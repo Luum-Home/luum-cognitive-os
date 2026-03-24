@@ -1,0 +1,40 @@
+# Runtime data (session-specific, not versioned)
+metrics/*.jsonl
+!metrics/.gitkeep
+tasks/active-tasks.json
+!tasks/.gitkeep
+checkpoints/*.json
+!checkpoints/.gitkeep
+*.log
+.last-sync
+
+# Environment
+.env
+.env.local
+
+# SeaweedFS credentials (use s3.json.example as template)
+infra/seaweedfs/s3.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+__pycache__/
+.venv/
+
+# Auto-generated skills
+skills/auto-generated/
+
+# Devbox
+.devbox/
+
+# Reference repos (cloned for study, not part of Cognitive OS)
+reference/
+
+# Sessions (runtime, per-session isolation)
+sessions/
+
+# Transcripts (runtime conversation index, not versioned)
+transcripts/
