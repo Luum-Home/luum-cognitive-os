@@ -1,0 +1,28 @@
+environments:
+  dev:
+    docker_registry: ""
+    k8s_namespace: dev
+    k8s_context: ""
+    argocd_enabled: false
+    auto_deploy: true
+    health_check_timeout: 60
+    rollback_on_failure: true
+
+  staging:
+    docker_registry: ""
+    k8s_namespace: staging
+    k8s_context: ""
+    argocd_enabled: true
+    auto_deploy: false
+    health_check_timeout: 120
+    rollback_on_failure: true
+
+  prod:
+    docker_registry: ""
+    k8s_namespace: prod
+    k8s_context: ""
+    argocd_enabled: true
+    auto_deploy: false
+    health_check_timeout: 180
+    rollback_on_failure: true
+    requires_approval: true
