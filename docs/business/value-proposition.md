@@ -104,15 +104,18 @@ The honest comparison is against the stack you would need to build and maintain 
 ## Getting Started
 
 ```bash
-# Install Cognitive OS
-curl -fsSL https://cognitive-os.dev/install.sh | bash
-
-# Initialize in your project
+# Clone Cognitive OS into your project
 cd your-project
-cognitive-os init
+git clone https://github.com/luum-home/luum-cognitive-os.git .cognitive-os-repo
+cp -r .cognitive-os-repo/.cognitive-os/ .cognitive-os/
+rm -rf .cognitive-os-repo
+
+# Initialize — detects your stack and generates project-specific config
+claude
+> /cognitive-os-init
 
 # Start coding with memory, quality gates, and self-improvement
-claude  # or cursor, codex, gemini — any MCP-compatible tool
+# Works with any MCP-compatible tool: claude, cursor, codex, gemini
 ```
 
 ## Contributing

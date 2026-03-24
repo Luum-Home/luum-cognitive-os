@@ -298,11 +298,14 @@ cognitive-os/
   generators/     # Auto-generate project configs from templates
 ```
 
-**One-command setup:**
+**Quick setup:**
 ```bash
-curl -fsSL https://cognitive-os.dev/install.sh | bash
 cd your-project
-cognitive-os init
+git clone https://github.com/luum-home/luum-cognitive-os.git .cognitive-os-repo
+cp -r .cognitive-os-repo/.cognitive-os/ .cognitive-os/
+rm -rf .cognitive-os-repo
+claude
+> /cognitive-os-init
 ```
 
 ---

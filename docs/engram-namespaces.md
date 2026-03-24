@@ -185,18 +185,18 @@ mem_search(query="agent KPIs latest", project="cognitive-os-meta")
 For multi-tenant SaaS deployments, each namespace maps to a separate Engram database:
 
 ```yaml
-# cognitive-os.yaml (future SaaS config)
+# cognitive-os.yaml (future SaaS config — not yet available)
 engram:
   namespaces:
     cognitive-os:
       backend: "shared"          # Global Engram instance
-      url: "https://engram.cognitive-os.dev/shared"
+      url: "${ENGRAM_SHARED_URL:-http://localhost:8766/shared}"
     project:
       backend: "isolated"        # Per-tenant database
-      url: "https://engram.cognitive-os.dev/tenant/{tenant-id}"
+      url: "${ENGRAM_TENANT_URL:-http://localhost:8766/tenant/{tenant-id}}"
     cognitive-os-meta:
       backend: "aggregated"      # Anonymized metrics store
-      url: "https://engram.cognitive-os.dev/metrics"
+      url: "${ENGRAM_METRICS_URL:-http://localhost:8766/metrics}"
 ```
 
 ## Cross-Project Learning

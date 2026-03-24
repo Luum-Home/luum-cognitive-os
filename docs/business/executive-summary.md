@@ -74,12 +74,15 @@ A 170-endpoint monolith was decomposed into 14+ microservices in ~24 hours using
 ## Getting Started
 
 ```bash
-# Install
-curl -fsSL https://cognitive-os.dev/install.sh | bash
-
-# Initialize in your project
+# Clone Cognitive OS into your project
 cd your-project
-cognitive-os init
+git clone https://github.com/luum-home/luum-cognitive-os.git .cognitive-os-repo
+cp -r .cognitive-os-repo/.cognitive-os/ .cognitive-os/
+rm -rf .cognitive-os-repo
+
+# Initialize — detects your stack and generates project-specific config
+claude
+> /cognitive-os-init
 
 # Done — your AI now has memory, discipline, and self-improvement
 ```
