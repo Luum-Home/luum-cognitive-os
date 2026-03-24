@@ -1,0 +1,21 @@
+{
+  "_comment": "Copy to s3.json and set credentials. Values must match LANGFUSE_S3_ACCESS_KEY / LANGFUSE_S3_SECRET_KEY in .env",
+  "identities": [
+    {
+      "name": "agentosadmin",
+      "credentials": [
+        {
+          "accessKey": "CHANGE_ME_ACCESS_KEY",
+          "secretKey": "CHANGE_ME_SECRET_KEY"
+        }
+      ],
+      "actions": [
+        "Admin",
+        "Read",
+        "List",
+        "Tagging",
+        "Write"
+      ]
+    }
+  ]
+}
