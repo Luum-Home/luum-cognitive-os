@@ -1,0 +1,1 @@
+{"timestamp":"2026-03-24T00:47:55Z","timestamp_epoch":1774313275,"type":"COMPILATION_ERROR","service":"unknown","framework":"node-build","error":"ERROR: cannot find module 'foo-bar'\nSyntaxError: Unexpected token\ncompilation failed\n","command":"npm run build\n","context":"missing import or dependency","fingerprint":"b5a5138119bb293166522434d29c7701"}
