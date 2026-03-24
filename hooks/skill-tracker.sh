@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+# PostToolUse hook: Combined skill feedback + metrics tracker
+# Fires on "Agent|Skill" — saves failure feedback to Engram AND appends metrics to JSONL
+# Replaces: skill-feedback-tracker.sh + skill-metrics-tracker.sh
+# Must complete in <5 seconds
+
+set -euo pipefail
+
+_HOOK_NAME="skill-tracker"
+source "$(dirname "$0")/_lib/safe-jsonl.sh"
+
+# Read tool result from stdin
+INPUT=$(cat)
+
+# Exit early if no input or no jq
+if [ -z "$INPUT" ]; then exit 0; fi
+if ! command -v jq &>/dev/null; then exit 0; fi
+
+TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)
+
+# Only track Agent and Skill tool uses
+case "$TOOL_NAME" in
+  Agent|Skill) ;;
+  *) exit 0 ;;
+esac
+
+TOOL_RESULT=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
+EXIT_CODE=$(echo "$INPUT" | jq -r '.exit_code // "0"' 2>/dev/null)
+
+# --- Extract skill name ---
+SKILL_NAME=$(echo "$INPUT" | jq -r '
+  .tool_input.skill // .tool_input.description // .tool_input.prompt // "unknown"
+' 2>/dev/null | head -c 100)
+
+# Normalize: "sdd-explore: Explore the codebase" -> "sdd-explore"
+SKILL_NAME=$(echo "$SKILL_NAME" | sed -E 's/^([a-zA-Z0-9_-]+).*/\1/' | tr '[:upper:]' '[:lower:]')
+
+if [ -z "$SKILL_NAME" ] || [ "$SKILL_NAME" = "unknown" ]; then
+  SKILL_NAME=$(echo "$INPUT" | jq -r '.tool_input.prompt // ""' 2>/dev/null | grep -oE '(sdd-[a-z]+|systematic-debugging|test-driven|verification|model-optimizer|skill-[a-z]+)' | head -1)
+  [ -z "$SKILL_NAME" ] && SKILL_NAME="unknown-agent"
+fi
+
+# --- Part 1: Failure detection + Engram feedback ---
+FAILED=false
+FAILURE_REASON=""
+
+if [ "$EXIT_CODE" != "0" ] && [ "$EXIT_CODE" != "" ]; then
+  FAILED=true
+  FAILURE_REASON="Exit code: $EXIT_CODE"
+fi
+
+if echo "$TOOL_RESULT" | grep -qi "error\|failed\|rejected\|exception\|timed out\|permission denied" 2>/dev/null; then
+  FAILED=true
+  FAILURE_REASON="${FAILURE_REASON:+$FAILURE_REASON | }Pattern match in result"
+fi
+
+if [ "$FAILED" = "true" ]; then
+  ENGRAM_PORT="${ENGRAM_PORT:-7437}"
+  curl -s -X POST "http://localhost:${ENGRAM_PORT}/api/observations" \
+    -H "Content-Type: application/json" \
+    -d "{
+      \"title\": \"Skill feedback: ${SKILL_NAME} failed\",
+      \"type\": \"discovery\",
+      \"project\": \"${CLAUDE_PROJECT_NAME:-my-project}\",
+      \"content\": \"**Skill**: ${SKILL_NAME}\\n**Failure**: ${FAILURE_REASON}\\n**Result excerpt**: $(echo "$TOOL_RESULT" | head -c 500 | jq -Rs .)\",
+      \"topic_key\": \"skill-feedback/${SKILL_NAME}\"
+    }" > /dev/null 2>&1 || true
+fi
+
+# --- Part 2: Metrics tracking (JSONL) ---
+# Session-aware: write to session-scoped metrics if session is active
+METRICS_DIR="${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/metrics"
+SESSION_ID="${COGNITIVE_OS_SESSION_ID:-}"
+if [ -z "$SESSION_ID" ]; then
+  _SESSION_FILE="${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/sessions/.current-session-$$"
+  [ -f "$_SESSION_FILE" ] && SESSION_ID=$(cat "$_SESSION_FILE" 2>/dev/null)
+fi
+if [ -n "$SESSION_ID" ]; then
+  SESSION_METRICS_DIR="${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/sessions/$SESSION_ID/metrics"
+  [ -d "${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/sessions/$SESSION_ID" ] && METRICS_DIR="$SESSION_METRICS_DIR"
+fi
+METRICS_FILE="$METRICS_DIR/skill-metrics.jsonl"
+mkdir -p "$METRICS_DIR"
+
+MODEL=$(echo "$INPUT" | jq -r '.tool_response.model // .tool_response.usage.model // "unknown"' 2>/dev/null)
+TOTAL_TOKENS=$(echo "$INPUT" | jq -r '.tool_response.total_tokens // .tool_response.usage.total_tokens // 0' 2>/dev/null)
+DURATION_MS=$(echo "$INPUT" | jq -r '.tool_response.duration_ms // .tool_response.durationMs // 0' 2>/dev/null)
+SUCCESS=$( [ "$FAILED" = "true" ] && echo "false" || echo "true" )
+TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+METRICS_LINE=$(jq -n \
+  --arg ts "$TIMESTAMP" \
+  --arg skill "$SKILL_NAME" \
+  --arg model "$MODEL" \
+  --argjson tokens "${TOTAL_TOKENS:-0}" \
+  --argjson duration "${DURATION_MS:-0}" \
+  --argjson success "${SUCCESS:-true}" \
+  '{timestamp: $ts, skill: $skill, model: $model, tokens: $tokens, duration_ms: $duration, success: $success}' 2>/dev/null)
+
+[ -n "$METRICS_LINE" ] && safe_jsonl_append "$METRICS_FILE" "$METRICS_LINE"
+
+exit 0
