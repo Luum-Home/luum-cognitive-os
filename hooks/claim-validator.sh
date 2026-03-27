@@ -13,6 +13,10 @@ _HOOK_NAME="claim-validator"
 # Source safe-jsonl helper if available
 _LIB_DIR="$(dirname "$0")/_lib"
 [ -f "$_LIB_DIR/safe-jsonl.sh" ] && source "$_LIB_DIR/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/common.sh"
+
+# Auto-disabled at capability level 5
+check_capability_level "claim-validator" && exit 0
 
 # Fallback if safe_jsonl_append is not defined
 if ! type safe_jsonl_append &>/dev/null 2>&1; then

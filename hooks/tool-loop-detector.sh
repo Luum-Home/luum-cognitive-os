@@ -10,6 +10,9 @@ set -euo pipefail
 
 source "$(dirname "$0")/_lib/common.sh"
 
+# Auto-disabled at capability level 5
+check_capability_level "tool-loop-detector" && exit 0
+
 # Use a session-stable temp file (PPID stays constant within a session)
 HISTORY_FILE="/tmp/claude-tool-history-${PPID}.log"
 MAX_HISTORY=10
