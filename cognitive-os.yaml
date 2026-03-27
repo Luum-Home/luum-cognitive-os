@@ -162,6 +162,7 @@ rules:
     strategy: compact              # compact | full
     compact_file: RULES-COMPACT.md # compressed rule index
     contextual_triggers:           # full rule loaded when trigger matches
+      # --- Existing triggers ---
       auto-repair: "auto-repair|auto_repair|circuit.breaker|remediation|error|failure|crash|sre"
       squad-protocol: "/squad-report|/retrospective"
       definition-of-done: "done|complete|finished|dod|definition of done"
@@ -169,6 +170,71 @@ rules:
       acceptance-criteria: "acceptance criteria|verify|verification|measurable"
       session-concurrency: "session|concurrent|lock|multi-session"
       self-improvement-protocol: "self-improve|self-improvement|kpi threshold|pattern detection"
+
+      # --- Verification & Trust (Section 3) ---
+      trust-score: "trust.score|trust.report|confidence.score|self.doubt|verification.evidence"
+      anti-hallucination: "hallucination|fabricat|claim.valid|ground.truth|cross.verif"
+      confidence-gate: "confidence.gate|low.confidence|score.below|block.low"
+
+      # --- Impact Assessment (Section 5) ---
+      blast-radius: "blast.radius|impact.analysis|scope.estimate|affected.files|proportional"
+      sandbox-sampling: "sandbox|sample.first|bulk.change|100.files|large.scope|epic.task"
+      impact-analysis: "impact.analysis|change.impact|importers|downstream|blast.radius"
+      scope-proportionality: "proportional|disproportionate|too.many.files|fix.delet"
+
+      # --- Agent Governance (Section 7) ---
+      agent-security: "permission|privilege|access.control|least.privilege|blocked.path|agent.security"
+      agent-kpis: "kpi|okr|agent.performance|weekly.review|metric.threshold"
+      agent-identity: "agent.identity|audit.trail|trust.level|delegation.rule"
+      consequence-system: "consequence|promote|degrade|disable.skill|okr.driven"
+
+      # --- Prompt Engineering (Section 8) ---
+      closed-loop-prompts: "success.criteria|fallback.action|halt.and.wait|retry.loop|escalat|closed.loop"
+      split-and-resume: "needs_clarification|clarification.answer|mid.task.ambig|split.and.resume"
+      clarification-gate: "clarification.gate|ambiguous.prompt|vague.prompt|prompt.score"
+
+      # --- Context Efficiency (Section 9) ---
+      context-optimization: "context.window|token.budget|progressive.loading|compaction|context.optim"
+      context-management: "context.capacity|save.and.summarize|pre.compaction|context.manag"
+      capability-levels: "capability.level|auto.disable|model.capability|safety.net"
+
+      # --- Security (Section 10) ---
+      credential-management: "credential|secret|env.var|api.key|password.manage|token.rotate"
+      license-policy: "license|agpl|sspl|gpl|copyleft|open.source.license|license.check"
+      security-scanning: "semgrep|sast|security.scan|vulnerab|security.finding"
+      pentesting-readiness: "pentest|security.test|prompt.injection|permission.escalat"
+
+      # --- Cost & Resources (Section 11) ---
+      resource-governance: "budget|monthly.limit|model.downgrade|cost.cap|resource.govern"
+      token-economy: "token.economy|cost.transparen|waste.prevent|cheapest.model"
+      decomposition: "decompos|break.down|sub.task|cost.aware|task.split"
+      cost-prediction: "cost.predict|estimate.cost|how.much.will|budget.forecast"
+      estimation-calibration: "estimat|calibrat|planning.poker|effort.estimate|how.long"
+
+      # --- Persistence & Recovery (Section 14) ---
+      fault-tolerance: "fault.tolerance|resilience|checkpoint|recover|resume.task|idempotent"
+      engram-organization: "engram|topic.key|prefix.system|memory.organiz"
+      crash-recovery: "crash.recovery|auto.checkpoint|orphaned.stash|session.crash"
+
+      # --- Change Safety (Section 15) ---
+      cognitive-os-changes: "cognitive.os.change|os.modif|hook.change|rule.change|skill.change"
+      capability-protection: "capability.snapshot|capability.diff|feature.loss|unintended.removal"
+      auto-rollback: "auto.rollback|rollback|revert|verify.fail.3|retry.exhaust"
+
+      # --- Monitoring & Observability (Section 16) ---
+      performance-monitoring: "performance.monitor|latency|throughput|p50|p95|p99|bottleneck"
+      doc-sync: "doc.sync|stale.doc|documentation.drift|doc.freshness"
+
+      # --- Autonomous Systems (Section 17) ---
+      singularity: "singularity|autonomous.loop|mape.k|daemon|codebase.health"
+
+      # --- Standalone contextual rules ---
+      error-learning: "error.pattern|error.recur|mistake.report|pdca|error.learn"
+      model-routing: "model.routing|routing.table|model.select|opus.vs.sonnet"
+      adversarial-review: "adversarial.review|code.review|zero.finding|review.protocol"
+      step-files: "step.file|long.running|resumable|checkpoint.step"
+      rate-limiting: "rate.limit|token.flood|tool.usage.limit|cooldown"
+
       # Project-specific triggers (add via /cognitive-os-init or manually):
       # go-architecture: "*.go"
       # constitutional-gates: "payment|transfer|card"
@@ -333,10 +399,38 @@ resources:
     auto_execute_safe: false        # Set to true to auto-run context-optimizer and error-analyzer
 
 model_capability:
-  level: 3                             # 1=basic, 2=good, 3=excellent, 4=autonomous
+  level: 3                             # 1=basic, 2=good, 3=excellent, 4=autonomous, 5=autonomous+
   auto_disable:
     3: [context-management]
     4: [clarification-gate, assumption-tracking, confidence-gate, model-routing, blast-radius]
+    5: [completeness-check, epic-task-detector, scope-proportionality, trust-score-validator,
+        claim-validator, tool-loop-detector, consequence-evaluator, infra-intent-detector,
+        pre-cleanup-snapshot, architecture-compliance, auto-skill-generator]
+
+efficiency:
+  profile: standard              # lean | standard | full
+  profiles:
+    lean:
+      description: "Minimum overhead. For experienced users on capable models."
+      rules_loading: compact_only
+      hooks: minimal
+      capability_level: 4
+      target_tokens_per_session: 6000
+      target_cost_per_session_usd: 0.10
+    standard:
+      description: "Good governance without waste. Recommended for most users."
+      rules_loading: compact_only
+      hooks: standard
+      capability_level: 3
+      target_tokens_per_session: 8000
+      target_cost_per_session_usd: 0.15
+    full:
+      description: "Maximum observability. For Cognitive OS development."
+      rules_loading: all
+      hooks: full
+      capability_level: 2
+      target_tokens_per_session: 142000
+      target_cost_per_session_usd: 2.50
 
 compatibility:
   baseline_model: "claude-opus-4-6"
@@ -404,6 +498,43 @@ tool_groups:
   minimal: [Read, Glob, Grep]
   coding: [Read, Write, Edit, Glob, Grep, Bash, Agent]
   full: [Read, Write, Edit, Glob, Grep, Bash, Agent, WebSearch, WebFetch]
+
+sources:
+  # Package sources — like /etc/apt/sources.list for agent components
+  # Each source provides skills, rules, hooks, presets, or MCP servers
+  registries:
+    - name: cos-builtin
+      type: local
+      path: .cognitive-os/
+      description: "Built-in Cognitive OS components"
+      enabled: true
+
+    - name: skills-sh
+      type: remote
+      url: https://skild.sh/api/v1
+      description: "Skills.sh — Vercel's agent skills registry (83K+ skills)"
+      enabled: true
+      provides: [skills]
+
+    - name: mcp-registry
+      type: remote
+      url: https://registry.modelcontextprotocol.io/api/v1
+      description: "Official MCP server registry"
+      enabled: true
+      provides: [mcp-servers]
+
+    - name: skillsmp
+      type: remote
+      url: https://api.skillsmp.com/v1
+      description: "SkillsMP — Community skills marketplace (350K+ skills)"
+      enabled: false
+      provides: [skills]
+
+  # Local/private sources
+  # - name: my-company
+  #   type: local
+  #   path: /path/to/private-registry
+  #   provides: [skills, rules, presets]
 
 paperclip:
   enabled: true

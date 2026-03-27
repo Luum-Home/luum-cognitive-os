@@ -1,0 +1,18 @@
+name: fintech
+description: "Financial technology preset — strict governance, security-first"
+efficiency_profile: full
+capability_level: 2
+components:
+  rules:
+    - RULES-COMPACT.md
+  skills:
+    - sdd-init
+    - sdd-apply
+    - sdd-verify
+    - security-scan
+    - secret-audit
+  quality:
+    coverage_minimum: 80
+    require_integration_tests: true
+    require_idempotency_tests: true
+    require_audit_trail: true

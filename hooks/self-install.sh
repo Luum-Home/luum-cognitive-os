@@ -134,6 +134,35 @@ for entry in "${SYNC_DIRS[@]}"; do
   synced_dirs+=("$src_name")
 done
 
+# ── Efficiency profile: restrict rules if lean or standard ───────────
+# Self-hosting (developing the OS itself) always uses full — we need all rules.
+# Efficiency profiles only apply to EXTERNAL projects that install Cognitive OS.
+IS_SELF_HOSTING=false
+[ -f "$PROJECT_DIR/hooks/self-install.sh" ] && IS_SELF_HOSTING=true
+
+CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
+EFFICIENCY_PROFILE="full"
+if [ "$IS_SELF_HOSTING" = false ] && [ -f "$CONFIG_FILE" ]; then
+  _ep=$(grep -A1 '^efficiency:' "$CONFIG_FILE" 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || true)
+  [ -n "$_ep" ] && EFFICIENCY_PROFILE="$_ep"
+fi
+
+cos_rules_dir="$PROJECT_DIR/.claude/rules/cos"
+if [[ "$EFFICIENCY_PROFILE" == "lean" || "$EFFICIENCY_PROFILE" == "standard" ]]; then
+  # Only keep RULES-COMPACT.md; remove all other rule symlinks
+  if [ -d "$cos_rules_dir" ]; then
+    for link in "$cos_rules_dir"/*.md; do
+      [ -L "$link" ] || continue
+      base=$(basename "$link")
+      if [ "$base" != "RULES-COMPACT.md" ]; then
+        rm -f "$link"
+        removed=$((removed + 1))
+      fi
+    done
+  fi
+fi
+# Self-hosting or profile=full: keep all symlinks as created by sync_dir above
+
 # ── Migration: clean up old flat symlinks in .claude/rules/ ──────────
 # Before namespacing, COS rules were symlinked flat into .claude/rules/.
 # Now they go to .claude/rules/cos/. Remove old flat symlinks that point
