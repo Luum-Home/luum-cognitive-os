@@ -34,6 +34,7 @@ The orchestrator checks this table before delegating to sub-agents.
 | opus | $15 | $75 | Deep reasoning, architecture, debugging |
 | sonnet | $3 | $15 | General tasks, implementation, specs |
 | haiku | $0.25 | $1.25 | Simple documentation, archiving |
+| openrouter/free | $0.00 | $0.00 | Last-resort fallback when budget exhausted |
 
 ## Dynamic Multi-Provider Routing
 
@@ -51,6 +52,9 @@ The `lib/model_router.py` module extends static routing with dynamic, multi-prov
 | deepseek-r1 | DeepSeek | 8 | 4 | 7 | 128K | $0.55 | $2.19 | No |
 | llama-3-70b | Local | 5 | 5 | 6 | 128K | $0.00 | $0.00 | Yes |
 | qwen-3-32b | Local | 4 | 7 | 5 | 32K | $0.00 | $0.00 | Yes |
+| openrouter/free | OpenRouter | 4 | 6 | 4 | 128K | $0.00 | $0.00 | No |
+| qwen/qwen3-32b:free | OpenRouter | 5 | 7 | 5 | 40K | $0.00 | $0.00 | No |
+| nvidia/llama-3.1-nemotron-ultra-253b:free | OpenRouter | 6 | 4 | 6 | 128K | $0.00 | $0.00 | No |
 
 ### Task Capability Mapping
 
@@ -60,7 +64,7 @@ The `lib/model_router.py` module extends static routing with dynamic, multi-prov
 | speed | sdd-archive, doc-sync, format |
 | code | sdd-apply, sdd-tasks, test-driven-development |
 | long_context | sdd-explore, eval-repo, exhaustive-prompt |
-| budget | document-feature, skill-creator |
+| budget | document-feature, skill-creator, sdd-archive, openrouter/free fallback |
 
 ### Python API
 
