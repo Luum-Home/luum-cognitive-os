@@ -71,7 +71,7 @@ class TestGetCapabilityLevel:
     def test_invalid_level_returns_default(self, tmp_path):
         """Out of range levels should return DEFAULT_LEVEL."""
         config = tmp_path / "cognitive-os.yaml"
-        config.write_text("model_capability:\n  level: 5\n")
+        config.write_text("model_capability:\n  level: 6\n")
         assert get_capability_level(str(config)) == DEFAULT_LEVEL
 
     def test_zero_level_returns_default(self, tmp_path):
@@ -177,8 +177,8 @@ class TestGetDisabledComponents:
         result = get_disabled_components(0, str(config))
         assert result == []
 
-    def test_clamps_above_4(self, tmp_path):
-        """Level above 4 should be treated as level 4."""
+    def test_clamps_above_5(self, tmp_path):
+        """Level above 5 should be treated as level 5."""
         config = tmp_path / "cognitive-os.yaml"
         config.write_text(
             "model_capability:\n"
