@@ -85,6 +85,31 @@ MODEL_CAPABILITIES: Dict[str, dict] = {
         "context": 32_000,
         "local": True,
     },
+    "openrouter/free": {
+        "reasoning": 4,
+        "speed": 6,
+        "code": 4,
+        "cost_per_1m_in": 0,
+        "cost_per_1m_out": 0,
+        "context": 128_000,
+        "note": "Auto-selects best available free model. Degraded quality but zero cost.",
+    },
+    "qwen/qwen3-32b:free": {
+        "reasoning": 5,
+        "speed": 7,
+        "code": 5,
+        "cost_per_1m_in": 0,
+        "cost_per_1m_out": 0,
+        "context": 40_960,
+    },
+    "nvidia/llama-3.1-nemotron-ultra-253b:free": {
+        "reasoning": 6,
+        "speed": 4,
+        "code": 6,
+        "cost_per_1m_in": 0,
+        "cost_per_1m_out": 0,
+        "context": 128_000,
+    },
 }
 
 TASK_REQUIREMENTS: Dict[str, List[str]] = {
@@ -112,6 +137,7 @@ TASK_REQUIREMENTS: Dict[str, List[str]] = {
     "budget": [
         "document-feature",
         "skill-creator",
+        "openrouter/free",
     ],
 }
 
@@ -198,6 +224,15 @@ def select_model(
 
     # Filter by budget constraint using a reference call estimate
     if budget_remaining is not None:
+        # When budget is effectively zero, prefer free models (OpenRouter + local)
+        if budget_remaining <= 0.01:
+            free_models = {
+                k: v for k, v in candidates.items()
+                if v.get("cost_per_1m_in", 0) == 0 and v.get("cost_per_1m_out", 0) == 0
+            }
+            if free_models:
+                candidates = free_models
+
         ref_input = 10_000
         ref_output = 5_000
         affordable = {}
