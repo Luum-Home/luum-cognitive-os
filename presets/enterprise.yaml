@@ -1,0 +1,20 @@
+name: enterprise
+description: "Full governance preset for enterprise projects — maximum safety, compliance, audit trails"
+efficiency_profile: full
+capability_level: 2
+components:
+  rules:
+    - RULES-COMPACT.md
+  skills:
+    - sdd-init
+    - sdd-apply
+    - sdd-verify
+    - security-scan
+    - secret-audit
+    - pentest-self
+    - deep-research
+  quality:
+    coverage_minimum: 80
+    require_integration_tests: true
+    require_audit_trail: true
+    require_security_review: true
