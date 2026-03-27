@@ -11,6 +11,10 @@ set -uo pipefail
 
 _HOOK_NAME="blast-radius"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/common.sh"
+
+# Auto-disabled at capability level 4
+check_capability_level "blast-radius" && exit 0
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
