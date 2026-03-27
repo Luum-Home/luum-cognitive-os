@@ -12,6 +12,7 @@ Higher-capability models do not need the same safety nets as lower-capability on
 | 2 | good | All safety nets active. Model is competent but benefits from all checks. |
 | 3 | excellent | Context management disabled. Model handles its own context efficiently. |
 | 4 | autonomous | Multiple safety nets disabled. Model is self-correcting and self-aware. |
+| 5 | autonomous+ | Most safety nets disabled. For future models that are self-correcting. Session, metrics, security, and error capture remain active. |
 
 ## Configuration
 
@@ -19,10 +20,13 @@ In `cognitive-os.yaml`:
 
 ```yaml
 model_capability:
-  level: 3  # 1=basic, 2=good, 3=excellent, 4=autonomous
+  level: 3  # 1=basic, 2=good, 3=excellent, 4=autonomous, 5=autonomous+
   auto_disable:
     3: [context-management]
     4: [clarification-gate, assumption-tracking, confidence-gate, model-routing, blast-radius]
+    5: [completeness-check, epic-task-detector, scope-proportionality, trust-score-validator,
+        claim-validator, tool-loop-detector, consequence-evaluator, infra-intent-detector,
+        pre-cleanup-snapshot, architecture-compliance, auto-skill-generator]
 ```
 
 ## Cumulative Disabling
@@ -30,6 +34,7 @@ model_capability:
 Components disabled at level N remain disabled at level N+1. For example:
 - Level 3 disables: `context-management`
 - Level 4 disables: `context-management` + `clarification-gate` + `assumption-tracking` + `confidence-gate` + `model-routing` + `blast-radius`
+- Level 5 disables: all of the above + `completeness-check` + `epic-task-detector` + `scope-proportionality` + `trust-score-validator` + `claim-validator` + `tool-loop-detector` + `consequence-evaluator` + `infra-intent-detector` + `pre-cleanup-snapshot` + `architecture-compliance` + `auto-skill-generator`
 
 ## Hook Integration
 
@@ -56,3 +61,16 @@ The `lib/capability_levels.py` module provides:
 - Core safety rules (user privacy, security, credential management) are NEVER auto-disabled regardless of capability level
 - Only performance and quality-of-life components can be disabled
 - The `auto_disable` map is configurable per project
+
+### Always-active components (never disabled, even at level 5)
+
+These components are foundational and remain active at every capability level:
+
+| Component | Reason |
+|-----------|--------|
+| `session-init.sh`, `session-cleanup.sh` | Session lifecycle management |
+| `error-pipeline.sh` | Error capture -- foundational for learning |
+| `secret-detector.sh` | Security -- never optional |
+| `content-policy.sh` | Security -- never optional |
+| `result-truncator.sh` | Context protection |
+| `completion-gate.sh` | Acceptance criteria verification |
