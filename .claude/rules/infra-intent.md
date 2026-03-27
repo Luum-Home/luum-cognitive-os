@@ -1,0 +1,1 @@
+../../rules/infra-intent.md

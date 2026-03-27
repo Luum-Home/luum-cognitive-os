@@ -1,0 +1,2 @@
+{"competitor": "cognitive-os", "task": "fix-known-bug", "status": "error", "timestamp": "20260323-234610", "metrics": {"time_seconds": 3, "exit_code": 1, "files_changed": 0, "files_created": 0, "tests_created": 0, "compiles": "n/a", "output_bytes": 215}}
+{"competitor": "claude-code", "task": "fix-known-bug", "status": "error", "timestamp": "20260323-234610", "metrics": {"time_seconds": 0, "exit_code": 1, "files_changed": 0, "files_created": 0, "tests_created": 0, "compiles": "n/a", "output_bytes": 215}}

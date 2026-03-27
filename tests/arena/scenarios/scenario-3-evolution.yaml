@@ -1,0 +1,29 @@
+name: "Repeated Research Task"
+description: "Same research twice — tests that OS learns and improves"
+category: research
+expected_total_cost: 1.00
+expected_duration_minutes: 10
+tags: [memory, evolution, cost-improvement]
+
+turns:
+  - type: user
+    content: "Research the best Go HTTP frameworks for our project"
+    expectations:
+      deep_research_skill: true
+      memory_search_first: true
+
+  - type: checkpoint
+    content: "After first research"
+    expectations:
+      memory_saved: true
+      cost_recorded: true
+
+  - type: delay
+    content: "Simulate 1 day passing"
+
+  - type: user
+    content: "Research the best Go HTTP frameworks for our project"
+    expectations:
+      memory_hit: true
+      cost_lower_than_first: true
+      no_redundant_search: true
