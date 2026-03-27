@@ -1,0 +1,1 @@
+<repo>/rules/auto-skill-generation.md

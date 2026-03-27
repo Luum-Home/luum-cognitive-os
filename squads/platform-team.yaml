@@ -1,0 +1,39 @@
+# Example squad definition for a platform/backend team.
+# Copy and customize for your project.
+apiVersion: agent.os/v1
+kind: Squad
+metadata:
+  name: platform-team
+spec:
+  domain: platform
+  description: >
+    Example squad for platform services: user management, authentication, onboarding.
+    Core identity and access control.
+  manager:
+    type: agent
+    role: engineering-manager
+    agentRef: engineering-manager-agent
+  members:
+    - role: backend-dev
+      agentRef: backend-architect
+      count: 2
+    - role: qa
+      agentRef: test-coverage-enforcer
+    - role: sre
+      agentRef: sre-agent
+  repos: []
+    # Add your platform service repos here
+  skills:
+    - testing-patterns
+  governance:
+    approvalFlow: manager-required
+    coverageMinimum: 75
+    phase: reconstruction
+    constitutionalGates:
+      - gate-secrets-never-in-code
+  metrics:
+    targets:
+      successRate: 0.90
+      architectureCompliance: 0.90
+      coverageMinimum: 75
+      maxIssueResolutionTime: 30  # minutes

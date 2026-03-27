@@ -1,0 +1,590 @@
+# =============================================================================
+# Cognitive OS — AI/ML Tooling (Universal)
+# =============================================================================
+# LLM observability, guardrails, proxy, and agent coordination.
+# Portable: add to any project.
+#
+# Requires: docker network create cognitive-os-network (or configure external network)
+#
+# Usage:
+#   docker-compose -f docker-compose.cognitive-os.yml up -d           # All services
+#   docker-compose -f docker-compose.cognitive-os.yml up -d langfuse-web litellm  # Only what you need
+#   docker-compose -f docker-compose.cognitive-os.yml down             # Shut down
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # Langfuse PostgreSQL — Database for Langfuse
+  # ---------------------------------------------------------------------------
+  langfuse-pg:
+    image: postgres:17-alpine
+    container_name: cognitive-os-langfuse-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${LANGFUSE_PG_USER:-langfuse}
+      POSTGRES_PASSWORD: ${LANGFUSE_PG_PASS:-langfuse_pass}
+      POSTGRES_DB: ${LANGFUSE_PG_DB:-langfuse}
+      TZ: UTC
+      PGTZ: UTC
+    ports:
+      - "127.0.0.1:${LANGFUSE_PG_PORT:-5434}:5432"
+    volumes:
+      - langfuse-pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U langfuse -d langfuse"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # Langfuse Valkey — Cache/queue for Langfuse worker (Redis-compatible, BSD-3)
+  # ---------------------------------------------------------------------------
+  langfuse-valkey:
+    image: valkey/valkey:8-alpine
+    container_name: cognitive-os-langfuse-valkey
+    restart: unless-stopped
+    command: >
+      --requirepass langfuse_redis
+      --maxmemory-policy noeviction
+    ports:
+      - "127.0.0.1:${LANGFUSE_REDIS_PORT:-6380}:6379"
+    volumes:
+      - langfuse-valkey-data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "-a", "langfuse_redis", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # Langfuse ClickHouse — Analytics storage for Langfuse
+  # ---------------------------------------------------------------------------
+  langfuse-clickhouse:
+    image: clickhouse/clickhouse-server
+    container_name: cognitive-os-langfuse-clickhouse
+    restart: unless-stopped
+    user: "101:101"
+    environment:
+      CLICKHOUSE_DB: default
+      CLICKHOUSE_USER: ${LANGFUSE_CH_USER:-clickhouse}
+      CLICKHOUSE_PASSWORD: ${LANGFUSE_CH_PASS:-clickhouse}
+    ports:
+      - "127.0.0.1:${LANGFUSE_CH_HTTP_PORT:-8123}:8123"
+      - "127.0.0.1:${LANGFUSE_CH_NATIVE_PORT:-9001}:9000"
+    volumes:
+      - langfuse-clickhouse-data:/var/lib/clickhouse
+      - langfuse-clickhouse-logs:/var/log/clickhouse-server
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # Langfuse SeaweedFS — S3-compatible object storage for Langfuse (Apache-2.0)
+  # Setup: cp infra/seaweedfs/s3.json.example infra/seaweedfs/s3.json
+  #        then set accessKey/secretKey to match LANGFUSE_S3_ACCESS_KEY/SECRET_KEY
+  # ---------------------------------------------------------------------------
+  langfuse-seaweedfs:
+    image: chrislusf/seaweedfs:latest
+    container_name: cognitive-os-langfuse-seaweedfs
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "/opt/seaweedfs/docker-entrypoint.sh"]
+    command: >
+      server -dir=/data
+      -s3
+      -s3.port=8333
+      -s3.config=/etc/seaweedfs/s3.json
+      -filer
+      -master.volumeSizeLimitMB=100
+    ports:
+      - "${LANGFUSE_S3_PORT:-8333}:8333"
+      - "127.0.0.1:${LANGFUSE_SEAWEEDFS_MASTER_PORT:-9333}:9333"
+      - "127.0.0.1:${LANGFUSE_SEAWEEDFS_FILER_PORT:-8888}:8888"
+    volumes:
+      - langfuse-seaweedfs-data:/data
+      - ./infra/seaweedfs/docker-entrypoint.sh:/opt/seaweedfs/docker-entrypoint.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:9333/cluster/status || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # Langfuse Worker — Background job processor
+  # ---------------------------------------------------------------------------
+  langfuse-worker:
+    image: langfuse/langfuse-worker:3
+    container_name: cognitive-os-langfuse-worker
+    restart: unless-stopped
+    depends_on:
+      langfuse-pg:
+        condition: service_healthy
+      langfuse-valkey:
+        condition: service_healthy
+      langfuse-clickhouse:
+        condition: service_healthy
+      langfuse-seaweedfs:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${LANGFUSE_WORKER_PORT:-3030}:3030"
+    environment: &langfuse-env
+      DATABASE_URL: postgresql://${LANGFUSE_PG_USER:-langfuse}:${LANGFUSE_PG_PASS:-langfuse_pass}@langfuse-pg:5432/${LANGFUSE_PG_DB:-langfuse}
+      NEXTAUTH_URL: ${LANGFUSE_URL:-http://localhost:3100}
+      NEXTAUTH_SECRET: ${LANGFUSE_NEXTAUTH_SECRET:-langfuse_local_dev_secret_change_me}
+      SALT: ${LANGFUSE_SALT:-langfuse_local_dev_salt_change_me}
+      ENCRYPTION_KEY: ${LANGFUSE_ENCRYPTION_KEY:?Set LANGFUSE_ENCRYPTION_KEY in .env (64-char hex string)}
+      TELEMETRY_ENABLED: ${LANGFUSE_TELEMETRY:-false}
+      LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "false"
+      # ClickHouse
+      CLICKHOUSE_MIGRATION_URL: clickhouse://langfuse-clickhouse:9000
+      CLICKHOUSE_URL: http://langfuse-clickhouse:8123
+      CLICKHOUSE_USER: ${LANGFUSE_CH_USER:-clickhouse}
+      CLICKHOUSE_PASSWORD: ${LANGFUSE_CH_PASS:-clickhouse}
+      CLICKHOUSE_CLUSTER_ENABLED: "false"
+      # Valkey (Redis-compatible)
+      REDIS_HOST: langfuse-valkey
+      REDIS_PORT: 6379
+      REDIS_AUTH: langfuse_redis
+      REDIS_TLS_ENABLED: "false"
+      # SeaweedFS / S3 — event upload
+      LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
+      LANGFUSE_S3_EVENT_UPLOAD_REGION: us-east-1
+      LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: ${LANGFUSE_S3_ACCESS_KEY:-agentosadmin}
+      LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: ${LANGFUSE_S3_SECRET_KEY:-agentossecret}
+      LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://langfuse-seaweedfs:8333
+      LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: "true"
+      LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
+      # SeaweedFS / S3 — media upload
+      LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
+      LANGFUSE_S3_MEDIA_UPLOAD_REGION: us-east-1
+      LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: ${LANGFUSE_S3_ACCESS_KEY:-agentosadmin}
+      LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${LANGFUSE_S3_SECRET_KEY:-agentossecret}
+      LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://localhost:${LANGFUSE_S3_PORT:-8333}
+      LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: "true"
+      LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
+      # Batch export disabled for local dev
+      LANGFUSE_S3_BATCH_EXPORT_ENABLED: "false"
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # Langfuse Web — LLM Observability UI (MIT, self-hosted)
+  # https://github.com/langfuse/langfuse
+  # UI: http://localhost:3100
+  # ---------------------------------------------------------------------------
+  langfuse-web:
+    image: langfuse/langfuse:3
+    container_name: cognitive-os-langfuse
+    restart: unless-stopped
+    depends_on:
+      langfuse-pg:
+        condition: service_healthy
+      langfuse-valkey:
+        condition: service_healthy
+      langfuse-clickhouse:
+        condition: service_healthy
+      langfuse-seaweedfs:
+        condition: service_healthy
+    ports:
+      - "${LANGFUSE_PORT:-3100}:3000"
+    environment:
+      <<: *langfuse-env
+      HOSTNAME: "0.0.0.0"
+      # Init a default org/project for local dev (optional)
+      LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG:-AgentOS}
+      LANGFUSE_INIT_PROJECT_NAME: ${LANGFUSE_INIT_PROJECT:-cognitive-os-dev}
+      LANGFUSE_INIT_USER_EMAIL: ${LANGFUSE_INIT_EMAIL:-}
+      LANGFUSE_INIT_USER_NAME: ${LANGFUSE_INIT_USER:-}
+      LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_PASSWORD:-}
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --timeout=10 --spider http://127.0.0.1:3000/api/public/health || exit 1"]
+      interval: 15s
+      timeout: 15s
+      retries: 10
+      start_period: 60s
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # LiteLLM Proxy — LLM Gateway for cost control and model routing (MIT)
+  # https://github.com/BerriAI/litellm
+  # ---------------------------------------------------------------------------
+  litellm:
+    image: ghcr.io/berriai/litellm:main-stable
+    container_name: cognitive-os-litellm
+    restart: unless-stopped
+    ports:
+      - "${LITELLM_PORT:-4000}:4000"
+    volumes:
+      - ./infra/litellm/config.yaml:/app/config.yaml:ro
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:-sk-cognitive-os-local-dev-key}
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness')\" || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # NeMo Guardrails — AI security guardrails server (Apache 2.0)
+  # https://github.com/NVIDIA/NeMo-Guardrails
+  # Jailbreak detection + PII masking for AI-powered features
+  # ---------------------------------------------------------------------------
+  nemo-guardrails:
+    build:
+      context: ./infra/nemo-guardrails
+      dockerfile: Dockerfile
+    container_name: cognitive-os-nemo-guardrails
+    restart: unless-stopped
+    ports:
+      - "${NEMO_GUARDRAILS_PORT:-8088}:8088"
+    environment:
+      # Uncomment when using LLM-based rails:
+      # OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      # NVIDIA_API_KEY: ${NVIDIA_API_KEY:-}
+      LOG_LEVEL: ${NEMO_LOG_LEVEL:-INFO}
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8088/v1/rails/configs')\" || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # Paperclip PostgreSQL — Database for Paperclip agent coordination
+  # ---------------------------------------------------------------------------
+  paperclip-pg:
+    image: postgres:17-alpine
+    container_name: cognitive-os-paperclip-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PAPERCLIP_PG_USER:-paperclip}
+      POSTGRES_PASSWORD: ${PAPERCLIP_PG_PASS:-paperclip}
+      POSTGRES_DB: ${PAPERCLIP_PG_DB:-paperclip}
+    ports:
+      - "127.0.0.1:${PAPERCLIP_PG_PORT:-5438}:5432"
+    volumes:
+      - paperclip-pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paperclip -d paperclip"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # Paperclip — Agent Coordination Platform
+  # Built from local source at ./paperclip/
+  # UI: http://localhost:3200
+  # ---------------------------------------------------------------------------
+  paperclip:
+    container_name: cognitive-os-paperclip
+    image: tuyenvd/paperclip:latest
+    restart: unless-stopped
+    ports:
+      - "${PAPERCLIP_PORT:-3200}:3100"
+    environment:
+      DATABASE_URL: postgres://${PAPERCLIP_PG_USER:-paperclip}:${PAPERCLIP_PG_PASS:-paperclip}@paperclip-pg:5432/${PAPERCLIP_PG_DB:-paperclip}
+      HOST: "0.0.0.0"
+      PORT: "3100"
+      SERVE_UI: "true"
+      # authenticated mode for Docker (local_trusted requires loopback only)
+      PAPERCLIP_DEPLOYMENT_MODE: ${PAPERCLIP_DEPLOYMENT_MODE:-authenticated}
+      PAPERCLIP_DEPLOYMENT_EXPOSURE: "private"
+      PAPERCLIP_PUBLIC_URL: ${PAPERCLIP_PUBLIC_URL:-http://localhost:3200}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-cognitive-os-paperclip-local-dev-secret}
+      PAPERCLIP_HOME: /paperclip
+      PAPERCLIP_INSTANCE_ID: default
+      PAPERCLIP_CONFIG: /paperclip/instances/default/config.json
+      PAPERCLIP_MIGRATION_AUTO_APPLY: "true"
+      # Auto-create admin account (no manual bootstrap needed)
+      PAPERCLIP_ADMIN_EMAIL: ${PAPERCLIP_ADMIN_EMAIL:-admin@cognitive-os.local}
+      PAPERCLIP_ADMIN_PASSWORD: ${PAPERCLIP_ADMIN_PASSWORD:-changeme-not-for-production}
+      PAPERCLIP_ADMIN_NAME: ${PAPERCLIP_ADMIN_NAME:-Cognitive OS Admin}
+    volumes:
+      - paperclip-data:/paperclip
+      - ./infra/paperclip/docker-entrypoint.sh:/app/docker-entrypoint.sh:ro
+    entrypoint: ["/app/docker-entrypoint.sh"]
+    command: []
+    depends_on:
+      paperclip-pg:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:3100/api/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # memU — Proactive Memory for AI Agents (Apache 2.0)
+  # https://github.com/NevaMind-AI/memU
+  # 3-layer hierarchical memory: Resource → Item → Category
+  # ---------------------------------------------------------------------------
+  memu:
+    image: python:3.13-slim
+    container_name: cognitive-os-memu
+    restart: unless-stopped
+    working_dir: /app
+    command: >
+      bash -c "pip install memu-ai 2>/dev/null &&
+      python -m memu.server --host 0.0.0.0 --port 8765"
+    ports:
+      - "127.0.0.1:${COGNITIVE_OS_MEMU_PORT:-8765}:8765"
+    environment:
+      MEMU_DB_URL: postgresql://memu:<db-password>@cognitive-os-langfuse-pg:5432/memu
+      MEMU_LLM_PROVIDER: ${MEMU_LLM_PROVIDER:-openai}
+      MEMU_LLM_API_KEY: ${MEMU_LLM_API_KEY:-}
+      MEMU_LOG_LEVEL: ${MEMU_LOG_LEVEL:-INFO}
+    depends_on:
+      langfuse-pg:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8765/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - cognitive-os-network
+    profiles:
+      - memory  # Only starts with: docker compose --profile memory up
+
+  # ---------------------------------------------------------------------------
+  # AutoMaker — Kanban-based AI Development Studio (MIT)
+  # https://github.com/AutoMaker-Org/automaker
+  # Visual Kanban UI + Claude Agent SDK + real-time agent streaming
+  # COS hooks fire automatically when AutoMaker launches Claude sessions
+  # ---------------------------------------------------------------------------
+  automaker:
+    image: ghcr.io/automaker-org/automaker:latest
+    container_name: cognitive-os-automaker
+    restart: unless-stopped
+    ports:
+      - "${COGNITIVE_OS_AUTOMAKER_PORT:-4200}:4200"
+    volumes:
+      - .:/workspace
+    environment:
+      CLAUDE_API_KEY: ${CLAUDE_API_KEY:-}
+      WORKSPACE_DIR: /workspace
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:4200/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - cognitive-os-network
+    profiles:
+      - ui  # Only starts with: docker compose --profile ui up
+
+  # ---------------------------------------------------------------------------
+  # Jupyter — GPU/Compute Sandbox for ML, data processing, analytics
+  # UI: http://localhost:8888 (token: cognitive-os-dev)
+  # ---------------------------------------------------------------------------
+  jupyter:
+    image: jupyter/scipy-notebook
+    container_name: cognitive-os-jupyter
+    restart: unless-stopped
+    ports:
+      - "${JUPYTER_PORT:-8888}:8888"
+    environment:
+      JUPYTER_TOKEN: "${JUPYTER_TOKEN:-cognitive-os-dev}"
+    volumes:
+      - jupyter-data:/home/jovyan/work
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8888/api/status || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # Opik — LLM Observability, Tracing & Evaluation (ADOPT)
+  # ---------------------------------------------------------------------------
+  opik-backend:
+    image: ghcr.io/comet-ml/opik/opik-backend:latest
+    container_name: cognitive-os-opik-backend
+    restart: unless-stopped
+    environment:
+      ANALYTICS_DB_MIGRATIONS_URL: jdbc:clickhouse://langfuse-clickhouse:8123/opik
+      ANALYTICS_DB_URL: jdbc:clickhouse://langfuse-clickhouse:8123/opik
+      ANALYTICS_DB_USERNAME: ${OPIK_CH_USER:-default}
+      ANALYTICS_DB_PASSWORD: ${OPIK_CH_PASS:-}
+      ANALYTICS_DB_DATABASE_NAME: opik
+      STATE_DB_URL: jdbc:mysql://opik-mysql:3306/opik?createDatabaseIfNotExist=true
+      STATE_DB_USERNAME: ${OPIK_MYSQL_USER:-opik}
+      STATE_DB_PASSWORD: ${OPIK_MYSQL_PASS:-opik_pass}
+      STATE_DB_DATABASE_NAME: opik
+      JAVA_OPTS: "-Xms256m -Xmx512m"
+    ports:
+      - "${OPIK_PORT:-5173}:8080"
+    depends_on:
+      opik-mysql:
+        condition: service_healthy
+      langfuse-clickhouse:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/is-alive/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    profiles:
+      - observability
+    networks:
+      - cognitive-os-network
+
+  opik-mysql:
+    image: mysql:8.4
+    container_name: cognitive-os-opik-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${OPIK_MYSQL_ROOT_PASS:-opik_root_pass}
+      MYSQL_DATABASE: opik
+      MYSQL_USER: ${OPIK_MYSQL_USER:-opik}
+      MYSQL_PASSWORD: ${OPIK_MYSQL_PASS:-opik_pass}
+    volumes:
+      - opik-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    profiles:
+      - observability
+    networks:
+      - cognitive-os-network
+
+  opik-frontend:
+    image: ghcr.io/comet-ml/opik/opik-frontend:latest
+    container_name: cognitive-os-opik-frontend
+    restart: unless-stopped
+    environment:
+      OPIK_API_URL: http://opik-backend:8080/api
+    ports:
+      - "${OPIK_UI_PORT:-5174}:5173"
+    depends_on:
+      opik-backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5173"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    profiles:
+      - observability
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # Webhook Trigger — GitHub webhook server for automated SDD pipelines
+  # Receives issue/PR events and launches Claude-based pipelines
+  # ---------------------------------------------------------------------------
+  webhook-trigger:
+    build:
+      context: ./skills/webhook-trigger
+      dockerfile: Dockerfile
+    container_name: cognitive-os-webhook-trigger
+    restart: unless-stopped
+    ports:
+      - "${WEBHOOK_PORT:-8001}:8001"
+    environment:
+      GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET:-}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      WEBHOOK_PORT: "8001"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8001/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    profiles:
+      - automation
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
+  # Cognee — Knowledge Graph Memory (ADOPT)
+  # ---------------------------------------------------------------------------
+  cognee:
+    image: python:3.13-slim
+    container_name: cognitive-os-cognee
+    restart: unless-stopped
+    working_dir: /app
+    entrypoint: ["/app/docker-entrypoint.sh"]
+    environment:
+      COGNEE_GRAPH_BACKEND: ${COGNEE_GRAPH_BACKEND:-networkx}
+      COGNEE_VECTOR_STORE: ${COGNEE_VECTOR_STORE:-lancedb}
+      COGNEE_LLM_PROVIDER: ${COGNEE_LLM_PROVIDER:-anthropic}
+      COGNEE_LLM_MODEL: ${COGNEE_LLM_MODEL:-claude-sonnet-4-5-20250514}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    ports:
+      - "${COGNEE_PORT:-8100}:8000"
+    volumes:
+      - ./infra/cognee/docker-entrypoint.sh:/app/docker-entrypoint.sh:ro
+      - cognee-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+    profiles:
+      - memory
+    networks:
+      - cognitive-os-network
+
+volumes:
+  jupyter-data:
+    name: cognitive-os-jupyter-data
+  langfuse-pg-data:
+    name: cognitive-os-langfuse-pg-data
+  langfuse-valkey-data:
+    name: cognitive-os-langfuse-valkey-data
+  langfuse-clickhouse-data:
+    name: cognitive-os-langfuse-clickhouse-data
+  langfuse-clickhouse-logs:
+    name: cognitive-os-langfuse-clickhouse-logs
+  langfuse-seaweedfs-data:
+    name: cognitive-os-langfuse-seaweedfs-data
+  paperclip-pg-data:
+    name: cognitive-os-paperclip-pg-data
+  paperclip-data:
+    name: cognitive-os-paperclip-data
+  opik-mysql-data:
+    name: cognitive-os-opik-mysql-data
+  cognee-data:
+    name: cognitive-os-cognee-data
+
+networks:
+  cognitive-os-network:
+    name: cognitive-os-network
+    external: true

@@ -1,0 +1,2 @@
+{"competitor":"cognitive-os","task":"fix-known-bug","status":"completed","timestamp":"20260323-235615","metrics":{"time_seconds":109,"exit_code":0,"files_changed":0,"files_created":0,"tests_created":0,"compiles":"true","output_bytes":839}}
+{"competitor":"claude-code","task":"fix-known-bug","status":"completed","timestamp":"20260323-235615","metrics":{"time_seconds":85,"exit_code":0,"files_changed":0,"files_created":0,"tests_created":0,"compiles":"true","output_bytes":633}}

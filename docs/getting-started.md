@@ -1,0 +1,418 @@
+# Getting Started with Cognitive OS
+
+> From zero to a fully managed AI agent operating system in your project.
+
+---
+
+## Prerequisites
+
+| Requirement | Minimum Version | Purpose |
+|-------------|----------------|---------|
+| **Claude Code** | Latest | AI agent CLI (the runtime) |
+| **Python** | 3.9+ | Library modules, test suite, singularity controller |
+| **Go** | 1.21+ | TUI test runner (`cmd/cos-test`) |
+| **Docker** | 24+ | Testcontainers, optional infrastructure services |
+| **Git** | 2.30+ | Worktree isolation, version control |
+| **gh CLI** | 2.0+ | GitHub integration (issues, PRs, webhooks) |
+| **uv** | 0.1+ | Python package management (recommended over pip) |
+
+Optional but recommended:
+
+| Tool | Purpose |
+|------|---------|
+| **devbox** | Reproducible development environment |
+| **jq** | JSON processing in hooks |
+
+---
+
+## Installation
+
+### In a new project
+
+```bash
+# One-line install
+curl -fsSL https://raw.githubusercontent.com/luum-home/luum-cognitive-os/main/install.sh | bash
+```
+
+Or manually:
+
+```bash
+git clone --depth 1 https://github.com/luum-home/luum-cognitive-os.git /tmp/cos
+cp -r /tmp/cos/.cognitive-os .cognitive-os
+cp /tmp/cos/cognitive-os.yaml cognitive-os.yaml
+rm -rf /tmp/cos
+```
+
+### Coexistence with existing .claude/ config
+
+Cognitive OS is designed to coexist safely with your project's existing `.claude/` configuration:
+
+- **Rules are namespaced**: COS rules install to `.claude/rules/cos/`, not `.claude/rules/`. Your project-specific rules in `.claude/rules/*.md` are never touched.
+- **Settings are merged**: If `.claude/settings.json` already exists, the installer merges COS hooks into your existing hook arrays without removing your hooks. Requires `jq`.
+- **Your CLAUDE.md is preserved**: COS never overwrites `.claude/CLAUDE.md`.
+
+```
+.claude/
+  rules/
+    architecture.md          <-- your project rule (untouched)
+    testing-conventions.md   <-- your project rule (untouched)
+    cos/                     <-- COS rules (namespaced)
+      trust-score.md
+      cost-tracking.md
+      license-policy.md
+      ...
+  settings.json              <-- merged: your hooks + COS hooks
+  CLAUDE.md                  <-- yours (untouched)
+```
+
+To uninstall COS without affecting your project config:
+1. Remove `.cognitive-os/` directory
+2. Remove `.claude/rules/cos/` directory
+3. Remove COS hook entries from `.claude/settings.json` (they reference `$CLAUDE_PROJECT_DIR/hooks/`)
+
+### First run
+
+```bash
+# Open Claude Code
+claude
+
+# Initialize Cognitive OS for your project
+/cognitive-os-init
+```
+
+The `/cognitive-os-init` skill:
+1. Reads your project stack (package.json, go.mod, docker-compose.yml, Cargo.toml, etc.)
+2. Auto-detects languages, frameworks, and infrastructure
+3. Generates `.claude/rules/` with project-specific architecture rules
+4. Merges `.claude/settings.json` with hook registrations (preserves existing hooks)
+5. Updates `cognitive-os.yaml` with detected infrastructure
+6. Saves a `detected-stack.json` for the skill auto-loader
+
+### Optional: Start infrastructure services
+
+```bash
+docker compose -f .cognitive-os/docker-compose.cognitive-os.yml up -d
+```
+
+This starts optional services:
+- **Langfuse** (port 3100): Observability and tracing
+- **LiteLLM** (port 4000): Cost control and model routing
+- **NeMo Guardrails** (port 8088): Content safety
+- **Paperclip** (port 3200): Governance dashboard
+
+These are optional. Cognitive OS works without them -- they add observability and cost control.
+
+---
+
+## What Happens at Session Start
+
+Every time you open Claude Code in a Cognitive OS project, the following hooks fire automatically:
+
+```
+SessionStart
+    |
+    +-- self-install.sh          Sync rules/hooks to .claude/ (dogfooding)
+    +-- session-init.sh          Create session ID, register in active-sessions.json
+    +-- session-resume.sh        Check for incomplete tasks from previous sessions
+    +-- stack-detector.sh        Detect project languages and frameworks
+    +-- inject-phase-context.sh  Load phase-specific rules (reconstruction/production/etc.)
+    +-- engram-auto-import.sh    Load persistent memory from Engram
+```
+
+You will see a status line indicating the health of the installation:
+```
+Self-hosting: OK (55 rules, 57 hooks synced)
+```
+
+---
+
+## Your First SDD Pipeline
+
+SDD (Spec-Driven Development) is the structured pipeline for substantial changes. Here is a walkthrough:
+
+### 1. Start a new change
+
+```
+/sdd-new add-user-authentication
+```
+
+This runs two phases:
+- **Explore**: Analyzes the codebase to understand current state
+- **Propose**: Generates a formal proposal with scope, risks, and approach
+
+### 2. Continue the pipeline
+
+```
+/sdd-continue add-user-authentication
+```
+
+Each invocation runs the next phase in the dependency chain:
+
+```
+explore -> propose -> spec -> design -> tasks -> apply -> verify -> archive
+```
+
+### 3. Fast-forward (skip to implementation)
+
+```
+/sdd-ff add-user-authentication
+```
+
+Runs all planning phases in sequence: propose -> spec -> design -> tasks.
+
+### 4. Apply the implementation
+
+```
+/sdd-apply add-user-authentication
+```
+
+Launches a sub-agent that reads the task breakdown and implements each task.
+
+### 5. Verify
+
+```
+/sdd-verify add-user-authentication
+```
+
+Runs adversarial review against the spec. If CRITICAL issues are found, the verify-apply loop retries up to 3 times.
+
+### 6. Archive
+
+```
+/sdd-archive add-user-authentication
+```
+
+Creates a permanent record of the change with lessons learned.
+
+### Resume after interruption
+
+If a session crashes or you close it mid-pipeline:
+
+```
+/sdd-continue add-user-authentication
+```
+
+The state is stored in Engram. It loads the last completed phase and continues from there.
+
+---
+
+## Running Tests
+
+### Python test suite (primary)
+
+```bash
+# Full suite (1714 tests)
+uv run pytest tests/ -v
+
+# By layer
+uv run pytest tests/unit/ -v           # Fast, no dependencies
+uv run pytest tests/behavior/ -v       # Simulates hook behavior
+uv run pytest tests/integration/ -v    # Requires Docker (testcontainers)
+uv run pytest tests/system/ -v         # End-to-end pipelines
+
+# Single file
+uv run pytest tests/unit/test_notifications.py -v
+```
+
+### Infrastructure tests (bash, fast)
+
+```bash
+bash tests/infra/test-hooks.sh    # Hook existence, permissions, syntax
+bash tests/infra/test-skills.sh   # Skill structure, catalog sync
+bash tests/infra/test-rules.sh    # Rule existence, RULES-COMPACT sync
+bash tests/infra/test-config.sh   # YAML validation
+```
+
+### From within Claude Code
+
+```
+/cognitive-os-test
+```
+
+This skill runs the full test suite and reports results.
+
+---
+
+## Setting Up Notifications
+
+Cognitive OS can send notifications via Telegram, Slack, or generic webhooks when pipelines complete, errors occur, or issues are processed.
+
+### Telegram
+
+1. Create a bot via [@BotFather](https://t.me/BotFather)
+2. Get your chat ID via [@userinfobot](https://t.me/userinfobot)
+3. Set environment variables:
+
+```bash
+export NOTIFY_PROVIDER=telegram
+export TELEGRAM_BOT_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
+export TELEGRAM_CHAT_ID=123456789
+```
+
+### Slack
+
+1. Create an incoming webhook in your Slack workspace
+2. Set environment variables:
+
+```bash
+export NOTIFY_PROVIDER=slack
+export SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+### Generic webhook
+
+```bash
+export NOTIFY_PROVIDER=webhook
+export WEBHOOK_URL=https://your-endpoint.com/notify
+```
+
+Notifications are sent as JSON POST requests. The `notify.sh` hook and `lib/notifications.py` module handle delivery.
+
+---
+
+## Key Concepts
+
+### Concept Map
+
+```
+                    cognitive-os.yaml
+                         |
+              +----------+----------+
+              |          |          |
+           HOOKS      RULES      SKILLS
+         (runtime)  (contracts)  (knowledge)
+              |          |          |
+              +----+-----+----+----+
+                   |          |
+                ENGRAM     METRICS
+              (memory)    (data)
+                   |          |
+              SINGULARITY CONTROLLER
+              (autonomous loop)
+```
+
+### Hooks
+
+Hooks intercept every tool call in Claude Code. They fire at four lifecycle points:
+
+| Point | When | Examples |
+|-------|------|---------|
+| `SessionStart` | When Claude Code opens | session-init, stack-detector, session-resume |
+| `PreToolUse` | Before any tool runs | error-pattern-detector, completeness-check |
+| `PostToolUse` | After any tool runs | error-learning, auto-verify, skill-tracker |
+| `Stop` | When session ends | session-cleanup, kpi-trigger |
+
+Hooks are bash scripts that run in <100ms and have zero dependencies.
+
+### Rules
+
+Rules are always-on behavioral contracts. They constrain agent behavior across all sessions. Examples:
+
+- **Phase-aware agents**: Behavior changes based on project phase (reconstruction vs production)
+- **License policy**: Block AGPL/SSPL dependencies
+- **Error learning**: Auto-capture failures to JSONL
+- **Cost tracking**: Alert on expensive agent runs
+- **Acceptance criteria**: Every agent prompt must include measurable criteria
+
+Rules are loaded in compact form (~1,500 tokens) at session start. Full rules load contextually when triggered.
+
+### Skills
+
+Skills are domain-specific knowledge packages. Each skill is a `SKILL.md` file with structured instructions, triggers, and references. Skills are the "device drivers" of Cognitive OS -- they tell agents how to interact with specific tools and domains.
+
+Loading priority: project skills > global skills > auto-generated skills.
+
+### Engram
+
+Engram is the persistent memory layer. It stores decisions, discoveries, bug fixes, SDD artifacts, and session summaries across all sessions. Think of it as a knowledge base that the agent builds over time.
+
+### Metrics
+
+Metrics are append-only JSONL files that track agent performance:
+
+| File | Content |
+|------|---------|
+| `skill-metrics.jsonl` | Execution data per skill invocation |
+| `error-learning.jsonl` | Error patterns and recurrence |
+| `trust-scores.jsonl` | Per-agent confidence scores |
+| `cost-events.jsonl` | Token usage and cost per agent |
+
+### Phases
+
+Every project has a lifecycle phase that affects agent behavior:
+
+| Phase | Behavior |
+|-------|----------|
+| `reconstruction` | Rewrite over patch, break backwards compat, fix everything |
+| `stabilization` | Standards enforced, fix remaining issues |
+| `production` | Feature flags required, no breaking changes |
+| `maintenance` | Bug fixes and security patches only |
+
+Set in `cognitive-os.yaml` under `project.phase`.
+
+---
+
+## What Works Without Docker?
+
+Most of Cognitive OS runs with zero external dependencies. Here is what each feature requires:
+
+| Feature | Needs Docker? | Needs Python? | Needs Go? |
+|---------|---------------|---------------|-----------|
+| Core rules + hooks | No | No | No |
+| SDD pipeline | No | No | No |
+| Safety mesh | No | No | No |
+| Error learning | No | No | No |
+| cos-test TUI | No | No | Yes (to build) |
+| cos CLI | No | No | Yes (to build) |
+| Performance monitor | No | Yes | No |
+| Cost dashboard | No | Yes | No |
+| Testcontainers | Yes | Yes | No |
+| Langfuse/Opik | Yes | No | No |
+| Agent Bus (Valkey) | Yes | Yes | No |
+
+For a faster start, see the [Quickstart](quickstart.md) guide.
+
+---
+
+## Using with Other IDEs
+
+Cognitive OS is designed for Claude Code but provides partial support for other AI coding IDEs through rule bridging.
+
+### Generate IDE-specific configs
+
+```bash
+# For Cursor: creates .cursor/rules/ with individual rule files
+bash scripts/ide-bridge.sh cursor
+
+# For Windsurf: creates .windsurfrules with concatenated rules
+bash scripts/ide-bridge.sh windsurf
+
+# For Aider: creates .aider.conf.yml with key conventions
+bash scripts/ide-bridge.sh aider
+```
+
+### What works in other IDEs
+
+Other IDEs receive the **rules layer only** -- behavioral contracts that tell the AI what to do and what to avoid. This includes license policy, acceptance criteria, phase-aware behavior, and quality standards.
+
+### What does NOT work in other IDEs
+
+| Feature | Why It Requires Claude Code |
+|---------|----------------------------|
+| Safety mesh (hooks) | Hooks need PreToolUse/PostToolUse lifecycle events |
+| Error learning | Requires PostToolUse hooks to capture failures |
+| Metrics and KPIs | Requires hooks to log execution data |
+| Engram memory | Requires MCP server integration |
+| SDD pipeline automation | Skills are readable but not enforceable without hooks |
+| Trust scores | Requires PostToolUse validation hooks |
+
+For the full compatibility matrix, see [ide-compatibility.md](ide-compatibility.md).
+
+---
+
+## Next Steps
+
+- Read the [FAQ](faq.md) for answers to common questions
+- Read the [Architecture Overview](architecture.md) for the full system diagram
+- Read [How to Extend](how-to-extend.md) to add hooks, rules, and skills
+- Read [Overview](overview.md) for the complete component inventory
