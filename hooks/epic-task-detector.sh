@@ -12,6 +12,10 @@ set -uo pipefail
 
 _HOOK_NAME="epic-task-detector"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/common.sh"
+
+# Auto-disabled at capability level 5
+check_capability_level "epic-task-detector" && exit 0
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
