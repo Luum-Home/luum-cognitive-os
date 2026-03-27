@@ -1,0 +1,18 @@
+name: startup
+description: "Lightweight preset for startups and small projects — fast iteration, minimal governance"
+efficiency_profile: lean
+capability_level: 4
+components:
+  rules:
+    - RULES-COMPACT.md
+  hooks:
+    - self-install.sh
+    - session-init.sh
+    - error-pipeline.sh
+    - secret-detector.sh
+    - agent-checkpoint.sh
+    - session-learning.sh
+    - session-cleanup.sh
+  quality:
+    coverage_minimum: 50
+    require_integration_tests: false
