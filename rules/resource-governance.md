@@ -69,7 +69,8 @@ When parallel agent limit is reached:
 When budget pressure detected:
 1. opus ($15/$75 per 1M) -> sonnet ($3/$15) — 5x cheaper
 2. sonnet -> haiku ($0.25/$1.25) — 12x cheaper
-3. haiku -> BLOCK (no more agents until budget resets)
+3. haiku -> openrouter/free ($0/$0) — free tier, degraded quality
+4. openrouter/free -> BLOCK (no more agents until budget resets)
 
 ### Downgrade Rules
 
@@ -78,7 +79,8 @@ When budget pressure detected:
 | < 80% | Use routing table as-is |
 | 80-95% | Force sonnet for all non-critical tasks (design, debugging stay opus) |
 | 95-100% | Force haiku for everything except security/critical tasks |
-| > 100% | BLOCK all agent launches, alert user |
+| 99-100% | Route to openrouter/free for non-critical tasks |
+| > 100% | BLOCK all agent launches except openrouter/free for trivial tasks, full BLOCK at 110% |
 
 ## Token Conservation
 
