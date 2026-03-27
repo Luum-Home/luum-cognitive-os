@@ -6,6 +6,10 @@ set -euo pipefail
 
 _HOOK_NAME="architecture-compliance"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/common.sh"
+
+# Auto-disabled at capability level 5
+check_capability_level "architecture-compliance" && exit 0
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 COGNITIVE_OS_YAML="$PROJECT_DIR/cognitive-os.yaml"
