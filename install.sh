@@ -137,6 +137,18 @@ elif [ -f "$COS_SETTINGS" ]; then
   echo "Created .claude/settings.json with COS hooks."
 fi
 
+# ── Install CLAUDE.md template if not present ─────────────────────────
+if [ ! -f ".claude/CLAUDE.md" ]; then
+  TEMPLATE="$TEMP_DIR/templates/CLAUDE.md.template"
+  if [ -f "$TEMPLATE" ]; then
+    mkdir -p ".claude"
+    cp "$TEMPLATE" ".claude/CLAUDE.md"
+    echo "Created .claude/CLAUDE.md from template."
+  fi
+else
+  echo "Existing .claude/CLAUDE.md preserved (not overwritten)."
+fi
+
 echo ""
 echo "Cognitive OS installed successfully!"
 echo ""
