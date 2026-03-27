@@ -1,0 +1,1 @@
+../../rules/trust-score.md

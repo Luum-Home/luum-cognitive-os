@@ -1,0 +1,333 @@
+#!/usr/bin/env bash
+# auto-repair-dispatcher.sh — PostToolUse hook: the BRAIN of the auto-repair system
+# Fires after error-learning.sh captures an error, decides whether to auto-repair.
+#
+# Trigger: PostToolUse (Bash tool)
+# Input:   stdin — JSON with tool_input.command, tool_response, exit_code
+# Output:  repair action (deterministic fix, LLM repair request, or skip)
+
+set -uo pipefail
+
+_HOOK_NAME="auto-repair-dispatcher"
+
+# ─── Source libraries ──────────────────────────────────────────────────────
+_LIB_DIR="$(cd "$(dirname "$0")/_lib" && pwd)"
+source "$_LIB_DIR/safe-jsonl.sh"
+source "$_LIB_DIR/common.sh"
+source "$_LIB_DIR/circuit-breaker.sh"
+source "$_LIB_DIR/remediation.sh"
+
+# ─── Paths ─────────────────────────────────────────────────────────────────
+PROJECT_DIR="$_PROJECT_DIR"
+CONFIG_FILE="$_CONFIG_FILE"
+METRICS_DIR="$(resolve_session_dir)"
+OUTCOMES_FILE="$METRICS_DIR/repair-outcomes.jsonl"
+
+# ─── Read stdin (cached via common.sh) ────────────────────────────────────
+read_stdin_json
+INPUT="$_STDIN_JSON"
+
+# ─── Quick exit: check if auto-repair is enabled ──────────────────────────
+_read_yaml_value() {
+  local key="$1"
+  local file="$2"
+  local default="$3"
+  if command -v yq >/dev/null 2>&1; then
+    local val
+    val=$(yq -r "$key // \"$default\"" "$file" 2>/dev/null)
+    [ "$val" = "null" ] && val="$default"
+    echo "$val"
+  else
+    # Fallback: grep-based extraction (flat keys only)
+    local val
+    val=$(grep -E "^\s*$(echo "$key" | sed 's/.*\.//'):" "$file" 2>/dev/null | head -1 | sed 's/.*:\s*//' | tr -d '[:space:]"'"'")
+    echo "${val:-$default}"
+  fi
+}
+
+SRE_ENABLED=$(_read_yaml_value '.sre.enabled' "$CONFIG_FILE" "true")
+AUTO_REPAIR=$(_read_yaml_value '.sre.auto_repair' "$CONFIG_FILE" "true")
+
+if [ "$SRE_ENABLED" != "true" ] || [ "$AUTO_REPAIR" != "true" ]; then
+  exit 0
+fi
+
+# ─── Extract tool output ──────────────────────────────────────────────────
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)
+RESPONSE=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
+EXIT_CODE=$(echo "$INPUT" | jq -r '.exit_code // "0"' 2>/dev/null)
+
+# No command or success → nothing to do
+[ -z "$COMMAND" ] && exit 0
+[ "$EXIT_CODE" = "0" ] && exit 0
+
+# ─── Check for error indicators ───────────────────────────────────────────
+_has_error_indicators() {
+  local output="$1"
+  echo "$output" | grep -qiE \
+    'FAIL|ERROR|panic|exit status [1-9]|fatal|compilation failed|cannot find module|ECONNREFUSED|timeout|segfault|OOM|killed|SyntaxError|TypeError'
+}
+
+if ! _has_error_indicators "$RESPONSE"; then
+  exit 0
+fi
+
+# ─── Classify error ───────────────────────────────────────────────────────
+classify_error() {
+  local output="$1"
+  if echo "$output" | grep -qiE "go build|tsc|compilation|compile|cannot find module"; then
+    echo "BUILD"
+  elif echo "$output" | grep -qiE "FAIL.*Test|test.*fail|jest|vitest|go test"; then
+    echo "TEST"
+  elif echo "$output" | grep -qiE "lint|eslint|golangci"; then
+    echo "LINT"
+  elif echo "$output" | grep -qiE "connection refused|timeout|ECONNREFUSED|dial tcp"; then
+    echo "INFRA"
+  elif echo "$output" | grep -qiE "panic|fatal|segfault|OOM|killed"; then
+    echo "RUNTIME"
+  else
+    echo "UNKNOWN"
+  fi
+}
+
+ERROR_TYPE=$(classify_error "$RESPONSE")
+
+# UNKNOWN errors are not auto-repairable
+[ "$ERROR_TYPE" = "UNKNOWN" ] && exit 0
+
+# ─── Detect service ───────────────────────────────────────────────────────
+detect_service() {
+  local cmd="$1"
+  local input="$2"
+
+  # From command path
+  if echo "$cmd" | grep -qi 'users-core'; then echo "users-core"; return; fi
+  if echo "$cmd" | grep -qi 'users-auth'; then echo "users-auth"; return; fi
+  if echo "$cmd" | grep -qi 'onboarding'; then echo "onboarding"; return; fi
+  if echo "$cmd" | grep -qiE 'bff-ninja|bff'; then echo "bff-ninja"; return; fi
+  if echo "$cmd" | grep -qiE 'acme-gateway|monolith'; then echo "acme-gateway"; return; fi
+  if echo "$cmd" | grep -qi 'mobile/app'; then echo "mobile-app"; return; fi
+
+  # From working directory
+  local work_dir
+  work_dir=$(echo "$input" | jq -r '.tool_input.working_directory // empty' 2>/dev/null)
+  if [ -n "$work_dir" ]; then
+    case "$work_dir" in
+      *users-core*)            echo "users-core"; return ;;
+      *users-auth*)            echo "users-auth"; return ;;
+      *onboarding*)            echo "onboarding"; return ;;
+      *bff-ninja*)             echo "bff-ninja"; return ;;
+      *acme-gateway*)          echo "acme-gateway"; return ;;
+      *mobile/app*)            echo "mobile-app"; return ;;
+    esac
+  fi
+
+  echo "unknown"
+}
+
+SERVICE=$(detect_service "$COMMAND" "$INPUT")
+
+# ─── Extract error message (first 500 chars) ──────────────────────────────
+ERROR_MSG=$(echo "$RESPONSE" | grep -iE \
+  'error:|Error:|FAIL|FAILED|cannot find|undefined:|TS[0-9]{4}:|SyntaxError|TypeError|ReferenceError|CompileError|panic:|FATAL|connection refused|timeout' \
+  | head -10 2>/dev/null)
+
+if [ -z "$ERROR_MSG" ]; then
+  ERROR_MSG=$(echo "$RESPONSE" | tail -20 2>/dev/null)
+fi
+
+ERROR_MSG=$(echo "$ERROR_MSG" | head -c 500)
+
+# ─── Generate fingerprint ─────────────────────────────────────────────────
+FINGERPRINT=$(echo -n "$ERROR_MSG" | head -c 200 | md5 2>/dev/null \
+  || echo -n "$ERROR_MSG" | head -c 200 | md5sum 2>/dev/null | cut -d' ' -f1)
+
+# ─── Circuit breaker check ────────────────────────────────────────────────
+if ! cb_check "$ERROR_TYPE" "$SERVICE"; then
+  safe_jsonl_append "$OUTCOMES_FILE" \
+    "$(jq -cn --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --argjson te "$(date +%s)" \
+      --arg et "$ERROR_TYPE" --arg svc "$SERVICE" --arg fp "$FINGERPRINT" \
+      --arg reason "circuit_breaker_open" \
+      '{timestamp:$ts,timestamp_epoch:$te,error_type:$et,service:$svc,fingerprint:$fp,action:"skipped",reason:$reason}')"
+  exit 0
+fi
+
+# ─── Global budget check ──────────────────────────────────────────────────
+if ! cb_global_budget_ok; then
+  safe_jsonl_append "$OUTCOMES_FILE" \
+    "$(jq -cn --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --argjson te "$(date +%s)" \
+      --arg et "$ERROR_TYPE" --arg svc "$SERVICE" --arg fp "$FINGERPRINT" \
+      --arg reason "hourly_cap_reached" \
+      '{timestamp:$ts,timestamp_epoch:$te,error_type:$et,service:$svc,fingerprint:$fp,action:"skipped",reason:$reason}')"
+  exit 0
+fi
+
+# ─── Phase gate ────────────────────────────────────────────────────────────
+PHASE="$(get_phase reconstruction)"
+
+ALLOW_CODE=false
+ALLOW_LLM=false
+ALLOW_INFRA=false
+
+case "$PHASE" in
+  reconstruction)  ALLOW_CODE=true;  ALLOW_LLM=true;  ALLOW_INFRA=true ;;
+  stabilization)   ALLOW_CODE=true;  ALLOW_LLM=true;  ALLOW_INFRA=true ;;
+  production)      ALLOW_CODE=false; ALLOW_LLM=false; ALLOW_INFRA=true ;;
+  maintenance)     ALLOW_CODE=false; ALLOW_LLM=false; ALLOW_INFRA=true ;;
+  *)               ALLOW_CODE=false; ALLOW_LLM=false; ALLOW_INFRA=false ;;
+esac
+
+# In production/maintenance, only INFRA errors are auto-repairable
+if [ "$ERROR_TYPE" != "INFRA" ] && [ "$ALLOW_CODE" = "false" ]; then
+  safe_jsonl_append "$OUTCOMES_FILE" \
+    "$(jq -cn --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --argjson te "$(date +%s)" \
+      --arg et "$ERROR_TYPE" --arg svc "$SERVICE" --arg fp "$FINGERPRINT" \
+      --arg phase "$PHASE" --arg reason "phase_gate_blocked" \
+      '{timestamp:$ts,timestamp_epoch:$te,error_type:$et,service:$svc,fingerprint:$fp,phase:$phase,action:"skipped",reason:$reason}')"
+  exit 0
+fi
+
+# ─── Remediation registry lookup ──────────────────────────────────────────
+FIX_JSON=""
+REPAIR_PATH=""
+
+if FIX_JSON=$(remediation_lookup "$ERROR_TYPE" "$SERVICE" "$ERROR_MSG"); then
+  REPAIR_PATH="deterministic"
+else
+  # No known fix — LLM path (only if phase allows)
+  if [ "$ALLOW_LLM" = "true" ]; then
+    REPAIR_PATH="llm"
+  else
+    safe_jsonl_append "$OUTCOMES_FILE" \
+      "$(jq -cn --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --argjson te "$(date +%s)" \
+        --arg et "$ERROR_TYPE" --arg svc "$SERVICE" --arg fp "$FINGERPRINT" \
+        --arg phase "$PHASE" --arg reason "no_known_fix_llm_blocked" \
+        '{timestamp:$ts,timestamp_epoch:$te,error_type:$et,service:$svc,fingerprint:$fp,phase:$phase,action:"skipped",reason:$reason}')"
+    exit 0
+  fi
+fi
+
+# ─── Execute repair ───────────────────────────────────────────────────────
+
+repair_execute_deterministic() {
+  local fix_json="$1"
+  local fix_type fix_command fix_diff
+
+  fix_type=$(echo "$fix_json" | jq -r '.fix_type // "command"')
+  fix_command=$(echo "$fix_json" | jq -r '.fix_command // empty')
+  fix_diff=$(echo "$fix_json" | jq -r '.fix_diff // empty')
+  local fix_fingerprint
+  fix_fingerprint=$(echo "$fix_json" | jq -r '.fingerprint // empty')
+
+  local success=false
+
+  case "$fix_type" in
+    command|restart|cache_clear)
+      if [ -n "$fix_command" ]; then
+        # Run the fix command with a 10-second timeout
+        if timeout 10 bash -c "$fix_command" >/dev/null 2>&1; then
+          success=true
+        fi
+      fi
+      ;;
+    code_change)
+      if [ -n "$fix_diff" ] && [ "$ALLOW_CODE" = "true" ]; then
+        # Decode base64 diff and attempt to apply
+        local decoded_diff
+        decoded_diff=$(echo "$fix_diff" | base64 -d 2>/dev/null || echo "$fix_diff" | base64 --decode 2>/dev/null)
+        if [ -n "$decoded_diff" ]; then
+          if echo "$decoded_diff" | git apply --check 2>/dev/null; then
+            if echo "$decoded_diff" | git apply 2>/dev/null; then
+              success=true
+            fi
+          fi
+        fi
+      fi
+      ;;
+  esac
+
+  # Record outcome
+  if [ "$success" = "true" ]; then
+    cb_record_success "$ERROR_TYPE" "$SERVICE"
+    [ -n "$fix_fingerprint" ] && remediation_register "$ERROR_TYPE" "$SERVICE" "$ERROR_MSG" "auto-detected" "$fix_type" "${fix_command:-$fix_diff}"
+  else
+    cb_record_failure "$ERROR_TYPE" "$SERVICE"
+    [ -n "$fix_fingerprint" ] && remediation_record_failure "$fix_fingerprint"
+  fi
+
+  echo "$success"
+}
+
+repair_execute_llm() {
+  local error_type="$1"
+  local service="$2"
+  local error_msg="$3"
+  local fingerprint="$4"
+
+  # Build error context for LLM
+  local error_context
+  error_context=$(jq -cn \
+    --arg et "$error_type" \
+    --arg svc "$service" \
+    --arg msg "$error_msg" \
+    --arg cmd "$COMMAND" \
+    --arg fp "$fingerprint" \
+    --arg phase "$PHASE" \
+    '{error_type:$et,service:$svc,error_message:$msg,command:$cmd,fingerprint:$fp,phase:$phase}')
+
+  # Write LLM repair request to a queue file for async processing
+  local repair_queue="$METRICS_DIR/repair-queue.jsonl"
+  safe_jsonl_append "$repair_queue" \
+    "$(jq -cn --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --argjson te "$(date +%s)" \
+      --argjson ctx "$error_context" --arg status "pending" \
+      '{timestamp:$ts,timestamp_epoch:$te,context:$ctx,status:$status}')"
+
+  # Log that we queued an LLM repair
+  safe_jsonl_append "$OUTCOMES_FILE" \
+    "$(jq -cn --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --argjson te "$(date +%s)" \
+      --arg et "$error_type" --arg svc "$service" --arg fp "$fingerprint" \
+      --arg phase "$PHASE" \
+      '{timestamp:$ts,timestamp_epoch:$te,error_type:$et,service:$svc,fingerprint:$fp,phase:$phase,action:"llm_repair_queued",repair_path:"llm"}')"
+}
+
+# ─── Dispatch ──────────────────────────────────────────────────────────────
+TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+TIMESTAMP_EPOCH=$(date +%s)
+
+if [ "$REPAIR_PATH" = "deterministic" ]; then
+  # Synchronous — deterministic fixes are fast (<10s)
+  RESULT=$(repair_execute_deterministic "$FIX_JSON")
+
+  safe_jsonl_append "$OUTCOMES_FILE" \
+    "$(jq -cn --arg ts "$TIMESTAMP" --argjson te "$TIMESTAMP_EPOCH" \
+      --arg et "$ERROR_TYPE" --arg svc "$SERVICE" --arg fp "$FINGERPRINT" \
+      --arg phase "$PHASE" --arg result "$RESULT" \
+      '{timestamp:$ts,timestamp_epoch:$te,error_type:$et,service:$svc,fingerprint:$fp,phase:$phase,action:"deterministic_repair",success:($result == "true"),repair_path:"deterministic"}')"
+
+  # After successful repair, update remediation registry
+  if [ "$RESULT" = "true" ]; then
+    local FIX_TYPE FIX_CMD
+    FIX_TYPE=$(echo "$FIX_JSON" | jq -r '.fix_type // "command"' 2>/dev/null)
+    FIX_CMD=$(echo "$FIX_JSON" | jq -r '.fix_command // empty' 2>/dev/null)
+    if type remediation_register >/dev/null 2>&1; then
+      remediation_register "$ERROR_TYPE" "$SERVICE" "$ERROR_MSG" "auto-repair success" "$FIX_TYPE" "$FIX_CMD"
+    fi
+  fi
+
+elif [ "$REPAIR_PATH" = "llm" ]; then
+  # Async — LLM repairs run in background so they don't block the hook chain
+  (
+    nohup bash -c "
+      $(declare -f repair_execute_llm)
+      $(declare -f safe_jsonl_append)
+      $(declare -f _resolve_metrics_dir)
+      METRICS_DIR='$METRICS_DIR'
+      OUTCOMES_FILE='$OUTCOMES_FILE'
+      COMMAND='$(echo "$COMMAND" | sed "s/'/'\\\\''/g")'
+      PHASE='$PHASE'
+      repair_execute_llm '$ERROR_TYPE' '$SERVICE' '$(echo "$ERROR_MSG" | head -c 200 | sed "s/'/'\\\\''/g")' '$FINGERPRINT'
+    " </dev/null >/dev/null 2>&1 &
+  )
+fi
+
+exit 0

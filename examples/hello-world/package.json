@@ -1,0 +1,13 @@
+{
+  "name": "cognitive-os-hello-world",
+  "version": "1.0.0",
+  "description": "Minimal example project for Cognitive OS",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Run /cognitive-os-init to generate test infrastructure\" && exit 0"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}

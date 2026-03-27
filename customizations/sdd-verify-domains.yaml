@@ -1,0 +1,143 @@
+# Domain-Specific Evaluator Routing for sdd-verify
+# This customization file is read by the orchestrator when launching sdd-verify.
+# It injects domain-specific evaluation instructions into the verify prompt.
+#
+# See rules/agent-customization.md for the override mechanism.
+# See lib/domain_router.py for the domain detection logic.
+
+# Use sonnet for verify (cost-effective for verification checks)
+model: sonnet
+
+# Skills to pre-load when sdd-verify launches
+skills_loaded:
+  - verification-before-completion
+  - dod-check
+
+# Override retry limit for verify
+max_retries: 3
+
+# Per-invocation budget cap
+budget_limit_usd: 0.50
+
+# Engram prefixes to pre-load for context
+context_priority:
+  - planning/
+  - implementation/
+  - architecture/
+
+# Domain-specific evaluation routing configuration
+# The orchestrator reads this to determine which domain evaluator to use.
+domain_routing:
+  enabled: true
+  # Python module that provides detect_domain() and get_evaluator_config()
+  router_module: lib/domain_router.py
+
+  # Domain-specific prompt overrides
+  # These are injected into the verify prompt based on detected domain.
+  domain_overrides:
+    backend:
+      custom_instructions: |
+        You are evaluating a BACKEND change. Prioritize:
+        1. Architecture compliance — verify clean architecture layers are respected
+        2. Error handling — every I/O operation must handle errors explicitly
+        3. Database queries — check for N+1 patterns, missing indexes, unbounded queries
+        4. Concurrency — look for race conditions, goroutine/thread safety
+        5. Test coverage — critical paths must have unit tests
+        Focus on correctness and robustness over style.
+      additional_halt_triggers:
+        - "database schema change detected"
+        - "concurrency pattern modified"
+
+    frontend:
+      custom_instructions: |
+        You are evaluating a FRONTEND change. Prioritize:
+        1. Accessibility — ARIA labels, semantic HTML, keyboard navigation
+        2. Responsive design — test mobile/tablet/desktop breakpoints
+        3. Bundle size — flag large new dependencies or missing tree-shaking
+        4. Component patterns — single responsibility, proper state management
+        5. Performance — unnecessary re-renders, missing memoization
+        Focus on user experience and accessibility over internal patterns.
+      additional_halt_triggers:
+        - "global CSS change detected"
+        - "design system component modified"
+
+    infrastructure:
+      custom_instructions: |
+        You are evaluating an INFRASTRUCTURE change. Prioritize:
+        1. Security — no hardcoded secrets, least privilege, network isolation
+        2. Idempotency — re-running the change must be safe
+        3. Scalability — resource limits set, horizontal scaling possible
+        4. Cost — no over-provisioned resources, right instance sizing
+        5. Rollback — change can be reverted safely
+        HALT and report if you detect production infrastructure changes.
+      additional_halt_triggers:
+        - "production environment configuration"
+        - "secret or credential path modified"
+        - "port or network policy changed"
+
+    database:
+      custom_instructions: |
+        You are evaluating a DATABASE change. Prioritize:
+        1. Migration safety — reversible migrations, no data loss, backup plan
+        2. Index strategy — proper indexes for query patterns, no redundant indexes
+        3. Data integrity — constraints, foreign keys, NOT NULL enforcement
+        4. Backward compatibility — old running code must work with new schema
+        5. Performance — no full table scans, batch operations for large data
+        HALT if you detect destructive migrations (DROP TABLE, DROP COLUMN).
+      additional_halt_triggers:
+        - "destructive migration (DROP)"
+        - "ALTER TABLE on production table"
+        - "data type change on existing column"
+
+    security:
+      model: opus  # Security changes deserve deeper reasoning
+      custom_instructions: |
+        You are evaluating a SECURITY change. This is CRITICAL. Prioritize:
+        1. Authentication — token validation, session expiry, credential storage
+        2. Authorization — permission checks on every endpoint, no escalation paths
+        3. Encryption — TLS everywhere, strong algorithms, proper key management
+        4. Input validation — all user input sanitized, parameterized queries
+        5. OWASP Top 10 — check for injection, XSS, CSRF, SSRF, etc.
+        6. Audit trail — security-relevant actions must be logged
+        ALWAYS HALT before approving security changes. Security review is mandatory.
+      additional_halt_triggers:
+        - "authentication flow modified"
+        - "authorization rule changed"
+        - "encryption algorithm or key change"
+        - "CORS configuration modified"
+
+    api:
+      custom_instructions: |
+        You are evaluating an API change. Prioritize:
+        1. Contract compliance — request/response schemas match documentation
+        2. Versioning — breaking changes versioned, deprecation notices present
+        3. Error responses — consistent format, correct HTTP status codes
+        4. Rate limiting — public endpoints have limits, proper 429 responses
+        5. Documentation — OpenAPI spec updated, examples provided
+        Focus on backward compatibility and consumer impact.
+      additional_halt_triggers:
+        - "breaking API contract change"
+        - "public endpoint added without rate limit"
+
+    mixed:
+      custom_instructions: |
+        This change spans MULTIPLE domains. Apply general evaluation:
+        1. Correctness — logic errors, edge cases, off-by-one
+        2. Security — no hardcoded secrets, input validation
+        3. Performance — no obvious bottlenecks
+        4. Maintainability — clear naming, no dead code, DRY
+        5. Test coverage — critical paths tested
+        Pay special attention to cross-domain interactions and integration points.
+
+# Phase-specific behavior for sdd-verify
+phase_behavior:
+  reconstruction:
+    # In reconstruction, verify is strict about architecture
+    custom_instructions: |
+      Architecture violations are BLOCKERS in reconstruction phase.
+      Wrong patterns must be flagged as S1 (BLOCKER), not S3 (SUGGESTION).
+  production:
+    # In production, verify is strict about backward compatibility
+    custom_instructions: |
+      Backward compatibility issues are BLOCKERS in production phase.
+      Any breaking change must be flagged as S1 (BLOCKER).

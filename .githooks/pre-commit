@@ -1,0 +1,8 @@
+#!/bin/bash
+BLOCKED="n""1u|N""1u|N""1U|gamer-wallet|altatienda|alta-tienda"
+VIOLATIONS=$(git diff --cached --name-only | grep -v ".githooks/" | xargs grep -l -E "$BLOCKED" 2>/dev/null | grep -v ".git/" | grep -v "docs/business/")
+if [ -n "$VIOLATIONS" ]; then
+  echo "BLOCKED: Project-specific terms found. Use generic names."
+  echo "$VIOLATIONS"
+  exit 1
+fi

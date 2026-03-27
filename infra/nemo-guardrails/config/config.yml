@@ -1,0 +1,28 @@
+# NeMo Guardrails Configuration
+# Generated from Cognitive OS rules/*.md
+# See: https://docs.nvidia.com/nemo/guardrails/
+
+models: []
+#  - type: main
+#    engine: openai
+#    model: gpt-4
+
+rails:
+  input:
+    flows:
+      - block prompt injection
+      - block vague prompts
+
+  output:
+    flows:
+      - block credential leaks
+      - flag assumption language
+      - flag low confidence
+
+# Instruction following mode — no LLM needed for pattern-based rails
+lowest_temperature: 0.0
+
+# Colang config
+colang_version: "2.0"
+
+# Rail definitions loaded from rails.co

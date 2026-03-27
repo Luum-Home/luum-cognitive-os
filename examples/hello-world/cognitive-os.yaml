@@ -1,0 +1,30 @@
+# Cognitive OS Configuration — Hello World Example
+# This is a minimal config. See the full reference at:
+# https://github.com/luum-home/luum-cognitive-os/blob/main/cognitive-os.yaml
+
+project:
+  name: hello-world
+  type: webapp
+  phase: reconstruction
+
+quality:
+  coverage:
+    minimum: 70
+    block_pr: true
+
+models:
+  routing:
+    default: sonnet
+    design: opus
+    implementation: sonnet
+    documentation: haiku
+
+hooks:
+  error_learning: true
+  dod_gate: true
+  skill_metrics: true
+  auto_test_on_edit: true
+
+skills:
+  auto_generate: true
+  adaptation: true

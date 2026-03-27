@@ -1,0 +1,1 @@
+../../rules/resource-governance.md
