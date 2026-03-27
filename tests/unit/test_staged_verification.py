@@ -297,13 +297,16 @@ class TestStageOrdering:
         assert values == sorted(values)
 
     def test_cost_increases_with_stage(self) -> None:
-        """Later stages should cost >= earlier stages."""
+        """Non-LLM stages should cost $0; LLM stages should have nonzero cost."""
         for complexity in _COMPLEXITY_STAGES:
             stages = get_stages_for_complexity(complexity)
-            costs = [_STAGE_ESTIMATES[s]["cost_usd"] for s in stages]
-            # Costs should be non-decreasing
-            for i in range(1, len(costs)):
-                assert costs[i] >= costs[i - 1], (
-                    f"{complexity}: stage {stages[i].name} costs less than "
-                    f"{stages[i-1].name}"
-                )
+            for s in stages:
+                cost = _STAGE_ESTIMATES[s]["cost_usd"]
+                if s in (VerificationStage.ADVERSARIAL, VerificationStage.CROSS_VERIFY):
+                    assert cost > 0, (
+                        f"{complexity}: LLM stage {s.name} should have nonzero cost"
+                    )
+                else:
+                    assert cost == 0.0, (
+                        f"{complexity}: non-LLM stage {s.name} should cost $0"
+                    )

@@ -217,7 +217,7 @@ class ConsequenceEngine:
                     target=record.agent_or_skill,
                     consequence=Consequence.PROMOTE,
                     reason=(
-                        f"{streak_required} consecutive scores >= {promote_threshold}% "
+                        f"{streak_required} consecutive scores >= {promote_threshold:.0f}% "
                         f"(latest: {record.trust_score:.0f}%)"
                     ),
                     actions_taken=[],
@@ -227,7 +227,7 @@ class ConsequenceEngine:
             return ConsequenceAction(
                 target=record.agent_or_skill,
                 consequence=Consequence.MAINTAIN,
-                reason=f"Score {record.trust_score:.0f}% >= {warn_threshold}%",
+                reason=f"Score {record.trust_score:.0f}% >= {warn_threshold:.0f}%",
                 actions_taken=[],
                 timestamp=now,
             )
@@ -251,7 +251,7 @@ class ConsequenceEngine:
                 target=record.agent_or_skill,
                 consequence=Consequence.DISABLE,
                 reason=(
-                    f"{consecutive_low} consecutive scores below {warn_threshold}% "
+                    f"{consecutive_low} consecutive scores below {warn_threshold:.0f}% "
                     f"(latest: {record.trust_score:.0f}%)"
                 ),
                 actions_taken=[],
@@ -262,7 +262,7 @@ class ConsequenceEngine:
                 target=record.agent_or_skill,
                 consequence=Consequence.DEGRADE,
                 reason=(
-                    f"{consecutive_low} consecutive scores below {warn_threshold}% "
+                    f"{consecutive_low} consecutive scores below {warn_threshold:.0f}% "
                     f"(latest: {record.trust_score:.0f}%)"
                 ),
                 actions_taken=[],
@@ -272,7 +272,7 @@ class ConsequenceEngine:
             return ConsequenceAction(
                 target=record.agent_or_skill,
                 consequence=Consequence.WARN,
-                reason=f"Score {record.trust_score:.0f}% below {warn_threshold}% threshold",
+                reason=f"Score {record.trust_score:.0f}% below {warn_threshold:.0f}% threshold",
                 actions_taken=[],
                 timestamp=now,
             )

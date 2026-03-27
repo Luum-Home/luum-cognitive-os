@@ -200,7 +200,7 @@ class TestRecoverFromCrash:
         # Now simulate crash: create another dirty file and stash it
         (dirty_repo / "another.py").write_text("x = 1\n")
         subprocess.run(
-            ["git", "stash", "push", "-m", "cos-simulated-crash"],
+            ["git", "stash", "push", "-m", "cos-simulated-crash", "--include-untracked"],
             cwd=str(dirty_repo),
             capture_output=True,
         )
@@ -216,7 +216,7 @@ class TestRecoverFromCrash:
         """Recovery info has all expected keys."""
         # Create a cos- stash manually
         subprocess.run(
-            ["git", "stash", "push", "-m", "cos-test-recovery"],
+            ["git", "stash", "push", "-m", "cos-test-recovery", "--include-untracked"],
             cwd=str(dirty_repo),
             capture_output=True,
         )
@@ -358,7 +358,7 @@ class TestRestoreStash:
         """Restoring a checkpoint stash applies the changes."""
         # Create a cos- stash manually (simulating a crash where pop never ran)
         subprocess.run(
-            ["git", "stash", "push", "-m", "cos-restore-test"],
+            ["git", "stash", "push", "-m", "cos-restore-test", "--include-untracked"],
             cwd=str(dirty_repo),
             capture_output=True,
         )
