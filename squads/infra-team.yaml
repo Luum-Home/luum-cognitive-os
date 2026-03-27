@@ -1,0 +1,45 @@
+# Example squad definition for an infrastructure team.
+# Copy and customize for your project.
+apiVersion: agent.os/v1
+kind: Squad
+metadata:
+  name: infra-team
+spec:
+  domain: infrastructure
+  description: >
+    Owns infrastructure, CI/CD, Docker, Cognitive OS itself.
+    Cross-cutting -- supports all other squads with tooling and reliability.
+  manager:
+    type: agent
+    role: engineering-manager
+    agentRef: engineering-manager-agent
+  members:
+    - role: sre
+      agentRef: sre-agent
+      count: 2
+    - role: security
+      agentRef: security-engineer
+    - role: devops
+      agentRef: devops-agent
+  repos: []
+    # Add your infrastructure repos here:
+    # - infra/
+    # - .claude/
+  skills:
+    - testing-patterns
+  governance:
+    approvalFlow: manager-required
+    coverageMinimum: 60
+    phase: reconstruction
+    constitutionalGates:
+      - gate-secrets-never-in-code
+  metrics:
+    targets:
+      successRate: 0.90
+      architectureCompliance: 0.90
+      coverageMinimum: 60
+      maxIssueResolutionTime: 15  # minutes
+      sre:
+        mttd: 2    # minutes
+        mttr: 5    # minutes
+        autoRepairRate: 0.90

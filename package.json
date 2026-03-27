@@ -1,0 +1,49 @@
+{
+  "name": "cognitive-os",
+  "version": "0.1.0",
+  "description": "Portable AI Agent Operating System — memory, quality gates, self-healing, and multi-agent orchestration for any project",
+  "bin": {
+    "cognitive-os": "./bin/cognitive-os.sh"
+  },
+  "scripts": {
+    "test": "bash tests/run-all-tests.sh",
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "files": [
+    ".cognitive-os/",
+    "cognitive-os.yaml",
+    "bin/",
+    "scripts/postinstall.js",
+    "install.sh",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "ai",
+    "agent",
+    "cognitive",
+    "operating-system",
+    "claude",
+    "cursor",
+    "codex",
+    "mcp",
+    "self-healing",
+    "multi-agent",
+    "quality-gates",
+    "memory",
+    "engram"
+  ],
+  "author": "Luum Home",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luum-home/luum-cognitive-os.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luum-home/luum-cognitive-os/issues"
+  },
+  "homepage": "https://github.com/luum-home/luum-cognitive-os#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

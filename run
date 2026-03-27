@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Wrapper to run any Python script/module via uv
+# Loads dependencies from requirements.txt automatically
+# Usage: ./run <script.py> [args...]
+#        ./run -m pytest tests/ -v
+set -euo pipefail
+exec uv run --with-requirements requirements.txt python "$@"

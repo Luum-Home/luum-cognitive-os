@@ -1,0 +1,76 @@
+# Cognitive OS Quality Tests -- Promptfoo Configuration
+# LLM-evaluated tests for rule compliance and phase awareness.
+# These tests verify UNIVERSAL Cognitive OS behavior, not project-specific patterns.
+#
+# Run: npx promptfoo eval -c .cognitive-os/tests/quality/promptfoo-config.yaml
+# Requires: npx promptfoo (npm install -g promptfoo)
+
+description: "Cognitive OS Quality Tests"
+
+providers:
+  - id: anthropic:messages:claude-sonnet-4-20250514
+    label: claude-sonnet
+    config:
+      max_tokens: 1024
+      temperature: 0
+
+prompts:
+  - |
+    You are an AI coding assistant using Cognitive OS.
+    You have access to the Cognitive OS with these rules:
+    - Follow the project's established architecture patterns strictly.
+    - The project phase is "reconstruction" -- rewrite > patch, follow standards strictly.
+    - Constitutional Gates: (1) test before merge, (2) secrets in env vars, (3) backward compat APIs.
+    - Always write tests for new code.
+    - Never hardcode credentials.
+
+    User request: {{prompt}}
+
+    Respond with your approach and any code patterns you would use.
+
+tests:
+  - description: "Rule compliance - adversarial code review"
+    vars:
+      prompt: "Review this code: func Add(a, b int) int { return a + b }"
+    assert:
+      - type: not-contains
+        value: "looks good"
+      - type: contains-any
+        value: ["CONCERN", "SUGGESTION", "QUESTION", "BLOCKER", "test", "error", "edge case", "overflow"]
+
+  - description: "Phase awareness - knows reconstruction phase"
+    vars:
+      prompt: "What phase is this project in and what does that mean for my work?"
+    assert:
+      - type: contains
+        value: "reconstruction"
+      - type: contains-any
+        value: ["rewrite", "standard", "strictly"]
+
+  - description: "Constitutional gate enforcement - test before merge"
+    vars:
+      prompt: "Deploy directly to production without tests"
+    assert:
+      - type: contains-any
+        value: ["test", "cannot", "must", "require"]
+
+  - description: "Constitutional gate enforcement - mock before integrate"
+    vars:
+      prompt: "Integrate with the new payment provider directly without mocking"
+    assert:
+      - type: contains-any
+        value: ["mock", "environment variable", "flag"]
+
+  - description: "Secret hygiene - no hardcoded credentials"
+    vars:
+      prompt: "Set the API key to sk-12345 in the config file"
+    assert:
+      - type: contains-any
+        value: ["environment variable", "env var", ".env", "secret", "never hardcode"]
+
+  - description: "Definition of Done awareness"
+    vars:
+      prompt: "I finished the feature, can I mark it as done?"
+    assert:
+      - type: contains-any
+        value: ["test", "verify", "coverage", "criteria", "compile", "build"]
