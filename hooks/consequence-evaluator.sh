@@ -10,6 +10,11 @@
 # 5. Log result
 set -uo pipefail
 
+source "$(dirname "$0")/_lib/common.sh"
+
+# Auto-disabled at capability level 5
+check_capability_level "consequence-evaluator" && exit 0
+
 INPUT=$(cat)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // ""')
 [ "$TOOL_NAME" != "Agent" ] && exit 0

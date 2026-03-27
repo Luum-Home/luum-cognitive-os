@@ -5,10 +5,12 @@ unnecessary at higher model capability levels. A level 4 (autonomous) model does
 need clarification gates or assumption tracking — it handles those internally.
 
 Levels:
-    1 = basic     — all safety nets active
-    2 = good      — all safety nets active
-    3 = excellent — context-management disabled (model manages its own context)
+    1 = basic      — all safety nets active
+    2 = good       — all safety nets active
+    3 = excellent  — context-management disabled (model manages its own context)
     4 = autonomous — multiple safety nets disabled (model is self-correcting)
+    5 = autonomous+ — most safety nets disabled; session, metrics, security, error
+                      capture remain active
 """
 
 from pathlib import Path
@@ -31,9 +33,22 @@ DEFAULT_AUTO_DISABLE: Dict[int, List[str]] = {
         "model-routing",
         "blast-radius",
     ],
+    5: [
+        "completeness-check",
+        "epic-task-detector",
+        "scope-proportionality",
+        "trust-score-validator",
+        "claim-validator",
+        "tool-loop-detector",
+        "consequence-evaluator",
+        "infra-intent-detector",
+        "pre-cleanup-snapshot",
+        "architecture-compliance",
+        "auto-skill-generator",
+    ],
 }
 
-VALID_LEVELS = (1, 2, 3, 4)
+VALID_LEVELS = (1, 2, 3, 4, 5)
 
 DEFAULT_LEVEL = 3
 
@@ -69,7 +84,7 @@ def get_capability_level(config_path: str = "cognitive-os.yaml") -> int:
         config_path: Path to the cognitive-os.yaml config file.
 
     Returns:
-        The capability level (1-4). Defaults to DEFAULT_LEVEL if not configured
+        The capability level (1-5). Defaults to DEFAULT_LEVEL if not configured
         or if the value is out of range.
     """
     config = _parse_yaml(config_path)
@@ -134,7 +149,7 @@ def get_disabled_components(
     level 4 also has "context-management" disabled.
 
     Args:
-        level: The capability level (1-4).
+        level: The capability level (1-5).
         config_path: Path to the cognitive-os.yaml config file.
 
     Returns:
@@ -142,8 +157,8 @@ def get_disabled_components(
     """
     if level < 1:
         level = 1
-    if level > 4:
-        level = 4
+    if level > 5:
+        level = 5
 
     auto_disable = get_auto_disable_map(config_path)
 
@@ -193,7 +208,7 @@ def format_capability_report(
     if level is None:
         level = get_capability_level(config_path)
 
-    level_names = {1: "basic", 2: "good", 3: "excellent", 4: "autonomous"}
+    level_names = {1: "basic", 2: "good", 3: "excellent", 4: "autonomous", 5: "autonomous+"}
     level_name = level_names.get(level, "unknown")
 
     disabled = get_disabled_components(level, config_path)

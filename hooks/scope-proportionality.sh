@@ -17,6 +17,9 @@ set -uo pipefail
 
 source "$(dirname "$0")/_lib/common.sh"
 
+# Auto-disabled at capability level 5
+check_capability_level "scope-proportionality" && exit 0
+
 check_private_mode
 
 # Only process Agent tool

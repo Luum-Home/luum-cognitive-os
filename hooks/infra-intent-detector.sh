@@ -10,6 +10,10 @@ set -euo pipefail
 
 _HOOK_NAME="infra-intent-detector"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/common.sh"
+
+# Auto-disabled at capability level 5
+check_capability_level "infra-intent-detector" && exit 0
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 COGNITIVE_OS_DIR="$PROJECT_DIR/.cognitive-os"
