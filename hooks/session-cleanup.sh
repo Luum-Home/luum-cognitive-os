@@ -88,4 +88,23 @@ fi
 # Clean up PID-based session file
 rm -f "$SESSIONS_DIR/.current-session-$$" 2>/dev/null
 
+# --- Step 5: Symbiosis Check (organism health) ---
+# Measure overhead-to-value ratio. Alert if parasitic.
+if command -v python3 >/dev/null 2>&1; then
+  _symbiosis=$(python3 -c "
+import sys
+sys.path.insert(0, '$PROJECT_DIR/lib')
+try:
+    from symbiosis_monitor import SymbiosisMonitor
+    m = SymbiosisMonitor('$PROJECT_DIR')
+    r = m.generate_report()
+    m.log_report(r)
+    if r.health == 'parasitic':
+        print('SYMBIOSIS WARNING: COS overhead ratio is {:.0%} (parasitic). {}'.format(r.overhead_ratio, r.recommendation or ''))
+except Exception:
+    pass
+" 2>/dev/null)
+  [ -n "$_symbiosis" ] && echo "$_symbiosis" >&2
+fi
+
 exit 0
