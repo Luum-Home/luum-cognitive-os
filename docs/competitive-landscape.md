@@ -1,6 +1,6 @@
 # Competitive Landscape: AI Coding Agent Frameworks & Tools (March 2026)
 
-> Last updated: 2026-03-22
+> Last updated: 2026-03-27
 
 > **Note**: Pricing, valuations, and market data in this document are as of March 2026 and may be outdated. Verify current information from official sources.
 
@@ -68,9 +68,9 @@ The AI coding agent market has exploded in 2025-2026. What started as autocomple
 - **GitHub**: Closed source
 - **Stars**: N/A (proprietary)
 - **License**: Proprietary ($20/mo+)
-- **What it does**: AI-first IDE (VS Code fork). Tab completion, multi-file agentic edits, .cursorrules for project config. Valued at $29.3B in 2026.
-- **Key differentiator**: IDE-native experience, visual diff editing, deep editor integration. Many devs use Cursor + Claude Code together.
-- **What we can learn**: .cursorrules showed the market wants project-level AI configuration. CLAUDE.md and AGENTS.md evolved from this insight.
+- **What it does**: AI-first IDE (VS Code fork). Tab completion, multi-file agentic edits, .cursorrules for project config. Valued at $29.3B in 2026. In March 2026, launched Cloud Agents: isolated VM-per-agent execution with full desktop environment, terminal, and browser. Agents clone repos, setup environments, write code, test, fix bugs, record screen videos, and create PRs. Self-hosted option via `agent worker start` with Kubernetes operator for enterprise scale. Multi-trigger support (Slack, GitHub, Linear, webhooks, API, schedule). 30% of Cursor's own code is now agent-written. Salesforce reports 90% of 20K developers using Cursor. Over half of Fortune 500 in production.
+- **Key differentiator**: IDE-native experience plus cloud agent execution engine. Video proof of agent work enables 30-second review instead of 500-line code review. Self-hosted workers keep code on customer infrastructure. Many devs use Cursor + Claude Code together.
+- **What we can learn**: .cursorrules showed the market wants project-level AI configuration. Cloud agents with video proof change the review paradigm. Self-hosted workers address enterprise data sovereignty concerns. The execution engine is powerful but lacks governance, memory, and quality gates -- a natural complementarity with Cognitive OS.
 
 ### Windsurf (Cognition/Codeium)
 - **GitHub**: Closed source
@@ -389,3 +389,188 @@ The AI coding agent market has exploded in 2025-2026. What started as autocomple
 | Tessl | Spec Registry | Growing | Open Source | tessl.io |
 | MS Agent Framework | Multi-Agent | Growing | MIT | github.com/microsoft/agent-framework |
 | AWS Agent Squad | Multi-Agent | Moderate | Apache 2.0 | github.com/awslabs/agent-squad |
+
+---
+
+## Cursor Cloud Agents — Execution Layer (March 2026)
+
+### What Cursor Shipped
+
+Cursor launched self-hosted cloud agents that fundamentally change how code gets built:
+
+- **Isolated VM per agent**: Each agent gets its own virtual machine, terminal, browser, full desktop environment
+- **End-to-end workflow**: Clone repo -> setup env -> write code -> test -> fix bugs -> record video -> create PR
+- **Video proof**: Agents record screen videos of what they built, enabling 30-second review instead of 500-line code review
+- **Self-hosted option**: `agent worker start` — one command, agents run on YOUR infrastructure, code never leaves
+- **Enterprise scale**: Kubernetes operator + Helm chart for thousands of workers
+- **Multi-trigger**: Slack, GitHub, Linear, webhooks, API, schedule, events
+- **Real results**: 30% of Cursor's own code is now agent-written. Salesforce: 90% of 20K developers use Cursor. Over half of Fortune 500 in production.
+
+### What Cursor Doesn't Have
+
+| Capability | Cursor | Cognitive OS |
+|-----------|--------|--------------|
+| Isolated execution | VM per agent | Delegates to sub-agents |
+| Video proof | Screen recording | Trust Reports with evidence |
+| Persistent memory | None — each agent starts fresh | Engram with topic keys |
+| Quality gates | None — human reviews PR | 18 thematic rules, staged verification |
+| Cost governance | None — agents run until done | Budget enforcement, rate limiting, model routing |
+| Pipeline discipline | None — single task per agent | SDD: spec -> design -> tasks -> apply -> verify |
+| Self-healing | None | Error learning, auto-repair, circuit breakers |
+| Phase awareness | None | reconstruction/stabilization/production/maintenance |
+| Multi-agent coordination | Parallel agents, no coordination | Squads with KPIs and escalation |
+| Adaptive complexity | None — treats all tasks the same | Adaptive bypass: trivial=direct, critical=full SDD |
+
+### Complementarity: COS as Governance Layer for Cursor Agents
+
+Cursor provides the execution engine. Cognitive OS provides the governance brain. Together:
+
+```
+Human gives task
+    |
+    v
+Cognitive OS (Layer 2)
+  - Classifies complexity (adaptive bypass)
+  - Reads project phase and profile
+  - Checks budget and rate limits
+  - Selects appropriate workflow (direct / delegate / SDD)
+  - Loads relevant rules and skills
+    |
+    v
+Cursor Cloud Agent (Layer 1)
+  - Gets isolated VM
+  - Writes code, tests, records video
+  - Returns merge-ready PR
+    |
+    v
+Cognitive OS (Layer 2)
+  - Validates claims (anti-hallucination)
+  - Runs acceptance criteria
+  - Checks trust score
+  - Saves learnings to Engram
+  - Tracks cost
+    |
+    v
+Human reviews video + Trust Report, approves or gives feedback
+```
+
+The "1 person directing 10 agents" scenario that Cursor envisions requires governance at scale:
+- Without COS: 10 agents running in parallel with no cost tracking, no quality gates, no shared memory. Chaos.
+- With COS: Each agent governed by phase rules, cost-tracked, quality-gated, memory-sharing. Orchestrated.
+
+### Integration Points
+
+| Trigger | COS Role | Cursor Role |
+|---------|----------|-------------|
+| Linear ticket arrives | Classify complexity, select workflow, check budget | Spin up agent VM, execute task |
+| Agent completes PR | Validate claims, run acceptance criteria, save to Engram | Record video, create PR |
+| Budget exceeded | Block new agents, downgrade model | N/A — COS controls the gate |
+| Agent fails 3 times | Auto-rollback, escalate to human | N/A — COS manages retry loop |
+| Cross-service change | Route to correct squad, check blast radius | Execute in isolated VMs per service |
+
+---
+
+## Agent Skills Ecosystem (March 2026)
+
+Anthropic launched Agent Skills as an open standard on December 18, 2025. A skill is a directory with a SKILL.md file that teaches AI agents how to handle specific tasks. As of March 2026, 16+ major tools support the standard.
+
+### Major Skill Registries
+
+| Platform | Skills | Installs | Model | URL |
+|----------|--------|----------|-------|-----|
+| SkillsMP | 351,349 | -- | Crawls GitHub for SKILL.md, semantic search | skillsmp.com |
+| Skills.sh (Vercel) | 83,627 | 8M+ | Curated registry with CLI, 18+ agent support | skild.sh |
+| ClawHub (OpenClaw) | 15,000+ | 1.5M+ | Marketplace for OpenClaw framework | clawhub.ai |
+| MCP Registry | 100+ servers | -- | Official Anthropic registry for MCP servers | registry.modelcontextprotocol.io |
+
+### What Registries DON'T Provide (Cognitive OS's Moat)
+
+- **Composed packages**: skill + rule + hook + config as an interdependent unit
+- **Governance layer**: quality gates, acceptance criteria, verification pipelines
+- **Orchestration**: SDD pipeline, multi-agent coordination, squads
+- **Memory**: Persistent cross-session memory (Engram)
+- **Self-healing**: Error learning, auto-repair, circuit breakers
+- **Cost governance**: Token economy, rate limiting, budget enforcement
+- **Efficiency profiles**: lean/standard/full configurations
+
+### Strategic Position
+
+Skills registries = npm (individual packages). Cognitive OS = Linux distribution (composed, configured, orchestrated system). The gap: no one offers "distro-level" composition for AI agents.
+
+```
+Layer 3: Skills Registries (Skills.sh, SkillsMP, ClawHub, MCP Registry)
+         ^ individual skills, MCP servers
+Layer 2: Cognitive OS (governance, orchestration, memory, self-healing)
+         ^ rules, hooks, profiles, pipelines
+Layer 1: AI Model (Claude, GPT, Gemini, local models)
+         ^ raw intelligence
+```
+
+Like Astro with React/Svelte/Vue -- Cognitive OS doesn't replace the skills ecosystem, it orchestrates it.
+
+---
+
+## Engram vs AutoDream: Memory Architecture Comparison
+
+Claude Code launched AutoDream (March 2026), a built-in memory consolidation feature that compresses agent memory files while idle — marketed as "REM sleep for AI." The approach has fundamental flaws that Engram solves by design.
+
+### How AutoDream Works
+
+AutoDream runs a sub-agent that reads all session transcripts and memory files, decides what is important, enforces a 200-line cap, and deletes everything else. The model compresses 80-90% of existing tokens. This happens automatically and invisibly.
+
+### The Problem (per Karpathy)
+
+> "The LLM is a CPU and the context window is RAM. Every call starts from zero except what you explicitly put in."
+
+AutoDream gives the model responsible for performance degradation the responsibility for its own memory compression. Compression is invisible and fails silently — hours of architecture decisions can be reduced to a tag like "discussed architecture", losing all nuance.
+
+### Engram vs AutoDream
+
+| Dimension | AutoDream | Engram (Cognitive OS) |
+|-----------|-----------|----------------------|
+| Storage philosophy | Compress and delete | Store everything, retrieve selectively |
+| Who decides what to keep | The model (invisible) | The user/agent explicitly (topic keys) |
+| Data loss | 80-90% compressed away permanently | Zero — all observations persist |
+| Retrieval | Load entire compressed file at session start | Selective: `mem_search` -> `mem_get_observation` |
+| Organization | Single .md file, unstructured | Prefixed topic keys (`planning/`, `bugfix/`, `architecture/`) |
+| Auditability | No audit trail — deleted data is gone | Full audit trail — every save timestamped |
+| Cross-project | Per-project only | Shared Engram with project-scoped namespaces |
+| Control | Model modifies its own memory | Model writes, never deletes without instruction |
+| Failure mode | Silent context loss | Explicit — search returns nothing if not saved |
+
+### Why This Matters
+
+The paper "Evaluating AGENTS.md" (arxiv.org/abs/2602.11988) found that context files reduce task success rates. AutoDream tries to solve this by compressing context. Engram solves it differently: store everything externally, load only what the current task needs. This is context engineering — "the delicate art of filling the context window with exactly the right information" (Karpathy) — not context destruction.
+
+### Cognitive OS Memory Architecture
+
+```
+Session N (active)
+  |
+  v
+mem_save() -- explicit, structured, topic-keyed
+  |
+  v
+Engram (SQLite, persistent, never compressed)
+  |
+  v
+Session N+1 (new session)
+  |
+  v
+mem_search() -- selective retrieval, only what's needed
+  |
+  v
+Context window -- filled with exactly the right information
+```
+
+No sleep metaphors. No invisible compression. No silent data loss. Just structured storage with selective retrieval — the way databases have worked for 50 years.
+
+---
+
+### Sources
+
+- [SkillsMP](https://skillsmp.com/) | [Skills.sh](https://skild.sh/) | [MCP Registry](https://registry.modelcontextprotocol.io/)
+- [Agent Skills Are the New npm](https://www.buildmvpfast.com/blog/agent-skills-npm-ai-package-manager-2026)
+- [AI Agent Skills Guide 2026](https://serenitiesai.com/articles/agent-skills-guide-2026)
+- [Paper: Evaluating AGENTS.md](https://arxiv.org/abs/2602.11988) — ETH Zurich
+- Claude Code AutoDream — Anthropic, March 2026 (experimental feature)
