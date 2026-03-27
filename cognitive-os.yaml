@@ -130,6 +130,17 @@ models:
     debugging: opus
     documentation: haiku
     archiving: haiku
+  providers:
+    openrouter:
+      enabled: true
+      api_key_env: OPENROUTER_API_KEY
+      free_tier:
+        auto_select: openrouter/free
+        preferred:
+          - qwen/qwen3-32b:free
+          - nvidia/llama-3.1-nemotron-ultra-253b:free
+      use_as_fallback: true
+      fallback_trigger: budget_exhausted
 
 memory:
   provider: engram
@@ -315,6 +326,8 @@ resources:
     daily_alert_usd: 10
     per_session_target_usd: 0.50
     per_agent_max_usd: 2.00
+    # Downgrade chain: opus -> sonnet -> haiku -> openrouter/free -> BLOCK
+    downgrade_chain: [opus, sonnet, haiku, "openrouter/free"]
 
   infrastructure:
     auto_scale: true
