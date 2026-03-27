@@ -1,0 +1,42 @@
+# Example squad definition for a payments/financial team.
+# Copy and customize for your project.
+apiVersion: agent.os/v1
+kind: Squad
+metadata:
+  name: payments-team
+spec:
+  domain: payments
+  description: >
+    Example squad for payment-related services.
+    High-compliance domain -- financial operations require idempotency and audit trails.
+  manager:
+    type: agent
+    role: engineering-manager
+    agentRef: engineering-manager-agent
+  members:
+    - role: backend-dev
+      agentRef: backend-architect
+      count: 2
+    - role: qa
+      agentRef: test-coverage-enforcer
+    - role: security
+      agentRef: security-engineer
+    - role: sre
+      agentRef: sre-agent
+  repos: []
+    # Add your payment service repos here
+  skills:
+    - testing-patterns
+  governance:
+    approvalFlow: manager-required
+    coverageMinimum: 80
+    phase: reconstruction
+    constitutionalGates:
+      - gate-idempotent-operations
+      - gate-audit-trail
+  metrics:
+    targets:
+      successRate: 0.90
+      architectureCompliance: 0.95
+      coverageMinimum: 80
+      maxIssueResolutionTime: 30  # minutes

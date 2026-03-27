@@ -1,0 +1,93 @@
+Cognitive OS (luum-agent-os)
+Copyright 2026 Luum
+
+This product includes the following third-party software:
+
+---
+
+Crawl4AI
+Copyright UncleCode
+Licensed under the Apache License, Version 2.0
+https://github.com/unclecode/crawl4ai
+
+This product includes software developed by UncleCode as part of the
+Crawl4AI project (Apache-2.0).
+
+---
+
+NeMo Guardrails
+Copyright NVIDIA Corporation
+Licensed under the Apache License, Version 2.0
+https://github.com/NVIDIA/NeMo-Guardrails
+
+This product includes software developed by NVIDIA Corporation as part of the
+NeMo Guardrails project (Apache-2.0).
+
+---
+
+ClickHouse
+Copyright ClickHouse Inc.
+Licensed under the Apache License, Version 2.0
+https://github.com/ClickHouse/ClickHouse
+
+This product includes software developed by ClickHouse Inc. as part of the
+ClickHouse project (Apache-2.0).
+
+---
+
+SeaweedFS
+Copyright Chris Lu
+Licensed under the Apache License, Version 2.0
+https://github.com/seaweedfs/seaweedfs
+
+This product includes software developed by Chris Lu as part of the
+SeaweedFS project (Apache-2.0).
+
+---
+
+Opik
+Copyright Comet ML
+Licensed under the Apache License, Version 2.0
+https://github.com/comet-ml/opik
+
+This product includes software developed by Comet ML as part of the
+Opik project (Apache-2.0).
+
+---
+
+Cognee
+Copyright Topoteretes
+Licensed under the Apache License, Version 2.0
+https://github.com/topoteretes/cognee
+
+This product includes software developed by Topoteretes as part of the
+Cognee project (Apache-2.0).
+
+---
+
+testcontainers-python
+Licensed under the Apache License, Version 2.0
+https://github.com/testcontainers/testcontainers-python
+
+This product includes software developed as part of the
+testcontainers-python project (Apache-2.0).
+
+---
+
+DeepEval
+Copyright Confident AI
+Licensed under the Apache License, Version 2.0
+https://github.com/confident-ai/deepeval
+
+This product includes software developed by Confident AI as part of the
+DeepEval project (Apache-2.0).
+
+---
+
+RAGAS
+Copyright Exploding Gradients
+Licensed under the Apache License, Version 2.0
+https://github.com/explodinggradients/ragas
+
+This product includes software developed by Exploding Gradients as part of the
+RAGAS project (Apache-2.0).

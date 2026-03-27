@@ -1,0 +1,106 @@
+# =============================================================================
+# Cognitive OS — Colang 2.0 Guardrails
+# =============================================================================
+# Maps Cognitive OS safety mesh rules to NeMo Guardrails rails.
+#
+# Source rules:
+#   - clarification-gate -> input rail (block vague prompts)
+#   - assumption-tracking -> output rail (flag hedging language)
+#   - confidence-gate -> output rail (block low-confidence responses)
+#   - credential-management -> output rail (block secrets in output)
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# INPUT RAILS
+# ---------------------------------------------------------------------------
+
+# Block prompt injection attempts
+# Maps to: security best practices
+define flow block prompt injection
+  user said something
+  if "ignore previous instructions" in $last_user_message
+    bot refuse to comply
+  elif "ignore all rules" in $last_user_message
+    bot refuse to comply
+  elif "you are now" in $last_user_message and "mode" in $last_user_message
+    bot refuse to comply
+  elif "disregard" in $last_user_message and "instructions" in $last_user_message
+    bot refuse to comply
+  elif "pretend you" in $last_user_message
+    bot refuse to comply
+  elif "act as if" in $last_user_message and "no rules" in $last_user_message
+    bot refuse to comply
+  elif "jailbreak" in $last_user_message
+    bot refuse to comply
+
+define bot refuse to comply
+  "I cannot comply with that request. It appears to be an attempt to override my safety guidelines."
+
+# Block vague prompts (maps to clarification-gate.sh)
+# Detects overly vague agent prompts that lack specificity
+define flow block vague prompts
+  user said something
+  $msg_len = len($last_user_message)
+  if $msg_len < 20 and "fix" in $last_user_message
+    bot request clarification
+  elif $msg_len < 20 and "update" in $last_user_message
+    bot request clarification
+
+define bot request clarification
+  "Your request is too vague. Please specify: which files, what change, and how to verify success."
+
+# ---------------------------------------------------------------------------
+# OUTPUT RAILS
+# ---------------------------------------------------------------------------
+
+# Block credential leaks in output (maps to credential-management rule)
+# Detects API keys, tokens, passwords in bot responses
+define flow block credential leaks
+  bot said something
+  if $last_bot_message matches r"(?i)(sk-[a-zA-Z0-9]{20,})"
+    bot redact credentials
+  elif $last_bot_message matches r"(?i)(api[_-]?key\s*[:=]\s*['\"][a-zA-Z0-9]{16,}['\"])"
+    bot redact credentials
+  elif $last_bot_message matches r"(?i)(password\s*[:=]\s*['\"][^'\"]{8,}['\"])"
+    bot redact credentials
+  elif $last_bot_message matches r"(?i)(secret[_-]?key\s*[:=]\s*['\"][a-zA-Z0-9]{16,}['\"])"
+    bot redact credentials
+  elif $last_bot_message matches r"(?i)(bearer\s+[a-zA-Z0-9._\-]{20,})"
+    bot redact credentials
+  elif $last_bot_message matches r"(?i)(ghp_[a-zA-Z0-9]{36})"
+    bot redact credentials
+  elif $last_bot_message matches r"(?i)(AKIA[0-9A-Z]{16})"
+    bot redact credentials
+
+define bot redact credentials
+  "I detected what appears to be a credential or secret in the output. The response has been blocked to prevent credential leakage. Please use environment variables instead of hardcoding secrets."
+
+# Flag assumption language in output (maps to assumption-tracker.sh)
+# Detects hedging/assumption language that indicates uncertainty
+define flow flag assumption language
+  bot said something
+  if "I assume" in $last_bot_message
+    bot add assumption warning
+  elif "I believe" in $last_bot_message and "should work" in $last_bot_message
+    bot add assumption warning
+  elif "probably" in $last_bot_message and "correct" in $last_bot_message
+    bot add assumption warning
+  elif "I think this is right" in $last_bot_message
+    bot add assumption warning
+
+define bot add assumption warning
+  $last_bot_message + "\n\n[GUARDRAIL WARNING: Response contains assumption language. Verify claims with evidence before proceeding.]"
+
+# Flag low confidence output (maps to confidence-gate.sh)
+# Detects responses that explicitly admit very low confidence
+define flow flag low confidence
+  bot said something
+  if "I'm not sure" in $last_bot_message and "might not work" in $last_bot_message
+    bot add confidence warning
+  elif "this is a guess" in $last_bot_message
+    bot add confidence warning
+  elif "untested" in $last_bot_message and "may break" in $last_bot_message
+    bot add confidence warning
+
+define bot add confidence warning
+  $last_bot_message + "\n\n[GUARDRAIL WARNING: Low confidence detected. Human review required before applying these changes.]"

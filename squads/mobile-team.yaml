@@ -1,0 +1,37 @@
+# Example squad definition for a mobile/frontend team.
+# Copy and customize for your project.
+apiVersion: agent.os/v1
+kind: Squad
+metadata:
+  name: mobile-team
+spec:
+  domain: mobile
+  description: >
+    Example squad for mobile app and API gateway/BFF.
+    User-facing -- changes directly impact UX and app store compliance.
+  manager:
+    type: agent
+    role: engineering-manager
+    agentRef: engineering-manager-agent
+  members:
+    - role: frontend-dev
+      agentRef: backend-architect  # or a dedicated mobile-dev agent
+      count: 2
+    - role: qa
+      agentRef: test-coverage-enforcer
+  repos: []
+    # Add your mobile/frontend repos here
+  skills:
+    - testing-patterns
+  governance:
+    approvalFlow: manager-required
+    coverageMinimum: 70
+    phase: reconstruction
+    constitutionalGates:
+      - gate-backward-compatible-apis
+  metrics:
+    targets:
+      successRate: 0.85
+      architectureCompliance: 0.95
+      coverageMinimum: 70
+      maxIssueResolutionTime: 45  # minutes

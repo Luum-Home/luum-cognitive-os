@@ -1,0 +1,418 @@
+# Cognitive OS Configuration
+# This file is the single source of truth for Cognitive OS behavior.
+# For SaaS: this will be editable via web dashboard.
+
+project:
+  name: my-project          # Override with your project name
+  type: webapp              # fintech | ecommerce | saas | webapp | startup | healthcare
+  phase: reconstruction     # reconstruction | stabilization | production | maintenance
+  # infrastructure: populated by /cognitive-os-init from docker-compose.yml + detection
+  # infrastructure:
+  #   auth:
+  #     name: keycloak       # keycloak | auth0 | clerk | firebase-auth | custom
+  #     port: 8070
+  #   database:
+  #     - name: postgresql
+  #       port: 5432
+  #   cache:
+  #     name: valkey          # valkey (Redis-compatible, BSD-3)
+  #     port: 6379
+  #   messaging:
+  #     name: rabbitmq       # rabbitmq | kafka | redpanda | sqs
+  #     port: 5672
+  #   services: []           # populated by /cognitive-os-init
+
+environment:
+  tool: devbox
+  config: devbox.json
+  checkpoint_dir: .cognitive-os/checkpoints
+
+phases:
+  reconstruction:
+    description: "Full rebuild. Rewrite > patch. Follow standards strictly. Don't preserve broken patterns."
+    break_existing: true
+    rewrite_over_patch: true
+    follow_standard_strictly: true
+    skip_backwards_compat: true
+    document_as_future_work: false
+    auto_remediate_architecture: true
+
+  stabilization:
+    description: "Standards established. Fix remaining issues. Start enforcing coverage."
+    break_existing: false
+    rewrite_over_patch: true
+    follow_standard_strictly: true
+    skip_backwards_compat: false
+    document_as_future_work: false
+    auto_remediate_architecture: true
+
+  production:
+    description: "Live system. Incremental changes only. Feature flags required."
+    break_existing: false
+    rewrite_over_patch: false
+    follow_standard_strictly: true
+    skip_backwards_compat: true
+    document_as_future_work: true
+    auto_remediate_architecture: false
+
+  maintenance:
+    description: "Stable. Bug fixes and security patches only."
+    break_existing: false
+    rewrite_over_patch: false
+    follow_standard_strictly: true
+    skip_backwards_compat: true
+    document_as_future_work: true
+    auto_remediate_architecture: false
+
+quality:
+  coverage:
+    minimum: 80                    # Global minimum coverage %
+    block_pr: true                 # Block PRs below threshold
+    per_package: true              # Enforce per package, not just global
+    exclude:                       # Packages to exclude from coverage
+      - "*/mocks/*"
+      - "*/test/*"
+      - "cmd/*"
+
+  presets:                         # Industry presets (for SaaS)
+    fintech:
+      coverage: 80
+      require_integration_tests: true
+      require_idempotency_tests: true
+      require_audit_trail: true
+    healthcare:
+      coverage: 90
+      require_hipaa_tests: true
+    ecommerce:
+      coverage: 70
+      require_integration_tests: true
+    startup:
+      coverage: 50
+      require_integration_tests: false
+
+  auto_verify: true                 # Run acceptance criteria verification on agent completion
+  exhaustive_prompts: true           # Enable completeness check on agent launch
+  completeness_check: true           # Advisory pre-launch prompt validation
+  verification_retries: 3            # Max retries on verification failure
+
+  gates:                           # Quality gates (override per project)
+    # Example for Go:
+    # - name: compilation
+    #   required: true
+    #   command: "go build ./..."
+    # - name: lint
+    #   required: true
+    #   command: "golangci-lint run ./..."
+    # Example for Node.js:
+    # - name: compilation
+    #   required: true
+    #   command: "npx tsc --noEmit"
+    # - name: lint
+    #   required: true
+    #   command: "npx eslint ."
+    # Populated by /cognitive-os-init based on detected stack
+    []
+
+sessions:
+  concurrency: true                # Enable multi-session support
+  isolation: per-session           # Each session gets its own tasks/metrics
+  lock_strategy: advisory          # Advisory locking (warn, not block)
+  lock_timeout_seconds: 300        # Lock auto-expires after 5 minutes
+  cleanup_on_exit: true            # Remove session directory on exit
+  merge_metrics_on_exit: true      # Append session metrics to global on exit
+  max_concurrent: 10               # Maximum simultaneous sessions
+
+models:
+  routing:
+    default: sonnet
+    design: opus
+    implementation: sonnet
+    debugging: opus
+    documentation: haiku
+    archiving: haiku
+
+memory:
+  provider: engram
+  sync:
+    auto_export: true              # Export on session end
+    auto_import: true              # Import on session start
+  memu:
+    enabled: false                 # Opt-in: requires docker compose --profile memory
+    url: ${COGNITIVE_OS_MEMU_URL:-http://localhost:8765}
+    sync_categories:
+      - cognitive-os/errors
+      - cognitive-os/repairs
+      - cognitive-os/decisions
+      - cognitive-os/discoveries
+    proactive_loading: true
+
+skills:
+  auto_generate: true              # Auto-generate skills from complex tasks
+  registry_update: true            # Update registry after changes
+  adaptation: true                 # Track feedback and adapt
+  loading:
+    strategy: progressive          # progressive | full
+    level1_budget: 5000            # tokens for catalog (always loaded)
+    level2_budget: 30000           # tokens for active skills (on demand)
+    max_active: 5                  # max simultaneous loaded skills
+    catalog: CATALOG.md            # compact skill index
+
+rules:
+  loading:
+    strategy: compact              # compact | full
+    compact_file: RULES-COMPACT.md # compressed rule index
+    contextual_triggers:           # full rule loaded when trigger matches
+      auto-repair: "auto-repair|auto_repair|circuit.breaker|remediation|error|failure|crash|sre"
+      squad-protocol: "/squad-report|/retrospective"
+      definition-of-done: "done|complete|finished|dod|definition of done"
+      agent-quality: "quality|minimum|maximum|exhaustive|acceptance criteria|verification"
+      acceptance-criteria: "acceptance criteria|verify|verification|measurable"
+      session-concurrency: "session|concurrent|lock|multi-session"
+      self-improvement-protocol: "self-improve|self-improvement|kpi threshold|pattern detection"
+      # Project-specific triggers (add via /cognitive-os-init or manually):
+      # go-architecture: "*.go"
+      # constitutional-gates: "payment|transfer|card"
+      # architecture: "cross-service|bff|microservice"
+      # services-config: "port|connection|refused"
+      # testing-local: "test|jest|wiremock"
+
+cost:
+  metering:
+    track_per_skill: true
+    track_per_rule: true
+    track_per_agent: true
+    report_interval: session_end
+  optimization:
+    auto_unload_unused_minutes: 5  # unload skills after N min inactivity
+    compress_rules: true           # use RULES-COMPACT.md instead of full rules
+    cache_skill_catalog: true      # cache CATALOG.md across session
+
+definition_of_done:
+  trivial:                               # < 20 lines, 1 file
+    - code_compiles
+    - no_lint_errors
+
+  small:                                 # 1-3 files, single service
+    - code_compiles
+    - unit_tests_pass
+    - no_lint_errors
+
+  medium:                                # multi-file, single service, new feature
+    - code_compiles
+    - unit_tests_added
+    - coverage_maintained
+    - lint_clean
+    - docs_updated
+
+  large:                                 # multi-service, new integration
+    - readiness_check_pass
+    - code_compiles
+    - unit_tests_80_percent
+    - integration_tests
+    - architecture_compliance
+    - docs_updated
+    - adversarial_review
+
+  critical:                              # security, payments, data migration
+    - readiness_check_pass
+    - code_compiles
+    - unit_tests_80_percent
+    - integration_tests
+    - architecture_compliance
+    - docs_updated
+    - adversarial_review
+    - security_review
+    - idempotency_verified
+    - audit_trail_present
+    - rollback_tested
+
+hooks:
+  error_learning: true
+  dod_gate: true
+  skill_metrics: true
+  tool_loop_detection: true
+  pre_compaction_flush: true
+  auto_test_on_edit: true
+  block_prod_urls: true
+  auto_refine: true
+  auto_verify: true                  # Run acceptance criteria on agent completion
+  completeness_check: true           # Warn on vague agent prompts before launch
+
+auto_refine:
+  enabled: true
+  max_retries: 3
+  tracking_dir: metrics/auto-refine    # relative to .cognitive-os/
+
+resources:
+  budget:
+    monthly_limit_usd: 200
+    daily_alert_usd: 10
+    per_session_target_usd: 0.50
+    per_agent_max_usd: 2.00
+
+  infrastructure:
+    auto_scale: true
+    services:
+      langfuse:
+        mode: on_demand
+        idle_timeout_minutes: 30
+      nemo_guardrails:
+        mode: on_demand
+        idle_timeout_minutes: 15
+      paperclip:
+        mode: on_demand
+        idle_timeout_minutes: 30
+      litellm:
+        mode: always
+      opik:
+        mode: on_demand
+        idle_timeout_minutes: 30
+        config:
+          api_url: "${OPIK_API_URL:-https://www.comet.com/opik/api}"
+          project_name: "cognitive-os"
+      cognee:
+        mode: on_demand
+        idle_timeout_minutes: 15
+        config:
+          graph_backend: "${COGNEE_GRAPH_BACKEND:-networkx}"
+          vector_store: "${COGNEE_VECTOR_STORE:-lancedb}"
+          mcp_enabled: true
+      # --- Agent Testing & Evaluation (Python packages, not Docker services) ---
+      deepeval:
+        status: planned                # Python package, not a Docker service
+        mode: cli
+        config:
+          provider: "${DEEPEVAL_LLM_PROVIDER:-anthropic}"
+          role: "unit testing, trajectory eval, red teaming"
+      ragas:
+        status: planned                # Python package, not a Docker service
+        mode: cli
+        config:
+          provider: "${RAGAS_LLM_PROVIDER:-anthropic}"
+          role: "memory quality, retrieval eval, synthetic test gen"
+      promptfoo:
+        status: planned                # Python package / npm CLI, not a Docker service
+        mode: cli
+        config:
+          role: "prompt regression, red teaming CI/CD gate"
+      # --- UI & Compute ---
+      automaker:
+        mode: on_demand
+        idle_timeout_minutes: 30
+        profile: ui                    # docker compose --profile ui
+      jupyter:
+        mode: on_demand
+        idle_timeout_minutes: 30
+
+  compute:
+    max_parallel_agents: 5
+    agent_timeout_seconds: 300
+    batch_size: 5
+    prefer_sequential: false
+
+  tokens:
+    model_downgrade_threshold_percent: 80
+    auto_summarize_at_percent: 70
+    skill_cache_ttl_seconds: 300
+    rule_compression: aggressive
+    result_truncation:
+      enabled: true
+      max_chars: 5000
+      head_chars: 2000
+      tail_chars: 1000
+      never_truncate_patterns:
+        - "FAIL"
+        - "ERROR"
+        - "panic"
+        - "PASS"
+        - "coverage:"
+
+  optimization:
+    governor_interval_sessions: 5
+    auto_run_on_session_end: true
+    auto_execute_safe: false        # Set to true to auto-run context-optimizer and error-analyzer
+
+model_capability:
+  level: 3                             # 1=basic, 2=good, 3=excellent, 4=autonomous
+  auto_disable:
+    3: [context-management]
+    4: [clarification-gate, assumption-tracking, confidence-gate, model-routing, blast-radius]
+
+compatibility:
+  baseline_model: "claude-opus-4-6"
+  test_on_model_change: true
+  test_skill: compat-test          # invoke via /cognitive-os-compat-test
+  minimum_requirements:
+    skill_trigger_accuracy: 90     # % — model correctly identifies matching skills
+    rule_compliance: 95            # % — model follows rules without extra prompting
+    memory_retrieval: true         # Engram must be reachable
+  thresholds:
+    all_clear: 8                   # tests passed out of 8
+    degraded: 6                    # minimum before DEGRADED status
+    broken: 5                      # at or below = BROKEN
+
+self_improvement:
+  enabled: true
+  auto_apply: false                # require human approval by default
+  trigger_threshold:
+    first_pass_success: 0.70       # below this -> suggest self-improve
+    iteration_count: 3             # tasks needing >3 iterations -> flag
+  schedule: session_end            # when to collect learnings
+  max_auto_improvements: 5         # cap per self-improve run
+
+sre:
+  enabled: true
+  check_interval: "*/2 * * * *"   # Every 2 minutes
+  auto_repair: true                # Auto-repair safe actions
+  escalation: true                 # Escalate unsafe actions
+
+auto_repair:
+  enabled: true
+  circuit_breaker:
+    max_consecutive_failures: 3  # was 2, calibration recommended 3
+    cooldown_seconds: 3600
+    global_hourly_cap: 10
+  phase_gates:
+    reconstruction: [code, lint, test, infra, llm]
+    stabilization: [code, lint, test, infra, llm]
+    production: [infra]
+    maintenance: [infra]
+  worktree:
+    base_dir: .cognitive-os/repair-wt
+    max_concurrent: 1
+    cleanup_on_success: true
+  remediation:
+    confidence_threshold: 0.8
+    gc_after_days: 30
+    gc_min_attempts: 5
+    gc_min_success_rate: 0.3
+  metrics:
+    rotation:
+      max_lines: 5000
+      keep_lines: 2500
+      retention_days: 30
+
+tool_groups:
+  # Core tool groups — referenced by name in agent customizations
+  fs: [Read, Write, Edit, Glob, Grep]
+  runtime: [Bash, Agent]
+  web: [WebSearch, WebFetch]
+  git: [Bash]                       # git commands only
+  readonly: [Read, Glob, Grep, WebSearch, WebFetch]
+
+  # Agent profiles (used in agent-customization)
+  minimal: [Read, Glob, Grep]
+  coding: [Read, Write, Edit, Glob, Grep, Bash, Agent]
+  full: [Read, Write, Edit, Glob, Grep, Bash, Agent, WebSearch, WebFetch]
+
+paperclip:
+  enabled: true
+  url: ${COGNITIVE_OS_PAPERCLIP_URL:-http://localhost:3200}
+  sync_on_session_end: true
+  artifacts:
+    - session_metrics
+    - repair_outcomes
+    - registry_snapshot
+    - cost_events
+    - agent_status
+    - sdd_pipeline

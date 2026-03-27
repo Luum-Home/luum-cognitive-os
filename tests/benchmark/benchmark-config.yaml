@@ -1,0 +1,146 @@
+# Cognitive OS Benchmark Configuration
+# Compare Cognitive OS vs BMAD METHOD v6 on standardized tasks
+# Run with: bash .cognitive-os/tests/benchmark/run-benchmark.sh
+
+version: "1.0"
+
+settings:
+  max_turns: 20
+  model: "claude-sonnet-4-20250514"
+  worktree_base: ".cognitive-os/tests/benchmark/worktrees"
+  results_file: ".cognitive-os/metrics/benchmark-results.jsonl"
+  timeout_seconds: 600
+  bmad_path: "bmad-method"
+
+benchmarks:
+  - id: "create-go-service"
+    name: "Create a new Go microservice"
+    prompt: "Create a new Go microservice called 'preferences' with CRUD endpoints for user preferences. It should follow clean architecture, use PostgreSQL, have unit tests, and be wired into docker-compose."
+    metrics:
+      - name: files_created
+        type: count
+        description: "Number of source files created"
+      - name: tests_created
+        type: count
+        description: "Number of test files created"
+      - name: compilation_success
+        type: boolean
+        check: "cd backend-go && go build ./apps/preferences/..."
+      - name: architecture_score
+        type: llm_eval
+        prompt: "Rate the clean architecture compliance of this Go service 0-10. Check for: domain layer isolation, use case layer, infrastructure layer separation, dependency injection, proper interfaces. Return ONLY a number 0-10."
+      - name: time_seconds
+        type: duration
+      - name: tokens_used
+        type: count
+
+  - id: "fix-bug"
+    name: "Fix a known bug"
+    prompt: "The transfers-p2p service crashes when amount is negative. Add validation and return a proper error."
+    setup: "Remove amount validation from create_transfer.go"
+    metrics:
+      - name: bug_fixed
+        type: boolean
+        description: "Negative amount no longer causes crash"
+      - name: test_added
+        type: boolean
+        description: "Test for negative amount validation exists"
+      - name: regression_introduced
+        type: boolean
+        description: "Existing tests still pass"
+      - name: time_seconds
+        type: duration
+      - name: tokens_used
+        type: count
+
+  - id: "add-endpoint"
+    name: "Add endpoint to existing service"
+    prompt: "Add a GET /api/v1/user/:id/preferences endpoint to <consumer-codename-b> that returns user notification preferences."
+    metrics:
+      - name: endpoint_works
+        type: boolean
+        description: "Endpoint responds to HTTP GET"
+      - name: follows_patterns
+        type: llm_eval
+        prompt: "Rate how well this endpoint follows existing code patterns in the service 0-10. Check for: consistent naming, same error handling style, proper DTOs, matching test patterns. Return ONLY a number 0-10."
+      - name: test_added
+        type: boolean
+        description: "Unit or integration test for endpoint exists"
+      - name: time_seconds
+        type: duration
+      - name: tokens_used
+        type: count
+
+  - id: "refactor-code"
+    name: "Refactor for clean architecture"
+    prompt: "The admin service has business logic in controllers. Refactor to move it to use cases."
+    metrics:
+      - name: logic_moved
+        type: boolean
+        description: "Business logic removed from controllers"
+      - name: tests_pass
+        type: boolean
+        description: "All existing tests still pass"
+      - name: architecture_improved
+        type: llm_eval
+        prompt: "Rate the architecture improvement after refactoring 0-10. Check for: controllers only handle HTTP, use cases contain business logic, proper dependency injection, no circular dependencies. Return ONLY a number 0-10."
+      - name: time_seconds
+        type: duration
+      - name: tokens_used
+        type: count
+
+  - id: "cross-service-feature"
+    name: "Implement cross-service feature"
+    prompt: "When a user changes their email, notify via push notification AND update the Keycloak record. This involves <consumer-codename-b>, notifications, and <consumer-codename-c> services."
+    metrics:
+      - name: services_touched
+        type: count
+        description: "Number of services modified"
+      - name: kafka_event_added
+        type: boolean
+        description: "Kafka event for email change exists"
+      - name: all_services_compile
+        type: boolean
+        check: "cd backend-go && go build ./..."
+      - name: integration_test_added
+        type: boolean
+        description: "Cross-service integration test exists"
+      - name: time_seconds
+        type: duration
+      - name: tokens_used
+        type: count
+
+  - id: "concurrent-sessions"
+    name: "Concurrent Session Safety"
+    prompt: "Open 2 sessions, both edit the same file"
+    metrics:
+      - name: no_data_loss
+        type: boolean
+        description: "Both sessions' changes are preserved or merged"
+      - name: no_corruption
+        type: boolean
+        description: "No corrupted state in sessions/ directory or metrics files"
+      - name: warning_shown
+        type: boolean
+        description: "Advisory warning displayed when second session edits same file"
+      - name: time_seconds
+        type: duration
+      - name: tokens_used
+        type: count
+
+scoring:
+  weights:
+    compilation_success: 15
+    tests_created: 10
+    test_added: 10
+    tests_pass: 10
+    architecture_score: 15
+    follows_patterns: 10
+    architecture_improved: 10
+    bug_fixed: 10
+    endpoint_works: 10
+    kafka_event_added: 5
+    integration_test_added: 5
+    time_seconds: -0.01  # penalty per second
+    tokens_used: -0.0001  # penalty per token
+  max_score: 50

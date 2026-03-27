@@ -1,0 +1,187 @@
+#!/bin/bash
+# Error Learning Hook — PostToolUse for Bash
+# Captures test/lint/build failures and logs them for pattern analysis.
+# Designed to be fast (<2s) and non-blocking.
+
+set -uo pipefail
+
+_HOOK_NAME="error-learning"
+source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/common.sh"
+
+PROJECT_DIR="$_PROJECT_DIR"
+METRICS_DIR="$(resolve_session_dir)"
+METRICS_FILE="$METRICS_DIR/error-learning.jsonl"
+
+# Read tool result from stdin (cached via common.sh)
+read_stdin_json
+INPUT="$_STDIN_JSON"
+
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)
+RESPONSE=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
+EXIT_CODE=$(echo "$INPUT" | jq -r '.exit_code // "0"' 2>/dev/null)
+
+# Exit early if no command or success
+[ -z "$COMMAND" ] && exit 0
+[ "$EXIT_CODE" = "0" ] && exit 0
+
+# --- Detect command type ---
+ERROR_TYPE=""
+FRAMEWORK=""
+
+# Test commands
+if echo "$COMMAND" | grep -qiE '(npx\s+)?jest|vitest|go\s+test|gradlew\s+(test|itest|utest)|pytest|yarn\s+test|npm\s+test'; then
+  ERROR_TYPE="TEST_FAILURE"
+  if echo "$COMMAND" | grep -qi 'vitest'; then
+    FRAMEWORK="vitest"
+  elif echo "$COMMAND" | grep -qi 'jest'; then
+    FRAMEWORK="jest"
+  elif echo "$COMMAND" | grep -qi 'go test'; then
+    FRAMEWORK="go-test"
+  elif echo "$COMMAND" | grep -qiE 'gradlew.*(test|itest|utest)'; then
+    FRAMEWORK="junit"
+  elif echo "$COMMAND" | grep -qi 'pytest'; then
+    FRAMEWORK="pytest"
+  fi
+fi
+
+# Lint commands
+if echo "$COMMAND" | grep -qiE 'eslint|golangci-lint|tsc\s+--noEmit|go\s+vet'; then
+  ERROR_TYPE="LINT_ERROR"
+  if echo "$COMMAND" | grep -qi 'eslint'; then
+    FRAMEWORK="eslint"
+  elif echo "$COMMAND" | grep -qi 'golangci-lint'; then
+    FRAMEWORK="golangci-lint"
+  elif echo "$COMMAND" | grep -qi 'tsc'; then
+    FRAMEWORK="tsc"
+  elif echo "$COMMAND" | grep -qi 'go vet'; then
+    FRAMEWORK="go-vet"
+  fi
+fi
+
+# Build commands (only if not already classified as lint)
+if [ -z "$ERROR_TYPE" ] && echo "$COMMAND" | grep -qiE 'go\s+build|gradlew\s+build|yarn\s+build|npm\s+run\s+build|tsc($|\s)'; then
+  ERROR_TYPE="BUILD_ERROR"
+  if echo "$COMMAND" | grep -qi 'go build'; then
+    FRAMEWORK="go-build"
+  elif echo "$COMMAND" | grep -qiE 'gradlew|gradle'; then
+    FRAMEWORK="gradle"
+  elif echo "$COMMAND" | grep -qi 'tsc'; then
+    FRAMEWORK="tsc"
+  else
+    FRAMEWORK="node-build"
+  fi
+  # Check if it's specifically a compilation error
+  if echo "$RESPONSE" | grep -qiE 'cannot find module|undefined:|syntax error|SyntaxError|TS[0-9]{4}:|compilation failed'; then
+    ERROR_TYPE="COMPILATION_ERROR"
+  fi
+fi
+
+# Not a test/lint/build command we care about
+[ -z "$ERROR_TYPE" ] && exit 0
+
+# --- Detect service from command path or working directory ---
+SERVICE="unknown"
+
+if echo "$COMMAND" | grep -qi '<consumer-codename-b>'; then
+  SERVICE="<consumer-codename-b>"
+elif echo "$COMMAND" | grep -qi '<consumer-codename-c>'; then
+  SERVICE="<consumer-codename-c>"
+elif echo "$COMMAND" | grep -qi 'onboarding'; then
+  SERVICE="onboarding"
+elif echo "$COMMAND" | grep -qiE '<consumer-codename-a>|bff'; then
+  SERVICE="<consumer-codename-a>"
+elif echo "$COMMAND" | grep -qiE '<consumer-service>|monolith'; then
+  SERVICE="<consumer-service>"
+elif echo "$COMMAND" | grep -qi 'mobile/app'; then
+  SERVICE="mobile-app"
+fi
+
+# If still unknown, try from tool_input working directory
+if [ "$SERVICE" = "unknown" ]; then
+  WORK_DIR=$(echo "$INPUT" | jq -r '.tool_input.working_directory // empty' 2>/dev/null)
+  if [ -n "$WORK_DIR" ]; then
+    case "$WORK_DIR" in
+      *<consumer-codename-b>*) SERVICE="<consumer-codename-b>" ;;
+      *<consumer-codename-c>*) SERVICE="<consumer-codename-c>" ;;
+      *onboarding*) SERVICE="onboarding" ;;
+      *<consumer-codename-a>*) SERVICE="<consumer-codename-a>" ;;
+      *<consumer-service>*) SERVICE="<consumer-service>" ;;
+      *mobile/app*) SERVICE="mobile-app" ;;
+    esac
+  fi
+fi
+
+# --- Extract error message (error-specific lines, fallback to last 20) ---
+ERROR_MSG=""
+
+ERROR_MSG=$(echo "$RESPONSE" | grep -iE 'error:|Error:|FAIL|FAILED|cannot find|undefined:|TS[0-9]{4}:|SyntaxError|TypeError|ReferenceError|CompileError|panic:|FATAL' | head -10 2>/dev/null)
+
+if [ -z "$ERROR_MSG" ]; then
+  ERROR_MSG=$(echo "$RESPONSE" | tail -20 2>/dev/null)
+fi
+
+# Truncate to 500 chars to keep JSONL manageable
+ERROR_MSG=$(echo "$ERROR_MSG" | head -c 500)
+
+# --- Dedup check: skip if identical error within last 60 seconds ---
+mkdir -p "$METRICS_DIR"
+
+if [ -f "$METRICS_FILE" ]; then
+  CUTOFF=$(date -v-60S +%s 2>/dev/null || date -d '60 seconds ago' +%s 2>/dev/null || echo "0")
+  ERROR_FINGERPRINT=$(echo "$ERROR_MSG" | head -c 100 | md5 2>/dev/null || echo "$ERROR_MSG" | head -c 100 | md5sum 2>/dev/null | cut -d' ' -f1)
+  LAST_ENTRIES=$(tail -10 "$METRICS_FILE" 2>/dev/null || true)
+  if [ -n "$LAST_ENTRIES" ]; then
+    DUPLICATE=$(echo "$LAST_ENTRIES" | while IFS= read -r line; do
+      L_TYPE=$(echo "$line" | jq -r '.type // empty' 2>/dev/null)
+      L_SVC=$(echo "$line" | jq -r '.service // empty' 2>/dev/null)
+      L_FP=$(echo "$line" | jq -r '.fingerprint // empty' 2>/dev/null)
+      L_EPOCH=$(echo "$line" | jq -r '.timestamp_epoch // 0' 2>/dev/null)
+      if [ "$L_TYPE" = "$ERROR_TYPE" ] && [ "$L_SVC" = "$SERVICE" ] && [ "$L_FP" = "$ERROR_FINGERPRINT" ] && [ "$L_EPOCH" -gt "$CUTOFF" ] 2>/dev/null; then
+        echo "DUPLICATE"
+        break
+      fi
+    done)
+    if [ "$DUPLICATE" = "DUPLICATE" ]; then
+      exit 0
+    fi
+  fi
+else
+  ERROR_FINGERPRINT=$(echo "$ERROR_MSG" | head -c 100 | md5 2>/dev/null || echo "$ERROR_MSG" | head -c 100 | md5sum 2>/dev/null | cut -d' ' -f1)
+fi
+
+# --- Build context hint ---
+CONTEXT=""
+if echo "$ERROR_MSG" | grep -qi 'undefined:\|cannot find module\|no such file'; then
+  CONTEXT="missing import or dependency"
+elif echo "$ERROR_MSG" | grep -qiE 'TS[0-9]{4}'; then
+  CONTEXT="TypeScript type error"
+elif echo "$ERROR_MSG" | grep -qi 'timeout\|ETIMEDOUT'; then
+  CONTEXT="timeout - service may not be running"
+elif echo "$ERROR_MSG" | grep -qi 'connection refused\|ECONNREFUSED'; then
+  CONTEXT="connection refused - dependency not available"
+elif echo "$ERROR_MSG" | grep -qi 'assertion\|expect\|toBe\|toEqual\|assert'; then
+  CONTEXT="assertion failure in test"
+elif echo "$ERROR_MSG" | grep -qi 'mock\|stub'; then
+  CONTEXT="mock/stub configuration issue"
+fi
+
+# --- Write to JSONL ---
+TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+TIMESTAMP_EPOCH=$(date +%s)
+
+ERROR_MSG_ESCAPED=$(echo "$ERROR_MSG" | jq -Rs '.' 2>/dev/null || echo '"error extraction failed"')
+COMMAND_ESCAPED=$(echo "$COMMAND" | jq -Rs '.' 2>/dev/null || echo '""')
+
+ENTRY="{\"timestamp\":\"${TIMESTAMP}\",\"timestamp_epoch\":${TIMESTAMP_EPOCH},\"type\":\"${ERROR_TYPE}\",\"service\":\"${SERVICE}\",\"framework\":\"${FRAMEWORK}\",\"error\":${ERROR_MSG_ESCAPED},\"command\":${COMMAND_ESCAPED},\"context\":\"${CONTEXT}\",\"fingerprint\":\"${ERROR_FINGERPRINT}\"}"
+safe_jsonl_append "$METRICS_FILE" "$ENTRY"
+
+# Check if remediation exists for this error
+if type remediation_lookup >/dev/null 2>&1 || source "$(dirname "$0")/_lib/remediation.sh" 2>/dev/null; then
+  if remediation_lookup "$ERROR_TYPE" "$SERVICE" "$ERROR_MSG" >/dev/null 2>&1; then
+    # Flag this error as having a known fix (informational)
+    echo "[error-learning] Known fix available for $ERROR_TYPE in $SERVICE" >&2
+  fi
+fi
+
+exit 0

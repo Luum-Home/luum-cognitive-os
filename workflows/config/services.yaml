@@ -1,0 +1,22 @@
+# Service registry for AI workflow pipelines.
+# Populated by /cognitive-os-init or manually.
+# Each service needs: name, path, language, port, build, test, lint commands.
+services: []
+  # Example:
+  # - name: api-server
+  #   path: apps/api
+  #   language: go
+  #   port: 8080
+  #   build: go build ./...
+  #   test: go test ./...
+  #   lint: golangci-lint run ./...
+  #   docker: true
+  #
+  # - name: web-app
+  #   path: apps/web
+  #   language: nestjs
+  #   port: 3000
+  #   build: npx tsc --noEmit
+  #   test: npx jest --no-cache
+  #   lint: npx eslint .
+  #   docker: true

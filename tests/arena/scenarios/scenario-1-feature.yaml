@@ -1,0 +1,45 @@
+name: "Add JWT Authentication"
+description: "Developer asks to add JWT auth — tests full SDD pipeline"
+category: feature
+expected_total_cost: 3.00
+expected_duration_minutes: 30
+tags: [sdd, safety-mesh, memory, estimation]
+
+turns:
+  - type: user
+    content: "Add authentication to the API"
+    expectations:
+      clarification_gate_activates: true
+      reason: "Vague task — no file paths, no tech specified"
+
+  - type: user
+    content: "Add JWT authentication to internal/server/auth/ using Go and ginext. Endpoints: POST /login, POST /register, GET /me. Use bcrypt for passwords."
+    expectations:
+      clarification_gate_passes: true
+      sdd_pipeline_suggested: true
+      planning_poker_runs: true
+      cost_prediction_shown: true
+
+  - type: checkpoint
+    content: "After scope clarification"
+    expectations:
+      memory_saved: true
+      cost_under: 0.50
+
+  - type: expect
+    content: "SDD explore phase"
+    expectations:
+      phase: "explore"
+      files_analyzed: true
+
+  - type: expect
+    content: "SDD propose phase"
+    expectations:
+      phase: "propose"
+      proposal_created: true
+
+  - type: checkpoint
+    content: "After proposal"
+    expectations:
+      cost_under: 1.50
+      trust_score_above: 0.7

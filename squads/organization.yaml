@@ -1,0 +1,123 @@
+apiVersion: agent.os/v1
+kind: Organization
+metadata:
+  name: my-project  # Override with your project name
+spec:
+  squads: []
+  # Example squads (uncomment and customize):
+  # - backend-team
+  # - frontend-team
+  # - infra-team
+  governance:
+    approvalFlow: manager-required
+    budgetLimit: 200  # USD/month
+    retrospectiveInterval: weekly
+  agents:
+    # Manager agents (shared across squads)
+    - name: engineering-manager-agent
+      kind: ManagerAgent
+      brain:
+        model: claude-opus-4-6
+        reasoning: deep
+      evaluation:
+        metrics:
+          - successRate
+          - hallucinationScore
+          - bugsIntroduced
+          - issueResolutionTime
+          - coverageImprovement
+          - architectureCompliance
+        thresholds:
+          successRate: 0.90
+          hallucinationScore: 0.05
+          architectureCompliance: 0.95
+      governance:
+        requiresApprovalFor:
+          - productionChanges
+          - squadReconfiguration
+      autoReconfigure:
+        enabled: true
+        triggers:
+          - metric: successRate
+            below: 0.80
+            action: upgradeModel
+          - metric: architectureCompliance
+            below: 0.90
+            action: retrainSkills
+          - metric: issueResolutionTime
+            above: 30  # minutes
+            action: scaleUp
+          - metric: bugsIntroduced
+            above: 3
+            action: addQAAgent
+        cooldown: 24h
+
+    # Operational agents
+    - name: backend-architect
+      kind: Agent
+      brain:
+        model: claude-sonnet-4-6
+        reasoning: analytical
+        fallback: claude-haiku-4-5
+      autonomy:
+        mode: supervised
+      policies:
+        budget:
+          maxTokensPerHour: 80000
+          maxCostPerTask: 1.50
+
+    - name: test-coverage-enforcer
+      kind: Agent
+      brain:
+        model: claude-sonnet-4-6
+        reasoning: analytical
+      autonomy:
+        mode: supervised
+      policies:
+        budget:
+          maxTokensPerHour: 50000
+          maxCostPerTask: 1.00
+
+    - name: security-engineer
+      kind: Agent
+      brain:
+        model: claude-sonnet-4-6
+        reasoning: deep
+      autonomy:
+        mode: manual  # security changes always need human approval
+      policies:
+        budget:
+          maxTokensPerHour: 30000
+          maxCostPerTask: 1.50
+
+    - name: sre-agent
+      kind: Agent
+      brain:
+        model: claude-sonnet-4-6
+        reasoning: reactive
+        fallback: claude-haiku-4-5
+      autonomy:
+        mode: supervised
+        approvals:
+          destructiveActions: required
+          productionChanges: required
+      policies:
+        budget:
+          maxTokensPerHour: 50000
+          maxCostPerTask: 2.00
+
+    - name: devops-agent
+      kind: Agent
+      brain:
+        model: claude-sonnet-4-6
+        reasoning: reactive
+        fallback: claude-haiku-4-5
+      autonomy:
+        mode: supervised
+        approvals:
+          destructiveActions: required
+          productionChanges: required
+      policies:
+        budget:
+          maxTokensPerHour: 40000
+          maxCostPerTask: 1.50

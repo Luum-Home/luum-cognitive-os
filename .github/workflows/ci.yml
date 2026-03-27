@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run unit tests
+        run: |
+          for t in tests/unit/test-*.sh; do
+            [ -f "$t" ] && bash "$t"
+          done
+
+      - name: Run integration tests
+        run: |
+          for t in tests/integration/test-*.sh; do
+            [ -f "$t" ] && bash "$t"
+          done
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ShellCheck hooks
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: '.cognitive-os/hooks'
+          severity: warning
+
+      - name: ShellCheck tests
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: 'tests'
+          severity: warning
+
+      - name: Validate YAML configs
+        run: |
+          python3 -c "
+          import yaml, sys, glob
+          errors = 0
+          for f in glob.glob('**/*.yaml', recursive=True) + glob.glob('**/*.yml', recursive=True):
+              try:
+                  with open(f) as fh:
+                      yaml.safe_load(fh)
+              except Exception as e:
+                  print(f'FAIL: {f}: {e}')
+                  errors += 1
+          sys.exit(1 if errors else 0)
+          "
+
+  docker:
+    name: Docker Stack Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Docker Compose config
+        run: docker compose -f docker-compose.cognitive-os.yml config --quiet
+
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for secrets in codebase
+        run: |
+          if [ -f hooks/secret-detector.sh ]; then
+            bash hooks/secret-detector.sh || true
+          fi
+
+      - name: Verify .gitignore covers sensitive files
+        run: |
+          MISSING=0
+          for pattern in ".env" ".env.local" "*.pem" "*.key"; do
+            if ! grep -q "$pattern" .gitignore 2>/dev/null; then
+              echo "WARNING: $pattern not in .gitignore"
+              MISSING=1
+            fi
+          done
+          exit $MISSING

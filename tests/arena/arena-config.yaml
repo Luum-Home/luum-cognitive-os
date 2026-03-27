@@ -1,0 +1,338 @@
+arena:
+  name: "Cognitive OS Competitive Arena"
+  version: "1.0"
+  description: "Benchmark suite comparing Cognitive OS against 10+ AI coding competitors"
+  workspace: "${CLAUDE_PROJECT_DIR:-.}"
+  results_dir: ".cognitive-os/metrics/arena"
+
+  competitors:
+    - id: cognitive-os
+      name: "Cognitive OS"
+      type: native
+      setup: "Already configured via .cognitive-os/"
+      installed: true
+      notes: "Our system. Skills, squads, hooks, rules, metrics."
+
+    - id: bmad
+      name: "BMAD METHOD v6"
+      type: clone
+      path: "bmad-method"
+      setup: "npx bmad-method --claude-code"
+      installed: true
+      notes: "Business/Marketing/Architecture/Development methodology"
+
+    - id: aider
+      name: "Aider"
+      type: cli
+      command: "aider"
+      install: "brew install aider"
+      requires: ["ANTHROPIC_API_KEY"]
+      installed: false
+      notes: "AI pair programming in terminal. Git-aware."
+
+    - id: codex
+      name: "Codex CLI (OpenAI)"
+      type: cli
+      command: "codex"
+      install: "npm i -g @openai/codex"
+      requires: ["OPENAI_API_KEY"]
+      installed: true
+      notes: "OpenAI's CLI agent. Requires OpenAI API key."
+
+    - id: goose
+      name: "Goose (Block)"
+      type: cli
+      command: "goose"
+      install: "brew install block/goose/goose"
+      requires: ["ANTHROPIC_API_KEY"]
+      installed: false
+      notes: "Block's autonomous coding agent."
+
+    - id: opencode
+      name: "OpenCode (Anthropic)"
+      type: cli
+      command: "opencode"
+      install: "npm i -g @anthropic-ai/opencode"
+      requires: ["ANTHROPIC_API_KEY"]
+      installed: false
+      notes: "Anthropic's open-source Claude Code alternative."
+
+    - id: openhands
+      name: "OpenHands (ex-OpenDevin)"
+      type: docker
+      image: "ghcr.io/all-hands-ai/openhands:latest"
+      install: "docker pull ghcr.io/all-hands-ai/openhands:latest"
+      requires: ["ANTHROPIC_API_KEY", "docker"]
+      installed: false
+      notes: "Full autonomous agent with sandbox. Docker required."
+
+    - id: metagpt
+      name: "MetaGPT"
+      type: python
+      command: "metagpt"
+      install: "pip install metagpt"
+      requires: ["OPENAI_API_KEY"]
+      installed: false
+      notes: "Multi-agent framework simulating software company roles."
+
+    - id: kiro
+      name: "Kiro (AWS)"
+      type: ide
+      install: "Download from kiro.dev"
+      requires: ["AWS account"]
+      installed: false
+      notes: "AWS AI IDE. Spec-driven development. Not CLI-automatable."
+
+    - id: cursor
+      name: "Cursor"
+      type: ide
+      install: "Download from cursor.com"
+      requires: ["Cursor subscription"]
+      installed: false
+      notes: "AI-native IDE. Not CLI-automatable. Manual benchmark only."
+
+    - id: windsurf
+      name: "Windsurf (Codeium)"
+      type: ide
+      install: "Download from windsurf.com"
+      requires: ["Windsurf subscription"]
+      installed: false
+      notes: "Codeium's AI IDE. Not CLI-automatable. Manual benchmark only."
+
+    - id: spec-kit
+      name: "Spec Kit / OpenSpec"
+      type: cli
+      command: "openspec"
+      install: "npm i -g @anthropic-ai/openspec"
+      requires: ["ANTHROPIC_API_KEY"]
+      installed: false
+      notes: "Spec-driven development framework."
+
+    - id: claude-code
+      name: "Claude Code (vanilla)"
+      type: cli
+      command: "claude"
+      requires: ["ANTHROPIC_API_KEY"]
+      installed: true
+      notes: "Baseline Claude Code without Cognitive OS customizations."
+
+  tasks:
+    - id: create-go-service
+      name: "Create Go Microservice"
+      category: greenfield
+      difficulty: hard
+      prompt: |
+        Create a new Go microservice called 'preferences' under <consumer-service-5>preferences/.
+        Requirements:
+        - Clean architecture: domain, application, infrastructure layers
+        - CRUD endpoints: GET/POST/PUT/DELETE /api/preferences/:userId
+        - PostgreSQL with GORM for persistence
+        - Entity: UserPreference (id UUID, userId string, key string, value string, createdAt, updatedAt)
+        - Use ginext ServiceBuilder pattern (see pkg/tools/ginext)
+        - Unit tests for the use case layer
+        - Dockerfile with multi-stage build
+      timeout: 300
+      metrics: [files_created, tests_created, compiles, architecture_score, time_seconds, tokens_used]
+      evaluation:
+        compiles: "cd <consumer-service-5>preferences && go build ./..."
+        tests_pass: "cd <consumer-service-5>preferences && go test ./..."
+        architecture: "Check domain/, application/, infrastructure/ separation"
+
+    - id: fix-known-bug
+      name: "Fix Known Bug"
+      category: bugfix
+      difficulty: easy
+      prompt: |
+        The function CreateTransfer in the transfers-p2p service panics when amount is zero.
+        Find the bug, fix it with proper validation (return error for amount <= 0),
+        and add a unit test covering zero, negative, and valid amounts.
+      timeout: 120
+      metrics: [bug_fixed, test_added, time_seconds, tokens_used]
+      evaluation:
+        bug_fixed: "grep -r 'amount.*<=.*0\\|amount.*==.*0' on the fixed file"
+        test_exists: "find . -name '*_test.go' -newer .arena-start"
+
+    - id: add-endpoint
+      name: "Add REST Endpoint"
+      category: feature
+      difficulty: medium
+      prompt: |
+        Add GET /api/users/:id/preferences to the <consumer-service-4> service.
+        - Follow existing controller patterns (ginext handlers)
+        - Create a use case that queries the preferences table
+        - Return JSON: { preferences: [{key, value}] }
+        - Add a unit test for the use case
+      timeout: 180
+      metrics: [endpoint_works, follows_patterns, test_added, time_seconds, tokens_used]
+      evaluation:
+        pattern_match: "Uses ginext CreateHandler, implements ControllerInterface"
+        test_exists: "New *_test.go file created"
+
+    - id: refactor
+      name: "Refactor to Clean Architecture"
+      category: refactor
+      difficulty: hard
+      prompt: |
+        The admin service has business logic in controllers.
+        Refactor to move all business logic into use case files.
+        Controllers should only call use cases, parse requests, and return responses.
+        Preserve all existing behavior. Run tests after to verify nothing broke.
+      timeout: 300
+      metrics: [logic_moved, tests_pass, architecture_score, time_seconds, tokens_used]
+      evaluation:
+        no_logic_in_controllers: "Controllers only call use cases"
+        tests_pass: "go test ./..."
+
+    - id: cross-service
+      name: "Cross-Service Feature"
+      category: integration
+      difficulty: hard
+      prompt: |
+        When a user updates their email in <consumer-service-4>:
+        1. Publish a Kafka event 'user.email.updated' with userId, oldEmail, newEmail
+        2. Create a consumer in <consumer-codename-c> that updates the email in Keycloak
+        3. Use existing Kafka producer/consumer patterns from pkg/tools/kafka
+        4. Add idempotency via event ID
+      timeout: 300
+      metrics: [services_touched, event_published, consumer_created, compiles, time_seconds, tokens_used]
+      evaluation:
+        producer: "Kafka producer created with proper topic"
+        consumer: "Kafka consumer with idempotency check"
+
+    - id: debug-issue
+      name: "Debug Production Issue"
+      category: debugging
+      difficulty: medium
+      prompt: |
+        Docker logs show 'connection refused' errors from <consumer-service-2> service trying to reach
+        <consumer-codename-b> on port 8080. The service works fine when started manually.
+        Diagnose the issue, explain the root cause, and fix it.
+        Hint: check Docker networking, environment variables, and service discovery.
+      timeout: 180
+      metrics: [root_cause_found, fix_applied, explanation_quality, time_seconds, tokens_used]
+      evaluation:
+        root_cause: "Identifies localhost vs container networking issue"
+        fix: "Updates env to use Docker service name or host.docker.internal"
+
+    - id: write-tests
+      name: "Write Comprehensive Tests"
+      category: testing
+      difficulty: medium
+      prompt: |
+        Write tests for the QR payment use case covering:
+        - Happy path: valid QR, sufficient balance, successful payment
+        - Validation errors: invalid QR format, missing fields
+        - Insufficient balance: proper error returned
+        - Idempotency: same transaction ID returns same result without double-processing
+        - Edge cases: zero amount, max amount, expired QR
+        Use testify assertions and table-driven tests.
+      timeout: 240
+      metrics: [tests_created, edge_cases_covered, uses_table_driven, time_seconds, tokens_used]
+      evaluation:
+        test_count: "Count test functions"
+        table_driven: "Uses []struct{} test cases"
+        edge_cases: "Covers zero, max, expired, duplicate"
+
+    - id: spec-planning
+      name: "Spec-Driven Planning"
+      category: planning
+      difficulty: medium
+      prompt: |
+        Plan a new feature: "Scheduled Transfers" that lets users set up recurring
+        P2P transfers (daily, weekly, monthly). Produce:
+        1. A proposal document with scope, architecture impact, risks
+        2. Technical spec with API contracts, data model, sequence diagrams
+        3. Task breakdown with dependencies and estimates
+        Do NOT implement. Only plan.
+      timeout: 300
+      metrics: [proposal_quality, spec_completeness, task_breakdown, time_seconds, tokens_used]
+      evaluation:
+        has_proposal: "Proposal with scope, risks, architecture"
+        has_spec: "API contract, data model defined"
+        has_tasks: "Ordered task list with dependencies"
+
+    - id: codebase-qa
+      name: "Codebase Understanding"
+      category: analysis
+      difficulty: easy
+      prompt: |
+        Answer these questions about the codebase:
+        1. How many Go services exist and what are their names?
+        2. What database does each service use?
+        3. How do services communicate with each other?
+        4. What testing frameworks are used?
+        5. Where are Kafka topics defined?
+        Be specific with file paths and code references.
+      timeout: 120
+      metrics: [accuracy, specificity, file_references, time_seconds, tokens_used]
+      evaluation:
+        correct_answers: "Verify against known architecture"
+
+    - id: documentation
+      name: "Generate API Documentation"
+      category: docs
+      difficulty: easy
+      prompt: |
+        Generate OpenAPI/Swagger documentation for the <consumer-service-2> service's
+        transfer endpoints. Include request/response schemas, error codes,
+        and example payloads. Output as a valid openapi.yaml file.
+      timeout: 180
+      metrics: [valid_openapi, endpoint_coverage, example_quality, time_seconds, tokens_used]
+      evaluation:
+        valid_yaml: "openapi.yaml parses without errors"
+        endpoints_covered: "All transfer endpoints documented"
+
+  scoring:
+    weights:
+      quality: 0.35
+      completeness: 0.25
+      speed: 0.20
+      cost: 0.20
+
+    quality_rubric:
+      10: "Perfect: follows all patterns, clean code, proper error handling"
+      8: "Good: minor deviations, works correctly"
+      6: "Acceptable: works but some pattern violations"
+      4: "Poor: works but significant issues"
+      2: "Broken: doesn't compile or has major bugs"
+      0: "Failed: no meaningful output"
+
+    completeness_rubric:
+      10: "All requirements met, tests included, docs added"
+      8: "Core requirements met, tests present"
+      6: "Most requirements met, some gaps"
+      4: "Partial implementation"
+      2: "Minimal output"
+      0: "Nothing produced"
+
+  categories:
+    - id: greenfield
+      name: "Greenfield Creation"
+      description: "Creating new services/features from scratch"
+    - id: bugfix
+      name: "Bug Fixing"
+      description: "Finding and fixing bugs"
+    - id: feature
+      name: "Feature Addition"
+      description: "Adding features to existing code"
+    - id: refactor
+      name: "Refactoring"
+      description: "Improving code structure without changing behavior"
+    - id: integration
+      name: "Cross-Service Integration"
+      description: "Features spanning multiple services"
+    - id: debugging
+      name: "Debugging"
+      description: "Diagnosing and fixing production issues"
+    - id: testing
+      name: "Test Writing"
+      description: "Writing comprehensive test suites"
+    - id: planning
+      name: "Planning & Specs"
+      description: "Technical planning without implementation"
+    - id: analysis
+      name: "Code Analysis"
+      description: "Understanding and explaining codebases"
+    - id: docs
+      name: "Documentation"
+      description: "Generating technical documentation"

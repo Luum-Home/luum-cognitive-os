@@ -1,0 +1,1 @@
+../../rules/adversarial-review.md

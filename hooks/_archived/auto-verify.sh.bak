@@ -1,0 +1,262 @@
+#!/usr/bin/env bash
+# PostToolUse hook: Auto-Verification Loop
+# Fires on "Agent" tool use — extracts acceptance criteria from prompt,
+# runs verification commands on completion, reports pass/fail.
+# Must run BEFORE dod-gate.sh in the hook chain.
+# Must complete in <10 seconds (verification commands may take time)
+#
+# PURPOSE: Prevents agents from claiming "done" without proving it.
+# When an agent reports completion, this hook:
+# 1. Checks if the original prompt included ACCEPTANCE CRITERIA
+# 2. Extracts verification commands from the criteria
+# 3. Runs each command and checks expected results
+# 4. Reports PASS or FAIL with details
+
+set -uo pipefail
+
+_HOOK_NAME="auto-verify"
+source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/common.sh"
+
+# Read stdin and gate on Agent tool
+read_stdin_json
+INPUT="$_STDIN_JSON"
+require_tool "Agent"
+
+PROJECT_DIR="$_PROJECT_DIR"
+METRICS_DIR="$(resolve_session_dir)"
+VERIFY_LOG="$METRICS_DIR/auto-verify.jsonl"
+
+MAX_VERIFY_TIME=8  # seconds per verification command
+
+# Exit early if no input or no jq
+if [ -z "$INPUT" ]; then
+  exit 0
+fi
+if ! command -v jq &>/dev/null; then
+  exit 0
+fi
+
+# Get response text
+RESPONSE=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
+if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
+  # Try nested response formats
+  RESPONSE=$(echo "$INPUT" | jq -r '.tool_response.result // .tool_response.output // .tool_response.content // empty' 2>/dev/null)
+fi
+if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
+  exit 0
+fi
+
+# Check if this looks like a completion report
+COMPLETION_SIGNALS="done|complete|finished|implemented|fixed|resolved|delivered|all tasks|PASS|listo"
+if ! echo "$RESPONSE" | grep -qiE "$COMPLETION_SIGNALS"; then
+  exit 0
+fi
+
+# Extract the original prompt/description that was sent to the agent
+AGENT_PROMPT=$(echo "$INPUT" | jq -r '
+  .tool_input.prompt // .tool_input.description // ""
+' 2>/dev/null)
+
+if [ -z "$AGENT_PROMPT" ] || [ "$AGENT_PROMPT" = "null" ]; then
+  exit 0
+fi
+
+# --- Check for ACCEPTANCE CRITERIA in the prompt ---
+
+# Look for the ACCEPTANCE CRITERIA block
+if ! echo "$AGENT_PROMPT" | grep -qiE "ACCEPTANCE CRITERIA|acceptance criteria"; then
+  # No acceptance criteria defined
+  TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+  mkdir -p "$METRICS_DIR" 2>/dev/null
+
+  # Log the missing criteria
+  AGENT_DESC=$(echo "$AGENT_PROMPT" | head -c 100)
+  ENTRY="{\"timestamp\":\"$TIMESTAMP\",\"status\":\"NO_CRITERIA\",\"agent\":$(echo "$AGENT_DESC" | jq -Rs .),\"checks\":0,\"passed\":0,\"failed\":0}"
+  safe_jsonl_append "$VERIFY_LOG" "$ENTRY"
+
+  echo ""
+  echo "=== AUTO-VERIFY: WARNING ==="
+  echo ""
+  echo "No ACCEPTANCE CRITERIA defined in the agent prompt."
+  echo "Cannot auto-verify task completion."
+  echo ""
+  echo "The orchestrator SHOULD include measurable acceptance criteria in every agent prompt."
+  echo "See: rules/acceptance-criteria.md"
+  echo ""
+  echo "Recommendation: Run /exhaustive-prompt before launching agents."
+  echo ""
+  echo "=== END AUTO-VERIFY ==="
+  echo ""
+  exit 0
+fi
+
+# --- Extract verification commands ---
+# Parse lines after "ACCEPTANCE CRITERIA:" that contain command patterns
+# We look for patterns like:
+#   1. description: command = expected
+#   2. command exits 0
+#   N. grep ... | wc -l = 0
+
+CRITERIA_BLOCK=$(echo "$AGENT_PROMPT" | sed -n '/[Aa][Cc][Cc][Ee][Pp][Tt][Aa][Nn][Cc][Ee] [Cc][Rr][Ii][Tt][Ee][Rr][Ii][Aa]/,/^$/p' | tail -n +2)
+
+if [ -z "$CRITERIA_BLOCK" ]; then
+  # Try alternate extraction — grab numbered lines after the header
+  CRITERIA_BLOCK=$(echo "$AGENT_PROMPT" | awk '/[Aa][Cc][Cc][Ee][Pp][Tt][Aa][Nn][Cc][Ee] [Cc][Rr][Ii][Tt][Ee][Rr][Ii][Aa]/,/^[A-Z]/' | grep -E '^\s*[0-9]+\.' | head -20)
+fi
+
+if [ -z "$CRITERIA_BLOCK" ]; then
+  echo ""
+  echo "=== AUTO-VERIFY: WARNING ==="
+  echo ""
+  echo "ACCEPTANCE CRITERIA header found but no parseable verification commands detected."
+  echo "Ensure criteria follow the format: N. description: command = expected_result"
+  echo ""
+  echo "=== END AUTO-VERIFY ==="
+  echo ""
+  exit 0
+fi
+
+# --- Run verification commands ---
+mkdir -p "$METRICS_DIR" 2>/dev/null
+
+TOTAL_CHECKS=0
+PASSED_CHECKS=0
+FAILED_CHECKS=0
+FAILED_DETAILS=""
+PASS_DETAILS=""
+
+# Extract commands that look executable
+# Patterns we recognize:
+#   grep ... | wc -l = N
+#   command exits 0
+#   command >= N
+#   find ... | wc -l >= N
+while IFS= read -r line; do
+  # Skip empty lines
+  [ -z "$line" ] && continue
+
+  # Extract the criterion description (text before the colon or command)
+  CRITERION_DESC=$(echo "$line" | sed 's/^\s*[0-9]*\.\s*//' | head -c 80)
+  TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
+
+  # Try to extract: command = expected or command exits N or command >= N
+  # Pattern 1: command = value (e.g., grep ... | wc -l = 0)
+  if echo "$line" | grep -qE '`[^`]+`\s*=\s*[0-9]+'; then
+    CMD=$(echo "$line" | grep -oE '`[^`]+`\s*=\s*[0-9]+' | head -1)
+    VERIFY_CMD=$(echo "$CMD" | sed 's/`//g' | sed 's/\s*=\s*[0-9]*$//')
+    EXPECTED=$(echo "$CMD" | grep -oE '[0-9]+$')
+
+    if [ -n "$VERIFY_CMD" ] && [ -n "$EXPECTED" ]; then
+      ACTUAL=$(cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" 2>/dev/null | tr -d '[:space:]')
+      if [ "$ACTUAL" = "$EXPECTED" ]; then
+        PASSED_CHECKS=$((PASSED_CHECKS + 1))
+        PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC (actual=$ACTUAL, expected=$EXPECTED)"
+      else
+        FAILED_CHECKS=$((FAILED_CHECKS + 1))
+        FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (actual=${ACTUAL:-<error>}, expected=$EXPECTED)"
+      fi
+      continue
+    fi
+  fi
+
+  # Pattern 2: command >= value
+  if echo "$line" | grep -qE '`[^`]+`\s*>=\s*[0-9]+'; then
+    CMD=$(echo "$line" | grep -oE '`[^`]+`\s*>=\s*[0-9]+' | head -1)
+    VERIFY_CMD=$(echo "$CMD" | sed 's/`//g' | sed 's/\s*>=\s*[0-9]*$//')
+    THRESHOLD=$(echo "$CMD" | grep -oE '[0-9]+$')
+
+    if [ -n "$VERIFY_CMD" ] && [ -n "$THRESHOLD" ]; then
+      ACTUAL=$(cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" 2>/dev/null | tr -d '[:space:]' | grep -oE '[0-9]+' | head -1)
+      if [ -n "$ACTUAL" ] && [ "$ACTUAL" -ge "$THRESHOLD" ] 2>/dev/null; then
+        PASSED_CHECKS=$((PASSED_CHECKS + 1))
+        PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC (actual=$ACTUAL, threshold=$THRESHOLD)"
+      else
+        FAILED_CHECKS=$((FAILED_CHECKS + 1))
+        FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (actual=${ACTUAL:-<error>}, threshold=$THRESHOLD)"
+      fi
+      continue
+    fi
+  fi
+
+  # Pattern 3: command exits 0
+  if echo "$line" | grep -qiE '`[^`]+`\s*exits?\s*0'; then
+    VERIFY_CMD=$(echo "$line" | grep -oE '`[^`]+`' | head -1 | tr -d '`')
+
+    if [ -n "$VERIFY_CMD" ]; then
+      if cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" &>/dev/null; then
+        PASSED_CHECKS=$((PASSED_CHECKS + 1))
+        PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC (exit code 0)"
+      else
+        EXIT_CODE=$?
+        FAILED_CHECKS=$((FAILED_CHECKS + 1))
+        FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (exit code $EXIT_CODE, expected 0)"
+      fi
+      continue
+    fi
+  fi
+
+  # Pattern 4: Non-parseable criterion — skip with note
+  # Don't count non-parseable criteria as failures
+  TOTAL_CHECKS=$((TOTAL_CHECKS - 1))
+
+done <<< "$CRITERIA_BLOCK"
+
+# --- Report Results ---
+
+TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+AGENT_DESC=$(echo "$AGENT_PROMPT" | head -c 100)
+
+if [ "$TOTAL_CHECKS" -eq 0 ]; then
+  ENTRY="{\"timestamp\":\"$TIMESTAMP\",\"status\":\"NO_PARSEABLE_CRITERIA\",\"agent\":$(echo "$AGENT_DESC" | jq -Rs .),\"checks\":0,\"passed\":0,\"failed\":0}"
+  safe_jsonl_append "$VERIFY_LOG" "$ENTRY"
+
+  echo ""
+  echo "=== AUTO-VERIFY: WARNING ==="
+  echo ""
+  echo "ACCEPTANCE CRITERIA found but no verification commands could be extracted."
+  echo "Ensure commands are wrapped in backticks with = or >= or 'exits 0' format."
+  echo ""
+  echo "=== END AUTO-VERIFY ==="
+  echo ""
+  exit 0
+fi
+
+# Log the verification result
+STATUS="PASS"
+if [ "$FAILED_CHECKS" -gt 0 ]; then
+  STATUS="FAIL"
+fi
+
+ENTRY="{\"timestamp\":\"$TIMESTAMP\",\"status\":\"$STATUS\",\"agent\":$(echo "$AGENT_DESC" | jq -Rs .),\"checks\":$TOTAL_CHECKS,\"passed\":$PASSED_CHECKS,\"failed\":$FAILED_CHECKS}"
+safe_jsonl_append "$VERIFY_LOG" "$ENTRY"
+
+if [ "$FAILED_CHECKS" -gt 0 ]; then
+  echo ""
+  echo "=== AUTO-VERIFY: VERIFICATION FAILED ==="
+  echo ""
+  echo "Task is NOT complete. $FAILED_CHECKS of $TOTAL_CHECKS acceptance criteria FAILED."
+  echo ""
+  echo "Results:"
+  echo -e "$PASS_DETAILS"
+  echo -e "$FAILED_DETAILS"
+  echo ""
+  echo "The orchestrator SHOULD re-launch the agent with this failure context."
+  echo "The agent must fix the failing criteria before completion is accepted."
+  echo ""
+  echo "=== END AUTO-VERIFY ==="
+  echo ""
+elif [ "$PASSED_CHECKS" -gt 0 ]; then
+  echo ""
+  echo "=== AUTO-VERIFY: VERIFICATION PASSED ==="
+  echo ""
+  echo "Task confirmed complete. $PASSED_CHECKS/$TOTAL_CHECKS acceptance criteria PASSED."
+  echo ""
+  echo "Results:"
+  echo -e "$PASS_DETAILS"
+  echo ""
+  echo "=== END AUTO-VERIFY ==="
+  echo ""
+fi
+
+exit 0

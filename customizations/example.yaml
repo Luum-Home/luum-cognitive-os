@@ -1,0 +1,62 @@
+# Agent Customization Example
+# Copy this file as {agent-name}.yaml to override defaults for a specific agent.
+# See .cognitive-os/rules/agent-customization.md for full documentation.
+#
+# Example: Override the SRE agent to use opus for better reasoning,
+# restrict its tools, and add custom instructions.
+
+# Override model (default comes from model-routing rules)
+model: opus
+
+# Override temperature (lower = more deterministic)
+temperature: 0.2
+
+# Maximum output tokens for this agent
+max_tokens: 8000
+
+# Tools this agent is allowed to use (replaces base list)
+# tools_allowed:
+#   - Bash
+#   - Read
+#   - Grep
+#   - Glob
+
+# Tools explicitly blocked for this agent (additive — always appended)
+tools_blocked:
+  - Write    # SRE should not write files, only diagnose
+
+# Skills to pre-load when this agent starts
+skills_loaded:
+  - sre-agent
+  - systematic-debugging
+
+# Per-invocation budget cap (USD)
+budget_limit_usd: 1.50
+
+# Additional HALT triggers beyond the defaults
+halt_triggers:
+  - "container restart"
+  - "database connection change"
+
+# Override closed-loop retry limit
+max_retries: 2
+
+# Engram prefixes to pre-load for context
+context_priority:
+  - sre/
+  - architecture/
+
+# Phase-specific behavior overrides
+phase_behavior:
+  reconstruction:
+    auto_repair: true      # Auto-repair safe actions in reconstruction
+  production:
+    auto_repair: false     # Require approval in production
+    halt_triggers:
+      - "any service restart"
+
+# Additional instructions appended to agent prompt
+custom_instructions: |
+  Focus on root cause analysis before suggesting fixes.
+  Always check container logs before assuming a code problem.
+  Prefer restart over rebuild when safe.
