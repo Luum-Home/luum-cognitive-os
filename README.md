@@ -64,16 +64,17 @@ The difference: a traditional OS manages hardware. Cognitive OS manages **cognit
 ## Quick Start (Any Project)
 
 ```bash
-# Option A: One-command install
-git clone --depth 1 https://github.com/luum-home/luum-cognitive-os.git /tmp/cognitive-os \
-  && bash /tmp/cognitive-os/install.sh \
-  && rm -rf /tmp/cognitive-os
+# Option A: Remote install (from GitHub)
+curl -sL https://raw.githubusercontent.com/luum-home/luum-cognitive-os/main/install.sh | bash
 
-# Option B: Manual install
-git clone --depth 1 https://github.com/luum-home/luum-cognitive-os.git /tmp/cognitive-os
-cp -r /tmp/cognitive-os/.cognitive-os/ .cognitive-os/
-cp /tmp/cognitive-os/cognitive-os.yaml cognitive-os.yaml
-rm -rf /tmp/cognitive-os
+# Option B: Local install (from a cloned repo)
+cd /path/to/your/project
+/path/to/luum-agent-os/install.sh              # auto-detects local repo
+# or
+./install.sh --from /path/to/luum-agent-os     # explicit source path
+
+# Option C: Force overwrite an existing installation
+./install.sh --force
 
 # Initialize — detects your stack and generates project-specific config
 claude
@@ -82,6 +83,8 @@ claude
 # (Optional) Start infrastructure for observability
 docker compose -f .cognitive-os/docker-compose.cognitive-os.yml up -d
 ```
+
+The installer auto-detects whether it is run from within the Cognitive OS repo (local mode) or via `curl | bash` (remote mode). Use `--from PATH` to point to a specific local copy. Run `./install.sh --help` for full usage.
 
 > **npx** (coming soon): `npx cognitive-os init`
 

@@ -7,15 +7,106 @@ VERSION="${COGNITIVE_OS_VERSION:-main}"
 TARGET_DIR=".cognitive-os"
 FORCE="${COGNITIVE_OS_FORCE:-false}"
 TEMP_DIR=$(mktemp -d)
+SOURCE_DIR=""
+FROM_FLAG=""
 
 cleanup() { rm -rf "$TEMP_DIR"; }
 trap cleanup EXIT
 
+# ── Argument parsing ──────────────────────────────────────────────────
+show_help() {
+  cat <<'USAGE'
+Usage: install.sh [OPTIONS]
+
+Install Cognitive OS into the current project.
+
+Options:
+  --from PATH    Use a local Cognitive OS repo instead of cloning from GitHub
+  --force        Overwrite existing installation without prompting
+  --help         Show this help message
+
+Environment variables:
+  COGNITIVE_OS_VERSION   Git branch/tag to install (default: main)
+  COGNITIVE_OS_FORCE     Set to "true" to overwrite without prompting
+
+Source detection:
+  If run from within the Cognitive OS repo (hooks/, rules/, skills/ exist
+  relative to the script), the local repo is used automatically.
+  Use --from to specify a different local repo path explicitly.
+
+Examples:
+  # Install from GitHub (remote)
+  curl -sL https://raw.githubusercontent.com/.../install.sh | bash
+
+  # Install from the repo you're currently in
+  ./install.sh
+
+  # Install from a specific local path
+  ./install.sh --from /path/to/luum-agent-os
+
+  # Force overwrite existing installation
+  ./install.sh --force
+USAGE
+  exit 0
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --from)
+      if [[ -z "${2:-}" ]]; then
+        echo "Error: --from requires a path argument."
+        exit 1
+      fi
+      FROM_FLAG="$2"
+      shift 2
+      ;;
+    --force)
+      FORCE="true"
+      shift
+      ;;
+    --help|-h)
+      show_help
+      ;;
+    *)
+      echo "Unknown option: $1"
+      echo "Run 'install.sh --help' for usage."
+      exit 1
+      ;;
+  esac
+done
+
+# ── Source detection ──────────────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [ -n "$FROM_FLAG" ]; then
+  # Explicit --from flag
+  if [ ! -d "$FROM_FLAG" ]; then
+    echo "Error: --from path does not exist: $FROM_FLAG"
+    exit 1
+  fi
+  FROM_FLAG="$(cd "$FROM_FLAG" && pwd)"
+  if [ -d "$FROM_FLAG/hooks" ] && [ -d "$FROM_FLAG/rules" ] && [ -d "$FROM_FLAG/skills" ]; then
+    SOURCE_DIR="$FROM_FLAG"
+  else
+    echo "Error: --from path does not look like a Cognitive OS repo."
+    echo "       Expected hooks/, rules/, skills/ directories in: $FROM_FLAG"
+    exit 1
+  fi
+elif [ -d "$SCRIPT_DIR/hooks" ] && [ -d "$SCRIPT_DIR/rules" ] && [ -d "$SCRIPT_DIR/skills" ]; then
+  # Running from within the repo itself
+  SOURCE_DIR="$SCRIPT_DIR"
+fi
+
 echo "=== Cognitive OS Installer ==="
 echo ""
 
-# Check prerequisites
-if ! command -v git >/dev/null 2>&1; then
+if [ -n "$SOURCE_DIR" ]; then
+  echo "Using local Cognitive OS from: $SOURCE_DIR"
+  echo ""
+fi
+
+# Check prerequisites (git only needed for remote install)
+if [ -z "$SOURCE_DIR" ] && ! command -v git >/dev/null 2>&1; then
   echo "Error: git is required but not installed."
   exit 1
 fi
@@ -84,13 +175,26 @@ if [ -d "$TARGET_DIR" ]; then
   fi
 fi
 
-# Clone and extract
-echo "Downloading Cognitive OS ($VERSION)..."
-git clone --depth 1 --branch "$VERSION" "$REPO_URL" "$TEMP_DIR" 2>/dev/null || \
-  git clone --depth 1 "$REPO_URL" "$TEMP_DIR"
+# ── Prepare source (local copy or remote clone) ──────────────────────
+prepare_source() {
+  if [ -n "$SOURCE_DIR" ]; then
+    # Local: copy repo contents to temp dir
+    echo "Copying from local source..."
+    # Remove the empty temp dir and copy source into its place
+    rm -rf "$TEMP_DIR"
+    cp -r "$SOURCE_DIR" "$TEMP_DIR"
+  else
+    # Remote: git clone
+    echo "Downloading Cognitive OS ($VERSION)..."
+    git clone --depth 1 --branch "$VERSION" "$REPO_URL" "$TEMP_DIR" 2>/dev/null || \
+      git clone --depth 1 "$REPO_URL" "$TEMP_DIR"
+  fi
+}
+
+prepare_source
 
 if [ ! -d "$TEMP_DIR/.cognitive-os" ]; then
-  echo "Error: .cognitive-os/ not found in repository."
+  echo "Error: .cognitive-os/ not found in source."
   exit 1
 fi
 
