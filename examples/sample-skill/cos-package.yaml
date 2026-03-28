@@ -1,0 +1,20 @@
+name: "@luum/sample-skill"
+version: "1.0.0"
+description: "A sample cos package for testing cos install/remove/list"
+authors: ["Cognitive OS Team"]
+license: "MIT"
+keywords: ["sample", "testing"]
+
+provides:
+  - skill
+  - rule
+
+exports:
+  - source: "skills/sample/SKILL.md"
+    type: skill
+    description: "Sample skill for testing"
+    triggers: ["sample", "test"]
+  - source: "rules/sample-rule.md"
+    type: rule
+    description: "Sample rule for testing"
+    always_active: false
