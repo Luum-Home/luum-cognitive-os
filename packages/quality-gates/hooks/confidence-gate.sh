@@ -14,7 +14,7 @@ source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 4
-check_capability_level "confidence-gate" && exit 0
+check_capability_level "confidence-gate"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 METRICS_DIR="$(_resolve_metrics_dir)"
