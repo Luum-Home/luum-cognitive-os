@@ -10,7 +10,7 @@ Classify task complexity BEFORE choosing workflow [`adaptive-bypass`]. Read `cog
 
 ### 2. Quality Gates
 
-Every agent prompt MUST include numbered `ACCEPTANCE CRITERIA:` with verifiable commands [`acceptance-criteria`]. Agents do minimum not maximum — fix with: (1) mandatory criteria, (2) auto-verify hook, (3) `/exhaustive-prompt` for scope enumeration, (4) completeness-check hook [`agent-quality`]. Clarification gate [`clarification-gate`] scores prompt ambiguity 0-100; >60 BLOCK, 30-60 WARN. Every review MUST produce at least one finding — "looks good" is PROHIBITED [`adversarial-review`]. Pre-commit hook blocks on test failure, warns on coverage <80% [`pre-commit-gate`]. Anti-sycophancy: no flattery openers, lead with substance, disagree openly. No TODO/stubs/commented-out code in committed work.
+Every agent prompt MUST include numbered `ACCEPTANCE CRITERIA:` with verifiable commands [`acceptance-criteria`]. Agents do minimum not maximum — fix with: (1) mandatory criteria, (2) auto-verify hook, (3) `/exhaustive-prompt` for scope enumeration, (4) completeness-check hook [`agent-quality`]. Clarification gate [`clarification-gate`] scores prompt ambiguity 0-100; >60 BLOCK, 30-60 WARN. Every review MUST produce at least one finding — "looks good" is PROHIBITED [`adversarial-review`]. Pre-commit hook blocks on test failure, warns on coverage <80% [`pre-commit-gate`]. Prompt quality [`prompt-quality`] scores prompts on 5 dimensions (advisory, never blocks). Scope creep detection [`scope-creep-detection`] PostToolUse hook flags edits outside approved scope. Anti-sycophancy: no flattery openers, lead with substance, disagree openly. No TODO/stubs/commented-out code in committed work.
 
 ### 3. Verification
 
@@ -42,7 +42,7 @@ Capacity thresholds [`context-management`]: 50% be concise, 70% MUST save to Eng
 
 ### 10. Security
 
-Credentials never in code [`credential-management`], always env vars, validate at startup. Content policy [`content-policy`] enforced by PostToolUse hook on Edit|Write — BLOCK on prohibited terms. License policy [`license-policy`]: BLOCK AGPL/SSPL/BSL/ELv2/Commons Clause/FSL; ALLOW MIT/BSD/Apache/ISC; CAUTION LGPL/MPL. Auto-enforced on dependencies via `lib/license_guard.py`. Semgrep SAST [`security-scanning`] auto-scans after `sdd-apply` (OFF by default, enable with `SEMGREP_ENABLED=true`). Pentesting readiness [`pentesting-readiness`]: 7 critical test cases covering secret access, hook modification, permission escalation, prompt injection. Active self-pentest via `/pentest-self` skill: 6 categories of security validation.
+Credentials never in code [`credential-management`], always env vars, validate at startup. Content policy [`content-policy`] enforced by PostToolUse hook on Edit|Write — BLOCK on prohibited terms. License policy [`license-policy`]: BLOCK AGPL/SSPL/BSL/ELv2/Commons Clause/FSL; ALLOW MIT/BSD/Apache/ISC; CAUTION LGPL/MPL. Auto-enforced on dependencies via `lib/license_guard.py`. Semgrep SAST [`security-scanning`] auto-scans after `sdd-apply` (OFF by default, enable with `SEMGREP_ENABLED=true`). Pentesting readiness [`pentesting-readiness`]: 7 critical test cases covering secret access, hook modification, permission escalation, prompt injection. Active self-pentest via `/pentest-self` skill: 6 categories of security validation. Supply chain defense [`supply-chain-defense`]: Docker digest pinning, git commit pinning, per-file integrity validation.
 
 ### 11. Skill Lifecycle
 
@@ -64,7 +64,7 @@ SessionStart hook [`infra-health`] checks Docker services vs `cognitive-os.yaml`
 
 ### 15. Change Safety
 
-Before any `.cognitive-os/` cleanup: `/capability-snapshot save`, after: `/capability-snapshot diff` [`capability-protection`]. OS modifications MUST follow plan-first [`cognitive-os-changes`]: create plan in `plans/`, run `/cognitive-os-test`. luum-agent-os MUST use its own tools [`dogfooding`]: substantial changes require full SDD pipeline; self-installed via `self-install.sh`. Cognitive OS is universal [`os-vs-project`]: project-specific content belongs in `{project}/.claude/`, never in `.cognitive-os/`.
+Before any `.cognitive-os/` cleanup: `/capability-snapshot save`, after: `/capability-snapshot diff` [`capability-protection`]. OS modifications MUST follow plan-first [`cognitive-os-changes`]: create plan in `plans/`, run `/cognitive-os-test`. luum-agent-os MUST use its own tools [`dogfooding`]: substantial changes require full SDD pipeline; self-installed via `self-install.sh`. Cognitive OS is universal [`os-vs-project`]: project-specific content belongs in `{project}/.claude/`, never in `.cognitive-os/`. Component classification [`component-classification`]: CORE vs PACKAGE classification protocol with independent versioning rules for packages.
 
 ### 16. Library Selection
 
@@ -77,6 +77,10 @@ Before any `.cognitive-os/` cleanup: `/capability-snapshot save`, after: `/capab
 ### 18. Private Mode
 
 [`private-mode`] (trigger: `/private`) — Disable all persistence (Engram, metrics, errors). Safety rules remain active. Flag at `/tmp/claude-private-mode-active`.
+
+### 19. Ecosystem Tools
+
+External tool integrations [`ecosystem-tools`] [`parry-integration`] [`hcom-integration`] [`repomix-integration`] [`trailofbits-skills`] [`context7-auto-trigger`] — optional external tool configs, loaded when tools are installed. See `rules/ecosystem-tools.md` for overview.
 
 ## Project-Specific
 

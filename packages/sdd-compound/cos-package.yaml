@@ -1,0 +1,15 @@
+name: "@luum/sdd-compound"
+version: "1.0.0"
+description: "SDD compound skill — multi-phase SDD pipeline execution in a single command"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["sdd", "compound", "pipeline", "spec-driven-development"]
+cos_version: ">=0.1.0"
+
+provides:
+  - skill
+
+exports:
+  - source: "skills/sdd-compound/SKILL.md"
+    type: skill
+    description: "Execute multiple SDD phases in sequence (compound pipeline)"

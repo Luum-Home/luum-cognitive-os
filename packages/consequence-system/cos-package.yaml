@@ -1,0 +1,27 @@
+name: "@luum/consequence-system"
+version: "1.0.0"
+description: "OKR-driven feedback loop — consequence evaluation, trust score validation, and auto-skill generation"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["consequence", "trust-score", "okr", "feedback", "auto-skill"]
+cos_version: ">=0.1.0"
+
+provides:
+  - hook
+
+exports:
+  - source: "hooks/consequence-evaluator.sh"
+    type: hook
+    description: "Evaluate agent trust score streaks for promote/degrade/disable"
+    hook_event: PostToolUse
+    hook_matcher: "Agent"
+  - source: "hooks/trust-score-validator.sh"
+    type: hook
+    description: "Validate Trust Report presence and extract scores"
+    hook_event: PostToolUse
+    hook_matcher: "Agent"
+  - source: "hooks/auto-skill-generator.sh"
+    type: hook
+    description: "Auto-generate reusable skills from complex agent completions"
+    hook_event: PostToolUse
+    hook_matcher: "Agent"
