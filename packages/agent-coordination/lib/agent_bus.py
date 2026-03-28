@@ -81,8 +81,26 @@ def _now_epoch() -> float:
     return time.time()
 
 
+def _ensure_valkey_via_smart_infra() -> bool:
+    """Attempt to start the Valkey service via smart_infra.
+
+    Returns True if the service was ensured successfully, False otherwise.
+    This is a best-effort operation that never raises.
+    """
+    try:
+        from lib.smart_infra import ensure_service
+
+        return ensure_service("valkey")
+    except Exception as exc:
+        logger.debug("smart_infra.ensure_service('valkey') failed: %s", exc)
+        return False
+
+
 def is_valkey_available(valkey_url: str = "redis://localhost:6379") -> bool:
     """Check if Valkey/Redis is reachable.
+
+    If not reachable on first try, attempts to start Valkey via
+    smart_infra on-demand infrastructure and retries once.
 
     Args:
         valkey_url: Redis-compatible connection URL.
@@ -94,9 +112,22 @@ def is_valkey_available(valkey_url: str = "redis://localhost:6379") -> bool:
         import redis
 
         client = redis.Redis.from_url(valkey_url, socket_connect_timeout=2)
-        return client.ping()
+        if client.ping():
+            return True
     except Exception:
-        return False
+        pass
+
+    # Valkey not reachable -- try starting it via smart_infra
+    if _ensure_valkey_via_smart_infra():
+        try:
+            import redis
+
+            client = redis.Redis.from_url(valkey_url, socket_connect_timeout=2)
+            return client.ping()
+        except Exception:
+            pass
+
+    return False
 
 
 class _FileFallback:
@@ -182,7 +213,11 @@ class AgentPublisher:
         self._connect()
 
     def _connect(self) -> None:
-        """Attempt to connect to Valkey. Falls back to file if unavailable."""
+        """Attempt to connect to Valkey. Falls back to file if unavailable.
+
+        On first failure, tries to start Valkey via smart_infra on-demand
+        infrastructure before falling back to file-based signaling.
+        """
         try:
             import redis
 
@@ -192,14 +227,38 @@ class AgentPublisher:
             self._client.ping()
             self._use_valkey = True
             logger.debug("AgentPublisher(%s): connected to Valkey", self.agent_id)
-        except Exception as e:
-            self._use_valkey = False
-            self._client = None
-            logger.warning(
-                "AgentPublisher(%s): Valkey unavailable (%s), using file fallback",
-                self.agent_id,
-                e,
-            )
+            return
+        except Exception:
+            pass
+
+        # Try starting Valkey via smart_infra before giving up
+        if _ensure_valkey_via_smart_infra():
+            try:
+                import redis
+
+                self._client = redis.Redis.from_url(
+                    self.valkey_url, socket_connect_timeout=2, decode_responses=True
+                )
+                self._client.ping()
+                self._use_valkey = True
+                logger.debug(
+                    "AgentPublisher(%s): connected to Valkey after smart_infra start",
+                    self.agent_id,
+                )
+                return
+            except Exception as e:
+                logger.warning(
+                    "AgentPublisher(%s): Valkey still unavailable after smart_infra (%s)",
+                    self.agent_id,
+                    e,
+                )
+
+        self._use_valkey = False
+        self._client = None
+        logger.warning(
+            "AgentPublisher(%s): Valkey unavailable, using file fallback",
+            self.agent_id,
+        )
 
     def _publish(self, suffix: str, data: Dict[str, Any]) -> None:
         """Publish a message to the agent's channel."""
@@ -480,7 +539,11 @@ class OrchestratorSubscriber:
         self._connect()
 
     def _connect(self) -> None:
-        """Attempt to connect to Valkey."""
+        """Attempt to connect to Valkey.
+
+        On first failure, tries to start Valkey via smart_infra on-demand
+        infrastructure before falling back to file-based signaling.
+        """
         try:
             import redis
 
@@ -491,13 +554,37 @@ class OrchestratorSubscriber:
             self._pubsub = self._client.pubsub()
             self._use_valkey = True
             logger.debug("OrchestratorSubscriber: connected to Valkey")
-        except Exception as e:
-            self._use_valkey = False
-            self._client = None
-            self._pubsub = None
-            logger.warning(
-                "OrchestratorSubscriber: Valkey unavailable (%s), using file fallback", e
-            )
+            return
+        except Exception:
+            pass
+
+        # Try starting Valkey via smart_infra before giving up
+        if _ensure_valkey_via_smart_infra():
+            try:
+                import redis
+
+                self._client = redis.Redis.from_url(
+                    self.valkey_url, socket_connect_timeout=2, decode_responses=True
+                )
+                self._client.ping()
+                self._pubsub = self._client.pubsub()
+                self._use_valkey = True
+                logger.debug(
+                    "OrchestratorSubscriber: connected to Valkey after smart_infra start"
+                )
+                return
+            except Exception as e:
+                logger.warning(
+                    "OrchestratorSubscriber: Valkey still unavailable after smart_infra (%s)",
+                    e,
+                )
+
+        self._use_valkey = False
+        self._client = None
+        self._pubsub = None
+        logger.warning(
+            "OrchestratorSubscriber: Valkey unavailable, using file fallback"
+        )
 
     def _handle_message(self, data: Dict[str, Any]) -> None:
         """Route a message to registered callbacks."""

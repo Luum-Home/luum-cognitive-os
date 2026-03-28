@@ -994,3 +994,92 @@ class TestEdgeCases:
         """Verify heartbeat timing constants."""
         assert HEARTBEAT_INTERVAL_S == 5
         assert HEARTBEAT_TIMEOUT_S == 15
+
+
+# ---------------------------------------------------------------------------
+# Smart Infra Integration Tests
+# ---------------------------------------------------------------------------
+
+
+class TestSmartInfraIntegration:
+    """Tests for agent_bus smart_infra integration (on-demand Valkey)."""
+
+    def test_ensure_valkey_called_on_publisher_connect_failure(self, tmp_fallback_dir):
+        """AgentPublisher calls ensure_service('valkey') when initial connect fails."""
+        mock_redis_cls = MagicMock()
+        mock_client = MagicMock()
+        # First ping fails (not running), second ping succeeds (after smart_infra)
+        mock_client.ping.side_effect = [ConnectionError("refused"), True]
+        mock_redis_cls.from_url.return_value = mock_client
+
+        with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
+             patch("lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
+            pub = AgentPublisher("test-agent", fallback_dir=tmp_fallback_dir)
+            mock_ensure.assert_called_once()
+            assert pub._use_valkey is True
+
+    def test_ensure_valkey_not_called_when_already_connected(self, tmp_fallback_dir):
+        """AgentPublisher does NOT call ensure_service when Valkey connects on first try."""
+        mock_redis_cls = MagicMock()
+        mock_client = MagicMock()
+        mock_client.ping.return_value = True
+        mock_redis_cls.from_url.return_value = mock_client
+
+        with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
+             patch("lib.agent_bus._ensure_valkey_via_smart_infra") as mock_ensure:
+            pub = AgentPublisher("test-agent", fallback_dir=tmp_fallback_dir)
+            mock_ensure.assert_not_called()
+            assert pub._use_valkey is True
+
+    def test_fallback_when_smart_infra_fails(self, tmp_fallback_dir):
+        """AgentPublisher falls back to file when both Valkey and smart_infra fail."""
+        mock_redis_cls = MagicMock()
+        mock_client = MagicMock()
+        mock_client.ping.side_effect = ConnectionError("refused")
+        mock_redis_cls.from_url.return_value = mock_client
+
+        with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
+             patch("lib.agent_bus._ensure_valkey_via_smart_infra", return_value=False):
+            pub = AgentPublisher("test-agent", fallback_dir=tmp_fallback_dir)
+            assert pub._use_valkey is False
+
+    def test_orchestrator_subscriber_calls_ensure_on_failure(self, tmp_fallback_dir):
+        """OrchestratorSubscriber calls ensure_service('valkey') when initial connect fails."""
+        mock_redis_cls = MagicMock()
+        mock_client = MagicMock()
+        mock_client.ping.side_effect = [ConnectionError("refused"), True]
+        mock_client.pubsub.return_value = MagicMock()
+        mock_redis_cls.from_url.return_value = mock_client
+
+        with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
+             patch("lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
+            sub = OrchestratorSubscriber(fallback_dir=tmp_fallback_dir)
+            mock_ensure.assert_called_once()
+            assert sub._use_valkey is True
+
+    def test_is_valkey_available_tries_smart_infra(self):
+        """is_valkey_available() tries smart_infra when Valkey is not reachable."""
+        mock_redis_mod = MagicMock()
+        mock_client = MagicMock()
+        # First ping fails, second succeeds after smart_infra
+        mock_client.ping.side_effect = [ConnectionError("refused"), True]
+        mock_redis_mod.Redis.from_url.return_value = mock_client
+
+        with patch.dict("sys.modules", {"redis": mock_redis_mod}), \
+             patch("lib.agent_bus._ensure_valkey_via_smart_infra", return_value=True) as mock_ensure:
+            result = is_valkey_available()
+            mock_ensure.assert_called_once()
+            assert result is True
+
+    def test_ensure_valkey_via_smart_infra_graceful_on_import_error(self):
+        """_ensure_valkey_via_smart_infra returns False on import error."""
+        from lib.agent_bus import _ensure_valkey_via_smart_infra
+
+        with patch("lib.agent_bus.ensure_service", side_effect=ImportError("no module")):
+            # Should not raise -- returns False
+            pass
+
+        # Test with the actual function patching smart_infra
+        with patch.dict("sys.modules", {"lib.smart_infra": None}):
+            result = _ensure_valkey_via_smart_infra()
+            assert result is False
