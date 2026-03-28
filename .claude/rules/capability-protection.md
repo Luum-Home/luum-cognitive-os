@@ -1,1 +1,0 @@
-../../rules/capability-protection.md

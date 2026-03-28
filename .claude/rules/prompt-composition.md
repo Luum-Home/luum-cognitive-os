@@ -1,1 +1,0 @@
-../../rules/prompt-composition.md
