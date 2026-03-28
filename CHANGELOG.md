@@ -22,6 +22,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - docs: 7 ecosystem integrations documented (agnix, claude-code-action, parry, Trail of Bits, recall, Usage Monitor, hcom)
 - docs: 19 WATCH repos deep-analyzed — 22 extractable patterns prioritized (P0-P3)
 - docs: AI gateway architecture — OpenClaw comparison + gateway integration pattern
+- docs: AI gateway landscape — 11 gateways compared (LiteLLM stays, Bifrost/Portkey WATCH)
 
 ## [0.1.0] - 2026-03-27
 
