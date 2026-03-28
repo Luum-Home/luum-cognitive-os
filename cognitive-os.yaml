@@ -571,6 +571,12 @@ tools:
     max_tokens: 50000
 
 security:
+  supply_chain:
+    pin_docker_digests: true         # All Docker images pinned to SHA256 digests
+    pin_cos_commits: true            # Pin Cognitive OS to specific commits
+    verify_on_pull: true             # Verify digest on docker pull
+    digest_rotation_days: 30         # Re-verify and rotate digests every 30 days
+
   parry:
     enabled: false                   # Set to true after installing parry-guard
     threshold: 0.7                   # Detection confidence threshold
