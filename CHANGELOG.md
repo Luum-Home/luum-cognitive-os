@@ -5,24 +5,48 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-28
+
 ### Security
-- security: pin all Docker images to SHA256 digests in docker-compose.cognitive-os.yml (supply chain defense)
-- security: add supply_chain config section to cognitive-os.yaml (digest rotation policy)
+- security: pin all Docker images to SHA256 digests (supply chain defense)
+- security: supply_chain config section in cognitive-os.yaml
+- fix: rate limiter blocked attempts no longer inflate counter
 
 ### Added
+- feat: Bifrost dual-gateway — LiteLLM complement with 11us latency, failover chain
+- feat: Scout Pattern + sdd-explore skills — pre-implementation reconnaissance (3 depth levels)
+- feat: WorkloadScheduler — proactive agent dispatch across rate limit windows
+- feat: Smart file reader — auto-pagination for files >10K tokens + advisory hook
+- feat: User prompt auto-capture — bilingual EN/ES classifier for engram persistence
+- feat: Rate limiter phase awareness — reconstruction 1.5x, production 0.75x
+- feat: Graceful rate limits — priority queue, batch suggestions, structured QUEUED messages
+- feat: Agent Bus on-demand — dedicated Valkey via smart_infra auto-start
+- feat: Non-blocking retry scheduler — CronCreate-based deferred agent re-launch
+- feat: cos status — show packages with unreleased changes
+- feat: cos release-all — batch release for monorepo (--patch/--minor/--dry-run)
+- feat: cos release --check — validate release readiness
+- feat: cos publish scoped tags — @luum/{name}@{version} format
+- feat: cos_version compatibility check on install
+- feat: cos CLI README — full documentation with CI/CD examples
+- feat: agent preamble — long-running commands must use run_in_background
+
+### Fixed
+- fix: self-install.sh legacy symlink cleanup (relative path matching)
+- fix: rootCmd.Version dynamic (ldflags + runtime VERSION file read)
+- fix: SearchGitHub() GITHUB_TOKEN auth support
+- fix: 47 legacy symlinks removed from .claude/rules/ root
+
+### Changed
+- 87 rules (was 83), 88 skills, 73 hooks
+- Rules consolidation safety tests (42 tests) as pre-consolidation baseline
+- EXPECTED_RULE_COUNT now dynamic (no manual updates needed)
+- 3600+ Python tests, 230+ Go tests — all passing
+
+### Documentation
 - docs: versioning strategy — dual OS core + package independent semver
-- docs: WISC framework analysis — context loading actively degrading performance, action plan
-- docs: complete component audit — 355 components classified (82 CORE, 273 PACKAGE across 23 target packages)
-- docs: package manager design — Brew model comparison with npm/cargo/go
-- docs: full integration audit — 38 external dependencies mapped for cos packaging
-- docs: plugin marketplace design -- cos install with 6-gate security audit pipeline
-- feat: dual-mode installer -- local source auto-detection + `--from` flag for `install.sh`
-- docs: tech radar update — 26 Claude Code ecosystem tools analyzed (7 ADOPT, 19 WATCH, 5 BLOCK)
-- docs: multi-tool architecture — adapter layer for OpenCode, Aider, Cursor support
-- docs: 7 ecosystem integrations documented (agnix, claude-code-action, parry, Trail of Bits, recall, Usage Monitor, hcom)
-- docs: 19 WATCH repos deep-analyzed — 22 extractable patterns prioritized (P0-P3)
-- docs: AI gateway architecture — OpenClaw comparison + gateway integration pattern
-- docs: AI gateway landscape — 11 gateways compared (LiteLLM stays, Bifrost/Portkey WATCH)
+- docs: WISC framework analysis — context loading impact on performance
+- docs: AI gateway landscape — 11 gateways compared
+- docs: cos-package-manager updated with new commands
 
 ## [0.1.0] - 2026-03-27
 
