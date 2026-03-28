@@ -301,6 +301,76 @@ This feature requires full Spec-Driven Development:
 6. `sdd-apply` -- Implementation in phases
 7. `sdd-verify` -- Security audit of the auditor itself
 
+### Full Integration Audit — 38 External Dependencies
+
+Complete inventory of all external tools, services, and dependencies in Cognitive OS, categorized for future `cos install` packaging.
+
+#### Docker Services (17 total)
+
+| Service | Profile | Core? | Future Package |
+|---|---|---|---|
+| Langfuse (web + worker) | default | Core | `@luum/langfuse-observability` |
+| Langfuse PostgreSQL | default | Core | (bundled with langfuse) |
+| Langfuse Valkey | default | Core | (bundled with langfuse) |
+| Langfuse ClickHouse | default | Core | (bundled with langfuse) |
+| Langfuse SeaweedFS | default | Core | (bundled with langfuse) |
+| LiteLLM | default | Core | `@luum/litellm-routing` |
+| NeMo Guardrails | default | Core | `@luum/nemo-guardrails` |
+| Paperclip + PostgreSQL | default | Core | `@luum/paperclip-dashboard` |
+| Webhook Trigger | automation | Core | `@luum/webhook-automation` |
+| Jupyter | default | Package | `@luum/jupyter-sandbox` |
+| memU | memory | Package | `@luum/memu-memory` |
+| Cognee | memory | Package | `@luum/cognee-memory` |
+| Opik (backend + mysql + frontend) | observability | Package | `@luum/opik-observability` |
+| AutoMaker | ui | Package | `@luum/automaker-ui` |
+
+#### Python Dependencies (Package candidates)
+
+| Dependency | Purpose | Core? | Future Package |
+|---|---|---|---|
+| crawl4ai | Web crawling for research | Package | `@luum/crawl4ai-web` |
+| deepeval | LLM unit testing | Package | `@luum/deepeval-testing` |
+| ragas | RAG quality evaluation | Package | `@luum/ragas-evals` |
+| guardrails-ai | Content policy validators | Package | `@luum/guardrails-validators` |
+| strands-agents-evals | Trace-based evaluation | Package | `@luum/strands-evals` |
+
+#### CLI Tools (Package candidates)
+
+| Tool | Purpose | Core? | Future Package |
+|---|---|---|---|
+| semgrep | SAST security scanning | Package | `@luum/semgrep-security` |
+| promptfoo | Prompt regression testing | Package | `@luum/promptfoo-regression` |
+| github CLI (gh) | GitHub automation | Package | `@luum/github-automation` |
+
+#### MCP Servers
+
+| Server | Purpose | Core? |
+|---|---|---|
+| Engram | Persistent memory | Core (always active) |
+| Context7 | Library documentation | Package (already integrated) |
+| Repomix | Repo context packing | Package (already integrated) |
+
+#### Remote Registries
+
+| Registry | Content | Status |
+|---|---|---|
+| MCP Registry | Official MCP servers | Active |
+| Skills.sh | 83K+ community skills | Optional |
+| SkillsMP | 350K+ community skills | Disabled |
+| OpenRouter | 655 LLM models | Active (fallback) |
+
+#### Delivery Phases for `cos install`
+
+| Phase | Bundles | What's included |
+|---|---|---|
+| 1. Core | `cos install core` | Langfuse, LiteLLM, Paperclip, databases |
+| 2. Safety | `cos install safety-mesh` | NeMo Guardrails, parry, guardrails-ai |
+| 3. Observability | `cos install observability` | Langfuse + Opik integration |
+| 4. Evaluation | `cos install eval-suite` | DeepEval, RAGAS, Promptfoo, Strands |
+| 5. Automation | `cos install automation` | Webhook Trigger, GitHub CLI, issue pipeline |
+| 6. Memory | `cos install memory-plus` | Cognee, memU |
+| 7. Profiles | `cos install profile:ui` | AutoMaker, Jupyter |
+
 ### Migration tools
 
 Import configurations from Cursor rules, Aider conventions, Copilot Workspace workflows, and other AI coding tools. A detection pass scans the project for `.cursorrules`, `.aider.conf`, `.github/copilot/`, and similar configuration files, then maps their concepts to Cognitive OS equivalents: Cursor rules become `rules/*.md`, Aider conventions become skill instructions, Copilot workflows become SDD pipeline configurations. Produces a migration report showing what was mapped, what needs manual review, and what has no equivalent.
