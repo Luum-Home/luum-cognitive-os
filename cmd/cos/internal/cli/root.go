@@ -26,6 +26,8 @@ Commands:
   install     Install a cos package from local path, GitHub, or URL
   remove      Remove an installed package
   list        List installed packages
+  search      Search for cos packages on GitHub
+  publish     Validate and prepare package for publishing
   audit       Run security audit on a package
   update      Update installed packages
   map         Show system knowledge graph
