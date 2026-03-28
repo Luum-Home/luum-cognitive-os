@@ -30,11 +30,12 @@ type LockedPackage struct {
 	SourceType   string            `yaml:"source_type"`        // local, github, url
 	Resolved     string            `yaml:"resolved"`           // full resolved path/URL
 	Commit       string            `yaml:"commit,omitempty"`   // git commit hash
-	Integrity    string            `yaml:"integrity"`          // sha256 of manifest
+	Integrity    string            `yaml:"integrity"`                // sha256 of manifest
 	License      string            `yaml:"license"`
 	InstalledAt  string            `yaml:"installed_at"`
 	Exports      []LockedExport    `yaml:"exports"`
 	Dependencies map[string]string `yaml:"dependencies,omitempty"`
+	FileHashes   map[string]string `yaml:"file_hashes,omitempty"`    // per-file SHA256 for integrity verification
 	Audit        AuditResult       `yaml:"audit"`
 	Forced       bool              `yaml:"forced,omitempty"`
 }

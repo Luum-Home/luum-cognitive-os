@@ -1,8 +1,11 @@
 package security
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -480,6 +483,131 @@ func TestScanSecrets_DetectsGenericApiKey(t *testing.T) {
 	if len(findings) == 0 {
 		t.Fatal("expected to detect generic API key pattern, got 0 findings")
 	}
+}
+
+// --- ComputeFileHashes tests ---
+
+func TestComputeFileHashes(t *testing.T) {
+	dir := t.TempDir()
+	writeFile(t, dir, "file1.txt", "hello world")
+	writeFile(t, dir, "subdir/file2.txt", "goodbye world")
+
+	hashes, err := ComputeFileHashes(dir)
+	if err != nil {
+		t.Fatalf("ComputeFileHashes failed: %v", err)
+	}
+
+	if len(hashes) != 2 {
+		t.Fatalf("expected 2 hashes, got %d", len(hashes))
+	}
+
+	// Verify hash of file1.txt is correct.
+	expectedHash := sha256Hex("hello world")
+	if hashes["file1.txt"] != expectedHash {
+		t.Errorf("file1.txt hash = %s, want %s", hashes["file1.txt"], expectedHash)
+	}
+
+	// Verify subdir/file2.txt is present.
+	subKey := filepath.Join("subdir", "file2.txt")
+	expectedHash2 := sha256Hex("goodbye world")
+	if hashes[subKey] != expectedHash2 {
+		t.Errorf("%s hash = %s, want %s", subKey, hashes[subKey], expectedHash2)
+	}
+}
+
+func TestComputeFileHashes_SkipsDotGit(t *testing.T) {
+	dir := t.TempDir()
+	writeFile(t, dir, "main.go", "package main")
+	writeFile(t, dir, ".git/config", "secret git config")
+	writeFile(t, dir, ".git/objects/abc", "git object data")
+
+	hashes, err := ComputeFileHashes(dir)
+	if err != nil {
+		t.Fatalf("ComputeFileHashes failed: %v", err)
+	}
+
+	// Should only contain main.go, not .git/ files.
+	if len(hashes) != 1 {
+		t.Fatalf("expected 1 hash (main.go only), got %d: %v", len(hashes), keys(hashes))
+	}
+	if _, ok := hashes["main.go"]; !ok {
+		t.Error("expected main.go in hashes")
+	}
+}
+
+func TestVerifyFileHashes_Match(t *testing.T) {
+	dir := t.TempDir()
+	writeFile(t, dir, "a.txt", "content a")
+	writeFile(t, dir, "b.txt", "content b")
+
+	expected := map[string]string{
+		"a.txt": sha256Hex("content a"),
+		"b.txt": sha256Hex("content b"),
+	}
+
+	mismatched, err := VerifyFileHashes(dir, expected)
+	if err != nil {
+		t.Fatalf("VerifyFileHashes failed: %v", err)
+	}
+	if len(mismatched) != 0 {
+		t.Errorf("expected 0 mismatches, got %d: %v", len(mismatched), mismatched)
+	}
+}
+
+func TestVerifyFileHashes_Mismatch(t *testing.T) {
+	dir := t.TempDir()
+	writeFile(t, dir, "a.txt", "modified content")
+
+	expected := map[string]string{
+		"a.txt": sha256Hex("original content"),
+	}
+
+	mismatched, err := VerifyFileHashes(dir, expected)
+	if err != nil {
+		t.Fatalf("VerifyFileHashes failed: %v", err)
+	}
+	if len(mismatched) != 1 {
+		t.Fatalf("expected 1 mismatch, got %d", len(mismatched))
+	}
+	if !strings.Contains(mismatched[0], "modified") {
+		t.Errorf("expected mismatch to indicate 'modified', got %q", mismatched[0])
+	}
+}
+
+func TestVerifyFileHashes_MissingFile(t *testing.T) {
+	dir := t.TempDir()
+	// Do NOT create deleted.txt.
+
+	expected := map[string]string{
+		"deleted.txt": sha256Hex("this file was deleted"),
+	}
+
+	mismatched, err := VerifyFileHashes(dir, expected)
+	if err != nil {
+		t.Fatalf("VerifyFileHashes failed: %v", err)
+	}
+	if len(mismatched) != 1 {
+		t.Fatalf("expected 1 mismatch, got %d", len(mismatched))
+	}
+	if !strings.Contains(mismatched[0], "missing") {
+		t.Errorf("expected mismatch to indicate 'missing', got %q", mismatched[0])
+	}
+}
+
+// sha256Hex computes the SHA256 hex digest of a string.
+func sha256Hex(s string) string {
+	h := sha256.Sum256([]byte(s))
+	return hex.EncodeToString(h[:])
+}
+
+// keys returns sorted keys from a map for debugging.
+func keys(m map[string]string) []string {
+	var k []string
+	for key := range m {
+		k = append(k, key)
+	}
+	sort.Strings(k)
+	return k
 }
 
 // --- Helpers ---
