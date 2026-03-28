@@ -31,6 +31,45 @@
 - **Alternative**: SQLAgent patterns with MIT-licensed components.
 - **Revisit if**: QueryWeaver relicenses. Evaluated: 2026-03-26.
 
+### Auto-Claude — Autonomous Agent Loop
+- **License**: AGPL-3.0
+- **What it does**: Autonomous Claude Code execution loop with self-directed task management.
+- **Why it's blocked**: Viral copyleft — would require open-sourcing all code that interacts with it.
+- **Alternative**: Our SDD pipeline + orchestrator covers this ground with MIT-compatible components.
+- **Revisit if**: Auto-Claude relicenses. Evaluated: 2026-03-28.
+
+### Claude Squad — Multi-Session Manager
+- **License**: AGPL-3.0
+- **What it does**: Terminal multiplexer for managing multiple Claude Code sessions simultaneously.
+- **Why it's blocked**: Viral copyleft — AGPL network interaction clause applies.
+- **Alternative**: Our session-concurrency protocol + orchestrator-mode already handle multi-session coordination.
+- **Revisit if**: Claude Squad relicenses. Evaluated: 2026-03-28.
+
+### Claudix — VS Code Extension
+- **License**: AGPL-3.0
+- **What it does**: VS Code extension for Claude Code integration.
+- **Why it's blocked**: Viral copyleft — AGPL applies to linked/interacting software.
+- **Alternative**: VS Code integration is not in our current scope; CLI-first approach.
+- **Revisit if**: Claudix relicenses. Evaluated: 2026-03-28.
+
+### pre-commit-hooks (aRustyDev) — Git Hook Pack
+- **License**: AGPL-3.0
+- **What it does**: Pre-commit hooks for Claude Code configuration validation.
+- **Why it's blocked**: Viral copyleft — AGPL applies to any software using these hooks.
+- **Alternative**: Our pre-commit-gate.sh already covers commit validation with permissive licensing.
+- **Revisit if**: aRustyDev relicenses. Evaluated: 2026-03-28.
+
+---
+
+## Blocked by GPL
+
+### Context Engineering Kit — Prompt Engineering Framework
+- **License**: GPL-3.0
+- **What it does**: Framework for systematic prompt engineering and context management.
+- **Why it's blocked**: Restrictive copyleft — GPL requires derivative works to be GPL-licensed.
+- **Alternative**: Our SDD pipeline provides more comprehensive spec-driven development with permissive licensing.
+- **Revisit if**: Context Engineering Kit relicenses. Evaluated: 2026-03-28.
+
 ---
 
 ## Blocked by SSPL
@@ -72,6 +111,11 @@
 | Daytona | Sandbox | 65k | AGPL | Copyleft (network) | E2B (Apache 2.0) |
 | Windmill | Scheduler | — | AGPL | Copyleft (network) | Temporal (MIT) |
 | QueryWeaver | Text2SQL | new | AGPL | Copyleft (linked) | SQLAgent (MIT) |
+| Auto-Claude | Agent Loop | — | AGPL | Copyleft (viral) | SDD pipeline + orchestrator |
+| Claude Squad | Multi-Session | — | AGPL | Copyleft (viral) | session-concurrency + orchestrator-mode |
+| Claudix | VS Code Extension | — | AGPL | Copyleft (viral) | CLI-first approach |
+| pre-commit-hooks | Git Hooks | — | AGPL | Copyleft (viral) | pre-commit-gate.sh |
+| Context Engineering Kit | Prompt Engineering | — | GPL | Copyleft (restrictive) | SDD pipeline |
 | Inngest | Scheduler | — | SSPL | Blocks SaaS | Hatchet (MIT) |
 | FalkorDB | Graph DB | 3.7k | SSPL | Blocks SaaS | Apache AGE (Apache 2.0) |
 | Arize Phoenix | Observability | — | ELv2 | Blocks managed service | Langfuse (MIT) |
