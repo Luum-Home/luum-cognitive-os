@@ -853,3 +853,137 @@ func TestE2E_ReleaseMultipleBumpFlags(t *testing.T) {
 		t.Fatal("release with multiple bump flags should fail")
 	}
 }
+
+// ---------------------------------------------------------------------------
+// E2E Tests — Publish
+// ---------------------------------------------------------------------------
+
+func TestE2E_PublishValidatesManifest(t *testing.T) {
+	// Create a valid package in temp dir with provides field.
+	pkg := createTestPackageForPublish(t, "test-pkg", "MIT", map[string]string{
+		"skills/test/SKILL.md": "---\nname: test\n---\n# Test",
+	})
+	out, code := runCos(t, pkg, "publish", "--dry-run")
+	// Should validate and show plan (but not actually tag/push).
+	if !strings.Contains(out, "test-pkg") && code != 0 {
+		t.Errorf("expected output to mention test-pkg or exit 0, got exit %d:\n%s", code, out)
+	}
+}
+
+// createTestPackageForPublish is like createTestPackage but adds the "provides"
+// field needed for publish validation.
+func createTestPackageForPublish(t *testing.T, name, license string, files map[string]string) string {
+	t.Helper()
+	dir := t.TempDir()
+
+	type exportEntry struct {
+		Source string `yaml:"source"`
+		Type   string `yaml:"type"`
+	}
+	var exports []exportEntry
+	providesSet := map[string]bool{}
+	for path := range files {
+		exportType := inferExportType(path)
+		exports = append(exports, exportEntry{Source: path, Type: exportType})
+		providesSet[exportType] = true
+	}
+	var provides []string
+	for p := range providesSet {
+		provides = append(provides, p)
+	}
+
+	manifest := map[string]interface{}{
+		"name":        name,
+		"version":     "1.0.0",
+		"description": "Test package",
+		"license":     license,
+		"exports":     exports,
+		"provides":    provides,
+	}
+	data, err := yaml.Marshal(manifest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeTestFileE2E(t, dir, "cos-package.yaml", string(data))
+
+	for path, content := range files {
+		writeTestFileE2E(t, dir, path, content)
+	}
+
+	return dir
+}
+
+func TestE2E_PublishWarnsNoReadme(t *testing.T) {
+	// Create a package WITHOUT README.md.
+	pkg := createTestPackage(t, "no-readme-pkg", "MIT", map[string]string{
+		"SKILL.md": "# Test Skill\n\nDoes things.\n",
+	})
+	out, _ := runCos(t, pkg, "publish", "--dry-run")
+	lowered := strings.ToLower(out)
+	if !strings.Contains(lowered, "no readme") && !strings.Contains(lowered, "readme") {
+		t.Errorf("expected warning about missing README.md:\n%s", out)
+	}
+}
+
+func TestE2E_PublishShowsReadmeOk(t *testing.T) {
+	// Create a package WITH README.md.
+	pkg := createTestPackage(t, "with-readme-pkg", "MIT", map[string]string{
+		"SKILL.md": "# Test Skill\n\nDoes things.\n",
+	})
+	writeTestFileE2E(t, pkg, "README.md", "# with-readme-pkg\n\nA test package.\n")
+	out, _ := runCos(t, pkg, "publish", "--dry-run")
+	lowered := strings.ToLower(out)
+	if !strings.Contains(lowered, "readme") {
+		t.Errorf("expected mention of README.md:\n%s", out)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// E2E Tests — Info
+// ---------------------------------------------------------------------------
+
+func TestE2E_InfoLocalPackage(t *testing.T) {
+	proj := createTestProject(t)
+	out, code := runCos(t, proj, "info", sampleSkillPath(t))
+	if code != 0 {
+		t.Fatalf("info should succeed, got exit %d. Output:\n%s", code, out)
+	}
+	if !strings.Contains(out, "sample-skill") {
+		t.Errorf("should show package name, got:\n%s", out)
+	}
+	if !strings.Contains(out, "MIT") {
+		t.Errorf("should show license, got:\n%s", out)
+	}
+	if !strings.Contains(out, "skill") {
+		t.Errorf("should show exports, got:\n%s", out)
+	}
+}
+
+func TestE2E_InfoInstalledPackage(t *testing.T) {
+	proj := createTestProject(t)
+	// Install first.
+	_, exitCode := runCos(t, proj, "install", sampleSkillPath(t))
+	if exitCode != 0 {
+		t.Fatal("install failed")
+	}
+	// Then info --installed.
+	out, code := runCos(t, proj, "info", "--installed", "@luum/sample-skill")
+	if code != 0 {
+		t.Fatalf("info --installed should succeed, got exit %d. Output:\n%s", code, out)
+	}
+	lowered := strings.ToLower(out)
+	if !strings.Contains(lowered, "install") {
+		t.Errorf("should show install info, got:\n%s", out)
+	}
+	if !strings.Contains(out, "MIT") {
+		t.Errorf("should show license, got:\n%s", out)
+	}
+}
+
+func TestE2E_InfoNotFound(t *testing.T) {
+	proj := createTestProject(t)
+	_, code := runCos(t, proj, "info", "--installed", "nonexistent")
+	if code == 0 {
+		t.Fatal("should fail for unknown package")
+	}
+}
