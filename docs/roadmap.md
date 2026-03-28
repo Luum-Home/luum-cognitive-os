@@ -199,12 +199,107 @@ SAST and DAST integration into the SDD pipeline. Static analysis runs during the
 
 Building the ecosystem around Cognitive OS: sharing skills across projects, migrating from other tools, and lowering the barrier to entry.
 
-### Plugin marketplace
+### Plugin Marketplace — `cos install` (Priority: Next Major Feature)
 
-Share and discover skills, hooks, and rules across projects and teams. Each plugin is a versioned package with metadata (name, version, author, license, compatibility). One-command install: `cos install skill:code-reviewer` downloads the skill, validates its license against the project policy, registers it in the catalog, and makes it available immediately. A public registry hosts community-contributed plugins. Private registries support enterprise teams. Dependency resolution ensures plugins declare their requirements.
+**Status**: Designed, pending implementation after ecosystem integrations.
 
-- **Status**: Exploring
-- **Dependencies**: RBAC (Phase 3, for controlling who can publish)
+The "npm moment" for AI agent tools. A package manager that aggregates, audits, and installs skills, hooks, rules, and bundles from any source.
+
+#### Two Modes of Package Creation
+
+| Mode | How | Example |
+|---|---|---|
+| **Generated** | COS reads a repo's stack/structure and auto-generates adapted skills | `cos install --generate https://github.com/org/repo` |
+| **Curated** | Pre-built packages from trusted sources, installed as-is | `cos install @trailofbits/security-skills` |
+
+#### Security Audit Pipeline (Mandatory)
+
+Every package goes through a 6-gate audit BEFORE installation:
+
+```
+cos install @source/package
+         │
+         ▼
+    ┌─────────────────────────┐
+    │   SECURITY AUDIT GATE   │
+    │                         │
+    │  1. License check       │ ← license_guard.py
+    │  2. Secret scan         │ ← secret-detector.sh
+    │  3. Injection scan      │ ← parry-guard
+    │  4. Dependency audit    │ ← NEW
+    │  5. Sandbox test        │ ← worktree isolation
+    │  6. Signature verify    │ ← NEW
+    │                         │
+    │  ALL PASS → Install     │
+    │  ANY FAIL → BLOCK       │
+    └─────────────────────────┘
+```
+
+#### Package Format
+
+```yaml
+# cos-package.yaml
+name: "@luum/safety-mesh"
+version: "1.0.0"
+license: "Apache-2.0"
+type: bundle  # skill | hook | rule | plugin | bundle
+requires: [parry, engram]
+files:
+  skills: [skills/]
+  hooks: [hooks/]
+  rules: [rules/]
+audit:
+  license_verified: true
+  secret_scan: passed
+  injection_scan: passed
+  signature: "sha256:..."
+```
+
+#### CLI Commands
+
+```bash
+cos install @luum/safety-mesh        # Install from public registry
+cos install ./local-package          # Install from local path
+cos install --generate https://...   # Auto-generate from repo
+cos search security                  # Search packages
+cos publish                          # Publish to registry
+cos audit @source/package            # Run security audit only
+cos list                             # List installed packages
+cos update                           # Update all packages
+cos remove @luum/safety-mesh         # Uninstall
+```
+
+#### Registry Architecture
+
+| Registry | Storage | Use Case |
+|---|---|---|
+| Public | GitHub repos with `cos-package.yaml` | Community packages |
+| Curated | `registry.cognitive-os.dev` (planned) | Verified packages |
+| Private | Local filesystem or S3 | Enterprise packages |
+
+#### Existing Infrastructure to Leverage
+
+| Component | Role in Marketplace |
+|---|---|
+| `cmd/cos/` (Go CLI) | Package manager CLI already exists (v0.1) |
+| `lib/license_guard.py` | Gate 1: License verification |
+| `hooks/secret-detector.sh` | Gate 2: Secret scanning |
+| `parry-guard` | Gate 3: Prompt injection scanning |
+| `skill-creator` skill | Generated mode: auto-create skills |
+| `eval-repo` skill | Generated mode: analyze repo structure |
+| `cognitive-os-init` skill | Generated mode: detect stack |
+| Git worktrees | Gate 5: Sandbox testing |
+
+#### Implementation Plan (SDD Required)
+
+This feature requires full Spec-Driven Development:
+1. `sdd-explore` -- Research npm/brew/cargo patterns
+2. `sdd-propose` -- Package format, registry design, audit pipeline
+3. `sdd-spec` -- CLI commands, security gates, manifest schema
+4. `sdd-design` -- Architecture (Go CLI + Python audit + registry)
+5. `sdd-tasks` -- Task breakdown (~15-20 tasks)
+6. `sdd-apply` -- Implementation in phases
+7. `sdd-verify` -- Security audit of the auditor itself
 
 ### Migration tools
 
@@ -273,17 +368,16 @@ The user sees the generated app and says "change the button color" or "add a con
 - **Status**: Not started
 - **Dependencies**: All of Phase 5.1-5.3
 
-### 5. Agent Package Manager (`cos`)
+### 5. Agent Package Manager (`cos`) — Extended
 
-A package manager for AI agent components (skills, hooks, rules, bundles). Like npm for coding agents.
+Extends the Plugin Marketplace (Phase 4) with advanced features: dependency lock files, workspace-level installs, offline caching, and enterprise registry federation. The core `cos install` / `cos publish` flow is implemented in Phase 4; this phase adds production-hardened package management.
 
-- `cos install @luum/safety-mesh` — install a bundle of hooks + rules
-- `cos publish` — share skills with the community
-- `cos search "kubernetes"` — find community skills
-- Versioning, dependency resolution, lock files
-- Registry: GitHub-based (like Go modules) or dedicated
-- **Status**: Researching (analyzing npm, pip, cargo, go modules, pub patterns)
-- **Dependencies**: Plugin marketplace (Phase 4)
+- Lock files (`cos.lock`) for reproducible installs
+- Workspace support: install packages at org level, inherit in projects
+- Offline cache for air-gapped environments
+- Registry federation: merge public + private registries
+- **Status**: Depends on Plugin Marketplace (Phase 4)
+- **Dependencies**: Plugin Marketplace (Phase 4)
 
 ---
 
@@ -339,7 +433,7 @@ Community contributions are welcome at every phase. Here is how to get involved.
 
 ### Phase 4: Community & Ecosystem
 
-- **Plugin marketplace**: Design package format and registry API. Build CLI install/publish commands. Implement version resolution.
+- **Plugin marketplace**: Implement 6-gate security audit pipeline. Extend `cmd/cos/` CLI with install/publish/search/audit commands. Design `cos-package.yaml` manifest schema. Build registry API (public GitHub-based + curated). Integrate parry-guard for injection scanning. Test sandbox isolation via worktrees.
 - **Migration tools**: Document configuration formats for Cursor, Aider, Copilot Workspace. Build parsers for each format. Test migration accuracy.
 - **i18n**: Translate documentation to Spanish. Externalize CLI strings. Design locale file format.
 - **Onboarding wizard**: Design wizard flow. Build CLI interactive prompts. Test on fresh machines with no prior configuration.

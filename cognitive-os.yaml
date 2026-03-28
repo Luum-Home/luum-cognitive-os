@@ -564,6 +564,17 @@ sources:
   #   path: /path/to/private-registry
   #   provides: [skills, rules, presets]
 
+security:
+  parry:
+    enabled: false                   # Set to true after installing parry-guard
+    threshold: 0.7                   # Detection confidence threshold
+
+agent_communication:
+  hcom:
+    enabled: false                   # Set to true after installing hcom
+    collision_detection: true
+    collision_window_seconds: 30
+
 paperclip:
   enabled: true
   url: ${COGNITIVE_OS_PAPERCLIP_URL:-http://localhost:3200}
