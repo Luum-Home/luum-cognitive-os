@@ -237,6 +237,46 @@ func TestResolve_PlainNameInvalid(t *testing.T) {
 	}
 }
 
+func TestResolve_ScopedNoRepo(t *testing.T) {
+	// "@luum" without a repo should error.
+	_, err := Resolve("@luum")
+	if err == nil {
+		t.Fatal("expected error for @luum without repo")
+	}
+}
+
+func TestResolve_URLWithPath(t *testing.T) {
+	src, err := Resolve("https://github.com/org/repo/tree/main/subdir")
+	if err != nil {
+		t.Fatalf("Resolve error: %v", err)
+	}
+
+	// Should extract org/repo even with extra path components.
+	if src.Owner != "org" {
+		t.Errorf("expected owner 'org', got %q", src.Owner)
+	}
+	if src.Repo != "repo" {
+		t.Errorf("expected repo 'repo', got %q", src.Repo)
+	}
+}
+
+func TestResolve_Version_Semver(t *testing.T) {
+	src, err := Resolve("@luum/pkg@v1.2.3")
+	if err != nil {
+		t.Fatalf("Resolve error: %v", err)
+	}
+
+	if src.Version != "v1.2.3" {
+		t.Errorf("expected version 'v1.2.3', got %q", src.Version)
+	}
+	if src.Owner != "luum" {
+		t.Errorf("expected owner 'luum', got %q", src.Owner)
+	}
+	if src.Repo != "pkg" {
+		t.Errorf("expected repo 'pkg', got %q", src.Repo)
+	}
+}
+
 // ---------------------------------------------------------------------------
 // String tests
 // ---------------------------------------------------------------------------
@@ -323,6 +363,50 @@ func TestFetchLocal(t *testing.T) {
 	}
 	if string(data) != "world" {
 		t.Errorf("expected 'world', got %q", string(data))
+	}
+}
+
+func TestFetchLocal_WithSubdirs(t *testing.T) {
+	srcDir := t.TempDir()
+
+	// Create nested directory structure.
+	subDir := filepath.Join(srcDir, "skills", "my-skill")
+	if err := os.MkdirAll(subDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(subDir, "SKILL.md"), []byte("# Skill"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(srcDir, "cos-package.yaml"), []byte("name: test"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	source := &ResolvedSource{
+		Type:      SourceLocal,
+		LocalPath: srcDir,
+		Name:      "test-pkg",
+	}
+
+	fetchedDir, err := Fetch(source)
+	if err != nil {
+		t.Fatalf("Fetch error: %v", err)
+	}
+	defer func() { _ = CleanupFetch(filepath.Dir(fetchedDir)) }()
+
+	// Verify nested file was copied.
+	nestedFile := filepath.Join(fetchedDir, "skills", "my-skill", "SKILL.md")
+	data, err := os.ReadFile(nestedFile)
+	if err != nil {
+		t.Fatalf("expected nested SKILL.md in fetched dir: %v", err)
+	}
+	if string(data) != "# Skill" {
+		t.Errorf("expected '# Skill', got %q", string(data))
+	}
+
+	// Verify root file also copied.
+	rootFile := filepath.Join(fetchedDir, "cos-package.yaml")
+	if _, err := os.Stat(rootFile); err != nil {
+		t.Errorf("expected cos-package.yaml in fetched dir: %v", err)
 	}
 }
 
