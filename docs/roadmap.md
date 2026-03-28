@@ -52,6 +52,22 @@ Safe environment for experimenting with skills, hooks, and pipelines without aff
 - **Status**: Planned
 - **Dependencies**: None
 
+### Ecosystem Integrations (ADOPT)
+
+7 tools from the Claude Code ecosystem analyzed and approved for integration:
+
+| Tool | License | Effort | What it adds |
+|---|---|---|---|
+| **agnix** | Apache-2.0 | 6-8h | Config file linter (342 rules for CLAUDE.md, SKILL.md, hooks, MCP) |
+| **claude-code-action** | MIT | 3-5h | GitHub Actions for @claude interactive, PR review, issue triage |
+| **parry** | MIT | 4h | ML-based prompt injection scanner (Rust/DeBERTa, runs as hook) |
+| **Trail of Bits Skills** | CC-BY-SA-4.0 | 7-22h | 62 security audit skills (code auditing, smart contracts, supply chain) |
+| **recall** | MIT | 2-4h | Full-text search of Claude Code conversations (Tantivy index) |
+| **Usage Monitor** | MIT | 2-3d | Ground-truth cost reconciliation from Claude's native JSONL |
+| **hcom** | MIT | 5d | Cross-terminal agent communication (SQLite + TCP) |
+
+Status: Analyzed, documented in tech radar. Integration pending.
+
 ---
 
 ### Agent Communication Bus
@@ -60,6 +76,53 @@ Bidirectional real-time communication between agents and the orchestrator using 
 
 - **Status**: Implemented
 - **Dependencies**: None (Valkey optional, file fallback built-in)
+
+---
+
+## Multi-Tool Support (Cross-cutting -- All Phases)
+
+Cognitive OS is evolving from Claude Code-only to a universal agent operating system supporting multiple AI coding tools.
+
+### Architecture
+
+```
+                    Cognitive OS
+                         |
+          +--------------+--------------+
+          |              |              |
+     Claude Code     OpenCode      Aider/Cursor
+          |              |              |
+     adapters/cc    adapters/oc    adapters/cursor
+          |              |              |
+          +--------------+--------------+
+                         |
+              +----------+----------+
+              |          |          |
+          Python libs   MCP     Docker infra
+          (agnostic)  (universal) (agnostic)
+```
+
+### 3 Layers of Portability
+
+| Layer | What | Status |
+|---|---|---|
+| **Python libs** (lib/*.py) | Tool-agnostic. model_router, smart_infra, cost_dashboard, etc. work with any agent | Ready |
+| **MCP servers** | Universal bridge. Engram, Context7 work with any MCP-compatible tool (Claude Code, Cursor, Continue, Cline) | Ready |
+| **Docker infrastructure** | Smart start, docker-compose -- tool-agnostic | Ready |
+| **Adapters** | Translate hooks/skills/settings between tool formats | Planned |
+| **Rules portability** | Auto-transform .claude/rules/*.md to .cursorrules, .aider, OpenCode formats | Planned |
+
+### Adapter Priority
+
+1. **Claude Code** (adapters/cc) -- Current, fully supported
+2. **OpenCode** (adapters/oc) -- Next target (open-source, growing fast, multi-provider)
+3. **Aider** (adapters/aider) -- Popular open-source alternative
+4. **Cursor** (adapters/cursor) -- .cursorrules ecosystem
+5. **Codex CLI** (adapters/codex) -- OpenAI's agent
+
+### What's Already Portable
+
+Tools like `recall` (supports Claude/Codex/OpenCode/Factory) and `hcom` (supports Claude/Gemini/Codex/OpenCode) prove multi-tool viability in the ecosystem.
 
 ---
 
