@@ -15,7 +15,7 @@ source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 4+
-check_capability_level "prompt-quality" && exit 0
+check_capability_level "prompt-quality"
 
 # Skip if private mode active
 check_private_mode
