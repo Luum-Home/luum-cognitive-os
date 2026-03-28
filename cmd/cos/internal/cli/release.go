@@ -11,6 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"luum-agent-os/cmd/cos/internal/manifest"
 	"luum-agent-os/cmd/cos/internal/project"
 	"luum-agent-os/cmd/cos/internal/ui"
 )
@@ -20,6 +21,7 @@ var (
 	releaseMinor  bool
 	releaseMajor  bool
 	releaseDryRun bool
+	releaseCheck  bool
 )
 
 var releaseCmd = &cobra.Command{
@@ -32,7 +34,8 @@ Examples:
   cos release --patch        Bump patch version
   cos release --minor        Bump minor version
   cos release --major        Bump major version
-  cos release --dry-run      Show what would happen`,
+  cos release --dry-run      Show what would happen
+  cos release --check        Validate release readiness without releasing`,
 	RunE: runRelease,
 }
 
@@ -41,6 +44,7 @@ func init() {
 	releaseCmd.Flags().BoolVar(&releaseMinor, "minor", false, "Bump minor version")
 	releaseCmd.Flags().BoolVar(&releaseMajor, "major", false, "Bump major version")
 	releaseCmd.Flags().BoolVar(&releaseDryRun, "dry-run", false, "Show what would happen without making changes")
+	releaseCmd.Flags().BoolVar(&releaseCheck, "check", false, "Validate release readiness without releasing")
 	rootCmd.AddCommand(releaseCmd)
 }
 
@@ -106,11 +110,124 @@ func updateChangelog(content, version string) string {
 	return result
 }
 
+// releaseReadinessCheck validates that the project is ready for a release.
+// Returns a list of check results (pass/fail) and an overall pass boolean.
+func releaseReadinessCheck(projectRoot, currentVersion string) ([]string, bool) {
+	var checks []string
+	allPassed := true
+
+	// Check 1: No uncommitted changes.
+	statusCmd := exec.Command("git", "status", "--porcelain")
+	statusCmd.Dir = projectRoot
+	statusOut, err := statusCmd.Output()
+	if err != nil {
+		checks = append(checks, fmt.Sprintf("%s Git status: could not determine (%v)", ui.IconError, err))
+		allPassed = false
+	} else if len(strings.TrimSpace(string(statusOut))) > 0 {
+		checks = append(checks, fmt.Sprintf("%s No uncommitted changes: FAIL (working tree is dirty)", ui.IconError))
+		allPassed = false
+	} else {
+		checks = append(checks, fmt.Sprintf("%s No uncommitted changes", ui.IconSuccess))
+	}
+
+	// Check 2: Version is newer than last git tag.
+	lastTagCmd := exec.Command("git", "describe", "--tags", "--abbrev=0")
+	lastTagCmd.Dir = projectRoot
+	lastTagOut, err := lastTagCmd.Output()
+	if err != nil {
+		// No tags exist yet — that's fine for a first release.
+		checks = append(checks, fmt.Sprintf("%s Version newer than last tag: OK (no previous tags)", ui.IconSuccess))
+	} else {
+		lastTag := strings.TrimSpace(string(lastTagOut))
+		lastTagVersion := strings.TrimPrefix(lastTag, "v")
+		// Also handle scoped tags: extract version after last @.
+		if idx := strings.LastIndex(lastTag, "@"); idx >= 0 {
+			lastTagVersion = lastTag[idx+1:]
+		}
+		cmp := manifest.CompareVersions(currentVersion, lastTagVersion)
+		if cmp > 0 {
+			checks = append(checks, fmt.Sprintf("%s Version %s is newer than last tag %s", ui.IconSuccess, currentVersion, lastTag))
+		} else {
+			checks = append(checks, fmt.Sprintf("%s Version newer than last tag: FAIL (current %s <= tag %s)", ui.IconError, currentVersion, lastTag))
+			allPassed = false
+		}
+	}
+
+	// Check 3: CHANGELOG.md has an [Unreleased] section with content.
+	changelogPath := filepath.Join(projectRoot, "CHANGELOG.md")
+	changelogData, err := os.ReadFile(changelogPath)
+	if err != nil {
+		checks = append(checks, fmt.Sprintf("%s CHANGELOG.md: not found", ui.IconError))
+		allPassed = false
+	} else {
+		content := string(changelogData)
+		if !strings.Contains(content, "## [Unreleased]") {
+			checks = append(checks, fmt.Sprintf("%s CHANGELOG.md: no [Unreleased] section found", ui.IconError))
+			allPassed = false
+		} else {
+			// Check there is content between [Unreleased] and the next ## heading.
+			idx := strings.Index(content, "## [Unreleased]")
+			rest := content[idx+len("## [Unreleased]"):]
+			nextSection := strings.Index(rest, "\n## ")
+			var section string
+			if nextSection >= 0 {
+				section = rest[:nextSection]
+			} else {
+				section = rest
+			}
+			trimmed := strings.TrimSpace(section)
+			if trimmed == "" {
+				checks = append(checks, fmt.Sprintf("%s CHANGELOG.md: [Unreleased] section is empty", ui.IconWarning))
+			} else {
+				checks = append(checks, fmt.Sprintf("%s CHANGELOG.md has unreleased entries", ui.IconSuccess))
+			}
+		}
+	}
+
+	// Check 4: Tests pass (run go test if go.mod exists, or python tests if pytest exists).
+	goModPath := filepath.Join(projectRoot, "cmd", "cos", "go.mod")
+	if _, err := os.Stat(goModPath); err == nil {
+		testCmd := exec.Command("go", "test", "./...")
+		testCmd.Dir = filepath.Join(projectRoot, "cmd", "cos")
+		if testOut, err := testCmd.CombinedOutput(); err != nil {
+			checks = append(checks, fmt.Sprintf("%s Tests pass: FAIL\n      %s",
+				ui.IconError, strings.Split(strings.TrimSpace(string(testOut)), "\n")[0]))
+			allPassed = false
+		} else {
+			checks = append(checks, fmt.Sprintf("%s Tests pass", ui.IconSuccess))
+		}
+	} else {
+		checks = append(checks, fmt.Sprintf("%s Tests: skipped (no go.mod found at cmd/cos/)", ui.IconWarning))
+	}
+
+	return checks, allPassed
+}
+
 func runRelease(cmd *cobra.Command, args []string) error {
 	projectRoot := project.FindRootOrCwd()
 	currentVersion := readVersionFile(projectRoot)
 	if currentVersion == "unknown" {
 		return fmt.Errorf("VERSION file not found in %s", projectRoot)
+	}
+
+	// Handle --check: validate release readiness and exit.
+	if releaseCheck {
+		fmt.Println()
+		fmt.Printf("%s Release readiness check (v%s):\n\n", ui.IconInfo, currentVersion)
+
+		checks, allPassed := releaseReadinessCheck(projectRoot, currentVersion)
+		for _, c := range checks {
+			fmt.Printf("  %s\n", c)
+		}
+
+		fmt.Println()
+		if allPassed {
+			fmt.Println(ui.SuccessStyle.Render(fmt.Sprintf("%s Release readiness: PASS", ui.IconSuccess)))
+		} else {
+			fmt.Println(ui.ErrorStyle.Render(fmt.Sprintf("%s Release readiness: FAIL — fix issues above before releasing", ui.IconError)))
+			os.Exit(1)
+		}
+		return nil
 	}
 
 	// Determine target version.

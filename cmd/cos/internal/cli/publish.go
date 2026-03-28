@@ -91,13 +91,14 @@ func runPublish(cmd *cobra.Command, args []string) error {
 	fmt.Println()
 	ui.Step(ui.IconInfo, "Checking git tag status...")
 
-	tagExists := gitTagExists(fmt.Sprintf("v%s", m.Version))
+	tagName := scopedTagName(m.Name, m.Version)
+	tagExists := gitTagExists(tagName)
 	if tagExists {
-		ui.Step(ui.IconWarning, fmt.Sprintf("Git tag v%s already exists", m.Version))
+		ui.Step(ui.IconWarning, fmt.Sprintf("Git tag %s already exists", tagName))
 		fmt.Println()
 		fmt.Println(ui.MutedStyle.Render("  Consider bumping the version in cos-package.yaml"))
 	} else {
-		ui.Step(ui.IconInfo, fmt.Sprintf("Git tag v%s does not exist yet", m.Version))
+		ui.Step(ui.IconInfo, fmt.Sprintf("Git tag %s does not exist yet", tagName))
 	}
 
 	// Step 5: Show publish summary.
@@ -123,13 +124,13 @@ func runPublish(cmd *cobra.Command, args []string) error {
 		if pushFlag {
 			// Create tag and push automatically.
 			fmt.Println()
-			ui.Step(ui.IconInfo, fmt.Sprintf("Creating git tag v%s...", m.Version))
+			ui.Step(ui.IconInfo, fmt.Sprintf("Creating git tag %s...", tagName))
 
-			tagCmd := exec.Command("git", "tag", fmt.Sprintf("v%s", m.Version))
+			tagCmd := exec.Command("git", "tag", tagName)
 			if out, err := tagCmd.CombinedOutput(); err != nil {
 				return fmt.Errorf("creating git tag: %s\n%s", err, string(out))
 			}
-			ui.Step(ui.IconSuccess, fmt.Sprintf("Created git tag v%s", m.Version))
+			ui.Step(ui.IconSuccess, fmt.Sprintf("Created git tag %s", tagName))
 
 			ui.Step(ui.IconInfo, "Pushing to remote...")
 			pushCmd := exec.Command("git", "push")
@@ -145,7 +146,7 @@ func runPublish(cmd *cobra.Command, args []string) error {
 		} else {
 			fmt.Println()
 			ui.Step(ui.IconArrow, "Next steps:")
-			fmt.Printf("  1. %s\n", ui.InfoStyle.Render(fmt.Sprintf("git tag v%s", m.Version)))
+			fmt.Printf("  1. %s\n", ui.InfoStyle.Render(fmt.Sprintf("git tag %s", tagName)))
 			fmt.Printf("  2. %s\n", ui.InfoStyle.Render("git push --tags"))
 			fmt.Println()
 			fmt.Println(ui.MutedStyle.Render("  Or use --push to do this automatically:"))
@@ -166,6 +167,13 @@ func runPublish(cmd *cobra.Command, args []string) error {
 	fmt.Printf("  %s\n", ui.HeaderStyle.Render(fmt.Sprintf("cos install %s@%s", m.Name, m.Version)))
 
 	return nil
+}
+
+// scopedTagName builds a scoped tag like "@luum/name@1.0.0" for package
+// publishing. This matches the cos install convention where packages are
+// referenced as @scope/name@version.
+func scopedTagName(name, version string) string {
+	return fmt.Sprintf("%s@%s", name, version)
 }
 
 // gitTagExists checks if a git tag with the given name already exists.

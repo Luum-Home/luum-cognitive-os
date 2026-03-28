@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 )
@@ -58,6 +59,15 @@ var HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 } = &http.Client{Timeout: 15 * time.Second}
 
+// setGitHubAuth adds the Authorization header if GITHUB_TOKEN is set in the
+// environment. Authenticated requests have a much higher rate limit (5000/hr
+// vs 60/hr for unauthenticated).
+func setGitHubAuth(req *http.Request) {
+	if token := os.Getenv("GITHUB_TOKEN"); token != "" {
+		req.Header.Set("Authorization", "Bearer "+token)
+	}
+}
+
 // SearchGitHub searches GitHub for repos with topic "cos-package" matching the query.
 func SearchGitHub(query string, limit int) ([]SearchResult, error) {
 	if limit <= 0 {
@@ -80,6 +90,7 @@ func SearchGitHub(query string, limit int) ([]SearchResult, error) {
 	}
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 	req.Header.Set("User-Agent", "cos-package-manager/0.1")
+	setGitHubAuth(req)
 
 	resp, err := HTTPClient.Do(req)
 	if err != nil {
@@ -123,6 +134,7 @@ func FetchManifestInfo(owner, repo string) (*SearchResult, error) {
 	}
 	req.Header.Set("Accept", "application/vnd.github.v3+json")
 	req.Header.Set("User-Agent", "cos-package-manager/0.1")
+	setGitHubAuth(req)
 
 	resp, err := HTTPClient.Do(req)
 	if err != nil {
