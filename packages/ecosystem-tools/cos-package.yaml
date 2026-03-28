@@ -1,0 +1,42 @@
+name: "@luum/ecosystem-tools"
+version: "1.0.0"
+description: "External tool integrations for Cognitive OS — agnix, parry, hcom, repomix, Trail of Bits, Context7"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["ecosystem", "tools", "integration", "security", "linter"]
+cos_version: ">=0.1.0"
+
+provides:
+  - rule
+  - hook
+
+exports:
+  - source: "rules/ecosystem-tools.md"
+    type: rule
+    description: "Overview of all integrated external tools"
+    always_active: false
+  - source: "rules/parry-integration.md"
+    type: rule
+    description: "Parry prompt injection scanner configuration"
+    always_active: false
+  - source: "rules/hcom-integration.md"
+    type: rule
+    description: "Hcom cross-terminal communication configuration"
+    always_active: false
+  - source: "rules/repomix-integration.md"
+    type: rule
+    description: "Repomix repo context packing integration"
+    always_active: false
+  - source: "rules/trailofbits-skills.md"
+    type: rule
+    description: "Trail of Bits security skills documentation"
+    always_active: false
+  - source: "rules/context7-auto-trigger.md"
+    type: rule
+    description: "Context7 library doc auto-lookup rule"
+    always_active: false
+  - source: "hooks/agnix-lint.sh"
+    type: hook
+    description: "Config file linter hook (342 rules)"
+    hook_event: PostToolUse
+    hook_matcher: "Edit|Write"
