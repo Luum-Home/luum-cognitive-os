@@ -68,6 +68,57 @@ Services are defined in `docker-compose.cognitive-os.yml`. Some run by default, 
 |---------|---------|-------------|
 | webhook-trigger | Webhook event listener | Event-driven automation, singularity triggers |
 
+## Smart Start (Lazy Loading)
+
+When `smart_start: true` is set in `cognitive-os.yaml`, Docker services start automatically when a skill or hook needs them, instead of requiring manual startup or `INFRA_AUTO_START=true`.
+
+### How It Works
+
+1. A skill or hook triggers (e.g., `/agent-kpis`)
+2. `lib/smart_infra.py` looks up the skill→service map
+3. If the required service (e.g., langfuse) is not running, it starts via `docker compose up -d`
+4. The system polls for healthy status (up to 120s)
+5. Once healthy, the skill proceeds normally
+6. On session exit, `idle-service-cleanup.sh` stops services past their `idle_timeout_minutes`
+
+### Skill-to-Service Map
+
+| Skill/Hook | Required Service |
+|---|---|
+| agent-kpis, observability-trace | langfuse |
+| sdd-apply, sdd-verify, sdd-pipeline, model-routing | litellm |
+| guardrails-validator, content-policy | nemo-guardrails |
+| squad-report, paperclip-sync | paperclip |
+| memu-sync | memu |
+| cognee-search | cognee |
+| jupyter-sandbox | jupyter |
+
+This map is configurable in `cognitive-os.yaml` under `resources.infrastructure.skill_service_map`.
+
+### Graceful Degradation
+
+If Docker is not available or a service fails to start, the system logs a warning and continues. Skills still execute — they may produce degraded results (e.g., no traces sent to Langfuse) but never crash.
+
+### Usage in Python
+
+```python
+from lib.smart_infra import ensure_service, requires_service
+
+# Explicit
+ensure_service("langfuse")
+
+# Decorator
+@requires_service("langfuse")
+def send_trace(...):
+    ...
+```
+
+### Usage in Bash Hooks
+
+```bash
+python3 -c "from lib.smart_infra import ensure_service; ensure_service('langfuse')" 2>/dev/null || true
+```
+
 ## Configuration
 
 In `cognitive-os.yaml`, services are configured under `resources.infrastructure.services`:

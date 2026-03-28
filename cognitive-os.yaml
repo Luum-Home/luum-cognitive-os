@@ -331,6 +331,21 @@ resources:
 
   infrastructure:
     auto_scale: true
+    smart_start: true              # Lazy-load Docker services when skills need them
+    skill_service_map:
+      agent-kpis: [langfuse]
+      observability-trace: [langfuse]
+      sdd-apply: [litellm]
+      sdd-verify: [litellm]
+      sdd-pipeline: [litellm]
+      model-routing: [litellm]
+      guardrails-validator: [nemo-guardrails]
+      content-policy: [nemo-guardrails]
+      paperclip-sync: [paperclip]
+      squad-report: [paperclip]
+      memu-sync: [memu]
+      cognee-search: [cognee]
+      jupyter-sandbox: [jupyter]
     services:
       langfuse:
         mode: on_demand
