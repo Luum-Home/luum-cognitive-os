@@ -91,17 +91,17 @@ class TestVersionConsistency:
         return (PROJECT_ROOT / "VERSION").read_text().strip()
 
     def test_cos_cli_version_matches(self):
-        """cos CLI version must match VERSION file."""
-        version = self._get_version()
+        """cos CLI must use dynamic version from VERSION file (via resolveVersion)."""
         root_go = (
             PROJECT_ROOT / "cmd" / "cos" / "internal" / "cli" / "root.go"
         )
         if not root_go.exists():
             pytest.skip("cmd/cos/internal/cli/root.go not found")
         content = root_go.read_text()
+        # Version is set dynamically at runtime via resolveVersion()
         assert (
-            f'Version: "{version}"' in content
-        ), f"cos CLI version does not match VERSION file ({version})"
+            "resolveVersion()" in content
+        ), "cos CLI must use resolveVersion() for dynamic version from VERSION file"
 
     def test_cos_test_cli_version_matches(self):
         """cos-test CLI version must match VERSION file."""
@@ -133,17 +133,15 @@ class TestVersionConsistency:
         locations_checked = ["VERSION"]
         mismatches = []
 
-        # cos CLI
+        # cos CLI (uses dynamic version via resolveVersion())
         cos_go = PROJECT_ROOT / "cmd" / "cos" / "internal" / "cli" / "root.go"
         if cos_go.exists():
             content = cos_go.read_text()
-            match = re.search(r'Version:\s*"([^"]+)"', content)
-            if match:
-                locations_checked.append("cmd/cos root.go")
-                if match.group(1) != version:
-                    mismatches.append(
-                        f"cmd/cos root.go has {match.group(1)}"
-                    )
+            locations_checked.append("cmd/cos root.go")
+            if "resolveVersion()" not in content:
+                mismatches.append(
+                    "cmd/cos root.go missing resolveVersion() call"
+                )
 
         # cos-test CLI
         costest_go = (
