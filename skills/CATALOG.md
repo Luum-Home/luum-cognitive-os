@@ -91,6 +91,8 @@
 | performance-dashboard | Show performance metrics: latency percentiles, throughput, overhead, bottlenecks, component health | `cos perf` | [universal] |
 | cost-predictor | Predict task cost from historical data, show confidence level, per-phase breakdown, measured model prices | `/cost-predict` | [universal] |
 | simulation-arena | Run scripted scenarios simulating developer workflows, measure safety mesh, cost, learning evolution | `/simulate` | [universal] |
+| scout | Quick pre-implementation codebase reconnaissance with 3 depth levels (quick/standard/deep) | `/scout` | [universal] |
+| sdd-explore | Deep feasibility analysis for SDD pipeline explore phase — builds on scout report | `/sdd-explore` | [universal] |
 
 ## Project Skills [generated]
 
