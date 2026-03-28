@@ -1,0 +1,22 @@
+name: "@luum/prompt-quality-gate"
+version: "1.0.0"
+description: "Prompt quality gate — validates agent prompt quality before launch"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["prompt", "quality", "gate", "validation", "agent"]
+cos_version: ">=0.1.0"
+
+provides:
+  - rule
+  - hook
+
+exports:
+  - source: "rules/prompt-quality.md"
+    type: rule
+    description: "Prompt quality standards and scoring criteria"
+    always_active: false
+  - source: "hooks/prompt-quality.sh"
+    type: hook
+    description: "Validates agent prompt quality before launch"
+    hook_event: PreToolUse
+    hook_matcher: "Agent"

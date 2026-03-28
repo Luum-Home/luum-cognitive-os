@@ -1,0 +1,17 @@
+name: "@luum/adaptive-workflow"
+version: "1.0.0"
+description: "Adaptive workflow bypass — classifies task complexity to skip unnecessary orchestration"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["adaptive", "workflow", "bypass", "complexity", "orchestration"]
+cos_version: ">=0.1.0"
+
+provides:
+  - hook
+
+exports:
+  - source: "hooks/adaptive-bypass.sh"
+    type: hook
+    description: "Evaluates task complexity to bypass unnecessary governance"
+    hook_event: PreToolUse
+    hook_matcher: "Agent"
