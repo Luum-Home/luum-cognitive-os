@@ -31,7 +31,9 @@ Commands:
   audit       Run security audit on a package
   update      Update installed packages
   map         Show system knowledge graph
-  perf        Show performance dashboard`,
+  perf        Show performance dashboard
+  version     Show OS and package versions
+  release     Create a new release`,
 	Version: "0.1.0",
 }
 

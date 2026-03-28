@@ -404,6 +404,7 @@ Tools, extensions, and frameworks built around Claude Code. Evaluated for integr
 | **Vibe-Log** | MIT | — | Session analysis and logging CLI | Session analytics patterns | Prompt quality scoring (not just ambiguity) |
 | **MyCoder** | MIT | 565 | CLI-based multi-agent coding system | CLI patterns for agent orchestration | Hierarchical agent spawning with token budget caps |
 | **Continue** | Apache-2.0 | — | Source-controlled AI checks for CI | CI-enforcement of AI rules | `checks/` directory + CI runner as GitHub status checks |
+| **Bifrost** | Apache-2.0 | — | High-performance AI gateway in Go, 4-tier budget hierarchy | LLM routing performance, budget hierarchy patterns |
 
 ### Patterns to Extract (Prioritized)
 
