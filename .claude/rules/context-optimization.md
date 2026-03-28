@@ -1,1 +1,0 @@
-../../rules/context-optimization.md

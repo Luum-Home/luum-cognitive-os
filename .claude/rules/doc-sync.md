@@ -1,1 +1,0 @@
-../../rules/doc-sync.md

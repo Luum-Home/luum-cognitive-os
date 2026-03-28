@@ -1,1 +1,0 @@
-../../rules/auto-skill-generation.md

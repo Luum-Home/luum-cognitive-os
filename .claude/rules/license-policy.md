@@ -1,1 +1,0 @@
-../../rules/license-policy.md

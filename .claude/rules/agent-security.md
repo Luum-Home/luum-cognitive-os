@@ -1,1 +1,0 @@
-../../rules/agent-security.md

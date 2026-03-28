@@ -1,1 +1,0 @@
-../../rules/os-vs-project.md
