@@ -263,6 +263,7 @@ rules:
       adversarial-review: "adversarial.review|code.review|zero.finding|review.protocol"
       step-files: "step.file|long.running|resumable|checkpoint.step"
       rate-limiting: "rate.limit|token.flood|tool.usage.limit|cooldown"
+      non-blocking-retry: "non.blocking.retry|deferred.retry|retry.scheduler|rate.limit.queue"
 
       # Project-specific triggers (add via /cognitive-os-init or manually):
       # go-architecture: "*.go"
