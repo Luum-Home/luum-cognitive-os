@@ -466,6 +466,35 @@ class TestEnsureForSkill:
 # ---------------------------------------------------------------------------
 
 
+class TestValkeyServiceMapping:
+    """Tests for Valkey service in smart_infra maps."""
+
+    def test_valkey_in_compose_map(self):
+        """Valkey service must be registered in SERVICE_COMPOSE_MAP."""
+        assert "valkey" in SERVICE_COMPOSE_MAP
+        info = SERVICE_COMPOSE_MAP["valkey"]
+        assert info["compose_services"] == ["valkey"]
+        assert info["health_container"] == "cognitive-os-valkey"
+        assert info["profile"] is None
+
+    def test_agent_bus_maps_to_valkey(self):
+        """agent-bus skill must map to valkey service."""
+        assert "agent-bus" in SKILL_SERVICE_MAP
+        assert SKILL_SERVICE_MAP["agent-bus"] == ["valkey"]
+
+    def test_agent_communication_maps_to_valkey(self):
+        """agent-communication skill must map to valkey service."""
+        assert "agent-communication" in SKILL_SERVICE_MAP
+        assert SKILL_SERVICE_MAP["agent-communication"] == ["valkey"]
+
+    def test_ensure_for_skill_agent_bus(self, smart_infra):
+        """ensure_for_skill('agent-bus') triggers valkey service."""
+        with patch.object(smart_infra, "ensure_service", return_value=True) as mock_es:
+            results = smart_infra.ensure_for_skill("agent-bus")
+            mock_es.assert_called_once_with("valkey", timeout_secs=120)
+            assert results == {"valkey": True}
+
+
 class TestFormatStatus:
     """Tests for SmartInfra.format_status()."""
 
