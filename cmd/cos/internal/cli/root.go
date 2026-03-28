@@ -22,7 +22,8 @@ A package manager for AI agent components: skills, rules, hooks, agents, and tem
 
 Commands:
   init        Create a new cos-package.yaml
-  validate    Validate cos-package.yaml in the current directory`,
+  validate    Validate cos-package.yaml in the current directory
+  install     Install a cos package from local path, GitHub, or URL`,
 	Version: "0.1.0",
 }
 
