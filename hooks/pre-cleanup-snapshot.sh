@@ -10,7 +10,7 @@ source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
-check_capability_level "pre-cleanup-snapshot" && exit 0
+check_capability_level "pre-cleanup-snapshot"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 METRICS_LOG="$PROJECT_DIR/.cognitive-os/metrics/capability-snapshots.jsonl"
