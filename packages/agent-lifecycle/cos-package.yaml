@@ -1,0 +1,22 @@
+name: "@luum/agent-lifecycle"
+version: "1.0.0"
+description: "Agent lifecycle hooks — prelaunch registration and post-completion checkpointing"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["agent", "lifecycle", "prelaunch", "checkpoint", "task-tracking"]
+cos_version: ">=0.1.0"
+
+provides:
+  - hook
+
+exports:
+  - source: "hooks/agent-prelaunch.sh"
+    type: hook
+    description: "Register agent tasks in active-tasks.json before launch"
+    hook_event: PreToolUse
+    hook_matcher: "Agent"
+  - source: "hooks/agent-checkpoint.sh"
+    type: hook
+    description: "Update task status on agent completion"
+    hook_event: PostToolUse
+    hook_matcher: "Agent"

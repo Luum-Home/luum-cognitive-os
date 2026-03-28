@@ -1,0 +1,24 @@
+name: "@luum/context-optimization"
+version: "1.0.0"
+description: "Context window optimization — metrics calibration, rotation, and contextual rule loading"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["context", "optimization", "metrics", "calibration", "rules"]
+cos_version: ">=0.1.0"
+
+provides:
+  - hook
+
+exports:
+  - source: "hooks/metrics-calibrator-trigger.sh"
+    type: hook
+    description: "Triggers metrics calibration based on accumulated data"
+    hook_event: PostToolUse
+  - source: "hooks/metrics-rotation.sh"
+    type: hook
+    description: "Rotates and archives old metrics files on session start"
+    hook_event: SessionStart
+  - source: "hooks/contextual-rule-loader.sh"
+    type: hook
+    description: "Loads relevant rules based on file context at session start"
+    hook_event: SessionStart
