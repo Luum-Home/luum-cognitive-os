@@ -123,6 +123,24 @@ sessions:
   max_concurrent: 10               # Maximum simultaneous sessions
 
 models:
+  gateways:
+    bifrost:
+      enabled: true
+      url: ${BIFROST_URL:-http://localhost:8081}
+      priority: 1              # Primary gateway (lowest latency)
+      supported_providers:
+        - openai
+        - anthropic
+        - google
+        - groq
+        - mistral
+        - cohere
+        - bedrock
+    litellm:
+      enabled: true
+      url: ${LITELLM_URL:-http://localhost:4000}
+      priority: 2              # Fallback gateway (feature-rich)
+      api_key_env: LITELLM_MASTER_KEY
   routing:
     default: sonnet
     design: opus
@@ -335,10 +353,10 @@ resources:
     skill_service_map:
       agent-kpis: [langfuse]
       observability-trace: [langfuse]
-      sdd-apply: [litellm]
-      sdd-verify: [litellm]
-      sdd-pipeline: [litellm]
-      model-routing: [litellm]
+      sdd-apply: [bifrost, litellm]
+      sdd-verify: [bifrost, litellm]
+      sdd-pipeline: [bifrost, litellm]
+      model-routing: [bifrost, litellm]
       guardrails-validator: [nemo-guardrails]
       content-policy: [nemo-guardrails]
       paperclip-sync: [paperclip]
@@ -346,6 +364,8 @@ resources:
       memu-sync: [memu]
       cognee-search: [cognee]
       jupyter-sandbox: [jupyter]
+      agent-bus: [valkey]
+      agent-communication: [valkey]
     services:
       langfuse:
         mode: on_demand
@@ -356,6 +376,9 @@ resources:
       paperclip:
         mode: on_demand
         idle_timeout_minutes: 30
+      bifrost:
+        mode: on_demand
+        idle_timeout_minutes: 30
       litellm:
         mode: always
       opik:
@@ -364,6 +387,9 @@ resources:
         config:
           api_url: "${OPIK_API_URL:-https://www.comet.com/opik/api}"
           project_name: "cognitive-os"
+      valkey:
+        mode: on_demand
+        idle_timeout_minutes: 30
       cognee:
         mode: on_demand
         idle_timeout_minutes: 15

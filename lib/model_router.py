@@ -1,10 +1,15 @@
-"""Dynamic Model Routing — Multi-provider model selection with capability benchmarks.
+"""Dynamic Model Routing — Multi-provider model selection with dual-gateway support.
 
 Provides intelligent model selection based on task requirements, budget constraints,
 and model capabilities. Supports both cloud and local models.
 
-When LITELLM_ENABLED=true and the selected model is non-Claude, the router
-can execute the call through the LiteLLM proxy instead of ClaudeExecutor.
+Dual-gateway architecture:
+- Bifrost (primary, 11us overhead): for OpenAI, Anthropic, Google, Groq, Mistral, Cohere
+- LiteLLM (fallback, feature-rich): for OpenRouter, local models, and all providers
+- ClaudeExecutor (direct): for Claude models via CLI
+
+When both gateways are enabled, the router tries Bifrost first for supported
+models, falls back to LiteLLM, then to ClaudeExecutor.
 """
 
 import logging
@@ -343,6 +348,56 @@ class RoutedResult:
     error: str = ""
 
 
+def _select_claude_fallback() -> str:
+    """Select the best Claude model as a fallback.
+
+    Returns:
+        Claude model identifier string.
+    """
+    claude_candidates = {
+        k: v for k, v in MODEL_CAPABILITIES.items() if "claude" in k.lower()
+    }
+    if claude_candidates:
+        return sorted(
+            claude_candidates.items(),
+            key=lambda x: (-x[1].get("reasoning", 0), _total_cost(x[1])),
+        )[0][0]
+    return "claude-sonnet-4"
+
+
+def _extract_response(response: Dict[str, Any], model: str, provider: str) -> RoutedResult:
+    """Extract a RoutedResult from an OpenAI-format response dict.
+
+    Args:
+        response: OpenAI-compatible response dict.
+        model: Model identifier used.
+        provider: Gateway name ("bifrost" or "litellm").
+
+    Returns:
+        RoutedResult with extracted text, tokens, and cost.
+    """
+    choices = response.get("choices", [])
+    text = ""
+    if choices:
+        text = choices[0].get("message", {}).get("content", "")
+
+    usage = response.get("usage", {})
+    tokens_in = usage.get("prompt_tokens", 0)
+    tokens_out = usage.get("completion_tokens", 0)
+
+    cost = estimate_cost(model, tokens_in, tokens_out)
+
+    return RoutedResult(
+        success=True,
+        text=text,
+        model=model,
+        tokens_in=tokens_in,
+        tokens_out=tokens_out,
+        cost_usd=cost,
+        provider=provider,
+    )
+
+
 def route_and_execute(
     task_type: str,
     messages: List[Dict[str, str]],
@@ -351,13 +406,13 @@ def route_and_execute(
     temperature: Optional[float] = None,
     max_tokens: Optional[int] = None,
 ) -> RoutedResult:
-    """Select the best model for a task and execute via the appropriate provider.
+    """Select the best model for a task and execute via the appropriate gateway.
 
-    When the selected model is non-Claude and LITELLM_ENABLED=true, the call
-    is routed through the LiteLLM proxy. Otherwise, a RoutedResult is returned
-    indicating that ClaudeExecutor should be used (the caller is responsible
-    for invoking it, since ClaudeExecutor requires a working directory and
-    CLI-specific configuration).
+    Dual-gateway routing:
+    1. Claude models -> signal ClaudeExecutor (caller handles execution)
+    2. Bifrost-supported models -> try Bifrost first (11us overhead)
+    3. Fall back to LiteLLM if Bifrost unavailable or unsupported
+    4. Fall back to Claude if both gateways are down
 
     Args:
         task_type: Task type for model selection (e.g., "sdd-propose").
@@ -370,20 +425,15 @@ def route_and_execute(
     Returns:
         RoutedResult with the response or routing guidance.
     """
-    from lib.litellm_client import (
-        LiteLLMClient,
-        LiteLLMError,
-        LiteLLMUnavailable,
-        is_litellm_available,
-        is_litellm_enabled,
-        is_model_litellm_routable,
-    )
+    from lib.gateway_selector import invalidate_health_cache, select_gateway
 
     model = select_model(task_type, budget_remaining=budget_remaining, prefer_local=prefer_local)
 
-    # If the model is Claude or LiteLLM is not enabled, signal that
-    # the caller should use ClaudeExecutor instead
-    if not is_model_litellm_routable(model) or not is_litellm_enabled():
+    # Use gateway selector to pick the best path
+    gateway = select_gateway(model)
+
+    # --- Claude path (direct CLI) ---
+    if gateway.name == "claude":
         return RoutedResult(
             success=False,
             text="",
@@ -392,76 +442,90 @@ def route_and_execute(
             error="Use ClaudeExecutor for this model",
         )
 
-    # Check LiteLLM availability
-    if not is_litellm_available():
-        logger.warning("LiteLLM enabled but proxy not available, falling back to Claude")
-        # Fall back to best Claude model for the task
-        claude_candidates = {
-            k: v for k, v in MODEL_CAPABILITIES.items() if "claude" in k.lower()
-        }
-        if claude_candidates:
-            fallback = sorted(
-                claude_candidates.items(),
-                key=lambda x: (-x[1].get("reasoning", 0), _total_cost(x[1])),
-            )[0][0]
-        else:
-            fallback = "claude-sonnet-4"
-        return RoutedResult(
-            success=False,
-            text="",
-            model=fallback,
-            provider="claude",
-            error="LiteLLM unavailable, falling back to Claude",
+    # --- Bifrost path ---
+    if gateway.name == "bifrost":
+        try:
+            from lib.bifrost_client import (
+                BifrostClient,
+                BifrostError,
+                BifrostUnavailable,
+                get_bifrost_model_name,
+            )
+
+            bifrost_model = get_bifrost_model_name(model)
+            client = BifrostClient()
+            response = client.chat_completion(
+                model=bifrost_model,
+                messages=messages,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            return _extract_response(response, model, "bifrost")
+
+        except (Exception,) as e:
+            # Bifrost failed — invalidate cache and fall through to LiteLLM
+            logger.warning("Bifrost failed for model %s: %s. Falling back to LiteLLM.", model, e)
+            invalidate_health_cache("bifrost")
+
+            # Try LiteLLM as fallback
+            fallback_gw = select_gateway(model, exclude=["bifrost"])
+            if fallback_gw.name == "litellm":
+                gateway = fallback_gw
+                # Fall through to LiteLLM execution below
+            else:
+                # Both gateways down, fall back to Claude
+                return RoutedResult(
+                    success=False,
+                    text="",
+                    model=_select_claude_fallback(),
+                    provider="claude",
+                    error=f"Bifrost failed ({e}), LiteLLM unavailable, falling back to Claude",
+                )
+
+    # --- LiteLLM path ---
+    if gateway.name == "litellm":
+        from lib.litellm_client import (
+            LiteLLMClient,
+            LiteLLMError,
+            LiteLLMUnavailable,
         )
 
-    # Execute through LiteLLM
-    try:
-        client = LiteLLMClient()
-        response = client.chat_completion(
-            model=model,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=max_tokens,
-        )
+        try:
+            client = LiteLLMClient()
+            response = client.chat_completion(
+                model=model,
+                messages=messages,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            return _extract_response(response, model, "litellm")
 
-        # Extract result from OpenAI-format response
-        choices = response.get("choices", [])
-        text = ""
-        if choices:
-            text = choices[0].get("message", {}).get("content", "")
+        except LiteLLMUnavailable as e:
+            logger.warning("LiteLLM became unavailable during execution: %s", e)
+            invalidate_health_cache("litellm")
+            return RoutedResult(
+                success=False,
+                text="",
+                model=_select_claude_fallback(),
+                provider="claude",
+                error=f"LiteLLM unavailable: {e}",
+            )
 
-        usage = response.get("usage", {})
-        tokens_in = usage.get("prompt_tokens", 0)
-        tokens_out = usage.get("completion_tokens", 0)
+        except LiteLLMError as e:
+            logger.error("LiteLLM error: %s", e)
+            return RoutedResult(
+                success=False,
+                text="",
+                model=model,
+                provider="litellm",
+                error=f"LiteLLM error: {e}",
+            )
 
-        cost = estimate_cost(model, tokens_in, tokens_out)
-
-        return RoutedResult(
-            success=True,
-            text=text,
-            model=model,
-            tokens_in=tokens_in,
-            tokens_out=tokens_out,
-            cost_usd=cost,
-            provider="litellm",
-        )
-
-    except LiteLLMUnavailable as e:
-        logger.warning("LiteLLM became unavailable during execution: %s", e)
-        return RoutedResult(
-            success=False,
-            text="",
-            model=model,
-            provider="litellm",
-            error=f"LiteLLM unavailable: {e}",
-        )
-
-    except LiteLLMError as e:
-        logger.error("LiteLLM error: %s", e)
-        return RoutedResult(
-            success=False,
-            text="",
-            model=model,
-            provider="litellm",
-            error=f"LiteLLM error: {e}",
-        )
+    # Should not reach here, but handle gracefully
+    return RoutedResult(
+        success=False,
+        text="",
+        model=_select_claude_fallback(),
+        provider="claude",
+        error=f"Unknown gateway: {gateway.name}",
+    )
