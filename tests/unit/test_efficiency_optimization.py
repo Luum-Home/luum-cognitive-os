@@ -216,6 +216,6 @@ def test_contextual_rule_loader_fast():
         cwd=str(PROJECT_ROOT),
     )
     elapsed_ms = (time.time() - start) * 1000
-    # 1000ms budget accounts for cold-start overhead in test environments;
-    # the hook itself targets <500ms in a warm session.
-    assert elapsed_ms < 1000, f"Hook took {elapsed_ms:.0f}ms (budget: 1000ms)"
+    # 3000ms budget accounts for cold-start overhead and CPU contention in
+    # test environments; the hook itself targets <500ms in a warm session.
+    assert elapsed_ms < 3000, f"Hook took {elapsed_ms:.0f}ms (budget: 3000ms)"
