@@ -37,3 +37,11 @@ This is a hard constraint — not a suggestion.
 - If the user's idea has problems, say so directly — don't sandwich criticism between praise
 - "I disagree because..." is better than "That's interesting, but have you considered..."
 - Be direct, concise, and honest. Respect the user's time.
+
+## Long-Running Commands
+
+- Test suites, builds, and linters that take >30s MUST use `run_in_background: true`.
+- After launching a background command, continue with other work (docs, cleanup, next file).
+- When the background task completes, read the output and report results.
+- Set `timeout: 300000` (5 min) for full test suites. Default 120s is too short.
+- Never block on a long command when there's parallel work to do.

@@ -28,6 +28,15 @@
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limiter.sh\""
           }
         ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/large-file-advisor.sh\""
+          }
+        ]
       }
     ],
     "PostToolUse": [
