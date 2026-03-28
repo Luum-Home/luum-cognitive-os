@@ -1,1 +1,0 @@
-../../rules/auto-repair.md

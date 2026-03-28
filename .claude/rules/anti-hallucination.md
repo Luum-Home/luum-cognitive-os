@@ -1,1 +1,0 @@
-../../rules/anti-hallucination.md

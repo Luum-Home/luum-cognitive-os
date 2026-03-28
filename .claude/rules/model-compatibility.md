@@ -1,1 +1,0 @@
-../../rules/model-compatibility.md
