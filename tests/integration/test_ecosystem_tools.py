@@ -239,6 +239,32 @@ class TestTrailOfBitsIntegration:
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# Repomix -- Repository Context Packing
+# ---------------------------------------------------------------------------
+
+
+class TestRepomixIntegration:
+    """Validate Repomix repository context packing integration."""
+
+    def test_rule_exists(self, project_root):
+        assert (project_root / "rules" / "repomix-integration.md").exists()
+
+    def test_config_present(self, project_root):
+        content = (project_root / "cognitive-os.yaml").read_text()
+        assert "repomix:" in content
+
+    def test_repomix_available(self):
+        if not shutil.which("npx"):
+            pytest.skip("npx not installed")
+        # Verify repomix can be invoked via npx
+
+
+# ---------------------------------------------------------------------------
+# Usage Monitor -- Claude Usage Reader
+# ---------------------------------------------------------------------------
+
+
 class TestUsageMonitorIntegration:
     """Validate Claude usage reader integration."""
 
@@ -257,3 +283,40 @@ class TestUsageMonitorIntegration:
         # Should return empty list, not crash
         result = read_usage(project_filter=str(tmp_path))
         assert isinstance(result, list)
+
+
+# ---------------------------------------------------------------------------
+# Session Parser -- Claude Session Metrics
+# ---------------------------------------------------------------------------
+
+
+class TestSessionParserIntegration:
+    """Validate session parser integration."""
+
+    def test_module_exists(self, project_root):
+        assert (project_root / "lib" / "session_parser.py").exists()
+
+    def test_imports(self):
+        from lib.session_parser import parse_session, list_sessions, get_session_metrics
+
+        assert callable(parse_session)
+        assert callable(list_sessions)
+        assert callable(get_session_metrics)
+
+    def test_list_sessions_handles_missing_dir(self):
+        from lib.session_parser import list_sessions
+
+        # Should return empty list, not crash
+        sessions = list_sessions(project_filter="/nonexistent/path")
+        assert isinstance(sessions, list)
+
+    def test_discover_subagents_handles_missing_dir(self, tmp_path):
+        from lib.session_parser import discover_subagents
+
+        result = discover_subagents(tmp_path / "nonexistent")
+        assert result == []
+
+    def test_format_session_report_callable(self):
+        from lib.session_parser import format_session_report
+
+        assert callable(format_session_report)
