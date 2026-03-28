@@ -10,6 +10,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - security: add supply_chain config section to cognitive-os.yaml (digest rotation policy)
 
 ### Added
+- docs: WISC framework analysis — context loading actively degrading performance, action plan
 - docs: complete component audit — 355 components classified (82 CORE, 273 PACKAGE across 23 target packages)
 - docs: package manager design — Brew model comparison with npm/cargo/go
 - docs: full integration audit — 38 external dependencies mapped for cos packaging
@@ -19,6 +20,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - docs: multi-tool architecture — adapter layer for OpenCode, Aider, Cursor support
 - docs: 7 ecosystem integrations documented (agnix, claude-code-action, parry, Trail of Bits, recall, Usage Monitor, hcom)
 - docs: 19 WATCH repos deep-analyzed — 22 extractable patterns prioritized (P0-P3)
+- docs: AI gateway architecture — OpenClaw comparison + gateway integration pattern
 
 ## [0.1.0] - 2026-03-27
 
