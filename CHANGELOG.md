@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- docs: package manager design — Brew model comparison with npm/cargo/go
 - docs: full integration audit — 38 external dependencies mapped for cos packaging
 - docs: plugin marketplace design -- cos install with 6-gate security audit pipeline
 - feat: dual-mode installer -- local source auto-detection + `--from` flag for `install.sh`
