@@ -1,1 +1,0 @@
-../../rules/phase-aware-agents.md

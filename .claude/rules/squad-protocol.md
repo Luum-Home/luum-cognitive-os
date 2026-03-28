@@ -1,1 +1,0 @@
-../../rules/squad-protocol.md

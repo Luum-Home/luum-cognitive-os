@@ -1,1 +1,0 @@
-../../rules/result-management.md

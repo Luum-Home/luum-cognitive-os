@@ -1,1 +1,0 @@
-../../rules/credential-management.md

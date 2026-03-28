@@ -1,1 +1,0 @@
-../../rules/cognitive-os-changes.md

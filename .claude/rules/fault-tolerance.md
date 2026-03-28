@@ -1,1 +1,0 @@
-../../rules/fault-tolerance.md
