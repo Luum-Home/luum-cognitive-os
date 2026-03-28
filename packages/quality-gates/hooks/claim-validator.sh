@@ -16,7 +16,7 @@ _LIB_DIR="$(dirname "$0")/_lib"
 source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
-check_capability_level "claim-validator" && exit 0
+check_capability_level "claim-validator"
 
 # Fallback if safe_jsonl_append is not defined
 if ! type safe_jsonl_append &>/dev/null 2>&1; then

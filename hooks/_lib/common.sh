@@ -86,7 +86,7 @@ get_phase() {
   if [ -f "$_CONFIG_FILE" ]; then
     local parsed
     parsed=$(grep -E '^\s*phase:' "$_CONFIG_FILE" 2>/dev/null | head -1 \
-      | sed 's/.*phase:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]')
+      | sed 's/.*phase:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]' || true)
     [ -n "$parsed" ] && echo "$parsed" && return 0
   fi
 
@@ -123,7 +123,7 @@ check_capability_level() {
   if [ -f "$_CONFIG_FILE" ]; then
     level=$(grep -A1 'model_capability:' "$_CONFIG_FILE" 2>/dev/null \
       | grep 'level:' | head -1 \
-      | sed 's/.*level:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]')
+      | sed 's/.*level:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]' || true)
   fi
   [ -z "$level" ] && level="3"
 

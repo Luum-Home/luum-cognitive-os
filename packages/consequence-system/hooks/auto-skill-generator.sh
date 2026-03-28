@@ -8,7 +8,7 @@ set -euo pipefail
 source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
-check_capability_level "auto-skill-generator" && exit 0
+check_capability_level "auto-skill-generator"
 
 SKILLS_DIR="${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/skills/auto-generated"
 METRICS_DIR="${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/metrics"

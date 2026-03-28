@@ -13,7 +13,7 @@ set -uo pipefail
 source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
-check_capability_level "consequence-evaluator" && exit 0
+check_capability_level "consequence-evaluator"
 
 INPUT=$(cat)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // ""')
