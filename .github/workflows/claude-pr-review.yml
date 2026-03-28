@@ -1,0 +1,32 @@
+name: Claude PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'hooks/**'
+      - 'rules/**'
+      - 'skills/**'
+      - 'lib/**'
+      - 'cognitive-os.yaml'
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          model: claude-sonnet-4-20250514
+          max_turns: 10
+          prompt: |
+            Review this PR focusing on:
+            1. Architecture compliance (clean architecture, correct layers)
+            2. Security implications (credential exposure, injection risks)
+            3. Quality gates (tests present, docs updated, no TODOs)
+            4. Scope proportionality (changes match task size)
+            Produce findings with severity: BLOCKER, CONCERN, SUGGESTION, QUESTION.
+            At least one finding is required.
