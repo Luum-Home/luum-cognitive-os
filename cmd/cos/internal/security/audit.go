@@ -1,9 +1,14 @@
 package security
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -270,6 +275,92 @@ func gateIcon(status GateStatus) string {
 	default:
 		return "[INFO]"
 	}
+}
+
+// ComputeFileHashes computes SHA256 hashes for all files in a directory.
+// Returns a map of relative_path -> sha256_hex_hash.
+// Skips .git/ directory and binary files.
+func ComputeFileHashes(dir string) (map[string]string, error) {
+	hashes := make(map[string]string)
+
+	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Get relative path.
+		rel, relErr := filepath.Rel(dir, path)
+		if relErr != nil {
+			return relErr
+		}
+
+		// Skip .git directory entirely.
+		if rel == ".git" || strings.HasPrefix(rel, ".git"+string(filepath.Separator)) {
+			if info.IsDir() {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+
+		// Skip directories.
+		if info.IsDir() {
+			return nil
+		}
+
+		// Compute SHA256.
+		f, openErr := os.Open(path)
+		if openErr != nil {
+			return fmt.Errorf("opening %s: %w", rel, openErr)
+		}
+		defer f.Close()
+
+		h := sha256.New()
+		if _, copyErr := io.Copy(h, f); copyErr != nil {
+			return fmt.Errorf("hashing %s: %w", rel, copyErr)
+		}
+
+		hashes[rel] = hex.EncodeToString(h.Sum(nil))
+		return nil
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("walking directory %s: %w", dir, err)
+	}
+
+	return hashes, nil
+}
+
+// VerifyFileHashes checks that all files match their expected hashes.
+// Returns list of mismatched or missing files.
+func VerifyFileHashes(dir string, expected map[string]string) ([]string, error) {
+	var mismatched []string
+
+	for relPath, expectedHash := range expected {
+		fullPath := filepath.Join(dir, relPath)
+
+		f, err := os.Open(fullPath)
+		if err != nil {
+			if os.IsNotExist(err) {
+				mismatched = append(mismatched, relPath+" (missing)")
+				continue
+			}
+			return nil, fmt.Errorf("opening %s: %w", relPath, err)
+		}
+
+		h := sha256.New()
+		if _, copyErr := io.Copy(h, f); copyErr != nil {
+			f.Close()
+			return nil, fmt.Errorf("hashing %s: %w", relPath, copyErr)
+		}
+		f.Close()
+
+		actualHash := hex.EncodeToString(h.Sum(nil))
+		if actualHash != expectedHash {
+			mismatched = append(mismatched, relPath+" (modified)")
+		}
+	}
+
+	return mismatched, nil
 }
 
 // ToAuditResult converts to the lockfile AuditResult format.

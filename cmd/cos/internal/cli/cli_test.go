@@ -267,6 +267,134 @@ func TestE2E_InstallSamplePackage(t *testing.T) {
 }
 
 // ---------------------------------------------------------------------------
+// E2E Tests — Supply Chain: Commit Hash in Lockfile
+// ---------------------------------------------------------------------------
+
+func TestE2E_InstallStoresCommitHash(t *testing.T) {
+	projectDir := createTestProject(t)
+
+	// Create a local test package inside a git repo so commit hash is captured.
+	pkgDir := t.TempDir()
+
+	// Initialize a git repo in the package directory.
+	gitInit := exec.Command("git", "init")
+	gitInit.Dir = pkgDir
+	if out, err := gitInit.CombinedOutput(); err != nil {
+		t.Fatalf("git init failed: %v\n%s", err, out)
+	}
+
+	// Write package files.
+	writeTestFileE2E(t, pkgDir, "cos-package.yaml", `name: test-commit-pkg
+version: 1.0.0
+description: Test package for commit hash
+license: MIT
+exports:
+  - source: SKILL.md
+    type: skill
+`)
+	writeTestFileE2E(t, pkgDir, "SKILL.md", "# Test Skill\n\nDoes things.\n")
+
+	// Commit the files so git rev-parse HEAD works.
+	gitAdd := exec.Command("git", "add", "-A")
+	gitAdd.Dir = pkgDir
+	if out, err := gitAdd.CombinedOutput(); err != nil {
+		t.Fatalf("git add failed: %v\n%s", err, out)
+	}
+	gitCommit := exec.Command("git", "commit", "-m", "initial commit")
+	gitCommit.Dir = pkgDir
+	gitCommit.Env = append(os.Environ(),
+		"GIT_AUTHOR_NAME=test", "GIT_AUTHOR_EMAIL=test@test.com",
+		"GIT_COMMITTER_NAME=test", "GIT_COMMITTER_EMAIL=test@test.com",
+	)
+	if out, err := gitCommit.CombinedOutput(); err != nil {
+		t.Fatalf("git commit failed: %v\n%s", err, out)
+	}
+
+	_, exitCode := runCos(t, projectDir, "install", pkgDir)
+	if exitCode != 0 {
+		t.Fatal("install failed")
+	}
+
+	lockData, err := os.ReadFile(filepath.Join(projectDir, "cos-lock.yaml"))
+	if err != nil {
+		t.Fatalf("failed to read lockfile: %v", err)
+	}
+
+	// Parse the lockfile and verify the commit is a 40-char hex string.
+	var lf map[string]interface{}
+	if err := yaml.Unmarshal(lockData, &lf); err != nil {
+		t.Fatalf("failed to parse lockfile YAML: %v", err)
+	}
+	pkgs, ok := lf["packages"].(map[string]interface{})
+	if !ok {
+		t.Fatal("expected packages key in lockfile")
+	}
+	for _, pkg := range pkgs {
+		pkgMap, ok := pkg.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		commit, ok := pkgMap["commit"].(string)
+		if !ok || commit == "" {
+			t.Error("expected non-empty commit in locked package")
+			continue
+		}
+		if len(commit) != 40 {
+			t.Errorf("expected 40-char commit hash, got %d chars: %q", len(commit), commit)
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+// E2E Tests — Supply Chain: File Hashes in Lockfile
+// ---------------------------------------------------------------------------
+
+func TestE2E_InstallStoresFileHashes(t *testing.T) {
+	projectDir := createTestProject(t)
+	samplePath := sampleSkillPath(t)
+
+	_, exitCode := runCos(t, projectDir, "install", samplePath)
+	if exitCode != 0 {
+		t.Fatal("install failed")
+	}
+
+	lockData, err := os.ReadFile(filepath.Join(projectDir, "cos-lock.yaml"))
+	if err != nil {
+		t.Fatalf("failed to read lockfile: %v", err)
+	}
+
+	// The lockfile should contain file_hashes section.
+	if !strings.Contains(string(lockData), "file_hashes:") {
+		t.Errorf("expected lockfile to contain 'file_hashes:' section:\n%s", string(lockData))
+	}
+
+	// Parse and verify file_hashes is non-empty.
+	var lf map[string]interface{}
+	if err := yaml.Unmarshal(lockData, &lf); err != nil {
+		t.Fatalf("failed to parse lockfile YAML: %v", err)
+	}
+	pkgs, ok := lf["packages"].(map[string]interface{})
+	if !ok {
+		t.Fatal("expected packages key in lockfile")
+	}
+	for _, pkg := range pkgs {
+		pkgMap, ok := pkg.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		fileHashes, ok := pkgMap["file_hashes"].(map[string]interface{})
+		if !ok || len(fileHashes) == 0 {
+			t.Error("expected non-empty file_hashes in locked package")
+			continue
+		}
+		// Verify at least cos-package.yaml is hashed.
+		if _, ok := fileHashes["cos-package.yaml"]; !ok {
+			t.Error("expected cos-package.yaml in file_hashes")
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
 // E2E Tests — List
 // ---------------------------------------------------------------------------
 

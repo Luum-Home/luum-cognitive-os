@@ -5,6 +5,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Security
+- security: pin all Docker images to SHA256 digests in docker-compose.cognitive-os.yml (supply chain defense)
+- security: add supply_chain config section to cognitive-os.yaml (digest rotation policy)
+
 ### Added
 - docs: package manager design — Brew model comparison with npm/cargo/go
 - docs: full integration audit — 38 external dependencies mapped for cos packaging

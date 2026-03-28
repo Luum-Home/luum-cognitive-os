@@ -15,6 +15,7 @@ import (
 // For local sources, copies the directory.
 // For GitHub sources, does a shallow git clone.
 // Returns the path to the fetched directory.
+// For GitHub sources, also populates source.Commit with the pinned commit hash.
 func Fetch(source *ResolvedSource) (string, error) {
 	if source == nil {
 		return "", fmt.Errorf("nil source")
@@ -24,7 +25,16 @@ func Fetch(source *ResolvedSource) (string, error) {
 	case SourceLocal:
 		return fetchLocal(source.LocalPath)
 	case SourceGitHub, SourceURL:
-		return fetchGitHub(source.Owner, source.Repo, source.Version)
+		dir, err := fetchGitHub(source.Owner, source.Repo, source.Version)
+		if err != nil {
+			return "", err
+		}
+		// Pin the exact commit hash for supply chain integrity.
+		commit, commitErr := captureGitCommit(dir)
+		if commitErr == nil {
+			source.Commit = commit
+		}
+		return dir, nil
 	default:
 		return "", fmt.Errorf("unsupported source type: %d", source.Type)
 	}
@@ -175,6 +185,25 @@ func findLatestTag(owner, repo string) (string, error) {
 	})
 
 	return tags[0], nil
+}
+
+// captureGitCommit returns the full SHA-1 commit hash of HEAD in the given directory.
+// This pins the exact commit for supply chain integrity, ensuring that tag
+// manipulation attacks cannot change the resolved content after fetch.
+func captureGitCommit(dir string) (string, error) {
+	cmd := exec.Command("git", "rev-parse", "HEAD")
+	cmd.Dir = dir
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	if err := cmd.Run(); err != nil {
+		return "", fmt.Errorf("git rev-parse HEAD failed in %s: %s: %w", dir, stderr.String(), err)
+	}
+	commit := strings.TrimSpace(stdout.String())
+	if len(commit) < 40 {
+		return "", fmt.Errorf("unexpected commit hash length: %q", commit)
+	}
+	return commit[:40], nil
 }
 
 // compareSemver compares two semver strings. Returns >0 if a > b, <0 if a < b, 0 if equal.

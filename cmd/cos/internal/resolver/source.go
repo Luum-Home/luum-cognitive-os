@@ -35,6 +35,7 @@ type ResolvedSource struct {
 	Repo      string // for SourceGitHub/URL
 	Version   string // tag/branch (empty = latest)
 	URL       string // full URL
+	Commit    string // pinned git commit hash (populated after Fetch)
 }
 
 // String returns a human-readable description of the source.
