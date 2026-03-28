@@ -1,0 +1,20 @@
+# Cognitive OS agnix configuration
+# See: https://github.com/agent-sh/agnix
+
+[config]
+severity = "warning"
+target = "claude-code"
+strict = false
+format = "text"
+
+[config.disabled_rules]
+# Cognitive OS uses custom conventions that may trigger false positives
+rules = []
+
+[config.exclude]
+patterns = [
+  ".cognitive-os/sessions/**",
+  ".cognitive-os/metrics/**",
+  ".cognitive-os/checkpoints/**",
+  "node_modules/**",
+]
