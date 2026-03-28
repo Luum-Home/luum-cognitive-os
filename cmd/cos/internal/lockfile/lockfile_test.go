@@ -195,6 +195,189 @@ func TestAddPackageOverwrites(t *testing.T) {
 	}
 }
 
+func TestGetPackage_NotFound(t *testing.T) {
+	lf := New()
+
+	pkg := lf.GetPackage("nonexistent")
+	if pkg != nil {
+		t.Error("expected GetPackage to return nil for nonexistent package")
+	}
+}
+
+func TestSaveAndLoad_WithAuditResult(t *testing.T) {
+	dir := t.TempDir()
+
+	original := New()
+	original.AddPackage("audit-pkg", LockedPackage{
+		Version: "1.0.0",
+		License: "MIT",
+		Audit: AuditResult{
+			License:   "pass",
+			Secrets:   "fail",
+			Injection: "warning",
+			Sandbox:   "skipped",
+			LastAudit: "2026-03-28T12:00:00Z",
+		},
+	})
+
+	if err := original.Save(dir); err != nil {
+		t.Fatalf("Save failed: %v", err)
+	}
+
+	loaded, err := Load(dir)
+	if err != nil {
+		t.Fatalf("Load failed: %v", err)
+	}
+
+	pkg := loaded.GetPackage("audit-pkg")
+	if pkg == nil {
+		t.Fatal("expected audit-pkg to exist")
+	}
+
+	if pkg.Audit.License != "pass" {
+		t.Errorf("expected audit.License 'pass', got %q", pkg.Audit.License)
+	}
+	if pkg.Audit.Secrets != "fail" {
+		t.Errorf("expected audit.Secrets 'fail', got %q", pkg.Audit.Secrets)
+	}
+	if pkg.Audit.Injection != "warning" {
+		t.Errorf("expected audit.Injection 'warning', got %q", pkg.Audit.Injection)
+	}
+	if pkg.Audit.Sandbox != "skipped" {
+		t.Errorf("expected audit.Sandbox 'skipped', got %q", pkg.Audit.Sandbox)
+	}
+	if pkg.Audit.LastAudit != "2026-03-28T12:00:00Z" {
+		t.Errorf("expected audit.LastAudit '2026-03-28T12:00:00Z', got %q", pkg.Audit.LastAudit)
+	}
+}
+
+func TestSaveAndLoad_WithExports(t *testing.T) {
+	dir := t.TempDir()
+
+	original := New()
+	original.AddPackage("export-pkg", LockedPackage{
+		Version: "2.0.0",
+		License: "Apache-2.0",
+		Exports: []LockedExport{
+			{Source: "SKILL.md", Type: "skill", Target: ".claude/skills/pkg/SKILL.md"},
+			{Source: "hooks/check.sh", Type: "hook", Target: ".cognitive-os/hooks/cos/pkg/check.sh", HookEvent: "PostToolUse", HookMatcher: "Bash"},
+			{Source: "rules/safety.md", Type: "rule", Target: ".claude/rules/cos/pkg/safety.md"},
+		},
+	})
+
+	if err := original.Save(dir); err != nil {
+		t.Fatalf("Save failed: %v", err)
+	}
+
+	loaded, err := Load(dir)
+	if err != nil {
+		t.Fatalf("Load failed: %v", err)
+	}
+
+	pkg := loaded.GetPackage("export-pkg")
+	if pkg == nil {
+		t.Fatal("expected export-pkg to exist")
+	}
+
+	if len(pkg.Exports) != 3 {
+		t.Fatalf("expected 3 exports, got %d", len(pkg.Exports))
+	}
+
+	// Verify hook export roundtrips with event/matcher.
+	hookExport := pkg.Exports[1]
+	if hookExport.HookEvent != "PostToolUse" {
+		t.Errorf("expected HookEvent 'PostToolUse', got %q", hookExport.HookEvent)
+	}
+	if hookExport.HookMatcher != "Bash" {
+		t.Errorf("expected HookMatcher 'Bash', got %q", hookExport.HookMatcher)
+	}
+}
+
+func TestSaveAndLoad_EmptyPackages(t *testing.T) {
+	dir := t.TempDir()
+
+	original := New()
+	// No packages added -- just the empty map.
+
+	if err := original.Save(dir); err != nil {
+		t.Fatalf("Save failed: %v", err)
+	}
+
+	loaded, err := Load(dir)
+	if err != nil {
+		t.Fatalf("Load failed: %v", err)
+	}
+
+	if loaded.Packages == nil {
+		t.Error("expected Packages map to be initialized (not nil)")
+	}
+	if len(loaded.Packages) != 0 {
+		t.Errorf("expected 0 packages, got %d", len(loaded.Packages))
+	}
+}
+
+func TestSaveAndLoad_WithDependencies(t *testing.T) {
+	dir := t.TempDir()
+
+	original := New()
+	original.AddPackage("dep-pkg", LockedPackage{
+		Version: "1.0.0",
+		License: "MIT",
+		Dependencies: map[string]string{
+			"@luum/core":   ">=1.0.0",
+			"@luum/safety": "^2.0.0",
+		},
+	})
+
+	if err := original.Save(dir); err != nil {
+		t.Fatalf("Save failed: %v", err)
+	}
+
+	loaded, err := Load(dir)
+	if err != nil {
+		t.Fatalf("Load failed: %v", err)
+	}
+
+	pkg := loaded.GetPackage("dep-pkg")
+	if pkg == nil {
+		t.Fatal("expected dep-pkg to exist")
+	}
+	if len(pkg.Dependencies) != 2 {
+		t.Errorf("expected 2 dependencies, got %d", len(pkg.Dependencies))
+	}
+	if pkg.Dependencies["@luum/core"] != ">=1.0.0" {
+		t.Errorf("expected core dep '>=1.0.0', got %q", pkg.Dependencies["@luum/core"])
+	}
+}
+
+func TestSaveAndLoad_ForcedFlag(t *testing.T) {
+	dir := t.TempDir()
+
+	original := New()
+	original.AddPackage("forced-pkg", LockedPackage{
+		Version: "1.0.0",
+		License: "AGPL-3.0",
+		Forced:  true,
+	})
+
+	if err := original.Save(dir); err != nil {
+		t.Fatalf("Save failed: %v", err)
+	}
+
+	loaded, err := Load(dir)
+	if err != nil {
+		t.Fatalf("Load failed: %v", err)
+	}
+
+	pkg := loaded.GetPackage("forced-pkg")
+	if pkg == nil {
+		t.Fatal("expected forced-pkg to exist")
+	}
+	if !pkg.Forced {
+		t.Error("expected Forced flag to be true after roundtrip")
+	}
+}
+
 func TestMultiplePackages(t *testing.T) {
 	lf := New()
 
