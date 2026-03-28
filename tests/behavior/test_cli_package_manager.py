@@ -335,11 +335,12 @@ class TestCLIInstall:
         assert "not found" in result.stderr
 
     def test_install_mcp_server_stub(self, tmp_path):
-        """'cos install mcp-server' should show the stub message."""
+        """'cos install mcp-server' should search the MCP registry."""
         project = _setup_minimal_project(tmp_path)
         result = _run_cli("install", "mcp-server", "some-server", cwd=str(project))
-        assert result.returncode == 0
-        assert "not yet implemented" in result.stdout
+        # The command searches the MCP registry; if not found, exits 1
+        combined = result.stdout + result.stderr
+        assert "MCP" in combined or "Searching" in combined or "registry" in combined.lower()
 
 
 # ── Uninstall ─────────────────────────────────────────────────────────

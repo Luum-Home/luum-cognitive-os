@@ -10,7 +10,7 @@ source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
-check_capability_level "trust-score-validator" && exit 0
+check_capability_level "trust-score-validator"
 
 # Read stdin and gate on Agent/task/delegate tool
 read_stdin_json
