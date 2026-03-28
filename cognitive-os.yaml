@@ -564,6 +564,12 @@ sources:
   #   path: /path/to/private-registry
   #   provides: [skills, rules, presets]
 
+tools:
+  repomix:
+    enabled: true
+    default_compress: true
+    max_tokens: 50000
+
 security:
   parry:
     enabled: false                   # Set to true after installing parry-guard
