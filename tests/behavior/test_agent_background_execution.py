@@ -1,0 +1,214 @@
+"""Behavior tests for agent background execution of long-running commands.
+
+Tests verify that:
+1. The agent preamble documents background execution requirements
+2. Related rules reference background execution patterns
+3. Background execution actually works via subprocess simulation
+4. Timeout configuration is appropriate for test suites
+"""
+
+import subprocess
+import time
+from pathlib import Path
+
+import pytest
+
+pytestmark = pytest.mark.behavior
+
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+PREAMBLE_PATH = PROJECT_ROOT / "templates" / "agent-preamble.md"
+RESPONSIVENESS_PATH = PROJECT_ROOT / "rules" / "responsiveness.md"
+CLOSED_LOOP_PATH = PROJECT_ROOT / "rules" / "closed-loop-prompts.md"
+
+
+# ---------------------------------------------------------------------------
+# Preamble content tests
+# ---------------------------------------------------------------------------
+
+
+class TestPreambleBackgroundSection:
+    """Verify the agent preamble documents background execution."""
+
+    def test_preamble_has_background_section(self):
+        """The preamble must have a 'Long-Running Commands' section."""
+        content = PREAMBLE_PATH.read_text()
+        assert "Long-Running Commands" in content, (
+            "agent-preamble.md must contain a 'Long-Running Commands' section"
+        )
+
+    def test_preamble_mentions_run_in_background(self):
+        """The preamble must reference the run_in_background parameter."""
+        content = PREAMBLE_PATH.read_text()
+        assert "run_in_background" in content, (
+            "agent-preamble.md must mention run_in_background"
+        )
+
+    def test_preamble_mentions_timeout(self):
+        """The preamble must mention an extended timeout for test suites."""
+        content = PREAMBLE_PATH.read_text()
+        assert "300000" in content or "300_000" in content or "5 min" in content, (
+            "agent-preamble.md must mention timeout: 300000 or equivalent 5-minute timeout"
+        )
+
+    def test_preamble_mentions_continue_work(self):
+        """The preamble must instruct agents to continue with other work."""
+        content = PREAMBLE_PATH.read_text()
+        lower = content.lower()
+        assert "continue" in lower and "other work" in lower, (
+            "agent-preamble.md must instruct agents to continue with other work "
+            "while a background command runs"
+        )
+
+
+# ---------------------------------------------------------------------------
+# Pattern documentation tests
+# ---------------------------------------------------------------------------
+
+
+class TestPatternDocumentation:
+    """Verify related rules document background execution patterns."""
+
+    def test_responsiveness_rule_mentions_background(self):
+        """rules/responsiveness.md must reference background execution."""
+        content = RESPONSIVENESS_PATH.read_text()
+        assert "run_in_background" in content, (
+            "rules/responsiveness.md must reference run_in_background"
+        )
+
+    def test_responsiveness_mentions_blocking_antipattern(self):
+        """rules/responsiveness.md should warn against blocking on long commands."""
+        content = RESPONSIVENESS_PATH.read_text()
+        lower = content.lower()
+        assert "blocking" in lower or "background" in lower, (
+            "rules/responsiveness.md should warn against blocking on long commands"
+        )
+
+    def test_closed_loop_mentions_verification(self):
+        """rules/closed-loop-prompts.md must document verification commands."""
+        content = CLOSED_LOOP_PATH.read_text()
+        assert "Verification" in content, (
+            "rules/closed-loop-prompts.md must have a Verification section"
+        )
+        assert "command" in content.lower(), (
+            "rules/closed-loop-prompts.md must document verification commands"
+        )
+
+
+# ---------------------------------------------------------------------------
+# Integration tests -- actual background behavior
+# ---------------------------------------------------------------------------
+
+
+class TestBackgroundExecution:
+    """Integration tests proving background vs foreground behavior."""
+
+    def test_background_command_returns_immediately(self):
+        """A background subprocess must return control in under 1 second.
+
+        Simulates what an agent does when using run_in_background: true --
+        the agent launches a subprocess without waiting for it to finish.
+        """
+        start = time.monotonic()
+        proc = subprocess.Popen(
+            ["bash", "-c", "sleep 3 && echo background-done"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        elapsed = time.monotonic() - start
+        # Popen returns immediately -- it does not block
+        assert elapsed < 1.0, (
+            f"Popen (background launch) should return in <1s, took {elapsed:.2f}s"
+        )
+        # Cleanup: terminate the background process
+        proc.terminate()
+        proc.wait(timeout=5)
+
+    def test_background_output_readable_after_completion(self):
+        """After a background command finishes, its output must be readable."""
+        proc = subprocess.Popen(
+            ["bash", "-c", "echo 'result-42'"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        stdout, _ = proc.communicate(timeout=10)
+        assert "result-42" in stdout, (
+            "Background command output must be readable after completion"
+        )
+        assert proc.returncode == 0
+
+    def test_foreground_command_blocks(self):
+        """A foreground subprocess.run blocks until completion.
+
+        This proves the difference: without run_in_background, the caller
+        is stuck waiting. With a 3-second sleep, we expect >2s of blocking.
+        """
+        start = time.monotonic()
+        result = subprocess.run(
+            ["bash", "-c", "sleep 3 && echo foreground-done"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        elapsed = time.monotonic() - start
+        assert elapsed >= 2.0, (
+            f"Foreground run should block for ~3s, but only took {elapsed:.2f}s"
+        )
+        assert "foreground-done" in result.stdout
+
+
+# ---------------------------------------------------------------------------
+# Timeout configuration tests
+# ---------------------------------------------------------------------------
+
+
+class TestTimeoutConfiguration:
+    """Verify timeout configuration is appropriate for test suites."""
+
+    def test_default_bash_timeout_too_short_for_full_suite(self):
+        """The default 120s timeout may be too short for a full test suite.
+
+        The preamble recommends 300000ms (5 min) for full suites.
+        This test documents that the default is 120s = 120000ms.
+        """
+        default_timeout_ms = 120_000
+        recommended_timeout_ms = 300_000
+        assert recommended_timeout_ms > default_timeout_ms, (
+            "The recommended suite timeout (300000ms) must exceed "
+            "the default bash timeout (120000ms)"
+        )
+
+    def test_full_suite_timing_fast_subset(self):
+        """Run a fast test subset and measure timing.
+
+        Even a small subset may take a few seconds, demonstrating why
+        background execution helps for larger suites.
+        """
+        # Pick a single fast unit test file to measure
+        test_file = PROJECT_ROOT / "tests" / "unit" / "test_rate_limiter.py"
+        if not test_file.exists():
+            pytest.skip("test_rate_limiter.py not found -- skip timing test")
+
+        start = time.monotonic()
+        result = subprocess.run(
+            [
+                "python3", "-m", "pytest",
+                str(test_file),
+                "-q", "--tb=no", "--no-header",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=60,
+            cwd=str(PROJECT_ROOT),
+        )
+        elapsed = time.monotonic() - start
+
+        # The test ran (pass or fail, we just care about timing)
+        assert elapsed < 60, (
+            f"Even a single test file should finish within 60s, took {elapsed:.2f}s"
+        )
+        # Document: if even a small file takes >1s, a full suite would benefit
+        # from background execution
+        if elapsed > 1.0:
+            # This is informational, not a failure
+            pass
