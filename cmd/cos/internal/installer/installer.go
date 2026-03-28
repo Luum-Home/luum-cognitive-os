@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"luum-agent-os/cmd/cos/internal/lockfile"
@@ -58,6 +59,11 @@ func RunInstall(spec string, projectRoot string, opts InstallOptions) (*InstallR
 
 	result.Package = m.Name
 	result.Version = m.Version
+
+	// Step 3b: Check cos_version compatibility.
+	if warn := CheckCosVersionCompat(m, projectRoot); warn != "" {
+		result.Message = warn
+	}
 
 	// Step 4: Dry run check.
 	if opts.DryRun {
@@ -348,4 +354,37 @@ func runScript(script, workDir string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
+}
+
+// readLocalVersion reads the VERSION file from projectRoot and returns its
+// trimmed content, or empty string if unavailable.
+func readLocalVersion(projectRoot string) string {
+	data, err := os.ReadFile(filepath.Join(projectRoot, "VERSION"))
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSpace(string(data))
+}
+
+// CheckCosVersionCompat checks whether the package's cos_version constraint
+// is satisfied by the local OS version. Returns a warning message if
+// incompatible, or empty string if compatible or no constraint is set.
+func CheckCosVersionCompat(m *manifest.Manifest, projectRoot string) string {
+	if m.CosVersion == "" {
+		return ""
+	}
+
+	localVersion := readLocalVersion(projectRoot)
+	if localVersion == "" {
+		return fmt.Sprintf("Warning: package requires cos_version %s but VERSION file not found", m.CosVersion)
+	}
+
+	if !manifest.MatchesConstraint(localVersion, m.CosVersion) {
+		return fmt.Sprintf(
+			"Warning: package requires cos_version %s but local OS version is %s — package may not work correctly",
+			m.CosVersion, localVersion,
+		)
+	}
+
+	return ""
 }

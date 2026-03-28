@@ -214,6 +214,62 @@ func TestSearchByType_FiltersCorrectly(t *testing.T) {
 	}
 }
 
+func TestSearchGitHub_SendsAuthToken(t *testing.T) {
+	resp := sampleSearchResponse()
+	var receivedAuth string
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		receivedAuth = r.Header.Get("Authorization")
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
+	}))
+	defer server.Close()
+
+	original := HTTPClient
+	HTTPClient = &mockHTTPClient{server: server}
+	defer func() { HTTPClient = original }()
+
+	// Set GITHUB_TOKEN.
+	t.Setenv("GITHUB_TOKEN", "test-token-123")
+
+	_, err := SearchGitHub("security", 10)
+	if err != nil {
+		t.Fatalf("SearchGitHub error: %v", err)
+	}
+
+	if receivedAuth != "Bearer test-token-123" {
+		t.Errorf("Authorization header = %q, want %q", receivedAuth, "Bearer test-token-123")
+	}
+}
+
+func TestSearchGitHub_NoAuthWithoutToken(t *testing.T) {
+	resp := sampleSearchResponse()
+	var receivedAuth string
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		receivedAuth = r.Header.Get("Authorization")
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
+	}))
+	defer server.Close()
+
+	original := HTTPClient
+	HTTPClient = &mockHTTPClient{server: server}
+	defer func() { HTTPClient = original }()
+
+	// Ensure GITHUB_TOKEN is unset.
+	t.Setenv("GITHUB_TOKEN", "")
+
+	_, err := SearchGitHub("security", 10)
+	if err != nil {
+		t.Fatalf("SearchGitHub error: %v", err)
+	}
+
+	if receivedAuth != "" {
+		t.Errorf("Authorization header = %q, want empty (no token set)", receivedAuth)
+	}
+}
+
 func TestFilterByLicense_FiltersCorrectly(t *testing.T) {
 	results := []SearchResult{
 		{Name: "@a/b", License: "MIT"},
