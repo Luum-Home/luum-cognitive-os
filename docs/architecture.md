@@ -292,6 +292,40 @@ Persistent agent definitions with specific roles:
 
 ---
 
+## Multi-Tool Adapter Architecture
+
+Cognitive OS is designed for portability across AI coding tools. The adapter layer translates tool-specific formats (hooks, settings, rules) while the core remains tool-agnostic.
+
+```
+                    Cognitive OS
+                         |
+          +--------------+--------------+
+          |              |              |
+     Claude Code     OpenCode      Aider/Cursor
+          |              |              |
+     adapters/cc    adapters/oc    adapters/cursor
+          |              |              |
+          +--------------+--------------+
+                         |
+              +----------+----------+
+              |          |          |
+          Python libs   MCP     Docker infra
+          (agnostic)  (universal) (agnostic)
+```
+
+### Portability Layers
+
+| Layer | Portable? | Notes |
+|-------|-----------|-------|
+| **Python libs** (lib/*.py) | Yes | No tool-specific code. model_router, cost_dashboard, singularity all work with any caller. |
+| **MCP servers** (Engram, Context7) | Yes | MCP is a universal protocol. Works with Claude Code, Cursor, Continue, Cline. |
+| **Docker infrastructure** | Yes | docker-compose is tool-agnostic. |
+| **Hooks** (hooks/*.sh) | No -- adapter needed | Claude Code hooks format. Adapters translate to other tool formats. |
+| **Rules** (rules/*.md) | Partially | Markdown is universal but .claude/rules/ path is Claude Code-specific. Adapters map to .cursorrules, .aider, etc. |
+| **Skills** (skills/*/SKILL.md) | Partially | Content is universal but invocation mechanism varies by tool. |
+
+---
+
 ## Data Flow
 
 ### Write paths (data enters the system)
