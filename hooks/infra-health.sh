@@ -177,7 +177,31 @@ if [ -n "$missing_services" ]; then
   fi
 fi
 
-# ---- 8. Log to metrics ----
+# ---- 8. Smart infrastructure (on-demand service management) ----
+smart_start_enabled=""
+if [ -f "$CONFIG_FILE" ]; then
+  smart_start_enabled=$(grep 'smart_start:' "$CONFIG_FILE" 2>/dev/null | head -1 | sed 's/.*smart_start:[[:space:]]*//' | tr -d '[:space:]')
+fi
+
+if [ "$smart_start_enabled" = "true" ] && command -v python3 >/dev/null 2>&1 && [ -n "$expected_services" ]; then
+  echo "  Smart infrastructure enabled:"
+  while IFS=: read -r svc_name svc_mode; do
+    [ -z "$svc_name" ] && continue
+    if [ "$svc_mode" = "always" ]; then
+      python3 -c "
+import sys
+sys.path.insert(0, '$PROJECT_DIR/lib')
+from smart_infra import ensure_service
+ensure_service('$svc_name')
+" 2>/dev/null || true
+      echo "    $svc_name: ensured (always-on)"
+    else
+      echo "    $svc_name: on-demand (will start when needed)"
+    fi
+  done <<< "$expected_services"
+fi
+
+# ---- 9. Log to metrics ----
 echo "{\"timestamp\":\"$TIMESTAMP\",\"docker\":true,\"running\":$running_count,\"expected\":$expected_count,\"missing\":\"${missing_services}\",\"action\":\"$action\"}" >> "$METRICS_FILE"
 
 exit 0
