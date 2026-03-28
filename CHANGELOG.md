@@ -3,6 +3,11 @@
 All notable changes to Cognitive OS are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+- feat: dual-mode installer -- local source auto-detection + `--from` flag for `install.sh`
+
 ## [0.1.0] - 2026-03-27
 
 ### Added
