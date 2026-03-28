@@ -362,3 +362,53 @@ AutoMaker is a Kanban-based dev studio that launches Claude Code sessions in git
 - AutoMaker is the only tool with a "reverse" integration pattern — it consumes us, we don't consume it
 - No `lib/` client needed — the integration is via hooks, not API
 - The bridge skill ensures the project has the right `.claude/` structure for AutoMaker to discover
+
+---
+
+## 18. Claude Code Ecosystem
+
+Tools, extensions, and frameworks built around Claude Code. Evaluated for integration into Cognitive OS infrastructure.
+
+### ADOPT
+
+| Tool | License | Stars | What it does | Integration plan |
+|------|---------|-------|--------------|------------------|
+| **agnix** | Apache-2.0 | 112 | Linter for CLAUDE.md, SKILL.md, hooks, MCP configs | Add as pre-commit validator for our 72 skills and 55 rules |
+| **claude-code-action** | MIT | 6.7K | Anthropic's official GitHub Action for Claude Code in CI/CD | Integrate into our GitHub Actions for PR review + issue triage |
+| **Claude Code Usage Monitor** | MIT | 7.2K | Real-time terminal token monitor with ML predictions | Complement our cost-tracking with visual terminal UI |
+| **hcom (claude-hook-comms)** | MIT | 170 | Cross-terminal agent communication via hooks | Alternative to Valkey bus for simpler multi-session coordination |
+| **parry** | MIT | 27 | Rust prompt injection scanner (DeBERTa/ONNX) | Strengthen content-policy hook and agent-security defenses |
+| **recall** | MIT | — | Full-text search and resume for Claude Code sessions | Fill Engram gap — searchable raw conversation history |
+| **Trail of Bits Skills** | CC-BY-SA-4.0 | 4K | Security audit skills from top security firm | Complement security-scanning and pentesting-readiness |
+
+### WATCH
+
+| Tool | License | Stars | What it does | What to learn |
+|------|---------|-------|--------------|---------------|
+| **Compound Engineering** | MIT | 11.3K | Brainstorm/plan/work/review/compound workflow | "Compounding" concept, ideate/brainstorm phases |
+| **SuperClaude** | MIT | 22K | Configuration framework with cognitive personas | Persona system, command structure patterns |
+| **Everything Claude Code** | MIT | 113.8K | Complete agent harness with skills, memory, security | Battle-tested patterns from 10+ months daily use |
+| **Ruflo/claude-flow** | MIT | 27.7K | Multi-agent swarm orchestration | Swarm patterns, AgentDB controllers |
+| **OpenAI Swarm** | MIT | 21K | Educational multi-agent framework | Agent handoff architecture reference |
+| **Repomix** | MIT | 22.7K | Pack repo into single AI-friendly file | Context packing for eval-repo/deep-research |
+| **Context7** | MIT | 50.9K | Library docs via MCP | Deeper MCP integration (already referenced) |
+| **cc-sessions** | MIT | 1.6K | Session management with todo validation | Scope creep prevention patterns |
+| **Claude Code System Prompts** | MIT | 6.9K | Internal system prompt documentation | Claude Code internals reference |
+| **tweakcc** | MIT | 1.5K | Customize system prompts and toolsets | Deeper customization layer ideas |
+| **SPARC** | Apache-2.0 | 442 | Spec-driven AI development framework | Alternative spec methodology to study |
+| **AgentSys** | MIT | 662 | Modular runtime: 19 plugins, 47 agents | Plugin marketplace architecture |
+| **cc-devops-skills** | Apache-2.0 | 141 | DevOps skill pack (CI/CD, infra, monitoring) | Cherry-pick DevOps skills we lack |
+| **claude-esp** | MIT | — | Stream Claude Code hidden output to terminal | Debugging/observability patterns |
+| **Crystal** | MIT | — | Desktop app for parallel Claude Code sessions | Parallel worktree management UX |
+| **RIPER Workflow** | MIT | — | Research/Innovate/Plan/Execute/Review workflow | Simplified workflow for adaptive-bypass |
+| **Vibe-Log** | MIT | — | Session analysis and logging CLI | Session analytics patterns |
+| **MyCoder** | MIT | 565 | CLI-based multi-agent coding system | CLI patterns for agent orchestration |
+| **Continue** | Apache-2.0 | — | Source-controlled AI checks for CI | CI-enforcement of AI rules |
+
+### Notes
+- 7 tools in ADOPT ring have clear integration paths with existing Cognitive OS infrastructure.
+- 19 tools in WATCH ring are monitored for patterns and ideas, not direct integration.
+- 5 additional tools were evaluated but blocked by license policy (AGPL/GPL) — see `docs/blocked-tools.md`.
+- agnix is the only linter purpose-built for Claude Code configuration files.
+- parry fills a gap in our prompt injection defenses with a dedicated ML-based scanner.
+- Trail of Bits Skills bring professional security audit expertise as reusable skills.
