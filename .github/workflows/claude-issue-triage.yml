@@ -1,0 +1,24 @@
+name: Claude Issue Triage
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          model: claude-sonnet-4-20250514
+          max_turns: 5
+          prompt: |
+            Triage this issue:
+            1. Classify complexity: trivial, small, medium, large, critical
+            2. Suggest labels: bug, feature, docs, chore, security
+            3. Estimate effort in hours
+            4. Identify affected components (hooks, rules, skills, lib, docs)
+            Reply with your triage as a comment.
