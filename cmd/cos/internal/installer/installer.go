@@ -123,16 +123,27 @@ func RunInstall(spec string, projectRoot string, opts InstallOptions) (*InstallR
 	lockedExports := buildLockedExports(targets)
 	integrity := computeManifestIntegrity(fetchedDir)
 
+	// Use commit hash from resolver (populated during Fetch for GitHub sources).
+	// Fall back to extracting from the fetched directory if not set.
+	commit := source.Commit
+	if commit == "" {
+		commit = getGitCommit(fetchedDir)
+	}
+
+	// Compute per-file SHA256 hashes for supply chain integrity verification.
+	fileHashes, _ := security.ComputeFileHashes(fetchedDir)
+
 	pkg := lockfile.LockedPackage{
 		Version:     m.Version,
 		Source:      source.Raw,
 		SourceType:  sourceTypeName(source.Type),
 		Resolved:    resolvedPath(source),
-		Commit:      getGitCommit(fetchedDir),
+		Commit:      commit,
 		Integrity:   integrity,
 		License:     m.License,
 		InstalledAt: time.Now().UTC().Format(time.RFC3339),
 		Exports:     lockedExports,
+		FileHashes:  fileHashes,
 		Audit:       audit.ToAuditResult(),
 		Forced:      audit.Forced,
 	}
