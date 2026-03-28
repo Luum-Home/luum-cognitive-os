@@ -59,6 +59,17 @@ pending -> in_progress -> completed
                        -> failed -> (re-launch) -> in_progress
 ```
 
+## Task Claiming
+
+When multiple agents could work on the same task, agents MUST claim tasks before starting:
+
+1. **Claim**: Set `claimed_by: {agent_id}` and `claimed_at: {ISO timestamp}` in the task entry
+2. **Check before claim**: If `claimed_by` is already set AND the claiming agent is alive (PID check), skip the task
+3. **Release on completion**: Clear `claimed_by` when task completes or fails
+4. **Auto-release on timeout**: Claims expire after `claim_timeout_seconds` (default: 300)
+
+This prevents duplicate work when the orchestrator launches multiple agents or when concurrent sessions work on the same project.
+
 ## Enriching task metadata
 
 When the orchestrator launches a sub-agent for a task that produces known outputs, it should update the task entry in active-tasks.json BEFORE launch by writing directly:
