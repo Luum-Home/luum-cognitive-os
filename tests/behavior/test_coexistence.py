@@ -180,6 +180,28 @@ class TestMigrationFromFlatSymlinks:
         assert external_link.is_symlink()
         assert external_link.exists()
 
+    def test_old_relative_symlinks_removed(self, tmp_path):
+        """Bug fix: old symlinks used relative paths (../../rules/X.md) but
+        cleanup only matched absolute paths. Verify relative symlinks are
+        also cleaned up after the fix."""
+        project = _setup_cos_project(tmp_path)
+
+        rules_dir = project / ".claude" / "rules"
+        rules_dir.mkdir(parents=True, exist_ok=True)
+        old_link = rules_dir / "trust-score.md"
+        # Create relative symlink — this is what self-install.sh historically created
+        old_link.symlink_to(Path("../../rules/trust-score.md"))
+        assert old_link.is_symlink()
+
+        _run_hook(str(project))
+
+        # Old relative symlink must be removed
+        assert not old_link.exists(), (
+            "Relative symlink ../../rules/trust-score.md was not cleaned up"
+        )
+        # New namespaced symlink created
+        assert (rules_dir / "cos" / "trust-score.md").is_symlink()
+
     def test_double_run_idempotent_after_migration(self, tmp_path):
         project = _setup_cos_project(tmp_path)
 

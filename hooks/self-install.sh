@@ -172,9 +172,11 @@ if [ -d "$old_rules_dir" ]; then
   for link in "$old_rules_dir"/*.md; do
     [ -L "$link" ] || continue
     target=$(readlink "$link" 2>/dev/null || true)
-    # Check if symlink points into our rules/ directory
+    # Check if symlink points into our rules/ directory (absolute or relative).
+    # Relative symlinks like ../../rules/X.md may chain through to packages/,
+    # so realpath would miss them.  Match both forms explicitly.
     case "$target" in
-      "$PROJECT_DIR/rules/"*)
+      "$PROJECT_DIR/rules/"* | ../../rules/*)
         rm -f "$link"
         removed=$((removed + 1))
         ;;
