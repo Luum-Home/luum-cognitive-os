@@ -18,7 +18,7 @@ services:
   # Langfuse PostgreSQL — Database for Langfuse
   # ---------------------------------------------------------------------------
   langfuse-pg:
-    image: postgres:17-alpine
+    image: postgres:17-alpine@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1  # pinned 2026-03-28
     container_name: cognitive-os-langfuse-pg
     restart: unless-stopped
     environment:
@@ -43,7 +43,7 @@ services:
   # Langfuse Valkey — Cache/queue for Langfuse worker (Redis-compatible, BSD-3)
   # ---------------------------------------------------------------------------
   langfuse-valkey:
-    image: valkey/valkey:8-alpine
+    image: valkey/valkey:8-alpine@sha256:cb3339abbd6e18942cd8ac3349f0c371a82ba5b6204b242563ba299e7956cbd0  # pinned 2026-03-28
     container_name: cognitive-os-langfuse-valkey
     restart: unless-stopped
     command: >
@@ -65,7 +65,7 @@ services:
   # Langfuse ClickHouse — Analytics storage for Langfuse
   # ---------------------------------------------------------------------------
   langfuse-clickhouse:
-    image: clickhouse/clickhouse-server
+    image: clickhouse/clickhouse-server@sha256:80fdbc9e6ebcb2cc381712744aef3346565fba30a1452570f6d2f4b6b9492bf4  # pinned 2026-03-28
     container_name: cognitive-os-langfuse-clickhouse
     restart: unless-stopped
     user: "101:101"
@@ -94,7 +94,7 @@ services:
   #        then set accessKey/secretKey to match LANGFUSE_S3_ACCESS_KEY/SECRET_KEY
   # ---------------------------------------------------------------------------
   langfuse-seaweedfs:
-    image: chrislusf/seaweedfs:latest
+    image: chrislusf/seaweedfs:latest@sha256:203e6f6f5a593a8335fb6c6b440005069595b4273216528ef2a4d3d1ab0a0ed4  # pinned 2026-03-28 — CRITICAL: was :latest (mutable)
     container_name: cognitive-os-langfuse-seaweedfs
     restart: unless-stopped
     entrypoint: ["/bin/sh", "/opt/seaweedfs/docker-entrypoint.sh"]
@@ -125,7 +125,7 @@ services:
   # Langfuse Worker — Background job processor
   # ---------------------------------------------------------------------------
   langfuse-worker:
-    image: langfuse/langfuse-worker:3
+    image: langfuse/langfuse-worker:3@sha256:0e7a6d86db72e804f8422af2b15d9b443aa67d33a5193941ddf7b5babd4fd518  # pinned 2026-03-28
     container_name: cognitive-os-langfuse-worker
     restart: unless-stopped
     depends_on:
@@ -185,7 +185,7 @@ services:
   # UI: http://localhost:3100
   # ---------------------------------------------------------------------------
   langfuse-web:
-    image: langfuse/langfuse:3
+    image: langfuse/langfuse:3@sha256:018a38c957d8cb51094bd28154a8cb0b0fb587e5bf4e00df75602b7ebe7933fa  # pinned 2026-03-28
     container_name: cognitive-os-langfuse
     restart: unless-stopped
     depends_on:
@@ -222,7 +222,7 @@ services:
   # https://github.com/BerriAI/litellm
   # ---------------------------------------------------------------------------
   litellm:
-    image: ghcr.io/berriai/litellm:main-stable
+    image: ghcr.io/berriai/litellm:main-stable@sha256:9e1536c6a9219519f024f221706b20b012ca5176988164798adc5c7fe011e5d5  # pinned 2026-03-28
     container_name: cognitive-os-litellm
     restart: unless-stopped
     ports:
@@ -273,7 +273,7 @@ services:
   # Paperclip PostgreSQL — Database for Paperclip agent coordination
   # ---------------------------------------------------------------------------
   paperclip-pg:
-    image: postgres:17-alpine
+    image: postgres:17-alpine@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1  # pinned 2026-03-28
     container_name: cognitive-os-paperclip-pg
     restart: unless-stopped
     environment:
@@ -299,7 +299,7 @@ services:
   # ---------------------------------------------------------------------------
   paperclip:
     container_name: cognitive-os-paperclip
-    image: tuyenvd/paperclip:latest
+    image: tuyenvd/paperclip:latest@sha256:efb90cc740cb3d990258b233d9fb5e95de26c181288653b3a26318820144db98  # pinned 2026-03-28 — was :latest (mutable)
     restart: unless-stopped
     ports:
       - "${PAPERCLIP_PORT:-3200}:3100"
@@ -344,7 +344,7 @@ services:
   # 3-layer hierarchical memory: Resource → Item → Category
   # ---------------------------------------------------------------------------
   memu:
-    image: python:3.13-slim
+    image: python:3.13-slim@sha256:739e7213785e88c0f702dcdc12c0973afcbd606dbf021a589cab77d6b00b579d  # pinned 2026-03-28
     container_name: cognitive-os-memu
     restart: unless-stopped
     working_dir: /app
@@ -379,7 +379,7 @@ services:
   # COS hooks fire automatically when AutoMaker launches Claude sessions
   # ---------------------------------------------------------------------------
   automaker:
-    image: ghcr.io/automaker-org/automaker:latest
+    image: ghcr.io/automaker-org/automaker:latest  # TODO: pin digest — registry denied access, verify and pin before production
     container_name: cognitive-os-automaker
     restart: unless-stopped
     ports:
@@ -405,7 +405,7 @@ services:
   # UI: http://localhost:8888 (token: cognitive-os-dev)
   # ---------------------------------------------------------------------------
   jupyter:
-    image: jupyter/scipy-notebook
+    image: jupyter/scipy-notebook@sha256:fca4bcc9cbd49d9a15e0e4df6c666adf17776c950da9fa94a4f0a045d5c4ad33  # pinned 2026-03-28 — was untagged (implicit :latest)
     container_name: cognitive-os-jupyter
     restart: unless-stopped
     ports:
@@ -427,7 +427,7 @@ services:
   # Opik — LLM Observability, Tracing & Evaluation (ADOPT)
   # ---------------------------------------------------------------------------
   opik-backend:
-    image: ghcr.io/comet-ml/opik/opik-backend:latest
+    image: ghcr.io/comet-ml/opik/opik-backend:latest@sha256:60d310f4180f05b09c1cd4b1bcf2f94025c8b5ae4644e969efc12551397ed70a  # pinned 2026-03-28 — was :latest (mutable)
     container_name: cognitive-os-opik-backend
     restart: unless-stopped
     environment:
@@ -460,7 +460,7 @@ services:
       - cognitive-os-network
 
   opik-mysql:
-    image: mysql:8.4
+    image: mysql:8.4@sha256:da906917ca4ace3ba55538b7c2ee97a9bc865ef14a4b6920b021f0249d603f3d  # pinned 2026-03-28
     container_name: cognitive-os-opik-mysql
     restart: unless-stopped
     environment:
@@ -482,7 +482,7 @@ services:
       - cognitive-os-network
 
   opik-frontend:
-    image: ghcr.io/comet-ml/opik/opik-frontend:latest
+    image: ghcr.io/comet-ml/opik/opik-frontend:latest@sha256:007cb7d328caa4d5d08411585a9fc8fa1120580b4fba6a9dc124e967bcc79b64  # pinned 2026-03-28 — was :latest (mutable)
     container_name: cognitive-os-opik-frontend
     restart: unless-stopped
     environment:
@@ -534,7 +534,7 @@ services:
   # Cognee — Knowledge Graph Memory (ADOPT)
   # ---------------------------------------------------------------------------
   cognee:
-    image: python:3.13-slim
+    image: python:3.13-slim@sha256:739e7213785e88c0f702dcdc12c0973afcbd606dbf021a589cab77d6b00b579d  # pinned 2026-03-28
     container_name: cognitive-os-cognee
     restart: unless-stopped
     working_dir: /app
