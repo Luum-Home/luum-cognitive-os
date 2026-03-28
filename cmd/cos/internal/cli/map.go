@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
+
+	"luum-agent-os/cmd/cos/internal/project"
 
 	"github.com/spf13/cobra"
 )
@@ -43,33 +44,10 @@ func init() {
 	rootCmd.AddCommand(mapCmd)
 }
 
-// findProjectRoot walks up from cwd looking for cognitive-os.yaml or .claude/
+// findProjectRoot walks up from cwd looking for Cognitive OS markers.
+// Delegates to the shared project.FindRoot; falls back to cwd on failure.
 func findProjectRoot() (string, error) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		return "", fmt.Errorf("getting working directory: %w", err)
-	}
-
-	dir := cwd
-	for {
-		// Check for markers
-		if _, err := os.Stat(filepath.Join(dir, "cognitive-os.yaml")); err == nil {
-			return dir, nil
-		}
-		if _, err := os.Stat(filepath.Join(dir, ".claude")); err == nil {
-			return dir, nil
-		}
-		if _, err := os.Stat(filepath.Join(dir, "rules")); err == nil {
-			return dir, nil
-		}
-
-		parent := filepath.Dir(dir)
-		if parent == dir {
-			// Reached filesystem root
-			return cwd, nil
-		}
-		dir = parent
-	}
+	return project.FindRootOrCwd(), nil
 }
 
 func runPython(projectRoot string, args ...string) (string, error) {
