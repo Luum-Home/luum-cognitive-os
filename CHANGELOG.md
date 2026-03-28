@@ -10,6 +10,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - security: add supply_chain config section to cognitive-os.yaml (digest rotation policy)
 
 ### Added
+- docs: versioning strategy — dual OS core + package independent semver
 - docs: WISC framework analysis — context loading actively degrading performance, action plan
 - docs: complete component audit — 355 components classified (82 CORE, 273 PACKAGE across 23 target packages)
 - docs: package manager design — Brew model comparison with npm/cargo/go

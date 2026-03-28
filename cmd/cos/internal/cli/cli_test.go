@@ -720,3 +720,136 @@ func TestE2E_AuditMultipleFailures(t *testing.T) {
 		t.Errorf("expected FAIL in output:\n%s", out)
 	}
 }
+
+// ---------------------------------------------------------------------------
+// E2E Tests — Version
+// ---------------------------------------------------------------------------
+
+func TestE2E_VersionCommand(t *testing.T) {
+	proj := createTestProject(t)
+	// Write VERSION file.
+	writeTestFileE2E(t, proj, "VERSION", "0.2.0\n")
+
+	out, code := runCos(t, proj, "version")
+	if code != 0 {
+		t.Fatalf("version should succeed, got exit %d. Output:\n%s", code, out)
+	}
+	if !strings.Contains(out, "0.2.0") {
+		t.Errorf("should show version 0.2.0, got:\n%s", out)
+	}
+}
+
+func TestE2E_VersionCommandNoFile(t *testing.T) {
+	proj := createTestProject(t)
+	// No VERSION file — should show "unknown".
+
+	out, code := runCos(t, proj, "version")
+	if code != 0 {
+		t.Fatalf("version should succeed even without VERSION file, got exit %d. Output:\n%s", code, out)
+	}
+	if !strings.Contains(out, "unknown") {
+		t.Errorf("should show 'unknown' when VERSION file is missing, got:\n%s", out)
+	}
+}
+
+func TestE2E_VersionCommandAll(t *testing.T) {
+	proj := createTestProject(t)
+	writeTestFileE2E(t, proj, "VERSION", "0.2.0\n")
+	samplePath := sampleSkillPath(t)
+
+	// Install a package first.
+	_, exitCode := runCos(t, proj, "install", samplePath)
+	if exitCode != 0 {
+		t.Fatal("install failed")
+	}
+
+	out, code := runCos(t, proj, "version", "--all")
+	if code != 0 {
+		t.Fatalf("version --all should succeed, got exit %d. Output:\n%s", code, out)
+	}
+	if !strings.Contains(out, "0.2.0") {
+		t.Errorf("should show OS version 0.2.0, got:\n%s", out)
+	}
+	if !strings.Contains(out, "@luum/sample-skill") {
+		t.Errorf("should show installed package name, got:\n%s", out)
+	}
+	if !strings.Contains(out, "1.0.0") {
+		t.Errorf("should show package version 1.0.0, got:\n%s", out)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// E2E Tests — Release
+// ---------------------------------------------------------------------------
+
+func TestE2E_ReleaseCommandDryRun(t *testing.T) {
+	proj := createTestProject(t)
+	writeTestFileE2E(t, proj, "VERSION", "0.1.0\n")
+
+	// Create a minimal CHANGELOG.
+	changelog := "# Changelog\n\n## [Unreleased]\n### Added\n- test feature\n"
+	writeTestFileE2E(t, proj, "CHANGELOG.md", changelog)
+
+	out, code := runCos(t, proj, "release", "0.2.0", "--dry-run")
+	if code != 0 {
+		t.Fatalf("dry-run should succeed, got exit %d. Output:\n%s", code, out)
+	}
+	if !strings.Contains(out, "0.2.0") {
+		t.Errorf("should mention target version 0.2.0, got:\n%s", out)
+	}
+	if !strings.Contains(out, "dry run") {
+		t.Errorf("should mention dry run, got:\n%s", out)
+	}
+
+	// Verify nothing changed.
+	content, err := os.ReadFile(filepath.Join(proj, "VERSION"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.TrimSpace(string(content)) != "0.1.0" {
+		t.Errorf("VERSION should not change on dry-run, got %q", strings.TrimSpace(string(content)))
+	}
+}
+
+func TestE2E_ReleaseCommandDryRunBump(t *testing.T) {
+	proj := createTestProject(t)
+	writeTestFileE2E(t, proj, "VERSION", "0.1.0\n")
+
+	out, code := runCos(t, proj, "release", "--minor", "--dry-run")
+	if code != 0 {
+		t.Fatalf("dry-run --minor should succeed, got exit %d. Output:\n%s", code, out)
+	}
+	if !strings.Contains(out, "0.2.0") {
+		t.Errorf("--minor from 0.1.0 should show 0.2.0, got:\n%s", out)
+	}
+}
+
+func TestE2E_ReleaseNoVersionOrFlag(t *testing.T) {
+	proj := createTestProject(t)
+	writeTestFileE2E(t, proj, "VERSION", "0.1.0\n")
+
+	_, code := runCos(t, proj, "release")
+	if code == 0 {
+		t.Fatal("release without version or flag should fail")
+	}
+}
+
+func TestE2E_ReleaseConflictingArgs(t *testing.T) {
+	proj := createTestProject(t)
+	writeTestFileE2E(t, proj, "VERSION", "0.1.0\n")
+
+	_, code := runCos(t, proj, "release", "0.2.0", "--patch")
+	if code == 0 {
+		t.Fatal("release with both explicit version and bump flag should fail")
+	}
+}
+
+func TestE2E_ReleaseMultipleBumpFlags(t *testing.T) {
+	proj := createTestProject(t)
+	writeTestFileE2E(t, proj, "VERSION", "0.1.0\n")
+
+	_, code := runCos(t, proj, "release", "--patch", "--minor")
+	if code == 0 {
+		t.Fatal("release with multiple bump flags should fail")
+	}
+}
