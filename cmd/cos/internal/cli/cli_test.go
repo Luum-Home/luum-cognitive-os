@@ -987,3 +987,71 @@ func TestE2E_InfoNotFound(t *testing.T) {
 		t.Fatal("should fail for unknown package")
 	}
 }
+
+// ---------------------------------------------------------------------------
+// E2E Tests — Version from VERSION file (Bug 1 fix)
+// ---------------------------------------------------------------------------
+
+func TestE2E_VersionFlag(t *testing.T) {
+	proj := createTestProject(t)
+	writeTestFileE2E(t, proj, "VERSION", "0.3.0\n")
+
+	out, code := runCos(t, proj, "--version")
+	if code != 0 {
+		t.Fatalf("--version should succeed, got exit %d. Output:\n%s", code, out)
+	}
+	if !strings.Contains(out, "0.3.0") {
+		t.Errorf("--version should show version from VERSION file, got:\n%s", out)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// E2E Tests — Release --check
+// ---------------------------------------------------------------------------
+
+func TestE2E_ReleaseCheckNoChangelog(t *testing.T) {
+	proj := createTestProject(t)
+	writeTestFileE2E(t, proj, "VERSION", "0.1.0\n")
+
+	out, code := runCos(t, proj, "release", "--check")
+	// Should fail because there is no CHANGELOG.md.
+	if code == 0 {
+		t.Fatalf("release --check should fail without CHANGELOG.md, got exit 0. Output:\n%s", out)
+	}
+	if !strings.Contains(out, "CHANGELOG") {
+		t.Errorf("should mention CHANGELOG issue, got:\n%s", out)
+	}
+}
+
+func TestE2E_ReleaseCheckWithChangelog(t *testing.T) {
+	proj := createTestProject(t)
+	writeTestFileE2E(t, proj, "VERSION", "0.1.0\n")
+	writeTestFileE2E(t, proj, "CHANGELOG.md", "# Changelog\n\n## [Unreleased]\n### Added\n- test feature\n")
+
+	out, code := runCos(t, proj, "release", "--check")
+	// May still fail due to git issues (no git repo in temp dir) but should
+	// mention readiness check results.
+	lowered := strings.ToLower(out)
+	if !strings.Contains(lowered, "readiness") && !strings.Contains(lowered, "release") {
+		t.Errorf("should mention release readiness, got:\n%s", out)
+	}
+	_ = code // Exit code depends on git state; we only verify output format.
+}
+
+// ---------------------------------------------------------------------------
+// E2E Tests — Publish scoped tags (Bug 2 fix)
+// ---------------------------------------------------------------------------
+
+func TestE2E_PublishShowsScopedTag(t *testing.T) {
+	pkg := createTestPackageForPublish(t, "@luum/my-pkg", "MIT", map[string]string{
+		"skills/test/SKILL.md": "---\nname: test\n---\n# Test",
+	})
+	out, _ := runCos(t, pkg, "publish", "--dry-run")
+	// Should show scoped tag format, not v{version}.
+	if strings.Contains(out, "v1.0.0") && !strings.Contains(out, "@luum/my-pkg@1.0.0") {
+		t.Errorf("should use scoped tag @luum/my-pkg@1.0.0, not v1.0.0, got:\n%s", out)
+	}
+	if !strings.Contains(out, "@luum/my-pkg@1.0.0") {
+		t.Errorf("should mention scoped tag @luum/my-pkg@1.0.0, got:\n%s", out)
+	}
+}

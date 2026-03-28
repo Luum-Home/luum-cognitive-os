@@ -5,6 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"luum-agent-os/cmd/cos/internal/project"
 	"luum-agent-os/cmd/cos/internal/ui"
 )
 
@@ -12,6 +13,13 @@ var (
 	verbose bool
 	noColor bool
 )
+
+// Version can be set at build time via ldflags:
+//
+//	go build -ldflags "-X luum-agent-os/cmd/cos/internal/cli.Version=1.2.3"
+//
+// If not set (empty), the version is read from the VERSION file at runtime.
+var Version string
 
 var rootCmd = &cobra.Command{
 	Use:   "cos",
@@ -34,13 +42,25 @@ Commands:
   map         Show system knowledge graph
   perf        Show performance dashboard
   version     Show OS and package versions
-  release     Create a new release`,
-	Version: "0.1.0",
+  release     Create a new release
+  status      Show release status of all packages
+  release-all Release all packages with unreleased changes`,
+}
+
+// resolveVersion returns the CLI version from ldflags or the VERSION file.
+func resolveVersion() string {
+	if Version != "" {
+		return Version
+	}
+	return readVersionFile(project.FindRootOrCwd())
 }
 
 // Execute runs the root command.
 func Execute() error {
 	ui.Initialize(noColor, verbose)
+
+	// Set version dynamically so `cos --version` works correctly.
+	rootCmd.Version = resolveVersion()
 
 	if err := rootCmd.Execute(); err != nil {
 		return fmt.Errorf("command execution failed: %w", err)
