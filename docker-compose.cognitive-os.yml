@@ -243,6 +243,37 @@ services:
       - cognitive-os-network
 
   # ---------------------------------------------------------------------------
+  # Bifrost — High-Performance AI Gateway (Apache 2.0)
+  # https://github.com/maximhq/bifrost
+  # 11μs latency overhead at 5K RPS, OpenAI-compatible API
+  # UI: http://localhost:8081 (provider config + monitoring)
+  # API: http://localhost:8081/v1/chat/completions (OpenAI-compatible)
+  # Config: mount config.json at /app/data for headless/GitOps setup,
+  #         or use the Web UI for visual configuration.
+  # ---------------------------------------------------------------------------
+  bifrost:
+    image: maximhq/bifrost:latest@sha256:799ac05fa78a368ca000d41ac321c147fc78d6219f12d4faffba12ea762ec05c  # pinned 2026-03-28
+    container_name: cognitive-os-bifrost
+    restart: unless-stopped
+    ports:
+      - "${BIFROST_PORT:-8081}:8080"
+    environment:
+      APP_PORT: "8080"
+      APP_HOST: "0.0.0.0"
+      LOG_LEVEL: ${BIFROST_LOG_LEVEL:-info}
+      LOG_STYLE: json
+    volumes:
+      - bifrost-data:/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
   # NeMo Guardrails — AI security guardrails server (Apache 2.0)
   # https://github.com/NVIDIA/NeMo-Guardrails
   # Jailbreak detection + PII masking for AI-powered features
@@ -531,6 +562,29 @@ services:
       - cognitive-os-network
 
   # ---------------------------------------------------------------------------
+  # Valkey — General-purpose Redis-compatible cache/pubsub (BSD-3)
+  # Used by: Agent Communication Bus (lib/agent_bus.py), rate limiter queue
+  # NOT the same as langfuse-valkey (which is Langfuse-internal with auth)
+  # ---------------------------------------------------------------------------
+  valkey:
+    image: valkey/valkey:8-alpine@sha256:cb3339abbd6e18942cd8ac3349f0c371a82ba5b6204b242563ba299e7956cbd0  # pinned 2026-03-28
+    container_name: cognitive-os-valkey
+    restart: unless-stopped
+    command: >
+      --maxmemory-policy noeviction
+      --save ""
+      --appendonly no
+    ports:
+      - "127.0.0.1:${VALKEY_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - cognitive-os-network
+
+  # ---------------------------------------------------------------------------
   # Cognee — Knowledge Graph Memory (ADOPT)
   # ---------------------------------------------------------------------------
   cognee:
@@ -563,6 +617,8 @@ services:
       - cognitive-os-network
 
 volumes:
+  bifrost-data:
+    name: cognitive-os-bifrost-data
   jupyter-data:
     name: cognitive-os-jupyter-data
   langfuse-pg-data:
