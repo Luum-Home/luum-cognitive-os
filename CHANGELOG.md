@@ -7,6 +7,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 - feat: dual-mode installer -- local source auto-detection + `--from` flag for `install.sh`
+- docs: tech radar update — 26 Claude Code ecosystem tools analyzed (7 ADOPT, 19 WATCH, 5 BLOCK)
 
 ## [0.1.0] - 2026-03-27
 
