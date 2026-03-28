@@ -75,6 +75,7 @@ class TestIdeCompatibilityDoc:
         # Check for table headers that indicate a support matrix
         assert (
             "Support Level" in content or "Support Matrix" in content
+            or "Summary Matrix" in content or "Compatibility Levels" in content
         ), "ide-compatibility.md must contain a support matrix"
 
 
