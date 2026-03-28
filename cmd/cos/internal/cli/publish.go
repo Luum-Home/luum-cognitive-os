@@ -21,13 +21,16 @@ var publishCmd = &cobra.Command{
 
 Steps:
   1. Validate cos-package.yaml
-  2. Run security self-audit
-  3. Check publish configuration
-  4. Suggest git tag creation`,
+  2. Check for README.md
+  3. Run security self-audit
+  4. Check publish configuration
+  5. Suggest git tag creation (use --push to auto-push)`,
 	RunE: runPublish,
 }
 
 func init() {
+	publishCmd.Flags().Bool("push", false, "Run git push && git push --tags after creating the tag")
+	publishCmd.Flags().Bool("dry-run", false, "Show what would be done without executing")
 	rootCmd.AddCommand(publishCmd)
 }
 
@@ -46,6 +49,14 @@ func runPublish(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		fmt.Println(ui.ErrorStyle.Render(fmt.Sprintf("%s Cannot read cos-package.yaml: %s", ui.IconError, err)))
 		os.Exit(1)
+	}
+
+	// Step 1b: Check for README.md.
+	readmePath := filepath.Join(cwd, "README.md")
+	if _, err := os.Stat(readmePath); os.IsNotExist(err) {
+		ui.Step(ui.IconWarning, "No README.md found in package directory — consider adding one for registry discovery")
+	} else {
+		ui.Step(ui.IconSuccess, "README.md found")
 	}
 
 	// Step 2: Validate manifest.
@@ -104,16 +115,55 @@ func runPublish(cmd *cobra.Command, args []string) error {
 
 	ui.Summary("Publish Summary", lines)
 
-	// Step 6: Show next steps.
-	if !tagExists {
-		fmt.Println()
-		ui.Step(ui.IconArrow, "Next steps:")
-		fmt.Printf("  1. %s\n", ui.InfoStyle.Render(fmt.Sprintf("git tag v%s", m.Version)))
-		fmt.Printf("  2. %s\n", ui.InfoStyle.Render("git push --tags"))
-		fmt.Println()
-		fmt.Println(ui.MutedStyle.Render("  After pushing the tag, users can install with:"))
-		fmt.Printf("  %s\n", ui.HeaderStyle.Render(fmt.Sprintf("cos install %s@%s", m.Name, m.Version)))
+	// Step 6: Handle --push or show next steps.
+	dryRun, _ := cmd.Flags().GetBool("dry-run")
+	pushFlag, _ := cmd.Flags().GetBool("push")
+
+	if !tagExists && !dryRun {
+		if pushFlag {
+			// Create tag and push automatically.
+			fmt.Println()
+			ui.Step(ui.IconInfo, fmt.Sprintf("Creating git tag v%s...", m.Version))
+
+			tagCmd := exec.Command("git", "tag", fmt.Sprintf("v%s", m.Version))
+			if out, err := tagCmd.CombinedOutput(); err != nil {
+				return fmt.Errorf("creating git tag: %s\n%s", err, string(out))
+			}
+			ui.Step(ui.IconSuccess, fmt.Sprintf("Created git tag v%s", m.Version))
+
+			ui.Step(ui.IconInfo, "Pushing to remote...")
+			pushCmd := exec.Command("git", "push")
+			if out, err := pushCmd.CombinedOutput(); err != nil {
+				return fmt.Errorf("git push: %s\n%s", err, string(out))
+			}
+
+			pushTagsCmd := exec.Command("git", "push", "--tags")
+			if out, err := pushTagsCmd.CombinedOutput(); err != nil {
+				return fmt.Errorf("git push --tags: %s\n%s", err, string(out))
+			}
+			ui.Step(ui.IconSuccess, "Pushed commits and tags to remote")
+		} else {
+			fmt.Println()
+			ui.Step(ui.IconArrow, "Next steps:")
+			fmt.Printf("  1. %s\n", ui.InfoStyle.Render(fmt.Sprintf("git tag v%s", m.Version)))
+			fmt.Printf("  2. %s\n", ui.InfoStyle.Render("git push --tags"))
+			fmt.Println()
+			fmt.Println(ui.MutedStyle.Render("  Or use --push to do this automatically:"))
+			fmt.Printf("  %s\n", ui.InfoStyle.Render(fmt.Sprintf("cos publish --push")))
+		}
 	}
+
+	if dryRun {
+		fmt.Println()
+		ui.Step(ui.IconInfo, "dry run — no tag created, no push executed")
+	}
+
+	// Step 7: GitHub topic suggestion.
+	fmt.Println()
+	fmt.Println(ui.MutedStyle.Render("  Tip: Add topic 'cos-package' to your repo for registry discovery"))
+	fmt.Println()
+	fmt.Println(ui.MutedStyle.Render("  After publishing, users can install with:"))
+	fmt.Printf("  %s\n", ui.HeaderStyle.Render(fmt.Sprintf("cos install %s@%s", m.Name, m.Version)))
 
 	return nil
 }
