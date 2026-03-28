@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -108,5 +110,113 @@ func TestUpdateChangelog(t *testing.T) {
 	}
 	if !strings.Contains(result, "## [0.1.0]") {
 		t.Error("should preserve previous version entries")
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Tests — scopedTagName
+// ---------------------------------------------------------------------------
+
+func TestScopedTagName(t *testing.T) {
+	tests := []struct {
+		name    string
+		version string
+		want    string
+	}{
+		{"@luum/safety-mesh", "1.0.0", "@luum/safety-mesh@1.0.0"},
+		{"my-package", "0.2.0", "my-package@0.2.0"},
+		{"@org/tool", "2.1.3", "@org/tool@2.1.3"},
+	}
+
+	for _, tt := range tests {
+		got := scopedTagName(tt.name, tt.version)
+		if got != tt.want {
+			t.Errorf("scopedTagName(%q, %q) = %q, want %q", tt.name, tt.version, got, tt.want)
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Tests — resolveVersion
+// ---------------------------------------------------------------------------
+
+func TestResolveVersion_LdflagsOverride(t *testing.T) {
+	// When Version is set via ldflags, resolveVersion returns it.
+	original := Version
+	Version = "9.9.9"
+	defer func() { Version = original }()
+
+	got := resolveVersion()
+	if got != "9.9.9" {
+		t.Errorf("resolveVersion() = %q, want %q", got, "9.9.9")
+	}
+}
+
+func TestResolveVersion_FallsBackToFile(t *testing.T) {
+	// When Version is empty, resolveVersion reads from VERSION file.
+	original := Version
+	Version = ""
+	defer func() { Version = original }()
+
+	// The function reads from project.FindRootOrCwd() which may or may not
+	// find a VERSION file. We just verify it returns a non-panic string.
+	got := resolveVersion()
+	if got == "" {
+		t.Error("resolveVersion() should return a non-empty string (either version or 'unknown')")
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Tests — readVersionFile
+// ---------------------------------------------------------------------------
+
+func TestReadVersionFile_Found(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, "VERSION"), []byte("1.2.3\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	got := readVersionFile(dir)
+	if got != "1.2.3" {
+		t.Errorf("readVersionFile() = %q, want %q", got, "1.2.3")
+	}
+}
+
+func TestReadVersionFile_NotFound(t *testing.T) {
+	dir := t.TempDir()
+	got := readVersionFile(dir)
+	if got != "unknown" {
+		t.Errorf("readVersionFile() = %q, want %q", got, "unknown")
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Tests — releaseReadinessCheck
+// ---------------------------------------------------------------------------
+
+func TestReleaseReadinessCheck_NoGitRepo(t *testing.T) {
+	dir := t.TempDir()
+	// No git repo — checks should still complete without panic.
+	checks, _ := releaseReadinessCheck(dir, "0.1.0")
+	if len(checks) == 0 {
+		t.Error("expected at least one check result")
+	}
+}
+
+func TestReleaseReadinessCheck_NoChangelog(t *testing.T) {
+	dir := t.TempDir()
+	checks, passed := releaseReadinessCheck(dir, "0.1.0")
+
+	// Should have a changelog failure.
+	found := false
+	for _, c := range checks {
+		if strings.Contains(c, "CHANGELOG") {
+			found = true
+		}
+	}
+	if !found {
+		t.Error("expected a check mentioning CHANGELOG")
+	}
+	if passed {
+		t.Error("should not pass with missing CHANGELOG")
 	}
 }

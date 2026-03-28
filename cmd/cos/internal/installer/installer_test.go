@@ -939,6 +939,87 @@ func TestResolveSkillTarget_RootSkill(t *testing.T) {
 }
 
 // ---------------------------------------------------------------------------
+// cos_version compatibility tests
+// ---------------------------------------------------------------------------
+
+func TestCheckCosVersionCompat_NoConstraint(t *testing.T) {
+	m := &manifest.Manifest{Name: "test-pkg", Version: "1.0.0"}
+	warn := CheckCosVersionCompat(m, t.TempDir())
+	if warn != "" {
+		t.Errorf("expected no warning for empty cos_version, got: %q", warn)
+	}
+}
+
+func TestCheckCosVersionCompat_VersionFileMissing(t *testing.T) {
+	m := &manifest.Manifest{Name: "test-pkg", Version: "1.0.0", CosVersion: ">=0.1.0"}
+	warn := CheckCosVersionCompat(m, t.TempDir())
+	if warn == "" {
+		t.Error("expected warning when VERSION file is missing")
+	}
+	if !strings.Contains(warn, "VERSION file not found") {
+		t.Errorf("expected 'VERSION file not found' in warning, got: %q", warn)
+	}
+}
+
+func TestCheckCosVersionCompat_Compatible(t *testing.T) {
+	dir := t.TempDir()
+	writeTestFile(t, dir, "VERSION", "0.2.0")
+
+	m := &manifest.Manifest{Name: "test-pkg", Version: "1.0.0", CosVersion: ">=0.1.0"}
+	warn := CheckCosVersionCompat(m, dir)
+	if warn != "" {
+		t.Errorf("expected no warning for compatible version, got: %q", warn)
+	}
+}
+
+func TestCheckCosVersionCompat_Incompatible(t *testing.T) {
+	dir := t.TempDir()
+	writeTestFile(t, dir, "VERSION", "0.1.0")
+
+	m := &manifest.Manifest{Name: "test-pkg", Version: "1.0.0", CosVersion: ">=0.2.0"}
+	warn := CheckCosVersionCompat(m, dir)
+	if warn == "" {
+		t.Error("expected warning for incompatible version")
+	}
+	if !strings.Contains(warn, "may not work correctly") {
+		t.Errorf("expected 'may not work correctly' in warning, got: %q", warn)
+	}
+}
+
+func TestCheckCosVersionCompat_ExactMatch(t *testing.T) {
+	dir := t.TempDir()
+	writeTestFile(t, dir, "VERSION", "1.0.0")
+
+	m := &manifest.Manifest{Name: "test-pkg", Version: "1.0.0", CosVersion: "1.0.0"}
+	warn := CheckCosVersionCompat(m, dir)
+	if warn != "" {
+		t.Errorf("expected no warning for exact match, got: %q", warn)
+	}
+}
+
+func TestCheckCosVersionCompat_CaretConstraint(t *testing.T) {
+	dir := t.TempDir()
+	writeTestFile(t, dir, "VERSION", "0.1.5")
+
+	m := &manifest.Manifest{Name: "test-pkg", Version: "1.0.0", CosVersion: "^0.1.0"}
+	warn := CheckCosVersionCompat(m, dir)
+	if warn != "" {
+		t.Errorf("expected no warning for ^0.1.0 with 0.1.5, got: %q", warn)
+	}
+}
+
+func TestCheckCosVersionCompat_CaretConstraintFail(t *testing.T) {
+	dir := t.TempDir()
+	writeTestFile(t, dir, "VERSION", "0.2.0")
+
+	m := &manifest.Manifest{Name: "test-pkg", Version: "1.0.0", CosVersion: "^0.1.0"}
+	warn := CheckCosVersionCompat(m, dir)
+	if warn == "" {
+		t.Error("expected warning for ^0.1.0 with 0.2.0")
+	}
+}
+
+// ---------------------------------------------------------------------------
 // Test helpers
 // ---------------------------------------------------------------------------
 
