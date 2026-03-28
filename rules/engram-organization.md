@@ -63,6 +63,30 @@ When searching for an artifact in Engram:
 2. If not found, search with legacy key: `mem_search(query: "sdd/auth-refactor/spec")`
 3. If not found, search by keywords: `mem_search(query: "auth refactor spec")`
 
+### Branch-Aware Topic Keys (Optional)
+
+For feature branches, topic keys can include a `@branch` suffix to scope observations:
+
+```
+planning/auth-refactor/spec               # Main branch (default)
+planning/auth-refactor/spec@feature/auth   # Feature branch specific
+```
+
+**When to use branch scoping:**
+- Working on a feature branch with experimental decisions
+- Multiple people working on different branches of the same change
+- Decisions that only apply to the branch, not the main codebase
+
+**When NOT to use:**
+- Architectural decisions (always project-scoped)
+- Bug fixes (usually apply globally)
+- Learnings and discoveries (shared knowledge)
+
+**Search protocol with branches:**
+1. Search with branch suffix: `planning/{change}/spec@{branch}`
+2. Fall back to unscoped: `planning/{change}/spec`
+3. Fall back to legacy: `sdd/{change}/spec`
+
 ### Write Rules
 
 - Always include `topic_key` in `mem_save` calls
