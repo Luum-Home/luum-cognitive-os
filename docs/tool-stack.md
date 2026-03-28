@@ -383,27 +383,72 @@ Tools, extensions, and frameworks built around Claude Code. Evaluated for integr
 
 ### WATCH
 
-| Tool | License | Stars | What it does | What to learn |
-|------|---------|-------|--------------|---------------|
-| **Compound Engineering** | MIT | 11.3K | Brainstorm/plan/work/review/compound workflow | "Compounding" concept, ideate/brainstorm phases |
-| **SuperClaude** | MIT | 22K | Configuration framework with cognitive personas | Persona system, command structure patterns |
-| **Everything Claude Code** | MIT | 113.8K | Complete agent harness with skills, memory, security | Battle-tested patterns from 10+ months daily use |
-| **Ruflo/claude-flow** | MIT | 27.7K | Multi-agent swarm orchestration | Swarm patterns, AgentDB controllers |
-| **OpenAI Swarm** | MIT | 21K | Educational multi-agent framework | Agent handoff architecture reference |
-| **Repomix** | MIT | 22.7K | Pack repo into single AI-friendly file | Context packing for eval-repo/deep-research |
-| **Context7** | MIT | 50.9K | Library docs via MCP | Deeper MCP integration (already referenced) |
-| **cc-sessions** | MIT | 1.6K | Session management with todo validation | Scope creep prevention patterns |
-| **Claude Code System Prompts** | MIT | 6.9K | Internal system prompt documentation | Claude Code internals reference |
-| **tweakcc** | MIT | 1.5K | Customize system prompts and toolsets | Deeper customization layer ideas |
-| **SPARC** | Apache-2.0 | 442 | Spec-driven AI development framework | Alternative spec methodology to study |
-| **AgentSys** | MIT | 662 | Modular runtime: 19 plugins, 47 agents | Plugin marketplace architecture |
-| **cc-devops-skills** | Apache-2.0 | 141 | DevOps skill pack (CI/CD, infra, monitoring) | Cherry-pick DevOps skills we lack |
-| **claude-esp** | MIT | — | Stream Claude Code hidden output to terminal | Debugging/observability patterns |
-| **Crystal** | MIT | — | Desktop app for parallel Claude Code sessions | Parallel worktree management UX |
-| **RIPER Workflow** | MIT | — | Research/Innovate/Plan/Execute/Review workflow | Simplified workflow for adaptive-bypass |
-| **Vibe-Log** | MIT | — | Session analysis and logging CLI | Session analytics patterns |
-| **MyCoder** | MIT | 565 | CLI-based multi-agent coding system | CLI patterns for agent orchestration |
-| **Continue** | Apache-2.0 | — | Source-controlled AI checks for CI | CI-enforcement of AI rules |
+| Tool | License | Stars | What it does | What to learn | Extractable patterns |
+|------|---------|-------|--------------|---------------|---------------------|
+| **Compound Engineering** | MIT | 11.3K | Brainstorm/plan/work/review/compound workflow | "Compounding" concept, ideate/brainstorm phases | Retrospect/compound phase after archive; learning extraction loop |
+| **SuperClaude** | MIT | 22K | Configuration framework with cognitive personas | Persona system, command structure patterns | Behavioral modes (`/mode`), wave-checkpoint-wave parallelism, pre-execution confidence scoring |
+| **Everything Claude Code** | MIT | 113.8K | Complete agent harness with skills, memory, security | Battle-tested patterns from 10+ months daily use | Instinct extraction (`/evolve`), 3-agent red-team security, memory consolidation |
+| **Ruflo/claude-flow** | MIT | 27.7K | Multi-agent swarm orchestration | Swarm patterns, AgentDB controllers | Task claiming protocol for active-tasks.json, memory forgetting curves |
+| **OpenAI Swarm** | MIT | 21K | Educational multi-agent framework | Agent handoff architecture reference | Agent-to-agent handoff via return value, dynamic/callable skills |
+| **Repomix** | MIT | 22.7K | Pack repo into single AI-friendly file | Context packing for eval-repo/deep-research | MCP server integration for eval-repo context packing |
+| **Context7** | MIT | 50.9K | Library docs via MCP | Deeper MCP integration (already referenced) | Auto-trigger rule: check library docs before implementation |
+| **cc-sessions** | MIT | 1.6K | Session management with todo validation | Scope creep prevention patterns | PostToolUse hook: detect edits outside approved scope |
+| **Claude Code System Prompts** | MIT | 6.9K | Internal system prompt documentation | Claude Code internals reference | Active cross-session knowledge synthesis patterns |
+| **tweakcc** | MIT | 1.5K | Customize system prompts and toolsets | Deeper customization layer ideas | Runtime prompt injection layer for behavioral overrides |
+| **SPARC** | Apache-2.0 | 442 | Spec-driven AI development framework | Alternative spec methodology to study | Specification-pseudocode-architecture-refinement phasing |
+| **AgentSys** | MIT | 662 | Modular runtime: 19 plugins, 47 agents | Plugin marketplace architecture | Config linter auto-fix, multi-platform adapter directories |
+| **cc-devops-skills** | Apache-2.0 | 141 | DevOps skill pack (CI/CD, infra, monitoring) | Cherry-pick DevOps skills we lack | Generator+Validator pair template for infrastructure skills |
+| **claude-esp** | MIT | — | Stream Claude Code hidden output to terminal | Debugging/observability patterns | Session JSONL parser for real metrics extraction |
+| **Crystal** | MIT | — | Desktop app for parallel Claude Code sessions | Parallel worktree management UX | Worktree lifecycle management patterns |
+| **RIPER Workflow** | MIT | — | Research/Innovate/Plan/Execute/Review workflow | Simplified workflow for adaptive-bypass | Branch-aware topic keys with `@branch` suffix |
+| **Vibe-Log** | MIT | — | Session analysis and logging CLI | Session analytics patterns | Prompt quality scoring (not just ambiguity) |
+| **MyCoder** | MIT | 565 | CLI-based multi-agent coding system | CLI patterns for agent orchestration | Hierarchical agent spawning with token budget caps |
+| **Continue** | Apache-2.0 | — | Source-controlled AI checks for CI | CI-enforcement of AI rules | `checks/` directory + CI runner as GitHub status checks |
+
+### Patterns to Extract (Prioritized)
+
+Actionable patterns identified from deep analysis of WATCH repos.
+
+#### P0 — Immediate (high impact, low effort)
+
+| Pattern | Source | What | Effort |
+|---|---|---|---|
+| Context7 auto-trigger | Context7 (50.9K⭐) | Rule: check library docs before implementation | 1h |
+| Repomix MCP for eval-repo | Repomix (22.7K⭐) | Add as MCP server for repo context packing | 2h |
+| Session JSONL parser | claude-esp | `lib/session_parser.py` — real metrics from Claude Code sessions | 4h |
+
+#### P1 — Next sprint (good ROI)
+
+| Pattern | Source | What | Effort |
+|---|---|---|---|
+| Scope-creep detection | cc-sessions (1.6K⭐) | PostToolUse hook: detect edits outside approved scope | 1d |
+| Compound/retrospect phase | Compound Engineering (11.3K⭐) | `/sdd-compound` skill: extract learnings post-archive | 1d |
+| CI checks as markdown | Continue (32K⭐) | `checks/` directory + CI runner as GitHub status checks | 2d |
+| Handoff pattern | OpenAI Swarm (21K⭐) | Agent-to-agent control transfer via return value | 1d |
+| Task claiming protocol | Ruflo (27.7K⭐) | Agents claim tasks in active-tasks.json, prevent duplicates | 4h |
+| Branch-aware Engram | RIPER Workflow | Topic keys with `@branch` suffix for feature branch scoping | 4h |
+| Prompt quality scoring | Vibe-Log | PreToolUse hook: score quality (not just ambiguity) | 4h |
+| Generator+Validator pairs | cc-devops-skills | Template pattern for infrastructure skills | 2h |
+
+#### P2 — Backlog (requires design)
+
+| Pattern | Source | What | Effort |
+|---|---|---|---|
+| Behavioral modes (`/mode`) | SuperClaude (22K⭐) | Switch cognitive style (brainstorm, efficiency, deep research) | 3d |
+| Instinct extraction (`/evolve`) | Everything Claude Code (113.8K⭐) | Auto-detect RECURRING patterns → crystallize into skills | 5d |
+| Wave-Checkpoint-Wave | SuperClaude | [parallel reads] → analyze → [parallel edits], 3.5x speedup | 3d |
+| Pre-execution confidence | SuperClaude | Confidence scoring BEFORE execution, not after | 2d |
+| Memory consolidation | System Prompts | Active cross-session knowledge synthesis | 2d |
+| Config linter auto-fix | AgentSys (662⭐) | Validate + auto-fix rules, hooks, skills misconfigurations | 3d |
+
+#### P3 — Future
+
+| Pattern | Source | What |
+|---|---|---|
+| Red-team 3-agent security | Everything Claude Code | 3 Opus agents: red-team/blue-team/auditor |
+| Memory forgetting curves | Ruflo | Temporal decay in Engram observations |
+| Dynamic/callable skills | OpenAI Swarm | Skills generated dynamically from context |
+| Multi-platform adapters | AgentSys | adapters/codex, adapters/opencode directories |
 
 ### Notes
 - 7 tools in ADOPT ring have clear integration paths with existing Cognitive OS infrastructure.

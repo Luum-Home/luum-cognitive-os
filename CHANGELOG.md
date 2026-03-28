@@ -11,6 +11,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - docs: tech radar update — 26 Claude Code ecosystem tools analyzed (7 ADOPT, 19 WATCH, 5 BLOCK)
 - docs: multi-tool architecture — adapter layer for OpenCode, Aider, Cursor support
 - docs: 7 ecosystem integrations documented (agnix, claude-code-action, parry, Trail of Bits, recall, Usage Monitor, hcom)
+- docs: 19 WATCH repos deep-analyzed — 22 extractable patterns prioritized (P0-P3)
 
 ## [0.1.0] - 2026-03-27
 

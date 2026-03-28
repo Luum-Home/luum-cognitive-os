@@ -65,6 +65,7 @@ When the orchestrator receives a task, consult this routing table to select the 
 | Infrastructure | `/sre-agent` | -- |
 | Skill creation | `/skill-creator` | -- |
 | Quality check | `/confidence-check` (pre) | `/self-review` (post) |
+| Library usage | Context7 MCP lookup | `/deep-research` |
 
 Note: This table COMPLEMENTS model-routing (which picks the MODEL). Skill routing picks the SKILL/WORKFLOW.
 
