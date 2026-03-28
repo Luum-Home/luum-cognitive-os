@@ -1,1 +1,0 @@
-../../rules/RULES-COMPACT.md

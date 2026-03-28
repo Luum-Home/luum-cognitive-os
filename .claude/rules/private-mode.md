@@ -1,1 +1,0 @@
-../../rules/private-mode.md
