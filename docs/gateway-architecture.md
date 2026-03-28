@@ -104,3 +104,34 @@ Bifrost (github.com/maximhq/bifrost) is a Go-based high-performance AI gateway w
 - Could replace/complement LiteLLM for production deployments
 
 See: docs/tool-stack.md for evaluation status.
+
+## AI Gateway Landscape — Open Source Comparison
+
+| Gateway | License | Language | Stars | Providers | Budget | Caching | Performance | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| **LiteLLM** | MIT | Python | 41.3K | 100+ | Per-key | Exact-match | ~8ms P95 | **ADOPT** (current) |
+| **Bifrost** | Apache-2.0 | Go | 3.3K | 15+ | 3-tier hierarchy | Semantic | 11µs (50x faster) | **WATCH** |
+| **Portkey** | MIT | TypeScript | 11K | 200+ | Virtual keys | Yes | <1ms, 122KB | **WATCH** |
+| **Kong AI** | Apache-2.0 | Lua/Go | 62K | Plugin-based | Enterprise only | Plugin | Proven | SKIP (overkill) |
+| **Helicone** | Apache-2.0 | Rust+TS | 4.8K | Major | Cost tracking | Yes | Sub-ms | SKIP (overlaps Langfuse) |
+| **Envoy AI** | Apache-2.0 | Go | 198 | Major | No | No | 1-3ms | SKIP (immature) |
+| **FastAPI DIY** | N/A | Python | N/A | Build your own | Build your own | No | ~2-5ms | SKIP (learning only) |
+
+### Recommendation
+
+**Stay with LiteLLM.** Broadest coverage (100+ providers), MIT license, massive community (41.3K stars), existing integration in our docker-compose and model_router.py.
+
+**Watch Bifrost** if we need high-throughput performance or move to Go infrastructure. Its 3-tier budget hierarchy could inspire improvements to our resource-governance.
+
+**Watch Portkey** as a lightweight alternative (122KB footprint, 200+ providers, MIT).
+
+### Why Not Build Our Own (FastAPI DIY)?
+
+The tutorial approach (FastAPI + API keys + token counting) demonstrates the concepts but misses:
+- Provider failover chains
+- Semantic caching
+- Distributed rate limiting
+- Multi-tenant budget management
+- Production observability
+
+LiteLLM solves all of these out of the box. Building from scratch would take months to reach feature parity.
