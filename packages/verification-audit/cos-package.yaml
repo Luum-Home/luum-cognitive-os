@@ -1,0 +1,32 @@
+name: "@luum/verification-audit"
+version: "1.0.0"
+description: "Output verification and audit hooks — result truncation, observability, assumption tracking, architecture compliance"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["verification", "audit", "truncation", "observability", "assumptions", "architecture"]
+cos_version: ">=0.1.0"
+
+provides:
+  - hook
+
+exports:
+  - source: "hooks/result-truncator.sh"
+    type: hook
+    description: "Truncate large command outputs to preserve context window"
+    hook_event: PostToolUse
+    hook_matcher: "Bash"
+  - source: "hooks/observability-trace.sh"
+    type: hook
+    description: "Send traces to observability backend (Langfuse)"
+    hook_event: PostToolUse
+    hook_matcher: "Agent"
+  - source: "hooks/assumption-tracker.sh"
+    type: hook
+    description: "Track assumption language in agent outputs"
+    hook_event: PostToolUse
+    hook_matcher: "Agent"
+  - source: "hooks/architecture-compliance.sh"
+    type: hook
+    description: "Check architecture pattern compliance in agent outputs"
+    hook_event: PostToolUse
+    hook_matcher: "Agent"

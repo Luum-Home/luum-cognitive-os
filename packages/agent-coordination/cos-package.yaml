@@ -1,0 +1,24 @@
+name: "@luum/agent-coordination"
+version: "1.0.0"
+description: "Agent coordination rules — communication bus, sidecars, and per-agent customization overrides"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["agent", "coordination", "communication", "sidecars", "customization"]
+cos_version: ">=0.1.0"
+
+provides:
+  - rule
+
+exports:
+  - source: "rules/agent-communication.md"
+    type: rule
+    description: "Agent Communication Bus Protocol via Valkey pub/sub"
+    always_active: false
+  - source: "rules/agent-sidecars.md"
+    type: rule
+    description: "Per-agent persistent sidecar memory via Engram"
+    always_active: false
+  - source: "rules/agent-customization.md"
+    type: rule
+    description: "Per-agent behavioral overrides via customization YAML files"
+    always_active: false

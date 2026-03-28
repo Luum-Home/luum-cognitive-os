@@ -1,0 +1,16 @@
+name: "@luum/infra-lifecycle"
+version: "1.0.0"
+description: "Infrastructure lifecycle management — idle service cleanup on session stop"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["infrastructure", "lifecycle", "cleanup", "idle", "docker"]
+cos_version: ">=0.1.0"
+
+provides:
+  - hook
+
+exports:
+  - source: "hooks/idle-service-cleanup.sh"
+    type: hook
+    description: "Stops idle Docker services on session stop"
+    hook_event: Stop
