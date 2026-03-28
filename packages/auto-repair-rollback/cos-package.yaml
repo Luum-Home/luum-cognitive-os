@@ -1,0 +1,16 @@
+name: "@luum/auto-repair-rollback"
+version: "1.0.0"
+description: "Auto-rollback trigger — detects verify-apply loop exhaustion and initiates rollback"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["auto-rollback", "repair", "verify", "revert", "safety"]
+cos_version: ">=0.1.0"
+
+provides:
+  - hook
+
+exports:
+  - source: "hooks/auto-rollback-trigger.sh"
+    type: hook
+    description: "Triggers auto-rollback when SDD verify-apply retries are exhausted"
+    hook_event: PostToolUse

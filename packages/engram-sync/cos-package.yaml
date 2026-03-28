@@ -1,0 +1,27 @@
+name: "@luum/engram-sync"
+version: "1.0.0"
+description: "Engram memory synchronization hooks — auto-sync on stop, auto-import on start, memu bridge"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["engram", "memory", "sync", "memu", "persistence"]
+cos_version: ">=0.1.0"
+
+provides:
+  - hook
+
+exports:
+  - source: "hooks/engram-auto-sync.sh"
+    type: hook
+    description: "Auto-sync engram observations on session stop"
+    hook_event: Stop
+    hook_matcher: ""
+  - source: "hooks/engram-auto-import.sh"
+    type: hook
+    description: "Auto-import engram observations on session start"
+    hook_event: SessionStart
+    hook_matcher: ""
+  - source: "hooks/memu-sync.sh"
+    type: hook
+    description: "Sync memory to memu service after tool use"
+    hook_event: PostToolUse
+    hook_matcher: "Agent"

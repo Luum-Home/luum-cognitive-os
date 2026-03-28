@@ -1,0 +1,34 @@
+name: "@luum/skill-governance"
+version: "1.0.0"
+description: "Skill lifecycle governance — tracking, KPI evaluation, agent bus monitoring, and auto-generation"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["skill", "governance", "tracking", "kpi", "agent-bus", "auto-generation"]
+cos_version: ">=0.1.0"
+
+provides:
+  - rule
+  - hook
+
+exports:
+  - source: "rules/skill-management.md"
+    type: rule
+    description: "Unified skill management protocol — loading, adaptation, routing"
+    always_active: true
+  - source: "rules/auto-skill-generation.md"
+    type: rule
+    description: "Auto-generation of skills from complex agent completions"
+    always_active: false
+  - source: "hooks/skill-tracker.sh"
+    type: hook
+    description: "Tracks skill execution metrics and feedback"
+    hook_event: PostToolUse
+    hook_matcher: "Agent"
+  - source: "hooks/kpi-trigger.sh"
+    type: hook
+    description: "Calculates KPI snapshots and triggers self-improvement"
+    hook_event: PostToolUse
+  - source: "hooks/agent-bus-monitor.sh"
+    type: hook
+    description: "Monitors agent communication bus on session start"
+    hook_event: SessionStart
