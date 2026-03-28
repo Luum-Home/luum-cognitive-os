@@ -1249,6 +1249,136 @@ cos publish [--dry-run] [--tag=<tag>]
 
 **Exit codes**: 0 (published), 1 (validation failed), 2 (score too low).
 
+### cos status
+
+Show release status of all packages in the `packages/` directory.
+
+```
+cos status [--json] [--changed-only]
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--json` | false | Output as JSON |
+| `--changed-only` | false | Show only packages with unreleased changes |
+
+For each package, displays the version from `cos-package.yaml`, the latest scoped git tag, and the number of commits since that tag.
+
+**Example**:
+
+```bash
+$ cos status
+  PACKAGE                     VERSION  LAST TAG                         COMMITS
+  @luum/quality-gates         1.0.0    @luum/quality-gates@1.0.0        3
+  @luum/trust-system          2.1.0    @luum/trust-system@2.1.0         0
+  @luum/sdd-compound          1.0.0    (none)                           12
+
+$ cos status --changed-only
+  PACKAGE                     VERSION  LAST TAG                         COMMITS
+  @luum/quality-gates         1.0.0    @luum/quality-gates@1.0.0        3
+  @luum/sdd-compound          1.0.0    (none)                           12
+```
+
+**Exit codes**: 0 (always).
+
+### cos release
+
+Create a new OS release: bump VERSION, update CHANGELOG, create git tag.
+
+```
+cos release [version]
+cos release --patch           # Bump patch version
+cos release --minor           # Bump minor version
+cos release --major           # Bump major version
+cos release --dry-run         # Show what would happen
+cos release --check           # Validate release readiness without releasing
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--patch` | false | Bump patch version |
+| `--minor` | false | Bump minor version |
+| `--major` | false | Bump major version |
+| `--dry-run` | false | Show what would happen without making changes |
+| `--check` | false | Validate release readiness without releasing |
+
+The `--check` flag validates that the working tree is clean, tests pass, and the version has not already been tagged. It exits 0 if ready, 1 if not.
+
+**Exit codes**: 0 (success), 1 (error).
+
+### cos release-all
+
+Find packages with unreleased changes, bump their versions, commit, and tag.
+
+Creates one commit with all version bumps and individual **scoped git tags** for each released package (e.g., `@luum/quality-gates@1.1.0`).
+
+```
+cos release-all --patch                          # Bump patch on changed packages
+cos release-all --minor                          # Bump minor on changed packages
+cos release-all --major                          # Bump major on changed packages
+cos release-all --dry-run                        # Preview changes
+cos release-all --include "quality-gates,trust"  # Only release these packages
+cos release-all --exclude "sdd-compound"         # Skip this package
+cos release-all --patch --yes                    # Skip confirmation prompt
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--patch` | false | Bump patch version (default bump type) |
+| `--minor` | false | Bump minor version |
+| `--major` | false | Bump major version |
+| `--dry-run` | false | Show what would happen without making changes |
+| `--yes` | false | Skip confirmation prompt |
+| `--include` | (all) | Comma-separated list of packages to include |
+| `--exclude` | (none) | Comma-separated list of packages to exclude |
+
+**Scoped tags**: Each package release creates a scoped git tag in the format `@scope/name@version`. This allows independent package versioning within the same repository.
+
+**Exit codes**: 0 (success), 1 (no packages to release or error).
+
+### Scoped Tags
+
+Packages in `packages/` use scoped git tags to version independently from the OS:
+
+```
+@luum/quality-gates@1.0.0
+@luum/trust-system@2.1.0
+@luum/sdd-compound@1.0.0-beta.1
+```
+
+The `cos status` command reads these tags to determine which packages have unreleased changes. The `cos release-all` command creates these tags automatically.
+
+### cos_version Field
+
+The `cos_version` field in `cos-package.yaml` declares the minimum Cognitive OS version required:
+
+```yaml
+name: "@luum/quality-gates"
+version: "1.0.0"
+cos_version: ">=0.1.0"    # Requires Cognitive OS 0.1.0 or later
+```
+
+During `cos install`, the resolver checks that the target Cognitive OS version (from the `VERSION` file) satisfies all `cos_version` constraints in the dependency graph. If not, installation is blocked with a clear error message.
+
+### GITHUB_TOKEN
+
+Several commands interact with GitHub and require authentication:
+
+| Command | Requires Token? | Purpose |
+|---------|----------------|---------|
+| `cos search` | Yes | Query GitHub API for package discovery |
+| `cos install` (GitHub source) | Optional | Access private repos (public repos work without) |
+| `cos publish --push` | Yes | Push git tags to origin |
+| `cos audit` (GitHub source) | Optional | Fetch package for audit |
+
+Set the token via environment variable:
+
+```bash
+export GITHUB_TOKEN="ghp_..."
+```
+
+Or via git credential helper (automatically detected). Without a token, public GitHub operations still work but are subject to lower API rate limits.
+
 ### cos workspace
 
 Workspace (monorepo) management.

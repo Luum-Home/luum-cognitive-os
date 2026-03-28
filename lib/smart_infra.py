@@ -68,6 +68,8 @@ SKILL_SERVICE_MAP: Dict[str, List[str]] = {
     "opik": ["opik"],
     "automaker": ["automaker"],
     "webhook-trigger": ["webhook-trigger"],
+    "agent-bus": ["valkey"],
+    "agent-communication": ["valkey"],
 }
 
 
@@ -125,6 +127,11 @@ SERVICE_COMPOSE_MAP: Dict[str, Dict[str, Any]] = {
         "compose_services": ["webhook-trigger"],
         "health_container": "cognitive-os-webhook-trigger",
         "profile": "automation",
+    },
+    "valkey": {
+        "compose_services": ["valkey"],
+        "health_container": "cognitive-os-valkey",
+        "profile": None,
     },
 }
 
