@@ -1075,11 +1075,7 @@ class TestSmartInfraIntegration:
         """_ensure_valkey_via_smart_infra returns False on import error."""
         from lib.agent_bus import _ensure_valkey_via_smart_infra
 
-        with patch("lib.agent_bus.ensure_service", side_effect=ImportError("no module")):
-            # Should not raise -- returns False
-            pass
-
-        # Test with the actual function patching smart_infra
+        # Simulate smart_infra not being importable
         with patch.dict("sys.modules", {"lib.smart_infra": None}):
             result = _ensure_valkey_via_smart_infra()
             assert result is False
