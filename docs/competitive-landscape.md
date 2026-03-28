@@ -567,6 +567,56 @@ No sleep metaphors. No invisible compression. No silent data loss. Just structur
 
 ---
 
+---
+
+## AI Infrastructure Concepts — What Cognitive OS Already Implements
+
+The AI agent ecosystem has developed specialized infrastructure patterns. Cognitive OS implements most of them under different names.
+
+### Concept Mapping
+
+| Infrastructure Concept | What It Is | Industry Examples | Cognitive OS Implementation |
+|---|---|---|---|
+| **AI Gateway** | Proxy between clients and LLMs — auth, rate limit, routing | Bifrost, LiteLLM, Portkey | LiteLLM (Docker) + webhook-trigger |
+| **AI Load Balancer** | Distributes requests across providers/instances | Bifrost (weighted keys), LiteLLM (fallback chains) | `model_router.py` fallback chain (opus→sonnet→haiku→openrouter/free) |
+| **AI Router** | Routes to the correct model per task type | Martian, custom routing tables | `model_router.py` (task→model mapping, 11 skills routed) |
+| **AI Proxy** | Intercepts requests for logging/caching/transform | Helicone, Portkey | LiteLLM + `observability.py` (Langfuse tracing) |
+| **AI Orchestrator** | Coordinates multiple agents/models | CrewAI, LangGraph, AutoGen | Orchestrator pattern + Agent tool delegation |
+| **AI Mesh** | Service mesh for AI microservices — defense in depth | (emerging concept) | Safety mesh: 55 rules + 57 hooks across 13 layers |
+| **AI Cache** | Semantic caching for similar responses | Bifrost (built-in), GPTCache | ❌ Not implemented — future candidate |
+| **AI Guardrails** | Content filtering pre/post LLM | NeMo Guardrails, Guardrails AI | NeMo (Docker) + `content-policy.sh` + parry (optional) |
+| **AI Budget Controller** | Cost control per tenant/team/key | Bifrost (3-tier), LiteLLM | `resource-governance.md` + `cost_dashboard.py` + `rate_limiter.py` |
+| **AI Registry** | Registry of available models/skills/packages | HuggingFace Hub, npm | `cos search` + `skill-management.md` + CATALOG.md |
+| **AI Pods** | Kubernetes pods running AI models | vLLM pods, Ollama pods, TGI | Docker Compose services (LiteLLM, NeMo, Langfuse) |
+| **AI Identity** | Agent identity, authentication, permissions | (emerging — AIM, SPIFFE) | `agent-identity.md` + `agent-security.md` + `agent_permissions.py` |
+
+### What We Have That Others Don't
+
+| Unique Capability | What It Does | No Equivalent In |
+|---|---|---|
+| **Self-healing (MAPE-K)** | Auto-detect, classify, fix errors → register known fixes | Any gateway or orchestrator |
+| **Persistent memory (Engram)** | Cross-session knowledge with FTS5 search | Any gateway |
+| **Consequence system** | Skills promoted (>=85%) or disabled (<60%) based on trust scores | Any framework |
+| **Package manager (cos)** | Install/audit/remove agent components with 6-gate security | Any agent OS |
+| **Broken window policy** | Fix broken tests even if "pre-existing" | Any agent framework |
+| **Supply chain defense** | SHA256 Docker pins, git commit pinning, per-file integrity | Most agent tools |
+
+### What We're Missing
+
+| Gap | What It Would Add | Priority |
+|---|---|---|
+| **Semantic caching** | Avoid re-querying LLM for similar prompts — cost reduction | Medium |
+| **Multi-tenant budget** | Per-user/team budget hierarchy (like Bifrost 3-tier) | Low |
+| **Event gateway** | Multi-channel input (Telegram, Slack, Discord) like OpenClaw | Medium |
+| **Always-on daemon** | Singularity as persistent service, not manual | Medium |
+
+### Sources
+
+See also:
+- `docs/gateway-architecture.md` — detailed gateway comparison (11 tools)
+- `docs/research/wisc-framework-analysis.md` — context management research
+- `docs/tool-stack.md` — full tech radar with ADOPT/WATCH/SKIP verdicts
+
 ### Sources
 
 - [SkillsMP](https://skillsmp.com/) | [Skills.sh](https://skild.sh/) | [MCP Registry](https://registry.modelcontextprotocol.io/)
