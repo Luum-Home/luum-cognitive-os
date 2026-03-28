@@ -10,6 +10,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - security: add supply_chain config section to cognitive-os.yaml (digest rotation policy)
 
 ### Added
+- docs: complete component audit — 355 components classified (82 CORE, 273 PACKAGE across 23 target packages)
 - docs: package manager design — Brew model comparison with npm/cargo/go
 - docs: full integration audit — 38 external dependencies mapped for cos packaging
 - docs: plugin marketplace design -- cos install with 6-gate security audit pipeline
