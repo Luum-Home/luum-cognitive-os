@@ -234,3 +234,251 @@ class TestTemplateCompatibility:
             content = f.read()
 
         assert "0-100" in content, "Template must specify the 0-100 scoring range"
+
+
+class TestAssumptionTrackerPromptTemplate:
+    """Tests for the assumption-tracker prompt hook template."""
+
+    TEMPLATE_PATH = os.path.join(
+        PROJECT_ROOT, "templates", "prompt-hooks", "assumption-tracker-prompt.md"
+    )
+
+    def test_template_file_exists(self):
+        """The assumption tracker prompt template must exist."""
+        assert os.path.isfile(self.TEMPLATE_PATH), (
+            f"Template not found at {self.TEMPLATE_PATH}. "
+            "Expected templates/prompt-hooks/assumption-tracker-prompt.md"
+        )
+
+    def test_template_is_not_empty(self):
+        """Template must contain substantial content."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+        assert len(content) > 200, "Template is too short to contain meaningful detection criteria"
+
+    def test_template_specifies_json_output(self):
+        """Template must instruct the model to return JSON."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert "JSON" in content or "json" in content, (
+            "Template must instruct the model to return JSON output"
+        )
+        for field in ["assumption_count", "assumptions", "severity"]:
+            assert field in content, f"Template must specify '{field}' in the JSON output format"
+
+    def test_template_has_high_confidence_patterns(self):
+        """Template must list HIGH confidence assumption patterns."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read().lower()
+
+        high_patterns = ["i assume", "i'm assuming", "presumably", "without more info"]
+        for pattern in high_patterns:
+            assert pattern in content, (
+                f"Template missing HIGH confidence pattern '{pattern}'"
+            )
+
+    def test_template_has_medium_confidence_patterns(self):
+        """Template must list MEDIUM confidence assumption patterns."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read().lower()
+
+        medium_patterns = ["i think", "probably", "likely", "it seems", "appears to be"]
+        for pattern in medium_patterns:
+            assert pattern in content, (
+                f"Template missing MEDIUM confidence pattern '{pattern}'"
+            )
+
+    def test_template_has_severity_thresholds(self):
+        """Template must define ok/warn severity thresholds."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert '"ok"' in content or "'ok'" in content, "Template must define 'ok' severity"
+        assert '"warn"' in content or "'warn'" in content, "Template must define 'warn' severity"
+
+    def test_template_has_examples(self):
+        """Template must include calibration examples."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        example_count = content.lower().count("input:")
+        assert example_count >= 2, (
+            f"Template has {example_count} examples, minimum 2 required for calibration."
+        )
+
+    def test_template_has_output_placeholder(self):
+        """Template must include a placeholder for the agent output to scan."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert "{{agent_output}}" in content, (
+            "Template must include {{agent_output}} placeholder for the agent response to scan."
+        )
+
+    def test_template_threshold_at_3(self):
+        """Template must specify the 3+ assumption threshold for warn severity."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert "3" in content, (
+            "Template must specify the threshold of 3+ assumptions for warn severity"
+        )
+
+
+class TestPromptQualityPromptTemplate:
+    """Tests for the prompt-quality prompt hook template."""
+
+    TEMPLATE_PATH = os.path.join(
+        PROJECT_ROOT, "templates", "prompt-hooks", "prompt-quality-prompt.md"
+    )
+
+    def test_template_file_exists(self):
+        """The prompt quality prompt template must exist."""
+        assert os.path.isfile(self.TEMPLATE_PATH), (
+            f"Template not found at {self.TEMPLATE_PATH}. "
+            "Expected templates/prompt-hooks/prompt-quality-prompt.md"
+        )
+
+    def test_template_is_not_empty(self):
+        """Template must contain substantial content."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+        assert len(content) > 200, "Template is too short to contain meaningful scoring criteria"
+
+    def test_template_specifies_json_output(self):
+        """Template must instruct the model to return JSON."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert "JSON" in content or "json" in content, (
+            "Template must instruct the model to return JSON output"
+        )
+        for field in ["score", "specificity", "actionability", "context", "measurability", "scope_clarity", "level", "suggestions"]:
+            assert field in content, f"Template must specify '{field}' in the JSON output format"
+
+    def test_template_has_five_dimensions(self):
+        """Template must score on all 5 quality dimensions."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read().lower()
+
+        dimensions = ["specificity", "actionability", "context", "measurability", "scope clarity"]
+        for dim in dimensions:
+            assert dim in content, f"Template missing quality dimension '{dim}'"
+
+    def test_template_has_dimension_ranges(self):
+        """Template must specify 0-20 range for each dimension."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert "0-20" in content, "Template must specify 0-20 range for each dimension"
+        assert "0-100" in content, "Template must specify 0-100 total scoring range"
+
+    def test_template_has_quality_levels(self):
+        """Template must define warning/info/good quality levels."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert '"warning"' in content or "'warning'" in content, "Template must define 'warning' level"
+        assert '"info"' in content or "'info'" in content, "Template must define 'info' level"
+        assert '"good"' in content or "'good'" in content, "Template must define 'good' level"
+
+    def test_template_has_level_thresholds(self):
+        """Template must define threshold values for quality levels."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        # < 30 = warning, 30-60 = info, > 60 = good
+        assert "30" in content, "Template must specify threshold value 30"
+        assert "60" in content, "Template must specify threshold value 60"
+
+    def test_template_has_examples(self):
+        """Template must include calibration examples."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        example_count = content.lower().count("input:")
+        assert example_count >= 2, (
+            f"Template has {example_count} examples, minimum 2 required for calibration."
+        )
+
+    def test_template_has_prompt_placeholder(self):
+        """Template must include a placeholder for the agent prompt to evaluate."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert "{{prompt}}" in content, (
+            "Template must include {{prompt}} placeholder for the agent prompt to evaluate."
+        )
+
+
+class TestScopeCreepPromptTemplate:
+    """Tests for the scope-creep-detector prompt hook template."""
+
+    TEMPLATE_PATH = os.path.join(
+        PROJECT_ROOT, "templates", "prompt-hooks", "scope-creep-prompt.md"
+    )
+
+    def test_template_file_exists(self):
+        """The scope creep prompt template must exist."""
+        assert os.path.isfile(self.TEMPLATE_PATH), (
+            f"Template not found at {self.TEMPLATE_PATH}. "
+            "Expected templates/prompt-hooks/scope-creep-prompt.md"
+        )
+
+    def test_template_is_not_empty(self):
+        """Template must contain substantial content."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+        assert len(content) > 200, "Template is too short to contain meaningful detection criteria"
+
+    def test_template_specifies_json_output(self):
+        """Template must instruct the model to return JSON."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert "JSON" in content or "json" in content, (
+            "Template must instruct the model to return JSON output"
+        )
+        for field in ["in_scope", "match_type", "matched_path", "file_path"]:
+            assert field in content, f"Template must specify '{field}' in the JSON output format"
+
+    def test_template_has_matching_rules(self):
+        """Template must define exact, prefix, and substring matching rules."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read().lower()
+
+        for rule in ["exact", "prefix", "substring"]:
+            assert rule in content, f"Template missing matching rule '{rule}'"
+
+    def test_template_has_scope_placeholders(self):
+        """Template must include placeholders for scope data injection."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert "{{approved_paths}}" in content, (
+            "Template must include {{approved_paths}} placeholder"
+        )
+        assert "{{file_path}}" in content, (
+            "Template must include {{file_path}} placeholder"
+        )
+
+    def test_template_has_examples(self):
+        """Template must include calibration examples."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        # Count examples by looking for "Approved paths:" markers
+        example_count = content.count("Approved paths:")
+        assert example_count >= 2, (
+            f"Template has {example_count} examples, minimum 2 required for calibration."
+        )
+
+    def test_template_has_boolean_in_scope(self):
+        """Template must return boolean in_scope field."""
+        with open(self.TEMPLATE_PATH) as f:
+            content = f.read()
+
+        assert "true" in content and "false" in content, (
+            "Template must show both true and false values for in_scope field"
+        )

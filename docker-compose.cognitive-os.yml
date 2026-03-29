@@ -616,6 +616,34 @@ services:
     networks:
       - cognitive-os-network
 
+  # ---------------------------------------------------------------------------
+  # COS Dashboard — Cognitive OS Web Management UI
+  # UI: http://localhost:3300
+  # ---------------------------------------------------------------------------
+  cos-dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    container_name: cognitive-os-dashboard
+    restart: unless-stopped
+    ports:
+      - "${COGNITIVE_OS_DASHBOARD_PORT:-3300}:3300"
+    volumes:
+      - .:/cos:ro
+    environment:
+      COS_ROOT: /cos
+      NODE_ENV: production
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3300/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    profiles:
+      - ui
+    networks:
+      - cognitive-os-network
+
 volumes:
   bifrost-data:
     name: cognitive-os-bifrost-data

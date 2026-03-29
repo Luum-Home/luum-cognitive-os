@@ -1,8 +1,8 @@
 # Cognitive OS Roadmap
 
-> Future features organized by phase. Updated: 2026-03-29 (v0.2.3).
+> Future features organized by phase. Updated: 2026-03-29 (v0.2.5).
 >
-> Current metrics: 5045 tests, 92 rules, 97 skills, 80 hooks.
+> Current metrics: 5074+ tests, 94 rules, 97 skills, 82 hooks.
 
 ---
 
@@ -27,7 +27,7 @@
 
 ---
 
-## Completed (v0.2.0 -- v0.2.3)
+## Completed (v0.2.0 -- v0.2.5)
 
 Items delivered across recent releases:
 
@@ -44,6 +44,10 @@ Items delivered across recent releases:
 | pytest-xdist parallel test support | v0.2.3 | `pytest -n auto` for faster test runs |
 | SubagentStart, UserPromptSubmit, TeammateIdle, TaskCreated, TaskCompleted hooks | v0.2.3 | New hook events for Agent Teams integration |
 | Ecosystem tools: agnix, semgrep, parry, aguara, garak, mcp-scan, promptfoo | v0.2.1+ | All documented in tech radar with graceful degradation |
+| MCP fixes, auto-sync hook, tech debt cleanup | v0.2.4 | Version sync, hook improvements |
+| Paperclip gaps 5-7 wired (safety mesh block sync, task sync, cost streaming) | v0.2.5 | Full Paperclip integration with shared `paperclip-notify.sh` helper |
+| UI evals, E2B sandbox integration, open-source strategy | v0.2.5 | E2B Firecracker microVM support, prompt governance |
+| Flaky test stabilization (hook performance thresholds) | v0.2.5 | Increased tolerance for system load variance |
 
 ---
 
@@ -167,7 +171,7 @@ Paperclip provides the visual UI layer for Cognitive OS. Instead of building a c
 
 The integration layer is a thin Python client (`lib/paperclip_client.py`) plus an enhanced session-end hook (`hooks/paperclip-sync.sh`). Paperclip itself is already running in the Docker stack (`docker-compose.cognitive-os.yml`).
 
-- **Status**: In progress
+- **Status**: In progress (gaps 1-8 wired, real-time streaming active)
 - **Dependencies**: None (Paperclip container and sync hook already exist)
 
 ### Multi-repo orchestration
