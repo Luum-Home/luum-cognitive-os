@@ -10,6 +10,7 @@ triggers:
   - simulate scenario
   - agent simulation
   - evolution test
+audience: os-dev
 ---
 
 # Simulation Arena — End-to-End Agent Workflow Simulation

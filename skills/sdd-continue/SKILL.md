@@ -10,6 +10,7 @@ outputs:
   - alternatives: Other possible actions ranked by impact
   - state_summary: Current state of all artifacts
   - reasoning: Why the recommended action was chosen
+audience: project
 ---
 
 # Enhanced SDD Continue (BMAD v6 Pattern 6)

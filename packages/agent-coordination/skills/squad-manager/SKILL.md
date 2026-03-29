@@ -4,6 +4,7 @@ version: 1.0.0
 command: /squad-report
 description: Evaluate squad performance and propose reconfigurations
 last-updated: 2026-03-22
+audience: project
 ---
 
 # Squad Manager Skill

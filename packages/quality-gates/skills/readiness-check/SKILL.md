@@ -9,6 +9,7 @@ outputs:
   - verdict: PASS | CONCERNS | FAIL
   - checklist: detailed results per check
   - blockers: list of items that must be fixed before implementing
+audience: project
 ---
 
 # Implementation Readiness Check

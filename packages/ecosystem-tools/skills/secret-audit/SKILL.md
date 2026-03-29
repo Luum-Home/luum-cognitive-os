@@ -4,6 +4,7 @@ description: Scan all services for env var usage, cross-reference with definitio
 invoke: /secret-audit
 version: 1.0.0
 model: sonnet
+audience: project
 ---
 
 # Secret Audit — Environment Variable Cross-Reference

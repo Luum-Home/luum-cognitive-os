@@ -12,6 +12,7 @@ outputs:
   - risks: Identified risks and open questions
   - recommendation: Proceed/pivot/abandon with reasoning
 version: 1.0.0
+audience: project
 last-updated: 2026-03-28
 ---
 

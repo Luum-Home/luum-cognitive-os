@@ -10,6 +10,7 @@ outputs:
   - verdict: PASS | PARTIAL | FAIL
   - criteria_results: per-criterion pass/fail with evidence
   - missing_items: what needs to be done to pass
+audience: project
 ---
 
 # Definition of Done Check
