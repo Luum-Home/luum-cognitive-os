@@ -21,7 +21,7 @@ Defines three security profiles (minimal, standard, paranoid) that control which
 
 | Property | Minimal | Standard | Paranoid |
 |----------|---------|----------|----------|
-| Hook count | 10 | 20 | 55 |
+| Hook count | 11 | 26 | 61 |
 | Safety mesh layers | 0/12 | 5/12 | 12/12 |
 | Overhead per tool call | ~100-200ms | ~300-500ms | ~2-5s |
 | Secret detection | Yes | Yes | Yes |

@@ -23,7 +23,7 @@ Hooks check `model_capability.auto_disable` internally. At capability level 3 (c
 
 **Use case**: Development, rapid prototyping, exploration, solo coding sessions
 **Overhead**: ~100-200ms per tool call
-**Active hooks**: 10
+**Active hooks**: 11
 **Safety mesh layers**: 0 of 12 (no safety mesh hooks registered)
 **Security posture**: Error capture and secret detection only -- no quality gates, no agent governance
 
@@ -43,6 +43,7 @@ Strips all quality gates and agent governance hooks. Retains only: session lifec
 | PostToolUse | Edit\|Write | `secret-detector.sh` | Block writes containing credentials/API keys | Security non-negotiable -- credential leaks are irreversible |
 | PostToolUse | Bash\|Edit\|Write | `auto-checkpoint.sh` | Periodic git stash for crash recovery | Prevents work loss on session crash |
 | PostToolUse | Agent | `agent-checkpoint.sh` | Update task status in active-tasks.json | Enables task resumption across sessions |
+| PreCompact | (all) | `pre-compaction-flush.sh` | Remind agent to save state to Engram before compaction | Data safety -- never lose context on compaction |
 | Stop | (all) | `session-learning.sh` | Capture session errors and patterns | Feeds self-improvement across sessions |
 | Stop | (all) | `session-cleanup.sh` | Merge metrics, release locks, clean up | Required for clean session teardown |
 
@@ -63,7 +64,7 @@ Strips all quality gates and agent governance hooks. Retains only: session lifec
 
 **Use case**: Normal development with safety nets, team environments, daily coding
 **Overhead**: ~300-500ms per tool call
-**Active hooks**: 20
+**Active hooks**: 26
 **Safety mesh layers**: 5 of 12 (layers 1, 2, 4, 6, 10)
 **Security posture**: Critical safety gates active, content policy enforced, quality gates on agent output
 
@@ -93,6 +94,12 @@ Adds the most impactful safety gates from the 12-layer mesh without activating e
 | PostToolUse | Agent | `completion-gate.sh` | Check acceptance criteria + DoD + auto-refine | Quality gate on agent output |
 | PostToolUse | Agent | `agent-checkpoint.sh` | Update task status in active-tasks.json | Task lifecycle tracking |
 | PostToolUse | Agent | `clarification-interceptor.sh` | Detect NEEDS_CLARIFICATION signals from agents | **Safety mesh layer 10** -- enables mid-task clarification |
+| PreCompact | (all) | `pre-compaction-flush.sh` | Remind agent to save state to Engram before compaction | Data safety |
+| SubagentStart | (all) | `subagent-context-injector.sh` | Inject agent preamble + engram sidecar context | Consistent subagent context |
+| UserPromptSubmit | (all) | `user-prompt-capture.sh` | Capture user prompts to engram (async) | Intent preservation |
+| TeammateIdle | (all) | `teammate-idle.sh` | Check for unclaimed tasks before teammate goes idle | Task throughput |
+| TaskCreated | (all) | `task-created.sh` | Validate task quality and prevent duplicates | Task governance |
+| TaskCompleted | (all) | `task-completed.sh` | Verify completion criteria on task done | Quality gate |
 | Stop | (all) | `session-learning.sh` | Capture session errors and patterns | Self-improvement data |
 | Stop | (all) | `session-cleanup.sh` | Merge metrics, release locks, clean up | Clean session teardown |
 
@@ -118,7 +125,7 @@ Adds the most impactful safety gates from the 12-layer mesh without activating e
 
 **Use case**: Production deployments, compliance audits, security-sensitive work, multi-agent orchestration
 **Overhead**: ~2-5s per tool call
-**Active hooks**: 38
+**Active hooks**: 61
 **Safety mesh layers**: 12 of 12 (all layers active)
 **Security posture**: Maximum defense-in-depth. Every quality gate, every security scanner, every governance check.
 
@@ -139,6 +146,8 @@ Activates the complete 12-layer safety mesh plus all governance, observability, 
 | SessionStart | (all) | `infra-health.sh` | Check Docker service availability | Infrastructure readiness verification |
 | SessionStart | (all) | `metrics-rotation.sh` | Rotate large JSONL metrics files | Prevents metrics file bloat |
 | SessionStart | (all) | `engram-auto-import.sh` | Import latest team memory from exports | Cross-session knowledge continuity |
+| **PreCompact** | | | | |
+| PreCompact | (all) | `pre-compaction-flush.sh` | Remind agent to save state to Engram before compaction | Data safety -- prevents context loss on compaction |
 | **PreToolUse** | | | | |
 | PreToolUse | Bash\|Agent\|Edit\|Write | `rate-limiter.sh` | Prevent token flooding and runaway loops | Cost protection |
 | PreToolUse | Read | `large-file-advisor.sh` | Warn before reading very large files | Context waste prevention |
@@ -158,6 +167,16 @@ Activates the complete 12-layer safety mesh plus all governance, observability, 
 | PreToolUse | Agent | `pre-cleanup-snapshot.sh` | Detect cleanup intent, suggest capability snapshot | Capability protection |
 | PreToolUse | Edit\|Write | `concurrent-write-guard.sh` | Advisory file locking for concurrent sessions | Multi-session safety |
 | PreToolUse | Bash | `jupyter-sandbox.sh` | Route Python to Jupyter when JUPYTER_SANDBOX=true | Sandboxed execution |
+| **SubagentStart** | | | | |
+| SubagentStart | (all) | `subagent-context-injector.sh` | Inject agent preamble + engram sidecar context | Consistent subagent context and governance |
+| **UserPromptSubmit** | | | | |
+| UserPromptSubmit | (all) | `user-prompt-capture.sh` | Capture user prompts to engram (async, never blocks) | Intent preservation across sessions |
+| **TeammateIdle** | | | | |
+| TeammateIdle | (all) | `teammate-idle.sh` | Check for unclaimed tasks before teammate goes idle | Task throughput optimization |
+| **TaskCreated** | | | | |
+| TaskCreated | (all) | `task-created.sh` | Validate task quality and prevent duplicates | Task governance |
+| **TaskCompleted** | | | | |
+| TaskCompleted | (all) | `task-completed.sh` | Verify completion criteria on task done | Quality gate on task completion |
 | **PostToolUse** | | | | |
 | PostToolUse | Bash | `error-pipeline.sh` | Capture test/build/lint failures to JSONL | Error learning |
 | PostToolUse | Bash | `result-truncator.sh` | Truncate large command outputs | Context protection |
@@ -213,7 +232,6 @@ These hooks are excluded because they serve niche use cases or require explicit 
 | `memu-sync.sh` | Stop -- requires memU service running |
 | `sync-to-repo.sh` | Stop -- syncs to dedicated repo, org-specific |
 | `session-knowledge-extractor.sh` | Stop -- knowledge extraction, not security |
-| `pre-compaction-flush.sh` | PreCompact -- triggered by compaction event, not security profile |
 | `pre-commit-gate.sh` | Git pre-commit -- not a Claude hook, separate installation |
 
 ---
@@ -280,8 +298,14 @@ These hooks are excluded because they serve niche use cases or require explicit 
 | engram-auto-sync.sh | -- | -- | Y | -- |
 | session-state-save.sh | -- | -- | Y | -- |
 | idle-service-cleanup.sh | -- | -- | Y | -- |
+| pre-compaction-flush.sh | Y | Y | Y | -- |
+| subagent-context-injector.sh | -- | Y | Y | -- |
+| user-prompt-capture.sh | -- | Y | Y | -- |
+| teammate-idle.sh | -- | Y | Y | -- |
+| task-created.sh | -- | Y | Y | -- |
+| task-completed.sh | -- | Y | Y | -- |
 | session-cleanup.sh | Y | Y | Y | -- |
-| **Total** | **10** | **20** | **55** | |
+| **Total** | **11** | **26** | **61** | |
 
 ---
 
