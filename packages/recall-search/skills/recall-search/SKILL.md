@@ -4,6 +4,7 @@ description: "Search past Claude Code conversations using full-text search. Use 
 allowed-tools:
   - Bash
   - Read
+audience: project
 ---
 
 # Recall Search

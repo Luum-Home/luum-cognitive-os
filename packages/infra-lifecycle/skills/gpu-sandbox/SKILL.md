@@ -4,6 +4,7 @@ description: Execute Python code in Jupyter runtime for compute-heavy tasks (ML,
 invoke: /gpu-sandbox
 version: 1.0.0
 model: sonnet
+audience: project
 ---
 
 # GPU Sandbox — Jupyter Compute Runtime

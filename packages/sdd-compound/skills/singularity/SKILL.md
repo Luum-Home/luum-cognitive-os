@@ -9,6 +9,7 @@ triggers:
   - codebase health daemon
 tags: [automation, mape-k, monitoring, self-healing, autonomous]
 auto-generated: false
+audience: project
 ---
 
 # Singularity — Autonomous MAPE-K Control Loop

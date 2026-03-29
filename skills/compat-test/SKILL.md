@@ -5,6 +5,7 @@ version: 1.0.0
 user-invocable: true
 auto-generated: false
 invoke: /cognitive-os-compat-test
+audience: os-dev
 ---
 
 # Model Compatibility Test

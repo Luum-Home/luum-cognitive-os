@@ -12,6 +12,7 @@ outputs:
   - sample-set: Representative files selected per type
   - sandbox-result: PASS | PARTIAL | FAIL per type
   - final-result: PASS | FAIL after full-scale application
+audience: project
 ---
 
 # Sandbox Sampling

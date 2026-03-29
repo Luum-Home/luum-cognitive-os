@@ -7,6 +7,7 @@ user-invocable: true
 auto-generated: false
 trigger: automaker, setup automaker, kanban, visual board, automaker bridge
 model: sonnet
+audience: os-dev
 ---
 
 # AutoMaker Bridge

@@ -5,6 +5,7 @@ version: 1.0.0
 user-invocable: true
 auto-generated: false
 last-updated: 2026-03-22
+audience: os-dev
 ---
 
 # Self-Improve Skill

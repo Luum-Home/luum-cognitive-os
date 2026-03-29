@@ -3,6 +3,7 @@ name: cognitive-os-test
 description: Run the Cognitive OS automated test suite (infra, behavior, quality)
 invoke: /cognitive-os-test
 version: 1.0.0
+audience: os-dev
 ---
 
 # Cognitive OS Test Suite

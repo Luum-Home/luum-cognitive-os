@@ -8,6 +8,7 @@ allowed-tools:
   - mcp__plugin_engram_engram__mem_save
   - mcp__plugin_engram_engram__mem_search
   - mcp__plugin_engram_engram__mem_get_observation
+audience: project
 ---
 
 # SDD Compound — Post-Archive Learning Extraction

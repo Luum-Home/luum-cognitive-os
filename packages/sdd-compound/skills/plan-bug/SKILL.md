@@ -3,6 +3,7 @@ name: plan-bug
 description: Create a bug fix plan with root cause analysis and evaluation scoring. Use before fixing any non-trivial bug.
 user-invocable: true
 version: 1.0.0
+audience: project
 ---
 
 # Plan Bug Fix
