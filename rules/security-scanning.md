@@ -103,7 +103,7 @@ In `cognitive-os.yaml` (optional):
 security:
   semgrep:
     enabled: false              # Set to true to activate
-    config: auto                # Semgrep ruleset (auto = community rules)
+    config: "auto,p/ai-best-practices"  # Semgrep rulesets (auto + AI security rules)
     max_files: 50               # Max files to scan per run
     severity_threshold: WARNING # Minimum severity to report
 ```
