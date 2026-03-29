@@ -429,7 +429,6 @@ class TestCosInitRegistration:
 # ── Integration: uninstall.sh deregisters project ──────────────────
 
 
-@pytest.mark.xfail(reason="uninstall.sh deregistration needs full COS install context in test")
 class TestUninstallDeregistration:
     """Tests that uninstall.sh deregisters the project from the global registry."""
 

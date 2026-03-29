@@ -131,6 +131,18 @@ func RunInstall(cfg SetupConfig, projectDir, cosSourceDir string) InstallResult 
 		}
 	}
 
+	// Step 4b: Apply profile filtering to existing rules.
+	// After cognitive-os.yaml is written with the chosen profile, filter
+	// .claude/rules/cos/ so only the rules matching the profile remain.
+	// This fixes the bug where running setup on an already-installed project
+	// would leave excess rules from a previous "full" installation.
+	if result.ConfigCreated || result.CosInitRun {
+		filterErr := applyProfileFilter(projectDir, string(cfg.Profile))
+		if filterErr != nil {
+			result.Errors = append(result.Errors, fmt.Sprintf("profile filter: %v", filterErr))
+		}
+	}
+
 	// Step 5: Write .claude/settings.json if it does not exist.
 	settingsPath := filepath.Join(projectDir, ".claude", "settings.json")
 	if _, err := os.Stat(settingsPath); os.IsNotExist(err) {
@@ -231,6 +243,68 @@ func countInstalledRules(dir string) int {
 		matches = append(matches, subMatches...)
 	}
 	return len(matches)
+}
+
+// coreRules defines the 14 always-loaded rules for the standard profile.
+// This must stay in sync with CORE_RULES in hooks/self-install.sh and
+// COS_INIT_CORE_RULES in scripts/cos-init.sh.
+var coreRules = map[string]bool{
+	"RULES-COMPACT.md":       true,
+	"adaptive-bypass.md":     true,
+	"acceptance-criteria.md": true,
+	"agent-quality.md":       true,
+	"trust-score.md":         true,
+	"definition-of-done.md":  true,
+	"phase-aware-agents.md":  true,
+	"closed-loop-prompts.md": true,
+	"token-economy.md":       true,
+	"responsiveness.md":      true,
+	"agent-security.md":      true,
+	"credential-management.md": true,
+	"content-policy.md":      true,
+	"error-learning.md":      true,
+}
+
+// applyProfileFilter removes rules from .claude/rules/cos/ that do not
+// belong to the selected profile. This ensures that switching from "full"
+// (or paranoid) to "standard" (or minimal) actually reduces the rule count.
+func applyProfileFilter(projectDir string, profile string) error {
+	cosRulesDir := filepath.Join(projectDir, ".claude", "rules", "cos")
+
+	if _, err := os.Stat(cosRulesDir); os.IsNotExist(err) {
+		return nil // no rules directory to filter
+	}
+
+	entries, err := os.ReadDir(cosRulesDir)
+	if err != nil {
+		return fmt.Errorf("reading rules dir: %w", err)
+	}
+
+	switch profile {
+	case "minimal":
+		// Lean/minimal: keep only RULES-COMPACT.md.
+		for _, e := range entries {
+			if e.IsDir() {
+				continue
+			}
+			if e.Name() != "RULES-COMPACT.md" {
+				os.Remove(filepath.Join(cosRulesDir, e.Name()))
+			}
+		}
+	case "standard":
+		// Standard: keep only the 14 core rules.
+		for _, e := range entries {
+			if e.IsDir() {
+				continue
+			}
+			if !coreRules[e.Name()] {
+				os.Remove(filepath.Join(cosRulesDir, e.Name()))
+			}
+		}
+	// "paranoid" and "full" keep everything — no filtering needed.
+	}
+
+	return nil
 }
 
 // countRegisteredHooks parses .claude/settings.json for hook entries.
