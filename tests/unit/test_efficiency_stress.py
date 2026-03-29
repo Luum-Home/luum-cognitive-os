@@ -619,14 +619,18 @@ class TestCostProjections:
 class TestCompleteness:
 
     def test_all_hooks_in_settings_json_exist(self):
-        """Every .sh file referenced in settings.json must exist in hooks/."""
+        """Every .sh file referenced in settings.json must exist."""
         settings = load_settings()
         hook_scripts = get_hooks_from_settings(settings)
         missing = []
         for script in hook_scripts:
+            # Check both hooks/ and packages/*/hooks/ (Paperclip hooks live in packages)
             path = PROJECT_ROOT / "hooks" / script
             if not path.exists():
-                missing.append(script)
+                # Search in packages
+                found = list(PROJECT_ROOT.glob(f"packages/*/hooks/{script}"))
+                if not found:
+                    missing.append(script)
         assert not missing, (
             f"Settings.json references non-existent hooks: {missing}"
         )
