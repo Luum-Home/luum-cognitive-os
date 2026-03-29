@@ -20,9 +20,10 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 # Quote-matching helpers for regex patterns.
 # Python 3.14 enforces bracket matching in raw strings, so ['"] inside r"..."
 # causes SyntaxError. We use these non-raw string constants instead.
-_Q = "['\"]"          # Matches ' or "
-_NQ = "[^'\"]"        # Matches anything except ' or "
-_NQP = "[^'\".)]"     # Matches non-quote, non-dot, non-paren
+_Q = "['\"]"           # Matches ' or "
+_NQ = "[^'\"]"         # Matches non-quote
+_NQS = "[^'\"]*"       # Zero or more non-quote chars
+_NQP = "[^'\"]+"       # One or more non-quote chars
 
 
 # ---------------------------------------------------------------------------
@@ -503,19 +504,19 @@ def _analyze_json_schema(content: str, filepath: Path, repo_path: str) -> List[C
 _ENV_PATTERNS = [
     # JavaScript / TypeScript
     re.compile(r"process\.env\.(\w+)", re.MULTILINE),
-    re.compile(r"process\.env\[(?:'|")(\w+)(?:'|")\]", re.MULTILINE),
+    re.compile(r"process\.env\[" + _Q + r"(\w+)" + _Q + r"\]", re.MULTILINE),
     # Go
-    re.compile(r"os\.Getenv\((?:'|")(\w+)(?:'|")\)", re.MULTILINE),
-    re.compile(r"os\.LookupEnv\((?:'|")(\w+)(?:'|")\)", re.MULTILINE),
+    re.compile(r"os\.Getenv\(" + _Q + r"(\w+)" + _Q + r"\)", re.MULTILINE),
+    re.compile(r"os\.LookupEnv\(" + _Q + r"(\w+)" + _Q + r"\)", re.MULTILINE),
     # Python
-    re.compile(r"os\.environ(?:\.get)?\(?\[?(?:'|")(\w+)(?:'|")\]?\)?", re.MULTILINE),
-    re.compile(r"os\.getenv\(['\"](\w+)['\"](?:,\s*['\"]((?:[^'"])*)['\"])?", re.MULTILINE),
+    re.compile(r"os\.environ(?:\.get)?\(?\[?" + _Q + r"(\w+)" + _Q + r"\]?\)?", re.MULTILINE),
+    re.compile(r"os\.getenv\(" + _Q + r"(\w+)" + _Q + r"(?:,\s*" + _Q + r"(" + _NQS + r")" + _Q + r")?", re.MULTILINE),
     # Rust
-    re.compile(r"env::var\((?:'|")(\w+)(?:'|")\)", re.MULTILINE),
+    re.compile(r"env::var\(" + _Q + r"(\w+)" + _Q + r"\)", re.MULTILINE),
     # Java / Kotlin
-    re.compile(r"System\.getenv\((?:'|")(\w+)(?:'|")\)", re.MULTILINE),
+    re.compile(r"System\.getenv\(" + _Q + r"(\w+)" + _Q + r"\)", re.MULTILINE),
     # Ruby
-    re.compile(r"ENV\[(?:'|")(\w+)(?:'|")\]", re.MULTILINE),
+    re.compile(r"ENV\[" + _Q + r"(\w+)" + _Q + r"\]", re.MULTILINE),
     # Generic .env file patterns
     re.compile(r"^(\w+)=(.*)$", re.MULTILINE),
 ]
@@ -523,13 +524,13 @@ _ENV_PATTERNS = [
 # Default value patterns (language-specific)
 _DEFAULT_PATTERNS = [
     # process.env.X || "default"
-    re.compile(r"process\.env\.(\w+)\s*\|\|\s*(?:'|")((?:[^'"])+)(?:'|")"),
+    re.compile(r"process\.env\.(\w+)\s*\|\|\s*" + _Q + r"(" + _NQP + r")" + _Q),
     # os.Getenv("X") with default via or-pattern
-    re.compile(r"os\.Getenv\((?:'|")(\w+)(?:'|")\).*(?:==\s*\"\".*?(?:'|")((?:[^'"])+)(?:'|"))"),
+    re.compile(r"os\.Getenv\(" + _Q + r"(\w+)" + _Q + r'\).*(?:==\s*"".*?' + _Q + r"(" + _NQP + r")" + _Q + r")"),
     # Python os.getenv("X", "default")
-    re.compile(r"os\.getenv\((?:'|")(\w+)(?:'|"),\s*(?:'|")([^\'"]*)(?:'|")\)"),
+    re.compile(r"os\.getenv\(" + _Q + r"(\w+)" + _Q + r",\s*" + _Q + r"(" + _NQS + r")" + _Q + r"\)"),
     # Python os.environ.get("X", "default")
-    re.compile(r"os\.environ\.get\((?:'|")(\w+)(?:'|"),\s*(?:'|")([^\'"]*)(?:'|")\)"),
+    re.compile(r"os\.environ\.get\(" + _Q + r"(\w+)" + _Q + r",\s*" + _Q + r"(" + _NQS + r")" + _Q + r"\)"),
 ]
 
 
@@ -581,36 +582,36 @@ def _analyze_env_vars_in_file(
 
 # Cobra (Go)
 _COBRA_CMD_RE = re.compile(
-    r"&cobra\.Command\s*\{[^}]*Use:\s*[\"\']([^\"\']+)[\"\']"
-    r"[^}]*(?:Short:\s*[\"\']([^\"\']+)[\"\'])?",
+    r"&cobra\.Command\s*\{[^}]*Use:\s*" + _Q + r"(" + _NQP + r")" + _Q
+    + r"[^}]*(?:Short:\s*" + _Q + r"(" + _NQP + r")" + _Q + r")?",
     re.DOTALL,
 )
 
 # Commander.js
 _COMMANDER_RE = re.compile(
-    r"\.command\((?:'|")([^\'\"]+)(?:'|")\)"
-    r"(?:\s*\.description\((?:'|")([^\'\"]+)(?:'|")\))?",
+    r"\.command\(" + _Q + r"(" + _NQP + r")" + _Q + r"\)"
+    + r"(?:\s*\.description\(" + _Q + r"(" + _NQP + r")" + _Q + r"\))?",
     re.DOTALL,
 )
 
 # Yargs
 _YARGS_CMD_RE = re.compile(
-    r"\.command\((?:'|")([^\'\"]+)(?:'|"),?\s*(?:'|")([^\'\"]*)(?:'|")\s*",
+    r"\.command\(" + _Q + r"(" + _NQP + r")" + _Q + r",?\s*" + _Q + r"(" + _NQS + r")" + _Q + r"\s*",
 )
 
 # Argparse (Python)
 _ARGPARSE_PARSER_RE = re.compile(
-    r"add_parser\((?:'|")([^\'\"]+)(?:'|")(?:.*?help=(?:'|")([^\'\"]+)(?:'|"))?\)",
+    r"add_parser\(" + _Q + r"(" + _NQP + r")" + _Q + r"(?:.*?help=" + _Q + r"(" + _NQP + r")" + _Q + r")?\)",
     re.DOTALL,
 )
 _ARGPARSE_ARG_RE = re.compile(
-    r"add_argument\((?:'|")(-{1,2}[^\'\"]+)(?:'|")(?:.*?help=(?:'|")([^\'\"]+)(?:'|"))?\)",
+    r"add_argument\(" + _Q + r"(-{1,2}" + _NQP + r")" + _Q + r"(?:.*?help=" + _Q + r"(" + _NQP + r")" + _Q + r")?\)",
     re.DOTALL,
 )
 
 # Click (Python)
 _CLICK_CMD_RE = re.compile(
-    r"@(?:click\.command|cli\.command|app\.command)\((?:name=)?(?:'|")?([^\'\"\)]+)",
+    r"@(?:click\.command|cli\.command|app\.command)\((?:name=)?" + _Q + r"?([^)]+)",
 )
 
 
@@ -676,34 +677,34 @@ def _analyze_cli_in_file(
 # Express.js / Fastify
 _EXPRESS_ROUTE_RE = re.compile(
     r"(?:app|router|server|fastify)\.(get|post|put|patch|delete|all|options|head)\("
-    r"(?:'|")([^\'\"]+)(?:'|")",
+    + _Q + r"(" + _NQP + r")" + _Q,
     re.IGNORECASE,
 )
 
 # Go (net/http, gin, echo, chi, gorilla)
 _GO_ROUTE_RE = re.compile(
     r"\.(?:GET|POST|PUT|PATCH|DELETE|Handle|HandleFunc|Group)\("
-    r"[\"\']([^\"\']+)[\"\']",
+    + _Q + r"(" + _NQP + r")" + _Q,
     re.IGNORECASE,
 )
 
 # Go gin-style
 _GIN_ROUTE_RE = re.compile(
-    r"\.(?:GET|POST|PUT|PATCH|DELETE)\([\"\']([^\"\']+)[\"\'],\s*(\w+)",
+    r"\.(?:GET|POST|PUT|PATCH|DELETE)\(" + _Q + r"(" + _NQP + r")" + _Q + r",\s*(\w+)",
 )
 
 # Flask / FastAPI
 _FLASK_ROUTE_RE = re.compile(
     r"@(?:app|blueprint|router|api)\.(?:route|get|post|put|patch|delete)\("
-    r"(?:'|")([^\'\"]+)(?:'|")"
-    r"(?:.*?methods=\[([^\]]+)\])?",
+    + _Q + r"(" + _NQP + r")" + _Q
+    + r"(?:.*?methods=\[([^\]]+)\])?",
     re.DOTALL,
 )
 
 # Spring Boot (Java/Kotlin)
 _SPRING_ROUTE_RE = re.compile(
     r"@(?:Get|Post|Put|Patch|Delete|Request)Mapping\("
-    r"(?:value\s*=\s*)?[\"\']([^\"\']+)[\"\']",
+    + r"(?:value\s*=\s*)?" + _Q + r"(" + _NQP + r")" + _Q,
 )
 
 
@@ -900,17 +901,17 @@ _AUTH_PATTERNS = {
 }
 
 _SESSION_COOKIE_RE = re.compile(
-    r"(?:cookie|session)[_.]?(?:name|key)\s*[:=]\s*(?:'|")([^\'\"]+)(?:'|")",
+    r"(?:cookie|session)[_.]?(?:name|key)\s*[:=]\s*" + _Q + r"(" + _NQP + r")" + _Q,
     re.IGNORECASE,
 )
 
 _AUTH_ENDPOINT_RE = re.compile(
-    r"(?:'|")(/(?:auth|login|logout|signup|register|token|session|oauth|callback)[^\'\"]*)(?:'|")",
+    _Q + r"(/(?:auth|login|logout|signup|register|token|session|oauth|callback)" + _NQS + r")" + _Q,
     re.IGNORECASE,
 )
 
 _AUTH_MIDDLEWARE_RE = re.compile(
-    r"(?:middleware|guard|interceptor|before_request|before_action)\s*[:=(\[]\s*(?:'|")?(\w*(?:auth|guard|protect|verify|token|jwt)\w*)(?:'|")?",
+    r"(?:middleware|guard|interceptor|before_request|before_action)\s*[:=(\[]\s*" + _Q + r"?(\w*(?:auth|guard|protect|verify|token|jwt)\w*)" + _Q + r"?",
     re.IGNORECASE,
 )
 
