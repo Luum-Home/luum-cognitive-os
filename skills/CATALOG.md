@@ -99,6 +99,7 @@
 | cost-predictor | Predict task cost from historical data, show confidence level, per-phase breakdown | `/cost-predict` | project |
 | run-tests | Auto-detect project test framework and run tests with structured pass/fail reporting | `/run-tests` | project |
 | repo-forensics | Deep forensic analysis of git repos: clone, scan all code, deps, architecture, tools, features, COS comparison | `/repo-forensics` | both |
+| reverse-engineer | Deep source code analysis of dependencies: extract config schemas, env vars, CLI commands, API routes, Docker setup, auth flows | `/reverse-engineer` | both |
 | red-team | Red team testing for agent prompts: detects injection, jailbreak, and manipulation vulnerabilities via Promptfoo | `/red-team` | os-dev |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints | `/vulnerability-scan` | os-dev |
 | agent-stress-test | Stress-test agent cognitive health to detect context-induced degradation | `/agent-stress-test` | os-dev |
