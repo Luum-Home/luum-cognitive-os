@@ -90,7 +90,7 @@ if [ -z "$SCAN_FILES" ]; then
 fi
 
 # --- Run Semgrep ---
-SEMGREP_OUTPUT=$(semgrep scan --config auto --json $SCAN_FILES 2>/dev/null) || true
+SEMGREP_OUTPUT=$(semgrep scan --config auto --config p/ai-best-practices --json $SCAN_FILES 2>/dev/null) || true
 
 if [ -z "$SEMGREP_OUTPUT" ]; then
   exit 0
