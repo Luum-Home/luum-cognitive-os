@@ -3,11 +3,28 @@ package cli
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/spf13/cobra"
 
 	"luum-agent-os/cmd/cos-test/internal/ui"
 )
+
+func resolveVersion() string {
+	if Version != "" {
+		return Version
+	}
+	// Try reading VERSION file from project root
+	cwd, _ := os.Getwd()
+	for dir := cwd; dir != "/" && dir != "."; dir = filepath.Dir(dir) {
+		data, err := os.ReadFile(filepath.Join(dir, "VERSION"))
+		if err == nil {
+			return strings.TrimSpace(string(data))
+		}
+	}
+	return "dev"
+}
 
 var (
 	ciMode  bool
@@ -28,11 +45,16 @@ Commands:
   coverage    Show test coverage across all dimensions
   dashboard   Interactive test dashboard
   watch       Watch for file changes and rerun tests`,
-	Version: "0.1.0",
 }
+
+// Version can be set via ldflags at build time.
+var Version string
 
 // Execute runs the root command.
 func Execute() error {
+	if rootCmd.Version == "" {
+		rootCmd.Version = resolveVersion()
+	}
 	ui.Initialize(noColor, verbose, ciMode)
 
 	if err := rootCmd.Execute(); err != nil {
