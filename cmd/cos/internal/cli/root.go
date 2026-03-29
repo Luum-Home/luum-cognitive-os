@@ -29,6 +29,7 @@ var rootCmd = &cobra.Command{
 A package manager for AI agent components: skills, rules, hooks, agents, and templates.
 
 Commands:
+  new         Create a new project with COS pre-configured
   init        Create a new cos-package.yaml
   validate    Validate cos-package.yaml in the current directory
   install     Install a cos package from local path, GitHub, or URL

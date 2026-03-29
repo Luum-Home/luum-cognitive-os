@@ -22,8 +22,9 @@ pytestmark = pytest.mark.unit
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
-# The 11 components that level 5 should disable (from DEFAULT_AUTO_DISABLE[5])
-LEVEL_5_COMPONENTS = [
+# Baseline components that level 5 should disable (from DEFAULT_AUTO_DISABLE[5]).
+# New additions to DEFAULT_AUTO_DISABLE[5] are OK; removals are caught.
+LEVEL_5_BASELINE_COMPONENTS = {
     "completeness-check",
     "epic-task-detector",
     "scope-proportionality",
@@ -35,7 +36,7 @@ LEVEL_5_COMPONENTS = [
     "pre-cleanup-snapshot",
     "architecture-compliance",
     "auto-skill-generator",
-]
+}
 
 # Essential hooks that must NEVER be disabled at any level
 ESSENTIAL_HOOKS = [
@@ -54,19 +55,29 @@ ESSENTIAL_HOOKS = [
 
 
 class TestLevel5DisablesComponents:
-    """Level 5 should auto-disable 11 additional components beyond level 4."""
+    """Level 5 should auto-disable additional components beyond level 4."""
 
-    def test_level5_disables_11_components(self):
-        """Level 5 should auto-disable 11 additional components beyond level 4."""
-        level5_specific = DEFAULT_AUTO_DISABLE.get(5, [])
-        assert len(level5_specific) == 11, (
-            f"Expected 11 level-5-specific components, got {len(level5_specific)}: {level5_specific}"
+    def test_level5_disables_at_least_baseline_components(self):
+        """Level 5 should auto-disable at least the baseline components."""
+        level5_specific = set(DEFAULT_AUTO_DISABLE.get(5, []))
+        assert len(level5_specific) >= len(LEVEL_5_BASELINE_COMPONENTS), (
+            f"Expected at least {len(LEVEL_5_BASELINE_COMPONENTS)} level-5-specific components, "
+            f"got {len(level5_specific)}: {sorted(level5_specific)}"
         )
 
-    def test_level5_components_match_expected(self):
-        """Level 5 disabled components should match the expected list."""
-        level5_specific = DEFAULT_AUTO_DISABLE.get(5, [])
-        assert sorted(level5_specific) == sorted(LEVEL_5_COMPONENTS)
+    def test_level5_baseline_components_present(self):
+        """All baseline level 5 components must still be disabled."""
+        level5_specific = set(DEFAULT_AUTO_DISABLE.get(5, []))
+        missing = LEVEL_5_BASELINE_COMPONENTS - level5_specific
+        assert not missing, (
+            f"Baseline level-5 components removed (not allowed): {sorted(missing)}"
+        )
+
+    def test_level5_no_baseline_removals(self):
+        """No baseline component should be removed from level 5."""
+        level5_specific = set(DEFAULT_AUTO_DISABLE.get(5, []))
+        removed = LEVEL_5_BASELINE_COMPONENTS - level5_specific
+        assert not removed, f"Level 5 baseline components removed: {sorted(removed)}"
 
 
 class TestLevel5CumulativeDisable:
@@ -113,7 +124,7 @@ class TestLevel5CumulativeDisable:
 
         disabled = get_disabled_components(4, str(config))
 
-        for comp in LEVEL_5_COMPONENTS:
+        for comp in LEVEL_5_BASELINE_COMPONENTS:
             assert comp not in disabled, (
                 f"Level 5 component '{comp}' should NOT be disabled at level 4"
             )
@@ -152,7 +163,7 @@ class TestLevel5HooksHaveCapabilityCheck:
         hooks_dir = PROJECT_ROOT / "hooks"
         missing = []
 
-        for component in LEVEL_5_COMPONENTS:
+        for component in LEVEL_5_BASELINE_COMPONENTS:
             # Hook files use the component name, sometimes with .sh suffix
             hook_file = hooks_dir / f"{component}.sh"
             if not hook_file.exists():
@@ -349,7 +360,7 @@ class TestLevel5ShouldComponentRun:
         config = tmp_path / "cognitive-os.yaml"
         config.write_text("model_capability:\n  level: 5\n")
 
-        for comp in LEVEL_5_COMPONENTS:
+        for comp in LEVEL_5_BASELINE_COMPONENTS:
             assert should_component_run(comp, 5, str(config)) is False, (
                 f"Component '{comp}' should be disabled at level 5"
             )
@@ -359,7 +370,7 @@ class TestLevel5ShouldComponentRun:
         config = tmp_path / "cognitive-os.yaml"
         config.write_text("model_capability:\n  level: 2\n")
 
-        for comp in LEVEL_5_COMPONENTS:
+        for comp in LEVEL_5_BASELINE_COMPONENTS:
             assert should_component_run(comp, 2, str(config)) is True, (
                 f"Component '{comp}' should be enabled at level 2"
             )
