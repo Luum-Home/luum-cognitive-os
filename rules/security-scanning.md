@@ -39,7 +39,7 @@ The `hooks/semgrep-scan.sh` hook fires after any Agent tool use that contains
 
 1. Identifies changed files from `git diff`
 2. Filters to source code files (.go, .ts, .py, .java, etc.)
-3. Runs `semgrep scan --config auto --json` on changed files
+3. Runs `semgrep scan --config auto --config p/ai-best-practices --json` on changed files
 4. Classifies findings using the adversarial review format:
 
 | Semgrep Severity | Adversarial Review Tier | Action |
@@ -107,6 +107,22 @@ security:
     max_files: 50               # Max files to scan per run
     severity_threshold: WARNING # Minimum severity to report
 ```
+
+## AI Best Practices Ruleset
+
+The `p/ai-best-practices` ruleset (58 rules) is included alongside the default `auto` config.
+It detects AI/ML-specific security issues:
+
+| Category | Examples |
+|----------|---------|
+| Hardcoded API keys | OpenAI, Anthropic, Cohere, HuggingFace keys in source |
+| Prompt injection | Unsanitized user input passed to LLM prompts |
+| MCP security | Insecure MCP server configurations and tool definitions |
+| Model configuration | Insecure model loading, pickle deserialization |
+| Data leakage | Sensitive data in LLM context or logging |
+
+This ruleset is particularly relevant for Cognitive OS development where agent prompts,
+MCP configurations, and LLM API calls are common patterns.
 
 ## Custom Rules
 

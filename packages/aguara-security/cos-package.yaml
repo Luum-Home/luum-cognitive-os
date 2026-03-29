@@ -1,0 +1,26 @@
+name: "@luum/aguara-security"
+version: "1.0.0"
+description: "Aguara AI agent security scanner integration — 189 deterministic rules for prompt injection, data exfiltration, and supply chain attack detection"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["security", "scanning", "prompt-injection", "agent-security", "aguara", "mcp"]
+cos_version: ">=0.1.0"
+
+provides:
+  - rule
+  - hook
+
+exports:
+  - source: "rules/aguara-integration.md"
+    type: rule
+    description: "Aguara security scanner integration and configuration"
+    always_active: false
+  - source: "../../hooks/aguara-scan.sh"
+    type: hook
+    description: "PreToolUse hook scanning agent prompts for security threats"
+    hook_event: PreToolUse
+    hook_matcher: "Agent"
+
+dependencies:
+  "@luum/ecosystem-tools":
+    version: ">=1.0.0"
