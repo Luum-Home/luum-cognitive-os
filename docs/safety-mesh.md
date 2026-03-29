@@ -1,7 +1,9 @@
 # Safety Mesh
 
 > The layered defense system that prevents agent errors from propagating through the Cognitive OS pipeline.
-> Author: luum | Updated: 2026-03-27 | Layers: 12
+> Author: luum | Updated: 2026-03-28 | Layers: 12
+>
+> See also: [docs/security-stack.md](security-stack.md) for the complete security posture including external tools, MCP security, supply chain defense, and red team capabilities.
 
 ## Motivation
 
