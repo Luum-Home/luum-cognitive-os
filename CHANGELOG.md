@@ -5,6 +5,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.6] - 2026-03-29
+
+### Added
+- Self-usage audit: COS uses 13% of its own tools (docs/self-usage-audit.md)
+- Self-building protocol: 6 mandatory integration phases (docs/self-building-protocol.md)
+- CLAUDE.md MANDATORY Self-Usage Protocol (SHOULD → MUST)
+- /reverse-engineer skill for deep source code analysis (46 tests)
+- Dashboard MVP live on :3300 (Next.js 15, 3 pages)
+- Paperclip full auto-bootstrap (config + signup + accept + company)
+- Paperclip hooks registered (4 async: agent-status, sdd-sync, squad-sync, task-sync)
+
+### Fixed
+- Paperclip Docker: reeoss image for ARM64, node direct (skip pnpm), init-config.sh
+- Hook path resolution for packages/ directory
+- INDEX.md version sync
+
 ## [0.2.5] - 2026-03-29
 
 ### Added
