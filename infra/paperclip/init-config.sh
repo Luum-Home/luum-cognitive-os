@@ -53,11 +53,12 @@ SERVER_PID=$!
 
 # Step 3: Full auto-bootstrap if not already done
 if [ ! -f "$BOOTSTRAP_MARKER" ]; then
-  echo "[COS] Waiting for server to be ready..."
-  # Wait longer on first boot (corepack downloads pnpm ~10s)
-  for i in $(seq 1 60); do
-    if curl -sf "http://localhost:${SERVER_PORT}/api/health" > /dev/null 2>&1; then
-      echo "[COS] Server ready. Running full auto-bootstrap..."
+  echo "[COS] Waiting for server + DB migrations..."
+  # Wait for health AND bootstrap_pending (means migrations done)
+  for i in $(seq 1 90); do
+    HEALTH=$(curl -sf "http://localhost:${SERVER_PORT}/api/health" 2>/dev/null)
+    if [ -n "$HEALTH" ] && echo "$HEALTH" | grep -q "bootstrap_pending"; then
+      echo "[COS] Server ready (migrations done). Running full auto-bootstrap..."
 
       # 3a: Generate bootstrap CEO invite
       INVITE_TOKEN=$(node cli/node_modules/tsx/dist/cli.mjs cli/src/index.ts auth bootstrap-ceo 2>&1 | grep "Invite URL:" | sed 's|.*/invite/||')
