@@ -85,6 +85,8 @@
 | jupyter-execute | Execute code in a Jupyter kernel sandbox for data analysis and benchmarks | `/jupyter-exec` | project |
 | semgrep-scan | Run Semgrep SAST security scanning, report in adversarial review format | `/semgrep-scan` | project |
 | confidence-check | Pre-implementation confidence assessment: 5-dimension readiness check before coding | `/confidence-check` | project |
+| code-review | Engram-integrated code review: quality, security, conventions, test coverage with memory | `/code-review` | project |
+| pr-review | Pull Request review: diff-based review with test verification and PASSED/FAILED verdict | `/pr-review` | project |
 | self-review | Lightweight 4-question post-implementation checklist for non-SDD work | `/self-review` | project |
 | web-crawler | Fetch and convert web pages to LLM-ready markdown using Crawl4AI | `/web-crawler` | project |
 | deep-research | Multi-hop research with configurable depth (quick/standard/deep/exhaustive), structured reports | `/deep-research` | project |
@@ -97,6 +99,9 @@
 | cost-predictor | Predict task cost from historical data, show confidence level, per-phase breakdown | `/cost-predict` | project |
 | run-tests | Auto-detect project test framework and run tests with structured pass/fail reporting | `/run-tests` | project |
 | repo-forensics | Deep forensic analysis of git repos: clone, scan all code, deps, architecture, tools, features, COS comparison | `/repo-forensics` | both |
+| red-team | Red team testing for agent prompts: detects injection, jailbreak, and manipulation vulnerabilities via Promptfoo | `/red-team` | os-dev |
+| vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints | `/vulnerability-scan` | os-dev |
+| agent-stress-test | Stress-test agent cognitive health to detect context-induced degradation | `/agent-stress-test` | os-dev |
 
 ## Project Skills [generated]
 
