@@ -197,7 +197,60 @@ The SSE endpoint tails JSONL metric files and emits new entries as they appear.
 
 ---
 
-## 5. Deployment
+## 5. Dual-Dashboard Architecture
+
+COS uses **two complementary dashboards**, not one monolithic UI:
+
+```
+                      Browser
+                     /       \
+            Paperclip          COS Dashboard
+            (port 3200)        (port 3300)
+                |                    |
+            Agent coord         COS-specific
+            Squad org chart     Rules, hooks, skills
+            SDD issues          Memory, cost, security
+            Inbox/notifs        Trust scores, KPIs
+            Monthly spend       Config editor
+```
+
+### Why Two Dashboards?
+
+| Paperclip | COS Dashboard |
+|-----------|---------------|
+| Agent coordination (heartbeats, status) | Rules/hooks/skills management |
+| Org chart of squads | Engram memory browser |
+| Issue tracking (SDD phases as issues) | Cost dashboard + budget gauges |
+| Inbox/notifications | Security scan results |
+| Monthly spend view | Trust score gauges |
+| Already running (Docker, port 3200) | Custom-built (port 3300) |
+
+**Paperclip** handles what it does well: agent lifecycle, squad structure, and SDD issue tracking. It's an existing open-source tool — we don't rebuild what works.
+
+**COS Dashboard** covers the 70% that Paperclip can't: COS-specific governance features (rules CRUD, hooks monitoring, Engram browser, cost management, security scanning, trust scores). No existing platform covers these.
+
+### Integration Between Dashboards
+
+- **Paperclip client** (`lib/paperclip_client.py`): COS pushes events to Paperclip (SDD phase transitions, agent status, squad changes, notifications)
+- **COS MCP server** (`mcp-server/cos_mcp.py`): COS Dashboard reads rules, metrics, tasks, memory via 8 MCP tools
+- **Shared data**: both read from the same metrics files (`.cognitive-os/metrics/`), Engram, and `active-tasks.json`
+- **No cross-dependency**: each dashboard runs independently. If one is down, the other continues.
+
+### When to Use Which
+
+| Task | Go to |
+|------|-------|
+| Check agent status/heartbeats | Paperclip |
+| View squad structure | Paperclip |
+| Track SDD pipeline progress | Paperclip |
+| Edit/create rules | COS Dashboard |
+| Browse skills catalog | COS Dashboard |
+| Search Engram memory | COS Dashboard |
+| Check cost/budget | COS Dashboard |
+| View security scan results | COS Dashboard |
+| Configure cognitive-os.yaml | COS Dashboard |
+
+## 6. Deployment
 
 ### Docker Compose Addition
 
