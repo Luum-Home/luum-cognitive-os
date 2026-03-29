@@ -13,9 +13,11 @@ Author: luum
 import json
 import logging
 import os
+import threading
+import time
 import urllib.error
 import urllib.request
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +36,49 @@ VALID_ISSUE_STATUSES = frozenset({"open", "in_progress", "blocked", "done"})
 VALID_SEVERITIES = frozenset({"info", "warning", "critical"})
 
 
+class _RetryQueue:
+    """Thread-safe queue for failed Paperclip requests.
+
+    When Paperclip is unavailable, requests are queued in memory and
+    retried on the next successful call. The queue is bounded (max 100
+    entries) and entries expire after 5 minutes.
+    """
+
+    _MAX_SIZE = 100
+    _ENTRY_TTL_S = 300  # 5 minutes
+
+    def __init__(self) -> None:
+        self._queue: List[Tuple[float, str, str, Optional[Dict[str, Any]]]] = []
+        self._lock = threading.Lock()
+
+    def enqueue(
+        self, method: str, path: str, data: Optional[Dict[str, Any]]
+    ) -> None:
+        """Add a failed request to the retry queue."""
+        with self._lock:
+            if len(self._queue) >= self._MAX_SIZE:
+                # Drop oldest entry
+                self._queue.pop(0)
+            self._queue.append((time.time(), method, path, data))
+
+    def drain(self) -> List[Tuple[str, str, Optional[Dict[str, Any]]]]:
+        """Return all non-expired entries and clear the queue."""
+        now = time.time()
+        with self._lock:
+            live = [
+                (m, p, d)
+                for (ts, m, p, d) in self._queue
+                if (now - ts) < self._ENTRY_TTL_S
+            ]
+            self._queue.clear()
+            return live
+
+    def size(self) -> int:
+        """Return current queue size."""
+        with self._lock:
+            return len(self._queue)
+
+
 class PaperclipClient:
     """REST API client for Paperclip dashboard integration.
 
@@ -41,15 +86,24 @@ class PaperclipClient:
         base_url: Paperclip server URL. Falls back to PAPERCLIP_URL or
             COGNITIVE_OS_PAPERCLIP_URL environment variables, then to
             http://localhost:3200.
+        enable_retry_queue: If True (default), failed requests are queued
+            in memory and retried on the next successful request.
     """
 
-    def __init__(self, base_url: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        base_url: Optional[str] = None,
+        enable_retry_queue: bool = True,
+    ) -> None:
         self.base_url = (
             base_url
             or os.environ.get("PAPERCLIP_URL")
             or os.environ.get("COGNITIVE_OS_PAPERCLIP_URL")
             or _DEFAULT_BASE_URL
         ).rstrip("/")
+        self._retry_queue: Optional[_RetryQueue] = (
+            _RetryQueue() if enable_retry_queue else None
+        )
 
     # -------------------------------------------------------------------
     # Health / availability
@@ -332,11 +386,30 @@ class PaperclipClient:
     # Internal HTTP transport
     # -------------------------------------------------------------------
 
+    def flush_retry_queue(self) -> int:
+        """Retry all queued requests. Returns the number successfully sent."""
+        if not self._retry_queue:
+            return 0
+        entries = self._retry_queue.drain()
+        sent = 0
+        for method, path, data in entries:
+            result = self._request(method, path, data, _skip_queue=True)
+            if result is not None:
+                sent += 1
+            # If it fails again, it goes back in the queue via _request
+        return sent
+
+    @property
+    def retry_queue_size(self) -> int:
+        """Number of requests currently queued for retry."""
+        return self._retry_queue.size() if self._retry_queue else 0
+
     def _request(
         self,
         method: str,
         path: str,
         data: Optional[Dict[str, Any]] = None,
+        _skip_queue: bool = False,
     ) -> Optional[Dict[str, Any]]:
         """Make an HTTP request to the Paperclip API.
 
@@ -344,6 +417,7 @@ class PaperclipClient:
             method: HTTP method (GET, POST, PUT, DELETE).
             path: API path (e.g. "/api/health").
             data: Optional dict to JSON-encode as the request body.
+            _skip_queue: Internal flag to prevent infinite queue loops.
 
         Returns:
             Parsed JSON response as a dict, or None on any failure
@@ -365,6 +439,9 @@ class PaperclipClient:
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 resp_body = resp.read().decode("utf-8")
+                # On success, try flushing queued requests
+                if self._retry_queue and self._retry_queue.size() > 0 and not _skip_queue:
+                    self.flush_retry_queue()
                 if resp_body:
                     return json.loads(resp_body)
                 # Empty body but 2xx status -- return an empty success dict
@@ -376,6 +453,14 @@ class PaperclipClient:
             return None
         except (urllib.error.URLError, OSError, TimeoutError) as exc:
             logger.debug("Paperclip %s %s failed: %s", method, path, exc)
+            # Queue for retry if it's a write (not health check GETs)
+            if (
+                self._retry_queue
+                and not _skip_queue
+                and method in ("POST", "PUT")
+                and path != "/api/health"
+            ):
+                self._retry_queue.enqueue(method, path, data)
             return None
         except (json.JSONDecodeError, ValueError) as exc:
             logger.debug(

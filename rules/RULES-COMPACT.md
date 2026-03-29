@@ -46,7 +46,7 @@ Credentials never in code [`credential-management`], always env vars, validate a
 
 ### 11. Skill Lifecycle
 
-Loading priority: project > global > auto-generated [`skill-management`]. Skill routing table maps task types to primary/fallback skills. Before exec: search Engram for feedback; after fail: save feedback; 3+ fails: suggest `/skill-creator`. Auto-generated from complex tasks (10+ tool uses OR 8000+ chars) [`auto-skill-generation`], saved to `auto-generated/`, opt-out: `NO_AUTO_SKILL=true`. Consequence system [`consequence-system`]: score >=85% (5x) PROMOTE, <60% WARN/DEGRADE/DISABLE. Evolutionary archive (via `lib/skill_archive.py`) tracks content hash, trust score, success rate per execution; flags <60% for rewrite, recommends rollback when >20 points below best.
+Loading priority: project > global > auto-generated [`skill-management`]. Skill routing table maps task types to primary/fallback skills. Before exec: search Engram for feedback; after fail: save feedback; 3+ fails: suggest `/skill-creator`. Auto-generated from complex tasks (10+ tool uses OR 8000+ chars) [`auto-skill-generation`], saved to `auto-generated/`, opt-out: `NO_AUTO_SKILL=true`. Consequence system [`consequence-system`]: score >=85% (5x) PROMOTE, <60% WARN/DEGRADE/DISABLE. Evolutionary archive (via `lib/skill_archive.py`) tracks content hash, trust score, success rate per execution; flags <60% for rewrite, recommends rollback when >20 points below best. Dynamic tool creation [`dynamic-tool-creation`]: agents create tools mid-task in `.cognitive-os/dynamic-tools/`, promote to skills if useful, cleanup at session end.
 
 ## Contextual (loaded on trigger)
 
