@@ -1,5 +1,15 @@
 # Library Selection Rules
 
+## License-First Protocol
+
+**ALWAYS check license BEFORE any other evaluation.** This applies to libraries, frameworks, tools, and external repos.
+
+- **MIT/Apache/BSD** → Can adopt code AND patterns
+- **AGPL/SSPL** → BLOCKED for code. CAN adopt architectural patterns via clean-room reimplementation. IDEAS are free, code is not.
+- **Custom/Unknown** → BLOCKED for code. Verify with legal before adopting patterns.
+
+When a repo is license-blocked, the evaluation must still document valuable PATTERNS that can be independently reimplemented.
+
 ## Mandatory Checks
 
 Before adopting any new library, the following checks are required:
