@@ -47,27 +47,108 @@ Update feedback to note the successful approach.
 
 ## Skill Routing Table
 
-When the orchestrator receives a task, consult this routing table to select the most appropriate skill:
+When the orchestrator receives a task, consult this routing table to select the most appropriate skill.
+Auto-selection is handled by `lib/skill_router.py` — the `SkillRouter` class matches user messages
+to skills using pattern-based intent detection (English + Spanish).
 
-| Task Type | Primary Skill | Fallback |
-|---|---|---|
-| New feature | `/sdd-new` (full pipeline) | `/plan-feature` (plan only) |
-| Bug fix | `/plan-bug` then implement | `/systematic-debugging` |
-| Research/investigation | `/deep-research` | `/eval-repo` (for repos) |
-| Code review | `/self-review` | `/sdd-verify` (formal) |
-| Security scan | `/semgrep-scan` | `/secret-audit` |
-| Performance issue | `/systematic-debugging` | -- |
-| Documentation | `/document-feature` | `/doc-sync` |
-| Architecture decision | `/sdd-new` with explore | -- |
-| Dependency evaluation | `/eval-repo` | `/recommend-library` |
-| Test writing | `/test-driven-development` | -- |
-| Refactoring | `/sdd-new` (if >5 files) | direct (if <5 files) |
-| Infrastructure | `/sre-agent` | -- |
-| Skill creation | `/skill-creator` | -- |
-| Quality check | `/confidence-check` (pre) | `/self-review` (post) |
-| Library usage | Context7 MCP lookup | `/deep-research` |
+### Core Routing Table
+
+| Context Signal | Primary Skill | Fallback | Confidence |
+|---|---|---|---|
+| GitHub URL in message | `/repo-forensics` | `/eval-repo` | 0.95 |
+| "evaluate repo", "tech radar" | `/eval-repo` | -- | 0.85 |
+| "fix bug", "arreglá el bug", "hay un error" | `/plan-bug` | `/systematic-debugging` | 0.90 |
+| "debug", "no funciona", "doesn't work" | `/systematic-debugging` | -- | 0.85 |
+| "new feature", "agregar", "necesito crear" | `/sdd-new` | `/plan-feature` | 0.85 |
+| "plan feature", "planificar funcionalidad" | `/plan-feature` | -- | 0.85 |
+| "run tests", "corré los tests", "pytest" | `/run-tests` | -- | 0.95 |
+| "write tests", "TDD", "red-green-refactor" | `/test-driven-development` | -- | 0.85 |
+| "coverage report", "cobertura" | `/coverage-report` | -- | 0.80 |
+| "security audit", "revisá la seguridad" | `/security-audit` | `/pentest-self` | 0.90 |
+| "pentest", "penetration test" | `/pentest-self` | -- | 0.90 |
+| "red team", "prompt injection test" | `/red-team` | `/vulnerability-scan` | 0.85 |
+| "vulnerability scan", "garak" | `/vulnerability-scan` | -- | 0.85 |
+| "semgrep", "SAST", "static analysis" | `/semgrep-scan` | -- | 0.85 |
+| "secret audit", "scan for secrets" | `/secret-audit` | -- | 0.85 |
+| "KPIs", "agent health", "métricas de agente" | `/agent-kpis` | `/model-optimizer` | 0.85 |
+| "model optimizer", "model routing" | `/model-optimizer` | -- | 0.85 |
+| "trust audit", "trust score analysis" | `/trust-audit` | -- | 0.85 |
+| "performance dashboard", "cos perf" | `cos perf` | -- | 0.85 |
+| "research", "investigá", "deep research" | `/deep-research` | `/tool-discovery` | 0.80 |
+| "find tools", "discover tools" | `/tool-discovery` | -- | 0.85 |
+| "create skill", "nueva skill" | `/skill-creator` | -- | 0.95 |
+| "optimize skill", "mejorar skill" | `/optimize-skill` | -- | 0.90 |
+| "release", "versión", "tag new version" | `/release-os` | -- | 0.90 |
+| "scout", "explorá el código", "reconnaissance" | `/scout` | `/sdd-explore` | 0.85 |
+| "sdd explore", "feasibility" | `/sdd-explore` | -- | 0.75 |
+| "document feature", "write docs" | `/document-feature` | `/doc-sync` | 0.85 |
+| "doc sync", "stale docs", "sync documentation" | `/doc-sync` | -- | 0.85 |
+| "review code", "revisá el código" | `/self-review` | `/sdd-verify` | 0.85 |
+| "stress test", "degradación", "cognitive load" | `/agent-stress-test` | -- | 0.90 |
+| "recommend library", "qué librería" | `/recommend-library` | -- | 0.85 |
+| "planning poker", "estimate cost" | `/planning-poker` | `/cost-predict` | 0.85 |
+| "cost predict", "predict cost" | `/cost-predict` | -- | 0.85 |
+| "status", "cómo viene", "health check" | `/cognitive-os-status` | -- | 0.80 |
+| "sprint", "sprint plan/status/retro" | `/sprint` | -- | 0.80 |
+| "SRE", "monitor services", "container down" | `/sre-agent` | -- | 0.80 |
+| "error analyzer", "analyze errors" | `/error-analyzer` | -- | 0.85 |
+| "impact analysis", "blast radius" | `/impact-analysis` | -- | 0.85 |
+| "issue to PR", "issue #123" | `/issue-to-pr` | -- | 0.80 |
+| "contract drift", "OpenAPI mismatch" | `/contract-drift` | -- | 0.85 |
+| "resource governor", "budget check" | `/resource-governor` | -- | 0.80 |
+| "self improve", "improve the system" | `/self-improve` | -- | 0.80 |
+| "retrospective", "squad report" | `/retrospective` | `/squad-report` | 0.90 |
+| "singularity", "autonomous loop" | `/singularity` | -- | 0.95 |
+| "readiness check", "ready to implement" | `/readiness-check` | -- | 0.80 |
+| "DoD check", "definition of done" | `/dod-check` | -- | 0.85 |
+| "confidence check" | `/confidence-check` | -- | 0.80 |
+| "web crawler", "crawl page" | `/web-crawler` | -- | 0.80 |
+| "audit website", "SEO audit" | `/audit-website` | -- | 0.80 |
+| "batch run", "run multiple SDD" | `/batch-run` | -- | 0.80 |
+| "sandbox sample", "sample before scaling" | `/sandbox-sample` | -- | 0.80 |
+| "resume tasks", "what was left" | `/resume-tasks` | -- | 0.80 |
+| "GPU sandbox", "Jupyter", "run Python ML" | `/gpu-sandbox` | `/jupyter-exec` | 0.75 |
+| "conversation memory", "search past sessions" | `/conversation-memory` | -- | 0.85 |
+| "exhaustive prompt", "enumerate scope" | `/exhaustive-prompt` | -- | 0.80 |
+| "validate config" | `/validate-config` | -- | 0.80 |
+| "smoke test" | `/smoke-test` | -- | 0.95 |
+| "sdd continue" | `/sdd-continue` | -- | 0.85 |
+| "sdd resume" | `/sdd-resume` | -- | 0.85 |
+| "repair status", "circuit breaker" | `/repair-status` | -- | 0.80 |
+| "capability snapshot" | `/capability-snapshot` | -- | 0.95 |
+| "persistent agent" | `/create-persistent-agent` | -- | 0.95 |
+| "auto rollback", "rollback failed change" | `/auto-rollback` | -- | 0.80 |
+| "arena", "benchmark comparison" | `/arena` | -- | 0.75 |
+| "simulation", "simulate scenario" | `/simulate` | -- | 0.80 |
+| "resolve blockers" | `/resolve-blockers` | -- | 0.85 |
+| "estimation report", "calibration accuracy" | `/estimation-report` | -- | 0.80 |
+| "session manager", "active sessions" | `/sessions` | -- | 0.75 |
+| "COS init", "initialize cognitive os" | `/cognitive-os-init` | -- | 0.90 |
+| "COS test", "test cognitive os" | `/cognitive-os-test` | -- | 0.85 |
+| "checkpoint", "save environment state" | `/checkpoint` | -- | 0.75 |
+| "webhook trigger" | `/webhook-trigger` | -- | 0.95 |
+| "private mode" | `/private` | -- | 0.90 |
 
 Note: This table COMPLEMENTS model-routing (which picks the MODEL). Skill routing picks the SKILL/WORKFLOW.
+
+### Auto-Selection Protocol
+
+The orchestrator uses `lib/skill_router.py` to auto-select skills:
+
+1. On every user message, call `router.best_match(message)`
+2. If confidence >= 0.80: suggest the skill to the user (do not auto-invoke without confirmation)
+3. If confidence 0.50-0.79: mention as a possibility
+4. If confidence < 0.50 or None: proceed normally without suggestion
+5. Spanish patterns are supported natively (e.g., "investigá", "arreglá", "necesito")
+
+```python
+from lib.skill_router import SkillRouter
+
+router = SkillRouter()
+match = router.best_match(user_message)
+if match and match.confidence >= 0.80:
+    print(router.format_suggestion([match]))
+```
 
 ## System Layers
 

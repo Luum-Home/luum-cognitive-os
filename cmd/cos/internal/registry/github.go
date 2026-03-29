@@ -9,6 +9,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"gopkg.in/yaml.v3"
 )
 
 // SearchResult represents a package found in the registry.
@@ -69,7 +71,13 @@ func setGitHubAuth(req *http.Request) {
 }
 
 // SearchGitHub searches GitHub for repos with topic "cos-package" matching the query.
+// This is the original search function preserved for backward compatibility.
 func SearchGitHub(query string, limit int) ([]SearchResult, error) {
+	return SearchGitHubTopic(query, "cos-package", limit)
+}
+
+// SearchGitHubTopic searches GitHub for repos with the given topic matching the query.
+func SearchGitHubTopic(query string, topic string, limit int) ([]SearchResult, error) {
 	if limit <= 0 {
 		limit = 10
 	}
@@ -78,7 +86,111 @@ func SearchGitHub(query string, limit int) ([]SearchResult, error) {
 	}
 
 	// Build the search query: user query + topic filter.
-	q := fmt.Sprintf("%s topic:cos-package", query)
+	q := fmt.Sprintf("%s topic:%s", query, topic)
+	return searchGitHubAPI(q, limit)
+}
+
+// SearchGitHubOrg searches repos within a GitHub organization, optionally
+// filtering by a query string.
+func SearchGitHubOrg(org string, query string, limit int) ([]SearchResult, error) {
+	if limit <= 0 {
+		limit = 10
+	}
+	if limit > 100 {
+		limit = 100
+	}
+
+	q := fmt.Sprintf("org:%s", org)
+	if query != "" {
+		q = fmt.Sprintf("%s %s", query, q)
+	}
+	return searchGitHubAPI(q, limit)
+}
+
+// SearchGitHubRepoContents searches within a specific GitHub repo for
+// cos-package.yaml files or skill directories. The repo parameter should
+// be in "owner/repo" format.
+func SearchGitHubRepoContents(repo string, query string, limit int) ([]SearchResult, error) {
+	parts := strings.SplitN(repo, "/", 2)
+	if len(parts) != 2 {
+		return nil, fmt.Errorf("repo must be in owner/repo format, got %q", repo)
+	}
+	owner, repoName := parts[0], parts[1]
+
+	// First get the repo info.
+	info, err := FetchManifestInfo(owner, repoName)
+	if err != nil {
+		return nil, fmt.Errorf("fetching repo info: %w", err)
+	}
+
+	// For a single-repo registry, return the repo itself if it matches the query.
+	if query == "" || matchesQuery(info, query) {
+		return []SearchResult{*info}, nil
+	}
+
+	return []SearchResult{}, nil
+}
+
+// SearchLocal searches a local directory for cos packages. Each subdirectory
+// containing a cos-package.yaml is considered a package.
+func SearchLocal(dirPath string, query string) ([]SearchResult, error) {
+	expandedPath := expandPath(dirPath)
+
+	entries, err := os.ReadDir(expandedPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return []SearchResult{}, nil
+		}
+		return nil, fmt.Errorf("reading directory %s: %w", expandedPath, err)
+	}
+
+	var results []SearchResult
+	queryLower := strings.ToLower(query)
+
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+
+		pkgDir := fmt.Sprintf("%s/%s", expandedPath, entry.Name())
+
+		// Check for cos-package.yaml or SKILL.md.
+		hasManifest := fileExists(fmt.Sprintf("%s/cos-package.yaml", pkgDir))
+		hasSkill := fileExists(fmt.Sprintf("%s/SKILL.md", pkgDir))
+
+		if !hasManifest && !hasSkill {
+			continue
+		}
+
+		name := entry.Name()
+
+		// Filter by query if provided.
+		if query != "" && !strings.Contains(strings.ToLower(name), queryLower) {
+			continue
+		}
+
+		result := SearchResult{
+			Name:  name,
+			Owner: "local",
+			Repo:  name,
+			URL:   pkgDir,
+		}
+
+		// Try to read description from manifest.
+		if hasManifest {
+			if desc := readManifestDescription(fmt.Sprintf("%s/cos-package.yaml", pkgDir)); desc != "" {
+				result.Description = desc
+			}
+		}
+
+		results = append(results, result)
+	}
+
+	return results, nil
+}
+
+// searchGitHubAPI executes a search against the GitHub Search Repositories API.
+func searchGitHubAPI(q string, limit int) ([]SearchResult, error) {
 	apiURL := fmt.Sprintf(
 		"https://api.github.com/search/repositories?q=%s&sort=stars&per_page=%d",
 		url.QueryEscape(q), limit,
@@ -120,6 +232,51 @@ func SearchGitHub(query string, limit int) ([]SearchResult, error) {
 	}
 
 	return results, nil
+}
+
+// matchesQuery checks if a search result matches a query string.
+func matchesQuery(r *SearchResult, query string) bool {
+	q := strings.ToLower(query)
+	return strings.Contains(strings.ToLower(r.Name), q) ||
+		strings.Contains(strings.ToLower(r.Description), q) ||
+		strings.Contains(strings.ToLower(r.Owner), q) ||
+		strings.Contains(strings.ToLower(r.Repo), q)
+}
+
+// expandPath expands ~ to the user's home directory.
+func expandPath(path string) string {
+	if strings.HasPrefix(path, "~/") {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return path
+		}
+		return home + path[1:]
+	}
+	return path
+}
+
+// fileExists returns true if the path exists and is a regular file.
+func fileExists(path string) bool {
+	info, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return !info.IsDir()
+}
+
+// readManifestDescription reads the description field from a cos-package.yaml.
+func readManifestDescription(path string) string {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return ""
+	}
+	var m struct {
+		Description string `yaml:"description"`
+	}
+	if err := yaml.Unmarshal(data, &m); err != nil {
+		return ""
+	}
+	return m.Description
 }
 
 // FetchManifestInfo fetches basic manifest info from a GitHub repo.
