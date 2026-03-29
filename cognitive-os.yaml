@@ -473,8 +473,8 @@ efficiency:
       target_tokens_per_session: 6000
       target_cost_per_session_usd: 0.10
     standard:
-      description: "Good governance without waste. Recommended for most users."
-      rules_loading: compact_only
+      description: "Good governance without waste. Loads 14 core rules. Recommended for most users."
+      rules_loading: core_rules
       hooks: standard
       capability_level: 3
       target_tokens_per_session: 8000

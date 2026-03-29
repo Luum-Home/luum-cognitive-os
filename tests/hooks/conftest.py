@@ -35,6 +35,7 @@ def run_hook():
     def _run(
         hook_name: str,
         stdin_json: Optional[dict] = None,
+        stdin_text: Optional[str] = None,
         env: Optional[dict] = None,
         timeout: int = 15,
     ) -> subprocess.CompletedProcess:
@@ -47,7 +48,12 @@ def run_hook():
         if env:
             run_env.update(env)
 
-        stdin_str = json.dumps(stdin_json) if stdin_json is not None else ""
+        if stdin_text is not None:
+            stdin_str = stdin_text
+        elif stdin_json is not None:
+            stdin_str = json.dumps(stdin_json)
+        else:
+            stdin_str = ""
 
         return subprocess.run(
             ["bash", str(hook_path)],

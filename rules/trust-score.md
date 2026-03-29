@@ -8,26 +8,44 @@ Agents overclaim completion. Humans don't trust "done" because they've been burn
 
 ## Trust Report (Mandatory)
 
-Every agent completion MUST include a Trust Report:
+Every agent completion MUST include a Trust Report with a **machine-parseable header** on the first line, followed by the human-readable body:
 
 ```
-TRUST REPORT:
-  Score: XX/100
+TRUST_REPORT: SCORE=75 STATUS=MEDIUM EVIDENCE=3 UNCERTAINTIES=2
+---
+Score: 75/100
 
-  EVIDENCE PROVIDED:
-    [check] [what was verified with proof]
-    [warn] [what was partially verified]
-    [fail] [what was NOT verified]
+EVIDENCE PROVIDED:
+  [check] [what was verified with proof]
+  [warn] [what was partially verified]
+  [fail] [what was NOT verified]
 
-  WHAT I'M CONFIDENT ABOUT:
-    - [list with reasoning]
+WHAT I'M CONFIDENT ABOUT:
+  - [list with reasoning]
 
-  WHAT I'M UNSURE ABOUT:
-    - [honest list of uncertainties]
+WHAT I'M UNSURE ABOUT:
+  - [honest list of uncertainties]
 
-  WHAT THE HUMAN SHOULD VERIFY:
-    - [specific actions the human should take]
+WHAT THE HUMAN SHOULD VERIFY:
+  - [specific actions the human should take]
 ```
+
+### Machine-Parseable Header
+
+The first line uses a deterministic key=value format for reliable extraction by hooks and scripts:
+
+| Field | Description | Values |
+|-------|-------------|--------|
+| `SCORE` | Numeric trust score | 0-100 |
+| `STATUS` | Score band label | HIGH (90+), MEDIUM (70-89), LOW (50-69), CRITICAL (<50) |
+| `EVIDENCE` | Count of [check]/[warn]/[fail] markers | integer |
+| `UNCERTAINTIES` | Count of items in "WHAT I'M UNSURE ABOUT" | integer |
+
+The `---` separator divides the header from the human-readable body. Parsing library: `lib/trust_report_parser.py`.
+
+### Legacy Format Support
+
+The parser also accepts the old format without the header line (a `TRUST REPORT:` block with `Score: XX/100`). New agents MUST use the header format. Legacy reports are parsed on a best-effort basis.
 
 ## Trust Score Calculation
 

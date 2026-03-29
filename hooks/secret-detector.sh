@@ -6,6 +6,7 @@ set -euo pipefail
 
 _HOOK_NAME="secret-detector"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/cache.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
@@ -33,6 +34,13 @@ case "$FILE_PATH" in
     exit 0
     ;;
 esac
+
+# SHA-256 cache: skip files that haven't changed since last scan
+# Invalidate when .gitignore changes (affects which env files are discoverable)
+_SD_RULES_HASH=$(shasum -a 256 "$PROJECT_DIR/.gitignore" 2>/dev/null | cut -d' ' -f1 || echo "none")
+if cache_hit "$FILE_PATH" "$_SD_RULES_HASH"; then
+  exit 0
+fi
 
 # Collect env var references from the edited file
 ENV_VARS=()
@@ -112,5 +120,8 @@ if [ ${#MISSING[@]} -gt 0 ]; then
   echo "These env vars are referenced in $FILE_PATH but not defined in .env, .env.example, docker-compose, or config files."
   echo "Add them to .env.example to maintain the secret hygiene contract."
 fi
+
+# Update cache — file scanned successfully (even if warnings were emitted)
+cache_update "$FILE_PATH" "$_SD_RULES_HASH"
 
 exit 0
