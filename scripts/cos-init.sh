@@ -293,6 +293,63 @@ else
   echo "Existing cognitive-os.yaml preserved"
 fi
 
+# ── 8b. Apply efficiency profile filtering ──────────────────────────
+# After rules are installed AND cognitive-os.yaml exists, apply profile
+# filtering from cognitive-os.yaml. This mirrors the logic in self-install.sh
+# so external projects get the same profile-aware rule restriction.
+EFFICIENCY_PROFILE="standard"
+if [ -f "cognitive-os.yaml" ]; then
+  _ep=$(grep -A1 '^efficiency:' cognitive-os.yaml 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || true)
+  [ -n "$_ep" ] && EFFICIENCY_PROFILE="$_ep"
+fi
+
+# Core rules for standard profile (must match self-install.sh CORE_RULES array)
+COS_INIT_CORE_RULES=(
+  "RULES-COMPACT.md"
+  "adaptive-bypass.md"
+  "acceptance-criteria.md"
+  "agent-quality.md"
+  "trust-score.md"
+  "definition-of-done.md"
+  "phase-aware-agents.md"
+  "closed-loop-prompts.md"
+  "token-economy.md"
+  "responsiveness.md"
+  "agent-security.md"
+  "credential-management.md"
+  "content-policy.md"
+  "error-learning.md"
+)
+
+RULES_DIR=".claude/rules/cos"
+if [ -d "$RULES_DIR" ]; then
+  if [ "$EFFICIENCY_PROFILE" = "lean" ]; then
+    # Keep only RULES-COMPACT.md
+    for rule in "$RULES_DIR"/*.md; do
+      [ -f "$rule" ] || continue
+      [ "$(basename "$rule")" = "RULES-COMPACT.md" ] || rm -f "$rule"
+    done
+    rules_installed=1
+  elif [ "$EFFICIENCY_PROFILE" = "standard" ]; then
+    # Keep only core rules
+    for rule in "$RULES_DIR"/*.md; do
+      [ -f "$rule" ] || continue
+      base=$(basename "$rule")
+      is_core=false
+      for core in "${COS_INIT_CORE_RULES[@]}"; do
+        [ "$base" = "$core" ] && is_core=true && break
+      done
+      [ "$is_core" = false ] && rm -f "$rule"
+    done
+    # Recount
+    rules_installed=0
+    for rule in "$RULES_DIR"/*.md; do
+      [ -f "$rule" ] && rules_installed=$((rules_installed + 1))
+    done
+  fi
+  # full profile: keep everything (no filtering)
+fi
+
 # ── 9. Create/merge .claude/settings.json ─────────────────────────
 # Build a minimal settings.json for the installed hooks
 if [ -f "$COS_SOURCE_DIR/.claude/settings.json" ]; then

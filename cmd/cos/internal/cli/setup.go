@@ -14,17 +14,23 @@ import (
 var (
 	setupNonInteractive bool
 	setupPreset         string
+	setupGlobal         bool
 )
 
 var setupCmd = &cobra.Command{
 	Use:   "setup",
 	Short: "Interactive onboarding wizard for Cognitive OS",
 	Long: `Run the interactive TUI wizard to install and configure Cognitive OS
-in the current project.
+in the current project, or install global rules for all projects.
 
 The wizard detects your project environment (language, package manager,
 Docker, git, CI) and guides you through selecting a security profile,
 project phase, and optional features.
+
+Use --global to install universal COS rules to ~/.claude/rules/cos/.
+Global rules apply to ALL projects on this machine without needing
+per-project installation. Hooks are NOT installed globally (they
+require project context).
 
 Presets for non-interactive mode:
   solo-dev      Minimal profile, reconstruction phase, fast development
@@ -33,6 +39,7 @@ Presets for non-interactive mode:
 
 Examples:
   cos setup                           Interactive wizard
+  cos setup --global                  Install global rules for all projects
   cos setup --non-interactive         Use defaults (team preset)
   cos setup --preset solo-dev         Use solo-dev preset
   cos setup --preset enterprise       Use enterprise preset`,
@@ -42,10 +49,16 @@ Examples:
 func init() {
 	setupCmd.Flags().BoolVar(&setupNonInteractive, "non-interactive", false, "Skip TUI, use defaults or preset")
 	setupCmd.Flags().StringVar(&setupPreset, "preset", "", "Use a preset configuration (solo-dev|team|enterprise)")
+	setupCmd.Flags().BoolVar(&setupGlobal, "global", false, "Install universal COS rules to ~/.claude/rules/cos/")
 	rootCmd.AddCommand(setupCmd)
 }
 
 func runSetup(cmd *cobra.Command, args []string) error {
+	// Handle --global mode: install universal rules to ~/.claude/rules/cos/.
+	if setupGlobal {
+		return runGlobalSetup()
+	}
+
 	cwd, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("getting working directory: %w", err)
@@ -117,6 +130,100 @@ func runSetup(cmd *cobra.Command, args []string) error {
 	fmt.Println("  cos status       Verify installation")
 	fmt.Println("  cos map          View system knowledge graph")
 	fmt.Println()
+
+	return nil
+}
+
+// coreGlobalRules is the list of 14 core rules installed globally.
+// These are universal across all projects and define COS behavioral protocol.
+// Kept in sync with scripts/cos-init-global.sh and hooks/self-install.sh CORE_RULES.
+var coreGlobalRules = []string{
+	"RULES-COMPACT.md",
+	"adaptive-bypass.md",
+	"acceptance-criteria.md",
+	"agent-quality.md",
+	"trust-score.md",
+	"definition-of-done.md",
+	"closed-loop-prompts.md",
+	"token-economy.md",
+	"responsiveness.md",
+	"credential-management.md",
+	"license-policy.md",
+	"result-management.md",
+	"decomposition.md",
+	"model-routing.md",
+}
+
+// runGlobalSetup installs universal COS rules to ~/.claude/rules/cos/.
+func runGlobalSetup() error {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return fmt.Errorf("finding home directory: %w", err)
+	}
+
+	cosSourceDir := findCosSourceDir()
+	if cosSourceDir == "" {
+		return fmt.Errorf("cannot find COS source directory; set COS_SOURCE_DIR or run from luum-agent-os repo")
+	}
+
+	rulesSource := fmt.Sprintf("%s/rules", cosSourceDir)
+	if _, err := os.Stat(rulesSource); err != nil {
+		return fmt.Errorf("rules source not found: %s", rulesSource)
+	}
+
+	globalRulesDir := fmt.Sprintf("%s/.claude/rules/cos", homeDir)
+
+	fmt.Println(ui.InfoStyle.Render("Installing universal COS rules globally"))
+	fmt.Println()
+	fmt.Printf("  Source: %s/rules/\n", cosSourceDir)
+	fmt.Printf("  Target: %s/\n", globalRulesDir)
+	fmt.Println()
+
+	// Create target directory.
+	if err := os.MkdirAll(globalRulesDir, 0755); err != nil {
+		return fmt.Errorf("creating rules directory: %w", err)
+	}
+
+	installed := 0
+	updated := 0
+	skipped := 0
+
+	for _, rule := range coreGlobalRules {
+		src := fmt.Sprintf("%s/%s", rulesSource, rule)
+		dst := fmt.Sprintf("%s/%s", globalRulesDir, rule)
+
+		srcData, err := os.ReadFile(src)
+		if err != nil {
+			fmt.Printf("  %s %s (not found, skipped)\n", ui.IconBullet, rule)
+			skipped++
+			continue
+		}
+
+		dstData, dstErr := os.ReadFile(dst)
+		if dstErr == nil {
+			// File exists — check if content differs.
+			if string(srcData) == string(dstData) {
+				skipped++
+				continue
+			}
+			updated++
+		} else {
+			installed++
+		}
+
+		if err := os.WriteFile(dst, srcData, 0644); err != nil {
+			return fmt.Errorf("writing %s: %w", rule, err)
+		}
+	}
+
+	fmt.Printf("  Installed: %d new\n", installed)
+	fmt.Printf("  Updated:   %d changed\n", updated)
+	fmt.Printf("  Skipped:   %d unchanged\n", skipped)
+	fmt.Println()
+	fmt.Println(ui.SuccessStyle.Render(fmt.Sprintf("%s %d universal rules installed to %s", ui.IconCheck, installed+updated+skipped, globalRulesDir)))
+	fmt.Println()
+	fmt.Println(ui.MutedStyle.Render("These rules now apply to ALL projects on this machine."))
+	fmt.Println(ui.MutedStyle.Render("Project-specific rules are still installed per-project via 'cos setup'."))
 
 	return nil
 }
