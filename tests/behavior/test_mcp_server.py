@@ -153,6 +153,42 @@ class TestReadmeContent:
         """README should have a table listing all tools."""
         assert "| Tool |" in self.readme or "| `cos_" in self.readme
 
+    def test_has_vscode_section(self):
+        """README must document VS Code configuration."""
+        assert "VS Code" in self.readme or "vscode" in self.readme.lower(), (
+            "README missing VS Code configuration section"
+        )
+
+    def test_has_cursor_section(self):
+        """README must document Cursor configuration."""
+        assert "Cursor" in self.readme or "cursor" in self.readme.lower(), (
+            "README missing Cursor configuration section"
+        )
+
+    def test_has_windsurf_section(self):
+        """README must document Windsurf configuration."""
+        assert "Windsurf" in self.readme or "windsurf" in self.readme.lower(), (
+            "README missing Windsurf configuration section"
+        )
+
+    def test_has_continue_section(self):
+        """README must document Continue extension configuration."""
+        assert "Continue" in self.readme or "continue" in self.readme.lower(), (
+            "README missing Continue extension configuration section"
+        )
+
+    def test_has_cline_section(self):
+        """README must document Cline extension configuration."""
+        assert "Cline" in self.readme or "cline" in self.readme.lower(), (
+            "README missing Cline extension configuration section"
+        )
+
+    def test_has_quick_verification_section(self):
+        """README must have a quick verification section."""
+        assert "fastmcp list" in self.readme or "fastmcp inspect" in self.readme, (
+            "README missing quick verification commands"
+        )
+
 
 # ---------------------------------------------------------------------------
 # Package configuration
