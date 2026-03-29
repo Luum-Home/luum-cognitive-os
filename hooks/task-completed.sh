@@ -39,8 +39,8 @@ log_completion_event() {
 
 # ─── Extract completion output ──────────────────────────────────────────────
 
-task_output=$(echo "$_STDIN_JSON" | jq -r '.output // .result // .message // empty' 2>/dev/null | head -100)
-task_id=$(echo "$_STDIN_JSON" | jq -r '.task_id // .id // empty' 2>/dev/null)
+task_output=$(echo "$_STDIN_JSON" | jq -r '.output // .result // .message // empty' 2>/dev/null | head -100 || true)
+task_id=$(echo "$_STDIN_JSON" | jq -r '.task_id // .id // empty' 2>/dev/null || true)
 
 # If no output at all, allow completion (graceful degradation — the hook
 # should not break Teams if stdin format is unexpected)

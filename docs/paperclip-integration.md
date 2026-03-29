@@ -68,49 +68,51 @@ User <---> Paperclip (UI on localhost:3200)
 | POST | `/api/notifications` | Push inbox notifications |
 | POST | `/api/org-chart` | Sync squad org chart |
 
-## What Needs to Be Built
+## Wiring Status
 
-### 1. Expand `lib/paperclip_client.py`
+### Completed (Gaps 1-4, 8)
 
-The existing client covers metrics push. It needs to be expanded with:
+| Gap | Component | Status | Details |
+|-----|-----------|--------|---------|
+| 1. SDD Pipeline Sync | `packages/paperclip-integration/hooks/paperclip-sdd-sync.sh` | DONE | PostToolUse Agent hook detects sdd-apply/verify/archive transitions, creates issues and pushes notifications |
+| 2. Agent Heartbeat | `packages/paperclip-integration/hooks/paperclip-agent-status.sh` | DONE | PostToolUse Agent hook pushes agent completion status and trust scores |
+| 3. Singularity Events | `lib/singularity.py` (`_push_singularity_to_paperclip`) | DONE | Inline wiring in `record_knowledge()` pushes event results as notifications |
+| 4. Squad Org Chart Sync | `packages/paperclip-integration/hooks/paperclip-squad-sync.sh` | DONE | SessionStart hook reads squads/*.yaml and syncs to Paperclip org chart |
+| 8. Error Recovery (Retry Queue) | `lib/paperclip_client.py` (`_RetryQueue`) | DONE | Failed POST/PUT requests queued in memory (max 100, 5min TTL), auto-retried on next success |
 
-- `PaperclipClient` class with configurable base URL
-- `create_project()` -- maps SDD changes to Paperclip projects
-- `create_issue()` -- maps SDD phases to Paperclip issues
-- `update_issue_status()` -- sync phase state (open/in_progress/blocked/done)
-- `update_agent_status()` -- push agent heartbeats from Agent Bus
-- `push_spend()` -- push per-model cost data
-- `push_notification()` -- push Singularity events to inbox
-- `sync_org_chart()` -- sync squad YAML definitions to org chart API
+### Documented Integration Points (Gaps 5-7)
 
-### 2. Enhance `hooks/paperclip-sync.sh`
+#### Gap 5: Safety Mesh Block Sync
 
-The hook currently pushes session summaries. It should also push:
+When safety mesh hooks (completion-gate.sh, claim-validator.sh, confidence-gate.sh) return exit code 2 (BLOCK), the blocked task should be reflected in Paperclip.
 
-- Active task list from `.claude/tasks/active-tasks.json` as Paperclip issues
-- Agent completion statuses from the Agent Bus
-- Session cost totals to the spend tracker
+**Integration point**: Add to any BLOCK-returning hook:
+```bash
+# After determining BLOCK, fire-and-forget:
+( python3 -c "
+from paperclip_client import PaperclipClient
+client = PaperclipClient()
+if client.is_available():
+    client.push_notification('Safety Mesh BLOCK', 'Hook: {hook_name}, Reason: {reason}', 'warning')
+" 2>/dev/null ) &
+```
 
-### 3. Singularity Integration
+Alternatively, create a shared helper in `hooks/_lib/paperclip-notify.sh` that any hook can source.
 
-Update `lib/singularity.py` to push events to Paperclip inbox:
-- Test failures, error patterns, coverage drops as notifications
-- Severity mapping: `circuit_open` -> critical, `test_failure` -> warning, `stale_docs` -> info
+#### Gap 6: Active Task Sync
 
-### 4. Squad Sync
+Bidirectional sync of `.claude/tasks/active-tasks.json` to Paperclip issues.
 
-Map `squads/*.yaml` to the Paperclip org chart API:
-- Each squad becomes a team
-- Agent definitions within squads become team members
-- Roles (manager, member) are mapped to Paperclip roles
+**Integration points**:
+- **SessionStart**: The existing `paperclip-squad-sync.sh` can be extended (or a sibling hook created) to push all `in_progress` tasks as Paperclip issues.
+- **Task completion**: The `agent-checkpoint.sh` PostToolUse hook updates task status. Add a Paperclip push after status update.
+- **Bidirectional**: Paperclip UI changes flowing back to COS requires Paperclip webhooks (not yet available).
 
-### 5. SDD Pipeline Sync
+#### Gap 7: Cost Event Streaming
 
-When SDD phases transition (via `sdd-apply`, `sdd-verify`, etc.):
-- Create or update a Paperclip "project" for the SDD change
-- Create "issues" for each phase
-- Update issue status as phases progress
-- Mark issues as "blocked" when safety mesh blocks execution
+Push cost events as they occur, not just at session end.
+
+**Integration point**: The `hooks/cost-tracker.sh` PostToolUse hook (or equivalent) that logs to `cost-events.jsonl` should also push to `client.push_spend()`. Since cost hooks fire frequently, use a threshold (push only when cumulative cost since last push exceeds $0.10) to avoid flooding.
 
 ## Data Flow
 

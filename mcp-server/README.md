@@ -15,15 +15,42 @@ Exposes Cognitive OS knowledge (Engram memory, task state, rules, metrics, quali
 pip install fastmcp pyyaml
 ```
 
-## Configuration
+## Quick Verification
 
-Add to your editor's MCP configuration. For Claude Code, add to `.claude/settings.json`:
+After installing, verify the server works:
+
+```bash
+cd /path/to/luum-agent-os
+
+# Check the server starts (Ctrl+C to stop)
+python3 mcp-server/cos_mcp.py
+
+# List all tools
+fastmcp list mcp-server/cos_mcp.py
+
+# Inspect server metadata
+fastmcp inspect mcp-server/cos_mcp.py
+
+# Call a tool directly
+fastmcp call mcp-server/cos_mcp.py cos_status
+
+# Or run the included test script
+bash scripts/test-mcp-server.sh
+```
+
+## Editor Configuration
+
+The COS MCP server uses **stdio transport** (the standard MCP communication method). Every MCP-compatible editor needs the same basic information: the command to run (`python3`), the path to the server script, and optionally the working directory.
+
+### Claude Code
+
+Add to `.claude/settings.json`:
 
 ```json
 {
   "mcpServers": {
     "cos": {
-      "command": "python",
+      "command": "python3",
       "args": ["mcp-server/cos_mcp.py"],
       "cwd": "/path/to/luum-agent-os"
     }
@@ -31,7 +58,164 @@ Add to your editor's MCP configuration. For Claude Code, add to `.claude/setting
 }
 ```
 
-For VS Code (with an MCP extension), Cursor, or Windsurf, use the equivalent MCP server configuration format with the same command and args.
+### Cursor
+
+Add to `.cursor/mcp.json` in your project root:
+
+```json
+{
+  "mcpServers": {
+    "cos": {
+      "command": "python3",
+      "args": ["/path/to/luum-agent-os/mcp-server/cos_mcp.py"]
+    }
+  }
+}
+```
+
+Alternatively, use `fastmcp install cursor` to auto-configure:
+
+```bash
+fastmcp install cursor mcp-server/cos_mcp.py --name cos
+```
+
+### VS Code with Copilot (built-in MCP support)
+
+VS Code 1.99+ has native MCP support via GitHub Copilot. Add to `.vscode/mcp.json` in your workspace:
+
+```json
+{
+  "servers": {
+    "cos": {
+      "type": "stdio",
+      "command": "python3",
+      "args": ["/path/to/luum-agent-os/mcp-server/cos_mcp.py"]
+    }
+  }
+}
+```
+
+Or add to your VS Code `settings.json` (user or workspace):
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "cos": {
+        "type": "stdio",
+        "command": "python3",
+        "args": ["/path/to/luum-agent-os/mcp-server/cos_mcp.py"]
+      }
+    }
+  }
+}
+```
+
+### VS Code with Continue Extension
+
+Add to `.continue/config.yaml` in your project root:
+
+```yaml
+mcpServers:
+  - name: cos
+    command: python3
+    args:
+      - /path/to/luum-agent-os/mcp-server/cos_mcp.py
+```
+
+Or in `.continue/config.json`:
+
+```json
+{
+  "mcpServers": [
+    {
+      "name": "cos",
+      "command": "python3",
+      "args": ["/path/to/luum-agent-os/mcp-server/cos_mcp.py"]
+    }
+  ]
+}
+```
+
+### VS Code with Cline Extension
+
+Add to your VS Code `settings.json`:
+
+```json
+{
+  "cline.mcpServers": {
+    "cos": {
+      "command": "python3",
+      "args": ["/path/to/luum-agent-os/mcp-server/cos_mcp.py"]
+    }
+  }
+}
+```
+
+Or configure via the Cline sidebar: click the MCP servers icon, then "Configure MCP Servers" to edit the JSON directly.
+
+### Windsurf
+
+Add to `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "cos": {
+      "command": "python3",
+      "args": ["/path/to/luum-agent-os/mcp-server/cos_mcp.py"]
+    }
+  }
+}
+```
+
+### Claude Desktop
+
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%/Claude/claude_desktop_config.json` (Windows):
+
+```json
+{
+  "mcpServers": {
+    "cos": {
+      "command": "python3",
+      "args": ["/path/to/luum-agent-os/mcp-server/cos_mcp.py"]
+    }
+  }
+}
+```
+
+Or use `fastmcp install claude-desktop`:
+
+```bash
+fastmcp install claude-desktop mcp-server/cos_mcp.py --name cos
+```
+
+### Any MCP-Compatible Editor
+
+The COS MCP server follows the standard MCP stdio protocol. For any editor that supports MCP:
+
+1. Set the **command** to `python3`
+2. Set the **args** to the absolute path: `["/path/to/luum-agent-os/mcp-server/cos_mcp.py"]`
+3. Optionally set **cwd** to the luum-agent-os directory
+
+The server reads its project context from the directory containing `mcp-server/cos_mcp.py`, so absolute paths work regardless of where the editor is running.
+
+### Using fastmcp install
+
+FastMCP can auto-generate configurations for supported editors:
+
+```bash
+# List supported editors
+fastmcp install --help
+
+# Install for a specific editor
+fastmcp install cursor mcp-server/cos_mcp.py --name cos
+fastmcp install claude-desktop mcp-server/cos_mcp.py --name cos
+fastmcp install claude-code mcp-server/cos_mcp.py --name cos
+
+# Generate raw MCP JSON (for manual configuration)
+fastmcp install mcp-json mcp-server/cos_mcp.py
+```
 
 ## Exposed Tools
 

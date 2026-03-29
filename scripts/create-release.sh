@@ -10,6 +10,22 @@ NOTES_FILE="/tmp/cos-release-notes-${VERSION}.md"
 
 echo "Generating release notes for v${VERSION}..."
 
+# Update CHANGELOG.md: move [Unreleased] to versioned section
+CHANGELOG_PATH="$PROJECT_ROOT/CHANGELOG.md"
+if [ -f "$CHANGELOG_PATH" ]; then
+    TODAY=$(date +%Y-%m-%d)
+    # Use perl for portable in-place editing (macOS sed -i differs from GNU)
+    perl -i -pe "s/^## \\[Unreleased\\]/## [Unreleased]\\n\\n## [${VERSION}] - ${TODAY}/" "$CHANGELOG_PATH"
+    echo "Updated CHANGELOG.md: [Unreleased] -> [${VERSION}] - ${TODAY}"
+fi
+
+# Update docs/INDEX.md version reference
+INDEX_PATH="$PROJECT_ROOT/docs/INDEX.md"
+if [ -f "$INDEX_PATH" ]; then
+    perl -i -pe "s/v[0-9]+\\.[0-9]+\\.[0-9]+/v${VERSION}/ if \$. == 1" "$INDEX_PATH"
+    echo "Updated docs/INDEX.md version to v${VERSION}"
+fi
+
 # Count actual components
 RULES_COUNT=$(find "$PROJECT_ROOT/rules" -name "*.md" -not -name "RULES-COMPACT.md" 2>/dev/null | wc -l | tr -d ' ')
 HOOKS_COUNT=$(find "$PROJECT_ROOT/hooks" -name "*.sh" -not -path "*/_*" 2>/dev/null | wc -l | tr -d ' ')
