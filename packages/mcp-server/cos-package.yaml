@@ -1,0 +1,47 @@
+name: "@luum/mcp-server"
+version: "1.0.0"
+description: "MCP server exposing Cognitive OS knowledge to any MCP-compatible editor (VS Code, Cursor, Windsurf)"
+authors: ["luum"]
+license: "Apache-2.0"
+keywords: ["mcp", "server", "integration", "memory", "tools", "editor"]
+cos_version: ">=0.2.0"
+
+provides:
+  - mcp-server
+
+exports:
+  - source: "../../mcp-server/cos_mcp.py"
+    type: mcp-server
+    description: "FastMCP server with 8 COS tools"
+
+dependencies:
+  fastmcp:
+    version: ">=2.0.0"
+    required: true
+    install: "pip install fastmcp"
+  pyyaml:
+    version: ">=6.0"
+    required: false
+    install: "pip install pyyaml"
+  engram:
+    version: ">=0.1.0"
+    required: false
+    install: "See engram documentation"
+
+tools:
+  - name: cos_search_memory
+    description: "Search Engram for past decisions, discoveries, bugs, patterns"
+  - name: cos_get_tasks
+    description: "Get current tasks from active-tasks.json with status filtering"
+  - name: cos_get_rules
+    description: "Find relevant COS rules by context using contextual triggers"
+  - name: cos_check_quality
+    description: "Run quality checks: prohibited terms, credential leaks, TODOs, stubs"
+  - name: cos_get_metrics
+    description: "Get session metrics: trust scores, error rates, cost, KPIs"
+  - name: cos_suggest_skill
+    description: "Suggest the best COS skill for a given task description"
+  - name: cos_save_memory
+    description: "Save an observation to Engram persistent memory"
+  - name: cos_status
+    description: "Get COS installation status: phase, rules, hooks, skills, packages"
