@@ -1,6 +1,8 @@
 # Cognitive OS Roadmap
 
-> Future features organized by phase. Updated: 2026-03-26.
+> Future features organized by phase. Updated: 2026-03-29 (v0.2.3).
+>
+> Current metrics: 5045 tests, 92 rules, 97 skills, 80 hooks.
 
 ---
 
@@ -25,6 +27,26 @@
 
 ---
 
+## Completed (v0.2.0 -- v0.2.3)
+
+Items delivered across recent releases:
+
+| Feature | Version | Notes |
+|---|---|---|
+| Agent Communication Bus (Valkey pub/sub) | v0.2.0 | Heartbeat, progress tracking, Q&A, file fallback |
+| COS MCP server (`cmd/cos/`) | v0.2.2 | Go CLI with install, audit, registry, perf commands |
+| Hook shell test infrastructure | v0.2.2 | 41 hooks testable via pytest |
+| Onboarding wizard (Go TUI) | v0.2.2 | `cos setup` with stack detection and config generation |
+| Code review and PR review skills | v0.2.3 | `/code-review` and `/pr-review` skills |
+| Hook cache library (`hooks/_lib/cache.sh`) | v0.2.3 | Shared caching for hook performance |
+| Trust report parser (`lib/trust_report_parser.py`) | v0.2.3 | Machine-parseable trust report extraction |
+| Technical debt cleanup (xfail fixes, doc sync) | v0.2.3 | 0 xpassed, 0 failed target |
+| pytest-xdist parallel test support | v0.2.3 | `pytest -n auto` for faster test runs |
+| SubagentStart, UserPromptSubmit, TeammateIdle, TaskCreated, TaskCompleted hooks | v0.2.3 | New hook events for Agent Teams integration |
+| Ecosystem tools: agnix, semgrep, parry, aguara, garak, mcp-scan, promptfoo | v0.2.1+ | All documented in tech radar with graceful degradation |
+
+---
+
 ## Phase 1: Multi-Model & Local Execution
 
 **Target: Q2 2026 (April -- June)**
@@ -44,6 +66,13 @@ Run skills locally with Llama 3, Qwen, and Phi for zero-cost development and off
 
 - **Status**: Planned
 - **Dependencies**: Multi-model support via LiteLLM (for unified routing)
+
+### Agent Teams Integration
+
+Native support for Claude Code Agent Teams: multi-agent coordination with TeammateIdle, TaskCreated, TaskCompleted, SubagentStart hooks. Shared task list with validation and completion verification. Idle teammate detection for task redistribution. Builds on the existing Agent Bus infrastructure.
+
+- **Status**: In progress (hooks implemented, orchestration pending)
+- **Dependencies**: Agent Communication Bus (completed)
 
 ### Sandbox mode
 
@@ -66,7 +95,7 @@ Safe environment for experimenting with skills, hooks, and pipelines without aff
 | **Usage Monitor** | MIT | 2-3d | Ground-truth cost reconciliation from Claude's native JSONL |
 | **hcom** | MIT | 5d | Cross-terminal agent communication (SQLite + TCP) |
 
-Status: Analyzed, documented in tech radar. Integration pending.
+Status: All analyzed and documented. agnix, semgrep, parry, aguara integrated with hooks. Trail of Bits skills available as submodule. recall and hcom documented. Usage Monitor pending.
 
 ---
 
@@ -74,7 +103,7 @@ Status: Analyzed, documented in tech radar. Integration pending.
 
 Bidirectional real-time communication between agents and the orchestrator using Valkey (Redis-compatible) pub/sub. Heartbeat monitoring (5s interval, 15s dead detection), progress tracking on each tool use, clarification request/answer flows, and control commands (stop/pause/resume). Terminal dashboard for live agent monitoring. Graceful degradation to file-based signaling when Valkey is unavailable. Foundation for the web dashboard and multi-agent coordination.
 
-- **Status**: Implemented
+- **Status**: Completed (v0.2.0)
 - **Dependencies**: None (Valkey optional, file fallback built-in)
 
 ---

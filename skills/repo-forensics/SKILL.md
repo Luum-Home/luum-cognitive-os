@@ -78,9 +78,25 @@ analysis = analyzer.analyze(repo_url, depth="quick")
 For `--deps-only`: call `analyzer.detect_dependencies(repo_path)` directly after cloning.
 For `--features-only`: call `analyzer.detect_features(repo_path)` directly after cloning.
 
+### LICENSE-FIRST PROTOCOL (MANDATORY)
+
+**Before ANY other analysis, check the license.** This determines what we can do:
+
+| License | Code Adoption | Pattern Adoption | Action |
+|---------|--------------|-----------------|--------|
+| MIT / BSD / Apache-2.0 / ISC | ✅ YES | ✅ YES | Full adoption possible |
+| LGPL / MPL | ⚠️ CAUTION | ✅ YES | Use as library only, don't modify |
+| AGPL-3.0 / SSPL | ❌ BLOCKED | ✅ YES | Patterns only, clean-room reimplementation |
+| Custom / NOASSERTION | ❌ BLOCKED | ⚠️ CAREFUL | Document patterns, verify with legal |
+| No license | ❌ BLOCKED | ❌ BLOCKED | Cannot use anything |
+
+**If license is AGPL/SSPL**: The report MUST clearly state "CODE ADOPTION BLOCKED" and list patterns that CAN be reimplemented independently (clean-room). IDEAS are free — code is not.
+
+**If license is MIT/Apache**: The report should highlight specific code/components that can be directly adopted or adapted.
+
 The full pipeline:
 1. Clone repo (shallow)
-2. Detect license
+2. **Detect license IMMEDIATELY** (step 2 is non-negotiable)
 3. Count languages (line-by-line breakdown)
 4. Parse ALL dependency files (package.json, go.mod, requirements.txt, Cargo.toml, build.gradle, pom.xml, Gemfile, mix.exs)
 5. Detect features (README headings, CHANGELOG entries, directory structure, CLI commands)
