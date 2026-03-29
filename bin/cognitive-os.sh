@@ -285,6 +285,7 @@ _parse_registries() {
   _REG_ENABLED=() _REG_DESCS=() _REG_PROVIDES=()
   _REG_COUNT=0
 
+  local in_sources_section=false
   local in_sources=false
   local name="" type="" url="" path="" enabled="" description="" provides=""
 
@@ -303,9 +304,23 @@ _parse_registries() {
   }
 
   while IFS= read -r line; do
-    # Detect start of sources.registries section
-    if echo "$line" | grep -qE '^\s*registries:'; then
-      in_sources=true
+    # Detect the top-level 'sources:' section
+    if echo "$line" | grep -qE '^sources:'; then
+      in_sources_section=true
+      continue
+    fi
+
+    # If we found the sources section, look for registries: within it
+    if $in_sources_section && ! $in_sources; then
+      if echo "$line" | grep -qE '^\s*registries:'; then
+        in_sources=true
+        continue
+      fi
+      # A new top-level key means we left the sources section without finding registries
+      if [ -n "$line" ] && echo "$line" | grep -qE '^[a-zA-Z]'; then
+        in_sources_section=false
+        continue
+      fi
       continue
     fi
 

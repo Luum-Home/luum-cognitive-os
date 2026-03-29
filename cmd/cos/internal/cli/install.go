@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/spf13/cobra"
 
 	"luum-agent-os/cmd/cos/internal/installer"
 	"luum-agent-os/cmd/cos/internal/project"
+	"luum-agent-os/cmd/cos/internal/registry"
 	"luum-agent-os/cmd/cos/internal/security"
 	"luum-agent-os/cmd/cos/internal/ui"
 )
@@ -55,6 +57,9 @@ func runInstall(cmd *cobra.Command, args []string) error {
 		// Fall back to current directory if no project markers found.
 		projectRoot = cwd
 	}
+
+	// If the spec is a bare name (no @, no /, no .), try registry resolution first.
+	spec = resolveFromRegistries(spec, projectRoot)
 
 	// Print header.
 	ui.Step(ui.IconInfo, fmt.Sprintf("Resolving %s...", spec))
@@ -137,4 +142,30 @@ func printExports(targets []installer.ExportTarget, projectRoot string, dryRun b
 		}
 		ui.ExportLine("+", relPath, t.Export.Type)
 	}
+}
+
+// resolveFromRegistries checks if the spec is a bare package name (no path
+// indicators) and tries to find it in configured registries. If found, returns
+// the GitHub URL. Otherwise returns the original spec unchanged.
+func resolveFromRegistries(spec string, projectRoot string) string {
+	// Skip if spec is clearly a path, URL, or scoped name.
+	if strings.HasPrefix(spec, "./") || strings.HasPrefix(spec, "/") ||
+		strings.HasPrefix(spec, "@") || strings.HasPrefix(spec, "https://") ||
+		strings.HasPrefix(spec, "github.com/") || strings.Contains(spec, "/") {
+		return spec
+	}
+
+	registries := registry.LoadRegistries(projectRoot)
+	results, _ := registry.SearchAllRegistries(registries, spec, 5)
+
+	// Look for an exact name match.
+	for _, r := range results {
+		if strings.EqualFold(r.Repo, spec) || strings.EqualFold(r.Name, spec) {
+			if r.URL != "" && strings.HasPrefix(r.URL, "https://") {
+				return r.URL
+			}
+		}
+	}
+
+	return spec
 }
