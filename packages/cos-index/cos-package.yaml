@@ -1,0 +1,21 @@
+name: "@luum/cos-index"
+version: "1.0.0"
+description: "Central package index for Cognitive OS — master registry of all known COS packages"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["index", "registry", "packages", "catalog", "discovery"]
+cos_version: ">=0.1.0"
+
+provides:
+  - registry
+
+exports:
+  - source: "index/packages.yaml"
+    type: registry
+    description: "Master index of all known COS packages"
+  - source: "scripts/validate-index.sh"
+    type: script
+    description: "Validate index entries against actual package metadata"
+  - source: "scripts/generate-index.sh"
+    type: script
+    description: "Generate or refresh index from local packages directory"

@@ -1,0 +1,215 @@
+# COS Package Index — Master Registry
+# Generated from packages/ directory. Run scripts/generate-index.sh to refresh.
+# Last updated: 2026-03-29
+
+packages:
+  # ── Quality & Verification ───────────────────────────────────────
+  - name: "@luum/quality-gates"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/quality-gates"
+    version: "1.0.0"
+    description: "Pre- and post-tool quality gates — clarification, confidence, completion, and claim validation"
+    tags: [quality, gates, verification, clarification, confidence]
+
+  - name: "@luum/verification-audit"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/verification-audit"
+    version: "1.0.0"
+    description: "Output verification and audit hooks — result truncation, observability, assumption tracking, architecture compliance"
+    tags: [verification, audit, truncation, observability, assumptions]
+
+  - name: "@luum/prompt-quality-gate"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/prompt-quality-gate"
+    version: "1.0.0"
+    description: "Prompt quality gate — validates agent prompt quality before launch"
+    tags: [prompt, quality, gate, validation]
+
+  - name: "@luum/consequence-system"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/consequence-system"
+    version: "1.0.0"
+    description: "OKR-driven feedback loop — consequence evaluation, trust score validation, and auto-skill generation"
+    tags: [consequence, trust-score, okr, feedback]
+
+  # ── Agent Coordination & Lifecycle ───────────────────────────────
+  - name: "@luum/agent-coordination"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/agent-coordination"
+    version: "1.0.0"
+    description: "Agent coordination rules — communication bus, sidecars, and per-agent customization overrides"
+    tags: [agent, coordination, communication, sidecars, customization]
+
+  - name: "@luum/agent-lifecycle"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/agent-lifecycle"
+    version: "1.0.0"
+    description: "Agent lifecycle hooks — prelaunch registration and post-completion checkpointing"
+    tags: [agent, lifecycle, prelaunch, checkpoint]
+
+  # ── Workflow & SDD ───────────────────────────────────────────────
+  - name: "@luum/adaptive-workflow"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/adaptive-workflow"
+    version: "1.0.0"
+    description: "Adaptive workflow bypass — classifies task complexity to skip unnecessary orchestration"
+    tags: [adaptive, workflow, bypass, complexity]
+
+  - name: "@luum/sdd-compound"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/sdd-compound"
+    version: "1.0.0"
+    description: "SDD compound skill — multi-phase SDD pipeline execution in a single command"
+    tags: [sdd, compound, pipeline, spec-driven-development]
+
+  - name: "@luum/dry-run-simulation"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/dry-run-simulation"
+    version: "1.0.0"
+    description: "Dry-run preview mode — intercepts agent launches when DRY_RUN=true for pipeline simulation"
+    tags: [dry-run, simulation, preview, pipeline]
+
+  # ── Scope & Task Management ──────────────────────────────────────
+  - name: "@luum/scope-governance"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/scope-governance"
+    version: "1.0.0"
+    description: "Scope governance — proportionality checks and scope creep detection for agent tasks"
+    tags: [scope, governance, proportionality, creep]
+
+  - name: "@luum/task-management"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/task-management"
+    version: "1.0.0"
+    description: "Task lifecycle hooks — recording, loop detection, scope creep, epic tasks, and blast radius"
+    tags: [task, management, scope, blast-radius]
+
+  # ── Security ─────────────────────────────────────────────────────
+  - name: "@luum/aguara-security"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/aguara-security"
+    version: "1.0.0"
+    description: "Aguara AI agent security scanner integration — 189 deterministic rules for prompt injection, data exfiltration, and supply chain attack detection"
+    tags: [security, scanning, prompt-injection, aguara]
+
+  - name: "@luum/mantis-security"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/mantis-security"
+    version: "1.0.0"
+    description: "Mantis HTTP security toolkit integration — automated security scanning with OWASP coverage"
+    tags: [security, http, scanning, owasp, mantis]
+
+  # ── Context & Memory ─────────────────────────────────────────────
+  - name: "@luum/context-optimization"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/context-optimization"
+    version: "1.0.0"
+    description: "Context window optimization — metrics calibration, rotation, and contextual rule loading"
+    tags: [context, optimization, metrics, calibration]
+
+  - name: "@luum/engram-sync"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/engram-sync"
+    version: "1.0.0"
+    description: "Engram memory synchronization hooks — auto-sync on stop, auto-import on start, memu bridge"
+    tags: [engram, memory, sync, persistence]
+
+  - name: "@luum/recall-search"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/recall-search"
+    version: "1.0.0"
+    description: "Full-text search of Claude Code conversations — fills Engram gap for raw conversation history"
+    tags: [recall, search, memory, conversations]
+
+  # ── Infrastructure ───────────────────────────────────────────────
+  - name: "@luum/infra-lifecycle"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/infra-lifecycle"
+    version: "1.0.0"
+    description: "Infrastructure lifecycle management — idle service cleanup on session stop"
+    tags: [infrastructure, lifecycle, cleanup, docker]
+
+  # ── Documentation ────────────────────────────────────────────────
+  - name: "@luum/document-sync"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/document-sync"
+    version: "1.0.0"
+    description: "Documentation synchronization — detects stale docs after code changes and syncs to repo on session stop"
+    tags: [documentation, sync, stale-docs]
+
+  # ── Skill Governance ─────────────────────────────────────────────
+  - name: "@luum/skill-governance"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/skill-governance"
+    version: "1.0.0"
+    description: "Skill lifecycle governance — tracking, KPI evaluation, agent bus monitoring, and auto-generation"
+    tags: [skill, governance, tracking, kpi]
+
+  # ── Safety & Repair ──────────────────────────────────────────────
+  - name: "@luum/auto-repair-rollback"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/auto-repair-rollback"
+    version: "1.0.0"
+    description: "Auto-rollback trigger — detects verify-apply loop exhaustion and initiates rollback"
+    tags: [auto-rollback, repair, verify, safety]
+
+  # ── Monitoring & Cost ────────────────────────────────────────────
+  - name: "@luum/usage-monitor"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/usage-monitor"
+    version: "1.0.0"
+    description: "Ground-truth cost reconciliation from Claude Code's native JSONL session files"
+    tags: [cost, usage, monitoring, reconciliation]
+
+  - name: "@luum/session-parser"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/session-parser"
+    version: "1.0.0"
+    description: "Parse Claude Code JSONL session files for real metrics — tokens, tool usage, subagents"
+    tags: [session, parser, metrics, tokens]
+
+  # ── Ecosystem Tools ──────────────────────────────────────────────
+  - name: "@luum/ecosystem-tools"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/ecosystem-tools"
+    version: "1.0.0"
+    description: "External tool integrations for Cognitive OS — agnix, parry, hcom, repomix, Trail of Bits, Context7"
+    tags: [ecosystem, tools, integration, security]
+
+  - name: "@luum/tero-testing"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/tero-testing"
+    version: "1.0.0"
+    description: "Tero HTTP testing with chaos engineering — deterministic testing with fault injection and latency simulation"
+    tags: [testing, http, chaos-engineering, tero]
+
+  # ── Integrations ─────────────────────────────────────────────────
+  - name: "@luum/paperclip-integration"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/paperclip-integration"
+    version: "1.0.0"
+    description: "Paperclip governance dashboard integration — session metrics sync on Stop"
+    tags: [paperclip, governance, dashboard, metrics]
+
+  - name: "@luum/mcp-server"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/mcp-server"
+    version: "1.0.0"
+    description: "MCP server exposing Cognitive OS knowledge to any MCP-compatible editor"
+    tags: [mcp, server, integration, editor]
+
+  # ── Privacy ──────────────────────────────────────────────────────
+  - name: "@luum/privacy-mode"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/privacy-mode"
+    version: "1.0.0"
+    description: "Private mode protocol — disable all persistence for casual conversations"
+    tags: [privacy, private-mode, persistence]
+
+  # ── This Index ───────────────────────────────────────────────────
+  - name: "@luum/cos-index"
+    repo: "Luum-Home/luum-agent-os"
+    path: "packages/cos-index"
+    version: "1.0.0"
+    description: "Central package index for Cognitive OS — master registry of all known COS packages"
+    tags: [index, registry, packages, catalog]
