@@ -5,6 +5,23 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.4] - 2026-03-29
+
+### Added
+- 8 UI platforms evaluated (Paperclip, AnythingLLM, AutoMaker, Aperant, agent-kit, AionUi, Agent Zero, OpenClaw)
+- E2B sandbox MCP integration package
+- Open-source strategy document (Apache-2.0 recommendation)
+- Prompt-driven governance design (4 hooks to convert)
+- Auto-sync hook for package rule symlinks + index regeneration
+- UI platforms evaluation document
+- License-first protocol in repo-forensics + library-selection
+
+### Fixed
+- cos setup now filters existing rules (92→14 for standard profile)
+- MCP server JSON parsing (cos_search_memory, cos_suggest_skill)
+- uninstall.sh step ordering (deregister before delete)
+- 18 xpassed tests cleaned, hook profile docs updated
+
 ## [0.2.3] - 2026-03-29
 
 ### Added
