@@ -60,7 +60,7 @@ if [ ! -f "$BOOTSTRAP_MARKER" ]; then
       echo "[COS] Server ready. Running full auto-bootstrap..."
 
       # 3a: Generate bootstrap CEO invite
-      INVITE_TOKEN=$(pnpm paperclipai auth bootstrap-ceo 2>&1 | grep "Invite URL:" | sed 's|.*/invite/||')
+      INVITE_TOKEN=$(node cli/node_modules/tsx/dist/cli.mjs cli/src/index.ts auth bootstrap-ceo 2>&1 | grep "Invite URL:" | sed 's|.*/invite/||')
 
       if [ -n "$INVITE_TOKEN" ]; then
         echo "[COS] Invite token: $INVITE_TOKEN"
@@ -88,11 +88,20 @@ if [ ! -f "$BOOTSTRAP_MARKER" ]; then
             -d '{"requestType":"human"}' 2>/dev/null)
 
           if echo "$RESULT" | grep -q "bootstrapAccepted"; then
+            # 3e: Create company as seed data
+            echo "[COS] Creating company..."
+            curl -s -X POST "http://localhost:${SERVER_PORT}/api/companies" \
+              -H "Content-Type: application/json" \
+              -H "Origin: http://localhost:${SERVER_PORT}" \
+              -H "Cookie: ${COOKIE}" \
+              -d "{\"name\":\"${PAPERCLIP_COMPANY_NAME:-Cognitive OS}\",\"mission\":\"AI Agent Operating System with governance, quality gates, and persistent memory\"}" > /dev/null 2>&1
+
             echo "[COS] ============================================"
-            echo "[COS] Bootstrap COMPLETE!"
+            echo "[COS] Bootstrap COMPLETE! Ready to use."
             echo "[COS]   Email:    ${ADMIN_EMAIL}"
             echo "[COS]   Password: ${ADMIN_PASSWORD}"
             echo "[COS]   URL:      http://localhost:${PAPERCLIP_PORT:-3200}"
+            echo "[COS]   Company:  ${PAPERCLIP_COMPANY_NAME:-Cognitive OS}"
             echo "[COS] ============================================"
             touch "$BOOTSTRAP_MARKER"
           else
