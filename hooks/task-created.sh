@@ -39,7 +39,7 @@ log_task_event() {
 
 # ─── Extract task description ───────────────────────────────────────────────
 
-task_desc=$(echo "$_STDIN_JSON" | jq -r '.description // .task_description // .prompt // .message // empty' 2>/dev/null | head -5)
+task_desc=$(echo "$_STDIN_JSON" | jq -r '.description // .task_description // .prompt // .message // empty' 2>/dev/null | head -5 || true)
 
 # If we cannot extract a description, allow creation (graceful degradation)
 if [ -z "$task_desc" ]; then

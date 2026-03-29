@@ -19,13 +19,15 @@ Author: luum
 License: MIT
 """
 
+import json
 import os
 import re
 import subprocess
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Dict, List, Optional
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional
 
 
 class Severity(str, Enum):
@@ -546,6 +548,182 @@ class CodeReviewer:
     def detect_base_branch(self) -> Optional[str]:
         """Auto-detect the base branch (main/master/develop)."""
         return _detect_base_branch(self.project_root)
+
+    # --- Engram bidirectional integration (GGA-style) ---
+
+    def search_past_reviews_from_engram(
+        self,
+        files: List[str],
+        project: str = "",
+        *,
+        mem_search_fn: Optional[Callable[..., Any]] = None,
+        mem_get_fn: Optional[Callable[..., Any]] = None,
+    ) -> List[dict]:
+        """Search engram for past reviews of the services touched by *files*.
+
+        This method performs actual engram calls via the provided callables.
+        If no callables are supplied, it falls back to returning empty results
+        (graceful degradation when engram is unavailable).
+
+        Args:
+            files: File paths to extract services from.
+            project: Engram project name (e.g. ``"luum-cognitive-os"``).
+            mem_search_fn: Callable matching ``mem_search(query, project, limit)``.
+                           Must return a list of dicts with at least ``"id"`` keys.
+            mem_get_fn: Callable matching ``mem_get_observation(id)`` that returns
+                        the full observation dict.
+
+        Returns:
+            List of past review context dicts, each containing:
+            ``{"service", "topic_key", "title", "content", "id"}``.
+        """
+        if mem_search_fn is None:
+            return []
+
+        results: List[dict] = []
+        services_seen: set = set()
+
+        for file_path in files:
+            service = _extract_service_from_path(file_path)
+            if service in services_seen:
+                continue
+            services_seen.add(service)
+
+            # Search review/* and bugfix/* topic keys for this service
+            for prefix in ("review", "bugfix", "implementation"):
+                query = f"{prefix}/{service}"
+                try:
+                    hits = mem_search_fn(query=query, project=project, limit=5)
+                    if not hits:
+                        continue
+                    # Normalise: hits may be a list of dicts or objects
+                    for hit in (hits if isinstance(hits, list) else [hits]):
+                        hit_id = hit.get("id") if isinstance(hit, dict) else getattr(hit, "id", None)
+                        if hit_id is None:
+                            continue
+                        # Fetch full content if getter available
+                        content = ""
+                        title = hit.get("title", "") if isinstance(hit, dict) else getattr(hit, "title", "")
+                        if mem_get_fn is not None:
+                            try:
+                                full = mem_get_fn(id=hit_id)
+                                content = (
+                                    full.get("content", "")
+                                    if isinstance(full, dict)
+                                    else getattr(full, "content", "")
+                                )
+                            except Exception:
+                                pass
+                        results.append({
+                            "service": service,
+                            "topic_key": query,
+                            "title": title,
+                            "content": content,
+                            "id": hit_id,
+                        })
+                except Exception:
+                    # Engram unavailable — graceful degradation
+                    continue
+
+        return results
+
+    def save_review_to_engram(
+        self,
+        report: ReviewReport,
+        project: str = "",
+        service: str = "",
+        change_name: str = "",
+        *,
+        mem_save_fn: Optional[Callable[..., Any]] = None,
+    ) -> dict:
+        """Save review findings to engram for future reference.
+
+        Performs the actual ``mem_save`` call when *mem_save_fn* is supplied.
+        Always returns the prepared payload dict (useful for testing even
+        without a live engram connection).
+
+        Args:
+            report: The ReviewReport to persist.
+            project: Engram project name.
+            service: Service name override. Auto-detected from findings if empty.
+            change_name: Optional change/PR name for the topic key.
+            mem_save_fn: Callable matching ``mem_save(**kwargs)``.
+
+        Returns:
+            The payload dict that was (or would be) sent to ``mem_save``.
+        """
+        payload = self.save_review(report, change_name=change_name)
+        payload["project"] = project
+
+        # Override service if explicitly provided
+        if service:
+            date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            payload["topic_key"] = f"review/{service}/{date_str}"
+            if change_name:
+                payload["topic_key"] = f"review/{change_name}/{date_str}"
+            payload["title"] = f"Code review: {service} ({report.status})"
+
+        if mem_save_fn is not None:
+            try:
+                mem_save_fn(
+                    title=payload["title"],
+                    content=payload["content"],
+                    type=payload.get("type", "review"),
+                    topic_key=payload["topic_key"],
+                    scope=payload.get("scope", "project"),
+                    project=project,
+                )
+            except Exception:
+                # Engram unavailable — payload is still returned
+                pass
+
+        return payload
+
+    def review_with_engram(
+        self,
+        files: List[str],
+        project: str = "",
+        context: str = "",
+        change_name: str = "",
+        *,
+        mem_search_fn: Optional[Callable[..., Any]] = None,
+        mem_get_fn: Optional[Callable[..., Any]] = None,
+        mem_save_fn: Optional[Callable[..., Any]] = None,
+    ) -> ReviewReport:
+        """Full review lifecycle: search engram -> review -> save to engram.
+
+        Convenience method that orchestrates the bidirectional flow.
+
+        Returns:
+            ReviewReport (with ``engram_context_used`` and ``past_review_count``
+            populated when engram was available).
+        """
+        # 1. Pre-review: search engram for past context
+        past_reviews = self.search_past_reviews_from_engram(
+            files, project=project, mem_search_fn=mem_search_fn, mem_get_fn=mem_get_fn,
+        )
+
+        # 2. Review files (static analysis)
+        report = self.review_files(files, context=context)
+
+        # 3. Enrich report with engram metadata
+        if past_reviews:
+            report.engram_context_used = True
+            report.past_review_count = len(past_reviews)
+
+        # 4. Post-review: save findings to engram
+        if mem_save_fn is not None:
+            services = {_extract_service_from_path(f) for f in files}
+            service_str = ", ".join(sorted(services)) if services else ""
+            self.save_review_to_engram(
+                report,
+                project=project,
+                service=service_str,
+                change_name=change_name,
+                mem_save_fn=mem_save_fn,
+            )
+
+        return report
 
     @staticmethod
     def format_report(report: ReviewReport) -> str:

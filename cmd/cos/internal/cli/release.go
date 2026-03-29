@@ -110,6 +110,47 @@ func updateChangelog(content, version string) string {
 	return result
 }
 
+// updateDocsIndex replaces the version reference in the first line heading of
+// docs/INDEX.md. The expected format is: "# ... — vX.Y.Z"
+func updateDocsIndex(content, newVersion string) string {
+	lines := strings.SplitN(content, "\n", 2)
+	if len(lines) == 0 {
+		return content
+	}
+
+	heading := lines[0]
+	// Find the last occurrence of a version pattern vX.Y.Z in the heading.
+	// We search backwards for "v" followed by digits and dots.
+	lastV := strings.LastIndex(heading, "v")
+	if lastV < 0 {
+		return content
+	}
+
+	// Extract the rest after 'v' and check it looks like a semver.
+	rest := heading[lastV+1:]
+	// Find where the version ends (first char that is not digit or dot).
+	endIdx := 0
+	for endIdx < len(rest) {
+		c := rest[endIdx]
+		if (c >= '0' && c <= '9') || c == '.' {
+			endIdx++
+		} else {
+			break
+		}
+	}
+
+	if endIdx == 0 {
+		return content
+	}
+
+	// Rebuild the heading with the new version.
+	newHeading := heading[:lastV] + "v" + newVersion + heading[lastV+1+endIdx:]
+	if len(lines) > 1 {
+		return newHeading + "\n" + lines[1]
+	}
+	return newHeading
+}
+
 // releaseReadinessCheck validates that the project is ready for a release.
 // Returns a list of check results (pass/fail) and an overall pass boolean.
 func releaseReadinessCheck(projectRoot, currentVersion string) ([]string, bool) {
@@ -277,8 +318,9 @@ func runRelease(cmd *cobra.Command, args []string) error {
 		fmt.Println("  Actions:")
 		fmt.Printf("    1. Update VERSION file to %s\n", targetVersion)
 		fmt.Println("    2. Update CHANGELOG.md (rename [Unreleased] section)")
-		fmt.Printf("    3. git commit -m \"release: v%s\"\n", targetVersion)
-		fmt.Printf("    4. git tag v%s\n", targetVersion)
+		fmt.Printf("    3. Update docs/INDEX.md version to v%s\n", targetVersion)
+		fmt.Printf("    4. git commit -m \"release: v%s\"\n", targetVersion)
+		fmt.Printf("    5. git tag v%s\n", targetVersion)
 		fmt.Println()
 		fmt.Println(ui.MutedStyle.Render("  No changes made (dry run)"))
 		return nil
@@ -304,8 +346,21 @@ func runRelease(cmd *cobra.Command, args []string) error {
 		fmt.Printf("%s Updated CHANGELOG.md\n", ui.IconCheck)
 	}
 
+	// Step 2b: Update docs/INDEX.md version reference.
+	docsIndexPath := filepath.Join(projectRoot, "docs", "INDEX.md")
+	docsIndexData, err := os.ReadFile(docsIndexPath)
+	if err != nil {
+		fmt.Printf("%s docs/INDEX.md not found, skipping version update\n", ui.IconWarning)
+	} else {
+		updated := updateDocsIndex(string(docsIndexData), targetVersion)
+		if err := os.WriteFile(docsIndexPath, []byte(updated), 0644); err != nil {
+			return fmt.Errorf("writing docs/INDEX.md: %w", err)
+		}
+		fmt.Printf("%s Updated docs/INDEX.md version to v%s\n", ui.IconCheck, targetVersion)
+	}
+
 	// Step 3: Git commit.
-	gitAdd := exec.Command("git", "add", "VERSION", "CHANGELOG.md")
+	gitAdd := exec.Command("git", "add", "VERSION", "CHANGELOG.md", "docs/INDEX.md")
 	gitAdd.Dir = projectRoot
 	if out, err := gitAdd.CombinedOutput(); err != nil {
 		return fmt.Errorf("git add failed: %w\n%s", err, string(out))
