@@ -12,6 +12,7 @@ outputs:
   - recommended_approach: Brief guidance based on terrain
 version: 1.0.0
 last-updated: 2026-03-28
+audience: project
 ---
 
 # Scout -- Pre-Implementation Codebase Reconnaissance

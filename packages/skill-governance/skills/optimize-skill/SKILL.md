@@ -5,6 +5,7 @@ user_invocable: true
 disable-model-invocation: true
 model: claude-opus-4-6
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
+audience: project
 ---
 
 # /optimize-skill — Karpathy Loop para Skills de Claude Code

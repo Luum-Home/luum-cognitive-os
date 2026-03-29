@@ -8,6 +8,7 @@ triggers:
   - run multiple changes
 tags: [sdd, batch, pipeline, automation, ci-cd]
 auto-generated: false
+audience: project
 ---
 
 # Batch Runner

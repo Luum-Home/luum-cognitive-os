@@ -4,6 +4,7 @@ description: Save and restore environment state snapshots using devbox
 invoke: /checkpoint
 version: 1.0.0
 model: sonnet
+audience: project
 ---
 
 # Devbox Checkpoint — State Snapshots

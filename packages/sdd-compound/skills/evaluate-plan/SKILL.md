@@ -3,6 +3,7 @@ name: evaluate-plan
 description: Evaluate any existing plan file with a 0-50 scoring system. Proposes improvements if score is low.
 user-invocable: true
 version: 1.0.0
+audience: project
 ---
 
 # Evaluate Plan

@@ -3,6 +3,7 @@ name: plan-feature
 description: Create a feature implementation plan with evaluation scoring. Use before implementing any significant feature.
 user-invocable: true
 version: 1.0.0
+audience: project
 ---
 
 # Plan Feature

@@ -12,6 +12,7 @@ license: MIT
 metadata:
   author: luum
   pattern: superclaude-confidence
+audience: project
 ---
 
 ## Purpose

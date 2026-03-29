@@ -5,6 +5,7 @@ version: 1.0.0
 last-updated: 2026-03-21
 source: superpowers (obra/superpowers)
 tech: debugging
+audience: project
 ---
 
 # Systematic Debugging

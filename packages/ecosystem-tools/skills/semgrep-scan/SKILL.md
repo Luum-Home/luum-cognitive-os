@@ -14,6 +14,7 @@ metadata:
   tool-license: LGPL-2.1
   tool-ring: ADOPT
   tool-score: 8.5
+audience: project
 ---
 
 ## Purpose

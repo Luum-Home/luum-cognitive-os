@@ -5,6 +5,7 @@
 ---
 description: "Analyze change impact: imports, tests, configs, services, and SDD artifacts affected"
 triggers: ["/impact-analysis"]
+audience: project
 ---
 
 ## Instructions
