@@ -152,6 +152,7 @@ func TestSetupHelpOutput(t *testing.T) {
 		"interactive TUI wizard",
 		"--non-interactive",
 		"--preset",
+		"--global",
 		"solo-dev",
 		"team",
 		"enterprise",
@@ -160,6 +161,29 @@ func TestSetupHelpOutput(t *testing.T) {
 	for _, check := range checks {
 		if !strings.Contains(out, check) {
 			t.Errorf("help output missing %q.\nGot:\n%s", check, out)
+		}
+	}
+}
+
+func TestCoreGlobalRulesCount(t *testing.T) {
+	// Verify the core global rules list has exactly 14 entries.
+	if len(coreGlobalRules) != 14 {
+		t.Errorf("expected 14 core global rules, got %d", len(coreGlobalRules))
+	}
+}
+
+func TestCoreGlobalRulesExist(t *testing.T) {
+	// Verify all core global rules exist in the rules/ directory.
+	// Find project root by looking for rules/ directory.
+	projectRoot := findCosSourceDir()
+	if projectRoot == "" {
+		t.Skip("COS source directory not found; skipping rule existence check")
+	}
+
+	for _, rule := range coreGlobalRules {
+		rulePath := filepath.Join(projectRoot, "rules", rule)
+		if _, err := os.Stat(rulePath); os.IsNotExist(err) {
+			t.Errorf("core global rule missing: rules/%s", rule)
 		}
 	}
 }
