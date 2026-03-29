@@ -58,6 +58,24 @@ Documents all external tools integrated into Cognitive OS, their configuration, 
 | Required | No (optional dependency) |
 | Scope | Conversation history search |
 
+### aguara — AI Agent Security Scanner
+
+| Property | Value |
+|----------|-------|
+| Purpose | Deterministic security scanner for AI agent skills and MCP servers. 189 rules across 14 threat categories (prompt injection, data exfiltration, supply chain attacks). No LLM required. |
+| Config | `cognitive-os.yaml` under `security.aguara` |
+| Hook | `hooks/aguara-scan.sh` (PreToolUse on Agent) |
+| Install | `go install github.com/garagon/aguara@latest` or `bash scripts/install-aguara.sh` |
+| Required | No (optional dependency, graceful skip if missing) |
+| Scope | Agent prompts before execution |
+
+**Phase behavior**:
+- All phases: CRITICAL findings block agent launch (exit 2), all others advisory (exit 0)
+
+**Metrics**: Findings logged to `.cognitive-os/metrics/aguara-findings.jsonl`
+
+**MCP Server**: `mcp-aguara` available as optional MCP server (`go install github.com/garagon/mcp-aguara@latest`). Provides 5 tools: `scan_content`, `check_mcp_config`, `list_rules`, `explain_rule`, `discover_mcp`. See `packages/aguara-security/rules/aguara-integration.md` for registration instructions.
+
 ### hcom — Cross-Terminal Communication
 
 | Property | Value |
@@ -102,7 +120,7 @@ When integrating a new external tool:
 Run the following to check which ecosystem tools are available:
 
 ```bash
-for tool in agnix semgrep parry-guard recall hcom; do
+for tool in agnix semgrep parry-guard aguara mcp-aguara recall hcom; do
   if command -v "$tool" &>/dev/null; then
     echo "[installed] $tool: $($tool --version 2>/dev/null | head -1)"
   else
@@ -113,4 +131,4 @@ done
 
 ## Contextual Trigger
 
-This rule is loaded when: ecosystem tools, external tools, agnix, semgrep, parry, recall, hcom, tool integration.
+This rule is loaded when: ecosystem tools, external tools, agnix, semgrep, parry, aguara, recall, hcom, tool integration.
