@@ -15,6 +15,10 @@ _LIB_DIR="$(dirname "$0")/_lib"
 [ -f "$_LIB_DIR/safe-jsonl.sh" ] && source "$_LIB_DIR/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
 
+# Paperclip notification helper for safety mesh blocks (Gap 5)
+_PAPERCLIP_LIB="$(dirname "$0")/_lib/paperclip-notify.sh"
+[ -f "$_PAPERCLIP_LIB" ] && source "$_PAPERCLIP_LIB"
+
 # Auto-disabled at capability level 5
 check_capability_level "claim-validator"
 
@@ -113,6 +117,10 @@ if [ "$HALLUCINATIONS" -gt 0 ]; then
     echo "HALLUCINATION DETECTED in $PHASE phase — blocking agent result." >&2
     echo "=== END CLAIM VALIDATOR ===" >&2
     echo ""
+    # Gap 5: Notify Paperclip of safety mesh block
+    if type paperclip_notify &>/dev/null 2>&1; then
+      paperclip_notify "Safety Mesh BLOCK: Hallucination" "Hook: claim-validator, Phase: $PHASE, Hallucinations: $HALLUCINATIONS" "warning"
+    fi
     exit 2
   else
     echo "Phase is $PHASE — warning only (not blocking)." >&2

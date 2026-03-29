@@ -5,6 +5,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.5] - 2026-03-29
+
+### Added
+- Paperclip gaps 5-7 wired: safety mesh block sync, active task sync, cost streaming
+- Shared `hooks/_lib/paperclip-notify.sh` helper for fire-and-forget Paperclip notifications
+- `paperclip-task-sync.sh` SessionStart hook pushes active tasks as Paperclip issues
+- `paperclip-cost-stream.sh` PostToolUse hook streams cost events with $0.10 threshold
+
+### Fixed
+- Flaky test `test_individual_hook_under_500ms` threshold increased to 2000ms for system load tolerance
+- Roadmap updated to v0.2.5 with current metrics (5074+ tests, 94 rules, 97 skills, 82 hooks)
+
 ## [0.2.4] - 2026-03-29
 
 ### Added

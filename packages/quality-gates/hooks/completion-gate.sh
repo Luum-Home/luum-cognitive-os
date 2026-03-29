@@ -12,6 +12,9 @@ set -uo pipefail
 
 _HOOK_NAME="completion-gate"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+# Paperclip notification helper for safety mesh blocks (Gap 5)
+_PAPERCLIP_LIB="$(dirname "$0")/_lib/paperclip-notify.sh"
+[ -f "$_PAPERCLIP_LIB" ] && source "$_PAPERCLIP_LIB"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
