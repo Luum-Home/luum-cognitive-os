@@ -104,8 +104,7 @@ class TestVersionConsistency:
         ), "cos CLI must use resolveVersion() for dynamic version from VERSION file"
 
     def test_cos_test_cli_version_matches(self):
-        """cos-test CLI version must match VERSION file."""
-        version = self._get_version()
+        """cos-test CLI must use dynamic version from VERSION file (via resolveVersion)."""
         root_go = (
             PROJECT_ROOT / "cmd" / "cos-test" / "internal" / "cli" / "root.go"
         )
@@ -113,8 +112,8 @@ class TestVersionConsistency:
             pytest.skip("cmd/cos-test/internal/cli/root.go not found")
         content = root_go.read_text()
         assert (
-            f'Version: "{version}"' in content
-        ), f"cos-test CLI version does not match VERSION file ({version})"
+            "resolveVersion()" in content
+        ), "cos-test CLI must use resolveVersion() for dynamic version from VERSION file"
 
     def test_docs_index_contains_version(self):
         """docs/INDEX.md must contain the current version."""
@@ -143,19 +142,17 @@ class TestVersionConsistency:
                     "cmd/cos root.go missing resolveVersion() call"
                 )
 
-        # cos-test CLI
+        # cos-test CLI (uses dynamic version via resolveVersion())
         costest_go = (
             PROJECT_ROOT / "cmd" / "cos-test" / "internal" / "cli" / "root.go"
         )
         if costest_go.exists():
             content = costest_go.read_text()
-            match = re.search(r'Version:\s*"([^"]+)"', content)
-            if match:
-                locations_checked.append("cmd/cos-test root.go")
-                if match.group(1) != version:
-                    mismatches.append(
-                        f"cmd/cos-test root.go has {match.group(1)}"
-                    )
+            locations_checked.append("cmd/cos-test root.go")
+            if "resolveVersion()" not in content:
+                mismatches.append(
+                    "cmd/cos-test root.go missing resolveVersion() call"
+                )
 
         # docs/INDEX.md
         index_md = PROJECT_ROOT / "docs" / "INDEX.md"

@@ -28,6 +28,7 @@
 | Developer Velocity | >3x vs manual | <2x triggers review |
 | Security & Compliance | 0 violations | Any violation is CRITICAL |
 | Resource Efficiency | >80% composite | <60% triggers alert |
+| Escalation Health | 5-15% escalation rate | <5% (suppressed) or >20% (too frequent) triggers alert |
 
 ## How KPIs Drive Improvement
 
@@ -49,6 +50,11 @@ These are automatic responses — the agent should suggest them when thresholds 
 | Budget health < 20% | CRITICAL: Trigger model downgrade chain, alert user |
 | Token efficiency < 80% | Run `/context-optimizer` to reduce wasted tokens |
 | Infra utilization < 50% | Suggest stopping idle Docker containers |
+| Escalation rate < 5% | Agents may be suppressing escalations — review agent preamble, ensure escalation protocol is loaded |
+| Escalation rate > 20% | Too many escalations — review task clarity, acceptance criteria quality, or agent capability matching |
+| Escalation resolution rate < 80% | Orchestrator failing to resolve escalations — review re-launch strategies |
+| Time-to-escalate > 20 tool calls | Agents spinning too long before escalating — lower escalation thresholds |
+| False escalation rate > 10% | Agents escalating unnecessarily — tighten detection thresholds |
 
 ### Resource Efficiency (NEW — from Resource Governor)
 
@@ -112,6 +118,37 @@ These are automatic responses — the agent should suggest them when thresholds 
 - **Alert threshold**: <90%
 - **Data source**: `.claude/metrics/architecture-violations.jsonl`
 - **Remediation**: Launch architecture remediation agent. In reconstruction phase, violations are blockers.
+
+### Escalation Health
+
+4 KPIs feed into escalation health measurement:
+
+| KPI | What it measures | Target | Data Source |
+|-----|-----------------|--------|-------------|
+| Escalation Rate | Escalations / total agent completions | 5-15% | `.cognitive-os/metrics/escalation-events.jsonl` |
+| Escalation Resolution Rate | Escalations resolved by orchestrator (re-launch succeeded) / total escalations | > 80% | Cross-reference `escalation-events.jsonl` with task completion |
+| Time-to-Escalate | Average tool calls before escalating when stuck | < 15 tool calls | `.cognitive-os/metrics/escalation-events.jsonl` (stuck_duration field) |
+| False Escalation Rate | Unnecessary escalations (task succeeded on immediate re-launch without changes) / total escalations | < 10% | `.cognitive-os/metrics/escalation-events.jsonl` cross-referenced with re-launch results |
+
+**How to calculate**:
+- Escalation Rate = count(escalation events) / count(agent completions) * 100
+- Resolution Rate = count(escalations where re-launch succeeded) / count(all escalations) * 100
+- Time-to-Escalate = mean(tool_calls_total from escalation events where escalation_count > 0)
+- False Escalation Rate = count(escalations where immediate re-launch succeeds unchanged) / count(all escalations) * 100
+
+**Alert thresholds**:
+- Escalation rate < 5%: WARN -- agents may be suppressing escalations (spinning instead of asking for help)
+- Escalation rate > 20%: WARN -- tasks may be too ambiguous or agents under-capable
+- Resolution rate < 80%: WARN -- orchestrator strategies need improvement
+- Time-to-escalate > 20: WARN -- agents spinning too long, lower detection thresholds
+- False escalation rate > 10%: WARN -- detection is too sensitive
+
+**Remediation**:
+- Low escalation rate: review agent preamble for escalation instructions, verify escalation detector is active
+- High escalation rate: improve task clarity, use `/exhaustive-prompt`, check model capability
+- Low resolution rate: review orchestrator re-launch strategies, consider different models or approaches
+- High time-to-escalate: lower `max_tool_calls_before_check` in EscalationDetector config
+- High false escalation rate: raise thresholds in `lib/escalation_detector.py` constants
 
 ## KPI Storage
 
