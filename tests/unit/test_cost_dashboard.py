@@ -318,15 +318,15 @@ class TestGetDailyCost:
 
     def test_filters_by_date(self, tmp_path):
         metrics = tmp_path / "cost-events.jsonl"
-        today = date.today()
+        today_utc = datetime.now(timezone.utc).date()
         events = [
             _make_event(cost=1.0, timestamp=datetime(2025, 1, 1, tzinfo=timezone.utc).isoformat()),
-            _make_event(cost=2.0),  # today
+            _make_event(cost=2.0),  # today (UTC)
         ]
         _write_events(metrics, events)
         dash = CostDashboard(metrics_path=str(metrics))
 
-        result_today = dash.get_daily_cost(today)
+        result_today = dash.get_daily_cost(today_utc)
         assert result_today["total_usd"] == pytest.approx(2.0, abs=0.01)
 
         result_old = dash.get_daily_cost(date(2025, 1, 1))
