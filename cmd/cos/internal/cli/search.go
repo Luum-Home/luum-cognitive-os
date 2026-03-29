@@ -7,27 +7,32 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"luum-agent-os/cmd/cos/internal/project"
 	"luum-agent-os/cmd/cos/internal/registry"
 	"luum-agent-os/cmd/cos/internal/ui"
 )
 
 var (
-	searchType    string
-	searchLicense string
-	searchLimit   int
+	searchType     string
+	searchLicense  string
+	searchLimit    int
+	searchRegistry string
 )
 
 var searchCmd = &cobra.Command{
 	Use:   "search <query>",
-	Short: "Search for cos packages on GitHub",
-	Long: `Search the GitHub registry for cos packages.
+	Short: "Search for cos packages across configured registries",
+	Long: `Search configured registries for cos packages.
 
-Searches for repositories tagged with "cos-package" on GitHub.
+By default, searches all enabled registries (configured in cognitive-os.yaml
+under packages.registries). Falls back to GitHub topic search if no registries
+are configured.
 
 Examples:
-  cos search security           Find security-related packages
-  cos search --type skill linter Find skill packages matching "linter"
-  cos search --license MIT auth  Find MIT-licensed auth packages`,
+  cos search security                     Search all registries
+  cos search --type skill linter          Find skill packages matching "linter"
+  cos search --license MIT auth           Find MIT-licensed auth packages
+  cos search --registry cos-official auth Search only the cos-official registry`,
 	Args: cobra.ExactArgs(1),
 	RunE: runSearch,
 }
@@ -36,19 +41,60 @@ func init() {
 	searchCmd.Flags().StringVar(&searchType, "type", "", "Filter by component type (skill, rule, hook, agent, template)")
 	searchCmd.Flags().StringVar(&searchLicense, "license", "", "Filter by license (MIT, Apache-2.0, etc.)")
 	searchCmd.Flags().IntVar(&searchLimit, "limit", 20, "Maximum number of results")
+	searchCmd.Flags().StringVar(&searchRegistry, "registry", "", "Search only this registry (by name)")
 	rootCmd.AddCommand(searchCmd)
 }
 
 func runSearch(cmd *cobra.Command, args []string) error {
 	query := args[0]
 
-	ui.Step(ui.IconInfo, fmt.Sprintf("Searching for %q...", query))
+	// Load registries from config.
+	projectRoot := project.FindRootOrCwd()
+	registries := registry.LoadRegistries(projectRoot)
+
+	if searchRegistry != "" {
+		ui.Step(ui.IconInfo, fmt.Sprintf("Searching registry %q for %q...", searchRegistry, query))
+	} else {
+		enabled := registry.EnabledRegistries(registries)
+		names := make([]string, len(enabled))
+		for i, r := range enabled {
+			names[i] = r.Name
+		}
+		ui.Step(ui.IconInfo, fmt.Sprintf("Searching %d registry(ies) for %q...", len(enabled), query))
+	}
 	fmt.Println()
 
-	results, err := registry.SearchGitHub(query, searchLimit)
-	if err != nil {
-		fmt.Println(ui.ErrorStyle.Render(fmt.Sprintf("%s %s", ui.IconError, err.Error())))
-		os.Exit(1)
+	var annotated []registry.AnnotatedResult
+	var searchErrors []error
+
+	if searchRegistry != "" {
+		results, err := registry.SearchOneRegistry(registries, searchRegistry, query, searchLimit)
+		if err != nil {
+			fmt.Println(ui.ErrorStyle.Render(fmt.Sprintf("%s %s", ui.IconError, err.Error())))
+			os.Exit(1)
+		}
+		annotated = results
+	} else {
+		results, errs := registry.SearchAllRegistries(registries, query, searchLimit)
+		annotated = results
+		searchErrors = errs
+	}
+
+	// Show non-fatal errors as warnings.
+	for _, err := range searchErrors {
+		fmt.Println(ui.WarningStyle.Render(fmt.Sprintf("  %s %s", ui.IconWarning, err.Error())))
+	}
+
+	// Convert to SearchResult slice for filtering.
+	var results []registry.SearchResult
+	registryMap := make(map[string]string) // URL -> registry name
+	for _, a := range annotated {
+		results = append(results, a.SearchResult)
+		key := a.URL
+		if key == "" {
+			key = a.Name
+		}
+		registryMap[key] = a.Registry
 	}
 
 	// Apply client-side filters.
@@ -62,14 +108,19 @@ func runSearch(cmd *cobra.Command, args []string) error {
 	if len(results) == 0 {
 		fmt.Println(ui.MutedStyle.Render("  No packages found matching your query."))
 		fmt.Println()
-		fmt.Println(ui.MutedStyle.Render("  Tip: packages must have the 'cos-package' topic on GitHub."))
+		fmt.Println(ui.MutedStyle.Render("  Tip: check your registries with 'cos registry list'."))
 		return nil
 	}
 
 	fmt.Printf("Search results for %q:\n\n", query)
 
 	for _, r := range results {
-		printSearchResult(r)
+		key := r.URL
+		if key == "" {
+			key = r.Name
+		}
+		regName := registryMap[key]
+		printSearchResultWithRegistry(r, regName)
 	}
 
 	fmt.Println()
@@ -78,8 +129,8 @@ func runSearch(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-// printSearchResult prints a single search result in a formatted line.
-func printSearchResult(r registry.SearchResult) {
+// printSearchResultWithRegistry prints a single search result with registry annotation.
+func printSearchResultWithRegistry(r registry.SearchResult, regName string) {
 	// Name column: left-aligned, padded.
 	name := ui.HeaderStyle.Render(fmt.Sprintf("%-26s", r.Name))
 
@@ -101,11 +152,18 @@ func printSearchResult(r registry.SearchResult) {
 
 	fmt.Printf("  %s  %s  %s  %s\n", name, stars, licenseFmt, desc)
 
-	// Show topics if present (excluding cos-package itself).
+	// Show registry source and topics.
+	var meta []string
+	if regName != "" {
+		meta = append(meta, fmt.Sprintf("from: %s", regName))
+	}
 	topics := filterTopics(r.Topics)
 	if len(topics) > 0 {
-		topicStr := ui.MutedStyle.Render(fmt.Sprintf("    tags: %s", strings.Join(topics, ", ")))
-		fmt.Printf("  %s\n", topicStr)
+		meta = append(meta, fmt.Sprintf("tags: %s", strings.Join(topics, ", ")))
+	}
+	if len(meta) > 0 {
+		metaStr := ui.MutedStyle.Render(fmt.Sprintf("    %s", strings.Join(meta, "  |  ")))
+		fmt.Printf("  %s\n", metaStr)
 	}
 }
 

@@ -830,6 +830,86 @@ cos cache list           # Show cache contents and sizes
 3. On subsequent installs from lock: re-compute hash and compare.
 4. Mismatch = error. The package content changed for the same version tag. This is a supply chain attack indicator.
 
+### Curated Package Index (Community Marketplace)
+
+Inspired by Agent Zero's plugin marketplace pattern ([agent0ai/a0-plugins](https://github.com/agent0ai/a0-plugins)), the cos ecosystem uses a curated GitHub repository as a discoverable package index.
+
+#### How Agent Zero Does It
+
+Agent Zero maintains a separate GitHub repo (`a0-plugins`) containing YAML manifests for each community plugin. Contributors submit PRs to add their plugins. The index is consumed by the Agent Zero UI and CLI for plugin discovery and installation.
+
+Key characteristics:
+- Single repo acts as the source of truth for available plugins
+- YAML files describe each plugin (name, description, repo URL, version)
+- Community contributions via pull requests
+- CI validates PRs before merge
+- Flat structure (no dependency resolution)
+
+#### How cos Does It (Expanded)
+
+The cos centralized index (`github.com/luum/cos-index`) adopts the same pattern but adds:
+
+| Feature | Agent Zero (a0-plugins) | cos Index |
+|---------|------------------------|-----------|
+| Format | YAML plugin manifests | YAML index with semver, scores, keywords |
+| Discovery | UI browse + CLI list | `cos search` with keyword/description matching |
+| Quality | No scoring | pub.dev-style 0-100 quality score per package |
+| Dependencies | None | Full dependency graph with MVS resolution |
+| Submission | Manual PR | `cos publish` auto-generates PR to index |
+| Validation | Basic CI checks | CI validates manifest, runs scorer, verifies license, checks supply chain |
+| Scoped names | No | `@org/package` resolves to `github.com/org/repo` |
+
+#### Creating the cos-index Repository
+
+To set up a curated package index (e.g., `Luum-Home/cos-packages-index`):
+
+1. Create the GitHub repository
+2. Add `index.yaml` at the root (see format in Section 6 above)
+3. Add CI workflow that validates PRs:
+   - Parse submitted YAML entry
+   - Clone the referenced repo at the declared version
+   - Run `cos validate` on the repo's cos-package.yaml
+   - Run `cos score` and verify minimum score threshold (40/100)
+   - Check license compatibility against `rules/license-policy.md`
+   - Verify integrity hashes
+4. Configure `cos` to use the index by adding it to `cognitive-os.yaml` sources:
+
+```yaml
+sources:
+  registries:
+    - name: cos-community
+      type: remote
+      url: https://raw.githubusercontent.com/Luum-Home/cos-packages-index/main/index.yaml
+      description: "Curated community cos packages"
+      enabled: true
+      provides: [skills, rules, hooks, agents, templates, bundles]
+```
+
+#### Integration with `cos search` and `cos install`
+
+When `cos search <query>` runs:
+1. Fetch the index (cached locally, refreshed hourly)
+2. Filter by keyword, description, and package name
+3. Display results with quality scores and install commands
+
+When `cos install @scope/name` runs:
+1. Look up `@scope/name` in the index to resolve `github.com/org/repo`
+2. Proceed with standard GitHub-based registry flow (clone, validate, resolve deps, install)
+
+#### Relationship to Other Registries
+
+The cos-index is one source among many configured in `cognitive-os.yaml`:
+
+| Registry | Type | What It Provides |
+|----------|------|-----------------|
+| cos-builtin | local | Built-in COS components |
+| cos-community (index) | remote | Curated community packages |
+| skills.sh | remote | Vercel's skills registry (83K+) |
+| mcp-registry | remote | Official MCP servers |
+| SkillsMP | remote | Community marketplace (350K+) |
+
+The `cos search` command queries all enabled registries and merges results.
+
 ---
 
 ## 7. CLI Reference

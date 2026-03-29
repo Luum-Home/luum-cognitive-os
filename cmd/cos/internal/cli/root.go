@@ -35,7 +35,8 @@ Commands:
   remove      Remove an installed package
   list        List installed packages
   info        Show detailed information about a package
-  search      Search for cos packages on GitHub
+  search      Search for cos packages across configured registries
+  registry    Manage package registries (list, add, enable, disable)
   publish     Validate and prepare package for publishing
   audit       Run security audit on a package
   update      Update installed packages
