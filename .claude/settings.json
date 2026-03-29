@@ -15,6 +15,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/crash-recovery.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/packages/paperclip-integration/hooks/paperclip-squad-sync.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/packages/paperclip-integration/hooks/paperclip-task-sync.sh\"",
+            "async": true
           }
         ]
       }
@@ -119,6 +129,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-checkpoint.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/packages/paperclip-integration/hooks/paperclip-agent-status.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/packages/paperclip-integration/hooks/paperclip-sdd-sync.sh\"",
+            "async": true
           }
         ]
       }
