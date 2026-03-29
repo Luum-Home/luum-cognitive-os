@@ -1,0 +1,1 @@
+../packages/tero-testing/rules/tero-integration.md

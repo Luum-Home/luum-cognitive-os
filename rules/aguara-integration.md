@@ -1,0 +1,1 @@
+../packages/aguara-security/rules/aguara-integration.md

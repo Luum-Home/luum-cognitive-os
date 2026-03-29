@@ -89,22 +89,32 @@ def _load_events(metrics_path: str) -> List[dict]:
 
 
 def _filter_events_by_date(events: List[dict], target_date: date) -> List[dict]:
-    """Filter events to those occurring on a specific date."""
+    """Filter events to those occurring on a specific date (UTC).
+
+    Compares the UTC date of timestamps against the target date.
+    Callers should pass UTC-based dates for consistency (e.g.,
+    ``datetime.now(timezone.utc).date()`` instead of ``date.today()``).
+    """
     filtered = []
     for ev in events:
         ts = _parse_timestamp(ev.get("timestamp", ""))
-        if ts and ts.date() == target_date:
-            filtered.append(ev)
+        if ts:
+            # Normalize to UTC for consistent comparison
+            utc_date = ts.astimezone(timezone.utc).date()
+            if utc_date == target_date:
+                filtered.append(ev)
     return filtered
 
 
 def _filter_events_by_month(events: List[dict], year: int, month: int) -> List[dict]:
-    """Filter events to those occurring in a specific month."""
+    """Filter events to those occurring in a specific month (UTC)."""
     filtered = []
     for ev in events:
         ts = _parse_timestamp(ev.get("timestamp", ""))
-        if ts and ts.year == year and ts.month == month:
-            filtered.append(ev)
+        if ts:
+            utc_ts = ts.astimezone(timezone.utc)
+            if utc_ts.year == year and utc_ts.month == month:
+                filtered.append(ev)
     return filtered
 
 
@@ -186,7 +196,7 @@ class CostDashboard:
         tokens_in, tokens_out = _total_tokens(events)
         model_bd = _model_breakdown(events)
 
-        today_events = _filter_events_by_date(events, date.today())
+        today_events = _filter_events_by_date(events, datetime.now(timezone.utc).date())
         daily_cost = sum(_compute_event_cost(ev) for ev in today_events)
         budget_remaining_pct = max(
             0.0, (1.0 - daily_cost / self.daily_budget) * 100
@@ -203,8 +213,8 @@ class CostDashboard:
         }
 
     def get_daily_cost(self, day: Optional[date] = None) -> Dict:
-        """Total cost for a day. Default today."""
-        target = day or date.today()
+        """Total cost for a day (UTC). Default today (UTC)."""
+        target = day or datetime.now(timezone.utc).date()
         events = _load_events(self.metrics_path)
         day_events = _filter_events_by_date(events, target)
         total = sum(_compute_event_cost(ev) for ev in day_events)
