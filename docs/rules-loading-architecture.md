@@ -128,10 +128,51 @@ Stay under 50% of the WISC threshold (75 rules) for optimal performance.
 
 See engram `architecture/rules-consolidation-analysis` for the full classification matrix.
 
+## Global Rules Accumulation
+
+Claude Code loads rules from BOTH `~/.claude/rules/` (user scope) and `.claude/rules/` (project scope). They **accumulate** -- all `.md` files from both locations are loaded into the context window.
+
+### How Global Rules Work
+
+User-level rules in `~/.claude/rules/` apply to every project on the machine. Project-level rules in `.claude/rules/` are project-specific. Claude Code loads user-level rules BEFORE project rules, giving project rules higher priority when instructions conflict.
+
+### Implications for COS
+
+COS can split rules between global and project levels:
+
+| Level | Rules | Purpose |
+|-------|-------|---------|
+| Global (`~/.claude/rules/cos/`) | Universal COS protocol (~14 rules, ~20K tokens) | Token economy, model routing, agent quality, trust score |
+| Project (`.claude/rules/cos/`) | Project-specific COS rules | Phase-aware behavior, blast radius, rate limiting, content policy |
+
+This split reduces per-project token overhead because universal rules only need to be installed once globally rather than copied into every project.
+
+### The Global + Project Pattern
+
+```
+Session context loaded:
+  ~/.claude/CLAUDE.md                  ← Orchestrator protocol (global)
+  ~/.claude/rules/cos/RULES-COMPACT.md ← Universal COS index (global)
+  ~/.claude/rules/cos/token-economy.md ← Universal rules (global)
+  .claude/rules/cos/phase-aware.md     ← Project COS rules (project)
+  .claude/rules/architecture.md        ← Project's own rules (project)
+```
+
+When COS detects a global install exists, `cos init` skips installing universal rules to the project, reducing duplication.
+
+### Migration Path
+
+1. `cos init --global` installs universal rules to `~/.claude/rules/cos/`
+2. `cos init` (project) detects global install, installs only project-specific rules
+3. Both scopes accumulate in the context window automatically
+
+See `docs/global-vs-project-config.md` for the full analysis of Claude Code's merge behavior across all configuration types.
+
 ## References
 
 - `rules/RULES-COMPACT.md` — Compressed index of all rules
 - `rules/context-optimization.md` — Progressive loading protocol
 - `rules/capability-levels.md` — Auto-disable by model capability
 - `docs/safety-mesh.md` — The 12-layer defense system
+- `docs/global-vs-project-config.md` — Global vs project config analysis
 - `tests/behavior/test_rules_consolidation.py` — 42-test safety net

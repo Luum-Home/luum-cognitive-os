@@ -85,7 +85,21 @@ if [ -d ".cognitive-os" ]; then
   removed_items="${removed_items:+$removed_items\n}  - .cognitive-os/ ($total_files files)"
 fi
 
-# ── 5. Remove install metadata ──────────────────────────────────
+# ── 5. Deregister from global COS installations registry ───────
+# Find the COS source directory from install-meta before we delete it
+_cos_source=""
+if [ -f ".cognitive-os/install-meta.json" ] && command -v jq >/dev/null 2>&1; then
+  _cos_source=$(jq -r '.source // ""' ".cognitive-os/install-meta.json" 2>/dev/null || true)
+fi
+# Try sourcing the registry script from the COS source
+_registry_script="${_cos_source:+$_cos_source/scripts/cos-registry.sh}"
+if [ -n "$_registry_script" ] && [ -f "$_registry_script" ] && command -v jq >/dev/null 2>&1; then
+  source "$_registry_script"
+  cos_registry_deregister "$(pwd)"
+  removed_items="${removed_items:+$removed_items\n}  - Deregistered from global COS registry"
+fi
+
+# ── 6. Remove install metadata ──────────────────────────────────
 # Clean up empty .claude/rules/ if we left it empty
 if [ -d ".claude/rules" ]; then
   remaining=$(find .claude/rules -type f 2>/dev/null | wc -l | tr -d ' ')
