@@ -155,7 +155,15 @@ fi
 # Re-run init
 bash "$source_dir/scripts/cos-init.sh" "--$current_mode"
 
-# ── 8. Run component-lint if available ──────────────────────────
+# ── 8. Update global registry ──────────────────────────────────
+REGISTRY_SCRIPT="$source_dir/scripts/cos-registry.sh"
+if [ -f "$REGISTRY_SCRIPT" ] && command -v jq >/dev/null 2>&1; then
+  source "$REGISTRY_SCRIPT"
+  project_name_reg=$(jq -r '.project_name // "unknown"' "$META_FILE" 2>/dev/null || echo "unknown")
+  cos_registry_register "$(pwd)" "$current_mode" "$latest_version" "$project_name_reg" "$source_dir"
+fi
+
+# ── 9. Run component-lint if available ──────────────────────────
 if [ -f "$source_dir/scripts/component-lint.sh" ]; then
   echo ""
   echo "Running component lint..."
@@ -163,6 +171,6 @@ if [ -f "$source_dir/scripts/component-lint.sh" ]; then
     echo "Warning: Component lint reported issues (non-fatal)."
 fi
 
-# ── 9. Summary ──────────────────────────────────────────────────
+# ── 10. Summary ─────────────────────────────────────────────────
 echo ""
 echo "Upgrade complete: $current_version -> $latest_version"

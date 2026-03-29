@@ -5,6 +5,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-03-28
+
+### Added
+- feat: hook architecture v2 — 7 events, 24 hooks (SubagentStart, UserPromptSubmit, PreCompact)
+- feat: agent escalation protocol — self-detect stuck, escalate with diagnosis
+- feat: agent cognitive load monitor — detect degradation under context overload
+- feat: Agent Teams integration (experimental) — lateral teammate communication
+- feat: auto-update projects on git pull (post-merge hook + global registry)
+- feat: component sources documentation (Trail of Bits, Antigravity, 8 security tools)
+- docs: agent-teams.md, global-vs-project-config.md, rules-loading-architecture.md
+- docs: security-stack.md master security document (8 layers, 32 tools)
+
+### Fixed
+- fix: cost_dashboard UTC timezone for date filtering
+- fix: cos-test CLI dynamic versioning
+- fix: all RULES-COMPACT references updated
+- fix: escalation detector test (error_repeat vs confidence_drop)
+
 ## [0.2.0] - 2026-03-28
 
 ### Security
