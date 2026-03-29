@@ -613,6 +613,20 @@ security:
     # aguara CLI: go install github.com/garagon/aguara@latest
     # mcp-aguara: go install github.com/garagon/mcp-aguara@latest
 
+  mcp_scan:
+    enabled: false                   # Set to true after installing mcp-scan
+    # pip install mcp-scan OR npx @invariantlabs/mcp-scan
+    scan_on_session_start: true      # Scan MCP configs at session start
+    scan_paths:                      # Files to scan for MCP server definitions
+      - .claude/settings.json
+      - .claude/settings.local.json
+
+  promptfoo:
+    enabled: false                   # Set to true after installing promptfoo
+    # npm install -g promptfoo OR npx promptfoo@latest
+    config: .promptfoo/config.yaml   # Red team test configuration
+    provider: echo                   # Default provider (echo for structural tests)
+
 agent_communication:
   hcom:
     enabled: false                   # Set to true after installing hcom
