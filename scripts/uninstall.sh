@@ -77,16 +77,8 @@ elif [ "$KEEP_CONFIG" = "true" ] && [ -f "cognitive-os.yaml" ]; then
   echo "Keeping cognitive-os.yaml (--keep-config)"
 fi
 
-# ── 4. Remove .cognitive-os/ directory ──────────────────────────
-if [ -d ".cognitive-os" ]; then
-  # Count contents for summary
-  total_files=$(find .cognitive-os -type f 2>/dev/null | wc -l | tr -d ' ')
-  rm -rf .cognitive-os
-  removed_items="${removed_items:+$removed_items\n}  - .cognitive-os/ ($total_files files)"
-fi
-
-# ── 5. Deregister from global COS installations registry ───────
-# Find the COS source directory from install-meta before we delete it
+# ── 4. Deregister from global COS installations registry ───────
+# Read install-meta BEFORE deleting .cognitive-os/ (step 5 deletes the directory)
 _cos_source=""
 if [ -f ".cognitive-os/install-meta.json" ] && command -v jq >/dev/null 2>&1; then
   _cos_source=$(jq -r '.source // ""' ".cognitive-os/install-meta.json" 2>/dev/null || true)
@@ -97,6 +89,14 @@ if [ -n "$_registry_script" ] && [ -f "$_registry_script" ] && command -v jq >/d
   source "$_registry_script"
   cos_registry_deregister "$(pwd)"
   removed_items="${removed_items:+$removed_items\n}  - Deregistered from global COS registry"
+fi
+
+# ── 5. Remove .cognitive-os/ directory ──────────────────────────
+if [ -d ".cognitive-os" ]; then
+  # Count contents for summary
+  total_files=$(find .cognitive-os -type f 2>/dev/null | wc -l | tr -d ' ')
+  rm -rf .cognitive-os
+  removed_items="${removed_items:+$removed_items\n}  - .cognitive-os/ ($total_files files)"
 fi
 
 # ── 6. Remove install metadata ──────────────────────────────────

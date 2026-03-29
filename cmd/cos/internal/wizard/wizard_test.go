@@ -227,6 +227,127 @@ func TestCountRegisteredHooks(t *testing.T) {
 	}
 }
 
+func TestApplyProfileFilterStandard(t *testing.T) {
+	dir := t.TempDir()
+	cosRulesDir := filepath.Join(dir, ".claude", "rules", "cos")
+	os.MkdirAll(cosRulesDir, 0755)
+
+	// Create 20 rule files: the 14 core + 6 extras.
+	allRules := []string{
+		"RULES-COMPACT.md", "adaptive-bypass.md", "acceptance-criteria.md",
+		"agent-quality.md", "trust-score.md", "definition-of-done.md",
+		"phase-aware-agents.md", "closed-loop-prompts.md", "token-economy.md",
+		"responsiveness.md", "agent-security.md", "credential-management.md",
+		"content-policy.md", "error-learning.md",
+		// extras that should be removed
+		"blast-radius.md", "sandbox-sampling.md", "scout-pattern.md",
+		"cognitive-load.md", "model-routing.md", "rate-limiting.md",
+	}
+	for _, name := range allRules {
+		os.WriteFile(filepath.Join(cosRulesDir, name), []byte("# Rule"), 0644)
+	}
+
+	err := applyProfileFilter(dir, "standard")
+	if err != nil {
+		t.Fatalf("applyProfileFilter(standard): %v", err)
+	}
+
+	remaining, _ := os.ReadDir(cosRulesDir)
+	if len(remaining) != 14 {
+		names := make([]string, len(remaining))
+		for i, e := range remaining {
+			names[i] = e.Name()
+		}
+		t.Errorf("expected 14 rules after standard filter, got %d: %v", len(remaining), names)
+	}
+
+	// Verify all core rules still exist.
+	for name := range coreRules {
+		if _, err := os.Stat(filepath.Join(cosRulesDir, name)); os.IsNotExist(err) {
+			t.Errorf("core rule %s was removed by standard filter", name)
+		}
+	}
+}
+
+func TestApplyProfileFilterMinimal(t *testing.T) {
+	dir := t.TempDir()
+	cosRulesDir := filepath.Join(dir, ".claude", "rules", "cos")
+	os.MkdirAll(cosRulesDir, 0755)
+
+	// Create 20 rule files.
+	rules := []string{
+		"RULES-COMPACT.md", "adaptive-bypass.md", "acceptance-criteria.md",
+		"agent-quality.md", "trust-score.md", "definition-of-done.md",
+		"phase-aware-agents.md", "closed-loop-prompts.md", "token-economy.md",
+		"responsiveness.md", "agent-security.md", "credential-management.md",
+		"content-policy.md", "error-learning.md",
+		"blast-radius.md", "sandbox-sampling.md", "scout-pattern.md",
+		"cognitive-load.md", "model-routing.md", "rate-limiting.md",
+	}
+	for _, name := range rules {
+		os.WriteFile(filepath.Join(cosRulesDir, name), []byte("# Rule"), 0644)
+	}
+
+	err := applyProfileFilter(dir, "minimal")
+	if err != nil {
+		t.Fatalf("applyProfileFilter(minimal): %v", err)
+	}
+
+	remaining, _ := os.ReadDir(cosRulesDir)
+	if len(remaining) != 1 {
+		names := make([]string, len(remaining))
+		for i, e := range remaining {
+			names[i] = e.Name()
+		}
+		t.Errorf("expected 1 rule after minimal filter, got %d: %v", len(remaining), names)
+	}
+
+	// Only RULES-COMPACT.md should remain.
+	if _, err := os.Stat(filepath.Join(cosRulesDir, "RULES-COMPACT.md")); os.IsNotExist(err) {
+		t.Error("RULES-COMPACT.md was removed by minimal filter")
+	}
+}
+
+func TestApplyProfileFilterFull(t *testing.T) {
+	dir := t.TempDir()
+	cosRulesDir := filepath.Join(dir, ".claude", "rules", "cos")
+	os.MkdirAll(cosRulesDir, 0755)
+
+	// Create 20 rule files.
+	rules := []string{
+		"RULES-COMPACT.md", "adaptive-bypass.md", "acceptance-criteria.md",
+		"agent-quality.md", "trust-score.md", "definition-of-done.md",
+		"phase-aware-agents.md", "closed-loop-prompts.md", "token-economy.md",
+		"responsiveness.md", "agent-security.md", "credential-management.md",
+		"content-policy.md", "error-learning.md",
+		"blast-radius.md", "sandbox-sampling.md", "scout-pattern.md",
+		"cognitive-load.md", "model-routing.md", "rate-limiting.md",
+	}
+	for _, name := range rules {
+		os.WriteFile(filepath.Join(cosRulesDir, name), []byte("# Rule"), 0644)
+	}
+
+	err := applyProfileFilter(dir, "paranoid")
+	if err != nil {
+		t.Fatalf("applyProfileFilter(paranoid): %v", err)
+	}
+
+	remaining, _ := os.ReadDir(cosRulesDir)
+	if len(remaining) != 20 {
+		t.Errorf("expected 20 rules after paranoid filter (no change), got %d", len(remaining))
+	}
+}
+
+func TestApplyProfileFilterEmptyDir(t *testing.T) {
+	dir := t.TempDir()
+	// No .claude/rules/cos/ directory exists.
+
+	err := applyProfileFilter(dir, "standard")
+	if err != nil {
+		t.Errorf("applyProfileFilter on empty dir should not error, got: %v", err)
+	}
+}
+
 func TestIsTTY(t *testing.T) {
 	// In test environment, stdout is typically not a TTY.
 	// Just verify it doesn't panic.

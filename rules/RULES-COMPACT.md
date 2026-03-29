@@ -80,7 +80,7 @@ Hook security profiles [`hook-security-profiles`] (trigger: hook config, securit
 
 ### 19. Ecosystem Tools
 
-External tool integrations [`ecosystem-tools`] [`parry-integration`] [`hcom-integration`] [`repomix-integration`] [`trailofbits-skills`] [`context7-auto-trigger`] — optional external tool configs, loaded when tools are installed. Tero [`tero-integration`] HTTP testing with chaos engineering (fault injection, latency simulation). See `rules/ecosystem-tools.md` for overview.
+External tool integrations [`ecosystem-tools`] [`parry-integration`] [`hcom-integration`] [`repomix-integration`] [`trailofbits-skills`] [`context7-auto-trigger`] — optional external tool configs, loaded when tools are installed. Tero [`tero-integration`] HTTP testing with chaos engineering (fault injection, latency simulation). E2B [`e2b-integration`] Firecracker microVM sandboxes for safe agent code execution. See `rules/ecosystem-tools.md` for overview.
 
 ## Project-Specific
 
