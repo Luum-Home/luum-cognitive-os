@@ -336,7 +336,14 @@ cat > .cognitive-os/install-meta.json << ENDJSON
 }
 ENDJSON
 
-# ── 11. Add to .gitignore ────────────────────────────────────────
+# ── 11. Register in global COS installations registry ───────────
+REGISTRY_SCRIPT="$COS_SOURCE_DIR/scripts/cos-registry.sh"
+if [ -f "$REGISTRY_SCRIPT" ] && command -v jq >/dev/null 2>&1; then
+  source "$REGISTRY_SCRIPT"
+  cos_registry_register "$PROJECT_DIR" "${MODE#--}" "$cos_version" "$project_name" "$COS_SOURCE_DIR"
+fi
+
+# ── 12. Add to .gitignore ────────────────────────────────────────
 if [ -f ".gitignore" ]; then
   for pattern in ".cognitive-os/sessions/" ".cognitive-os/metrics/" ".cognitive-os/tasks/"; do
     if ! grep -qF "$pattern" .gitignore 2>/dev/null; then
