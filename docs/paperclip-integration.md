@@ -80,39 +80,28 @@ User <---> Paperclip (UI on localhost:3200)
 | 4. Squad Org Chart Sync | `packages/paperclip-integration/hooks/paperclip-squad-sync.sh` | DONE | SessionStart hook reads squads/*.yaml and syncs to Paperclip org chart |
 | 8. Error Recovery (Retry Queue) | `lib/paperclip_client.py` (`_RetryQueue`) | DONE | Failed POST/PUT requests queued in memory (max 100, 5min TTL), auto-retried on next success |
 
-### Documented Integration Points (Gaps 5-7)
+### Wired (Gaps 5-7)
 
-#### Gap 5: Safety Mesh Block Sync
+| Gap | Component | Status | Details |
+|-----|-----------|--------|---------|
+| 5. Safety Mesh Block Sync | `hooks/_lib/paperclip-notify.sh` + hooks | DONE | Shared helper sourced by claim-validator.sh, confidence-gate.sh, completion-gate.sh. On exit 2 (BLOCK), pushes notification to Paperclip inbox. |
+| 6. Active Task Sync | `packages/paperclip-integration/hooks/paperclip-task-sync.sh` | DONE | SessionStart hook reads active-tasks.json, pushes in_progress/pending tasks as Paperclip issues (COS -> Paperclip, one-directional). |
+| 7. Cost Event Streaming | `packages/paperclip-integration/hooks/paperclip-cost-stream.sh` | DONE | PostToolUse Agent hook checks cumulative cost delta; pushes to Paperclip spend tracker when delta exceeds $0.10 threshold. |
 
-When safety mesh hooks (completion-gate.sh, claim-validator.sh, confidence-gate.sh) return exit code 2 (BLOCK), the blocked task should be reflected in Paperclip.
+#### Gap 5 Implementation Details
 
-**Integration point**: Add to any BLOCK-returning hook:
-```bash
-# After determining BLOCK, fire-and-forget:
-( python3 -c "
-from paperclip_client import PaperclipClient
-client = PaperclipClient()
-if client.is_available():
-    client.push_notification('Safety Mesh BLOCK', 'Hook: {hook_name}, Reason: {reason}', 'warning')
-" 2>/dev/null ) &
-```
+Shared helper `hooks/_lib/paperclip-notify.sh` provides `paperclip_notify()`, `paperclip_update_issue_status()`, `paperclip_push_spend()`, and `paperclip_push_tasks_as_issues()`. Any hook can source it and call these fire-and-forget functions. Currently wired into:
+- `hooks/claim-validator.sh` -- notifies on hallucination BLOCK
+- `hooks/confidence-gate.sh` -- notifies on low-confidence BLOCK
+- `hooks/completion-gate.sh` -- sources the helper (ready for future BLOCK paths)
 
-Alternatively, create a shared helper in `hooks/_lib/paperclip-notify.sh` that any hook can source.
+#### Gap 6 Implementation Details
 
-#### Gap 6: Active Task Sync
+`packages/paperclip-integration/hooks/paperclip-task-sync.sh` runs on SessionStart. It reads `.claude/tasks/active-tasks.json`, filters for `in_progress` and `pending` tasks, and creates Paperclip issues (capped at 20 to avoid flooding). One-directional: COS to Paperclip only. Bidirectional sync (Paperclip UI changes back to COS) requires Paperclip webhooks (not yet available).
 
-Bidirectional sync of `.claude/tasks/active-tasks.json` to Paperclip issues.
+#### Gap 7 Implementation Details
 
-**Integration points**:
-- **SessionStart**: The existing `paperclip-squad-sync.sh` can be extended (or a sibling hook created) to push all `in_progress` tasks as Paperclip issues.
-- **Task completion**: The `agent-checkpoint.sh` PostToolUse hook updates task status. Add a Paperclip push after status update.
-- **Bidirectional**: Paperclip UI changes flowing back to COS requires Paperclip webhooks (not yet available).
-
-#### Gap 7: Cost Event Streaming
-
-Push cost events as they occur, not just at session end.
-
-**Integration point**: The `hooks/cost-tracker.sh` PostToolUse hook (or equivalent) that logs to `cost-events.jsonl` should also push to `client.push_spend()`. Since cost hooks fire frequently, use a threshold (push only when cumulative cost since last push exceeds $0.10) to avoid flooding.
+`packages/paperclip-integration/hooks/paperclip-cost-stream.sh` runs on PostToolUse for Agent. It reads `cost-events.jsonl`, calculates cumulative cost, and pushes to Paperclip `push_spend()` only when the delta since last push exceeds $0.10. The last-pushed amount is tracked in `metrics/.paperclip-cost-last-push` to avoid duplicate pushes.
 
 ## Data Flow
 
