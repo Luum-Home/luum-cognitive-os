@@ -143,7 +143,11 @@ class TestTokenBudgets:
             )
 
     def test_every_rule_referenced_in_compact(self):
-        """Every .md file in rules/ must have its [rule-name] key in RULES-COMPACT.md."""
+        """Every .md file in rules/ must have its [rule-name] key in RULES-COMPACT.md.
+
+        The authoritative check lives in test_rules_consolidation.py.
+        This test provides a helpful message pointing to the fix.
+        """
         compact_text = (PROJECT_ROOT / "rules" / "RULES-COMPACT.md").read_text()
         rule_files = get_all_rule_files()
         references = extract_rule_references(compact_text)
@@ -157,7 +161,8 @@ class TestTokenBudgets:
                     missing.append(rule_name)
 
         assert not missing, (
-            f"{len(missing)} rules not referenced in RULES-COMPACT.md: {missing}"
+            f"{len(missing)} rules not referenced in RULES-COMPACT.md: {missing}. "
+            f"Add [`rule-name`] references to rules/RULES-COMPACT.md for each new rule."
         )
 
     def test_no_orphan_references_in_compact(self):
@@ -688,11 +693,11 @@ class TestCompleteness:
         )
 
     def test_rules_count_matches_expectations(self):
-        """The number of rule .md files should match what self-install reports."""
+        """The number of rule .md files should not drop below a minimum baseline."""
         rule_files = list(PROJECT_ROOT.glob("rules/*.md"))
         # Exclude RULES-COMPACT.md from count
         actual_rules = [f for f in rule_files if f.name != "RULES-COMPACT.md"]
-        # We expect ~71 rule files based on the system state
+        # Minimum baseline; additions don't break this
         assert len(actual_rules) >= 50, (
             f"Only {len(actual_rules)} rule files found, expected at least 50"
         )
