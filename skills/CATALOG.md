@@ -95,6 +95,7 @@
 | planning-poker | Multi-agent Planning Poker: 3 independent complexity estimates, divergence detection | `/planning-poker` | project |
 | performance-dashboard | Show performance metrics: latency percentiles, throughput, overhead, bottlenecks | `cos perf` | project |
 | cost-predictor | Predict task cost from historical data, show confidence level, per-phase breakdown | `/cost-predict` | project |
+| run-tests | Auto-detect project test framework and run tests with structured pass/fail reporting | `/run-tests` | project |
 
 ## Project Skills [generated]
 
