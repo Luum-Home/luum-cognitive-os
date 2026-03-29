@@ -531,8 +531,8 @@ class TestSymlinkChain:
             f for f in RULES_DIR.glob("*.md")
             if f.is_symlink() and "packages/" in os.readlink(f)
         ]
-        assert len(package_rules) == 15, (
-            f"Expected 15 package-sourced rules, found {len(package_rules)}: "
+        assert len(package_rules) == 17, (
+            f"Expected 17 package-sourced rules, found {len(package_rules)}: "
             f"{sorted(r.name for r in package_rules)}"
         )
 
@@ -733,6 +733,7 @@ class TestPackageRules:
 
     EXPECTED_PACKAGES_WITH_RULES = {
         "agent-coordination": ["agent-communication.md", "agent-customization.md", "agent-sidecars.md"],
+        "aguara-security": ["aguara-integration.md"],
         "document-sync": ["doc-sync.md"],
         "ecosystem-tools": [
             "context7-auto-trigger.md", "ecosystem-tools.md", "hcom-integration.md",
@@ -742,6 +743,7 @@ class TestPackageRules:
         "prompt-quality-gate": ["prompt-quality.md"],
         "scope-governance": ["scope-creep-detection.md"],
         "skill-governance": ["auto-skill-generation.md", "skill-management.md"],
+        "tero-testing": ["tero-integration.md"],
     }
 
     def test_known_packages_have_expected_rules(self):
@@ -796,6 +798,8 @@ class TestKnownRulesList:
         "acceptance-criteria.md",
         "adaptive-bypass.md",
         "adversarial-review.md",
+        "agent-escalation.md",
+        "aguara-integration.md",
         "agent-communication.md",
         "agent-customization.md",
         "agent-identity.md",
@@ -827,6 +831,7 @@ class TestKnownRulesList:
         "credential-management.md",
         "decomposition.md",
         "definition-of-done.md",
+        "cognitive-load.md",
         "doc-sync.md",
         "dogfooding.md",
         "dry-run.md",
@@ -836,6 +841,7 @@ class TestKnownRulesList:
         "estimation-calibration.md",
         "fault-tolerance.md",
         "hcom-integration.md",
+        "hook-security-profiles.md",
         "impact-analysis.md",
         "infra-health.md",
         "infra-intent.md",
@@ -874,6 +880,7 @@ class TestKnownRulesList:
         "step-files.md",
         "supply-chain-defense.md",
         "token-economy.md",
+        "tero-integration.md",
         "trailofbits-skills.md",
         "trust-score.md",
         "non-blocking-retry.md",
