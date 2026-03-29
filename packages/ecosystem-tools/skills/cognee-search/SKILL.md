@@ -15,6 +15,7 @@ tags:
 requires:
   - COGNEE_ENABLED=true
   - Cognee container running (docker compose --profile memory)
+audience: project
 ---
 
 # Cognee Search

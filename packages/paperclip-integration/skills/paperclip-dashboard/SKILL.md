@@ -3,6 +3,7 @@ name: paperclip-dashboard
 description: View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent status, spend, org chart, notifications)
 trigger: dashboard, paperclip, metrics view, show repairs, show health, org chart, spend
 model: haiku
+audience: os-dev
 ---
 
 # Paperclip Dashboard

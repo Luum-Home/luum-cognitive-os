@@ -12,6 +12,7 @@ last-updated: 2026-03-27
 license: MIT
 metadata:
   author: luum
+audience: project
 ---
 
 ## Purpose

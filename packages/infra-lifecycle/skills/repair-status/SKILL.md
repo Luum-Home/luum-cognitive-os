@@ -3,6 +3,7 @@ name: repair-status
 description: Report on auto-repair system health and statistics
 trigger: repair status, repair report, auto-repair, circuit breaker status
 model: haiku
+audience: project
 ---
 
 # Repair Status

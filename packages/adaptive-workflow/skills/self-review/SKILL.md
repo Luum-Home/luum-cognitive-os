@@ -11,6 +11,7 @@ license: MIT
 metadata:
   author: luum
   pattern: superclaude-self-review
+audience: project
 ---
 
 ## Purpose

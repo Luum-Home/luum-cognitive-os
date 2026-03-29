@@ -10,6 +10,7 @@ triggers:
   - document feature
   - generate docs
   - update feature docs
+audience: project
 ---
 
 # Document Feature

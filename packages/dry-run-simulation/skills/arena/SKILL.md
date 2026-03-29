@@ -24,6 +24,7 @@ args:
   - name: report
     description: "Generate report from latest results"
     flag: true
+audience: os-dev
 ---
 
 # Arena — Competitive Benchmark Skill

@@ -6,6 +6,7 @@ triggers:
   - /run-benchmark
   - /compare-bmad
 tags: [testing, benchmark, comparison, quality]
+audience: os-dev
 ---
 
 # Cognitive OS Benchmark Skill

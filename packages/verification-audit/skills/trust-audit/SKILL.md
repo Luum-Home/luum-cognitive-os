@@ -4,6 +4,7 @@ description: Analyze trust scores across agents and tasks, identify patterns, re
 invoke: /trust-audit
 tag: universal
 model: sonnet
+audience: both
 ---
 
 # Trust Audit Skill

@@ -1,3 +1,9 @@
+---
+name: recommend-library
+description: Search package registries and rank by relevance, adoption, maintenance, and license compliance
+audience: project
+---
+
 # Skill: recommend-library
 
 > Auto Library Recommender — searches package registries and ranks results by relevance, adoption, maintenance, and license compliance.

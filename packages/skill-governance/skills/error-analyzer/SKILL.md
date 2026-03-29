@@ -4,6 +4,7 @@ description: Analyze accumulated errors from test/lint/build runs and propose sk
 version: 1.0.0
 user-invocable: true
 auto-generated: false
+audience: project
 ---
 
 # Error Analyzer Skill

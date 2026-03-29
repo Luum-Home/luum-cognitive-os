@@ -3,6 +3,7 @@ name: conversation-memory
 description: Search and learn from past Cognitive OS sessions — the system's long-term memory
 trigger: what did we do, remember session, past sessions, conversation history, session search, recall
 model: sonnet
+audience: project
 ---
 
 # Conversation Memory

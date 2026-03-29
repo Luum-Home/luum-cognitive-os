@@ -5,6 +5,7 @@
 ---
 description: "Full health check of all Cognitive OS components"
 triggers: ["/cognitive-os-status", "/aos-status", "/health"]
+audience: both
 ---
 
 ## Instructions
