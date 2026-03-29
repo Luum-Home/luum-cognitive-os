@@ -143,14 +143,14 @@ class TestCosInitGlobal:
         "agent-quality.md",
         "trust-score.md",
         "definition-of-done.md",
+        "phase-aware-agents.md",
         "closed-loop-prompts.md",
         "token-economy.md",
         "responsiveness.md",
+        "agent-security.md",
         "credential-management.md",
-        "license-policy.md",
-        "result-management.md",
-        "decomposition.md",
-        "model-routing.md",
+        "content-policy.md",
+        "error-learning.md",
     ]
 
     def test_script_exists(self):

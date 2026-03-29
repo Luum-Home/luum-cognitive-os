@@ -1,4 +1,4 @@
-# Cognitive OS Documentation Index — v0.2.1
+# Cognitive OS Documentation Index — v0.2.3
 
 > Everything about the AI-assisted development setup: hooks, rules, skills, automation, self-improvement, and how to extend it.
 > Updated: 2026-03-27

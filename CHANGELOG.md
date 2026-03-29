@@ -5,6 +5,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-03-29
+
+### Added
+- feat: TUI onboarding wizard (bubbletea Go) with 3 presets
+- feat: code-review + pr-review skills with engram integration
+- feat: Agent Teams hooks (TeammateIdle, TaskCreated, TaskCompleted)
+- feat: plugin index (packages/cos-index/) with 28 packages
+- feat: cos setup --global installs 14 core rules to ~/.claude/
+- feat: COS MCP server (8 tools for any editor)
+- feat: hook shell tests (222 tests for 50+ hooks)
+- feat: auto skill selection (60+ bilingual routing entries)
+- feat: repo forensics (deep repo analyzer)
+- feat: cos registries multi-source
+- feat: SHA-256 caching for hooks
+- feat: trust report parser (machine-parseable header)
+
+### Fixed
+- fix: cos-init.sh profile filtering for external projects
+- fix: self-install.sh rules consolidation (standard = 14 core)
+- fix: infra-intent-detector.sh jq guard
+- fix: all xfail tests resolved
+- fix: test fragility (7 hardcoded patterns made dynamic)
+
 ## [0.2.1] - 2026-03-28
 
 ### Added
