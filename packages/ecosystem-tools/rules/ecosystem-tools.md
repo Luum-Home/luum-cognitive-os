@@ -76,6 +76,157 @@ Documents all external tools integrated into Cognitive OS, their configuration, 
 
 **MCP Server**: `mcp-aguara` available as optional MCP server (`go install github.com/garagon/mcp-aguara@latest`). Provides 5 tools: `scan_content`, `check_mcp_config`, `list_rules`, `explain_rule`, `discover_mcp`. See `packages/aguara-security/rules/aguara-integration.md` for registration instructions.
 
+### garak — LLM Vulnerability Scanner (ADOPT)
+
+| Property | Value |
+|----------|-------|
+| Purpose | "Nmap for LLMs" -- 179 probes for hallucination, data leakage, prompt injection, toxicity, and encoding attacks against LLM endpoints |
+| Config | N/A (CLI tool, arguments passed per invocation) |
+| Skill | `skills/vulnerability-scan/SKILL.md` |
+| Install | `pip install garak` or `bash scripts/install-garak.sh` |
+| Required | No (optional dependency) |
+| Scope | LLM endpoint vulnerability scanning |
+| GitHub | [NVIDIA/garak](https://github.com/NVIDIA/garak) |
+| License | Apache-2.0 |
+| Status | **ADOPT** -- Skill implemented, install script available |
+
+**Metrics**: Findings logged to `.cognitive-os/metrics/garak-findings.jsonl`
+
+**Package**: `packages/tero-testing/` and `packages/mantis-security/` are companion garagon tools.
+
+### LlamaFirewall (Meta) — AI Security Framework (EVALUATE)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Multi-layer AI security framework for detecting risks in chat and agentic operations. Combines prompt injection detection, content safety, and agent behavior monitoring. |
+| Config | N/A (evaluation phase) |
+| Hook | N/A (not yet implemented) |
+| Install | See [meta-llama/PurpleLlama](https://github.com/meta-llama/PurpleLlama) |
+| Required | No |
+| Scope | Input/output guardrails for LLM operations |
+| GitHub | [meta-llama/PurpleLlama](https://github.com/meta-llama/PurpleLlama) |
+| License | MIT |
+| Status | **EVALUATE** -- Under evaluation, may complement NeMo Guardrails |
+
+**Evaluation Notes**: LlamaFirewall provides multi-layer defense (PromptGuard, CodeShield, Llama Guard) that could complement our NeMo Guardrails for agent-specific scenarios. Key differentiator: agentic operation support with tool call monitoring. Evaluate whether it covers gaps NeMo does not, particularly for agentic tool-use patterns.
+
+### AgentGateway (Linux Foundation) — AI-Native Proxy (EVALUATE)
+
+| Property | Value |
+|----------|-------|
+| Purpose | AI-native proxy for MCP/A2A protocols with RBAC, observability, and policy enforcement |
+| Config | N/A (evaluation phase) |
+| Hook | N/A (not yet implemented) |
+| Install | See [agentgateway/agentgateway](https://github.com/agentgateway/agentgateway) |
+| Required | No |
+| Scope | Central policy enforcement point for agent protocols |
+| GitHub | [agentgateway/agentgateway](https://github.com/agentgateway/agentgateway) |
+| License | Apache-2.0 |
+| Status | **EVALUATE** -- Compare with existing Bifrost + LiteLLM gateway setup |
+
+**Evaluation Notes**: AgentGateway provides native MCP/A2A protocol support with RBAC, which our current gateway stack (Bifrost + LiteLLM) does not. Key question: does AgentGateway replace or complement our existing gateways? The RBAC layer could unify our `lib/agent_permissions.py` enforcement at the network level. Evaluate after MCP security tooling (MCP-Scan, mcp-context-protector) is in place.
+
+### OneCLI — Agent Credential Vault (EVALUATE)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Rust HTTP gateway that injects credentials transparently so agents never hold raw keys. AES-256-GCM encryption, per-agent scoping. |
+| Config | N/A (evaluation phase) |
+| Hook | N/A (not yet implemented) |
+| Install | See [onecli/onecli](https://github.com/onecli/onecli) |
+| Required | No |
+| Scope | Credential injection for agent operations |
+| GitHub | [onecli/onecli](https://github.com/onecli/onecli) |
+| License | OSS (Rust) |
+| Status | **EVALUATE** -- Phase 2 integration per identity stack roadmap |
+
+**Evaluation Notes**: Already referenced in `rules/agent-identity.md` as a Phase 2 integration target. OneCLI would replace our current `lib/secret_ref.py` with a dedicated credential vault that prevents agents from ever seeing raw keys. Current SecretRef reads from env vars; OneCLI provides proper cryptographic key management with per-agent scoping.
+
+### Agentic Radar (SPLX AI) — Agent Workflow Analyzer (WATCH)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Visualizes agent workflows, detects risky tool usage and permission loops via static analysis |
+| Config | N/A (watch phase) |
+| Hook | N/A |
+| Install | See SPLX AI documentation |
+| Required | No |
+| Scope | Agent workflow topology analysis |
+| Status | **WATCH** -- Monitoring for maturity |
+
+**Evaluation Notes**: Agentic Radar provides static analysis of agent workflow graphs that our current tooling does not cover. Could detect circular permission delegation and risky tool usage patterns. Watch for production readiness and evaluate when our agent orchestration becomes more complex.
+
+### skill-scanner (Cisco AI Defense) — Skill Security Scanner (WATCH)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Scanner for AI agent skills that detects prompt injection, data exfiltration, and malicious code patterns |
+| Config | N/A (watch phase) |
+| Hook | N/A |
+| Install | See Cisco AI Defense documentation |
+| Required | No |
+| Scope | Skill definition security scanning |
+| Status | **WATCH** -- Aguara covers similar space with 189 rules |
+
+**Evaluation Notes**: Significant overlap with Aguara, which already provides 189 deterministic rules for skill scanning. skill-scanner uses ML-based detection which could catch patterns Aguara's deterministic rules miss, but adds complexity. Revisit if Aguara proves insufficient for skill security coverage.
+
+### tero (garagon) — HTTP Testing with Chaos (WATCH)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Deterministic HTTP testing with fault injection, latency simulation, connection drops, and chaos engineering patterns |
+| Config | N/A (CLI tool) |
+| Hook | N/A |
+| Install | `go install github.com/garagon/tero@latest` |
+| Required | No |
+| Scope | HTTP resilience testing |
+| GitHub | [garagon/tero](https://github.com/garagon/tero) |
+| License | Apache-2.0 |
+| Status | **WATCH** -- COS package at `packages/tero-testing/` |
+
+### mantis (garagon) — HTTP Security Toolkit (WATCH)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Automated HTTP security scanning with OWASP coverage, header analysis, TLS verification |
+| Config | N/A (CLI tool) |
+| Hook | N/A |
+| Install | `go install github.com/garagon/mantis@latest` |
+| Required | No |
+| Scope | HTTP endpoint security scanning (DAST) |
+| GitHub | [garagon/mantis](https://github.com/garagon/mantis) |
+| License | Apache-2.0 |
+| Status | **WATCH** -- COS package at `packages/mantis-security/` |
+
+### mcp-scan — MCP Server Configuration Scanner
+
+| Property | Value |
+|----------|-------|
+| Purpose | Scans MCP server configurations for tool poisoning, injection vulnerabilities, and cross-origin violations |
+| Config | `cognitive-os.yaml` under `security.mcp_scan` |
+| Hook | `hooks/mcp-scan.sh` (SessionStart) |
+| Install | `pip install mcp-scan` or `npx @invariantlabs/mcp-scan` or `bash scripts/install-mcp-scan.sh` |
+| Required | No (optional dependency, graceful skip if missing) |
+| Scope | `.claude/settings.json` and `.claude/settings.local.json` MCP server definitions |
+
+**Phase behavior**:
+- All phases: advisory only (exit 0) -- never blocks session start
+
+**Metrics**: Findings logged to `.cognitive-os/metrics/mcp-scan-findings.jsonl`
+
+### promptfoo — LLM Red Team Testing
+
+| Property | Value |
+|----------|-------|
+| Purpose | Red team testing for agent prompts -- detects injection, jailbreak, and manipulation vulnerabilities |
+| Config | `.promptfoo/config.yaml` at project root |
+| Skill | `skills/red-team/SKILL.md` |
+| Install | `npm install -g promptfoo` or `npx promptfoo@latest` or `bash scripts/install-promptfoo.sh` |
+| Required | No (optional dependency) |
+| Scope | Agent preamble and prompt templates |
+
+**Metrics**: Results logged to `.cognitive-os/metrics/red-team-results.jsonl`
+
 ### hcom — Cross-Terminal Communication
 
 | Property | Value |
@@ -120,7 +271,7 @@ When integrating a new external tool:
 Run the following to check which ecosystem tools are available:
 
 ```bash
-for tool in agnix semgrep parry-guard aguara mcp-aguara recall hcom; do
+for tool in agnix semgrep parry-guard aguara mcp-aguara mcp-scan garak promptfoo recall hcom tero mantis; do
   if command -v "$tool" &>/dev/null; then
     echo "[installed] $tool: $($tool --version 2>/dev/null | head -1)"
   else
@@ -131,4 +282,4 @@ done
 
 ## Contextual Trigger
 
-This rule is loaded when: ecosystem tools, external tools, agnix, semgrep, parry, aguara, recall, hcom, tool integration.
+This rule is loaded when: ecosystem tools, external tools, agnix, semgrep, parry, aguara, mcp-scan, promptfoo, garak, recall, hcom, tero, mantis, tool integration.
