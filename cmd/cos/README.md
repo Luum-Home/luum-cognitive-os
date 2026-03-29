@@ -63,6 +63,35 @@ cos audit github.com/luum/untrusted-pkg
 | `cos audit <package>` | Run security audit on a package without installing |
 | `cos publish` | Validate and prepare package for publishing |
 
+### Registry Management
+
+| Command | Description |
+|---------|-------------|
+| `cos registry list` | Show configured package registries |
+| `cos registry add <name>` | Add a new registry (requires `--type` flag) |
+| `cos registry enable <name>` | Enable a disabled registry |
+| `cos registry disable <name>` | Disable a registry |
+
+```bash
+# List all configured registries
+cos registry list
+
+# Add a GitHub org registry
+cos registry add my-org --type github-org --org MyOrg
+
+# Add a GitHub topic registry
+cos registry add custom-topic --type github-topic --topic my-cos-packages
+
+# Add a local directory registry
+cos registry add local-pkgs --type directory --path ~/.cos-packages/
+
+# Disable a registry
+cos registry disable my-org
+
+# Re-enable it
+cos registry enable my-org
+```
+
 ### System Information
 
 | Command | Description |

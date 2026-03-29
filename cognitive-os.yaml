@@ -554,8 +554,48 @@ tool_groups:
   coding: [Read, Write, Edit, Glob, Grep, Bash, Agent]
   full: [Read, Write, Edit, Glob, Grep, Bash, Agent, WebSearch, WebFetch]
 
+packages:
+  # Package registries for cos search/install — configurable sources for cos packages.
+  # cos searches these registries when running `cos search <query>`.
+  registries:
+    - name: cos-official
+      type: github-topic
+      topic: cos-package
+      enabled: true
+      priority: 1
+
+    - name: luum-org
+      type: github-org
+      org: Luum-Home
+      enabled: true
+      priority: 2
+
+    - name: garagon-tools
+      type: github-org
+      org: garagon
+      enabled: true
+      priority: 3
+
+    - name: antigravity-skills
+      type: github-repo
+      repo: sickn33/antigravity-awesome-skills
+      enabled: false  # opt-in, 1331+ skills
+      priority: 10
+
+    - name: trail-of-bits
+      type: github-repo
+      repo: trailofbits/skills
+      enabled: false  # opt-in
+      priority: 10
+
+    - name: local
+      type: directory
+      path: ~/.cognitive-os/local-packages/
+      enabled: true
+      priority: 0  # highest priority (local overrides)
+
 sources:
-  # Package sources — like /etc/apt/sources.list for agent components
+  # External data sources — like /etc/apt/sources.list for agent components
   # Each source provides skills, rules, hooks, presets, or MCP servers
   registries:
     - name: cos-builtin

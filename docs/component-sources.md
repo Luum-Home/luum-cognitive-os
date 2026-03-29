@@ -54,6 +54,37 @@ All external sources of skills, rules, hooks, tools, research, and infrastructur
 | Hcom | N/A | N/A | Cross-terminal agent communication (SQLite + TCP) | OPTIONAL -- `packages/ecosystem-tools/rules/hcom-integration.md` |
 | Repomix | [yamadashy/repomix](https://github.com/yamadashy/repomix) | MIT | Repository context packing with tree-sitter compression | OPTIONAL -- `packages/ecosystem-tools/rules/repomix-integration.md` |
 
+## Agent Frameworks
+
+| Source | URL | License | Components | Status |
+|--------|-----|---------|------------|--------|
+| Agent Zero | [agent0ai/agent-zero](https://github.com/agent0ai/agent-zero) | Custom (see repo) | AI agent framework: plugin system, plugin marketplace (GitHub index repo), self-updater, plugin scanner, agent teams, Telegram integration | EVALUATE -- patterns analyzed, see `docs/ecosystem-comparison.md` |
+
+### Agent Zero Analysis
+
+**Repository**: [agent0ai/agent-zero](https://github.com/agent0ai/agent-zero)
+
+| Metric | Value |
+|--------|-------|
+| Stars | 16,494 |
+| Language | Python |
+| License | Custom (NOASSERTION in GitHub API -- check repo directly) |
+| Last pushed | 2026-03-29 (actively maintained) |
+| Plugin index | [agent0ai/a0-plugins](https://github.com/agent0ai/a0-plugins) (MIT, 43 stars) |
+| Website | [agent-zero.ai](https://agent-zero.ai) |
+
+**Patterns adopted into COS**:
+
+| Pattern | Agent Zero Implementation | COS Implementation |
+|---------|--------------------------|---------------------|
+| Plugin marketplace | GitHub index repo (`a0-plugins`) with YAML manifests, community PRs | `cos` package manager with `cos-index` repo, YAML manifests, quality scoring |
+| Plugin/skill creation | `create-plugin` skill generates plugin scaffolding | `skill-creator` skill + `cos init` generates cos-package.yaml scaffolding |
+| Plugin security scanning | Built-in plugin scanner checks for malicious patterns | Aguara (189 rules), content-policy hook, secret-detector, Parry (ML-based) |
+| Self-update mechanism | Dashboard UI for updating framework | `post-merge` hook + `self-install.sh` for auto-sync |
+| Agent teams | Built-in UI for multi-agent collaboration | Claude Code Agent Teams integration with COS quality gates |
+
+**License concern**: Agent Zero uses a custom license (shows as NOASSERTION). Verify compatibility before adopting any code. COS adopts architectural patterns only, not code.
+
 ## Under Evaluation
 
 | Source | URL | License | What | Status |
