@@ -24,18 +24,20 @@ METRICS_LOG="$COGNITIVE_OS_DIR/metrics/infra-detections.jsonl"
 INPUT=$(cat)
 
 # Only process Agent/task/delegate tool calls
-TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)
-if [[ "$TOOL_NAME" != "Agent" && "$TOOL_NAME" != "task" && "$TOOL_NAME" != "delegate" ]]; then
+# Guard against malformed JSON — jq failure should not kill the hook
+TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null) || true
+if [[ -z "$TOOL_NAME" || ( "$TOOL_NAME" != "Agent" && "$TOOL_NAME" != "task" && "$TOOL_NAME" != "delegate" ) ]]; then
   exit 0
 fi
 
 # Extract the prompt/task description from the tool input
+# Guard against malformed JSON — exit 0 on jq failure
 PROMPT_TEXT=$(echo "$INPUT" | jq -r '
   (.tool_input.prompt // "") + " " +
   (.tool_input.description // "") + " " +
   (.tool_input.task // "") + " " +
   (.tool_input.instructions // "")
-' 2>/dev/null | tr '[:upper:]' '[:lower:]')
+' 2>/dev/null | tr '[:upper:]' '[:lower:]') || true
 
 if [[ -z "$PROMPT_TEXT" || "$PROMPT_TEXT" == "   " ]]; then
   exit 0

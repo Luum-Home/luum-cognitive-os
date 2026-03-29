@@ -35,6 +35,26 @@ EXPECTED_RULE_COUNT = len(list(Path(__file__).resolve().parents[2].joinpath("rul
 # These are tracked so consolidation does not lose them
 PENDING_INTEGRATION_RULES = set()  # All rules synced as of 2026-03-28
 
+# The 14 core rules that remain in the standard efficiency profile.
+# These provide essential governance without overwhelming the context window.
+# See docs/rules-loading-architecture.md for the rationale.
+CORE_RULES = {
+    "RULES-COMPACT.md",
+    "adaptive-bypass.md",
+    "acceptance-criteria.md",
+    "agent-quality.md",
+    "trust-score.md",
+    "definition-of-done.md",
+    "phase-aware-agents.md",
+    "closed-loop-prompts.md",
+    "token-economy.md",
+    "responsiveness.md",
+    "agent-security.md",
+    "credential-management.md",
+    "content-policy.md",
+    "error-learning.md",
+}
+
 
 def _get_rule_files() -> list[Path]:
     """All .md files in rules/."""
@@ -573,12 +593,15 @@ class TestSelfInstallIntegration:
         (tmp_path / ".claude").mkdir(parents=True)
         (tmp_path / ".claude" / "settings.json").write_text('{"hooks": {}}\n')
 
-        # Create rules dir with a few rules + RULES-COMPACT.md
+        # Create rules dir with core rules + extra non-core rules
         rules_dir = tmp_path / "rules"
         rules_dir.mkdir()
-        (rules_dir / "RULES-COMPACT.md").write_text("# Compact\nCompressed index.\n")
+        for rule_name in CORE_RULES:
+            (rules_dir / rule_name).write_text(f"# {rule_name}\nCore rule content.\n")
+        # Add non-core rules to verify they get removed
         (rules_dir / "alpha-rule.md").write_text("# Alpha\nSome alpha rule content here.\n")
         (rules_dir / "beta-rule.md").write_text("# Beta\nSome beta rule content here.\n")
+        (rules_dir / "sandbox-sampling.md").write_text("# Sandbox\nNon-core rule.\n")
 
         # cognitive-os.yaml with profile
         (tmp_path / "cognitive-os.yaml").write_text(
@@ -615,18 +638,69 @@ class TestSelfInstallIntegration:
                 f"Lean profile should only keep RULES-COMPACT.md, found: {remaining_names}"
             )
 
-    def test_standard_profile_only_keeps_compact(self, tmp_path):
-        """With standard profile, only RULES-COMPACT.md remains in cos/."""
+    def test_standard_profile_keeps_core_rules(self, tmp_path):
+        """With standard profile, only the 14 core rules remain in cos/."""
         project = self._setup_external_project(tmp_path, profile="standard")
         self._run_hook(str(project))
 
         cos_dir = project / ".claude" / "rules" / "cos"
         if cos_dir.exists():
             remaining = list(cos_dir.glob("*.md"))
-            remaining_names = [r.name for r in remaining]
-            assert remaining_names == ["RULES-COMPACT.md"] or remaining_names == [], (
-                f"Standard profile should only keep RULES-COMPACT.md, found: {remaining_names}"
+            remaining_names = {r.name for r in remaining}
+            # Only core rules should survive; non-core must be removed
+            non_core = remaining_names - CORE_RULES
+            assert not non_core, (
+                f"Standard profile should only keep core rules, found extra: {sorted(non_core)}"
             )
+            # Every remaining rule must be a core rule
+            for name in remaining_names:
+                assert name in CORE_RULES, (
+                    f"Standard profile kept non-core rule: {name}"
+                )
+
+    def test_standard_profile_has_exactly_14_core_rules(self, tmp_path):
+        """Standard profile must keep exactly 14 core rules after filtering."""
+        project = self._setup_external_project(tmp_path, profile="standard")
+        self._run_hook(str(project))
+
+        cos_dir = project / ".claude" / "rules" / "cos"
+        if cos_dir.exists():
+            remaining = list(cos_dir.glob("*.md"))
+            remaining_names = {r.name for r in remaining}
+            assert len(remaining_names) == len(CORE_RULES), (
+                f"Standard profile should have {len(CORE_RULES)} rules, "
+                f"found {len(remaining_names)}: {sorted(remaining_names)}"
+            )
+            assert remaining_names == CORE_RULES, (
+                f"Standard profile rules mismatch. "
+                f"Missing: {sorted(CORE_RULES - remaining_names)}. "
+                f"Extra: {sorted(remaining_names - CORE_RULES)}"
+            )
+
+    def test_standard_profile_removes_non_core_rules(self, tmp_path):
+        """Standard profile must remove non-core rules like alpha-rule, beta-rule."""
+        project = self._setup_external_project(tmp_path, profile="standard")
+        self._run_hook(str(project))
+
+        cos_dir = project / ".claude" / "rules" / "cos"
+        if cos_dir.exists():
+            remaining_names = {r.name for r in cos_dir.glob("*.md")}
+            assert "alpha-rule.md" not in remaining_names, "Non-core alpha-rule.md should be removed"
+            assert "beta-rule.md" not in remaining_names, "Non-core beta-rule.md should be removed"
+            assert "sandbox-sampling.md" not in remaining_names, "Non-core sandbox-sampling.md should be removed"
+
+    def test_standard_profile_each_core_rule_present(self, tmp_path):
+        """Each of the 14 core rules must be present after standard profile install."""
+        project = self._setup_external_project(tmp_path, profile="standard")
+        self._run_hook(str(project))
+
+        cos_dir = project / ".claude" / "rules" / "cos"
+        if cos_dir.exists():
+            remaining_names = {r.name for r in cos_dir.glob("*.md")}
+            for core_rule in CORE_RULES:
+                assert core_rule in remaining_names, (
+                    f"Core rule {core_rule} missing after standard profile install"
+                )
 
     def test_self_hosting_forces_full_profile(self):
         """When self-hosting (hooks/self-install.sh exists), profile is always full."""
