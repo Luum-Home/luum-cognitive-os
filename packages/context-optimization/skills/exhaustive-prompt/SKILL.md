@@ -1,3 +1,9 @@
+---
+name: exhaustive-prompt
+description: Generate exhaustive agent prompts with scope enumeration and acceptance criteria
+audience: project
+---
+
 # Exhaustive Prompt Generator
 
 > **Invoke**: `/exhaustive-prompt`

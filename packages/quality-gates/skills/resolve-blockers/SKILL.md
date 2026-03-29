@@ -21,6 +21,7 @@ outputs:
 metadata:
   author: luum
   pattern-source: .cognitive-os/Archive (3)/ai-workflow/ai_workflow_resolve_iso.py
+audience: project
 ---
 
 # Resolve Blockers

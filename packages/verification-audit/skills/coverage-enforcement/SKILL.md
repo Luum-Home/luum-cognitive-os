@@ -6,6 +6,7 @@ description: Run Go test coverage for all services, enforce thresholds from cogn
 last-updated: 2026-03-22
 auto-generated: false
 tech: go
+audience: project
 ---
 
 # Coverage Enforcement Skill

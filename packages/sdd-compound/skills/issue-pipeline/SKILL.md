@@ -4,6 +4,7 @@ version: 1.0.0
 description: Fetch a GitHub issue, run the SDD pipeline, and open a pull request
 invoke: /issue-to-pr <number>
 tags: [universal, automation, pipeline]
+audience: project
 ---
 
 # Issue-to-PR Pipeline

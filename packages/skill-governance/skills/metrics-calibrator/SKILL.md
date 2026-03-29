@@ -3,6 +3,7 @@ name: metrics-calibrator
 description: Analyze KPI history and auto-calibrate thresholds for meaningful alerting
 trigger: calibrate metrics, adjust thresholds, metric calibration, KPI tuning
 model: sonnet
+audience: os-dev
 ---
 
 # Metrics Calibrator

@@ -4,6 +4,7 @@ description: Execute code in a Jupyter kernel sandbox for data analysis, Python 
 invoke: /jupyter-exec
 version: 1.0.0
 model: sonnet
+audience: project
 ---
 
 # Jupyter Execute — Sandboxed Code Execution

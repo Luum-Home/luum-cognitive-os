@@ -4,6 +4,7 @@ description: "A sample skill for testing the cos package manager."
 allowed-tools:
   - Read
   - Bash
+audience: project
 ---
 
 # Sample Skill

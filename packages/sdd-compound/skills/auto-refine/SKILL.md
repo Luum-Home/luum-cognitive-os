@@ -4,6 +4,7 @@ description: Analyze a failed agent's output, determine root cause, and re-launc
 version: 1.0.0
 user-invocable: true
 auto-generated: false
+audience: project
 ---
 
 # Auto-Refine Skill
