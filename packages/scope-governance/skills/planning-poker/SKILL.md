@@ -10,6 +10,7 @@ triggers:
   - planning poker
   - how big is this task
   - estimate effort
+audience: project
 ---
 
 # Planning Poker — Multi-Agent Complexity Estimation

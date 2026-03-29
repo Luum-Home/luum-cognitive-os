@@ -3,6 +3,7 @@ name: memu-context
 description: Query memU proactive memory for relevant context before starting work
 trigger: what do I know about, context for, remember, prior context, memu, proactive context
 model: haiku
+audience: project
 ---
 
 # memU Context Loader

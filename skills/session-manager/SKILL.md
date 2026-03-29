@@ -1,3 +1,9 @@
+---
+name: session-manager
+description: Manage concurrent Cognitive OS sessions — list, inspect, and clean up
+audience: project
+---
+
 # Session Manager
 
 > Manage concurrent Cognitive OS sessions: list, inspect, and clean up.

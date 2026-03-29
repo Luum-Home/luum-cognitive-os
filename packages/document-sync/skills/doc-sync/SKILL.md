@@ -4,6 +4,7 @@ version: 1.0.0
 description: Synchronize documentation that became stale after code changes
 invocation: /doc-sync
 last-updated: 2026-03-22
+audience: project
 ---
 
 # Doc Sync — Stale Documentation Updater

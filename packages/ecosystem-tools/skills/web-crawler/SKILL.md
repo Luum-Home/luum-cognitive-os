@@ -14,6 +14,7 @@ metadata:
   tool-license: Apache-2.0
   tool-ring: ADOPT
   tool-score: null
+audience: project
 ---
 
 ## Purpose

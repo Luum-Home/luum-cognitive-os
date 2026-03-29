@@ -6,6 +6,7 @@ allowed-tools:
   - Grep
   - Bash
   - mcp__plugin_engram_engram__mem_search
+audience: os-dev
 ---
 
 # Component Classifier

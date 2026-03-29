@@ -4,6 +4,7 @@ description: Calculate and report Cognitive OS KPIs and OKRs. Shows agent health
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-03-21
+audience: both
 ---
 
 # Agent KPI Dashboard

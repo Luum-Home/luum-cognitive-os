@@ -3,6 +3,7 @@ name: tool-discovery
 description: Discover new open-source tools that could enhance Cognitive OS capabilities
 trigger: discover tools, find new tools, tool scan, what's new in open source, tool radar
 model: sonnet
+audience: os-dev
 ---
 
 # Tool Discovery

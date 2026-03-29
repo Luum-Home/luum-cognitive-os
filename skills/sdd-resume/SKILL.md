@@ -7,6 +7,7 @@ trigger: User invokes /sdd-resume [change-name] [--from phase], or needs to insp
 inputs:
   - change-name (optional): SDD change to resume. If omitted, lists all in-progress changes.
   - --from (optional): Force resume from a specific phase (skips auto-detection).
+audience: project
 outputs:
   - next_phase: The phase to execute next
   - state_summary: Current pipeline state with timing data

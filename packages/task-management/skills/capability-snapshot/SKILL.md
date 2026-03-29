@@ -5,6 +5,7 @@
 ---
 description: "Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss during refactors"
 triggers: ["/capability-snapshot"]
+audience: os-dev
 ---
 
 ## Instructions

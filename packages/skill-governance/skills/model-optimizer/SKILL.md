@@ -4,6 +4,7 @@ version: 1.0.0
 last-updated: 2026-03-21
 description: Analyze skill execution metrics and recommend optimal model routing
 auto-generated: false
+audience: both
 ---
 
 # Model Optimizer

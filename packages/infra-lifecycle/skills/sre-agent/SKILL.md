@@ -5,6 +5,7 @@ version: 2.0.0
 last-updated: 2026-03-22
 user-invocable: true
 auto-generated: false
+audience: project
 ---
 
 # SRE Auto-Repair Agent

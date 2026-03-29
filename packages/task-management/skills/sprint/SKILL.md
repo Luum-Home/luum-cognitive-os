@@ -5,6 +5,7 @@ invoke: /sprint
 version: 1.0.0
 model: sonnet
 tags: [planning, tracking, workflow]
+audience: project
 ---
 
 # Sprint Tracking (BMAD v6 Pattern 10)
