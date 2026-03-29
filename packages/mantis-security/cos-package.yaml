@@ -1,0 +1,19 @@
+name: "@luum/mantis-security"
+version: "1.0.0"
+description: "Mantis HTTP security toolkit integration — automated security scanning for HTTP services with OWASP coverage"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords: ["security", "http", "scanning", "owasp", "mantis", "garagon"]
+cos_version: ">=0.1.0"
+
+provides:
+  - rule
+
+exports:
+  - source: "README.md"
+    type: documentation
+    description: "Mantis HTTP security toolkit overview and integration notes"
+
+dependencies:
+  "@luum/ecosystem-tools":
+    version: ">=1.0.0"
