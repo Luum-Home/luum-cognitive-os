@@ -330,7 +330,7 @@ services:
   # ---------------------------------------------------------------------------
   paperclip:
     container_name: cognitive-os-paperclip
-    image: tuyenvd/paperclip:latest@sha256:efb90cc740cb3d990258b233d9fb5e95de26c181288653b3a26318820144db98  # pinned 2026-03-28 — was :latest (mutable)
+    image: reeoss/paperclipai-paperclip:latest  # mirror with ARM64 support (ghcr.io needs auth)
     restart: unless-stopped
     ports:
       - "${PAPERCLIP_PORT:-3200}:3100"
@@ -339,24 +339,18 @@ services:
       HOST: "0.0.0.0"
       PORT: "3100"
       SERVE_UI: "true"
-      # authenticated mode for Docker (local_trusted requires loopback only)
       PAPERCLIP_DEPLOYMENT_MODE: ${PAPERCLIP_DEPLOYMENT_MODE:-authenticated}
       PAPERCLIP_DEPLOYMENT_EXPOSURE: "private"
       PAPERCLIP_PUBLIC_URL: ${PAPERCLIP_PUBLIC_URL:-http://localhost:3200}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-cognitive-os-paperclip-local-dev-secret}
       PAPERCLIP_HOME: /paperclip
       PAPERCLIP_INSTANCE_ID: default
-      PAPERCLIP_CONFIG: /paperclip/instances/default/config.json
       PAPERCLIP_MIGRATION_AUTO_APPLY: "true"
-      # Auto-create admin account (no manual bootstrap needed)
       PAPERCLIP_ADMIN_EMAIL: ${PAPERCLIP_ADMIN_EMAIL:-admin@cognitive-os.local}
       PAPERCLIP_ADMIN_PASSWORD: ${PAPERCLIP_ADMIN_PASSWORD:-changeme-not-for-production}
       PAPERCLIP_ADMIN_NAME: ${PAPERCLIP_ADMIN_NAME:-Cognitive OS Admin}
     volumes:
       - paperclip-data:/paperclip
-      - ./infra/paperclip/docker-entrypoint.sh:/app/docker-entrypoint.sh:ro
-    entrypoint: ["/app/docker-entrypoint.sh"]
-    command: []
     depends_on:
       paperclip-pg:
         condition: service_healthy

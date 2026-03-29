@@ -1,0 +1,15 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "cos-dashboard",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3300,
+      "cwd": "dashboard",
+      "env": {
+        "COS_ROOT": ".."
+      }
+    }
+  ]
+}
