@@ -114,6 +114,156 @@ func TestUpdateChangelog(t *testing.T) {
 }
 
 // ---------------------------------------------------------------------------
+// Tests — updateChangelog preserves existing entries
+// ---------------------------------------------------------------------------
+
+func TestUpdateChangelog_PreservesExisting(t *testing.T) {
+	input := `# Changelog
+
+## [Unreleased]
+### Fixed
+- bug fix alpha
+
+## [0.2.0] - 2026-03-28
+### Added
+- feature one
+
+## [0.1.0] - 2026-03-27
+### Added
+- initial release
+`
+	result := updateChangelog(input, "0.3.0")
+
+	// New [Unreleased] still present.
+	if !strings.Contains(result, "## [Unreleased]") {
+		t.Error("should contain new [Unreleased] section")
+	}
+	// New version section present.
+	if !strings.Contains(result, "## [0.3.0]") {
+		t.Error("should contain [0.3.0] section")
+	}
+	// Previous versions preserved.
+	if !strings.Contains(result, "## [0.2.0] - 2026-03-28") {
+		t.Error("should preserve [0.2.0] section")
+	}
+	if !strings.Contains(result, "## [0.1.0] - 2026-03-27") {
+		t.Error("should preserve [0.1.0] section")
+	}
+	// Content under old [Unreleased] moves under the new version.
+	if !strings.Contains(result, "bug fix alpha") {
+		t.Error("should preserve unreleased entries under new version")
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Tests — updateDocsIndex
+// ---------------------------------------------------------------------------
+
+func TestUpdateDocsIndex_UpdatesVersion(t *testing.T) {
+	input := "# Cognitive OS Documentation Index — v0.2.4\n\n> Some description here.\n"
+	result := updateDocsIndex(input, "0.3.0")
+	if !strings.Contains(result, "v0.3.0") {
+		t.Errorf("expected v0.3.0 in result, got: %s", result)
+	}
+	if strings.Contains(result, "v0.2.4") {
+		t.Error("old version v0.2.4 should be replaced")
+	}
+	// Rest of content preserved.
+	if !strings.Contains(result, "Some description here.") {
+		t.Error("should preserve content after the first line")
+	}
+}
+
+func TestUpdateDocsIndex_NoVersionInHeading(t *testing.T) {
+	input := "# Documentation Index\n\nSome content.\n"
+	result := updateDocsIndex(input, "1.0.0")
+	// No version to replace, content should be unchanged.
+	if result != input {
+		t.Errorf("should not modify content without version, got: %s", result)
+	}
+}
+
+func TestUpdateDocsIndex_EmptyContent(t *testing.T) {
+	result := updateDocsIndex("", "1.0.0")
+	if result != "" {
+		t.Errorf("should return empty for empty input, got: %q", result)
+	}
+}
+
+func TestUpdateDocsIndex_SingleLine(t *testing.T) {
+	input := "# Docs — v0.1.0"
+	result := updateDocsIndex(input, "2.0.0")
+	if result != "# Docs — v2.0.0" {
+		t.Errorf("expected '# Docs — v2.0.0', got: %s", result)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Tests — release integration (files updated together)
+// ---------------------------------------------------------------------------
+
+func TestReleaseUpdatesAllFiles(t *testing.T) {
+	dir := t.TempDir()
+
+	// Create VERSION file.
+	os.WriteFile(filepath.Join(dir, "VERSION"), []byte("0.2.0\n"), 0644)
+
+	// Create CHANGELOG.md.
+	changelog := `# Changelog
+
+## [Unreleased]
+### Added
+- new stuff
+
+## [0.2.0] - 2026-03-28
+### Added
+- old stuff
+`
+	os.WriteFile(filepath.Join(dir, "CHANGELOG.md"), []byte(changelog), 0644)
+
+	// Create docs/INDEX.md.
+	os.MkdirAll(filepath.Join(dir, "docs"), 0755)
+	docsIndex := "# Cognitive OS Documentation Index — v0.2.0\n\n> Description.\n"
+	os.WriteFile(filepath.Join(dir, "docs", "INDEX.md"), []byte(docsIndex), 0644)
+
+	newVersion := "0.3.0"
+
+	// Simulate the release updates (without git operations).
+	// Update CHANGELOG.
+	clData, _ := os.ReadFile(filepath.Join(dir, "CHANGELOG.md"))
+	updatedCl := updateChangelog(string(clData), newVersion)
+	os.WriteFile(filepath.Join(dir, "CHANGELOG.md"), []byte(updatedCl), 0644)
+
+	// Update docs/INDEX.md.
+	idxData, _ := os.ReadFile(filepath.Join(dir, "docs", "INDEX.md"))
+	updatedIdx := updateDocsIndex(string(idxData), newVersion)
+	os.WriteFile(filepath.Join(dir, "docs", "INDEX.md"), []byte(updatedIdx), 0644)
+
+	// Verify CHANGELOG.
+	finalCl, _ := os.ReadFile(filepath.Join(dir, "CHANGELOG.md"))
+	clStr := string(finalCl)
+	if !strings.Contains(clStr, "## [0.3.0]") {
+		t.Error("CHANGELOG should contain [0.3.0]")
+	}
+	if !strings.Contains(clStr, "## [Unreleased]") {
+		t.Error("CHANGELOG should still have [Unreleased]")
+	}
+	if !strings.Contains(clStr, "## [0.2.0] - 2026-03-28") {
+		t.Error("CHANGELOG should preserve [0.2.0]")
+	}
+
+	// Verify docs/INDEX.md.
+	finalIdx, _ := os.ReadFile(filepath.Join(dir, "docs", "INDEX.md"))
+	idxStr := string(finalIdx)
+	if !strings.Contains(idxStr, "v0.3.0") {
+		t.Error("docs/INDEX.md should contain v0.3.0")
+	}
+	if strings.Contains(idxStr, "v0.2.0") {
+		t.Error("docs/INDEX.md should not contain old version v0.2.0")
+	}
+}
+
+// ---------------------------------------------------------------------------
 // Tests — scopedTagName
 // ---------------------------------------------------------------------------
 
