@@ -10,6 +10,8 @@
 #   2 — violations found (BLOCK)
 set -uo pipefail
 
+source "$(dirname "$0")/_lib/cache.sh"
+
 INPUT=$(cat)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // ""')
 
@@ -41,6 +43,13 @@ fi
 # Load content policy
 POLICY_FILE="$PROJECT_DIR/.cognitive-os/content-policy.yaml"
 if [ ! -f "$POLICY_FILE" ]; then
+    exit 0
+fi
+
+# SHA-256 cache: skip files that haven't changed since last scan
+# Invalidate when content-policy.yaml changes (rules changed)
+_CP_RULES_HASH=$(shasum -a 256 "$POLICY_FILE" 2>/dev/null | cut -d' ' -f1 || echo "none")
+if cache_hit "$FILE_PATH" "$_CP_RULES_HASH"; then
     exit 0
 fi
 
@@ -109,5 +118,8 @@ if [ "$VIOLATIONS" -gt 0 ]; then
 
     exit 2  # BLOCK
 fi
+
+# Update cache — file passed content policy scan
+cache_update "$FILE_PATH" "$_CP_RULES_HASH"
 
 exit 0

@@ -411,6 +411,15 @@ class TestInfraIntentDetector:
         result = run_hook(self.HOOK, stdin_json=stdin, env=mock_project["env"])
         assert result.returncode == 0
 
+    def test_malformed_json_exits_0(self, run_hook, mock_project):
+        """Malformed JSON input should exit 0 (not crash with exit 5)."""
+        result = run_hook(
+            self.HOOK,
+            stdin_text='{"not valid json',
+            env=mock_project["env"],
+        )
+        assert result.returncode == 0
+
 
 # ---------------------------------------------------------------------------
 # rate-limit-protection.sh — PreToolUse on Agent

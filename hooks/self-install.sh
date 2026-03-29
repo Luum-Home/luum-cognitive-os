@@ -148,13 +148,53 @@ if [ "$IS_SELF_HOSTING" = false ] && [ -f "$CONFIG_FILE" ]; then
 fi
 
 cos_rules_dir="$PROJECT_DIR/.claude/rules/cos"
-if [[ "$EFFICIENCY_PROFILE" == "lean" || "$EFFICIENCY_PROFILE" == "standard" ]]; then
-  # Only keep RULES-COMPACT.md; remove all other rule symlinks
+
+# Core rules: the 14 always-loaded rules for standard profile.
+# These provide essential governance without overwhelming the context window.
+# See docs/rules-loading-architecture.md for the rationale.
+CORE_RULES=(
+  "RULES-COMPACT.md"
+  "adaptive-bypass.md"
+  "acceptance-criteria.md"
+  "agent-quality.md"
+  "trust-score.md"
+  "definition-of-done.md"
+  "phase-aware-agents.md"
+  "closed-loop-prompts.md"
+  "token-economy.md"
+  "responsiveness.md"
+  "agent-security.md"
+  "credential-management.md"
+  "content-policy.md"
+  "error-learning.md"
+)
+
+if [[ "$EFFICIENCY_PROFILE" == "lean" ]]; then
+  # Lean: only keep RULES-COMPACT.md; remove all other rule symlinks
   if [ -d "$cos_rules_dir" ]; then
     for link in "$cos_rules_dir"/*.md; do
       [ -L "$link" ] || continue
       base=$(basename "$link")
       if [ "$base" != "RULES-COMPACT.md" ]; then
+        rm -f "$link"
+        removed=$((removed + 1))
+      fi
+    done
+  fi
+elif [[ "$EFFICIENCY_PROFILE" == "standard" ]]; then
+  # Standard: keep only the 14 core rules
+  if [ -d "$cos_rules_dir" ]; then
+    for link in "$cos_rules_dir"/*.md; do
+      [ -L "$link" ] || continue
+      base=$(basename "$link")
+      is_core=false
+      for core in "${CORE_RULES[@]}"; do
+        if [ "$base" = "$core" ]; then
+          is_core=true
+          break
+        fi
+      done
+      if [ "$is_core" = false ]; then
         rm -f "$link"
         removed=$((removed + 1))
       fi

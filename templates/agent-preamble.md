@@ -60,6 +60,34 @@ Escalation signals:
 
 It is better to escalate early than to waste tokens on a dead end. Save partial progress to Engram before escalating so the next agent does not redo your completed work.
 
+## Trust Report Format
+
+When you complete a task, your Trust Report MUST start with a machine-parseable header line:
+
+```
+TRUST_REPORT: SCORE=75 STATUS=MEDIUM EVIDENCE=3 UNCERTAINTIES=2
+---
+Score: 75/100
+
+EVIDENCE PROVIDED:
+  [check] Tests pass: go test ./... -- 42 passed, 0 failed
+  [warn] Coverage not measured
+  [fail] Integration tests not run
+
+WHAT I'M CONFIDENT ABOUT:
+  - Unit tests cover the happy path
+
+WHAT I'M UNSURE ABOUT:
+  - Edge case with empty input not tested
+  - Performance under load unknown
+
+WHAT THE HUMAN SHOULD VERIFY:
+  - Run integration tests manually
+```
+
+STATUS values: HIGH (90+), MEDIUM (70-89), LOW (50-69), CRITICAL (<50).
+EVIDENCE = count of [check]/[warn]/[fail] markers. UNCERTAINTIES = count of items in "WHAT I'M UNSURE ABOUT".
+
 ## Long-Running Commands
 
 - Test suites, builds, and linters that take >30s MUST use `run_in_background: true`.

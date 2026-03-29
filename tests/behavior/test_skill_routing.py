@@ -100,7 +100,6 @@ class TestSkillRoutingTablePresence:
         )
 
 
-@pytest.mark.xfail(reason="Routing table uses invoke names that differ from CATALOG entries — needs normalization")
 class TestSkillRoutingTableCatalogAlignment:
     """Verify that routing table skills exist in the catalog."""
 
@@ -131,9 +130,25 @@ class TestSkillRoutingTableCatalogAlignment:
         )
 
 
-@pytest.mark.xfail(reason="Routing table uses invoke names that differ from directory names — needs normalization")
 class TestSkillRoutingTableDirectories:
     """Verify that routing table skills have corresponding directories."""
+
+    # Invoke name -> directory name mapping for skills whose invoke command
+    # differs from their directory name in skills/.
+    INVOKE_TO_DIR = {
+        "coverage-report": "coverage-enforcement",
+        "cost-predict": "cost-predictor",
+        "issue-to-pr": "issue-pipeline",
+        "squad-report": "squad-manager",
+        "batch-run": "batch-runner",
+        "jupyter-exec": "jupyter-execute",
+        "create-persistent-agent": "persistent-agent",
+        "simulate": "simulation-arena",
+        "estimation-report": "estimation-report",
+        "sessions": "session-manager",
+        "checkpoint": "devbox-checkpoint",
+        "private": "private-mode",
+    }
 
     def test_routing_skills_have_directories(
         self, skill_management_content, skill_directories
@@ -141,21 +156,27 @@ class TestSkillRoutingTableDirectories:
         """Every skill in the routing table should have a skills/ directory."""
         routing_skills = _extract_routing_table_skills(skill_management_content)
 
-        # Normalize: some invoke names differ from directory names.
-        # These are meta-commands handled by the orchestrator or SDD phases
+        # Meta-commands handled by the orchestrator or SDD phases
         # that live under .claude/skills/ as phase skills, not standalone dirs.
         meta_commands = {"sdd-new", "sdd-verify", "skill-creator"}
 
+        # Skills listed in CATALOG.md but implemented as lib modules
+        # rather than standalone SKILL.md directories.
+        lib_only_skills = {"cost-predict", "estimation-report"}
+
+        excluded = meta_commands | lib_only_skills
+
         missing = []
         for skill in routing_skills:
-            if skill in meta_commands:
+            if skill in excluded:
                 continue
-            # Try the exact name and common variants
-            if skill not in skill_directories:
+            # Resolve invoke name to directory name
+            dir_name = self.INVOKE_TO_DIR.get(skill, skill)
+            if dir_name not in skill_directories:
                 # Try without prefix for auto-triggered skills
-                hyphenated = skill.replace("_", "-")
+                hyphenated = dir_name.replace("_", "-")
                 if hyphenated not in skill_directories:
-                    missing.append(skill)
+                    missing.append(f"{skill} (checked: {dir_name})")
 
         assert not missing, (
             f"Skills in routing table without a skills/ directory: {missing}"
