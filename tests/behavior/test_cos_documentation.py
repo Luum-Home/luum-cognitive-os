@@ -51,7 +51,6 @@ class TestReadmeExists:
         assert len(content) > 500, "README is too short to be useful"
 
 
-@pytest.mark.xfail(reason="New registry subcommands not yet in README — needs update")
 class TestReadmeReferencesAllCommands:
     """README must reference every implemented CLI command."""
 

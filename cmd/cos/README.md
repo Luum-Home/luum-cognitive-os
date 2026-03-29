@@ -92,6 +92,13 @@ cos registry disable my-org
 cos registry enable my-org
 ```
 
+### Project Setup
+
+| Command | Description |
+|---------|-------------|
+| `cos new <project-name>` | Create a new project with COS pre-configured (supports go, typescript, python, minimal templates) |
+| `cos setup` | Interactive onboarding wizard for installing and configuring Cognitive OS |
+
 ### System Information
 
 | Command | Description |

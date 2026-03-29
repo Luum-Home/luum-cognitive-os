@@ -1,7 +1,7 @@
 # Rules Loading Architecture
 
 > How rules accumulate in Cognitive OS and why consolidation matters.
-> Updated: 2026-03-28
+> Updated: 2026-03-29
 
 ## How Claude Code Loads Rules
 
@@ -92,9 +92,11 @@ self-install.sh (this repo)
 
 | Profile | Rules Installed | Use Case |
 |---------|----------------|----------|
-| `lean` | Only RULES-COMPACT.md | Maximum speed, minimal guidance |
-| `standard` | Only RULES-COMPACT.md | Balanced (same as lean for now) |
-| `full` | All rules | Maximum guidance, self-hosted dev |
+| `lean` | Only RULES-COMPACT.md (1 rule) | Maximum speed, minimal guidance |
+| `standard` | 14 core rules (~20K tokens) | Balanced governance. Recommended for most users. |
+| `full` | All rules (~73K tokens) | Maximum guidance, self-hosted dev |
+
+The 14 core rules in `standard` profile are: RULES-COMPACT, adaptive-bypass, acceptance-criteria, agent-quality, trust-score, definition-of-done, phase-aware-agents, closed-loop-prompts, token-economy, responsiveness, agent-security, credential-management, content-policy, error-learning. All other rules are loaded on-demand via contextual triggers defined in `cognitive-os.yaml`.
 
 ### Capability-Level Auto-Disable
 
@@ -123,7 +125,7 @@ Stay under 50% of the WISC threshold (75 rules) for optimal performance.
 |-------|--------|-------------|
 | Analysis | COMPLETE | 89 rules classified, 14 core identified |
 | Safety tests | COMPLETE | 42-test baseline for regression detection |
-| Implementation | PENDING | Move 75 rules to on-demand with triggers |
+| Implementation | COMPLETE | Standard profile loads 14 core rules; 75+ rules on-demand via triggers |
 | Validation | PENDING | Before/after performance comparison |
 
 See engram `architecture/rules-consolidation-analysis` for the full classification matrix.
