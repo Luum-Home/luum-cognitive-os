@@ -141,7 +141,10 @@ def _count_files(pattern: str, base: Path) -> int:
 
 
 def _engram_search(query: str, project: str = "", limit: int = 10) -> str:
-    """Search Engram via the engram CLI or Python API."""
+    """Search Engram via the engram CLI or Python API.
+
+    Always returns valid JSON (object or array).
+    """
     # Try the engram Python package first
     try:
         from engram.api import search  # type: ignore
@@ -160,7 +163,13 @@ def _engram_search(query: str, project: str = "", limit: int = 10) -> str:
             cmd, capture_output=True, text=True, timeout=10
         )
         if result.returncode == 0:
-            return result.stdout.strip()
+            output = result.stdout.strip()
+            # Ensure the output is valid JSON; wrap plain text as a message
+            try:
+                json.loads(output)
+                return output
+            except (json.JSONDecodeError, ValueError):
+                return json.dumps({"results": [], "message": output})
     except (FileNotFoundError, subprocess.TimeoutExpired):
         pass
 
@@ -532,8 +541,6 @@ def cos_suggest_skill(message: str) -> str:
         try:
             match = router.best_match(message)
             if match:
-                # Get top 3 matches
-                all_matches = router.all_matches(message, limit=3)
                 return json.dumps({
                     "best_match": {
                         "skill": match.skill_name,
@@ -541,15 +548,7 @@ def cos_suggest_skill(message: str) -> str:
                         "confidence": match.confidence,
                         "reason": match.reason,
                     },
-                    "alternatives": [
-                        {
-                            "skill": m.skill_name,
-                            "command": m.invoke_command,
-                            "confidence": m.confidence,
-                            "reason": m.reason,
-                        }
-                        for m in (all_matches[1:] if all_matches else [])
-                    ],
+                    "alternatives": [],
                 }, indent=2)
             else:
                 return json.dumps({
