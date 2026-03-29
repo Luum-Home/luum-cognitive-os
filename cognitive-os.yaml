@@ -608,6 +608,11 @@ security:
     enabled: false                   # Set to true after installing parry-guard
     threshold: 0.7                   # Detection confidence threshold
 
+  aguara:
+    enabled: false                   # Set to true after installing aguara
+    # aguara CLI: go install github.com/garagon/aguara@latest
+    # mcp-aguara: go install github.com/garagon/mcp-aguara@latest
+
 agent_communication:
   hcom:
     enabled: false                   # Set to true after installing hcom
