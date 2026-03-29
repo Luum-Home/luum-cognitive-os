@@ -40,18 +40,32 @@ def test_rules_compact_token_budget():
 
 
 def test_rules_compact_covers_all_rules():
-    """Every rule file in rules/ should have an entry in RULES-COMPACT.md."""
+    """Every rule file in rules/ should have an entry in RULES-COMPACT.md.
+
+    Uses a warning for newly added rules that haven't been integrated yet,
+    since the authoritative check is in test_rules_consolidation.py.
+    """
+    import warnings
     compact = (PROJECT_ROOT / "rules" / "RULES-COMPACT.md").read_text()
     rule_files = sorted(PROJECT_ROOT.glob("rules/*.md"))
     missing = []
     for f in rule_files:
         if f.name == "RULES-COMPACT.md":
             continue
-        # Check if the rule name (without .md) appears in compact
         rule_name = f.stem
         if rule_name not in compact:
             missing.append(rule_name)
-    assert not missing, f"Rules missing from RULES-COMPACT.md: {missing}"
+    if missing:
+        warnings.warn(
+            f"Rules not yet in RULES-COMPACT.md (update COMPACT when ready): {missing}",
+            UserWarning,
+            stacklevel=1,
+        )
+    # Still assert but with a helpful message pointing to the fix
+    assert not missing, (
+        f"Rules missing from RULES-COMPACT.md: {missing}. "
+        f"Add references to rules/RULES-COMPACT.md for each new rule."
+    )
 
 
 # ---------------------------------------------------------------------------
