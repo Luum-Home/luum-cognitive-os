@@ -351,6 +351,8 @@ services:
       PAPERCLIP_ADMIN_NAME: ${PAPERCLIP_ADMIN_NAME:-Cognitive OS Admin}
     volumes:
       - paperclip-data:/paperclip
+      - ./infra/paperclip/init-config.sh:/app/init-config.sh:ro
+    entrypoint: ["/bin/sh", "/app/init-config.sh"]
     depends_on:
       paperclip-pg:
         condition: service_healthy
