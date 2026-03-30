@@ -387,5 +387,19 @@ func runRelease(cmd *cobra.Command, args []string) error {
 	fmt.Printf("%s Release v%s created.\n", ui.IconSuccess, targetVersion)
 	fmt.Printf("  Push with: git push && git push --tags\n")
 
+	// Auto-update registered projects
+	autoUpdateScript := filepath.Join(projectRoot, "scripts", "auto-update-projects.sh")
+	if _, err := os.Stat(autoUpdateScript); err == nil {
+		fmt.Println()
+		fmt.Println("Updating registered projects...")
+		updateCmd := exec.Command("bash", autoUpdateScript)
+		updateCmd.Dir = projectRoot
+		updateCmd.Stdout = os.Stdout
+		updateCmd.Stderr = os.Stderr
+		if err := updateCmd.Run(); err != nil {
+			fmt.Printf("  Warning: auto-update failed: %v\n", err)
+		}
+	}
+
 	return nil
 }
