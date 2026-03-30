@@ -126,6 +126,13 @@ func runSetup(cmd *cobra.Command, args []string) error {
 
 	fmt.Println(ui.SuccessStyle.Render(fmt.Sprintf("%s Done! Cognitive OS is configured.", ui.IconCheck)))
 	fmt.Println()
+
+	// Show skill recommendations based on detected stack.
+	recs := wizard.RecommendSkills(env, cwd)
+	if len(recs) > 0 {
+		fmt.Println(wizard.FormatRecommendations(recs))
+	}
+
 	fmt.Println(ui.MutedStyle.Render("Next steps:"))
 	fmt.Println("  cos status       Verify installation")
 	fmt.Println("  cos map          View system knowledge graph")
