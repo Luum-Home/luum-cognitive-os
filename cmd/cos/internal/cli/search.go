@@ -125,6 +125,8 @@ func runSearch(cmd *cobra.Command, args []string) error {
 
 	fmt.Println()
 	fmt.Printf("  %s\n", ui.MutedStyle.Render(fmt.Sprintf("%d package(s) found", len(results))))
+	fmt.Println()
+	fmt.Printf("  %s\n", ui.MutedStyle.Render("Install: cos add <name>"))
 
 	return nil
 }
@@ -134,8 +136,13 @@ func printSearchResultWithRegistry(r registry.SearchResult, regName string) {
 	// Name column: left-aligned, padded.
 	name := ui.HeaderStyle.Render(fmt.Sprintf("%-26s", r.Name))
 
-	// Stars column.
-	stars := ui.MutedStyle.Render(fmt.Sprintf("★ %-5d", r.Stars))
+	// Stars column: show installs for skills-sh, stars for others.
+	var stars string
+	if regName == "skills-sh" && r.Stars > 0 {
+		stars = ui.MutedStyle.Render(fmt.Sprintf("%-12s", registry.FormatInstallCount(r.Stars)))
+	} else {
+		stars = ui.MutedStyle.Render(fmt.Sprintf("★ %-5d", r.Stars))
+	}
 
 	// License column.
 	license := r.License

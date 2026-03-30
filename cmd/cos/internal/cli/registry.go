@@ -26,7 +26,7 @@ var registryCmd = &cobra.Command{
 	Long: `Manage package registries for cos search and install.
 
 Registries are configured in cognitive-os.yaml under packages.registries.
-Supported types: github-topic, github-org, github-repo, directory.
+Supported types: github-topic, github-org, github-repo, directory, skills-sh.
 
 Examples:
   cos registry list                                    Show configured registries
@@ -139,6 +139,12 @@ func registryDetail(r registry.RegistryConfig) string {
 		return fmt.Sprintf("repo:%s", r.Repo)
 	case registry.RegistryDirectory:
 		return fmt.Sprintf("path:%s", r.Path)
+	case registry.RegistrySkillsSh:
+		baseURL := r.BaseURL
+		if baseURL == "" {
+			baseURL = registry.SkillsShDefaultBaseURL
+		}
+		return fmt.Sprintf("url:%s", baseURL)
 	default:
 		return string(r.Type)
 	}
@@ -174,8 +180,10 @@ func runRegistryAdd(cmd *cobra.Command, args []string) error {
 		if regAddPath == "" {
 			return fmt.Errorf("--path is required for directory type")
 		}
+	case registry.RegistrySkillsSh:
+		// No required fields — base_url is optional.
 	default:
-		return fmt.Errorf("unknown registry type %q. Valid types: github-topic, github-org, github-repo, directory", regAddType)
+		return fmt.Errorf("unknown registry type %q. Valid types: github-topic, github-org, github-repo, directory, skills-sh", regAddType)
 	}
 
 	newReg := registry.RegistryConfig{
