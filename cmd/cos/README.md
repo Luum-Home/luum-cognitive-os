@@ -123,6 +123,12 @@ cos registry enable my-org
 | `cos release-all --include "pkg1,pkg2"` | Only release specific packages |
 | `cos release-all --exclude "pkg1"` | Skip specific packages |
 | `cos release-all --dry-run` | Preview changes without executing |
+| `cos release-all --changelog` | Write per-package CHANGELOG.md files |
+| `cos changelog` | Show unreleased changes per package |
+| `cos changelog <name>` | Show changes for a specific package |
+| `cos changelog --since <tag>` | Show changes since a specific git tag |
+| `cos add <skill>` | Search and install a skill in one step |
+| `cos add --from skills-sh <skill>` | Install from skills.sh registry |
 
 ### Global Flags
 
