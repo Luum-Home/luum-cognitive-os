@@ -98,6 +98,7 @@
 | performance-dashboard | Show performance metrics: latency percentiles, throughput, overhead, bottlenecks | `cos perf` | project |
 | cost-predictor | Predict task cost from historical data, show confidence level, per-phase breakdown | `/cost-predict` | project |
 | run-tests | Auto-detect project test framework and run tests with structured pass/fail reporting | `/run-tests` | project |
+| install-recommended | Detect project stack and recommend relevant skills to install | `/install-recommended` | project |
 | repo-forensics | Deep forensic analysis of git repos: clone, scan all code, deps, architecture, tools, features, COS comparison | `/repo-forensics` | both |
 | reverse-engineer | Deep source code analysis of dependencies: extract config schemas, env vars, CLI commands, API routes, Docker setup, auth flows | `/reverse-engineer` | both |
 | red-team | Red team testing for agent prompts: detects injection, jailbreak, and manipulation vulnerabilities via Promptfoo | `/red-team` | os-dev |
