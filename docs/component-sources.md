@@ -1,6 +1,6 @@
 # Component Sources
 
-> Last updated: 2026-03-29
+> Last updated: 2026-03-30
 
 All external sources of skills, rules, hooks, tools, research, and infrastructure components referenced or integrated into luum-agent-os (Cognitive OS).
 
@@ -270,6 +270,83 @@ Do NOT integrate GGA as a dependency. Reasons:
 **Potential complementary use**: GGA could run alongside COS as a pre-commit gate for human developer commits, while COS governs agent-generated code. The planned Engram integration in GGA would enable shared memory between the two systems.
 
 **Note on fork**: The URL provided (`tomyaparicio/gentleman-guardian-angel`) is a dead fork with 0 stars and no activity beyond the initial fork on 2026-02-19. The upstream organization repo (875 stars, active development) is the canonical repository.
+
+## Skill Ecosystem Tools
+
+| Source | URL | License | Components | Status |
+|--------|-----|---------|------------|--------|
+| autoskills (midudev) | [midudev/autoskills](https://github.com/midudev/autoskills) | CC-BY-NC-4.0 | CLI that auto-detects project tech stack and installs matching AI agent skills from skills.sh. 38 technology mappings, combo detection, parallel install, TUI multi-select. | WATCH -- patterns only (NC license blocks code adoption) |
+| skills CLI (Anthropic) | [npm: skills](https://www.npmjs.com/package/skills) | MIT | Official Agent Skills installer. Manages skill installation from GitHub repos into Claude Code. Used by autoskills under the hood. | EVALUATE -- valid integration target |
+| skills.sh | [skills.sh](https://skills.sh) | Various (per skill) | Open Agent Skills ecosystem and directory. Curated skill marketplace with hundreds of skills across frameworks and technologies. | EVALUATE -- skill source for COS |
+
+### autoskills Analysis
+
+**Repository**: [midudev/autoskills](https://github.com/midudev/autoskills)
+
+| Metric | Value |
+|--------|-------|
+| Stars | 119 |
+| Language | JavaScript (Node.js 22+, ESM, zero deps) |
+| License | CC-BY-NC-4.0 (NonCommercial -- blocks code adoption) |
+| Created | 2026-03-25 |
+| Last pushed | 2026-03-30 (actively maintained) |
+| Version | 0.1.6 |
+| Author | midudev |
+
+**What it does**: One-command skill stack installer. Scans package.json and config files to detect 38+ technologies (React, Next.js, Vue, Astro, Cloudflare, Expo, WordPress, etc.), identifies cross-technology combos (React+shadcn, Next.js+Supabase), and installs matching skills via `npx skills add` (Anthropic's MIT-licensed CLI).
+
+**Architecture**: 5 files, zero dependencies. Detection uses package names, config file existence, config file content patterns, and regex package patterns. Installation runs parallel (concurrency=3) with animated TUI progress. Interactive multi-select for skill choice.
+
+**Patterns worth studying** (reimplement independently due to NC license):
+1. **Technology-to-skill mapping (SKILLS_MAP)**: structured array mapping tech IDs to detection signals and skill paths. More structured than our stack-detector.sh.
+2. **Combo detection (COMBO_SKILLS_MAP)**: cross-technology skill recommendations. No COS equivalent.
+3. **Frontend heuristic**: scans for .html/.css/.vue/.jsx/.tsx files to 3 levels deep as fallback detection.
+4. **skills.sh integration**: leverages Anthropic's official skill ecosystem via MIT-licensed CLI.
+
+**Recommendation: WATCH -- selective pattern adoption**
+
+Do NOT integrate as dependency. CC-BY-NC-4.0 blocks commercial use. Very new (5 days old at evaluation time). The actual value is in the curation pattern, not the code. The `skills` npm package (MIT) that autoskills wraps is the legitimate integration target.
+
+**Potential COS enhancement**: Add a `/install-skills` command to `cognitive-os-init` that uses our existing stack-detector.sh output + a SKILLS_MAP-style mapping to recommend and install external skills from skills.sh via the MIT-licensed `skills` CLI.
+
+## Web Platform Access
+
+| Source | URL | License | Components | Status |
+|--------|-----|---------|------------|--------|
+| opencli-rs-skill | [nashsu/opencli-rs-skill](https://github.com/nashsu/opencli-rs-skill) | Apache-2.0 | Claude Code SKILL.md wrapper for opencli-rs CLI | WATCH |
+| opencli-rs | [nashsu/opencli-rs](https://github.com/nashsu/opencli-rs) | Apache-2.0 | Rust CLI (4.7MB) turning 55+ web platforms into CLI interfaces via Chrome session reuse (CDP) | WATCH |
+
+### opencli-rs Analysis
+
+**Repository**: [nashsu/opencli-rs](https://github.com/nashsu/opencli-rs) + [nashsu/opencli-rs-skill](https://github.com/nashsu/opencli-rs-skill)
+
+| Metric | Value |
+|--------|-------|
+| Stars (CLI) | 1,020 |
+| Stars (skill) | 253 |
+| Language | Rust (8 crates), YAML adapters |
+| License | Apache-2.0 (declared in Cargo.toml workspace.package.license; no LICENSE file present) |
+| Created | 2026-03-24 (CLI), 2026-03-25 (skill) |
+| Last pushed | 2026-03-29 (CLI), 2026-03-25 (skill) |
+| Binary size | 4.7MB (single binary, zero runtime deps) |
+| Platform count | 55+ (social, news, finance, desktop apps) |
+
+**What it does**: Rust CLI that turns 55+ web platforms into command-line interfaces by reusing Chrome browser login sessions via CDP (Chrome DevTools Protocol). The skill wrapper teaches Claude Code to use the CLI. Three modes: Public (direct HTTP/API), Browser (CDP via Chrome Extension), Desktop (Electron app control).
+
+**Architecture** (8 Rust crates): core (types), pipeline (YAML-driven step engine), browser (CDP bridge, stealth, DOM helpers), output (table/JSON/YAML/CSV/MD rendering), discovery (adapter scanning), external (CLI wrapping for gh/docker/kubectl), ai (cascade/explore/generate/synthesize), cli (entry point).
+
+**Key pattern -- Declarative YAML adapters**: Each command is `adapters/{site}/{command}.yaml` with metadata, typed args, a pipeline of steps (fetch, navigate, evaluate JS, filter, map, transform, limit), and output columns. Cleanly separates site-specific logic from execution engine.
+
+**Valuable patterns** (Apache-2.0, safe to adopt):
+1. Declarative YAML pipeline for web data extraction (fetch -> transform -> filter -> output)
+2. Chrome session reuse via CDP eliminates auth friction
+3. Multi-format output rendering engine
+4. Adapter discovery pattern (scan directories for YAML, register dynamically)
+5. External CLI wrapping via uniform YAML definitions
+
+**Risks**: Extremely new (6 days old), no test suite, Chrome Extension requirement, fragile scraping approach, no LICENSE file, installs via curl-pipe-sh, browser mode executes arbitrary JS in page context.
+
+**Recommendation: WATCH** -- Too new for adoption. Monitor for stability over 3+ months. The YAML adapter pattern is worth studying independently.
 
 ## Under Evaluation
 
