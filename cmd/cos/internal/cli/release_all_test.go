@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"luum-agent-os/cmd/cos/internal/manifest"
 )
@@ -274,5 +275,235 @@ func TestE2E_ReleaseAllMultipleBumpFlags(t *testing.T) {
 	}
 	if !strings.Contains(out, "only one bump flag") {
 		t.Errorf("expected 'only one bump flag' error, got:\n%s", out)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Unit Tests — getPackageCommits
+// ---------------------------------------------------------------------------
+
+func TestGetPackageCommits(t *testing.T) {
+	dir := setupGitProjectWithTaggedPackages(t)
+
+	// Add a commit touching the alpha package.
+	writeTestFileE2E(t, dir, "packages/alpha/new-file.md", "new content")
+	gitAdd := exec.Command("git", "add", "-A")
+	gitAdd.Dir = dir
+	if out, err := gitAdd.CombinedOutput(); err != nil {
+		t.Fatalf("git add: %v\n%s", err, out)
+	}
+	gitCommit := exec.Command("git", "commit", "-m", "feat: add new file to alpha")
+	gitCommit.Dir = dir
+	if out, err := gitCommit.CombinedOutput(); err != nil {
+		t.Fatalf("git commit: %v\n%s", err, out)
+	}
+
+	commits, err := getPackageCommits(dir, "packages/alpha", "@test/alpha@1.0.0")
+	if err != nil {
+		t.Fatalf("getPackageCommits: %v", err)
+	}
+	if len(commits) != 1 {
+		t.Fatalf("expected 1 commit, got %d: %v", len(commits), commits)
+	}
+	if !strings.Contains(commits[0], "add new file to alpha") {
+		t.Errorf("expected commit message about alpha, got: %s", commits[0])
+	}
+}
+
+func TestGetPackageCommits_NoTag(t *testing.T) {
+	dir := setupGitProjectWithPackages(t)
+
+	// Without tags, should return all commits affecting the package.
+	commits, err := getPackageCommits(dir, "packages/alpha", "@test/alpha@1.0.0")
+	if err != nil {
+		t.Fatalf("getPackageCommits: %v", err)
+	}
+	// The initial commit touches packages/alpha, so we should get at least 1.
+	if len(commits) < 1 {
+		t.Errorf("expected at least 1 commit, got %d", len(commits))
+	}
+}
+
+func TestGetPackageCommits_NoCommitsSinceTag(t *testing.T) {
+	dir := setupGitProjectWithTaggedPackages(t)
+
+	// No new commits — should return empty.
+	commits, err := getPackageCommits(dir, "packages/alpha", "@test/alpha@1.0.0")
+	if err != nil {
+		t.Fatalf("getPackageCommits: %v", err)
+	}
+	if len(commits) != 0 {
+		t.Errorf("expected 0 commits, got %d: %v", len(commits), commits)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Unit Tests — generatePackageChangelog
+// ---------------------------------------------------------------------------
+
+func TestGeneratePackageChangelog(t *testing.T) {
+	commits := []string{
+		"feat: add new security scanner",
+		"fix: correct import path",
+		"docs: update README",
+	}
+
+	result := generatePackageChangelog("@luum/ecosystem-tools", "1.0.1", commits)
+
+	today := time.Now().Format("2006-01-02")
+	if !strings.Contains(result, "## [1.0.1] - "+today) {
+		t.Errorf("expected version heading with today's date, got:\n%s", result)
+	}
+	for _, c := range commits {
+		if !strings.Contains(result, "- "+c) {
+			t.Errorf("expected commit %q in output, got:\n%s", c, result)
+		}
+	}
+}
+
+func TestGeneratePackageChangelog_NoCommits(t *testing.T) {
+	result := generatePackageChangelog("@test/pkg", "1.0.0", nil)
+	if !strings.Contains(result, "Version bump") {
+		t.Errorf("expected fallback message for empty commits, got:\n%s", result)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Unit Tests — writePackageChangelog
+// ---------------------------------------------------------------------------
+
+func TestWritePackageChangelog_NewFile(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "CHANGELOG.md")
+
+	commits := []string{"feat: initial feature", "fix: bug fix"}
+	err := writePackageChangelog(path, "@test/pkg", "1.0.0", commits)
+	if err != nil {
+		t.Fatalf("writePackageChangelog: %v", err)
+	}
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("reading changelog: %v", err)
+	}
+	content := string(data)
+	if !strings.Contains(content, "# Changelog") {
+		t.Errorf("expected heading in new changelog:\n%s", content)
+	}
+	if !strings.Contains(content, "## [1.0.0]") {
+		t.Errorf("expected version section:\n%s", content)
+	}
+	if !strings.Contains(content, "- feat: initial feature") {
+		t.Errorf("expected commit entry:\n%s", content)
+	}
+}
+
+func TestWritePackageChangelog_ExistingFile(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "CHANGELOG.md")
+
+	// Write initial changelog.
+	initial := "# Changelog — @test/pkg\n\n## [1.0.0] - 2026-03-28\n- Initial release\n"
+	if err := os.WriteFile(path, []byte(initial), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	// Prepend a new version.
+	commits := []string{"feat: new feature"}
+	err := writePackageChangelog(path, "@test/pkg", "1.0.1", commits)
+	if err != nil {
+		t.Fatalf("writePackageChangelog: %v", err)
+	}
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("reading changelog: %v", err)
+	}
+	content := string(data)
+
+	// New version should appear before old version.
+	idx101 := strings.Index(content, "## [1.0.1]")
+	idx100 := strings.Index(content, "## [1.0.0]")
+	if idx101 < 0 || idx100 < 0 {
+		t.Fatalf("expected both version sections in:\n%s", content)
+	}
+	if idx101 >= idx100 {
+		t.Errorf("expected 1.0.1 before 1.0.0 in changelog:\n%s", content)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// E2E Tests — release-all --changelog
+// ---------------------------------------------------------------------------
+
+func TestE2E_ReleaseAllWithChangelog(t *testing.T) {
+	dir := setupGitProjectWithTaggedPackages(t)
+
+	// Add a commit to alpha.
+	writeTestFileE2E(t, dir, "packages/alpha/extra.md", "extra content")
+	gitAdd := exec.Command("git", "add", "-A")
+	gitAdd.Dir = dir
+	if out, err := gitAdd.CombinedOutput(); err != nil {
+		t.Fatalf("git add: %v\n%s", err, out)
+	}
+	gitCommit := exec.Command("git", "commit", "-m", "feat: add extra to alpha")
+	gitCommit.Dir = dir
+	if out, err := gitCommit.CombinedOutput(); err != nil {
+		t.Fatalf("git commit: %v\n%s", err, out)
+	}
+
+	out, exitCode := runCos(t, dir, "release-all", "--patch", "--yes", "--changelog", "--include", "alpha")
+	if exitCode != 0 {
+		t.Fatalf("expected exit 0, got %d. Output:\n%s", exitCode, out)
+	}
+
+	// Verify CHANGELOG.md was created.
+	data, err := os.ReadFile(filepath.Join(dir, "packages", "alpha", "CHANGELOG.md"))
+	if err != nil {
+		t.Fatalf("CHANGELOG.md not created: %v", err)
+	}
+	content := string(data)
+	if !strings.Contains(content, "## [1.0.1]") {
+		t.Errorf("expected version 1.0.1 in changelog:\n%s", content)
+	}
+	if !strings.Contains(content, "add extra to alpha") {
+		t.Errorf("expected commit message in changelog:\n%s", content)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// E2E Tests — release-all dry-run shows per-package notes
+// ---------------------------------------------------------------------------
+
+func TestE2E_ReleaseAllDryRunShowsChanges(t *testing.T) {
+	dir := setupGitProjectWithTaggedPackages(t)
+
+	// Add commits to both packages.
+	writeTestFileE2E(t, dir, "packages/alpha/change.md", "change")
+	gitAdd := exec.Command("git", "add", "-A")
+	gitAdd.Dir = dir
+	if out, err := gitAdd.CombinedOutput(); err != nil {
+		t.Fatalf("git add: %v\n%s", err, out)
+	}
+	gitCommit := exec.Command("git", "commit", "-m", "feat: alpha change")
+	gitCommit.Dir = dir
+	if out, err := gitCommit.CombinedOutput(); err != nil {
+		t.Fatalf("git commit: %v\n%s", err, out)
+	}
+
+	out, exitCode := runCos(t, dir, "release-all", "--patch", "--dry-run")
+	if exitCode != 0 {
+		t.Fatalf("expected exit 0, got %d. Output:\n%s", exitCode, out)
+	}
+
+	// Should show commit info.
+	if !strings.Contains(out, "alpha change") {
+		t.Errorf("expected commit message 'alpha change' in dry-run output:\n%s", out)
+	}
+	if !strings.Contains(out, "1 commits") || !strings.Contains(out, "(1 commits)") {
+		// Allow either format.
+		if !strings.Contains(out, "commit") {
+			t.Errorf("expected commit count in dry-run output:\n%s", out)
+		}
 	}
 }
