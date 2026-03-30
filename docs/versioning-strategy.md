@@ -61,7 +61,7 @@ What `cos release` does automatically:
 
 When you run `cos release`, all projects registered in `~/.cognitive-os/installations.json` are automatically updated to the new version. This means:
 
-- `/n1u/` or any other project using COS gets the latest rules, hooks, and skills
+- Any project using COS gets the latest rules, hooks, and skills
 - Profile filtering is applied (standard = 14 core rules)
 - No manual intervention needed
 
