@@ -22,6 +22,8 @@ const (
 	RegistryGitHubRepo RegistryType = "github-repo"
 	// RegistryDirectory searches a local directory for packages.
 	RegistryDirectory RegistryType = "directory"
+	// RegistrySkillsSh searches the skills.sh registry (skills.sh / agentskills.io).
+	RegistrySkillsSh RegistryType = "skills-sh"
 )
 
 // RegistryConfig represents a single configured package registry.
@@ -32,6 +34,7 @@ type RegistryConfig struct {
 	Org      string       `yaml:"org,omitempty"`      // for github-org
 	Repo     string       `yaml:"repo,omitempty"`     // for github-repo
 	Path     string       `yaml:"path,omitempty"`     // for directory
+	BaseURL  string       `yaml:"base_url,omitempty"` // for skills-sh (custom API URL)
 	Enabled  bool         `yaml:"enabled"`
 	Priority int          `yaml:"priority"`
 }
@@ -202,6 +205,12 @@ func searchRegistry(reg RegistryConfig, query string, limit int) ([]SearchResult
 			return nil, fmt.Errorf("directory registry %q missing path field", reg.Name)
 		}
 		return SearchLocal(reg.Path, query)
+	case RegistrySkillsSh:
+		baseURL := reg.BaseURL
+		if baseURL == "" {
+			baseURL = SkillsShDefaultBaseURL
+		}
+		return SearchSkillsSh(query, baseURL, limit)
 	default:
 		return nil, fmt.Errorf("unknown registry type %q for %q", reg.Type, reg.Name)
 	}

@@ -576,6 +576,11 @@ packages:
       enabled: true
       priority: 3
 
+    - name: skills-sh
+      type: skills-sh
+      enabled: true
+      priority: 5
+
     - name: antigravity-skills
       type: github-repo
       repo: sickn33/antigravity-awesome-skills
