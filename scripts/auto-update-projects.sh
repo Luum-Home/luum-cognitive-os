@@ -147,7 +147,13 @@ while IFS= read -r project_path; do
   echo "  UPDATING $project_name (v$project_version -> v$cos_version, mode: $project_mode)..."
 
   (
-    cd "$project_path"
+    cd "$project_path" || { echo "    ERROR: cannot cd to $project_path"; exit 1; }
+
+    # SAFETY: never run destructive ops on the COS source itself
+    if [ "$(pwd -P)" = "$(cd "$COS_SOURCE_DIR" && pwd -P)" ]; then
+      echo "    SKIPPED: project path is the COS source itself"
+      exit 0
+    fi
 
     # Remove existing COS components (same as upgrade.sh)
     [ -d ".claude/rules/cos" ] && rm -rf .claude/rules/cos
@@ -156,7 +162,7 @@ while IFS= read -r project_path; do
     [ -d ".cognitive-os/templates" ] && rm -rf .cognitive-os/templates
 
     # Re-run cos-init with original mode
-    bash "$COS_SOURCE_DIR/scripts/cos-init.sh" "--$project_mode" > /dev/null 2>&1
+    COS_SOURCE_DIR="$COS_SOURCE_DIR" bash "$COS_SOURCE_DIR/scripts/cos-init.sh" "--$project_mode" > /dev/null 2>&1
   )
 
   if [ $? -eq 0 ]; then
