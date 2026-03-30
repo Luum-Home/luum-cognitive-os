@@ -370,6 +370,89 @@ func TestSearchAllRegistries_HandlesFailedRegistryGracefully(t *testing.T) {
 	}
 }
 
+func TestSkillsShRegistryType_Recognized(t *testing.T) {
+	var rt RegistryType = "skills-sh"
+	if rt != RegistrySkillsSh {
+		t.Errorf("RegistryType %q != RegistrySkillsSh", rt)
+	}
+}
+
+func TestLoadRegistries_ReadsSkillsSh(t *testing.T) {
+	dir := t.TempDir()
+	config := `
+packages:
+  registries:
+    - name: skills-sh
+      type: skills-sh
+      enabled: true
+      priority: 5
+`
+	if err := os.WriteFile(filepath.Join(dir, "cognitive-os.yaml"), []byte(config), 0644); err != nil {
+		t.Fatalf("writing config: %v", err)
+	}
+
+	registries := LoadRegistries(dir)
+
+	if len(registries) != 1 {
+		t.Fatalf("LoadRegistries len = %d, want 1", len(registries))
+	}
+
+	if registries[0].Type != RegistrySkillsSh {
+		t.Errorf("Type = %q, want %q", registries[0].Type, RegistrySkillsSh)
+	}
+	if registries[0].Name != "skills-sh" {
+		t.Errorf("Name = %q, want %q", registries[0].Name, "skills-sh")
+	}
+	if registries[0].Priority != 5 {
+		t.Errorf("Priority = %d, want 5", registries[0].Priority)
+	}
+}
+
+func TestSearchAllRegistries_IncludesSkillsSh(t *testing.T) {
+	skillsResp := skillsShSearchResponse{
+		Skills: []skillsShSkill{
+			{ID: "react-skill", Name: "React Skill", Installs: 1000, Source: "test/repo"},
+		},
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/api/search" {
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(skillsResp)
+			return
+		}
+		// GitHub fallback.
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(githubSearchResponse{TotalCount: 0, Items: []githubSearchItem{}})
+	}))
+	defer server.Close()
+
+	original := HTTPClient
+	HTTPClient = &mockHTTPClient{server: server}
+	defer func() { HTTPClient = original }()
+
+	registries := []RegistryConfig{
+		{Name: "skills-sh", Type: RegistrySkillsSh, BaseURL: server.URL, Enabled: true, Priority: 1},
+	}
+
+	results, errs := SearchAllRegistries(registries, "react", 10)
+
+	if len(errs) != 0 {
+		t.Errorf("unexpected errors: %v", errs)
+	}
+
+	if len(results) != 1 {
+		t.Fatalf("results len = %d, want 1", len(results))
+	}
+
+	if results[0].Name != "React Skill" {
+		t.Errorf("Name = %q, want %q", results[0].Name, "React Skill")
+	}
+	if results[0].Registry != "skills-sh" {
+		t.Errorf("Registry = %q, want %q", results[0].Registry, "skills-sh")
+	}
+}
+
 func TestSearchAllRegistries_PriorityOrdering(t *testing.T) {
 	// Create two servers returning different results.
 	makeServer := func(name, owner string) *httptest.Server {
