@@ -65,6 +65,24 @@ COS works invisibly through Claude Code hooks:
 - **Security** scans for leaked credentials and vulnerabilities
 - **Cost management** routes to optimal models, prevents token waste
 
+## Keeping COS Updated
+
+Your project auto-updates when the OS releases a new version:
+
+```bash
+# In the COS repo — release triggers auto-update of all registered projects:
+cos release --patch
+
+# Or manually update a specific project:
+cd /path/to/your-project
+COS_SOURCE_DIR=/path/to/luum-agent-os cos setup --non-interactive --preset team
+```
+
+Projects are registered automatically during `cos setup`. Check registration:
+```bash
+cat ~/.cognitive-os/installations.json
+```
+
 ## Configuration
 
 Edit `cognitive-os.yaml` in your project root:
