@@ -136,6 +136,17 @@ func RunWizard(env DetectedEnv) (SetupConfig, error) {
 			env.FormatDetection(),
 	))
 
+	// Phase 1b: Show skill recommendations based on detected stack.
+	recs := RecommendSkills(env, ".")
+	if len(recs) > 0 {
+		recBoxStyle := lipgloss.NewStyle().
+			Border(lipgloss.RoundedBorder()).
+			BorderForeground(lipgloss.Color("86")).
+			Padding(0, 2).
+			MarginBottom(1)
+		fmt.Println(recBoxStyle.Render(FormatSkillRecommendations(recs)))
+	}
+
 	// Phase 2: Security profile selection.
 	var profile string
 	profileForm := huh.NewForm(
