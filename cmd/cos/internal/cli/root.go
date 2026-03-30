@@ -32,6 +32,7 @@ Commands:
   new         Create a new project with COS pre-configured
   init        Create a new cos-package.yaml
   validate    Validate cos-package.yaml in the current directory
+  add         Search and install skills in one step (search + install)
   install     Install a cos package from local path, GitHub, or URL
   remove      Remove an installed package
   list        List installed packages
