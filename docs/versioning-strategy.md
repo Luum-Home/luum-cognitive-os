@@ -38,8 +38,54 @@ git push && git push --tags
 # 6. GitHub Release (automated via scripts/create-release.sh)
 ```
 
-### Script: `scripts/create-release.sh`
-Automates steps 1-5 with interactive prompts.
+### Recommended: `cos release`
+
+The `cos release` command automates the entire release process:
+
+```bash
+cos release 0.3.0          # Create release v0.3.0
+cos release --minor         # Bump minor version
+cos release --patch         # Bump patch version
+cos release --dry-run       # Preview without executing
+cos release --check         # Validate readiness only
+```
+
+What `cos release` does automatically:
+1. Updates `VERSION` file
+2. Moves `[Unreleased]` to `[x.y.z]` in `CHANGELOG.md`
+3. Updates version in `docs/INDEX.md`
+4. Creates git commit + tag
+5. **Auto-updates all registered projects** (via `scripts/auto-update-projects.sh`)
+
+### Auto-Update of Registered Projects
+
+When you run `cos release`, all projects registered in `~/.cognitive-os/installations.json` are automatically updated to the new version. This means:
+
+- `/<consumer-codename-a>/` or any other project using COS gets the latest rules, hooks, and skills
+- Profile filtering is applied (standard = 14 core rules)
+- No manual intervention needed
+
+**How projects get registered:**
+```bash
+# During initial install:
+cos setup                    # Interactive — registers automatically
+cos setup --preset team      # Non-interactive — registers automatically
+
+# Or manually:
+bash scripts/cos-registry.sh register /path/to/project standard 0.3.0 my-project /path/to/cos
+```
+
+**When auto-update triggers:**
+
+| Action | Updates projects? | Mechanism |
+|--------|------------------|-----------|
+| `cos release` | ✅ Yes | Runs auto-update-projects.sh after release |
+| `git pull` on COS repo | ✅ Yes | post-merge git hook |
+| `git push` on COS repo | ❌ No | No post-push hook in Git |
+| Manual | ✅ Yes | `bash scripts/auto-update-projects.sh` |
+
+### Legacy: `scripts/create-release.sh`
+Still available for interactive release prompts, but `cos release` is preferred.
 
 ## Package Versioning
 

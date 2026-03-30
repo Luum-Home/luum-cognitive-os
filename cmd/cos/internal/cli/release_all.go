@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 
@@ -18,13 +19,14 @@ import (
 )
 
 var (
-	releaseAllPatch   bool
-	releaseAllMinor   bool
-	releaseAllMajor   bool
-	releaseAllDryRun  bool
-	releaseAllYes     bool
-	releaseAllInclude string
-	releaseAllExclude string
+	releaseAllPatch     bool
+	releaseAllMinor     bool
+	releaseAllMajor     bool
+	releaseAllDryRun    bool
+	releaseAllYes       bool
+	releaseAllInclude   string
+	releaseAllExclude   string
+	releaseAllChangelog bool
 )
 
 var releaseAllCmd = &cobra.Command{
@@ -41,7 +43,8 @@ Examples:
   cos release-all --dry-run        Show what would happen
   cos release-all --include "quality-gates,trust-system"
   cos release-all --exclude "sdd-compound"
-  cos release-all --patch --yes    Skip confirmation prompt`,
+  cos release-all --patch --yes    Skip confirmation prompt
+  cos release-all --patch --changelog  Write per-package CHANGELOG.md files`,
 	RunE: runReleaseAll,
 }
 
@@ -53,6 +56,7 @@ func init() {
 	releaseAllCmd.Flags().BoolVar(&releaseAllYes, "yes", false, "Skip confirmation prompt")
 	releaseAllCmd.Flags().StringVar(&releaseAllInclude, "include", "", "Comma-separated package names to include (substring match)")
 	releaseAllCmd.Flags().StringVar(&releaseAllExclude, "exclude", "", "Comma-separated package names to exclude (substring match)")
+	releaseAllCmd.Flags().BoolVar(&releaseAllChangelog, "changelog", false, "Write per-package CHANGELOG.md files")
 	rootCmd.AddCommand(releaseAllCmd)
 }
 
@@ -62,7 +66,8 @@ type releaseAllPlan struct {
 	OldVersion string
 	NewVersion string
 	TagName    string
-	PkgDir     string // relative path from project root, e.g. "packages/quality-gates"
+	PkgDir     string   // relative path from project root, e.g. "packages/quality-gates"
+	Commits    []string // commit messages since last tag
 }
 
 func runReleaseAll(cmd *cobra.Command, args []string) error {
@@ -131,12 +136,17 @@ func runReleaseAll(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("finding directory for %s: %w", s.Name, err)
 		}
 
+		// Fetch commit messages for this package since last tag.
+		lastTag := scopedTagName(s.Name, s.Version)
+		commits, _ := getPackageCommits(projectRoot, pkgDir, lastTag)
+
 		plans = append(plans, releaseAllPlan{
 			Name:       s.Name,
 			OldVersion: s.Version,
 			NewVersion: newVersion,
 			TagName:    scopedTagName(s.Name, newVersion),
 			PkgDir:     pkgDir,
+			Commits:    commits,
 		})
 	}
 
@@ -145,16 +155,23 @@ func runReleaseAll(cmd *cobra.Command, args []string) error {
 	fmt.Printf("%s Release plan (%d packages):\n\n", ui.IconInfo, len(plans))
 
 	for _, p := range plans {
-		fmt.Printf("  %s  %s  %s -> %s  (tag: %s)\n",
+		commitInfo := ""
+		if len(p.Commits) > 0 {
+			commitInfo = fmt.Sprintf("  (%d commits)", len(p.Commits))
+		}
+		fmt.Printf("  %s  %s  %s -> %s  (tag: %s)%s\n",
 			ui.IconArrow,
 			ui.HeaderStyle.Render(p.Name),
 			p.OldVersion,
 			ui.SuccessStyle.Render(p.NewVersion),
 			p.TagName,
+			commitInfo,
 		)
 	}
 
 	if releaseAllDryRun {
+		// Show per-package changelogs in dry-run mode.
+		printPackageChangelogs(plans)
 		fmt.Println()
 		fmt.Println(ui.MutedStyle.Render("  No changes made (dry run)"))
 		return nil
@@ -211,8 +228,28 @@ func runReleaseAll(cmd *cobra.Command, args []string) error {
 		fmt.Printf("  %s Tagged: %s\n", ui.IconCheck, p.TagName)
 	}
 
+	// Write per-package CHANGELOG.md files if --changelog is set.
+	if releaseAllChangelog {
+		for _, p := range plans {
+			changelogPath := filepath.Join(projectRoot, p.PkgDir, "CHANGELOG.md")
+			if err := writePackageChangelog(changelogPath, p.Name, p.NewVersion, p.Commits); err != nil {
+				fmt.Printf("  %s Failed to write changelog for %s: %v\n", ui.IconWarning, p.Name, err)
+			}
+		}
+		fmt.Printf("\n  %s Per-package changelogs written to packages/*/CHANGELOG.md\n", ui.IconCheck)
+	}
+
+	// Print summary report with commit counts.
 	fmt.Println()
-	fmt.Printf("%s Released %d packages.\n", ui.IconSuccess, len(plans))
+	fmt.Printf("%s Released %d packages:\n", ui.IconSuccess, len(plans))
+	for _, p := range plans {
+		commitInfo := ""
+		if len(p.Commits) > 0 {
+			commitInfo = fmt.Sprintf("  (%d commits)", len(p.Commits))
+		}
+		fmt.Printf("  %-40s %s -> %s%s\n", p.Name, p.OldVersion, p.NewVersion, commitInfo)
+	}
+	fmt.Println()
 	fmt.Printf("  Push with: git push && git push --tags\n")
 
 	return nil
@@ -317,6 +354,118 @@ func updateManifestVersion(path, newVersion string) error {
 	}
 
 	return os.WriteFile(path, out, 0644)
+}
+
+// getPackageCommits returns commit messages for a specific package since a given tag.
+// If the tag does not exist, it returns all commits affecting the package directory.
+func getPackageCommits(projectRoot, pkgDir, lastTag string) ([]string, error) {
+	var args []string
+	if lastTag != "" && gitTagExistsInDir(projectRoot, lastTag) {
+		args = []string{"log", "--oneline", "--no-decorate", lastTag + "..HEAD", "--", pkgDir}
+	} else {
+		args = []string{"log", "--oneline", "--no-decorate", "--", pkgDir}
+	}
+
+	cmd := exec.Command("git", args...)
+	cmd.Dir = projectRoot
+	out, err := cmd.Output()
+	if err != nil {
+		return nil, fmt.Errorf("git log: %w", err)
+	}
+
+	raw := strings.TrimSpace(string(out))
+	if raw == "" {
+		return nil, nil
+	}
+
+	var commits []string
+	for _, line := range strings.Split(raw, "\n") {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+		// Strip the short hash prefix (first word).
+		if idx := strings.IndexByte(line, ' '); idx >= 0 {
+			commits = append(commits, strings.TrimSpace(line[idx+1:]))
+		} else {
+			commits = append(commits, line)
+		}
+	}
+	return commits, nil
+}
+
+// generatePackageChangelog formats a list of commits as a markdown changelog
+// section for a given package version.
+func generatePackageChangelog(name, version string, commits []string) string {
+	today := time.Now().Format("2006-01-02")
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf("## [%s] - %s\n", version, today))
+	if len(commits) == 0 {
+		sb.WriteString("- Version bump (no notable changes)\n")
+	} else {
+		for _, c := range commits {
+			sb.WriteString(fmt.Sprintf("- %s\n", c))
+		}
+	}
+	return sb.String()
+}
+
+// writePackageChangelog creates or prepends to a CHANGELOG.md file in the package directory.
+func writePackageChangelog(path, name, version string, commits []string) error {
+	newSection := generatePackageChangelog(name, version, commits)
+
+	existing, err := os.ReadFile(path)
+	if err != nil {
+		// File does not exist; create from scratch.
+		header := fmt.Sprintf("# Changelog — %s\n\n", name)
+		return os.WriteFile(path, []byte(header+newSection), 0644)
+	}
+
+	// Insert the new section after the first heading line.
+	content := string(existing)
+	// Find the position after the first line (the # heading).
+	if idx := strings.Index(content, "\n"); idx >= 0 {
+		// Insert after the heading + a blank line.
+		before := content[:idx+1]
+		after := content[idx+1:]
+		// Skip any leading blank lines after the heading.
+		trimmedAfter := strings.TrimLeft(after, "\n")
+		updated := before + "\n" + newSection + "\n" + trimmedAfter
+		return os.WriteFile(path, []byte(updated), 0644)
+	}
+
+	// Fallback: just prepend.
+	return os.WriteFile(path, []byte(content+"\n"+newSection), 0644)
+}
+
+// printPackageChangelogs prints per-package commit details to stdout.
+func printPackageChangelogs(plans []releaseAllPlan) {
+	hasCommits := false
+	for _, p := range plans {
+		if len(p.Commits) > 0 {
+			hasCommits = true
+			break
+		}
+	}
+	if !hasCommits {
+		return
+	}
+
+	fmt.Println()
+	fmt.Printf("%s Per-package changes:\n", ui.IconInfo)
+	for _, p := range plans {
+		if len(p.Commits) == 0 {
+			continue
+		}
+		fmt.Printf("\n  %s %s -> %s\n",
+			ui.HeaderStyle.Render(p.Name),
+			p.OldVersion,
+			ui.SuccessStyle.Render(p.NewVersion),
+		)
+		for _, c := range p.Commits {
+			fmt.Printf("    %s %s\n", ui.IconBullet, c)
+		}
+	}
 }
 
 // buildReleaseAllCommitMsg creates a commit message summarizing all package releases.
