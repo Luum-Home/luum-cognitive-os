@@ -30,6 +30,15 @@
         ]
       },
       {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/release-guard.sh\""
+          }
+        ]
+      },
+      {
         "matcher": "Read",
         "hooks": [
           {
