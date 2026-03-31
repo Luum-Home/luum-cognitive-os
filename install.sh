@@ -193,53 +193,20 @@ prepare_source() {
 
 prepare_source
 
-if [ ! -d "$TEMP_DIR/.cognitive-os" ]; then
-  echo "Error: .cognitive-os/ not found in source."
+# ── Delegate to cos-init.sh ──────────────────────────────────────────
+# cos-init.sh handles: rules, hooks, skills, templates, settings.json,
+# cognitive-os.yaml, CLAUDE.md template, and registry registration.
+# It uses generate-project-settings.sh for correct hook paths and
+# installs to namespaced cos/ subdirectories.
+COS_INIT="$TEMP_DIR/scripts/cos-init.sh"
+
+if [ ! -f "$COS_INIT" ]; then
+  echo "Error: cos-init.sh not found in source."
   exit 1
 fi
 
-# Install .cognitive-os/
-cp -r "$TEMP_DIR/.cognitive-os" "$TARGET_DIR"
-
-# Copy cognitive-os.yaml if not present
-if [ ! -f "cognitive-os.yaml" ] && [ -f "$TEMP_DIR/cognitive-os.yaml" ]; then
-  cp "$TEMP_DIR/cognitive-os.yaml" cognitive-os.yaml
-fi
-
-# ── Namespace rules under .claude/rules/cos/ ──────────────────────────
-# COS rules go into a cos/ subdirectory to avoid mixing with project rules.
-if [ -d "$TEMP_DIR/rules" ]; then
-  mkdir -p ".claude/rules/cos"
-  for rule in "$TEMP_DIR"/rules/*.md; do
-    [ -f "$rule" ] || continue
-    cp "$rule" ".claude/rules/cos/$(basename "$rule")"
-  done
-  echo "Rules installed to .claude/rules/cos/"
-fi
-
-# ── Merge or create .claude/settings.json ─────────────────────────────
-# COS hooks reference (generated from the repo's .claude/settings.json)
-COS_SETTINGS="$TEMP_DIR/.claude/settings.json"
-
-if [ -f ".claude/settings.json" ] && [ -f "$COS_SETTINGS" ]; then
-  # Existing settings.json — merge COS hooks without losing project hooks
-  if [ "$HAS_JQ" = "true" ] && [ -f "$TEMP_DIR/scripts/merge-settings.sh" ]; then
-    echo "Merging COS hooks into existing .claude/settings.json..."
-    MERGED=$(mktemp)
-    bash "$TEMP_DIR/scripts/merge-settings.sh" ".claude/settings.json" "$COS_SETTINGS" "$MERGED"
-    mv "$MERGED" ".claude/settings.json"
-    echo "Settings merged successfully."
-  else
-    echo "Warning: Cannot merge settings (jq or merge script missing)."
-    echo "         Your existing .claude/settings.json was preserved."
-    echo "         You may need to manually add COS hooks."
-  fi
-elif [ -f "$COS_SETTINGS" ]; then
-  # No existing settings.json — copy COS one as-is
-  mkdir -p ".claude"
-  cp "$COS_SETTINGS" ".claude/settings.json"
-  echo "Created .claude/settings.json with COS hooks."
-fi
+echo "Running cos-init.sh..."
+COS_SOURCE_DIR="$TEMP_DIR" bash "$COS_INIT" --standard
 
 # ── Install CLAUDE.md template if not present ─────────────────────────
 if [ ! -f ".claude/CLAUDE.md" ]; then
@@ -257,14 +224,11 @@ echo ""
 echo "Cognitive OS installed successfully!"
 echo ""
 echo "Project structure:"
-echo "  .cognitive-os/       — Cognitive OS core (skills, hooks, templates)"
-echo "  .claude/rules/cos/   — COS rules (namespaced, won't conflict with yours)"
-echo "  .claude/rules/*.md   — Your project rules (untouched)"
-echo "  .claude/settings.json — Hooks (merged with your existing hooks)"
+echo "  .cognitive-os/hooks/cos/     — COS hooks (namespaced)"
+echo "  .cognitive-os/skills/cos/    — COS skills (namespaced)"
+echo "  .cognitive-os/templates/cos/ — COS templates (namespaced)"
+echo "  .claude/rules/cos/           — COS rules (namespaced)"
+echo "  .claude/settings.json        — Hooks (project + COS merged)"
 echo ""
-echo "Next steps:"
-echo "  1. Open Claude Code: claude"
-echo "  2. Run: /cognitive-os-init"
-echo "  3. (Optional) Start infrastructure:"
-echo "     docker compose -f .cognitive-os/docker-compose.cognitive-os.yml up -d"
+echo "Your existing .claude/ configuration is preserved."
 echo ""
