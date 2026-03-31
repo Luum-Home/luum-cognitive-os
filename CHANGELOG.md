@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.3.3] - 2026-03-31
+
+### Fixed
+- CRITICAL: detect and replace .cognitive-os symlinks before rm -rf (root cause of 228-file deletion)
+- Namespace COS components under cos/ subdirectory to preserve project-custom hooks/skills/templates
+
+### Added
+- 13 integration safety tests for auto-update and cos-init
+
 ## [0.3.2] - 2026-03-30
 
 ## [0.3.1] - 2026-03-30
