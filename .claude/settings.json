@@ -160,6 +160,17 @@
         ]
       }
     ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/background-agent-reminder.sh\""
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": "",
