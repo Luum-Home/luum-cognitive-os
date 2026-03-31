@@ -34,11 +34,11 @@ class TestModelUpgradeShortNames:
 
     def test_haiku_upgrades_to_sonnet(self, detector: EscalationDetector) -> None:
         result = detector.suggest_model_upgrade("haiku", "loop_detected")
-        assert result == "sonnet"
+        assert result == "claude-sonnet-4"
 
     def test_sonnet_upgrades_to_opus(self, detector: EscalationDetector) -> None:
         result = detector.suggest_model_upgrade("sonnet", "error_repeat")
-        assert result == "opus"
+        assert result == "claude-opus-4-6"
 
     def test_opus_returns_none_for_human_escalation(
         self, detector: EscalationDetector
@@ -112,7 +112,7 @@ class TestModelUpgradeEdgeCases:
         ]
         for etype in types:
             result = detector.suggest_model_upgrade("sonnet", etype)
-            assert result == "opus", f"Failed for escalation type: {etype}"
+            assert result == "claude-opus-4-6", f"Failed for escalation type: {etype}"
 
 
 # ---------------------------------------------------------------------------
@@ -134,7 +134,7 @@ class TestModelUpgradeIntegration:
         assert signal.severity == "recommend"
 
         upgrade = d.suggest_model_upgrade("sonnet", signal.type)
-        assert upgrade == "opus"
+        assert upgrade == "claude-opus-4-6"
 
     def test_no_upgrade_for_suggest_severity(self) -> None:
         """When severity is only 'suggest', the caller decides whether to upgrade.
@@ -149,7 +149,7 @@ class TestModelUpgradeIntegration:
         # Method still returns a valid upgrade -- severity gating is the
         # caller's responsibility.
         upgrade = d.suggest_model_upgrade("haiku", signal.type)
-        assert upgrade == "sonnet"
+        assert upgrade == "claude-sonnet-4"
 
     def test_opus_stuck_recommends_human(self) -> None:
         """When opus is stuck, suggest_model_upgrade returns None,
@@ -182,10 +182,14 @@ class TestNormaliseModel:
         assert EscalationDetector._normalise_model("claude-sonnet-4") == "sonnet"
         assert EscalationDetector._normalise_model("claude-opus-4-6") == "opus"
 
+    def test_non_anthropic_returns_family(self) -> None:
+        # Non-Anthropic models now return their family from the catalog.
+        assert EscalationDetector._normalise_model("gpt-4o") == "gpt4"
+        assert EscalationDetector._normalise_model("llama-3-70b") == "llama"
+
     def test_unknown_returns_none(self) -> None:
-        assert EscalationDetector._normalise_model("gpt-4o") is None
-        assert EscalationDetector._normalise_model("llama-3-70b") is None
         assert EscalationDetector._normalise_model("") is None
+        assert EscalationDetector._normalise_model("totally-unknown-model") is None
 
     def test_case_insensitive(self) -> None:
         assert EscalationDetector._normalise_model("HAIKU") == "haiku"

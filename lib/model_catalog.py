@@ -64,9 +64,9 @@ class ModelEntry:
 # Catalog data
 # ---------------------------------------------------------------------------
 
-# IMPORTANT: prices must stay in sync with lib/cost_dashboard.py MODEL_PRICES
-# and lib/model_router.py MODEL_CAPABILITIES.  When providers change pricing,
-# update HERE first, then migrate the consumers.
+# Single source of truth for all model pricing and capabilities.
+# Consumer modules (cost_dashboard, model_router, workload_scheduler, etc.)
+# derive their dicts from this catalog -- no manual sync needed.
 # Last verified: 2026-03-27
 
 _ENTRIES: Tuple[ModelEntry, ...] = (

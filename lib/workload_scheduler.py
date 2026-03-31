@@ -28,21 +28,19 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Tuple
 
+from lib.model_catalog import ModelCatalog
 from lib.rate_limiter import (
     VALID_ACTIONS,
     RateLimitConfig,
     RateLimiter,
 )
 
-# Model cost reference (per 1M tokens, input price used for estimation)
+# Model cost reference (per 1M tokens) — derived from ModelCatalog.
+# Kept as a module-level dict for backward compatibility with external importers.
 MODEL_COSTS: Dict[str, Tuple[float, float]] = {
-    "opus": (15.0, 75.0),
-    "claude-opus-4-6": (15.0, 75.0),
-    "sonnet": (3.0, 15.0),
-    "claude-sonnet-4": (3.0, 15.0),
-    "haiku": (0.25, 1.25),
-    "claude-haiku-3.5": (0.25, 1.25),
-    "openrouter/free": (0.0, 0.0),
+    alias: (ModelCatalog.get(alias).input_price_per_m,
+            ModelCatalog.get(alias).output_price_per_m)
+    for alias in ModelCatalog.all_aliases()
 }
 
 # Default token split assumption: 40% input, 60% output
@@ -109,7 +107,7 @@ class SchedulePlan:
 def estimate_task_cost(estimated_tokens: int, model: str = "sonnet") -> float:
     """Estimate the USD cost of a task from token count and model.
 
-    Uses the default input/output ratio (40/60) and published model prices.
+    Uses the default input/output ratio (40/60) and ModelCatalog pricing.
 
     Args:
         estimated_tokens: Total tokens (input + output).
@@ -118,10 +116,12 @@ def estimate_task_cost(estimated_tokens: int, model: str = "sonnet") -> float:
     Returns:
         Estimated cost in USD.
     """
-    input_price, output_price = MODEL_COSTS.get(model, MODEL_COSTS["sonnet"])
-    input_tokens = estimated_tokens * DEFAULT_INPUT_RATIO
-    output_tokens = estimated_tokens * DEFAULT_OUTPUT_RATIO
-    cost = (input_tokens * input_price + output_tokens * output_price) / 1_000_000
+    input_tokens = int(estimated_tokens * DEFAULT_INPUT_RATIO)
+    output_tokens = int(estimated_tokens * DEFAULT_OUTPUT_RATIO)
+    try:
+        cost = ModelCatalog.estimate_cost(model, input_tokens, output_tokens)
+    except KeyError:
+        cost = ModelCatalog.estimate_cost("sonnet", input_tokens, output_tokens)
     return round(cost, 4)
 
 

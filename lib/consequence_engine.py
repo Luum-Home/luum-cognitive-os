@@ -72,13 +72,7 @@ _DEFAULT_THRESHOLDS: Dict[str, Any] = {
     "promote_streak_required": 5,
 }
 
-# Model downgrade chain used by DEGRADE actions
-_MODEL_DOWNGRADE: Dict[str, str] = {
-    "opus": "sonnet",
-    "claude-opus-4-6": "claude-sonnet-4",
-    "sonnet": "haiku",
-    "claude-sonnet-4": "claude-haiku-3.5",
-}
+from lib.model_catalog import ModelCatalog
 
 
 # ---------------------------------------------------------------------------
@@ -349,10 +343,18 @@ class ConsequenceEngine:
 
     def _suggest_model_downgrade(self, target: str) -> str:
         """Suggest a model downgrade for the target."""
-        # Check routing table for current model
-        for original, downgraded in _MODEL_DOWNGRADE.items():
-            if original in target.lower() or target.lower() in original:
-                return f"downgrade {original} -> {downgraded}"
+        try:
+            downgraded = ModelCatalog.downgrade(target)
+            if downgraded is not None:
+                return f"downgrade {target} -> {downgraded}"
+        except KeyError:
+            # target might not be a model name but a skill/agent name;
+            # try extracting a model family keyword
+            for family in ("opus", "sonnet", "haiku"):
+                if family in target.lower():
+                    down = ModelCatalog.downgrade(family)
+                    if down is not None:
+                        return f"downgrade {family} -> {down}"
         return "use cheaper model + require human review"
 
     # -- queries -----------------------------------------------------------
