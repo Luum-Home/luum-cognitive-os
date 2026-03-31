@@ -17,19 +17,14 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-# Model prices per 1M tokens (USD) — mirrors lib/model_router.py
+from lib.model_catalog import ModelCatalog
+
+# Model prices per 1M tokens (USD) — derived from ModelCatalog (single source of truth).
+# Kept as a module-level dict for backward compatibility with external importers.
 MODEL_PRICES: Dict[str, Dict[str, float]] = {
-    "opus": {"input": 15.00, "output": 75.00},
-    "claude-opus-4-6": {"input": 15.00, "output": 75.00},
-    "sonnet": {"input": 3.00, "output": 15.00},
-    "claude-sonnet-4": {"input": 3.00, "output": 15.00},
-    "haiku": {"input": 0.25, "output": 1.25},
-    "claude-haiku-3.5": {"input": 0.25, "output": 1.25},
-    "gpt-4o": {"input": 2.50, "output": 10.00},
-    "gemini-2.5-pro": {"input": 1.25, "output": 5.00},
-    "deepseek-r1": {"input": 0.55, "output": 2.19},
-    "llama-3-70b": {"input": 0.0, "output": 0.0},
-    "qwen-3-32b": {"input": 0.0, "output": 0.0},
+    alias: {"input": ModelCatalog.get(alias).input_price_per_m,
+            "output": ModelCatalog.get(alias).output_price_per_m}
+    for alias in ModelCatalog.all_aliases()
 }
 
 # Default daily budget (USD) — can be overridden by cognitive-os.yaml
@@ -123,13 +118,13 @@ def _compute_event_cost(ev: dict) -> float:
     if "estimated_cost_usd" in ev:
         return float(ev["estimated_cost_usd"])
     model = ev.get("model", "sonnet")
-    prices = MODEL_PRICES.get(model, MODEL_PRICES.get("sonnet", {}))
     tokens_in = int(ev.get("input_tokens", 0))
     tokens_out = int(ev.get("output_tokens", 0))
-    return (
-        tokens_in * prices.get("input", 3.0) / 1_000_000
-        + tokens_out * prices.get("output", 15.0) / 1_000_000
-    )
+    try:
+        return ModelCatalog.estimate_cost(model, tokens_in, tokens_out)
+    except KeyError:
+        # Fallback to sonnet pricing for unknown models
+        return ModelCatalog.estimate_cost("sonnet", tokens_in, tokens_out)
 
 
 def _model_breakdown(events: List[dict]) -> Dict[str, float]:
@@ -276,14 +271,12 @@ class CostDashboard:
         Assumes a 60/40 split between input and output tokens when only
         a total token count is provided.
         """
-        prices = MODEL_PRICES.get(model, MODEL_PRICES.get("sonnet", {}))
         input_tokens = int(estimated_tokens * 0.6)
         output_tokens = int(estimated_tokens * 0.4)
-        cost = (
-            input_tokens * prices.get("input", 3.0) / 1_000_000
-            + output_tokens * prices.get("output", 15.0) / 1_000_000
-        )
-        return round(cost, 6)
+        try:
+            return ModelCatalog.estimate_cost(model, input_tokens, output_tokens)
+        except KeyError:
+            return ModelCatalog.estimate_cost("sonnet", input_tokens, output_tokens)
 
     def get_efficiency_metrics(self) -> Dict:
         """Token efficiency analysis.
@@ -512,11 +505,10 @@ def record_cost_event(
         success: Whether the action completed successfully.
         metrics_path: Path to the JSONL file.
     """
-    prices = MODEL_PRICES.get(model, MODEL_PRICES.get("sonnet", {}))
-    cost = (
-        tokens_in * prices.get("input", 3.0) / 1_000_000
-        + tokens_out * prices.get("output", 15.0) / 1_000_000
-    )
+    try:
+        cost = ModelCatalog.estimate_cost(model, tokens_in, tokens_out)
+    except KeyError:
+        cost = ModelCatalog.estimate_cost("sonnet", tokens_in, tokens_out)
 
     event = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
