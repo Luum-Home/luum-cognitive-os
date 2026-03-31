@@ -173,11 +173,28 @@ while IFS= read -r project_path; do
       mkdir -p ".claude"
     fi
 
-    # Remove existing COS components (same as upgrade.sh)
+    # Remove ONLY COS-managed components (namespaced under cos/).
+    # Project-specific hooks/skills/templates outside cos/ are preserved.
     [ -d ".claude/rules/cos" ] && rm -rf .claude/rules/cos
-    [ -d ".cognitive-os/hooks" ] && rm -rf .cognitive-os/hooks
-    [ -d ".cognitive-os/skills" ] && rm -rf .cognitive-os/skills
-    [ -d ".cognitive-os/templates" ] && rm -rf .cognitive-os/templates
+    [ -d ".cognitive-os/hooks/cos" ] && rm -rf .cognitive-os/hooks/cos
+    [ -d ".cognitive-os/skills/cos" ] && rm -rf .cognitive-os/skills/cos
+    [ -d ".cognitive-os/templates/cos" ] && rm -rf .cognitive-os/templates/cos
+
+    # Migration: if old flat layout exists (no cos/ subfolder), clean it.
+    # Detect by checking for install-meta.json which indicates a COS installation.
+    if [ -f ".cognitive-os/install-meta.json" ]; then
+      # Old layout: hooks directly in .cognitive-os/hooks/ (not namespaced)
+      # Only clean if cos/ subfolder doesn't exist (hasn't been migrated yet)
+      if [ -d ".cognitive-os/hooks" ] && [ ! -d ".cognitive-os/hooks/cos" ]; then
+        rm -rf .cognitive-os/hooks
+      fi
+      if [ -d ".cognitive-os/skills" ] && [ ! -d ".cognitive-os/skills/cos" ]; then
+        rm -rf .cognitive-os/skills
+      fi
+      if [ -d ".cognitive-os/templates" ] && [ ! -d ".cognitive-os/templates/cos" ]; then
+        rm -rf .cognitive-os/templates
+      fi
+    fi
 
     # Re-run cos-init with original mode
     COS_SOURCE_DIR="$COS_SOURCE_DIR" bash "$COS_SOURCE_DIR/scripts/cos-init.sh" "--$project_mode" > /dev/null 2>&1
