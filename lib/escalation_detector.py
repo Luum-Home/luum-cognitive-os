@@ -510,27 +510,6 @@ class EscalationDetector:
     # Model upgrade suggestion
     # ------------------------------------------------------------------
 
-    # Upgrade chain: cheaper model stuck -> suggest the next tier up.
-    # Opus stuck -> human escalation (no higher model available).
-    _MODEL_UPGRADE_CHAIN: Dict[str, str] = {
-        "haiku": "sonnet",
-        "claude-haiku-3.5": "claude-sonnet-4",
-        "sonnet": "opus",
-        "claude-sonnet-4": "claude-opus-4-6",
-    }
-
-    # Model aliases for normalisation (short name -> canonical).
-    _MODEL_ALIASES: Dict[str, str] = {
-        "haiku": "haiku",
-        "claude-haiku-3.5": "haiku",
-        "claude-haiku-3-5": "haiku",
-        "sonnet": "sonnet",
-        "claude-sonnet-4": "sonnet",
-        "opus": "opus",
-        "claude-opus-4-6": "opus",
-        "claude-opus-4": "opus",
-    }
-
     def suggest_model_upgrade(
         self,
         current_model: str,
@@ -541,6 +520,8 @@ class EscalationDetector:
         Called when an escalation signal with severity >= "recommend" is
         detected. Returns the suggested model to upgrade to, or ``None``
         when the only recourse is human escalation (i.e. already on opus).
+
+        Uses ``ModelCatalog.upgrade()`` from the centralized catalog.
 
         Args:
             current_model: The model currently running the agent
@@ -553,24 +534,13 @@ class EscalationDetector:
             current model is already the highest tier (opus) and human
             escalation is the only option.
         """
-        normalised = self._normalise_model(current_model)
+        from lib.model_catalog import ModelCatalog
 
-        # If already on opus (or unknown/unrecognised), no model upgrade
-        # can help -- recommend human escalation.
-        if normalised == "opus" or normalised is None:
+        try:
+            return ModelCatalog.upgrade(current_model)
+        except KeyError:
+            # Model not recognised in the catalog — no upgrade possible.
             return None
-
-        # Look up upgrade in the chain using both short and canonical names.
-        upgrade = self._MODEL_UPGRADE_CHAIN.get(current_model)
-        if upgrade:
-            return upgrade
-
-        # Try with the short alias.
-        short = self._MODEL_ALIASES.get(current_model.lower())
-        if short:
-            return self._MODEL_UPGRADE_CHAIN.get(short)
-
-        return None
 
     @classmethod
     def _normalise_model(cls, model: str) -> Optional[str]:
@@ -578,7 +548,12 @@ class EscalationDetector:
 
         Returns None if the model is not recognised.
         """
-        return cls._MODEL_ALIASES.get(model.lower())
+        from lib.model_catalog import ModelCatalog
+
+        try:
+            return ModelCatalog.family(model)
+        except KeyError:
+            return None
 
     # ------------------------------------------------------------------
     # Helpers
