@@ -506,6 +506,84 @@ class EscalationDetector:
     # Helpers
     # ------------------------------------------------------------------
 
+    # ------------------------------------------------------------------
+    # Model upgrade suggestion
+    # ------------------------------------------------------------------
+
+    # Upgrade chain: cheaper model stuck -> suggest the next tier up.
+    # Opus stuck -> human escalation (no higher model available).
+    _MODEL_UPGRADE_CHAIN: Dict[str, str] = {
+        "haiku": "sonnet",
+        "claude-haiku-3.5": "claude-sonnet-4",
+        "sonnet": "opus",
+        "claude-sonnet-4": "claude-opus-4-6",
+    }
+
+    # Model aliases for normalisation (short name -> canonical).
+    _MODEL_ALIASES: Dict[str, str] = {
+        "haiku": "haiku",
+        "claude-haiku-3.5": "haiku",
+        "claude-haiku-3-5": "haiku",
+        "sonnet": "sonnet",
+        "claude-sonnet-4": "sonnet",
+        "opus": "opus",
+        "claude-opus-4-6": "opus",
+        "claude-opus-4": "opus",
+    }
+
+    def suggest_model_upgrade(
+        self,
+        current_model: str,
+        escalation_type: str,
+    ) -> Optional[str]:
+        """Suggest a model upgrade when escalation is detected.
+
+        Called when an escalation signal with severity >= "recommend" is
+        detected. Returns the suggested model to upgrade to, or ``None``
+        when the only recourse is human escalation (i.e. already on opus).
+
+        Args:
+            current_model: The model currently running the agent
+                (e.g. "sonnet", "claude-sonnet-4", "haiku").
+            escalation_type: The type of escalation signal that triggered
+                the suggestion (e.g. "loop_detected", "error_repeat").
+
+        Returns:
+            The suggested model name to upgrade to, or ``None`` if the
+            current model is already the highest tier (opus) and human
+            escalation is the only option.
+        """
+        normalised = self._normalise_model(current_model)
+
+        # If already on opus (or unknown/unrecognised), no model upgrade
+        # can help -- recommend human escalation.
+        if normalised == "opus" or normalised is None:
+            return None
+
+        # Look up upgrade in the chain using both short and canonical names.
+        upgrade = self._MODEL_UPGRADE_CHAIN.get(current_model)
+        if upgrade:
+            return upgrade
+
+        # Try with the short alias.
+        short = self._MODEL_ALIASES.get(current_model.lower())
+        if short:
+            return self._MODEL_UPGRADE_CHAIN.get(short)
+
+        return None
+
+    @classmethod
+    def _normalise_model(cls, model: str) -> Optional[str]:
+        """Normalise a model identifier to a short name (haiku/sonnet/opus).
+
+        Returns None if the model is not recognised.
+        """
+        return cls._MODEL_ALIASES.get(model.lower())
+
+    # ------------------------------------------------------------------
+    # Helpers
+    # ------------------------------------------------------------------
+
     @staticmethod
     def _severity_from_count(count: int, threshold: int) -> str:
         """Derive severity from how far count exceeds threshold."""
