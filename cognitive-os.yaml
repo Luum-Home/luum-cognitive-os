@@ -679,9 +679,22 @@ agent_communication:
     collision_window_seconds: 30
 
 sdd:
+  phases:
+    explore:  { model: sonnet, max_cost: 0.50 }
+    propose:  { model: opus,   max_cost: 1.00 }
+    spec:     { model: sonnet, max_cost: 0.50 }
+    design:   { model: opus,   max_cost: 1.00 }
+    tasks:    { model: sonnet, max_cost: 0.50 }
+    apply:    { model: sonnet, max_cost: 0.50 }
+    verify:   { model: sonnet, max_cost: 0.50 }
+    archive:  { model: haiku,  max_cost: 0.10 }
   fast_path:
     enabled: true
-    model_threshold: opus  # Models at or above this tier use fast path (explore→propose→apply→verify→archive)
+    model_threshold: opus  # Models at or above this tier use model-fast-path (explore→propose→apply→verify→archive)
+    # /sdd-ff fast-forward pipeline — runs all planning phases without explore/apply/verify/archive
+    phases: [propose, spec, design, tasks]
+    parallel:
+      - [spec, design]  # spec and design can run in parallel after propose completes
 
 paperclip:
   enabled: true
