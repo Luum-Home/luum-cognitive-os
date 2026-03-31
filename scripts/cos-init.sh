@@ -97,7 +97,7 @@ echo ""
 
 # Minimal: 5 core rules
 MINIMAL_RULES="trust-score acceptance-criteria closed-loop-prompts definition-of-done agent-quality"
-MINIMAL_HOOKS="error-learning session-init session-cleanup"
+MINIMAL_HOOKS="error-learning error-pipeline result-truncator session-init session-cleanup"
 
 # Standard: minimal + more rules and hooks
 STANDARD_RULES="$MINIMAL_RULES phase-aware-agents model-routing context-management fault-tolerance
@@ -107,7 +107,10 @@ STANDARD_RULES="$MINIMAL_RULES phase-aware-agents model-routing context-manageme
 STANDARD_HOOKS="$MINIMAL_HOOKS clarification-gate blast-radius scope-proportionality
   error-pattern-detector auto-refine auto-verify completeness-check dod-gate
   trust-score-validator skill-metrics-tracker inject-phase-context stack-detector
-  pre-compaction-flush"
+  pre-compaction-flush rate-limiter large-file-advisor secret-detector content-policy
+  doc-sync-detector auto-checkpoint claim-validator completion-gate
+  clarification-interceptor agent-checkpoint
+  session-learning crash-recovery teammate-idle task-created task-completed"
 STANDARD_SKILLS="sdd-explore sdd-propose sdd-spec sdd-design sdd-tasks sdd-apply
   sdd-verify plan-feature systematic-debugging verification-before-completion"
 
