@@ -138,6 +138,8 @@ class TestCosInitSettingsGeneration:
         """Run cos-init.sh in a directory and return the generated settings."""
         env = os.environ.copy()
         env["COS_SOURCE_DIR"] = str(PROJECT_ROOT)
+        # Isolate registry to prevent polluting ~/.cognitive-os/installations.json
+        env["COS_REGISTRY_FILE"] = str(project_dir / ".cos-test-registry.json")
         result = subprocess.run(
             ["bash", str(COS_INIT), mode],
             capture_output=True, text=True, cwd=str(project_dir), env=env,
