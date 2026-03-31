@@ -59,6 +59,10 @@ proposal -> specs --> tasks -> [READINESS CHECK] -> apply -> verify -> archive
            design
 ```
 
+**Fast path** (Opus model only): `explore -> propose -> [READINESS CHECK] -> apply -> verify -> archive`
+Skips spec/design/tasks phases. Controlled by `sdd.fast_path` in `cognitive-os.yaml`.
+Use `SDDPipeline.get_phases(model, config)` from `lib/sdd_pipeline.py` to resolve the correct phase list.
+
 ### Auto-Refinement (PITER Loop)
 When an agent task fails (test/build/lint errors detected by auto-refine hook):
 1. If phase is reconstruction: auto-retry ALWAYS enabled — agents fix their own work, up to 3 attempts
