@@ -115,6 +115,17 @@ STANDARD_SKILLS="sdd-explore sdd-propose sdd-spec sdd-design sdd-tasks sdd-apply
 # (will copy all rules, all hooks, all skills)
 
 # ── 3. Create directory structure ──────────────────────────────────
+
+# SAFETY: if .cognitive-os or .claude is a symlink (e.g. pointing to COS source),
+# mkdir -p would follow the symlink and create dirs inside the source repo.
+# This is a known misconfiguration — fix it by replacing the symlink.
+for dir_check in ".cognitive-os" ".claude"; do
+  if [ -L "$dir_check" ]; then
+    echo "WARNING: $dir_check is a symlink ($(readlink "$dir_check")) — replacing with real directory"
+    rm "$dir_check"
+  fi
+done
+
 mkdir -p .claude/rules/cos
 mkdir -p .claude/commands
 mkdir -p .cognitive-os/metrics
