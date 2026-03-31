@@ -18,103 +18,20 @@ from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
-# IMPORTANT: These are DEFAULT prices used when no historical data exists.
-# The CostPredictor (lib/cost_predictor.py) calculates REAL prices from actual
-# API responses. These defaults should be updated when providers change pricing.
-# Source: https://docs.anthropic.com/en/docs/about-claude/models
-# Last verified: 2026-03-27
+from lib.model_catalog import ModelCatalog
+
+# Model capabilities dict — derived from ModelCatalog (single source of truth).
+# Kept as a module-level dict for backward compatibility with external importers
+# and the format_routing_table() function.
 MODEL_CAPABILITIES: Dict[str, dict] = {
-    "claude-opus-4-6": {
-        "reasoning": 9,
-        "speed": 3,
-        "code": 8,
-        "cost_per_1m_in": 15.0,
-        "cost_per_1m_out": 75.0,
-        "context": 1_000_000,
-    },
-    "claude-sonnet-4": {
-        "reasoning": 6,
-        "speed": 7,
-        "code": 7,
-        "cost_per_1m_in": 3.0,
-        "cost_per_1m_out": 15.0,
-        "context": 200_000,
-    },
-    "claude-haiku-3.5": {
-        "reasoning": 3,
-        "speed": 9,
-        "code": 4,
-        "cost_per_1m_in": 0.25,
-        "cost_per_1m_out": 1.25,
-        "context": 200_000,
-    },
-    "gpt-4o": {
-        "reasoning": 7,
-        "speed": 6,
-        "code": 7,
-        "cost_per_1m_in": 2.5,
-        "cost_per_1m_out": 10.0,
-        "context": 128_000,
-    },
-    "gemini-2.5-pro": {
-        "reasoning": 8,
-        "speed": 5,
-        "code": 8,
-        "cost_per_1m_in": 1.25,
-        "cost_per_1m_out": 5.0,
-        "context": 1_000_000,
-    },
-    "deepseek-r1": {
-        "reasoning": 8,
-        "speed": 4,
-        "code": 7,
-        "cost_per_1m_in": 0.55,
-        "cost_per_1m_out": 2.19,
-        "context": 128_000,
-    },
-    "llama-3-70b": {
-        "reasoning": 5,
-        "speed": 5,
-        "code": 6,
-        "cost_per_1m_in": 0,
-        "cost_per_1m_out": 0,
-        "context": 128_000,
-        "local": True,
-    },
-    "qwen-3-32b": {
-        "reasoning": 4,
-        "speed": 7,
-        "code": 5,
-        "cost_per_1m_in": 0,
-        "cost_per_1m_out": 0,
-        "context": 32_000,
-        "local": True,
-    },
-    "openrouter/free": {
-        "reasoning": 4,
-        "speed": 6,
-        "code": 4,
-        "cost_per_1m_in": 0,
-        "cost_per_1m_out": 0,
-        "context": 128_000,
-        "note": "Auto-selects best available free model. Degraded quality but zero cost.",
-    },
-    "qwen/qwen3-32b:free": {
-        "reasoning": 5,
-        "speed": 7,
-        "code": 5,
-        "cost_per_1m_in": 0,
-        "cost_per_1m_out": 0,
-        "context": 40_960,
-    },
-    "nvidia/llama-3.1-nemotron-ultra-253b:free": {
-        "reasoning": 6,
-        "speed": 4,
-        "code": 6,
-        "cost_per_1m_in": 0,
-        "cost_per_1m_out": 0,
-        "context": 128_000,
-    },
+    e.id: {
+        **{k: v for k, v in e.capabilities.items()},
+        "cost_per_1m_in": e.input_price_per_m,
+        "cost_per_1m_out": e.output_price_per_m,
+        "context": e.context_window,
+        **({"local": True} if e.local else {}),
+    }
+    for e in ModelCatalog.all_entries()
 }
 
 TASK_REQUIREMENTS: Dict[str, List[str]] = {
@@ -184,12 +101,7 @@ def estimate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
     Raises:
         KeyError: If the model is not known.
     """
-    caps = get_model_capabilities(model)
-    cost = (
-        input_tokens * caps["cost_per_1m_in"] / 1_000_000
-        + output_tokens * caps["cost_per_1m_out"] / 1_000_000
-    )
-    return round(cost, 6)
+    return ModelCatalog.estimate_cost(model, input_tokens, output_tokens)
 
 
 def select_model(

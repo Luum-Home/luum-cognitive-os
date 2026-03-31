@@ -29,6 +29,8 @@ from typing import Any, Dict, List, Optional
 from urllib.error import URLError
 from urllib.request import Request, urlopen
 
+from lib.model_catalog import ModelCatalog
+
 logger = logging.getLogger(__name__)
 
 # Default Bifrost gateway URL (port 8081 externally, 8080 internal)
@@ -60,22 +62,17 @@ MODEL_TO_BIFROST: Dict[str, str] = {
     "deepseek-chat": "deepseek/deepseek-chat",
 }
 
-# Models that should NOT go through Bifrost:
-# - Claude models: use ClaudeExecutor directly
+# Models that should NOT go through Bifrost — derived from ModelCatalog:
+# - Claude models (Anthropic): use ClaudeExecutor directly
 # - OpenRouter models: only LiteLLM handles OpenRouter free tier
 # - Local models: only accessible via LiteLLM (Ollama/vLLM proxy)
-BIFROST_EXCLUDED_MODELS = {
-    "claude-opus-4-6",
-    "claude-sonnet-4",
-    "claude-haiku-3.5",
-    "openrouter/free",
-    "qwen/qwen3-32b:free",
-    "nvidia/llama-3.1-nemotron-ultra-253b:free",
-    "llama-3-70b",
-    "llama-3-8b",
-    "qwen-3-32b",
-    "qwen-3-8b",
-}
+BIFROST_EXCLUDED_MODELS = (
+    {e.id for e in ModelCatalog.by_provider("anthropic")}
+    | {e.id for e in ModelCatalog.by_provider("openrouter")}
+    | {e.id for e in ModelCatalog.all_entries() if e.local}
+    # Keep non-catalog entries that may not be in the catalog yet
+    | {"llama-3-8b", "qwen-3-8b"}
+)
 
 
 class BifrostUnavailable(Exception):
