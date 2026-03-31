@@ -7,6 +7,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [0.3.4] - 2026-03-31
 
+### Added
+- `lib/model_catalog.py` — centralized model registry (14 models, 40+ aliases, upgrade/downgrade chains)
+- `lib/sdd_pipeline.py` — SDD fast path: skip spec/design/tasks for Opus 4.6
+- `lib/kpi_collector.py` — reads .jsonl metrics, computes Agent Quality/Efficiency KPIs
+- `suggest_model_upgrade()` in escalation_detector for dynamic model escalation
+- `generate-project-settings.sh` — generates correct settings.json for external projects
+- `background-agent-reminder.sh` — UserPromptSubmit hook prevents orchestrator blocking
+- `release-guard.sh` — blocks manual VERSION/git tag (enforces cos release)
+- `docs/agent-efficiency-strategy.md` — 3-level strategy to reduce agent cost 20x
+- 170+ new integration and unit tests
+
+### Changed
+- Migrated 7 lib files to import from model_catalog (removed 68 hardcoded model refs)
+- Agent model routing: default to Sonnet, Opus only for deep reasoning
+- Non-blocking rule added to CLAUDE.md (MUST not wait on background agents)
+
+### Fixed
+- Test registry isolation (cos-init tests no longer pollute global installations.json)
+- Hook paths in project settings.json now use `.cognitive-os/hooks/cos/` namespace
+
 ## [0.3.3] - 2026-03-31
 
 ### Fixed
