@@ -120,6 +120,123 @@ Run sub-agents in git worktrees with a minimal `.claude/rules/` directory contai
 
 ---
 
+### Level 2 Implementation Plan
+
+**Chosen approach: capability level 4 + lean profile (a + d combined)**
+
+Approaches (a) and (d) are already implemented in infrastructure and require only config changes. They deliver the maximum token reduction for minimum implementation effort.
+
+Approach (b) (prompt-composition) is the right long-term solution but requires orchestrator refactoring. Approach (c) (worktrees) adds management complexity that is not justified at this stage.
+
+#### Step 1: Set capability level 4 in cognitive-os.yaml (immediate, zero code)
+
+```yaml
+# cognitive-os.yaml — change this:
+model_capability:
+  level: 3     # current
+
+# to this:
+model_capability:
+  level: 4     # autonomous — disables 5 redundant hooks for Opus 4.6
+```
+
+**What this disables** (hooks that run on every agent launch):
+- `clarification-gate` — Opus 4.6 handles ambiguity internally
+- `assumption-tracking` — Opus 4.6 is self-aware about its assumptions
+- `confidence-gate` — Trust score enforcement is redundant at this model tier
+- `model-routing` — The orchestrator already sets model explicitly
+- `blast-radius` — Scope estimation is baked into Opus 4.6 reasoning
+
+**Token savings**: ~5 hook files × ~800 tokens = **~4K tokens per agent launch** saved from context-loading overhead.
+
+#### Step 2: Switch efficiency profile to lean for sub-agents (short term)
+
+```yaml
+# cognitive-os.yaml — change this:
+efficiency:
+  profile: standard     # current: loads 14 core rule files (~11K tokens)
+
+# to this:
+efficiency:
+  profile: lean         # loads RULES-COMPACT.md only (~1.5K tokens)
+```
+
+The `lean` profile is enforced by `hooks/self-install.sh` at session start. It removes all rule symlinks except `RULES-COMPACT.md` from `.claude/rules/cos/`. The compact index gives every agent the rule summaries it needs to load the full rule on demand, without loading all 75 full files upfront.
+
+**Token savings from rules**:
+| Profile | Files loaded | Approx tokens |
+|---|---|---|
+| full (current) | 75 rule files | ~73,000 |
+| standard | 14 core rules | ~11,000 |
+| lean | 1 compact index | ~1,500 |
+
+**Net per-agent reduction from Step 1 + Step 2**: ~100K → ~27K tokens (~73% reduction).
+
+#### Step 3: Inject task-specific rules via prompt-composition (medium term)
+
+Use `lib/context_diet.py` to select 2–4 rules per task type and inject them into the agent prompt via the `templates/` composition system. This eliminates reliance on file-based loading entirely for sub-agents.
+
+**Task-to-rules mapping:**
+
+| Task Type | Rules Needed | Total rules |
+|---|---|---|
+| implementation | acceptance-criteria, closed-loop-prompts, trust-score + always-included | 7 |
+| review | adversarial-review, trust-score + always-included | 6 |
+| debugging | error-learning, closed-loop-prompts + always-included | 6 |
+| docs | always-included only | 4 |
+| archiving | always-included only | 4 |
+
+**Always-included rules** (governance floor for all agents):
+- `RULES-COMPACT.md` — compact rule index for on-demand loading
+- `adaptive-bypass.md` — complexity classification gate
+- `agent-quality.md` — anti-sycophancy, communication standards
+- `credential-management.md` — security baseline
+
+**Token savings from Step 3**: from ~27K (lean profile) → ~5K (diet injection) = **~82% additional reduction**.
+
+#### Expected token savings — real numbers
+
+Current rule file count: 75 `.md` files in `rules/`
+Average rule file size: ~6,000 chars = ~1,500 tokens
+
+| Scenario | Context tokens | Estimated cost (Sonnet) |
+|---|---|---|
+| Current (full load) | ~100,000 | ~$0.30 |
+| Step 1 only (cap level 4) | ~96,000 | ~$0.29 |
+| Step 2 only (lean profile) | ~28,500 | ~$0.09 |
+| Step 1 + Step 2 combined | ~24,500 | ~$0.07 |
+| Step 3 (prompt diet) | ~5,000 | ~$0.02 |
+
+At 20 sub-agent launches per session, Step 1 + Step 2 saves **~$4.40/session** vs current.
+Full implementation (all three steps) saves **~$5.60/session** — a **19x cost reduction**.
+
+#### Config changes summary
+
+```yaml
+# cognitive-os.yaml — two-line change for immediate 73% token reduction
+
+model_capability:
+  level: 4      # was: 3
+
+efficiency:
+  profile: lean  # was: standard
+```
+
+#### Tooling
+
+`lib/context_diet.py` provides:
+- `estimate_rules_tokens(rules_dir)` — measure actual token load before/after
+- `get_minimal_rules(task_type)` — select 4–7 rules per task
+- `format_diet_report(rules_dir)` — print baseline vs optimal comparison
+
+Run anytime to measure current state:
+```python
+from lib.context_diet import format_diet_report
+print(format_diet_report(".claude/rules/cos"))
+```
+
+---
+
 ## Level 3: Aggressive Parallelization
 
 **Status: Partially implemented (WorkloadScheduler exists), underused**
