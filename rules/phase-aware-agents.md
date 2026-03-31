@@ -59,8 +59,13 @@ proposal -> specs --> tasks -> [READINESS CHECK] -> apply -> verify -> archive
            design
 ```
 
-**Fast path** (Opus model only): `explore -> propose -> [READINESS CHECK] -> apply -> verify -> archive`
-Skips spec/design/tasks phases. Controlled by `sdd.fast_path` in `cognitive-os.yaml`.
+**`/sdd-ff` fast-forward pipeline**: `propose → spec + design (parallel) → tasks`
+Runs all planning phases automatically in sequence. Does NOT include explore/apply/verify/archive.
+Phase sequence defined in `sdd.fast_path.phases` in `cognitive-os.yaml`.
+Model assignments per phase: propose=opus, spec=sonnet, design=opus, tasks=sonnet (from `sdd.phases`).
+
+**Model-tier fast path** (Opus only): `explore → propose → apply → verify → archive`
+Skips spec/design/tasks entirely. Controlled by `sdd.fast_path.model_threshold` in `cognitive-os.yaml`.
 Use `SDDPipeline.get_phases(model, config)` from `lib/sdd_pipeline.py` to resolve the correct phase list.
 
 ### Auto-Refinement (PITER Loop)
