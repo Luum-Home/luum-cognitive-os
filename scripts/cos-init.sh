@@ -128,6 +128,9 @@ done
 
 mkdir -p .claude/rules/cos
 mkdir -p .claude/commands
+mkdir -p .cognitive-os/hooks/cos
+mkdir -p .cognitive-os/skills/cos
+mkdir -p .cognitive-os/templates/cos
 mkdir -p .cognitive-os/metrics
 mkdir -p .cognitive-os/sessions
 mkdir -p .cognitive-os/tasks
@@ -171,7 +174,7 @@ fi
 # ── 5. Install hooks ─────────────────────────────────────────────
 hooks_installed=0
 hooks_source="$COS_SOURCE_DIR/hooks"
-hooks_dest=".cognitive-os/hooks"
+hooks_dest=".cognitive-os/hooks/cos"
 mkdir -p "$hooks_dest"
 
 install_hook() {
@@ -212,7 +215,7 @@ fi
 # ── 6. Install skills (standard and full only) ───────────────────
 skills_installed=0
 skills_source="$COS_SOURCE_DIR/skills"
-skills_dest=".cognitive-os/skills"
+skills_dest=".cognitive-os/skills/cos"
 
 if [ "$MODE" != "--minimal" ] && [ -d "$skills_source" ]; then
   mkdir -p "$skills_dest"
@@ -245,10 +248,10 @@ fi
 
 # ── 7. Install templates (standard and full only) ────────────────
 if [ "$MODE" != "--minimal" ] && [ -d "$COS_SOURCE_DIR/templates" ]; then
-  mkdir -p .cognitive-os/templates
+  mkdir -p .cognitive-os/templates/cos
   for tmpl in "$COS_SOURCE_DIR/templates"/*.md; do
     [ -f "$tmpl" ] || continue
-    cp "$tmpl" ".cognitive-os/templates/$(basename "$tmpl")"
+    cp "$tmpl" ".cognitive-os/templates/cos/$(basename "$tmpl")"
   done
 fi
 
