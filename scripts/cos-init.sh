@@ -365,24 +365,39 @@ if [ -d "$RULES_DIR" ]; then
 fi
 
 # ── 9. Create/merge .claude/settings.json ─────────────────────────
-# Build a minimal settings.json for the installed hooks
-if [ -f "$COS_SOURCE_DIR/.claude/settings.json" ]; then
-  if [ -f ".claude/settings.json" ]; then
-    # Merge if jq available
-    if command -v jq >/dev/null 2>&1 && [ -f "$COS_SOURCE_DIR/scripts/merge-settings.sh" ]; then
-      merged_tmp=$(mktemp)
-      bash "$COS_SOURCE_DIR/scripts/merge-settings.sh" ".claude/settings.json" "$COS_SOURCE_DIR/.claude/settings.json" "$merged_tmp" 2>/dev/null && \
-        mv "$merged_tmp" ".claude/settings.json" && \
-        echo "Merged hooks into existing .claude/settings.json" || \
-        echo "Warning: Could not merge settings. Your .claude/settings.json preserved."
-      rm -f "$merged_tmp"
+# Generate a project-appropriate settings.json with correct hook paths.
+# Self-hosting hooks (self-install.sh, release-guard.sh) are excluded.
+# Hook paths use .cognitive-os/hooks/cos/ (not hooks/ which is COS source layout).
+GENERATOR="$COS_SOURCE_DIR/scripts/generate-project-settings.sh"
+if [ -f "$GENERATOR" ] && command -v jq >/dev/null 2>&1; then
+  generated_tmp=$(mktemp)
+  if bash "$GENERATOR" "$MODE" --output="$generated_tmp" 2>/dev/null; then
+    if [ -f ".claude/settings.json" ]; then
+      # Merge: keep project hooks, replace COS hooks
+      if [ -f "$COS_SOURCE_DIR/scripts/merge-settings.sh" ]; then
+        merged_tmp=$(mktemp)
+        bash "$COS_SOURCE_DIR/scripts/merge-settings.sh" ".claude/settings.json" "$generated_tmp" "$merged_tmp" 2>/dev/null && \
+          mv "$merged_tmp" ".claude/settings.json" && \
+          echo "Merged COS hooks into existing .claude/settings.json" || \
+          echo "Warning: Could not merge settings. Your .claude/settings.json preserved."
+        rm -f "$merged_tmp"
+      else
+        echo "Warning: merge-settings.sh not found. Your .claude/settings.json preserved."
+      fi
     else
-      echo "Warning: Cannot merge settings (jq or merge script missing)."
-      echo "         Your .claude/settings.json preserved."
+      mv "$generated_tmp" ".claude/settings.json"
+      echo "Created .claude/settings.json with project-appropriate hook paths"
     fi
   else
+    echo "Warning: generate-project-settings.sh failed. Falling back to copy."
+    cp "$COS_SOURCE_DIR/.claude/settings.json" ".claude/settings.json" 2>/dev/null || true
+  fi
+  rm -f "$generated_tmp"
+else
+  # No generator or no jq — fallback to direct copy
+  if [ -f "$COS_SOURCE_DIR/.claude/settings.json" ] && [ ! -f ".claude/settings.json" ]; then
     cp "$COS_SOURCE_DIR/.claude/settings.json" ".claude/settings.json"
-    echo "Created .claude/settings.json"
+    echo "Warning: Created settings.json without path transformation (jq missing)"
   fi
 fi
 
