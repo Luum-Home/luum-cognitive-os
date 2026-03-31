@@ -678,6 +678,11 @@ agent_communication:
     collision_detection: true
     collision_window_seconds: 30
 
+sdd:
+  fast_path:
+    enabled: true
+    model_threshold: opus  # Models at or above this tier use fast path (explore→propose→apply→verify→archive)
+
 paperclip:
   enabled: true
   url: ${COGNITIVE_OS_PAPERCLIP_URL:-http://localhost:3200}
