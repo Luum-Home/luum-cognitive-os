@@ -45,8 +45,16 @@ def _run_script(
     cwd: Optional[str] = None,
     timeout: int = 30,
 ) -> subprocess.CompletedProcess:
-    """Run a bash script and return the result."""
+    """Run a bash script and return the result.
+
+    Automatically isolates the COS registry to a temp file to prevent
+    test pollution of ~/.cognitive-os/installations.json.
+    """
     env = os.environ.copy()
+    # Isolate registry: use cwd-based temp file to avoid polluting global registry
+    if "COS_REGISTRY_FILE" not in (env_overrides or {}):
+        _cwd = cwd or os.getcwd()
+        env["COS_REGISTRY_FILE"] = os.path.join(_cwd, ".cos-test-registry.json")
     if env_overrides:
         env.update(env_overrides)
     cmd = ["bash", str(script)] + (args or [])
