@@ -155,6 +155,24 @@ while IFS= read -r project_path; do
       exit 0
     fi
 
+    # SAFETY: if .cognitive-os is a symlink (e.g. pointing to COS source),
+    # rm -rf on subdirectories would follow the symlink and destroy the source.
+    # Fix: replace the symlink with a real directory.
+    if [ -L ".cognitive-os" ]; then
+      symlink_target=$(readlink ".cognitive-os")
+      echo "    WARNING: .cognitive-os is a symlink to $symlink_target — replacing with real directory"
+      rm ".cognitive-os"
+      mkdir -p ".cognitive-os"
+    fi
+
+    # Same check for .claude
+    if [ -L ".claude" ]; then
+      symlink_target=$(readlink ".claude")
+      echo "    WARNING: .claude is a symlink to $symlink_target — replacing with real directory"
+      rm ".claude"
+      mkdir -p ".claude"
+    fi
+
     # Remove existing COS components (same as upgrade.sh)
     [ -d ".claude/rules/cos" ] && rm -rf .claude/rules/cos
     [ -d ".cognitive-os/hooks" ] && rm -rf .cognitive-os/hooks
