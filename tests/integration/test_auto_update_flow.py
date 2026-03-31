@@ -751,9 +751,9 @@ class TestAutoUpdateFlow:
         result = run_auto_update(cos_src, registry_file)
         assert result.returncode == 0
 
-        # Check hooks directory exists and has hooks
-        hooks_dir = project / ".cognitive-os" / "hooks"
-        assert hooks_dir.exists()
+        # Check hooks directory exists and has hooks (namespaced under cos/)
+        hooks_dir = project / ".cognitive-os" / "hooks" / "cos"
+        assert hooks_dir.exists(), f"Expected {hooks_dir} to exist. Contents: {list((project / '.cognitive-os' / 'hooks').iterdir()) if (project / '.cognitive-os' / 'hooks').exists() else 'hooks/ missing'}"
         hook_files = list(hooks_dir.glob("*.sh"))
         assert len(hook_files) > 0
 
