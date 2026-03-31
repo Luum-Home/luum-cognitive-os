@@ -28,18 +28,23 @@ from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
-# Model name mapping for the --model flag
+from lib.model_catalog import ModelCatalog
+
+# Model name mapping for the --model flag.
+# NOTE: These dated IDs are CLI-specific and may differ from the catalog's
+# canonical IDs. Only Anthropic models need this mapping.
 MODEL_MAP: Dict[str, str] = {
     "opus": "claude-opus-4-20250514",
     "sonnet": "claude-sonnet-4-20250514",
     "haiku": "claude-haiku-3-5-20241022",
 }
 
-# Cost per 1M tokens (input, output) by model family
+# Cost per 1M tokens (input, output) by model family — thin wrapper over
+# ModelCatalog for backward compatibility with external importers.
 MODEL_COSTS: Dict[str, Tuple[float, float]] = {
-    "opus": (15.0, 75.0),
-    "sonnet": (3.0, 15.0),
-    "haiku": (0.25, 1.25),
+    e.short_name: (e.input_price_per_m, e.output_price_per_m)
+    for e in ModelCatalog.all_entries()
+    if e.provider == "anthropic"
 }
 
 # Environment variables safe to pass to subprocess
@@ -171,8 +176,10 @@ def _model_family(model_id: str) -> str:
 
 def _estimate_cost(tokens_in: int, tokens_out: int, model_family_name: str) -> float:
     """Estimate USD cost from token counts and model family."""
-    input_price, output_price = MODEL_COSTS.get(model_family_name, MODEL_COSTS["sonnet"])
-    return (tokens_in * input_price + tokens_out * output_price) / 1_000_000
+    try:
+        return ModelCatalog.estimate_cost(model_family_name, tokens_in, tokens_out)
+    except KeyError:
+        return ModelCatalog.estimate_cost("sonnet", tokens_in, tokens_out)
 
 
 def _tool_summary(tool_name: str, inp: Dict[str, Any]) -> str:
