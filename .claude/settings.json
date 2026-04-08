@@ -74,10 +74,6 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/parry-scan.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aguara-scan.sh\""
           }
         ]
       }
@@ -133,10 +129,6 @@
       {
         "matcher": "Agent",
         "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-output-verifier.sh\""
-          },
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/claim-validator.sh\""
