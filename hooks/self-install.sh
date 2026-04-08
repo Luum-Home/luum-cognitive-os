@@ -6,6 +6,10 @@
 # Sync directories are auto-discovered: every entry in SYNC_DIRS is checked for
 # existence at the project root.  Adding a new top-level directory (e.g. agents/)
 # only requires adding one line to the SYNC_DIRS table below — no other changes.
+#
+# NOTE: rules/ is NOT in SYNC_DIRS. It is managed separately by sync_core_rules()
+# which only symlinks the ~16 core rules instead of all 94, keeping session context
+# overhead at ~21K tokens instead of ~94K tokens.
 set -euo pipefail
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
@@ -28,8 +32,8 @@ fixes=""
 #   pattern   — glob pattern for flat strategy (ignored for tree)
 #
 # To add a new directory, just append a line here.
+# rules/ is intentionally excluded — managed by sync_core_rules() below.
 SYNC_DIRS=(
-  "rules|claude_cos|flat|*.md"
   "skills|cos|tree|"
   "squads|cos|flat|*.yaml"
   "templates|cos|flat|*.md"
@@ -134,74 +138,91 @@ for entry in "${SYNC_DIRS[@]}"; do
   synced_dirs+=("$src_name")
 done
 
-# ── Efficiency profile: restrict rules if lean or standard ───────────
-# Self-hosting (developing the OS itself) always uses full — we need all rules.
-# Efficiency profiles only apply to EXTERNAL projects that install Cognitive OS.
-IS_SELF_HOSTING=false
-[ -f "$PROJECT_DIR/hooks/self-install.sh" ] && IS_SELF_HOSTING=true
+# ── Core rules sync ──────────────────────────────────────────────────
+# Only ~16 core rules are symlinked into .claude/rules/cos/ — NOT all 94.
+# Loading all 94 rules costs ~93,700 tokens (~2,677% of the 3,500 token target).
+# The 16 core rules cover all essential always-active governance hooks and
+# protocols. All 94 rule files remain in rules/ as reference — only symlinks
+# are managed here.
+#
+# Efficiency profile controls which subset is active:
+#   lean     — RULES-COMPACT.md only
+#   standard/full/self-hosting — the 16 CORE_RULES below
+#
+# See docs/rules-loading-architecture.md for the rationale.
 
 CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
-EFFICIENCY_PROFILE="full"
-if [ "$IS_SELF_HOSTING" = false ] && [ -f "$CONFIG_FILE" ]; then
+EFFICIENCY_PROFILE="standard"
+if [ -f "$CONFIG_FILE" ]; then
   _ep=$(grep -A1 '^efficiency:' "$CONFIG_FILE" 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || true)
   [ -n "$_ep" ] && EFFICIENCY_PROFILE="$_ep"
 fi
 
-cos_rules_dir="$PROJECT_DIR/.claude/rules/cos"
-
-# Core rules: the 14 always-loaded rules for standard profile.
-# These provide essential governance without overwhelming the context window.
-# See docs/rules-loading-architecture.md for the rationale.
 CORE_RULES=(
   "RULES-COMPACT.md"
   "adaptive-bypass.md"
   "acceptance-criteria.md"
   "agent-quality.md"
   "trust-score.md"
-  "definition-of-done.md"
+  "token-economy.md"
   "phase-aware-agents.md"
   "closed-loop-prompts.md"
-  "token-economy.md"
-  "responsiveness.md"
-  "agent-security.md"
+  "error-learning.md"
+  "rate-limiting.md"
   "credential-management.md"
   "content-policy.md"
-  "error-learning.md"
+  "result-management.md"
+  "blast-radius.md"
+  "clarification-gate.md"
+  "model-routing.md"
 )
 
+# Build the effective allowed-rules list based on profile
 if [[ "$EFFICIENCY_PROFILE" == "lean" ]]; then
-  # Lean: only keep RULES-COMPACT.md; remove all other rule symlinks
-  if [ -d "$cos_rules_dir" ]; then
-    for link in "$cos_rules_dir"/*.md; do
-      [ -L "$link" ] || continue
-      base=$(basename "$link")
-      if [ "$base" != "RULES-COMPACT.md" ]; then
-        rm -f "$link"
-        removed=$((removed + 1))
-      fi
-    done
-  fi
-elif [[ "$EFFICIENCY_PROFILE" == "standard" ]]; then
-  # Standard: keep only the 14 core rules
-  if [ -d "$cos_rules_dir" ]; then
-    for link in "$cos_rules_dir"/*.md; do
-      [ -L "$link" ] || continue
-      base=$(basename "$link")
-      is_core=false
-      for core in "${CORE_RULES[@]}"; do
-        if [ "$base" = "$core" ]; then
-          is_core=true
-          break
-        fi
-      done
-      if [ "$is_core" = false ]; then
-        rm -f "$link"
-        removed=$((removed + 1))
-      fi
-    done
-  fi
+  ALLOWED_RULES=("RULES-COMPACT.md")
+else
+  ALLOWED_RULES=("${CORE_RULES[@]}")
 fi
-# Self-hosting or profile=full: keep all symlinks as created by sync_dir above
+
+cos_rules_dir="$PROJECT_DIR/.claude/rules/cos"
+mkdir -p "$cos_rules_dir"
+
+# Add missing core-rule symlinks
+for rule in "${ALLOWED_RULES[@]}"; do
+  src="$PROJECT_DIR/rules/$rule"
+  link="$cos_rules_dir/$rule"
+  [ -f "$src" ] || continue
+  if [ ! -e "$link" ]; then
+    ln -sf "$src" "$link"
+    added=$((added + 1))
+  fi
+done
+
+# Remove symlinks that are NOT in the allowed list (stale or previously full set)
+if [ -d "$cos_rules_dir" ]; then
+  for link in "$cos_rules_dir"/*.md; do
+    [ -L "$link" ] || continue
+    base=$(basename "$link")
+    # Check if broken (target gone)
+    if [ ! -e "$link" ]; then
+      rm -f "$link"
+      removed=$((removed + 1))
+      continue
+    fi
+    # Check if not in allowed list
+    is_allowed=false
+    for allowed in "${ALLOWED_RULES[@]}"; do
+      if [ "$base" = "$allowed" ]; then
+        is_allowed=true
+        break
+      fi
+    done
+    if [ "$is_allowed" = false ]; then
+      rm -f "$link"
+      removed=$((removed + 1))
+    fi
+  done
+fi
 
 # ── Migration: clean up old flat symlinks in .claude/rules/ ──────────
 # Before namespacing, COS rules were symlinked flat into .claude/rules/.

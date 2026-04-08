@@ -1,1 +1,0 @@
-<repo>/rules/prompt-quality.md
