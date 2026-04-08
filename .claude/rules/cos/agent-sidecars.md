@@ -1,1 +1,0 @@
-<repo>/rules/agent-sidecars.md

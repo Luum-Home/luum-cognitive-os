@@ -1,1 +1,0 @@
-<repo>/rules/private-mode.md
