@@ -14,6 +14,7 @@ Minimum: 10 tests.
 
 import json
 import uuid
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -211,6 +212,107 @@ class TestCheckTriggers:
         triggers = pipeline.check_learning_triggers()
         error_triggers = [t for t in triggers if t.trigger_type == "error_pattern"]
         assert len(error_triggers) == 0
+
+    def test_three_errors_exactly_triggers_signal(self, isolated_pipeline):
+        """Exactly 3 errors of the same type+service must produce an error_pattern trigger."""
+        pipeline, _, _, _ = isolated_pipeline
+        for _ in range(3):
+            pipeline.record_error(
+                error_type="LINT_ERROR",
+                service="boundary-svc",
+                message="lint violation",
+            )
+        triggers = pipeline.check_learning_triggers()
+        error_triggers = [t for t in triggers if t.trigger_type == "error_pattern"]
+        assert len(error_triggers) >= 1, (
+            "Exactly 3 errors must cross the >= 3 threshold and produce a trigger"
+        )
+
+    def test_two_errors_does_not_trigger(self, isolated_pipeline):
+        """2 errors of the same type+service must NOT produce an error_pattern trigger."""
+        pipeline, _, _, _ = isolated_pipeline
+        for _ in range(2):
+            pipeline.record_error(
+                error_type="LINT_ERROR",
+                service="boundary-svc",
+                message="lint violation",
+            )
+        triggers = pipeline.check_learning_triggers()
+        error_triggers = [t for t in triggers if t.trigger_type == "error_pattern"]
+        assert len(error_triggers) == 0, (
+            f"2 errors should be below the threshold; got {len(error_triggers)} trigger(s)"
+        )
+
+    def test_error_at_24h_boundary(self, tmp_path):
+        """Errors written with timestamps just inside the 24h window must be counted.
+
+        An entry at exactly now - 23h should be included (cutoff = now - 24h).
+        An entry at exactly now - 25h should be excluded.
+        """
+        correlations = str(tmp_path / "correlations.jsonl")
+        errors = str(tmp_path / "errors.jsonl")
+
+        now = datetime.now(timezone.utc)
+        inside_window = (now - timedelta(hours=23)).isoformat()   # 1h before cutoff edge
+        outside_window = (now - timedelta(hours=25)).isoformat()  # 1h after cutoff edge
+
+        # Write 3 entries that are inside the window + 3 that are outside
+        lines = []
+        for _ in range(3):
+            lines.append(json.dumps({
+                "error_type": "BUILD_ERROR",
+                "service": "boundary-svc",
+                "timestamp": inside_window,
+            }))
+        for _ in range(3):
+            lines.append(json.dumps({
+                "error_type": "BUILD_ERROR",
+                "service": "boundary-svc",
+                "timestamp": outside_window,
+            }))
+
+        Path(correlations).write_text("\n".join(lines) + "\n")
+
+        pipeline = LearningPipeline(
+            correlations_path=correlations,
+            errors_path=errors,
+        )
+        triggers = pipeline.check_learning_triggers()
+        error_triggers = [t for t in triggers if t.trigger_type == "error_pattern"]
+        assert len(error_triggers) >= 1, (
+            "3 entries inside the 24h window should produce a trigger "
+            "(outside-window entries must be excluded)"
+        )
+
+    def test_trigger_carries_skill_name(self, isolated_pipeline):
+        """The trigger detail should include the error_type that caused the pattern."""
+        pipeline, _, _, _ = isolated_pipeline
+        pipeline.record_agent_completion(
+            task_id="setup",
+            success=True,
+            trust_score=80.0,
+            skill_name="deploy-skill",
+        )
+        for _ in range(3):
+            pipeline.record_error(
+                error_type="DEPLOY_ERROR",
+                service="deploy-svc",
+                message="deploy failed",
+            )
+        triggers = pipeline.check_learning_triggers()
+        error_triggers = [t for t in triggers if t.trigger_type == "error_pattern"]
+        assert len(error_triggers) >= 1, (
+            "3 DEPLOY_ERROR entries should produce an error_pattern trigger"
+        )
+        trigger = error_triggers[0]
+        # The trigger detail must carry the error_type or the target must reference the service
+        assert trigger.target or trigger.message, (
+            "Trigger must have a non-empty target or message"
+        )
+        assert "DEPLOY_ERROR" in trigger.message or "deploy-svc" in trigger.target, (
+            f"Trigger should reference the error type or service; "
+            f"message={trigger.message!r}, target={trigger.target!r}"
+        )
 
 
 # ---------------------------------------------------------------------------

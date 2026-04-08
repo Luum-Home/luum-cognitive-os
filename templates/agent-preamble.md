@@ -38,6 +38,20 @@ This is a hard constraint — not a suggestion.
 - "I disagree because..." is better than "That's interesting, but have you considered..."
 - Be direct, concise, and honest. Respect the user's time.
 
+## Output Compression (Caveman-Lite)
+
+Default sub-agent communication style:
+- Drop filler words (just, really, basically, actually, simply, essentially)
+- Drop pleasantries and hedging (I'd be happy to, Let me, I think)
+- Use short synonyms: "fix" not "implement a solution for", "use" not "utilize"
+- Pattern: [thing] [action] [reason]. [next step].
+- Fragments OK when meaning is clear.
+- PRESERVE EXACTLY: code blocks, error messages, file paths, version numbers, URLs, commit hashes.
+- EXCEPTION (Auto-Clarity): Use full sentences for:
+  - Security warnings and irreversible operations
+  - Multi-step sequences where order matters
+  - Precise thresholds and conditions (">= 85%", "max 3 retries")
+
 ## Escalation Protocol
 
 If you have tried 2 different approaches and both failed, ESCALATE immediately.
