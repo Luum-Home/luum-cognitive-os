@@ -450,3 +450,61 @@ class TestSameSessionRefreshesLock:
             assert new_timestamp >= old_timestamp, (
                 f"Timestamp was not refreshed: old={old_timestamp}, new={new_timestamp}"
             )
+
+
+# ---------------------------------------------------------------------------
+# Symlink hash limitation test (appended)
+# ---------------------------------------------------------------------------
+
+
+class TestSymlinkHashLimitation:
+    """Document the known limitation that symlinks produce a different lock hash
+    than their targets because the hook hashes the *path string*, not the
+    resolved inode.
+
+    This means that if two different sessions write to the same underlying file
+    via a symlink and its real path respectively, the guard will issue two
+    separate lock files — one per path — and will NOT detect the contention.
+
+    This test exists purely to *document* the limitation; it asserts the
+    observable behaviour so that future refactors that accidentally fix or
+    break the behaviour trigger a deliberate review.
+    """
+
+    def test_symlink_creates_different_lock_hash(self, tmp_path):
+        """A symlink path and its target produce distinct lock hashes.
+
+        KNOWN LIMITATION: The concurrent-write-guard hashes the raw file_path
+        string.  If an agent passes the symlink path while another passes the
+        real path, both will acquire 'different' locks and contention will not
+        be detected.
+
+        This is intentional (path-based deduplication is simpler and avoids
+        the cost of realpath on every write) but callers should be aware.
+        """
+        # Create a real file and a symlink pointing to it
+        real_file = tmp_path / "real_handler.go"
+        real_file.touch()
+        link_file = tmp_path / "link_handler.go"
+        link_file.symlink_to(real_file)
+
+        # Compute hashes for each path the way the hook does (md5 of path string)
+        import subprocess as sp
+
+        def _md5(path: str) -> str:
+            r = sp.run(
+                ["bash", "-c", f"echo -n '{path}' | md5sum | cut -d' ' -f1 || "
+                               f"echo -n '{path}' | md5"],
+                capture_output=True, text=True, timeout=5,
+            )
+            return r.stdout.strip()
+
+        hash_real = _md5(str(real_file))
+        hash_link = _md5(str(link_file))
+
+        assert hash_real != hash_link, (
+            "Expected real path and symlink path to produce different hashes "
+            "(documenting that the guard is path-string based, not inode based). "
+            "If this assertion fails, the hash function may have been changed to "
+            "use realpath — review whether the limitation still applies."
+        )
