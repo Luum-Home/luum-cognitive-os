@@ -402,3 +402,67 @@ class TestSessionCleanup:
         assert session_id_2 in ids_after, (
             f"Session 2 ({session_id_2}) should still be present"
         )
+
+
+# ---------------------------------------------------------------------------
+# Concurrency and flock pattern tests (appended)
+# ---------------------------------------------------------------------------
+
+
+class TestConcurrentInits:
+    """Tests for concurrent session-init.sh behaviour."""
+
+    def test_two_concurrent_inits_both_registered(self, tmp_path):
+        """Two concurrent session-init calls must both appear in active-sessions.json.
+
+        Uses Python threading to launch two hook subprocesses in parallel.
+        Requires flock — skipped when unavailable (macOS ships without it by
+        default; Linux always has it).
+        """
+        if not FLOCK_AVAILABLE:
+            pytest.skip("flock not available — registration uses flock for atomicity")
+
+        import threading
+
+        results: list[subprocess.CompletedProcess] = []
+        errors: list[str] = []
+
+        def _run_init() -> None:
+            r = _run_hook(INIT_HOOK, tmp_path)
+            results.append(r)
+            if r.returncode != 0:
+                errors.append(r.stderr)
+
+        t1 = threading.Thread(target=_run_init)
+        t2 = threading.Thread(target=_run_init)
+        t1.start()
+        t2.start()
+        t1.join(timeout=30)
+        t2.join(timeout=30)
+
+        assert not errors, f"One or more session-init calls failed:\n{''.join(errors)}"
+
+        sessions_file = _active_sessions_file(tmp_path)
+        assert sessions_file.exists(), "active-sessions.json not created"
+
+        data = json.loads(sessions_file.read_text())
+        registered = data.get("sessions", [])
+        assert len(registered) >= 2, (
+            f"Expected at least 2 sessions registered after concurrent inits, "
+            f"got {len(registered)}: {registered}"
+        )
+
+    def test_flock_pattern_exists_in_hook(self):
+        """session-init.sh source must contain a flock call for atomic registration.
+
+        This guards against accidental removal of the locking mechanism during
+        refactors.
+        """
+        if not INIT_HOOK.exists():
+            pytest.skip(f"Hook not found: {INIT_HOOK}")
+
+        source = INIT_HOOK.read_text()
+        assert "flock" in source, (
+            "session-init.sh does not contain 'flock' — concurrent registration "
+            "is no longer protected. This is a regression."
+        )

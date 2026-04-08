@@ -105,6 +105,17 @@
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints | `/vulnerability-scan` | os-dev |
 | agent-stress-test | Stress-test agent cognitive health to detect context-induced degradation | `/agent-stress-test` | os-dev |
 
+## Communication Skills — Caveman [plugin]
+
+> Ported from `.claude/plugins/caveman/`. License: MIT. See `rules/os-vs-project.md`.
+> Caveman-compress scripts live at `.claude/plugins/caveman/caveman-compress/scripts/`.
+
+| Skill | Description | Invoke | Audience |
+|-------|-------------|--------|----------|
+| caveman | Ultra-compressed communication mode (~75% token reduction). Intensity levels: lite/full/ultra | `/caveman [lite\|full\|ultra]` | both |
+| caveman-es | Modo cavernícola en español. Misma compresión, soporte nativo español | `/caveman-es [lite\|full\|ultra]` | both |
+| caveman-compress | Compress natural language memory files (CLAUDE.md, todos) into caveman format | `/caveman:compress <filepath>` | both |
+
 ## External Skills — Trail of Bits [submodule]
 
 > Installed via `bash scripts/install-tob-skills.sh` at `.claude/plugins/trailofbits-skills/`.
