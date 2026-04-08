@@ -1,0 +1,6 @@
+[submodule ".claude/plugins/hermes-agent"]
+	path = .claude/plugins/hermes-agent
+	url = https://github.com/NousResearch/hermes-agent.git
+[submodule ".claude/plugins/pi-mono"]
+	path = .claude/plugins/pi-mono
+	url = https://github.com/badlogic/pi-mono.git

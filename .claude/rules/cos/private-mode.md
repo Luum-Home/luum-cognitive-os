@@ -1,1 +1,0 @@
-/Users/matias.nahuel.amendola/Projects/luum/luum-agent-os/rules/private-mode.md
