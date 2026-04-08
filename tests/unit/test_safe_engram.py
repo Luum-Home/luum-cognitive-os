@@ -278,3 +278,46 @@ class TestSafeEngramEdgeCases:
         result = safe_save(injection_title, _CLEAN)
         assert result.blocked is True
         assert len(result.reasons) > 0
+
+    def test_content_with_regex_metacharacters_no_crash(self):
+        """Content containing regex metacharacters must not raise an exception.
+
+        The MemoryScanner uses regex patterns internally.  Special characters
+        such as .*+?()[]{}^$| in user content could crash a naive regex match.
+        The function must complete without raising regardless of such input.
+        """
+        metachar_content = r".*+?()[]{}^$|\\ unrelated text here"
+        try:
+            result = scan_only_check(metachar_content)
+        except Exception as exc:  # noqa: BLE001
+            pytest.fail(
+                f"scan_only_check raised {type(exc).__name__} on regex-metachar content: {exc}"
+            )
+        # Result must be either "OK" or start with "BLOCKED:"
+        assert result == "OK" or result.startswith("BLOCKED:"), (
+            f"Unexpected return value: {result!r}"
+        )
+
+    def test_partial_regex_in_content_safe(self):
+        """Partial or malformed regex patterns inside content must not cause a crash.
+
+        Examples: unclosed groups '(foo', unclosed brackets '[abc', lone backslash.
+        These should be treated as literal text by the scanner, not parsed as regex.
+        """
+        partial_regex_samples = [
+            "(unclosed group",
+            "[unclosed bracket",
+            "trailing backslash\\",
+            "quantifier without atom +",
+            "bare pipe |",
+        ]
+        for sample in partial_regex_samples:
+            try:
+                result = scan_only_check(sample)
+            except Exception as exc:  # noqa: BLE001
+                pytest.fail(
+                    f"scan_only_check raised {type(exc).__name__} on {sample!r}: {exc}"
+                )
+            assert result == "OK" or result.startswith("BLOCKED:"), (
+                f"Unexpected return value for {sample!r}: {result!r}"
+            )

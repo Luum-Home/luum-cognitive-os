@@ -1,0 +1,8 @@
+adoptions:
+  - id: caveman-lite-preamble
+    source: caveman
+    source_file: skills/caveman/SKILL.md
+    our_file: templates/agent-preamble.md
+    adapted: true
+    adaptation_notes: "Ported lite-mode rules + Auto-Clarity exception to agent preamble"
+    adopted_date: "2026-04-08"
