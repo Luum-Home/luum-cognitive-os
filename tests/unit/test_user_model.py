@@ -2,6 +2,9 @@
 Unit tests for lib/user_model.py
 """
 
+import json
+from unittest.mock import MagicMock, patch
+
 import pytest
 from lib.user_model import UserModel, UserPreference
 
@@ -310,3 +313,101 @@ class TestSerialization:
         assert pref.value == "Spanish"
         assert pref.confidence == 0.8
         assert pref.source == "inferred"
+
+
+# ---------------------------------------------------------------------------
+# Engram persistence (subprocess integration)
+# ---------------------------------------------------------------------------
+
+
+class TestEngramPersistence:
+    """Tests for save_to_engram / load_from_engram — subprocess path mocked."""
+
+    def test_save_to_engram_calls_subprocess(self):
+        """save_to_engram must invoke the engram binary via subprocess.run."""
+        model = UserModel()
+        model.record_preference("communication", "language", "Spanish", 0.9)
+
+        mock_proc = MagicMock()
+        mock_proc.returncode = 0
+        mock_proc.stdout = "Saved."
+        mock_proc.stderr = ""
+
+        with patch("lib.user_model.subprocess.run", return_value=mock_proc) as mock_run:
+            model.save_to_engram(project="test-project")
+
+        mock_run.assert_called_once()
+        call_args = mock_run.call_args[0][0]  # positional first arg = cmd list
+        assert any("save" in str(a) for a in call_args), (
+            f"Expected 'save' in subprocess command, got: {call_args}"
+        )
+
+    def test_load_from_engram_empty_result_returns_default(self):
+        """If engram search returns nothing, load_from_engram returns a default UserModel."""
+        mock_proc = MagicMock()
+        mock_proc.returncode = 0
+        mock_proc.stdout = ""  # no output from engram
+        mock_proc.stderr = ""
+
+        with patch("lib.user_model.subprocess.run", return_value=mock_proc):
+            result = UserModel.load_from_engram(project="test-project")
+
+        assert isinstance(result, UserModel), (
+            "load_from_engram with empty output should return a UserModel instance"
+        )
+        assert result.interaction_count == 0, (
+            "Default model should have interaction_count=0"
+        )
+        assert len(result.preferences) == 0, (
+            "Default model should have no preferences"
+        )
+
+    def test_load_from_engram_corrupt_json_graceful(self):
+        """If engram returns a line starting with '{' but is corrupt JSON, return default."""
+        mock_proc = MagicMock()
+        mock_proc.returncode = 0
+        mock_proc.stdout = "{this is not valid json\n"
+        mock_proc.stderr = ""
+
+        with patch("lib.user_model.subprocess.run", return_value=mock_proc):
+            result = UserModel.load_from_engram(project="test-project")
+
+        assert isinstance(result, UserModel), (
+            "Corrupt JSON from engram should return a default UserModel, not raise"
+        )
+
+    def test_preferences_survive_simulated_restart(self):
+        """Preferences saved via mocked engram can be reloaded in a new instance.
+
+        Simulates the full round-trip: save → (restart) → load.
+        """
+        original = UserModel()
+        original.record_preference("communication", "language", "Spanish", 0.95)
+        original.record_technical_context("stack", "Go")
+        original.interaction_count = 7
+
+        saved_json = json.dumps(original.to_dict())
+
+        save_proc = MagicMock()
+        save_proc.returncode = 0
+        save_proc.stdout = "Saved."
+        save_proc.stderr = ""
+
+        load_proc = MagicMock()
+        load_proc.returncode = 0
+        # Engram returns a JSON line starting with '{'
+        load_proc.stdout = saved_json + "\n"
+        load_proc.stderr = ""
+
+        with patch("lib.user_model.subprocess.run", return_value=save_proc):
+            original.save_to_engram(project="test-project")
+
+        with patch("lib.user_model.subprocess.run", return_value=load_proc):
+            restored = UserModel.load_from_engram(project="test-project")
+
+        assert isinstance(restored, UserModel)
+        pref = restored.get_preference("communication", "language")
+        assert pref is not None, "Language preference should survive the round-trip"
+        assert pref.value == "Spanish"
+        assert restored.technical_context.get("stack") == "Go"
+        assert restored.interaction_count == 7
