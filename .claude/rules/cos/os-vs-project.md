@@ -1,1 +1,0 @@
-<repo>/rules/os-vs-project.md

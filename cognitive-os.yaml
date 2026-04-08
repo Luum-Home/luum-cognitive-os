@@ -654,7 +654,7 @@ security:
     threshold: 0.7                   # Detection confidence threshold
 
   aguara:
-    enabled: false                   # Set to true after installing aguara
+    enabled: true                    # Enabled by default — graceful skip if aguara binary not installed
     # aguara CLI: go install github.com/garagon/aguara@latest
     # mcp-aguara: go install github.com/garagon/mcp-aguara@latest
 

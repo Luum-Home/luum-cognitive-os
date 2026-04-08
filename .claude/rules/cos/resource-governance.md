@@ -1,1 +1,0 @@
-<repo>/rules/resource-governance.md

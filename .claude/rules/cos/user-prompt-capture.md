@@ -1,1 +1,0 @@
-<repo>/rules/user-prompt-capture.md

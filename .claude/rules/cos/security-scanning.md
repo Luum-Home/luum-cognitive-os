@@ -1,1 +1,0 @@
-<repo>/rules/security-scanning.md
