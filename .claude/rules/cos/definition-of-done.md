@@ -1,1 +1,0 @@
-<repo>/rules/definition-of-done.md

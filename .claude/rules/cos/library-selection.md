@@ -1,1 +1,0 @@
-<repo>/rules/library-selection.md

@@ -1,1 +1,0 @@
-<repo>/rules/squad-protocol.md
