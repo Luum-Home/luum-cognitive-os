@@ -141,11 +141,28 @@ def _count_files(pattern: str, base: Path) -> int:
 
 
 def _engram_search(query: str, project: str = "", limit: int = 10) -> str:
-    """Search Engram via the engram CLI or Python API.
+    """Search Engram with hybrid FTS5+Jaccard retrieval when available.
 
+    Priority: MemoryRetriever (hybrid) -> engram Python API -> engram CLI.
     Always returns valid JSON (object or array).
     """
-    # Try the engram Python package first
+    # Try hybrid retrieval first (FTS5 + Jaccard reranking)
+    try:
+        import sys, os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+        from lib.memory_retriever import MemoryRetriever
+        retriever = MemoryRetriever()
+        results = retriever.search(query, limit=limit, project=project or None)
+        if results:
+            return json.dumps([{
+                "id": r.id, "title": r.title, "content": r.content,
+                "topic_key": r.topic_key, "project": r.project,
+                "score": round(r.combined_score, 3)
+            } for r in results], indent=2)
+    except Exception:
+        pass
+
+    # Fallback: try the engram Python package
     try:
         from engram.api import search  # type: ignore
         results = search(query=query, project=project or None, limit=limit)
@@ -164,7 +181,6 @@ def _engram_search(query: str, project: str = "", limit: int = 10) -> str:
         )
         if result.returncode == 0:
             output = result.stdout.strip()
-            # Ensure the output is valid JSON; wrap plain text as a message
             try:
                 json.loads(output)
                 return output
