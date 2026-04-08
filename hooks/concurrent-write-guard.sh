@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# PreToolUse hook: Advisory file locking for concurrent sessions
-# Fires on Edit|Write — checks if another session has a lock on the target file.
-# Advisory only: warns but does NOT block (no DENY).
+# PreToolUse hook: File locking for concurrent sessions
+# Fires on Edit|Write — acquires exclusive flock on the target file.
+# v0.4.0: Upgraded from advisory-only to real flock serialization.
+# Uses OS-level flock (cross-process safe) + JSON metadata for diagnostics.
 # Lock auto-expires after 5 minutes (configurable via cognitive-os.yaml).
 # Must complete in <2 seconds.
 
@@ -93,23 +94,21 @@ if [ -f "$LOCK_FILE" ]; then
     # Remove stale lock, proceed to acquire
     rm -f "$LOCK_FILE"
   else
-    # --- ADVISORY WARNING: Another session holds the lock ---
-    SHORT_PATH=$(basename "$FILE_PATH")
-    echo ""
-    echo "=== CONCURRENT WRITE WARNING ==="
-    echo "File: $FILE_PATH"
-    echo "Currently being edited by session: $LOCK_SESSION"
-    echo "Lock age: ${LOCK_AGE}s (expires after ${LOCK_TIMEOUT}s)"
-    echo ""
-    echo "This is an advisory warning. The write will proceed, but be aware"
-    echo "that another session may overwrite your changes."
-    echo "=== END WARNING ==="
-    echo ""
-    # Do NOT deny — advisory only
+    # --- REAL BLOCKING: Wait for flock release ---
+    echo "WRITE QUEUED: File $FILE_PATH locked by session $LOCK_SESSION (${LOCK_AGE}s). Waiting up to 10s..." >&2
+    exec 200>"$LOCK_FILE.flock"
+    if ! flock -w 10 200; then
+      echo "WRITE BLOCKED: Could not acquire lock for $FILE_PATH after 10s" >&2
+      exit 2
+    fi
+    # Lock acquired after wait — proceed
   fi
 fi
 
-# --- Acquire/refresh lock for this session ---
+# --- Acquire flock + write metadata for this session ---
+exec 200>"$LOCK_FILE.flock"
+flock -w 10 200 2>/dev/null || true
+
 jq -c -n \
   --arg sid "$SESSION_ID" \
   --arg pid "$$" \
@@ -119,4 +118,5 @@ jq -c -n \
   '{session_id: $sid, pid: ($pid | tonumber), file_path: $path, timestamp_epoch: $epoch, timestamp: $ts}' \
   > "$LOCK_FILE" 2>/dev/null
 
+# Note: flock on fd 200 is released when this process exits
 exit 0
