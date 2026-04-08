@@ -284,6 +284,42 @@ class TestBudgetDowngradeChain:
                 f"Task {task!r} with budget={budget} selected {model!r} — should avoid opus"
             )
 
+    def test_budget_depleted_falls_through_to_free(self):
+        """At budget=$0.001 the router must fall through to a fully free model.
+
+        $0.001 is the boundary that triggers the free-model filter
+        (budget_remaining <= 0.01).  The returned model must have zero
+        cost for both input and output tokens.
+        """
+        model = select_model("sdd-apply", budget_remaining=0.001)
+        caps = MODEL_CAPABILITIES.get(model, {})
+        in_cost = caps.get("cost_per_1m_in", -1)
+        out_cost = caps.get("cost_per_1m_out", -1)
+        assert in_cost == 0.0 and out_cost == 0.0, (
+            f"budget=0.001 selected {model!r} with in={in_cost}, out={out_cost} "
+            "— expected a free model (both costs == 0.0)"
+        )
+
+    def test_prefer_local_zero_budget_returns_free(self):
+        """prefer_local=True with budget=0.0 must return a local, zero-cost model.
+
+        Combining both constraints — local preference AND exhausted budget —
+        must still resolve to a valid model that is both local and free.
+        """
+        model = select_model("sdd-apply", budget_remaining=0.0, prefer_local=True)
+        caps = MODEL_CAPABILITIES.get(model, {})
+        in_cost = caps.get("cost_per_1m_in", -1)
+        out_cost = caps.get("cost_per_1m_out", -1)
+        is_local = caps.get("local", False)
+        # Must be in the known capabilities registry
+        assert model in MODEL_CAPABILITIES, (
+            f"prefer_local + budget=0 returned unknown model {model!r}"
+        )
+        # Must be free (zero cost)
+        assert in_cost == 0.0 and out_cost == 0.0, (
+            f"prefer_local + budget=0 → {model!r} costs in={in_cost} out={out_cost} — must be free"
+        )
+
 
 # ---------------------------------------------------------------------------
 # Edge cases

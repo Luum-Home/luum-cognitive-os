@@ -16,6 +16,7 @@ This file covers:
 import json
 import os
 import subprocess
+import threading
 import time
 from pathlib import Path
 
@@ -627,3 +628,82 @@ class TestRateLimiterEdgeCases:
         # Above threshold
         assert rl.suggest_reduction(3) != ""
         assert rl.suggest_reduction(10) != ""
+
+
+# ---------------------------------------------------------------------------
+# Concurrent access (thread-safety gap tests)
+# ---------------------------------------------------------------------------
+
+
+class TestConcurrentAccess:
+    """Thread-safety tests for RateLimiter under concurrent load."""
+
+    def test_concurrent_record_no_lost_updates(self, tmp_path):
+        """5 threads each recording N times must not lose any updates.
+
+        Total recorded = threads * records_per_thread.
+        State persisted to a shared file must reflect all writes.
+        """
+        records_per_thread = 4
+        num_threads = 5
+        expected_total = num_threads * records_per_thread
+
+        rl = _make_limiter(
+            tmp_path,
+            max_tool_calls_per_minute=200,  # high enough to avoid blocking
+        )
+
+        errors: list[Exception] = []
+
+        def _worker():
+            try:
+                for _ in range(records_per_thread):
+                    rl.record("tool_call")
+            except Exception as exc:  # noqa: BLE001
+                errors.append(exc)
+
+        threads = [threading.Thread(target=_worker) for _ in range(num_threads)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join(timeout=10)
+
+        assert not errors, f"Worker threads raised exceptions: {errors}"
+
+        # Load a fresh instance to read what was actually persisted
+        rl2 = RateLimiter(
+            config=RateLimitConfig(max_tool_calls_per_minute=200),
+            state_path=rl.state_path,
+            phase="stabilization",
+        )
+        status = rl2.get_status()
+        recorded = status["tool_call"]["used"]
+        assert recorded == expected_total, (
+            f"Expected {expected_total} recorded tool_calls, got {recorded} "
+            "(possible lost updates under concurrency)"
+        )
+
+    def test_partial_write_produces_fresh_state(self, tmp_path):
+        """A partially-written JSON state file must yield a fresh (empty) state.
+
+        Simulates a crash mid-write where only part of the JSON was flushed.
+        The RateLimiter must recover gracefully rather than crashing.
+        """
+        state_file = tmp_path / "rate-limit-state.json"
+        # Simulate truncated JSON as if a write was interrupted
+        state_file.write_text('{"tool_calls": [1234567, 89')
+
+        rl = RateLimiter(
+            state_path=str(state_file),
+            phase="stabilization",
+        )
+        # A fresh state has 0 used entries; first check must be allowed
+        allowed, reason = rl.check("tool_call")
+        assert allowed is True, (
+            f"Partial-write recovery failed: check returned allowed={allowed}, reason={reason!r}"
+        )
+        # Confirm the status reflects empty state
+        status = rl.get_status()
+        assert status["tool_call"]["used"] == 0, (
+            f"Expected 0 used after partial-write recovery, got {status['tool_call']['used']}"
+        )
