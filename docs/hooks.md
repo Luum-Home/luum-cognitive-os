@@ -1,24 +1,96 @@
 # Hooks — Runtime Interceptors
 
-Hooks are shell scripts that fire at specific points in the Claude Code session lifecycle. They are configured in `.claude/settings.json` and live in `.claude/hooks/`.
+Hooks are shell scripts that fire at specific points in the Claude Code session lifecycle. They are configured in `.claude/settings.json` and live in `hooks/` (94 scripts total; 46 registered in `settings.json`).
 
 ## Summary
 
-| Hook | File | Trigger | Matcher |
+46 hooks are registered across 8 lifecycle events. The full hook scripts directory (`hooks/`) contains 94 scripts; the remainder load on-demand or are utility scripts.
+
+### SessionStart (3)
+
+| Hook | File | Purpose |
+|------|------|---------|
+| Self-Install | `self-install.sh` | Syncs core rule symlinks; framework auto-sync for self-hosted dev |
+| Session Init | `session-init.sh` | Session ID, isolation, active-sessions.json |
+| Crash Recovery | `crash-recovery.sh` | Detects orphaned checkpoint stashes from prior crashes |
+
+### PreToolUse (9)
+
+| Hook | File | Matcher | Purpose |
 |------|------|---------|---------|
-| Stack Detector | `stack-detector.sh` | SessionStart | (none) |
-| Session Init | `session-init.sh` | SessionStart | (none) |
-| Block Prod URLs | `block-prod-urls.sh` | PreToolUse | `Bash` |
-| Concurrent Write Guard | `concurrent-write-guard.sh` | PreToolUse | `Edit\|Write` |
-| Auto Test on Edit | `auto-test-on-edit.sh` | PostToolUse | `Edit\|Write` |
-| Skill Feedback Tracker | `skill-feedback-tracker.sh` | PostToolUse | `Agent\|Skill` |
-| Session Cleanup | `session-cleanup.sh` | Stop | (none) |
-| Auto-Repair Dispatcher | `auto-repair-dispatcher.sh` | PostToolUse | `Bash` |
-| Metrics Rotation | `metrics-rotation.sh` | SessionStart | (none) |
-| Metrics Calibrator Trigger | `metrics-calibrator-trigger.sh` | SessionStart | (none) |
-| Tool Discovery Trigger | `tool-discovery-trigger.sh` | SessionStart | (none) |
-| Conversation Capture | `conversation-capture.sh` | Stop | (none) |
-| Session Knowledge Extractor | `session-knowledge-extractor.sh` | Stop | (none) |
+| Rate Limiter | `rate-limiter.sh` | `Bash\|Agent\|Edit\|Write` | Enforces per-minute/hour tool call limits |
+| Release Guard | `release-guard.sh` | `Bash` | Blocks destructive commands in production |
+| Large File Advisor | `large-file-advisor.sh` | `Read` | Advises on reads of files >40KB |
+| Concurrent Write Guard | `concurrent-write-guard.sh` | `Edit\|Write` | Advisory file locking for multi-session |
+| Clarification Gate | `clarification-gate.sh` | `Agent` | Blocks vague prompts (ambiguity score >60) |
+| Blast Radius | `blast-radius.sh` | `Agent` | Estimates task scope before launch |
+| Error Pattern Detector | `error-pattern-detector.sh` | `Agent` | Injects warnings when 3+ similar errors detected |
+| Parry Scan | `parry-scan.sh` | `Agent` | ML-based prompt injection scanning |
+| Aguara Scan | `aguara-scan.sh` | `Agent` | 189-rule deterministic security scan |
+
+### PostToolUse (24)
+
+| Hook | File | Matcher | Purpose |
+|------|------|---------|---------|
+| Error Pipeline | `error-pipeline.sh` | `Bash` | Captures test/lint/build failures |
+| Result Truncator | `result-truncator.sh` | `Bash` | Truncates large command output (>5000 chars) |
+| Tool Loop Detector | `tool-loop-detector.sh` | `Bash` | Detects repetitive tool-call loops |
+| Secret Detector | `secret-detector.sh` | `Edit\|Write` | Scans written files for credential leaks |
+| Content Policy | `content-policy.sh` | `Edit\|Write` | Enforces prohibited terms policy |
+| Doc Sync Detector | `doc-sync-detector.sh` | `Edit\|Write` | Flags stale docs after code edits |
+| Scope Creep Detector | `scope-creep-detector.sh` | `Edit\|Write` | Warns when edits fall outside approved task scope |
+| Auto-Checkpoint | `auto-checkpoint.sh` | `Bash\|Edit\|Write` | Creates git stash every 5 min (WAL for crashes) |
+| Claim Validator | `claim-validator.sh` | `Agent` | Validates agent file-creation claims against filesystem |
+| Completion Gate | `completion-gate.sh` | `Agent` | Runs acceptance criteria commands on completion |
+| Clarification Interceptor | `clarification-interceptor.sh` | `Agent` | Detects NEEDS_CLARIFICATION: markers |
+| Agent Checkpoint | `agent-checkpoint.sh` | `Agent` | Marks tasks completed/failed in active-tasks.json |
+| Auto-Skill Generator | `auto-skill-generator.sh` | `Agent` | Creates SKILL.md from complex completed tasks |
+| Trust Score Validator | `trust-score-validator.sh` | `Agent` | Extracts and logs Trust Report scores |
+| Confidence Gate | `confidence-gate.sh` | `Agent` | Blocks low-confidence results in production phase |
+| Consequence Evaluator | `consequence-evaluator.sh` | `Agent` | OKR-driven consequence (promote/degrade/disable) |
+| Scope Proportionality | `scope-proportionality.sh` | `Agent` | Detects disproportionate response scope |
+| Assumption Tracker | `assumption-tracker.sh` | `Agent` | Counts assumption language in agent output |
+| Skill Feedback Tracker | `skill-feedback-tracker.sh` | `Agent` | Tracks skill failures in Engram |
+| **Auto-Refine** | `auto-refine.sh` | `Agent` | Auto-retry loop on failure (max 3 attempts) — **new in v0.4.0** |
+| **Auto-Verify** | `auto-verify.sh` | `Agent` | Runs acceptance criteria commands after completion — **new in v0.4.0** |
+| **DoD Gate** | `dod-gate.sh` | `Agent` | Enforces Definition of Done criteria — **new in v0.4.0** |
+| **Auto-Repair Dispatcher** | `auto-repair-dispatcher.sh` | `Agent` | MAPE-K repair brain — dispatches fixes — **new in v0.4.0** |
+| **Error Learning** | `error-learning.sh` | `Bash` | Error pattern accumulation and dedup — **new in v0.4.0** |
+
+### Stop (5)
+
+| Hook | File | Purpose |
+|------|------|---------|
+| Session Learning | `session-learning.sh` | Captures session errors, failed skills, iteration counts |
+| Session Cleanup | `session-cleanup.sh` | Merges session metrics, deregisters session |
+| Task Recorder | `task-recorder.sh` | Records completed task costs for cost prediction |
+| Session State Save | `session-state-save.sh` | Persists session state to disk |
+| KPI Trigger | `kpi-trigger.sh` | KPI snapshot and weekly self-improve flag |
+
+### Other (4)
+
+| Hook | File | Trigger | Purpose |
+|------|------|---------|---------|
+| Teammate Idle | `teammate-idle.sh` | TeammateIdle | Handles idle teammate notifications |
+| Task Created | `task-created.sh` | TaskCreated | Registers newly created tasks |
+| Task Completed | `task-completed.sh` | TaskCompleted | Records task completion events |
+| Background Agent Reminder | `background-agent-reminder.sh` | UserPromptSubmit | Reminds about running background agents |
+| User Prompt Capture | `user-prompt-capture.sh` | UserPromptSubmit | Captures actionable user prompts to Engram |
+
+### New in v0.4.0
+
+8 hooks were added in v0.4.0 to close the self-improvement loop:
+
+| Hook | Trigger | Purpose |
+|------|---------|---------|
+| `auto-refine.sh` | PostToolUse (Agent) | Auto-retry loop: detects failures, retries up to 3 times |
+| `auto-verify.sh` | PostToolUse (Agent) | Runs acceptance criteria verification commands post-completion |
+| `dod-gate.sh` | PostToolUse (Agent) | Enforces complexity-appropriate Definition of Done |
+| `error-learning.sh` | PostToolUse (Bash) | Accumulates and deduplicates error patterns to JSONL |
+| `auto-repair-dispatcher.sh` | PostToolUse (Agent) | MAPE-K brain: classifies errors, dispatches worktree repairs |
+| `skill-feedback-tracker.sh` | PostToolUse (Agent) | Saves skill failures to Engram for skill-adaptation loop |
+| `parry-scan.sh` | PreToolUse (Agent) | ML-based prompt injection detection (DeBERTa) |
+| `reinvention-check.sh` | PostToolUse (Agent) | Prevents re-inventing already-solved problems |
 
 ---
 
@@ -121,40 +193,66 @@ Hooks are shell scripts that fire at specific points in the Claude Code session 
 
 ## Hook Configuration in settings.json
 
+46 hooks are registered in `.claude/settings.json`. The structure groups hooks by lifecycle event and matcher. Example showing selected hooks:
+
 ```json
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/self-install.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-init.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/crash-recovery.sh\""}
+        ]
+      }
+    ],
     "PreToolUse": [
       {
-        "matcher": "Bash",
+        "matcher": "Bash|Agent|Edit|Write",
+        "hooks": [{"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limiter.sh\""}]
+      },
+      {
+        "matcher": "Agent",
         "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/block-prod-urls.sh\""
-          }
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/clarification-gate.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/blast-radius.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/error-pattern-detector.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/parry-scan.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aguara-scan.sh\""}
         ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "Bash",
         "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/auto-test-on-edit.sh\""
-          }
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/error-pipeline.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/error-learning.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""}
         ]
       },
       {
-        "matcher": "Agent|Skill",
+        "matcher": "Agent",
         "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/skill-feedback-tracker.sh\""
-          }
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-feedback-tracker.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-refine.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-verify.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dod-gate.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-repair-dispatcher.sh\""}
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-cleanup.sh\""},
+          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/kpi-trigger.sh\""}
         ]
       }
     ]
   }
 }
 ```
+
+See `.claude/settings.json` for the complete 46-hook registration.

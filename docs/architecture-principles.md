@@ -93,9 +93,9 @@ Rules are pure behavioral constraints. They define what agents MUST and MUST NOT
 | Format | Markdown (.md) |
 | Location | `rules/` |
 | Dependencies | NONE |
-| Loaded by | RULES-COMPACT.md at session start; full rules on contextual trigger |
+| Loaded by | `self-install.sh` symlinks 16 core rules to `.claude/rules/cos/`; all others load on contextual trigger |
 | Testing | Behavior tests: does the system follow the rule? |
-| Count | 55 |
+| Count | 16 core always-loaded; 150+ total |
 
 **Design constraints:**
 - A rule describes WHAT, never HOW. "Every agent completion must include a Trust Report" is a rule. "Extract the score with grep and log it to JSONL" is a hook's job.
@@ -138,7 +138,7 @@ Hooks are lifecycle interceptors that enforce rules at runtime. They are the glu
 | Dependencies | May source `hooks/_lib/*.sh`; may read rules and config |
 | Shared code | `hooks/_lib/common.sh` (require_tool, resolve_session_dir, etc.) |
 | Testing | Behavior tests: does the hook fire correctly and produce expected side effects? |
-| Count | 57 |
+| Count | 94 scripts; 46 registered in `.claude/settings.json` |
 
 **Design constraints:**
 - Hooks are thin wrappers. They detect conditions and trigger actions, but complex logic belongs in `lib/`.

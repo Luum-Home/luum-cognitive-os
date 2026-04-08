@@ -56,6 +56,22 @@ Next Execution (better prompts, better acceptance criteria, better patterns)
 KPIs Improve
 ```
 
+## Unified Connector: LearningPipeline
+
+**File**: `lib/learning_pipeline.py`
+
+`LearningPipeline` is the integration layer that connects the five previously-isolated subsystems into a single pass:
+
+1. **`prompt_classifier`** — classifies user intent before persisting prompts
+2. **`skill_archive`** — records skill executions with trust scores (feeds evolutionary archive)
+3. **`consequence_engine`** — evaluates promote/degrade/disable streaks from skill archive data
+4. **`error_classifier`** — classifies errors by type and service
+5. **Trigger surfacing** — surfaces `LearningTrigger` signals (error patterns, skill degradation, consequence events) for injection into agent prompts
+
+Before this, each subsystem wrote to separate JSONL files without cross-referencing each other. `LearningPipeline` processes every agent completion through all five in sequence and saves `ErrorCorrelation` records to `metrics/error-skill-correlations.jsonl` to link errors back to the skill that caused them.
+
+---
+
 ## Components
 
 ### 1. Error Capture Layer
@@ -137,7 +153,11 @@ hooks/session-learning.sh -------> metrics/session-learnings.jsonl -+--> /self-i
 hooks/kpi-trigger.sh ------------> metrics/kpi-history.jsonl -------+    |
 skills/agent-kpis/ --------------> Engram (agent-kpis/latest) -----+    |
                                                                          |
-                    +----------------------------------------------------+
+lib/learning_pipeline.py ---------> error-skill-correlations.jsonl --+  |
+  (runs on every completion)         (links errors → skill that ran)  |  |
+                                                                       |  |
+                    +--------------------------------------------------+  |
+                    +-----------------------------------------------------+
                     |
                     v
             rules/acceptance-criteria.md (updated)

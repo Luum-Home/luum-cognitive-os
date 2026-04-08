@@ -19,6 +19,8 @@
 | Sprut Agent Kit | 1.6/3 | Reference | MIT | 4 patterns adapted | Content creator toolkit with novel agent persistence ideas |
 | Xetro.ai | -- | Competitor | Proprietary | Comparison only | Consultancy rebranded as product; no real OSS offering |
 | QuinotoSpec | -- | Reference | -- | 3 patterns implemented | Sprint planning and governance patterns for agent systems |
+| Hermes Agent (Nous Research) | 26/30 | ADOPT | MIT | 4 patterns + submodule | Self-reinforcing learning loop, 9431 LOC, 465 tests. memory_scanner.py, memory_retriever.py, feedback_detector.py |
+| Pi Coding Agent | 25/30 | ADOPT | MIT | 4 patterns + submodule | Powers OpenClaw (160K+ stars), 7 packages, 161 tests. file_mutation_queue.py, compaction cut-points |
 
 ## Detailed Evaluations
 
@@ -199,6 +201,84 @@
 3. Skeptical evaluator -- adversarial review mandate (every review must find at least one issue)
 
 **What we skipped**: Evaluation dataset construction (we use live metrics instead), benchmark-specific harness patterns.
+
+---
+
+## 2026-04-08: Hermes/Pi Deep Investigation
+
+**Agents launched**: 11 agents, 2 investigation rounds.
+**Models**: Opus (analysis), Sonnet (implementation).
+**Duration**: Full maturation sprint.
+**See**: `.cognitive-os/plans/research/hermes-pi-investigation.md` for full notes.
+
+### Summary Table
+
+| Tool | Score | Ring | License | Decision | Key Finding |
+|------|-------|------|---------|----------|-------------|
+| Hermes Agent (Nous Research) | 26/30 | ADOPT | MIT | 4 patterns adopted + submodule | Self-reinforcing learning loop is genuine, not cosmetic. 9431 LOC, 465 tests. Honcho memory = separate design from Engram (not a reinvention). |
+| Pi Coding Agent | 25/30 | ADOPT | MIT | 4 patterns adopted + submodule | Powers OpenClaw (160K+ stars). File mutation queue solves a real parallel-agent problem COS had not addressed. 7-package monorepo, 161 tests. |
+
+### Key Finding: COS Was 30% Real, 70% Aspirational
+
+Pre-investigation audit revealed COS had 3 unjustified reinventions (Engram vs Honcho, Squads vs Composio, SDD vs Spec Kit) and 5 adopted-but-inactive tools. Maturation sprint executed to close the gap:
+
+1. **Memory scanning** — Hermes had it as a core tool, COS had zero equivalent. Added `lib/memory_scanner.py`.
+2. **File mutation safety** — Pi solved this at scale (OpenClaw production), COS had only advisory locks. Added `lib/file_mutation_queue.py`.
+3. **Hybrid retrieval** — Hermes's holographic plugin showed vector-only Engram search was insufficient. Added `lib/memory_retriever.py`.
+4. **Feedback detection** — Hermes's review agent concept, simplified to `lib/feedback_detector.py`.
+5. **Compaction cut-points** — Pi's pattern reinforced correct placement of `pre-compaction-flush.sh` checkpoints.
+
+### Reinvention Audit Results
+
+| COS Component | Comparable External | Assessment | Decision |
+|---------------|--------------------|---------| ---------|
+| Engram (SQLite, topic keys) | Honcho (hierarchical, app/user/session) | Different designs, different use cases | NOT a reinvention — keep both |
+| Squads (agent teams) | Composio (fleet management, worktrees) | Different scope — Squads is governance, Composio is execution | NOT a reinvention — different problem |
+| SDD pipeline (7 phases) | Spec Kit (3 phases: req/design/tasks) | SDD is deeper (explore/verify/archive) but Spec Kit has broader adoption | NOT a reinvention — different depth |
+
+All 3 were judged as justified independent development. No consolidation required.
+
+### Hermes Evaluation
+
+**Repository**: NousResearch/hermes-agent
+**License**: MIT (confirmed — safe for all adoption modes)
+
+**Score breakdown**:
+- Functionality: 9/10 (learning loop is genuine and working)
+- License: 10/10 (MIT)
+- Maintenance: 7/10 (active but solo maintainer risk)
+- Integration: 5/10 (Python monolith, requires architecture adaptation)
+- Community: 5/10 (growing, research-focused)
+
+**What we took** (4 patterns):
+1. Memory scanning — `lib/memory_scanner.py`
+2. Hybrid retrieval — `lib/memory_retriever.py`
+3. Injection fencing concept — influenced content-policy hook
+4. Feedback detection — `lib/feedback_detector.py`
+
+**What we skipped**: Honcho backend (have Engram), FastAPI server, 9431-line monolith structure.
+
+### Pi Evaluation
+
+**Repository**: Pi-agent/pi
+**License**: MIT (confirmed — safe for all adoption modes)
+
+**Score breakdown**:
+- Functionality: 9/10 (proven at OpenClaw scale, 160K+ stars)
+- License: 10/10 (MIT)
+- Maintenance: 8/10 (active team, multiple contributors)
+- Integration: 5/10 (TypeScript, requires porting)
+- Community: 8/10 (large via OpenClaw)
+
+**What we took** (4 patterns):
+1. File mutation queue — `lib/file_mutation_queue.py`
+2. Compaction cut-points — influenced `hooks/pre-compaction-flush.sh`
+3. Structural tests — added `tests/structural/` directory
+4. Settings override — influenced `cognitive-os.yaml` phase-aware config
+
+**What we skipped**: TypeScript runtime, Pi's memory system, double-while loop architecture.
+
+---
 
 ## Evaluation Methodology
 

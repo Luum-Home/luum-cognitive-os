@@ -245,7 +245,7 @@ assertions:
 
 1. **Phase 1**: Add Promptfoo tests for constitutional gates (Gate 1-7 from `constitutional-gates.md`). Run on every PR.
 2. **Phase 2**: Add DeepEval skill trigger tests. Define expected skill for each common prompt pattern.
-3. **Phase 3**: Build custom Engram persistence test harness (write, search, get, session summary cycle).
+3. **Phase 3**: ~~Build custom Engram persistence test harness~~ **DONE** — `tests/unit/test_engram_persistence.py` covers 19 real engram tests using the `real_engram` fixture (no MagicMock; backed by a real SQLite DB).
 4. **Phase 4**: Add hook protocol tests with JSON schema validation.
 5. **Phase 5**: Add Arize Phoenix for multi-agent debugging when squads are production-ready.
 

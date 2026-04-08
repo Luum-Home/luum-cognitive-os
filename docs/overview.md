@@ -30,7 +30,7 @@ The difference: a traditional OS manages hardware. Cognitive OS manages **cognit
               +----------------------+----------------------+
               |                      |                      |
     +---------v---------+  +---------v---------+  +---------v---------+
-    |    HOOKS (57)     |  |    RULES (55)     |  |    SKILLS (72)    |
+    |    HOOKS (46+)    |  |    RULES (16)     |  |    SKILLS (72)    |
     |  (runtime gates)  |  | (always-on laws)  |  | (domain knowledge)|
     +---------+---------+  +---------+---------+  +---------+---------+
     | SessionStart:     |  | constitutional-   |  | Project (9):      |
@@ -64,7 +64,7 @@ The difference: a traditional OS manages hardware. Cognitive OS manages **cognit
 
 ## Self-Improvement Loop
 
-The AI ecosystem implements a closed-loop self-improvement cycle. Each agent execution feeds data back into the system, which uses it to improve future executions.
+The AI ecosystem implements a closed-loop self-improvement cycle backed by `lib/learning_pipeline.py`, which integrates 5 previously isolated subsystems (error learning, skill feedback, memory scanning, user model, and reinvention guard) into a single connected pipeline. Each agent execution feeds data back into the system, which uses it to improve future executions.
 
 ```
 Agentes ejecutan tareas
@@ -121,34 +121,37 @@ KPIs suben -> loop cerrado
 
 ## Component Inventory
 
-### Hooks (57) — Runtime Interceptors
+### Hooks (46 registered) — Runtime Interceptors
 
-Hooks fire automatically at specific lifecycle points. They run shell scripts.
+Hooks fire automatically at specific lifecycle points. They run shell scripts. 46 hooks are registered in `.claude/settings.json` across 8 lifecycle events; 94 hook scripts exist in `hooks/`.
 
 | Hook | Trigger | Purpose |
 |------|---------|---------|
-| `stack-detector.sh` | SessionStart | Scans project, generates `detected-stack.json` |
-| `session-resume.sh` | SessionStart | Auto-recovers incomplete tasks from previous sessions |
-| `metrics-rotation.sh` | SessionStart | JSONL rotation to prevent unbounded growth |
-| `metrics-calibrator-trigger.sh` | SessionStart | Weekly KPI calibration check |
-| `tool-discovery-trigger.sh` | SessionStart | Weekly tool scan check |
-| `block-prod-urls.sh` | PreToolUse (Bash) | Blocks production URLs in commands |
+| `self-install.sh` | SessionStart | Syncs core rule symlinks to `.claude/rules/cos/` |
+| `session-init.sh` | SessionStart | Session ID, isolation, active-sessions.json |
+| `crash-recovery.sh` | SessionStart | Detects orphaned checkpoint stashes from prior crashes |
 | `error-pattern-detector.sh` | PreToolUse (Agent) | Injects warnings for recurring error patterns (3+) |
-| `agent-prelaunch.sh` | PreToolUse (Agent) | Registers tasks in active-tasks.json for fault tolerance |
-| `auto-test-on-edit.sh` | PostToolUse (Edit/Write) | Auto-runs tests for the edited service |
-| `skill-feedback-tracker.sh` | PostToolUse (Agent/Skill) | Tracks skill failures in Engram |
-| `skill-metrics-tracker.sh` | PostToolUse (Agent) | Captures tokens, time, model per execution to skill-metrics.jsonl |
-| `error-learning.sh` | PostToolUse (Bash) | Captures test/lint/build failures to error-learning.jsonl |
-| `auto-repair-dispatcher.sh` | PostToolUse (Bash) | MAPE-K repair brain — analyzes errors, dispatches fixes |
+| `clarification-gate.sh` | PreToolUse (Agent) | Blocks vague prompts (ambiguity score > 60) |
+| `blast-radius.sh` | PreToolUse (Agent) | Estimates task scope before launch |
+| `parry-scan.sh` | PreToolUse (Agent) | ML-based prompt injection scanning |
+| `aguara-scan.sh` | PreToolUse (Agent) | 189-rule deterministic security scan |
+| `error-pipeline.sh` | PostToolUse (Bash) | Captures test/lint/build failures |
+| `error-learning.sh` | PostToolUse (Bash) | Error pattern accumulation and dedup |
+| `auto-repair-dispatcher.sh` | PostToolUse (Bash) | MAPE-K repair brain — dispatches fixes |
+| `skill-feedback-tracker.sh` | PostToolUse (Agent) | Tracks skill failures in Engram |
+| `auto-refine.sh` | PostToolUse (Agent) | Auto-retry loop on failure (max 3 attempts) |
+| `auto-verify.sh` | PostToolUse (Agent) | Runs acceptance criteria commands after completion |
+| `dod-gate.sh` | PostToolUse (Agent) | Enforces Definition of Done criteria |
+| `trust-score-validator.sh` | PostToolUse (Agent) | Extracts and logs Trust Report scores |
 | `agent-checkpoint.sh` | PostToolUse (Agent) | Marks tasks completed/failed in active-tasks.json |
-| `conversation-capture.sh` | Stop | Session transcript indexing |
-| `session-knowledge-extractor.sh` | Stop | Pattern mining from session activity |
+| `session-cleanup.sh` | Stop | Merges session metrics, deregisters session |
+| `kpi-trigger.sh` | Stop | KPI snapshot and weekly self-improve flag |
 
-*Plus 41 additional hooks for phase injection, squad management, auto-repair, security scanning, and infrastructure.*
+*Plus additional hooks for rate limiting, content policy, secret detection, claim validation, assumption tracking, confidence gate, consequence evaluation, scope proportionality, doc-sync, and more.*
 
-### Rules (55) — Always-Active Constraints
+### Rules (16 core always-loaded) — Always-Active Constraints
 
-Rules are loaded at session start and enforced throughout. They live in `.claude/rules/`.
+Rules are managed by `self-install.sh`, which symlinks exactly 16 core rules to `.claude/rules/cos/` on each session start (down from 94 in v0.3.x, reducing always-loaded tokens from ~93K to ~21K). All other rules load on contextual trigger.
 
 | Rule | Scope |
 |------|-------|

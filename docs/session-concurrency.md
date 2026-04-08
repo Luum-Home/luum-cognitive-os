@@ -154,9 +154,21 @@ sessions:
   max_concurrent: 10               # Maximum simultaneous sessions
 ```
 
+## Python-Level Serialization: FileMutationQueue
+
+For Python callers (lib/, skills that call Python directly), `lib/file_mutation_queue.py` provides real per-file serialization — not advisory warnings:
+
+- Maintains a `threading.Lock` per resolved canonical path (symlink-aware via `Path.resolve()`)
+- Concurrent writes to the same file block until the first writer finishes
+- Concurrent writes to **different** files proceed in parallel
+- Self-cleaning: lock entries are removed when no threads are waiting
+- Use via context manager: `with queue.lock("/path/to/file"): ...`
+
+This is complementary to the shell-level `concurrent-write-guard.sh` (which warns) — Python components use `FileMutationQueue` for hard serialization.
+
 ## Limitations
 
-- **Local file system only**: Locking uses `flock` and PID checks, which only work on a single machine. Distributed locking across networked file systems is not supported.
-- **Advisory only**: File locking does not prevent writes. It is a best-effort warning system.
+- **Local file system only**: Locking uses `flock` and PID checks (shell) / thread locks (Python), which only work on a single machine. Distributed locking across networked file systems is not supported.
+- **Shell locking is advisory only**: `concurrent-write-guard.sh` warns but does not block shell-level writes. It is a best-effort warning system.
 - **PID reuse**: In rare cases, a PID could be reused by the OS, causing a stale lock to appear active. The timeout-based expiry mitigates this.
 - **Session ID discovery**: Hooks discover the session ID via environment variable or PID-based file lookup. If neither works (e.g., a sub-process with a different PID), the hook falls back to global behavior.
