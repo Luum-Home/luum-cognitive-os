@@ -51,6 +51,15 @@ The Auto-Repair System is a MAPE-K (Monitor-Analyze-Plan-Execute-Knowledge) loop
 | `remediation.sh` | Remediation registry: register fixes, O(1) lookup, failure tracking, garbage collection |
 | `execute-repair.sh` | Worktree-isolated repair execution (deterministic + LLM paths) |
 
+### Python Libraries (lib/)
+
+| Library | Purpose |
+|---------|---------|
+| `lib/file_mutation_queue.py` | Per-file thread lock that **serializes** concurrent writes (not just warns). Ported from Pi coding-agent. Symlink-aware path resolution; self-cleaning when queue drains. Replaces advisory-only `concurrent-write-guard.sh` for Python callers. |
+| `lib/reinvention_guard.py` | Prevents rebuilding features that already exist in adopted upstreams (Hermes, Pi). Checks `adoption-registry.yaml`, lib/, docs/, and the competitive landscape doc before any new component is created. Returns `ExistingImplementation` hits with relevance scores and `adopt/adapt/reference/ignore` recommendations. |
+| `lib/learning_pipeline.py` | Connects prompt_classifier, skill_archive, consequence_engine, error_classifier into a single pass per agent completion. Surfaces `LearningTrigger` signals; writes `error-skill-correlations.jsonl`. |
+| `lib/memory_scanner.py` | 12-pattern content security scanner (prompt injection, exfil, invisible Unicode) that gates all `mem_save` calls before Engram persistence. Ported from Hermes memory_tool.py (MIT). |
+
 ### Hooks
 
 | Hook | Trigger | Role in MAPE-K |
@@ -158,6 +167,7 @@ States: CLOSED (allow) → OPEN (block) → HALF-OPEN (allow 1 attempt)
 | `metrics/calibration-history.jsonl` | KPI calibration snapshots |
 | `metrics/knowledge-graph.jsonl` | Cross-session pattern detections |
 | `metrics/tool-discovery.jsonl` | Tool scan results |
+| `metrics/error-skill-correlations.jsonl` | Error events linked to the skill that ran (learning_pipeline.py) |
 | `transcripts/transcript-index.jsonl` | Session transcript index |
 
 ## Configuration

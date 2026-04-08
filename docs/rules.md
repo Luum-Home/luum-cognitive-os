@@ -1,19 +1,46 @@
 # Rules — Always-Active Constraints
 
-Rules are markdown files in `.claude/rules/` that Claude loads at session start and enforces throughout the entire session. They define constraints, protocols, and behaviors.
+Rules are markdown files that Claude loads at session start and enforces throughout the entire session. They define constraints, protocols, and behaviors.
 
-## Summary
+**Loading architecture**: `self-install.sh` symlinks exactly 16 core rules into `.claude/rules/cos/` at every session start. This reduces always-loaded tokens from ~93K (loading all 150+ rules) to ~21K. All other rules load contextually when a trigger condition matches.
+
+## Core Rules (16 always-loaded)
+
+These 16 rules are symlinked to `.claude/rules/cos/` by `self-install.sh` on every session start:
 
 | Rule | File | Purpose |
 |------|------|---------|
-| Constitutional Gates | `constitutional-gates.md` | 7 immutable architectural principles |
-| Control Manifest | `control-manifest.md` | Protected zones, performance/security constraints, task scaling |
-| License Policy | `license-policy.md` | Dependency license vetting for SaaS |
-| Skill Adaptation | `skill-adaptation.md` | Auto-improvement loop for skills |
-| Skill Auto-Loader | `skill-auto-loader.md` | Maps detected stack to skills |
-| Skill Registry Protocol | `skill-registry-protocol.md` | Skill priority, versioning, refresh |
-| Auto-Repair | `auto-repair.md` | Phase gates, circuit breaker, never-auto-repair list |
-| Metrics Calibration | `metrics-calibration.md` | Metric threshold auto-calibration |
+| Rules Compact | `RULES-COMPACT.md` | Thematic index of all rules; compressed reference |
+| Adaptive Bypass | `adaptive-bypass.md` | Smart orchestration: workflow proportional to task complexity |
+| Acceptance Criteria | `acceptance-criteria.md` | Every agent prompt must include measurable criteria |
+| Agent Quality | `agent-quality.md` | Maximum output, not minimum; anti-sycophancy |
+| Trust Score | `trust-score.md` | Mandatory Trust Report with evidence, uncertainty, verification |
+| Token Economy | `token-economy.md` | 5 token principles: transparency, worthiness, memory-first |
+| Phase-Aware Agents | `phase-aware-agents.md` | reconstruction/stabilization/production/maintenance behavior |
+| Closed-Loop Prompts | `closed-loop-prompts.md` | Self-correcting agent execution with HALT-and-WAIT protocol |
+| Error Learning | `error-learning.md` | Error capture protocol and PDCA mistake documentation |
+| Rate Limiting | `rate-limiting.md` | Per-minute/hour limits on all tool invocations |
+| Credential Management | `credential-management.md` | Credentials never in code; env vars and validation |
+| Content Policy | `content-policy.md` | Prohibited terms; automated enforcement via hook |
+| Result Management | `result-management.md` | Large output prevention; auto-truncation; large file reading |
+| Blast Radius | `blast-radius.md` | Task scope estimation before agent launch |
+| Clarification Gate | `clarification-gate.md` | Blocks vague prompts (ambiguity score >60) |
+| Model Routing | `model-routing.md` | Routing table: which model for which task type |
+
+## Contextual Rules (150+ total, loaded on trigger)
+
+All other rules live in `rules/` and load when their trigger condition is detected. Examples:
+
+| Category | Examples |
+|----------|---------|
+| Self-healing | `auto-repair.md`, `fault-tolerance.md`, `crash-recovery.md` |
+| Quality gates | `definition-of-done.md`, `adversarial-review.md`, `sandbox-sampling.md` |
+| Security | `agent-security.md`, `license-policy.md`, `supply-chain-defense.md` |
+| Agent governance | `agent-kpis.md`, `agent-escalation.md`, `squad-protocol.md` |
+| Architecture | `os-vs-project.md`, `component-classification.md`, `dogfooding.md` |
+| Efficiency | `resource-governance.md`, `workload-scheduling.md`, `context-optimization.md` |
+
+See `RULES-COMPACT.md` for the full thematic index with trigger conditions.
 
 ---
 
