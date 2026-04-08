@@ -68,8 +68,13 @@ to skills using pattern-based intent detection (English + Spanish).
 | "pentest", "penetration test" | `/pentest-self` | -- | 0.90 |
 | "red team", "prompt injection test" | `/red-team` | `/vulnerability-scan` | 0.85 |
 | "vulnerability scan", "garak" | `/vulnerability-scan` | -- | 0.85 |
-| "semgrep", "SAST", "static analysis" | `/semgrep-scan` | -- | 0.85 |
+| "semgrep", "SAST", "static analysis" | `/semgrep-scan` | `tob-static-analysis` | 0.85 |
 | "secret audit", "scan for secrets" | `/secret-audit` | -- | 0.85 |
+| "trail of bits", "tob audit", "tob security" | `tob-static-analysis` | `tob-insecure-defaults` | 0.90 |
+| "audit github actions", "actions injection", "agentic actions" | `tob-agentic-actions-auditor` | -- | 0.90 |
+| "supply chain audit", "dependency risk", "typosquatting" | `tob-supply-chain-risk-auditor` | -- | 0.90 |
+| "insecure defaults", "fail-open", "fail open config" | `tob-insecure-defaults` | `tob-static-analysis` | 0.85 |
+| "variant analysis", "bug propagation", "bug pattern" | `tob-variant-analysis` | `tob-static-analysis` | 0.85 |
 | "KPIs", "agent health", "métricas de agente" | `/agent-kpis` | `/model-optimizer` | 0.85 |
 | "model optimizer", "model routing" | `/model-optimizer` | -- | 0.85 |
 | "trust audit", "trust score analysis" | `/trust-audit` | -- | 0.85 |
