@@ -81,7 +81,7 @@ Session Start
 Normal Operation
   |
   +-- auto-checkpoint.sh (every 5 min, on Bash|Edit|Write)
-  +-- error-pipeline.sh (capture errors)
+  +-- error-pipeline.sh (capture errors -> learning_pipeline.py correlates with skill)
   +-- context-management (agent behavioral guidelines at 50/70/85%)
   |
   v

@@ -140,34 +140,41 @@ GitHub Issue #42 ("Add password reset flow")
 
 ## Component Inventory
 
-### Hooks (57)
+### Hooks (46 registered, 94 scripts)
 
-Hooks are bash scripts that intercept Claude Code tool calls at four lifecycle points.
+Hooks are bash scripts that intercept Claude Code tool calls. 46 hooks are registered in `.claude/settings.json`; 94 hook scripts exist in `hooks/`.
 
 | Lifecycle Point | Count | Key Hooks |
 |----------------|-------|-----------|
-| **SessionStart** | 8 | `session-init`, `session-resume`, `stack-detector`, `self-install`, `inject-phase-context`, `engram-auto-import` |
-| **PreToolUse** | 10 | `error-pattern-detector`, `completeness-check`, `epic-task-detector`, `agent-prelaunch`, `resource-check`, `pre-cleanup-snapshot`, `guardrails-validator`, `semgrep-scan` |
-| **PostToolUse** | 24 | `error-learning`, `auto-verify`, `auto-refine`, `skill-tracker`, `trust-score-validator`, `dod-gate`, `secret-detector`, `doc-sync-detector`, `auto-skill-generator`, `result-truncator`, `agent-bus-monitor`, `observability-trace` |
-| **Stop** | 5 | `session-cleanup`, `kpi-trigger`, `session-learning`, `pre-compaction-flush`, `jupyter-sandbox` |
+| **SessionStart** | 3 | `self-install`, `session-init`, `crash-recovery` |
+| **PreToolUse** | 9 | `rate-limiter`, `clarification-gate`, `blast-radius`, `error-pattern-detector`, `parry-scan`, `aguara-scan`, `concurrent-write-guard`, `large-file-advisor`, `release-guard` |
+| **PostToolUse** | 24 | `error-pipeline`, `error-learning`, `auto-refine`, `auto-verify`, `dod-gate`, `skill-feedback-tracker`, `trust-score-validator`, `confidence-gate`, `agent-checkpoint`, `auto-skill-generator`, `auto-repair-dispatcher`, `secret-detector`, `content-policy`, `doc-sync-detector`, `scope-creep-detector`, `claim-validator`, `assumption-tracker`, `scope-proportionality`, `consequence-evaluator`, `completion-gate`, `clarification-interceptor`, `result-truncator`, `auto-checkpoint`, `tool-loop-detector` |
+| **Stop** | 5 | `session-cleanup`, `kpi-trigger`, `session-learning`, `task-recorder`, `session-state-save` |
+| **Other** | 5 | `teammate-idle`, `task-created`, `task-completed`, `background-agent-reminder`, `user-prompt-capture` |
 | **Shared library** | - | `hooks/_lib/` (common functions) |
 
-### Rules (55)
+### Rules (16 core always-loaded)
 
-Rules are always-on behavioral contracts in Markdown.
+Rules are always-on behavioral contracts in Markdown. `self-install.sh` symlinks exactly 16 core rules to `.claude/rules/cos/` at session start (reduced from 94 in v0.3.x, saving ~72K tokens). All other rules load on contextual trigger. See `docs/rules-loading-architecture.md` for details.
 
-| Category | Rules |
-|----------|-------|
-| **Quality** | agent-quality, acceptance-criteria, definition-of-done, trust-score, adversarial-review, closed-loop-prompts |
-| **Safety** | license-policy, credential-management, secret-hygiene, capability-protection |
-| **Governance** | phase-aware-agents, resource-governance, cost-tracking, model-routing, agent-kpis |
-| **Memory** | engram-organization, context-management, context-optimization, fault-tolerance |
-| **Process** | plan-first, cognitive-os-changes, dogfooding, step-files, result-management |
-| **Self-improvement** | error-learning, auto-skill-generation, self-improvement-protocol, metrics-calibration, skill-management |
-| **Organization** | squad-protocol, agent-identity, agent-customization, agent-sidecars, session-concurrency |
-| **Detection** | infra-intent, sandbox-sampling, auto-repair, library-selection |
-| **Compatibility** | model-compatibility, os-vs-project, doc-sync, prompt-composition |
-| **Special** | private-mode |
+| Core Rule | Purpose |
+|-----------|---------|
+| `RULES-COMPACT.md` | Compressed index of all rules |
+| `adaptive-bypass.md` | Scale-adaptive workflow selection |
+| `acceptance-criteria.md` | Mandatory measurable criteria |
+| `agent-quality.md` | Prevent minimum-effort output |
+| `trust-score.md` | Evidence-based confidence reporting |
+| `token-economy.md` | 5 token principles |
+| `phase-aware-agents.md` | Phase-aware behavior |
+| `closed-loop-prompts.md` | Self-correcting execution |
+| `error-learning.md` | Error capture protocol |
+| `rate-limiting.md` | Per-minute/hour call limits |
+| `credential-management.md` | Secrets never in code |
+| `content-policy.md` | Prohibited terms enforcement |
+| `result-management.md` | Large output truncation |
+| `blast-radius.md` | Task scope estimation |
+| `clarification-gate.md` | Block vague prompts |
+| `model-routing.md` | Model routing table |
 
 ### Skills (72)
 
@@ -211,7 +218,9 @@ Persistent agent definitions with specific roles:
 | `stack-validator` | Validate technology stack compliance |
 | `test-coverage-enforcer` | Enforce test coverage thresholds |
 
-### Library Modules (22 Python modules)
+### Library Modules (79 Python modules)
+
+Key modules (see `lib/` for full list):
 
 | Module | Purpose |
 |--------|---------|
@@ -222,21 +231,36 @@ Persistent agent definitions with specific roles:
 | `claude_executor.py` | Programmatic Claude Code invocation via CLI subprocess |
 | `cognee_client.py` | Client for Cognee knowledge graph and RAG engine |
 | `domain_router.py` | Route issues to the right squad/pipeline |
+| `feedback_detector.py` | Detects user feedback signals in session output |
+| `file_mutation_queue.py` | Queues and serializes file mutation operations |
 | `guardrails_validators.py` | NeMo Guardrails validation helpers |
 | `impact_analysis.py` | Change impact analysis: importers, coverage, risk classification |
 | `issue_pipeline.py` | GitHub issue to PR automation |
 | `jupyter_client.py` | Client for Jupyter notebook execution sandbox |
+| `learning_pipeline.py` | Connects 5 island systems: error learning, skill feedback, memory scanning, user model, reinvention guard |
 | `litellm_client.py` | Client for LiteLLM model routing and cost tracking |
+| `memory_retriever.py` | Structured retrieval from Engram with ranking |
+| `memory_scanner.py` | Scans session output for memory-worthy observations |
 | `model_router.py` | Dynamic multi-provider model selection and cost estimation |
 | `notifications.py` | Telegram, Slack, webhook notifications |
 | `observability.py` | Unified observability: Langfuse and Opik tracing integration |
 | `paperclip_client.py` | Client for Paperclip governance dashboard |
-| `phase_timing.py` | Phase duration tracking and estimation |
+| `reinvention_guard.py` | Detects and blocks redundant reimplementation of existing work |
 | `sdd_resume.py` | SDD state management and phase continuation |
 | `session_state.py` | Session state persistence with atomic writes |
 | `singularity.py` | MAPE-K autonomous controller |
+| `user_model.py` | Builds a persistent model of user preferences and patterns |
 | `web_crawler.py` | Web content extraction via Crawl4AI (markdown, structured, crawl) |
 | `webhook_trigger.py` | FastAPI server for GitHub webhooks |
+
+### Git Submodules
+
+Two external agent repos are included as submodules under `.claude/plugins/`:
+
+| Submodule | Path | Purpose |
+|-----------|------|---------|
+| `hermes-agent` | `.claude/plugins/hermes-agent` | NousResearch Hermes agent reference implementation |
+| `pi-mono` | `.claude/plugins/pi-mono` | Pi monorepo patterns for agent orchestration |
 
 ---
 
@@ -249,13 +273,13 @@ Persistent agent definitions with specific roles:
 |                                                                   |
 |  RUNTIME        Claude Code CLI + Claude Opus 4.6 (1M context)   |
 |                                                                   |
-|  HOOKS          Bash (57 scripts, <100ms each, zero deps)        |
+|  HOOKS          Bash (94 scripts, 46 registered, <100ms each)    |
 |                                                                   |
-|  RULES          Markdown (55 files, loaded progressively)        |
+|  RULES          Markdown (16 core always-loaded, 150+ total)     |
 |                                                                   |
 |  SKILLS         Markdown (72 SKILL.md files, 3-level loading)    |
 |                                                                   |
-|  LIBRARY        Python 3.9+ (stdlib-only where possible)         |
+|  LIBRARY        Python 3.9+ (79 modules, stdlib-only where poss) |
 |                 FastAPI (webhook server only)                     |
 |                                                                   |
 |  CLI TOOLS      Go 1.21+ (cos-test TUI binary)                  |

@@ -73,6 +73,9 @@ Sync flow:
 | active-tasks.json | `.claude/tasks/` | YES — session-resume.sh detects |
 | skill-metrics.jsonl | `.claude/metrics/` | NO — accumulated over time |
 | error-learning.jsonl | `.claude/metrics/` | NO — accumulated over time |
+| error-skill-correlations.jsonl | `.cognitive-os/metrics/` | NO — accumulated by learning_pipeline.py |
+| remediation-registry.jsonl | `.cognitive-os/metrics/` | NO — known-fix database |
+| remediation-index.json | `.cognitive-os/metrics/` | YES — rebuilt from registry |
 
 ### Docker Runtime
 

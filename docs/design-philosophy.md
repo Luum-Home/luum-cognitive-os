@@ -59,7 +59,7 @@ Every major biological system has a functional analog in Cognitive OS. This wasn
 - `rate-limiter.sh` = satiation reflex (stop consuming when full)
 - `result-truncator.sh` = pupil constriction (reduce input when overwhelmed)
 
-57 hooks form the nervous system of Cognitive OS. They fire at four lifecycle points: SessionStart (8 hooks), PreToolUse (10), PostToolUse (24), and Stop (5). Like a reflex arc, the signal path is fixed: stimulus arrives, hook fires, response is emitted. No deliberation.
+46 hooks are registered in the nervous system of Cognitive OS (94 scripts exist in `hooks/`; 46 are registered in `settings.json`). They fire at eight lifecycle points: SessionStart (3), PreToolUse (9), PostToolUse (24), Stop (5), plus TeammateIdle, TaskCreated, TaskCompleted, and UserPromptSubmit (4 more). Like a reflex arc, the signal path is fixed: stimulus arrives, hook fires, response is emitted. No deliberation.
 
 **Files**: `hooks/*.sh`, `.claude/settings.json`
 
@@ -318,7 +318,7 @@ The brand "Luum" already sounds organic. The product could be "Luum" -- a cognit
 |---|---|---|---|
 | Immune system | Auto-repair + circuit breakers | Yes | Production |
 | Long-term memory | Engram | Yes | Production |
-| Reflexes | Hooks (57) | Yes | Production |
+| Reflexes | Hooks (46 registered, 94 scripts) | Yes | Production |
 | Maturation | Capability levels 1-5 | Yes | Production |
 | Natural selection | Consequence system | Yes | Beta |
 | Pain signals | Error learning | Yes | Production |
@@ -338,10 +338,10 @@ The brand "Luum" already sounds organic. The product could be "Luum" -- a cognit
 
 | Dimension | Count | Biological Analog |
 |---|---|---|
-| Hooks | 57 | Nerve endings |
-| Rules | 55 | DNA sequences (behavioral encoding) |
+| Hooks | 94 scripts; 46 registered | Nerve endings |
+| Rules | 16 core always-loaded; 150+ total | DNA sequences (behavioral encoding) |
 | Skills | 72 | Learned abilities |
-| Python modules | 22 | Organ systems |
+| Python modules | 79 | Organ systems |
 | Metrics files | 20+ JSONL | Biomarkers |
 | Efficiency profiles | 3 | Metabolic modes |
 | Capability levels | 5 | Developmental stages |

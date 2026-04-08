@@ -85,6 +85,55 @@ All external sources of skills, rules, hooks, tools, research, and infrastructur
 
 **License concern**: Agent Zero uses a custom license (shows as NOASSERTION). Verify compatibility before adopting any code. COS adopts architectural patterns only, not code.
 
+### Hermes Agent (Nous Research) — Added as submodule 2026-04-08
+
+**Repository**: NousResearch/hermes-agent
+
+| Metric | Value |
+|--------|-------|
+| Stars | Growing |
+| Language | Python |
+| License | MIT |
+| Lines of code | 9,431 (monolith) |
+| Test files | 465 |
+| Architecture | Single module + FastAPI server; Honcho memory backend |
+| Added | git submodule, 2026-04-08 |
+
+**Components used as source reference**:
+
+| Component | Source file | COS implementation | Status |
+|-----------|------------|-------------------|--------|
+| Memory scanning | `tools/memory_tool.py` | `lib/memory_scanner.py` | ADOPTED |
+| Hybrid retrieval | `plugins/holographic/retrieval.py` | `lib/memory_retriever.py` | ADOPTED |
+| Feedback detection | Review agent prompt pattern | `lib/feedback_detector.py` | ADOPTED |
+| Injection fencing | Tool boundary model | Influenced `hooks/content-policy.sh` | ADOPTED (pattern) |
+
+**What we did NOT adopt**: Honcho (we have Engram — confirmed not a reinvention, separate design), FastAPI server, monolithic structure.
+
+### Pi Coding Agent — Added as submodule 2026-04-08
+
+**Repository**: Pi-agent/pi
+
+| Metric | Value |
+|--------|-------|
+| Stars | High (powers OpenClaw, 160K+ stars) |
+| Language | TypeScript |
+| License | MIT |
+| Architecture | 7-package monorepo (core, tools, memory, compaction, settings, structural, runner) |
+| Test files | 161 |
+| Added | git submodule, 2026-04-08 |
+
+**Components used as source reference**:
+
+| Component | Source file | COS implementation | Status |
+|-----------|------------|-------------------|--------|
+| File mutation queue | `packages/core/file-mutation-queue.ts` | `lib/file_mutation_queue.py` | ADOPTED |
+| Compaction cut-points | `packages/compaction/` | Influenced `hooks/pre-compaction-flush.sh` | ADOPTED (pattern) |
+| Structural tests | `packages/structural/` | Added `tests/structural/` directory | ADOPTED (pattern) |
+| Settings override | `packages/settings/` | Influenced `cognitive-os.yaml` phase-aware config | ADOPTED (pattern) |
+
+**What we did NOT adopt**: TypeScript runtime, Pi's memory system (we have Engram), double-while loop (incompatible with Claude Code hook architecture).
+
 ## Agent Platforms / Operating Systems
 
 | Source | URL | License | Components | Status |
@@ -369,6 +418,8 @@ Do NOT integrate as dependency. CC-BY-NC-4.0 blocks commercial use. Very new (5 
 | arxiv 2507.11538 | LLM instruction following limits | >150 instructions degrade performance; drives capability levels and context optimization |
 | arxiv 2602.11988 (ETH Zurich) | Evaluating AGENTS.md | Context files reduce task success rates; validates adaptive bypass |
 | awesome-claude-code | Ecosystem reference | 114+ tools surveyed for package manager design |
+| Hermes Agent (Nous Research) | git submodule, MIT, 9431 LOC, 465 tests | 4 patterns: memory scanning, hybrid retrieval, injection fencing, feedback detection |
+| Pi Coding Agent | git submodule, MIT, 7 packages, 161 tests | 4 patterns: file mutation queue, compaction cut-points, structural tests, settings override |
 
 ## Awesome Lists and Curated Collections
 
