@@ -34,6 +34,31 @@ if ! command -v python3 >/dev/null 2>&1; then
   exit 0
 fi
 
+# Scan prompt for threats before capturing to persistent storage
+_SCAN_RESULT=$(python3 -c "
+import sys
+sys.path.insert(0, '$_PROJECT_DIR')
+from lib.safe_engram import scan_only_check
+print(scan_only_check(sys.stdin.read()))
+" <<< "$prompt_text" 2>/dev/null || echo "OK")
+
+if [[ "$_SCAN_RESULT" == BLOCKED:* ]]; then
+  # Log blocked attempt; do NOT write the prompt to any persistent store
+  python3 -c "
+import sys, json, os, datetime
+metrics_dir = os.path.join('$_PROJECT_DIR', '.cognitive-os', 'metrics')
+os.makedirs(metrics_dir, exist_ok=True)
+entry = {
+    'timestamp': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    'event': 'scan_blocked',
+    'reasons': '${_SCAN_RESULT#BLOCKED:}',
+}
+with open(os.path.join(metrics_dir, 'prompt-captures.jsonl'), 'a') as f:
+    f.write(json.dumps(entry) + '\n')
+" 2>/dev/null || true
+  exit 0
+fi
+
 # Classify and optionally capture
 python3 -c "
 import sys, json, os
@@ -68,5 +93,8 @@ except Exception:
     # Never fail — this is async observability only
     pass
 " <<< "$(echo "$prompt_text" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null)" 2>/dev/null || true
+
+# Wire to feedback_detector, user_model, and learning_pipeline
+echo "$prompt_text" | python3 "$_PROJECT_DIR/lib/process_user_message.py" 2>/dev/null || true
 
 exit 0
