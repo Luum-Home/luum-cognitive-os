@@ -178,7 +178,33 @@ def _engram_search(query: str, project: str = "", limit: int = 10) -> str:
 
 def _engram_save(title: str, content: str, type_: str = "manual",
                  project: str = "", topic_key: str = "") -> str:
-    """Save to Engram via CLI."""
+    """Scan content for threats then save to Engram via CLI.
+
+    Returns an error JSON string if the content is blocked by the
+    memory scanner or if the engram CLI is unavailable.
+    """
+    # --- Memory scanner gate -------------------------------------------
+    try:
+        from lib.safe_engram import safe_save, SafeEngramResult
+        result: SafeEngramResult = safe_save(
+            title=title,
+            content=content,
+            type_=type_,
+            project=project,
+            topic_key=topic_key,
+        )
+        if result.blocked:
+            return json.dumps({
+                "error": "Content blocked by memory scanner.",
+                "reasons": result.reasons,
+            })
+        if result.returncode is not None and result.returncode not in (0, 127):
+            return json.dumps({"error": "Engram CLI not available. Install engram."})
+        return result.engram_output or "Saved successfully."
+    except ImportError:
+        pass  # safe_engram not available — fall back to direct CLI call
+
+    # --- Direct CLI fallback (safe_engram unavailable) ------------------
     cmd = ["engram", "save", "--title", title, "--content", content, "--type", type_]
     if project:
         cmd.extend(["--project", project])
