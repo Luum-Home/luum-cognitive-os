@@ -5,6 +5,76 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-04-08
+
+### Added — Maturation Sprint (Hermes/Pi Investigation)
+
+#### New Libraries (7)
+- `lib/learning_pipeline.py` — connects 5 island systems (skill_archive + consequence_engine + error_classifier + prompt_classifier + auto-skill-gen) into a unified feedback loop
+- `lib/memory_scanner.py` — content security scanning for Engram saves, 12 threat patterns ported from Hermes Agent (MIT)
+- `lib/feedback_detector.py` — implicit and explicit user feedback detection (EN/ES), 7 signal types
+- `lib/user_model.py` — lightweight user preference modeling on Engram, heuristic inference from messages
+- `lib/file_mutation_queue.py` — real per-file serialization for concurrent writes, ported from Pi coding agent (MIT)
+- `lib/memory_retriever.py` — hybrid FTS5 + Jaccard retrieval for improved Engram recall quality
+- `lib/reinvention_guard.py` — checks upstream repos before building new features to prevent reinvention
+
+#### New Hooks (8)
+- `hooks/auto-refine.sh` — retry tracking (max 3) with escalation on failure exhaustion
+- `hooks/auto-verify.sh` — extracts and logs acceptance criteria from agent output
+- `hooks/dod-gate.sh` — Definition of Done enforcement, blocks in production/maintenance
+- `hooks/error-learning.sh` — error classification and deduplication to JSONL
+- `hooks/auto-repair-dispatcher.sh` — matches errors against known fix registry
+- `hooks/skill-feedback-tracker.sh` — tracks per-skill success/failure, warns on degradation
+- `hooks/parry-scan.sh` — prompt injection scanning via parry-guard (graceful if not installed)
+- `hooks/reinvention-check.sh` — advisory check before creating new lib/hook files
+
+#### New Tests (242 behavioral, 0 file-checks)
+- `tests/integration/test_engram_persistence.py` — 19 tests, real SQLite (no MagicMock)
+- `tests/unit/test_memory_scanner.py` — 29 tests, all 12 threat patterns
+- `tests/unit/test_feedback_detector.py` — 30 tests, EN/ES, implicit/explicit
+- `tests/unit/test_learning_pipeline.py` — 15 tests, cross-system integration
+- `tests/unit/test_user_model.py` — 43 tests, preferences, inference, serialization
+- `tests/unit/test_file_mutation_queue.py` — 23 tests, threading, symlinks, stress
+- `tests/unit/test_memory_retriever.py` — 32 tests, Jaccard, FTS5, scoring
+- `tests/unit/test_reinvention_guard.py` — 11 tests, search across repos
+- `tests/unit/test_hook_behavioral.py` — 17 tests, blast radius/error pipeline/content policy thresholds
+- `tests/unit/test_tob_skills_wired.py` — 22 tests, routing and catalog integration
+
+#### Upstream Tracking
+- Added Hermes Agent as git submodule (`.claude/plugins/hermes-agent`)
+- Added Pi coding agent as git submodule (`.claude/plugins/pi-mono`)
+- Created `.cognitive-os/adoption-registry.yaml` for tracking adopted features
+- Created `scripts/check-upstream-changes.sh` for upstream sync
+
+#### Research Documentation
+- `.cognitive-os/plans/research/hermes-pi-investigation.md` — consolidated findings from 11 agents
+- `.cognitive-os/plans/research/reality-audit.md` — 30% real / 70% aspirational analysis
+- `.cognitive-os/plans/research/maturation-strategy.md` — Clean/Connect/Integrate/Adopt plan
+- `.cognitive-os/plans/research/implementation-plans.md` — detailed plans with test strategy
+- `.cognitive-os/plans/research/adoption-plan.md` — submodules, sync, test modernization
+- `.cognitive-os/plans/research/reinvention-decisions.md` — post-hoc justifications for 3 reinventions
+
+### Changed
+- `hooks/self-install.sh` — now symlinks only 16 core rules (was 94). Token overhead reduced ~77%
+- `.claude/settings.json` — 40+ hooks registered (was 19). 15 orphan hooks activated
+- `cognitive-os.yaml` — Aguara security scanning enabled by default
+- `skills/CATALOG.md` — Trail of Bits 5 security skills added to routing
+- `rules/skill-management.md` — Trail of Bits routing signals added
+- `tests/conftest.py` — added real_engram, isolated_cos_home, override_settings, run_hook fixtures
+
+### Fixed
+- Learning loop was described as connected but had 0 cross-imports (now integrated via learning_pipeline.py)
+- 7 hooks referenced in rules but never existed on disk (now created)
+- 59 hooks existed but were never registered (15 most valuable now registered)
+- Engram persistence was always mocked in tests (now has 19 real persistence tests)
+- File mutation was advisory-only (now real serialization via file_mutation_queue.py)
+
+### Security
+- Memory content scanning: 12 threat patterns + invisible Unicode detection before Engram saves
+- Aguara 189-rule scanner: activated by default (graceful degradation if not installed)
+- Trail of Bits 62 security skills: wired to skill routing table
+- Reinvention guard: prevents building features that exist in upstream repos
+
 ## [0.3.6] - 2026-03-31
 
 ## [0.3.5] - 2026-03-31
