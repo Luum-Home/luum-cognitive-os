@@ -39,7 +39,7 @@ Cognitive OS is the first system to combine all of these in one:
 - MAPE-K self-healing loop
 - Persistent cross-session memory
 - Self-improving metrics
-- Quality governance (44 rules, 41 hooks)
+- Quality governance (95 rules, 101 hooks)
 - Autonomous tool discovery
 
 No single product on the market provides this combination. Comparing Cognitive OS to coding tools like Aider or Cursor is a category error — those are code editors/assistants, not agent operating systems.
@@ -53,7 +53,7 @@ The closest equivalent to Cognitive OS is the stack you would need to build and 
 | Write code | Claude Code / Aider / Cursor | Built-in (any LLM) |
 | Auto-repair errors | Manual + StackStorm/Rundeck | MAPE-K loop + remediation registry |
 | Cross-session memory | Nothing (lost every session) | Engram (persistent, searchable) |
-| Quality gates | Custom CI/CD pipeline | 44 rules + 41 hooks |
+| Quality gates | Custom CI/CD pipeline | 95 rules + 101 hooks |
 | Metrics & KPIs | Grafana + custom dashboards | Built-in + auto-calibrating |
 | Tool discovery | Manual research | Weekly auto-scan |
 | Self-improvement | Doesn't exist | Built-in (feedback loops) |

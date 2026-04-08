@@ -1,7 +1,7 @@
 # Patterns Adopted from External Sources
 
 > Catalog of patterns integrated into Cognitive OS from external tools, frameworks, and research.
-> Author: luum | Updated: 2026-03-27
+> Author: luum | Updated: 2026-04-08
 
 ## Summary
 
@@ -13,7 +13,9 @@
 | QuinotoSpec | 3 | Governance, drift detection |
 | Sazonia Archive (TAC) | 5 | Infrastructure, automation |
 | Anthropic Engineering | 3 | Evaluation, adversarial review |
-| **Total** | **24** | |
+| Hermes Agent (Nous Research) | 4 | Learning loop, memory, feedback |
+| Pi Coding Agent | 4 | File safety, compaction, testing |
+| **Total** | **32** | |
 
 ---
 
@@ -358,3 +360,111 @@
 **Original concept**: Self-modifying agent systems that use execution history to evolve their own prompts, tools, and configurations toward higher performance.
 
 **Our adaptation**: Scoped to skill-level evolution rather than full agent self-modification. Constrained by the existing safety guards (max 5 auto-improvements, test gate, blocklist, cooldown). The archive creates a verifiable record of what worked and what did not, turning skill improvement from guesswork into data-driven optimization.
+
+---
+
+## From Hermes Agent (Nous Research) — MIT, 9431 LOC, 465 tests
+
+> Added as git submodule 2026-04-08. Investigation revealed COS had reinvented Honcho (Engram) independently. Patterns below were not reinventions — they were genuinely missing from COS.
+
+### 1. Memory Scanning (Mid-Task Retrieval)
+
+**What it does**: Scans the agent's own persistent memory mid-task to surface relevant past context — decisions, bugfixes, patterns — without waiting for the user to invoke search explicitly. The agent reads its own Engram as a working resource during execution, not just at session start.
+
+**Where it lives**: `lib/memory_scanner.py`
+
+**How it integrates**: Called by agents at the start of medium+ tasks. Queries Engram with the task description as the search query, returns ranked observations, and injects the top results into the agent's working context. Respects the token budget defined in `cognitive-os.yaml`.
+
+**Original pattern**: Hermes's `tools/memory_tool.py` — a first-class tool the agent calls to read its Honcho memory mid-conversation.
+
+**Our adaptation**: Wrapped as a Python library rather than a standalone tool. Integrated with the Engram topic-key prefix system (`planning/`, `implementation/`, `bugfix/`, etc.) so scans can be scoped by prefix. Added relevance scoring via `lib/memory_decay.py`.
+
+### 2. Injection Fencing
+
+**What it does**: Establishes a structured boundary between user-supplied content and agent instructions. Tool inputs that contain potential injection patterns are sanitized or rejected before reaching the agent prompt.
+
+**Where it lives**: Influences the existing `hooks/content-policy.sh` and `hooks/aguara-scan.sh` boundary model.
+
+**How it integrates**: The content-policy hook now applies injection fencing logic: user content processed via tools is treated as data, not instructions. Aguara's prompt injection rules (PI-001 through PI-xxx) enforce this at the PreToolUse level.
+
+**Original pattern**: Hermes's injection fencing in the tool input path — structured separation between trusted instructions and untrusted user data.
+
+**Our adaptation**: Not a new hook; strengthened the existing security boundary. The conceptual contribution is the explicit "data vs instruction" framing applied to tool inputs.
+
+### 3. Skill Nudge via Background Review
+
+**What it does**: A background review concept where the agent asynchronously reviews its own past interactions to surface feedback signals — phrases like "that was wrong", "not what I asked", "try again" — and converts them into skill improvement hints. The agent is nudged toward better behavior across sessions by processing its own correction history.
+
+**Where it lives**: `lib/feedback_detector.py`
+
+**How it integrates**: Runs at session start against the last N Engram observations flagged as user feedback (captured by `mem_save_prompt` with category `feedback`). Produces a list of nudge signals passed into the agent preamble as "Known improvement areas from past sessions." Integrates with the self-improvement protocol trigger system.
+
+**Original pattern**: Hermes's review agent — a dedicated sub-agent that reads past interactions and generates skill-improvement proposals.
+
+**Our adaptation**: Simplified from a full sub-agent to a lightweight Python detector. Reuses the existing prompt-capture pipeline rather than reading raw conversation history. Nudge signals are advisory, not blocking.
+
+### 4. Hybrid Retrieval (Holographic Plugin)
+
+**What it does**: Combines vector similarity search with keyword (BM25-style) search for Engram queries. Pure vector search misses exact-match queries; pure keyword search misses semantic similarity. Hybrid retrieval blends both scores for more accurate results.
+
+**Where it lives**: `lib/memory_retriever.py`
+
+**How it integrates**: Replaces direct `mem_search` calls in the memory scanner and agent sidecars. Takes a query string, runs both vector and keyword search against Engram, merges results using a configurable alpha weight (default: 0.7 vector / 0.3 keyword), returns ranked observations.
+
+**Original pattern**: Hermes's holographic plugin (`plugins/holographic/retrieval.py`) — hybrid retrieval for the Honcho memory backend.
+
+**Our adaptation**: Ported retrieval logic to work with Engram's SQLite backend. Keyword search implemented with SQLite FTS5. Vector search uses the existing Engram embedding index when available, falls back to keyword-only if embeddings are not configured.
+
+---
+
+## From Pi Coding Agent — MIT, 7 packages, 161 tests
+
+> Added as git submodule 2026-04-08. Pi is the execution engine behind OpenClaw (160K+ stars). Investigation confirmed Pi solved two problems COS had not addressed: file mutation races in parallel agents and context compaction tearing operations mid-execution.
+
+### 1. File Mutation Queue
+
+**What it does**: Serializes all file write operations through a single queue to prevent race conditions when multiple parallel agents modify the same files. Without this, two agents writing to overlapping files can produce corrupted or partially-applied changes.
+
+**Where it lives**: `lib/file_mutation_queue.py`
+
+**How it integrates**: The orchestrator acquires a mutation slot before any parallel agent batch that includes file writes. Write operations are enqueued and dispatched serially within each batch. Compatible with the existing advisory file lock system (`session-concurrency.md`) — the queue is the strong serialization; locks are the advisory warning.
+
+**Original pattern**: Pi's `packages/core/file-mutation-queue.ts` — a TypeScript async queue for file operations.
+
+**Our adaptation**: Ported to Python with asyncio. Integrated with the session concurrency system so the queue is session-scoped. Supports priority (critical fixes ahead of background writes) and timeout.
+
+### 2. Compaction Cut-Points
+
+**What it does**: Inserts explicit save checkpoints before expensive or non-resumable operations so that context compaction cannot split the operation mid-execution. If compaction happens during a cut-point-protected operation, the agent resumes from the checkpoint rather than from mid-operation.
+
+**Where it lives**: Influenced `hooks/pre-compaction-flush.sh` checkpoint placement and the crash recovery protocol (`rules/crash-recovery.md`).
+
+**How it integrates**: Long-running skills (sdd-apply, sdd-verify, bulk migrations) now insert `# CUT-POINT` markers at the start of each discrete step. The pre-compaction-flush hook flushes Engram state at these markers. The crash recovery hook detects the last cut-point on resume.
+
+**Original pattern**: Pi's compaction cut-point protocol — explicit markers in the agent loop that signal safe compaction boundaries.
+
+**Our adaptation**: Implemented as hook-level checkpointing rather than loop-level markers (incompatible with Claude Code's hook architecture). Step files (`rules/step-files.md`) serve the same function at the skill level.
+
+### 3. Structural Tests
+
+**What it does**: Tests that validate agent behavior invariants — not "does the code compile" but "does the agent follow the preamble format", "does every skill produce a TRUST_REPORT", "does the hook chain fire in the correct order". Structural tests catch regressions in the agent OS itself, not in the code it generates.
+
+**Where it lives**: Added to `tests/structural/` (new directory, parallel to `tests/unit/` and `tests/behavior/`).
+
+**How it integrates**: Part of the CI test suite. Run by `scripts/run-tests.sh` with the `--structural` flag. Checks: preamble compliance, trust report presence, hook registration in settings.local.json, skill frontmatter completeness, rule cross-references.
+
+**Original pattern**: Pi's structural test package (`packages/structural/`) — tests for agent behavior properties.
+
+**Our adaptation**: Implemented in Python rather than TypeScript. Focused on Claude Code-specific invariants (hook registration, SKILL.md frontmatter, trust report format) rather than Pi's loop invariants.
+
+### 4. Settings Override Per Environment
+
+**What it does**: Allows per-environment and per-test overrides of agent settings without modifying the base configuration. Tests can inject different phase settings, budget limits, or model choices without touching `cognitive-os.yaml`.
+
+**Where it lives**: Influenced the `cognitive-os.yaml` phase-aware override system and the test harness configuration.
+
+**How it integrates**: The test harness now accepts a `--settings-override` flag pointing to a YAML file with delta values. Overrides are merged on top of `cognitive-os.yaml` at test time. Production never uses overrides; they are test-only.
+
+**Original pattern**: Pi's settings override system (`packages/settings/`) — environment-specific setting injection.
+
+**Our adaptation**: Simpler than Pi's full override system. COS uses YAML merge rather than a typed settings package. Integrated with the existing `cognitive-os.yaml` schema.

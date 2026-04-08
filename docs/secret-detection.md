@@ -10,6 +10,20 @@ EnvGuard is a suite of tools that ensures environment variable hygiene across th
 
 ## Components
 
+### 0. Memory Scanner (Pre-Engram Gate)
+
+**File**: `lib/memory_scanner.py`
+**When it runs**: Before any `mem_save` call persists content to Engram
+**What it scans** (12 threat patterns + invisible Unicode):
+- Prompt injection (`ignore previous instructions`, `you are now`, `system prompt override`, etc.)
+- Role hijacking and rule-bypass instructions
+- Credential exfiltration via curl/wget with secret env vars
+- File reads targeting `.env`, credentials, `.netrc`, `.pgpass`, `.npmrc`
+- SSH backdoor patterns (`authorized_keys`, `~/.ssh/`)
+- Invisible Unicode characters used to hide injections
+
+If any pattern matches, the save is **blocked** and the reasons are returned to the caller. Content is never silently truncated — all violations are reported together.
+
 ### 1. Secret Detector Hook
 
 **File**: `hooks/secret-detector.sh`

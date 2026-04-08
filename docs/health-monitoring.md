@@ -32,6 +32,8 @@ Checks 17 components and outputs an ASCII table:
 | Templates | Template files in `.cognitive-os/templates/` |
 | Workflows | `run.py` + pipeline files in `.cognitive-os/workflows/` |
 | Plans | Active plans in `.cognitive-os/plans/` |
+| Auto-Repair | Circuit breaker states, remediation registry size, repair success rate (via `/repair-status`) |
+| Learning Pipeline | `error-skill-correlations.jsonl` present and writable |
 
 Statuses: **OK**, **WARN** (degraded but functional), **FAIL** (broken).
 

@@ -1,7 +1,7 @@
 # Safety Mesh
 
 > The layered defense system that prevents agent errors from propagating through the Cognitive OS pipeline.
-> Author: luum | Updated: 2026-03-28 | Layers: 12
+> Author: luum | Updated: 2026-04-08 | Layers: 14
 >
 > See also: [docs/security-stack.md](security-stack.md) for the complete security posture including external tools, MCP security, supply chain defense, and red team capabilities.
 
@@ -11,9 +11,9 @@ A major cloud provider launched an AI coding tool that generated code without ad
 
 The lesson: a single quality gate is a single point of failure. Safety must be a mesh -- multiple independent layers that catch different failure modes at different stages of the pipeline.
 
-## The 12-Layer Safety Mesh
+## The 14-Layer Safety Mesh
 
-The Cognitive OS safety mesh consists of 12 layers arranged in a specific order. Each layer catches a distinct failure mode that other layers cannot detect.
+The Cognitive OS safety mesh consists of 14 layers arranged in a specific order. Each layer catches a distinct failure mode that other layers cannot detect.
 
 | Layer | Hook | Type | Stage | What It Prevents | Exit Code |
 |-------|------|------|-------|------------------|-----------|
@@ -29,6 +29,8 @@ The Cognitive OS safety mesh consists of 12 layers arranged in a specific order.
 | 10 | `clarification-interceptor.sh` | PostToolUse | After completion | Mid-task ambiguity causing incorrect assumptions | 0 (LOG + orchestrator signal) |
 | 11 | `auto-rollback-trigger.sh` | PostToolUse | After retry exhaustion | Broken code accumulating after failed fix attempts | 2 (BLOCK) + revert |
 | 12 | `lib/cross_verifier.py` | Library | On demand | Second model catches first model's hallucinations | N/A (library call) |
+| 13 | `reinvention-check.sh` | PostToolUse | After completion | Re-solving already-solved problems; redundant work | 0 (WARN + suggest reuse) |
+| 14 | `lib/memory_scanner.py` | Library | Session start | Stale/contradictory Engram memories affecting decisions | N/A (library call) |
 
 ## Layer Details
 
@@ -152,6 +154,30 @@ The Cognitive OS safety mesh consists of 12 layers arranged in a specific order.
 
 **Configuration**: `hooks/auto-rollback-trigger.sh`, PostToolUse on Agent. Phase-aware: auto-executes in reconstruction/stabilization, requires approval in production/maintenance.
 
+### Layer 13: Reinvention Check (Post-Completion Warning)
+
+**Purpose**: Detects when an agent re-solves a problem that has already been solved in a prior session. Prevents wasted tokens re-doing work that exists in Engram or in the skill library.
+
+**How it works**: After agent completion, scans the output for newly implemented patterns. Searches Engram and the skill catalog for matching prior solutions. If a match is found, warns the orchestrator and suggests loading the existing solution instead of keeping the re-implementation.
+
+**What it catches**: An agent implementing a retry-with-backoff utility when an identical utility was built three sessions ago and saved to Engram. Prevents the codebase from accumulating duplicate solutions.
+
+**What it does NOT catch**: Legitimate reimplementations where the new version is intentionally different or improved. The check is advisory and the orchestrator decides whether to keep or discard the new implementation.
+
+**Configuration**: `hooks/reinvention-check.sh`, PostToolUse on Agent. Library: `lib/reinvention_guard.py`.
+
+### Layer 14: Memory Scanner (Session Start Library)
+
+**Purpose**: Ensures the Engram memory that will influence decisions this session is valid, non-contradictory, and current. Stale or incorrect memories from prior sessions can cause agents to make wrong decisions confidently.
+
+**How it works**: At session start (via `lib/learning_pipeline.py`), `lib/memory_scanner.py` scans recent Engram observations for staleness markers, internal contradictions, and observations that conflict with the current codebase state. Flagged memories are annotated so agents receive a warning when they are loaded.
+
+**What it catches**: A decision saved three months ago ("use Redis for caching") that contradicts the current architecture ("switched to Valkey"). Without scanning, an agent would read the old decision and follow it without knowing it is outdated.
+
+**What it does NOT catch**: Memories that are factually incorrect but internally consistent (no contradiction signals). External ground truth validation is needed for those.
+
+**Configuration**: `lib/memory_scanner.py`, called by `lib/learning_pipeline.py`. Added in v0.4.0 as part of the connected learning loop.
+
 ## Execution Order
 
 ### Pre-Launch (before agent starts)
@@ -198,6 +224,9 @@ Agent completes
     v
 [10] auto-rollback-trigger.sh -- Did retries exhaust?
      |                            3 retries failed: ROLLBACK
+     v
+[13] reinvention-check.sh -- Does a prior solution exist?
+     |                         Match found: WARN + suggest reuse
      v
 Result accepted or escalated
 ```

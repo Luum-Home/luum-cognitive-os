@@ -1,7 +1,7 @@
-# Cognitive OS Documentation Index — v0.3.6
+# Cognitive OS Documentation Index — v0.4.0
 
 > Everything about the AI-assisted development setup: hooks, rules, skills, automation, self-improvement, and how to extend it.
-> Updated: 2026-03-27
+> Updated: 2026-04-08
 
 > **Disclaimer**: Cognitive OS is not affiliated with, endorsed by, or sponsored by Anthropic, OpenAI, Google, Amazon, Microsoft, or any other company whose products are referenced in this documentation. All product names, trademarks, and registered trademarks are the property of their respective owners. References to third-party products are for informational and interoperability purposes only.
 
@@ -133,16 +133,16 @@ SaaS vision, commercial features, pitch, case study, and framework design docs h
 
 | Component | Count | Location |
 |-----------|-------|----------|
-| Hooks | 57 | `hooks/` |
-| Rules | 57 | `rules/` |
+| Hooks | 94 scripts; 46 registered | `hooks/` |
+| Rules | 16 core always-loaded; 150+ total | `rules/` |
 | Skills | 72 | `skills/` |
 | Squads | 5 | `squads/` |
 | Agents | 3 | `agents/` |
-| Lib Modules | 23 | `lib/` |
+| Lib Modules | 79 | `lib/` |
 | MCP Servers | 2 | Engram (memory), Context7 (docs) |
-| Metrics Files | 8+ | `metrics/` |
-| Docs | 70 | `docs/` |
-| Tests | 1714 | `tests/` |
+| Metrics Files | 20+ | `metrics/` |
+| Docs | 113 | `docs/` |
+| Tests | 4732 | `tests/` |
 
 ## Entry Points
 

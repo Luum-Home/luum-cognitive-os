@@ -2,7 +2,7 @@
 
 ## Overview
 
-The luum-agent-os test suite contains **1714 tests** across **64 test files**, organized into four categories: unit, behavior, integration, and system. Tests are executed via pytest and surfaced through a Go-based TUI dashboard (`cos-test`).
+The luum-agent-os test suite contains **~5639 tests** across **195 test files**, organized into four categories: unit, behavior, integration, and system. Tests are executed via pytest and surfaced through a Go-based TUI dashboard (`cos-test`).
 
 ## Architecture
 
@@ -10,9 +10,9 @@ The luum-agent-os test suite contains **1714 tests** across **64 test files**, o
 cos-test (Go: Cobra + Bubbletea + Lipgloss)
   └── ./run -m pytest --json-report
         └── tests/
-              ├── unit/          (22 files, 698 tests)
-              ├── behavior/      (28 files, 926 tests)
-              ├── integration/   (8 files, 62 tests)
+              ├── unit/          (94 files, ~2823 tests)
+              ├── behavior/      (73 files, ~1636 tests)
+              ├── integration/   (17 files, ~259 tests)
               ├── system/        (5 files, 25 tests)
               └── conftest.py + pytest.ini
 ```
@@ -23,7 +23,7 @@ cos-test (Go: Cobra + Bubbletea + Lipgloss)
 
 ## Test Categories
 
-### Unit Tests (698 tests, 22 files)
+### Unit Tests (~2823 tests, 94 files)
 
 Fast, isolated tests with no external dependencies. Validate individual functions and state machines.
 
@@ -37,7 +37,7 @@ Fast, isolated tests with no external dependencies. Validate individual function
 | `test_eval_repo_scoring.py` | Repository scoring | License validation, activity scoring, auto-reject criteria |
 | `test_remediation.py` | Remediation registry | CRUD operations on the remediation registry |
 
-### Behavior Tests (926 tests, 28 files)
+### Behavior Tests (~1636 tests, 73 files)
 
 Validate business logic, hook contracts, skill structures, and protocol compliance without requiring Docker or external services.
 
@@ -66,7 +66,7 @@ Validate business logic, hook contracts, skill structures, and protocol complian
 | `test_sprint_planning.py` | Sprint planning | Capacity calculation and task assignment |
 | `test_sdd_governance.py` | SDD governance | Compliance scoring and rollback decision logic |
 
-### Integration Tests (62 tests, 8 files)
+### Integration Tests (~259 tests, 17 files)
 
 Require Docker. Use testcontainers to spin up **17 Docker services** on demand. Marked with the `docker` pytest marker.
 
@@ -137,13 +137,24 @@ cd cmd/cos-test && go build -o cos-test . && ./cos-test dashboard
 
 | Category | Files | Tests | Percentage |
 |----------|-------|-------|------------|
-| Unit | 22 | 698 | 40.7% |
-| Behavior | 28 | 926 | 54.0% |
-| Integration | 8 | 62 | 3.6% |
-| System | 5 | 25 | 1.5% |
-| **Total** | **64** | **1714** | **100%** |
+| Unit | 94 | ~2823 | ~50% |
+| Behavior | 73 | ~1636 | ~29% |
+| Integration | 17 | ~259 | ~5% |
+| System | 5 | 25 | <1% |
+| **Total** | **195** | **~5639** | **100%** |
 
-The behavior test layer carries the majority of coverage. This is intentional: behavior tests validate hook contracts, skill structures, and protocol logic without Docker overhead, keeping the feedback loop fast.
+The unit test layer now carries the plurality of coverage. Behavior tests shifted focus from file-existence checks (reclassified as unit) to pure behavioral assertions — 65% of behavior tests verify runtime behavior, 3% are integration-style, and the remainder validate structural invariants. This keeps the feedback loop fast while ensuring real behavior is covered.
+
+## Key Fixtures (conftest.py)
+
+Four shared fixtures power the behavioral and unit layers:
+
+| Fixture | What It Provides |
+|---------|-----------------|
+| `real_engram` | A real engram client backed by a temp SQLite DB — no MagicMock |
+| `isolated_cos_home` | Temporary `COS_HOME` directory via `tmp_path` + monkeypatch |
+| `override_settings` | Monkeypatches `cognitive-os.yaml` values without touching disk |
+| `run_hook` | Executes a hook script with mock stdin JSON, captures stdout/stderr/exit code |
 
 ## Adding New Tests
 

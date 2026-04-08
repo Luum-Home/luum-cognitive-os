@@ -38,10 +38,10 @@ Claude Code loads `cos/*.md` + `*.md` at root level. They accumulate.
 
 | Layer | Rules | Est. Tokens | Notes |
 |-------|-------|-------------|-------|
-| COS always-loaded | 14 | ~20K | Core gates and protocols |
-| COS on-demand | 41 | 0 (loaded when triggered) | Context-specific |
+| COS always-loaded | 16 | ~21K | Core gates and protocols |
+| COS on-demand | 134+ | 0 (loaded when triggered) | Context-specific |
 | Typical project rules | 10-30 | 15-45K | Same as before |
-| **Total (external project)** | **24-44** | **35-65K** | **3-6% of 1M context window** |
+| **Total (external project)** | **26-46** | **36-66K** | **3-6% of 1M context window** |
 
 ## Why This Matters
 
@@ -93,10 +93,10 @@ self-install.sh (this repo)
 | Profile | Rules Installed | Use Case |
 |---------|----------------|----------|
 | `lean` | Only RULES-COMPACT.md (1 rule) | Maximum speed, minimal guidance |
-| `standard` | 14 core rules (~20K tokens) | Balanced governance. Recommended for most users. |
-| `full` | All rules (~73K tokens) | Maximum guidance, self-hosted dev |
+| `standard` | 16 core rules (~21K tokens) | Balanced governance. Recommended for most users. |
+| `full` | All rules (~93K tokens) | Maximum guidance, self-hosted dev |
 
-The 14 core rules in `standard` profile are: RULES-COMPACT, adaptive-bypass, acceptance-criteria, agent-quality, trust-score, definition-of-done, phase-aware-agents, closed-loop-prompts, token-economy, responsiveness, agent-security, credential-management, content-policy, error-learning. All other rules are loaded on-demand via contextual triggers defined in `cognitive-os.yaml`.
+The 16 core rules in `standard` profile are: RULES-COMPACT, adaptive-bypass, acceptance-criteria, agent-quality, trust-score, token-economy, phase-aware-agents, closed-loop-prompts, error-learning, rate-limiting, credential-management, content-policy, result-management, blast-radius, clarification-gate, model-routing. All other rules are loaded on-demand via contextual triggers defined in `cognitive-os.yaml`.
 
 ### Capability-Level Auto-Disable
 
@@ -113,9 +113,9 @@ For external projects using Cognitive OS:
 
 | Context Window | Max Always-Loaded Rules | COS Budget | Project Budget |
 |---------------|------------------------|-----------|---------------|
-| 200K tokens | 30 rules | 14 (COS core) | 16 project rules |
-| 500K tokens | 50 rules | 14 (COS core) | 36 project rules |
-| 1M tokens | 80 rules | 14 (COS core) | 66 project rules |
+| 200K tokens | 30 rules | 16 (COS core) | 14 project rules |
+| 500K tokens | 50 rules | 16 (COS core) | 34 project rules |
+| 1M tokens | 80 rules | 16 (COS core) | 64 project rules |
 
 Stay under 50% of the WISC threshold (75 rules) for optimal performance.
 
@@ -123,10 +123,10 @@ Stay under 50% of the WISC threshold (75 rules) for optimal performance.
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| Analysis | COMPLETE | 89 rules classified, 14 core identified |
-| Safety tests | COMPLETE | 42-test baseline for regression detection |
-| Implementation | COMPLETE | Standard profile loads 14 core rules; 75+ rules on-demand via triggers |
-| Validation | PENDING | Before/after performance comparison |
+| Analysis | COMPLETE | 150+ rules classified, 16 core identified |
+| Safety tests | COMPLETE | 242-test baseline for regression detection |
+| Implementation | COMPLETE | Standard profile loads 16 core rules; 134+ rules on-demand via triggers |
+| Validation | COMPLETE | Token reduction confirmed: 93K → 21K always-loaded |
 
 See engram `architecture/rules-consolidation-analysis` for the full classification matrix.
 
@@ -144,7 +144,7 @@ COS can split rules between global and project levels:
 
 | Level | Rules | Purpose |
 |-------|-------|---------|
-| Global (`~/.claude/rules/cos/`) | Universal COS protocol (~14 rules, ~20K tokens) | Token economy, model routing, agent quality, trust score |
+| Global (`~/.claude/rules/cos/`) | Universal COS protocol (~16 rules, ~21K tokens) | Token economy, model routing, agent quality, trust score |
 | Project (`.claude/rules/cos/`) | Project-specific COS rules | Phase-aware behavior, blast radius, rate limiting, content policy |
 
 This split reduces per-project token overhead because universal rules only need to be installed once globally rather than copied into every project.

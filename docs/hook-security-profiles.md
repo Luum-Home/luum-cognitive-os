@@ -115,7 +115,8 @@ Adds the most impactful safety gates from the 12-layer mesh without activating e
 - No scope creep detector (requires active task scope metadata)
 - No auto-rollback trigger (relevant only for SDD pipeline failures)
 - No auto-skill generator (optimization, not safety)
-- No external security scanners (aguara, semgrep)
+- No external scanners (semgrep); aguara is registered in paranoid only — the library-level memory_scanner.py runs regardless of profile
+
 - No observability tracing (langfuse/opik)
 - No architecture compliance checks
 
