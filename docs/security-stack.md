@@ -1,6 +1,6 @@
 # Cognitive OS Security Stack
 
-> Last updated: 2026-03-28 | Layers: 8 | Tools: 19 active, 8 optional, 5 planned
+> Last updated: 2026-04-08 | Layers: 8 | Tools: 20 active, 8 optional, 5 planned
 
 The single source of truth for the Cognitive OS security posture. Every defense layer, every tool, every gap.
 
@@ -9,7 +9,7 @@ The single source of truth for the Cognitive OS security posture. Every defense 
 | Metric | Value |
 |--------|-------|
 | Active defense layers | 8 |
-| Active tools/hooks (always on) | 19 |
+| Active tools/hooks (always on) | 20 |
 | Optional tools (install to enable) | 8 |
 | Planned integrations | 5 |
 | MCP-specific defenses | 3 (1 optional, 2 planned) |
@@ -28,7 +28,7 @@ Prevents malformed, vague, or malicious prompts from reaching agents.
 | 1.2 | Blast Radius Estimation | Hook | **ACTIVE** | High-impact tasks launched without awareness | `hooks/blast-radius.sh` | Internal |
 | 1.3 | Dry-Run Preview | Hook | **ACTIVE** | Unintended execution during pipeline preview | `hooks/dry-run-preview.sh` | Internal |
 | 1.4 | Prompt Quality Scoring | Hook | **ACTIVE** | Weak prompts missing criteria/context (advisory) | `hooks/prompt-quality.sh` | Internal |
-| 1.5 | Aguara Scan | Hook | **OPTIONAL** | Prompt injection, data exfil, supply chain (189 rules, 14 categories) | `hooks/aguara-scan.sh` | Apache-2.0 |
+| 1.5 | Aguara Scan | Hook | **ACTIVE** | Prompt injection, data exfil, supply chain (189 rules, 14 categories) | `hooks/aguara-scan.sh` | Apache-2.0 |
 | 1.6 | Parry Guard | Hook | **OPTIONAL** | ML-based prompt injection detection (DeBERTa transformers) | `hooks/parry-scan.sh` (documented) | OSS |
 
 ### Layer 2: Permission and Identity
@@ -56,10 +56,11 @@ Scans generated code for vulnerabilities, anti-patterns, and license violations.
 |---|------|------|--------|--------------------------|----------|---------|
 | 3.1 | Content Policy | Hook | **ACTIVE** | Prohibited terms/patterns in generated files | `hooks/content-policy.sh` | Internal |
 | 3.2 | Secret Detector | Hook | **ACTIVE** | Credentials leaked into source code | `hooks/secret-detector.sh` | Internal |
-| 3.3 | License Guard | Protocol | **ACTIVE** | AGPL/SSPL/BSL/ELv2/Commons Clause dependencies | `rules/license-policy.md` | Internal |
-| 3.4 | Semgrep SAST | Hook | **OPTIONAL** | Security vulnerabilities, coding anti-patterns | `hooks/semgrep-scan.sh` | OSS |
-| 3.5 | Semgrep AI Rules | Config | **OPTIONAL** | 58 AI-specific rules (hardcoded keys, injection, MCP, hooks) | Semgrep `ai-best-practices` config | OSS |
-| 3.6 | Trail of Bits Skills | Skills | **OPTIONAL** | 62 professional security audit skills (6 categories) | `.claude/plugins/trailofbits-skills/` | CC-BY-SA-4.0 |
+| 3.3 | Memory Scanner | Library | **ACTIVE** | Prompt injection, exfil, invisible Unicode in Engram saves (12 patterns) | `lib/memory_scanner.py` | Internal |
+| 3.4 | License Guard | Protocol | **ACTIVE** | AGPL/SSPL/BSL/ELv2/Commons Clause dependencies | `rules/license-policy.md` | Internal |
+| 3.5 | Semgrep SAST | Hook | **OPTIONAL** | Security vulnerabilities, coding anti-patterns | `hooks/semgrep-scan.sh` | OSS |
+| 3.6 | Semgrep AI Rules | Config | **OPTIONAL** | 58 AI-specific rules (hardcoded keys, injection, MCP, hooks) | Semgrep `ai-best-practices` config | OSS |
+| 3.7 | Trail of Bits Skills | Skills | **OPTIONAL** | 62 professional security audit skills (6 categories) | `.claude/plugins/trailofbits-skills/` | CC-BY-SA-4.0 |
 
 ### Layer 4: MCP Security
 
@@ -134,8 +135,8 @@ Proactively finds vulnerabilities before attackers do.
 
 | Status | Count | Tools |
 |--------|-------|-------|
-| ACTIVE | 19 | Clarification Gate, Blast Radius, Dry-Run, Prompt Quality, Agent Permissions, Agent Identity, Always-Blocked Paths, Monotonic Attenuation, Credential Management, Content Policy, Secret Detector, License Guard, SHA256 Docker Pins, Commit Hash Pinning, Per-File Integrity, cos audit Gate 3, Scope Proportionality, Claim Validator, Assumption Tracker, Trust Score Validator, Confidence Gate, Clarification Interceptor, Cross Verifier, Scope Creep Detector, Rate Limiter, Rate Limit Protection, Auto-Rollback, Circuit Breaker, Resource Governance, Pentest Self |
-| OPTIONAL | 8 | Aguara Scan, Parry Guard, Semgrep SAST, Semgrep AI Rules, Trail of Bits Skills, mcp-aguara, NeMo Guardrails, Garak |
+| ACTIVE | 20 | Clarification Gate, Blast Radius, Dry-Run, Prompt Quality, Aguara Scan, Agent Permissions, Agent Identity, Always-Blocked Paths, Monotonic Attenuation, Credential Management, Content Policy, Secret Detector, Memory Scanner, License Guard, SHA256 Docker Pins, Commit Hash Pinning, Per-File Integrity, cos audit Gate 3, Scope Proportionality, Claim Validator, Assumption Tracker, Trust Score Validator, Confidence Gate, Clarification Interceptor, Cross Verifier, Scope Creep Detector, Rate Limiter, Rate Limit Protection, Auto-Rollback, Circuit Breaker, Resource Governance, Pentest Self |
+| OPTIONAL | 8 | Parry Guard, Semgrep SAST, Semgrep AI Rules, Trail of Bits Skills, mcp-aguara, NeMo Guardrails, Garak |
 | PLANNED | 5 | MCP-Scan, mcp-context-protector, Semgrep MCP Server, Promptfoo, AgentFence |
 
 ## Phase-Aware Behavior
@@ -163,7 +164,7 @@ Security enforcement scales with the project phase:
 
 | Attack Vector | Defense Layers | Primary Tool |
 |---------------|---------------|-------------|
-| Prompt injection | 1.1, 1.5, 1.6, 4.1 | Clarification Gate + Aguara + Parry |
+| Prompt injection | 1.1, 1.5, 1.6, 3.3, 4.1 | Clarification Gate + Aguara + Memory Scanner + Parry |
 | Credential exfiltration | 2.3, 2.5, 3.2 | Always-blocked paths + Secret Detector |
 | Permission escalation | 2.1, 2.4 | 6-level permissions + monotonic attenuation |
 | Hallucinated output | 6.2, 6.4, 6.5, 6.7 | Claim Validator + Trust Score + Cross Verifier |
@@ -210,7 +211,8 @@ When adding a new security tool to the Cognitive OS:
 ### Aguara (Agent Security Scanner)
 ```bash
 go install github.com/garagon/aguara@latest
-# Enable: cognitive-os.yaml -> security.aguara.enabled: true
+# Enabled by default (graceful skip if binary missing)
+# cognitive-os.yaml -> security.aguara.enabled: true (default)
 ```
 
 ### Parry (ML Prompt Injection)

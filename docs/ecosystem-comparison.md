@@ -1,27 +1,30 @@
 # Ecosystem Comparison
 
 > Comparative analysis of AI agent operating systems and frameworks.
-> Updated: 2026-03-29
+> Updated: 2026-04-08
 
 ## Feature Matrix
 
-| Feature | COS (luum-agent-os) | Agent Zero | OpenClaw |
-|---------|---------------------|------------|----------|
-| Language | Python/Go/Bash | Python | Unknown |
-| Plugin/package system | cos packages (Go CLI, cos-package.yaml) | Plugins (UI + CLI, YAML manifests) | Unknown |
-| Marketplace | GitHub-based registry + centralized index + skills.sh + SkillsMP | GitHub index repo (a0-plugins, community PRs) | Unknown |
-| Security layers | 14 layers, 32+ tools (Aguara, Semgrep, Parry, content-policy, secret-detector, NeMo Guardrails) | Plugin scanner (built-in) | 4-tier resilience model |
-| Memory/persistence | Engram (SQLite WAL, cross-session, topic-key organization) | Unknown (investigate) | Unknown |
-| Multi-agent | Claude Code Agent Teams + subagent orchestration + Valkey pub/sub bus | Agent Teams (built-in UI) | Unknown |
-| Self-update | post-merge hook + self-install.sh (auto-sync rules/hooks) | Dashboard UI updater | Unknown |
-| Test framework | 4099+ tests (unit, integration, behavior, stress) | Unknown | Unknown |
-| Quality gates | 12+ hooks (clarification, acceptance criteria, trust score, DoD, adversarial review) | Unknown | Unknown |
-| Cost governance | Budget limits, model downgrade chain, cost prediction, workload scheduling | Unknown | Unknown |
-| Skill creation | skill-creator skill + cos init + cos publish | create-plugin skill | Unknown |
-| Configuration | cognitive-os.yaml (single source of truth) | Unknown | Unknown |
-| IDE support | Claude Code (primary), extensible to Cursor/Windsurf/Cline | Custom UI + CLI | Unknown |
-| Observability | Langfuse, Opik, performance monitoring, metrics JSONL | Unknown | Unknown |
-| Chaos testing | Tero (fault injection, latency simulation) | Unknown | Unknown |
+| Feature | COS (luum-agent-os) | Agent Zero | OpenClaw | Hermes | Pi |
+|---------|---------------------|------------|----------|--------|-----|
+| Language | Python/Go/Bash | Python | TypeScript | Python | TypeScript |
+| Plugin/package system | cos packages (Go CLI, cos-package.yaml) | Plugins (UI + CLI, YAML manifests) | Unknown | None | 7-package monorepo |
+| Marketplace | GitHub-based registry + centralized index + skills.sh + SkillsMP | GitHub index repo (a0-plugins, community PRs) | Unknown | None | None |
+| Security layers | 14 layers, 32+ tools (Aguara, Semgrep, Parry, content-policy, secret-detector, NeMo Guardrails) | Plugin scanner (built-in) | 4-tier resilience model | Injection fencing | None |
+| Memory/persistence | Engram (SQLite WAL, cross-session, topic-key organization) | Unknown | Message store | Honcho (app/user/session hierarchical) | Session-scoped state |
+| Learning loop | memory_scanner.py (mid-task Engram scan) | None | None | Core: memory tool + review agent | None |
+| Multi-agent | Claude Code Agent Teams + subagent orchestration + Valkey pub/sub bus | Agent Teams (built-in UI) | Messaging swarm | Single agent | Double-while loop (inner/outer) |
+| Self-update | post-merge hook + self-install.sh (auto-sync rules/hooks) | Dashboard UI updater | Unknown | None | None |
+| Test framework | 242+ tests (unit, integration, behavior, stress) | Unknown | Unknown | 465 test files | 161 test files, structural tests |
+| Quality gates | 12+ hooks (clarification, acceptance criteria, trust score, DoD, adversarial review) | Unknown | Unknown | Self-correction | None |
+| Cost governance | Budget limits, model downgrade chain, cost prediction, workload scheduling | Unknown | Unknown | None | None |
+| Skill creation | skill-creator skill + cos init + cos publish | create-plugin skill | Unknown | None | None |
+| Configuration | cognitive-os.yaml (single source of truth) | Unknown | Unknown | Env-based | Settings override (per env/test) |
+| IDE support | Claude Code (primary), extensible to Cursor/Windsurf/Cline | Custom UI + CLI | Unknown | Any (API-based) | Claude Code + others |
+| Observability | Langfuse, Opik, performance monitoring, metrics JSONL | Unknown | Unknown | None | None |
+| Chaos testing | Tero (fault injection, latency simulation) | Unknown | Unknown | None | None |
+| File mutation safety | lib/file_mutation_queue.py (serialized ops) | Unknown | Unknown | None | file-mutation-queue.ts (source) |
+| Context compaction | pre-compaction-flush.sh + cut-point pattern | Unknown | Unknown | None | Compaction cut-points (source) |
 
 ## Architecture Comparison
 
@@ -55,6 +58,14 @@
 | GitHub index repo for plugins | Agent Zero | `docs/cos-package-manager.md` Section 6 (centralized index with YAML manifests, community PRs) | ADOPTED (pattern) |
 | Plugin/skill creation workflow | Agent Zero | `skill-creator` skill + `cos init` + `cos-package.yaml` generation | ADOPTED (pattern) |
 | Plugin security scanning | Agent Zero | Aguara + content-policy + secret-detector (broader than Agent Zero's scanner) | ADOPTED (expanded) |
+| Memory scanning (mid-task retrieval) | Hermes Agent | `lib/memory_scanner.py`: scans Engram mid-task for relevant past context | ADOPTED |
+| Injection fencing | Hermes Agent | Influenced content-policy hook boundary model (structured tool boundary) | ADOPTED (pattern) |
+| Skill nudge via review agent | Hermes Agent | `lib/feedback_detector.py`: detects feedback in Engram to surface improvement opportunities | ADOPTED |
+| Hybrid retrieval (holographic plugin) | Hermes Agent | `lib/memory_retriever.py`: vector + keyword hybrid search for Engram | ADOPTED |
+| File mutation queue | Pi Coding Agent | `lib/file_mutation_queue.py`: serializes file ops for parallel agent safety | ADOPTED |
+| Compaction cut-points | Pi Coding Agent | Influenced `hooks/pre-compaction-flush.sh` checkpoint placement logic | ADOPTED (pattern) |
+| Structural tests | Pi Coding Agent | Added structural test patterns to COS test suite | ADOPTED (pattern) |
+| Settings override per environment | Pi Coding Agent | Influenced `cognitive-os.yaml` phase-aware config system | ADOPTED (pattern) |
 
 ## Patterns We Have That Others Do Not
 
@@ -99,3 +110,5 @@ OpenClaw contributed the 4-tier fault tolerance model that COS adopted and expan
 - OpenClaw: Referenced in `docs/component-sources.md` under Research and Design Influences
 - BMAD Method v6: Referenced in `docs/component-sources.md`
 - Tactical Agentic Coding: [agenticengineer.com](https://agenticengineer.com)
+- Hermes Agent (Nous Research): Added as git submodule 2026-04-08, MIT license, 9431 LOC, 465 test files
+- Pi Coding Agent: Added as git submodule 2026-04-08, MIT license, 7-package monorepo, 161 test files, powers OpenClaw

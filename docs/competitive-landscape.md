@@ -267,7 +267,35 @@ The AI coding agent market has exploded in 2025-2026. What started as autocomple
 - **Already known** - 247k+ stars, messaging-first architecture.
 
 ### Hermes Agent (Nous Research)
-- **Already known** - Self-improving architecture.
+- **GitHub**: https://github.com/NousResearch/hermes-agent (added as git submodule 2026-04-08)
+- **Stars**: Growing
+- **License**: MIT
+- **What it does**: Self-reinforcing learning loop agent. 9,431-line monolith with 465 test files. Honcho-based persistent memory with hierarchical sessions (app/user/session). Built-in review agent that detects feedback and triggers skill nudges. Holographic plugin for hybrid vector + graph retrieval. Background review concept: asynchronous evaluation of past interactions to surface improvement opportunities.
+- **Architecture**: Single Python module + FastAPI server. Memory scanning tool reads agent's own Honcho memory to surface relevant past interactions mid-task. Injection fencing prevents prompt injection via structured tool boundary.
+- **Test coverage**: 465 test files (unit, integration, behavior).
+- **Key differentiator**: The self-reinforcing loop is genuine — not just retry-on-failure but proactive review of past performance leading to skill adjustments. Honcho memory supports app-scoped, user-scoped, and session-scoped observations.
+- **What we adopted**:
+  - Memory scanning pattern → `lib/memory_scanner.py`: scans own Engram memory mid-task for relevant context
+  - Injection fencing concept → influenced existing content-policy hook boundary model
+  - Skill nudge pattern → background skill feedback detection
+  - Hybrid retrieval (holographic plugin) → `lib/memory_retriever.py`: vector + keyword hybrid search
+  - Feedback detection (review agent pattern) → `lib/feedback_detector.py`
+- **What we did NOT adopt**: Honcho as memory backend (we have Engram, reinvention avoided), FastAPI server (wrong architecture for Claude Code hooks), monolithic structure.
+
+### Pi Coding Agent
+- **GitHub**: https://github.com/Pi-agent/pi (added as git submodule 2026-04-08)
+- **Stars**: High (powers OpenClaw with 160K+ stars)
+- **License**: MIT
+- **What it does**: 7-package TypeScript monorepo. Double-while agent loop (outer: task lifecycle, inner: tool call cycle). 161 test files across packages. The execution engine behind OpenClaw — OpenClaw's resilience and multi-channel features run on Pi's core loop.
+- **Architecture**: Packages: `@pi/core` (agent loop), `@pi/tools` (tool registry), `@pi/memory` (session state), `@pi/compaction` (context management), `@pi/settings` (override system), `@pi/structural` (structural tests), `@pi/runner` (CLI). File mutation queue serializes all file operations to avoid race conditions in parallel agents.
+- **Test coverage**: 161 test files (unit, structural, integration). Structural tests validate agent behavior invariants.
+- **Key differentiator**: The compaction cut-point pattern inserts checkpoints before known expensive tool calls so compaction never splits mid-operation. Settings override system per test/environment. File mutation queue prevents the "parallel agent file corruption" problem.
+- **What we adopted**:
+  - File mutation queue → `lib/file_mutation_queue.py`: serialized file operations for parallel agent safety
+  - Compaction cut-points → influenced `hooks/pre-compaction-flush.sh` checkpoint logic
+  - Structural tests pattern → added to COS test suite philosophy
+  - Settings override per environment → influenced `cognitive-os.yaml` phase-aware config
+- **What we did NOT adopt**: TypeScript runtime (COS is Python/Bash), Pi's memory system (we have Engram), the double-while loop pattern (incompatible with Claude Code hook architecture).
 
 ### Superpowers
 - **Already known** - 103k stars, TDD/debugging skills.

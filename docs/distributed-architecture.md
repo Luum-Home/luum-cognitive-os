@@ -267,7 +267,7 @@ Node 1 (dev machine)                    Node 2 (CI server)
 | Hooks | `hooks/*.sh` | Bash scripts, no state | **YES** — portable, run on any node |
 | Skills | `skills/*/SKILL.md` | Markdown files | **YES** — portable, content-addressed |
 | Rules | `rules/*.md` | Markdown files | **YES** — portable, version-controlled |
-| Session Mgmt | `sessions/{id}/` | File-based isolation + locks | **NO** — needs distributed locking |
+| Session Mgmt | `sessions/{id}/` + `lib/file_mutation_queue.py` | File isolation + advisory shell locks + Python thread serialization | **NO** — needs distributed locking (Python-level `FileMutationQueue` handles single-machine concurrency) |
 | Metrics | `.cognitive-os/metrics/*.jsonl` | Local append-only files | **NO** — needs centralized store |
 | Task Registry | `active-tasks.json` | Local JSON file | **NO** — needs distributed queue |
 | Singularity | `lib/singularity.py` | Single-instance MAPE-K | **PARTIAL** — needs leader election |

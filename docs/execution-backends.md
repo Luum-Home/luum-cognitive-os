@@ -28,6 +28,8 @@ Cognitive OS is a control plane. It decides WHAT to build, HOW MUCH to spend, an
 
 Each backend is a "driver" that COS loads on demand. Adding a new backend does not change the core -- it registers in `cognitive-os.yaml` and implements the standard interface.
 
+Before implementing a new backend, run `lib/reinvention_guard.py` to check whether the adopted upstreams (Hermes, Pi) or the competitive landscape already provide the capability.
+
 ---
 
 ## 2. Backend Registry
