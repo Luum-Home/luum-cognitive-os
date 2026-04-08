@@ -243,4 +243,7 @@ elif [ "$REPAIR_PATH" = "llm" ]; then
   safe_jsonl_append "$OUTCOMES_FILE" "$(jq -cn --arg ts "$TIMESTAMP" --argjson te "$TIMESTAMP_EPOCH" --arg et "$REPAIR_ERROR_TYPE" --arg svc "$SERVICE" --arg fp "$ERROR_FINGERPRINT" --arg phase "$PHASE" '{timestamp:$ts,timestamp_epoch:$te,error_type:$et,service:$svc,fingerprint:$fp,phase:$phase,action:"llm_repair_queued",repair_path:"llm"}')"
 fi
 
+# Wire to learning pipeline
+echo "$INPUT" | python3 "$PROJECT_DIR/lib/record_error.py" 2>/dev/null || true
+
 exit 0

@@ -175,6 +175,8 @@ if [ "$FAILURE_DETECTED" = false ]; then
   if [ -d "$REFINE_DIR" ] && [ -f "$REFINE_DIR/$TASK_FINGERPRINT.count" ]; then
     rm -f "$REFINE_DIR/$TASK_FINGERPRINT.count" "$REFINE_DIR/$TASK_FINGERPRINT.history" 2>/dev/null
   fi
+  # Wire to learning pipeline (success path)
+  echo "$INPUT" | python3 "$PROJECT_DIR/lib/record_completion.py" 2>/dev/null || true
   exit 0
 fi
 
@@ -213,5 +215,8 @@ echo "Instructions:"; echo "1. Analyze WHY the previous attempt failed"
 echo "2. Fix the root cause (not just symptoms)"; echo "3. Re-run verification to confirm the fix"
 [ "$RETRY_COUNT" -ge 2 ] && echo "4. LAST ATTEMPT — if this fails, escalate with full diagnosis"
 echo "---"; echo "=== END COMPLETION-GATE ==="; echo ""
+
+# Wire to learning pipeline
+echo "$INPUT" | python3 "$PROJECT_DIR/lib/record_completion.py" 2>/dev/null || true
 
 exit 0

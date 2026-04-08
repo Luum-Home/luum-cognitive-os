@@ -90,4 +90,15 @@ echo ""
 # Write session ID to a discoverable file so other hooks can read it
 echo "$SESSION_ID" > "$SESSIONS_DIR/.current-session-$$"
 
+# Load user model for this session
+python3 -c "
+import sys; sys.path.insert(0, '$PROJECT_DIR')
+from lib.user_model import UserModel
+model = UserModel.load_from_engram()
+if model.preferences:
+    profile = model.get_profile_summary()
+    with open('$SESSION_DIR/user-profile.txt', 'w') as f:
+        f.write(profile)
+" 2>/dev/null || true
+
 exit 0
