@@ -25,8 +25,8 @@ logger = logging.getLogger(__name__)
 # Langfuse integration — graceful if not installed or not configured
 _langfuse_client = None
 try:
-    from langfuse import get_client as _get_langfuse_client
-    _langfuse_client = _get_langfuse_client()
+    from langfuse import Langfuse as _LangfuseClass
+    _langfuse_client = _LangfuseClass()
 except Exception:
     pass  # Langfuse not installed or not configured — skip silently
 
@@ -95,13 +95,34 @@ def detect_success(output: str, data: dict) -> bool:
     return True
 
 
-def append_cost_event(metrics_dir: str, description: str, tokens_estimated: int) -> None:
+_MODEL_PRICE_PER_TOKEN = {
+    "opus": 0.000075,    # $75/1M output tokens (worst case — output is more expensive)
+    "sonnet": 0.000015,  # $15/1M output tokens
+    "haiku": 0.00000125, # $1.25/1M output tokens
+}
+
+
+def detect_model(data: dict) -> str:
+    """Detect which model was used from tool_input fields."""
+    tool_input = data.get("tool_input", {})
+    if isinstance(tool_input, dict):
+        for field in ("model", "description", "prompt"):
+            val = str(tool_input.get(field, "")).lower()
+            if "opus" in val:
+                return "opus"
+            if "haiku" in val:
+                return "haiku"
+    return "sonnet"
+
+
+def append_cost_event(metrics_dir: str, description: str, tokens_estimated: int, model: str = "sonnet") -> None:
     """Append a cost event to cost-events.jsonl."""
-    cost_usd = tokens_estimated * 0.000015
+    price_per_token = _MODEL_PRICE_PER_TOKEN.get(model, _MODEL_PRICE_PER_TOKEN["sonnet"])
+    cost_usd = tokens_estimated * price_per_token
     event = {
         "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "agent": description[:200],
-        "model": "sonnet",
+        "model": model,
         "estimated_cost_usd": round(cost_usd, 6),
         "tokens_estimated": tokens_estimated,
     }
@@ -122,27 +143,40 @@ def _send_langfuse_trace(
     success: bool,
     task_id: str,
 ) -> None:
-    """Send agent completion trace to Langfuse. Silent on failure."""
+    """Send agent completion trace to Langfuse v3 (OTEL-based). Silent on failure."""
     if _langfuse_client is None:
         return
     try:
-        trace = _langfuse_client.trace(
-            name=skill_name,
-            metadata={
-                "task_type": task_type,
-                "trust_score": trust_score,
-                "tokens_used": tokens_used,
-                "success": success,
-                "cost_usd": round(tokens_used * 0.000015, 6),
-            },
-            tags=["cos-agent", task_type, "success" if success else "failure"],
-        )
-        trace.span(
-            name="agent-completion",
-            input={"task_id": task_id, "task_type": task_type},
-            output={"trust_score": trust_score, "success": success},
-            metadata={"tokens": tokens_used},
-        )
+        # v3 API: start_as_current_span creates trace + span
+        with _langfuse_client.start_as_current_span(name=skill_name) as span:
+            trace_id = _langfuse_client.get_current_trace_id()
+            _langfuse_client.update_current_trace(
+                metadata={
+                    "task_type": task_type,
+                    "trust_score": trust_score,
+                    "tokens_used": tokens_used,
+                    "success": success,
+                    "task_id": task_id,
+                },
+            )
+            with _langfuse_client.start_as_current_generation(
+                name="agent-completion",
+                input={"task_id": task_id, "task_type": task_type},
+                metadata={"tokens": tokens_used},
+            ) as gen:
+                _langfuse_client.update_current_generation(
+                    output={"trust_score": trust_score, "success": success},
+                    usage_details={"input": tokens_used // 2, "output": tokens_used // 2},
+                )
+
+        # Record trust score as a first-class Langfuse Score via REST-backed method
+        if trace_id:
+            _langfuse_client.create_score(
+                name="trust-score",
+                value=trust_score / 100.0,
+                trace_id=trace_id,
+                comment=f"{'success' if success else 'failure'}: {skill_name}",
+            )
         _langfuse_client.flush()
     except Exception:
         pass  # Never block completion recording for observability
@@ -163,6 +197,9 @@ def main():
             or tool_response.get("content")
             or ""
         )
+    elif isinstance(tool_response, str) and tool_response:
+        # Claude Code sends tool_response as a plain string for Agent PostToolUse
+        output = tool_response
     else:
         output = str(data.get("tool_output", data.get("result", "")))
 
@@ -171,6 +208,7 @@ def main():
     tokens_used = estimate_tokens(output)
     success = detect_success(output, data)
     task_id = data.get("tool_call_id") or "unknown"
+    model = detect_model(data)
 
     pipeline = LearningPipeline()
     result = pipeline.record_agent_completion(
@@ -183,7 +221,7 @@ def main():
 
     project_dir = os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd())
     metrics_dir = os.path.join(project_dir, ".cognitive-os", "metrics")
-    append_cost_event(metrics_dir, skill_name, tokens_used)
+    append_cost_event(metrics_dir, skill_name, tokens_used, model=model)
 
     # Send trace to Langfuse (if available)
     _send_langfuse_trace(

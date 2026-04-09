@@ -48,16 +48,22 @@ TASK_ID="task-$(date +%s)-$RANDOM"
 # Get current timestamp
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
+# Record parent PID as a proxy for health checking
+AGENT_PID="$$"
+
 # Build the new task entry
 NEW_TASK=$(jq -c -n \
   --arg id "$TASK_ID" \
   --arg desc "$DESCRIPTION" \
   --arg ts "$TIMESTAMP" \
+  --arg pid "$AGENT_PID" \
   '{
     id: $id,
     description: $desc,
     status: "in_progress",
     launchedAt: $ts,
+    started_at: $ts,
+    pid: ($pid | tonumber),
     completedAt: null,
     outputSummary: null,
     expectedOutputs: [],

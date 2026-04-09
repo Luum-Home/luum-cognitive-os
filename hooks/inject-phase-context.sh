@@ -165,6 +165,28 @@ except Exception:
   fi
 fi
 
+# --- Guard: skip preamble injection if already present in prompt ---
+# This prevents double-injection if multiple hooks fire or if the orchestrator
+# manually included the preamble in the task description.
+ALREADY_HAS_PREAMBLE=0
+if echo "$AGENT_PROMPT" | grep -q "TRUST_REPORT: SCORE="; then
+  ALREADY_HAS_PREAMBLE=1
+fi
+
+# --- Inject agent-preamble.md (the core quality contract) ---
+# This ensures every sub-agent receives the TRUST_REPORT format requirement
+# and emits machine-parseable trust scores that feed the quality feedback loop.
+PREAMBLE_FILE="$PROJECT_DIR/templates/agent-preamble.md"
+if [[ "$ALREADY_HAS_PREAMBLE" -eq 0 ]] && [[ -f "$PREAMBLE_FILE" ]]; then
+  PREAMBLE_CONTENT=$(cat "$PREAMBLE_FILE")
+  # Interpolate {{phase}} placeholder
+  PREAMBLE_CONTENT="${PREAMBLE_CONTENT//\{\{phase\}\}/$PHASE}"
+  echo "--- AGENT PREAMBLE (mandatory — read before starting) ---"
+  echo "$PREAMBLE_CONTENT"
+  echo "--- END AGENT PREAMBLE ---"
+  echo ""
+fi
+
 # --- Output all context ---
 echo ""
 echo "PROJECT: ${PROJECT_NAME} ($PROJECT_TYPE)"
@@ -202,11 +224,6 @@ if [[ -n "$AGENT_PROMPT" ]] && [[ -f "$GOTCHAS_FILE" ]]; then
   fi
 fi
 
-echo ""
-echo "REQUIRED: Include a Trust Report at the end of your response."
-echo "Honestly assess: what you verified, what you're unsure about, what the human should check."
-echo "Admitting uncertainty builds trust. Claiming perfection destroys it."
-echo "See rules/trust-score.md for format and scoring."
 echo ""
 
 exit 0

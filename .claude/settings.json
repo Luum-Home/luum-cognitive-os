@@ -38,6 +38,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/resource-check.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dispatch-gate.sh\""
           },
           {
@@ -90,6 +94,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/error-learning.sh\""
           }
         ]
       },
@@ -149,6 +157,14 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dequeue-notify.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/consequence-evaluator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/confidence-gate.sh\""
           }
         ]
       },
@@ -185,7 +201,10 @@
       {
         "matcher": "",
         "hooks": [
-          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/teammate-idle.sh\""}
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/teammate-idle.sh\""
+          }
         ]
       }
     ],
@@ -193,7 +212,10 @@
       {
         "matcher": "",
         "hooks": [
-          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-created.sh\""}
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-created.sh\""
+          }
         ]
       }
     ],
@@ -201,7 +223,21 @@
       {
         "matcher": "",
         "hooks": [
-          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\""}
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\""
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pre-compaction-flush.sh\""
+          }
         ]
       }
     ]

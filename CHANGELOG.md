@@ -3,260 +3,61 @@
 All notable changes to Cognitive OS are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.7.0] - 2026-04-09
+
+### Added
+- feat: Task DAG runner — declarative dependency graph for multi-agent workflows (lib/task_dag.py, 27 tests)
+- feat: Agent health monitor — file-based dead/stuck agent detection without Valkey (lib/agent_health_monitor.py, 34 tests)
+- feat: Queue drain on completion — blocked agents auto-enqueue and launch when slots free (lib/queue_drainer.py, 18 tests)
+- feat: CronCreate scheduled drain — periodic 5-min fallback for stuck queues (lib/scheduled_drain.py, 15 tests)
+- feat: Auto-repair with worktree isolation — fixes applied in isolated git worktree, verify, merge or discard (20 tests)
+- feat: Auto-rewrite on skill failure — 3+ failures triggers /optimize-skill suggestion (9 tests)
+- feat: Escalation detection wired — agents emit ESCALATION: markers, completion-gate detects (20 tests)
+- feat: PromptBuilder — integrates context_diet + prompt_cache for token-efficient agent prompts (36 tests)
+- feat: Dynamic model routing — DEGRADE/PROMOTE feed into model selection, budget-aware downgrade (16 tests)
+- feat: E2E self-repair smoke test — 5 scenarios proving full feedback loop works (29 tests)
+- feat: Closed-loop consequence tests — DEGRADE/PROMOTE/DISABLE validated end-to-end (22 tests)
+- feat: cos-bootstrap.sh — one-command project setup (env, Docker, Langfuse, rules sync) (16 tests)
+- feat: cos-update.sh — idempotent update for existing installations
+- feat: scripts/test-all.sh — unified test runner with pytest-xdist parallel execution
+- feat: Claude HUD — real-time statusline showing context %, costs, agents (ADOPT, MIT)
+- feat: Langfuse v3 integration — traces + scores via OTEL API, auto-provisioned API keys
+- feat: scripts/setup-langfuse.sh — fully automated Langfuse key provisioning (no manual steps)
+- docs: self-repair-guide.md — user guide explaining what developers will experience
+- docs: getting-started.md — updated with bootstrap, test runner, self-repair sections
+
+### Fixed
+- fix: agent preamble injection — sub-agents now emit TRUST_REPORT (was missing, cascade root cause)
+- fix: cost tracking $0.00 — tool_response parsed as string, model-aware pricing (was always zero)
+- fix: detect_success false positive — "0 failed" in Trust Report matched FAIL pattern
+- fix: SeaweedFS healthcheck — localhost→127.0.0.1 (IPv6 resolution bug in Alpine)
+- fix: integration test timeout — 30s→300s for testcontainers (was killing Docker fixtures)
+- fix: hardcoded project path in test_e2e_flows.py — now uses Path(__file__).parents[2]
+- fix: record_completion.py Langfuse API updated to v3 (OTEL-based spans + generations)
+- fix: consequence-history.jsonl cleaned — 83% test data removed (600→102 real entries)
+
+### Wired (hooks connected to settings.json)
+- error-learning.sh (PostToolUse/Bash) — captures test/lint/build failures
+- consequence-evaluator.sh (PostToolUse/Agent) — PROMOTE/DEGRADE/DISABLE decisions
+- pre-compaction-flush.sh (PreCompact) — saves state before context reset
+- resource-check.sh (PreToolUse/Agent) — budget enforcement blocks over-spend
+- confidence-gate.sh (PostToolUse/Agent) — blocks low-confidence results in production
+
+### Changed
+- requirements.txt: langfuse>=3.0, pytest-xdist>=3.5 added
+- rules/RULES-COMPACT.md: added skill-rewrite and task-dag references
+- templates/agent-preamble.md: full escalation protocol with 5 signal types
+
 ## [Unreleased]
 
-## [0.5.0] - 2026-04-09
-
-### Changed
-- Anonymized private project references in architecture docs
-- Fixed 14 behavior test failures: aguara config, hook registrations, content policy scanning, rule namespacing, and hook profile completeness
-- Added crash-recovery.sh, auto-checkpoint.sh, content-policy.sh to settings.json
-- Added reinvention-check.sh (safety mesh layer 13) to paranoid security profile
-- Updated docs/INDEX.md version to v0.5.0
-
-## [0.4.2] - 2026-04-08
-
-## [0.4.1] - 2026-04-08
-
-## [0.4.0] - 2026-04-08
-
-### Added — Maturation Sprint (Hermes/Pi Investigation)
-
-#### New Libraries (7)
-- `lib/learning_pipeline.py` — connects 5 island systems (skill_archive + consequence_engine + error_classifier + prompt_classifier + auto-skill-gen) into a unified feedback loop
-- `lib/memory_scanner.py` — content security scanning for Engram saves, 12 threat patterns ported from Hermes Agent (MIT)
-- `lib/feedback_detector.py` — implicit and explicit user feedback detection (EN/ES), 7 signal types
-- `lib/user_model.py` — lightweight user preference modeling on Engram, heuristic inference from messages
-- `lib/file_mutation_queue.py` — real per-file serialization for concurrent writes, ported from Pi coding agent (MIT)
-- `lib/memory_retriever.py` — hybrid FTS5 + Jaccard retrieval for improved Engram recall quality
-- `lib/reinvention_guard.py` — checks upstream repos before building new features to prevent reinvention
-
-#### New Hooks (8)
-- `hooks/auto-refine.sh` — retry tracking (max 3) with escalation on failure exhaustion
-- `hooks/auto-verify.sh` — extracts and logs acceptance criteria from agent output
-- `hooks/dod-gate.sh` — Definition of Done enforcement, blocks in production/maintenance
-- `hooks/error-learning.sh` — error classification and deduplication to JSONL
-- `hooks/auto-repair-dispatcher.sh` — matches errors against known fix registry
-- `hooks/skill-feedback-tracker.sh` — tracks per-skill success/failure, warns on degradation
-- `hooks/parry-scan.sh` — prompt injection scanning via parry-guard (graceful if not installed)
-- `hooks/reinvention-check.sh` — advisory check before creating new lib/hook files
-
-#### New Tests (242 behavioral, 0 file-checks)
-- `tests/integration/test_engram_persistence.py` — 19 tests, real SQLite (no MagicMock)
-- `tests/unit/test_memory_scanner.py` — 29 tests, all 12 threat patterns
-- `tests/unit/test_feedback_detector.py` — 30 tests, EN/ES, implicit/explicit
-- `tests/unit/test_learning_pipeline.py` — 15 tests, cross-system integration
-- `tests/unit/test_user_model.py` — 43 tests, preferences, inference, serialization
-- `tests/unit/test_file_mutation_queue.py` — 23 tests, threading, symlinks, stress
-- `tests/unit/test_memory_retriever.py` — 32 tests, Jaccard, FTS5, scoring
-- `tests/unit/test_reinvention_guard.py` — 11 tests, search across repos
-- `tests/unit/test_hook_behavioral.py` — 17 tests, blast radius/error pipeline/content policy thresholds
-- `tests/unit/test_tob_skills_wired.py` — 22 tests, routing and catalog integration
-
-#### Upstream Tracking
-- Added Hermes Agent as git submodule (`.claude/plugins/hermes-agent`)
-- Added Pi coding agent as git submodule (`.claude/plugins/pi-mono`)
-- Created `.cognitive-os/adoption-registry.yaml` for tracking adopted features
-- Created `scripts/check-upstream-changes.sh` for upstream sync
-
-#### Research Documentation
-- `.cognitive-os/plans/research/hermes-pi-investigation.md` — consolidated findings from 11 agents
-- `.cognitive-os/plans/research/reality-audit.md` — 30% real / 70% aspirational analysis
-- `.cognitive-os/plans/research/maturation-strategy.md` — Clean/Connect/Integrate/Adopt plan
-- `.cognitive-os/plans/research/implementation-plans.md` — detailed plans with test strategy
-- `.cognitive-os/plans/research/adoption-plan.md` — submodules, sync, test modernization
-- `.cognitive-os/plans/research/reinvention-decisions.md` — post-hoc justifications for 3 reinventions
-
-### Changed
-- `hooks/self-install.sh` — now symlinks only 16 core rules (was 94). Token overhead reduced ~77%
-- `.claude/settings.json` — 40+ hooks registered (was 19). 15 orphan hooks activated
-- `cognitive-os.yaml` — Aguara security scanning enabled by default
-- `skills/CATALOG.md` — Trail of Bits 5 security skills added to routing
-- `rules/skill-management.md` — Trail of Bits routing signals added
-- `tests/conftest.py` — added real_engram, isolated_cos_home, override_settings, run_hook fixtures
-
-### Fixed
-- Learning loop was described as connected but had 0 cross-imports (now integrated via learning_pipeline.py)
-- 7 hooks referenced in rules but never existed on disk (now created)
-- 59 hooks existed but were never registered (15 most valuable now registered)
-- Engram persistence was always mocked in tests (now has 19 real persistence tests)
-- File mutation was advisory-only (now real serialization via file_mutation_queue.py)
-
-### Security
-- Memory content scanning: 12 threat patterns + invisible Unicode detection before Engram saves
-- Aguara 189-rule scanner: activated by default (graceful degradation if not installed)
-- Trail of Bits 62 security skills: wired to skill routing table
-- Reinvention guard: prevents building features that exist in upstream repos
-
-## [0.3.6] - 2026-03-31
-
-## [0.3.5] - 2026-03-31
-
-## [0.3.4] - 2026-03-31
-
 ### Added
-- `lib/model_catalog.py` — centralized model registry (14 models, 40+ aliases, upgrade/downgrade chains)
-- `lib/sdd_pipeline.py` — SDD fast path: skip spec/design/tasks for Opus 4.6
-- `lib/kpi_collector.py` — reads .jsonl metrics, computes Agent Quality/Efficiency KPIs
-- `suggest_model_upgrade()` in escalation_detector for dynamic model escalation
-- `generate-project-settings.sh` — generates correct settings.json for external projects
-- `background-agent-reminder.sh` — UserPromptSubmit hook prevents orchestrator blocking
-- `release-guard.sh` — blocks manual VERSION/git tag (enforces cos release)
-- `docs/agent-efficiency-strategy.md` — 3-level strategy to reduce agent cost 20x
-- 170+ new integration and unit tests
-
-### Changed
-- Migrated 7 lib files to import from model_catalog (removed 68 hardcoded model refs)
-- Agent model routing: default to Sonnet, Opus only for deep reasoning
-- Non-blocking rule added to CLAUDE.md (MUST not wait on background agents)
-
-### Fixed
-- Test registry isolation (cos-init tests no longer pollute global installations.json)
-- Hook paths in project settings.json now use `.cognitive-os/hooks/cos/` namespace
-
-## [0.3.3] - 2026-03-31
-
-### Fixed
-- CRITICAL: detect and replace .cognitive-os symlinks before rm -rf (root cause of 228-file deletion)
-- Namespace COS components under cos/ subdirectory to preserve project-custom hooks/skills/templates
-
-### Added
-- 13 integration safety tests for auto-update and cos-init
-
-## [0.3.2] - 2026-03-30
-
-## [0.3.1] - 2026-03-30
-
-## [0.3.0] - 2026-03-30
-
-## [0.2.6] - 2026-03-29
-
-### Added
-- Self-usage audit: COS uses 13% of its own tools (docs/self-usage-audit.md)
-- Self-building protocol: 6 mandatory integration phases (docs/self-building-protocol.md)
-- CLAUDE.md MANDATORY Self-Usage Protocol (SHOULD → MUST)
-- /reverse-engineer skill for deep source code analysis (46 tests)
-- Dashboard MVP live on :3300 (Next.js 15, 3 pages)
-- Paperclip full auto-bootstrap (config + signup + accept + company)
-- Paperclip hooks registered (4 async: agent-status, sdd-sync, squad-sync, task-sync)
-
-### Fixed
-- Paperclip Docker: reeoss image for ARM64, node direct (skip pnpm), init-config.sh
-- Hook path resolution for packages/ directory
-- INDEX.md version sync
-
-## [0.2.5] - 2026-03-29
-
-### Added
-- Paperclip gaps 5-7 wired: safety mesh block sync, active task sync, cost streaming
-- Shared `hooks/_lib/paperclip-notify.sh` helper for fire-and-forget Paperclip notifications
-- `paperclip-task-sync.sh` SessionStart hook pushes active tasks as Paperclip issues
-- `paperclip-cost-stream.sh` PostToolUse hook streams cost events with $0.10 threshold
-
-### Fixed
-- Flaky test `test_individual_hook_under_500ms` threshold increased to 2000ms for system load tolerance
-- Roadmap updated to v0.2.5 with current metrics (5074+ tests, 94 rules, 97 skills, 82 hooks)
-
-## [0.2.4] - 2026-03-29
-
-### Added
-- 8 UI platforms evaluated (Paperclip, AnythingLLM, AutoMaker, Aperant, agent-kit, AionUi, Agent Zero, OpenClaw)
-- E2B sandbox MCP integration package
-- Open-source strategy document (Apache-2.0 recommendation)
-- Prompt-driven governance design (4 hooks to convert)
-- Auto-sync hook for package rule symlinks + index regeneration
-- UI platforms evaluation document
-- License-first protocol in repo-forensics + library-selection
-
-### Fixed
-- cos setup now filters existing rules (92→14 for standard profile)
-- MCP server JSON parsing (cos_search_memory, cos_suggest_skill)
-- uninstall.sh step ordering (deregister before delete)
-- 18 xpassed tests cleaned, hook profile docs updated
-
-## [0.2.3] - 2026-03-29
-
-### Added
-- feat: TUI onboarding wizard (bubbletea Go) with 3 presets
-- feat: code-review + pr-review skills with engram integration
-- feat: Agent Teams hooks (TeammateIdle, TaskCreated, TaskCompleted)
-- feat: plugin index (packages/cos-index/) with 28 packages
-- feat: cos setup --global installs 14 core rules to ~/.claude/
-- feat: COS MCP server (8 tools for any editor)
-- feat: hook shell tests (222 tests for 50+ hooks)
-- feat: auto skill selection (60+ bilingual routing entries)
-- feat: repo forensics (deep repo analyzer)
-- feat: cos registries multi-source
-- feat: SHA-256 caching for hooks
-- feat: trust report parser (machine-parseable header)
-
-### Fixed
-- fix: cos-init.sh profile filtering for external projects
-- fix: self-install.sh rules consolidation (standard = 14 core)
-- fix: infra-intent-detector.sh jq guard
-- fix: all xfail tests resolved
-- fix: test fragility (7 hardcoded patterns made dynamic)
-
-## [0.2.1] - 2026-03-28
-
-### Added
-- feat: hook architecture v2 — 7 events, 24 hooks (SubagentStart, UserPromptSubmit, PreCompact)
-- feat: agent escalation protocol — self-detect stuck, escalate with diagnosis
-- feat: agent cognitive load monitor — detect degradation under context overload
-- feat: Agent Teams integration (experimental) — lateral teammate communication
-- feat: auto-update projects on git pull (post-merge hook + global registry)
-- feat: component sources documentation (Trail of Bits, Antigravity, 8 security tools)
-- docs: agent-teams.md, global-vs-project-config.md, rules-loading-architecture.md
-- docs: security-stack.md master security document (8 layers, 32 tools)
-
-### Fixed
-- fix: cost_dashboard UTC timezone for date filtering
-- fix: cos-test CLI dynamic versioning
-- fix: all RULES-COMPACT references updated
-- fix: escalation detector test (error_repeat vs confidence_drop)
-
-## [0.2.0] - 2026-03-28
-
-### Security
-- security: pin all Docker images to SHA256 digests (supply chain defense)
-- security: supply_chain config section in cognitive-os.yaml
-- fix: rate limiter blocked attempts no longer inflate counter
-
-### Added
-- feat: Bifrost dual-gateway — LiteLLM complement with 11us latency, failover chain
-- feat: Scout Pattern + sdd-explore skills — pre-implementation reconnaissance (3 depth levels)
-- feat: WorkloadScheduler — proactive agent dispatch across rate limit windows
-- feat: Smart file reader — auto-pagination for files >10K tokens + advisory hook
-- feat: User prompt auto-capture — bilingual EN/ES classifier for engram persistence
-- feat: Rate limiter phase awareness — reconstruction 1.5x, production 0.75x
-- feat: Graceful rate limits — priority queue, batch suggestions, structured QUEUED messages
-- feat: Agent Bus on-demand — dedicated Valkey via smart_infra auto-start
-- feat: Non-blocking retry scheduler — CronCreate-based deferred agent re-launch
-- feat: cos status — show packages with unreleased changes
-- feat: cos release-all — batch release for monorepo (--patch/--minor/--dry-run)
-- feat: cos release --check — validate release readiness
-- feat: cos publish scoped tags — @luum/{name}@{version} format
-- feat: cos_version compatibility check on install
-- feat: cos CLI README — full documentation with CI/CD examples
-- feat: agent preamble — long-running commands must use run_in_background
-
-### Fixed
-- fix: self-install.sh legacy symlink cleanup (relative path matching)
-- fix: rootCmd.Version dynamic (ldflags + runtime VERSION file read)
-- fix: SearchGitHub() GITHUB_TOKEN auth support
-- fix: 47 legacy symlinks removed from .claude/rules/ root
-
-### Changed
-- 87 rules (was 83), 88 skills, 73 hooks
-- Rules consolidation safety tests (42 tests) as pre-consolidation baseline
-- EXPECTED_RULE_COUNT now dynamic (no manual updates needed)
-- 3600+ Python tests, 230+ Go tests — all passing
-
-### Documentation
-- docs: versioning strategy — dual OS core + package independent semver
-- docs: WISC framework analysis — context loading impact on performance
-- docs: AI gateway landscape — 11 gateways compared
-- docs: cos-package-manager updated with new commands
+- docs: package migration plan — 10 integrations mapped to future cos packages
+- docs: plugin marketplace design -- cos install with 6-gate security audit pipeline
+- feat: dual-mode installer -- local source auto-detection + `--from` flag for `install.sh`
+- docs: tech radar update — 26 Claude Code ecosystem tools analyzed (7 ADOPT, 19 WATCH, 5 BLOCK)
+- docs: multi-tool architecture — adapter layer for OpenCode, Aider, Cursor support
+- docs: 7 ecosystem integrations documented (agnix, claude-code-action, parry, Trail of Bits, recall, Usage Monitor, hcom)
+- docs: 19 WATCH repos deep-analyzed — 22 extractable patterns prioritized (P0-P3)
 
 ## [0.1.0] - 2026-03-27
 

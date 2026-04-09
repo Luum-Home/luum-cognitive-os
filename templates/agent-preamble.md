@@ -54,25 +54,35 @@ Default sub-agent communication style:
 
 ## Escalation Protocol
 
-If you have tried 2 different approaches and both failed, ESCALATE immediately.
-Do not spin on the same error. Output:
+If you detect you are stuck, ESCALATE immediately. Do not spin on the same approach.
+
+Output this EXACT format (the `ESCALATION:` marker is detected automatically):
 
 ```
 ESCALATION:
-  Type: {loop_detected|no_progress|error_repeat|confidence_drop|timeout_risk}
-  Evidence: {what you tried and what failed}
-  Diagnosis: {your best guess at root cause}
-  Recommendation: {what a fresh agent or human should try}
+  Type: loop_detected | no_progress | error_repeat | confidence_drop | timeout_risk
+  Severity: suggest | recommend | urgent
+  Evidence: what you observed (file edited N times, same error seen N times, etc.)
+  Tool calls: <number of tool calls so far>
+  Diagnosis: your best guess at root cause
+  Recommendation: what a fresh agent or human should try differently
 ```
 
-Escalation signals:
-- You edited the same file 3+ times without resolving the issue
-- You ran the same command 3+ times with the same failure
-- You made >10 tool calls without a PROGRESS marker
-- More than half of your recent tool calls are failing
-- You saw the exact same error message twice
+Severity levels:
+- `suggest` — something looks wrong but may resolve (3+ file edits, 8+ calls without progress)
+- `recommend` — the current approach is not converging (6+ file edits, same error 3x, 15+ calls without progress)
+- `urgent` — stop immediately, human must decide (9+ file edits, 25+ calls without progress, >80% error rate)
 
-It is better to escalate early than to waste tokens on a dead end. Save partial progress to Engram before escalating so the next agent does not redo your completed work.
+Escalation signals (self-monitor for these throughout your run):
+- You edited the same file 3+ times without resolving the issue → `loop_detected`
+- You ran the same command 3+ times with the same failure → `loop_detected`
+- You made >10 tool calls without a PROGRESS marker → `no_progress`
+- More than half of your recent tool calls are failing → `confidence_drop`
+- You saw the exact same error message twice → `error_repeat`
+- You have used >80% of your expected tool call budget → `timeout_risk`
+
+Save partial progress to Engram before escalating so the next agent does not redo completed work.
+It is better to escalate early than to waste tokens on a dead end.
 
 ## Trust Report (MANDATORY — last thing before ending)
 

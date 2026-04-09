@@ -1,4 +1,7 @@
 """Shared fixtures for integration tests."""
+import signal
+import sys
+
 import pytest
 import os
 
@@ -20,6 +23,24 @@ def docker_available():
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
         pytest.skip("Docker not running")
     return True
+
+@pytest.fixture(autouse=True)
+def _integration_test_timeout():
+    """Override the global 30s timeout with 300s for integration tests.
+
+    Docker containers need 60-120s to start. The global conftest.py sets 30s
+    via SIGALRM which kills testcontainers fixtures during setup.
+    """
+    if sys.platform == "win32":
+        yield
+        return
+    old_handler = signal.getsignal(signal.SIGALRM)
+    signal.alarm(300)  # 5 minutes for container startup + test
+    yield
+    signal.alarm(0)
+    if callable(old_handler):
+        signal.signal(signal.SIGALRM, old_handler)
+
 
 @pytest.fixture
 def cognitive_os_env():

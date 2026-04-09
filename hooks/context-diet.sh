@@ -93,19 +93,27 @@ elif echo "$PROMPT_LOWER" | grep -qE 'implement|apply|sdd-apply|build|create|add
   TASK_TYPE="implement"
 fi
 
-# --- Get minimal rules via Python (fast, <200ms) ---
+# --- Get minimal rules via prompt_builder (integrates context_diet + prompt_cache) ---
 RULES_OUTPUT=""
 if command -v python3 &>/dev/null; then
+  # Use the integrated PromptBuilder which wires context_diet + prompt_cache together
   RULES_OUTPUT=$(python3 -c "
 import sys
 sys.path.insert(0, '$PROJECT_DIR')
 try:
-    from lib.context_diet import ContextDiet
-    diet = ContextDiet.from_yaml('$PROJECT_DIR/cognitive-os.yaml', rules_dir='$PROJECT_DIR/rules')
-    rules = diet.select_rules('$TASK_TYPE')
+    from lib.prompt_builder import PromptBuilder
+    builder = PromptBuilder.from_project('$PROJECT_DIR')
+    rules = builder.selected_rules('$TASK_TYPE')
     print(','.join(rules))
 except Exception:
-    pass
+    # Fallback to context_diet directly
+    try:
+        from lib.context_diet import ContextDiet
+        diet = ContextDiet.from_yaml('$PROJECT_DIR/cognitive-os.yaml', rules_dir='$PROJECT_DIR/rules')
+        rules = diet.select_rules('$TASK_TYPE')
+        print(','.join(rules))
+    except Exception:
+        pass
 " 2>/dev/null || true)
 fi
 
