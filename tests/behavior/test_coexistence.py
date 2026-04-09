@@ -52,8 +52,8 @@ def _setup_cos_project(tmp_path: Path) -> Path:
     rules_dir = tmp_path / "rules"
     rules_dir.mkdir()
     (rules_dir / "trust-score.md").write_text("# Trust Score\n")
-    (rules_dir / "cost-tracking.md").write_text("# Cost Tracking\n")
-    (rules_dir / "license-policy.md").write_text("# License Policy\n")
+    (rules_dir / "content-policy.md").write_text("# Cost Tracking\n")
+    (rules_dir / "model-routing.md").write_text("# License Policy\n")
 
     (tmp_path / ".claude").mkdir(parents=True)
     (tmp_path / ".claude" / "settings.json").write_text('{"hooks": {}}\n')
@@ -75,8 +75,8 @@ class TestRuleNamespacing:
         cos_rules = project / ".claude" / "rules" / "cos"
         assert cos_rules.is_dir()
         assert (cos_rules / "trust-score.md").is_symlink()
-        assert (cos_rules / "cost-tracking.md").is_symlink()
-        assert (cos_rules / "license-policy.md").is_symlink()
+        assert (cos_rules / "content-policy.md").is_symlink()
+        assert (cos_rules / "model-routing.md").is_symlink()
 
     def test_rules_not_in_flat_rules_dir(self, tmp_path):
         project = _setup_cos_project(tmp_path)
@@ -148,8 +148,8 @@ class TestMigrationFromFlatSymlinks:
         rules_dir = project / ".claude" / "rules"
         rules_dir.mkdir(parents=True, exist_ok=True)
         (rules_dir / "my-project-rule.md").write_text("# My Rule\n")
-        old_link = rules_dir / "cost-tracking.md"
-        old_link.symlink_to(project / "rules" / "cost-tracking.md")
+        old_link = rules_dir / "content-policy.md"
+        old_link.symlink_to(project / "rules" / "content-policy.md")
 
         _run_hook(str(project))
 
@@ -157,10 +157,10 @@ class TestMigrationFromFlatSymlinks:
         assert (rules_dir / "my-project-rule.md").exists()
         assert not (rules_dir / "my-project-rule.md").is_symlink()
         # Old symlink removed
-        assert not (rules_dir / "cost-tracking.md").is_symlink() or \
-               not (rules_dir / "cost-tracking.md").exists()
+        assert not (rules_dir / "content-policy.md").is_symlink() or \
+               not (rules_dir / "content-policy.md").exists()
         # New location
-        assert (rules_dir / "cos" / "cost-tracking.md").is_symlink()
+        assert (rules_dir / "cos" / "content-policy.md").is_symlink()
 
     def test_migration_ignores_symlinks_to_other_targets(self, tmp_path):
         project = _setup_cos_project(tmp_path)

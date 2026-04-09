@@ -1,0 +1,26 @@
+# Prevent Claude Code from auto-loading ALL rule files as project instructions.
+# Only the 16 core rules symlinked into .claude/rules/cos/ should be loaded.
+# Loading all 95+ rules costs ~94K tokens and degrades agent performance.
+# See: ETH Zurich paper (arxiv.org/abs/2602.11988) — more instructions = less effectiveness.
+#
+# The self-install.sh hook manages which rules are active via the CORE_RULES array.
+# All rules remain in rules/ as source-of-truth; only the selected subset is loaded.
+
+# Exclude source rule files (loaded selectively via .claude/rules/cos/ symlinks)
+rules/
+packages/*/rules/
+
+# Exclude reference materials (not needed in agent context)
+reference/
+
+# Exclude test files from context
+tests/
+
+# Exclude documentation from auto-loading (loaded on demand)
+docs/
+
+# Exclude node_modules if any
+node_modules/
+
+# Exclude git internals
+.git/

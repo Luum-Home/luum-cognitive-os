@@ -1,4 +1,6 @@
-"""STATUS: ORPHAN — designed and documented but never called from production code.
+"""DEFER: This module depends on external services not yet configured. Not actively used.
+
+STATUS: Designed and documented but never called from production code.
 Wire when complex orchestrator tasks exercise mid-task tool creation.
 See: rules/dynamic-tool-creation.md for the design.
 

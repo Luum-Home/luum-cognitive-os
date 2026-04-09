@@ -1,7 +1,7 @@
-# Cognitive OS Documentation Index — v0.4.2
+# Cognitive OS Documentation Index — v0.5.0
 
 > Everything about the AI-assisted development setup: hooks, rules, skills, automation, self-improvement, and how to extend it.
-> Updated: 2026-04-08
+> Updated: 2026-04-09
 
 > **Disclaimer**: Cognitive OS is not affiliated with, endorsed by, or sponsored by Anthropic, OpenAI, Google, Amazon, Microsoft, or any other company whose products are referenced in this documentation. All product names, trademarks, and registered trademarks are the property of their respective owners. References to third-party products are for informational and interoperability purposes only.
 
