@@ -156,14 +156,17 @@ def _apply_profile_filter_pure(rules: set[str], profile: str) -> set[str]:
     This mirrors the logic in self-install.sh and serves as a reference
     implementation for verifying behavior.
 
-    lean     -> RULES-COMPACT.md only
-    standard, full, self-hosting -> CORE_RULES (16 core rules)
+    lean                  -> RULES-COMPACT.md only
+    standard              -> CORE_RULES (16 core rules)
+    full / self-hosting   -> ALL rules (full context for development)
     """
     if profile == "lean":
         return {r for r in rules if r == "RULES-COMPACT.md"}
-    else:
-        # standard / full / self-hosting: keep only the 16 CORE_RULES
+    elif profile == "standard":
         return {r for r in rules if r in CORE_RULES}
+    else:
+        # full / self-hosting: keep everything
+        return rules
 
 
 # ---------------------------------------------------------------------------
@@ -185,15 +188,17 @@ class TestProfileFilterLogic:
         filtered = _apply_profile_filter_pure(ALL_RULE_FILES, "lean")
         assert filtered == {"RULES-COMPACT.md"}
 
-    def test_full_profile_keeps_core_rules(self):
-        """Full profile keeps the 16 CORE_RULES (same as standard).
+    def test_full_profile_keeps_all_rules(self):
+        """Full/self-hosting profile should keep every rule file.
 
-        The self-install.sh always uses CORE_RULES for any non-lean profile.
-        This is intentional: loading all 95 rules would cost ~93K tokens.
+        self-install.sh syncs ALL rules for self-hosted development,
+        providing maximum context coverage during development.
         """
         filtered = _apply_profile_filter_pure(ALL_RULE_FILES, "full")
-        assert filtered == CORE_RULES
-        assert len(filtered) == 16
+        assert filtered == ALL_RULE_FILES
+        assert len(filtered) >= 70, (
+            f"Expected >= 70 rules in full profile, got {len(filtered)}"
+        )
 
     def test_core_rules_are_subset_of_all(self):
         """Every core rule must actually exist in the rules/ directory."""
@@ -219,18 +224,18 @@ class TestProfileFilterShellScript:
     expected self-hosted behavior (all rules kept).
     """
 
-    def test_self_hosted_keeps_core_rules(self, tmp_path):
-        """Self-hosted project should keep the 16 CORE_RULES.
+    def test_self_hosted_keeps_all_rules(self, tmp_path):
+        """Self-hosted project should keep all rules (full profile).
 
-        self-install.sh always uses CORE_RULES for self-hosted projects
-        (any non-lean profile). All 95 rules would cost ~93K tokens.
+        In self-hosting mode, self-install.sh syncs ALL rules to cos/,
+        giving developers full rule context during development.
         """
         project = _setup_external_project(tmp_path, "standard")
         remaining = _run_profile_filter(project)
 
-        # Self-hosted uses CORE_RULES (16 rules) regardless of profile
-        assert len(remaining) == len(CORE_RULES), (
-            f"Self-hosted should keep {len(CORE_RULES)} core rules, got {len(remaining)}"
+        # Self-hosted always uses full profile — all rules are kept
+        assert len(remaining) >= 70, (
+            f"Self-hosted should keep all rules, got {len(remaining)}"
         )
 
     def test_self_install_exits_clean(self, tmp_path):

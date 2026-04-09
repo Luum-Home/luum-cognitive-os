@@ -194,6 +194,7 @@ Activates the complete 12-layer safety mesh plus all governance, observability, 
 | PostToolUse | Agent | `confidence-gate.sh` | Block low-confidence results in production | **Safety mesh layer 9** |
 | PostToolUse | Agent | `clarification-interceptor.sh` | Detect NEEDS_CLARIFICATION signals | **Safety mesh layer 10** |
 | PostToolUse | Agent | `auto-rollback-trigger.sh` | Trigger rollback on verify-apply exhaustion | **Safety mesh layer 11** |
+| PostToolUse | Agent | `reinvention-check.sh` | Detect re-solving already-solved problems; suggest reuse | **Safety mesh layer 13** |
 | PostToolUse | Agent | `completion-gate.sh` | Check acceptance criteria + DoD + auto-refine | Quality gate |
 | PostToolUse | Agent | `consequence-evaluator.sh` | OKR-driven promote/degrade/disable feedback | Agent governance |
 | PostToolUse | Agent | `auto-skill-generator.sh` | Auto-generate skills from complex completions | Skill lifecycle |

@@ -1,0 +1,1 @@
+<repo>/rules/pre-commit-gate.md

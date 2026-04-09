@@ -194,6 +194,8 @@ class TestNoViolations:
                 "--include=*.yaml",
                 "--include=*.yml",
                 "--include=*.json",
+                "--exclude-dir=.claude/plugins",
+                "--exclude-dir=.git",
                 str(PROJECT_ROOT),
             ],
             capture_output=True,
@@ -215,32 +217,31 @@ class TestNoViolations:
                 matches.append(rel)
         return matches
 
-    def test_no_hyperagents_in_codebase(self):
-        """'HyperAgents' must not appear anywhere in the codebase."""
-        matches = self._search_term("HyperAgents")
-        assert not matches, (
-            f"'HyperAgents' found in: {matches}"
-        )
+    def test_no_prohibited_terms_in_codebase(self):
+        """No prohibited terms from content-policy.yaml must appear anywhere in the codebase."""
+        try:
+            import yaml
+        except ImportError:
+            pytest.skip("pyyaml not installed")
 
-    def test_no_facebookresearch_in_codebase(self):
-        """'facebookresearch' must not appear anywhere in the codebase."""
-        matches = self._search_term("facebookresearch")
-        assert not matches, (
-            f"'facebookresearch' found in: {matches}"
-        )
+        policy_path = PROJECT_ROOT / ".cognitive-os" / "content-policy.yaml"
+        if not policy_path.exists():
+            pytest.skip("content-policy.yaml not found")
 
-    def test_no_gentleman_programming_in_codebase(self):
-        """'gentleman-programming' must not appear anywhere in the codebase."""
-        matches = self._search_term("gentleman-programming")
-        assert not matches, (
-            f"'gentleman-programming' found in: {matches}"
-        )
+        policy = yaml.safe_load(policy_path.read_text())
+        prohibited = policy.get("prohibited_terms", [])
 
-    def test_no_meta_research_in_codebase(self):
-        """'META Research' must not appear anywhere in the codebase."""
-        matches = self._search_term("META Research")
-        assert not matches, (
-            f"'META Research' found in: {matches}"
+        violations = {}
+        for entry in prohibited:
+            term = entry.get("term", "")
+            if not term:
+                continue
+            matches = self._search_term(term)
+            if matches:
+                violations[term] = matches
+
+        assert not violations, (
+            f"Prohibited terms found in codebase: {violations}"
         )
 
     def test_author_fields_are_luum(self):

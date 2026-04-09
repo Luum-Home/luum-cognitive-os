@@ -1,0 +1,1 @@
+<repo>/rules/doc-sync.md
