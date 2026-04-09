@@ -283,6 +283,7 @@ These hooks are excluded because they serve niche use cases or require explicit 
 | confidence-gate.sh | -- | -- | Y | Layer 9 |
 | clarification-interceptor.sh | -- | Y | Y | Layer 10 |
 | auto-rollback-trigger.sh | -- | -- | Y | Layer 11 |
+| reinvention-check.sh | -- | -- | Y | Layer 13 |
 | completion-gate.sh | -- | Y | Y | -- |
 | consequence-evaluator.sh | -- | -- | Y | -- |
 | auto-skill-generator.sh | -- | -- | Y | -- |
@@ -307,7 +308,7 @@ These hooks are excluded because they serve niche use cases or require explicit 
 | task-created.sh | -- | Y | Y | -- |
 | task-completed.sh | -- | Y | Y | -- |
 | session-cleanup.sh | Y | Y | Y | -- |
-| **Total** | **11** | **26** | **61** | |
+| **Total** | **11** | **26** | **62** | |
 
 ---
 
