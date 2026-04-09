@@ -193,3 +193,20 @@ workflows:
 | Closed-loop prompts | Enable agent steps to self-correct within their execution |
 | ZTE | ADWs are the execution mechanism for ZTE — event-triggered ADWs are Phase 2 |
 | Leverage Point 10 | ADWs ARE leverage point 10 (workflow automation) |
+
+## Pipeline Executor
+
+The pipeline executor (`lib/pipeline_executor.py`) is the runtime that executes workflow YAMLs.
+
+### Usage
+
+```bash
+# Via skill
+/run-pipeline feature my-feature
+
+# Direct CLI
+python3 -m lib.pipeline_executor --workflow .cognitive-os/workflows/feature-pipeline.yaml --change my-feature
+```
+
+### State Management
+Pipeline state is persisted to `.cognitive-os/pipeline-state/{change}.json` after every phase completion. Use `--resume` to continue from the last completed phase.

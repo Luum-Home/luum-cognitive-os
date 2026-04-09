@@ -18,7 +18,7 @@ scenario by:
 Related files:
     - hooks/self-install.sh       (the sync + profile filter logic)
     - rules/                       (the source rule files)
-    - docs/rules-loading-architecture.md (rationale for 14 core rules)
+    - docs/rules-loading-architecture.md (rationale for 16 core rules)
 """
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RULES_DIR = PROJECT_ROOT / "rules"
 SELF_INSTALL = PROJECT_ROOT / "hooks" / "self-install.sh"
 
-# The 14 core rules that the standard profile keeps.
+# The 16 core rules that the standard/full/self-hosting profiles keep.
 # Must match the CORE_RULES array in hooks/self-install.sh exactly.
 CORE_RULES = {
     "RULES-COMPACT.md",
@@ -42,15 +42,17 @@ CORE_RULES = {
     "acceptance-criteria.md",
     "agent-quality.md",
     "trust-score.md",
-    "definition-of-done.md",
+    "token-economy.md",
     "phase-aware-agents.md",
     "closed-loop-prompts.md",
-    "token-economy.md",
-    "responsiveness.md",
-    "agent-security.md",
+    "error-learning.md",
+    "rate-limiting.md",
     "credential-management.md",
     "content-policy.md",
-    "error-learning.md",
+    "result-management.md",
+    "blast-radius.md",
+    "clarification-gate.md",
+    "model-routing.md",
 }
 
 # All rule .md files in the source rules/ directory (dynamic count)
@@ -151,16 +153,17 @@ def _run_profile_filter(project: Path) -> set[str]:
 def _apply_profile_filter_pure(rules: set[str], profile: str) -> set[str]:
     """Pure Python implementation of the profile filtering logic.
 
-    This mirrors the logic in self-install.sh lines 172-203 and serves
-    as a reference implementation for verifying behavior.
+    This mirrors the logic in self-install.sh and serves as a reference
+    implementation for verifying behavior.
+
+    lean     -> RULES-COMPACT.md only
+    standard, full, self-hosting -> CORE_RULES (16 core rules)
     """
     if profile == "lean":
         return {r for r in rules if r == "RULES-COMPACT.md"}
-    elif profile == "standard":
-        return {r for r in rules if r in CORE_RULES}
     else:
-        # full: keep everything
-        return rules
+        # standard / full / self-hosting: keep only the 16 CORE_RULES
+        return {r for r in rules if r in CORE_RULES}
 
 
 # ---------------------------------------------------------------------------
@@ -171,24 +174,26 @@ def _apply_profile_filter_pure(rules: set[str], profile: str) -> set[str]:
 class TestProfileFilterLogic:
     """Test the profile filtering logic in pure Python."""
 
-    def test_standard_profile_keeps_14_core_rules(self):
-        """Standard profile should keep exactly the 14 core rules."""
+    def test_standard_profile_keeps_16_core_rules(self):
+        """Standard profile should keep exactly the 16 core rules."""
         filtered = _apply_profile_filter_pure(ALL_RULE_FILES, "standard")
         assert filtered == CORE_RULES
-        assert len(filtered) == 14
+        assert len(filtered) == 16
 
     def test_lean_profile_keeps_only_compact(self):
         """Lean profile should keep only RULES-COMPACT.md."""
         filtered = _apply_profile_filter_pure(ALL_RULE_FILES, "lean")
         assert filtered == {"RULES-COMPACT.md"}
 
-    def test_full_profile_keeps_all_rules(self):
-        """Full profile should keep every rule file."""
+    def test_full_profile_keeps_core_rules(self):
+        """Full profile keeps the 16 CORE_RULES (same as standard).
+
+        The self-install.sh always uses CORE_RULES for any non-lean profile.
+        This is intentional: loading all 95 rules would cost ~93K tokens.
+        """
         filtered = _apply_profile_filter_pure(ALL_RULE_FILES, "full")
-        assert filtered == ALL_RULE_FILES
-        assert len(filtered) >= 70, (
-            f"Expected >= 70 rules in full profile, got {len(filtered)}"
-        )
+        assert filtered == CORE_RULES
+        assert len(filtered) == 16
 
     def test_core_rules_are_subset_of_all(self):
         """Every core rule must actually exist in the rules/ directory."""
@@ -197,9 +202,9 @@ class TestProfileFilterLogic:
             f"Core rules reference non-existent files: {missing}"
         )
 
-    def test_core_rules_count_is_14(self):
-        """The CORE_RULES constant must have exactly 14 entries."""
-        assert len(CORE_RULES) == 14
+    def test_core_rules_count_is_16(self):
+        """The CORE_RULES constant must have exactly 16 entries."""
+        assert len(CORE_RULES) == 16
 
 
 class TestProfileFilterShellScript:
@@ -214,14 +219,18 @@ class TestProfileFilterShellScript:
     expected self-hosted behavior (all rules kept).
     """
 
-    def test_self_hosted_keeps_all_rules(self, tmp_path):
-        """Self-hosted project should keep all rules (full profile)."""
+    def test_self_hosted_keeps_core_rules(self, tmp_path):
+        """Self-hosted project should keep the 16 CORE_RULES.
+
+        self-install.sh always uses CORE_RULES for self-hosted projects
+        (any non-lean profile). All 95 rules would cost ~93K tokens.
+        """
         project = _setup_external_project(tmp_path, "standard")
         remaining = _run_profile_filter(project)
 
-        # Self-hosted always uses full — profile is ignored
-        assert len(remaining) >= 70, (
-            f"Self-hosted should keep all rules, got {len(remaining)}"
+        # Self-hosted uses CORE_RULES (16 rules) regardless of profile
+        assert len(remaining) == len(CORE_RULES), (
+            f"Self-hosted should keep {len(CORE_RULES)} core rules, got {len(remaining)}"
         )
 
     def test_self_install_exits_clean(self, tmp_path):
@@ -264,7 +273,7 @@ class TestExternalProjectSimulation:
     logic directly and checking file system results.
     """
 
-    def test_standard_profile_installs_14_core_rules(self, tmp_path):
+    def test_standard_profile_installs_16_core_rules(self, tmp_path):
         """Simulate external project install with standard profile."""
         project = _setup_external_project(tmp_path, "standard")
         cos_rules_dir = project / ".claude" / "rules" / "cos"
@@ -275,11 +284,11 @@ class TestExternalProjectSimulation:
                 link.unlink()
 
         remaining = {f.name for f in cos_rules_dir.glob("*.md")}
-        assert len(remaining) == 14
+        assert len(remaining) == 16
         assert remaining == CORE_RULES
 
     def test_standard_profile_has_right_rules(self, tmp_path):
-        """Verify the 14 core rules include the expected essentials."""
+        """Verify the 16 core rules include the expected essentials."""
         project = _setup_external_project(tmp_path, "standard")
         cos_rules_dir = project / ".claude" / "rules" / "cos"
 
@@ -289,21 +298,23 @@ class TestExternalProjectSimulation:
 
         remaining = {f.name for f in cos_rules_dir.glob("*.md")}
 
-        # Must-have rules for any project
+        # Must-have rules for any project (all 16 CORE_RULES)
         assert "RULES-COMPACT.md" in remaining
         assert "acceptance-criteria.md" in remaining
         assert "trust-score.md" in remaining
-        assert "agent-security.md" in remaining
         assert "credential-management.md" in remaining
         assert "content-policy.md" in remaining
         assert "error-learning.md" in remaining
-        assert "definition-of-done.md" in remaining
         assert "phase-aware-agents.md" in remaining
         assert "closed-loop-prompts.md" in remaining
         assert "token-economy.md" in remaining
-        assert "responsiveness.md" in remaining
         assert "adaptive-bypass.md" in remaining
         assert "agent-quality.md" in remaining
+        assert "rate-limiting.md" in remaining
+        assert "result-management.md" in remaining
+        assert "blast-radius.md" in remaining
+        assert "clarification-gate.md" in remaining
+        assert "model-routing.md" in remaining
 
     def test_lean_profile_installs_only_compact(self, tmp_path):
         """Lean profile should only have RULES-COMPACT.md."""
