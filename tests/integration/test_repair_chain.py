@@ -180,6 +180,19 @@ class TestRepairChain:
         if not dispatcher.exists():
             pytest.skip("auto-repair-dispatcher.sh not found")
 
+        # Create a remediation registry entry matching the error we will inject.
+        # The dispatcher only writes outcomes when a registry entry matches.
+        registry_path = repair_env["metrics_dir"] / "remediation-registry.jsonl"
+        registry_entry = json.dumps({
+            "type": "TEST_FAILURE",
+            "service": "unknown",
+            "error_pattern": "expect\\(received\\)",
+            "description": "Jest assertion mismatch",
+            "fix_type": "command",
+            "fix": "echo registry-match",
+        })
+        registry_path.write_text(registry_entry + "\n")
+
         input_file = _build_hook_input(
             tmp_path,
             "jest --runInBand",
@@ -200,8 +213,10 @@ class TestRepairChain:
         # Wait briefly for background nohup processes
         time.sleep(1)
 
+        # dispatcher writes to repair-dispatch.jsonl when a registry match is found
+        dispatch = repair_env["metrics_dir"] / "repair-dispatch.jsonl"
         outcomes = repair_env["metrics_dir"] / "repair-outcomes.jsonl"
         queue = repair_env["metrics_dir"] / "repair-queue.jsonl"
-        assert outcomes.exists() or queue.exists(), (
-            "dispatcher should write an outcome or queue entry"
+        assert dispatch.exists() or outcomes.exists() or queue.exists(), (
+            "dispatcher should write a dispatch, outcome, or queue entry when a registry match exists"
         )

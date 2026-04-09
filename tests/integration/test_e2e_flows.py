@@ -30,6 +30,7 @@ import time
 import urllib.error
 import urllib.request
 import uuid
+from typing import Optional, Dict, Tuple, Union
 
 import pytest
 
@@ -88,8 +89,8 @@ def wait_for_http(
     interval: int = 3,
     expected_status: int = 200,
     method: str = "GET",
-    data: bytes | None = None,
-    headers: dict[str, str] | None = None,
+    data: Optional[bytes] = None,
+    headers: Optional[Dict[str, str]] = None,
 ) -> str:
     """Poll an HTTP endpoint until it returns the expected status or timeout expires.
 
@@ -100,7 +101,7 @@ def wait_for_http(
     Raises ``TimeoutError`` if the endpoint is not reachable within *timeout* seconds.
     """
     deadline = time.monotonic() + timeout
-    last_error: Exception | None = None
+    last_error: Optional[Exception] = None
     while time.monotonic() < deadline:
         try:
             req = urllib.request.Request(url, method=method, data=data)
@@ -124,10 +125,10 @@ def http_request(
     url: str,
     *,
     method: str = "GET",
-    data: dict | None = None,
-    headers: dict[str, str] | None = None,
+    data: Optional[dict] = None,
+    headers: Optional[Dict[str, str]] = None,
     timeout: int = 30,
-) -> tuple[int, str]:
+) -> Tuple[int, str]:
     """Make a single HTTP request, returning (status_code, body).
 
     Does NOT retry — use wait_for_http for polling.
@@ -151,7 +152,7 @@ def http_request(
         return 0, str(exc)
 
 
-def _host_port(container: DockerContainer, container_port: int | str) -> tuple[str, int]:
+def _host_port(container: DockerContainer, container_port: Union[int, str]) -> Tuple[str, int]:
     """Return (host, mapped_port) for a running container."""
     host = container.get_container_host_ip()
     port = int(container.get_exposed_port(int(container_port)))

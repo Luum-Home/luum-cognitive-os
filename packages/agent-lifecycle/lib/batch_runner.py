@@ -4,6 +4,18 @@
 # dependencies = ["pyyaml"]
 # ///
 """
+DEPRECATED: Use lib/pipeline_executor.py instead.
+
+This module is superseded by pipeline_executor.py which provides:
+- Declarative YAML workflow definitions (.cognitive-os/workflows/*.yaml)
+- Resume/start-from support
+- Phase timing and state persistence
+- Dry-run mode
+
+Migration:
+  OLD: python lib/batch_runner.py add-auth --fast-forward
+  NEW: python -m lib.pipeline_executor --workflow .cognitive-os/workflows/feature-pipeline.yaml --change add-auth
+
 SDD Batch Runner — Execute multiple SDD changes sequentially.
 
 Runs SDD pipeline phases for a list of changes provided via CLI args
@@ -48,7 +60,7 @@ _LIB_DIR = str(Path(__file__).resolve().parent)
 if _LIB_DIR not in sys.path:
     sys.path.insert(0, _LIB_DIR)
 
-from claude_executor import ClaudeExecutor, ClaudeResult
+from lib.claude_executor import ClaudeExecutor, ClaudeResult
 
 # ---------------------------------------------------------------------------
 # SDD phase constants
