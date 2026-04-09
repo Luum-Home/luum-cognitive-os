@@ -187,61 +187,76 @@ CORE_RULES=(
   "model-routing.md"
 )
 
-# Build the effective allowed-rules list based on profile
+# Build the effective allowed-rules list based on profile.
+# In self-hosting/full mode, ALL rules in rules/ are symlinked (not just CORE_RULES).
+# In standard mode, only CORE_RULES are synced. In lean mode, only RULES-COMPACT.md.
 if [[ "$EFFICIENCY_PROFILE" == "lean" ]]; then
   ALLOWED_RULES=("RULES-COMPACT.md")
-elif [[ "$EFFICIENCY_PROFILE" == "full" ]] || [[ "$IS_SELF_HOSTING" == "true" ]]; then
-  # Full/self-hosting: symlink ALL rules that exist in rules/
-  ALLOWED_RULES=()
-  if [ -d "$PROJECT_DIR/rules" ]; then
-    for f in "$PROJECT_DIR/rules"/*.md; do
-      [ -f "$f" ] && ALLOWED_RULES+=("$(basename "$f")")
-    done
-  fi
-  # Ensure CORE_RULES are always included even if rules/ dir is empty
-  if [ ${#ALLOWED_RULES[@]} -eq 0 ]; then
-    ALLOWED_RULES=("${CORE_RULES[@]}")
-  fi
+  SYNC_ALL_RULES=false
+elif [[ "$IS_SELF_HOSTING" == "true" ]] || [[ "$EFFICIENCY_PROFILE" == "full" ]]; then
+  # Self-hosting and full profile: symlink every rule file that exists
+  ALLOWED_RULES=("${CORE_RULES[@]}")
+  SYNC_ALL_RULES=true
 else
   ALLOWED_RULES=("${CORE_RULES[@]}")
+  SYNC_ALL_RULES=false
 fi
 
 cos_rules_dir="$PROJECT_DIR/.claude/rules/cos"
 mkdir -p "$cos_rules_dir"
 
-# Add missing core-rule symlinks
-for rule in "${ALLOWED_RULES[@]}"; do
-  src="$PROJECT_DIR/rules/$rule"
-  link="$cos_rules_dir/$rule"
-  [ -f "$src" ] || continue
-  if [ ! -e "$link" ]; then
-    ln -sf "$src" "$link"
-    added=$((added + 1))
-  fi
-done
+# Add missing symlinks
+if [[ "$SYNC_ALL_RULES" == "true" ]]; then
+  # Symlink every .md file in rules/
+  for src in "$PROJECT_DIR/rules"/*.md; do
+    [ -f "$src" ] || continue
+    base=$(basename "$src")
+    link="$cos_rules_dir/$base"
+    if [ ! -e "$link" ]; then
+      ln -sf "$src" "$link"
+      added=$((added + 1))
+    fi
+  done
+else
+  # Only symlink CORE_RULES (or lean subset)
+  for rule in "${ALLOWED_RULES[@]}"; do
+    src="$PROJECT_DIR/rules/$rule"
+    link="$cos_rules_dir/$rule"
+    [ -f "$src" ] || continue
+    if [ ! -e "$link" ]; then
+      ln -sf "$src" "$link"
+      added=$((added + 1))
+    fi
+  done
+fi
 
-# Remove symlinks that are NOT in the allowed list (stale or previously full set)
+# Remove symlinks in cos_rules_dir:
+# - Always remove broken symlinks (target gone)
+# - In standard/lean mode: also remove symlinks not in ALLOWED_RULES
+# - In self-hosting/full mode: only remove broken symlinks (all rules are valid)
 if [ -d "$cos_rules_dir" ]; then
   for link in "$cos_rules_dir"/*.md; do
     [ -L "$link" ] || continue
     base=$(basename "$link")
-    # Check if broken (target gone)
+    # Always remove broken symlinks
     if [ ! -e "$link" ]; then
       rm -f "$link"
       removed=$((removed + 1))
       continue
     fi
-    # Check if not in allowed list
-    is_allowed=false
-    for allowed in "${ALLOWED_RULES[@]}"; do
-      if [ "$base" = "$allowed" ]; then
-        is_allowed=true
-        break
+    # In standard/lean mode, remove symlinks not in allowed list
+    if [[ "$SYNC_ALL_RULES" != "true" ]]; then
+      is_allowed=false
+      for allowed in "${ALLOWED_RULES[@]}"; do
+        if [ "$base" = "$allowed" ]; then
+          is_allowed=true
+          break
+        fi
+      done
+      if [ "$is_allowed" = false ]; then
+        rm -f "$link"
+        removed=$((removed + 1))
       fi
-    done
-    if [ "$is_allowed" = false ]; then
-      rm -f "$link"
-      removed=$((removed + 1))
     fi
   done
 fi

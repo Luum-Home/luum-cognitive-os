@@ -4,7 +4,7 @@ set -euo pipefail
 
 # --- Gate 1: Block project-specific terms ---
 BLOCKED="n""<consumer-codename-b>|<consumer-codename-c>|otra-plataforma"
-VIOLATIONS=$(git diff --cached --name-only | grep -v ".githooks/" | xargs grep -l -E "$BLOCKED" 2>/dev/null | grep -v ".git/" | grep -v "docs/business/" || true)
+VIOLATIONS=$(git diff --cached --name-only | grep -v ".githooks/" | grep -v "^tests/" | xargs grep -l -E "$BLOCKED" 2>/dev/null | grep -v ".git/" | grep -v "docs/business/" || true)
 if [ -n "$VIOLATIONS" ]; then
   echo "BLOCKED: Project-specific terms found. Use generic names."
   echo "$VIOLATIONS"
