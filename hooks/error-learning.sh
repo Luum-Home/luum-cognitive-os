@@ -12,10 +12,12 @@ source "$(dirname "$0")/_lib/common.sh"
 check_private_mode
 read_stdin_json
 
-EXIT_CODE=$(stdin_field '.tool_response.exit_code' '0')
+EXIT_CODE=$(stdin_field '.exit_code' '0')
 COMMAND=$(stdin_field '.tool_input.command' '')
-STDOUT=$(stdin_field '.tool_response.stdout' '')
-STDERR=$(stdin_field '.tool_response.stderr' '')
+# tool_response may be a plain string (stdout) or an object with stdout/stderr fields.
+# Use direct jq with type-checking to handle both formats.
+STDOUT=$(echo "$_STDIN_JSON" | jq -r 'if (.tool_response | type) == "object" then .tool_response.stdout // "" else .tool_response // "" end' 2>/dev/null || true)
+STDERR=$(echo "$_STDIN_JSON" | jq -r 'if (.tool_response | type) == "object" then .tool_response.stderr // "" else "" end' 2>/dev/null || true)
 
 # Only process failures
 [ "$EXIT_CODE" = "0" ] || [ "$EXIT_CODE" = "" ] && exit 0
@@ -23,18 +25,19 @@ STDERR=$(stdin_field '.tool_response.stderr' '')
 
 COMBINED="$STDOUT $STDERR"
 
-# Classify error type
+# Classify error type — command-based checks run first to avoid false positives.
+# Example: "compilation failed" contains "failed" but is a BUILD_ERROR not TEST_FAILURE.
 ERROR_TYPE="UNKNOWN_ERROR"
-if echo "$COMMAND" | grep -qE '(jest|vitest|go test|gradlew test|pytest|yarn test|npm test)' || \
-   echo "$COMBINED" | grep -qiE '(FAILED|failing|assertion error|test.*fail)'; then
-  ERROR_TYPE="TEST_FAILURE"
-elif echo "$COMMAND" | grep -qE '(eslint|golangci-lint|tsc --noEmit|go vet)' || \
-     echo "$COMBINED" | grep -qiE '(lint error|vet:)'; then
+if echo "$COMMAND" | grep -qE '(eslint|golangci-lint|tsc --noEmit|go vet)' || \
+   echo "$COMBINED" | grep -qiE '(lint error|vet:)'; then
   ERROR_TYPE="LINT_ERROR"
-elif echo "$COMBINED" | grep -qiE '(syntax error|unexpected token|cannot find|undefined:)'; then
+elif echo "$COMBINED" | grep -qiE '(syntax error|unexpected token|cannot find module|undefined:)'; then
   ERROR_TYPE="COMPILATION_ERROR"
 elif echo "$COMMAND" | grep -qE '(go build|gradlew build|yarn build|npm run build|tsc)'; then
   ERROR_TYPE="BUILD_ERROR"
+elif echo "$COMMAND" | grep -qE '(jest|vitest|go test|gradlew test|pytest|yarn test|npm test)' || \
+   echo "$COMBINED" | grep -qiE '(assertion error|test.*fail|test suite failed)'; then
+  ERROR_TYPE="TEST_FAILURE"
 fi
 
 # Fingerprint for deduplication (md5 of first 100 chars of error)
