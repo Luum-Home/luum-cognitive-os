@@ -14,7 +14,7 @@ uvicorn>=0.23
 
 # === Observability (ADOPT) ===
 opik>=1.0                    # LLM tracing, evaluation, monitoring
-langfuse>=2.0                # LLM observability (alternative/complement)
+langfuse>=3.0                # LLM observability — v3 OTEL-based API
 
 # === Memory (ADOPT) ===
 cognee>=0.1                  # Knowledge graph memory
@@ -39,3 +39,4 @@ testcontainers>=4.0          # Docker-based integration testing
 pytest>=8.0
 pytest-asyncio>=0.23
 pytest-timeout>=2.2
+pytest-xdist>=3.5              # Parallel test execution (-n auto)

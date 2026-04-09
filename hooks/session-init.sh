@@ -90,6 +90,21 @@ echo ""
 # Write session ID to a discoverable file so other hooks can read it
 echo "$SESSION_ID" > "$SESSIONS_DIR/.current-session-$$"
 
+# ─── Self-improve KPI flag check ─────────────────────────────────────────────
+SELF_IMPROVE_FLAG="$PROJECT_DIR/.cognitive-os/metrics/.self-improve-recommended"
+if [ -f "$SELF_IMPROVE_FLAG" ]; then
+  REASON=$(python3 -c "
+import json
+try:
+    with open('$SELF_IMPROVE_FLAG') as f:
+        d = json.load(f)
+    print(d.get('reason','KPIs below threshold'))
+except Exception:
+    print('KPIs below threshold')
+" 2>/dev/null || echo "KPIs below threshold")
+  echo "SELF-IMPROVE RECOMMENDED: $REASON — consider running /self-improve" >&2
+fi
+
 # Load user model for this session
 python3 -c "
 import sys; sys.path.insert(0, '$PROJECT_DIR')

@@ -59,7 +59,7 @@ pending -> in_progress -> completed
                        -> failed -> (re-launch) -> in_progress
 ```
 
-## Task Claiming
+### Task Claiming
 
 When multiple agents could work on the same task, agents MUST claim tasks before starting:
 

@@ -19,7 +19,7 @@ Author: luum
 import json
 import os
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -399,6 +399,70 @@ class ConsequenceEngine:
 
         return list(disabled.values())
 
+    def get_skills_needing_rewrite(
+        self,
+        metrics_dir: str = ".cognitive-os/metrics",
+        threshold: int = 3,
+        hours: int = 24,
+    ) -> List[Dict[str, Any]]:
+        """Return skills that have failed >= threshold times in the last N hours.
+
+        A "failure" is any performance record with ``success=False``.
+        Reads consequence-history.jsonl (self.history_path) and returns a
+        list of dicts with keys:
+          - skill_name: str
+          - failure_count: int
+          - last_error: str   (task_type of the most recent failure)
+          - suggested_action: str
+
+        Only skills with failure_count >= threshold are returned.
+        Skills that are already disabled are included (they may need rewrite
+        even if not re-enabled yet).
+        """
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
+        raw = self._read_all_raw()
+
+        # Collect failures per skill within the time window
+        failures_by_skill: Dict[str, List[Dict[str, Any]]] = {}
+        for entry in raw:
+            if entry.get("record_type") != "performance":
+                continue
+            if entry.get("success", True):
+                continue
+            try:
+                ts_str = entry.get("timestamp", "")
+                ts = datetime.fromisoformat(ts_str)
+                if ts.tzinfo is None:
+                    ts = ts.replace(tzinfo=timezone.utc)
+            except (ValueError, TypeError):
+                continue
+            if ts < cutoff:
+                continue
+            skill = entry.get("agent_or_skill", "")
+            if not skill:
+                continue
+            failures_by_skill.setdefault(skill, []).append(entry)
+
+        result: List[Dict[str, Any]] = []
+        for skill_name, failures in failures_by_skill.items():
+            count = len(failures)
+            if count < threshold:
+                continue
+            # Most recent failure first
+            failures_sorted = sorted(failures, key=lambda e: e.get("timestamp", ""), reverse=True)
+            last_failure = failures_sorted[0]
+            last_error = last_failure.get("task_type", "") or last_failure.get("agent_or_skill", "")
+            result.append({
+                "skill_name": skill_name,
+                "failure_count": count,
+                "last_error": last_error,
+                "suggested_action": f"/optimize-skill {skill_name}",
+            })
+
+        # Sort by failure_count descending so worst offenders come first
+        result.sort(key=lambda x: x["failure_count"], reverse=True)
+        return result
+
     def re_enable_skill(self, skill_name: str) -> bool:
         """Re-enable a disabled skill (after rewrite/optimization).
 
@@ -416,6 +480,57 @@ class ConsequenceEngine:
             "timestamp": datetime.now(timezone.utc).isoformat(),
         })
         return True
+
+    def is_skill_disabled(self, skill_name: str) -> bool:
+        """Return True if *skill_name* is currently disabled.
+
+        A skill is disabled when the most recent action record for it is
+        'disable' and no subsequent 're-enable' record exists.
+        """
+        if not skill_name:
+            return False
+        disabled = self.get_disabled_skills()
+        return any(d["skill"] == skill_name for d in disabled)
+
+    def get_model_override(self, skill_name: str) -> Optional[str]:
+        """Return a forced model downgrade for a degraded skill, or None.
+
+        If the most recent action for *skill_name* is a 'degradation' record,
+        we return the recommended downgraded model tier (haiku/sonnet/opus).
+        The caller (dispatch-gate) should use this instead of the task-derived
+        model recommendation.
+
+        Returns None when no downgrade is in effect.
+        """
+        if not skill_name:
+            return None
+
+        raw = self._read_all_raw()
+
+        # Walk backwards to find the most recent action for this skill
+        for entry in reversed(raw):
+            target = entry.get("target", "")
+            if target != skill_name:
+                continue
+            rt = entry.get("record_type", "")
+            if rt == "degradation":
+                # Extract the downgraded model from the stored message
+                downgrade = entry.get("downgrade", "")
+                # Format: "downgrade {from} -> {to}"
+                for tier in ("haiku", "sonnet", "opus"):
+                    if f"-> {tier}" in downgrade:
+                        return tier
+                # Fallback: one tier down from a simple keyword match
+                if "opus" in downgrade:
+                    return "sonnet"
+                if "sonnet" in downgrade:
+                    return "haiku"
+                return "haiku"
+            elif rt in ("promotion", "re-enable"):
+                # A subsequent positive action clears the downgrade
+                return None
+
+        return None
 
     def get_promotions(self, last_n: int = 10) -> List[ConsequenceAction]:
         """List recent promotions (positive reinforcement tracking)."""
