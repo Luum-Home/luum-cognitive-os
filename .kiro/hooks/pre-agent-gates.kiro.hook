@@ -1,0 +1,13 @@
+{
+  "name": "Pre Agent Gates",
+  "description": "Cognitive OS portability shim: resource checks, dispatch gate, clarification gate, blast radius, phase context injection, agent prelaunch, completeness check, error pattern detector, prompt quality, epic task detector, and context diet — all running before agent tool use. Maps to Claude Code PreToolUse[Agent] hooks. Exit code 2 blocks execution.",
+  "version": "1",
+  "when": {
+    "type": "preToolUse",
+    "toolName": "*"
+  },
+  "then": {
+    "type": "runShell",
+    "command": "bash \"${workspaceFolder}/hooks/resource-check.sh\" && bash \"${workspaceFolder}/hooks/dispatch-gate.sh\" && bash \"${workspaceFolder}/hooks/clarification-gate.sh\" && bash \"${workspaceFolder}/hooks/blast-radius.sh\" && bash \"${workspaceFolder}/hooks/inject-phase-context.sh\" && bash \"${workspaceFolder}/hooks/agent-prelaunch.sh\" && bash \"${workspaceFolder}/hooks/completeness-check.sh\" && bash \"${workspaceFolder}/hooks/error-pattern-detector.sh\" && bash \"${workspaceFolder}/hooks/prompt-quality.sh\" && bash \"${workspaceFolder}/hooks/epic-task-detector.sh\" && bash \"${workspaceFolder}/hooks/context-diet.sh\""
+  }
+}

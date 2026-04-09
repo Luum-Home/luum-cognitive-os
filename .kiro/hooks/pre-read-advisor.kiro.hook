@@ -1,0 +1,13 @@
+{
+  "name": "Pre Read Large File Advisor",
+  "description": "Cognitive OS portability shim: warns before reading files that exceed the large-file threshold (~40KB / ~10K tokens). Maps to a PreToolUse[Read] advisory — not registered in Claude Code's settings.json but useful in Kiro's read hook. Advisory only: the hook exits 0 regardless.",
+  "version": "1",
+  "when": {
+    "type": "preToolUse",
+    "toolName": "read"
+  },
+  "then": {
+    "type": "runShell",
+    "command": "bash \"${workspaceFolder}/hooks/large-file-advisor.sh\""
+  }
+}
