@@ -1,190 +1,135 @@
-"""
-Unit tests for lib.record_completion — main() entry point.
-
-Covers:
-  - test_missing_tool_output_defaults_to_success
-  - test_score_extraction_non_numeric_uses_default (SCORE=abc → 75)
-  - test_blocked_substring_in_benign_context ("UNBLOCKED" not failure)
-  - test_success_false_when_fail_in_output
-  - test_empty_string_output_treated_as_success
-  - test_malformed_json_stdin_does_not_crash
-"""
-
-from __future__ import annotations
-
-import io
+"""Unit tests for lib/record_completion.py extraction helpers."""
 import json
+import os
 import sys
+
 import pytest
-from unittest.mock import MagicMock, patch
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
+from lib.record_completion import (
+    extract_skill_name,
+    extract_trust_score,
+    estimate_tokens,
+    classify_task_type,
+    detect_success,
+    append_cost_event,
+)
 
 
-# ---------------------------------------------------------------------------
-# Helpers — we call main() by patching stdin and capturing stdout
-# ---------------------------------------------------------------------------
-
-def _run_main(stdin_data: str) -> dict:
-    """Run record_completion.main() with given JSON string on stdin.
-
-    Returns the parsed JSON written to stdout (or {} on failure).
-    """
-    import importlib
-
-    captured_out = io.StringIO()
-
-    with patch("sys.stdin", io.StringIO(stdin_data)), \
-         patch("sys.stdout", captured_out):
-        # Reload to avoid cached module state
-        import lib.record_completion as rc
-        rc.main()
-
-    output = captured_out.getvalue().strip()
-    if output:
-        return json.loads(output)
-    return {}
+def make_payload(description="", prompt="", result=""):
+    return {
+        "tool_call_id": "toolu_abc123",
+        "tool_name": "Agent",
+        "tool_input": {"description": description, "prompt": prompt},
+        "tool_response": {"result": result},
+    }
 
 
-def _make_input(tool_output: str = "", tool_call_id: str = "test-id") -> str:
-    return json.dumps({
-        "tool_output": tool_output,
-        "tool_call_id": tool_call_id,
-    })
+class TestExtractSkillName:
+    def test_prefers_description(self):
+        data = make_payload(description="Implement auth endpoint", prompt="Other")
+        assert extract_skill_name(data) == "Implement auth endpoint"
+
+    def test_falls_back_to_prompt(self):
+        data = make_payload(description="", prompt="Fix test\nmore detail")
+        assert extract_skill_name(data) == "Fix test"
+
+    def test_truncates_to_100(self):
+        data = make_payload(description="A" * 150)
+        assert len(extract_skill_name(data)) == 100
+
+    def test_unknown_when_empty(self):
+        data = make_payload(description="", prompt="")
+        assert extract_skill_name(data) == "unknown"
+
+    def test_strips_whitespace(self):
+        data = make_payload(description="  Review PR  ")
+        assert extract_skill_name(data) == "Review PR"
+
+    def test_missing_tool_input(self):
+        assert extract_skill_name({"tool_call_id": "x"}) == "unknown"
 
 
-# ---------------------------------------------------------------------------
-# Tests — we patch LearningPipeline to avoid I/O side effects
-# ---------------------------------------------------------------------------
+class TestExtractTrustScore:
+    def test_machine_format(self):
+        assert extract_trust_score("TRUST_REPORT: SCORE=85 STATUS=HIGH") == 85
+
+    def test_human_format(self):
+        assert extract_trust_score("Score: 92/100") == 92
+
+    def test_legacy_format(self):
+        assert extract_trust_score("done SCORE=67 ok") == 67
+
+    def test_default_is_50(self):
+        assert extract_trust_score("No trust report") == 50
+
+    def test_clamps_above_100(self):
+        assert extract_trust_score("SCORE=150") == 100
+
+    def test_zero(self):
+        assert extract_trust_score("TRUST_REPORT: SCORE=0") == 0
 
 
-class TestRecordCompletionMain:
+class TestEstimateTokens:
+    def test_empty(self):
+        assert estimate_tokens("") == 0
 
-    @patch("lib.record_completion.LearningPipeline")
-    def test_missing_tool_output_defaults_to_success(self, MockPipeline):
-        """When tool_output key is absent, output is '' → success=True."""
-        mock_pipeline = MagicMock()
-        mock_pipeline.record_agent_completion.return_value = MagicMock()
-        mock_pipeline.record_agent_completion.return_value.__str__ = lambda s: "MAINTAIN"
-        MockPipeline.return_value = mock_pipeline
+    def test_ratio(self):
+        assert estimate_tokens("x" * 400) == 100
 
-        # No tool_output in payload
-        stdin_data = json.dumps({"tool_call_id": "abc"})
-        result = _run_main(stdin_data)
 
-        call_kwargs = mock_pipeline.record_agent_completion.call_args
-        assert call_kwargs is not None
-        # success should be True (empty string has none of FAIL/ERROR/BLOCKED)
-        _, kwargs = call_kwargs if call_kwargs[1] else (call_kwargs[0], {})
-        if kwargs:
-            assert kwargs.get("success", True) is True
-        else:
-            positional = call_kwargs[0]
-            # positional: task_id, success, trust_score, skill_name
-            assert positional[1] is True
+class TestClassifyTaskType:
+    def test_implement(self):
+        assert classify_task_type("Implement endpoint") == "implementation"
 
-    @patch("lib.record_completion.LearningPipeline")
-    def test_score_extraction_non_numeric_uses_default(self, MockPipeline):
-        r"""SCORE=abc should not match the \d+ regex; trust_score defaults to 75."""
-        mock_pipeline = MagicMock()
-        mock_pipeline.record_agent_completion.return_value = MagicMock()
-        MockPipeline.return_value = mock_pipeline
+    def test_review(self):
+        assert classify_task_type("Review PR") == "review"
 
-        stdin_data = _make_input("Some output SCORE=abc no number here")
-        _run_main(stdin_data)
+    def test_fix(self):
+        assert classify_task_type("Fix broken test") == "debugging"
 
-        call_args = mock_pipeline.record_agent_completion.call_args
-        # Extract trust_score from either positional or keyword args
-        args, kwargs = call_args
-        trust_score = kwargs.get("trust_score", args[2] if len(args) > 2 else None)
-        assert trust_score == 75, f"Expected default 75, got {trust_score}"
+    def test_doc(self):
+        assert classify_task_type("Document API") == "documentation"
 
-    @patch("lib.record_completion.LearningPipeline")
-    def test_blocked_substring_in_benign_context(self, MockPipeline):
-        """'UNBLOCKED' contains 'BLOCKED' substring but should still read as success=False."""
-        mock_pipeline = MagicMock()
-        mock_pipeline.record_agent_completion.return_value = MagicMock()
-        MockPipeline.return_value = mock_pipeline
+    def test_archive(self):
+        assert classify_task_type("Archive change") == "archiving"
 
-        # "BLOCKED" IS in "UNBLOCKED" as a substring — the code uses 'in output.upper()'
-        # so "BLOCKED" in "UNBLOCKED" is True → success=False.
-        # This test documents that behavior (substring match, not word boundary).
-        stdin_data = _make_input("Gate UNBLOCKED: proceed normally")
-        _run_main(stdin_data)
+    def test_general(self):
+        assert classify_task_type("Something vague") == "general"
 
-        call_args = mock_pipeline.record_agent_completion.call_args
-        args, kwargs = call_args
-        success = kwargs.get("success", args[1] if len(args) > 1 else None)
-        # "BLOCKED" substring IS present in "UNBLOCKED" → success is False
-        assert success is False
 
-    @patch("lib.record_completion.LearningPipeline")
-    def test_success_false_when_fail_in_output(self, MockPipeline):
-        """FAIL keyword → success=False."""
-        mock_pipeline = MagicMock()
-        mock_pipeline.record_agent_completion.return_value = MagicMock()
-        MockPipeline.return_value = mock_pipeline
+class TestDetectSuccess:
+    def test_success(self):
+        assert detect_success("42 tests passed", make_payload()) is True
 
-        stdin_data = _make_input("Build FAIL: compilation error")
-        _run_main(stdin_data)
+    def test_fail_keyword(self):
+        assert detect_success("FAIL: 3 tests", make_payload()) is False
 
-        call_args = mock_pipeline.record_agent_completion.call_args
-        args, kwargs = call_args
-        success = kwargs.get("success", args[1] if len(args) > 1 else None)
-        assert success is False
+    def test_error_keyword(self):
+        assert detect_success("ERROR: build", make_payload()) is False
 
-    @patch("lib.record_completion.LearningPipeline")
-    def test_empty_string_output_treated_as_success(self, MockPipeline):
-        """Empty tool_output → no failure keywords → success=True."""
-        mock_pipeline = MagicMock()
-        mock_pipeline.record_agent_completion.return_value = MagicMock()
-        MockPipeline.return_value = mock_pipeline
+    def test_is_error_flag(self):
+        data = {"tool_call_id": "x", "tool_input": {},
+                "tool_response": {"result": "out", "is_error": True}}
+        assert detect_success("out", data) is False
 
-        stdin_data = _make_input("")
-        _run_main(stdin_data)
 
-        call_args = mock_pipeline.record_agent_completion.call_args
-        args, kwargs = call_args
-        success = kwargs.get("success", args[1] if len(args) > 1 else None)
-        assert success is True
+class TestAppendCostEvent:
+    def test_creates_file(self, tmp_path):
+        append_cost_event(str(tmp_path), "task", 400)
+        assert (tmp_path / "cost-events.jsonl").exists()
 
-    @patch("lib.record_completion.LearningPipeline")
-    def test_malformed_json_stdin_does_not_crash(self, MockPipeline):
-        """Malformed JSON on stdin should raise JSONDecodeError — document behavior."""
-        # The current implementation calls json.loads() directly, so malformed input
-        # raises JSONDecodeError. This test documents that fact.
-        import json as json_mod
+    def test_fields(self, tmp_path):
+        append_cost_event(str(tmp_path), "Review PR", 200)
+        event = json.loads((tmp_path / "cost-events.jsonl").read_text().strip())
+        assert event["model"] == "sonnet"
+        assert event["tokens_estimated"] == 200
+        assert "timestamp" in event
 
-        with pytest.raises(json_mod.JSONDecodeError):
-            import io
-            import lib.record_completion as rc
-            with patch("sys.stdin", io.StringIO("{not valid json")):
-                rc.main()
+    def test_pricing(self, tmp_path):
+        append_cost_event(str(tmp_path), "task", 1000)
+        event = json.loads((tmp_path / "cost-events.jsonl").read_text().strip())
+        assert abs(event["estimated_cost_usd"] - 0.015) < 0.0001
 
-    @patch("lib.record_completion.LearningPipeline")
-    def test_score_extracted_from_output(self, MockPipeline):
-        """SCORE=90 in output → trust_score=90."""
-        mock_pipeline = MagicMock()
-        mock_pipeline.record_agent_completion.return_value = MagicMock()
-        MockPipeline.return_value = mock_pipeline
-
-        stdin_data = _make_input("Trust Report SCORE=90 all good")
-        _run_main(stdin_data)
-
-        call_args = mock_pipeline.record_agent_completion.call_args
-        args, kwargs = call_args
-        trust_score = kwargs.get("trust_score", args[2] if len(args) > 2 else None)
-        assert trust_score == 90
-
-    @patch("lib.record_completion.LearningPipeline")
-    def test_result_field_used_as_fallback_output(self, MockPipeline):
-        """When 'tool_output' absent but 'result' present, 'result' is used."""
-        mock_pipeline = MagicMock()
-        mock_pipeline.record_agent_completion.return_value = MagicMock()
-        MockPipeline.return_value = mock_pipeline
-
-        stdin_data = json.dumps({"result": "ERROR: something went wrong", "tool_call_id": "x"})
-        _run_main(stdin_data)
-
-        call_args = mock_pipeline.record_agent_completion.call_args
-        args, kwargs = call_args
-        success = kwargs.get("success", args[1] if len(args) > 1 else None)
-        assert success is False
+    def test_survives_bad_dir(self):
+        append_cost_event("/nonexistent/path", "task", 100)
