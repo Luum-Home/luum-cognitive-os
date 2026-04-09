@@ -6,7 +6,7 @@
 #
 # Profiles:
 #   lean     — 7 hooks, minimum overhead
-#   standard — 27 hooks, good governance without waste
+#   standard — 29 hooks, good governance without waste
 #   full     — all hooks (current settings.json as-is)
 #
 # Usage:
@@ -122,6 +122,7 @@ build_settings() {
       pre_bash=$(hook_group "Bash" \
         "rate-limiter.sh")
       pre_agent=$(hook_group "Agent" \
+        "dispatch-gate.sh" \
         "clarification-gate.sh" \
         "blast-radius.sh" \
         "inject-phase-context.sh" \
@@ -161,7 +162,8 @@ build_settings() {
         "agent-checkpoint.sh" \
         "trust-score-validator.sh" \
         "auto-skill-generator.sh" \
-        "auto-repair-dispatcher.sh")
+        "auto-repair-dispatcher.sh" \
+        "dequeue-notify.sh")
       post_all=$(hook_group "" \
         "context-watchdog.sh")
       ;;
@@ -274,16 +276,16 @@ case "$PROFILE" in
   standard)
     echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh"
     echo "  PreToolUse Bash: rate-limiter.sh"
-    echo "  PreToolUse Agent: clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, completeness-check.sh, error-pattern-detector.sh, prompt-quality.sh, epic-task-detector.sh"
+    echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, completeness-check.sh, error-pattern-detector.sh, prompt-quality.sh, epic-task-detector.sh, context-diet.sh"
     echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh"
     echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
     echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, architecture-compliance.sh"
-    echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh"
-    echo "  Stop: session-learning.sh, session-cleanup.sh"
+    echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, auto-skill-generator.sh, auto-repair-dispatcher.sh, dequeue-notify.sh"
+    echo "  Stop: session-learning.sh, session-cleanup.sh, kpi-trigger.sh"
     echo "  TeammateIdle: teammate-idle.sh"
     echo "  TaskCreated: task-created.sh"
     echo "  TaskCompleted: task-completed.sh"
-    echo "  Total: 33 hooks"
+    echo "  Total: 35 hooks"
     ;;
 esac
 
