@@ -91,7 +91,7 @@ _ENTRIES: Tuple[ModelEntry, ...] = (
         output_price_per_m=15.0,
         context_window=200_000,
         capabilities={"reasoning": 6, "speed": 7, "code": 7},
-        aliases=("sonnet", "claude-sonnet", "claude-sonnet-4-20250514"),
+        aliases=("sonnet", "claude-sonnet", "claude-sonnet-4-20250514", "claude-sonnet-4-6"),
     ),
     ModelEntry(
         id="claude-haiku-3.5",
@@ -102,7 +102,7 @@ _ENTRIES: Tuple[ModelEntry, ...] = (
         output_price_per_m=1.25,
         context_window=200_000,
         capabilities={"reasoning": 3, "speed": 9, "code": 4},
-        aliases=("haiku", "claude-haiku-3-5", "claude-haiku", "claude-haiku-3-5-20241022"),
+        aliases=("haiku", "claude-haiku-3-5", "claude-haiku", "claude-haiku-3-5-20241022", "claude-haiku-4-5"),
     ),
     # --- OpenAI ---
     ModelEntry(
