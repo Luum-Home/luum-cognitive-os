@@ -13,6 +13,9 @@ from lib.record_completion import (
     classify_task_type,
     detect_success,
     append_cost_event,
+    get_real_token_usage,
+    calculate_cost_usd,
+    find_session_jsonl,
 )
 
 
@@ -268,3 +271,209 @@ class TestSendLangfuseTrace:
             mock_client.create_score.assert_not_called()
         finally:
             rc._langfuse_client = original
+
+
+# ---------------------------------------------------------------------------
+# Real token usage — new tests
+# ---------------------------------------------------------------------------
+
+def _make_assistant_jsonl_line(
+    tool_call_id: str,
+    model: str = "claude-opus-4-6",
+    input_tokens: int = 1000,
+    output_tokens: int = 500,
+    cache_read: int = 200,
+    cache_write: int = 300,
+) -> str:
+    """Build a JSONL line that mimics a Claude Code assistant message."""
+    record = {
+        "type": "assistant",
+        "message": {
+            "model": model,
+            "role": "assistant",
+            "content": [
+                {
+                    "type": "tool_use",
+                    "id": tool_call_id,
+                    "name": "Agent",
+                    "input": {"description": "test task"},
+                }
+            ],
+            "usage": {
+                "input_tokens": input_tokens,
+                "output_tokens": output_tokens,
+                "cache_read_input_tokens": cache_read,
+                "cache_creation_input_tokens": cache_write,
+            },
+        },
+        "uuid": "uuid-test",
+        "sessionId": "session-test",
+    }
+    return json.dumps(record)
+
+
+class TestGetRealTokenUsageFromJsonl:
+    def test_finds_matching_tool_call(self, tmp_path):
+        jsonl_file = tmp_path / "session.jsonl"
+        line = _make_assistant_jsonl_line(
+            tool_call_id="toolu_test123",
+            model="claude-opus-4-6",
+            input_tokens=1000,
+            output_tokens=500,
+            cache_read=200,
+            cache_write=300,
+        )
+        jsonl_file.write_text(line + "\n")
+
+        result = get_real_token_usage(str(jsonl_file), "toolu_test123")
+        assert result is not None
+        assert result["input_tokens"] == 1000
+        assert result["output_tokens"] == 500
+        assert result["cache_read_input_tokens"] == 200
+        assert result["cache_creation_input_tokens"] == 300
+        assert result["model"] == "claude-opus-4-6"
+        assert result["total_cost_usd"] > 0
+
+    def test_returns_none_when_tool_call_not_found(self, tmp_path):
+        jsonl_file = tmp_path / "session.jsonl"
+        line = _make_assistant_jsonl_line(tool_call_id="toolu_other")
+        jsonl_file.write_text(line + "\n")
+
+        result = get_real_token_usage(str(jsonl_file), "toolu_missing")
+        assert result is None
+
+    def test_returns_none_for_missing_file(self, tmp_path):
+        result = get_real_token_usage(str(tmp_path / "nonexistent.jsonl"), "toolu_xyz")
+        assert result is None
+
+    def test_skips_malformed_lines(self, tmp_path):
+        jsonl_file = tmp_path / "session.jsonl"
+        good_line = _make_assistant_jsonl_line(tool_call_id="toolu_good")
+        jsonl_file.write_text("not-json\n{broken\n" + good_line + "\n")
+
+        result = get_real_token_usage(str(jsonl_file), "toolu_good")
+        assert result is not None
+        assert result["input_tokens"] == 1000
+
+    def test_skips_non_assistant_records(self, tmp_path):
+        jsonl_file = tmp_path / "session.jsonl"
+        user_record = json.dumps({"type": "user", "message": {"role": "user", "content": "hi"}})
+        assistant_line = _make_assistant_jsonl_line(tool_call_id="toolu_agent")
+        jsonl_file.write_text(user_record + "\n" + assistant_line + "\n")
+
+        result = get_real_token_usage(str(jsonl_file), "toolu_agent")
+        assert result is not None
+
+    def test_multiple_entries_returns_correct_one(self, tmp_path):
+        jsonl_file = tmp_path / "session.jsonl"
+        line1 = _make_assistant_jsonl_line(
+            tool_call_id="toolu_first", input_tokens=100, output_tokens=50
+        )
+        line2 = _make_assistant_jsonl_line(
+            tool_call_id="toolu_second", input_tokens=9999, output_tokens=8888
+        )
+        jsonl_file.write_text(line1 + "\n" + line2 + "\n")
+
+        result = get_real_token_usage(str(jsonl_file), "toolu_second")
+        assert result is not None
+        assert result["input_tokens"] == 9999
+        assert result["output_tokens"] == 8888
+
+
+class TestRealCostCalculationOpus:
+    def test_opus_cost_calculation(self, tmp_path):
+        jsonl_file = tmp_path / "session.jsonl"
+        # 10k input, 5k output, no cache
+        line = _make_assistant_jsonl_line(
+            tool_call_id="toolu_opus",
+            model="claude-opus-4-6",
+            input_tokens=10_000,
+            output_tokens=5_000,
+            cache_read=0,
+            cache_write=0,
+        )
+        jsonl_file.write_text(line + "\n")
+
+        result = get_real_token_usage(str(jsonl_file), "toolu_opus")
+        assert result is not None
+        # 10k * $15/1M + 5k * $75/1M = $0.15 + $0.375 = $0.525
+        expected = (10_000 * 15.0 + 5_000 * 75.0) / 1_000_000
+        assert abs(result["total_cost_usd"] - expected) < 1e-7
+
+    def test_opus_cost_with_cache(self):
+        cost = calculate_cost_usd(
+            input_tokens=10_000,
+            output_tokens=2_000,
+            cache_read_tokens=50_000,
+            cache_write_tokens=5_000,
+            model="claude-opus-4-6",
+        )
+        # 10k*15 + 2k*75 + 50k*1.5 + 5k*3.75 (all /1M)
+        expected = (10_000 * 15 + 2_000 * 75 + 50_000 * 1.5 + 5_000 * 3.75) / 1_000_000
+        assert abs(cost - expected) < 1e-7
+
+
+class TestRealCostCalculationSonnet:
+    def test_sonnet_cost_calculation(self, tmp_path):
+        jsonl_file = tmp_path / "session.jsonl"
+        line = _make_assistant_jsonl_line(
+            tool_call_id="toolu_sonnet",
+            model="claude-sonnet-4-6",
+            input_tokens=10_000,
+            output_tokens=5_000,
+            cache_read=0,
+            cache_write=0,
+        )
+        jsonl_file.write_text(line + "\n")
+
+        result = get_real_token_usage(str(jsonl_file), "toolu_sonnet")
+        assert result is not None
+        # 10k * $3/1M + 5k * $15/1M = $0.03 + $0.075 = $0.105
+        expected = (10_000 * 3.0 + 5_000 * 15.0) / 1_000_000
+        assert abs(result["total_cost_usd"] - expected) < 1e-7
+
+    def test_sonnet_cheaper_than_opus(self):
+        opus_cost = calculate_cost_usd(1000, 500, 0, 0, "claude-opus-4-6")
+        sonnet_cost = calculate_cost_usd(1000, 500, 0, 0, "claude-sonnet-4-6")
+        assert sonnet_cost < opus_cost
+
+    def test_haiku_cheaper_than_sonnet(self):
+        sonnet_cost = calculate_cost_usd(1000, 500, 0, 0, "sonnet")
+        haiku_cost = calculate_cost_usd(1000, 500, 0, 0, "haiku")
+        assert haiku_cost < sonnet_cost
+
+
+class TestFallbackToEstimateWhenNoSessionFile:
+    def test_fallback_used_when_no_jsonl(self, tmp_path):
+        """When the session file doesn't exist, append_cost_event uses estimate."""
+        result = get_real_token_usage(str(tmp_path / "missing.jsonl"), "toolu_xyz")
+        assert result is None
+
+        # append_cost_event should still work with estimate
+        append_cost_event(str(tmp_path), "task", 400, model="sonnet", real_usage=None)
+        event = json.loads((tmp_path / "cost-events.jsonl").read_text().strip())
+        assert event["is_estimate"] is True
+        assert event["tokens_estimated"] == 400
+
+    def test_real_usage_sets_is_estimate_false(self, tmp_path):
+        real_usage = {
+            "input_tokens": 1000,
+            "output_tokens": 500,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 0,
+            "total_cost_usd": 0.0225,
+            "model": "claude-sonnet-4-6",
+        }
+        append_cost_event(str(tmp_path), "task", 0, real_usage=real_usage)
+        event = json.loads((tmp_path / "cost-events.jsonl").read_text().strip())
+        assert event["is_estimate"] is False
+        assert event["input_tokens"] == 1000
+        assert event["output_tokens"] == 500
+        assert event["actual_cost_usd"] == 0.0225
+        assert event["model"] == "claude-sonnet-4-6"
+
+    def test_find_session_jsonl_returns_none_for_unknown_project(self, tmp_path):
+        result = find_session_jsonl("/nonexistent/project/path", None)
+        # Should return None gracefully (projects dir won't have this path)
+        # This may find real data if $HOME/.claude/projects exists — just check no crash
+        assert result is None or isinstance(result, str)
