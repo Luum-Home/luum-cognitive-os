@@ -6,7 +6,7 @@
 #
 # Profiles:
 #   lean     — 7 hooks, minimum overhead
-#   standard — 18 hooks, good governance without waste
+#   standard — 27 hooks, good governance without waste
 #   full     — all hooks (current settings.json as-is)
 #
 # Usage:
@@ -105,6 +105,7 @@ build_settings() {
       session_start=$(hook_group "" \
         "self-install.sh" \
         "session-init.sh" \
+        "crash-recovery.sh" \
         "session-resume.sh")
       ;;
   esac
@@ -121,6 +122,8 @@ build_settings() {
       pre_bash=$(hook_group "Bash" \
         "rate-limiter.sh")
       pre_agent=$(hook_group "Agent" \
+        "clarification-gate.sh" \
+        "blast-radius.sh" \
         "inject-phase-context.sh" \
         "agent-prelaunch.sh" \
         "completeness-check.sh" \
@@ -131,7 +134,7 @@ build_settings() {
   esac
 
   # PostToolUse hooks
-  local post_bash="" post_edit="" post_agent=""
+  local post_bash="" post_bash_edit_write="" post_edit="" post_agent=""
   case "$profile" in
     lean)
       post_bash=$(hook_group "Bash" \
@@ -145,10 +148,14 @@ build_settings() {
       post_bash=$(hook_group "Bash" \
         "error-pipeline.sh" \
         "result-truncator.sh")
+      post_bash_edit_write=$(hook_group "Bash|Edit|Write" \
+        "auto-checkpoint.sh")
       post_edit=$(hook_group "Edit|Write" \
         "secret-detector.sh" \
+        "content-policy.sh" \
         "architecture-compliance.sh")
       post_agent=$(hook_group "Agent" \
+        "claim-validator.sh" \
         "completion-gate.sh" \
         "agent-checkpoint.sh")
       ;;
@@ -170,52 +177,64 @@ build_settings() {
   esac
 
   # ── Assemble JSON ───────────────────────────────────────────────
-  cat <<'HEADER'
-{
-  "hooks": {
-    "SessionStart": [
-HEADER
-  echo "$session_start"
-  echo '    ],'
+  printf '{\n  "hooks": {\n    "SessionStart": [\n'
+  printf '%s\n' "$session_start"
+  printf '    ],\n'
 
   # PreToolUse — only emit if there are entries
   if [ -n "$pre_bash" ] || [ -n "$pre_agent" ]; then
-    echo '    "PreToolUse": ['
+    printf '    "PreToolUse": [\n'
     local pre_first=true
     for group in "$pre_bash" "$pre_agent"; do
       [ -z "$group" ] && continue
       if [ "$pre_first" = true ]; then
         pre_first=false
       else
-        echo ','
+        printf ',\n'
       fi
       printf '%s' "$group"
     done
-    echo ''
-    echo '    ],'
+    printf '\n    ],\n'
   fi
 
-  echo '    "PostToolUse": ['
+  printf '    "PostToolUse": [\n'
   local post_first=true
-  for group in "$post_bash" "$post_edit" "$post_agent"; do
+  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_agent"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
     else
-      echo ','
+      printf ',\n'
     fi
     printf '%s' "$group"
   done
-  echo ''
-  echo '    ],'
+  printf '\n    ],\n'
 
-  echo '    "Stop": ['
-  echo "$stop_hooks"
-  cat <<'FOOTER'
-    ]
-  }
-}
-FOOTER
+  printf '    "Stop": [\n'
+  printf '%s\n' "$stop_hooks"
+
+  if [ "$profile" = "standard" ]; then
+    # Close Stop array, then emit agent teams events, then close hooks+root
+    printf '    ],\n'
+    printf '    "TeammateIdle": [\n'
+    printf '      {\n        "matcher": "",\n        "hooks": [\n'
+    printf '          {"type": "command", "command": "bash \\"$CLAUDE_PROJECT_DIR/hooks/teammate-idle.sh\\""}\n'
+    printf '        ]\n      }\n'
+    printf '    ],\n'
+    printf '    "TaskCreated": [\n'
+    printf '      {\n        "matcher": "",\n        "hooks": [\n'
+    printf '          {"type": "command", "command": "bash \\"$CLAUDE_PROJECT_DIR/hooks/task-created.sh\\""}\n'
+    printf '        ]\n      }\n'
+    printf '    ],\n'
+    printf '    "TaskCompleted": [\n'
+    printf '      {\n        "matcher": "",\n        "hooks": [\n'
+    printf '          {"type": "command", "command": "bash \\"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\\""}\n'
+    printf '        ]\n      }\n'
+    printf '    ]\n'
+    printf '  }\n}\n'
+  else
+    printf '    ]\n  }\n}\n'
+  fi
 }
 
 # ── Write settings.json ─────────────────────────────────────────────
@@ -246,14 +265,18 @@ case "$PROFILE" in
     echo "  Total: 7 hooks"
     ;;
   standard)
-    echo "  SessionStart: self-install.sh, session-init.sh, session-resume.sh"
+    echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh"
     echo "  PreToolUse Bash: rate-limiter.sh"
-    echo "  PreToolUse Agent: inject-phase-context.sh, agent-prelaunch.sh, completeness-check.sh, error-pattern-detector.sh, prompt-quality.sh, epic-task-detector.sh"
+    echo "  PreToolUse Agent: clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, completeness-check.sh, error-pattern-detector.sh, prompt-quality.sh, epic-task-detector.sh"
     echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh"
-    echo "  PostToolUse Edit|Write: secret-detector.sh, architecture-compliance.sh"
-    echo "  PostToolUse Agent: completion-gate.sh, agent-checkpoint.sh"
+    echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
+    echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, architecture-compliance.sh"
+    echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh"
     echo "  Stop: session-learning.sh, session-cleanup.sh"
-    echo "  Total: 18 hooks"
+    echo "  TeammateIdle: teammate-idle.sh"
+    echo "  TaskCreated: task-created.sh"
+    echo "  TaskCompleted: task-completed.sh"
+    echo "  Total: 27 hooks"
     ;;
 esac
 
