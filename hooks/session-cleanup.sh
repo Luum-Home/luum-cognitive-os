@@ -88,7 +88,67 @@ fi
 # Clean up PID-based session file
 rm -f "$SESSIONS_DIR/.current-session-$$" 2>/dev/null
 
-# --- Step 5: Symbiosis Check (organism health) ---
+# --- Step 5: Mark lost agents and log them ---
+# Any task still in_progress when the session ends is considered lost.
+TASKS_FILE="$PROJECT_DIR/.cognitive-os/tasks/active-tasks.json"
+if [ -f "$TASKS_FILE" ] && command -v jq &>/dev/null && command -v python3 &>/dev/null; then
+  LOST_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+  METRICS_DIR="$GLOBAL_METRICS_DIR"
+  mkdir -p "$METRICS_DIR" 2>/dev/null
+
+  # Collect in_progress tasks before marking them lost
+  LOST_TASKS=$(jq -c \
+    '.tasks[] | select(.status == "in_progress")' \
+    "$TASKS_FILE" 2>/dev/null || true)
+
+  if [ -n "$LOST_TASKS" ]; then
+    # Write one log entry per lost task
+    while IFS= read -r task; do
+      TASK_ID=$(echo "$task" | jq -r '.id // ""' 2>/dev/null)
+      TASK_DESC=$(echo "$task" | jq -r '.description // ""' 2>/dev/null | head -c 200)
+      LAUNCHED_AT=$(echo "$task" | jq -r '.launchedAt // ""' 2>/dev/null)
+
+      # Calculate how long it was running (best effort)
+      DURATION=0
+      if [ -n "$LAUNCHED_AT" ]; then
+        DURATION=$(python3 -c "
+import sys
+from datetime import datetime, timezone
+
+def parse_iso(s):
+    s = s.rstrip('Z')
+    return datetime.fromisoformat(s).replace(tzinfo=timezone.utc)
+
+try:
+    launched = parse_iso('$LAUNCHED_AT')
+    from datetime import datetime as dt
+    now = datetime.fromisoformat('$LOST_TIMESTAMP'.rstrip('Z')).replace(tzinfo=timezone.utc)
+    print(int((now - launched).total_seconds()))
+except Exception:
+    print(0)
+" 2>/dev/null || echo "0")
+      fi
+
+      printf '{"timestamp":"%s","task_id":"%s","duration_secs":%s,"status":"lost","description":"%s"}\n' \
+        "$LOST_TIMESTAMP" "$TASK_ID" "$DURATION" \
+        "$(echo "$TASK_DESC" | sed 's/"/\\"/g')" \
+        >> "$METRICS_DIR/agent-timeouts.jsonl" 2>/dev/null || true
+    done <<< "$LOST_TASKS"
+
+    # Mark all in_progress tasks as lost in the file
+    LOCK_FILE="$PROJECT_DIR/.cognitive-os/tasks/.active-tasks.lock"
+    (
+      flock -w 5 200 2>/dev/null || true
+      MARKED=$(jq \
+        --arg ts "$LOST_TIMESTAMP" \
+        '(.tasks[] | select(.status == "in_progress")) |= . + {"status": "lost", "completedAt": $ts}' \
+        "$TASKS_FILE" 2>/dev/null)
+      [ -n "$MARKED" ] && echo "$MARKED" > "$TASKS_FILE"
+    ) 200>"$LOCK_FILE" || true
+  fi
+fi
+
+# --- Step 6: Symbiosis Check (organism health) ---
 # Measure overhead-to-value ratio. Alert if parasitic.
 if command -v python3 >/dev/null 2>&1; then
   _symbiosis=$(python3 -c "
