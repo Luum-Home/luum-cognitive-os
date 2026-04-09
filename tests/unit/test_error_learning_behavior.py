@@ -31,15 +31,19 @@ def _make_stdin(
     stderr: str = "",
     exit_code: int = 1,
 ) -> str:
-    """Build a JSON string representing a PostToolUse Bash event."""
+    """Build a JSON string representing a PostToolUse Bash event.
+
+    Claude Code PostToolUse format: exit_code is at the top level,
+    tool_response contains the stdout/stderr output as an object or string.
+    """
     payload = {
         "tool_name": "Bash",
         "tool_input": {"command": command},
         "tool_response": {
-            "exit_code": exit_code,
             "stdout": stdout,
             "stderr": stderr,
         },
+        "exit_code": exit_code,
     }
     return json.dumps(payload)
 
