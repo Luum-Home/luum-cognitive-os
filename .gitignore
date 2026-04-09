@@ -8,6 +8,9 @@ checkpoints/*.json
 *.log
 .last-sync
 
+# Generated backups
+*.bak
+
 # Environment
 .env
 .env.local
