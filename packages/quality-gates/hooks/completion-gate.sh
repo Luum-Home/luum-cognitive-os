@@ -195,6 +195,30 @@ if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
   echo "Task: $AGENT_ID"; echo "Failure type: $FAILURE_TYPE"
   echo "Latest error:"; echo "$FAILURE_DETAILS" | head -5
   echo "=== END ESCALATION ==="; echo ""
+
+  # Wire circuit breaker + dead letter queue (never block on failure)
+  python3 -c "
+import sys, os
+sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
+try:
+    from lib.circuit_breaker import CircuitBreaker
+    cb = CircuitBreaker()
+    task_type = '$FAILURE_TYPE'.lower().replace('_error','').replace('_failure','')
+    cb.record_failure(task_type or 'general')
+except Exception: pass
+try:
+    from lib.dead_letter_queue import DeadLetterQueue
+    dlq = DeadLetterQueue()
+    dlq.enqueue_dead_letter(
+        task_id='$AGENT_ID'[:100],
+        description='$AGENT_ID'[:200],
+        failure_type='$FAILURE_TYPE',
+        retry_history='$RETRY_COUNT retries exhausted',
+        diagnosis='$(echo "$FAILURE_DETAILS" | head -1 | tr -d "'")'[:500]
+    )
+except Exception: pass
+" 2>/dev/null || true
+
   rm -f "$RETRY_FILE" "$REFINE_DIR/$TASK_FINGERPRINT.history" 2>/dev/null
   exit 0
 fi
