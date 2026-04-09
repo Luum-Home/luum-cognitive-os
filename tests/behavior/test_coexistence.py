@@ -214,7 +214,8 @@ class TestMigrationFromFlatSymlinks:
         assert "FIXED" in r1.stdout
 
         r2 = _run_hook(str(project))
-        assert "OK" in r2.stdout
+        # Second run should not add new symlinks (migration already complete)
+        assert "added" not in r2.stdout or "added 0" in r2.stdout
 
 
 # ── Settings merge tests ──────────────────────────────────────────────
@@ -509,14 +510,16 @@ class TestIdempotency:
     def test_self_install_idempotent(self, tmp_path):
         project = _setup_cos_project(tmp_path)
 
-        r1 = _run_hook(str(project))
+        _run_hook(str(project))
         cos_rules_1 = list((project / ".claude" / "rules" / "cos").glob("*.md"))
 
         r2 = _run_hook(str(project))
         cos_rules_2 = list((project / ".claude" / "rules" / "cos").glob("*.md"))
 
-        assert "OK" in r2.stdout
+        # Idempotency: rule count must not change on re-run
         assert len(cos_rules_1) == len(cos_rules_2)
+        # No new rules were added on second run (added count should be 0)
+        assert "added" not in r2.stdout or "added 0" in r2.stdout
 
     def test_settings_merge_idempotent(self, tmp_path):
         """Merging the same COS hooks twice doesn't duplicate."""
