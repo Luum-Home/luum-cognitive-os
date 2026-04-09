@@ -1,4 +1,8 @@
-"""Dynamic Tool Creator -- mid-task tool creation for agents.
+"""STATUS: ORPHAN — designed and documented but never called from production code.
+Wire when complex orchestrator tasks exercise mid-task tool creation.
+See: rules/dynamic-tool-creation.md for the design.
+
+Dynamic Tool Creator -- mid-task tool creation for agents.
 
 Agents can create lightweight tools DURING execution when they encounter
 capability gaps or repetitive patterns. Tools live in .cognitive-os/dynamic-tools/

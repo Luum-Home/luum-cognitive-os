@@ -14,6 +14,7 @@ Related files:
 
 import os
 import re
+from typing import Optional
 from pathlib import Path
 
 import pytest
@@ -35,24 +36,28 @@ EXPECTED_RULE_COUNT = len(list(Path(__file__).resolve().parents[2].joinpath("rul
 # These are tracked so consolidation does not lose them
 PENDING_INTEGRATION_RULES = set()  # All rules synced as of 2026-03-28
 
-# The 14 core rules that remain in the standard efficiency profile.
+# The 16 core rules that remain in standard/full/self-hosting profiles.
 # These provide essential governance without overwhelming the context window.
+# Loading all 95 rules would cost ~93,700 tokens vs ~21K for these 16.
 # See docs/rules-loading-architecture.md for the rationale.
+# Must match CORE_RULES in hooks/self-install.sh exactly.
 CORE_RULES = {
     "RULES-COMPACT.md",
     "adaptive-bypass.md",
     "acceptance-criteria.md",
     "agent-quality.md",
     "trust-score.md",
-    "definition-of-done.md",
+    "token-economy.md",
     "phase-aware-agents.md",
     "closed-loop-prompts.md",
-    "token-economy.md",
-    "responsiveness.md",
-    "agent-security.md",
+    "error-learning.md",
+    "rate-limiting.md",
     "credential-management.md",
     "content-policy.md",
-    "error-learning.md",
+    "result-management.md",
+    "blast-radius.md",
+    "clarification-gate.md",
+    "model-routing.md",
 }
 
 
@@ -101,31 +106,32 @@ class TestRuleInventory:
             f"Files: {[f.name for f in rule_files]}"
         )
 
-    def test_cos_symlinks_match_rules_count(self):
-        """Number of symlinks in .claude/rules/cos/ must equal integrated rules.
+    def test_cos_symlinks_match_core_rules_count(self):
+        """Symlinks in .claude/rules/cos/ must equal exactly the CORE_RULES set.
 
-        Rules in PENDING_INTEGRATION_RULES are not yet synced and excluded.
+        self-install.sh selectively syncs only CORE_RULES into cos/ (not all 95 rules).
+        This keeps session context overhead at ~21K tokens instead of ~93K tokens.
+        See docs/rules-loading-architecture.md for the rationale.
         """
         if not COS_RULES_DIR.exists():
             pytest.skip(".claude/rules/cos/ does not exist")
-        symlinks = list(COS_RULES_DIR.glob("*.md"))
-        integrated_rules = [
-            f for f in _get_rule_files() if f.name not in PENDING_INTEGRATION_RULES
-        ]
-        assert len(symlinks) == len(integrated_rules), (
-            f"Symlinks ({len(symlinks)}) != integrated rule files ({len(integrated_rules)}). "
-            f"Missing in cos/: {set(f.name for f in integrated_rules) - set(s.name for s in symlinks)}. "
-            f"Extra in cos/: {set(s.name for s in symlinks) - set(f.name for f in integrated_rules)}"
+        symlinks = {s.name for s in COS_RULES_DIR.glob("*.md")}
+        assert symlinks == CORE_RULES, (
+            f"cos/ symlinks != CORE_RULES.\n"
+            f"Missing from cos/: {CORE_RULES - symlinks}.\n"
+            f"Extra in cos/ (not in CORE_RULES): {symlinks - CORE_RULES}"
         )
 
-    def test_every_integrated_rule_has_a_symlink(self):
-        """Every integrated rule file must have a corresponding symlink in .claude/rules/cos/."""
+    def test_every_core_rule_has_a_symlink(self):
+        """Every CORE_RULE must have a corresponding symlink in .claude/rules/cos/.
+
+        Non-core rules are intentionally excluded from cos/ to save context tokens.
+        """
         if not COS_RULES_DIR.exists():
             pytest.skip(".claude/rules/cos/ does not exist")
-        rule_names = {f.name for f in _get_rule_files()} - PENDING_INTEGRATION_RULES
         symlink_names = {s.name for s in COS_RULES_DIR.glob("*.md")}
-        missing = rule_names - symlink_names
-        assert not missing, f"Rules without symlinks: {sorted(missing)}"
+        missing = CORE_RULES - symlink_names
+        assert not missing, f"Core rules without symlinks in cos/: {sorted(missing)}"
 
     def test_pending_rules_tracked(self):
         """PENDING_INTEGRATION_RULES must actually be pending (no symlink yet)."""
@@ -576,7 +582,7 @@ class TestSelfInstallIntegration:
 
     HOOK_PATH = PROJECT_ROOT / "hooks" / "self-install.sh"
 
-    def _run_hook(self, project_dir: str, env_overrides: dict | None = None):
+    def _run_hook(self, project_dir: str, env_overrides: Optional[dict] = None):
         import subprocess
         env = os.environ.copy()
         env["CLAUDE_PROJECT_DIR"] = project_dir
@@ -610,19 +616,19 @@ class TestSelfInstallIntegration:
 
         return tmp_path
 
-    def test_full_profile_keeps_all_integrated_rules(self):
-        """With full profile, all integrated rule symlinks remain in cos/."""
-        # Use the real repo (self-hosting = always full)
+    def test_full_profile_keeps_core_rules(self):
+        """With full/self-hosting profile, only CORE_RULES are in cos/.
+
+        The self-install.sh ALWAYS uses CORE_RULES for non-lean profiles
+        (standard, full, self-hosting). This limits cos/ to 16 rules
+        (~21K tokens) instead of all 95 (~93K tokens).
+        """
         if not COS_RULES_DIR.exists():
             pytest.skip(".claude/rules/cos/ does not exist")
 
-        integrated_count = len([
-            f for f in RULES_DIR.glob("*.md")
-            if f.name not in PENDING_INTEGRATION_RULES
-        ])
         cos_count = len(list(COS_RULES_DIR.glob("*.md")))
-        assert cos_count == integrated_count, (
-            f"Full profile: cos/ has {cos_count} but integrated rules has {integrated_count}"
+        assert cos_count == len(CORE_RULES), (
+            f"Full profile: cos/ has {cos_count} but expected {len(CORE_RULES)} (CORE_RULES)"
         )
 
     def test_lean_profile_only_keeps_compact(self, tmp_path):

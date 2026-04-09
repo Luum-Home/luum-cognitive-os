@@ -6,7 +6,7 @@
 #
 # Profiles:
 #   lean     — 7 hooks, minimum overhead
-#   standard — 15 hooks, good governance without waste
+#   standard — 18 hooks, good governance without waste
 #   full     — all hooks (current settings.json as-is)
 #
 # Usage:
@@ -124,7 +124,9 @@ build_settings() {
         "inject-phase-context.sh" \
         "agent-prelaunch.sh" \
         "completeness-check.sh" \
-        "error-pattern-detector.sh")
+        "error-pattern-detector.sh" \
+        "prompt-quality.sh" \
+        "epic-task-detector.sh")
       ;;
   esac
 
@@ -144,7 +146,8 @@ build_settings() {
         "error-pipeline.sh" \
         "result-truncator.sh")
       post_edit=$(hook_group "Edit|Write" \
-        "secret-detector.sh")
+        "secret-detector.sh" \
+        "architecture-compliance.sh")
       post_agent=$(hook_group "Agent" \
         "completion-gate.sh" \
         "agent-checkpoint.sh")
@@ -245,12 +248,12 @@ case "$PROFILE" in
   standard)
     echo "  SessionStart: self-install.sh, session-init.sh, session-resume.sh"
     echo "  PreToolUse Bash: rate-limiter.sh"
-    echo "  PreToolUse Agent: inject-phase-context.sh, agent-prelaunch.sh, completeness-check.sh, error-pattern-detector.sh"
+    echo "  PreToolUse Agent: inject-phase-context.sh, agent-prelaunch.sh, completeness-check.sh, error-pattern-detector.sh, prompt-quality.sh, epic-task-detector.sh"
     echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh"
-    echo "  PostToolUse Edit|Write: secret-detector.sh"
+    echo "  PostToolUse Edit|Write: secret-detector.sh, architecture-compliance.sh"
     echo "  PostToolUse Agent: completion-gate.sh, agent-checkpoint.sh"
     echo "  Stop: session-learning.sh, session-cleanup.sh"
-    echo "  Total: 15 hooks"
+    echo "  Total: 18 hooks"
     ;;
 esac
 
