@@ -223,128 +223,75 @@ class TestOpikBackendService:
 # ===========================================================================
 
 class TestLangfuseWebService:
-    """Verify Langfuse web starts with all dependencies and passes health check."""
+    """Verify Langfuse web starts with all dependencies and passes health check.
+
+    Infrastructure (PG + Valkey + ClickHouse + SeaweedFS) is provided by the
+    session-scoped ``langfuse_app_infra`` fixture defined in conftest.py so
+    it is shared with TestLangfuseWorkerService (4 fewer containers total).
+    """
+
+    # --- Langfuse common env vars (mirrors &langfuse-env YAML anchor) ---
+    _LANGFUSE_ENV = {
+        "DATABASE_URL": "postgresql://langfuse:<db-password>@langfuse-pg:5432/langfuse",
+        "NEXTAUTH_URL": "http://localhost:3100",
+        "NEXTAUTH_SECRET": "test_secret_32chars_minimum_length",
+        "SALT": "test_salt_32chars_minimum_length_x",
+        "ENCRYPTION_KEY": "0000000000000000000000000000000000000000000000000000000000000000",
+        "TELEMETRY_ENABLED": "false",
+        "LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES": "false",
+        # ClickHouse
+        "CLICKHOUSE_MIGRATION_URL": "clickhouse://langfuse-clickhouse:9000",
+        "CLICKHOUSE_URL": "http://langfuse-clickhouse:8123",
+        "CLICKHOUSE_USER": "clickhouse",
+        "CLICKHOUSE_PASSWORD": "clickhouse",
+        "CLICKHOUSE_CLUSTER_ENABLED": "false",
+        # Valkey
+        "REDIS_HOST": "langfuse-valkey",
+        "REDIS_PORT": "6379",
+        "REDIS_AUTH": "langfuse_redis",
+        "REDIS_TLS_ENABLED": "false",
+        # S3 — event upload
+        "LANGFUSE_S3_EVENT_UPLOAD_BUCKET": "langfuse",
+        "LANGFUSE_S3_EVENT_UPLOAD_REGION": "us-east-1",
+        "LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID": "agentosadmin",
+        "LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY": "agentossecret",
+        "LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT": "http://langfuse-seaweedfs:8333",
+        "LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE": "true",
+        "LANGFUSE_S3_EVENT_UPLOAD_PREFIX": "events/",
+        # S3 — media upload
+        "LANGFUSE_S3_MEDIA_UPLOAD_BUCKET": "langfuse",
+        "LANGFUSE_S3_MEDIA_UPLOAD_REGION": "us-east-1",
+        "LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID": "agentosadmin",
+        "LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY": "agentossecret",
+        "LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT": "http://langfuse-seaweedfs:8333",
+        "LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE": "true",
+        "LANGFUSE_S3_MEDIA_UPLOAD_PREFIX": "media/",
+        # Batch export
+        "LANGFUSE_S3_BATCH_EXPORT_ENABLED": "false",
+        # Web-specific
+        "HOSTNAME": "0.0.0.0",
+    }
 
     @pytest.fixture(scope="class")
-    def langfuse_stack(self, docker_available):
-        network = Network()
-        network.create()
-
-        # --- PostgreSQL ---
-        postgres = (
-            DockerContainer("postgres:17-alpine")
-            .with_network(network)
-            .with_network_aliases("langfuse-pg")
-            .with_exposed_ports(5432)
-            .with_env("POSTGRES_USER", "langfuse")
-            .with_env("POSTGRES_PASSWORD", "langfuse_pass")
-            .with_env("POSTGRES_DB", "langfuse")
-            .with_env("TZ", "UTC")
-            .with_env("PGTZ", "UTC")
-        )
-        postgres.start()
-        wait_for_logs(postgres, "database system is ready to accept connections", timeout=30)
-
-        # --- Valkey (Redis-compatible) ---
-        valkey = (
-            DockerContainer("valkey/valkey:8-alpine")
-            .with_network(network)
-            .with_network_aliases("langfuse-valkey")
-            .with_exposed_ports(6379)
-            .with_command("--requirepass langfuse_redis --maxmemory-policy noeviction")
-        )
-        valkey.start()
-        wait_for_logs(valkey, "Ready to accept connections", timeout=30)
-
-        # --- ClickHouse ---
-        clickhouse = (
-            DockerContainer("clickhouse/clickhouse-server")
-            .with_network(network)
-            .with_network_aliases("langfuse-clickhouse")
-            .with_exposed_ports(8123, 9000)
-            .with_env("CLICKHOUSE_DB", "default")
-            .with_env("CLICKHOUSE_USER", "clickhouse")
-            .with_env("CLICKHOUSE_PASSWORD", "clickhouse")
-        )
-        clickhouse.start()
-        wait_for_logs(clickhouse, "Ready for connections", timeout=60)
-
-        # --- SeaweedFS (S3-compatible storage) ---
-        seaweedfs = (
-            DockerContainer("chrislusf/seaweedfs:latest")
-            .with_network(network)
-            .with_network_aliases("langfuse-seaweedfs")
-            .with_exposed_ports(8333, 9333)
-            .with_command("server -dir=/data -s3 -s3.port=8333 -filer -master.volumeSizeLimitMB=100")
-        )
-        seaweedfs.start()
-        wait_for_logs(seaweedfs, "Start Seaweed", timeout=30)
-
-        # --- Langfuse common env vars (mirrors &langfuse-env YAML anchor) ---
-        langfuse_env = {
-            "DATABASE_URL": "postgresql://langfuse:<db-password>@langfuse-pg:5432/langfuse",
-            "NEXTAUTH_URL": "http://localhost:3100",
-            "NEXTAUTH_SECRET": "test_secret_32chars_minimum_length",
-            "SALT": "test_salt_32chars_minimum_length_x",
-            "ENCRYPTION_KEY": "0000000000000000000000000000000000000000000000000000000000000000",
-            "TELEMETRY_ENABLED": "false",
-            "LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES": "false",
-            # ClickHouse
-            "CLICKHOUSE_MIGRATION_URL": "clickhouse://langfuse-clickhouse:9000",
-            "CLICKHOUSE_URL": "http://langfuse-clickhouse:8123",
-            "CLICKHOUSE_USER": "clickhouse",
-            "CLICKHOUSE_PASSWORD": "clickhouse",
-            "CLICKHOUSE_CLUSTER_ENABLED": "false",
-            # Valkey
-            "REDIS_HOST": "langfuse-valkey",
-            "REDIS_PORT": "6379",
-            "REDIS_AUTH": "langfuse_redis",
-            "REDIS_TLS_ENABLED": "false",
-            # S3 — event upload
-            "LANGFUSE_S3_EVENT_UPLOAD_BUCKET": "langfuse",
-            "LANGFUSE_S3_EVENT_UPLOAD_REGION": "us-east-1",
-            "LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID": "agentosadmin",
-            "LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY": "agentossecret",
-            "LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT": "http://langfuse-seaweedfs:8333",
-            "LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE": "true",
-            "LANGFUSE_S3_EVENT_UPLOAD_PREFIX": "events/",
-            # S3 — media upload
-            "LANGFUSE_S3_MEDIA_UPLOAD_BUCKET": "langfuse",
-            "LANGFUSE_S3_MEDIA_UPLOAD_REGION": "us-east-1",
-            "LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID": "agentosadmin",
-            "LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY": "agentossecret",
-            "LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT": "http://langfuse-seaweedfs:8333",
-            "LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE": "true",
-            "LANGFUSE_S3_MEDIA_UPLOAD_PREFIX": "media/",
-            # Batch export
-            "LANGFUSE_S3_BATCH_EXPORT_ENABLED": "false",
-            # Web-specific
-            "HOSTNAME": "0.0.0.0",
-        }
+    def langfuse_stack(self, langfuse_app_infra):
+        """Start only the Langfuse web container; infrastructure comes from the
+        session-scoped ``langfuse_app_infra`` fixture (shared with worker tests)."""
+        network = langfuse_app_infra["network"]
 
         langfuse_web = DockerContainer("langfuse/langfuse:3")
         langfuse_web.with_network(network)
         langfuse_web.with_network_aliases("langfuse-web")
         langfuse_web.with_exposed_ports(3000)
-        for key, value in langfuse_env.items():
+        for key, value in self._LANGFUSE_ENV.items():
             langfuse_web.with_env(key, value)
         langfuse_web.start()
 
         yield {
-            "postgres": postgres,
-            "valkey": valkey,
-            "clickhouse": clickhouse,
-            "seaweedfs": seaweedfs,
+            **langfuse_app_infra,
             "langfuse_web": langfuse_web,
-            "network": network,
         }
 
         langfuse_web.stop()
-        seaweedfs.stop()
-        clickhouse.stop()
-        valkey.stop()
-        postgres.stop()
-        network.remove()
 
     def test_langfuse_health(self, langfuse_stack):
         """GET /api/public/health should return 200."""
@@ -366,64 +313,19 @@ class TestLangfuseWebService:
 # ===========================================================================
 
 class TestLangfuseWorkerService:
-    """Verify Langfuse worker starts with all dependencies and stays running."""
+    """Verify Langfuse worker starts with all dependencies and stays running.
+
+    Infrastructure (PG + Valkey + ClickHouse + SeaweedFS) is provided by the
+    session-scoped ``langfuse_app_infra`` fixture defined in conftest.py so
+    it is shared with TestLangfuseWebService (4 fewer containers total).
+    """
 
     @pytest.fixture(scope="class")
-    def langfuse_worker_stack(self, docker_available):
-        network = Network()
-        network.create()
+    def langfuse_worker_stack(self, langfuse_app_infra):
+        """Start only the Langfuse worker container; infrastructure comes from the
+        session-scoped ``langfuse_app_infra`` fixture (shared with web tests)."""
+        network = langfuse_app_infra["network"]
 
-        # --- PostgreSQL ---
-        postgres = (
-            DockerContainer("postgres:17-alpine")
-            .with_network(network)
-            .with_network_aliases("langfuse-pg")
-            .with_exposed_ports(5432)
-            .with_env("POSTGRES_USER", "langfuse")
-            .with_env("POSTGRES_PASSWORD", "langfuse_pass")
-            .with_env("POSTGRES_DB", "langfuse")
-            .with_env("TZ", "UTC")
-            .with_env("PGTZ", "UTC")
-        )
-        postgres.start()
-        wait_for_logs(postgres, "database system is ready to accept connections", timeout=30)
-
-        # --- Valkey (Redis-compatible) ---
-        valkey = (
-            DockerContainer("valkey/valkey:8-alpine")
-            .with_network(network)
-            .with_network_aliases("langfuse-valkey")
-            .with_exposed_ports(6379)
-            .with_command("--requirepass langfuse_redis --maxmemory-policy noeviction")
-        )
-        valkey.start()
-        wait_for_logs(valkey, "Ready to accept connections", timeout=30)
-
-        # --- ClickHouse ---
-        clickhouse = (
-            DockerContainer("clickhouse/clickhouse-server")
-            .with_network(network)
-            .with_network_aliases("langfuse-clickhouse")
-            .with_exposed_ports(8123, 9000)
-            .with_env("CLICKHOUSE_DB", "default")
-            .with_env("CLICKHOUSE_USER", "clickhouse")
-            .with_env("CLICKHOUSE_PASSWORD", "clickhouse")
-        )
-        clickhouse.start()
-        wait_for_logs(clickhouse, "Ready for connections", timeout=60)
-
-        # --- SeaweedFS (S3-compatible storage) ---
-        seaweedfs = (
-            DockerContainer("chrislusf/seaweedfs:latest")
-            .with_network(network)
-            .with_network_aliases("langfuse-seaweedfs")
-            .with_exposed_ports(8333, 9333)
-            .with_command("server -dir=/data -s3 -s3.port=8333 -filer -master.volumeSizeLimitMB=100")
-        )
-        seaweedfs.start()
-        wait_for_logs(seaweedfs, "Start Seaweed", timeout=30)
-
-        # --- Langfuse common env vars (mirrors &langfuse-env YAML anchor) ---
         langfuse_env = {
             "DATABASE_URL": "postgresql://langfuse:<db-password>@langfuse-pg:5432/langfuse",
             "NEXTAUTH_URL": "http://localhost:3100",
@@ -474,20 +376,11 @@ class TestLangfuseWorkerService:
         langfuse_worker.start()
 
         yield {
-            "postgres": postgres,
-            "valkey": valkey,
-            "clickhouse": clickhouse,
-            "seaweedfs": seaweedfs,
+            **langfuse_app_infra,
             "langfuse_worker": langfuse_worker,
-            "network": network,
         }
 
         langfuse_worker.stop()
-        seaweedfs.stop()
-        clickhouse.stop()
-        valkey.stop()
-        postgres.stop()
-        network.remove()
 
     def test_langfuse_worker_stays_running(self, langfuse_worker_stack):
         """Worker container should remain in running state for at least 10 seconds (no crash loop)."""
