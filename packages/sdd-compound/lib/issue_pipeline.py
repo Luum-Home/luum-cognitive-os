@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""ORPHAN: This module is not actively used. See docs/architecture/reality-audit.md.
+
 Issue-to-PR Pipeline — Fetches a GitHub issue, classifies it, creates a worktree,
 runs the SDD pipeline, and opens a pull request.
 

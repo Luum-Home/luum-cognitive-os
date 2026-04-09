@@ -254,9 +254,11 @@ class TestNoViolations:
                 "--exclude-dir=pi-mono",
                 "--exclude-dir=caveman",
                 "--exclude-dir=.git",
-                # Exclude cos/ — it's just symlinks to rules/ which is already scanned.
-                # Scanning cos/ causes the same files to be checked twice, doubling scan time.
-                "--exclude-dir=cos",
+                # Exclude .cognitive-os/ — it contains symlinks back into the project
+                # (cos/, docs/, skills/, etc.) which would cause files to be scanned
+                # multiple times, making the grep much slower than the 30s test timeout.
+                # The underlying source files are already covered by scanning PROJECT_ROOT.
+                "--exclude-dir=.cognitive-os",
                 str(PROJECT_ROOT),
             ],
             capture_output=True,

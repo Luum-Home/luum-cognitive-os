@@ -27,12 +27,19 @@ from typing import Any, Dict, List, Optional, Tuple
 try:
     from fastapi import FastAPI, HTTPException, Request, Response
     import uvicorn
+    FASTAPI_AVAILABLE = True
 except ImportError:
-    raise ImportError(
-        "webhook_trigger requires fastapi and uvicorn. "
-        "Install with: pip install fastapi uvicorn "
-        "or: pip install -r requirements.txt"
+    import logging as _logging
+    _logging.getLogger(__name__).warning(
+        "webhook_trigger: fastapi/uvicorn not installed. "
+        "Server cannot start. Install with: pip install fastapi uvicorn"
     )
+    FASTAPI_AVAILABLE = False
+    FastAPI = None  # type: ignore[assignment,misc]
+    HTTPException = None  # type: ignore[assignment,misc]
+    Request = None  # type: ignore[assignment]
+    Response = None  # type: ignore[assignment]
+    uvicorn = None  # type: ignore[assignment]
 
 # ---------------------------------------------------------------------------
 # Local imports
@@ -305,116 +312,115 @@ def _run_pipeline(
 
 
 # ---------------------------------------------------------------------------
-# FastAPI application
+# FastAPI application (only constructed when fastapi is available)
 # ---------------------------------------------------------------------------
 
-app = FastAPI(
-    title="Luum Webhook Trigger",
-    description="GitHub webhook receiver for Cognitive OS SDD pipeline",
-    version="1.0.0",
-)
-
-
-@app.get("/health")
-async def health() -> Dict[str, str]:
-    """Health check endpoint."""
-    return {
-        "status": "healthy",
-        "service": "luum-webhook-trigger",
-        "project_dir": PROJECT_DIR,
-    }
-
-
-@app.post("/gh-webhook")
-async def github_webhook(request: Request) -> Dict[str, Any]:
-    """Receive and process GitHub webhook events.
-
-    Supported events:
-      - ``issues`` (action: opened, labeled)
-      - ``issue_comment`` (action: created)
-
-    Returns a JSON response with processing status.
-    """
-    # --- Signature verification ---
-    raw_body = await request.body()
-    sig_header = request.headers.get("X-Hub-Signature-256", "")
-
-    if not _verify_signature(raw_body, sig_header):
-        raise HTTPException(status_code=401, detail="Invalid signature")
-
-    # --- Parse event ---
-    event_type = request.headers.get("X-GitHub-Event", "")
-    try:
-        payload = json.loads(raw_body)
-    except json.JSONDecodeError:
-        raise HTTPException(status_code=400, detail="Invalid JSON payload")
-
-    action = payload.get("action", "")
-    issue = payload.get("issue", {})
-    issue_number = issue.get("number")
-    repo_full_name = payload.get("repository", {}).get("full_name", "")
-
-    if not issue_number or not repo_full_name:
-        return {"status": "ignored", "reason": "missing issue or repo info"}
-
-    # --- Determine trigger text ---
-    trigger_text: Optional[str] = None
-
-    if event_type == "issues" and action == "opened":
-        body = issue.get("body", "") or ""
-        if not _is_bot_comment(body) and _has_trigger(body):
-            trigger_text = body
-
-    elif event_type == "issues" and action == "labeled":
-        # Check if the newly-added label plus existing body has a trigger
-        body = issue.get("body", "") or ""
-        if not _is_bot_comment(body) and _has_trigger(body):
-            trigger_text = body
-
-    elif event_type == "issue_comment" and action == "created":
-        comment_body = payload.get("comment", {}).get("body", "") or ""
-        if not _is_bot_comment(comment_body) and _has_trigger(comment_body):
-            trigger_text = comment_body
-
-    else:
-        return {"status": "ignored", "reason": f"unhandled event: {event_type}.{action}"}
-
-    if trigger_text is None:
-        return {"status": "ignored", "reason": "no trigger keyword found"}
-
-    # --- Classify issue ---
-    labels = [lbl.get("name", "") for lbl in issue.get("labels", [])]
-    title = issue.get("title", "")
-    body = issue.get("body", "") or ""
-    issue_class = classify_issue(labels, title, body)
-
-    # --- Build change name ---
-    change_name = _make_change_name(issue_number, title)
-
-    logger.info(
-        "Trigger detected: repo=%s issue=#%d class=%s change=%s",
-        repo_full_name,
-        issue_number,
-        issue_class.value,
-        change_name,
+if FASTAPI_AVAILABLE:
+    app = FastAPI(
+        title="Luum Webhook Trigger",
+        description="GitHub webhook receiver for Cognitive OS SDD pipeline",
+        version="1.0.0",
     )
 
-    # --- Launch pipeline in background ---
-    thread = threading.Thread(
-        target=_run_pipeline,
-        args=(repo_full_name, issue_number, change_name, issue_class),
-        daemon=True,
-        name=f"sdd-{change_name}",
-    )
-    thread.start()
+    @app.get("/health")
+    async def health() -> Dict[str, str]:
+        """Health check endpoint."""
+        return {
+            "status": "healthy",
+            "service": "luum-webhook-trigger",
+            "project_dir": PROJECT_DIR,
+        }
 
-    return {
-        "status": "accepted",
-        "issue_number": issue_number,
-        "issue_class": issue_class.value,
-        "change_name": change_name,
-        "repo": repo_full_name,
-    }
+    @app.post("/gh-webhook")
+    async def github_webhook(request: Request) -> Dict[str, Any]:
+        """Receive and process GitHub webhook events.
+
+        Supported events:
+          - ``issues`` (action: opened, labeled)
+          - ``issue_comment`` (action: created)
+
+        Returns a JSON response with processing status.
+        """
+        # --- Signature verification ---
+        raw_body = await request.body()
+        sig_header = request.headers.get("X-Hub-Signature-256", "")
+
+        if not _verify_signature(raw_body, sig_header):
+            raise HTTPException(status_code=401, detail="Invalid signature")
+
+        # --- Parse event ---
+        event_type = request.headers.get("X-GitHub-Event", "")
+        try:
+            payload = json.loads(raw_body)
+        except json.JSONDecodeError:
+            raise HTTPException(status_code=400, detail="Invalid JSON payload")
+
+        action = payload.get("action", "")
+        issue = payload.get("issue", {})
+        issue_number = issue.get("number")
+        repo_full_name = payload.get("repository", {}).get("full_name", "")
+
+        if not issue_number or not repo_full_name:
+            return {"status": "ignored", "reason": "missing issue or repo info"}
+
+        # --- Determine trigger text ---
+        trigger_text: Optional[str] = None
+
+        if event_type == "issues" and action == "opened":
+            body = issue.get("body", "") or ""
+            if not _is_bot_comment(body) and _has_trigger(body):
+                trigger_text = body
+
+        elif event_type == "issues" and action == "labeled":
+            # Check if the newly-added label plus existing body has a trigger
+            body = issue.get("body", "") or ""
+            if not _is_bot_comment(body) and _has_trigger(body):
+                trigger_text = body
+
+        elif event_type == "issue_comment" and action == "created":
+            comment_body = payload.get("comment", {}).get("body", "") or ""
+            if not _is_bot_comment(comment_body) and _has_trigger(comment_body):
+                trigger_text = comment_body
+
+        else:
+            return {"status": "ignored", "reason": f"unhandled event: {event_type}.{action}"}
+
+        if trigger_text is None:
+            return {"status": "ignored", "reason": "no trigger keyword found"}
+
+        # --- Classify issue ---
+        labels = [lbl.get("name", "") for lbl in issue.get("labels", [])]
+        title = issue.get("title", "")
+        body = issue.get("body", "") or ""
+        issue_class = classify_issue(labels, title, body)
+
+        # --- Build change name ---
+        change_name = _make_change_name(issue_number, title)
+
+        logger.info(
+            "Trigger detected: repo=%s issue=#%d class=%s change=%s",
+            repo_full_name,
+            issue_number,
+            issue_class.value,
+            change_name,
+        )
+
+        # --- Launch pipeline in background ---
+        thread = threading.Thread(
+            target=_run_pipeline,
+            args=(repo_full_name, issue_number, change_name, issue_class),
+            daemon=True,
+            name=f"sdd-{change_name}",
+        )
+        thread.start()
+
+        return {
+            "status": "accepted",
+            "issue_number": issue_number,
+            "issue_class": issue_class.value,
+            "change_name": change_name,
+            "repo": repo_full_name,
+        }
 
 
 # ---------------------------------------------------------------------------
@@ -422,6 +428,9 @@ async def github_webhook(request: Request) -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
+    if not FASTAPI_AVAILABLE:
+        raise SystemExit("Cannot start server: fastapi/uvicorn not installed. "
+                         "Run: pip install fastapi uvicorn")
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",

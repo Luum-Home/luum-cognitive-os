@@ -39,11 +39,10 @@ def _setup_full_project(tmp_path: Path) -> Path:
     (hooks_dir / "session-init.sh").write_text("#!/usr/bin/env bash\nexit 0\n")
     (hooks_dir / "health.sh").write_text("#!/usr/bin/env bash\nexit 0\n")
 
-    # Rules — include CORE_RULES files so the hook's allowlist sync works.
-    # alpha.md and beta.md are retained for tests that verify stale-symlink
-    # removal (they are non-core, so they won't be synced by the hook).
-    # RULES-COMPACT.md and adaptive-bypass.md ARE in CORE_RULES, so they
-    # will be symlinked.
+    # Rules — in self-hosting/full mode, ALL rules are synced to cos/.
+    # alpha.md and beta.md are included to verify that non-CORE_RULES files
+    # are also synced in self-hosting mode.
+    # RULES-COMPACT.md and adaptive-bypass.md ARE in CORE_RULES.
     rules_dir = tmp_path / "rules"
     rules_dir.mkdir()
     (rules_dir / "alpha.md").write_text("# Alpha\n")
@@ -128,16 +127,16 @@ class TestDetection:
 
 class TestRulesSync:
     def test_creates_rule_symlinks(self, tmp_path):
-        # The hook only syncs files listed in CORE_RULES.
-        # RULES-COMPACT.md and adaptive-bypass.md are both in CORE_RULES
-        # and are created by _setup_full_project, so they get symlinked.
+        # In self-hosting/full mode, ALL rules in rules/ are synced to cos/.
+        # RULES-COMPACT.md and adaptive-bypass.md are in CORE_RULES and present.
+        # alpha.md and beta.md are also synced (all rules mode).
         project = _setup_full_project(tmp_path)
         _run_hook(str(project))
         cos_rules = project / ".claude" / "rules" / "cos"
         assert (cos_rules / "RULES-COMPACT.md").is_symlink()
         assert (cos_rules / "adaptive-bypass.md").is_symlink()
-        # Non-core rules (alpha.md, beta.md) are NOT synced
-        assert not (cos_rules / "alpha.md").exists()
+        # In self-hosting mode all rules are synced (including non-CORE_RULES)
+        assert (cos_rules / "alpha.md").is_symlink()
 
     def test_removes_stale_rule_symlinks(self, tmp_path):
         project = _setup_full_project(tmp_path)

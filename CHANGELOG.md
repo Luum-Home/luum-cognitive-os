@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-04-09
+
+### Changed
+- Anonymized private project references in architecture docs
+- Fixed 14 behavior test failures: aguara config, hook registrations, content policy scanning, rule namespacing, and hook profile completeness
+- Added crash-recovery.sh, auto-checkpoint.sh, content-policy.sh to settings.json
+- Added reinvention-check.sh (safety mesh layer 13) to paranoid security profile
+- Updated docs/INDEX.md version to v0.5.0
+
 ## [0.4.2] - 2026-04-08
 
 ## [0.4.1] - 2026-04-08
