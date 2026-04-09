@@ -1,0 +1,13 @@
+{
+  "name": "Post Agent Quality Gates",
+  "description": "Cognitive OS portability shim: claim validation, completion gate, agent checkpoint, trust score validation, auto-skill generation, auto-repair dispatch, dequeue notification, consequence evaluation, confidence gate, scope proportionality, assumption tracking, skill feedback tracking, and context watchdog — running after each agent tool use. Maps to Claude Code PostToolUse[Agent] hooks.",
+  "version": "1",
+  "when": {
+    "type": "postToolUse",
+    "toolName": "*"
+  },
+  "then": {
+    "type": "runShell",
+    "command": "bash \"${workspaceFolder}/hooks/claim-validator.sh\"; bash \"${workspaceFolder}/hooks/completion-gate.sh\"; bash \"${workspaceFolder}/hooks/agent-checkpoint.sh\"; bash \"${workspaceFolder}/hooks/trust-score-validator.sh\"; bash \"${workspaceFolder}/hooks/auto-skill-generator.sh\"; bash \"${workspaceFolder}/hooks/auto-repair-dispatcher.sh\"; bash \"${workspaceFolder}/hooks/dequeue-notify.sh\"; bash \"${workspaceFolder}/hooks/consequence-evaluator.sh\"; bash \"${workspaceFolder}/hooks/confidence-gate.sh\"; bash \"${workspaceFolder}/hooks/scope-proportionality.sh\"; bash \"${workspaceFolder}/hooks/assumption-tracker.sh\"; bash \"${workspaceFolder}/hooks/skill-feedback-tracker.sh\"; bash \"${workspaceFolder}/hooks/context-watchdog.sh\""
+  }
+}
