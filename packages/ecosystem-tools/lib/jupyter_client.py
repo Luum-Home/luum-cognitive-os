@@ -1,4 +1,8 @@
-"""Jupyter REST API client for Cognitive OS agent code execution.
+"""STATUS: ORPHAN — Docker service configured, skill/hook exist, but zero production callers.
+Wire when Jupyter MCP sandbox is activated (JUPYTER_SANDBOX=true).
+See: docs/gpu-sandbox.md for the design.
+
+Jupyter REST API client for Cognitive OS agent code execution.
 
 Provides sandboxed Python execution via a Jupyter kernel server.
 Uses only stdlib (urllib) — no external dependencies.

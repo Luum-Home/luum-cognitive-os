@@ -654,7 +654,7 @@ security:
     threshold: 0.7                   # Detection confidence threshold
 
   aguara:
-    enabled: true                    # Enabled by default — graceful skip if aguara binary not installed
+    enabled: false                   # Set to true after installing aguara binary
     # aguara CLI: go install github.com/garagon/aguara@latest
     # mcp-aguara: go install github.com/garagon/mcp-aguara@latest
 
@@ -695,6 +695,15 @@ sdd:
     phases: [propose, spec, design, tasks]
     parallel:
       - [spec, design]  # spec and design can run in parallel after propose completes
+
+workflows:
+  directory: .cognitive-os/workflows
+  state_directory: .cognitive-os/pipeline-state
+  available:
+    - feature-pipeline
+    - bugfix-pipeline
+    - chore-pipeline
+  default_trigger: manual
 
 paperclip:
   enabled: true
