@@ -203,7 +203,6 @@ class TestNoViolations:
             ],
             capture_output=True,
             text=True,
-            timeout=20,
         )
         if result.returncode != 0:
             return []
@@ -235,14 +234,45 @@ class TestNoViolations:
         policy = yaml.safe_load(policy_path.read_text())
         prohibited = policy.get("prohibited_terms", [])
 
-        violations = {}
-        for entry in prohibited:
-            term = entry.get("term", "")
-            if not term:
+        terms = [e.get("term", "") for e in prohibited if e.get("term")]
+        if not terms:
+            return  # Nothing to check
+
+        # Build a single grep pattern to check all terms at once
+        pattern = "|".join(terms)
+        result = subprocess.run(
+            [
+                "grep", "-ril", "-E", pattern,
+                "--include=*.md",
+                "--include=*.py",
+                "--include=*.sh",
+                "--include=*.yaml",
+                "--include=*.yml",
+                "--include=*.json",
+                # Exclude git submodule plugin directories (external code)
+                "--exclude-dir=hermes-agent",
+                "--exclude-dir=pi-mono",
+                "--exclude-dir=caveman",
+                "--exclude-dir=.git",
+                str(PROJECT_ROOT),
+            ],
+            capture_output=True,
+            text=True,
+        )
+
+        if result.returncode != 0:
+            return  # No matches found
+
+        violations = []
+        for line in result.stdout.strip().splitlines():
+            if not line:
                 continue
-            matches = self._search_term(term)
-            if matches:
-                violations[term] = matches
+            try:
+                rel = os.path.relpath(line, PROJECT_ROOT)
+            except ValueError:
+                rel = line
+            if rel not in self.EXCLUDED_FILES:
+                violations.append(rel)
 
         assert not violations, (
             f"Prohibited terms found in codebase: {violations}"
