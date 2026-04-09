@@ -152,8 +152,18 @@ done
 # See docs/rules-loading-architecture.md for the rationale.
 
 CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
+
+# Detect whether we are running inside the luum-agent-os repo itself.
+# When self-hosting, always use the full profile so all rules are loaded.
+IS_SELF_HOSTING=false
+if [ -f "$PROJECT_DIR/hooks/self-install.sh" ]; then
+  IS_SELF_HOSTING=true
+fi
+
 EFFICIENCY_PROFILE="standard"
-if [ -f "$CONFIG_FILE" ]; then
+if [ "$IS_SELF_HOSTING" = "true" ]; then
+  EFFICIENCY_PROFILE="full"
+elif [ -f "$CONFIG_FILE" ]; then
   _ep=$(grep -A1 '^efficiency:' "$CONFIG_FILE" 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || true)
   [ -n "$_ep" ] && EFFICIENCY_PROFILE="$_ep"
 fi
@@ -261,6 +271,60 @@ for dir in sessions metrics tasks; do
     fixes="${fixes:+$fixes, }created $dir dir"
   fi
 done
+
+# ── Consistency checks (session-start enforcement) ──────────────────
+# These catch problems that the pre-commit hook warns about, in case
+# code entered the repo via --no-verify, direct push, or git pull.
+
+# Check 1: lib/ symlinks integrity
+broken_symlinks=0
+if [ -d "$PROJECT_DIR/lib" ]; then
+  while IFS= read -r link; do
+    if [ ! -e "$link" ]; then
+      broken_symlinks=$((broken_symlinks + 1))
+    fi
+  done < <(find "$PROJECT_DIR/lib" -maxdepth 1 -type l 2>/dev/null)
+  if [ "$broken_symlinks" -gt 0 ]; then
+    fixes="${fixes:+$fixes, }$broken_symlinks broken lib/ symlinks"
+  fi
+fi
+
+# Check 2: settings.json matches current efficiency profile
+if [ -f "$PROJECT_DIR/scripts/apply-efficiency-profile.sh" ] && [ -f "$PROJECT_DIR/.claude/settings.json" ]; then
+  current_profile=$(grep -A1 '^efficiency:' "$PROJECT_DIR/cognitive-os.yaml" 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || echo "standard")
+  if [ "$current_profile" != "full" ]; then
+    # Count hooks that should exist for this profile
+    expected_hooks=$(grep -c "hook_entry\|hook_group" "$PROJECT_DIR/scripts/apply-efficiency-profile.sh" 2>/dev/null || echo 0)
+    actual_hooks=$(grep -c '"command":' "$PROJECT_DIR/.claude/settings.json" 2>/dev/null || echo 0)
+    # Simple sanity: if actual is 0 but expected > 0, something is wrong
+    if [ "$actual_hooks" -eq 0 ] && [ "$expected_hooks" -gt 0 ]; then
+      fixes="${fixes:+$fixes, }settings.json has 0 hooks — run: bash scripts/apply-efficiency-profile.sh $current_profile"
+    fi
+  fi
+fi
+
+# Check 3: .githooks/pre-commit exists and is executable
+if [ ! -x "$PROJECT_DIR/.githooks/pre-commit" ]; then
+  fixes="${fixes:+$fixes, }.githooks/pre-commit missing or not executable"
+fi
+
+# Check 4: git core.hooksPath points to .githooks
+hooks_path=$(git -C "$PROJECT_DIR" config core.hooksPath 2>/dev/null || echo "")
+if [ "$hooks_path" != ".githooks" ]; then
+  git -C "$PROJECT_DIR" config core.hooksPath .githooks 2>/dev/null || true
+  fixes="${fixes:+$fixes, }fixed core.hooksPath -> .githooks"
+fi
+
+# Check 5: workflows directory exists
+if [ ! -d "$PROJECT_DIR/.cognitive-os/workflows" ]; then
+  fixes="${fixes:+$fixes, }.cognitive-os/workflows/ missing"
+fi
+
+# Check 6: pipeline state directory exists
+if [ ! -d "$PROJECT_DIR/.cognitive-os/pipeline-state" ]; then
+  mkdir -p "$PROJECT_DIR/.cognitive-os/pipeline-state"
+  fixes="${fixes:+$fixes, }created pipeline-state dir"
+fi
 
 # ── Counts for status ────────────────────────────────────────────────
 rule_count=0;  [ -d "$PROJECT_DIR/.claude/rules/cos" ]      && rule_count=$(find "$PROJECT_DIR/.claude/rules/cos" -maxdepth 1 -name '*.md' | wc -l | tr -d ' ')

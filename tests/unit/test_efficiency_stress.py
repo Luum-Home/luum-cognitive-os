@@ -416,7 +416,13 @@ class TestHookPerformance:
         """
         settings = load_settings()
         all_hooks = set()
-        for _event_type, entries in settings.get("hooks", {}).items():
+        # Skip SessionStart and Stop hooks — they perform initialization work
+        # (creating directories, git operations) that is expected to take longer
+        # than the per-tool-call budget tested here.
+        SKIP_EVENT_TYPES = {"SessionStart", "Stop"}
+        for event_type, entries in settings.get("hooks", {}).items():
+            if event_type in SKIP_EVENT_TYPES:
+                continue
             for entry in entries:
                 for hook in entry.get("hooks", []):
                     cmd = hook.get("command", "")

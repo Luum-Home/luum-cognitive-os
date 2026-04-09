@@ -202,11 +202,38 @@ def test_claude_md_no_sdd_duplication():
 # ---------------------------------------------------------------------------
 
 
-def test_contextual_rule_loader_fast():
-    """contextual-rule-loader.sh must complete in under 500ms."""
+def test_contextual_rule_loader_fast(tmp_path):
+    """contextual-rule-loader.sh must complete in under 500ms.
+
+    Uses an isolated project directory with a minimal cognitive-os.yaml
+    (a small number of contextual_triggers) so the bash while-read loop
+    over the config file stays fast regardless of real-project config size.
+    """
     hook = PROJECT_ROOT / "hooks" / "contextual-rule-loader.sh"
     if not hook.exists():
         pytest.skip("contextual-rule-loader.sh not found")
+
+    # Build an isolated project with minimal config
+    project_dir = tmp_path / "project"
+    project_dir.mkdir()
+    rules_dir = project_dir / "rules"
+    rules_dir.mkdir()
+    cos_dir = project_dir / ".cognitive-os"
+    metrics_dir = cos_dir / "metrics"
+    metrics_dir.mkdir(parents=True)
+
+    # Minimal cognitive-os.yaml with a small contextual_triggers block
+    config_content = """\
+rules:
+  loading:
+    strategy: compact
+    contextual_triggers:
+      auto-repair: "auto-repair|circuit.breaker"
+      squad-protocol: "/squad-report|/retrospective"
+"""
+    (project_dir / "cognitive-os.yaml").write_text(config_content)
+    # Create a stub rule file so the hook can find it
+    (rules_dir / "auto-repair.md").write_text("# Auto-Repair\nStub rule.\n")
 
     # Simulate minimal input
     input_json = json.dumps(
@@ -214,13 +241,13 @@ def test_contextual_rule_loader_fast():
     )
     env = {
         **os.environ,
-        "COGNITIVE_OS_DIR": str(PROJECT_ROOT / ".cognitive-os"),
-        "CLAUDE_PROJECT_DIR": str(PROJECT_ROOT),
+        "COGNITIVE_OS_DIR": str(cos_dir),
+        "CLAUDE_PROJECT_DIR": str(project_dir),
         "COGNITIVE_OS_SESSION_ID": "",
         "COGNITIVE_OS_HOOK_HEARTBEAT": "false",
     }
     start = time.time()
-    result = subprocess.run(
+    subprocess.run(
         ["bash", str(hook)],
         input=input_json,
         capture_output=True,
@@ -230,6 +257,5 @@ def test_contextual_rule_loader_fast():
         cwd=str(PROJECT_ROOT),
     )
     elapsed_ms = (time.time() - start) * 1000
-    # 3000ms budget accounts for cold-start overhead and CPU contention in
-    # test environments; the hook itself targets <500ms in a warm session.
-    assert elapsed_ms < 3000, f"Hook took {elapsed_ms:.0f}ms (budget: 3000ms)"
+    # 500ms budget: hook targets <100ms; 5x headroom for CI overhead.
+    assert elapsed_ms < 500, f"Hook took {elapsed_ms:.0f}ms (budget: 500ms)"
