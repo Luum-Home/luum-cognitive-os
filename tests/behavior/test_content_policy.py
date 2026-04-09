@@ -194,12 +194,16 @@ class TestNoViolations:
                 "--include=*.yaml",
                 "--include=*.yml",
                 "--include=*.json",
-                "--exclude-dir=.claude/plugins",
+                # Exclude git submodule plugin directories (external code)
+                "--exclude-dir=hermes-agent",
+                "--exclude-dir=pi-mono",
+                "--exclude-dir=caveman",
                 "--exclude-dir=.git",
                 str(PROJECT_ROOT),
             ],
             capture_output=True,
             text=True,
+            timeout=20,
         )
         if result.returncode != 0:
             return []
