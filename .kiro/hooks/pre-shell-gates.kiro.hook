@@ -1,0 +1,13 @@
+{
+  "name": "Pre Shell Gates",
+  "description": "Cognitive OS portability shim: rate limiting and loop detection before shell command execution. Maps to Claude Code PreToolUse[Bash] hooks. Exit code 2 blocks execution and returns stderr to the agent.",
+  "version": "1",
+  "when": {
+    "type": "preToolUse",
+    "toolName": "shell"
+  },
+  "then": {
+    "type": "runShell",
+    "command": "bash \"${workspaceFolder}/hooks/rate-limiter.sh\" && bash \"${workspaceFolder}/hooks/tool-loop-detector.sh\""
+  }
+}

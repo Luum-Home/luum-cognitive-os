@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# PostToolUse hook: Definition of Done Gate
+# DEPRECATED: This hook's functionality is merged into completion-gate.sh (Phase 2).
+# Do NOT wire this hook — it would duplicate the DoD check already in completion-gate.
+# Original: PostToolUse hook: Definition of Done Gate
 # Fires on "Agent" completions — checks DoD criteria based on task complexity.
 # Blocks (exit 2) in production/maintenance if DoD not met; warns otherwise.
 

@@ -1,0 +1,13 @@
+{
+  "name": "Post Write Security and Quality Gates",
+  "description": "Cognitive OS portability shim: secret detection, content policy, architecture compliance, scope creep detection, doc sync detection, and crash-recovery checkpoint — running after every file write. Maps to Claude Code PostToolUse[Edit|Write] hooks. Exit code 2 from secret-detector or content-policy signals a violation (advisory in Kiro post-hooks — Kiro post-hooks cannot block).",
+  "version": "1",
+  "when": {
+    "type": "postToolUse",
+    "toolName": "write"
+  },
+  "then": {
+    "type": "runShell",
+    "command": "bash \"${workspaceFolder}/hooks/secret-detector.sh\"; bash \"${workspaceFolder}/hooks/content-policy.sh\"; bash \"${workspaceFolder}/hooks/architecture-compliance.sh\"; bash \"${workspaceFolder}/hooks/scope-creep-detector.sh\"; bash \"${workspaceFolder}/hooks/doc-sync-detector.sh\"; bash \"${workspaceFolder}/hooks/auto-checkpoint.sh\""
+  }
+}
