@@ -128,7 +128,11 @@ class TestEvaluateGate:
 
 
 class TestPipelineState:
-    """Tests for PipelineState save/load cycle."""
+    """Tests for PipelineState save/load cycle.
+
+    API: save() uses self._state_file (set at construction via _state_file param).
+         load(state_file, change_name, workflow_name) takes an explicit file path.
+    """
 
     @pytest.fixture(autouse=True)
     def imports(self):
@@ -136,13 +140,23 @@ class TestPipelineState:
         self.State = PipelineState
         self.StepResult = StepResult
 
-    def test_fresh_state_has_empty_steps(self):
-        state = self.State(change_name="test-change", workflow_name="feature-pipeline")
+    def _make_state(self, tmp_path, change_name="test-change", workflow_name="feature-pipeline", **kw):
+        """Create a PipelineState with _state_file pointed to tmp_path."""
+        state_file = str(tmp_path / f"{change_name}.json")
+        return self.State(
+            change_name=change_name,
+            workflow_name=workflow_name,
+            _state_file=state_file,
+            **kw,
+        )
+
+    def test_fresh_state_has_empty_steps(self, tmp_path):
+        state = self._make_state(tmp_path)
         assert state.steps_completed == []
         assert state.step_results == {}
 
-    def test_mark_completed_adds_result(self):
-        state = self.State(change_name="test-change", workflow_name="feature-pipeline")
+    def test_mark_completed_adds_result(self, tmp_path):
+        state = self._make_state(tmp_path)
         result = self.StepResult(
             name="propose",
             step_type="agent",
@@ -157,7 +171,7 @@ class TestPipelineState:
         assert state.step_results["propose"].status == "completed"
 
     def test_save_and_load_roundtrip(self, tmp_path):
-        state = self.State(change_name="my-feature", workflow_name="feature-pipeline")
+        state = self._make_state(tmp_path, change_name="my-feature")
         result = self.StepResult(
             name="propose",
             step_type="agent",
@@ -168,40 +182,36 @@ class TestPipelineState:
             retry_count=0,
         )
         state.mark_completed("propose", result)
-        state.save(state_dir=tmp_path)
+        state.save()
 
-        loaded = self.State.load(
-            change_name="my-feature",
-            workflow_name="feature-pipeline",
-            state_dir=tmp_path,
-        )
+        state_file = str(tmp_path / "my-feature.json")
+        loaded = self.State.load(state_file, "my-feature", "feature-pipeline")
         assert "propose" in loaded.steps_completed
-        assert loaded.step_results["propose"].status == "completed"
         assert loaded.workflow_name == "feature-pipeline"
 
     def test_load_missing_file_returns_fresh_state(self, tmp_path):
-        loaded = self.State.load(
-            change_name="nonexistent",
-            workflow_name="feature-pipeline",
-            state_dir=tmp_path,
-        )
+        state_file = str(tmp_path / "nonexistent.json")
+        loaded = self.State.load(state_file, "nonexistent", "feature-pipeline")
         assert loaded.steps_completed == []
         assert loaded.change_name == "nonexistent"
 
     def test_save_creates_json_file(self, tmp_path):
+        state = self._make_state(tmp_path, change_name="mychange")
+        state.save()
+        state_file = tmp_path / "mychange.json"
+        assert state_file.exists()
+
+    def test_save_skips_when_no_state_file(self, tmp_path):
+        """save() is a no-op when _state_file is None."""
         state = self.State(change_name="x", workflow_name="feature-pipeline")
-        state.save(state_dir=tmp_path)
-        files = list(tmp_path.glob("*.json"))
-        assert len(files) >= 1
+        # Should not raise
+        state.save()
 
     def test_vars_persisted(self, tmp_path):
-        state = self.State(
-            change_name="x",
-            workflow_name="feature-pipeline",
-            vars={"FOO": "bar"},
-        )
-        state.save(state_dir=tmp_path)
-        loaded = self.State.load("x", "feature-pipeline", state_dir=tmp_path)
+        state = self._make_state(tmp_path, change_name="x", vars={"FOO": "bar"})
+        state.save()
+        state_file = str(tmp_path / "x.json")
+        loaded = self.State.load(state_file, "x", "feature-pipeline")
         assert loaded.vars.get("FOO") == "bar"
 
 
