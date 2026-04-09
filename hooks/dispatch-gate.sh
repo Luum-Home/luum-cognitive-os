@@ -68,6 +68,33 @@ except Exception:
         >> "$metrics_dir/dispatch-gate.jsonl" 2>/dev/null || true
 }
 
+# ─── Circuit breaker check ────────────────────────────────────────────────────
+
+CB_BLOCKED=$(python3 -c "
+import sys, os
+sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
+try:
+    from lib.circuit_breaker import CircuitBreaker
+    from lib.record_completion import classify_task_type
+    desc = os.environ.get('_DISPATCH_DESC', 'general')
+    task_type = classify_task_type(desc)
+    cb = CircuitBreaker()
+    if not cb.can_launch(task_type):
+        print(f'OPEN:{task_type}')
+    else:
+        print('OK')
+except Exception:
+    print('OK')
+" 2>/dev/null || echo "OK")
+
+if [[ "$CB_BLOCKED" == OPEN:* ]]; then
+    BLOCKED_TYPE="${CB_BLOCKED#OPEN:}"
+    _log_event "circuit_open"
+    echo "DISPATCH GATE: Circuit breaker OPEN for '${BLOCKED_TYPE}' tasks. Cooldown in effect." >&2
+    echo "  Too many consecutive failures for this task type. Wait for cooldown or run different task type." >&2
+    exit 2
+fi
+
 # ─── Decision ─────────────────────────────────────────────────────────────────
 
 if [ "$ACTIVE" -ge "$MAX_AGENTS" ] 2>/dev/null; then
@@ -81,6 +108,23 @@ fi
 
 # Slots available — allow the launch
 NEXT=$((ACTIVE + 1))
-echo "DISPATCH GATE: Slot ${NEXT}/${MAX_AGENTS} allocated." >&2
+
+# Model recommendation (advisory, never blocks)
+MODEL_ADVICE=$(python3 -c "
+import sys, os
+sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
+try:
+    from lib.dispatch_model_advisor import recommend_model, format_model_advice
+    desc = '''${_STDIN_JSON:-{}}'''
+    import json
+    d = json.loads(desc) if desc.strip() else {}
+    task_desc = d.get('tool_input', {}).get('description', d.get('tool_input', {}).get('prompt', '')[:100])
+    rec = recommend_model(task_desc)
+    print(format_model_advice(rec))
+except Exception:
+    print('')
+" 2>/dev/null || echo "")
+
+echo "DISPATCH GATE: Slot ${NEXT}/${MAX_AGENTS} allocated.${MODEL_ADVICE:+ $MODEL_ADVICE}" >&2
 _log_event "allow"
 exit 0
