@@ -1,4 +1,8 @@
-"""File Lock Registry -- Distributed file locking for agent coordination.
+"""STATUS: ORPHAN — has unit tests but no production caller yet.
+Wire when ORCHESTRATOR_MODE=executor is activated.
+See: rules/orchestrator-mode.md for the design.
+
+File Lock Registry -- Distributed file locking for agent coordination.
 
 Provides file-level locking so that multiple concurrent agents (or sessions)
 can coordinate writes. Uses Valkey (Redis-compatible) when available, with a

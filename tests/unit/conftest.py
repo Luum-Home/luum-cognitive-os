@@ -14,6 +14,25 @@ def project_root() -> Path:
 
 
 @pytest.fixture
+def isolated_cos_home(tmp_path: Path) -> Path:
+    """Create an isolated Cognitive OS project directory for hook tests.
+
+    Returns the project root directory (tmp_path / "project") with the
+    standard .cognitive-os/metrics directory tree pre-created.  Tests that
+    need additional sub-directories can create them relative to this path.
+    """
+    project_dir = tmp_path / "project"
+    metrics_dir = project_dir / ".cognitive-os" / "metrics"
+    metrics_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create a minimal cognitive-os.yaml so hooks that read config don't error
+    config = project_dir / "cognitive-os.yaml"
+    config.write_text("project:\n  phase: stabilization\n")
+
+    return project_dir
+
+
+@pytest.fixture
 def lib_dir(project_root) -> Path:
     """Return the path to hooks/_lib/ directory."""
     return project_root / "hooks" / "_lib"

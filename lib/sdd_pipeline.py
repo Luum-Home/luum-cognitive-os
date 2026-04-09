@@ -203,6 +203,10 @@ def _parse_fast_path_from_file(path: str) -> Optional[Dict[str, Any]]:
                 m = re.match(r"^\s{4}(\w+)\s*:\s*(.+)", stripped)
                 if m:
                     key, value = m.group(1), m.group(2).strip()
+                    # Strip inline YAML comments (# ...)
+                    comment_pos = value.find("  #")
+                    if comment_pos >= 0:
+                        value = value[:comment_pos].strip()
                     # Parse booleans
                     if value.lower() in ("true", "yes"):
                         result[key] = True

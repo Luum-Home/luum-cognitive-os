@@ -4,6 +4,8 @@
 
 ## Always Active
 
+> **Hook activation depends on the efficiency profile (lean/standard/full) set in `cognitive-os.yaml`.** Rules marked "always active" describe intended behavior when the corresponding hook is wired for the current profile. See `scripts/apply-efficiency-profile.sh` for the exact hook set per profile. Lean activates 7 hooks; standard activates 18; full activates all hooks.
+
 ### 1. Adaptive Workflow
 
 Classify task complexity BEFORE choosing workflow [`adaptive-bypass`]. Read `cognitive-os.yaml` for the CURRENT project's `phase` and `efficiency.profile` — these determine how aggressively to bypass. Trivial (<3 files, obvious fix): work directly, no delegation, no SDD. Small (1-3 files): delegate if needed, no SDD. Medium+: plan first [`plan-first`] or full SDD. In production/maintenance phase, bias TOWARD governance (small tasks may still need delegation). In reconstruction, bias TOWARD speed (even small tasks can be done directly). 5 DoD levels (trivial/small/medium/large/critical) — agents MUST classify before starting, cannot mark done without ALL criteria passing [`definition-of-done`] [`phase-aware-agents`]. Readiness gate required before `sdd-apply` on large+ tasks. Research shows context files reduce task success rates for simple tasks (arxiv.org/abs/2602.11988) — the bypass improves both efficiency AND effectiveness.
@@ -69,6 +71,10 @@ Hook security profiles [`hook-security-profiles`] (trigger: hook config, securit
 ### 16. Library Selection
 
 [`library-selection`] (trigger: new library adoption) — Mandatory checks: license compatibility, >1000 weekly downloads (npm) / >500 monthly (PyPI), last publish <6 months, TypeScript support, existing dependency overlap. Use `/recommend-library`.
+
+### 16b. Reinvention Prevention
+
+[`reinvention-prevention`] (trigger: creating new lib/hook/skill) — Before building, run `ReinventionGuard.check()` to search upstream submodules (hermes-agent, pi-mono), existing `lib/`, adoption registry, and competitive docs. Decision ladder: adopt → adapt → reference → build. Document every decision in `.cognitive-os/adoption-registry.yaml`. Hook `reinvention-check.sh` fires automatically on agent launches mentioning new file creation.
 
 ### 17. Dry Run
 

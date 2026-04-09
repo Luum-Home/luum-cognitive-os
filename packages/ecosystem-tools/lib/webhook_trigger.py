@@ -24,8 +24,15 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 
-from fastapi import FastAPI, HTTPException, Request, Response
-import uvicorn
+try:
+    from fastapi import FastAPI, HTTPException, Request, Response
+    import uvicorn
+except ImportError:
+    raise ImportError(
+        "webhook_trigger requires fastapi and uvicorn. "
+        "Install with: pip install fastapi uvicorn "
+        "or: pip install -r requirements.txt"
+    )
 
 # ---------------------------------------------------------------------------
 # Local imports

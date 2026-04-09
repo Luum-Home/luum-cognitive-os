@@ -39,11 +39,17 @@ def _setup_full_project(tmp_path: Path) -> Path:
     (hooks_dir / "session-init.sh").write_text("#!/usr/bin/env bash\nexit 0\n")
     (hooks_dir / "health.sh").write_text("#!/usr/bin/env bash\nexit 0\n")
 
-    # Rules
+    # Rules — include CORE_RULES files so the hook's allowlist sync works.
+    # alpha.md and beta.md are retained for tests that verify stale-symlink
+    # removal (they are non-core, so they won't be synced by the hook).
+    # RULES-COMPACT.md and adaptive-bypass.md ARE in CORE_RULES, so they
+    # will be symlinked.
     rules_dir = tmp_path / "rules"
     rules_dir.mkdir()
     (rules_dir / "alpha.md").write_text("# Alpha\n")
     (rules_dir / "beta.md").write_text("# Beta\n")
+    (rules_dir / "RULES-COMPACT.md").write_text("# Compact\n")
+    (rules_dir / "adaptive-bypass.md").write_text("# Adaptive Bypass\n")
 
     # Skills (subdirs with SKILL.md)
     for name in ["eval-repo", "contract-drift", "sdd-apply"]:
@@ -88,6 +94,21 @@ def _setup_full_project(tmp_path: Path) -> Path:
     (tmp_path / ".claude" / "settings.json").write_text('{"hooks": {}}\n')
     (tmp_path / "cognitive-os.yaml").write_text("version: 1\n")
 
+    # Infrastructure checks in self-install.sh (checks 3, 4, 5):
+    # Create .githooks/pre-commit so check 3 passes.
+    githooks_dir = tmp_path / ".githooks"
+    githooks_dir.mkdir()
+    pre_commit = githooks_dir / "pre-commit"
+    pre_commit.write_text("#!/usr/bin/env bash\nexit 0\n")
+    pre_commit.chmod(0o755)
+    # Initialize a git repo so check 4 (core.hooksPath) persists across runs.
+    import subprocess as _sp
+    _sp.run(["git", "init", str(tmp_path)], capture_output=True, check=False)
+    _sp.run(["git", "-C", str(tmp_path), "config", "core.hooksPath", ".githooks"],
+            capture_output=True, check=False)
+    # Create .cognitive-os/workflows/ so check 5 passes.
+    (tmp_path / ".cognitive-os" / "workflows").mkdir(parents=True, exist_ok=True)
+
     return tmp_path
 
 
@@ -107,11 +128,16 @@ class TestDetection:
 
 class TestRulesSync:
     def test_creates_rule_symlinks(self, tmp_path):
+        # The hook only syncs files listed in CORE_RULES.
+        # RULES-COMPACT.md and adaptive-bypass.md are both in CORE_RULES
+        # and are created by _setup_full_project, so they get symlinked.
         project = _setup_full_project(tmp_path)
         _run_hook(str(project))
         cos_rules = project / ".claude" / "rules" / "cos"
-        assert (cos_rules / "alpha.md").is_symlink()
-        assert (cos_rules / "beta.md").is_symlink()
+        assert (cos_rules / "RULES-COMPACT.md").is_symlink()
+        assert (cos_rules / "adaptive-bypass.md").is_symlink()
+        # Non-core rules (alpha.md, beta.md) are NOT synced
+        assert not (cos_rules / "alpha.md").exists()
 
     def test_removes_stale_rule_symlinks(self, tmp_path):
         project = _setup_full_project(tmp_path)
@@ -387,9 +413,19 @@ class TestBulkUpgrade:
         project = _setup_full_project(tmp_path)
         _run_hook(str(project))  # initial sync
 
-        # Simulate upgrade: add 5 rules + 3 skills
-        for i in range(5):
-            (project / "rules" / f"new-rule-{i}.md").write_text(f"# Rule {i}\n")
+        # Simulate upgrade: add 5 CORE_RULES files + 3 skills.
+        # Only CORE_RULES files are synced by self-install.sh.
+        # _setup_full_project already added RULES-COMPACT.md and adaptive-bypass.md;
+        # add 5 more CORE_RULES names that don't yet exist in the tmp project.
+        new_core_rules = [
+            "acceptance-criteria.md",
+            "agent-quality.md",
+            "trust-score.md",
+            "token-economy.md",
+            "phase-aware-agents.md",
+        ]
+        for name in new_core_rules:
+            (project / "rules" / name).write_text(f"# {name}\n")
         for name in ["feature-x", "feature-y", "feature-z"]:
             skill = project / "skills" / name
             skill.mkdir()
@@ -397,11 +433,11 @@ class TestBulkUpgrade:
 
         result = _run_hook(str(project))
         assert "FIXED" in result.stdout
-        assert "added 8" in result.stdout  # 5 rules + 3 skills
+        assert "added 8" in result.stdout  # 5 core rules + 3 skills
 
         # Verify all exist
-        for i in range(5):
-            assert (project / ".claude" / "rules" / "cos" / f"new-rule-{i}.md").is_symlink()
+        for name in new_core_rules:
+            assert (project / ".claude" / "rules" / "cos" / name).is_symlink()
         for name in ["feature-x", "feature-y", "feature-z"]:
             assert (project / ".cognitive-os" / "skills" / name).exists()
 
@@ -422,27 +458,31 @@ class TestBulkUpgrade:
         assert not list((project / ".claude" / "rules" / "cos").glob("*.md"))
 
     def test_mixed_add_and_remove(self, tmp_path):
+        # Use CORE_RULES files so the hook actually syncs them.
+        # Remove RULES-COMPACT.md (core, was synced), add acceptance-criteria.md (core, new).
         project = _setup_full_project(tmp_path)
         _run_hook(str(project))
 
-        # Remove one rule, add another
-        (project / "rules" / "alpha.md").unlink()
-        (project / "rules" / "delta.md").write_text("# Delta\n")
+        # Remove one CORE_RULES file (its symlink becomes stale)
+        (project / "rules" / "RULES-COMPACT.md").unlink()
+        # Add a new CORE_RULES file (should get a new symlink)
+        (project / "rules" / "acceptance-criteria.md").write_text("# Acceptance Criteria\n")
 
         result = _run_hook(str(project))
         assert "FIXED" in result.stdout
-        assert not (project / ".claude" / "rules" / "cos" / "alpha.md").exists()
-        assert (project / ".claude" / "rules" / "cos" / "delta.md").is_symlink()
+        assert not (project / ".claude" / "rules" / "cos" / "RULES-COMPACT.md").exists()
+        assert (project / ".claude" / "rules" / "cos" / "acceptance-criteria.md").is_symlink()
 
 
 class TestSymlinkContent:
     """Verify symlinks point to correct content, not just existence."""
 
     def test_rule_symlink_resolves_to_source(self, tmp_path):
+        # Use RULES-COMPACT.md (a CORE_RULES file) which gets symlinked by the hook.
         project = _setup_full_project(tmp_path)
         _run_hook(str(project))
-        link = project / ".claude" / "rules" / "cos" / "alpha.md"
-        assert link.read_text() == "# Alpha\n"
+        link = project / ".claude" / "rules" / "cos" / "RULES-COMPACT.md"
+        assert link.read_text() == "# Compact\n"
 
     def test_skill_symlink_resolves_to_skill_md(self, tmp_path):
         project = _setup_full_project(tmp_path)
@@ -451,14 +491,15 @@ class TestSymlinkContent:
         assert (skill_link / "SKILL.md").read_text() == "# eval-repo\n"
 
     def test_source_change_reflected_through_symlink(self, tmp_path):
+        # Use adaptive-bypass.md (a CORE_RULES file) which gets symlinked by the hook.
         project = _setup_full_project(tmp_path)
         _run_hook(str(project))
 
-        # Modify source rule
-        (project / "rules" / "alpha.md").write_text("# Alpha v2 — updated\n")
+        # Modify source CORE_RULES file
+        (project / "rules" / "adaptive-bypass.md").write_text("# Adaptive Bypass v2 — updated\n")
 
         # Symlink should reflect change without re-running hook
-        link = project / ".claude" / "rules" / "cos" / "alpha.md"
+        link = project / ".claude" / "rules" / "cos" / "adaptive-bypass.md"
         assert "v2" in link.read_text()
 
     def test_squad_symlink_resolves(self, tmp_path):
@@ -580,14 +621,22 @@ class TestRealRepo:
         assert "OK" in result.stdout, "Real repo should already be synced"
 
     def test_real_repo_counts_match_source(self):
-        """Verify synced counts match actual source counts."""
+        """Verify synced counts match the CORE_RULES count and actual hook count.
+
+        self-install.sh reports the count of symlinks in .claude/rules/cos/,
+        which is the CORE_RULES count (16), NOT the total rules/ count (95).
+        """
         real_root = HOOK_PATH.parents[1]
         if not (real_root / "hooks" / "self-install.sh").exists():
             pytest.skip("not in luum-agent-os")
 
-        rule_count = len(list((real_root / "rules").glob("*.md")))
+        # The cos/ dir only has CORE_RULES symlinks, not all rules.
+        cos_rules_dir = real_root / ".claude" / "rules" / "cos"
+        if cos_rules_dir.exists():
+            rule_count = len(list(cos_rules_dir.glob("*.md")))
+        else:
+            rule_count = 0
         hook_count = len(list((real_root / "hooks").glob("*.sh")))
-        skill_dirs = len([d for d in (real_root / "skills").iterdir() if d.is_dir()])
 
         result = _run_hook(str(real_root))
         assert f"{rule_count} rules" in result.stdout

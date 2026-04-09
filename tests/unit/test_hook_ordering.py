@@ -130,11 +130,19 @@ class TestPostToolUseRegistrations:
         )
 
     def test_agent_verifier_registered(self):
-        """agent-output-verifier.sh must be registered for PostToolUse Agent."""
+        """A claim/output verification hook must be registered for PostToolUse Agent.
+
+        agent-output-verifier.sh was merged into claim-validator.sh (v0.4.2).
+        Either hook satisfies the invariant that agent output is verified.
+        """
         settings = _load_settings()
         agent_cmds = _commands_for_matcher(_post_tool_use_hooks(settings), "Agent")
 
-        assert any("agent-output-verifier.sh" in c for c in agent_cmds), (
-            "agent-output-verifier.sh not found in PostToolUse Agent hooks.\n"
+        has_verifier = any(
+            ("agent-output-verifier.sh" in c or "claim-validator.sh" in c)
+            for c in agent_cmds
+        )
+        assert has_verifier, (
+            "Neither agent-output-verifier.sh nor claim-validator.sh found in PostToolUse Agent hooks.\n"
             f"Agent commands: {agent_cmds}"
         )
