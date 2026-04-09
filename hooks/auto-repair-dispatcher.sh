@@ -12,10 +12,23 @@ source "$(dirname "$0")/_lib/common.sh"
 check_private_mode
 read_stdin_json
 
-TOOL_OUTPUT=$(stdin_field '.tool_response.content' '')
-if [ -z "$TOOL_OUTPUT" ]; then
-  TOOL_OUTPUT=$(stdin_field '.tool_response' '' | jq -r 'if type == "array" then .[].text // "" else . // "" end' 2>/dev/null || true)
-fi
+# Extract tool output from various response formats:
+#   - Agent format: tool_response is an array of {type, text} objects
+#   - Bash format: tool_response is a plain string (stdout)
+#   - Object format: tool_response.content is a string or array
+TOOL_OUTPUT=$(echo "$_STDIN_JSON" | jq -r '
+  if .tool_response | type == "array" then
+    [.tool_response[] | .text // ""] | join(" ")
+  elif .tool_response | type == "object" then
+    if .tool_response.content | type == "array" then
+      [.tool_response.content[] | .text // ""] | join(" ")
+    else
+      .tool_response.content // .tool_response.stdout // ""
+    end
+  else
+    .tool_response // ""
+  end
+' 2>/dev/null || true)
 
 # Only process if there's failure content
 if ! echo "$TOOL_OUTPUT" | grep -qiE '(FAIL|ERROR|build failed|test failed)'; then

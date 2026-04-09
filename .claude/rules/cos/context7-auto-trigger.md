@@ -1,0 +1,1 @@
+<repo>/rules/context7-auto-trigger.md
