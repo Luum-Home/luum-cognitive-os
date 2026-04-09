@@ -208,6 +208,7 @@ class TestTokenBudgets:
 # Category 2: Contextual Loader Tests
 # ===========================================================================
 
+@pytest.mark.forked  # Isolate from xdist workers — hook reads shared config files
 class TestContextualLoader:
 
     LOADER_PATH = PROJECT_ROOT / "hooks" / "contextual-rule-loader.sh"
