@@ -15,16 +15,6 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/crash-recovery.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/packages/paperclip-integration/hooks/paperclip-squad-sync.sh\"",
-            "async": true
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/packages/paperclip-integration/hooks/paperclip-task-sync.sh\"",
-            "async": true
           }
         ]
       }
@@ -40,11 +30,29 @@
         ]
       },
       {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/release-guard.sh\""
+          }
+        ]
+      },
+      {
         "matcher": "Read",
         "hooks": [
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/large-file-advisor.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/concurrent-write-guard.sh\""
           }
         ]
       },
@@ -62,6 +70,22 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/error-pattern-detector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/parry-scan.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/completeness-check.sh\" || true"
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/prompt-quality.sh\" || true"
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/epic-task-detector.sh\" || true"
           }
         ]
       }
@@ -77,6 +101,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/tool-loop-detector.sh\""
           }
         ]
       },
@@ -97,8 +125,11 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/package-sync.sh\"",
-            "async": true
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/scope-creep-detector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/architecture-compliance.sh\" || true"
           }
         ]
       },
@@ -132,28 +163,56 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/packages/paperclip-integration/hooks/paperclip-agent-status.sh\"",
-            "async": true
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-skill-generator.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/packages/paperclip-integration/hooks/paperclip-sdd-sync.sh\"",
-            "async": true
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/trust-score-validator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/confidence-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/consequence-evaluator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/scope-proportionality.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/assumption-tracker.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-feedback-tracker.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-refine.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-verify.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dod-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-repair-dispatcher.sh\""
           }
         ]
-      }
-    ],
-    "Stop": [
+      },
       {
-        "matcher": "",
+        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-learning.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-cleanup.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/error-learning.sh\""
           }
         ]
       }
@@ -187,6 +246,48 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\""
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/background-agent-reminder.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/user-prompt-capture.sh\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-learning.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-cleanup.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-recorder.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-state-save.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/kpi-trigger.sh\""
           }
         ]
       }
