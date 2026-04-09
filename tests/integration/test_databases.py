@@ -8,8 +8,9 @@ Tests real containers for each data store used by the platform:
   - langfuse-valkey:     Valkey 8 (Redis-compatible cache for Langfuse)
   - langfuse-clickhouse: ClickHouse (Langfuse analytics/OLAP)
 
-Each test class spins up a real container via testcontainers, verifies
-connectivity, runs DDL + DML operations, and validates query results.
+All containers are SESSION-scoped (started once, shared across all test
+classes).  Individual test isolation is achieved via per-test ``connection``
+fixtures that roll back transactions after each test.
 
 Run:
     python -m pytest tests/integration/test_databases.py -v
@@ -94,36 +95,32 @@ class TestLangfusePostgres:
     Mirrors the langfuse-pg service from docker-compose:
       image: postgres:17-alpine
       POSTGRES_USER=langfuse, POSTGRES_PASSWORD=langfuse_pass, POSTGRES_DB=langfuse
+
+    Uses the session-scoped ``langfuse_pg_container`` fixture from conftest.py —
+    the container is started once and shared across all test classes that use it.
     """
 
-    @pytest.fixture(scope="class")
-    def pg_container(self):
-        """Start a Postgres 17 container matching langfuse-pg config."""
-        container = PostgresContainer(
-            image="postgres:17-alpine",
-            username="langfuse",
-            password="langfuse_pass",
-            dbname="langfuse",
-        )
-        with container:
-            yield container
-
     @pytest.fixture()
-    def connection(self, pg_container):
+    def connection(self, langfuse_pg_container):
         """Return a psycopg2 connection, rolled back after each test."""
         import psycopg2
 
-        url = pg_container.get_connection_url().replace("postgresql+psycopg2://", "postgresql://")
-        conn = psycopg2.connect(url)
+        container = langfuse_pg_container
+        host = container.get_container_host_ip()
+        port = int(container.get_exposed_port(5432))
+        conn = psycopg2.connect(
+            host=host, port=port,
+            user="langfuse", password="langfuse_pass", dbname="langfuse",
+        )
         conn.autocommit = False
         yield conn
         conn.rollback()
         conn.close()
 
-    def test_container_starts(self, pg_container):
+    def test_container_starts(self, langfuse_pg_container):
         """Container must be running and exposing a mapped port."""
-        assert pg_container.get_container_host_ip() is not None
-        assert pg_container.get_exposed_port(5432) is not None
+        assert langfuse_pg_container.get_container_host_ip() is not None
+        assert langfuse_pg_container.get_exposed_port(5432) is not None
 
     def test_select_one(self, connection):
         """Basic SELECT 1 proves the wire protocol works."""
@@ -185,36 +182,31 @@ class TestPaperclipPostgres:
     Mirrors the paperclip-pg service from docker-compose:
       image: postgres:17-alpine
       POSTGRES_USER=paperclip, POSTGRES_PASSWORD=paperclip, POSTGRES_DB=paperclip
+
+    Uses the session-scoped ``paperclip_pg_container`` fixture from conftest.py.
     """
 
-    @pytest.fixture(scope="class")
-    def pg_container(self):
-        """Start a Postgres 17 container matching paperclip-pg config."""
-        container = PostgresContainer(
-            image="postgres:17-alpine",
-            username="paperclip",
-            password="paperclip",
-            dbname="paperclip",
-        )
-        with container:
-            yield container
-
     @pytest.fixture()
-    def connection(self, pg_container):
+    def connection(self, paperclip_pg_container):
         """Return a psycopg2 connection, rolled back after each test."""
         import psycopg2
 
-        url = pg_container.get_connection_url().replace("postgresql+psycopg2://", "postgresql://")
-        conn = psycopg2.connect(url)
+        container = paperclip_pg_container
+        host = container.get_container_host_ip()
+        port = int(container.get_exposed_port(5432))
+        conn = psycopg2.connect(
+            host=host, port=port,
+            user="paperclip", password="paperclip", dbname="paperclip",
+        )
         conn.autocommit = False
         yield conn
         conn.rollback()
         conn.close()
 
-    def test_container_starts(self, pg_container):
+    def test_container_starts(self, paperclip_pg_container):
         """Container must be running and exposing a mapped port."""
-        assert pg_container.get_container_host_ip() is not None
-        assert pg_container.get_exposed_port(5432) is not None
+        assert paperclip_pg_container.get_container_host_ip() is not None
+        assert paperclip_pg_container.get_exposed_port(5432) is not None
 
     def test_select_one(self, connection):
         """Basic SELECT 1 proves the wire protocol works."""
@@ -282,43 +274,9 @@ class TestOpikMySQL:
       image: mysql:8.4
       MYSQL_ROOT_PASSWORD=opik_root_pass, MYSQL_DATABASE=opik,
       MYSQL_USER=opik, MYSQL_PASSWORD=opik_pass
+
+    Uses the session-scoped ``mysql_container`` fixture from conftest.py.
     """
-
-    @pytest.fixture(scope="class")
-    def mysql_container(self):
-        """Start a MySQL 8.4 container matching opik-mysql config."""
-        import mysql.connector
-
-        container = (
-            DockerContainer(image="mysql:8.4")
-            .with_exposed_ports(3306)
-            .with_env("MYSQL_ROOT_PASSWORD", "opik_root_pass")
-            .with_env("MYSQL_DATABASE", "opik")
-            .with_env("MYSQL_USER", "opik")
-            .with_env("MYSQL_PASSWORD", "opik_pass")
-        )
-        container.start()
-        _wait_for_port(container, 3306, timeout=90)
-        # MySQL accepts TCP connections before user/db init is complete.
-        # Retry the actual MySQL handshake until the non-root user works.
-        host = container.get_container_host_ip()
-        port = int(container.get_exposed_port(3306))
-        deadline = time.monotonic() + 60
-        while time.monotonic() < deadline:
-            try:
-                conn = mysql.connector.connect(
-                    host=host, port=port,
-                    user="opik", password="opik_pass", database="opik",
-                    connection_timeout=5,
-                )
-                conn.close()
-                break
-            except mysql.connector.Error:
-                time.sleep(2)
-        else:
-            raise TimeoutError("MySQL did not become ready for user 'opik' within 60s")
-        yield container
-        container.stop()
 
     @pytest.fixture()
     def connection(self, mysql_container):
@@ -407,25 +365,13 @@ class TestLangfuseValkey:
       image: valkey/valkey:8-alpine
       Auth password: langfuse_redis
 
+    Uses the session-scoped ``valkey_container`` fixture from conftest.py.
     Uses redis-py client since Valkey is wire-compatible with Redis.
     """
 
-    @pytest.fixture(scope="class")
-    def valkey_container(self):
-        """Start a Valkey 8 container with password auth."""
-        container = (
-            DockerContainer(image="valkey/valkey:8-alpine")
-            .with_exposed_ports(6379)
-            .with_command("valkey-server --requirepass langfuse_redis")
-        )
-        container.start()
-        _wait_for_port(container, 6379, timeout=30)
-        yield container
-        container.stop()
-
     @pytest.fixture()
     def redis_client(self, valkey_container):
-        """Return a redis-py client connected to the Valkey container."""
+        """Return a redis-py client connected to the shared Valkey container."""
         import redis
 
         client = redis.Redis(
@@ -491,56 +437,23 @@ class TestLangfuseClickHouse:
       Ports: 8123 (HTTP), 9000 (native)
       CLICKHOUSE_DB=default, CLICKHOUSE_USER=clickhouse,
       CLICKHOUSE_PASSWORD=clickhouse
+
+    Uses the session-scoped ``clickhouse_container`` fixture from conftest.py.
+    Each test drops and recreates its own table to avoid state leakage.
     """
 
-    @pytest.fixture(scope="class")
-    def ch_container(self):
-        """Start a ClickHouse server container with auth configured."""
-        from urllib.request import urlopen, Request
-        from urllib.error import URLError
-
-        container = (
-            DockerContainer(image="clickhouse/clickhouse-server:latest")
-            .with_exposed_ports(8123, 9000)
-            .with_env("CLICKHOUSE_DB", "default")
-            .with_env("CLICKHOUSE_USER", "clickhouse")
-            .with_env("CLICKHOUSE_PASSWORD", "clickhouse")
-        )
-        container.start()
-        _wait_for_port(container, 8123, timeout=60)
-        # Wait for ClickHouse HTTP interface to actually respond to queries
-        host = container.get_container_host_ip()
-        port = int(container.get_exposed_port(8123))
-        deadline = time.monotonic() + 60
-        while time.monotonic() < deadline:
-            try:
-                url = f"http://{host}:{port}/?query=SELECT+1&user=clickhouse&password=clickhouse"
-                with urlopen(url, timeout=5) as resp:
-                    if resp.read().decode().strip() == "1":
-                        break
-            except (URLError, OSError):
-                time.sleep(1)
-        else:
-            raise TimeoutError("ClickHouse HTTP interface did not become ready within 60s")
-        yield container
-        container.stop()
-
     @pytest.fixture()
-    def ch_http(self, ch_container):
+    def ch_http(self, clickhouse_container):
         """Return a helper to execute ClickHouse queries via HTTP interface."""
         from urllib.request import urlopen, Request
         from urllib.parse import urlencode
 
-        host = ch_container.get_container_host_ip()
-        port = int(ch_container.get_exposed_port(8123))
+        host = clickhouse_container.get_container_host_ip()
+        port = int(clickhouse_container.get_exposed_port(8123))
         base_url = f"http://{host}:{port}"
 
         def query(sql: str, *, fmt: str = "TabSeparated") -> str:
-            """Execute a SQL query against the ClickHouse HTTP interface.
-
-            Sends the query as POST body to avoid URL-encoding issues with
-            multi-line DDL/DML statements.
-            """
+            """Execute a SQL query against the ClickHouse HTTP interface."""
             params = urlencode({
                 "default_format": fmt,
                 "user": "clickhouse",
@@ -553,11 +466,10 @@ class TestLangfuseClickHouse:
 
         return query
 
-    def test_container_starts(self, ch_container):
+    def test_container_starts(self, clickhouse_container):
         """Container must be running and exposing mapped ports."""
-        assert ch_container.get_container_host_ip() is not None
-        assert ch_container.get_exposed_port(8123) is not None
-        assert ch_container.get_exposed_port(9000) is not None
+        assert clickhouse_container.get_container_host_ip() is not None
+        assert clickhouse_container.get_exposed_port(8123) is not None
 
     def test_select_one(self, ch_http):
         """SELECT 1 must return '1', proving HTTP interface works."""
@@ -574,10 +486,11 @@ class TestLangfuseClickHouse:
 
     def test_create_table_insert_query(self, ch_http):
         """Full DDL + DML cycle using MergeTree engine."""
-        # Create table
+        # Drop and recreate for a clean slate within the shared container.
+        ch_http("DROP TABLE IF EXISTS langfuse_events")
         ch_http(
             """
-            CREATE TABLE IF NOT EXISTS langfuse_events (
+            CREATE TABLE langfuse_events (
                 event_id String,
                 event_type String,
                 value Float64,

@@ -6,6 +6,35 @@ Documents all external tools integrated into Cognitive OS, their configuration, 
 
 ## Integrated Tools
 
+### ccusage — Claude Code Token & Cost Analytics (ADOPT)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Reads real token usage from `~/.claude/projects/*/\*.jsonl` and reports daily/monthly/session/5h-block costs with structured JSON output |
+| Install | `npx ccusage@latest` (zero install) or `npm install -g ccusage` |
+| Required | No (optional, but recommended for accurate cost visibility) |
+| Output | Tables, JSON (`--json`), grouped by session/day/month/project |
+| License | MIT |
+| GitHub | [ryoppippi/ccusage](https://github.com/ryoppippi/ccusage) |
+| Version | v18+ (actively maintained, 100+ releases) |
+| Scope | `~/.claude/projects/` — same JSONL files Cognitive OS reads natively |
+
+**Usage examples**:
+```bash
+npx ccusage@latest            # current month summary
+npx ccusage@latest session    # per-session breakdown
+npx ccusage@latest blocks     # 5-hour billing window view
+npx ccusage@latest --json     # structured JSON for scripting
+npx ccusage@latest daily --since 2026-04-01
+```
+
+**Integration with Cognitive OS**: `lib/record_completion.py` reads the same JSONL files natively to extract real `input_tokens`, `output_tokens`, and `cache_*_tokens` per completion, replacing the previous `len(output)//4` estimate. `ccusage` provides session-level and monthly roll-ups that the COS cost dashboard (`lib/cost_dashboard.py`) can optionally delegate to.
+
+**Why chosen over alternatives**:
+- `ccost` (Rust): good but requires cargo install, smaller community
+- `claude-usage` (Python): dashboard-only, no JSON output for scripting
+- `Claude-Code-Usage-Monitor` (Python): real-time UI only, no JSON output, no CLI integration
+
 ### agnix — Agent Configuration Linter
 
 | Property | Value |
@@ -307,7 +336,7 @@ When integrating a new external tool:
 Run the following to check which ecosystem tools are available:
 
 ```bash
-for tool in agnix semgrep parry-guard aguara mcp-aguara mcp-scan garak promptfoo recall hcom tero mantis; do
+for tool in ccusage agnix semgrep parry-guard aguara mcp-aguara mcp-scan garak promptfoo recall hcom tero mantis; do
   if command -v "$tool" &>/dev/null; then
     echo "[installed] $tool: $($tool --version 2>/dev/null | head -1)"
   else
@@ -318,4 +347,4 @@ done
 
 ## Contextual Trigger
 
-This rule is loaded when: ecosystem tools, external tools, agnix, semgrep, parry, aguara, mcp-scan, promptfoo, garak, recall, hcom, tero, mantis, tool integration.
+This rule is loaded when: ecosystem tools, external tools, ccusage, token usage, cost tracking, claude usage, agnix, semgrep, parry, aguara, mcp-scan, promptfoo, garak, recall, hcom, tero, mantis, tool integration.
