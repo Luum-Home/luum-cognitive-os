@@ -157,7 +157,10 @@ build_settings() {
       post_agent=$(hook_group "Agent" \
         "claim-validator.sh" \
         "completion-gate.sh" \
-        "agent-checkpoint.sh")
+        "agent-checkpoint.sh" \
+        "trust-score-validator.sh" \
+        "auto-skill-generator.sh" \
+        "auto-repair-dispatcher.sh")
       ;;
   esac
 
@@ -172,7 +175,8 @@ build_settings() {
     standard)
       stop_hooks=$(hook_group "" \
         "session-learning.sh" \
-        "session-cleanup.sh")
+        "session-cleanup.sh" \
+        "kpi-trigger.sh")
       ;;
   esac
 
@@ -276,7 +280,7 @@ case "$PROFILE" in
     echo "  TeammateIdle: teammate-idle.sh"
     echo "  TaskCreated: task-created.sh"
     echo "  TaskCompleted: task-completed.sh"
-    echo "  Total: 27 hooks"
+    echo "  Total: 31 hooks"
     ;;
 esac
 
