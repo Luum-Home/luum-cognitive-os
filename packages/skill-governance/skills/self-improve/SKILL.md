@@ -36,6 +36,22 @@ Execution -> Verification -> Error Capture -> Pattern Detection -> Self-Improve 
 
 ## Instructions
 
+### Step 0: Run lib/self_improvement.py First (Quick Analysis)
+
+Before deep-diving into raw files, run the pre-built analysis:
+
+```python
+import sys, os
+sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
+from lib.self_improvement import analyze_kpi_history, suggest_improvements, format_improvement_report
+
+analysis = analyze_kpi_history('.cognitive-os/metrics')
+suggestions = suggest_improvements(analysis)
+print(format_improvement_report(analysis, suggestions))
+```
+
+This gives you: avg trust score, success rate, recurring errors, skill failures, consequence distribution, and whether trust scores are real or still hardcoded defaults. Use this as your baseline — the steps below add depth.
+
 ### Step 1: Load All Error and Metrics Data
 
 Read these files from `.cognitive-os/metrics/`:
