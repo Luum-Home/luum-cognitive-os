@@ -90,17 +90,59 @@ The `/cognitive-os-init` skill:
 
 ### Optional: Start infrastructure services
 
+Use the bootstrap script for a fully automated one-command setup:
+
 ```bash
-docker compose -f .cognitive-os/docker-compose.cognitive-os.yml up -d
+bash scripts/cos-bootstrap.sh
 ```
 
-This starts optional services:
+This single command:
+1. Creates `.env` from `env.example` (or merges new vars into your existing `.env`)
+2. Generates `LANGFUSE_ENCRYPTION_KEY` if not set
+3. Creates the `cognitive-os-network` Docker network
+4. Starts Docker services based on the chosen profile
+5. Waits for health checks to pass
+6. Provisions Langfuse API keys automatically
+7. Syncs rules and hooks symlinks
+8. Creates the `.cognitive-os/` directory structure
+
+#### Profiles
+
+| Profile | Services | Use when |
+|---------|----------|----------|
+| `minimal` | Langfuse stack (6 containers) | Low resource usage, observability only |
+| `standard` | Langfuse + LiteLLM (default) | Recommended — cost control + observability |
+| `full` | All services | Complete stack including Paperclip, Jupyter |
+
+```bash
+bash scripts/cos-bootstrap.sh --profile minimal   # lightweight
+bash scripts/cos-bootstrap.sh --profile standard  # recommended (default)
+bash scripts/cos-bootstrap.sh --profile full      # everything
+bash scripts/cos-bootstrap.sh --dry-run           # preview without changes
+```
+
+The bootstrap script is **idempotent** — safe to run multiple times.
+
+Services started by the standard profile:
 - **Langfuse** (port 3100): Observability and tracing
 - **LiteLLM** (port 4000): Cost control and model routing
+
+Additional services available in the `full` profile:
 - **NeMo Guardrails** (port 8088): Content safety
 - **Paperclip** (port 3200): Governance dashboard
+- **Jupyter** (port 8888): GPU/compute sandbox
 
-These are optional. Cognitive OS works without them -- they add observability and cost control.
+These are optional. Cognitive OS works without them — they add observability and cost control.
+
+#### Updating an existing installation
+
+```bash
+bash scripts/cos-update.sh
+bash scripts/cos-update.sh --pull-images   # also pull latest Docker images
+```
+
+The update script merges new `.env` variables (never overwriting existing values),
+restarts changed containers, and re-syncs rules and hooks.
 
 ---
 
@@ -198,20 +240,33 @@ The state is stored in Engram. It loads the last completed phase and continues f
 
 ## Running Tests
 
-### Python test suite (primary)
+### Unified test runner (recommended)
 
 ```bash
-# Full suite (1714 tests)
-uv run pytest tests/ -v
+bash scripts/test-all.sh              # Full suite: unit (parallel) + integration + bash
+bash scripts/test-all.sh --unit       # Unit tests only (~30s with xdist)
+bash scripts/test-all.sh --no-docker  # Skip Docker-dependent tests
+bash scripts/test-all.sh --parallel 8 # Force 8 parallel workers
+bash scripts/test-all.sh -v           # Verbose output
+```
+
+The unified runner uses `pytest-xdist` for parallel unit test execution (auto-detects CPUs),
+runs integration tests sequentially (Docker containers), and finishes with bash layer tests.
+
+### Python test suite (direct pytest)
+
+```bash
+# Full suite (3500+ tests)
+python3 -m pytest tests/ -n auto      # Parallel with xdist
 
 # By layer
-uv run pytest tests/unit/ -v           # Fast, no dependencies
-uv run pytest tests/behavior/ -v       # Simulates hook behavior
-uv run pytest tests/integration/ -v    # Requires Docker (testcontainers)
-uv run pytest tests/system/ -v         # End-to-end pipelines
+python3 -m pytest tests/unit/ -n auto         # Fast, parallel, no dependencies
+python3 -m pytest tests/integration/ -v       # Requires Docker (testcontainers)
+python3 -m pytest tests/behavior/ -v          # Simulates hook behavior
+python3 -m pytest tests/system/ -v            # End-to-end pipelines
 
 # Single file
-uv run pytest tests/unit/test_notifications.py -v
+python3 -m pytest tests/unit/test_record_completion.py -v
 ```
 
 ### Infrastructure tests (bash, fast)
@@ -407,6 +462,30 @@ Other IDEs receive the **rules layer only** -- behavioral contracts that tell th
 | Trust scores | Requires PostToolUse validation hooks |
 
 For the full compatibility matrix, see [ide-compatibility.md](ide-compatibility.md).
+
+---
+
+## Self-Repair System
+
+COS monitors every agent that completes and automatically adjusts its own behavior. No configuration needed.
+
+After each agent finishes, COS reads its output and extracts a quality score (0-100). Based on that score:
+
+- **Score ≥ 85, five times in a row** — skill is *promoted*: a snapshot of its best state is saved
+- **Score 60-84** — no action, skill continues as-is
+- **Score < 60 once** — skill is *warned*, still runs normally
+- **Score < 60 twice** — skill is *degraded*: next launch uses a cheaper/faster model
+- **Score < 60 three times** — skill is *disabled*: launches are blocked until you run `/optimize-skill`
+
+When this happens you'll see messages like:
+
+```
+CONSEQUENCE: DEGRADE — model downgraded (sonnet → haiku)
+DISPATCH GATE: Skill 'flaky-parser' is DISABLED by consequence engine.
+  Run /optimize-skill flaky-parser to fix it.
+```
+
+For the full guide — including every message you'll see, how to monitor the metrics files, and how to intervene — read [Self-Repair System Guide](self-repair-guide.md).
 
 ---
 
