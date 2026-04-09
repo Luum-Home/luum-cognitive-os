@@ -38,6 +38,30 @@ fi
 METRICS_DIR=$(_resolve_metrics_dir)
 REGISTRY="$_PROJECT_DIR/.cognitive-os/metrics/remediation-registry.jsonl"
 
+# Try Python auto_repair.py first (built-in patterns)
+REPAIR_SUGGESTION=$(python3 -c "
+import sys, os
+sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
+try:
+    from lib.auto_repair import classify_error, format_repair_suggestion
+    msg = '''$TOOL_OUTPUT'''[:2000]
+    r = classify_error('AGENT_FAILURE', msg)
+    if r:
+        print(format_repair_suggestion(r, msg))
+    else:
+        print('')
+except Exception:
+    print('')
+" 2>/dev/null || echo "")
+
+if [ -n "$REPAIR_SUGGESTION" ]; then
+  echo "AUTO-REPAIR: $REPAIR_SUGGESTION" >&2
+  safe_jsonl_append "$METRICS_DIR/repair-dispatch.jsonl" \
+    "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"source\":\"auto_repair.py\",\"suggestion\":$(echo "$REPAIR_SUGGESTION" | jq -Rs '.')}"
+  exit 0
+fi
+
+# Fallback: search JSONL registry for matching patterns
 [ -f "$REGISTRY" ] || exit 0
 
 TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)

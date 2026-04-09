@@ -74,9 +74,11 @@ Escalation signals:
 
 It is better to escalate early than to waste tokens on a dead end. Save partial progress to Engram before escalating so the next agent does not redo your completed work.
 
-## Trust Report Format
+## Trust Report (MANDATORY — last thing before ending)
 
-When you complete a task, your Trust Report MUST start with a machine-parseable header line:
+**YOU MUST OUTPUT THIS** as the LAST section of your response. Without it, your work is recorded with trust_score=50 (unknown) which triggers WARN in the quality system.
+
+When you complete a task, output this EXACT format:
 
 ```
 TRUST_REPORT: SCORE=75 STATUS=MEDIUM EVIDENCE=3 UNCERTAINTIES=2
