@@ -129,12 +129,13 @@ build_settings() {
         "completeness-check.sh" \
         "error-pattern-detector.sh" \
         "prompt-quality.sh" \
-        "epic-task-detector.sh")
+        "epic-task-detector.sh" \
+        "context-diet.sh")
       ;;
   esac
 
   # PostToolUse hooks
-  local post_bash="" post_bash_edit_write="" post_edit="" post_agent=""
+  local post_bash="" post_bash_edit_write="" post_edit="" post_agent="" post_all=""
   case "$profile" in
     lean)
       post_bash=$(hook_group "Bash" \
@@ -161,6 +162,8 @@ build_settings() {
         "trust-score-validator.sh" \
         "auto-skill-generator.sh" \
         "auto-repair-dispatcher.sh")
+      post_all=$(hook_group "" \
+        "context-watchdog.sh")
       ;;
   esac
 
@@ -203,7 +206,7 @@ build_settings() {
 
   printf '    "PostToolUse": [\n'
   local post_first=true
-  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_agent"; do
+  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_agent" "$post_all"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
@@ -280,7 +283,7 @@ case "$PROFILE" in
     echo "  TeammateIdle: teammate-idle.sh"
     echo "  TaskCreated: task-created.sh"
     echo "  TaskCompleted: task-completed.sh"
-    echo "  Total: 31 hooks"
+    echo "  Total: 33 hooks"
     ;;
 esac
 
