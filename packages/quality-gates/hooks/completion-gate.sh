@@ -12,6 +12,50 @@ set -uo pipefail
 
 _HOOK_NAME="completion-gate"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+
+# ---------------------------------------------------------------------------
+# Queue Drain — runs on ALL exit paths via trap EXIT
+# Checks the slot-based dispatch queue and tells the orchestrator which
+# queued agents can now launch (advisory, stderr only, never blocks).
+# ---------------------------------------------------------------------------
+_drain_queue() {
+    local _PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+    local _DRAIN_OUTPUT
+    _DRAIN_OUTPUT=$(python3 -c "
+import sys, os
+sys.path.insert(0, '$_PROJECT_DIR')
+try:
+    from lib.queue_drainer import QueueDrainer
+    drainer = QueueDrainer()
+    ready = drainer.get_ready_agents(max_count=3)
+    if ready:
+        print(drainer.format_drain_instruction())
+except Exception:
+    pass
+" 2>/dev/null)
+    if [ -n "$_DRAIN_OUTPUT" ]; then
+        echo "$_DRAIN_OUTPUT" >&2
+    fi
+
+    # Health check: detect stuck/dead agents alongside queue drain
+    local _HEALTH_OUTPUT
+    _HEALTH_OUTPUT=$(python3 -c "
+import sys, os
+sys.path.insert(0, '$_PROJECT_DIR')
+try:
+    from lib.agent_health_monitor import AgentHealthMonitor
+    monitor = AgentHealthMonitor()
+    health = monitor.check_health()
+    if health['timeout'] or health['dead']:
+        print(monitor.format_health_report())
+except Exception:
+    pass
+" 2>/dev/null)
+    if [ -n "$_HEALTH_OUTPUT" ]; then
+        echo "$_HEALTH_OUTPUT" >&2
+    fi
+}
+trap '_drain_queue' EXIT
 # Paperclip notification helper for safety mesh blocks (Gap 5)
 _PAPERCLIP_LIB="$(dirname "$0")/_lib/paperclip-notify.sh"
 [ -f "$_PAPERCLIP_LIB" ] && source "$_PAPERCLIP_LIB"
@@ -177,7 +221,50 @@ if [ "$FAILURE_DETECTED" = false ]; then
   fi
   # Wire to learning pipeline (success path)
   echo "$INPUT" | python3 "$PROJECT_DIR/lib/record_completion.py" 2>/dev/null || true
+
+  # === PHASE 4: SERVER-SIDE ESCALATION DETECTION (success path) ===
+  # Even on apparent success, detect if agent self-reported an ESCALATION marker.
+  _ESCALATION_BLOCK=$(echo "$AGENT_OUTPUT" | grep -A8 "^ESCALATION:" 2>/dev/null)
+  if [ -n "$_ESCALATION_BLOCK" ]; then
+    echo "" >&2
+    echo "=== COMPLETION-GATE: AGENT ESCALATION DETECTED ===" >&2
+    echo "$_ESCALATION_BLOCK" >&2
+    echo "=== END ESCALATION ===" >&2
+    echo "" >&2
+    python3 -c "
+import sys, os, json
+sys.path.insert(0, '$PROJECT_DIR')
+try:
+    from lib.escalation_detector import EscalationDetector
+    d = EscalationDetector()
+    d.save_metrics('$METRICS_DIR')
+except Exception:
+    pass
+" 2>/dev/null || true
+  fi
+
   exit 0
+fi
+
+# === PHASE 4: SERVER-SIDE ESCALATION DETECTION (failure path) ===
+# Detect ESCALATION: markers the agent may have self-reported.
+_ESCALATION_BLOCK=$(echo "$AGENT_OUTPUT" | grep -A8 "^ESCALATION:" 2>/dev/null)
+if [ -n "$_ESCALATION_BLOCK" ]; then
+  echo ""
+  echo "=== COMPLETION-GATE: AGENT ESCALATION DETECTED ==="
+  echo "$_ESCALATION_BLOCK"
+  echo "=== END ESCALATION ==="
+  echo ""
+  python3 -c "
+import sys, os
+sys.path.insert(0, '$PROJECT_DIR')
+try:
+    from lib.escalation_detector import EscalationDetector
+    d = EscalationDetector()
+    d.save_metrics('$METRICS_DIR')
+except Exception:
+    pass
+" 2>/dev/null || true
 fi
 
 mkdir -p "$REFINE_DIR" 2>/dev/null
@@ -220,6 +307,8 @@ except Exception: pass
 " 2>/dev/null || true
 
   rm -f "$RETRY_FILE" "$REFINE_DIR/$TASK_FINGERPRINT.history" 2>/dev/null
+  # Record failure cost even on escalation path
+  echo "$INPUT" | python3 "$PROJECT_DIR/lib/record_completion.py" 2>/dev/null || true
   exit 0
 fi
 
@@ -228,6 +317,23 @@ if [ "$AUTO_REFINE_MODE" = "suggest" ]; then
   echo "Agent task failed (attempt $RETRY_COUNT/$MAX_RETRIES). Failure type: $FAILURE_TYPE"
   echo "Phase '$PHASE' requires human approval for auto-refinement."
   echo "=== END COMPLETION-GATE ==="; echo ""
+  # Record failure cost in suggest mode
+  echo "$INPUT" | python3 "$PROJECT_DIR/lib/record_completion.py" 2>/dev/null || true
+  # Check skill rewrite needs after recording failure
+  _SR=$(python3 -c "
+import sys, os
+sys.path.insert(0, '$PROJECT_DIR')
+try:
+    from lib.consequence_engine import ConsequenceEngine
+    e = ConsequenceEngine('$METRICS_DIR/consequence-history.jsonl')
+    skills = e.get_skills_needing_rewrite('$METRICS_DIR')
+    for s in skills:
+        print(f'REWRITE SUGGESTED: {s[\"skill_name\"]} has {s[\"failure_count\"]} failures in 24h (requires approval)')
+        print(f'  Run: /optimize-skill {s[\"skill_name\"]}')
+except Exception:
+    pass
+" 2>/dev/null)
+  [ -n "$_SR" ] && echo "$_SR" >&2
   exit 0
 fi
 
@@ -242,5 +348,40 @@ echo "---"; echo "=== END COMPLETION-GATE ==="; echo ""
 
 # Wire to learning pipeline
 echo "$INPUT" | python3 "$PROJECT_DIR/lib/record_completion.py" 2>/dev/null || true
+
+# === PHASE 5: SKILL REWRITE SUGGESTIONS ===
+# After learning pipeline, check if any skill has 3+ failures in 24h.
+# Phase-aware: reconstruction/stabilization = auto suggestion,
+#              production/maintenance = manual approval required.
+_REWRITE_OUTPUT=$(python3 -c "
+import sys, os
+sys.path.insert(0, '$PROJECT_DIR')
+try:
+    from lib.consequence_engine import ConsequenceEngine
+    e = ConsequenceEngine('$METRICS_DIR/consequence-history.jsonl')
+    skills = e.get_skills_needing_rewrite('$METRICS_DIR')
+    phase = '$PHASE'
+    for s in skills:
+        name = s['skill_name']
+        count = s['failure_count']
+        last_err = s['last_error']
+        if phase in ('reconstruction', 'stabilization'):
+            print(f'AUTO-REWRITE SUGGESTED: {name} has {count} failures in 24h')
+            print(f'  Last error context: {last_err}')
+            print(f'  Run: /optimize-skill {name}')
+        else:
+            print(f'REWRITE SUGGESTED: {name} has {count} failures in 24h (requires approval)')
+            print(f'  Last error context: {last_err}')
+            print(f'  Run: /optimize-skill {name}')
+except Exception:
+    pass
+" 2>/dev/null)
+if [ -n "$_REWRITE_OUTPUT" ]; then
+    echo "" >&2
+    echo "=== COMPLETION-GATE: SKILL REWRITE RECOMMENDATIONS ===" >&2
+    echo "$_REWRITE_OUTPUT" >&2
+    echo "=== END SKILL REWRITE RECOMMENDATIONS ===" >&2
+    echo "" >&2
+fi
 
 exit 0

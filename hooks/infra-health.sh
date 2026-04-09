@@ -201,7 +201,27 @@ ensure_service('$svc_name')
   done <<< "$expected_services"
 fi
 
-# ---- 9. Log to metrics ----
+# ---- 9. Auto-provision Langfuse API keys if Langfuse is running but keys are absent ----
+# This runs setup-langfuse.sh silently (idempotent: skips if keys already in .env).
+LANGFUSE_PUBLIC_KEY_VAL="${LANGFUSE_PUBLIC_KEY:-}"
+if [ -z "$LANGFUSE_PUBLIC_KEY_VAL" ] && [ -f "$PROJECT_DIR/.env" ]; then
+  LANGFUSE_PUBLIC_KEY_VAL=$(grep -E '^LANGFUSE_PUBLIC_KEY=' "$PROJECT_DIR/.env" 2>/dev/null | tail -1 | cut -d= -f2-)
+fi
+
+LANGFUSE_RUNNING=false
+if echo "$running_services" | grep -qi "langfuse"; then
+  LANGFUSE_RUNNING=true
+fi
+
+if [ "$LANGFUSE_RUNNING" = "true" ] && [ -z "$LANGFUSE_PUBLIC_KEY_VAL" ]; then
+  SETUP_SCRIPT="$PROJECT_DIR/scripts/setup-langfuse.sh"
+  if [ -f "$SETUP_SCRIPT" ]; then
+    echo "  Langfuse is running but API keys are not set — running setup-langfuse.sh..."
+    bash "$SETUP_SCRIPT" 2>&1 | sed 's/^/  /' || true
+  fi
+fi
+
+# ---- 10. Log to metrics ----
 echo "{\"timestamp\":\"$TIMESTAMP\",\"docker\":true,\"running\":$running_count,\"expected\":$expected_count,\"missing\":\"${missing_services}\",\"action\":\"$action\"}" >> "$METRICS_FILE"
 
 exit 0

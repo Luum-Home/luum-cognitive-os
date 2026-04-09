@@ -12,8 +12,12 @@ When both gateways are enabled, the router tries Bifrost first for supported
 models, falls back to LiteLLM, then to ClaudeExecutor.
 """
 
+import json
 import logging
+import os
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
@@ -199,6 +203,157 @@ def select_model(
 def _total_cost(caps: dict) -> float:
     """Calculate a normalized cost score for sorting. Lower is cheaper."""
     return caps.get("cost_per_1m_in", 0) + caps.get("cost_per_1m_out", 0)
+
+
+# ---------------------------------------------------------------------------
+# Consequence-driven model override
+# ---------------------------------------------------------------------------
+
+# Simple downgrade chain for consequence-based routing
+_DOWNGRADE_CHAIN: Dict[str, Optional[str]] = {
+    "opus": "sonnet",
+    "claude-opus-4-6": "claude-sonnet-4",
+    "sonnet": "haiku",
+    "claude-sonnet-4": "claude-haiku-3.5",
+    "haiku": None,
+    "claude-haiku-3.5": None,
+}
+
+# Shorthand aliases used in routing (normalize to simple names)
+_MODEL_FAMILY: Dict[str, str] = {
+    "claude-opus-4-6": "opus",
+    "claude-sonnet-4": "sonnet",
+    "claude-haiku-3.5": "haiku",
+}
+
+
+def _downgrade_model(model: str) -> Optional[str]:
+    """Return the next cheaper model in the downgrade chain, or None if already at floor."""
+    # Normalize to family name first, then downgrade
+    family = _MODEL_FAMILY.get(model, model)
+    downgraded_family = _DOWNGRADE_CHAIN.get(family)
+    if downgraded_family is None:
+        return None
+    # Try to return a full model ID if available in MODEL_CAPABILITIES
+    for model_id in MODEL_CAPABILITIES:
+        if downgraded_family in model_id.lower():
+            return model_id
+    return downgraded_family
+
+
+def get_consequence_override(
+    skill_name: str,
+    metrics_dir: Optional[str] = None,
+) -> Optional[str]:
+    """Check consequence history and return model override for a skill.
+
+    Rules:
+    - DISABLED: return None (caller should BLOCK the launch)
+    - DEGRADED: force downgrade (opus→sonnet, sonnet→haiku)
+    - PROMOTED: prefer the model that scored highest (opus for high-value tasks)
+    - No record: return sentinel "no-override"
+
+    Args:
+        skill_name: The skill or agent name to check.
+        metrics_dir: Optional path to .cognitive-os/metrics. Auto-detected if None.
+
+    Returns:
+        - None          → skill is DISABLED, do not launch
+        - "no-override" → no consequence data, proceed normally
+        - model string  → use this model (DEGRADED downgrade or PROMOTED preference)
+    """
+    _NO_OVERRIDE = "no-override"
+
+    # Locate the consequence history file
+    if metrics_dir is None:
+        project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
+            "COGNITIVE_OS_PROJECT_DIR", "."
+        )
+        metrics_dir = os.path.join(project_dir, ".cognitive-os", "metrics")
+
+    history_path = Path(metrics_dir) / "consequence-history.jsonl"
+    if not history_path.exists():
+        return _NO_OVERRIDE
+
+    # Read all records for the skill, in chronological order
+    records: List[Dict[str, Any]] = []
+    try:
+        with open(history_path, "r", encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                # Match on agent_or_skill (performance records) or target (action records)
+                target = entry.get("agent_or_skill") or entry.get("target", "")
+                if target == skill_name:
+                    records.append(entry)
+    except OSError:
+        return _NO_OVERRIDE
+
+    if not records:
+        return _NO_OVERRIDE
+
+    # Determine the most recent significant action
+    # Walk backwards to find the last disable / re-enable / degradation / promotion
+    latest_disable_ts: Optional[datetime] = None
+    latest_reenable_ts: Optional[datetime] = None
+    latest_degrade_ts: Optional[datetime] = None
+    latest_promote_ts: Optional[datetime] = None
+
+    def _parse_ts(ts_str: str) -> Optional[datetime]:
+        try:
+            return datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+        except (ValueError, TypeError, AttributeError):
+            return None
+
+    for entry in records:
+        rt = entry.get("record_type", "")
+        ts = _parse_ts(entry.get("timestamp", ""))
+        if ts is None:
+            continue
+        if rt == "disable":
+            if latest_disable_ts is None or ts > latest_disable_ts:
+                latest_disable_ts = ts
+        elif rt == "re-enable":
+            if latest_reenable_ts is None or ts > latest_reenable_ts:
+                latest_reenable_ts = ts
+        elif rt == "degradation":
+            if latest_degrade_ts is None or ts > latest_degrade_ts:
+                latest_degrade_ts = ts
+        elif rt == "promotion":
+            if latest_promote_ts is None or ts > latest_promote_ts:
+                latest_promote_ts = ts
+
+    # DISABLED check: most recent disable is after most recent re-enable
+    if latest_disable_ts is not None:
+        if latest_reenable_ts is None or latest_disable_ts > latest_reenable_ts:
+            return None  # Caller should BLOCK
+
+    # DEGRADED check: most recent degradation not superseded by promotion
+    if latest_degrade_ts is not None:
+        if latest_promote_ts is None or latest_degrade_ts > latest_promote_ts:
+            # Get the task-type model for this skill and downgrade it
+            from lib.dispatch_model_advisor import classify_task_type, _TASK_MODEL_MAP
+            task_type = classify_task_type(skill_name)
+            base_model = _TASK_MODEL_MAP.get(task_type, "sonnet")
+            downgraded = _downgrade_model(base_model)
+            return downgraded if downgraded is not None else "haiku"
+
+    # PROMOTED check: most recent promotion
+    if latest_promote_ts is not None:
+        if latest_degrade_ts is None or latest_promote_ts > latest_degrade_ts:
+            # For promoted skills, use opus (highest quality model)
+            # Find the best opus-family model available
+            for model_id in MODEL_CAPABILITIES:
+                if "opus" in model_id.lower():
+                    return model_id
+            return "opus"
+
+    return _NO_OVERRIDE
 
 
 def format_routing_table() -> str:

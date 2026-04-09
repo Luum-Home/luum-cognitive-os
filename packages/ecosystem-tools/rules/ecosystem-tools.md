@@ -238,6 +238,42 @@ Documents all external tools integrated into Cognitive OS, their configuration, 
 | Required | No (optional dependency) |
 | Scope | Multi-session coordination |
 
+### claude-hud — Real-Time Session HUD
+
+| Property | Value |
+|----------|-------|
+| Purpose | Displays a persistent statusline below the Claude Code input showing context usage %, active tools, running subagents, todo progress, session cost, model name, and git branch |
+| Config | `~/.claude/plugins/claude-hud/config.json` — optional overrides for layout, display toggles, colors |
+| Hook | N/A — runs via Claude Code's native `statusLine` API (configured in `~/.claude/settings.json`) |
+| Install | Via Claude Code plugin system: `/plugin marketplace add jarrodwatts/claude-hud` then `/plugin install claude-hud` then `/claude-hud:setup` |
+| Required | No (optional enhancement, graceful skip if not installed) |
+| Scope | All Claude Code sessions globally (user-scoped plugin) |
+| GitHub | [jarrodwatts/claude-hud](https://github.com/jarrodwatts/claude-hud) |
+| License | MIT |
+| Status | **ADOPT** — installed and configured |
+
+**What it shows** (default Essential preset, customizable via `/claude-hud:configure`):
+
+```
+[claude-opus-4-6] │ luum-agent-os git:(main*)
+Context ████░░░░░░ 38% │ Usage ██░░░░░░░░ 22% (1h 20m / 5h)
+◐ Edit: ecosystem-tools.md | ✓ Read ×3 | ✓ Grep ×2
+◐ explore [sonnet]: Finding auth code (2m 15s)
+```
+
+**Configuration** (active config at `~/.claude/plugins/claude-hud/config.json`):
+- `lineLayout: expanded` — multi-line display
+- `display.showTools: true` — tool activity line
+- `display.showAgents: true` — subagent status line
+- `display.showCost: true` — session cost
+- `display.showDuration: true` — session duration
+
+**Integration with Cognitive OS**: The context bar directly correlates with `rules/context-management.md` thresholds (50%/70%/85%). Seeing the bar approach yellow/red is an early warning to save state to Engram.
+
+**Manual install path** (if plugin system is unavailable): Clone `https://github.com/jarrodwatts/claude-hud` to `~/.claude/plugins/cache/claude-hud/claude-hud/{version}/`, add `statusLine` config to `~/.claude/settings.json`, then restart Claude Code.
+
+**Metrics**: No separate metrics file — statusline renders natively in the terminal UI.
+
 ## Graceful Degradation Pattern
 
 All ecosystem tool hooks follow this pattern:

@@ -148,6 +148,47 @@ except Exception:
   fi
 fi
 
+# --- Step 5b: Self-improve KPI flag ---
+# Check last KPI snapshot. If first_pass_success_rate < 0.70 OR
+# avg_trust_score < 60, write a flag so session-init warns next session.
+SELF_IMPROVE_FLAG="$GLOBAL_METRICS_DIR/.self-improve-recommended"
+KPI_FILE="$GLOBAL_METRICS_DIR/kpi-history.jsonl"
+
+if [ -f "$KPI_FILE" ] && command -v python3 >/dev/null 2>&1; then
+  KPI_VERDICT=$(python3 -c "
+import json, sys
+
+kpi_file = '$KPI_FILE'
+flag_file = '$SELF_IMPROVE_FLAG'
+
+try:
+    with open(kpi_file, 'r') as f:
+        lines = [l.strip() for l in f if l.strip()]
+    if not lines:
+        sys.exit(0)
+    last = json.loads(lines[-1])
+    first_pass = float(last.get('first_pass_success_rate', 1.0))
+    avg_trust  = float(last.get('avg_trust_score', 100.0))
+    if first_pass < 0.70 or avg_trust < 60.0:
+        with open(flag_file, 'w') as fh:
+            json.dump({'reason': 'first_pass_success_rate={:.2f} avg_trust_score={:.1f}'.format(first_pass, avg_trust),
+                       'timestamp': last.get('timestamp', '')}, fh)
+        print('RECOMMENDED')
+    else:
+        # Clear stale flag if KPIs recovered
+        import os
+        if os.path.exists(flag_file):
+            os.remove(flag_file)
+        print('OK')
+except Exception as ex:
+    print('ERROR:' + str(ex))
+" 2>/dev/null || echo "SKIP")
+
+  if [ "$KPI_VERDICT" = "RECOMMENDED" ]; then
+    echo "SELF-IMPROVE RECOMMENDED: KPIs below threshold — run /self-improve at next session start." >&2
+  fi
+fi
+
 # --- Step 6: Symbiosis Check (organism health) ---
 # Measure overhead-to-value ratio. Alert if parasitic.
 if command -v python3 >/dev/null 2>&1; then
