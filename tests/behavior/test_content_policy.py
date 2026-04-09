@@ -254,6 +254,9 @@ class TestNoViolations:
                 "--exclude-dir=pi-mono",
                 "--exclude-dir=caveman",
                 "--exclude-dir=.git",
+                # Exclude cos/ — it's just symlinks to rules/ which is already scanned.
+                # Scanning cos/ causes the same files to be checked twice, doubling scan time.
+                "--exclude-dir=cos",
                 str(PROJECT_ROOT),
             ],
             capture_output=True,
