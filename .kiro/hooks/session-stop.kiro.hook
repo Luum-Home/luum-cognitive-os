@@ -1,0 +1,12 @@
+{
+  "name": "Session Stop",
+  "description": "Cognitive OS portability shim: session learning, cleanup, and KPI trigger at end of agent turn. Maps to Claude Code Stop hooks. NOTE: Kiro's 'agentStop' fires when the agent finishes its turn — equivalent to Claude Code's Stop event.",
+  "version": "1",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "runShell",
+    "command": "bash \"${workspaceFolder}/hooks/session-learning.sh\"; bash \"${workspaceFolder}/hooks/session-cleanup.sh\"; bash \"${workspaceFolder}/hooks/kpi-trigger.sh\""
+  }
+}

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# PostToolUse hook: Auto-Refine (PITER loop)
+# DEPRECATED: This hook's functionality is merged into completion-gate.sh (Phase 3).
+# Do NOT wire this hook — it would duplicate the auto-refine/PITER loop in completion-gate.
+# Original: PostToolUse hook: Auto-Refine (PITER loop)
 # Fires on "Agent" completions — detects failures and tracks retry count.
 # Outputs ORCHESTRATOR ACTION REQUIRED on failure (max 3 retries), ESCALATION at limit.
 

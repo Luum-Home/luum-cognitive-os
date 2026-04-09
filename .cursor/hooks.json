@@ -1,0 +1,173 @@
+{
+  "_comment": "Cognitive OS hooks portability shim for Cursor IDE (hooks v1, Cursor 1.7+).",
+  "_note": "Hook scripts are identical to Claude Code. Only this registration config differs.",
+  "_variable": "Cursor does not expose a $PROJECT_DIR variable — hooks run with cwd = workspace root, so relative paths work. Use shell expansion for portability.",
+  "_gaps": {
+    "SessionStart": "Cursor has no sessionStart lifecycle event. Use 'beforeSubmitPrompt' as the nearest substitute for first-prompt setup, but it fires on every prompt — guard with a flag file if needed.",
+    "PreCompact": "Cursor has no context-compaction lifecycle event. pre-compaction-flush.sh cannot be wired here.",
+    "TeammateIdle": "Cursor-specific team event — not applicable.",
+    "TaskCreated": "Cursor-specific task event — not applicable.",
+    "TaskCompleted": "Cursor-specific task event — not applicable.",
+    "PostToolUse_Agent": "Cursor has no sub-agent concept. Hooks that fire on Claude Code 'Agent' tool use are mapped to 'afterFileEdit' or 'stop' as best-effort approximations.",
+    "matcher_Bash_only": "Cursor's 'beforeShellExecution' covers all shell use. Bash-specific matchers from Claude Code map 1:1.",
+    "matcher_Agent_only": "No direct equivalent. Agent-scoped hooks from Claude Code are mapped to 'stop' (post-turn) as the closest Cursor lifecycle point."
+  },
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "_comment": "Nearest substitute for SessionStart — fires on every prompt, not only session open. Guards should be used in the scripts themselves (flag files / lock files).",
+        "command": "bash \"${PWD}/hooks/session-init.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/crash-recovery.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/session-resume.sh\""
+      }
+    ],
+
+    "beforeShellExecution": [
+      {
+        "_comment": "Maps to PreToolUse[Bash] in Claude Code — rate limiting and loop detection for shell commands.",
+        "command": "bash \"${PWD}/hooks/rate-limiter.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/tool-loop-detector.sh\""
+      },
+      {
+        "_comment": "Resource / dispatch gates — originally Agent-scoped in Claude Code but applied broadly here since Cursor has no agent sub-process concept.",
+        "command": "bash \"${PWD}/hooks/resource-check.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/blast-radius.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/error-pattern-detector.sh\""
+      }
+    ],
+
+    "beforeReadFile": [
+      {
+        "_comment": "Maps to PreToolUse[Read] — no direct Claude Code equivalent registered, but large-file advisor is useful here.",
+        "command": "bash \"${PWD}/hooks/large-file-advisor.sh\""
+      }
+    ],
+
+    "afterFileEdit": [
+      {
+        "_comment": "Maps to PostToolUse[Edit|Write] — security and quality gates that run after every file write.",
+        "command": "bash \"${PWD}/hooks/secret-detector.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/content-policy.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/architecture-compliance.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/scope-creep-detector.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/doc-sync-detector.sh\""
+      },
+      {
+        "_comment": "Crash-recovery checkpoint — maps to PostToolUse[Bash|Edit|Write] in Claude Code.",
+        "command": "bash \"${PWD}/hooks/auto-checkpoint.sh\""
+      }
+    ],
+
+    "beforeMCPExecution": [
+      {
+        "_comment": "Maps to PreToolUse[Agent] in Claude Code — validation gates before any MCP/agent tool use.",
+        "command": "bash \"${PWD}/hooks/dispatch-gate.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/clarification-gate.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/inject-phase-context.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/agent-prelaunch.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/completeness-check.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/prompt-quality.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/epic-task-detector.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/context-diet.sh\""
+      }
+    ],
+
+    "stop": [
+      {
+        "_comment": "Maps to Stop hooks AND PostToolUse[Agent] hooks — fires at end of each agent turn.",
+
+        "_comment_error_pipeline": "Bash PostToolUse error pipeline — approximated at turn end (no per-command granularity in Cursor).",
+        "command": "bash \"${PWD}/hooks/error-pipeline.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/error-learning.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/result-truncator.sh\""
+      },
+      {
+        "_comment": "Agent PostToolUse hooks — quality and consequence evaluation at turn end.",
+        "command": "bash \"${PWD}/hooks/claim-validator.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/completion-gate.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/agent-checkpoint.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/trust-score-validator.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/auto-skill-generator.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/auto-repair-dispatcher.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/dequeue-notify.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/consequence-evaluator.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/confidence-gate.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/scope-proportionality.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/assumption-tracker.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/skill-feedback-tracker.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/context-watchdog.sh\""
+      },
+      {
+        "_comment": "Stop lifecycle hooks — session wrap-up.",
+        "command": "bash \"${PWD}/hooks/session-learning.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/session-cleanup.sh\""
+      },
+      {
+        "command": "bash \"${PWD}/hooks/kpi-trigger.sh\""
+      }
+    ]
+  }
+}

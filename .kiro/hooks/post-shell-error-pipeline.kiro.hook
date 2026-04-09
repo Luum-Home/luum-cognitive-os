@@ -1,0 +1,13 @@
+{
+  "name": "Post Shell Error Pipeline",
+  "description": "Cognitive OS portability shim: captures errors, truncates large output, and runs error learning after each shell command execution. Maps to Claude Code PostToolUse[Bash] hooks. Also runs the crash-recovery checkpoint (PostToolUse[Bash|Edit|Write] in Claude Code).",
+  "version": "1",
+  "when": {
+    "type": "postToolUse",
+    "toolName": "shell"
+  },
+  "then": {
+    "type": "runShell",
+    "command": "bash \"${workspaceFolder}/hooks/error-pipeline.sh\"; bash \"${workspaceFolder}/hooks/result-truncator.sh\"; bash \"${workspaceFolder}/hooks/error-learning.sh\"; bash \"${workspaceFolder}/hooks/auto-checkpoint.sh\""
+  }
+}

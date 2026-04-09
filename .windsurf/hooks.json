@@ -1,0 +1,264 @@
+{
+  "_comment": "Cognitive OS hooks portability shim for Windsurf / Cascade (hooks schema v1).",
+  "_note": "Hook scripts are identical to Claude Code. Only this registration config differs.",
+  "_variable": "Windsurf hooks run with cwd = workspace root by default. Use relative paths from project root or set working_directory explicitly.",
+  "_gaps": {
+    "SessionStart": "Windsurf has no sessionStart lifecycle event. 'pre_user_prompt' is the closest substitute — fires before each user message, not only on session open. Guard with a flag file in the scripts.",
+    "PreCompact": "Windsurf has no context-compaction event. pre-compaction-flush.sh cannot be wired here.",
+    "PreToolUse_Agent": "Windsurf maps agent/MCP tool calls to pre_mcp_tool_use. Claude Code 'Agent' matcher hooks are placed there.",
+    "PostToolUse_Agent": "Windsurf maps post-MCP to post_mcp_tool_use. Claude Code 'Agent' PostToolUse hooks are placed there.",
+    "PostToolUse_Bash_error_pipeline": "Windsurf's post_run_command fires after each shell command — a finer granularity than Claude Code's PostToolUse[Bash], so error learning is more precise here.",
+    "stop": "post_cascade_response is the equivalent of Claude Code's Stop event.",
+    "TeammateIdle": "Windsurf-specific concept — not applicable.",
+    "TaskCreated": "Not applicable in Windsurf.",
+    "TaskCompleted": "Not applicable in Windsurf."
+  },
+  "hooks": {
+    "pre_user_prompt": [
+      {
+        "_comment": "Nearest substitute for SessionStart — fires on every prompt. Scripts should self-guard with flag files.",
+        "command": "bash \"${PWD}/hooks/session-init.sh\"",
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/crash-recovery.sh\"",
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/session-resume.sh\"",
+        "working_directory": "${workspaceFolder}"
+      }
+    ],
+
+    "pre_run_command": [
+      {
+        "_comment": "Maps to PreToolUse[Bash] — rate limiting and loop detection before each shell command.",
+        "command": "bash \"${PWD}/hooks/rate-limiter.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/tool-loop-detector.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      }
+    ],
+
+    "post_run_command": [
+      {
+        "_comment": "Maps to PostToolUse[Bash] — error capture and result truncation after each shell command.",
+        "command": "bash \"${PWD}/hooks/error-pipeline.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/result-truncator.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/error-learning.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "_comment": "Crash-recovery checkpoint — maps to PostToolUse[Bash|Edit|Write].",
+        "command": "bash \"${PWD}/hooks/auto-checkpoint.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      }
+    ],
+
+    "pre_read_code": [
+      {
+        "_comment": "No direct Claude Code equivalent registered for PreToolUse[Read], but large-file advisor fits here.",
+        "command": "bash \"${PWD}/hooks/large-file-advisor.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      }
+    ],
+
+    "pre_write_code": [
+      {
+        "_comment": "Maps to PreToolUse for write/edit operations — no direct Claude Code equivalent, but secret detector as a pre-write gate adds value.",
+        "command": "bash \"${PWD}/hooks/secret-detector.sh\"",
+        "show_output": true,
+        "working_directory": "${workspaceFolder}"
+      }
+    ],
+
+    "post_write_code": [
+      {
+        "_comment": "Maps to PostToolUse[Edit|Write] — security and quality gates after every file write.",
+        "command": "bash \"${PWD}/hooks/content-policy.sh\"",
+        "show_output": true,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/architecture-compliance.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/scope-creep-detector.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/doc-sync-detector.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "_comment": "Crash-recovery checkpoint.",
+        "command": "bash \"${PWD}/hooks/auto-checkpoint.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      }
+    ],
+
+    "pre_mcp_tool_use": [
+      {
+        "_comment": "Maps to PreToolUse[Agent] — all validation gates before agent/MCP tool invocation.",
+        "command": "bash \"${PWD}/hooks/resource-check.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/dispatch-gate.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/clarification-gate.sh\"",
+        "show_output": true,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/blast-radius.sh\"",
+        "show_output": true,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/inject-phase-context.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/agent-prelaunch.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/completeness-check.sh\"",
+        "show_output": true,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/error-pattern-detector.sh\"",
+        "show_output": true,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/prompt-quality.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/epic-task-detector.sh\"",
+        "show_output": true,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/context-diet.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      }
+    ],
+
+    "post_mcp_tool_use": [
+      {
+        "_comment": "Maps to PostToolUse[Agent] — quality gates and consequence evaluation after each MCP tool use.",
+        "command": "bash \"${PWD}/hooks/claim-validator.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/completion-gate.sh\"",
+        "show_output": true,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/agent-checkpoint.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/trust-score-validator.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/auto-skill-generator.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/auto-repair-dispatcher.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/dequeue-notify.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/consequence-evaluator.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/confidence-gate.sh\"",
+        "show_output": true,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/scope-proportionality.sh\"",
+        "show_output": true,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/assumption-tracker.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/skill-feedback-tracker.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/context-watchdog.sh\"",
+        "show_output": false,
+        "working_directory": "${workspaceFolder}"
+      }
+    ],
+
+    "post_cascade_response": [
+      {
+        "_comment": "Maps to Stop — session wrap-up hooks that fire at end of each Cascade response turn.",
+        "command": "bash \"${PWD}/hooks/session-learning.sh\"",
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/session-cleanup.sh\"",
+        "working_directory": "${workspaceFolder}"
+      },
+      {
+        "command": "bash \"${PWD}/hooks/kpi-trigger.sh\"",
+        "working_directory": "${workspaceFolder}"
+      }
+    ]
+  }
+}
