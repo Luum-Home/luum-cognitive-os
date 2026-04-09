@@ -1,0 +1,12 @@
+{
+  "name": "Session Init",
+  "description": "Cognitive OS portability shim: runs session startup hooks (init, crash recovery, session resume) when the agent starts. Maps to Claude Code SessionStart hooks. NOTE: Kiro has no sessionStart event — 'promptSubmit' fires on every prompt. Scripts self-guard with flag files to prevent re-running.",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "runShell",
+    "command": "bash \"${workspaceFolder}/hooks/session-init.sh\" && bash \"${workspaceFolder}/hooks/crash-recovery.sh\" && bash \"${workspaceFolder}/hooks/session-resume.sh\""
+  }
+}

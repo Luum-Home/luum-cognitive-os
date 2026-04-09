@@ -109,57 +109,129 @@ VERIFY_STATUS=""
 VERIFY_FAILED=0
 
 if [ "$IS_COMPLETION" = "true" ] && [ -n "$AGENT_PROMPT" ] && [ "$AGENT_PROMPT" != "null" ]; then
-  if ! echo "$AGENT_PROMPT" | grep -qiE "ACCEPTANCE CRITERIA|acceptance criteria"; then
+  # Check prompt first, then response — agents often define criteria in their output
+  CRITERIA_SOURCE=""
+  if echo "$AGENT_PROMPT" | grep -qiE "ACCEPTANCE CRITERIA|acceptance criteria"; then
+    CRITERIA_SOURCE="$AGENT_PROMPT"
+  elif echo "$RESPONSE" | grep -qiE "ACCEPTANCE CRITERIA|acceptance criteria"; then
+    CRITERIA_SOURCE="$RESPONSE"
+  fi
+
+  if [ -z "$CRITERIA_SOURCE" ]; then
     mkdir -p "$METRICS_DIR" 2>/dev/null
     AGENT_DESC=$(echo "$AGENT_PROMPT" | head -c 100)
     safe_jsonl_append "$VERIFY_LOG" "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"status\":\"NO_CRITERIA\",\"agent\":$(echo "$AGENT_DESC" | jq -Rs .),\"checks\":0,\"passed\":0,\"failed\":0}"
     echo ""; echo "=== COMPLETION-GATE: AUTO-VERIFY WARNING ==="; echo ""
-    echo "No ACCEPTANCE CRITERIA defined in the agent prompt."
+    echo "No ACCEPTANCE CRITERIA defined in the agent prompt or response."
     echo "See: rules/acceptance-criteria.md"; echo ""
     VERIFY_STATUS="NO_CRITERIA"
   else
-    CRITERIA_BLOCK=$(echo "$AGENT_PROMPT" | sed -n '/[Aa][Cc][Cc][Ee][Pp][Tt][Aa][Nn][Cc][Ee] [Cc][Rr][Ii][Tt][Ee][Rr][Ii][Aa]/,/^$/p' | tail -n +2)
-    [ -z "$CRITERIA_BLOCK" ] && CRITERIA_BLOCK=$(echo "$AGENT_PROMPT" | awk '/[Aa][Cc][Cc][Ee][Pp][Tt][Aa][Nn][Cc][Ee] [Cc][Rr][Ii][Tt][Ee][Rr][Ii][Aa]/,/^[A-Z]/' | grep -E '^\s*[0-9]+\.' | head -20)
+    # --- Fix 1: Robust block extraction ---
+    # Extract criteria block: handles ACCEPTANCE CRITERIA:, ## Acceptance Criteria, etc.
+    # Continues past blank lines; stops at the next section header.
+    CRITERIA_BLOCK=$(echo "$CRITERIA_SOURCE" | awk '
+      /^[[:space:]]*(#{1,3}[[:space:]]+)?[Aa]cceptance[[:space:]][Cc]riteria/ ||
+      /^[[:space:]]*ACCEPTANCE[[:space:]]CRITERIA/ {
+        found=1; next
+      }
+      found {
+        # Stop at next section header: markdown header, a line starting with 4+ uppercase
+        # letters (ALL-CAPS section label), or a horizontal rule (=== or ---).
+        if (/^[[:space:]]*(#{1,4})[[:space:]]/ ||
+            /^[[:space:]]*[A-Z]{4,}[[:space:]:]/ ||
+            /^[[:space:]]*[A-Z]{4,}$/ ||
+            /^[=]{3,}/ ||
+            /^[-]{3,}[[:space:]]*$/) {
+          exit
+        }
+        # Only print lines that look like criteria items (numbered or bulleted)
+        if (/^[[:space:]]*([0-9]+\.|-|\*)[[:space:]]/) print
+      }
+    ')
     if [ -z "$CRITERIA_BLOCK" ]; then
       VERIFY_STATUS="NO_PARSEABLE"
     else
-      TOTAL_CHECKS=0; PASSED_CHECKS=0; FAILED_CHECKS=0; FAILED_DETAILS=""; PASS_DETAILS=""
+      TOTAL_CHECKS=0; PASSED_CHECKS=0; FAILED_CHECKS=0; SKIPPED_CHECKS=0; FAILED_DETAILS=""; PASS_DETAILS=""; SKIPPED_DETAILS=""
       while IFS= read -r line; do
         [ -z "$line" ] && continue
-        CRITERION_DESC=$(echo "$line" | sed 's/^\s*[0-9]*\.\s*//' | head -c 80)
+        # Normalize: strip leading numbering (1., 2.) or bullets (-, *)
+        CRITERION_DESC=$(echo "$line" | sed 's/^[[:space:]]*[0-9]*\.[[:space:]]*//' | sed 's/^[[:space:]]*[-*][[:space:]]*//' | head -c 100)
         TOTAL_CHECKS=$((TOTAL_CHECKS + 1))
+
+        # --- Fix 2: Extended pattern matching ---
+
+        # Pattern A: `cmd` = N  (exact numeric match)
         if echo "$line" | grep -qE '`[^`]+`\s*=\s*[0-9]+'; then
           CMD=$(echo "$line" | grep -oE '`[^`]+`\s*=\s*[0-9]+' | head -1)
-          VERIFY_CMD=$(echo "$CMD" | sed 's/`//g' | sed 's/\s*=\s*[0-9]*$//')
+          VERIFY_CMD=$(echo "$CMD" | sed 's/`//g' | sed 's/[[:space:]]*=[[:space:]]*[0-9]*$//')
           EXPECTED=$(echo "$CMD" | grep -oE '[0-9]+$')
           if [ -n "$VERIFY_CMD" ] && [ -n "$EXPECTED" ]; then
             ACTUAL=$(cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" 2>/dev/null | tr -d '[:space:]')
             if [ "$ACTUAL" = "$EXPECTED" ]; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
             else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (actual=${ACTUAL:-<error>}, expected=$EXPECTED)"; fi; continue; fi; fi
+
+        # Pattern B: `cmd` >= N  (threshold match)
         if echo "$line" | grep -qE '`[^`]+`\s*>=\s*[0-9]+'; then
           CMD=$(echo "$line" | grep -oE '`[^`]+`\s*>=\s*[0-9]+' | head -1)
-          VERIFY_CMD=$(echo "$CMD" | sed 's/`//g' | sed 's/\s*>=\s*[0-9]*$//')
+          VERIFY_CMD=$(echo "$CMD" | sed 's/`//g' | sed 's/[[:space:]]*>=[[:space:]]*[0-9]*$//')
           THRESHOLD=$(echo "$CMD" | grep -oE '[0-9]+$')
           if [ -n "$VERIFY_CMD" ] && [ -n "$THRESHOLD" ]; then
             ACTUAL=$(cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" 2>/dev/null | tr -d '[:space:]' | grep -oE '[0-9]+' | head -1)
             if [ -n "$ACTUAL" ] && [ "$ACTUAL" -ge "$THRESHOLD" ] 2>/dev/null; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
             else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (actual=${ACTUAL:-<error>}, threshold=$THRESHOLD)"; fi; continue; fi; fi
+
+        # Pattern C: `cmd` exits 0 / exit 0 (exit-code match — original)
         if echo "$line" | grep -qiE '`[^`]+`\s*exits?\s*0'; then
           VERIFY_CMD=$(echo "$line" | grep -oE '`[^`]+`' | head -1 | tr -d '`')
           if [ -n "$VERIFY_CMD" ]; then
             if cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" &>/dev/null; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
-            else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (exit code $?, expected 0)"; fi; continue; fi; fi
+            else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (exit code non-zero, expected 0)"; fi; continue; fi; fi
+
+        # Pattern D: `cmd` should exit 0 / should return 0 / returns 0
+        if echo "$line" | grep -qiE '`[^`]+`\s*(should\s+)?(exit|return)s?\s*0'; then
+          VERIFY_CMD=$(echo "$line" | grep -oE '`[^`]+`' | head -1 | tr -d '`')
+          if [ -n "$VERIFY_CMD" ]; then
+            if cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" &>/dev/null; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
+            else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (exit code non-zero, expected 0)"; fi; continue; fi; fi
+
+        # Pattern E: `cmd` should return empty / returns nothing / returns empty
+        if echo "$line" | grep -qiE '`[^`]+`\s*(should\s+)?(return|returns|produce)s?\s*(empty|nothing|no\s+output)'; then
+          VERIFY_CMD=$(echo "$line" | grep -oE '`[^`]+`' | head -1 | tr -d '`')
+          if [ -n "$VERIFY_CMD" ]; then
+            ACTUAL=$(cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$VERIFY_CMD" 2>/dev/null)
+            if [ -z "$ACTUAL" ]; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
+            else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (expected empty output, got: ${ACTUAL:0:60})"; fi; continue; fi; fi
+
+        # Pattern F: bare shell command (no backticks) starting with common tools
+        if echo "$line" | grep -qiE '(^|:[[:space:]]*)(grep|find|wc|test|ls|go |python|pytest|yarn|npm|cargo|make|./)[[:alnum:]]'; then
+          BARE_CMD=$(echo "$line" | grep -oE '(grep|find|wc|test|ls|go |python[23]?|pytest|yarn|npm|cargo|make|\./)[^|&;]*' | head -1)
+          if [ -n "$BARE_CMD" ]; then
+            if cd "$PROJECT_DIR" && timeout "$MAX_VERIFY_TIME" bash -c "$BARE_CMD" &>/dev/null; then PASSED_CHECKS=$((PASSED_CHECKS + 1)); PASS_DETAILS="${PASS_DETAILS}\n  PASS: $CRITERION_DESC"
+            else FAILED_CHECKS=$((FAILED_CHECKS + 1)); FAILED_DETAILS="${FAILED_DETAILS}\n  FAIL: $CRITERION_DESC (command failed)"; fi; continue; fi; fi
+
+        # --- Fix 3: Don't discard — report as SKIPPED ---
+        SKIPPED_CHECKS=$((SKIPPED_CHECKS + 1))
         TOTAL_CHECKS=$((TOTAL_CHECKS - 1))
+        SKIPPED_DETAILS="${SKIPPED_DETAILS}\n  SKIP: $CRITERION_DESC"
       done <<< "$CRITERIA_BLOCK"
-      if [ "$TOTAL_CHECKS" -eq 0 ]; then VERIFY_STATUS="NO_PARSEABLE"
+      if [ "$TOTAL_CHECKS" -eq 0 ] && [ "$SKIPPED_CHECKS" -gt 0 ]; then
+        VERIFY_STATUS="NO_PARSEABLE"
+        safe_jsonl_append "$VERIFY_LOG" "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"status\":\"NO_PARSEABLE\",\"agent\":$(echo "$AGENT_PROMPT" | head -c 100 | jq -Rs .),\"checks\":0,\"passed\":0,\"failed\":0,\"skipped\":$SKIPPED_CHECKS}"
+        echo ""; echo "=== COMPLETION-GATE: CRITERIA NOT PARSEABLE ==="; echo "$SKIPPED_CHECKS criteria found but none matched a known verification pattern."
+        echo "Skipped criteria:"; echo -e "$SKIPPED_DETAILS"; echo ""
+      elif [ "$TOTAL_CHECKS" -eq 0 ]; then VERIFY_STATUS="NO_PARSEABLE"
       elif [ "$FAILED_CHECKS" -gt 0 ]; then
         VERIFY_STATUS="FAIL"; VERIFY_FAILED=$FAILED_CHECKS
-        safe_jsonl_append "$VERIFY_LOG" "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"status\":\"FAIL\",\"agent\":$(echo "$AGENT_PROMPT" | head -c 100 | jq -Rs .),\"checks\":$TOTAL_CHECKS,\"passed\":$PASSED_CHECKS,\"failed\":$FAILED_CHECKS}"
-        echo ""; echo "=== COMPLETION-GATE: VERIFICATION FAILED ==="; echo "Task is NOT complete. $FAILED_CHECKS of $TOTAL_CHECKS acceptance criteria FAILED."; echo -e "$PASS_DETAILS"; echo -e "$FAILED_DETAILS"; echo ""
+        safe_jsonl_append "$VERIFY_LOG" "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"status\":\"FAIL\",\"agent\":$(echo "$AGENT_PROMPT" | head -c 100 | jq -Rs .),\"checks\":$TOTAL_CHECKS,\"passed\":$PASSED_CHECKS,\"failed\":$FAILED_CHECKS,\"skipped\":$SKIPPED_CHECKS}"
+        echo ""; echo "=== COMPLETION-GATE: VERIFICATION FAILED ==="; echo "Task is NOT complete. $FAILED_CHECKS of $TOTAL_CHECKS acceptance criteria FAILED."
+        echo -e "$PASS_DETAILS"; echo -e "$FAILED_DETAILS"
+        [ -n "$SKIPPED_DETAILS" ] && echo -e "$SKIPPED_DETAILS"; echo ""
       else
         VERIFY_STATUS="PASS"
-        safe_jsonl_append "$VERIFY_LOG" "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"status\":\"PASS\",\"agent\":$(echo "$AGENT_PROMPT" | head -c 100 | jq -Rs .),\"checks\":$TOTAL_CHECKS,\"passed\":$PASSED_CHECKS,\"failed\":0}"
-        echo ""; echo "=== COMPLETION-GATE: VERIFICATION PASSED === ($PASSED_CHECKS/$TOTAL_CHECKS)"; echo ""
+        safe_jsonl_append "$VERIFY_LOG" "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"status\":\"PASS\",\"agent\":$(echo "$AGENT_PROMPT" | head -c 100 | jq -Rs .),\"checks\":$TOTAL_CHECKS,\"passed\":$PASSED_CHECKS,\"failed\":0,\"skipped\":$SKIPPED_CHECKS}"
+        echo ""; echo "=== COMPLETION-GATE: VERIFICATION PASSED === ($PASSED_CHECKS/$TOTAL_CHECKS)"
+        [ "$SKIPPED_CHECKS" -gt 0 ] && echo "  ($SKIPPED_CHECKS criteria skipped — no parseable command found)"
+        echo ""
       fi
     fi
   fi

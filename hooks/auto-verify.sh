@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# PostToolUse hook: Auto-Verify (acceptance criteria extraction)
+# DEPRECATED: This hook's functionality is merged into completion-gate.sh (Phase 1).
+# Do NOT wire this hook — it would duplicate the auto-verify already in completion-gate.
+# Original: PostToolUse hook: Auto-Verify (acceptance criteria extraction)
 # Fires on "Agent" completions — checks if output contains ACCEPTANCE CRITERIA section.
 # Advisory only (exit 0 always). Logs result to metrics.
 
