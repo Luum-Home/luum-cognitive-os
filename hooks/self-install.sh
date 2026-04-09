@@ -190,6 +190,18 @@ CORE_RULES=(
 # Build the effective allowed-rules list based on profile
 if [[ "$EFFICIENCY_PROFILE" == "lean" ]]; then
   ALLOWED_RULES=("RULES-COMPACT.md")
+elif [[ "$EFFICIENCY_PROFILE" == "full" ]] || [[ "$IS_SELF_HOSTING" == "true" ]]; then
+  # Full/self-hosting: symlink ALL rules that exist in rules/
+  ALLOWED_RULES=()
+  if [ -d "$PROJECT_DIR/rules" ]; then
+    for f in "$PROJECT_DIR/rules"/*.md; do
+      [ -f "$f" ] && ALLOWED_RULES+=("$(basename "$f")")
+    done
+  fi
+  # Ensure CORE_RULES are always included even if rules/ dir is empty
+  if [ ${#ALLOWED_RULES[@]} -eq 0 ]; then
+    ALLOWED_RULES=("${CORE_RULES[@]}")
+  fi
 else
   ALLOWED_RULES=("${CORE_RULES[@]}")
 fi

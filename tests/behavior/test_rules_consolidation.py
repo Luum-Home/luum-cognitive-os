@@ -106,32 +106,36 @@ class TestRuleInventory:
             f"Files: {[f.name for f in rule_files]}"
         )
 
-    def test_cos_symlinks_match_core_rules_count(self):
-        """Symlinks in .claude/rules/cos/ must equal exactly the CORE_RULES set.
+    def test_cos_symlinks_match_rules_count(self):
+        """Number of symlinks in .claude/rules/cos/ must equal integrated rules.
 
-        self-install.sh selectively syncs only CORE_RULES into cos/ (not all 95 rules).
-        This keeps session context overhead at ~21K tokens instead of ~93K tokens.
-        See docs/rules-loading-architecture.md for the rationale.
+        Rules in PENDING_INTEGRATION_RULES are not yet synced and excluded.
+        In self-hosting mode, self-install.sh syncs ALL rules to cos/.
+        In standard mode, only CORE_RULES are synced.
         """
         if not COS_RULES_DIR.exists():
             pytest.skip(".claude/rules/cos/ does not exist")
-        symlinks = {s.name for s in COS_RULES_DIR.glob("*.md")}
-        assert symlinks == CORE_RULES, (
-            f"cos/ symlinks != CORE_RULES.\n"
-            f"Missing from cos/: {CORE_RULES - symlinks}.\n"
-            f"Extra in cos/ (not in CORE_RULES): {symlinks - CORE_RULES}"
+        symlinks = list(COS_RULES_DIR.glob("*.md"))
+        integrated_rules = [
+            f for f in _get_rule_files() if f.name not in PENDING_INTEGRATION_RULES
+        ]
+        assert len(symlinks) == len(integrated_rules), (
+            f"Symlinks ({len(symlinks)}) != integrated rule files ({len(integrated_rules)}). "
+            f"Missing in cos/: {set(f.name for f in integrated_rules) - set(s.name for s in symlinks)}. "
+            f"Extra in cos/: {set(s.name for s in symlinks) - set(f.name for f in integrated_rules)}"
         )
 
-    def test_every_core_rule_has_a_symlink(self):
-        """Every CORE_RULE must have a corresponding symlink in .claude/rules/cos/.
+    def test_every_integrated_rule_has_a_symlink(self):
+        """Every integrated rule file must have a corresponding symlink in .claude/rules/cos/.
 
-        Non-core rules are intentionally excluded from cos/ to save context tokens.
+        Self-hosting mode syncs ALL rules (not just CORE_RULES).
         """
         if not COS_RULES_DIR.exists():
             pytest.skip(".claude/rules/cos/ does not exist")
+        rule_names = {f.name for f in _get_rule_files()} - PENDING_INTEGRATION_RULES
         symlink_names = {s.name for s in COS_RULES_DIR.glob("*.md")}
-        missing = CORE_RULES - symlink_names
-        assert not missing, f"Core rules without symlinks in cos/: {sorted(missing)}"
+        missing = rule_names - symlink_names
+        assert not missing, f"Rules without symlinks: {sorted(missing)}"
 
     def test_pending_rules_tracked(self):
         """PENDING_INTEGRATION_RULES must actually be pending (no symlink yet)."""
@@ -616,19 +620,22 @@ class TestSelfInstallIntegration:
 
         return tmp_path
 
-    def test_full_profile_keeps_core_rules(self):
-        """With full/self-hosting profile, only CORE_RULES are in cos/.
+    def test_full_profile_keeps_all_integrated_rules(self):
+        """With full/self-hosting profile, all integrated rule symlinks are in cos/.
 
-        The self-install.sh ALWAYS uses CORE_RULES for non-lean profiles
-        (standard, full, self-hosting). This limits cos/ to 16 rules
-        (~21K tokens) instead of all 95 (~93K tokens).
+        self-install.sh syncs ALL rules for self-hosted development, providing
+        maximum context coverage. Standard profile keeps only CORE_RULES.
         """
         if not COS_RULES_DIR.exists():
             pytest.skip(".claude/rules/cos/ does not exist")
 
+        integrated_count = len([
+            f for f in RULES_DIR.glob("*.md")
+            if f.name not in PENDING_INTEGRATION_RULES
+        ])
         cos_count = len(list(COS_RULES_DIR.glob("*.md")))
-        assert cos_count == len(CORE_RULES), (
-            f"Full profile: cos/ has {cos_count} but expected {len(CORE_RULES)} (CORE_RULES)"
+        assert cos_count == integrated_count, (
+            f"Full/self-hosting profile: cos/ has {cos_count} but integrated rules has {integrated_count}"
         )
 
     def test_lean_profile_only_keeps_compact(self, tmp_path):

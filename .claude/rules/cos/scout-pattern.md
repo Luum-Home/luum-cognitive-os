@@ -1,0 +1,1 @@
+<repo>/rules/scout-pattern.md

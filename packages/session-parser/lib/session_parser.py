@@ -392,8 +392,12 @@ def get_session_metrics(session_id_or_path: str | Path) -> dict:
     duration_minutes = 0.0
     if len(timestamps) >= 2:
         try:
+            def _parse_ts(ts: str):
+                # Python <3.11 fromisoformat does not accept 'Z' suffix
+                return datetime.fromisoformat(ts.replace("Z", "+00:00"))
+
             parsed_ts = sorted(
-                datetime.fromisoformat(ts) for ts in timestamps if ts
+                _parse_ts(ts) for ts in timestamps if ts
             )
             if len(parsed_ts) >= 2:
                 duration_minutes = round(
