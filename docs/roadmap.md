@@ -1,8 +1,6 @@
 # Cognitive OS Roadmap
 
-> Future features organized by phase. Updated: 2026-03-29 (v0.2.5).
->
-> Current metrics: 5074+ tests, 94 rules, 97 skills, 82 hooks.
+> Future features organized by phase. Updated: 2026-03-26.
 
 ---
 
@@ -27,30 +25,6 @@
 
 ---
 
-## Completed (v0.2.0 -- v0.2.5)
-
-Items delivered across recent releases:
-
-| Feature | Version | Notes |
-|---|---|---|
-| Agent Communication Bus (Valkey pub/sub) | v0.2.0 | Heartbeat, progress tracking, Q&A, file fallback |
-| COS MCP server (`cmd/cos/`) | v0.2.2 | Go CLI with install, audit, registry, perf commands |
-| Hook shell test infrastructure | v0.2.2 | 41 hooks testable via pytest |
-| Onboarding wizard (Go TUI) | v0.2.2 | `cos setup` with stack detection and config generation |
-| Code review and PR review skills | v0.2.3 | `/code-review` and `/pr-review` skills |
-| Hook cache library (`hooks/_lib/cache.sh`) | v0.2.3 | Shared caching for hook performance |
-| Trust report parser (`lib/trust_report_parser.py`) | v0.2.3 | Machine-parseable trust report extraction |
-| Technical debt cleanup (xfail fixes, doc sync) | v0.2.3 | 0 xpassed, 0 failed target |
-| pytest-xdist parallel test support | v0.2.3 | `pytest -n auto` for faster test runs |
-| SubagentStart, UserPromptSubmit, TeammateIdle, TaskCreated, TaskCompleted hooks | v0.2.3 | New hook events for Agent Teams integration |
-| Ecosystem tools: agnix, semgrep, parry, aguara, garak, mcp-scan, promptfoo | v0.2.1+ | All documented in tech radar with graceful degradation |
-| MCP fixes, auto-sync hook, tech debt cleanup | v0.2.4 | Version sync, hook improvements |
-| Paperclip gaps 5-7 wired (safety mesh block sync, task sync, cost streaming) | v0.2.5 | Full Paperclip integration with shared `paperclip-notify.sh` helper |
-| UI evals, E2B sandbox integration, open-source strategy | v0.2.5 | E2B Firecracker microVM support, prompt governance |
-| Flaky test stabilization (hook performance thresholds) | v0.2.5 | Increased tolerance for system load variance |
-
----
-
 ## Phase 1: Multi-Model & Local Execution
 
 **Target: Q2 2026 (April -- June)**
@@ -70,13 +44,6 @@ Run skills locally with Llama 3, Qwen, and Phi for zero-cost development and off
 
 - **Status**: Planned
 - **Dependencies**: Multi-model support via LiteLLM (for unified routing)
-
-### Agent Teams Integration
-
-Native support for Claude Code Agent Teams: multi-agent coordination with TeammateIdle, TaskCreated, TaskCompleted, SubagentStart hooks. Shared task list with validation and completion verification. Idle teammate detection for task redistribution. Builds on the existing Agent Bus infrastructure.
-
-- **Status**: In progress (hooks implemented, orchestration pending)
-- **Dependencies**: Agent Communication Bus (completed)
 
 ### Sandbox mode
 
@@ -99,7 +66,7 @@ Safe environment for experimenting with skills, hooks, and pipelines without aff
 | **Usage Monitor** | MIT | 2-3d | Ground-truth cost reconciliation from Claude's native JSONL |
 | **hcom** | MIT | 5d | Cross-terminal agent communication (SQLite + TCP) |
 
-Status: All analyzed and documented. agnix, semgrep, parry, aguara integrated with hooks. Trail of Bits skills available as submodule. recall and hcom documented. Usage Monitor pending.
+Status: Analyzed, documented in tech radar. Integration pending.
 
 ---
 
@@ -107,7 +74,7 @@ Status: All analyzed and documented. agnix, semgrep, parry, aguara integrated wi
 
 Bidirectional real-time communication between agents and the orchestrator using Valkey (Redis-compatible) pub/sub. Heartbeat monitoring (5s interval, 15s dead detection), progress tracking on each tool use, clarification request/answer flows, and control commands (stop/pause/resume). Terminal dashboard for live agent monitoring. Graceful degradation to file-based signaling when Valkey is unavailable. Foundation for the web dashboard and multi-agent coordination.
 
-- **Status**: Completed (v0.2.0)
+- **Status**: Implemented
 - **Dependencies**: None (Valkey optional, file fallback built-in)
 
 ---
@@ -171,7 +138,7 @@ Paperclip provides the visual UI layer for Cognitive OS. Instead of building a c
 
 The integration layer is a thin Python client (`lib/paperclip_client.py`) plus an enhanced session-end hook (`hooks/paperclip-sync.sh`). Paperclip itself is already running in the Docker stack (`docker-compose.cognitive-os.yml`).
 
-- **Status**: In progress (gaps 1-8 wired, real-time streaming active)
+- **Status**: In progress
 - **Dependencies**: None (Paperclip container and sync hook already exist)
 
 ### Multi-repo orchestration
@@ -334,75 +301,57 @@ This feature requires full Spec-Driven Development:
 6. `sdd-apply` -- Implementation in phases
 7. `sdd-verify` -- Security audit of the auditor itself
 
-### Full Integration Audit — 38 External Dependencies
+### Package Migration — Existing Integrations to cos Packages
 
-Complete inventory of all external tools, services, and dependencies in Cognitive OS, categorized for future `cos install` packaging.
+When `cos install` is built, these existing integrations will be migrated from core to installable packages. The code is already modular (each has its own rule, config, and tests).
 
-#### Docker Services (17 total)
-
-| Service | Profile | Core? | Future Package |
-|---|---|---|---|
-| Langfuse (web + worker) | default | Core | `@luum/langfuse-observability` |
-| Langfuse PostgreSQL | default | Core | (bundled with langfuse) |
-| Langfuse Valkey | default | Core | (bundled with langfuse) |
-| Langfuse ClickHouse | default | Core | (bundled with langfuse) |
-| Langfuse SeaweedFS | default | Core | (bundled with langfuse) |
-| LiteLLM | default | Core | `@luum/litellm-routing` |
-| NeMo Guardrails | default | Core | `@luum/nemo-guardrails` |
-| Paperclip + PostgreSQL | default | Core | `@luum/paperclip-dashboard` |
-| Webhook Trigger | automation | Core | `@luum/webhook-automation` |
-| Jupyter | default | Package | `@luum/jupyter-sandbox` |
-| memU | memory | Package | `@luum/memu-memory` |
-| Cognee | memory | Package | `@luum/cognee-memory` |
-| Opik (backend + mysql + frontend) | observability | Package | `@luum/opik-observability` |
-| AutoMaker | ui | Package | `@luum/automaker-ui` |
-
-#### Python Dependencies (Package candidates)
-
-| Dependency | Purpose | Core? | Future Package |
-|---|---|---|---|
-| crawl4ai | Web crawling for research | Package | `@luum/crawl4ai-web` |
-| deepeval | LLM unit testing | Package | `@luum/deepeval-testing` |
-| ragas | RAG quality evaluation | Package | `@luum/ragas-evals` |
-| guardrails-ai | Content policy validators | Package | `@luum/guardrails-validators` |
-| strands-agents-evals | Trace-based evaluation | Package | `@luum/strands-evals` |
-
-#### CLI Tools (Package candidates)
-
-| Tool | Purpose | Core? | Future Package |
-|---|---|---|---|
-| semgrep | SAST security scanning | Package | `@luum/semgrep-security` |
-| promptfoo | Prompt regression testing | Package | `@luum/promptfoo-regression` |
-| github CLI (gh) | GitHub automation | Package | `@luum/github-automation` |
-
-#### MCP Servers
-
-| Server | Purpose | Core? |
+| Current Location | Future Package | Contents |
 |---|---|---|
-| Engram | Persistent memory | Core (always active) |
-| Context7 | Library documentation | Package (already integrated) |
-| Repomix | Repo context packing | Package (already integrated) |
+| `.agnix.toml` + `hooks/agnix-lint.sh` | `@luum/agnix-integration` | Config linter hook + config |
+| `rules/parry-integration.md` + config | `@luum/parry-security` | Prompt injection scanner config |
+| `skills/recall-search/SKILL.md` | `@luum/recall-search` | Conversation search skill + fallback chain |
+| `rules/hcom-integration.md` + config | `@luum/hcom-bridge` | Cross-terminal agent communication |
+| `ATTRIBUTION.md` + `scripts/install-tob-skills.sh` | `@trailofbits/security-skills` | 62 security audit skills |
+| `.github/workflows/claude-*.yml` | `@luum/claude-actions` | GitHub Action workflows (interactive, review, triage) |
+| `rules/repomix-integration.md` + config | `@luum/repomix-tools` | Repo context packing tool |
+| `lib/claude_usage_reader.py` | `@luum/usage-monitor` | Cost reconciliation from Claude JSONL |
+| `lib/session_parser.py` | `@luum/session-parser` | Real metrics from Claude Code sessions |
+| `rules/context7-auto-trigger.md` | `@luum/context7-rules` | Library doc auto-lookup rule |
 
-#### Remote Registries
+#### What stays core (never a package)
 
-| Registry | Content | Status |
-|---|---|---|
-| MCP Registry | Official MCP servers | Active |
-| Skills.sh | 83K+ community skills | Optional |
-| SkillsMP | 350K+ community skills | Disabled |
-| OpenRouter | 655 LLM models | Active (fallback) |
+| Component | Why core |
+|---|---|
+| Engram (memory) | OS doesn't function without it |
+| Rules engine (55 rules) | Fundamental governance |
+| Hook system (57 hooks) | Lifecycle management |
+| `lib/model_router.py` | Model routing is core capability |
+| `lib/smart_infra.py` | Docker management is core capability |
+| `lib/cost_dashboard.py` | Cost governance is core |
+| SDD pipeline | Core workflow |
 
-#### Delivery Phases for `cos install`
+#### Migration approach
+1. Build `cos install` package manager first
+2. Create `cos-package.yaml` manifest for each integration
+3. Move files to `packages/{name}/` directory structure
+4. Test install/uninstall cycle
+5. Update docs to reference `cos install` instead of manual setup
 
-| Phase | Bundles | What's included |
-|---|---|---|
-| 1. Core | `cos install core` | Langfuse, LiteLLM, Paperclip, databases |
-| 2. Safety | `cos install safety-mesh` | NeMo Guardrails, parry, guardrails-ai |
-| 3. Observability | `cos install observability` | Langfuse + Opik integration |
-| 4. Evaluation | `cos install eval-suite` | DeepEval, RAGAS, Promptfoo, Strands |
-| 5. Automation | `cos install automation` | Webhook Trigger, GitHub CLI, issue pipeline |
-| 6. Memory | `cos install memory-plus` | Cognee, memU |
-| 7. Profiles | `cos install profile:ui` | AutoMaker, Jupyter |
+This is tracked as part of the Plugin Marketplace feature (Phase 4).
+
+#### Integration audit — discover ALL packageable components
+
+Before starting migration, run a full codebase audit to discover additional packageable components beyond the 10 listed above. Search for:
+
+- **MCP server configurations** in `mcp-servers/` or `.claude/settings*.json` that connect to external services
+- **Docker services** in `docker-compose*.yml` that are optional (not core infrastructure)
+- **External tool wrappers** in `lib/` that depend on specific binaries (semgrep, repomix, parry, etc.)
+- **GitHub Actions workflows** in `.github/workflows/` that could be distributed independently
+- **Script-based installers** in `scripts/` that pull third-party tools
+- **Integration rules** in `rules/*-integration.md` that configure external tool behavior
+- **Integration skills** in `skills/` that wrap external tools or APIs
+
+This audit should happen on day one of the `cos install` implementation to ensure the package list is complete before building the manifest schema.
 
 ### Migration tools
 

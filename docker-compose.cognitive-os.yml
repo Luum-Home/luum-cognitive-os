@@ -113,7 +113,7 @@ services:
       - langfuse-seaweedfs-data:/data
       - ./infra/seaweedfs/docker-entrypoint.sh:/opt/seaweedfs/docker-entrypoint.sh:ro
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:9333/cluster/status || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:9333/cluster/status || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -202,12 +202,17 @@ services:
     environment:
       <<: *langfuse-env
       HOSTNAME: "0.0.0.0"
-      # Init a default org/project for local dev (optional)
-      LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG:-AgentOS}
-      LANGFUSE_INIT_PROJECT_NAME: ${LANGFUSE_INIT_PROJECT:-cognitive-os-dev}
-      LANGFUSE_INIT_USER_EMAIL: ${LANGFUSE_INIT_EMAIL:-}
-      LANGFUSE_INIT_USER_NAME: ${LANGFUSE_INIT_USER:-}
-      LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_PASSWORD:-}
+      # Headless init — auto-provision org/project/user/API keys on first start
+      # All values are idempotent: re-running with same IDs is a no-op
+      LANGFUSE_INIT_ORG_ID: ${LANGFUSE_INIT_ORG_ID:-cognitive-os-org}
+      LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG_NAME:-AgentOS}
+      LANGFUSE_INIT_PROJECT_ID: ${LANGFUSE_INIT_PROJECT_ID:-cognitive-os-project}
+      LANGFUSE_INIT_PROJECT_NAME: ${LANGFUSE_INIT_PROJECT_NAME:-cognitive-os-dev}
+      LANGFUSE_INIT_PROJECT_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:-}
+      LANGFUSE_INIT_PROJECT_SECRET_KEY: ${LANGFUSE_SECRET_KEY:-}
+      LANGFUSE_INIT_USER_EMAIL: ${LANGFUSE_INIT_USER_EMAIL:-}
+      LANGFUSE_INIT_USER_NAME: ${LANGFUSE_INIT_USER_NAME:-}
+      LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_USER_PASSWORD:-}
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --timeout=10 --spider http://127.0.0.1:3000/api/public/health || exit 1"]
       interval: 15s
