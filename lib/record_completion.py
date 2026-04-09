@@ -15,9 +15,20 @@ import sys
 import json
 import os
 import re
+import logging
 from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/..")
+
+logger = logging.getLogger(__name__)
+
+# Langfuse integration — graceful if not installed or not configured
+_langfuse_client = None
+try:
+    from langfuse import get_client as _get_langfuse_client
+    _langfuse_client = _get_langfuse_client()
+except Exception:
+    pass  # Langfuse not installed or not configured — skip silently
 
 from lib.learning_pipeline import LearningPipeline
 
@@ -103,6 +114,40 @@ def append_cost_event(metrics_dir: str, description: str, tokens_estimated: int)
         pass
 
 
+def _send_langfuse_trace(
+    skill_name: str,
+    task_type: str,
+    trust_score: int,
+    tokens_used: int,
+    success: bool,
+    task_id: str,
+) -> None:
+    """Send agent completion trace to Langfuse. Silent on failure."""
+    if _langfuse_client is None:
+        return
+    try:
+        trace = _langfuse_client.trace(
+            name=skill_name,
+            metadata={
+                "task_type": task_type,
+                "trust_score": trust_score,
+                "tokens_used": tokens_used,
+                "success": success,
+                "cost_usd": round(tokens_used * 0.000015, 6),
+            },
+            tags=["cos-agent", task_type, "success" if success else "failure"],
+        )
+        trace.span(
+            name="agent-completion",
+            input={"task_id": task_id, "task_type": task_type},
+            output={"trust_score": trust_score, "success": success},
+            metadata={"tokens": tokens_used},
+        )
+        _langfuse_client.flush()
+    except Exception:
+        pass  # Never block completion recording for observability
+
+
 def main():
     raw = sys.stdin.read()
     try:
@@ -139,6 +184,16 @@ def main():
     project_dir = os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd())
     metrics_dir = os.path.join(project_dir, ".cognitive-os", "metrics")
     append_cost_event(metrics_dir, skill_name, tokens_used)
+
+    # Send trace to Langfuse (if available)
+    _send_langfuse_trace(
+        skill_name=skill_name,
+        task_type=classify_task_type(skill_name),
+        trust_score=trust_score,
+        tokens_used=tokens_used,
+        success=success,
+        task_id=task_id,
+    )
 
     print(json.dumps({
         "action": str(result),
