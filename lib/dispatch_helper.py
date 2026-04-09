@@ -1,0 +1,242 @@
+"""Dispatch Helper — lightweight scheduling helper for dispatch-gate.sh.
+
+Called by hooks/dispatch-gate.sh on every Agent PreToolUse to decide whether
+to allow a new agent launch, enqueue it for later, or drain the ready queue.
+
+Design constraints (runs on every PreToolUse):
+- No heavy imports at module level — only stdlib
+- Graceful degradation when config / task files / queue are missing
+- WorkloadScheduler import is optional (falls back to simple priority sort)
+- Never raises — all errors are caught and surfaced in the returned dict
+
+Public API:
+    check_slot_availability() -> dict
+    enqueue_agent(description, priority) -> str
+    dequeue_ready_agents() -> list[dict]
+    format_dispatch_status() -> str
+
+Usage from shell:
+    python3 -c "from lib.dispatch_helper import check_slot_availability; \
+        import json, sys; print(json.dumps(check_slot_availability()))"
+
+Python 3.9+ compatible. Author: luum.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+from typing import Any, Dict, List, Optional
+
+# ---------------------------------------------------------------------------
+# Internal helpers — lazy imports to keep module-level overhead minimal
+# ---------------------------------------------------------------------------
+
+_DEFAULT_MAX_PARALLEL = 5
+_COGNITIVE_OS_DIR = ".cognitive-os"
+_TASKS_PATH = os.path.join(_COGNITIVE_OS_DIR, "tasks", "active-tasks.json")
+
+
+def _find_config_path() -> Optional[str]:
+    """Return the first readable cognitive-os.yaml found on the search path."""
+    candidates = [
+        "cognitive-os.yaml",
+        os.path.join(_COGNITIVE_OS_DIR, "cognitive-os.yaml"),
+    ]
+    project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
+        "COGNITIVE_OS_PROJECT_DIR", ""
+    )
+    if project_dir:
+        candidates.insert(0, os.path.join(project_dir, "cognitive-os.yaml"))
+
+    for path in candidates:
+        if os.path.isfile(path):
+            return path
+    return None
+
+
+def _read_max_parallel_agents(config_path: Optional[str] = None) -> int:
+    """Parse max_parallel_agents from cognitive-os.yaml.
+
+    Falls back to _DEFAULT_MAX_PARALLEL on any error.
+    Reads line-by-line to avoid a YAML library dependency.
+    """
+    path = config_path or _find_config_path()
+    if not path:
+        return _DEFAULT_MAX_PARALLEL
+
+    try:
+        with open(path, "r") as fh:
+            for line in fh:
+                m = re.match(r"^\s*max_parallel_agents:\s*(\d+)", line)
+                if m:
+                    return int(m.group(1))
+    except OSError:
+        pass
+
+    return _DEFAULT_MAX_PARALLEL
+
+
+def _count_active_tasks(tasks_path: Optional[str] = None) -> int:
+    """Count tasks with status == 'in_progress' from active-tasks.json.
+
+    Returns 0 on any error (missing file, parse failure, etc.).
+    """
+    path = tasks_path or _TASKS_PATH
+    if not os.path.isfile(path):
+        return 0
+
+    try:
+        with open(path, "r") as fh:
+            data = json.load(fh)
+        tasks = data.get("tasks", [])
+        return sum(1 for t in tasks if t.get("status") == "in_progress")
+    except (json.JSONDecodeError, TypeError, OSError, KeyError):
+        return 0
+
+
+def _get_queue() -> Any:
+    """Return a RateLimitQueue instance, or None on import failure."""
+    try:
+        from lib.rate_limiter import RateLimitQueue  # noqa: PLC0415
+
+        return RateLimitQueue()
+    except Exception:  # pragma: no cover — import failure in unusual envs
+        return None
+
+
+def _count_queued(queue: Any) -> int:
+    """Return the number of items currently in the queue."""
+    if queue is None:
+        return 0
+    try:
+        return len(queue.peek())
+    except Exception:
+        return 0
+
+
+# ---------------------------------------------------------------------------
+# Public API
+# ---------------------------------------------------------------------------
+
+
+def check_slot_availability(
+    config_path: Optional[str] = None,
+    tasks_path: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Check whether a new agent launch slot is available.
+
+    Args:
+        config_path: Optional override for cognitive-os.yaml location.
+        tasks_path:  Optional override for active-tasks.json location.
+
+    Returns:
+        {
+            "available": bool,   # True when active < max
+            "active":   int,     # Current in_progress task count
+            "max":      int,     # max_parallel_agents from config
+            "queued":   int,     # Items currently in the rate-limit queue
+        }
+    """
+    max_agents = _read_max_parallel_agents(config_path)
+    active = _count_active_tasks(tasks_path)
+    queue = _get_queue()
+    queued = _count_queued(queue)
+
+    return {
+        "available": active < max_agents,
+        "active": active,
+        "max": max_agents,
+        "queued": queued,
+    }
+
+
+def enqueue_agent(description: str, priority: int = 5) -> str:
+    """Enqueue a blocked agent launch for retry after cooldown.
+
+    Args:
+        description: Human-readable description of the blocked agent task.
+        priority:    Priority level 1–10 (1=critical, 5=normal, 10=low).
+
+    Returns:
+        A queue_id string (8-char hex UUID prefix).
+        Returns "queue-unavailable" if the queue cannot be reached.
+    """
+    queue = _get_queue()
+    if queue is None:
+        return "queue-unavailable"
+
+    try:
+        queue_id = queue.enqueue(
+            action_type="agent_launch",
+            context={"description": description},
+            priority=max(1, min(10, priority)),
+        )
+        return queue_id
+    except Exception:
+        return "queue-error"
+
+
+def dequeue_ready_agents() -> List[Dict[str, Any]]:
+    """Return agents whose cooldown has expired and are ready to launch.
+
+    Filters to items of type 'agent_launch' only.
+
+    Returns:
+        List of dicts, each containing:
+            queue_id, description, priority, enqueued_at
+        Ordered by priority (ascending), then FIFO within same priority.
+        Returns [] on any error.
+    """
+    queue = _get_queue()
+    if queue is None:
+        return []
+
+    try:
+        ready_items = queue.dequeue_ready()
+    except Exception:
+        return []
+
+    result: List[Dict[str, Any]] = []
+    for item in ready_items:
+        if item.get("action_type") != "agent_launch":
+            continue
+        context = item.get("context", {})
+        result.append(
+            {
+                "queue_id": item.get("queue_id", ""),
+                "description": context.get("description", ""),
+                "priority": item.get("priority", 5),
+                "enqueued_at": item.get("enqueued_at", 0.0),
+            }
+        )
+
+    return result
+
+
+def format_dispatch_status(
+    config_path: Optional[str] = None,
+    tasks_path: Optional[str] = None,
+) -> str:
+    """Return a human-readable one-line dispatch status for stderr output.
+
+    Example outputs:
+        "Dispatch: 2/5 slots active, 0 queued — AVAILABLE"
+        "Dispatch: 5/5 slots active, 3 queued — FULL (agent enqueued)"
+
+    Args:
+        config_path: Optional override for cognitive-os.yaml location.
+        tasks_path:  Optional override for active-tasks.json location.
+
+    Returns:
+        Single-line status string (no trailing newline).
+    """
+    status = check_slot_availability(config_path=config_path, tasks_path=tasks_path)
+    active = status["active"]
+    max_agents = status["max"]
+    queued = status["queued"]
+    availability = "AVAILABLE" if status["available"] else "FULL (agent enqueued)"
+
+    queued_part = f", {queued} queued" if queued > 0 else ", 0 queued"
+    return f"Dispatch: {active}/{max_agents} slots active{queued_part} — {availability}"

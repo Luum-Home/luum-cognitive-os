@@ -95,4 +95,82 @@ fi
 
 exec 200>&-
 
+# ── Timeout detection ────────────────────────────────────────────────────────
+# Read agent_timeout_seconds from cognitive-os.yaml (default: 300)
+TIMEOUT_SECS=300
+CONFIG_FILE="$_PROJECT_DIR/cognitive-os.yaml"
+[ ! -f "$CONFIG_FILE" ] && CONFIG_FILE="$_PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
+if [ -f "$CONFIG_FILE" ]; then
+  PARSED_TIMEOUT=$(grep 'agent_timeout_seconds:' "$CONFIG_FILE" 2>/dev/null | head -1 \
+    | sed 's/.*agent_timeout_seconds:[[:space:]]*//' | tr -d '[:space:]' | grep -E '^[0-9]+$' || true)
+  [ -n "$PARSED_TIMEOUT" ] && TIMEOUT_SECS="$PARSED_TIMEOUT"
+fi
+
+# Re-read the updated task to get its timestamps
+if [ -f "$TASKS_FILE" ] && command -v jq &>/dev/null; then
+  MATCH_PREFIX_TIMEOUT=$(echo "$DESCRIPTION" | head -c 50)
+
+  # Fetch the task we just updated (by prefix match, last completed/failed entry)
+  TASK_DATA=$(jq -r \
+    --arg prefix "$MATCH_PREFIX_TIMEOUT" \
+    --arg ts "$TIMESTAMP" \
+    '
+    (.tasks | to_entries
+      | map(select(
+          (.value.status == "completed" or .value.status == "failed")
+          and (.value.description[0:50] == $prefix)
+          and (.value.completedAt == $ts)
+        ))
+      | last // null
+    )' "$TASKS_FILE" 2>/dev/null)
+
+  if [ -n "$TASK_DATA" ] && [ "$TASK_DATA" != "null" ]; then
+    LAUNCHED_AT=$(echo "$TASK_DATA" | jq -r '.value.launchedAt // ""' 2>/dev/null)
+    TASK_ID=$(echo "$TASK_DATA" | jq -r '.value.id // ""' 2>/dev/null)
+    TASK_DESC=$(echo "$TASK_DATA" | jq -r '.value.description // ""' 2>/dev/null | head -c 200)
+
+    if [ -n "$LAUNCHED_AT" ] && [ -n "$TASK_ID" ]; then
+      # Calculate duration in seconds using Python (portable, handles ISO8601)
+      DURATION=$(python3 -c "
+import sys
+from datetime import datetime, timezone
+
+def parse_iso(s):
+    s = s.rstrip('Z')
+    return datetime.fromisoformat(s).replace(tzinfo=timezone.utc)
+
+try:
+    launched = parse_iso('$LAUNCHED_AT')
+    completed = parse_iso('$TIMESTAMP')
+    print(int((completed - launched).total_seconds()))
+except Exception:
+    print(0)
+" 2>/dev/null || echo "0")
+
+      if [ "$DURATION" -gt "$TIMEOUT_SECS" ] 2>/dev/null; then
+        # Mark task as slow
+        exec 200>"$LOCK_FILE"
+        flock -w 2 200 2>/dev/null || true
+        SLOW_UPDATED=$(jq \
+          --arg id "$TASK_ID" \
+          'if (.tasks | map(select(.id == $id)) | length) > 0
+           then (.tasks[] | select(.id == $id)) |= . + {"slow": true}
+           else .
+           end' "$TASKS_FILE" 2>/dev/null)
+        [ -n "$SLOW_UPDATED" ] && echo "$SLOW_UPDATED" > "$TASKS_FILE"
+        exec 200>&-
+
+        # Log to metrics
+        METRICS_DIR="$_PROJECT_DIR/.cognitive-os/metrics"
+        mkdir -p "$METRICS_DIR" 2>/dev/null
+        TIMEOUT_LOG="$METRICS_DIR/agent-timeouts.jsonl"
+        printf '{"timestamp":"%s","task_id":"%s","duration_secs":%s,"timeout":%s,"description":"%s"}\n' \
+          "$TIMESTAMP" "$TASK_ID" "$DURATION" "$TIMEOUT_SECS" \
+          "$(echo "$TASK_DESC" | sed 's/"/\\"/g')" \
+          >> "$TIMEOUT_LOG" 2>/dev/null || true
+      fi
+    fi
+  fi
+fi
+
 exit 0
