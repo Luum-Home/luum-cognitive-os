@@ -242,7 +242,10 @@ if [ ! -f "$COS_INIT" ]; then
 fi
 
 echo "Running cos-init.sh..."
-COS_SOURCE_DIR="$TEMP_DIR" bash "$COS_INIT" --standard
+# COS_SOURCE_DIR tells cos-init.sh where to copy files from (temp dir).
+# COS_ORIGINAL_SOURCE tells it the real source repo path for the registry,
+# so auto-update-projects.sh can find projects installed from this repo.
+COS_SOURCE_DIR="$TEMP_DIR" COS_ORIGINAL_SOURCE="${SOURCE_DIR:-}" bash "$COS_INIT" --standard
 
 # ── Install CLAUDE.md template if not present ─────────────────────────
 if [ ! -f ".claude/CLAUDE.md" ]; then
