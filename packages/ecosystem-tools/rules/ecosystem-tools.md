@@ -171,6 +171,22 @@ npx ccusage@latest daily --since 2026-04-01
 
 **Evaluation Notes**: Already referenced in `rules/agent-identity.md` as a Phase 2 integration target. OneCLI would replace our current `lib/secret_ref.py` with a dedicated credential vault that prevents agents from ever seeing raw keys. Current SecretRef reads from env vars; OneCLI provides proper cryptographic key management with per-agent scoping.
 
+### Archon — AI Agent Workflow Engine (EVALUATE)
+
+| Property | Value |
+|----------|-------|
+| Purpose | YAML-defined DAG workflow engine for AI coding agents with worktree isolation, conditional branching, loop nodes, and multi-platform adapters |
+| Config | N/A (evaluation phase — pattern adoption only) |
+| Hook | N/A (not yet implemented) |
+| Install | See [coleam00/Archon](https://github.com/coleam00/Archon) |
+| Required | No |
+| Scope | Workflow execution patterns for TaskDAG enhancement |
+| GitHub | [coleam00/Archon](https://github.com/coleam00/Archon) |
+| License | MIT |
+| Status | **EVALUATE** — Adopt patterns (conditional DAG, loops, output piping) via clean-room, not the runtime |
+
+**Evaluation Notes**: Archon excels at workflow execution mechanics (14/27 features) while COS excels at governance (11/27). Language barrier (TypeScript/Bun vs Python) and architectural mismatch (standalone server vs CLI overlay) make direct adoption impractical. Clean-room implementation of conditional execution, loop primitives, and output piping into our `lib/task_dag.py` is the recommended path. Full evaluation at `docs/research/archon-evaluation.md`. Re-evaluate if Archon adds governance features.
+
 ### Agentic Radar (SPLX AI) — Agent Workflow Analyzer (WATCH)
 
 | Property | Value |
