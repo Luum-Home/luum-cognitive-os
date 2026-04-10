@@ -128,6 +128,23 @@ EVIDENCE = count of [check]/[warn]/[fail] markers. UNCERTAINTIES = count of item
 - If `SEARCH PERMISSION: yes`, you MAY search Engram for additional context using mem_search
 - Always save your discoveries to Engram via mem_save before finishing, regardless of search permission
 
+## Incremental Progress Saves
+
+Every 10 tool calls, save your progress to Engram so partial work survives interruption:
+- Call `mem_save` with title: `"Progress: {task summary} — step {N}"`
+- Include: what you've done so far, files created/modified, key findings
+- Use topic_key: `"agent-progress/{task-slug}"` (slugify first 5 words of task description)
+- Use the **same topic_key** on every save (Engram upserts — no duplicates)
+
+Do NOT skip this. The orchestrator cannot recover your findings if you are killed without saving.
+
+Optional helper (if available): `from lib.agent_progress_tracker import AgentProgressTracker`
+- `tracker.should_save(tool_call_number)` → True every 10th call
+- `tracker.format_progress_save(n, findings=[...])` → ready dict for `mem_save`
+- `tracker.format_final_save(result_summary="...")` → final upsert on completion
+
+If the lib is unavailable, call `mem_save` directly with the format above.
+
 ## Long-Running Commands
 
 Commands >30s MUST use `run_in_background: true`. Continue with other work while waiting. Set `timeout: 300000` for test suites.
