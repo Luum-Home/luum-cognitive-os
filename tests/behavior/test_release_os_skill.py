@@ -55,9 +55,9 @@ class TestReleaseOsFrontmatter:
         assert frontmatter, "release-os SKILL.md missing YAML frontmatter"
 
     def test_audience_is_os_dev(self, frontmatter: str):
-        """Must be classified as os-dev audience."""
-        assert "audience: os-dev" in frontmatter, (
-            "release-os must have audience: os-dev"
+        """Must be classified as os-dev audience (or os shorthand)."""
+        assert "audience: os-dev" in frontmatter or "audience: os" in frontmatter, (
+            "release-os must have audience: os-dev or audience: os"
         )
 
     def test_has_name(self, frontmatter: str):

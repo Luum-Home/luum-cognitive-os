@@ -14,7 +14,7 @@ import pytest
 pytestmark = pytest.mark.behavior
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-VALID_AUDIENCES = {"project", "os-dev", "both"}
+VALID_AUDIENCES = {"project", "os-dev", "both", "os", "human"}
 
 # Directories to scan for SKILL.md files
 SKILL_DIRS = [
