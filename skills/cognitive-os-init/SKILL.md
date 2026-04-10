@@ -1,178 +1,67 @@
 ---
 name: cognitive-os-init
-description: Initialize Cognitive OS for a project. Detects stack, generates cognitive-os.yaml config, and creates project-specific skills/rules/hooks in {project}/.claude/.
-version: 1.0.0
-last-updated: 2026-03-22
+description: META skill — initialize Cognitive OS for a project by chaining detect-stack → generate-config → scaffold-project.
+version: 2.0.0
+last-updated: 2026-04-10
 user-invocable: true
 auto-generated: false
-audience: os-dev
+audience: both
+tags: [init, setup, meta]
 ---
 
 # Cognitive OS Init
 
-Initialize Cognitive OS for the current project. Detects your stack automatically and generates project-specific configuration.
+META skill. Chains three atomic skills to fully initialize Cognitive OS for a project.
 
-## What It Does
+## Atomic Skills
 
-1. **Detects** your project's language, framework, database, auth provider, messaging, and services
-2. **Generates** `cognitive-os.yaml` with detected infrastructure
-3. **Creates** project-specific files in `{project}/.claude/`:
-   - Rules: architecture patterns, constitutional gates, service configs
-   - Skills: SRE agent configured for this project's containers, health checks
-   - Hooks: production URL blocking, auto-test with project's test commands
+| Step | Skill | What it does | Output |
+|------|-------|-------------|--------|
+| 1 | `/detect-stack` | Scans project files to detect languages, frameworks, infrastructure, and services | `.cognitive-os/detected-stack.json` |
+| 2 | `/generate-config` | Reads detection output, generates/updates `cognitive-os.yaml` | `cognitive-os.yaml` |
+| 3 | `/scaffold-project` | Creates `.claude/` structure, rules, skills, and hooks from detection output | `.claude/` directory tree |
+
+Each atomic skill can be invoked independently. Use this META skill when you want to run all three in sequence.
 
 ## Execution Protocol
 
-### Step 1: Detect Project Stack
+### Step 1: Run /detect-stack
 
-Scan the project root for stack indicators:
+Invoke the `detect-stack` skill. It will:
+- Scan `go.mod`, `package.json`, `docker-compose.yml`, `pom.xml`, etc.
+- Detect languages, frameworks, infrastructure, services, and project type
+- Write `.cognitive-os/detected-stack.json`
 
-**Languages & Frameworks:**
+If it fails, stop and report the error. Do not continue to step 2.
 
-| File | Detected Stack |
-|------|---------------|
-| `go.mod` | Go |
-| `package.json` with `@nestjs/core` | NestJS (Node.js) |
-| `package.json` with `express` | Express.js (Node.js) |
-| `package.json` with `next` | Next.js (Node.js) |
-| `package.json` with `react-native` or `expo` | React Native / Expo |
-| `pom.xml` with `spring-boot` | Spring Boot (Java) |
-| `build.gradle` with `spring-boot` | Spring Boot (Java/Kotlin) |
-| `requirements.txt` or `pyproject.toml` | Python |
-| `Cargo.toml` | Rust |
+### Step 2: Run /generate-config
 
-**Infrastructure (from docker-compose.yml or docker-compose.*.yml):**
+Invoke the `generate-config` skill. It will:
+- Read `.cognitive-os/detected-stack.json`
+- Generate or merge `cognitive-os.yaml` with detected infrastructure and quality gates
 
-| Image/Service Pattern | Detected Infrastructure |
-|-----------------------|------------------------|
-| `postgres` / `postgresql` | PostgreSQL database |
-| `mysql` / `mariadb` | MySQL database |
-| `mongo` / `mongodb` | MongoDB database |
-| `redis` / `valkey` / `keydb` | Redis/Valkey cache |
-| `rabbitmq` | RabbitMQ messaging |
-| `kafka` / `redpanda` / `confluentinc` | Kafka messaging |
-| `keycloak` | Keycloak auth |
-| `auth0` | Auth0 auth |
-| `elasticsearch` / `opensearch` | Search engine |
-| `meilisearch` / `typesense` | Search engine |
-| `minio` / `localstack` | S3-compatible storage |
-| `nginx` / `traefik` / `caddy` | Reverse proxy |
+If it fails, stop and report the error. Do not continue to step 3.
 
-**Services (from docker-compose.yml build contexts or service directories):**
+### Step 3: Run /scaffold-project
 
-For each service with a `build` context, extract:
-- Service name
-- Source directory (from `build.context`)
-- Port (from `ports` mapping)
+Invoke the `scaffold-project` skill. It will:
+- Read `.cognitive-os/detected-stack.json`
+- Create `.claude/rules/architecture.md`, `constitutional-gates.md`, `services-config.md`
+- Create `.claude/skills/sre-agent-config/SKILL.md`, `health-check/SKILL.md`
+- Create `.claude/hooks/block-prod-urls.sh`
+- Update `.cognitive-os/workflows/config/services.yaml`
 
-### Step 2: Generate cognitive-os.yaml
+### Step 4: Report
 
-Update `cognitive-os.yaml` with detected values:
-
-```yaml
-project:
-  name: {detected_from_directory_name_or_package_json}
-  type: {auto_classify: fintech|ecommerce|saas|webapp|startup|healthcare}
-  phase: reconstruction
-  infrastructure:
-    auth:
-      name: {detected_auth_provider}
-      port: {detected_port}
-    database:
-      - name: {detected_db}
-        port: {detected_port}
-    cache:
-      name: {detected_cache}
-      port: {detected_port}
-    messaging:
-      name: {detected_broker}
-      port: {detected_port}
-    services:
-      - name: {service_name}
-        path: {source_directory}
-        port: {port}
-        language: {detected_language}
-```
-
-Also populate `quality.gates` based on detected language:
-
-**Go:** `go build ./...`, `golangci-lint run ./...`, `go test ./...`
-**Node.js:** `npx tsc --noEmit`, `npx eslint .`, `npx jest --no-cache`
-**Java:** `./gradlew build`, `./gradlew test`
-**Python:** `python -m pytest`, `ruff check .`
-
-And populate `rules.loading.contextual_triggers` based on detected stack.
-
-### Step 3: Generate Project-Specific Rules
-
-Create in `{project}/.claude/rules/`:
-
-**architecture.md** -- Based on detected stack:
-- For multi-service projects: document the communication flow (which services call which)
-- For monoliths: document the module structure
-- Read from existing code or docker-compose to detect service dependencies
-
-**constitutional-gates.md** -- Based on project type:
-- `fintech`: idempotency, audit trails, mock-before-integrate
-- `ecommerce`: inventory consistency, payment mock-first
-- `healthcare`: HIPAA compliance, data encryption, PHI audit
-- `webapp` (default): test-before-merge, secrets-in-env-vars, backward-compatible-APIs
-
-**services-config.md** -- From detected infrastructure:
-- Port mapping for all services
-- Default credentials (local only)
-- Required environment variables
-
-### Step 4: Generate Project-Specific Skills
-
-Create in `{project}/.claude/skills/`:
-
-**sre-agent-config/SKILL.md** -- SRE agent overlay with:
-- Container-to-directory mapping for THIS project
-- Port-to-service mapping
-- Project-specific health check endpoints
-
-**health-check/SKILL.md** -- Health check skill with:
-- Endpoints for each detected service
-- Expected response codes
-- Dependency health chain
-
-### Step 5: Generate Project-Specific Hooks
-
-Create in `{project}/.claude/hooks/`:
-
-**block-prod-urls.sh** -- Block production URLs:
-- Detect production URLs from .env files or config
-- Create hook that warns on usage of production URLs in local dev
-
-### Step 6: Populate Workflow Config
-
-Update `.cognitive-os/workflows/config/services.yaml` with detected services.
-
-### Step 7: Report
-
-Output a summary:
+After all three skills complete, output the combined summary:
 
 ```
 == Cognitive OS Init Complete ==
 
-Detected stack:
-  Language: {languages}
-  Framework: {frameworks}
-  Database: {databases}
-  Auth: {auth_provider}
-  Cache: {cache}
-  Messaging: {messaging}
-  Services: {count} services detected
-
-Generated files:
-  cognitive-os.yaml (updated)
-  .claude/rules/architecture.md
-  .claude/rules/constitutional-gates.md
-  .claude/rules/services-config.md
-  .claude/skills/sre-agent-config/SKILL.md
-  .claude/skills/health-check/SKILL.md
-  .cognitive-os/workflows/config/services.yaml
+Phases completed:
+  [x] detect-stack    → .cognitive-os/detected-stack.json
+  [x] generate-config → cognitive-os.yaml
+  [x] scaffold-project → .claude/ (7 files)
 
 Next steps:
   1. Review generated files and adjust as needed
@@ -180,19 +69,19 @@ Next steps:
   3. Run /sre-agent to verify service monitoring
 ```
 
-## Project Type Auto-Classification
+## Running Individual Phases
 
-| Signal | Classified As |
-|--------|--------------|
-| Payment/wallet/transfer in service names or code | fintech |
-| Cart/product/order/inventory in service names or code | ecommerce |
-| Patient/medical/health/prescription in code | healthcare |
-| Multi-tenant, subscription, billing | saas |
-| Default | webapp |
+You can run any phase independently:
+
+```
+/detect-stack         # Only detect and record stack
+/generate-config      # Only update cognitive-os.yaml (requires detected-stack.json)
+/scaffold-project     # Only create .claude/ structure (requires detected-stack.json)
+```
 
 ## Important Notes
 
-- This skill ONLY generates project-specific files in `.claude/` -- it does NOT modify Cognitive OS universal files
-- Generated files are starting points -- they should be reviewed and customized
-- Re-running `/cognitive-os-init` will regenerate files (with confirmation before overwriting)
-- The skill is idempotent: running it twice produces the same result
+- This skill ONLY generates project-specific files in `.claude/` — it does NOT modify Cognitive OS universal files
+- Generated files are starting points — review and customize after running
+- Re-running `/cognitive-os-init` will re-run all three phases (each will prompt before overwriting)
+- The full pipeline is idempotent: running it twice produces the same result
