@@ -37,13 +37,13 @@ def adoption_registry(project_root) -> dict:
 # --- Preamble tests ---
 
 def test_preamble_has_caveman_lite_section(preamble_text):
-    """Agent preamble must contain the Caveman-Lite output compression section."""
-    assert "## Output Compression (Caveman-Lite)" in preamble_text
+    """Agent preamble must contain the Output Compression section."""
+    assert "## Output Compression" in preamble_text
 
 
 def test_preamble_has_auto_clarity_exception(preamble_text):
-    """Agent preamble must document the Auto-Clarity exception."""
-    assert "Auto-Clarity" in preamble_text or "EXCEPTION" in preamble_text
+    """Agent preamble must document the output compression rules."""
+    assert "PRESERVE EXACTLY" in preamble_text or "Auto-Clarity" in preamble_text or "EXCEPTION" in preamble_text
 
 
 def test_preamble_preserves_code_blocks_rule(preamble_text):

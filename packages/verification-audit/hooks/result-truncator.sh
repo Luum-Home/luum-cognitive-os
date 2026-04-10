@@ -109,7 +109,48 @@ if [ -n "$PATTERNS" ]; then
   fi
 fi
 
-# --- Truncate ---
+# --- Try smart truncation first ---
+# Command-type-aware structured extraction (Workstream 3: intelligent-context-compaction)
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // "unknown"' 2>/dev/null | head -c 500)
+export _SMART_TRUNC_CMD="$COMMAND"
+export _SMART_TRUNC_MAX="$MAX_CHARS"
+export _SMART_TRUNC_LIB="$PROJECT_DIR/lib"
+
+SMART_RESULT=$(echo "$RESPONSE" | python3 - <<'PYEOF' 2>/dev/null
+import sys
+import os
+sys.path.insert(0, os.environ.get("_SMART_TRUNC_LIB", ""))
+try:
+    from smart_truncator import smart_truncate
+    output = sys.stdin.read()
+    cmd = os.environ.get("_SMART_TRUNC_CMD", "unknown")
+    max_chars = int(os.environ.get("_SMART_TRUNC_MAX", "5000"))
+    result = smart_truncate(cmd, output, max_chars)
+    # Only emit if we produced a structured summary shorter than the original
+    if result and len(result) < len(output):
+        print(result, end="")
+except Exception:
+    pass  # Fall through to head+tail
+PYEOF
+)
+
+if [ -n "$SMART_RESULT" ]; then
+  # Use smart structured extraction result
+  RESULT=$(echo "$INPUT" | jq --arg tr "$SMART_RESULT" '.tool_response = $tr' 2>/dev/null)
+  if [ $? -eq 0 ] && [ -n "$RESULT" ]; then
+    echo "$RESULT"
+
+    # Log smart truncation event
+    mkdir -p "$METRICS_DIR"
+    COMMAND_ESCAPED=$(echo "$COMMAND" | jq -Rs '.' 2>/dev/null || echo '"unknown"')
+    TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+    ENTRY="{\"timestamp\":\"${TIMESTAMP}\",\"original_chars\":${RESPONSE_LEN},\"truncated_chars\":${#SMART_RESULT},\"method\":\"smart\",\"command\":${COMMAND_ESCAPED}}"
+    safe_jsonl_append "$METRICS_FILE" "$ENTRY"
+    exit 0
+  fi
+fi
+
+# --- Truncate (head+tail fallback) ---
 HEAD_PART=$(echo "$RESPONSE" | head -c "$HEAD_CHARS")
 TAIL_PART=$(echo "$RESPONSE" | tail -c "$TAIL_CHARS")
 TRUNCATION_MSG="\n... [TRUNCATED: ${RESPONSE_LEN} chars total, showing first ${HEAD_CHARS} + last ${TAIL_CHARS}] ...\n"
