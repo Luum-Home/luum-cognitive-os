@@ -5,6 +5,7 @@ description: >
   Misma precisión técnica, menos palabrería. Niveles: lite, full (default), ultra.
   Usar cuando el usuario diga "modo cavernícola", "habla como cavernícola", "menos tokens",
   "sé breve", o invoque /caveman-es.
+audience: both
 ---
 
 Responder breve como cavernícola listo. Toda sustancia técnica queda. Solo relleno muere.

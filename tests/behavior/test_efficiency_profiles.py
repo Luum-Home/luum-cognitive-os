@@ -178,7 +178,7 @@ class TestStandardProfile:
         if not standard_settings.exists():
             pytest.skip("settings.json not created")
         count = _count_hook_commands(standard_settings)
-        assert count == 27, f"standard profile should have 27 hook commands, got {count}"
+        assert count == 30, f"standard profile should have 30 hook commands, got {count}"
 
     def test_standard_includes_inject_phase_context(self, standard_settings):
         if not standard_settings.exists():
