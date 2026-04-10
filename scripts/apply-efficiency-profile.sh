@@ -118,16 +118,19 @@ build_settings() {
   esac
 
   # PreToolUse hooks
-  local pre_bash="" pre_agent=""
+  local pre_bash="" pre_read="" pre_agent=""
   case "$profile" in
     lean)
       # No PreToolUse hooks for lean
       pre_bash=""
+      pre_read=""
       pre_agent=""
       ;;
     standard)
       pre_bash=$(hook_group "Bash" \
         "rate-limiter.sh")
+      pre_read=$(hook_group "Read" \
+        "large-file-advisor.sh")
       pre_agent=$(hook_group "Agent" \
         "dispatch-gate.sh" \
         "clarification-gate.sh" \
@@ -161,7 +164,8 @@ build_settings() {
       post_edit=$(hook_group "Edit|Write" \
         "secret-detector.sh" \
         "content-policy.sh" \
-        "confidentiality-enforcer.sh")
+        "confidentiality-enforcer.sh" \
+        "doc-sync-detector.sh")
       post_agent=$(hook_group "Agent" \
         "claim-validator.sh" \
         "completion-gate.sh" \
@@ -193,10 +197,10 @@ build_settings() {
   printf '    ],\n'
 
   # PreToolUse — only emit if there are entries
-  if [ -n "$pre_bash" ] || [ -n "$pre_agent" ]; then
+  if [ -n "$pre_bash" ] || [ -n "$pre_read" ] || [ -n "$pre_agent" ]; then
     printf '    "PreToolUse": [\n'
     local pre_first=true
-    for group in "$pre_bash" "$pre_agent"; do
+    for group in "$pre_bash" "$pre_read" "$pre_agent"; do
       [ -z "$group" ] && continue
       if [ "$pre_first" = true ]; then
         pre_first=false
