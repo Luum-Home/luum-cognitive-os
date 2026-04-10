@@ -94,6 +94,30 @@ mem_save(
 )
 ```
 
+### Step 5b: Update Plan Statuses
+
+For each plan file in `.cognitive-os/plans/features/*.md`:
+1. Check if any workstream/phase was completed this session (cross-reference with commits, engram saves, completed tasks)
+2. If yes, update the plan file: change status from pending/in-progress to DONE with date
+3. This keeps plans as living documents, not static artifacts
+
+Also check the master plan (`self-optimizing-pipeline.md`) specifically:
+- For each WS, check if work was done this session
+- Update the execution priority table if statuses changed
+
+### Step 5c: Persist Pending User Requests
+
+Read the user request queue:
+```python
+from lib.request_queue import get_pending_requests, format_pending_summary
+pending = get_pending_requests(session_dir=f".cognitive-os/sessions/{SESSION_ID}")
+```
+
+If there are pending requests:
+1. Include them in the backlog as Priority 1 items
+2. Save to engram under `session/pending-requests/{date}` so next session picks them up
+3. Report the count to the user: "N user requests were not completed this session"
+
 ### Step 6: Report to User
 
 Output the final wrapup report:
