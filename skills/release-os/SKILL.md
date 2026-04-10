@@ -1,155 +1,105 @@
 ---
 name: release-os
 command: /release-os
-description: Validate, version, tag, and release the Cognitive OS
-version: 1.0.0
-audience: os-dev
-last-updated: 2026-03-28
+description: META — orchestrate the full Cognitive OS release by chaining the 5 atomic release skills
+version: 2.0.0
+audience: os
+tags: [release, meta]
+last-updated: 2026-04-10
 ---
 
-# Release OS -- Cognitive OS Release Skill
+# Release OS — META Skill
 
 ## Purpose
 
-Automate the release process for Cognitive OS: validate readiness, bump version, update changelog, commit, tag, and optionally push. Ensures consistent, repeatable releases.
+Thin orchestration wrapper that chains the 5 atomic release skills in order. Each step is independently invocable — use this META skill for a full end-to-end release, or invoke individual steps when you need fine-grained control.
+
+## Atomic Skills (in order)
+
+| Step | Skill | What it does |
+|------|-------|--------------|
+| 1 | `/validate-release` | Pre-flight checks: clean tree, correct branch, VERSION exists, CHANGELOG has content |
+| 2 | `/bump-version [type\|version]` | Calculate and write new version to VERSION file |
+| 3 | `/generate-changelog [version]` | Move [Unreleased] entries into a versioned section |
+| 4 | `/tag-release [version]` | Create the release commit and annotated git tag |
+| 5 | `/push-release` | Push commit and tags to remote (requires explicit confirmation) |
 
 ## When to Use
 
-- Before publishing a new version of Cognitive OS
-- After a batch of features/fixes are ready for release
-- When the user says `/release-os`
-
-## Prerequisites
-
-Before running, the skill validates:
-1. Working tree is clean (`git status --porcelain` is empty)
-2. On the `main` branch
-3. CHANGELOG.md has content under `[Unreleased]`
-4. VERSION file exists
-5. `cos release --check` passes (if cos CLI is available)
+- `/release-os` — full release pipeline (asks for bump type, then runs all 5 steps)
+- `/release-os minor` — full pipeline with bump type pre-specified
+- `/release-os 1.2.3` — full pipeline with explicit version pre-specified
+- Individual steps for partial releases or re-running a failed step
 
 ## Process
 
-### Step 1: Pre-Validation
+### Step 1: Run `/validate-release`
 
-Run pre-release checks:
+Load and execute the `validate-release` skill.
 
-```bash
-# Clean working tree
-git status --porcelain
+If FAIL: stop and report the failing check. Do NOT proceed.
 
-# On main branch
-git branch --show-current
+### Step 2: Run `/bump-version [arg]`
 
-# CHANGELOG has unreleased content
-grep -A1 '## \[Unreleased\]' CHANGELOG.md
+If the user passed a version or bump type to `/release-os`, forward it to `/bump-version`.
+If not, `/bump-version` will ask the user.
 
-# VERSION file exists
-cat VERSION
+If FAIL: stop and report.
 
-# cos release readiness (optional, skip if cos not installed)
-cos release --check 2>/dev/null || echo "cos CLI not available, skipping"
-```
+### Step 3: Run `/generate-changelog`
 
-If any check fails, report the issue and stop. Do not proceed with a dirty tree or missing changelog entries.
+The version from Step 2 is used automatically (reads from VERSION file).
 
-### Step 2: Determine Version
+If FAIL: stop and report. The VERSION file was already updated — note this in the error.
 
-Accept version from user or prompt for bump type:
+### Step 4: Run `/tag-release`
 
-- If user provides explicit version (e.g., `/release-os 1.0.0`): use it
-- If user provides bump type (e.g., `/release-os minor`): calculate from current VERSION
-  - `patch`: 0.2.0 -> 0.2.1
-  - `minor`: 0.2.0 -> 0.3.0
-  - `major`: 0.2.0 -> 1.0.0
-- If neither: ask the user which bump type to use
+If FAIL: stop and report. VERSION and CHANGELOG.md have already been updated but not committed.
+Suggest: fix the issue and re-run `/tag-release` directly.
 
-### Step 3: Update VERSION File
+### Step 5: Run `/push-release`
 
-Write the new version to `VERSION`:
-
-```bash
-echo "X.Y.Z" > VERSION
-```
-
-### Step 4: Update CHANGELOG.md
-
-Move `[Unreleased]` content to a new version section:
-
-1. Read current CHANGELOG.md
-2. Replace `## [Unreleased]` section:
-   - Add empty `## [Unreleased]` at the top
-   - Create `## [X.Y.Z] - YYYY-MM-DD` with the previous unreleased content
-3. Write updated CHANGELOG.md
-
-The format follows [Keep a Changelog](https://keepachangelog.com/).
-
-### Step 5: Commit
-
-Create a release commit:
-
-```bash
-git add VERSION CHANGELOG.md
-git commit -m "release: vX.Y.Z"
-```
-
-### Step 6: Create Git Tag
-
-```bash
-git tag -a vX.Y.Z -m "Release vX.Y.Z"
-```
-
-### Step 7: Package Tags (Optional)
-
-If `cos` CLI is available, create package-level tags for packages with unreleased changes:
-
-```bash
-cos release-all --patch --dry-run  # Show what would be tagged
-cos release-all --patch            # Create package tags
-```
-
-Only run if the user confirms.
-
-### Step 8: Push (Optional)
-
-Ask the user before pushing:
-
-```bash
-git push origin main --tags
-```
-
-Only push if the user explicitly confirms. Never auto-push.
-
-## Safety Rules
-
-- NEVER release from a dirty working tree
-- NEVER release from a branch other than main (unless user explicitly overrides)
-- NEVER auto-push -- always ask for confirmation
-- NEVER skip CHANGELOG validation
-- If any step fails, stop and report -- do not continue partial releases
-- The release commit message MUST follow the format: `release: vX.Y.Z`
+This step always halts for user confirmation. The user may choose to skip (push later manually).
 
 ## Output
 
-After successful release:
+After each step, show that step's output. On full success:
 
 ```
-RELEASE COMPLETE:
-  Version: vX.Y.Z
-  Commit: {short hash}
-  Tag: vX.Y.Z
-  Changelog: Updated with {N} entries
-  Package tags: {created|skipped}
-  Pushed: {yes|no}
+RELEASE COMPLETE: vX.Y.Z
+  1. validate-release: PASS
+  2. bump-version: 0.1.0 → X.Y.Z
+  3. generate-changelog: N entries moved
+  4. tag-release: commit <hash>, tag vX.Y.Z
+  5. push-release: pushed to origin | skipped
 
-Next steps:
-  - Push if not yet pushed: git push origin main --tags
-  - Announce the release
+Next steps (if push was skipped):
+  git push origin main --tags
 ```
+
+## Safety Rules (inherited from atomic skills)
+
+- NEVER release from a dirty working tree
+- NEVER release from a branch other than `main` (unless explicitly overridden)
+- NEVER auto-push — step 5 always requires confirmation
+- If any step fails, stop immediately — do not continue with partial state
+- Each atomic skill is safe to re-run individually after a failure
+
+## Resuming a Partial Release
+
+If the pipeline fails mid-way, identify the last successful step and re-run from the next step:
+
+| Last success | Re-run from |
+|---|---|
+| validate-release | `/bump-version` |
+| bump-version | `/generate-changelog` |
+| generate-changelog | `/tag-release` |
+| tag-release | `/push-release` |
 
 ## Integration
 
-- **VERSION**: Single source of truth for OS version
-- **CHANGELOG.md**: Human-readable release notes
-- **cos CLI**: Package-level releases for monorepo packages
-- **Engram**: Save release metadata for cross-session tracking
+- **VERSION**: Single source of truth, updated by `/bump-version`
+- **CHANGELOG.md**: Updated by `/generate-changelog`
+- **git history**: Written by `/tag-release`
+- **Remote**: Updated by `/push-release`
+- **Engram**: Save release metadata after a successful push for cross-session tracking
