@@ -433,19 +433,41 @@ if [ -f "$REGISTRY_SCRIPT" ] && command -v jq >/dev/null 2>&1; then
 fi
 
 # ── 12. Add to .gitignore ────────────────────────────────────────
+# Ensure all COS runtime paths are ignored in the project's .gitignore.
+# This runs on both install AND update (--force), so new patterns are
+# added incrementally without duplicating existing entries.
+
+COS_GITIGNORE_PATTERNS=(
+  "# Cognitive OS runtime (not committed)"
+  ".cognitive-os/sessions/"
+  ".cognitive-os/metrics/"
+  ".cognitive-os/tasks/"
+  ".cognitive-os/checkpoints/"
+  ".cognitive-os/dynamic-tools/"
+  ".cognitive-os/rate-limit-state.json"
+  ".cognitive-os/install-meta.json"
+  ""
+  "# Cognitive OS local settings"
+  ".claude/settings.local.json"
+)
+
 if [ -f ".gitignore" ]; then
-  for pattern in ".cognitive-os/sessions/" ".cognitive-os/metrics/" ".cognitive-os/tasks/"; do
+  for pattern in "${COS_GITIGNORE_PATTERNS[@]}"; do
+    # Skip comments and empty lines if they don't need dedup
+    if [ -z "$pattern" ] || [[ "$pattern" == \#* ]]; then
+      # Add comment/blank only if the NEXT functional pattern is missing
+      continue
+    fi
     if ! grep -qF "$pattern" .gitignore 2>/dev/null; then
       echo "$pattern" >> .gitignore
     fi
   done
 else
-  cat > .gitignore << 'ENDGI'
-# Cognitive OS runtime (not committed)
-.cognitive-os/sessions/
-.cognitive-os/metrics/
-.cognitive-os/tasks/
-ENDGI
+  {
+    for pattern in "${COS_GITIGNORE_PATTERNS[@]}"; do
+      echo "$pattern"
+    done
+  } > .gitignore
 fi
 
 # ── Summary ──────────────────────────────────────────────────────
