@@ -27,11 +27,20 @@ Optional but recommended:
 
 ## Installation
 
+> **Important**: The installer installs into the **current working directory**.
+> Always `cd` into your project first, then run the installer.
+
 ### In a new project
 
 ```bash
-# One-line install
+# cd into YOUR PROJECT first
+cd /path/to/your/project
+
+# Option 1: Remote install (from GitHub)
 curl -fsSL https://raw.githubusercontent.com/luum-home/luum-cognitive-os/main/install.sh | bash
+
+# Option 2: Local install (from a cloned Cognitive OS repo)
+/path/to/luum-agent-os/install.sh
 ```
 
 Or manually:
@@ -42,6 +51,12 @@ cp -r /tmp/cos/.cognitive-os .cognitive-os
 cp /tmp/cos/cognitive-os.yaml cognitive-os.yaml
 rm -rf /tmp/cos
 ```
+
+### About the `--from` flag
+
+The `--from PATH` flag tells the installer where the Cognitive OS source code is.
+You only need it if the `install.sh` script was downloaded separately (not inside the repo).
+When running the script directly from the repo, source detection is automatic.
 
 ### Coexistence with existing .claude/ config
 
