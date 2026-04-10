@@ -1,3 +1,7 @@
+> **ARCHIVED**: This document is no longer maintained. Kept for historical reference.
+> Archived on: 2026-04-10
+> Reason: Historical benchmark data from a single run on 2026-03-23. Point-in-time artifact; not updated as the codebase evolves. Use `/arena` to run fresh benchmarks.
+
 # Cognitive OS Arena Benchmark Results
 
 **Date**: 2026-03-23
