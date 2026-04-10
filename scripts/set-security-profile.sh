@@ -108,6 +108,7 @@ build_settings() {
         "session-resume.sh" \
         "cognitive-os-health.sh" \
         "infra-health.sh" \
+        "mcp-scan.sh" \
         "metrics-rotation.sh" \
         "engram-auto-import.sh")
       ;;
@@ -140,6 +141,7 @@ build_settings() {
         "blast-radius.sh" \
         "dry-run-preview.sh" \
         "aguara-scan.sh" \
+        "parry-scan.sh" \
         "error-pattern-detector.sh" \
         "completeness-check.sh" \
         "prompt-quality.sh" \
@@ -213,6 +215,7 @@ build_settings() {
         "tool-loop-detector.sh" \
         "skill-tracker.sh" \
         "semgrep-scan.sh" \
+        "guardrails-validator.sh" \
         "observability-trace.sh" \
         "notify.sh" \
         "agent-checkpoint.sh")

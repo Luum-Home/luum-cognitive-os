@@ -34,6 +34,15 @@
         ]
       },
       {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/large-file-advisor.sh\""
+          }
+        ]
+      },
+      {
         "matcher": "Agent",
         "hooks": [
           {
@@ -58,23 +67,15 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/completeness-check.sh\""
-          },
-          {
-            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/error-pattern-detector.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/prompt-quality.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/predev-completeness-check.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/epic-task-detector.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/context-diet.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/registration-check.sh\""
           }
         ]
       }
@@ -115,7 +116,11 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/architecture-compliance.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/confidentiality-enforcer.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/doc-sync-detector.sh\""
           }
         ]
       },
@@ -140,24 +145,7 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-skill-generator.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-repair-dispatcher.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dequeue-notify.sh\""
-          }
-        ]
-      },
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/context-watchdog.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/audit-id-enricher.sh\""
           }
         ]
       }
@@ -176,7 +164,11 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/kpi-trigger.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/git-context-capture.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-changelog.sh\""
           }
         ]
       }
@@ -185,7 +177,10 @@
       {
         "matcher": "",
         "hooks": [
-          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/teammate-idle.sh\""}
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/teammate-idle.sh\""
+          }
         ]
       }
     ],
@@ -193,7 +188,10 @@
       {
         "matcher": "",
         "hooks": [
-          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-created.sh\""}
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-created.sh\""
+          }
         ]
       }
     ],
@@ -201,7 +199,10 @@
       {
         "matcher": "",
         "hooks": [
-          {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\""}
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\""
+          }
         ]
       }
     ]
