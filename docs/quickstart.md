@@ -25,14 +25,8 @@ No Docker, Python, or Go required for core features.
 ## Want more?
 
 ```bash
-bash ~/.cognitive-os-src/scripts/cos-init.sh --full
+bash ~/.cognitive-os-src/scripts/cos-init.sh --full  # or --minimal / --standard
 ```
-
-| Mode | What you get | Context cost |
-|------|-------------|-------------|
-| `--minimal` | 5 rules, 3 hooks | ~500 tokens |
-| `--standard` | 25 rules, 15 hooks, 10 skills | ~2000 tokens |
-| `--full` | Everything | ~5000 tokens |
 
 ## What works without Docker?
 
