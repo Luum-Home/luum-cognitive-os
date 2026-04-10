@@ -108,12 +108,29 @@ _install_cos_block() {
     return 0
   fi
 
-  # The hook content
+  # The hook content — pre-push runs in background after push completes
   local hook_block
-  hook_block=$(cat << 'HOOKEOF'
+  if [ "$hook_name" = "pre-push" ]; then
+    hook_block=$(cat << 'HOOKEOF'
 
 # COS_AUTO_UPDATE BEGIN — Do not edit this block manually
-# Auto-updates all registered COS installations after git pull/push.
+# Auto-updates all registered COS installations after git push completes.
+# Runs in background so the push is not delayed, and uses the new HEAD.
+# Installed by: bash scripts/setup-git-hooks.sh
+# Remove with:  bash scripts/setup-git-hooks.sh --remove
+_COS_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+if [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
+  (sleep 2 && echo "" && echo "[COS] Updating projects after push..." && \
+   bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /') &
+fi
+# COS_AUTO_UPDATE END
+HOOKEOF
+    )
+  else
+    hook_block=$(cat << 'HOOKEOF'
+
+# COS_AUTO_UPDATE BEGIN — Do not edit this block manually
+# Auto-updates all registered COS installations after git pull/merge.
 # Installed by: bash scripts/setup-git-hooks.sh
 # Remove with:  bash scripts/setup-git-hooks.sh --remove
 _COS_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -124,7 +141,8 @@ if [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
 fi
 # COS_AUTO_UPDATE END
 HOOKEOF
-  )
+    )
+  fi
 
   if [ -f "$hook_file" ]; then
     echo "$hook_block" >> "$hook_file"
