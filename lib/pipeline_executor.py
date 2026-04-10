@@ -221,8 +221,30 @@ class PipelineState:
             json.dump(data, fh, indent=2)
 
     @classmethod
-    def load(cls, state_file: str, change_name: str, workflow_name: str) -> "PipelineState":
-        """Load persisted state or return a fresh instance."""
+    def load(
+        cls,
+        state_file: str,
+        change_name: str,
+        workflow_name: str = "",
+        *,
+        state_dir: Optional[str] = None,
+    ) -> "PipelineState":
+        """Load persisted state or return a fresh instance.
+
+        Can be called in two ways:
+
+        1. Legacy: ``load(state_file_path, change_name, workflow_name)``
+        2. Convenience: ``load(change_name, workflow_name, state_dir=path)``
+           When *state_dir* is given the first arg is treated as *change_name*
+           and the state file path is derived as ``state_dir/change_name.json``.
+        """
+        if state_dir is not None:
+            # Convenience form: first arg is change_name, second is workflow_name
+            actual_change = state_file  # first arg is actually change_name here
+            actual_workflow = change_name  # second arg is workflow_name
+            resolved_file = os.path.join(str(state_dir), f"{actual_change}.json")
+            return cls.load(resolved_file, actual_change, actual_workflow)
+
         if os.path.isfile(state_file):
             try:
                 with open(state_file, encoding="utf-8") as fh:
