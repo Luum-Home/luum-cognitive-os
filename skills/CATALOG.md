@@ -105,6 +105,20 @@
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints | `/vulnerability-scan` | os-dev |
 | agent-stress-test | Stress-test agent cognitive health to detect context-induced degradation | `/agent-stress-test` | os-dev |
 
+## Pre-Development & Audit Skills [project-discovery / project-audit]
+
+> Located at `.cognitive-os/skills/`. Installed via the project-discovery and project-audit packages.
+
+| Skill | Description | Invoke | Audience |
+|-------|-------------|--------|----------|
+| context-analysis | Analyze project business context, stakeholders, constraints | `/context-analysis` | project |
+| threat-model | STRIDE-based threat identification and severity scoring | `/threat-model` | project |
+| competitive-research | Benchmarking, library evaluation, competitive analysis | `/competitive-research` | project |
+| execution-plan | Phased execution plan with budget estimation | `/execution-plan` | project |
+| audience-summaries | Audience-targeted summaries from pre-dev artifacts | `/audience-summaries` | project |
+| audit-report | Comprehensive audit report for sprint or date range | `/audit-report` | project |
+| traceability-check | Requirement-to-test traceability gap detection | `/traceability-check` | project |
+
 ## Communication Skills — Caveman [plugin]
 
 > Ported from `.claude/plugins/caveman/`. License: MIT. See `rules/os-vs-project.md`.
