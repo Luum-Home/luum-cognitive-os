@@ -198,4 +198,15 @@ _singularity_suggestion() {
 
 _singularity_suggestion
 
+# ─── Test baseline capture (non-blocking) ────────────────────────────────────
+# Capture current test state so session-end can detect regressions introduced
+# during this session. Runs in background — never slows session start.
+(
+  if command -v python3 &>/dev/null && python3 -m pytest --version &>/dev/null 2>&1; then
+    python3 -m pytest --tb=no -q 2>&1 | tail -5 > "$SESSION_DIR/test-baseline.txt" 2>/dev/null || true
+  else
+    echo "baseline: unavailable" > "$SESSION_DIR/test-baseline.txt"
+  fi
+) &
+
 exit 0
