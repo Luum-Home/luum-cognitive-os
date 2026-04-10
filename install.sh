@@ -18,7 +18,11 @@ show_help() {
   cat <<'USAGE'
 Usage: install.sh [OPTIONS]
 
-Install Cognitive OS into the current project.
+Install Cognitive OS into the CURRENT DIRECTORY (your project).
+
+IMPORTANT: Run this command FROM your project directory, not from the
+Cognitive OS repo. The installer creates .cognitive-os/ and updates
+.claude/ in the current working directory.
 
 Options:
   --from PATH    Use a local Cognitive OS repo instead of cloning from GitHub
@@ -35,14 +39,17 @@ Source detection:
   Use --from to specify a different local repo path explicitly.
 
 Examples:
+  # Install into your project from a local Cognitive OS repo
+  cd /path/to/your-project
+  /path/to/luum-agent-os/install.sh
+
+  # Same thing with explicit --from
+  cd /path/to/your-project
+  bash install.sh --from /path/to/luum-agent-os
+
   # Install from GitHub (remote)
+  cd /path/to/your-project
   curl -sL https://raw.githubusercontent.com/.../install.sh | bash
-
-  # Install from the repo you're currently in
-  ./install.sh
-
-  # Install from a specific local path
-  ./install.sh --from /path/to/luum-agent-os
 
   # Force overwrite existing installation
   ./install.sh --force
@@ -100,8 +107,24 @@ fi
 echo "=== Cognitive OS Installer ==="
 echo ""
 
+# Guard: prevent installing COS into its own repo
+CWD="$(pwd)"
+if [ -n "$SOURCE_DIR" ] && [ "$CWD" = "$SOURCE_DIR" ]; then
+  echo "Error: You are running the installer FROM the Cognitive OS repo itself."
+  echo ""
+  echo "The installer installs into the CURRENT DIRECTORY. You should run it"
+  echo "from your PROJECT directory, not from the Cognitive OS source."
+  echo ""
+  echo "Example:"
+  echo "  cd /path/to/your-project"
+  echo "  $SOURCE_DIR/install.sh"
+  echo ""
+  exit 1
+fi
+
 if [ -n "$SOURCE_DIR" ]; then
   echo "Using local Cognitive OS from: $SOURCE_DIR"
+  echo "Installing into: $CWD"
   echo ""
 fi
 
@@ -178,11 +201,24 @@ fi
 # ── Prepare source (local copy or remote clone) ──────────────────────
 prepare_source() {
   if [ -n "$SOURCE_DIR" ]; then
-    # Local: copy repo contents to temp dir
+    # Local: copy only the directories cos-init.sh needs, skip .venv/reference/node_modules
     echo "Copying from local source..."
-    # Remove the empty temp dir and copy source into its place
     rm -rf "$TEMP_DIR"
-    cp -r "$SOURCE_DIR" "$TEMP_DIR"
+    mkdir -p "$TEMP_DIR"
+    # Use rsync if available (excludes broken symlinks in .venv, reference/, etc.)
+    if command -v rsync >/dev/null 2>&1; then
+      rsync -a \
+        --exclude='.venv' \
+        --exclude='node_modules' \
+        --exclude='reference' \
+        --exclude='.git' \
+        --exclude='__pycache__' \
+        "$SOURCE_DIR/" "$TEMP_DIR/"
+    else
+      # Fallback: cp with error suppression for broken symlinks
+      cp -r "$SOURCE_DIR" "$TEMP_DIR.bak" 2>/dev/null || true
+      mv "$TEMP_DIR.bak" "$TEMP_DIR"
+    fi
   else
     # Remote: git clone
     echo "Downloading Cognitive OS ($VERSION)..."
