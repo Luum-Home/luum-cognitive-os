@@ -96,6 +96,7 @@ npx ccusage@latest daily --since 2026-04-01
 | Hook | `hooks/aguara-scan.sh` (PreToolUse on Agent) |
 | Install | `go install github.com/garagon/aguara@latest` or `bash scripts/install-aguara.sh` |
 | Required | No (optional dependency, graceful skip if missing) |
+| Registered | Yes — registered in paranoid security profile (PreToolUse on Agent) |
 | Scope | Agent prompts before execution |
 
 **Phase behavior**:
