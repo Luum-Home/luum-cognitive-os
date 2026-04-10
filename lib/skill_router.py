@@ -974,6 +974,93 @@ def _build_default_routing_table() -> List[_RoutingEntry]:
             fallback_command=None,
             reason_template="Webhook trigger detected",
         ),
+
+        # --- Pre-development & audit skills ---
+        _RoutingEntry(
+            patterns=_compile([
+                (r"\bcontext[- ]?analysis\b", 0.95),
+                (r"\b(analiz[áa]\w*|analyze)\s+(the\s+|el\s+|la\s+)?(project\s+)?context\b", 0.85),
+                (r"\b(new\s+project|project\s+brief|stakeholders|business\s+context)\b", 0.80),
+                (r"\b(brief|contexto)\s+(del\s+|de\s+)?(proyecto|project)\b", 0.80),
+            ]),
+            skill_name="context-analysis",
+            invoke_command="/context-analysis",
+            fallback_command=None,
+            reason_template="Project context analysis detected",
+        ),
+        _RoutingEntry(
+            patterns=_compile([
+                (r"\bthreat[- ]?model\b", 0.95),
+                (r"\bstride\b", 0.85),
+                (r"\b(security\s+assessment|risk\s+analysis|threat\s+identification)\b", 0.80),
+                (r"\b(modelo\s+de\s+amenazas?|an[áa]lisis\s+de\s+riesgo)\b", 0.85),
+            ]),
+            skill_name="threat-model",
+            invoke_command="/threat-model",
+            fallback_command=None,
+            reason_template="Threat modeling detected",
+        ),
+        _RoutingEntry(
+            patterns=_compile([
+                (r"\bcompetitive[- ]?research\b", 0.95),
+                (r"\bbenchmarking\b", 0.80),
+                (r"\b(library|librer[ií]a)\s+evaluation\b", 0.80),
+                (r"\b(competitive|competencia)\s+(analysis|an[áa]lisis|landscape)\b", 0.85),
+                (r"\b(alternativas?|alternatives?)\s+(para|for|to)\b", 0.75),
+            ]),
+            skill_name="competitive-research",
+            invoke_command="/competitive-research",
+            fallback_command=None,
+            reason_template="Competitive research / benchmarking detected",
+        ),
+        _RoutingEntry(
+            patterns=_compile([
+                (r"\bexecution[- ]?plan\b", 0.95),
+                (r"\b(plan\s+de\s+ejecuci[oó]n|phased\s+(execution|plan))\b", 0.90),
+                (r"\b(budget\s+estimation|estimaci[oó]n\s+de\s+presupuesto)\b", 0.85),
+                (r"\b(milestones?|timeline|phases?)\s+(plan|planning|breakdown)\b", 0.80),
+            ]),
+            skill_name="execution-plan",
+            invoke_command="/execution-plan",
+            fallback_command=None,
+            reason_template="Execution plan creation detected",
+        ),
+        _RoutingEntry(
+            patterns=_compile([
+                (r"\baudience[- ]?summar\w*\b", 0.95),
+                (r"\bexecutive\s+summary\b", 0.85),
+                (r"\bstakeholder\s+(report|summary|resumen)\b", 0.85),
+                (r"\b(res[uú]menes?\s+para\s+audiencias?|audience[- ]?targeted)\b", 0.85),
+            ]),
+            skill_name="audience-summaries",
+            invoke_command="/audience-summaries",
+            fallback_command=None,
+            reason_template="Audience-targeted summaries detected",
+        ),
+        _RoutingEntry(
+            patterns=_compile([
+                (r"\baudit[- ]?report\b", 0.95),
+                (r"\b(sprint\s+review|work\s+summary|progress\s+report)\b", 0.80),
+                (r"\b(informe\s+de\s+auditor[ií]a|reporte\s+de\s+sprint)\b", 0.85),
+                (r"\b(audit\s+report|comprehensive\s+audit)\b", 0.90),
+            ]),
+            skill_name="audit-report",
+            invoke_command="/audit-report",
+            fallback_command=None,
+            reason_template="Audit report generation detected",
+        ),
+        _RoutingEntry(
+            patterns=_compile([
+                (r"\btraceability[- ]?check\b", 0.95),
+                (r"\b(coverage\s+gaps?|requirement\s+tracking)\b", 0.80),
+                (r"\b(trazabilidad|rastreabilidad)\b", 0.85),
+                (r"\b(requirement[- ]?to[- ]?test|req\s+coverage)\b", 0.85),
+            ]),
+            skill_name="traceability-check",
+            invoke_command="/traceability-check",
+            fallback_command=None,
+            reason_template="Traceability gap detection detected",
+        ),
     ]
 
 
