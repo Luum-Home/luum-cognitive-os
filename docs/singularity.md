@@ -117,21 +117,21 @@ In production and maintenance phases, the controller operates conservatively:
 ### Enable (One-Time Run)
 
 ```bash
-python lib/singularity.py run
+SINGULARITY_ENABLED=true python3 lib/singularity.py run
 # or
-python lib/singularity.py dry-run  # preview only
+SINGULARITY_ENABLED=true python3 lib/singularity.py dry-run  # preview only
 ```
 
 ### Enable (Continuous Daemon)
 
 ```bash
-python lib/singularity.py daemon --interval 300 --budget 10.0
+SINGULARITY_ENABLED=true python3 lib/singularity.py daemon --interval 300 --budget 10.0
 ```
 
 ### Enable (Cron Schedule)
 
 ```cron
-*/5 * * * * cd /path/to/project && python lib/singularity.py run >> /var/log/singularity.log 2>&1
+*/5 * * * * cd /path/to/project && PYTHONPATH=. SINGULARITY_ENABLED=true python3 lib/singularity.py run >> /var/log/singularity.log 2>&1
 ```
 
 ### Disable
@@ -143,7 +143,7 @@ python lib/singularity.py daemon --interval 300 --budget 10.0
 ### Check Status
 
 ```bash
-python lib/singularity.py status
+SINGULARITY_ENABLED=true python3 lib/singularity.py status
 ```
 
 ## Monitoring the Singularity (Meta-Monitoring)
@@ -152,7 +152,7 @@ The Singularity controller is itself observable:
 
 | What to Check | How | Healthy Signal |
 |---------------|-----|----------------|
-| Is it running? | `python lib/singularity.py status` | Shows recent cycles |
+| Is it running? | `SINGULARITY_ENABLED=true python3 lib/singularity.py status` | Shows recent cycles |
 | Is it spending too much? | Check `daily_spend_usd` in status output | Below daily budget |
 | Is it effective? | Check `success_rates` in status output | > 70% per event type |
 | Is it stuck? | Check `active_cooldowns` in status | Cooldowns cycling normally |
@@ -187,6 +187,186 @@ lib/singularity.py
         +-- run_once()       # Single MAPE-K cycle
         +-- run_daemon()     # Continuous loop with SIGTERM handling
         +-- status()         # Current state report
+```
+
+## Auto-Suggestion Protocol
+
+Singularity is inactive by default. Rather than requiring users to remember to enable it, Cognitive OS proactively suggests activation when observable signals warrant it. Suggestions are advisory — they never block session startup or normal work.
+
+### Primary Implementation: SessionStart
+
+`hooks/session-init.sh` runs at the start of every Claude Code session. It checks three signals using only file existence tests and line counts (no heavy parsing, < 200ms total):
+
+| Signal | Check | Suggestion Shown |
+|--------|-------|-----------------|
+| Never ran | `singularity-events.jsonl` does not exist | Suggest dry-run as a first-time introduction |
+| Active errors | `error-learning.jsonl` has 3+ entries in last 24h | Suggest activation for autonomous error monitoring |
+| Stale docs pending | `stale-docs.jsonl` exists and is non-empty | Mention doc-sync pipeline as a quick win |
+
+The output appears as a clearly delimited block on stderr so it is visible but does not clutter normal output:
+
+```
+=== SINGULARITY SUGGESTION ===
+Detected: 5 errors in last 24h, 2 stale docs
+Consider activating Singularity for autonomous monitoring.
+Try: SINGULARITY_ENABLED=true python3 lib/singularity.py dry-run
+=== END SINGULARITY ===
+```
+
+If Singularity has never run:
+
+```
+=== SINGULARITY SUGGESTION ===
+Singularity has never been run in this project.
+Try: SINGULARITY_ENABLED=true python3 lib/singularity.py dry-run
+=== END SINGULARITY ===
+```
+
+SessionStart is the primary implementation point because it is zero-cost (no API calls, no subprocess), runs every session unconditionally, and catches the "never tried it" case that hook-based triggers would miss.
+
+### Secondary Triggers (Contextual)
+
+These points already have hooks or reporting infrastructure. Adding a suggestion line is low-effort and contextually relevant:
+
+| Trigger Point | Signal | Suggestion |
+|---------------|--------|------------|
+| After sdd-verify FAIL x3 | Auto-rollback triggered | Suggest Singularity for early pattern detection before the next feature cycle |
+| After `/cognitive-os-init` | Fresh project setup | Include in onboarding checklist as an optional next step |
+| KPI degradation | `kpi-trigger.sh` detects score drop | Suggest continuous monitoring to catch future regressions automatically |
+
+These are lower-priority than the SessionStart check and should be implemented as one-line additions to the existing hook output rather than new hook files.
+
+### Why Not Auto-Enable
+
+Singularity launches Claude pipelines autonomously, which costs tokens and money. Auto-enabling without user consent would violate the budget governance rules in `rules/resource-governance.md`. The suggestion pattern — show signal, recommend dry-run, let user decide — respects user agency while still surfacing the option at the right moment.
+
+## Scheduling Options
+
+The Singularity can be triggered in five ways. Choose based on persistence and vendor requirements.
+
+> For the full portability comparison across IDEs, see [`docs/architecture/cross-runtime-portability.md#scheduling--recurring-tasks`](architecture/cross-runtime-portability.md#scheduling--recurring-tasks).
+
+| Option | Persists across sessions | Survives reboots | Independent of Claude Code | Best for |
+|--------|--------------------------|-----------------|---------------------------|----------|
+| `CronCreate` (in-session) | No | No | No | Quick experiments only |
+| Claude Code Scheduled Task (MCP) | Yes | No | No (needs Claude Code) | Claude Code-only setups |
+| System crontab | Yes | Yes | Yes | Production (recommended) |
+| Daemon mode (`nohup`) | Until reboot | No | Yes | Development / staging |
+| launchd / systemd | Yes | Yes | Yes | Production (most robust) |
+
+### Option 1: Session-only (CronCreate)
+
+Runs inside the current Claude Code session. Dies when the session ends. Use only for testing.
+
+```
+# Within a Claude Code session:
+# CronCreate with interval: 300 seconds
+# Prompt: "cd /path/to/project && PYTHONPATH=. SINGULARITY_ENABLED=true python3 lib/singularity.py run"
+```
+
+**Warning**: `CronCreate` has no portable equivalent in Cursor, Windsurf, or Kiro. Do not rely on it for production scheduling.
+
+### Option 2: Claude Code Durable Scheduled Task
+
+Survives individual sessions but still requires the Claude Code runtime.
+
+```bash
+# Via MCP tool: mcp__scheduled-tasks__create_scheduled_task
+# schedule: "*/5 * * * *"
+# prompt: "cd /path/to/project && PYTHONPATH=. SINGULARITY_ENABLED=true python3 lib/singularity.py run"
+```
+
+### Option 3: System Crontab (recommended for production)
+
+Vendor-independent. Runs as an OS process, unaffected by which IDE is in use.
+
+```bash
+crontab -e
+# Add:
+*/5 * * * * cd /path/to/project && PYTHONPATH=. SINGULARITY_ENABLED=true python3 lib/singularity.py run >> /var/log/singularity.log 2>&1
+```
+
+### Option 4: Daemon Mode
+
+Long-running background process. Survives session ends but not reboots.
+
+```bash
+PYTHONPATH=. SINGULARITY_ENABLED=true nohup python3 lib/singularity.py daemon --interval 300 --budget 10.0 >> /var/log/singularity.log 2>&1 &
+echo $! > /var/run/singularity.pid  # save PID for later kill
+```
+
+### Option 5: launchd (macOS) / systemd (Linux)
+
+Most robust option — survives reboots, managed by the OS supervisor.
+
+**macOS launchd** (`~/Library/LaunchAgents/com.luum.singularity.plist`):
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.luum.singularity</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/path/to/project/lib/singularity.py</string>
+    <string>run</string>
+  </array>
+  <key>WorkingDirectory</key><string>/path/to/project</string>
+  <key>StartInterval</key><integer>300</integer>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PYTHONPATH</key><string>/path/to/project</string>
+    <key>SINGULARITY_ENABLED</key><string>true</string>
+  </dict>
+  <key>StandardOutPath</key><string>/var/log/singularity.log</string>
+  <key>StandardErrorPath</key><string>/var/log/singularity.log</string>
+</dict>
+</plist>
+```
+
+```bash
+launchctl load ~/Library/LaunchAgents/com.luum.singularity.plist
+```
+
+**Linux systemd** — create two unit files, then enable the timer:
+
+`~/.config/systemd/user/singularity.service`:
+
+```ini
+[Unit]
+Description=Cognitive OS Singularity controller (single run)
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/path/to/project
+ExecStart=/usr/bin/python3 /path/to/project/lib/singularity.py run
+Environment="PYTHONPATH=/path/to/project"
+Environment="SINGULARITY_ENABLED=true"
+StandardOutput=append:/var/log/singularity.log
+StandardError=append:/var/log/singularity.log
+```
+
+`~/.config/systemd/user/singularity.timer`:
+
+```ini
+[Unit]
+Description=Run Singularity controller every 5 minutes
+
+[Timer]
+OnCalendar=*:0/5
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now singularity.timer
+systemctl --user status singularity.timer
 ```
 
 ## Dependencies
