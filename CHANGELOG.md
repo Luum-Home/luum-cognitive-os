@@ -48,6 +48,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - rules/RULES-COMPACT.md: added skill-rewrite and task-dag references
 - templates/agent-preamble.md: full escalation protocol with 5 signal types
 
+## [0.8.4] - 2026-04-10
+
+### Added
+- feat: security-tools-landscape.md — implementation status tracking for P1/P2 security tools
+- feat: tero-testing and mantis-security packages with cos-package.yaml manifests
+- feat: workflow YAML files (feature-pipeline.yaml, bugfix-pipeline.yaml) in .cognitive-os/workflows/
+- fix: pre-commit hook Gate 3e made advisory (warn, not block) on malformed workflow YAML
+- fix: pre-commit hook gate labels standardized (Gate 3a–3e) for consistent detection
+- fix: docs/INDEX.md version updated to v0.8.4
+
 ## [Unreleased]
 
 ### Added
