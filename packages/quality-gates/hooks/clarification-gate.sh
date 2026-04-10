@@ -121,6 +121,33 @@ if ! echo "$AGENT_PROMPT" | grep -qiE '(acceptance criteria|success criteria|def
   add_question 10 "No success/acceptance criteria found. How will completion be verified?"
 fi
 
+# --- Detail Discount — specific prompts should not be penalized for length ---
+# File paths present: each file path reference reduces score by -5 (capped at -20)
+FILE_PATH_COUNT=$(echo "$AGENT_PROMPT" | grep -oE '/[a-zA-Z0-9_./-]+\.[a-z]{1,4}' | wc -l | tr -d ' ')
+if [ "$FILE_PATH_COUNT" -gt 0 ]; then
+  DISCOUNT=$((FILE_PATH_COUNT * 5))
+  [ "$DISCOUNT" -gt 20 ] && DISCOUNT=20
+  SCORE=$((SCORE - DISCOUNT))
+fi
+
+# Long detailed prompt with file paths: additional -10
+if [ "${#AGENT_PROMPT}" -gt 500 ] && [ "$FILE_PATH_COUNT" -gt 0 ]; then
+  SCORE=$((SCORE - 10))
+fi
+
+# Engram/memory references indicate structured agent work: -10
+if echo "$AGENT_PROMPT" | grep -qiE 'mem_save|mem_search|engram|topic_key'; then
+  SCORE=$((SCORE - 10))
+fi
+
+# Numbered steps indicate structured instructions: -10
+if echo "$AGENT_PROMPT" | grep -qE '^[0-9]+\.'; then
+  SCORE=$((SCORE - 10))
+fi
+
+# Floor at 0
+[ "$SCORE" -lt 0 ] && SCORE=0
+
 # Cap score at 100
 if [ "$SCORE" -gt 100 ]; then
   SCORE=100

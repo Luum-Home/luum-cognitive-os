@@ -75,7 +75,8 @@ class TestRuleNamespacing:
         cos_rules = project / ".claude" / "rules" / "cos"
         assert cos_rules.is_dir()
         assert (cos_rules / "trust-score.md").is_symlink()
-        assert (cos_rules / "content-policy.md").is_symlink()
+        # content-policy.md is excluded (hook-enforced) — should NOT be symlinked
+        assert not (cos_rules / "content-policy.md").is_symlink()
         assert (cos_rules / "model-routing.md").is_symlink()
 
     def test_rules_not_in_flat_rules_dir(self, tmp_path):
@@ -148,8 +149,9 @@ class TestMigrationFromFlatSymlinks:
         rules_dir = project / ".claude" / "rules"
         rules_dir.mkdir(parents=True, exist_ok=True)
         (rules_dir / "my-project-rule.md").write_text("# My Rule\n")
-        old_link = rules_dir / "content-policy.md"
-        old_link.symlink_to(project / "rules" / "content-policy.md")
+        # Use model-routing.md (not hook-enforced, so it gets symlinked)
+        old_link = rules_dir / "model-routing.md"
+        old_link.symlink_to(project / "rules" / "model-routing.md")
 
         _run_hook(str(project))
 
@@ -157,10 +159,12 @@ class TestMigrationFromFlatSymlinks:
         assert (rules_dir / "my-project-rule.md").exists()
         assert not (rules_dir / "my-project-rule.md").is_symlink()
         # Old symlink removed
-        assert not (rules_dir / "content-policy.md").is_symlink() or \
-               not (rules_dir / "content-policy.md").exists()
-        # New location
-        assert (rules_dir / "cos" / "content-policy.md").is_symlink()
+        assert not (rules_dir / "model-routing.md").is_symlink() or \
+               not (rules_dir / "model-routing.md").exists()
+        # New location (model-routing.md is not hook-enforced, so it IS symlinked to cos/)
+        assert (rules_dir / "cos" / "model-routing.md").is_symlink()
+        # content-policy.md is hook-enforced and should NOT be symlinked to cos/
+        assert not (rules_dir / "cos" / "content-policy.md").is_symlink()
 
     def test_migration_ignores_symlinks_to_other_targets(self, tmp_path):
         project = _setup_cos_project(tmp_path)
@@ -581,5 +585,6 @@ class TestStatusCounts:
     def test_rule_count_reflects_cos_dir(self, tmp_path):
         project = _setup_cos_project(tmp_path)
         result = _run_hook(str(project))
-        # 3 rules in our test setup
-        assert "3 rules" in result.stdout
+        # Setup has trust-score.md, content-policy.md, model-routing.md.
+        # content-policy.md is hook-enforced (EXCLUDED_RULES) so only 2 are symlinked.
+        assert "2 rules" in result.stdout
