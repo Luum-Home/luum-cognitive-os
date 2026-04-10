@@ -10,6 +10,13 @@ packages:
     description: "Adaptive workflow bypass — classifies task complexity to skip unnecessary orchestration"
     tags: [adaptive, workflow, bypass, complexity, orchestration]
 
+  - name: "@luum/advisor-mcp"
+    repo: "Luum-Home/luum-cognitive-os"
+    path: "packages/advisor-mcp"
+    version: "1.0.0"
+    description: "Model-agnostic advisor MCP server for mid-task strategic consultation"
+    tags: [mcp, advisor, strategic, multi-provider, llm]
+
   - name: "@luum/agent-coordination"
     repo: "Luum-Home/luum-cognitive-os"
     path: "packages/agent-coordination"
@@ -128,6 +135,20 @@ packages:
     version: "1.0.0"
     description: "Private mode protocol — disable all persistence for casual conversations"
     tags: [privacy, private-mode, persistence, disable]
+
+  - name: "@luum/project-audit"
+    repo: "Luum-Home/luum-cognitive-os"
+    path: "packages/project-audit"
+    version: "1.0.0"
+    description: "Automated work tracking, audit trail, changelog generation, and requirement-to-test traceability"
+    tags: [audit, tracking, changelog, traceability, git-context, sprint]
+
+  - name: "@luum/project-discovery"
+    repo: "Luum-Home/luum-cognitive-os"
+    path: "packages/project-discovery"
+    version: "1.0.0"
+    description: "Pre-development planning pipeline with IP protection — context analysis, threat modeling, competitive research, execution planning, and audience-targeted summaries"
+    tags: [planning, pre-dev, discovery, threat-model, research, confidentiality, ip-protection]
 
   - name: "@luum/prompt-quality-gate"
     repo: "Luum-Home/luum-cognitive-os"

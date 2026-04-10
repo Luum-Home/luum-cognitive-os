@@ -16,7 +16,14 @@
 # Idempotent — safe to run multiple times.
 set -euo pipefail
 
-PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# Use cwd as project dir so the script works when invoked from any project root.
+# Fall back to the script's parent dir for backwards compatibility.
+if [ -f "cognitive-os.yaml" ] || [ -d ".claude" ]; then
+  PROJECT_DIR="$(pwd)"
+else
+  PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+fi
 CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 SETTINGS_FILE="$PROJECT_DIR/.claude/settings.json"
 
@@ -127,22 +134,20 @@ build_settings() {
         "blast-radius.sh" \
         "inject-phase-context.sh" \
         "agent-prelaunch.sh" \
-        "completeness-check.sh" \
         "error-pattern-detector.sh" \
-        "prompt-quality.sh" \
-        "epic-task-detector.sh" \
-        "context-diet.sh")
+        "predev-completeness-check.sh")
       ;;
   esac
 
   # PostToolUse hooks
-  local post_bash="" post_bash_edit_write="" post_edit="" post_agent="" post_all=""
+  local post_bash="" post_bash_edit_write="" post_edit="" post_agent=""
   case "$profile" in
     lean)
       post_bash=$(hook_group "Bash" \
         "error-pipeline.sh")
       post_edit=$(hook_group "Edit|Write" \
-        "secret-detector.sh")
+        "secret-detector.sh" \
+        "confidentiality-enforcer.sh")
       post_agent=$(hook_group "Agent" \
         "agent-checkpoint.sh")
       ;;
@@ -155,17 +160,13 @@ build_settings() {
       post_edit=$(hook_group "Edit|Write" \
         "secret-detector.sh" \
         "content-policy.sh" \
-        "architecture-compliance.sh")
+        "confidentiality-enforcer.sh")
       post_agent=$(hook_group "Agent" \
         "claim-validator.sh" \
         "completion-gate.sh" \
         "agent-checkpoint.sh" \
         "trust-score-validator.sh" \
-        "auto-skill-generator.sh" \
-        "auto-repair-dispatcher.sh" \
-        "dequeue-notify.sh")
-      post_all=$(hook_group "" \
-        "context-watchdog.sh")
+        "audit-id-enricher.sh")
       ;;
   esac
 
@@ -174,14 +175,14 @@ build_settings() {
   case "$profile" in
     lean)
       stop_hooks=$(hook_group "" \
-        "session-learning.sh" \
         "session-cleanup.sh")
       ;;
     standard)
       stop_hooks=$(hook_group "" \
         "session-learning.sh" \
         "session-cleanup.sh" \
-        "kpi-trigger.sh")
+        "git-context-capture.sh" \
+        "session-changelog.sh")
       ;;
   esac
 
@@ -208,7 +209,7 @@ build_settings() {
 
   printf '    "PostToolUse": [\n'
   local post_first=true
-  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_agent" "$post_all"; do
+  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_agent"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
@@ -221,29 +222,7 @@ build_settings() {
 
   printf '    "Stop": [\n'
   printf '%s\n' "$stop_hooks"
-
-  if [ "$profile" = "standard" ]; then
-    # Close Stop array, then emit agent teams events, then close hooks+root
-    printf '    ],\n'
-    printf '    "TeammateIdle": [\n'
-    printf '      {\n        "matcher": "",\n        "hooks": [\n'
-    printf '          {"type": "command", "command": "bash \\"$CLAUDE_PROJECT_DIR/hooks/teammate-idle.sh\\""}\n'
-    printf '        ]\n      }\n'
-    printf '    ],\n'
-    printf '    "TaskCreated": [\n'
-    printf '      {\n        "matcher": "",\n        "hooks": [\n'
-    printf '          {"type": "command", "command": "bash \\"$CLAUDE_PROJECT_DIR/hooks/task-created.sh\\""}\n'
-    printf '        ]\n      }\n'
-    printf '    ],\n'
-    printf '    "TaskCompleted": [\n'
-    printf '      {\n        "matcher": "",\n        "hooks": [\n'
-    printf '          {"type": "command", "command": "bash \\"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\\""}\n'
-    printf '        ]\n      }\n'
-    printf '    ]\n'
-    printf '  }\n}\n'
-  else
-    printf '    ]\n  }\n}\n'
-  fi
+  printf '    ]\n  }\n}\n'
 }
 
 # ── Write settings.json ─────────────────────────────────────────────
@@ -268,24 +247,21 @@ case "$PROFILE" in
   lean)
     echo "  SessionStart: self-install.sh, session-init.sh"
     echo "  PostToolUse Bash: error-pipeline.sh"
-    echo "  PostToolUse Edit|Write: secret-detector.sh"
+    echo "  PostToolUse Edit|Write: secret-detector.sh, confidentiality-enforcer.sh"
     echo "  PostToolUse Agent: agent-checkpoint.sh"
-    echo "  Stop: session-learning.sh, session-cleanup.sh"
+    echo "  Stop: session-cleanup.sh"
     echo "  Total: 7 hooks"
     ;;
   standard)
     echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh"
     echo "  PreToolUse Bash: rate-limiter.sh"
-    echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, completeness-check.sh, error-pattern-detector.sh, prompt-quality.sh, epic-task-detector.sh, context-diet.sh"
+    echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh"
     echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh"
     echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
-    echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, architecture-compliance.sh"
-    echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, auto-skill-generator.sh, auto-repair-dispatcher.sh, dequeue-notify.sh"
-    echo "  Stop: session-learning.sh, session-cleanup.sh, kpi-trigger.sh"
-    echo "  TeammateIdle: teammate-idle.sh"
-    echo "  TaskCreated: task-created.sh"
-    echo "  TaskCompleted: task-completed.sh"
-    echo "  Total: 35 hooks"
+    echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh"
+    echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, audit-id-enricher.sh"
+    echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh"
+    echo "  Total: 27 hooks"
     ;;
 esac
 
