@@ -138,6 +138,19 @@ The OS kernel lives in `.cognitive-os/` (universal). Claude Code integration liv
 | 4. Pipeline runner (external) | Tool-agnostic Python CLI orchestration | 5-7 days | Workflows work with any CLI tool |
 | 5. Cross-tool test suite | Validate COS on Cursor + OpenCode | 2-3 days | Confidence |
 
+## Git Submodules in Worktrees
+
+**Problem**: Submodule `.git` files use relative paths (`gitdir: ../../../.git/modules/...`) that break in worktrees because the worktree is at a different filesystem depth than the main repo.
+
+**Symptom**: `git status` fails with:
+```
+fatal: not a git repository: .claude/plugins/hermes-agent/../../../.git/modules/.claude/plugins/hermes-agent
+```
+
+**Fix**: Rewrite submodule `.git` files with absolute paths pointing to the main repo's `.git/modules/` directory.
+
+**Status**: Known git limitation. Claude Code issue anthropics/claude-code#27201 (closed without fix). The `hooks/worktree-submodule-fix.sh` SessionStart hook handles this automatically.
+
 ## What Cannot Be Ported
 
 | Feature | Why | Degradation Strategy |
@@ -147,6 +160,23 @@ The OS kernel lives in `.cognitive-os/` (universal). Claude Code integration liv
 | PreCompact hook | Only Claude Code signals context compression | No equivalent; checkpointing manual |
 | UserPromptSubmit hook | Only Claude Code + Cursor have this | No input validation in other tools |
 | Auto-chain SDD pipeline | Requires in-session Agent tool | Use pipeline-runner (external) instead |
+| CronCreate scheduling | Claude Code session-only, in-memory | Use portable alternatives (see below) |
+
+### Scheduling / Recurring Tasks
+
+`CronCreate` is a Claude Code native tool that creates scheduled tasks within the current session. It is **not portable** — it has no equivalent in Cursor, Windsurf, or Kiro, and tasks die when the session ends.
+
+| Mechanism | Provider | Persists across sessions | Survives reboots | Independent of Claude Code |
+|-----------|----------|--------------------------|-----------------|---------------------------|
+| `CronCreate` | Claude Code (native) | No (session-only, in-memory) | No | No |
+| Scheduled Tasks (durable) | Claude Code (Scheduled Tasks MCP) | Yes (files persist on disk but tasks do not auto-resume without Claude Code running) | No | No (requires Claude Code runtime) |
+| `singularity.py daemon` | COS (Python) | Yes (OS process) | No | Yes |
+| System crontab | OS | Yes | Yes | Yes |
+| launchd (macOS) / systemd (Linux) | OS | Yes | Yes (survives reboot) | Yes |
+
+For critical, long-running scheduling (Singularity MAPE-K loop, periodic KPI checks), always prefer the portable alternatives. `CronCreate` is acceptable for one-off session experiments but must not be used as the sole scheduling mechanism for production workflows.
+
+> For detailed setup examples for each scheduling option, see [`docs/singularity.md#scheduling-options`](../singularity.md#scheduling-options).
 
 Each feature has a graceful degradation: COS detects the tool via env vars and silently disables unsupported features rather than failing.
 
