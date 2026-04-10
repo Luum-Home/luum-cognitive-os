@@ -171,7 +171,8 @@ build_settings() {
         "completion-gate.sh" \
         "agent-checkpoint.sh" \
         "trust-score-validator.sh" \
-        "audit-id-enricher.sh")
+        "audit-id-enricher.sh" \
+        "state-heartbeat.sh")
       ;;
   esac
 
@@ -187,7 +188,9 @@ build_settings() {
         "session-learning.sh" \
         "session-cleanup.sh" \
         "git-context-capture.sh" \
-        "session-changelog.sh")
+        "session-changelog.sh" \
+        "test-baseline-diff.sh" \
+        "session-hygiene.sh")
       ;;
   esac
 
@@ -264,9 +267,9 @@ case "$PROFILE" in
     echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh"
     echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
     echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh"
-    echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, audit-id-enricher.sh"
-    echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh"
-    echo "  Total: 27 hooks"
+    echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, audit-id-enricher.sh, state-heartbeat.sh"
+    echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, test-baseline-diff.sh, session-hygiene.sh"
+    echo "  Total: 30 hooks"
     ;;
 esac
 
