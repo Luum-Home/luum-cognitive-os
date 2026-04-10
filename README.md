@@ -63,20 +63,25 @@ The difference: a traditional OS manages hardware. Cognitive OS manages **cognit
 
 ## Quick Start (Any Project)
 
+> **Important**: Always run the installer FROM your project directory.
+> The installer creates `.cognitive-os/` and updates `.claude/` in the **current working directory**.
+
 ```bash
+# Step 1: cd into YOUR PROJECT (not the Cognitive OS repo)
+cd /path/to/your/project
+
+# Step 2: Run the installer (pick one)
+
 # Option A: Remote install (from GitHub)
 curl -sL https://raw.githubusercontent.com/luum-home/luum-cognitive-os/main/install.sh | bash
 
 # Option B: Local install (from a cloned repo)
-cd /path/to/your/project
-/path/to/luum-agent-os/install.sh              # auto-detects local repo
-# or
-./install.sh --from /path/to/luum-agent-os     # explicit source path
+/path/to/luum-agent-os/install.sh
 
 # Option C: Force overwrite an existing installation
-./install.sh --force
+/path/to/luum-agent-os/install.sh --force
 
-# Initialize — detects your stack and generates project-specific config
+# Step 3: Initialize — detects your stack and generates project-specific config
 claude
 > /cognitive-os-init
 
@@ -84,7 +89,9 @@ claude
 docker compose -f .cognitive-os/docker-compose.cognitive-os.yml up -d
 ```
 
-The installer auto-detects whether it is run from within the Cognitive OS repo (local mode) or via `curl | bash` (remote mode). Use `--from PATH` to point to a specific local copy. Run `./install.sh --help` for full usage.
+The installer auto-detects whether it is run from within the Cognitive OS repo (local mode) or via `curl | bash` (remote mode). Run `install.sh --help` for full usage.
+
+> **`--from` flag**: Only needed when the `install.sh` script is not inside the Cognitive OS repo (e.g., downloaded separately). In that case, use `--from /path/to/luum-agent-os` to tell the installer where to find the source files. If you run the script directly from the repo, `--from` is unnecessary.
 
 > **npx** (coming soon): `npx cognitive-os init`
 
