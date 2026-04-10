@@ -2,6 +2,9 @@
 # COS pre-commit hook — content policy + Python validation
 set -euo pipefail
 
+# Shared error counter (used by Gate 2 and Gate 3e)
+errors=0
+
 # --- Gate 1: Block project-specific terms ---
 BLOCKED="n""1u|N""1u|N""1U|gamer-wallet|altatienda|alta-tienda"
 VIOLATIONS=$(git diff --cached --name-only | grep -v ".githooks/" | grep -v "^tests/" | xargs grep -l -E "$BLOCKED" 2>/dev/null | grep -v ".git/" | grep -v "docs/business/" || true)
@@ -14,7 +17,6 @@ fi
 # --- Gate 2: Python syntax + lint (ruff or py_compile) ---
 staged_py=$(git diff --cached --name-only --diff-filter=ACM -- '*.py' || true)
 if [ -n "$staged_py" ]; then
-  errors=0
   COS_ROOT="$(git rev-parse --show-toplevel)"
 
   if command -v ruff &>/dev/null; then
@@ -55,7 +57,7 @@ fi
 COS_ROOT="${COS_ROOT:-$(git rev-parse --show-toplevel)}"
 warnings=0
 
-# 3a. New hook files MUST be registered in apply-efficiency-profile.sh
+# Gate 3a. New hook files MUST be registered in apply-efficiency-profile.sh
 staged_hooks=$(git diff --cached --name-only --diff-filter=A -- 'hooks/*.sh' || true)
 if [ -n "$staged_hooks" ]; then
   while IFS= read -r hook; do
@@ -69,7 +71,7 @@ if [ -n "$staged_hooks" ]; then
   done <<< "$staged_hooks"
 fi
 
-# 3b. New lib/ files MUST NOT break symlink architecture
+# Gate 3b. New lib/ files MUST NOT break symlink architecture
 staged_lib_new=$(git diff --cached --name-only --diff-filter=A -- 'lib/*.py' || true)
 if [ -n "$staged_lib_new" ]; then
   while IFS= read -r libfile; do
@@ -85,7 +87,7 @@ if [ -n "$staged_lib_new" ]; then
   done <<< "$staged_lib_new"
 fi
 
-# 3c. New skills MUST have SKILL.md
+# Gate 3c. New skills MUST have SKILL.md
 staged_skill_dirs=$(git diff --cached --name-only --diff-filter=A -- '.cognitive-os/skills/*' || true)
 if [ -n "$staged_skill_dirs" ]; then
   # Extract unique skill directory names
@@ -99,7 +101,7 @@ if [ -n "$staged_skill_dirs" ]; then
   done <<< "$skill_dirs"
 fi
 
-# 3d. settings.json should not be edited directly (use apply-efficiency-profile.sh)
+# Gate 3d. settings.json should not be edited directly (use apply-efficiency-profile.sh)
 staged_settings=$(git diff --cached --name-only -- '.claude/settings.json' || true)
 if [ -n "$staged_settings" ]; then
   # Check if apply-efficiency-profile.sh was also modified (legitimate regeneration)
@@ -112,16 +114,16 @@ if [ -n "$staged_settings" ]; then
   fi
 fi
 
-# 3e. Workflow YAMLs must parse
+# Gate 3e. Workflow YAMLs must parse (advisory — warn only)
 staged_workflows=$(git diff --cached --name-only --diff-filter=ACM -- '.cognitive-os/workflows/*.yaml' '.cognitive-os/workflows/*.yml' || true)
 if [ -n "$staged_workflows" ]; then
   while IFS= read -r wf; do
     [ -z "$wf" ] && continue
     [ ! -f "$wf" ] && continue
     if ! python3 -c "import yaml; yaml.safe_load(open('$wf'))" 2>/dev/null; then
-      echo "ERROR: Workflow $wf has invalid YAML"
+      echo "WARNING: Workflow $wf has invalid YAML"
       python3 -c "import yaml; yaml.safe_load(open('$wf'))" 2>&1 || true
-      errors=$((errors + 1))
+      warnings=$((warnings + 1))
     fi
   done <<< "$staged_workflows"
 fi

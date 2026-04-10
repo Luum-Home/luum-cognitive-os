@@ -74,17 +74,6 @@ def _find_config_path(project_dir: str) -> Optional[str]:
     return None
 
 
-def _find_rules_dir(project_dir: str) -> Optional[str]:
-    """Resolve the rules directory from the project root."""
-    candidates = [
-        os.path.join(project_dir, "rules"),
-        os.path.join(project_dir, ".claude", "rules"),
-    ]
-    for path in candidates:
-        if os.path.isdir(path):
-            return path
-    return None
-
 
 def _load_preamble(project_dir: str, phase: str = "reconstruction") -> str:
     """Load the agent preamble template with phase interpolated."""
@@ -156,11 +145,9 @@ class PromptBuilder:
             Configured PromptBuilder ready for use.
         """
         config_path = _find_config_path(project_dir)
-        rules_dir = _find_rules_dir(project_dir)
 
         diet = ContextDiet.from_yaml(
             config_path=config_path or "cognitive-os.yaml",
-            rules_dir=rules_dir,
         )
         return cls(
             diet=diet,
