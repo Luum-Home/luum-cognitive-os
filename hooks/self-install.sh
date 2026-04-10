@@ -180,16 +180,11 @@ CORE_RULES=(
   "error-learning.md"
   "credential-management.md"
   "model-routing.md"
-  "rate-limiting.md"
-  "content-policy.md"
-  "blast-radius.md"
-  "clarification-gate.md"
   "result-management.md"
 )
-# NOTE: rate-limiting, content-policy, blast-radius, clarification-gate, result-management
-# ARE hook-enforced but KEPT in CORE_RULES by design (2026-04-10):
-# Rules in context = proactive (agent anticipates gates). Hooks = reactive (block after).
-# Both together = defense in depth. See engram: architecture/core-rules-proactive-vs-reactive
+# NOTE: rate-limiting, content-policy, blast-radius, clarification-gate were previously kept
+# in CORE_RULES (proactive defence-in-depth). They are now moved to EXCLUDED_RULES so their
+# hook enforcement is the sole active layer, reducing context overhead.
 
 # ── Excluded rules for self-hosting (SYNC_ALL_RULES=true) ─────────────
 # These rules are fully enforced by registered hooks and do NOT need to
@@ -197,20 +192,20 @@ CORE_RULES=(
 # Each entry maps to the hook that makes the rule redundant in context.
 EXCLUDED_RULES=(
   "anti-hallucination.md"          # → claim-validator.sh (PostToolUse Agent)
-  "auto-repair.md"                 # → auto-repair-dispatcher.sh (PostToolUse Agent)
-  "auto-skill-generation.md"       # → auto-skill-generator.sh (PostToolUse Agent)
+  "blast-radius.md"                # → blast-radius.sh (PreToolUse Agent)
+  "clarification-gate.md"          # → clarification-gate.sh (PreToolUse Agent)
+  "content-policy.md"              # → content-policy.sh (PostToolUse Edit|Write)
   "crash-recovery.md"              # → auto-checkpoint.sh + crash-recovery.sh (registered)
   "prompt-quality.md"              # → prompt-quality.sh (PreToolUse Agent)
+  "rate-limiting.md"               # → rate-limiter.sh (PreToolUse Bash|Agent|Edit|Write)
   "skill-rewrite.md"               # → completion-gate.sh (PostToolUse Agent)
+  "auto-skill-generation.md"       # → auto-skill-generator.sh (PostToolUse Agent)
+  "auto-repair.md"                 # → auto-repair-dispatcher.sh (PostToolUse Agent)
   "pre-dev-readiness-gate.md"      # → predev-completeness-check.sh (PreToolUse Agent)
   "audit-trail.md"                 # → git-context-capture.sh + session-changelog.sh (Stop)
-  "doc-sync.md"                    # → doc-sync-detector.sh (PostToolUse Edit|Write)
   "pre-commit-gate.md"             # → pre-commit-gate.sh (git hook, not Claude hook)
-  "scope-creep-detection.md"       # → scope-creep-detector.sh (PostToolUse Edit|Write)
-  "assumption-tracking.md"         # → assumption-tracker.sh (PostToolUse Agent)
+  "confidentiality-protection.md"  # → confidentiality-enforcer.sh (PostToolUse Edit|Write)
 )
-# NOTE: blast-radius, clarification-gate, content-policy, rate-limiting, result-management
-# are hook-enforced but KEPT in CORE_RULES (proactive > reactive). See engram decision.
 
 # Build the effective allowed-rules list based on profile.
 # In self-hosting/full mode, ALL rules in rules/ are symlinked (not just CORE_RULES).
