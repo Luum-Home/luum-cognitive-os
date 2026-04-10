@@ -339,6 +339,18 @@ auto_refine:
   max_retries: 3
   tracking_dir: metrics/auto-refine    # relative to .cognitive-os/
 
+# Anthropic Advisor Tool strategy (advisor_20260301 beta)
+# Lets a cheap executor model (Sonnet) consult an expensive advisor model (Opus)
+# inline during a single API request.  Requires ORCHESTRATOR_MODE=executor and
+# the 'anthropic' Python package.  Falls back to plain Sonnet if unavailable.
+advisor:
+  enabled: true
+  model: "claude-opus-4-6"           # The advisor model (Opus)
+  executor_model: "claude-sonnet-4"  # The executor model (Sonnet)
+  max_uses_per_request: 3            # Max advisory calls per request
+  # Tasks that route through the sonnet+advisor tier when executor mode is active
+  tasks: [sdd-apply, sdd-verify, systematic-debugging]
+
 resources:
   budget:
     monthly_limit_usd: 200
