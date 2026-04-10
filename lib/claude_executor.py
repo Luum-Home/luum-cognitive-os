@@ -28,7 +28,14 @@ from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
-from lib.model_catalog import ModelCatalog
+from lib.model_catalog import (
+    ModelCatalog,
+    ADVISOR_BETA,
+    ADVISOR_TOOL_DEF,
+    ADVISOR_EXECUTOR_MODEL,
+    ADVISOR_MODEL,
+    ADVISOR_TOKENS_PER_USE,
+)
 
 # Model name mapping for the --model flag.
 # NOTE: These dated IDs are CLI-specific and may differ from the catalog's
@@ -38,6 +45,9 @@ MODEL_MAP: Dict[str, str] = {
     "sonnet": "claude-sonnet-4-20250514",
     "haiku": "claude-haiku-3-5-20241022",
 }
+
+#: Sentinel model name that triggers the Anthropic Advisor strategy.
+SONNET_ADVISOR_TIER: str = "sonnet+advisor"
 
 # Cost per 1M tokens (input, output) by model family — thin wrapper over
 # ModelCatalog for backward compatibility with external importers.
@@ -105,6 +115,10 @@ class ClaudeResult:
     retry_code: RetryCode = RetryCode.NONE
     error_message: str = ""
     exit_code: int = 0
+    # Advisor strategy fields (populated when model == "sonnet+advisor")
+    advisor_uses: int = 0        # Number of times the advisor was invoked
+    advisor_tokens_in: int = 0   # Input tokens consumed by the advisor model
+    advisor_tokens_out: int = 0  # Output tokens consumed by the advisor model
 
 
 def _classify_error(exit_code: int, stderr: str) -> RetryCode:
@@ -614,6 +628,208 @@ class ClaudeExecutor:
         # Exhausted retries
         assert last_result is not None
         return last_result
+
+    def run_with_advisor(
+        self,
+        prompt: str,
+        system_prompt: Optional[str] = None,
+        max_tokens: int = 8096,
+        max_advisor_uses: int = 3,
+    ) -> ClaudeResult:
+        """Execute a prompt using the Anthropic Advisor Strategy (direct API).
+
+        Uses ``claude-sonnet-4`` as the executor and ``claude-opus-4-6`` as the
+        advisor.  Requires a valid ``ANTHROPIC_API_KEY`` environment variable and
+        the ``anthropic`` Python package.
+
+        This method is only available in ``ORCHESTRATOR_MODE=executor`` and when
+        the ``anthropic`` package is installed.  If either precondition is not met
+        it falls back to the standard CLI-based ``run()`` method with the Sonnet
+        model.
+
+        Args:
+            prompt: The user prompt to execute.
+            system_prompt: Optional system prompt string.
+            max_tokens: Maximum output tokens. Defaults to 8096.
+            max_advisor_uses: Maximum number of advisor invocations allowed
+                within this request. Defaults to 3.
+
+        Returns:
+            ClaudeResult with combined executor + advisor token counts and cost.
+        """
+        start_time = time.monotonic()
+
+        # Check preconditions
+        api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+        if not api_key:
+            logger.warning(
+                "run_with_advisor: ANTHROPIC_API_KEY not set, falling back to run()"
+            )
+            return self.run(prompt=prompt, model="sonnet")
+
+        try:
+            import anthropic as _anthropic  # type: ignore[import]
+        except ImportError:
+            logger.warning(
+                "run_with_advisor: 'anthropic' package not installed, falling back to run()"
+            )
+            return self.run(prompt=prompt, model="sonnet")
+
+        try:
+            client = _anthropic.Anthropic(api_key=api_key)
+
+            # Build the advisor tool definition with the configured max_uses
+            advisor_tool: Dict[str, Any] = {
+                **ADVISOR_TOOL_DEF,
+                "max_uses": max_advisor_uses,
+            }
+
+            messages: List[Dict[str, Any]] = [
+                {"role": "user", "content": prompt},
+            ]
+
+            kwargs: Dict[str, Any] = {
+                "model": ADVISOR_EXECUTOR_MODEL,
+                "max_tokens": max_tokens,
+                "messages": messages,
+                "tools": [advisor_tool],
+                "betas": [ADVISOR_BETA],
+            }
+            if system_prompt:
+                kwargs["system"] = system_prompt
+
+            response = client.beta.messages.create(**kwargs)
+
+            duration = time.monotonic() - start_time
+
+            # Extract response text
+            result_text = ""
+            for block in response.content:
+                if hasattr(block, "text"):
+                    result_text += block.text
+
+            # Extract token usage
+            usage = response.usage
+            tokens_in = getattr(usage, "input_tokens", 0)
+            tokens_out = getattr(usage, "output_tokens", 0)
+
+            # Extract advisor-specific usage from iterations
+            advisor_uses = 0
+            advisor_tokens_in = 0
+            advisor_tokens_out = 0
+            iterations = getattr(usage, "iterations", None)
+            if iterations:
+                for iteration in iterations:
+                    # Advisor iterations have a model field matching the advisor model
+                    it_model = getattr(iteration, "model", "")
+                    if ADVISOR_MODEL in it_model or "opus" in it_model.lower():
+                        advisor_uses += 1
+                        advisor_tokens_in += getattr(iteration, "input_tokens", 0)
+                        advisor_tokens_out += getattr(iteration, "output_tokens", 0)
+
+            # Mixed billing cost
+            cost = ModelCatalog.estimate_advisor_cost(
+                executor_input_tokens=tokens_in,
+                executor_output_tokens=tokens_out,
+                advisor_uses=advisor_uses,
+            )
+
+            if self._bus_publisher:
+                self._bus_publisher.report_complete(result_text[:500])
+                self._bus_publisher.stop()
+
+            return ClaudeResult(
+                success=True,
+                result_text=result_text,
+                tokens_in=tokens_in,
+                tokens_out=tokens_out,
+                cost_usd=round(cost, 6),
+                duration_secs=round(duration, 2),
+                model_used=ADVISOR_EXECUTOR_MODEL,
+                retry_code=RetryCode.NONE,
+                advisor_uses=advisor_uses,
+                advisor_tokens_in=advisor_tokens_in,
+                advisor_tokens_out=advisor_tokens_out,
+            )
+
+        except Exception as exc:
+            duration = time.monotonic() - start_time
+            err_str = str(exc)
+            logger.error("run_with_advisor failed: %s", err_str)
+            if self._bus_publisher:
+                self._bus_publisher.report_error(err_str[:500])
+                self._bus_publisher.stop()
+            return ClaudeResult(
+                success=False,
+                result_text="Advisor execution error: %s" % err_str,
+                duration_secs=round(duration, 2),
+                retry_code=RetryCode.EXECUTION_ERROR,
+                error_message=err_str,
+                exit_code=-1,
+            )
+
+    def run_auto(
+        self,
+        prompt: str,
+        model: Optional[str] = None,
+        timeout: Optional[int] = None,
+        allowed_tools: Optional[List[str]] = None,
+        system_prompt: Optional[str] = None,
+        max_tokens: int = 8096,
+    ) -> ClaudeResult:
+        """Run a prompt, automatically selecting the advisor strategy when appropriate.
+
+        If *model* is ``"sonnet+advisor"`` and the advisor preconditions are met
+        (API key present, ``anthropic`` package installed), delegates to
+        :meth:`run_with_advisor`.  Otherwise falls back to :meth:`run`.
+
+        Args:
+            prompt: The prompt string to execute.
+            model: Model shortname/ID or ``"sonnet+advisor"``.  If ``None``,
+                uses the instance's default model.
+            timeout: Timeout for the CLI fallback path (seconds).
+            allowed_tools: Tool allowlist for the CLI fallback path.
+            system_prompt: System prompt for the advisor path.
+            max_tokens: Max output tokens for the advisor path.
+
+        Returns:
+            ClaudeResult from whichever execution path was used.
+        """
+        effective_model = model or self.default_model or ""
+        if effective_model == SONNET_ADVISOR_TIER:
+            api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+            try:
+                import anthropic as _chk  # noqa: F401
+                has_pkg = True
+            except ImportError:
+                has_pkg = False
+
+            if api_key and has_pkg:
+                return self.run_with_advisor(
+                    prompt=prompt,
+                    system_prompt=system_prompt,
+                    max_tokens=max_tokens,
+                )
+            else:
+                # Graceful fallback: use Sonnet via CLI
+                logger.info(
+                    "sonnet+advisor requested but preconditions not met "
+                    "(api_key=%s, has_pkg=%s), falling back to sonnet",
+                    bool(api_key),
+                    has_pkg,
+                )
+                return self.run(
+                    prompt=prompt,
+                    model="sonnet",
+                    timeout=timeout,
+                    allowed_tools=allowed_tools,
+                )
+        return self.run(
+            prompt=prompt,
+            model=effective_model,
+            timeout=timeout,
+            allowed_tools=allowed_tools,
+        )
 
     def slash(
         self,

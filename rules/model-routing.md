@@ -10,12 +10,15 @@
 | sdd-spec | sonnet | default | — | Structured writing |
 | sdd-design | opus | default | — | Architecture decisions |
 | sdd-tasks | sonnet | default | — | Mechanical decomposition |
-| sdd-apply | sonnet | default | — | Implementation |
-| sdd-verify | sonnet | default | — | Verification checks |
+| sdd-apply | sonnet+advisor | high | — | Sonnet executes, Opus advises on architecture |
+| sdd-verify | sonnet+advisor | high | — | Sonnet verifies, Opus advises on edge cases |
 | sdd-archive | haiku | default | — | Simple documentation |
-| systematic-debugging | opus | default | — | Root cause analysis |
+| systematic-debugging | sonnet+advisor | high | — | Sonnet debugs, Opus advises on root cause |
 | test-driven-development | sonnet | default | — | Fast red-green cycles |
 | verification-before-completion | sonnet | default | — | Evidence checking |
+
+> **sonnet+advisor** requires `ORCHESTRATOR_MODE=executor` and the `anthropic` Python package.
+> When preconditions are not met, falls back to `sonnet` automatically.
 
 ## How This Works
 
@@ -32,9 +35,12 @@ The orchestrator checks this table before delegating to sub-agents.
 | Model | Input (per 1M tokens) | Output (per 1M tokens) | Best For |
 |---|---|---|---|
 | opus | $15 | $75 | Deep reasoning, architecture, debugging |
+| sonnet+advisor | $3 + ~$0.12/advice | $15 + ~$0.60/advice | Deep reasoning at fraction of Opus cost |
 | sonnet | $3 | $15 | General tasks, implementation, specs |
 | haiku | $0.25 | $1.25 | Simple documentation, archiving |
 | openrouter/free | $0.00 | $0.00 | Last-resort fallback when budget exhausted |
+
+> `sonnet+advisor` billing: executor tokens at Sonnet rates + each advisory call costs ~500 in + ~1000 out at Opus rates (~$0.075/advice at current pricing). With `max_uses=3`, worst-case overhead is ~$0.23 vs full Opus.
 
 ## Dynamic Multi-Provider Routing
 
