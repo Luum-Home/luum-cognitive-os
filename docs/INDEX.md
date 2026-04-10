@@ -91,8 +91,8 @@
 | [gpu-sandbox.md](gpu-sandbox.md) | Jupyter MCP GPU sandbox: compute runtime for ML/data/finance |
 | [self-improvement-loop.md](self-improvement-loop.md) | Complete self-improvement loop: KPIs, pattern detection, auto-improvement of rules/skills |
 | [competitive-arena.md](competitive-arena.md) | Competitive arena: benchmark suite comparing Cognitive OS against 10+ AI coding tools |
-| [benchmark-results.md](benchmark-results.md) | Arena benchmark results: preliminary comparison + subsystem timings |
-| [cleanup-verification.md](cleanup-verification.md) | Cleanup verification report: post-refactor capability check |
+| [archived/benchmark-results.md](archived/benchmark-results.md) | *(archived)* Arena benchmark results from 2026-03-23: preliminary comparison + subsystem timings |
+| [archived/cleanup-verification.md](archived/cleanup-verification.md) | *(archived)* Cleanup verification report from 2026-03-22: post-refactor capability check |
 
 ### Research & Patterns
 
