@@ -34,6 +34,15 @@ def install_dir(tmp_path):
     return project
 
 
+@pytest.fixture(autouse=True)
+def isolate_registry(tmp_path):
+    """Use a temp registry so tests don't pollute ~/.cognitive-os/installations.json."""
+    registry = tmp_path / "test-registry.json"
+    os.environ["COS_REGISTRY_FILE"] = str(registry)
+    yield
+    os.environ.pop("COS_REGISTRY_FILE", None)
+
+
 @pytest.fixture
 def cos_source():
     """Return the path to the Cognitive OS source repo."""
@@ -389,6 +398,57 @@ class TestGitignore:
             or f.startswith(".ruff_cache/")
         ]
         assert runtime_tracked == [], f"Runtime files still tracked in git: {runtime_tracked}"
+
+
+# ---------------------------------------------------------------------------
+# Registry Source Tracking
+# ---------------------------------------------------------------------------
+
+
+class TestRegistrySource:
+    """Tests that the registry tracks the real source repo, not temp dirs."""
+
+    def test_registry_source_is_real_repo(self, install_dir, cos_source):
+        """The registry source field should point to the real COS repo, not /tmp/."""
+        registry = Path(os.environ["COS_REGISTRY_FILE"])
+
+        subprocess.run(
+            [str(INSTALLER), "--force"],
+            cwd=install_dir,
+            capture_output=True,
+            text=True,
+        )
+
+        if registry.is_file():
+            import json
+
+            data = json.loads(registry.read_text())
+            entries = data.get("installations", [])
+            for entry in entries:
+                source = entry.get("source", "")
+                assert "/tmp/" not in source or "pytest" in source, (
+                    f"Registry source points to temp dir: {source}"
+                )
+
+    def test_install_meta_source_is_real_repo(self, install_dir, cos_source):
+        """install-meta.json source field should be the real COS repo path."""
+        subprocess.run(
+            [str(INSTALLER), "--force"],
+            cwd=install_dir,
+            capture_output=True,
+            text=True,
+        )
+
+        meta = install_dir / ".cognitive-os" / "install-meta.json"
+        if meta.is_file():
+            import json
+
+            data = json.loads(meta.read_text())
+            source = data.get("source", "")
+            # Should be the real COS repo, not a mktemp directory
+            assert str(cos_source) in source or source == str(cos_source), (
+                f"install-meta.json source is '{source}', expected to contain '{cos_source}'"
+            )
 
 
 # ---------------------------------------------------------------------------
