@@ -1,3 +1,7 @@
+> **ARCHIVED**: This document is no longer maintained. Kept for historical reference.
+> Archived on: 2026-04-10
+> Reason: One-time verification report from the 2026-03-22 cleanup (12 deleted docs, 3 merged rules, 3 deleted hooks). Point-in-time artifact — the verification it describes is complete and no longer actionable.
+
 # Cleanup Verification Report
 
 > Date: 2026-03-22
