@@ -211,8 +211,20 @@ Each of the remaining 59 rules (73 total minus 14 always-loaded) is loaded only 
 | 76 | `trailofbits-skills.md` | keyword | Trail of Bits security skills | (package rule) |
 | 77 | `user-prompt-capture.md` | hook | UserPromptSubmit captures user intent | (auto-fires via hook) |
 | 78 | `workload-scheduling.md` | keyword | Task batching, parallel dispatch | `workload.scheduling\|task.batching\|parallel` |
+| 79 | `agent-output-reading.md` | keyword | Agent output parsing, reading agent results | `agent.output\|parse.output\|read.result` |
+| 80 | `audit-trail.md` | hook | Stop hook captures git context, session changelog | `audit.trail\|git.context\|session.changelog` |
+| 81 | `confidentiality-protection.md` | hook | PostToolUse Edit/Write scans for IP leaks | `confidentiality\|ip.leak\|attribution` |
+| 82 | `dynamic-tool-creation.md` | keyword | Mid-task tool creation, capability gap | `dynamic.tool\|mid.task.tool\|create.tool` |
+| 83 | `e2b-integration.md` | config | `E2B_API_KEY` set, sandbox execution | `e2b\|sandbox\|safe.execution\|microvm` |
+| 84 | `model-directive.md` | hook | dispatch-gate emits MODEL_DIRECTIVE | `model.directive\|MODEL_DIRECTIVE\|dispatch.model` |
+| 85 | `pre-dev-readiness-gate.md` | hook | PreToolUse Agent detects implementation intent | `pre.dev.readiness\|readiness.gate\|planning.artifacts` |
+| 86 | `queue-advisor.md` | hook | dispatch-gate detects queue items | `queue.advisor\|dispatch.queue\|queued.agent` |
+| 87 | `queue-drain.md` | hook | completion-gate triggers queue drain | `queue.drain\|drain.queue\|queued.launch` |
+| 88 | `reinvention-prevention.md` | hook | PreToolUse Agent detects create lib/hook/skill | `reinvention\|check.upstream\|adoption.registry` |
+| 89 | `skill-rewrite.md` | hook | PostToolUse Agent detects 3+ failures | `skill.rewrite\|optimize.skill\|skill.failing` |
+| 90 | `task-dag.md` | keyword | Task dependencies, DAG, parallel agent waves | `task.dag\|dependency.graph\|execution.waves` |
 
-Note: The count shows 78 on-demand entries but the actual count after removing the 14 always-loaded from 73 total is 59. The table above includes rules from both `rules/` and `packages/*/rules/` -- some package rules are symlinked into `rules/` and counted in the 73.
+Note: The count shows 90 on-demand entries but the actual count after removing the 14 always-loaded from 73 total is 59. The table above includes rules from both `rules/` and `packages/*/rules/` -- some package rules are symlinked into `rules/` and counted in the 73.
 
 Reconciliation: 73 files in `rules/` minus 14 always-loaded = 59 on-demand rules. The table above numbers beyond 59 because it exhaustively lists every rule including noting which come from packages.
 
