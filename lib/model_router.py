@@ -38,6 +38,22 @@ MODEL_CAPABILITIES: Dict[str, dict] = {
     for e in ModelCatalog.all_entries()
 }
 
+# ---------------------------------------------------------------------------
+# Advisor strategy routing
+# ---------------------------------------------------------------------------
+
+#: Tasks that benefit from the sonnet+advisor strategy.
+#: These are tasks that previously routed to opus but don't strictly need it —
+#: Sonnet executes with optional Opus advisory for architecture/edge-case calls.
+ADVISOR_TASKS: frozenset = frozenset({
+    "sdd-apply",
+    "sdd-verify",
+    "systematic-debugging",
+})
+
+#: Sentinel returned by select_model() when the advisor strategy should be used.
+SONNET_ADVISOR_TIER: str = "sonnet+advisor"
+
 TASK_REQUIREMENTS: Dict[str, List[str]] = {
     "reasoning": [
         "sdd-propose",
@@ -91,36 +107,59 @@ def get_model_capabilities(model: str) -> dict:
     return dict(MODEL_CAPABILITIES[model])
 
 
-def estimate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
+def estimate_cost(
+    model: str,
+    input_tokens: int,
+    output_tokens: int,
+    advisor_uses: int = 0,
+) -> float:
     """Estimate the cost of a model call.
 
+    For the ``"sonnet+advisor"`` virtual tier, uses mixed billing:
+    executor tokens at Sonnet rates + advisory calls at Opus rates.
+
     Args:
-        model: Model identifier.
-        input_tokens: Number of input tokens.
-        output_tokens: Number of output tokens.
+        model: Model identifier or ``"sonnet+advisor"`` for the advisor tier.
+        input_tokens: Number of input tokens (executor side).
+        output_tokens: Number of output tokens (executor side).
+        advisor_uses: Number of advisory calls made (only relevant for
+            ``"sonnet+advisor"``; ignored for standard models).
 
     Returns:
         Estimated cost in USD.
 
     Raises:
-        KeyError: If the model is not known.
+        KeyError: If the model is not known and is not the advisor tier.
     """
+    if model == SONNET_ADVISOR_TIER:
+        return ModelCatalog.estimate_advisor_cost(input_tokens, output_tokens, advisor_uses)
     return ModelCatalog.estimate_cost(model, input_tokens, output_tokens)
+
+
+def is_advisor_available() -> bool:
+    """Return True when the sonnet+advisor strategy can be used.
+
+    The advisor strategy requires direct Anthropic API access (executor mode)
+    and is not available through CLI subprocess or LiteLLM gateway.
+    """
+    return os.environ.get("ORCHESTRATOR_MODE", "").lower() == "executor"
 
 
 def select_model(
     task_type: str,
     budget_remaining: Optional[float] = None,
     prefer_local: bool = False,
+    use_advisor: Optional[bool] = None,
 ) -> str:
     """Pick the best model for a given task type.
 
     Selection logic:
-    1. Determine the primary capability needed for the task type
-    2. Filter models by budget constraint (if provided)
-    3. Filter for local models only (if prefer_local=True)
-    4. Score remaining models by the required capability
-    5. Break ties with cost efficiency (lower cost wins)
+    1. Check if the task qualifies for the sonnet+advisor strategy
+    2. Determine the primary capability needed for the task type
+    3. Filter models by budget constraint (if provided)
+    4. Filter for local models only (if prefer_local=True)
+    5. Score remaining models by the required capability
+    6. Break ties with cost efficiency (lower cost wins)
 
     Args:
         task_type: The type of task (e.g., "sdd-propose", "sdd-archive").
@@ -128,10 +167,23 @@ def select_model(
             excludes models whose estimated cost exceeds this amount.
             Uses a reference call of 10K input + 5K output tokens.
         prefer_local: If True, only consider local models (cost=0).
+        use_advisor: Override for the advisor strategy.  ``None`` (default)
+            means auto-detect based on ``ORCHESTRATOR_MODE``.  Pass
+            ``True`` to force the advisor tier or ``False`` to disable it.
 
     Returns:
-        Model identifier string.
+        Model identifier string, or ``SONNET_ADVISOR_TIER`` (``"sonnet+advisor"``)
+        when the advisor strategy is selected.
     """
+    # Advisor strategy: return the virtual tier sentinel when eligible
+    _use_advisor = use_advisor if use_advisor is not None else is_advisor_available()
+    if (
+        _use_advisor
+        and task_type in ADVISOR_TASKS
+        and not prefer_local
+    ):
+        return SONNET_ADVISOR_TIER
+
     primary_capability = _TASK_TO_CAPABILITY.get(task_type)
 
     candidates = dict(MODEL_CAPABILITIES)
