@@ -36,9 +36,9 @@ EXPECTED_RULE_COUNT = len(list(Path(__file__).resolve().parents[2].joinpath("rul
 # These are tracked so consolidation does not lose them
 PENDING_INTEGRATION_RULES = set()  # All rules synced as of 2026-03-28
 
-# The 16 core rules that remain in standard/full/self-hosting profiles.
+# The 11 core rules that remain in standard profile context load.
 # These provide essential governance without overwhelming the context window.
-# Loading all 95 rules would cost ~93,700 tokens vs ~21K for these 16.
+# Loading all 103 rules would cost ~93,700 tokens vs ~11K for these 11.
 # See docs/rules-loading-architecture.md for the rationale.
 # Must match CORE_RULES in hooks/self-install.sh exactly.
 CORE_RULES = {
@@ -51,14 +51,34 @@ CORE_RULES = {
     "phase-aware-agents.md",
     "closed-loop-prompts.md",
     "error-learning.md",
-    "rate-limiting.md",
     "credential-management.md",
+    "model-routing.md",
+    "rate-limiting.md",
     "content-policy.md",
-    "result-management.md",
     "blast-radius.md",
     "clarification-gate.md",
-    "model-routing.md",
+    "result-management.md",
 }
+
+# Rules fully enforced by registered hooks — intentionally excluded from agent context
+# (symlinks and COMPACT narrative refs removed; rule .md files remain as documentation).
+# Must match EXCLUDED_RULES in hooks/self-install.sh exactly.
+EXCLUDED_RULES = {
+    "anti-hallucination.md",
+    "auto-repair.md",
+    "auto-skill-generation.md",
+    "crash-recovery.md",
+    "prompt-quality.md",
+    "skill-rewrite.md",
+    "pre-dev-readiness-gate.md",
+    "audit-trail.md",
+    "doc-sync.md",
+    "pre-commit-gate.md",
+    "scope-creep-detection.md",
+    "assumption-tracking.md",
+}
+# NOTE: blast-radius, clarification-gate, content-policy, rate-limiting, result-management
+# are hook-enforced BUT kept in CORE_RULES (proactive > reactive decision 2026-04-10)
 
 
 def _get_rule_files() -> list[Path]:
@@ -107,17 +127,19 @@ class TestRuleInventory:
         )
 
     def test_cos_symlinks_match_rules_count(self):
-        """Number of symlinks in .claude/rules/cos/ must equal integrated rules.
+        """Number of symlinks in .claude/rules/cos/ must equal integrated non-excluded rules.
 
         Rules in PENDING_INTEGRATION_RULES are not yet synced and excluded.
-        In self-hosting mode, self-install.sh syncs ALL rules to cos/.
+        Rules in EXCLUDED_RULES are hook-enforced and intentionally excluded from context.
+        In self-hosting mode, self-install.sh syncs all rules minus EXCLUDED_RULES to cos/.
         In standard mode, only CORE_RULES are synced.
         """
         if not COS_RULES_DIR.exists():
             pytest.skip(".claude/rules/cos/ does not exist")
         symlinks = list(COS_RULES_DIR.glob("*.md"))
         integrated_rules = [
-            f for f in _get_rule_files() if f.name not in PENDING_INTEGRATION_RULES
+            f for f in _get_rule_files()
+            if f.name not in PENDING_INTEGRATION_RULES and f.name not in EXCLUDED_RULES
         ]
         assert len(symlinks) == len(integrated_rules), (
             f"Symlinks ({len(symlinks)}) != integrated rule files ({len(integrated_rules)}). "
@@ -126,13 +148,13 @@ class TestRuleInventory:
         )
 
     def test_every_integrated_rule_has_a_symlink(self):
-        """Every integrated rule file must have a corresponding symlink in .claude/rules/cos/.
+        """Every non-excluded integrated rule must have a symlink in .claude/rules/cos/.
 
-        Self-hosting mode syncs ALL rules (not just CORE_RULES).
+        Self-hosting mode syncs all rules minus EXCLUDED_RULES (hook-enforced, no context needed).
         """
         if not COS_RULES_DIR.exists():
             pytest.skip(".claude/rules/cos/ does not exist")
-        rule_names = {f.name for f in _get_rule_files()} - PENDING_INTEGRATION_RULES
+        rule_names = {f.name for f in _get_rule_files()} - PENDING_INTEGRATION_RULES - EXCLUDED_RULES
         symlink_names = {s.name for s in COS_RULES_DIR.glob("*.md")}
         missing = rule_names - symlink_names
         assert not missing, f"Rules without symlinks: {sorted(missing)}"
@@ -621,17 +643,18 @@ class TestSelfInstallIntegration:
         return tmp_path
 
     def test_full_profile_keeps_all_integrated_rules(self):
-        """With full/self-hosting profile, all integrated rule symlinks are in cos/.
+        """With full/self-hosting profile, all non-excluded integrated rules are in cos/.
 
-        self-install.sh syncs ALL rules for self-hosted development, providing
-        maximum context coverage. Standard profile keeps only CORE_RULES.
+        self-install.sh syncs all rules minus EXCLUDED_RULES for self-hosted development.
+        EXCLUDED_RULES are hook-enforced — no context overhead needed.
+        Standard profile keeps only CORE_RULES.
         """
         if not COS_RULES_DIR.exists():
             pytest.skip(".claude/rules/cos/ does not exist")
 
         integrated_count = len([
             f for f in RULES_DIR.glob("*.md")
-            if f.name not in PENDING_INTEGRATION_RULES
+            if f.name not in PENDING_INTEGRATION_RULES and f.name not in EXCLUDED_RULES
         ])
         cos_count = len(list(COS_RULES_DIR.glob("*.md")))
         assert cos_count == integrated_count, (

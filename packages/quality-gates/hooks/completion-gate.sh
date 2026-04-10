@@ -271,6 +271,46 @@ if [ "$IS_COMPLETION" = "true" ]; then
   fi
 fi
 
+# === PHASE 2b: RETURN CONTRACT CHECK (advisory) ===
+# Warn if the agent did not include a RESULT: block (structured return contract).
+# This is advisory only (exit 0 always) — it does not block progress.
+if [ "$IS_COMPLETION" = "true" ]; then
+  if echo "$RESPONSE" | grep -q "^RESULT:"; then
+    # Return contract present — optionally validate it
+    _RC_VIOLATIONS=$(python3 -c "
+import sys, os
+sys.path.insert(0, '$PROJECT_DIR')
+try:
+    from lib.return_contract_parser import parse_return_contract, validate_return_contract
+    output = open('/dev/stdin').read() if not sys.stdin.isatty() else '$RESPONSE'
+    # Use the response captured in bash (passed via heredoc approach won't work here,
+    # so we rely on the python inline eval with the known output variable)
+    import subprocess, json
+    parsed = parse_return_contract('''$(echo "$RESPONSE" | head -c 4000 | sed "s/'/'\\\\''/g")''')
+    if parsed:
+        violations = validate_return_contract(parsed)
+        for v in violations:
+            print(v)
+except Exception:
+    pass
+" 2>/dev/null)
+    if [ -n "$_RC_VIOLATIONS" ]; then
+      echo "" >&2
+      echo "=== COMPLETION-GATE: RETURN CONTRACT WARNINGS ===" >&2
+      echo "$_RC_VIOLATIONS" >&2
+      echo "=== END RETURN CONTRACT WARNINGS ===" >&2
+      echo "" >&2
+    fi
+  else
+    echo "" >&2
+    echo "=== COMPLETION-GATE: RETURN CONTRACT MISSING ===" >&2
+    echo "Agent did not include a RESULT: block. Add one before the Trust Report." >&2
+    echo "See: templates/agent-preamble.md — Return Contract section" >&2
+    echo "=== END RETURN CONTRACT ===" >&2
+    echo "" >&2
+  fi
+fi
+
 # === PHASE 3: AUTO-REFINE / PITER LOOP ===
 AUTO_REFINE_MODE="auto"
 case "$PHASE" in reconstruction|stabilization) AUTO_REFINE_MODE="auto" ;; production|maintenance) AUTO_REFINE_MODE="suggest" ;; esac
