@@ -3,9 +3,15 @@
 ## Install
 
 ```bash
+# Clone the Cognitive OS source (one-time)
 git clone https://github.com/luum-home/luum-agent-os.git ~/.cognitive-os-src
+
+# cd into YOUR PROJECT, then run the installer
+cd /path/to/your/project
 bash ~/.cognitive-os-src/scripts/cos-init.sh
 ```
+
+> The installer installs into the **current directory**. Always `cd` into your project first.
 
 ## That's it. Start coding.
 
