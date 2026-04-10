@@ -405,9 +405,15 @@ else
 fi
 
 # ── 10. Save install metadata ────────────────────────────────────
+# COS_ORIGINAL_SOURCE is set by install.sh to the real repo path (not the temp copy).
+# If not set, fall back to COS_SOURCE_DIR (direct cos-init.sh invocation).
+REGISTRY_SOURCE="${COS_ORIGINAL_SOURCE:-$COS_SOURCE_DIR}"
+
 cos_version="unknown"
 if [ -f "$VERSION_FILE" ]; then
   cos_version=$(cat "$VERSION_FILE")
+elif [ -d "$REGISTRY_SOURCE/.git" ]; then
+  cos_version=$(cd "$REGISTRY_SOURCE" && git rev-parse --short HEAD 2>/dev/null || echo "dev")
 elif [ -d "$COS_SOURCE_DIR/.git" ]; then
   cos_version=$(cd "$COS_SOURCE_DIR" && git rev-parse --short HEAD 2>/dev/null || echo "dev")
 fi
@@ -416,7 +422,7 @@ cat > .cognitive-os/install-meta.json << ENDJSON
 {
   "mode": "${MODE#--}",
   "version": "$cos_version",
-  "source": "$COS_SOURCE_DIR",
+  "source": "$REGISTRY_SOURCE",
   "installed_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
   "project_name": "$project_name",
   "rules_installed": $rules_installed,
@@ -429,7 +435,7 @@ ENDJSON
 REGISTRY_SCRIPT="$COS_SOURCE_DIR/scripts/cos-registry.sh"
 if [ -f "$REGISTRY_SCRIPT" ] && command -v jq >/dev/null 2>&1; then
   source "$REGISTRY_SCRIPT"
-  cos_registry_register "$PROJECT_DIR" "${MODE#--}" "$cos_version" "$project_name" "$COS_SOURCE_DIR"
+  cos_registry_register "$PROJECT_DIR" "${MODE#--}" "$cos_version" "$project_name" "$REGISTRY_SOURCE"
 fi
 
 # ── 12. Add to .gitignore ────────────────────────────────────────
