@@ -208,4 +208,8 @@ except Exception:
   [ -n "$_symbiosis" ] && echo "$_symbiosis" >&2
 fi
 
+# --- Advisory: suggest session wrapup ---
+# Non-blocking advisory so the user knows /session-wrapup is available.
+echo "TIP: Run /session-wrapup before closing to inventory pending work and save session state to engram." >&2
+
 exit 0
