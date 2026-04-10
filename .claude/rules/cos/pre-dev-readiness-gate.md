@@ -1,1 +1,0 @@
-<repo>/rules/pre-dev-readiness-gate.md
