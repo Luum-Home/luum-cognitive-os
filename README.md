@@ -95,6 +95,20 @@ The installer auto-detects whether it is run from within the Cognitive OS repo (
 
 > **npx** (coming soon): `npx cognitive-os init`
 
+## Keeping Projects Updated
+
+When you update the COS source repo, all installed projects update automatically:
+
+```bash
+# As a maintainer: push triggers auto-update of your local projects
+git push
+
+# As a user: pull triggers auto-update of your local projects
+git pull
+```
+
+The auto-update is powered by git hooks (`post-merge` + `pre-push`) that re-run the installer on every registered project. Install the hooks once with `bash scripts/setup-git-hooks.sh`. See [docs/getting-started.md](docs/getting-started.md) for details.
+
 ## 3-Layer Architecture
 
 ```
