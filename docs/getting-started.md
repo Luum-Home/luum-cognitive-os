@@ -156,8 +156,11 @@ These are optional. Cognitive OS works without them — they add observability a
 When you update the Cognitive OS source repo (`git pull` or `git push`), all
 registered projects are updated automatically via git hooks:
 
-- `git pull` triggers the `post-merge` hook (for users pulling updates)
-- `git push` triggers the `pre-push` hook (for maintainers pushing changes)
+- `git pull` triggers the `post-merge` hook — runs synchronously, projects are
+  updated before you get your prompt back
+- `git push` triggers the `pre-push` hook — runs in background after the push
+  completes (2s delay), so the push is not delayed and projects get the version
+  that was just pushed
 
 Both hooks run `scripts/auto-update-projects.sh`, which:
 1. Reads `~/.cognitive-os/installations.json` (the global registry)
