@@ -178,14 +178,39 @@ CORE_RULES=(
   "phase-aware-agents.md"
   "closed-loop-prompts.md"
   "error-learning.md"
-  "rate-limiting.md"
   "credential-management.md"
+  "model-routing.md"
+  "rate-limiting.md"
   "content-policy.md"
-  "result-management.md"
   "blast-radius.md"
   "clarification-gate.md"
-  "model-routing.md"
+  "result-management.md"
 )
+# NOTE: rate-limiting, content-policy, blast-radius, clarification-gate, result-management
+# ARE hook-enforced but KEPT in CORE_RULES by design (2026-04-10):
+# Rules in context = proactive (agent anticipates gates). Hooks = reactive (block after).
+# Both together = defense in depth. See engram: architecture/core-rules-proactive-vs-reactive
+
+# ── Excluded rules for self-hosting (SYNC_ALL_RULES=true) ─────────────
+# These rules are fully enforced by registered hooks and do NOT need to
+# be in agent context. Rule .md files remain in rules/ as human docs.
+# Each entry maps to the hook that makes the rule redundant in context.
+EXCLUDED_RULES=(
+  "anti-hallucination.md"          # → claim-validator.sh (PostToolUse Agent)
+  "auto-repair.md"                 # → auto-repair-dispatcher.sh (PostToolUse Agent)
+  "auto-skill-generation.md"       # → auto-skill-generator.sh (PostToolUse Agent)
+  "crash-recovery.md"              # → auto-checkpoint.sh + crash-recovery.sh (registered)
+  "prompt-quality.md"              # → prompt-quality.sh (PreToolUse Agent)
+  "skill-rewrite.md"               # → completion-gate.sh (PostToolUse Agent)
+  "pre-dev-readiness-gate.md"      # → predev-completeness-check.sh (PreToolUse Agent)
+  "audit-trail.md"                 # → git-context-capture.sh + session-changelog.sh (Stop)
+  "doc-sync.md"                    # → doc-sync-detector.sh (PostToolUse Edit|Write)
+  "pre-commit-gate.md"             # → pre-commit-gate.sh (git hook, not Claude hook)
+  "scope-creep-detection.md"       # → scope-creep-detector.sh (PostToolUse Edit|Write)
+  "assumption-tracking.md"         # → assumption-tracker.sh (PostToolUse Agent)
+)
+# NOTE: blast-radius, clarification-gate, content-policy, rate-limiting, result-management
+# are hook-enforced but KEPT in CORE_RULES (proactive > reactive). See engram decision.
 
 # Build the effective allowed-rules list based on profile.
 # In self-hosting/full mode, ALL rules in rules/ are symlinked (not just CORE_RULES).
@@ -207,14 +232,31 @@ mkdir -p "$cos_rules_dir"
 
 # Add missing symlinks
 if [[ "$SYNC_ALL_RULES" == "true" ]]; then
-  # Symlink every .md file in rules/
+  # Symlink every .md file in rules/ EXCEPT those that are hook-enforced (EXCLUDED_RULES)
   for src in "$PROJECT_DIR/rules"/*.md; do
     [ -f "$src" ] || continue
     base=$(basename "$src")
+    # Skip rules that are fully enforced by registered hooks
+    is_excluded=false
+    for excl in "${EXCLUDED_RULES[@]}"; do
+      if [[ "$base" == "$excl" ]]; then
+        is_excluded=true
+        break
+      fi
+    done
+    [[ "$is_excluded" == "true" ]] && continue
     link="$cos_rules_dir/$base"
     if [ ! -e "$link" ]; then
       ln -sf "$src" "$link"
       added=$((added + 1))
+    fi
+  done
+  # Remove symlinks for excluded rules if they were previously created
+  for excl in "${EXCLUDED_RULES[@]}"; do
+    link="$cos_rules_dir/$excl"
+    if [ -L "$link" ]; then
+      rm "$link"
+      removed=$((removed + 1))
     fi
   done
 else
