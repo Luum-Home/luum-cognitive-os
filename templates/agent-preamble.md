@@ -122,6 +122,12 @@ WHAT THE HUMAN SHOULD VERIFY:
 STATUS values: HIGH (90+), MEDIUM (70-89), LOW (50-69), CRITICAL (<50).
 EVIDENCE = count of [check]/[warn]/[fail] markers. UNCERTAINTIES = count of items in "WHAT I'M UNSURE ABOUT".
 
+## Context Injection
+- If you receive a `CONTEXT (from orchestrator):` block, use it as your primary source of truth
+- If `SEARCH PERMISSION: no`, do NOT search Engram — all needed context is in the prompt
+- If `SEARCH PERMISSION: yes`, you MAY search Engram for additional context using mem_search
+- Always save your discoveries to Engram via mem_save before finishing, regardless of search permission
+
 ## Long-Running Commands
 
 Commands >30s MUST use `run_in_background: true`. Continue with other work while waiting. Set `timeout: 300000` for test suites.
