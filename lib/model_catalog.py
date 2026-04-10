@@ -232,6 +232,34 @@ _ANTHROPIC_CHAIN: Tuple[str, ...] = (
     "claude-opus-4-6",
 )
 
+# ---------------------------------------------------------------------------
+# Advisor strategy constants
+# ---------------------------------------------------------------------------
+
+#: Beta feature name required in the ``betas`` list when using the advisor tool.
+ADVISOR_BETA: str = "advisor-tool-2026-03-01"
+
+#: Tool type string for the Anthropic Advisor Tool.
+ADVISOR_TOOL_TYPE: str = "advisor_20260301"
+
+#: The advisor tool definition injected into API requests for ``sonnet+advisor``.
+#: Uses ``claude-opus-4-6`` as the advisor model.
+ADVISOR_TOOL_DEF: dict = {
+    "type": ADVISOR_TOOL_TYPE,
+    "name": "advisor",
+    "model": "claude-opus-4-6",
+    "max_uses": 3,
+}
+
+#: Approximate tokens consumed per advisory call (Opus side) for cost estimation.
+#: Based on typical pattern: ~500 in + ~1000 out per advice invocation.
+ADVISOR_TOKENS_PER_USE: Tuple[int, int] = (500, 1_000)
+
+#: Pricing for the ``sonnet+advisor`` virtual tier — executor uses Sonnet rates,
+#: advisor uses Opus rates.  Exposed here so callers can do mixed billing.
+ADVISOR_EXECUTOR_MODEL: str = "claude-sonnet-4"
+ADVISOR_MODEL: str = "claude-opus-4-6"
+
 
 # ---------------------------------------------------------------------------
 # ModelCatalog
@@ -394,6 +422,41 @@ class ModelCatalog:
         """Return ``(input_price_per_m, output_price_per_m)`` for a model."""
         entry = cls.get(model)
         return (entry.input_price_per_m, entry.output_price_per_m)
+
+    @classmethod
+    def estimate_advisor_cost(
+        cls,
+        executor_input_tokens: int,
+        executor_output_tokens: int,
+        advisor_uses: int = 0,
+    ) -> float:
+        """Estimate cost for a ``sonnet+advisor`` request.
+
+        Mixed billing: executor tokens billed at Sonnet rates; each advisory
+        call billed at Opus rates using ``ADVISOR_TOKENS_PER_USE`` as an
+        approximate token count when ``advisor_uses > 0``.
+
+        Args:
+            executor_input_tokens: Input tokens consumed by the Sonnet executor.
+            executor_output_tokens: Output tokens consumed by the Sonnet executor.
+            advisor_uses: Number of times the advisor was actually invoked.
+                          Defaults to 0 (no advisory calls).
+
+        Returns:
+            Estimated total cost in USD.
+        """
+        # Executor cost (Sonnet)
+        exec_cost = cls.estimate_cost(
+            ADVISOR_EXECUTOR_MODEL, executor_input_tokens, executor_output_tokens
+        )
+        # Advisor cost (Opus × number of advisory calls)
+        advisor_in, advisor_out = ADVISOR_TOKENS_PER_USE
+        adv_cost = cls.estimate_cost(
+            ADVISOR_MODEL,
+            advisor_in * advisor_uses,
+            advisor_out * advisor_uses,
+        )
+        return round(exec_cost + adv_cost, 6)
 
     # ------------------------------------------------------------------
     # Enumeration
