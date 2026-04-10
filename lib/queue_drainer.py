@@ -258,17 +258,30 @@ class QueueDrainer:
         self._save_queue(items)
         return item_id
 
-    def get_ready_agents(self, max_count: Optional[int] = None) -> List[Dict[str, Any]]:
+    def get_ready_agents(
+        self,
+        max_count: Optional[int] = None,
+        use_advisor: bool = True,
+    ) -> List[Dict[str, Any]]:
         """Return queued agents that can launch given current slot availability.
 
         Agents are selected by priority (1=highest), then FIFO within
         the same priority. Only items with status='queued' are considered.
 
+        When use_advisor=True (default), the QueueAdvisor dynamically reorders
+        the candidates based on budget pressure, context usage, staleness, and
+        dependency unblocking before the slot limit is applied. If the advisor
+        raises any exception the original priority-FIFO order is used as a
+        fallback so existing behaviour is never broken.
+
         Args:
-            max_count: Max agents to return. Defaults to available_slots.
+            max_count:   Max agents to return. Defaults to available_slots.
+            use_advisor: Reorder via QueueAdvisor heuristics (default True).
 
         Returns:
             List of dicts: {id, prompt, description, model, priority, enqueued_at}
+            When use_advisor=True each dict also contains advisor_score and
+            advisor_reason fields.
         """
         available = self._available_slots()
         if available <= 0:
@@ -282,8 +295,8 @@ class QueueDrainer:
         queued = [i for i in items if i.get("status") == "queued"]
         queued.sort(key=lambda x: (x.get("priority", 5), x.get("_enqueued_epoch", 0)))
 
-        selected = queued[:limit]
-        return [
+        # Build the canonical return structure first (all candidates)
+        candidates = [
             {
                 "id": item["id"],
                 "prompt": item.get("prompt", ""),
@@ -292,8 +305,22 @@ class QueueDrainer:
                 "priority": item.get("priority", 5),
                 "enqueued_at": item.get("enqueued_at", ""),
             }
-            for item in selected
+            for item in queued
         ]
+
+        # Optionally reorder via advisor (additive — fallback preserves original order)
+        if use_advisor and candidates:
+            try:
+                from lib.queue_advisor import QueueAdvisor  # noqa: PLC0415
+
+                project_dir = os.environ.get("CLAUDE_PROJECT_DIR", ".")
+                advisor = QueueAdvisor(project_dir=project_dir)
+                candidates = advisor.advise(candidates)
+            except Exception:
+                # Advisor failure: fall back to priority-FIFO silently
+                pass
+
+        return candidates[:limit]
 
     def mark_dispatched(self, agent_id: str) -> bool:
         """Mark a queued agent as 'dispatching' (launch is in progress).

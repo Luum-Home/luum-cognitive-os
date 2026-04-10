@@ -6,6 +6,10 @@
 
 | Skill | Description | Invoke | Audience |
 |-------|-------------|--------|----------|
+| add-hook | Add a new lifecycle hook to the OS: create script, register in settings.json, add to efficiency profile, write test | `/add-hook` | os |
+| add-rule | Add a new always-active or contextual rule: create .md file, symlink, update RULES-COMPACT.md | `/add-rule` | os |
+| add-skill | Add a new skill: create SKILL.md with frontmatter, add to CATALOG.md, write structure test | `/add-skill` | os |
+| add-mcp | Integrate a new MCP server: register in settings.json, document in ecosystem-tools.md, add graceful degradation | `/add-mcp` | os |
 | cognitive-os-init | Initialize Cognitive OS for a project: detect stack, generate config and project-specific files | `/cognitive-os-init` | os-dev |
 | cognitive-os-test | Run the Cognitive OS automated test suite (infra, behavior, quality) | `/cognitive-os-test` | os-dev |
 | cognitive-os-benchmark | Run benchmark comparisons | `/benchmark` | os-dev |
@@ -23,7 +27,12 @@
 | arena | Run competitive benchmarks against AI coding tools | `/arena` | os-dev |
 | simulation-arena | Run scripted scenarios simulating developer workflows, measure safety mesh | `/simulate` | os-dev |
 | tool-discovery | Discover new open-source tools via GitHub scan, classify, evaluate, propose | `/tool-discovery` | os-dev |
-| release-os | Validate, version, tag, and release the Cognitive OS | `/release-os` | os-dev |
+| release-os | META — orchestrate full OS release by chaining 5 atomic release skills | `/release-os` | os |
+| validate-release | Pre-release readiness check: clean tree, correct branch, VERSION, CHANGELOG | `/validate-release` | os |
+| bump-version | Calculate and write new version to VERSION file (patch/minor/major or explicit) | `/bump-version` | os |
+| generate-changelog | Move [Unreleased] CHANGELOG entries into a versioned release section | `/generate-changelog` | os |
+| tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag | `/tag-release` | os |
+| push-release | Push the release commit and tags to remote — always requires explicit confirmation | `/push-release` | os |
 | opik-integration | Configure Opik for LLM observability, tracing, and evaluation | `/opik-setup` | os-dev |
 | cognee-integration | Configure Cognee for knowledge graph memory and MCP integration | `/cognee-setup` | os-dev |
 | deepeval-integration | LLM unit testing, trajectory eval, red teaming (60+ metrics) | `/deepeval-setup` | os-dev |
@@ -49,6 +58,8 @@
 | coverage-enforcement | Run test coverage, enforce thresholds from cognitive-os.yaml | `/coverage-report` | project |
 | retrospective | Weekly cross-squad analysis with trend data and reconfig proposals | `/retrospective` | project |
 | resume-tasks | Check for incomplete tasks from previous sessions | `/resume-tasks` | project |
+| session-backlog | Inventory all pending work across plans, engram, tasks, audits, and git — produces prioritized backlog for future sessions | `/session-backlog` | both |
+| session-wrapup | End-of-session routine: backlog inventory + engram save + session summary | `/session-wrapup` | both |
 | doc-sync | Detect and update stale documentation after code changes | `/doc-sync` | project |
 | private-mode | Toggle private conversation (no persistence, no metrics) | `/private` | project |
 | optimize-skill | Iteratively improve a skill using evals and feedback | `/optimize-skill` | project |

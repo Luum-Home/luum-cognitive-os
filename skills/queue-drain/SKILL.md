@@ -3,6 +3,7 @@ name: queue-drain
 description: Periodic agent queue drain and health check
 trigger: Scheduled via CronCreate every 5 minutes, or invoked manually when agents may be stuck
 version: 1.0.0
+audience: os-dev
 ---
 
 # Queue Drain
