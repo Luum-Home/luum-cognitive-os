@@ -19,6 +19,7 @@ set -euo pipefail
 COS_SOURCE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 GIT_HOOKS_DIR="$COS_SOURCE_DIR/.git/hooks"
 POST_MERGE_HOOK="$GIT_HOOKS_DIR/post-merge"
+PRE_PUSH_HOOK="$GIT_HOOKS_DIR/pre-push"
 MARKER="# COS_AUTO_UPDATE"
 
 # ── Parse args ─────────────────────────────────────────────────────
@@ -50,59 +51,69 @@ fi
 
 # ── Status check ───────────────────────────────────────────────────
 if [ "$ACTION" = "status" ]; then
-  if [ -f "$POST_MERGE_HOOK" ] && grep -qF "$MARKER" "$POST_MERGE_HOOK" 2>/dev/null; then
-    echo "COS auto-update hook: INSTALLED"
-    echo "Location: $POST_MERGE_HOOK"
-  else
-    echo "COS auto-update hook: NOT INSTALLED"
-    echo "Run: bash scripts/setup-git-hooks.sh"
-  fi
+  for hook_file in "$POST_MERGE_HOOK" "$PRE_PUSH_HOOK"; do
+    hook_name=$(basename "$hook_file")
+    if [ -f "$hook_file" ] && grep -qF "$MARKER" "$hook_file" 2>/dev/null; then
+      echo "COS auto-update ($hook_name): INSTALLED"
+    else
+      echo "COS auto-update ($hook_name): NOT INSTALLED"
+    fi
+  done
   exit 0
 fi
+
+# ── Helper: remove COS block from a hook file ────────────────────
+_remove_cos_block() {
+  local hook_file="$1"
+  local hook_name
+  hook_name=$(basename "$hook_file")
+
+  if [ ! -f "$hook_file" ]; then
+    echo "No $hook_name hook found. Nothing to remove."
+    return 0
+  fi
+
+  if ! grep -qF "$MARKER" "$hook_file" 2>/dev/null; then
+    echo "$hook_name hook exists but does not contain COS auto-update."
+    return 0
+  fi
+
+  sed -i '' "/$MARKER BEGIN/,/$MARKER END/d" "$hook_file" 2>/dev/null || \
+    sed -i "/$MARKER BEGIN/,/$MARKER END/d" "$hook_file" 2>/dev/null
+
+  non_empty_lines=$(grep -cv '^\s*$\|^#!/' "$hook_file" 2>/dev/null || echo 0)
+  if [ "$non_empty_lines" -eq 0 ]; then
+    rm -f "$hook_file"
+    echo "Removed $hook_name hook (was COS-only)."
+  else
+    echo "Removed COS auto-update block from $hook_name hook."
+  fi
+}
 
 # ── Remove ─────────────────────────────────────────────────────────
 if [ "$ACTION" = "remove" ]; then
-  if [ ! -f "$POST_MERGE_HOOK" ]; then
-    echo "No post-merge hook found. Nothing to remove."
-    exit 0
-  fi
-
-  if ! grep -qF "$MARKER" "$POST_MERGE_HOOK" 2>/dev/null; then
-    echo "Post-merge hook exists but does not contain COS auto-update."
-    exit 0
-  fi
-
-  # Remove the COS block (from marker to end-marker)
-  sed -i '' "/$MARKER BEGIN/,/$MARKER END/d" "$POST_MERGE_HOOK" 2>/dev/null || \
-    sed -i "/$MARKER BEGIN/,/$MARKER END/d" "$POST_MERGE_HOOK" 2>/dev/null
-
-  # If the file is now empty (just shebang + whitespace), remove it
-  non_empty_lines=$(grep -cv '^\s*$\|^#!/' "$POST_MERGE_HOOK" 2>/dev/null || echo 0)
-  if [ "$non_empty_lines" -eq 0 ]; then
-    rm -f "$POST_MERGE_HOOK"
-    echo "Removed post-merge hook (was COS-only)."
-  else
-    echo "Removed COS auto-update block from post-merge hook."
-    echo "Other hook content preserved."
-  fi
+  _remove_cos_block "$POST_MERGE_HOOK"
+  _remove_cos_block "$PRE_PUSH_HOOK"
   exit 0
 fi
 
-# ── Install ────────────────────────────────────────────────────────
-mkdir -p "$GIT_HOOKS_DIR"
+# ── Helper: install COS block into a hook file ───────────────────
+_install_cos_block() {
+  local hook_file="$1"
+  local hook_name
+  hook_name=$(basename "$hook_file")
 
-# Check if our marker already exists
-if [ -f "$POST_MERGE_HOOK" ] && grep -qF "$MARKER" "$POST_MERGE_HOOK" 2>/dev/null; then
-  echo "COS auto-update hook already installed."
-  echo "Location: $POST_MERGE_HOOK"
-  exit 0
-fi
+  if [ -f "$hook_file" ] && grep -qF "$MARKER" "$hook_file" 2>/dev/null; then
+    echo "COS auto-update ($hook_name): already installed."
+    return 0
+  fi
 
-# The hook content
-HOOK_BLOCK=$(cat << 'HOOKEOF'
+  # The hook content
+  local hook_block
+  hook_block=$(cat << 'HOOKEOF'
 
 # COS_AUTO_UPDATE BEGIN — Do not edit this block manually
-# Auto-updates all registered COS installations after git pull/merge.
+# Auto-updates all registered COS installations after git pull/push.
 # Installed by: bash scripts/setup-git-hooks.sh
 # Remove with:  bash scripts/setup-git-hooks.sh --remove
 _COS_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -113,23 +124,30 @@ if [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
 fi
 # COS_AUTO_UPDATE END
 HOOKEOF
-)
+  )
 
-if [ -f "$POST_MERGE_HOOK" ]; then
-  # Append to existing hook
-  echo "$HOOK_BLOCK" >> "$POST_MERGE_HOOK"
-  echo "Appended COS auto-update to existing post-merge hook."
-else
-  # Create new hook
-  cat > "$POST_MERGE_HOOK" << 'SHEBANG'
+  if [ -f "$hook_file" ]; then
+    echo "$hook_block" >> "$hook_file"
+    echo "Appended COS auto-update to existing $hook_name hook."
+  else
+    cat > "$hook_file" << 'SHEBANG'
 #!/usr/bin/env bash
 SHEBANG
-  echo "$HOOK_BLOCK" >> "$POST_MERGE_HOOK"
-  chmod +x "$POST_MERGE_HOOK"
-  echo "Created post-merge hook with COS auto-update."
-fi
+    echo "$hook_block" >> "$hook_file"
+    chmod +x "$hook_file"
+    echo "Created $hook_name hook with COS auto-update."
+  fi
+}
 
-echo "Location: $POST_MERGE_HOOK"
+# ── Install ────────────────────────────────────────────────────────
+mkdir -p "$GIT_HOOKS_DIR"
+
+_install_cos_block "$POST_MERGE_HOOK"
+_install_cos_block "$PRE_PUSH_HOOK"
+
 echo ""
-echo "Now when you 'git pull' this repo, all registered COS installations"
-echo "will be automatically updated."
+echo "Auto-update triggers:"
+echo "  git pull  -> post-merge  (users pulling updates)"
+echo "  git push  -> pre-push    (maintainers pushing changes)"
+echo ""
+echo "All registered COS installations will be updated on either event."
