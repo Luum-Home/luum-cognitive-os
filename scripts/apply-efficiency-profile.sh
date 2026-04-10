@@ -135,7 +135,8 @@ build_settings() {
         "inject-phase-context.sh" \
         "agent-prelaunch.sh" \
         "error-pattern-detector.sh" \
-        "predev-completeness-check.sh")
+        "predev-completeness-check.sh" \
+        "registration-check.sh")
       ;;
   esac
 
