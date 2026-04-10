@@ -151,13 +151,59 @@ These are optional. Cognitive OS works without them — they add observability a
 
 #### Updating an existing installation
 
+**Automatic updates (recommended):**
+
+When you update the Cognitive OS source repo (`git pull` or `git push`), all
+registered projects are updated automatically via git hooks:
+
+- `git pull` triggers the `post-merge` hook (for users pulling updates)
+- `git push` triggers the `pre-push` hook (for maintainers pushing changes)
+
+Both hooks run `scripts/auto-update-projects.sh`, which:
+1. Reads `~/.cognitive-os/installations.json` (the global registry)
+2. Finds projects installed from this specific COS repo
+3. Re-runs `cos-init.sh` with each project's original mode (minimal/standard/full)
+4. Updates rules, hooks, skills, and templates without touching project-specific files
+
+To install the git hooks (one-time setup):
+```bash
+bash scripts/setup-git-hooks.sh
+```
+
+**Manual update of a single project:**
+
+```bash
+cd /path/to/your-project
+/path/to/luum-agent-os/install.sh --force
+```
+
+**Infrastructure update (Docker services):**
+
 ```bash
 bash scripts/cos-update.sh
 bash scripts/cos-update.sh --pull-images   # also pull latest Docker images
 ```
 
-The update script merges new `.env` variables (never overwriting existing values),
-restarts changed containers, and re-syncs rules and hooks.
+The infrastructure update merges new `.env` variables (never overwriting existing
+values), restarts changed containers, and re-syncs rules and hooks.
+
+#### How the project registry works
+
+Every installation is registered in `~/.cognitive-os/installations.json` with:
+- The project path and name
+- The install mode (minimal/standard/full)
+- The COS source repo path (for auto-update matching)
+- The version at install time
+
+View registered projects:
+```bash
+bash scripts/cos-registry.sh list
+```
+
+Clean up stale entries (projects that no longer exist on disk):
+```bash
+bash scripts/cos-registry.sh cleanup
+```
 
 ---
 

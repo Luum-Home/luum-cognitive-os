@@ -10,7 +10,7 @@ set -euo pipefail
 COS_SOURCE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 MODE="${1:---standard}"
 PROJECT_DIR="$(pwd)"
-VERSION_FILE="$COS_SOURCE_DIR/.cognitive-os/version"
+VERSION_FILE="$COS_SOURCE_DIR/VERSION"
 
 # ── Self-hosting guard ──────────────────────────────────────────────
 # If running inside luum-agent-os itself, refuse (use self-install.sh instead).
@@ -410,12 +410,17 @@ fi
 REGISTRY_SOURCE="${COS_ORIGINAL_SOURCE:-$COS_SOURCE_DIR}"
 
 cos_version="unknown"
-if [ -f "$VERSION_FILE" ]; then
-  cos_version=$(cat "$VERSION_FILE")
-elif [ -d "$REGISTRY_SOURCE/.git" ]; then
-  cos_version=$(cd "$REGISTRY_SOURCE" && git rev-parse --short HEAD 2>/dev/null || echo "dev")
-elif [ -d "$COS_SOURCE_DIR/.git" ]; then
-  cos_version=$(cd "$COS_SOURCE_DIR" && git rev-parse --short HEAD 2>/dev/null || echo "dev")
+# Try git tag first (most accurate), then VERSION file, then short SHA
+_ver_dir="${REGISTRY_SOURCE:-$COS_SOURCE_DIR}"
+if [ -d "$_ver_dir/.git" ]; then
+  cos_version=$(cd "$_ver_dir" && git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || true)
+fi
+if [ -z "$cos_version" ] || [ "$cos_version" = "unknown" ]; then
+  if [ -f "$VERSION_FILE" ]; then
+    cos_version=$(tr -d '[:space:]' < "$VERSION_FILE")
+  elif [ -d "$_ver_dir/.git" ]; then
+    cos_version=$(cd "$_ver_dir" && git rev-parse --short HEAD 2>/dev/null || echo "dev")
+  fi
 fi
 
 cat > .cognitive-os/install-meta.json << ENDJSON
