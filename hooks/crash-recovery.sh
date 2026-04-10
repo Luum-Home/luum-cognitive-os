@@ -8,6 +8,45 @@ set -uo pipefail
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-.}"
 
+# ── State-snapshot recovery ──────────────────────────────────────────────────
+# Check the most recent session dir for an orphaned state-snapshot.json.
+# An "orphaned" snapshot is one where the session is no longer active.
+SESSIONS_DIR="$PROJECT_DIR/.cognitive-os/sessions"
+if [ -d "$SESSIONS_DIR" ] && command -v python3 >/dev/null 2>&1; then
+    # Find the most recently modified session dir (excluding 'current' symlink)
+    RECENT_SESSION=$(find "$SESSIONS_DIR" -mindepth 1 -maxdepth 1 -type d \
+        ! -name "current" ! -name "default" \
+        -printf '%T@ %p\n' 2>/dev/null \
+        | sort -rn | head -1 | awk '{print $2}')
+    if [ -z "$RECENT_SESSION" ]; then
+        # macOS fallback (no -printf)
+        RECENT_SESSION=$(ls -td "$SESSIONS_DIR"/*/  2>/dev/null \
+            | grep -v '/current/' | grep -v '/default/' | head -1)
+        RECENT_SESSION="${RECENT_SESSION%/}"
+    fi
+
+    if [ -n "$RECENT_SESSION" ] && [ -f "$RECENT_SESSION/state-snapshot.json" ]; then
+        RECOVERY_MSG=$(python3 -c "
+import sys
+sys.path.insert(0, '$PROJECT_DIR')
+try:
+    from lib.state_heartbeat import StateHeartbeat
+    h = StateHeartbeat('$RECENT_SESSION')
+    print(h.format_recovery_prompt())
+except Exception as e:
+    pass
+" 2>/dev/null)
+        if [ -n "$RECOVERY_MSG" ]; then
+            echo "" >&2
+            echo "INFO: STATE SNAPSHOT FOUND from previous session:" >&2
+            echo "$RECOVERY_MSG" | while IFS= read -r line; do
+                echo "  $line" >&2
+            done
+            echo "" >&2
+        fi
+    fi
+fi
+
 # Ensure we are in a git repo
 if ! git -C "$PROJECT_DIR" rev-parse --git-dir >/dev/null 2>&1; then
     exit 0
