@@ -1,0 +1,64 @@
+name: "@luum/project-audit"
+version: "1.0.0"
+description: "Automated work tracking, audit trail, changelog generation, and requirement-to-test traceability"
+authors: ["Cognitive OS Team"]
+license: "Apache-2.0"
+keywords:
+  - audit
+  - tracking
+  - changelog
+  - traceability
+  - git-context
+  - sprint
+cos_version: ">=0.1.0"
+
+provides:
+  - skill
+  - rule
+  - hook
+
+exports:
+  # Hooks
+  - source: "../../hooks/git-context-capture.sh"
+    type: hook
+    description: "Captures git context (branch, commits, diff) at session end"
+    hook_event: Stop
+    hook_matcher: ""
+
+  - source: "../../hooks/audit-id-enricher.sh"
+    type: hook
+    description: "Enriches JSONL metrics with cross-cutting audit IDs"
+    hook_event: PostToolUse
+    hook_matcher: "Agent|Bash"
+
+  - source: "../../hooks/session-changelog.sh"
+    type: hook
+    description: "Generates session changelog at session end"
+    hook_event: Stop
+    hook_matcher: ""
+
+  # Rule
+  - source: "../../rules/audit-trail.md"
+    type: rule
+    description: "Mandatory audit trail for every session"
+    always_active: true
+
+  # Skills
+  - source: "../../.cognitive-os/skills/audit-report/SKILL.md"
+    type: skill
+    description: "Generate comprehensive audit report for sprint or date range"
+    triggers:
+      - audit report
+      - sprint review
+      - work summary
+      - progress report
+
+  - source: "../../.cognitive-os/skills/traceability-check/SKILL.md"
+    type: skill
+    description: "Check requirement-to-test traceability gaps"
+    triggers:
+      - traceability
+      - coverage gaps
+      - requirement tracking
+
+dependencies: {}
