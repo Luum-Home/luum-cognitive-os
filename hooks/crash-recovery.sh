@@ -47,6 +47,28 @@ except Exception as e:
     fi
 fi
 
+# ── Work Queue Brief ─────────────────────────────────────────────────────
+# Show pending work from persistent queue (survives across sessions)
+QUEUE_FILE="$PROJECT_DIR/.cognitive-os/work-queue.json"
+if [ -f "$QUEUE_FILE" ] && command -v python3 >/dev/null 2>&1; then
+    QUEUE_BRIEF=$(python3 -c "
+import sys
+sys.path.insert(0, '$PROJECT_DIR')
+try:
+    from lib.work_queue import WorkQueue
+    q = WorkQueue('$QUEUE_FILE')
+    pending = q.get_pending()
+    if pending:
+        print(q.format_session_brief())
+except Exception:
+    pass
+" 2>/dev/null)
+    if [ -n "$QUEUE_BRIEF" ]; then
+        echo "$QUEUE_BRIEF" >&2
+        echo "" >&2
+    fi
+fi
+
 # Ensure we are in a git repo
 if ! git -C "$PROJECT_DIR" rev-parse --git-dir >/dev/null 2>&1; then
     exit 0
