@@ -531,6 +531,71 @@ def extract_lint_summary(output: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# SmartTruncator class — object-oriented wrapper for the functional API
+# ---------------------------------------------------------------------------
+
+class SmartTruncator:
+    """Class-based wrapper around the smart_truncate functional API.
+
+    Provides the same interface described in WS2 while delegating to the
+    existing per-type extractors above.
+    """
+
+    def __init__(self, max_chars: int = 5000):
+        self.max_chars = max_chars
+
+    def truncate(self, command: str, output: str) -> str:
+        """Truncate *output* intelligently based on *command* type.
+
+        Always preserves lines containing FAIL/ERROR/panic/CRITICAL/WARN/PASS/coverage.
+        """
+        result = smart_truncate(command, output, max_chars=self.max_chars)
+        # Guarantee critical lines are never lost regardless of strategy
+        if len(output) > self.max_chars:
+            result = self._ensure_critical_lines(output, result)
+        return result
+
+    def _ensure_critical_lines(self, original: str, truncated: str) -> str:
+        """Inject any critical lines from *original* that are absent in *truncated*."""
+        _critical = re.compile(
+            r"\b(FAIL(ED)?|ERROR|panic|CRITICAL|WARN(ING)?|PASS|coverage:)\b",
+            re.IGNORECASE,
+        )
+        missing = [l for l in original.splitlines()
+                   if _critical.search(l) and l not in truncated]
+        if not missing:
+            return truncated
+        suffix = "\n[preserved critical lines]\n" + "\n".join(missing)
+        # Trim to stay within budget
+        available = self.max_chars - len(suffix)
+        return truncated[:max(0, available)] + suffix
+
+    def detect_command_type(self, command: str) -> str:
+        """Classify command into: test, build, lint, git, docker, json, count, other."""
+        return _detect_command_type(command)
+
+    def extract_test_summary(self, output: str) -> str:
+        """Extract just the test summary from pytest/go test/jest output."""
+        return extract_test_summary(output)
+
+    def extract_errors(self, output: str) -> str:
+        """Extract error/failure lines with context."""
+        lines = output.splitlines()
+        _err_re = re.compile(
+            r"\b(FAIL(ED)?|ERROR|panic|CRITICAL|exception)\b", re.IGNORECASE
+        )
+        collected: list[str] = []
+        seen: set[int] = set()
+        for i, line in enumerate(lines):
+            if _err_re.search(line):
+                for j in range(max(0, i - 1), min(len(lines), i + 2)):
+                    if j not in seen:
+                        collected.append(lines[j])
+                        seen.add(j)
+        return "\n".join(collected)
+
+
+# ---------------------------------------------------------------------------
 # Fallback helpers
 # ---------------------------------------------------------------------------
 
