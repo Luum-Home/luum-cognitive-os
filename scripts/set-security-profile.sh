@@ -104,7 +104,8 @@ build_settings() {
         "session-init.sh" \
         "crash-recovery.sh" \
         "infra-health.sh" \
-        "worktree-submodule-fix.sh")
+        "worktree-submodule-fix.sh" \
+        "usage-health-check.sh")
       ;;
     paranoid)
       session_start=$(hook_group "" \
@@ -114,6 +115,7 @@ build_settings() {
         "session-resume.sh" \
         "infra-health.sh" \
         "worktree-submodule-fix.sh" \
+        "usage-health-check.sh" \
         "cognitive-os-health.sh" \
         "mcp-scan.sh" \
         "metrics-rotation.sh" \
