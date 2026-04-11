@@ -183,6 +183,8 @@ services:
   # Langfuse Web — LLM Observability UI (MIT, self-hosted)
   # https://github.com/langfuse/langfuse
   # UI: http://localhost:3100
+  # MIGRATED TO PIP: pip install mlflow>=2.0. Container kept for reference/CI.
+  # Run locally: mlflow server --backend-store-uri sqlite:///mlflow.db --host 0.0.0.0 --port 5000
   # ---------------------------------------------------------------------------
   langfuse-web:
     image: langfuse/langfuse:3@sha256:018a38c957d8cb51094bd28154a8cb0b0fb587e5bf4e00df75602b7ebe7933fa  # pinned 2026-03-28
@@ -225,6 +227,8 @@ services:
   # ---------------------------------------------------------------------------
   # LiteLLM Proxy — LLM Gateway for cost control and model routing (MIT)
   # https://github.com/BerriAI/litellm
+  # MIGRATED TO PIP: pip install litellm>=1.0. Container kept for reference/CI.
+  # Run locally: litellm --config infra/litellm/config.yaml (or use Python API directly)
   # ---------------------------------------------------------------------------
   litellm:
     image: ghcr.io/berriai/litellm:main-stable@sha256:9e1536c6a9219519f024f221706b20b012ca5176988164798adc5c7fe011e5d5  # pinned 2026-03-28
@@ -282,6 +286,8 @@ services:
   # NeMo Guardrails — AI security guardrails server (Apache 2.0)
   # https://github.com/NVIDIA/NeMo-Guardrails
   # Jailbreak detection + PII masking for AI-powered features
+  # MIGRATED TO PIP: pip install nemoguardrails>=0.10. Container kept for reference/CI.
+  # Use in-process: from nemoguardrails import RailsConfig, LLMRails
   # ---------------------------------------------------------------------------
   nemo-guardrails:
     build:
@@ -374,6 +380,8 @@ services:
   # memU — Proactive Memory for AI Agents (Apache 2.0)
   # https://github.com/NevaMind-AI/memU
   # 3-layer hierarchical memory: Resource → Item → Category
+  # MIGRATED TO PIP: pip install memu>=2.0. Container kept for reference/CI.
+  # Container was just a pip install wrapper anyway. Run: python -m memu.server
   # ---------------------------------------------------------------------------
   memu:
     image: python:3.13-slim@sha256:739e7213785e88c0f702dcdc12c0973afcbd606dbf021a589cab77d6b00b579d  # pinned 2026-03-28
@@ -435,6 +443,8 @@ services:
   # ---------------------------------------------------------------------------
   # Jupyter — GPU/Compute Sandbox for ML, data processing, analytics
   # UI: http://localhost:8888 (token: cognitive-os-dev)
+  # MIGRATED TO PIP: pip install jupyter>=1.0 notebook>=7.0. Container kept for reference/CI.
+  # Run locally: jupyter lab (or jupyter notebook)
   # ---------------------------------------------------------------------------
   jupyter:
     image: jupyter/scipy-notebook@sha256:fca4bcc9cbd49d9a15e0e4df6c666adf17776c950da9fa94a4f0a045d5c4ad33  # pinned 2026-03-28 — was untagged (implicit :latest)
@@ -457,6 +467,8 @@ services:
 
   # ---------------------------------------------------------------------------
   # Opik — LLM Observability, Tracing & Evaluation (ADOPT)
+  # MIGRATED TO PIP: pip install opik>=1.0. Container kept for reference/CI.
+  # Already configured to use Comet cloud API (comet.com/opik). No local server needed.
   # ---------------------------------------------------------------------------
   opik-backend:
     image: ghcr.io/comet-ml/opik/opik-backend:latest@sha256:60d310f4180f05b09c1cd4b1bcf2f94025c8b5ae4644e969efc12551397ed70a  # pinned 2026-03-28 — was :latest (mutable)
