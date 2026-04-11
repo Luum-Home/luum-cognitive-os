@@ -187,24 +187,104 @@ CORE_RULES=(
 # hook enforcement is the sole active layer, reducing context overhead.
 
 # ── Excluded rules for self-hosting (SYNC_ALL_RULES=true) ─────────────
-# These rules are fully enforced by registered hooks and do NOT need to
-# be in agent context. Rule .md files remain in rules/ as human docs.
-# Each entry maps to the hook that makes the rule redundant in context.
+# These rules are NOT loaded into agent context for three reasons:
+#   A) Hook-enforced: the hook makes the rule file redundant in context
+#   B) Package-specific: only relevant when that optional package is active
+#   C) Contextual: rare/specialized; indexed in RULES-COMPACT, loads on demand
+# Rule .md files remain in rules/ as human docs — only symlinks are managed.
 EXCLUDED_RULES=(
+  # ── A) Hook-enforced (hook is the active enforcement layer) ──────────
   "anti-hallucination.md"          # → claim-validator.sh (PostToolUse Agent)
   "blast-radius.md"                # → blast-radius.sh (PreToolUse Agent)
   "clarification-gate.md"          # → clarification-gate.sh (PreToolUse Agent)
   "content-policy.md"              # → content-policy.sh (PostToolUse Edit|Write)
-  "crash-recovery.md"              # → auto-checkpoint.sh + crash-recovery.sh (registered)
+  "crash-recovery.md"              # → auto-checkpoint.sh + crash-recovery.sh
   "prompt-quality.md"              # → prompt-quality.sh (PreToolUse Agent)
   "rate-limiting.md"               # → rate-limiter.sh (PreToolUse Bash|Agent|Edit|Write)
+  "rate-limit-protection.md"       # → rate-limit-protection.sh (PreToolUse Agent)
   "skill-rewrite.md"               # → completion-gate.sh (PostToolUse Agent)
   "auto-skill-generation.md"       # → auto-skill-generator.sh (PostToolUse Agent)
   "auto-repair.md"                 # → auto-repair-dispatcher.sh (PostToolUse Agent)
   "pre-dev-readiness-gate.md"      # → predev-completeness-check.sh (PreToolUse Agent)
   "audit-trail.md"                 # → git-context-capture.sh + session-changelog.sh (Stop)
-  "pre-commit-gate.md"             # → pre-commit-gate.sh (git hook, not Claude hook)
+  "pre-commit-gate.md"             # → pre-commit-gate.sh (git hook)
   "confidentiality-protection.md"  # → confidentiality-enforcer.sh (PostToolUse Edit|Write)
+  "scope-proportionality.md"       # → scope-proportionality.sh (PostToolUse Agent)
+  "scope-creep-detection.md"       # → scope-proportionality.sh (PostToolUse Agent)
+  "confidence-gate.md"             # → confidence-gate.sh (PostToolUse Agent)
+  "consequence-system.md"          # → consequence-evaluator.sh (PostToolUse Agent)
+  "auto-rollback.md"               # → auto-rollback-trigger.sh (PostToolUse Agent)
+  "response-compression.md"        # → response-length-check.sh (PostToolUse Agent)
+  "assumption-tracking.md"         # → assumption-tracker.sh (PostToolUse Agent)
+
+  # ── B) Package-specific (only relevant when package is active) ────────
+  "aguara-integration.md"          # packages/aguara-security — load when aguara used
+  "e2b-integration.md"             # packages/e2b-sandbox — load when E2B used
+  "hcom-integration.md"            # packages/ecosystem-tools — load when hcom used
+  "parry-integration.md"           # packages/ecosystem-tools — load when parry used
+  "repomix-integration.md"         # packages/ecosystem-tools — load when repomix used
+  "tero-integration.md"            # packages/tero-testing — load when tero used
+  "trailofbits-skills.md"          # packages/ecosystem-tools — load when tob skills used
+  "context7-auto-trigger.md"       # packages/ecosystem-tools — load when context7 used
+  "ecosystem-tools.md"             # packages/ecosystem-tools — reference doc, not behavioral
+  "private-mode.md"                # packages/privacy-mode — load when /private invoked
+  "doc-sync.md"                    # packages/document-sync — load when /doc-sync invoked
+  "security-scanning.md"           # packages/security — load when semgrep scan invoked
+
+  # ── C) Contextual (indexed in RULES-COMPACT, load on demand) ─────────
+  "singularity.md"                 # rare: autonomous MAPE-K loop
+  "squad-protocol.md"              # contextual: squad ops trigger
+  "estimation-calibration.md"      # contextual: medium+ task estimation
+  "step-files.md"                  # contextual: long phase workflows
+  "dry-run.md"                     # contextual: DRY_RUN=true sessions
+  "session-concurrency.md"         # contextual: multi-session coordination
+  "agent-communication.md"         # contextual: Valkey bus (OFF by default)
+  "agent-customization.md"         # contextual: per-agent override files
+  "agent-sidecars.md"              # contextual: sidecar pattern reference
+  "performance-monitoring.md"      # contextual: perf dashboard invocation
+  "cognitive-load.md"              # contextual: >50% context threshold
+  "workload-scheduling.md"         # contextual: 4+ concurrent task batching
+  "task-dag.md"                    # contextual: dependency DAG workflows
+  "queue-drain.md"                 # contextual: dispatch queue draining
+  "queue-advisor.md"               # contextual: dynamic queue prioritization
+  "non-blocking-retry.md"          # contextual: rate-limited retry scheduling
+  "hook-security-profiles.md"      # contextual: profile switching reference
+  "infra-health.md"                # contextual: Docker infra health checks
+  "infra-intent.md"                # contextual: infra keyword detection
+  "sandbox-sampling.md"            # contextual: >100 file operations
+  "impact-analysis.md"             # contextual: pre-sdd-apply blast analysis
+  "scout-pattern.md"               # contextual: pre-implementation recon
+  "split-and-resume.md"            # contextual: mid-task clarification
+  "fault-tolerance.md"             # contextual: session recovery ops
+  "capability-protection.md"       # contextual: before OS refactors/cleanup
+  "capability-levels.md"           # contextual: model capability auto-disable
+  "os-vs-project.md"               # contextual: OS vs project separation guide
+  "dogfooding.md"                  # contextual: self-hosting requirement doc
+  "plan-first.md"                  # contextual: plan-first protocol reference
+  "cost-prediction.md"             # contextual: cost forecasting invocation
+  "pentesting-readiness.md"        # contextual: security audit reference
+  "supply-chain-defense.md"        # contextual: supply chain attack mitigations
+  "dynamic-tool-creation.md"       # contextual: mid-task tool creation
+  "component-classification.md"    # contextual: OS component CORE vs PACKAGE
+  "skill-management.md"            # contextual: skill lifecycle management
+  "reinvention-prevention.md"      # contextual: check-before-build guard
+  "user-prompt-capture.md"         # contextual: prompt classifier usage
+  "agent-escalation.md"            # contextual: escalation detector library
+  "agent-identity.md"              # contextual: identity & audit trail reference
+  "agent-security.md"              # contextual: least-privilege permission API
+  "agent-kpis.md"                  # contextual: KPI calculation invocation
+  "model-compatibility.md"         # contextual: model switch checklist
+  "model-directive.md"             # contextual: dispatch-gate directive protocol
+  "orchestrator-mode.md"           # contextual: executor mode activation
+  "engram-organization.md"         # contextual: engram prefix system reference
+  "cognitive-os-changes.md"        # contextual: plan-first for OS mods
+  "library-selection.md"           # contextual: library evaluation checklist
+  "prompt-composition.md"          # contextual: template composition protocol
+  "self-improvement-protocol.md"   # contextual: weekly self-improve trigger
+  "broken-window-policy.md"        # contextual: covers same ground as agent-quality
+  "decomposition.md"               # contextual: covered by token-economy + model-routing
+  "license-policy.md"              # contextual: license table reference
+  "context-optimization.md"        # contextual: progressive loading reference
 )
 
 # Build the effective allowed-rules list based on profile.
