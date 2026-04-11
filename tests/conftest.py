@@ -38,6 +38,12 @@ def project_root() -> Path:
 
 
 @pytest.fixture(scope="session")
+def skills_dir(project_root: Path) -> Path:
+    """Return the path to the Cognitive OS skills directory."""
+    return project_root / ".cognitive-os" / "skills"
+
+
+@pytest.fixture(scope="session")
 def docker_available():
     """Check whether Docker is installed and the daemon is running.
 
