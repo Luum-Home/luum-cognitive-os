@@ -1,1 +1,0 @@
-/Users/matias.nahuel.amendola/Projects/luum/luum-agent-os/rules/user-prompt-capture.md
