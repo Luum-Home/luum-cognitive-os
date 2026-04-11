@@ -64,6 +64,37 @@ Before recommending a new library:
 - Check if a framework-native solution exists (NestJS modules, Spring Boot starters, Expo SDK)
 - Prefer extending existing dependencies over adding new ones
 
+## Deployment Weight (pip-first)
+
+**ALWAYS prefer pip-installable tools over Docker-based ones.**
+
+| Deployment Type | Preference | When Acceptable |
+|---|---|---|
+| `pip install` | Preferred | Always |
+| Single binary (`go install`, `cargo install`) | Acceptable | When no pip alternative |
+| Docker (1 container) | Caution | Only if no pip/binary alternative |
+| Docker (2+ containers) | Avoid | Only if genuinely no alternative AND critical need |
+| Docker (5+ containers) | Blocked | Never — find a lighter alternative |
+
+### Why pip-first?
+
+- A 16 GB Mac cannot run 20 Docker containers simultaneously
+- Each container consumes 200 MB–1 GB RAM
+- Docker image cache grows unbounded (we recovered 100 GB in one cleanup)
+- pip packages run in-process with zero infrastructure overhead
+
+### pip-first Score
+
+Use `ToolAdoptionEvaluator.check_deployment_weight(url)` to get a numeric
+`pip_first_score` (0.0–1.0):
+
+| Score | Weight | Decision |
+|---|---|---|
+| 1.0 | pip-install | Proceed immediately |
+| 0.8–0.9 | single-binary / npm | Acceptable |
+| 0.2 | docker-light | Investigate alternatives first |
+| 0.0 | docker-heavy (3+ containers) | Default to WATCH; block ADOPT |
+
 ## Decision Record
 
 When a library is selected, save the decision to engram:
