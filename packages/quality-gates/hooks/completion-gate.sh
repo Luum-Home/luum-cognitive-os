@@ -331,6 +331,41 @@ if [ "$FAILURE_DETECTED" = false ]; then
   if [ -d "$REFINE_DIR" ] && [ -f "$REFINE_DIR/$TASK_FINGERPRINT.count" ]; then
     rm -f "$REFINE_DIR/$TASK_FINGERPRINT.count" "$REFINE_DIR/$TASK_FINGERPRINT.history" 2>/dev/null
   fi
+
+  # === MARK TASK COMPLETED in active-tasks.json ===
+  # Find the most recent in_progress task matching the agent prompt and mark it done.
+  _TASKS_FILE="$PROJECT_DIR/.cognitive-os/tasks/active-tasks.json"
+  if [ -f "$_TASKS_FILE" ] && command -v jq &>/dev/null; then
+    _AGENT_DESC=$(echo "$AGENT_PROMPT" | head -c 200)
+    _COMPLETION_TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    _OUTPUT_SUMMARY=$(echo "$AGENT_OUTPUT" | head -c 300 | tr '\n' ' ')
+    _UPDATED_TASKS=$(jq \
+      --arg desc "$_AGENT_DESC" \
+      --arg ts "$_COMPLETION_TS" \
+      --arg summary "$_OUTPUT_SUMMARY" \
+      '
+      # Find the index of the most recent in_progress task whose description
+      # starts with (or contains) the agent description prefix.
+      (
+        [ .tasks | to_entries[]
+          | select(.value.status == "in_progress")
+          | select(.value.description | startswith($desc[:80]) )
+        ] | sort_by(.value.launchedAt) | last
+      ) as $match |
+      if $match then
+        .tasks[$match.key].status = "completed"
+        | .tasks[$match.key].completedAt = $ts
+        | .tasks[$match.key].outputSummary = $summary
+        | .lastUpdated = $ts
+      else
+        .
+      end
+      ' "$_TASKS_FILE" 2>/dev/null)
+    if [ -n "$_UPDATED_TASKS" ]; then
+      echo "$_UPDATED_TASKS" > "$_TASKS_FILE"
+    fi
+  fi
+
   # Wire to learning pipeline (success path)
   echo "$INPUT" | python3 "$PROJECT_DIR/lib/record_completion.py" 2>/dev/null || true
 
