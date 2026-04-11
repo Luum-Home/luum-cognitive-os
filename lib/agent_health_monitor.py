@@ -299,24 +299,53 @@ class AgentHealthMonitor:
     # Internal helpers                                                     #
     # ------------------------------------------------------------------ #
 
-    def _classify_task(self, task: Dict[str, Any], limit: int) -> str:
-        """Return 'healthy', 'timeout', or 'dead' for a single task."""
-        # Dead check first: if we have a PID and it's gone, report as dead
-        pid = task.get("pid")
-        if pid is not None:
-            try:
-                pid_int = int(pid)
-                if not _pid_alive(pid_int):
-                    return "dead"
-            except (TypeError, ValueError):
-                pass
+    # Minimum task age before a dead PID can trigger "dead" classification.
+    # PreToolUse hooks record PID=null (the agent hasn't started yet), so we
+    # must give tasks time to actually launch before treating a missing/dead
+    # PID as evidence of failure.
+    _MIN_AGE_FOR_DEAD_SECONDS: int = 300  # 5 minutes
 
-        # Timeout check: use started_at if present, fall back to launchedAt
+    # Tasks with null/missing PID are classified as stale only after this long.
+    _NULL_PID_STALE_SECONDS: int = 1800  # 30 minutes
+
+    def _classify_task(self, task: Dict[str, Any], limit: int) -> str:
+        """Return 'healthy', 'timeout', or 'dead' for a single task.
+
+        Classification rules:
+        1. If PID is null/missing → skip PID check entirely; rely on age only.
+           Tasks become stale (→ timeout) after _NULL_PID_STALE_SECONDS.
+        2. If PID is present and the process is dead, only classify as 'dead'
+           when the task has been running for at least _MIN_AGE_FOR_DEAD_SECONDS.
+           This prevents false-positives during the window between PreToolUse
+           (where the hook stores its own now-dead PID) and actual agent startup.
+        3. Age-based timeout uses the configured limit.
+        """
         ts = task.get("started_at") or task.get("launchedAt")
-        if ts:
-            age = _age_seconds(ts)
-            if age is not None and age > limit:
+        age = _age_seconds(ts) if ts else None
+
+        pid = task.get("pid")
+
+        if pid is None:
+            # No PID recorded — age-only classification.
+            if age is not None and age > self._NULL_PID_STALE_SECONDS:
                 return "timeout"
+            return "healthy"
+
+        # PID present — check liveness, but only after minimum age guard.
+        try:
+            pid_int = int(pid)
+            task_old_enough = age is not None and age >= self._MIN_AGE_FOR_DEAD_SECONDS
+            if task_old_enough and not _pid_alive(pid_int):
+                return "dead"
+        except (TypeError, ValueError):
+            # Unparseable PID — treat as missing.
+            if age is not None and age > self._NULL_PID_STALE_SECONDS:
+                return "timeout"
+            return "healthy"
+
+        # Timeout check: use the configured limit regardless of PID status.
+        if age is not None and age > limit:
+            return "timeout"
 
         return "healthy"
 
