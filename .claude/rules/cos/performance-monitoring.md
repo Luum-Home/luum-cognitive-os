@@ -1,1 +1,0 @@
-<repo>/rules/performance-monitoring.md

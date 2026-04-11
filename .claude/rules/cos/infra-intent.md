@@ -1,1 +1,0 @@
-<repo>/rules/infra-intent.md

@@ -1,1 +1,0 @@
-<repo>/rules/confidentiality-protection.md

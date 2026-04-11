@@ -1,1 +1,0 @@
-<repo>/rules/consequence-system.md
