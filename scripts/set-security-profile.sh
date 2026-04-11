@@ -106,7 +106,8 @@ build_settings() {
         "infra-health.sh" \
         "worktree-submodule-fix.sh" \
         "usage-health-check.sh" \
-        "orchestrator-mode-detect.sh")
+        "orchestrator-mode-detect.sh" \
+        "ecosystem-check.sh")
       ;;
     paranoid)
       session_start=$(hook_group "" \
@@ -123,7 +124,8 @@ build_settings() {
         "engram-auto-import.sh" \
         "agent-bus-monitor.sh" \
         "singularity-check.sh" \
-        "orchestrator-mode-detect.sh")
+        "orchestrator-mode-detect.sh" \
+        "ecosystem-check.sh")
       ;;
   esac
 
