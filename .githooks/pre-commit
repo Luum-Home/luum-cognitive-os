@@ -63,10 +63,18 @@ if [ -n "$staged_hooks" ]; then
   while IFS= read -r hook; do
     [ -z "$hook" ] && continue
     hookname=$(basename "$hook")
+    # Skip _lib/ internal helpers (not meant to be registered)
+    case "$hookname" in _*) continue ;; esac
     if ! grep -q "$hookname" "$COS_ROOT/scripts/apply-efficiency-profile.sh" 2>/dev/null; then
-      echo "WARNING: New hook $hookname is NOT in apply-efficiency-profile.sh — it will never fire"
+      echo "BLOCKED: New hook $hookname is NOT registered in apply-efficiency-profile.sh — it will never fire"
       echo "  Add it to the appropriate profile (lean/standard/full) in scripts/apply-efficiency-profile.sh"
-      warnings=$((warnings + 1))
+      echo "  Also add it to scripts/set-security-profile.sh (minimal/standard/paranoid)"
+      exit 1
+    fi
+    if ! grep -q "$hookname" "$COS_ROOT/scripts/set-security-profile.sh" 2>/dev/null; then
+      echo "BLOCKED: New hook $hookname is NOT registered in set-security-profile.sh"
+      echo "  Add it to the appropriate profile (minimal/standard/paranoid)"
+      exit 1
     fi
   done <<< "$staged_hooks"
 fi
