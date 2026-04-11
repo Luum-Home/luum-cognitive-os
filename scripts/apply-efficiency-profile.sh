@@ -168,7 +168,8 @@ build_settings() {
         "secret-detector.sh" \
         "content-policy.sh" \
         "confidentiality-enforcer.sh" \
-        "doc-sync-detector.sh")
+        "doc-sync-detector.sh" \
+        "wiring-check.sh")
       post_agent=$(hook_group "Agent" \
         "claim-validator.sh" \
         "completion-gate.sh" \
