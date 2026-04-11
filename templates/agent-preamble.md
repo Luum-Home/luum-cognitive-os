@@ -73,4 +73,4 @@ STATUS: HIGH (90+), MEDIUM (70-89), LOW (50-69), CRITICAL (<50). Must list at le
 
 ## Long-Running Commands
 
-Commands >30s MUST use `run_in_background: true`. Set `timeout: 300000` for test suites.
+Commands >30s MUST use `run_in_background: true`. Continue with other work while waiting. Set `timeout: 300000` for test suites.
