@@ -2,9 +2,12 @@
 # Set Security Profile — Generates settings.json based on the selected security profile
 #
 # Security profiles control which hooks are active for defense-in-depth:
-#   minimal  — 10 hooks, error capture + secret detection only
-#   standard — 20 hooks, critical safety mesh layers + quality gates (recommended)
-#   paranoid — 55 hooks, full safety mesh + all governance + observability
+#   minimal  — ~15 hooks, essential safety only (secret detection, rate limiting, error capture)
+#   standard — ~30 hooks, safety + quality gates + observability (recommended)
+#   paranoid — ~55 hooks, full safety mesh + governance + all event types
+#
+# Supported event types: SessionStart, UserPromptSubmit, PreToolUse, PostToolUse,
+#                        SubagentStart, PreCompact, Stop
 #
 # Usage:
 #   bash scripts/set-security-profile.sh [minimal|standard|paranoid]
@@ -24,9 +27,9 @@ if [ "${1:-}" = "--current" ]; then
     exit 1
   fi
   hook_count=$(grep -c '"command":' "$SETTINGS_FILE" 2>/dev/null || echo 0)
-  if [ "$hook_count" -le 12 ]; then
+  if [ "$hook_count" -le 18 ]; then
     echo "Current profile: minimal (~$hook_count hooks)"
-  elif [ "$hook_count" -le 25 ]; then
+  elif [ "$hook_count" -le 35 ]; then
     echo "Current profile: standard (~$hook_count hooks)"
   else
     echo "Current profile: paranoid (~$hook_count hooks)"
@@ -92,13 +95,16 @@ build_settings() {
       session_start=$(hook_group "" \
         "self-install.sh" \
         "session-init.sh" \
-        "crash-recovery.sh")
+        "crash-recovery.sh" \
+        "infra-health.sh")
       ;;
     standard)
       session_start=$(hook_group "" \
         "self-install.sh" \
         "session-init.sh" \
-        "crash-recovery.sh")
+        "crash-recovery.sh" \
+        "infra-health.sh" \
+        "worktree-submodule-fix.sh")
       ;;
     paranoid)
       session_start=$(hook_group "" \
@@ -106,11 +112,30 @@ build_settings() {
         "session-init.sh" \
         "crash-recovery.sh" \
         "session-resume.sh" \
-        "cognitive-os-health.sh" \
         "infra-health.sh" \
+        "worktree-submodule-fix.sh" \
+        "cognitive-os-health.sh" \
         "mcp-scan.sh" \
         "metrics-rotation.sh" \
-        "engram-auto-import.sh")
+        "engram-auto-import.sh" \
+        "agent-bus-monitor.sh" \
+        "singularity-check.sh")
+      ;;
+  esac
+
+  # ── UserPromptSubmit ──
+  local user_prompt_submit=""
+  case "$profile" in
+    minimal) ;;
+    standard)
+      user_prompt_submit=$(hook_group "" \
+        "user-prompt-capture.sh")
+      ;;
+    paranoid)
+      user_prompt_submit=$(hook_group "" \
+        "user-prompt-capture.sh" \
+        "background-agent-reminder.sh" \
+        "private-mode-gate.sh")
       ;;
   esac
 
@@ -127,9 +152,14 @@ build_settings() {
       pre_read=$(hook_group "Read" \
         "large-file-advisor.sh")
       pre_agent=$(hook_group "Agent" \
+        "dispatch-gate.sh" \
         "clarification-gate.sh" \
         "blast-radius.sh" \
+        "adaptive-bypass.sh" \
+        "epic-task-detector.sh" \
         "error-pattern-detector.sh")
+      pre_bash=$(hook_group "Bash" \
+        "release-guard.sh")
       ;;
     paranoid)
       pre_bash_agent_edit_write=$(hook_group "Bash|Agent|Edit|Write" \
@@ -137,8 +167,11 @@ build_settings() {
       pre_read=$(hook_group "Read" \
         "large-file-advisor.sh")
       pre_agent=$(hook_group "Agent" \
+        "dispatch-gate.sh" \
         "clarification-gate.sh" \
         "blast-radius.sh" \
+        "adaptive-bypass.sh" \
+        "epic-task-detector.sh" \
         "dry-run-preview.sh" \
         "aguara-scan.sh" \
         "parry-scan.sh" \
@@ -151,30 +184,38 @@ build_settings() {
         "rate-limit-protection.sh" \
         "resource-check.sh" \
         "infra-intent-detector.sh" \
-        "pre-cleanup-snapshot.sh")
+        "pre-cleanup-snapshot.sh" \
+        "reinvention-check.sh" \
+        "predev-completeness-check.sh")
       pre_edit_write=$(hook_group "Edit|Write" \
         "concurrent-write-guard.sh")
       pre_bash=$(hook_group "Bash" \
+        "release-guard.sh" \
         "jupyter-sandbox.sh")
       ;;
   esac
 
   # ── PostToolUse ──
-  local post_bash="" post_bash_edit_write="" post_edit_write="" post_agent=""
+  local post_bash="" post_bash_edit_write="" post_edit_write="" post_agent="" post_all=""
   case "$profile" in
     minimal)
       post_bash=$(hook_group "Bash" \
-        "error-pipeline.sh")
+        "error-pipeline.sh" \
+        "result-truncator.sh")
       post_edit_write=$(hook_group "Edit|Write" \
-        "secret-detector.sh")
+        "secret-detector.sh" \
+        "content-policy.sh")
       post_bash_edit_write=$(hook_group "Bash|Edit|Write" \
         "auto-checkpoint.sh")
       post_agent=$(hook_group "Agent" \
+        "completion-gate.sh" \
+        "state-heartbeat.sh" \
         "agent-checkpoint.sh")
       ;;
     standard)
       post_bash=$(hook_group "Bash" \
         "error-pipeline.sh" \
+        "error-learning.sh" \
         "result-truncator.sh")
       post_edit_write=$(hook_group "Edit|Write" \
         "secret-detector.sh" \
@@ -186,15 +227,18 @@ build_settings() {
         "claim-validator.sh" \
         "completion-gate.sh" \
         "clarification-interceptor.sh" \
+        "state-heartbeat.sh" \
         "agent-checkpoint.sh")
       ;;
     paranoid)
       post_bash=$(hook_group "Bash" \
         "error-pipeline.sh" \
+        "error-learning.sh" \
         "result-truncator.sh")
       post_edit_write=$(hook_group "Edit|Write" \
         "secret-detector.sh" \
         "content-policy.sh" \
+        "confidentiality-enforcer.sh" \
         "doc-sync-detector.sh" \
         "scope-creep-detector.sh" \
         "agnix-lint.sh")
@@ -214,11 +258,37 @@ build_settings() {
         "architecture-compliance.sh" \
         "tool-loop-detector.sh" \
         "skill-tracker.sh" \
+        "skill-feedback-tracker.sh" \
         "semgrep-scan.sh" \
         "guardrails-validator.sh" \
         "observability-trace.sh" \
+        "auto-repair-dispatcher.sh" \
+        "dequeue-notify.sh" \
+        "context-watchdog.sh" \
+        "state-heartbeat.sh" \
         "notify.sh" \
         "agent-checkpoint.sh")
+      post_all=$(hook_group "" \
+        "private-mode-metrics-gate.sh")
+      ;;
+  esac
+
+  # ── SubagentStart ──
+  local subagent_start=""
+  case "$profile" in
+    minimal|standard) ;;
+    paranoid)
+      subagent_start=$(hook_group "" \
+        "subagent-context-injector.sh")
+      ;;
+  esac
+
+  # ── PreCompact ──
+  local pre_compact=""
+  case "$profile" in
+    minimal|standard|paranoid)
+      pre_compact=$(hook_group "" \
+        "pre-compaction-flush.sh")
       ;;
   esac
 
@@ -228,11 +298,16 @@ build_settings() {
     minimal)
       stop_hooks=$(hook_group "" \
         "session-learning.sh" \
+        "session-hygiene.sh" \
         "session-cleanup.sh")
       ;;
     standard)
       stop_hooks=$(hook_group "" \
         "session-learning.sh" \
+        "session-changelog.sh" \
+        "session-hygiene.sh" \
+        "test-baseline-diff.sh" \
+        "git-context-capture.sh" \
         "session-cleanup.sh")
       ;;
     paranoid)
@@ -240,6 +315,10 @@ build_settings() {
         "session-learning.sh" \
         "kpi-trigger.sh" \
         "task-recorder.sh" \
+        "session-changelog.sh" \
+        "session-hygiene.sh" \
+        "test-baseline-diff.sh" \
+        "git-context-capture.sh" \
         "conversation-capture.sh" \
         "engram-auto-sync.sh" \
         "session-state-save.sh" \
@@ -256,6 +335,14 @@ build_settings() {
 HEADER
   echo "$session_start"
   echo '    ],'
+
+  # UserPromptSubmit (only emit if non-empty)
+  if [ -n "$user_prompt_submit" ]; then
+    echo '    "UserPromptSubmit": ['
+    printf '%s' "$user_prompt_submit"
+    echo ''
+    echo '    ],'
+  fi
 
   # PreToolUse
   echo '    "PreToolUse": ['
@@ -275,7 +362,7 @@ HEADER
   # PostToolUse
   echo '    "PostToolUse": ['
   local post_first=true
-  for group in "$post_bash" "$post_edit_write" "$post_bash_edit_write" "$post_agent"; do
+  for group in "$post_bash" "$post_edit_write" "$post_bash_edit_write" "$post_agent" "$post_all"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
@@ -286,6 +373,22 @@ HEADER
   done
   echo ''
   echo '    ],'
+
+  # SubagentStart (only emit if non-empty)
+  if [ -n "$subagent_start" ]; then
+    echo '    "SubagentStart": ['
+    printf '%s' "$subagent_start"
+    echo ''
+    echo '    ],'
+  fi
+
+  # PreCompact (only emit if non-empty)
+  if [ -n "$pre_compact" ]; then
+    echo '    "PreCompact": ['
+    printf '%s' "$pre_compact"
+    echo ''
+    echo '    ],'
+  fi
 
   echo '    "Stop": ['
   echo "$stop_hooks"
@@ -334,11 +437,17 @@ case "$PROFILE" in
     echo "  Overhead: ~100-200ms per tool call"
     ;;
   standard)
-    echo "  SessionStart: self-install, session-init, crash-recovery"
-    echo "  PreToolUse: rate-limiter, large-file-advisor, clarification-gate, blast-radius, error-pattern-detector"
-    echo "  PostToolUse: error-pipeline, result-truncator, secret-detector, content-policy, doc-sync-detector,"
-    echo "               auto-checkpoint, claim-validator, completion-gate, clarification-interceptor, agent-checkpoint"
-    echo "  Stop: session-learning, session-cleanup"
+    echo "  SessionStart: self-install, session-init, crash-recovery, infra-health, worktree-submodule-fix"
+    echo "  UserPromptSubmit: user-prompt-capture"
+    echo "  PreToolUse: rate-limiter, large-file-advisor, dispatch-gate, clarification-gate,"
+    echo "              blast-radius, adaptive-bypass, epic-task-detector, error-pattern-detector,"
+    echo "              release-guard"
+    echo "  PostToolUse: error-pipeline, error-learning, result-truncator, secret-detector,"
+    echo "               content-policy, doc-sync-detector, auto-checkpoint, claim-validator,"
+    echo "               completion-gate, clarification-interceptor, state-heartbeat, agent-checkpoint"
+    echo "  PreCompact: pre-compaction-flush"
+    echo "  Stop: session-learning, session-changelog, session-hygiene, test-baseline-diff,"
+    echo "        git-context-capture, session-cleanup"
     echo "  Safety mesh layers: 5/12 (layers 1,2,4,6,10)"
     echo "  Overhead: ~300-500ms per tool call"
     ;;
@@ -347,6 +456,8 @@ case "$PROFILE" in
     echo "  All governance hooks active"
     echo "  External security scanners enabled (aguara, semgrep, agnix)"
     echo "  Full observability (traces, KPIs, conversation capture)"
+    echo "  7 event types covered: SessionStart, UserPromptSubmit, PreToolUse, PostToolUse,"
+    echo "                         SubagentStart, PreCompact, Stop"
     echo "  Overhead: ~2-5s per tool call"
     ;;
 esac
