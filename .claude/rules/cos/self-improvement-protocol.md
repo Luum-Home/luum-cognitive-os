@@ -1,1 +1,0 @@
-<repo>/rules/self-improvement-protocol.md

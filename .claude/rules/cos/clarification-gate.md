@@ -1,1 +1,0 @@
-<repo>/rules/clarification-gate.md
