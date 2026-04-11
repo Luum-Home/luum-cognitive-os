@@ -109,3 +109,9 @@ tool-discovery-trigger.sh
 tool-loop-detector.sh
 user-prompt-capture.sh
 worktree-submodule-fix.sh
+agent-work-tracker.sh
+ecosystem-check.sh
+mlflow-sync.sh
+orchestrator-mode-detect.sh
+usage-health-check.sh
+wiring-check.sh

@@ -48,3 +48,4 @@ smart_truncator
 
 # Webhook trigger — not yet wired to a hook
 webhook_trigger
+return_contract_validator
