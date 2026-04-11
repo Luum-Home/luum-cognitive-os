@@ -1,1 +1,0 @@
-<repo>/rules/cost-prediction.md

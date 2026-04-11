@@ -1,1 +1,0 @@
-<repo>/rules/plan-first.md

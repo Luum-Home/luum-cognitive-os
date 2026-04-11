@@ -1,1 +1,0 @@
-<repo>/rules/license-policy.md

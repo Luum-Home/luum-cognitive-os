@@ -1,1 +1,0 @@
-<repo>/rules/queue-drain.md
