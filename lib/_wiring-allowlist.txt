@@ -1,0 +1,50 @@
+# Lib Wiring Allowlist
+# Lib modules listed here are intentionally not imported by any operational code
+# (hooks, scripts, .cognitive-os). They may be standalone utilities, future integrations,
+# or modules only used in tests.
+#
+# This is a RATCHET — this list can only shrink (as libs are wired), never grow.
+# New entries require explicit justification as a comment.
+#
+# Format: bare module name (without .py), one per line.
+# Lines starting with # are comments.
+#
+# Grandfathered at Phase 1 of Stabilization Mega Plan (2026-04-11)
+# As each lib is wired (imported by hooks/scripts), remove it from this list.
+
+# Dashboard / observability — not yet wired to a hook or script
+agent_dashboard
+
+# Batch runner — invoked via CLI / skills, not imported by hooks
+batch_runner
+
+# External service clients — optional integrations not yet wired
+cognee_client
+litellm_client
+
+# Advanced tool creation — future feature, not yet wired
+dynamic_tool_creator
+
+# Concurrency primitive — not yet wired to operational code
+file_lock_registry
+
+# Issue pipeline — future integration
+issue_pipeline
+
+# Jupyter integration — optional, not yet wired
+jupyter_client
+
+# Orchestrator mode — detection logic not yet wired to a hook
+orchestrator_mode
+
+# Phase timing — instrumentation not yet wired
+phase_timing
+
+# SDD resume — not yet wired to a hook
+sdd_resume
+
+# Smart truncator — not yet wired (result-truncator.sh uses its own logic)
+smart_truncator
+
+# Webhook trigger — not yet wired to a hook
+webhook_trigger
