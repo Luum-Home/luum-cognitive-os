@@ -115,7 +115,8 @@ build_settings() {
         "crash-recovery.sh" \
         "session-resume.sh" \
         "orchestrator-mode-detect.sh" \
-        "usage-health-check.sh")
+        "usage-health-check.sh" \
+        "ecosystem-check.sh")
       ;;
   esac
 
