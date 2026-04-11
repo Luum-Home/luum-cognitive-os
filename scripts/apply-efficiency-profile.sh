@@ -142,7 +142,8 @@ build_settings() {
         "agent-prelaunch.sh" \
         "error-pattern-detector.sh" \
         "predev-completeness-check.sh" \
-        "registration-check.sh")
+        "registration-check.sh" \
+        "agent-work-tracker.sh")
       ;;
   esac
 
@@ -176,7 +177,8 @@ build_settings() {
         "agent-checkpoint.sh" \
         "trust-score-validator.sh" \
         "audit-id-enricher.sh" \
-        "state-heartbeat.sh")
+        "state-heartbeat.sh" \
+        "agent-work-tracker.sh")
       ;;
   esac
 
