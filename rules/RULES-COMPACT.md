@@ -8,7 +8,7 @@
 Classify complexity BEFORE workflow [`adaptive-bypass`]. Trivial(<3 files): direct. Small(1-3): delegate if needed. Medium+: plan/SDD. Phase modifies bypass: reconstruction=speed, production=governance. 5 DoD levels [`definition-of-done`] [`phase-aware-agents`]. Readiness gate before `sdd-apply` on large+.
 
 ### 2. Quality Gates
-Prompts MUST have numbered `ACCEPTANCE CRITERIA:` with verifiable commands [`acceptance-criteria`]. Agents do minimum — fix: criteria, auto-verify, `/exhaustive-prompt` [`agent-quality`]. Clarification gate [`clarification-gate`]: >60 BLOCK, 30-60 WARN (hook-enforced). Reviews MUST produce findings [`adversarial-review`]. No sycophancy, no TODO/stubs in committed code. Broken windows [`broken-window-policy`]: fix what you find.
+Prompts MUST have numbered `ACCEPTANCE CRITERIA:` with verifiable commands [`acceptance-criteria`]. Agents do minimum — fix: criteria, auto-verify, `/exhaustive-prompt` [`agent-quality`]. Clarification gate [`clarification-gate`]: >60 BLOCK, 30-60 WARN (hook-enforced). Reviews MUST produce findings [`adversarial-review`]. No sycophancy, no TODO/stubs in committed code. Broken windows [`broken-window-policy`]: fix what you find. Orchestrator output budgets [`response-compression`]: tables>prose, numbers>adjectives, no "I'm going to...".
 
 ### 3. Verification
 Trust Report mandatory: score(0-100) = evidence(40%)+criteria(30%)+self-awareness(20%)+proportionality(10%) [`trust-score`]. 1+ uncertainty required. Confidence gate [`confidence-gate`]: <50 WARN(recon)/BLOCK(prod). Claim-validator hook enforces ground truth. Staged verification: SYNTAX→LINT→BUILD→UNIT→INTEGRATION→ADVERSARIAL, stop on first fail.
