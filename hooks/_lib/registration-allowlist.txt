@@ -1,0 +1,111 @@
+# Hook Registration Allowlist
+# Hooks listed here are intentionally not fully registered in all profiles.
+# This is a RATCHET — this list can only shrink (as hooks are wired), never grow.
+# New hooks added to this list require explicit justification as a comment.
+#
+# Format: one hook filename per line (basename only, e.g. my-hook.sh)
+# Lines starting with # are comments.
+#
+# Grandfathered at Phase 1 of Stabilization Mega Plan (2026-04-11)
+# These hooks exist on disk but are not fully registered in:
+#   - scripts/set-security-profile.sh
+#   - scripts/apply-efficiency-profile.sh
+#   - .claude/settings.local.json
+# As each hook is wired in Phase 3+, remove it from this list.
+
+adaptive-bypass.sh
+agent-bus-monitor.sh
+agent-checkpoint.sh
+agent-output-verifier.sh
+agent-prelaunch.sh
+agnix-lint.sh
+aguara-scan.sh
+architecture-compliance.sh
+assumption-tracker.sh
+audit-id-enricher.sh
+auto-repair-dispatcher.sh
+auto-rollback-trigger.sh
+auto-skill-generator.sh
+background-agent-reminder.sh
+blast-radius.sh
+claim-validator.sh
+clarification-gate.sh
+clarification-interceptor.sh
+code-review-on-commit.sh
+cognitive-os-health.sh
+concurrent-write-guard.sh
+confidence-gate.sh
+confidentiality-enforcer.sh
+consequence-evaluator.sh
+context-diet.sh
+context-watchdog.sh
+contextual-rule-loader.sh
+conversation-capture.sh
+dequeue-notify.sh
+doc-sync-detector.sh
+dry-run-preview.sh
+engram-auto-import.sh
+engram-auto-sync.sh
+epic-task-detector.sh
+error-learning.sh
+error-pattern-detector.sh
+error-pipeline.sh
+git-context-capture.sh
+guardrails-validator.sh
+idle-service-cleanup.sh
+infra-health.sh
+infra-intent-detector.sh
+inject-phase-context.sh
+jupyter-sandbox.sh
+kpi-trigger.sh
+large-file-advisor.sh
+mcp-scan.sh
+memu-sync.sh
+metrics-calibrator-trigger.sh
+metrics-rotation.sh
+notify.sh
+observability-trace.sh
+package-sync.sh
+paperclip-sync.sh
+parry-scan.sh
+pre-cleanup-snapshot.sh
+pre-commit-gate.sh
+pre-compaction-flush.sh
+predev-completeness-check.sh
+private-mode-gate.sh
+private-mode-metrics-gate.sh
+prompt-quality.sh
+rate-limit-protection.sh
+rate-limiter.sh
+registration-check.sh
+reinvention-check.sh
+release-guard.sh
+resource-check.sh
+result-truncator.sh
+scope-creep-detector.sh
+scope-proportionality.sh
+secret-detector.sh
+semgrep-scan.sh
+session-changelog.sh
+session-cleanup.sh
+session-hygiene.sh
+session-init.sh
+session-knowledge-extractor.sh
+session-learning.sh
+session-resume.sh
+session-state-save.sh
+singularity-check.sh
+skill-feedback-tracker.sh
+skill-tracker.sh
+state-heartbeat.sh
+subagent-context-injector.sh
+sync-to-repo.sh
+task-completed.sh
+task-created.sh
+task-recorder.sh
+teammate-idle.sh
+test-baseline-diff.sh
+tool-discovery-trigger.sh
+tool-loop-detector.sh
+user-prompt-capture.sh
+worktree-submodule-fix.sh
