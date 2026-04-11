@@ -381,10 +381,10 @@ resources:
       agent-communication: [valkey]
     services:
       langfuse:
-        mode: on_demand
+        mode: disabled             # Replaced by MLflow (pip install mlflow>=2.0). Run: mlflow server --backend-store-uri sqlite:///mlflow.db
         idle_timeout_minutes: 30
       nemo_guardrails:
-        mode: on_demand
+        mode: pip                  # MIGRATED: pip install nemoguardrails>=0.10. Use RailsConfig + LLMRails in-process.
         idle_timeout_minutes: 15
       paperclip:
         mode: on_demand
@@ -395,7 +395,7 @@ resources:
       litellm:
         mode: always
       opik:
-        mode: on_demand
+        mode: cloud                # MIGRATED: pip install opik>=1.0. Uses Comet cloud API by default — no local container needed.
         idle_timeout_minutes: 30
         config:
           api_url: "${OPIK_API_URL:-https://www.comet.com/opik/api}"
@@ -410,6 +410,15 @@ resources:
           graph_backend: "${COGNEE_GRAPH_BACKEND:-networkx}"
           vector_store: "${COGNEE_VECTOR_STORE:-lancedb}"
           mcp_enabled: true
+      mlflow:
+        mode: pip                  # Phase 1 migration target: replaces langfuse-web + 5 dep containers. pip install mlflow>=2.0
+        config:
+          backend_store_uri: "sqlite:///mlflow.db"
+          host: "0.0.0.0"
+          port: 5000
+      memu:
+        mode: pip                  # MIGRATED: pip install memu>=2.0. Run: python -m memu.server
+        idle_timeout_minutes: 15
       # --- Agent Testing & Evaluation (Python packages, not Docker services) ---
       deepeval:
         status: planned                # Python package, not a Docker service
@@ -434,7 +443,7 @@ resources:
         idle_timeout_minutes: 30
         profile: ui                    # docker compose --profile ui
       jupyter:
-        mode: on_demand
+        mode: pip                  # MIGRATED: pip install jupyter>=1.0 notebook>=7.0. Run: jupyter lab
         idle_timeout_minutes: 30
 
   compute:
