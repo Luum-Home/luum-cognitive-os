@@ -203,10 +203,10 @@ class HostMonitor:
     def get_pressure_level(self) -> str:
         """Classify current resource pressure.
 
-        LOW:      RAM <60%, CPU <60%, Disk <80%
-        MODERATE: RAM 60-80% OR CPU 60-80%
-        HIGH:     RAM 80-90% OR CPU 80-90%
-        CRITICAL: RAM >90% OR CPU >90% OR Disk >95%
+        LOW:      RAM <70%, CPU <70%, Disk <80%
+        MODERATE: RAM 70-85% OR CPU 70-85%
+        HIGH:     RAM 85-95% OR CPU 85-95%
+        CRITICAL: RAM >95% OR CPU >95% OR Disk >95%
         """
         mem = self.get_memory()
         cpu = self.get_cpu()
@@ -215,11 +215,11 @@ class HostMonitor:
         cpu_pct = cpu["usage_pct"]
         disk_pct = disk["usage_pct"]
 
-        if ram_pct > 90 or cpu_pct > 90 or disk_pct > 95:
+        if ram_pct > 95 or cpu_pct > 95 or disk_pct > 95:
             return "critical"
-        if ram_pct > 80 or cpu_pct > 80:
+        if ram_pct > 85 or cpu_pct > 85:
             return "high"
-        if ram_pct > 60 or cpu_pct > 60:
+        if ram_pct > 70 or cpu_pct > 70:
             return "moderate"
         return "low"
 
