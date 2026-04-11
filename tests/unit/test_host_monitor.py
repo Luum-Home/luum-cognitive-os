@@ -147,32 +147,32 @@ class TestPressureLevel:
 
     def test_pressure_moderate_ram(self):
         m = _monitor()
-        self._patch(m, ram=70.0, cpu=30.0)
+        self._patch(m, ram=75.0, cpu=30.0)
         assert m.get_pressure_level() == "moderate"
 
     def test_pressure_moderate_cpu(self):
         m = _monitor()
-        self._patch(m, ram=30.0, cpu=70.0)
+        self._patch(m, ram=30.0, cpu=75.0)
         assert m.get_pressure_level() == "moderate"
 
     def test_pressure_high_ram(self):
         m = _monitor()
-        self._patch(m, ram=85.0, cpu=30.0)
+        self._patch(m, ram=90.0, cpu=30.0)
         assert m.get_pressure_level() == "high"
 
     def test_pressure_high_cpu(self):
         m = _monitor()
-        self._patch(m, ram=30.0, cpu=85.0)
+        self._patch(m, ram=30.0, cpu=90.0)
         assert m.get_pressure_level() == "high"
 
     def test_pressure_critical_ram(self):
         m = _monitor()
-        self._patch(m, ram=95.0, cpu=30.0)
+        self._patch(m, ram=96.0, cpu=30.0)
         assert m.get_pressure_level() == "critical"
 
     def test_pressure_critical_cpu(self):
         m = _monitor()
-        self._patch(m, ram=30.0, cpu=95.0)
+        self._patch(m, ram=30.0, cpu=96.0)
         assert m.get_pressure_level() == "critical"
 
     def test_pressure_critical_disk(self):
@@ -180,15 +180,21 @@ class TestPressureLevel:
         self._patch(m, ram=50.0, cpu=50.0, disk=96.0)
         assert m.get_pressure_level() == "critical"
 
-    def test_pressure_boundary_exactly_60(self):
-        """60% is NOT moderate — must be >60 to trigger."""
+    def test_pressure_boundary_exactly_70(self):
+        """70% is NOT moderate — must be >70 to trigger."""
         m = _monitor()
-        self._patch(m, ram=60.0, cpu=60.0)
+        self._patch(m, ram=70.0, cpu=70.0)
         assert m.get_pressure_level() == "low"
 
-    def test_pressure_boundary_just_over_60(self):
+    def test_pressure_boundary_just_over_70(self):
         m = _monitor()
-        self._patch(m, ram=60.1, cpu=59.0)
+        self._patch(m, ram=70.1, cpu=59.0)
+        assert m.get_pressure_level() == "moderate"
+
+    def test_80_percent_is_moderate_not_high(self):
+        """80% RAM should be MODERATE, not HIGH (old threshold was too aggressive)."""
+        m = _monitor()
+        self._patch(m, ram=80.0, cpu=30.0)
         assert m.get_pressure_level() == "moderate"
 
 
