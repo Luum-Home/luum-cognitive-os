@@ -180,3 +180,150 @@ def estimate_cache_savings(
             f"{cached_reads} turns. ~{savings_pct}% input cost reduction."
         ),
     }
+
+
+# ---------------------------------------------------------------------------
+# PromptCacheManager — high-level class for ClaudeExecutor integration
+# ---------------------------------------------------------------------------
+
+# Sonnet pricing (per 1M tokens)
+_INPUT_PRICE_PER_M = 3.00
+_CACHE_WRITE_PRICE_PER_M = 3.75   # 1.25× input
+_CACHE_READ_PRICE_PER_M = 0.30    # 0.10× input
+_CHARS_PER_TOKEN = 4
+_TASK_MARKER = "## Task"
+
+
+class PromptCacheManager:
+    """Manages prompt cache breakpoints for the Anthropic API.
+
+    A helper intended for use with ClaudeExecutor when
+    ORCHESTRATOR_MODE=executor.  Marks stable sections (preamble, rules,
+    project context) with ``cache_control: {type: ephemeral}`` so that
+    repeated sub-agent launches read from the cache at 0.10× input cost.
+    """
+
+    CACHEABLE_SECTIONS = [
+        "system_prompt",
+        "rules_context",
+        "project_context",
+    ]
+
+    def add_cache_breakpoints(
+        self, messages: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
+        """Add ``cache_control`` to the first stable system/user message.
+
+        Strategy:
+        - First message with role ``"system"`` or the first ``"user"``
+          message whose content contains preamble text → marked cacheable.
+        - All other messages → untouched.
+
+        Returns a new list; original dicts are not mutated.
+        """
+        if not messages:
+            return []
+
+        result: List[Dict[str, Any]] = []
+        marked = False
+
+        for msg in messages:
+            role = msg.get("role", "")
+            if not marked and role in ("system", "user"):
+                msg = dict(msg)
+                content = msg.get("content", "")
+                if isinstance(content, str):
+                    cacheable, _ = self._split_at_marker(content)
+                    if cacheable:
+                        msg["cache_control"] = {"type": "ephemeral"}
+                        marked = True
+                elif isinstance(content, list):
+                    new_blocks: List[Any] = []
+                    for block in content:
+                        if (
+                            not marked
+                            and isinstance(block, dict)
+                            and block.get("type") == "text"
+                        ):
+                            block = dict(block)
+                            block["cache_control"] = {"type": "ephemeral"}
+                            marked = True
+                        new_blocks.append(block)
+                    msg["content"] = new_blocks
+            result.append(msg)
+
+        return result
+
+    def estimate_cache_savings(
+        self,
+        cached_tokens: int,
+        total_invocations: int,
+    ) -> Dict[str, float]:
+        """Estimate USD cost savings from caching across *total_invocations*.
+
+        First invocation pays the cache-write premium (1.25×).
+        Subsequent invocations pay the cache-read discount (0.10×).
+
+        Returns:
+            without_cache_usd, with_cache_usd, savings_pct,
+            cache_write_cost, cache_read_cost
+        """
+        if total_invocations < 1:
+            total_invocations = 1
+
+        without_cache = (
+            (cached_tokens / 1_000_000) * _INPUT_PRICE_PER_M * total_invocations
+        )
+        write_cost = (cached_tokens / 1_000_000) * _CACHE_WRITE_PRICE_PER_M
+        reads = max(0, total_invocations - 1)
+        read_cost = (cached_tokens / 1_000_000) * _CACHE_READ_PRICE_PER_M * reads
+        with_cache = write_cost + read_cost
+        savings_pct = (
+            (without_cache - with_cache) / without_cache * 100 if without_cache else 0.0
+        )
+
+        return {
+            "without_cache_usd": round(without_cache, 6),
+            "with_cache_usd": round(with_cache, 6),
+            "savings_pct": round(savings_pct, 1),
+            "cache_write_cost": round(write_cost, 6),
+            "cache_read_cost": round(read_cost, 6),
+        }
+
+    def split_prompt_sections(self, full_prompt: str) -> Dict[str, Any]:
+        """Split a full agent prompt at the ``## Task`` marker.
+
+        Returns:
+            cacheable        – text before the task marker
+            non_cacheable    – ``## Task`` section and everything after
+            cacheable_tokens – rough token count of the cacheable section
+        """
+        cacheable, non_cacheable = self._split_at_marker(full_prompt)
+        token_estimate = max(1, len(cacheable) // _CHARS_PER_TOKEN)
+        return {
+            "cacheable": cacheable,
+            "non_cacheable": non_cacheable,
+            "cacheable_tokens": token_estimate,
+        }
+
+    def format_cache_report(self, invocations: int, cached_tokens: int) -> str:
+        """One-line cache savings report for session summaries."""
+        est = self.estimate_cache_savings(cached_tokens, invocations)
+        saved = est["without_cache_usd"] - est["with_cache_usd"]
+        return (
+            "Cache: {inv} invocations × {tok} tokens → "
+            "{pct:.0f}% saved (${saved:.4f} of ${total:.4f})".format(
+                inv=invocations,
+                tok=cached_tokens,
+                pct=est["savings_pct"],
+                saved=saved,
+                total=est["without_cache_usd"],
+            )
+        )
+
+    @staticmethod
+    def _split_at_marker(text: str) -> "tuple[str, str]":
+        idx = text.find(_TASK_MARKER)
+        if idx == -1:
+            return text, ""
+        return text[:idx], text[idx:]

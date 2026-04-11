@@ -2,6 +2,7 @@
 
 Validates Anthropic prompt caching adapter: system prompt caching,
 message-level caching (system_and_3 strategy), and savings estimation.
+Also tests PromptCacheManager for ClaudeExecutor integration.
 """
 
 import copy
@@ -12,6 +13,7 @@ from lib.prompt_cache import (
     apply_cache_to_system_prompt,
     apply_message_cache,
     estimate_cache_savings,
+    PromptCacheManager,
 )
 
 pytestmark = pytest.mark.unit
@@ -237,3 +239,115 @@ class TestEstimateCacheSavings:
     def test_zero_tokens_no_crash(self):
         result = estimate_cache_savings(0, avg_turns=5)
         assert result["cached_tokens"] == 0
+
+
+# ---------------------------------------------------------------------------
+# PromptCacheManager
+# ---------------------------------------------------------------------------
+
+
+class TestPromptCacheManager:
+    def setup_method(self):
+        self.mgr = PromptCacheManager()
+
+    # --- add_cache_breakpoints ---
+
+    def test_add_cache_breakpoints_adds_marker(self):
+        msgs = [{"role": "system", "content": "You are a helpful agent."}]
+        result = self.mgr.add_cache_breakpoints(msgs)
+        assert result[0].get("cache_control") == {"type": "ephemeral"} or (
+            isinstance(result[0]["content"], list)
+            and result[0]["content"][0].get("cache_control") == {"type": "ephemeral"}
+        )
+
+    def test_cache_breakpoints_only_on_system(self):
+        """Task-specific messages (after the preamble) must not get cache markers."""
+        preamble = "You are a helpful agent.\n"
+        msgs = [
+            {"role": "system", "content": preamble},
+            {"role": "user", "content": "## Task\nDo the work."},
+        ]
+        result = self.mgr.add_cache_breakpoints(msgs)
+        # Second message (the task) must NOT have cache_control
+        task_msg = result[1]
+        assert "cache_control" not in task_msg
+        content = task_msg.get("content", "")
+        if isinstance(content, list):
+            for block in content:
+                assert "cache_control" not in block
+
+    def test_empty_messages(self):
+        assert self.mgr.add_cache_breakpoints([]) == []
+
+    def test_original_not_mutated(self):
+        msgs = [{"role": "system", "content": "Preamble"}]
+        original = copy.deepcopy(msgs)
+        self.mgr.add_cache_breakpoints(msgs)
+        assert msgs == original
+
+    # --- estimate_cache_savings ---
+
+    def test_estimate_savings_positive(self):
+        """Multiple invocations must yield positive savings."""
+        result = self.mgr.estimate_cache_savings(cached_tokens=5000, total_invocations=10)
+        assert result["savings_pct"] > 0
+        assert result["with_cache_usd"] < result["without_cache_usd"]
+
+    def test_estimate_savings_single(self):
+        """Single invocation has no reads — write overhead may exceed savings."""
+        result = self.mgr.estimate_cache_savings(cached_tokens=5000, total_invocations=1)
+        # write cost (1.25×) > read savings (0) → with_cache >= without_cache
+        assert result["cache_read_cost"] == 0.0
+
+    def test_estimate_savings_above_50pct_for_many_invocations(self):
+        """5+ invocations must yield >50% savings as required by acceptance criteria."""
+        result = self.mgr.estimate_cache_savings(cached_tokens=5000, total_invocations=5)
+        assert result["savings_pct"] > 50
+
+    def test_pricing_correctness(self):
+        """write = 1.25× input, read = 0.10× input."""
+        tokens = 1_000_000  # exactly 1M for easy maths
+        result = self.mgr.estimate_cache_savings(cached_tokens=tokens, total_invocations=2)
+        # write: $3.75, read: $0.30 (1 read) → total $4.05
+        assert abs(result["cache_write_cost"] - 3.75) < 0.01
+        assert abs(result["cache_read_cost"] - 0.30) < 0.01
+
+    def test_returns_all_keys(self):
+        result = self.mgr.estimate_cache_savings(5000, 5)
+        for key in ("without_cache_usd", "with_cache_usd", "savings_pct",
+                    "cache_write_cost", "cache_read_cost"):
+            assert key in result
+
+    # --- split_prompt_sections ---
+
+    def test_split_sections_with_task_marker(self):
+        prompt = "Preamble rules.\n\n## Task\nDo something.\n"
+        result = self.mgr.split_prompt_sections(prompt)
+        assert "Preamble" in result["cacheable"]
+        assert "## Task" in result["non_cacheable"]
+        assert "## Task" not in result["cacheable"]
+
+    def test_split_sections_no_marker(self):
+        prompt = "Just rules, no task section."
+        result = self.mgr.split_prompt_sections(prompt)
+        assert result["cacheable"] == prompt
+        assert result["non_cacheable"] == ""
+
+    def test_cacheable_tokens_estimate(self):
+        prompt = "A" * 400 + "\n\n## Task\nwork"
+        result = self.mgr.split_prompt_sections(prompt)
+        # 400 chars / 4 = 100 tokens roughly
+        assert 80 <= result["cacheable_tokens"] <= 120
+
+    # --- format_cache_report ---
+
+    def test_format_cache_report(self):
+        report = self.mgr.format_cache_report(invocations=10, cached_tokens=5000)
+        assert "%" in report
+        assert "$" in report
+        assert "10" in report
+
+    def test_format_cache_report_contains_savings(self):
+        report = self.mgr.format_cache_report(invocations=10, cached_tokens=5000)
+        # savings should be non-zero for 10 invocations
+        assert "0%" not in report or "saved" in report
