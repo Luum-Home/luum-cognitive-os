@@ -173,3 +173,122 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 2. **Level 2** (on demand): Full SKILL.md when skill is invoked or triggered (~1-3K tokens each)
 3. **Level 3** (rare): references/ files for detailed examples (~2-5K tokens each)
 4. **Max active**: 5 skills simultaneously. Unload after 5 min inactivity.
+- **add-hook** — Step-by-step guide for adding a new hook to the Cognitive OS
+- **add-mcp** — Step-by-step guide for integrating a new MCP server into the Cognitive OS
+- **add-rule** — Step-by-step guide for adding a new rule to the Cognitive OS
+- **add-skill** — Step-by-step guide for adding a new skill to the Cognitive OS
+- **agent-kpis** — Calculate and report Cognitive OS KPIs and OKRs. Shows agent health, efficiency, quality metrics. Use periodically or when evaluating agent performance.
+- **agent-stress-test** — No description
+- **analyze-improvements** — Analyze KPIs, error patterns, and skill metrics to identify improvement opportunities. Produces a ranked list of proposed changes with AUTO vs HUMAN-APPROVAL classification. Output only — makes NO file changes.
+- **apply-improvements** — Apply approved self-improvement changes from an analyze-improvements report. Applies AUTO changes immediately; presents HUMAN-APPROVAL changes for explicit confirmation before touching files.
+- **arena** — Run competitive benchmarks comparing Cognitive OS against other AI coding tools
+- **audit-website** — >
+- **auto-refine** — Analyze a failed agent's output, determine root cause, and re-launch with refined instructions. Implements the PITER Refine step.
+- **auto-rollback** — No description
+- **automaker-bridge** — Configure AutoMaker to use Cognitive OS as its execution brain
+- **batch-runner** — Execute multiple SDD changes sequentially with timing, reporting, and failure handling
+- **bump-version** — Calculate and write the new version to the VERSION file
+- **capability-snapshot** — No description
+- **caveman** — >
+- **caveman-es** — >
+- **code-review** — >
+- **cognee-integration** — >
+- **cognee-search** — Semantic knowledge graph search via Cognee — complements Engram FTS5 with relationship-aware retrieval
+- **cognitive-os-benchmark** — Run benchmark comparisons between Cognitive OS and BMAD METHOD v6
+- **cognitive-os-init** — META skill — initialize Cognitive OS for a project by chaining detect-stack → generate-config → scaffold-project.
+- **cognitive-os-status** — No description
+- **cognitive-os-test** — Run the Cognitive OS automated test suite (infra, behavior, quality)
+- **compat-test** — Smoke test suite verifying Cognitive OS works correctly with the current AI model. Checks skill triggers, rule compliance, phase awareness, memory, progressive loading, templates, budget awareness, and error handling.
+- **component-classifier** — Classify a new component (skill, hook, rule, lib) as CORE or PACKAGE. Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package.
+- **compose-prompt** — Compose a sub-agent prompt from reusable templates. Use when launching sub-agents to ensure consistent instructions.
+- **compress** — >
+- **confidence-check** — >
+- **contract-drift** — >
+- **conversation-memory** — Search and learn from past Cognitive OS sessions — the system's long-term memory
+- **coverage-enforcement** — Run Go test coverage for all services, enforce thresholds from cognitive-os.yaml, report per-package results
+- **deep-research** — >
+- **deepeval-integration** — >
+- **detect-stack** — Scan a project root and produce detected-stack.json with detected languages, frameworks, databases, auth, cache, messaging, and services.
+- **devbox-checkpoint** — Save and restore environment state snapshots using devbox
+- **doc-sync** — Synchronize documentation that became stale after code changes
+- **document-feature** — Generate or update structured feature documentation using 3-layer detection (SDD spec, git diff, CLI arg)
+- **dod-check** — Verify Definition of Done criteria for a task at a given complexity level
+- **error-analyzer** — Analyze accumulated errors from test/lint/build runs and propose skill improvements. Use when error patterns repeat.
+- **eval-repo** — >
+- **evaluate-plan** — Evaluate any existing plan file with a 0-50 scoring system. Proposes improvements if score is low.
+- **exhaustive-prompt** — Generate exhaustive agent prompts with scope enumeration and acceptance criteria
+- **generate-changelog** — Move [Unreleased] CHANGELOG entries into a versioned release section
+- **generate-config** — Read detected-stack.json and generate or update cognitive-os.yaml with detected infrastructure, quality gates, and stack-specific settings.
+- **gpu-sandbox** — Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data processing, financial calculations)
+- **harness-audit** — >
+- **impact-analysis** — No description
+- **install-recommended** — Detect project stack and recommend relevant skills to install
+- **issue-pipeline** — Fetch a GitHub issue, run the SDD pipeline, and open a pull request
+- **jupyter-execute** — Execute code in a Jupyter kernel sandbox for data analysis, Python snippets, and benchmarks
+- **memu-context** — Query memU proactive memory for relevant context before starting work
+- **metrics-calibrator** — Analyze KPI history and auto-calibrate thresholds for meaningful alerting
+- **model-optimizer** — Analyze skill execution metrics and recommend optimal model routing
+- **nemo-guardrails** — >
+- **opik-integration** — >
+- **optimize-skill** — Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras y refinando el prompt
+- **paperclip-dashboard** — View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent status, spend, org chart, notifications)
+- **pentest-self** — >
+- **persistent-agent** — >
+- **plan-bug** — Create a bug fix plan with root cause analysis and evaluation scoring. Use before fixing any non-trivial bug.
+- **plan-feature** — Create a feature implementation plan with evaluation scoring. Use before implementing any significant feature.
+- **planning-poker** — No description
+- **pr-review** — >
+- **private-mode** — Toggle private conversation mode. When active, nothing is saved to Engram, metrics, error logs, or git. Use for personal conversations, sensitive topics, or casual chat. Activate with /private, deactivate with /private off.
+- **promptfoo-integration** — >
+- **push-release** — Push the release commit and tags to the remote — always requires explicit confirmation
+- **queue-drain** — Periodic agent queue drain and health check
+- **ragas-integration** — >
+- **readiness-check** — Implementation readiness gate — validates all prerequisites before coding starts
+- **recall-search** — Search past Claude Code conversations using full-text search. Use when Engram mem_search doesn't find what you're looking for -- recall searches raw conversation transcripts.
+- **recommend-library** — Search package registries and rank by relevance, adoption, maintenance, and license compliance
+- **red-team** — No description
+- **release-os** — META — orchestrate the full Cognitive OS release by chaining the 5 atomic release skills
+- **repair-status** — Report on auto-repair system health and statistics
+- **repo-forensics** — >
+- **research-protocol** — >
+- **resolve-blockers** — >
+- **resource-governor** — Master resource optimizer — coordinates budget, infrastructure, agents, skills, and tokens system-wide
+- **resume-tasks** — Check for incomplete tasks from previous sessions and offer to resume them. Use when starting a new session or after a crash.
+- **retrospective** — Weekly analysis of all squads with trend analysis and auto-reconfiguration proposals
+- **reverse-engineer** — >
+- **run-tests** — Auto-detect project test framework and run tests with structured reporting
+- **sandbox-sample** — Classify, sample, sandbox-verify, then scale changes across large file sets
+- **scaffold-project** — Create the .claude/ directory structure, symlink rules, and generate project-specific rules, skills, and hooks using detected-stack.json.
+- **scout** — Quick pre-implementation codebase reconnaissance with 3 depth levels
+- **sdd-compound** — Extract learnings and compound knowledge after completing an SDD change. Run after sdd-archive to crystallize patterns, update skill routing, and improve future iterations.
+- **sdd-continue** — Enhanced SDD continuation with state inspection — determines optimal next action
+- **sdd-explore** — Explore and investigate ideas before committing to a change — deep feasibility analysis
+- **sdd-resume** — Resume an SDD pipeline from its last completed phase with timing and state visibility
+- **secret-audit** — Scan all services for env var usage, cross-reference with definitions, report gaps
+- **security-audit** — >
+- **self-improve** — META skill — orchestrates analyze-improvements → (human reviews) → apply-improvements. The closing piece of the self-improvement loop.
+- **self-review** — >
+- **semgrep-scan** — >
+- **session-backlog** — Inventory all pending work across plans, engram, tasks, todos, audits, and git. Classify by priority and produce a structured backlog document for future sessions.
+- **session-manager** — Manage concurrent Cognitive OS sessions — list, inspect, and clean up
+- **session-report-executive** — Generate an executive-level session report translating technical metrics into business language. For non-technical leaders who need to know what the Cognitive OS did during a session.
+- **session-wrapup** — End-of-session routine — run session-backlog inventory, save to engram, write session summary, and report what was accomplished and what comes next.
+- **simulation-arena** — No description
+- **singularity** — Codebase Singularity — autonomous MAPE-K control loop that monitors, classifies, and routes codebase events to the right pipeline
+- **skill-creator** — No description
+- **smoke-test** — Run end-to-end smoke tests that validate the real Cognitive OS system works
+- **sprint** — Lightweight agent-managed sprint tracking — plan, status, retro, course-correct
+- **squad-manager** — Evaluate squad performance and propose reconfigurations
+- **sre-agent** — SRE auto-repair agent. Monitors all project services, detects errors in logs, searches Engram for known fixes, and auto-repairs or proposes fixes. Invoke with /sre-agent or let it run autonomously via scheduled task.
+- **strands-evals-integration** — >
+- **systematic-debugging** — Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
+- **tag-release** — Create the release commit (VERSION + CHANGELOG) and annotated git tag
+- **test-driven-development** — Use when implementing any feature or bugfix, before writing implementation code
+- **tool-discovery** — Discover new open-source tools that could enhance Cognitive OS capabilities
+- **trust-audit** — Analyze trust scores across agents and tasks, identify patterns, recommend reviews
+- **validate-config** — Validate all Cognitive OS configuration files — agents, squads, skills, rules, hooks
+- **validate-release** — Pre-release readiness check — validates working tree, branch, changelog, and VERSION file
+- **verification-before-completion** — Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims
+- **vulnerability-scan** — Run LLM vulnerability probes using Garak against configured endpoints
+- **web-crawler** — >
+- **webhook-trigger** — GitHub webhook server that receives issue events and launches SDD pipelines automatically via ClaudeExecutor.
