@@ -92,6 +92,22 @@ RESULT:
 - The Trust Report follows immediately after `RESULT:`
 - Exception: add `EXTENDED_RESPONSE: true` on the first line of your response if the task genuinely requires verbose output (e.g., producing a document, generating a large spec)
 
+## Structured Return
+
+When your task is complete, end your response with this exact format (before the Trust Report):
+
+```
+RESULT:
+  status: completed|failed|partial
+  summary: [1-2 sentences of what was done]
+  files_created: [comma-separated paths, or none]
+  files_modified: [comma-separated paths, or none]
+  tests: [N passed, N failed, N xfail]
+  discoveries: [key findings, one per line prefixed with -]
+```
+
+This block MUST be the last substantive section before the Trust Report. The orchestrator parses it to extract a compact summary without reading the full transcript.
+
 ## Trust Report (MANDATORY — last thing before ending)
 
 **YOU MUST OUTPUT THIS** as the LAST section of your response. Without it, your work is recorded with trust_score=50 (unknown) which triggers WARN in the quality system.
