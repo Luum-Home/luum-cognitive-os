@@ -209,4 +209,29 @@ _singularity_suggestion
   fi
 ) &
 
+# ─── Work-queue pending items check ──────────────────────────────────────────
+# Warn if prior sessions left pending tasks in the work queue
+python3 - <<'WQEOF' 2>/dev/null || true
+import sys, os
+PROJECT_ROOT = os.environ.get('CLAUDE_PROJECT_DIR', os.getcwd())
+sys.path.insert(0, PROJECT_ROOT)
+try:
+    from lib.work_queue import WorkQueue
+    q = WorkQueue(queue_path=os.path.join(PROJECT_ROOT, '.cognitive-os', 'work-queue.json'))
+    pending = q.get_pending()
+    if pending:
+        import sys
+        print(f"\n=== WORK QUEUE: {len(pending)} pending task(s) from prior sessions ===", file=sys.stderr)
+        for t in pending[:5]:
+            desc = t.get('description', '')[:80]
+            added = t.get('added_at', '')[:19]
+            print(f"  [{added}] {desc}", file=sys.stderr)
+        if len(pending) > 5:
+            print(f"  ... and {len(pending) - 5} more. Check .cognitive-os/work-queue.json", file=sys.stderr)
+        print(f"=== Consider resuming or clearing stale tasks ===\n", file=sys.stderr)
+except Exception:
+    pass
+WQEOF
+
+
 exit 0

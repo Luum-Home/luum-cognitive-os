@@ -346,6 +346,12 @@ class LearningPipeline:
 
         Returns a formatted string suitable for injection into agent prompts.
         """
+        try:
+            from lib.format_converter import FormatConverter
+            _fc = FormatConverter
+        except ImportError:
+            _fc = None
+
         lines = ["LEARNING CONTEXT:"]
 
         # Recent errors from error-learning.jsonl
@@ -353,35 +359,71 @@ class LearningPipeline:
         if error_entries:
             recent = error_entries[-5:]
             lines.append("\nRecent errors:")
-            for e in recent:
-                svc = e.get("service", "unknown")
-                etype = e.get("type", e.get("error_type", "unknown"))
-                lines.append(f"  - [{etype}] {svc}: {e.get('message', '')[:80]}")
+            if _fc is not None:
+                records = [
+                    {
+                        "type": e.get("type", e.get("error_type", "unknown")),
+                        "service": e.get("service", "unknown"),
+                        "message": e.get("message", "")[:80],
+                    }
+                    for e in recent
+                ]
+                lines.append(_fc.auto_format(records))
+            else:
+                for e in recent:
+                    svc = e.get("service", "unknown")
+                    etype = e.get("type", e.get("error_type", "unknown"))
+                    lines.append(f"  - [{etype}] {svc}: {e.get('message', '')[:80]}")
 
         # Skill execution history (top underperforming)
         underperforming = self._archive.get_underperforming_skills(threshold=0.6)
         if underperforming:
             lines.append("\nUnderperforming skills (success rate < 60%):")
-            for skill in underperforming[:3]:
-                archive = self._archive.get_archive(skill)
-                lines.append(
-                    f"  - {skill}: {archive.success_rate:.0%} success "
-                    f"({archive.total_uses} uses)"
-                )
+            if _fc is not None:
+                records = []
+                for skill in underperforming[:3]:
+                    archive = self._archive.get_archive(skill)
+                    records.append({
+                        "skill": skill,
+                        "success_rate": f"{archive.success_rate:.0%}",
+                        "uses": archive.total_uses,
+                    })
+                lines.append(_fc.auto_format(records))
+            else:
+                for skill in underperforming[:3]:
+                    archive = self._archive.get_archive(skill)
+                    lines.append(
+                        f"  - {skill}: {archive.success_rate:.0%} success "
+                        f"({archive.total_uses} uses)"
+                    )
 
         # Active triggers
         triggers = self.check_learning_triggers()
         if triggers:
             lines.append("\nActive warnings:")
-            for t in triggers[:5]:
-                lines.append(f"  - [{t.severity.upper()}] {t.message}")
+            if _fc is not None:
+                records = [
+                    {"severity": t.severity.upper(), "message": t.message}
+                    for t in triggers[:5]
+                ]
+                lines.append(_fc.auto_format(records))
+            else:
+                for t in triggers[:5]:
+                    lines.append(f"  - [{t.severity.upper()}] {t.message}")
 
         # Disabled skills
         disabled = self._engine.get_disabled_skills()
         if disabled:
             lines.append("\nDisabled skills (require /optimize-skill):")
-            for d in disabled[:3]:
-                lines.append(f"  - {d['skill']}: {d['reason'][:60]}")
+            if _fc is not None:
+                records = [
+                    {"skill": d["skill"], "reason": d["reason"][:60]}
+                    for d in disabled[:3]
+                ]
+                lines.append(_fc.auto_format(records))
+            else:
+                for d in disabled[:3]:
+                    lines.append(f"  - {d['skill']}: {d['reason'][:60]}")
 
         if len(lines) == 1:
             return "LEARNING CONTEXT: No signals — system healthy."
