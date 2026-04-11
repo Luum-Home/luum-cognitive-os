@@ -92,18 +92,17 @@ class TestPreambleQuality:
     """Verify the preamble stays within quality bounds."""
 
     def test_preamble_under_token_budget(self, preamble_content):
-        """Preamble should be under 8000 characters to avoid context bloat.
+        """Preamble should be under 5000 characters to avoid context bloat.
 
         The preamble is injected into EVERY sub-agent launch. A bloated
-        preamble wastes tokens across all delegations. Budget raised from
-        6000 to 8000 after adding Context Injection (WS16) and
-        Incremental Progress Saves (WS13b) sections.
-        TODO(TO-7): Compress preamble back under 6000 via reference-based
-        loading instead of inline content.
+        preamble wastes tokens across all delegations. Compressed in TO-7
+        from 7176 chars (~1800 tokens) to under 5000 chars (~1250 tokens)
+        by removing duplicate sections, inlining hook-enforced protocols
+        as references, and shortening verbose escalation detail.
         """
         char_count = len(preamble_content)
-        assert char_count < 8000, (
-            f"Preamble is {char_count} chars, should be under 8000 to stay "
+        assert char_count < 5000, (
+            f"Preamble is {char_count} chars, should be under 5000 to stay "
             f"within token budget for sub-agent injection"
         )
 
