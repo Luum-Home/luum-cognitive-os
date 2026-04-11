@@ -1,0 +1,43 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.10
+    hooks:
+      - id: ruff
+        args: [--fix, --select, "F401,F841"]
+        files: ^(lib|scripts)/
+
+  - repo: https://github.com/jendrikseipp/vulture
+    rev: v2.16
+    hooks:
+      - id: vulture
+        args: [lib/, --min-confidence, "90"]
+
+  - repo: local
+    hooks:
+      - id: catalog-sync
+        name: Skill catalog sync
+        entry: python3 scripts/check-catalog-sync.py
+        language: python
+        pass_filenames: false
+        always_run: true
+
+      - id: hook-registration
+        name: Hook registration check
+        entry: python3 scripts/check-hook-registration.py
+        language: python
+        pass_filenames: false
+        always_run: true
+
+      - id: lib-wiring
+        name: Lib wiring check
+        entry: python3 scripts/check-lib-wiring.py
+        language: python
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: test-ratchet
+        name: Test count ratchet
+        entry: python3 scripts/check-test-ratchet.py
+        language: python
+        pass_filenames: false
+        stages: [pre-push]
