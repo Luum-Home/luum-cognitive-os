@@ -163,7 +163,8 @@ build_settings() {
         "blast-radius.sh" \
         "adaptive-bypass.sh" \
         "epic-task-detector.sh" \
-        "error-pattern-detector.sh")
+        "error-pattern-detector.sh" \
+        "agent-work-tracker.sh")
       pre_bash=$(hook_group "Bash" \
         "release-guard.sh")
       ;;
@@ -192,7 +193,8 @@ build_settings() {
         "infra-intent-detector.sh" \
         "pre-cleanup-snapshot.sh" \
         "reinvention-check.sh" \
-        "predev-completeness-check.sh")
+        "predev-completeness-check.sh" \
+        "agent-work-tracker.sh")
       pre_edit_write=$(hook_group "Edit|Write" \
         "concurrent-write-guard.sh")
       pre_bash=$(hook_group "Bash" \
@@ -216,7 +218,8 @@ build_settings() {
       post_agent=$(hook_group "Agent" \
         "completion-gate.sh" \
         "state-heartbeat.sh" \
-        "agent-checkpoint.sh")
+        "agent-checkpoint.sh" \
+        "agent-work-tracker.sh")
       ;;
     standard)
       post_bash=$(hook_group "Bash" \
@@ -235,7 +238,8 @@ build_settings() {
         "completion-gate.sh" \
         "clarification-interceptor.sh" \
         "state-heartbeat.sh" \
-        "agent-checkpoint.sh")
+        "agent-checkpoint.sh" \
+        "agent-work-tracker.sh")
       ;;
     paranoid)
       post_bash=$(hook_group "Bash" \
@@ -275,7 +279,8 @@ build_settings() {
         "context-watchdog.sh" \
         "state-heartbeat.sh" \
         "notify.sh" \
-        "agent-checkpoint.sh")
+        "agent-checkpoint.sh" \
+        "agent-work-tracker.sh")
       post_all=$(hook_group "" \
         "private-mode-metrics-gate.sh")
       ;;

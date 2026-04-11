@@ -48,26 +48,63 @@ if [ "$PATTERN_COUNT" -gt 0 ] 2>/dev/null; then
   echo "=== ERROR PATTERN WARNINGS ==="
   echo ""
 
-  echo "$PATTERNS" | jq -r '.[] |
-    "WARNING: KNOWN ERROR PATTERN: \(.service) has had \(.count) \(.type) errors in the last 24h.\n" +
-    (if (.contexts | length) > 0 then "  Common cause: " + (.contexts | join(", ")) + "\n" else "" end) +
-    "  Framework(s): " + (.frameworks | join(", ")) + "\n" +
-    "  Latest error: " + .latest_error + "\n" +
-    (if .type == "TEST_FAILURE" and (.contexts | any(contains("missing import"))) then
-      "  Recommended: check imports and run dependency resolution before tests.\n"
-    elif .type == "BUILD_ERROR" and (.contexts | any(contains("TypeScript"))) then
-      "  Recommended: fix type errors before building.\n"
-    elif .type == "LINT_ERROR" then
-      "  Recommended: run auto-fix (eslint --fix / go fmt) before manual fixes.\n"
-    elif .contexts | any(contains("connection refused")) then
-      "  Recommended: verify infrastructure is running (docker-compose ps).\n"
-    elif .contexts | any(contains("timeout")) then
-      "  Recommended: check service health before running tests.\n"
+  if [ "$PATTERN_COUNT" -eq 1 ]; then
+    # Single pattern: keep the original WARNING: prefix format
+    echo "$PATTERNS" | jq -r '.[] |
+      "WARNING: KNOWN ERROR PATTERN: \(.service) has had \(.count) \(.type) errors in the last 24h.\n" +
+      (if (.contexts | length) > 0 then "  Common cause: " + (.contexts | join(", ")) + "\n" else "" end) +
+      "  Framework(s): " + (.frameworks | join(", ")) + "\n" +
+      "  Latest error: " + .latest_error + "\n" +
+      (if .type == "TEST_FAILURE" and (.contexts | any(contains("missing import"))) then
+        "  Recommended: check imports and run dependency resolution before tests.\n"
+      elif .type == "BUILD_ERROR" and (.contexts | any(contains("TypeScript"))) then
+        "  Recommended: fix type errors before building.\n"
+      elif .type == "LINT_ERROR" then
+        "  Recommended: run auto-fix (eslint --fix / go fmt) before manual fixes.\n"
+      elif .contexts | any(contains("connection refused")) then
+        "  Recommended: verify infrastructure is running (docker-compose ps).\n"
+      elif .contexts | any(contains("timeout")) then
+        "  Recommended: check service health before running tests.\n"
+      else
+        "  Recommended: review error pattern before proceeding.\n"
+      end)
+    ' 2>/dev/null
+  else
+    # Multiple patterns: render as compact Markdown table via FormatConverter
+    COMPACT=$(echo "$PATTERNS" | python3 -c "
+import sys, json
+try:
+    from lib.format_converter import FormatConverter
+except ImportError:
+    import os, sys
+    sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
+    from lib.format_converter import FormatConverter
+
+patterns = json.load(sys.stdin)
+records = []
+for p in patterns:
+    records.append({
+        'service': p.get('service', ''),
+        'type': p.get('type', ''),
+        'count': p.get('count', 0),
+        'cause': ', '.join(p.get('contexts', []))[:50] or '—',
+        'framework': ', '.join(p.get('frameworks', []))[:30] or '—',
+    })
+print(FormatConverter.to_markdown_table(records))
+" 2>/dev/null)
+
+    if [ -n "$COMPACT" ]; then
+      echo "WARNING: KNOWN ERROR PATTERNS ($PATTERN_COUNT patterns in last 24h):"
+      echo ""
+      echo "$COMPACT"
     else
-      "  Recommended: review error pattern before proceeding.\n"
-    end) +
-    "---"
-  ' 2>/dev/null
+      # Fallback to original format if Python call fails
+      echo "$PATTERNS" | jq -r '.[] |
+        "WARNING: KNOWN ERROR PATTERN: \(.service) has had \(.count) \(.type) errors in the last 24h." +
+        (if (.contexts | length) > 0 then " Cause: " + (.contexts | join(", ")) else "" end)
+      ' 2>/dev/null
+    fi
+  fi
 
   echo ""
   echo "Run /error-analyzer for detailed analysis and skill improvement proposals."
