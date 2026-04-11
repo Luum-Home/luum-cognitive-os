@@ -21,40 +21,54 @@ The `infra-health.sh` SessionStart hook auto-detects Docker availability and rep
 
 `INFRA_AUTO_START` defaults to `false` (safe default). Auto-starting services consumes resources and may not be desired in all environments.
 
+## Pip-Installed Services (not checked as Docker containers)
+
+The following services have been migrated to pip packages. The infra-health hook does NOT
+check for their Docker containers — they run as Python libraries or local processes.
+
+| Service | pip package | How to run |
+|---------|-------------|------------|
+| langfuse-web + deps | `pip install mlflow>=2.0` | `mlflow server --backend-store-uri sqlite:///mlflow.db` |
+| litellm | `pip install litellm>=1.0` | `litellm --config infra/litellm/config.yaml` or Python API |
+| nemo-guardrails | `pip install nemoguardrails>=0.10` | `from nemoguardrails import RailsConfig, LLMRails` |
+| memu | `pip install memu>=2.0` | `python -m memu.server` |
+| jupyter | `pip install jupyter>=1.0 notebook>=7.0` | `jupyter lab` |
+| opik | `pip install opik>=1.0` | Uses Comet cloud API — no local server needed |
+
 ## Services and Profiles
 
 Services are defined in `docker-compose.cognitive-os.yml`. Some run by default, others require specific Docker Compose profiles.
 
 ### Default Profile (no profile needed)
 
-| Service | Purpose | When Needed |
-|---------|---------|-------------|
-| langfuse-web | LLM observability and tracing | Metrics, agent KPIs, observability |
-| langfuse-pg | Langfuse PostgreSQL database | Required by langfuse-web |
-| langfuse-valkey | Langfuse cache | Required by langfuse-web |
-| langfuse-clickhouse | Langfuse analytics | Required by langfuse-web |
-| langfuse-seaweedfs | Langfuse object storage | Required by langfuse-web |
-| langfuse-worker | Langfuse background worker | Required by langfuse-web |
-| litellm | LLM proxy and model routing | Model routing, cost tracking |
-| nemo-guardrails | NeMo Guardrails for content safety | PII detection, content filtering |
-| paperclip | Governance and compliance dashboard | Squad reports, governance reviews |
-| paperclip-pg | Paperclip PostgreSQL database | Required by paperclip |
-| jupyter | Jupyter notebook environment | Data analysis, experimentation |
+| Service | Purpose | When Needed | Status |
+|---------|---------|-------------|--------|
+| langfuse-web | LLM observability and tracing | Metrics, agent KPIs | **MIGRATED TO PIP** (mlflow) |
+| langfuse-pg | Langfuse PostgreSQL database | Required by langfuse-web | **MIGRATED TO PIP** |
+| langfuse-valkey | Langfuse cache | Required by langfuse-web | **MIGRATED TO PIP** |
+| langfuse-clickhouse | Langfuse analytics | Required by langfuse-web | **MIGRATED TO PIP** |
+| langfuse-seaweedfs | Langfuse object storage | Required by langfuse-web | **MIGRATED TO PIP** |
+| langfuse-worker | Langfuse background worker | Required by langfuse-web | **MIGRATED TO PIP** |
+| litellm | LLM proxy and model routing | Model routing, cost tracking | **MIGRATED TO PIP** |
+| nemo-guardrails | NeMo Guardrails for content safety | PII detection, content filtering | **MIGRATED TO PIP** |
+| paperclip | Governance and compliance dashboard | Squad reports, governance reviews | Docker (no pip equiv) |
+| paperclip-pg | Paperclip PostgreSQL database | Required by paperclip | Docker (no pip equiv) |
+| jupyter | Jupyter notebook environment | Data analysis, experimentation | **MIGRATED TO PIP** |
 
 ### Profile: `memory`
 
-| Service | Purpose | When Needed |
-|---------|---------|-------------|
-| memu | Memory management service | Cross-session memory sync |
-| cognee | Knowledge graph and RAG engine | Advanced memory, knowledge retrieval |
+| Service | Purpose | When Needed | Status |
+|---------|---------|-------------|--------|
+| memu | Memory management service | Cross-session memory sync | **MIGRATED TO PIP** |
+| cognee | Knowledge graph and RAG engine | Advanced memory, knowledge retrieval | Docker (pip API available) |
 
 ### Profile: `observability`
 
-| Service | Purpose | When Needed |
-|---------|---------|-------------|
-| opik-backend | Opik tracing backend | LLM evaluation and tracing |
-| opik-mysql | Opik MySQL database | Required by opik-backend |
-| opik-frontend | Opik web UI | Trace visualization |
+| Service | Purpose | When Needed | Status |
+|---------|---------|-------------|--------|
+| opik-backend | Opik tracing backend | LLM evaluation and tracing | **MIGRATED TO PIP** (cloud) |
+| opik-mysql | Opik MySQL database | Required by opik-backend | **MIGRATED TO PIP** |
+| opik-frontend | Opik web UI | Trace visualization | **MIGRATED TO PIP** (Comet UI) |
 
 ### Profile: `ui`
 
