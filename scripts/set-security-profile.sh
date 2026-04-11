@@ -105,7 +105,8 @@ build_settings() {
         "crash-recovery.sh" \
         "infra-health.sh" \
         "worktree-submodule-fix.sh" \
-        "usage-health-check.sh")
+        "usage-health-check.sh" \
+        "orchestrator-mode-detect.sh")
       ;;
     paranoid)
       session_start=$(hook_group "" \
@@ -121,7 +122,8 @@ build_settings() {
         "metrics-rotation.sh" \
         "engram-auto-import.sh" \
         "agent-bus-monitor.sh" \
-        "singularity-check.sh")
+        "singularity-check.sh" \
+        "orchestrator-mode-detect.sh")
       ;;
   esac
 
@@ -222,7 +224,8 @@ build_settings() {
       post_edit_write=$(hook_group "Edit|Write" \
         "secret-detector.sh" \
         "content-policy.sh" \
-        "doc-sync-detector.sh")
+        "doc-sync-detector.sh" \
+        "wiring-check.sh")
       post_bash_edit_write=$(hook_group "Bash|Edit|Write" \
         "auto-checkpoint.sh")
       post_agent=$(hook_group "Agent" \
@@ -243,7 +246,8 @@ build_settings() {
         "confidentiality-enforcer.sh" \
         "doc-sync-detector.sh" \
         "scope-creep-detector.sh" \
-        "agnix-lint.sh")
+        "agnix-lint.sh" \
+        "wiring-check.sh")
       post_bash_edit_write=$(hook_group "Bash|Edit|Write" \
         "auto-checkpoint.sh")
       post_agent=$(hook_group "Agent" \
@@ -445,8 +449,9 @@ case "$PROFILE" in
     echo "              blast-radius, adaptive-bypass, epic-task-detector, error-pattern-detector,"
     echo "              release-guard"
     echo "  PostToolUse: error-pipeline, error-learning, result-truncator, secret-detector,"
-    echo "               content-policy, doc-sync-detector, auto-checkpoint, claim-validator,"
-    echo "               completion-gate, clarification-interceptor, state-heartbeat, agent-checkpoint"
+    echo "               content-policy, doc-sync-detector, wiring-check, auto-checkpoint,"
+    echo "               claim-validator, completion-gate, clarification-interceptor,"
+    echo "               state-heartbeat, agent-checkpoint"
     echo "  PreCompact: pre-compaction-flush"
     echo "  Stop: session-learning, session-changelog, session-hygiene, test-baseline-diff,"
     echo "        git-context-capture, session-cleanup"
