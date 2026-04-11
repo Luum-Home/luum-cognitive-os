@@ -113,7 +113,9 @@ build_settings() {
         "self-install.sh" \
         "session-init.sh" \
         "crash-recovery.sh" \
-        "session-resume.sh")
+        "session-resume.sh" \
+        "orchestrator-mode-detect.sh" \
+        "usage-health-check.sh")
       ;;
   esac
 
@@ -190,7 +192,8 @@ build_settings() {
         "git-context-capture.sh" \
         "session-changelog.sh" \
         "test-baseline-diff.sh" \
-        "session-hygiene.sh")
+        "session-hygiene.sh" \
+        "mlflow-sync.sh")
       ;;
   esac
 
