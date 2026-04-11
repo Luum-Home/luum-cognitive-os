@@ -433,10 +433,30 @@ class CostDashboard:
         ]
 
         total_cost = data["total_usd"] or 1.0
+        model_rows = []
         for model, cost in sorted(model_bd.items(), key=lambda x: -x[1]):
             pct = cost / total_cost * 100
             calls = model_calls.get(model, 0)
-            lines.append(f"  {model}: ${cost:.2f} ({pct:.0f}%) -- {calls} calls")
+            model_rows.append({
+                "model": model,
+                "cost": f"${cost:.2f}",
+                "pct": f"{pct:.0f}%",
+                "calls": calls,
+            })
+
+        try:
+            from lib.format_converter import FormatConverter
+            if model_rows:
+                lines.append(
+                    FormatConverter.to_markdown_table(
+                        model_rows, columns=["model", "cost", "pct", "calls"]
+                    )
+                )
+        except ImportError:
+            for row in model_rows:
+                lines.append(
+                    f"  {row['model']}: {row['cost']} ({row['pct']}) -- {row['calls']} calls"
+                )
 
         lines.append("")
         lines.append("Efficiency:")
