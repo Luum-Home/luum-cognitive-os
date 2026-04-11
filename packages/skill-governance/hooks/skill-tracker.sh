@@ -7,6 +7,11 @@
 
 set -euo pipefail
 
+# Record wall-clock start time in milliseconds immediately on entry
+_SKILL_TRACKER_START_MS=$(python3 -c "import time; print(int(time.time()*1000))" 2>/dev/null \
+    || date +%s%3N 2>/dev/null \
+    || echo "0")
+
 _HOOK_NAME="skill-tracker"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
@@ -70,8 +75,29 @@ METRICS_DIR="$(resolve_session_dir)"
 METRICS_FILE="$METRICS_DIR/skill-metrics.jsonl"
 
 MODEL=$(echo "$INPUT" | jq -r 'try (.tool_response.model // .tool_response.usage.model // "unknown") catch "unknown"' 2>/dev/null || echo "unknown")
-TOTAL_TOKENS=$(echo "$INPUT" | jq -r 'try (.tool_response.total_tokens // .tool_response.usage.total_tokens // 0) catch 0' 2>/dev/null || echo "0")
-DURATION_MS=$(echo "$INPUT" | jq -r 'try (.tool_response.duration_ms // .tool_response.durationMs // 0) catch 0' 2>/dev/null || echo "0")
+
+# --- Token estimation ---
+# Claude Code's PostToolUse hook input does NOT expose token counts for the Agent tool.
+# We estimate from output length: chars / 4 is a standard approximation.
+TOOL_RESPONSE_TEXT=$(echo "$INPUT" | jq -r 'try (.tool_response // "") catch ""' 2>/dev/null || echo "")
+TOOL_RESPONSE_LEN=${#TOOL_RESPONSE_TEXT}
+TOTAL_TOKENS=$(( TOOL_RESPONSE_LEN / 4 ))
+# Ensure minimum of 1 so entries are distinguishable from "not measured"
+[ "$TOTAL_TOKENS" -lt 1 ] && TOTAL_TOKENS=1
+
+# --- Duration tracking ---
+# Compute wall-clock time since hook entry (captures agent execution time reflected
+# in hook scheduling delay, not the full agent run, but gives a non-zero signal).
+_SKILL_TRACKER_END_MS=$(python3 -c "import time; print(int(time.time()*1000))" 2>/dev/null \
+    || date +%s%3N 2>/dev/null \
+    || echo "0")
+DURATION_MS=0
+if [ "$_SKILL_TRACKER_START_MS" != "0" ] && [ "$_SKILL_TRACKER_END_MS" != "0" ]; then
+    DURATION_MS=$(( _SKILL_TRACKER_END_MS - _SKILL_TRACKER_START_MS ))
+fi
+# Ensure duration is non-negative
+[ "$DURATION_MS" -lt 0 ] && DURATION_MS=0
+
 if [ "$FAILED" = "true" ]; then SUCCESS="false"; else SUCCESS="true"; fi
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
