@@ -8,19 +8,19 @@
 Classify complexity BEFORE workflow [`adaptive-bypass`]. Trivial(<3 files): direct. Small(1-3): delegate if needed. Medium+: plan/SDD. Phase modifies bypass: reconstruction=speed, production=governance. 5 DoD levels [`definition-of-done`] [`phase-aware-agents`]. Readiness gate before `sdd-apply` on large+.
 
 ### 2. Quality Gates
-Prompts MUST have numbered `ACCEPTANCE CRITERIA:` with verifiable commands [`acceptance-criteria`]. Agents do minimum — fix: criteria, auto-verify, `/exhaustive-prompt` [`agent-quality`]. Clarification gate [`clarification-gate`]: >60 BLOCK, 30-60 WARN (hook-enforced). Reviews MUST produce findings [`adversarial-review`]. No sycophancy, no TODO/stubs in committed code. Broken windows [`broken-window-policy`]: fix what you find. Orchestrator output budgets [`response-compression`]: tables>prose, numbers>adjectives, no "I'm going to...".
+Prompts MUST have `ACCEPTANCE CRITERIA:` with commands [`acceptance-criteria`]. Agents do minimum — fix: criteria, auto-verify, `/exhaustive-prompt` [`agent-quality`]. Reviews MUST produce findings [`adversarial-review`]. No sycophancy, no TODO/stubs. Broken windows [`broken-window-policy`]: fix what you find.
 
 ### 3. Verification
-Trust Report mandatory: score(0-100) = evidence(40%)+criteria(30%)+self-awareness(20%)+proportionality(10%) [`trust-score`]. 1+ uncertainty required. Confidence gate [`confidence-gate`]: <50 WARN(recon)/BLOCK(prod). Claim-validator hook enforces ground truth. Staged verification: SYNTAX→LINT→BUILD→UNIT→INTEGRATION→ADVERSARIAL, stop on first fail.
+Trust Report mandatory: score(0-100) = evidence(40%)+criteria(30%)+self-awareness(20%)+proportionality(10%) [`trust-score`]. 1+ uncertainty required. Staged verification: SYNTAX→LINT→BUILD→UNIT→INTEGRATION→ADVERSARIAL, stop on first fail.
 
 ### 4. Cost Governance
 5 principles [`token-economy`]: transparency, worthiness, decomposition, memory-first, optimize-by-default. >$1 tasks decompose to <$0.50 [`decomposition`]. Routing [`model-routing`]: opus=propose/design/debug, sonnet=impl/verify, haiku=archive. Model directive [`model-directive`]: dispatch-gate emits MODEL_DIRECTIVE — MUST follow; MODEL_DISABLED blocks. Queue drain [`queue-drain`]+advisor [`queue-advisor`]: drain on completion, dynamic reorder. Budget [`resource-governance`]: >80%=sonnet, >95%=haiku, >100%=BLOCK. Rate limits hook: 30 tools/min, 20 agents/hr. Non-blocking retry [`non-blocking-retry`]: CronCreate.
 
 ### 5. Impact Assessment
-Blast radius [`blast-radius`]: LOW(1-5), MEDIUM(6-20), HIGH(21-50), CRITICAL(50+/infra/security) (hook-enforced). Proportionality [`scope-proportionality`]: fixes must not delete(BLOCK prod), >20 files=WARN. Impact analysis [`impact-analysis`] MUST run before large/critical sdd-apply. >100 files MUST sample [`sandbox-sampling`]. Scout [`scout-pattern`]: recon before medium+ implementation.
+Impact analysis [`impact-analysis`] MUST run before large/critical sdd-apply. >100 files MUST sample [`sandbox-sampling`]. Scout [`scout-pattern`]: recon before medium+ implementation.
 
 ### 6. Self-Healing
-Errors to `error-learning.jsonl` [`error-learning`], deduped 60s; 3+ same=warning. Auto-repair hook enforces capture→classify→fix→verify. Auto-rollback [`auto-rollback`] on 3x verify fail. Crash-recovery: 5min checkpoints (hook-enforced).
+Errors to `error-learning.jsonl` [`error-learning`], deduped 60s; 3+ same=warning.
 
 ### 7. Agent Governance
 Audit trail [`agent-identity`], trust 0-3, monotonic attenuation. Least-privilege [`agent-security`]: TTL 120min; blocked: `.env`,`*.key`,secrets. KPIs [`agent-kpis`]: quality>90%, efficiency -20% MoM. Overrides [`agent-customization`]. Sidecars [`agent-sidecars`]. Bus [`agent-communication`] Valkey(OFF).
