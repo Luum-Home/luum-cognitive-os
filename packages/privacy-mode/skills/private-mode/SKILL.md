@@ -20,7 +20,7 @@ Toggle private conversation mode on or off.
    - Do NOT track errors in error-learning.jsonl
    - Do NOT update active-tasks.json
    - Do NOT follow skill-adaptation, model-routing, or agent-kpis rules
-   - Do NOT follow constitutional gates (fintech rules don't apply to chat)
+   - Do NOT follow constitutional gates (domain-specific rules don't apply to chat)
    - Conversation is casual, relaxed, no orchestrator role
    - Respond naturally as a friend, not as an agent
 4. Rules that STILL apply even in private mode:

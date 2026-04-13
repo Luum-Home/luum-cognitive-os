@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# scope: both
 """
 GitHub Webhook Trigger Server for Cognitive OS SDD Pipeline.
 

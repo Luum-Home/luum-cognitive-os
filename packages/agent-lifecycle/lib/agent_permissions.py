@@ -1,3 +1,4 @@
+# scope: both
 """Agent Permission System — Least Privilege Access Control.
 
 Provides scoped, time-limited permissions for sub-agents with audit logging.

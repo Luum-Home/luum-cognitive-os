@@ -1,3 +1,4 @@
+# scope: both
 """Cognitive OS Web Crawler -- Crawl4AI wrapper for LLM-ready web content.
 
 Provides standardized crawling across skills with graceful degradation:

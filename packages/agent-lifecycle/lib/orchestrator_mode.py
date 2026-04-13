@@ -1,3 +1,4 @@
+# scope: both
 """Orchestrator Mode -- subprocess-based delegation via ClaudeExecutor.
 
 When ``ORCHESTRATOR_MODE=executor`` the orchestrator delegates work to

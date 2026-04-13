@@ -1,3 +1,4 @@
+# scope: both
 """Memory decay for Engram observations.
 
 Calculates time-based relevance scores so older memories naturally

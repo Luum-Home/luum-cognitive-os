@@ -1,3 +1,4 @@
+# scope: both
 """Cognitive OS Agent Dashboard -- Terminal-based real-time agent monitor.
 
 Subscribes to all agent bus events and displays active agents, their phases,
