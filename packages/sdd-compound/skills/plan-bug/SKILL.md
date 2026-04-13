@@ -19,7 +19,12 @@ Create a structured bug fix plan with root cause analysis, then self-evaluate it
 - Check error logs, stack traces, or reproduction steps provided
 - Check `.cognitive-os/plans/bugs/` for similar past bug fixes
 
-### 2. Root Cause Analysis
+### 2. Load Architecture Config
+
+- Read `cognitive-os.yaml -> project.architecture` for frameworks, layers, and evaluation criteria
+- These drive the Architecture Alignment scoring in Step 4 (no hardcoded framework names)
+
+### 3. Root Cause Analysis
 
 - Read relevant source files where the bug manifests
 - Trace the code path from entry point to failure
@@ -27,7 +32,7 @@ Create a structured bug fix plan with root cause analysis, then self-evaluate it
 - Check if the bug exists in other similar code paths
 - Search Engram for related past fixes: `mem_search(query: "bugfix {service} {symptoms}")`
 
-### 3. Write the Plan
+### 4. Write the Plan
 
 Save to `.cognitive-os/plans/bugs/{YYYY-MM-DD}-{slug}.md` with this format:
 
@@ -77,7 +82,7 @@ severity: critical|high|medium|low
 {How to revert safely}
 ```
 
-### 4. Self-Evaluate (0-50)
+### 5. Self-Evaluate (0-50)
 
 Score the plan on 5 criteria (0-10 each):
 
@@ -86,18 +91,18 @@ Score the plan on 5 criteria (0-10 each):
 | Completeness | X/10 | Root cause identified? All affected paths checked? |
 | Feasibility | X/10 | Fix is straightforward and testable? |
 | Risk Assessment | X/10 | Side effects considered? Rollback plan clear? |
-| Architecture Alignment | X/10 | Fix follows existing patterns, no architecture violations? |
+| Architecture Alignment | X/10 | Fix follows architecture criteria from `cognitive-os.yaml -> project.architecture.evaluation_criteria`? No violations of configured frameworks/layers? |
 | Test Coverage Plan | X/10 | Bug reproduction test + regression tests defined? |
 
 **Total: X/50**
 
-### 5. Auto-Improve if Needed
+### 6. Auto-Improve if Needed
 
 - If score < 25: identify weak areas, improve the plan, re-evaluate
 - Focus on root cause depth and test coverage
 - Update the plan file with improvements and new score
 
-### 6. Present to User
+### 7. Present to User
 
 - Show root cause analysis and fix approach
 - Show score and any concerns
