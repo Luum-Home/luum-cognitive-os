@@ -12,6 +12,15 @@ Score an existing plan on 5 criteria (0-50 total) and propose improvements if ne
 
 ## Procedure
 
+### 0. Load Architecture Config
+
+Read `cognitive-os.yaml -> project.architecture` to get:
+- `frameworks` — expected framework per language (used in Architecture Alignment scoring)
+- `layers` — expected layer structure (domain, application, infrastructure, dtos)
+- `evaluation_criteria` — list of architecture criteria to evaluate against
+
+If `cognitive-os.yaml` is missing or `project.architecture` is not set, use generic clean architecture principles as fallback.
+
 ### 1. Locate the Plan
 
 - Accept a plan file path as argument, or
@@ -40,9 +49,12 @@ Score an existing plan on 5 criteria (0-50 total) and propose improvements if ne
 - For financial operations: idempotency and audit trail?
 
 #### Architecture Alignment (0-10)
-- Follows clean architecture layers?
-- Uses correct framework (ginext for Go, NestJS patterns for TS)?
-- DTOs in the right layer (application/dtos/)?
+
+Read criteria from `cognitive-os.yaml -> project.architecture.evaluation_criteria`. If config is missing, fall back to generic clean architecture principles. Evaluate each criterion from the config list. The default criteria check:
+
+- Follows clean architecture layers from `project.architecture.layers`?
+- Uses correct framework per language from `project.architecture.frameworks`?
+- DTOs in the right layer (from `project.architecture.layers.dtos`)?
 - Respects constitutional gates?
 - Dependencies flow inward (infra -> app -> domain)?
 

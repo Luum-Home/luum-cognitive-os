@@ -2,8 +2,8 @@
 name: coverage-enforcement
 version: 1.0.0
 command: /coverage-report
-description: Run Go test coverage for all services, enforce thresholds from cognitive-os.yaml, report per-package results
-last-updated: 2026-03-22
+description: Run Go test coverage for all services, enforce thresholds from cognitive-os.yaml, report per-package results. Service root read from project.architecture.services_root.go config.
+last-updated: 2026-04-13
 auto-generated: false
 tech: go
 audience: project
@@ -21,7 +21,7 @@ Run Go test coverage across all backend-go services, enforce minimum thresholds 
 /coverage-report [service]
 ```
 
-- No arguments: run coverage on ALL Go services in `backend-go/apps/`
+- No arguments: run coverage on ALL Go services discovered from config
 - With service name: run coverage only for that service (e.g., `/coverage-report wallet`)
 
 ## Steps
@@ -29,23 +29,28 @@ Run Go test coverage across all backend-go services, enforce minimum thresholds 
 ### 1. Read Configuration
 
 Read `cognitive-os.yaml` from the project root to get:
+- `project.architecture.services_root.go` — root path for Go services (default: `backend-go/apps`)
 - `quality.coverage.minimum` — global minimum coverage % (default: 80)
 - `quality.coverage.per_package` — whether to enforce per-package (default: true)
 - `quality.coverage.exclude` — glob patterns to exclude from enforcement
 
-If `cognitive-os.yaml` is missing, use defaults: 80% minimum, per-package enforcement, exclude `*/mocks/*`, `*/test/*`, `cmd/*`.
+If `cognitive-os.yaml` is missing, use defaults: `backend-go/apps` services root, 80% minimum, per-package enforcement, exclude `*/mocks/*`, `*/test/*`, `cmd/*`.
+
+Store the services root in a variable: `SERVICES_ROOT` (read from config, fallback to `backend-go/apps`).
 
 ### 2. Discover Services
 
-List all directories in `backend-go/apps/` that contain a `go.mod` file. Each is a Go service module.
+List all directories in `${SERVICES_ROOT}/` that contain a `go.mod` file. Each is a Go service module.
+
+If `${SERVICES_ROOT}` does not exist, check if a `go.mod` exists at the project root (mono-module project) and adjust discovery accordingly.
 
 ### 3. Run Coverage Per Service
 
 For each service (or the specified one):
 
 ```bash
-cd backend-go
-go test -coverprofile=/tmp/{service}-coverage.out ./apps/{service}/... 2>&1
+cd $(dirname ${SERVICES_ROOT})
+go test -coverprofile=/tmp/{service}-coverage.out ./${SERVICES_ROOT##*/}/{service}/... 2>&1
 ```
 
 If tests fail, capture the output but continue to next service.
