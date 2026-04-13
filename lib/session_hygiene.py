@@ -1,3 +1,4 @@
+# scope: both
 """Session hygiene — auto-prune tasks, mark plans done, update CATALOG.md."""
 from __future__ import annotations
 

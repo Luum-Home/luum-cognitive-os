@@ -1,3 +1,4 @@
+# scope: both
 """User Request Queue — persists user messages that arrive while orchestrator is busy.
 
 When a user sends a message via system-reminder (while agents are running),
@@ -6,6 +7,8 @@ to context compaction.
 
 The /session-backlog skill reads this file as one of its sources.
 """
+
+from __future__ import annotations
 
 import json
 import os

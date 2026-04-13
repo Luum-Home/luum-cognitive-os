@@ -1,3 +1,4 @@
+# scope: both
 """Repetition Detector -- finds repeated tool-call patterns for auto-skill generation.
 
 Reads skill-metrics.jsonl (fields: skill_name, tool_calls, tokens, duration_ms, success)

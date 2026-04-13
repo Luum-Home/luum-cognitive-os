@@ -1,3 +1,4 @@
+# scope: both
 """Notification digest — batches task-completion notifications into a compact summary."""
 from __future__ import annotations
 

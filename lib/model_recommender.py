@@ -1,3 +1,4 @@
+# scope: both
 """Model recommender — cheapest model capable of handling a task type."""
 
 from __future__ import annotations
