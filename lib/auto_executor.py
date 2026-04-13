@@ -1,3 +1,4 @@
+# scope: both
 """Auto-activation logic for executor mode.
 
 Checks if Valkey is reachable and, when it is, activates executor mode

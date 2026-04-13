@@ -1,3 +1,4 @@
+# scope: both
 """MLflow bridge for Cognitive OS observability.
 
 Syncs cost-events.jsonl and skill-metrics.jsonl to MLflow tracking.

@@ -1,3 +1,4 @@
+# scope: both
 """Anchored Summarizer — proactive context preservation before compaction.
 
 Extracts critical context (decisions, file paths, task state) from conversation
