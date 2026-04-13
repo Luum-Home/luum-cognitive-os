@@ -7,7 +7,10 @@ are visible to /session-backlog, and nothing is lost even under edge conditions.
 import json
 import os
 import subprocess
+import sys
 from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 import pytest
 
@@ -216,9 +219,12 @@ class TestRequestQueueCLI:
     def test_enqueue_via_subprocess(self, session_env):
         """Can enqueue from a subprocess (simulating orchestrator calling lib)."""
         sd = session_env["session_dir"]
+        env = {**os.environ, "PYTHONPATH": str(PROJECT_ROOT)}
         result = subprocess.run(
-            ["python3", "-c", f"from lib.request_queue import enqueue_request; enqueue_request('subprocess msg', session_dir='{sd}')"],
+            [sys.executable, "-c", f"from lib.request_queue import enqueue_request; enqueue_request('subprocess msg', session_dir='{sd}')"],
             capture_output=True, text=True, timeout=10,
+            env=env,
+            cwd=str(PROJECT_ROOT),
         )
         assert result.returncode == 0, f"Failed: {result.stderr}"
 
@@ -231,9 +237,12 @@ class TestRequestQueueCLI:
         sd = session_env["session_dir"]
         enqueue_request("pre-existing", session_dir=sd)
 
+        env = {**os.environ, "PYTHONPATH": str(PROJECT_ROOT)}
         result = subprocess.run(
-            ["python3", "-c", f"from lib.request_queue import format_pending_summary; print(format_pending_summary(session_dir='{sd}'))"],
+            [sys.executable, "-c", f"from lib.request_queue import format_pending_summary; print(format_pending_summary(session_dir='{sd}'))"],
             capture_output=True, text=True, timeout=10,
+            env=env,
+            cwd=str(PROJECT_ROOT),
         )
         assert result.returncode == 0
         assert "1 pending" in result.stdout
