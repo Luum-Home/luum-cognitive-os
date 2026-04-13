@@ -1,3 +1,4 @@
+# scope: os-only
 """
 Reinvention Guard — Prevents building features that already exist upstream.
 
