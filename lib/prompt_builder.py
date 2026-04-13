@@ -1,3 +1,4 @@
+# scope: both
 """Prompt Builder — wires context_diet + prompt_cache into agent orchestration.
 
 This module is the integration point between:

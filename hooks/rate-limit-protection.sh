@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Rate Limit Protection — PreToolUse hook on Agent
 #
 # Before EVERY agent launch, check rate limit status.

@@ -1,3 +1,4 @@
+# scope: both
 """Threat classification using STRIDE categories."""
 
 from __future__ import annotations

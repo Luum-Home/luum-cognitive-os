@@ -1,3 +1,4 @@
+# scope: both
 """Retry Scheduler -- Non-blocking deferred retry via scheduled tasks.
 
 When the rate limiter blocks an agent launch, the orchestrator should not

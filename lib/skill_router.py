@@ -1,3 +1,4 @@
+# scope: both
 """Skill Router — Auto-select skills from conversation context.
 
 Matches user messages to the most appropriate Cognitive OS skill using
