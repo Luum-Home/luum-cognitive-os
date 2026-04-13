@@ -1,3 +1,4 @@
+# scope: both
 """Rate Limiter — Prevents token flooding and excessive tool usage.
 
 Tracks tool calls, agent launches, bash commands, and file writes with

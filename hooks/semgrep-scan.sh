@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PostToolUse hook: Semgrep SAST Scanner
 # Fires on "Agent" tool use — runs Semgrep on changed files after sdd-apply
 # Advisory only (exit 0) — reports findings but does not block

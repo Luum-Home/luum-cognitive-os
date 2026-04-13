@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # predev-completeness-check.sh — PreToolUse hook on Agent
 # CONCERNS: pre-development, readiness, completeness
 #

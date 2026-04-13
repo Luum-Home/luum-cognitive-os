@@ -1,3 +1,4 @@
+# scope: both
 """Test Framework Detector — Auto-detect project test frameworks.
 
 Scans project root for configuration files that indicate which test

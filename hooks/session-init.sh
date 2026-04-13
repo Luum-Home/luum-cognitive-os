@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # SessionStart hook: Initialize session isolation
 # Creates a unique session directory with isolated tasks and metrics.
 # Registers the session in active-sessions.json with file locking.

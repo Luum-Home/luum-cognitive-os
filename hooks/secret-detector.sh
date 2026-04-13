@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PostToolUse hook on Edit|Write: detect new env var references without definitions
 # Part of EnvGuard — Secret Detection tooling
 

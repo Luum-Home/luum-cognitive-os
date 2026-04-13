@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # CONCERNS: quality, observability
 # PreToolUse hook: Large File Advisor for Read tool
 # Checks file size BEFORE the Read happens. If the file exceeds ~40KB (~10K tokens),

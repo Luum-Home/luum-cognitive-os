@@ -31,6 +31,8 @@ try:
 except ImportError:
     _HAS_YAML = False
 
+SCOPE = "os-only"
+
 
 @dataclass
 class ExistingImplementation:
