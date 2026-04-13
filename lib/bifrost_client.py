@@ -1,3 +1,4 @@
+# scope: both
 """Bifrost AI Gateway Client — High-performance gateway for multi-provider routing.
 
 Provides an OpenAI-compatible chat completion interface via the Bifrost

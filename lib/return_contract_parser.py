@@ -1,3 +1,4 @@
+# scope: both
 """
 Return Contract Parser — lib/return_contract_parser.py
 

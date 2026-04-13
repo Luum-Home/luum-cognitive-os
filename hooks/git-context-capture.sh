@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # git-context-capture.sh — Stop hook
 # CONCERNS: audit, git-context, session-tracking
 #

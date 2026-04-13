@@ -1,3 +1,4 @@
+# scope: both
 """Task DAG — Directed Acyclic Graph runner for agent orchestration.
 
 Lets the orchestrator declare task dependencies and the system handles

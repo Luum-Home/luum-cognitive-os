@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # conversation-capture.sh — Capture session transcript for conversation memory
 # Trigger: Stop (runs at session end, before session-cleanup.sh)
 

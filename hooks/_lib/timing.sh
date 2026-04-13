@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # timing.sh — Hook timing wrapper for Cognitive OS performance monitoring
 #
 # Usage:

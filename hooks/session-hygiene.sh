@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Stop hook — runs hygiene at session end to clean stale state
 python3 -c "
 import sys
