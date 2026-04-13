@@ -1,3 +1,4 @@
+# scope: both
 """Cross Verifier — Use a second model to verify primary model output.
 
 Provides independent verification by asking a DIFFERENT model to review

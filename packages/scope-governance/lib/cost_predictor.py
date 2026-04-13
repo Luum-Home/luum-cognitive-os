@@ -1,3 +1,4 @@
+# scope: both
 """Cost Predictor — Predictive cost engine based on historical task data.
 
 Connects existing components (cost_dashboard, estimation_calibrator, error_matching)

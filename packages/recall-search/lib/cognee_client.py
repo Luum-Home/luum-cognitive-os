@@ -1,3 +1,4 @@
+# scope: both
 """Cognee Client — Semantic knowledge graph search for Cognitive OS.
 
 Provides a client for Cognee's REST API to complement Engram's FTS5 search

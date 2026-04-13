@@ -110,7 +110,7 @@ Write `.cognitive-os/detected-stack.json`:
     "proxy": []
   },
   "services": [
-    { "name": "api", "path": "<service-monorepo>/apps/api", "port": 3000, "language": "go" }
+    { "name": "api", "path": "apps/api", "port": 3000, "language": "go" }
   ],
   "detected_at": "ISO-8601 timestamp"
 }

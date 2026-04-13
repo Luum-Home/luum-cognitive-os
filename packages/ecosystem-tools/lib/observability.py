@@ -1,3 +1,4 @@
+# scope: both
 """Observability tracing module for Langfuse and Opik.
 
 Provides functions to send execution traces to Langfuse and/or Opik

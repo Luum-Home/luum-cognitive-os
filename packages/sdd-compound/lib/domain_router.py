@@ -1,3 +1,4 @@
+# scope: both
 """Domain-specific evaluator routing for SDD verify.
 
 Analyzes affected file paths to classify the domain of a change and returns

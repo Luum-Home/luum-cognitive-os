@@ -1,3 +1,4 @@
+# scope: both
 """System Knowledge Graph — Dependency mapping across all Cognitive OS layers.
 
 Scans the entire project to build a graph of components (rules, skills, hooks,

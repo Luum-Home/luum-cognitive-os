@@ -1,3 +1,4 @@
+# scope: both
 """Cognitive OS Agent Communication Bus -- Valkey pub/sub for real-time agent coordination.
 
 Provides bidirectional communication between agents and the orchestrator using
