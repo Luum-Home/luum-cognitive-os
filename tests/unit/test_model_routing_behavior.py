@@ -85,7 +85,7 @@ class TestModelSelectionForReasoningTasks:
 
     def test_systematic_debugging_selects_high_reasoning(self):
         """Root cause analysis needs the best reasoning capability."""
-        model = select_model("systematic-debugging")
+        model = select_model("systematic-debugging", use_advisor=False)
         assert _is_high_reasoning(model), (
             f"systematic-debugging selected {model!r} — expected high-reasoning model"
         )
@@ -101,7 +101,7 @@ class TestModelSelectionForReasoningTasks:
         """Reasoning tasks must not route to the cheapest/free models."""
         haiku_total = 0.25 + 1.25
         for task in TASK_REQUIREMENTS["reasoning"]:
-            model = select_model(task)
+            model = select_model(task, use_advisor=False)
             caps = MODEL_CAPABILITIES.get(model, {})
             total_cost = caps.get("cost_per_1m_in", 0) + caps.get("cost_per_1m_out", 0)
             assert total_cost > haiku_total, (
@@ -119,7 +119,7 @@ class TestModelSelectionForCodeTasks:
 
     def test_sdd_apply_selects_good_code_model(self):
         """sdd-apply (implementation) needs a model with good code capability."""
-        model = select_model("sdd-apply")
+        model = select_model("sdd-apply", use_advisor=False)
         assert _is_balanced_code(model), (
             f"sdd-apply selected {model!r} — expected balanced code model (code>=6, not opus-priced)"
         )
@@ -141,7 +141,7 @@ class TestModelSelectionForCodeTasks:
     def test_code_tasks_return_valid_models(self):
         """All code task types must resolve to a known model."""
         for task in TASK_REQUIREMENTS["code"]:
-            model = select_model(task)
+            model = select_model(task, use_advisor=False)
             assert model in MODEL_CAPABILITIES, (
                 f"Code task {task!r} resolved to unknown model {model!r}"
             )
@@ -291,7 +291,7 @@ class TestBudgetDowngradeChain:
         (budget_remaining <= 0.01).  The returned model must have zero
         cost for both input and output tokens.
         """
-        model = select_model("sdd-apply", budget_remaining=0.001)
+        model = select_model("sdd-apply", budget_remaining=0.001, use_advisor=False)
         caps = MODEL_CAPABILITIES.get(model, {})
         in_cost = caps.get("cost_per_1m_in", -1)
         out_cost = caps.get("cost_per_1m_out", -1)
@@ -356,7 +356,7 @@ class TestModelSelectionEdgeCases:
         """Every task in TASK_REQUIREMENTS must resolve to a known model."""
         for capability, tasks in TASK_REQUIREMENTS.items():
             for task in tasks:
-                model = select_model(task)
+                model = select_model(task, use_advisor=False)
                 assert model in MODEL_CAPABILITIES, (
                     f"Task {task!r} (capability={capability}) routed to unknown model {model!r}"
                 )
