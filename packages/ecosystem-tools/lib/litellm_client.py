@@ -1,8 +1,14 @@
 """LiteLLM Proxy Client — Route non-Claude models through LiteLLM gateway.
 
 Provides an OpenAI-compatible chat completion interface via the LiteLLM
-proxy running at http://localhost:4000. Enables multi-model routing for
-models like GPT-4o, Gemini, DeepSeek, Llama, and Qwen.
+proxy. Supports both Docker proxy mode (http://localhost:4000) and pip
+library mode (litellm --config config.yaml or litellm.completion() direct).
+
+MIGRATION NOTE (Phase 2): LiteLLM is migrated from Docker to pip library.
+The Docker container is kept in docker-compose for reference/CI only.
+For new code, prefer using litellm.completion() directly instead of HTTP proxy.
+This client remains for backward compatibility with existing code that
+expects the HTTP proxy interface.
 
 Usage:
     from lib.litellm_client import LiteLLMClient, is_litellm_available
