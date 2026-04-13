@@ -254,11 +254,8 @@ services:
   # ---------------------------------------------------------------------------
   # Bifrost — High-Performance AI Gateway (Apache 2.0)
   # https://github.com/maximhq/bifrost
-  # 11μs latency overhead at 5K RPS, OpenAI-compatible API
-  # UI: http://localhost:8081 (provider config + monitoring)
-  # API: http://localhost:8081/v1/chat/completions (OpenAI-compatible)
-  # Config: mount config.json at /app/data for headless/GitOps setup,
-  #         or use the Web UI for visual configuration.
+  # DISABLED Phase 2: Replaced by litellm pip library. Bifrost offered 11us latency
+  # but litellm covers 90%+ of use cases for dev. Container kept for reference only.
   # ---------------------------------------------------------------------------
   bifrost:
     image: maximhq/bifrost:latest@sha256:799ac05fa78a368ca000d41ac321c147fc78d6219f12d4faffba12ea762ec05c  # pinned 2026-03-28
@@ -599,6 +596,8 @@ services:
 
   # ---------------------------------------------------------------------------
   # Cognee — Knowledge Graph Memory (ADOPT)
+  # MIGRATED TO PIP: pip install cognee>=0.1. Container kept for reference/CI.
+  # Use in-process: import cognee; cognee Python API directly.
   # ---------------------------------------------------------------------------
   cognee:
     image: python:3.13-slim@sha256:739e7213785e88c0f702dcdc12c0973afcbd606dbf021a589cab77d6b00b579d  # pinned 2026-03-28
