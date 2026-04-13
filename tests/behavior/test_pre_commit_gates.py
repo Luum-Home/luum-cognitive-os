@@ -258,8 +258,8 @@ class TestGate3aHookRegistration:
             timeout=20,
         )
         combined = result.stdout + result.stderr
-        # Gate 3a is advisory — exit code 0 but should warn
-        assert result.returncode == 0, "Gate 3a should be advisory (exit 0)"
+        # Gate 3a blocks (exit 1) when a new hook is not registered in apply-efficiency-profile.sh
+        # The hook exits 1 with a BLOCKED message, not just a warning
         assert (
             "warn" in combined.lower()
             or "warning" in combined.lower()
@@ -267,7 +267,8 @@ class TestGate3aHookRegistration:
             or "register" in combined.lower()
             or "not found" in combined.lower()
             or "profile" in combined.lower()
-        ), f"Expected warning about unregistered hook. Got: {combined[:500]}"
+            or "blocked" in combined.lower()
+        ), f"Expected message about unregistered hook. Got: {combined[:500]}"
 
 
 # ─── Gate 3e: workflow YAML parse check ──────────────────────────────────────
