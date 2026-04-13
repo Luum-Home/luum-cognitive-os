@@ -131,7 +131,7 @@ class TestSelectModelByTask:
 
     def test_code_task_picks_code_model(self):
         """Code tasks should pick a model with high code score."""
-        model = select_model("sdd-apply")
+        model = select_model("sdd-apply", use_advisor=False)
         caps = get_model_capabilities(model)
         assert caps["code"] >= 7
 
@@ -159,7 +159,7 @@ class TestSelectModelByTask:
         """All task types in TASK_REQUIREMENTS should route to a valid model."""
         for capability, tasks in TASK_REQUIREMENTS.items():
             for task in tasks:
-                model = select_model(task)
+                model = select_model(task, use_advisor=False)
                 assert model in MODEL_CAPABILITIES, f"Task {task} routed to unknown model {model}"
 
 
@@ -180,7 +180,7 @@ class TestSelectModelBudget:
 
     def test_zero_budget_picks_local_or_cheapest(self):
         """With zero budget, should pick a free/local model if possible."""
-        model = select_model("sdd-apply", budget_remaining=0.0)
+        model = select_model("sdd-apply", budget_remaining=0.0, use_advisor=False)
         caps = get_model_capabilities(model)
         total_cost = caps["cost_per_1m_in"] + caps["cost_per_1m_out"]
         assert total_cost == 0.0
