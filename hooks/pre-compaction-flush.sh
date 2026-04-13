@@ -8,6 +8,18 @@
 # This hook runs BEFORE context compaction occurs.
 # It outputs a system message that the agent will see and act on.
 
+# ---------------------------------------------------------------------------
+# Step 1: Run anchored summarizer to persist structured context
+# ---------------------------------------------------------------------------
+PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+SESSION_DIR="${CLAUDE_SESSION_DIR:-$PROJECT_DIR/.cognitive-os/sessions/current}"
+
+python3 -c "
+import sys; sys.path.insert(0, '$PROJECT_DIR')
+from lib.anchored_summarizer import AnchoredSummarizer
+AnchoredSummarizer.auto_save(session_dir='$SESSION_DIR')
+" 2>/dev/null || true
+
 cat <<'FLUSH_MSG'
 Session nearing compaction. Save any important decisions, discoveries, or bug fixes to Engram NOW.
 
