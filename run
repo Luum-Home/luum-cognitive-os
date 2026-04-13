@@ -1,7 +1,39 @@
 #!/usr/bin/env bash
-# Wrapper to run any Python script/module via uv
-# Loads dependencies from requirements.txt automatically
-# Usage: ./run <script.py> [args...]
-#        ./run -m pytest tests/ -v
-set -euo pipefail
-exec uv run --with-requirements requirements.txt python "$@"
+# Wrapper: always runs commands through the project .venv
+#
+# Usage:
+#   ./run pytest --tb=no -q          Run pytest
+#   ./run python -m lib.some_module  Run a module
+#   ./run test-failures              Show failure count by file
+#   ./run test-quick                 Fast unit tests only
+#   ./run test-full                  Full suite
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+VENV="$SCRIPT_DIR/.venv/bin"
+
+if [ ! -d "$VENV" ]; then
+    echo "No .venv found. Creating with: uv venv" >&2
+    uv venv "$SCRIPT_DIR/.venv" && uv pip install -e ".[testing]"
+fi
+
+case "$1" in
+    test-failures)
+        TMPOUT=$(mktemp)
+        "$VENV/python" -m pytest --tb=no -q --no-header "${@:2}" 2>&1 | tee "$TMPOUT" \
+            | grep "^FAILED" \
+            | sed 's/FAILED //' \
+            | awk -F'::' '{print $1}' \
+            | sort | uniq -c | sort -rn
+        echo "---"
+        tail -1 "$TMPOUT"
+        rm -f "$TMPOUT"
+        ;;
+    test-quick)
+        exec "$VENV/python" -m pytest tests/unit/ --tb=short -q "${@:2}"
+        ;;
+    test-full)
+        exec "$VENV/python" -m pytest --tb=no -q "${@:2}"
+        ;;
+    *)
+        exec "$VENV/$@"
+        ;;
+esac
