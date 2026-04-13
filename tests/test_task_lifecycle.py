@@ -9,11 +9,11 @@ Components under test:
   3. AgentHealthMonitor._update_task_status -- used by the completion path
 
 Classification rules (from AgentHealthMonitor._classify_task):
-  - pid=null + age < 1800s  -> healthy
-  - pid=null + age >= 1800s -> timeout (stale)
-  - pid=N + age < 300s      -> healthy (grace period, even if PID is dead)
-  - pid=N + age >= 300s + PID dead  -> dead
-  - pid=N + age >= 300s + PID alive -> healthy (or timeout by age vs configured limit)
+  - pid=null + age < timeout_limit  -> healthy
+  - pid=null + age >= timeout_limit -> timeout (stale)
+  - pid=N + age < 5s               -> healthy (grace period, even if PID is dead)
+  - pid=N + age >= 5s + PID dead   -> dead
+  - pid=N + age >= 5s + PID alive  -> healthy (or timeout by age vs configured limit)
 
 All tests use tmp_path for isolation; the real .cognitive-os/tasks/active-tasks.json
 is never touched.
@@ -44,12 +44,13 @@ PRELAUNCH_HOOK = PROJECT_ROOT / "hooks" / "agent-prelaunch.sh"
 # ---------------------------------------------------------------------------
 
 sys.path.insert(0, str(PROJECT_ROOT))
-from lib.agent_health_monitor import AgentHealthMonitor  # noqa: E402
+from lib.agent_health_monitor import AgentHealthMonitor, _DEFAULT_TIMEOUT_SECONDS  # noqa: E402
 
-# Grace period constants read from the class itself so tests stay in sync
+# Grace period constants read from the class/module so tests stay in sync
 # with any future changes to the thresholds.
-_MIN_AGE_FOR_DEAD = AgentHealthMonitor._MIN_AGE_FOR_DEAD_SECONDS   # 300 s = 5 min
-_NULL_PID_STALE = AgentHealthMonitor._NULL_PID_STALE_SECONDS        # 1800 s = 30 min
+_MIN_AGE_FOR_DEAD = AgentHealthMonitor._MIN_AGE_FOR_DEAD_SECONDS   # 5 s grace period
+# Null-PID tasks become stale after the configured timeout (same as live-PID timeout).
+_NULL_PID_STALE = _DEFAULT_TIMEOUT_SECONDS  # 300 s default
 
 
 # ---------------------------------------------------------------------------
@@ -433,10 +434,11 @@ class TestHealthMonitor:
         if _pid_is_alive(dead_pid):
             pytest.skip("PID 99999 is alive -- cannot test dead-PID grace period")
 
-        # Age well under the 300s grace period
+        # Age well under the grace period (use half of _MIN_AGE_FOR_DEAD, min 1s)
+        grace_age = max(1, _MIN_AGE_FOR_DEAD // 2)
         tasks_file = _make_tasks_file(
             tmp_path,
-            [_task_entry("task-grace", pid=dead_pid, age_offset_seconds=10)],
+            [_task_entry("task-grace", pid=dead_pid, age_offset_seconds=grace_age)],
         )
         monitor = AgentHealthMonitor(tasks_path=str(tasks_file))
         health = monitor.check_health()
