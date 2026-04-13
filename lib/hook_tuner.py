@@ -1,3 +1,4 @@
+# scope: both
 """Hook Tuner — Tracks false positive rates per hook and recommends threshold adjustments.
 
 FP rate = retry_successes / total_blocks. Tune when rate > 10% with 10+ samples.

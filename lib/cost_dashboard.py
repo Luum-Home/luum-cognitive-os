@@ -1,3 +1,4 @@
+# scope: both
 """Cost Dashboard — Real-time cost transparency and token economy analytics.
 
 Provides session, daily, and monthly cost reporting with efficiency metrics,
