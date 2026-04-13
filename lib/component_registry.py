@@ -11,6 +11,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List
 
+SCOPE = "os-only"
+
 
 @dataclass
 class RegistrationReport:

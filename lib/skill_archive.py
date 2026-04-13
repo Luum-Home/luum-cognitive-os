@@ -1,3 +1,4 @@
+# scope: both
 """Scored Skill Archive for Cognitive OS.
 
 Maintains a scored history of skill configurations. When a skill succeeds

@@ -1,3 +1,4 @@
+# scope: both
 """Safe Engram wrapper — scans content before saving to memory.
 
 Every save goes through MemoryScanner first.  If the scanner detects

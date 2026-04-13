@@ -1,3 +1,4 @@
+# scope: both
 """Execute Claude Code programmatically via CLI subprocess.
 
 Provides a structured executor with cost tracking, retry logic,

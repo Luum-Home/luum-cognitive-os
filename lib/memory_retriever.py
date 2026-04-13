@@ -1,3 +1,4 @@
+# scope: both
 """
 Hybrid Memory Retriever — FTS5 + Jaccard reranking for Engram queries.
 

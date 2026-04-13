@@ -1,3 +1,4 @@
+# scope: both
 """Centralized Model Catalog -- Single source of truth for all model metadata.
 
 Every model known to Cognitive OS is registered here with canonical IDs,

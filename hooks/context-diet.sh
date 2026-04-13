@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook: Context Diet — Task-aware rule selection advisory
 # Fires on "Agent" tool use — classifies task type and outputs which rules
 # are relevant, so the orchestrator knows the minimal context needed.
