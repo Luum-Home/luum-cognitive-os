@@ -6,6 +6,38 @@ project:
   name: my-project          # Override with your project name
   type: webapp              # fintech | ecommerce | saas | webapp | startup | healthcare
   phase: reconstruction     # reconstruction | stabilization | production | maintenance
+
+  # Architecture configuration — skills read from here instead of hardcoding
+  # Populated by /cognitive-os-init based on detected stack; override manually as needed
+  architecture:
+    frameworks:
+      go: ginext               # ginext | gin | echo | fiber | chi | huma
+      typescript: nestjs       # nestjs | express | fastify | hono
+      java: spring-boot        # spring-boot | quarkus | micronaut
+    layers:
+      domain: "internal/domain"
+      application: "internal/application"
+      infrastructure: "internal/infrastructure"
+      dtos: "application/dtos"
+    services_root:
+      go: "backend-go/apps"
+      typescript: "services"
+      java: "micro-services"
+    service_paths:
+      - "mobile/bff-ninja/src"
+      - "micro-services/onboarding/src"
+      - "services/acme-gateway"
+      - "micro-services/users-core"
+      - "micro-services/users-auth"
+      - "backend-go/apps"
+    evaluation_criteria:
+      - "Follows clean architecture layers (domain/application/infrastructure)"
+      - "Uses correct framework per language (see frameworks above)"
+      - "DTOs in application layer, not domain layer"
+      - "Dependencies flow inward (infra -> app -> domain)"
+      - "Cross-service communication via SDKs, not direct imports"
+      - "Constitutional gates respected for sensitive operations"
+
   # infrastructure: populated by /cognitive-os-init from docker-compose.yml + detection
   # infrastructure:
   #   auth:
@@ -364,19 +396,19 @@ resources:
     auto_scale: true
     smart_start: true              # Lazy-load Docker services when skills need them
     skill_service_map:
-      agent-kpis: [langfuse]
-      observability-trace: [langfuse]
-      sdd-apply: [bifrost, litellm]
-      sdd-verify: [bifrost, litellm]
-      sdd-pipeline: [bifrost, litellm]
-      model-routing: [bifrost, litellm]
-      guardrails-validator: [nemo-guardrails]
-      content-policy: [nemo-guardrails]
+      agent-kpis: [mlflow]             # MIGRATED Phase 1: langfuse -> mlflow (pip)
+      observability-trace: [mlflow]    # MIGRATED Phase 1: langfuse -> mlflow (pip)
+      sdd-apply: [litellm]            # MIGRATED Phase 2: removed bifrost, litellm runs as pip library
+      sdd-verify: [litellm]           # MIGRATED Phase 2: removed bifrost, litellm runs as pip library
+      sdd-pipeline: [litellm]         # MIGRATED Phase 2: removed bifrost, litellm runs as pip library
+      model-routing: [litellm]        # MIGRATED Phase 2: removed bifrost, litellm runs as pip library
+      guardrails-validator: [nemo-guardrails]  # MIGRATED Phase 2: runs as pip library in-process
+      content-policy: [nemo-guardrails]        # MIGRATED Phase 2: runs as pip library in-process
       paperclip-sync: [paperclip]
       squad-report: [paperclip]
-      memu-sync: [memu]
-      cognee-search: [cognee]
-      jupyter-sandbox: [jupyter]
+      memu-sync: [memu]               # MIGRATED Phase 2: runs as pip library
+      cognee-search: [cognee]          # MIGRATED Phase 2: runs as pip library
+      jupyter-sandbox: [jupyter]       # MIGRATED Phase 2: runs as pip install
       agent-bus: [valkey]
       agent-communication: [valkey]
     services:
@@ -390,10 +422,10 @@ resources:
         mode: on_demand
         idle_timeout_minutes: 30
       bifrost:
-        mode: on_demand
+        mode: disabled             # MIGRATED Phase 2: removed in favor of litellm pip library. Bifrost had 11us latency but litellm covers 90% of use cases.
         idle_timeout_minutes: 30
       litellm:
-        mode: always
+        mode: pip                  # MIGRATED Phase 2: pip install litellm>=1.0. Use litellm.completion() directly or `litellm --config config.yaml` as local process.
       opik:
         mode: cloud                # MIGRATED: pip install opik>=1.0. Uses Comet cloud API by default — no local container needed.
         idle_timeout_minutes: 30
@@ -401,10 +433,10 @@ resources:
           api_url: "${OPIK_API_URL:-https://www.comet.com/opik/api}"
           project_name: "cognitive-os"
       valkey:
-        mode: on_demand
+        mode: on_demand            # Phase 3: keep as optional Docker. File fallback (agent_bus.py) handles single-session use.
         idle_timeout_minutes: 30
       cognee:
-        mode: on_demand
+        mode: pip                  # MIGRATED Phase 2: pip install cognee>=0.1. Use Python API in-process instead of HTTP server.
         idle_timeout_minutes: 15
         config:
           graph_backend: "${COGNEE_GRAPH_BACKEND:-networkx}"

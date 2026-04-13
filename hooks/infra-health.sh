@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Infrastructure Health Check — SessionStart hook
 # Auto-detects Docker status and required services.
 # Outputs advisory messages about missing infrastructure.
@@ -88,6 +89,12 @@ always_services=""
 if [ -n "$expected_services" ]; then
   while IFS=: read -r svc_name svc_mode; do
     [ -z "$svc_name" ] && continue
+
+    # Skip services that don't need Docker (migrated to pip, cloud, or disabled)
+    if [ "$svc_mode" = "pip" ] || [ "$svc_mode" = "cloud" ] || [ "$svc_mode" = "disabled" ] || [ "$svc_mode" = "cli" ]; then
+      continue
+    fi
+
     expected_count=$((expected_count + 1))
 
     # Check if this service (or a container matching it) is running
