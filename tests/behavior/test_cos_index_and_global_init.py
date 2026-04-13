@@ -5,7 +5,7 @@ Tests:
 2. cos-index/scripts/validate-index.sh exists and is executable
 3. cos-index/scripts/generate-index.sh exists and is executable
 4. scripts/cos-init-global.sh exists and is executable
-5. cos-init-global.sh installs 14 core rules to a temp dir
+5. cos-init-global.sh installs core rules to a temp dir
 6. Index validation script passes on the actual index
 """
 
@@ -193,11 +193,11 @@ class TestCosInitGlobal:
         rules_dir = fake_home / ".claude" / "rules" / "cos"
         assert rules_dir.is_dir(), "~/.claude/rules/cos/ was not created"
 
-        # All 14 core rules should be installed
+        # All core rules should be installed
         installed = list(rules_dir.glob("*.md"))
         assert (
-            len(installed) == 14
-        ), f"Expected 14 rules, got {len(installed)}: {[f.name for f in installed]}"
+            len(installed) == len(self.CORE_RULES)
+        ), f"Expected {len(self.CORE_RULES)} rules, got {len(installed)}: {[f.name for f in installed]}"
 
         for rule in self.CORE_RULES:
             rule_file = rules_dir / rule
