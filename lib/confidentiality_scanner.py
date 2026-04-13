@@ -1,3 +1,4 @@
+# scope: both
 """Confidentiality scanner — detects IP leaks in generated output.
 
 When an AI agent reads from one project and writes docs for another, it must

@@ -1,3 +1,4 @@
+# scope: both
 """
 User Model — Synthesizes user preferences from captured prompts and feedback.
 

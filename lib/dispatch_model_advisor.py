@@ -1,3 +1,4 @@
+# scope: both
 """Dispatch-time model recommender for agent tasks.
 
 Recommends the optimal model for an agent task based on:

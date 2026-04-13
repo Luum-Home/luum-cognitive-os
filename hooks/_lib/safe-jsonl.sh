@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # safe-jsonl.sh — Shared library for safe JSONL writes with flock + hook health heartbeats
 # Part of: auto-repair-system (ARS-1-01)
 #

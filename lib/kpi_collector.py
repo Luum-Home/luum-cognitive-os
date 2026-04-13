@@ -1,3 +1,4 @@
+# scope: both
 """KPI Collector -- Reads metric JSONL files and computes session KPIs.
 
 Computes the KPIs defined in rules/agent-kpis.md by reading the .jsonl

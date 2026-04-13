@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # UserPromptSubmit hook: Auto-capture user prompts to engram for session context.
 #
 # Event: UserPromptSubmit

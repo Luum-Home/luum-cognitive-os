@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook: File locking for concurrent sessions
 # Fires on Edit|Write — acquires exclusive flock on the target file.
 # v0.4.0: Upgraded from advisory-only to real flock serialization.
