@@ -21,11 +21,12 @@ Create a structured implementation plan for a new feature, then self-evaluate it
 
 ### 2. Research the Codebase
 
+- Read `cognitive-os.yaml -> project.architecture` for framework, layer, and evaluation criteria config
 - Read the service's directory structure
-- Identify existing patterns (controllers, use cases, entities, DTOs)
+- Identify existing patterns (controllers, use cases, entities, DTOs) based on `project.architecture.layers`
 - Check for related tests and their patterns
 - Review constitutional gates that apply (`.claude/rules/constitutional-gates.md`)
-- Check the current project phase (`.cognitive-os/cognitive-os.yaml` -> `project.phase`)
+- Check the current project phase (`cognitive-os.yaml -> project.phase`)
 
 ### 3. Write the Plan
 
@@ -76,7 +77,7 @@ Score the plan on 5 criteria (0-10 each):
 | Completeness | X/10 | Are all requirements covered? |
 | Feasibility | X/10 | Can be built with current tools and patterns? |
 | Risk Assessment | X/10 | Are risks identified with concrete mitigations? |
-| Architecture Alignment | X/10 | Follows clean architecture, ginext, correct layers? |
+| Architecture Alignment | X/10 | Follows architecture criteria from `cognitive-os.yaml -> project.architecture.evaluation_criteria`? |
 | Test Coverage Plan | X/10 | Tests defined for happy path, edge cases, error cases? |
 
 **Total: X/50**

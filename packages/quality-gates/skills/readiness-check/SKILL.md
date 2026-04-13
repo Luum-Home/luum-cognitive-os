@@ -36,7 +36,8 @@ The readiness check evaluates these dimensions:
 ### 2. Design Reviewed
 - [ ] Design artifact exists in engram (`sdd/{change-name}/design`)
 - [ ] Design specifies: components, interfaces, data flow
-- [ ] Design follows architecture standards (ginext, clean arch layers)
+- [ ] Design follows architecture standards from `cognitive-os.yaml -> project.architecture.evaluation_criteria`
+- [ ] Design uses the correct framework per language from `cognitive-os.yaml -> project.architecture.frameworks`
 - [ ] Design addresses cross-service communication via SDKs (not direct imports)
 
 ### 3. Tasks Broken Down
@@ -61,18 +62,19 @@ The readiness check evaluates these dimensions:
 - [ ] Test strategy defined (unit, integration, e2e)
 - [ ] Critical paths identified for test coverage
 - [ ] Test data / fixtures identified or planned
-- [ ] Coverage target set (minimum 80% for fintech)
+- [ ] Coverage target set (from `cognitive-os.yaml -> quality.coverage.minimum`, default 80%)
 
 ## Execution Steps
 
-1. **Retrieve artifacts**: Search engram for spec, design, and tasks using topic keys
-2. **Validate each dimension**: Check existence and completeness
-3. **Score results**: Each dimension is GREEN (complete), YELLOW (partial), or RED (missing/incomplete)
-4. **Determine verdict**:
+1. **Read project config**: Load `cognitive-os.yaml` to get `project.architecture` (frameworks, layers, evaluation_criteria) and `quality.coverage.minimum`. These drive all architecture checks below instead of hardcoded framework names.
+2. **Retrieve artifacts**: Search engram for spec, design, and tasks using topic keys
+3. **Validate each dimension**: Check existence and completeness
+4. **Score results**: Each dimension is GREEN (complete), YELLOW (partial), or RED (missing/incomplete)
+5. **Determine verdict**:
    - **PASS**: All dimensions GREEN
    - **CONCERNS**: No RED, but some YELLOW. Proceed with caution, note what's incomplete.
    - **FAIL**: Any dimension RED. Must fix before implementing.
-5. **Return structured result**
+6. **Return structured result**
 
 ## Result Format
 
