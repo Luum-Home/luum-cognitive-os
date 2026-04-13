@@ -15,27 +15,34 @@ Full scan of all services for environment variable usage. Cross-references with 
 
 ## Procedure
 
+### Step 0: Load Service Paths from Config
+
+Read `cognitive-os.yaml -> project.architecture.service_paths` to get the list of directories to scan.
+If config is missing, auto-discover by:
+1. Reading `docker-compose.yml` for service build contexts
+2. Falling back to `find . -name 'go.mod' -o -name 'package.json' -o -name 'pom.xml'` to locate service roots
+
+Store the discovered paths in `SERVICE_PATHS`.
+
 ### Step 1: Collect All Env Var References
 
-Scan source code across all services:
+Scan source code across all services listed in `SERVICE_PATHS`:
 
 ```bash
-# TypeScript/Node (BFF, onboarding, monolith)
-grep -rn 'process\.env\.\([A-Z_][A-Z0-9_]*\)' \
-  mobile/<consumer-codename-a>/src/ \
-  <consumer-service-5>onboarding/src/ \
-  services/<consumer-service>/
+# TypeScript/Node services (auto-detected from SERVICE_PATHS entries containing package.json)
+grep -rn 'process\.env\.\([A-Z_][A-Z0-9_]*\)' ${TS_SERVICE_PATHS}
 
-# Go services
-grep -rn 'os\.Getenv("[A-Z_][A-Z0-9_]*")' \
+# Go services (auto-detected from SERVICE_PATHS entries containing go.mod)
+grep -rn 'os\.Getenv("[A-Z_][A-Z0-9_]*")' ${GO_SERVICE_PATHS} \
   --include='*.go'
 
-# Java/Spring Boot (<consumer-codename-b>, <consumer-codename-c>)
+# Java/Spring Boot services (auto-detected from SERVICE_PATHS entries containing pom.xml)
 grep -rn 'System\.getenv("[A-Z_][A-Z0-9_]*")\|@Value("${[A-Z_][A-Z0-9_]*' \
-  <consumer-service-5><consumer-codename-b>/ \
-  <consumer-service-5><consumer-codename-c>/ \
+  ${JAVA_SERVICE_PATHS} \
   --include='*.java' --include='*.properties' --include='*.yml'
 ```
+
+The service path classification (TS vs Go vs Java) is determined by which project files exist in each path (`package.json` = TS, `go.mod` = Go, `pom.xml` = Java).
 
 ### Step 2: Collect All Env Var Definitions
 
