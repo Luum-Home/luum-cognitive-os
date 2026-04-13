@@ -1,9 +1,12 @@
+# scope: both
 """Persistent work queue that survives across sessions.
 
 Reads/writes .cognitive-os/work-queue.json. Auto-updated at session end
 by session-hygiene.sh hook. The orchestrator reads this at session start
 to know exactly what's pending.
 """
+
+from __future__ import annotations
 
 import json
 import os

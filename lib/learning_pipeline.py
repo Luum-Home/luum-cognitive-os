@@ -1,3 +1,4 @@
+# scope: both
 """
 Learning Pipeline — Connects the 5 island systems into a unified feedback loop.
 

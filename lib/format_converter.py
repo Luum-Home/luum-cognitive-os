@@ -1,3 +1,4 @@
+# scope: both
 """Token-efficient format converter for LLM context injection.
 
 Converts structured data (dicts/lists) from verbose JSON to compact formats
