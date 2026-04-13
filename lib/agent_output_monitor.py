@@ -293,7 +293,7 @@ class AgentOutputMonitor:
                         obj = json.loads(line)
                     except (json.JSONDecodeError, ValueError):
                         continue
-                    if obj.get("type") != "assistant":
+                    if not isinstance(obj, dict) or obj.get("type") != "assistant":
                         continue
                     content = obj.get("message", {}).get("content", [])
                     if isinstance(content, list):
