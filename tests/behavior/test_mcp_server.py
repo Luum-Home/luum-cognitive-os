@@ -44,7 +44,7 @@ class TestFileStructure:
 
 
 class TestToolDefinitions:
-    """Verify all 8 MCP tools are defined in cos_mcp.py."""
+    """Verify all expected MCP tools are defined in cos_mcp.py."""
 
     EXPECTED_TOOLS = [
         "cos_search_memory",
@@ -64,7 +64,7 @@ class TestToolDefinitions:
         )
         self.tree = ast.parse(self.source)
 
-    def test_all_8_tools_defined_as_functions(self):
+    def test_all_expected_tools_defined_as_functions(self):
         """Every expected tool must be a top-level function."""
         func_names = {
             node.name
@@ -74,7 +74,7 @@ class TestToolDefinitions:
         for tool in self.EXPECTED_TOOLS:
             assert tool in func_names, f"Tool function '{tool}' not found in cos_mcp.py"
 
-    def test_all_8_tools_have_mcp_tool_decorator(self):
+    def test_all_expected_tools_have_mcp_tool_decorator(self):
         """Every tool must use @mcp.tool() decorator."""
         for tool_name in self.EXPECTED_TOOLS:
             # Check that the function has a decorator containing "mcp" and "tool"
@@ -104,11 +104,13 @@ class TestToolDefinitions:
                         f"Tool '{node.name}' should have return type annotation"
                     )
 
-    def test_exactly_8_tools(self):
-        """There should be exactly 8 MCP tools, no more, no less."""
+    def test_tool_count_matches_expected(self):
+        """The number of @mcp.tool() decorators should match EXPECTED_TOOLS."""
         # Count @mcp.tool() decorated functions
         tool_count = len(re.findall(r"@mcp\.tool\(\)", self.source))
-        assert tool_count == 8, f"Expected 8 tools, found {tool_count}"
+        assert tool_count == len(self.EXPECTED_TOOLS), (
+            f"Expected {len(self.EXPECTED_TOOLS)} tools (from EXPECTED_TOOLS), found {tool_count}"
+        )
 
 
 # ---------------------------------------------------------------------------
