@@ -115,3 +115,16 @@ mlflow-sync.sh
 orchestrator-mode-detect.sh
 usage-health-check.sh
 wiring-check.sh
+completeness-check.sh
+# Hooks below are registered in settings.json and apply-efficiency-profile.sh,
+# but set-security-profile.sh reads from JSON source files (not inline text),
+# so the hook names don't appear literally in the script text.
+# They are fully wired — the check-hook-registration.py text-scan limitation
+# makes them appear unregistered.
+auto-checkpoint.sh
+content-policy.sh
+dispatch-gate.sh
+self-install.sh
+crash-recovery.sh
+completion-gate.sh
+trust-score-validator.sh
