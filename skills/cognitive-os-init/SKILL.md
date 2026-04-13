@@ -13,6 +13,10 @@ tags: [init, setup, meta]
 
 META skill. Chains three atomic skills to fully initialize Cognitive OS for a project.
 
+## Overview
+
+META skill that chains three atomic skills to fully initialize Cognitive OS for a project: detect-stack → generate-config → scaffold-project.
+
 ## Atomic Skills
 
 | Step | Skill | What it does | Output |

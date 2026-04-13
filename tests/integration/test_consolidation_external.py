@@ -46,12 +46,8 @@ CORE_RULES = {
     "phase-aware-agents.md",
     "closed-loop-prompts.md",
     "error-learning.md",
-    "rate-limiting.md",
     "credential-management.md",
-    "content-policy.md",
     "result-management.md",
-    "blast-radius.md",
-    "clarification-gate.md",
     "model-routing.md",
 }
 
@@ -178,10 +174,10 @@ class TestProfileFilterLogic:
     """Test the profile filtering logic in pure Python."""
 
     def test_standard_profile_keeps_16_core_rules(self):
-        """Standard profile should keep exactly the 16 core rules."""
+        """Standard profile should keep exactly the core rules."""
         filtered = _apply_profile_filter_pure(ALL_RULE_FILES, "standard")
         assert filtered == CORE_RULES
-        assert len(filtered) == 16
+        assert len(filtered) == len(CORE_RULES)
 
     def test_lean_profile_keeps_only_compact(self):
         """Lean profile should keep only RULES-COMPACT.md."""
@@ -208,8 +204,8 @@ class TestProfileFilterLogic:
         )
 
     def test_core_rules_count_is_16(self):
-        """The CORE_RULES constant must have exactly 16 entries."""
-        assert len(CORE_RULES) == 16
+        """The CORE_RULES constant must have exactly 12 entries (rate-limiting, content-policy, blast-radius, clarification-gate moved to EXCLUDED_RULES)."""
+        assert len(CORE_RULES) == 12
 
 
 class TestProfileFilterShellScript:
@@ -225,18 +221,22 @@ class TestProfileFilterShellScript:
     """
 
     def test_self_hosted_keeps_all_rules(self, tmp_path):
-        """Self-hosted project should keep all rules (full profile).
+        """Self-hosted project should keep at least the core rules.
 
-        In self-hosting mode, self-install.sh syncs ALL rules to cos/,
-        giving developers full rule context during development.
+        In self-hosting mode, self-install.sh syncs all rules EXCEPT those
+        in EXCLUDED_RULES (hook-enforced, package-specific, or contextual rules
+        that are loaded on demand). At least the 12 CORE_RULES should be present.
         """
         project = _setup_external_project(tmp_path, "standard")
         remaining = _run_profile_filter(project)
 
-        # Self-hosted always uses full profile — all rules are kept
-        assert len(remaining) >= 70, (
-            f"Self-hosted should keep all rules, got {len(remaining)}"
+        # Self-hosted keeps all rules minus excluded ones — at least CORE_RULES
+        assert len(remaining) >= len(CORE_RULES), (
+            f"Self-hosted should keep at least {len(CORE_RULES)} core rules, got {len(remaining)}"
         )
+        # All CORE_RULES should be present
+        for rule in CORE_RULES:
+            assert rule in remaining, f"Core rule {rule} missing from self-hosted install"
 
     def test_self_install_exits_clean(self, tmp_path):
         """self-install.sh should exit 0 on a properly structured project."""
@@ -289,11 +289,11 @@ class TestExternalProjectSimulation:
                 link.unlink()
 
         remaining = {f.name for f in cos_rules_dir.glob("*.md")}
-        assert len(remaining) == 16
+        assert len(remaining) == len(CORE_RULES)
         assert remaining == CORE_RULES
 
     def test_standard_profile_has_right_rules(self, tmp_path):
-        """Verify the 16 core rules include the expected essentials."""
+        """Verify the core rules include the expected essentials."""
         project = _setup_external_project(tmp_path, "standard")
         cos_rules_dir = project / ".claude" / "rules" / "cos"
 
@@ -303,22 +303,18 @@ class TestExternalProjectSimulation:
 
         remaining = {f.name for f in cos_rules_dir.glob("*.md")}
 
-        # Must-have rules for any project (all 16 CORE_RULES)
+        # Must-have rules for any project (all 12 CORE_RULES)
         assert "RULES-COMPACT.md" in remaining
         assert "acceptance-criteria.md" in remaining
         assert "trust-score.md" in remaining
         assert "credential-management.md" in remaining
-        assert "content-policy.md" in remaining
         assert "error-learning.md" in remaining
         assert "phase-aware-agents.md" in remaining
         assert "closed-loop-prompts.md" in remaining
         assert "token-economy.md" in remaining
         assert "adaptive-bypass.md" in remaining
         assert "agent-quality.md" in remaining
-        assert "rate-limiting.md" in remaining
         assert "result-management.md" in remaining
-        assert "blast-radius.md" in remaining
-        assert "clarification-gate.md" in remaining
         assert "model-routing.md" in remaining
 
     def test_lean_profile_installs_only_compact(self, tmp_path):
