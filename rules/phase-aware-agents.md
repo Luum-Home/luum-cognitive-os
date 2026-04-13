@@ -6,7 +6,7 @@ Read the current phase from `cognitive-os.yaml` -> `project.phase`.
 
 ### Phase: reconstruction
 When in reconstruction phase, ALL agents MUST:
-- Follow the standard STRICTLY (ginext, not huma/chi)
+- Follow the project's declared framework STRICTLY (per `cognitive-os.yaml -> project.architecture.frameworks`)
 - REWRITE code that doesn't follow standards (don't patch, don't document as "future work")
 - Break existing patterns if they're wrong
 - Not worry about backwards compatibility
@@ -33,13 +33,15 @@ When in maintenance phase, ALL agents MUST:
 - Document everything as future work unless critical
 
 ### Architecture Standards (always enforced)
-- HTTP framework: ginext (pkg/tools/ginext/)
-- Controllers: implement models.ControllerInterface
-- Use cases: implement models.UseCaseInterface[P, Q, B, H, R]
-- Entities: embed entities.EntityWithID
-- Repositories: implement RepositoryInterface[E, K]
-- DTOs: in application/dtos/, NOT domain/dtos/
-- All app code under internal/
+
+Read architecture standards from `cognitive-os.yaml -> project.architecture`. These typically include:
+- HTTP framework: per `project.architecture.frameworks` (use the project's declared framework only)
+- Controllers: implement the project's controller interface
+- Use cases: implement the project's use case interface
+- Entities: follow the project's entity conventions
+- Repositories: implement the project's repository interface
+- DTOs: in the application layer, NOT in the domain layer
+- All app code under the project's declared source root
 - One use case per file
 - Mappers: Map{Input}To{Output} naming
 

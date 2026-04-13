@@ -1,3 +1,4 @@
+# scope: both
 """Multi-provider notification system for Cognitive OS.
 
 Supports Telegram, Slack webhooks, and generic HTTP webhooks.

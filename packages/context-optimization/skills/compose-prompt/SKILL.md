@@ -50,7 +50,7 @@ Assemble the final prompt in this order:
 
 {context templates (go-service-context, etc.)}
 
-{gate templates (quality-gates, fintech-gates, etc.)}
+{gate templates (quality-gates, industry-gates, etc.)}
 
 {error-recovery if selected}
 

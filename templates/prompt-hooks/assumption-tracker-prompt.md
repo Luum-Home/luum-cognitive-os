@@ -13,7 +13,7 @@ Return ONLY valid JSON on a single line, no markdown formatting:
 
 Examples:
 
-Input: "I implemented the endpoint using ginext. Tests pass with go test ./..."
+Input: "I implemented the endpoint using the declared framework. Tests pass with go test ./..."
 Output: {"assumption_count": 0, "assumptions": [], "severity": "ok"}
 
 Input: "I assume the database is PostgreSQL. I'll assume the default port is 5432. The migration probably needs a new table."

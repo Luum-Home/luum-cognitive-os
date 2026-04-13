@@ -92,7 +92,7 @@ Six-dimension checklist: specs complete, design reviewed, tasks broken down, dep
 **Status**: Implemented
 **File**: `hooks/inject-phase-context.sh` (rewritten)
 
-Hook now injects full project context into every sub-agent: current phase from cognitive-os.yaml, architecture standards (ginext, clean arch, naming), all 7 constitutional gates, active squad assignment, project type. Prevents sub-agents from violating conventions they were never told about.
+Hook now injects full project context into every sub-agent: current phase from cognitive-os.yaml, architecture standards (declared framework, clean arch, naming), all 7 constitutional gates, active squad assignment, project type. Prevents sub-agents from violating conventions they were never told about.
 
 ### Pattern 4: Per-Agent Sidecars via Engram
 

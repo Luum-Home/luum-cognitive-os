@@ -1,3 +1,4 @@
+# scope: both
 """Session Parser -- reads Claude Code JSONL session files for real metrics.
 
 Extracts token counts, tool usage timings, subagent activity, and model

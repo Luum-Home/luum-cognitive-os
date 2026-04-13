@@ -1,3 +1,4 @@
+# scope: both
 """Paperclip REST API client for Cognitive OS dashboard integration.
 
 Paperclip is the UI layer for Cognitive OS. This client provides methods to

@@ -217,13 +217,13 @@ Verify the list is complete by cross-referencing with router configuration.
 
 ### Example 3: Architecture Compliance
 
-**Pattern detected**: Go service agents used `huma` framework instead of `ginext`.
+**Pattern detected**: Go service agents used a non-standard framework instead of the project's declared framework.
 
 **Root cause**: Models defaulted to popular Go frameworks without checking project conventions.
 
 **Fix applied**:
-1. Created `skills/go-service-patterns/` skill with ginext examples
-2. Added ginext check to `hooks/architecture-compliance.sh`
+1. Created `skills/go-service-patterns/` skill with framework-specific examples
+2. Added framework compliance check to `hooks/architecture-compliance.sh`
 3. Added contextual trigger: `*.go` files load go-architecture rule
 
 **Impact**: Architecture violations dropped from 40% to 0%.

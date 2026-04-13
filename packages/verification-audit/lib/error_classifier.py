@@ -1,3 +1,4 @@
+# scope: both
 """Structured error classification for Cognitive OS.
 
 Classifies error text and exit codes into structured categories with

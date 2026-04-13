@@ -53,7 +53,7 @@ These improve how individual agents perform their work.
 
 | Component | How It Maps |
 |-----------|-------------|
-| go-architecture rule | Go patterns (ginext, clean arch layers, naming) |
+| go-architecture rule | Go patterns (declared framework, clean arch layers, naming) |
 | architecture rule | project platform communication layers |
 | constitutional-gates | Immutable architectural principles |
 | phase-aware-agents | Architecture enforcement varies by project phase |

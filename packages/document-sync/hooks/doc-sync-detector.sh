@@ -49,12 +49,12 @@ CHANGE_TYPE=""
 # --- Controller changes ---
 if echo "$FILE_PATH" | grep -qE '(infrastructure/controllers/|controller\.go|controller\.ts|Controller\.java)'; then
   CHANGE_TYPE="controller"
-  STALE_DOCS="docs/backend-go/migration-audit.md docs/backend-go/feature-parity-report.md"
+  STALE_DOCS="docs/migration-audit.md docs/feature-parity-report.md"
 
 # --- Entity / domain model changes ---
 elif echo "$FILE_PATH" | grep -qE '(domain/entities/|entity\.go|_entity\.go|entity\.ts|Entity\.java)'; then
   CHANGE_TYPE="entity"
-  STALE_DOCS="docs/backend-go/migration-audit.md"
+  STALE_DOCS="docs/migration-audit.md"
 
 # --- Config changes ---
 elif echo "$FILE_PATH" | grep -qE '(config/|\.config\.ts|configuration\.ts|application\.properties|application\.yml)'; then
@@ -64,12 +64,12 @@ elif echo "$FILE_PATH" | grep -qE '(config/|\.config\.ts|configuration\.ts|appli
 # --- Use case changes ---
 elif echo "$FILE_PATH" | grep -qE '(application/use.?cases?/|_usecase\.go|usecase\.go|\.usecase\.ts|UseCase\.java)'; then
   CHANGE_TYPE="usecase"
-  STALE_DOCS="docs/backend-go/migration-audit.md docs/backend-go/feature-parity-report.md"
+  STALE_DOCS="docs/migration-audit.md docs/feature-parity-report.md"
 
 # --- Route / module changes ---
 elif echo "$FILE_PATH" | grep -qE '(\.module\.ts|routes\.go|router\.go|\.routes\.ts)'; then
   CHANGE_TYPE="route"
-  STALE_DOCS="docs/backend-go/migration-audit.md"
+  STALE_DOCS="docs/migration-audit.md"
 
 # --- Cognitive OS hooks ---
 elif echo "$FILE_PATH" | grep -qE '\hooks/'; then

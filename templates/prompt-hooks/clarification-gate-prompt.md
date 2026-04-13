@@ -25,13 +25,13 @@ Examples:
 Input: "Add auth to the project"
 Output: {"score": 70, "verdict": "BLOCK", "questions": ["Which files or directories should be modified?", "Which auth framework should be used (JWT, OAuth, session)?", "What are the acceptance criteria?"]}
 
-Input: "Implement GetUserByID in internal/users/application/use_cases/get_user_by_id.go using ginext. Acceptance criteria: go build exits 0, go test ./internal/users/... exits 0."
+Input: "Implement CreateOrder in internal/orders/application/use_cases/create_order.go using the declared framework. Acceptance criteria: go build exits 0, go test ./internal/orders/... exits 0."
 Output: {"score": 0, "verdict": "PASS", "questions": []}
 
 Input: "Fix all the bugs"
 Output: {"score": 75, "verdict": "BLOCK", "questions": ["Which bugs specifically? List file paths or error messages.", "How many bugs are in scope?", "What verification proves each bug is fixed?"]}
 
-Input: "Refactor the user service DTOs in internal/users/application/dtos/ to use the new naming convention. Tests must pass."
+Input: "Refactor the order service DTOs in internal/orders/application/dtos/ to use the new naming convention. Tests must pass."
 Output: {"score": 10, "verdict": "PASS", "questions": []}
 
 The agent prompt to evaluate:

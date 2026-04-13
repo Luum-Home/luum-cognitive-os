@@ -43,7 +43,7 @@ In phase `maintenance`: Plans required, human approval for anything > bug fix
 | Completeness | 10 | All requirements covered? |
 | Feasibility | 10 | Can be built with current tools? |
 | Risk Assessment | 10 | Risks identified with mitigations? |
-| Architecture Alignment | 10 | Follows clean architecture + ginext? |
+| Architecture Alignment | 10 | Follows clean architecture + declared framework? |
 | Test Coverage Plan | 10 | Tests defined for all scenarios? |
 
 ## Integration with Workflows

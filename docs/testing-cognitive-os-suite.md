@@ -113,7 +113,7 @@ LLM-evaluated via promptfoo. Requires `promptfoo` installed and `ANTHROPIC_API_K
 
 | Test | What It Checks |
 |------|----------------|
-| Go endpoint creation | Uses ginext, not chi/huma/echo |
+| Go endpoint creation | Uses the project's declared framework, not non-standard alternatives |
 | Handler pattern | Uses CreateHandler/ControllerInterface, not raw c.JSON() |
 | DTO location | application/ not domain/dtos/ |
 | Code review | Provides substantive feedback, not "looks good" |

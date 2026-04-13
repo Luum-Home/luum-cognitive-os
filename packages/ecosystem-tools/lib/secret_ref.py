@@ -1,3 +1,4 @@
+# scope: both
 """Resolve SecretRef objects in configuration dictionaries.
 
 A SecretRef is a dict with keys "source" and "id" that references

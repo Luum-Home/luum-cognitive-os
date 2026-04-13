@@ -202,7 +202,7 @@ Verdicts: score 0-29 = PASS, 30-60 = WARN, 61-100 = BLOCK.
 Input: "Add auth to the project"
 Output: {"score": 70, "verdict": "BLOCK", "questions": ["Which files should be modified?", "Which auth framework (JWT, OAuth, session)?", "What are the acceptance criteria?"]}
 
-Input: "Implement GetUserByID in internal/users/application/use_cases/get_user_by_id.go using ginext. Acceptance criteria: go build exits 0, go test ./internal/users/... exits 0."
+Input: "Implement CreateOrder in internal/orders/application/use_cases/create_order.go using the declared framework. Acceptance criteria: go build exits 0, go test ./internal/orders/... exits 0."
 Output: {"score": 0, "verdict": "PASS", "questions": []}
 
 ## Agent Prompt to Evaluate

@@ -47,7 +47,7 @@ Detected keywords: `auth`, `authentication`, `authorization`, `permission`, `cre
 
 ### MEDIUM (6-20 files)
 ```
-"Refactor the DTOs in internal/users/application/dtos/ to use the new naming convention"
+"Refactor the DTOs in internal/orders/application/dtos/ to use the new naming convention"
 ```
 - 1 directory reference -> score 5 -> MEDIUM (silent)
 

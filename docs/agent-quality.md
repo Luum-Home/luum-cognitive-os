@@ -11,7 +11,7 @@ When agents receive vague or ambiguous prompts, they consistently deliver minima
 | "Rebrand old-name to new-name" | Renames 3 obvious config files | Renames 203 occurrences across 37 files |
 | "Migrate endpoints to Go" | Migrates 10 endpoints | Migrates all 317 endpoints |
 | "Fix lint errors" | Fixes 5 easy ones | Fixes all 45 errors |
-| "Follow existing patterns" | Uses some patterns | Uses the exact ginext/clean-arch patterns |
+| "Follow existing patterns" | Uses some patterns | Uses the exact declared framework/clean-arch patterns |
 
 Root causes:
 1. Ambiguous prompts are interpreted minimally

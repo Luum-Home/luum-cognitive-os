@@ -141,7 +141,7 @@ ORCHESTRATOR ACTION REQUIRED: Re-launch the agent with this context:
 ---
 PITER REFINEMENT (attempt 2/3)
 Previous attempt failed with TEST_FAILURE:
-  FAIL: TestGetUserByID (expected 200, got 500)
+  FAIL: TestGetEntity (expected 200, got 500)
   FAIL: TestCreateOrder (panic: nil pointer)
 Instructions:
 1. Analyze WHY the previous attempt failed
@@ -159,7 +159,7 @@ Agent task failed after 3 attempts. Human intervention needed.
 Task: implement-user-endpoint
 Failure type: TEST_FAILURE
 Latest error:
-  FAIL: TestGetUserByID
+  FAIL: TestGetEntity
   FAIL: TestCreateOrder
 === END ESCALATION ===
 ```

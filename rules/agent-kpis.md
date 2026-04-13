@@ -112,8 +112,8 @@ These are automatic responses — the agent should suggest them when thresholds 
 - Low self-awareness: reinforce mandatory self-doubt in agent prompts
 
 ### Architecture Compliance
-- **What it measures**: % of Go services following the standard patterns (ginext, correct DTO layer, internal/ prefix)
-- **How to calculate**: Count services using ginext vs huma, DTOs in correct layer (application/dtos/), internal/ prefix usage
+- **What it measures**: % of services following the project's declared architecture patterns (per `cognitive-os.yaml -> project.architecture`)
+- **How to calculate**: Count services using the declared framework vs non-standard alternatives, DTOs in correct layer (application/dtos/), proper source root usage
 - **Target**: 100%
 - **Alert threshold**: <90%
 - **Data source**: `.claude/metrics/architecture-violations.jsonl`

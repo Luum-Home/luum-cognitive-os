@@ -1,3 +1,4 @@
+# scope: both
 """Agent Planning Poker — Multi-agent complexity estimation with consensus.
 
 Like human Planning Poker (Scrum), but 3 AI agents independently estimate

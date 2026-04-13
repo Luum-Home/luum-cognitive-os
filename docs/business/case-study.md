@@ -138,7 +138,7 @@ If Cognitive OS can decompose a 170-endpoint monolith in 1 day, it can do the sa
 Everything is documented:
 
 - `docs/cognitive-os/` — 12 documents covering architecture, tooling, strategy
-- `docs/backend-go/` — 10 documents covering migration, Docker, databases
+- Project-specific docs — covering migration, Docker, databases
 - `docs/research/` — 7 documents covering 70+ tools evaluated
 - `docs/mobile/` — 3 documents covering modernization
 
