@@ -1,3 +1,4 @@
+# scope: both
 """Agent Simulation Arena — end-to-end agent workflow simulation and evolution tracking.
 
 Runs scripted scenarios that simulate real developer workflows. Each scenario

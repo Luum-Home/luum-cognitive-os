@@ -80,7 +80,7 @@ PostToolUse hook on the Bash tool. Triggers on `go test`, `git commit`, `git pus
 
 ### Layer 2: Agent (test-coverage-enforcer.md)
 
-Activates when Go source files change in `backend-go/apps/`.
+Activates when Go source files change in the services root (per `cognitive-os.yaml -> project.architecture.services_root.go`).
 
 **What it does:**
 - Runs `go test -coverprofile` on the affected service
@@ -93,7 +93,7 @@ Activates when Go source files change in `backend-go/apps/`.
 
 ### Layer 3: GitHub Action (claude-pr-review.yml)
 
-Runs on every PR that touches `backend-go/apps/`.
+Runs on every PR that touches the Go services root.
 
 **What it does:**
 - Detects which Go services changed
@@ -141,4 +141,4 @@ Use the `/coverage-report` skill:
 
 ## Current Baseline
 
-See `docs/backend-go/coverage-baseline.md` for the current state of coverage across all 13 Go services.
+See the project's coverage baseline documentation for the current state of coverage across all Go services.

@@ -74,7 +74,7 @@ Based on `project.type` from `detected-stack.json`:
 
 | Project Type | Gates |
 |-------------|-------|
-| `fintech` | idempotency for all financial ops, audit trails mandatory, mock-before-integrate for payment providers |
+| `fintech` | idempotency for all financial ops, audit trails mandatory, mock-before-integrate for payment providers (example) |
 | `ecommerce` | inventory consistency checks, payment mock-first, order idempotency |
 | `healthcare` | HIPAA compliance reminders, PHI must be encrypted at rest, audit log every data access |
 | `saas` | multi-tenant data isolation, subscription state consistency |

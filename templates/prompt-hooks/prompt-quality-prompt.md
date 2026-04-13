@@ -19,7 +19,7 @@ Examples:
 Input: "Fix the bugs"
 Output: {"score": 10, "specificity": 0, "actionability": 10, "context": 0, "measurability": 0, "scope_clarity": 0, "level": "warning", "suggestions": ["Add specific file paths or function names", "Define acceptance criteria with verification commands", "Specify bounded scope (which bugs, how many)"]}
 
-Input: "Implement GetUserByID in internal/users/application/use_cases/get_user_by_id.go using ginext. Follow the existing repository pattern. Acceptance criteria: go build exits 0, go test ./internal/users/... exits 0."
+Input: "Implement CreateOrder in internal/orders/application/use_cases/create_order.go using the declared framework. Follow the existing repository pattern. Acceptance criteria: go build exits 0, go test ./internal/orders/... exits 0."
 Output: {"score": 90, "specificity": 20, "actionability": 20, "context": 15, "measurability": 20, "scope_clarity": 15, "level": "good", "suggestions": []}
 
 Input: "Refactor all the services to use the new pattern"

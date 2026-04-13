@@ -80,11 +80,11 @@ Separate section listing exact commands to run after completion:
 
 ```
 VERIFICATION (run ALL, ALL must pass):
-1. grep -rl 'old-name'' backend-go/apps/ --include='*.go' | wc -l
+1. grep -rl 'old-name'' ${SERVICES_ROOT}/ --include='*.go' | wc -l
    Expected: 0
-2. cd backend-go && go build ./...
+2. go build ./...
    Expected: exit code 0
-3. cd backend-go && go test ./... -short
+3. go test ./... -short
    Expected: exit code 0
 ```
 
@@ -152,7 +152,7 @@ The skill would:
 The skill would:
 1. Run `find payments/src/routes/wallet -name '*.ts'` to enumerate source endpoints
 2. Run `grep -r 'router\.\(get\|post\|put\|delete\)' payments/src/routes/wallet/` to count
-3. Check existing Go endpoints with `find backend-go/apps/wallet -name '*_controller.go'`
+3. Check existing Go endpoints with `find ${SERVICES_ROOT}/wallet -name '*_controller.go'`
 4. Calculate delta: remaining = source - existing
 5. Generate per-endpoint migration instructions
 6. Create acceptance criteria based on endpoint count parity

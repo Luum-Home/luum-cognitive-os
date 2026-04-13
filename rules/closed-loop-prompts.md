@@ -236,14 +236,14 @@ closed_loop:
 
 ```
 ## Success Criteria
-- [ ] New endpoint GET /api/users/:id returns 200 with user data
-- [ ] Unit test for GetUserByID use case passes
+- [ ] New endpoint GET /api/orders/:id returns 200 with order data
+- [ ] Unit test for CreateOrder use case passes
 - [ ] No lint errors in new files
 
 ## Verification
-yarn test --filter="GetUserByID"
-yarn lint src/users/
-curl -s localhost:3001/api/users/test-id | jq .status
+yarn test --filter="CreateOrder"
+yarn lint src/orders/
+curl -s localhost:3001/api/orders/test-id | jq .status
 ```
 
 ### Bad: Vague and Unverifiable

@@ -51,7 +51,7 @@ Each agent follows an identical pattern:
 
 1. Read monolith domain (use cases, routes, data access)
 2. Research open-source tools that apply (from `docs/research/`)
-3. Create Go service in `backend-go/apps/{domain}/`
+3. Create Go service in `${SERVICES_ROOT}/{domain}/`
 4. Follow core-backend clean architecture (skills loaded)
 5. Implement mock provider via plugin architecture
 6. Add Kafka consumers/producers for events
@@ -129,6 +129,6 @@ If the session crashes mid-decomposition:
 | Doc | Description |
 |-----|-------------|
 | [README.md](README.md) | Cognitive OS architecture: 13 components, self-improvement loop |
-| [../backend-go/migration-audit.md](../backend-go/migration-audit.md) | Current state: 251 original endpoints vs 79 Go, per-feature status |
+| Project migration audit | Current state: endpoint migration progress, per-feature status |
 | [../plan-descomposicion-monolith.md](../plan-descomposicion-monolith.md) | Original decomposition plan: domains, phases, architecture target |
 | [../ai-ecosystem/overview.md](../ai-ecosystem/overview.md) | Self-improvement loop: how agents get better over time |

@@ -52,7 +52,7 @@ Questions generated:
 ### WARNED (score 30-60)
 
 ```
-"Add JWT authentication to src/auth/ using Go and ginext"
+"Add JWT authentication to src/auth/ using Go and the project's HTTP framework"
 ```
 - Has file paths (0)
 - Has tech specification (0)
@@ -62,12 +62,12 @@ Questions generated:
 ### PASSED (score < 30)
 
 ```
-"Implement GetUserByID use case in internal/users/application/use_cases/get_user_by_id.go using ginext.
+"Implement CreateOrder use case in internal/orders/application/use_cases/create_order.go using the declared framework.
 
 ACCEPTANCE CRITERIA:
 1. `go build ./...` exits 0
-2. `go test ./internal/users/...` exits 0
-3. Endpoint GET /api/users/:id returns 200 with user data"
+2. `go test ./internal/orders/...` exits 0
+3. Endpoint POST /api/orders returns 201 with order data"
 ```
 - Has file paths (0)
 - Has tech (0)

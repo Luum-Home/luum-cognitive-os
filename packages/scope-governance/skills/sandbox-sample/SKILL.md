@@ -74,7 +74,7 @@ Select 3-5 representative files per type. The sample MUST cover edge cases.
 ```
 SAMPLE SET (12 files from 210 total):
   code (4/147):
-    - pkg/tools/ginext/builder.go (smallest, 45 lines)
+    - pkg/tools/http/builder.go (smallest, 45 lines)
     - cmd/main.go (largest, 320 lines)
     - internal/application/auth_usecase.go (complex, 8 occurrences)
     - pkg/sdks/users/client.go (cross-boundary, imports target)

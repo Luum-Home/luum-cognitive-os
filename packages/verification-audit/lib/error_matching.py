@@ -1,3 +1,4 @@
+# scope: both
 """
 Error signature matching for the Cognitive OS error learning system.
 

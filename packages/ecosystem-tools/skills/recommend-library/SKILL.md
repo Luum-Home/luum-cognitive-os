@@ -121,6 +121,6 @@ When recommending libraries, consider the existing project stack:
 - **NestJS 10** — prefer NestJS-native modules when available
 - **Spring Boot 3.0.6 / Java 17** — check Java version compatibility
 - **Express.js** — check middleware compatibility
-- **Go (ginext)** — check compatibility with Gin framework
+- **Go** — check compatibility with the project's declared HTTP framework
 
 Always check if a similar library is already in the project's dependencies before recommending a new one.

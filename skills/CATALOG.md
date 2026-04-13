@@ -161,7 +161,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 
 | Skill | Description | Generated For |
 |-------|-------------|---------------|
-| framework-patterns | Framework-specific patterns (ginext, NestJS, Spring Boot, etc.) | All projects |
+| framework-patterns | Framework-specific patterns (per `cognitive-os.yaml -> project.architecture.frameworks`) | All projects |
 | start-stack | Start the full local stack | Multi-service projects |
 | check-health | Health check with project endpoints | All projects |
 | add-mock-provider | Add mock for external provider | Projects with external APIs |
@@ -292,3 +292,4 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **vulnerability-scan** — Run LLM vulnerability probes using Garak against configured endpoints
 - **web-crawler** — >
 - **webhook-trigger** — GitHub webhook server that receives issue events and launches SDD pipelines automatically via ClaudeExecutor.
+- **agent-dashboard** — Show real-time status of all running background agents

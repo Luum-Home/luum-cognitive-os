@@ -1,3 +1,4 @@
+# scope: both
 """Phase Timing — wall-clock measurement and cost estimation for SDD phases.
 
 Provides a context manager for timing phases, ASCII table rendering,

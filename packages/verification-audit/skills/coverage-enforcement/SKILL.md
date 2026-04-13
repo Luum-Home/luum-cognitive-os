@@ -13,7 +13,7 @@ audience: project
 
 ## Purpose
 
-Run Go test coverage across all backend-go services, enforce minimum thresholds from `cognitive-os.yaml`, and generate a per-package coverage report with actionable guidance on what needs more tests.
+Run Go test coverage across all Go services (per `cognitive-os.yaml -> project.architecture.services_root.go`), enforce minimum thresholds, and generate a per-package coverage report with actionable guidance on what needs more tests.
 
 ## Invocation
 
@@ -29,14 +29,14 @@ Run Go test coverage across all backend-go services, enforce minimum thresholds 
 ### 1. Read Configuration
 
 Read `cognitive-os.yaml` from the project root to get:
-- `project.architecture.services_root.go` — root path for Go services (default: `backend-go/apps`)
+- `project.architecture.services_root.go` — root path for Go services (default: `apps`)
 - `quality.coverage.minimum` — global minimum coverage % (default: 80)
 - `quality.coverage.per_package` — whether to enforce per-package (default: true)
 - `quality.coverage.exclude` — glob patterns to exclude from enforcement
 
-If `cognitive-os.yaml` is missing, use defaults: `backend-go/apps` services root, 80% minimum, per-package enforcement, exclude `*/mocks/*`, `*/test/*`, `cmd/*`.
+If `cognitive-os.yaml` is missing, use defaults: `apps` services root, 80% minimum, per-package enforcement, exclude `*/mocks/*`, `*/test/*`, `cmd/*`.
 
-Store the services root in a variable: `SERVICES_ROOT` (read from config, fallback to `backend-go/apps`).
+Store the services root in a variable: `SERVICES_ROOT` (read from config, fallback to `apps`).
 
 ### 2. Discover Services
 
@@ -119,7 +119,7 @@ Suggested tests for cards:
 
 Show current config:
 ```
-Threshold: 80% (from cognitive-os.yaml, preset: fintech)
+Threshold: 80% (from cognitive-os.yaml)
 Per-package: true
 Excluded: */mocks/*, */test/*, cmd/*
 ```

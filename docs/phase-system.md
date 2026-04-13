@@ -44,8 +44,8 @@ To change the phase, edit the `phase` field. All agents will immediately use the
 The `architecture-compliance.sh` hook (PostToolUse on Agent) automatically checks agent output for violations:
 
 **Detected violations:**
-- Using `huma` instead of `ginext`
-- Using `chi` directly instead of `ginext` router
+- Using a non-standard framework instead of the project's declared framework
+- Using a low-level router directly instead of the declared framework's router
 - DTOs placed in `domain/dtos/` instead of `application/dtos/`
 - App code missing `internal/` prefix
 
@@ -79,7 +79,7 @@ Architecture compliance is tracked as a KPI:
 
 | From | To | When |
 |------|----|------|
-| reconstruction | stabilization | All services follow ginext standard, core patterns established |
+| reconstruction | stabilization | All services follow the declared framework standard, core patterns established |
 | stabilization | production | Coverage targets met, no outstanding architecture violations |
 | production | maintenance | Feature development paused, only ops work |
 | maintenance | reconstruction | Major overhaul planned |

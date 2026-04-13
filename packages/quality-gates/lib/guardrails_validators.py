@@ -1,3 +1,4 @@
+# scope: both
 """Guardrails AI validators for the Cognitive OS safety mesh.
 
 Wraps guardrails-ai validators for PII detection, jailbreak detection,

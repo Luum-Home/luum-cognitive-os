@@ -1,3 +1,4 @@
+# scope: both
 """License Auto-Guard -- Enforce license policy on dependencies.
 
 Checks licenses against blocked/caution lists, auto-blocks in

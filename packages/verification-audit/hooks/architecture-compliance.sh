@@ -54,13 +54,13 @@ while IFS= read -r go_file; do
 
   # Check for huma import
   if echo "$AGENT_OUTPUT" | grep -q "danielgtaylor/huma"; then
-    VIOLATIONS="${VIOLATIONS}VIOLATION: $go_file uses huma instead of ginext\n"
+    VIOLATIONS="${VIOLATIONS}VIOLATION: $go_file uses non-standard framework (huma) instead of the declared framework\n"
     VIOLATION_COUNT=$((VIOLATION_COUNT + 1))
   fi
 
   # Check for chi import
   if echo "$AGENT_OUTPUT" | grep -q "go-chi/chi"; then
-    WARNINGS="${WARNINGS}WARNING: $go_file uses chi directly instead of ginext router\n"
+    WARNINGS="${WARNINGS}WARNING: $go_file uses chi directly instead of the declared framework router\n"
     WARNING_COUNT=$((WARNING_COUNT + 1))
   fi
 

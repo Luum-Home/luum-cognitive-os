@@ -1,3 +1,4 @@
+# scope: both
 """Estimation calibration loop for Cognitive OS.
 
 Records pre-task estimates and post-task actuals, computes calibration

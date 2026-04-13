@@ -1,3 +1,4 @@
+# scope: both
 """Session State Persistence — survives compaction and crashes.
 
 Manages `.cognitive-os/session-state.json` so a new session can recover

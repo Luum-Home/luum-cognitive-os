@@ -1,3 +1,4 @@
+# scope: both
 """Claude Usage Reader -- reads ground-truth token usage from Claude Code sessions.
 
 Reads ~/.claude/projects/*.jsonl to get actual token consumption, costs,

@@ -1,3 +1,4 @@
+# scope: both
 """Change Impact Analysis module.
 
 Given a list of changed files, analyzes:

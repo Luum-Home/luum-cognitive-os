@@ -54,7 +54,7 @@ Everything here is tied to THIS project's stack and infrastructure.
 - `architecture.md` -- Service communication flow, dependency rules
 - `constitutional-gates.md` -- Industry-specific immutable gates
 - `services-config.md` -- Ports, credentials, environment variables
-- `go-architecture.md` -- Framework-specific conventions (ginext, chi, etc.)
+- `go-architecture.md` -- Framework-specific conventions (per `cognitive-os.yaml -> project.architecture.frameworks`)
 - `testing-local.md` -- Test infrastructure setup (WireMock, TestContainers, etc.)
 
 **Skills**:

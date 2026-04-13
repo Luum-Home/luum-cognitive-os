@@ -1,3 +1,4 @@
+# scope: both
 """Capability Levels — Auto-disable components based on model capability level.
 
 Capability levels allow the system to automatically disable rules/hooks that are

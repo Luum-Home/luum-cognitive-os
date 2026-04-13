@@ -1,3 +1,4 @@
+# scope: both
 """Homeostasis — Continuous Self-Regulation for Cognitive OS.
 
 Like biological homeostasis (temperature, pH, blood sugar), this module

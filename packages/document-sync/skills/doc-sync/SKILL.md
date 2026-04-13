@@ -63,7 +63,7 @@ Updated N documents based on M code changes:
 
 | Document | Changes Applied | Source Files |
 |----------|----------------|--------------|
-| docs/backend-go/migration-audit.md | Updated endpoint list | apps/wallet/infrastructure/controllers/wallet_controller.go |
+| docs/migration-audit.md | Updated endpoint list | apps/wallet/infrastructure/controllers/wallet_controller.go |
 | ... | ... | ... |
 
 Remaining stale entries: X (if any failed)
