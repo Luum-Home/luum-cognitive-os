@@ -2,7 +2,7 @@
 
 This is an EXAMPLE template. Projects should create their own industry-specific gates.
 
-For a fintech project, you might include:
+For a financial services project, you might include:
 - Idempotency for financial operations
 - Audit trails for money movement
 - Mock-first for external provider integrations

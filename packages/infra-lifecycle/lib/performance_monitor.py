@@ -1,3 +1,4 @@
+# scope: both
 """Performance Monitor — latency, throughput, and efficiency tracking for Cognitive OS.
 
 The "Micrometer/Actuator" equivalent for Agent OS: like Spring Boot monitors

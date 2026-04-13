@@ -1,3 +1,4 @@
+# scope: both
 """LiteLLM Proxy Client — Route non-Claude models through LiteLLM gateway.
 
 Provides an OpenAI-compatible chat completion interface via the LiteLLM

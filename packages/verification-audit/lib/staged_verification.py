@@ -1,3 +1,4 @@
+# scope: both
 """Staged Verification for Cognitive OS.
 
 Runs cheap verification checks first (syntax, lint) and only proceeds to

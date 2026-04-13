@@ -1,3 +1,4 @@
+# scope: both
 """Symbiosis Monitor — Overhead-to-Value Ratio Tracking
 
 A symbiotic organism provides more value than it consumes.

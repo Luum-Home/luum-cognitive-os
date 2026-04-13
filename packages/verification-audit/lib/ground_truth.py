@@ -1,3 +1,4 @@
+# scope: both
 """Ground Truth Checker — Verify agent claims against filesystem reality.
 
 Extracts verifiable claims from agent output (file creation, test counts,

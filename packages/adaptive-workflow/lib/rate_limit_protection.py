@@ -1,3 +1,4 @@
+# scope: both
 """Rate Limit Protection — Detect approaching API rate limits and auto-pause.
 
 Monitors token consumption per session and warns/pauses before hitting

@@ -1,3 +1,4 @@
+# scope: both
 """Engagement-weighted scoring engine for research results.
 
 Adapted from the Sprut Agent Kit last30days scoring pattern.

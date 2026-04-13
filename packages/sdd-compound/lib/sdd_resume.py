@@ -1,3 +1,4 @@
+# scope: both
 """SDD Pipeline Resume — state management and phase continuation.
 
 Loads SDD state from Engram, determines next phase, and persists

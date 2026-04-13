@@ -49,7 +49,7 @@ Agents classify tasks at the START of work. If unsure, classify UP (safer).
 | `code_compiles` | All affected services build | Build commands exit 0 |
 | `unit_tests_80_percent` | Coverage >= 80% on new code | Coverage report shows >= 80% |
 | `integration_tests` | Integration tests written and pass | `go test -tags=integration` or equivalent |
-| `architecture_compliance` | No architecture violations | No huma/chi imports, clean arch layers respected |
+| `architecture_compliance` | No architecture violations | No non-standard framework imports, clean arch layers respected |
 | `docs_updated` | Architecture docs and READMEs updated | Modified `.md` files present |
 | `adversarial_review` | Adversarial review completed | Output contains BLOCKER/CONCERN/SUGGESTION labels |
 
