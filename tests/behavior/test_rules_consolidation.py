@@ -30,7 +30,7 @@ SKILLS_DIR = PROJECT_ROOT / "skills"
 COMPACT_PATH = RULES_DIR / "RULES-COMPACT.md"
 
 # Current known count as of pre-consolidation snapshot
-EXPECTED_RULE_COUNT = len(list(Path(__file__).resolve().parents[2].joinpath("rules").glob("*.md")))
+EXPECTED_RULE_COUNT = len(list(PROJECT_ROOT.joinpath("rules").glob("*.md")))
 
 # Rules that are newly added and not yet fully integrated (no symlink, no COMPACT ref)
 # These are tracked so consolidation does not lose them
@@ -60,25 +60,45 @@ CORE_RULES = {
     "result-management.md",
 }
 
-# Rules fully enforced by registered hooks — intentionally excluded from agent context
-# (symlinks and COMPACT narrative refs removed; rule .md files remain as documentation).
-# Must match EXCLUDED_RULES in hooks/self-install.sh exactly.
-EXCLUDED_RULES = {
-    "anti-hallucination.md",
-    "auto-repair.md",
-    "auto-skill-generation.md",
-    "crash-recovery.md",
-    "prompt-quality.md",
-    "skill-rewrite.md",
-    "pre-dev-readiness-gate.md",
-    "audit-trail.md",
-    "doc-sync.md",
-    "pre-commit-gate.md",
-    "scope-creep-detection.md",
-    "assumption-tracking.md",
-}
-# NOTE: blast-radius, clarification-gate, content-policy, rate-limiting, result-management
-# are hook-enforced BUT kept in CORE_RULES (proactive > reactive decision 2026-04-10)
+
+def _parse_excluded_rules_from_self_install() -> set[str]:
+    """Parse EXCLUDED_RULES array from hooks/self-install.sh at test runtime.
+
+    This is the single source of truth for which rules are excluded from cos/
+    symlinks. Parsing it dynamically prevents this test from drifting whenever
+    self-install.sh is updated.
+
+    The shell array uses the format:
+        EXCLUDED_RULES=(
+          "rule-name.md"  # optional comment
+          ...
+        )
+    """
+    self_install = PROJECT_ROOT / "hooks" / "self-install.sh"
+    if not self_install.exists():
+        return set()
+
+    text = self_install.read_text()
+    # Find the EXCLUDED_RULES=( block — the closing ) is on its own line after ~90 entries.
+    # We can't use .*?\) because comments contain parentheses like (PostToolUse Agent).
+    # Instead, find the start and scan for the closing ^) on its own line.
+    start = text.find("EXCLUDED_RULES=(")
+    if start == -1:
+        return set()
+    # Find the closing ) that's at the start of a line (possibly after whitespace)
+    block_start = text.index("(", start) + 1
+    close = re.search(r'^\)', text[block_start:], re.MULTILINE)
+    if not close:
+        return set()
+    block = text[block_start:block_start + close.start()]
+    # Extract quoted .md filenames, stripping inline comments
+    filenames = re.findall(r'"([a-z0-9._-]+\.md)"', block)
+    return set(filenames)
+
+
+# Rules intentionally excluded from cos/ symlinks — parsed from hooks/self-install.sh
+# so this test always stays in sync with the actual enforcement layer.
+EXCLUDED_RULES = _parse_excluded_rules_from_self_install()
 
 
 def _get_rule_files() -> list[Path]:
