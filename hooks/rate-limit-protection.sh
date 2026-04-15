@@ -33,38 +33,46 @@ AGENTS_USED=0
 CUTOFF_EPOCH=$(date -v-1H +%s 2>/dev/null || date -d '1 hour ago' +%s 2>/dev/null || echo 0)
 
 if [[ -f "$COST_EVENTS" ]]; then
-    while IFS= read -r line; do
-        [[ -z "$line" ]] && continue
-        ts=$(echo "$line" | python3 -c "
-import sys, json
+    read -r TOKENS_USED AGENTS_USED < <(python3 - "$COST_EVENTS" "$CUTOFF_EPOCH" <<'PYEOF'
+import sys
 from datetime import datetime, timezone
+
+filepath, cutoff_str = sys.argv[1], sys.argv[2]
+cutoff = int(cutoff_str)
+tokens_used = 0
+agents_used = 0
+
 try:
-    e = json.load(sys.stdin)
-    t = datetime.fromisoformat(e.get('timestamp',''))
-    if t.tzinfo is None:
-        t = t.replace(tzinfo=timezone.utc)
-    print(int(t.timestamp()))
-except: print(0)
-" 2>/dev/null || echo 0)
-        if [[ "$ts" -ge "$CUTOFF_EPOCH" ]]; then
-            tok=$(echo "$line" | python3 -c "
-import sys, json
-try:
-    e = json.load(sys.stdin)
-    print(e.get('total_tokens', 0) or (e.get('input_tokens',0) + e.get('output_tokens',0)))
-except: print(0)
-" 2>/dev/null || echo 0)
-            TOKENS_USED=$((TOKENS_USED + tok))
-            is_agent=$(echo "$line" | python3 -c "
-import sys, json
-try:
-    e = json.load(sys.stdin)
-    print(1 if e.get('action') == 'agent_launch' else 0)
-except: print(0)
-" 2>/dev/null || echo 0)
-            AGENTS_USED=$((AGENTS_USED + is_agent))
-        fi
-    done < "$COST_EVENTS"
+    import json
+    with open(filepath) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                e = json.loads(line)
+            except Exception:
+                continue
+            try:
+                t = datetime.fromisoformat(e.get('timestamp', ''))
+                if t.tzinfo is None:
+                    t = t.replace(tzinfo=timezone.utc)
+                ts = int(t.timestamp())
+            except Exception:
+                ts = 0
+            if ts >= cutoff:
+                tok = e.get('total_tokens', 0) or (e.get('input_tokens', 0) + e.get('output_tokens', 0))
+                tokens_used += tok or 0
+                if e.get('action') == 'agent_launch':
+                    agents_used += 1
+except Exception:
+    pass
+
+print(tokens_used, agents_used)
+PYEOF
+    ) 2>/dev/null || true
+    TOKENS_USED="${TOKENS_USED:-0}"
+    AGENTS_USED="${AGENTS_USED:-0}"
 fi
 
 # Calculate percentage
