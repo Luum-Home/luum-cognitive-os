@@ -1,1 +1,1 @@
-<repo>/rules/closed-loop-prompts.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/closed-loop-prompts.md
