@@ -1,1 +1,1 @@
-<repo>/rules/trust-score.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/trust-score.md

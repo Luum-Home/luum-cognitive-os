@@ -1,1 +1,1 @@
-<repo>/rules/error-learning.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/error-learning.md
