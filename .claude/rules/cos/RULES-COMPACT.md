@@ -1,1 +1,1 @@
-/Users/matias.nahuel.amendola/Projects/luum/luum-agent-os/rules/RULES-COMPACT.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/RULES-COMPACT.md
