@@ -1,1 +1,1 @@
-<repo>/rules/adversarial-review.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/adversarial-review.md

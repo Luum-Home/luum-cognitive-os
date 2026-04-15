@@ -1,1 +1,1 @@
-<repo>/rules/definition-of-done.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/definition-of-done.md
