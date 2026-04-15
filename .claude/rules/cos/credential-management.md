@@ -1,1 +1,1 @@
-<repo>/rules/credential-management.md
+<operator-repo-path>/.claude/worktrees/romantic-allen/rules/credential-management.md

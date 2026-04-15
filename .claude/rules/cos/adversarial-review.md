@@ -1,1 +1,1 @@
-<repo>/rules/adversarial-review.md
+<operator-repo-path>/.claude/worktrees/romantic-allen/rules/adversarial-review.md

@@ -1,1 +1,1 @@
-<repo>/rules/token-economy.md
+<operator-repo-path>/.claude/worktrees/romantic-allen/rules/token-economy.md

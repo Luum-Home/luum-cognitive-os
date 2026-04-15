@@ -1,1 +1,1 @@
-<repo>/rules/agent-output-reading.md
+<operator-repo-path>/.claude/worktrees/romantic-allen/rules/agent-output-reading.md

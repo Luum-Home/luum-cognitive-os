@@ -1,1 +1,1 @@
-<repo>/rules/adaptive-bypass.md
+<operator-repo-path>/.claude/worktrees/romantic-allen/rules/adaptive-bypass.md
