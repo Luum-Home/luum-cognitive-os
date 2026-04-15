@@ -55,7 +55,6 @@ except Exception:
         echo "$_HEALTH_OUTPUT" >&2
     fi
 }
-trap '_drain_queue' EXIT
 # Paperclip notification helper for safety mesh blocks (Gap 5)
 _PAPERCLIP_LIB="$(dirname "$0")/_lib/paperclip-notify.sh"
 [ -f "$_PAPERCLIP_LIB" ] && source "$_PAPERCLIP_LIB"
@@ -86,6 +85,9 @@ command -v jq &>/dev/null || exit 0
 
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)
 [ "$TOOL_NAME" != "Agent" ] && exit 0
+
+# Set trap AFTER early-exit checks — only Agent tool calls need queue draining
+trap '_drain_queue' EXIT
 
 RESPONSE=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
 if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
