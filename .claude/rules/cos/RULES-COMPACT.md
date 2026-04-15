@@ -1,1 +1,1 @@
-<repo>/rules/RULES-COMPACT.md
+<operator-repo-path>/.claude/worktrees/romantic-allen/rules/RULES-COMPACT.md

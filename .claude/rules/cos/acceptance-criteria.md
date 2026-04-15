@@ -1,1 +1,1 @@
-<repo>/rules/acceptance-criteria.md
+<operator-repo-path>/.claude/worktrees/romantic-allen/rules/acceptance-criteria.md
