@@ -1,1 +1,1 @@
-<repo>/rules/agent-output-reading.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/agent-output-reading.md

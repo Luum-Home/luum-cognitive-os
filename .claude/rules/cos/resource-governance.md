@@ -1,1 +1,1 @@
-<repo>/rules/resource-governance.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/resource-governance.md

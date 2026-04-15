@@ -1,1 +1,1 @@
-<repo>/rules/token-economy.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/token-economy.md
