@@ -1,0 +1,45 @@
+# Architecture Decision Records
+
+Retroactive ADRs reconstructed from engram memory (309 decision/architecture entries) and git history (252 commits, Mar 23 - Apr 13, 2026).
+
+ADRs 001-005 live in `docs/architecture/cos-dispatch/adrs/` and cover the COS dispatch subsystem.
+
+## Project-Level ADRs
+
+| ADR | Date | Title | Status |
+|-----|------|-------|--------|
+| [006](006-agpl-license-compliance.md) | 2026-03-23 | AGPL License Compliance -- Replace Redis and MinIO | Accepted |
+| [007](007-cognitive-os-rebrand.md) | 2026-03-24 | Rebrand from Agent OS to Cognitive OS | Accepted |
+| [008](008-multi-tool-support.md) | 2026-03-28 | Multi-Tool Support -- Not Claude Code-Only | Accepted |
+| [009](009-package-architecture.md) | 2026-03-28 | Package Architecture -- 375 Components Reclassified | Accepted |
+| [010](010-hook-architecture-v2.md) | 2026-03-28 | Hook Architecture v2 -- 7 Event Types, 3 Profiles | Accepted |
+| [011](011-dual-gateway-bifrost-litellm.md) | 2026-03-28 | Dual Gateway -- Bifrost Primary, LiteLLM Fallback | Accepted |
+| [012](012-prompt-driven-governance.md) | 2026-03-29 | Prompt-Driven Governance -- Declarative Hook Logic | Accepted |
+| [013](013-security-stack.md) | 2026-03-29 | Security Stack -- 8 Layers, 32 Tools | Accepted |
+| [014](014-sdd-fast-path.md) | 2026-03-31 | SDD Fast Path -- Skip Phases for Capable Models | Accepted |
+| [015](015-rules-to-hooks-migration.md) | 2026-04-10 | Rules-to-Hooks Migration -- Context to Enforcement | Accepted |
+| [016](016-context-diet.md) | 2026-03-31 | Context Diet -- Token Optimization Strategy | Accepted |
+| [017](017-stabilization-freeze.md) | 2026-04-11 | Stabilization Freeze -- No New Features | Accepted |
+| [018](018-docker-to-pip-migration.md) | 2026-04-11 | Docker-to-pip Migration -- Service Infrastructure | Accepted |
+| [019](019-scope-tagging.md) | 2026-04-13 | Scope Tagging -- Component Audience Classification | Accepted |
+| [020](020-contamination-fix.md) | 2026-04-13 | Contamination Fix -- Remove Project-Specific Code | Accepted |
+
+## Decision Timeline
+
+```
+Mar 23  ADR-006  AGPL license compliance
+Mar 24  ADR-007  Cognitive OS rebrand
+Mar 28  ADR-008  Multi-tool support decision
+        ADR-009  Package architecture (375 -> 82 CORE + 227 PACKAGE)
+        ADR-010  Hook architecture v2 (began, completed Apr 13)
+        ADR-011  Dual gateway (Bifrost + LiteLLM)
+Mar 29  ADR-012  Prompt-driven governance
+        ADR-013  Security stack (8 layers, 32 tools)
+Mar 31  ADR-014  SDD fast path
+        ADR-016  Context diet (3-level efficiency)
+Apr 10  ADR-015  Rules-to-hooks migration
+Apr 11  ADR-017  Stabilization freeze
+        ADR-018  Docker-to-pip migration
+Apr 13  ADR-019  Scope tagging
+        ADR-020  Contamination fix
+```
