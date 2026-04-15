@@ -1,1 +1,1 @@
-<repo>/rules/phase-aware-agents.md
+<operator-repo-path>/.claude/worktrees/romantic-allen/rules/phase-aware-agents.md

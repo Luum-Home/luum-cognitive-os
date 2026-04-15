@@ -1,0 +1,43 @@
+# ADR-017: Stabilization Freeze -- No New Features Until Wiring Complete
+
+**Date:** 2026-04-11
+**Status:** Accepted
+**Commits:** f49731d, abccc8f
+**Engram IDs:** 5319, 5889
+
+## Context
+
+After 18 days of rapid development, the OS had accumulated 375+ components but many were not wired into the running system. A reality audit revealed: 82 unwired libs, 17 unregistered hooks, 14 phantom skills (referenced but not present), and 292 failing tests. Each session added new components but the wiring rate was declining. Dead code accumulated. The user declared the OS "unmanageable" -- components were built but could not be trusted to work because there was no automated enforcement preventing unwired components from accumulating.
+
+## Decision
+
+Declare a stabilization freeze: no new features until the existing system is fully wired, tested, and validated. The phase transition was from "reconstruction" to "stabilization."
+
+**Mega plan**: 6 phases across ~10 sessions, targeting 43% wiring to 90%:
+1. **Foundation**: Pre-commit hooks (ruff, vulture), automated enforcement gates.
+2. **Catalog cleanup**: Remove phantom skills, dead references, orphaned configs.
+3. **Critical wiring**: Connect the 82 unwired libs to their consumers.
+4. **Lib triage**: Evaluate each unwired lib -- wire, archive, or delete.
+5. **CI pipeline**: Automated validation on every commit.
+6. **Runtime validation**: Health checks confirming components work at runtime, not just at import time.
+
+**Enforcement mechanisms added**:
+- Wiring validator hook: detects unregistered components at commit time.
+- Registration check: BLOCKS commits with unregistered hooks (upgraded from warning to enforcement).
+- Component usage tracker: identifies dead weight components.
+
+## Alternatives Considered
+
+- **Continue feature development with parallel stabilization**: Keeps momentum but the wiring gap widens faster than it closes. Each new feature adds components that need wiring. Rejected as unsustainable.
+- **Archive everything unwired and start clean**: Drastic but eliminates the debt. Rejected because many unwired components are valuable -- they just need connection points.
+- **Hire/assign someone to stabilization while features continue**: Not applicable to a solo developer project.
+
+## Consequences
+
+- Feature development stopped for multiple sessions, allowing focused stabilization work.
+- Test failures dropped from 292 to single digits through systematic fix sessions.
+- The enforcement gates (pre-commit, registration check) created a ratchet effect: once wired, components cannot silently become unwired.
+- The stabilization process itself generated valuable patterns: the Docker-to-pip migration (ADR-018), scope tagging (ADR-019), and contamination fix (ADR-020) all emerged as stabilization work items.
+- The fundamental lesson was documented: building components is easy, wiring them into a working system is the hard part.
+
+> **Note:** Commits after the freeze date include `feat:` prefixes for stabilization work (scope tagging, Docker-to-pip Phase 2, audit enforcement). These are stabilization/wiring tasks, not new user-facing features. The freeze was followed in spirit — test failures dropped from 292 to 6 (commit `a06b7ef`).
