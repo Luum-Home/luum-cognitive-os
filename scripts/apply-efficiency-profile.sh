@@ -116,7 +116,8 @@ build_settings() {
         "session-resume.sh" \
         "orchestrator-mode-detect.sh" \
         "usage-health-check.sh" \
-        "ecosystem-check.sh")
+        "ecosystem-check.sh" \
+        "pattern-check.sh")
       ;;
   esac
 
