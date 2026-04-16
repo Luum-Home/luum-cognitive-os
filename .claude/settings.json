@@ -29,11 +29,6 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/mcp-scan.sh\"",
             "async": true
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pattern-check.sh\"",
-            "async": true
           }
         ]
       }
@@ -158,11 +153,6 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-detector.sh\"",
-            "async": true
           }
         ]
       },
@@ -306,6 +296,39 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-recorder.sh\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/teammate-idle.sh\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "TaskCreated": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-created.sh\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\"",
             "async": true
           }
         ]
