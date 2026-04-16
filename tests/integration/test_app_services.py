@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 """Integration tests for Cognitive OS application-layer services.
 
 Tests that each application service starts correctly with its dependencies
