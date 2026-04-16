@@ -309,6 +309,52 @@ Topic keys for searching:
 
 ---
 
+## P0 — Harness Adoption Gap (2026-04-16, Phase 5 sprint feedback)
+
+**Status:** 🔴 Blocks real-world adoption. Elevated from BACKLOG → ACTIVE investigation (parallel to Phase 5.3).
+
+**Symptom (empirical, two independent sessions):**
+
+- A separate project install of COS produced an honest post-mortem: the assistant never used COS-native skills (`/compose-prompt`, `/exhaustive-prompt`, `/agent-dashboard`, `/auto-refine`, `/verification-before-completion`, `/plan-feature`, `/session-backlog`, `/resource-governor`) despite them being installed. Instead it copied ~20KB of canon into each agent prompt manually.
+- Self-audit on this very project during Phase 5.0/5.1/5.2 reveals the **same pattern** — the orchestrator inlined Trust Report / Auto-Refine / HALT / Scope Guard / Acceptance Criteria blocks (~1.2KB each × 6 agents = ~7KB wasted) instead of invoking `/compose-prompt`.
+- Dogfooding failure: if the orchestrator of the OS project itself falls into this pattern, every user install will too.
+
+**Root cause (hypothesized, needs investigation):**
+
+126 skills on disk at `skills/` but only ~40 appear in the harness's "Skills available for use with the Skill tool" catalog. **86 skills are ghosts** — installed, counted by self-hosting check, invisible to the Skill tool. The 9 core skills named above are all in the ghost set.
+
+Candidate causes:
+1. `SKILL.md` frontmatter invalid / missing `description` / missing required field
+2. Plugin/catalog registration mechanism filters to a hardcoded subset
+3. Harness requires skills under a specific path (`.claude/skills/` vs `skills/`)
+4. Skill depth / nesting limits
+5. Permissions on `SKILL.md` files
+
+**Contributing design issue:**
+
+Even if registration were fixed, the hooks as registered are **observational** (metrics collection), not **interceptive**. A `PreToolUse` on `Agent` does NOT inject "did you consider `/compose-prompt`?" — so when registration is fixed, the orchestrator will still default to native `Agent()` out of training bias + momentum.
+
+**Fix plan (ordered by precedence):**
+
+1. **P0 — Registration gap diagnosis** (launched 2026-04-16 in parallel with Phase 5.3): explain why 86/126 skills are ghosts. Output: ranked hypotheses + reproduction steps.
+2. **P0 — Registration gap fix** (follow-up, pending diagnosis): make all skills reach the harness catalog, or document the hard limit and choose the 40 that matter most.
+3. **P1 — Forcing function** (post-fix): `PreToolUse` hook on `Agent` that:
+   - Detects inline canon patterns (Trust Report / Auto-Refine / HALT headers)
+   - Suggests or auto-wraps with `/compose-prompt`
+   - Blocks when agent prompt is vague (no ACCEPTANCE CRITERIA)
+4. **P2 — Minimal profile** (`cognitive-os-init --profile=<docs|backend|security|full>`): curate 8-15 core skills per profile, hide the rest. Reduces cognitive noise, speeds adoption curve from 60min to ~10min.
+
+**Acceptance criteria for closing this item:**
+
+- [ ] Skill tool exposes all 9 core skills by name: compose-prompt, exhaustive-prompt, agent-dashboard, auto-refine, verification-before-completion, plan-feature, session-backlog, resource-governor, paperclip-dashboard
+- [ ] `PreToolUse Agent` hook injects canon automatically for prompts lacking ACCEPTANCE CRITERIA
+- [ ] A fresh install demo proves: orchestrator uses `/compose-prompt` instead of inline canon on its first 3 agent launches
+- [ ] `--profile=minimal` exists and installs only the curated set
+
+**Blast radius if not fixed:** every single user install repeats the pattern. The OS becomes a file dump with rules/hooks/skills nobody invokes. Adoption = 0 despite installs.
+
+---
+
 **Last updated:** 2026-04-16
-**Created during:** Session 2026-04-16 (gap closure + stabilization to 93%)
+**Created during:** Session 2026-04-16 (gap closure + stabilization to 93%) and Session 2026-04-16 (Phase 5 sprint + harness adoption gap surfaced)
 **Engram IDs referenced:** 30+ entries
