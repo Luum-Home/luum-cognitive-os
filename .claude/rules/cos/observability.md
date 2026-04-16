@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/observability.md
+<operator-repo-path>/rules/observability.md

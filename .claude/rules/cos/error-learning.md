@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/error-learning.md
+<operator-repo-path>/rules/error-learning.md

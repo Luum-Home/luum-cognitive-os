@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/resource-governance.md
+<operator-repo-path>/rules/resource-governance.md

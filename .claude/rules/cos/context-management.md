@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/context-management.md
+<operator-repo-path>/rules/context-management.md

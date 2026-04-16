@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/agent-quality.md
+<operator-repo-path>/rules/agent-quality.md

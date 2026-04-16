@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/responsiveness.md
+<operator-repo-path>/rules/responsiveness.md

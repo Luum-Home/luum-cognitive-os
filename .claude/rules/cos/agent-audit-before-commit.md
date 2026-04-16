@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/agent-audit-before-commit.md
+<operator-repo-path>/rules/agent-audit-before-commit.md
