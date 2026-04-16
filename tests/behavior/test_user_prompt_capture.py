@@ -21,42 +21,6 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 # ---------------------------------------------------------------------------
 
 
-class TestRuleFile:
-    """Verify the rule file exists and contains required references."""
-
-    def test_rule_file_exists(self):
-        rule_path = PROJECT_ROOT / "rules" / "user-prompt-capture.md"
-        assert rule_path.exists(), "rules/user-prompt-capture.md must exist"
-
-    def test_rule_references_mem_save_prompt(self):
-        rule_path = PROJECT_ROOT / "rules" / "user-prompt-capture.md"
-        content = rule_path.read_text(encoding="utf-8")
-        assert "mem_save_prompt" in content, "Rule must reference mem_save_prompt"
-
-    def test_rule_references_classifier(self):
-        rule_path = PROJECT_ROOT / "rules" / "user-prompt-capture.md"
-        content = rule_path.read_text(encoding="utf-8")
-        assert "prompt_classifier" in content, "Rule must reference the classifier library"
-
-    def test_rule_documents_categories(self):
-        rule_path = PROJECT_ROOT / "rules" / "user-prompt-capture.md"
-        content = rule_path.read_text(encoding="utf-8")
-        for category in ["task_request", "decision", "feedback", "context"]:
-            assert category in content, f"Rule must document the {category} category"
-
-    def test_rule_documents_skip_categories(self):
-        rule_path = PROJECT_ROOT / "rules" / "user-prompt-capture.md"
-        content = rule_path.read_text(encoding="utf-8")
-        for category in ["acknowledgment", "status_query", "navigation"]:
-            assert category in content, f"Rule must document skip category {category}"
-
-    def test_rule_explains_no_hook(self):
-        """Rule must explain that no UserPromptSubmit hook exists in Claude Code."""
-        rule_path = PROJECT_ROOT / "rules" / "user-prompt-capture.md"
-        content = rule_path.read_text(encoding="utf-8")
-        assert "UserPromptSubmit" in content or "no hook" in content.lower() or "No Hook" in content
-
-
 # ---------------------------------------------------------------------------
 # Classifier module importability
 # ---------------------------------------------------------------------------

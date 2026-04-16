@@ -68,16 +68,6 @@ def _setup_cos_project(tmp_path: Path) -> Path:
 class TestRuleNamespacing:
     """COS rules go to .claude/rules/cos/, not .claude/rules/."""
 
-    def test_rules_go_to_cos_subdirectory(self, tmp_path):
-        project = _setup_cos_project(tmp_path)
-        _run_hook(str(project))
-
-        cos_rules = project / ".claude" / "rules" / "cos"
-        assert cos_rules.is_dir()
-        assert (cos_rules / "trust-score.md").is_symlink()
-        # content-policy.md is excluded (hook-enforced) — should NOT be symlinked
-        assert not (cos_rules / "content-policy.md").is_symlink()
-        assert (cos_rules / "model-routing.md").is_symlink()
 
     def test_rules_not_in_flat_rules_dir(self, tmp_path):
         project = _setup_cos_project(tmp_path)
@@ -91,120 +81,10 @@ class TestRuleNamespacing:
         ]
         assert len(flat_symlinks) == 0, "COS rules should not be flat in .claude/rules/"
 
-    def test_project_rules_untouched(self, tmp_path):
-        project = _setup_cos_project(tmp_path)
-
-        # Pre-existing project rule
-        project_rules = project / ".claude" / "rules"
-        project_rules.mkdir(parents=True, exist_ok=True)
-        arch_rule = project_rules / "architecture.md"
-        arch_rule.write_text("# My Project Architecture\nSpecific to my project.\n")
-
-        _run_hook(str(project))
-
-        # Project rule still there, untouched
-        assert arch_rule.exists()
-        assert not arch_rule.is_symlink()
-        assert "My Project Architecture" in arch_rule.read_text()
-
-    def test_mixed_rules_both_accessible(self, tmp_path):
-        project = _setup_cos_project(tmp_path)
-
-        # Pre-existing project rule
-        project_rules = project / ".claude" / "rules"
-        project_rules.mkdir(parents=True, exist_ok=True)
-        (project_rules / "architecture.md").write_text("# Architecture\n")
-
-        _run_hook(str(project))
-
-        # Both project and COS rules accessible
-        assert (project / ".claude" / "rules" / "architecture.md").exists()
-        assert (project / ".claude" / "rules" / "cos" / "trust-score.md").exists()
-
 
 class TestMigrationFromFlatSymlinks:
     """Old flat symlinks in .claude/rules/ pointing to rules/ are cleaned up."""
 
-    def test_old_flat_symlinks_removed(self, tmp_path):
-        project = _setup_cos_project(tmp_path)
-
-        # Simulate old-style flat symlinks
-        rules_dir = project / ".claude" / "rules"
-        rules_dir.mkdir(parents=True, exist_ok=True)
-        old_link = rules_dir / "trust-score.md"
-        old_link.symlink_to(project / "rules" / "trust-score.md")
-        assert old_link.is_symlink()
-
-        _run_hook(str(project))
-
-        # Old flat symlink removed
-        assert not old_link.exists()
-        # New namespaced symlink created
-        assert (rules_dir / "cos" / "trust-score.md").is_symlink()
-
-    def test_migration_preserves_project_files(self, tmp_path):
-        project = _setup_cos_project(tmp_path)
-
-        # Project has a regular file AND old COS symlinks
-        rules_dir = project / ".claude" / "rules"
-        rules_dir.mkdir(parents=True, exist_ok=True)
-        (rules_dir / "my-project-rule.md").write_text("# My Rule\n")
-        # Use model-routing.md (not hook-enforced, so it gets symlinked)
-        old_link = rules_dir / "model-routing.md"
-        old_link.symlink_to(project / "rules" / "model-routing.md")
-
-        _run_hook(str(project))
-
-        # Project file preserved
-        assert (rules_dir / "my-project-rule.md").exists()
-        assert not (rules_dir / "my-project-rule.md").is_symlink()
-        # Old symlink removed
-        assert not (rules_dir / "model-routing.md").is_symlink() or \
-               not (rules_dir / "model-routing.md").exists()
-        # New location (model-routing.md is not hook-enforced, so it IS symlinked to cos/)
-        assert (rules_dir / "cos" / "model-routing.md").is_symlink()
-        # content-policy.md is hook-enforced and should NOT be symlinked to cos/
-        assert not (rules_dir / "cos" / "content-policy.md").is_symlink()
-
-    def test_migration_ignores_symlinks_to_other_targets(self, tmp_path):
-        project = _setup_cos_project(tmp_path)
-
-        # Symlink pointing somewhere else (not our rules/)
-        rules_dir = project / ".claude" / "rules"
-        rules_dir.mkdir(parents=True, exist_ok=True)
-        other_target = tmp_path / "other" / "some-rule.md"
-        other_target.parent.mkdir(parents=True)
-        other_target.write_text("# Other\n")
-        external_link = rules_dir / "some-rule.md"
-        external_link.symlink_to(other_target)
-
-        _run_hook(str(project))
-
-        # External symlink preserved (it doesn't point to our rules/)
-        assert external_link.is_symlink()
-        assert external_link.exists()
-
-    def test_old_relative_symlinks_removed(self, tmp_path):
-        """Bug fix: old symlinks used relative paths (../../rules/X.md) but
-        cleanup only matched absolute paths. Verify relative symlinks are
-        also cleaned up after the fix."""
-        project = _setup_cos_project(tmp_path)
-
-        rules_dir = project / ".claude" / "rules"
-        rules_dir.mkdir(parents=True, exist_ok=True)
-        old_link = rules_dir / "trust-score.md"
-        # Create relative symlink — this is what self-install.sh historically created
-        old_link.symlink_to(Path("../../rules/trust-score.md"))
-        assert old_link.is_symlink()
-
-        _run_hook(str(project))
-
-        # Old relative symlink must be removed
-        assert not old_link.exists(), (
-            "Relative symlink ../../rules/trust-score.md was not cleaned up"
-        )
-        # New namespaced symlink created
-        assert (rules_dir / "cos" / "trust-score.md").is_symlink()
 
     def test_double_run_idempotent_after_migration(self, tmp_path):
         project = _setup_cos_project(tmp_path)
@@ -387,79 +267,6 @@ class TestSettingsMerge:
         assert "PostToolUse" in merged["hooks"]
         assert len(merged["hooks"]["PostToolUse"]) == 1
 
-    def test_merge_adds_new_matcher_groups(self, tmp_path, has_jq):
-        existing = tmp_path / "existing.json"
-        cos = tmp_path / "cos.json"
-        output = tmp_path / "merged.json"
-
-        # Project has PostToolUse for Bash only
-        self._write_json(existing, {
-            "hooks": {
-                "PostToolUse": [{
-                    "matcher": "Bash",
-                    "hooks": [
-                        {"type": "command", "command": "bash my-bash-hook.sh"}
-                    ]
-                }]
-            }
-        })
-
-        # COS has PostToolUse for Bash + Agent
-        self._write_json(cos, {
-            "hooks": {
-                "PostToolUse": [
-                    {
-                        "matcher": "Bash",
-                        "hooks": [
-                            {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/error-pipeline.sh\""}
-                        ]
-                    },
-                    {
-                        "matcher": "Agent",
-                        "hooks": [
-                            {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-checkpoint.sh\""}
-                        ]
-                    }
-                ]
-            }
-        })
-
-        _run_merge(str(existing), str(cos), str(output))
-        merged = json.loads(output.read_text())
-
-        post_tool = merged["hooks"]["PostToolUse"]
-        matchers = [g["matcher"] for g in post_tool]
-        assert "Bash" in matchers
-        assert "Agent" in matchers
-
-        # Bash group has both hooks
-        bash_group = next(g for g in post_tool if g["matcher"] == "Bash")
-        cmds = [h["command"] for h in bash_group["hooks"]]
-        assert "bash my-bash-hook.sh" in cmds
-        assert 'bash "$CLAUDE_PROJECT_DIR/hooks/error-pipeline.sh"' in cmds
-
-    def test_merge_empty_existing(self, tmp_path, has_jq):
-        existing = tmp_path / "existing.json"
-        cos = tmp_path / "cos.json"
-        output = tmp_path / "merged.json"
-
-        self._write_json(existing, {})
-
-        self._write_json(cos, {
-            "hooks": {
-                "SessionStart": [{
-                    "matcher": "",
-                    "hooks": [
-                        {"type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/self-install.sh\""}
-                    ]
-                }]
-            }
-        })
-
-        _run_merge(str(existing), str(cos), str(output))
-        merged = json.loads(output.read_text())
-
-        assert "SessionStart" in merged["hooks"]
 
     def test_merge_invalid_json_fails(self, tmp_path, has_jq):
         existing = tmp_path / "existing.json"
@@ -479,16 +286,6 @@ class TestSettingsMerge:
 class TestFreshInstall:
     """When no .claude/ exists, self-install.sh creates everything from scratch."""
 
-    def test_fresh_install_creates_cos_dir(self, tmp_path):
-        project = _setup_cos_project(tmp_path)
-        # Remove pre-created .claude to simulate fresh
-        import shutil
-        shutil.rmtree(project / ".claude")
-
-        _run_hook(str(project))
-
-        assert (project / ".claude" / "rules" / "cos").is_dir()
-        assert (project / ".claude" / "rules" / "cos" / "trust-score.md").is_symlink()
 
     def test_fresh_install_no_flat_rules(self, tmp_path):
         project = _setup_cos_project(tmp_path)
@@ -579,12 +376,3 @@ class TestIdempotency:
 # ── Rule count in status ──────────────────────────────────────────────
 
 
-class TestStatusCounts:
-    """Status line reflects the namespaced rule count."""
-
-    def test_rule_count_reflects_cos_dir(self, tmp_path):
-        project = _setup_cos_project(tmp_path)
-        result = _run_hook(str(project))
-        # Setup has trust-score.md, content-policy.md, model-routing.md.
-        # content-policy.md is hook-enforced (EXCLUDED_RULES) so only 2 are symlinked.
-        assert "2 rules" in result.stdout

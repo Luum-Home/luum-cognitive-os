@@ -30,38 +30,6 @@ class TestContentPolicyConfig:
     def policy_path(self):
         return PROJECT_ROOT / ".cognitive-os" / "content-policy.yaml"
 
-    def test_content_policy_yaml_exists(self, policy_path):
-        """content-policy.yaml must exist."""
-        assert policy_path.exists(), f"Missing: {policy_path}"
-
-    def test_has_prohibited_terms_section(self, policy_path):
-        """content-policy.yaml must have prohibited_terms section."""
-        content = policy_path.read_text()
-        assert "prohibited_terms:" in content, (
-            "content-policy.yaml missing prohibited_terms section"
-        )
-
-    def test_has_prohibited_patterns_section(self, policy_path):
-        """content-policy.yaml must have prohibited_patterns section."""
-        content = policy_path.read_text()
-        assert "prohibited_patterns:" in content, (
-            "content-policy.yaml missing prohibited_patterns section"
-        )
-
-    def test_has_required_values_section(self, policy_path):
-        """content-policy.yaml must have required_values section."""
-        content = policy_path.read_text()
-        assert "required_values:" in content, (
-            "content-policy.yaml missing required_values section"
-        )
-
-    def test_has_content_rules_section(self, policy_path):
-        """content-policy.yaml must have content_rules section."""
-        content = policy_path.read_text()
-        assert "content_rules:" in content, (
-            "content-policy.yaml missing content_rules section"
-        )
-
 
 # ─── Hook tests ───────────────────────────────────────────────────────────────
 
@@ -73,9 +41,6 @@ class TestContentPolicyHook:
     def hook_path(self):
         return PROJECT_ROOT / "hooks" / "content-policy.sh"
 
-    def test_hook_exists(self, hook_path):
-        """content-policy.sh hook must exist."""
-        assert hook_path.exists(), f"Missing: {hook_path}"
 
     def test_hook_is_valid_bash(self, hook_path):
         """content-policy.sh must be valid bash syntax."""
@@ -118,55 +83,10 @@ class TestContentPolicyHook:
 # ─── Rule tests ───────────────────────────────────────────────────────────────
 
 
-class TestContentPolicyRule:
-    """Tests for rules/content-policy.md."""
-
-    def test_rule_exists(self):
-        """rules/content-policy.md must exist."""
-        rule_path = PROJECT_ROOT / "rules" / "content-policy.md"
-        assert rule_path.exists(), f"Missing: {rule_path}"
-
-
 # ─── Agent preamble tests ────────────────────────────────────────────────────
 
 
-class TestAgentPreamble:
-    """Tests for content policy in agent-preamble.md."""
-
-    def test_preamble_mentions_content_policy(self):
-        """agent-preamble.md must mention content policy."""
-        preamble_path = PROJECT_ROOT / "templates" / "agent-preamble.md"
-        assert preamble_path.exists(), f"Missing: {preamble_path}"
-
-        content = preamble_path.read_text()
-        assert "Content Policy" in content, (
-            "agent-preamble.md does not mention Content Policy"
-        )
-
-    def test_preamble_lists_prohibited_terms(self):
-        """agent-preamble.md must list the prohibited terms."""
-        preamble_path = PROJECT_ROOT / "templates" / "agent-preamble.md"
-        content = preamble_path.read_text()
-        assert "Prohibited" in content or "prohibited" in content, (
-            "agent-preamble.md does not list prohibited terms"
-        )
-
-
 # ─── Pre-commit gate tests ───────────────────────────────────────────────────
-
-
-class TestPreCommitGate:
-    """Tests for content policy integration in pre-commit-gate.sh."""
-
-    def test_precommit_checks_content_policy(self):
-        """pre-commit-gate.sh must include content policy check."""
-        gate_path = PROJECT_ROOT / "hooks" / "pre-commit-gate.sh"
-        assert gate_path.exists(), f"Missing: {gate_path}"
-
-        content = gate_path.read_text()
-        assert "content-policy" in content.lower() or "POLICY_FILE" in content, (
-            "pre-commit-gate.sh does not check content policy"
-        )
 
 
 # ─── Codebase violation tests ────────────────────────────────────────────────

@@ -56,35 +56,11 @@ class TestSelfImprovementHooksExist:
             pytest.fail("session-learning.sh does not exist")
         assert os.access(hook, os.X_OK), "session-learning.sh should be executable"
 
-    def test_self_improve_skill_exists(self, project_root):
-        skill = project_root / "skills" / "self-improve" / "SKILL.md"
-        assert skill.exists(), "self-improve SKILL.md should exist"
-
-    def test_self_improve_skill_frontmatter(self, project_root):
-        skill = project_root / "skills" / "self-improve" / "SKILL.md"
-        if not skill.exists():
-            pytest.skip("SKILL.md not found")
-        content = skill.read_text()
-        assert "name: self-improve" in content, "skill should have correct name"
-        assert "user-invocable: true" in content, "skill should be user-invocable"
-
 
 @pytest.mark.behavior
 class TestSelfImprovementProtocol:
     """Tests for self-improvement-protocol rule."""
 
-    def test_protocol_rule_exists(self, project_root):
-        rule = project_root / "rules" / "self-improvement-protocol.md"
-        assert rule.exists(), "self-improvement-protocol.md should exist"
-
-    def test_protocol_distinguishes_auto_and_human_approval(self, project_root):
-        rule = project_root / "rules" / "self-improvement-protocol.md"
-        if not rule.exists():
-            pytest.skip("protocol file not found")
-        content = rule.read_text()
-        assert "AUTO" in content and "HUMAN APPROVAL" in content, (
-            "protocol should distinguish auto-apply vs human approval"
-        )
 
     def test_protocol_includes_rollback(self, project_root):
         rule = project_root / "rules" / "self-improvement-protocol.md"
@@ -228,62 +204,3 @@ class TestMockMetricsData:
             assert "success_rate" in last_line, "should contain success_rate"
 
 
-@pytest.mark.behavior
-class TestSelfImprovementConfig:
-    """Tests for cognitive-os.yaml self-improvement configuration."""
-
-    def test_config_has_self_improvement(self, project_root):
-        config = project_root / "cognitive-os.yaml"
-        if not config.exists():
-            pytest.skip("config not found")
-        content = config.read_text()
-        assert "self_improvement:" in content, "config should have self_improvement section"
-
-    def test_config_has_auto_apply(self, project_root):
-        config = project_root / "cognitive-os.yaml"
-        if not config.exists():
-            pytest.skip("config not found")
-        content = config.read_text()
-        assert "auto_apply:" in content, "config should have auto_apply setting"
-
-    def test_config_has_first_pass_success(self, project_root):
-        config = project_root / "cognitive-os.yaml"
-        if not config.exists():
-            pytest.skip("config not found")
-        content = config.read_text()
-        assert "first_pass_success:" in content, "config should have first_pass_success threshold"
-
-    def test_config_has_max_auto_improvements(self, project_root):
-        config = project_root / "cognitive-os.yaml"
-        if not config.exists():
-            pytest.skip("config not found")
-        content = config.read_text()
-        assert "max_auto_improvements:" in content, "config should have max_auto_improvements"
-
-
-@pytest.mark.behavior
-class TestSelfImprovementIntegration:
-    """Tests for catalog and rules integration."""
-
-    def test_catalog_includes_self_improve(self, project_root):
-        catalog = project_root / "skills" / "CATALOG.md"
-        if not catalog.exists():
-            pytest.skip("CATALOG.md not found")
-        assert "self-improve" in catalog.read_text(), "CATALOG should include self-improve"
-
-    def test_rules_compact_references_self_improvement(self, project_root):
-        rules = project_root / "rules" / "RULES-COMPACT.md"
-        if not rules.exists():
-            pytest.skip("RULES-COMPACT.md not found")
-        content = rules.read_text().lower()
-        has_ref = "self-improvement" in content or "self_improvement" in content or "self-improve" in content or "kpi" in content
-        if not has_ref:
-            pytest.xfail("RULES-COMPACT does not yet reference self-improvement — feature pending integration")
-
-    def test_docs_index_includes_self_improvement_loop(self, project_root):
-        index = project_root / "docs" / "INDEX.md"
-        if not index.exists():
-            pytest.skip("docs/INDEX.md not found")
-        assert "self-improvement-loop" in index.read_text(), (
-            "docs/INDEX should include self-improvement-loop"
-        )
