@@ -11,6 +11,7 @@ outputs:
   - state_summary: Current state of all artifacts
   - reasoning: Why the recommended action was chosen
 audience: project
+effort: opus
 ---
 
 # Enhanced SDD Continue (BMAD v6 Pattern 6)

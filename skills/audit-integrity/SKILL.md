@@ -5,6 +5,7 @@ description: >
   Resolves symlinks before classifying, preventing false ghost reports.
 version: 1.0.0
 user-invocable: true
+disable-model-invocation: true
 auto-generated: false
 last-updated: 2026-04-15
 license: MIT
