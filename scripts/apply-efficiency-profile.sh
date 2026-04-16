@@ -180,7 +180,8 @@ build_settings() {
         "trust-score-validator.sh" \
         "audit-id-enricher.sh" \
         "state-heartbeat.sh" \
-        "agent-work-tracker.sh")
+        "agent-work-tracker.sh" \
+        "task-panel-sync.sh")
       ;;
   esac
 
