@@ -1,4 +1,3 @@
-# scope: both
 """
 Memory Scanner — Content security scanning before Engram persistence.
 

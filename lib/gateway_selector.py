@@ -1,4 +1,3 @@
-# scope: both
 """Gateway Selector — Dual-gateway routing with health checks and failover.
 
 Encapsulates the logic for choosing between Bifrost (fast path), LiteLLM

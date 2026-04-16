@@ -1,4 +1,3 @@
-# scope: both
 """Record error to learning pipeline."""
 import sys, json, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/..")

@@ -1,4 +1,3 @@
-# scope: both
 """Dispatch Helper — lightweight scheduling helper for dispatch-gate.sh.
 
 Called by hooks/dispatch-gate.sh on every Agent PreToolUse to decide whether

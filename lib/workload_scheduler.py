@@ -1,4 +1,3 @@
-# scope: both
 """Workload Scheduler -- Intelligent task dispatch within rate limits.
 
 Plans the dispatch order and timing for multiple concurrent tasks based on

@@ -1,4 +1,3 @@
-# scope: both
 """Reverse Engineer module.
 
 Deep source code analysis of dependencies to understand internal APIs,
