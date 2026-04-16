@@ -256,6 +256,24 @@ class TestSessionCleanup:
                 return session_id
         pytest.fail(f"Could not extract Session ID from init output:\n{result.stdout}")
 
+    def _setup_session_fast(self, tmp_path: Path) -> str:
+        """Create a minimal session structure without running session-init.sh.
+
+        This avoids the 6 Python cold-starts in session-init.sh. Suitable for
+        tests that only need a valid session directory on disk (not a fully
+        registered session).
+        """
+        import time as _time
+        session_id = f"{int(_time.time())}-0-testfast"
+        session_dir = _sessions_dir(tmp_path) / session_id
+        (session_dir / "metrics").mkdir(parents=True, exist_ok=True)
+        (session_dir / "tasks.json").write_text("[]")
+        import json as _json
+        (session_dir / "meta.json").write_text(
+            _json.dumps({"session_id": session_id, "pid": 0, "start_time": "2026-01-01T00:00:00Z"})
+        )
+        return session_id
+
     def test_cleanup_exits_zero_with_valid_session(self, tmp_path):
         """Hook must exit 0 after cleaning up a valid session."""
         session_id = self._setup_session(tmp_path)
@@ -353,7 +371,9 @@ class TestSessionCleanup:
 
     def test_cleanup_unwritable_metrics_skips_gracefully(self, tmp_path):
         """If global metrics dir is unwritable, cleanup should still exit 0."""
-        session_id = self._setup_session(tmp_path)
+        # Use the fast setup to avoid 6 Python cold-starts from session-init.sh.
+        # This test only needs a valid session dir with metrics — not a registered session.
+        session_id = self._setup_session_fast(tmp_path)
         session_dir = _sessions_dir(tmp_path) / session_id
         session_metrics_dir = session_dir / "metrics"
         if not session_metrics_dir.exists():
