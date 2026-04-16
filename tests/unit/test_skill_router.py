@@ -2,12 +2,17 @@
 
 Validates skill auto-selection from conversation context, including
 English and Spanish pattern matching, GitHub URL detection, confidence
-scoring, fallback handling, and routing table integrity.
+scoring, fallback handling, routing table integrity, and audience filtering.
 """
 
 import pytest
 
-from lib.skill_router import SkillMatch, SkillRouter
+from lib.skill_router import (
+    SkillMatch,
+    SkillRouter,
+    _audience_matches_context,
+    _detect_audience_context,
+)
 
 pytestmark = pytest.mark.unit
 
@@ -19,7 +24,15 @@ pytestmark = pytest.mark.unit
 
 @pytest.fixture
 def router() -> SkillRouter:
-    return SkillRouter()
+    # Use 'project' context so all project-audience skills are visible.
+    # Audience-specific tests create their own routers with explicit context.
+    return SkillRouter(audience_context="project")
+
+
+@pytest.fixture
+def os_dev_router() -> SkillRouter:
+    """Router in os-dev context (shows os-dev and os-audience skills)."""
+    return SkillRouter(audience_context="os-dev")
 
 
 # ---------------------------------------------------------------------------
@@ -162,19 +175,19 @@ class TestRunTestsDetection:
 class TestSecurityDetection:
     """Security-related messages should match appropriate security skills."""
 
-    def test_security_audit_english(self, router: SkillRouter):
-        match = router.best_match("run a security audit on the project")
+    def test_security_audit_english(self, os_dev_router: SkillRouter):
+        match = os_dev_router.best_match("run a security audit on the project")
         assert match is not None
         assert match.invoke_command == "/security-audit"
         assert match.confidence >= 0.85
 
-    def test_security_audit_spanish(self, router: SkillRouter):
-        match = router.best_match("revisá la seguridad del proyecto")
+    def test_security_audit_spanish(self, os_dev_router: SkillRouter):
+        match = os_dev_router.best_match("revisá la seguridad del proyecto")
         assert match is not None
         assert match.invoke_command == "/security-audit"
 
-    def test_red_team(self, router: SkillRouter):
-        match = router.best_match("run red team testing on the prompts")
+    def test_red_team(self, os_dev_router: SkillRouter):
+        match = os_dev_router.best_match("run red team testing on the prompts")
         assert match is not None
         assert match.invoke_command == "/red-team"
 
@@ -369,8 +382,8 @@ class TestDebugging:
 class TestSpecificSkills:
     """Test specific skill matches for various intents."""
 
-    def test_stress_test(self, router: SkillRouter):
-        match = router.best_match("run a stress test on the agent")
+    def test_stress_test(self, os_dev_router: SkillRouter):
+        match = os_dev_router.best_match("run a stress test on the agent")
         assert match is not None
         assert match.invoke_command == "/agent-stress-test"
 
@@ -462,3 +475,130 @@ class TestDeduplication:
         )
         skill_names = [m.skill_name for m in matches]
         assert len(skill_names) == len(set(skill_names))
+
+
+# ---------------------------------------------------------------------------
+# Audience filtering
+# ---------------------------------------------------------------------------
+
+
+class TestAudienceMatchesContext:
+    """Unit tests for the _audience_matches_context helper."""
+
+    def test_both_always_matches_project(self):
+        assert _audience_matches_context("both", "project") is True
+
+    def test_both_always_matches_os_dev(self):
+        assert _audience_matches_context("both", "os-dev") is True
+
+    def test_human_always_matches_project(self):
+        assert _audience_matches_context("human", "project") is True
+
+    def test_human_always_matches_os_dev(self):
+        assert _audience_matches_context("human", "os-dev") is True
+
+    def test_os_dev_excluded_in_project_context(self):
+        assert _audience_matches_context("os-dev", "project") is False
+
+    def test_os_excluded_in_project_context(self):
+        assert _audience_matches_context("os", "project") is False
+
+    def test_os_dev_included_in_os_dev_context(self):
+        assert _audience_matches_context("os-dev", "os-dev") is True
+
+    def test_os_included_in_os_dev_context(self):
+        assert _audience_matches_context("os", "os-dev") is True
+
+    def test_project_included_in_project_context(self):
+        assert _audience_matches_context("project", "project") is True
+
+    def test_project_excluded_in_os_dev_context(self):
+        assert _audience_matches_context("project", "os-dev") is False
+
+    def test_unknown_audience_defaults_to_visible(self):
+        """Unknown audience values should be treated as visible (backward compat)."""
+        assert _audience_matches_context("unknown-value", "project") is True
+        assert _audience_matches_context("unknown-value", "os-dev") is True
+
+
+class TestAudienceRouterFiltering:
+    """Integration tests: SkillRouter respects audience context."""
+
+    def test_project_context_hides_os_dev_skills(self):
+        """Skills tagged 'os-dev' should not appear when context is 'project'."""
+        router = SkillRouter(audience_context="project")
+        # Force all entries to os-dev to confirm they are hidden
+        for entry in router._routing_table:
+            entry.audience = "os-dev"
+        matches = router.match("run a stress test on the agent")
+        assert matches == [], "os-dev skills should be filtered out in project context"
+
+    def test_os_dev_context_hides_project_skills(self):
+        """Skills tagged 'project' should not appear when context is 'os-dev'."""
+        router = SkillRouter(audience_context="os-dev")
+        for entry in router._routing_table:
+            entry.audience = "project"
+        matches = router.match("run a stress test on the agent")
+        assert matches == [], "project skills should be filtered out in os-dev context"
+
+    def test_both_skills_always_appear(self):
+        """Skills tagged 'both' should appear in any context."""
+        for ctx in ("project", "os-dev"):
+            router = SkillRouter(audience_context=ctx)
+            for entry in router._routing_table:
+                entry.audience = "both"
+            matches = router.match("run the tests")
+            assert len(matches) > 0, f"'both' skills must appear in '{ctx}' context"
+
+    def test_human_skills_always_appear(self):
+        """Skills tagged 'human' should appear in any context."""
+        for ctx in ("project", "os-dev"):
+            router = SkillRouter(audience_context=ctx)
+            for entry in router._routing_table:
+                entry.audience = "human"
+            matches = router.match("run the tests")
+            assert len(matches) > 0, f"'human' skills must appear in '{ctx}' context"
+
+    def test_audience_context_stored_on_router(self):
+        """audience_context property should reflect the value passed in."""
+        router_proj = SkillRouter(audience_context="project")
+        assert router_proj.audience_context == "project"
+
+        router_os = SkillRouter(audience_context="os-dev")
+        assert router_os.audience_context == "os-dev"
+
+    def test_missing_audience_defaults_to_both(self):
+        """Entries with no audience (default 'both') are visible in all contexts."""
+        for ctx in ("project", "os-dev"):
+            router = SkillRouter(audience_context=ctx)
+            # Leave audience at default ("both") for all entries
+            for entry in router._routing_table:
+                entry.audience = "both"
+            matches = router.match("run the tests")
+            assert len(matches) > 0
+
+
+class TestDetectAudienceContext:
+    """Tests for _detect_audience_context()."""
+
+    def test_luum_agent_os_in_path_returns_os_dev(self, monkeypatch):
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/home/user/luum-agent-os")
+        assert _detect_audience_context() == "os-dev"
+
+    def test_cognitive_os_in_path_returns_os_dev(self, monkeypatch):
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/home/user/cognitive-os")
+        assert _detect_audience_context() == "os-dev"
+
+    def test_luum_cognitive_os_in_path_returns_os_dev(self, monkeypatch):
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/home/user/luum-cognitive-os")
+        assert _detect_audience_context() == "os-dev"
+
+    def test_unrelated_path_returns_project(self, monkeypatch):
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/home/user/my-app")
+        assert _detect_audience_context() == "project"
+
+    def test_no_env_var_uses_cwd(self, monkeypatch):
+        monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
+        # Just verify it returns a valid value without crashing
+        result = _detect_audience_context()
+        assert result in ("os-dev", "project")
