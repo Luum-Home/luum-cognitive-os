@@ -15,6 +15,11 @@ import (
 //   - RepeatedFailure: same (validator, error_code) seen ≥ minRepeats times
 //   - PerfRegression:  validator's recent mean latency vs older mean
 //   - ErrorCluster:    same error_code spans ≥ minSessions distinct sessions
+//
+// Phase 5.1 adds the remaining three:
+//   - FalsePositive:         validator overrides dominate its warn/fail outcomes
+//   - MissingCoverage:       tool_type events with no matching validator
+//   - SequenceCorrelation:   failure pairs that repeat across flush batches
 type SQLDetector struct {
 	db *sql.DB
 
@@ -24,6 +29,12 @@ type SQLDetector struct {
 	RegressionFactor  float64 // PerfRegression slowdown ratio   (default 1.5x)
 	RegressionMinRuns int     // PerfRegression min runs each window (default 5)
 	ErrorClusterSess  int     // ErrorCluster distinct-session threshold (default 3)
+
+	// Phase 5.1 tunables.
+	FalsePositiveThreshold    float64 // FalsePositive: override/(fail+warn) ratio (default 0.5)
+	FalsePositiveMinSample    int     // FalsePositive: min total events to avoid tiny-sample noise (default 5)
+	MissingCoverageThreshold  int     // MissingCoverage: uncovered events per tool_type (default 10)
+	SequenceCorrelationThreshold int  // SequenceCorrelation: min pair count in failure_sequences (default 3)
 }
 
 // NewDetector returns a SQLDetector wired to the given database.
@@ -38,6 +49,11 @@ func NewDetector(db *sql.DB) *SQLDetector {
 		RegressionFactor:  1.5,
 		RegressionMinRuns: 5,
 		ErrorClusterSess:  3,
+
+		FalsePositiveThreshold:       0.5,
+		FalsePositiveMinSample:       5,
+		MissingCoverageThreshold:     10,
+		SequenceCorrelationThreshold: 3,
 	}
 }
 
@@ -67,6 +83,24 @@ func (d *SQLDetector) Analyze(since time.Time, minConfidence float64) ([]Detecte
 		return nil, fmt.Errorf("error_cluster: %w", err)
 	}
 	out = append(out, clusters...)
+
+	fps, err := d.detectFalsePositives(since)
+	if err != nil {
+		return nil, fmt.Errorf("false_positive: %w", err)
+	}
+	out = append(out, fps...)
+
+	missing, err := d.detectMissingCoverage(since)
+	if err != nil {
+		return nil, fmt.Errorf("missing_coverage: %w", err)
+	}
+	out = append(out, missing...)
+
+	seqcorr, err := d.detectSequenceCorrelations()
+	if err != nil {
+		return nil, fmt.Errorf("sequence_correlation: %w", err)
+	}
+	out = append(out, seqcorr...)
 
 	return filterByConfidence(out, minConfidence), nil
 }
@@ -392,6 +426,229 @@ func (d *SQLDetector) evidenceForCode(errCode string, since time.Time) ([]Execut
 	query += " ORDER BY timestamp DESC LIMIT ?"
 	args = append(args, d.MaxEvidence)
 	return scanExecutions(d.db, query, args...)
+}
+
+// ---------------------------------------------------------------------------
+// FalsePositive
+// ---------------------------------------------------------------------------
+
+// detectFalsePositives identifies validators whose warn/fail outcomes are
+// dismissed (result='override') at a rate ≥ FalsePositiveThreshold AND whose
+// total event volume is at least FalsePositiveMinSample. High override ratio
+// means the validator is noisy — humans consistently disagree with its verdict.
+func (d *SQLDetector) detectFalsePositives(since time.Time) ([]DetectedPattern, error) {
+	query := `SELECT validator_name,
+	                 SUM(CASE WHEN result = 'override' THEN 1 ELSE 0 END)          AS overrides,
+	                 SUM(CASE WHEN result IN ('fail','warn','override') THEN 1 ELSE 0 END) AS total
+	          FROM executions
+	          WHERE result IN ('fail','warn','override')`
+	var args []any
+	if !since.IsZero() {
+		query += " AND timestamp >= ?"
+		args = append(args, since)
+	}
+	query += `
+	        GROUP BY validator_name
+	        HAVING total >= ?
+	        ORDER BY overrides DESC`
+	args = append(args, d.FalsePositiveMinSample)
+
+	type row struct {
+		validator string
+		overrides int
+		total     int
+	}
+
+	rows, err := d.db.Query(query, args...)
+	if err != nil {
+		return nil, err
+	}
+	var candidates []row
+	for rows.Next() {
+		var r row
+		if err := rows.Scan(&r.validator, &r.overrides, &r.total); err != nil {
+			rows.Close()
+			return nil, err
+		}
+		candidates = append(candidates, r)
+	}
+	if err := rows.Err(); err != nil {
+		rows.Close()
+		return nil, err
+	}
+	rows.Close()
+
+	var patterns []DetectedPattern
+	for _, c := range candidates {
+		ratio := float64(c.overrides) / float64(c.total)
+		if ratio < d.FalsePositiveThreshold {
+			continue
+		}
+
+		// Confidence: proportional to both ratio and sample size.
+		// At threshold (ratio=0.5, sample=MinSample) → ~0.5; saturates toward 1.0.
+		ratioScore := (ratio - d.FalsePositiveThreshold) / (1.0 - d.FalsePositiveThreshold + 1e-9)
+		sampleScore := float64(c.total-d.FalsePositiveMinSample+1) /
+			float64(c.total-d.FalsePositiveMinSample+2)
+		conf := round2(0.5 + 0.5*math.Sqrt(ratioScore*sampleScore))
+		if conf > 1 {
+			conf = 1
+		}
+
+		patterns = append(patterns, DetectedPattern{
+			Type: PatternFalsePositive,
+			Description: fmt.Sprintf(
+				"%s overridden %d/%d times (%.0f%% false-positive rate)",
+				c.validator, c.overrides, c.total, ratio*100),
+			Confidence:  conf,
+			AutoFixable: false,
+			Suggestion: fmt.Sprintf(
+				"Validator %s has a %.0f%% override rate (%d/%d events). "+
+					"Consider relaxing its rules or disabling it via cognitive-os.yaml.",
+				c.validator, ratio*100, c.overrides, c.total),
+		})
+	}
+	return patterns, nil
+}
+
+// ---------------------------------------------------------------------------
+// MissingCoverage
+// ---------------------------------------------------------------------------
+
+// detectMissingCoverage finds tool_type values whose events are never matched
+// by any validator (validator_name is empty string, which the Tracker stores
+// for events that passed through without a matching validator). Groups with
+// ≥ MissingCoverageThreshold events are reported.
+func (d *SQLDetector) detectMissingCoverage(since time.Time) ([]DetectedPattern, error) {
+	query := `SELECT tool_type, COUNT(*) AS n
+	          FROM executions
+	          WHERE (validator_name = '' OR validator_name IS NULL)`
+	var args []any
+	if !since.IsZero() {
+		query += " AND timestamp >= ?"
+		args = append(args, since)
+	}
+	query += `
+	        GROUP BY tool_type
+	        HAVING n >= ?
+	        ORDER BY n DESC`
+	args = append(args, d.MissingCoverageThreshold)
+
+	type row struct {
+		toolType string
+		count    int
+	}
+
+	rows, err := d.db.Query(query, args...)
+	if err != nil {
+		return nil, err
+	}
+	var candidates []row
+	for rows.Next() {
+		var r row
+		if err := rows.Scan(&r.toolType, &r.count); err != nil {
+			rows.Close()
+			return nil, err
+		}
+		candidates = append(candidates, r)
+	}
+	if err := rows.Err(); err != nil {
+		rows.Close()
+		return nil, err
+	}
+	rows.Close()
+
+	if len(candidates) == 0 {
+		return nil, nil
+	}
+
+	// Build the tool type list for the suggestion.
+	types := make([]string, 0, len(candidates))
+	for _, c := range candidates {
+		types = append(types, fmt.Sprintf("%s(%d)", c.toolType, c.count))
+	}
+
+	// Use the largest uncovered volume as the confidence anchor.
+	maxCount := candidates[0].count
+	conf := round2(0.5 + 0.5*float64(maxCount-d.MissingCoverageThreshold+1)/
+		float64(maxCount-d.MissingCoverageThreshold+2))
+	if conf > 1 {
+		conf = 1
+	}
+
+	pattern := DetectedPattern{
+		Type: PatternMissingCoverage,
+		Description: fmt.Sprintf(
+			"%d tool type(s) have no validator coverage: %v",
+			len(candidates), types),
+		Confidence:  conf,
+		AutoFixable: false,
+		Suggestion: fmt.Sprintf(
+			"Tool types with no validator coverage: %v. "+
+				"Consider adding validators via cognitive-os.yaml or the auto-generator.",
+			types),
+	}
+	return []DetectedPattern{pattern}, nil
+}
+
+// ---------------------------------------------------------------------------
+// SequenceCorrelation
+// ---------------------------------------------------------------------------
+
+// detectSequenceCorrelations reads the failure_sequences table (populated
+// eagerly by Tracker.flushLocked) and emits a pattern for every source→target
+// pair whose count is at least SequenceCorrelationThreshold.
+func (d *SQLDetector) detectSequenceCorrelations() ([]DetectedPattern, error) {
+	query := `SELECT source_code, target_code, count
+	          FROM failure_sequences
+	          WHERE count >= ?
+	          ORDER BY count DESC`
+
+	type row struct {
+		src   string
+		tgt   string
+		count int
+	}
+
+	rows, err := d.db.Query(query, d.SequenceCorrelationThreshold)
+	if err != nil {
+		return nil, err
+	}
+	var candidates []row
+	for rows.Next() {
+		var r row
+		if err := rows.Scan(&r.src, &r.tgt, &r.count); err != nil {
+			rows.Close()
+			return nil, err
+		}
+		candidates = append(candidates, r)
+	}
+	if err := rows.Err(); err != nil {
+		rows.Close()
+		return nil, err
+	}
+	rows.Close()
+
+	var patterns []DetectedPattern
+	for _, c := range candidates {
+		// Log-scaled confidence: threshold → 0.55, doubles → ~0.7, 10× → ~0.9
+		logRatio := math.Log2(float64(c.count)/float64(d.SequenceCorrelationThreshold) + 1)
+		conf := round2(math.Min(0.5+0.5*(logRatio/(logRatio+1)), 1.0))
+
+		patterns = append(patterns, DetectedPattern{
+			Type: PatternSequenceCorrelation,
+			Description: fmt.Sprintf(
+				"Failure sequence %s → %s repeated %d times",
+				c.src, c.tgt, c.count),
+			Confidence:  conf,
+			AutoFixable: false,
+			Suggestion: fmt.Sprintf(
+				"%s → %s (count=%d): fixing %s frequently causes %s. "+
+					"These errors may share a root cause.",
+				c.src, c.tgt, c.count, c.src, c.tgt),
+		})
+	}
+	return patterns, nil
 }
 
 // ---------------------------------------------------------------------------
