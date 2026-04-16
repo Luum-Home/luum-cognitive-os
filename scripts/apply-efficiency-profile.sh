@@ -162,7 +162,8 @@ build_settings() {
     standard)
       post_bash=$(hook_group "Bash" \
         "error-pipeline.sh" \
-        "result-truncator.sh")
+        "result-truncator.sh" \
+        "adr-detector.sh")
       post_bash_edit_write=$(hook_group "Bash|Edit|Write" \
         "auto-checkpoint.sh")
       post_edit=$(hook_group "Edit|Write" \
