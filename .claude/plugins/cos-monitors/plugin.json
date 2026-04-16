@@ -1,0 +1,25 @@
+{
+  "name": "cos-monitors",
+  "version": "0.1.0",
+  "description": "Cognitive OS background monitors — agent bus health, system health, crash recovery. Replaces SessionStart-launched daemons with managed plugin monitors.",
+  "monitors": [
+    {
+      "name": "agent-bus-monitor",
+      "command": "bash $CLAUDE_PROJECT_DIR/hooks/agent-bus-monitor.sh",
+      "interval": "30s",
+      "description": "Watches agent-bus state files for stuck agents, dead handlers, and queue backlogs."
+    },
+    {
+      "name": "cognitive-os-health",
+      "command": "bash $CLAUDE_PROJECT_DIR/hooks/cognitive-os-health.sh",
+      "interval": "60s",
+      "description": "Periodic health check — Engram reachability, hook dispatcher pulse, settings.json validity."
+    },
+    {
+      "name": "crash-recovery",
+      "command": "bash $CLAUDE_PROJECT_DIR/hooks/crash-recovery.sh",
+      "interval": "120s",
+      "description": "Watches for orphaned PID files and stale session state from killed/crashed agents."
+    }
+  ]
+}
