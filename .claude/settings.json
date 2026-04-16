@@ -29,6 +29,11 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/mcp-scan.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pattern-check.sh\"",
+            "async": true
           }
         ]
       }
@@ -153,6 +158,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-detector.sh\"",
+            "async": true
           }
         ]
       },
