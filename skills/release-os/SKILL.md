@@ -6,6 +6,8 @@ version: 2.0.0
 audience: os
 tags: [release, meta]
 last-updated: 2026-04-10
+disable-model-invocation: true
+effort: sonnet
 ---
 
 # Release OS — META Skill
