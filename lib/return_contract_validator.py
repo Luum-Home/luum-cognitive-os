@@ -1,4 +1,3 @@
-# scope: both
 """ReturnContractValidator — parse and validate sub-agent RESULT blocks.
 
 Sub-agents end their output with a RESULT: block (defined in agent-preamble.md).

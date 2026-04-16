@@ -1,4 +1,3 @@
-# scope: both
 """Trust Report Parser -- Machine-parseable Trust Report extraction.
 
 Parses the structured TRUST_REPORT header line and the full human-readable

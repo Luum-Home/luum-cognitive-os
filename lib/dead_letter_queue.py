@@ -1,4 +1,3 @@
-# scope: both
 """Dead letter queue (DLQ) for agents that exhaust all retries.
 
 When an agent fails after the maximum number of retries, the orchestrator

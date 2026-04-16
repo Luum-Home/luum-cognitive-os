@@ -1,4 +1,3 @@
-# scope: both
 """Checkpoint Manager -- periodic WAL-like saves for crash recovery.
 
 Creates named git stashes at regular intervals so uncommitted work survives

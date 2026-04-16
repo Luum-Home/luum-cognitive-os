@@ -1,4 +1,3 @@
-# scope: both
 """Scheduled Drain — combined queue drain + health check helper.
 
 Called by the CronCreate-based periodic queue drain task (Phase 4A of the

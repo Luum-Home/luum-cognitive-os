@@ -1,4 +1,3 @@
-# scope: both
 """Dynamic Model Routing — Multi-provider model selection with dual-gateway support.
 
 Provides intelligent model selection based on task requirements, budget constraints,

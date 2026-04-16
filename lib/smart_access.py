@@ -1,4 +1,3 @@
-# scope: both
 """smart_access.py — Token-efficient targeted file access helpers."""
 
 from __future__ import annotations
