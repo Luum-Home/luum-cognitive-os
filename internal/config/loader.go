@@ -78,6 +78,12 @@ type PatternsConfig struct {
 	MinCount         int              `toml:"min_count"`
 	AnalysisInterval string           `toml:"analysis_interval"`
 	AutoGenerate     AutoGenerateConfig `toml:"auto_generate"`
+
+	// Phase 5.1 detector thresholds.
+	FalsePositiveThreshold    float64 `toml:"false_positive_threshold"`    // default 0.5
+	FalsePositiveMinSample    int     `toml:"false_positive_min_sample"`   // default 5
+	MissingCoverageThreshold  int     `toml:"missing_coverage_threshold"`  // default 10
+	SequenceCorrelationThreshold int  `toml:"sequence_correlation_threshold"` // default 3
 }
 
 // AutoGenerateConfig controls auto-generation of validators from patterns.
@@ -123,6 +129,10 @@ func DefaultConfig() *Config {
 				RequireReview:       true,
 				MaxPerSession:       3,
 			},
+			FalsePositiveThreshold:       0.5,
+			FalsePositiveMinSample:       5,
+			MissingCoverageThreshold:     10,
+			SequenceCorrelationThreshold: 3,
 		},
 	}
 }
