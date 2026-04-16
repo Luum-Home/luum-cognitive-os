@@ -5,6 +5,7 @@ user-invocable: true
 version: 0.1.0
 last-updated: 2026-04-09
 audience: human
+effort: haiku
 tags: [governance, transparency, reporting]
 triggers:
   - session report

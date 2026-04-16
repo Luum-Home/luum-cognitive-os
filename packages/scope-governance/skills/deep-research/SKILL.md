@@ -12,6 +12,7 @@ license: MIT
 metadata:
   author: luum
 audience: project
+effort: opus
 ---
 
 ## Purpose
