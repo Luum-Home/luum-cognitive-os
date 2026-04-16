@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/agent-audit-before-commit.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/agent-audit-before-commit.md
