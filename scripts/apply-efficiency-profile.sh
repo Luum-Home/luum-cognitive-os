@@ -195,7 +195,8 @@ build_settings() {
         "audit-id-enricher.sh" \
         "state-heartbeat.sh" \
         "agent-work-tracker.sh" \
-        "task-panel-sync.sh")
+        "task-panel-sync.sh" \
+        "task-bridge-notify.sh")
       ;;
   esac
 
