@@ -1,4 +1,3 @@
-# scope: both
 """Cross-cutting audit ID for linking metrics across sessions, sprints, and changes."""
 
 from __future__ import annotations

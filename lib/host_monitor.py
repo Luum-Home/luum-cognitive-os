@@ -1,4 +1,3 @@
-# scope: both
 """Host Resource Monitor — adaptive agent throttling based on system pressure.
 
 Cross-platform (macOS Darwin + Linux). No external dependencies.

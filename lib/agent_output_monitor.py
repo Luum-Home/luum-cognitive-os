@@ -1,4 +1,3 @@
-# scope: both
 """Agent Output Monitor — read agent JSONL output files and extract progress.
 
 Lightweight module for monitoring agents launched via Claude Code's Agent tool.

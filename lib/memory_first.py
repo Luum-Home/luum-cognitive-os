@@ -1,4 +1,3 @@
-# scope: both
 """memory_first.py — Enforce the memory-first principle.
 
 Check what you already know before searching Engram or reading files.

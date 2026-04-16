@@ -1,4 +1,3 @@
-# scope: both
 """Process user messages: feedback detection + user model + prompt classification.
 Called by user-prompt-capture.sh via: python3 lib/process_user_message.py"""
 import sys, json, os

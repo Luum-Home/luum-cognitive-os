@@ -1,4 +1,3 @@
-# scope: both
 """Orchestrator capability detector — auto-detects available communication modes.
 
 At session start, call ``OrchestratorCapabilities().detect()`` once to learn
