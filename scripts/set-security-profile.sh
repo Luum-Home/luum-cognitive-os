@@ -114,11 +114,14 @@ case "$PROFILE" in
     # Hooks: prompt-quality-llm.sh (PreToolUse/Agent)
     # Hooks: completeness-check-llm.sh (PreToolUse/Agent)
     # Hooks: confidence-gate-llm.sh (PostToolUse/Agent)
+    # ADR-023 mutation-style hooks (PreToolUse Bash|Edit|Write|Agent):
+    # Hooks: secret-detector.sh — redacts via hookSpecificOutput.updatedInput
+    # Hooks: blast-radius.sh    — surfaces warnings via additionalContext
     echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, pattern-check"
     echo "  UserPromptSubmit: user-prompt-capture"
     echo "  SubagentStart: subagent-context-injector"
-    echo "  PreToolUse: rate-limiter, secret-detector, dispatch-gate, clarification-gate,"
-    echo "              blast-radius, inject-phase-context, agent-prelaunch, error-pattern-detector,"
+    echo "  PreToolUse: rate-limiter, secret-detector (ADR-023 redact), dispatch-gate, clarification-gate,"
+    echo "              blast-radius (ADR-023 advisory), inject-phase-context, agent-prelaunch, error-pattern-detector,"
     echo "              prompt-quality-llm, completeness-check-llm"
     # Hooks: adr-detector.sh (async, PostToolUse/Bash)
     # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
