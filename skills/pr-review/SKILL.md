@@ -14,6 +14,7 @@ context info:
   pattern: gga-pr-review
   inspired-by: GGA (Gentleman Guardian Angel) — MIT licensed
 audience: project
+effort: opus
 ---
 
 ## Purpose
