@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
 # worktree-submodule-fix.sh — SessionStart hook
 #
 # Problem: git submodule .git files use relative paths (gitdir: ../../../.git/modules/...)

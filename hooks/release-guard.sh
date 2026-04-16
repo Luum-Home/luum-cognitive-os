@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
 # release-guard.sh — PreToolUse hook on Bash
 #
 # Detects manual release patterns (echo > VERSION, git tag v*, manual version
