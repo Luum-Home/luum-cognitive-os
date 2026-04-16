@@ -17,15 +17,24 @@ import (
 	"github.com/luum/cos-dispatch/internal/config"
 	"github.com/luum/cos-dispatch/internal/dispatcher"
 	"github.com/luum/cos-dispatch/internal/executor"
+	"github.com/luum/cos-dispatch/internal/pattern"
 	"github.com/luum/cos-dispatch/internal/provider"
 	"github.com/luum/cos-dispatch/internal/transformer"
 	"github.com/luum/cos-dispatch/internal/validator"
+	"github.com/luum/cos-dispatch/internal/validator/impl"
 	"github.com/luum/cos-dispatch/pkg/hook"
 )
 
 var version = "dev"
 
 func main() {
+	os.Exit(run())
+}
+
+// run is the real entry point. It returns an exit code so deferred cleanup
+// (tracker.Close) runs before os.Exit is called. Using os.Exit directly in
+// main would skip defers and leave the tracker buffer unflushed.
+func run() int {
 	// Parse flags
 	providerFlag := flag.String("provider", "", "Override provider detection (claude|codex|gemini|cursor|windsurf)")
 	configFlag := flag.String("config", "", "Path to config file")
@@ -37,18 +46,18 @@ func main() {
 
 	if *versionFlag {
 		fmt.Fprintf(os.Stdout, "cos-dispatch %s\n", version)
-		os.Exit(0)
+		return 0
 	}
 
 	// Read stdin
 	raw, err := io.ReadAll(os.Stdin)
 	if err != nil {
 		log.Printf("[cos-dispatch] error reading stdin: %v", err)
-		os.Exit(0)
+		return 0
 	}
 	if len(raw) == 0 {
 		log.Printf("[cos-dispatch] empty stdin, nothing to do")
-		os.Exit(0)
+		return 0
 	}
 
 	// Determine project dir
@@ -78,6 +87,11 @@ func main() {
 	// Build components
 	providerReg := provider.NewRegistry()
 	validatorReg := validator.NewRegistry()
+	// Register built-in Phase-3 validators (rate limiter, secret detector, etc.)
+	// Phase left empty so the factory falls back to its "stabilization" default.
+	impl.RegisterDefaults(validatorReg, impl.FactoryConfig{
+		ProjectDir: projectDir,
+	})
 	pipeline := transformer.NewPipeline()
 
 	// Choose executor
@@ -97,6 +111,24 @@ func main() {
 	}
 	opts = append(opts, dispatcher.WithLogger(logger))
 
+	// Optionally wire pattern tracker (non-fatal: dispatcher works without it).
+	// Defer tracker.Close() here so it runs before run() returns and os.Exit
+	// is called — defers in run() execute normally unlike defers in main()
+	// when os.Exit is called directly.
+	if cfg.Patterns.Enabled && cfg.Patterns.DBPath != "" {
+		tracker, trackerErr := pattern.NewTracker(cfg.Patterns.DBPath)
+		if trackerErr != nil {
+			log.Printf("[cos-dispatch] pattern tracker unavailable (continuing without): %v", trackerErr)
+		} else {
+			defer func() {
+				if closeErr := tracker.Close(); closeErr != nil {
+					log.Printf("[cos-dispatch] tracker close: %v", closeErr)
+				}
+			}()
+			opts = append(opts, dispatcher.WithTracker(tracker))
+		}
+	}
+
 	// Handle --disable
 	_ = *disableFlag // reserved for future validator filtering
 	_ = *dryRun      // reserved for future dry-run support
@@ -111,17 +143,16 @@ func main() {
 		log.Printf("[cos-dispatch] dispatch error: %v", err)
 		// Fail-open: write empty allow response
 		fmt.Fprint(os.Stdout, `{"hookSpecificOutput":{"permissionDecision":"allow","reason":"internal error","additionalContext":""}}`)
-		os.Exit(0)
+		return 0
 	}
 
 	os.Stdout.Write(resp)
 
 	// Check if any blocking errors occurred — exit 2 to signal block
-	// We need to check the response for deny decision
 	if containsDeny(resp) {
-		os.Exit(2)
+		return 2
 	}
-	os.Exit(0)
+	return 0
 }
 
 // containsDeny checks if the response JSON contains a deny decision.

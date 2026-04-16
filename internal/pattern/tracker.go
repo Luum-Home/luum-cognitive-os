@@ -12,9 +12,9 @@ import (
 )
 
 // schemaSQL is the embedded subset of docs/architecture/cos-dispatch/schema.sql
-// that Phase 4 needs (executions, detected_patterns, session_summaries,
-// failure_sequences). Wrapped in IF NOT EXISTS so calling NewTracker on an
-// existing database is a no-op.
+// covering all 5 tables: executions, detected_patterns, generated_artifacts,
+// failure_sequences, session_summaries. Wrapped in IF NOT EXISTS so calling
+// NewTracker on an existing database is a no-op.
 const schemaSQL = `
 CREATE TABLE IF NOT EXISTS executions (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,7 +24,9 @@ CREATE TABLE IF NOT EXISTS executions (
     tool_type       TEXT NOT NULL,
     tool_input_hash TEXT,
     validator_name  TEXT NOT NULL,
-    result          TEXT NOT NULL,
+    result          TEXT NOT NULL CHECK(result IN ('pass','fail','warn','transform','override')),
+    -- override = a warn/fail result dismissed by a human or downstream system;
+    -- primary source signal for FalsePositive detection in Phase 5.1.
     duration_ms     INTEGER NOT NULL,
     error_code      TEXT,
     error_message   TEXT,
@@ -50,6 +52,22 @@ CREATE TABLE IF NOT EXISTS detected_patterns (
 );
 CREATE INDEX IF NOT EXISTS idx_patterns_status ON detected_patterns(status);
 CREATE INDEX IF NOT EXISTS idx_patterns_type   ON detected_patterns(pattern_type);
+
+CREATE TABLE IF NOT EXISTS generated_artifacts (
+    id                INTEGER PRIMARY KEY AUTOINCREMENT,
+    name              TEXT NOT NULL UNIQUE,
+    artifact_type     TEXT NOT NULL,
+    source_pattern_id INTEGER REFERENCES detected_patterns(id),
+    language          TEXT NOT NULL,
+    code              TEXT NOT NULL,
+    config_snippet    TEXT,
+    confidence        REAL NOT NULL,
+    generated_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    enabled           BOOLEAN NOT NULL DEFAULT 0,
+    feedback          TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_artifacts_enabled ON generated_artifacts(enabled);
+CREATE INDEX IF NOT EXISTS idx_artifacts_source  ON generated_artifacts(source_pattern_id);
 
 CREATE TABLE IF NOT EXISTS session_summaries (
     session_id          TEXT PRIMARY KEY,
@@ -214,11 +232,69 @@ func (t *SQLTracker) flushLocked() error {
 		}
 	}
 
+	// Populate failure_sequences: detect consecutive failure pairs within the
+	// same session in this flush batch and upsert into failure_sequences.
+	// "Consecutive" means adjacent positions in the buffer with the same
+	// session_id. Cross-session sequences are deferred to Phase 5.1.
+	if err := insertFailureSequences(tx, t.buffer); err != nil {
+		_ = tx.Rollback()
+		return fmt.Errorf("pattern: insert failure sequences: %w", err)
+	}
+
 	if err := tx.Commit(); err != nil {
 		return fmt.Errorf("pattern: commit tx: %w", err)
 	}
 
 	t.buffer = t.buffer[:0]
+	return nil
+}
+
+// insertFailureSequences scans the flush batch for consecutive failure pairs
+// within the same session and upserts them into the failure_sequences table.
+// "Failure" means result is ResultFail or ResultWarn (not pass/transform/override).
+// Only adjacent records sharing a session_id are considered; cross-session
+// detection is out of scope for Phase 5.0.
+func insertFailureSequences(tx *sql.Tx, batch []ExecutionRecord) error {
+	if len(batch) < 2 {
+		return nil
+	}
+
+	const upsertSQL = `
+INSERT INTO failure_sequences (source_code, target_code, count, first_seen, last_seen)
+VALUES (?, ?, 1, ?, ?)
+ON CONFLICT(source_code, target_code) DO UPDATE SET
+    count    = failure_sequences.count + 1,
+    last_seen = excluded.last_seen`
+
+	stmt, err := tx.Prepare(upsertSQL)
+	if err != nil {
+		return fmt.Errorf("prepare upsert: %w", err)
+	}
+	defer stmt.Close()
+
+	isFailure := func(r ExecutionRecord) bool {
+		return r.Result == ResultFail || r.Result == ResultWarn
+	}
+
+	now := time.Now().UTC()
+	for i := 1; i < len(batch); i++ {
+		prev, cur := batch[i-1], batch[i]
+		if prev.SessionID != cur.SessionID {
+			continue
+		}
+		if !isFailure(prev) || !isFailure(cur) {
+			continue
+		}
+		src := prev.ErrorCode
+		tgt := cur.ErrorCode
+		if src == "" || tgt == "" {
+			// Without error codes we cannot build a meaningful sequence key.
+			continue
+		}
+		if _, err := stmt.Exec(src, tgt, now, now); err != nil {
+			return fmt.Errorf("upsert sequence %s->%s: %w", src, tgt, err)
+		}
+	}
 	return nil
 }
 
