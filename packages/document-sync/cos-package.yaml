@@ -1,5 +1,5 @@
 name: "@luum/document-sync"
-version: "1.0.0"
+version: "1.1.0"
 description: "Documentation synchronization — detects stale docs after code changes and syncs to repo on session stop"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"

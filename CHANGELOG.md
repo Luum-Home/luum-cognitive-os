@@ -3,6 +3,127 @@
 All notable changes to Cognitive OS are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.9.0] - 2026-04-16 — "Self-Awareness"
+
+Major stabilization release following the growth crisis post-mortem. OS can now
+detect its own degradation patterns. See docs/architecture/POST-MORTEM-2026-04.md.
+
+### Added
+
+**Self-awareness mechanisms (the 5 wounds prevented):**
+- feat: cos-dispatch Go binary — vendor-agnostic hook dispatcher (Phases 1-4 complete)
+  - 11 Go packages, all tests passing on Go 1.25.6
+  - Validators + transformers + predicates + provider adapters for 5 AI coding agents
+  - SQLite pattern tracker with 3 detector types (RepeatedFailure, PerfRegression, ErrorCluster)
+  - 6 high-value bash hooks ported to Go (rate-limiter, rate-limit-protection, secret-detector, content-policy, completeness-checker, prompt-quality)
+- feat: lib/pattern_detector.py — detects dead metadata, broken chains, phantom entries, structural tests
+- feat: lib/adr_detector.py + hooks/adr-detector.sh — auto-generates ADR drafts on architectural git commits (8 weighted signals)
+- feat: hooks/_lib/file_checker.sh — symlink-aware file existence checks (prevents false "missing" reports)
+- feat: /audit-integrity skill — standardized audit with symlink resolution
+- feat: /detect-patterns skill — on-demand pattern detection
+
+**Agent amnesia prevention:**
+- feat: templates/agent-mandatory-rules.md — rules injected into every sub-agent via SubagentStart hook
+- feat: Updated hooks/subagent-context-injector.sh to load mandatory rules automatically
+
+**Task panel bridge (ADR-024):**
+- feat: hooks/_lib/task_bridge.py — correlates COS task_id with Claude Code tool_use_id
+- feat: hooks/task-bridge-notify.sh — PostToolUse hook emitting hookSpecificOutput with COS orchestration state
+- feat: Enhanced hooks/agent-prelaunch.sh to capture tool_use_id
+
+**Cross-device memory:**
+- feat: scripts/engram-sync.sh — project-scoped export/import of engram observations to git
+- feat: Activated packages/engram-sync hooks (Stop + SessionStart)
+- feat: First export: 544 observations at .engram/exports/luum-cognitive-os.jsonl
+
+**Claude Code feature integration (ADR-021 adapter pattern):**
+- feat: hooks/_lib/recap_adapter.py + hooks/recap-sync.sh — integrates session-wrapup with Claude Code /recap
+- feat: hooks/task-panel-sync.sh + _lib/task_panel_adapter.py — exposes active-tasks to native UI
+- feat: Registered TeammateIdle/TaskCreated/TaskCompleted events in settings.json
+- feat: 3 prompt-type hooks (prompt-quality-llm, completeness-check-llm, confidence-gate-llm) — Haiku-evaluated advisories (ADR-022)
+- feat: .claude/plugins/cos-monitors/plugin.json — native monitors manifest for background daemons
+- feat: Skills sweep — 21 skills annotated with paths/disable-model-invocation/effort frontmatter
+
+**Mutation via updatedInput (ADR-023):**
+- feat: hooks/secret-detector.sh — redacts AWS/GitHub/Slack/Stripe/OpenAI secrets via updatedInput instead of blocking
+- feat: hooks/blast-radius.sh — emits warnings via additionalContext, still allows execution
+- feat: hooks/inject-phase-context.sh + context-diet.sh — migrated to native hookSpecificOutput.additionalContext
+
+**CI gate for test quality:**
+- feat: .github/workflows/test-quality.yml — mutation testing (cosmic-ray) + structural test detector on PRs
+- feat: scripts/check-test-quality.py — AST-based classifier (CI/pre-commit/manual modes)
+- feat: .cosmic-ray.toml — mutation testing config
+- feat: Pre-commit Gate 3f blocks structural-only tests
+
+**2-tier skill loading:**
+- feat: skills/CATALOG-COMPACT.md — ~60% token reduction at session start (~2965 vs 7243)
+- feat: scripts/generate-compact-catalog.py — regenerates from SKILL.md files
+- feat: /catalog-full skill for on-demand full catalog
+
+**Onboarding tooling:**
+- feat: scripts/setup.sh — one-command dependency install (--minimal/--standard/--full)
+- feat: scripts/doctor.sh — 12 health check categories
+- feat: .go-version + goenv integration (Go 1.25.6)
+- feat: docs/setup/dependencies.md — comprehensive manifest by package manager
+
+**ADRs (7 new, 16 retroactive = 22 total):**
+- ADR-006 through ADR-020: retroactive coverage of March 21 - April 13 history
+- ADR-021: Vendor-agnostic state with provider adapters
+- ADR-022: Prompt-type hooks adoption (Haiku-evaluated)
+- ADR-023: updatedInput pattern (mutate vs block)
+- ADR-024: Task Panel Bridge (tool_use_id correlation)
+
+**Institutional memory (4 living documents):**
+- docs/architecture/stabilization-roadmap.md — status tracker
+- docs/architecture/FROZEN-BACKLOG.md — 30+ deferred plans
+- docs/architecture/LESSONS-LEARNED.md — 5 wounds + red flags
+- docs/architecture/POST-MORTEM-2026-04.md — full retrospective
+
+**Testing:**
+- 23 behavioral tests for 3 hook perf fixes (rate-limit-protection, dispatch-gate, completion-gate)
+- 10 tests for Task Panel Bridge
+- 18 tests for prompt-type hooks
+- 22 tests for pattern detector
+- 54 tests for auto-ADR detector
+- docs/testing/README.md — comprehensive testing guide
+
+### Fixed
+
+**Performance (3 critical hooks):**
+- perf: rate-limit-protection.sh — O(n) Python per-line → single call (30-90s → 50-100ms)
+- perf: dispatch-gate.sh — 9 Python cold starts → 1 consolidated call (2.1s → 300-400ms)
+- perf: completion-gate.sh — EXIT trap guarded behind Agent check (42s/session saved from non-Agent calls)
+- perf: session-init.sh — 3 Python cold starts → 1 helper script
+
+**Test infrastructure:**
+- fix: 8 failing singularity tests — extracted _singularity_suggestion to _lib/ for isolated testing (20x faster)
+- fix: test_app_services.py collection error (DockerContainer type annotation)
+
+**Stale references cleanup:**
+- fix: Removed 8 dead config flags + 18 dead config sections from cognitive-os.yaml
+- fix: project.name corrected from my-project to luum-cognitive-os
+- fix: Bifrost disabled in config to match docker-compose (ADR-011 superseded by ADR-018)
+- fix: Removed 179 dead SCOPE/scope tags from 84 hooks + 95 libs (no code reads them)
+
+### Removed
+
+- 67 structural-only test files (false coverage) — tests/smoke/ deleted entirely
+- 2,317 lines of structural tests pruned from 33 mixed behavior files
+- 3 phantom skill entries from CATALOG.md (skills with no SKILL.md)
+- 3 phantom entries from lib/skill_router.py routing table
+
+### Changed
+
+- Audience filtering now implemented in lib/skill_router.py (was metadata-only for 18 days)
+- .claude/settings.json: 10 new hooks registered across events
+- scripts/apply-efficiency-profile.sh + set-security-profile.sh: updated for all new hooks
+
+### Notes
+
+- Stabilization reached 98% per stabilization-roadmap.md
+- 4 components identified for reclassification to packages/ (deferred to v1.0 — see FROZEN-BACKLOG)
+- 50+ commits in the 2-session stabilization effort
+
 ## [0.7.0] - 2026-04-09
 
 ### Added
