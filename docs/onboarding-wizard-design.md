@@ -709,7 +709,7 @@ Installing Cognitive OS v0.2.1...
 | Singularity | `rules/singularity.md` installed |
 | Plan-first | `rules/plan-first.md` installed |
 | Acceptance criteria | `quality.auto_verify: true` |
-| DoD gates | `hooks.dod_gate: true` |
+| DoD gates | `/dod-check` skill (config flag removed) |
 | Trust score | `rules/trust-score.md` installed |
 | Adversarial review | `rules/adversarial-review.md` installed |
 | Assumption tracking | Hook registered |
@@ -806,7 +806,7 @@ features:
   auto_refine: true
   plan_first: true
   acceptance_criteria: true
-  dod_gates: true
+  # dod_gates: removed (use /dod-check skill instead)
   trust_score: true
 security_tools: []
 docker_services: []

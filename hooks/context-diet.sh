@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook: Context Diet — Task-aware rule selection advisory
 # Fires on "Agent" tool use — classifies task type and outputs which rules
 # are relevant, so the orchestrator knows the minimal context needed.
@@ -7,6 +8,9 @@
 #
 # PURPOSE: Reduces sub-agent cold start by advising which rules matter.
 # Works with lib/context_diet.py to map task_type -> minimal rule set.
+#
+# Transport: emits hookSpecificOutput.additionalContext on stdout (Claude Code native).
+# Falls back to stderr when invoked outside Claude Code (no valid stdin JSON).
 
 set -uo pipefail
 
@@ -16,6 +20,9 @@ source "$(dirname "$0")/_lib/common.sh"
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 DIET_LOG="$METRICS_DIR/context-diet.jsonl"
+
+# additionalContext hard limit per Claude Code spec
+MAX_CONTEXT_CHARS=10000
 
 # Session-aware metrics directory
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-}"
@@ -42,9 +49,15 @@ if ! command -v jq &>/dev/null; then
   exit 0
 fi
 
+# Detect "real" Claude Code invocation: stdin is a JSON object with tool_name.
+TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null || echo "")
+HAS_VALID_INPUT=0
+if [ -n "$TOOL_NAME" ]; then
+  HAS_VALID_INPUT=1
+fi
+
 # Only process Agent tool
-TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)
-if [ "$TOOL_NAME" != "Agent" ]; then
+if [ -n "$TOOL_NAME" ] && [ "$TOOL_NAME" != "Agent" ]; then
   exit 0
 fi
 
@@ -117,10 +130,62 @@ except Exception:
 " 2>/dev/null || true)
 fi
 
-# --- Advisory output ---
+# --- Compose advisory message ---
+ADVISORY_MSG=""
 if [ -n "$RULES_OUTPUT" ]; then
   RULE_COUNT=$(echo "$RULES_OUTPUT" | tr ',' '\n' | wc -l | tr -d ' ')
-  echo "CONTEXT DIET: task_type=$TASK_TYPE, $RULE_COUNT rules needed: $RULES_OUTPUT" >&2
+  ADVISORY_MSG="CONTEXT DIET: task_type=${TASK_TYPE}, ${RULE_COUNT} rules needed: ${RULES_OUTPUT}"
+fi
+
+# --- Truncate to 10K char limit ---
+if [ -n "$ADVISORY_MSG" ]; then
+  ADVISORY_LEN=${#ADVISORY_MSG}
+  if [ "$ADVISORY_LEN" -gt "$MAX_CONTEXT_CHARS" ]; then
+    if command -v python3 >/dev/null 2>&1; then
+      # Use printf (no trailing newline) so truncation math stays exact
+      ADVISORY_MSG=$(printf '%s' "$ADVISORY_MSG" | python3 -c "
+import sys
+buf = sys.stdin.read()
+limit = ${MAX_CONTEXT_CHARS}
+if len(buf) > limit:
+    marker = '\n[truncated at 10K chars]'
+    sys.stdout.write(buf[: limit - len(marker)] + marker)
+else:
+    sys.stdout.write(buf)
+")
+    else
+      ADVISORY_MSG="${ADVISORY_MSG:0:9975}
+[truncated at 10K chars]"
+    fi
+  fi
+fi
+
+# --- Emit via the selected transport ---
+if [ -n "$ADVISORY_MSG" ]; then
+  if [ "$HAS_VALID_INPUT" -eq 1 ]; then
+    # Claude Code: emit hookSpecificOutput JSON on stdout
+    if command -v python3 >/dev/null 2>&1; then
+      printf '%s' "$ADVISORY_MSG" | python3 -c "
+import json, sys
+ctx = sys.stdin.read()
+out = {
+    'hookSpecificOutput': {
+        'hookEventName': 'PreToolUse',
+        'additionalContext': ctx,
+        'permissionDecision': 'allow',
+    }
+}
+sys.stdout.write(json.dumps(out))
+"
+    else
+      jq -n \
+        --arg ctx "$ADVISORY_MSG" \
+        '{hookSpecificOutput: {hookEventName: "PreToolUse", additionalContext: $ctx, permissionDecision: "allow"}}'
+    fi
+  else
+    # No valid Claude Code input — degrade to stderr for manual/test invocations
+    echo "$ADVISORY_MSG" >&2
+  fi
 fi
 
 # --- Log to metrics ---

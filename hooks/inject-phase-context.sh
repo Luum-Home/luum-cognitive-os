@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook on Agent — injects phase context from cognitive-os.yaml into agent prompts.
 # Universal hook: reads project type and phase from config, does NOT hardcode any
 # project-specific architecture standards or constitutional gates.
+#
+# Transport: emits hookSpecificOutput.additionalContext on stdout (Claude Code native).
+# Falls back to stderr when invoked outside Claude Code (no valid stdin JSON).
 
 set -euo pipefail
 
@@ -9,12 +13,23 @@ PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 COGNITIVE_OS_DIR="$PROJECT_DIR/.cognitive-os"
 COGNITIVE_OS_YAML="$COGNITIVE_OS_DIR/cognitive-os.yaml"
 
+# additionalContext hard limit per Claude Code spec
+MAX_CONTEXT_CHARS=10000
+
 # Read input from stdin
 INPUT=$(cat)
 
+# Detect "real" Claude Code invocation: stdin is a JSON object with tool_name.
+# When invoked manually (testing without Claude Code), tool_name will be empty
+# and we'll emit to stderr for diagnostic visibility.
+TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null || echo "")
+HAS_VALID_INPUT=0
+if [[ -n "$TOOL_NAME" ]]; then
+  HAS_VALID_INPUT=1
+fi
+
 # Only process Agent tool calls
-TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)
-if [[ "$TOOL_NAME" != "Agent" && "$TOOL_NAME" != "task" && "$TOOL_NAME" != "delegate" ]]; then
+if [[ -n "$TOOL_NAME" ]] && [[ "$TOOL_NAME" != "Agent" && "$TOOL_NAME" != "task" && "$TOOL_NAME" != "delegate" ]]; then
   exit 0
 fi
 
@@ -173,57 +188,123 @@ if echo "$AGENT_PROMPT" | grep -q "TRUST_REPORT: SCORE="; then
   ALREADY_HAS_PREAMBLE=1
 fi
 
-# --- Inject agent-preamble.md (the core quality contract) ---
-# This ensures every sub-agent receives the TRUST_REPORT format requirement
-# and emits machine-parseable trust scores that feed the quality feedback loop.
+# --- Compose context buffer (single string) ---
+# Build everything into CONTEXT_BUF, then emit via the chosen transport.
+CONTEXT_BUF=""
+
+# Inject agent-preamble.md (the core quality contract)
 PREAMBLE_FILE="$PROJECT_DIR/templates/agent-preamble.md"
 if [[ "$ALREADY_HAS_PREAMBLE" -eq 0 ]] && [[ -f "$PREAMBLE_FILE" ]]; then
   PREAMBLE_CONTENT=$(cat "$PREAMBLE_FILE")
   # Interpolate {{phase}} placeholder
   PREAMBLE_CONTENT="${PREAMBLE_CONTENT//\{\{phase\}\}/$PHASE}"
-  echo "--- AGENT PREAMBLE (REQUIRED — read before starting) ---"
-  echo "$PREAMBLE_CONTENT"
-  echo "--- END AGENT PREAMBLE ---"
-  echo ""
+  CONTEXT_BUF+="--- AGENT PREAMBLE (REQUIRED — read before starting) ---
+${PREAMBLE_CONTENT}
+--- END AGENT PREAMBLE ---
+
+"
 fi
 
-# --- Output all context ---
-echo ""
-echo "PROJECT: ${PROJECT_NAME} ($PROJECT_TYPE)"
-echo "PHASE: $PHASE"
-echo ""
-echo "PHASE RULES:"
-echo "$RULES"
+CONTEXT_BUF+="
+PROJECT: ${PROJECT_NAME} (${PROJECT_TYPE})
+PHASE: ${PHASE}
+
+PHASE RULES:
+${RULES}"
+
 if [[ -n "$GOTCHAS" ]]; then
-  echo ""
-  echo "KNOWN TRAPS (auto-detected from your task keywords):"
-  echo "$GOTCHAS"
-fi
-if [[ -n "$ENGRAM_WARNINGS" ]]; then
-  echo ""
-  echo "RELEVANT DISCOVERIES (from project memory):"
-  echo "$ENGRAM_WARNINGS"
-fi
-if [[ -n "$PROJECT_CONTEXT" ]]; then
-  echo ""
-  echo -e "PROJECT CONTEXT:$PROJECT_CONTEXT"
-fi
-if [[ -n "$SQUAD_INFO" ]]; then
-  echo ""
-  echo "$SQUAD_INFO"
+  CONTEXT_BUF+="
+
+KNOWN TRAPS (auto-detected from your task keywords):
+${GOTCHAS}"
 fi
 
-# --- Inject gotchas file if working on COS internals ---
+if [[ -n "$ENGRAM_WARNINGS" ]]; then
+  CONTEXT_BUF+="
+
+RELEVANT DISCOVERIES (from project memory):
+${ENGRAM_WARNINGS}"
+fi
+
+if [[ -n "$PROJECT_CONTEXT" ]]; then
+  # PROJECT_CONTEXT may contain literal \n sequences — interpret them
+  CONTEXT_BUF+="
+
+PROJECT CONTEXT:$(printf '%b' "$PROJECT_CONTEXT")"
+fi
+
+if [[ -n "$SQUAD_INFO" ]]; then
+  CONTEXT_BUF+="
+
+${SQUAD_INFO}"
+fi
+
+# Inject gotchas file if working on COS internals
 GOTCHAS_FILE="$PROJECT_DIR/templates/project-gotchas.md"
 if [[ -n "$AGENT_PROMPT" ]] && [[ -f "$GOTCHAS_FILE" ]]; then
-  # Only inject for COS-internal work (mentions lib/, hooks/, packages/, .cognitive-os/)
   if echo "$AGENT_PROMPT" | grep -qiE 'lib/|hooks/|packages/|\.cognitive-os/|settings\.json|cognitive-os\.yaml'; then
-    echo ""
-    echo "--- PROJECT GOTCHAS (read before modifying COS internals) ---"
-    cat "$GOTCHAS_FILE"
+    GOTCHAS_CONTENT=$(cat "$GOTCHAS_FILE")
+    CONTEXT_BUF+="
+
+--- PROJECT GOTCHAS (read before modifying COS internals) ---
+${GOTCHAS_CONTENT}"
   fi
 fi
 
-echo ""
+CONTEXT_BUF+="
+"
+
+# --- Truncate to 10K char limit ---
+# additionalContext has a hard cap of 10,000 chars per Claude Code spec.
+# Use Python for safe multi-byte truncation; fall back to bash arithmetic.
+CONTEXT_LEN=${#CONTEXT_BUF}
+if [[ "$CONTEXT_LEN" -gt "$MAX_CONTEXT_CHARS" ]]; then
+  if command -v python3 >/dev/null 2>&1; then
+    # Use printf (no trailing newline) instead of <<< (adds trailing newline)
+    # so the truncation math stays exact.
+    CONTEXT_BUF=$(printf '%s' "$CONTEXT_BUF" | python3 -c "
+import sys
+buf = sys.stdin.read()
+limit = ${MAX_CONTEXT_CHARS}
+if len(buf) > limit:
+    # Reserve room for truncation marker (no trailing newline)
+    marker = '\n[truncated at 10K chars]'
+    sys.stdout.write(buf[: limit - len(marker)] + marker)
+else:
+    sys.stdout.write(buf)
+")
+  else
+    CONTEXT_BUF="${CONTEXT_BUF:0:9975}
+[truncated at 10K chars]"
+  fi
+fi
+
+# --- Emit via the selected transport ---
+if [[ "$HAS_VALID_INPUT" -eq 1 ]]; then
+  # Claude Code: emit hookSpecificOutput JSON on stdout
+  if command -v python3 >/dev/null 2>&1; then
+    # Use printf (no trailing newline) to preserve exact char count
+    printf '%s' "$CONTEXT_BUF" | python3 -c "
+import json, sys
+ctx = sys.stdin.read()
+out = {
+    'hookSpecificOutput': {
+        'hookEventName': 'PreToolUse',
+        'additionalContext': ctx,
+        'permissionDecision': 'allow',
+    }
+}
+sys.stdout.write(json.dumps(out))
+"
+  else
+    # No python3 fallback — use jq
+    jq -n \
+      --arg ctx "$CONTEXT_BUF" \
+      '{hookSpecificOutput: {hookEventName: "PreToolUse", additionalContext: $ctx, permissionDecision: "allow"}}'
+  fi
+else
+  # No valid Claude Code input — degrade to stderr for manual/test invocations
+  echo "$CONTEXT_BUF" >&2
+fi
 
 exit 0
