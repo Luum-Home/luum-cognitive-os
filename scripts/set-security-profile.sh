@@ -108,6 +108,7 @@ case "$PROFILE" in
     echo "  Overhead: ~100-200ms per tool call"
     ;;
   standard)
+    # Hooks: task-bridge-notify.sh (async, PostToolUse/Agent, ADR-024)
     # Hooks: task-panel-sync.sh (async, PostToolUse/Agent, ADR-021 adapter)
     # Hooks: pattern-check.sh (async, SessionStart)
     # ADR-022 prompt-type advisories (Haiku-evaluated, run alongside regex variants):
