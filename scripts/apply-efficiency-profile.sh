@@ -122,19 +122,26 @@ build_settings() {
   esac
 
   # PreToolUse hooks
-  local pre_bash="" pre_read="" pre_agent=""
+  local pre_bash="" pre_read="" pre_edit_write="" pre_agent=""
   case "$profile" in
     lean)
       # No PreToolUse hooks for lean
       pre_bash=""
       pre_read=""
+      pre_edit_write=""
       pre_agent=""
       ;;
     standard)
+      # ADR-023: secret-detector also runs as PreToolUse on Bash|Edit|Write|MultiEdit
+      # so it can REDACT literal credentials via hookSpecificOutput.updatedInput
+      # before the command/edit reaches the shell or the disk.
       pre_bash=$(hook_group "Bash" \
-        "rate-limiter.sh")
+        "rate-limiter.sh" \
+        "secret-detector.sh")
       pre_read=$(hook_group "Read" \
         "large-file-advisor.sh")
+      pre_edit_write=$(hook_group "Edit|Write|MultiEdit" \
+        "secret-detector.sh")
       # ADR-022: prompt-quality-llm.sh and completeness-check-llm.sh are
       # Haiku-evaluated advisories that run alongside the regex variants.
       pre_agent=$(hook_group "Agent" \
@@ -207,7 +214,8 @@ build_settings() {
         "session-changelog.sh" \
         "test-baseline-diff.sh" \
         "session-hygiene.sh" \
-        "mlflow-sync.sh")
+        "mlflow-sync.sh" \
+        "recap-sync.sh")
       ;;
   esac
 
@@ -217,10 +225,10 @@ build_settings() {
   printf '    ],\n'
 
   # PreToolUse — only emit if there are entries
-  if [ -n "$pre_bash" ] || [ -n "$pre_read" ] || [ -n "$pre_agent" ]; then
+  if [ -n "$pre_bash" ] || [ -n "$pre_read" ] || [ -n "$pre_edit_write" ] || [ -n "$pre_agent" ]; then
     printf '    "PreToolUse": [\n'
     local pre_first=true
-    for group in "$pre_bash" "$pre_read" "$pre_agent"; do
+    for group in "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_agent"; do
       [ -z "$group" ] && continue
       if [ "$pre_first" = true ]; then
         pre_first=false
@@ -279,14 +287,15 @@ case "$PROFILE" in
     ;;
   standard)
     echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh"
-    echo "  PreToolUse Bash: rate-limiter.sh"
+    echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact)"
+    echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
     echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh"
     echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh"
     echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
     echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh"
     echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, audit-id-enricher.sh, state-heartbeat.sh"
-    echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, test-baseline-diff.sh, session-hygiene.sh"
-    echo "  Total: 30 hooks"
+    echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, test-baseline-diff.sh, session-hygiene.sh, recap-sync.sh"
+    echo "  Total: 31 hooks"
     ;;
 esac
 
