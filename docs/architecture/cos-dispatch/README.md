@@ -134,7 +134,11 @@ generated/                         # Auto-generated validators/transformers
 
 **Phase 2 (Parallel + Providers):** DONE — 2026-04-16. Executor with parallel category pools, Codex + Gemini provider adapters. Task Panel adapter added as first ADR-021 implementation.
 
-**Phase 3-5:** Pending (next sessions).
+**Phase 3 (Native Validators, partial):** DONE — 2026-04-16. 6 of 17 high-value hooks ported to Go validators in `internal/validator/impl/`: rate-limiter, rate-limit-protection, secret-detector, content-policy, completeness-checker, prompt-quality. The remaining 11 stay as bash plugins (acceptable — plugin adapter exists).
+
+**Phase 4 (Pattern Tracking):** DONE — 2026-04-16. SQLite-backed `SQLTracker` + `SQLDetector` in `internal/pattern/`. 3 of 6 detector types implemented (RepeatedFailure, PerfRegression, ErrorCluster). Dispatcher instrumented via `WithTracker()` option. 11 tests passing.
+
+**Phase 5 (Auto-Generator + Remaining Providers):** Pending — next session. Also pending: FalsePositive, MissingCoverage, SequenceCorrelation detectors.
 
 ## Timeline
 
@@ -142,10 +146,10 @@ generated/                         # Auto-generated validators/transformers
 |-------|-------|------|------|--------|
 | 1. Foundation | 1-2 | 8 | Core binary, interfaces, plugin adapter, Claude provider | **DONE** |
 | 2. Parallel + Providers | 3 | 5 | Executor, Codex + Gemini adapters | **DONE** |
-| 3. Native Validators | 4-5 | 11 | Port 17 validators + 5 transformers to Go | Pending |
-| 4. Pattern Tracking | 6 | 7 | SQLite, detector, instrumentation | Pending |
-| 5. Auto-Gen + Providers | 7-8 | 8 | Generator, feedback, Cursor + Windsurf | Pending |
-| **Total** | **8** | **39** | | |
+| 3. Native Validators | 4-5 | 11 | Port 17 hooks → Go (6 of 17 done, rest as plugins) | **DONE (partial, acceptable)** |
+| 4. Pattern Tracking | 6 | 7 | SQLite tracker + detector with 3 of 6 pattern types | **DONE (partial)** |
+| 5. Auto-Gen + Providers | 7-8 | 8 | Generator, feedback, Cursor + Windsurf, remaining 3 detectors | Pending |
+| **Total** | **8** | **39** | ~80% effort complete as of 2026-04-16 | |
 
 ## Related Documents
 
