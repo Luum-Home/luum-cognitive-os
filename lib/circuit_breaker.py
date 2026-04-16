@@ -1,4 +1,3 @@
-# scope: both
 """Circuit breaker for agent task launches.
 
 Prevents launching agents for a task_type that keeps failing by tracking

@@ -1,4 +1,3 @@
-# scope: both
 """Ecosystem Evaluator — monitors plugins and evaluated tools for adoption opportunities.
 
 Tracks:

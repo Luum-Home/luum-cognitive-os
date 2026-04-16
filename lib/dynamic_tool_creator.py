@@ -1,4 +1,3 @@
-# scope: both
 """DEFER: This module depends on external services not yet configured. Not actively used.
 
 STATUS: Designed and documented but never called from production code.

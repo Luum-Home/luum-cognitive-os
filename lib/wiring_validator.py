@@ -1,4 +1,3 @@
-# scope: both
 """WiringValidator — detects components that exist but are never registered/used.
 
 Validates three component types:

@@ -1,4 +1,3 @@
-# scope: both
 """
 Feedback Detector — Detects implicit and explicit user feedback signals.
 

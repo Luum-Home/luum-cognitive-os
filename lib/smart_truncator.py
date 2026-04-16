@@ -1,4 +1,3 @@
-# scope: both
 """
 Smart Result Truncator — command-type-aware structured extraction.
 
