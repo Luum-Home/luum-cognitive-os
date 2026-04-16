@@ -1,0 +1,7 @@
+[cosmic-ray]
+module-path = "lib/"
+timeout = 30
+test-command = "python -m pytest tests/unit/ -x -q --no-header -p no:timeout -p no:xdist"
+
+[cosmic-ray.distributor]
+name = "local"
