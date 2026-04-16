@@ -7,6 +7,8 @@ auto-generated: false
 last-updated: 2026-04-10
 audience: both
 tags: [self-improvement, apply, verification]
+disable-model-invocation: true
+effort: sonnet
 ---
 
 # Apply Improvements Skill
