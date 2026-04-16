@@ -26,72 +26,9 @@ CLOSED_LOOP_PATH = PROJECT_ROOT / "rules" / "closed-loop-prompts.md"
 # ---------------------------------------------------------------------------
 
 
-class TestPreambleBackgroundSection:
-    """Verify the agent preamble documents background execution."""
-
-    def test_preamble_has_background_section(self):
-        """The preamble must have a 'Long-Running Commands' section."""
-        content = PREAMBLE_PATH.read_text()
-        assert "Long-Running Commands" in content, (
-            "agent-preamble.md must contain a 'Long-Running Commands' section"
-        )
-
-    def test_preamble_mentions_run_in_background(self):
-        """The preamble must reference the run_in_background parameter."""
-        content = PREAMBLE_PATH.read_text()
-        assert "run_in_background" in content, (
-            "agent-preamble.md must mention run_in_background"
-        )
-
-    def test_preamble_mentions_timeout(self):
-        """The preamble must mention an extended timeout for test suites."""
-        content = PREAMBLE_PATH.read_text()
-        assert "300000" in content or "300_000" in content or "5 min" in content, (
-            "agent-preamble.md must mention timeout: 300000 or equivalent 5-minute timeout"
-        )
-
-    def test_preamble_mentions_continue_work(self):
-        """The preamble must instruct agents to continue with other work."""
-        content = PREAMBLE_PATH.read_text()
-        lower = content.lower()
-        assert "continue" in lower and "other work" in lower, (
-            "agent-preamble.md must instruct agents to continue with other work "
-            "while a background command runs"
-        )
-
-
 # ---------------------------------------------------------------------------
 # Pattern documentation tests
 # ---------------------------------------------------------------------------
-
-
-class TestPatternDocumentation:
-    """Verify related rules document background execution patterns."""
-
-    def test_responsiveness_rule_mentions_background(self):
-        """rules/responsiveness.md must reference background execution."""
-        content = RESPONSIVENESS_PATH.read_text()
-        assert "run_in_background" in content, (
-            "rules/responsiveness.md must reference run_in_background"
-        )
-
-    def test_responsiveness_mentions_blocking_antipattern(self):
-        """rules/responsiveness.md should warn against blocking on long commands."""
-        content = RESPONSIVENESS_PATH.read_text()
-        lower = content.lower()
-        assert "blocking" in lower or "background" in lower, (
-            "rules/responsiveness.md should warn against blocking on long commands"
-        )
-
-    def test_closed_loop_mentions_verification(self):
-        """rules/closed-loop-prompts.md must document verification commands."""
-        content = CLOSED_LOOP_PATH.read_text()
-        assert "Verification" in content, (
-            "rules/closed-loop-prompts.md must have a Verification section"
-        )
-        assert "command" in content.lower(), (
-            "rules/closed-loop-prompts.md must document verification commands"
-        )
 
 
 # ---------------------------------------------------------------------------

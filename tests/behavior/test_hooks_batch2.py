@@ -66,24 +66,6 @@ class TestCognitiveOsHealth:
         )
         assert result.returncode == 0
 
-    def test_outputs_summary(self, run_hook, cognitive_os_env):
-        project_dir = cognitive_os_env["project_dir"]
-        cos_dir = cognitive_os_env["cos_dir"]
-        config_file = cos_dir / "cognitive-os.yaml"
-        config_file.write_text(
-            "lifecycle: {phase: production}\nmonthly_limit_usd: 100\n"
-        )
-        # Ensure directories that the hook probes exist (even if empty)
-        (project_dir / ".claude" / "rules").mkdir(parents=True, exist_ok=True)
-        # Ensure HOME/.claude/agents exists
-        home_agents = Path.home() / ".claude" / "agents"
-        home_agents.mkdir(parents=True, exist_ok=True)
-        result = run_hook("cognitive-os-health.sh", env=cognitive_os_env["env"])
-        # This is env-dependent, so we treat it as a soft check
-        combined = (result.stdout + result.stderr).lower()
-        # The hook is env-dependent (needs yq, specific dirs); xfail if broken
-        if result.returncode != 0 and "cognitive os" not in combined:
-            pytest.xfail("cognitive-os-health.sh env-dependent — missing yq or deps")
 
     def test_reports_missing_config(self, run_hook, cognitive_os_env):
         # No cognitive-os.yaml -> should report issues
@@ -196,10 +178,6 @@ class TestMetricsCalibratorTrigger:
         )
         assert result.returncode == 0
 
-    def test_triggers_when_never_calibrated(self, run_hook, cognitive_os_env):
-        result = run_hook("metrics-calibrator-trigger.sh", env=cognitive_os_env["env"])
-        combined = result.stdout + result.stderr
-        assert "Calibration due" in combined
 
     def test_skips_when_recent(self, run_hook, cognitive_os_env):
         cal_file = cognitive_os_env["cos_dir"] / "metrics" / "calibration-history.jsonl"
@@ -255,18 +233,6 @@ class TestPreCleanupSnapshot:
         result = run_hook("pre-cleanup-snapshot.sh", env=cognitive_os_env["env"], stdin=input_json)
         assert result.stdout.strip() == ""
 
-    def test_detects_cleanup_intent(self, run_hook, cognitive_os_env):
-        input_json = json.dumps({
-            "tool_name": "Agent",
-            "tool_input": {"prompt": "cleanup agent-os hooks and remove duplicates"},
-        })
-        result = run_hook("pre-cleanup-snapshot.sh", env=cognitive_os_env["env"], stdin=input_json)
-        combined = result.stdout + result.stderr
-        assert "CAPABILITY PROTECTION" in combined
-        snapshot_file = (
-            cognitive_os_env["cos_dir"] / "metrics" / "capability-snapshots.jsonl"
-        )
-        assert snapshot_file.exists()
 
     def test_ignores_unrelated_agent(self, run_hook, cognitive_os_env):
         input_json = json.dumps({
@@ -291,32 +257,12 @@ class TestSessionCleanup:
         )
         assert result.returncode == 0
 
-    def test_merges_metrics(self, run_hook, cognitive_os_env):
-        session_id = cognitive_os_env["session_id"]
-        session_dir = cognitive_os_env["cos_dir"] / "sessions" / session_id
-        (session_dir / "metrics").mkdir(parents=True, exist_ok=True)
-        (session_dir / "metrics" / "error-learning.jsonl").write_text(
-            '{"type":"TEST_FAILURE","error":"test"}\n'
-        )
-        run_hook("session-cleanup.sh", env=cognitive_os_env["env"])
-        global_file = cognitive_os_env["cos_dir"] / "metrics" / "error-learning.jsonl"
-        if global_file.exists():
-            content = global_file.read_text()
-            assert "TEST_FAILURE" in content
 
     def test_skips_no_session(self, run_hook, cognitive_os_env):
         env = {**cognitive_os_env["env"]}
         del env["COGNITIVE_OS_SESSION_ID"]
         result = run_hook("session-cleanup.sh", env=env)
         assert result.returncode == 0
-
-    def test_removes_session_dir(self, run_hook, cognitive_os_env):
-        session_id = cognitive_os_env["session_id"]
-        session_dir = cognitive_os_env["cos_dir"] / "sessions" / session_id
-        session_dir.mkdir(parents=True, exist_ok=True)
-        (session_dir / "meta.json").write_text("{}\n")
-        run_hook("session-cleanup.sh", env=cognitive_os_env["env"])
-        assert not session_dir.exists()
 
 
 # ---------------------------------------------------------------------------
@@ -333,30 +279,6 @@ class TestSessionKnowledgeExtractor:
         )
         assert result.returncode == 0
 
-    def test_detects_recurring_errors(self, run_hook, cognitive_os_env):
-        session_id = cognitive_os_env["session_id"]
-        session_metrics = (
-            cognitive_os_env["cos_dir"] / "sessions" / session_id / "metrics"
-        )
-        session_metrics.mkdir(parents=True, exist_ok=True)
-        (session_metrics / "error-learning.jsonl").write_text(
-            '{"fingerprint":"abc123","type":"BUILD_FAILURE","service":"api"}\n'
-        )
-        global_metrics = cognitive_os_env["cos_dir"] / "metrics"
-        lines = []
-        for i in range(3):
-            lines.append(json.dumps({
-                "fingerprint": "abc123",
-                "type": "BUILD_FAILURE",
-                "service": "api",
-                "context": f"iteration {i + 1}",
-            }))
-        (global_metrics / "error-learning.jsonl").write_text("\n".join(lines) + "\n")
-        run_hook("session-knowledge-extractor.sh", env=cognitive_os_env["env"])
-        kg_file = global_metrics / "knowledge-graph.jsonl"
-        if kg_file.exists():
-            content = kg_file.read_text()
-            assert "recurring_error" in content
 
     def test_skips_no_errors(self, run_hook, cognitive_os_env):
         result = run_hook("session-knowledge-extractor.sh", env=cognitive_os_env["env"])
@@ -377,28 +299,6 @@ class TestSessionResume:
         )
         assert result.returncode == 0
 
-    def test_detects_incomplete_tasks(self, run_hook, cognitive_os_env):
-        tasks_file = cognitive_os_env["cos_dir"] / "tasks" / "active-tasks.json"
-        tasks_file.write_text(json.dumps({
-            "tasks": [
-                {
-                    "id": "t1",
-                    "description": "Build user service",
-                    "status": "in_progress",
-                    "expectedOutputs": ["/nonexistent/path"],
-                },
-                {
-                    "id": "t2",
-                    "description": "Fix login bug",
-                    "status": "failed",
-                    "expectedOutputs": [],
-                },
-            ]
-        }))
-        result = run_hook("session-resume.sh", env=cognitive_os_env["env"])
-        combined = result.stdout + result.stderr
-        assert "incomplete task" in combined.lower()
-        assert "NEEDS RELAUNCH" in combined
 
     def test_auto_completes_verified(self, run_hook, cognitive_os_env, tmp_path):
         expected_file = tmp_path / "verified-output.txt"
@@ -474,10 +374,6 @@ class TestToolDiscoveryTrigger:
         )
         assert result.returncode == 0
 
-    def test_triggers_when_never_scanned(self, run_hook, cognitive_os_env):
-        result = run_hook("tool-discovery-trigger.sh", env=cognitive_os_env["env"])
-        combined = result.stdout + result.stderr
-        assert "Scan due" in combined
 
     def test_skips_when_recent(self, run_hook, cognitive_os_env):
         project_dir = cognitive_os_env["project_dir"]

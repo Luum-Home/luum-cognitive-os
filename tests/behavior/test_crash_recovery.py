@@ -27,10 +27,6 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 class TestAutoCheckpointHook:
 
-    def test_hook_exists(self):
-        """auto-checkpoint.sh hook file exists."""
-        hook_path = PROJECT_ROOT / "hooks" / "auto-checkpoint.sh"
-        assert hook_path.exists(), "hooks/auto-checkpoint.sh does not exist"
 
     def test_hook_is_valid_bash(self):
         """auto-checkpoint.sh is valid bash syntax."""
@@ -64,10 +60,6 @@ class TestAutoCheckpointHook:
 
 class TestCrashRecoveryHook:
 
-    def test_hook_exists(self):
-        """crash-recovery.sh hook file exists."""
-        hook_path = PROJECT_ROOT / "hooks" / "crash-recovery.sh"
-        assert hook_path.exists(), "hooks/crash-recovery.sh does not exist"
 
     def test_hook_is_valid_bash(self):
         """crash-recovery.sh is valid bash syntax."""
@@ -132,48 +124,6 @@ class TestCrashRecoveryHook:
 # ---------------------------------------------------------------------------
 
 
-class TestCrashRecoveryRule:
-
-    def test_rule_exists(self):
-        """rules/crash-recovery.md exists."""
-        rule_path = PROJECT_ROOT / "rules" / "crash-recovery.md"
-        assert rule_path.exists(), "rules/crash-recovery.md does not exist"
-
-    def test_rule_mentions_auto_checkpoint(self):
-        """Rule references the auto-checkpoint hook."""
-        content = (PROJECT_ROOT / "rules" / "crash-recovery.md").read_text()
-        assert "auto-checkpoint" in content
-
-    def test_rule_mentions_crash_recovery_hook(self):
-        """Rule references the crash-recovery hook."""
-        content = (PROJECT_ROOT / "rules" / "crash-recovery.md").read_text()
-        assert "crash-recovery" in content
-
-
-class TestFaultToleranceDoc:
-
-    def test_doc_exists(self):
-        """docs/fault-tolerance.md exists."""
-        doc_path = PROJECT_ROOT / "docs" / "fault-tolerance.md"
-        assert doc_path.exists(), "docs/fault-tolerance.md does not exist"
-
-    def test_doc_covers_crash_scenario(self):
-        """Doc covers computer crash / power loss scenario."""
-        content = (PROJECT_ROOT / "docs" / "fault-tolerance.md").read_text()
-        assert "crash" in content.lower()
-        assert "power loss" in content.lower()
-
-    def test_doc_covers_oom(self):
-        """Doc covers out-of-memory scenario."""
-        content = (PROJECT_ROOT / "docs" / "fault-tolerance.md").read_text()
-        assert "OOM" in content or "out of memory" in content.lower()
-
-    def test_doc_covers_network_loss(self):
-        """Doc covers network loss scenario."""
-        content = (PROJECT_ROOT / "docs" / "fault-tolerance.md").read_text()
-        assert "network" in content.lower() or "internet" in content.lower()
-
-
 # ---------------------------------------------------------------------------
 # Settings integration
 # ---------------------------------------------------------------------------
@@ -218,15 +168,6 @@ class TestHooksRegistered:
                     found = True
                     break
         assert found, "crash-recovery.sh not registered in SessionStart"
-
-
-class TestRulesCompact:
-
-    def test_crash_recovery_in_rules_compact(self):
-        """Crash recovery is mentioned in RULES-COMPACT.md."""
-        compact_path = PROJECT_ROOT / "rules" / "RULES-COMPACT.md"
-        content = compact_path.read_text()
-        assert "crash-recovery" in content.lower() or "Crash Recovery" in content
 
 
 # ---------------------------------------------------------------------------

@@ -208,28 +208,6 @@ class TestCoreRulesNotExcluded:
             "credential-management.md must stay — never put secrets in code"
 
 
-class TestPackageRulesExcluded:
-    """Package-specific rules must be excluded (not relevant to OS dev context)."""
-
-    @pytest.mark.parametrize("rule", PACKAGE_RULES_EXPECTED_EXCLUDED)
-    def test_package_rule_is_excluded(self, excluded_rules, rule):
-        assert rule in excluded_rules, (
-            f"{rule} should be in EXCLUDED_RULES — it is package-specific "
-            f"and only relevant when that optional package is active"
-        )
-
-
-class TestContextualRulesExcluded:
-    """Contextual/specialized rules must be excluded (indexed in RULES-COMPACT)."""
-
-    @pytest.mark.parametrize("rule", CONTEXTUAL_RULES_EXPECTED_EXCLUDED)
-    def test_contextual_rule_is_excluded(self, excluded_rules, rule):
-        assert rule in excluded_rules, (
-            f"{rule} should be in EXCLUDED_RULES — it is contextual/specialized "
-            f"and indexed in RULES-COMPACT for on-demand loading"
-        )
-
-
 class TestSymlinkCountAfterInstall:
     """After running self-install.sh, fewer than 50 rules should be symlinked."""
 

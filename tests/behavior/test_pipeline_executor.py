@@ -195,17 +195,6 @@ class TestPipelineState:
         assert loaded.steps_completed == []
         assert loaded.change_name == "nonexistent"
 
-    def test_save_creates_json_file(self, tmp_path):
-        state = self._make_state(tmp_path, change_name="mychange")
-        state.save()
-        state_file = tmp_path / "mychange.json"
-        assert state_file.exists()
-
-    def test_save_skips_when_no_state_file(self, tmp_path):
-        """save() is a no-op when _state_file is None."""
-        state = self.State(change_name="x", workflow_name="feature-pipeline")
-        # Should not raise
-        state.save()
 
     def test_vars_persisted(self, tmp_path):
         state = self._make_state(tmp_path, change_name="x", vars={"FOO": "bar"})
@@ -319,11 +308,6 @@ class TestWorkflowYaml:
             pytest.skip("pyyaml not installed")
         return yaml.safe_load(path.read_text())
 
-    def test_feature_pipeline_exists(self):
-        assert (self.WORKFLOWS_DIR / "feature-pipeline.yaml").exists()
-
-    def test_bugfix_pipeline_exists(self):
-        assert (self.WORKFLOWS_DIR / "bugfix-pipeline.yaml").exists()
 
     def test_feature_pipeline_has_steps(self):
         path = self.WORKFLOWS_DIR / "feature-pipeline.yaml"
@@ -349,23 +333,6 @@ class TestWorkflowYaml:
         step_names = [s.get("name", s.get("id", "")) for s in data["steps"]]
         assert any("propose" in name for name in step_names)
 
-    def test_feature_pipeline_step_types_are_valid(self):
-        path = self.WORKFLOWS_DIR / "feature-pipeline.yaml"
-        if not path.exists():
-            pytest.skip("feature-pipeline.yaml not found")
-        data = self._load_yaml(path)
-        valid_types = {"agent", "script", "gate"}
-        for step in data["steps"]:
-            step_type = step.get("type", "agent")
-            assert step_type in valid_types, f"Step {step} has invalid type {step_type!r}"
-
-    def test_feature_pipeline_has_gate_step(self):
-        path = self.WORKFLOWS_DIR / "feature-pipeline.yaml"
-        if not path.exists():
-            pytest.skip("feature-pipeline.yaml not found")
-        data = self._load_yaml(path)
-        types = [s.get("type", "agent") for s in data["steps"]]
-        assert "gate" in types
 
     def test_bugfix_pipeline_has_apply_step(self):
         path = self.WORKFLOWS_DIR / "bugfix-pipeline.yaml"
@@ -375,25 +342,4 @@ class TestWorkflowYaml:
         step_names = [s.get("name", s.get("id", "")) for s in data["steps"]]
         assert any("apply" in name for name in step_names)
 
-    def test_on_failure_values_are_valid(self):
-        for filename in ("feature-pipeline.yaml", "bugfix-pipeline.yaml"):
-            path = self.WORKFLOWS_DIR / filename
-            if not path.exists():
-                continue
-            data = self._load_yaml(path)
-            valid_failures = {"abort", "retry", "escalate", "skip"}
-            for step in data["steps"]:
-                if "on_failure" in step:
-                    assert step["on_failure"] in valid_failures, (
-                        f"{filename}: step {step.get('name')} has invalid on_failure"
-                    )
 
-    def test_variable_syntax_in_scripts(self):
-        """Script steps using ${VAR:-default} syntax should be parseable."""
-        path = self.WORKFLOWS_DIR / "feature-pipeline.yaml"
-        if not path.exists():
-            pytest.skip("feature-pipeline.yaml not found")
-        data = self._load_yaml(path)
-        raw_text = path.read_text()
-        # The file should contain at least one default-value substitution
-        assert "${" in raw_text

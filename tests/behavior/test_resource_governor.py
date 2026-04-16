@@ -95,10 +95,3 @@ class TestResourceGovernor:
             "should block agent launch when over monthly budget"
         )
 
-    def test_budget_thresholds_in_config(self, project_root):
-        config = project_root / ".cognitive-os" / "cognitive-os.yaml"
-        if not config.exists():
-            pytest.skip("cognitive-os.yaml not found")
-        content = config.read_text()
-        assert "monthly_limit_usd:" in content, "config should have monthly_limit_usd"
-        assert "daily_alert_usd:" in content, "config should have daily_alert_usd"

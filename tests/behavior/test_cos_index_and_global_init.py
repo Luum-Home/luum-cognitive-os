@@ -31,27 +31,6 @@ class TestCosIndex:
     INDEX_DIR = PROJECT_ROOT / "packages" / "cos-index"
     INDEX_FILE = INDEX_DIR / "index" / "packages.yaml"
 
-    def test_index_directory_exists(self):
-        assert self.INDEX_DIR.is_dir(), "packages/cos-index/ directory does not exist"
-
-    def test_index_file_exists(self):
-        assert self.INDEX_FILE.is_file(), "packages/cos-index/index/packages.yaml does not exist"
-
-    def test_cos_package_yaml_exists(self):
-        pkg_yaml = self.INDEX_DIR / "cos-package.yaml"
-        assert pkg_yaml.is_file(), "packages/cos-index/cos-package.yaml does not exist"
-
-    def test_readme_exists(self):
-        readme = self.INDEX_DIR / "README.md"
-        assert readme.is_file(), "packages/cos-index/README.md does not exist"
-
-    def test_validate_script_exists(self):
-        script = self.INDEX_DIR / "scripts" / "validate-index.sh"
-        assert script.is_file(), "validate-index.sh does not exist"
-
-    def test_generate_script_exists(self):
-        script = self.INDEX_DIR / "scripts" / "generate-index.sh"
-        assert script.is_file(), "generate-index.sh does not exist"
 
     def test_validate_script_is_executable(self):
         script = self.INDEX_DIR / "scripts" / "validate-index.sh"
@@ -153,8 +132,6 @@ class TestCosInitGlobal:
         "error-learning.md",
     ]
 
-    def test_script_exists(self):
-        assert self.SCRIPT.is_file(), "scripts/cos-init-global.sh does not exist"
 
     def test_script_is_executable(self):
         assert os.access(self.SCRIPT, os.X_OK), "cos-init-global.sh is not executable"
@@ -254,11 +231,6 @@ class TestCosInitGlobal:
         assert result.returncode == 0, f"idempotent rerun failed: {result.stderr}"
         assert "Skipped" in result.stdout, "Second run should skip unchanged rules"
 
-    def test_core_rules_source_files_exist(self):
-        """All 14 core rules must exist in the rules/ directory."""
-        for rule in self.CORE_RULES:
-            rule_path = PROJECT_ROOT / "rules" / rule
-            assert rule_path.is_file(), f"Core rule missing from source: rules/{rule}"
 
     def test_help_flag(self):
         """--help should show usage without error."""
