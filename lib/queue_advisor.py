@@ -1,4 +1,3 @@
-# scope: both
 """Queue Advisor — dynamic dispatch prioritizer for the agent queue.
 
 Reorders the dispatch queue based on runtime state (budget, context usage,

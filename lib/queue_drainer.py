@@ -1,4 +1,3 @@
-# scope: both
 """Queue Drainer — slot-based dispatch queue for blocked agent launches.
 
 When dispatch-gate.sh blocks an agent launch because all slots are full,

@@ -1,4 +1,3 @@
-# scope: both
 """Context Diet — Token-efficient rule selection for sub-agents.
 
 Each sub-agent launched by the orchestrator currently loads all rules from

@@ -1,4 +1,3 @@
-# scope: both
 """
 commit_classifier.py — Classify changed files into thematic commit groups.
 

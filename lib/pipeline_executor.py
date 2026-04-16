@@ -1,4 +1,3 @@
-# scope: both
 """Pipeline Executor — workflow YAML to execution engine.
 
 Reads a workflow YAML from ``.cognitive-os/workflows/``, resolves variable

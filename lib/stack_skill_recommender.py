@@ -1,4 +1,3 @@
-# scope: both
 """Stack Skill Recommender — Map detected project stack to recommended skills.
 
 Detects technologies from project files (package.json, go.mod, pyproject.toml,
