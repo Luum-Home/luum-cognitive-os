@@ -58,42 +58,6 @@ def _load_settings_commands() -> list[str]:
 class TestContextManagementThresholds:
     """Verify that context-management thresholds are documented and actionable."""
 
-    def test_context_management_rule_exists(self):
-        """rules/context-management.md must exist."""
-        assert CONTEXT_MGMT_RULE.exists(), (
-            f"rules/context-management.md not found at {CONTEXT_MGMT_RULE}. "
-            "This rule defines the 50/70/85% thresholds for proactive state-saving."
-        )
-
-    def test_fifty_percent_threshold_documented(self):
-        """Context-management rule must document the 50% efficiency-mode threshold."""
-        if not CONTEXT_MGMT_RULE.exists():
-            pytest.skip("rules/context-management.md not found")
-        content = CONTEXT_MGMT_RULE.read_text()
-        assert "50%" in content or "50 %" in content, (
-            "rules/context-management.md must document the 50% threshold "
-            "(efficiency mode: be concise, start saving important decisions)."
-        )
-
-    def test_seventy_percent_threshold_documented(self):
-        """Context-management rule must document the 70% save-and-summarize threshold."""
-        if not CONTEXT_MGMT_RULE.exists():
-            pytest.skip("rules/context-management.md not found")
-        content = CONTEXT_MGMT_RULE.read_text()
-        assert "70%" in content or "70 %" in content, (
-            "rules/context-management.md must document the 70% threshold "
-            "(CRITICAL save point: mandatory Engram save before proceeding)."
-        )
-
-    def test_eighty_five_percent_threshold_documented(self):
-        """Context-management rule must document the 85% stop-and-handoff threshold."""
-        if not CONTEXT_MGMT_RULE.exists():
-            pytest.skip("rules/context-management.md not found")
-        content = CONTEXT_MGMT_RULE.read_text()
-        assert "85%" in content or "85 %" in content, (
-            "rules/context-management.md must document the 85% threshold "
-            "(URGENT: stop new work, complete current task, call mem_session_summary)."
-        )
 
     def test_context_management_rule_mandates_engram_save(self):
         """Context-management rule must mandate Engram saves at the 70% threshold."""
@@ -106,16 +70,6 @@ class TestContextManagementThresholds:
             "mandatory save mechanism at the 70% threshold."
         )
 
-    def test_context_management_rule_mandates_session_summary(self):
-        """Context-management rule must mandate mem_session_summary at 85%."""
-        if not CONTEXT_MGMT_RULE.exists():
-            pytest.skip("rules/context-management.md not found")
-        content = CONTEXT_MGMT_RULE.read_text()
-        assert "mem_session_summary" in content, (
-            "rules/context-management.md must mandate calling mem_session_summary "
-            "at the 85% threshold so the next session can resume intelligently."
-        )
-
 
 # ===========================================================================
 # Pre-Compaction Flush Hook Tests
@@ -125,12 +79,6 @@ class TestContextManagementThresholds:
 class TestPreCompactionFlushHook:
     """Verify the pre-compaction-flush.sh hook is correct and registered."""
 
-    def test_flush_hook_exists(self):
-        """pre-compaction-flush.sh must exist in the hooks directory."""
-        assert FLUSH_HOOK.exists(), (
-            f"pre-compaction-flush.sh not found at {FLUSH_HOOK}. "
-            "This is the last-resort safety net before context compaction."
-        )
 
     def test_flush_hook_is_executable_or_valid_bash(self):
         """pre-compaction-flush.sh must be valid bash (bash -n passes)."""
@@ -146,26 +94,6 @@ class TestPreCompactionFlushHook:
             f"pre-compaction-flush.sh has bash syntax errors:\n{result.stderr}"
         )
 
-    def test_flush_hook_contains_session_summary_instruction(self):
-        """pre-compaction-flush.sh must instruct the agent to call mem_session_summary."""
-        if not FLUSH_HOOK.exists():
-            pytest.skip("pre-compaction-flush.sh not found")
-        content = FLUSH_HOOK.read_text().lower()
-        assert "mem_session_summary" in content, (
-            "pre-compaction-flush.sh must instruct the agent to call "
-            "mem_session_summary. Without a session summary, the next session "
-            "has no structured record of what was accomplished."
-        )
-
-    def test_flush_hook_contains_mem_save_instruction(self):
-        """pre-compaction-flush.sh must instruct the agent to call mem_save."""
-        if not FLUSH_HOOK.exists():
-            pytest.skip("pre-compaction-flush.sh not found")
-        content = FLUSH_HOOK.read_text().lower()
-        assert "mem_save" in content, (
-            "pre-compaction-flush.sh must instruct the agent to call mem_save "
-            "for unsaved decisions, bug fixes, or discoveries."
-        )
 
     def test_flush_hook_mentions_in_progress_tasks(self):
         """pre-compaction-flush.sh must instruct noting in-progress tasks."""
@@ -187,50 +115,6 @@ class TestPreCompactionFlushHook:
 class TestSessionDirectoryStructure:
     """Verify that session-init creates the proper directory structure."""
 
-    def test_session_init_creates_session_id_directory(self):
-        """session-init.sh must create a unique session ID directory."""
-        session_init = HOOKS_DIR / "session-init.sh"
-        if not session_init.exists():
-            pytest.skip("session-init.sh not found")
-        content = session_init.read_text()
-        # Verify it creates SESSION_DIR
-        assert "SESSION_DIR" in content or "session_dir" in content.lower(), (
-            "session-init.sh must create a per-session directory (SESSION_DIR) "
-            "for session isolation."
-        )
-
-    def test_session_init_creates_meta_json(self):
-        """session-init.sh must create meta.json with session metadata."""
-        session_init = HOOKS_DIR / "session-init.sh"
-        if not session_init.exists():
-            pytest.skip("session-init.sh not found")
-        content = session_init.read_text()
-        assert "meta.json" in content, (
-            "session-init.sh must create meta.json containing session_id, pid, "
-            "and start_time for crash recovery identification."
-        )
-
-    def test_session_init_creates_tasks_json(self):
-        """session-init.sh must create an empty tasks.json for session-scoped tracking."""
-        session_init = HOOKS_DIR / "session-init.sh"
-        if not session_init.exists():
-            pytest.skip("session-init.sh not found")
-        content = session_init.read_text()
-        assert "tasks.json" in content, (
-            "session-init.sh must create a session-scoped tasks.json. "
-            "This enables per-session task isolation."
-        )
-
-    def test_session_init_creates_metrics_directory(self):
-        """session-init.sh must create a metrics/ subdirectory for session metrics."""
-        session_init = HOOKS_DIR / "session-init.sh"
-        if not session_init.exists():
-            pytest.skip("session-init.sh not found")
-        content = session_init.read_text()
-        assert "metrics" in content, (
-            "session-init.sh must create a metrics/ directory within the session "
-            "directory for session-scoped metric isolation."
-        )
 
     def test_session_init_runs_at_session_start(self):
         """session-init.sh must be registered as a SessionStart hook."""

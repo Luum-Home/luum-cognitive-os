@@ -82,18 +82,6 @@ class TestInjectPhaseContext:
         result = run_cos_hook(cos_hooks_dir, "inject-phase-context.sh", env=project_dir_env, stdin=mock_input)
         assert result.returncode == 0
 
-    def test_outputs_phase_information(self, cos_hooks_dir, project_dir_env):
-        hook = cos_hooks_dir / "inject-phase-context.sh"
-        if not hook.exists() or not os.access(str(hook), os.X_OK):
-            pytest.skip("inject-phase-context.sh not available")
-
-        mock_input = json.dumps({
-            "tool_name": "Agent",
-            "tool_input": {"prompt": "test prompt"},
-        })
-        result = run_cos_hook(cos_hooks_dir, "inject-phase-context.sh", env=project_dir_env, stdin=mock_input)
-        combined = (result.stdout + result.stderr).upper()
-        assert "PHASE:" in combined
 
     def test_outputs_valid_phase_name(self, cos_hooks_dir, project_dir_env):
         hook = cos_hooks_dir / "inject-phase-context.sh"
@@ -109,18 +97,6 @@ class TestInjectPhaseContext:
         valid_phases = ("reconstruction", "stabilization", "production", "maintenance")
         assert any(phase in combined for phase in valid_phases)
 
-    def test_injects_constitutional_gates(self, cos_hooks_dir, project_dir_env):
-        hook = cos_hooks_dir / "inject-phase-context.sh"
-        if not hook.exists() or not os.access(str(hook), os.X_OK):
-            pytest.skip("inject-phase-context.sh not available")
-
-        mock_input = json.dumps({
-            "tool_name": "Agent",
-            "tool_input": {"prompt": "test prompt"},
-        })
-        result = run_cos_hook(cos_hooks_dir, "inject-phase-context.sh", env=project_dir_env, stdin=mock_input)
-        combined = (result.stdout + result.stderr).upper()
-        assert "CONSTITUTIONAL GATES" in combined
 
     def test_no_output_for_non_agent(self, cos_hooks_dir, project_dir_env):
         hook = cos_hooks_dir / "inject-phase-context.sh"

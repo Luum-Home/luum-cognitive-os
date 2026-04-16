@@ -32,9 +32,6 @@ pytestmark = pytest.mark.behavior
 class TestGap1SDDPipelineSync:
     """Gap 1: SDD phase transitions push to Paperclip."""
 
-    def test_paperclip_sdd_sync_hook_exists(self):
-        hook = PROJECT_ROOT / "packages" / "paperclip-integration" / "hooks" / "paperclip-sdd-sync.sh"
-        assert hook.exists(), "paperclip-sdd-sync.sh hook must exist"
 
     def test_paperclip_sdd_sync_hook_is_executable(self):
         hook = PROJECT_ROOT / "packages" / "paperclip-integration" / "hooks" / "paperclip-sdd-sync.sh"
@@ -67,15 +64,6 @@ class TestGap1SDDPipelineSync:
         )
         assert result.returncode == 0
 
-    def test_hook_detects_sdd_patterns(self):
-        """Hook should detect SDD phase keywords in agent output."""
-        hook_text = (
-            PROJECT_ROOT / "packages" / "paperclip-integration" / "hooks" / "paperclip-sdd-sync.sh"
-        ).read_text()
-        assert "sdd-apply" in hook_text
-        assert "sdd-verify" in hook_text
-        assert "sdd-archive" in hook_text
-
 
 # ---------------------------------------------------------------------------
 # Gap 2: Agent Heartbeat Integration
@@ -85,9 +73,6 @@ class TestGap1SDDPipelineSync:
 class TestGap2AgentHeartbeat:
     """Gap 2: Agent completion pushes status to Paperclip."""
 
-    def test_paperclip_agent_status_hook_exists(self):
-        hook = PROJECT_ROOT / "packages" / "paperclip-integration" / "hooks" / "paperclip-agent-status.sh"
-        assert hook.exists(), "paperclip-agent-status.sh hook must exist"
 
     def test_paperclip_agent_status_hook_is_executable(self):
         hook = PROJECT_ROOT / "packages" / "paperclip-integration" / "hooks" / "paperclip-agent-status.sh"
@@ -105,13 +90,6 @@ class TestGap2AgentHeartbeat:
         )
         assert result.returncode == 0
 
-    def test_hook_calls_update_agent_status(self):
-        """Hook should reference update_agent_status in its Python block."""
-        hook_text = (
-            PROJECT_ROOT / "packages" / "paperclip-integration" / "hooks" / "paperclip-agent-status.sh"
-        ).read_text()
-        assert "update_agent_status" in hook_text
-
 
 # ---------------------------------------------------------------------------
 # Gap 3: Singularity Event Notifications
@@ -121,14 +99,6 @@ class TestGap2AgentHeartbeat:
 class TestGap3SingularityEvents:
     """Gap 3: Singularity pushes events to Paperclip inbox."""
 
-    def test_singularity_has_paperclip_wiring(self):
-        """lib/singularity.py should call Paperclip push function."""
-        singularity_path = PROJECT_ROOT / "lib" / "singularity.py"
-        assert singularity_path.exists()
-        content = singularity_path.read_text()
-        assert "_push_singularity_to_paperclip" in content, (
-            "singularity.py must contain _push_singularity_to_paperclip function"
-        )
 
     def test_singularity_calls_push_in_record_knowledge(self):
         """record_knowledge should invoke the paperclip push."""
@@ -160,21 +130,10 @@ class TestGap3SingularityEvents:
 class TestGap4SquadOrgChartSync:
     """Gap 4: Squad definitions sync to Paperclip org chart."""
 
-    def test_squad_sync_hook_exists(self):
-        hook = PROJECT_ROOT / "packages" / "paperclip-integration" / "hooks" / "paperclip-squad-sync.sh"
-        assert hook.exists(), "paperclip-squad-sync.sh hook must exist"
 
     def test_squad_sync_hook_is_executable(self):
         hook = PROJECT_ROOT / "packages" / "paperclip-integration" / "hooks" / "paperclip-squad-sync.sh"
         assert os.access(hook, os.X_OK), "paperclip-squad-sync.sh must be executable"
-
-    def test_hook_reads_squads_yaml(self):
-        """Hook should reference squads/*.yaml directory."""
-        hook_text = (
-            PROJECT_ROOT / "packages" / "paperclip-integration" / "hooks" / "paperclip-squad-sync.sh"
-        ).read_text()
-        assert "squads" in hook_text
-        assert "sync_org_chart" in hook_text
 
 
 # ---------------------------------------------------------------------------

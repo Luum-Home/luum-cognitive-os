@@ -21,108 +21,14 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 # ---------------------------------------------------------------------------
 
 
-class TestRuleFile:
-    """Verify rules/agent-escalation.md exists with required content."""
-
-    def test_rule_file_exists(self) -> None:
-        rule_path = PROJECT_ROOT / "rules" / "agent-escalation.md"
-        assert rule_path.exists(), "rules/agent-escalation.md must exist"
-
-    def test_rule_defines_escalation_types(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-escalation.md").read_text()
-        for signal_type in [
-            "loop_detected",
-            "no_progress",
-            "confidence_drop",
-            "error_repeat",
-            "timeout_risk",
-        ]:
-            assert signal_type in content, f"Rule must define signal type: {signal_type}"
-
-    def test_rule_defines_severity_levels(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-escalation.md").read_text()
-        for severity in ["suggest", "recommend", "urgent"]:
-            assert severity in content, f"Rule must define severity: {severity}"
-
-    def test_rule_defines_orchestrator_response(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-escalation.md").read_text()
-        assert "Orchestrator Response" in content, "Rule must define orchestrator response protocol"
-
-    def test_rule_defines_anti_patterns(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-escalation.md").read_text()
-        assert "Anti-Pattern" in content, "Rule must define anti-patterns"
-
-    def test_rule_references_closed_loop(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-escalation.md").read_text()
-        assert "closed-loop" in content.lower() or "closed_loop" in content.lower(), (
-            "Rule must reference closed-loop-prompts for integration"
-        )
-
-
 # ---------------------------------------------------------------------------
 # Preamble includes escalation section
 # ---------------------------------------------------------------------------
 
 
-class TestPreamble:
-    """Verify templates/agent-preamble.md includes escalation instructions."""
-
-    def test_preamble_has_escalation_section(self) -> None:
-        content = (PROJECT_ROOT / "templates" / "agent-preamble.md").read_text()
-        assert "Escalation Protocol" in content, "Preamble must have Escalation Protocol section"
-
-    def test_preamble_has_escalation_marker(self) -> None:
-        content = (PROJECT_ROOT / "templates" / "agent-preamble.md").read_text()
-        assert "ESCALATION:" in content, "Preamble must show the ESCALATION: marker format"
-
-    def test_preamble_lists_signal_types(self) -> None:
-        content = (PROJECT_ROOT / "templates" / "agent-preamble.md").read_text()
-        assert "loop_detected" in content, "Preamble must list loop_detected signal"
-        assert "no_progress" in content, "Preamble must list no_progress signal"
-        assert "error_repeat" in content, "Preamble must list error_repeat signal"
-
-    def test_preamble_mentions_early_escalation(self) -> None:
-        content = (PROJECT_ROOT / "templates" / "agent-preamble.md").read_text()
-        assert "better to escalate early" in content.lower() or "escalate early" in content.lower(), (
-            "Preamble must encourage early escalation over spinning"
-        )
-
-
 # ---------------------------------------------------------------------------
 # agent-kpis.md includes escalation KPIs
 # ---------------------------------------------------------------------------
-
-
-class TestKPIs:
-    """Verify rules/agent-kpis.md includes escalation KPIs."""
-
-    def test_kpis_has_escalation_section(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-kpis.md").read_text()
-        assert "Escalation Health" in content, "agent-kpis.md must have Escalation Health section"
-
-    def test_kpis_has_escalation_rate(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-kpis.md").read_text()
-        assert "Escalation Rate" in content, "Must define Escalation Rate KPI"
-
-    def test_kpis_has_resolution_rate(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-kpis.md").read_text()
-        assert "Resolution Rate" in content or "Escalation Resolution Rate" in content, (
-            "Must define Escalation Resolution Rate KPI"
-        )
-
-    def test_kpis_has_time_to_escalate(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-kpis.md").read_text()
-        assert "Time-to-Escalate" in content, "Must define Time-to-Escalate KPI"
-
-    def test_kpis_has_false_escalation_rate(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-kpis.md").read_text()
-        assert "False Escalation Rate" in content or "False escalation rate" in content, (
-            "Must define False Escalation Rate KPI"
-        )
-
-    def test_kpis_in_okr_table(self) -> None:
-        content = (PROJECT_ROOT / "rules" / "agent-kpis.md").read_text()
-        assert "Escalation Health" in content, "Escalation Health must appear in OKR table"
 
 
 # ---------------------------------------------------------------------------

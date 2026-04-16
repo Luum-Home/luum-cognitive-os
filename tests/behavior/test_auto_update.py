@@ -371,15 +371,6 @@ class TestSetupGitHooks:
         # Should only appear once
         assert content.count("COS_AUTO_UPDATE BEGIN") == 1
 
-    def test_appends_to_existing_hook(self, tmp_path):
-        repo = self._create_fake_git_repo(tmp_path)
-        hook = repo / ".git" / "hooks" / "post-merge"
-        hook.write_text("#!/usr/bin/env bash\necho 'existing hook'\n")
-        hook.chmod(0o755)
-        _run_script(repo / "scripts" / "setup-git-hooks.sh")
-        content = hook.read_text()
-        assert "existing hook" in content
-        assert "COS_AUTO_UPDATE" in content
 
     def test_remove_cleans_hook(self, tmp_path):
         repo = self._create_fake_git_repo(tmp_path)

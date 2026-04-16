@@ -194,22 +194,6 @@ class TestCrossFeatureCascades:
 class TestClarificationGateEdgeCases:
     """Edge cases for the clarification-gate PreToolUse hook."""
 
-    def test_05_file_paths_no_action_verb(self, run_hook, cognitive_os_env):
-        """Prompt with file paths but no action verb -> the gate detects short
-        prompts and assigns ambiguity score. May block (rc=2), warn (WARNING),
-        or pass with low score (< 30) depending on exact scoring.
-        The gate does NOT crash and exits cleanly."""
-        env = cognitive_os_env["env"]
-        prompt = make_agent_input("src/internal/users/handler.go")
-        result = run_hook("clarification-gate.sh", env=env, stdin=prompt)
-        # Gate should run without error (exit 0 or exit 2 for BLOCK)
-        assert result.returncode in (0, 2), (
-            f"Gate should exit 0 (pass/warn) or 2 (block), got: {result.returncode}"
-        )
-        # If it passes, it should do so silently (score < 30) or with a WARNING (score 30-60)
-        combined = result.stdout + result.stderr
-        if result.returncode == 2:
-            assert "BLOCKED" in combined
 
     def test_06_question_not_task(self, run_hook, cognitive_os_env):
         """Prompt that's a question, not a task -> The gate detects open

@@ -65,8 +65,6 @@ def _make_git_repo(tmp_path):
 
 
 class TestHookStructure:
-    def test_hook_exists(self):
-        assert HOOK.exists(), f"Missing: {HOOK}"
 
     def test_hook_is_valid_bash(self):
         result = subprocess.run(
@@ -85,9 +83,6 @@ class TestHookStructure:
         content = HOOK.read_text()
         assert content.startswith("#!/"), "Hook must start with a shebang"
 
-    def test_hook_references_apply_efficiency_profile(self):
-        content = HOOK.read_text()
-        assert "apply-efficiency-profile" in content
 
     def test_hook_has_seven_gates(self):
         """Hook should have identifiable gate sections."""

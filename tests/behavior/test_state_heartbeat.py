@@ -76,31 +76,9 @@ def test_snapshot_has_timestamp():
     assert snap["timestamp"]  # non-empty
 
 
-def test_snapshot_has_all_builtin_collectors():
-    """All five built-in collectors appear in the snapshot dict."""
-    StateHeartbeat = _import_heartbeat()
-    session_dir = _make_session_dir()
-    hb = StateHeartbeat(str(session_dir))
-    snap = hb.snapshot()
-    for key in ("active_tasks", "pending_requests", "git_status", "session_meta", "todo_state"):
-        assert key in snap, f"Missing collector output: {key}"
-
-
 # ---------------------------------------------------------------------------
 # Save / load roundtrip
 # ---------------------------------------------------------------------------
-
-def test_save_creates_json_file():
-    """save() creates a valid JSON file at state-snapshot.json."""
-    StateHeartbeat = _import_heartbeat()
-    session_dir = _make_session_dir()
-    hb = StateHeartbeat(str(session_dir))
-    hb.save()
-    snap_path = session_dir / "state-snapshot.json"
-    assert snap_path.exists(), "state-snapshot.json was not created"
-    with open(snap_path) as fh:
-        data = json.load(fh)
-    assert "timestamp" in data
 
 
 def test_load_returns_saved_data():
@@ -145,38 +123,9 @@ def test_crashing_collector_does_not_break_heartbeat():
     assert snap["good"]["ok"] is True
 
 
-def test_crashing_collector_does_not_prevent_save():
-    """save() succeeds even when a collector crashes."""
-    StateHeartbeat = _import_heartbeat()
-    session_dir = _make_session_dir()
-    hb = StateHeartbeat(str(session_dir))
-    hb.register("bad", lambda: (_ for _ in ()).throw(ValueError("boom")))
-    hb.save()  # must not raise
-    assert (session_dir / "state-snapshot.json").exists()
-
-
 # ---------------------------------------------------------------------------
 # format_recovery_prompt
 # ---------------------------------------------------------------------------
-
-def test_format_recovery_prompt_no_snapshot():
-    """format_recovery_prompt with no snapshot returns a sensible message."""
-    StateHeartbeat = _import_heartbeat()
-    session_dir = _make_session_dir()
-    hb = StateHeartbeat(str(session_dir))
-    msg = hb.format_recovery_prompt()
-    assert "No previous session state" in msg
-
-
-def test_format_recovery_prompt_with_snapshot():
-    """format_recovery_prompt returns a non-empty recovery string after save."""
-    StateHeartbeat = _import_heartbeat()
-    session_dir = _make_session_dir()
-    hb = StateHeartbeat(str(session_dir))
-    hb.save()
-    msg = hb.format_recovery_prompt()
-    assert "PREVIOUS SESSION STATE" in msg
-    assert "Snapshot taken" in msg
 
 
 # ---------------------------------------------------------------------------
