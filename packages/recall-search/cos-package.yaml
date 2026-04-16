@@ -1,5 +1,5 @@
 name: "@luum/recall-search"
-version: "1.0.0"
+version: "1.1.0"
 description: "Full-text search of Claude Code conversations — fills Engram gap for raw conversation history"
 authors: ["Cognitive OS Team"]
 license: "MIT"

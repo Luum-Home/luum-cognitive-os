@@ -1,5 +1,5 @@
 name: "@luum/session-parser"
-version: "1.0.0"
+version: "1.1.0"
 description: "Parse Claude Code JSONL session files for real metrics — tokens, tool usage, subagents"
 authors: ["Cognitive OS Team"]
 license: "MIT"

@@ -1,5 +1,5 @@
 name: "@luum/agent-coordination"
-version: "1.0.0"
+version: "1.1.0"
 description: "Agent coordination rules — communication bus, sidecars, and per-agent customization overrides"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"

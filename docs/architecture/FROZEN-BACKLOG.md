@@ -52,6 +52,47 @@ Components that already exist (Apache-2.0):
 
 ---
 
+## P1 — Core vs Extensions Audit (April 2026 deferred)
+
+**Why:** 141 commits between v0.8.7 and v0.9.0 added many components directly to root. Some are core (vendor-agnostic, always-loaded) but others are extensions that should live in `packages/` for optional installation.
+
+### Candidates to move to `packages/`
+
+**→ `packages/advisory-llm/` (NEW):**
+- `hooks/prompt-quality-llm.sh` (Haiku-evaluated prompt quality)
+- `hooks/completeness-check-llm.sh` (Haiku-evaluated completeness)
+- `hooks/confidence-gate-llm.sh` (Haiku Trust Report verification)
+
+Reason: requires Anthropic Haiku API access. Users without API access can't run these. Belongs as an optional extension.
+
+**→ `packages/claude-code-integration/` (NEW):**
+- `hooks/recap-sync.sh` + `hooks/_lib/recap_adapter.py` (integrates with Claude Code `/recap`)
+
+Reason: Claude Code-specific. Other AI coding agents (Codex, Gemini, Cursor, Windsurf) don't have `/recap`. Belongs as provider-specific extension.
+
+### Deprecate / remove (superseded)
+
+- `hooks/task-panel-sync.sh` → superseded by `hooks/task-bridge-notify.sh` (ADR-024)
+- `hooks/_lib/task_panel_adapter.py` → folded into `hooks/_lib/task_bridge.py`
+
+### Keep as core (verified vendor-agnostic)
+
+- `cmd/cos-dispatch/` + `internal/*` + `pkg/*` — the Go dispatcher (core engine)
+- `lib/pattern_detector.py`, `lib/adr_detector.py` — self-awareness mechanisms
+- `hooks/_lib/task_bridge.py` + `hooks/task-bridge-notify.sh` — correlation pattern works for any tool
+- `hooks/_lib/file_checker.sh` — symlink safety, universal
+- `hooks/_lib/session_init_helper.py` — generic session lifecycle
+- `hooks/_lib/singularity-suggestion.sh` — project-agnostic advisory
+- `scripts/*` (setup, doctor, engram-sync, check-test-quality, generate-compact-catalog)
+- `templates/agent-mandatory-rules.md` — applies to any sub-agent
+- 22 ADRs + 4 living docs
+
+### Task size
+
+~4 hours: create 2 new packages, move 5 files, update `settings.json` + profile scripts, verify nothing breaks. Should happen BEFORE v1.0 to avoid shipping a bloated core.
+
+---
+
 ## MEGA PLANS (Multi-session)
 
 ### 1. Stabilization Mega Plan — engram #5889
