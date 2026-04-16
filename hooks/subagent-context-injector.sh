@@ -153,12 +153,64 @@ ${sidecar}"
   fi
 fi
 
-# ─── Output JSON with additionalContext ──────────────────────────────────────
+# ─── Truncate to 10K char limit ──────────────────────────────────────────────
+# additionalContext has a hard cap of 10,000 chars per Claude Code spec.
+MAX_CONTEXT_CHARS=10000
+if [ -n "$context" ]; then
+  context_len=${#context}
+  if [ "$context_len" -gt "$MAX_CONTEXT_CHARS" ]; then
+    if command -v python3 >/dev/null 2>&1; then
+      # Use printf (no trailing newline) so truncation math stays exact
+      context=$(printf '%s' "$context" | python3 -c "
+import sys
+buf = sys.stdin.read()
+limit = ${MAX_CONTEXT_CHARS}
+if len(buf) > limit:
+    marker = '\n[truncated at 10K chars]'
+    sys.stdout.write(buf[: limit - len(marker)] + marker)
+else:
+    sys.stdout.write(buf)
+")
+    else
+      context="${context:0:9975}
+[truncated at 10K chars]"
+    fi
+  fi
+fi
+
+# ─── Output JSON with hookSpecificOutput.additionalContext ───────────────────
+# Detect Claude Code invocation by presence of stdin JSON object.
+# Falls back to stderr when invoked manually (testing without Claude Code).
+HAS_VALID_INPUT=0
+if [ -n "$_STDIN_JSON" ] && echo "$_STDIN_JSON" | jq -e 'type == "object"' >/dev/null 2>&1; then
+  HAS_VALID_INPUT=1
+fi
 
 if [ -n "$context" ]; then
-  # Escape the context for JSON embedding
-  escaped_context=$(python3 -c "import json, sys; print(json.dumps(sys.stdin.read()))" <<< "$context" 2>/dev/null || echo '""')
-  echo "{\"additionalContext\": ${escaped_context}}"
+  if [ "$HAS_VALID_INPUT" -eq 1 ]; then
+    # Claude Code: emit hookSpecificOutput JSON on stdout
+    if command -v python3 >/dev/null 2>&1; then
+      printf '%s' "$context" | python3 -c "
+import json, sys
+ctx = sys.stdin.read()
+out = {
+    'hookSpecificOutput': {
+        'hookEventName': 'SubagentStart',
+        'additionalContext': ctx,
+        'permissionDecision': 'allow',
+    }
+}
+sys.stdout.write(json.dumps(out))
+"
+    else
+      jq -n \
+        --arg ctx "$context" \
+        '{hookSpecificOutput: {hookEventName: "SubagentStart", additionalContext: $ctx, permissionDecision: "allow"}}'
+    fi
+  else
+    # No valid Claude Code input — degrade to stderr for manual/test invocations
+    echo "$context" >&2
+  fi
 fi
 
 exit 0

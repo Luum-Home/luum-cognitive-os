@@ -128,16 +128,24 @@ pkg/
 generated/                         # Auto-generated validators/transformers
 ```
 
+## Status
+
+**Phase 1 (Foundation):** DONE — 2026-04-15. Core binary, interfaces, plugin adapter, Claude provider. 10 Go packages, all tests passing.
+
+**Phase 2 (Parallel + Providers):** DONE — 2026-04-16. Executor with parallel category pools, Codex + Gemini provider adapters. Task Panel adapter added as first ADR-021 implementation.
+
+**Phase 3-5:** Pending (next sessions).
+
 ## Timeline
 
-| Phase | Weeks | Days | What |
-|-------|-------|------|------|
-| 1. Foundation | 1-2 | 8 | Core binary, interfaces, plugin adapter, Claude provider |
-| 2. Parallel + Providers | 3 | 5 | Executor, Codex + Gemini adapters |
-| 3. Native Validators | 4-5 | 11 | Port 17 validators + 5 transformers to Go |
-| 4. Pattern Tracking | 6 | 7 | SQLite, detector, instrumentation |
-| 5. Auto-Gen + Providers | 7-8 | 8 | Generator, feedback, Cursor + Windsurf |
-| **Total** | **8** | **39** | |
+| Phase | Weeks | Days | What | Status |
+|-------|-------|------|------|--------|
+| 1. Foundation | 1-2 | 8 | Core binary, interfaces, plugin adapter, Claude provider | **DONE** |
+| 2. Parallel + Providers | 3 | 5 | Executor, Codex + Gemini adapters | **DONE** |
+| 3. Native Validators | 4-5 | 11 | Port 17 validators + 5 transformers to Go | Pending |
+| 4. Pattern Tracking | 6 | 7 | SQLite, detector, instrumentation | Pending |
+| 5. Auto-Gen + Providers | 7-8 | 8 | Generator, feedback, Cursor + Windsurf | Pending |
+| **Total** | **8** | **39** | | |
 
 ## Related Documents
 
@@ -151,6 +159,7 @@ generated/                         # Auto-generated validators/transformers
 - [ADR-003: SQLite over JSONL](adrs/003-sqlite-over-jsonl.md)
 - [ADR-004: Generated artifacts disabled](adrs/004-generated-artifacts-disabled.md)
 - [ADR-005: Typed provider adapters](adrs/005-typed-provider-adapters.md)
+- [ADR-021: Vendor-Agnostic State with Provider Adapters](../adrs/021-vendor-agnostic-with-adapters.md)
 
 ## References
 
