@@ -108,7 +108,8 @@ case "$PROFILE" in
     echo "  Overhead: ~100-200ms per tool call"
     ;;
   standard)
-    echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health"
+    # Hooks: pattern-check.sh (async, SessionStart)
+    echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, pattern-check"
     echo "  UserPromptSubmit: user-prompt-capture"
     echo "  SubagentStart: subagent-context-injector"
     echo "  PreToolUse: rate-limiter, secret-detector, dispatch-gate, clarification-gate,"
