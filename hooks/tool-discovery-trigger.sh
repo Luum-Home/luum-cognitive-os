@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # tool-discovery-trigger.sh — Check if tool discovery scan is due
 # Trigger: SessionStart
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # common.sh — Shared utility functions for Cognitive OS hooks
 #
 # Usage: source "$(dirname "$0")/_lib/common.sh"

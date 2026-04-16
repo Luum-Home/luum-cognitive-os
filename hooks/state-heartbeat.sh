@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # state-heartbeat.sh — Continuous session state persistence
 # PostToolUse hook: saves state snapshot every 10 tool calls or every 120 seconds.
 #

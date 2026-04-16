@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # tuning.sh — Shared helper for hooks with tunable thresholds.
 #
 # Usage:

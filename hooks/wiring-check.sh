@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # PostToolUse on Write|Edit: warn when a newly written hook is not registered.
 # Advisory only — never blocks writes (exit 0 always).
 #

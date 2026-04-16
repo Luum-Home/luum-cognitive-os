@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
 # registration-check.sh — PreToolUse hook on Agent (advisory)
 # CONCERNS: consistency, registration, os-development
 #

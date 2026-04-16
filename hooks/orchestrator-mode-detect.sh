@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # SessionStart: detect orchestrator communication mode and report to stderr.
 #
 # Prints a one-line status so developers immediately know whether the session

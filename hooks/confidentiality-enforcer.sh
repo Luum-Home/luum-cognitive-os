@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # confidentiality-enforcer.sh — PostToolUse hook on Edit|Write
 # CONCERNS: confidentiality, ip-protection
 #
