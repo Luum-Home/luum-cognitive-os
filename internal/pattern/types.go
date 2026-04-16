@@ -116,3 +116,34 @@ type Detector interface {
 	Analyze(since time.Time, minConfidence float64) ([]DetectedPattern, error)
 	AnalyzeSession(sessionID string, minConfidence float64) ([]DetectedPattern, error)
 }
+
+// FeedbackDecision records the human's verdict on a generated artifact.
+type FeedbackDecision string
+
+const (
+	FeedbackEnabled  FeedbackDecision = "enabled"
+	FeedbackDisabled FeedbackDecision = "disabled"
+	FeedbackModified FeedbackDecision = "modified"
+	FeedbackDeleted  FeedbackDecision = "deleted"
+)
+
+// GeneratedArtifact is the result of generating a single Go source stub from
+// a DetectedPattern. Enabled is always false when first created (ADR-004).
+type GeneratedArtifact struct {
+	Name            string
+	ArtifactType    string           // "validator" | "transformer" | "plugin" | "rule"
+	SourcePatternID int64            // FK → detected_patterns.id (0 if not persisted)
+	Language        string           // always "go" in Phase 5.2 (ADR-009)
+	Code            string           // Go source text
+	ConfigSnippet   string           // TOML registration snippet
+	Confidence      float64
+	Enabled         bool             // always false at creation time
+	Feedback        string           // empty until ApplyFeedback is called
+}
+
+// Generator creates validator stubs from detected patterns and manages their
+// lifecycle through human review.
+type Generator interface {
+	Generate(patterns []DetectedPattern) ([]GeneratedArtifact, error)
+	ApplyFeedback(artifactName string, decision FeedbackDecision) error
+}
