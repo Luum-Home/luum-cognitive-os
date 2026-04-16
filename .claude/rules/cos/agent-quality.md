@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/agent-quality.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/agent-quality.md

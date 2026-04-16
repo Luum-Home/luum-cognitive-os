@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/worktrees/romantic-allen/rules/context-management.md
+/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/context-management.md
