@@ -11,6 +11,7 @@ license: MIT
 metadata:
   author: luum
 audience: os-dev
+effort: haiku
 ---
 
 ## Purpose
