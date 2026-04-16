@@ -5,6 +5,7 @@ invoke: /jupyter-exec
 version: 1.0.0
 model: sonnet
 audience: project
+paths: ["*.py", "*.ipynb", "pyproject.toml"]
 ---
 
 # Jupyter Execute — Sandboxed Code Execution
