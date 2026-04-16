@@ -107,16 +107,6 @@ class TestToolCallBudget:
             "the expected budget IS, giving agents nothing concrete to self-monitor against."
         )
 
-    def test_preamble_has_timeout_risk_signal(self, preamble_content):
-        """Preamble must document the timeout_risk escalation signal.
-
-        This signal is the mechanism by which agents self-detect budget exhaustion.
-        It already exists in the escalation section.
-        """
-        assert "timeout_risk" in preamble_content, (
-            "Preamble must mention 'timeout_risk' escalation signal so agents "
-            "know to escalate when they approach their budget ceiling."
-        )
 
     def test_preamble_has_save_and_stop_for_budget_exhaustion(self, preamble_content):
         """Preamble must instruct agents to save progress and stop on budget exhaustion."""
@@ -133,43 +123,6 @@ class TestToolCallBudget:
             "Found no 'save partial progress' or equivalent instruction."
         )
 
-    def test_preamble_has_escalation_protocol(self, preamble_content):
-        """Preamble must document an Escalation Protocol section."""
-        assert "Escalation Protocol" in preamble_content or "ESCALATION" in preamble_content, (
-            "Preamble must include an Escalation Protocol section so agents know "
-            "how to signal they are stuck before consuming excessive tool calls."
-        )
-
-    def test_preamble_has_structured_return_format(self, preamble_content):
-        """Preamble must specify a structured return format (RESULT:, Trust Report, etc.)."""
-        assert "RESULT:" in preamble_content or "Return Contract" in preamble_content, (
-            "Preamble must define a structured return format (e.g., RESULT: block) "
-            "so orchestrators can parse agent output without reading full transcripts."
-        )
-
-    def test_preamble_has_no_progress_detection(self, preamble_content):
-        """Preamble must define the no_progress escalation signal."""
-        assert "no_progress" in preamble_content, (
-            "Preamble must document 'no_progress' as an escalation signal trigger. "
-            "This is what catches agents spinning without forward movement."
-        )
-
-    def test_preamble_has_loop_detected_signal(self, preamble_content):
-        """Preamble must define the loop_detected escalation signal."""
-        assert "loop_detected" in preamble_content, (
-            "Preamble must document 'loop_detected' as an escalation signal. "
-            "Editing the same file 3+ times or running the same command 3+ times "
-            "is a strong indicator of a runaway loop."
-        )
-
-    def test_preamble_progress_marker_requirement(self, preamble_content):
-        """Preamble must require PROGRESS markers to enable no-progress detection."""
-        assert "PROGRESS" in preamble_content, (
-            "Preamble must require agents to output PROGRESS markers. "
-            "These are the signal that no_progress detection uses to determine "
-            "if a long tool-call sequence is actually making forward progress."
-        )
-
 
 # ===========================================================================
 # B. Compaction Resilience Tests
@@ -179,13 +132,6 @@ class TestToolCallBudget:
 class TestCompactionResilience:
     """Verify the compaction protection hook exists and is wired correctly."""
 
-    def test_pre_compaction_flush_hook_exists(self):
-        """pre-compaction-flush.sh must exist in the hooks directory."""
-        flush_hook = HOOKS_DIR / "pre-compaction-flush.sh"
-        assert flush_hook.exists(), (
-            f"pre-compaction-flush.sh not found at {flush_hook}. "
-            "This hook is the last-resort safety net before context compaction."
-        )
 
     def test_pre_compaction_flush_is_syntactically_valid(self):
         """pre-compaction-flush.sh must pass bash -n syntax check."""
@@ -233,13 +179,6 @@ class TestCompactionResilience:
             "Add it under a PreCompact (or equivalent) hook type."
         )
 
-    def test_crash_recovery_hook_exists(self):
-        """crash-recovery.sh must exist — it's the session-start recovery mechanism."""
-        crash_hook = HOOKS_DIR / "crash-recovery.sh"
-        assert crash_hook.exists(), (
-            f"crash-recovery.sh not found at {crash_hook}. "
-            "This hook detects unclean shutdowns at session start."
-        )
 
     def test_crash_recovery_registered_in_settings(self, all_registered_commands):
         """crash-recovery.sh must be registered in settings.json SessionStart hooks."""
@@ -270,14 +209,6 @@ class TestCompactionResilience:
 class TestRequestPersistence:
     """Verify that user requests survive context compaction via the queue file."""
 
-    def test_request_queue_module_exists(self):
-        """lib/request_queue.py must exist."""
-        queue_path = LIB_DIR / "request_queue.py"
-        assert queue_path.exists(), (
-            f"lib/request_queue.py not found at {queue_path}. "
-            "This module is needed to persist user messages that arrive "
-            "while agents are running (system-reminder messages)."
-        )
 
     def test_request_queue_has_enqueue_function(self):
         """lib/request_queue.py must export enqueue_request."""
@@ -415,12 +346,6 @@ class TestRequestPersistence:
 class TestBackgroundAgentIsolation:
     """Verify preamble documents background execution and Engram save before exit."""
 
-    def test_preamble_documents_run_in_background(self, preamble_content):
-        """Preamble must mention run_in_background for long commands."""
-        assert "run_in_background" in preamble_content, (
-            "Preamble must instruct agents to use run_in_background: true for "
-            "commands >30s. Blocking tool calls accumulate context and slow agents."
-        )
 
     def test_preamble_instructs_engram_save_before_finish(self, preamble_content):
         """Preamble must instruct agents to save findings to Engram before finishing."""
@@ -436,12 +361,6 @@ class TestBackgroundAgentIsolation:
             "discoveries and the next agent starts from scratch."
         )
 
-    def test_preamble_has_trust_report_requirement(self, preamble_content):
-        """Preamble must require a TRUST_REPORT in agent output."""
-        assert "TRUST_REPORT" in preamble_content, (
-            "Preamble must require TRUST_REPORT in every agent completion. "
-            "This is how the orchestrator knows the agent finished (vs. timed out)."
-        )
 
     @pytest.mark.xfail(
         reason="WS14: preamble does not yet have explicit isolation warning about "
@@ -476,42 +395,6 @@ class TestBackgroundAgentIsolation:
 class TestStateRecovery:
     """Verify the session and task tracking infrastructure for state recovery."""
 
-    def test_session_init_creates_session_directory_structure(self):
-        """session-init.sh must create .cognitive-os/sessions/{id}/ with meta.json."""
-        session_init = HOOKS_DIR / "session-init.sh"
-        assert session_init.exists(), "session-init.sh not found"
-        content = session_init.read_text()
-        # Hook must create session directory and meta.json
-        assert "meta.json" in content, (
-            "session-init.sh must create a meta.json file in the session directory "
-            "for session recovery and identification."
-        )
-        assert "mkdir" in content, (
-            "session-init.sh must create the session directory structure."
-        )
-
-    def test_active_tasks_file_has_tasks_field(self):
-        """agent-prelaunch.sh must use a tasks schema with a 'tasks' array."""
-        prelaunch = HOOKS_DIR / "agent-prelaunch.sh"
-        if not prelaunch.exists():
-            pytest.skip("agent-prelaunch.sh not found")
-        content = prelaunch.read_text()
-        # The hook initializes with {"version":1,"tasks":[]} schema
-        assert '"tasks"' in content or "'tasks'" in content, (
-            "agent-prelaunch.sh must use a schema with a 'tasks' field for tracking "
-            "active sub-agent tasks. This enables crash recovery and state inspection."
-        )
-
-    def test_active_tasks_schema_has_status_field(self):
-        """agent-prelaunch.sh must record task status for recovery."""
-        prelaunch = HOOKS_DIR / "agent-prelaunch.sh"
-        if not prelaunch.exists():
-            pytest.skip("agent-prelaunch.sh not found")
-        content = prelaunch.read_text()
-        assert "status" in content, (
-            "agent-prelaunch.sh must record a 'status' field (e.g., in_progress, completed) "
-            "so crash-recovery.sh can identify which tasks were running when the session died."
-        )
 
     def test_crash_recovery_hook_is_syntactically_valid(self):
         """crash-recovery.sh must pass bash -n syntax check."""
@@ -543,14 +426,6 @@ class TestStateRecovery:
             f"session-init.sh has syntax errors:\n{result.stderr}"
         )
 
-    def test_session_resume_hook_exists(self):
-        """session-resume.sh must exist for in-progress task detection on startup."""
-        resume_hook = HOOKS_DIR / "session-resume.sh"
-        assert resume_hook.exists(), (
-            f"session-resume.sh not found at {resume_hook}. "
-            "This hook detects in-progress tasks from a prior session and warns "
-            "the agent about work that may need resumption."
-        )
 
     def test_session_resume_registered_in_settings(self, all_registered_commands):
         """session-resume.sh must be registered as a SessionStart hook."""

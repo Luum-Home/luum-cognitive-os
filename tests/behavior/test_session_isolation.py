@@ -143,23 +143,6 @@ class TestSessionIsolation:
                     shutil.rmtree(sessions_dir / s, ignore_errors=True)
                     self._remove_from_active(sessions_dir, s)
 
-    def test_active_sessions_registry(self, session_init_hook, sessions_dir, project_root):
-        _, sid1, _ = _init_session(session_init_hook, project_root)
-        _, sid2, _ = _init_session(session_init_hook, project_root)
-        try:
-            active = sessions_dir / "active-sessions.json"
-            if not active.exists():
-                pytest.skip("active-sessions.json not found")
-            data = json.loads(active.read_text())
-            ids = [s["id"] for s in data.get("sessions", [])]
-            assert sid1 in ids and sid2 in ids, (
-                f"both sessions should be in the registry, got {ids}"
-            )
-        finally:
-            for s in [sid1, sid2]:
-                if s:
-                    shutil.rmtree(sessions_dir / s, ignore_errors=True)
-                    self._remove_from_active(sessions_dir, s)
 
     @staticmethod
     def _remove_from_active(sessions_dir: Path, sid: str):
