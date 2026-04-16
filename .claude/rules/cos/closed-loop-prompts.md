@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/closed-loop-prompts.md
+<operator-repo-path>/rules/closed-loop-prompts.md

@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/definition-of-done.md
+<operator-repo-path>/rules/definition-of-done.md

@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/trust-score.md
+<operator-repo-path>/rules/trust-score.md

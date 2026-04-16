@@ -1,1 +1,1 @@
-<operator-repo-path>/.claude/worktrees/romantic-allen/rules/model-routing.md
+<operator-repo-path>/rules/model-routing.md
