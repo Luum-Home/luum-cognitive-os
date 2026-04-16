@@ -8,9 +8,26 @@ Consolidated inventory of all plans, decisions, and queued work from engram that
 
 ---
 
-## P0 — Cross-Device Memory Sync (NEW — April 16)
+## P0 — Cross-Device Memory Sync ✅ DONE (April 16)
 
-**Why P0:** Without this, changing devices loses engram (2,348 observations) and memory files. Four living documents (roadmap, lessons, frozen-backlog, post-mortem) already sync via git, but engram DB does not.
+**Status:** Activated during session 2026-04-16. 544 project-scoped observations now cross-device via git.
+
+**What was done:**
+- `scripts/engram-sync.sh` created — filters by project (luum-cognitive-os/luum-agent-os/cognitive-os-demo)
+- Hooks activated in settings.json: Stop (sync) + SessionStart (import)
+- First export committed: `.engram/exports/luum-cognitive-os.jsonl` (1.5MB, 544 observations)
+- Pre-commit gate exempts `.engram/exports/` from project-term blocker (historical content in observations)
+
+**How it works now:**
+1. Session end → `engram-auto-sync.sh` exports via `scripts/engram-sync.sh` + commits to git
+2. Next session on any device → `engram-auto-import.sh` reads JSONL, imports into local engram
+3. Only project-scoped observations sync — your other engram memories stay local
+
+**Scope:** 544 of 2,348 total observations (23%). Other projects' memory not exported.
+
+---
+
+### (Original plan — preserved for reference)
 
 **Solution: Activate existing `packages/engram-sync` package**
 
