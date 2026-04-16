@@ -25,6 +25,7 @@ ADRs 001-005 live in `docs/architecture/cos-dispatch/adrs/` and cover the COS di
 | [020](020-contamination-fix.md) | 2026-04-13 | Contamination Fix -- Remove Project-Specific Code | Accepted |
 | [021](021-vendor-agnostic-with-adapters.md) | 2026-04-16 | Vendor-Agnostic State with Provider Adapters | Accepted |
 | [022](022-prompt-type-hooks-adoption.md) | 2026-04-15 | Prompt-Type Hooks Adoption -- Haiku-Evaluated Advisories | Accepted |
+| [023](023-updated-input-pattern.md) | 2026-04-16 | updatedInput Pattern -- Mutate Tool Input Instead of Blocking | Accepted |
 
 ## Decision Timeline
 
@@ -46,4 +47,24 @@ Apr 13  ADR-019  Scope tagging
         ADR-020  Contamination fix
 Apr 15  ADR-022  Prompt-type hooks adoption (Haiku-evaluated advisories)
 Apr 16  ADR-021  Vendor-agnostic state with provider adapters (Task Panel first impl)
+        ADR-023  updatedInput pattern (secret-detector redacts instead of blocking)
 ```
+
+## Session 2026-04-16 Summary
+
+This session closed the last 7 Claude Code feature gaps and brought the OS to 98%
+stabilization. Key architectural additions:
+
+- **ADR-021** established the adapter pattern for vendor-agnostic state
+- **ADR-022** adopted Haiku-evaluated prompt hooks for advisory gates
+- **ADR-023** introduced the updatedInput pattern (redact/mutate vs block)
+
+All three work together: ADR-021 is the principle (never lose portability),
+ADR-022/023 are specific implementations that follow it.
+
+## Related Documents
+
+- `../stabilization-roadmap.md` — current status and remaining work
+- `../FROZEN-BACKLOG.md` — 30+ deferred plans, resume order
+- `../LESSONS-LEARNED.md` — the 5 wounds + red flags
+- `../POST-MORTEM-2026-04.md` — full project history retrospective
