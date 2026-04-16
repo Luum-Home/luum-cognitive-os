@@ -10,7 +10,9 @@ CREATE TABLE executions (
     tool_type       TEXT NOT NULL,          -- 'Bash', 'Write', 'Edit', 'Agent', etc.
     tool_input_hash TEXT,                   -- SHA-256 of normalized input (for dedup)
     validator_name  TEXT NOT NULL,
-    result          TEXT NOT NULL,          -- 'pass', 'fail', 'warn', 'transform'
+    result          TEXT NOT NULL CHECK(result IN ('pass','fail','warn','transform','override')),
+                                            -- 'override' = a warn/fail result dismissed by a human or downstream
+                                            -- system; primary source signal for FalsePositive detection in Phase 5.1
     duration_ms     INTEGER NOT NULL,
     error_code      TEXT,
     error_message   TEXT,
