@@ -1,0 +1,92 @@
+name: Test Quality Gate
+on:
+  pull_request:
+    paths:
+      - 'lib/**/*.py'
+      - 'tests/**/*.py'
+
+jobs:
+  structural-test-detector:
+    name: Detect structural-only tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check new tests for structural-only patterns
+        run: python scripts/check-test-quality.py --ci
+
+  mutation-test:
+    name: Mutation testing on changed files
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install cosmic-ray pytest pyyaml
+      - name: Run mutation testing on changed lib/ files
+        run: |
+          set -euo pipefail
+
+          CHANGED=$(git diff --name-only origin/main -- 'lib/*.py' | head -5)
+          if [ -z "$CHANGED" ]; then
+            echo "No changed lib/ files — skipping mutation testing."
+            exit 0
+          fi
+
+          THRESHOLD=40
+          overall_pass=true
+
+          for file in $CHANGED; do
+            [ ! -f "$file" ] && continue
+            module=$(echo "$file" | sed 's|/|.|g; s|\.py$||')
+
+            # Build a per-file cosmic-ray config
+            cat > /tmp/cr-config.toml <<EOF
+          [cosmic-ray]
+          module-path = "$file"
+          timeout = 30
+          test-command = "python -m pytest tests/unit/ -x -q --no-header -p no:timeout -p no:xdist"
+
+          [cosmic-ray.distributor]
+          name = "local"
+          EOF
+
+            db="/tmp/cr-${module}.sqlite"
+            rm -f "$db"
+
+            echo "--- Mutation testing: $file ---"
+            cosmic-ray init /tmp/cr-config.toml "$db" 2>&1 || { echo "WARN: cosmic-ray init failed for $file, skipping"; continue; }
+            cosmic-ray exec /tmp/cr-config.toml "$db" 2>&1 || { echo "WARN: cosmic-ray exec failed for $file, skipping"; continue; }
+
+            # Parse the report
+            report=$(cr-report "$db" 2>&1 || true)
+            echo "$report"
+
+            # Extract kill rate from report
+            kill_rate=$(echo "$report" | grep -oP '[\d.]+(?=%)' | tail -1 || echo "0")
+            kill_int=${kill_rate%%.*}
+
+            if [ "$kill_int" -lt "$THRESHOLD" ]; then
+              echo "FAIL: $file mutation score ${kill_rate}% < ${THRESHOLD}% threshold"
+              overall_pass=false
+            else
+              echo "PASS: $file mutation score ${kill_rate}%"
+            fi
+          done
+
+          if [ "$overall_pass" = false ]; then
+            echo ""
+            echo "Mutation testing failed. Tests for changed files do not kill enough mutants."
+            echo "This means the tests are likely structural (checking file existence) rather than behavioral."
+            echo "See docs/testing/mutation-testing.md for guidance."
+            exit 1
+          fi

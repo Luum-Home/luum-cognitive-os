@@ -137,6 +137,19 @@ if [ -n "$staged_workflows" ]; then
   done <<< "$staged_workflows"
 fi
 
+# Gate 3f. New test files must not be purely structural
+staged_tests_new=$(git diff --cached --name-only --diff-filter=A -- 'tests/*.py' 'tests/**/*.py' || true)
+if [ -n "$staged_tests_new" ]; then
+  if python3 "$COS_ROOT/scripts/check-test-quality.py" --pre-commit 2>/dev/null; then
+    : # tests have behavioral assertions
+  else
+    echo "BLOCKED: New test file(s) contain only structural assertions (path.exists, is_file, 'in content')."
+    echo "  Add assertions that test return values, side effects, or error handling."
+    echo "  See docs/testing/mutation-testing.md for guidance."
+    exit 1
+  fi
+fi
+
 if [ "$warnings" -gt 0 ]; then
   echo ""
   echo "Pre-commit: $warnings consistency warning(s). Review above before pushing."
