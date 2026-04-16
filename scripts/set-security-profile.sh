@@ -110,18 +110,24 @@ case "$PROFILE" in
   standard)
     # Hooks: task-panel-sync.sh (async, PostToolUse/Agent, ADR-021 adapter)
     # Hooks: pattern-check.sh (async, SessionStart)
+    # ADR-022 prompt-type advisories (Haiku-evaluated, run alongside regex variants):
+    # Hooks: prompt-quality-llm.sh (PreToolUse/Agent)
+    # Hooks: completeness-check-llm.sh (PreToolUse/Agent)
+    # Hooks: confidence-gate-llm.sh (PostToolUse/Agent)
     echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, pattern-check"
     echo "  UserPromptSubmit: user-prompt-capture"
     echo "  SubagentStart: subagent-context-injector"
     echo "  PreToolUse: rate-limiter, secret-detector, dispatch-gate, clarification-gate,"
-    echo "              blast-radius, inject-phase-context, agent-prelaunch, error-pattern-detector"
+    echo "              blast-radius, inject-phase-context, agent-prelaunch, error-pattern-detector,"
+    echo "              prompt-quality-llm, completeness-check-llm"
     # Hooks: adr-detector.sh (async, PostToolUse/Bash)
+    # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
     echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, auto-checkpoint, content-policy,"
     echo "               doc-sync-detector, claim-validator, completion-gate, agent-checkpoint,"
-    echo "               trust-score-validator, auto-repair-dispatcher, dequeue-notify,"
+    echo "               trust-score-validator, confidence-gate-llm, auto-repair-dispatcher, dequeue-notify,"
     echo "               state-heartbeat, context-watchdog"
     echo "  PreCompact: pre-compaction-flush"
-    echo "  Stop: session-learning, session-cleanup, kpi-trigger"
+    echo "  Stop: session-learning, session-cleanup, kpi-trigger, recap-sync"
     echo "  Safety mesh layers: 5/12"
     echo "  Overhead: ~300-500ms per tool call"
     ;;
