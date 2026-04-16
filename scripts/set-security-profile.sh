@@ -113,7 +113,8 @@ case "$PROFILE" in
     echo "  SubagentStart: subagent-context-injector"
     echo "  PreToolUse: rate-limiter, secret-detector, dispatch-gate, clarification-gate,"
     echo "              blast-radius, inject-phase-context, agent-prelaunch, error-pattern-detector"
-    echo "  PostToolUse: error-pipeline, result-truncator, auto-checkpoint, content-policy,"
+    # Hooks: adr-detector.sh (async, PostToolUse/Bash)
+    echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, auto-checkpoint, content-policy,"
     echo "               doc-sync-detector, claim-validator, completion-gate, agent-checkpoint,"
     echo "               trust-score-validator, auto-repair-dispatcher, dequeue-notify,"
     echo "               state-heartbeat, context-watchdog"
