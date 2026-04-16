@@ -15,7 +15,7 @@ func TestNewTracker_AppliesSchema(t *testing.T) {
 	defer tr.Close()
 
 	// Schema should be in place: querying sqlite_master must succeed and
-	// return our four tables.
+	// return our five tables.
 	rows, err := tr.DB().Query(`SELECT name FROM sqlite_master WHERE type='table' ORDER BY name`)
 	if err != nil {
 		t.Fatalf("query schema: %v", err)
@@ -23,10 +23,11 @@ func TestNewTracker_AppliesSchema(t *testing.T) {
 	defer rows.Close()
 
 	want := map[string]bool{
-		"detected_patterns":  false,
-		"executions":         false,
-		"failure_sequences":  false,
-		"session_summaries":  false,
+		"detected_patterns":   false,
+		"executions":          false,
+		"failure_sequences":   false,
+		"generated_artifacts": false,
+		"session_summaries":   false,
 	}
 	for rows.Next() {
 		var name string
@@ -208,5 +209,206 @@ func TestTracker_CloseFlushesAndIsIdempotent(t *testing.T) {
 func TestNewTracker_RejectsEmptyPath(t *testing.T) {
 	if _, err := NewTracker(""); err == nil {
 		t.Fatal("expected error for empty dbPath")
+	}
+}
+
+// TestFailureSequences_TwoConsecutiveFails verifies that two adjacent failure
+// records in the same session produce one row in failure_sequences with count=1.
+func TestFailureSequences_TwoConsecutiveFails(t *testing.T) {
+	tr, err := NewTracker(":memory:")
+	if err != nil {
+		t.Fatalf("NewTracker: %v", err)
+	}
+	defer tr.Close()
+
+	tr.SetBufferSize(10) // prevent auto-flush mid-test
+
+	now := time.Date(2026, 4, 16, 10, 0, 0, 0, time.UTC)
+	tr.Record(ExecutionRecord{
+		Timestamp:     now,
+		SessionID:     "sess-seq",
+		EventType:     "before_tool",
+		ToolType:      "Bash",
+		ValidatorName: "v1",
+		Result:        ResultFail,
+		DurationMs:    5,
+		ErrorCode:     "COS-001",
+	})
+	tr.Record(ExecutionRecord{
+		Timestamp:     now.Add(time.Second),
+		SessionID:     "sess-seq",
+		EventType:     "before_tool",
+		ToolType:      "Bash",
+		ValidatorName: "v2",
+		Result:        ResultFail,
+		DurationMs:    6,
+		ErrorCode:     "COS-002",
+	})
+
+	if err := tr.Flush(); err != nil {
+		t.Fatalf("Flush: %v", err)
+	}
+
+	var count int
+	if err := tr.DB().QueryRow(
+		`SELECT count FROM failure_sequences WHERE source_code=? AND target_code=?`,
+		"COS-001", "COS-002",
+	).Scan(&count); err != nil {
+		t.Fatalf("query failure_sequences: %v", err)
+	}
+	if count != 1 {
+		t.Errorf("failure_sequences count = %d, want 1", count)
+	}
+}
+
+// TestFailureSequences_TripleRepeat verifies that the same consecutive failure
+// pair flushed in three separate batches accumulates to count=3.
+func TestFailureSequences_TripleRepeat(t *testing.T) {
+	tr, err := NewTracker(":memory:")
+	if err != nil {
+		t.Fatalf("NewTracker: %v", err)
+	}
+	defer tr.Close()
+
+	tr.SetBufferSize(10) // manual flush only
+
+	now := time.Date(2026, 4, 16, 11, 0, 0, 0, time.UTC)
+	addPair := func(offset time.Duration) {
+		tr.Record(ExecutionRecord{
+			Timestamp: now.Add(offset), SessionID: "sess-triple",
+			EventType: "before_tool", ToolType: "Edit",
+			ValidatorName: "va", Result: ResultFail,
+			DurationMs: 1, ErrorCode: "COS-A",
+		})
+		tr.Record(ExecutionRecord{
+			Timestamp: now.Add(offset + time.Millisecond), SessionID: "sess-triple",
+			EventType: "before_tool", ToolType: "Edit",
+			ValidatorName: "vb", Result: ResultFail,
+			DurationMs: 1, ErrorCode: "COS-B",
+		})
+		if err := tr.Flush(); err != nil {
+			t.Fatalf("Flush: %v", err)
+		}
+	}
+
+	addPair(0)
+	addPair(10 * time.Second)
+	addPair(20 * time.Second)
+
+	var count int
+	if err := tr.DB().QueryRow(
+		`SELECT count FROM failure_sequences WHERE source_code=? AND target_code=?`,
+		"COS-A", "COS-B",
+	).Scan(&count); err != nil {
+		t.Fatalf("query failure_sequences: %v", err)
+	}
+	if count != 3 {
+		t.Errorf("failure_sequences count = %d, want 3", count)
+	}
+}
+
+// TestSchemaContainsGeneratedArtifacts verifies that the generated_artifacts
+// table exists in a fresh database and contains the expected columns.
+// This guards against fresh-install failures in Phase 5.2 (Generator), which
+// INSERTs new artifacts into this table.
+func TestSchemaContainsGeneratedArtifacts(t *testing.T) {
+	dbPath := filepath.Join(t.TempDir(), "artifacts-schema.db")
+	tr, err := NewTracker(dbPath)
+	if err != nil {
+		t.Fatalf("NewTracker: %v", err)
+	}
+	defer tr.Close()
+
+	// 1. Table must exist.
+	var tableName string
+	err = tr.DB().QueryRow(
+		`SELECT name FROM sqlite_master WHERE type='table' AND name='generated_artifacts'`,
+	).Scan(&tableName)
+	if err != nil {
+		t.Fatalf("generated_artifacts table not found in schema: %v", err)
+	}
+
+	// 2. Expected columns must be present (names only; PRAGMA returns one row per column).
+	rows, err := tr.DB().Query(`PRAGMA table_info(generated_artifacts)`)
+	if err != nil {
+		t.Fatalf("PRAGMA table_info: %v", err)
+	}
+	defer rows.Close()
+
+	wantCols := map[string]bool{
+		"id":                false,
+		"name":              false,
+		"artifact_type":     false,
+		"source_pattern_id": false,
+		"language":          false,
+		"code":              false,
+		"config_snippet":    false,
+		"confidence":        false,
+		"generated_at":      false,
+		"enabled":           false,
+		"feedback":          false,
+	}
+	for rows.Next() {
+		var (
+			cid       int
+			colName   string
+			colType   string
+			notNull   int
+			dfltValue any
+			pk        int
+		)
+		if err := rows.Scan(&cid, &colName, &colType, &notNull, &dfltValue, &pk); err != nil {
+			t.Fatalf("scan PRAGMA row: %v", err)
+		}
+		if _, ok := wantCols[colName]; ok {
+			wantCols[colName] = true
+		}
+	}
+	if err := rows.Err(); err != nil {
+		t.Fatalf("PRAGMA rows: %v", err)
+	}
+
+	for col, seen := range wantCols {
+		if !seen {
+			t.Errorf("column %q missing from generated_artifacts", col)
+		}
+	}
+}
+
+// TestFailureSequences_CrossSessionNotCounted confirms that adjacent failures
+// in DIFFERENT sessions do NOT create a failure_sequences row.
+func TestFailureSequences_CrossSessionNotCounted(t *testing.T) {
+	tr, err := NewTracker(":memory:")
+	if err != nil {
+		t.Fatalf("NewTracker: %v", err)
+	}
+	defer tr.Close()
+
+	tr.SetBufferSize(10)
+
+	now := time.Date(2026, 4, 16, 12, 0, 0, 0, time.UTC)
+	tr.Record(ExecutionRecord{
+		Timestamp: now, SessionID: "sess-A",
+		EventType: "before_tool", ToolType: "Bash",
+		ValidatorName: "v1", Result: ResultFail,
+		DurationMs: 1, ErrorCode: "COS-001",
+	})
+	tr.Record(ExecutionRecord{
+		Timestamp: now.Add(time.Second), SessionID: "sess-B",
+		EventType: "before_tool", ToolType: "Bash",
+		ValidatorName: "v2", Result: ResultFail,
+		DurationMs: 1, ErrorCode: "COS-002",
+	})
+
+	if err := tr.Flush(); err != nil {
+		t.Fatalf("Flush: %v", err)
+	}
+
+	var rowCount int
+	if err := tr.DB().QueryRow(`SELECT COUNT(*) FROM failure_sequences`).Scan(&rowCount); err != nil {
+		t.Fatalf("count: %v", err)
+	}
+	if rowCount != 0 {
+		t.Errorf("cross-session sequences = %d, want 0", rowCount)
 	}
 }
