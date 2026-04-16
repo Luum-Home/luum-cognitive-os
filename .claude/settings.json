@@ -29,6 +29,11 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/mcp-scan.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/packages/engram-sync/hooks/engram-auto-import.sh\"",
+            "async": true
           }
         ]
       }
@@ -296,6 +301,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-recorder.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/packages/engram-sync/hooks/engram-auto-sync.sh\"",
             "async": true
           }
         ]
