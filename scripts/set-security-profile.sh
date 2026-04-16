@@ -108,6 +108,7 @@ case "$PROFILE" in
     echo "  Overhead: ~100-200ms per tool call"
     ;;
   standard)
+    # Hooks: task-panel-sync.sh (async, PostToolUse/Agent, ADR-021 adapter)
     # Hooks: pattern-check.sh (async, SessionStart)
     echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, pattern-check"
     echo "  UserPromptSubmit: user-prompt-capture"
