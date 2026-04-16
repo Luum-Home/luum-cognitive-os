@@ -1,3 +1,4 @@
+# scope: both
 """Skill Router — Auto-select skills from conversation context.
 
 Matches user messages to the most appropriate Cognitive OS skill using
@@ -24,64 +25,6 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 
-# ---------------------------------------------------------------------------
-# Audience filtering helpers
-# ---------------------------------------------------------------------------
-
-def _detect_audience_context() -> str:
-    """Detect whether we're running inside the OS repo or a project repo.
-
-    Returns:
-        'os-dev' if running inside the Cognitive OS repo itself,
-        'project' otherwise.
-    """
-    project_dir = os.environ.get('CLAUDE_PROJECT_DIR', os.getcwd())
-    os_markers = ['luum-agent-os', 'cognitive-os', 'luum-cognitive-os']
-    if any(marker in project_dir for marker in os_markers):
-        return 'os-dev'
-    return 'project'
-
-
-def _parse_skill_audience(skill_dir: Path) -> str:
-    """Read the ``audience`` field from a skill's SKILL.md frontmatter.
-
-    Returns 'both' if the field is absent or the file cannot be read.
-    """
-    skill_md = skill_dir / "SKILL.md"
-    try:
-        with open(skill_md, "r", encoding="utf-8") as f:
-            in_frontmatter = False
-            for line in f:
-                stripped = line.strip()
-                if stripped == "---":
-                    in_frontmatter = not in_frontmatter
-                    continue
-                if in_frontmatter and stripped.startswith("audience:"):
-                    value = stripped[len("audience:"):].strip()
-                    return value if value else "both"
-    except (OSError, IOError):
-        pass
-    return "both"
-
-
-def _audience_matches_context(audience: str, context: str) -> bool:
-    """Return True if a skill with *audience* should be shown in *context*.
-
-    Rules:
-    - 'both' and 'human' → always shown
-    - 'os-dev' and 'os' → only shown in 'os-dev' context
-    - 'project' → only shown in 'project' context
-    """
-    if audience in ("both", "human"):
-        return True
-    if audience in ("os-dev", "os"):
-        return context == "os-dev"
-    if audience == "project":
-        return context == "project"
-    # Unknown value: default to showing it
-    return True
-
-
 @dataclass(frozen=True)
 class SkillMatch:
     """A matched skill with confidence and reasoning."""
@@ -104,7 +47,6 @@ class _RoutingEntry:
     invoke_command: str
     fallback_command: Optional[str]
     reason_template: str
-    audience: str = "both"  # audience tag read from SKILL.md frontmatter
 
 
 def _compile(patterns: List[Tuple[str, float]]) -> List[Tuple[re.Pattern, float]]:
@@ -352,18 +294,6 @@ def _build_default_routing_table() -> List[_RoutingEntry]:
             fallback_command=None,
             reason_template="Trust audit detected",
         ),
-        _RoutingEntry(
-            patterns=_compile([
-                (r"\bperformance[- ]?dashboard\b", 0.95),
-                (r"\b(latency|throughput|overhead)\s+(report|metrics|dashboard)\b", 0.80),
-                (r"\bcos\s+perf\b", 0.95),
-            ]),
-            skill_name="performance-dashboard",
-            invoke_command="cos perf",
-            fallback_command=None,
-            reason_template="Performance dashboard detected",
-        ),
-
         # --- Research ---
         _RoutingEntry(
             patterns=_compile([
@@ -524,17 +454,6 @@ def _build_default_routing_table() -> List[_RoutingEntry]:
             fallback_command="/cost-predict",
             reason_template="Estimation / planning poker detected",
         ),
-        _RoutingEntry(
-            patterns=_compile([
-                (r"\bcost[- ]?predict\b", 0.95),
-                (r"\bpredict\s+(the\s+)?cost\b", 0.85),
-            ]),
-            skill_name="cost-predictor",
-            invoke_command="/cost-predict",
-            fallback_command=None,
-            reason_template="Cost prediction detected",
-        ),
-
         # --- Status ---
         _RoutingEntry(
             patterns=_compile([
@@ -917,18 +836,6 @@ def _build_default_routing_table() -> List[_RoutingEntry]:
             reason_template="Session management detected",
         ),
 
-        # --- Estimation report ---
-        _RoutingEntry(
-            patterns=_compile([
-                (r"\bestimation[- ]?report\b", 0.95),
-                (r"\bcalibration\s+(report|accuracy)\b", 0.80),
-            ]),
-            skill_name="estimation-report",
-            invoke_command="/estimation-report",
-            fallback_command=None,
-            reason_template="Estimation calibration report detected",
-        ),
-
         # --- Persistent agent ---
         _RoutingEntry(
             patterns=_compile([
@@ -1158,11 +1065,7 @@ class SkillRouter:
             skills in the routing table actually exist.
     """
 
-    def __init__(
-        self,
-        catalog_path: Optional[str] = None,
-        audience_context: Optional[str] = None,
-    ):
+    def __init__(self, catalog_path: Optional[str] = None):
         if catalog_path is None:
             # Auto-detect relative to this file's location
             lib_dir = Path(__file__).resolve().parent
@@ -1171,31 +1074,6 @@ class SkillRouter:
         self._catalog_path = catalog_path
         self._known_skills = _parse_catalog(catalog_path)
         self._routing_table = _build_default_routing_table()
-
-        # Audience filtering: detect context and populate audience on each entry
-        self._audience_context: str = (
-            audience_context if audience_context is not None
-            else _detect_audience_context()
-        )
-        self._load_skill_audiences(Path(catalog_path).parent)
-
-    def _load_skill_audiences(self, skills_dir: Path) -> None:
-        """Populate the ``audience`` field on each routing entry from SKILL.md.
-
-        Walks ``skills_dir`` looking for ``<skill_name>/SKILL.md``.  Entries
-        whose skill directory cannot be found keep the default value of
-        ``'both'``, maintaining backward compatibility.
-        """
-        for entry in self._routing_table:
-            skill_path = skills_dir / entry.skill_name
-            if skill_path.is_dir():
-                entry.audience = _parse_skill_audience(skill_path)
-            # else: leave entry.audience as its dataclass default ("both")
-
-    @property
-    def audience_context(self) -> str:
-        """The detected audience context ('os-dev' or 'project')."""
-        return self._audience_context
 
     @property
     def known_skills(self) -> Set[str]:
@@ -1219,10 +1097,6 @@ class SkillRouter:
         matches: List[SkillMatch] = []
 
         for entry in self._routing_table:
-            # Skip skills that don't target the current audience context
-            if not _audience_matches_context(entry.audience, self._audience_context):
-                continue
-
             best_conf = 0.0
             for pattern, base_conf in entry.patterns:
                 if pattern.search(text):
