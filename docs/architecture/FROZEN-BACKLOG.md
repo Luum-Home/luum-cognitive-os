@@ -8,6 +8,33 @@ Consolidated inventory of all plans, decisions, and queued work from engram that
 
 ---
 
+## P0 — Cross-Device Memory Sync (NEW — April 16)
+
+**Why P0:** Without this, changing devices loses engram (2,348 observations) and memory files. Four living documents (roadmap, lessons, frozen-backlog, post-mortem) already sync via git, but engram DB does not.
+
+**Solution: Activate existing `packages/engram-sync` package**
+
+Components that already exist (Apache-2.0):
+- `hooks/engram-auto-sync.sh` — Stop event, exports observations to `.engram/exports/*.json`
+- `hooks/engram-auto-import.sh` — SessionStart event, imports JSONs into local engram
+- `hooks/memu-sync.sh` — memU bridge (optional)
+
+**Activation steps (1 hour):**
+1. Register both hooks in `.claude/settings.json` (Stop + SessionStart, async)
+2. Create `.engram/exports/` directory and add to git
+3. Test round-trip: export on device A → commit → pull on device B → import → verify engram has same data
+4. Document pattern in `docs/setup/cross-device-memory.md`
+
+**Alternatives evaluated:**
+- Engram cloud (Postgres): real-time but requires server — deferred
+- Litestream → S3: WAL replica — deferred, read-only
+- Git-LFS for engram.db: simple but 20MB per commit — rejected
+- Turso/LibSQL embedded: multi-master — deferred, curve
+
+**Rationale:** engram-sync is Apache-2.0, already installed, git-based (no new infra), legible JSON format (diffable). Simplest path to device portability.
+
+---
+
 ## MEGA PLANS (Multi-session)
 
 ### 1. Stabilization Mega Plan — engram #5889
