@@ -24,6 +24,13 @@ skills/auto-generated/
 .last-sync
 rate-limit-state.json
 
+# ── Compiled Go binaries + SQLite scratch (build artifacts) ──────────────────
+/cos-dispatch
+*.exe
+*.test
+*.db
+*.db-journal
+
 # ── Plugin runtime data ─────────────────────────────────────────────────────
 .claude/plugins/.cognitive-os/
 
