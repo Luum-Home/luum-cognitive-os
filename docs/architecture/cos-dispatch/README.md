@@ -138,7 +138,7 @@ generated/                         # Auto-generated validators/transformers
 
 **Phase 4 (Pattern Tracking):** DONE — 2026-04-16. SQLite-backed `SQLTracker` + `SQLDetector` in `internal/pattern/`. 3 of 6 detector types implemented (RepeatedFailure, PerfRegression, ErrorCluster). Dispatcher instrumented via `WithTracker()` option. 11 tests passing.
 
-**Phase 5 (Auto-Generator + Remaining Providers):** Pending — next session. Also pending: FalsePositive, MissingCoverage, SequenceCorrelation detectors.
+**Phase 5 (Auto-Generator + Remaining Providers):** Pending — next session. Also pending: FalsePositive, MissingCoverage, SequenceCorrelation detectors. Sub-phase breakdown is captured in [ADR-011](adrs/011-phase-5-sub-phase-ordering.md); the constituent decisions live in ADR-006 through ADR-009.
 
 ## Timeline
 
@@ -163,6 +163,12 @@ generated/                         # Auto-generated validators/transformers
 - [ADR-003: SQLite over JSONL](adrs/003-sqlite-over-jsonl.md)
 - [ADR-004: Generated artifacts disabled](adrs/004-generated-artifacts-disabled.md)
 - [ADR-005: Typed provider adapters](adrs/005-typed-provider-adapters.md)
+- [ADR-006: `override` result type in executions](adrs/006-override-result-type.md)
+- [ADR-007: Eager population of `failure_sequences`](adrs/007-eager-failure-sequences.md)
+- [ADR-008: `cos-dispatch review` as subcommand in same binary](adrs/008-review-subcommand.md)
+- [ADR-009: Go-only auto-generation in Phase 5](adrs/009-go-only-auto-generation.md)
+- [ADR-010: Real-behavior tests required for every Phase 5 sub-phase](adrs/010-real-behavior-tests.md)
+- [ADR-011: Phase 5 sub-phase ordering (5.0 first)](adrs/011-phase-5-sub-phase-ordering.md)
 - [ADR-021: Vendor-Agnostic State with Provider Adapters](../adrs/021-vendor-agnostic-with-adapters.md)
 
 ## References
