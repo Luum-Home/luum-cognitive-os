@@ -135,6 +135,8 @@ build_settings() {
         "rate-limiter.sh")
       pre_read=$(hook_group "Read" \
         "large-file-advisor.sh")
+      # ADR-022: prompt-quality-llm.sh and completeness-check-llm.sh are
+      # Haiku-evaluated advisories that run alongside the regex variants.
       pre_agent=$(hook_group "Agent" \
         "dispatch-gate.sh" \
         "clarification-gate.sh" \
@@ -143,6 +145,8 @@ build_settings() {
         "agent-prelaunch.sh" \
         "error-pattern-detector.sh" \
         "predev-completeness-check.sh" \
+        "completeness-check-llm.sh" \
+        "prompt-quality-llm.sh" \
         "registration-check.sh" \
         "agent-work-tracker.sh")
       ;;
@@ -173,11 +177,14 @@ build_settings() {
         "confidentiality-enforcer.sh" \
         "doc-sync-detector.sh" \
         "wiring-check.sh")
+      # ADR-022: confidence-gate-llm.sh is the Haiku-evaluated advisory
+      # variant of confidence-gate.sh; runs alongside it.
       post_agent=$(hook_group "Agent" \
         "claim-validator.sh" \
         "completion-gate.sh" \
         "agent-checkpoint.sh" \
         "trust-score-validator.sh" \
+        "confidence-gate-llm.sh" \
         "audit-id-enricher.sh" \
         "state-heartbeat.sh" \
         "agent-work-tracker.sh" \
