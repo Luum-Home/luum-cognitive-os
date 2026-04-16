@@ -6,6 +6,8 @@ version: 0.1.0
 audience: os
 tags: [release, git]
 last-updated: 2026-04-10
+disable-model-invocation: true
+effort: haiku
 ---
 
 # Tag Release

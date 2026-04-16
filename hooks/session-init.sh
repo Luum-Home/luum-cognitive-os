@@ -87,6 +87,18 @@ echo ""
 echo "Set COGNITIVE_OS_SESSION_ID=$SESSION_ID for this session."
 echo ""
 
+# ─── Level-1 skills catalog pointer ──────────────────────────────────────────
+# The compact catalog (CATALOG-COMPACT.md) is the Level-1 index loaded at
+# session start. Full SKILL.md files load on demand. The full catalog with
+# invocations and sections is available via /catalog-full.
+CATALOG_COMPACT="$PROJECT_DIR/skills/CATALOG-COMPACT.md"
+if [ -f "$CATALOG_COMPACT" ]; then
+  echo "Skills catalog: skills/CATALOG-COMPACT.md (run /catalog-full for details)"
+else
+  echo "WARN: skills/CATALOG-COMPACT.md missing — run: python3 scripts/generate-compact-catalog.py" >&2
+fi
+echo ""
+
 # Write session ID to a discoverable file so other hooks can read it
 echo "$SESSION_ID" > "$SESSIONS_DIR/.current-session-$$"
 
