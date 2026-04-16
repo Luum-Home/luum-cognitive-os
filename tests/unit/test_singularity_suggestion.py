@@ -1,12 +1,9 @@
 """Behavioral tests for _singularity_suggestion() in hooks/session-init.sh.
 
-session-init.sh calls _singularity_suggestion() near the end of its execution.
-Rather than sourcing and re-calling the function in isolation (which loses the
-first call's output), we run the full hook and extract the singularity-relevant
-portion of its stderr.
-
-Non-suggestion stderr lines that session-init.sh always emits are filtered out
-by checking for the "=== SINGULARITY" marker lines.
+The _singularity_suggestion() function is extracted to
+hooks/_lib/singularity-suggestion.sh and sourced by session-init.sh.
+Tests source the function directly (not the full hook) to avoid the 6 Python
+cold-starts that session-init.sh triggers, keeping each test under 5 s.
 
 Invariants:
 - Suggests singularity + dry-run hint when singularity-events.jsonl is absent
@@ -29,33 +26,12 @@ pytestmark = pytest.mark.unit
 
 HOOKS_DIR = Path(__file__).resolve().parent.parent.parent / "hooks"
 HOOK_PATH = HOOKS_DIR / "session-init.sh"
+SUGGESTION_LIB = HOOKS_DIR / "_lib" / "singularity-suggestion.sh"
 
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
-
-
-def _run_hook(project_dir: Path, timeout: int = 20) -> subprocess.CompletedProcess:
-    """Run the full session-init.sh hook in *project_dir* and return the result.
-
-    The hook writes the singularity suggestion block to stderr between
-    '=== SINGULARITY SUGGESTION ===' and '=== END SINGULARITY ===' markers.
-    """
-    if not HOOK_PATH.exists():
-        pytest.skip(f"Hook not found: {HOOK_PATH}")
-
-    env = os.environ.copy()
-    env["CLAUDE_PROJECT_DIR"] = str(project_dir)
-    env["COGNITIVE_OS_HOOK_HEARTBEAT"] = "false"
-
-    return subprocess.run(
-        ["bash", str(HOOK_PATH)],
-        capture_output=True,
-        text=True,
-        env=env,
-        timeout=timeout,
-    )
 
 
 def _singularity_block(result: subprocess.CompletedProcess) -> str:
@@ -77,9 +53,27 @@ def _singularity_block(result: subprocess.CompletedProcess) -> str:
     return stderr[start : end + len(end_marker)]
 
 
-def _run_suggestion(project_dir: Path, timeout: int = 20) -> subprocess.CompletedProcess:
-    """Alias kept for clarity — runs the hook and is used identically to _run_hook."""
-    return _run_hook(project_dir, timeout=timeout)
+def _run_suggestion(project_dir: Path, timeout: int = 5) -> subprocess.CompletedProcess:
+    """Source _singularity_suggestion() directly and call it.
+
+    This bypasses the full session-init.sh hook (which triggers 6 Python
+    cold-starts) and tests only the pure-bash singularity function.
+    Timeout is 5 s instead of 20 s since no Python is involved.
+    """
+    if not SUGGESTION_LIB.exists():
+        pytest.skip(f"Singularity lib not found: {SUGGESTION_LIB}")
+
+    script = f'''
+source "{SUGGESTION_LIB}"
+export PROJECT_DIR="{project_dir}"
+_singularity_suggestion
+'''
+    return subprocess.run(
+        ["bash", "-c", script],
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+    )
 
 
 def _metrics_dir(project_dir: Path) -> Path:
