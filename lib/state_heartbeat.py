@@ -1,4 +1,3 @@
-# scope: both
 """State Heartbeat — continuous session state persistence.
 
 Runs a set of pluggable collectors every N tool calls (or every N seconds) and

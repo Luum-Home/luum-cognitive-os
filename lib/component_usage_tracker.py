@@ -1,4 +1,3 @@
-# scope: both
 """Component Usage Tracker — Dead Weight Detection.
 
 Scans hooks, libs, rules, and skills to identify which components are

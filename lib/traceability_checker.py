@@ -1,4 +1,3 @@
-# scope: both
 """Requirement-to-test traceability checker.
 
 Discovers requirements from documentation, then checks whether each has a

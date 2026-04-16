@@ -1,4 +1,3 @@
-# scope: both
 """Cognitive Load Monitor -- Detect agent degradation from context overload.
 
 Tracks agent cognitive health across a session by measuring quality metrics

@@ -1,4 +1,3 @@
-# scope: both
 """
 Agent Output Extractor — parse Claude Code agent JSONL output files.
 

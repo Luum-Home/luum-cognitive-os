@@ -1,4 +1,3 @@
-# scope: both
 """Lightweight context window usage estimator for orchestrator awareness.
 
 Tracks estimated token usage based on tool calls and messages.
