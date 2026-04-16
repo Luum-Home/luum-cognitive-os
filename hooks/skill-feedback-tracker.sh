@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # PostToolUse hook: Skill Feedback Tracker
 # Fires on "Agent" completions — tracks skill success/failure rates.
 # Warns when a skill has degraded (3+ failures).

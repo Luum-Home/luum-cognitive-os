@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # SessionStart hook: Quick singularity status check
 # OFF by default. Set SINGULARITY_CHECK=true to enable.
 # Reports pending events from the singularity controller.

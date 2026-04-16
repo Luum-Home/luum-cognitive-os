@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # PostToolUse hook: Verify that files agents claim to have created actually exist
 # Fires on Agent completion. Advisory only (exit 0 always).
 set -uo pipefail

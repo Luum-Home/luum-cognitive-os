@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # Stop hook: sync session metrics to MLflow
 # Always exits 0 — never blocks session cleanup.
 

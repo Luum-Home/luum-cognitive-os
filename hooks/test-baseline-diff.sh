@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # Stop hook: Test Baseline Diff (Anti-Confirmation-Bias)
 # Compares test results at session end against the baseline captured at start.
 # If new failures appeared, warns the orchestrator to stop attributing them to

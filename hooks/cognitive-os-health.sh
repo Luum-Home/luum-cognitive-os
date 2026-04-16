@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
 # Cognitive OS Health — SessionStart quick-check (1-line summary)
 # Outputs: "Cognitive OS: X/Y OK | Phase: Z | Budget: $0/$N | Down: component1, component2"
 set -euo pipefail

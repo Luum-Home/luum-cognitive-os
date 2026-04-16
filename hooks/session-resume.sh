@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # SessionStart hook: Auto-detect incomplete tasks from previous sessions
 # Checks active-tasks.json for in_progress/failed tasks and verifies their state
 # Must complete in <3 seconds

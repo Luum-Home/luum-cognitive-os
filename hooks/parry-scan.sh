@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # PreToolUse hook: Parry Prompt Injection Scanner
 # Fires on "Agent" tool use — scans agent prompts for prompt injection attempts.
 # Requires parry-guard to be installed. Gracefully skips if not found.

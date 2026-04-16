@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # CONCERNS: concurrency, resource-protection, workload-scheduling
 # Dispatch Gate — controls agent launch concurrency.
 # PreToolUse hook on Agent.
