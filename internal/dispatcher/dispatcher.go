@@ -8,9 +8,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/luum/cos-dispatch/internal/config"
 	"github.com/luum/cos-dispatch/internal/executor"
+	"github.com/luum/cos-dispatch/internal/pattern"
 	"github.com/luum/cos-dispatch/internal/provider"
 	"github.com/luum/cos-dispatch/internal/transformer"
 	"github.com/luum/cos-dispatch/internal/validator"
@@ -26,6 +28,10 @@ type Dispatcher struct {
 	executor            executor.Executor
 	config              *config.Config
 	logger              *log.Logger
+
+	// tracker, if non-nil, receives one ExecutionRecord per executed
+	// validator. Optional — pattern tracking can be disabled by leaving nil.
+	tracker pattern.Tracker
 
 	// providerOverride forces a specific provider instead of auto-detect.
 	providerOverride hook.Provider
@@ -46,6 +52,19 @@ func WithProviderOverride(p hook.Provider) Option {
 func WithLogger(l *log.Logger) Option {
 	return func(d *Dispatcher) {
 		d.logger = l
+	}
+}
+
+// WithTracker attaches a pattern.Tracker to the dispatcher. After every
+// dispatch call, the dispatcher records one ExecutionRecord per matched
+// validator (pass or fail) so the pattern.Detector can later surface
+// repeated failures, perf regressions, and error clusters.
+//
+// The tracker is optional: if not configured, dispatch behaviour is
+// identical to previous releases.
+func WithTracker(t pattern.Tracker) Option {
+	return func(d *Dispatcher) {
+		d.tracker = t
 	}
 }
 
@@ -100,8 +119,13 @@ func (d *Dispatcher) Dispatch(ctx context.Context, raw []byte) ([]byte, error) {
 	validators := d.validatorRegistry.FindValidators(hookCtx)
 	d.logf("matched %d validators", len(validators))
 
-	// 5. Execute validators
+	// 5. Execute validators (timed for pattern tracking)
+	execStart := time.Now()
 	validationErrors := d.executor.Execute(ctx, hookCtx, validators)
+	execDuration := time.Since(execStart)
+
+	// 5a. Record execution data for pattern detection (non-blocking).
+	d.recordExecutions(hookCtx, validators, validationErrors, execDuration)
 
 	// 6. Filter out disabled error codes
 	validationErrors = d.filterDisabledCodes(validationErrors)
@@ -198,5 +222,64 @@ func (d *Dispatcher) buildErrorResponse(prov provider.Provider, hookCtx *hook.Co
 func (d *Dispatcher) logf(format string, args ...any) {
 	if d.logger != nil {
 		d.logger.Printf("[cos-dispatch] "+format, args...)
+	}
+}
+
+// recordExecutions emits one pattern.ExecutionRecord per matched validator.
+//
+// Each call is non-blocking — Tracker.Record buffers internally — so the
+// dispatcher's hot path is unaffected. The duration column attributes the
+// total executor time evenly across validators when no per-validator
+// timing is available; this is sufficient for trend detection over many
+// runs (PerfRegression averages many points).
+func (d *Dispatcher) recordExecutions(
+	hookCtx *hook.Context,
+	validators []validator.Validator,
+	errs []*transformer.ValidationError,
+	totalDuration time.Duration,
+) {
+	if d.tracker == nil || hookCtx == nil || len(validators) == 0 {
+		return
+	}
+
+	// Build a quick lookup of failing validators by name for O(1) classification.
+	failures := make(map[string]*transformer.ValidationError, len(errs))
+	for _, e := range errs {
+		if e == nil {
+			continue
+		}
+		failures[e.ValidatorName] = e
+	}
+
+	// Spread the total duration evenly when we lack per-validator timing.
+	perValidatorMs := int64(totalDuration / time.Duration(len(validators)) / time.Millisecond)
+	if perValidatorMs < 0 {
+		perValidatorMs = 0
+	}
+
+	now := time.Now().UTC()
+	sessionID := hookCtx.SessionID
+	eventType := string(hookCtx.Event)
+	toolType := string(hookCtx.ToolName)
+
+	for _, v := range validators {
+		if v == nil {
+			continue
+		}
+		rec := pattern.ExecutionRecord{
+			Timestamp:     now,
+			SessionID:     sessionID,
+			EventType:     eventType,
+			ToolType:      toolType,
+			ValidatorName: v.Name(),
+			Result:        pattern.ResultPass,
+			DurationMs:    perValidatorMs,
+		}
+		if e, failed := failures[v.Name()]; failed {
+			rec.Result = pattern.ResultFail
+			rec.ErrorCode = e.ErrorCode
+			rec.ErrorMessage = e.Message
+		}
+		d.tracker.Record(rec)
 	}
 }
