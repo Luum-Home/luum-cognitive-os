@@ -10,7 +10,7 @@
 |-------------|----------------|---------|
 | **Claude Code** | Latest | AI agent CLI (the runtime) |
 | **Python** | 3.9+ | Library modules, test suite, singularity controller |
-| **Go** | 1.21+ | TUI test runner (`cmd/cos-test`) |
+| **Go** | 1.21+ | TUI test runner (`cmd/cos-test`), cos-dispatch binary |
 | **Docker** | 24+ | Testcontainers, optional infrastructure services |
 | **Git** | 2.30+ | Worktree isolation, version control |
 | **gh CLI** | 2.0+ | GitHub integration (issues, PRs, webhooks) |
@@ -20,8 +20,27 @@ Optional but recommended:
 
 | Tool | Purpose |
 |------|---------|
+| **goenv** | Manage Go versions; repo ships a `.go-version` file pinning Go 1.21 |
 | **devbox** | Reproducible development environment |
 | **jq** | JSON processing in hooks |
+
+### Quick dependency check
+
+Run the environment doctor to verify all dependencies are installed:
+
+```bash
+bash scripts/doctor.sh
+```
+
+The doctor checks for all required and optional tools and reports what is missing.
+
+### Automated setup (recommended for new contributors)
+
+```bash
+bash scripts/setup.sh
+```
+
+`setup.sh` installs Python dependencies, verifies Go toolchain, and validates the local environment. Idempotent — safe to re-run.
 
 ---
 

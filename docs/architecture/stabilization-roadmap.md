@@ -51,11 +51,12 @@ The real dispatcher usage:
 - Phase 4: SQLite pattern tracking (7 days) — blocked earlier on disk space
 - Phase 5: Auto-generator + feedback loop (8 days)
 
-### Documentation (3-5 days)
-Many skills/hooks/libs have stale docs. Need a sweep to:
-- Remove references to deleted components (67 structural tests, dead config)
-- Document the adapter pattern (ADR-021)
-- Update CLAUDE.md with recent architectural decisions
+### Documentation ~~(3-5 days)~~ DONE — 2026-04-15
+- ADR index updated with ADR-021 and ADR-022
+- cos-dispatch README: Phase 1+2 marked DONE, ADR-021 linked
+- getting-started.md: added goenv/.go-version, setup.sh, doctor.sh
+- stabilization-roadmap.md: updated status to reflect completed work
+- Stale references to deleted components: no active docs contamination found (references in ADRs and competitive-landscape are historical, kept intentionally)
 
 ### Deferred items from earlier
 
