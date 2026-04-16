@@ -38,6 +38,9 @@ DESCRIPTION=$(echo "$INPUT" | jq -r '
   .tool_input.description // .tool_input.prompt // "unknown task"
 ' 2>/dev/null | head -c 500)
 
+# Extract Claude Code's native tool_use_id for panel correlation (ADR-024)
+TOOL_USE_ID=$(echo "$INPUT" | jq -r '.tool_use_id // empty' 2>/dev/null)
+
 if [ -z "$DESCRIPTION" ] || [ "$DESCRIPTION" = "null" ]; then
   DESCRIPTION="unknown task"
 fi
@@ -52,13 +55,15 @@ TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 # so $$ is the hook's own (already-exiting) PID, not the agent's.
 # Health classification relies on age-based timeout only.
 
-# Build the new task entry
+# Build the new task entry (includes toolUseId for native panel correlation)
 NEW_TASK=$(jq -c -n \
   --arg id "$TASK_ID" \
+  --arg tui "$TOOL_USE_ID" \
   --arg desc "$DESCRIPTION" \
   --arg ts "$TIMESTAMP" \
   '{
     id: $id,
+    toolUseId: (if $tui == "" then null else $tui end),
     description: $desc,
     status: "in_progress",
     launchedAt: $ts,
