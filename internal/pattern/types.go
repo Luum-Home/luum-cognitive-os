@@ -58,13 +58,19 @@ func (t PatternType) String() string {
 	}
 }
 
-// Result enumerates the four canonical outcomes a validator/transformer
-// execution can produce, matching the `result` column in the schema.
+// Result enumerates the canonical outcomes a validator/transformer execution
+// can produce, matching the `result` CHECK constraint in the schema.
+//
+// ResultOverride signals that a warn/fail result was dismissed by a human or
+// downstream system. It is the primary source signal for FalsePositive
+// detection in Phase 5.1 — record it whenever an operator explicitly accepts
+// a flagged hook execution.
 const (
 	ResultPass      = "pass"
 	ResultFail      = "fail"
 	ResultWarn      = "warn"
 	ResultTransform = "transform"
+	ResultOverride  = "override"
 )
 
 // ExecutionRecord is one row in the executions table — one validator (or
