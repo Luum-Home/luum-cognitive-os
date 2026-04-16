@@ -1,0 +1,3 @@
+# This directory holds auto-generated validator stubs produced by cos-dispatch.
+# It must exist in the repo for `go vet` during test runs (see generator_test.go).
+# Real stubs committed here by Phase 5.3 review workflow.
