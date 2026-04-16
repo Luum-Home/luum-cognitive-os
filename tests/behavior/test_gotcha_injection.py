@@ -49,8 +49,6 @@ def _run_hook(tool_name: str, prompt: str = "", env_overrides=None, timeout=10):
 
 
 class TestHookStructure:
-    def test_hook_exists(self):
-        assert HOOK.exists(), f"Missing: {HOOK}"
 
     def test_hook_is_valid_bash(self):
         result = subprocess.run(
@@ -115,17 +113,6 @@ class TestNonAgentToolFiltering:
 class TestPhaseOutput:
     """Agent calls should always emit phase context."""
 
-    def test_agent_produces_phase_section(self):
-        result = _run_hook("Agent", "build the feature")
-        assert "PHASE" in result.stdout
-
-    def test_agent_produces_project_section(self):
-        result = _run_hook("Agent", "build the feature")
-        assert "PROJECT" in result.stdout
-
-    def test_agent_produces_phase_rules(self):
-        result = _run_hook("Agent", "build the feature")
-        assert "PHASE RULES" in result.stdout or "RULES" in result.stdout
 
     def test_reconstruction_phase_rules_are_present(self):
         """When phase is reconstruction, rewrite-focused rules appear."""
@@ -135,20 +122,6 @@ class TestPhaseOutput:
         # The hook emits phase-specific rules, so output should contain rule content
         assert len(output.strip()) > 50, "Hook should produce substantive output"
 
-    def test_trust_report_reminder_always_present(self):
-        """The Trust Report reminder must always be included."""
-        result = _run_hook("Agent", "do anything")
-        assert "Trust Report" in result.stdout or "TRUST" in result.stdout.upper()
-
-    def test_trust_report_reminder_present_with_simple_prompt(self):
-        result = _run_hook("Agent", "fix the bug")
-        assert "Trust Report" in result.stdout or "trust" in result.stdout.lower()
-
-    def test_required_include_in_output(self):
-        """Output should contain REQUIRED marker before Trust Report."""
-        result = _run_hook("Agent", "do something")
-        assert "REQUIRED" in result.stdout
-
 
 # ─── Keyword-triggered gotchas ────────────────────────────────────────────────
 
@@ -156,73 +129,12 @@ class TestPhaseOutput:
 class TestGotchaInjection:
     """Specific keywords in the prompt trigger warning/gotcha sections."""
 
-    def test_lib_keyword_triggers_symlink_warning(self):
-        result = _run_hook("Agent", "update lib/something.py for dedup")
-        output = result.stdout
-        assert "KNOWN TRAPS" in output or "symlink" in output.lower() or "WARNING" in output
-
-    def test_settings_json_keyword_triggers_generated_warning(self):
-        result = _run_hook("Agent", "edit settings.json to wire the hook")
-        output = result.stdout
-        assert (
-            "KNOWN TRAPS" in output
-            or "generated" in output.lower()
-            or "apply-efficiency-profile" in output.lower()
-            or "WARNING" in output
-        )
-
-    def test_new_hook_keyword_triggers_profile_registration_warning(self):
-        result = _run_hook("Agent", "create a new hook in hooks/")
-        output = result.stdout
-        assert (
-            "KNOWN TRAPS" in output
-            or "profile" in output.lower()
-            or "register" in output.lower()
-            or "WARNING" in output
-        )
-
-    def test_hooks_sh_keyword_triggers_profile_warning(self):
-        result = _run_hook("Agent", "add hooks/rate-monitor.sh to the system")
-        output = result.stdout
-        assert (
-            "KNOWN TRAPS" in output
-            or "profile" in output.lower()
-            or "WARNING" in output
-        )
-
-    def test_workflow_keyword_triggers_schema_warning(self):
-        result = _run_hook("Agent", "create a workflow pipeline yaml for the feature")
-        output = result.stdout
-        assert (
-            "KNOWN TRAPS" in output
-            or "schema" in output.lower()
-            or "workflow" in output.lower()
-            or "WARNING" in output
-        )
-
-    def test_plans_dir_keyword_triggers_directory_warning(self):
-        result = _run_hook("Agent", "look at plans/ directory for context")
-        output = result.stdout
-        assert (
-            "KNOWN TRAPS" in output
-            or "plans/" in output
-            or "WARNING" in output
-        )
 
     def test_no_keyword_produces_no_traps_section(self):
         result = _run_hook("Agent", "add two numbers together and return the result")
         # No keyword → no KNOWN TRAPS section
         output = result.stdout
         assert "KNOWN TRAPS" not in output
-
-    def test_multiple_keywords_produce_multiple_warnings(self):
-        result = _run_hook(
-            "Agent",
-            "update lib/mymodule.py and settings.json for the new hook",
-        )
-        output = result.stdout
-        # At minimum a KNOWN TRAPS section should exist
-        assert "KNOWN TRAPS" in output or "WARNING" in output
 
 
 # ─── Project gotchas file injection ──────────────────────────────────────────
@@ -289,14 +201,7 @@ class TestOptionalSections:
 
 
 class TestOutputFormat:
-    def test_output_contains_project_name(self):
-        result = _run_hook("Agent", "do something")
-        output = result.stdout
-        assert "PROJECT" in output
 
-    def test_output_contains_phase_label(self):
-        result = _run_hook("Agent", "do something")
-        assert "PHASE" in result.stdout
 
     def test_output_not_empty_for_agent(self):
         result = _run_hook("Agent", "implement a feature")

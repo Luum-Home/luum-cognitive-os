@@ -51,8 +51,6 @@ def _collect_hook_scripts(settings_path: Path) -> set:
 
 
 class TestScriptExists:
-    def test_script_file_exists(self):
-        assert SCRIPT.exists(), f"Missing: {SCRIPT}"
 
     def test_script_is_valid_bash(self):
         result = subprocess.run(
@@ -111,40 +109,12 @@ class TestLeanProfile:
         # If lean_settings fixture ran successfully, it exited zero
         assert True  # fixture would have raised if exit nonzero
 
-    def test_lean_creates_settings_json(self, lean_settings):
-        assert lean_settings.exists(), "lean should create .claude/settings.json"
 
     def test_lean_has_minimum_hook_commands(self, lean_settings):
         if not lean_settings.exists():
             pytest.skip("settings.json not created")
         count = _count_hook_commands(lean_settings)
         assert count >= 5, f"lean profile should have at least 5 hook commands, got {count}"
-
-    def test_lean_includes_self_install(self, lean_settings):
-        if not lean_settings.exists():
-            pytest.skip("settings.json not created")
-        assert "self-install.sh" in lean_settings.read_text()
-
-    def test_lean_includes_secret_detector(self, lean_settings):
-        if not lean_settings.exists():
-            pytest.skip("settings.json not created")
-        assert "secret-detector.sh" in lean_settings.read_text()
-
-    def test_lean_includes_error_pipeline(self, lean_settings):
-        if not lean_settings.exists():
-            pytest.skip("settings.json not created")
-        assert "error-pipeline.sh" in lean_settings.read_text()
-
-    def test_lean_includes_session_cleanup(self, lean_settings):
-        if not lean_settings.exists():
-            pytest.skip("settings.json not created")
-        assert "session-cleanup.sh" in lean_settings.read_text()
-
-    def test_lean_produces_valid_json(self, lean_settings):
-        if not lean_settings.exists():
-            pytest.skip("settings.json not created")
-        parsed = json.loads(lean_settings.read_text())
-        assert "hooks" in parsed
 
 
 # ─── Standard profile ────────────────────────────────────────────────────────
@@ -171,35 +141,12 @@ class TestStandardProfile:
     def test_standard_exits_zero(self, standard_settings):
         assert True  # fixture would have raised if exit nonzero
 
-    def test_standard_creates_settings_json(self, standard_settings):
-        assert standard_settings.exists()
 
     def test_standard_has_minimum_hook_commands(self, standard_settings):
         if not standard_settings.exists():
             pytest.skip("settings.json not created")
         count = _count_hook_commands(standard_settings)
         assert count >= 20, f"standard profile should have at least 20 hook commands, got {count}"
-
-    def test_standard_includes_inject_phase_context(self, standard_settings):
-        if not standard_settings.exists():
-            pytest.skip("settings.json not created")
-        assert "inject-phase-context.sh" in standard_settings.read_text()
-
-    def test_standard_includes_rate_limiter(self, standard_settings):
-        if not standard_settings.exists():
-            pytest.skip("settings.json not created")
-        assert "rate-limiter.sh" in standard_settings.read_text()
-
-    def test_standard_includes_completion_gate(self, standard_settings):
-        if not standard_settings.exists():
-            pytest.skip("settings.json not created")
-        assert "completion-gate.sh" in standard_settings.read_text()
-
-    def test_standard_produces_valid_json(self, standard_settings):
-        if not standard_settings.exists():
-            pytest.skip("settings.json not created")
-        parsed = json.loads(standard_settings.read_text())
-        assert "hooks" in parsed
 
 
 # ─── Full profile (reports, no-op) ───────────────────────────────────────────

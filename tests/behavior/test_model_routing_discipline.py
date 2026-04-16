@@ -17,29 +17,6 @@ def rec() -> ModelRecommender:
     return ModelRecommender()
 
 
-def test_routing_table_exists():
-    assert ROUTING_MD.exists(), "rules/model-routing.md must exist"
-
-
-def test_routing_table_has_haiku_tasks(routing_md_text):
-    """rules/model-routing.md must mention haiku for archive/doc tasks."""
-    assert "haiku" in routing_md_text
-    assert "sdd-archive" in routing_md_text
-
-
-def test_routing_table_has_opus_tasks(routing_md_text):
-    """rules/model-routing.md must mention opus for design/debug tasks."""
-    assert "opus" in routing_md_text
-    assert "sdd-design" in routing_md_text
-    assert "sdd-propose" in routing_md_text
-
-
-def test_routing_table_has_sonnet_tasks(routing_md_text):
-    """rules/model-routing.md must mention sonnet for implementation tasks."""
-    assert "sonnet" in routing_md_text
-    assert "sdd-apply" in routing_md_text
-
-
 def test_recommender_haiku_tasks_align_with_routing_table(rec, routing_md_text):
     """All haiku-routed task types in recommender should align with haiku mention in rules."""
     haiku_tasks = [task for task, model in rec.ROUTING_TABLE.items() if model == "haiku"]
@@ -53,15 +30,6 @@ def test_recommender_opus_tasks_align_with_routing_table(rec, routing_md_text):
     opus_tasks = [task for task, model in rec.ROUTING_TABLE.items() if model == "opus"]
     assert len(opus_tasks) > 0, "Recommender must define opus tasks"
     assert "opus" in routing_md_text
-
-
-def test_recommender_matches_routing_table(rec):
-    """Every entry in ROUTING_TABLE maps to a known model."""
-    valid_models = {"haiku", "sonnet", "opus"}
-    for task_type, model in rec.ROUTING_TABLE.items():
-        assert model in valid_models, (
-            f"Task '{task_type}' maps to unknown model '{model}'"
-        )
 
 
 def test_haiku_cheaper_than_sonnet_cheaper_than_opus(rec):

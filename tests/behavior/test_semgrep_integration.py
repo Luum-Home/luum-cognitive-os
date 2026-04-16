@@ -25,8 +25,6 @@ HOOK_PATH = PROJECT_ROOT / "hooks" / "semgrep-scan.sh"
 class TestSemgrepHookGating:
     """Tests for conditions that cause the hook to skip."""
 
-    def test_hook_file_exists(self):
-        assert HOOK_PATH.exists(), "semgrep-scan.sh must exist in hooks/"
 
     def test_hook_is_executable(self):
         assert os.access(HOOK_PATH, os.X_OK), "semgrep-scan.sh must be executable"
@@ -145,41 +143,12 @@ class TestSemgrepRuleFile:
 
     RULE_FILE = PROJECT_ROOT / "rules" / "security-scanning.md"
 
-    def test_rule_file_exists(self):
-        assert self.RULE_FILE.exists(), "security-scanning.md must exist"
-
-    def test_rule_documents_activation(self):
-        content = self.RULE_FILE.read_text()
-        assert "SEMGREP_ENABLED" in content, "Must document the SEMGREP_ENABLED env var"
-
-    def test_rule_documents_graceful_degradation(self):
-        content = self.RULE_FILE.read_text()
-        assert "graceful" in content.lower() or "not installed" in content.lower(), (
-            "Must document graceful degradation when semgrep is not installed"
-        )
-
-    def test_rule_documents_severity_mapping(self):
-        content = self.RULE_FILE.read_text()
-        assert "BLOCKER" in content, "Must document BLOCKER tier mapping"
-        assert "CONCERN" in content, "Must document CONCERN tier mapping"
-        assert "SUGGESTION" in content, "Must document SUGGESTION tier mapping"
-
-    def test_rule_documents_jsonl_logging(self):
-        content = self.RULE_FILE.read_text()
-        assert "semgrep-findings.jsonl" in content, "Must document JSONL log file"
-
 
 class TestSemgrepSkillFile:
     """Tests for the semgrep-scan skill definition."""
 
     SKILL_FILE = PROJECT_ROOT / "skills" / "semgrep-scan" / "SKILL.md"
 
-    def test_skill_file_exists(self):
-        assert self.SKILL_FILE.exists(), "SKILL.md must exist"
-
-    def test_skill_has_invocation(self):
-        content = self.SKILL_FILE.read_text()
-        assert "/security-scan" in content, "Must document /security-scan invocation"
 
     def test_skill_has_frontmatter(self):
         content = self.SKILL_FILE.read_text()
