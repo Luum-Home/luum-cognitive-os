@@ -1,5 +1,5 @@
 name: "@luum/dry-run-simulation"
-version: "1.0.0"
+version: "1.1.0"
 description: "Dry-run preview mode — intercepts agent launches when DRY_RUN=true for pipeline simulation"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"

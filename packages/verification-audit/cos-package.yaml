@@ -1,5 +1,5 @@
 name: "@luum/verification-audit"
-version: "1.0.0"
+version: "1.1.0"
 description: "Output verification and audit hooks — result truncation, observability, assumption tracking, architecture compliance"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"

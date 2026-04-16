@@ -1,5 +1,5 @@
 name: "@luum/infra-lifecycle"
-version: "1.0.0"
+version: "1.1.0"
 description: "Infrastructure lifecycle management — idle service cleanup on session stop"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"

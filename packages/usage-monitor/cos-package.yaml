@@ -1,5 +1,5 @@
 name: "@luum/usage-monitor"
-version: "1.0.0"
+version: "1.1.0"
 description: "Ground-truth cost reconciliation from Claude Code's native JSONL session files"
 authors: ["Cognitive OS Team"]
 license: "MIT"
