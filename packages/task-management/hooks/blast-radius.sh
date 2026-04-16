@@ -162,39 +162,36 @@ ENTRY=$(jq -c -n \
 safe_jsonl_append "$BLAST_LOG" "$ENTRY"
 
 # --- Output ---
+# ADR-023: prefer hookSpecificOutput.additionalContext (mutation-style) over
+# free-form stderr warnings. Claude Code surfaces additionalContext to the
+# orchestrator without surfacing it as a "block" event, which is exactly the
+# advisory semantics we want here. We still allow the agent to launch.
+emit_additional_context() {
+  local context="$1"
+  jq -c -n \
+    --arg ctx "$context" \
+    '{
+      hookSpecificOutput: {
+        hookEventName: "PreToolUse",
+        permissionDecision: "allow",
+        additionalContext: $ctx
+      }
+    }'
+}
+
 if [ "$RADIUS" = "CRITICAL" ]; then
-  echo ""
-  echo "=== BLAST RADIUS: CRITICAL ==="
-  echo ""
-  echo "Estimated impact: $FILE_SCORE+ files"
-  [ "$INFRA_HIT" = true ] && echo "Infrastructure changes detected."
-  [ "$SECURITY_HIT" = true ] && echo "Security-sensitive changes detected."
-  echo ""
-  echo "Signals:"
-  echo -e "$SIGNALS"
-  echo ""
-  echo "RECOMMENDATION: Use /sandbox-sample before scaling. Consider /exhaustive-prompt for scope enumeration."
-  echo "For security changes, ensure adversarial review is included."
-  echo ""
-  echo "This check is ADVISORY — the agent will still launch."
-  echo ""
-  echo "=== END BLAST RADIUS ==="
-  echo ""
+  EXTRA=""
+  [ "$INFRA_HIT" = true ]    && EXTRA="${EXTRA} Infrastructure changes detected."
+  [ "$SECURITY_HIT" = true ] && EXTRA="${EXTRA} Security-sensitive changes detected."
+  CTX="BLAST RADIUS WARNING: this operation is CRITICAL. Estimated impact: ${FILE_SCORE}+ files.${EXTRA}"
+  CTX="${CTX} Signals:\n$(printf '%b' "$SIGNALS")"
+  CTX="${CTX}\nRECOMMENDATION: use /sandbox-sample before scaling. Consider /exhaustive-prompt for scope enumeration. For security changes, ensure adversarial review is included."
+  emit_additional_context "$CTX"
 elif [ "$RADIUS" = "HIGH" ]; then
-  echo ""
-  echo "=== BLAST RADIUS: HIGH ==="
-  echo ""
-  echo "Estimated impact: $FILE_SCORE files"
-  echo ""
-  echo "Signals:"
-  echo -e "$SIGNALS"
-  echo ""
-  echo "RECOMMENDATION: Consider /sandbox-sample for validation before full-scale apply."
-  echo ""
-  echo "This check is ADVISORY — the agent will still launch."
-  echo ""
-  echo "=== END BLAST RADIUS ==="
-  echo ""
+  CTX="BLAST RADIUS WARNING: this operation is HIGH-impact. Estimated impact: ${FILE_SCORE} files."
+  CTX="${CTX} Signals:\n$(printf '%b' "$SIGNALS")"
+  CTX="${CTX}\nRECOMMENDATION: consider /sandbox-sample for validation before full-scale apply."
+  emit_additional_context "$CTX"
 fi
 
 # Advisory only — always exit 0
