@@ -90,31 +90,12 @@ echo ""
 # Write session ID to a discoverable file so other hooks can read it
 echo "$SESSION_ID" > "$SESSIONS_DIR/.current-session-$$"
 
-# ─── Self-improve KPI flag check ─────────────────────────────────────────────
-SELF_IMPROVE_FLAG="$PROJECT_DIR/.cognitive-os/metrics/.self-improve-recommended"
-if [ -f "$SELF_IMPROVE_FLAG" ]; then
-  REASON=$(python3 -c "
-import json
-try:
-    with open('$SELF_IMPROVE_FLAG') as f:
-        d = json.load(f)
-    print(d.get('reason','KPIs below threshold'))
-except Exception:
-    print('KPIs below threshold')
-" 2>/dev/null || echo "KPIs below threshold")
-  echo "SELF-IMPROVE RECOMMENDED: $REASON — consider running /self-improve" >&2
-fi
-
-# Load user model for this session
-python3 -c "
-import sys; sys.path.insert(0, '$PROJECT_DIR')
-from lib.user_model import UserModel
-model = UserModel.load_from_engram()
-if model.preferences:
-    profile = model.get_profile_summary()
-    with open('$SESSION_DIR/user-profile.txt', 'w') as f:
-        f.write(profile)
-" 2>/dev/null || true
+# ─── Self-improve + user model + work queue (consolidated) ────────────────────
+# Consolidated into a single python3 call (was 3 cold starts).
+SELF_IMPROVE_FLAG="$PROJECT_DIR/.cognitive-os/metrics/.self-improve-recommended" \
+SESSION_DIR="$SESSION_DIR" \
+CLAUDE_PROJECT_DIR="$PROJECT_DIR" \
+python3 "$(dirname "$0")/_lib/session_init_helper.py" 2>/dev/null || true
 
 # ─── Singularity auto-suggestion ─────────────────────────────────────────────
 # Advisory only — always exits 0. Lightweight file checks only (no subprocess).
@@ -135,29 +116,7 @@ _singularity_suggestion
   fi
 ) &
 
-# ─── Work-queue pending items check ──────────────────────────────────────────
-# Warn if prior sessions left pending tasks in the work queue
-python3 - <<'WQEOF' 2>/dev/null || true
-import sys, os
-PROJECT_ROOT = os.environ.get('CLAUDE_PROJECT_DIR', os.getcwd())
-sys.path.insert(0, PROJECT_ROOT)
-try:
-    from lib.work_queue import WorkQueue
-    q = WorkQueue(queue_path=os.path.join(PROJECT_ROOT, '.cognitive-os', 'work-queue.json'))
-    pending = q.get_pending()
-    if pending:
-        import sys
-        print(f"\n=== WORK QUEUE: {len(pending)} pending task(s) from prior sessions ===", file=sys.stderr)
-        for t in pending[:5]:
-            desc = t.get('description', '')[:80]
-            added = t.get('added_at', '')[:19]
-            print(f"  [{added}] {desc}", file=sys.stderr)
-        if len(pending) > 5:
-            print(f"  ... and {len(pending) - 5} more. Check .cognitive-os/work-queue.json", file=sys.stderr)
-        print(f"=== Consider resuming or clearing stale tasks ===\n", file=sys.stderr)
-except Exception:
-    pass
-WQEOF
+# Work queue check moved to _lib/session_init_helper.py (consolidated above)
 
 
 exit 0
