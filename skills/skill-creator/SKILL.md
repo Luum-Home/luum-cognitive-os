@@ -3,6 +3,7 @@ name: skill-creator
 version: 1.1.0
 audience: both
 invoke: /skill-creator
+effort: opus
 ---
 
 # Skill Creator with cos Packaging

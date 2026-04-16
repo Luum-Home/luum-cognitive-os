@@ -4,6 +4,7 @@ description: Create a feature implementation plan with evaluation scoring. Use b
 user-invocable: true
 version: 1.0.0
 audience: project
+effort: opus
 ---
 
 # Plan Feature
