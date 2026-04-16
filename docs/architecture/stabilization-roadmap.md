@@ -5,18 +5,61 @@
 
 This document tracks the remaining work to bring the Cognitive OS from "functional but fragile" to "stable for exponential growth."
 
-## Current State (2026-04-15)
+## Current State (2026-04-16)
 
-After the comprehensive audit and stabilization session:
+After TWO comprehensive audit + stabilization sessions:
 
-- **20 ADRs** documenting all major decisions (retroactive + design)
+- **22 ADRs** (ADR-001 to ADR-022) documenting all major decisions
 - **cos-dispatch Phase 1+2** complete: 10 Go packages, all tests passing
 - **3 critical hook perf fixes** applied (rate-limit-protection, dispatch-gate, completion-gate)
-- **67 structural test files** deleted (false coverage eliminated)
-- **Guardrails in place**: CI gate with mutation testing, mandatory agent rules, pattern detector, auto-ADR
-- **8,023 / 8,031 tests passing** (99.9%)
+- **67 structural test files** deleted + 33 files pruned (false coverage eliminated)
+- **Guardrails**: CI gate with mutation testing, mandatory agent rules, pattern detector, auto-ADR
+- **All tests passing** (8 previously-failing tests now pass)
+- **Claude Code feature adoption**:
+  - Agent Teams events registered (TeammateIdle/TaskCreated/TaskCompleted)
+  - Task Panel adapter (first ADR-021 implementation)
+  - Skills hygiene: 21 skills with paths/disable-model-invocation/effort
+  - 2-tier skill loading (CATALOG-COMPACT reduces ~60% session tokens)
+- **Session-init perf**: 3 Python cold starts → 1 (consolidated)
+- **Stabilization: ~93%**
 
-## Remaining Work
+## Pending for NEXT Session
+
+These are the last 7% to reach 100% stabilization. Deferred from session 2026-04-16 due to context limits:
+
+### Gap 2: updatedInput migration (Medium effort, High impact)
+Current hooks block with exit 2 when they should mutate the input and allow.
+- `hooks/secret-detector.sh` → redact secrets from `tool_input.command` via `updatedInput` instead of blocking
+- `hooks/blast-radius.sh` → add warning as additionalContext instead of logging to stderr
+- Pattern: return `{"hookSpecificOutput": {"permissionDecision": "allow", "updatedInput": {...}}}`
+
+### Gap 3: additionalContext migration (Medium effort, Medium impact)
+Migrate from stdout conventions to native `hookSpecificOutput.additionalContext`:
+- `hooks/inject-phase-context.sh`
+- `hooks/context-diet.sh`
+- `hooks/subagent-context-injector.sh` (partially done — keep verifying)
+
+### /recap adapter (Low effort, Medium impact)
+Integrate session-wrapup with Claude Code's native `/recap` command.
+- Our Stop hook currently writes its own summary
+- The native `/recap` does similar
+- Add an adapter that enriches `/recap` output with COS data OR replaces our duplicate with `/recap` invocation
+
+### cos-dispatch Phase 3-5 (11 + 7 + 8 days)
+The real dispatcher usage:
+- Phase 3: Port 17 hooks to Go validators (11 days)
+- Phase 4: SQLite pattern tracking (7 days) — blocked earlier on disk space
+- Phase 5: Auto-generator + feedback loop (8 days)
+
+### Documentation (3-5 days)
+Many skills/hooks/libs have stale docs. Need a sweep to:
+- Remove references to deleted components (67 structural tests, dead config)
+- Document the adapter pattern (ADR-021)
+- Update CLAUDE.md with recent architectural decisions
+
+### Deferred items from earlier
+
+## Remaining Work (Reference — from earlier planning)
 
 ### P0 — Block "stable" certification
 
