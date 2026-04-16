@@ -1,5 +1,5 @@
 name: "@luum/cos-index"
-version: "1.0.0"
+version: "1.1.0"
 description: "Central package index for Cognitive OS — master registry of all known COS packages"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
