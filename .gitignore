@@ -73,3 +73,6 @@ Thumbs.db
 *.swp
 *~
 mutants/
+conftest.py
+cos_mutation.sqlite
+.claude/worktrees/
