@@ -35,6 +35,7 @@ fixes=""
 # rules/ is intentionally excluded — managed by sync_core_rules() below.
 SYNC_DIRS=(
   "skills|cos|tree|"
+  "skills|claude|tree|"
   "squads|cos|flat|*.yaml"
   "templates|cos|flat|*.md"
   "agents|cos|flat|*.md"
