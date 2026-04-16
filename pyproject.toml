@@ -39,6 +39,8 @@ testing = [
     "pytest-asyncio>=0.23",
     "pytest-timeout>=2.2",
     "pytest-xdist>=3.5",
+    "mutmut>=3.0",
+    "pytest-smell>=1.0",
 ]
 security = [
     # semgrep: install via `brew install semgrep` or `pip install semgrep`
@@ -78,6 +80,10 @@ select = ["F401", "F841", "E711", "E712"]
 [tool.vulture]
 min_confidence = 80
 paths = ["lib/"]
+
+[tool.mutmut]
+paths_to_mutate = ["lib/"]
+test_command = "python -m pytest tests/unit/test_rate_limiter.py -x -q --no-header -p no:timeout -c /dev/null"
 
 [build-system]
 requires = ["hatchling"]
