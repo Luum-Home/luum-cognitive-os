@@ -1,3 +1,4 @@
+<!-- Cleaned: removed phantom entries without SKILL.md implementations -->
 # Cognitive OS Skills Catalog
 
 > Compact index loaded at session start. Full SKILL.md loaded on demand (Level 2).
@@ -104,10 +105,7 @@
 | research-protocol | Meta-skill: systematic investigation methodology (DISCOVER/ANALYZE/COMPARE/SYNTHESIZE) | `/research-protocol` | project |
 | audit-website | 6-category website audit (SEO, Performance, Security, Content/UX, Accessibility, Schema.org) | `/audit-website` | project |
 | persistent-agent | Create persistent agents with state across sessions: identity profile, event log | `/create-persistent-agent` | project |
-| estimation-report | View estimation calibration report: bias factors, accuracy, confidence per agent | `/estimation-report` | project |
 | planning-poker | Multi-agent Planning Poker: 3 independent complexity estimates, divergence detection | `/planning-poker` | project |
-| performance-dashboard | Show performance metrics: latency percentiles, throughput, overhead, bottlenecks | `cos perf` | project |
-| cost-predictor | Predict task cost from historical data, show confidence level, per-phase breakdown | `/cost-predict` | project |
 | run-tests | Auto-detect project test framework and run tests with structured pass/fail reporting | `/run-tests` | project |
 | install-recommended | Detect project stack and recommend relevant skills to install | `/install-recommended` | project |
 | repo-forensics | Deep forensic analysis of git repos: clone, scan all code, deps, architecture, tools, features, COS comparison | `/repo-forensics` | both |
@@ -115,6 +113,7 @@
 | red-team | Red team testing for agent prompts: detects injection, jailbreak, and manipulation vulnerabilities via Promptfoo | `/red-team` | os-dev |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints | `/vulnerability-scan` | os-dev |
 | agent-stress-test | Stress-test agent cognitive health to detect context-induced degradation | `/agent-stress-test` | os-dev |
+| audit-integrity | Verify integrity of skills, hooks, libs, and config against the OS manifest | `/audit-integrity` | os-dev |
 
 ## Pre-Development & Audit Skills [project-discovery / project-audit]
 
@@ -182,6 +181,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **analyze-improvements** — Analyze KPIs, error patterns, and skill metrics to identify improvement opportunities. Produces a ranked list of proposed changes with AUTO vs HUMAN-APPROVAL classification. Output only — makes NO file changes.
 - **apply-improvements** — Apply approved self-improvement changes from an analyze-improvements report. Applies AUTO changes immediately; presents HUMAN-APPROVAL changes for explicit confirmation before touching files.
 - **arena** — Run competitive benchmarks comparing Cognitive OS against other AI coding tools
+- **audit-integrity** — Verify integrity of skills, hooks, libs, and config against the OS manifest
 - **audit-website** — >
 - **auto-refine** — Analyze a failed agent's output, determine root cause, and re-launch with refined instructions. Implements the PITER Refine step.
 - **auto-rollback** — No description

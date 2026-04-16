@@ -3,7 +3,7 @@
 # For SaaS: this will be editable via web dashboard.
 
 project:
-  name: my-project          # Override with your project name
+  name: luum-cognitive-os
   type: webapp              # fintech | ecommerce | saas | webapp | startup | healthcare
   phase: reconstruction     # reconstruction | stabilization | production | maintenance
 
@@ -23,13 +23,8 @@ project:
       go: "backend-go/apps"
       typescript: "services"
       java: "micro-services"
-    service_paths:
-      - "mobile/bff-ninja/src"
-      - "micro-services/onboarding/src"
-      - "services/acme-gateway"
-      - "micro-services/users-core"
-      - "micro-services/users-auth"
-      - "backend-go/apps"
+    # Removed: dead config that nothing reads (session 2026-04-15)
+    # service_paths: project-specific paths from another project removed
     evaluation_criteria:
       - "Follows clean architecture layers (domain/application/infrastructure)"
       - "Uses correct framework per language (see frameworks above)"
@@ -106,21 +101,8 @@ quality:
       - "*/test/*"
       - "cmd/*"
 
-  presets:                         # Industry presets (for SaaS)
-    fintech:
-      coverage: 80
-      require_integration_tests: true
-      require_idempotency_tests: true
-      require_audit_trail: true
-    healthcare:
-      coverage: 90
-      require_hipaa_tests: true
-    ecommerce:
-      coverage: 70
-      require_integration_tests: true
-    startup:
-      coverage: 50
-      require_integration_tests: false
+  # Removed: dead config that nothing reads (session 2026-04-15)
+  # quality.presets (fintech/healthcare/ecommerce/startup) removed
 
   auto_verify: true                 # Run acceptance criteria verification on agent completion
   exhaustive_prompts: true           # Enable completeness check on agent launch
@@ -157,7 +139,7 @@ sessions:
 models:
   gateways:
     bifrost:
-      enabled: true
+      enabled: false           # disabled in docker-compose (migrated to litellm pip)
       url: ${BIFROST_URL:-http://localhost:8081}
       priority: 1              # Primary gateway (lowest latency)
       supported_providers:
@@ -304,16 +286,9 @@ rules:
       # services-config: "port|connection|refused"
       # testing-local: "test|jest|wiremock"
 
-cost:
-  metering:
-    track_per_skill: true
-    track_per_rule: true
-    track_per_agent: true
-    report_interval: session_end
-  optimization:
-    auto_unload_unused_minutes: 5  # unload skills after N min inactivity
-    compress_rules: true           # use RULES-COMPACT.md instead of full rules
-    cache_skill_catalog: true      # cache CATALOG.md across session
+# Removed: dead config that nothing reads (session 2026-04-15)
+# cost.metering (track_per_skill/rule/agent, report_interval) removed
+# cost.optimization (auto_unload, compress_rules, cache_skill_catalog) removed
 
 definition_of_done:
   trivial:                               # < 20 lines, 1 file
@@ -355,15 +330,10 @@ definition_of_done:
     - rollback_tested
 
 hooks:
-  error_learning: true
-  dod_gate: true
+  # Removed: dead config that nothing reads (session 2026-04-15)
+  # error_learning, dod_gate, tool_loop_detection, pre_compaction_flush,
+  # auto_test_on_edit, block_prod_urls, auto_refine, auto_verify removed
   skill_metrics: true
-  tool_loop_detection: true
-  pre_compaction_flush: true
-  auto_test_on_edit: true
-  block_prod_urls: true
-  auto_refine: true
-  auto_verify: true                  # Run acceptance criteria on agent completion
   completeness_check: true           # Warn on vague agent prompts before launch
 
 auto_refine:
@@ -371,17 +341,8 @@ auto_refine:
   max_retries: 3
   tracking_dir: metrics/auto-refine    # relative to .cognitive-os/
 
-# Anthropic Advisor Tool strategy (advisor_20260301 beta)
-# Lets a cheap executor model (Sonnet) consult an expensive advisor model (Opus)
-# inline during a single API request.  Requires ORCHESTRATOR_MODE=executor and
-# the 'anthropic' Python package.  Falls back to plain Sonnet if unavailable.
-advisor:
-  enabled: true
-  model: "claude-opus-4-6"           # The advisor model (Opus)
-  executor_model: "claude-sonnet-4"  # The executor model (Sonnet)
-  max_uses_per_request: 3            # Max advisory calls per request
-  # Tasks that route through the sonnet+advisor tier when executor mode is active
-  tasks: [sdd-apply, sdd-verify, systematic-debugging]
+# Removed: dead config that nothing reads (session 2026-04-15)
+# advisor.* (enabled, model, executor_model, max_uses, tasks) removed
 
 resources:
   budget:
@@ -501,10 +462,8 @@ resources:
         - "PASS"
         - "coverage:"
 
-  optimization:
-    governor_interval_sessions: 5
-    auto_run_on_session_end: true
-    auto_execute_safe: false        # Set to true to auto-run context-optimizer and error-analyzer
+  # Removed: dead config that nothing reads (session 2026-04-15)
+  # resources.optimization (governor_interval, auto_run, auto_execute) removed
 
 model_capability:
   level: 3                             # 1=basic, 2=good, 3=excellent, 4=autonomous, 5=autonomous+
@@ -540,18 +499,8 @@ efficiency:
       target_tokens_per_session: 142000
       target_cost_per_session_usd: 2.50
 
-compatibility:
-  baseline_model: "claude-opus-4-6"
-  test_on_model_change: true
-  test_skill: compat-test          # invoke via /cognitive-os-compat-test
-  minimum_requirements:
-    skill_trigger_accuracy: 90     # % — model correctly identifies matching skills
-    rule_compliance: 95            # % — model follows rules without extra prompting
-    memory_retrieval: true         # Engram must be reachable
-  thresholds:
-    all_clear: 8                   # tests passed out of 8
-    degraded: 6                    # minimum before DEGRADED status
-    broken: 5                      # at or below = BROKEN
+# Removed: dead config that nothing reads (session 2026-04-15)
+# compatibility.* removed
 
 self_improvement:
   enabled: true
@@ -689,11 +638,8 @@ sources:
   #   path: /path/to/private-registry
   #   provides: [skills, rules, presets]
 
-tools:
-  repomix:
-    enabled: true
-    default_compress: true
-    max_tokens: 50000
+# Removed: dead config that nothing reads (session 2026-04-15)
+# tools.repomix.* removed
 
 security:
   supply_chain:
@@ -719,17 +665,11 @@ security:
       - .claude/settings.json
       - .claude/settings.local.json
 
-  promptfoo:
-    enabled: false                   # Set to true after installing promptfoo
-    # npm install -g promptfoo OR npx promptfoo@latest
-    config: .promptfoo/config.yaml   # Red team test configuration
-    provider: echo                   # Default provider (echo for structural tests)
+  # Removed: dead config that nothing reads (session 2026-04-15)
+  # security.promptfoo.* removed
 
-agent_communication:
-  hcom:
-    enabled: false                   # Set to true after installing hcom
-    collision_detection: true
-    collision_window_seconds: 30
+# Removed: dead config that nothing reads (session 2026-04-15)
+# agent_communication.hcom.* removed
 
 sdd:
   phases:
@@ -749,14 +689,8 @@ sdd:
     parallel:
       - [spec, design]  # spec and design can run in parallel after propose completes
 
-workflows:
-  directory: .cognitive-os/workflows
-  state_directory: .cognitive-os/pipeline-state
-  available:
-    - feature-pipeline
-    - bugfix-pipeline
-    - chore-pipeline
-  default_trigger: manual
+# Removed: dead config that nothing reads (session 2026-04-15)
+# workflows.* removed
 
 paperclip:
   enabled: true
