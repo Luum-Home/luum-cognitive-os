@@ -13,7 +13,7 @@ ADRs 001-005 live in `docs/architecture/cos-dispatch/adrs/` and cover the COS di
 | [008](008-multi-tool-support.md) | 2026-03-28 | Multi-Tool Support -- Not Claude Code-Only | Accepted |
 | [009](009-package-architecture.md) | 2026-03-28 | Package Architecture -- 375 Components Reclassified | Accepted |
 | [010](010-hook-architecture-v2.md) | 2026-03-28 | Hook Architecture v2 -- 7 Event Types, 3 Profiles | Accepted |
-| [011](011-dual-gateway-bifrost-litellm.md) | 2026-03-28 | Dual Gateway -- Bifrost Primary, LiteLLM Fallback | Accepted |
+| [011](011-dual-gateway-bifrost-litellm.md) | 2026-03-28 | Dual Gateway -- Bifrost Primary, LiteLLM Fallback | Superseded by ADR-018 |
 | [012](012-prompt-driven-governance.md) | 2026-03-29 | Prompt-Driven Governance -- Declarative Hook Logic | Accepted |
 | [013](013-security-stack.md) | 2026-03-29 | Security Stack -- 8 Layers, 32 Tools | Accepted |
 | [014](014-sdd-fast-path.md) | 2026-03-31 | SDD Fast Path -- Skip Phases for Capable Models | Accepted |
@@ -23,6 +23,8 @@ ADRs 001-005 live in `docs/architecture/cos-dispatch/adrs/` and cover the COS di
 | [018](018-docker-to-pip-migration.md) | 2026-04-11 | Docker-to-pip Migration -- Service Infrastructure | Accepted |
 | [019](019-scope-tagging.md) | 2026-04-13 | Scope Tagging -- Component Audience Classification | Accepted |
 | [020](020-contamination-fix.md) | 2026-04-13 | Contamination Fix -- Remove Project-Specific Code | Accepted |
+| [021](021-vendor-agnostic-with-adapters.md) | 2026-04-16 | Vendor-Agnostic State with Provider Adapters | Accepted |
+| [022](022-prompt-type-hooks-adoption.md) | 2026-04-15 | Prompt-Type Hooks Adoption -- Haiku-Evaluated Advisories | Accepted |
 
 ## Decision Timeline
 
@@ -42,4 +44,6 @@ Apr 11  ADR-017  Stabilization freeze
         ADR-018  Docker-to-pip migration
 Apr 13  ADR-019  Scope tagging
         ADR-020  Contamination fix
+Apr 15  ADR-022  Prompt-type hooks adoption (Haiku-evaluated advisories)
+Apr 16  ADR-021  Vendor-agnostic state with provider adapters (Task Panel first impl)
 ```
