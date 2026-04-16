@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # pre-commit-gate.sh — Git pre-commit hook that gates commits on test health
 #
 # 1. Runs pytest and blocks commit if any tests fail

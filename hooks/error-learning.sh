@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # PostToolUse hook: Error Learning
 # Fires on "Bash" tool use — captures failures to error-learning.jsonl.
 # Classifies errors, deduplicates within 60s, and appends to JSONL.

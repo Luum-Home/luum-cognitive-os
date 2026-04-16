@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # normalize-stdin.sh — Stdin normalization layer for Cognitive OS hooks
 #
 # Abstracts the JSON input format so hooks work across different AI coding

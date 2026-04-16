@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # PreToolUse hook: Block all Engram persistence tools when private mode is active
 # Checks for /tmp/claude-private-mode-active flag file
 # Must complete in <1 second

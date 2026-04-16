@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # Stop hook: Persist session state checkpoint before session ends.
 # Calls lib/session_state.py checkpoint so the next session can recover.
 # Must complete in <5 seconds.

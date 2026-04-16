@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # execute-repair.sh — Core execution engine for auto-repair system
 # Part of: auto-repair-system (ARS-1-04)
 #

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # paperclip-notify.sh — Shared helper for fire-and-forget Paperclip notifications
 #
 # Usage:

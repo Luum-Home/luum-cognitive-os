@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # PreToolUse hook on Agent — scans agent prompt/task for infrastructure intent keywords.
 # Suggests matching infrastructure from cognitive-os.yaml config. Does NOT block.
 # Logs detections to .cognitive-os/metrics/infra-detections.jsonl

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # remediation.sh — Shared library for remediation registry operations
 # Part of: auto-repair-system (ARS-1-03)
 #

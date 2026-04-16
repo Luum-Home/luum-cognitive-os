@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
 # PreToolUse hook: Reinvention Check
 # Fires on "Agent" tool use — warns if agent may be recreating existing implementations.
 # Advisory only (exit 0 always).

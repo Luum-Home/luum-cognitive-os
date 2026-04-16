@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # Infrastructure Health Check — SessionStart hook
 # Auto-detects Docker status and required services.
 # Outputs advisory messages about missing infrastructure.
