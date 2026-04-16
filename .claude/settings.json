@@ -267,6 +267,11 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/state-heartbeat.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-bridge-notify.sh\"",
+            "async": true
           }
         ]
       },
