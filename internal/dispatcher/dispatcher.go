@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"sync/atomic"
 	"time"
 
 	"github.com/luum/cos-dispatch/internal/config"
@@ -32,6 +33,16 @@ type Dispatcher struct {
 	// tracker, if non-nil, receives one ExecutionRecord per executed
 	// validator. Optional — pattern tracking can be disabled by leaving nil.
 	tracker pattern.Tracker
+
+	// generator, if non-nil, is invoked after each dispatch to produce Go
+	// validator stubs from detected patterns (Phase 5.2/5.3, ADR-004).
+	// Optional — auto-generation can be disabled by leaving nil.
+	generator pattern.Generator
+
+	// dispatchCount tracks how many Dispatch calls have completed. Used to
+	// trigger Analyze+Generate every N dispatches (configurable via
+	// cfg.Patterns.AnalysisInterval).
+	dispatchCount int64
 
 	// providerOverride forces a specific provider instead of auto-detect.
 	providerOverride hook.Provider
@@ -65,6 +76,18 @@ func WithLogger(l *log.Logger) Option {
 func WithTracker(t pattern.Tracker) Option {
 	return func(d *Dispatcher) {
 		d.tracker = t
+	}
+}
+
+// WithGenerator attaches a pattern.Generator to the dispatcher. After every
+// N dispatch calls (controlled by cfg.Patterns.AnalysisInterval), the
+// dispatcher runs Analyze on the tracker DB and passes the results to
+// Generate so Go validator stubs are emitted automatically.
+//
+// The generator is optional: if not configured, auto-generation is disabled.
+func WithGenerator(g pattern.Generator) Option {
+	return func(d *Dispatcher) {
+		d.generator = g
 	}
 }
 
@@ -143,7 +166,14 @@ func (d *Dispatcher) Dispatch(ctx context.Context, raw []byte) ([]byte, error) {
 	}
 
 	// 10. Marshal response
-	return json.Marshal(resp)
+	result, marshalErr := json.Marshal(resp)
+
+	// 11. Trigger Analyze+Generate asynchronously if a generator is wired
+	// and the dispatch counter has reached the configured interval.
+	// This runs in the background so it never blocks the response path.
+	d.maybeRunGenerator()
+
+	return result, marshalErr
 }
 
 func (d *Dispatcher) selectProvider() provider.Provider {
@@ -282,4 +312,76 @@ func (d *Dispatcher) recordExecutions(
 		}
 		d.tracker.Record(rec)
 	}
+}
+
+// analysisIntervalN returns how many dispatches must complete before a
+// Generate cycle is triggered.  Defaults to 100; the config field is a string
+// ("session_end" or an integer) for backwards compatibility.
+func (d *Dispatcher) analysisIntervalN() int64 {
+	if d.config == nil {
+		return 100
+	}
+	switch d.config.Patterns.AnalysisInterval {
+	case "", "session_end":
+		return 100 // approximate "end of session" trigger
+	default:
+		// Try to parse as integer.
+		var n int64
+		if _, err := fmt.Sscanf(d.config.Patterns.AnalysisInterval, "%d", &n); err == nil && n > 0 {
+			return n
+		}
+		return 100
+	}
+}
+
+// maybeRunGenerator fires Analyze+Generate asynchronously when the dispatch
+// counter is a multiple of analysisIntervalN.  It is a no-op when the
+// generator or tracker is nil.  Errors are logged but do not affect callers.
+func (d *Dispatcher) maybeRunGenerator() {
+	if d.generator == nil || d.tracker == nil {
+		return
+	}
+	n := atomic.AddInt64(&d.dispatchCount, 1)
+	interval := d.analysisIntervalN()
+	if n%interval != 0 {
+		return
+	}
+	// Run in background — do not block the response path.
+	gen := d.generator
+	tracker := d.tracker
+	minConf := float64(0.7)
+	if d.config != nil {
+		minConf = d.config.Patterns.AutoGenerate.ConfidenceThreshold
+	}
+	go func() {
+		// Flush tracker so the detector sees the most recent records.
+		if flushErr := tracker.Flush(); flushErr != nil {
+			d.logf("generator: tracker flush: %v", flushErr)
+			return
+		}
+		// We need a Detector to run Analyze.  SQLTracker exposes DB(); create
+		// a transient SQLDetector for the analysis.
+		sqlTracker, ok := tracker.(*pattern.SQLTracker)
+		if !ok {
+			return
+		}
+		detector := pattern.NewDetector(sqlTracker.DB())
+		since := time.Now().Add(-24 * time.Hour)
+		patterns, analyzeErr := detector.Analyze(since, minConf)
+		if analyzeErr != nil {
+			d.logf("generator: analyze: %v", analyzeErr)
+			return
+		}
+		if len(patterns) == 0 {
+			return
+		}
+		artifacts, genErr := gen.Generate(patterns)
+		if genErr != nil {
+			d.logf("generator: generate: %v", genErr)
+			return
+		}
+		if len(artifacts) > 0 {
+			d.logf("generator: emitted %d artifact(s)", len(artifacts))
+		}
+	}()
 }
