@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# SCOPE: both
 # SessionStart hook: quick component health check
 # Only runs every 24h (checks last run timestamp)
 
