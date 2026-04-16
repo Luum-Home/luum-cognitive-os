@@ -2,6 +2,7 @@
 name: session-manager
 description: Manage concurrent Cognitive OS sessions — list, inspect, and clean up
 audience: project
+effort: haiku
 ---
 
 # Session Manager

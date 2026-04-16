@@ -7,6 +7,8 @@ last-updated: 2026-04-13
 auto-generated: false
 tech: go
 audience: project
+effort: haiku
+paths: ["*.go", "go.mod"]
 ---
 
 # Coverage Enforcement Skill

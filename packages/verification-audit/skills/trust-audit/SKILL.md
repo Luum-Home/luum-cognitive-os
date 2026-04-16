@@ -5,6 +5,7 @@ invoke: /trust-audit
 tag: universal
 model: sonnet
 audience: both
+effort: haiku
 ---
 
 # Trust Audit Skill
