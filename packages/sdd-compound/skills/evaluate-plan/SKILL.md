@@ -4,6 +4,7 @@ description: Evaluate any existing plan file with a 0-50 scoring system. Propose
 user-invocable: true
 version: 1.0.0
 audience: project
+effort: opus
 ---
 
 # Evaluate Plan
