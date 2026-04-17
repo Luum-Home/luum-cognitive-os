@@ -52,17 +52,32 @@ result: dict = {
 # 1. Read config (cognitive-os.yaml)
 # ---------------------------------------------------------------------------
 try:
-    import yaml  # type: ignore
-
     cfg_path = Path(PROJECT_DIR) / "cognitive-os.yaml"
     if not cfg_path.exists():
         cfg_path = Path(PROJECT_DIR) / ".cognitive-os" / "cognitive-os.yaml"
+
     if cfg_path.exists():
-        with open(cfg_path) as f:
-            cfg = yaml.safe_load(f) or {}
-        result["max_agents"] = (
-            cfg.get("resources", {}).get("compute", {}).get("max_parallel_agents", 5)
-        )
+        # Prefer lib.config_loader.load_structured when lib/ is importable
+        # (production: PROJECT_DIR == project root; tests: PROJECT_DIR == tmp_path).
+        try:
+            from lib.config_loader import load_structured  # type: ignore
+            cfg = load_structured(str(cfg_path))
+        except ImportError:
+            import yaml  # type: ignore
+            with open(cfg_path) as _f:
+                cfg = yaml.safe_load(_f) or {}
+    else:
+        cfg = {}
+
+    yaml_max_agents = (
+        cfg.get("resources", {}).get("compute", {}).get("max_parallel_agents", 5)
+    )
+    # Env var takes precedence over YAML (D2.2 fix: env beats YAML, not the reverse)
+    env_max = os.environ.get("COGNITIVE_OS_MAX_PARALLEL_AGENTS", "")
+    if env_max.isdigit():
+        result["max_agents"] = int(env_max)
+    else:
+        result["max_agents"] = yaml_max_agents
 except Exception as e:
     result["error"] += f"config:{e};"
 
