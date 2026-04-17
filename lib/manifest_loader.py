@@ -94,6 +94,32 @@ class Manifest:
         return self.profiles[name]
 
 
+def get_mcps_for_profile(profile: str, path: Path | str | None = None) -> list[dict]:
+    """Return registrable MCP server dicts for a given profile name.
+
+    Each dict contains: name, command, args, env (always {}), register_to.
+    Only servers listed in profile.mcp_servers_recommended are returned.
+    Raises ManifestError if the profile is unknown or the manifest is invalid.
+    """
+    manifest = load_manifest(path)
+    prof = manifest.profile(profile)
+    result: list[dict] = []
+    for mcp_name in prof.mcp_servers_recommended:
+        mcp = manifest.mcp_server(mcp_name)
+        if mcp is None:
+            # profile references are already validated in _build_manifest; this
+            # should not happen in practice, but be defensive.
+            raise ManifestError(f"MCP server {mcp_name!r} referenced by profile but not found")
+        result.append({
+            "name": mcp.name,
+            "command": mcp.command,
+            "args": list(mcp.args),
+            "env": {},
+            "register_to": mcp.register_to,
+        })
+    return result
+
+
 def default_manifest_path() -> Path:
     """Return the on-disk path of manifests/dependencies.yaml.
 
