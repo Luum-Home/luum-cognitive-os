@@ -30,6 +30,7 @@ import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from lib.paths import project_root
 
 # ---------------------------------------------------------------------------
 # Phase definitions
@@ -130,9 +131,7 @@ def _read_sdd_config(config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
 
     # Search common locations.
     paths_to_try: List[str] = []
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-        "COGNITIVE_OS_PROJECT_DIR", ""
-    )
+    project_dir = project_root()
     if project_dir:
         paths_to_try.append(os.path.join(project_dir, "cognitive-os.yaml"))
         paths_to_try.append(
