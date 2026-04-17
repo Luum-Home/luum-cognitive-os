@@ -408,3 +408,103 @@ def test_uv_sync_missing_binary_is_non_fatal(tmp_path):
     # sha file must NOT be written when uv is unavailable
     sha_file = scratch / ".cognitive-os" / "state" / "pyproject.sha"
     assert not sha_file.exists(), "pyproject.sha must not be written when uv is missing"
+
+
+def test_uv_sync_runs_before_self_install(tmp_path):
+    """uv sync must complete before hooks/self-install.sh is invoked.
+
+    Both tools write a log entry with a timestamp. The test asserts that
+    uv's log entry sorts earlier (i.e. has a lower timestamp) than the
+    self-install entry.
+    """
+    import time
+
+    scratch = _make_scratch_project(tmp_path)
+    _seed_pyproject(scratch, '[project]\nname = "demo"\nversion = "0.1.0"\n')
+
+    order_log = scratch / "invocation-order.log"
+
+    # --- uv stub: records its invocation timestamp ----------------------------
+    uv_log_path = _install_uv_stub(scratch)
+    # Replace the simple stub with one that also appends to the shared order log
+    stub_bin = scratch / "stub-bin"
+    uv_stub = stub_bin / "uv"
+    uv_stub.write_text(
+        "#!/usr/bin/env bash\n"
+        f'echo "uv $*" >> {uv_log_path}\n'
+        # Use nanoseconds for maximum resolution to avoid ties on fast machines
+        f'printf "uv\\t%s\\n" "$(date +%s%N)" >> {order_log}\n'
+        "exit 0\n"
+    )
+    uv_stub.chmod(0o755)
+
+    # --- self-install stub: replaces the real hooks/self-install.sh -----------
+    # _make_scratch_project symlinks hooks/ to the real project; we need a
+    # writable copy so we can replace self-install.sh without touching the repo.
+    real_hooks_link = scratch / "hooks"
+    real_hooks_link.unlink()  # remove the symlink
+    hooks_dir = scratch / "hooks"
+    hooks_dir.mkdir()
+    # Copy every file from the real hooks dir into the scratch hooks dir,
+    # resolving symlinks so the copies are independent.
+    real_hooks_src = PROJECT_ROOT / "hooks"
+    if real_hooks_src.exists():
+        for entry in real_hooks_src.iterdir():
+            dest = hooks_dir / entry.name
+            if entry.is_symlink() or entry.is_file():
+                shutil.copy2(str(entry.resolve()), str(dest))
+                dest.chmod(0o755)
+            elif entry.is_dir():
+                shutil.copytree(str(entry), str(dest))
+
+    # Now overwrite self-install.sh with an order-logging shim
+    self_install = hooks_dir / "self-install.sh"
+    self_install.write_text(
+        "#!/usr/bin/env bash\n"
+        f'printf "self-install\\t%s\\n" "$(date +%s%N)" >> {order_log}\n'
+        "exit 0\n"
+    )
+    self_install.chmod(0o755)
+
+    # --- Run the update -------------------------------------------------------
+    env = {**os.environ, "PATH": f"{stub_bin}:{os.environ.get('PATH', '')}"}
+    result = subprocess.run(
+        ["bash", str(scratch / "scripts" / "cos-update.sh"), "--no-verify", "--force"],
+        capture_output=True, text=True, timeout=90, cwd=str(scratch), env=env,
+    )
+
+    assert result.returncode in (0, 1), (
+        f"Unexpected exit {result.returncode}. stderr: {result.stderr[-500:]}"
+    )
+
+    # --- Parse the order log --------------------------------------------------
+    assert order_log.exists(), (
+        f"Order log was never written — neither uv nor self-install ran.\n"
+        f"stdout: {result.stdout[-500:]}\nstderr: {result.stderr[-500:]}"
+    )
+
+    entries: dict[str, int] = {}
+    for line in order_log.read_text().splitlines():
+        parts = line.split("\t")
+        if len(parts) == 2:
+            name, ts_str = parts
+            try:
+                entries[name.strip()] = int(ts_str.strip())
+            except ValueError:
+                pass
+
+    assert "uv" in entries, (
+        f"uv stub was not recorded in order log. log: {order_log.read_text()!r}\n"
+        f"stderr: {result.stderr[-500:]}"
+    )
+    assert "self-install" in entries, (
+        f"self-install stub was not recorded in order log. log: {order_log.read_text()!r}\n"
+        f"stderr: {result.stderr[-500:]}"
+    )
+
+    assert entries["uv"] < entries["self-install"], (
+        f"uv sync did NOT run before self-install!\n"
+        f"uv timestamp:           {entries['uv']}\n"
+        f"self-install timestamp: {entries['self-install']}\n"
+        f"Order log:\n{order_log.read_text()}"
+    )

@@ -487,8 +487,8 @@ if [[ "$DRY_RUN" == "true" ]]; then
   say "  - capture pre-state snapshot (SHA-256 of settings + listings)"
   say "  - create backup at .cognitive-os/backups/pre-update-<UTC>/"
   say "  - rotate backups to last ${MAX_BACKUPS}"
-  say "  - run hooks/self-install.sh"
   say "  - sync Python deps via uv sync if pyproject.toml changed"
+  say "  - run hooks/self-install.sh"
   say "  - capture post-state snapshot and diff against pre-state"
   if [[ "$NO_VERIFY" == "true" ]]; then
     say "  - skip verification (--no-verify)"
@@ -509,15 +509,16 @@ rotate_backups
 # --- Apply -----------------------------------------------------------------
 pull_images_if_requested
 
+# Sync Python dependencies BEFORE self-install so that any new deps introduced
+# upstream in pyproject.toml are present when self-install.sh runs.
+# Failure here is a WARN (does not abort the update) so that partial offline
+# environments still get the self-install updates applied.
+sync_python_deps_if_changed || warn "python dependency sync encountered errors (see log above)"
+
 apply_rc=0
 if ! run_self_install; then
   apply_rc=$?
 fi
-
-# Sync Python dependencies when pyproject.toml has changed upstream.
-# Failure here is a WARN (does not abort the update) so that partial offline
-# environments still get the self-install updates applied.
-sync_python_deps_if_changed || warn "python dependency sync encountered errors (see log above)"
 
 # --- Post-state snapshot + diff -------------------------------------------
 POST_SNAPSHOT="$(mktemp -t cos-update.XXXXXX)"
