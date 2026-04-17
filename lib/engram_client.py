@@ -1,12 +1,47 @@
-"""Engram client stub — thin wrapper around the engram CLI for observation search.
+"""Engram client — structured read/write API for trusted internal callers.
 
-This module provides a Python interface to the engram memory system.
-It wraps the engram CLI via subprocess. When engram is unavailable,
-all functions degrade gracefully (return empty results, log to stderr).
+FOR (use case)
+--------------
+Use this module when **internal, trusted code** needs to search, fetch, or save
+observations programmatically and wants machine-parseable results (``dict | None``
+or ``list[dict]``).  All CLI commands include ``--json`` so callers can parse
+structured output without string-matching.  If you need search or structured
+persistence from a hook or library, this is the right module.
 
-Primary consumers:
-  - hooks/inject-phase-context.sh (searches for discovery/bugfix/feedback memories)
-  - hooks/subagent-context-injector.sh (searches for agent sidecar context)
+CONSUMERS (as of 2026-04-17)
+-----------------------------
+- ``lib/memory.py:19`` — ``mem_search``, ``mem_get_observation``, and ``mem_save``
+  helper functions used by the orchestrator memory layer.
+- ``hooks/inject-phase-context.sh`` — searches for discovery/bugfix/feedback
+  observations to inject into sub-agent context.
+- ``hooks/subagent-context-injector.sh`` — searches for agent sidecar context.
+- ``tests/unit/test_engram_client.py`` — full characterization test suite (46 tests).
+
+CONTRACT
+--------
+- All three functions **never raise** — errors produce empty/None returns silently.
+- ``search_observations()`` returns ``list[dict]`` (empty on any failure).
+- ``get_observation()`` returns ``dict | None`` (None on any failure).
+- ``save_observation()`` returns ``dict | None`` (None on any failure).
+- All CLI commands include ``--json``; output is parsed as JSON, not returned as
+  a raw string.  Callers receive structured data, not human-readable text.
+- Binary-missing (``FileNotFoundError``) is silently swallowed — callers see empty
+  results, not an error, enabling graceful degradation when engram is not installed.
+
+NOT (cross-reference)
+----------------------
+This module is **not** for content from untrusted sources (agent output, user input,
+LLM-generated text).  For those, use ``lib.safe_engram`` (see ``lib/safe_engram.py``),
+which runs ``MemoryScanner`` before any write and returns a ``SafeEngramResult``
+dataclass with human-readable ``engram_output`` strings (no ``--json``).
+
+The two modules have **zero overlapping callers** — the boundary is intentional.
+Merging them would require either adding scanner overhead to every internal read,
+or exposing ``--json`` output to MCP clients, breaking the user-facing string contract
+in ``mcp-server/cos_mcp.py``.
+
+ADR references: ``docs/architecture/adrs/026-r2-r3-design-review.md`` (R3 findings)
+               ``docs/architecture/adrs/026a-decisions.md`` (D3.1 decision)
 """
 
 from __future__ import annotations

@@ -1,7 +1,13 @@
 # ADR-026: R2 and R3 Consolidation — Design Review
 
 **Date:** 2026-04-17
-**Status:** Proposed (awaiting human decision)
+**Status:** CLOSED (R3 portion) / Partially accepted
+
+> **R3 audit item — CLOSED 2026-04-17**: Investigated in ADR-026; modules have
+> zero overlapping callers and different contracts — see ADR-026a for evidence.
+> Module-level docstrings added to `lib/safe_engram.py` and `lib/engram_client.py`
+> per D3.1. Bug fix for `cos_mcp.py` returncode=127 applied per D3.2.
+> Reference: `docs/architecture/adrs/026a-decisions.md`.
 **Related:** commit `540998a` (R3 characterization, PR #7), `d5f6f12` (R2 characterization, PR #8), `6ed3e63` (R1 characterization, PR #9)
 
 ## Context
