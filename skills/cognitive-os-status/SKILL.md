@@ -1,12 +1,14 @@
-# /cognitive-os-status
-
-> Complete health report of the Cognitive OS in one command.
-
 ---
+name: cognitive-os-status
 description: "Full health check of all Cognitive OS components"
 triggers: ["/cognitive-os-status", "/aos-status", "/health"]
 audience: both
 ---
+
+# /cognitive-os-status
+
+> Complete health report of the Cognitive OS in one command.
+
 
 ## Instructions
 
