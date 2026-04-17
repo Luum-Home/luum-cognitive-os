@@ -1,12 +1,14 @@
-# /impact-analysis
-
-> Analyze the blast radius of a set of changed files before making changes.
-
 ---
+name: impact-analysis
 description: "Analyze change impact: imports, tests, configs, services, and SDD artifacts affected"
 triggers: ["/impact-analysis"]
 audience: project
 ---
+
+# /impact-analysis
+
+> Analyze the blast radius of a set of changed files before making changes.
+
 
 ## Instructions
 
