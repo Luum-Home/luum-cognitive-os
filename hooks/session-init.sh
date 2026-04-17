@@ -117,16 +117,12 @@ source "$(dirname "$0")/_lib/singularity-suggestion.sh"
 
 _singularity_suggestion
 
-# ─── Test baseline capture (non-blocking) ────────────────────────────────────
-# Capture current test state so session-end can detect regressions introduced
-# during this session. Runs in background — never slows session start.
-(
-  if command -v python3 &>/dev/null && python3 -m pytest --version &>/dev/null 2>&1; then
-    python3 -m pytest --tb=no -q 2>&1 | tail -5 > "$SESSION_DIR/test-baseline.txt" 2>/dev/null || true
-  else
-    echo "baseline: unavailable" > "$SESSION_DIR/test-baseline.txt"
-  fi
-) &
+# ─── Test baseline capture — DISABLED 2026-04-17 ─────────────────────────────
+# Ran `pytest` on every session start. Full-suite runs leaked ~190 orphaned
+# processes holding ~300 MiB. Pending redesign in ADR-027 Phase 3:
+# incremental tests, PID-tracked cleanup, consumer that actually reads the
+# baseline. Re-enable only after those land.
+echo "baseline: disabled (see ADR-027)" > "$SESSION_DIR/test-baseline.txt"
 
 # Work queue check moved to _lib/session_init_helper.py (consolidated above)
 
