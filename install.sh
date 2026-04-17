@@ -19,6 +19,7 @@ FROM_FLAG=""
 PROFILE=""             # Resolved profile: default | full
 PROFILE_SOURCE=""      # flag | env | auto
 SKIP_MANIFEST_CHECK="${COGNITIVE_OS_SKIP_MANIFEST_CHECK:-false}"
+INSTALL_DEPS=false
 
 cleanup() { rm -rf "$TEMP_DIR"; }
 trap cleanup EXIT
@@ -53,6 +54,9 @@ Options:
   --from PATH            Use a local Cognitive OS repo instead of cloning.
   --force                Overwrite existing installation without prompting.
   --skip-manifest-check  Skip the post-install dependency report.
+  --install-deps         After advisory manifest check, actually install missing
+                         dependencies: run uv sync for Python deps and register
+                         MCP servers via scripts/register-mcps.sh.
   --help, -h             Show this help message.
 
 Environment variables:
@@ -123,6 +127,10 @@ while [[ $# -gt 0 ]]; do
       SKIP_MANIFEST_CHECK="true"
       shift
       ;;
+    --install-deps)
+      INSTALL_DEPS=true
+      shift
+      ;;
     --full)
       normalize_profile "full" "flag"
       PROFILE_SOURCE="flag"
@@ -153,7 +161,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     *)
       echo "Unknown option: $1" >&2
-      echo "Valid: --full, --profile=NAME, --from PATH, --force, --skip-manifest-check, --help" >&2
+      echo "Valid: --full, --profile=NAME, --from PATH, --force, --skip-manifest-check, --install-deps, --help" >&2
       echo "Legacy (remapped): --lean, --standard" >&2
       echo "Run 'install.sh --help' for full usage." >&2
       exit 1
@@ -424,4 +432,45 @@ else
     echo "         Cognitive OS bug — please report it. Install itself succeeded." >&2
     echo ""
   fi
+fi
+
+# ── Dependency installation (--install-deps) ───────────────────────────
+# Only runs when --install-deps flag is passed. Without it the advisory-only
+# behavior from PR #6 is fully preserved.
+if [ "$INSTALL_DEPS" = "true" ]; then
+  echo "Installing dependencies (--install-deps)..."
+  echo ""
+
+  # Python deps via uv sync
+  if command -v uv >/dev/null 2>&1; then
+    echo "Running uv sync..."
+    if ( uv sync ); then
+      echo "  uv sync: OK"
+    else
+      echo "  WARN: uv sync failed — Python dependencies may be incomplete" >&2
+    fi
+  else
+    echo "  WARN: uv not installed — skipping Python dependency sync" >&2
+  fi
+
+  # MCP servers via register-mcps.sh
+  REGISTER_MCPS="${TEMP_DIR}/scripts/register-mcps.sh"
+  if [ ! -f "$REGISTER_MCPS" ]; then
+    # When running from the repo itself (SOURCE_DIR set), try the real path
+    if [ -n "${SOURCE_DIR:-}" ] && [ -f "${SOURCE_DIR}/scripts/register-mcps.sh" ]; then
+      REGISTER_MCPS="${SOURCE_DIR}/scripts/register-mcps.sh"
+    fi
+  fi
+  if [ -f "$REGISTER_MCPS" ] && command -v python3 >/dev/null 2>&1; then
+    echo "Registering MCP servers for profile '${PROFILE}'..."
+    if bash "$REGISTER_MCPS" --profile "$PROFILE"; then
+      echo "  MCP registration: OK"
+    else
+      echo "  WARN: MCP registration encountered errors — see output above" >&2
+    fi
+  else
+    echo "  WARN: register-mcps.sh not found or python3 unavailable — skipping MCP registration" >&2
+  fi
+
+  echo ""
 fi

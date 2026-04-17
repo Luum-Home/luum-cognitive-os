@@ -51,6 +51,8 @@ COMPOSE_FILE="${PROJECT_ROOT}/docker-compose.cognitive-os.yml"
 PYPROJECT_FILE="${PROJECT_ROOT}/pyproject.toml"
 STATE_DIR="${COS_DIR}/state"
 PYPROJECT_SHA_FILE="${STATE_DIR}/pyproject.sha"
+REGISTER_MCPS_SCRIPT="${SCRIPT_DIR}/register-mcps.sh"
+COGNITIVE_OS_YAML="${PROJECT_ROOT}/cognitive-os.yaml"
 
 MAX_BACKUPS=3
 
@@ -335,6 +337,35 @@ sync_python_deps_if_changed() {
   fi
 }
 
+# ---------------------------------------------------------------------------
+# MCP registration — calls scripts/register-mcps.sh with the profile from
+# cognitive-os.yaml. Caching is handled inside register-mcps.sh (mcps.sha).
+# Failure is non-fatal (WARN + continue), matching the uv sync behavior.
+# ---------------------------------------------------------------------------
+register_mcps_if_changed() {
+  [[ -f "$REGISTER_MCPS_SCRIPT" ]] || { warn "register-mcps.sh not found — skipping MCP registration"; return 0; }
+
+  # Read profile from cognitive-os.yaml; default to 'standard' if absent.
+  # Use grep+awk for bash 3.2 compatibility (no yq/python dependency here).
+  local profile
+  profile="$(grep -E '^\s*profile:' "$COGNITIVE_OS_YAML" 2>/dev/null | head -1 | awk '{print $2}' | tr -d '"' | tr -d "'")"
+  if [[ -z "$profile" ]]; then
+    profile="standard"
+    note "cognitive-os.yaml has no 'profile:' key; defaulting to '${profile}'"
+  fi
+
+  local dry_flag=""
+  [[ "$DRY_RUN" == "true" ]] && dry_flag="--dry-run"
+
+  note "Registering MCPs for profile '${profile}'..."
+  if bash "$REGISTER_MCPS_SCRIPT" --profile "$profile" --cache-dir "$STATE_DIR" ${dry_flag} >&2; then
+    return 0
+  else
+    warn "MCP registration encountered errors (see log above) — continuing update"
+    return 0   # non-fatal
+  fi
+}
+
 # Optional docker compose pull (legacy --pull-images)
 pull_images_if_requested() {
   [[ "$PULL_IMAGES" == "true" ]] || return 0
@@ -488,12 +519,13 @@ if [[ "$DRY_RUN" == "true" ]]; then
   say "  - create backup at .cognitive-os/backups/pre-update-<UTC>/"
   say "  - rotate backups to last ${MAX_BACKUPS}"
   say "  - sync Python deps via uv sync if pyproject.toml changed"
+  say "  - register mcps via scripts/register-mcps.sh if manifest changed"
   say "  - run hooks/self-install.sh"
   say "  - capture post-state snapshot and diff against pre-state"
   if [[ "$NO_VERIFY" == "true" ]]; then
     say "  - skip verification (--no-verify)"
   else
-    say "  - verify: self-install re-run, pytest audit, go build"
+    say "  - verify: re-run install hooks, pytest audit, go build"
   fi
   if [[ "$AUTO_ROLLBACK" == "true" ]]; then
     say "  - on verify failure: auto-rollback settings.json"
@@ -514,6 +546,8 @@ pull_images_if_requested
 # Failure here is a WARN (does not abort the update) so that partial offline
 # environments still get the self-install updates applied.
 sync_python_deps_if_changed || warn "python dependency sync encountered errors (see log above)"
+
+register_mcps_if_changed
 
 apply_rc=0
 if ! run_self_install; then
