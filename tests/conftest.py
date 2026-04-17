@@ -16,6 +16,7 @@ def pytest_configure(config):
     """Register all custom markers used across the test suite."""
     markers = [
         "unit: Unit tests for individual library functions",
+        "audit: Aspirational-component audit tests (gated from default CI)",
         "behavior: Behavior tests validating hook and skill interactions",
         "integration: Integration tests spanning multiple components",
         "system: System-level infrastructure tests (config, docker, metrics, rules)",

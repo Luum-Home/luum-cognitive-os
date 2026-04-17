@@ -1,13 +1,15 @@
-# /agent-stress-test
-
-> Diagnostic skill that stress-tests agent quality to find the degradation point.
-
 ---
+name: agent-stress-test
 description: "Stress-test agent cognitive health to detect context-induced degradation"
 triggers: ["/agent-stress-test", "/stress-test", "/cognitive-stress"]
 audience: os-dev
 version: 1.0.0
 ---
+
+# /agent-stress-test
+
+> Diagnostic skill that stress-tests agent quality to find the degradation point.
+
 
 ## Instructions
 
