@@ -1,13 +1,15 @@
-# /red-team
-
-> Run adversarial red team tests against agent prompts using Promptfoo.
-
 ---
+name: red-team
 description: "Red team testing for agent prompts — detects injection, jailbreak, and manipulation vulnerabilities"
 triggers: ["/red-team", "/redteam", "/promptfoo"]
 audience: os-dev
 version: 1.0.0
 ---
+
+# /red-team
+
+> Run adversarial red team tests against agent prompts using Promptfoo.
+
 
 ## Instructions
 

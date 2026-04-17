@@ -79,7 +79,7 @@ Extract `--competitor`, `--task`, `--list`, `--dry-run`, `--evaluate`, `--report
 3. STOP
 
 **Otherwise (run benchmark):**
-1. Execute `.cognitive-os/tests/arena/run-arena.sh` with appropriate flags
+1. Execute `tests/arena/run-arena.sh` with appropriate flags
 2. Collect results
 3. Report summary inline
 
@@ -88,7 +88,7 @@ Extract `--competitor`, `--task`, `--list`, `--dry-run`, `--evaluate`, `--report
 For the shell-based runner:
 
 ```bash
-.cognitive-os/tests/arena/run-arena.sh \
+tests/arena/run-arena.sh \
   ${COMPETITOR:+--competitor $COMPETITOR} \
   ${TASK:+--task $TASK}
 ```
@@ -131,7 +131,7 @@ All competitors, tasks, and scoring defined in:
 ## Adding New Competitors
 
 1. Add entry to `arena.competitors[]` in config
-2. If CLI-based, add runner case in `run-arena.sh`
+2. If CLI-based, add runner case in `tests/arena/run-arena.sh`
 3. If IDE-based, mark as `type: ide` (manual benchmark only)
 
 ## Adding New Tasks
