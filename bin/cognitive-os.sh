@@ -17,6 +17,18 @@ yaml_get() {
   grep -E "^\s*${key}:" "$file" 2>/dev/null | head -1 | sed 's/^[^:]*:\s*//' | tr -d "'\"\r"
 }
 
+# Extract the scalar value from a "key: value" YAML line — no subprocesses.
+# Usage: _yaml_val "$line"
+_yaml_val() {
+  local line="$1"
+  local val="${line#*:}"
+  val="${val#"${val%%[![:space:]]*}"}"   # strip leading whitespace
+  val="${val%"${val##*[![:space:]]}"}"   # strip trailing whitespace
+  val="${val#\"}"; val="${val%\"}"       # strip surrounding double-quotes
+  val="${val#\'}"; val="${val%\'}"       # strip surrounding single-quotes
+  printf '%s' "$val"
+}
+
 # Check that cognitive-os.yaml exists in cwd
 require_config() {
   if [ ! -f "$CONFIG_FILE" ]; then
@@ -305,19 +317,19 @@ _parse_registries() {
 
   while IFS= read -r line; do
     # Detect the top-level 'sources:' section
-    if echo "$line" | grep -qE '^sources:'; then
+    if [[ "$line" =~ ^sources: ]]; then
       in_sources_section=true
       continue
     fi
 
     # If we found the sources section, look for registries: within it
     if $in_sources_section && ! $in_sources; then
-      if echo "$line" | grep -qE '^\s*registries:'; then
+      if [[ "$line" =~ ^[[:space:]]*registries: ]]; then
         in_sources=true
         continue
       fi
       # A new top-level key means we left the sources section without finding registries
-      if [ -n "$line" ] && echo "$line" | grep -qE '^[a-zA-Z]'; then
+      if [[ -n "$line" && "$line" =~ ^[a-zA-Z] ]]; then
         in_sources_section=false
         continue
       fi
@@ -325,7 +337,7 @@ _parse_registries() {
     fi
 
     # Detect end: a non-indented, non-comment, non-empty line while in_sources
-    if $in_sources && [ -n "$line" ] && echo "$line" | grep -qE '^[a-zA-Z]'; then
+    if $in_sources && [[ -n "$line" && "$line" =~ ^[a-zA-Z] ]]; then
       _flush_reg
       break
     fi
@@ -333,30 +345,30 @@ _parse_registries() {
     if ! $in_sources; then continue; fi
 
     # New registry entry
-    if echo "$line" | grep -qE '^\s*- name:'; then
+    if [[ "$line" =~ ^[[:space:]]*-[[:space:]]*name: ]]; then
       _flush_reg
-      name=$(echo "$line" | sed 's/.*name:\s*//' | tr -d "'\"\r" | sed 's/^[[:space:]]*//')
+      name=$(_yaml_val "${line#*- name}")
       continue
     fi
 
     # Skip comments and blank lines
-    if echo "$line" | grep -qE '^\s*#' || [ -z "$(echo "$line" | tr -d '[:space:]')" ]; then
+    if [[ "$line" =~ ^[[:space:]]*# ]] || [[ -z "${line//[[:space:]]/}" ]]; then
       continue
     fi
 
     # Parse fields within an entry
-    if echo "$line" | grep -qE '^\s*type:'; then
-      type=$(echo "$line" | sed 's/.*type:\s*//' | tr -d "'\"\r" | sed 's/^[[:space:]]*//')
-    elif echo "$line" | grep -qE '^\s*url:'; then
-      url=$(echo "$line" | sed 's/.*url:\s*//' | tr -d "'\"\r" | sed 's/^[[:space:]]*//')
-    elif echo "$line" | grep -qE '^\s*path:'; then
-      path=$(echo "$line" | sed 's/.*path:\s*//' | tr -d "'\"\r" | sed 's/^[[:space:]]*//')
-    elif echo "$line" | grep -qE '^\s*enabled:'; then
-      enabled=$(echo "$line" | sed 's/.*enabled:\s*//' | tr -d "'\"\r" | sed 's/^[[:space:]]*//')
-    elif echo "$line" | grep -qE '^\s*description:'; then
-      description=$(echo "$line" | sed 's/.*description:\s*//' | tr -d "'\"\r" | sed 's/^[[:space:]]*//')
-    elif echo "$line" | grep -qE '^\s*provides:'; then
-      provides=$(echo "$line" | sed 's/.*provides:\s*//' | tr -d "'\"\r" | sed 's/^[[:space:]]*//')
+    if [[ "$line" =~ ^[[:space:]]*type: ]]; then
+      type=$(_yaml_val "$line")
+    elif [[ "$line" =~ ^[[:space:]]*url: ]]; then
+      url=$(_yaml_val "$line")
+    elif [[ "$line" =~ ^[[:space:]]*path: ]]; then
+      path=$(_yaml_val "$line")
+    elif [[ "$line" =~ ^[[:space:]]*enabled: ]]; then
+      enabled=$(_yaml_val "$line")
+    elif [[ "$line" =~ ^[[:space:]]*description: ]]; then
+      description=$(_yaml_val "$line")
+    elif [[ "$line" =~ ^[[:space:]]*provides: ]]; then
+      provides=$(_yaml_val "$line")
     fi
   done < "$CONFIG_FILE"
 
