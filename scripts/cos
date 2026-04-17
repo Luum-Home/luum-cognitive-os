@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# cos — minimal subcommand dispatcher for Cognitive OS
+#
+# Routes:
+#   cos status [flags]   -> scripts/cos-status.sh
+#   cos *                -> bin/cognitive-os.sh (init, doctor, list, install, ...)
+#
+# This keeps the `cos` UX short (`cos status`, `cos init`) while leaving the
+# full CLI in bin/cognitive-os.sh unchanged.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+
+SUBCMD="${1:-help}"
+
+case "$SUBCMD" in
+  status)
+    shift
+    exec bash "$SCRIPT_DIR/cos-status.sh" "$@"
+    ;;
+  help|-h|--help|"")
+    cat <<EOF
+cos — Cognitive OS command-line
+
+Usage:
+  cos status [--verbose|--json|--help]   Show what is active (profile, skills, hooks, rules, health)
+  cos init [dir]                         Install Cognitive OS into a project
+  cos doctor                             Check installation health
+  cos list [type]                        List installed components
+  cos install <type> <name>              Install a component
+  cos search <query>                     Search components across sources
+  cos version                            Show version
+
+  cos help                               This help
+
+Routed to bin/cognitive-os.sh: init, doctor, list, install, uninstall, search,
+sources, update, version.
+
+Routed to scripts/cos-status.sh: status.
+EOF
+    exit 0
+    ;;
+  *)
+    # Delegate all other subcommands to the existing full CLI
+    FULL_CLI="$PROJECT_ROOT/bin/cognitive-os.sh"
+    if [ ! -x "$FULL_CLI" ]; then
+      echo "cos: bin/cognitive-os.sh not found or not executable at $FULL_CLI" >&2
+      exit 1
+    fi
+    exec bash "$FULL_CLI" "$@"
+    ;;
+esac
