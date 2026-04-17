@@ -1,0 +1,227 @@
+schema_version: 1
+
+# Cognitive OS — Declarative dependency manifest.
+#
+# Single source of truth for Python deps, external CLIs, and MCP servers.
+# Consumed by scripts/manifest-check.sh, lib/manifest_loader.py, and
+# (eventually) install.sh / cos-update.sh / doctor.sh.
+#
+# Edit this file to add/remove a dependency. Loader rejects unknown keys
+# and missing required fields — see lib/manifest_loader.py for the schema.
+
+python:
+  required:
+    - pyyaml>=6.0
+    - jinja2>=3.1
+  groups:
+    llm: [litellm>=1.0, redis>=5.0.0]
+    web: [fastapi>=0.100, uvicorn>=0.23]
+    observability: [opik>=1.0, langfuse>=3.0]
+    memory: [cognee>=0.1]
+    guardrails: [nemoguardrails]
+    jupyter: [jupyter, notebook]
+    crawling: [crawl4ai>=0.8.0]
+    testing:
+      - pytest>=8.0
+      - pytest-asyncio>=0.23
+      - pytest-timeout>=2.2
+      - pytest-xdist>=3.5
+      - mutmut>=3.0
+      - pytest-smell>=1.0
+    enforcement:
+      - pre-commit>=4.0
+      - ruff>=0.9.0
+      - vulture>=2.14
+      - import-linter>=2.0
+      - pytest-cov>=6.0
+      - diff-cover>=9.0
+
+tools:
+  - name: jq
+    criticality: required
+    check: jq --version
+    install:
+      macos: brew install jq
+      debian: apt-get install -y jq
+    consumed_by:
+      - hooks/*.sh (50+ hooks parse JSON via jq)
+      - scripts/cos-init.sh
+      - scripts/merge-settings.sh
+
+  - name: git
+    criticality: required
+    check: git --version
+    install:
+      macos: brew install git
+      debian: apt-get install -y git
+    consumed_by:
+      - install.sh
+      - scripts/setup-git-hooks.sh
+
+  - name: uv
+    criticality: required
+    check: uv --version
+    install:
+      any: curl -LsSf https://astral.sh/uv/install.sh | sh
+    consumed_by:
+      - scripts/setup.sh
+      - pyproject.toml workflow
+
+  - name: python3
+    criticality: required
+    check: python3 --version
+    min_version: "3.11"
+    install:
+      any: see pyproject.toml requires-python
+    consumed_by:
+      - hooks/*.py
+      - lib/*.py
+
+  - name: engram
+    criticality: recommended
+    check: engram --version
+    install:
+      any: npx -y @anthropic/engram
+    degraded_behavior: |
+      Memory features return empty results. lib/engram_client.py wraps
+      the CLI with try/except and returns [] on failure.
+    consumed_by:
+      - lib/engram_client.py
+      - hooks/inject-phase-context.sh
+      - hooks/subagent-context-injector.sh
+
+  - name: gh
+    criticality: recommended
+    check: gh --version
+    install:
+      macos: brew install gh
+      debian: apt-get install -y gh
+    consumed_by:
+      - GitHub MCP automation
+      - PR/issue workflows
+
+  - name: docker
+    criticality: optional
+    check: docker --version
+    install:
+      any: see https://docs.docker.com/get-docker/
+    consumed_by:
+      - scripts/cos-bootstrap.sh
+      - infra services (Langfuse, LiteLLM)
+
+  - name: aguara
+    criticality: optional
+    check: aguara --version
+    install:
+      any: go install github.com/garagon/aguara@latest
+    enabled_when: cognitive-os.yaml security.aguara.enabled == true
+    consumed_by:
+      - hooks/aguara-scan.sh
+
+  - name: mcp-scan
+    criticality: optional
+    check: mcp-scan --version
+    install:
+      any: pip install mcp-scan
+    enabled_when: cognitive-os.yaml security.mcp_scan.enabled == true
+    consumed_by:
+      - hooks/mcp-scan.sh
+
+  - name: semgrep
+    criticality: optional
+    check: semgrep --version
+    install:
+      macos: brew install semgrep
+      debian: pip install semgrep
+    consumed_by:
+      - skills/security-scan
+
+  - name: parry-guard
+    criticality: optional
+    check: parry-guard --version
+    install:
+      macos: brew install vaporif/tap/parry-guard
+    consumed_by:
+      - skills/prompt-injection-defense
+
+  - name: promptfoo
+    criticality: optional
+    check: promptfoo --version
+    install:
+      any: npm install -g promptfoo
+    consumed_by:
+      - skills/red-team
+
+  - name: garak
+    criticality: optional
+    check: garak --version
+    install:
+      any: pip install garak
+    consumed_by:
+      - skills/vulnerability-scan
+
+mcp_servers:
+  - name: engram
+    criticality: recommended
+    transport: stdio
+    command: npx
+    args: ["-y", "@anthropic/engram"]
+    register_to: ~/.claude/settings.json
+    requires_tool: engram
+    consumed_by:
+      - lib/engram_client.py
+      - hooks/inject-phase-context.sh
+
+  - name: aguara
+    criticality: optional
+    transport: stdio
+    command: mcp-aguara
+    args: []
+    register_to: ~/.claude/settings.json
+    requires_tool: aguara
+    enabled_when: cognitive-os.yaml security.aguara.enabled == true
+    consumed_by:
+      - hooks/aguara-scan.sh
+
+profiles:
+  default:
+    python_groups: []
+    tools_required:
+      - jq
+      - git
+      - uv
+      - python3
+    tools_recommended:
+      - engram
+      - gh
+    mcp_servers_recommended:
+      - engram
+
+  full:
+    python_groups:
+      - llm
+      - web
+      - observability
+      - memory
+      - guardrails
+      - jupyter
+      - crawling
+      - testing
+      - enforcement
+    tools_required:
+      - jq
+      - git
+      - uv
+      - python3
+    tools_recommended:
+      - engram
+      - gh
+      - docker
+      - aguara
+      - mcp-scan
+      - semgrep
+      - parry-guard
+      - promptfoo
+    mcp_servers_recommended:
+      - engram
+      - aguara
