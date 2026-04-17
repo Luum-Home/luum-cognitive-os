@@ -25,12 +25,12 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import signal
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from lib.config_loader import read_int_from_file as _cl_read_int_from_file
 from lib.paths import project_root
 
 # ---------------------------------------------------------------------------
@@ -92,11 +92,17 @@ def _pid_alive(pid: int) -> bool:
 
 
 def _read_timeout_seconds(config_path: Optional[str] = None) -> int:
-    """Parse agent_timeout_seconds from cognitive-os.yaml without PyYAML."""
+    """Parse agent_timeout_seconds from cognitive-os.yaml without PyYAML.
+
+    Delegates line-by-line parsing to lib.config_loader.read_int_from_file.
+    Preserves the documented candidate-path order: project_root first, then
+    explicit config_path, then the cwd-relative default.  This order is locked
+    by characterization tests in tests/unit/test_cos_yaml_readers.py.
+    """
     candidates: List[str] = []
     project_dir = project_root()
     if project_dir:
-        candidates.append(os.path.join(project_dir, "cognitive-os.yaml"))
+        candidates.append(os.path.join(str(project_dir), "cognitive-os.yaml"))
     if config_path:
         candidates.append(config_path)
     candidates.append(_DEFAULT_CONFIG_PATH)
@@ -104,14 +110,9 @@ def _read_timeout_seconds(config_path: Optional[str] = None) -> int:
     for path in candidates:
         if not os.path.isfile(path):
             continue
-        try:
-            with open(path, encoding="utf-8") as fh:
-                for line in fh:
-                    m = re.match(r"^\s*agent_timeout_seconds:\s*(\d+)", line)
-                    if m:
-                        return int(m.group(1))
-        except OSError:
-            pass
+        result = _cl_read_int_from_file("agent_timeout_seconds", path)
+        if result is not None:
+            return result
 
     return _DEFAULT_TIMEOUT_SECONDS
 
