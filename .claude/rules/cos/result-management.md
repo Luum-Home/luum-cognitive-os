@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/result-management.md
+../../../rules/result-management.md

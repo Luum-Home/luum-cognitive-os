@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/trust-score.md
+../../../rules/trust-score.md

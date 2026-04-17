@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/credential-management.md
+../../../rules/credential-management.md

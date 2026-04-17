@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/responsiveness.md
+../../../rules/responsiveness.md
