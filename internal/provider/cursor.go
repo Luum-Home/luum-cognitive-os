@@ -10,6 +10,9 @@ import (
 )
 
 // cursorPayload represents the JSON structure Cursor sends on stdin.
+// Cursor uses camelCase event names (e.g. "beforeShellExecution") and may
+// include extra vendor fields such as model_id that are not present in the
+// Claude Code format.
 type cursorPayload struct {
 	HookEvent string          `json:"hook_event"`
 	ToolName  string          `json:"tool_name"`
@@ -17,15 +20,25 @@ type cursorPayload struct {
 	SessionID string          `json:"session_id"`
 	ExitCode  *int            `json:"exit_code,omitempty"`
 	Output    string          `json:"output,omitempty"`
+	// ModelID is a Cursor-specific field identifying the model that invoked the hook.
+	ModelID string `json:"model_id,omitempty"`
 }
 
 // cursorToolInput represents Cursor tool_input fields.
+// Cursor preserves the standard tool_input keys used by Claude Code.
 type cursorToolInput struct {
 	Command  string `json:"command,omitempty"`
 	FilePath string `json:"file_path,omitempty"`
 	Content  string `json:"content,omitempty"`
 	Prompt   string `json:"prompt,omitempty"`
 	Pattern  string `json:"pattern,omitempty"`
+}
+
+// cursorResponse is the vendor-conformant response envelope Cursor expects.
+// Cursor hooks read "action" ("allow" or "deny") and an optional "message".
+type cursorResponse struct {
+	Action  string `json:"action"`
+	Message string `json:"message,omitempty"`
 }
 
 // CursorProvider adapts Cursor editor hook payloads to the canonical format.
@@ -40,12 +53,19 @@ func (p *CursorProvider) Name() hook.Provider {
 	return hook.ProviderCursor
 }
 
-// Detect checks for CURSOR_SESSION_ID env var or presence of .cursor/ directory.
+// Detect returns true when CURSOR_SESSION_ID is set (the primary runtime
+// signal Cursor injects) or CURSOR_PROJECT_DIR is set.  The .cursor/
+// directory check is an additional heuristic used only when env vars are
+// absent; it is intentionally last so that a checked-in .cursor/ in a
+// non-Cursor session does not cause a false positive.
 func (p *CursorProvider) Detect() bool {
 	if os.Getenv("CURSOR_SESSION_ID") != "" {
 		return true
 	}
-	// Check for .cursor/ directory in the current working directory.
+	if os.Getenv("CURSOR_PROJECT_DIR") != "" {
+		return true
+	}
+	// Heuristic: .cursor/ directory in CWD.
 	if _, err := os.Stat(".cursor"); err == nil {
 		return true
 	}
@@ -86,17 +106,38 @@ func (p *CursorProvider) Parse(raw []byte) (*hook.Context, error) {
 		ctx.ToolOutput = payload.Output
 	}
 
+	// Populate ProjectDir from Cursor-specific or fallback env vars.
+	if dir := os.Getenv("CURSOR_PROJECT_DIR"); dir != "" {
+		ctx.ProjectDir = dir
+	} else if dir := os.Getenv("CLAUDE_PROJECT_DIR"); dir != "" {
+		// cos-dispatch may be launched inside a Cursor session that also has
+		// CLAUDE_PROJECT_DIR set (e.g. Claude Code running inside Cursor).
+		ctx.ProjectDir = dir
+	}
+
+	// Preserve Cursor-specific model_id in context metadata.
+	if payload.ModelID != "" {
+		ctx.SetMetadata("cursor_model_id", payload.ModelID)
+	}
+
 	return ctx, nil
 }
 
-// BuildResponse returns Cursor's expected JSON response format.
+// BuildResponse returns Cursor's vendor-conformant response envelope.
+// Cursor hooks expect {"action":"allow"|"deny","message":"..."}.
+// The additionalContext argument is appended to message when non-empty.
 func (p *CursorProvider) BuildResponse(hookCtx *hook.Context, decision string, message string, additionalContext string) any {
-	return map[string]any{
-		"hookSpecificOutput": map[string]any{
-			"permissionDecision": decision,
-			"reason":             message,
-			"additionalContext":  additionalContext,
-		},
+	msg := message
+	if additionalContext != "" {
+		if msg != "" {
+			msg = msg + " — " + additionalContext
+		} else {
+			msg = additionalContext
+		}
+	}
+	return cursorResponse{
+		Action:  decision,
+		Message: msg,
 	}
 }
 
@@ -107,16 +148,18 @@ func (p *CursorProvider) ConfigPaths(projectDir string) []string {
 	}
 }
 
-// mapCursorEvent maps Cursor event names to canonical events.
+// mapCursorEvent maps Cursor camelCase event names to canonical events.
+// Cursor uses camelCase (beforeShellExecution, afterFileEdit) unlike Claude
+// which uses PascalCase (PreToolUse, PostToolUse).
 func mapCursorEvent(event string) hook.CanonicalEvent {
 	switch event {
 	case "beforeShellExecution":
 		return hook.CanonicalEventBeforeTool
-	case "afterFileEdit":
+	case "afterFileEdit", "afterFileWrite", "afterShellExecution":
 		return hook.CanonicalEventAfterTool
-	case "SessionStart":
+	case "sessionStart":
 		return hook.CanonicalEventSessionStart
-	case "SessionEnd":
+	case "sessionEnd":
 		return hook.CanonicalEventSessionEnd
 	default:
 		return hook.CanonicalEventUnknown

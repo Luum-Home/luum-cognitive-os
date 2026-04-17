@@ -1,0 +1,9 @@
+{
+  "hook_event": "beforeShellExecution",
+  "tool_name": "Bash",
+  "tool_input": {
+    "command": "git push origin main"
+  },
+  "session_id": "cursor-session-abc123",
+  "model_id": "claude-4-opus"
+}
