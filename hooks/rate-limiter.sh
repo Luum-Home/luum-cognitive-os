@@ -76,10 +76,28 @@ else:
 " 2>/dev/null || echo "OK")
 
 if [[ "$RESULT" == *"BLOCKED"* ]]; then
-    echo "RATE LIMIT:" >&2
+    # Preserve machine-parseable lines for orchestrator polling
     echo "$RESULT" >&2
+
+    # Extract human-readable fields for actionable error block
+    QUEUE_ID=$(echo "$RESULT" | grep -m1 "^Queue ID:" | cut -d' ' -f3-)
+    QUEUE_DEPTH=$(echo "$RESULT" | grep -m1 "^Queued items:" | awk '{print $3}')
+    COOLDOWN=$(echo "$RESULT" | grep -m1 "queued for retry in" | sed 's/.*retry in \([0-9]*\)s.*/\1/')
+    BLOCKED_REASON=$(echo "$RESULT" | grep -m1 "^BLOCKED:" | sed 's/^BLOCKED: //')
+
+    # Actionable UX block (UX2 improvement: "RATE LIMIT: bash_command limit exceeded" with no
+    # context → labeled human-readable block with Action: line, ETA, queue cancel instructions)
     echo "" >&2
-    # Show detailed limit status with queue info
+    echo "⚠️  Rate limit reached for $ACTION" >&2
+    echo "    Reason:      ${BLOCKED_REASON:-unknown}" >&2
+    echo "    Phase:       $PHASE" >&2
+    [ -n "$COOLDOWN" ] && echo "    Next slot:   in ~${COOLDOWN}s" >&2
+    [ -n "$QUEUE_DEPTH" ] && echo "    Queue:       ${QUEUE_DEPTH} commands pending${QUEUE_ID:+ (ID: $QUEUE_ID)}" >&2
+    echo "    Action:      your command will retry automatically; cancel with Ctrl-C" >&2
+    echo "    Diagnose:    run 'cos status' to see rate state anytime" >&2
+    echo "" >&2
+
+    # Show detailed limit status with queue info (kept for power users)
     python3 -c "
 import sys, os
 sys.path.insert(0, '$_PROJECT_DIR')
