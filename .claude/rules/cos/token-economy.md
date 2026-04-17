@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/token-economy.md
+../../../rules/token-economy.md
