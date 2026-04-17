@@ -29,6 +29,8 @@ import os
 import re
 from typing import Any, Dict, List, Optional
 
+from lib.paths import project_root
+
 # ---------------------------------------------------------------------------
 # Internal helpers — lazy imports to keep module-level overhead minimal
 # ---------------------------------------------------------------------------
@@ -44,9 +46,7 @@ def _find_config_path() -> Optional[str]:
         "cognitive-os.yaml",
         os.path.join(_COGNITIVE_OS_DIR, "cognitive-os.yaml"),
     ]
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-        "COGNITIVE_OS_PROJECT_DIR", ""
-    )
+    project_dir = project_root()
     if project_dir:
         candidates.insert(0, os.path.join(project_dir, "cognitive-os.yaml"))
 

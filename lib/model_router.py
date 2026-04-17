@@ -318,6 +318,8 @@ def get_consequence_override(
 
     # Locate the consequence history file
     if metrics_dir is None:
+        # NOTE: custom resolution — differs from lib.paths.project_root() (Pattern A').
+        # See tests/unit/test_project_dir_resolution.py for rationale.
         project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
             "COGNITIVE_OS_PROJECT_DIR", "."
         )
