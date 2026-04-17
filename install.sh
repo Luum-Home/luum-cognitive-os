@@ -18,6 +18,7 @@ SOURCE_DIR=""
 FROM_FLAG=""
 PROFILE=""             # Resolved profile: default | full
 PROFILE_SOURCE=""      # flag | env | auto
+SKIP_MANIFEST_CHECK="${COGNITIVE_OS_SKIP_MANIFEST_CHECK:-false}"
 
 cleanup() { rm -rf "$TEMP_DIR"; }
 trap cleanup EXIT
@@ -46,18 +47,20 @@ Legacy flags:
                  migration notice. Kept for backwards compatibility.
 
 Options:
-  --full             Install everything (see above).
-  --profile=NAME     Explicit profile: 'default' or 'full'. Legacy values
-                     ('lean', 'standard') are accepted and remapped.
-  --from PATH        Use a local Cognitive OS repo instead of cloning.
-  --force            Overwrite existing installation without prompting.
-  --help, -h         Show this help message.
+  --full                 Install everything (see above).
+  --profile=NAME         Explicit profile: 'default' or 'full'. Legacy values
+                         ('lean', 'standard') are accepted and remapped.
+  --from PATH            Use a local Cognitive OS repo instead of cloning.
+  --force                Overwrite existing installation without prompting.
+  --skip-manifest-check  Skip the post-install dependency report.
+  --help, -h             Show this help message.
 
 Environment variables:
-  COGNITIVE_OS_VERSION   Git branch/tag to install (default: main)
-  COGNITIVE_OS_FORCE     Set to "true" to overwrite without prompting
-  COS_PROFILE            Override profile: 'default' or 'full'. Legacy
-                         values ('lean', 'standard') are remapped.
+  COGNITIVE_OS_VERSION              Git branch/tag to install (default: main)
+  COGNITIVE_OS_FORCE                Set to "true" to overwrite without prompting
+  COGNITIVE_OS_SKIP_MANIFEST_CHECK  Set to "true" to skip the dependency report
+  COS_PROFILE                       Override profile: 'default' or 'full'.
+                                    Legacy values ('lean', 'standard') remapped.
 
 Examples:
   # Default install (no flag — recommended for first time)
@@ -116,6 +119,10 @@ while [[ $# -gt 0 ]]; do
       FORCE="true"
       shift
       ;;
+    --skip-manifest-check)
+      SKIP_MANIFEST_CHECK="true"
+      shift
+      ;;
     --full)
       normalize_profile "full" "flag"
       PROFILE_SOURCE="flag"
@@ -146,7 +153,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     *)
       echo "Unknown option: $1" >&2
-      echo "Valid: --full, --profile=NAME, --from PATH, --force, --help" >&2
+      echo "Valid: --full, --profile=NAME, --from PATH, --force, --skip-manifest-check, --help" >&2
       echo "Legacy (remapped): --lean, --standard" >&2
       echo "Run 'install.sh --help' for full usage." >&2
       exit 1
@@ -382,3 +389,39 @@ fi
 
 echo "Your existing .claude/ configuration is preserved."
 echo ""
+
+# ── Manifest check (advisory) ─────────────────────────────────────────
+# Reports declared dependencies (Python deps, CLIs, MCP servers) against
+# what is actually installed on the user's system. NEVER fails the install
+# — only the user sees "MISSING" hints with install commands.
+#
+# Skipped if:
+#   - --skip-manifest-check / COGNITIVE_OS_SKIP_MANIFEST_CHECK=true
+#   - python3 not on PATH (the loader needs it)
+#   - source repo is too old to ship the manifest
+MANIFEST_CHECK="$TEMP_DIR/scripts/manifest-check.sh"
+if [ "$SKIP_MANIFEST_CHECK" = "true" ]; then
+  echo "Manifest check skipped (--skip-manifest-check)."
+  echo ""
+elif ! command -v python3 >/dev/null 2>&1; then
+  echo "Manifest check skipped (python3 not found)."
+  echo ""
+elif [ ! -f "$MANIFEST_CHECK" ]; then
+  echo "Manifest check skipped (source repo predates manifests/)."
+  echo ""
+else
+  echo "Checking declared dependencies for profile '$PROFILE'..."
+  echo ""
+  # Exit 0 = all required present; 1 = some required missing (still ok to use
+  # COS, just with degraded features); 2 = manifest broken (a bug, surface it).
+  set +e
+  bash "$MANIFEST_CHECK" --profile "$PROFILE"
+  manifest_exit=$?
+  set -e
+  if [ "$manifest_exit" = "2" ]; then
+    echo ""
+    echo "WARNING: dependency manifest failed validation (exit 2). This is a" >&2
+    echo "         Cognitive OS bug — please report it. Install itself succeeded." >&2
+    echo ""
+  fi
+fi
