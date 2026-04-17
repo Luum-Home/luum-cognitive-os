@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/responsiveness.md
+../../../rules/responsiveness.md

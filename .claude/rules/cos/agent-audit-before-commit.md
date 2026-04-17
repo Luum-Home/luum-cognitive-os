@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/agent-audit-before-commit.md
+../../../rules/agent-audit-before-commit.md

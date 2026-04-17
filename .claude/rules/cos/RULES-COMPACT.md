@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/RULES-COMPACT.md
+../../../rules/RULES-COMPACT.md

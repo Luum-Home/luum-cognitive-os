@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/observability.md
+../../../rules/observability.md

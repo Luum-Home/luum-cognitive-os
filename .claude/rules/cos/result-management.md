@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/result-management.md
+../../../rules/result-management.md

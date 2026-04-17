@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/trust-score.md
+../../../rules/trust-score.md

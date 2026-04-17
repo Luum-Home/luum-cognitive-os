@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/definition-of-done.md
+../../../rules/definition-of-done.md

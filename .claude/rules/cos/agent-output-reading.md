@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/agent-output-reading.md
+../../../rules/agent-output-reading.md

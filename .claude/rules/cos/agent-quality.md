@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/agent-quality.md
+../../../rules/agent-quality.md
