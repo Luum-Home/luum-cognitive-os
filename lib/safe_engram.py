@@ -1,9 +1,46 @@
-"""Safe Engram wrapper — scans content before saving to memory.
+"""Safe Engram wrapper — security-scanned write path for untrusted content.
 
-Every save goes through MemoryScanner first.  If the scanner detects
-a threat (prompt injection, credential exfiltration, invisible Unicode,
-etc.) the save is skipped and a blocked result is returned.  Clean
-content is forwarded to the engram CLI exactly as before.
+FOR (use case)
+--------------
+Use this module when saving content that originates from **untrusted sources**:
+agent output, LLM-generated text, user input, or anything that may carry prompt
+injection, credential strings, or invisible Unicode.  Every write is vetted by
+``MemoryScanner`` before the engram CLI is invoked.  If scanning is the concern,
+this is the right module.
+
+CONSUMERS (as of 2026-04-17)
+-----------------------------
+- ``mcp-server/cos_mcp.py:204`` — the ``_engram_save`` tool handler (primary consumer).
+  Reads ``SafeEngramResult.blocked``, ``.reasons``, ``.returncode``, and
+  ``.engram_output`` directly via attribute access.
+- ``lib/anchored_summarizer.py:274`` — injects an inline ``safe_save`` call into
+  agent prompts for session-summary writes.
+- ``tests/unit/test_safe_engram.py`` and ``tests/unit/test_safe_engram_contract.py``
+  — the contract test suite that locks consumer-facing behavior.
+
+CONTRACT
+--------
+- ``safe_save()`` **never raises** — all error conditions (binary missing, timeout,
+  scan block) are encoded into the returned ``SafeEngramResult`` dataclass.
+- Return-code semantics: ``0`` = engram saved OK; ``127`` = binary not on PATH
+  (treated as graceful degradation, not an error); ``-1`` = subprocess timeout;
+  any other non-zero = engram CLI error.
+- ``engram_output`` is **human-readable plain text**, never JSON.  The CLI command
+  deliberately omits ``--json`` so ``cos_mcp`` can return the string verbatim to
+  MCP clients.
+- ``blocked=True`` means MemoryScanner rejected the content before the CLI ran;
+  ``returncode`` is ``None`` in that case.
+
+NOT (cross-reference)
+----------------------
+This module is **not** for trusted internal reads or structured machine-parseable
+writes.  For those, use ``lib.engram_client`` (see ``lib/engram_client.py``), which
+returns ``dict | None`` and passes ``--json`` to the CLI.  The two modules have
+**zero overlapping callers** — see ADR-026 and ADR-026a for the investigation
+that confirmed this boundary.
+
+ADR references: ``docs/architecture/adrs/026-r2-r3-design-review.md`` (R3 findings)
+               ``docs/architecture/adrs/026a-decisions.md`` (D3.1 decision)
 
 Usage (Python)::
 
