@@ -216,37 +216,49 @@ else
 fi
 
 # ── 6. Install skills (standard and full only) ───────────────────
+# Skills are installed to BOTH destinations with DIFFERENT layouts (see ADR-001):
+#   .cognitive-os/skills/cos/<name>/  → vendor-agnostic kernel path, namespaced under `cos/` to
+#                                       avoid collision when multiple OS sources populate this path
+#   .claude/skills/<name>/            → Claude Code harness driver path, FLAT layout
+#                                       (empirically verified by ADR-001 Experiment 1 that the
+#                                       harness reads {project}/.claude/skills/<name>/SKILL.md;
+#                                       the nested `cos/` wrapper would hide skills from discovery)
+# Only driver-path skills count toward skills_installed (that is what the harness sees).
 skills_installed=0
 skills_source="$COS_SOURCE_DIR/skills"
-skills_dest=".cognitive-os/skills/cos"
+SKILL_DEST_KERNEL=".cognitive-os/skills/cos"
+SKILL_DEST_DRIVER=".claude/skills"
+SKILL_DESTS=("$SKILL_DEST_KERNEL" "$SKILL_DEST_DRIVER")
 
 if [ "$MODE" != "--minimal" ] && [ -d "$skills_source" ]; then
-  mkdir -p "$skills_dest"
+  for skills_dest in "${SKILL_DESTS[@]}"; do
+    mkdir -p "$skills_dest"
 
-  if [ "$MODE" = "--full" ]; then
-    # Install all skills
-    for skill_dir in "$skills_source"/*/; do
-      [ -d "$skill_dir" ] || continue
-      skill_name=$(basename "$skill_dir")
-      cp -r "$skill_dir" "$skills_dest/$skill_name"
-      skills_installed=$((skills_installed + 1))
-    done
-    # Copy CATALOG.md if exists
-    if [ -f "$skills_source/CATALOG.md" ]; then
-      cp "$skills_source/CATALOG.md" "$skills_dest/CATALOG.md"
-    fi
-  else
-    # Install standard skills
-    for name in $STANDARD_SKILLS; do
-      if [ -d "$skills_source/$name" ]; then
-        cp -r "$skills_source/$name" "$skills_dest/$name"
-        skills_installed=$((skills_installed + 1))
+    if [ "$MODE" = "--full" ]; then
+      # Install all skills
+      for skill_dir in "$skills_source"/*/; do
+        [ -d "$skill_dir" ] || continue
+        skill_name=$(basename "$skill_dir")
+        cp -r "$skill_dir" "$skills_dest/$skill_name"
+        [ "$skills_dest" = "$SKILL_DEST_DRIVER" ] && skills_installed=$((skills_installed + 1))
+      done
+      # Copy CATALOG.md if exists
+      if [ -f "$skills_source/CATALOG.md" ]; then
+        cp "$skills_source/CATALOG.md" "$skills_dest/CATALOG.md"
       fi
-    done
-    if [ -f "$skills_source/CATALOG.md" ]; then
-      cp "$skills_source/CATALOG.md" "$skills_dest/CATALOG.md"
+    else
+      # Install standard skills
+      for name in $STANDARD_SKILLS; do
+        if [ -d "$skills_source/$name" ]; then
+          cp -r "$skills_source/$name" "$skills_dest/$name"
+          [ "$skills_dest" = "$SKILL_DEST_DRIVER" ] && skills_installed=$((skills_installed + 1))
+        fi
+      done
+      if [ -f "$skills_source/CATALOG.md" ]; then
+        cp "$skills_source/CATALOG.md" "$skills_dest/CATALOG.md"
+      fi
     fi
-  fi
+  done
 fi
 
 # ── 7. Install templates (standard and full only) ────────────────
