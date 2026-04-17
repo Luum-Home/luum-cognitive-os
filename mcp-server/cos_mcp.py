@@ -214,7 +214,14 @@ def _engram_save(title: str, content: str, type_: str = "manual",
                 "error": "Content blocked by memory scanner.",
                 "reasons": result.reasons,
             })
-        if result.returncode is not None and result.returncode not in (0, 127):
+        if result.returncode == 127:
+            return json.dumps({
+                "error": (
+                    "engram binary not found on PATH — memory features disabled. "
+                    "Install via 'npx -y @anthropic/engram' (see manifests/dependencies.yaml)."
+                )
+            })
+        if result.returncode is not None and result.returncode != 0:
             return json.dumps({"error": "Engram CLI not available. Install engram."})
         return result.engram_output or "Saved successfully."
     except ImportError:
