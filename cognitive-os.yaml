@@ -475,24 +475,17 @@ model_capability:
         pre-cleanup-snapshot, architecture-compliance, auto-skill-generator]
 
 efficiency:
-  profile: standard              # lean | standard | full
+  profile: default               # default | full  (ADR-002: collapsed 3-tier system)
   profiles:
-    lean:
-      description: "Minimum overhead. For experienced users on capable models."
-      rules_loading: compact_only
-      hooks: minimal
-      capability_level: 4
-      target_tokens_per_session: 6000
-      target_cost_per_session_usd: 0.10
-    standard:
-      description: "Good governance without waste. Loads 14 core rules. Recommended for most users."
+    default:
+      description: "10 curated core skills, ~29 standard hooks, 14 core rules. ADR-002 vanilla default."
       rules_loading: core_rules
-      hooks: standard
+      hooks: default
       capability_level: 3
       target_tokens_per_session: 8000
       target_cost_per_session_usd: 0.15
     full:
-      description: "Maximum observability. For Cognitive OS development."
+      description: "Maximum observability. Every skill, hook, and rule. For COS contributors."
       rules_loading: all
       hooks: full
       capability_level: 2
