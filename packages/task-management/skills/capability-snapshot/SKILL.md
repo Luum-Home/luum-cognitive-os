@@ -1,12 +1,14 @@
-# /capability-snapshot
-
-> Protect against feature loss during refactors/cleanups. Snapshot all Cognitive OS capabilities, diff to detect losses, restore removed items.
-
 ---
+name: capability-snapshot
 description: "Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss during refactors"
 triggers: ["/capability-snapshot"]
 audience: os-dev
 ---
+
+# /capability-snapshot
+
+> Protect against feature loss during refactors/cleanups. Snapshot all Cognitive OS capabilities, diff to detect losses, restore removed items.
+
 
 ## Instructions
 
