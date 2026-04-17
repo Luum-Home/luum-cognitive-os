@@ -1,0 +1,10 @@
+{
+  "hook_event": "afterFileEdit",
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "/src/main.go"
+  },
+  "session_id": "cursor-session-abc123",
+  "exit_code": 0,
+  "output": ""
+}

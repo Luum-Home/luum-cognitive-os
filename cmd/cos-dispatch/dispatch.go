@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -101,6 +102,17 @@ func runDispatch(fs *flag.FlagSet, f *dispatchFlags) int {
 	impl.RegisterDefaults(validatorReg, impl.FactoryConfig{
 		ProjectDir: projectDir,
 	})
+
+	// --disable NAME1,NAME2 — remove named validators from the registry before
+	// the dispatcher is built.  We create a filtered registry so the dispatcher
+	// never sees the disabled validators (they are not just skipped at runtime;
+	// they are removed entirely so the tracker does not record them either).
+	disabledNames := parseDisabledNames(f.disable)
+	if len(disabledNames) > 0 {
+		filteredReg := filterValidators(validatorReg, disabledNames, logger)
+		validatorReg = filteredReg
+	}
+
 	pipeline := transformer.NewPipeline()
 
 	// Choose executor
@@ -121,6 +133,8 @@ func runDispatch(fs *flag.FlagSet, f *dispatchFlags) int {
 	opts = append(opts, dispatcher.WithLogger(logger))
 
 	// Optionally wire pattern tracker (non-fatal: dispatcher works without it).
+	// In --dry-run mode we still wire the tracker so execution data is collected
+	// for production diagnosis — we just never emit a deny decision.
 	if cfg.Patterns.Enabled && cfg.Patterns.DBPath != "" {
 		tracker, trackerErr := pattern.NewTracker(cfg.Patterns.DBPath)
 		if trackerErr != nil {
@@ -144,9 +158,6 @@ func runDispatch(fs *flag.FlagSet, f *dispatchFlags) int {
 		}
 	}
 
-	// Reserved for future use
-	_ = f.disable
-	_ = f.dryRun
 	_ = runtime.NumCPU()
 	_ = fs
 
@@ -161,9 +172,17 @@ func runDispatch(fs *flag.FlagSet, f *dispatchFlags) int {
 		return 0
 	}
 
+	// --dry-run: log the decision but always emit allow + dryRun:true marker.
+	// The tracker has already recorded the execution above; only the response
+	// written to stdout is replaced.
+	if f.dryRun && containsDeny(resp) {
+		logger.Printf("[cos-dispatch] dry-run: deny suppressed, emitting allow")
+		resp = buildDryRunAllowResponse(resp)
+	}
+
 	os.Stdout.Write(resp)
 
-	if containsDeny(resp) {
+	if !f.dryRun && containsDeny(resp) {
 		return 2
 	}
 	return 0
@@ -180,6 +199,96 @@ func newGeneratorForDispatch(tracker *pattern.SQLTracker, cfg *config.Config, pr
 }
 
 // containsDeny checks if the response JSON contains a deny decision.
+// It covers both the Claude/Codex/Gemini envelope (permissionDecision) and the
+// Cursor envelope (action) and Windsurf envelope (cascadeDecision).
 func containsDeny(resp []byte) bool {
-	return strings.Contains(string(resp), `"permissionDecision":"deny"`)
+	s := string(resp)
+	return strings.Contains(s, `"permissionDecision":"deny"`) ||
+		strings.Contains(s, `"action":"deny"`) ||
+		strings.Contains(s, `"cascadeDecision":"deny"`)
+}
+
+// buildDryRunAllowResponse replaces a deny response with an allow response that
+// includes a "dryRun":true field for observability.  The original deny reason is
+// preserved inside a "dryRunDeniedReason" field so callers can audit what would
+// have been blocked.
+//
+// The function attempts to parse the response as a generic JSON object and
+// inject the dry-run markers.  If parsing fails (e.g. unexpected envelope), it
+// returns a minimal fallback allow response.
+func buildDryRunAllowResponse(denyResp []byte) []byte {
+	var obj map[string]any
+	if err := json.Unmarshal(denyResp, &obj); err != nil {
+		// Unparseable response — return a safe fallback.
+		return []byte(`{"hookSpecificOutput":{"permissionDecision":"allow","reason":"dry-run","additionalContext":""},"dryRun":true}`)
+	}
+
+	// Inject top-level dry-run marker.
+	obj["dryRun"] = true
+
+	// Flip the decision in whichever envelope is present.
+	mutateDecision(obj, "permissionDecision", "deny", "allow")
+
+	// Cursor envelope: {"action":"deny",...}
+	if action, ok := obj["action"].(string); ok && action == "deny" {
+		obj["action"] = "allow"
+		obj["dryRunDeniedReason"] = obj["message"]
+	}
+
+	// Windsurf envelope: {"cascadeDecision":"deny",...}
+	if cd, ok := obj["cascadeDecision"].(string); ok && cd == "deny" {
+		obj["cascadeDecision"] = "allow"
+		obj["dryRunDeniedReason"] = obj["reason"]
+	}
+
+	result, err := json.Marshal(obj)
+	if err != nil {
+		return []byte(`{"dryRun":true}`)
+	}
+	return result
+}
+
+// mutateDecision flips a nested string field inside a "hookSpecificOutput"
+// sub-object from oldVal to newVal when the field is present.
+func mutateDecision(obj map[string]any, field, oldVal, newVal string) {
+	hso, ok := obj["hookSpecificOutput"].(map[string]any)
+	if !ok {
+		return
+	}
+	if v, ok := hso[field].(string); ok && v == oldVal {
+		hso[field] = newVal
+		obj["dryRunDeniedReason"] = hso["reason"]
+	}
+}
+
+// parseDisabledNames splits a comma-separated validator disable list into a
+// set of names.  Empty entries and surrounding whitespace are ignored.
+func parseDisabledNames(raw string) map[string]struct{} {
+	names := make(map[string]struct{})
+	if raw == "" {
+		return names
+	}
+	for _, part := range strings.Split(raw, ",") {
+		name := strings.TrimSpace(part)
+		if name != "" {
+			names[name] = struct{}{}
+		}
+	}
+	return names
+}
+
+// filterValidators returns a new Registry that contains only the validators
+// from src whose names are NOT in the disabled set.  Skipped validators are
+// logged at info level so operators can confirm the flag is working.
+func filterValidators(src *validator.Registry, disabled map[string]struct{}, logger *log.Logger) *validator.Registry {
+	dst := validator.NewRegistry()
+	for _, reg := range src.Registrations() {
+		name := reg.Validator.Name()
+		if _, skip := disabled[name]; skip {
+			logger.Printf("[cos-dispatch] --disable: skipping validator %q", name)
+			continue
+		}
+		dst.Register(reg.Validator, reg.Predicate)
+	}
+	return dst
 }
