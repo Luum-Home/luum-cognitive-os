@@ -14,15 +14,26 @@ set -euo pipefail
 
 COS_SOURCE_DIR="${COS_SOURCE_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
 SOURCE_SETTINGS="$COS_SOURCE_DIR/.claude/settings.json"
-MODE="--standard"
+# ADR-002: canonical modes are --default and --full. Legacy (--minimal,
+# --standard, --lean) are silently remapped to --default.
+MODE="--default"
 OUTPUT=""
 
 for arg in "$@"; do
   case "$arg" in
-    --minimal|--standard|--full) MODE="$arg" ;;
+    --default|--full) MODE="$arg" ;;
+    --minimal|--standard|--lean)
+      echo "Note: ADR-002 collapsed '$arg' into '--default'. Using '--default'." >&2
+      MODE="--default"
+      ;;
     --output=*) OUTPUT="${arg#--output=}" ;;
     --help|-h)
-      echo "Usage: bash $0 [--minimal|--standard|--full] [--output FILE]"
+      echo "Usage: bash $0 [--default|--full] [--output FILE]"
+      echo ""
+      echo "  --default  ADR-002 default tier (curated hook set)"
+      echo "  --full     Full hook coverage"
+      echo ""
+      echo "  Legacy (remapped to --default): --minimal, --standard, --lean"
       exit 0
       ;;
   esac
@@ -42,15 +53,16 @@ fi
 # Self-hosting-only hooks: never included in external projects
 SELF_HOSTING_ONLY="self-install.sh release-guard.sh"
 
-MINIMAL_HOOKS="error-pipeline.sh session-init.sh session-cleanup.sh result-truncator.sh"
-
-STANDARD_HOOKS="$MINIMAL_HOOKS
+# ADR-002 default tier hook set (~29 hooks). Includes the regression guards:
+# auto-verify, auto-refine, dod-gate, session-sanity, confidentiality-enforcer.
+DEFAULT_HOOKS="error-pipeline.sh session-init.sh session-cleanup.sh result-truncator.sh
   clarification-gate.sh blast-radius.sh scope-proportionality.sh
   error-pattern-detector.sh auto-refine.sh auto-verify.sh completeness-check.sh dod-gate.sh
   trust-score-validator.sh skill-metrics-tracker.sh inject-phase-context.sh stack-detector.sh
   pre-compaction-flush.sh rate-limiter.sh large-file-advisor.sh secret-detector.sh content-policy.sh
+  confidentiality-enforcer.sh
   doc-sync-detector.sh auto-checkpoint.sh claim-validator.sh completion-gate.sh
-  clarification-interceptor.sh agent-checkpoint.sh
+  clarification-interceptor.sh agent-checkpoint.sh session-sanity.sh
   session-learning.sh crash-recovery.sh teammate-idle.sh task-created.sh task-completed.sh"
 
 # ── Step 1: Transform paths ─────────────────────────────────────────
@@ -122,11 +134,8 @@ build_jq_filter() {
 
 # ── Step 3: Apply mode filter ───────────────────────────────────────
 case "$MODE" in
-  --minimal)
-    result=$(build_jq_filter "$MINIMAL_HOOKS")
-    ;;
-  --standard)
-    result=$(build_jq_filter "$STANDARD_HOOKS")
+  --default)
+    result=$(build_jq_filter "$DEFAULT_HOOKS")
     ;;
   --full)
     # Full: include all except self-hosting-only

@@ -3,6 +3,49 @@
 All notable changes to Cognitive OS are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased] — UX1 + UX8 installer overhaul (ADR-002)
+
+### Changed
+
+- **BREAKING CHANGE (ADR-002)**: collapsed the 3-tier install profile system
+  (`--lean` / `--standard` / `--full`) to 2 tiers:
+  - `default` (no flag): 10 curated core skills + ~29 standard hooks + 14 core
+    rules (~8000 tokens/session). Installed out of the box with no flag — the
+    vanilla DX matches `git`, `gh`, and `claude`.
+  - `--full`: every skill, hook, and rule (~142000 tokens/session). For mature
+    projects and COS contributors.
+- Legacy flags (`--lean`, `--standard`, `--minimal`) are now silently remapped
+  to `default` with a stderr migration note — existing deployments continue to
+  work without manual intervention.
+- `install.sh`: new flag surface (`--full`, `--profile=NAME`, `--from`,
+  `--force`, `--help`) with explicit ENV override (`COS_PROFILE`). Auto-detection
+  removed; default is always `default`. Post-install summary now reports the
+  number of skills exposed under `.claude/skills/` and warns on zero.
+- `scripts/cos-init.sh`: accepts `--default` and `--full`; legacy flags
+  silently map to `--default`. Skill install no longer gated behind non-minimal
+  (both tiers ship skills). `DEFAULT_SKILLS` lists the 10 curated entries.
+- `scripts/apply-efficiency-profile.sh`: 2-tier profile builder. The default
+  tier now explicitly registers `auto-verify.sh`, `auto-refine.sh`,
+  `dod-gate.sh`, `session-sanity.sh`, and `confidentiality-enforcer.sh`
+  (PostToolUse Edit|Write) — the last fixes a regression where the enforcer
+  had been dropped from the generated settings.
+- `scripts/auto-update-projects.sh`: normalizes legacy registry `mode` values
+  (`lean`, `standard`, `minimal`) to `default` before re-running `cos-init.sh`,
+  so projects upgrade automatically on the next cascade.
+- `scripts/generate-project-settings.sh`: `--default` is the canonical flag;
+  legacy flags silently alias. `DEFAULT_HOOKS` now contains
+  `confidentiality-enforcer.sh` and `session-sanity.sh`.
+- `cognitive-os.yaml`: `efficiency.profile: default` and the `profiles:` map
+  now defines only `default` and `full`.
+- `docs/usage/cos-status.md`: references updated to the 2-tier model.
+
+### Migration
+
+Users who previously ran `install.sh --lean` or `install.sh --standard` should
+drop the flag. The new `default` tier is a strict superset of the old `lean`
+tier and the same hook set as the old `standard` tier plus 10 curated skills.
+See `docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md`.
+
 ## [0.9.0] - 2026-04-16 — "Self-Awareness"
 
 Major stabilization release following the growth crisis post-mortem. OS can now
