@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/model-routing.md
+../../../rules/model-routing.md

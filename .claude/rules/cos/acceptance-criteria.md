@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/acceptance-criteria.md
+../../../rules/acceptance-criteria.md

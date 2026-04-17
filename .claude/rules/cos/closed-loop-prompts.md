@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/closed-loop-prompts.md
+../../../rules/closed-loop-prompts.md

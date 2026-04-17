@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/token-economy.md
+../../../rules/token-economy.md

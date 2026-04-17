@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/credential-management.md
+../../../rules/credential-management.md

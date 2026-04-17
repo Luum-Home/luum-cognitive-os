@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/adaptive-bypass.md
+../../../rules/adaptive-bypass.md

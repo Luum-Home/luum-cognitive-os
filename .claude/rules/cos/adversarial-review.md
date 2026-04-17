@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/adversarial-review.md
+../../../rules/adversarial-review.md

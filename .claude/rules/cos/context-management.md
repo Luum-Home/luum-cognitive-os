@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/context-management.md
+../../../rules/context-management.md

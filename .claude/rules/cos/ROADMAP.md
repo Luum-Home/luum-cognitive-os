@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/ROADMAP.md
+../../../rules/ROADMAP.md

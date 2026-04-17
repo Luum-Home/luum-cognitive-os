@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/error-learning.md
+../../../rules/error-learning.md

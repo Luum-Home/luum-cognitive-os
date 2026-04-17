@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/phase-aware-agents.md
+../../../rules/phase-aware-agents.md

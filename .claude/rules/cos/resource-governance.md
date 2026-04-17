@@ -1,1 +1,1 @@
-<operator-repo-path>/rules/resource-governance.md
+../../../rules/resource-governance.md
