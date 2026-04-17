@@ -17,7 +17,29 @@
 set -euo pipefail
 
 COS_SOURCE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-GIT_HOOKS_DIR="$COS_SOURCE_DIR/.git/hooks"
+
+# Resolve the active hooks directory.
+#
+# git honors `core.hooksPath` over `.git/hooks` when both exist. If we install
+# into `.git/hooks` while the repo has `core.hooksPath=.githooks`, the hooks
+# we install never fire — silent breakage. Prefer the configured path.
+#
+# `git config --get` returns non-zero when the key is unset; we treat that
+# as "no override" and fall back to `.git/hooks`.
+_resolve_hooks_dir() {
+  local configured
+  configured="$(git -C "$COS_SOURCE_DIR" config --get core.hooksPath 2>/dev/null || true)"
+  if [ -n "$configured" ]; then
+    case "$configured" in
+      /*) printf '%s\n' "$configured" ;;
+      *)  printf '%s/%s\n' "$COS_SOURCE_DIR" "$configured" ;;
+    esac
+  else
+    printf '%s/.git/hooks\n' "$COS_SOURCE_DIR"
+  fi
+}
+
+GIT_HOOKS_DIR="$(_resolve_hooks_dir)"
 POST_MERGE_HOOK="$GIT_HOOKS_DIR/post-merge"
 PRE_PUSH_HOOK="$GIT_HOOKS_DIR/pre-push"
 MARKER="# COS_AUTO_UPDATE"
@@ -118,8 +140,8 @@ _install_cos_block() {
 # Runs in background so the push is not delayed, and uses the new HEAD.
 # Installed by: bash scripts/setup-git-hooks.sh
 # Remove with:  bash scripts/setup-git-hooks.sh --remove
-_COS_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
-if [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
+_COS_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
   (sleep 2 && echo "" && echo "[COS] Updating projects after push..." && \
    bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /') &
 fi
@@ -133,8 +155,8 @@ HOOKEOF
 # Auto-updates all registered COS installations after git pull/merge.
 # Installed by: bash scripts/setup-git-hooks.sh
 # Remove with:  bash scripts/setup-git-hooks.sh --remove
-_COS_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
-if [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
+_COS_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
   echo ""
   echo "[COS] Checking for projects to update..."
   bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /'
@@ -163,6 +185,8 @@ mkdir -p "$GIT_HOOKS_DIR"
 _install_cos_block "$POST_MERGE_HOOK"
 _install_cos_block "$PRE_PUSH_HOOK"
 
+echo ""
+echo "Hooks directory: $GIT_HOOKS_DIR"
 echo ""
 echo "Auto-update triggers:"
 echo "  git pull  -> post-merge  (users pulling updates)"
