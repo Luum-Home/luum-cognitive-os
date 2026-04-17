@@ -48,6 +48,9 @@ SELF_INSTALL_SCRIPT="${PROJECT_ROOT}/hooks/self-install.sh"
 ENV_FILE="${PROJECT_ROOT}/.env"
 ENV_EXAMPLE="${PROJECT_ROOT}/env.example"
 COMPOSE_FILE="${PROJECT_ROOT}/docker-compose.cognitive-os.yml"
+PYPROJECT_FILE="${PROJECT_ROOT}/pyproject.toml"
+STATE_DIR="${COS_DIR}/state"
+PYPROJECT_SHA_FILE="${STATE_DIR}/pyproject.sha"
 
 MAX_BACKUPS=3
 
@@ -295,6 +298,43 @@ run_self_install() {
   fi
 }
 
+# ---------------------------------------------------------------------------
+# Python dependency sync — runs `uv sync` only when pyproject.toml changes.
+# Caches the SHA-256 of pyproject.toml in .cognitive-os/state/pyproject.sha so
+# that subsequent updates without upstream changes are no-ops.
+# ---------------------------------------------------------------------------
+sync_python_deps_if_changed() {
+  [[ -f "$PYPROJECT_FILE" ]] || return 0
+
+  local current_sha previous_sha=""
+  current_sha="$(sha256_of "$PYPROJECT_FILE")"
+  if [[ -f "$PYPROJECT_SHA_FILE" ]]; then
+    previous_sha="$(cat "$PYPROJECT_SHA_FILE" 2>/dev/null || echo "")"
+  fi
+
+  if [[ "$current_sha" == "$previous_sha" ]]; then
+    note "pyproject.toml unchanged (sha ${current_sha:0:8}); skipping uv sync"
+    return 0
+  fi
+
+  if ! command -v uv >/dev/null 2>&1; then
+    warn "pyproject.toml changed but 'uv' is not installed — skipping dependency sync"
+    warn "  install uv (https://docs.astral.sh/uv/) and re-run to sync Python deps"
+    return 0
+  fi
+
+  note "pyproject.toml changed (${previous_sha:0:8}→${current_sha:0:8}); running uv sync"
+  if ( cd "$PROJECT_ROOT" && uv sync >&2 ); then
+    mkdir -p "$STATE_DIR"
+    printf '%s\n' "$current_sha" > "$PYPROJECT_SHA_FILE"
+    note "pyproject.sha cache updated"
+    return 0
+  else
+    warn "uv sync failed; not updating pyproject.sha (will retry on next update)"
+    return 1
+  fi
+}
+
 # Optional docker compose pull (legacy --pull-images)
 pull_images_if_requested() {
   [[ "$PULL_IMAGES" == "true" ]] || return 0
@@ -448,6 +488,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
   say "  - create backup at .cognitive-os/backups/pre-update-<UTC>/"
   say "  - rotate backups to last ${MAX_BACKUPS}"
   say "  - run hooks/self-install.sh"
+  say "  - sync Python deps via uv sync if pyproject.toml changed"
   say "  - capture post-state snapshot and diff against pre-state"
   if [[ "$NO_VERIFY" == "true" ]]; then
     say "  - skip verification (--no-verify)"
@@ -472,6 +513,11 @@ apply_rc=0
 if ! run_self_install; then
   apply_rc=$?
 fi
+
+# Sync Python dependencies when pyproject.toml has changed upstream.
+# Failure here is a WARN (does not abort the update) so that partial offline
+# environments still get the self-install updates applied.
+sync_python_deps_if_changed || warn "python dependency sync encountered errors (see log above)"
 
 # --- Post-state snapshot + diff -------------------------------------------
 POST_SNAPSHOT="$(mktemp -t cos-update.XXXXXX)"
