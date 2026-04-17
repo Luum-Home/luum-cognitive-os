@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/agent-quality.md
+../../../rules/agent-quality.md

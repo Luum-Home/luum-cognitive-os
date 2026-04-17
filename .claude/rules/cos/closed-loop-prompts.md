@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/closed-loop-prompts.md
+../../../rules/closed-loop-prompts.md

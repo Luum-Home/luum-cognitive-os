@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/model-routing.md
+../../../rules/model-routing.md

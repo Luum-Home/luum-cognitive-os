@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/agent-output-reading.md
+../../../rules/agent-output-reading.md

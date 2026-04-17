@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/resource-governance.md
+../../../rules/resource-governance.md

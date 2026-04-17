@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/adversarial-review.md
+../../../rules/adversarial-review.md
