@@ -525,3 +525,28 @@ class TestDispatchGateCheckYaml:
         result = _run_dispatch_gate_check(tmp_path)
         assert result["max_agents"] == self.DEFAULT
         assert "config:" in result["error"]
+
+    def test_env_var_beats_yaml_value(self, tmp_path):
+        # D2.2 regression: COGNITIVE_OS_MAX_PARALLEL_AGENTS env var must take
+        # precedence over the value read from cognitive-os.yaml.
+        _write(
+            tmp_path / "cognitive-os.yaml",
+            "resources:\n  compute:\n    max_parallel_agents: 3\n",
+        )
+        env = {
+            **os.environ,
+            "CLAUDE_PROJECT_DIR": str(tmp_path),
+            "COGNITIVE_OS_MAX_PARALLEL_AGENTS": "42",
+        }
+        proc = subprocess.run(
+            [sys.executable, str(_DISPATCH_GATE_CHECK)],
+            input="{}",
+            capture_output=True,
+            text=True,
+            env=env,
+            timeout=15,
+        )
+        assert proc.returncode == 0, f"stderr={proc.stderr}"
+        result = json.loads(proc.stdout)
+        # Env var (42) must win over YAML value (3)
+        assert result["max_agents"] == 42

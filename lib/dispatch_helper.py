@@ -26,10 +26,10 @@ from __future__ import annotations
 
 import json
 import os
-import re
 from typing import Any, Dict, List, Optional
 
-from lib.paths import project_root
+from lib.config_loader import find_config_path as _cl_find_config_path
+from lib.config_loader import read_top_level_int as _cl_read_top_level_int
 
 # ---------------------------------------------------------------------------
 # Internal helpers — lazy imports to keep module-level overhead minimal
@@ -41,41 +41,23 @@ _TASKS_PATH = os.path.join(_COGNITIVE_OS_DIR, "tasks", "active-tasks.json")
 
 
 def _find_config_path() -> Optional[str]:
-    """Return the first readable cognitive-os.yaml found on the search path."""
-    candidates = [
-        "cognitive-os.yaml",
-        os.path.join(_COGNITIVE_OS_DIR, "cognitive-os.yaml"),
-    ]
-    project_dir = project_root()
-    if project_dir:
-        candidates.insert(0, os.path.join(project_dir, "cognitive-os.yaml"))
+    """Return the first readable cognitive-os.yaml found on the search path.
 
-    for path in candidates:
-        if os.path.isfile(path):
-            return path
-    return None
+    Delegates to lib.config_loader.find_config_path() which implements the
+    same Pattern-A search order (project_root env vars → cwd → .cognitive-os).
+    """
+    return _cl_find_config_path()
 
 
 def _read_max_parallel_agents(config_path: Optional[str] = None) -> int:
     """Parse max_parallel_agents from cognitive-os.yaml.
 
     Falls back to _DEFAULT_MAX_PARALLEL on any error.
-    Reads line-by-line to avoid a YAML library dependency.
+    Delegates to lib.config_loader.read_top_level_int for line-by-line parsing.
     """
-    path = config_path or _find_config_path()
-    if not path:
-        return _DEFAULT_MAX_PARALLEL
-
-    try:
-        with open(path, "r") as fh:
-            for line in fh:
-                m = re.match(r"^\s*max_parallel_agents:\s*(\d+)", line)
-                if m:
-                    return int(m.group(1))
-    except OSError:
-        pass
-
-    return _DEFAULT_MAX_PARALLEL
+    return _cl_read_top_level_int(
+        "max_parallel_agents", _DEFAULT_MAX_PARALLEL, config_path
+    )
 
 
 def _count_active_tasks(tasks_path: Optional[str] = None) -> int:
