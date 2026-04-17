@@ -34,18 +34,56 @@ This is a structural failure, not a one-off. Three root causes:
 
 ### Pillar 1 — Runtime Observability of the SO
 
-**Goal**: know at all times what processes/resources the SO consumes.
+**Goal**: know at all times what processes/resources the SO consumes; know
+which metrics are actually consumed; detect and safely terminate hung
+agents and bash processes.
 
-Artefacts:
+Sub-pillar 1.A — Metrics census (audit existing):
 
-- `hooks/hook-runtime-probe.sh` — PostToolUse + SessionEnd. Logs per-session:
-  orphaned child count, open FDs, RAM delta, per-hook duration.
-- `lib/process_registry.py` — central PID registry. Every hook that uses `&`
-  MUST register the PID with a TTL. A reaper (cron or SessionEnd hook) kills
-  entries past TTL.
-- `scripts/so-vitals.sh` — one-shot CLI that prints current orphans, MCP RAM,
-  JSONL sizes, FD count. Runnable manually or at SessionStart (silent unless
-  thresholds breached).
+- Inventory every `.cognitive-os/metrics/*.jsonl` file: who writes it, who
+  reads it, retention policy.
+- Current known files: cost-events, error-learning, trust-scores,
+  hook-health, context-watchdog, truncation-events, resource-checks,
+  auto-verify, completeness-check, prompt-captures, skill-archive,
+  consequence-history, large-file-reads, infra-usage.
+- For each: CONSUMED (keep + rotate), ORPHAN (deprecate), or MISCONFIGURED
+  (fix the consumer).
+- Rotation policy: size-based (1 MiB cap) + age-based (7 days) per file.
+- Schema unification: one `MetricEvent` base schema all writers extend.
+- Deliverable: `docs/reports/metrics-census.md` with triage table.
+
+Sub-pillar 1.B — Process registry + reaper (hooks and subprocesses):
+
+- `lib/process_registry.py` — every hook that uses `&`, `nohup`, or spawns
+  a long-lived subprocess MUST register PID + TTL + owner-hook.
+- Reaper runs at SessionEnd AND as a lightweight cron (every 5 min):
+  SIGTERM with 10s grace, then SIGKILL. Safe-kill policy enforced.
+- Whitelist of `detached-daemon` entries (MCP servers, Docker) skipped by
+  reaper but still monitored for RAM/CPU thresholds.
+
+Sub-pillar 1.C — Agent liveness (Claude-Code sub-agents):
+
+- Every sub-agent writes a heartbeat to
+  `.cognitive-os/tasks/{agent_id}.heartbeat` every 60s (adapt the preamble
+  template).
+- Watchdog: any heartbeat >5 min stale → marked `stale`, orchestrator
+  notified, optionally SIGTERM'd.
+- State machine: `launched → running → stale → reaped | completed`.
+- `scripts/so-agent-status.sh` prints current agent fleet: id, model,
+  elapsed, heartbeat age, status.
+
+Sub-pillar 1.D — Unified dashboard:
+
+- `scripts/so-vitals.sh` — one-shot CLI printing:
+  - Agents in flight (from 1.C)
+  - Registered bash processes + TTL (from 1.B)
+  - Orphan detection (processes not in registry but spawned by our hooks)
+  - MCP RSS summary
+  - JSONL sizes + rotation status (from 1.A)
+  - Hook runtime p50/p95 (last 100 invocations)
+- Runnable manually, at SessionStart (silent unless thresholds breached),
+  or by `/so-status` skill.
+- Exit code non-zero if any SLO breached — usable in CI.
 
 ### Pillar 2 — Contract Tests for Hooks
 
