@@ -1,0 +1,15 @@
+{
+  "hook_event": "PostCascadeAction",
+  "tool_name": "Write",
+  "tool_input": {
+    "file_path": "/src/config.yaml",
+    "content": "key: value"
+  },
+  "session_id": "windsurf-sess-xyz789",
+  "exit_code": 0,
+  "output": "written",
+  "cascade_context": {
+    "workspace": "/home/user/project",
+    "active_file": "config.yaml"
+  }
+}
