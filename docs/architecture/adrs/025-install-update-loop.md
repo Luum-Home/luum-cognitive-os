@@ -136,7 +136,7 @@ that existed before PR #6 would persist.
 - PR #6 (16f5e1a) — install.sh manifest-check (advisory-only, the gap)
 - PR #10 (1540ef4, v0.10.0) — uv sync and register-mcps in cos-update.sh
 - Commit 6de320c — Lote 1: uv sync order fix (uv before self-install)
-- Commit TBD — Lote 2: register-mcps loop + drift fix (this ADR)
+- Commit [0db8c14](https://github.com/Luum-Home/luum-cognitive-os/commit/0db8c14) — Lote 2: register-mcps loop + drift fix (this ADR)
 - Q1 audit 2026-04-17 — documented BLOCKER: install pipeline advisory-only
 - `scripts/register-mcps.sh` — implementation
 - `scripts/cos-update.sh` — auto-update spine
