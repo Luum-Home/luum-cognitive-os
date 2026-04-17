@@ -267,3 +267,144 @@ def test_update_backup_rotation(tmp_path):
         assert not any(stamp in name for name in remaining), (
             f"Old seed {stamp} survived rotation: {remaining}"
         )
+
+
+# ---------------------------------------------------------------------------
+# Tests — uv sync cache on pyproject.toml change
+# ---------------------------------------------------------------------------
+
+
+def _install_uv_stub(scratch: Path) -> Path:
+    """Install a fake `uv` on PATH that records invocations to a log file.
+
+    Returns the log path. The stub accepts any args, exits 0, and appends
+    one line per call to the log (JOIN-ed args).
+    """
+    bin_dir = scratch / "stub-bin"
+    bin_dir.mkdir(exist_ok=True)
+    log_path = scratch / "uv-invocations.log"
+    stub = bin_dir / "uv"
+    stub.write_text(
+        "#!/usr/bin/env bash\n"
+        f'echo "uv $*" >> {log_path}\n'
+        "exit 0\n"
+    )
+    stub.chmod(0o755)
+    return log_path
+
+
+def _seed_pyproject(scratch: Path, contents: str) -> Path:
+    pyproject = scratch / "pyproject.toml"
+    pyproject.write_text(contents)
+    return pyproject
+
+
+def test_uv_sync_runs_when_pyproject_changes(tmp_path):
+    """When pyproject.toml SHA differs from the cached value, uv sync must run."""
+    scratch = _make_scratch_project(tmp_path)
+    _seed_pyproject(scratch, '[project]\nname = "demo"\nversion = "0.1.0"\n')
+    log_path = _install_uv_stub(scratch)
+
+    env = {**os.environ, "PATH": f"{scratch / 'stub-bin'}:{os.environ.get('PATH', '')}"}
+    result = subprocess.run(
+        ["bash", str(scratch / "scripts" / "cos-update.sh"), "--no-verify", "--force"],
+        capture_output=True, text=True, timeout=90, cwd=str(scratch), env=env,
+    )
+
+    assert result.returncode in (0, 1), (
+        f"Unexpected exit code {result.returncode}. stderr: {result.stderr[-500:]}"
+    )
+    assert log_path.exists(), (
+        f"uv stub was never invoked. stderr: {result.stderr[-500:]}"
+    )
+    invocations = log_path.read_text().strip().splitlines()
+    assert any("sync" in line for line in invocations), (
+        f"uv sync not called. invocations: {invocations}"
+    )
+
+    sha_file = scratch / ".cognitive-os" / "state" / "pyproject.sha"
+    assert sha_file.exists(), "pyproject.sha cache was not written after successful uv sync"
+    cached_sha = sha_file.read_text().strip()
+    assert len(cached_sha) == 64, f"cached sha is not a sha256 hex digest: {cached_sha!r}"
+
+
+def test_uv_sync_skipped_when_pyproject_unchanged(tmp_path):
+    """Second run with the same pyproject.toml must NOT re-invoke uv sync."""
+    scratch = _make_scratch_project(tmp_path)
+    _seed_pyproject(scratch, '[project]\nname = "demo"\nversion = "0.1.0"\n')
+    log_path = _install_uv_stub(scratch)
+
+    env = {**os.environ, "PATH": f"{scratch / 'stub-bin'}:{os.environ.get('PATH', '')}"}
+
+    # First run: sha cache is absent, uv sync must fire.
+    first = subprocess.run(
+        ["bash", str(scratch / "scripts" / "cos-update.sh"), "--no-verify", "--force"],
+        capture_output=True, text=True, timeout=90, cwd=str(scratch), env=env,
+    )
+    assert first.returncode in (0, 1)
+    assert log_path.exists()
+    first_calls = log_path.read_text().strip().splitlines()
+
+    # Second run with pyproject unchanged: must be a no-op.
+    second = subprocess.run(
+        ["bash", str(scratch / "scripts" / "cos-update.sh"), "--no-verify", "--force"],
+        capture_output=True, text=True, timeout=90, cwd=str(scratch), env=env,
+    )
+    assert second.returncode in (0, 1)
+    second_calls = log_path.read_text().strip().splitlines()
+    assert len(second_calls) == len(first_calls), (
+        f"uv sync ran again despite unchanged pyproject. first={first_calls}, second={second_calls}"
+    )
+
+
+def test_uv_sync_reruns_when_pyproject_mutates(tmp_path):
+    """Mutating pyproject.toml between runs must re-invoke uv sync."""
+    scratch = _make_scratch_project(tmp_path)
+    _seed_pyproject(scratch, '[project]\nname = "demo"\nversion = "0.1.0"\n')
+    log_path = _install_uv_stub(scratch)
+
+    env = {**os.environ, "PATH": f"{scratch / 'stub-bin'}:{os.environ.get('PATH', '')}"}
+
+    subprocess.run(
+        ["bash", str(scratch / "scripts" / "cos-update.sh"), "--no-verify", "--force"],
+        capture_output=True, text=True, timeout=90, cwd=str(scratch), env=env,
+    )
+    first_count = len(log_path.read_text().strip().splitlines())
+
+    # Mutate pyproject — add a dep line so the SHA changes
+    _seed_pyproject(
+        scratch,
+        '[project]\nname = "demo"\nversion = "0.1.0"\ndependencies = ["requests"]\n',
+    )
+
+    subprocess.run(
+        ["bash", str(scratch / "scripts" / "cos-update.sh"), "--no-verify", "--force"],
+        capture_output=True, text=True, timeout=90, cwd=str(scratch), env=env,
+    )
+    second_count = len(log_path.read_text().strip().splitlines())
+
+    assert second_count > first_count, (
+        "uv sync did not re-run after pyproject.toml SHA changed"
+    )
+
+
+def test_uv_sync_missing_binary_is_non_fatal(tmp_path):
+    """Missing `uv` must not fail the update — only emit a warning."""
+    scratch = _make_scratch_project(tmp_path)
+    _seed_pyproject(scratch, '[project]\nname = "demo"\nversion = "0.1.0"\n')
+
+    # PATH with no `uv` binary
+    env = {**os.environ, "PATH": "/usr/bin:/bin"}
+    result = subprocess.run(
+        ["bash", str(scratch / "scripts" / "cos-update.sh"), "--no-verify", "--force"],
+        capture_output=True, text=True, timeout=90, cwd=str(scratch), env=env,
+    )
+
+    # Update must not abort — apply may still fail for unrelated reasons (rc=1)
+    # but must not be rc=2 (verify) since we passed --no-verify.
+    assert result.returncode in (0, 1), (
+        f"Missing uv caused unexpected exit {result.returncode}. stderr: {result.stderr[-500:]}"
+    )
+    # sha file must NOT be written when uv is unavailable
+    sha_file = scratch / ".cognitive-os" / "state" / "pyproject.sha"
+    assert not sha_file.exists(), "pyproject.sha must not be written when uv is missing"
