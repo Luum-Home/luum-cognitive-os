@@ -31,6 +31,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from lib.paths import project_root
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -93,9 +94,7 @@ def _pid_alive(pid: int) -> bool:
 def _read_timeout_seconds(config_path: Optional[str] = None) -> int:
     """Parse agent_timeout_seconds from cognitive-os.yaml without PyYAML."""
     candidates: List[str] = []
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-        "COGNITIVE_OS_PROJECT_DIR", ""
-    )
+    project_dir = project_root()
     if project_dir:
         candidates.append(os.path.join(project_dir, "cognitive-os.yaml"))
     if config_path:
@@ -122,9 +121,7 @@ def _resolve_paths(
     config_path: Optional[str],
 ) -> tuple[str, str]:
     """Return (tasks_path, config_path) with project-dir resolution."""
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-        "COGNITIVE_OS_PROJECT_DIR", ""
-    )
+    project_dir = project_root()
     if not tasks_path:
         if project_dir:
             tasks_path = os.path.join(project_dir, _DEFAULT_TASKS_PATH)
@@ -401,11 +398,9 @@ class AgentHealthMonitor:
             # Import lazily to avoid circular dependencies
             import sys
 
-            project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-                "COGNITIVE_OS_PROJECT_DIR", ""
-            )
+            project_dir = project_root()
             if project_dir:
-                sys.path.insert(0, project_dir)
+                sys.path.insert(0, str(project_dir))
 
             from lib.queue_drainer import QueueDrainer  # type: ignore[import]
 
@@ -430,11 +425,9 @@ class AgentHealthMonitor:
         try:
             import sys
 
-            project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-                "COGNITIVE_OS_PROJECT_DIR", ""
-            )
+            project_dir = project_root()
             if project_dir:
-                sys.path.insert(0, project_dir)
+                sys.path.insert(0, str(project_dir))
 
             from lib.dead_letter_queue import DeadLetterQueue  # type: ignore[import]
 
