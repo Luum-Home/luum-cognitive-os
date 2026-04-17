@@ -53,6 +53,9 @@ def _project_root() -> Path:
     Priority: ``COGNITIVE_OS_PROJECT_DIR`` → ``CLAUDE_PROJECT_DIR`` → cwd.
     We deliberately do NOT call ``git rev-parse`` here — telemetry must remain
     cheap, and hooks already set one of the env vars.
+
+    NOTE: custom resolution — differs from lib.paths.project_root() (Pattern D).
+    See tests/unit/test_project_dir_resolution.py for rationale.
     """
     return Path(
         os.environ.get("COGNITIVE_OS_PROJECT_DIR")

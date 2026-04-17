@@ -36,6 +36,8 @@ import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
+from lib.paths import project_root
+
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
@@ -63,9 +65,7 @@ def _read_max_parallel_agents() -> int:
     import re
 
     candidates: List[str] = []
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-        "COGNITIVE_OS_PROJECT_DIR", ""
-    )
+    project_dir = project_root()
     if project_dir:
         candidates.append(os.path.join(project_dir, "cognitive-os.yaml"))
     candidates.append(_DEFAULT_CONFIG_PATH)
@@ -313,6 +313,8 @@ class QueueDrainer:
             try:
                 from lib.queue_advisor import QueueAdvisor  # noqa: PLC0415
 
+                # NOTE: custom resolution — differs from lib.paths.project_root() (Pattern C).
+                # See tests/unit/test_project_dir_resolution.py for rationale.
                 project_dir = os.environ.get("CLAUDE_PROJECT_DIR", ".")
                 advisor = QueueAdvisor(project_dir=project_dir)
                 candidates = advisor.advise(candidates)

@@ -198,46 +198,71 @@ PATTERN_A_PRIME_LITERAL = (
 PATTERN_C_LITERAL = 'os.environ.get("CLAUDE_PROJECT_DIR", ".")'
 
 
+PATTERN_A_MIGRATED_CALL = "project_root()"
+PATTERN_A_MIGRATED_IMPORT = "from lib.paths import project_root"
+
+
 @pytest.mark.parametrize(
-    ("relpath", "expected_literal"),
+    "relpath",
     [
-        ("lib/dispatch_helper.py", PATTERN_A_LITERAL),
-        ("lib/dispatch_model_advisor.py", PATTERN_A_LITERAL),
-        ("lib/rate_limiter.py", PATTERN_A_LITERAL),
-        ("lib/sdd_pipeline.py", PATTERN_A_LITERAL),
-        ("lib/queue_drainer.py", PATTERN_A_LITERAL),
-        ("lib/agent_health_monitor.py", PATTERN_A_LITERAL),
+        "lib/dispatch_helper.py",
+        "lib/dispatch_model_advisor.py",
+        "lib/rate_limiter.py",
+        "lib/sdd_pipeline.py",
+        "lib/queue_drainer.py",
+        "lib/agent_health_monitor.py",
     ],
 )
-def test_pattern_a_literal_present_in_source(relpath, expected_literal):
-    """Each Pattern A consumer must contain the canonical expression verbatim."""
+def test_pattern_a_literal_present_in_source(relpath):
+    """Each Pattern A consumer MUST import and call project_root() (Lote-3, R1 migration).
+
+    Previously checked for the inline env-var expression.  After the R1 refactor
+    all 10 Pattern A sites were migrated to ``lib.paths.project_root()``.
+    """
     src = (REPO_ROOT / relpath).read_text()
-    assert expected_literal in src, (
-        f"{relpath} no longer contains Pattern A literally — "
-        "if you intentionally changed the resolution, update this test "
-        "and verify the new behavior is captured by Section 1."
+    assert PATTERN_A_MIGRATED_IMPORT in src, (
+        f"{relpath} does not import project_root from lib.paths — "
+        "either the R1 migration was reverted or the file was excluded by mistake."
+    )
+    assert PATTERN_A_MIGRATED_CALL in src, (
+        f"{relpath} does not call project_root() — "
+        "the R1 migration must replace all Pattern A inline expressions."
+    )
+    # Verify the OLD inline Pattern A expression is GONE (migration complete).
+    assert PATTERN_A_LITERAL not in src, (
+        f"{relpath} still contains the old Pattern A literal — "
+        "the R1 migration is incomplete for this file."
     )
 
 
 def test_pattern_a_literal_appears_4_times_in_agent_health_monitor():
-    """agent_health_monitor.py uses Pattern A at lines :96, :125, :404, :433.
+    """agent_health_monitor.py was migrated: 0 old literals, 4 project_root() calls.
 
-    The literal at :404 and :433 is indented further (inside try/except
-    inside methods). Catch all 4 by checking both indentation variants.
+    Previously the 4 Pattern A sites used the inline expression at :96, :125,
+    :404, :433.  After R1 all 4 are replaced by project_root() calls.
     """
     src = (REPO_ROOT / "lib/agent_health_monitor.py").read_text()
-    total = src.count(PATTERN_A_LITERAL) + src.count(PATTERN_A_LITERAL_INDENTED)
-    assert total == 4, (
-        f"agent_health_monitor.py: expected 4 Pattern A occurrences, found {total}. "
-        "The audit catalogued :96, :125, :404, :433. Update test or audit if changed."
+    old_total = src.count(PATTERN_A_LITERAL) + src.count(PATTERN_A_LITERAL_INDENTED)
+    assert old_total == 0, (
+        f"agent_health_monitor.py: found {old_total} old Pattern A literals — "
+        "expected 0 after R1 migration to project_root()."
+    )
+    new_total = src.count(PATTERN_A_MIGRATED_CALL)
+    assert new_total == 4, (
+        f"agent_health_monitor.py: expected 4 project_root() calls (was 4 Pattern A sites), "
+        f"found {new_total}."
     )
 
 
 def test_pattern_a_literal_appears_twice_in_dispatch_model_advisor():
+    """dispatch_model_advisor.py was migrated: 0 old literals, 2 project_root() calls."""
     src = (REPO_ROOT / "lib/dispatch_model_advisor.py").read_text()
-    assert src.count(PATTERN_A_LITERAL) == 2, (
-        "dispatch_model_advisor.py: expected 2 Pattern A occurrences "
-        "(lines 97 and 136)."
+    assert src.count(PATTERN_A_LITERAL) == 0, (
+        "dispatch_model_advisor.py: still contains old Pattern A literals — "
+        "expected 0 after R1 migration."
+    )
+    assert src.count(PATTERN_A_MIGRATED_CALL) == 2, (
+        "dispatch_model_advisor.py: expected 2 project_root() calls (was 2 Pattern A sites)."
     )
 
 
@@ -470,7 +495,17 @@ class TestDispatchGateCheckProjectDirConstant:
 
 
 def test_audit_count_of_sites_per_pattern():
-    """Sanity asserts so the audit catalogue stays in sync with reality."""
+    """Sanity asserts so the audit catalogue stays in sync with reality.
+
+    After the Lote-3 R1 migration:
+    - All 10 Pattern A inline expressions have been replaced by project_root() calls.
+      The count of the OLD Pattern A literal is now 0; the 10 sites are tracked
+      instead by test_pattern_a_literal_present_in_source (which checks for the
+      project_root() call and import).
+    - Pattern A' (1 site, model_router:321) is unchanged — different default.
+    - Pattern C (2 sites) is unchanged — different semantics.
+    - Pattern D (1 site, telemetry) is unchanged — reversed precedence.
+    """
     counts: dict[str, int] = {"A": 0, "A_prime": 0, "C": 0, "D": 0}
     for relpath in [
         "lib/dispatch_helper.py",
@@ -494,9 +529,107 @@ def test_audit_count_of_sites_per_pattern():
             if cog_idx >= 0 and claude_idx >= 0 and cog_idx < claude_idx:
                 counts["D"] += 1
 
-    assert counts == {"A": 10, "A_prime": 1, "C": 2, "D": 1}, (
-        f"Audit count drift: {counts}. Expected 10+1+2+1=14 occurrences across "
-        "13 sites (queue_drainer.py has both A and C). If the count changed, a "
-        "site was added, removed, or refactored — update this assertion AND "
-        "the test below it explicitly so we know what changed."
+    # After R1 migration: Pattern A inline literals are 0 (migrated to project_root()).
+    # Pattern A', C, D outliers are unchanged.
+    assert counts == {"A": 0, "A_prime": 1, "C": 2, "D": 1}, (
+        f"Audit count drift: {counts}. Expected 0+1+2+1 after R1 migration. "
+        "Pattern A sites (10) now use project_root() from lib.paths — "
+        "the inline expression count should be 0. If a site reverted to inline "
+        "or a new site was added, update this assertion explicitly."
     )
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# Section 5 — lib.paths.project_root() matches Pattern A semantics exactly
+# ─────────────────────────────────────────────────────────────────────────
+
+
+class TestLibPathsProjectRoot:
+    """``lib.paths.project_root()`` must match Pattern A semantics exactly.
+
+    These assertions mirror ``TestPatternA`` (Section 1) but call
+    ``project_root()`` instead of the inline ``_pattern_a()`` helper.
+    If ``project_root()`` ever diverges from Pattern A, these tests surface it.
+    """
+
+    def test_both_unset_returns_none(self, monkeypatch):
+        """Both env vars absent → None (falsy, matches Pattern A '' default)."""
+        from lib.paths import project_root
+
+        _clear_env(monkeypatch)
+        assert project_root() is None
+
+    def test_claude_only_returns_path(self, monkeypatch):
+        from lib.paths import project_root
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/from-claude")
+        result = project_root()
+        assert result is not None
+        assert result == Path("/from-claude")
+
+    def test_cognitive_os_only_returns_path(self, monkeypatch):
+        from lib.paths import project_root
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", "/from-cognitive-os")
+        result = project_root()
+        assert result is not None
+        assert result == Path("/from-cognitive-os")
+
+    def test_both_set_claude_wins(self, monkeypatch):
+        from lib.paths import project_root
+
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/claude")
+        monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", "/cognitive")
+        result = project_root()
+        assert result == Path("/claude")
+
+    def test_claude_empty_string_falls_back(self, monkeypatch):
+        """``""`` is falsy → ``or`` falls through to COGNITIVE_OS_PROJECT_DIR."""
+        from lib.paths import project_root
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "")
+        monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", "/fallback")
+        result = project_root()
+        assert result == Path("/fallback")
+
+    def test_both_empty_returns_none(self, monkeypatch):
+        from lib.paths import project_root
+
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "")
+        monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", "")
+        assert project_root() is None
+
+    def test_returns_pathlib_path_not_str(self, monkeypatch):
+        from lib.paths import project_root
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/some/dir")
+        result = project_root()
+        assert isinstance(result, Path), f"Expected Path, got {type(result)!r}"
+
+    def test_idempotent(self, monkeypatch):
+        """Repeated calls with the same env vars return equal paths."""
+        from lib.paths import project_root
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/stable")
+        assert project_root() == project_root()
+
+    def test_truthy_when_configured(self, monkeypatch):
+        """Callers rely on ``if project_dir:`` — must be truthy when set."""
+        from lib.paths import project_root
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/some/path")
+        assert project_root()  # truthy
+
+    def test_falsy_when_not_configured(self, monkeypatch):
+        """Callers rely on ``if project_dir:`` — must be falsy (None) when unset."""
+        from lib.paths import project_root
+
+        _clear_env(monkeypatch)
+        result = project_root()
+        assert not result  # None is falsy
