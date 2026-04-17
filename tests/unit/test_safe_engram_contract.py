@@ -510,3 +510,98 @@ class TestCrossModuleConsumerContract:
         assert isinstance(out, str)
         # cos_mcp.py:213-216 returns a JSON object with "error" + "reasons".
         assert "blocked" in out.lower() or "reasons" in out.lower()
+
+
+# ---------------------------------------------------------------------------
+# 10. D3.2 bug fix — returncode=127 must produce a specific user-facing message.
+#     Added 2026-04-17 per ADR-026a D3.2 decision.
+# ---------------------------------------------------------------------------
+
+
+class TestReturncode127Classification:
+    """returncode=127 (binary not found) must produce a distinct error message.
+
+    Before the fix, ``cos_mcp.py:217`` lumped returncode=127 with returncode=0
+    in a ``not in (0, 127)`` success-or-passthrough dichotomy, silently returning
+    ``"engram binary not found; save skipped."`` as if it were a save confirmation.
+    After the fix, returncode=127 gets an explicit branch with a user-facing
+    "engram not found on PATH" message.
+    """
+
+    def test_returncode_127_classified_as_missing_binary(self):
+        """Simulates engram missing from PATH; asserts the specific 127 message
+        is produced AND the returncode=0 success path is NOT taken.
+
+        Acceptance: output is a JSON error string containing "not found" or
+        "binary not found" — not the verbatim engram_output (success path).
+        """
+        cos_mcp = _import_cos_mcp()
+        if cos_mcp is None or not hasattr(cos_mcp, "_engram_save"):
+            pytest.skip("cos_mcp not importable in this environment")
+
+        with patch(
+            "lib.safe_engram.subprocess.run", side_effect=FileNotFoundError()
+        ):
+            out = cos_mcp._engram_save("Title", _CLEAN)
+
+        # Must be a JSON error, not a plain success string.
+        assert isinstance(out, str)
+        parsed = None
+        try:
+            import json as _json
+            parsed = _json.loads(out)
+        except _json.JSONDecodeError:
+            pass
+
+        # The fix produces a JSON object with an "error" key.
+        assert parsed is not None, (
+            f"Expected JSON output for 127, got plain string: {out!r}"
+        )
+        assert "error" in parsed, f"Expected 'error' key in JSON, got: {parsed}"
+
+        # The error message must mention "not found" or PATH.
+        error_text = parsed["error"].lower()
+        assert "not found" in error_text or "path" in error_text, (
+            f"Expected 'not found'/'PATH' in error message, got: {parsed['error']!r}"
+        )
+
+        # The returncode=0 success path returns a plain string (not JSON) — verify
+        # we did NOT take it.
+        import json as _json
+        try:
+            _json.loads(out)
+        except _json.JSONDecodeError:
+            pytest.fail(
+                "returncode=127 returned a plain string (success path taken), "
+                "expected a JSON error object."
+            )
+
+    def test_returncode_nonzero_nonretriable_still_errors(self):
+        """Non-zero, non-127 returncodes must still produce the generic CLI error.
+
+        This verifies the fix did NOT accidentally narrow the existing error branch
+        (i.e. returncode=1, 2, -1 still yield an error JSON, not a success string).
+        """
+        cos_mcp = _import_cos_mcp()
+        if cos_mcp is None or not hasattr(cos_mcp, "_engram_save"):
+            pytest.skip("cos_mcp not importable in this environment")
+
+        for bad_rc in (1, 2, 42):
+            with patch(
+                "lib.safe_engram.subprocess.run",
+                return_value=_make_proc(bad_rc, stderr="some engram error"),
+            ):
+                out = cos_mcp._engram_save("Title", _CLEAN)
+
+            assert isinstance(out, str), f"returncode={bad_rc}: expected str, got {type(out)}"
+            import json as _json
+            try:
+                parsed = _json.loads(out)
+            except _json.JSONDecodeError:
+                pytest.fail(
+                    f"returncode={bad_rc}: expected JSON error object, "
+                    f"got plain string: {out!r}"
+                )
+            assert "error" in parsed, (
+                f"returncode={bad_rc}: expected 'error' key in JSON, got: {parsed}"
+            )

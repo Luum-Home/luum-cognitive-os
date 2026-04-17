@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 117
+Total skills: 124
 
 ## os (12)
 
@@ -22,12 +22,14 @@ Total skills: 117
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and VERSION file |
 
-## os-dev (24)
+## os-dev (27)
 
 | Skill | Description |
 |-------|-------------|
+| agent-stress-test | Stress-test agent cognitive health to detect context-induced degradation |
 | arena | Run competitive benchmarks comparing Cognitive OS against other AI coding tools |
 | automaker-bridge | Configure AutoMaker to use Cognitive OS as its execution brain |
+| capability-snapshot | Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss during refactors |
 | cognee-integration | Configure and use Cognee for knowledge graph memory. |
 | cognitive-os-benchmark | Run benchmark comparisons between Cognitive OS and BMAD METHOD v6 |
 | cognitive-os-test | Run the Cognitive OS automated test suite (infra, behavior, quality) |
@@ -44,6 +46,7 @@ Total skills: 117
 | promptfoo-integration | Configure Promptfoo for prompt regression testing and red teaming of skills in CI/CD pipelines. |
 | queue-drain | Periodic agent queue drain and health check |
 | ragas-integration | Configure and use RAGAS for memory quality testing, retrieval evaluation, and synthetic test genera… |
+| red-team | Red team testing for agent prompts — detects injection, jailbreak, and manipulation vulnerabilities |
 | security-audit | Comprehensive security audit of Cognitive OS configuration, secrets, hooks, permissions, and infras… |
 | simulation-arena |  |
 | smoke-test | Run end-to-end smoke tests that validate the real Cognitive OS system works |
@@ -51,7 +54,7 @@ Total skills: 117
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
-## both (20)
+## both (22)
 
 | Skill | Description |
 |-------|-------------|
@@ -62,7 +65,9 @@ Total skills: 117
 | caveman | Ultra-compressed communication mode. |
 | caveman-es | Modo cavernícola en español. |
 | cognitive-os-init | META skill — initialize Cognitive OS for a project by chaining detect-stack → generate-config → sca… |
+| cognitive-os-status | Full health check of all Cognitive OS components |
 | compress | Compress natural language memory files (CLAUDE.md, todos, preferences) into caveman format to save… |
+| cos-status | Display current Cognitive OS state — active profile, skills exposed, hooks wired, rules loaded, pac… |
 | detect-stack | Scan a project root and produce detected-stack.json with detected languages, frameworks, databases,… |
 | generate-config | Read detected-stack.json and generate or update cognitive-os.yaml with detected infrastructure, qua… |
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
@@ -76,12 +81,13 @@ Total skills: 117
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend reviews |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules, hooks |
 
-## project (60)
+## project (62)
 
 | Skill | Description |
 |-------|-------------|
 | audit-website | Perform a comprehensive 6-category website audit (SEO, Performance, Security, Content/UX, Accessibi… |
 | auto-refine | Analyze a failed agent's output, determine root cause, and re-launch with refined instructions. |
+| auto-rollback | Auto-rollback failed SDD apply commits when verify-apply loop exceeds max retries |
 | batch-runner | Execute multiple SDD changes sequentially with timing, reporting, and failure handling |
 | code-review | Engram-integrated code review with adversarial protocol. |
 | cognee-search | Semantic knowledge graph search via Cognee — complements Engram FTS5 with relationship-aware retrie… |
@@ -100,6 +106,7 @@ Total skills: 117
 | evaluate-plan | Evaluate any existing plan file with a 0-50 scoring system. |
 | exhaustive-prompt | Generate exhaustive agent prompts with scope enumeration and acceptance criteria |
 | gpu-sandbox | Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data processing, financial calc… |
+| impact-analysis | Analyze change impact: imports, tests, configs, services, and SDD artifacts affected |
 | install-recommended | Detect project stack and recommend relevant skills to install |
 | issue-pipeline | Fetch a GitHub issue, run the SDD pipeline, and open a pull request |
 | jupyter-execute | Execute code in a Jupyter kernel sandbox for data analysis, Python snippets, and benchmarks |
