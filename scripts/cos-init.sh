@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # cos init — Bootstrap Cognitive OS in any project
-# Usage: bash /path/to/luum-agent-os/scripts/cos-init.sh [--minimal|--standard|--full]
+# Usage: bash /path/to/luum-agent-os/scripts/cos-init.sh [--default|--full]
+#
+# ADR-002 collapsed the 3-tier profile system to 2 tiers:
+#   --default (canonical) — 10 curated core skills, ~29 standard hooks, 14 core rules
+#   --full                — everything
+# Legacy flags (--minimal, --standard, --lean) are silently remapped to --default.
 #
 # Bash 3.x compatible (no associative arrays, no bash 4+ features).
 # Author: luum
@@ -8,28 +13,38 @@ set -euo pipefail
 
 # ── Resolve COS source directory ────────────────────────────────────
 COS_SOURCE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-MODE="${1:---standard}"
+RAW_MODE="${1:---default}"
 PROJECT_DIR="$(pwd)"
 VERSION_FILE="$COS_SOURCE_DIR/VERSION"
 
 # ── Self-hosting guard ──────────────────────────────────────────────
 # If running inside luum-agent-os itself, refuse (use self-install.sh instead).
 if [ -f "$PROJECT_DIR/hooks/self-install.sh" ] && [ "$PROJECT_DIR" = "$COS_SOURCE_DIR" ]; then
-  echo "Error: Cannot run cos-init inside luum-agent-os itself."
-  echo "       This repo uses self-install.sh for self-hosting."
+  echo "Error: Cannot run cos-init inside luum-agent-os itself." >&2
+  echo "       This repo uses self-install.sh for self-hosting." >&2
   exit 1
 fi
 
-# ── Mode validation ─────────────────────────────────────────────────
-case "$MODE" in
-  --minimal|--standard|--full)
+# ── Mode validation + ADR-002 legacy remap ──────────────────────────
+# Canonical profiles (ADR-002): --default, --full.
+# Legacy values (--minimal, --standard, --lean) are silently remapped to --default
+# with a stderr migration note. install.sh also normalizes at the entry point, so
+# the rejection/remap path here protects direct users of cos-init.sh.
+case "$RAW_MODE" in
+  --default|--full)
+    MODE="$RAW_MODE"
+    ;;
+  --minimal|--standard|--lean)
+    echo "Note: ADR-002 collapsed '${RAW_MODE}' into '--default'. Using '--default'." >&2
+    MODE="--default"
     ;;
   *)
-    echo "Usage: bash $0 [--minimal|--standard|--full]"
-    echo ""
-    echo "  --minimal   5 core rules, 3 hooks (~500 token overhead)"
-    echo "  --standard  25 rules, 15 hooks, 10 skills (~2000 token overhead)"
-    echo "  --full      Everything (~5000 token overhead)"
+    echo "Usage: bash $0 [--default|--full]" >&2
+    echo "" >&2
+    echo "  --default  10 curated skills, ~29 standard hooks, 14 core rules (~8K tokens/session)" >&2
+    echo "  --full     Everything (~142K tokens/session)" >&2
+    echo "" >&2
+    echo "  Legacy (remapped to --default): --minimal, --standard, --lean" >&2
     exit 1
     ;;
 esac
@@ -93,26 +108,31 @@ if [ "$has_claude_dir" = "true" ]; then
 fi
 echo ""
 
-# ── 2. Define mode components ──────────────────────────────────────
+# ── 2. Define mode components (ADR-002: default + full) ─────────────
 
-# Minimal: 5 core rules
-MINIMAL_RULES="trust-score acceptance-criteria closed-loop-prompts definition-of-done agent-quality"
-MINIMAL_HOOKS="error-learning error-pipeline result-truncator session-init session-cleanup"
+# DEFAULT_RULES: the 14 core rules (matches self-install.sh CORE_RULES +
+# 2 extras kept for parity with the previous "standard" tier docs).
+DEFAULT_RULES="trust-score acceptance-criteria closed-loop-prompts definition-of-done
+  agent-quality adaptive-bypass phase-aware-agents token-economy
+  responsiveness credential-management content-policy error-learning
+  model-routing result-management"
 
-# Standard: minimal + more rules and hooks
-STANDARD_RULES="$MINIMAL_RULES phase-aware-agents model-routing context-management fault-tolerance
-  error-learning result-management responsiveness credential-management license-policy
-  agent-identity agent-kpis context-optimization plan-first prompt-composition
-  skill-management resource-governance doc-sync sandbox-sampling blast-radius"
-STANDARD_HOOKS="$MINIMAL_HOOKS clarification-gate blast-radius scope-proportionality
+# DEFAULT_HOOKS: the standard hook set (~29 hooks) — rate-limiter,
+# agent-prelaunch, auto-verify, auto-refine, dod-gate, session-sanity, etc.
+DEFAULT_HOOKS="error-learning error-pipeline result-truncator session-init session-cleanup
+  clarification-gate blast-radius scope-proportionality
   error-pattern-detector auto-refine auto-verify completeness-check dod-gate
   trust-score-validator skill-metrics-tracker inject-phase-context stack-detector
   pre-compaction-flush rate-limiter large-file-advisor secret-detector content-policy
   doc-sync-detector auto-checkpoint claim-validator completion-gate
-  clarification-interceptor agent-checkpoint
+  clarification-interceptor agent-checkpoint session-sanity confidentiality-enforcer
   session-learning crash-recovery teammate-idle task-created task-completed"
-STANDARD_SKILLS="sdd-explore sdd-propose sdd-spec sdd-design sdd-tasks sdd-apply
-  sdd-verify plan-feature systematic-debugging verification-before-completion"
+
+# DEFAULT_SKILLS: the 10 curated "vanilla value" skills from ADR-002.
+# These deliver the core primitives an orchestrator needs on first run.
+DEFAULT_SKILLS="compose-prompt exhaustive-prompt agent-dashboard auto-refine
+  verification-before-completion plan-feature session-backlog resource-governor
+  paperclip-dashboard cos-status"
 
 # Full: everything available
 # (will copy all rules, all hooks, all skills)
@@ -159,12 +179,8 @@ if [ "$MODE" = "--full" ]; then
     rules_installed=$((rules_installed + 1))
   done
 else
-  # Install mode-specific rules
-  rules_list="$MINIMAL_RULES"
-  if [ "$MODE" = "--standard" ]; then
-    rules_list="$STANDARD_RULES"
-  fi
-  for name in $rules_list; do
+  # Default mode: install the 14 core rules (ADR-002).
+  for name in $DEFAULT_RULES; do
     install_rule "$name"
   done
 fi
@@ -202,11 +218,8 @@ if [ "$MODE" = "--full" ]; then
     cp -r "$hooks_source/_lib" "$hooks_dest/_lib"
   fi
 else
-  hooks_list="$MINIMAL_HOOKS"
-  if [ "$MODE" = "--standard" ]; then
-    hooks_list="$STANDARD_HOOKS"
-  fi
-  for name in $hooks_list; do
+  # Default mode: the standard hook set (~29 hooks, ADR-002).
+  for name in $DEFAULT_HOOKS; do
     install_hook "$name"
   done
   # Always copy _lib if it exists (hooks depend on it)
@@ -215,7 +228,7 @@ else
   fi
 fi
 
-# ── 6. Install skills (standard and full only) ───────────────────
+# ── 6. Install skills (both default and full tiers — ADR-002) ─────
 # Skills are installed to BOTH destinations with DIFFERENT layouts (see ADR-001):
 #   .cognitive-os/skills/cos/<name>/  → vendor-agnostic kernel path, namespaced under `cos/` to
 #                                       avoid collision when multiple OS sources populate this path
@@ -230,7 +243,7 @@ SKILL_DEST_KERNEL=".cognitive-os/skills/cos"
 SKILL_DEST_DRIVER=".claude/skills"
 SKILL_DESTS=("$SKILL_DEST_KERNEL" "$SKILL_DEST_DRIVER")
 
-if [ "$MODE" != "--minimal" ] && [ -d "$skills_source" ]; then
+if [ -d "$skills_source" ]; then
   for skills_dest in "${SKILL_DESTS[@]}"; do
     mkdir -p "$skills_dest"
 
@@ -247,8 +260,8 @@ if [ "$MODE" != "--minimal" ] && [ -d "$skills_source" ]; then
         cp "$skills_source/CATALOG.md" "$skills_dest/CATALOG.md"
       fi
     else
-      # Install standard skills
-      for name in $STANDARD_SKILLS; do
+      # Default: install the 10 curated core skills (ADR-002).
+      for name in $DEFAULT_SKILLS; do
         if [ -d "$skills_source/$name" ]; then
           cp -r "$skills_source/$name" "$skills_dest/$name"
           [ "$skills_dest" = "$SKILL_DEST_DRIVER" ] && skills_installed=$((skills_installed + 1))
@@ -261,8 +274,8 @@ if [ "$MODE" != "--minimal" ] && [ -d "$skills_source" ]; then
   done
 fi
 
-# ── 7. Install templates (standard and full only) ────────────────
-if [ "$MODE" != "--minimal" ] && [ -d "$COS_SOURCE_DIR/templates" ]; then
+# ── 7. Install templates (both default and full tiers) ──────────
+if [ -d "$COS_SOURCE_DIR/templates" ]; then
   mkdir -p .cognitive-os/templates/cos
   for tmpl in "$COS_SOURCE_DIR/templates"/*.md; do
     [ -f "$tmpl" ] || continue
@@ -322,17 +335,28 @@ else
   echo "Existing cognitive-os.yaml preserved"
 fi
 
-# ── 8b. Apply efficiency profile filtering ──────────────────────────
-# After rules are installed AND cognitive-os.yaml exists, apply profile
-# filtering from cognitive-os.yaml. This mirrors the logic in self-install.sh
-# so external projects get the same profile-aware rule restriction.
-EFFICIENCY_PROFILE="standard"
+# ── 8b. Apply efficiency profile filtering (ADR-002) ─────────────────
+# After rules are installed AND cognitive-os.yaml exists, re-apply the
+# profile filter from cognitive-os.yaml. ADR-002 collapsed to 2 tiers
+# (default + full); legacy values (lean/standard/minimal) map to default.
+EFFICIENCY_PROFILE="default"
 if [ -f "cognitive-os.yaml" ]; then
   _ep=$(grep -A1 '^efficiency:' cognitive-os.yaml 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || true)
-  [ -n "$_ep" ] && EFFICIENCY_PROFILE="$_ep"
+  case "$_ep" in
+    default|full)     EFFICIENCY_PROFILE="$_ep" ;;
+    lean|standard|minimal|"")
+      [ -n "$_ep" ] && echo "Note: cognitive-os.yaml efficiency.profile='$_ep' → 'default' (ADR-002)." >&2
+      EFFICIENCY_PROFILE="default"
+      ;;
+    *)
+      echo "Warning: unknown efficiency.profile='$_ep' in cognitive-os.yaml → treating as 'default'." >&2
+      EFFICIENCY_PROFILE="default"
+      ;;
+  esac
 fi
 
-# Core rules for standard profile (must match self-install.sh CORE_RULES array)
+# Core rules for the default profile (14 rules — must stay in sync with
+# self-install.sh CORE_RULES and ADR-002 rule set).
 COS_INIT_CORE_RULES=(
   "RULES-COMPACT.md"
   "adaptive-bypass.md"
@@ -351,33 +375,24 @@ COS_INIT_CORE_RULES=(
 )
 
 RULES_DIR=".claude/rules/cos"
-if [ -d "$RULES_DIR" ]; then
-  if [ "$EFFICIENCY_PROFILE" = "lean" ]; then
-    # Keep only RULES-COMPACT.md
-    for rule in "$RULES_DIR"/*.md; do
-      [ -f "$rule" ] || continue
-      [ "$(basename "$rule")" = "RULES-COMPACT.md" ] || rm -f "$rule"
+if [ -d "$RULES_DIR" ] && [ "$EFFICIENCY_PROFILE" = "default" ]; then
+  # Keep only core rules (default tier).
+  for rule in "$RULES_DIR"/*.md; do
+    [ -f "$rule" ] || continue
+    base=$(basename "$rule")
+    is_core=false
+    for core in "${COS_INIT_CORE_RULES[@]}"; do
+      [ "$base" = "$core" ] && is_core=true && break
     done
-    rules_installed=1
-  elif [ "$EFFICIENCY_PROFILE" = "standard" ]; then
-    # Keep only core rules
-    for rule in "$RULES_DIR"/*.md; do
-      [ -f "$rule" ] || continue
-      base=$(basename "$rule")
-      is_core=false
-      for core in "${COS_INIT_CORE_RULES[@]}"; do
-        [ "$base" = "$core" ] && is_core=true && break
-      done
-      [ "$is_core" = false ] && rm -f "$rule"
-    done
-    # Recount
-    rules_installed=0
-    for rule in "$RULES_DIR"/*.md; do
-      [ -f "$rule" ] && rules_installed=$((rules_installed + 1))
-    done
-  fi
-  # full profile: keep everything (no filtering)
+    [ "$is_core" = false ] && rm -f "$rule"
+  done
+  # Recount
+  rules_installed=0
+  for rule in "$RULES_DIR"/*.md; do
+    [ -f "$rule" ] && rules_installed=$((rules_installed + 1))
+  done
 fi
+# full profile: keep everything (no filtering)
 
 # ── 9. Create/merge .claude/settings.json ─────────────────────────
 # Generate a project-appropriate settings.json with correct hook paths.
@@ -502,7 +517,7 @@ echo "  Skills: $skills_installed available"
 echo ""
 echo "Next: start coding! The AI knows what to do."
 echo ""
-if [ "$MODE" = "--minimal" ]; then
-  echo "Want more? Re-run with --standard or --full:"
-  echo "  bash $COS_SOURCE_DIR/scripts/cos-init.sh --standard"
+if [ "$MODE" = "--default" ]; then
+  echo "Need maximum coverage? Re-run with --full:"
+  echo "  bash $COS_SOURCE_DIR/scripts/cos-init.sh --full"
 fi

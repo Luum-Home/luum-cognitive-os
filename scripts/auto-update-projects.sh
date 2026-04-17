@@ -121,8 +121,21 @@ while IFS= read -r project_path; do
     '.installations[] | select(.path == $path) | .project_name // "unknown"' \
     "$REGISTRY_FILE" 2>/dev/null || echo "unknown")
   project_mode=$(jq -r --arg path "$project_path" \
-    '.installations[] | select(.path == $path) | .mode // "standard"' \
-    "$REGISTRY_FILE" 2>/dev/null || echo "standard")
+    '.installations[] | select(.path == $path) | .mode // "default"' \
+    "$REGISTRY_FILE" 2>/dev/null || echo "default")
+  # ADR-002: normalize legacy profile names to 'default' before re-running cos-init.
+  case "$project_mode" in
+    default|full)
+      ;;
+    lean|standard|minimal)
+      echo "    Note: normalizing legacy mode '$project_mode' → 'default' (ADR-002)"
+      project_mode="default"
+      ;;
+    *)
+      echo "    Warning: unknown mode '$project_mode' — treating as 'default'"
+      project_mode="default"
+      ;;
+  esac
   project_version=$(jq -r --arg path "$project_path" \
     '.installations[] | select(.path == $path) | .version // "unknown"' \
     "$REGISTRY_FILE" 2>/dev/null || echo "unknown")

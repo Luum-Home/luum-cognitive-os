@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 # Apply Efficiency Profile — Generates settings.json based on the selected profile
 #
-# Reads the efficiency.profile value from cognitive-os.yaml and generates
-# a settings.json with the appropriate hook set for that profile tier.
+# ADR-002 collapsed the 3-tier profile system (lean/standard/full) to two tiers:
+#   default  — curated ~29 hook set + core rules (~8000 tokens/session)
+#   full     — every hook in the repo (~142000 tokens/session)
 #
-# Profiles:
-#   lean     — 7 hooks, minimum overhead
-#   standard — 29 hooks, good governance without waste
-#   full     — all hooks (current settings.json as-is)
+# Legacy values (lean, standard, minimal) are silently remapped to `default`
+# with a stderr note so existing deployments keep working.
 #
 # Usage:
-#   bash scripts/apply-efficiency-profile.sh [lean|standard|full]
+#   bash scripts/apply-efficiency-profile.sh [default|full]
 #
 # If no argument is given, reads from cognitive-os.yaml.
 # Idempotent — safe to run multiple times.
@@ -28,19 +27,26 @@ CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 SETTINGS_FILE="$PROJECT_DIR/.claude/settings.json"
 
 # ── Resolve profile ─────────────────────────────────────────────────
-PROFILE="${1:-}"
-if [ -z "$PROFILE" ]; then
+RAW_PROFILE="${1:-}"
+if [ -z "$RAW_PROFILE" ]; then
   if [ -f "$CONFIG_FILE" ]; then
-    PROFILE=$(grep -A1 '^efficiency:' "$CONFIG_FILE" 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || true)
+    RAW_PROFILE=$(grep -A1 '^efficiency:' "$CONFIG_FILE" 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || true)
   fi
-  PROFILE="${PROFILE:-full}"
+  RAW_PROFILE="${RAW_PROFILE:-default}"
 fi
 
-# Validate profile
-case "$PROFILE" in
-  lean|standard|full) ;;
+# Normalize profile (ADR-002 collapse). Legacy → default with stderr note.
+case "$RAW_PROFILE" in
+  default|full)
+    PROFILE="$RAW_PROFILE"
+    ;;
+  lean|standard|minimal)
+    echo "Note: ADR-002 collapsed '$RAW_PROFILE' into 'default'. Using 'default'." >&2
+    PROFILE="default"
+    ;;
   *)
-    echo "ERROR: Unknown profile '$PROFILE'. Valid: lean, standard, full" >&2
+    echo "ERROR: Unknown profile '$RAW_PROFILE'. Valid: default, full." >&2
+    echo "       Legacy (remapped to default): lean, standard, minimal." >&2
     exit 1
     ;;
 esac
@@ -81,165 +87,143 @@ GROUPEOF
 
 # ── Profile: full ───────────────────────────────────────────────────
 if [ "$PROFILE" = "full" ]; then
-  echo "Profile 'full' keeps settings.json unchanged (all hooks active)."
+  # Full tier keeps the committed settings.json (maximum hook coverage, all
+  # registered events). If a backup exists from a previous 'default' run,
+  # restore it so the fix for confidentiality-enforcer regressions is visible.
+  if [ -f "$SETTINGS_FILE.bak" ]; then
+    cp "$SETTINGS_FILE.bak" "$SETTINGS_FILE"
+    echo "Restored full settings from $SETTINGS_FILE.bak"
+  fi
+  echo "Profile 'full' keeps settings.json as-is (all hooks active, including confidentiality-enforcer)."
   echo ""
-  echo "Current hooks in $SETTINGS_FILE:"
   if [ -f "$SETTINGS_FILE" ]; then
-    # Count hooks
     hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
-    echo "  Total hook commands: $hook_count"
+    echo "Current hooks in $SETTINGS_FILE: $hook_count"
+    # Verify confidentiality-enforcer is still wired (regression check).
+    if ! grep -q 'confidentiality-enforcer' "$SETTINGS_FILE"; then
+      echo "Warning: confidentiality-enforcer.sh is NOT wired in $SETTINGS_FILE." >&2
+      echo "         Re-run hooks/self-install.sh to restore." >&2
+    fi
   else
-    echo "  (settings.json not found)"
+    echo "  (settings.json not found — run the installer first)"
   fi
   exit 0
 fi
 
-# ── Build settings.json for lean/standard ───────────────────────────
-# We build the entire hooks section from scratch for the target profile.
-
+# ── Build settings.json for the default profile ─────────────────────
+# ADR-002 default tier: ~29 curated hooks. Explicitly registers:
+#   auto-verify, auto-refine, dod-gate, session-sanity,
+#   confidentiality-enforcer (PostToolUse Edit|Write — regression-guarded)
 build_settings() {
-  local profile="$1"
+  # SessionStart
+  local session_start
+  session_start=$(hook_group "" \
+    "self-install.sh" \
+    "session-init.sh" \
+    "crash-recovery.sh" \
+    "session-resume.sh" \
+    "orchestrator-mode-detect.sh" \
+    "usage-health-check.sh" \
+    "ecosystem-check.sh" \
+    "pattern-check.sh")
 
-  # SessionStart hooks
-  local session_start=""
-  case "$profile" in
-    lean)
-      session_start=$(hook_group "" \
-        "self-install.sh" \
-        "session-init.sh")
-      ;;
-    standard)
-      session_start=$(hook_group "" \
-        "self-install.sh" \
-        "session-init.sh" \
-        "crash-recovery.sh" \
-        "session-resume.sh" \
-        "orchestrator-mode-detect.sh" \
-        "usage-health-check.sh" \
-        "ecosystem-check.sh" \
-        "pattern-check.sh")
-      ;;
-  esac
+  # PreToolUse
+  # ADR-023: secret-detector runs as PreToolUse on Bash|Edit|Write|MultiEdit
+  # so it can REDACT credentials via hookSpecificOutput.updatedInput before
+  # the command or edit reaches the shell / the disk.
+  local pre_bash
+  pre_bash=$(hook_group "Bash" \
+    "rate-limiter.sh" \
+    "secret-detector.sh")
+  local pre_read
+  pre_read=$(hook_group "Read" \
+    "large-file-advisor.sh")
+  local pre_edit_write
+  pre_edit_write=$(hook_group "Edit|Write|MultiEdit" \
+    "secret-detector.sh")
+  # ADR-022: prompt-quality-llm.sh and completeness-check-llm.sh are
+  # Haiku-evaluated advisories that run alongside the regex variants.
+  local pre_agent
+  pre_agent=$(hook_group "Agent" \
+    "dispatch-gate.sh" \
+    "clarification-gate.sh" \
+    "blast-radius.sh" \
+    "inject-phase-context.sh" \
+    "agent-prelaunch.sh" \
+    "error-pattern-detector.sh" \
+    "predev-completeness-check.sh" \
+    "completeness-check-llm.sh" \
+    "prompt-quality-llm.sh" \
+    "auto-refine.sh" \
+    "registration-check.sh" \
+    "agent-work-tracker.sh")
 
-  # PreToolUse hooks
-  local pre_bash="" pre_read="" pre_edit_write="" pre_agent=""
-  case "$profile" in
-    lean)
-      # No PreToolUse hooks for lean
-      pre_bash=""
-      pre_read=""
-      pre_edit_write=""
-      pre_agent=""
-      ;;
-    standard)
-      # ADR-023: secret-detector also runs as PreToolUse on Bash|Edit|Write|MultiEdit
-      # so it can REDACT literal credentials via hookSpecificOutput.updatedInput
-      # before the command/edit reaches the shell or the disk.
-      pre_bash=$(hook_group "Bash" \
-        "rate-limiter.sh" \
-        "secret-detector.sh")
-      pre_read=$(hook_group "Read" \
-        "large-file-advisor.sh")
-      pre_edit_write=$(hook_group "Edit|Write|MultiEdit" \
-        "secret-detector.sh")
-      # ADR-022: prompt-quality-llm.sh and completeness-check-llm.sh are
-      # Haiku-evaluated advisories that run alongside the regex variants.
-      pre_agent=$(hook_group "Agent" \
-        "dispatch-gate.sh" \
-        "clarification-gate.sh" \
-        "blast-radius.sh" \
-        "inject-phase-context.sh" \
-        "agent-prelaunch.sh" \
-        "error-pattern-detector.sh" \
-        "predev-completeness-check.sh" \
-        "completeness-check-llm.sh" \
-        "prompt-quality-llm.sh" \
-        "registration-check.sh" \
-        "agent-work-tracker.sh")
-      ;;
-  esac
+  # PostToolUse
+  local post_bash
+  post_bash=$(hook_group "Bash" \
+    "error-pipeline.sh" \
+    "result-truncator.sh" \
+    "adr-detector.sh")
+  local post_bash_edit_write
+  post_bash_edit_write=$(hook_group "Bash|Edit|Write" \
+    "auto-checkpoint.sh")
+  # confidentiality-enforcer must stay wired in the default tier — its
+  # absence was the regression flagged in the UX8 scope guard.
+  local post_edit
+  post_edit=$(hook_group "Edit|Write" \
+    "secret-detector.sh" \
+    "content-policy.sh" \
+    "confidentiality-enforcer.sh" \
+    "doc-sync-detector.sh" \
+    "wiring-check.sh")
+  # ADR-022: confidence-gate-llm.sh is the Haiku-evaluated advisory
+  # variant of confidence-gate.sh; runs alongside it.
+  # auto-verify + dod-gate gate every agent completion.
+  local post_agent
+  post_agent=$(hook_group "Agent" \
+    "claim-validator.sh" \
+    "completion-gate.sh" \
+    "agent-checkpoint.sh" \
+    "trust-score-validator.sh" \
+    "confidence-gate-llm.sh" \
+    "auto-verify.sh" \
+    "dod-gate.sh" \
+    "session-sanity.sh" \
+    "audit-id-enricher.sh" \
+    "state-heartbeat.sh" \
+    "agent-work-tracker.sh" \
+    "task-panel-sync.sh" \
+    "task-bridge-notify.sh")
 
-  # PostToolUse hooks
-  local post_bash="" post_bash_edit_write="" post_edit="" post_agent=""
-  case "$profile" in
-    lean)
-      post_bash=$(hook_group "Bash" \
-        "error-pipeline.sh")
-      post_edit=$(hook_group "Edit|Write" \
-        "secret-detector.sh" \
-        "confidentiality-enforcer.sh")
-      post_agent=$(hook_group "Agent" \
-        "agent-checkpoint.sh")
-      ;;
-    standard)
-      post_bash=$(hook_group "Bash" \
-        "error-pipeline.sh" \
-        "result-truncator.sh" \
-        "adr-detector.sh")
-      post_bash_edit_write=$(hook_group "Bash|Edit|Write" \
-        "auto-checkpoint.sh")
-      post_edit=$(hook_group "Edit|Write" \
-        "secret-detector.sh" \
-        "content-policy.sh" \
-        "confidentiality-enforcer.sh" \
-        "doc-sync-detector.sh" \
-        "wiring-check.sh")
-      # ADR-022: confidence-gate-llm.sh is the Haiku-evaluated advisory
-      # variant of confidence-gate.sh; runs alongside it.
-      post_agent=$(hook_group "Agent" \
-        "claim-validator.sh" \
-        "completion-gate.sh" \
-        "agent-checkpoint.sh" \
-        "trust-score-validator.sh" \
-        "confidence-gate-llm.sh" \
-        "audit-id-enricher.sh" \
-        "state-heartbeat.sh" \
-        "agent-work-tracker.sh" \
-        "task-panel-sync.sh" \
-        "task-bridge-notify.sh")
-      ;;
-  esac
-
-  # Stop hooks
-  local stop_hooks=""
-  case "$profile" in
-    lean)
-      stop_hooks=$(hook_group "" \
-        "session-cleanup.sh")
-      ;;
-    standard)
-      stop_hooks=$(hook_group "" \
-        "session-learning.sh" \
-        "session-cleanup.sh" \
-        "git-context-capture.sh" \
-        "session-changelog.sh" \
-        "test-baseline-diff.sh" \
-        "session-hygiene.sh" \
-        "mlflow-sync.sh" \
-        "recap-sync.sh")
-      ;;
-  esac
+  # Stop
+  local stop_hooks
+  stop_hooks=$(hook_group "" \
+    "session-learning.sh" \
+    "session-cleanup.sh" \
+    "git-context-capture.sh" \
+    "session-changelog.sh" \
+    "test-baseline-diff.sh" \
+    "session-hygiene.sh" \
+    "mlflow-sync.sh" \
+    "recap-sync.sh")
 
   # ── Assemble JSON ───────────────────────────────────────────────
   printf '{\n  "hooks": {\n    "SessionStart": [\n'
   printf '%s\n' "$session_start"
   printf '    ],\n'
 
-  # PreToolUse — only emit if there are entries
-  if [ -n "$pre_bash" ] || [ -n "$pre_read" ] || [ -n "$pre_edit_write" ] || [ -n "$pre_agent" ]; then
-    printf '    "PreToolUse": [\n'
-    local pre_first=true
-    for group in "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_agent"; do
-      [ -z "$group" ] && continue
-      if [ "$pre_first" = true ]; then
-        pre_first=false
-      else
-        printf ',\n'
-      fi
-      printf '%s' "$group"
-    done
-    printf '\n    ],\n'
-  fi
+  printf '    "PreToolUse": [\n'
+  local pre_first=true
+  for group in "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_agent"; do
+    [ -z "$group" ] && continue
+    if [ "$pre_first" = true ]; then
+      pre_first=false
+    else
+      printf ',\n'
+    fi
+    printf '%s' "$group"
+  done
+  printf '\n    ],\n'
 
   printf '    "PostToolUse": [\n'
   local post_first=true
@@ -262,50 +246,40 @@ build_settings() {
 # ── Write settings.json ─────────────────────────────────────────────
 mkdir -p "$(dirname "$SETTINGS_FILE")"
 
-# Back up current settings if it exists
+# Back up current settings if it exists (so `full` can restore it later).
 if [ -f "$SETTINGS_FILE" ]; then
   cp "$SETTINGS_FILE" "$SETTINGS_FILE.bak"
   echo "Backed up current settings to $SETTINGS_FILE.bak"
 fi
 
-build_settings "$PROFILE" > "$SETTINGS_FILE"
+build_settings > "$SETTINGS_FILE"
 
 # Count hooks in new settings
 new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
-echo "Applied profile '$PROFILE': $new_hook_count hook commands in settings.json"
+echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
+
+# Sanity: confirm the regression guards are wired.
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh; do
+  if ! grep -q "$hook" "$SETTINGS_FILE"; then
+    echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
+  fi
+done
 
 # ── Summary ─────────────────────────────────────────────────────────
 echo ""
-echo "Hook summary for profile '$PROFILE':"
-case "$PROFILE" in
-  lean)
-    echo "  SessionStart: self-install.sh, session-init.sh"
-    echo "  PostToolUse Bash: error-pipeline.sh"
-    echo "  PostToolUse Edit|Write: secret-detector.sh, confidentiality-enforcer.sh"
-    echo "  PostToolUse Agent: agent-checkpoint.sh"
-    echo "  Stop: session-cleanup.sh"
-    echo "  Total: 7 hooks"
-    ;;
-  standard)
-    echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh"
-    echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact)"
-    echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
-    echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh"
-    echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh"
-    echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
-    echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh"
-    echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, audit-id-enricher.sh, state-heartbeat.sh"
-    echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, test-baseline-diff.sh, session-hygiene.sh, recap-sync.sh"
-    echo "  Total: 31 hooks"
-    ;;
-esac
+echo "Hook summary for profile 'default' (ADR-002):"
+echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh"
+echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact)"
+echo "  PreToolUse Read: large-file-advisor.sh"
+echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
+echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, auto-refine.sh, registration-check.sh, agent-work-tracker.sh"
+echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.sh"
+echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
+echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"
+echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh"
+echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, test-baseline-diff.sh, session-hygiene.sh, mlflow-sync.sh, recap-sync.sh"
+echo "  Total hook commands: $new_hook_count"
 
 echo ""
 echo "To revert to full hooks: bash scripts/apply-efficiency-profile.sh full"
 echo "  (This restores settings.json from settings.json.bak)"
-
-# If reverting to full, restore backup
-if [ "$PROFILE" = "full" ] && [ -f "$SETTINGS_FILE.bak" ]; then
-  cp "$SETTINGS_FILE.bak" "$SETTINGS_FILE"
-  echo "Restored full settings from backup."
-fi
