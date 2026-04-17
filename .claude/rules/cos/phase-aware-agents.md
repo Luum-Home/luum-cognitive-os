@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/phase-aware-agents.md
+../../../rules/phase-aware-agents.md

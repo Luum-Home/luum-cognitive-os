@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/RULES-COMPACT.md
+../../../rules/RULES-COMPACT.md

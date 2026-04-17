@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/error-learning.md
+../../../rules/error-learning.md

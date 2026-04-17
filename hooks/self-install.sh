@@ -54,6 +54,29 @@ resolve_dest() {
   esac
 }
 
+# ── Helper: portable relative path from dir_of_link -> target ─────────
+# Usage: rel_path <target_abs> <link_abs>
+# Portable across macOS and Linux (no GNU-only flags).
+rel_path() {
+  local target="$1" link="$2"
+  local link_dir
+  link_dir=$(dirname "$link")
+  python3 - "$target" "$link_dir" <<'PY'
+import os, sys
+target, start = sys.argv[1], sys.argv[2]
+print(os.path.relpath(target, start))
+PY
+}
+
+# ── Helper: create a relative symlink (replaces `ln -sf abs_src link`) ─
+# Usage: ln_rel <target_abs> <link_abs>
+ln_rel() {
+  local target="$1" link="$2"
+  local rel
+  rel=$(rel_path "$target" "$link")
+  ln -sf "$rel" "$link"
+}
+
 # ── Helper: sync directory as flat symlinks ───────────────────────────
 # Usage: sync_dir <src_dir> <dst_dir> <glob_pattern>
 sync_dir() {
@@ -77,7 +100,7 @@ sync_dir() {
     base=$(basename "$file")
     local link="$dst/$base"
     if [ ! -e "$link" ]; then
-      ln -sf "$file" "$link"
+      ln_rel "$file" "$link"
       added=$((added + 1))
     fi
   done
@@ -106,7 +129,7 @@ sync_tree() {
     base=$(basename "$dir")
     local link="$dst/$base"
     if [ ! -e "$link" ]; then
-      ln -sf "$dir" "$link"
+      ln_rel "$dir" "$link"
       added=$((added + 1))
     fi
   done
@@ -118,7 +141,7 @@ sync_tree() {
     base=$(basename "$file")
     local link="$dst/$base"
     if [ ! -e "$link" ]; then
-      ln -sf "$file" "$link"
+      ln_rel "$file" "$link"
       added=$((added + 1))
     fi
   done
@@ -323,7 +346,7 @@ if [[ "$SYNC_ALL_RULES" == "true" ]]; then
     [[ "$is_excluded" == "true" ]] && continue
     link="$cos_rules_dir/$base"
     if [ ! -e "$link" ]; then
-      ln -sf "$src" "$link"
+      ln_rel "$src" "$link"
       added=$((added + 1))
     fi
   done
@@ -342,7 +365,7 @@ else
     link="$cos_rules_dir/$rule"
     [ -f "$src" ] || continue
     if [ ! -e "$link" ]; then
-      ln -sf "$src" "$link"
+      ln_rel "$src" "$link"
       added=$((added + 1))
     fi
   done

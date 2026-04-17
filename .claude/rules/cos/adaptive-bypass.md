@@ -1,1 +1,1 @@
-/Users/marialuzmontiel/projects/luum/luum-agent-os/rules/adaptive-bypass.md
+../../../rules/adaptive-bypass.md
