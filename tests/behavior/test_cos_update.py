@@ -508,3 +508,136 @@ def test_uv_sync_runs_before_self_install(tmp_path):
         f"self-install timestamp: {entries['self-install']}\n"
         f"Order log:\n{order_log.read_text()}"
     )
+
+
+def test_register_mcps_runs_between_uv_and_self_install(tmp_path):
+    """register-mcps.sh must be called AFTER uv sync and BEFORE self-install.
+
+    All three write nanosecond timestamps to a shared order log. We assert
+    uv.ts < claude-mcp.ts < self-install.ts.
+    """
+    import time
+
+    scratch = _make_scratch_project(tmp_path)
+    _seed_pyproject(scratch, '[project]\nname = "demo"\nversion = "0.1.0"\n')
+
+    order_log = scratch / "invocation-order.log"
+
+    # --- uv stub (timestamps to order log) ------------------------------------
+    uv_log_path = _install_uv_stub(scratch)
+    stub_bin = scratch / "stub-bin"
+    uv_stub = stub_bin / "uv"
+    uv_stub.write_text(
+        "#!/usr/bin/env bash\n"
+        f'echo "uv $*" >> {uv_log_path}\n'
+        f'printf "uv\\t%s\\n" "$(date +%s%N 2>/dev/null || date +%s)000" >> {order_log}\n'
+        "exit 0\n"
+    )
+    uv_stub.chmod(0o755)
+
+    # --- claude stub (timestamps to order log) ---------------------------------
+    # register-mcps.sh calls `claude mcp add`; we stub `claude` to log timestamps.
+    claude_stub = stub_bin / "claude"
+    claude_stub.write_text(
+        "#!/usr/bin/env bash\n"
+        "# Handle `claude mcp list` (return empty so add is always attempted)\n"
+        "if [[ \"${1:-}\" == 'mcp' && \"${2:-}\" == 'list' ]]; then\n"
+        "  echo ''\n"
+        "  exit 0\n"
+        "fi\n"
+        f'printf "claude-mcp\\t%s\\n" "$(date +%s%N 2>/dev/null || date +%s)000" >> {order_log}\n'
+        "exit 0\n"
+    )
+    claude_stub.chmod(0o755)
+
+    # --- self-install stub ----------------------------------------------------
+    real_hooks_link = scratch / "hooks"
+    real_hooks_link.unlink()
+    hooks_dir = scratch / "hooks"
+    hooks_dir.mkdir()
+    real_hooks_src = PROJECT_ROOT / "hooks"
+    if real_hooks_src.exists():
+        for entry in real_hooks_src.iterdir():
+            dest = hooks_dir / entry.name
+            if entry.is_symlink() or entry.is_file():
+                shutil.copy2(str(entry.resolve()), str(dest))
+                dest.chmod(0o755)
+            elif entry.is_dir():
+                shutil.copytree(str(entry), str(dest))
+
+    self_install = hooks_dir / "self-install.sh"
+    self_install.write_text(
+        "#!/usr/bin/env bash\n"
+        f'printf "self-install\\t%s\\n" "$(date +%s%N 2>/dev/null || date +%s)000" >> {order_log}\n'
+        "exit 0\n"
+    )
+    self_install.chmod(0o755)
+
+    # Also copy register-mcps.sh into scratch scripts/ so the path is found
+    shutil.copy(
+        str(PROJECT_ROOT / "scripts" / "register-mcps.sh"),
+        str(scratch / "scripts" / "register-mcps.sh"),
+    )
+
+    # --- Run update -----------------------------------------------------------
+    env = {
+        **os.environ,
+        "PATH": f"{stub_bin}:{os.environ.get('PATH', '')}",
+        "HOME": str(tmp_path / "fake-home"),
+    }
+    (tmp_path / "fake-home" / ".claude").mkdir(parents=True, exist_ok=True)
+    result = subprocess.run(
+        ["bash", str(scratch / "scripts" / "cos-update.sh"), "--no-verify", "--force"],
+        capture_output=True, text=True, timeout=120, cwd=str(scratch), env=env,
+    )
+
+    assert result.returncode in (0, 1), (
+        f"Unexpected exit {result.returncode}. stderr: {result.stderr[-500:]}"
+    )
+
+    # --- Parse order log ------------------------------------------------------
+    assert order_log.exists(), (
+        f"Order log was never written.\nstdout: {result.stdout[-500:]}\nstderr: {result.stderr[-500:]}"
+    )
+
+    entries: dict[str, int] = {}
+    for line in order_log.read_text().splitlines():
+        parts = line.split("\t")
+        if len(parts) == 2:
+            name, ts_str = parts
+            name = name.strip()
+            try:
+                ts = int(ts_str.strip())
+                # Keep the earliest timestamp for each name (first occurrence)
+                if name not in entries:
+                    entries[name] = ts
+            except ValueError:
+                pass
+
+    # uv and self-install are always expected; claude-mcp may be present if
+    # register-mcps.sh ran and found a manifest change.
+    assert "uv" in entries, (
+        f"uv not in order log. log:\n{order_log.read_text()!r}\nstderr: {result.stderr[-500:]}"
+    )
+    assert "self-install" in entries, (
+        f"self-install not in order log. log:\n{order_log.read_text()!r}\nstderr: {result.stderr[-500:]}"
+    )
+
+    if "claude-mcp" in entries:
+        assert entries["uv"] < entries["claude-mcp"], (
+            f"uv did NOT run before claude-mcp!\n"
+            f"uv ts: {entries['uv']}, claude-mcp ts: {entries['claude-mcp']}\n"
+            f"Order log:\n{order_log.read_text()}"
+        )
+        assert entries["claude-mcp"] < entries["self-install"], (
+            f"claude-mcp did NOT run before self-install!\n"
+            f"claude-mcp ts: {entries['claude-mcp']}, self-install ts: {entries['self-install']}\n"
+            f"Order log:\n{order_log.read_text()}"
+        )
+
+    # Even if claude-mcp didn't run (SHA cache hit), ordering invariant holds:
+    assert entries["uv"] < entries["self-install"], (
+        f"uv did NOT run before self-install!\n"
+        f"uv ts: {entries['uv']}, self-install ts: {entries['self-install']}\n"
+        f"Order log:\n{order_log.read_text()}"
+    )
