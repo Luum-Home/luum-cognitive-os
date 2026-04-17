@@ -394,13 +394,13 @@ func TestRegistryDetect_PriorityOrder(t *testing.T) {
 
 // --- BuildResponse format tests for all providers ---
 
-func TestAllProviders_BuildResponse_Format(t *testing.T) {
+// TestBuildResponse_Claude_Codex_Gemini verifies that the Claude-compatible
+// providers (Claude, Codex, Gemini) emit the hookSpecificOutput envelope.
+func TestBuildResponse_Claude_Codex_Gemini(t *testing.T) {
 	providers := []Provider{
 		NewClaudeProvider(),
 		NewCodexProvider(),
 		NewGeminiProvider(),
-		NewCursorProvider(),
-		NewWindsurfProvider(),
 	}
 
 	for _, p := range providers {
@@ -419,7 +419,7 @@ func TestAllProviders_BuildResponse_Format(t *testing.T) {
 
 			output, ok := result["hookSpecificOutput"].(map[string]any)
 			if !ok {
-				t.Fatal("missing hookSpecificOutput key")
+				t.Fatalf("missing hookSpecificOutput key in response: %s", data)
 			}
 			if output["permissionDecision"] != "deny" {
 				t.Errorf("decision = %q, want %q", output["permissionDecision"], "deny")
@@ -429,6 +429,98 @@ func TestAllProviders_BuildResponse_Format(t *testing.T) {
 			}
 		})
 	}
+}
+
+// TestCursorBuildResponse_VendorEnvelope verifies that Cursor emits its
+// vendor-conformant {"action","message"} envelope (not hookSpecificOutput).
+func TestCursorBuildResponse_VendorEnvelope(t *testing.T) {
+	p := NewCursorProvider()
+
+	t.Run("deny", func(t *testing.T) {
+		resp := p.BuildResponse(nil, "deny", "blocked by policy", "")
+		data, err := json.Marshal(resp)
+		if err != nil {
+			t.Fatalf("marshal: %v", err)
+		}
+
+		var result map[string]any
+		if err := json.Unmarshal(data, &result); err != nil {
+			t.Fatalf("unmarshal: %v", err)
+		}
+
+		if _, hasHSO := result["hookSpecificOutput"]; hasHSO {
+			t.Error("cursor response must NOT have hookSpecificOutput (wrong envelope)")
+		}
+		if result["action"] != "deny" {
+			t.Errorf("action = %q, want %q", result["action"], "deny")
+		}
+		if result["message"] != "blocked by policy" {
+			t.Errorf("message = %q, want %q", result["message"], "blocked by policy")
+		}
+	})
+
+	t.Run("allow", func(t *testing.T) {
+		resp := p.BuildResponse(nil, "allow", "", "")
+		data, err := json.Marshal(resp)
+		if err != nil {
+			t.Fatalf("marshal: %v", err)
+		}
+
+		var result map[string]any
+		if err := json.Unmarshal(data, &result); err != nil {
+			t.Fatalf("unmarshal: %v", err)
+		}
+
+		if result["action"] != "allow" {
+			t.Errorf("action = %q, want %q", result["action"], "allow")
+		}
+	})
+}
+
+// TestWindsurfBuildResponse_VendorEnvelope verifies that Windsurf emits its
+// vendor-conformant {"cascadeDecision","reason"} envelope.
+func TestWindsurfBuildResponse_VendorEnvelope(t *testing.T) {
+	p := NewWindsurfProvider()
+
+	t.Run("deny", func(t *testing.T) {
+		resp := p.BuildResponse(nil, "deny", "blocked by policy", "")
+		data, err := json.Marshal(resp)
+		if err != nil {
+			t.Fatalf("marshal: %v", err)
+		}
+
+		var result map[string]any
+		if err := json.Unmarshal(data, &result); err != nil {
+			t.Fatalf("unmarshal: %v", err)
+		}
+
+		if _, hasHSO := result["hookSpecificOutput"]; hasHSO {
+			t.Error("windsurf response must NOT have hookSpecificOutput (wrong envelope)")
+		}
+		if result["cascadeDecision"] != "deny" {
+			t.Errorf("cascadeDecision = %q, want %q", result["cascadeDecision"], "deny")
+		}
+		if result["reason"] != "blocked by policy" {
+			t.Errorf("reason = %q, want %q", result["reason"], "blocked by policy")
+		}
+	})
+
+	t.Run("allow", func(t *testing.T) {
+		resp := p.BuildResponse(nil, "allow", "", "")
+		data, err := json.Marshal(resp)
+		if err != nil {
+			t.Fatalf("marshal: %v", err)
+		}
+
+		var result map[string]any
+		if err := json.Unmarshal(data, &result); err != nil {
+			t.Fatalf("unmarshal: %v", err)
+		}
+
+		if result["cascadeDecision"] != "allow" {
+			t.Errorf("cascadeDecision = %q, want %q", result["cascadeDecision"], "allow")
+		}
+	})
 }
 
 // --- Provider Name tests ---

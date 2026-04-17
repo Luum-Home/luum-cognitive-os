@@ -120,6 +120,14 @@ type registration struct {
 	predicate Predicate
 }
 
+// Registration is the exported view of a single registry entry.
+// It is used by callers that need to inspect or copy the registry (e.g. to
+// build a filtered registry for --disable support).
+type Registration struct {
+	Validator Validator
+	Predicate Predicate
+}
+
 // Registry manages validator registrations and selects applicable validators
 // for a given hook context.
 type Registry struct {
@@ -139,6 +147,20 @@ func (r *Registry) Register(v Validator, pred Predicate) {
 		validator: v,
 		predicate: pred,
 	})
+}
+
+// Registrations returns a snapshot of all current registrations as exported
+// Registration values.  The slice is a copy; modifying it does not affect the
+// registry.
+func (r *Registry) Registrations() []Registration {
+	out := make([]Registration, len(r.registrations))
+	for i, reg := range r.registrations {
+		out[i] = Registration{
+			Validator: reg.validator,
+			Predicate: reg.predicate,
+		}
+	}
+	return out
 }
 
 // FindValidators returns all validators whose predicates match the context.
