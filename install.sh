@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 # install.sh — Install Cognitive OS into the current project
+#
+# UX1 + UX8 — ADR-002 collapsed the 3-tier profile system to 2 tiers:
+#   default  — 10 curated core skills, ~29 standard hooks, 14 core rules (~8000 tokens/session)
+#   --full   — every skill, hook, and rule (~142000 tokens/session)
+#
+# Legacy flags (--lean, --standard) are silently remapped to `default` with a
+# stderr migration notice. See docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md.
 set -euo pipefail
 
 REPO_URL="https://github.com/luum-home/luum-cognitive-os.git"
@@ -9,6 +16,8 @@ FORCE="${COGNITIVE_OS_FORCE:-false}"
 TEMP_DIR=$(mktemp -d)
 SOURCE_DIR=""
 FROM_FLAG=""
+PROFILE=""             # Resolved profile: default | full
+PROFILE_SOURCE=""      # flag | env | auto
 
 cleanup() { rm -rf "$TEMP_DIR"; }
 trap cleanup EXIT
@@ -24,31 +33,44 @@ IMPORTANT: Run this command FROM your project directory, not from the
 Cognitive OS repo. The installer creates .cognitive-os/ and updates
 .claude/ in the current working directory.
 
+Profiles (ADR-002):
+  (default)      10 curated core skills, ~29 standard hooks, 14 core rules
+                   (~8000 tokens/session overhead). Works out of the box.
+  --full         Every skill, hook, and rule available
+                   (~142000 tokens/session). For mature projects and COS
+                   contributors.
+
+Legacy flags:
+  --lean, --standard, --profile=lean|standard
+                 Silently remapped to the default profile with a stderr
+                 migration notice. Kept for backwards compatibility.
+
 Options:
-  --from PATH    Use a local Cognitive OS repo instead of cloning from GitHub
-  --force        Overwrite existing installation without prompting
-  --help         Show this help message
+  --full             Install everything (see above).
+  --profile=NAME     Explicit profile: 'default' or 'full'. Legacy values
+                     ('lean', 'standard') are accepted and remapped.
+  --from PATH        Use a local Cognitive OS repo instead of cloning.
+  --force            Overwrite existing installation without prompting.
+  --help, -h         Show this help message.
 
 Environment variables:
   COGNITIVE_OS_VERSION   Git branch/tag to install (default: main)
   COGNITIVE_OS_FORCE     Set to "true" to overwrite without prompting
-
-Source detection:
-  If run from within the Cognitive OS repo (hooks/, rules/, skills/ exist
-  relative to the script), the local repo is used automatically.
-  Use --from to specify a different local repo path explicitly.
+  COS_PROFILE            Override profile: 'default' or 'full'. Legacy
+                         values ('lean', 'standard') are remapped.
 
 Examples:
-  # Install into your project from a local Cognitive OS repo
+  # Default install (no flag — recommended for first time)
   cd /path/to/your-project
   /path/to/luum-agent-os/install.sh
 
-  # Same thing with explicit --from
-  cd /path/to/your-project
+  # Full install (everything)
+  /path/to/luum-agent-os/install.sh --full
+
+  # Install from local repo
   bash install.sh --from /path/to/luum-agent-os
 
   # Install from GitHub (remote)
-  cd /path/to/your-project
   curl -sL https://raw.githubusercontent.com/.../install.sh | bash
 
   # Force overwrite existing installation
@@ -57,11 +79,34 @@ USAGE
   exit 0
 }
 
+# Normalize a raw profile value (from flag or env) to the ADR-002 canonical
+# set. Legacy values are remapped with a stderr note. Unknown values fail.
+normalize_profile() {
+  local raw="$1"
+  local context="$2"   # "flag" | "env"
+  case "$raw" in
+    default|full)
+      PROFILE="$raw"
+      ;;
+    lean|standard|minimal)
+      echo "Note: ADR-002 collapsed '$raw' into 'default'. Using 'default'." >&2
+      echo "      Drop the flag next time: https://github.com/.../ADR-002-simplify-profiles.md" >&2
+      PROFILE="default"
+      ;;
+    *)
+      echo "Error: unknown profile '$raw' (from $context)." >&2
+      echo "       Valid profiles (ADR-002): default, full." >&2
+      echo "       Legacy (remapped to default): lean, standard." >&2
+      exit 1
+      ;;
+  esac
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --from)
       if [[ -z "${2:-}" ]]; then
-        echo "Error: --from requires a path argument."
+        echo "Error: --from requires a path argument." >&2
         exit 1
       fi
       FROM_FLAG="$2"
@@ -71,16 +116,55 @@ while [[ $# -gt 0 ]]; do
       FORCE="true"
       shift
       ;;
+    --full)
+      normalize_profile "full" "flag"
+      PROFILE_SOURCE="flag"
+      shift
+      ;;
+    --lean|--standard)
+      # Legacy shorthand — remap via normalize_profile for the stderr note.
+      normalize_profile "${1#--}" "flag"
+      PROFILE_SOURCE="flag"
+      shift
+      ;;
+    --profile=*)
+      normalize_profile "${1#--profile=}" "flag"
+      PROFILE_SOURCE="flag"
+      shift
+      ;;
+    --profile)
+      if [[ -z "${2:-}" ]]; then
+        echo "Error: --profile requires a name argument." >&2
+        exit 1
+      fi
+      normalize_profile "$2" "flag"
+      PROFILE_SOURCE="flag"
+      shift 2
+      ;;
     --help|-h)
       show_help
       ;;
     *)
-      echo "Unknown option: $1"
-      echo "Run 'install.sh --help' for usage."
+      echo "Unknown option: $1" >&2
+      echo "Valid: --full, --profile=NAME, --from PATH, --force, --help" >&2
+      echo "Legacy (remapped): --lean, --standard" >&2
+      echo "Run 'install.sh --help' for full usage." >&2
       exit 1
       ;;
   esac
 done
+
+# ENV override (only if no explicit flag was passed).
+if [ -z "$PROFILE" ] && [ -n "${COS_PROFILE:-}" ]; then
+  normalize_profile "$COS_PROFILE" "env"
+  PROFILE_SOURCE="env"
+fi
+
+# Auto default: ADR-002 removed auto-detection. Default is always `default`.
+if [ -z "$PROFILE" ]; then
+  PROFILE="default"
+  PROFILE_SOURCE="auto"
+fi
 
 # ── Source detection ──────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -88,15 +172,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ -n "$FROM_FLAG" ]; then
   # Explicit --from flag
   if [ ! -d "$FROM_FLAG" ]; then
-    echo "Error: --from path does not exist: $FROM_FLAG"
+    echo "Error: --from path does not exist: $FROM_FLAG" >&2
     exit 1
   fi
   FROM_FLAG="$(cd "$FROM_FLAG" && pwd)"
   if [ -d "$FROM_FLAG/hooks" ] && [ -d "$FROM_FLAG/rules" ] && [ -d "$FROM_FLAG/skills" ]; then
     SOURCE_DIR="$FROM_FLAG"
   else
-    echo "Error: --from path does not look like a Cognitive OS repo."
-    echo "       Expected hooks/, rules/, skills/ directories in: $FROM_FLAG"
+    echo "Error: --from path does not look like a Cognitive OS repo." >&2
+    echo "       Expected hooks/, rules/, skills/ directories in: $FROM_FLAG" >&2
     exit 1
   fi
 elif [ -d "$SCRIPT_DIR/hooks" ] && [ -d "$SCRIPT_DIR/rules" ] && [ -d "$SCRIPT_DIR/skills" ]; then
@@ -106,19 +190,21 @@ fi
 
 echo "=== Cognitive OS Installer ==="
 echo ""
+echo "Profile: $PROFILE (source: $PROFILE_SOURCE)"
+echo ""
 
 # Guard: prevent installing COS into its own repo
 CWD="$(pwd)"
 if [ -n "$SOURCE_DIR" ] && [ "$CWD" = "$SOURCE_DIR" ]; then
-  echo "Error: You are running the installer FROM the Cognitive OS repo itself."
-  echo ""
-  echo "The installer installs into the CURRENT DIRECTORY. You should run it"
-  echo "from your PROJECT directory, not from the Cognitive OS source."
-  echo ""
-  echo "Example:"
-  echo "  cd /path/to/your-project"
-  echo "  $SOURCE_DIR/install.sh"
-  echo ""
+  echo "Error: You are running the installer FROM the Cognitive OS repo itself." >&2
+  echo "" >&2
+  echo "The installer installs into the CURRENT DIRECTORY. You should run it" >&2
+  echo "from your PROJECT directory, not from the Cognitive OS source." >&2
+  echo "" >&2
+  echo "Example:" >&2
+  echo "  cd /path/to/your-project" >&2
+  echo "  $SOURCE_DIR/install.sh" >&2
+  echo "" >&2
   exit 1
 fi
 
@@ -130,7 +216,7 @@ fi
 
 # Check prerequisites (git only needed for remote install)
 if [ -z "$SOURCE_DIR" ] && ! command -v git >/dev/null 2>&1; then
-  echo "Error: git is required but not installed."
+  echo "Error: git is required but not installed." >&2
   exit 1
 fi
 
@@ -237,15 +323,18 @@ prepare_source
 COS_INIT="$TEMP_DIR/scripts/cos-init.sh"
 
 if [ ! -f "$COS_INIT" ]; then
-  echo "Error: cos-init.sh not found in source."
+  echo "Error: cos-init.sh not found in source." >&2
   exit 1
 fi
 
 echo "Running cos-init.sh..."
+# Map canonical profile → cos-init.sh flag. ADR-002: default + full only.
+COS_INIT_FLAG="--$PROFILE"
+
 # COS_SOURCE_DIR tells cos-init.sh where to copy files from (temp dir).
 # COS_ORIGINAL_SOURCE tells it the real source repo path for the registry,
 # so auto-update-projects.sh can find projects installed from this repo.
-COS_SOURCE_DIR="$TEMP_DIR" COS_ORIGINAL_SOURCE="${SOURCE_DIR:-}" bash "$COS_INIT" --standard
+COS_SOURCE_DIR="$TEMP_DIR" COS_ORIGINAL_SOURCE="${SOURCE_DIR:-}" bash "$COS_INIT" "$COS_INIT_FLAG"
 
 # ── Install CLAUDE.md template if not present ─────────────────────────
 if [ ! -f ".claude/CLAUDE.md" ]; then
@@ -259,15 +348,37 @@ else
   echo "Existing .claude/CLAUDE.md preserved (not overwritten)."
 fi
 
+# ── Post-install summary (UX1) ────────────────────────────────────────
+# Count what actually landed under .claude/skills/ — the driver surface
+# that the Claude Code harness reads (ADR-001).
+skills_exposed=0
+if [ -d ".claude/skills" ]; then
+  for d in .claude/skills/*/; do
+    [ -d "$d" ] && skills_exposed=$((skills_exposed + 1))
+  done
+fi
+
 echo ""
-echo "Cognitive OS installed successfully!"
+echo "Cognitive OS installed successfully."
+echo ""
+echo "Profile:        $PROFILE"
+echo "Skills exposed: $skills_exposed (under .claude/skills/)"
 echo ""
 echo "Project structure:"
 echo "  .cognitive-os/hooks/cos/     — COS hooks (namespaced)"
-echo "  .cognitive-os/skills/cos/    — COS skills (namespaced)"
+echo "  .cognitive-os/skills/cos/    — COS skills (kernel path, namespaced)"
 echo "  .cognitive-os/templates/cos/ — COS templates (namespaced)"
+echo "  .claude/skills/              — Skills exposed to the harness (flat, ADR-001)"
 echo "  .claude/rules/cos/           — COS rules (namespaced)"
 echo "  .claude/settings.json        — Hooks (project + COS merged)"
 echo ""
+
+if [ "$skills_exposed" -eq 0 ]; then
+  echo "WARNING: 0 skills are exposed to the harness under .claude/skills/." >&2
+  echo "         This is likely a bug — run 'bash hooks/self-install.sh' or" >&2
+  echo "         re-run this installer with --force to repair." >&2
+  echo "" >&2
+fi
+
 echo "Your existing .claude/ configuration is preserved."
 echo ""
