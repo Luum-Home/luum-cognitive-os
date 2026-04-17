@@ -75,8 +75,13 @@ mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 SNAPSHOT_FILE="$SESSIONS_DIR/agent-${AGENT_ID}-snapshot.json"
 
 # Determine if working tree has changes
+# NOTE: we check porcelain status but EXCLUDE our own session/metrics dirs
+# because git stash --include-untracked would otherwise sweep them away.
 TREE_DIRTY=false
-if [ -n "$(git -C "$PROJECT_DIR" status --porcelain 2>/dev/null)" ]; then
+STATUS_OUT=$(git -C "$PROJECT_DIR" status --porcelain 2>/dev/null || true)
+# Filter out .cognitive-os/ paths (our bookkeeping) to decide dirtiness
+FILTERED_STATUS=$(echo "$STATUS_OUT" | grep -v -E '(^\?\? |^.. )\.cognitive-os/' || true)
+if [ -n "$FILTERED_STATUS" ]; then
   TREE_DIRTY=true
 fi
 
@@ -86,9 +91,15 @@ SNAPSHOT_STATUS="skipped"
 ERROR_MSG=""
 
 if [ "$TREE_DIRTY" = true ]; then
-  # Create stash. We accept whatever git returns; if it fails we log and move on.
-  if git -C "$PROJECT_DIR" stash push --include-untracked --keep-index -m "$STASH_MSG" >/dev/null 2>&1; then
-    # Capture the ref of the most recent stash (must be ours)
+  # Use pathspec exclusion to keep .cognitive-os/ in the working tree.
+  # Git's stash push accepts pathspecs — we pass `.` with an exclude so the
+  # stash captures every normally-tracked/untracked change except our own
+  # session state (which MUST survive stash push or the metadata write
+  # that follows this block would fail).
+  if git -C "$PROJECT_DIR" stash push --include-untracked --keep-index \
+        -m "$STASH_MSG" \
+        -- ':(exclude).cognitive-os' ':(exclude).cognitive-os/**' '.' \
+        >/dev/null 2>&1; then
     STASH_REF=$(git -C "$PROJECT_DIR" stash list --max-count=1 2>/dev/null | head -1 | cut -d: -f1 || true)
     if [ -n "$STASH_REF" ]; then
       SNAPSHOT_STATUS="stashed"
@@ -103,6 +114,10 @@ if [ "$TREE_DIRTY" = true ]; then
 else
   SNAPSHOT_STATUS="skip_clean"
 fi
+
+# Re-create SESSIONS_DIR in case stash swallowed it despite our exclude
+mkdir -p "$SESSIONS_DIR" 2>/dev/null || true
+mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 
 # Write snapshot metadata JSON (no jq dep — manual emit to stay fast)
 {
