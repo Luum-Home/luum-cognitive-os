@@ -1,0 +1,493 @@
+#!/usr/bin/env bash
+# cos-status.sh — Transparency command for Cognitive OS state
+#
+# Shows what is currently active:
+#   - Profile (from cognitive-os.yaml)
+#   - Skills exposed + installed
+#   - Hooks wired (grouped by event)
+#   - Rules (source + auto-injected)
+#   - Packages installed
+#   - Install source / last session
+#   - Health checks (3 asserts)
+#
+# Flags: --verbose, --json, --help
+#
+# Example:
+#   bash scripts/cos-status.sh
+#   bash scripts/cos-status.sh --verbose
+#   bash scripts/cos-status.sh --json
+
+set -uo pipefail  # NOTE: no -e — we want to keep running through optional checks
+
+# ── Locate project root ────────────────────────────────────────────────
+# Uses $CLAUDE_PROJECT_DIR if set; otherwise derives from script location.
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+
+# ── Flag parsing ───────────────────────────────────────────────────────
+
+MODE="pretty"   # pretty | json
+VERBOSE=0
+
+usage() {
+  cat <<EOF
+cos status — show what is currently active in Cognitive OS
+
+Usage:
+  bash scripts/cos-status.sh [flags]
+
+Flags:
+  --verbose    Expand each section with individual names
+  --json       Machine-parseable JSON output (implies no color)
+  --help       Show this help and exit
+
+Reads:
+  - cognitive-os.yaml         (profile)
+  - .claude/settings.json     (wired hooks)
+  - .claude/skills/           (driver-exposed skills)
+  - .cognitive-os/skills/     (installed skills)
+  - rules/                    (source rules)
+  - packages/                 (installed packages)
+
+Exit code: 0 always (health issues are reported in the output, not via exit code).
+
+When to run:
+  - At session start, to confirm COS is wired correctly
+  - After install/update, to verify the new state
+  - When something feels broken, to compare expected vs actual
+EOF
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --verbose|-v) VERBOSE=1 ;;
+    --json)       MODE="json" ;;
+    --help|-h)    usage; exit 0 ;;
+    *) echo "Unknown flag: $1" >&2; usage >&2; exit 2 ;;
+  esac
+  shift
+done
+
+# ── Color helpers ──────────────────────────────────────────────────────
+# Colorize only if stdout is a TTY AND not --json.
+
+if [ -t 1 ] && [ "$MODE" != "json" ]; then
+  C_BOLD=$'\033[1m'
+  C_DIM=$'\033[2m'
+  C_GREEN=$'\033[32m'
+  C_RED=$'\033[31m'
+  C_YELLOW=$'\033[33m'
+  C_BLUE=$'\033[34m'
+  C_RESET=$'\033[0m'
+else
+  C_BOLD="" C_DIM="" C_GREEN="" C_RED="" C_YELLOW="" C_BLUE="" C_RESET=""
+fi
+
+# ── Data collection ────────────────────────────────────────────────────
+
+# Profile — read from cognitive-os.yaml (efficiency.profile)
+# Minimal YAML: take the first line that starts with "  profile:" after "efficiency:".
+get_profile() {
+  local yaml="$PROJECT_ROOT/cognitive-os.yaml"
+  if [ ! -f "$yaml" ]; then
+    echo "unknown"
+    return
+  fi
+  # awk state machine: enter efficiency block, capture profile within 10 lines.
+  awk '
+    /^efficiency:/ { inblock=1; next }
+    inblock && /^[a-zA-Z]/ { inblock=0 }
+    inblock && /^  profile:/ {
+      sub(/^  profile:[[:space:]]*/, "");
+      sub(/[[:space:]]*#.*$/, "");
+      gsub(/["\x27]/, "");
+      print; exit
+    }
+  ' "$yaml" | head -1
+}
+
+# Count skills in a directory. A skill is a subdirectory containing SKILL.md,
+# or a loose subdirectory (legacy installs). We count subdirectories under the dir.
+count_skills() {
+  local dir="$1"
+  [ -d "$dir" ] || { echo 0; return; }
+  # Count entries (files or dirs) at depth 1, excluding hidden files.
+  local n
+  n=$(find "$dir" -mindepth 1 -maxdepth 1 ! -name ".*" 2>/dev/null | wc -l | tr -d ' ')
+  echo "${n:-0}"
+}
+
+list_skills() {
+  local dir="$1"
+  [ -d "$dir" ] || return
+  find "$dir" -mindepth 1 -maxdepth 1 ! -name ".*" 2>/dev/null \
+    | xargs -n1 basename 2>/dev/null | sort
+}
+
+# Count rule files in rules/ (*.md, excluding RULES-COMPACT.md index).
+count_rules() {
+  local dir="$PROJECT_ROOT/rules"
+  [ -d "$dir" ] || { echo 0; return; }
+  local n
+  n=$(find "$dir" -maxdepth 1 -name '*.md' ! -name 'RULES-COMPACT.md' 2>/dev/null | wc -l | tr -d ' ')
+  echo "${n:-0}"
+}
+
+count_packages() {
+  local dir="$PROJECT_ROOT/packages"
+  [ -d "$dir" ] || { echo 0; return; }
+  local n
+  n=$(find "$dir" -mindepth 1 -maxdepth 1 -type d ! -name ".*" 2>/dev/null | wc -l | tr -d ' ')
+  echo "${n:-0}"
+}
+
+list_packages() {
+  local dir="$PROJECT_ROOT/packages"
+  [ -d "$dir" ] || return
+  find "$dir" -mindepth 1 -maxdepth 1 -type d ! -name ".*" 2>/dev/null \
+    | xargs -n1 basename 2>/dev/null | sort
+}
+
+# Parse .claude/settings.json for hooks. Uses python3 for JSON — always
+# available on macOS and linux. If python3 missing, we fall back to a
+# "unknown — jq not available" mode.
+#
+# Emits one line per hook: "EVENT<TAB>COMMAND<TAB>HOOK_PATH_OR_EMPTY"
+parse_hooks() {
+  local settings="$PROJECT_ROOT/.claude/settings.json"
+  if [ ! -f "$settings" ]; then
+    return
+  fi
+  if ! command -v python3 >/dev/null 2>&1; then
+    return
+  fi
+  python3 - "$settings" "$PROJECT_ROOT" <<'PYEOF'
+import json, sys, re, os
+
+settings_path = sys.argv[1]
+project_root = sys.argv[2]
+
+try:
+    with open(settings_path) as fh:
+        data = json.load(fh)
+except Exception:
+    sys.exit(0)
+
+hooks_block = data.get("hooks", {}) or {}
+for event, matcher_groups in hooks_block.items():
+    if not isinstance(matcher_groups, list):
+        continue
+    for group in matcher_groups:
+        if not isinstance(group, dict):
+            continue
+        for h in group.get("hooks", []) or []:
+            cmd = h.get("command", "") or ""
+            # Extract the script path — the token inside the first quoted path,
+            # or the last argument of the command.
+            m = re.search(r'"\$CLAUDE_PROJECT_DIR/([^"]+)"', cmd)
+            path = ""
+            if m:
+                path = os.path.join(project_root, m.group(1))
+            else:
+                # Fallback: last whitespace-separated token
+                toks = cmd.split()
+                if toks:
+                    path = toks[-1].strip('"')
+            print(f"{event}\t{cmd}\t{path}")
+PYEOF
+}
+
+# Health checks — three asserts. Each emits "OK<TAB>msg" or "FAIL<TAB>msg<TAB>hint".
+run_health_checks() {
+  local skills_dir="$PROJECT_ROOT/.claude/skills"
+  local settings="$PROJECT_ROOT/.claude/settings.json"
+
+  # 1. .claude/skills/ non-empty
+  if [ -d "$skills_dir" ] && [ "$(count_skills "$skills_dir")" -gt 0 ]; then
+    printf 'OK\t.claude/skills/ exposed (%d entries)\n' "$(count_skills "$skills_dir")"
+  else
+    printf 'FAIL\t.claude/skills/ is empty (expected >0)\tbash hooks/self-install.sh\n'
+  fi
+
+  # 2. .claude/settings.json valid JSON
+  if [ -f "$settings" ]; then
+    if command -v python3 >/dev/null 2>&1; then
+      if python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$settings" >/dev/null 2>&1; then
+        printf 'OK\t.claude/settings.json is valid JSON\n'
+      else
+        printf 'FAIL\t.claude/settings.json is not valid JSON\tfix JSON syntax or regenerate via bash hooks/self-install.sh\n'
+      fi
+    else
+      printf 'OK\t.claude/settings.json present (JSON not verified — python3 missing)\n'
+    fi
+  else
+    printf 'FAIL\t.claude/settings.json missing\tbash hooks/self-install.sh\n'
+  fi
+
+  # 3. Every wired hook exists on disk
+  if [ -f "$settings" ] && command -v python3 >/dev/null 2>&1; then
+    local missing=0 missing_names=""
+    while IFS=$'\t' read -r event cmd path; do
+      [ -z "$path" ] && continue
+      if [ ! -e "$path" ]; then
+        missing=$((missing + 1))
+        missing_names="$missing_names $(basename "$path")"
+      fi
+    done < <(parse_hooks)
+    if [ "$missing" -eq 0 ]; then
+      printf 'OK\tall wired hooks exist on disk\n'
+    else
+      printf "FAIL\t%d wired hook(s) missing:%s\tbash hooks/self-install.sh\n" "$missing" "$missing_names"
+    fi
+  else
+    printf 'OK\twired-hooks check skipped (settings or python3 missing)\n'
+  fi
+}
+
+# Last session end — read latest session meta.json if any.
+get_last_session() {
+  local sessions_dir="$PROJECT_ROOT/.cognitive-os/sessions"
+  [ -d "$sessions_dir" ] || { echo ""; return; }
+  # Find latest meta.json by mtime, print its parent dir name.
+  local latest
+  latest=$(find "$sessions_dir" -name meta.json -type f 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
+  [ -z "$latest" ] && { echo ""; return; }
+  # Use stat to get mtime; macOS vs Linux differ.
+  if stat -f '%Sm' "$latest" >/dev/null 2>&1; then
+    stat -f '%Sm' -t '%Y-%m-%d %H:%M:%S' "$latest"
+  else
+    stat -c '%y' "$latest" 2>/dev/null | cut -d. -f1
+  fi
+}
+
+# Install source — currently we derive "self-hosted" (repo root matches
+# package root). Future: read from a state file written by install.sh.
+get_install_source() {
+  local marker="$PROJECT_ROOT/.cognitive-os/install-source"
+  if [ -f "$marker" ]; then
+    head -1 "$marker"
+  else
+    # Self-hosted if install.sh lives at the root
+    if [ -f "$PROJECT_ROOT/install.sh" ] || [ -f "$PROJECT_ROOT/hooks/self-install.sh" ]; then
+      echo "$PROJECT_ROOT (self-hosted)"
+    else
+      echo "unknown"
+    fi
+  fi
+}
+
+# ── Rendering ──────────────────────────────────────────────────────────
+
+PROFILE="$(get_profile)"
+[ -z "$PROFILE" ] && PROFILE="unknown"
+
+SKILLS_DRIVER=$(count_skills "$PROJECT_ROOT/.claude/skills")
+SKILLS_KERNEL_COS=$(count_skills "$PROJECT_ROOT/.cognitive-os/skills/cos")
+SKILLS_KERNEL_ROOT=$(count_skills "$PROJECT_ROOT/.cognitive-os/skills")
+# Prefer the canonical kernel path if populated, else the flat install path
+if [ "$SKILLS_KERNEL_COS" -gt 0 ]; then
+  SKILLS_KERNEL=$SKILLS_KERNEL_COS
+  SKILLS_KERNEL_PATH=".cognitive-os/skills/cos/"
+else
+  SKILLS_KERNEL=$SKILLS_KERNEL_ROOT
+  SKILLS_KERNEL_PATH=".cognitive-os/skills/"
+fi
+
+RULES_COUNT=$(count_rules)
+PACKAGES_COUNT=$(count_packages)
+INSTALL_SOURCE="$(get_install_source)"
+LAST_SESSION="$(get_last_session)"
+
+# Collect hook events into associative array (via temp file — macOS bash 3 has
+# no associative arrays on older systems, but we use bash 4 features below
+# conditionally).
+HOOK_TSV="$(parse_hooks || true)"
+
+# Compute event -> count table (portable: use awk).
+render_hook_table() {
+  local tsv="$1"
+  if [ -z "$tsv" ]; then return; fi
+  printf '%s\n' "$tsv" | awk -F'\t' '{print $1}' | sort | uniq -c \
+    | awk '{printf "%s\t%s\n", $2, $1}'
+}
+
+HOOK_EVENTS_TSV="$(render_hook_table "$HOOK_TSV")"
+TOTAL_HOOKS=$(printf '%s' "$HOOK_TSV" | awk 'NF>0' | wc -l | tr -d ' ')
+[ -z "$TOTAL_HOOKS" ] && TOTAL_HOOKS=0
+
+HEALTH_TSV="$(run_health_checks)"
+HEALTH_FAIL_COUNT=$(printf '%s' "$HEALTH_TSV" | awk -F'\t' '$1=="FAIL"' | awk 'NF>0' | wc -l | tr -d ' ')
+[ -z "$HEALTH_FAIL_COUNT" ] && HEALTH_FAIL_COUNT=0
+
+# ── JSON output ────────────────────────────────────────────────────────
+
+emit_json() {
+  python3 - <<PYEOF
+import json, sys, os
+
+profile = "$PROFILE"
+skills_driver = int("$SKILLS_DRIVER")
+skills_kernel = int("$SKILLS_KERNEL")
+skills_kernel_path = "$SKILLS_KERNEL_PATH"
+rules_count = int("$RULES_COUNT")
+packages_count = int("$PACKAGES_COUNT")
+install_source = """$INSTALL_SOURCE"""
+last_session = """$LAST_SESSION"""
+total_hooks = int("$TOTAL_HOOKS" or 0)
+
+# Parse hook tsv
+hook_tsv = """$HOOK_TSV"""
+hooks_by_event = {}
+hook_list = []
+for line in hook_tsv.splitlines():
+    if not line.strip():
+        continue
+    parts = line.split("\t")
+    if len(parts) < 3:
+        continue
+    event, cmd, path = parts[0], parts[1], parts[2]
+    hooks_by_event.setdefault(event, 0)
+    hooks_by_event[event] += 1
+    hook_list.append({"event": event, "path": path, "exists": bool(path) and os.path.exists(path)})
+
+# Parse health tsv
+health_tsv = """$HEALTH_TSV"""
+health = []
+for line in health_tsv.splitlines():
+    if not line.strip():
+        continue
+    parts = line.split("\t")
+    status = parts[0]
+    msg = parts[1] if len(parts) > 1 else ""
+    hint = parts[2] if len(parts) > 2 else ""
+    health.append({"status": status, "message": msg, "hint": hint})
+
+out = {
+    "profile": profile,
+    "skills": {
+        "driver_exposed": skills_driver,
+        "kernel_installed": skills_kernel,
+        "kernel_path": skills_kernel_path,
+    },
+    "hooks": {
+        "total": total_hooks,
+        "by_event": hooks_by_event,
+    },
+    "rules": {"source_count": rules_count},
+    "packages": {"count": packages_count},
+    "install": {"source": install_source},
+    "session": {"last_end": last_session},
+    "health": {
+        "checks": health,
+        "failures": sum(1 for h in health if h["status"] == "FAIL"),
+    },
+}
+json.dump(out, sys.stdout, indent=2, sort_keys=True)
+sys.stdout.write("\n")
+PYEOF
+}
+
+# ── Pretty output ──────────────────────────────────────────────────────
+
+pretty_print() {
+  printf '%sCOS Status%s\n' "${C_BOLD}" "${C_RESET}"
+  printf '%s══════════%s\n\n' "${C_DIM}" "${C_RESET}"
+
+  printf '%-16s %s %s(cognitive-os.yaml)%s\n' "Profile:" "${C_BOLD}${PROFILE}${C_RESET}" "${C_DIM}" "${C_RESET}"
+
+  # Skills section
+  local skills_line
+  if [ "$SKILLS_DRIVER" -gt 0 ]; then
+    skills_line="${C_GREEN}OK${C_RESET}"
+  else
+    skills_line="${C_RED}EMPTY${C_RESET}"
+  fi
+  printf '%-16s %d exposed -> .claude/skills/  %s\n' "Skills:" "$SKILLS_DRIVER" "$skills_line"
+  printf '%-16s %d installed -> %s\n' "" "$SKILLS_KERNEL" "$SKILLS_KERNEL_PATH"
+  if [ "$VERBOSE" -eq 1 ] && [ "$SKILLS_DRIVER" -gt 0 ]; then
+    list_skills "$PROJECT_ROOT/.claude/skills" | head -20 | awk '{printf "                   - %s\n", $0}'
+    if [ "$SKILLS_DRIVER" -gt 20 ]; then
+      printf '                   ... (%d more, use --json for full list)\n' "$((SKILLS_DRIVER - 20))"
+    fi
+  fi
+
+  # Hooks section
+  printf '%-16s %d wired\n' "Hooks:" "$TOTAL_HOOKS"
+  if [ -n "$HOOK_EVENTS_TSV" ]; then
+    # Preferred event order
+    local preferred="SessionStart UserPromptSubmit SubagentStart PreCompact PreToolUse PostToolUse Stop TeammateIdle TaskCreated TaskCompleted"
+    # Emit in preferred order first, then any leftover events
+    local emitted=""
+    for ev in $preferred; do
+      local cnt
+      cnt=$(printf '%s\n' "$HOOK_EVENTS_TSV" | awk -F'\t' -v e="$ev" '$1==e {print $2}')
+      if [ -n "$cnt" ]; then
+        printf '  %-14s %s\n' "${ev}:" "$cnt"
+        emitted="$emitted $ev"
+      fi
+    done
+    # Leftovers
+    printf '%s\n' "$HOOK_EVENTS_TSV" | while IFS=$'\t' read -r ev cnt; do
+      [ -z "$ev" ] && continue
+      case " $emitted " in *" $ev "*) continue ;; esac
+      printf '  %-14s %s\n' "${ev}:" "$cnt"
+    done
+  fi
+
+  # Rules section
+  printf '%-16s %d total\n' "Rules:" "$RULES_COUNT"
+  if [ "$VERBOSE" -eq 1 ]; then
+    find "$PROJECT_ROOT/rules" -maxdepth 1 -name '*.md' ! -name 'RULES-COMPACT.md' 2>/dev/null \
+      | xargs -n1 basename 2>/dev/null | sort | head -15 \
+      | awk '{printf "                   - %s\n", $0}'
+    if [ "$RULES_COUNT" -gt 15 ]; then
+      printf '                   ... (%d more)\n' "$((RULES_COUNT - 15))"
+    fi
+  fi
+
+  # Packages section
+  printf '%-16s %d installed\n' "Packages:" "$PACKAGES_COUNT"
+  if [ "$VERBOSE" -eq 1 ] && [ "$PACKAGES_COUNT" -gt 0 ]; then
+    list_packages | awk '{printf "                   - %s\n", $0}'
+  fi
+
+  # Install
+  printf '%-16s %s\n' "Install:" "$INSTALL_SOURCE"
+
+  # Last session
+  if [ -n "$LAST_SESSION" ]; then
+    printf '%-16s %s\n' "Last session:" "$LAST_SESSION"
+  fi
+
+  # Health
+  printf '\n'
+  if [ "$HEALTH_FAIL_COUNT" -eq 0 ]; then
+    printf '%-16s %sall checks pass%s\n' "Health:" "${C_GREEN}OK ${C_RESET}" ""
+    if [ "$VERBOSE" -eq 1 ]; then
+      printf '%s\n' "$HEALTH_TSV" | while IFS=$'\t' read -r st msg _; do
+        [ -z "$st" ] && continue
+        printf '                   - %s\n' "$msg"
+      done
+    fi
+  else
+    printf '%-16s %s%d issue(s)%s\n' "Health:" "${C_RED}FAIL " "$HEALTH_FAIL_COUNT" "${C_RESET}"
+    printf '%s\n' "$HEALTH_TSV" | while IFS=$'\t' read -r st msg hint; do
+      [ "$st" = "FAIL" ] || continue
+      printf '  %s- %s%s\n' "${C_RED}" "$msg" "${C_RESET}"
+      [ -n "$hint" ] && printf '    %sFix: %s%s\n' "${C_DIM}" "$hint" "${C_RESET}"
+    done
+  fi
+
+  printf '\n%s(run: bash scripts/cos-status.sh --verbose for details)%s\n' "${C_DIM}" "${C_RESET}"
+}
+
+# ── Entry point ────────────────────────────────────────────────────────
+
+if [ "$MODE" = "json" ]; then
+  emit_json
+else
+  pretty_print
+fi
+
+exit 0
