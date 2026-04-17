@@ -38,6 +38,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
+from lib.paths import project_root
+
 # Phase modifiers per rules/rate-limiting.md
 PHASE_MODIFIERS: Dict[str, float] = {
     "reconstruction": 1.5,
@@ -68,9 +70,7 @@ def _read_phase_from_config(config_path: Optional[str] = None) -> str:
         paths_to_try.append(config_path)
 
     # Common locations via environment variables
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-        "COGNITIVE_OS_PROJECT_DIR", ""
-    )
+    project_dir = project_root()
     if project_dir:
         paths_to_try.append(os.path.join(project_dir, "cognitive-os.yaml"))
         paths_to_try.append(

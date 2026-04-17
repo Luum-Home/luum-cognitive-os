@@ -19,6 +19,8 @@ from pathlib import Path
 # Bootstrap
 # ---------------------------------------------------------------------------
 
+# NOTE: custom resolution — differs from lib.paths.project_root() (Pattern C).
+# See tests/unit/test_project_dir_resolution.py for rationale.
 PROJECT_DIR = os.environ.get("CLAUDE_PROJECT_DIR", ".")
 sys.path.insert(0, PROJECT_DIR)
 

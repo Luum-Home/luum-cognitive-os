@@ -29,6 +29,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from lib.paths import project_root
+
 # ---------------------------------------------------------------------------
 # Task-type → model routing (mirrors rules/model-routing.md)
 # ---------------------------------------------------------------------------
@@ -94,9 +96,7 @@ def _find_config_path() -> Optional[str]:
     """Locate cognitive-os.yaml searching standard locations."""
     candidates: List[str] = []
 
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-        "COGNITIVE_OS_PROJECT_DIR", ""
-    )
+    project_dir = project_root()
     if project_dir:
         candidates.append(os.path.join(project_dir, "cognitive-os.yaml"))
 
@@ -133,9 +133,7 @@ def _read_hourly_cap(config_path: Optional[str] = None) -> float:
 
 def _find_metrics_dir() -> Optional[str]:
     """Locate .cognitive-os/metrics directory."""
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-        "COGNITIVE_OS_PROJECT_DIR", ""
-    )
+    project_dir = project_root()
     if project_dir:
         candidate = os.path.join(project_dir, ".cognitive-os", "metrics")
         if os.path.isdir(candidate):
