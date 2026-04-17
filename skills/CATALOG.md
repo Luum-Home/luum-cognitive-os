@@ -296,3 +296,4 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **agent-dashboard** — Show real-time status of all running background agents
 - **detect-patterns** — >
 - **catalog-full** — Load and display the full skills catalog (skills/CATALOG.md) with invocations, sections, and audience columns. Use when the compact Level-1 catalog does not have enough detail.
+- **cos-status** — Display current Cognitive OS state — active profile, skills exposed, hooks wired, rules loaded, packages installed, and health checks. Use when a user asks about OS state, installation verification, or troubleshooting.
