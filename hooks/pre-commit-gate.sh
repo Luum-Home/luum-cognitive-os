@@ -3,7 +3,8 @@
 #
 # 1. Runs pytest and blocks commit if any tests fail
 # 2. Runs coverage-report.sh and warns if composite coverage drops below threshold
-# 3. Supports --no-verify (standard git behavior, handled by git itself)
+# 3. Persists coverage measurement to .cognitive-os/metrics/coverage-history.jsonl
+# 4. Supports --no-verify (standard git behavior, handled by git itself)
 #
 # Environment variables:
 #   COVERAGE_THRESHOLD  — minimum composite coverage % (default: 80)
@@ -17,6 +18,8 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 COVERAGE_THRESHOLD="${COVERAGE_THRESHOLD:-80}"
+METRICS_DIR="$ROOT_DIR/.cognitive-os/metrics"
+COVERAGE_HISTORY="$METRICS_DIR/coverage-history.jsonl"
 
 # ─── Step 1: Run tests ──────────────────────────────────────────────────────
 
@@ -54,6 +57,16 @@ if [ -f "$coverage_report" ]; then
       echo "WARNING: Composite coverage ${coverage_pct}% is below threshold ${COVERAGE_THRESHOLD}%" >&2
       echo "Consider adding tests before committing." >&2
       # Warning only — does NOT block the commit
+    fi
+
+    # Persist coverage measurement to history for singularity.py to consume.
+    if [ -n "$coverage_pct" ]; then
+      mkdir -p "$METRICS_DIR"
+      COMMIT_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+      TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+      printf '{"timestamp":"%s","source":"pre-commit-gate","event_type":"coverage_measurement","payload":{"coverage_pct":%s,"commit_sha":"%s","threshold":%s}}\n' \
+        "$TIMESTAMP" "$coverage_pct" "$COMMIT_SHA" "$COVERAGE_THRESHOLD" \
+        >> "$COVERAGE_HISTORY"
     fi
   fi
 fi
