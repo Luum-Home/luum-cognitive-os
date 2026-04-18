@@ -20,7 +20,7 @@ RETENTION_DAYS="${COGNITIVE_OS_METRICS_RETENTION_DAYS:-30}"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
-ARCHIVE_DIR="$METRICS_DIR/.archive"
+ARCHIVE_DIR="$METRICS_DIR/archive"
 
 # ─── Main ────────────────────────────────────────────────────────────────────
 
@@ -60,6 +60,22 @@ if [ -d "$ARCHIVE_DIR" ]; then
     rm -f "$old_archive" 2>/dev/null
     CLEANED=$((CLEANED + 1))
   done < <(find "$ARCHIVE_DIR" -name "*.gz" -mtime "+$RETENTION_DAYS" 2>/dev/null)
+fi
+
+# Clean stale test-e2e agent-bus directories (F-6: accumulate indefinitely)
+TEST_E2E_TTL_DAYS="${COGNITIVE_OS_TEST_E2E_TTL_DAYS:-7}"
+AGENT_BUS_DIR="$PROJECT_DIR/.cognitive-os/agent-bus"
+STALE_E2E=0
+
+if [ -d "$AGENT_BUS_DIR" ]; then
+  while IFS= read -r stale_dir; do
+    rm -rf "$stale_dir" 2>/dev/null
+    STALE_E2E=$((STALE_E2E + 1))
+  done < <(find "$AGENT_BUS_DIR" -maxdepth 1 -type d -name 'test-e2e-*' -mtime "+$TEST_E2E_TTL_DAYS" 2>/dev/null)
+fi
+
+if [ "$STALE_E2E" -gt 0 ]; then
+  echo "[rotate-metrics] cleaned $STALE_E2E stale test-e2e dirs" >&2
 fi
 
 # Report if anything happened
