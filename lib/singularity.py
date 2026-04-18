@@ -427,8 +427,16 @@ def _monitor_coverage(project_root: str) -> List[SingularityEvent]:
         last = entries[-1]
         prev = entries[-2]
 
-        last_cov = last.get("coverage_pct", last.get("coverage"))
-        prev_cov = prev.get("coverage_pct", prev.get("coverage"))
+        # Support both flat schema (legacy) and MetricEvent-wrapped schema
+        # (payload.coverage_pct) written by pre-commit-gate.sh.
+        def _extract_coverage(entry: Dict[str, Any]) -> Any:
+            flat = entry.get("coverage_pct", entry.get("coverage"))
+            if flat is not None:
+                return flat
+            return entry.get("payload", {}).get("coverage_pct")
+
+        last_cov = _extract_coverage(last)
+        prev_cov = _extract_coverage(prev)
 
         if (last_cov is not None and prev_cov is not None
                 and isinstance(last_cov, (int, float))
