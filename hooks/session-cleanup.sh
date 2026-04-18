@@ -42,11 +42,49 @@ fi
 if [ "$MERGE_METRICS" = true ] && [ -d "$SESSION_DIR/metrics" ]; then
   mkdir -p "$GLOBAL_METRICS_DIR"
 
+  MERGE_LOCK_DIR="$PROJECT_DIR/.cognitive-os/runtime/locks"
+  mkdir -p "$MERGE_LOCK_DIR" 2>/dev/null || true
+
   for metric_file in "$SESSION_DIR/metrics"/*.jsonl; do
     [ ! -f "$metric_file" ] && continue
     basename_file=$(basename "$metric_file")
-    # Append session metrics to global (not overwrite)
-    cat "$metric_file" >> "$GLOBAL_METRICS_DIR/$basename_file"
+    global_file="$GLOBAL_METRICS_DIR/$basename_file"
+    lockfile="$MERGE_LOCK_DIR/merge-${basename_file}.lock"
+
+    # Acquire per-file exclusive lock with 30s timeout; fail-open on timeout
+    if command -v flock >/dev/null 2>&1; then
+      if ! (
+        flock -w 30 9 || {
+          echo "[session-cleanup] WARN: lock timeout for $basename_file — skipping merge" >&2
+          exit 1
+        }
+        cat "$metric_file" >> "$global_file"
+      ) 9>"$lockfile"; then
+        continue
+      fi
+    else
+      # Fallback: mkdir-based advisory lock (atomic on POSIX, no flock needed)
+      _lock_dir="${lockfile}.d"
+      _lock_acquired=false
+      _lock_deadline=$(( $(date +%s) + 30 ))
+      while true; do
+        if mkdir "$_lock_dir" 2>/dev/null; then
+          _lock_acquired=true
+          break
+        fi
+        if [ "$(date +%s)" -ge "$_lock_deadline" ]; then
+          echo "[session-cleanup] WARN: lock timeout (mkdir) for $basename_file — skipping merge" >&2
+          break
+        fi
+        sleep 0.2 2>/dev/null || sleep 1
+      done
+      if [ "$_lock_acquired" = true ]; then
+        cat "$metric_file" >> "$global_file"
+        rmdir "$_lock_dir" 2>/dev/null || true
+      else
+        continue
+      fi
+    fi
   done
 fi
 
