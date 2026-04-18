@@ -77,14 +77,18 @@ _register_session() {
 
 _register_session
 
-# Export session ID for downstream hooks
-# Note: Claude Code hooks communicate via stdout/env; we print for the session to pick up
+# Export session ID for downstream hooks.
+# Child processes inherit this env var so session-cleanup.sh, error-pipeline.sh,
+# git-context-capture.sh and other session-scoped writers can find the active
+# session directory. Without the explicit export, COGNITIVE_OS_SESSION_ID was
+# unset in hook subprocesses and 7 metrics files never landed on disk (ADR-028a §5.3).
+export COGNITIVE_OS_SESSION_ID="$SESSION_ID"
 echo ""
 echo "=== COGNITIVE OS SESSION INITIALIZED ==="
 echo "Session ID: $SESSION_ID"
 echo "Session dir: $SESSION_DIR"
 echo ""
-echo "Set COGNITIVE_OS_SESSION_ID=$SESSION_ID for this session."
+echo "COGNITIVE_OS_SESSION_ID exported to child hooks."
 echo ""
 
 # ─── Level-1 skills catalog pointer ──────────────────────────────────────────
