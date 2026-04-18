@@ -202,7 +202,98 @@ consume it. No conflict, no sequencing dependency. Keep as independent deliverab
 
 ---
 
-## 5. References
+## 5. Census findings (2026-04-18) — scope changes to D1.A
+
+Metrics census (docs/reports/metrics-census.md, 447 files enumerated, 45 logical identities) produced findings that invalidate ADR-028 D1.A baseline and add new scope.
+
+### 5.1 F-1: ADR-028 hook-health "~40% unparseable" claim is false
+
+ADR-028 line 105-106 states hook-health.jsonl mixes `duration_ms` and `elapsed_ms` with ~40% unparseable rows. Actual state:
+- 7,692 rows, 0 bad JSON
+- Uniform schema `{timestamp, hook, exit_code, duration_ms}` on 100% of rows
+- `elapsed_ms` field does not appear anywhere
+- `safe-jsonl.sh` already standardised the schema
+
+Action: Remove the ~40% claim from ADR-028 D1.A text. The schema drift cited as motivation for the MetricEvent migration does not exist in this file. The MetricEvent schema is still valuable (cost-events.jsonl has real drift per F-3) but the justification in ADR-028 needs updating.
+
+### 5.2 F-3: cost-events.jsonl has real schema drift (2 incompatible shapes)
+
+- Shape A (62%, 100 rows): {agent, estimated_cost_usd, is_estimate, model, timestamp, tokens_estimated}
+- Shape B (38%, 60 rows): Shape A + {branch, change_id, session_id, sprint_id}
+
+Cause: audit-id-enricher.sh enriches only when an active audit_id exists. Consumers silently drop missing fields.
+
+Action: First concrete migration target for lib/metric_event.py. Define fields as Optional where Shape-B-exclusive; backfill Shape-A rows with nulls on write through MetricEvent.validate().
+
+### 5.3 F-4: 7 files missing from disk despite active writers — D1.A.0 prerequisite
+
+The following files are referenced by 20+ hooks and libraries but do not exist on disk:
+- error-learning.jsonl (6 readers, 3 writers)
+- repair-outcomes.jsonl (3 readers, 2 writers)
+- remediation-registry.jsonl (3 readers, 2 writers)
+- repair-queue.jsonl, repair-dispatch.jsonl
+- session-audit.jsonl
+- singularity-events.jsonl
+
+Impact: auto-repair system accumulates no history; error-pattern-detector never fires; singularity never triggers; cognitive-os-health shows empty data silently.
+
+Root cause hypothesis: `COGNITIVE_OS_SESSION_ID` is unset when the writing hooks fire, so they write to session-scoped `$SESSION_DIR/metrics/` which is never created, or `session-cleanup.sh` exits at line 23 without merging because the session directory is missing.
+
+Scope change: Add D1.A.0 as a PREREQUISITE to D1.A. Before writing `lib/metric_event.py` or extending rotation, diagnose and fix the write path for these 7 files. Without this, the new MetricEvent schema will also never land on disk.
+
+D1.A.0 acceptance:
+- [ ] Root cause of missing-file pattern documented (likely SESSION_ID propagation)
+- [ ] Fix applied (probable: writers fall back to `$PROJECT_DIR/.cognitive-os/metrics/` when `$SESSION_DIR` unset)
+- [ ] All 7 files exist on disk with at least 1 row after one normal session
+- [ ] Regression test: `tests/contracts/test_metric_file_existence.py` asserts each file is writable+exists
+
+### 5.4 F-5: 5 reader-without-writer files silently zero KPIs
+
+Files with readers but no writers anywhere in the codebase:
+- trust-scores.jsonl (kpi_collector.py)
+- escalation-events.jsonl (kpi_collector.py)
+- coverage-history.jsonl (singularity.py)
+- stale-docs.jsonl (singularity.py)
+- error-skill-correlations.jsonl (learning_pipeline.py)
+
+Impact: trust-score KPI, escalation-rate KPI, and coverage trends are permanently zero. Consumers fail silently. This means dashboards and decision systems that rely on these KPIs have been making decisions on zeroed inputs.
+
+Scope change: Add to D1.A.0. Each file needs EITHER a writer assigned OR the read-path removed. Default action: assign owner hooks (trust-score-validator.sh exists but only logs to stderr — make it write to trust-scores.jsonl). If no writer candidate exists within D1.A.0 scope, delete the read-path to stop silent zeroing.
+
+### 5.5 F-6: agent-bus test-e2e cleanup
+
+309 test-e2e-{hex}/ directories accumulate indefinitely in .cognitive-os/agent-bus/. No TTL, no cleanup.
+
+Action: Add `find .cognitive-os/agent-bus -maxdepth 1 -name 'test-e2e-*' -mtime +7 -exec rm -rf {} \;` to `hooks/rotate-metrics.sh` or `session-cleanup.sh`. Minor, include in D1.A alongside the rotation extension.
+
+### 5.6 F-7: metrics-rotation.sh path mismatch
+
+ADR-028 D1.A specifies archive destination `.cognitive-os/metrics/archive/`. Current hook writes to `.cognitive-os/metrics/.archive/` (dot-prefix, hidden).
+
+Action: Align path with ADR-028 spec when extending rotation for size+age thresholds.
+
+### 5.7 Revised D1.A scope
+
+Original D1.A artifacts (lib/metric_event.py, rotation policy enforcement, census) are unchanged. New sub-phase:
+
+D1.A.0 (BLOCKS D1.A.1+):
+- Diagnose+fix F-4 missing files (SESSION_ID propagation or fallback path)
+- Resolve F-5 reader-without-writer (assign writers or remove reads)
+- Add test-e2e directory cleanup per F-6
+- Align archive path per F-7
+
+D1.A.1: lib/metric_event.py (first migration target: cost-events.jsonl per F-3)
+D1.A.2: Extend rotate-metrics.sh with 1 MiB size + 7 day age thresholds
+D1.A.3: Update ADR-028 text to remove F-1 claim, reference this addendum
+
+### 5.8 References to census
+
+- Full census: docs/reports/metrics-census.md
+- Engram: adr-028/metrics-census (search for summary + recommendations)
+
+---
+
+## 6. References
 
 - Engram #11552, topic `gaps/adr-027-028-reconciliation-analysis` — full reconciliation table
   covering 20 plan docs and 14 work-queue items.
@@ -213,6 +304,8 @@ consume it. No conflict, no sequencing dependency. Keep as independent deliverab
 - `docs/adrs/ADR-027a.md` — sibling addendum covering the slimming reconciliation (hook
   count direction contradiction with `hook-architecture-v2.md`; EXCLUDED_RULES mechanism
   already-committed state).
+- `docs/reports/metrics-census.md` — D1.A metrics census (447 files, 45 logical identities);
+  source of findings F-1 through F-7 documented in §5.
 
 ---
 
@@ -231,3 +324,9 @@ consume it. No conflict, no sequencing dependency. Keep as independent deliverab
 - [ ] Update `work-queue.json` entry `test-quality-audit`: add `"depends_on": "adr-028-phase-b"`
       and `"rationale": "audit after structural contract test layer exists"`.
 - [ ] Before Phase A exit, run the §3 verification command and resolve any matches.
+- [ ] Execute D1.A.0 before D1.A.1 (MetricEvent schema): diagnose missing-file write path
+      (F-4), resolve reader-without-writer files (F-5), add test-e2e cleanup (F-6), align
+      archive path (F-7).
+- [ ] Amend ADR-028 D1.A text to remove the ~40% unparseable claim per §5.1; update
+      justification to cite cost-events.jsonl shape drift (F-3) as the concrete migration
+      motivation.
