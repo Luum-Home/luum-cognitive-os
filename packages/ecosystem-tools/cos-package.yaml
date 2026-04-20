@@ -1,5 +1,5 @@
 name: "@luum/ecosystem-tools"
-version: "1.1.0"
+version: "1.2.0"
 description: "External tool integrations for Cognitive OS — agnix, parry, hcom, repomix, Trail of Bits, Context7"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
