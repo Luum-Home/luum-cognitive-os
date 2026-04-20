@@ -11,6 +11,7 @@ Usage:
 from __future__ import annotations
 
 import logging
+import os
 import time
 from typing import Optional
 
@@ -18,6 +19,12 @@ from lib.agent_bus import AgentPublisher
 from lib.agent_output_monitor import AgentOutputMonitor, AgentStatus
 
 logger = logging.getLogger(__name__)
+
+# Default Valkey/Redis URL — override with VALKEY_URL or COS_VALKEY_URL env var
+_DEFAULT_VALKEY_URL = os.environ.get(
+    "VALKEY_URL",
+    os.environ.get("COS_VALKEY_URL", "redis://localhost:6379"),
+)
 
 
 class AgentOutputBridge:
@@ -35,7 +42,7 @@ class AgentOutputBridge:
     def __init__(
         self,
         output_dir: str,
-        valkey_url: str = "redis://localhost:6379",
+        valkey_url: str = _DEFAULT_VALKEY_URL,
         fallback_dir: Optional[str] = None,
     ) -> None:
         self.output_dir = output_dir
