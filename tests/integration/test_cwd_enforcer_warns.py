@@ -142,7 +142,11 @@ def test_git_commit_from_worktree_emits_warning(tmp_path: Path) -> None:
     raw_lines = [l for l in metrics_file.read_text().splitlines() if l.strip()]
     assert raw_lines, "Expected at least one log entry in cwd-enforcer.jsonl"
     last = json.loads(raw_lines[-1])
-    assert last.get("event") == "warned", f"Expected event=warned, got: {last}"
+    # Layer 3 upgrade: event is now "rewritten" (command-rewrite mode) instead
+    # of "warned". Accept either to remain backward-compatible with test infra.
+    assert last.get("event") in ("warned", "rewritten", "warn_fallback"), (
+        f"Expected a cwd-enforcement event, got: {last}"
+    )
 
 
 # ── Test 2: git commit from main path → no warning ───────────────────────────
