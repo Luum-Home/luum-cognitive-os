@@ -24,6 +24,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+from lib.metric_event import MetricEvent, append_event
+
 
 # ---------------------------------------------------------------------------
 # Enums and data classes
@@ -155,6 +157,7 @@ class ConsequenceEngine:
     # -- persistence -------------------------------------------------------
 
     def _read_all_raw(self) -> List[Dict[str, Any]]:
+        """Read all raw entries, normalising MetricEvent-wrapped rows back to legacy shape."""
         path = Path(self.history_path)
         if not path.exists():
             return []
@@ -165,16 +168,34 @@ class ConsequenceEngine:
                 if not line:
                     continue
                 try:
-                    entries.append(json.loads(line))
+                    row = json.loads(line)
                 except json.JSONDecodeError:
                     continue
+                # Unwrap MetricEvent rows: restore flat shape expected by callers
+                if "schema_version" in row and "event_type" in row and "payload" in row:
+                    flat = dict(row["payload"])
+                    # event_type encodes "consequence.<record_type>"
+                    event_type = row.get("event_type", "")
+                    if event_type.startswith("consequence."):
+                        flat["record_type"] = event_type[len("consequence."):]
+                    flat.setdefault("timestamp", row.get("timestamp", ""))
+                    entries.append(flat)
+                else:
+                    entries.append(row)
         return entries
 
     def _append_raw(self, entry: Dict[str, Any]) -> None:
-        path = Path(self.history_path)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with open(path, "a", encoding="utf-8") as fh:
-            fh.write(json.dumps(entry, default=str) + "\n")
+        """Append a consequence record as a MetricEvent."""
+        record_type = entry.pop("record_type", "record")
+        # timestamp is a top-level MetricEvent field, not part of payload
+        timestamp = entry.pop("timestamp", "")
+        event = MetricEvent(
+            source="consequence-engine",
+            event_type=f"consequence.{record_type}",
+            payload=entry,
+            timestamp=timestamp,
+        )
+        append_event(self.history_path, event)
 
     # -- core evaluation ---------------------------------------------------
 
