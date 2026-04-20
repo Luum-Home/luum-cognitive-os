@@ -142,6 +142,23 @@ build_settings() {
     "pattern-check.sh" \
     "metrics-rotation.sh")
 
+  # UserPromptSubmit
+  local user_prompt_submit_entries
+  user_prompt_submit_entries=$(
+    hook_entry "user-prompt-capture.sh"; printf ',\n'
+    hook_entry "session-wrapup-trigger.sh"
+  )
+  local user_prompt_submit
+  user_prompt_submit=$(cat <<GROUPEOF
+      {
+        "matcher": "",
+        "hooks": [
+$user_prompt_submit_entries
+        ]
+      }
+GROUPEOF
+  )
+
   # PreToolUse
   # ADR-023: secret-detector runs as PreToolUse on Bash|Edit|Write|MultiEdit
   # so it can REDACT credentials via hookSpecificOutput.updatedInput before
@@ -262,6 +279,10 @@ GROUPEOF
   printf '%s\n' "$session_start"
   printf '    ],\n'
 
+  printf '    "UserPromptSubmit": [\n'
+  printf '%s\n' "$user_prompt_submit"
+  printf '    ],\n'
+
   printf '    "PreToolUse": [\n'
   local pre_first=true
   for group in "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_agent"; do
@@ -309,7 +330,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -319,6 +340,7 @@ done
 echo ""
 echo "Hook summary for profile 'default' (ADR-002):"
 echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, valkey-ensure.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh"
+echo "  UserPromptSubmit: user-prompt-capture.sh, session-wrapup-trigger.sh"
 echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh, destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"

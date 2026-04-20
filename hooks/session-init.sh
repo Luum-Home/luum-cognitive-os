@@ -150,5 +150,25 @@ fi
 
 # Work queue check moved to _lib/session_init_helper.py (consolidated above)
 
+# ─── Commit-nudge banner (ADR-030 Q2) ─────────────────────────────────────────
+_NUDGE_FILE="$PROJECT_DIR/.cognitive-os/runtime/commit-nudge"
+_NUDGE_STALE_HOURS="${COMMIT_NUDGE_STALE_HOURS:-24}"
+if [ -f "$_NUDGE_FILE" ]; then
+    # Filter: only commits from the last N hours (mtime-based)
+    _now=$(date +%s)
+    _mtime=$(stat -f %m "$_NUDGE_FILE" 2>/dev/null || stat -c %Y "$_NUDGE_FILE" 2>/dev/null || echo "$_now")
+    _age_hours=$(( (_now - _mtime) / 3600 ))
+    if [ "$_age_hours" -le "$_NUDGE_STALE_HOURS" ]; then
+        _commit_count=$(wc -l < "$_NUDGE_FILE" 2>/dev/null | tr -d ' ')
+        _latest=$(tail -1 "$_NUDGE_FILE" 2>/dev/null)
+        if [ "${_commit_count:-0}" -gt 0 ]; then
+            echo "" >&2
+            echo "📋 Commits since last wrapup: $_commit_count." >&2
+            echo "   Latest: $_latest" >&2
+            echo "   Invoke /session-wrapup to archive today's work." >&2
+            echo "" >&2
+        fi
+    fi
+fi
 
 exit 0

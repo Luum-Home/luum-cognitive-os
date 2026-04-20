@@ -176,6 +176,12 @@ against the same canonical artifacts.
 - It does not close or terminate the Claude Code session
 - It does not modify any source files
 
+## Post-wrapup cleanup (ADR-030 Q2)
+
+As the final step, clear the commit-nudge breadcrumb so the next session doesn't re-surface the banner:
+
+    rm -f "$PROJECT_DIR/.cognitive-os/runtime/commit-nudge"
+
 ## Edge Cases
 
 - **Engram unavailable**: Skip all `mem_save` / `mem_session_summary` calls. Write the backlog document to disk only. Report: "Engram unavailable — session summary not persisted to memory."

@@ -100,7 +100,7 @@ echo "Hook summary for security profile '$PROFILE':"
 case "$PROFILE" in
   minimal)
     echo "  SessionStart: self-install, session-init, crash-recovery, session-resume"
-    echo "  UserPromptSubmit: user-prompt-capture"
+    echo "  UserPromptSubmit: user-prompt-capture, session-wrapup-trigger.sh"
     echo "  SubagentStart: subagent-context-injector"
     echo "  PreToolUse: rate-limiter, secret-detector"
     echo "  PostToolUse: error-pipeline, result-truncator, content-policy, auto-checkpoint"
@@ -123,7 +123,7 @@ case "$PROFILE" in
     # Hooks: secret-detector.sh — redacts via hookSpecificOutput.updatedInput
     # Hooks: blast-radius.sh    — surfaces warnings via additionalContext
     echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, valkey-ensure.sh (executor mode only), pattern-check, metrics-rotation.sh"
-    echo "  UserPromptSubmit: user-prompt-capture"
+    echo "  UserPromptSubmit: user-prompt-capture, session-wrapup-trigger.sh"
     echo "  SubagentStart: subagent-context-injector"
     echo "  PreToolUse: rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact),"
     echo "              destructive-git-blocker.sh (ADR-003 R1 git-op safety), destructive-rm-blocker.sh (ADR-003 R2 file-erasure safety),"

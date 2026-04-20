@@ -33,4 +33,10 @@ STATUS bands: HIGH 90+, MEDIUM 70-89, LOW 50-69, CRITICAL <50.
 
 **Context:** `SEARCH PERMISSION: no` → don't use mem_search. `yes` → allowed.
 
+**Auto-triggers (mandatory honour):** If any hook/context block contains a
+line beginning `AUTO-TRIGGER:`, invoke the named skill BEFORE any other
+tool call. Exception: the user explicitly countermanded in the same message.
+Ignoring AUTO-TRIGGER is a trust-report violation (falls under "what I
+verified").
+
 Full reference: `rules/agent-escalation.md`, `rules/trust-score.md`, `rules/closed-loop-prompts.md`.
