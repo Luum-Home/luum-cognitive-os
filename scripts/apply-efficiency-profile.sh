@@ -205,7 +205,8 @@ build_settings() {
     "test-baseline-diff.sh" \
     "session-hygiene.sh" \
     "mlflow-sync.sh" \
-    "recap-sync.sh")
+    "recap-sync.sh" \
+    "session-end-reap.sh")
 
   # ── Assemble JSON ───────────────────────────────────────────────
   printf '{\n  "hooks": {\n    "SessionStart": [\n'
@@ -277,7 +278,7 @@ echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.s
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
 echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"
 echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh"
-echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, test-baseline-diff.sh, session-hygiene.sh, mlflow-sync.sh, recap-sync.sh"
+echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, test-baseline-diff.sh, session-hygiene.sh, mlflow-sync.sh, recap-sync.sh, session-end-reap.sh"
 echo "  Total hook commands: $new_hook_count"
 
 echo ""

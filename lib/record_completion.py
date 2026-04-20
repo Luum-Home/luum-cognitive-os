@@ -36,6 +36,7 @@ except Exception:
     pass  # Langfuse not installed or not configured — skip silently
 
 from lib.learning_pipeline import LearningPipeline
+from lib.metric_event import MetricEvent, append_event
 
 
 def extract_skill_name(data: dict) -> str:
@@ -289,7 +290,7 @@ def append_cost_event(
     model: str = "sonnet",
     real_usage: Optional[dict] = None,
 ) -> None:
-    """Append a cost event to cost-events.jsonl.
+    """Append a cost event to cost-events.jsonl (ADR-028 D1.A MetricEvent schema).
 
     When ``real_usage`` is provided (from ``get_real_token_usage``), actual
     token counts and cost are used and ``is_estimate`` is set to False.
@@ -302,8 +303,7 @@ def append_cost_event(
         cache_write = real_usage.get("cache_creation_input_tokens", 0)
         cost_usd = real_usage.get("total_cost_usd", 0.0)
         real_model = real_usage.get("model", model)
-        event = {
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        payload: dict = {
             "agent": description[:200],
             "model": real_model,
             "input_tokens": input_tokens,
@@ -316,8 +316,7 @@ def append_cost_event(
     else:
         price_per_token = _MODEL_PRICE_PER_TOKEN.get(model, _MODEL_PRICE_PER_TOKEN["sonnet"])
         cost_usd = tokens_estimated * price_per_token
-        event = {
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        payload = {
             "agent": description[:200],
             "model": model,
             "estimated_cost_usd": round(cost_usd, 6),
@@ -326,9 +325,12 @@ def append_cost_event(
         }
     cost_file = os.path.join(metrics_dir, "cost-events.jsonl")
     try:
-        os.makedirs(metrics_dir, exist_ok=True)
-        with open(cost_file, "a", encoding="utf-8") as fh:
-            fh.write(json.dumps(event) + "\n")
+        event = MetricEvent(
+            source="record_completion",
+            event_type="cost.recorded",
+            payload=payload,
+        )
+        append_event(cost_file, event)
     except OSError:
         pass
 
