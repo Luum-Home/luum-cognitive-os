@@ -1,5 +1,5 @@
 name: "@luum/paperclip-integration"
-version: "1.0.0"
+version: "1.1.0"
 description: "Paperclip governance dashboard integration — session metrics sync on Stop"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
