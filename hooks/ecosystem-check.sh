@@ -21,7 +21,7 @@ if [ -f "$LAST_RUN" ]; then
 fi
 
 # ── 2. Run evaluation ─────────────────────────────────────────────────────
-python3 -c "
+timeout 30 python3 -c "
 import sys
 sys.path.insert(0, '$PROJECT_DIR')
 from lib.ecosystem_evaluator import EcosystemEvaluator
