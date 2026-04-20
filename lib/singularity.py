@@ -46,6 +46,7 @@ if _LIB_DIR not in sys.path:
 
 from claude_executor import ClaudeExecutor, ClaudeResult
 from notifications import send_raw
+from metric_event import MetricEvent, append_event as _me_append_event
 
 logger = logging.getLogger("singularity")
 
@@ -145,7 +146,11 @@ class PipelineExecution:
 # ---------------------------------------------------------------------------
 
 def _read_jsonl(path: str, max_lines: int = 5000) -> List[Dict[str, Any]]:
-    """Read a JSONL file safely, returning at most max_lines entries."""
+    """Read a JSONL file safely, returning at most max_lines entries.
+
+    MetricEvent-wrapped rows are transparently unwrapped so consumers receive
+    the same flat dict shape as legacy rows.
+    """
     results: List[Dict[str, Any]] = []
     if not os.path.isfile(path):
         return results
@@ -158,20 +163,51 @@ def _read_jsonl(path: str, max_lines: int = 5000) -> List[Dict[str, Any]]:
                 if not line:
                     continue
                 try:
-                    results.append(json.loads(line))
+                    row = json.loads(line)
                 except (json.JSONDecodeError, ValueError):
                     continue
+                # Unwrap MetricEvent rows back to flat shape
+                if "schema_version" in row and "event_type" in row and "payload" in row:
+                    flat = dict(row["payload"])
+                    flat.setdefault("timestamp", row.get("timestamp", ""))
+                    # Restore phase/action from event_type for callers that use them
+                    event_type = row.get("event_type", "")
+                    if event_type.startswith("singularity.") and "phase" not in flat:
+                        parts = event_type[len("singularity."):].split(".", 1)
+                        flat.setdefault("phase", parts[0])
+                        if len(parts) > 1:
+                            flat.setdefault("action", parts[1])
+                    results.append(flat)
+                else:
+                    results.append(row)
     except (OSError, IOError) as e:
         logger.warning("Failed to read %s: %s", path, e)
     return results
 
 
 def _append_jsonl(path: str, entry: Dict[str, Any]) -> None:
-    """Append a single JSON entry to a JSONL file."""
+    """Append a single JSON entry as a MetricEvent to a JSONL file."""
     try:
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "a", encoding="utf-8") as f:
-            f.write(json.dumps(entry) + "\n")
+        entry = dict(entry)  # defensive copy
+        # Derive event_type from 'phase' or 'action' keys; fall back to generic
+        phase = entry.get("phase", "")
+        action = entry.get("action", "")
+        if phase and action:
+            event_type = f"singularity.{phase}.{action}"
+        elif phase:
+            event_type = f"singularity.{phase}"
+        elif action:
+            event_type = f"singularity.{action}"
+        else:
+            event_type = "singularity.event"
+        timestamp = entry.pop("timestamp", "")
+        event = MetricEvent(
+            source="singularity",
+            event_type=event_type,
+            payload=entry,
+            timestamp=timestamp,
+        )
+        _me_append_event(path, event)
     except (OSError, IOError) as e:
         logger.warning("Failed to write to %s: %s", path, e)
 

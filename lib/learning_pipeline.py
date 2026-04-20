@@ -33,6 +33,7 @@ from lib.consequence_engine import (
 )
 from lib.error_classifier import classify_error, ErrorCategory
 from lib.prompt_classifier import classify_prompt, ClassificationResult, PromptCategory
+from lib.metric_event import MetricEvent, append_event
 
 
 # ---------------------------------------------------------------------------
@@ -78,6 +79,7 @@ def _now_iso() -> str:
 
 
 def _read_jsonl(path: str) -> List[Dict]:
+    """Read JSONL file, normalising MetricEvent-wrapped rows to flat shape."""
     p = Path(path)
     if not p.exists():
         return []
@@ -88,17 +90,30 @@ def _read_jsonl(path: str) -> List[Dict]:
             if not line:
                 continue
             try:
-                entries.append(json.loads(line))
+                row = json.loads(line)
             except json.JSONDecodeError:
                 continue
+            # Unwrap MetricEvent rows
+            if "schema_version" in row and "event_type" in row and "payload" in row:
+                flat = dict(row["payload"])
+                flat.setdefault("timestamp", row.get("timestamp", ""))
+                entries.append(flat)
+            else:
+                entries.append(row)
     return entries
 
 
-def _append_jsonl(path: str, entry: Dict) -> None:
-    p = Path(path)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    with open(p, "a", encoding="utf-8") as fh:
-        fh.write(json.dumps(entry, default=str) + "\n")
+def _append_jsonl(path: str, entry: Dict, event_type: str = "learning.record") -> None:
+    """Append a learning record as a MetricEvent."""
+    entry = dict(entry)  # defensive copy — we pop timestamp
+    timestamp = entry.pop("timestamp", "")
+    event = MetricEvent(
+        source="learning-pipeline",
+        event_type=event_type,
+        payload=entry,
+        timestamp=timestamp,
+    )
+    append_event(path, event)
 
 
 # ---------------------------------------------------------------------------
@@ -206,6 +221,7 @@ class LearningPipeline:
                 "skill_name": self._last_skill,
                 "timestamp": correlation.timestamp,
             },
+            event_type="learning.error_correlation",
         )
         return correlation
 
@@ -237,6 +253,7 @@ class LearningPipeline:
                     "skill_name": self._last_skill,
                     "timestamp": _now_iso(),
                 },
+                event_type="learning.feedback_correlation",
             )
         return result
 
