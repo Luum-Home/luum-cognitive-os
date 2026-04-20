@@ -99,24 +99,19 @@ three remain.
 
 ### 2.4 `phase-aware-agents.md` → `auto-refine.sh` — RESOLVED (same hook as above)
 
-### 2.5 `response-compression.md` / `self-install.sh comment` → `response-length-check.sh` — OPEN
-- **State**: hook does NOT exist on disk. The rule file itself contains no
-  hook reference, but `hooks/self-install.sh` maps
-  `response-compression.md → response-length-check.sh` in its EXCLUDED_RULES
-  comments, which is misleading
-- **Interim**: the rule is agent-instruction-only. The orchestrator MUST
-  self-enforce response budgets (see the budget table inside the rule)
-- **Pending action** (hook-sprint): either build `response-length-check.sh`
-  or update the EXCLUDED_RULES comment in `self-install.sh` to state
-  "agent-instruction-only, no hook"
+### 2.5 `response-compression.md` / `self-install.sh comment` → `response-length-check.sh` — RESOLVED (D24)
+- **State**: hook does NOT exist on disk. Misleading comment in `hooks/self-install.sh`
+  removed (Batch C, 2026-04-20). Comment now reads "agent-instruction-only (no hook)".
+- **Resolution**: `self-install.sh` EXCLUDED_RULES comment updated to remove the
+  `→ response-length-check.sh` reference. Rule is fully agent-instruction-only.
+- **No further action required.**
 
-### 2.6 `context-optimization.md` → `context-budget.sh` — OPEN
-- **State**: hook does NOT exist on disk. The rule itself acknowledges:
-  "the `context-budget.sh` hook is not currently registered in `settings.local.json`"
-- **Interim**: agents MUST self-monitor context usage against the thresholds
-  in `rules/context-management.md` (50% / 70% / 85%)
-- **Pending action** (hook-sprint): build `context-budget.sh` or rewrite the
-  rule to make manual monitoring explicit (remove the hook reference entirely)
+### 2.6 `context-optimization.md` → `context-budget.sh` — RESOLVED (D25)
+- **State**: hook does NOT exist on disk. Misleading sentence in `rules/context-optimization.md`
+  removed (Batch C, 2026-04-20). Rule now explicitly states agents self-monitor per
+  `rules/context-management.md` thresholds (50% / 70% / 85%).
+- **Resolution**: rule updated to be fully agent-instruction-only with no hook reference.
+- **No further action required.**
 
 ## Section 3 — Template coverage (agent-mandatory-rules)
 

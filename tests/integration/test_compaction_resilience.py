@@ -646,7 +646,9 @@ class TestCrashRecovery:
         )
 
     @pytest.mark.xfail(
-        reason="crash-recovery hook not yet wired into SessionStart settings.local.json"
+        reason="auto-snapshot-load not yet implemented in session-init.sh: "
+               "crash-recovery.sh is wired to SessionStart but session-init.sh does not "
+               "yet inject state-snapshot.json into the live session context"
     )
     def test_session_start_hook_loads_snapshot_automatically(self, tmp_path):
         """The session-init SessionStart hook should auto-load the last snapshot.
