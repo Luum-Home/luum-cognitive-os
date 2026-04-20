@@ -30,6 +30,39 @@ if echo "$PROMPT" | grep -qiE "$CLOSURE_RE"; then
         additionalContext: "AUTO-TRIGGER: user requested session close. Invoke /session-wrapup before any other action. Do not skip. (See ADR-030 Q1 / hooks/session-wrapup-trigger.sh)"
       }
     }'
+
+    # ADR-030 §Testing: log emission for log-then-reconcile compliance test.
+    # Degrade silently on any Python error — never block the hook.
+    _PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
+    _SESSION_ID="${COGNITIVE_OS_SESSION_ID:-unknown}"
+    _PROMPT_DIGEST=$(printf '%s' "$PROMPT" | sha256sum 2>/dev/null | cut -c1-8 || printf 'xxxxxxxx')
+    _MATCHED_PHRASE=$(echo "$PROMPT" | grep -oiE "$CLOSURE_RE" | head -1 | cut -c1-40 || true)
+    _PY=$(command -v python3 || command -v python || true)
+    if [ -n "$_PY" ]; then
+        COGNITIVE_OS_PROJECT_DIR="$_PROJECT_DIR" \
+        "$_PY" - "$_PROJECT_DIR" "$_SESSION_ID" "$_PROMPT_DIGEST" "$_MATCHED_PHRASE" \
+            </dev/null >/dev/null 2>&1 <<'PYEOF' || true
+import os, sys
+root = sys.argv[1]
+sys.path.insert(0, root)
+try:
+    from lib.metric_event import MetricEvent, append_event
+    event = MetricEvent(
+        source="session-wrapup-trigger",
+        event_type="auto_trigger.emitted",
+        payload={
+            "suggested_skill": "session-wrapup",
+            "prompt_digest": sys.argv[3],
+            "session_id": sys.argv[2],
+            "matched_phrase": sys.argv[4],
+        },
+    )
+    out = os.path.join(root, ".cognitive-os", "metrics", "auto-trigger-events.jsonl")
+    append_event(out, event)
+except Exception:
+    pass
+PYEOF
+    fi
 fi
 
 exit 0

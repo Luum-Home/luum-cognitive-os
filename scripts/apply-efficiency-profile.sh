@@ -227,10 +227,24 @@ GROUPEOF
   # ADR-022: confidence-gate-llm.sh is the Haiku-evaluated advisory
   # variant of confidence-gate.sh; runs alongside it.
   # auto-verify + dod-gate gate every agent completion.
-  # PostToolUse Skill — track every skill invocation for observability
+  # PostToolUse Skill — track every skill invocation for observability.
+  # skill-invocation-logger.sh (ADR-030): logs to skill-invocations.jsonl for
+  # the log-then-reconcile AUTO-TRIGGER compliance test.
+  local post_skill_entries
+  post_skill_entries=$(
+    hook_entry "skill-usage-tracker.sh"; printf ',\n'
+    hook_entry "skill-invocation-logger.sh"
+  )
   local post_skill
-  post_skill=$(hook_group "Skill" \
-    "skill-usage-tracker.sh")
+  post_skill=$(cat <<GROUPEOF
+      {
+        "matcher": "Skill",
+        "hooks": [
+$post_skill_entries
+        ]
+      }
+GROUPEOF
+  )
 
   local post_agent_entries
   post_agent_entries=$(
@@ -330,7 +344,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -348,7 +362,7 @@ echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
 echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"
-echo "  PostToolUse Skill: skill-usage-tracker.sh"
+echo "  PostToolUse Skill: skill-usage-tracker.sh, skill-invocation-logger.sh"
 echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh, global-verify.sh after"
 echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, session-hygiene.sh, mlflow-sync.sh, recap-sync.sh, session-end-reap.sh"
 echo "  Total hook commands: $new_hook_count"
