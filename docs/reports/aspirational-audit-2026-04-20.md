@@ -4,12 +4,12 @@
 
 | Metric | Value |
 |--------|-------|
-| Total components | 477 |
-| REAL | 116 |
-| DORMANT | 264 |
+| Total components | 480 |
+| REAL | 114 |
+| DORMANT | 269 |
 | ASPIRATIONAL | 63 |
 | METADATA | 34 |
-| DORMANT + ASPIRATIONAL ratio | 68.5% |
+| DORMANT + ASPIRATIONAL ratio | 69.2% |
 
 ## Worst Offenders (ASPIRATIONAL + DORMANT)
 
@@ -19,10 +19,10 @@
 - `hooks/architecture-compliance.sh`
 - `hooks/assumption-tracker.sh`
 - `hooks/adr-detector.sh`
+- `hooks/agent-checkpoint.sh`
 - `hooks/agent-prelaunch.sh`
 - `hooks/agent-work-tracker.sh`
 - `hooks/aspirational-audit-weekly.sh`
-- `hooks/auto-checkpoint.sh`
 
 ## Component Detail
 
@@ -46,7 +46,7 @@
 | `hooks/adaptive-bypass.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: logic merged into agent-prelaunch.sh and orchestrator rules; kept for reference | whitelisted exclusion: DEPRECATED: logic merged into agent-prelaunch.sh and orchestrator rules; kept for reference |
 | `hooks/adr-detector.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/agent-bus-monitor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running | planned but not wired: CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running |
-| `hooks/agent-checkpoint.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/agent-checkpoint.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/agent-output-verifier.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired | planned but not wired: FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired |
 | `hooks/agent-prelaunch.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/agent-work-tracker.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
@@ -57,15 +57,15 @@
 | `hooks/assumption-tracker.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: PreToolUse Agent — ADR-022 variant, not in default profile | planned but not wired: FUTURE: PreToolUse Agent — ADR-022 variant, not in default profile |
 | `hooks/audit-id-enricher.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/auto-checkpoint.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/auto-refine.sh` | REAL | fire_count_7d=21, registered=True | fires actively (21 rows in hook-health.jsonl last 7d) |
+| `hooks/auto-refine.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
 | `hooks/auto-repair-dispatcher.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: fires only on error-pipeline output, sourced not registered | planned but not wired: CONDITIONAL: fires only on error-pipeline output, sourced not registered |
-| `hooks/auto-rollback-trigger.sh` | REAL | fire_count_7d=9, registered=True | fires actively (9 rows in hook-health.jsonl last 7d) |
+| `hooks/auto-rollback-trigger.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
 | `hooks/auto-skill-generator.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: invoked by /auto-skill skill, not a hook matcher | whitelisted exclusion: MANUAL_TRIGGER: invoked by /auto-skill skill, not a hook matcher |
-| `hooks/auto-verify.sh` | REAL | fire_count_7d=25, registered=True | fires actively (25 rows in hook-health.jsonl last 7d) |
+| `hooks/auto-verify.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
 | `hooks/background-agent-reminder.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired |
-| `hooks/blast-radius.sh` | REAL | fire_count_7d=49, registered=True | fires actively (49 rows in hook-health.jsonl last 7d) |
-| `hooks/claim-validator.sh` | REAL | fire_count_7d=44, registered=True | fires actively (44 rows in hook-health.jsonl last 7d) |
-| `hooks/clarification-gate.sh` | REAL | fire_count_7d=49, registered=True | fires actively (49 rows in hook-health.jsonl last 7d) |
+| `hooks/blast-radius.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
+| `hooks/claim-validator.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
+| `hooks/clarification-gate.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
 | `hooks/clarification-interceptor.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: functionality merged into clarification-gate.sh; kept for backward-compat reference | whitelisted exclusion: DEPRECATED: functionality merged into clarification-gate.sh; kept for backward-compat reference |
 | `hooks/code-review-on-commit.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers LLM code review on git commit; uses pre-commit-gate.sh pathway — not yet wired to Claude events | planned but not wired: FUTURE: triggers LLM code review on git commit; uses pre-commit-gate.sh pathway — not yet wired to Claude events |
 | `hooks/cognitive-os-health.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: health-check report for the full OS; run on demand via /cos-status | whitelisted exclusion: MANUAL_TRIGGER: health-check report for the full OS; run on demand via /cos-status |
@@ -74,7 +74,7 @@
 | `hooks/completion-gate.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/concurrent-write-guard.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: prevents concurrent file writes; planned for PreToolUse Edit|Write — not yet wired | planned but not wired: FUTURE: prevents concurrent file writes; planned for PreToolUse Edit\|Write — not yet wired |
 | `hooks/confidence-gate-llm.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/confidence-gate.sh` | REAL | fire_count_7d=9, registered=True | fires actively (9 rows in hook-health.jsonl last 7d) |
+| `hooks/confidence-gate.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
 | `hooks/confidentiality-enforcer.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/consequence-evaluator.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: invoked by /consequence skill | whitelisted exclusion: MANUAL_TRIGGER: invoked by /consequence skill |
 | `hooks/content-policy.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
@@ -84,11 +84,11 @@
 | `hooks/conversation-capture.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired | planned but not wired: FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired |
 | `hooks/crash-recovery.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/dequeue-notify.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: fires only when dispatch-gate emits queue events | planned but not wired: CONDITIONAL: fires only when dispatch-gate emits queue events |
-| `hooks/destructive-git-blocker.sh` | REAL | fire_count_7d=119, registered=True | fires actively (119 rows in hook-health.jsonl last 7d) |
-| `hooks/destructive-rm-blocker.sh` | REAL | fire_count_7d=113, registered=True | fires actively (113 rows in hook-health.jsonl last 7d) |
+| `hooks/destructive-git-blocker.sh` | REAL | fire_count_7d=123, registered=True | fires actively (123 rows in hook-health.jsonl last 7d) |
+| `hooks/destructive-rm-blocker.sh` | REAL | fire_count_7d=123, registered=True | fires actively (123 rows in hook-health.jsonl last 7d) |
 | `hooks/dispatch-gate.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/doc-sync-detector.sh` | REAL | fire_count_7d=301, registered=True | fires actively (301 rows in hook-health.jsonl last 7d) |
-| `hooks/dod-gate.sh` | REAL | fire_count_7d=25, registered=True | fires actively (25 rows in hook-health.jsonl last 7d) |
+| `hooks/doc-sync-detector.sh` | REAL | fire_count_7d=23, registered=True | fires actively (23 rows in hook-health.jsonl last 7d) |
+| `hooks/dod-gate.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
 | `hooks/dry-run-preview.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired | planned but not wired: FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired |
 | `hooks/ecosystem-check.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/engram-auto-import.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired | planned but not wired: FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired |
@@ -96,7 +96,7 @@
 | `hooks/epic-task-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: heuristic detector, not yet wired to any matcher | planned but not wired: FUTURE: heuristic detector, not yet wired to any matcher |
 | `hooks/error-learning.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: captures test/lint/build errors; planned PostToolUse Bash alongside error-pipeline.sh | planned but not wired: FUTURE: captures test/lint/build errors; planned PostToolUse Bash alongside error-pipeline.sh |
 | `hooks/error-pattern-detector.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/error-pipeline.sh` | REAL | fire_count_7d=887, registered=True | fires actively (887 rows in hook-health.jsonl last 7d) |
+| `hooks/error-pipeline.sh` | REAL | fire_count_7d=111, registered=True | fires actively (111 rows in hook-health.jsonl last 7d) |
 | `hooks/git-context-capture.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/global-verify.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/guardrails-validator.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: NeMo Guardrails integration, fires via /guardrails skill | planned but not wired: CONDITIONAL: NeMo Guardrails integration, fires via /guardrails skill |
@@ -106,12 +106,13 @@
 | `hooks/inject-phase-context.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/jupyter-sandbox.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired | planned but not wired: FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired |
 | `hooks/kpi-trigger.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: Stop hook in full profile; wires to kpi_collector | planned but not wired: FUTURE: Stop hook in full profile; wires to kpi_collector |
-| `hooks/large-file-advisor.sh` | REAL | fire_count_7d=237, registered=True | fires actively (237 rows in hook-health.jsonl last 7d) |
+| `hooks/large-file-advisor.sh` | REAL | fire_count_7d=42, registered=True | fires actively (42 rows in hook-health.jsonl last 7d) |
 | `hooks/mcp-scan.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: MCP server audit, fires on demand | planned but not wired: CONDITIONAL: MCP server audit, fires on demand |
 | `hooks/memu-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired | planned but not wired: FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired |
 | `hooks/metrics-calibrator-trigger.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired | planned but not wired: FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired |
-| `hooks/metrics-rotation.sh` | REAL | fire_count_7d=50, registered=True | fires actively (50 rows in hook-health.jsonl last 7d) |
+| `hooks/metrics-rotation.sh` | REAL | fire_count_7d=1, registered=True | fires actively (1 rows in hook-health.jsonl last 7d) |
 | `hooks/mlflow-sync.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/native-agent-heartbeat.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/notify.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: generic desktop notification wrapper; invoked by other hooks, not registered directly | whitelisted exclusion: MANUAL_TRIGGER: generic desktop notification wrapper; invoked by other hooks, not registered directly |
 | `hooks/observability-trace.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: Langfuse integration, fires only when LANGFUSE_ENABLED=true | planned but not wired: CONDITIONAL: Langfuse integration, fires only when LANGFUSE_ENABLED=true |
 | `hooks/orchestrator-mode-detect.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
@@ -131,31 +132,32 @@
 | `hooks/prompt-quality.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: regex variant superseded by prompt-quality-llm.sh | planned but not wired: FUTURE: regex variant superseded by prompt-quality-llm.sh |
 | `hooks/rate-limit-protection.sh` | METADATA | deprecated_shim=True | DEPRECATED shim — short file with DEPRECATED marker |
 | `hooks/rate-limiter.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/reaper-heartbeat.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/recap-sync.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/registration-check.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/reinvention-check.sh` | REAL | fire_count_7d=55, registered=True | fires actively (55 rows in hook-health.jsonl last 7d) |
+| `hooks/reinvention-check.sh` | REAL | fire_count_7d=29, registered=True | fires actively (29 rows in hook-health.jsonl last 7d) |
 | `hooks/release-guard.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired | planned but not wired: FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired |
 | `hooks/resource-check.sh` | METADATA | registered=False, excluded=True, category=INFRA: checks resource limits before spawning; called programmatically by rate-limiter.sh, not registered as independent hook | whitelisted exclusion: INFRA: checks resource limits before spawning; called programmatically by rate-limiter.sh, not registered as independent hook |
-| `hooks/result-truncator.sh` | REAL | fire_count_7d=888, registered=True | fires actively (888 rows in hook-health.jsonl last 7d) |
+| `hooks/result-truncator.sh` | REAL | fire_count_7d=111, registered=True | fires actively (111 rows in hook-health.jsonl last 7d) |
 | `hooks/scope-creep-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: PostToolUse Agent, planned but not wired | planned but not wired: FUTURE: PostToolUse Agent, planned but not wired |
 | `hooks/scope-proportionality.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: PostToolUse Agent, planned | planned but not wired: FUTURE: PostToolUse Agent, planned |
-| `hooks/secret-detector.sh` | REAL | fire_count_7d=995, registered=True | fires actively (995 rows in hook-health.jsonl last 7d) |
+| `hooks/secret-detector.sh` | REAL | fire_count_7d=171, registered=True | fires actively (171 rows in hook-health.jsonl last 7d) |
 | `hooks/self-install.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/semgrep-scan.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: fires via /semgrep-scan skill | planned but not wired: CONDITIONAL: fires via /semgrep-scan skill |
 | `hooks/session-changelog.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/session-cleanup.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/session-cleanup.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/session-end-reap.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/session-hygiene.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/session-init.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/session-knowledge-extractor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: extracts learnings at session end; planned for Stop event — not yet wired | planned but not wired: FUTURE: extracts learnings at session end; planned for Stop event — not yet wired |
-| `hooks/session-learning.sh` | REAL | fire_count_7d=41, registered=True | fires actively (41 rows in hook-health.jsonl last 7d) |
+| `hooks/session-learning.sh` | REAL | fire_count_7d=10, registered=True | fires actively (10 rows in hook-health.jsonl last 7d) |
 | `hooks/session-resume.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/session-sanity.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/session-state-save.sh` | METADATA | registered=False, excluded=True, category=INFRA: saves session state to disk; invoked by session-cleanup.sh or manually; not a standalone registered hook | whitelisted exclusion: INFRA: saves session state to disk; invoked by session-cleanup.sh or manually; not a standalone registered hook |
 | `hooks/session-wrapup-trigger.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/singularity-check.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: checks MAPE-K loop state; invoked by /singularity skill, not by Claude events | whitelisted exclusion: MANUAL_TRIGGER: checks MAPE-K loop state; invoked by /singularity skill, not by Claude events |
 | `hooks/skill-feedback-tracker.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: tracks skill usage quality; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: tracks skill usage quality; planned for PostToolUse Agent — not yet wired |
-| `hooks/skill-invocation-logger.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/skill-invocation-logger.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/skill-tracker.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: tracks skill invocations for model-optimizer; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: tracks skill invocations for model-optimizer; planned for PostToolUse Agent — not yet wired |
 | `hooks/skill-usage-tracker.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/state-heartbeat.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
@@ -170,15 +172,15 @@
 | `hooks/token-budget-monitor.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/tool-discovery-trigger.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired |
 | `hooks/tool-loop-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired | planned but not wired: FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired |
-| `hooks/trust-score-validator.sh` | REAL | fire_count_7d=44, registered=True | fires actively (44 rows in hook-health.jsonl last 7d) |
+| `hooks/trust-score-validator.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
 | `hooks/usage-health-check.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/user-prompt-capture.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/valkey-ensure.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/valkey-ensure.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/wiring-check.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/worktree-submodule-fix.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: fixes git submodule state in worktrees; invoked manually after worktree operations | planned but not wired: CONDITIONAL: fixes git submodule state in worktrees; invoked manually after worktree operations |
 | `lib/adr_detector.py` | REAL | callers=1, size_bytes=15751 | imported by 1 non-test caller(s) |
 | `lib/agent_bus.py` | REAL | callers=1, size_bytes=29356 | imported by 1 non-test caller(s) |
-| `lib/agent_bus_metrics.py` | REAL | callers=5, size_bytes=14987 | imported by 5 non-test caller(s) |
+| `lib/agent_bus_metrics.py` | REAL | callers=6, size_bytes=14987 | imported by 6 non-test caller(s) |
 | `lib/agent_context_injector.py` | DORMANT | callers=0, size_bytes=4733 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/agent_dashboard.py` | DORMANT | callers=0, size_bytes=8242 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/agent_health_monitor.py` | REAL | callers=2, size_bytes=16489 | imported by 2 non-test caller(s) |
@@ -277,10 +279,10 @@
 | `lib/rate_limiter.py` | REAL | callers=2, size_bytes=24883 | imported by 2 non-test caller(s) |
 | `lib/record_completion.py` | REAL | callers=1, size_bytes=16875 | imported by 1 non-test caller(s) |
 | `lib/record_error.py` | DORMANT | callers=0, size_bytes=688 | no non-test callers found in hooks/, packages/, scripts/ |
-| `lib/ref_key_loader.py` | DORMANT | callers=0, size_bytes=5425 | no non-test callers found in hooks/, packages/, scripts/ |
+| `lib/ref_key_loader.py` | REAL | callers=1, size_bytes=5425 | imported by 1 non-test caller(s) |
 | `lib/reinvention_guard.py` | DORMANT | callers=0, size_bytes=12450 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/release_analyzer.py` | DORMANT | callers=0, size_bytes=19825 | no non-test callers found in hooks/, packages/, scripts/ |
-| `lib/repetition_detector.py` | REAL | callers=0, writes_jsonl=True, size_bytes=6093 | writes to an existing metrics JSONL file |
+| `lib/repetition_detector.py` | DORMANT | callers=0, size_bytes=6093 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/repo_analyzer.py` | DORMANT | callers=0, size_bytes=51731 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/request_queue.py` | DORMANT | callers=0, size_bytes=4288 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/research_scoring.py` | DORMANT | callers=0, size_bytes=7750 | no non-test callers found in hooks/, packages/, scripts/ |
@@ -303,7 +305,7 @@
 | `lib/skill_router.py` | DORMANT | callers=0, size_bytes=46082 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/smart_access.py` | DORMANT | callers=0, size_bytes=6992 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/smart_infra.py` | REAL | callers=1, size_bytes=23098 | imported by 1 non-test caller(s) |
-| `lib/smart_reader.py` | REAL | callers=0, writes_jsonl=True, size_bytes=24454 | writes to an existing metrics JSONL file |
+| `lib/smart_reader.py` | DORMANT | callers=0, size_bytes=24454 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/smart_truncator.py` | DORMANT | callers=0, size_bytes=20833 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/stack_skill_recommender.py` | DORMANT | callers=0, size_bytes=18329 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/staged_verification.py` | DORMANT | callers=0, size_bytes=15214 | no non-test callers found in hooks/, packages/, scripts/ |
@@ -323,7 +325,7 @@
 | `lib/webhook_trigger.py` | DORMANT | callers=0, size_bytes=14410 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/wiring_validator.py` | DORMANT | callers=0, size_bytes=12299 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/work_queue.py` | REAL | callers=5, size_bytes=6414 | imported by 5 non-test caller(s) |
-| `scripts/apply-efficiency-profile.sh` | DORMANT | callers=0, size_bytes=14963 | no observable production use detected |
+| `scripts/apply-efficiency-profile.sh` | REAL | writes_jsonl=True, size_bytes=15142 | writes to an existing metrics JSONL file |
 | `scripts/aspirational-audit.py` | REAL | writes_jsonl=True, size_bytes=28726 | writes to an existing metrics JSONL file |
 | `scripts/auto-update-projects.sh` | DORMANT | callers=0, size_bytes=9854 | no observable production use detected |
 | `scripts/backfill-cost-events.py` | REAL | writes_jsonl=True, size_bytes=2848 | writes to an existing metrics JSONL file |
@@ -335,11 +337,12 @@
 | `scripts/check-test-ratchet.py` | DORMANT | callers=0, size_bytes=4244 | no observable production use detected |
 | `scripts/check-upstream-changes.sh` | DORMANT | callers=0, size_bytes=851 | no observable production use detected |
 | `scripts/component-lint.sh` | DORMANT | callers=0, size_bytes=9712 | no observable production use detected |
+| `scripts/compose-agent-prompt.py` | DORMANT | callers=0, size_bytes=7526 | no observable production use detected |
 | `scripts/cos-bootstrap.sh` | DORMANT | callers=0, size_bytes=16903 | no observable production use detected |
 | `scripts/cos-core-skills-check.sh` | DORMANT | callers=0, size_bytes=8437 | no observable production use detected |
 | `scripts/cos-ghost-skills.sh` | REAL | writes_jsonl=True, size_bytes=3222 | writes to an existing metrics JSONL file |
 | `scripts/cos-init-global.sh` | DORMANT | callers=0, size_bytes=4626 | no observable production use detected |
-| `scripts/cos-init.sh` | DORMANT | callers=0, size_bytes=19760 | no observable production use detected |
+| `scripts/cos-init.sh` | DORMANT | callers=0, size_bytes=21246 | no observable production use detected |
 | `scripts/cos-registry.sh` | DORMANT | callers=0, size_bytes=6642 | no observable production use detected |
 | `scripts/cos-release-check.sh` | DORMANT | callers=0, size_bytes=20638 | no observable production use detected |
 | `scripts/cos-sessions.sh` | REAL | writes_jsonl=True, size_bytes=5519 | writes to an existing metrics JSONL file |
@@ -366,13 +369,13 @@
 | `scripts/orchestrator.py` | REAL | writes_jsonl=True, size_bytes=8114 | writes to an existing metrics JSONL file |
 | `scripts/register-mcps.sh` | DORMANT | callers=0, size_bytes=15569 | no observable production use detected |
 | `scripts/run-all-tests.sh` | DORMANT | callers=0, size_bytes=4048 | no observable production use detected |
-| `scripts/set-security-profile.sh` | DORMANT | callers=0, size_bytes=7576 | no observable production use detected |
+| `scripts/set-security-profile.sh` | DORMANT | callers=0, size_bytes=7807 | no observable production use detected |
 | `scripts/setup-git-hooks.sh` | DORMANT | callers=0, size_bytes=7018 | no observable production use detected |
 | `scripts/setup-langfuse.sh` | DORMANT | callers=0, size_bytes=10713 | no observable production use detected |
 | `scripts/setup.sh` | DORMANT | callers=0, size_bytes=11084 | no observable production use detected |
 | `scripts/so-emergency-stop.sh` | DORMANT | callers=0, size_bytes=5181 | no observable production use detected |
 | `scripts/so-reaper.sh` | DORMANT | callers=0, size_bytes=2341 | no observable production use detected |
-| `scripts/so-vitals.sh` | REAL | writes_jsonl=True, size_bytes=7252 | writes to an existing metrics JSONL file |
+| `scripts/so-vitals.sh` | DORMANT | callers=0, size_bytes=7252 | no observable production use detected |
 | `scripts/test-agent-teams-hooks.sh` | DORMANT | callers=0, size_bytes=4384 | no observable production use detected |
 | `scripts/test-all.sh` | DORMANT | callers=0, size_bytes=8267 | no observable production use detected |
 | `scripts/test-cognitive-os-full.sh` | DORMANT | callers=0, size_bytes=6493 | no observable production use detected |
