@@ -3,7 +3,69 @@
 All notable changes to Cognitive OS are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased] — UX1 + UX8 installer overhaul (ADR-002)
+## [0.12.0] - 2026-04-20 — "SO Reliability Framework"
+
+### Added — ADR-028 (full 6-pillar reliability framework)
+
+- **D1.A Observability foundation**: `lib/metric_event.py` (canonical JSONL event schema with ENOSPC-safe `append_event` returning bool), `docs/reports/metrics-census.md` (F-1..F-8 surfaced), rotation by size (>1 MiB) + age (>7 d) in `hooks/metrics-rotation.sh`, archive path aligned.
+- **D1.B Process registry + reaper**: `lib/process_registry.py` + `ProcessRegistry` facade (register/deregister/cleanup_expired/detect_orphans), `scripts/so-reaper.sh`, `hooks/session-end-reap.sh`. 8 real call sites via `hooks/_lib/register-bg.sh`. Safe-kill contract: only registered PIDs can be terminated.
+- **D1.C Agent liveness (via agent_bus adapter, ADR-028b)**: `lib/agent_bus_metrics.py` bridges `cos:agent:*:heartbeat` events to MetricEvent JSONL. No parallel heartbeat system — builds on existing `lib/agent_bus.py`. Proven end-to-end with orchestrator smoke test (commit `ae84bb8`).
+- **D1.D Unified dashboard**: `scripts/so-vitals.sh` (human + `--json` modes) aggregates agents, registered processes, orphan suspects, JSONL sizes, Valkey reachability. Consumed by chaos and contract tests.
+- **D2 Contract test suite**: `tests/contracts/test_orphan_hooks.py` (130 hooks → 0 orphans), `test_fd_invariant.py`, `test_ram_ceiling.py`, `test_p95_hook_latency.py`. 4 real contracts, all behavioral.
+- **D3 Systematic audit**: `docs/reports/hook-audit-2026-04.md` — 130 hooks scanned, 18 findings (2 BLOCKER, 9 CONCERN, 7 SUGGESTION) with anti-pattern taxonomy.
+- **D4 Systematic fix**: 2/2 BLOCKERs + 9/9 CONCERNs resolved. `test-baseline-diff.sh` deleted (WS11 Bug-1 pattern). `mlflow-sync` + 5 other hooks wrapped in `timeout 30`. `rate-limit-protection.sh` reduced to deprecation shim of `token-budget-monitor.sh`.
+- **D5 SLOs + runbook + killswitch**: `rules/so-slo.md` (9 SLOs + error budget), `docs/runbooks/so-incident-runbook.md`, `scripts/so-emergency-stop.sh`, `hooks/_lib/killswitch_check.sh` sourced by 124 of 129 hooks.
+- **D6 Chaos suite**: `tests/chaos/` 5 scenarios (MCP kill, hook timeout, disk-full ENOSPC, FD exhaustion, git-reset cascade detector). All behavioral, 1 found a real gap and flipped to pass after D4 fix.
+
+### Added — ADR-027 (SO slimming)
+
+- **Phase 1**: `hooks/global-verify.sh` (PreToolUse/PostToolUse Agent, targeted test resolver + baseline/after diff), `lib/targeted_test_resolver.py` + `TargetedTestResolver` facade.
+- **Phase 2**: `lib/ref_key_loader.py` — on-demand `[\`key\`]` → `rules/<key>.md` expansion with miss logging. Enables contextual rule inclusion.
+
+### Added — ADR-029 (anti-reinvention gate)
+
+- `hooks/reinvention-check.sh` wired at PreToolUse Agent. Grep-based similarity check against existing modules before sub-agent writes new file. Advisory in Phase A; hard-block at ≥0.7 similarity planned for Phase B.
+
+### Added — Infrastructure
+
+- `hooks/valkey-ensure.sh` auto-starts Valkey via OrbStack when `ORCHESTRATOR_MODE=executor`.
+- `scripts/orchestrator.py` — dogfood entry point that uses `ClaudeExecutor` + `agent_bus_metrics` instead of the native Agent tool. Self-hosting loop proven (see `docs/reports/orchestrator-dogfood-smoke-test-2026-04-20.md`).
+- 5 MetricEvent writer migrations (cost-events, consequence, skill-archive, telemetry, learning, singularity). 100% of cost-events rows migrated via `scripts/backfill-cost-events.py`.
+
+### Changed
+
+- `rules/RULES-COMPACT.md`: added `[\`so-slo\`]` ref-key on Infra line so ADR-028 SLO catalogue is loadable via the ref-key loader.
+- `templates/agent-preamble.md`: 100 → 34 lines (trim). ~60% reduction in sub-agent context overhead (see `docs/reports/sub-agent-context-trim-2026-04-20.md`).
+- `hooks/blast-radius.sh`: CRITICAL now requires `(INFRA AND SECURITY) OR file_score > 100` (was: `INFRA OR SECURITY OR file_score > 50`). Message compressed to one line.
+- `hooks/inject-phase-context.sh`: gotchas dedup per session (first agent gets full text, subsequent get pointer).
+- `hooks/_lib/task_panel_adapter.py`: skip tasks already in native Task panel (no more duplicate blocks).
+- `lib/rate_limit_protection.py` → renamed to `lib/token_budget_monitor.py` (name collision with rate-limiter killed).
+
+### Removed
+
+- `lib/task_dag.py`, `lib/pipeline_executor.py`, `lib/workload_scheduler.py` — 65KB of dead code (`workflow-engine`), zero production callers.
+- `hooks/test-baseline-diff.sh` — WS11 Bug-1 pattern (unbounded pytest at Stop).
+- `lib/rate_limit_protection.py` + `hooks/rate-limit-protection.sh` reduced to deprecation shims.
+- `valkey>=5.0` from `pyproject.toml` (redundant; `redis>=5.0.0` speaks the Valkey wire protocol).
+
+### Fixed
+
+- **F-4 SESSION_ID propagation**: `hooks/session-init.sh` now explicitly `export`s `COGNITIVE_OS_SESSION_ID` so 7 previously-invisible JSONL files (error-learning, repair-outcomes, remediation-registry, repair-queue, repair-dispatch, session-audit, singularity-events) can be written.
+- **Singularity path**: `lib/singularity.py` `_SINGULARITY_LOG` was pointing to a dead `metrics/` directory; now writes to `.cognitive-os/metrics/`.
+- **Hook registration sweep (debt register P1)**: `audit-id-enricher`, `auto-rollback-trigger`, `confidence-gate`, `confidentiality-enforcer`, `predev-completeness-check` registered (were on disk but never fired).
+- **`metric_event.append_event` ENOSPC**: now returns `False` instead of raising, preventing cascading failures under disk pressure. `tests/chaos/test_disk_full_metrics.py` flipped from xfail to pass.
+- **`scripts/so-vitals.sh` `cwd` bug**: `sys.path.insert(0, ".")` replaced with `"$PROJECT_DIR"` so the script works when invoked from outside the repo root.
+
+### Documentation
+
+- 4 new ADRs: `ADR-027a`, `ADR-028a`, `ADR-028b`, `ADR-029`.
+- 9 audit / report documents under `docs/reports/` (metrics census, hook audit, debt register, artifact verification, reconciliation audit, smoke test, context trim, D1B TODO, validation).
+
+### Dependencies
+
+- `pyproject.toml` version bumped from `0.8.4` (stale — had not tracked releases since April 10) to `0.12.0` (aligned with tag).
+
+## [Unreleased — superseded by 0.12.0] — UX1 + UX8 installer overhaul (ADR-002)
 
 ### Changed
 
