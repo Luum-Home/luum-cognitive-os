@@ -1,5 +1,8 @@
 # Task DAG — Dependency-Aware Agent Orchestration
 
+> **REMOVED 2026-04-20**: `lib/task_dag.py` was deleted (0 production callers, 24KB dead code).
+> The conceptual pattern described here is still valid; re-implement if needed.
+
 ## Purpose
 
 Replaces manual dependency tracking in conversation with a formal Directed Acyclic Graph.

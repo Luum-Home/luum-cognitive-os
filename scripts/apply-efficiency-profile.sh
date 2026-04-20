@@ -202,6 +202,11 @@ GROUPEOF
   # ADR-022: confidence-gate-llm.sh is the Haiku-evaluated advisory
   # variant of confidence-gate.sh; runs alongside it.
   # auto-verify + dod-gate gate every agent completion.
+  # PostToolUse Skill — track every skill invocation for observability
+  local post_skill
+  post_skill=$(hook_group "Skill" \
+    "skill-usage-tracker.sh")
+
   local post_agent_entries
   post_agent_entries=$(
     hook_entry "claim-validator.sh"; printf ',\n'
@@ -263,7 +268,7 @@ GROUPEOF
 
   printf '    "PostToolUse": [\n'
   local post_first=true
-  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_agent"; do
+  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_skill" "$post_agent"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
@@ -295,7 +300,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -312,6 +317,7 @@ echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
 echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"
+echo "  PostToolUse Skill: skill-usage-tracker.sh"
 echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh, global-verify.sh after"
 echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, test-baseline-diff.sh, session-hygiene.sh, mlflow-sync.sh, recap-sync.sh, session-end-reap.sh"
 echo "  Total hook commands: $new_hook_count"

@@ -1,5 +1,8 @@
 # Workload Scheduling
 
+> **REMOVED 2026-04-20**: `lib/workload_scheduler.py` was deleted (0 production callers, 16KB dead code).
+> The scheduling concepts described here remain valid; re-implement if needed.
+
 ## Purpose
 
 When the orchestrator has multiple tasks to dispatch (e.g., SDD batches, parallel agents, sprint tasks), the WorkloadScheduler plans which tasks to dispatch immediately and which to queue based on current rate limit availability, task priority, and cost headroom.
