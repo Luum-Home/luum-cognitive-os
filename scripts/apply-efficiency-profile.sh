@@ -129,6 +129,8 @@ fi
 #   confidentiality-enforcer (PostToolUse Edit|Write — regression-guarded)
 build_settings() {
   # SessionStart
+  # mcp-scan.sh: scans MCP server config for tool poisoning/injection at session start.
+  # Fast (~100ms), graceful degradation (exit 0 if mcp-scan not installed).
   local session_start
   session_start=$(hook_group "" \
     "self-install.sh" \
@@ -142,7 +144,8 @@ build_settings() {
     "ecosystem-check.sh" \
     "pattern-check.sh" \
     "metrics-rotation.sh" \
-    "aspirational-audit-weekly.sh")
+    "aspirational-audit-weekly.sh" \
+    "mcp-scan.sh")
 
   # UserPromptSubmit
   local user_prompt_submit_entries
@@ -180,6 +183,11 @@ GROUPEOF
     "secret-detector.sh")
   # ADR-022: prompt-quality-llm.sh and completeness-check-llm.sh are
   # Haiku-evaluated advisories that run alongside the regex variants.
+  # D35: aguara-scan.sh + parry-scan.sh — security hooks, standard profile.
+  #   aguara-scan.sh: 189-rule deterministic prompt injection/supply-chain scanner.
+  #     Fast, exit 0 when aguara not installed. Blocks (exit 2) on CRITICAL only.
+  #   parry-scan.sh: ML-based prompt injection scanner.
+  #     Fast, exit 0 when parry-guard not installed. Blocks (exit 2) on detection.
   local pre_agent_entries
   pre_agent_entries=$(
     hook_entry "dispatch-gate.sh"; printf ',\n'
@@ -192,6 +200,8 @@ GROUPEOF
     hook_entry "completeness-check-llm.sh"; printf ',\n'
     hook_entry "prompt-quality-llm.sh"; printf ',\n'
     hook_entry "reinvention-check.sh"; printf ',\n'
+    hook_entry "aguara-scan.sh"; printf ',\n'
+    hook_entry "parry-scan.sh"; printf ',\n'
     hook_entry "auto-refine.sh"; printf ',\n'
     hook_entry "registration-check.sh"; printf ',\n'
     hook_entry "agent-work-tracker.sh"; printf ',\n'
@@ -249,6 +259,9 @@ $post_skill_entries
 GROUPEOF
   )
 
+  # D35: semgrep-scan.sh — SAST scanner, fires after sdd-apply completes.
+  # Advisory only (always exit 0). Requires SEMGREP_ENABLED=true + semgrep installed
+  # to produce output; silently exits otherwise — safe for default profile.
   local post_agent_entries
   post_agent_entries=$(
     hook_entry "claim-validator.sh"; printf ',\n'
@@ -267,6 +280,7 @@ GROUPEOF
     hook_entry "agent-work-tracker.sh"; printf ',\n'
     hook_entry "task-panel-sync.sh"; printf ',\n'
     hook_entry "task-bridge-notify.sh"; printf ',\n'
+    hook_entry "semgrep-scan.sh"; printf ',\n'
     hook_entry_with_args "global-verify.sh" "after"
   )
   local post_agent
@@ -348,7 +362,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh mcp-scan.sh aguara-scan.sh parry-scan.sh semgrep-scan.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -357,17 +371,17 @@ done
 # ── Summary ─────────────────────────────────────────────────────────
 echo ""
 echo "Hook summary for profile 'default' (ADR-002):"
-echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, valkey-ensure.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh"
+echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, valkey-ensure.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh, mcp-scan.sh (D35: MCP tool poisoning scan)"
 echo "  UserPromptSubmit: user-prompt-capture.sh, session-wrapup-trigger.sh"
 echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh, destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
-echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
+echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, aguara-scan.sh (D35: 189-rule prompt injection), parry-scan.sh (D35: ML injection scanner), auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
 echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh, skill-invocation-logger.sh"
-echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh, global-verify.sh after"
+echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh, semgrep-scan.sh (D35: SAST, advisory), global-verify.sh after"
 echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, session-hygiene.sh, mlflow-sync.sh, recap-sync.sh, session-end-reap.sh"
 echo "  Total hook commands: $new_hook_count"
 

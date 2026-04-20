@@ -58,7 +58,7 @@ Age in days from 2026-04-20. Effort in session-units (1 session ≈ 3-4h Opus).
 | D32 | FROZEN-BACKLOG #14 | uncommitted_note | >30 | LOW | Onboarding wizard TUI — `cos setup` partial, full polish deferred | Scope-out full polish OR accept `cos setup` as final | 0.5 |
 | D33 | FROZEN-BACKLOG #17 | uncommitted_note | >30 | LOW | Plans directory consolidation decision pending (`plans/` vs `.cognitive-os/plans/`) | Pick one; move and delete other | 0.25 |
 | D34 | FROZEN-BACKLOG #21 | uncommitted_note | >30 | MEDIUM | Docker→pip phase 3 pending: Paperclip, PostgreSQL, Valkey still in docker-compose | Design migration per service | 2 |
-| D35 | FROZEN-BACKLOG #23 | uncommitted_note | >30 | MEDIUM | Security tools partially wired: Semgrep/MCP-Scan/Promptfoo/Garak/Aguara/Parry hooks exist, not in default profile | Add to `default` profile in `apply-efficiency-profile.sh` | 0.5 |
+| D35 | FROZEN-BACKLOG #23 | uncommitted_note | >30 | ~~MEDIUM~~ **RESOLVED** | ~~Security tools partially wired~~ mcp-scan (SessionStart), aguara-scan + parry-scan (PreToolUse Agent), semgrep-scan (PostToolUse Agent) added to `default` profile. All 4 exit 0 when CLI absent. | — | — |
 | D36 | FROZEN-BACKLOG #19 | uncommitted_note | >30 | LOW | 5 rules still without hook equivalent — decide: keep as rule OR implement hook. | Audit 5 rules; per-rule decision | 0.5 |
 | D37 | tests/audit/test_install_scripts.py:392-409 | skip | ~10 | NOISE→LOW | 3 install tests skipped (network, Docker, HOME mutation). Documented gaps, not real debt. | Set up CI sandbox with Docker + redirected HOME | 1 |
 | D38 | lib/code_reviewer.py:159-162 | todo | >30 | NOISE | Regex patterns for matching TODO/FIXME/HACK/XXX — these are scanner rules, not TODOs themselves. | N/A | - |
