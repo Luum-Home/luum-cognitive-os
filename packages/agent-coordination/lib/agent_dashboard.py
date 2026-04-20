@@ -23,6 +23,12 @@ from typing import Any, Dict, List, Optional
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# Default Valkey/Redis URL — override with VALKEY_URL or COS_VALKEY_URL env var
+_DEFAULT_VALKEY_URL = os.environ.get(
+    "VALKEY_URL",
+    os.environ.get("COS_VALKEY_URL", "redis://localhost:6379"),
+)
+
 
 def _format_ago(epoch: float) -> str:
     """Format a timestamp as 'Xs ago' or 'Xm ago'."""
@@ -63,7 +69,7 @@ class AgentDashboard:
 
     def __init__(
         self,
-        valkey_url: str = "redis://localhost:6379",
+        valkey_url: str = _DEFAULT_VALKEY_URL,
         refresh_interval: float = 1.0,
     ) -> None:
         self.valkey_url = valkey_url
@@ -225,8 +231,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--url",
-        default="redis://localhost:6379",
-        help="Valkey/Redis URL (default: redis://localhost:6379)",
+        default=_DEFAULT_VALKEY_URL,
+        help="Valkey/Redis URL (default: redis://localhost:6379, override with VALKEY_URL env var)",
     )
     parser.add_argument(
         "--refresh",

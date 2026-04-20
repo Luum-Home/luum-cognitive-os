@@ -30,6 +30,12 @@ logger = logging.getLogger(__name__)
 # Default file-based fallback directory
 _DEFAULT_FALLBACK_DIR = ".cognitive-os/agent-bus"
 
+# Default Valkey/Redis URL — override with VALKEY_URL or COS_VALKEY_URL env var
+_DEFAULT_VALKEY_URL = os.environ.get(
+    "VALKEY_URL",
+    os.environ.get("COS_VALKEY_URL", "redis://localhost:6379"),
+)
+
 # Channel prefix
 _CHANNEL_PREFIX = "cos:agent"
 
@@ -97,7 +103,7 @@ def _ensure_valkey_via_smart_infra() -> bool:
         return False
 
 
-def is_valkey_available(valkey_url: str = "redis://localhost:6379") -> bool:
+def is_valkey_available(valkey_url: str = _DEFAULT_VALKEY_URL) -> bool:
     """Check if Valkey/Redis is reachable.
 
     If not reachable on first try, attempts to start Valkey via
@@ -195,7 +201,7 @@ class AgentPublisher:
     def __init__(
         self,
         agent_id: str,
-        valkey_url: str = "redis://localhost:6379",
+        valkey_url: str = _DEFAULT_VALKEY_URL,
         fallback_dir: Optional[str] = None,
     ) -> None:
         self.agent_id = _sanitize_agent_id(agent_id)
@@ -517,7 +523,7 @@ class OrchestratorSubscriber:
 
     def __init__(
         self,
-        valkey_url: str = "redis://localhost:6379",
+        valkey_url: str = _DEFAULT_VALKEY_URL,
         fallback_dir: Optional[str] = None,
     ) -> None:
         self.valkey_url = valkey_url
