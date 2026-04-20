@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # Apply Efficiency Profile — Generates settings.json based on the selected profile
 #
+# ── manual-invoke only ────────────────────────────────────────────────────────
+# so-emergency-stop.sh  — ADR-028 D5 kill-switch (manual CLI, not a hook matcher)
+# hooks/_lib/killswitch_check.sh — sourced by hooks; exempt from hook-matcher wiring
+# ─────────────────────────────────────────────────────────────────────────────
+#
 # ADR-002 collapsed the 3-tier profile system (lean/standard/full) to two tiers:
 #   default  — curated ~29 hook set + core rules (~8000 tokens/session)
 #   full     — every hook in the repo (~142000 tokens/session)
