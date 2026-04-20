@@ -130,6 +130,7 @@ build_settings() {
     "crash-recovery.sh" \
     "session-resume.sh" \
     "orchestrator-mode-detect.sh" \
+    "valkey-ensure.sh" \
     "usage-health-check.sh" \
     "ecosystem-check.sh" \
     "pattern-check.sh" \
@@ -163,6 +164,7 @@ build_settings() {
     hook_entry "predev-completeness-check.sh"; printf ',\n'
     hook_entry "completeness-check-llm.sh"; printf ',\n'
     hook_entry "prompt-quality-llm.sh"; printf ',\n'
+    hook_entry "reinvention-check.sh"; printf ',\n'
     hook_entry "auto-refine.sh"; printf ',\n'
     hook_entry "registration-check.sh"; printf ',\n'
     hook_entry "agent-work-tracker.sh"; printf ',\n'
@@ -302,11 +304,11 @@ done
 # ── Summary ─────────────────────────────────────────────────────────
 echo ""
 echo "Hook summary for profile 'default' (ADR-002):"
-echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh"
+echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, valkey-ensure.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh"
 echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
-echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
+echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
 echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"

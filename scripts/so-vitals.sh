@@ -107,6 +107,24 @@ try:
 except Exception:
     pass
 
+# Valkey reachability (for agent_bus)
+import socket
+valkey_reachable = False
+valkey_host = os.environ.get("VALKEY_HOST", "127.0.0.1")
+valkey_port = int(os.environ.get("VALKEY_PORT", "6379"))
+try:
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(0.5)
+    s.connect((valkey_host, valkey_port))
+    s.close()
+    valkey_reachable = True
+except Exception:
+    valkey_reachable = False
+
+orchestrator_mode = os.environ.get("ORCHESTRATOR_MODE", "native")
+valkey_required = (orchestrator_mode == "executor")
+valkey_warning = (valkey_required and not valkey_reachable)
+
 payload = {
     "agents_in_flight": len([a for a in agents if a["state"] not in ("STALE", "hung")]),
     "agents_stale": len([a for a in agents if a["state"] == "STALE"]),
@@ -120,6 +138,10 @@ payload = {
     "jsonl_needs_rotation": len([j for j in jsonl_files if j["will_rotate"]]),
     "disk_bytes": disk_bytes,
     "disk_mib": round(disk_bytes / (1024*1024), 2),
+    "valkey_reachable": valkey_reachable,
+    "valkey_host": f"{valkey_host}:{valkey_port}",
+    "orchestrator_mode": orchestrator_mode,
+    "valkey_warning": valkey_warning,
 }
 
 event = MetricEvent(
@@ -140,6 +162,10 @@ else:
     print(f"Disk:         {payload['disk_mib']} MiB under .cognitive-os/")
     print(f"Agents:       {payload['agents_in_flight']} in flight, {payload['agents_stale']} stale")
     print(f"Processes:    {payload['processes_registered']} registered, {payload['orphan_suspects_count']} orphan suspects")
+    bus_state = "REACHABLE" if valkey_reachable else "DOWN"
+    print(f"Valkey:       {bus_state} at {valkey_host}:{valkey_port}  (orchestrator={orchestrator_mode})")
+    if valkey_warning:
+        print(f"  *** WARNING: ORCHESTRATOR_MODE=executor but Valkey unreachable — agent_bus degraded to FallbackBus ***")
     print(f"JSONL files:  {payload['jsonl_files']} total, {payload['jsonl_needs_rotation']} need rotation")
     if agents:
         print()
