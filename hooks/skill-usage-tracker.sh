@@ -95,6 +95,10 @@ _TRACKER_PID=$!
 
 # ADR-028 D1.B — register with process_registry so the reaper knows this is a
 # managed short-lived process and not an orphan.
+# ADR-028 D4 fix (2026-04-20): the registration subshell itself was launched with &
+# but its PID was never tracked (CONCERN — bg_without_pid_track). Fixed: capture
+# _REG_PID and disown it explicitly so the parent shell does not accumulate zombies,
+# and register _REG_PID with process_registry as a second managed short-lived process.
 (
   COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" \
     "$PY" - "$_TRACKER_PID" "skill-usage-tracker" "30" "short_lived" <<'PYEOF' >/dev/null 2>&1
@@ -108,6 +112,24 @@ except Exception:
     pass
 PYEOF
 ) &
+_REG_PID=$!
+disown "$_REG_PID" 2>/dev/null || true
+
+# Register _REG_PID itself so the reaper knows it too.
+(
+  COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" \
+    "$PY" - "$_REG_PID" "skill-usage-tracker-reg" "15" "short_lived" <<'PYEOF' >/dev/null 2>&1
+import sys, os
+root = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd()
+sys.path.insert(0, root)
+try:
+    import lib.process_registry as process_registry
+    process_registry.register(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]), sys.argv[4])
+except Exception:
+    pass
+PYEOF
+) &
+disown $! 2>/dev/null || true
 
 # Parent returns immediately with success — background writer runs on its own.
 exit 0

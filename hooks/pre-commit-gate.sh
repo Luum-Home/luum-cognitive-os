@@ -1,17 +1,24 @@
 #!/usr/bin/env bash
-# pre-commit-gate.sh — Git pre-commit hook that gates commits on test health
+# pre-commit-gate.sh — Git pre-commit hook that gates commits on structural checks
 #
-# 1. Runs pytest and blocks commit if any tests fail
-# 2. Runs coverage-report.sh and warns if composite coverage drops below threshold
-# 3. Persists coverage measurement to .cognitive-os/metrics/coverage-history.jsonl
-# 4. Supports --no-verify (standard git behavior, handled by git itself)
+# ADR-028 D4 fix (2026-04-20): Removed inline pytest block (BLOCKER — test_run_inside_hook).
+# Pytest is owned exclusively by hooks/global-verify.sh (ADR-027 Phase 1).
+# Running the full test suite inside a pre-commit hook blocks VCS operations
+# indefinitely and re-introduces the WS11 orphan-process pattern.
+#
+# This hook now performs only structural checks:
+#   1. Coverage measurement (advisory warn only, never blocks)
+#   2. Content-policy check on staged files
+#
+# Full test verification: run `bash hooks/global-verify.sh` before committing,
+# or rely on CI. Do NOT add pytest back here.
 #
 # Environment variables:
 #   COVERAGE_THRESHOLD  — minimum composite coverage % (default: 80)
 #
 # Exit codes:
-#   0 — all tests pass, commit allowed
-#   1 — tests failing, commit blocked
+#   0 — structural checks pass, commit allowed
+#   1 — content policy violation, commit blocked
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -21,28 +28,7 @@ COVERAGE_THRESHOLD="${COVERAGE_THRESHOLD:-80}"
 METRICS_DIR="$ROOT_DIR/.cognitive-os/metrics"
 COVERAGE_HISTORY="$METRICS_DIR/coverage-history.jsonl"
 
-# ─── Step 1: Run tests ──────────────────────────────────────────────────────
-
-test_output=$(python3 -m pytest tests/ -q --tb=no 2>&1 | tail -1)
-
-# Check for failures — pytest summary line looks like "N failed, M passed"
-# or "N passed" (all pass) or "no tests ran"
-if echo "$test_output" | grep -qiE '[0-9]+ failed'; then
-  # Extract the failure count
-  failed_count=$(echo "$test_output" | grep -oE '[0-9]+ failed' | grep -oE '[0-9]+')
-  echo "COMMIT BLOCKED: ${failed_count} tests failing" >&2
-  echo "Test output: ${test_output}" >&2
-  exit 1
-fi
-
-# Also block if pytest itself errored (no "passed" in output and non-empty)
-if [ -n "$test_output" ] && ! echo "$test_output" | grep -qiE 'passed|no tests ran'; then
-  echo "COMMIT BLOCKED: test suite did not complete successfully" >&2
-  echo "Test output: ${test_output}" >&2
-  exit 1
-fi
-
-# ─── Step 2: Check coverage ─────────────────────────────────────────────────
+# ─── Step 1 (formerly Step 2): Check coverage ───────────────────────────────
 
 coverage_report="$ROOT_DIR/tests/coverage-report.sh"
 
@@ -71,7 +57,7 @@ if [ -f "$coverage_report" ]; then
   fi
 fi
 
-# ─── Step 3: Content policy check ─────────────────────────────────────────────
+# ─── Step 2 (formerly Step 3): Content policy check ───────────────────────────
 
 POLICY_FILE="$ROOT_DIR/.cognitive-os/content-policy.yaml"
 
