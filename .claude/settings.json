@@ -43,6 +43,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/metrics-rotation.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aspirational-audit-weekly.sh\""
           }
         ]
       }

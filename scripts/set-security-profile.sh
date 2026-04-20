@@ -122,7 +122,7 @@ case "$PROFILE" in
     # ADR-023 mutation-style hooks (PreToolUse Bash|Edit|Write|Agent):
     # Hooks: secret-detector.sh — redacts via hookSpecificOutput.updatedInput
     # Hooks: blast-radius.sh    — surfaces warnings via additionalContext
-    echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, valkey-ensure.sh (executor mode only), pattern-check, metrics-rotation.sh"
+    echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, valkey-ensure.sh (executor mode only), pattern-check, metrics-rotation.sh, aspirational-audit-weekly.sh"
     echo "  UserPromptSubmit: user-prompt-capture, session-wrapup-trigger.sh"
     echo "  SubagentStart: subagent-context-injector"
     echo "  PreToolUse: rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact),"
