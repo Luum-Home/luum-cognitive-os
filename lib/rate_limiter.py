@@ -1,3 +1,4 @@
+# SCOPE: both
 """Rate Limiter — Prevents token flooding and excessive tool usage.
 
 This module governs *action counts* (tool calls per minute, agent launches per hour).

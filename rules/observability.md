@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Observability — MLflow Integration
 
 ## Always Active (when mlflow installed)

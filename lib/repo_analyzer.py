@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """Repo Analyzer — Deep forensic analysis of git repositories.
 
 Clones repos, analyzes code, dependencies, architecture, features, tools,

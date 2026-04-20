@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Confidence Gate Protocol
 
 ## Purpose

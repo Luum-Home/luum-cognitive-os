@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Skill Rewrite Protocol
 
 ## Purpose

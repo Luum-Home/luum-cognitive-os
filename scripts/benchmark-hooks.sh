@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # benchmark-hooks.sh — Measure real execution time of all registered hooks
 #
 # PERFORMANCE CONTRACT:

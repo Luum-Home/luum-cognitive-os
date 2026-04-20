@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Consequence System — OKR-Driven Feedback Loop
 
 ## Purpose

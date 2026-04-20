@@ -1,3 +1,4 @@
+# SCOPE: both
 """Telemetry for COS observability (Capa-4).
 
 Minimal, file-based telemetry that records runtime events to append-only JSONL

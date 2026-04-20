@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Non-Blocking Retry Protocol
 
 ## Purpose

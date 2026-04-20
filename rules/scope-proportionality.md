@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Scope Proportionality Check
 
 ## Purpose

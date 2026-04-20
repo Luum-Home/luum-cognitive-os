@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Cognitive Load Monitoring
 
 ## Purpose

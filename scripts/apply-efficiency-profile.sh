@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Apply Efficiency Profile — Generates settings.json based on the selected profile
 #
 # ── manual-invoke only ────────────────────────────────────────────────────────

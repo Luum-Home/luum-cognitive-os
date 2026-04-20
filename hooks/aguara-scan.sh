@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # PreToolUse hook: Aguara AI Agent Security Scanner
 # Fires on "Agent" tool use — scans agent prompts before execution
 # Deterministic rule-based scanning (no LLM required)

@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """Agent-bus metrics adapter — ADR-028b D1.C.
 
 Bridges agent_bus heartbeat events (real-time, pub/sub) to durable

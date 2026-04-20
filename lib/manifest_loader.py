@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """Manifest loader for manifests/dependencies.yaml.
 
 Single source of truth for COS dependencies (Python, CLIs, MCP servers).

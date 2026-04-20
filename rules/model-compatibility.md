@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Model Compatibility — Baseline Expectations
 
 ## Baseline Model

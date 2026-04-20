@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook: Completeness Check
 # Fires on "Agent" tool use — checks if the agent prompt is exhaustive enough
 # Advisory only — does NOT block. Suggests running /exhaustive-prompt first.

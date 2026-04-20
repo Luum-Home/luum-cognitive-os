@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 # Rules Roadmap — Pending Work
 
 > Created Sprint 2A, 2026-04-16. Tracks rules whose enforcement promise exceeds

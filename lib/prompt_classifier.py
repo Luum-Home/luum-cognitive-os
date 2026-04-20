@@ -1,3 +1,4 @@
+# SCOPE: both
 """Prompt Classifier — Categorize user prompts for selective engram capture.
 
 Classifies user messages into categories and determines whether they should

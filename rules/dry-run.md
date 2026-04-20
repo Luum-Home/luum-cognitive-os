@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Dry-Run Preview Protocol
 
 ## Purpose

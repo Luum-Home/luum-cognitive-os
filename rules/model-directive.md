@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Model Directive Protocol
 
 ## Rule: Orchestrator MUST Follow MODEL_DIRECTIVE

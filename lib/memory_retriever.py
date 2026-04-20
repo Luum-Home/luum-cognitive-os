@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """
 Hybrid Memory Retriever — FTS5 + Jaccard reranking for Engram queries.
 

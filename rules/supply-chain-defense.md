@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Supply Chain Defense Protocol
 
 ## Context

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # migrate-to-cognitive-os.sh — Migrate a project from .agent-os/ to .cognitive-os/
 #
 # Usage: bash /path/to/cognitive-os/scripts/migrate-to-cognitive-os.sh [project-dir]

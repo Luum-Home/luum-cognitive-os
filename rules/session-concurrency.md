@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Session Concurrency
 
 ## Overview

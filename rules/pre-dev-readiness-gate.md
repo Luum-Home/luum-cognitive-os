@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Pre-Development Readiness Gate
 
 ## Purpose

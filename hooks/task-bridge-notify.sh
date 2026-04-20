@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Task Bridge Notify — exposes COS task state to Claude Code (ADR-024)
 #
 # PostToolUse hook on Agent. Async — never blocks.

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # =============================================================================
 # register-mcps.sh — Register MCP servers declared in manifests/dependencies.yaml
 # =============================================================================

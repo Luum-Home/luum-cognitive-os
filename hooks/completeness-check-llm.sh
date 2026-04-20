@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: cos
+# SCOPE: both
 # PreToolUse hook: Completeness Check (LLM-evaluated, ADR-022)
 # Fires on "Agent" tool use — emits a type:"prompt" handler that asks Haiku
 # whether the agent prompt enumerates the work to be done or hides behind

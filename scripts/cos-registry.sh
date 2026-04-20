@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # cos-registry.sh — Manage the global COS installations registry
 #
 # Library functions for adding/removing/querying COS installations.

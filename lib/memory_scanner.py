@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """
 Memory Scanner — Content security scanning before Engram persistence.
 

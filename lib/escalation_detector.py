@@ -1,3 +1,4 @@
+# SCOPE: both
 """Escalation Detector -- Self-detect when agents are stuck and should escalate.
 
 Agents currently retry 3 times mechanically then fail. They don't detect loops,
