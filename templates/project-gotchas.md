@@ -27,6 +27,7 @@
 - "lib/ and packages/ have duplicate files" → **symlinks**, not duplicates
 - "48 hooks are dead" → **efficiency profile**, not a bug
 - "No tests for lib/X" → check `tests/unit/test_X.py` AND `tests/behavior/`
+- "How do I add OpenCode/Cursor/Aider/Continue support?" → **do NOT fork the hook chain**. Subclass `HarnessAdapter` in `lib/harness_adapter/`, register in `dispatch.py`. See `docs/guides/adding-a-harness-adapter.md` and ADR-033.
 
 ## Verification commands
 
