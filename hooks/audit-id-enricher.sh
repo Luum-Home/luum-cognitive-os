@@ -47,11 +47,25 @@ try:
         lines = f.readlines()
     if lines:
         last = json.loads(lines[-1])
-        if 'session_id' not in last:
-            enriched = enrich_jsonl_entry(last, ctx)
-            lines[-1] = json.dumps(enriched) + '\n'
-            with open(cost_file, 'w') as f:
-                f.writelines(lines)
+        # MetricEvent rows store enrichment fields inside 'payload'.
+        # Legacy rows (no 'payload' key) are enriched at the top level for
+        # backwards compatibility.
+        if 'payload' in last:
+            # MetricEvent-shaped row: enrich inside payload only
+            payload = last.get('payload', {})
+            if 'session_id' not in payload:
+                enriched_payload = enrich_jsonl_entry(payload, ctx)
+                last['payload'] = enriched_payload
+                lines[-1] = json.dumps(last) + '\n'
+                with open(cost_file, 'w') as f:
+                    f.writelines(lines)
+        else:
+            # Legacy row: enrich at top level (backwards compat)
+            if 'session_id' not in last:
+                enriched = enrich_jsonl_entry(last, ctx)
+                lines[-1] = json.dumps(enriched) + '\n'
+                with open(cost_file, 'w') as f:
+                    f.writelines(lines)
 except FileNotFoundError:
     pass
 except Exception:

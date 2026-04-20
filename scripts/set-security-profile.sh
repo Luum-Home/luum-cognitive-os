@@ -131,7 +131,7 @@ case "$PROFILE" in
     echo "               trust-score-validator, confidence-gate-llm, auto-repair-dispatcher, dequeue-notify,"
     echo "               state-heartbeat, context-watchdog"
     echo "  PreCompact: pre-compaction-flush"
-    echo "  Stop: session-learning, session-cleanup, kpi-trigger, recap-sync"
+    echo "  Stop: session-learning, session-cleanup, session-end-reap.sh, kpi-trigger, recap-sync"
     echo "  Safety mesh layers: 5/12"
     echo "  Overhead: ~300-500ms per tool call"
     ;;
