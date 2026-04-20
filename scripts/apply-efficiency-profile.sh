@@ -133,6 +133,7 @@ build_settings() {
   session_start=$(hook_group "" \
     "self-install.sh" \
     "session-init.sh" \
+    "reaper-heartbeat.sh" \
     "crash-recovery.sh" \
     "session-resume.sh" \
     "orchestrator-mode-detect.sh" \
@@ -194,6 +195,7 @@ GROUPEOF
     hook_entry "auto-refine.sh"; printf ',\n'
     hook_entry "registration-check.sh"; printf ',\n'
     hook_entry "agent-work-tracker.sh"; printf ',\n'
+    hook_entry "native-agent-heartbeat.sh"; printf ',\n'
     hook_entry_with_args "global-verify.sh" "before"
   )
   local pre_agent
@@ -261,6 +263,7 @@ GROUPEOF
     hook_entry "audit-id-enricher.sh"; printf ',\n'
     hook_entry "auto-rollback-trigger.sh"; printf ',\n'
     hook_entry "state-heartbeat.sh"; printf ',\n'
+    hook_entry "native-agent-heartbeat.sh"; printf ',\n'
     hook_entry "agent-work-tracker.sh"; printf ',\n'
     hook_entry "task-panel-sync.sh"; printf ',\n'
     hook_entry "task-bridge-notify.sh"; printf ',\n'
