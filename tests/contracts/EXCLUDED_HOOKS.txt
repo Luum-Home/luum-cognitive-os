@@ -46,14 +46,15 @@ session-hygiene.sh | MANUAL_TRIGGER: cleanup script for stale session artefacts;
 singularity-check.sh | MANUAL_TRIGGER: checks MAPE-K loop state; invoked by /singularity skill, not by Claude events
 
 # ── Future / unregistered gates (FUTURE) ────────────────────────────────────
-confidence-gate.sh | FUTURE: per rules/ROADMAP.md §1.3 — not registered; pending PreToolUse Agent registration sprint
-confidentiality-enforcer.sh | FUTURE: per rules/ROADMAP.md §1.4 — not registered; pending PostToolUse Edit|Write registration sprint
-audit-id-enricher.sh | FUTURE: per rules/ROADMAP.md §1.5 — not registered; pending PreToolUse Agent registration sprint
-predev-completeness-check.sh | FUTURE: per rules/ROADMAP.md §1.6 — not registered; pending PreToolUse Agent registration sprint
-reinvention-check.sh | FUTURE: per rules/ROADMAP.md §1.7 — not registered; pending PreToolUse Edit|Write registration sprint
-git-context-capture.sh | FUTURE: per rules/ROADMAP.md §1.1 — not registered; pending Stop/PostToolUse registration sprint
-session-changelog.sh | FUTURE: per rules/ROADMAP.md §1.1 — not registered; pending Stop registration sprint
-auto-rollback-trigger.sh | FUTURE: per rules/ROADMAP.md §1.2 — not registered; pending PostToolUse Agent registration sprint
+# NOTE: The following hooks were moved OUT of this section when registered (hook-sweep-2026-04-20):
+#   confidence-gate.sh        → PostToolUse Agent (D04)
+#   confidentiality-enforcer.sh → PostToolUse Edit|Write (D05, registered earlier)
+#   audit-id-enricher.sh      → PostToolUse Agent (D02, registered earlier)
+#   predev-completeness-check.sh → PreToolUse Agent (D06, registered earlier)
+#   reinvention-check.sh      → PreToolUse Agent (D07, registered earlier)
+#   git-context-capture.sh    → Stop (ROADMAP §1.1, registered earlier)
+#   session-changelog.sh      → Stop (ROADMAP §1.1, registered earlier)
+#   auto-rollback-trigger.sh  → PostToolUse Agent (D03)
 
 # ── Conditional / optional integrations (CONDITIONAL) ───────────────────────
 valkey-ensure.sh | CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed

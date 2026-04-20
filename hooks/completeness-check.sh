@@ -9,6 +9,8 @@
 # This hook detects red flags and warns the orchestrator.
 
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="completeness-check"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"

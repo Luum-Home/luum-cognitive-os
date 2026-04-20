@@ -2,6 +2,8 @@
 # Cognitive OS Health — SessionStart quick-check (1-line summary)
 # Outputs: "Cognitive OS: X/Y OK | Phase: Z | Budget: $0/$N | Down: component1, component2"
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 # Find docker binary (varies by OS/install)
 DOCKER="$(command -v docker 2>/dev/null || echo "/Applications/Docker.app/Contents/Resources/bin/docker")"

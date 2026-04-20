@@ -218,11 +218,13 @@ GROUPEOF
     hook_entry "completion-gate.sh"; printf ',\n'
     hook_entry "agent-checkpoint.sh"; printf ',\n'
     hook_entry "trust-score-validator.sh"; printf ',\n'
+    hook_entry "confidence-gate.sh"; printf ',\n'
     hook_entry "confidence-gate-llm.sh"; printf ',\n'
     hook_entry "auto-verify.sh"; printf ',\n'
     hook_entry "dod-gate.sh"; printf ',\n'
     hook_entry "session-sanity.sh"; printf ',\n'
     hook_entry "audit-id-enricher.sh"; printf ',\n'
+    hook_entry "auto-rollback-trigger.sh"; printf ',\n'
     hook_entry "state-heartbeat.sh"; printf ',\n'
     hook_entry "agent-work-tracker.sh"; printf ',\n'
     hook_entry "task-panel-sync.sh"; printf ',\n'
@@ -304,7 +306,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -322,7 +324,7 @@ echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.s
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
 echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh"
-echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh, global-verify.sh after"
+echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh, global-verify.sh after"
 echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, session-hygiene.sh, mlflow-sync.sh, recap-sync.sh, session-end-reap.sh"
 echo "  Total hook commands: $new_hook_count"
 

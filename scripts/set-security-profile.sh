@@ -114,7 +114,10 @@ case "$PROFILE" in
     # ADR-022 prompt-type advisories (Haiku-evaluated, run alongside regex variants):
     # Hooks: prompt-quality-llm.sh (PreToolUse/Agent)
     # Hooks: completeness-check-llm.sh (PreToolUse/Agent)
+    # Hooks: confidence-gate.sh (PostToolUse/Agent — D04 rule-based confidence enforcement)
     # Hooks: confidence-gate-llm.sh (PostToolUse/Agent)
+    # Hooks: audit-id-enricher.sh (PostToolUse/Agent — D02 audit trail IDs)
+    # Hooks: auto-rollback-trigger.sh (PostToolUse/Agent — D03 verify-apply loop exhaustion)
     # ADR-023 mutation-style hooks (PreToolUse Bash|Edit|Write|Agent):
     # Hooks: secret-detector.sh — redacts via hookSpecificOutput.updatedInput
     # Hooks: blast-radius.sh    — surfaces warnings via additionalContext
@@ -128,7 +131,7 @@ case "$PROFILE" in
     # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
     echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, auto-checkpoint, content-policy,"
     echo "               doc-sync-detector, claim-validator, completion-gate, agent-checkpoint,"
-    echo "               trust-score-validator, confidence-gate-llm, auto-repair-dispatcher, dequeue-notify,"
+    echo "               trust-score-validator, confidence-gate.sh, confidence-gate-llm, audit-id-enricher.sh, auto-rollback-trigger.sh, auto-repair-dispatcher, dequeue-notify,"
     echo "               state-heartbeat, context-watchdog, global-verify.sh after"
     echo "  PostToolUse Skill: skill-usage-tracker.sh"
     echo "  PreCompact: pre-compaction-flush"
