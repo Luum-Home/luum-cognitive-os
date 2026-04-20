@@ -136,13 +136,16 @@ if echo "$AGENT_PROMPT" | grep -qiE '\b(auth|authentication|authorization|permis
 fi
 
 # --- Classification ---
+# Thresholds tuned up: the old rules flagged every doc/test agent as CRITICAL
+# because "migration" or "auth" keyword alone triggered it. Noise > signal.
+# CRITICAL now requires: (infra AND security) OR file_score > 100.
+# HIGH: file_score > 40.
+# Below that: silent (do not emit advisory).
 RADIUS="LOW"
-if [ "$INFRA_HIT" = true ] || [ "$SECURITY_HIT" = true ] || [ "$FILE_SCORE" -gt 50 ]; then
+if { [ "$INFRA_HIT" = true ] && [ "$SECURITY_HIT" = true ]; } || [ "$FILE_SCORE" -gt 100 ]; then
   RADIUS="CRITICAL"
-elif [ "$FILE_SCORE" -gt 20 ]; then
+elif [ "$FILE_SCORE" -gt 40 ]; then
   RADIUS="HIGH"
-elif [ "$FILE_SCORE" -gt 5 ]; then
-  RADIUS="MEDIUM"
 fi
 
 # --- Logging ---
@@ -180,19 +183,13 @@ emit_additional_context() {
 }
 
 if [ "$RADIUS" = "CRITICAL" ]; then
-  EXTRA=""
-  [ "$INFRA_HIT" = true ]    && EXTRA="${EXTRA} Infrastructure changes detected."
-  [ "$SECURITY_HIT" = true ] && EXTRA="${EXTRA} Security-sensitive changes detected."
-  CTX="BLAST RADIUS WARNING: this operation is CRITICAL. Estimated impact: ${FILE_SCORE}+ files.${EXTRA}"
-  CTX="${CTX} Signals:\n$(printf '%b' "$SIGNALS")"
-  CTX="${CTX}\nRECOMMENDATION: use /sandbox-sample before scaling. Consider /exhaustive-prompt for scope enumeration. For security changes, ensure adversarial review is included."
+  CTX="BLAST RADIUS: CRITICAL (~${FILE_SCORE} files, infra+security). Consider /sandbox-sample."
   emit_additional_context "$CTX"
 elif [ "$RADIUS" = "HIGH" ]; then
-  CTX="BLAST RADIUS WARNING: this operation is HIGH-impact. Estimated impact: ${FILE_SCORE} files."
-  CTX="${CTX} Signals:\n$(printf '%b' "$SIGNALS")"
-  CTX="${CTX}\nRECOMMENDATION: consider /sandbox-sample for validation before full-scale apply."
+  CTX="BLAST RADIUS: HIGH (~${FILE_SCORE} files)."
   emit_additional_context "$CTX"
 fi
+# LOW/MEDIUM: silent. JSONL log captures all levels for analytics.
 
 # Advisory only — always exit 0
 exit 0
