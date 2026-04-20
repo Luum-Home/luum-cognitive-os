@@ -140,7 +140,8 @@ build_settings() {
     "usage-health-check.sh" \
     "ecosystem-check.sh" \
     "pattern-check.sh" \
-    "metrics-rotation.sh")
+    "metrics-rotation.sh" \
+    "aspirational-audit-weekly.sh")
 
   # UserPromptSubmit
   local user_prompt_submit_entries
