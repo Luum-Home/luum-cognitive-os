@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # contextual-rule-loader.sh — PreToolUse hook on Agent
 # Loads full rule files on demand when the agent prompt matches contextual triggers.
 #

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Skill Management — Unified Protocol
 
 ## Loading Priority

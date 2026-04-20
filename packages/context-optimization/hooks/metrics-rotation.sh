@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # metrics-rotation.sh — Rotate JSONL metrics files to prevent unbounded growth
 # Part of: auto-repair-system (ARS-1-03)
 # Trigger: SessionStart

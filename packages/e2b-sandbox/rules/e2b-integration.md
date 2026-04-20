@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # E2B Sandbox -- Secure Agent Code Execution
 
 ## Overview

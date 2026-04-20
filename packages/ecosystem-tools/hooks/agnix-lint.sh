@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # agnix-lint.sh — PostToolUse hook on Edit|Write
 # CONCERNS: quality, linting, agent-config
 #

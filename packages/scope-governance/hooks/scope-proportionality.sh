@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PostToolUse hook: Scope Proportionality Check
 # Fires on "Agent" tool use — checks if response is proportional to the task.
 # CONCERNS: safety, proportionality, governance

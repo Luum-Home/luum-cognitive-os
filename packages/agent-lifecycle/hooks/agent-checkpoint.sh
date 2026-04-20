@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # CONCERNS: state, lifecycle, orchestration
 # PostToolUse hook: Update sub-agent task status after completion
 # Fires on "Agent" tool use — updates task in active-tasks.json

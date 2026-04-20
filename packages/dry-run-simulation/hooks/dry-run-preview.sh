@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # PreToolUse hook on Agent — blocks agent execution when DRY_RUN=true.
 # Outputs what WOULD be executed without running it. Useful for previewing
 # SDD pipelines: DRY_RUN=true /sdd-ff my-feature
