@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Orchestrator Prompt Compose — Trap Preview Before Agent Launch
 
 ## Rule (Always Active)

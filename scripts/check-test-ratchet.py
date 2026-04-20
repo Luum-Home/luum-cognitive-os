@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """Ensure the test count never decreases (ratchet pattern).
 
 On first run, creates a baseline in .cognitive-os/metrics/test-baseline.json.

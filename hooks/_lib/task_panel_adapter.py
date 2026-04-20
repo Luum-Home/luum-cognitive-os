@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """Task Panel Adapter — mirrors COS task state to Claude Code's native UI.
 
 Implements ADR-021 (vendor-agnostic state with provider adapters).
