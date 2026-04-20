@@ -5,7 +5,7 @@
 # is running in CONNECTED (executor + Valkey) or FIRE_AND_FORGET (Agent tool)
 # mode. Entirely advisory — exits 0 in all cases.
 
-python3 -c "
+timeout 30 python3 -c "
 import sys
 try:
     from lib.orchestrator_capabilities import OrchestratorCapabilities

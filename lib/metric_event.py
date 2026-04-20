@@ -105,11 +105,32 @@ class MetricEvent:
         )
 
 
-def append_event(path: str, event: MetricEvent) -> None:
-    """Append a MetricEvent to a JSONL file, creating parent dirs if needed."""
-    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
-    with open(path, "a", encoding="utf-8") as fh:
-        fh.write(event.to_jsonl() + "\n")
+def append_event(path: str, event: MetricEvent) -> bool:
+    """Append a MetricEvent to a JSONL file, creating parent dirs if needed.
+
+    Returns True on success, False on OSError (ENOSPC, EROFS, permission,
+    parent-mkdir failure). Callers that care about backpressure can check
+    the return value; most callers can ignore it — the function never
+    raises, so a full disk will not crash a hook or session.
+
+    ADR-028 D4 fix per chaos test_disk_full_metrics.py: the previous
+    implementation let OSError propagate, which would cascade into hook
+    failures and session instability under disk pressure.
+    """
+    try:
+        os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+        with open(path, "a", encoding="utf-8") as fh:
+            fh.write(event.to_jsonl() + "\n")
+        return True
+    except OSError as e:
+        # Log once and degrade gracefully. No logger import at module top
+        # to keep this path dependency-free; use stderr directly.
+        import sys as _sys
+        _sys.stderr.write(
+            f"[metric_event] append_event failed ({type(e).__name__}: {e}); "
+            f"degrading — event for path={path!r} dropped\n"
+        )
+        return False
 
 
 def normalize_legacy_row(
