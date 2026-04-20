@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: auto-rollback
 description: "Auto-rollback failed SDD apply commits when verify-apply loop exceeds max retries"

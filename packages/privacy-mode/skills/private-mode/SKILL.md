@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: private-mode
 description: Toggle private conversation mode. When active, nothing is saved to Engram, metrics, error logs, or git. Use for personal conversations, sensitive topics, or casual chat. Activate with /private, deactivate with /private off.

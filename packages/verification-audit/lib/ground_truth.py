@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Ground Truth Checker — Verify agent claims against filesystem reality.
 

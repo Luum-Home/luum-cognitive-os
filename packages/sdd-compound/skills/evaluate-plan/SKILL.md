@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: evaluate-plan
 description: Evaluate any existing plan file with a 0-50 scoring system. Proposes improvements if score is low.

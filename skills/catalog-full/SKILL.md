@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: catalog-full
 description: Load and display the full skills catalog (skills/CATALOG.md) with invocations, sections, and audience columns. Use when the compact Level-1 catalog does not have enough detail.

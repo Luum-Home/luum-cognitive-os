@@ -1,3 +1,4 @@
+# SCOPE: both
 """Unit tests for Claude usage reader."""
 import json
 

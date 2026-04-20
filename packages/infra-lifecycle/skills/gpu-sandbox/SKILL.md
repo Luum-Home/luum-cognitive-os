@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: gpu-sandbox
 description: Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data processing, financial calculations)

@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Cross Verifier — Use a second model to verify primary model output.
 

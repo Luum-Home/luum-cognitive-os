@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: planning-poker
 version: 1.0.0

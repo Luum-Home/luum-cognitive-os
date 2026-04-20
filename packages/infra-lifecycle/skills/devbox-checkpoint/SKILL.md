@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: devbox-checkpoint
 description: Save and restore environment state snapshots using devbox

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: cognee-search
 version: 1.0.0

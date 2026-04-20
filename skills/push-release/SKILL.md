@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: push-release
 command: /push-release

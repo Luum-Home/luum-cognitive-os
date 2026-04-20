@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Structured error classification for Cognitive OS.
 

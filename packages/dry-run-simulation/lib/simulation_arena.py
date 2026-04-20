@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Agent Simulation Arena — end-to-end agent workflow simulation and evolution tracking.
 

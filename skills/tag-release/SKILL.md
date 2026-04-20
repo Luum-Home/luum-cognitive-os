@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: tag-release
 command: /tag-release

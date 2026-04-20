@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: detect-stack
 description: Scan a project root and produce detected-stack.json with detected languages, frameworks, databases, auth, cache, messaging, and services.

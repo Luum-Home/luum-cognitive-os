@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Resolve SecretRef objects in configuration dictionaries.
 

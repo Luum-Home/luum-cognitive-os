@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Deprecation shim — module renamed to token_budget_monitor.
 

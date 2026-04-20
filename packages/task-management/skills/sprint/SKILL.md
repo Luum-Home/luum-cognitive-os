@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: sprint
 description: Lightweight agent-managed sprint tracking — plan, status, retro, course-correct

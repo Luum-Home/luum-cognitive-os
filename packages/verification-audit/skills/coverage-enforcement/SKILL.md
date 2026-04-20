@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: coverage-enforcement
 version: 1.0.0

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: sre-agent
 description: SRE auto-repair agent. Monitors all project services, detects errors in logs, searches Engram for known fixes, and auto-repairs or proposes fixes. Invoke with /sre-agent or let it run autonomously via scheduled task.

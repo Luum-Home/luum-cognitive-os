@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: secret-audit
 description: Scan all services for env var usage, cross-reference with definitions, report gaps

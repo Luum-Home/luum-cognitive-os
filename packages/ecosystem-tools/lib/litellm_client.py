@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """LiteLLM Proxy Client — Route non-Claude models through LiteLLM gateway.
 

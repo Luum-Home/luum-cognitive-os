@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: metrics-calibrator
 description: Analyze KPI history and auto-calibrate thresholds for meaningful alerting

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: red-team
 description: "Red team testing for agent prompts — detects injection, jailbreak, and manipulation vulnerabilities"

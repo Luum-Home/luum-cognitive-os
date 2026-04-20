@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: jupyter-execute
 description: Execute code in a Jupyter kernel sandbox for data analysis, Python snippets, and benchmarks

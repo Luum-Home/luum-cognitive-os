@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: session-wrapup
 description: End-of-session routine — run session-backlog inventory, save to engram, write session summary, and report what was accomplished and what comes next.

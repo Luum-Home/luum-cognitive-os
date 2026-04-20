@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: add-mcp
 description: Step-by-step guide for integrating a new MCP server into the Cognitive OS

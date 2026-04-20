@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Homeostasis — Continuous Self-Regulation for Cognitive OS.
 

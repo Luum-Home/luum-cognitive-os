@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Session State Persistence — survives compaction and crashes.
 

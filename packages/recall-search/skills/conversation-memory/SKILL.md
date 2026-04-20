@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: conversation-memory
 description: Search and learn from past Cognitive OS sessions — the system's long-term memory

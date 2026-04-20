@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: session-report-executive
 description: Generate an executive-level session report translating technical metrics into business language. For non-technical leaders who need to know what the Cognitive OS did during a session.

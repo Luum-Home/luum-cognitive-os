@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Cognitive OS Agent Dashboard -- Terminal-based real-time agent monitor.
 

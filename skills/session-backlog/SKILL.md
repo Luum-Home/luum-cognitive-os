@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: session-backlog
 description: Inventory all pending work across plans, engram, tasks, todos, audits, and git. Classify by priority and produce a structured backlog document for future sessions.

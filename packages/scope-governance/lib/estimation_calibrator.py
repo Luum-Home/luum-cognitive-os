@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Estimation calibration loop for Cognitive OS.
 

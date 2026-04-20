@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: sdd-continue
 command: /sdd-continue

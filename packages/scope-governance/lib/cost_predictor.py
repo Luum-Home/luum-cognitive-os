@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Cost Predictor — Predictive cost engine based on historical task data.
 

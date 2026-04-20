@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Cognitive OS Agent Communication Bus -- Valkey pub/sub for real-time agent coordination.
 

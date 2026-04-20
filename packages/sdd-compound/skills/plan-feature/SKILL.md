@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: plan-feature
 description: Create a feature implementation plan with evaluation scoring. Use before implementing any significant feature.

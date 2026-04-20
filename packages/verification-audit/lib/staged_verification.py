@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Staged Verification for Cognitive OS.
 
