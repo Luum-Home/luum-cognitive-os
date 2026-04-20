@@ -136,6 +136,7 @@ build_settings() {
     "self-install.sh" \
     "session-init.sh" \
     "reaper-heartbeat.sh" \
+    "cos-executor-heartbeat.sh" \
     "crash-recovery.sh" \
     "session-resume.sh" \
     "orchestrator-mode-detect.sh" \
@@ -170,6 +171,7 @@ GROUPEOF
   # the command or edit reaches the shell / the disk.
   local pre_bash
   pre_bash=$(hook_group "Bash" \
+    "rate-limit-precheck.sh" \
     "rate-limiter.sh" \
     "token-budget-monitor.sh" \
     "secret-detector.sh" \
@@ -385,7 +387,7 @@ echo "Hook summary for profile 'default' (ADR-002):"
 echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, valkey-ensure.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh, mcp-scan.sh (D35: MCP tool poisoning scan)"
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  UserPromptSubmit: user-prompt-capture.sh, session-wrapup-trigger.sh"
-echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh, destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
+echo "  PreToolUse Bash: rate-limit-precheck.sh (D45 gap B: sidecar retry_count lift), rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh, destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, aguara-scan.sh (D35: 189-rule prompt injection), parry-scan.sh (D35: ML injection scanner), auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
