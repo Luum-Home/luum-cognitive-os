@@ -122,7 +122,9 @@ pattern-check.sh | FUTURE: checks for known anti-patterns; planned for PreToolUs
 private-mode-gate.sh | FUTURE: gates operations in private mode; planned for PreToolUse — not yet wired
 private-mode-metrics-gate.sh | FUTURE: gates metrics emission in private mode; planned for PostToolUse — not yet wired
 release-guard.sh | FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired
-test-baseline-diff.sh | FUTURE: diffs test results against baseline; planned for PostToolUse Bash — not yet wired
+# test-baseline-diff.sh — DELETED in D4 (ADR-028 Pilar 4, 2026-04-20).
+# File no longer exists. Pytest responsibility consolidated into
+# hooks/global-verify.sh (ADR-027 Phase 1).
 token-budget-monitor.sh | FUTURE: monitors token budget mid-session; planned for PostToolUse — not yet wired
 global-verify.sh | FUTURE: global verification pass at Stop; planned for Stop event — not yet wired
 

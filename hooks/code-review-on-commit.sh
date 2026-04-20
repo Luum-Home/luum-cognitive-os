@@ -56,7 +56,7 @@ fi
 # ─── Run code review ──────────────────────────────────────────────────────
 
 # Build a Python one-liner that reviews the staged files
-review_output=$(cd "$ROOT_DIR" && python3 -c "
+review_output=$(cd "$ROOT_DIR" && timeout 60 python3 -c "
 import sys, json
 sys.path.insert(0, '.')
 from lib.code_reviewer import CodeReviewer
