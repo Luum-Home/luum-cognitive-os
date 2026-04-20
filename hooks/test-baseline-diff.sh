@@ -3,6 +3,12 @@
 # Compares test results at session end against the baseline captured at start.
 # If new failures appeared, warns the orchestrator to stop attributing them to
 # "pre-existing" without checking. Advisory only — always exits 0.
+#
+# ADR-028 D4 fix (2026-04-20): Inline pytest block (BLOCKER — test_run_inside_hook)
+# removed. Running the full suite at every Stop event re-introduces the WS11 orphan
+# pattern (same bug that was disabled in session-init.sh lines 124-129).
+# The "AFTER" baseline is now read from the global-verify.sh artefact written earlier
+# in this session, or the hook exits silently if no artefact exists.
 
 set -uo pipefail
 
@@ -42,12 +48,16 @@ _parse_summary() {
   echo "${passed:-0} ${failed:-0} ${errors:-0}"
 }
 
-# ─── Run pytest again ────────────────────────────────────────────────────────
-if ! command -v python3 &>/dev/null; then
+# ─── Read the AFTER baseline from global-verify.sh artefact ─────────────────
+# ADR-028 D4: Inline pytest was removed. global-verify.sh (ADR-027 §1) is the
+# single pytest entry-point. If it ran this session it writes a summary artefact.
+GV_SUMMARY="$SESSIONS_DIR/$SESSION_ID/global-verify-summary.txt"
+if [ ! -f "$GV_SUMMARY" ]; then
+  # global-verify.sh did not run this session — no AFTER baseline to compare.
   exit 0
 fi
 
-AFTER=$(python3 -m pytest --tb=no -q 2>&1 | tail -5) || true
+AFTER=$(cat "$GV_SUMMARY" 2>/dev/null | tail -5) || true
 
 # ─── Compare ─────────────────────────────────────────────────────────────────
 read -r passed_before failed_before errors_before <<< "$(_parse_summary "$BASELINE")"

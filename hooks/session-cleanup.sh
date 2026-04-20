@@ -64,20 +64,21 @@ if [ "$MERGE_METRICS" = true ] && [ -d "$SESSION_DIR/metrics" ]; then
       fi
     else
       # Fallback: mkdir-based advisory lock (atomic on POSIX, no flock needed)
+      # ADR-028 D4 fix (2026-04-20): moved deadline check to the while condition
+      # (was in the loop body, allowing overshoot under slow `date` — CONCERN unbounded_loop).
       _lock_dir="${lockfile}.d"
       _lock_acquired=false
       _lock_deadline=$(( $(date +%s) + 30 ))
-      while true; do
+      while [ "$(date +%s)" -lt "$_lock_deadline" ]; do
         if mkdir "$_lock_dir" 2>/dev/null; then
           _lock_acquired=true
           break
         fi
-        if [ "$(date +%s)" -ge "$_lock_deadline" ]; then
-          echo "[session-cleanup] WARN: lock timeout (mkdir) for $basename_file — skipping merge" >&2
-          break
-        fi
         sleep 0.2 2>/dev/null || sleep 1
       done
+      if [ "$_lock_acquired" = false ]; then
+        echo "[session-cleanup] WARN: lock timeout (mkdir) for $basename_file — skipping merge" >&2
+      fi
       if [ "$_lock_acquired" = true ]; then
         cat "$metric_file" >> "$global_file"
         rmdir "$_lock_dir" 2>/dev/null || true
