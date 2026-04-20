@@ -6,6 +6,8 @@
 # Must complete in <5 seconds
 
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 # Record wall-clock start time in milliseconds immediately on entry
 _SKILL_TRACKER_START_MS=$(python3 -c "import time; print(int(time.time()*1000))" 2>/dev/null \

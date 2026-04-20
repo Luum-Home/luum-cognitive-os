@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 # SessionStart hook: quick component health check
 # Only runs every 24h (checks last run timestamp)
 

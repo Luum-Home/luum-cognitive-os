@@ -13,6 +13,8 @@
 #
 # Reads tool_name / tool_response / tool_input from the standard Agent hook payload.
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="auto-verify"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"

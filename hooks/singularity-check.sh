@@ -4,6 +4,8 @@
 # Reports pending events from the singularity controller.
 
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 # Check if enabled (OFF by default)
 SINGULARITY_CHECK="${SINGULARITY_CHECK:-false}"

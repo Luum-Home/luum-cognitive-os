@@ -6,6 +6,8 @@
 _HOOK_NAME="memu-sync"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 MEMU_URL="${COGNITIVE_OS_MEMU_URL:-http://localhost:8765}"

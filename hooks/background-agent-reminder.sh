@@ -7,6 +7,8 @@
 # Type: UserPromptSubmit
 # Exit: 0 (always advisory)
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 # Check if there are running background tasks via the tasks system
 TASKS_FILE="${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/tasks/active-tasks.json"

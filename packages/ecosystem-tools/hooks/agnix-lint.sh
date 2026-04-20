@@ -9,6 +9,8 @@
 #   0 — no issues or advisory warning (reconstruction/stabilization)
 #   2 — errors found (BLOCK in production/maintenance)
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="agnix-lint"
 source "$(dirname "$0")/_lib/common.sh"

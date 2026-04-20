@@ -9,6 +9,8 @@
 # and reports findings using the adversarial review format (BLOCKER/CONCERN/SUGGESTION).
 
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="semgrep-scan"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"

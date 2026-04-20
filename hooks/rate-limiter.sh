@@ -7,6 +7,8 @@
 # On BLOCK: enqueues the action for automatic retry and outputs a structured
 # message so the orchestrator can poll RateLimitQueue.dequeue_ready().
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 source "$(dirname "$0")/_lib/common.sh"
 

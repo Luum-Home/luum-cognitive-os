@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 # DEPRECATED — renamed to token-budget-monitor.sh in commit 5e3c188.
 # This shim keeps backward compat for any external callers that still
 # invoke the old name. Produces one-time stderr warning and exits 0.

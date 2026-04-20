@@ -11,6 +11,8 @@
 # Registered at the `standard` tier of scripts/apply-efficiency-profile.sh so
 # every user running the default profile gets this safety net.
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="session-sanity"
 

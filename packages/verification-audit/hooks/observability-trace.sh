@@ -6,6 +6,8 @@
 # Must complete in <5 seconds (non-blocking, fire-and-forget)
 
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="observability-trace"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"

@@ -4,6 +4,8 @@
 # Fast (<3s), non-blocking. Outputs warning text to stdout if patterns found.
 
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_FILE="$PROJECT_DIR/.cognitive-os/metrics/error-learning.jsonl"
