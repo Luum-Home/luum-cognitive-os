@@ -1,5 +1,5 @@
 name: "@luum/skill-governance"
-version: "1.1.0"
+version: "1.2.0"
 description: "Skill lifecycle governance — tracking, KPI evaluation, agent bus monitoring, and auto-generation"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
