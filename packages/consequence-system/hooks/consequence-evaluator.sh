@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # consequence-evaluator.sh — PostToolUse hook on Agent
 # CONCERNS: quality, governance, okr
 #

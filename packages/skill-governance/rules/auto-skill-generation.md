@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Auto-Skill Generation Protocol
 
 ## What It Does

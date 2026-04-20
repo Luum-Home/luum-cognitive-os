@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Stop hook: Record completed task info to task-history.jsonl
 # Reads session cost from cost-events.jsonl, task info from active-tasks.json,
 # computes models used/tokens/duration, appends to task-history.jsonl.

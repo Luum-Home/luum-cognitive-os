@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook: Prompt Quality Scoring
 # Fires on "Agent" tool use — scores prompt QUALITY on 5 dimensions
 # ADVISORY ONLY: never blocks (always exits 0)

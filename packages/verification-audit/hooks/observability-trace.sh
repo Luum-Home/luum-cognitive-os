@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # CONCERNS: observability, tracing
 # PostToolUse hook: Send traces to Langfuse and/or Opik after Agent executions
 # Fires on "Agent" — extracts execution metadata and POSTs to observability backends

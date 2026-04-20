@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Doc Sync Rule
 
 ## Session End Warning

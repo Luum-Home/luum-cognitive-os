@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # CONCERNS: safety, hallucination, verification
 # Claim Validator — verifies agent claims against filesystem reality
 # PostToolUse hook on Agent

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # PostToolUse hook on Agent — checks agent output for architecture violations in Go files.
 # Reads project phase from cognitive-os.yaml and logs violations accordingly.
 

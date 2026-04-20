@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # paperclip-sync.sh — Sync Cognitive OS metrics to Paperclip dashboard
 # Trigger: Stop (before session-cleanup.sh)
 #

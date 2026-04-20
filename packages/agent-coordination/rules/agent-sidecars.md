@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Agent Sidecars via Engram (BMAD v6 Pattern 4)
 
 ## Purpose

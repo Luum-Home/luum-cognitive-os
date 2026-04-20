@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Hook: agent-bus-monitor (SessionStart)
 # Checks Valkey connectivity and reports active agents from previous sessions.
 # OFF by default — enable via AGENT_BUS_ENABLED=true environment variable.

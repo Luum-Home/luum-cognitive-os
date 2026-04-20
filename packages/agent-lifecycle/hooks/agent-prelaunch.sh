@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook: Register sub-agent tasks before launch
 # Fires on "Agent" tool use — records task in active-tasks.json
 # Must complete in <3 seconds

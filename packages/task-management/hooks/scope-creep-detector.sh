@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PostToolUse hook: Scope Creep Detection
 # Fires on Edit|Write — detects when agents edit files outside the approved task scope.
 # CONCERNS: safety, scope, governance

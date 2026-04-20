@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # memu-sync.sh — Sync session context to memU proactive memory
 # Trigger: Stop (after conversation-capture.sh, before session-knowledge-extractor.sh)
 # Only runs if memU is available

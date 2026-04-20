@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Parry -- Prompt Injection Scanner
 
 ## Overview
