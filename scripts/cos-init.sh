@@ -50,7 +50,44 @@ case "$RAW_MODE" in
     ;;
 esac
 
+# ── Scope filter (A2) ───────────────────────────────────────────────
+# INSTALL_SCOPE controls which SCOPE-tagged files are copied.
+# Values: project (default for user projects), both (alias), all (os-only included).
+# Files with no SCOPE header are always included (untagged = universal).
+INSTALL_SCOPE="${COS_INSTALL_SCOPE:-both}"
+case "$INSTALL_SCOPE" in
+  project|both|all) ;;
+  *)
+    echo "Warning: unknown COS_INSTALL_SCOPE='$INSTALL_SCOPE' → treating as 'both'." >&2
+    INSTALL_SCOPE="both"
+    ;;
+esac
+
+# scope_allows FILE → returns 0 (allow) or 1 (skip)
+scope_allows() {
+  local f="$1"
+  [ -f "$f" ] || return 0  # non-files always pass
+
+  # If scope is "all", never filter
+  [ "$INSTALL_SCOPE" = "all" ] && return 0
+
+  # Extract SCOPE header (first 3 lines only — fast)
+  local scope_val
+  scope_val=$(head -3 "$f" 2>/dev/null | grep -m1 -oE '(# SCOPE:|<!-- SCOPE:) [a-zA-Z_/-]+' | awk '{print $NF}' | tr -d ' ' | head -1 || true)
+
+  # No SCOPE header → include unconditionally
+  [ -z "$scope_val" ] && return 0
+
+  # project/both scopes: allow "project" or "both", block "os-only"
+  case "$scope_val" in
+    project|both) return 0 ;;
+    os-only)      return 1 ;;
+    *)            return 0 ;;  # unknown tag → include
+  esac
+}
+
 echo "=== Cognitive OS Init ($MODE) ==="
+echo "Scope filter: $INSTALL_SCOPE"
 echo ""
 
 # ── 1. Detect existing project stack ────────────────────────────────
@@ -173,9 +210,10 @@ install_rule() {
 }
 
 if [ "$MODE" = "--full" ]; then
-  # Install all rules
+  # Install all rules (respecting scope filter)
   for rule in "$rules_source"/*.md; do
     [ -f "$rule" ] || continue
+    scope_allows "$rule" || continue
     cp "$rule" ".claude/rules/cos/$(basename "$rule")"
     rules_installed=$((rules_installed + 1))
   done
@@ -210,6 +248,7 @@ install_hook() {
 if [ "$MODE" = "--full" ]; then
   for hook in "$hooks_source"/*.sh; do
     [ -f "$hook" ] || continue
+    scope_allows "$hook" || continue
     cp "$hook" "$hooks_dest/$(basename "$hook")"
     chmod +x "$hooks_dest/$(basename "$hook")"
     hooks_installed=$((hooks_installed + 1))
