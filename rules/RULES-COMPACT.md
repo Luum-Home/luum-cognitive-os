@@ -24,7 +24,7 @@ Blast radius hook-enforced [`blast-radius`]. Scope proportionality hook-enforced
 Errors to `error-learning.jsonl` [`error-learning`], deduped 60s; 3+ same=warning. Auto-rollback hook-enforced [`auto-rollback`]. [`crash-recovery`] [`auto-repair`].
 
 ### 7. Agent Governance
-Audit trail hook-enforced [`agent-identity`]. [`agent-security`]: TTL 120min; blocks `.env`,`*.key`,secrets. [`agent-kpis`]: quality>90%, efficiency -20% MoM. [`agent-customization`] overrides. [`agent-sidecars`]. [`agent-communication`] Valkey(OFF).
+Audit trail hook-enforced [`agent-identity`]. [`agent-security`]: TTL 120min; blocks `.env`,`*.key`,secrets. [`agent-kpis`]: quality>90%, efficiency -20% MoM. [`agent-customization`] overrides. [`agent-sidecars`]. [`agent-communication`] Valkey(OFF). Harness-agnostic event capture [ADR-033]: canonical schema in `lib/harness_adapter/`; CC adapter preserves legacy `agent-heartbeat.jsonl`, new harnesses add one adapter file.
 
 ### 8. Prompt Engineering
 [`closed-loop-prompts`]: criteria+verification+fallback. [`agent-escalation`]: stuck→diagnose; 5-15% rate, max 3 retries. HALT for multi-service/migration/auth. [`prompt-composition`] templates. [`responsiveness`]: no silence >10s, `run_in_background` for >5s cmds, 10-15 agents/sprint. [`split-and-resume`]: `NEEDS_CLARIFICATION:`, max 2 rounds. [`orchestrator-prompt-compose`] (ADR-032): pipe draft through `scripts/compose-agent-prompt.py` before Agent call when task touches settings.json/lib/*.py/packages/efficiency-profile.
