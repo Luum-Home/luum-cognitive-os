@@ -20,8 +20,32 @@ MODE = "$MODE"
 try:
     from lib.metric_event import MetricEvent, append_event
 except ImportError:
-    print("so-vitals: lib.metric_event not importable", file=sys.stderr)
-    sys.exit(1)
+    # Graceful degradation: emit minimal vitals JSON and exit 0
+    # so callers (hooks, tests) don't see a failure when the lib is unavailable.
+    import datetime
+    minimal = {
+        "source": "so-vitals",
+        "event_type": "so.vitals",
+        "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+        "degraded": True,
+        "degraded_reason": "lib.metric_event not importable",
+        "agents_in_flight": 0,
+        "agents_stale": 0,
+        "processes_registered": 0,
+        "orphan_suspects_count": 0,
+        "jsonl_files": 0,
+        "jsonl_needs_rotation": 0,
+        "disk_bytes": 0,
+        "disk_mib": 0.0,
+        "valkey_reachable": False,
+        "valkey_warning": False,
+    }
+    print("so-vitals: lib.metric_event not importable — degraded mode", file=sys.stderr)
+    if "$MODE" == "--json":
+        print(json.dumps(minimal))
+    else:
+        print("=== SO Vitals (degraded — lib.metric_event unavailable) ===")
+    sys.exit(0)
 
 # Agents in flight — reads from agent_bus via AgentBusMetrics adapter
 # (ADR-028b D1.C). Falls through to empty when adapter unavailable.
