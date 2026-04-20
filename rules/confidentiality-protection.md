@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Confidentiality Protection — IP Leak Prevention
 
 ## Purpose

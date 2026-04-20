@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Upgrade Cognitive OS to latest version
 # Usage: bash scripts/upgrade.sh [--force]
 #

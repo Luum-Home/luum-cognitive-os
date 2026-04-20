@@ -1,3 +1,4 @@
+# SCOPE: both
 """Unified cognitive-os.yaml reader — luum-agent-os kernel.
 
 Provides three access variants that match the three cost profiles found

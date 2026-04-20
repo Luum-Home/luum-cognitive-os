@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Response Compression — Orchestrator Output Discipline
 
 ## Rule (Always Active)

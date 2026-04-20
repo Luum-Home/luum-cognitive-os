@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # pre-commit-gate.sh — Git pre-commit hook that gates commits on structural checks
 #
 # ADR-028 D4 fix (2026-04-20): Removed inline pytest block (BLOCKER — test_run_inside_hook).

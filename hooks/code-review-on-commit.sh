@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # code-review-on-commit.sh — Git pre-commit hook that runs code review on staged files
 #
 # Fires as a git pre-commit hook (NOT a Claude Code hook).

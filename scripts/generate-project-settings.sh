@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # generate-project-settings.sh — Generate a clean settings.json for external projects
 #
 # Reads the COS source settings.json, transforms hook paths for external project layout,

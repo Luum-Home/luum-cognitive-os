@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Create a GitHub Release for Cognitive OS
 # Auto-generates release notes from the actual codebase state
 # Usage: bash scripts/create-release.sh [version]

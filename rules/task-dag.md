@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Task DAG — Dependency-Aware Agent Orchestration
 
 > **REMOVED 2026-04-20**: `lib/task_dag.py` was deleted (0 production callers, 24KB dead code).

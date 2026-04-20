@@ -1,3 +1,4 @@
+# SCOPE: both
 """Auto-repair system — worktree-isolated repair engine.
 
 Classifies errors, applies known remediations from a registry, and executes

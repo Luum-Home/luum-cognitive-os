@@ -1,4 +1,5 @@
 #!/bin/bash
+# SCOPE: both
 # Engram Sync — Exports project-scoped observations to JSON for git tracking.
 #
 # Only exports observations where project matches the current repo.

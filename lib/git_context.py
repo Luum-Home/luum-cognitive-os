@@ -1,3 +1,4 @@
+# SCOPE: both
 """Git context capture for session audit trail."""
 
 from __future__ import annotations

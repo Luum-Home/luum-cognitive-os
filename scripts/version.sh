@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Version management for Cognitive OS
 # Usage:
 #   bash scripts/version.sh            # show current version

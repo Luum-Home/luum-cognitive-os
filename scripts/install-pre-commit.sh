@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # install-pre-commit.sh — Symlink pre-commit-gate.sh into .git/hooks/pre-commit
 #
 # Usage: bash scripts/install-pre-commit.sh

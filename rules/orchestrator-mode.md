@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Orchestrator Mode — Subprocess-Based Delegation
 
 ## Activation

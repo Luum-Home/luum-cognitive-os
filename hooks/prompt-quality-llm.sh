@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: cos
+# SCOPE: both
 # PreToolUse hook: Prompt Quality (LLM-evaluated, ADR-022)
 # Fires on "Agent" tool use — emits a type:"prompt" handler that asks Haiku
 # to score the agent prompt on 5 dimensions (specificity, actionability,

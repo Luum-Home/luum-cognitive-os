@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Cost-Aware Decomposition
 
 ## Rule: Break Down Before Spending

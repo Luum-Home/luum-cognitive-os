@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # install-garak.sh — Install Garak LLM vulnerability scanner
 set -euo pipefail
 

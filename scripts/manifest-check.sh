@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # manifest-check.sh — Report status of declared dependencies vs reality.
 #
 # Reads manifests/dependencies.yaml via lib/manifest_loader.py, then for the

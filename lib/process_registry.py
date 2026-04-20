@@ -1,3 +1,4 @@
+# SCOPE: both
 """Process registry — ADR-028 D1.B.
 
 Tracks PIDs spawned by hooks/skills so the reaper can distinguish registered

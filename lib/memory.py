@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """Memory access stub — thin interface to the engram observation store.
 
 Provides mem_search() and related helpers used by Python modules that

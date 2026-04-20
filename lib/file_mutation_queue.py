@@ -1,3 +1,4 @@
+# SCOPE: both
 """
 File Mutation Queue — Per-file serialization for concurrent writes.
 

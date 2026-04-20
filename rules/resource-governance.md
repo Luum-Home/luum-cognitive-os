@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Resource Governance Protocol
 
 ## Budget Enforcement (ALWAYS ACTIVE)

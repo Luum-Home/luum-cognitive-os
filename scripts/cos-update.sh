@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # =============================================================================
 # cos-update.sh — Idempotent Cognitive OS update with verify + rollback (UX6)
 # =============================================================================

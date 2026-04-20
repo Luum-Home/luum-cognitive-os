@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # License Policy
 
 For commercial/closed-source projects, ALL dependencies must comply with this policy. Adjust based on your project's licensing model.

@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """WiringValidator — detects components that exist but are never registered/used.
 
 Validates three component types:

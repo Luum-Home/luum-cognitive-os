@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # install-tob-skills.sh — Install Trail of Bits security skills
 set -euo pipefail
 

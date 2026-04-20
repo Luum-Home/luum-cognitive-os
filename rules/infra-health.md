@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Infrastructure Health Check
 
 ## Purpose

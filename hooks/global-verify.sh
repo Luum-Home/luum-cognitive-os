@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # global-verify.sh — ADR-027 Phase 1 / ADR-028a §1 replacement for WS11
 # PostToolUse:Agent hook. Runs targeted tests before/after agent work and
 # blocks completion if the agent's claim contradicts the evidence.

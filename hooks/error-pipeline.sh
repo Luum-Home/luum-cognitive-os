@@ -1,4 +1,5 @@
 #!/bin/bash
+# SCOPE: both
 # CONCERNS: observability, recovery, logging
 # Error Pipeline Hook — PostToolUse for Bash
 # Merged from: error-learning.sh + auto-repair-dispatcher.sh

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Error Learning Protocol
 
 ## Automatic Error Capture

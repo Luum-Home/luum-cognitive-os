@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Sandbox Sampling Rule
 
 ## Purpose

@@ -1,4 +1,5 @@
 #!/bin/bash
+# SCOPE: both
 # Error Pattern Detector — PreToolUse for Agent
 # Checks for repeated error patterns and injects warnings into agent context.
 # Fast (<3s), non-blocking. Outputs warning text to stdout if patterns found.
