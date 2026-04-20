@@ -138,9 +138,30 @@ if [ -n "$staged_workflows" ]; then
 fi
 
 # Gate 3f. New test files must not be purely structural
+# Carve-out: if the entire staged diff consists only of SCOPE-tag lines
+# (# SCOPE: ... or <!-- SCOPE: ... -->), skip the structural check — these
+# lines carry no behavior and the mutation gate adds no signal for them.
+#
+# Smoke-test (do NOT run during a scope-tag-only commit itself):
+#   echo '# SCOPE: both' >> hooks/some-hook.sh
+#   git add hooks/some-hook.sh
+#   bash .githooks/pre-commit   # should emit [mutation-gate] scope-tag-only commit: skipping structural check
+#   git reset HEAD hooks/some-hook.sh
+#   git checkout -- hooks/some-hook.sh
+_scope_only_commit=false
+_added_lines=$(git diff --cached --unified=0 | grep '^+' | grep -v '^+++' || true)
+if [ -n "$_added_lines" ]; then
+  _non_scope=$(echo "$_added_lines" | grep -vE '^\+[[:space:]]*(#[[:space:]]*SCOPE:[[:space:]]*(os-only|project|both)[[:space:]]*|<!--[[:space:]]*SCOPE:[[:space:]]*(os-only|project|both)[[:space:]]*-->)[[:space:]]*$' || true)
+  if [ -z "$_non_scope" ]; then
+    _scope_only_commit=true
+  fi
+fi
+
 staged_tests_new=$(git diff --cached --name-only --diff-filter=A -- 'tests/*.py' 'tests/**/*.py' || true)
 if [ -n "$staged_tests_new" ]; then
-  if python3 "$COS_ROOT/scripts/check-test-quality.py" --pre-commit 2>/dev/null; then
+  if [ "$_scope_only_commit" = true ]; then
+    echo "[mutation-gate] scope-tag-only commit: skipping structural check" >&2
+  elif python3 "$COS_ROOT/scripts/check-test-quality.py" --pre-commit 2>/dev/null; then
     : # tests have behavioral assertions
   else
     echo "BLOCKED: New test file(s) contain only structural assertions (path.exists, is_file, 'in content')."
