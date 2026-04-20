@@ -340,5 +340,7 @@ class TestFormatArchiveReport:
 class TestCostTracking:
     def test_cost_persisted(self, mgr: SkillArchiveManager, archive_file: str) -> None:
         mgr.record_execution("s", "v", 80, True, "t", cost=0.05)
-        data = json.loads(Path(archive_file).read_text().strip())
-        assert data["cost_usd"] == 0.05
+        raw = json.loads(Path(archive_file).read_text().strip())
+        # MetricEvent shape: fields are in payload
+        assert raw.get("schema_version") == 1
+        assert raw["payload"]["cost_usd"] == 0.05

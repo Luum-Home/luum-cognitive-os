@@ -1,0 +1,139 @@
+# EXCLUDED_HOOKS.txt
+# Intentionally unregistered hooks — each entry must have a reason.
+#
+# Format: <hook-filename.sh> | <reason>
+#
+# To whitelist a new unregistered hook, add it here with a reason.
+# Do NOT add hooks that should be registered — fix those in .claude/settings.json instead.
+#
+# Categories:
+#   MANUAL_TRIGGER   — invoked on demand, not via Claude event hooks
+#   GIT_HOOK         — wired to git, not Claude's hook system
+#   LIBRARY          — helper sourced by other hooks, not a hook itself (in _lib/)
+#   DEPRECATED       — superseded by another hook; kept for reference
+#   FUTURE           — planned for a future sprint; not yet wired
+#   CONDITIONAL      — wired conditionally (e.g. only when a service is active)
+#   ADMIN            — one-shot admin script, not meant to run on every event
+#   INFRA            — infrastructure setup script; run manually or by CI
+
+# ── _lib/ helper scripts (LIBRARY) ──────────────────────────────────────────
+# These are sourced fragments, not standalone hooks.
+_lib/cache.sh | LIBRARY: shared caching helpers sourced by other hooks
+_lib/circuit-breaker.sh | LIBRARY: circuit-breaker logic sourced by other hooks
+_lib/common.sh | LIBRARY: common utilities sourced by all hooks
+_lib/execute-repair.sh | LIBRARY: repair execution helpers sourced by auto-repair-dispatcher.sh
+_lib/file_checker.sh | LIBRARY: file-checking utilities sourced by other hooks
+_lib/normalize-stdin.sh | LIBRARY: stdin normalization helpers sourced by other hooks
+_lib/paperclip-notify.sh | LIBRARY: paperclip notification helpers sourced by other hooks
+_lib/remediation.sh | LIBRARY: remediation helpers sourced by auto-repair-dispatcher.sh
+_lib/safe-jsonl.sh | LIBRARY: safe JSONL write helpers sourced by other hooks
+_lib/semantic-search.sh | LIBRARY: semantic search helpers sourced by other hooks
+_lib/singularity-suggestion.sh | LIBRARY: singularity suggestion helpers sourced by singularity-check.sh
+_lib/timing.sh | LIBRARY: timing/latency helpers sourced by other hooks
+_lib/tuning.sh | LIBRARY: performance-tuning helpers sourced by other hooks
+
+# ── Git hooks (GIT_HOOK) ─────────────────────────────────────────────────────
+pre-commit-gate.sh | GIT_HOOK: symlinked to .git/hooks/pre-commit; not a Claude hook (per rules/ROADMAP.md Section 1.8)
+
+# ── Manual-trigger / admin scripts (MANUAL_TRIGGER / ADMIN) ─────────────────
+self-install.sh | ADMIN: bootstraps settings.json registrations; run at SessionStart only for self-wiring; also called as admin one-shot
+wiring-check.sh | MANUAL_TRIGGER: audits hook registration; run on demand by operator, not on every event
+registration-check.sh | MANUAL_TRIGGER: checks hook registration state; invoked manually or by CI
+cognitive-os-health.sh | MANUAL_TRIGGER: health-check report for the full OS; run on demand via /cos-status
+usage-health-check.sh | MANUAL_TRIGGER: reports token/rate usage; invoked on demand, not on every event
+session-sanity.sh | MANUAL_TRIGGER: sanity-check script; invoked manually at session boundaries as needed
+session-hygiene.sh | MANUAL_TRIGGER: cleanup script for stale session artefacts; run on demand
+singularity-check.sh | MANUAL_TRIGGER: checks MAPE-K loop state; invoked by /singularity skill, not by Claude events
+
+# ── Future / unregistered gates (FUTURE) ────────────────────────────────────
+confidence-gate.sh | FUTURE: per rules/ROADMAP.md §1.3 — not registered; pending PreToolUse Agent registration sprint
+confidentiality-enforcer.sh | FUTURE: per rules/ROADMAP.md §1.4 — not registered; pending PostToolUse Edit|Write registration sprint
+audit-id-enricher.sh | FUTURE: per rules/ROADMAP.md §1.5 — not registered; pending PreToolUse Agent registration sprint
+predev-completeness-check.sh | FUTURE: per rules/ROADMAP.md §1.6 — not registered; pending PreToolUse Agent registration sprint
+reinvention-check.sh | FUTURE: per rules/ROADMAP.md §1.7 — not registered; pending PreToolUse Edit|Write registration sprint
+git-context-capture.sh | FUTURE: per rules/ROADMAP.md §1.1 — not registered; pending Stop/PostToolUse registration sprint
+session-changelog.sh | FUTURE: per rules/ROADMAP.md §1.1 — not registered; pending Stop registration sprint
+auto-rollback-trigger.sh | FUTURE: per rules/ROADMAP.md §1.2 — not registered; pending PostToolUse Agent registration sprint
+
+# ── Conditional / optional integrations (CONDITIONAL) ───────────────────────
+valkey-ensure.sh | CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed
+agent-bus-monitor.sh | CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running
+idle-service-cleanup.sh | CONDITIONAL: cleans up idle Docker services; run by cron or manually, not on every Claude event
+mlflow-sync.sh | CONDITIONAL: syncs metrics to MLflow at session end; only active when mlflow Python package is installed
+package-sync.sh | CONDITIONAL: syncs package.json dependencies; triggered by CI or developer, not by Claude hooks
+worktree-submodule-fix.sh | CONDITIONAL: fixes git submodule state in worktrees; invoked manually after worktree operations
+orchestrator-mode-detect.sh | CONDITIONAL: detects ORCHESTRATOR_MODE env var; sourced by other hooks, not registered independently
+
+# ── Deprecated / superseded hooks (DEPRECATED) ──────────────────────────────
+agnix-lint.sh | DEPRECATED: superseded by architecture-compliance.sh for lint enforcement
+adaptive-bypass.sh | DEPRECATED: logic merged into agent-prelaunch.sh and orchestrator rules; kept for reference
+clarification-interceptor.sh | DEPRECATED: functionality merged into clarification-gate.sh; kept for backward-compat reference
+completeness-check-llm.sh | DEPRECATED: LLM-based variant; completeness-check.sh (rule-based) is the registered version
+confidence-gate-llm.sh | DEPRECATED: LLM-based variant; confidence-gate.sh (rule-based) is the planned replacement
+prompt-quality-llm.sh | DEPRECATED: LLM-based variant; prompt-quality.sh (rule-based) is the registered version
+
+# ── Infrastructure / setup scripts (INFRA) ──────────────────────────────────
+session-state-save.sh | INFRA: saves session state to disk; invoked by session-cleanup.sh or manually; not a standalone registered hook
+resource-check.sh | INFRA: checks resource limits before spawning; called programmatically by rate-limiter.sh, not registered as independent hook
+infra-intent-detector.sh | INFRA: detects infrastructure-intent in prompts; called by agent-prelaunch.sh, not registered independently
+
+# ── Notification helpers (MANUAL_TRIGGER) ───────────────────────────────────
+notify.sh | MANUAL_TRIGGER: generic desktop notification wrapper; invoked by other hooks, not registered directly
+task-bridge-notify.sh | MANUAL_TRIGGER: sends task events to external bridge; invoked programmatically by task lifecycle hooks
+task-completed.sh | MANUAL_TRIGGER: task-completion event handler; invoked by external task system, not by Claude events
+task-created.sh | MANUAL_TRIGGER: task-creation event handler; invoked by external task system, not by Claude events
+task-panel-sync.sh | MANUAL_TRIGGER: syncs task panel state; invoked programmatically, not by Claude events
+teammate-idle.sh | MANUAL_TRIGGER: notifies when a team member's agent goes idle; invoked by squad infrastructure, not by Claude events
+
+# ── Session-related unregistered hooks ──────────────────────────────────────
+session-knowledge-extractor.sh | FUTURE: extracts learnings at session end; planned for Stop event — not yet wired
+recap-sync.sh | FUTURE: syncs session recap to external system; planned for Stop event — not yet wired
+session-end-reap.sh | FUTURE: reaps stale session artefacts at Stop; ADR-028 Phase B work item — not yet wired
+
+# ── Agent lifecycle helpers ──────────────────────────────────────────────────
+post-agent-verify.sh | FUTURE: post-agent verification; superceded by completion-gate.sh in current wiring
+pre-agent-snapshot.sh | FUTURE: snapshot before agent launch; planned for PreToolUse Agent — not yet wired
+pre-cleanup-snapshot.sh | FUTURE: snapshot before cleanup operations; invoked manually or by admin scripts
+agent-work-tracker.sh | FUTURE: tracks in-progress agent work; planned integration with task-recorder.sh — not yet wired
+agent-output-verifier.sh | FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired
+background-agent-reminder.sh | FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired
+tool-discovery-trigger.sh | FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired
+
+# ── Code review / quality ────────────────────────────────────────────────────
+code-review-on-commit.sh | FUTURE: triggers LLM code review on git commit; uses pre-commit-gate.sh pathway — not yet wired to Claude events
+skill-feedback-tracker.sh | FUTURE: tracks skill usage quality; planned for PostToolUse Agent — not yet wired
+skill-usage-tracker.sh | FUTURE: tracks which skills are used per session; planned for PostToolUse Agent — not yet wired
+
+# ── Misc ────────────────────────────────────────────────────────────────────
+auto-verify.sh | FUTURE: per rules/ROADMAP.md §2.1 — built by UX2 sprint but registration not yet verified
+dod-gate.sh | FUTURE: per rules/ROADMAP.md §2.2 — built by UX2 sprint; registration status unverified
+auto-refine.sh | FUTURE: per rules/ROADMAP.md §2.3 — built by UX2 sprint; registration status unverified
+error-learning.sh | FUTURE: captures test/lint/build errors; planned PostToolUse Bash alongside error-pipeline.sh
+large-file-advisor.sh | FUTURE: advises on large file reads; planned PreToolUse Read — not yet wired
+context-diet.sh | FUTURE: enforces context diet; planned PostToolUse Agent — not yet wired
+conversation-capture.sh | FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired
+concurrent-write-guard.sh | FUTURE: prevents concurrent file writes; planned for PreToolUse Edit|Write — not yet wired
+destructive-git-blocker.sh | FUTURE: blocks destructive git commands; planned for PreToolUse Bash — not yet wired
+ecosystem-check.sh | FUTURE: checks library ecosystem before adoption; planned for PreToolUse Agent — not yet wired
+engram-auto-import.sh | FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired
+engram-auto-sync.sh | FUTURE: auto-syncs changes to engram; planned for PostToolUse — not yet wired
+jupyter-sandbox.sh | FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired
+pattern-check.sh | FUTURE: checks for known anti-patterns; planned for PreToolUse Edit|Write — not yet wired
+private-mode-gate.sh | FUTURE: gates operations in private mode; planned for PreToolUse — not yet wired
+private-mode-metrics-gate.sh | FUTURE: gates metrics emission in private mode; planned for PostToolUse — not yet wired
+release-guard.sh | FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired
+test-baseline-diff.sh | FUTURE: diffs test results against baseline; planned for PostToolUse Bash — not yet wired
+token-budget-monitor.sh | FUTURE: monitors token budget mid-session; planned for PostToolUse — not yet wired
+global-verify.sh | FUTURE: global verification pass at Stop; planned for Stop event — not yet wired
+
+# ── Hooks discovered during initial audit run (not in earlier survey) ────────
+adr-detector.sh | FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired
+contextual-rule-loader.sh | FUTURE: dynamically loads contextual rules; planned for SubagentStart — not yet wired
+dry-run-preview.sh | FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired
+memu-sync.sh | FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired
+metrics-calibrator-trigger.sh | FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired
+metrics-rotation.sh | INFRA: rotates JSONL metrics files to prevent unbounded growth; invoked by cron or manually, not on every event
+paperclip-sync.sh | CONDITIONAL: syncs governance data to Paperclip; only active when Paperclip service is running
+skill-tracker.sh | FUTURE: tracks skill invocations for model-optimizer; planned for PostToolUse Agent — not yet wired
+sync-to-repo.sh | MANUAL_TRIGGER: syncs local OS changes to the luum-agent-os repo; invoked manually by developer
+tool-loop-detector.sh | FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired

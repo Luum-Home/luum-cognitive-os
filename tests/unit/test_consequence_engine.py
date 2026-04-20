@@ -166,9 +166,9 @@ class TestApplyConsequence:
         assert len(result) == 1
         assert "Promoted" in result[0]
         assert "sdd-verify" in result[0]
-        # Check promotion record was persisted
+        # Check promotion record was persisted (MetricEvent shape: event_type contains "promotion")
         lines = Path(history_file).read_text().strip().splitlines()
-        promo_lines = [l for l in lines if '"promotion"' in l]
+        promo_lines = [l for l in lines if "promotion" in l]
         assert len(promo_lines) == 1
 
     def test_degrade_suggests_model_downgrade(self, engine: ConsequenceEngine) -> None:
@@ -322,10 +322,13 @@ class TestSaveAction:
         engine.save_action(action)
         lines = Path(history_file).read_text().strip().splitlines()
         assert len(lines) >= 1
-        last = json.loads(lines[-1])
-        assert last["record_type"] == "action"
-        assert last["target"] == "my-skill"
-        assert last["consequence"] == "warn"
+        raw = json.loads(lines[-1])
+        # MetricEvent shape: record_type encoded in event_type, payload holds fields
+        assert raw.get("schema_version") == 1
+        assert "consequence.action" in raw.get("event_type", "")
+        payload = raw["payload"]
+        assert payload["target"] == "my-skill"
+        assert payload["consequence"] == "warn"
 
 
 # ---------------------------------------------------------------------------
