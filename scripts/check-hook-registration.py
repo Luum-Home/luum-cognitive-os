@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """Validate that all hooks in hooks/*.sh are registered in security/efficiency profiles.
 
 A hook is considered registered when it appears in ALL of:
