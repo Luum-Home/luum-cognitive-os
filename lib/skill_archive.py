@@ -22,6 +22,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+from lib.metric_event import MetricEvent, append_event
+
 
 # ---------------------------------------------------------------------------
 # Data classes
@@ -116,6 +118,7 @@ class SkillArchiveManager:
     # -- persistence -------------------------------------------------------
 
     def _read_all(self) -> List[SkillSnapshot]:
+        """Read all snapshots, normalising MetricEvent-wrapped rows back to snapshot dicts."""
         path = Path(self.archive_path)
         if not path.exists():
             return []
@@ -126,16 +129,32 @@ class SkillArchiveManager:
                 if not line:
                     continue
                 try:
-                    snapshots.append(_dict_to_snapshot(json.loads(line)))
-                except (json.JSONDecodeError, KeyError):
+                    row = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                # Unwrap MetricEvent rows
+                if "schema_version" in row and "event_type" in row and "payload" in row:
+                    flat = dict(row["payload"])
+                    flat.setdefault("timestamp", row.get("timestamp", ""))
+                    row = flat
+                try:
+                    snapshots.append(_dict_to_snapshot(row))
+                except KeyError:
                     continue
         return snapshots
 
     def _append(self, snap: SkillSnapshot) -> None:
-        path = Path(self.archive_path)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with open(path, "a", encoding="utf-8") as fh:
-            fh.write(json.dumps(_snapshot_to_dict(snap), default=str) + "\n")
+        """Append a skill snapshot as a MetricEvent."""
+        snap_dict = _snapshot_to_dict(snap)
+        # timestamp is a top-level MetricEvent field
+        timestamp = snap_dict.pop("timestamp", "")
+        event = MetricEvent(
+            source="skill-archive",
+            event_type="skill.execution.recorded",
+            payload=snap_dict,
+            timestamp=timestamp,
+        )
+        append_event(self.archive_path, event)
 
     # -- public API --------------------------------------------------------
 

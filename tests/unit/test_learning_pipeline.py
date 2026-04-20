@@ -121,7 +121,16 @@ class TestRecordError:
             message="compilation failed",
         )
         # Read correlations file and verify skill_name is set
-        entries = [json.loads(l) for l in Path(correlations_path).read_text().splitlines() if l.strip()]
+        # MetricEvent shape: relevant fields are in payload
+        raw_entries = [json.loads(l) for l in Path(correlations_path).read_text().splitlines() if l.strip()]
+        entries = []
+        for e in raw_entries:
+            if "schema_version" in e and "payload" in e:
+                flat = dict(e["payload"])
+                flat.setdefault("timestamp", e.get("timestamp", ""))
+                entries.append(flat)
+            else:
+                entries.append(e)
         error_entries = [e for e in entries if "error_type" in e]
         assert len(error_entries) >= 1
         assert any(e.get("skill_name") == "sdd-apply" for e in error_entries)
