@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Context7 Auto-Trigger — Library Documentation Lookup
 
 ## Purpose

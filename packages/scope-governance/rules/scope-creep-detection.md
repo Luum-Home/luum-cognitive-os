@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Scope Creep Detection
 
 ## Purpose

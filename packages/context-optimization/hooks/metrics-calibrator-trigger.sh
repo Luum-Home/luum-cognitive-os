@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # metrics-calibrator-trigger.sh — Check if metrics calibration is due
 # Trigger: SessionStart (after kpi-trigger.sh)
 

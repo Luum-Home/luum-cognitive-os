@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Tero -- HTTP Testing with Chaos Engineering
 
 ## Overview

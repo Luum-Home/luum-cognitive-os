@@ -1,4 +1,5 @@
 #!/bin/bash
+# SCOPE: both
 # CONCERNS: performance, quality, observability
 # Hook: Result Truncator — PostToolUse for Bash
 # Prevents large tool outputs from flooding the context window.

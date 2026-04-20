@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PostToolUse hook on Agent — detects when verify-apply loop exceeds max retries
 # and triggers the auto-rollback skill.
 # Looks for "Verify-apply loop exceeded 3 retries" in agent response.

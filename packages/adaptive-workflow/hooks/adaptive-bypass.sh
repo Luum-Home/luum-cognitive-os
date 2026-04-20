@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook: Adaptive Bypass — Automatic Complexity Classification
 # Fires on "Agent" tool use — classifies task complexity and recommends workflow
 # Advisory only (exit 0) — does NOT block, injects classification for the model

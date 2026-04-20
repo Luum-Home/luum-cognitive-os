@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PostToolUse hook on Agent — detects NEEDS_CLARIFICATION marker in agent output.
 # Extracts questions and signals the orchestrator to handle resolution.
 # Advisory only (exit 0) — does NOT block, tells orchestrator to act.

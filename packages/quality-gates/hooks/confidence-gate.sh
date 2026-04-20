@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PostToolUse hook on Agent — enforces confidence thresholds from Trust Reports.
 # Complements trust-score-validator.sh by adding BLOCKING behavior for very low scores.
 # - Score < 30: CRITICAL warning (blocks in production/maintenance)
