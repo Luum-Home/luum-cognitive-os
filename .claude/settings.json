@@ -51,6 +51,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aspirational-audit-weekly.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/mcp-scan.sh\""
           }
         ]
       }
@@ -159,6 +163,14 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aguara-scan.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/parry-scan.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-refine.sh\""
           },
           {
@@ -171,11 +183,11 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/global-verify.sh\" before"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/native-agent-heartbeat.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/native-agent-heartbeat.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/global-verify.sh\" before"
           }
         ]
       }
@@ -298,6 +310,10 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/native-agent-heartbeat.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-work-tracker.sh\""
           },
           {
@@ -310,11 +326,11 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/global-verify.sh\" after"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/semgrep-scan.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/native-agent-heartbeat.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/global-verify.sh\" after"
           }
         ]
       }
