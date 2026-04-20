@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """Cognitive OS Orchestrator — dogfood entry point.
 
 Launches sub-Claude agents via `lib.claude_executor.ClaudeExecutor`, which
