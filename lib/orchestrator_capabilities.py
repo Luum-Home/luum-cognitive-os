@@ -63,7 +63,35 @@ class OrchestratorCapabilities:
         return self
 
     def _check_executor(self) -> bool:
-        return os.environ.get("ORCHESTRATOR_MODE", "").lower() == "executor"
+        if os.environ.get("ORCHESTRATOR_MODE", "").lower() == "executor":
+            return True
+        # ADR-034: the cos-executor daemon writes .cognitive-os/runtime/
+        # orchestrator-mode with the value "executor" while it is running.
+        # Reading this lets the banner reflect reality even when the env
+        # var was not exported into this process.
+        try:
+            from pathlib import Path
+            project = Path(
+                os.environ.get("COGNITIVE_OS_PROJECT_DIR",
+                               os.environ.get("CLAUDE_PROJECT_DIR",
+                                              os.getcwd()))
+            )
+            state = project / ".cognitive-os" / "runtime" / "orchestrator-mode"
+            pid_file = project / ".cognitive-os" / "runtime" / "cos-executor.pid"
+            if state.exists() and state.read_text().strip().lower() == "executor":
+                # Verify the daemon PID is still alive; a stale mode file
+                # without a live PID should not flip the banner to ✅.
+                if pid_file.exists():
+                    try:
+                        pid = int(pid_file.read_text().strip() or "0")
+                        if pid > 0:
+                            os.kill(pid, 0)
+                            return True
+                    except (OSError, ValueError):
+                        return False
+        except Exception:
+            pass
+        return False
 
     def _check_valkey(self) -> bool:
         host = os.environ.get("VALKEY_HOST", "localhost")
