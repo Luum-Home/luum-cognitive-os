@@ -41,13 +41,23 @@ class ClaudeCodeAdapter(HarnessAdapter):
     #: Heartbeat stream expected by ``AgentBusMetrics.on_heartbeat_event``.
     default_output: ClassVar[str] = ".cognitive-os/metrics/agent-heartbeat.jsonl"
 
-    def __init__(self, project_dir=None, correlation_store: Optional[CorrelationStore] = None) -> None:
+    def __init__(
+        self,
+        project_dir=None,
+        correlation_store: Optional[CorrelationStore] = None,
+    ) -> None:
         super().__init__(project_dir)
         # ADR-033b: shared correlation store; callers may inject a custom one
         # for testing or cross-process recovery.
         self._correlation: CorrelationStore = correlation_store or CorrelationStore(
             project_dir=self.project_dir
         )
+        # ADR-038 Gap #4: per-agent PostToolUse:Agent event counter within
+        # this adapter instance (i.e. within the current hook invocation
+        # lifetime). Counts are also persisted across invocations via
+        # _reasoning_cycle_file so the heartbeat payload carries a session-
+        # cumulative count.
+        self._cycle_counts: dict[str, int] = {}
 
     # --- detection ---------------------------------------------------------
 
@@ -90,6 +100,10 @@ class ClaudeCodeAdapter(HarnessAdapter):
                 # ADR-033b: look up real start time from correlation store
                 duration_ms = self._compute_duration_ms(tool_use_id)
                 usage = _extract_token_usage(raw.get("tool_response"))
+                # ADR-038 Gap #4: increment reasoning cycle count on every
+                # PostToolUse:Agent (each post = one completed think→act→observe
+                # cycle), then reset after the final tick is emitted.
+                cycle_count = self._increment_cycle_count(tool_use_id)
                 events.append(
                     AgentEnd(
                         agent_id=tool_use_id,
@@ -106,8 +120,10 @@ class ClaudeCodeAdapter(HarnessAdapter):
                         ts=ts,
                         alive=False,
                         session_id=session_id,
+                        reasoning_cycle_count=cycle_count,
                     )
                 )
+                self._reset_cycle_count(tool_use_id)
                 if any(v for v in usage.values()):
                     events.append(
                         TokenUsage(
@@ -138,6 +154,7 @@ class ClaudeCodeAdapter(HarnessAdapter):
                         ts=ts,
                         alive=True,
                         session_id=session_id,
+                        reasoning_cycle_count=0,
                     )
                 )
         else:
@@ -154,6 +171,69 @@ class ClaudeCodeAdapter(HarnessAdapter):
                 )
 
         return events
+
+    # --- reasoning cycle tracking ------------------------------------------
+
+    @property
+    def _reasoning_cycle_file(self):
+        return (
+            self.project_dir
+            / ".cognitive-os"
+            / "metrics"
+            / "reasoning-cycle-counts.jsonl"
+        )
+
+    def _load_cycle_count(self, agent_id: str) -> int:
+        """Return the persisted cumulative reasoning cycle count for agent_id."""
+        path = self._reasoning_cycle_file
+        if not path.exists():
+            return 0
+        count = 0
+        try:
+            for line in path.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    import json as _json
+                    rec = _json.loads(line)
+                except Exception:
+                    continue
+                if rec.get("agent_id") == agent_id:
+                    count = rec.get("cycle_count", count)
+        except OSError:
+            pass
+        return count
+
+    def _save_cycle_count(self, agent_id: str, count: int) -> None:
+        """Append the updated cycle count to the persistent JSONL."""
+        import json as _json
+        path = self._reasoning_cycle_file
+        path.parent.mkdir(parents=True, exist_ok=True)
+        record = {
+            "agent_id": agent_id,
+            "cycle_count": count,
+            "ts": time.time(),
+        }
+        try:
+            with open(path, "a", encoding="utf-8") as fh:
+                fh.write(_json.dumps(record) + "\n")
+        except OSError:
+            pass
+
+    def _increment_cycle_count(self, agent_id: str) -> int:
+        """Increment and persist the reasoning cycle count; return new value."""
+        current = self._cycle_counts.get(agent_id)
+        if current is None:
+            current = self._load_cycle_count(agent_id)
+        current += 1
+        self._cycle_counts[agent_id] = current
+        self._save_cycle_count(agent_id, current)
+        return current
+
+    def _reset_cycle_count(self, agent_id: str) -> None:
+        """Reset the cycle count on AgentEnd (after recording the final tick)."""
+        self._cycle_counts.pop(agent_id, None)
 
     # --- duration ----------------------------------------------------------
 
