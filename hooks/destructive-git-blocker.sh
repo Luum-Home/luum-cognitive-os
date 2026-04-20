@@ -96,6 +96,24 @@ fi
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 AGENT_ID="${CLAUDE_AGENT_ID:-}"
 
+# ── Agent-context detection (R4 hardening) ───────────────────────────────────
+# Consider "agent context" if ANY of the following is true:
+#   1. CLAUDE_AGENT_ID is non-empty
+#   2. COGNITIVE_OS_SESSION_ID is non-empty
+#   3. ORCHESTRATOR_MODE == executor
+#   4. Parent process name matches claude or claude-code (best-effort)
+_git_blocker_is_agent_context() {
+  [ -n "${CLAUDE_AGENT_ID:-}" ]             && return 0
+  [ -n "${COGNITIVE_OS_SESSION_ID:-}" ]     && return 0
+  [ "${ORCHESTRATOR_MODE:-}" = "executor" ] && return 0
+  local ppid_name
+  ppid_name=$(ps -p $PPID -o comm= 2>/dev/null || true)
+  if echo "$ppid_name" | grep -qiE '^claude(-code)?$'; then
+    return 0
+  fi
+  return 1
+}
+
 # Extract the matched op name (stash pop, reset --hard, etc.) for the alert text
 OP_NAME=$(echo "$FIRST_HIT" | awk '{
   if ($2=="stash") print "git stash " $3;
@@ -111,7 +129,7 @@ esc_cmd=${esc_cmd//\"/\\\"}
 esc_cmd=$(echo "$esc_cmd" | head -c 500 | tr '\n\r' '  ')
 esc_op=${OP_NAME//\"/\\\"}
 
-if [ -n "$AGENT_ID" ]; then
+if _git_blocker_is_agent_context; then
   # Agent context → BLOCK
   echo "" >&2
   echo "=== DESTRUCTIVE-GIT-BLOCKER: BLOCKED ===" >&2
