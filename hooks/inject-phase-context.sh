@@ -239,15 +239,27 @@ if [[ -n "$SQUAD_INFO" ]]; then
 ${SQUAD_INFO}"
 fi
 
-# Inject gotchas file if working on COS internals
+# Inject gotchas file if working on COS internals — but only ONCE per session.
+# Subsequent agents get a 1-line pointer instead of the full 3KB file.
 GOTCHAS_FILE="$PROJECT_DIR/templates/project-gotchas.md"
 if [[ -n "$AGENT_PROMPT" ]] && [[ -f "$GOTCHAS_FILE" ]]; then
   if echo "$AGENT_PROMPT" | grep -qiE 'lib/|hooks/|packages/|\.cognitive-os/|settings\.json|cognitive-os\.yaml'; then
-    GOTCHAS_CONTENT=$(cat "$GOTCHAS_FILE")
-    CONTEXT_BUF+="
+    # Per-session dedup marker
+    _SID="${COGNITIVE_OS_SESSION_ID:-default}"
+    _GOTCHAS_MARKER="$PROJECT_DIR/.cognitive-os/sessions/$_SID/.gotchas-injected"
+    if [[ -f "$_GOTCHAS_MARKER" ]]; then
+      # Already seen this session — just remind it exists
+      CONTEXT_BUF+="
+
+Gotchas reference: templates/project-gotchas.md (already loaded this session)"
+    else
+      GOTCHAS_CONTENT=$(cat "$GOTCHAS_FILE")
+      CONTEXT_BUF+="
 
 --- PROJECT GOTCHAS (read before modifying COS internals) ---
 ${GOTCHAS_CONTENT}"
+      mkdir -p "$(dirname "$_GOTCHAS_MARKER")" 2>/dev/null && touch "$_GOTCHAS_MARKER" 2>/dev/null || true
+    fi
   fi
 fi
 
