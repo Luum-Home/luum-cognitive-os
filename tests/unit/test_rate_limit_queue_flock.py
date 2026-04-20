@@ -59,9 +59,10 @@ def test_concurrent_enqueue_no_lost_writes(tmp_path: Path) -> None:
     assert len(results) == 10, f"Expected 10 queue IDs, got {len(results)}"
     assert len(set(results)) == 10, "Duplicate queue IDs detected"
 
-    # Verify persisted count — reload from disk
-    with open(queue_path) as f:
-        persisted = json.load(f)
+    # Verify persisted count — reload from disk via a fresh queue instance
+    # (JSONL append-only format: use the queue API, not raw JSON parse)
+    verify_q = RateLimitQueue(state_path=queue_path, cooldown_seconds=300)
+    persisted = verify_q.peek()
     assert len(persisted) == 10, f"Expected 10 persisted items, got {len(persisted)}"
 
 
