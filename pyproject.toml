@@ -12,6 +12,7 @@ dependencies = [
 llm = [
     "litellm>=1.0",
     "redis>=5.0.0",
+    "valkey>=5.0",
 ]
 web = [
     "fastapi>=0.100",
@@ -20,6 +21,9 @@ web = [
 observability = [
     "opik>=1.0",
     "langfuse>=3.0",
+    # mlflow-skinny: lightweight mlflow without pyarrow/pandas (which fail on Python 3.14).
+    # Use mlflow-skinny for tracking/observability; full mlflow requires pyarrow to build.
+    "mlflow-skinny>=2.0",
 ]
 memory = [
     "cognee>=0.1",
