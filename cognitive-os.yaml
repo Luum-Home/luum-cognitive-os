@@ -477,6 +477,14 @@ model_capability:
         claim-validator, tool-loop-detector, consequence-evaluator, infra-intent-detector,
         pre-cleanup-snapshot, architecture-compliance, auto-skill-generator]
 
+orchestration:
+  # Controls which working directory is injected into sub-agent prompts by
+  # agent-working-dir-inject.sh (PreToolUse:Agent).
+  # current      — no injection; sub-agent inherits the parent's cwd (worktree if inside one)
+  # main_worktree — resolve the main-branch worktree via `git worktree list` and inject it
+  # branch       — inject the primary worktree for the current branch
+  sub_agent_cwd: main_worktree   # current | main_worktree | branch
+
 efficiency:
   profile: default               # default | full  (ADR-002: collapsed 3-tier system)
   profiles:

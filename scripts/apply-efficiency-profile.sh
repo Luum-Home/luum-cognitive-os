@@ -194,6 +194,7 @@ GROUPEOF
     hook_entry "clarification-gate.sh"; printf ',\n'
     hook_entry "blast-radius.sh"; printf ',\n'
     hook_entry "inject-phase-context.sh"; printf ',\n'
+    hook_entry "agent-working-dir-inject.sh"; printf ',\n'
     hook_entry "agent-prelaunch.sh"; printf ',\n'
     hook_entry "error-pattern-detector.sh"; printf ',\n'
     hook_entry "predev-completeness-check.sh"; printf ',\n'
@@ -387,7 +388,7 @@ echo "  UserPromptSubmit: user-prompt-capture.sh, session-wrapup-trigger.sh"
 echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh, destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
-echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, aguara-scan.sh (D35: 189-rule prompt injection), parry-scan.sh (D35: ML injection scanner), auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
+echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, aguara-scan.sh (D35: 189-rule prompt injection), parry-scan.sh (D35: ML injection scanner), auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.sh, rate-limit-drain.sh (D45: retry_count+1 re-enqueue, non-blocking)"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
 echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"
