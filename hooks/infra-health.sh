@@ -4,6 +4,8 @@
 # Outputs advisory messages about missing infrastructure.
 # Env: INFRA_AUTO_START=true to auto-start missing services (default: false)
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
 COMPOSE_FILE="$PROJECT_DIR/docker-compose.cognitive-os.yml"

@@ -4,6 +4,8 @@
 # when a Claude Code session ends. Does NOT push.
 
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 EXPORT_DIR="$PROJECT_DIR/.engram/exports"

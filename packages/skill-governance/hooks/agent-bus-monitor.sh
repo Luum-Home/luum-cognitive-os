@@ -4,6 +4,8 @@
 # OFF by default — enable via AGENT_BUS_ENABLED=true environment variable.
 
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 # Only run if explicitly enabled
 if [ "${AGENT_BUS_ENABLED:-false}" != "true" ]; then
