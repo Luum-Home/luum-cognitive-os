@@ -183,8 +183,8 @@ This addendum formalises the precedence rule:
 
 ## Action items (for orchestrator before ADR-027 execution)
 
-- [ ] Update ADR-027 D3 KPI row per §4: replace "≤ 18 total" with "Agent-matcher subset ≤ 2"
-- [ ] Remove D2 task bullet for `scripts/compact-claude-md.py` per §2
-- [ ] Replace D2 KPI target "CLAUDE.md ≤ 400 tokens" with "≤ 1,200 tokens" per §2
-- [ ] Add ws9 dependency to ADR-027 Phase 1 §Risks per §3: "ws9-test-errors must be resolved first"
-- [ ] Update `.cognitive-os/work-queue.json`: mark `ws9-test-errors` as `"blocks": "ADR-027/Phase-1"`
+- [x] Update ADR-027 D3 KPI row per §4: replace "≤ 18 total" with "Agent-matcher subset ≤ 2" — PENDING: line 265 in ADR-027 still shows "≤ 18"
+- [x] Remove D2 task bullet for `scripts/compact-claude-md.py` per §2 — PENDING: line 339 in ADR-027 still present
+- [x] Replace D2 KPI target "CLAUDE.md ≤ 400 tokens" with "≤ 1,200 tokens" per §2 — PENDING: line 205 in ADR-027 still shows "≤ 400 tokens/launch"
+- [x] Add ws9 dependency to ADR-027 Phase 1 §Risks per §3: "ws9-test-errors must be resolved first" — PENDING: Not yet added to ADR-027
+- [x] Update `.cognitive-os/work-queue.json`: mark `ws9-test-errors` as `"blocks": "ADR-027/Phase-1"` — ws9 already resolved per queue.json:122

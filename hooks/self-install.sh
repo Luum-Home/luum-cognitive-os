@@ -239,7 +239,7 @@ EXCLUDED_RULES=(
   "confidence-gate.md"             # → confidence-gate.sh (PostToolUse Agent)
   "consequence-system.md"          # → consequence-evaluator.sh (PostToolUse Agent)
   "auto-rollback.md"               # → auto-rollback-trigger.sh (PostToolUse Agent)
-  "response-compression.md"        # → response-length-check.sh (PostToolUse Agent)
+  "response-compression.md"        # agent-instruction-only (no hook — see rules/ROADMAP.md §D24)
   "assumption-tracking.md"         # → assumption-tracker.sh (PostToolUse Agent)
 
   # ── B) Package-specific (only relevant when package is active) ────────
