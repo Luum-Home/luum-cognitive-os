@@ -2,9 +2,9 @@
 
 Every model known to Cognitive OS is registered here with canonical IDs,
 aliases, pricing, capabilities, and provider information. Other lib modules
-(model_router, cost_dashboard, consequence_engine, escalation_detector,
-workload_scheduler) should eventually import from this catalog instead of
-maintaining their own hardcoded dictionaries.
+(model_router, cost_dashboard, consequence_engine, escalation_detector)
+should import from this catalog instead of maintaining their own hardcoded
+dictionaries.
 
 Usage:
     from lib.model_catalog import ModelCatalog
@@ -65,7 +65,7 @@ class ModelEntry:
 # ---------------------------------------------------------------------------
 
 # Single source of truth for all model pricing and capabilities.
-# Consumer modules (cost_dashboard, model_router, workload_scheduler, etc.)
+# Consumer modules (cost_dashboard, model_router, etc.)
 # derive their dicts from this catalog -- no manual sync needed.
 # Last verified: 2026-03-27
 

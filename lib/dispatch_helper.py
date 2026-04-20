@@ -6,7 +6,7 @@ to allow a new agent launch, enqueue it for later, or drain the ready queue.
 Design constraints (runs on every PreToolUse):
 - No heavy imports at module level — only stdlib
 - Graceful degradation when config / task files / queue are missing
-- WorkloadScheduler import is optional (falls back to simple priority sort)
+- Falls back to simple priority sort (WorkloadScheduler removed 2026-04-20)
 - Never raises — all errors are caught and surfaced in the returned dict
 
 Public API:
