@@ -16,7 +16,7 @@ if [ -f "$LAST_RUN_FILE" ]; then
 fi
 
 # Run the health check
-python3 -c "
+timeout 30 python3 -c "
 from lib.component_usage_tracker import ComponentUsageTracker
 t = ComponentUsageTracker()
 r = t.generate_usage_report()
