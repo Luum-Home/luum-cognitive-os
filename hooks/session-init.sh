@@ -129,6 +129,25 @@ _singularity_suggestion
 # baseline. Re-enable only after those land.
 echo "baseline: disabled (see ADR-027)" > "$SESSION_DIR/test-baseline.txt"
 
+# ─── Pending-task reminder ─────────────────────────────────────────────────────
+# Advisory nudge at session start: if the work-queue has active P1-P5 items
+# still marked pending, remind the orchestrator to inspect them via the
+# canonical skills. Does NOT auto-invoke — orchestrator or user decides.
+# Fail-silent: any jq/path issue is ignored (exit 0 contract).
+_WORK_QUEUE="$PROJECT_DIR/.cognitive-os/work-queue.json"
+if [ -f "$_WORK_QUEUE" ] && command -v jq >/dev/null 2>&1; then
+  _pending_count=$(jq '[.priority_queue[]? | select(.status=="pending")] | length' "$_WORK_QUEUE" 2>/dev/null || echo 0)
+  _parked_count=$(jq '[.parked[]?] | length' "$_WORK_QUEUE" 2>/dev/null || echo 0)
+  if [ "${_pending_count:-0}" -gt 0 ] 2>/dev/null; then
+    echo "" >&2
+    echo "📋 Pending tasks detected ($_pending_count active, $_parked_count parked)." >&2
+    echo "   Inspect:  /session-backlog   (full P1-P5 list with first steps)" >&2
+    echo "   Resume:   /resume-tasks      (re-launch any in-progress from last session)" >&2
+    echo "   Report:   /session-report-executive" >&2
+    echo "" >&2
+  fi
+fi
+
 # Work queue check moved to _lib/session_init_helper.py (consolidated above)
 
 
