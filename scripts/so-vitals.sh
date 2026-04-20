@@ -11,7 +11,7 @@ python3 - <<PYEOF
 import json, os, sys, time, subprocess
 from pathlib import Path
 
-sys.path.insert(0, ".")
+sys.path.insert(0, "$PROJECT_DIR")
 
 ROOT = Path("$PROJECT_DIR")
 MODE = "$MODE"

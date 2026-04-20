@@ -76,7 +76,7 @@ if [ -L "$LIB_DIR/adr_detector.py" ]; then
     LIB_DIR=$(readlink -f "$LIB_DIR")
 fi
 
-RESULT=$(python3 -c "
+RESULT=$(timeout 30 python3 -c "
 import json, sys
 sys.path.insert(0, '$(dirname "$LIB_DIR")')
 from lib.adr_detector import analyze_commit, generate_adr_draft, log_detection
