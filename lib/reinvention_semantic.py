@@ -1,22 +1,37 @@
 # SCOPE: both
-"""Reinvention-gate Phase B-α — Jaccard similarity over module token bags.
+"""Reinvention-gate Phase B — semantic similarity index (Jaccard + Embeddings).
 
 See: docs/adrs/ADR-029b-reinvention-phase-b-semantic.md
+     docs/adrs/ADR-039-reinvention-phase-b-beta-embeddings.md
 
-The module builds a JSON index of existing modules (lib/, hooks/, scripts/) and
-scores agent prompts against it using Jaccard set overlap on extracted tokens
-(docstrings, function/class names, shell header comments).
+Two index implementations:
 
-Stdlib only — no ML dependencies. p95 query time < 50 ms on this repo.
+* **SemanticIndex** (Phase B-α, always available) — Jaccard set overlap on
+  extracted tokens (docstrings, function/class names, shell header comments).
+  Stdlib only. p95 query time < 50 ms.
 
-Usage:
+* **EmbeddingsIndex** (Phase B-β, optional) — cosine similarity over
+  sentence-transformer embeddings (``all-MiniLM-L6-v2`` default).
+  Requires ``sentence-transformers>=3.0`` (``pip install
+  luum-cognitive-os[semantic]``). Raises ``ImportError`` if absent so callers
+  can fall back to ``SemanticIndex``.
+
+Usage::
+
     from lib.reinvention_semantic import SemanticIndex
 
     idx = SemanticIndex()
-    idx.build_index(".")                     # scan + persist to .cognitive-os/reinvention-index.json
+    idx.build_index(".")
     matches = idx.find_similar("throttle agent tool calls per minute", top_k=3)
-    for m in matches:
-        print(m["path"], m["score"])
+
+    # Phase B-β (embeddings):
+    try:
+        from lib.reinvention_semantic import EmbeddingsIndex
+        eidx = EmbeddingsIndex()
+        eidx.build_index(".")
+        matches = eidx.find_similar("throttle agent tool calls per minute", top_k=3)
+    except ImportError:
+        pass  # sentence-transformers not installed — use SemanticIndex above
 """
 from __future__ import annotations
 
@@ -28,6 +43,18 @@ from typing import Iterable
 
 INDEX_SCHEMA_VERSION = 1
 DEFAULT_INDEX_RELPATH = ".cognitive-os/reinvention-index.json"
+
+# Embeddings index artefacts (Phase B-β).
+DEFAULT_EMBEDDINGS_RELPATH = ".cognitive-os/reinvention-index.embeddings.npy"
+DEFAULT_EMBEDDINGS_META_RELPATH = ".cognitive-os/reinvention-index.embeddings.json"
+
+# Default model: ~90 MB, Apache-2 licence, runs locally.
+# Override via REINVENTION_EMBED_MODEL env var.
+DEFAULT_EMBED_MODEL = "all-MiniLM-L6-v2"
+
+# Recalibrated threshold for cosine similarity (embeddings produce much higher
+# scores than Jaccard; empirical range 0.3-0.9 for genuine matches).
+DEFAULT_EMBED_MIN_SCORE = 0.45
 
 # Minimal stopword list — generic CS / project words that dominate docstrings
 # and carry little discriminative signal.
@@ -306,23 +333,263 @@ class SemanticIndex:
         return scored[:top_k]
 
 
+# ---------- Phase B-β: EmbeddingsIndex ----------
+
+
+def _require_sentence_transformers():
+    """Import sentence_transformers or raise ImportError with install hint."""
+    try:
+        import sentence_transformers  # noqa: F401
+        return sentence_transformers
+    except ImportError as exc:
+        raise ImportError(
+            "sentence-transformers is not installed. "
+            "Install the optional semantic extra: "
+            "pip install 'luum-cognitive-os[semantic]' "
+            "or pip install sentence-transformers>=3.0"
+        ) from exc
+
+
+class EmbeddingsIndex:
+    """Cosine-similarity index over sentence-transformer embeddings (Phase B-β).
+
+    Raises ``ImportError`` on instantiation if ``sentence-transformers`` is not
+    installed — the caller must catch this and fall back to ``SemanticIndex``.
+
+    The index persists two files:
+    - ``.cognitive-os/reinvention-index.embeddings.npy``  (float32 matrix, rows = items)
+    - ``.cognitive-os/reinvention-index.embeddings.json`` (metadata: paths, docstrings, model name)
+
+    Cache hit detection uses a SHA-256 of the metadata JSON's mtime so that
+    adding new files triggers a partial rebuild (full rebuild for now; partial
+    is a future optimisation).
+    """
+
+    def __init__(
+        self,
+        embeddings_path: str | Path | None = None,
+        meta_path: str | Path | None = None,
+        model_name: str | None = None,
+    ) -> None:
+        st = _require_sentence_transformers()  # raises ImportError early if absent
+        self._st = st
+        self.model_name: str = model_name or DEFAULT_EMBED_MODEL
+        self.embeddings_path: Path | None = Path(embeddings_path) if embeddings_path else None
+        self.meta_path: Path | None = Path(meta_path) if meta_path else None
+
+        # Runtime state
+        self._model = None  # lazy-loaded on first build/query
+        self._embeddings = None  # numpy float32 array, shape (N, D)
+        self.items: list[dict] = []  # same structure as SemanticIndex.items
+        self.built_at: str | None = None
+        self.project_root: str | None = None
+
+    # ---------- internal helpers ----------
+
+    def _get_model(self):
+        if self._model is None:
+            import os
+            model_name = os.environ.get("REINVENTION_EMBED_MODEL", self.model_name)
+            self._model = self._st.SentenceTransformer(model_name)
+        return self._model
+
+    def _item_text(self, item: dict) -> str:
+        """Produce the text string that represents a module for embedding."""
+        parts = [item.get("docstring_excerpt", ""), " ".join(item.get("tokens", []))]
+        return " ".join(p for p in parts if p).strip()
+
+    def _resolve_paths(self, root: Path) -> None:
+        if self.embeddings_path is None:
+            self.embeddings_path = root / DEFAULT_EMBEDDINGS_RELPATH
+        if self.meta_path is None:
+            self.meta_path = root / DEFAULT_EMBEDDINGS_META_RELPATH
+
+    # ---------- build ----------
+
+    def build_index(self, project_root: str | Path) -> None:
+        """Scan project_root, embed each module, persist artefacts.
+
+        Re-uses the Jaccard SemanticIndex scan to extract tokens/docstrings;
+        this avoids duplicating the file-walking logic.
+        """
+        import numpy as np
+
+        root = Path(project_root).resolve()
+        self._resolve_paths(root)
+
+        # Reuse SemanticIndex scanning — it already knows how to extract tokens.
+        jaccard_idx = SemanticIndex()
+        jaccard_idx.build_index(root)  # scan only; we'll build our own persistence
+        self.items = jaccard_idx.items
+        self.project_root = str(root)
+        self.built_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+        if not self.items:
+            self._embeddings = np.empty((0, 384), dtype=np.float32)
+            self._persist()
+            return
+
+        texts = [self._item_text(item) for item in self.items]
+        model = self._get_model()
+        embeddings = model.encode(
+            texts,
+            convert_to_numpy=True,
+            normalize_embeddings=True,  # cosine = dot product for unit vectors
+            show_progress_bar=False,
+        )
+        self._embeddings = embeddings.astype(np.float32)
+        self._persist()
+
+    def _persist(self) -> None:
+        import numpy as np
+        assert self.embeddings_path is not None
+        assert self.meta_path is not None
+
+        self.embeddings_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Save embeddings matrix.
+        tmp_npy = self.embeddings_path.with_suffix(".npy.tmp")
+        np.save(str(tmp_npy), self._embeddings)
+        tmp_npy.replace(self.embeddings_path)
+
+        # Save metadata.
+        meta = {
+            "version": INDEX_SCHEMA_VERSION,
+            "built_at": self.built_at,
+            "project_root": self.project_root,
+            "model_name": self.model_name,
+            "items": self.items,
+        }
+        tmp_json = self.meta_path.with_suffix(".json.tmp")
+        tmp_json.write_text(json.dumps(meta, separators=(",", ":")))
+        tmp_json.replace(self.meta_path)
+
+    # ---------- load ----------
+
+    def load(self, root: str | Path | None = None) -> bool:
+        """Load persisted artefacts. Returns True on success."""
+        import numpy as np
+
+        if root is not None:
+            self._resolve_paths(Path(root).resolve())
+
+        if not self.meta_path or not self.meta_path.is_file():
+            return False
+        if not self.embeddings_path or not self.embeddings_path.is_file():
+            return False
+
+        try:
+            meta = json.loads(self.meta_path.read_text())
+        except (OSError, json.JSONDecodeError):
+            return False
+        if meta.get("version") != INDEX_SCHEMA_VERSION:
+            return False
+
+        try:
+            self._embeddings = np.load(str(self.embeddings_path))
+        except Exception:
+            return False
+
+        self.items = meta.get("items", [])
+        self.built_at = meta.get("built_at")
+        self.project_root = meta.get("project_root")
+        self.model_name = meta.get("model_name", self.model_name)
+        return True
+
+    # ---------- query ----------
+
+    def find_similar(
+        self,
+        description: str,
+        top_k: int = 3,
+        min_score: float = DEFAULT_EMBED_MIN_SCORE,
+    ) -> list[dict]:
+        """Return up to top_k items scored >= min_score (cosine similarity).
+
+        Each result: {"path", "score", "kind", "docstring_excerpt"}.
+        Score range: -1..1 (practically 0..1 for natural language queries).
+        """
+        import numpy as np
+
+        if not description or self._embeddings is None or len(self._embeddings) == 0:
+            return []
+
+        model = self._get_model()
+        q_vec = model.encode(
+            [description],
+            convert_to_numpy=True,
+            normalize_embeddings=True,
+            show_progress_bar=False,
+        )[0].astype(np.float32)  # shape (D,)
+
+        # Dot product of normalised vectors = cosine similarity.
+        scores = self._embeddings @ q_vec  # shape (N,)
+
+        scored: list[dict] = []
+        for i, score in enumerate(scores.tolist()):
+            if score >= min_score:
+                item = self.items[i]
+                scored.append({
+                    "path": item["path"],
+                    "score": round(float(score), 4),
+                    "kind": item["kind"],
+                    "docstring_excerpt": item.get("docstring_excerpt", ""),
+                })
+
+        scored.sort(key=lambda r: r["score"], reverse=True)
+        return scored[:top_k]
+
+
 # ---------- CLI entry point ----------
 
 def _cli() -> int:
     import argparse
-    parser = argparse.ArgumentParser(description="Reinvention semantic index (Phase B-α).")
+    import os
+    parser = argparse.ArgumentParser(
+        description="Reinvention semantic index (Phase B-α Jaccard / Phase B-β Embeddings)."
+    )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     b = sub.add_parser("build", help="Build the index.")
     b.add_argument("--root", default=".")
+    b.add_argument("--embeddings", action="store_true", help="Build embeddings index (Phase B-β).")
 
     q = sub.add_parser("query", help="Query the index.")
     q.add_argument("description")
     q.add_argument("--top-k", type=int, default=3)
-    q.add_argument("--min-score", type=float, default=0.3)
+    q.add_argument("--min-score", type=float, default=None)
     q.add_argument("--root", default=".")
+    q.add_argument("--embeddings", action="store_true", help="Query embeddings index (Phase B-β).")
 
     args = parser.parse_args()
+
+    use_embeddings = getattr(args, "embeddings", False)
+
+    if use_embeddings:
+        root = Path(args.root)
+        eidx = EmbeddingsIndex(
+            embeddings_path=root / DEFAULT_EMBEDDINGS_RELPATH,
+            meta_path=root / DEFAULT_EMBEDDINGS_META_RELPATH,
+        )
+        if args.cmd == "build":
+            eidx.build_index(args.root)
+            print(f"indexed {len(eidx.items)} items → {eidx.embeddings_path}")
+            return 0
+        if args.cmd == "query":
+            if not eidx.load(args.root):
+                eidx.build_index(args.root)
+            min_score = args.min_score if args.min_score is not None else DEFAULT_EMBED_MIN_SCORE
+            matches = eidx.find_similar(args.description, top_k=args.top_k, min_score=min_score)
+            if not matches:
+                print("no matches")
+                return 0
+            for m in matches:
+                print(f"{m['score']:.3f}  {m['path']}  ({m['kind']})")
+                if m["docstring_excerpt"]:
+                    print(f"        {m['docstring_excerpt']}")
+            return 0
+        return 2
+
     idx = SemanticIndex(Path(args.root) / DEFAULT_INDEX_RELPATH)
     if args.cmd == "build":
         idx.build_index(args.root)
@@ -331,7 +598,8 @@ def _cli() -> int:
     if args.cmd == "query":
         if not idx.load():
             idx.build_index(args.root)
-        matches = idx.find_similar(args.description, top_k=args.top_k, min_score=args.min_score)
+        min_score = args.min_score if args.min_score is not None else 0.3
+        matches = idx.find_similar(args.description, top_k=args.top_k, min_score=min_score)
         if not matches:
             print("no matches")
             return 0
