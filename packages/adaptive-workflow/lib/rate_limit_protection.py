@@ -12,11 +12,15 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/..")
+from lib.metric_event import MetricEvent, append_event as _append_metric_event
 
 
 @dataclass
@@ -187,19 +191,18 @@ class RateLimitProtection:
         if action == "agent_launch":
             self._session_agents += 1
 
-        entry = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "model": model,
-            "action": action,
-            "input_tokens": tokens_in,
-            "output_tokens": tokens_out,
-            "total_tokens": tokens_in + tokens_out,
-        }
-
-        path = Path(self.cost_events_path)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with open(path, "a") as fh:
-            fh.write(json.dumps(entry) + "\n")
+        event = MetricEvent(
+            source="rate_limit_protection",
+            event_type="cost.recorded",
+            payload={
+                "model": model,
+                "action": action,
+                "input_tokens": tokens_in,
+                "output_tokens": tokens_out,
+                "total_tokens": tokens_in + tokens_out,
+            },
+        )
+        _append_metric_event(self.cost_events_path, event)
 
     def estimate_action_cost_tokens(self, action_type: str) -> int:
         """Estimate tokens for common actions.
