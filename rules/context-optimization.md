@@ -66,7 +66,7 @@ Full rules are loaded on top of RULES-COMPACT.md when triggers match:
 
 ## Metrics
 
-Context usage can be logged to `.cognitive-os/metrics/context-usage.jsonl`. Note: the `context-budget.sh` hook is not currently registered in `settings.local.json` and must be registered to enable automatic logging.
+Context usage can be logged to `.cognitive-os/metrics/context-usage.jsonl`. Logging is agent-instruction-only — no automatic hook fires for context monitoring. Agents MUST self-monitor context thresholds per `rules/context-management.md` (50% / 70% / 85%).
 
 Fields tracked:
 - `catalog_tokens`: tokens used by CATALOG-COMPACT.md (Level 1)
