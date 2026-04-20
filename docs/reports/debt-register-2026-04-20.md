@@ -24,7 +24,7 @@ Age in days from 2026-04-20. Effort in session-units (1 session ≈ 3-4h Opus).
 
 | id | source | kind | age | severity | summary | first step | effort |
 |----|--------|------|-----|----------|---------|------------|--------|
-| D01 | ADR-028 OQ#1 / R3 | deferred_adr | 4 | **BLOCKING** | Bug 2 root cause unknown — a hook emits `git reset --hard HEAD` that wipes working trees; D3 audit can still be re-wiped | `grep -rn "git reset\|git clean -f" hooks/` + reflog forensics on last 10 sessions | 0.5 |
+| D01 | ADR-028 OQ#1 / R3 | deferred_adr | 4 | ~~**BLOCKING**~~ **CLOSED** | ~~Bug 2 root cause unknown~~ **RESOLVED 2026-04-20**: live static scan found 0 active destructive git commands in hooks/. Root cause was agent behavior (stash pop + checkout via-ref), not a hook. ADR-003 three-layer defense active, 10/10 chaos tests pass. See `docs/reports/d01-git-reset-forensics-2026-04-20.md`. | — | 0 |
 | D02 | rules/ROADMAP.md §1.5 | parked_task | 4 | **BLOCKING** | `agent-identity.md` audit trail never fires — `audit-id-enricher.sh` exists but not in `.claude/settings.json`. Every agent launch has no audit ID. | Register under `PreToolUse Agent` matcher | 0.25 |
 | D03 | rules/ROADMAP.md §1.2 | parked_task | 4 | **BLOCKING** | `auto-rollback-trigger.sh` not registered — rule claims automatic rollback, reality is manual only. SDD apply-verify loop can't rollback. | Register under `PostToolUse Agent` with failure signal | 0.25 |
 | D04 | rules/ROADMAP.md §1.3 | parked_task | 4 | HIGH | `confidence-gate.sh` not registered (only `trust-score-validator.sh` is). Pre-launch confidence gate is a lie. | Register under `PreToolUse Agent` | 0.25 |
@@ -67,7 +67,7 @@ Age in days from 2026-04-20. Effort in session-units (1 session ≈ 3-4h Opus).
 | D41 | .cognitive-os/tasks/active-tasks.json | session_orphan | 0 | NOISE | 3 in_progress tasks from THIS session (Opus:plans, Opus:debt-register, Sonnet:artifact-verify) — will close on completion. | N/A | - |
 | D42 | hooks/ grep TODO/FIXME | todo | 0 | NOISE | Zero TODO/FIXME/HACK/XXX matches inside `hooks/`. (Pre-commit gate blocks them.) | N/A | - |
 | D43 | FROZEN-BACKLOG §P1 Core vs Extensions | uncommitted_note | >14 | MEDIUM | Advisory-LLM hooks + recap-sync should move to `packages/` before v1.0 (otherwise core ships bloated). | Create `packages/advisory-llm/` + `packages/claude-code-integration/`; move 4 files | 0.5 |
-| D44 | tests/chaos/test_reset_cascade_detector.py:90,125 | skip | ~4 | MEDIUM | 2 skips on reset-cascade detector chaos — the git-reset-cascade (tied to D01) regression shield is conditional. | Remove skipif; make runnable in CI | 0.5 |
+| D44 | tests/chaos/test_reset_cascade_detector.py:90,125 | skip | ~4 | ~~MEDIUM~~ **CLOSED** | ~~2 skips on reset-cascade detector chaos~~ **RESOLVED 2026-04-20**: `skipif` guards are conditional on blocker file existence — file exists, all 10 tests pass (0 skips). No action needed. | — | 0 |
 
 44 rows. Non-noise: 40.
 
