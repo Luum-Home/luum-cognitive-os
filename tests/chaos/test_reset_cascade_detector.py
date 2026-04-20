@@ -124,6 +124,48 @@ class TestResetCascadeDetector:
 
     @pytest.mark.skipif(
         not _BLOCKER.exists(),
+        reason="hooks/destructive-git-blocker.sh not found; skipping checkout HEAD test",
+    )
+    @pytest.mark.parametrize(
+        "command",
+        [
+            "git checkout -- foo.py",              # canonical direct form
+            "git checkout HEAD -- foo.py",         # original Sprint-2a incident form (ADR-003 §Context)
+            "git checkout HEAD~1 -- bar.py",       # ref with ~ notation
+            "git checkout feat/x -- baz.py",       # ref with slash
+            "git checkout 2264356 -- hooks/x.sh",  # ref as sha
+        ],
+    )
+    def test_blocker_sh_blocks_checkout_via_ref_in_agent_context(self, tmp_path, command):
+        """ADR-003 R1 regression: `git checkout HEAD -- <path>` and via-ref forms must block.
+
+        The original regex only matched `checkout -- <path>`; the Sprint-2a incident
+        (ADR-003 §Context line 10) used `git checkout HEAD -- <file>` which slipped
+        through. The R1 fix broadens the pattern; this test pins all 5 canonical forms.
+        """
+        env = {
+            **os.environ,
+            "CLAUDE_TOOL_INPUT": command,
+            "CLAUDE_AGENT_ID": "chaos-test-agent",
+            "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
+            "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
+        }
+        result = subprocess.run(
+            ["bash", str(_BLOCKER)],
+            capture_output=True, text=True, timeout=10,
+            env=env, cwd=str(_PROJ_ROOT),
+        )
+        assert result.returncode == 1, (
+            f"destructive-git-blocker.sh must exit 1 on `{command}` with agent id set.\n"
+            f"returncode: {result.returncode}\n"
+            f"stderr: {result.stderr[:300]}"
+        )
+        assert "BLOCKED" in result.stderr, (
+            f"Expected 'BLOCKED' in stderr for `{command}`; got: {result.stderr[:300]}"
+        )
+
+    @pytest.mark.skipif(
+        not _BLOCKER.exists(),
         reason="hooks/destructive-git-blocker.sh not found; skipping warn test",
     )
     def test_blocker_sh_warns_but_allows_in_user_context(self, tmp_path):
