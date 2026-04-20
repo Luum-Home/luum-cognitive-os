@@ -150,7 +150,9 @@ build_settings() {
   pre_bash=$(hook_group "Bash" \
     "rate-limiter.sh" \
     "token-budget-monitor.sh" \
-    "secret-detector.sh")
+    "secret-detector.sh" \
+    "destructive-git-blocker.sh" \
+    "destructive-rm-blocker.sh")
   local pre_read
   pre_read=$(hook_group "Read" \
     "large-file-advisor.sh")
@@ -307,7 +309,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -317,7 +319,7 @@ done
 echo ""
 echo "Hook summary for profile 'default' (ADR-002):"
 echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, valkey-ensure.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh"
-echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact)"
+echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh, destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"

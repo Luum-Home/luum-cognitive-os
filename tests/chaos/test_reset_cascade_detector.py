@@ -166,6 +166,44 @@ class TestResetCascadeDetector:
 
     @pytest.mark.skipif(
         not _BLOCKER.exists(),
+        reason="hooks/destructive-git-blocker.sh not found; skipping session_id context test",
+    )
+    def test_blocker_detects_session_id_as_agent_context(self, tmp_path):
+        """R4: COGNITIVE_OS_SESSION_ID alone (no CLAUDE_AGENT_ID) must trigger BLOCKED.
+
+        Without this, a subshell / env -i / orchestrator refactor that drops
+        CLAUDE_AGENT_ID but preserves COGNITIVE_OS_SESSION_ID would silently
+        downgrade blocking to a warning.
+        """
+        env = {
+            **os.environ,
+            "CLAUDE_TOOL_INPUT": "git reset --hard HEAD~1",
+            # Intentionally NOT setting CLAUDE_AGENT_ID
+            "COGNITIVE_OS_SESSION_ID": "chaos-session-id-r4",
+            "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
+            "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
+        }
+        env.pop("CLAUDE_AGENT_ID", None)
+        env.pop("ORCHESTRATOR_MODE", None)
+
+        result = subprocess.run(
+            ["bash", str(_BLOCKER)],
+            capture_output=True, text=True, timeout=10,
+            env=env, cwd=str(_PROJ_ROOT),
+        )
+        assert result.returncode == 1, (
+            "destructive-git-blocker.sh must exit 1 (BLOCKED) when only "
+            "COGNITIVE_OS_SESSION_ID is set (no CLAUDE_AGENT_ID).\n"
+            f"returncode: {result.returncode}\n"
+            f"stderr: {result.stderr[:300]}"
+        )
+        assert "BLOCKED" in result.stderr, (
+            "Expected 'BLOCKED' in stderr for session_id-only agent context; "
+            f"got: {result.stderr[:300]}"
+        )
+
+    @pytest.mark.skipif(
+        not _BLOCKER.exists(),
         reason="hooks/destructive-git-blocker.sh not found; skipping warn test",
     )
     def test_blocker_sh_warns_but_allows_in_user_context(self, tmp_path):
