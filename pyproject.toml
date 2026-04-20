@@ -47,6 +47,15 @@ testing = [
     "pytest-xdist>=3.5",
     "mutmut>=3.0",
     "pytest-smell>=1.0",
+    # testcontainers: used for ephemeral Valkey in @pytest.mark.integration tests.
+    # RedisContainer("valkey/valkey:7.2.4") provides an isolated Valkey instance
+    # so integration tests don't depend on OrbStack being up.
+    # NOTE: The orchestrator Valkey-bridge test (heartbeat → MetricEvent JSONL) was
+    # evaluated but not implemented with testcontainers: it would require spawning a
+    # real sub-Claude to produce heartbeats, which is expensive and out of scope.
+    # testcontainers is included so future integration tests (e.g. agent_bus pub/sub)
+    # can use it without a pyproject.toml change.
+    "testcontainers[redis]>=4.0",
 ]
 security = [
     # semgrep: install via `brew install semgrep` or `pip install semgrep`
