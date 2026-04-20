@@ -1,7 +1,10 @@
-"""Behavioral + performance tests for hooks/rate-limit-protection.sh.
+"""Behavioral + performance tests for hooks/token-budget-monitor.sh.
 
 Verifies correctness and prevents performance regression after the
 single-pass Python optimisation (no multiple python3 cold starts).
+
+Renamed from test_rate_limit_protection_perf.py — the hook was renamed
+from rate-limit-protection.sh to token-budget-monitor.sh.
 """
 from __future__ import annotations
 
@@ -16,7 +19,7 @@ import pytest
 
 pytestmark = pytest.mark.unit
 
-HOOK_PATH = Path(__file__).resolve().parents[2] / "hooks" / "rate-limit-protection.sh"
+HOOK_PATH = Path(__file__).resolve().parents[2] / "hooks" / "token-budget-monitor.sh"
 
 # ---------------------------------------------------------------------------
 # Helpers

@@ -31,8 +31,10 @@ import json
 
 logger = logging.getLogger(__name__)
 
-# Default LiteLLM proxy URL
-DEFAULT_LITELLM_URL = "http://localhost:4000"
+# Default LiteLLM proxy URL — None means no proxy; set LITELLM_URL env var to enable.
+# The old Docker-based default (localhost:4000) is intentionally removed as part of
+# the Docker→pip migration (Phase 2). The proxy is no longer started automatically.
+DEFAULT_LITELLM_URL: Optional[str] = os.environ.get("LITELLM_URL") or None
 
 # Models that should be routed through LiteLLM (non-Claude)
 LITELLM_ROUTABLE_MODELS = {
@@ -87,13 +89,16 @@ def is_litellm_available(url: Optional[str] = None, timeout: float = 3.0) -> boo
     """Check if the LiteLLM proxy is reachable and healthy.
 
     Args:
-        url: Base URL for the LiteLLM proxy. Defaults to DEFAULT_LITELLM_URL.
+        url: Base URL for the LiteLLM proxy. Defaults to LITELLM_URL env var.
         timeout: Connection timeout in seconds.
 
     Returns:
         True if the health endpoint responds successfully.
+        Returns False immediately when no URL is configured.
     """
-    base_url = url or os.environ.get("LITELLM_URL", DEFAULT_LITELLM_URL)
+    base_url = url or DEFAULT_LITELLM_URL
+    if not base_url:
+        return False
     health_url = f"{base_url.rstrip('/')}/health/liveliness"
     try:
         req = Request(health_url, method="GET")
@@ -131,7 +136,7 @@ class LiteLLMClient:
     """Client for the LiteLLM proxy with OpenAI-compatible API.
 
     Args:
-        base_url: LiteLLM proxy URL. Defaults to LITELLM_URL env or localhost:4000.
+        base_url: LiteLLM proxy URL. Defaults to LITELLM_URL env var (None if unset).
         api_key: API key for the proxy. Defaults to LITELLM_MASTER_KEY env.
         timeout: Request timeout in seconds.
     """
@@ -142,9 +147,8 @@ class LiteLLMClient:
         api_key: Optional[str] = None,
         timeout: float = 120.0,
     ):
-        self.base_url = (
-            base_url or os.environ.get("LITELLM_URL", DEFAULT_LITELLM_URL)
-        ).rstrip("/")
+        resolved_url = base_url or DEFAULT_LITELLM_URL or ""
+        self.base_url = resolved_url.rstrip("/")
         self.api_key = api_key or os.environ.get("LITELLM_MASTER_KEY", "")
         self.timeout = timeout
 

@@ -35,7 +35,7 @@ type FactoryConfig struct {
 // predicates that match the bash hook event/tool gating:
 //
 //   - rate-limiter:           BeforeTool on Bash | Edit | Write | Agent
-//   - rate-limit-protection:  BeforeTool on Agent
+//   - token-budget-monitor:   BeforeTool on Agent
 //   - secret-detector:        AfterTool on Edit | Write
 //   - content-policy:         AfterTool on Edit | Write
 //   - completeness-check:     BeforeTool on Agent
@@ -69,7 +69,7 @@ func RegisterDefaults(reg *validator.Registry, cfg FactoryConfig) *validator.Reg
 	)
 
 	reg.Register(NewRateLimiterValidator(cfg.RateLimiterStatePath, cfg.Phase), beforeFileOrCmd)
-	reg.Register(NewRateLimitProtectionValidator(cfg.CostEventsPath, cfg.HourlyTokens, cfg.AgentsPerHour), beforeAgent)
+	reg.Register(NewTokenBudgetMonitorValidator(cfg.CostEventsPath, cfg.HourlyTokens, cfg.AgentsPerHour), beforeAgent)
 	reg.Register(NewSecretDetectorValidator(cfg.ProjectDir), afterFile)
 	reg.Register(NewContentPolicyValidator(cfg.ProjectDir, cfg.ContentPolicyPath), afterFile)
 	reg.Register(NewCompletenessCheckerValidator(), beforeAgent)

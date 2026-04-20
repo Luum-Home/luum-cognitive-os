@@ -1,5 +1,9 @@
 """Rate Limiter — Prevents token flooding and excessive tool usage.
 
+This module governs *action counts* (tool calls per minute, agent launches per hour).
+For API *token consumption* monitoring (80% / 95% budget thresholds) see:
+  lib/token_budget_monitor.py  (renamed from lib/rate_limit_protection.py)
+
 Tracks tool calls, agent launches, bash commands, and file writes with
 configurable per-minute/per-hour limits. Includes cost-per-hour caps.
 State is persisted to disk for cross-invocation tracking within a session.

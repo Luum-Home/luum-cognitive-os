@@ -121,15 +121,15 @@ case "$PROFILE" in
     echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, pattern-check, metrics-rotation.sh"
     echo "  UserPromptSubmit: user-prompt-capture"
     echo "  SubagentStart: subagent-context-injector"
-    echo "  PreToolUse: rate-limiter, secret-detector (ADR-023 redact), dispatch-gate, clarification-gate,"
+    echo "  PreToolUse: rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact), dispatch-gate, clarification-gate,"
     echo "              blast-radius (ADR-023 advisory), inject-phase-context, agent-prelaunch, error-pattern-detector,"
-    echo "              prompt-quality-llm, completeness-check-llm"
+    echo "              prompt-quality-llm, completeness-check-llm, global-verify.sh before"
     # Hooks: adr-detector.sh (async, PostToolUse/Bash)
     # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
     echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, auto-checkpoint, content-policy,"
     echo "               doc-sync-detector, claim-validator, completion-gate, agent-checkpoint,"
     echo "               trust-score-validator, confidence-gate-llm, auto-repair-dispatcher, dequeue-notify,"
-    echo "               state-heartbeat, context-watchdog"
+    echo "               state-heartbeat, context-watchdog, global-verify.sh after"
     echo "  PreCompact: pre-compaction-flush"
     echo "  Stop: session-learning, session-cleanup, session-end-reap.sh, kpi-trigger, recap-sync"
     echo "  Safety mesh layers: 5/12"

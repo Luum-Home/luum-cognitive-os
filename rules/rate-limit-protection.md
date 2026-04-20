@@ -1,8 +1,12 @@
-# Rate Limit Protection
+# Token Budget Monitor (formerly Rate Limit Protection)
+
+> **Note**: The hook and Python module were renamed.  Use `hooks/token-budget-monitor.sh`
+> and `lib/token_budget_monitor.py`.  This rule file keeps its original name for
+> backwards compatibility with `hooks/self-install.sh` registry mapping.
 
 ## Always Active
 
-Rate limits are monitored on every agent launch via `hooks/rate-limit-protection.sh` (PreToolUse on Agent).
+API token consumption is monitored on every agent launch via `hooks/token-budget-monitor.sh` (PreToolUse on Agent).
 
 ### Thresholds
 
@@ -31,7 +35,7 @@ Set `RATE_LIMIT_OVERRIDE=true` for emergencies. This bypasses the block but does
 
 ### Lib Module
 
-`lib/rate_limit_protection.py` provides `RateLimitProtection` class with `check()`, `should_launch_agent()`, `record_usage()`, and formatting helpers.
+`lib/token_budget_monitor.py` provides `RateLimitProtection` class with `check()`, `should_launch_agent()`, `record_usage()`, and formatting helpers.  The old name `lib/rate_limit_protection.py` is a deprecation shim.
 
 ### Metrics
 
