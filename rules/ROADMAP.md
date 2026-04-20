@@ -21,6 +21,7 @@ script). Per the Sprint 2A scope guard, neither is editable in this sprint.
 - **Interim**: agents MUST include who/when/what in every change, as if the hooks were firing
 - **Pending action**: register all 3 hooks in `.claude/settings.json` under the
   appropriate `Stop` and `PostToolUse` matchers (owner: hook-registration sprint)
+- **RESOLVED**: git-context-capture.sh registered at apply-efficiency-profile.sh:264 (Stop); session-changelog.sh and audit-id-enricher.sh registered at lines 263 (PostToolUse Agent), per commit 92cf485
 
 ### 1.2 `auto-rollback.md`
 - **Claimed hook**: `auto-rollback-trigger.sh`
@@ -28,6 +29,7 @@ script). Per the Sprint 2A scope guard, neither is editable in this sprint.
 - **Interim**: agents MUST check for rollback triggers manually; the orchestrator
   MUST be prepared to invoke rollback by running the hook by hand
 - **Pending action**: register under `PostToolUse Agent` matcher with failure signal
+- **RESOLVED**: auto-rollback-trigger.sh registered at apply-efficiency-profile.sh:264 (PostToolUse Agent), per commit 92cf485
 
 ### 1.3 `confidence-gate.md`
 - **Claimed hooks**: `confidence-gate.sh`, `trust-score-validator.sh`
@@ -36,6 +38,7 @@ script). Per the Sprint 2A scope guard, neither is editable in this sprint.
   pre-launch confidence gate does not. Agents SHOULD still publish confidence
   estimates in their own output
 - **Pending action**: register `confidence-gate.sh` under `PreToolUse Agent`
+- **RESOLVED**: confidence-gate.sh registered at apply-efficiency-profile.sh:258 (PostToolUse Agent), confidence-gate-llm.sh at line 259, per commit 92cf485
 
 ### 1.4 `confidentiality-protection.md`
 - **Claimed hook**: `confidentiality-enforcer.sh`
@@ -43,6 +46,7 @@ script). Per the Sprint 2A scope guard, neither is editable in this sprint.
 - **Interim**: agents MUST refuse to emit credentials or PII; secret-detector
   (separately registered) catches a subset but not the full confidentiality scope
 - **Pending action**: register under `PostToolUse Edit|Write`
+- **RESOLVED**: confidentiality-enforcer.sh registered at apply-efficiency-profile.sh:227 (PostToolUse Edit|Write), per commit 92cf485
 
 ### 1.5 `agent-identity.md`
 - **Claimed hook**: `audit-id-enricher.sh`
@@ -50,6 +54,7 @@ script). Per the Sprint 2A scope guard, neither is editable in this sprint.
 - **Interim**: agents MUST self-declare identity (name, model, purpose) in the
   first line of every response
 - **Pending action**: register under `PreToolUse Agent` so IDs are auto-stamped
+- **RESOLVED**: audit-id-enricher.sh registered at apply-efficiency-profile.sh:263 (PostToolUse Agent), per commit 92cf485
 
 ### 1.6 `pre-dev-readiness-gate.md`
 - **Claimed hook**: `predev-completeness-check.sh`
@@ -58,6 +63,7 @@ script). Per the Sprint 2A scope guard, neither is editable in this sprint.
   `sdd-apply` on Medium+ tasks (same behavior, slower feedback loop)
 - **Pending action**: register under `PreToolUse Agent` when agent name matches
   `sdd-apply*`
+- **RESOLVED**: predev-completeness-check.sh registered at apply-efficiency-profile.sh:191 (PreToolUse Agent), per commit 92cf485
 
 ### 1.7 `reinvention-prevention.md`
 - **Claimed hook**: `reinvention-check.sh`
@@ -66,6 +72,7 @@ script). Per the Sprint 2A scope guard, neither is editable in this sprint.
   a new pattern; no automatic block
 - **Pending action**: register under `PreToolUse Edit|Write` when the edit creates
   a new module
+- **RESOLVED**: reinvention-check.sh registered at apply-efficiency-profile.sh:194 (PreToolUse Agent), per commit 92cf485
 
 ### 1.8 `pre-commit-gate.md` (INTENTIONAL — not a Claude hook)
 - **Claimed hook**: `pre-commit-gate.sh` (symlinked to `.git/hooks/pre-commit`)
