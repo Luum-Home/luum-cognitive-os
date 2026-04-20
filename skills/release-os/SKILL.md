@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: release-os
 command: /release-os

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: validate-config
 description: Validate all Cognitive OS configuration files — agents, squads, skills, rules, hooks

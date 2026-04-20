@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: repair-status
 description: Report on auto-repair system health and statistics

@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """STATUS: ORPHAN — has unit tests but no production caller yet.
 Wire when ORCHESTRATOR_MODE=executor is activated.

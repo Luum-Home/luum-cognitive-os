@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: dod-check
 command: /dod-check

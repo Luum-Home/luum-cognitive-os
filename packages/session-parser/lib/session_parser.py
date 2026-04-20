@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Session Parser -- reads Claude Code JSONL session files for real metrics.
 

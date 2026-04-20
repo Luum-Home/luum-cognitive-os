@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: cognitive-os-test
 description: Run the Cognitive OS automated test suite (infra, behavior, quality)

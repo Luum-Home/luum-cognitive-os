@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: promptfoo-integration
 description: >

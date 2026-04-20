@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: add-skill
 description: Step-by-step guide for adding a new skill to the Cognitive OS

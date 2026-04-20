@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: error-analyzer
 description: Analyze accumulated errors from test/lint/build runs and propose skill improvements. Use when error patterns repeat.

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: model-optimizer
 version: 1.0.0

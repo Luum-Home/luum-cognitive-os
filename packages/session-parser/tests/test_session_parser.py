@@ -1,3 +1,4 @@
+# SCOPE: both
 """Unit tests for session parser."""
 import json
 

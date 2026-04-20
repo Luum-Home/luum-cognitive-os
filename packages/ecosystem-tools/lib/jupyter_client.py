@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """STATUS: ORPHAN — Docker service configured, skill/hook exist, but zero production callers.
 Wire when Jupyter MCP sandbox is activated (JUPYTER_SANDBOX=true).

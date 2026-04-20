@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: resource-governor
 version: 1.0.0

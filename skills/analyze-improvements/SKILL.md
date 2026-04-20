@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: analyze-improvements
 description: Analyze KPIs, error patterns, and skill metrics to identify improvement opportunities. Produces a ranked list of proposed changes with AUTO vs HUMAN-APPROVAL classification. Output only — makes NO file changes.

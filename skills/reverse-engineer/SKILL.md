@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: reverse-engineer
 description: >

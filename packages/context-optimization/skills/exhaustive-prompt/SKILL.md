@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: exhaustive-prompt
 description: Generate exhaustive agent prompts with scope enumeration and acceptance criteria

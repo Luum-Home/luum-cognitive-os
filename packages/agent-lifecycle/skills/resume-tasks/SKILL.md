@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: resume-tasks
 description: Check for incomplete tasks from previous sessions and offer to resume them. Use when starting a new session or after a crash.

@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: audit-integrity
 description: >

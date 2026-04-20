@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Token Budget Monitor — Detect approaching API token budget limits and auto-pause.
 

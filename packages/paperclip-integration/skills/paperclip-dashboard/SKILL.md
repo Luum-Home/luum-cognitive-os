@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: paperclip-dashboard
 description: View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent status, spend, org chart, notifications)

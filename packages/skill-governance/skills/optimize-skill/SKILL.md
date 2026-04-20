@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: optimize-skill
 description: Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras y refinando el prompt
