@@ -276,12 +276,26 @@ def test_model_router_uses_pattern_a_prime_with_dot_default():
     )
 
 
-def test_dispatch_gate_check_uses_pattern_c():
+def test_dispatch_gate_check_uses_cognitive_os_fallback():
+    """Lote-4 D2.2 fix (ADR-026a): dispatch_gate_check now honours COGNITIVE_OS_PROJECT_DIR.
+
+    Before D2.2 this site used Pattern C (CLAUDE only). After the fix it uses
+    Pattern A semantics: CLAUDE wins when set, COGNITIVE_OS is the fallback.
+    The old Pattern C literal is intentionally absent.
+    """
     src = (REPO_ROOT / "hooks/_lib/dispatch_gate_check.py").read_text()
-    assert PATTERN_C_LITERAL in src, (
-        "hooks/_lib/dispatch_gate_check.py no longer uses Pattern C "
-        "(CLAUDE only, default '.'). This site has no COGNITIVE_OS fallback "
-        "by design — verify any new resolution preserves that contract."
+    # New expression: CLAUDE or COGNITIVE_OS or "."
+    assert 'os.environ.get("CLAUDE_PROJECT_DIR")' in src, (
+        "hooks/_lib/dispatch_gate_check.py: CLAUDE_PROJECT_DIR lookup removed — "
+        "the D2.2 fix must still honour CLAUDE_PROJECT_DIR as the primary variable."
+    )
+    assert 'os.environ.get("COGNITIVE_OS_PROJECT_DIR")' in src, (
+        "hooks/_lib/dispatch_gate_check.py: COGNITIVE_OS_PROJECT_DIR fallback missing — "
+        "D2.2 fix (ADR-026a) requires both env vars to be checked."
+    )
+    assert PATTERN_C_LITERAL not in src, (
+        "hooks/_lib/dispatch_gate_check.py: still uses Pattern C (CLAUDE only). "
+        "D2.2 fix should have replaced it with the COGNITIVE_OS fallback expression."
     )
 
 
@@ -453,7 +467,11 @@ class TestTelemetryProjectRoot:
 
 
 class TestDispatchGateCheckProjectDirConstant:
-    """hooks/_lib/dispatch_gate_check.PROJECT_DIR — Pattern C, captured at import."""
+    """hooks/_lib/dispatch_gate_check.PROJECT_DIR — Pattern A (D2.2 fix), captured at import.
+
+    Before Lote-4 D2.2 (ADR-026a), this site used Pattern C (CLAUDE only, default '.').
+    After the fix it uses Pattern A: CLAUDE wins, COGNITIVE_OS is the fallback, "." is default.
+    """
 
     def _reload_module(self, monkeypatch):
         """Re-import the module so the module-level constant re-reads env."""
@@ -481,12 +499,16 @@ class TestDispatchGateCheckProjectDirConstant:
         module = self._reload_module(monkeypatch)
         assert module.PROJECT_DIR == "/from-claude"
 
-    def test_cognitive_os_alone_resolves_to_dot(self, monkeypatch):
-        """Locks the absence of COGNITIVE_OS_PROJECT_DIR fallback at this site."""
+    def test_cognitive_os_alone_resolves_to_cognitive_os_dir(self, monkeypatch):
+        """D2.2 fix (ADR-026a): COGNITIVE_OS_PROJECT_DIR is now the fallback.
+
+        Before the fix this resolved to '.' (Pattern C).  After the fix it
+        resolves to the COGNITIVE_OS value (Pattern A semantics).
+        """
         _clear_env(monkeypatch)
         monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", "/from-cognitive-os")
         module = self._reload_module(monkeypatch)
-        assert module.PROJECT_DIR == "."
+        assert module.PROJECT_DIR == "/from-cognitive-os"
 
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -530,12 +552,16 @@ def test_audit_count_of_sites_per_pattern():
                 counts["D"] += 1
 
     # After R1 migration: Pattern A inline literals are 0 (migrated to project_root()).
-    # Pattern A', C, D outliers are unchanged.
-    assert counts == {"A": 0, "A_prime": 1, "C": 2, "D": 1}, (
-        f"Audit count drift: {counts}. Expected 0+1+2+1 after R1 migration. "
+    # Pattern A', D outliers are unchanged.
+    # After Lote-4 D2.2 fix: dispatch_gate_check.py migrated from Pattern C to
+    # Pattern A (COGNITIVE_OS fallback added), so Pattern C count drops from 2 to 1
+    # (only queue_drainer:316 remains as Pattern C).
+    assert counts == {"A": 0, "A_prime": 1, "C": 1, "D": 1}, (
+        f"Audit count drift: {counts}. Expected 0+1+1+1 after R1 migration + Lote-4 D2.2. "
         "Pattern A sites (10) now use project_root() from lib.paths — "
-        "the inline expression count should be 0. If a site reverted to inline "
-        "or a new site was added, update this assertion explicitly."
+        "the inline expression count should be 0. "
+        "Pattern C is now 1: only queue_drainer:316 (dispatch_gate_check was C, now A via D2.2). "
+        "If a site reverted to inline or a new site was added, update this assertion explicitly."
     )
 
 

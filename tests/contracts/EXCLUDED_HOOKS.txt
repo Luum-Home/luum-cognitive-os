@@ -137,3 +137,30 @@ paperclip-sync.sh | CONDITIONAL: syncs governance data to Paperclip; only active
 skill-tracker.sh | FUTURE: tracks skill invocations for model-optimizer; planned for PostToolUse Agent — not yet wired
 sync-to-repo.sh | MANUAL_TRIGGER: syncs local OS changes to the luum-agent-os repo; invoked manually by developer
 tool-loop-detector.sh | FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired
+
+# --- 2026-04-20 post-D5/D6: hooks present but only in full profile or on-demand ---
+aguara-scan.sh | CONDITIONAL: Aguara security scanner — fires only when AGUARA_ENABLED=true
+architecture-compliance.sh | FUTURE: PostToolUse Edit|Write — planned but not yet wired
+assumption-tracker.sh | FUTURE: PreToolUse Agent — ADR-022 variant, not in default profile
+auto-repair-dispatcher.sh | CONDITIONAL: fires only on error-pipeline output, sourced not registered
+auto-skill-generator.sh | MANUAL_TRIGGER: invoked by /auto-skill skill, not a hook matcher
+completeness-check.sh | FUTURE: regex variant superseded by completeness-check-llm.sh
+consequence-evaluator.sh | MANUAL_TRIGGER: invoked by /consequence skill
+context-watchdog.sh | CONDITIONAL: PostToolUse in full profile only; default uses context-diet.sh
+dequeue-notify.sh | CONDITIONAL: fires only when dispatch-gate emits queue events
+epic-task-detector.sh | FUTURE: heuristic detector, not yet wired to any matcher
+guardrails-validator.sh | CONDITIONAL: NeMo Guardrails integration, fires via /guardrails skill
+infra-health.sh | CONDITIONAL: SessionStart in full profile; default profile uses usage-health-check.sh
+kpi-trigger.sh | FUTURE: Stop hook in full profile; wires to kpi_collector
+mcp-scan.sh | CONDITIONAL: MCP server audit, fires on demand
+observability-trace.sh | CONDITIONAL: Langfuse integration, fires only when LANGFUSE_ENABLED=true
+parry-scan.sh | CONDITIONAL: Parry security integration
+pre-compaction-flush.sh | CONDITIONAL: PreCompact event — registered in full profile only
+prompt-quality.sh | FUTURE: regex variant superseded by prompt-quality-llm.sh
+rate-limit-protection.sh | DEPRECATED: renamed to token-budget-monitor.sh; shim remains for back-compat
+scope-creep-detector.sh | FUTURE: PostToolUse Agent, planned but not wired
+scope-proportionality.sh | FUTURE: PostToolUse Agent, planned
+semgrep-scan.sh | CONDITIONAL: fires via /semgrep-scan skill
+subagent-context-injector.sh | INFRA: SubagentStart event — not included by default profile
+task-recorder.sh | LIBRARY: sourced by dispatch-gate; not a standalone matcher
+user-prompt-capture.sh | INFRA: UserPromptSubmit event — full profile only
