@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# post-commit — ADR-030 Q2 breadcrumb for session-wrapup reminder
+set -uo pipefail
+
+REPO_DIR=$(git rev-parse --show-toplevel 2>/dev/null || exit 0)
+NUDGE_DIR="$REPO_DIR/.cognitive-os/runtime"
+NUDGE_FILE="$NUDGE_DIR/commit-nudge"
+
+mkdir -p "$NUDGE_DIR" 2>/dev/null || exit 0
+
+SHA=$(git rev-parse --short HEAD 2>/dev/null)
+SUBJ=$(git log -1 --format='%s' 2>/dev/null | head -c 120)
+TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+[ -n "$SHA" ] && printf '%s | %s | %s\n' "$TS" "$SHA" "$SUBJ" >> "$NUDGE_FILE" 2>/dev/null || true
+
+exit 0
