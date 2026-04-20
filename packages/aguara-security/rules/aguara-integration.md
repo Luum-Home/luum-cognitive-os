@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Aguara -- AI Agent Security Scanner
 
 ## Overview

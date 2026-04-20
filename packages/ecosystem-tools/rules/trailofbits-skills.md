@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Trail of Bits Security Skills
 
 ## Overview

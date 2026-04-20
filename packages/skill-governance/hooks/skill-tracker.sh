@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # CONCERNS: metrics, observability, quality
 # PostToolUse hook: Combined skill feedback + metrics tracker
 # Fires on "Agent|Skill" — saves failure feedback to Engram AND appends metrics to JSONL

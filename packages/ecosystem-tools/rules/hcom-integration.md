@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Hcom -- Cross-Terminal Agent Communication
 
 ## Overview

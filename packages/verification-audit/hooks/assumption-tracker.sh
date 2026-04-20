@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PostToolUse hook: Assumption Tracker
 # Fires on "Agent" tool use — scans agent responses for assumption language
 # Advisory only (exit 0) — warns when too many assumptions detected

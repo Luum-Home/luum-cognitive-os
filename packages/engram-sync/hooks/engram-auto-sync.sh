@@ -1,4 +1,5 @@
 #!/bin/bash
+# SCOPE: os-only
 # Hook: Engram Auto-Sync (Stop/SessionEnd)
 # Automatically exports Engram observations and commits to git
 # when a Claude Code session ends. Does NOT push.

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # CONCERNS: safety, quality, observability
 # PostToolUse hook: Detects tool usage loops and warns the agent.
 # Tracks last 10 tool calls and identifies repetitive patterns.

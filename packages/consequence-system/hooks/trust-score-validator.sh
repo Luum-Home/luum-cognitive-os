@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # CONCERNS: quality, verification, metrics
 # PostToolUse hook on Agent — validates Trust Report presence and logs trust scores.
 # Checks agent output for Trust Report, extracts score, logs to metrics.

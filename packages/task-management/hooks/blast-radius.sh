@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook: Blast Radius Estimation
 # Fires on "Agent" tool use — estimates the impact scope of a task
 # Advisory only (exit 0) — does NOT block, but warns for HIGH/CRITICAL
