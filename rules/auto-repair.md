@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Auto-Repair System
 
 ## Always Active

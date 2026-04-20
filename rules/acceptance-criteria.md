@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Mandatory Acceptance Criteria
 
 ## Purpose

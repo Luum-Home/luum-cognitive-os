@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # test-mcp-server.sh -- Quick smoke test for the COS MCP server.
 #
 # Verifies:

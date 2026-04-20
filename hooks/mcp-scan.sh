@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # SessionStart hook: MCP-Scan — MCP Server Configuration Scanner
 # Scans .claude/settings.json MCP server definitions for tool poisoning and injection
 # Advisory only (exit 0) — never blocks session start

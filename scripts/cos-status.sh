@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # cos-status.sh — Transparency command for Cognitive OS state
 #
 # Shows what is currently active:

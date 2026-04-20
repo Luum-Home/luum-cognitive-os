@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """SDD Pipeline — Fast Path for Capable Models.
 
 Defines phase sequences for the Spec-Driven Development pipeline. Capable

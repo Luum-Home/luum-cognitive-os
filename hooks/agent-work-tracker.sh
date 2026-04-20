@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Hook: agent-work-tracker
 # Events: PreToolUse (Agent), PostToolUse (Agent)
 # Purpose: Track agent tasks in persistent work queue so the next session

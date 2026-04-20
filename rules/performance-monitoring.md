@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Performance Monitoring Protocol
 
 ## Purpose

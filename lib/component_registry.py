@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """component_registry.py — Detect unregistered hooks, rules, skills, and packages.
 
 Used by the /register-component skill and registration-check.sh hook to surface

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # Cognitive OS Development Setup
 # Usage: ./scripts/setup.sh [--minimal|--standard|--full]
 #

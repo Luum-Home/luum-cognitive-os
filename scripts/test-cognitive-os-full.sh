@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Cognitive OS Full Test Suite Runner
 # Runs all 3 layers: Infrastructure, Behavior, Quality
 # Usage: bash .cognitive-os/scripts/test-cognitive-os-full.sh [--skip-quality] [--skip-behavior]

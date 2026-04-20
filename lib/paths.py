@@ -1,3 +1,4 @@
+# SCOPE: both
 """Canonical project-root resolver for the luum-agent-os kernel.
 
 Implements **Pattern A** — the dominant resolution strategy used at 10 sites

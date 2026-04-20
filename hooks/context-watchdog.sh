@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Context Watchdog — estimates context usage and warns at thresholds
 # Type: PostToolUse
 # Matcher: (none — fires on ALL tools)

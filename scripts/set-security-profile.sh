@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Set Security Profile — Applies the selected security profile to .claude/settings.json
 #
 # Security profiles control which hooks are active for defense-in-depth:

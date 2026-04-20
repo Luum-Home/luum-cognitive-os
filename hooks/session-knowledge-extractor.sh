@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # session-knowledge-extractor.sh — Extract knowledge patterns from session
 # Trigger: Stop (after conversation-capture.sh, before session-cleanup.sh)
 

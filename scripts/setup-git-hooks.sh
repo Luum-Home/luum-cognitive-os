@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # setup-git-hooks.sh — Install git hooks in the COS repo for auto-update
 #
 # Installs a post-merge hook that automatically updates all registered

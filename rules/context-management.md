@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Context Window Management — Proactive Summarization Protocol
 
 ## Overview

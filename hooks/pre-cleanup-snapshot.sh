@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # PreToolUse hook on Agent — detects cleanup/refactor intent and triggers capability snapshot
 # Logs detections to .cognitive-os/metrics/capability-snapshots.jsonl
 # Must complete in <3 seconds

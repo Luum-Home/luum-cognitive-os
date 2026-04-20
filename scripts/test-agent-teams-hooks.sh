@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # test-agent-teams-hooks.sh — Validate Agent Teams hooks with mock input.
 #
 # Usage: bash scripts/test-agent-teams-hooks.sh

@@ -1,3 +1,4 @@
+# SCOPE: both
 """Engram client — structured read/write API for trusted internal callers.
 
 FOR (use case)

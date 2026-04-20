@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # auto-update-projects.sh — Update all COS installations after OS repo changes
 #
 # Reads the global registry of COS installations and re-syncs each project

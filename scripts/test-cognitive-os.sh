@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Cognitive OS Infrastructure Test Runner (Layer 1 only)
 # Runs all infra tests and outputs a summary.
 set -uo pipefail

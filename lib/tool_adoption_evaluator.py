@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """Tool Adoption Evaluator — deep evaluation pipeline for external tools and repos.
 
 Evaluates GitHub URLs for license compatibility, deployment weight, feature overlap,

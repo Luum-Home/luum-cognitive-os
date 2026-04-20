@@ -1,3 +1,4 @@
+# SCOPE: both
 """Persistent work queue that survives across sessions.
 
 Reads/writes .cognitive-os/work-queue.json. Auto-updated at session end

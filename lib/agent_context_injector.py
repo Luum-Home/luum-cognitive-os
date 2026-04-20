@@ -1,3 +1,4 @@
+# SCOPE: both
 """Agent Context Injector — helps orchestrators decide what context to pass to sub-agents."""
 
 from __future__ import annotations

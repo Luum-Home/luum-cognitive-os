@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Fault Tolerance Protocol
 
 ## 4-Tier Resilience Model

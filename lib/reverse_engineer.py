@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """Reverse Engineer module.
 
 Deep source code analysis of dependencies to understand internal APIs,
