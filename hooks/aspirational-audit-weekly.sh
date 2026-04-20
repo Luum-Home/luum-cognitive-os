@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # aspirational-audit-weekly.sh — SessionStart hook
 #
 # Runs aspirational-audit.py at most once every 7 days.

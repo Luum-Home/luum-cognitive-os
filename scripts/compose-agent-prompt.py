@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """
 compose-agent-prompt.py — Prepend trap warnings to an agent prompt before launch.
 
