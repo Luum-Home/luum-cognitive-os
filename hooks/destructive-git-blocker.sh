@@ -65,8 +65,14 @@ if [ -z "$COMMAND" ]; then
   exit 0
 fi
 
-# Pattern — note: extended regex, dollar-less because we match anywhere after the git invocation
-DESTRUCTIVE_PATTERN='^[[:space:]]*git[[:space:]]+(stash[[:space:]]+(pop|drop|apply)|reset[[:space:]]+--hard|checkout[[:space:]]+--|clean[[:space:]]+-f|restore|revert|worktree)'
+# Pattern — note: extended regex, dollar-less because we match anywhere after the git invocation.
+# ADR-003 R1 fix (2026-04-20 forensic): the original regex `checkout[[:space:]]+--` matched
+# `git checkout -- foo` but NOT `git checkout HEAD -- foo` (the exact form that triggered the
+# Sprint-2a incident per ADR-003 §Context line 10). The checkout alternative now matches both
+# direct (`checkout -- <path>`) and via-ref (`checkout <ref> -- <path>`, e.g. HEAD, HEAD~1,
+# <sha>, <branch>, <tag>) forms. `<ref>` may contain letters, digits, slash, dot, underscore,
+# tilde, caret, hyphen.
+DESTRUCTIVE_PATTERN='^[[:space:]]*git[[:space:]]+(stash[[:space:]]+(pop|drop|apply)|reset[[:space:]]+--hard|checkout[[:space:]]+(--|[A-Za-z0-9/._~^-]+[[:space:]]+--)|clean[[:space:]]+-f|restore|revert|worktree)'
 
 # Test first line (commands may be multiline or pipelined — we inspect each sub-command
 # crudely by splitting on shell separators).
