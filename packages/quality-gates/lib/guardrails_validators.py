@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Guardrails AI validators for the Cognitive OS safety mesh.
 

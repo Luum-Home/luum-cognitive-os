@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: doc-sync
 version: 1.0.0

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: sandbox-sample
 command: /sandbox-sample

@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Observability tracing module for Langfuse and Opik.
 

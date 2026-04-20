@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Capability Levels — Auto-disable components based on model capability level.
 

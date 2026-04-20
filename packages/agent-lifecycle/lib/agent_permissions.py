@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Agent Permission System — Least Privilege Access Control.
 

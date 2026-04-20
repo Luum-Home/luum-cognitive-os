@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Orchestrator Mode -- subprocess-based delegation via ClaudeExecutor.
 

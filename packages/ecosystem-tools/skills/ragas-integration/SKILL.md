@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: ragas-integration
 description: >

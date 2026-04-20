@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Memory decay for Engram observations.
 

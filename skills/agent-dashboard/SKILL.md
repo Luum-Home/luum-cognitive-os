@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: agent-dashboard
 description: Show real-time status of all running background agents

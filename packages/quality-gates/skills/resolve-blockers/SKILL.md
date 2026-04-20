@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: resolve-blockers
 command: /resolve-blockers

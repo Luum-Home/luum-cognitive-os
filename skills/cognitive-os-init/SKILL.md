@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: cognitive-os-init
 description: META skill — initialize Cognitive OS for a project by chaining detect-stack → generate-config → scaffold-project.

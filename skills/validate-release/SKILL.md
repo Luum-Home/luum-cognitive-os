@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: validate-release
 command: /validate-release

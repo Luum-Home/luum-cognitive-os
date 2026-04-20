@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Multi-provider notification system for Cognitive OS.
 

@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """SDD Pipeline Resume — state management and phase continuation.
 

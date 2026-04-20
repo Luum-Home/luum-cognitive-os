@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: queue-drain
 description: Periodic agent queue drain and health check

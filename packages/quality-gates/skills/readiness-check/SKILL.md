@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: readiness-check
 command: /readiness-check

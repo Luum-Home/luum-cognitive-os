@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: impact-analysis
 description: "Analyze change impact: imports, tests, configs, services, and SDD artifacts affected"

@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: generate-changelog
 command: /generate-changelog

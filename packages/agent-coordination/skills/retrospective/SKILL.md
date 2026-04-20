@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: retrospective
 version: 1.0.0

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: self-improve
 description: META skill — orchestrates analyze-improvements → (human reviews) → apply-improvements. The closing piece of the self-improvement loop.
