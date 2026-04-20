@@ -91,6 +91,23 @@ except Exception:
     pass
 PYEOF
 ) </dev/null >/dev/null 2>&1 &
+_TRACKER_PID=$!
+
+# ADR-028 D1.B — register with process_registry so the reaper knows this is a
+# managed short-lived process and not an orphan.
+(
+  COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" \
+    "$PY" - "$_TRACKER_PID" "skill-usage-tracker" "30" "short_lived" <<'PYEOF' >/dev/null 2>&1
+import sys, os
+root = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd()
+sys.path.insert(0, root)
+try:
+    import lib.process_registry as process_registry
+    process_registry.register(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]), sys.argv[4])
+except Exception:
+    pass
+PYEOF
+) &
 
 # Parent returns immediately with success — background writer runs on its own.
 exit 0

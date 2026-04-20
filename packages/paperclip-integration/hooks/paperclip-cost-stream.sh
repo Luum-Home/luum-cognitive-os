@@ -72,5 +72,21 @@ except Exception:
     pass  # Fire-and-forget
 " 2>/dev/null
 ) &
+_COST_PID=$!
+
+# ADR-028 D1.B — register with process_registry so the reaper tracks this spawn.
+(
+  COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" \
+    python3 - "$_COST_PID" <<'PYEOF' >/dev/null 2>&1
+import sys, os
+root = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd()
+sys.path.insert(0, root)
+try:
+    import lib.process_registry as process_registry
+    process_registry.register(int(sys.argv[1]), "paperclip-cost-stream", 60, "short_lived")
+except Exception:
+    pass
+PYEOF
+) &
 
 exit 0
