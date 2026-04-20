@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """
 aspirational-audit.py — COS Component Classification Audit
 
