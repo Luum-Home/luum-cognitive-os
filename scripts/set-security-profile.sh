@@ -118,12 +118,12 @@ case "$PROFILE" in
     # ADR-023 mutation-style hooks (PreToolUse Bash|Edit|Write|Agent):
     # Hooks: secret-detector.sh — redacts via hookSpecificOutput.updatedInput
     # Hooks: blast-radius.sh    — surfaces warnings via additionalContext
-    echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, pattern-check, metrics-rotation.sh"
+    echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, valkey-ensure.sh (executor mode only), pattern-check, metrics-rotation.sh"
     echo "  UserPromptSubmit: user-prompt-capture"
     echo "  SubagentStart: subagent-context-injector"
     echo "  PreToolUse: rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact), dispatch-gate, clarification-gate,"
     echo "              blast-radius (ADR-023 advisory), inject-phase-context, agent-prelaunch, error-pattern-detector,"
-    echo "              prompt-quality-llm, completeness-check-llm, global-verify.sh before"
+    echo "              reinvention-check.sh (ADR-029 anti-duplication), prompt-quality-llm, completeness-check-llm, global-verify.sh before"
     # Hooks: adr-detector.sh (async, PostToolUse/Bash)
     # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
     echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, auto-checkpoint, content-policy,"
