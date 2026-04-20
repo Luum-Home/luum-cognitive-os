@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Stop hook: emit COS session state as additionalContext for Claude Code's
 # native /recap command. Implements ADR-021 (vendor-agnostic state with
 # provider adapters).

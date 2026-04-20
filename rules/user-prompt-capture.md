@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # User Prompt Capture Protocol
 
 ## Purpose

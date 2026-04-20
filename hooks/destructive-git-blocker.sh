@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # CONCERNS: safety, git-ops, adr-003-mechanism-c
 # Destructive Git Op Blocker — PreToolUse Bash
 #

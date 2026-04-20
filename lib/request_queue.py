@@ -1,3 +1,4 @@
+# SCOPE: both
 """User Request Queue — persists user messages that arrive while orchestrator is busy.
 
 When a user sends a message via system-reminder (while agents are running),

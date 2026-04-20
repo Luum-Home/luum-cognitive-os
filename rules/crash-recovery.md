@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Crash Recovery Protocol
 
 ## Purpose

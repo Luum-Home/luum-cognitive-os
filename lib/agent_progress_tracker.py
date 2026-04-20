@@ -1,3 +1,4 @@
+# SCOPE: both
 """
 AgentProgressTracker — incremental Engram saves for sub-agents.
 

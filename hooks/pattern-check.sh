@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-infra
+# SCOPE: os-only
 # Pattern check — lightweight session-start scan for critical issues.
 # Runs async at session start; only checks broken chains (the most critical).
 # Full detection available via /detect-patterns skill.

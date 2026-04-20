@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # TeammateIdle hook: Check for unclaimed tasks when a teammate is about to go idle.
 #
 # Event: TeammateIdle

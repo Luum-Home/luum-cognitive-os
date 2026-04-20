@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Component Linter — Detects copy-paste errors, stale fields, and inconsistencies
 # Usage: bash scripts/component-lint.sh [--fix]
 set -uo pipefail

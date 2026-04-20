@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Agent Security — Least Privilege Protocol
 
 ## Principle of Least Privilege

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Token Economy — Cost Transparency and Waste Prevention
 
 ## The 5 Token Principles (ALWAYS ACTIVE)

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Change Impact Analysis Protocol
 
 ## Purpose

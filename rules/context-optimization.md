@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Context Optimization Protocol
 
 ## Purpose

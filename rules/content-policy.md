@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Content Policy — Automated Enforcement
 
 ## Purpose

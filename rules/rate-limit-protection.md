@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Token Budget Monitor (formerly Rate Limit Protection)
 
 > **Note**: The hook and Python module were renamed.  Use `hooks/token-budget-monitor.sh`

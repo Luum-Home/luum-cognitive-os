@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # skill-usage-tracker.sh — PostToolUse hook for the Skill tool.
 #
 # PURPOSE

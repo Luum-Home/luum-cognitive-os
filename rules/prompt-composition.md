@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Prompt Composition Rule
 
 ## When Launching Sub-Agents

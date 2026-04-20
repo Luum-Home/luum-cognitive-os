@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreCompact hook: Reminds the agent to save durable memories to Engram
 # before context compaction destroys working memory.
 #

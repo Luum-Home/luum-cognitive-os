@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # install-aguara.sh — Install aguara AI agent security scanner and mcp-aguara MCP server
 set -euo pipefail
 

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Blast Radius Estimation
 
 ## Purpose

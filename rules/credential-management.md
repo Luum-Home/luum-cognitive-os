@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Credential Management
 
 ## Never in Code

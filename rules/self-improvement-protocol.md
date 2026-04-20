@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Self-Improvement Protocol
 
 ## When to Run `/self-improve`

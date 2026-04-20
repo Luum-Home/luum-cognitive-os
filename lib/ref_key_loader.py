@@ -1,3 +1,4 @@
+# SCOPE: both
 """Ref-key loader — ADR-027 Phase 2.
 
 Resolves `[\`ref-key\`]` markers in text to the corresponding rule file

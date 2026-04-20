@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # session-changelog.sh — Stop hook
 # CONCERNS: audit, changelog, session-tracking
 #

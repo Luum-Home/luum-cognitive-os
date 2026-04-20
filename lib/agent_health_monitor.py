@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """Agent Health Monitor — filesystem-based health checks for in-progress agents.
 
 Detects dead/stuck agents without requiring Valkey or any external service.

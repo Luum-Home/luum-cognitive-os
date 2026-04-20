@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Singularity Rule — Autonomous MAPE-K Control Loop
 
 ## Activation

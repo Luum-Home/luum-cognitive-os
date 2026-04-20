@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Responsiveness Protocol
 
 ## Rule: Never Appear Stuck

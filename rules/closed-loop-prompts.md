@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Closed-Loop Prompts — Self-Correcting Agent Execution
 
 > Source: "Tactical Agentic Coding" by IndyDevDan (agenticengineer.com)

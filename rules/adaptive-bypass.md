@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Adaptive Bypass — Smart Orchestration
 
 ## Purpose

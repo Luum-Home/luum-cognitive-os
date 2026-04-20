@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """
 release_analyzer.py — Analyze git changes to determine what releases are needed.
 

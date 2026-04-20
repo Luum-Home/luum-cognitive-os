@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """ADR auto-detection — analyze git commits for architectural significance.
 

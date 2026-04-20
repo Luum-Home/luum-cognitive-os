@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # session-end-reap.sh — Stop hook: invoke so-reaper at session end (ADR-028 D1.B)
 #
 # Registered under the Stop matcher in the default and full efficiency profiles.

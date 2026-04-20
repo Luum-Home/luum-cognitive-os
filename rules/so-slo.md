@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # SO SLO Catalogue — Source of Truth (ADR-028 D5)
 
 > Adopted: 2026-04-20. Owner: ADR-028 coordinator.

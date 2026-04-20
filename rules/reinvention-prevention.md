@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Reinvention Prevention
 
 ## Rule: Check Before Building

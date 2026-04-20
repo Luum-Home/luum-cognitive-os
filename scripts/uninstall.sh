@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Uninstall Cognitive OS from a project
 # Usage: bash scripts/uninstall.sh [--keep-config]
 #

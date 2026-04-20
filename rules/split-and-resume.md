@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Split-and-Resume Pattern
 
 ## Purpose

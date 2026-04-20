@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # merge-settings.sh — Merge Cognitive OS hooks into an existing .claude/settings.json
 #
 # Usage: bash merge-settings.sh <existing_settings.json> <cos_hooks.json> [output_file]

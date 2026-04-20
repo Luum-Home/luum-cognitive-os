@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Model Routing — Auto-Updated by /model-optimizer
 
 ## Routing Table

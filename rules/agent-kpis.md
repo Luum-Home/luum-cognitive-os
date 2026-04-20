@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Agent KPI Protocol
 
 ## When to Calculate KPIs
