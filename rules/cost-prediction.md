@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Cost Prediction Protocol
 
 ## When to Predict

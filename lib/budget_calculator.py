@@ -1,3 +1,4 @@
+# SCOPE: both
 """Budget calculator for pre-development project estimation."""
 
 from __future__ import annotations

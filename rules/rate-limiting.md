@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Rate Limiting Protocol
 
 ## Purpose

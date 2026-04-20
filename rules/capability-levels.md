@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Capability Levels — Auto-Disable Components
 
 ## Purpose

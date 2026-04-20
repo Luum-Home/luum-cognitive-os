@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # extract-agent-output.sh — Extract assistant text from agent JSONL output files
 #
 # Usage:

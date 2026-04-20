@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # cos init — Bootstrap Cognitive OS in any project
 # Usage: bash /path/to/luum-agent-os/scripts/cos-init.sh [--default|--full]
 #

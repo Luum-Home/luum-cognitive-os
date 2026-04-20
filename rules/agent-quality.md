@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Agent Quality: Maximum Output, Not Minimum
 
 ## The Core Problem

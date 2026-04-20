@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 # UserPromptSubmit hook: Auto-capture user prompts to engram for session context.

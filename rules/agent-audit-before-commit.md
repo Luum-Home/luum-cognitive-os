@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Agent Audit Before Commit
 
 ## Rule (Always Active)

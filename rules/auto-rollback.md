@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Auto-Rollback Protocol
 
 ## Purpose

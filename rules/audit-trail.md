@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Audit Trail — Automated Work Tracking
 
 ## Purpose

@@ -1,3 +1,4 @@
+# SCOPE: both
 """Smart Infrastructure — Lazy Docker service lifecycle management.
 
 Manages on-demand startup, health polling, and idle shutdown of Docker

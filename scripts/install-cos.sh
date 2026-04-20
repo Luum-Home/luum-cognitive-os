@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # install-cos.sh — One-liner installer for Cognitive OS (cos CLI)
 #
 # Usage:

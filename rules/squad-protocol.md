@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Squad Protocol
 
 ## How Agents Discover Their Squad

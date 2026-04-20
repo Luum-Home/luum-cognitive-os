@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Mandatory Clarification Gate
 
 ## Purpose

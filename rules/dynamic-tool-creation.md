@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Dynamic Tool Creation -- Mid-Task Tool Generation
 
 ## Purpose

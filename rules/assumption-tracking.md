@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Assumption Tracking
 
 ## Purpose

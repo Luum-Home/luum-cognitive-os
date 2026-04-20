@@ -1,3 +1,4 @@
+# SCOPE: both
 """Agent Output Bridge — publishes file-based agent progress to Valkey AgentBus.
 
 Bridges the gap between Claude Code's Agent tool (which writes JSONL output files)

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Task Panel Sync — exposes COS task state to Claude Code's native UI.
 #
 # Implements ADR-021 (vendor-agnostic state with provider adapters).

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Agent Identity Protocol
 
 ## Agent Identification

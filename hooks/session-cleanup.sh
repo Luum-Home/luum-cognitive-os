@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Stop hook: Clean up session on exit
 # Removes session from active-sessions.json, merges metrics, optionally cleans up directory.
 # Must complete in <10 seconds.

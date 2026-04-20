@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Phase-Aware Agent Protocol
 
 ## Current Phase: RECONSTRUCTION

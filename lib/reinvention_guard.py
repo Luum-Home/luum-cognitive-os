@@ -1,3 +1,4 @@
+# SCOPE: both
 """
 Reinvention Guard — Prevents building features that already exist upstream.
 

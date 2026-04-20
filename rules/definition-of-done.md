@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Definition of Done (DoD) by Task Complexity
 
 ## Purpose

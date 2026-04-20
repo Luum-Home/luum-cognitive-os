@@ -1,3 +1,4 @@
+# SCOPE: both
 """Prompt caching adapter for Anthropic models.
 
 Adapts the ``system_and_3`` caching strategy from hermes-agent (MIT) to

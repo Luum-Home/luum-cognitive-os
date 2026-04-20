@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """Ecosystem Evaluator — monitors plugins and evaluated tools for adoption opportunities.
 
 Tracks:

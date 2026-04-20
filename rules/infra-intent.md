@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Infrastructure Intent Detection Rules
 
 ## Purpose

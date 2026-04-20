@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # CONCERNS: ux, session-health, adr-001-regression-detector
 # Session Sanity Hook — SessionStart
 # Verifies that the .claude/ installation is intact after every session start:

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # install-mcp-scan.sh — Install MCP-Scan (Invariant Labs) MCP server configuration scanner
 set -euo pipefail
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Generate IDE-specific configs from Cognitive OS rules
 # Usage:
 #   bash scripts/ide-bridge.sh <ide>     # generate config for a specific IDE
