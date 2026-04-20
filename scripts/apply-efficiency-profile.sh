@@ -125,7 +125,8 @@ build_settings() {
     "orchestrator-mode-detect.sh" \
     "usage-health-check.sh" \
     "ecosystem-check.sh" \
-    "pattern-check.sh")
+    "pattern-check.sh" \
+    "metrics-rotation.sh")
 
   # PreToolUse
   # ADR-023: secret-detector runs as PreToolUse on Bash|Edit|Write|MultiEdit
@@ -269,7 +270,7 @@ done
 # ── Summary ─────────────────────────────────────────────────────────
 echo ""
 echo "Hook summary for profile 'default' (ADR-002):"
-echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh"
+echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh"
 echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
