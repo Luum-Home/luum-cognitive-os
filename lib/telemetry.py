@@ -28,6 +28,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+from lib.metric_event import MetricEvent, append_event as _me_append_event
+
 # ─── Configuration ───────────────────────────────────────────────────────────
 
 #: Default size threshold that triggers rotation (bytes). Override with env
@@ -103,14 +105,24 @@ def _rotate_if_needed(path: Path) -> None:
 
 
 def _append(filename: str, payload: Dict[str, Any]) -> Optional[Path]:
-    """Append one JSON object as a line. Returns the path written, or None on error."""
+    """Append one JSON object as a MetricEvent line. Returns the path written, or None on error."""
     try:
         target = _metrics_dir() / filename
         _rotate_if_needed(target)
-        payload.setdefault("timestamp", _utc_iso())
-        line = json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
-        with target.open("a", encoding="utf-8") as fh:
-            fh.write(line + "\n")
+        # Extract or generate timestamp (MetricEvent handles it if empty)
+        timestamp = payload.pop("timestamp", _utc_iso())
+        # Use the 'event' field as event_type suffix; keep it in payload for readers
+        event_label = payload.get("event", filename.replace(".jsonl", ""))
+        # Determine source from filename stem
+        source = Path(filename).stem
+        payload_copy = dict(payload)  # preserve original; pop was only for timestamp
+        event = MetricEvent(
+            source=source,
+            event_type=f"telemetry.{event_label}",
+            payload=payload_copy,
+            timestamp=timestamp,
+        )
+        _me_append_event(str(target), event)
         return target
     except Exception:
         return None
@@ -246,6 +258,9 @@ def iter_records(filename: str):
 
     Silently skips unparseable lines and missing files. The scan is limited to
     the metrics dir; rotated files are globbed by stem.
+
+    MetricEvent-wrapped rows are transparently unwrapped so consumers receive
+    the same flat dict shape as legacy rows.
     """
     directory = _metrics_dir()
     stem = Path(filename).stem
@@ -264,9 +279,16 @@ def iter_records(filename: str):
                     if not line:
                         continue
                     try:
-                        yield json.loads(line)
+                        row = json.loads(line)
                     except json.JSONDecodeError:
                         continue
+                    # Unwrap MetricEvent rows back to flat shape
+                    if "schema_version" in row and "event_type" in row and "payload" in row:
+                        flat = dict(row["payload"])
+                        flat.setdefault("timestamp", row.get("timestamp", ""))
+                        yield flat
+                    else:
+                        yield row
         except OSError:
             continue
 
