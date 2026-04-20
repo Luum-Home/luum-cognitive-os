@@ -203,3 +203,92 @@ def test_killswitch_idempotent(tmp_project: Path) -> None:
     data = json.loads(flag.read_text())
     assert "timestamp" in data
     assert data["reason"] == "second run (idempotent)"
+
+
+# ── Test 6 (R3): safety blockers are never suppressed by killswitch ───────────
+
+def test_killswitch_never_suppresses_safety_blockers(tmp_project: Path) -> None:
+    """R3: destructive-git-blocker.sh must NOT be suppressed when killswitch is active.
+
+    The killswitch critical whitelist must include the safety blocker hooks so that
+    flipping the killswitch does not disable git/rm protection.
+    """
+    # Plant the flag
+    flag = _flag_path(tmp_project)
+    flag.write_text('{"timestamp":"2026-04-20T00:00:00Z","reason":"r3-test"}')
+
+    # Test each safety blocker hook name
+    for hook_name in ("destructive-git-blocker.sh", "destructive-rm-blocker.sh", "secret-detector.sh"):
+        mock_hook = tmp_project / f"mock-{hook_name}"
+        mock_hook.write_text(
+            textwrap.dedent(f"""\
+            #!/usr/bin/env bash
+            export HOOK_NAME="{hook_name}"
+            export PROJECT_DIR="{tmp_project}"
+            source "{KILLSWITCH_CHECK}"
+            # Safety blocker — must reach here even with killswitch
+            echo "HOOK_EXECUTED"
+            exit 0
+            """)
+        )
+        mock_hook.chmod(0o755)
+
+        result = subprocess.run(
+            ["bash", str(mock_hook)],
+            capture_output=True,
+            text=True,
+            cwd=str(tmp_project),
+        )
+
+        assert result.returncode == 0, (
+            f"Safety hook {hook_name} exited non-zero with killswitch active:\n{result.stderr}"
+        )
+        assert "HOOK_EXECUTED" in result.stdout, (
+            f"Safety hook {hook_name} was suppressed by killswitch — it MUST NOT be. "
+            f"stdout: {result.stdout!r}"
+        )
+
+
+# ── Test 7 (Q#5): SO_KILLSWITCH env-var triggers suppression ─────────────────
+
+def test_so_killswitch_env_var_triggers_suppression(tmp_project: Path) -> None:
+    """Q#5: SO_KILLSWITCH=1 env var must activate killswitch without flag file.
+
+    This is the ADR-028 Q#5 fallback for when the disk is full and the flag
+    file cannot be written.
+    """
+    # Ensure flag does NOT exist — we want only the env-var to trigger
+    flag = _flag_path(tmp_project)
+    flag.unlink(missing_ok=True)
+    assert not flag.exists(), "Pre-condition: flag must be absent for env-var test"
+
+    mock_hook = tmp_project / "mock-non-critical-env.sh"
+    mock_hook.write_text(
+        textwrap.dedent(f"""\
+        #!/usr/bin/env bash
+        export HOOK_NAME="some-non-critical.sh"
+        export PROJECT_DIR="{tmp_project}"
+        source "{KILLSWITCH_CHECK}"
+        # If we reach here the hook was NOT suppressed
+        echo "HOOK_EXECUTED"
+        exit 0
+        """)
+    )
+    mock_hook.chmod(0o755)
+
+    result = subprocess.run(
+        ["bash", str(mock_hook)],
+        capture_output=True,
+        text=True,
+        cwd=str(tmp_project),
+        env={**os.environ, "SO_KILLSWITCH": "1", "PROJECT_DIR": str(tmp_project)},
+    )
+
+    assert result.returncode == 0, (
+        f"Non-critical hook with SO_KILLSWITCH=1 exited non-zero: {result.returncode}\n"
+        f"stderr: {result.stderr}"
+    )
+    assert "HOOK_EXECUTED" not in result.stdout, (
+        "Non-critical hook executed despite SO_KILLSWITCH=1 — env-var suppression failed. "
+        f"stdout: {result.stdout!r}"
+    )

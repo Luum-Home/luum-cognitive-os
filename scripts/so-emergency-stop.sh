@@ -11,8 +11,18 @@
 # Idempotent — safe to run multiple times.
 # Exits 0 always.
 #
+# Emergency stop is activated by either:
+#   1. The flag file .cognitive-os/runtime/hook-killswitch.flag (written by this script), OR
+#   2. The environment variable SO_KILLSWITCH=1  (ADR-028 Q#5 env-var fallback).
+#      Use this fallback when the disk is full and the flag file cannot be written:
+#        export SO_KILLSWITCH=1   # suppresses non-critical hooks immediately
+#      The env-var is checked by hooks/_lib/killswitch_check.sh alongside the flag file.
+#      Critical safety hooks (destructive-git-blocker, destructive-rm-blocker,
+#      secret-detector, credential-guard, etc.) are NEVER suppressed by either mechanism.
+#
 # To restore:
 #   rm -f .cognitive-os/runtime/hook-killswitch.flag
+#   unset SO_KILLSWITCH
 #   cp .claude/settings.json.bak .claude/settings.json
 #   bash scripts/apply-efficiency-profile.sh default   # optional: re-apply full profile
 
@@ -77,7 +87,10 @@ echo ""
 echo "  Critical hooks still firing:"
 echo "    credential-guard.sh, license-guard.sh,"
 echo "    pre-compaction-flush.sh, session-cleanup.sh,"
-echo "    self-install.sh, session-init.sh"
+echo "    self-install.sh, session-init.sh,"
+echo "    destructive-git-blocker.sh, destructive-rm-blocker.sh,"
+echo "    secret-detector.sh"
+echo "  Env-var fallback: SO_KILLSWITCH=1 (for full-disk scenarios)"
 echo ""
 echo "  To restore normal operation:"
 echo "    1. Resolve the underlying issue"
