@@ -91,6 +91,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limit-precheck.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limiter.sh\""
           },
           {
