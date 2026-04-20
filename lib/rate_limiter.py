@@ -33,15 +33,17 @@ Usage:
 Python 3.9+ compatible. Author: luum.
 """
 
+import fcntl
 import json
 import math
 import os
 import re
 import time
 import uuid
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, Generator, List, Optional, Tuple
 
 from lib.paths import project_root
 
@@ -68,6 +70,80 @@ CIRCUIT_BREAKER_THRESHOLD = 10  # Items in queue before circuit-breaker check
 CIRCUIT_BREAKER_WINDOW = 60  # Seconds to pause drainer when circuit trips
 BACKOFF_BASE_SECONDS = 1     # First backoff: 1s (doubles each retry: 1, 2, 4, 8s)
 CORRUPTION_RECOVERY_THRESHOLD = 100  # Items with retry_count > MAX_RETRY_COUNT → truncate
+
+# flock parameters for concurrent queue access
+_QUEUE_LOCK_TIMEOUT_SECONDS = 5
+_QUEUE_LOCK_TIMEOUT_LOG = os.path.join(
+    ".cognitive-os", "metrics", "queue-lock-timeout.jsonl"
+)
+
+
+@contextmanager
+def _queue_file_lock(
+    path: str, timeout: float = _QUEUE_LOCK_TIMEOUT_SECONDS
+) -> Generator[None, None, None]:
+    """Exclusive file lock around RateLimitQueue read-modify-write.
+
+    Uses a dedicated ``<path>.lock`` sentinel file so we never hold an
+    exclusive lock on the queue JSON file itself (which would prevent
+    readers from loading it).
+
+    Polls with 50 ms sleep intervals up to ``timeout`` seconds.
+    On timeout, logs to ``_QUEUE_LOCK_TIMEOUT_LOG`` and yields anyway
+    (best-effort, non-blocking for callers).
+    """
+    lock_path = path + ".lock"
+    try:
+        os.makedirs(os.path.dirname(lock_path) or ".", exist_ok=True)
+    except OSError:
+        pass
+
+    deadline = time.monotonic() + timeout
+    lock_fd = None
+    acquired = False
+
+    try:
+        lock_fd = open(lock_path, "w")  # noqa: WPS515 - kept open for lock lifetime
+        while time.monotonic() < deadline:
+            try:
+                fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                acquired = True
+                break
+            except BlockingIOError:
+                time.sleep(0.05)
+
+        if not acquired:
+            _log_lock_timeout(path)
+        yield
+    finally:
+        if lock_fd is not None:
+            try:
+                if acquired:
+                    fcntl.flock(lock_fd, fcntl.LOCK_UN)
+                lock_fd.close()
+            except OSError:
+                pass
+
+
+def _log_lock_timeout(queue_path: str) -> None:
+    """Append a lock-timeout event to the metrics log."""
+    log_path = os.environ.get("_QUEUE_LOCK_TIMEOUT_LOG", _QUEUE_LOCK_TIMEOUT_LOG)
+    try:
+        os.makedirs(os.path.dirname(log_path) or ".", exist_ok=True)
+        with open(log_path, "a") as f:
+            f.write(
+                json.dumps(
+                    {
+                        "ts": time.time(),
+                        "event": "lock_timeout",
+                        "queue_path": queue_path,
+                        "timeout_seconds": _QUEUE_LOCK_TIMEOUT_SECONDS,
+                    }
+                )
+                + "\n"
+            )
+    except OSError:
+        pass
 
 
 def _read_phase_from_config(config_path: Optional[str] = None) -> str:
@@ -593,48 +669,51 @@ class RateLimitQueue:
                 state_dir = os.path.dirname(self.state_path) or "."
                 os.makedirs(state_dir, exist_ok=True)
                 drop_log = os.path.join(state_dir, "rate-limit-dropped.jsonl")
-                with open(drop_log, "a") as f:
-                    f.write(
-                        json.dumps(
-                            {
-                                "timestamp": time.time(),
-                                "action_type": action_type,
-                                "retry_count": retry_count,
-                                "context": context or {},
-                                "reason": "retry_cap_exceeded",
-                            }
+                with _queue_file_lock(drop_log):
+                    with open(drop_log, "a") as f:
+                        f.write(
+                            json.dumps(
+                                {
+                                    "timestamp": time.time(),
+                                    "action_type": action_type,
+                                    "retry_count": retry_count,
+                                    "context": context or {},
+                                    "reason": "retry_cap_exceeded",
+                                }
+                            )
+                            + "\n"
                         )
-                        + "\n"
-                    )
             except OSError:
                 pass
             return ""  # Item dropped
 
-        self._prune()
+        with _queue_file_lock(self.state_path):
+            self._merge_from_disk_for_enqueue()
+            self._prune()
 
-        # Exponential backoff: cooldown * 2^retry_count, capped at 10 minutes
-        backoff = min(self.cooldown_seconds * (2 ** retry_count), 600)
-        now = time.time()
-        queue_id = str(uuid.uuid4())[:8]
-        item: Dict[str, Any] = {
-            "queue_id": queue_id,
-            "action_type": action_type,
-            "context": context or {},
-            "priority": priority,
-            "enqueued_at": now,
-            "eligible_at": now + backoff,
-            "retry_count": retry_count,
-        }
+            # Exponential backoff: cooldown * 2^retry_count, capped at 10 minutes
+            backoff = min(self.cooldown_seconds * (2 ** retry_count), 600)
+            now = time.time()
+            queue_id = str(uuid.uuid4())[:8]
+            item: Dict[str, Any] = {
+                "queue_id": queue_id,
+                "action_type": action_type,
+                "context": context or {},
+                "priority": priority,
+                "enqueued_at": now,
+                "eligible_at": now + backoff,
+                "retry_count": retry_count,
+            }
 
-        self._items.append(item)
+            self._items.append(item)
 
-        # Enforce max size -- drop oldest low-priority items first
-        if len(self._items) > MAX_QUEUE_SIZE:
-            # Sort by priority desc then enqueued_at asc (oldest low-pri first)
-            self._items.sort(key=lambda x: (-x["priority"], x["enqueued_at"]))
-            self._items = self._items[:MAX_QUEUE_SIZE]
+            # Enforce max size -- drop oldest low-priority items first
+            if len(self._items) > MAX_QUEUE_SIZE:
+                # Sort by priority desc then enqueued_at asc (oldest low-pri first)
+                self._items.sort(key=lambda x: (-x["priority"], x["enqueued_at"]))
+                self._items = self._items[:MAX_QUEUE_SIZE]
 
-        self._save()
+            self._save()
         return queue_id
 
     def dequeue_ready(self) -> List[Dict[str, Any]]:
@@ -654,40 +733,42 @@ class RateLimitQueue:
             Each item contains a ``retry_count`` field callers should
             increment and pass back to ``enqueue()`` if the item fails again.
         """
-        self._prune()
-        now = time.time()
+        with _queue_file_lock(self.state_path):
+            self._load_locked()
+            self._prune()
+            now = time.time()
 
-        # Circuit breaker: check for persistent failure loop before dequeuing
-        if len(self._items) >= CIRCUIT_BREAKER_THRESHOLD:
-            failing_items = [
-                i for i in self._items if i.get("retry_count", 0) >= 1
-            ]
-            if len(failing_items) == len(self._items):
-                # All items have failed at least once — circuit is tripped.
-                # Push all eligible_at forward to enforce a cooldown window.
-                modified = False
-                for item in self._items:
-                    if item["eligible_at"] <= now:
-                        item["eligible_at"] = now + CIRCUIT_BREAKER_WINDOW
-                        modified = True
-                if modified:
-                    self._save()
-                    return []  # Drainer paused — caller should wait
+            # Circuit breaker: check for persistent failure loop before dequeuing
+            if len(self._items) >= CIRCUIT_BREAKER_THRESHOLD:
+                failing_items = [
+                    i for i in self._items if i.get("retry_count", 0) >= 1
+                ]
+                if len(failing_items) == len(self._items):
+                    # All items have failed at least once — circuit is tripped.
+                    # Push all eligible_at forward to enforce a cooldown window.
+                    modified = False
+                    for item in self._items:
+                        if item["eligible_at"] <= now:
+                            item["eligible_at"] = now + CIRCUIT_BREAKER_WINDOW
+                            modified = True
+                    if modified:
+                        self._save()
+                        return []  # Drainer paused — caller should wait
 
-        ready: List[Dict[str, Any]] = []
-        remaining: List[Dict[str, Any]] = []
+            ready: List[Dict[str, Any]] = []
+            remaining: List[Dict[str, Any]] = []
 
-        for item in self._items:
-            if item["eligible_at"] <= now:
-                ready.append(item)
-            else:
-                remaining.append(item)
+            for item in self._items:
+                if item["eligible_at"] <= now:
+                    ready.append(item)
+                else:
+                    remaining.append(item)
 
-        # Sort ready items: priority asc, then enqueued_at asc (FIFO)
-        ready.sort(key=lambda x: (x["priority"], x["enqueued_at"]))
+            # Sort ready items: priority asc, then enqueued_at asc (FIFO)
+            ready.sort(key=lambda x: (x["priority"], x["enqueued_at"]))
 
-        self._items = remaining
-        self._save()
+            self._items = remaining
+            self._save()
         return ready
 
     def peek(self) -> List[Dict[str, Any]]:
@@ -709,11 +790,13 @@ class RateLimitQueue:
         Returns:
             True if the item was found and removed, False otherwise.
         """
-        before = len(self._items)
-        self._items = [i for i in self._items if i["queue_id"] != queue_id]
-        removed = len(self._items) < before
-        if removed:
-            self._save()
+        with _queue_file_lock(self.state_path):
+            self._load_locked()
+            before = len(self._items)
+            self._items = [i for i in self._items if i["queue_id"] != queue_id]
+            removed = len(self._items) < before
+            if removed:
+                self._save()
         return removed
 
     def format_queue_status(self) -> str:
@@ -763,19 +846,21 @@ class RateLimitQueue:
         Returns:
             Number of items dropped (0 if no corruption detected).
         """
-        over_cap = [
-            i for i in self._items if i.get("retry_count", 0) > MAX_RETRY_COUNT
-        ]
-        if len(over_cap) >= CORRUPTION_RECOVERY_THRESHOLD:
-            before = len(self._items)
-            self._items = [
-                i
-                for i in self._items
-                if i.get("retry_count", 0) <= MAX_RETRY_COUNT
+        with _queue_file_lock(self.state_path):
+            self._load_locked()
+            over_cap = [
+                i for i in self._items if i.get("retry_count", 0) > MAX_RETRY_COUNT
             ]
-            dropped = before - len(self._items)
-            self._save()
-            return dropped
+            if len(over_cap) >= CORRUPTION_RECOVERY_THRESHOLD:
+                before = len(self._items)
+                self._items = [
+                    i
+                    for i in self._items
+                    if i.get("retry_count", 0) <= MAX_RETRY_COUNT
+                ]
+                dropped = before - len(self._items)
+                self._save()
+                return dropped
         return 0
 
     def _prune(self) -> None:
@@ -807,11 +892,35 @@ class RateLimitQueue:
                 pass
         return []
 
+    def _load_locked(self) -> None:
+        """Reload queue from disk, replacing in-memory state.
+
+        Used inside flock-protected sections where we need the latest
+        on-disk state before modifying it.
+        """
+        self._items = self._load()
+
+    def _merge_from_disk_for_enqueue(self) -> None:
+        """Merge disk state into in-memory state without losing pending items.
+
+        Used in ``enqueue()`` to pick up items written by other processes
+        while preserving items already in ``self._items`` that haven't been
+        flushed yet (prevents loss of in-process enqueue batches).
+        """
+        disk_items = self._load()
+        known_ids = {i["queue_id"] for i in self._items}
+        for item in disk_items:
+            if item["queue_id"] not in known_ids:
+                self._items.append(item)
+
     def _save(self) -> None:
-        """Persist queue to disk."""
+        """Persist queue to disk (atomic write via tmp + replace)."""
         try:
-            os.makedirs(os.path.dirname(self.state_path) or ".", exist_ok=True)
-            with open(self.state_path, "w") as f:
+            state_dir = os.path.dirname(self.state_path) or "."
+            os.makedirs(state_dir, exist_ok=True)
+            tmp = self.state_path + ".tmp"
+            with open(tmp, "w") as f:
                 json.dump(self._items, f)
+            os.replace(tmp, self.state_path)
         except OSError:
             pass  # Best effort

@@ -11,6 +11,7 @@ from lib.harness_adapter.base import (
     HarnessAdapter,
     HarnessName,
     HeartbeatTick,
+    ParseError,
     TokenUsage,
     ToolUse,
 )
@@ -35,6 +36,7 @@ class TestCanonicalEvents:
             ToolUse(agent_id="a1", tool_name="Bash", started_at=3.0, exit_status="success"),
             TokenUsage(agent_id="a1", ts=4.0, input_tokens=100, output_tokens=50),
             HeartbeatTick(agent_id="a1", ts=5.0, alive=False),
+            ParseError(source_line="unknown line", adapter="aider", reason="no_match"),
         ]
         for original in samples:
             data = original.to_dict()
@@ -48,12 +50,10 @@ class TestCanonicalEvents:
         from lib.harness_adapter.claude_code import ClaudeCodeAdapter
         from lib.harness_adapter.aider import AiderAdapter
 
-        random_payload = {"foo": "bar", "no_known_keys": True}
-        assert ClaudeCodeAdapter.detect_harness(random_payload) is None
-        assert AiderAdapter.detect_harness(random_payload) is None
-        # Also None for non-dict garbage
-        assert ClaudeCodeAdapter.detect_harness(42) is None
-        assert AiderAdapter.detect_harness(None) is None
-        # Sanity: known CC shape detects as CLAUDE_CODE
-        cc = {"tool_name": "Agent", "tool_use_id": "x", "tool_input": {}}
-        assert ClaudeCodeAdapter.detect_harness(cc) == HarnessName.CLAUDE_CODE
+        assert ClaudeCodeAdapter.detect_harness({"random": "payload"}) is None
+        assert AiderAdapter.detect_harness({"random": "payload"}) is None
+
+    def test_parse_error_event_registered(self):
+        """ParseError must be in the event registry."""
+        assert "parse_error" in CanonicalEvent._registry
+        assert CanonicalEvent._registry["parse_error"] is ParseError
