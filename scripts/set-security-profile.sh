@@ -135,7 +135,7 @@ case "$PROFILE" in
     echo "              reinvention-check.sh (ADR-029 anti-duplication), prompt-quality-llm, completeness-check-llm, global-verify.sh before"
     # Hooks: adr-detector.sh (async, PostToolUse/Bash)
     # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
-    echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, auto-checkpoint, content-policy,"
+    echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, rate-limit-drain.sh (D45: retry_count+1 re-enqueue), auto-checkpoint, content-policy,"
     echo "               doc-sync-detector, claim-validator, completion-gate, agent-checkpoint,"
     echo "               trust-score-validator, confidence-gate.sh, confidence-gate-llm, audit-id-enricher.sh, auto-rollback-trigger.sh, auto-repair-dispatcher, dequeue-notify,"
     echo "               state-heartbeat, context-watchdog, global-verify.sh after"
