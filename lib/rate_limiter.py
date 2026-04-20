@@ -757,7 +757,8 @@ def _replay_jsonl(jsonl_path: str) -> List[Dict[str, Any]]:
                     item = event.get("item", {})
                     if not action_id and item:
                         action_id = item.get("queue_id", "")
-                    if action_id:
+                    # Skip malformed events (no queue_id or empty item stub)
+                    if action_id and item and item.get("queue_id"):
                         if "retry_count" not in item:
                             item["retry_count"] = 0
                         state[action_id] = item

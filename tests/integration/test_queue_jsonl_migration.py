@@ -191,19 +191,32 @@ class TestCompactionShrinksFile:
 
         jsonl_path = queue._jsonl_path
 
-        # Pump enough dequeue+enqueue cycles to exceed the compaction threshold.
-        # Each cycle: make items eligible → dequeue → re-enqueue.
-        # We track events: each enqueue = 1 event, each dequeue = N events,
-        # each _save during dequeue/enqueue = 1+N events.
-        # Easier: just directly append dummy events until threshold.
+        # Pump enough events to exceed the compaction threshold by directly
+        # appending filler events.  Each filler event must have a valid item
+        # structure so _replay_jsonl does not skip it.
         from lib.rate_limiter import _append_event
 
+        filler_id = "filler000"
+        filler_item = {
+            "queue_id": filler_id,
+            "action_type": "agent_launch",
+            "context": {"description": "filler"},
+            "priority": PRIORITY_NORMAL,
+            "enqueued_at": time.time() - 100,
+            "eligible_at": time.time() + 3600,
+            "retry_count": 0,
+        }
         filler_count = JSONL_COMPACTION_THRESHOLD + 10
         now = time.time()
         for _ in range(filler_count):
             _append_event(
                 jsonl_path,
-                {"action": "updated", "action_id": "filler", "timestamp": now, "item": {}},
+                {
+                    "action": "updated",
+                    "action_id": filler_id,
+                    "timestamp": now,
+                    "item": filler_item,
+                },
             )
 
         # Trigger compaction via one more enqueue
@@ -218,11 +231,13 @@ class TestCompactionShrinksFile:
             f"compaction from {filler_count} filler events)"
         )
 
-        # Verify all 51 live items survive compaction
+        # Verify live items survive compaction.
+        # MAX_QUEUE_SIZE=50 caps the queue, so we expect exactly 50 items.
+        # (50 original + filler + trigger-compact but cap enforces at 50)
         reloaded = RateLimitQueue(state_path=queue_path, cooldown_seconds=3600)
         items = reloaded.peek()
-        assert len(items) == 51, (
-            f"Expected 51 live items after compaction, got {len(items)}"
+        assert len(items) == 50, (
+            f"Expected 50 live items after compaction (MAX_QUEUE_SIZE), got {len(items)}"
         )
 
     def test_no_compaction_below_threshold(self, tmp_path: Path) -> None:
