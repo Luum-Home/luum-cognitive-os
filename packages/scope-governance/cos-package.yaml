@@ -1,5 +1,5 @@
 name: "@luum/scope-governance"
-version: "1.1.0"
+version: "1.2.0"
 description: "Scope governance — proportionality checks and scope creep detection for agent tasks"
 authors: ["Cognitive OS Team"]
 license: "Apache-2.0"
