@@ -7,6 +7,29 @@
 # Phase-aware: reads project phase from cognitive-os.yaml and applies modifier.
 # On BLOCK: enqueues the action for automatic retry and outputs a structured
 # message so the orchestrator can poll RateLimitQueue.dequeue_ready().
+#
+# ───────────────────────────────────────────────────────────────────────────
+# RATE-LIMITER FLOW (D45 — full end-to-end retry_count wiring)
+# ───────────────────────────────────────────────────────────────────────────
+#
+#   Fresh user Bash → rate-limiter.sh (PreToolUse:Bash)
+#     ├─ allowed: record + exit 0 (command runs)
+#     └─ blocked: queue.enqueue(action, retry_count=$RATE_LIMIT_RETRY_COUNT)
+#                 exit 2 (command blocked; orchestrator notified via stderr)
+#
+#   After every Bash → rate-limit-drain.sh (PostToolUse:Bash, NON-BLOCKING)
+#     ├─ queue.dequeue_ready() returns items whose cooldown elapsed
+#     ├─ for each item: re-check rl.check(action_type)
+#     │   ├─ allowed now: emit RATE_LIMIT_READY message (orchestrator re-runs)
+#     │   └─ still blocked: queue.enqueue(action, retry_count=item.retry_count+1)
+#     │                     ↑ library drops if retry_count > MAX_RETRY_COUNT
+#     └─ never exits non-zero (would deadlock the original Bash)
+#
+# Environment hand-off (when orchestrator re-runs a previously-queued action):
+#   RATE_LIMIT_RETRY_COUNT — int, the retry_count of the dequeued item; the
+#                            PreToolUse hook passes this to enqueue() so
+#                            re-blocks are counted against the cap.
+# ───────────────────────────────────────────────────────────────────────────
 set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
@@ -32,6 +55,15 @@ esac
 # Read project phase for phase-aware rate limiting
 PHASE=$(get_phase "stabilization")
 
+# D45: when this PreToolUse fires for a re-injected (previously-queued) action,
+# the orchestrator/drainer is expected to set RATE_LIMIT_RETRY_COUNT to the
+# retry_count of the dequeued item. Fresh user bash leaves it unset (=> 0).
+RETRY_COUNT="${RATE_LIMIT_RETRY_COUNT:-0}"
+# Defensive: must be a non-negative integer
+case "$RETRY_COUNT" in
+    ''|*[!0-9]*) RETRY_COUNT=0 ;;
+esac
+
 # Check rate limit via Python (passing phase for modifier calculation)
 RESULT=$(python3 -c "
 import sys, os
@@ -46,7 +78,9 @@ rl = RateLimiter(
 allowed, reason = rl.check('$ACTION')
 
 if not allowed:
-    # Enqueue the blocked action for automatic retry
+    # Enqueue the blocked action for automatic retry.
+    # D45: pass retry_count from the env hand-off so re-blocks are counted
+    # against MAX_RETRY_COUNT. Fresh user bash → retry_count=0.
     queue = RateLimitQueue(
         state_path='$_PROJECT_DIR/.cognitive-os/rate-limit-queue.json',
         cooldown_seconds=rl.config.cooldown_seconds,
@@ -54,7 +88,7 @@ if not allowed:
     queue_id = queue.enqueue('$ACTION', {
         'description': '$TOOL_NAME action',
         'blocked_reason': reason,
-    })
+    }, retry_count=$RETRY_COUNT)
     queued_items = queue.peek()
     queued_count = len(queued_items)
     cooldown = rl.config.cooldown_seconds
