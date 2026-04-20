@@ -1,15 +1,22 @@
-"""Claude Code adapter (ADR-033 reference implementation).
+"""Claude Code adapter (ADR-033 + ADR-033b).
 
 Translates Claude Code hook payloads (PreToolUse:Agent, PostToolUse:Agent,
 PostToolUse:* for generic tools) into canonical events.
 
 Mirrors the legacy logic in ``hooks/native-agent-heartbeat.sh`` so behaviour is
 preserved while capture is decoupled from the harness.
+
+ADR-033b: ``duration_ms`` is now computed from Pre/Post correlation via
+:class:`~lib.harness_adapter.tool_use_correlation.CorrelationStore` instead of
+relying on a non-existent ``started_at`` field in the Post payload. On
+``PreToolUse:Agent`` the adapter records the start time; on
+``PostToolUse:Agent`` it pops it and computes the real elapsed milliseconds.
 """
 
 from __future__ import annotations
 
 import os
+import time
 from typing import Any, ClassVar, Dict, List, Optional
 
 from .base import (
@@ -23,6 +30,7 @@ from .base import (
     ToolUse,
     now_epoch,
 )
+from .tool_use_correlation import CorrelationStore
 
 
 class ClaudeCodeAdapter(HarnessAdapter):
@@ -32,6 +40,14 @@ class ClaudeCodeAdapter(HarnessAdapter):
 
     #: Heartbeat stream expected by ``AgentBusMetrics.on_heartbeat_event``.
     default_output: ClassVar[str] = ".cognitive-os/metrics/agent-heartbeat.jsonl"
+
+    def __init__(self, project_dir=None, correlation_store: Optional[CorrelationStore] = None) -> None:
+        super().__init__(project_dir)
+        # ADR-033b: shared correlation store; callers may inject a custom one
+        # for testing or cross-process recovery.
+        self._correlation: CorrelationStore = correlation_store or CorrelationStore(
+            project_dir=self.project_dir
+        )
 
     # --- detection ---------------------------------------------------------
 
@@ -71,13 +87,15 @@ class ClaudeCodeAdapter(HarnessAdapter):
             # Agent lifecycle → canonical AgentStart / AgentEnd plus a
             # heartbeat for backward-compat with agent-heartbeat.jsonl readers.
             if is_post:
+                # ADR-033b: look up real start time from correlation store
+                duration_ms = self._compute_duration_ms(tool_use_id)
                 usage = _extract_token_usage(raw.get("tool_response"))
                 events.append(
                     AgentEnd(
                         agent_id=tool_use_id,
                         ended_at=ts,
                         exit_status=_exit_status(raw),
-                        duration_ms=_duration_ms(raw, ts),
+                        duration_ms=duration_ms,
                         token_usage=usage,
                         session_id=session_id,
                     )
@@ -102,6 +120,8 @@ class ClaudeCodeAdapter(HarnessAdapter):
                         )
                     )
             else:
+                # ADR-033b: record start time for correlation
+                self._correlation.record(tool_use_id, time.monotonic())
                 events.append(
                     AgentStart(
                         agent_id=tool_use_id,
@@ -134,6 +154,22 @@ class ClaudeCodeAdapter(HarnessAdapter):
                 )
 
         return events
+
+    # --- duration ----------------------------------------------------------
+
+    def _compute_duration_ms(self, tool_use_id: str) -> Optional[int]:
+        """Pop the stored start time and return elapsed milliseconds.
+
+        ADR-033b: replaces the aspirational ``_duration_ms(raw, ts)`` helper
+        that read a ``started_at`` field that CC payloads never include.
+        Returns ``None`` when no Pre event was seen for this ID (e.g. the
+        process was restarted between Pre and Post).
+        """
+        started = self._correlation.pop(tool_use_id)
+        if started is None:
+            return None
+        elapsed = time.monotonic() - started
+        return max(0, int(elapsed * 1000))
 
     # --- compatibility emit -----------------------------------------------
 
@@ -227,16 +263,6 @@ def _exit_status(raw: Dict[str, Any]) -> str:
             return "error"
         return "success"
     return "unknown"
-
-
-def _duration_ms(raw: Dict[str, Any], ended_at: float) -> Optional[int]:
-    started = raw.get("started_at") or raw.get("tool_input", {}).get("started_at")
-    try:
-        if started:
-            return max(0, int((ended_at - float(started)) * 1000))
-    except (TypeError, ValueError):
-        return None
-    return None
 
 
 def _summarize(tool_input: Any, limit: int = 160) -> Optional[str]:
