@@ -11,6 +11,8 @@
 # Type: PreToolUse (Bash)
 # Exit: 0 = pass, 2 = block
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 # Read tool input from stdin
 input=$(cat)

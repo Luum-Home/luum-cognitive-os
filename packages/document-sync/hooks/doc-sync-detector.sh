@@ -1,4 +1,6 @@
 #!/bin/bash
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 # Hook: PostToolUse — Detect when code changes make documentation stale
 # Triggers on Edit/Write of source files (*.go, *.ts, *.java)
 # Appends stale doc entries to .cognitive-os/metrics/stale-docs.jsonl

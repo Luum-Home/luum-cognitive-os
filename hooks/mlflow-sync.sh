@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 # Stop hook: sync session metrics to MLflow
 # Always exits 0 — never blocks session cleanup.
 #

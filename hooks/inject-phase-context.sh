@@ -8,6 +8,8 @@
 # Falls back to stderr when invoked outside Claude Code (no valid stdin JSON).
 
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 COGNITIVE_OS_DIR="$PROJECT_DIR/.cognitive-os"

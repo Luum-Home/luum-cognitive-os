@@ -16,6 +16,8 @@
 # Related: Claude Code issue anthropics/claude-code#27201 (closed without fix)
 
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 # Only run if .git is a FILE (i.e., we're inside a worktree or submodule checkout).
 # In a normal clone, .git is a directory.

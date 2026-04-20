@@ -4,6 +4,8 @@
 # Classifies errors, deduplicates within 60s, and appends to JSONL.
 
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="error-learning"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"

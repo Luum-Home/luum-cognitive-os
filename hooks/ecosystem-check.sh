@@ -3,6 +3,8 @@
 # Checks plugin submodules for new commits and evaluated tools for staleness.
 # Runs at most once every 7 days. Graceful — never blocks session start.
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
