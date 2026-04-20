@@ -16,6 +16,17 @@ production=0.75x, maintenance=0.5x).
 Includes RateLimitQueue for automatic retry of blocked actions after
 cooldown expires, with priority ordering and batch reduction suggestions.
 
+Queue storage format: append-only JSONL at ``<state_path>.jsonl`` (or
+``.cognitive-os/rate-limit-queue.jsonl``).  Each line is a canonical event
+with fields ``action``, ``action_id``, ``timestamp`` plus item payload.
+Valid actions: ``queued``, ``dequeued``, ``dropped``, ``retried``,
+``updated``, ``compacted``.  Current queue state is derived by replaying
+events grouped by ``action_id`` (last-write-wins).
+
+Legacy ``rate-limit-queue.json`` files are automatically migrated on first
+boot: each entry emits a ``queued`` event and the old file is renamed to
+``rate-limit-queue.json.deprecated``.
+
 Usage:
     from lib.rate_limiter import RateLimiter, RateLimitConfig, RateLimitQueue
 
@@ -76,6 +87,9 @@ _QUEUE_LOCK_TIMEOUT_SECONDS = 5
 _QUEUE_LOCK_TIMEOUT_LOG = os.path.join(
     ".cognitive-os", "metrics", "queue-lock-timeout.jsonl"
 )
+
+# JSONL compaction: rewrite JSONL with only live entries after this many events
+JSONL_COMPACTION_THRESHOLD = 1000
 
 
 @contextmanager
@@ -606,6 +620,192 @@ class RateLimiter:
             pass  # Best effort -- don't crash on I/O failure
 
 
+def _migrate_legacy_json(json_path: str, jsonl_path: str) -> int:
+    """Migrate a legacy monolithic JSON queue file to JSONL events.
+
+    If ``json_path`` exists AND ``jsonl_path`` does NOT yet exist, each entry
+    in the JSON array is emitted as a ``queued`` event in the new JSONL file.
+    The old JSON file is then renamed to ``<json_path>.deprecated`` to prevent
+    repeated migration.
+
+    Args:
+        json_path:  Path to the legacy ``.json`` queue file.
+        jsonl_path: Target path for the new ``.jsonl`` event log.
+
+    Returns:
+        Number of entries migrated (0 if migration was not needed).
+    """
+    if not os.path.exists(json_path):
+        return 0
+    if os.path.exists(jsonl_path):
+        # JSONL already exists — migration already ran (or JSONL was created
+        # fresh).  Do not attempt migration to avoid data duplication.
+        return 0
+
+    migrated = 0
+    try:
+        with open(json_path, "r") as fh:
+            data = json.load(fh)
+        if not isinstance(data, list):
+            return 0
+
+        os.makedirs(os.path.dirname(jsonl_path) or ".", exist_ok=True)
+        with open(jsonl_path, "a") as fh:
+            for item in data:
+                if "retry_count" not in item:
+                    item["retry_count"] = 0
+                queue_id = item.get("queue_id", "")
+                event = {
+                    "action": "queued",
+                    "action_id": queue_id,
+                    "timestamp": item.get("enqueued_at", time.time()),
+                    "item": item,
+                }
+                fh.write(json.dumps(event) + "\n")
+                migrated += 1
+
+        # Rename the old file so migration does not run again
+        deprecated_path = json_path + ".deprecated"
+        try:
+            os.rename(json_path, deprecated_path)
+        except OSError:
+            pass  # Best effort — if rename fails, next boot skips (JSONL exists)
+
+        # Log the migration event
+        _append_event(
+            jsonl_path,
+            {
+                "action": "migration",
+                "action_id": "",
+                "timestamp": time.time(),
+                "migrated_count": migrated,
+                "source": json_path,
+            },
+        )
+    except (json.JSONDecodeError, TypeError, OSError):
+        pass
+
+    return migrated
+
+
+def _derive_jsonl_path(state_path: str) -> str:
+    """Return the JSONL event-log path derived from ``state_path``.
+
+    If *state_path* ends with ``.json`` the suffix is replaced with ``.jsonl``.
+    Otherwise ``.jsonl`` is appended.  This keeps the two files side-by-side so
+    legacy migration helpers can locate both.
+    """
+    if state_path.endswith(".json"):
+        return state_path[:-5] + ".jsonl"
+    return state_path + ".jsonl"
+
+
+def _append_event(jsonl_path: str, event: Dict[str, Any]) -> None:
+    """Append a single event line to the JSONL event log.
+
+    O_APPEND writes are atomic for records smaller than PIPE_BUF (~4 KB on
+    macOS/Linux), so individual event appends do NOT need a lock.  Only the
+    compaction step (which truncates the file) must hold the flock.
+    """
+    try:
+        os.makedirs(os.path.dirname(jsonl_path) or ".", exist_ok=True)
+        with open(jsonl_path, "a") as fh:
+            fh.write(json.dumps(event) + "\n")
+    except OSError:
+        pass  # Best effort
+
+
+def _replay_jsonl(jsonl_path: str) -> List[Dict[str, Any]]:
+    """Replay JSONL events to derive current live queue items.
+
+    Semantics (last-write-wins per ``action_id``):
+    - ``queued``  / ``retried`` / ``updated`` → item is present (upsert)
+    - ``dequeued`` / ``dropped``               → item is removed
+    - ``compacted``                             → payload replaces ALL state
+
+    Items without ``retry_count`` are backfilled with 0 for backwards compat.
+    """
+    if not os.path.exists(jsonl_path):
+        return []
+
+    state: Dict[str, Dict[str, Any]] = {}  # action_id → item
+
+    try:
+        with open(jsonl_path, "r") as fh:
+            for raw_line in fh:
+                line = raw_line.strip()
+                if not line:
+                    continue
+                try:
+                    event = json.loads(line)
+                except json.JSONDecodeError:
+                    continue  # Skip malformed lines
+
+                action = event.get("action", "")
+                action_id = event.get("action_id", "")
+
+                if action == "compacted":
+                    # Full state reset — payload is the complete live items list
+                    state = {}
+                    for item in event.get("items", []):
+                        aid = item.get("queue_id", "")
+                        if aid:
+                            if "retry_count" not in item:
+                                item["retry_count"] = 0
+                            state[aid] = item
+                elif action in ("queued", "retried", "updated"):
+                    item = event.get("item", {})
+                    if not action_id and item:
+                        action_id = item.get("queue_id", "")
+                    if action_id:
+                        if "retry_count" not in item:
+                            item["retry_count"] = 0
+                        state[action_id] = item
+                elif action in ("dequeued", "dropped"):
+                    state.pop(action_id, None)
+    except OSError:
+        return []
+
+    return list(state.values())
+
+
+def _compact_jsonl(jsonl_path: str, live_items: List[Dict[str, Any]]) -> None:
+    """Rewrite the JSONL file with a single ``compacted`` snapshot event.
+
+    Must be called while holding the queue flock so no concurrent writer
+    appends between the read and the truncation.
+    """
+    event = {
+        "action": "compacted",
+        "action_id": "",
+        "timestamp": time.time(),
+        "items": live_items,
+    }
+    try:
+        os.makedirs(os.path.dirname(jsonl_path) or ".", exist_ok=True)
+        tmp = jsonl_path + ".tmp"
+        with open(tmp, "w") as fh:
+            fh.write(json.dumps(event) + "\n")
+        os.replace(tmp, jsonl_path)
+    except OSError:
+        pass  # Best effort — next boot will compact again
+
+
+def _count_jsonl_lines(jsonl_path: str) -> int:
+    """Return the number of non-empty lines in the JSONL file."""
+    if not os.path.exists(jsonl_path):
+        return 0
+    try:
+        count = 0
+        with open(jsonl_path, "r") as fh:
+            for line in fh:
+                if line.strip():
+                    count += 1
+        return count
+    except OSError:
+        return 0
+
+
 class RateLimitQueue:
     """Queues blocked actions for automatic retry after cooldown.
 
@@ -619,7 +819,18 @@ class RateLimitQueue:
     Constraints:
     - Max 50 items in queue (oldest auto-pruned on overflow)
     - Items older than 2 hours are auto-pruned
-    - State persisted to .cognitive-os/rate-limit-queue.json
+    - State persisted as append-only JSONL events (see module docstring)
+
+    Storage layout:
+    - ``state_path``       — legacy JSON path (kept for backwards compat;
+                             migrated to JSONL on first boot if it exists)
+    - ``_jsonl_path``      — active JSONL event log derived from state_path
+    - ``state_path.lock``  — flock sentinel (unchanged)
+
+    Migration:
+        If ``state_path`` (the old ``.json`` file) exists on construction, its
+        contents are emitted as ``queued`` events to the new JSONL and the old
+        file is renamed to ``<state_path>.deprecated``.
     """
 
     def __init__(
@@ -628,8 +839,13 @@ class RateLimitQueue:
         cooldown_seconds: int = 60,
     ):
         self.state_path = state_path
+        self._jsonl_path: str = _derive_jsonl_path(state_path)
         self.cooldown_seconds = cooldown_seconds
-        self._items: List[Dict[str, Any]] = self._load()
+
+        # Migrate legacy JSON → JSONL on first boot
+        _migrate_legacy_json(state_path, self._jsonl_path)
+
+        self._items: List[Dict[str, Any]] = _replay_jsonl(self._jsonl_path)
         # Recover corrupted queue at startup (compounding-retry loops fill it
         # with exhausted items that can never succeed).
         self.recover_if_corrupted()
@@ -695,6 +911,7 @@ class RateLimitQueue:
             backoff = min(self.cooldown_seconds * (2 ** retry_count), 600)
             now = time.time()
             queue_id = str(uuid.uuid4())[:8]
+            action_label = "retried" if retry_count > 0 else "queued"
             item: Dict[str, Any] = {
                 "queue_id": queue_id,
                 "action_type": action_type,
@@ -713,7 +930,17 @@ class RateLimitQueue:
                 self._items.sort(key=lambda x: (-x["priority"], x["enqueued_at"]))
                 self._items = self._items[:MAX_QUEUE_SIZE]
 
-            self._save()
+            # Append queued/retried event to JSONL (O_APPEND atomic for <PIPE_BUF)
+            _append_event(
+                self._jsonl_path,
+                {
+                    "action": action_label,
+                    "action_id": queue_id,
+                    "timestamp": now,
+                    "item": item,
+                },
+            )
+            self._compact_if_needed()
         return queue_id
 
     def dequeue_ready(self) -> List[Dict[str, Any]]:
@@ -768,7 +995,18 @@ class RateLimitQueue:
             ready.sort(key=lambda x: (x["priority"], x["enqueued_at"]))
 
             self._items = remaining
-            self._save()
+
+            # Append a dequeued event for each released item
+            for item in ready:
+                _append_event(
+                    self._jsonl_path,
+                    {
+                        "action": "dequeued",
+                        "action_id": item["queue_id"],
+                        "timestamp": now,
+                    },
+                )
+            self._compact_if_needed()
         return ready
 
     def peek(self) -> List[Dict[str, Any]]:
@@ -796,7 +1034,16 @@ class RateLimitQueue:
             self._items = [i for i in self._items if i["queue_id"] != queue_id]
             removed = len(self._items) < before
             if removed:
-                self._save()
+                _append_event(
+                    self._jsonl_path,
+                    {
+                        "action": "dropped",
+                        "action_id": queue_id,
+                        "timestamp": time.time(),
+                        "reason": "cancelled",
+                    },
+                )
+                self._compact_if_needed()
         return removed
 
     def format_queue_status(self) -> str:
@@ -873,17 +1120,22 @@ class RateLimitQueue:
             self._save()
 
     def _load(self) -> List[Dict[str, Any]]:
-        """Load queue from disk.
+        """Load queue by replaying JSONL events.
 
-        Backfills ``retry_count`` = 0 on items that pre-date the compounding-
-        retry fix (written before the field was introduced).
+        Falls back to legacy JSON if JSONL does not exist (migration not yet
+        run).  Backfills ``retry_count`` = 0 for items that pre-date the
+        compounding-retry fix.
         """
+        # Primary: replay JSONL event log
+        if os.path.exists(self._jsonl_path):
+            return _replay_jsonl(self._jsonl_path)
+
+        # Fallback: legacy monolithic JSON (migration will run on next save)
         if os.path.exists(self.state_path):
             try:
                 with open(self.state_path, "r") as f:
                     data = json.load(f)
                 if isinstance(data, list):
-                    # Backfill retry_count for items that pre-date the fix
                     for item in data:
                         if "retry_count" not in item:
                             item["retry_count"] = 0
@@ -914,13 +1166,35 @@ class RateLimitQueue:
                 self._items.append(item)
 
     def _save(self) -> None:
-        """Persist queue to disk (atomic write via tmp + replace)."""
-        try:
-            state_dir = os.path.dirname(self.state_path) or "."
-            os.makedirs(state_dir, exist_ok=True)
-            tmp = self.state_path + ".tmp"
-            with open(tmp, "w") as f:
-                json.dump(self._items, f)
-            os.replace(tmp, self.state_path)
-        except OSError:
-            pass  # Best effort
+        """Persist current ``_items`` state by appending ``updated`` events.
+
+        This method exists for backwards compatibility with tests and internal
+        code that mutate ``_items`` directly (e.g. adjusting ``eligible_at``)
+        and then call ``_save()``.  It emits one ``updated`` event per item and
+        then compacts the JSONL if the threshold is reached.
+
+        For normal queue operations (enqueue/dequeue/cancel) the individual
+        action methods append their own typed events; ``_save()`` is not called
+        there — they call ``_compact_if_needed()`` directly.
+        """
+        now = time.time()
+        for item in self._items:
+            _append_event(
+                self._jsonl_path,
+                {
+                    "action": "updated",
+                    "action_id": item.get("queue_id", ""),
+                    "timestamp": now,
+                    "item": item,
+                },
+            )
+        self._compact_if_needed()
+
+    def _compact_if_needed(self) -> None:
+        """Compact the JSONL file if it exceeds JSONL_COMPACTION_THRESHOLD lines.
+
+        Must be called while holding the queue flock (or during the lock-free
+        startup path) because it truncates the file.
+        """
+        if _count_jsonl_lines(self._jsonl_path) >= JSONL_COMPACTION_THRESHOLD:
+            _compact_jsonl(self._jsonl_path, self._items)
