@@ -161,6 +161,52 @@ class HeartbeatTick(CanonicalEvent):
 
 
 # ---------------------------------------------------------------------------
+# ADR-034 live events (extends ADR-033 schema)
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class ToolUseStart(CanonicalEvent):
+    """Live: a tool invocation has begun (paired with :class:`ToolUseEnd`)."""
+
+    event_type: ClassVar[str] = "tool_use_start"
+
+    agent_id: str = ""
+    tool_name: str = ""
+    started_at: float = 0.0
+    tool_input_summary: Optional[str] = None
+    session_id: Optional[str] = None
+
+
+@dataclass
+class ToolUseEnd(CanonicalEvent):
+    """Live: a tool invocation has ended (paired with :class:`ToolUseStart`)."""
+
+    event_type: ClassVar[str] = "tool_use_end"
+
+    agent_id: str = ""
+    tool_name: str = ""
+    ended_at: float = 0.0
+    duration_ms: int = 0
+    exit_status: str = "success"  # success|error|timeout
+    session_id: Optional[str] = None
+
+
+@dataclass
+class ProgressMarker(CanonicalEvent):
+    """Live: a ``PROGRESS: [N/M]`` marker emitted by an agent."""
+
+    event_type: ClassVar[str] = "progress_marker"
+
+    agent_id: str = ""
+    ts: float = 0.0
+    step_current: int = 0
+    step_total: int = 0
+    message: str = ""
+    session_id: Optional[str] = None
+
+
+# ---------------------------------------------------------------------------
 # Adapter ABC
 # ---------------------------------------------------------------------------
 
