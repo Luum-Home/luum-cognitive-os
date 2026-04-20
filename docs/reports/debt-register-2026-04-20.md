@@ -68,8 +68,9 @@ Age in days from 2026-04-20. Effort in session-units (1 session ≈ 3-4h Opus).
 | D42 | hooks/ grep TODO/FIXME | todo | 0 | NOISE | Zero TODO/FIXME/HACK/XXX matches inside `hooks/`. (Pre-commit gate blocks them.) | N/A | - |
 | D43 | FROZEN-BACKLOG §P1 Core vs Extensions | uncommitted_note | >14 | MEDIUM | Advisory-LLM hooks + recap-sync should move to `packages/` before v1.0 (otherwise core ships bloated). | Create `packages/advisory-llm/` + `packages/claude-code-integration/`; move 4 files | 0.5 |
 | D44 | tests/chaos/test_reset_cascade_detector.py:90,125 | skip | ~4 | ~~MEDIUM~~ **CLOSED** | ~~2 skips on reset-cascade detector chaos~~ **RESOLVED 2026-04-20**: `skipif` guards are conditional on blocker file existence — file exists, all 10 tests pass (0 skips). No action needed. | — | 0 |
+| D45 | orchestrator-2026-04-20 | production_bug | 0 | ~~BLOCKING~~ **RESOLVED** | Rate-limiter compounding retry loop — fixed in this session: retry cap (MAX_RETRY_COUNT=3), exponential backoff (2^n×cooldown, cap 600s), circuit breaker (≥10 all-retried items → 60s pause), startup corruption recovery. 14 chaos tests added. | see commit | **RESOLVED** |
 
-44 rows. Non-noise: 40.
+45 rows. Non-noise: 41.
 
 ---
 
