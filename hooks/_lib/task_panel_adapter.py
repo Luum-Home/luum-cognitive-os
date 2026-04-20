@@ -46,7 +46,16 @@ def _format_for_claude_panel(tasks: list[dict]) -> str:
     Claude Code's native Task panel shows Agent + Bash tool calls, but not
     our orchestration layer (circuit breaker, workload scheduler, queue).
     This formatted block gives the agent visibility into that hidden state.
+
+    Dedup: tasks with `toolUseId` are already emitted by hooks/_lib/task_bridge.py
+    as "COS In-Progress with native Task panel link". We skip them here to
+    avoid listing the same task twice in the orchestrator context.
     """
+    if not tasks:
+        return ""
+
+    # Filter out tasks already emitted by task_bridge.py (those with toolUseId).
+    tasks = [t for t in tasks if not t.get("toolUseId")]
     if not tasks:
         return ""
 
@@ -54,6 +63,11 @@ def _format_for_claude_panel(tasks: list[dict]) -> str:
     for task in tasks:
         status = task.get("status", "unknown")
         by_status.setdefault(status, []).append(task)
+
+    # Only emit if there is something actionable. Empty/completed-only state
+    # produces noise with no signal.
+    if not any(by_status.get(s) for s in ("in_progress", "queued", "failed")):
+        return ""
 
     lines = ["## COS Task State (not visible in native Task panel)\n"]
 
