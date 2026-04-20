@@ -11,8 +11,10 @@ dependencies = [
 [project.optional-dependencies]
 llm = [
     "litellm>=1.0",
+    # redis client speaks the Valkey wire protocol; Valkey (fork of Redis 7.2.4)
+    # is the server running in OrbStack (see rules/orchestrator-mode.md).
+    # The `valkey` Python package was redundant — code uses `import redis`.
     "redis>=5.0.0",
-    "valkey>=5.0",
 ]
 web = [
     "fastapi>=0.100",
