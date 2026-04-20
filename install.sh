@@ -20,6 +20,10 @@ PROFILE=""             # Resolved profile: default | full
 PROFILE_SOURCE=""      # flag | env | auto
 SKIP_MANIFEST_CHECK="${COGNITIVE_OS_SKIP_MANIFEST_CHECK:-false}"
 INSTALL_DEPS=false
+# INSTALL_SCOPE controls which SCOPE-tagged files are copied.
+# Values: project (SCOPE:project + SCOPE:both), both (same as project),
+#         all (everything, including SCOPE:os-only — for COS self-hosting).
+INSTALL_SCOPE="${COS_INSTALL_SCOPE:-both}"
 
 cleanup() { rm -rf "$TEMP_DIR"; }
 trap cleanup EXIT
@@ -57,6 +61,11 @@ Options:
   --install-deps         After advisory manifest check, actually install missing
                          dependencies: run uv sync for Python deps and register
                          MCP servers via scripts/register-mcps.sh.
+  --scope=SCOPE          Filter installed files by SCOPE tag (default: both).
+                           project  — files tagged SCOPE:project or SCOPE:both
+                           both     — same as project (default for user projects)
+                           all      — every file, including SCOPE:os-only
+                                      (use when self-hosting COS)
   --help, -h             Show this help message.
 
 Environment variables:
@@ -65,6 +74,7 @@ Environment variables:
   COGNITIVE_OS_SKIP_MANIFEST_CHECK  Set to "true" to skip the dependency report
   COS_PROFILE                       Override profile: 'default' or 'full'.
                                     Legacy values ('lean', 'standard') remapped.
+  COS_INSTALL_SCOPE                 Override scope filter: project|both|all.
 
 Examples:
   # Default install (no flag — recommended for first time)
@@ -130,6 +140,36 @@ while [[ $# -gt 0 ]]; do
     --install-deps)
       INSTALL_DEPS=true
       shift
+      ;;
+    --scope=*)
+      # --scope=project|both|all: filter installed files by SCOPE tag
+      _scope_val="${1#--scope=}"
+      case "$_scope_val" in
+        project|both|all)
+          INSTALL_SCOPE="$_scope_val"
+          ;;
+        *)
+          echo "Error: --scope must be project, both, or all (got: '$_scope_val')." >&2
+          exit 1
+          ;;
+      esac
+      shift
+      ;;
+    --scope)
+      if [[ -z "${2:-}" ]]; then
+        echo "Error: --scope requires a value: project, both, or all." >&2
+        exit 1
+      fi
+      case "$2" in
+        project|both|all)
+          INSTALL_SCOPE="$2"
+          ;;
+        *)
+          echo "Error: --scope must be project, both, or all (got: '$2')." >&2
+          exit 1
+          ;;
+      esac
+      shift 2
       ;;
     --full)
       normalize_profile "full" "flag"
@@ -349,7 +389,9 @@ COS_INIT_FLAG="--$PROFILE"
 # COS_SOURCE_DIR tells cos-init.sh where to copy files from (temp dir).
 # COS_ORIGINAL_SOURCE tells it the real source repo path for the registry,
 # so auto-update-projects.sh can find projects installed from this repo.
-COS_SOURCE_DIR="$TEMP_DIR" COS_ORIGINAL_SOURCE="${SOURCE_DIR:-}" bash "$COS_INIT" "$COS_INIT_FLAG"
+# COS_INSTALL_SCOPE propagates the --scope flag so cos-init.sh can filter
+# SCOPE-tagged files during copy.
+COS_SOURCE_DIR="$TEMP_DIR" COS_ORIGINAL_SOURCE="${SOURCE_DIR:-}" COS_INSTALL_SCOPE="$INSTALL_SCOPE" bash "$COS_INIT" "$COS_INIT_FLAG"
 
 # ── Install CLAUDE.md template if not present ─────────────────────────
 if [ ! -f ".claude/CLAUDE.md" ]; then
