@@ -105,8 +105,8 @@ case "$PROFILE" in
     echo "  SessionStart: self-install, session-init, crash-recovery, session-resume"
     echo "  UserPromptSubmit: user-prompt-capture, session-wrapup-trigger.sh"
     echo "  SubagentStart: subagent-context-injector"
-    echo "  PreToolUse: rate-limiter, secret-detector"
-    echo "  PostToolUse: error-pipeline, result-truncator, content-policy, auto-checkpoint"
+    echo "  PreToolUse: rate-limit-precheck.sh (D45 sidecar), rate-limiter, secret-detector"
+    echo "  PostToolUse: error-pipeline, result-truncator, rate-limit-drain.sh (D45 drainer), content-policy, auto-checkpoint"
     echo "  PreCompact: pre-compaction-flush"
     echo "  Stop: session-cleanup"
     echo "  Overhead: ~100-200ms per tool call"
@@ -128,14 +128,16 @@ case "$PROFILE" in
     echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, valkey-ensure.sh (executor mode only), pattern-check, metrics-rotation.sh, aspirational-audit-weekly.sh"
     echo "  UserPromptSubmit: user-prompt-capture, session-wrapup-trigger.sh"
     echo "  SubagentStart: subagent-context-injector"
-    echo "  PreToolUse: rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact),"
+    # Hooks: adr-detector.sh (async, PostToolUse/Bash)
+    # Hooks: rate-limit-drain.sh (D45 gap A, PostToolUse/Bash, drainer-as-executor)
+    # Hooks: rate-limit-precheck.sh (D45 gap B, PreToolUse/Bash, sidecar hash lookup)
+    # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
+    echo "  PreToolUse: rate-limit-precheck.sh (D45 sidecar), rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact),"
     echo "              destructive-git-blocker.sh (ADR-003 R1 git-op safety), destructive-rm-blocker.sh (ADR-003 R2 file-erasure safety),"
     echo "              dispatch-gate, clarification-gate,"
     echo "              blast-radius (ADR-023 advisory), inject-phase-context, agent-working-dir-inject.sh, agent-prelaunch, error-pattern-detector,"
     echo "              reinvention-check.sh (ADR-029 anti-duplication), prompt-quality-llm, completeness-check-llm, global-verify.sh before"
-    # Hooks: adr-detector.sh (async, PostToolUse/Bash)
-    # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
-    echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, auto-checkpoint, content-policy,"
+    echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, rate-limit-drain.sh (D45 drainer), auto-checkpoint, content-policy,"
     echo "               doc-sync-detector, claim-validator, completion-gate, agent-checkpoint,"
     echo "               trust-score-validator, confidence-gate.sh, confidence-gate-llm, audit-id-enricher.sh, auto-rollback-trigger.sh, auto-repair-dispatcher, dequeue-notify,"
     echo "               state-heartbeat, context-watchdog, global-verify.sh after"
