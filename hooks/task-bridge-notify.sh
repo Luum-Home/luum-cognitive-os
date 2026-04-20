@@ -7,6 +7,8 @@
 # so the model sees what's invisible in the native Task panel.
 
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 

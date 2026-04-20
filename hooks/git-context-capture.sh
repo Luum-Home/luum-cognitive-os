@@ -9,6 +9,8 @@
 #   0 — always (never blocks session end)
 
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 # Stop hooks do not receive stdin tool JSON.
 

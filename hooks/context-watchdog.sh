@@ -12,6 +12,8 @@
 #
 # Must be fast (<50ms) and always exits 0.
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 SESSION_DIR="$PROJECT_DIR/.cognitive-os/sessions/current"

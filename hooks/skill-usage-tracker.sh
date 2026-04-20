@@ -25,6 +25,8 @@
 #     }
 
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 # Read stdin up-front (fast, local copy) so we can safely background the
 # heavy work below. Reading in the foreground avoids the subtle issue where a
@@ -68,14 +70,20 @@ fi
 PY=$(command -v python3 || command -v python || true)
 [ -z "$PY" ] && exit 0
 
+# ADR-028 §585: use _register_bg so all background PIDs are tracked by the
+# process registry and the reaper treats them as managed (not orphans).
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/register-bg.sh"
+
 # Delegate the actual write to the Python telemetry module in the background
-# so we never delay the tool call. Python owns rotation, locking semantics,
-# and JSON encoding uniformly with the rest of the stack.
-(
+# so we never delay the tool call.  _register_bg wraps the command with & and
+# registers its PID in the process_registry automatically.
+#
+# Because the telemetry call uses a heredoc we wrap it in a helper function so
+# _register_bg can invoke it as a plain command.
+_skill_telemetry_write() {
   COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" \
     "$PY" - "$SKILL_NAME" "$DURATION_MS" <<'PYEOF' >/dev/null 2>&1
 import os, sys
-# Make lib/ importable regardless of caller CWD.
 root = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd()
 sys.path.insert(0, root)
 try:
@@ -87,49 +95,11 @@ try:
         dur = 0.0
     record_skill_invocation(name, duration_ms=dur)
 except Exception:
-    # Never propagate — telemetry must not break tool execution.
     pass
 PYEOF
-) </dev/null >/dev/null 2>&1 &
-_TRACKER_PID=$!
+}
 
-# ADR-028 D1.B — register with process_registry so the reaper knows this is a
-# managed short-lived process and not an orphan.
-# ADR-028 D4 fix (2026-04-20): the registration subshell itself was launched with &
-# but its PID was never tracked (CONCERN — bg_without_pid_track). Fixed: capture
-# _REG_PID and disown it explicitly so the parent shell does not accumulate zombies,
-# and register _REG_PID with process_registry as a second managed short-lived process.
-(
-  COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" \
-    "$PY" - "$_TRACKER_PID" "skill-usage-tracker" "30" "short_lived" <<'PYEOF' >/dev/null 2>&1
-import sys, os
-root = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd()
-sys.path.insert(0, root)
-try:
-    import lib.process_registry as process_registry
-    process_registry.register(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]), sys.argv[4])
-except Exception:
-    pass
-PYEOF
-) &
-_REG_PID=$!
-disown "$_REG_PID" 2>/dev/null || true
-
-# Register _REG_PID itself so the reaper knows it too.
-(
-  COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" \
-    "$PY" - "$_REG_PID" "skill-usage-tracker-reg" "15" "short_lived" <<'PYEOF' >/dev/null 2>&1
-import sys, os
-root = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd()
-sys.path.insert(0, root)
-try:
-    import lib.process_registry as process_registry
-    process_registry.register(int(sys.argv[1]), sys.argv[2], int(sys.argv[3]), sys.argv[4])
-except Exception:
-    pass
-PYEOF
-) &
-disown $! 2>/dev/null || true
+_register_bg "skill-usage-tracker" 30 "short_lived" _skill_telemetry_write >/dev/null 2>&1
 
 # Parent returns immediately with success — background writer runs on its own.
 exit 0

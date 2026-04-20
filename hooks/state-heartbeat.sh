@@ -7,6 +7,8 @@
 #
 # Author: luum
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 SESSION_DIR="${CLAUDE_SESSION_DIR:-${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/sessions/default}"
 SESSION_ID="${CLAUDE_SESSION_ID:-default}"

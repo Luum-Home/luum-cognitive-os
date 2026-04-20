@@ -13,6 +13,8 @@
 # Claude Code adapter for the legacy regex-based confidence-gate.sh.
 
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="confidence-gate-llm"
 

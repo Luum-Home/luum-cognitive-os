@@ -9,6 +9,8 @@
 # Complements parry-guard (ML-based) with deterministic pattern matching.
 
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="aguara-scan"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"

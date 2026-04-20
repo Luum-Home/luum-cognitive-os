@@ -5,6 +5,8 @@
 _HOOK_NAME="conversation-capture"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 TRANSCRIPTS_DIR="$PROJECT_DIR/.cognitive-os/transcripts"

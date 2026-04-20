@@ -4,6 +4,8 @@
 # Must complete in <1 second
 
 set -euo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 FLAG="/tmp/claude-private-mode-active"
 

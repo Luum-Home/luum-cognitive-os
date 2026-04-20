@@ -9,6 +9,8 @@
 # 4. Apply if needed (promote/warn/degrade/disable)
 # 5. Log result
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 source "$(dirname "$0")/_lib/common.sh"
 

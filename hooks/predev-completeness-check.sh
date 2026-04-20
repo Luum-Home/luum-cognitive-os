@@ -9,6 +9,8 @@
 #   0 — artifacts present or prompt is not implementation-related
 #   2 — critical artifacts missing (production/maintenance phase only)
 set -uo pipefail
+# ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 INPUT=$(cat)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // ""')
