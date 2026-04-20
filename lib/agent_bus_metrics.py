@@ -22,7 +22,9 @@ from typing import Any, Dict, List, Optional
 # Keep imports lazy/guarded so the module is importable without Valkey
 # installed.
 try:
-    from packages.agent_coordination.lib.agent_bus import (  # type: ignore
+    # lib/agent_bus.py is a symlink to packages/agent-coordination/lib/agent_bus.py.
+    # Python can't import package paths with hyphens, so we go through the symlink.
+    from lib.agent_bus import (  # type: ignore
         OrchestratorSubscriber,
         _DEFAULT_FALLBACK_DIR,  # type: ignore
         _DEFAULT_VALKEY_URL,  # type: ignore
@@ -203,22 +205,31 @@ class AgentBusMetrics:
     def subscribe(self) -> Any:
         """Attach the adapter to a live OrchestratorSubscriber.
 
-        Constructs one if not injected. The subscriber must be started by
-        the caller; this method only registers the heartbeat callback.
-        Returns the subscriber (useful for tests and shutdown).
+        Constructs one if not injected, registers the heartbeat callback,
+        and calls `subscribe_all()` so the subscriber starts listening on
+        the wildcard heartbeat channel. Returns the subscriber.
         """
         if self._subscriber is None:
             if OrchestratorSubscriber is None:
                 raise RuntimeError(
                     "agent_bus.OrchestratorSubscriber unavailable — install 'redis' or "
-                    "run in a checkout with packages/agent-coordination/lib on the path."
+                    "run in a checkout with lib/agent_bus.py on the path."
                 )
             self._subscriber = OrchestratorSubscriber(
                 valkey_url=self._valkey_url,
                 fallback_dir=str(self._fallback_dir),
             )
-        # on_heartbeat registers a callback; let the subscriber own start/stop.
+        # Register the callback BEFORE subscribing so no early messages are lost.
         self._subscriber.on_heartbeat(self.on_heartbeat_event)
+        # Activate the subscription — subscribe_all() psubscribes to the
+        # wildcard heartbeat/progress/question channels and starts the
+        # listener thread. Without this, on_heartbeat_event is never invoked.
+        try:
+            self._subscriber.subscribe_all()
+        except Exception:
+            # Fallback mode (no Valkey) — subscriber has no channels to join,
+            # but on_heartbeat_event still callable by direct dispatch in tests.
+            pass
         return self._subscriber
 
     # -- Internals ---------------------------------------------------------
