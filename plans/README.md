@@ -1,5 +1,11 @@
-# Plans (Historical)
+# Plans
 
-Historical plan files from early development. This directory is no longer active.
+Active plans have been consolidated under `.cognitive-os/plans/`.
 
-Active plans are in `.cognitive-os/plans/`. See `rules/cognitive-os-changes.md` for the protocol.
+See `.cognitive-os/plans/` for:
+- `features/` — feature plans
+- `research/` — research/exploration plans
+- `bugs/` — bug investigation plans
+- `chores/` — chore/refactor plans
+- `evaluations/` — evaluation and assessment plans
+- `migrations/` — migration plans

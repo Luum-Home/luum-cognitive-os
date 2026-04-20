@@ -26,7 +26,6 @@
 
 - "lib/ and packages/ have duplicate files" → **symlinks**, not duplicates
 - "48 hooks are dead" → **efficiency profile**, not a bug
-- "plans/ directory is empty" → plans live in `.cognitive-os/plans/` currently
 - "No tests for lib/X" → check `tests/unit/test_X.py` AND `tests/behavior/`
 
 ## Verification commands
