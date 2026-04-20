@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Change Impact Analysis module.
 

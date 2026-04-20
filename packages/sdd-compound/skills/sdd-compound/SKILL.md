@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: sdd-compound
 description: "Extract learnings and compound knowledge after completing an SDD change. Run after sdd-archive to crystallize patterns, update skill routing, and improve future iterations."

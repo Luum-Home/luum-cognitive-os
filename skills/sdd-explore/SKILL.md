@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: sdd-explore
 command: /sdd-explore

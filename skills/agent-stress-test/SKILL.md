@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: agent-stress-test
 description: "Stress-test agent cognitive health to detect context-induced degradation"

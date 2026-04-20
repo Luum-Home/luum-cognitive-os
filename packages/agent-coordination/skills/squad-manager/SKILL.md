@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: squad-manager
 version: 1.0.0

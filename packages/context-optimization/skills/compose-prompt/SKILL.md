@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: compose-prompt
 description: Compose a sub-agent prompt from reusable templates. Use when launching sub-agents to ensure consistent instructions.

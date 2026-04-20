@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: apply-improvements
 description: Apply approved self-improvement changes from an analyze-improvements report. Applies AUTO changes immediately; presents HUMAN-APPROVAL changes for explicit confirmation before touching files.

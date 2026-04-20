@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Cognee Client — Semantic knowledge graph search for Cognitive OS.
 

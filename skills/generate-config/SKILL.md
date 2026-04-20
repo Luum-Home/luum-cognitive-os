@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: generate-config
 description: Read detected-stack.json and generate or update cognitive-os.yaml with detected infrastructure, quality gates, and stack-specific settings.

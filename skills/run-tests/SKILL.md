@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: run-tests
 description: Auto-detect project test framework and run tests with structured reporting

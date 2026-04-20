@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Paperclip REST API client for Cognitive OS dashboard integration.
 

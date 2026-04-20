@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: memu-context
 description: Query memU proactive memory for relevant context before starting work

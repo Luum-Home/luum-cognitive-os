@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: tool-discovery
 description: Discover new open-source tools that could enhance Cognitive OS capabilities

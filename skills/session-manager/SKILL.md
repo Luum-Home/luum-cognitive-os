@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: session-manager
 description: Manage concurrent Cognitive OS sessions — list, inspect, and clean up

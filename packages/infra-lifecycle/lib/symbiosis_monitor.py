@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Symbiosis Monitor — Overhead-to-Value Ratio Tracking
 

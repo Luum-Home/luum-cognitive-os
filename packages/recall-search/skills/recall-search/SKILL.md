@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: recall-search
 description: "Search past Claude Code conversations using full-text search. Use when Engram mem_search doesn't find what you're looking for -- recall searches raw conversation transcripts."
