@@ -168,7 +168,7 @@ class TestToolNameFiltering:
         "clarification-gate.sh",
         "completeness-check.sh",
         "infra-intent-detector.sh",
-        "rate-limit-protection.sh",
+        "token-budget-monitor.sh",
     }
     POSTTOOL_AGENT_HOOKS = {
         "claim-validator.sh",
@@ -227,7 +227,7 @@ class TestMissingProjectDir:
         "error-pipeline.sh",
         "completeness-check.sh",
         "infra-intent-detector.sh",
-        "rate-limit-protection.sh",
+        "token-budget-monitor.sh",
     }
 
     def test_nonexistent_project_dir(self, hook_path, tmp_path):
@@ -270,7 +270,7 @@ class TestJsonParsing:
         "error-pipeline.sh",
         "completeness-check.sh",
         "infra-intent-detector.sh",
-        "rate-limit-protection.sh",
+        "token-budget-monitor.sh",
         "rate-limiter.sh",
         "large-file-advisor.sh",
     }

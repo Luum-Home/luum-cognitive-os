@@ -28,6 +28,8 @@ import time
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
+from lib.config_loader import find_config_path as _cl_find_config_path
+
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
@@ -80,22 +82,16 @@ _MODEL_BUDGET_TIER: Dict[str, str] = {
 # ---------------------------------------------------------------------------
 
 
-def _find_config_path(project_dir: str) -> Optional[str]:
-    """Return first readable cognitive-os.yaml from project_dir."""
-    candidates = [
-        os.path.join(project_dir, "cognitive-os.yaml"),
-        os.path.join(project_dir, _COGNITIVE_OS_DIR, "cognitive-os.yaml"),
-        _DEFAULT_CONFIG_PATH,
-    ]
-    for path in candidates:
-        if os.path.isfile(path):
-            return path
-    return None
-
-
 def _read_daily_limit(project_dir: str) -> float:
     """Parse resources.budget.daily_alert_usd from cognitive-os.yaml."""
-    path = _find_config_path(project_dir)
+    # Search project_dir first, then fall back to canonical env-var / cwd search.
+    _project_candidates = [
+        os.path.join(project_dir, "cognitive-os.yaml"),
+        os.path.join(project_dir, _COGNITIVE_OS_DIR, "cognitive-os.yaml"),
+    ]
+    path: Optional[str] = next(
+        (p for p in _project_candidates if os.path.isfile(p)), None
+    ) or _cl_find_config_path()
     if not path:
         return 10.0  # sensible default
 

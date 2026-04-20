@@ -33,7 +33,7 @@ from lib.metric_event import normalize_legacy_row
 def _guess_source(row: dict) -> str:
     """Heuristic: infer writer source from row fields."""
     if "action" in row:
-        return "rate_limit_protection"
+        return "token_budget_monitor"
     if "agent" in row:
         return "record_completion"
     return "unknown"
