@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook: Epic Task Detector
 # Fires on "Agent" tool use — detects tasks that might affect many files
 # Advisory only — does NOT block. Suggests running /sandbox-sample first.

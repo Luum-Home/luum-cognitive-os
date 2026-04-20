@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Private Mode Protocol
 
 ## Activation

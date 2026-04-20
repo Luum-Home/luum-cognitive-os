@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Prompt Quality Scoring
 
 ## Purpose

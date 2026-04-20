@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # CONCERNS: quality, verification, testing
 # Completion Gate Hook — PostToolUse for Agent
 # Merged from: auto-verify.sh + dod-gate.sh + auto-refine.sh

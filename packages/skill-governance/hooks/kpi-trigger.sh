@@ -1,4 +1,5 @@
 #!/bin/bash
+# SCOPE: os-only
 # KPI Trigger Hook — Stop hook (runs at session end)
 # Reads KPI data from metrics/, checks thresholds, logs snapshot to kpi-history.jsonl.
 # If any KPI is below threshold, flags self-improvement for next session.

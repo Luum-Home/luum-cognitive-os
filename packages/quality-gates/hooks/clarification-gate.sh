@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # PreToolUse hook: Clarification Gate
 # Fires on "Agent" tool use — scores prompt ambiguity and blocks if too vague
 # BLOCKING: exit 2 if ambiguity score > 60 (blocks tool use)

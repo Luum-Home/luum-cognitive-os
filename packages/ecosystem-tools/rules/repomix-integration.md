@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Repomix Integration — Repository Context Packing
 
 ## Purpose

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # PostToolUse hook: Auto-generate SKILL.md from complex agent completions
 # Fires on "Agent" tool use — detects complex successful tasks and templates a reusable skill
 # Must complete in <5 seconds

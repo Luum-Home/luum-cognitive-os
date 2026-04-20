@@ -1,4 +1,5 @@
 #!/bin/bash
+# SCOPE: os-only
 # Hook: Engram Auto-Import (SessionStart)
 # Checks if .engram/exports/ has files newer than the last import
 # and imports them automatically so every session starts with latest team memory.
