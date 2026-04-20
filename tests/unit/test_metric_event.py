@@ -166,6 +166,14 @@ class TestMetricEventSerialisation:
         assert isinstance(e.payload, dict)
         assert "legacy_payload" in e.payload
 
+    def test_from_dict_tolerates_unknown_schema_version(self):
+        """from_dict must not raise for any schema_version >= 1 (ADR-028c contract)."""
+        d = {"schema_version": 999, "source": "x", "event_type": "y", "payload": {}}
+        e = MetricEvent.from_dict(d)
+        assert e.source == "x"
+        assert e.event_type == "y"
+        assert e.schema_version == 999
+
 
 # ---------------------------------------------------------------------------
 # append_event
