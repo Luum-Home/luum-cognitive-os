@@ -292,6 +292,11 @@ GROUPEOF
     "recap-sync.sh" \
     "session-end-reap.sh")
 
+  # PreCompact — flush Engram context before context compaction
+  local pre_compact
+  pre_compact=$(hook_group "" \
+    "pre-compaction-flush.sh")
+
   # ── Assemble JSON ───────────────────────────────────────────────
   printf '{\n  "hooks": {\n    "SessionStart": [\n'
   printf '%s\n' "$session_start"
@@ -299,6 +304,10 @@ GROUPEOF
 
   printf '    "UserPromptSubmit": [\n'
   printf '%s\n' "$user_prompt_submit"
+  printf '    ],\n'
+
+  printf '    "PreCompact": [\n'
+  printf '%s\n' "$pre_compact"
   printf '    ],\n'
 
   printf '    "PreToolUse": [\n'
@@ -348,7 +357,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh pre-compaction-flush.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -358,6 +367,7 @@ done
 echo ""
 echo "Hook summary for profile 'default' (ADR-002):"
 echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, valkey-ensure.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh"
+echo "  PreCompact: pre-compaction-flush.sh"
 echo "  UserPromptSubmit: user-prompt-capture.sh, session-wrapup-trigger.sh"
 echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh, destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
 echo "  PreToolUse Read: large-file-advisor.sh"

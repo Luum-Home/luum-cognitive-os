@@ -164,10 +164,6 @@ class TestCompactionResilience:
             "mem_session_summary before compaction destroys working memory."
         )
 
-    @pytest.mark.xfail(
-        reason="WS14: pre-compaction-flush.sh is not registered as a PreCompact hook "
-               "in settings.json (PreCompact hook type may not be supported by current Claude Code version)"
-    )
     def test_pre_compaction_flush_registered_in_settings(self, all_registered_commands):
         """pre-compaction-flush.sh must be registered as a hook in settings.json."""
         is_registered = any(
