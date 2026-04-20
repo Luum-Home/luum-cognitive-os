@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Dequeue Notify — notifies orchestrator when agent slots free up after completion.
 # Type: PostToolUse
 # Matcher: Agent

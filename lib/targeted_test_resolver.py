@@ -1,3 +1,4 @@
+# SCOPE: both
 """Targeted test resolver — ADR-027 Phase 1.
 
 Given a list of changed files (from `git diff --name-only`), returns the set

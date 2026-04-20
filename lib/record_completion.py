@@ -1,3 +1,4 @@
+# SCOPE: both
 """Record agent completion to learning pipeline.
 
 Reads a JSON object from stdin with the shape produced by completion-gate.sh:

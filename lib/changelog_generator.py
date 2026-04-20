@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """Changelog generator from session and sprint data.
 
 Reads session metadata, git context, task records, and cost events to produce

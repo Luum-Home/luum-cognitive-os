@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # PostToolUse hook: Guardrails AI Validator
 # Fires on "Agent" tool use — runs PII check on agent responses
 # Advisory only (exit 0) — warns on PII detection

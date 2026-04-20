@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # jupyter-sandbox.sh — Route Python execution to Jupyter sandbox
 # Trigger: PreToolUse on Bash
 #

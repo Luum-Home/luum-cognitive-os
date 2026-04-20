@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Anti-Hallucination Rule
 
 ## Purpose

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Trust Score Protocol
 
 ## Purpose

@@ -1,3 +1,4 @@
+# SCOPE: both
 """Safe Engram wrapper — security-scanned write path for untrusted content.
 
 FOR (use case)

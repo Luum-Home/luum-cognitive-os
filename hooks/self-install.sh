@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # Self-Install Hook — Full framework auto-sync for self-hosted development
 # Detects if running inside the luum-agent-os repo itself and syncs ALL components.
 # Must complete in <1s. Idempotent and safe.

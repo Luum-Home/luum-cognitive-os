@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Scout Pattern -- Pre-Implementation Reconnaissance
 
 ## Purpose

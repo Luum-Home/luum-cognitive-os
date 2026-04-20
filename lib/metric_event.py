@@ -1,3 +1,4 @@
+# SCOPE: both
 """MetricEvent — canonical JSONL event schema for SO observability (ADR-028 D1.A)."""
 
 from __future__ import annotations

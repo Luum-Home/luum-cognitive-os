@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Hook Security Profiles
 
 ## Purpose

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 # /// script
 # requires-python = ">=3.9"
 # ///

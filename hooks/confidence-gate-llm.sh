@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: cos
+# SCOPE: both
 # PostToolUse hook: Confidence Gate (LLM-evaluated, ADR-022)
 # Fires on Agent / task / delegate tool results — emits a type:"prompt"
 # handler that asks Haiku whether the agent response includes a Trust

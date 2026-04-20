@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Queue Advisor — Dynamic Dispatch Prioritization
 
 ## Purpose

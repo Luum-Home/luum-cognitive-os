@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # PostToolUse hook: Suppress metrics and error writing when private mode is active
 # Runs BEFORE skill-metrics-tracker.sh and error-learning.sh
 # Must complete in <1 second

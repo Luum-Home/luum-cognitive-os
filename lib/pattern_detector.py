@@ -12,7 +12,7 @@ Usage:
     for issue in issues:
         print(f"[{issue.severity}] {issue.type}: {issue.description}")
 """
-# SCOPE: os-infra
+# SCOPE: os-only
 
 import ast
 import os

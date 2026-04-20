@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # install-promptfoo.sh — Install Promptfoo red team testing framework
 set -euo pipefail
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # cos-init-global.sh — Install universal COS rules to ~/.claude/rules/cos/
 # These rules apply to ALL projects on this machine.
 # Does NOT install hooks (they need project context via $CLAUDE_PROJECT_DIR).

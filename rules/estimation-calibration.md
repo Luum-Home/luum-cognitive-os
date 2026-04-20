@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Estimation Calibration Protocol
 
 ## Purpose

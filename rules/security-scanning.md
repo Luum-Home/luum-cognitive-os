@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Security Scanning — Semgrep SAST Integration
 
 ## Overview

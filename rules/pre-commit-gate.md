@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Pre-Commit Coverage Gate
 
 ## Purpose

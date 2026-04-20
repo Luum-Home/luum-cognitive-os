@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # cos-ghost-skills.sh — List skills exposed but never invoked in the last N days.
 #
 # A "ghost" skill is one present under .claude/skills/ that has zero matching

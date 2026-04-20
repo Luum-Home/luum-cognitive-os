@@ -1,3 +1,4 @@
+# SCOPE: both
 """Smart Reader — Auto-pagination for large file reads.
 
 Provides intelligent file reading that handles files exceeding the Read tool's

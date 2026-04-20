@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # cos-sessions — Show Cognitive OS session history
 #
 # Reads .cognitive-os/metrics/session-log.jsonl (written by hooks/session-sanity.sh)

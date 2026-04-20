@@ -1,3 +1,4 @@
+# SCOPE: both
 """OKR-driven consequence engine for Cognitive OS.
 
 Connects performance metrics to real consequences: when agents/skills

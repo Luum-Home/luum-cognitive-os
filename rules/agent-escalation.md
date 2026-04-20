@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Agent Escalation Protocol
 
 ## Purpose

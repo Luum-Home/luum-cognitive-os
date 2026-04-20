@@ -1,3 +1,4 @@
+# SCOPE: os-only
 """Self-improvement analysis — minimal viable version.
 
 Reads KPI history and session learnings to suggest improvements.

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Broken Window Policy
 
 ## Principle

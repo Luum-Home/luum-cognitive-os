@@ -1,3 +1,4 @@
+# SCOPE: both
 """Pre-development artifact completeness checker."""
 from __future__ import annotations
 

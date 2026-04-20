@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Token Budget Monitor — PreToolUse hook on Agent
 #
 # Monitors API token consumption before every agent launch.

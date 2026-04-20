@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 # Result Management — Large Output Prevention
 
 ## Problem
