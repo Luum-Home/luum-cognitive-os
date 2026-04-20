@@ -131,3 +131,18 @@ def resolve_tests_for_changes(changed_files: Iterable[str]) -> List[str]:
 
 
 __all__ = ["resolve_tests_for_changes"]
+
+
+class TargetedTestResolver:
+    """Namespace class for lib.targeted_test_resolver.
+
+    Canonical API is the module-level `resolve_tests_for_changes` function.
+    This class is a thin facade so `from lib.targeted_test_resolver import
+    TargetedTestResolver` also works, matching ADR-027 Phase 1 references.
+    """
+
+    resolve_tests_for_changes = staticmethod(resolve_tests_for_changes)
+
+
+# Re-declare __all__ at end so the class is exported too.
+__all__ = ["resolve_tests_for_changes", "TargetedTestResolver"]

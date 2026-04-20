@@ -277,3 +277,35 @@ def _is_alive(pid: int) -> bool:
         # Process exists but we can't signal it — treat as alive.
         return True
     return True
+
+
+class ProcessRegistry:
+    """Namespace class exposing the process_registry module API.
+
+    Added to align with commit-body and ADR references that advertised a
+    class-style interface. The canonical API remains the module-level free
+    functions (`register`, `deregister`, `list_live`, `cleanup_expired`,
+    `detect_orphans`) — this class is a thin facade so callers may also
+    write `from lib.process_registry import ProcessRegistry`.
+
+    Contract: stateless; every method delegates to the module-level
+    function with identical signature.
+    """
+
+    register = staticmethod(register)
+    deregister = staticmethod(deregister)
+    list_live = staticmethod(list_live)
+    cleanup_expired = staticmethod(cleanup_expired)
+    detect_orphans = staticmethod(detect_orphans)
+
+
+__all__ = [
+    "ProcessRecord",
+    "ProcessRegistry",
+    "VALID_KINDS",
+    "register",
+    "deregister",
+    "list_live",
+    "cleanup_expired",
+    "detect_orphans",
+]

@@ -41,7 +41,7 @@ Priority: project>global>auto [`skill-management`]. [`skill-rewrite`]+[`auto-ski
 
 **Team**: [`squad-protocol`] auto-reconfig <0.80. [`estimation-calibration`] medium+. [`self-improvement-protocol`] weekly, max 5 changes.
 
-**Infra**: [`infra-health`] Docker check. [`singularity`] MAPE-K(inactive). [`performance-monitoring`] p50/p95/p99. [`observability`] MLflow. [`infra-intent`] [`model-compatibility`].
+**Infra**: [`infra-health`] Docker check. [`singularity`] MAPE-K(inactive). [`performance-monitoring`] p50/p95/p99. [`observability`] MLflow. [`so-slo`] ADR-028 SLO catalogue + error budget + cadence. [`infra-intent`] [`model-compatibility`].
 
 **Persistence**: [`fault-tolerance`] 4-tier. [`engram-organization`] prefixes. [`session-concurrency`]. [`step-files`] long phases.
 
