@@ -554,6 +554,9 @@ class RateLimitQueue:
         self.state_path = state_path
         self.cooldown_seconds = cooldown_seconds
         self._items: List[Dict[str, Any]] = self._load()
+        # Recover corrupted queue at startup (compounding-retry loops fill it
+        # with exhausted items that can never succeed).
+        self.recover_if_corrupted()
 
     def enqueue(
         self,
@@ -587,16 +590,12 @@ class RateLimitQueue:
         # Drop items that have exceeded the retry cap — prevents unbounded growth
         if retry_count > MAX_RETRY_COUNT:
             try:
-                os.makedirs(
-                    os.path.dirname(self.state_path) or ".", exist_ok=True
-                )
-                drop_log = self.state_path.replace(
-                    "rate-limit-queue.json", "rate-limit-dropped.jsonl"
-                )
+                state_dir = os.path.dirname(self.state_path) or "."
+                os.makedirs(state_dir, exist_ok=True)
+                drop_log = os.path.join(state_dir, "rate-limit-dropped.jsonl")
                 with open(drop_log, "a") as f:
-                    import json as _json
                     f.write(
-                        _json.dumps(
+                        json.dumps(
                             {
                                 "timestamp": time.time(),
                                 "action_type": action_type,
@@ -644,11 +643,36 @@ class RateLimitQueue:
         Items are returned sorted by priority (lowest first), then
         by enqueue time (FIFO within same priority).
 
+        Circuit-breaker: if >= CIRCUIT_BREAKER_THRESHOLD items are queued AND
+        all of them have retry_count >= 1 (indicating a persistent failure
+        loop), the drainer pauses for CIRCUIT_BREAKER_WINDOW seconds by
+        pushing all eligible items' eligible_at forward. This prevents CPU
+        spin when every retry hits the same rate limit and re-queues.
+
         Returns:
             List of queue items that are now eligible for execution.
+            Each item contains a ``retry_count`` field callers should
+            increment and pass back to ``enqueue()`` if the item fails again.
         """
         self._prune()
         now = time.time()
+
+        # Circuit breaker: check for persistent failure loop before dequeuing
+        if len(self._items) >= CIRCUIT_BREAKER_THRESHOLD:
+            failing_items = [
+                i for i in self._items if i.get("retry_count", 0) >= 1
+            ]
+            if len(failing_items) == len(self._items):
+                # All items have failed at least once — circuit is tripped.
+                # Push all eligible_at forward to enforce a cooldown window.
+                modified = False
+                for item in self._items:
+                    if item["eligible_at"] <= now:
+                        item["eligible_at"] = now + CIRCUIT_BREAKER_WINDOW
+                        modified = True
+                if modified:
+                    self._save()
+                    return []  # Drainer paused — caller should wait
 
         ready: List[Dict[str, Any]] = []
         remaining: List[Dict[str, Any]] = []
@@ -727,6 +751,33 @@ class RateLimitQueue:
                 )
         return "\n".join(lines)
 
+    def recover_if_corrupted(self) -> int:
+        """Detect and recover a corrupted queue at startup.
+
+        A queue is considered corrupted when more than
+        CORRUPTION_RECOVERY_THRESHOLD items have retry_count > MAX_RETRY_COUNT.
+        This indicates a compounding-retry loop filled the queue before the cap
+        was enforced.  On detection, all over-cap items are dropped and the
+        remainder is saved.
+
+        Returns:
+            Number of items dropped (0 if no corruption detected).
+        """
+        over_cap = [
+            i for i in self._items if i.get("retry_count", 0) > MAX_RETRY_COUNT
+        ]
+        if len(over_cap) >= CORRUPTION_RECOVERY_THRESHOLD:
+            before = len(self._items)
+            self._items = [
+                i
+                for i in self._items
+                if i.get("retry_count", 0) <= MAX_RETRY_COUNT
+            ]
+            dropped = before - len(self._items)
+            self._save()
+            return dropped
+        return 0
+
     def _prune(self) -> None:
         """Remove items older than MAX_QUEUE_AGE_SECONDS."""
         now = time.time()
@@ -737,12 +788,20 @@ class RateLimitQueue:
             self._save()
 
     def _load(self) -> List[Dict[str, Any]]:
-        """Load queue from disk."""
+        """Load queue from disk.
+
+        Backfills ``retry_count`` = 0 on items that pre-date the compounding-
+        retry fix (written before the field was introduced).
+        """
         if os.path.exists(self.state_path):
             try:
                 with open(self.state_path, "r") as f:
                     data = json.load(f)
                 if isinstance(data, list):
+                    # Backfill retry_count for items that pre-date the fix
+                    for item in data:
+                        if "retry_count" not in item:
+                            item["retry_count"] = 0
                     return data
             except (json.JSONDecodeError, TypeError, OSError):
                 pass
