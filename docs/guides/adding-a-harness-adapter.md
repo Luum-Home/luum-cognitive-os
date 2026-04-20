@@ -116,3 +116,63 @@ Target: 100% pass, all adapters.
 - [ ] ADR-033 referenced in the commit message
 
 Questions? Start from ADR-033 (`docs/adrs/ADR-033-harness-agnostic-event-capture.md`) and the Claude Code reference implementation (`claude_code.py`).
+
+## Live streaming (ADR-034)
+
+Post-hoc capture (above) covers JSONL analysis. To also feed the live TUI (`cos-watch`), dashboards and MLflow bridge, implement the **streaming** path defined by ADR-034.
+
+### Why a second path?
+
+Post-hoc adapters are invoked by hooks / file-close handlers. Live consumers need events *as they happen*. ADR-034 adds three live event types on top of the ADR-033 schema:
+
+| Event            | When to emit                                        |
+|------------------|------------------------------------------------------|
+| `ToolUseStart`   | Tool invocation has begun                            |
+| `ToolUseEnd`     | Tool invocation has ended                            |
+| `ProgressMarker` | Agent emitted `PROGRESS: [N/M] <message>`            |
+
+`ToolUse` / `AgentEnd` from ADR-033 remain the post-hoc authoritative record.
+
+### Implementing `stream_events`
+
+Add a streaming variant (or extend your post-hoc adapter) with this signature:
+
+```python
+def stream_events(self, source, poll_interval=0.5,
+                  stop_event=None, max_iterations=None):
+    """Yield canonical live events as `source` produces them.
+
+    - `source`: file path, fifo, or anything your harness streams to.
+    - `poll_interval`: seconds between reads (portable polling).
+    - `stop_event`: threading.Event; when set, the generator returns.
+    - `max_iterations`: test hook; None = infinite.
+    """
+```
+
+Reference: `packages/agent-lifecycle/lib/harness_adapter/aider_streaming.py`. It tracks a byte offset per source file so repeated reads do not duplicate events.
+
+### Routing to consumers
+
+The `cos-executor` daemon (`scripts/cos-executor.py`) subscribes to `cos:agent:*:*` and re-publishes normalised events on `cos:canonical:live`. Your adapter writes to `cos:agent:<id>:<suffix>` via `AgentPublisher` or falls through to the FallbackBus JSONL files — either way the daemon picks it up.
+
+### Back-pressure
+
+The Executor caps fan-out at **50 events/sec** per project. If your adapter can emit faster, down-sample before yielding (every 10th token, every 500 ms, …).
+
+### Portability rules
+
+- Prefer **polling** (`time.sleep`) over `inotify`/`fsevents` — runs unchanged on macOS, Linux and CI.
+- Track a byte offset per source file; reset it when the file shrinks (rotation).
+- Never raise out of the generator; exit silently on `stop_event` or IO errors.
+
+### Tests
+
+- `test_<harness>_streaming_adapter.py` — parse fixed lines, verify event types and ordering.
+- Exercise `stop_event.set()` to prove the generator returns cleanly.
+- Exercise a second call with no file change — no duplicate events.
+
+### Banner feedback
+
+When the Executor is running, the session banner flips from
+`Agent comms: FIRE_AND_FORGET (Valkey ✅, Executor ❌)` to
+`Agent comms: CONNECTED (Valkey ✅, Executor ✅)`. Use that as the smoke test that live streaming is live end-to-end.
