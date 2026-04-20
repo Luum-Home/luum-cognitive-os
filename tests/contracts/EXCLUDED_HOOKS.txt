@@ -127,7 +127,7 @@ release-guard.sh | FUTURE: guards release operations; planned for PreToolUse Bas
 # File no longer exists. Pytest responsibility consolidated into
 # hooks/global-verify.sh (ADR-027 Phase 1).
 token-budget-monitor.sh | FUTURE: monitors token budget mid-session; planned for PostToolUse — not yet wired
-global-verify.sh | FUTURE: global verification pass at Stop; planned for Stop event — not yet wired
+global-verify.sh | CONDITIONAL: global verification pass at PreToolUse/PostToolUse Agent; registered at apply-efficiency-profile.sh:365 (PreToolUse Agent before) and line 370 (PostToolUse Agent after), per commit 92cf485
 
 # ── Hooks discovered during initial audit run (not in earlier survey) ────────
 adr-detector.sh | FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired
