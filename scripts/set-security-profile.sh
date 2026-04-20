@@ -131,7 +131,7 @@ case "$PROFILE" in
     echo "  PreToolUse: rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact),"
     echo "              destructive-git-blocker.sh (ADR-003 R1 git-op safety), destructive-rm-blocker.sh (ADR-003 R2 file-erasure safety),"
     echo "              dispatch-gate, clarification-gate,"
-    echo "              blast-radius (ADR-023 advisory), inject-phase-context, agent-prelaunch, error-pattern-detector,"
+    echo "              blast-radius (ADR-023 advisory), inject-phase-context, agent-working-dir-inject.sh, agent-prelaunch, error-pattern-detector,"
     echo "              reinvention-check.sh (ADR-029 anti-duplication), prompt-quality-llm, completeness-check-llm, global-verify.sh before"
     # Hooks: adr-detector.sh (async, PostToolUse/Bash)
     # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
