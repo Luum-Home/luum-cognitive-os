@@ -1,0 +1,1 @@
+../packages/cos-self-knowledge/lib/self_knowledge.py
