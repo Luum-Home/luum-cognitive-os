@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """License Auto-Guard -- Enforce license policy on dependencies.
 

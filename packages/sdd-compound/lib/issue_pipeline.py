@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 # scope: both
 """ORPHAN: This module is not actively used. See docs/architecture/reality-audit.md.
 

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: component-classifier
 description: "Classify a new component (skill, hook, rule, lib) as CORE or PACKAGE. Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package."

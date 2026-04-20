@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: trust-audit
 description: Analyze trust scores across agents and tasks, identify patterns, recommend reviews

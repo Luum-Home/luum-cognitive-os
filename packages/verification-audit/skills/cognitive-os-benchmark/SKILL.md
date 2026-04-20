@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: cognitive-os-benchmark
 description: Run benchmark comparisons between Cognitive OS and BMAD METHOD v6

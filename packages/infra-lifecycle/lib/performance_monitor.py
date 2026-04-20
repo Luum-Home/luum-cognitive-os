@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Performance Monitor — latency, throughput, and efficiency tracking for Cognitive OS.
 

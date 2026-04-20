@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: detect-patterns
 description: >

@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Engagement-weighted scoring engine for research results.
 

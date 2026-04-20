@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: bump-version
 command: /bump-version

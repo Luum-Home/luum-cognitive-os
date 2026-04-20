@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: strands-evals-integration
 description: >

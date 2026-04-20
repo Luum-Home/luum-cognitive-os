@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """System Knowledge Graph — Dependency mapping across all Cognitive OS layers.
 

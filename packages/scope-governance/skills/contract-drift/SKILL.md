@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: contract-drift
 description: >

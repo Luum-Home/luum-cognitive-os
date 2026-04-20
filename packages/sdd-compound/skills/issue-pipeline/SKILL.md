@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: issue-pipeline
 version: 1.0.0

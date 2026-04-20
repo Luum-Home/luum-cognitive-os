@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Agent Planning Poker — Multi-agent complexity estimation with consensus.
 

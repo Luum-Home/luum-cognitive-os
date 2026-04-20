@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: batch-runner
 version: 1.0.0

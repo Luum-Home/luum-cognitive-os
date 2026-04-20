@@ -1,3 +1,4 @@
+# SCOPE: both
 """Advisor MCP Server — Model-agnostic strategic advisor for coding agents.
 
 Any AI coding agent (Claude Code, Cursor, Windsurf, etc.) can call the

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: install-recommended
 description: Detect project stack and recommend relevant skills to install

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: simulation-arena
 version: 1.0.0

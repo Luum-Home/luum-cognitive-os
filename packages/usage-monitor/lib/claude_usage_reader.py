@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Claude Usage Reader -- reads ground-truth token usage from Claude Code sessions.
 

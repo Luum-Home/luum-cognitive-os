@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: add-rule
 description: Step-by-step guide for adding a new rule to the Cognitive OS

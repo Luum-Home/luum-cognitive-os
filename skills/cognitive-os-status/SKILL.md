@@ -1,3 +1,4 @@
+<!-- SCOPE: os-only -->
 ---
 name: cognitive-os-status
 description: "Full health check of all Cognitive OS components"

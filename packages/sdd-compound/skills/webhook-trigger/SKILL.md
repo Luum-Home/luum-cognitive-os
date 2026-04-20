@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: webhook-trigger
 description: GitHub webhook server that receives issue events and launches SDD pipelines automatically via ClaudeExecutor.

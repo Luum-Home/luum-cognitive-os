@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: singularity
 version: 1.0.0

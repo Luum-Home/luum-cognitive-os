@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: sdd-resume
 command: /sdd-resume

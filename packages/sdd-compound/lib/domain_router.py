@@ -1,3 +1,4 @@
+# SCOPE: both
 # scope: both
 """Domain-specific evaluator routing for SDD verify.
 

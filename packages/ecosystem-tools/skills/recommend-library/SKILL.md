@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: recommend-library
 description: Search package registries and rank by relevance, adoption, maintenance, and license compliance

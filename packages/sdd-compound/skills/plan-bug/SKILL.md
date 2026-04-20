@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: plan-bug
 description: Create a bug fix plan with root cause analysis and evaluation scoring. Use before fixing any non-trivial bug.

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: add-hook
 description: Step-by-step guide for adding a new hook to the Cognitive OS

@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: scaffold-project
 description: Create the .claude/ directory structure, symlink rules, and generate project-specific rules, skills, and hooks using detected-stack.json.

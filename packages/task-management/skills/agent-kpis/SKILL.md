@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: agent-kpis
 description: Calculate and report Cognitive OS KPIs and OKRs. Shows agent health, efficiency, quality metrics. Use periodically or when evaluating agent performance.

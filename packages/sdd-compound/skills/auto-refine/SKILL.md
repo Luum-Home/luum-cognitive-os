@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: auto-refine
 description: Analyze a failed agent's output, determine root cause, and re-launch with refined instructions. Implements the PITER Refine step.
