@@ -131,7 +131,7 @@ case "$PROFILE" in
     echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, valkey-ensure.sh (executor mode only), pattern-check, metrics-rotation.sh, aspirational-audit-weekly.sh"
     echo "  UserPromptSubmit: user-prompt-capture, session-wrapup-trigger.sh"
     echo "  SubagentStart: subagent-context-injector"
-    echo "  PreToolUse: rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact),"
+    echo "  PreToolUse: agent-bash-cwd-enforcer.sh (cwd mismatch advisory for git ops), rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact),"
     echo "              destructive-git-blocker.sh (ADR-003 R1 git-op safety), destructive-rm-blocker.sh (ADR-003 R2 file-erasure safety),"
     echo "              dispatch-gate, clarification-gate,"
     echo "              blast-radius (ADR-023 advisory), inject-phase-context, agent-working-dir-inject.sh, agent-prelaunch, error-pattern-detector,"

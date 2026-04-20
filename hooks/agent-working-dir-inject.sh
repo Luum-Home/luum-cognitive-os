@@ -148,8 +148,11 @@ log_event "injected" "policy=$POLICY target=$TARGET_DIR"
 
 # ── Build and emit additionalContext ─────────────────────────────────────────
 CONTEXT="WORKING DIR: $TARGET_DIR
-(Auto-resolved by agent-working-dir-inject.sh per cognitive-os.yaml orchestration.sub_agent_cwd=$POLICY)
-Use absolute paths under this directory. Commits land on the branch checked out at that path."
+⚠ CRITICAL: your inherited cwd is NOT this path. For git, file ops, and commits to land at WORKING DIR, you MUST:
+  - For git: \`git -C $TARGET_DIR <cmd>\` OR prefix every bash with \`cd $TARGET_DIR &&\`
+  - For file writes: use absolute paths under $TARGET_DIR
+Commits made without this prefix WILL land on whatever branch the orchestrator's cwd has checked out (probably a worktree, NOT main).
+(Auto-resolved by agent-working-dir-inject.sh per cognitive-os.yaml orchestration.sub_agent_cwd=$POLICY)"
 
 if [ "$HAS_VALID_INPUT" -eq 1 ]; then
   # Prefer jq (no python3 startup cost); fall back to python3 if jq unavailable.
