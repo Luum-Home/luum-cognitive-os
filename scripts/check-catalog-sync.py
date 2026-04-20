@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """Validate that skills on disk match CATALOG.md entries.
 
 Exit 0 if in sync, exit 1 with details if mismatched.

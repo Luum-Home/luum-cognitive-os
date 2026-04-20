@@ -76,10 +76,6 @@ def all_registered_commands(settings_hooks) -> list[str]:
 class TestToolCallBudget:
     """Verify the preamble instructs agents on tool-call limits."""
 
-    @pytest.mark.xfail(
-        reason="WS14: explicit numeric tool-call ceiling not defined — "
-               "preamble mentions '>80% of expected budget' but never states what the budget number is"
-    )
     def test_preamble_has_explicit_tool_call_limit(self, preamble_content):
         """Preamble must state a concrete numeric cap (e.g., 'max 50 tool calls').
 
@@ -362,10 +358,6 @@ class TestBackgroundAgentIsolation:
         )
 
 
-    @pytest.mark.xfail(
-        reason="WS14: preamble does not yet have explicit isolation warning about "
-               "not spawning sub-agents without checking dispatch-gate / slot count"
-    )
     def test_preamble_warns_against_unrestricted_sub_agent_spawning(self, preamble_content):
         """Preamble must warn agents not to spawn unlimited sub-agents.
 

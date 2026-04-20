@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """Detect structural-only test files that verify existence rather than behavior.
 
 Structural tests check things like path.exists(), is_file(), is_dir(), or
