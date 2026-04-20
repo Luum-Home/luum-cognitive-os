@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 <!-- Cleaned: removed phantom entries without SKILL.md implementations -->
 # Cognitive OS Skills Catalog
 
