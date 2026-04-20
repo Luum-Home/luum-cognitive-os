@@ -131,11 +131,10 @@ def cmd_run(args: argparse.Namespace) -> int:
     abm = AgentBusMetrics()
     if valkey:
         try:
+            # subscribe() registers the heartbeat callback AND calls
+            # subscribe_all() so the subscriber starts listening on
+            # cos:agent:*:heartbeat. Listener thread spawns inside agent_bus.
             abm.subscribe()
-            # subscribe() registers the callback; the underlying subscriber
-            # must be told to listen in a background thread.
-            if abm._subscriber and hasattr(abm._subscriber, "start"):
-                abm._subscriber.start()
         except Exception as e:
             if args.verbose:
                 print(f"[orchestrator] subscriber start failed: {e}", file=sys.stderr)

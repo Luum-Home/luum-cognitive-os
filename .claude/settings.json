@@ -22,27 +22,48 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-mode-detect.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/infra-health.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/valkey-ensure.sh\""
-          },
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/mcp-scan.sh\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/usage-health-check.sh\""
-          },
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/user-prompt-capture.sh\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "",
+        "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/ecosystem-check.sh\""
-          },
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/subagent-context-injector.sh\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pattern-check.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/metrics-rotation.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pre-compaction-flush.sh\""
           }
         ]
       }
@@ -54,28 +75,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limiter.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/token-budget-monitor.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/secret-detector.sh\""
           }
         ]
       },
       {
-        "matcher": "Read",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/large-file-advisor.sh\""
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|Write|MultiEdit",
+        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
@@ -112,35 +116,28 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/predev-completeness-check.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/completeness-check.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/completeness-check-llm.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/prompt-quality.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/prompt-quality-llm.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/epic-task-detector.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/reinvention-check.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aguara-scan.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-refine.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/parry-scan.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/registration-check.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-work-tracker.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/global-verify.sh\" before"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limit-protection.sh\""
           }
         ]
       }
@@ -156,10 +153,6 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-detector.sh\""
           }
         ]
       },
@@ -168,7 +161,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-checkpoint.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-checkpoint.sh\"",
+            "async": true
           }
         ]
       },
@@ -177,32 +171,26 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/secret-detector.sh\""
-          },
-          {
-            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/content-policy.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/confidentiality-enforcer.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/architecture-compliance.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/doc-sync-detector.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/scope-creep-detector.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/wiring-check.sh\""
-          }
-        ]
-      },
-      {
-        "matcher": "Skill",
-        "hooks": [
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/doc-sync-detector.sh\"",
+            "async": true
+          },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-usage-tracker.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/semgrep-scan.sh\"",
+            "async": true
           }
         ]
       },
@@ -227,43 +215,63 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/confidence-gate-llm.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-skill-generator.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-verify.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-repair-dispatcher.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dod-gate.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dequeue-notify.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-sanity.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/assumption-tracker.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/audit-id-enricher.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/consequence-evaluator.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/state-heartbeat.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/scope-proportionality.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-work-tracker.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/semgrep-scan.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-panel-sync.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/observability-trace.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-bridge-notify.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/guardrails-validator.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/global-verify.sh\" after"
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/state-heartbeat.sh\"",
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/context-watchdog.sh\"",
+            "async": true
           }
         ]
       }
@@ -282,31 +290,13 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/git-context-capture.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/kpi-trigger.sh\"",
+            "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-changelog.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/test-baseline-diff.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-hygiene.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/mlflow-sync.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/recap-sync.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-end-reap.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-recorder.sh\"",
+            "async": true
           }
         ]
       }
