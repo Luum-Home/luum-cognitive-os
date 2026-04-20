@@ -1,4 +1,7 @@
-"""Tests for lib/rate_limit_protection.py — Rate Limit Protection.
+"""Tests for lib/token_budget_monitor.py — Token Budget Monitor.
+
+Imports via lib.token_budget_monitor (canonical).  The old module name
+lib.rate_limit_protection remains as a deprecation shim.
 
 Author: luum
 """
@@ -13,7 +16,7 @@ from unittest.mock import patch
 
 import pytest
 
-from lib.rate_limit_protection import RateLimitProtection, RateLimitStatus
+from lib.token_budget_monitor import RateLimitProtection, RateLimitStatus
 
 
 @pytest.fixture
@@ -106,10 +109,12 @@ class TestRecordUsage:
         assert cost_file.exists()
         with open(cost_file) as fh:
             entry = json.loads(fh.readline())
-        assert entry["input_tokens"] == 1000
-        assert entry["output_tokens"] == 2000
-        assert entry["total_tokens"] == 3000
-        assert entry["model"] == "sonnet"
+        # record_usage writes via MetricEvent which nests token fields under "payload"
+        payload = entry["payload"]
+        assert payload["input_tokens"] == 1000
+        assert payload["output_tokens"] == 2000
+        assert payload["total_tokens"] == 3000
+        assert payload["model"] == "sonnet"
 
     def test_record_agent_launch_increments_counter(
         self, protection: RateLimitProtection

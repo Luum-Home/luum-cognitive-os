@@ -59,6 +59,13 @@ hook_entry() {
   printf '          {\n            "type": "command",\n            "command": "bash \\"$CLAUDE_PROJECT_DIR/hooks/%s\\""\n          }' "$script"
 }
 
+# ── Helper: build a hook entry with extra args ──────────────────────
+hook_entry_with_args() {
+  local script="$1"
+  local args="$2"
+  printf '          {\n            "type": "command",\n            "command": "bash \\"$CLAUDE_PROJECT_DIR/hooks/%s\\" %s"\n          }' "$script" "$args"
+}
+
 # ── Helper: build a hook group ──────────────────────────────────────
 # Usage: hook_group <matcher> <script1> [script2] ...
 hook_group() {
@@ -135,6 +142,7 @@ build_settings() {
   local pre_bash
   pre_bash=$(hook_group "Bash" \
     "rate-limiter.sh" \
+    "token-budget-monitor.sh" \
     "secret-detector.sh")
   local pre_read
   pre_read=$(hook_group "Read" \
@@ -144,20 +152,32 @@ build_settings() {
     "secret-detector.sh")
   # ADR-022: prompt-quality-llm.sh and completeness-check-llm.sh are
   # Haiku-evaluated advisories that run alongside the regex variants.
+  local pre_agent_entries
+  pre_agent_entries=$(
+    hook_entry "dispatch-gate.sh"; printf ',\n'
+    hook_entry "clarification-gate.sh"; printf ',\n'
+    hook_entry "blast-radius.sh"; printf ',\n'
+    hook_entry "inject-phase-context.sh"; printf ',\n'
+    hook_entry "agent-prelaunch.sh"; printf ',\n'
+    hook_entry "error-pattern-detector.sh"; printf ',\n'
+    hook_entry "predev-completeness-check.sh"; printf ',\n'
+    hook_entry "completeness-check-llm.sh"; printf ',\n'
+    hook_entry "prompt-quality-llm.sh"; printf ',\n'
+    hook_entry "auto-refine.sh"; printf ',\n'
+    hook_entry "registration-check.sh"; printf ',\n'
+    hook_entry "agent-work-tracker.sh"; printf ',\n'
+    hook_entry_with_args "global-verify.sh" "before"
+  )
   local pre_agent
-  pre_agent=$(hook_group "Agent" \
-    "dispatch-gate.sh" \
-    "clarification-gate.sh" \
-    "blast-radius.sh" \
-    "inject-phase-context.sh" \
-    "agent-prelaunch.sh" \
-    "error-pattern-detector.sh" \
-    "predev-completeness-check.sh" \
-    "completeness-check-llm.sh" \
-    "prompt-quality-llm.sh" \
-    "auto-refine.sh" \
-    "registration-check.sh" \
-    "agent-work-tracker.sh")
+  pre_agent=$(cat <<GROUPEOF
+      {
+        "matcher": "Agent",
+        "hooks": [
+$pre_agent_entries
+        ]
+      }
+GROUPEOF
+  )
 
   # PostToolUse
   local post_bash
@@ -180,21 +200,33 @@ build_settings() {
   # ADR-022: confidence-gate-llm.sh is the Haiku-evaluated advisory
   # variant of confidence-gate.sh; runs alongside it.
   # auto-verify + dod-gate gate every agent completion.
+  local post_agent_entries
+  post_agent_entries=$(
+    hook_entry "claim-validator.sh"; printf ',\n'
+    hook_entry "completion-gate.sh"; printf ',\n'
+    hook_entry "agent-checkpoint.sh"; printf ',\n'
+    hook_entry "trust-score-validator.sh"; printf ',\n'
+    hook_entry "confidence-gate-llm.sh"; printf ',\n'
+    hook_entry "auto-verify.sh"; printf ',\n'
+    hook_entry "dod-gate.sh"; printf ',\n'
+    hook_entry "session-sanity.sh"; printf ',\n'
+    hook_entry "audit-id-enricher.sh"; printf ',\n'
+    hook_entry "state-heartbeat.sh"; printf ',\n'
+    hook_entry "agent-work-tracker.sh"; printf ',\n'
+    hook_entry "task-panel-sync.sh"; printf ',\n'
+    hook_entry "task-bridge-notify.sh"; printf ',\n'
+    hook_entry_with_args "global-verify.sh" "after"
+  )
   local post_agent
-  post_agent=$(hook_group "Agent" \
-    "claim-validator.sh" \
-    "completion-gate.sh" \
-    "agent-checkpoint.sh" \
-    "trust-score-validator.sh" \
-    "confidence-gate-llm.sh" \
-    "auto-verify.sh" \
-    "dod-gate.sh" \
-    "session-sanity.sh" \
-    "audit-id-enricher.sh" \
-    "state-heartbeat.sh" \
-    "agent-work-tracker.sh" \
-    "task-panel-sync.sh" \
-    "task-bridge-notify.sh")
+  post_agent=$(cat <<GROUPEOF
+      {
+        "matcher": "Agent",
+        "hooks": [
+$post_agent_entries
+        ]
+      }
+GROUPEOF
+  )
 
   # Stop
   local stop_hooks
@@ -274,11 +306,11 @@ echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, sessi
 echo "  PreToolUse Bash: rate-limiter.sh, secret-detector.sh (ADR-023 redact)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
-echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, auto-refine.sh, registration-check.sh, agent-work-tracker.sh"
+echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
 echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"
-echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh"
+echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh, global-verify.sh after"
 echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, test-baseline-diff.sh, session-hygiene.sh, mlflow-sync.sh, recap-sync.sh, session-end-reap.sh"
 echo "  Total hook commands: $new_hook_count"
 

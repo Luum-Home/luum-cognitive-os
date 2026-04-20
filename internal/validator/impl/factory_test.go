@@ -27,10 +27,10 @@ func TestFactory_RegistersAllSix(t *testing.T) {
 		t.Errorf("Bash before: got %v, want %v", got, want)
 	}
 
-	// BeforeTool / Agent → rate-limiter, rate-limit-protection, completeness, prompt-quality.
+	// BeforeTool / Agent → rate-limiter, token-budget-monitor, completeness, prompt-quality.
 	agentCtx := &hook.Context{Event: hook.CanonicalEventBeforeTool, ToolName: hook.ToolAgent}
 	got = names(reg.FindValidators(agentCtx))
-	want = []string{"rate-limiter", "rate-limit-protection", "completeness-check", "prompt-quality"}
+	want = []string{"rate-limiter", "token-budget-monitor", "completeness-check", "prompt-quality"}
 	if !sameSet(got, want) {
 		t.Errorf("Agent before: got %v, want %v", got, want)
 	}

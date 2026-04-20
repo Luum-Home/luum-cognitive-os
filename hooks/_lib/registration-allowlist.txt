@@ -75,7 +75,7 @@ predev-completeness-check.sh
 private-mode-gate.sh
 private-mode-metrics-gate.sh
 prompt-quality.sh
-rate-limit-protection.sh
+token-budget-monitor.sh
 rate-limiter.sh
 registration-check.sh
 reinvention-check.sh
