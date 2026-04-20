@@ -268,6 +268,27 @@ fi
 CONTEXT_BUF+="
 "
 
+# --- Expand [`ref-key`] markers inline (ADR-027 Phase 2) ---
+# Any [`rule-name`] reference in the preamble or phase rules is replaced
+# with the full content of rules/<rule-name>.md (max_depth=1, no recursion).
+if command -v python3 >/dev/null 2>&1; then
+  _EXPANDED=$(printf '%s' "$CONTEXT_BUF" | python3 -c "
+import sys
+sys.path.insert(0, '${PROJECT_DIR}')
+buf = sys.stdin.read()
+try:
+    from lib.ref_key_loader import expand
+    sys.stdout.write(expand(buf, max_depth=1))
+except Exception:
+    sys.stdout.write(buf)
+" 2>/dev/null)
+  # Only update CONTEXT_BUF if expansion succeeded (non-empty result)
+  if [[ -n "$_EXPANDED" ]]; then
+    CONTEXT_BUF="$_EXPANDED"
+  fi
+  unset _EXPANDED
+fi
+
 # --- Truncate to 10K char limit ---
 # additionalContext has a hard cap of 10,000 chars per Claude Code spec.
 # Use Python for safe multi-byte truncation; fall back to bash arithmetic.
