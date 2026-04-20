@@ -52,7 +52,14 @@ Components that already exist (Apache-2.0):
 
 ---
 
-## P1 — Core vs Extensions Audit (April 2026 deferred)
+## P1 — Core vs Extensions Audit (MVP DONE 2026-04-20 — waves pending)
+
+**Status (2026-04-20):** MVP delivered — audit complete, migration plan approved, first extension (`cos-advisory-llm`) extracted as proof-of-concept with backwards-compat symlinks. 14 packs and shim cleanup remain (21 waves → v1.0).
+
+- Audit: `docs/architecture/core-vs-extensions-audit-2026-04-20.md` (581 components classified: 126 CORE, 453 EXTENSION, 2 REMOVE).
+- Plan: `docs/architecture/core-vs-extensions-migration-plan.md` (21 waves, one pack per minor version).
+- POC: `packages/cos-advisory-llm/` (3 LLM hooks moved, symlinks at `hooks/*-llm.sh`, both profiles smoke-tested green).
+- Debt row D43 → PARTIAL.
 
 **Why:** 141 commits between v0.8.7 and v0.9.0 added many components directly to root. Some are core (vendor-agnostic, always-loaded) but others are extensions that should live in `packages/` for optional installation.
 
