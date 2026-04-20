@@ -49,6 +49,7 @@ import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from lib.config_loader import find_config_path as _cl_find_config_path
 from lib.context_diet import ContextDiet
 from lib.prompt_cache import apply_cache_to_system_prompt, apply_message_cache
 
@@ -59,20 +60,6 @@ from lib.prompt_cache import apply_cache_to_system_prompt, apply_message_cache
 # Approximate token budgets
 _DEFAULT_TASK_TYPE = "implement"
 _RULES_SECTION_HEADER = "## Active Rules\n\n"
-
-
-def _find_config_path(project_dir: str) -> Optional[str]:
-    """Resolve cognitive-os.yaml from project_dir or common fallback paths."""
-    candidates = [
-        os.path.join(project_dir, "cognitive-os.yaml"),
-        os.path.join(project_dir, ".cognitive-os", "cognitive-os.yaml"),
-        "cognitive-os.yaml",
-    ]
-    for path in candidates:
-        if os.path.isfile(path):
-            return path
-    return None
-
 
 
 def _load_preamble(project_dir: str, phase: str = "reconstruction") -> str:
@@ -144,7 +131,14 @@ class PromptBuilder:
         Returns:
             Configured PromptBuilder ready for use.
         """
-        config_path = _find_config_path(project_dir)
+        # Search project_dir first, then fall back to canonical env-var / cwd search.
+        _proj_candidates = [
+            os.path.join(project_dir, "cognitive-os.yaml"),
+            os.path.join(project_dir, ".cognitive-os", "cognitive-os.yaml"),
+        ]
+        config_path: Optional[str] = next(
+            (p for p in _proj_candidates if os.path.isfile(p)), None
+        ) or _cl_find_config_path()
 
         diet = ContextDiet.from_yaml(
             config_path=config_path or "cognitive-os.yaml",

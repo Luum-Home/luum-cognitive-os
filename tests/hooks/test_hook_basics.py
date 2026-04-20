@@ -15,7 +15,7 @@ Priority hooks tested:
 6. auto-checkpoint.sh
 7. completeness-check.sh
 8. infra-intent-detector.sh
-9. rate-limit-protection.sh
+9. token-budget-monitor.sh
 10. large-file-advisor.sh
 """
 
@@ -422,15 +422,15 @@ class TestInfraIntentDetector:
 
 
 # ---------------------------------------------------------------------------
-# rate-limit-protection.sh — PreToolUse on Agent
-# Blocks at 95% rate limit usage
+# token-budget-monitor.sh — PreToolUse on Agent
+# Blocks at 95% token budget usage
 # ---------------------------------------------------------------------------
 
 
 class TestRateLimitProtection:
-    """Tests for hooks/rate-limit-protection.sh."""
+    """Tests for hooks/token-budget-monitor.sh (renamed from rate-limit-protection.sh)."""
 
-    HOOK = "rate-limit-protection.sh"
+    HOOK = "token-budget-monitor.sh"
 
     def test_normal_usage_passes(self, run_hook, mock_project):
         """Under normal conditions (no prior usage), should pass."""

@@ -63,7 +63,7 @@ rules that were previously indexed only in `RULES-COMPACT.md` without delivery.
 Rules you do NOT need to read inline (they are hook-enforced; violations
 auto-block):
 `anti-hallucination`, `assumption-tracking`, `blast-radius`, `clarification-gate`,
-`content-policy`, `prompt-quality`, `rate-limiting`, `rate-limit-protection`,
+`content-policy`, `prompt-quality`, `rate-limiting`, `rate-limit-protection` (now `token-budget-monitor`),
 `scope-creep-detection`, `scope-proportionality`, `consequence-system`,
 `trust-score` (validator portion), `crash-recovery`, `credential-management` (via
 secret-detector), `error-learning`, `result-management`, `user-prompt-capture`,

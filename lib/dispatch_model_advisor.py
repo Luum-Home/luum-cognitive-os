@@ -29,6 +29,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from lib.config_loader import find_config_path as _find_config_path
 from lib.paths import project_root
 
 # ---------------------------------------------------------------------------
@@ -92,21 +93,7 @@ def classify_task_type(description: str) -> str:
 # Config helpers
 # ---------------------------------------------------------------------------
 
-def _find_config_path() -> Optional[str]:
-    """Locate cognitive-os.yaml searching standard locations."""
-    candidates: List[str] = []
-
-    project_dir = project_root()
-    if project_dir:
-        candidates.append(os.path.join(project_dir, "cognitive-os.yaml"))
-
-    candidates.append("cognitive-os.yaml")
-    candidates.append(os.path.join(".cognitive-os", "cognitive-os.yaml"))
-
-    for p in candidates:
-        if os.path.isfile(p):
-            return p
-    return None
+# _find_config_path is imported from lib.config_loader (canonical implementation)
 
 
 def _read_hourly_cap(config_path: Optional[str] = None) -> float:

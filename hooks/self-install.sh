@@ -225,7 +225,7 @@ EXCLUDED_RULES=(
   "crash-recovery.md"              # → auto-checkpoint.sh + crash-recovery.sh
   "prompt-quality.md"              # → prompt-quality.sh (PreToolUse Agent)
   "rate-limiting.md"               # → rate-limiter.sh (PreToolUse Bash|Agent|Edit|Write)
-  "rate-limit-protection.md"       # → rate-limit-protection.sh (PreToolUse Agent)
+  "rate-limit-protection.md"       # → token-budget-monitor.sh (PreToolUse Agent)
   "skill-rewrite.md"               # → completion-gate.sh (PostToolUse Agent)
   "auto-skill-generation.md"       # → auto-skill-generator.sh (PostToolUse Agent)
   "auto-repair.md"                 # → auto-repair-dispatcher.sh (PostToolUse Agent)
