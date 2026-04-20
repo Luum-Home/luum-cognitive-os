@@ -1,7 +1,8 @@
-"""Harness-agnostic event capture layer (ADR-033).
+"""Harness-agnostic event capture layer (ADR-033 + ADR-033b).
 
 Public surface:
     - CanonicalEvent, AgentStart, AgentEnd, ToolUse, TokenUsage, HeartbeatTick
+    - ParseError (ADR-033b)
     - HarnessName (enum)
     - HarnessAdapter (ABC)
 
@@ -15,6 +16,7 @@ from .base import (
     HarnessAdapter,
     HarnessName,
     HeartbeatTick,
+    ParseError,
     ToolUse,
     TokenUsage,
 )
@@ -26,6 +28,7 @@ __all__ = [
     "HarnessAdapter",
     "HarnessName",
     "HeartbeatTick",
+    "ParseError",
     "ToolUse",
     "TokenUsage",
 ]
