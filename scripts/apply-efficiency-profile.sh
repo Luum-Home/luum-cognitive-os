@@ -147,7 +147,8 @@ build_settings() {
     "metrics-rotation.sh" \
     "aspirational-audit-weekly.sh" \
     "mcp-scan.sh" \
-    "session-start-worktree-nudge.sh")
+    "session-start-worktree-nudge.sh" \
+    "self-knowledge-refresh.sh")
 
   # UserPromptSubmit
   local user_prompt_submit_entries
