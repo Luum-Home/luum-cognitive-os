@@ -5,17 +5,8 @@
 # dependencies = ["pyyaml"]
 # ///
 """
-DEPRECATED: Use lib/pipeline_executor.py instead.
-
-This module is superseded by pipeline_executor.py which provides:
-- Declarative YAML workflow definitions (.cognitive-os/workflows/*.yaml)
-- Resume/start-from support
-- Phase timing and state persistence
-- Dry-run mode
-
-Migration:
-  OLD: python lib/batch_runner.py add-auth --fast-forward
-  NEW: python -m lib.pipeline_executor --workflow .cognitive-os/workflows/feature-pipeline.yaml --change add-auth
+DEPRECATED: pipeline_executor.py was removed 2026-04-20 (0 production callers).
+This module remains as the primary batch runner for SDD pipelines.
 
 SDD Batch Runner — Execute multiple SDD changes sequentially.
 
