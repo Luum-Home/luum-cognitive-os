@@ -396,6 +396,9 @@ resources:
       valkey:
         mode: on_demand            # Phase 3: keep as optional Docker. File fallback (agent_bus.py) handles single-session use.
         idle_timeout_minutes: 30
+        env_vars:
+          VALKEY_URL: "redis://localhost:6379"       # Primary override (agent_bus.py, agent_dashboard.py, agent_output_to_bus.py)
+          COS_VALKEY_URL: "redis://localhost:6379"   # Alias — checked if VALKEY_URL unset
       cognee:
         mode: pip                  # MIGRATED Phase 2: pip install cognee>=0.1. Use Python API in-process instead of HTTP server.
         idle_timeout_minutes: 15
