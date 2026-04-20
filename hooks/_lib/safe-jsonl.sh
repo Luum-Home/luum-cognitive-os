@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # safe-jsonl.sh — Shared library for safe JSONL writes + hook health heartbeats
 #
 # PERFORMANCE CONTRACT:

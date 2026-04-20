@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """Task Bridge — correlates COS task_id with Claude Code tool_use_id.
 
 This is the bidirectional link that makes COS-orchestrated tasks visible

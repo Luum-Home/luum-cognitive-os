@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # circuit-breaker.sh — Per-error-type circuit breaker for auto-repair
 # Part of: auto-repair-system (ARS-1-02)
 #

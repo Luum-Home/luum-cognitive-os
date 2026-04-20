@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # Symlink-aware file existence checker.
 # Use this instead of raw [ -f ] to avoid false "missing" reports on symlinks.
 #
