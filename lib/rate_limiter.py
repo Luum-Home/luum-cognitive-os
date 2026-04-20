@@ -62,6 +62,13 @@ PRIORITY_LOW = 10
 MAX_QUEUE_SIZE = 50
 MAX_QUEUE_AGE_SECONDS = 7200  # 2 hours
 
+# Compounding retry protection
+MAX_RETRY_COUNT = 3          # Drop item after this many failed retries
+CIRCUIT_BREAKER_THRESHOLD = 10  # Items in queue before circuit-breaker check
+CIRCUIT_BREAKER_WINDOW = 60  # Seconds to pause drainer when circuit trips
+BACKOFF_BASE_SECONDS = 1     # First backoff: 1s (doubles each retry: 1, 2, 4, 8s)
+CORRUPTION_RECOVERY_THRESHOLD = 100  # Items with retry_count > MAX_RETRY_COUNT → truncate
+
 
 def _read_phase_from_config(config_path: Optional[str] = None) -> str:
     """Read project phase from cognitive-os.yaml.
@@ -553,8 +560,15 @@ class RateLimitQueue:
         action_type: str,
         context: Optional[Dict[str, Any]] = None,
         priority: int = PRIORITY_NORMAL,
+        retry_count: int = 0,
     ) -> str:
         """Queue a blocked action for retry after cooldown.
+
+        Implements compounding-retry protection:
+        - retry_count tracks how many times this item has been re-queued.
+        - After MAX_RETRY_COUNT retries, the item is dropped and logged.
+        - Backoff is exponential: eligible_at = now + cooldown * 2^retry_count
+          (capped at 10 minutes).
 
         Args:
             action_type: The action type that was blocked (e.g. "agent_launch").
@@ -562,12 +576,45 @@ class RateLimitQueue:
                      or any metadata the orchestrator needs to re-launch.
             priority: Priority level (1=high, 5=normal, 10=low). Lower
                       numbers dequeue first.
+            retry_count: Number of times this item has already been retried.
+                         Callers should pass the previous item's retry_count + 1
+                         when re-enqueueing a failed item.
 
         Returns:
-            A unique queue_id string for tracking or cancellation.
+            A unique queue_id string for tracking or cancellation, or empty
+            string if the item was dropped due to retry cap.
         """
+        # Drop items that have exceeded the retry cap — prevents unbounded growth
+        if retry_count > MAX_RETRY_COUNT:
+            try:
+                os.makedirs(
+                    os.path.dirname(self.state_path) or ".", exist_ok=True
+                )
+                drop_log = self.state_path.replace(
+                    "rate-limit-queue.json", "rate-limit-dropped.jsonl"
+                )
+                with open(drop_log, "a") as f:
+                    import json as _json
+                    f.write(
+                        _json.dumps(
+                            {
+                                "timestamp": time.time(),
+                                "action_type": action_type,
+                                "retry_count": retry_count,
+                                "context": context or {},
+                                "reason": "retry_cap_exceeded",
+                            }
+                        )
+                        + "\n"
+                    )
+            except OSError:
+                pass
+            return ""  # Item dropped
+
         self._prune()
 
+        # Exponential backoff: cooldown * 2^retry_count, capped at 10 minutes
+        backoff = min(self.cooldown_seconds * (2 ** retry_count), 600)
         now = time.time()
         queue_id = str(uuid.uuid4())[:8]
         item: Dict[str, Any] = {
@@ -576,7 +623,8 @@ class RateLimitQueue:
             "context": context or {},
             "priority": priority,
             "enqueued_at": now,
-            "eligible_at": now + self.cooldown_seconds,
+            "eligible_at": now + backoff,
+            "retry_count": retry_count,
         }
 
         self._items.append(item)
