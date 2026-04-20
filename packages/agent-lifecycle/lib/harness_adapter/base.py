@@ -98,6 +98,9 @@ class AgentStart(CanonicalEvent):
     parent_id: Optional[str] = None
     input_summary: Optional[str] = None
     session_id: Optional[str] = None
+    # ADR-038 Gap #4: cap on reasoning cycles per agent task (default 20).
+    # Kept optional so existing callers that omit the field stay backward compat.
+    max_reasoning_cycles: int = 20
 
 
 @dataclass
@@ -158,6 +161,9 @@ class HeartbeatTick(CanonicalEvent):
     tool_call_count: Optional[int] = None
     remaining_budget: Optional[float] = None
     session_id: Optional[str] = None
+    # ADR-038 Gap #4: cumulative PostToolUse:Agent events seen for this agent_id
+    # within the current session. None means "not tracked" (backward compat).
+    reasoning_cycle_count: Optional[int] = None
 
 
 @dataclass
