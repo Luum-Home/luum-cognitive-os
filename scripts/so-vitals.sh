@@ -22,16 +22,28 @@ except ImportError:
     print("so-vitals: lib.metric_event not importable", file=sys.stderr)
     sys.exit(1)
 
-# Agents in flight (graceful fallback if D1.C not landed)
+# Agents in flight — reads from agent_bus via AgentBusMetrics adapter
+# (ADR-028b D1.C). Falls through to empty when adapter unavailable.
 agents = []
 try:
-    from lib.agent_heartbeat import list_live, scan_stale
-    for hb in list_live(max_age_seconds=300):
-        agents.append({"agent_id": hb.agent_id, "state": hb.state, "age_s": int(time.time() - hb.timestamp), "pid": hb.pid})
-    for hb in scan_stale(max_age_seconds=300):
-        agents.append({"agent_id": hb.agent_id, "state": "STALE", "age_s": int(time.time() - hb.timestamp), "pid": hb.pid})
+    from lib.agent_bus_metrics import AgentBusMetrics
+    _abm = AgentBusMetrics()
+    for rec in _abm.list_live(max_age_seconds=300):
+        agents.append({
+            "agent_id": rec["agent_id"],
+            "state": rec.get("last_phase") or "live",
+            "age_s": int(rec.get("age_seconds", 0)),
+            "pid": 0,  # agent_bus tracks sub-claudes, not OS PIDs
+        })
+    for rec in _abm.scan_stale(max_age_seconds=300):
+        agents.append({
+            "agent_id": rec["agent_id"],
+            "state": "STALE",
+            "age_s": int(rec.get("age_seconds", 0)),
+            "pid": 0,
+        })
 except ImportError:
-    agents = []  # D1.C not ready yet
+    agents = []
 
 # Registered processes + TTL (D1.B)
 processes = []
