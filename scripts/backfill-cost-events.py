@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """Backfill cost-events.jsonl to MetricEvent schema (ADR-028 D1.A.1).
 
 Reads existing cost-events.jsonl, converts rows that pre-date MetricEvent
