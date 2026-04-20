@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # semantic-search.sh — Fuzzy error matching via vector similarity
 # Falls back to exact fingerprint if zvec not available
 

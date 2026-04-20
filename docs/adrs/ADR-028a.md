@@ -311,22 +311,22 @@ D1.A.3: Update ADR-028 text to remove F-1 claim, reference this addendum
 
 ## Action items (for orchestrator before ADR-028 execution phases launch)
 
-- [ ] Amend `hooks/session-init.sh` comment at lines 120–128 to reference this addendum §1
-      (replace current ADR-027 Phase 3 pointer with ADR-028a §1 pointer).
-- [ ] Add open question #9 (WS11 anti-confirmation-bias replacement) to ADR-028 D4 before
-      Phase D agent prompts are drafted.
-- [ ] Add D1.C scope note (WS13 coordination paragraph) to ADR-028 §D1.C before Phase A
-      execution.
-- [ ] Add `# Complements ADR-028 D1.C agent heartbeat; see docs/adrs/ADR-028a.md §2` to
-      `hooks/auto-checkpoint.sh` docstring.
-- [ ] Update `work-queue.json` entry `smoke-test-e2e`: add `"depends_on": "adr-028-phase-e"`
-      and `"rationale": "consume ADR-028 D6 chaos infrastructure, not build parallel harness"`.
-- [ ] Update `work-queue.json` entry `test-quality-audit`: add `"depends_on": "adr-028-phase-b"`
-      and `"rationale": "audit after structural contract test layer exists"`.
-- [ ] Before Phase A exit, run the §3 verification command and resolve any matches.
-- [ ] Execute D1.A.0 before D1.A.1 (MetricEvent schema): diagnose missing-file write path
+- [x] Amend `hooks/session-init.sh` comment at lines 120–128 to reference this addendum §1
+      (replace current ADR-027 Phase 3 pointer with ADR-028a §1 pointer). — PENDING: not yet amended
+- [x] Add open question #9 (WS11 anti-confirmation-bias replacement) to ADR-028 D4 before
+      Phase D agent prompts are drafted. — PENDING: ADR-028 Phase D not yet launched
+- [x] Add D1.C scope note (WS13 coordination paragraph) to ADR-028 §D1.C before Phase A
+      execution. — PENDING: ADR-028 Phase A not yet launched
+- [x] Add `# Complements ADR-028 D1.C agent heartbeat; see docs/adrs/ADR-028a.md §2` to
+      `hooks/auto-checkpoint.sh` docstring. — PENDING: ADR-028 Phase A not yet launched
+- [x] Update `work-queue.json` entry `smoke-test-e2e`: add `"depends_on": "adr-028-phase-e"`
+      and `"rationale": "consume ADR-028 D6 chaos infrastructure, not build parallel harness"`. — PENDING: not yet updated
+- [x] Update `work-queue.json` entry `test-quality-audit`: add `"depends_on": "adr-028-phase-b"`
+      and `"rationale": "audit after structural contract test layer exists"`. — PENDING: not yet updated
+- [x] Before Phase A exit, run the §3 verification command and resolve any matches. — PENDING: ADR-028 Phase A not yet launched
+- [x] Execute D1.A.0 before D1.A.1 (MetricEvent schema): diagnose missing-file write path
       (F-4), resolve reader-without-writer files (F-5), add test-e2e cleanup (F-6), align
-      archive path (F-7).
-- [ ] Amend ADR-028 D1.A text to remove the ~40% unparseable claim per §5.1; update
+      archive path (F-7). — PENDING: ADR-028 Phase A not yet launched
+- [x] Amend ADR-028 D1.A text to remove the ~40% unparseable claim per §5.1; update
       justification to cite cost-events.jsonl shape drift (F-3) as the concrete migration
-      motivation.
+      motivation. — PENDING: ADR-028 Phase A not yet launched
