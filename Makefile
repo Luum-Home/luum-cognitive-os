@@ -41,7 +41,7 @@ test-chaos:
 	$(PYTEST) tests/chaos/ -v
 
 test-all:
-	$(PYTEST) tests/ --ignore=tests/unit/test_aider_streaming_adapter.py -q --tb=short
+	$(PYTEST) tests/ -q --tb=short
 
 test-changed:
 	@files=$$(git diff --name-only HEAD | grep -E '\.py$$' || true); \
