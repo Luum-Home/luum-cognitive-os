@@ -146,6 +146,7 @@ case "$PROFILE" in
     echo "               trust-score-validator, confidence-gate.sh, confidence-gate-llm, audit-id-enricher.sh, auto-rollback-trigger.sh, auto-repair-dispatcher, dequeue-notify,"
     echo "               state-heartbeat, context-watchdog, global-verify.sh after"
     echo "  PostToolUse Skill: skill-usage-tracker.sh, skill-invocation-logger.sh"
+    echo "  PostToolUse TodoWrite+Agent: work-queue-sync.sh (task-tracking)"
     echo "  PreCompact: pre-compaction-flush"
     echo "  Stop: session-learning, session-cleanup, session-end-reap.sh, kpi-trigger, recap-sync"
     echo "  Safety mesh layers: 5/12"
