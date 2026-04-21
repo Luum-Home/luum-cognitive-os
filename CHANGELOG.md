@@ -3,7 +3,13 @@
 All notable changes to Cognitive OS are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
-## [0.10.0] - 2026-04-21 — "ADR-047 Phase A + Decision Depth Gate"
+## [0.15.0] - 2026-04-21 — "ADR-047 Phase A + Decision Depth Gate"
+
+> Note: VERSION file was stale at 0.9.0 when this release was cut, but
+> tags v0.10.0 through v0.14.2 already existed remotely (patch releases
+> not documented in this CHANGELOG). Bumped to 0.15.0 as next available.
+> This is the first documented release since 0.12.0; intervening patches
+> exist as tags only.
 
 ### Added — ADR-047 Session Lifecycle Management (Phase A shipped)
 
