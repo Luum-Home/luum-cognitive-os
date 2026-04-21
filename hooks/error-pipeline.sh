@@ -9,6 +9,7 @@
 set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 
 _HOOK_NAME="error-pipeline"
 
@@ -123,7 +124,7 @@ mkdir -p "$METRICS_DIR"
 if [ "$_SKIP_ERROR_LOG" = "false" ]; then
   _SHOULD_LOG=true
   if [ -f "$ERROR_LEARNING_FILE" ]; then
-    CUTOFF=$(date -v-60S +%s 2>/dev/null || date -d '60 seconds ago' +%s 2>/dev/null || echo "0")
+    CUTOFF=$(python3 -c "import time; print(int(time.time()) - 60)")
     LAST_ENTRIES=$(tail -10 "$ERROR_LEARNING_FILE" 2>/dev/null || true)
     if [ -n "$LAST_ENTRIES" ]; then
       DUPLICATE=$(echo "$LAST_ENTRIES" | while IFS= read -r line; do
