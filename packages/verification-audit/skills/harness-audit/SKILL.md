@@ -12,6 +12,8 @@ license: MIT
 metadata:
   author: luum
 audience: os-dev
+summary_line: "Evaluate harness components (hooks, rules, skills) for continued relevance."
+
 ---
 
 ## Purpose

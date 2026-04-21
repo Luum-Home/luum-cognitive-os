@@ -5,6 +5,8 @@ description: Read detected-stack.json and generate or update cognitive-os.yaml w
 version: 0.1.0
 audience: both
 tags: [init, setup, config]
+summary_line: Read detected-stack.json and generate or update cognitive-os.yaml with detected…
+
 ---
 
 # Generate Config

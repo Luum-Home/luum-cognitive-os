@@ -12,6 +12,8 @@ triggers:
   - generate docs
   - update feature docs
 audience: project
+summary_line: Generate or update structured feature documentation using 3-layer detection…
+
 ---
 
 # Document Feature

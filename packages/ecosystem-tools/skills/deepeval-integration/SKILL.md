@@ -16,6 +16,8 @@ metadata:
   tool-ring: ADOPT
   tool-score: 8.08
 audience: os-dev
+summary_line: "Configure and use DeepEval for LLM unit testing, agent trajectory evaluation…"
+
 ---
 
 ## Purpose

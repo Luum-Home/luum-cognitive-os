@@ -6,6 +6,8 @@ last-updated: 2026-03-22
 description: Master resource optimizer — coordinates budget, infrastructure, agents, skills, and tokens system-wide
 auto-generated: false
 audience: project
+summary_line: "Master resource optimizer — coordinates budget, infrastructure, agents, skills…"
+
 ---
 
 # Resource Governor

@@ -13,6 +13,8 @@ metadata:
   author: luum
 audience: os-dev
 effort: haiku
+summary_line: "Detect systemic problems in the Cognitive OS codebase: dead metadata, broken…"
+
 ---
 
 ## Purpose

@@ -7,6 +7,8 @@ last-updated: 2026-03-21
 source: superpowers (obra/superpowers)
 tech: verification
 audience: project
+summary_line: "Use when about to claim work is complete, fixed, or passing, before committing…"
+
 ---
 
 # Verification Before Completion

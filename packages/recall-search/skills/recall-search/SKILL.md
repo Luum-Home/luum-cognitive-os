@@ -6,6 +6,8 @@ allowed-tools:
   - Bash
   - Read
 audience: project
+summary_line: "\"Search past Claude Code conversations using full-text search."
+
 ---
 
 # Recall Search

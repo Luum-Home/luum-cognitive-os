@@ -13,6 +13,8 @@ license: MIT
 metadata:
   author: luum
 audience: os
+summary_line: "Symlink-aware integrity audit of hooks, libs, and skills."
+
 ---
 
 ## Purpose

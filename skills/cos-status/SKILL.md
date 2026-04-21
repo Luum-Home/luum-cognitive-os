@@ -5,6 +5,8 @@ description: Display current Cognitive OS state — active profile, skills expos
 triggers: ["/cos-status", "/status", "cos status"]
 audience: both
 version: 1.0.0
+summary_line: "Display current Cognitive OS state — active profile, skills exposed, hooks…"
+
 ---
 
 # /cos-status — Cognitive OS State Transparency

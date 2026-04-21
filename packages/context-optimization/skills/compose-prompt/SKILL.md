@@ -5,6 +5,8 @@ description: Compose a sub-agent prompt from reusable templates. Use when launch
 user-invocable: true
 version: 1.0.0
 audience: project
+summary_line: Compose a sub-agent prompt from reusable templates.
+
 ---
 
 # Compose Prompt

@@ -6,6 +6,8 @@ user-invocable: true
 version: 1.0.0
 audience: project
 effort: opus
+summary_line: Evaluate any existing plan file with a 0-50 scoring system.
+
 ---
 
 # Evaluate Plan

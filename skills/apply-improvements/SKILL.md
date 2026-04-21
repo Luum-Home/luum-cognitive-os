@@ -10,6 +10,8 @@ audience: both
 tags: [self-improvement, apply, verification]
 disable-model-invocation: true
 effort: sonnet
+summary_line: Apply approved self-improvement changes from an analyze-improvements report.
+
 ---
 
 # Apply Improvements Skill

@@ -13,6 +13,8 @@ license: MIT
 metadata:
   author: luum
 audience: project
+summary_line: Create persistent agents that maintain their own state across sessions.
+
 ---
 
 ## Purpose

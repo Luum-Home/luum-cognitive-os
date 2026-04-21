@@ -14,6 +14,8 @@ metadata:
   author: luum
 audience: both
 effort: opus
+summary_line: Deep source code analysis of a dependency to understand its internal APIs…
+
 ---
 
 ## Purpose

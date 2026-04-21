@@ -7,6 +7,8 @@ version: 1.0.0
 last-updated: 2026-03-21
 audience: both
 effort: haiku
+summary_line: Calculate and report Cognitive OS KPIs and OKRs.
+
 ---
 
 # Agent KPI Dashboard

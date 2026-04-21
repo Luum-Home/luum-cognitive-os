@@ -6,6 +6,8 @@ version: 1.0.0
 user-invocable: true
 auto-generated: false
 audience: project
+summary_line: "Analyze a failed agent's output, determine root cause, and re-launch with…"
+
 ---
 
 # Auto-Refine Skill

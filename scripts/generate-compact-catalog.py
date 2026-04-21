@@ -81,6 +81,14 @@ def collect_skills(root: Path = PROJECT_ROOT) -> list[dict]:
     """Scan skills/*/SKILL.md and packages/*/skills/*/SKILL.md."""
     skills: list[dict] = []
 
+    # Per ADR-044 Phase 2 L2: prefer `summary_line` (≤80 chars) when present;
+    # fall back to first-sentence of `description` otherwise.
+    def _describe(fm: dict) -> str:
+        sl = (fm.get("summary_line") or "").strip()
+        if sl:
+            return sl
+        return first_sentence(fm.get("description", ""))
+
     for skill_md in sorted(root.glob("skills/*/SKILL.md")):
         fm = parse_frontmatter(skill_md.read_text())
         if not fm:
@@ -88,7 +96,7 @@ def collect_skills(root: Path = PROJECT_ROOT) -> list[dict]:
         skills.append({
             "name": fm.get("name", skill_md.parent.name),
             "audience": fm.get("audience", "project"),
-            "description": first_sentence(fm.get("description", "")),
+            "description": _describe(fm),
             "path": str(skill_md.relative_to(root)),
             "package": None,
         })
@@ -101,7 +109,7 @@ def collect_skills(root: Path = PROJECT_ROOT) -> list[dict]:
         skills.append({
             "name": fm.get("name", skill_md.parent.name),
             "audience": fm.get("audience", "project"),
-            "description": first_sentence(fm.get("description", "")),
+            "description": _describe(fm),
             "path": str(skill_md.relative_to(root)),
             "package": pkg,
         })

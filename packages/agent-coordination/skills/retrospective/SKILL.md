@@ -6,6 +6,8 @@ command: /retrospective
 description: Weekly analysis of all squads with trend analysis and auto-reconfiguration proposals
 last-updated: 2026-03-22
 audience: project
+summary_line: Weekly analysis of all squads with trend analysis and auto-reconfiguration…
+
 ---
 
 # Retrospective Skill

@@ -17,6 +17,8 @@ requires:
   - COGNEE_ENABLED=true
   - Cognee container running (docker compose --profile memory)
 audience: project
+summary_line: Semantic knowledge graph search via Cognee — complements Engram FTS5 with…
+
 ---
 
 # Cognee Search
