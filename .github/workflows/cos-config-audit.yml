@@ -1,0 +1,173 @@
+name: COS Config Audit
+
+# Runs the aspirational-vs-real config audit (scripts/cos-config-audit.sh).
+# Detects drift between what cognitive-os.yaml promises and what the code implements.
+# Advisory by default — only fails a PR if [DRIFT] markers are introduced.
+
+on:
+  schedule:
+    # Weekly cadence so drift doesn't accumulate silently. Mondays 09:00 UTC.
+    - cron: "0 9 * * 1"
+  pull_request:
+    branches: [main]
+    paths:
+      - 'cognitive-os.yaml'
+      - 'scripts/cos-config-audit.sh'
+      - 'hooks/**'
+      - 'scripts/apply-efficiency-profile.sh'
+      - 'scripts/set-security-profile.sh'
+      - '.github/workflows/cos-config-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  audit:
+    name: Run cos-config-audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Run cos-config-audit (JSON)
+        id: audit_json
+        run: |
+          set +e
+          python3 scripts/cos-config-audit.sh --json > audit.json
+          rc=$?
+          echo "audit_rc=${rc}" >> "$GITHUB_OUTPUT"
+          if [ "${rc}" -ne 0 ]; then
+            echo "::error::cos-config-audit.sh --json failed with exit code ${rc}"
+            cat audit.json || true
+            exit "${rc}"
+          fi
+          echo "--- audit.json (head) ---"
+          head -c 4000 audit.json || true
+          echo
+
+      - name: Run cos-config-audit (text)
+        id: audit_text
+        run: |
+          set +e
+          python3 scripts/cos-config-audit.sh > audit.txt 2>&1
+          rc=$?
+          echo "text_rc=${rc}" >> "$GITHUB_OUTPUT"
+          echo "--- audit.txt ---"
+          cat audit.txt
+          if [ "${rc}" -ne 0 ]; then
+            echo "::error::cos-config-audit.sh (text) failed with exit code ${rc}"
+            exit "${rc}"
+          fi
+
+      - name: Summarize audit output
+        id: summary
+        run: |
+          # Count IMPL / PARTIAL / ASPIR / DRIFT markers from the text output.
+          # These counts are advisory and match the script's own summary line.
+          impl=$(grep -c '^\[IMPL\]'    audit.txt || true)
+          partial=$(grep -c '^\[PARTIAL\]' audit.txt || true)
+          aspir=$(grep -c '^\[ASPIR\]'  audit.txt || true)
+          drift=$(grep -c '\[DRIFT\]'   audit.txt || true)
+
+          # Normalize in case grep returns empty
+          impl=${impl:-0}
+          partial=${partial:-0}
+          aspir=${aspir:-0}
+          drift=${drift:-0}
+
+          echo "impl=${impl}"       >> "$GITHUB_OUTPUT"
+          echo "partial=${partial}" >> "$GITHUB_OUTPUT"
+          echo "aspir=${aspir}"     >> "$GITHUB_OUTPUT"
+          echo "drift=${drift}"     >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## COS Config Audit"
+            echo
+            echo "| Status | Count |"
+            echo "|--------|-------|"
+            echo "| IMPL    | ${impl} |"
+            echo "| PARTIAL | ${partial} |"
+            echo "| ASPIR   | ${aspir} |"
+            echo "| DRIFT   | ${drift} |"
+            echo
+            echo "<details><summary>Full output</summary>"
+            echo
+            echo '```'
+            cat audit.txt
+            echo '```'
+            echo
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment on PR with summary
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const text = fs.readFileSync('audit.txt', 'utf8');
+            const impl    = '${{ steps.summary.outputs.impl }}';
+            const partial = '${{ steps.summary.outputs.partial }}';
+            const aspir   = '${{ steps.summary.outputs.aspir }}';
+            const drift   = '${{ steps.summary.outputs.drift }}';
+
+            const body = [
+              '## COS Config Audit',
+              '',
+              '| Status | Count |',
+              '|--------|-------|',
+              `| IMPL    | ${impl} |`,
+              `| PARTIAL | ${partial} |`,
+              `| ASPIR   | ${aspir} |`,
+              `| DRIFT   | ${drift} |`,
+              '',
+              '<details><summary>Full output</summary>',
+              '',
+              '```',
+              text.length > 60000 ? text.slice(0, 60000) + '\n... (truncated)' : text,
+              '```',
+              '',
+              '</details>',
+              '',
+              '_This comment is produced by `.github/workflows/cos-config-audit.yml`._',
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body,
+            });
+
+      - name: Upload audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cos-config-audit
+          path: |
+            audit.json
+            audit.txt
+          retention-days: 30
+
+      - name: Fail PR on DRIFT (advisory gate)
+        # Only enforce on PRs — cron runs are observational.
+        # [DRIFT] markers indicate that a contract moved backwards (IMPL -> PARTIAL/ASPIR)
+        # or that a contract's implementation disappeared entirely.
+        if: github.event_name == 'pull_request'
+        run: |
+          drift='${{ steps.summary.outputs.drift }}'
+          if [ "${drift}" != "0" ]; then
+            echo "::error::cos-config-audit detected ${drift} [DRIFT] finding(s). See audit.txt for details."
+            exit 1
+          fi
+          echo "No drift detected (drift=${drift})."

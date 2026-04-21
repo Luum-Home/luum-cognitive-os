@@ -225,3 +225,89 @@ Once Agent G delivers `portable.sh`:
 | Check violation count | `scripts/lint-shell.sh 2>&1 \| tail -3` |
 | Test Docker build locally | `docker build -f Dockerfile.ci-linux .` |
 | Full local smoke | `docker run --rm luum-agent-os-ci-linux` |
+
+---
+
+## 8. cos-config-audit CI
+
+`.github/workflows/cos-config-audit.yml` runs `scripts/cos-config-audit.sh` on a
+weekly cadence and on PRs that touch config-relevant files, so aspirational drift
+in `cognitive-os.yaml` is detected before it accumulates.
+
+### What it does
+
+Invokes `python3 scripts/cos-config-audit.sh` (the script is Python despite the
+`.sh` extension) in both JSON and text modes. Each declared runtime contract in
+`cognitive-os.yaml` is cross-checked against the codebase (hooks registered,
+scripts present, profile wiring, etc.) and classified as:
+
+| Marker | Meaning |
+|--------|---------|
+| `[IMPL]`    | Contract is fully implemented and wired |
+| `[PARTIAL]` | Partially wired — some pieces present, others missing |
+| `[ASPIR]`   | Pure aspiration — config promises behaviour that is not coded |
+| `[DRIFT]`   | Regression — something previously `IMPL` is no longer wired |
+
+### When it runs
+
+| Trigger | Purpose |
+|---------|---------|
+| `schedule` (`0 9 * * 1`) | Weekly roll-up every Monday at 09:00 UTC |
+| `pull_request` on config-relevant paths | Catch drift introduced by a change before merge |
+| `workflow_dispatch` | Manual invocation from the Actions tab |
+
+Watched paths for the PR trigger:
+
+- `cognitive-os.yaml`
+- `scripts/cos-config-audit.sh`
+- `hooks/**`
+- `scripts/apply-efficiency-profile.sh`
+- `scripts/set-security-profile.sh`
+- `.github/workflows/cos-config-audit.yml`
+
+### Advisory vs enforcing
+
+- `ASPIR` and `PARTIAL` findings are **advisory** — they appear in the summary
+  and the PR comment but do not fail the job.
+- `DRIFT` findings **fail the PR** (not cron runs). Drift indicates a
+  previously-wired contract regressed, which is a real defect.
+- Script errors (non-zero exit from the tool itself) always fail the job.
+
+### How to read the output
+
+Each run produces:
+
+1. **GitHub Step Summary** — a table of `IMPL` / `PARTIAL` / `ASPIR` / `DRIFT`
+   counts followed by the full text output in a collapsible block.
+2. **PR comment** (on PR triggers) — same table, appended as a sticky comment on
+   the pull request for reviewer visibility.
+3. **Artifacts** — `audit.json` and `audit.txt` uploaded under the name
+   `cos-config-audit`, retained for 30 days.
+
+To inspect locally before pushing:
+
+```bash
+python3 scripts/cos-config-audit.sh          # human-readable
+python3 scripts/cos-config-audit.sh --json   # machine-readable
+```
+
+### How to add a new contract
+
+Contracts live in the `CONTRACTS` list near the top of
+`scripts/cos-config-audit.sh`. Each entry is a dict:
+
+```python
+{
+    "section": "runtime.my_feature",
+    "description": "one-line description of what the config promises",
+    "check": lambda root: ("IMPL" | "PARTIAL" | "ASPIR", "reason string"),
+}
+```
+
+The `check` callable receives the repository root as a `pathlib.Path` and must
+return a 2-tuple `(status, reason)` where `status` is one of `"IMPL"`,
+`"PARTIAL"`, or `"ASPIR"`. See the existing contracts in the script for
+examples (hook registration checks, file existence checks, YAML-key probes).
+
+After adding a contract, re-run the script locally to confirm it emits the
+expected status, then commit. The workflow will pick it up on the next trigger.
