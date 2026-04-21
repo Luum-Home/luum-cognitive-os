@@ -527,6 +527,176 @@ def append_jsonl(path: Path, record: Dict[str, Any]) -> None:
 
 
 # ---------------------------------------------------------------------------
+# ADR-047 Phase B gate metric — false-positive rate computation
+# ---------------------------------------------------------------------------
+
+# Gate thresholds (from ADR-047 §"Gate threshold")
+GATE_FP_RATE_MAX = 0.01        # < 1 %
+GATE_MIN_SAMPLE = 50           # minimum flagged detections (distinct events)
+GATE_MIN_OBSERVATION_HOURS = 336  # 2 weeks, per ADR-047 Phase A window
+
+
+@dataclass
+class GateMetric:
+    """Result of computing the Phase A → Phase B gate metric."""
+    total_records: int
+    distinct_flagged_pids: int
+    flagged_records: int
+    resumed_within_24h: int      # false positives — sessions that showed recovery
+    stayed_idle: int             # true positives — would have been killed cleanly
+    fp_rate: float               # resumed_within_24h / flagged_records
+    observation_span_hours: float
+    sample_size_ok: bool
+    fp_rate_ok: bool
+    observation_span_ok: bool
+    gate_passes: bool            # ALL three must be True
+    evidence_summary: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+def _parse_watchdog_ts(s: str) -> float:
+    """Parse ISO-8601 Z timestamp → epoch seconds. Returns 0 on failure."""
+    try:
+        import datetime
+        dt = datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ")
+        return dt.replace(tzinfo=datetime.timezone.utc).timestamp()
+    except (ValueError, TypeError):
+        return 0.0
+
+
+def compute_gate_metric(records: List[Dict[str, Any]]) -> GateMetric:
+    """Compute Phase A → Phase B gate per ADR-047.
+
+    A session flagged with would_kill=True is considered a FALSE POSITIVE if,
+    within 24h after the flag, that PID re-appears with classification=HEALTHY
+    or cpu_percent > 0 (i.e. the session was actually alive/resumed — the
+    Phase A classifier mis-flagged it).
+
+    Returns a GateMetric. gate_passes is True only if:
+      - fp_rate < GATE_FP_RATE_MAX
+      - distinct flagged records >= GATE_MIN_SAMPLE
+      - observation span covers >= GATE_MIN_OBSERVATION_HOURS
+
+    This function is pure — no I/O. Caller is responsible for loading JSONL.
+    """
+    if not records:
+        return GateMetric(
+            total_records=0,
+            distinct_flagged_pids=0,
+            flagged_records=0,
+            resumed_within_24h=0,
+            stayed_idle=0,
+            fp_rate=0.0,
+            observation_span_hours=0.0,
+            sample_size_ok=False,
+            fp_rate_ok=False,
+            observation_span_ok=False,
+            gate_passes=False,
+            evidence_summary="no_records",
+        )
+
+    # Group by PID
+    by_pid: Dict[int, List[Dict[str, Any]]] = {}
+    for r in records:
+        pid = r.get("session_pid")
+        if pid is None:
+            continue
+        by_pid.setdefault(pid, []).append(r)
+
+    flagged_pids: List[int] = []
+    for pid, events in by_pid.items():
+        if any(e.get("would_kill") for e in events):
+            flagged_pids.append(pid)
+
+    flagged_records = sum(1 for r in records if r.get("would_kill"))
+
+    fp = 0
+    tp = 0
+    for pid in flagged_pids:
+        events = sorted(by_pid[pid], key=lambda r: r.get("timestamp", ""))
+        first_flag = next(e for e in events if e.get("would_kill"))
+        flag_ts = _parse_watchdog_ts(first_flag.get("timestamp", ""))
+        if flag_ts == 0.0:
+            continue
+        resumed = False
+        for e in events:
+            ts = _parse_watchdog_ts(e.get("timestamp", ""))
+            if ts <= flag_ts:
+                continue
+            if ts - flag_ts > 86400:
+                break
+            # Recovery = HEALTHY classification OR measurable CPU activity
+            if e.get("classification") == "HEALTHY" or (e.get("cpu_percent") or 0) > 0:
+                resumed = True
+                break
+        if resumed:
+            fp += 1
+        else:
+            tp += 1
+
+    total_flag = fp + tp
+    fp_rate = (fp / total_flag) if total_flag else 0.0
+
+    # Observation span
+    stamps = sorted(_parse_watchdog_ts(r.get("timestamp", "")) for r in records)
+    stamps = [s for s in stamps if s > 0]
+    span_hours = ((stamps[-1] - stamps[0]) / 3600.0) if len(stamps) >= 2 else 0.0
+
+    sample_size_ok = total_flag >= GATE_MIN_SAMPLE
+    fp_rate_ok = (total_flag > 0) and (fp_rate < GATE_FP_RATE_MAX)
+    span_ok = span_hours >= GATE_MIN_OBSERVATION_HOURS
+    gate_passes = sample_size_ok and fp_rate_ok and span_ok
+
+    if gate_passes:
+        summary = f"GATE_PASS: fp_rate={fp_rate*100:.2f}% sample={total_flag} span={span_hours:.1f}h"
+    else:
+        reasons = []
+        if not sample_size_ok:
+            reasons.append(f"sample={total_flag}<{GATE_MIN_SAMPLE}")
+        if not fp_rate_ok:
+            reasons.append(f"fp_rate={fp_rate*100:.2f}%>={GATE_FP_RATE_MAX*100:.2f}%")
+        if not span_ok:
+            reasons.append(f"span={span_hours:.1f}h<{GATE_MIN_OBSERVATION_HOURS}h")
+        summary = "GATE_FAIL: " + ", ".join(reasons)
+
+    return GateMetric(
+        total_records=len(records),
+        distinct_flagged_pids=len(flagged_pids),
+        flagged_records=flagged_records,
+        resumed_within_24h=fp,
+        stayed_idle=tp,
+        fp_rate=fp_rate,
+        observation_span_hours=span_hours,
+        sample_size_ok=sample_size_ok,
+        fp_rate_ok=fp_rate_ok,
+        observation_span_ok=span_ok,
+        gate_passes=gate_passes,
+        evidence_summary=summary,
+    )
+
+
+def load_watchdog_jsonl(path: Path) -> List[Dict[str, Any]]:
+    """Load a session-watchdog.jsonl file, ignoring malformed lines."""
+    if not path.is_file():
+        return []
+    records: List[Dict[str, Any]] = []
+    try:
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                records.append(json.loads(line))
+            except json.JSONDecodeError:
+                continue
+    except OSError:
+        return []
+    return records
+
+
+# ---------------------------------------------------------------------------
 # Config loader
 # ---------------------------------------------------------------------------
 
