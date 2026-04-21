@@ -352,7 +352,7 @@ runtime:
   # STATUS: implemented
   reaper:
     enabled: true
-  # STATUS: partial
+  # STATUS: implemented
   session_watchdog:
     enabled: true           # Phase A: log-only; set false to disable entirely
     mode: "log-only"        # "log-only" | "enforce" | "off"
