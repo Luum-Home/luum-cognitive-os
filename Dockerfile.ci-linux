@@ -1,0 +1,56 @@
+# Dockerfile.ci-linux — Linux smoke-test image for cross-platform discipline.
+#
+# Build:
+#   docker build -f Dockerfile.ci-linux -t luum-agent-os-ci-linux .
+#
+# Run smoke tests:
+#   docker run --rm luum-agent-os-ci-linux
+#
+# Run shellcheck gate:
+#   docker run --rm luum-agent-os-ci-linux scripts/lint-shell.sh --new-only
+#
+# Run specific pytest tests:
+#   docker run --rm luum-agent-os-ci-linux \
+#     python3 -m pytest tests/unit/test_cross_platform_discipline.py -v
+#
+# Base: debian:bookworm-slim (lighter than ubuntu:22.04 by ~40 MB)
+
+FROM debian:bookworm-slim
+
+# Prevent interactive prompts during apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required toolchain
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
+    python3 \
+    python3-pip \
+    python3-venv \
+    jq \
+    shellcheck \
+    ripgrep \
+    sed \
+    gawk \
+    coreutils \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python test dependencies
+RUN python3 -m pip install --no-cache-dir --break-system-packages \
+    pytest \
+    pytest-timeout \
+    pytest-mock
+
+# Set working directory
+WORKDIR /work
+
+# Copy project (honours .dockerignore if present)
+COPY . /work
+
+# Ensure scripts are executable
+RUN chmod +x /work/scripts/ci-smoke-linux.sh \
+             /work/scripts/lint-shell.sh
+
+# Default: run the Linux smoke test suite
+CMD ["bash", "scripts/ci-smoke-linux.sh"]
