@@ -124,11 +124,11 @@ source "$(dirname "$0")/_lib/singularity-suggestion.sh"
 _singularity_suggestion
 
 # ─── Test baseline capture — DISABLED 2026-04-17 ─────────────────────────────
+# WS11 baseline capture DISABLED — orphaning bug, see ADR-028 (commit 1b755cf = Bug 1 source).
 # Ran `pytest` on every session start. Full-suite runs leaked ~190 orphaned
-# processes holding ~300 MiB. Pending redesign in ADR-027 Phase 3:
-# incremental tests, PID-tracked cleanup, consumer that actually reads the
-# baseline. Re-enable only after those land.
-echo "baseline: disabled (see ADR-027)" > "$SESSION_DIR/test-baseline.txt"
+# processes holding ~300 MiB.
+# Anti-confirmation-bias goal preserved via global-verify.sh; see docs/adrs/ADR-028a.md §1.
+echo "baseline: disabled (see ADR-028a §1)" > "$SESSION_DIR/test-baseline.txt"
 
 # ─── Pending-task reminder ─────────────────────────────────────────────────────
 # Advisory nudge at session start: if the work-queue has active P1-P5 items
