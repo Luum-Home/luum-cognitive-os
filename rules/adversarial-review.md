@@ -65,3 +65,16 @@ The orchestrator MUST NOT accept a review result that:
 - Has findings without severity tiers
 - Uses phrases like "looks good", "LGTM", "no issues", "everything is fine"
 - Fails to cover at least 3 of the 5 review dimensions (correctness, security, performance, maintainability, tests)
+
+## Multi-Persona Pattern (skills/doc-review-personas)
+
+`/doc-review-personas` implements the multi-persona variant of this rule:
+N reviewer lenses (CFO, Tech Lead, Commercial, New Dev, Editor) run in parallel
+over the same documentation corpus; findings are consolidated with the severity
+tiers defined above. Each persona individually respects the ≥1-finding rule and
+emits the machine-parseable `TRUST_REPORT` header from `rules/trust-score.md`.
+
+The consolidator deduplicates findings by `(location, what-prefix)` and keeps
+the highest severity when two personas independently flag the same issue. This
+is the canonical implementation when the subject under review is docs, not
+code — for code-level adversarial review, use `skills/code-review`.
