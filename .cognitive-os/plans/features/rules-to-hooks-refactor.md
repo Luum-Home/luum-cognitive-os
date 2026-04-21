@@ -1,3 +1,10 @@
+<!--
+RECONCILIATION STATUS: LIVE
+Related ADRs: ws1 EXCLUDED_RULES (14→87 rules excluded, commits 8dc4a6e/1ee19a4/7b13d25), ADR-029 (reinvention-check wiring), rules/ROADMAP.md §1 (hook-enforced-BROKEN list now mostly RESOLVED per commit 92cf485)
+Reconciled: 2026-04-21
+Remaining scope: the systematic classification of which rules become hooks vs stay as rules is partially done; rules/ROADMAP.md tracks individual hook registrations but the meta-framework (tiered rule-to-hook migration policy) is not formalized in an ADR.
+-->
+
 # Plan: Rules-to-Hooks Architectural Refactor
 
 ## Problem
