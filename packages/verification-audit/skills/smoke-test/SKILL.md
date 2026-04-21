@@ -19,16 +19,16 @@ Run end-to-end smoke tests that validate the real Cognitive OS system works -- n
 
 ```bash
 # Default: Phases 1-3 (no Docker or Claude API needed)
-python3 tests/smoke/run-smoke.py
+bash scripts/cos-smoke.sh
 
 # Quick: Phases 1-2 only (infrastructure + safety mesh)
-python3 tests/smoke/run-smoke.py --quick
+bash scripts/cos-smoke.sh --quick
 
 # Include Docker service tests
-python3 tests/smoke/run-smoke.py --docker
+bash scripts/cos-smoke.sh --docker
 
 # Full run including Claude CLI checks
-python3 tests/smoke/run-smoke.py --all
+bash scripts/cos-smoke.sh --all
 ```
 
 ## Phases
