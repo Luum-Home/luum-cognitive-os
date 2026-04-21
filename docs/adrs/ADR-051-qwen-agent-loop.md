@@ -66,7 +66,51 @@ Reuse audit (before implementation — caught by user asking "no duplicamos?"):
 
 Tests: 16 new tests in `tests/unit/test_qwen_agent_loop.py` (29 total for the module). All passing. Safety envelope preserved: 30s default timeout, result-as-string errors, no Python exceptions leak.
 
-### Phase 3 — Context injection (follow-up)
+### Phase 3 — Context injection (DELIVERED 2026-04-21)
+
+Shipped:
+- New module `lib/qwen_context_injector.py` — loads `templates/agent-mandatory-rules.md`
+  and `templates/agent-preamble.md` (the same templates used by
+  `hooks/subagent-context-injector.sh` for Claude sub-agents). Exposes
+  `build_context_prefix(level)` and `compose_system_prompt(level, user_system_prompt)`.
+- `run_agent()` grows a keyword-only `context_level: str = "none"` parameter.
+  Values: `"none"` (default, backward-compat — zero tokens injected),
+  `"minimal"` (preamble only, ~1.5K tokens, fits haiku-tier tasks),
+  `"full"` (mandatory-rules + preamble, ~5K tokens, for opus-tier or
+  trust-sensitive dispatches). Caller-supplied `system_prompt` is preserved
+  and appended after the governance prefix with a `---` separator.
+- Signature remains backward-compatible: the new param is keyword-only with a
+  no-op default, so existing callers (`lib/dispatch.py`, `scripts/orchestrator.py`,
+  Phase 4 parity harness, all 29 pre-existing tests) continue working unchanged.
+- Resilient loader: missing or unreadable templates degrade to an empty prefix
+  (logged at WARN) instead of raising — a template move cannot break Qwen dispatch.
+- `@lru_cache` on template reads — templates are loaded once per process.
+
+Design decisions:
+- **Default is `"none"`, not `"minimal"`**: changing behavior for existing
+  callers silently would violate the Phase 2 → Phase 3 compatibility promise.
+  Callers opt in when they're ready (and when they've budgeted the tokens).
+- **Prefix, not replace**: caller-supplied `system_prompt` is preserved so
+  skill-specific instructions can layer on top of governance rules.
+- **Same templates as Claude sub-agents**: `subagent-context-injector.sh` reads
+  these two files — reusing them means Qwen sub-agents inherit governance
+  changes automatically without a second source of truth to keep in sync.
+
+Tests: 7 new tests in `tests/unit/test_qwen_agent_loop.py` (36 total for the
+module). Covered: default is backward-compat (no system message when none
+provided), user `system_prompt` passes through unchanged at level `"none"`,
+`"minimal"` injects preamble but NOT mandatory-rules, `"full"` injects both,
+caller `system_prompt` survives at level `"full"`, unknown level degrades to
+`"none"`, `build_context_prefix()` unit-level check on level sizing.
+
+Deferred to a future phase (not blocking):
+- Per-skill `context_level` hints (skills declare `qwen_context_level: full`
+  in frontmatter, `lib/dispatch.py` reads it and passes to `run_agent`).
+- Dynamic skill injection (injecting specific `skills/<name>/SKILL.md` content
+  when the task matches a skill trigger) — today `"full"` only injects the
+  two universal templates, not per-skill content.
+
+### Phase 3 (original scope, for reference)
 
 - Inject relevant `hooks/`, `rules/`, and `skills/` into the system prompt so
   Qwen-dispatched sub-agents follow the same governance as Claude sub-agents
