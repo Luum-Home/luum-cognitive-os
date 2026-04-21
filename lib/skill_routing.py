@@ -68,6 +68,13 @@ class SkillRequirements:
     fallback_on_rate_limit: bool = True
     fallback_on_any_error: bool = False
     budget_max_usd_per_call: Optional[float] = None
+    # ADR-056 Level 3: transparent Qwen bridge (per-skill opt-in).
+    # auto_fallback_to_qwen=True means `hooks/agent-qwen-bridge.sh` may redirect
+    # the Agent tool_input through `scripts/orchestrator.py --providers qwen,claude`
+    # when quota pressure >= fallback_min_pressure. Skills MUST only opt in when
+    # they tolerate the Qwen agent-loop tool-set loss (no Skill/TodoWrite/MCP tools).
+    auto_fallback_to_qwen: bool = False
+    fallback_min_pressure: float = 0.7
 
     def resolve_providers(self, default_cascade: list[str]) -> list[str]:
         """Compute the effective cascade for this skill.
@@ -184,6 +191,30 @@ def parse_routing_block(frontmatter_yaml: dict) -> Optional[SkillRequirements]:
                 file=sys.stderr,
             )
 
+    # ADR-056 L3 fields (backward-compat: absent means opt-out)
+    if "auto_fallback_to_qwen" in routing:
+        req.auto_fallback_to_qwen = bool(routing["auto_fallback_to_qwen"])
+
+    min_p = routing.get("fallback_min_pressure")
+    if min_p is not None:
+        try:
+            mp = float(min_p)
+            # Clamp to [0.0, 1.0] — anything outside is a config error
+            if mp < 0.0 or mp > 1.0:
+                print(
+                    f"[skill_routing] WARN: fallback_min_pressure out of range "
+                    f"[0.0, 1.0] (got {mp}) — clamping",
+                    file=sys.stderr,
+                )
+                mp = max(0.0, min(1.0, mp))
+            req.fallback_min_pressure = mp
+        except (TypeError, ValueError):
+            print(
+                f"[skill_routing] WARN: fallback_min_pressure must be numeric "
+                f"(got {min_p!r})",
+                file=sys.stderr,
+            )
+
     return req
 
 
@@ -217,6 +248,63 @@ def load_skill_requirements(skill_md_path: str | Path) -> Optional[SkillRequirem
     return parse_routing_block(fm if isinstance(fm, dict) else {})
 
 
+def find_skill_md(skill_name: str, project_root: str | Path | None = None) -> Optional[Path]:
+    """Resolve a skill NAME (e.g. "sdd-archive") to its SKILL.md path.
+
+    Search order (first hit wins):
+      1. `skills/{name}/SKILL.md` at project root
+      2. `packages/*/skills/{name}/SKILL.md` (nested package skills)
+      3. `.claude/skills/{name}/SKILL.md` (user-overridden skills)
+
+    Returns `None` when the skill cannot be located. Never raises — the bridge
+    hook degrades to no-op on unknown skills per ADR-056 L3 contract.
+    """
+    if not skill_name or not isinstance(skill_name, str):
+        return None
+    # Skill names are slugs — reject anything that could escape the lookup
+    if "/" in skill_name or ".." in skill_name or skill_name.startswith("."):
+        return None
+
+    root = Path(project_root) if project_root else Path.cwd()
+
+    # 1. skills/{name}/SKILL.md
+    candidate = root / "skills" / skill_name / "SKILL.md"
+    if candidate.is_file():
+        return candidate
+
+    # 2. packages/*/skills/{name}/SKILL.md
+    packages_dir = root / "packages"
+    if packages_dir.is_dir():
+        for pkg in packages_dir.iterdir():
+            if not pkg.is_dir():
+                continue
+            candidate = pkg / "skills" / skill_name / "SKILL.md"
+            if candidate.is_file():
+                return candidate
+
+    # 3. .claude/skills/{name}/SKILL.md
+    candidate = root / ".claude" / "skills" / skill_name / "SKILL.md"
+    if candidate.is_file():
+        return candidate
+
+    return None
+
+
+def load_skill_requirements_by_name(
+    skill_name: str, project_root: str | Path | None = None
+) -> Optional[SkillRequirements]:
+    """Convenience wrapper: resolve skill name → SKILL.md → SkillRequirements.
+
+    Returns `None` when the skill cannot be located OR has no routing block.
+    Used by `hooks/agent-qwen-bridge.sh` to avoid open-coding the name→path
+    lookup in shell.
+    """
+    md = find_skill_md(skill_name, project_root)
+    if md is None:
+        return None
+    return load_skill_requirements(md)
+
+
 def to_dispatch_dict(req: SkillRequirements) -> dict:
     """Serialise `SkillRequirements` into the dict shape `dispatch()` consumes.
 
@@ -232,4 +320,6 @@ def to_dispatch_dict(req: SkillRequirements) -> dict:
         "fallback_on_rate_limit": req.fallback_on_rate_limit,
         "fallback_on_any_error": req.fallback_on_any_error,
         "budget_max_usd_per_call": req.budget_max_usd_per_call,
+        "auto_fallback_to_qwen": req.auto_fallback_to_qwen,
+        "fallback_min_pressure": req.fallback_min_pressure,
     }
