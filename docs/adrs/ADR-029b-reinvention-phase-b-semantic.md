@@ -229,3 +229,72 @@ python3 -c "from lib.reinvention_semantic import SemanticIndex; s=SemanticIndex(
 pytest tests/unit/test_reinvention_semantic.py -v  # 5/5 pass
 REINVENTION_PHASE_B=0 bash hooks/reinvention-check.sh < /dev/null  # Phase A only
 ```
+
+---
+
+## Resolution Log
+
+### 2026-04-21 — Phase B-β wired as optional
+
+**Status change**: Phase B-β (embeddings) moved from "deferred" to "optional,
+wired, not installed by default". Hard-block escalation (Phase B-γ) still
+deferred per §5.
+
+**What landed**:
+
+1. `pyproject.toml` gains an OPTIONAL `[project.optional-dependencies] semantic`
+   extra: `sentence-transformers>=3.0`, `numpy>=1.26`. Deliberately NOT included
+   in the `dev` extra — PyTorch (~200 MB) would bloat every CI run.
+   Install explicitly with `pip install '.[semantic]'`.
+
+2. `hooks/reinvention-check.sh` now recognises `REINVENTION_PHASE_B=2` as the
+   embeddings path. The inline Python tries `EmbeddingsIndex` first, catches
+   `ImportError` (sentence-transformers absent) or any query-time exception
+   (model load failure, missing `.npy` artefacts), and falls back silently to
+   Phase B-α Jaccard. The metrics JSONL `phase` field reports the path actually
+   taken (`B-alpha` or `B-beta`). Hook exit code remains `0` on every path
+   (advisory only, §5).
+
+3. `EmbeddingsIndex` already existed in `lib/reinvention_semantic.py` (shipped
+   alongside Phase B-α). The stated "create `lib/reinvention_embeddings.py`"
+   step from the work order was deliberately NOT executed — creating a second
+   module for the same class would itself be a reinvention incident. Instead,
+   a latent `_persist()` bug (numpy auto-appends `.npy` to the tempfile, which
+   broke `tmp.replace()`) was fixed in-place.
+
+4. `tests/unit/test_reinvention_embeddings.py` — 7 cases, all mocking
+   `sentence_transformers` via `monkeypatch.setitem(sys.modules, …)`. No model
+   download in CI. Covers: ImportError when module absent, build+persist,
+   load round-trip, scored top-k query, threshold filtering, empty-index query,
+   hook-style graceful fallback.
+
+**What was explicitly deferred**:
+
+- Real-corpus precision/recall benchmark (ADR-039 acceptance: precision > 0.7
+  @ recall 0.6). Next step: curate a labelled test set from
+  `.cognitive-os/metrics/reinvention-checks.jsonl` over the next 7-14 days with
+  `REINVENTION_PHASE_B=2` enabled on one developer machine, then run a
+  precision/recall script that compares Jaccard vs embeddings on the same
+  queries.
+- Index build on `SessionStart`. Currently build is manual
+  (`python3 -m lib.reinvention_semantic build --embeddings`). Auto-build on
+  session start is separate work per ADR-029b §6 "Build triggers".
+- Threshold re-calibration in production. Default `DEFAULT_EMBED_MIN_SCORE=0.45`
+  is a theoretical value; tune based on the benchmark above.
+- `semantic` extra installation in CI. Deferred to a follow-up once the
+  precision benchmark justifies the disk/time cost.
+
+**Evidence** (verification commands run 2026-04-21):
+
+```
+pytest tests/unit/test_reinvention_embeddings.py -v   # 7/7 pass
+pytest tests/unit/test_reinvention_semantic.py -v     # 5/5 pass (no regression)
+pytest tests/unit/test_reinvention_guard.py -v        # 11/11 pass (no regression)
+REINVENTION_PHASE_B=2 bash hooks/reinvention-check.sh < … # exit 0 without embeddings
+```
+
+**Residual risk**: Phase B-β has never run against a real sentence-transformers
+install in CI. The test suite mocks the module; a first-run surprise on the
+real model (e.g. tokenizer download, huggingface_hub version drift) is possible.
+Dogfooding on one developer machine first (per §8 rollout plan Step 2, extended
+to B-β) is the intended mitigation.
