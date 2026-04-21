@@ -122,7 +122,7 @@ sub-agent code tasks (the dominant workload):
 | Priority | Provider | Access | Cost (1M in / 1M out) | Quality | Rationale |
 |---|---|---|---|---|---|
 | 1 | Claude Max subscription | Native Agent tool | $0 (until rate-limit hit) | ⭐⭐⭐⭐⭐ | Already paid |
-| 2 | Z.AI GLM Coding Plan Lite | Subscription $9/mo | $0 marginal | ⭐⭐⭐⭐ | Includes GLM-5.1, GLM-5-Turbo, GLM-5v-Turbo (vision), GLM-4.7 fallbacks. Unlimited bursts. |
+| 2 | Z.AI GLM Coding Plan **Pro Quarterly** | Subscription $64.80/mo | $0 marginal | ⭐⭐⭐⭐ | Includes GLM-5.1, GLM-5-Turbo, GLM-5v-Turbo (vision), GLM-4.7 fallbacks. 5× Lite headroom, priority access, 40-60% faster. Selected over Lite ($18/mo) for our observed 4-5 parallel-agent workload. |
 | 3 | Qwen 3.6 Plus | OpenRouter or Alibaba Cloud | $0.325 / $1.95 | ⭐⭐⭐⭐ (SWE-bench 78.8) | 1M context, strong code. Pay-per-use. |
 | 4 | MiniMax M2.7 | MiniMax API | $0.30 / $1.20 | ⭐⭐⭐⭐ | 205K context, ultra-cheap for long-tail tasks. |
 | 5 | OpenRouter free tier | OpenRouter (free models) | $0 | ⭐⭐⭐ (degraded) | Llama 3.1 70B, Nemotron, Qwen3 free. 50 req/day or 1000 with $10 balance. |
@@ -135,23 +135,31 @@ Burst: 4 opus-class agents, 200K input / 80K output total.
 | Provider | Cost | vs Anthropic direct |
 |---|---|---|
 | Claude Max subscription | $0 | free |
-| Z.AI GLM Coding Plan Lite | $0 marginal ($9/mo flat) | ∞× (unlimited bursts) |
+| Z.AI GLM Coding Plan Pro Quarterly | $0 marginal ($64.80/mo flat) | ∞× (unlimited bursts within 5× Lite envelope) |
 | GLM-5.1 API pay-per-use | $0.63 | 14× cheaper |
 | Qwen 3.6 Plus | $0.22 | 41× cheaper |
 | MiniMax M2.7 | $0.16 | 56× cheaper |
 | **Anthropic API direct Opus** | **$9.00** | baseline (reference) |
 
 A month of typical overflow usage (say 20 bursts):
-- GLM Coding Plan: **$9/mo** fixed
+- GLM Coding Plan Pro Quarterly: **$64.80/mo** fixed
 - Qwen 3.6 Plus via OpenRouter: **~$4.40/mo**
 - MiniMax M2.7: **~$3.20/mo**
 - Anthropic API direct: **~$180/mo**
 
-Total recommended stack: **$220/mo** (Claude Max $200 + GLM Lite $9 +
-Qwen/MiniMax ~$10) with effectively unlimited overflow.
+Total recommended stack: **~$275/mo** (Claude Max $200 + GLM **Pro
+Quarterly** $64.80 + Qwen/MiniMax/OpenRouter ~$10 for edge cases) with
+effectively unlimited overflow for complex workloads.
 
 Versus Anthropic API direct as overflow: **$260–380/mo** for marginally
 better quality on 5% of tasks.
+
+**Note**: earlier drafts of this ADR cited $9/mo for Z.AI Lite. Verified
+actual pricing at z.ai/subscribe on 2026-04-21: Lite is $18/mo ($16.20
+quarterly). Pro $72/mo ($64.80 quarterly) is selected based on our
+observed workload matching Z.AI's "complex workloads" tier, not
+"lightweight." Lite would saturate under 4-5 parallel-agent bursts
+within the first week.
 
 ## Pros and cons summary
 
@@ -228,7 +236,8 @@ critical tasks.**
 ### Z.AI GLM Coding Plan
 
 **Pros**
-- Fixed $9/mo (Lite) with effectively unlimited bursts for code work.
+- Fixed $64.80/mo (Pro Quarterly) with effectively unlimited bursts
+  matching observed "complex workloads" tier for code work.
 - Includes GLM-5.1 + GLM-5-Turbo + GLM-5v-Turbo (vision) + fallbacks.
 - Open-source model family — reproducible on-prem if needed.
 - Quality approaches Claude Opus 4.6 on coding benchmarks (per Apiyi.com
