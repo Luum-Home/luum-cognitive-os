@@ -185,6 +185,79 @@ class TestSelectModel(unittest.TestCase):
         self.assertEqual(m, "qwen3.6-plus")
 
 
+class TestClaudeToQwenMapping(unittest.TestCase):
+    """ADR-049: when the skill declares a Claude model tier, fallback must
+    honor that tier by mapping to the best Qwen bundle equivalent."""
+
+    def test_opus_maps_to_qwen36plus(self):
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("opus"), "qwen3.6-plus")
+
+    def test_sonnet_maps_to_qwen3_coder_plus(self):
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("sonnet"), "qwen3-coder-plus")
+
+    def test_haiku_maps_to_minimax(self):
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("haiku"), "minimax-m2.5")
+
+    def test_full_claude_name_opus(self):
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("claude-opus-4-7"), "qwen3.6-plus")
+
+    def test_full_claude_name_sonnet(self):
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("claude-sonnet-4-6"), "qwen3-coder-plus")
+
+    def test_full_claude_name_haiku(self):
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("claude-haiku-4-5-20251001"), "minimax-m2.5")
+
+    def test_case_insensitive(self):
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("OPUS"), "qwen3.6-plus")
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("Claude-Sonnet-4"), "qwen3-coder-plus")
+
+    def test_none_returns_default(self):
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen(None), qwen_provider.DEFAULT_MODEL)
+
+    def test_empty_string_returns_default(self):
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen(""), qwen_provider.DEFAULT_MODEL)
+
+    def test_unknown_tier_returns_default(self):
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("gpt-5"), qwen_provider.DEFAULT_MODEL)
+
+    def test_mapped_models_exist_in_bundle(self):
+        """Every mapped Qwen model MUST be in RECOMMENDED_MODELS bundle —
+        otherwise we'd dispatch to a model not available under subscription."""
+        for claude_tier, qwen_model in qwen_provider.CLAUDE_TO_QWEN_MAP.items():
+            self.assertIn(
+                qwen_model,
+                qwen_provider.RECOMMENDED_MODELS,
+                f"{claude_tier} maps to {qwen_model} which is NOT in RECOMMENDED_MODELS",
+            )
+
+    def test_select_model_respects_claude_hint(self):
+        """select_model with claude_model_hint overrides task-based heuristic."""
+        # Without hint: general task → qwen3.6-plus
+        self.assertEqual(qwen_provider.select_model(task="general"), "qwen3.6-plus")
+        # With hint=haiku: should flip to minimax-m2.5 regardless of task
+        self.assertEqual(
+            qwen_provider.select_model(task="general", claude_model_hint="haiku"),
+            "minimax-m2.5",
+        )
+        # With hint=sonnet + code task: sonnet mapping wins
+        self.assertEqual(
+            qwen_provider.select_model(task="code", claude_model_hint="sonnet"),
+            "qwen3-coder-plus",
+        )
+
+    def test_select_model_long_context_overrides_hint(self):
+        """need_long_context is a hard requirement — overrides even claude_model_hint."""
+        self.assertEqual(
+            qwen_provider.select_model(need_long_context=True, claude_model_hint="haiku"),
+            "qwen3.6-plus",
+        )
+
+    def test_select_model_vision_overrides_hint(self):
+        """need_vision is a hard requirement — overrides claude_model_hint."""
+        m = qwen_provider.select_model(need_vision=True, claude_model_hint="haiku")
+        self.assertTrue(qwen_provider.RECOMMENDED_MODELS[m]["vision"])
+
+
 class TestConfigDefaults(unittest.TestCase):
     def test_default_base_url_points_to_alibaba(self):
         self.assertIn("aliyuncs.com", qwen_provider.DEFAULT_BASE_URL)
