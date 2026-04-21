@@ -252,7 +252,8 @@ GROUPEOF
     "content-policy.sh" \
     "confidentiality-enforcer.sh" \
     "doc-sync-detector.sh" \
-    "wiring-check.sh")
+    "wiring-check.sh" \
+    "surface-fix-detector.sh")
   # PostToolUse TodoWrite — track todo state changes to work-queue log.
   local post_todo
   post_todo=$(hook_group "TodoWrite" \
@@ -412,7 +413,7 @@ echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, aguara-scan.sh (D35: 189-rule prompt injection), parry-scan.sh (D35: ML injection scanner), auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.sh, rate-limit-drain.sh (D45: retry_count+1 re-enqueue, non-blocking)"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
-echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"
+echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh, surface-fix-detector.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh, skill-invocation-logger.sh"
 echo "  PostToolUse TodoWrite: work-queue-sync.sh"
 echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh, semgrep-scan.sh (D35: SAST, advisory), work-queue-sync.sh, global-verify.sh after"
