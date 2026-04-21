@@ -43,10 +43,18 @@ crawling = [
 # ADR-029b Phase B-β (ADR-039) — reinvention-gate semantic embeddings.
 # Optional: adds ~90MB model + PyTorch CPU wheel (~200MB). Hook falls back
 # to Jaccard (Phase B-α) when this extra is not installed.
-# Install with: pip install 'luum-cognitive-os[semantic]'
+# Install with: uv sync --extra semantic
 semantic = [
     "sentence-transformers>=3.0",
     "numpy>=1.26",
+]
+# ADR-049 — direct-SDK LLM dispatch (no LiteLLM/Bifrost proxy).
+# The `openai` SDK covers Alibaba Qwen, DeepSeek, OpenRouter, MiniMax, GLM,
+# and OpenAI itself via base_url overrides. Used by lib/qwen_provider.py
+# and (future) sibling providers.
+# Install with: uv sync --extra direct_providers
+direct_providers = [
+    "openai>=1.50",
 ]
 testing = [
     "pytest>=8.0",
