@@ -658,6 +658,41 @@ def update_timestamp_marker(metrics_dir: Path) -> None:
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# ws8: Auto-classifier integration
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _run_classifier(project_root: Path, audit_file: Path) -> None:
+    """Call cos-classify-coverage.py after a full audit run (ws8 integration).
+
+    Generates .cognitive-os/coverage-tiers.json from the fresh audit JSONL.
+    Failure is non-fatal — a warning is printed and the main audit continues.
+    """
+    import subprocess as _subprocess
+
+    classifier = project_root / "scripts" / "cos-classify-coverage.py"
+    if not classifier.exists():
+        return  # classifier not yet present — skip silently
+
+    try:
+        result = _subprocess.run(
+            [sys.executable, str(classifier),
+             "--project-dir", str(project_root),
+             "--audit-file", str(audit_file),
+             "--summary"],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        if result.returncode == 0:
+            print(f"[aspirational-audit] coverage-tiers updated: {result.stdout.strip()}")
+        else:
+            stderr = result.stderr.strip()
+            print(f"[aspirational-audit] classifier warning: {stderr}", file=sys.stderr)
+    except Exception as exc:  # noqa: BLE001
+        print(f"[aspirational-audit] classifier skipped ({exc})", file=sys.stderr)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # CLI
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -701,6 +736,10 @@ def main(argv: list[str] | None = None) -> int:
     write_jsonl(events, jsonl_path)
     write_report(events, report_path, summary)
     update_timestamp_marker(metrics_dir)
+
+    # ws8: auto-classifier integration — run cos-classify-coverage.py after
+    # each full audit run so coverage-tiers.json stays current.
+    _run_classifier(project_root, jsonl_path)
 
     ratio_pct = round(summary["dormant_aspirational_ratio"] * 100, 1)
     print(f"[aspirational-audit] {summary['total']} components classified")
