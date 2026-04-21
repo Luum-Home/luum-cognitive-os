@@ -88,3 +88,6 @@ mutants/
 conftest.py
 cos_mutation.sqlite
 .claude/worktrees/
+
+# Auto-regenerated rule mirrors (source of truth is rules/*.md)
+.claude/rules/cos/
