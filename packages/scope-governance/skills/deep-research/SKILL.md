@@ -14,6 +14,8 @@ metadata:
   author: luum
 audience: project
 effort: opus
+summary_line: Multi-hop research skill for deep investigation of topics.
+
 ---
 
 ## Purpose

@@ -7,6 +7,8 @@ user-invocable: true
 auto-generated: false
 invoke: /cognitive-os-compat-test
 audience: os-dev
+summary_line: Smoke test suite verifying Cognitive OS works correctly with the current AI…
+
 ---
 
 # Model Compatibility Test

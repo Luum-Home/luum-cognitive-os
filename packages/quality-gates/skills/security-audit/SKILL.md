@@ -13,6 +13,8 @@ metadata:
   author: luum
   category: security
 audience: os-dev
+summary_line: "Comprehensive security audit of Cognitive OS configuration, secrets, hooks…"
+
 ---
 
 ## Purpose

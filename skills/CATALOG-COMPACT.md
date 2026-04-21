@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 124
+Total skills: 125
 
 ## os (12)
 
@@ -17,40 +17,40 @@ Total skills: 124
 | audit-integrity | Symlink-aware integrity audit of hooks, libs, and skills. |
 | bump-version | Calculate and write the new version to the VERSION file |
 | generate-changelog | Move [Unreleased] CHANGELOG entries into a versioned release section |
-| push-release | Push the release commit and tags to the remote — always requires explicit confirmation |
-| release-os | META — orchestrate the full Cognitive OS release by chaining the 5 atomic release skills |
+| push-release | Push the release commit and tags to the remote — always requires explicit… |
+| release-os | META — orchestrate the full Cognitive OS release by chaining the 5 atomic… |
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
-| validate-release | Pre-release readiness check — validates working tree, branch, changelog, and VERSION file |
+| validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 
 ## os-dev (27)
 
 | Skill | Description |
 |-------|-------------|
 | agent-stress-test | Stress-test agent cognitive health to detect context-induced degradation |
-| arena | Run competitive benchmarks comparing Cognitive OS against other AI coding tools |
+| arena | \"Run competitive benchmarks comparing Cognitive OS against other AI coding… |
 | automaker-bridge | Configure AutoMaker to use Cognitive OS as its execution brain |
-| capability-snapshot | Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss during refactors |
+| capability-snapshot | \"Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss… |
 | cognee-integration | Configure and use Cognee for knowledge graph memory. |
 | cognitive-os-benchmark | Run benchmark comparisons between Cognitive OS and BMAD METHOD v6 |
 | cognitive-os-test | Run the Cognitive OS automated test suite (infra, behavior, quality) |
-| compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI model. |
-| component-classifier | Classify a new component (skill, hook, rule, lib) as CORE or PACKAGE. |
-| deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation, and skill/hook qualit… |
-| detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken chains, phantom entrie… |
+| compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI… |
+| component-classifier | \"Classify a new component (skill, hook, rule, lib) as CORE or PACKAGE. |
+| deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
+| detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
 | harness-audit | Evaluate harness components (hooks, rules, skills) for continued relevance. |
 | metrics-calibrator | Analyze KPI history and auto-calibrate thresholds for meaningful alerting |
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules. |
 | opik-integration | Configure and use Opik for LLM observability, tracing, and evaluation. |
-| paperclip-dashboard | View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent status, spend, org cha… |
+| paperclip-dashboard | View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent… |
 | pentest-self | Self-penetration testing for Cognitive OS safety mesh. |
-| promptfoo-integration | Configure Promptfoo for prompt regression testing and red teaming of skills in CI/CD pipelines. |
+| promptfoo-integration | Configure Promptfoo for prompt regression testing and red teaming of skills in… |
 | queue-drain | Periodic agent queue drain and health check |
-| ragas-integration | Configure and use RAGAS for memory quality testing, retrieval evaluation, and synthetic test genera… |
-| red-team | Red team testing for agent prompts — detects injection, jailbreak, and manipulation vulnerabilities |
-| security-audit | Comprehensive security audit of Cognitive OS configuration, secrets, hooks, permissions, and infras… |
-| simulation-arena |  |
+| ragas-integration | Configure and use RAGAS for memory quality testing, retrieval evaluation, and… |
+| red-team | \"Red team testing for agent prompts — detects injection, jailbreak, and… |
+| security-audit | Comprehensive security audit of Cognitive OS configuration, secrets, hooks… |
+| simulation-arena | End-to-end agent workflow simulation for safety-mesh regression. |
 | smoke-test | Run end-to-end smoke tests that validate the real Cognitive OS system works |
-| strands-evals-integration | Configure Strands Evals for trace-based agent trajectory evaluation using OpenTelemetry instrumenta… |
+| strands-evals-integration | Configure Strands Evals for trace-based agent trajectory evaluation using… |
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
@@ -59,98 +59,99 @@ Total skills: 124
 | Skill | Description |
 |-------|-------------|
 | agent-kpis | Calculate and report Cognitive OS KPIs and OKRs. |
-| analyze-improvements | Analyze KPIs, error patterns, and skill metrics to identify improvement opportunities. |
+| analyze-improvements | Analyze KPIs, error patterns, and skill metrics to identify improvement… |
 | apply-improvements | Apply approved self-improvement changes from an analyze-improvements report. |
-| catalog-full | Load and display the full skills catalog (skills/CATALOG.md) with invocations, sections, and audien… |
+| catalog-full | Load and display the full skills catalog (skills/CATALOG.md) with invocations… |
 | caveman | Ultra-compressed communication mode. |
 | caveman-es | Modo cavernícola en español. |
-| cognitive-os-init | META skill — initialize Cognitive OS for a project by chaining detect-stack → generate-config → sca… |
+| cognitive-os-init | META skill — initialize Cognitive OS for a project by chaining detect-stack →… |
 | cognitive-os-status | Full health check of all Cognitive OS components |
-| compress | Compress natural language memory files (CLAUDE.md, todos, preferences) into caveman format to save… |
-| cos-status | Display current Cognitive OS state — active profile, skills exposed, hooks wired, rules loaded, pac… |
-| detect-stack | Scan a project root and produce detected-stack.json with detected languages, frameworks, databases,… |
-| generate-config | Read detected-stack.json and generate or update cognitive-os.yaml with detected infrastructure, qua… |
+| compress | Compress natural language memory files (CLAUDE.md, todos, preferences) into… |
+| cos-status | Display current Cognitive OS state — active profile, skills exposed, hooks… |
+| detect-stack | Scan a project root and produce detected-stack.json with detected languages… |
+| generate-config | Read detected-stack.json and generate or update cognitive-os.yaml with detected… |
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
 | repo-forensics | Deep forensic analysis of git repositories. |
-| reverse-engineer | Deep source code analysis of a dependency to understand its internal APIs, config schemas, CLI comm… |
-| scaffold-project | Create the .claude/ directory structure, symlink rules, and generate project-specific rules, skills… |
-| self-improve | META skill — orchestrates analyze-improvements → (human reviews) → apply-improvements. |
+| reverse-engineer | Deep source code analysis of a dependency to understand its internal APIs… |
+| scaffold-project | Create the .claude/ directory structure, symlink rules, and generate… |
+| self-improve | META skill — orchestrates analyze-improvements → (human reviews) →… |
 | session-backlog | Inventory all pending work across plans, engram, tasks, todos, audits, and git. |
-| session-wrapup | End-of-session routine — run session-backlog inventory, save to engram, write session summary, and… |
-| skill-creator |  |
-| trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend reviews |
-| validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules, hooks |
+| session-wrapup | End-of-session routine — run session-backlog inventory, save to engram, write… |
+| skill-creator | Create new AI agent skills + cos package scaffolding. |
+| trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
+| validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 
-## project (62)
+## project (63)
 
 | Skill | Description |
 |-------|-------------|
-| audit-website | Perform a comprehensive 6-category website audit (SEO, Performance, Security, Content/UX, Accessibi… |
-| auto-refine | Analyze a failed agent's output, determine root cause, and re-launch with refined instructions. |
-| auto-rollback | Auto-rollback failed SDD apply commits when verify-apply loop exceeds max retries |
-| batch-runner | Execute multiple SDD changes sequentially with timing, reporting, and failure handling |
+| audit-website | Perform a comprehensive 6-category website audit (SEO, Performance, Security… |
+| auto-refine | Analyze a failed agent's output, determine root cause, and re-launch with… |
+| auto-rollback | \"Auto-rollback failed SDD apply commits when verify-apply loop exceeds max… |
+| batch-runner | Execute multiple SDD changes sequentially with timing, reporting, and failure… |
 | code-review | Engram-integrated code review with adversarial protocol. |
-| cognee-search | Semantic knowledge graph search via Cognee — complements Engram FTS5 with relationship-aware retrie… |
+| cognee-search | Semantic knowledge graph search via Cognee — complements Engram FTS5 with… |
 | compose-prompt | Compose a sub-agent prompt from reusable templates. |
 | confidence-check | Pre-implementation confidence assessment. |
-| contract-drift | Detect drift between HTTP calls in source code and OpenAPI/Swagger contract definitions. |
+| contract-drift | Detect drift between HTTP calls in source code and OpenAPI/Swagger contract… |
 | conversation-memory | Search and learn from past Cognitive OS sessions — the system's long-term memory |
-| coverage-enforcement | Run Go test coverage for all services, enforce thresholds from cognitive-os.yaml, report per-packag… |
+| coverage-enforcement | Run Go test coverage for all services, enforce thresholds from… |
 | deep-research | Multi-hop research skill for deep investigation of topics. |
 | devbox-checkpoint | Save and restore environment state snapshots using devbox |
 | doc-sync | Synchronize documentation that became stale after code changes |
-| document-feature | Generate or update structured feature documentation using 3-layer detection (SDD spec, git diff, CL… |
+| document-feature | Generate or update structured feature documentation using 3-layer detection… |
 | dod-check | Verify Definition of Done criteria for a task at a given complexity level |
-| error-analyzer | Analyze accumulated errors from test/lint/build runs and propose skill improvements. |
+| error-analyzer | Analyze accumulated errors from test/lint/build runs and propose skill… |
 | eval-repo | Evaluate external git repositories for potential inclusion in the tech radar. |
 | evaluate-plan | Evaluate any existing plan file with a 0-50 scoring system. |
 | exhaustive-prompt | Generate exhaustive agent prompts with scope enumeration and acceptance criteria |
-| gpu-sandbox | Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data processing, financial calc… |
-| impact-analysis | Analyze change impact: imports, tests, configs, services, and SDD artifacts affected |
+| gpu-sandbox | Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data… |
+| impact-analysis | \"Analyze change impact: imports, tests, configs, services, and SDD artifacts… |
 | install-recommended | Detect project stack and recommend relevant skills to install |
+| invariant-check | Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs… |
 | issue-pipeline | Fetch a GitHub issue, run the SDD pipeline, and open a pull request |
-| jupyter-execute | Execute code in a Jupyter kernel sandbox for data analysis, Python snippets, and benchmarks |
+| jupyter-execute | Execute code in a Jupyter kernel sandbox for data analysis, Python snippets… |
 | memu-context | Query memU proactive memory for relevant context before starting work |
-| optimize-skill | Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras y refinando el prom… |
+| optimize-skill | Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras… |
 | persistent-agent | Create persistent agents that maintain their own state across sessions. |
 | plan-bug | Create a bug fix plan with root cause analysis and evaluation scoring. |
 | plan-feature | Create a feature implementation plan with evaluation scoring. |
-| planning-poker |  |
+| planning-poker | Multi-agent complexity estimation via planning-poker rounds. |
 | pr-review | Pull Request review skill. |
 | private-mode | Toggle private conversation mode. |
 | readiness-check | Implementation readiness gate — validates all prerequisites before coding starts |
-| recall-search | Search past Claude Code conversations using full-text search. |
-| recommend-library | Search package registries and rank by relevance, adoption, maintenance, and license compliance |
+| recall-search | \"Search past Claude Code conversations using full-text search. |
+| recommend-library | Search package registries and rank by relevance, adoption, maintenance, and… |
 | repair-status | Report on auto-repair system health and statistics |
-| research-protocol | Meta-skill that teaches agents HOW to investigate any source material systematically. |
+| research-protocol | Meta-skill that teaches agents HOW to investigate any source material… |
 | resolve-blockers | Automatically resolve blockers reported by readiness-check. |
-| resource-governor | Master resource optimizer — coordinates budget, infrastructure, agents, skills, and tokens system-w… |
+| resource-governor | Master resource optimizer — coordinates budget, infrastructure, agents, skills… |
 | resume-tasks | Check for incomplete tasks from previous sessions and offer to resume them. |
-| retrospective | Weekly analysis of all squads with trend analysis and auto-reconfiguration proposals |
+| retrospective | Weekly analysis of all squads with trend analysis and auto-reconfiguration… |
 | run-tests | Auto-detect project test framework and run tests with structured reporting |
 | sandbox-sample | Classify, sample, sandbox-verify, then scale changes across large file sets |
 | scout | Quick pre-implementation codebase reconnaissance with 3 depth levels |
-| sdd-compound | Extract learnings and compound knowledge after completing an SDD change. |
+| sdd-compound | \"Extract learnings and compound knowledge after completing an SDD change. |
 | sdd-continue | Enhanced SDD continuation with state inspection — determines optimal next action |
-| sdd-explore | Explore and investigate ideas before committing to a change — deep feasibility analysis |
-| sdd-resume | Resume an SDD pipeline from its last completed phase with timing and state visibility |
-| secret-audit | Scan all services for env var usage, cross-reference with definitions, report gaps |
+| sdd-explore | Explore and investigate ideas before committing to a change — deep feasibility… |
+| sdd-resume | Resume an SDD pipeline from its last completed phase with timing and state… |
+| secret-audit | Scan all services for env var usage, cross-reference with definitions, report… |
 | self-review | Lightweight 4-question post-implementation checklist for non-SDD work. |
 | semgrep-scan | Run Semgrep SAST security scanning on a path or changed files. |
 | session-manager | Manage concurrent Cognitive OS sessions — list, inspect, and clean up |
-| singularity | Codebase Singularity — autonomous MAPE-K control loop that monitors, classifies, and routes codebas… |
+| singularity | Codebase Singularity — autonomous MAPE-K control loop that monitors… |
 | sprint | Lightweight agent-managed sprint tracking — plan, status, retro, course-correct |
 | squad-manager | Evaluate squad performance and propose reconfigurations |
 | sre-agent | SRE auto-repair agent. |
-| systematic-debugging | Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes |
+| systematic-debugging | Use when encountering any bug, test failure, or unexpected behavior, before… |
 | test-driven-development | Use when implementing any feature or bugfix, before writing implementation code |
-| verification-before-completion | Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - re… |
+| verification-before-completion | Use when about to claim work is complete, fixed, or passing, before committing… |
 | web-crawler | Fetch and convert web pages to LLM-ready markdown using Crawl4AI. |
-| webhook-trigger | GitHub webhook server that receives issue events and launches SDD pipelines automatically via Claud… |
+| webhook-trigger | GitHub webhook server that receives issue events and launches SDD pipelines… |
 
 ## human (1)
 
 | Skill | Description |
 |-------|-------------|
-| session-report-executive | Generate an executive-level session report translating technical metrics into business language. |
+| session-report-executive | Generate an executive-level session report translating technical metrics into… |
 

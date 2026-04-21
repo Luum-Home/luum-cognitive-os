@@ -5,6 +5,8 @@ description: "Red team testing for agent prompts — detects injection, jailbrea
 triggers: ["/red-team", "/redteam", "/promptfoo"]
 audience: os-dev
 version: 1.0.0
+summary_line: "\"Red team testing for agent prompts — detects injection, jailbreak, and…"
+
 ---
 
 # /red-team

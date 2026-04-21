@@ -7,6 +7,8 @@ last-updated: 2026-03-22
 user-invocable: true
 auto-generated: false
 audience: project
+summary_line: SRE auto-repair agent.
+
 ---
 
 # SRE Auto-Repair Agent

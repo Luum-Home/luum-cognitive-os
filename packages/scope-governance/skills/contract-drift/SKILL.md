@@ -13,6 +13,8 @@ license: MIT
 metadata:
   author: luum
 audience: project
+summary_line: Detect drift between HTTP calls in source code and OpenAPI/Swagger contract…
+
 ---
 
 ## Purpose

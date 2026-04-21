@@ -8,6 +8,8 @@ user-invocable: true
 auto-generated: false
 tech: python, fastapi
 audience: project
+summary_line: GitHub webhook server that receives issue events and launches SDD pipelines…
+
 ---
 
 # Webhook Trigger

@@ -9,6 +9,8 @@ tags: [release, git]
 last-updated: 2026-04-10
 disable-model-invocation: true
 effort: haiku
+summary_line: Push the release commit and tags to the remote — always requires explicit…
+
 ---
 
 # Push Release

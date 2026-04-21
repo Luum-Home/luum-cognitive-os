@@ -8,6 +8,8 @@ auto-generated: false
 last-updated: 2026-04-10
 audience: both
 tags: [self-improvement, meta, kpis]
+summary_line: META skill — orchestrates analyze-improvements → (human reviews) →…
+
 ---
 
 # Self-Improve Skill (META)

@@ -6,6 +6,8 @@ invoke: /secret-audit
 version: 1.0.0
 model: sonnet
 audience: project
+summary_line: "Scan all services for env var usage, cross-reference with definitions, report…"
+
 ---
 
 # Secret Audit — Environment Variable Cross-Reference

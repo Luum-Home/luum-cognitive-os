@@ -16,6 +16,8 @@ metadata:
   tool-ring: ADOPT
   tool-score: 8.95
 audience: os-dev
+summary_line: "Configure and use Opik for LLM observability, tracing, and evaluation."
+
 ---
 
 ## Purpose

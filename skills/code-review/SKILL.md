@@ -16,6 +16,8 @@ context info:
   inspired-by: GGA (Gentleman Guardian Angel) — MIT licensed
 audience: project
 effort: opus
+summary_line: Engram-integrated code review with adversarial protocol.
+
 ---
 
 ## Purpose

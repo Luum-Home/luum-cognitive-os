@@ -13,6 +13,8 @@ outputs:
   - next_phase: The phase to execute next
   - state_summary: Current pipeline state with timing data
   - timing_table: ASCII table of per-phase durations and costs
+summary_line: Resume an SDD pipeline from its last completed phase with timing and state…
+
 ---
 
 # SDD Resume

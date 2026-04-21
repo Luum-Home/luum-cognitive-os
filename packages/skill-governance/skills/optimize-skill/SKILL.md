@@ -7,6 +7,8 @@ disable-model-invocation: true
 model: claude-opus-4-6
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 audience: project
+summary_line: "Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras…"
+
 ---
 
 # /optimize-skill — Karpathy Loop para Skills de Claude Code

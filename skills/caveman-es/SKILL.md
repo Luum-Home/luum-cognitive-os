@@ -7,6 +7,8 @@ description: >
   Usar cuando el usuario diga "modo cavernícola", "habla como cavernícola", "menos tokens",
   "sé breve", o invoque /caveman-es.
 audience: both
+summary_line: Modo cavernícola en español.
+
 ---
 
 Responder breve como cavernícola listo. Toda sustancia técnica queda. Solo relleno muere.
