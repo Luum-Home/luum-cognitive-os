@@ -320,6 +320,135 @@ AND as emergency free tier.**
   atomic to avoid compose drift mid-transition.
 - **ADR-022 references LiteLLM** — needs update pointer to this ADR.
 
+## Implementation — Feature Flag Pattern (NORMATIVE)
+
+All providers are implemented as stubs in `lib/model_router.py` from the
+start, but enabled individually via `cognitive-os.yaml` feature flags.
+This decouples "we support provider X" from "provider X is active in this
+session." Users opt in to each provider by obtaining the API key and
+flipping `enabled: true`.
+
+### Canonical schema
+
+```yaml
+# cognitive-os.yaml
+providers:
+  claude_max:
+    enabled: true                       # STATUS: implemented
+    priority: 1                         # native Agent tool, always primary
+    notes: "Claude Code Max subscription, used via native Agent tool"
+
+  zai_glm:
+    enabled: false                      # STATUS: implemented — flip to true to activate
+    priority: 2
+    api_key_env: ZAI_API_KEY
+    default_model: glm-5.1
+    base_url: https://open.bigmodel.cn/api/paas/v4/
+    fallback_models: [glm-5-turbo, glm-5v-turbo, glm-4.7]
+
+  qwen:
+    enabled: false                      # STATUS: implemented
+    priority: 3
+    api_key_env: OPENROUTER_API_KEY     # simplest path (no Alibaba Cloud signup)
+    default_model: qwen/qwen3.6-plus
+    base_url: https://openrouter.ai/api/v1
+
+  minimax:
+    enabled: false                      # STATUS: implemented
+    priority: 4
+    api_key_env: MINIMAX_API_KEY
+    default_model: minimax-m2.7
+    base_url: https://api.minimax.io/v1
+
+  openrouter_free:
+    enabled: false                      # STATUS: implemented
+    priority: 5
+    api_key_env: OPENROUTER_API_KEY
+    default_model: nvidia/llama-3.1-nemotron-ultra-253b:free
+    base_url: https://openrouter.ai/api/v1
+    notes: "Emergency free tier — 50 req/day or 1000 with $10 balance"
+
+  anthropic_api_direct:
+    enabled: false                      # STATUS: implemented — opt-in for critical only
+    priority: 6
+    api_key_env: ANTHROPIC_API_KEY
+    default_model: claude-opus-4-7
+    notes: "Reserved for critical tasks — $15/$75 per 1M tokens"
+```
+
+### Dispatch algorithm
+
+`lib/model_router.py::dispatch(task, budget_remaining_usd)` iterates only
+the providers with `enabled: true`, sorted by `priority` ascending:
+
+```python
+def dispatch(task, budget_remaining_usd):
+    for provider in sorted_enabled_providers():
+        if not provider_budget_ok(provider, task, budget_remaining_usd):
+            continue
+        try:
+            return call_direct_sdk(provider, task)
+        except RateLimitError:
+            log_rate_limit(provider); continue
+        except ProviderUnavailable:
+            log_outage(provider); continue
+    raise NoProvidersAvailable("all enabled providers exhausted or budgeted out")
+```
+
+Each `call_direct_sdk(provider, task)` uses the appropriate SDK:
+- `claude_max` → Claude Code native Agent tool (NOT direct SDK — special path)
+- `anthropic_api_direct` → `anthropic` SDK
+- everything else → `openai` SDK with `base_url` override
+
+### Minimum viable setup (1 provider)
+
+User wants to start with ONE provider (Z.AI Lite). Steps:
+
+1. `zai_glm.enabled: true` in `cognitive-os.yaml`
+2. `ZAI_API_KEY=...` in `.env`
+3. Leave all others at `enabled: false`
+
+Router works end-to-end with a single overflow provider. No code changes.
+
+When user decides to add MiniMax later:
+
+1. `minimax.enabled: true`
+2. `MINIMAX_API_KEY=...` in `.env`
+3. Done. Router picks it up on next invocation.
+
+**Adding a NEW provider not in the list** (e.g. DeepSeek):
+
+1. Add row to `providers:` block in yaml
+2. Add `call_deepseek(...)` stub in `lib/model_router.py` (~15 lines,
+   OpenAI-compatible via `base_url`)
+3. Add test covering the dispatch path
+4. PR review
+
+**Disabling a provider temporarily** (e.g. provider has an outage):
+
+1. `enabled: false` in yaml
+2. Next dispatch skips it
+3. No code changes, no restart
+
+### Validator contract
+
+`scripts/cos-config-audit.sh` gains contract `meta.llm_providers_reachable`:
+
+- For each `enabled: true` provider, ping a cheap endpoint (model list /
+  health check) with the configured API key.
+- Reports IMPL if all enabled providers respond; PARTIAL if key missing;
+  ASPIR if endpoint unreachable or 401/403.
+
+Prevents the "enabled but misconfigured" drift (similar gap to
+`meta.settings_freshness`).
+
+### Zero-provider fallback
+
+If all providers fail or are disabled, the router raises
+`NoProvidersAvailable`. The orchestrator logs this and falls back to the
+native Agent tool even if it's rate-limited — user sees the original
+"You're out of extra usage" error rather than silent hang.
+
 ## Rollout
 
 1. ✅ Document analysis (this ADR) — DONE 2026-04-21.
@@ -385,18 +514,35 @@ grep -r 'ADR-049' docs/adrs/ADR-022.md docs/adrs/ADR-028.md rules/model-routing.
 
 ## Open questions (non-blocking)
 
-1. **Should we build a dedicated config file for provider cascade**
-   (`providers.yaml`) instead of expanding `cognitive-os.yaml`? Argument
-   for separation: provider tuning is high-churn (prices move monthly),
-   main config is stable. Argument against: one more config surface.
+1. **Dedicated `providers.yaml` file vs expanding `cognitive-os.yaml`**.
+   Provider tuning is high-churn (prices move monthly); main config is
+   stable. Separation would scope reviews better. Argument against: one
+   more config surface to track. **Deferred — revisit after 3 months of
+   real usage.**
+
 2. **OpenRouter BYOK mode** — if we hold our own Anthropic API key,
-   routing via OpenRouter BYOK gives us unified observability + 1M
-   free requests/mo. Worth evaluating once direct-SDK baseline is
-   shipped.
+   routing via OpenRouter BYOK gives us unified observability + 1M free
+   requests/mo. Worth evaluating once direct-SDK baseline is shipped.
+   **Deferred — revisit after Milestone 2 (3+ providers active).**
+
 3. **Semantic cache** — if we find ourselves re-sending similar prompts
-   (e.g. SDD phase templates), we may want to add a thin cache layer
-   in `lib/model_router.py` (Python dict + TTL). Bifrost would have
-   given this for free. Keep under observation.
+   (e.g. SDD phase templates), a thin cache layer in `lib/model_router.py`
+   (Python dict + TTL) would help. Bifrost would have given this for
+   free. **Keep under observation — add if repeat-prompt rate > 20% in
+   metrics.**
+
+4. **Automatic rate-limit detection accuracy** — step 7 of rollout adds
+   `hooks/rate-limit-detector.sh` that greps stderr for "out of extra
+   usage". Claude's error wording may change. Mitigation: maintain a
+   regex pattern list in the hook, update on observed new wording, log
+   unmatched errors for manual review.
+
+5. **Claude Max subscription recovery signal** — currently no automated
+   way to detect when the subscription cooldown ends (reset hour known
+   in user's local TZ but not broadcast to the hook). Router will keep
+   fallback-routing until user manually re-enables. Future: parse the
+   "resets Xpm (America/Buenos_Aires)" message, schedule a re-check
+   hook at that time.
 
 ## Sources
 
