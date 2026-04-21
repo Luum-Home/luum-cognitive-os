@@ -299,6 +299,82 @@ STATUS_LABEL = {
     "ASPIR": "ASPIR",
 }
 
+# Map between annotation vocabulary (user-facing words in YAML comments) and
+# the validator's internal status codes.
+ANNOTATION_TO_STATUS = {
+    "implemented": "IMPL",
+    "partial": "PARTIAL",
+    "aspirational": "ASPIR",
+}
+
+
+def parse_status_annotations(yaml_path: Path) -> dict[str, str]:
+    """
+    Parse `# STATUS: <value>` comments in cognitive-os.yaml and map them to
+    contract section paths. Returns dict mapping "section.name" -> "IMPL"|"PARTIAL"|"ASPIR".
+
+    Association rule:
+      - The annotation applies to the nearest following YAML key (within 3 non-blank lines)
+      - Nested keys are resolved to dotted paths based on indentation
+      - Special form `# STATUS: X (some.section)` binds to the explicit section name
+    """
+    if not yaml_path.exists():
+        return {}
+    try:
+        lines = yaml_path.read_text().splitlines()
+    except (OSError, PermissionError):
+        return {}
+
+    annotations: dict[str, str] = {}
+    # Stack of (indent_level, key) tracking the YAML nesting path
+    nesting: list[tuple[int, str]] = []
+    # Pending annotations: list of (status, explicit_target_or_none)
+    pending: list[tuple[str, str | None]] = []
+
+    status_re = re.compile(r"^\s*#\s*STATUS:\s*(\w+)(?:\s*\(([^)]+)\))?\s*$", re.IGNORECASE)
+    key_re = re.compile(r"^(\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:")
+
+    for line in lines:
+        # Skip blank lines — pending annotations carry through
+        if not line.strip():
+            continue
+
+        m_status = status_re.match(line)
+        if m_status:
+            word = m_status.group(1).lower()
+            explicit = m_status.group(2)
+            status = ANNOTATION_TO_STATUS.get(word)
+            if status:
+                pending.append((status, explicit))
+            continue
+
+        # Other comment lines (not STATUS) reset nothing
+        if line.lstrip().startswith("#"):
+            continue
+
+        m_key = key_re.match(line)
+        if not m_key:
+            # Non-key content — drop pending (they must bind to next key)
+            # But only drop if we've consumed them; otherwise keep one more chance
+            continue
+
+        indent = len(m_key.group(1))
+        key = m_key.group(2)
+        # Maintain nesting stack based on indentation
+        while nesting and nesting[-1][0] >= indent:
+            nesting.pop()
+        nesting.append((indent, key))
+        dotted = ".".join(k for _, k in nesting)
+
+        # Bind pending annotations
+        if pending:
+            for status, explicit in pending:
+                target = explicit if explicit else dotted
+                annotations[target] = status
+            pending = []
+
+    return annotations
+
 ANSI = {
     "IMPL": "\033[32m",      # green
     "PARTIAL": "\033[33m",   # yellow
@@ -314,6 +390,7 @@ def _colorize(status: str, text: str, use_color: bool) -> str:
 
 
 def run_audit(use_color: bool = True) -> list[dict]:
+    annotations = parse_status_annotations(REPO_ROOT / "cognitive-os.yaml")
     results = []
     for contract in CONTRACTS:
         section = contract["section"]
@@ -321,27 +398,52 @@ def run_audit(use_color: bool = True) -> list[dict]:
             status, reason = contract["check"](REPO_ROOT)
         except Exception as exc:  # noqa: BLE001
             status, reason = "ASPIR", f"check raised exception: {exc}"
-        results.append({"section": section, "status": status, "reason": reason})
+        entry = {"section": section, "status": status, "reason": reason}
+        annotated = annotations.get(section)
+        entry["annotation"] = annotated  # may be None
+        if annotated is None:
+            entry["coherence"] = "UNANNOTATED"
+        elif annotated != status:
+            entry["coherence"] = "DRIFT"
+        else:
+            entry["coherence"] = "OK"
+        results.append(entry)
     return results
 
 
 def format_text(results: list[dict], use_color: bool = True) -> str:
     lines = []
     for r in results:
-        label = _colorize(r["status"], f"[{r['status']:^7}]", use_color)
-        lines.append(f"{label} {r['section']} — {r['reason']}")
+        coherence = r.get("coherence", "OK")
+        if coherence == "DRIFT":
+            label_text = "[ DRIFT ]"
+            label = _colorize("ASPIR", label_text, use_color)
+            ann = r.get("annotation") or "?"
+            suffix = f" (annotation={ann}, actual={r['status']})"
+            lines.append(f"{label} {r['section']} — {r['reason']}{suffix}")
+        else:
+            label = _colorize(r["status"], f"[{r['status']:^7}]", use_color)
+            unann = " [unannotated]" if coherence == "UNANNOTATED" else ""
+            lines.append(f"{label} {r['section']} — {r['reason']}{unann}")
     counts = {s: sum(1 for r in results if r["status"] == s) for s in ("IMPL", "PARTIAL", "ASPIR")}
+    drift_count = sum(1 for r in results if r.get("coherence") == "DRIFT")
+    unann_count = sum(1 for r in results if r.get("coherence") == "UNANNOTATED")
     lines.append("")
     lines.append(
         f"Summary: {counts['IMPL']} implemented, "
         f"{counts['PARTIAL']} partial, "
         f"{counts['ASPIR']} aspirational."
     )
+    if drift_count or unann_count:
+        lines.append(
+            f"Coherence: {drift_count} drift, {unann_count} unannotated."
+        )
     return "\n".join(lines)
 
 
 def main():
     want_json = "--json" in sys.argv
+    strict = "--strict" in sys.argv
     use_color = sys.stdout.isatty() and not want_json
 
     results = run_audit(use_color=use_color)
@@ -351,6 +453,8 @@ def main():
     else:
         print(format_text(results, use_color=use_color))
 
+    if strict and any(r.get("coherence") == "DRIFT" for r in results):
+        sys.exit(1)
     sys.exit(0)
 
 
