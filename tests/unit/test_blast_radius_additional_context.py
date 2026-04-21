@@ -90,8 +90,15 @@ class TestBlastRadiusAdditionalContext:
         assert any(level in ctx for level in ("HIGH", "CRITICAL"))
 
     def test_security_keyword_emits_critical_context(self, tmp_path: Path) -> None:
-        """Security keywords (auth, jwt, oauth, ...) must trigger CRITICAL
-        and surface the security-specific recommendation."""
+        """Security keywords combined with broad scope (across all services) must
+        trigger at least a HIGH or CRITICAL blast radius warning.
+
+        Note: the hook was updated (comment: "Noise > signal") so security
+        keywords ALONE no longer trigger CRITICAL — a high file-score is also
+        required.  A prompt with "across all services" (+50 score) combined with
+        security keywords satisfies the new HIGH threshold (score > 40).
+        CRITICAL requires (infra AND security) OR score > 100.
+        """
         result = _run(
             _agent_payload("Add OAuth2 authentication across all services"),
             env_extra={"CLAUDE_PROJECT_DIR": str(tmp_path)},
@@ -101,7 +108,10 @@ class TestBlastRadiusAdditionalContext:
         ctx = data["hookSpecificOutput"].get("additionalContext", "") or data.get(
             "additionalContext", ""
         )
-        assert "CRITICAL" in ctx
+        # Accept HIGH or CRITICAL — both are valid warnings for this prompt
+        assert any(level in ctx for level in ("HIGH", "CRITICAL")), (
+            f"Expected HIGH or CRITICAL blast radius for security+scope prompt, got: {ctx!r}"
+        )
         assert "BLAST RADIUS" in ctx
 
     def test_still_allows_execution(self, tmp_path: Path) -> None:
