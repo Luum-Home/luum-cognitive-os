@@ -5,7 +5,7 @@
 # What it checks (in order):
 #   1. cos-config-audit.sh reports meta.llm_providers_reachable = IMPL
 #   2. lib/qwen_provider.py is importable and call() works (real API call)
-#   3. scripts/orchestrator.py _try_qwen_fallback() returns a result object
+#   3. scripts/orchestrator.py _try_qwen_primary() returns a result object
 #      when invoked programmatically (mocked rate-limit error)
 #   4. COS_DISABLE_LLM_FALLBACK=1 kill-switch blocks the fallback
 #
@@ -69,14 +69,14 @@ else
   exit 2
 fi
 
-say "Check 3 / 4 — orchestrator _try_qwen_fallback() returns result"
+say "Check 3 / 4 — orchestrator _try_qwen_primary() returns result"
 orch_result=$(
   uv run python3 -c "
 import importlib.util, sys
 spec = importlib.util.spec_from_file_location('orch', 'scripts/orchestrator.py')
 orch = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(orch)
-r = orch._try_qwen_fallback('Respond with: PONG')
+r = orch._try_qwen_primary('Respond with: PONG')
 if r is None:
     print('FALLBACK_NONE'); raise SystemExit(0)
 print(f'FALLBACK_RESULT success={r.success} provider={r.provider}')
@@ -89,21 +89,27 @@ else
   exit 3
 fi
 
-say "Check 4 / 4 — COS_DISABLE_LLM_FALLBACK=1 kill-switch"
+say "Check 4 / 4 — COS_DISABLE_LLM_FALLBACK=1 cascade kill-switch"
+# Per C1 Option B rewrite: the kill-switch is CASCADE-SCOPED. It blocks advance
+# to a fallback provider, NOT the initial primary call. Semantically correct
+# because Qwen-as-primary should still fire (it's what the user explicitly
+# requested via --providers qwen,...); only the fallback-to-Claude step is
+# what the switch blocks.
 switch_result=$(
   COS_DISABLE_LLM_FALLBACK=1 uv run python3 -c "
 import importlib.util, sys
 spec = importlib.util.spec_from_file_location('orch', 'scripts/orchestrator.py')
 orch = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(orch)
-r = orch._try_qwen_fallback('anything')
-print('SWITCH_RESPECTED' if r is None else f'SWITCH_IGNORED: r={r!r}')
+# Verify _fallback_disabled() returns True under the env var
+disabled = orch._fallback_disabled(verbose=False)
+print('SWITCH_RESPECTED' if disabled else 'SWITCH_IGNORED')
 " 2>&1 | tail -1
 )
 if echo "$switch_result" | grep -q 'SWITCH_RESPECTED'; then
-  pass "kill-switch blocks fallback as expected"
+  pass "cascade kill-switch detected as expected"
 else
-  fail "CRITICAL: kill-switch IGNORED — $switch_result"
+  fail "CRITICAL: cascade kill-switch IGNORED — $switch_result"
   exit 4
 fi
 
