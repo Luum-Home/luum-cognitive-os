@@ -48,7 +48,7 @@ def _short_id() -> str:
 def _activate_executor_mode() -> dict:
     """Attempt to activate executor mode; return mode descriptor."""
     try:
-        from lib.auto_executor import AutoExecutor
+        from lib.orchestrator_mode_activator import AutoExecutor
 
         return AutoExecutor.check_and_activate()
     except Exception as e:

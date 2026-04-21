@@ -17,13 +17,20 @@ OUTPUT = PROJECT_ROOT / "skills" / "CATALOG-COMPACT.md"
 
 
 def parse_frontmatter(text: str) -> dict:
-    """Minimal YAML frontmatter parser (handles simple key: value, and key: > multiline)."""
-    if not text.startswith("---"):
+    """Minimal YAML frontmatter parser (handles simple key: value, and key: > multiline).
+
+    SKILL.md files may begin with an HTML comment (e.g. ``<!-- SCOPE: both -->``)
+    before the YAML front-matter fence.  Strip all leading HTML comments so that
+    the ``---`` fence is always at position 0 before parsing.
+    """
+    # Strip any leading HTML comments (<!-- ... -->) before the frontmatter fence.
+    stripped = re.sub(r"^(\s*<!--.*?-->\s*)+", "", text, flags=re.DOTALL)
+    if not stripped.startswith("---"):
         return {}
-    end = text.find("\n---", 3)
+    end = stripped.find("\n---", 3)
     if end < 0:
         return {}
-    fm = text[3:end].strip("\n")
+    fm = stripped[3:end].strip("\n")
 
     result: dict[str, str] = {}
     lines = fm.splitlines()

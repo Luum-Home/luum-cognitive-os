@@ -171,8 +171,11 @@ class TestRecordUsage:
         assert tool["last_used_at"] is not None
 
     def test_noop_for_unknown(self, creator):
-        # Should not raise
+        # Should silently skip unknown tools without raising
         creator.record_usage("does-not-exist")
+        # Confirm the registry was not corrupted by the no-op
+        tools = creator.list_dynamic_tools()
+        assert isinstance(tools, list), "list_dynamic_tools must return a list after noop"
 
 
 class TestPromoteToSkill:
