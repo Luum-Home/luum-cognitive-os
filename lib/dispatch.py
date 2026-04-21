@@ -195,9 +195,14 @@ def dispatch(
       claude_executor: already-instantiated ClaudeExecutor (required if 'claude' in list)
       claude_model: optional model hint (opus/sonnet/haiku or full name)
       task_type: freeform tag for metrics (e.g. "general", "code", "reasoning")
-      skill_name: optional skill name for metrics — enables future per-skill routing
-      skill_requirements: RESERVED for ADR-050 (tier, need_vision, need_long_context).
-        Ignored today; orchestrator passes it through unchanged.
+      skill_name: optional skill name for metrics — enables per-skill routing
+      skill_requirements: ADR-050 per-skill routing dict. Recognised keys:
+        providers_preferred (list), providers_excluded (list),
+        fallback_on_rate_limit (bool, default True),
+        fallback_on_any_error (bool, default False),
+        budget_max_usd_per_call (float | None). When present, overrides the
+        default `providers` cascade and controls fallback advance rules.
+        None → legacy uniform behaviour (backward-compatible).
       timeout: per-call timeout in seconds
       verbose: print cascade decisions to stderr
 
@@ -209,6 +214,30 @@ def dispatch(
     # Honor COS_FORCE_CLAUDE_PRIMARY override at the dispatch boundary too
     if os.environ.get("COS_FORCE_CLAUDE_PRIMARY", "").strip() == "1":
         providers = ["claude"]
+
+    # ADR-050: apply per-skill routing if provided. Env override (COS_FORCE_CLAUDE_PRIMARY)
+    # takes precedence — it's a hard kill-switch.
+    _skill_req = skill_requirements if isinstance(skill_requirements, dict) else {}
+    if _skill_req and os.environ.get("COS_FORCE_CLAUDE_PRIMARY", "").strip() != "1":
+        pref = _skill_req.get("providers_preferred") or []
+        if isinstance(pref, list) and pref:
+            providers = list(pref)
+        excl = _skill_req.get("providers_excluded") or []
+        if isinstance(excl, list) and excl:
+            _blocked = set(excl)
+            providers = [p for p in providers if p not in _blocked]
+        if verbose:
+            print(f"[dispatch] ADR-050 skill routing applied → providers={providers}",
+                  file=sys.stderr)
+
+    # Fallback policy (ADR-050) — defaults preserve legacy cascade semantics
+    _fallback_on_rate_limit = bool(_skill_req.get("fallback_on_rate_limit", True))
+    _fallback_on_any_error = bool(_skill_req.get("fallback_on_any_error", False))
+    _budget_cap = _skill_req.get("budget_max_usd_per_call")
+    try:
+        _budget_cap = float(_budget_cap) if _budget_cap is not None else None
+    except (TypeError, ValueError):
+        _budget_cap = None
 
     providers_requested = list(providers)
     providers_tried: list[str] = []
@@ -231,17 +260,44 @@ def dispatch(
             break
 
         # Cascade advance policy:
-        #   - Previous attempt was Qwen failure → ALWAYS advance (Qwen is overflow,
-        #     fallback makes sense for any failure).
-        #   - Previous attempt was Claude failure → ONLY advance if rate-limit
-        #     (Claude is frontier — non-rate-limit failures won't be fixed by
-        #     a cheaper fallback, surface them instead).
+        #   - ADR-050 fallback_on_any_error=False (default for quality-sensitive
+        #     skills): previous Claude failure without rate-limit → stop cascade.
+        #   - ADR-050 fallback_on_rate_limit=False: even rate-limit errors don't
+        #     advance — fail hard rather than silently degrade.
+        #   - Otherwise: Qwen failure → ALWAYS advance; Claude failure → ONLY
+        #     advance if rate-limit.
         if is_fallback and response is not None:
             prev_was_claude = response.get("provider_label") == "claude"
-            if prev_was_claude and not _is_rate_limit_error(response.get("error")):
+            prev_err = response.get("error")
+            prev_was_rate_limit = _is_rate_limit_error(prev_err)
+
+            # ADR-050: explicit fallback_on_rate_limit=False overrides rate-limit advance
+            if prev_was_rate_limit and not _fallback_on_rate_limit:
+                if verbose:
+                    print(
+                        "[dispatch] ADR-050 fallback_on_rate_limit=false — not advancing on rate limit",
+                        file=sys.stderr,
+                    )
+                break
+
+            if prev_was_claude and not prev_was_rate_limit and not _fallback_on_any_error:
                 if verbose:
                     print(
                         "[dispatch] Claude failed non-rate-limit — not advancing to cheaper fallback",
+                        file=sys.stderr,
+                    )
+                break
+
+        # ADR-050 budget cap: if we've already spent at/above the cap, stop cascade
+        # (this prevents a cheap fallback from still being cost-capped blind).
+        # Checked pre-call so we never exceed the declared budget.
+        if _budget_cap is not None and response is not None:
+            spent = float(response.get("cost_usd", 0.0) or 0.0)
+            if spent >= _budget_cap:
+                if verbose:
+                    print(
+                        f"[dispatch] ADR-050 budget cap ${_budget_cap:.4f} reached "
+                        f"(spent ${spent:.4f}) — stopping cascade",
                         file=sys.stderr,
                     )
                 break
@@ -317,6 +373,15 @@ def dispatch(
         "latency_ms": result.latency_ms,
         "success": result.success,
         "error": result.error[:500] if result.error else "",
+        # ADR-050: surface the routing policy that shaped this dispatch
+        "skill_routing": {
+            "tier": _skill_req.get("tier") if _skill_req else None,
+            "providers_preferred": list(_skill_req.get("providers_preferred") or []) if _skill_req else [],
+            "providers_excluded": list(_skill_req.get("providers_excluded") or []) if _skill_req else [],
+            "fallback_on_rate_limit": _fallback_on_rate_limit if _skill_req else None,
+            "fallback_on_any_error": _fallback_on_any_error if _skill_req else None,
+            "budget_max_usd_per_call": _budget_cap,
+        } if _skill_req else None,
     }
     metric_sink(record)
 

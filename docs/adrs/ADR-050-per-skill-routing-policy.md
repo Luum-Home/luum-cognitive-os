@@ -2,8 +2,25 @@
 
 ## Status
 
-**Reserved** — stub. Builds on ADR-049 (Qwen primary cascade) + ADR-051
-(Qwen agent loop) when both are mature. Not scheduled.
+**Accepted** — 2026-04-21. Schema + dispatch integration shipped. Builds on
+ADR-049 (Qwen primary cascade) and unblocked by ADR-051 Phase 3 (agent loop
+skill-context injection).
+
+Shipped in this ADR:
+- `lib/skill_routing.py` — frontmatter loader + `SkillRequirements` dataclass
+- `lib/dispatch.py::dispatch(skill_requirements=...)` — honors the routing block
+- Example frontmatter updates: `skills/sdd-explore`, `skills/sdd-resume`,
+  `packages/quality-gates/skills/security-audit`
+- `tests/unit/test_skill_routing.py` — 25 tests covering parsing, precedence,
+  dispatch integration, budget caps, backward compat
+
+Deferred to follow-ups (see "Open questions" below):
+- `cognitive-os.yaml` per-project override block
+- `meta.skill_routing_coverage` validator contract
+- Automatic orchestrator lookup: today callers must load frontmatter with
+  `skill_routing.load_skill_requirements()` and pass the result to
+  `dispatch()`. Phase 2 will wire this into `scripts/orchestrator.py` so the
+  `--skill` flag triggers the load transparently.
 
 ## Context
 
@@ -24,9 +41,42 @@ This is a coarse policy. In reality, skills have heterogeneous needs:
 
 ## Decision
 
-**Deferred**. This ADR reserves the design space for per-skill routing
-policies. When implemented, skills declare their routing requirements in
-frontmatter and the dispatcher honors them.
+Skills declare their routing preferences in `SKILL.md` frontmatter under a
+`routing:` block. `lib/skill_routing.py` parses and canonicalises that block
+into a `SkillRequirements` dataclass. `lib/dispatch.py::dispatch()` accepts
+the dict form via the `skill_requirements=` kwarg and overrides the default
+cascade accordingly.
+
+### Precedence (hard → soft)
+
+1. `COS_FORCE_CLAUDE_PRIMARY=1` env override — cannot be overridden by a skill
+2. Skill `providers_preferred` whitelist — rewrites the cascade
+3. Skill `providers_excluded` blacklist — removes from the (preferred or default) cascade
+4. Default `providers=["qwen", "claude"]` from `--providers` flag or caller
+
+### Fallback policy
+
+- `fallback_on_rate_limit: true` (default) — Claude rate-limit advances to next provider
+- `fallback_on_rate_limit: false` — hard stop on rate-limit (security-audit uses this)
+- `fallback_on_any_error: true` — even non-rate-limit Claude failures advance (sdd-resume uses this)
+- `fallback_on_any_error: false` (default) — quality-sensitive skills fail hard
+
+### Budget caps
+
+`budget_max_usd_per_call` is checked pre-call between cascade stages. If the
+previous attempt's reported `cost_usd` meets-or-exceeds the cap, the cascade
+stops regardless of success/failure. Checked only when a prior attempt has
+emitted a cost, so the first provider always runs.
+
+### Backward compatibility
+
+- `skill_requirements=None` (default) → legacy uniform cascade, identical metric record
+- `skill_requirements={}` (empty dict) → also legacy behaviour
+- Skills without a `routing:` block → `load_skill_requirements()` returns `None`,
+  caller sees legacy behaviour
+
+This is verified by `test_none_skill_requirements_is_backward_compatible` and
+`test_empty_skill_requirements_dict_is_noop` in `tests/unit/test_skill_routing.py`.
 
 ### Proposed schema (reserved in skill frontmatter)
 
