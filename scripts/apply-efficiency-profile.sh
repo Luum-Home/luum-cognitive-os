@@ -244,6 +244,11 @@ GROUPEOF
     "confidentiality-enforcer.sh" \
     "doc-sync-detector.sh" \
     "wiring-check.sh")
+  # PostToolUse TodoWrite — track todo state changes to work-queue log.
+  local post_todo
+  post_todo=$(hook_group "TodoWrite" \
+    "work-queue-sync.sh")
+
   # ADR-022: confidence-gate-llm.sh is the Haiku-evaluated advisory
   # variant of confidence-gate.sh; runs alongside it.
   # auto-verify + dod-gate gate every agent completion.
@@ -288,6 +293,7 @@ GROUPEOF
     hook_entry "task-panel-sync.sh"; printf ',\n'
     hook_entry "task-bridge-notify.sh"; printf ',\n'
     hook_entry "semgrep-scan.sh"; printf ',\n'
+    hook_entry "work-queue-sync.sh"; printf ',\n'
     hook_entry_with_args "global-verify.sh" "after"
   )
   local post_agent
@@ -346,7 +352,7 @@ GROUPEOF
 
   printf '    "PostToolUse": [\n'
   local post_first=true
-  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_skill" "$post_agent"; do
+  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_todo" "$post_skill" "$post_agent"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
@@ -398,7 +404,8 @@ echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.s
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
 echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh, skill-invocation-logger.sh"
-echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh, semgrep-scan.sh (D35: SAST, advisory), global-verify.sh after"
+echo "  PostToolUse TodoWrite: work-queue-sync.sh"
+echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, confidence-gate-llm.sh, auto-verify.sh, dod-gate.sh, session-sanity.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, state-heartbeat.sh, agent-work-tracker.sh, task-panel-sync.sh, task-bridge-notify.sh, semgrep-scan.sh (D35: SAST, advisory), work-queue-sync.sh, global-verify.sh after"
 echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, session-hygiene.sh, mlflow-sync.sh, recap-sync.sh, session-end-reap.sh"
 echo "  Total hook commands: $new_hook_count"
 
