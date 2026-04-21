@@ -36,6 +36,31 @@ exposed Docker ports. Generates a structured report with CRITICAL/HIGH/MEDIUM/LO
 ## Invocation
 
 `/security-audit` -- Full security audit of the current project
+`/security-audit --project-dir <path>` -- Full audit + persist the
+final report into `<path>/docs/04-seguridad/` per the ADR-054/055
+10-category convention.
+
+### Persistence mode (--project-dir)
+
+When `--project-dir` is set, the skill runs the 8 scan steps as usual
+and, after the inline report is generated, pipes it into
+`scripts/security-audit-writer.py`, which writes:
+
+```
+<project-dir>/docs/04-seguridad/security-audit-<YYYY-MM-DD>-<HHMMSS>.md
+```
+
+Backward-compatible: without `--project-dir`, no files are written
+(inline report only).
+
+Example:
+
+```bash
+# Persist a rendered report into an adopting project.
+uv run python3 scripts/security-audit-writer.py \
+    --project-dir /path/to/adopting-project \
+    --report-file /tmp/audit.md
+```
 
 ## Steps
 
