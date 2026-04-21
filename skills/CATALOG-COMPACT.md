@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 125
+Total skills: 129
 
 ## os (12)
 
@@ -22,7 +22,7 @@ Total skills: 125
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 
-## os-dev (27)
+## os-dev (28)
 
 | Skill | Description |
 |-------|-------------|
@@ -42,6 +42,7 @@ Total skills: 125
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules. |
 | opik-integration | Configure and use Opik for LLM observability, tracing, and evaluation. |
 | paperclip-dashboard | View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent… |
+| pattern-audit | Grep/regex audit with mandatory sampling — forbids unverified severity counts. |
 | pentest-self | Self-penetration testing for Cognitive OS safety mesh. |
 | promptfoo-integration | Configure Promptfoo for prompt regression testing and red teaming of skills in… |
 | queue-drain | Periodic agent queue drain and health check |
@@ -54,7 +55,7 @@ Total skills: 125
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
-## both (22)
+## both (23)
 
 | Skill | Description |
 |-------|-------------|
@@ -70,6 +71,7 @@ Total skills: 125
 | cos-status | Display current Cognitive OS state — active profile, skills exposed, hooks… |
 | detect-stack | Scan a project root and produce detected-stack.json with detected languages… |
 | generate-config | Read detected-stack.json and generate or update cognitive-os.yaml with detected… |
+| llm-status | Inspect LLM dispatch state — providers configured, kill-switches, recent dispatch totals. |
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
 | repo-forensics | Deep forensic analysis of git repositories. |
 | reverse-engineer | Deep source code analysis of a dependency to understand its internal APIs… |
@@ -81,7 +83,7 @@ Total skills: 125
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 
-## project (63)
+## project (64)
 
 | Skill | Description |
 |-------|-------------|
@@ -119,6 +121,7 @@ Total skills: 125
 | planning-poker | Multi-agent complexity estimation via planning-poker rounds. |
 | pr-review | Pull Request review skill. |
 | private-mode | Toggle private conversation mode. |
+| project-scaffold | Create the 10-category docs/ convention (ADR-054) in a project root. |
 | readiness-check | Implementation readiness gate — validates all prerequisites before coding starts |
 | recall-search | \"Search past Claude Code conversations using full-text search. |
 | recommend-library | Search package registries and rank by relevance, adoption, maintenance, and… |
@@ -148,6 +151,12 @@ Total skills: 125
 | verification-before-completion | Use when about to claim work is complete, fixed, or passing, before committing… |
 | web-crawler | Fetch and convert web pages to LLM-ready markdown using Crawl4AI. |
 | webhook-trigger | GitHub webhook server that receives issue events and launches SDD pipelines… |
+
+## adopters (1)
+
+| Skill | Description |
+|-------|-------------|
+| rules-export | Export SO rules/ as a point-in-time snapshot into docs/08-estandares/. |
 
 ## human (1)
 

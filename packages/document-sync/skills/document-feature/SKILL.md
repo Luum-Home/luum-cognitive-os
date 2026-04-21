@@ -1,9 +1,9 @@
 <!-- SCOPE: both -->
 ---
 name: document-feature
-version: 1.0.0
-description: Generate or update structured feature documentation using 3-layer detection (SDD spec, git diff, CLI arg)
-invocation: /document-feature [feature-name]
+version: 1.1.0
+description: Generate or update structured feature documentation using 3-layer detection (SDD spec, git diff, CLI arg). Extension (v1.1, ADR-054 Phase 2): accepts --project-dir to append to docs/05-features/features-backlog.md in an adopter project.
+invocation: /document-feature [feature-name] [--project-dir <path>]
 user-invocable: true
 last-updated: 2026-03-26
 triggers:
@@ -23,11 +23,31 @@ Generate or incrementally update structured documentation for project features. 
 ## Invocation
 
 ```
-/document-feature [feature-name]
+/document-feature [feature-name] [--project-dir <path>]
 ```
 
 - With `feature-name`: documents that specific feature (Layer 3)
 - Without arguments: auto-detects features via SDD spec or git diff (Layers 1-2)
+- With `--project-dir <path>`: **ADR-054 Phase 2 extension** — in addition to (or instead of) the full per-feature doc, append a one-row entry to `<path>/docs/05-features/features-backlog.md` following the 10-category convention. Backward-compat: when the flag is absent, behavior is unchanged.
+
+### `--project-dir` mode (backlog append)
+
+When `--project-dir` is set, invoke:
+
+```
+uv run python3 scripts/document-feature-append.py \
+  --project-dir <path> \
+  --feature "<feature name>" \
+  [--status backlog|in-progress|done|blocked] \
+  [--priority L|M|H] \
+  [--owner "<owner>"]
+```
+
+Behavior:
+- Creates `docs/05-features/features-backlog.md` if missing, with table header.
+- Assigns the next monotonic id `F-NN` based on existing rows.
+- Appends one row; does NOT rewrite existing rows.
+- Does NOT touch `docs/features/<feature>.md` (the legacy per-feature doc). Both outputs can coexist — backlog is the project-level index, per-feature docs are detail pages.
 
 ## Procedure
 

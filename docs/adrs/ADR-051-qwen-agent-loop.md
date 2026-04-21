@@ -1,6 +1,6 @@
 # ADR-051 — Qwen Agent Loop (Tool-Use Parity with Claude Code Agent)
 
-- **Status**: Proposed
+- **Status**: Accepted (2026-04-21) — Phases 1, 2, 3, 4 all DELIVERED this session. Commits: MVP phase 1, 1e6542c (phase 2), 534814e (phase 3), 925dff5 (phase 4)
 - **Date**: 2026-04-21
 - **Owners**: Orchestration / LLM dispatch
 - **Depends on**: [ADR-049](./ADR-049-llm-gateway-selection-and-overflow-providers.md) (Qwen selection), `lib/qwen_provider.py`
