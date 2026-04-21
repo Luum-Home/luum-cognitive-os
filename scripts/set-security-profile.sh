@@ -140,7 +140,8 @@ case "$PROFILE" in
     echo "  PreToolUse: rate-limit-precheck.sh (D45 sidecar), agent-bash-cwd-enforcer.sh (cwd mismatch advisory for git ops), rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact),"
     echo "              destructive-git-blocker.sh (ADR-003 R1 git-op safety), destructive-rm-blocker.sh (ADR-003 R2 file-erasure safety), project-docs-convention.sh (ADR-054/055 10-category docs convention soft-warn),"
     echo "              dispatch-gate, clarification-gate,"
-    echo "              blast-radius (ADR-023 advisory), inject-phase-context, agent-working-dir-inject.sh, agent-prelaunch, error-pattern-detector,"
+    echo "              blast-radius (ADR-023 advisory), agent-quota-advisor.sh (ADR-056 L1: Claude Max quota advisory), agent-quota-redirect.sh (ADR-056 L2: opt-in block+redirect, COS_AUTO_REDIRECT_AGENT=1), agent-qwen-bridge.sh (ADR-056 L3: opt-in per-skill transparent bridge),"
+    echo "              inject-phase-context, agent-working-dir-inject.sh, agent-prelaunch, error-pattern-detector,"
     echo "              reinvention-check.sh (ADR-029 anti-duplication), prompt-quality-llm, completeness-check-llm, global-verify.sh before,"
     echo "              session-heartbeat.sh (ADR-047: liveness signal on every tool call, wildcard matcher)"
     # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)

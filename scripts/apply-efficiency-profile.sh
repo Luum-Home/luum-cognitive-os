@@ -211,6 +211,9 @@ GROUPEOF
     hook_entry "dispatch-gate.sh"; printf ',\n'
     hook_entry "clarification-gate.sh"; printf ',\n'
     hook_entry "blast-radius.sh"; printf ',\n'
+    hook_entry "agent-quota-advisor.sh"; printf ',\n'
+    hook_entry "agent-quota-redirect.sh"; printf ',\n'
+    hook_entry "agent-qwen-bridge.sh"; printf ',\n'
     hook_entry "inject-phase-context.sh"; printf ',\n'
     hook_entry "agent-working-dir-inject.sh"; printf ',\n'
     hook_entry "agent-prelaunch.sh"; printf ',\n'
@@ -405,7 +408,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh pre-compaction-flush.sh mcp-scan.sh aguara-scan.sh parry-scan.sh semgrep-scan.sh agent-bash-cwd-enforcer.sh session-start-worktree-nudge.sh session-heartbeat.sh session-watchdog-launcher.sh context-watchdog.sh docker-drift-detector.sh rate-limit-detector.sh project-docs-convention.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh pre-compaction-flush.sh mcp-scan.sh aguara-scan.sh parry-scan.sh semgrep-scan.sh agent-bash-cwd-enforcer.sh session-start-worktree-nudge.sh session-heartbeat.sh session-watchdog-launcher.sh context-watchdog.sh docker-drift-detector.sh rate-limit-detector.sh project-docs-convention.sh agent-quota-advisor.sh agent-quota-redirect.sh agent-qwen-bridge.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -422,7 +425,7 @@ echo "  PostToolUse *: context-watchdog.sh (ADR-027/rules/context-management: 50
 echo "  PreToolUse Bash: rate-limit-precheck.sh (D45 gap B: sidecar retry_count lift), agent-bash-cwd-enforcer.sh (cwd mismatch advisory for git ops), rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh (ADR-003 + ADR-055b: user-context BLOCK w/ override), destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
-echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, aguara-scan.sh (D35: 189-rule prompt injection), parry-scan.sh (D35: ML injection scanner), auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
+echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, agent-quota-advisor.sh (ADR-056 L1: Claude Max quota advisory), inject-phase-context.sh, agent-working-dir-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, aguara-scan.sh (D35: 189-rule prompt injection), parry-scan.sh (D35: ML injection scanner), auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, adr-detector.sh, rate-limit-drain.sh (D45: retry_count+1 re-enqueue, non-blocking)"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh"
 echo "  PostToolUse Edit|Write: secret-detector.sh, content-policy.sh, confidentiality-enforcer.sh, doc-sync-detector.sh, wiring-check.sh, surface-fix-detector.sh"
