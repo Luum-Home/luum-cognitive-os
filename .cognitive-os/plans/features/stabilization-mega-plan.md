@@ -1,3 +1,10 @@
+<!--
+RECONCILIATION STATUS: SUPERSEDED
+Superseded by: ADR-028 (SO Reliability & Observability Framework — covers the "aspirational→enforced" transition with SLOs + error budgets), ADR-031 (aspirational-audit recurring), ADR-041 (exercised coverage pipeline)
+Reconciled: 2026-04-21
+Reason: the "everything that MUST happen goes in deterministic code" principle and the complexity gate have been absorbed into the ADR-028 framework with explicit SLOs. Wiring-rate tracking is now continuous (ADR-031/041).
+-->
+
 # MEGA PLAN: Stabilization — From Aspirational to Enforced
 
 **Created**: 2026-04-11
