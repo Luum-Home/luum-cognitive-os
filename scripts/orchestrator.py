@@ -39,10 +39,123 @@ sys.path.insert(0, str(_PROJECT_ROOT))
 
 # --- Helpers ----------------------------------------------------------------
 
+# Patterns matched against ClaudeExecutor error output to decide whether
+# to trigger the ADR-049 direct-SDK fallback (Alibaba Qwen). Case-insensitive.
+# Mirror of the list in hooks/rate-limit-detector.sh — keep in sync.
+_RATE_LIMIT_PATTERNS = (
+    "out of extra usage",
+    "rate limit exceeded",
+    "approximate usage limit",
+    "approximately usage limit",
+    "approaching your usage limit",
+    "you're out of",
+    "usage limit reached",
+)
+
+
+def _is_rate_limit_error(error: str) -> bool:
+    """True if error text matches any known Claude subscription rate-limit wording."""
+    if not error:
+        return False
+    low = error.lower()
+    return any(p in low for p in _RATE_LIMIT_PATTERNS)
+
 
 def _short_id() -> str:
     """Short, unique agent id — first 8 hex chars of a uuid4."""
     return uuid.uuid4().hex[:8]
+
+
+def _try_qwen_fallback(prompt: str, claude_model: str | None = None, verbose: bool = False):
+    """Dispatch a prompt via lib/qwen_provider.py direct-SDK as ADR-049 fallback.
+
+    Honors skill frontmatter model suggestions: if `claude_model` is passed
+    (e.g. "opus"/"sonnet"/"haiku" from the skill's declared model), maps it
+    to the best Qwen bundle equivalent. This avoids quality mismatch when
+    a skill designed for Opus falls back to the default Qwen choice.
+
+    Returns a ClaudeExecutor-compatible result object (has `.success`, `.text`,
+    `.input_tokens`, `.output_tokens`, `.cost_usd`, `.error`) so callers don't
+    need to special-case which provider answered.
+
+    Returns None (no fallback) if any of the following is true:
+      * COS_DISABLE_LLM_FALLBACK=1 in env (global kill-switch, ADR-049)
+      * COS_DISABLE_QWEN_FALLBACK=1 in env (per-provider kill-switch)
+      * lib.qwen_provider import fails (module missing)
+      * qwen_provider.is_configured() returns False (API key unset)
+    In those None cases, the caller should surface the original Claude
+    error as-is.
+    """
+    # Kill-switches — evaluated in order, any match blocks the fallback.
+    #
+    #   COS_DISABLE_LLM_FALLBACK=1   — GLOBAL: blocks ALL direct-SDK fallbacks
+    #                                  (future providers too: DeepSeek, MiniMax, GLM).
+    #                                  Master switch for debugging or cost containment.
+    #   COS_DISABLE_QWEN_FALLBACK=1  — PER-PROVIDER: blocks only Qwen, other
+    #                                  providers (when added) continue to work.
+    #                                  Pattern: COS_DISABLE_<PROVIDER>_FALLBACK=1
+    #
+    # Use "1" literal — empty string, "0", or "false" do NOT disable.
+    if os.environ.get("COS_DISABLE_LLM_FALLBACK", "").strip() == "1":
+        if verbose:
+            print(
+                "[orchestrator] COS_DISABLE_LLM_FALLBACK=1 — global fallback disabled",
+                file=sys.stderr,
+            )
+        return None
+    if os.environ.get("COS_DISABLE_QWEN_FALLBACK", "").strip() == "1":
+        if verbose:
+            print(
+                "[orchestrator] COS_DISABLE_QWEN_FALLBACK=1 — Qwen fallback disabled "
+                "(global LLM fallback still active if other providers exist)",
+                file=sys.stderr,
+            )
+        return None
+
+    try:
+        from lib.qwen_provider import call as qwen_call, is_configured, select_model
+    except ImportError as e:
+        if verbose:
+            print(f"[orchestrator] qwen_provider import failed: {e}", file=sys.stderr)
+        return None
+
+    if not is_configured():
+        if verbose:
+            print(
+                "[orchestrator] qwen_provider unconfigured (ALIBABA_QWEN_API_KEY unset) — "
+                "returning original Claude error",
+                file=sys.stderr,
+            )
+        return None
+
+    # Honor the skill's declared Claude tier (opus/sonnet/haiku) when choosing
+    # the Qwen bundle model, so a skill designed for Opus maps to qwen3.6-plus
+    # rather than always landing on the default.
+    chosen_model = select_model(claude_model_hint=claude_model)
+
+    if verbose:
+        print(
+            f"[orchestrator] Claude rate-limit detected → falling back to qwen_provider "
+            f"(ADR-049, claude_hint={claude_model!r} → qwen_model={chosen_model!r})",
+            file=sys.stderr,
+        )
+
+    messages = [{"role": "user", "content": prompt}]
+    result = qwen_call(messages, model=chosen_model)
+
+    # Adapt QwenResult → ClaudeExecutor-like namespace so cmd_run's reporting
+    # logic stays provider-agnostic.
+    class _FallbackResult:
+        def __init__(self, r):
+            self.success = r.success
+            self.text = r.text
+            self.input_tokens = r.tokens_in
+            self.output_tokens = r.tokens_out
+            self.cost_usd = r.cost_usd
+            self.error = r.error
+            self.provider = "alibaba_qwen"
+
+    return _FallbackResult(result)
 
 
 def _activate_executor_mode() -> dict:
@@ -154,6 +267,20 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     t0 = time.monotonic()
     result = executor.run(prompt, model=args.model, timeout=args.timeout)
+
+    # ADR-049 rollout step 6: if Claude hit subscription rate-limit, retry
+    # once via direct-SDK fallback (Alibaba Qwen via lib/qwen_provider.py).
+    # Retry-primary semantics: every invocation tries Claude FIRST; fallback
+    # only fires on recognized rate-limit errors. Next invocation tries
+    # Claude again (no sticky mode). This lets Claude recover mid-session
+    # without orchestrator intervention.
+    provider_used = "claude"
+    if not result.success and _is_rate_limit_error(getattr(result, "error", "") or ""):
+        fallback = _try_qwen_fallback(prompt, claude_model=args.model, verbose=args.verbose)
+        if fallback is not None:
+            result = fallback
+            provider_used = "alibaba_qwen"
+
     elapsed = time.monotonic() - t0
 
     # Stop subscriber if we started one
@@ -165,6 +292,7 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     # Report
     print(f"agent_id:    {agent_id}")
+    print(f"provider:    {provider_used}")
     print(f"success:     {result.success}")
     print(f"elapsed:     {elapsed:.2f}s")
     print(f"input_tok:   {getattr(result, 'input_tokens', 0)}")
