@@ -20,6 +20,8 @@
 | 7 | JSONL total growth / session | < 1 MiB | — | `du` diff before/after | `so-vitals.jsonl` | `metrics-rotation.sh` | `test_disk_full_metrics.py` |
 | 8 | Destructive git ops from hooks | 0 | 0 tolerance | `test_hook_no_destructive_git` + reflog diff | contract-test CI | `git-context-capture.sh` | `test_reset_cascade_detector.py` |
 | 9 | Agent heartbeat staleness | p99 < 5 min | 1 agent / month stale | watchdog scan of `agent-heartbeat.jsonl` | `agent-heartbeat.jsonl` | `state-heartbeat.sh` (session) / agent watchdog | `test_kill_mcp_mid_session.py` |
+| 10 | Initial context payload size | < 50,000 tokens (core) | 10% of sessions over SLO | `scripts/startup-benchmark.sh` → `payload.core_payload_tokens` | `startup-benchmark.jsonl` | `session-init.sh` (catalog loading) | `test_startup_budget.py` |
+| 11 | TTFT (Time to First Token) | p95 < 5 s | 4 h / month over | Manual: wall-clock from session start to first output token; automated via PostToolUse delta (see `docs/architecture/functional-audit/startup-baseline-2026-04-20.md` §6) | `ttft-events.jsonl` (future) | `session-init.sh` + first PostToolUse hook | — (manual until instrumented) |
 
 ### Note on SLO 9 — heartbeat subsystem split
 
