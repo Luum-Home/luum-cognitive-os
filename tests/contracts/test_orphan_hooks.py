@@ -282,5 +282,9 @@ def test_coverage_summary(
         f"  Orphans:           {orphan_count}\n"
         f"──────────────────────────────────────────────────────────"
     )
-    # This test always passes; it's purely informational.
-    assert True
+    # Sanity: the computed counts must be consistent (no double-counting)
+    accounted = registered_count + orphan_count
+    assert accounted <= total, (
+        f"registered ({registered_count}) + orphans ({orphan_count}) = {accounted} "
+        f"exceeds total hook files ({total}) — counts are inconsistent"
+    )

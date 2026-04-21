@@ -377,9 +377,13 @@ class TestModuleImport:
     def test_import_is_fast(self):
         """Module can be imported without triggering file I/O on import."""
         import importlib
+        import time
         import lib.dispatch_helper as mod
 
+        start = time.monotonic()
         importlib.reload(mod)  # Re-import to confirm no side effects
+        elapsed = time.monotonic() - start
+        assert elapsed < 2.0, f"import took {elapsed:.2f}s — unexpectedly slow (suggests file I/O at import)"
 
     def test_check_slot_availability_is_callable(self):
         """check_slot_availability exists and is callable."""

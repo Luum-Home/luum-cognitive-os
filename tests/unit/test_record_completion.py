@@ -146,13 +146,15 @@ class TestSendLangfuseTrace:
     """Verify _send_langfuse_trace calls the Langfuse v3 API correctly."""
 
     def test_skips_when_client_is_none(self):
-        """No crash when Langfuse is not configured."""
+        """No crash when Langfuse is not configured; client stays None after the call."""
         import lib.record_completion as rc
         original = rc._langfuse_client
         try:
             rc._langfuse_client = None
-            # Should return silently, no exception
+            # Should return silently without raising
             rc._send_langfuse_trace("skill", "impl", 82, 5000, True, "task-1")
+            # Client must remain None (must not be auto-initialised as a side effect)
+            assert rc._langfuse_client is None, "_langfuse_client must stay None after early-exit path"
         finally:
             rc._langfuse_client = original
 
