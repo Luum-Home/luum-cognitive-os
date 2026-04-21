@@ -138,7 +138,7 @@ case "$PROFILE" in
     # Hooks: rate-limit-precheck.sh (D45 gap B, PreToolUse/Bash, sidecar hash lookup)
     # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
     echo "  PreToolUse: rate-limit-precheck.sh (D45 sidecar), agent-bash-cwd-enforcer.sh (cwd mismatch advisory for git ops), rate-limiter, token-budget-monitor.sh, secret-detector (ADR-023 redact),"
-    echo "              destructive-git-blocker.sh (ADR-003 R1 git-op safety), destructive-rm-blocker.sh (ADR-003 R2 file-erasure safety),"
+    echo "              destructive-git-blocker.sh (ADR-003 R1 git-op safety), destructive-rm-blocker.sh (ADR-003 R2 file-erasure safety), project-docs-convention.sh (ADR-054/055 10-category docs convention soft-warn),"
     echo "              dispatch-gate, clarification-gate,"
     echo "              blast-radius (ADR-023 advisory), inject-phase-context, agent-working-dir-inject.sh, agent-prelaunch, error-pattern-detector,"
     echo "              reinvention-check.sh (ADR-029 anti-duplication), prompt-quality-llm, completeness-check-llm, global-verify.sh before,"
