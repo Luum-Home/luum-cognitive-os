@@ -95,13 +95,24 @@ def _pid_alive(pid: int) -> bool:
 def _read_timeout_seconds(config_path: Optional[str] = None) -> int:
     """Parse agent_timeout_seconds from cognitive-os.yaml without PyYAML.
 
-    Delegates line-by-line parsing to lib.config_loader.read_int_from_file.
-    Preserves the documented candidate-path order: project_root first, then
-    explicit config_path, then the cwd-relative default.  This order is locked
-    by characterization tests in tests/unit/test_cos_yaml_readers.py.
+    Delegates to :func:`lib.config_loader.read_int_from_file` via a
+    candidate-path list that preserves the characterised search order:
+
+        1. ``${CLAUDE_PROJECT_DIR or COGNITIVE_OS_PROJECT_DIR}/cognitive-os.yaml``
+        2. ``config_path`` argument (if provided)
+        3. ``_DEFAULT_CONFIG_PATH`` (``"cognitive-os.yaml"``, cwd-relative)
+
+    The search-order CONTRACT is:  project-dir candidate is checked FIRST,
+    then the explicit arg, then the cwd-relative default.  This matches the
+    locked behaviour in ``TestReadTimeoutSeconds.test_project_dir_yaml_takes_precedence_over_explicit_arg``.
+
+    ``read_int_from_file`` returns ``None`` when the key is absent (not the
+    default), so "key absent, try next candidate" vs "key found with default
+    value, stop here" are correctly distinguished.
     """
-    candidates: List[str] = []
     project_dir = project_root()
+
+    candidates: List[str] = []
     if project_dir:
         candidates.append(os.path.join(str(project_dir), "cognitive-os.yaml"))
     if config_path:
@@ -111,9 +122,9 @@ def _read_timeout_seconds(config_path: Optional[str] = None) -> int:
     for path in candidates:
         if not os.path.isfile(path):
             continue
-        result = _cl_read_int_from_file("agent_timeout_seconds", path)
-        if result is not None:
-            return result
+        value = _cl_read_int_from_file("agent_timeout_seconds", path)
+        if value is not None:
+            return value
 
     return _DEFAULT_TIMEOUT_SECONDS
 

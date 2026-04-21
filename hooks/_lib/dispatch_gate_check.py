@@ -21,8 +21,20 @@ from pathlib import Path
 
 # NOTE: custom resolution — differs from lib.paths.project_root() (Pattern C).
 # See tests/unit/test_project_dir_resolution.py for rationale.
-PROJECT_DIR = os.environ.get("CLAUDE_PROJECT_DIR", ".")
+# D2.2 fix (ADR-026a): honour COGNITIVE_OS_PROJECT_DIR as a fallback so that
+# both env vars are treated equally.  CLAUDE_PROJECT_DIR still wins when set.
+PROJECT_DIR = (
+    os.environ.get("CLAUDE_PROJECT_DIR")
+    or os.environ.get("COGNITIVE_OS_PROJECT_DIR")
+    or "."
+)
 sys.path.insert(0, PROJECT_DIR)
+# Also ensure the OS package root (where lib/ lives) is on sys.path so that
+# lib.config_loader and its siblings are importable even when CLAUDE_PROJECT_DIR
+# points to a consumer project (not the OS root itself).
+_OS_ROOT = str(Path(__file__).resolve().parent.parent.parent)
+if _OS_ROOT not in sys.path:
+    sys.path.append(_OS_ROOT)
 
 # Read stdin once
 try:
@@ -52,32 +64,16 @@ result: dict = {
 # 1. Read config (cognitive-os.yaml)
 # ---------------------------------------------------------------------------
 try:
+    from lib.config_loader import load_structured  # type: ignore
+
     cfg_path = Path(PROJECT_DIR) / "cognitive-os.yaml"
     if not cfg_path.exists():
         cfg_path = Path(PROJECT_DIR) / ".cognitive-os" / "cognitive-os.yaml"
-
-    if cfg_path.exists():
-        # Prefer lib.config_loader.load_structured when lib/ is importable
-        # (production: PROJECT_DIR == project root; tests: PROJECT_DIR == tmp_path).
-        try:
-            from lib.config_loader import load_structured  # type: ignore
-            cfg = load_structured(str(cfg_path))
-        except ImportError:
-            import yaml  # type: ignore
-            with open(cfg_path) as _f:
-                cfg = yaml.safe_load(_f) or {}
-    else:
-        cfg = {}
-
-    yaml_max_agents = (
+    cfg_path_str = str(cfg_path) if cfg_path.exists() else None
+    cfg = load_structured(cfg_path_str)
+    result["max_agents"] = (
         cfg.get("resources", {}).get("compute", {}).get("max_parallel_agents", 5)
     )
-    # Env var takes precedence over YAML (D2.2 fix: env beats YAML, not the reverse)
-    env_max = os.environ.get("COGNITIVE_OS_MAX_PARALLEL_AGENTS", "")
-    if env_max.isdigit():
-        result["max_agents"] = int(env_max)
-    else:
-        result["max_agents"] = yaml_max_agents
 except Exception as e:
     result["error"] += f"config:{e};"
 
