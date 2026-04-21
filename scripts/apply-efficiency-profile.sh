@@ -149,7 +149,8 @@ build_settings() {
     "aspirational-audit-weekly.sh" \
     "mcp-scan.sh" \
     "session-start-worktree-nudge.sh" \
-    "self-knowledge-refresh.sh")
+    "self-knowledge-refresh.sh" \
+    "session-startup-protocol.sh")
 
   # UserPromptSubmit
   # session-heartbeat.sh: ADR-047 Phase B liveness signal (≤1ms atomic file write).
@@ -404,7 +405,7 @@ done
 # ── Summary ─────────────────────────────────────────────────────────
 echo ""
 echo "Hook summary for profile 'default' (ADR-002):"
-echo "  SessionStart: self-install.sh, session-init.sh, reaper-daemon-launcher.sh, session-watchdog-launcher.sh (ADR-047 Phase A: singleton watchdog daemon), cos-executor-daemon-launcher.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, valkey-ensure.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh, mcp-scan.sh (D35: MCP tool poisoning scan), session-start-worktree-nudge.sh (ADR-035: worktree cwd warning)"
+echo "  SessionStart: self-install.sh, session-init.sh, reaper-daemon-launcher.sh, session-watchdog-launcher.sh (ADR-047 Phase A: singleton watchdog daemon), cos-executor-daemon-launcher.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, valkey-ensure.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh, mcp-scan.sh (D35: MCP tool poisoning scan), session-start-worktree-nudge.sh (ADR-035: worktree cwd warning), session-startup-protocol.sh (rules/startup-protocol.md: 5-step context check)"
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  UserPromptSubmit: user-prompt-capture.sh, session-wrapup-trigger.sh, session-heartbeat.sh (ADR-047: liveness)"
 echo "  PreToolUse *: session-heartbeat.sh (ADR-047: liveness signal on all tool calls)"
