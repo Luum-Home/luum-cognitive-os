@@ -57,6 +57,7 @@ resolve_dest() {
 
 # ── Helper: portable relative path from dir_of_link -> target ─────────
 # Usage: rel_path <target_abs> <link_abs>
+# Emits a path relative to dirname(link) that resolves to target.
 # Portable across macOS and Linux (no GNU-only flags).
 rel_path() {
   local target="$1" link="$2"

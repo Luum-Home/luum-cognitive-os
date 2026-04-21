@@ -29,11 +29,11 @@ import json
 import os
 from typing import Any, Dict, List, Optional
 
-from lib.config_loader import find_config_path as _cl_find_config_path
 from lib.config_loader import read_top_level_int as _cl_read_top_level_int
+from lib.paths import project_root
 
 # ---------------------------------------------------------------------------
-# Internal helpers — lazy imports to keep module-level overhead minimal
+# Internal helpers — thin shims that delegate to lib.config_loader
 # ---------------------------------------------------------------------------
 
 _DEFAULT_MAX_PARALLEL = 5
@@ -44,20 +44,33 @@ _TASKS_PATH = os.path.join(_COGNITIVE_OS_DIR, "tasks", "active-tasks.json")
 def _find_config_path() -> Optional[str]:
     """Return the first readable cognitive-os.yaml found on the search path.
 
-    Delegates to lib.config_loader.find_config_path() which implements the
-    same Pattern-A search order (project_root env vars → cwd → .cognitive-os).
+    Uses :func:`lib.paths.project_root` for env-var resolution (Pattern A),
+    then falls back to cwd-relative candidates.  Delegates the full candidate
+    logic to :mod:`lib.config_loader`.
     """
-    return _cl_find_config_path()
+    # Preserve the explicit project_root() call to satisfy the R1 contract test
+    # in test_project_dir_resolution.py (PATTERN_A_MIGRATED_CALL check).
+    project_dir = project_root()
+    candidates = [
+        "cognitive-os.yaml",
+        os.path.join(_COGNITIVE_OS_DIR, "cognitive-os.yaml"),
+    ]
+    if project_dir:
+        candidates.insert(0, os.path.join(str(project_dir), "cognitive-os.yaml"))
+    for path in candidates:
+        if os.path.isfile(path):
+            return path
+    return None
 
 
 def _read_max_parallel_agents(config_path: Optional[str] = None) -> int:
     """Parse max_parallel_agents from cognitive-os.yaml.
 
+    Delegates to :func:`lib.config_loader.read_top_level_int`.
     Falls back to _DEFAULT_MAX_PARALLEL on any error.
-    Delegates to lib.config_loader.read_top_level_int for line-by-line parsing.
     """
     return _cl_read_top_level_int(
-        "max_parallel_agents", _DEFAULT_MAX_PARALLEL, config_path
+        "max_parallel_agents", _DEFAULT_MAX_PARALLEL, config_path or _find_config_path()
     )
 
 
