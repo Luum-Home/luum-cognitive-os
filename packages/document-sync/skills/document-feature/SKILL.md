@@ -13,6 +13,14 @@ triggers:
   - update feature docs
 audience: project
 summary_line: Generate or update structured feature documentation using 3-layer detection…
+routing:
+  # ADR-056 Level 3 — transparent Qwen bridge (per-skill opt-in).
+  # This skill is mechanical (template-fill + structured write) and tolerates the
+  # Qwen agent-loop tool-set loss (no Skill/TodoWrite/MCP). Safe to redirect when
+  # Claude-Max quota pressure is high.
+  auto_fallback_to_qwen: true
+  fallback_min_pressure: 0.6
+  tier: cheap
 
 ---
 
