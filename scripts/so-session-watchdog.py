@@ -29,7 +29,7 @@ import sys
 import time
 import uuid
 from pathlib import Path
-from typing import List
+from typing import Any, List, Optional
 
 # ---------------------------------------------------------------------------
 # Path wiring — ensure lib/ is importable regardless of CWD
@@ -56,8 +56,10 @@ from lib.session_watchdog_lib import (  # noqa: E402
     WatchdogRecord,
     append_jsonl,
     classify_session,
+    compute_gate_metric,
     enrich_session,
     load_watchdog_config,
+    load_watchdog_jsonl,
     should_kill,
     _enumerate_via_ps,
     _enumerate_via_psutil,
@@ -65,7 +67,7 @@ from lib.session_watchdog_lib import (  # noqa: E402
 )
 
 # Re-export so callers can do: from scripts.so_session_watchdog import should_kill
-__all__ = ["should_kill", "run_once", "run_daemon", "run_scan"]
+__all__ = ["should_kill", "run_once", "run_daemon", "run_scan", "evaluate_gate"]
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -130,8 +132,35 @@ def write_records(records: List[WatchdogRecord]) -> None:
 # ---------------------------------------------------------------------------
 
 
-def run_once(config: dict, verbose: bool = False) -> int:
-    """Single scan pass.  Returns exit code."""
+def evaluate_gate(jsonl_path: Optional[Path] = None) -> "Any":
+    """Compute the Phase B gate metric from the current JSONL record stream.
+
+    Resolves the JSONL path AT CALL TIME (reads module global WATCHDOG_JSONL)
+    so that tests monkey-patching `WATCHDOG_JSONL` via `patch.object` are
+    honored. Callers may pass an explicit path to override.
+
+    Returns a GateMetric dataclass. Callers use `.gate_passes` to decide
+    whether Phase B enforcement may be enabled.
+    """
+    if jsonl_path is None:
+        jsonl_path = WATCHDOG_JSONL
+    records = load_watchdog_jsonl(jsonl_path)
+    return compute_gate_metric(records)
+
+
+def run_once(config: dict, verbose: bool = False, kill_mode: bool = False) -> int:
+    """Single scan pass.  Returns exit code.
+
+    Parameters
+    ----------
+    kill_mode:
+        If True, caller requested Phase B enforcement. The function evaluates
+        the gate metric first. If the gate FAILS, the request is refused,
+        an explanation is printed to stderr, and the function falls back to
+        log-only behavior. This is the primary Phase B safety rail: even if
+        someone edits `cognitive-os.yaml` to set `mode: enforce`, enforcement
+        will NOT activate until the gate passes.
+    """
     mode = config.get("mode", "log-only")
 
     if mode == "off":
@@ -139,12 +168,34 @@ def run_once(config: dict, verbose: bool = False) -> int:
             print("[watchdog] mode=off — skipping scan.", file=sys.stderr)
         return 0
 
-    if mode == "enforce":
-        print(
-            "[watchdog] ERROR: Phase B enforce mode not yet implemented — staying in log-only.",
-            file=sys.stderr,
-        )
-        # Do NOT kill anything. Fall through to log-only.
+    # Phase B gate: evaluate before any kill authority is granted
+    enforce_requested = kill_mode or mode == "enforce"
+    if enforce_requested:
+        gate = evaluate_gate()
+        if not gate.gate_passes:
+            print(
+                f"[watchdog] Phase B REFUSED: gate metric fails — {gate.evidence_summary}",
+                file=sys.stderr,
+            )
+            print(
+                f"[watchdog]   total_records={gate.total_records} "
+                f"flagged_records={gate.flagged_records} "
+                f"fp_rate={gate.fp_rate*100:.2f}% "
+                f"span={gate.observation_span_hours:.1f}h",
+                file=sys.stderr,
+            )
+            print(
+                "[watchdog]   falling back to log-only mode (no kills performed).",
+                file=sys.stderr,
+            )
+            # Fall through to log-only — DO NOT kill
+        else:
+            # Gate passed — but kill logic is not yet implemented. Fail safe.
+            print(
+                f"[watchdog] Phase B gate PASSED ({gate.evidence_summary}) but kill implementation "
+                "is not yet wired. Staying in log-only mode. See ADR-047 §'Phase B'.",
+                file=sys.stderr,
+            )
 
     records = run_scan(config)
     write_records(records)
@@ -220,6 +271,25 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Loop every --interval seconds (default 60).",
     )
+    mode_group.add_argument(
+        "--gate-report",
+        action="store_true",
+        help="Compute Phase B gate metric from JSONL and print report; do NOT scan.",
+    )
+    p.add_argument(
+        "--kill-mode",
+        action="store_true",
+        help=(
+            "Request Phase B enforcement. Requires gate metric to pass "
+            "(fp_rate<1%%, sample>=50, 2-week span). If gate fails, the "
+            "request is refused and watchdog falls back to log-only."
+        ),
+    )
+    p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Force dry-run: never actually send signals, even if kill_mode is set.",
+    )
     p.add_argument(
         "--interval",
         type=int,
@@ -263,8 +333,31 @@ def main(argv: list[str] | None = None) -> int:
             print("[watchdog] enabled=false in config — exiting.", file=sys.stderr)
         return 0
 
+    if args.gate_report:
+        gate = evaluate_gate()
+        print(f"ADR-047 Phase B gate report")
+        print(f"  JSONL: {WATCHDOG_JSONL}")
+        print(f"  total_records: {gate.total_records}")
+        print(f"  distinct_flagged_pids: {gate.distinct_flagged_pids}")
+        print(f"  flagged_records (would_kill=true): {gate.flagged_records}")
+        print(f"  resumed_within_24h (false positives): {gate.resumed_within_24h}")
+        print(f"  stayed_idle (true positives): {gate.stayed_idle}")
+        print(f"  fp_rate: {gate.fp_rate*100:.2f}% (threshold <1.00%)")
+        print(f"  observation_span_hours: {gate.observation_span_hours:.2f} (threshold >=336h)")
+        print(f"  sample_size_ok: {gate.sample_size_ok}")
+        print(f"  fp_rate_ok: {gate.fp_rate_ok}")
+        print(f"  observation_span_ok: {gate.observation_span_ok}")
+        print(f"  GATE: {'PASS' if gate.gate_passes else 'FAIL'}")
+        print(f"  summary: {gate.evidence_summary}")
+        return 0 if gate.gate_passes else 2
+
+    kill_mode = bool(args.kill_mode)
+    if args.dry_run:
+        # Dry-run forces no enforcement even if kill-mode was requested
+        os.environ["SO_WATCHDOG_DRY_RUN"] = "1"
+
     if args.once:
-        return run_once(config, verbose=args.verbose)
+        return run_once(config, verbose=args.verbose, kill_mode=kill_mode)
     else:
         return run_daemon(config, interval_sec=args.interval, verbose=args.verbose)
 
