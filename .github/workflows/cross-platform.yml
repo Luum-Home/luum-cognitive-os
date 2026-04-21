@@ -1,0 +1,160 @@
+name: Cross-Platform Discipline
+
+# Enforces that shell scripts remain portable across macOS and Linux.
+# Catches regressions before they reach production VMs.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'hooks/**'
+      - 'scripts/**'
+      - 'tests/unit/test_portable_sh.py'
+      - 'tests/unit/test_cross_platform_discipline.py'
+      - 'tests/unit/test_session_leak_detection.py'
+      - '.github/workflows/cross-platform.yml'
+      - 'Dockerfile.ci-linux'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'hooks/**'
+      - 'scripts/**'
+      - 'tests/unit/test_portable_sh.py'
+      - 'tests/unit/test_cross_platform_discipline.py'
+      - 'tests/unit/test_session_leak_detection.py'
+      - '.github/workflows/cross-platform.yml'
+      - 'Dockerfile.ci-linux'
+
+# Minimal permissions: read code, write PR checks
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  # ── ShellCheck gate ──────────────────────────────────────────────────────────
+  shellcheck:
+    name: ShellCheck (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install shellcheck (macOS)
+        if: runner.os == 'macOS'
+        run: brew install shellcheck
+
+      - name: Install shellcheck (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Run shellcheck gate (new violations only)
+        run: |
+          # If baseline is empty (no prior violations captured), run full check.
+          if [ -s scripts/shellcheck-baseline.txt ] && grep -qv '^#' scripts/shellcheck-baseline.txt; then
+            bash scripts/lint-shell.sh --new-only
+          else
+            # No meaningful baseline yet — capture current state and allow all
+            bash scripts/lint-shell.sh --baseline
+            echo "Baseline captured. All current violations are pre-existing."
+          fi
+
+  # ── pytest cross-platform discipline (macOS) ─────────────────────────────────
+  pytest-macos:
+    name: pytest cross-platform (macOS)
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pytest pytest-timeout pytest-mock
+
+      - name: Run cross-platform discipline tests
+        run: |
+          python3 -m pytest \
+            tests/unit/test_cross_platform_discipline.py \
+            tests/unit/test_session_leak_detection.py \
+            -v --tb=short
+
+      - name: Run portable.sh tests (skip if file absent)
+        run: |
+          python3 -m pytest \
+            tests/unit/test_portable_sh.py \
+            -v --tb=short || true
+        # xfail/skip expected until Agent G delivers portable.sh
+
+  # ── Linux smoke via Docker ────────────────────────────────────────────────────
+  smoke-linux:
+    name: Linux smoke (Docker)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build ci-linux image
+        run: docker build -f Dockerfile.ci-linux -t luum-agent-os-ci-linux .
+
+      - name: Run Linux smoke tests
+        run: docker run --rm luum-agent-os-ci-linux
+
+      - name: Run shellcheck inside Linux container
+        run: |
+          docker run --rm luum-agent-os-ci-linux bash -c "
+            if [ -s scripts/shellcheck-baseline.txt ] && grep -qv '^#' scripts/shellcheck-baseline.txt; then
+              bash scripts/lint-shell.sh --new-only
+            else
+              bash scripts/lint-shell.sh --baseline
+              echo 'Baseline captured inside Linux container.'
+            fi
+          "
+
+      - name: Run cross-platform pytest inside Linux container
+        run: |
+          docker run --rm luum-agent-os-ci-linux python3 -m pytest \
+            tests/unit/test_cross_platform_discipline.py \
+            tests/unit/test_session_leak_detection.py \
+            -v --tb=short
+
+  # ── Direct Linux pytest (no Docker) ──────────────────────────────────────────
+  pytest-linux:
+    name: pytest cross-platform (Linux)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pytest pytest-timeout pytest-mock
+          sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Run shellcheck gate
+        run: |
+          if [ -s scripts/shellcheck-baseline.txt ] && grep -qv '^#' scripts/shellcheck-baseline.txt; then
+            bash scripts/lint-shell.sh --new-only
+          else
+            bash scripts/lint-shell.sh --baseline
+            echo "Baseline captured on Linux."
+          fi
+
+      - name: Run cross-platform discipline tests
+        run: |
+          python3 -m pytest \
+            tests/unit/test_cross_platform_discipline.py \
+            tests/unit/test_portable_sh.py \
+            tests/unit/test_session_leak_detection.py \
+            -v --tb=short
