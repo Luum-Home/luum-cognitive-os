@@ -300,8 +300,16 @@ class TestModeEnforce(unittest.TestCase):
                 exit_code = mod.run_once(config, verbose=False)
 
             assert exit_code == 0
-            # Error message must appear in stderr
-            assert "enforce mode not yet implemented" in buf.getvalue()
+            # ADR-047 Phase B gate: mode=enforce must be refused while gate fails.
+            # Previous message was "enforce mode not yet implemented"; with the
+            # gate-based refusal wiring, the message is "Phase B REFUSED" + "falling
+            # back to log-only". Either path guarantees no kills happened.
+            stderr_text = buf.getvalue()
+            assert (
+                "REFUSED" in stderr_text
+                or "log-only" in stderr_text.lower()
+                or "not yet implemented" in stderr_text
+            ), f"Expected Phase B refusal or fallback message, got: {stderr_text[:500]}"
             # Still writes records (log-only fallthrough)
             assert tmp_path.exists()
             lines = tmp_path.read_text().strip().splitlines()
@@ -846,6 +854,226 @@ class TestCrossPhaseInvariants(unittest.TestCase):
             f"(load_watchdog_config defaults) or lower the Phase B constant "
             f"_CPU_IDLE_THRESHOLD_PCT — but keep them coherent."
         )
+
+
+# ---------------------------------------------------------------------------
+# ADR-047 Phase B gate metric tests
+# ---------------------------------------------------------------------------
+
+from lib.session_watchdog_lib import (  # noqa: E402
+    GATE_FP_RATE_MAX,
+    GATE_MIN_OBSERVATION_HOURS,
+    GATE_MIN_SAMPLE,
+    compute_gate_metric,
+    load_watchdog_jsonl,
+)
+
+
+def _mk_record(pid: int, ts: str, classification: str, would_kill: bool, cpu: float = 0.0):
+    """Factory for a synthetic watchdog JSONL record."""
+    return {
+        "timestamp": ts,
+        "scan_id": "test-scan",
+        "session_pid": pid,
+        "session_etime_sec": 9999,
+        "classification": classification,
+        "would_kill": would_kill,
+        "reason": "test",
+        "resume_id": None,
+        "engram_mcp_children": [],
+        "cpu_percent": cpu,
+        "ttl_hours_configured": 6.0,
+    }
+
+
+class TestGateMetricEmpty(unittest.TestCase):
+    def test_no_records_is_not_a_pass(self):
+        gate = compute_gate_metric([])
+        assert gate.gate_passes is False
+        assert gate.total_records == 0
+        assert "no_records" in gate.evidence_summary
+
+
+class TestGateMetricSampleSize(unittest.TestCase):
+    def test_small_sample_fails_even_with_zero_fp(self):
+        """Sample size < 50 must fail the gate regardless of FP rate."""
+        # 10 PIDs, each flagged once, none resumed → FP rate = 0% but sample too small
+        records = []
+        for pid in range(1000, 1010):
+            records.append(_mk_record(pid, "2026-01-01T00:00:00Z", "IDLE_OVER_TTL", True))
+        gate = compute_gate_metric(records)
+        assert gate.flagged_records == 10
+        assert gate.fp_rate == 0.0
+        assert gate.sample_size_ok is False
+        assert gate.gate_passes is False
+
+
+class TestGateMetricFpRate(unittest.TestCase):
+    def test_high_fp_rate_fails_the_gate(self):
+        """FP rate >= 1% must fail even with adequate sample size."""
+        records = []
+        # 100 PIDs flagged; 50 resumed within 24h → FP rate = 50%
+        for pid in range(1, 51):
+            records.append(_mk_record(pid, "2026-01-01T00:00:00Z", "IDLE_OVER_TTL", True))
+            # Resumption signal: HEALTHY record within 24h
+            records.append(_mk_record(pid, "2026-01-01T12:00:00Z", "HEALTHY", False, cpu=5.0))
+        for pid in range(51, 101):
+            records.append(_mk_record(pid, "2026-01-01T00:00:00Z", "IDLE_OVER_TTL", True))
+            # No resumption — stayed idle
+        gate = compute_gate_metric(records)
+        assert gate.flagged_records == 100
+        assert gate.resumed_within_24h == 50
+        assert gate.stayed_idle == 50
+        assert gate.fp_rate_ok is False
+        assert gate.gate_passes is False
+
+
+class TestGateMetricPassing(unittest.TestCase):
+    def test_gate_passes_when_all_criteria_met(self):
+        """Gate passes with large sample, FP rate < 1%, and 2-week span."""
+        records = []
+        # 200 distinct PIDs flagged across 2 weeks (336h), with 1 resumed = 0.5% FP rate
+        for pid in range(1, 201):
+            records.append(_mk_record(pid, "2026-01-01T00:00:00Z", "IDLE_OVER_TTL", True))
+        # Add one resumption event (FP)
+        records.append(_mk_record(1, "2026-01-01T12:00:00Z", "HEALTHY", False, cpu=3.0))
+        # Add a record at the 2-week mark to extend the observation span
+        records.append(_mk_record(999, "2026-01-15T01:00:00Z", "HEALTHY", False))
+        gate = compute_gate_metric(records)
+        assert gate.flagged_records == 200
+        assert gate.resumed_within_24h == 1
+        assert gate.fp_rate == 1 / 200  # 0.5%
+        assert gate.fp_rate_ok is True
+        assert gate.sample_size_ok is True
+        assert gate.observation_span_ok is True
+        assert gate.gate_passes is True
+        assert "GATE_PASS" in gate.evidence_summary
+
+
+class TestGateMetricObservationSpan(unittest.TestCase):
+    def test_short_span_fails_even_with_good_stats(self):
+        """Observation span < 2 weeks must fail the gate."""
+        records = []
+        # 60 PIDs flagged on a single day, all stayed idle
+        for pid in range(1, 61):
+            records.append(_mk_record(pid, "2026-01-01T00:00:00Z", "IDLE_OVER_TTL", True))
+        records.append(_mk_record(999, "2026-01-01T23:00:00Z", "HEALTHY", False))
+        gate = compute_gate_metric(records)
+        assert gate.flagged_records == 60
+        assert gate.sample_size_ok is True
+        assert gate.fp_rate == 0.0
+        assert gate.fp_rate_ok is True
+        assert gate.observation_span_ok is False
+        assert gate.gate_passes is False
+
+
+class TestGateConstants(unittest.TestCase):
+    def test_gate_constants_match_adr(self):
+        """Gate constants must match ADR-047 §'Gate threshold' specification."""
+        assert GATE_FP_RATE_MAX == 0.01
+        assert GATE_MIN_SAMPLE == 50
+        assert GATE_MIN_OBSERVATION_HOURS == 336  # 14 days × 24h
+
+
+class TestLoadWatchdogJsonl(unittest.TestCase):
+    def test_load_missing_file_returns_empty(self):
+        records = load_watchdog_jsonl(Path("/nonexistent/path.jsonl"))
+        assert records == []
+
+    def test_load_skips_malformed_lines(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "wd.jsonl"
+            path.write_text(
+                json.dumps(_mk_record(1, "2026-01-01T00:00:00Z", "HEALTHY", False)) + "\n"
+                + "this is not json\n"
+                + json.dumps(_mk_record(2, "2026-01-01T00:00:00Z", "HEALTHY", False)) + "\n"
+            )
+            records = load_watchdog_jsonl(path)
+        assert len(records) == 2
+
+
+# ---------------------------------------------------------------------------
+# Phase B kill-mode refusal tests — enforcement is blocked when gate fails
+# ---------------------------------------------------------------------------
+
+class TestKillModeRefusal(unittest.TestCase):
+    """When kill_mode=True but the gate fails, run_once MUST fall back to log-only."""
+
+    def test_kill_mode_refused_when_gate_fails(self):
+        """Requesting kill_mode with a failing gate must not kill; must log refusal."""
+        import io
+        mod = _load_watchdog_module("sw_kill_refused")
+        config = _make_config(mode="log-only", ttl_hours=0.0001)
+
+        fake_proc = ProcessInfo(
+            pid=os.getpid(),
+            ppid=os.getppid(),
+            etime_sec=9999,
+            cpu_percent=0.0,
+            command="claude --output-format stream-json --input-format stream-json",
+            start_time_epoch=time.time() - 9999,
+        )
+
+        kill_calls: List[Any] = []
+        def mock_kill(pid: int, sig: int) -> None:
+            if sig != 0:
+                kill_calls.append((pid, sig))
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir) / "session-watchdog.jsonl"
+            buf = io.StringIO()
+
+            # Seed a minimal JSONL that guarantees the gate FAILS (empty file)
+            tmp_path.parent.mkdir(parents=True, exist_ok=True)
+            tmp_path.write_text("")  # zero records → gate fails
+
+            with patch.object(mod, "WATCHDOG_JSONL", tmp_path), \
+                 patch.object(mod, "_enumerate_via_ps", return_value=([fake_proc], [])), \
+                 patch.object(mod, "_try_import_psutil", return_value=None), \
+                 patch("lib.session_watchdog_lib._pid_exists", return_value=True), \
+                 patch("os.kill", side_effect=mock_kill), \
+                 patch("sys.stderr", buf):
+                exit_code = mod.run_once(config, verbose=False, kill_mode=True)
+
+            assert exit_code == 0
+            assert not kill_calls, f"Kill must be refused when gate fails: {kill_calls}"
+            stderr_output = buf.getvalue()
+            assert "REFUSED" in stderr_output or "log-only" in stderr_output.lower(), (
+                f"Expected refusal message in stderr, got: {stderr_output[:500]}"
+            )
+
+    def test_gate_report_command_returns_nonzero_on_fail(self):
+        """`--gate-report` exits 2 when gate fails (useful for CI/monitoring)."""
+        mod = _load_watchdog_module("sw_gate_report")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir) / "session-watchdog.jsonl"
+            tmp_path.parent.mkdir(parents=True, exist_ok=True)
+            tmp_path.write_text("")  # empty → gate fails
+
+            import io
+            buf_out = io.StringIO()
+            with patch.object(mod, "WATCHDOG_JSONL", tmp_path), \
+                 patch("sys.stdout", buf_out):
+                exit_code = mod.main(["--gate-report"])
+
+            assert exit_code == 2, f"Expected exit 2 on gate fail, got {exit_code}"
+            out = buf_out.getvalue()
+            assert "GATE: FAIL" in out or "FAIL" in out
+
+    def test_evaluate_gate_function_reads_current_jsonl(self):
+        """evaluate_gate() reads the configured WATCHDOG_JSONL path and returns GateMetric."""
+        mod = _load_watchdog_module("sw_eval_gate")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir) / "session-watchdog.jsonl"
+            tmp_path.parent.mkdir(parents=True, exist_ok=True)
+            # Write a minimal failing record set
+            tmp_path.write_text(
+                json.dumps(_mk_record(1, "2026-01-01T00:00:00Z", "IDLE_OVER_TTL", True)) + "\n"
+            )
+            with patch.object(mod, "WATCHDOG_JSONL", tmp_path):
+                gate = mod.evaluate_gate()
+            assert gate.flagged_records == 1
+            assert gate.gate_passes is False  # sample too small
 
 
 # ---------------------------------------------------------------------------
