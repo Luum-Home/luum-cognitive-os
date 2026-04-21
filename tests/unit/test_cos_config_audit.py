@@ -174,3 +174,140 @@ class TestCosConfigAuditJsonMode:
             assert entry.get("reason", "").strip(), (
                 f"Empty reason for section '{entry['section']}'"
             )
+
+
+# ---------------------------------------------------------------------------
+# Annotation coherence tests (STATUS annotations vs runtime checks)
+# ---------------------------------------------------------------------------
+
+import importlib.util
+from importlib.machinery import SourceFileLoader
+
+
+def _load_audit_module():
+    """Dynamically load cos-config-audit.sh as a Python module (despite .sh ext)."""
+    loader = SourceFileLoader("cos_config_audit", str(AUDIT_SCRIPT))
+    spec = importlib.util.spec_from_loader("cos_config_audit", loader)
+    module = importlib.util.module_from_spec(spec)
+    loader.exec_module(module)
+    return module
+
+
+class TestStatusAnnotations:
+    """Parser correctly extracts # STATUS: comments from cognitive-os.yaml."""
+
+    def test_status_annotations_parsed(self, tmp_path):
+        """Parser extracts annotation→section bindings from YAML."""
+        mod = _load_audit_module()
+        yaml_text = (
+            "project:\n"
+            "  # STATUS: implemented\n"
+            "  phase: reconstruction\n"
+            "efficiency:\n"
+            "  # STATUS: partial\n"
+            "  profile: default\n"
+            "# STATUS: aspirational\n"
+            "orchestration:\n"
+            "  sub_agent_cwd: current\n"
+        )
+        yaml_file = tmp_path / "test.yaml"
+        yaml_file.write_text(yaml_text)
+        annotations = mod.parse_status_annotations(yaml_file)
+        assert annotations.get("project.phase") == "IMPL"
+        assert annotations.get("efficiency.profile") == "PARTIAL"
+        assert annotations.get("orchestration") == "ASPIR"
+
+
+class TestDriftDetection:
+    """Drift: annotation contradicts computed status."""
+
+    def test_drift_detected(self, tmp_path, monkeypatch):
+        """When annotation says implemented but check returns ASPIR -> [DRIFT]."""
+        mod = _load_audit_module()
+
+        # Fake annotations with a drift
+        fake_annotations = {"runtime.ttft_watchdog": "IMPL"}  # drift: actual is ASPIR
+        monkeypatch.setattr(mod, "parse_status_annotations", lambda p: fake_annotations)
+
+        results = mod.run_audit(use_color=False)
+        ttft = next(r for r in results if r["section"] == "runtime.ttft_watchdog")
+        assert ttft["coherence"] == "DRIFT", f"Expected DRIFT, got {ttft['coherence']}"
+        assert ttft["annotation"] == "IMPL"
+        assert ttft["status"] == "ASPIR"
+
+        text = mod.format_text(results, use_color=False)
+        assert "DRIFT" in text, "Expected [DRIFT] marker in text output"
+        assert "runtime.ttft_watchdog" in text
+
+    def test_strict_mode_exits_nonzero_on_drift(self):
+        """--strict flag returns exit 1 when DRIFT present (simulated via env patching)."""
+        # We simulate by writing a temporary yaml that introduces drift.
+        # Simpler: invoke the script with a monkey-patched annotation parser via
+        # a helper script. Easiest path: patch cognitive-os.yaml temporarily.
+        import shutil
+        yaml_path = REPO_ROOT / "cognitive-os.yaml"
+        backup = yaml_path.read_text()
+        try:
+            # Flip one annotation to create drift
+            tampered = backup.replace(
+                "# STATUS: aspirational\n  ttft_watchdog:",
+                "# STATUS: implemented\n  ttft_watchdog:",
+                1,
+            )
+            assert tampered != backup, "Failed to tamper yaml for drift test"
+            yaml_path.write_text(tampered)
+
+            # Non-strict exits 0
+            r_normal = _run_audit()
+            assert r_normal.returncode == 0, (
+                f"Non-strict should exit 0 even on drift, got {r_normal.returncode}"
+            )
+            assert "DRIFT" in r_normal.stdout, "Expected DRIFT marker in tampered output"
+
+            # Strict exits 1
+            r_strict = _run_audit("--strict")
+            assert r_strict.returncode == 1, (
+                f"--strict should exit 1 on drift, got {r_strict.returncode}\n"
+                f"stdout: {r_strict.stdout}"
+            )
+        finally:
+            yaml_path.write_text(backup)
+
+
+class TestUnannotatedFlagged:
+    """Sections without annotation are flagged with [unannotated]."""
+
+    def test_unannotated_sections_flagged(self, monkeypatch):
+        """Remove all annotations; every contract line should show [unannotated]."""
+        mod = _load_audit_module()
+        monkeypatch.setattr(mod, "parse_status_annotations", lambda p: {})
+        results = mod.run_audit(use_color=False)
+        for r in results:
+            assert r["coherence"] == "UNANNOTATED", (
+                f"Expected UNANNOTATED for {r['section']}, got {r['coherence']}"
+            )
+        text = mod.format_text(results, use_color=False)
+        assert "[unannotated]" in text, "Expected [unannotated] marker in text output"
+
+
+class TestCoherenceInvariant:
+    """Invariant: committed cognitive-os.yaml annotations must match runtime checks."""
+
+    def test_all_current_sections_coherent(self):
+        """Run validator against real cognitive-os.yaml — ZERO drift allowed."""
+        result = _run_audit("--json")
+        assert result.returncode == 0, f"audit failed: {result.stderr}"
+        data = json.loads(result.stdout)
+        drift_entries = [e for e in data if e.get("coherence") == "DRIFT"]
+        assert not drift_entries, (
+            f"Coherence violation: {len(drift_entries)} section(s) drift from annotation.\n"
+            + "\n".join(
+                f"  - {e['section']}: annotation={e.get('annotation')} actual={e['status']}"
+                for e in drift_entries
+            )
+        )
+        unannotated = [e for e in data if e.get("coherence") == "UNANNOTATED"]
+        assert not unannotated, (
+            f"Missing annotations on {len(unannotated)} contract section(s): "
+            f"{[e['section'] for e in unannotated]}"
+        )
