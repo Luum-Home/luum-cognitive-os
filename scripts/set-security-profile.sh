@@ -141,7 +141,8 @@ case "$PROFILE" in
     echo "              destructive-git-blocker.sh (ADR-003 R1 git-op safety), destructive-rm-blocker.sh (ADR-003 R2 file-erasure safety),"
     echo "              dispatch-gate, clarification-gate,"
     echo "              blast-radius (ADR-023 advisory), inject-phase-context, agent-working-dir-inject.sh, agent-prelaunch, error-pattern-detector,"
-    echo "              reinvention-check.sh (ADR-029 anti-duplication), prompt-quality-llm, completeness-check-llm, global-verify.sh before"
+    echo "              reinvention-check.sh (ADR-029 anti-duplication), prompt-quality-llm, completeness-check-llm, global-verify.sh before,"
+    echo "              session-heartbeat.sh (ADR-047: liveness signal on every tool call, wildcard matcher)"
     # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
     echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, rate-limit-drain.sh (D45 drainer/executor), auto-checkpoint, content-policy,"
     echo "               doc-sync-detector, claim-validator, completion-gate, agent-checkpoint,"
