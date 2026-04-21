@@ -1,0 +1,18 @@
+name: smoke-sprint
+commit_strategy: per_task
+notes: Minimal 2-task sprint used by the COS e2e smoke suite.
+
+tasks:
+  - id: smoke-task-1
+    title: "Verify rate limiter is accessible"
+    prompt: "Check that lib.rate_limiter.RateLimiter can be imported and returns a status string."
+    model: sonnet
+    file_scope:
+      - lib/rate_limiter.py
+
+  - id: smoke-task-2
+    title: "Check self-knowledge index exists"
+    prompt: "Confirm that lib.self_knowledge.query returns a list (possibly empty) for any term."
+    model: sonnet
+    file_scope:
+      - lib/self_knowledge.py
