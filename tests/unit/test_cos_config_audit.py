@@ -278,16 +278,105 @@ class TestUnannotatedFlagged:
     """Sections without annotation are flagged with [unannotated]."""
 
     def test_unannotated_sections_flagged(self, monkeypatch):
-        """Remove all annotations; every contract line should show [unannotated]."""
+        """Remove all annotations; every non-meta contract line should show [unannotated].
+
+        `meta.*` sections are cross-file contracts exempt from annotation; they
+        stay coherent ("OK") even when annotations are wiped.
+        """
         mod = _load_audit_module()
         monkeypatch.setattr(mod, "parse_status_annotations", lambda p: {})
         results = mod.run_audit(use_color=False)
         for r in results:
-            assert r["coherence"] == "UNANNOTATED", (
-                f"Expected UNANNOTATED for {r['section']}, got {r['coherence']}"
-            )
+            if r["section"].startswith("meta."):
+                assert r["coherence"] == "OK", (
+                    f"Expected meta.* to be OK, got {r['coherence']} for {r['section']}"
+                )
+            else:
+                assert r["coherence"] == "UNANNOTATED", (
+                    f"Expected UNANNOTATED for {r['section']}, got {r['coherence']}"
+                )
         text = mod.format_text(results, use_color=False)
         assert "[unannotated]" in text, "Expected [unannotated] marker in text output"
+
+
+class TestSettingsFreshness:
+    """Contract: meta.settings_freshness tracks apply-efficiency-profile.sh SHA."""
+
+    def test_settings_freshness_matches_when_sha_equal(self, tmp_path, monkeypatch):
+        """When tracked SHA equals current script SHA → IMPL."""
+        import hashlib
+        mod = _load_audit_module()
+
+        # Build a fake root with script + settings + matching SHA file
+        script = tmp_path / "scripts" / "apply-efficiency-profile.sh"
+        script.parent.mkdir(parents=True)
+        script.write_text("#!/bin/bash\necho hi\n")
+        settings = tmp_path / ".claude" / "settings.json"
+        settings.parent.mkdir(parents=True)
+        settings.write_text("{}")
+        sha_file = tmp_path / ".cognitive-os" / "state" / "apply-efficiency-profile.sha"
+        sha_file.parent.mkdir(parents=True)
+        sha_file.write_text(hashlib.sha256(script.read_bytes()).hexdigest())
+
+        status, reason = mod._check_settings_freshness(tmp_path)
+        assert status == "IMPL", f"expected IMPL, got {status}: {reason}"
+        assert "in sync" in reason
+
+    def test_settings_freshness_drift_when_sha_differs(self, tmp_path):
+        """Stale tracked SHA → ASPIR with guidance to re-run."""
+        mod = _load_audit_module()
+        script = tmp_path / "scripts" / "apply-efficiency-profile.sh"
+        script.parent.mkdir(parents=True)
+        script.write_text("#!/bin/bash\necho hi\n")
+        settings = tmp_path / ".claude" / "settings.json"
+        settings.parent.mkdir(parents=True)
+        settings.write_text("{}")
+        sha_file = tmp_path / ".cognitive-os" / "state" / "apply-efficiency-profile.sha"
+        sha_file.parent.mkdir(parents=True)
+        sha_file.write_text("0" * 64)  # stale
+
+        status, reason = mod._check_settings_freshness(tmp_path)
+        assert status == "ASPIR", f"expected ASPIR, got {status}: {reason}"
+        assert "apply-efficiency-profile.sh changed" in reason
+
+    def test_settings_freshness_partial_when_no_sha_tracked(self, tmp_path):
+        """settings.json present but no SHA file → PARTIAL."""
+        mod = _load_audit_module()
+        script = tmp_path / "scripts" / "apply-efficiency-profile.sh"
+        script.parent.mkdir(parents=True)
+        script.write_text("#!/bin/bash\necho hi\n")
+        settings = tmp_path / ".claude" / "settings.json"
+        settings.parent.mkdir(parents=True)
+        settings.write_text("{}")
+        # No SHA file
+
+        status, reason = mod._check_settings_freshness(tmp_path)
+        assert status == "PARTIAL", f"expected PARTIAL, got {status}: {reason}"
+        assert "no profile SHA tracked" in reason
+
+    def test_meta_sections_not_required_to_have_status_annotation(self, monkeypatch):
+        """meta.* contracts are cross-file; they should NOT produce [unannotated]."""
+        mod = _load_audit_module()
+        # Force empty annotations — every contract is "unannotated" by lookup
+        monkeypatch.setattr(mod, "parse_status_annotations", lambda p: {})
+
+        results = mod.run_audit(use_color=False)
+        meta_entries = [r for r in results if r["section"].startswith("meta.")]
+        assert meta_entries, "Expected at least one meta.* contract (meta.settings_freshness)"
+        for r in meta_entries:
+            assert r["coherence"] == "OK", (
+                f"meta.* section should be coherent without annotation, "
+                f"got {r['coherence']} for {r['section']}"
+            )
+        # And the text output MUST NOT mark these as [unannotated]
+        text = mod.format_text(results, use_color=False)
+        for r in meta_entries:
+            # Find the line for this section and assert no [unannotated] suffix
+            for line in text.splitlines():
+                if r["section"] in line:
+                    assert "[unannotated]" not in line, (
+                        f"meta.* line should not carry [unannotated]: {line}"
+                    )
 
 
 class TestCoherenceInvariant:
