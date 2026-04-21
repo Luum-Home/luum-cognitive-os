@@ -380,34 +380,43 @@ def _check_docker_container_freshness(root: Path):
     if not running:
         return ("PARTIAL", "no cognitive-os-* containers running — stack not started")
 
-    # For each running container, inspect actual image sha and compare to pin
+    # For each running container, compare the MANIFEST DIGEST of its source
+    # image to the pin. Important distinction:
+    #   - `.Image`         = image CONFIG ID (sha of the config blob; not the digest)
+    #   - `.Config.Image`  = the image REFERENCE the container was created from,
+    #                         including the @sha256:... manifest digest if pinned
+    # Comparing .Image against the pin is ALWAYS a mismatch because they are
+    # different hash schemes of the same image. Use Config.Image.
     drifts = []
     verified = 0
     for name, image_ref in running:
-        # Resolve running container's actual image sha
         try:
             insp = subprocess.run(
-                [docker, "inspect", "--format", "{{.Image}}", name],
+                [docker, "inspect", "--format", "{{.Config.Image}}", name],
                 capture_output=True, text=True, timeout=5,
             )
         except (subprocess.SubprocessError, FileNotFoundError):
             continue
         if insp.returncode != 0:
             continue
-        # Output: "sha256:<hex>"
-        running_sha = insp.stdout.strip().removeprefix("sha256:")
+        config_image = insp.stdout.strip()
 
-        # Find matching pin by image name prefix (image_ref is "repo:tag" or "repo:tag@sha256:...")
-        # pins key is "repo:tag" (without @sha256 suffix)
+        # Find matching pin by image base name
         base = image_ref.split("@", 1)[0]
         pinned_sha = pins.get(base)
         if pinned_sha is None:
-            # No pin for this image — skip (it's a floating tag or unpinned)
             continue
 
         verified += 1
-        if not running_sha.startswith(pinned_sha):
-            drifts.append(f"{name} (pin={pinned_sha[:8]}, running={running_sha[:8]})")
+        # If Config.Image contains the pinned digest, fresh. Otherwise drift.
+        if pinned_sha not in config_image:
+            # Running ref MAY have its own digest or be tagged; extract what we can
+            running_digest = ""
+            if "@sha256:" in config_image:
+                running_digest = config_image.split("@sha256:", 1)[1][:8]
+            drifts.append(
+                f"{name} (pin={pinned_sha[:8]}, running={running_digest or 'no-digest'})"
+            )
 
     if verified == 0:
         return ("PARTIAL", "no running containers have pinned-sha images to verify")
