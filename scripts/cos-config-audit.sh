@@ -429,6 +429,76 @@ def _check_docker_container_freshness(root: Path):
     return ("IMPL", f"{verified} cognitive-os container(s) match pinned images")
 
 
+def _check_llm_providers_reachable(root: Path):
+    """
+    Verify that any direct-SDK LLM provider configured in the environment
+    has its API key set AND the SDK needed to reach it is importable.
+
+    Per ADR-049, we use `openai` SDK with base_url overrides as the single
+    client for OpenAI-compatible providers (Qwen, DeepSeek, MiniMax via
+    DashScope/OpenRouter). `anthropic` SDK is reserved for Anthropic API
+    direct (opt-in tier).
+
+    Status logic:
+      * No provider env vars set                     → PARTIAL (no overflow wired yet)
+      * At least one env var set + openai SDK absent → ASPIR  (install direct_providers extra)
+      * Env var set + SDK importable + base_url set  → IMPL
+      * Env var set but base_url missing             → PARTIAL (config incomplete)
+
+    This check does NOT ping the actual provider endpoint — that would
+    require a live API call per audit run, which burns quota. Reachability
+    is inferred from config completeness; runtime failures are logged by
+    the dispatcher itself to lib/qwen_provider.py's QwenResult.error.
+    """
+    # Known direct-SDK providers + their env-var schema
+    providers = [
+        {
+            "name": "alibaba_qwen",
+            "api_key_env": "ALIBABA_QWEN_API_KEY",
+            "base_url_env": "ALIBABA_QWEN_BASE_URL",  # optional (default exists in qwen_provider.py)
+            "sdk": "openai",
+        },
+        # Future: deepseek, minimax_direct, openrouter, etc. — add rows here.
+    ]
+
+    import importlib
+
+    configured = []
+    unconfigured = []
+    sdk_missing = []
+
+    for p in providers:
+        if os.environ.get(p["api_key_env"]):
+            # Key present — check SDK
+            try:
+                importlib.import_module(p["sdk"])
+                configured.append(p["name"])
+            except ImportError:
+                sdk_missing.append((p["name"], p["sdk"]))
+        else:
+            unconfigured.append(p["name"])
+
+    if sdk_missing:
+        names = ", ".join(f"{n} (needs `{s}`)" for n, s in sdk_missing)
+        return (
+            "ASPIR",
+            f"API key set for {names} but SDK not installed — "
+            "run `uv sync --extra direct_providers`",
+        )
+
+    if configured:
+        return (
+            "IMPL",
+            f"{len(configured)} direct-SDK provider(s) configured: {', '.join(configured)}",
+        )
+
+    return (
+        "PARTIAL",
+        "no direct-SDK providers configured — set ALIBABA_QWEN_API_KEY in .env "
+        "to activate Qwen overflow (per ADR-049)",
+    )
+
+
 def _check_orchestration(root: Path):
     # Check that referenced hooks in orchestration section exist
     # Known key hook: agent-working-dir-inject.sh
@@ -504,6 +574,12 @@ CONTRACTS = [
         "section": "meta.docker_container_freshness",
         "description": "running cognitive-os-* containers use the images pinned in docker-compose.cognitive-os.yml",
         "check": _check_docker_container_freshness,
+    },
+    {
+        # ADR-049 direct-SDK overflow providers wiring check.
+        "section": "meta.llm_providers_reachable",
+        "description": "direct-SDK LLM overflow providers (ADR-049) are configured and their SDKs importable",
+        "check": _check_llm_providers_reachable,
     },
 ]
 
