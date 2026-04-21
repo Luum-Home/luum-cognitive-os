@@ -258,94 +258,40 @@ def cmd_run(args: argparse.Namespace) -> int:
     if args.verbose:
         print(f"[orchestrator] launching agent_id={agent_id} model={args.model or 'default'}", file=sys.stderr)
 
-    # ADR-049 (corrected architecture — Option B): priority-cascade.
-    # Default list "qwen,claude" — Qwen primary for sub-agents, Claude fallback.
-    # The user↔Claude Code main chat is NOT covered (native Claude Code
-    # limitation). This orchestrator preserves Claude Max quota for the
-    # main chat by routing sub-agent dispatches to Qwen by default.
-    #
-    # User can override:
-    #   --providers claude          (Claude only, no cascade)
-    #   --providers qwen            (Qwen only, no cascade)
-    #   --providers claude,qwen     (invert priority — Claude first, Qwen fallback)
-    #   --providers deepseek,qwen,claude  (future 3-tier)
-    # Env override: COS_FORCE_CLAUDE_PRIMARY=1 rewrites the list to "claude".
+    # ADR-049 (corrected architecture — Option B): delegate cascade to
+    # lib/dispatch.py. cmd_run becomes a thin wrapper that instantiates
+    # ClaudeExecutor and forwards the task to the abstract dispatcher.
+    # Benefits: uniform metrics logging, testable in isolation, reusable
+    # from skills/hooks/future auto-router.
+    from lib.dispatch import dispatch as _dispatch
+
     providers_raw = getattr(args, "providers", None) or "qwen,claude"
-    if os.environ.get("COS_FORCE_CLAUDE_PRIMARY", "").strip() == "1":
-        providers_raw = "claude"
-        if args.verbose:
-            print("[orchestrator] COS_FORCE_CLAUDE_PRIMARY=1 — overriding providers=claude", file=sys.stderr)
     providers_list = [p.strip() for p in providers_raw.split(",") if p.strip()]
 
     t0 = time.monotonic()
-
-    # Iterate the cascade: first provider is primary, rest are fallbacks on failure.
-    # Fallback is skipped if COS_DISABLE_LLM_FALLBACK=1.
-    # Qwen→Claude fallback always retries; Claude→next fallback only on rate-limit.
-    providers_tried: list[str] = []
-    result = None
-    provider_used = None
-
-    for idx, provider in enumerate(providers_list):
-        is_fallback = idx > 0
-        if is_fallback and _fallback_disabled(verbose=args.verbose):
-            break
-
-        # For Claude-as-fallback: only try if the previous provider's error
-        # was a rate-limit signal (preserves the "retry-primary" semantic)
-        if is_fallback and provider == "claude" and result is not None:
-            if not _is_rate_limit_error(getattr(result, "error", "") or ""):
-                # Previous provider failed for non-rate-limit reasons — Claude
-                # fallback unlikely to help; exit cascade with previous error.
-                if args.verbose:
-                    print(
-                        f"[orchestrator] {providers_tried[-1]} failed non-rate-limit → "
-                        f"skipping Claude fallback",
-                        file=sys.stderr,
-                    )
-                break
-
-        providers_tried.append(provider)
-        if args.verbose:
-            prefix = "[orchestrator] primary" if not is_fallback else "[orchestrator] fallback"
-            print(f"{prefix} → {provider}", file=sys.stderr)
-
-        attempt = None
-        if provider == "qwen":
-            attempt = _try_qwen_primary(prompt, claude_model=args.model, verbose=args.verbose)
-            if attempt is None:
-                # Qwen unavailable/unconfigured/disabled — treat as failed attempt, try next
-                if args.verbose:
-                    print("[orchestrator] qwen unavailable — advancing cascade", file=sys.stderr)
-                continue
-        elif provider == "claude":
-            attempt = executor.run(prompt, model=args.model, timeout=args.timeout)
-        else:
-            # Future providers: deepseek, minimax, glm — scaffold here
-            if args.verbose:
-                print(f"[orchestrator] provider {provider!r} not implemented — skipping", file=sys.stderr)
-            continue
-
-        result = attempt
-        provider_used = "alibaba_qwen" if provider == "qwen" else provider
-
-        if result.success:
-            break  # First success wins; no further cascade
-
-    # If ALL providers failed or cascade exited early, ensure we still have a result
-    if result is None:
-        # No provider was actually attempted successfully — build a failure result
-        result = type("_Empty", (), {
-            "success": False,
-            "text": "",
-            "input_tokens": 0,
-            "output_tokens": 0,
-            "cost_usd": 0.0,
-            "error": f"no providers in cascade succeeded (tried: {providers_tried or providers_list})",
-        })()
-        provider_used = "none"
-
+    dr = _dispatch(
+        prompt=prompt,
+        providers=providers_list,
+        claude_executor=executor,
+        claude_model=args.model,
+        task_type="general",   # orchestrator CLI has no task-type hint yet
+        skill_name=None,       # skills will set this when they call dispatch() directly
+        timeout=args.timeout,
+        verbose=args.verbose,
+    )
     elapsed = time.monotonic() - t0
+
+    # Adapt DispatchResult → old-shape object for downstream print logic below.
+    result = type("_Adapt", (), {
+        "success": dr.success,
+        "text": dr.text,
+        "input_tokens": dr.input_tokens,
+        "output_tokens": dr.output_tokens,
+        "cost_usd": dr.cost_usd,
+        "error": dr.error,
+    })()
+    provider_used = dr.provider_used
+    providers_tried = dr.providers_tried
 
     # Stop subscriber if we started one
     if abm._subscriber and hasattr(abm._subscriber, "stop"):
