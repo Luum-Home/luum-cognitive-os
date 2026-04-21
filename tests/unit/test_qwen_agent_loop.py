@@ -512,3 +512,136 @@ def test_glob_files_bad_root():
     out = qal._tool_glob_files({"pattern": "*.py", "path": "/definitely/does/not/exist/xyz123"})
     assert out.startswith("ERROR:")
     assert "does not exist" in out
+
+
+# ---------------------------------------------------------------------------
+# Phase 3 — Governance context injection (ADR-051).
+# ---------------------------------------------------------------------------
+
+
+def _capture_messages_client(final_text: str = "done"):
+    """A FakeClient variant that records the `messages` kwarg of each call."""
+
+    captured: Dict[str, Any] = {"messages": None}
+
+    class _Capture:
+        def __init__(self):
+            self.chat = SimpleNamespace(
+                completions=SimpleNamespace(create=self._create)
+            )
+
+        def _create(self, **kwargs: Any) -> SimpleNamespace:
+            if captured["messages"] is None:
+                # Only record the first call — that's the one with the system prompt.
+                captured["messages"] = list(kwargs.get("messages") or [])
+            return _mk_response(content=final_text)
+
+    return _Capture(), captured
+
+
+def test_context_level_default_is_none_backward_compat():
+    """Default call (no context_level) must not inject any system message.
+
+    Backward compatibility: pre-Phase-3 callers get identical behavior.
+    """
+    client, captured = _capture_messages_client("hi")
+    result = qal.run_agent("say hi", client=client)
+
+    assert result.success is True
+    msgs = captured["messages"]
+    # No system prompt supplied and no injection → only the user message.
+    assert len(msgs) == 1
+    assert msgs[0]["role"] == "user"
+
+
+def test_context_level_none_with_user_system_prompt_unchanged():
+    """context_level='none' + user system_prompt → system message is exactly the caller's."""
+    client, captured = _capture_messages_client("hi")
+    qal.run_agent(
+        "say hi",
+        system_prompt="You are a test agent.",
+        context_level="none",
+        client=client,
+    )
+
+    msgs = captured["messages"]
+    assert msgs[0]["role"] == "system"
+    assert msgs[0]["content"] == "You are a test agent."
+
+
+def test_context_level_minimal_injects_preamble():
+    """context_level='minimal' → system prompt contains agent-preamble.md content."""
+    client, captured = _capture_messages_client("hi")
+    qal.run_agent("say hi", context_level="minimal", client=client)
+
+    msgs = captured["messages"]
+    assert msgs[0]["role"] == "system"
+    body = msgs[0]["content"]
+    # Substrings unique to agent-preamble.md
+    assert "TRUST_REPORT:" in body
+    assert "NEEDS_CLARIFICATION:" in body
+    assert "Sub-agent in Cognitive OS" in body
+    # Minimal must NOT include the mandatory-rules-specific content.
+    assert "MANDATORY PROJECT RULES" not in body
+
+
+def test_context_level_full_injects_both_templates():
+    """context_level='full' → both mandatory-rules and preamble are present."""
+    client, captured = _capture_messages_client("hi")
+    qal.run_agent("say hi", context_level="full", client=client)
+
+    msgs = captured["messages"]
+    assert msgs[0]["role"] == "system"
+    body = msgs[0]["content"]
+    # From agent-mandatory-rules.md
+    assert "MANDATORY PROJECT RULES" in body
+    assert "rules/acceptance-criteria.md" in body
+    # From agent-preamble.md
+    assert "TRUST_REPORT:" in body
+    assert "NEEDS_CLARIFICATION:" in body
+
+
+def test_context_level_full_preserves_user_system_prompt():
+    """User system prompt must be appended after the governance prefix."""
+    client, captured = _capture_messages_client("hi")
+    qal.run_agent(
+        "say hi",
+        system_prompt="Custom caller instructions.",
+        context_level="full",
+        client=client,
+    )
+
+    msgs = captured["messages"]
+    body = msgs[0]["content"]
+    assert "MANDATORY PROJECT RULES" in body
+    assert "Custom caller instructions." in body
+    # Governance prefix must precede caller prompt.
+    assert body.index("MANDATORY PROJECT RULES") < body.index("Custom caller instructions.")
+
+
+def test_context_level_unknown_falls_back_to_none():
+    """Unknown level must not crash — degrades to no injection."""
+    client, captured = _capture_messages_client("hi")
+    result = qal.run_agent("say hi", context_level="garbage", client=client)
+
+    assert result.success is True
+    msgs = captured["messages"]
+    # No injection → only user message.
+    assert len(msgs) == 1
+    assert msgs[0]["role"] == "user"
+
+
+def test_context_injector_build_prefix_levels():
+    """Unit-level check on qwen_context_injector.build_context_prefix()."""
+    from lib.qwen_context_injector import build_context_prefix
+
+    assert build_context_prefix("none") == ""
+    minimal = build_context_prefix("minimal")
+    full = build_context_prefix("full")
+
+    assert "Sub-agent in Cognitive OS" in minimal
+    assert "MANDATORY PROJECT RULES" not in minimal
+    assert "MANDATORY PROJECT RULES" in full
+    assert "Sub-agent in Cognitive OS" in full
+    # "full" should be strictly larger than "minimal".
+    assert len(full) > len(minimal)

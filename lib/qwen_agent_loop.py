@@ -471,6 +471,8 @@ def run_agent(
     system_prompt: Optional[str] = None,
     verbose: bool = False,
     client: Any = None,
+    *,
+    context_level: str = "none",
 ) -> AgentLoopResult:
     """Run a Qwen agent loop until the model stops calling tools or a cap trips.
 
@@ -484,11 +486,22 @@ def run_agent(
         verbose: log each iteration to the module logger at INFO level.
         client: OpenAI-compatible client override (tests pass a mock here).
             If None, obtained via qwen_provider._get_openai_client().
+        context_level: governance-context injection level (ADR-051 Phase 3).
+            Keyword-only. "none" (default, backward-compat) = no injection.
+            "minimal" prepends templates/agent-preamble.md (~1.5K tokens).
+            "full" prepends mandatory-rules + preamble (~5K tokens). Injected
+            content precedes `system_prompt` if both are provided.
 
     Returns:
         AgentLoopResult with success/text and metrics. On failure, `error`
         is populated; `messages_history` always reflects whatever was exchanged.
     """
+    # ADR-051 Phase 3 — compose governance prefix with caller-supplied prompt.
+    from lib.qwen_context_injector import compose_system_prompt
+    system_prompt = compose_system_prompt(
+        level=context_level,  # type: ignore[arg-type]
+        user_system_prompt=system_prompt,
+    )
     # Validate tools_allowed membership early — cheap guard.
     if tools_allowed is not None:
         unknown = [t for t in tools_allowed if t not in ALL_TOOL_NAMES]
