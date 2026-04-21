@@ -14,6 +14,15 @@ outputs:
   - state_summary: Current pipeline state with timing data
   - timing_table: ASCII table of per-phase durations and costs
 summary_line: Resume an SDD pipeline from its last completed phase with timing and state…
+# ADR-050 per-skill routing: resume is mechanical state inspection + phase
+# dispatch. No reasoning required — route to cheap provider first, allow
+# fallback on any error since this must always succeed.
+routing:
+  tier: cheap
+  providers_preferred: [qwen, claude]
+  fallback_on_rate_limit: true
+  fallback_on_any_error: true
+  budget_max_usd_per_call: 0.25
 
 ---
 

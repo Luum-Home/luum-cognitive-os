@@ -14,6 +14,16 @@ metadata:
   category: security
 audience: os-dev
 summary_line: "Comprehensive security audit of Cognitive OS configuration, secrets, hooks…"
+# ADR-050 per-skill routing: security-critical skill. Lock to Claude (frontier),
+# explicitly exclude cheap providers, disable ALL fallback — we want a hard
+# failure rather than a silent downgrade that could miss vulnerabilities.
+routing:
+  tier: frontier
+  providers_preferred: [claude]
+  providers_excluded: [minimax, qwen]
+  fallback_on_rate_limit: false
+  fallback_on_any_error: false
+  budget_max_usd_per_call: 2.00
 
 ---
 
