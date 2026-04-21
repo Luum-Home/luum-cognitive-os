@@ -122,7 +122,7 @@ sub-agent code tasks (the dominant workload):
 | Priority | Provider | Access | Cost (1M in / 1M out) | Quality | Rationale |
 |---|---|---|---|---|---|
 | 1 | Claude Max subscription | Native Agent tool | $0 (until rate-limit hit) | ⭐⭐⭐⭐⭐ | Already paid |
-| 2 | Z.AI GLM Coding Plan **Pro Quarterly** | Subscription $64.80/mo | $0 marginal | ⭐⭐⭐⭐ | Includes GLM-5.1, GLM-5-Turbo, GLM-5v-Turbo (vision), GLM-4.7 fallbacks. 5× Lite headroom, priority access, 40-60% faster. Selected over Lite ($18/mo) for our observed 4-5 parallel-agent workload. |
+| 2 | **Alibaba Qwen Coding Plan Pro** | Subscription $50/mo (first month $15, second $25 promo) | $0 marginal | ⭐⭐⭐⭐⭐ | **SELECTED OVERFLOW PROVIDER.** Multi-model aggregator: Qwen3.6-plus (1M context, SWE-bench 64.8), Qwen3-Max, Qwen3-Coder variants, plus **Kimi-K2.5, GLM-5, MiniMax-M2.5 bundled**. 90K req/mo, 6000/5h, 45K/week. Works with Claude Code, Cursor, Cline, Qwen Code. ToS: interactive coding tools only (no batch/cron). |
 | 3 | Qwen 3.6 Plus | OpenRouter or Alibaba Cloud | $0.325 / $1.95 | ⭐⭐⭐⭐ (SWE-bench 78.8) | 1M context, strong code. Pay-per-use. |
 | 4 | MiniMax M2.7 | MiniMax API | $0.30 / $1.20 | ⭐⭐⭐⭐ | 205K context, ultra-cheap for long-tail tasks. |
 | 5 | OpenRouter free tier | OpenRouter (free models) | $0 | ⭐⭐⭐ (degraded) | Llama 3.1 70B, Nemotron, Qwen3 free. 50 req/day or 1000 with $10 balance. |
@@ -135,31 +135,82 @@ Burst: 4 opus-class agents, 200K input / 80K output total.
 | Provider | Cost | vs Anthropic direct |
 |---|---|---|
 | Claude Max subscription | $0 | free |
-| Z.AI GLM Coding Plan Pro Quarterly | $0 marginal ($64.80/mo flat) | ∞× (unlimited bursts within 5× Lite envelope) |
+| Alibaba Qwen Coding Plan Pro | $0 marginal ($50/mo flat) | ∞× (90K req/mo headroom) |
 | GLM-5.1 API pay-per-use | $0.63 | 14× cheaper |
 | Qwen 3.6 Plus | $0.22 | 41× cheaper |
 | MiniMax M2.7 | $0.16 | 56× cheaper |
 | **Anthropic API direct Opus** | **$9.00** | baseline (reference) |
 
 A month of typical overflow usage (say 20 bursts):
-- GLM Coding Plan Pro Quarterly: **$64.80/mo** fixed
+- Alibaba Qwen Coding Plan Pro: **$50/mo** fixed (first month $15 promo)
 - Qwen 3.6 Plus via OpenRouter: **~$4.40/mo**
 - MiniMax M2.7: **~$3.20/mo**
 - Anthropic API direct: **~$180/mo**
 
-Total recommended stack: **~$275/mo** (Claude Max $200 + GLM **Pro
-Quarterly** $64.80 + Qwen/MiniMax/OpenRouter ~$10 for edge cases) with
-effectively unlimited overflow for complex workloads.
+Total recommended stack: **$250/mo** (Claude Max $200 + Alibaba Qwen
+Coding Pro $50) with effectively unlimited overflow for interactive
+coding work.
 
-Versus Anthropic API direct as overflow: **$260–380/mo** for marginally
+Versus Anthropic API direct as overflow: $260–380/mo for marginally
 better quality on 5% of tasks.
 
-**Note**: earlier drafts of this ADR cited $9/mo for Z.AI Lite. Verified
-actual pricing at z.ai/subscribe on 2026-04-21: Lite is $18/mo ($16.20
-quarterly). Pro $72/mo ($64.80 quarterly) is selected based on our
-observed workload matching Z.AI's "complex workloads" tier, not
-"lightweight." Lite would saturate under 4-5 parallel-agent bursts
-within the first week.
+### Single-overflow decision (MiniMax Max vs Qwen Pro at $50/mo)
+
+Both subscriptions are exactly $50/mo. Exhaustive matrix:
+
+| Dimension | MiniMax Coding Plan Max | Alibaba Qwen Coding Plan Pro | Winner |
+|---|---|---|---|
+| Price | $50/mo ($500/yr saves $100) | $50/mo (promo: $15 m1, $25 m2) | Qwen (promo) |
+| Quota / 5h | 1,000–4,500 prompts | **6,000 requests** | Qwen |
+| Weekly | ~10,000 | **45,000** | Qwen (4.5×) |
+| Monthly | ~40,000 | **90,000** | Qwen (2.25×) |
+| Model families | 1 (MiniMax M2.x only) | **6** — Qwen3.6-plus, Qwen3-Max, Coder variants + **Kimi-K2.5, GLM-5, MiniMax-M2.5 bundled** | **Qwen** |
+| Context window | 200K | **1M** (Qwen3.6-plus) | Qwen (5×) |
+| SWE-bench | 53.7 (M2.7) | **64.8** (Qwen3.6-plus) | Qwen (+20%) |
+| Terminal-Bench 2.0 | 57% | **61.6%** | Qwen |
+| Vendor stability | Startup (IPO'd 2025) | **Alibaba Cloud** enterprise | Qwen |
+| Automated use (batch/cron) | **Allowed** | **Prohibited** (interactive only) | MiniMax |
+| Yearly lock-in option | Yes ($500) | Monthly only | MiniMax |
+| Tool support | 20+ (Claude Code, Cursor, Cline, Kilo, Roo…) | Claude Code, Cursor, Cline, Qwen Code, Kilo | Functional tie |
+
+**Qwen Pro wins on 7 dimensions, MiniMax on 2 (batch permission, yearly
+option).**
+
+### Why the "interactive only" ToS is acceptable
+
+Qwen Pro's restriction against automated/batch/backend use would disqualify
+it if our overflow target included:
+- Cron-scheduled LLM evaluators
+- Nightly SDD pipelines running unattended
+- Webhook handlers invoking LLM
+- Application backends
+
+**Our actual overflow target is the opposite**: sub-agents spawned during
+an interactive Claude Code session when the user has hit rate-limit. That
+IS interactive coding — the user is present, typing, triaging agent output.
+This is exactly what Qwen Pro's ToS permits.
+
+If we later need a batch-capable provider (e.g. weekly audit hook that
+calls LLM), we add MiniMax pay-per-use (`$0.30/$1.20 per 1M`, no
+subscription, ToS-unrestricted) as a Tier 3 addition — estimated
+$2-5/mo real usage. Not needed now.
+
+### Why not Z.AI GLM
+
+Earlier drafts of this ADR selected Z.AI Pro Quarterly at $64.80/mo as
+the primary overflow. Superseded by Qwen Pro for these reasons:
+
+- **Cheaper** ($50 vs $64.80 = $14.80/mo save)
+- **More models per dollar** — Qwen Pro bundles Kimi + GLM + MiniMax IN
+  ADDITION to Qwen family. Z.AI bundles only GLM family.
+- **Larger context** — Qwen3.6-plus 1M vs GLM-5.1 200K.
+- **Higher code quality** — Qwen3.6-plus SWE-bench 64.8 vs GLM-5.1 ~45.
+- **More stable vendor** — Alibaba. Z.AI raised prices 2× in 2 months
+  (Feb + Apr 2026) — quarterly lock doesn't help if they hike again.
+
+Z.AI remains a viable alternative if user prefers the interface or has a
+specific preference for GLM models. Documented here as an analyzed-but-
+rejected option.
 
 ## Pros and cons summary
 
@@ -236,8 +287,9 @@ critical tasks.**
 ### Z.AI GLM Coding Plan
 
 **Pros**
-- Fixed $64.80/mo (Pro Quarterly) with effectively unlimited bursts
-  matching observed "complex workloads" tier for code work.
+- Z.AI evaluated but superseded by Qwen Pro (see comparison above) — $50
+  vs $64.80, larger context, more model families bundled, more stable
+  vendor.
 - Includes GLM-5.1 + GLM-5-Turbo + GLM-5v-Turbo (vision) + fallbacks.
 - Open-source model family — reproducible on-prem if needed.
 - Quality approaches Claude Opus 4.6 on coding benchmarks (per Apiyi.com
@@ -347,9 +399,20 @@ providers:
     priority: 1                         # native Agent tool, always primary
     notes: "Claude Code Max subscription, used via native Agent tool"
 
-  zai_glm:
-    enabled: false                      # STATUS: implemented — flip to true to activate
+  alibaba_qwen:                         # SELECTED as single overflow provider
+    enabled: true                       # STATUS: implemented
     priority: 2
+    api_key_env: ALIBABA_QWEN_API_KEY
+    default_model: qwen3.6-plus         # 1M context, SWE-bench 64.8
+    base_url: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+    fallback_models: [qwen3-max, qwen3-coder-plus, qwen3-coder-next, kimi-k2.5, glm-5, minimax-m2.5]
+    quota_per_month: 90000
+    quota_per_5h: 6000
+    tos_interactive_only: true          # no batch/cron/backend use
+
+  zai_glm:                              # EVALUATED, not selected — alternative
+    enabled: false                      # STATUS: implemented
+    priority: 6                         # lowered to fallback tier
     api_key_env: ZAI_API_KEY
     default_model: glm-5.1
     base_url: https://open.bigmodel.cn/api/paas/v4/
