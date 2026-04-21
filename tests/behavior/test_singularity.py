@@ -816,9 +816,9 @@ class TestPlan:
 
         assert len(planned) <= _MAX_PARALLEL - 2
 
+    @pytest.mark.skip(reason="Cooldown is enforced in the analyze phase (see TestAnalyze); plan trusts analyze output")
     def test_cooldown_same_event_type_within_hour(self):
         """Cooldown is enforced via the analyze phase, not plan. Plan trusts analyze output."""
-        # This is tested in TestAnalyze. Plan receives already-filtered events.
         pass
 
     def test_budget_exhausted_skips_all(self, tmp_path):

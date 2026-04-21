@@ -106,8 +106,9 @@ class TestLeanProfile:
         return tmp_path / ".claude" / "settings.json"
 
     def test_lean_exits_zero(self, lean_settings):
-        # If lean_settings fixture ran successfully, it exited zero
-        assert True  # fixture would have raised if exit nonzero
+        # Fixture runs the lean profile; if it raises, the test fails.
+        # Additionally, the settings.json must have been created.
+        assert lean_settings.exists(), "lean profile should create settings.json"
 
 
     def test_lean_has_minimum_hook_commands(self, lean_settings):
@@ -139,7 +140,9 @@ class TestStandardProfile:
             settings_path.unlink()
 
     def test_standard_exits_zero(self, standard_settings):
-        assert True  # fixture would have raised if exit nonzero
+        # Fixture runs the standard profile; if it raises, the test fails.
+        # Additionally, settings.json must exist at the project root.
+        assert standard_settings.exists(), "standard profile should create settings.json"
 
 
     def test_standard_has_minimum_hook_commands(self, standard_settings):

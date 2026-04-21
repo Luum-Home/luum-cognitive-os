@@ -180,9 +180,11 @@ class TestCreateAnchor:
     def test_timestamp_is_iso_format(self):
         anchor = _make().create_anchor("decided to use Redis.")
         ts = anchor["timestamp"]
-        # Should parse without raising
-        from datetime import datetime
-        datetime.fromisoformat(ts.replace("Z", "+00:00"))
+        from datetime import datetime, timezone
+        # Must parse without raising and be a recent UTC timestamp
+        parsed = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+        assert parsed.tzinfo is not None, "timestamp must be timezone-aware"
+        assert parsed.year >= 2024, f"timestamp year {parsed.year} looks wrong"
 
     def test_decisions_populated(self):
         anchor = _make().create_anchor("We decided to use ginext for routing.")

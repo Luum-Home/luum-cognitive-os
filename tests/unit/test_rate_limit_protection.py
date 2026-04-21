@@ -235,3 +235,210 @@ class TestHourlyReset:
         status = protection.check()
         # Old events should not be counted (only in-memory session counters)
         assert status.tokens_used_session < 2_000_000
+
+
+# ---------------------------------------------------------------------------
+# Hook-level performance and correctness tests
+# (merged from test_rate_limit_protection_perf.py — targets
+#  hooks/token-budget-monitor.sh directly via subprocess)
+# ---------------------------------------------------------------------------
+
+import subprocess
+import tempfile
+
+_HOOK_PATH = Path(__file__).resolve().parents[2] / "hooks" / "token-budget-monitor.sh"
+
+
+def _run_hook(tmpdir: str, extra_env: dict | None = None, stdin: str = "") -> subprocess.CompletedProcess:
+    env = {
+        **os.environ,
+        "CLAUDE_PROJECT_DIR": tmpdir,
+        "HOME": tmpdir,
+    }
+    if extra_env:
+        env.update(extra_env)
+    return subprocess.run(
+        ["bash", str(_HOOK_PATH)],
+        env=env,
+        capture_output=True,
+        text=True,
+        input=stdin,
+        timeout=5,
+    )
+
+
+def _write_cost_events(metrics_dir: Path, count: int, tokens_per_event: int = 100,
+                       every_nth_is_agent: int = 3,
+                       timestamp: str = "2026-04-15T23:00:00+00:00") -> None:
+    metrics_dir.mkdir(parents=True, exist_ok=True)
+    with open(metrics_dir / "cost-events.jsonl", "w") as f:
+        for i in range(count):
+            action = "agent_launch" if i % every_nth_is_agent == 0 else "tool_call"
+            f.write(json.dumps({
+                "timestamp": timestamp,
+                "total_tokens": tokens_per_event,
+                "action": action,
+            }) + "\n")
+
+
+class TestPerf:
+    """Performance tests for hooks/token-budget-monitor.sh.
+
+    Verifies the single-pass Python optimisation keeps the hook fast
+    (no multiple python3 cold starts).
+    """
+
+    def test_completes_under_500ms_empty_file(self, tmp_path: Path) -> None:
+        """No cost-events file: must complete in < 500 ms."""
+        metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+        metrics_dir.mkdir(parents=True)
+
+        env = {"RATE_LIMIT_OVERRIDE": "false"}
+        start = time.monotonic()
+        result = _run_hook(str(tmp_path), extra_env=env)
+        elapsed = time.monotonic() - start
+
+        assert elapsed < 0.5, f"Took {elapsed:.3f}s (limit 0.5s); stderr={result.stderr[:200]}"
+
+    def test_completes_under_500ms_with_1000_lines(self, tmp_path: Path) -> None:
+        """1000-line cost-events file must still complete in < 500 ms."""
+        metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+        _write_cost_events(metrics_dir, count=1000)
+
+        env = {"RATE_LIMIT_OVERRIDE": "true"}
+        start = time.monotonic()
+        result = _run_hook(str(tmp_path), extra_env=env)
+        elapsed = time.monotonic() - start
+
+        assert elapsed < 0.5, f"Took {elapsed:.3f}s (limit 0.5s); stderr={result.stderr[:200]}"
+
+
+class TestTokenCountingHook:
+    """Correctness tests for the token-budget-monitor.sh hook."""
+
+    def test_token_counting_correct(self, tmp_path: Path) -> None:
+        """Tokens are summed from total_tokens field across recent events."""
+        metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+        _write_cost_events(metrics_dir, count=10, tokens_per_event=500)
+
+        env = {"RATE_LIMIT_OVERRIDE": "false"}
+        result = _run_hook(str(tmp_path), extra_env=env)
+        assert result.returncode == 0, f"Unexpected block; stderr={result.stderr}"
+
+    def test_agent_launch_counting(self, tmp_path: Path) -> None:
+        """agent_launch events are counted separately from tool_call events."""
+        metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+        metrics_dir.mkdir(parents=True, exist_ok=True)
+
+        events = []
+        for i in range(5):
+            events.append({"timestamp": "2026-04-15T23:00:00+00:00",
+                            "total_tokens": 10, "action": "agent_launch"})
+        for i in range(5):
+            events.append({"timestamp": "2026-04-15T23:00:00+00:00",
+                            "total_tokens": 10, "action": "tool_call"})
+
+        with open(metrics_dir / "cost-events.jsonl", "w") as f:
+            for e in events:
+                f.write(json.dumps(e) + "\n")
+
+        result = _run_hook(str(tmp_path), extra_env={"RATE_LIMIT_OVERRIDE": "false"})
+        assert result.returncode == 0, f"Should not be blocked; stderr={result.stderr}"
+
+
+class TestHourlyCutoffHook:
+    """Hourly cutoff tests for the token-budget-monitor.sh hook."""
+
+    def test_hourly_cutoff_excludes_old_events(self, tmp_path: Path) -> None:
+        """Events older than 1 hour must NOT count towards the rate limit."""
+        metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+        metrics_dir.mkdir(parents=True, exist_ok=True)
+
+        old_ts = "2026-04-15T21:00:00+00:00"
+        events = [
+            {"timestamp": old_ts, "total_tokens": 4_900_000, "action": "tool_call"},
+        ]
+        fresh_ts = "2026-04-15T23:00:00+00:00"
+        events.append({"timestamp": fresh_ts, "total_tokens": 1000, "action": "tool_call"})
+
+        with open(metrics_dir / "cost-events.jsonl", "w") as f:
+            for e in events:
+                f.write(json.dumps(e) + "\n")
+
+        result = _run_hook(str(tmp_path), extra_env={"RATE_LIMIT_OVERRIDE": "false"})
+        assert result.returncode != 2, (
+            f"Old events were counted; gate should not block; stderr={result.stderr}"
+        )
+
+
+class TestExitCodesHook:
+    """Exit code tests for the token-budget-monitor.sh hook."""
+
+    def test_exits_2_over_95_percent_tokens(self, tmp_path: Path) -> None:
+        """Hook must exit 2 when token usage exceeds 95% of the hourly limit."""
+        from datetime import datetime, timezone
+        metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+        metrics_dir.mkdir(parents=True, exist_ok=True)
+
+        hourly_limit = 1_000_000
+        tokens = int(hourly_limit * 0.96)
+        fresh_ts = datetime.now(timezone.utc).isoformat()
+        with open(metrics_dir / "cost-events.jsonl", "w") as f:
+            f.write(json.dumps({
+                "timestamp": fresh_ts,
+                "total_tokens": tokens,
+                "action": "tool_call",
+            }) + "\n")
+
+        env = {
+            "RATE_LIMIT_OVERRIDE": "false",
+            "RATE_LIMIT_HOURLY_TOKENS": str(hourly_limit),
+        }
+        result = _run_hook(str(tmp_path), extra_env=env)
+        assert result.returncode == 2, (
+            f"Expected exit 2 at 96% usage, got {result.returncode}; stderr={result.stderr}"
+        )
+
+    def test_exits_0_under_limit(self, tmp_path: Path) -> None:
+        """Hook must exit 0 when token usage is well below the limit."""
+        metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+        _write_cost_events(metrics_dir, count=5, tokens_per_event=100)
+
+        env = {
+            "RATE_LIMIT_OVERRIDE": "false",
+            "RATE_LIMIT_HOURLY_TOKENS": "5000000",
+        }
+        result = _run_hook(str(tmp_path), extra_env=env)
+        assert result.returncode == 0, (
+            f"Expected exit 0 under limit, got {result.returncode}; stderr={result.stderr}"
+        )
+
+
+class TestOverrideHook:
+    """Override bypass tests for the token-budget-monitor.sh hook."""
+
+    def test_rate_limit_override_bypasses(self, tmp_path: Path) -> None:
+        """RATE_LIMIT_OVERRIDE=true must cause an immediate exit 0."""
+        metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+        metrics_dir.mkdir(parents=True, exist_ok=True)
+
+        hourly_limit = 100
+        with open(metrics_dir / "cost-events.jsonl", "w") as f:
+            f.write(json.dumps({
+                "timestamp": "2026-04-15T23:00:00+00:00",
+                "total_tokens": 99,
+                "action": "tool_call",
+            }) + "\n")
+
+        env = {
+            "RATE_LIMIT_OVERRIDE": "true",
+            "RATE_LIMIT_HOURLY_TOKENS": str(hourly_limit),
+        }
+        start = time.monotonic()
+        result = _run_hook(str(tmp_path), extra_env=env)
+        elapsed = time.monotonic() - start
+
+        assert result.returncode == 0, (
+            f"Override should bypass gate; got {result.returncode}; stderr={result.stderr}"
+        )
+        assert elapsed < 0.3, f"Override should be near-instant; took {elapsed:.3f}s"

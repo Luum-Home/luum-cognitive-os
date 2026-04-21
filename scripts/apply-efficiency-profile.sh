@@ -135,8 +135,8 @@ build_settings() {
   session_start=$(hook_group "" \
     "self-install.sh" \
     "session-init.sh" \
-    "reaper-heartbeat.sh" \
-    "cos-executor-heartbeat.sh" \
+    "reaper-daemon-launcher.sh" \
+    "cos-executor-daemon-launcher.sh" \
     "crash-recovery.sh" \
     "session-resume.sh" \
     "orchestrator-mode-detect.sh" \
