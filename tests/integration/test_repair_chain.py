@@ -126,8 +126,12 @@ class TestRepairChain:
             cwd=str(repair_env["project_dir"]),
             timeout=15,
         )
-        # Dispatcher should process without crashing -- any exit is acceptable
-        # since the repair may or may not find a fix
+        # Dispatcher should process without crashing (exit 0 or 1 both OK;
+        # exit 2+ signals an unexpected shell error)
+        assert result.returncode in (0, 1), (
+            f"dispatcher exited {result.returncode} (unexpected shell error):\n"
+            f"stdout: {result.stdout[:300]}\nstderr: {result.stderr[:300]}"
+        )
 
     def test_deterministic_repair_chain(self, hooks_dir, repair_env, tmp_path):
         """Register a known fix, then feed the same error -- dispatcher should find it."""
@@ -163,7 +167,7 @@ class TestRepairChain:
             "1",
         )
 
-        subprocess.run(
+        chain_result = subprocess.run(
             ["bash", str(dispatcher)],
             stdin=open(input_file),
             capture_output=True,
@@ -172,8 +176,12 @@ class TestRepairChain:
             cwd=str(repair_env["project_dir"]),
             timeout=15,
         )
-        # The chain should execute without error -- outcomes depend on the
-        # repair path taken (deterministic vs LLM vs skip)
+        # The chain should execute without unexpected shell errors.
+        # exit 0 = fix applied; exit 1 = no matching repair; both are valid.
+        assert chain_result.returncode in (0, 1), (
+            f"repair chain exited {chain_result.returncode} (unexpected):\n"
+            f"stdout: {chain_result.stdout[:300]}\nstderr: {chain_result.stderr[:300]}"
+        )
 
     def test_outcomes_recorded(self, hooks_dir, repair_env, tmp_path):
         dispatcher = hooks_dir / "auto-repair-dispatcher.sh"

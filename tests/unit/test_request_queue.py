@@ -51,8 +51,12 @@ class TestEnqueue:
     def test_valid_jsonl(self, queue_dir):
         enqueue_request("test", session_dir=queue_dir)
         path = Path(queue_dir) / "user-requests.jsonl"
-        for line in path.read_text().splitlines():
-            json.loads(line)  # Should not raise
+        lines = path.read_text().splitlines()
+        assert len(lines) >= 1, "enqueue_request must write at least one JSONL line"
+        for line in lines:
+            entry = json.loads(line)  # must parse without raising
+            assert isinstance(entry, dict), f"each JSONL line must be a JSON object, got: {type(entry)}"
+            assert "message" in entry, f"each entry must have a 'message' key, keys={list(entry)}"
 
 
 class TestGetPending:

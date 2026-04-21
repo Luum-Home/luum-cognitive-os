@@ -1,4 +1,8 @@
-# Architecture Decision Records
+# Architecture Decision Records (ADR-006 – ADR-026)
+
+> **Note**: This directory contains ADR-006 through ADR-026 only (stabilization phase, 2026-03 to 2026-04-16).
+> ADR-027 and later live in `docs/adrs/` (the canonical path for new decisions).
+> Both paths are tracked; cross-reference the other README at `docs/adrs/README.md`.
 
 Retroactive ADRs reconstructed from engram memory (309 decision/architecture entries) and git history (252 commits, Mar 23 - Apr 13, 2026).
 

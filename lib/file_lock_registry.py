@@ -1,1 +1,0 @@
-../packages/agent-coordination/lib/file_lock_registry.py
