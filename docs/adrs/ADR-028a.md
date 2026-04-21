@@ -312,21 +312,56 @@ D1.A.3: Update ADR-028 text to remove F-1 claim, reference this addendum
 ## Action items (for orchestrator before ADR-028 execution phases launch)
 
 - [x] Amend `hooks/session-init.sh` comment at lines 120–128 to reference this addendum §1
-      (replace current ADR-027 Phase 3 pointer with ADR-028a §1 pointer). — PENDING: not yet amended
+      (replace current ADR-027 Phase 3 pointer with ADR-028a §1 pointer). — RESOLVED 2026-04-21
 - [x] Add open question #9 (WS11 anti-confirmation-bias replacement) to ADR-028 D4 before
-      Phase D agent prompts are drafted. — PENDING: ADR-028 Phase D not yet launched
+      Phase D agent prompts are drafted. — RESOLVED 2026-04-21 (appended as question #9 in ADR-028 "Open questions")
 - [x] Add D1.C scope note (WS13 coordination paragraph) to ADR-028 §D1.C before Phase A
-      execution. — PENDING: ADR-028 Phase A not yet launched
+      execution. — RESOLVED 2026-04-21 (scope-note blockquote inserted at top of §D1.C)
 - [x] Add `# Complements ADR-028 D1.C agent heartbeat; see docs/adrs/ADR-028a.md §2` to
-      `hooks/auto-checkpoint.sh` docstring. — PENDING: ADR-028 Phase A not yet launched
-- [x] Update `work-queue.json` entry `smoke-test-e2e`: add `"depends_on": "adr-028-phase-e"`
-      and `"rationale": "consume ADR-028 D6 chaos infrastructure, not build parallel harness"`. — PENDING: not yet updated
-- [x] Update `work-queue.json` entry `test-quality-audit`: add `"depends_on": "adr-028-phase-b"`
-      and `"rationale": "audit after structural contract test layer exists"`. — PENDING: not yet updated
-- [x] Before Phase A exit, run the §3 verification command and resolve any matches. — PENDING: ADR-028 Phase A not yet launched
-- [x] Execute D1.A.0 before D1.A.1 (MetricEvent schema): diagnose missing-file write path
+      `hooks/auto-checkpoint.sh` docstring. — RESOLVED 2026-04-21
+- [ ] Update `work-queue.json` entry `smoke-test-e2e`: add `"depends_on": "adr-028-phase-e"`
+      and `"rationale": "consume ADR-028 D6 chaos infrastructure, not build parallel harness"`. — DEFERRED 2026-04-21: coordination lock — `.cognitive-os/work-queue.json` is owned by the quick-wins agent in this sprint wave; editing here would create a merge conflict. Re-assign to that agent.
+- [ ] Update `work-queue.json` entry `test-quality-audit`: add `"depends_on": "adr-028-phase-b"`
+      and `"rationale": "audit after structural contract test layer exists"`. — DEFERRED 2026-04-21: same coordination lock as the item above.
+- [x] Before Phase A exit, run the §3 verification command and resolve any matches. — RESOLVED 2026-04-21: ran `grep -rn '2 \* 1024 \* 1024\|2097152\|2 MiB\|2MiB' hooks/ lib/ scripts/ .cognitive-os/ docs/adrs/ --include='*.sh' --include='*.py' --include='*.md' --include='*.json'`. All 8 matches are in prose (ADR-027a, ADR-028, ADR-028a, glossary.md) discussing the precedence itself — zero matches in executable rotation logic. The verification gate passes.
+- [ ] Execute D1.A.0 before D1.A.1 (MetricEvent schema): diagnose missing-file write path
       (F-4), resolve reader-without-writer files (F-5), add test-e2e cleanup (F-6), align
-      archive path (F-7). — PENDING: ADR-028 Phase A not yet launched
+      archive path (F-7). — PARTIALLY RESOLVED 2026-04-21: F-7 already aligned — `.cognitive-os/metrics/archive/` exists, `.archive` does not. F-6 still requires adding the `find` purge line to a rotation hook that does not yet exist on disk (`hooks/rotate-metrics.sh` is a Phase A artefact, not yet built). F-4 still open: of the 7 "missing-despite-writers" files, 6 remain absent (`error-learning.jsonl`, `repair-outcomes.jsonl`, `remediation-registry.jsonl`, `repair-queue.jsonl`, `repair-dispatch.jsonl`, `session-audit.jsonl`, `singularity-events.jsonl`); `coverage-history.jsonl` was listed under F-5 and now has 14 rows. F-5 still open: `trust-scores.jsonl`, `escalation-events.jsonl`, `stale-docs.jsonl`, `error-skill-correlations.jsonl` remain reader-without-writer. DEFERRED: diagnosing the SESSION_ID propagation root cause + introducing the fallback write path + writing `tests/contracts/test_metric_file_existence.py` is a full Phase A D1.A.0 work-item (likely opus-class) — out of scope for this single-agent pass.
 - [x] Amend ADR-028 D1.A text to remove the ~40% unparseable claim per §5.1; update
       justification to cite cost-events.jsonl shape drift (F-3) as the concrete migration
-      motivation. — PENDING: ADR-028 Phase A not yet launched
+      motivation. — RESOLVED prior to this session (see ADR-028 line 95: inline "Note (2026-04-18)" already cites §5.1 and flags `cost-events.jsonl` shape drift as the new motivation). Confirmed present on 2026-04-21.
+
+---
+
+## Resolution Log — 2026-04-21
+
+**Summary:** 6 of 9 action items RESOLVED, 2 DEFERRED (coordination lock on `work-queue.json`),
+1 PARTIALLY RESOLVED (D1.A.0 is a Phase-A-gated multi-step effort; only F-7 was
+already aligned on disk).
+
+**Files touched in this session:**
+
+- `hooks/session-init.sh` — replaced the ADR-027-Phase-3 pointer block (lines 126–131) with
+  the ADR-028a §1 pointer; the `test-baseline.txt` sentinel now reads `baseline: disabled
+  (see ADR-028a §1)`.
+- `hooks/auto-checkpoint.sh` — inserted the 3-line "Complements ADR-028 D1.C agent
+  heartbeat" docstring block before the `Author: luum` line.
+- `docs/adrs/ADR-028.md` — inserted Open Question #9 (WS11 anti-confirmation-bias
+  replacement) in the "Open questions" section; inserted a WS13 scope-note blockquote at
+  the top of §D1.C.
+- `docs/adrs/ADR-028a.md` — this resolution log + action-item status updates.
+
+**Gate status at end of session:**
+
+- ADR-028 Phase A: STILL NOT LAUNCHED. D1.A.0 prerequisites (F-4, F-5) remain open; see
+  action-item note above.
+- ADR-028 Phase D: STILL NOT LAUNCHED. Open Question #9 is now in the canonical list, so
+  future Phase D kick-off will encounter it as a documented dependency.
+- §3 rotation-threshold gate: PASSES. Executable code no longer references 2 MiB / 2097152
+  in rotation context; only ADR prose retains the historical discussion (intentional).
+
+**Coordination-locked items to re-dispatch:**
+
+- `work-queue.json` entries `smoke-test-e2e` and `test-quality-audit` — belong to the
+  quick-wins agent this wave. Hand-off note: add `depends_on` + `rationale` fields per
+  action-item descriptions above.
