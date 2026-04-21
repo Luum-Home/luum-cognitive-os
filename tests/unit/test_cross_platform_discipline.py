@@ -66,6 +66,15 @@ PRE_EXISTING_SHEBANG_VIOLATIONS: set[str] = {
     "hooks/result-truncator.sh",
     "hooks/session-learning.sh",
     "hooks/sync-to-repo.sh",
+    # cos-config-audit.sh is a Python script with .sh extension (polyglot file).
+    # It has #!/usr/bin/env python3 — intentional, not a portability bug.
+    "scripts/cos-config-audit.sh",
+}
+
+# Files that contain non-bash shebangs (e.g. Python scripts named .sh).
+# These are excluded from bash -n syntax checks.
+NON_BASH_SH_FILES: set[str] = {
+    "scripts/cos-config-audit.sh",
 }
 
 
@@ -320,7 +329,18 @@ def test_env_shebang(shell_file: Path):
     ids=lambda p: str(p.relative_to(PROJECT_DIR)),
 )
 def test_bash_syntax(shell_file: Path):
-    """Every shell file must pass bash -n syntax check."""
+    """Every shell file must pass bash -n syntax check.
+
+    Files with non-bash shebangs (e.g. Python scripts with .sh extension)
+    are skipped — bash -n cannot parse Python/other languages.
+    """
+    rel = shell_file.relative_to(PROJECT_DIR).as_posix()
+    if rel in NON_BASH_SH_FILES:
+        pytest.skip(
+            f"{rel} has a non-bash shebang (see NON_BASH_SH_FILES) — "
+            "bash -n does not apply to non-bash scripts"
+        )
+
     result = subprocess.run(
         ["bash", "-n", str(shell_file)],
         capture_output=True,
