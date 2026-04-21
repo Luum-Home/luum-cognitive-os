@@ -173,8 +173,9 @@ MVP provides `consolidate_commits_stub()` so callers can import a stable symbol.
 | Wave | Scope | Status |
 |------|-------|--------|
 | MVP (this ADR) | YAML spec, manifest persistence, 5 canonical events, `cos sprint {run,status,list,cancel}`, example spec, unit+integration tests | Shipped |
-| Beta | `cos watch --sprint` TUI, test aggregator impl, `SprintTestSummary` event, orchestrator wiring that actually dispatches agents from `run` | Follow-up |
-| Full | Consolidated-commit impl (`squash`), notifier on completion, multi-project sprint registry, retry-failed-tasks | Follow-up |
+| Wave 1 (test aggregator) | `lib/sprint_test_aggregator.py` (pytest/go/jest/vitest parsing + regression detection), `scripts/sprint-test-summary.sh` CLI (text + `--json`), 13 unit tests | **Shipped 2026-04-21** |
+| Beta | `cos watch --sprint` TUI, `SprintTestSummary` canonical event emission, orchestrator wiring that actually dispatches agents from `run` | Follow-up (pending) |
+| Full | Consolidated-commit impl (`squash`), notifier on completion, multi-project sprint registry, retry-failed-tasks | Follow-up (pending) |
 
 ## Consequences
 
@@ -205,3 +206,19 @@ MVP provides `consolidate_commits_stub()` so callers can import a stable symbol.
 3. **Consolidated commits — `lib.sprint_commit`**: implement `squash` strategy with safe rollback, capture base ref at `SprintStarted`, enforce file-scope guardrails.
 4. **Orchestrator dispatch wiring**: replace the `launch.md` hand-off with a direct orchestrator hook (`cos sprint run --dispatch`) that invokes the current harness's agent-launch primitive per task.
 5. **Notifier**: on `SprintCompleted`, emit a desktop/terminal notification summarizing pass/fail counts and total cost.
+
+## Resolution Log
+
+- **2026-04-21 — Wave 1 (test aggregator) DELIVERED.** Implemented `lib/sprint_test_aggregator.py`
+  with the contract from §"Test aggregation algorithm": per-session reader with primary source
+  (`.cognitive-os/sessions/<id>/test-results.jsonl`) and fallback (`metrics/task-*.log` regex
+  parsing for pytest, go test, jest, vitest). Aggregator returns rolled-up totals, per-suite
+  breakdown, per-runner breakdown, and chronological pass→fail regressions. CLI wrapper
+  `scripts/sprint-test-summary.sh` supports explicit session IDs, auto-detection of recent
+  sessions (`--limit N`), and JSON output (`--json`). Exit code 1 when totals include failures
+  or errors. 13 unit tests in `tests/unit/test_sprint_test_aggregator.py` (all green). The
+  `SprintTestSummary` canonical event emission is explicitly deferred to the Beta wave per
+  the Rollout waves table — aggregator returns a plain dict consumable by whoever wires the
+  event next. **Still pending**: TUI (`cos watch --sprint`) and consolidated-commit (`squash`).
+  Existing `aggregate_test_results_stub()` in `lib/sprint_orchestrator.py` remains for API
+  stability; Beta wave should replace it with a thin shim over `aggregate()`.
