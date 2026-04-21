@@ -255,14 +255,19 @@ def test_pattern_a_literal_appears_4_times_in_agent_health_monitor():
 
 
 def test_pattern_a_literal_appears_twice_in_dispatch_model_advisor():
-    """dispatch_model_advisor.py was migrated: 0 old literals, 2 project_root() calls."""
+    """dispatch_model_advisor.py was migrated: 0 old literals, 1 project_root() call.
+
+    Originally had 2 Pattern A sites, but after refactoring the monthly budget
+    lookup path was merged with the hourly lookup path so only _find_metrics_dir()
+    (1 direct project_root() call) remains. Count updated 2026-04-21.
+    """
     src = (REPO_ROOT / "lib/dispatch_model_advisor.py").read_text()
     assert src.count(PATTERN_A_LITERAL) == 0, (
         "dispatch_model_advisor.py: still contains old Pattern A literals — "
         "expected 0 after R1 migration."
     )
-    assert src.count(PATTERN_A_MIGRATED_CALL) == 2, (
-        "dispatch_model_advisor.py: expected 2 project_root() calls (was 2 Pattern A sites)."
+    assert src.count(PATTERN_A_MIGRATED_CALL) == 1, (
+        "dispatch_model_advisor.py: expected 1 project_root() call in _find_metrics_dir()."
     )
 
 

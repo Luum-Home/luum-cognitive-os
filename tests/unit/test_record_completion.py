@@ -125,14 +125,17 @@ class TestAppendCostEvent:
     def test_fields(self, tmp_path):
         append_cost_event(str(tmp_path), "Review PR", 200)
         event = json.loads((tmp_path / "cost-events.jsonl").read_text().strip())
-        assert event["model"] == "sonnet"
-        assert event["tokens_estimated"] == 200
+        # Fields are stored under event["payload"] in the MetricEvent schema (ADR-028 D1.A)
+        payload = event["payload"]
+        assert payload["model"] == "sonnet"
+        assert payload["tokens_estimated"] == 200
         assert "timestamp" in event
 
     def test_pricing(self, tmp_path):
         append_cost_event(str(tmp_path), "task", 1000)
         event = json.loads((tmp_path / "cost-events.jsonl").read_text().strip())
-        assert abs(event["estimated_cost_usd"] - 0.015) < 0.0001
+        payload = event["payload"]
+        assert abs(payload["estimated_cost_usd"] - 0.015) < 0.0001
 
     def test_survives_bad_dir(self):
         append_cost_event("/nonexistent/path", "task", 100)
@@ -454,8 +457,10 @@ class TestFallbackToEstimateWhenNoSessionFile:
         # append_cost_event should still work with estimate
         append_cost_event(str(tmp_path), "task", 400, model="sonnet", real_usage=None)
         event = json.loads((tmp_path / "cost-events.jsonl").read_text().strip())
-        assert event["is_estimate"] is True
-        assert event["tokens_estimated"] == 400
+        # Fields are stored under event["payload"] in the MetricEvent schema (ADR-028 D1.A)
+        payload = event["payload"]
+        assert payload["is_estimate"] is True
+        assert payload["tokens_estimated"] == 400
 
     def test_real_usage_sets_is_estimate_false(self, tmp_path):
         real_usage = {
@@ -468,11 +473,13 @@ class TestFallbackToEstimateWhenNoSessionFile:
         }
         append_cost_event(str(tmp_path), "task", 0, real_usage=real_usage)
         event = json.loads((tmp_path / "cost-events.jsonl").read_text().strip())
-        assert event["is_estimate"] is False
-        assert event["input_tokens"] == 1000
-        assert event["output_tokens"] == 500
-        assert event["actual_cost_usd"] == 0.0225
-        assert event["model"] == "claude-sonnet-4-6"
+        # Fields are stored under event["payload"] in the MetricEvent schema (ADR-028 D1.A)
+        payload = event["payload"]
+        assert payload["is_estimate"] is False
+        assert payload["input_tokens"] == 1000
+        assert payload["output_tokens"] == 500
+        assert payload["actual_cost_usd"] == 0.0225
+        assert payload["model"] == "claude-sonnet-4-6"
 
     def test_find_session_jsonl_returns_none_for_unknown_project(self, tmp_path):
         result = find_session_jsonl("/nonexistent/project/path", None)

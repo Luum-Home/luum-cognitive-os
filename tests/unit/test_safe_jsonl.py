@@ -114,10 +114,19 @@ class TestConcurrentWrites:
         assert corrupted == 0
 
 
-class TestInvalidJsonRejected:
-    """safe_jsonl_append rejects invalid JSON input."""
+class TestInvalidJsonPassThrough:
+    """safe_jsonl_append does NOT validate JSON — caller owns correctness.
 
-    def test_file_empty_or_not_created(self, jsonl_env):
+    Per the performance contract in safe-jsonl.sh:
+    "No jq validation — callers construct JSON, callers own correctness.
+     Spawning jq to validate 1 line costs more than the line is worth."
+
+    This test documents the INTENTIONAL behavior: invalid JSON is written
+    as-is. Callers must ensure they pass valid JSON.
+    """
+
+    def test_invalid_json_is_written_as_is(self, jsonl_env):
+        """safe_jsonl_append writes caller-provided content without JSON validation."""
         target = jsonl_env["tmp_path"] / "invalid.jsonl"
         script = f'''
             _SAFE_JSONL_LOADED=""
@@ -125,10 +134,12 @@ class TestInvalidJsonRejected:
             safe_jsonl_append "{target}" 'this is not json'
         '''
         _run(jsonl_env, script)
-        if target.exists():
-            content = target.read_text().strip()
-            assert content == ""
-        # If file doesn't exist, that's also correct
+        # The append ALWAYS writes caller content — no validation performed
+        assert target.exists(), "safe_jsonl_append must create the target file"
+        content = target.read_text().strip()
+        assert content == "this is not json", (
+            "safe_jsonl_append must write content verbatim (no JSON validation)"
+        )
 
 
 class TestFlockTimeout:
