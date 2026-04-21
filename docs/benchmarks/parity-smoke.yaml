@@ -1,0 +1,45 @@
+# Parity smoke task set (ADR-051 Phase 4)
+#
+# Small set of deterministic tasks used to compare the Claude Agent() tool
+# path (via ClaudeExecutor) against the Qwen agent loop (lib/qwen_agent_loop).
+#
+# Each task:
+#   - id            : stable identifier used in metrics/reports
+#   - description   : short human-readable summary
+#   - prompt        : the instruction given to both providers verbatim
+#   - tools_allowed : optional subset of Qwen tool names
+#                     (Claude receives the equivalent native tools — no restriction)
+#   - success_cmd   : optional shell command; exit 0 = task succeeded.
+#                     Run AFTER each provider executes. Deterministic tasks
+#                     should define one; open-ended ones may omit it.
+#   - watch_paths   : optional list of repo-relative paths to diff before/after
+#                     for "files modified" accounting. If omitted, no diff.
+
+tasks:
+  - id: read-adr-028
+    description: Read a known file and summarize in one line
+    prompt: |
+      Read the file docs/adrs/ADR-028-stabilization-os-slo.md and output a
+      single-sentence summary of its purpose. Do not edit anything.
+    tools_allowed: [read_file]
+
+  - id: grep-trust-score
+    description: Grep for a known string across the repo
+    prompt: |
+      Search the repository for occurrences of the string "TRUST_REPORT:"
+      and report how many distinct files contain it. Output only the count
+      and a short list of the files. Do not edit anything.
+    tools_allowed: [grep_files, read_file]
+
+  - id: count-adrs
+    description: List ADR files and output the total count
+    prompt: |
+      List the files under docs/adrs/ matching ADR-*.md and output the
+      total number of ADR files found. Do not edit anything.
+    tools_allowed: [glob_files, run_bash]
+
+  - id: sum-two-numbers
+    description: No-tool pure reasoning task (baseline)
+    prompt: |
+      What is 47 + 58? Respond with only the numeric answer.
+    tools_allowed: []
