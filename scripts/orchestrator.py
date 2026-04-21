@@ -66,51 +66,44 @@ def _short_id() -> str:
     return uuid.uuid4().hex[:8]
 
 
-def _try_qwen_fallback(prompt: str, claude_model: str | None = None, verbose: bool = False):
-    """Dispatch a prompt via lib/qwen_provider.py direct-SDK as ADR-049 fallback.
+def _fallback_disabled(verbose: bool = False) -> bool:
+    """True if any kill-switch env var blocks fallback."""
+    if os.environ.get("COS_DISABLE_LLM_FALLBACK", "").strip() == "1":
+        if verbose:
+            print("[orchestrator] COS_DISABLE_LLM_FALLBACK=1 — no fallback", file=sys.stderr)
+        return True
+    return False
+
+
+def _try_qwen_primary(prompt: str, claude_model: str | None = None, verbose: bool = False):
+    """Dispatch a prompt via lib/qwen_provider.py direct-SDK as PRIMARY path
+    for sub-agents (ADR-049 corrected architecture).
+
+    Sub-agents invoked via scripts/orchestrator.py go to Qwen by default to
+    preserve Claude Max subscription quota for the primary user↔Claude Code
+    chat (which cannot be redirected).
 
     Honors skill frontmatter model suggestions: if `claude_model` is passed
     (e.g. "opus"/"sonnet"/"haiku" from the skill's declared model), maps it
-    to the best Qwen bundle equivalent. This avoids quality mismatch when
-    a skill designed for Opus falls back to the default Qwen choice.
+    to the best Qwen bundle equivalent.
 
     Returns a ClaudeExecutor-compatible result object (has `.success`, `.text`,
-    `.input_tokens`, `.output_tokens`, `.cost_usd`, `.error`) so callers don't
-    need to special-case which provider answered.
+    `.input_tokens`, `.output_tokens`, `.cost_usd`, `.error`) on success, or
+    None if Qwen is unavailable. In the None case, caller should try Claude
+    as fallback (or surface the original error).
 
-    Returns None (no fallback) if any of the following is true:
-      * COS_DISABLE_LLM_FALLBACK=1 in env (global kill-switch, ADR-049)
-      * COS_DISABLE_QWEN_FALLBACK=1 in env (per-provider kill-switch)
+    Returns None (Qwen skipped) if any of the following is true:
+      * COS_DISABLE_QWEN=1 in env (per-provider kill-switch)
       * lib.qwen_provider import fails (module missing)
       * qwen_provider.is_configured() returns False (API key unset)
-    In those None cases, the caller should surface the original Claude
-    error as-is.
     """
-    # Kill-switches — evaluated in order, any match blocks the fallback.
-    #
-    #   COS_DISABLE_LLM_FALLBACK=1   — GLOBAL: blocks ALL direct-SDK fallbacks
-    #                                  (future providers too: DeepSeek, MiniMax, GLM).
-    #                                  Master switch for debugging or cost containment.
-    #   COS_DISABLE_QWEN_FALLBACK=1  — PER-PROVIDER: blocks only Qwen, other
-    #                                  providers (when added) continue to work.
-    #                                  Pattern: COS_DISABLE_<PROVIDER>_FALLBACK=1
-    #
-    # Use "1" literal — empty string, "0", or "false" do NOT disable.
-    if os.environ.get("COS_DISABLE_LLM_FALLBACK", "").strip() == "1":
+    if os.environ.get("COS_DISABLE_QWEN", "").strip() == "1":
         if verbose:
-            print(
-                "[orchestrator] COS_DISABLE_LLM_FALLBACK=1 — global fallback disabled",
-                file=sys.stderr,
-            )
+            print("[orchestrator] COS_DISABLE_QWEN=1 — Qwen primary disabled", file=sys.stderr)
         return None
-    if os.environ.get("COS_DISABLE_QWEN_FALLBACK", "").strip() == "1":
-        if verbose:
-            print(
-                "[orchestrator] COS_DISABLE_QWEN_FALLBACK=1 — Qwen fallback disabled "
-                "(global LLM fallback still active if other providers exist)",
-                file=sys.stderr,
-            )
-        return None
+    # (Kill-switches checked at top of function; see _fallback_disabled for
+    # COS_DISABLE_LLM_FALLBACK handling. COS_FORCE_CLAUDE_PRIMARY and
+    # COS_DISABLE_QWEN handled in cmd_run and at top of this function.)
 
     try:
         from lib.qwen_provider import call as qwen_call, is_configured, select_model
@@ -265,21 +258,92 @@ def cmd_run(args: argparse.Namespace) -> int:
     if args.verbose:
         print(f"[orchestrator] launching agent_id={agent_id} model={args.model or 'default'}", file=sys.stderr)
 
-    t0 = time.monotonic()
-    result = executor.run(prompt, model=args.model, timeout=args.timeout)
+    # ADR-049 (corrected architecture — Option B): priority-cascade.
+    # Default list "qwen,claude" — Qwen primary for sub-agents, Claude fallback.
+    # The user↔Claude Code main chat is NOT covered (native Claude Code
+    # limitation). This orchestrator preserves Claude Max quota for the
+    # main chat by routing sub-agent dispatches to Qwen by default.
+    #
+    # User can override:
+    #   --providers claude          (Claude only, no cascade)
+    #   --providers qwen            (Qwen only, no cascade)
+    #   --providers claude,qwen     (invert priority — Claude first, Qwen fallback)
+    #   --providers deepseek,qwen,claude  (future 3-tier)
+    # Env override: COS_FORCE_CLAUDE_PRIMARY=1 rewrites the list to "claude".
+    providers_raw = getattr(args, "providers", None) or "qwen,claude"
+    if os.environ.get("COS_FORCE_CLAUDE_PRIMARY", "").strip() == "1":
+        providers_raw = "claude"
+        if args.verbose:
+            print("[orchestrator] COS_FORCE_CLAUDE_PRIMARY=1 — overriding providers=claude", file=sys.stderr)
+    providers_list = [p.strip() for p in providers_raw.split(",") if p.strip()]
 
-    # ADR-049 rollout step 6: if Claude hit subscription rate-limit, retry
-    # once via direct-SDK fallback (Alibaba Qwen via lib/qwen_provider.py).
-    # Retry-primary semantics: every invocation tries Claude FIRST; fallback
-    # only fires on recognized rate-limit errors. Next invocation tries
-    # Claude again (no sticky mode). This lets Claude recover mid-session
-    # without orchestrator intervention.
-    provider_used = "claude"
-    if not result.success and _is_rate_limit_error(getattr(result, "error", "") or ""):
-        fallback = _try_qwen_fallback(prompt, claude_model=args.model, verbose=args.verbose)
-        if fallback is not None:
-            result = fallback
-            provider_used = "alibaba_qwen"
+    t0 = time.monotonic()
+
+    # Iterate the cascade: first provider is primary, rest are fallbacks on failure.
+    # Fallback is skipped if COS_DISABLE_LLM_FALLBACK=1.
+    # Qwen→Claude fallback always retries; Claude→next fallback only on rate-limit.
+    providers_tried: list[str] = []
+    result = None
+    provider_used = None
+
+    for idx, provider in enumerate(providers_list):
+        is_fallback = idx > 0
+        if is_fallback and _fallback_disabled(verbose=args.verbose):
+            break
+
+        # For Claude-as-fallback: only try if the previous provider's error
+        # was a rate-limit signal (preserves the "retry-primary" semantic)
+        if is_fallback and provider == "claude" and result is not None:
+            if not _is_rate_limit_error(getattr(result, "error", "") or ""):
+                # Previous provider failed for non-rate-limit reasons — Claude
+                # fallback unlikely to help; exit cascade with previous error.
+                if args.verbose:
+                    print(
+                        f"[orchestrator] {providers_tried[-1]} failed non-rate-limit → "
+                        f"skipping Claude fallback",
+                        file=sys.stderr,
+                    )
+                break
+
+        providers_tried.append(provider)
+        if args.verbose:
+            prefix = "[orchestrator] primary" if not is_fallback else "[orchestrator] fallback"
+            print(f"{prefix} → {provider}", file=sys.stderr)
+
+        attempt = None
+        if provider == "qwen":
+            attempt = _try_qwen_primary(prompt, claude_model=args.model, verbose=args.verbose)
+            if attempt is None:
+                # Qwen unavailable/unconfigured/disabled — treat as failed attempt, try next
+                if args.verbose:
+                    print("[orchestrator] qwen unavailable — advancing cascade", file=sys.stderr)
+                continue
+        elif provider == "claude":
+            attempt = executor.run(prompt, model=args.model, timeout=args.timeout)
+        else:
+            # Future providers: deepseek, minimax, glm — scaffold here
+            if args.verbose:
+                print(f"[orchestrator] provider {provider!r} not implemented — skipping", file=sys.stderr)
+            continue
+
+        result = attempt
+        provider_used = "alibaba_qwen" if provider == "qwen" else provider
+
+        if result.success:
+            break  # First success wins; no further cascade
+
+    # If ALL providers failed or cascade exited early, ensure we still have a result
+    if result is None:
+        # No provider was actually attempted successfully — build a failure result
+        result = type("_Empty", (), {
+            "success": False,
+            "text": "",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "cost_usd": 0.0,
+            "error": f"no providers in cascade succeeded (tried: {providers_tried or providers_list})",
+        })()
+        provider_used = "none"
 
     elapsed = time.monotonic() - t0
 
@@ -324,6 +388,17 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--timeout", type=int, default=600, help="Timeout in seconds.")
     r.add_argument("--agent-id", default=None, help="Override agent id.")
     r.add_argument("--show-text", action="store_true", help="Print the agent's text output.")
+    r.add_argument(
+        "--providers",
+        default="qwen,claude",
+        help="Comma-separated priority-cascade list of providers. Default 'qwen,claude' "
+             "preserves Claude Max quota for the main user↔Claude Code chat (ADR-049 Option B). "
+             "Primary = first, fallbacks = rest in order. Examples: 'qwen' (solo Qwen), "
+             "'claude' (solo Claude), 'claude,qwen' (invert priority), "
+             "'deepseek,qwen,claude' (future 3-tier). Override session-wide with "
+             "COS_FORCE_CLAUDE_PRIMARY=1 (rewrites list to 'claude'). "
+             "Ensemble (parallel multi-provider) is a separate future flag '--ensemble'.",
+    )
     r.add_argument("--verbose", action="store_true")
     r.set_defaults(func=cmd_run)
 

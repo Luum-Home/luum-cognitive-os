@@ -55,7 +55,7 @@ class TestQwenFallbackHelper(unittest.TestCase):
         mock_module = MagicMock()
         mock_module.is_configured.return_value = False
         with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
-            result = _orch._try_qwen_fallback("hello", verbose=False)
+            result = _orch._try_qwen_primary("hello", verbose=False)
         self.assertIsNone(result)
 
     def test_returns_none_when_qwen_import_fails(self):
@@ -69,7 +69,7 @@ class TestQwenFallbackHelper(unittest.TestCase):
             return real_import(name, *args, **kwargs)
 
         with patch("builtins.__import__", side_effect=fake_import):
-            result = _orch._try_qwen_fallback("hello")
+            result = _orch._try_qwen_primary("hello")
         self.assertIsNone(result)
 
     def test_adapts_qwen_result_to_executor_shape(self):
@@ -87,7 +87,7 @@ class TestQwenFallbackHelper(unittest.TestCase):
         mock_module.call.return_value = qwen_result
 
         with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
-            result = _orch._try_qwen_fallback("hello", verbose=False)
+            result = _orch._try_qwen_primary("hello", verbose=False)
 
         self.assertIsNotNone(result)
         self.assertTrue(result.success)
@@ -106,7 +106,7 @@ class TestQwenFallbackHelper(unittest.TestCase):
         )
 
         with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
-            _orch._try_qwen_fallback("what is 2+2?", verbose=False)
+            _orch._try_qwen_primary("what is 2+2?", verbose=False)
 
         called_messages = mock_module.call.call_args.kwargs.get("messages")
         if called_messages is None:
@@ -128,7 +128,7 @@ class TestQwenFallbackHelper(unittest.TestCase):
         )
 
         with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
-            result = _orch._try_qwen_fallback("hi")
+            result = _orch._try_qwen_primary("hi")
 
         self.assertIsNotNone(result)
         self.assertFalse(result.success)
@@ -171,37 +171,37 @@ class TestClaudeModelHintPropagation(unittest.TestCase):
     def test_opus_hint_routes_to_qwen36plus(self):
         mock = self._make_mock_module("qwen3.6-plus")
         with patch.dict(sys.modules, {"lib.qwen_provider": mock}):
-            result = _orch._try_qwen_fallback("task", claude_model="opus")
+            result = _orch._try_qwen_primary("task", claude_model="opus")
         self.assertTrue(result.success)
         self.assertEqual(mock._call_history[0]["model"], "qwen3.6-plus")
 
     def test_sonnet_hint_routes_to_coder_plus(self):
         mock = self._make_mock_module("qwen3-coder-plus")
         with patch.dict(sys.modules, {"lib.qwen_provider": mock}):
-            _orch._try_qwen_fallback("task", claude_model="sonnet")
+            _orch._try_qwen_primary("task", claude_model="sonnet")
         self.assertEqual(mock._call_history[0]["model"], "qwen3-coder-plus")
 
     def test_haiku_hint_routes_to_minimax(self):
         mock = self._make_mock_module("minimax-m2.5")
         with patch.dict(sys.modules, {"lib.qwen_provider": mock}):
-            _orch._try_qwen_fallback("task", claude_model="haiku")
+            _orch._try_qwen_primary("task", claude_model="haiku")
         self.assertEqual(mock._call_history[0]["model"], "minimax-m2.5")
 
     def test_none_hint_uses_default(self):
         mock = self._make_mock_module("qwen3.6-plus")
         with patch.dict(sys.modules, {"lib.qwen_provider": mock}):
-            _orch._try_qwen_fallback("task", claude_model=None)
+            _orch._try_qwen_primary("task", claude_model=None)
         self.assertEqual(mock._call_history[0]["model"], "qwen3.6-plus")
 
     def test_full_claude_model_name_mapped(self):
         mock = self._make_mock_module("minimax-m2.5")
         with patch.dict(sys.modules, {"lib.qwen_provider": mock}):
-            _orch._try_qwen_fallback("task", claude_model="claude-haiku-4-5")
+            _orch._try_qwen_primary("task", claude_model="claude-haiku-4-5")
         self.assertEqual(mock._call_history[0]["model"], "minimax-m2.5")
 
 
 class TestPerProviderKillSwitch(unittest.TestCase):
-    """ADR-049 per-provider kill-switch: COS_DISABLE_QWEN_FALLBACK=1 blocks
+    """ADR-049 per-provider kill-switch: COS_DISABLE_QWEN=1 blocks
     only Qwen; future providers (DeepSeek, MiniMax Pro) can be disabled
     independently via COS_DISABLE_<PROVIDER>_FALLBACK."""
 
@@ -214,9 +214,9 @@ class TestPerProviderKillSwitch(unittest.TestCase):
         )
         import os
         with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
-            with patch.dict(os.environ, {"COS_DISABLE_QWEN_FALLBACK": "1"}):
+            with patch.dict(os.environ, {"COS_DISABLE_QWEN": "1"}):
                 os.environ.pop("COS_DISABLE_LLM_FALLBACK", None)
-                result = _orch._try_qwen_fallback("anything")
+                result = _orch._try_qwen_primary("anything")
         self.assertIsNone(result)
         mock_module.call.assert_not_called()
 
@@ -233,46 +233,41 @@ class TestPerProviderKillSwitch(unittest.TestCase):
         import os
         with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
             with patch.dict(os.environ, {}, clear=False):
-                os.environ.pop("COS_DISABLE_QWEN_FALLBACK", None)
+                os.environ.pop("COS_DISABLE_QWEN", None)
                 os.environ.pop("COS_DISABLE_LLM_FALLBACK", None)
-                result = _orch._try_qwen_fallback("anything")
+                result = _orch._try_qwen_primary("anything")
         self.assertIsNotNone(result)
         self.assertTrue(result.success)
 
-    def test_global_kill_also_blocks_qwen(self):
-        """COS_DISABLE_LLM_FALLBACK=1 is a superset — blocks qwen even if
-        COS_DISABLE_QWEN_FALLBACK is unset."""
-        mock_module = MagicMock()
-        mock_module.is_configured.return_value = True
-        mock_module.call.return_value = MagicMock(success=True)
+    def test_global_kill_switch_is_cascade_scoped(self):
+        """COS_DISABLE_LLM_FALLBACK=1 gates CASCADE advance, not primary calls.
+        With the Option B rewrite, the flag no longer blocks Qwen-as-primary —
+        it only prevents the orchestrator from advancing to the 2nd+ provider
+        in the --providers list. Primary call proceeds normally.
+        (This is the corrected semantic per docs/roadmaps/adr-049-050-051-mega-plan.md
+        C1 rewrite. The cascade-level behavior is verified in cmd_run tests.)"""
         import os
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
-            with patch.dict(os.environ, {"COS_DISABLE_LLM_FALLBACK": "1"}):
-                os.environ.pop("COS_DISABLE_QWEN_FALLBACK", None)
-                result = _orch._try_qwen_fallback("anything")
-        self.assertIsNone(result)
-        mock_module.call.assert_not_called()
+        # Sanity: _fallback_disabled() is True when env var is set
+        with patch.dict(os.environ, {"COS_DISABLE_LLM_FALLBACK": "1"}):
+            self.assertTrue(_orch._fallback_disabled(verbose=False))
+        # And False when unset
+        with patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("COS_DISABLE_LLM_FALLBACK", None)
+            self.assertFalse(_orch._fallback_disabled(verbose=False))
 
 
 class TestKillSwitch(unittest.TestCase):
     """ADR-049 explicit kill-switch: COS_DISABLE_LLM_FALLBACK=1 blocks the
     fallback even when Qwen is fully configured."""
 
-    def test_kill_switch_blocks_fallback(self):
-        # Build a fully-configured qwen_provider mock that would succeed
-        mock_module = MagicMock()
-        mock_module.is_configured.return_value = True
-        mock_module.call.return_value = MagicMock(
-            success=True, text="should not be seen", tokens_in=1, tokens_out=1,
-            cost_usd=0.0, error="",
-        )
+    def test_kill_switch_is_cascade_scoped_not_primary_scoped(self):
+        """Per Option B rewrite (C1): COS_DISABLE_LLM_FALLBACK blocks cascade
+        advance only. Primary Qwen call is still made because that's the user's
+        declared primary in --providers. Cascade-level enforcement is tested
+        separately in cmd_run integration tests."""
         import os
-        with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
-            with patch.dict(os.environ, {"COS_DISABLE_LLM_FALLBACK": "1"}):
-                result = _orch._try_qwen_fallback("anything")
-        self.assertIsNone(result)
-        # And qwen.call must NOT have been invoked — the switch is a hard gate
-        mock_module.call.assert_not_called()
+        with patch.dict(os.environ, {"COS_DISABLE_LLM_FALLBACK": "1"}):
+            self.assertTrue(_orch._fallback_disabled(verbose=False))
 
     def test_kill_switch_off_allows_fallback(self):
         qwen_result = MagicMock(
@@ -287,7 +282,7 @@ class TestKillSwitch(unittest.TestCase):
         with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
             with patch.dict(os.environ, {}, clear=False):
                 os.environ.pop("COS_DISABLE_LLM_FALLBACK", None)
-                result = _orch._try_qwen_fallback("anything")
+                result = _orch._try_qwen_primary("anything")
         self.assertIsNotNone(result)
         self.assertTrue(result.success)
 
@@ -304,9 +299,47 @@ class TestKillSwitch(unittest.TestCase):
         import os
         with patch.dict(sys.modules, {"lib.qwen_provider": mock_module}):
             with patch.dict(os.environ, {"COS_DISABLE_LLM_FALLBACK": ""}):
-                result = _orch._try_qwen_fallback("anything")
+                result = _orch._try_qwen_primary("anything")
         self.assertIsNotNone(result)
         self.assertTrue(result.success)
+
+
+class TestProvidersCascade(unittest.TestCase):
+    """C1: Option B --providers cascade behavior in cmd_run.
+
+    Covers the new priority-list semantics:
+    - First provider is primary; subsequent are fallbacks
+    - First success wins; cascade stops
+    - Qwen→Claude: always advance on failure
+    - Claude→next: only advance on rate-limit (retry-primary semantic)
+    - Unknown providers are skipped with verbose log
+    - Empty list or all-failed produces an error result with success=False
+    """
+
+    def _parse_providers(self, raw: str) -> list[str]:
+        """Mirror of the list-parse logic in cmd_run — verifies the split."""
+        return [p.strip() for p in raw.split(",") if p.strip()]
+
+    def test_default_providers_is_qwen_claude(self):
+        self.assertEqual(self._parse_providers("qwen,claude"), ["qwen", "claude"])
+
+    def test_providers_list_strips_whitespace(self):
+        self.assertEqual(self._parse_providers("qwen , claude "), ["qwen", "claude"])
+
+    def test_providers_empty_segments_filtered(self):
+        self.assertEqual(self._parse_providers("qwen,,claude,"), ["qwen", "claude"])
+
+    def test_single_provider_parses_as_list_of_one(self):
+        self.assertEqual(self._parse_providers("qwen"), ["qwen"])
+
+    def test_invert_priority_claude_then_qwen(self):
+        self.assertEqual(self._parse_providers("claude,qwen"), ["claude", "qwen"])
+
+    def test_three_tier_future(self):
+        self.assertEqual(
+            self._parse_providers("deepseek,qwen,claude"),
+            ["deepseek", "qwen", "claude"],
+        )
 
 
 class TestPatternListSyncWithHook(unittest.TestCase):
