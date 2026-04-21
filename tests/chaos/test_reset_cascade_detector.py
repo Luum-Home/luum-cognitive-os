@@ -206,15 +206,28 @@ class TestResetCascadeDetector:
         not _BLOCKER.exists(),
         reason="hooks/destructive-git-blocker.sh not found; skipping warn test",
     )
-    def test_blocker_sh_warns_but_allows_in_user_context(self, tmp_path):
-        """destructive-git-blocker.sh must exit 0 (warn, not block) without CLAUDE_AGENT_ID."""
+    def test_blocker_sh_blocks_user_context_by_default(self, tmp_path):
+        """ADR-055b: user context is now BLOCKED by default (exit 2).
+
+        Scrubs bypass vars (CI, PYTEST_CURRENT_TEST, COS_GIT_BYPASS) to simulate
+        a real interactive shell and verify the block lands.
+        """
         env = {
             **os.environ,
             "CLAUDE_TOOL_INPUT": "git reset --hard HEAD~1",
             "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
         }
-        # Remove agent id to simulate user/orchestrator context
-        env.pop("CLAUDE_AGENT_ID", None)
+        # Remove agent id AND bypass/override vars to simulate real user context
+        for var in (
+            "CLAUDE_AGENT_ID",
+            "COGNITIVE_OS_SESSION_ID",
+            "ORCHESTRATOR_MODE",
+            "CI",
+            "PYTEST_CURRENT_TEST",
+            "COS_GIT_BYPASS",
+            "COS_ALLOW_DESTRUCTIVE_GIT",
+        ):
+            env.pop(var, None)
 
         result = subprocess.run(
             ["bash", str(_BLOCKER)],
@@ -225,10 +238,10 @@ class TestResetCascadeDetector:
             cwd=str(_PROJ_ROOT),
         )
 
-        assert result.returncode == 0, (
-            "In user context, blocker should exit 0 (warn, allow); "
+        assert result.returncode == 2, (
+            "ADR-055b: user context must BLOCK (exit 2); "
             f"got {result.returncode}.\nstderr: {result.stderr}"
         )
-        assert "WARN" in result.stderr or "warn" in result.stderr.lower(), (
-            "Expected a warning in stderr for user context; got: " + result.stderr[:300]
+        assert "BLOCKED" in result.stderr, (
+            "Expected BLOCKED in stderr for user context; got: " + result.stderr[:300]
         )
