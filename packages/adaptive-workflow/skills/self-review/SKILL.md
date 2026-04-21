@@ -13,6 +13,8 @@ metadata:
   author: luum
   pattern: superclaude-self-review
 audience: project
+summary_line: Lightweight 4-question post-implementation checklist for non-SDD work.
+
 ---
 
 ## Purpose

@@ -15,6 +15,8 @@ outputs:
 version: 1.0.0
 audience: project
 last-updated: 2026-03-28
+summary_line: Explore and investigate ideas before committing to a change — deep feasibility…
+
 ---
 
 # SDD Explore -- Deep Feasibility Analysis

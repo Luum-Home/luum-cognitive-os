@@ -7,6 +7,8 @@ description: >
   Compressed version overwrites the original file. Human-readable backup saved as FILE.original.md.
   Trigger: /caveman:compress <filepath> or "compress memory file"
 audience: both
+summary_line: "Compress natural language memory files (CLAUDE.md, todos, preferences) into…"
+
 ---
 
 # Caveman Compress

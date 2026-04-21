@@ -6,6 +6,8 @@ version: 1.0.0
 user-invocable: true
 auto-generated: false
 audience: project
+summary_line: Analyze accumulated errors from test/lint/build runs and propose skill…
+
 ---
 
 # Error Analyzer Skill

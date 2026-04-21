@@ -16,6 +16,8 @@ metadata:
   tool-ring: ADOPT
   tool-score: 8.5
 audience: project
+summary_line: Run Semgrep SAST security scanning on a path or changed files.
+
 ---
 
 ## Purpose

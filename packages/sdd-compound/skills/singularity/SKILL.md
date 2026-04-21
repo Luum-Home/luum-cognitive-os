@@ -11,6 +11,8 @@ triggers:
 tags: [automation, mape-k, monitoring, self-healing, autonomous]
 auto-generated: false
 audience: project
+summary_line: Codebase Singularity — autonomous MAPE-K control loop that monitors…
+
 ---
 
 # Singularity — Autonomous MAPE-K Control Loop

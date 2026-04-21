@@ -6,6 +6,8 @@ user-invocable: true
 version: 1.0.0
 audience: project
 effort: opus
+summary_line: Create a bug fix plan with root cause analysis and evaluation scoring.
+
 ---
 
 # Plan Bug Fix

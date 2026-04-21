@@ -16,6 +16,8 @@ metadata:
   tool-ring: TRIAL
   tool-score: 7.80
 audience: os-dev
+summary_line: Configure Promptfoo for prompt regression testing and red teaming of skills in…
+
 ---
 
 ## Purpose

@@ -9,6 +9,8 @@ last-updated: 2026-04-10
 audience: both
 effort: opus
 tags: [self-improvement, analysis, kpis]
+summary_line: "Analyze KPIs, error patterns, and skill metrics to identify improvement…"
+
 ---
 
 # Analyze Improvements Skill

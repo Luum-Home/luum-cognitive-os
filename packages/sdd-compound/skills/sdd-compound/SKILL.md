@@ -10,6 +10,8 @@ allowed-tools:
   - mcp__plugin_engram_engram__mem_search
   - mcp__plugin_engram_engram__mem_get_observation
 audience: project
+summary_line: "\"Extract learnings and compound knowledge after completing an SDD change."
+
 ---
 
 # SDD Compound — Post-Archive Learning Extraction

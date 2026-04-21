@@ -7,6 +7,8 @@ version: 1.0.0
 model: sonnet
 audience: project
 paths: ["*.py", "*.ipynb", "pyproject.toml"]
+summary_line: "Execute code in a Jupyter kernel sandbox for data analysis, Python snippets…"
+
 ---
 
 # Jupyter Execute — Sandboxed Code Execution

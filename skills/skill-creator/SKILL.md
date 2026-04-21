@@ -1,6 +1,8 @@
 <!-- SCOPE: both -->
 ---
 name: skill-creator
+description: Creates new AI agent skills following the Agent Skills spec, then generates cos package scaffolding for sharing.
+summary_line: Create new AI agent skills + cos package scaffolding.
 version: 1.1.0
 audience: both
 invoke: /skill-creator
