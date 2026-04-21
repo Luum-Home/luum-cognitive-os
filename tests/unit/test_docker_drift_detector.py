@@ -149,3 +149,104 @@ def test_hook_registered_in_settings_json():
         "docker-drift-detector.sh not in settings.json — run "
         "`bash scripts/apply-efficiency-profile.sh default`"
     )
+
+
+# ---------------------------------------------------------------------------
+# Validator invariant — catch the regression that originally hit us
+# ---------------------------------------------------------------------------
+
+def test_validator_distinguishes_manifest_digest_from_image_id():
+    """Real regression 2026-04-21: the first version of
+    `_check_docker_container_freshness` compared `{{.Image}}` (image CONFIG ID)
+    against the compose pin's `@sha256:...` (image MANIFEST DIGEST). These are
+    two different hash schemes of the same image, so comparison always failed
+    — every running container was flagged as stale.
+
+    Invariant: if a container's `Config.Image` field contains the exact pinned
+    digest from compose, the validator must classify it as IMPL (fresh). This
+    test encodes the rule so any future regression in hash-field comparison
+    is caught at test-time rather than in production.
+
+    Skipped if docker is unavailable or no cognitive-os-* containers run.
+    """
+    docker = None
+    for candidate in (
+        "/opt/homebrew/bin/docker",
+        "/usr/local/bin/docker",
+        "/Applications/OrbStack.app/Contents/Resources/bin/docker",
+    ):
+        if Path(candidate).exists():
+            docker = candidate
+            break
+    if docker is None:
+        docker = shutil.which("docker")
+    if docker is None:
+        import pytest
+        pytest.skip("docker not available")
+
+    # Find any running container whose Config.Image contains "@sha256:"
+    # (i.e. was created from a pinned image). If none match the compose pins,
+    # skip — we can't test the invariant without a live subject.
+    compose_path = REPO_ROOT / "docker-compose.cognitive-os.yml"
+    if not compose_path.exists():
+        import pytest
+        pytest.skip("compose file missing")
+
+    import re
+    pins = {}
+    for m in re.finditer(
+        r"^\s*image:\s*([^\s#@]+)@sha256:([0-9a-f]{64})",
+        compose_path.read_text(),
+        re.MULTILINE,
+    ):
+        pins[m.group(1)] = m.group(2)
+    if not pins:
+        import pytest
+        pytest.skip("no pinned images in compose")
+
+    # Run the validator — if any pinned container is running, it must be IMPL
+    result = subprocess.run(
+        ["python3", str(REPO_ROOT / "scripts" / "cos-config-audit.sh")],
+        capture_output=True, text=True, timeout=15,
+    )
+    assert result.returncode == 0
+    # If the validator still confuses manifest digest vs image ID, ALL running
+    # pinned containers get flagged as drift → meta.docker_container_freshness
+    # will be ASPIR with "7 container(s) running stale image" or similar.
+    # Invariant: if containers are actually running, validator reports IMPL
+    # OR PARTIAL. A false-positive ASPIR ("stale image") is the regression.
+    lines = [l for l in result.stdout.splitlines() if "docker_container_freshness" in l]
+    if not lines:
+        import pytest
+        pytest.skip("validator did not emit docker_container_freshness line")
+    line = lines[0]
+    # Running containers exist per compose? check
+    has_running = subprocess.run(
+        [docker, "ps", "--filter", "name=cognitive-os-", "-q"],
+        capture_output=True, text=True, timeout=5,
+    ).stdout.strip()
+    if not has_running:
+        import pytest
+        pytest.skip("no cognitive-os-* containers running")
+
+    # At least one container is running. With the fixed validator, it must
+    # classify as IMPL when Config.Image matches the pin. If ASPIR AND the
+    # reason mentions "stale" it's the regression.
+    # Tolerance: if genuine drift exists (e.g. user hasn't pulled recent
+    # updates) that's legitimate ASPIR. We can't distinguish perfectly here,
+    # but Config.Image always carries the creation-time pin digest — a
+    # container created from the pinned digest will always match, so unless
+    # someone manually `docker run` a mismatched image, IMPL is expected.
+    assert "[ IMPL  ]" in line or "[PARTIAL]" in line, (
+        f"validator regressed: {line.strip()} — this may be the "
+        "manifest-digest-vs-image-id confusion re-introduced (see "
+        "_check_docker_container_freshness docstring)"
+    )
+
+
+def test_cos_update_tracks_compose_sha():
+    """recreate_docker_if_compose_changed() must be wired into cos-update.sh."""
+    text = (REPO_ROOT / "scripts" / "cos-update.sh").read_text()
+    assert "recreate_docker_if_compose_changed" in text
+    assert "DOCKER_COMPOSE_SHA_FILE" in text
+    assert "docker-compose.sha" in text
