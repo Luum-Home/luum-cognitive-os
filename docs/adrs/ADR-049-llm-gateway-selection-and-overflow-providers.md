@@ -616,6 +616,58 @@ grep -r 'ADR-049' docs/adrs/ADR-022.md docs/adrs/ADR-028.md rules/model-routing.
    "resets Xpm (America/Buenos_Aires)" message, schedule a re-check
    hook at that time.
 
+## Architecture Correction (2026-04-21)
+
+Original ADR-049 wrote "Claude primary + Qwen reactive fallback." That
+direction was wrong for our actual use case:
+
+- **Main chat (user↔Claude Code) cannot be redirected** — Claude Code
+  is a proprietary app; no plugin/hook intercepts the primary chat.
+- **Sub-agents via `scripts/orchestrator.py`** can be redirected.
+
+Corrected architecture (Option B, implemented as mega-plan C1-C7):
+
+- **Qwen is PRIMARY** for sub-agents dispatched via our orchestrator.
+  This preserves Claude Max quota for the main chat.
+- **Claude is FALLBACK** — only invoked when Qwen fails.
+- **Asymmetric cascade advance rules**:
+  - Qwen failure → always advance to Claude (Qwen is overflow)
+  - Claude failure → only advance if rate-limit (don't mask non-quota
+    errors behind a cheaper provider)
+
+## Implementation checkpoints (mega-plan)
+
+| Checkpoint | Deliverable | Status |
+|---|---|---|
+| C0 | `docs/roadmaps/adr-049-050-051-mega-plan.md` persisted | ✅ |
+| C1 | `--providers` CLI (Option B cascade) + kill-switches | ✅ |
+| C2 | `lib/dispatch.py` abstract router + JSONL metrics foundation | ✅ |
+| C3 | `rules/llm-dispatch.md` + gotcha + ref-key | ✅ |
+| C4 | `/llm-status` skill (`scripts/llm-status.py`) | ✅ |
+| C5 | `docs/runbooks/llm-dispatch.md` operational guide | ✅ |
+| C6 | ADR-049 update (this section) + ADR-050/052/053 stubs | ✅ |
+| C6.5 | `claude-code-router` research (NO-GO verdict) | ✅ |
+| C7 | ADR-051 Phase 1 Qwen agent loop (Read/Edit/Bash tools) | ✅ |
+| C8 | ADR-051 Phase 2/3/4 (remaining tools, hooks injection, parity) | DEFERRED |
+
+## Future Extensibility
+
+Reserved ADR slots:
+
+- **ADR-050** Per-Skill Routing Policy — `routing:` frontmatter schema,
+  `skill_requirements` parameter already reserved in
+  `lib/dispatch.dispatch()`.
+- **ADR-051** Qwen Agent Loop — Phase 1 shipped (`lib/qwen_agent_loop.py`),
+  Phases 2-4 deferred.
+- **ADR-052** Provider Benchmark Harness — quality signal producer,
+  feeds ADR-053.
+- **ADR-053** Dispatch Auto-Optimizer — consumes `llm-dispatch.jsonl`
+  + benchmark data to re-tune routing per `(skill, task_type)`.
+
+None of these are required for the current Qwen+Claude cascade to
+function. They unlock multi-provider + per-skill + adaptive routing
+when/if that complexity is justified by observed usage patterns.
+
 ## Sources
 
 - [Trend Micro: LiteLLM Supply Chain Compromise (March 2026)](https://www.trendmicro.com/en_us/research/26/c/inside-litellm-supply-chain-compromise.html)
