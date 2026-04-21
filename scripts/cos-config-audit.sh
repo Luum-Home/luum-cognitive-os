@@ -296,6 +296,130 @@ def _check_settings_freshness(root: Path):
     )
 
 
+def _check_docker_container_freshness(root: Path):
+    """
+    Verify running cognitive-os-* containers match the image pin in
+    docker-compose.cognitive-os.yml. Drift scenario: someone updates the
+    pinned sha in compose but the old container keeps running because
+    `docker compose up -d` was not invoked with --force-recreate; the
+    container persists indefinitely with stale image and can crash-loop
+    if the old entrypoint was removed upstream.
+
+    Status logic:
+      * compose file missing          → ASPIR
+      * docker CLI missing            → PARTIAL (can't check, but compose exists)
+      * no cognitive-os-* containers  → PARTIAL (service stack not running)
+      * all running match their pin   → IMPL
+      * at least one drift            → ASPIR with drift list
+
+    Real incident that motivated this (2026-04-21): cognitive-os-langfuse-worker
+    kept crash-looping with `./worker/entrypoint.sh: No such file or directory`.
+    Compose was pinned to sha 0e7a6d86 (new), container ran sha 50674bb0 (old).
+    Recreating with --force-recreate fixed it.
+    """
+    import re
+    import subprocess
+
+    compose_path = root / "docker-compose.cognitive-os.yml"
+    if not compose_path.exists():
+        return ("ASPIR", "docker-compose.cognitive-os.yml missing")
+
+    # Find docker binary (OrbStack installs it in a non-standard location).
+    docker = None
+    for candidate in (
+        "/opt/homebrew/bin/docker",
+        "/usr/local/bin/docker",
+        "/Applications/OrbStack.app/Contents/Resources/bin/docker",
+    ):
+        if Path(candidate).exists():
+            docker = candidate
+            break
+    if docker is None:
+        # subprocess.which would need `which` on PATH, fall back to PATH lookup
+        from shutil import which
+        docker = which("docker")
+    if docker is None:
+        return ("PARTIAL", "docker CLI not found — cannot verify container freshness")
+
+    # Parse compose for `image:` lines that reference pinned digests.
+    # Match blocks like:
+    #   image: foo/bar:tag@sha256:abcdef...
+    # We only care about pinned (@sha256:) images; others are floating and
+    # can't be drift-checked.
+    compose_text = compose_path.read_text()
+    pin_re = re.compile(
+        r"^\s*image:\s*([^\s#@]+)@sha256:([0-9a-f]{64})",
+        re.MULTILINE,
+    )
+    pins = {}  # image_name -> sha256
+    for m in pin_re.finditer(compose_text):
+        pins[m.group(1)] = m.group(2)
+
+    if not pins:
+        return ("PARTIAL", "no @sha256 pinned images in compose — nothing to verify")
+
+    # List running containers with name prefix cognitive-os-
+    try:
+        proc = subprocess.run(
+            [docker, "ps", "--filter", "name=cognitive-os-", "--format", "{{.Names}}\t{{.Image}}"],
+            capture_output=True, text=True, timeout=5,
+        )
+    except (subprocess.SubprocessError, FileNotFoundError) as exc:
+        return ("PARTIAL", f"docker ps failed: {exc}")
+    if proc.returncode != 0:
+        return ("PARTIAL", f"docker ps returned {proc.returncode}: {proc.stderr.strip()[:80]}")
+
+    running = []  # list of (name, image_ref_or_sha)
+    for line in proc.stdout.strip().splitlines():
+        if not line.strip():
+            continue
+        parts = line.split("\t", 1)
+        if len(parts) == 2:
+            running.append((parts[0], parts[1]))
+
+    if not running:
+        return ("PARTIAL", "no cognitive-os-* containers running — stack not started")
+
+    # For each running container, inspect actual image sha and compare to pin
+    drifts = []
+    verified = 0
+    for name, image_ref in running:
+        # Resolve running container's actual image sha
+        try:
+            insp = subprocess.run(
+                [docker, "inspect", "--format", "{{.Image}}", name],
+                capture_output=True, text=True, timeout=5,
+            )
+        except (subprocess.SubprocessError, FileNotFoundError):
+            continue
+        if insp.returncode != 0:
+            continue
+        # Output: "sha256:<hex>"
+        running_sha = insp.stdout.strip().removeprefix("sha256:")
+
+        # Find matching pin by image name prefix (image_ref is "repo:tag" or "repo:tag@sha256:...")
+        # pins key is "repo:tag" (without @sha256 suffix)
+        base = image_ref.split("@", 1)[0]
+        pinned_sha = pins.get(base)
+        if pinned_sha is None:
+            # No pin for this image — skip (it's a floating tag or unpinned)
+            continue
+
+        verified += 1
+        if not running_sha.startswith(pinned_sha):
+            drifts.append(f"{name} (pin={pinned_sha[:8]}, running={running_sha[:8]})")
+
+    if verified == 0:
+        return ("PARTIAL", "no running containers have pinned-sha images to verify")
+    if drifts:
+        return (
+            "ASPIR",
+            f"{len(drifts)} container(s) running stale image: {'; '.join(drifts)} — "
+            "run `docker compose -f docker-compose.cognitive-os.yml up -d --force-recreate <service>`",
+        )
+    return ("IMPL", f"{verified} cognitive-os container(s) match pinned images")
+
+
 def _check_orchestration(root: Path):
     # Check that referenced hooks in orchestration section exist
     # Known key hook: agent-working-dir-inject.sh
@@ -363,6 +487,14 @@ CONTRACTS = [
         "section": "meta.settings_freshness",
         "description": "settings.json is the current output of apply-efficiency-profile.sh",
         "check": _check_settings_freshness,
+    },
+    {
+        # Another meta.* cross-file contract: docker container images must
+        # match compose.yml pins. Prevents the stale-container/crash-loop
+        # scenario (see _check_docker_container_freshness docstring).
+        "section": "meta.docker_container_freshness",
+        "description": "running cognitive-os-* containers use the images pinned in docker-compose.cognitive-os.yml",
+        "check": _check_docker_container_freshness,
     },
 ]
 
