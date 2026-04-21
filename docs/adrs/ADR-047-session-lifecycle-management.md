@@ -7,6 +7,66 @@ ADR-045 (hook execution model, Agent A) and ADR-046 (rule classification,
 Agent B). Targets the active breach of `rules/so-slo.md` SLO 4
 ("0 orphans / session").
 
+### Phase status (updated 2026-04-21)
+
+| Phase | Status | Evidence |
+|-------|--------|----------|
+| Phase A (log-only) | **DELIVERED** | `lib/session_watchdog_lib.py`, `scripts/so-session-watchdog.py`, 50 unit tests pass |
+| Phase B (enforce) | **BLOCKED by gate — DO NOT ENABLE** | See §"Phase B gate evaluation 2026-04-21" below |
+
+### Phase B gate evaluation — 2026-04-21
+
+Measured via `scripts/so-session-watchdog.py --gate-report` against
+`.cognitive-os/metrics/session-watchdog.jsonl` (162 records collected
+2026-04-21 14:03Z → 21:03Z).
+
+| Gate criterion | Threshold | Observed | Pass? |
+|---|---|---|---|
+| False-positive rate | `< 1.00%` | **100.00%** (2/2 flagged PIDs resumed within 24h) | ❌ |
+| Sample size (flagged detections) | `≥ 50` | **42 flagged records across 2 distinct PIDs** | ❌ |
+| Observation span | `≥ 336 h` (2 weeks) | **7.0 h** | ❌ |
+
+**Verdict**: Phase B enforcement **MUST NOT** activate. All three gate
+criteria fail. A flagged PID re-appearing with `classification=HEALTHY`
+or `cpu_percent > 0` within 24h counts as a false positive per the
+definition in §"Gate metric to unlock Phase B" below; both of the two
+currently-flagged PIDs meet that criterion (PID 51546 returned with
+CPU=11.8%; PID 21079 oscillates between IDLE_OVER_TTL and HEALTHY on
+successive scans). This is consistent with the expected Phase A behavior
+on a live dev host where the operator routinely resumes sessions.
+
+**What's needed to unblock Phase B**:
+
+1. Run Phase A for at least 2 weeks (currently: 7 h). The ADR explicitly
+   calls for "Phase A (log-only, 2 weeks)".
+2. Accumulate at least 50 distinct flagged detections. The 7-hour window
+   produced only 2 distinct flagged PIDs; longer observation is required.
+3. The false-positive rate must drop below 1% — if 100% FP persists, the
+   classifier thresholds need retuning (raise `ttl_hours` above 6h; raise
+   `idle_cpu_threshold` above 5.0%) before attempting Phase B again.
+
+**Enforcement hardening shipped 2026-04-21** (refuses Phase B while
+gate fails, with or without config changes):
+
+- `lib/session_watchdog_lib.py::compute_gate_metric()` — pure computation
+  of the gate metric from a list of watchdog records.
+- `scripts/so-session-watchdog.py::evaluate_gate()` — reads the live JSONL
+  and returns a `GateMetric` dataclass.
+- CLI: `--gate-report` (prints report, exits 2 on FAIL), `--kill-mode`
+  (requests Phase B; refused with log-only fallback while gate fails).
+- `run_once(config, kill_mode=True)` — evaluates the gate; on FAIL logs
+  `Phase B REFUSED: ...` to stderr and falls through to log-only. Even
+  if `cognitive-os.yaml` has `mode: enforce`, no kills are performed
+  while the gate fails.
+- 8 new unit tests in `tests/unit/test_session_watchdog.py`
+  (`TestGateMetric*`, `TestLoadWatchdogJsonl`, `TestKillModeRefusal`).
+
+**Re-evaluation protocol**: once Phase A has run for 2 weeks on a
+production host, run `uv run python3 scripts/so-session-watchdog.py
+--gate-report`. If the report prints `GATE: PASS`, the owner may
+proceed to wire the actual kill implementation (not yet coded — the
+current code only logs the refusal).
+
 ---
 
 ## Context
