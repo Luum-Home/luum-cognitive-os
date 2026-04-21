@@ -151,10 +151,13 @@ build_settings() {
     "self-knowledge-refresh.sh")
 
   # UserPromptSubmit
+  # session-heartbeat.sh: ADR-047 Phase B liveness signal (≤1ms atomic file write).
+  # Distinct from state-heartbeat.sh (crash recovery, PostToolUse Agent only).
   local user_prompt_submit_entries
   user_prompt_submit_entries=$(
     hook_entry "user-prompt-capture.sh"; printf ',\n'
-    hook_entry "session-wrapup-trigger.sh"
+    hook_entry "session-wrapup-trigger.sh"; printf ',\n'
+    hook_entry "session-heartbeat.sh"
   )
   local user_prompt_submit
   user_prompt_submit=$(cat <<GROUPEOF
@@ -171,6 +174,12 @@ GROUPEOF
   # ADR-023: secret-detector runs as PreToolUse on Bash|Edit|Write|MultiEdit
   # so it can REDACT credentials via hookSpecificOutput.updatedInput before
   # the command or edit reaches the shell / the disk.
+  #
+  # session-heartbeat.sh fires on ALL PreToolUse events (empty matcher = wildcard)
+  # for ADR-047 Phase B liveness signaling. ≤1ms atomic write, always exit 0.
+  local pre_all
+  pre_all=$(hook_group "" \
+    "session-heartbeat.sh")
   local pre_bash
   pre_bash=$(hook_group "Bash" \
     "rate-limit-precheck.sh" \
@@ -339,7 +348,7 @@ GROUPEOF
 
   printf '    "PreToolUse": [\n'
   local pre_first=true
-  for group in "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_agent"; do
+  for group in "$pre_all" "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_agent"; do
     [ -z "$group" ] && continue
     if [ "$pre_first" = true ]; then
       pre_first=false
@@ -384,7 +393,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh pre-compaction-flush.sh mcp-scan.sh aguara-scan.sh parry-scan.sh semgrep-scan.sh agent-bash-cwd-enforcer.sh session-start-worktree-nudge.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh pre-compaction-flush.sh mcp-scan.sh aguara-scan.sh parry-scan.sh semgrep-scan.sh agent-bash-cwd-enforcer.sh session-start-worktree-nudge.sh session-heartbeat.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -395,7 +404,8 @@ echo ""
 echo "Hook summary for profile 'default' (ADR-002):"
 echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, orchestrator-mode-detect.sh, valkey-ensure.sh, usage-health-check.sh, ecosystem-check.sh, pattern-check.sh, metrics-rotation.sh, mcp-scan.sh (D35: MCP tool poisoning scan), session-start-worktree-nudge.sh (ADR-035: worktree cwd warning)"
 echo "  PreCompact: pre-compaction-flush.sh"
-echo "  UserPromptSubmit: user-prompt-capture.sh, session-wrapup-trigger.sh"
+echo "  UserPromptSubmit: user-prompt-capture.sh, session-wrapup-trigger.sh, session-heartbeat.sh (ADR-047: liveness)"
+echo "  PreToolUse *: session-heartbeat.sh (ADR-047: liveness signal on all tool calls)"
 echo "  PreToolUse Bash: rate-limit-precheck.sh (D45 gap B: sidecar retry_count lift), agent-bash-cwd-enforcer.sh (cwd mismatch advisory for git ops), rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh, destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
