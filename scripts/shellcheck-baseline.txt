@@ -1,0 +1,21 @@
+# shellcheck-baseline.txt — pre-existing ShellCheck violations snapshot.
+#
+# This file was generated on 2026-04-20.
+# ShellCheck was NOT installed on the developer's macOS machine at capture time.
+#
+# HOW TO REGENERATE (after installing shellcheck):
+#   brew install shellcheck          # macOS
+#   scripts/lint-shell.sh --baseline  # captures current violations here
+#
+# HOW TO USE IN CI:
+#   scripts/lint-shell.sh --new-only  # fails only if NEW violations appear
+#
+# VIOLATION COUNT AT CAPTURE TIME: unknown (shellcheck not available locally)
+# Run inside Dockerfile.ci-linux to get the real count:
+#   docker build -f Dockerfile.ci-linux -t luum-ci .
+#   docker run --rm luum-ci scripts/lint-shell.sh --baseline
+#   docker run --rm luum-ci cat scripts/shellcheck-baseline.txt
+#
+# Suppressed codes (never appear in baseline):
+#   SC1091 — not following source
+#   SC2086 — double-quote to prevent word splitting
