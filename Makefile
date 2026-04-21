@@ -1,7 +1,11 @@
 # Cognitive OS — test + dev targets
-# See docs/reports/next-session-handoff-2026-04-20.md for roadmap.
+# All python invocations go through `uv run` so UV-managed deps
+# (fastmcp, openai SDK, etc.) are visible. See docs/reports/next-session-handoff-2026-04-20.md.
 
 .PHONY: help test test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean
+
+PY := uv run python3
+PYTEST := uv run pytest
 
 help:
 	@echo "Targets:"
@@ -15,39 +19,41 @@ help:
 	@echo "  smoke             bash scripts/cos-smoke.sh — critical path e2e."
 	@echo "  audit             Aspirational audit + self-knowledge refresh."
 	@echo "  clean             Prune metrics + caches (keeps last 1000 JSONL events)."
+	@echo ""
+	@echo "All python commands run via 'uv run' — plain 'python3' or 'pytest' will miss UV-managed deps."
 
 test: test-fast
 
 test-fast:
-	pytest tests/unit/ -n auto --tb=line
+	$(PYTEST) tests/unit/ -n auto --tb=line
 
 test-unit:
-	pytest tests/unit/ --tb=line
+	$(PYTEST) tests/unit/ --tb=line
 
 test-integration:
-	pytest tests/integration/ -m "not slow and not docker" --tb=short
+	$(PYTEST) tests/integration/ -m "not slow and not docker" --tb=short
 
 test-e2e:
 	bash scripts/cos-smoke.sh -v
-	pytest tests/e2e/ -v
+	$(PYTEST) tests/e2e/ -v
 
 test-chaos:
-	pytest tests/chaos/ -v
+	$(PYTEST) tests/chaos/ -v
 
 test-all:
-	pytest tests/ --ignore=tests/unit/test_aider_streaming_adapter.py -q --tb=short
+	$(PYTEST) tests/ --ignore=tests/unit/test_aider_streaming_adapter.py -q --tb=short
 
 test-changed:
 	@files=$$(git diff --name-only HEAD | grep -E '\.py$$' || true); \
 	if [ -z "$$files" ]; then echo "No changed .py files"; exit 0; fi; \
-	pytest $$(echo $$files | tr ' ' '\n' | grep -E 'tests/' || echo tests/) --tb=short
+	$(PYTEST) $$(echo $$files | tr ' ' '\n' | grep -E 'tests/' || echo tests/) --tb=short
 
 smoke:
 	bash scripts/cos-smoke.sh -v
 
 audit:
-	python3 scripts/aspirational-audit.py --dry-run
-	python3 scripts/cos-build-self-knowledge.py
+	$(PY) scripts/aspirational-audit.py --dry-run
+	$(PY) scripts/cos-build-self-knowledge.py
 
 clean:
 	find .cognitive-os/metrics -name "*.jsonl" -size +10M -exec tail -c 5M {} + 2>/dev/null || true
