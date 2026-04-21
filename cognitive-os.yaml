@@ -5,6 +5,7 @@
 project:
   name: luum-cognitive-os
   type: webapp              # fintech | ecommerce | saas | webapp | startup | healthcare
+  # STATUS: implemented
   phase: reconstruction     # reconstruction | stabilization | production | maintenance
 
   # Architecture configuration — skills read from here instead of hardcoding
@@ -346,24 +347,30 @@ auto_refine:
 
 # ADR-047 — Session Lifecycle Management (Phase A: log-only)
 # All three flags default OFF/log-only so this section is strictly additive.
+# STATUS: implemented (runtime.killswitch_respected)
 runtime:
+  # STATUS: implemented
   reaper:
     enabled: true
+  # STATUS: partial
   session_watchdog:
     enabled: true           # Phase A: log-only; set false to disable entirely
     mode: "log-only"        # "log-only" | "enforce" | "off"
     ttl_hours: 6            # sessions older than this are IDLE_OVER_TTL candidates
     idle_cpu_threshold: 5.0 # cpu% below this = idle (percent). Unified with Phase B _CPU_IDLE_THRESHOLD_PCT per rules/decision-depth-gate.md invariant (Phase A superset of Phase B).
     idle_samples_required: 3  # consecutive idle samples before marking (daemon mode)
+  # STATUS: aspirational
   ttft_watchdog:
     enabled: false          # Phase A: not yet wired to hooks
     max_sec: 480            # 8 min — TTFT alert threshold
+  # STATUS: aspirational
   engram_mcp:
     wrapper_enabled: false  # Phase A: semaphore not yet deployed
     max_concurrent: 4
     wait_sec: 15
 
 resources:
+  # STATUS: implemented
   budget:
     monthly_limit_usd: 200
     daily_alert_usd: 10
@@ -496,6 +503,7 @@ model_capability:
         claim-validator, tool-loop-detector, consequence-evaluator, infra-intent-detector,
         pre-cleanup-snapshot, architecture-compliance, auto-skill-generator]
 
+# STATUS: implemented
 orchestration:
   # Controls which working directory is injected into sub-agent prompts by
   # agent-working-dir-inject.sh (PreToolUse:Agent).
@@ -505,6 +513,7 @@ orchestration:
   sub_agent_cwd: main_worktree   # current | main_worktree | branch
 
 efficiency:
+  # STATUS: implemented
   profile: default               # default | full  (ADR-002: collapsed 3-tier system)
   profiles:
     default:
