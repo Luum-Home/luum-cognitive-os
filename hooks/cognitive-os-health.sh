@@ -5,6 +5,7 @@
 set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 
 # Find docker binary (varies by OS/install)
 DOCKER="$(command -v docker 2>/dev/null || echo "/Applications/Docker.app/Contents/Resources/bin/docker")"
@@ -96,7 +97,7 @@ hook_errors=0
 stale_hooks=""
 HEALTH_FILE="$AOS/metrics/hook-health.jsonl"
 if [ -f "$HEALTH_FILE" ]; then
-  cutoff_epoch=$(date -v-24H +%s 2>/dev/null || date -d '24 hours ago' +%s 2>/dev/null || echo 0)
+  cutoff_epoch=$(portable_date_minus 1)
   if command -v python3 >/dev/null 2>&1; then
     read -r hook_errors stale_hooks <<< "$(python3 -c "
 import json, sys, os
@@ -200,7 +201,7 @@ if [ -f "$REPAIR_FILE" ] || [ -d "$CB_DIR" ]; then
   open_breakers=0
   # Count repair outcomes from last 24h
   if [ -f "$REPAIR_FILE" ]; then
-    cutoff_24h=$(date -v-24H +%s 2>/dev/null || date -d '24 hours ago' +%s 2>/dev/null || echo 0)
+    cutoff_24h=$(portable_date_minus 1)
     while IFS= read -r line; do
       [ -z "$line" ] && continue
       r_epoch=$(echo "$line" | jq -r '.timestamp_epoch // 0' 2>/dev/null)

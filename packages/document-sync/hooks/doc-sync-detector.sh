@@ -127,7 +127,7 @@ REL_FILE=$(echo "$FILE_PATH" | sed "s|$PROJECT_DIR/||")
 
 # Deduplicate: skip if same file+docs combo was logged in the last 60 seconds
 if [ -f "$STALE_FILE" ]; then
-  CUTOFF=$(date -v-60S +%s 2>/dev/null || date -d '60 seconds ago' +%s 2>/dev/null || echo "0")
+  CUTOFF=$(( $(date +%s) - 60 ))
   RECENT=$(tail -5 "$STALE_FILE" | jq -r --arg file "$REL_FILE" 'select(.changed_file == $file) | .timestamp' 2>/dev/null | tail -1)
   if [ -n "$RECENT" ]; then
     RECENT_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")

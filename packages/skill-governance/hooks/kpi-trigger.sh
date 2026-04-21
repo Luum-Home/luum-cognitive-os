@@ -67,7 +67,7 @@ fi
 ERROR_FILE="$METRICS_DIR/error-learning.jsonl"
 ERROR_COUNT_24H=0
 if [ -f "$ERROR_FILE" ]; then
-  CUTOFF=$(date -v-24H +%s 2>/dev/null || date -d '24 hours ago' +%s 2>/dev/null || echo "0")
+  CUTOFF=$(( $(date +%s) - 86400 ))
   ERROR_COUNT_24H=$(awk -F'"timestamp_epoch":' '{split($2,a,","); if(a[1]+0 > '"$CUTOFF"') count++} END{print count+0}' "$ERROR_FILE" 2>/dev/null || echo "0")
 fi
 

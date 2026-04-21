@@ -8,6 +8,7 @@
 set -uo pipefail
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 SESSIONS_DIR="$PROJECT_DIR/.cognitive-os/sessions"
 ACTIVE_FILE="$SESSIONS_DIR/active-sessions.json"
 LOCKS_DIR="$SESSIONS_DIR/locks"
@@ -156,7 +157,7 @@ _NUDGE_STALE_HOURS="${COMMIT_NUDGE_STALE_HOURS:-24}"
 if [ -f "$_NUDGE_FILE" ]; then
     # Filter: only commits from the last N hours (mtime-based)
     _now=$(date +%s)
-    _mtime=$(stat -f %m "$_NUDGE_FILE" 2>/dev/null || stat -c %Y "$_NUDGE_FILE" 2>/dev/null || echo "$_now")
+    _mtime=$(portable_stat_mtime "$_NUDGE_FILE" 2>/dev/null || echo "$_now")
     _age_hours=$(( (_now - _mtime) / 3600 ))
     if [ "$_age_hours" -le "$_NUDGE_STALE_HOURS" ]; then
         _commit_count=$(wc -l < "$_NUDGE_FILE" 2>/dev/null | tr -d ' ')

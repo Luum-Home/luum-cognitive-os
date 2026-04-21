@@ -25,6 +25,7 @@ set -euo pipefail
 
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 
 # ── Locate project root ──────────────────────────────────────────────────────
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-}"
@@ -101,16 +102,11 @@ CACHE_FILE="${CWD_INJECT_CACHE_FILE:-$COS_DIR/cwd-inject-cache.json}"
 _worktrees_mtime() {
   local wt_dir="$PROJECT_DIR/.git/worktrees"
   if [ -d "$wt_dir" ]; then
-    # macOS: stat -f %m; Linux: stat -c %Y — try both, fall back to "0"
-    stat -f %m "$wt_dir" 2>/dev/null \
-      || stat -c %Y "$wt_dir" 2>/dev/null \
-      || echo "0"
+    portable_stat_mtime "$wt_dir" 2>/dev/null || echo "0"
   else
     # No worktrees dir (single-worktree repo) — use mtime of .git itself as
     # a stable proxy; changes only when repo structure changes.
-    stat -f %m "$PROJECT_DIR/.git" 2>/dev/null \
-      || stat -c %Y "$PROJECT_DIR/.git" 2>/dev/null \
-      || echo "0"
+    portable_stat_mtime "$PROJECT_DIR/.git" 2>/dev/null || echo "0"
   fi
 }
 
