@@ -126,61 +126,90 @@ class TestBlastRadiusThresholds:
         assert "CRITICAL" not in combined
 
     def test_many_directory_refs_produce_high_warning(self, isolated_cos_home):
-        """Five distinct directory references → score ~25 → HIGH or CRITICAL."""
+        """Many distinct directory references → HIGH or CRITICAL blast radius.
+
+        The hook thresholds (as of the "noise > signal" rewrite):
+          HIGH: file_score > 40  (each dir reference = 5 file score)
+          CRITICAL: (infra AND security) OR score > 100
+
+        9 directory references → score = 45 → HIGH.
+        """
         env = {
             "CLAUDE_PROJECT_DIR": str(isolated_cos_home),
             "COGNITIVE_OS_PROJECT_DIR": str(isolated_cos_home),
             "COGNITIVE_OS_SESSION_ID": "",
             "COGNITIVE_OS_HOOK_HEARTBEAT": "false",
         }
+        # 9 directories × 5 = 45 → exceeds HIGH threshold (40)
         prompt = (
             "Refactor all Go files in internal/users/, internal/orders/, "
-            "internal/payments/, internal/billing/, internal/notifications/ "
+            "internal/payments/, internal/billing/, internal/notifications/, "
+            "internal/reports/, internal/audit/, internal/events/, internal/search/ "
             "to use the new error wrapping pattern."
         )
         result = _run_hook(self.HOOK, stdin_json=_agent_input(prompt), env=env)
         assert result.returncode == 0
         combined = result.stdout + result.stderr
         assert any(kw in combined for kw in ("HIGH", "CRITICAL")), (
-            f"Expected HIGH or CRITICAL for multi-dir prompt, got: {combined[:400]}"
+            f"Expected HIGH or CRITICAL for 9-directory prompt, got: {combined[:400]}"
         )
 
     def test_jwt_keyword_yields_critical(self, isolated_cos_home):
-        """Security keyword 'jwt' must produce CRITICAL regardless of file count."""
+        """Security + infrastructure combined keywords must produce CRITICAL.
+
+        The hook was updated to reduce noise: security keywords ALONE are
+        no longer enough for CRITICAL (they used to be).  The new rule is:
+          CRITICAL = (infra_hit AND security_hit) OR file_score > 100
+
+        Prompt with JWT (security) + Dockerfile/deployment (infra) across all
+        services satisfies the CRITICAL condition.
+        """
         env = {
             "CLAUDE_PROJECT_DIR": str(isolated_cos_home),
             "COGNITIVE_OS_PROJECT_DIR": str(isolated_cos_home),
             "COGNITIVE_OS_SESSION_ID": "",
             "COGNITIVE_OS_HOOK_HEARTBEAT": "false",
         }
+        # Triggers both security (jwt, auth) and infra (docker, deployment) hits
         result = _run_hook(
             self.HOOK,
-            stdin_json=_agent_input("Add JWT authentication to the API gateway"),
+            stdin_json=_agent_input(
+                "Add JWT authentication and update the Dockerfile deployment pipeline"
+            ),
             env=env,
         )
         assert result.returncode == 0
         combined = result.stdout + result.stderr
         assert "CRITICAL" in combined, (
-            f"Expected CRITICAL for security keyword 'JWT': {combined[:400]}"
+            f"Expected CRITICAL for security+infra combined prompt: {combined[:400]}"
         )
 
     def test_docker_keyword_yields_critical(self, isolated_cos_home):
-        """Infrastructure keyword 'docker' must produce CRITICAL."""
+        """Infrastructure + security combined keywords must produce CRITICAL.
+
+        Infrastructure keywords alone (docker, deployment) now produce LOW
+        (silent) because single-keyword triggers were too noisy.  To reach
+        CRITICAL, the prompt must trigger both infra AND security hits.
+        This test verifies the CRITICAL classification for that combination.
+        """
         env = {
             "CLAUDE_PROJECT_DIR": str(isolated_cos_home),
             "COGNITIVE_OS_PROJECT_DIR": str(isolated_cos_home),
             "COGNITIVE_OS_SESSION_ID": "",
             "COGNITIVE_OS_HOOK_HEARTBEAT": "false",
         }
+        # Triggers infra (docker-compose, deployment) AND security (credentials, TLS)
         result = _run_hook(
             self.HOOK,
-            stdin_json=_agent_input("Update the Dockerfile and docker-compose configuration"),
+            stdin_json=_agent_input(
+                "Update the Dockerfile and docker-compose configuration with TLS certificates and credential secrets"
+            ),
             env=env,
         )
         assert result.returncode == 0
         combined = result.stdout + result.stderr
         assert "CRITICAL" in combined, (
-            f"Expected CRITICAL for infrastructure keyword 'docker': {combined[:400]}"
+            f"Expected CRITICAL for infra+security combined prompt: {combined[:400]}"
         )
 
     def test_non_agent_tool_is_silent(self, isolated_cos_home):
