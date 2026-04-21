@@ -2,13 +2,14 @@
 # All python invocations go through `uv run` so UV-managed deps
 # (fastmcp, openai SDK, etc.) are visible. See docs/reports/next-session-handoff-2026-04-20.md.
 
-.PHONY: help test test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean
+.PHONY: help test test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention
 
 PY := uv run python3
 PYTEST := uv run pytest
 
 help:
 	@echo "Targets:"
+	@echo "  ci-deps           Install optional CI deps (flock + Paperclip stub) to unblock skipped tests."
 	@echo "  test-fast         Unit tests, paralelo (-n auto). <30s."
 	@echo "  test-unit         Unit tests serial (useful for debugging xdist conflicts)."
 	@echo "  test-integration  Integration tests serial (tmp state sensitive)."
@@ -55,7 +56,21 @@ audit:
 	$(PY) scripts/aspirational-audit.py --dry-run
 	$(PY) scripts/cos-build-self-knowledge.py
 
+ci-deps:
+	@bash scripts/ci-setup.sh
+
 clean:
 	find .cognitive-os/metrics -name "*.jsonl" -size +10M -exec tail -c 5M {} + 2>/dev/null || true
 	find . -name __pycache__ -type d -exec rm -rf {} + 2>/dev/null || true
 	find . -name .pytest_cache -type d -exec rm -rf {} + 2>/dev/null || true
+
+# ADR-054/055 — check an adopting project follows the 10-category docs convention.
+# Override PROJECT_DIR to target an external project; defaults to the SO repo.
+# Soft-warn by default; pass STRICT=1 to fail on missing categories.
+check-docs-convention:
+	@PROJECT_DIR="$${PROJECT_DIR:-$$(pwd)}"; \
+	if [ "$${STRICT:-0}" = "1" ]; then \
+		bash hooks/project-docs-convention.sh --project-dir "$$PROJECT_DIR" --strict; \
+	else \
+		bash hooks/project-docs-convention.sh --project-dir "$$PROJECT_DIR"; \
+	fi
