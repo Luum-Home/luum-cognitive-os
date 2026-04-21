@@ -55,6 +55,8 @@ STATE_DIR="${COS_DIR}/state"
 PYPROJECT_SHA_FILE="${STATE_DIR}/pyproject.sha"
 APPLY_EFF_PROFILE_SCRIPT="${SCRIPT_DIR}/apply-efficiency-profile.sh"
 APPLY_EFF_PROFILE_SHA_FILE="${STATE_DIR}/apply-efficiency-profile.sha"
+DOCKER_COMPOSE_FILE="${PROJECT_ROOT}/docker-compose.cognitive-os.yml"
+DOCKER_COMPOSE_SHA_FILE="${STATE_DIR}/docker-compose.sha"
 REGISTER_MCPS_SCRIPT="${SCRIPT_DIR}/register-mcps.sh"
 COGNITIVE_OS_YAML="${PROJECT_ROOT}/cognitive-os.yaml"
 
@@ -399,6 +401,91 @@ regenerate_settings_if_profile_changed() {
 }
 
 # ---------------------------------------------------------------------------
+# Auto-recreate docker containers when docker-compose.cognitive-os.yml changes.
+# Mirrors regenerate_settings_if_profile_changed: caches SHA-256 of the compose
+# file in .cognitive-os/state/docker-compose.sha. When the pin sha of any image
+# is updated upstream, this function detects the compose change and runs
+# `docker compose pull` + `up -d --force-recreate` so running containers pick
+# up the new images.
+#
+# Without this, downstream projects update compose via cos-update but their
+# containers keep running the old images indefinitely (restart: unless-stopped
+# doesn't recreate with the new pin). The 2026-04-21 langfuse-worker incident
+# (crash loop from old entrypoint that was removed upstream) was exactly this
+# scenario.
+#
+# Graceful degradation:
+#   - compose file missing → silent skip
+#   - docker binary missing → skip with note (running compose stack not our concern)
+#   - docker daemon not up → skip (user may not have started docker yet)
+#   - pull failure → WARN, do NOT recreate (old containers keep running, no worse)
+#   - up -d failure → WARN + revert sha cache so next run retries
+#
+# Failure is non-fatal. Honors --force to re-run even on matching sha.
+# ---------------------------------------------------------------------------
+recreate_docker_if_compose_changed() {
+  [[ -f "$DOCKER_COMPOSE_FILE" ]] || return 0
+
+  # Locate docker binary (may be outside PATH in OrbStack installs)
+  local docker=""
+  for candidate in \
+    /opt/homebrew/bin/docker \
+    /usr/local/bin/docker \
+    /Applications/OrbStack.app/Contents/Resources/bin/docker
+  do
+    [[ -x "$candidate" ]] && { docker="$candidate"; break; }
+  done
+  [[ -n "$docker" ]] || docker="$(command -v docker 2>/dev/null || true)"
+  if [[ -z "$docker" ]]; then
+    note "docker binary not found — skipping container freshness check"
+    return 0
+  fi
+
+  # Daemon up? Fail silently if not.
+  if ! timeout 2 "$docker" info >/dev/null 2>&1; then
+    note "docker daemon not responding — skipping container recreate"
+    return 0
+  fi
+
+  local current_sha previous_sha=""
+  current_sha="$(sha256_of "$DOCKER_COMPOSE_FILE")"
+  if [[ -f "$DOCKER_COMPOSE_SHA_FILE" ]]; then
+    previous_sha="$(cat "$DOCKER_COMPOSE_SHA_FILE" 2>/dev/null || echo "")"
+  fi
+
+  if [[ "$current_sha" == "$previous_sha" && "$FORCE" != "true" ]]; then
+    note "docker-compose.cognitive-os.yml unchanged (sha ${current_sha:0:8}); skipping container recreate"
+    return 0
+  fi
+
+  note "docker-compose.cognitive-os.yml changed (${previous_sha:0:8}→${current_sha:0:8}); pulling + recreating cognitive-os containers"
+  if [[ "$DRY_RUN" == "true" ]]; then
+    note "[DRY RUN] would run: docker compose -f $DOCKER_COMPOSE_FILE pull && up -d --force-recreate"
+    return 0
+  fi
+
+  if ! "$docker" compose -f "$DOCKER_COMPOSE_FILE" pull >&2; then
+    warn "docker compose pull failed; not updating sha cache (will retry on next update)"
+    return 1
+  fi
+
+  # Note: --force-recreate targets running services only; services that aren't
+  # up stay down. Build failures (e.g. Dockerfile pip issues) in ONE service
+  # can abort the entire recreate — use --no-build where safe, or target only
+  # pulled services. We rely on the user running `docker compose build` manually
+  # when Dockerfile changes are involved.
+  if "$docker" compose -f "$DOCKER_COMPOSE_FILE" up -d --force-recreate --no-build >&2; then
+    mkdir -p "$STATE_DIR"
+    printf '%s\n' "$current_sha" > "$DOCKER_COMPOSE_SHA_FILE"
+    note "docker-compose.sha cache updated"
+    return 0
+  else
+    warn "docker compose up failed; not updating sha cache (will retry on next update)"
+    return 1
+  fi
+}
+
+# ---------------------------------------------------------------------------
 # MCP registration — calls scripts/register-mcps.sh with the profile from
 # cognitive-os.yaml. Caching is handled inside register-mcps.sh (mcps.sha).
 # Failure is non-fatal (WARN + continue), matching the uv sync behavior.
@@ -613,6 +700,11 @@ sync_python_deps_if_changed || warn "python dependency sync encountered errors (
 # Done BEFORE self-install so self-install operates on the refreshed settings.
 # Placed after file sync (sync_python_deps_if_changed above) and before verify.
 regenerate_settings_if_profile_changed || warn "settings regeneration encountered errors (see log above)"
+
+# Recreate docker containers if compose changed (closes the image-drift gap
+# — see recreate_docker_if_compose_changed docstring for the 2026-04-21
+# incident that motivated this).
+recreate_docker_if_compose_changed || warn "docker container recreate encountered errors (see log above)"
 
 register_mcps_if_changed
 
