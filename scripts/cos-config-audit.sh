@@ -239,6 +239,63 @@ def _check_resources_budget(root: Path):
     return ("ASPIR", "neither hooks/token-budget-monitor.sh nor lib/budget_calculator.py found")
 
 
+def _check_settings_freshness(root: Path):
+    """
+    Verify .claude/settings.json is an up-to-date output of the current
+    scripts/apply-efficiency-profile.sh. The downstream-drift scenario:
+    cos-update.sh copies a new apply-efficiency-profile.sh (adding a hook
+    registration) but doesn't re-run it — settings.json stays stale and the
+    new hook never fires.
+
+    Status logic:
+      * script missing         → ASPIR (can't track what doesn't exist)
+      * settings.json missing  → ASPIR (nothing to check against)
+      * SHA file missing but
+        settings.json exists   → PARTIAL (first-run or manually generated;
+                                           no baseline recorded yet)
+      * SHAs match             → IMPL   (settings.json regenerated against
+                                           the current script)
+      * SHAs differ            → ASPIR  (script changed since last regen —
+                                           settings.json is stale)
+    """
+    script_path = root / "scripts" / "apply-efficiency-profile.sh"
+    settings_path = root / ".claude" / "settings.json"
+    sha_path = root / ".cognitive-os" / "state" / "apply-efficiency-profile.sha"
+
+    if not script_path.exists():
+        return ("ASPIR", "scripts/apply-efficiency-profile.sh missing — cannot track freshness")
+    if not settings_path.exists():
+        return ("ASPIR", ".claude/settings.json missing — run scripts/apply-efficiency-profile.sh")
+
+    # Compute current script SHA
+    import hashlib
+    try:
+        current_sha = hashlib.sha256(script_path.read_bytes()).hexdigest()
+    except OSError as exc:
+        return ("ASPIR", f"failed to hash apply-efficiency-profile.sh: {exc}")
+
+    if not sha_path.exists():
+        return (
+            "PARTIAL",
+            "settings.json present but no profile SHA tracked (first-run or manually generated); "
+            "run `bash scripts/apply-efficiency-profile.sh <profile>` to record baseline",
+        )
+
+    try:
+        tracked_sha = sha_path.read_text().strip()
+    except OSError as exc:
+        return ("ASPIR", f"failed to read tracked SHA: {exc}")
+
+    if tracked_sha == current_sha:
+        return ("IMPL", f"settings.json in sync with apply-efficiency-profile.sh (sha={current_sha[:8]})")
+
+    return (
+        "ASPIR",
+        f"apply-efficiency-profile.sh changed (tracked={tracked_sha[:8]}, current={current_sha[:8]}) "
+        f"since last regen — run `bash scripts/apply-efficiency-profile.sh <profile>`",
+    )
+
+
 def _check_orchestration(root: Path):
     # Check that referenced hooks in orchestration section exist
     # Known key hook: agent-working-dir-inject.sh
@@ -297,6 +354,15 @@ CONTRACTS = [
         "section": "orchestration",
         "description": "Orchestration hooks (agent-working-dir-inject etc.) wired and registered",
         "check": _check_orchestration,
+    },
+    {
+        # Cross-file contract (not a single cognitive-os.yaml key), so it
+        # lives under the synthetic `meta.*` namespace. Such sections do not
+        # carry a `# STATUS:` annotation in cognitive-os.yaml — the audit
+        # coherence logic exempts `meta.*` from the "UNANNOTATED" flag.
+        "section": "meta.settings_freshness",
+        "description": "settings.json is the current output of apply-efficiency-profile.sh",
+        "check": _check_settings_freshness,
     },
 ]
 
@@ -408,7 +474,12 @@ def run_audit(use_color: bool = True) -> list[dict]:
         entry = {"section": section, "status": status, "reason": reason}
         annotated = annotations.get(section)
         entry["annotation"] = annotated  # may be None
-        if annotated is None:
+        # `meta.*` sections are cross-file contracts (not single yaml keys), so
+        # they're exempt from the `# STATUS:` annotation requirement. Treat
+        # them as coherent by design.
+        if section.startswith("meta."):
+            entry["coherence"] = "OK"
+        elif annotated is None:
             entry["coherence"] = "UNANNOTATED"
         elif annotated != status:
             entry["coherence"] = "DRIFT"
