@@ -195,8 +195,10 @@ class TestClaudeToQwenMapping(unittest.TestCase):
     def test_sonnet_maps_to_qwen3_coder_plus(self):
         self.assertEqual(qwen_provider.map_claude_model_to_qwen("sonnet"), "qwen3-coder-plus")
 
-    def test_haiku_maps_to_minimax(self):
-        self.assertEqual(qwen_provider.map_claude_model_to_qwen("haiku"), "minimax-m2.5")
+    def test_haiku_maps_to_qwen3_coder_plus(self):
+        # minimax-m2.5 is not callable on the current Coding Plan Pro subscription;
+        # remapped to qwen3-coder-plus until Alibaba enables it. See CLAUDE_TO_QWEN_MAP note.
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("haiku"), "qwen3-coder-plus")
 
     def test_full_claude_name_opus(self):
         self.assertEqual(qwen_provider.map_claude_model_to_qwen("claude-opus-4-7"), "qwen3.6-plus")
@@ -205,7 +207,7 @@ class TestClaudeToQwenMapping(unittest.TestCase):
         self.assertEqual(qwen_provider.map_claude_model_to_qwen("claude-sonnet-4-6"), "qwen3-coder-plus")
 
     def test_full_claude_name_haiku(self):
-        self.assertEqual(qwen_provider.map_claude_model_to_qwen("claude-haiku-4-5-20251001"), "minimax-m2.5")
+        self.assertEqual(qwen_provider.map_claude_model_to_qwen("claude-haiku-4-5-20251001"), "qwen3-coder-plus")
 
     def test_case_insensitive(self):
         self.assertEqual(qwen_provider.map_claude_model_to_qwen("OPUS"), "qwen3.6-plus")
@@ -234,16 +236,29 @@ class TestClaudeToQwenMapping(unittest.TestCase):
         """select_model with claude_model_hint overrides task-based heuristic."""
         # Without hint: general task → qwen3.6-plus
         self.assertEqual(qwen_provider.select_model(task="general"), "qwen3.6-plus")
-        # With hint=haiku: should flip to minimax-m2.5 regardless of task
+        # With hint=haiku: should flip to qwen3-coder-plus regardless of task
+        # (minimax-m2.5 is not callable on current plan — remapped to qwen3-coder-plus)
         self.assertEqual(
             qwen_provider.select_model(task="general", claude_model_hint="haiku"),
-            "minimax-m2.5",
+            "qwen3-coder-plus",
         )
         # With hint=sonnet + code task: sonnet mapping wins
         self.assertEqual(
             qwen_provider.select_model(task="code", claude_model_hint="sonnet"),
             "qwen3-coder-plus",
         )
+
+    def test_haiku_remap_callable_model(self):
+        """haiku must map to a model present in RECOMMENDED_MODELS (i.e. callable).
+        This test encodes the fix for the minimax-m2.5 live-call failure (2026-04-21).
+        When/if minimax-m2.5 becomes callable, update CLAUDE_TO_QWEN_MAP["haiku"]
+        and this assertion accordingly."""
+        haiku_model = qwen_provider.map_claude_model_to_qwen("haiku")
+        self.assertEqual(haiku_model, "qwen3-coder-plus",
+                         "haiku should map to qwen3-coder-plus until minimax-m2.5 is callable")
+        # Ensure the mapped model is actually in the subscription bundle
+        self.assertIn(haiku_model, qwen_provider.RECOMMENDED_MODELS,
+                      f"haiku mapping '{haiku_model}' is not in RECOMMENDED_MODELS bundle")
 
     def test_select_model_long_context_overrides_hint(self):
         """need_long_context is a hard requirement — overrides even claude_model_hint."""
