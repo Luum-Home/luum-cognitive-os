@@ -512,6 +512,36 @@ def _check_orchestration(root: Path):
     return ("PARTIAL", "hooks/agent-working-dir-inject.sh exists but NOT registered in settings.json")
 
 
+def _check_docs_convention_enforcement(root: Path):
+    """ADR-054/055: verify the SO ships the tooling adopting projects need
+    to honor the 10-category docs convention.
+
+    Required pieces:
+      - lib/docs_writer.py (shared writer utility)
+      - lib/project_scaffolder.py (already shipped by ADR-054)
+      - scripts/project-scaffold.py (CLI)
+      - scripts/security-audit-writer.py (persistence sidecar)
+      - scripts/rules-export.py (standards exporter)
+      - hooks/project-docs-convention.sh (soft-warn hook)
+      - skills/rules-export/SKILL.md
+    """
+    required = [
+        "lib/docs_writer.py",
+        "lib/project_scaffolder.py",
+        "scripts/project-scaffold.py",
+        "scripts/security-audit-writer.py",
+        "scripts/rules-export.py",
+        "hooks/project-docs-convention.sh",
+        "skills/rules-export/SKILL.md",
+    ]
+    missing = [p for p in required if not (root / p).exists()]
+    if not missing:
+        return ("IMPL", f"all {len(required)} ADR-054/055 tooling artefacts present")
+    if len(missing) == len(required):
+        return ("ASPIR", f"no ADR-054/055 tooling found; missing all {len(required)} artefacts")
+    return ("PARTIAL", f"{len(required) - len(missing)}/{len(required)} artefacts present; missing: {', '.join(missing)}")
+
+
 CONTRACTS = [
     {
         "section": "runtime.session_watchdog",
@@ -580,6 +610,14 @@ CONTRACTS = [
         "section": "meta.llm_providers_reachable",
         "description": "direct-SDK LLM overflow providers (ADR-049) are configured and their SDKs importable",
         "check": _check_llm_providers_reachable,
+    },
+    {
+        # ADR-054/055 docs convention — verifies the SO itself ships the
+        # required writer library, scripts, and hook so adopting projects
+        # can honor the 10-category convention.
+        "section": "meta.docs_convention_enforcement",
+        "description": "10-category docs convention tooling (ADR-054/055): writer lib, skill scripts, enforcement hook",
+        "check": _check_docs_convention_enforcement,
     },
 ]
 

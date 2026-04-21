@@ -49,9 +49,10 @@ def test_categories_constant_has_10_entries():
         assert dir_name.startswith(f"{i:02d}-"), f"position {i} is {dir_name!r}"
 
 
-def test_expected_file_count_is_34():
-    # 10 categories × (1 README + N starter files) + 1 top-level docs/README.md = 34
-    assert expected_file_count() == 34
+def test_expected_file_count_is_45():
+    # 10 categories × (1 README + N starter files) + 1 top-level docs/README.md + 1 adrs/README.md = 45
+    # (Extended in v1.1: added personas/roles/user-journeys/C4/glossary/rbac/prd/use-cases + adrs/ dir)
+    assert expected_file_count() == 45
 
 
 # ---------------------------------------------------------------------------
@@ -220,7 +221,7 @@ def test_scaffold_single_category_only(tmp_path: Path):
     # Only the one category should exist
     assert (tmp_path / "docs" / "03-dominio-riesgo").exists()
     assert not (tmp_path / "docs" / "01-contexto").exists()
-    assert len(created) == 3  # README + domain-model + risk-register
+    assert len(created) == 4  # README + domain-model + risk-register + glossary (v1.1)
 
 
 def test_scaffold_category_invalid_number(tmp_path: Path):
