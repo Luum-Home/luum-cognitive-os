@@ -12,6 +12,8 @@ license: MIT
 metadata:
   author: luum
 audience: project
+summary_line: Evaluate external git repositories for potential inclusion in the tech radar.
+
 ---
 
 ## Purpose

@@ -23,6 +23,8 @@ metadata:
   author: luum
   pattern-source: .cognitive-os/Archive (3)/ai-workflow/ai_workflow_resolve_iso.py
 audience: project
+summary_line: Automatically resolve blockers reported by readiness-check.
+
 ---
 
 # Resolve Blockers

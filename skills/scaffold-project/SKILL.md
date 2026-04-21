@@ -5,6 +5,8 @@ description: Create the .claude/ directory structure, symlink rules, and generat
 version: 0.1.0
 audience: both
 tags: [init, setup, scaffold]
+summary_line: "Create the .claude/ directory structure, symlink rules, and generate…"
+
 ---
 
 # Scaffold Project

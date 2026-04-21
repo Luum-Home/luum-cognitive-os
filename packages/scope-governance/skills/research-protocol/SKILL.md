@@ -14,6 +14,8 @@ license: MIT
 metadata:
   author: luum
 audience: project
+summary_line: Meta-skill that teaches agents HOW to investigate any source material…
+
 ---
 
 ## Purpose

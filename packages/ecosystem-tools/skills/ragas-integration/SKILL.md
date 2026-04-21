@@ -16,6 +16,8 @@ metadata:
   tool-ring: ADOPT
   tool-score: 8.30
 audience: os-dev
+summary_line: "Configure and use RAGAS for memory quality testing, retrieval evaluation, and…"
+
 ---
 
 ## Purpose

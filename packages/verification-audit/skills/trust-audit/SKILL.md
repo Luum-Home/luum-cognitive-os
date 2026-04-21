@@ -7,6 +7,8 @@ tag: universal
 model: sonnet
 audience: both
 effort: haiku
+summary_line: "Analyze trust scores across agents and tasks, identify patterns, recommend…"
+
 ---
 
 # Trust Audit Skill

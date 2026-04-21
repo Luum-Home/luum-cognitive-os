@@ -5,6 +5,8 @@ description: View and sync Cognitive OS state to Paperclip dashboard (SDD projec
 trigger: dashboard, paperclip, metrics view, show repairs, show health, org chart, spend
 model: haiku
 audience: os-dev
+summary_line: "View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent…"
+
 ---
 
 # Paperclip Dashboard

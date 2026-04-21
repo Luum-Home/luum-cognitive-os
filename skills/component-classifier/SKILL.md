@@ -8,6 +8,8 @@ allowed-tools:
   - Bash
   - mcp__plugin_engram_engram__mem_search
 audience: os-dev
+summary_line: "\"Classify a new component (skill, hook, rule, lib) as CORE or PACKAGE."
+
 ---
 
 # Component Classifier

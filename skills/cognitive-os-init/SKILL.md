@@ -8,6 +8,8 @@ user-invocable: true
 auto-generated: false
 audience: both
 tags: [init, setup, meta]
+summary_line: META skill — initialize Cognitive OS for a project by chaining detect-stack →…
+
 ---
 
 # Cognitive OS Init

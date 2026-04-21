@@ -1,7 +1,7 @@
 # ADR-044: Context Payload Slimming — Non-Rule Startup Components
 
-**Status**: Proposed
-**Date**: 2026-04-20
+**Status**: Phase 2 RESOLVED (frontmatter migration + catalog generator) — Phase 2 slash commands BLOCKED (sandbox write-permission on `.claude/commands/`)
+**Date**: 2026-04-20 (proposed), 2026-04-21 (Phase 2 partial resolution)
 **Authors**: Agent C (startup-optimization initiative, stream 3/4)
 **Related**: ADR-043 (rule classification — Agent B, paired work), ADR-032 (orchestrator-prompt-compose), ADR-037 (self-knowledge-base)
 
@@ -150,6 +150,40 @@ A "startup minimal context" mode:
 - How does the harness decide what skill metadata to inject? If it reads only `description`, frontmatter `summary_line` is inert — need empirical check (upstream task).
 - Interaction with context-watchdog thresholds (50/70/85%) — slim startup pushes the 70% warning later, which is desirable.
 - Cross-agent coordination: when Agent B's rule index and this ADR's slash-command directory both exist, they should share a unified `.claude/commands/` namespace to avoid collisions.
+
+## Resolution Log
+
+### 2026-04-21 — Phase 2 (partial): frontmatter migration + catalog generator
+
+**Scope executed**:
+- L2 frontmatter convention: added `summary_line` (≤80 chars) to every SKILL.md whose `description` exceeds 80 chars. 85 skills migrated in one pass (+ 2 fixed skills that were previously missing `description` entirely: `simulation-arena`, `planning-poker`, + 1 existing `skill-creator` description recovered). Post-migration inventory: 125 skills total, 125 have `name`, 125 have `description`, 88 have `summary_line`. 0 YAML parse errors.
+- Catalog generator (`scripts/generate-compact-catalog.py`) updated to prefer `summary_line` over `first_sentence(description)` when rendering the compact catalog. Output regenerated: `skills/CATALOG-COMPACT.md` 13,019 → 11,941 chars (~270-token reduction, ~8% shrink on the catalog file alone).
+
+**Scope BLOCKED (sandbox write-permission)**:
+- L1 `/engram-help` slash command (`.claude/commands/engram-help.md`)
+- L3 `/sdd-help` slash command (`.claude/commands/sdd-help.md`)
+- L2 `/skills-search` slash command (`.claude/commands/skills-search.md`)
+- Cross-agent `/rules-expand` namespace reservation (`.claude/commands/rules-expand.md`)
+
+The sandbox in this session denied both `mkdir .claude/commands` and `Write` to files under that path. Slash-command authoring requires either:
+1. An out-of-sandbox pass (user or orchestrator with elevated permissions creates `.claude/commands/` first, then a follow-up agent fills in the four command files), OR
+2. A settings.json allowlist entry granting write access under `.claude/commands/**` (per `rules/orchestrator-prompt-compose.md` — touching `.claude/` is a trap-sensitive target and deserves the pipe-through check).
+
+**Does not touch**:
+- Global `~/.claude/CLAUDE.md` — ADR explicitly marks this user-owned; slimming that file is Phase 3 / opt-in via `scripts/startup-slim.sh` (not built yet).
+- `skills/invariant-check/`, `rules/decision-depth-gate.md` — scope-excluded by coordinating task prompt.
+
+**Acceptance criteria status**:
+| # | Criterion | Target | Actual | Met |
+|---|---|---|---|---|
+| 1 | Every skill has `name` + `description` + scope/audience | 125 | 125 | yes |
+| 2 | `summary_line` added where `description` > 80 chars | 88 | 88 | yes |
+| 3 | `.claude/commands/*.md` ≥ 3 files | ≥3 | 0 | no (blocked) |
+| 4 | ADR-044 has Resolution Log 2026-04-21 | yes | yes | yes |
+| 5 | Catalog regenerated + parses | yes | 11,941 chars, 0 errors | yes |
+| 6 | Frontmatter YAML parse test | 0 errors | 0 errors | yes |
+
+**Next action (Phase 2 completion)**: relaunch Phase 2 slash-command work from a context where `.claude/commands/` is writable. The four command bodies are fully specified in §"Lazy-loading mechanism" of this ADR and can be generated directly from the current `~/.claude/CLAUDE.md` sections plus `skills/CATALOG-COMPACT.md` for the `/skills-search` body.
 
 ## References
 

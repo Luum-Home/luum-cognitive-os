@@ -4,6 +4,8 @@ name: invariant-check
 description: Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs, proposes invariants between them, and writes pytest assertions that enforce the relationship. Trigger when a review finds "two values look inconsistent", when landing new numeric constants that might drift across ADR and implementation, or when closing a decision-depth-gate finding of type "two values inconsistent".
 version: 1.0
 audience: project
+summary_line: "Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs…"
+
 ---
 
 # invariant-check

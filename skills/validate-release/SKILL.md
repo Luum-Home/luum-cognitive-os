@@ -9,6 +9,8 @@ tags: [release, validation]
 last-updated: 2026-04-10
 disable-model-invocation: true
 effort: haiku
+summary_line: "Pre-release readiness check — validates working tree, branch, changelog, and…"
+
 ---
 
 # Validate Release

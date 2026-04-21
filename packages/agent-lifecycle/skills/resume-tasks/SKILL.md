@@ -6,6 +6,8 @@ user-invocable: true
 version: 1.0.0
 last-updated: 2026-03-21
 audience: project
+summary_line: Check for incomplete tasks from previous sessions and offer to resume them.
+
 ---
 
 # Resume Tasks — Fault Tolerance Recovery

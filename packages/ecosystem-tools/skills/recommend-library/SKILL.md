@@ -3,6 +3,8 @@
 name: recommend-library
 description: Search package registries and rank by relevance, adoption, maintenance, and license compliance
 audience: project
+summary_line: "Search package registries and rank by relevance, adoption, maintenance, and…"
+
 ---
 
 # Skill: recommend-library

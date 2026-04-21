@@ -10,6 +10,8 @@ triggers:
 tags: [sdd, batch, pipeline, automation, ci-cd]
 auto-generated: false
 audience: project
+summary_line: "Execute multiple SDD changes sequentially with timing, reporting, and failure…"
+
 ---
 
 # Batch Runner

@@ -4,6 +4,8 @@ name: auto-rollback
 description: "Auto-rollback failed SDD apply commits when verify-apply loop exceeds max retries"
 triggers: ["/auto-rollback", "Verify-apply loop exceeded 3 retries"]
 audience: project
+summary_line: "\"Auto-rollback failed SDD apply commits when verify-apply loop exceeds max…"
+
 ---
 
 # /auto-rollback

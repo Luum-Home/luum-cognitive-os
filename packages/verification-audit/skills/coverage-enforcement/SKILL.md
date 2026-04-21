@@ -10,6 +10,8 @@ tech: go
 audience: project
 effort: haiku
 paths: ["*.go", "go.mod"]
+summary_line: "Run Go test coverage for all services, enforce thresholds from…"
+
 ---
 
 # Coverage Enforcement Skill
