@@ -4,25 +4,25 @@
 
 | Metric | Value |
 |--------|-------|
-| Total components | 480 |
-| REAL | 114 |
-| DORMANT | 269 |
-| ASPIRATIONAL | 63 |
-| METADATA | 34 |
-| DORMANT + ASPIRATIONAL ratio | 69.2% |
+| Total components | 506 |
+| REAL | 129 |
+| DORMANT | 267 |
+| ASPIRATIONAL | 68 |
+| METADATA | 42 |
+| DORMANT + ASPIRATIONAL ratio | 66.2% |
 
 ## Worst Offenders (ASPIRATIONAL + DORMANT)
 
+- `hooks/adr-detector.sh`
 - `hooks/agent-bus-monitor.sh`
 - `hooks/agent-output-verifier.sh`
-- `hooks/aguara-scan.sh`
-- `hooks/architecture-compliance.sh`
-- `hooks/assumption-tracker.sh`
-- `hooks/adr-detector.sh`
-- `hooks/agent-checkpoint.sh`
-- `hooks/agent-prelaunch.sh`
 - `hooks/agent-work-tracker.sh`
 - `hooks/aspirational-audit-weekly.sh`
+- `hooks/agent-prelaunch.sh`
+- `hooks/auto-checkpoint.sh`
+- `hooks/auto-skill-generator.sh`
+- `hooks/consequence-evaluator.sh`
+- `hooks/content-policy.sh`
 
 ## Component Detail
 
@@ -38,148 +38,157 @@
 | `hooks/_lib/paperclip-notify.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/register-bg.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/remediation.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
+| `hooks/_lib/resolve-main-worktree.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/safe-jsonl.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/semantic-search.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/singularity-suggestion.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/timing.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/tuning.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/adaptive-bypass.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: logic merged into agent-prelaunch.sh and orchestrator rules; kept for reference | whitelisted exclusion: DEPRECATED: logic merged into agent-prelaunch.sh and orchestrator rules; kept for reference |
-| `hooks/adr-detector.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/adr-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired | planned but not wired: FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired |
+| `hooks/agent-bash-cwd-enforcer.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/agent-bus-monitor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running | planned but not wired: CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running |
-| `hooks/agent-checkpoint.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/agent-checkpoint.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/agent-output-verifier.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired | planned but not wired: FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired |
 | `hooks/agent-prelaunch.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/agent-work-tracker.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/agent-work-tracker.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: tracks in-progress agent work; planned integration with task-recorder.sh — not yet wired | planned but not wired: FUTURE: tracks in-progress agent work; planned integration with task-recorder.sh — not yet wired |
+| `hooks/agent-working-dir-inject.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/agnix-lint.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: superseded by architecture-compliance.sh for lint enforcement | whitelisted exclusion: DEPRECATED: superseded by architecture-compliance.sh for lint enforcement |
-| `hooks/aguara-scan.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: Aguara security scanner — fires only when AGUARA_ENABLED=true | planned but not wired: CONDITIONAL: Aguara security scanner — fires only when AGUARA_ENABLED=true |
-| `hooks/architecture-compliance.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: PostToolUse Edit|Write — planned but not yet wired | planned but not wired: FUTURE: PostToolUse Edit\|Write — planned but not yet wired |
-| `hooks/aspirational-audit-weekly.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/assumption-tracker.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: PreToolUse Agent — ADR-022 variant, not in default profile | planned but not wired: FUTURE: PreToolUse Agent — ADR-022 variant, not in default profile |
-| `hooks/audit-id-enricher.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/aguara-scan.sh` | REAL | fire_count_7d=28, registered=True | fires actively (28 rows in hook-health.jsonl last 7d) |
+| `hooks/architecture-compliance.sh` | REAL | fire_count_7d=150, registered=True | fires actively (150 rows in hook-health.jsonl last 7d) |
+| `hooks/aspirational-audit-weekly.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/assumption-tracker.sh` | REAL | fire_count_7d=19, registered=True | fires actively (19 rows in hook-health.jsonl last 7d) |
+| `hooks/audit-id-enricher.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
 | `hooks/auto-checkpoint.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/auto-refine.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
-| `hooks/auto-repair-dispatcher.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: fires only on error-pipeline output, sourced not registered | planned but not wired: CONDITIONAL: fires only on error-pipeline output, sourced not registered |
-| `hooks/auto-rollback-trigger.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
-| `hooks/auto-skill-generator.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: invoked by /auto-skill skill, not a hook matcher | whitelisted exclusion: MANUAL_TRIGGER: invoked by /auto-skill skill, not a hook matcher |
-| `hooks/auto-verify.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
+| `hooks/auto-refine.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: per rules/ROADMAP.md §2.3 — built by UX2 sprint; registration status unverified | planned but not wired: FUTURE: per rules/ROADMAP.md §2.3 — built by UX2 sprint; registration status unverified |
+| `hooks/auto-repair-dispatcher.sh` | REAL | fire_count_7d=19, registered=True | fires actively (19 rows in hook-health.jsonl last 7d) |
+| `hooks/auto-rollback-trigger.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/auto-skill-generator.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/auto-verify.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: per rules/ROADMAP.md §2.1 — built by UX2 sprint but registration not yet verified | planned but not wired: FUTURE: per rules/ROADMAP.md §2.1 — built by UX2 sprint but registration not yet verified |
 | `hooks/background-agent-reminder.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired |
-| `hooks/blast-radius.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
-| `hooks/claim-validator.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
-| `hooks/clarification-gate.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
+| `hooks/blast-radius.sh` | REAL | fire_count_7d=49, registered=True | fires actively (49 rows in hook-health.jsonl last 7d) |
+| `hooks/claim-validator.sh` | REAL | fire_count_7d=45, registered=True | fires actively (45 rows in hook-health.jsonl last 7d) |
+| `hooks/clarification-gate.sh` | REAL | fire_count_7d=49, registered=True | fires actively (49 rows in hook-health.jsonl last 7d) |
 | `hooks/clarification-interceptor.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: functionality merged into clarification-gate.sh; kept for backward-compat reference | whitelisted exclusion: DEPRECATED: functionality merged into clarification-gate.sh; kept for backward-compat reference |
 | `hooks/code-review-on-commit.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers LLM code review on git commit; uses pre-commit-gate.sh pathway — not yet wired to Claude events | planned but not wired: FUTURE: triggers LLM code review on git commit; uses pre-commit-gate.sh pathway — not yet wired to Claude events |
 | `hooks/cognitive-os-health.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: health-check report for the full OS; run on demand via /cos-status | whitelisted exclusion: MANUAL_TRIGGER: health-check report for the full OS; run on demand via /cos-status |
-| `hooks/completeness-check-llm.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/completeness-check.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: regex variant superseded by completeness-check-llm.sh | planned but not wired: FUTURE: regex variant superseded by completeness-check-llm.sh |
+| `hooks/completeness-check-llm.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: LLM-based variant; completeness-check.sh (rule-based) is the registered version | whitelisted exclusion: DEPRECATED: LLM-based variant; completeness-check.sh (rule-based) is the registered version |
+| `hooks/completeness-check.sh` | REAL | fire_count_7d=28, registered=True | fires actively (28 rows in hook-health.jsonl last 7d) |
 | `hooks/completion-gate.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/concurrent-write-guard.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: prevents concurrent file writes; planned for PreToolUse Edit|Write — not yet wired | planned but not wired: FUTURE: prevents concurrent file writes; planned for PreToolUse Edit\|Write — not yet wired |
-| `hooks/confidence-gate-llm.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/confidence-gate.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
-| `hooks/confidentiality-enforcer.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/consequence-evaluator.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: invoked by /consequence skill | whitelisted exclusion: MANUAL_TRIGGER: invoked by /consequence skill |
+| `hooks/confidence-gate-llm.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: LLM-based variant; confidence-gate.sh (rule-based) is the planned replacement | whitelisted exclusion: DEPRECATED: LLM-based variant; confidence-gate.sh (rule-based) is the planned replacement |
+| `hooks/confidence-gate.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/confidentiality-enforcer.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/consequence-evaluator.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/content-policy.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/context-diet.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: enforces context diet; planned PostToolUse Agent — not yet wired | planned but not wired: FUTURE: enforces context diet; planned PostToolUse Agent — not yet wired |
-| `hooks/context-watchdog.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: PostToolUse in full profile only; default uses context-diet.sh | planned but not wired: CONDITIONAL: PostToolUse in full profile only; default uses context-diet.sh |
+| `hooks/context-watchdog.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/contextual-rule-loader.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: dynamically loads contextual rules; planned for SubagentStart — not yet wired | planned but not wired: FUTURE: dynamically loads contextual rules; planned for SubagentStart — not yet wired |
 | `hooks/conversation-capture.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired | planned but not wired: FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired |
+| `hooks/cos-executor-heartbeat.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
 | `hooks/crash-recovery.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/dequeue-notify.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: fires only when dispatch-gate emits queue events | planned but not wired: CONDITIONAL: fires only when dispatch-gate emits queue events |
-| `hooks/destructive-git-blocker.sh` | REAL | fire_count_7d=123, registered=True | fires actively (123 rows in hook-health.jsonl last 7d) |
-| `hooks/destructive-rm-blocker.sh` | REAL | fire_count_7d=123, registered=True | fires actively (123 rows in hook-health.jsonl last 7d) |
+| `hooks/dequeue-notify.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/destructive-git-blocker.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: blocks destructive git commands; planned for PreToolUse Bash — not yet wired | planned but not wired: FUTURE: blocks destructive git commands; planned for PreToolUse Bash — not yet wired |
+| `hooks/destructive-rm-blocker.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
 | `hooks/dispatch-gate.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/doc-sync-detector.sh` | REAL | fire_count_7d=23, registered=True | fires actively (23 rows in hook-health.jsonl last 7d) |
-| `hooks/dod-gate.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
+| `hooks/doc-sync-detector.sh` | REAL | fire_count_7d=307, registered=True | fires actively (307 rows in hook-health.jsonl last 7d) |
+| `hooks/dod-gate.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: per rules/ROADMAP.md §2.2 — built by UX2 sprint; registration status unverified | planned but not wired: FUTURE: per rules/ROADMAP.md §2.2 — built by UX2 sprint; registration status unverified |
 | `hooks/dry-run-preview.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired | planned but not wired: FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired |
-| `hooks/ecosystem-check.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/ecosystem-check.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: checks library ecosystem before adoption; planned for PreToolUse Agent — not yet wired | planned but not wired: FUTURE: checks library ecosystem before adoption; planned for PreToolUse Agent — not yet wired |
 | `hooks/engram-auto-import.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired | planned but not wired: FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired |
 | `hooks/engram-auto-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: auto-syncs changes to engram; planned for PostToolUse — not yet wired | planned but not wired: FUTURE: auto-syncs changes to engram; planned for PostToolUse — not yet wired |
-| `hooks/epic-task-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: heuristic detector, not yet wired to any matcher | planned but not wired: FUTURE: heuristic detector, not yet wired to any matcher |
+| `hooks/epic-task-detector.sh` | REAL | fire_count_7d=28, registered=True | fires actively (28 rows in hook-health.jsonl last 7d) |
 | `hooks/error-learning.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: captures test/lint/build errors; planned PostToolUse Bash alongside error-pipeline.sh | planned but not wired: FUTURE: captures test/lint/build errors; planned PostToolUse Bash alongside error-pipeline.sh |
 | `hooks/error-pattern-detector.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/error-pipeline.sh` | REAL | fire_count_7d=111, registered=True | fires actively (111 rows in hook-health.jsonl last 7d) |
-| `hooks/git-context-capture.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/global-verify.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/guardrails-validator.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: NeMo Guardrails integration, fires via /guardrails skill | planned but not wired: CONDITIONAL: NeMo Guardrails integration, fires via /guardrails skill |
+| `hooks/error-pipeline.sh` | REAL | fire_count_7d=900, registered=True | fires actively (900 rows in hook-health.jsonl last 7d) |
+| `hooks/git-context-capture.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/global-verify.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: global verification pass at PreToolUse/PostToolUse Agent; registered at apply-efficiency-profile.sh:365 (PreToolUse Agent before) and line 370 (PostToolUse Agent after), per commit 92cf485 | planned but not wired: CONDITIONAL: global verification pass at PreToolUse/PostToolUse Agent; registered at apply-efficiency-profile.sh:365 (PreToolUse Agent before) and line 370 (PostToolUse Agent after), per commit 92cf485 |
+| `hooks/guardrails-validator.sh` | REAL | fire_count_7d=19, registered=True | fires actively (19 rows in hook-health.jsonl last 7d) |
 | `hooks/idle-service-cleanup.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: cleans up idle Docker services; run by cron or manually, not on every Claude event | planned but not wired: CONDITIONAL: cleans up idle Docker services; run by cron or manually, not on every Claude event |
-| `hooks/infra-health.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: SessionStart in full profile; default profile uses usage-health-check.sh | planned but not wired: CONDITIONAL: SessionStart in full profile; default profile uses usage-health-check.sh |
+| `hooks/infra-health.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/infra-intent-detector.sh` | METADATA | registered=False, excluded=True, category=INFRA: detects infrastructure-intent in prompts; called by agent-prelaunch.sh, not registered independently | whitelisted exclusion: INFRA: detects infrastructure-intent in prompts; called by agent-prelaunch.sh, not registered independently |
 | `hooks/inject-phase-context.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/jupyter-sandbox.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired | planned but not wired: FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired |
-| `hooks/kpi-trigger.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: Stop hook in full profile; wires to kpi_collector | planned but not wired: FUTURE: Stop hook in full profile; wires to kpi_collector |
-| `hooks/large-file-advisor.sh` | REAL | fire_count_7d=42, registered=True | fires actively (42 rows in hook-health.jsonl last 7d) |
-| `hooks/mcp-scan.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: MCP server audit, fires on demand | planned but not wired: CONDITIONAL: MCP server audit, fires on demand |
+| `hooks/kpi-trigger.sh` | REAL | fire_count_7d=19, registered=True | fires actively (19 rows in hook-health.jsonl last 7d) |
+| `hooks/large-file-advisor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: advises on large file reads; planned PreToolUse Read — not yet wired | planned but not wired: FUTURE: advises on large file reads; planned PreToolUse Read — not yet wired |
+| `hooks/mcp-scan.sh` | REAL | fire_count_7d=11, registered=True | fires actively (11 rows in hook-health.jsonl last 7d) |
 | `hooks/memu-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired | planned but not wired: FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired |
 | `hooks/metrics-calibrator-trigger.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired | planned but not wired: FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired |
-| `hooks/metrics-rotation.sh` | REAL | fire_count_7d=1, registered=True | fires actively (1 rows in hook-health.jsonl last 7d) |
-| `hooks/mlflow-sync.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/native-agent-heartbeat.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/metrics-rotation.sh` | METADATA | registered=False, excluded=True, category=INFRA: rotates JSONL metrics files to prevent unbounded growth; invoked by cron or manually, not on every event | whitelisted exclusion: INFRA: rotates JSONL metrics files to prevent unbounded growth; invoked by cron or manually, not on every event |
+| `hooks/mlflow-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: syncs metrics to MLflow at session end; only active when mlflow Python package is installed | planned but not wired: CONDITIONAL: syncs metrics to MLflow at session end; only active when mlflow Python package is installed |
+| `hooks/native-agent-heartbeat.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
 | `hooks/notify.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: generic desktop notification wrapper; invoked by other hooks, not registered directly | whitelisted exclusion: MANUAL_TRIGGER: generic desktop notification wrapper; invoked by other hooks, not registered directly |
-| `hooks/observability-trace.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: Langfuse integration, fires only when LANGFUSE_ENABLED=true | planned but not wired: CONDITIONAL: Langfuse integration, fires only when LANGFUSE_ENABLED=true |
-| `hooks/orchestrator-mode-detect.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/observability-trace.sh` | REAL | fire_count_7d=19, registered=True | fires actively (19 rows in hook-health.jsonl last 7d) |
+| `hooks/orchestrator-mode-detect.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: detects ORCHESTRATOR_MODE env var; sourced by other hooks, not registered independently | planned but not wired: CONDITIONAL: detects ORCHESTRATOR_MODE env var; sourced by other hooks, not registered independently |
 | `hooks/package-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: syncs package.json dependencies; triggered by CI or developer, not by Claude hooks | planned but not wired: CONDITIONAL: syncs package.json dependencies; triggered by CI or developer, not by Claude hooks |
 | `hooks/paperclip-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: syncs governance data to Paperclip; only active when Paperclip service is running | planned but not wired: CONDITIONAL: syncs governance data to Paperclip; only active when Paperclip service is running |
-| `hooks/parry-scan.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: Parry security integration | planned but not wired: CONDITIONAL: Parry security integration |
-| `hooks/pattern-check.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/parry-scan.sh` | REAL | fire_count_7d=28, registered=True | fires actively (28 rows in hook-health.jsonl last 7d) |
+| `hooks/pattern-check.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: checks for known anti-patterns; planned for PreToolUse Edit|Write — not yet wired | planned but not wired: FUTURE: checks for known anti-patterns; planned for PreToolUse Edit\|Write — not yet wired |
 | `hooks/post-agent-verify.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: post-agent verification; superceded by completion-gate.sh in current wiring | planned but not wired: FUTURE: post-agent verification; superceded by completion-gate.sh in current wiring |
 | `hooks/pre-agent-snapshot.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: snapshot before agent launch; planned for PreToolUse Agent — not yet wired | planned but not wired: FUTURE: snapshot before agent launch; planned for PreToolUse Agent — not yet wired |
 | `hooks/pre-cleanup-snapshot.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: snapshot before cleanup operations; invoked manually or by admin scripts | planned but not wired: FUTURE: snapshot before cleanup operations; invoked manually or by admin scripts |
 | `hooks/pre-commit-gate.sh` | METADATA | registered=False, excluded=True, category=GIT_HOOK: symlinked to .git/hooks/pre-commit; not a Claude hook (per rules/ROADMAP.md Section 1.8) | whitelisted exclusion: GIT_HOOK: symlinked to .git/hooks/pre-commit; not a Claude hook (per rules/ROADMAP.md Section 1.8) |
-| `hooks/pre-compaction-flush.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: PreCompact event — registered in full profile only | planned but not wired: CONDITIONAL: PreCompact event — registered in full profile only |
-| `hooks/predev-completeness-check.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/pre-compaction-flush.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/predev-completeness-check.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
 | `hooks/private-mode-gate.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: gates operations in private mode; planned for PreToolUse — not yet wired | planned but not wired: FUTURE: gates operations in private mode; planned for PreToolUse — not yet wired |
 | `hooks/private-mode-metrics-gate.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: gates metrics emission in private mode; planned for PostToolUse — not yet wired | planned but not wired: FUTURE: gates metrics emission in private mode; planned for PostToolUse — not yet wired |
-| `hooks/prompt-quality-llm.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/prompt-quality.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: regex variant superseded by prompt-quality-llm.sh | planned but not wired: FUTURE: regex variant superseded by prompt-quality-llm.sh |
+| `hooks/prompt-quality-llm.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: LLM-based variant; prompt-quality.sh (rule-based) is the registered version | whitelisted exclusion: DEPRECATED: LLM-based variant; prompt-quality.sh (rule-based) is the registered version |
+| `hooks/prompt-quality.sh` | REAL | fire_count_7d=28, registered=True | fires actively (28 rows in hook-health.jsonl last 7d) |
+| `hooks/rate-limit-drain.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/rate-limit-precheck.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
 | `hooks/rate-limit-protection.sh` | METADATA | deprecated_shim=True | DEPRECATED shim — short file with DEPRECATED marker |
 | `hooks/rate-limiter.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/reaper-heartbeat.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/recap-sync.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/registration-check.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/reinvention-check.sh` | REAL | fire_count_7d=29, registered=True | fires actively (29 rows in hook-health.jsonl last 7d) |
+| `hooks/reaper-heartbeat.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/recap-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: syncs session recap to external system; planned for Stop event — not yet wired | planned but not wired: FUTURE: syncs session recap to external system; planned for Stop event — not yet wired |
+| `hooks/registration-check.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: checks hook registration state; invoked manually or by CI | whitelisted exclusion: MANUAL_TRIGGER: checks hook registration state; invoked manually or by CI |
+| `hooks/reinvention-check.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
 | `hooks/release-guard.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired | planned but not wired: FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired |
 | `hooks/resource-check.sh` | METADATA | registered=False, excluded=True, category=INFRA: checks resource limits before spawning; called programmatically by rate-limiter.sh, not registered as independent hook | whitelisted exclusion: INFRA: checks resource limits before spawning; called programmatically by rate-limiter.sh, not registered as independent hook |
-| `hooks/result-truncator.sh` | REAL | fire_count_7d=111, registered=True | fires actively (111 rows in hook-health.jsonl last 7d) |
-| `hooks/scope-creep-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: PostToolUse Agent, planned but not wired | planned but not wired: FUTURE: PostToolUse Agent, planned but not wired |
-| `hooks/scope-proportionality.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: PostToolUse Agent, planned | planned but not wired: FUTURE: PostToolUse Agent, planned |
-| `hooks/secret-detector.sh` | REAL | fire_count_7d=171, registered=True | fires actively (171 rows in hook-health.jsonl last 7d) |
+| `hooks/result-truncator.sh` | REAL | fire_count_7d=901, registered=True | fires actively (901 rows in hook-health.jsonl last 7d) |
+| `hooks/scope-creep-detector.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/scope-proportionality.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/secret-detector.sh` | REAL | fire_count_7d=1020, registered=True | fires actively (1020 rows in hook-health.jsonl last 7d) |
 | `hooks/self-install.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/semgrep-scan.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: fires via /semgrep-scan skill | planned but not wired: CONDITIONAL: fires via /semgrep-scan skill |
-| `hooks/session-changelog.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/session-cleanup.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/session-end-reap.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/session-hygiene.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/self-knowledge-refresh.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/semgrep-scan.sh` | REAL | fire_count_7d=169, registered=True | fires actively (169 rows in hook-health.jsonl last 7d) |
+| `hooks/session-changelog.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
+| `hooks/session-cleanup.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/session-end-reap.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: reaps stale session artefacts at Stop; ADR-028 Phase B work item — not yet wired | planned but not wired: FUTURE: reaps stale session artefacts at Stop; ADR-028 Phase B work item — not yet wired |
+| `hooks/session-hygiene.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: cleanup script for stale session artefacts; run on demand | whitelisted exclusion: MANUAL_TRIGGER: cleanup script for stale session artefacts; run on demand |
 | `hooks/session-init.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/session-knowledge-extractor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: extracts learnings at session end; planned for Stop event — not yet wired | planned but not wired: FUTURE: extracts learnings at session end; planned for Stop event — not yet wired |
-| `hooks/session-learning.sh` | REAL | fire_count_7d=10, registered=True | fires actively (10 rows in hook-health.jsonl last 7d) |
+| `hooks/session-learning.sh` | REAL | fire_count_7d=43, registered=True | fires actively (43 rows in hook-health.jsonl last 7d) |
 | `hooks/session-resume.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/session-sanity.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/session-sanity.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: sanity-check script; invoked manually at session boundaries as needed | whitelisted exclusion: MANUAL_TRIGGER: sanity-check script; invoked manually at session boundaries as needed |
+| `hooks/session-start-worktree-nudge.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
 | `hooks/session-state-save.sh` | METADATA | registered=False, excluded=True, category=INFRA: saves session state to disk; invoked by session-cleanup.sh or manually; not a standalone registered hook | whitelisted exclusion: INFRA: saves session state to disk; invoked by session-cleanup.sh or manually; not a standalone registered hook |
 | `hooks/session-wrapup-trigger.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/singularity-check.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: checks MAPE-K loop state; invoked by /singularity skill, not by Claude events | whitelisted exclusion: MANUAL_TRIGGER: checks MAPE-K loop state; invoked by /singularity skill, not by Claude events |
 | `hooks/skill-feedback-tracker.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: tracks skill usage quality; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: tracks skill usage quality; planned for PostToolUse Agent — not yet wired |
-| `hooks/skill-invocation-logger.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/skill-invocation-logger.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
 | `hooks/skill-tracker.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: tracks skill invocations for model-optimizer; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: tracks skill invocations for model-optimizer; planned for PostToolUse Agent — not yet wired |
-| `hooks/skill-usage-tracker.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/skill-usage-tracker.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: tracks which skills are used per session; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: tracks which skills are used per session; planned for PostToolUse Agent — not yet wired |
 | `hooks/state-heartbeat.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/subagent-context-injector.sh` | METADATA | registered=False, excluded=True, category=INFRA: SubagentStart event — not included by default profile | whitelisted exclusion: INFRA: SubagentStart event — not included by default profile |
+| `hooks/subagent-context-injector.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
 | `hooks/sync-to-repo.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: syncs local OS changes to the luum-agent-os repo; invoked manually by developer | whitelisted exclusion: MANUAL_TRIGGER: syncs local OS changes to the luum-agent-os repo; invoked manually by developer |
-| `hooks/task-bridge-notify.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/task-bridge-notify.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: sends task events to external bridge; invoked programmatically by task lifecycle hooks | whitelisted exclusion: MANUAL_TRIGGER: sends task events to external bridge; invoked programmatically by task lifecycle hooks |
 | `hooks/task-completed.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: task-completion event handler; invoked by external task system, not by Claude events | whitelisted exclusion: MANUAL_TRIGGER: task-completion event handler; invoked by external task system, not by Claude events |
 | `hooks/task-created.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: task-creation event handler; invoked by external task system, not by Claude events | whitelisted exclusion: MANUAL_TRIGGER: task-creation event handler; invoked by external task system, not by Claude events |
-| `hooks/task-panel-sync.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/task-recorder.sh` | METADATA | registered=False, excluded=True, category=LIBRARY: sourced by dispatch-gate; not a standalone matcher | whitelisted exclusion: LIBRARY: sourced by dispatch-gate; not a standalone matcher |
+| `hooks/task-panel-sync.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: syncs task panel state; invoked programmatically, not by Claude events | whitelisted exclusion: MANUAL_TRIGGER: syncs task panel state; invoked programmatically, not by Claude events |
+| `hooks/task-recorder.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/teammate-idle.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: notifies when a team member's agent goes idle; invoked by squad infrastructure, not by Claude events | whitelisted exclusion: MANUAL_TRIGGER: notifies when a team member's agent goes idle; invoked by squad infrastructure, not by Claude events |
-| `hooks/token-budget-monitor.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/token-budget-monitor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: monitors token budget mid-session; planned for PostToolUse — not yet wired | planned but not wired: FUTURE: monitors token budget mid-session; planned for PostToolUse — not yet wired |
 | `hooks/tool-discovery-trigger.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired |
 | `hooks/tool-loop-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired | planned but not wired: FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired |
-| `hooks/trust-score-validator.sh` | REAL | fire_count_7d=7, registered=True | fires actively (7 rows in hook-health.jsonl last 7d) |
-| `hooks/usage-health-check.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/trust-score-validator.sh` | REAL | fire_count_7d=45, registered=True | fires actively (45 rows in hook-health.jsonl last 7d) |
+| `hooks/usage-health-check.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: reports token/rate usage; invoked on demand, not on every event | whitelisted exclusion: MANUAL_TRIGGER: reports token/rate usage; invoked on demand, not on every event |
 | `hooks/user-prompt-capture.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
-| `hooks/valkey-ensure.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
-| `hooks/wiring-check.sh` | DORMANT | fire_count_7d=0, registered=True | registered in settings.json but no fire events in last 7 days |
+| `hooks/valkey-ensure.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed | planned but not wired: CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed |
+| `hooks/wiring-check.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: audits hook registration; run on demand by operator, not on every event | whitelisted exclusion: MANUAL_TRIGGER: audits hook registration; run on demand by operator, not on every event |
+| `hooks/work-queue-sync.sh` | ASPIRATIONAL | registered=False, excluded=False, fire_count_7d=0 | not registered in settings.json and not in EXCLUDED_HOOKS.txt |
 | `hooks/worktree-submodule-fix.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: fixes git submodule state in worktrees; invoked manually after worktree operations | planned but not wired: CONDITIONAL: fixes git submodule state in worktrees; invoked manually after worktree operations |
 | `lib/adr_detector.py` | REAL | callers=1, size_bytes=15751 | imported by 1 non-test caller(s) |
-| `lib/agent_bus.py` | REAL | callers=1, size_bytes=29356 | imported by 1 non-test caller(s) |
+| `lib/agent_bus.py` | REAL | callers=1, size_bytes=31800 | imported by 1 non-test caller(s) |
 | `lib/agent_bus_metrics.py` | REAL | callers=6, size_bytes=14987 | imported by 6 non-test caller(s) |
 | `lib/agent_context_injector.py` | DORMANT | callers=0, size_bytes=4733 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/agent_dashboard.py` | DORMANT | callers=0, size_bytes=8242 | no non-test callers found in hooks/, packages/, scripts/ |
@@ -252,7 +261,7 @@
 | `lib/memory_first.py` | DORMANT | callers=0, size_bytes=3973 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/memory_retriever.py` | DORMANT | callers=0, size_bytes=9406 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/memory_scanner.py` | DORMANT | callers=0, size_bytes=4476 | no non-test callers found in hooks/, packages/, scripts/ |
-| `lib/metric_event.py` | REAL | callers=9, size_bytes=6064 | imported by 9 non-test caller(s) |
+| `lib/metric_event.py` | REAL | callers=11, size_bytes=6064 | imported by 11 non-test caller(s) |
 | `lib/mlflow_bridge.py` | REAL | callers=1, size_bytes=9115 | imported by 1 non-test caller(s) |
 | `lib/model_catalog.py` | DORMANT | callers=0, size_bytes=17380 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/model_recommender.py` | DORMANT | callers=0, size_bytes=4210 | no non-test callers found in hooks/, packages/, scripts/ |
@@ -260,7 +269,7 @@
 | `lib/notification_digest.py` | DORMANT | callers=0, size_bytes=4312 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/notifications.py` | REAL | callers=1, size_bytes=12174 | imported by 1 non-test caller(s) |
 | `lib/observability.py` | REAL | callers=1, size_bytes=10023 | imported by 1 non-test caller(s) |
-| `lib/orchestrator_capabilities.py` | REAL | callers=1, size_bytes=7259 | imported by 1 non-test caller(s) |
+| `lib/orchestrator_capabilities.py` | REAL | callers=1, size_bytes=8626 | imported by 1 non-test caller(s) |
 | `lib/orchestrator_mode.py` | DORMANT | callers=0, size_bytes=4837 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/paperclip_client.py` | DORMANT | callers=0, size_bytes=18239 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/paths.py` | REAL | callers=1, size_bytes=2133 | imported by 1 non-test caller(s) |
@@ -276,17 +285,20 @@
 | `lib/queue_advisor.py` | REAL | callers=0, writes_jsonl=True, size_bytes=27198 | writes to an existing metrics JSONL file |
 | `lib/queue_drainer.py` | REAL | callers=3, size_bytes=14817 | imported by 3 non-test caller(s) |
 | `lib/rate_limit_protection.py` | DORMANT | callers=0, size_bytes=863 | no non-test callers found in hooks/, packages/, scripts/ |
-| `lib/rate_limiter.py` | REAL | callers=2, size_bytes=24883 | imported by 2 non-test caller(s) |
+| `lib/rate_limit_queue_migration.py` | DORMANT | callers=0, size_bytes=3513 | no non-test callers found in hooks/, packages/, scripts/ |
+| `lib/rate_limiter.py` | REAL | callers=3, size_bytes=44549 | imported by 3 non-test caller(s) |
 | `lib/record_completion.py` | REAL | callers=1, size_bytes=16875 | imported by 1 non-test caller(s) |
 | `lib/record_error.py` | DORMANT | callers=0, size_bytes=688 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/ref_key_loader.py` | REAL | callers=1, size_bytes=5425 | imported by 1 non-test caller(s) |
 | `lib/reinvention_guard.py` | DORMANT | callers=0, size_bytes=12450 | no non-test callers found in hooks/, packages/, scripts/ |
+| `lib/reinvention_semantic.py` | REAL | callers=1, size_bytes=22088 | imported by 1 non-test caller(s) |
 | `lib/release_analyzer.py` | DORMANT | callers=0, size_bytes=19825 | no non-test callers found in hooks/, packages/, scripts/ |
-| `lib/repetition_detector.py` | DORMANT | callers=0, size_bytes=6093 | no non-test callers found in hooks/, packages/, scripts/ |
+| `lib/repetition_detector.py` | REAL | callers=0, writes_jsonl=True, size_bytes=6093 | writes to an existing metrics JSONL file |
 | `lib/repo_analyzer.py` | DORMANT | callers=0, size_bytes=51731 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/request_queue.py` | DORMANT | callers=0, size_bytes=4288 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/research_scoring.py` | DORMANT | callers=0, size_bytes=7750 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/retry_scheduler.py` | DORMANT | callers=0, size_bytes=5440 | no non-test callers found in hooks/, packages/, scripts/ |
+| `lib/retry_tracker.py` | REAL | callers=0, writes_jsonl=True, size_bytes=3385 | writes to an existing metrics JSONL file |
 | `lib/return_contract_parser.py` | REAL | callers=2, size_bytes=8526 | imported by 2 non-test caller(s) |
 | `lib/return_contract_validator.py` | DORMANT | callers=0, size_bytes=6609 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/reverse_engineer.py` | DORMANT | callers=0, size_bytes=43887 | no non-test callers found in hooks/, packages/, scripts/ |
@@ -296,6 +308,7 @@
 | `lib/sdd_resume.py` | DORMANT | callers=0, size_bytes=11873 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/secret_ref.py` | REAL | callers=1, size_bytes=4680 | imported by 1 non-test caller(s) |
 | `lib/self_improvement.py` | REAL | callers=0, writes_jsonl=True, size_bytes=8252 | writes to an existing metrics JSONL file |
+| `lib/self_knowledge.py` | DORMANT | callers=0, size_bytes=10009 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/session_hygiene.py` | REAL | callers=1, size_bytes=5446 | imported by 1 non-test caller(s) |
 | `lib/session_parser.py` | REAL | callers=1, size_bytes=16900 | imported by 1 non-test caller(s) |
 | `lib/session_state.py` | REAL | callers=1, size_bytes=8945 | imported by 1 non-test caller(s) |
@@ -305,8 +318,9 @@
 | `lib/skill_router.py` | DORMANT | callers=0, size_bytes=46082 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/smart_access.py` | DORMANT | callers=0, size_bytes=6992 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/smart_infra.py` | REAL | callers=1, size_bytes=23098 | imported by 1 non-test caller(s) |
-| `lib/smart_reader.py` | DORMANT | callers=0, size_bytes=24454 | no non-test callers found in hooks/, packages/, scripts/ |
+| `lib/smart_reader.py` | REAL | callers=0, writes_jsonl=True, size_bytes=24454 | writes to an existing metrics JSONL file |
 | `lib/smart_truncator.py` | DORMANT | callers=0, size_bytes=20833 | no non-test callers found in hooks/, packages/, scripts/ |
+| `lib/sprint_orchestrator.py` | REAL | callers=1, size_bytes=16876 | imported by 1 non-test caller(s) |
 | `lib/stack_skill_recommender.py` | DORMANT | callers=0, size_bytes=18329 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/staged_verification.py` | DORMANT | callers=0, size_bytes=15214 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/state_heartbeat.py` | REAL | callers=2, size_bytes=9842 | imported by 2 non-test caller(s) |
@@ -325,35 +339,45 @@
 | `lib/webhook_trigger.py` | DORMANT | callers=0, size_bytes=14410 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/wiring_validator.py` | DORMANT | callers=0, size_bytes=12299 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/work_queue.py` | REAL | callers=5, size_bytes=6414 | imported by 5 non-test caller(s) |
-| `scripts/apply-efficiency-profile.sh` | REAL | writes_jsonl=True, size_bytes=15142 | writes to an existing metrics JSONL file |
-| `scripts/aspirational-audit.py` | REAL | writes_jsonl=True, size_bytes=28726 | writes to an existing metrics JSONL file |
+| `scripts/apply-efficiency-profile.sh` | DORMANT | callers=0, size_bytes=17521 | no observable production use detected |
+| `scripts/aspirational-audit.py` | REAL | writes_jsonl=True, size_bytes=30661 | writes to an existing metrics JSONL file |
 | `scripts/auto-update-projects.sh` | DORMANT | callers=0, size_bytes=9854 | no observable production use detected |
-| `scripts/backfill-cost-events.py` | REAL | writes_jsonl=True, size_bytes=2848 | writes to an existing metrics JSONL file |
+| `scripts/backfill-cost-events.py` | REAL | writes_jsonl=True, size_bytes=2862 | writes to an existing metrics JSONL file |
 | `scripts/benchmark-hooks.sh` | DORMANT | callers=0, size_bytes=5747 | no observable production use detected |
-| `scripts/check-catalog-sync.py` | DORMANT | callers=0, size_bytes=4249 | no observable production use detected |
-| `scripts/check-hook-registration.py` | DORMANT | callers=0, size_bytes=3692 | no observable production use detected |
-| `scripts/check-lib-wiring.py` | DORMANT | callers=0, size_bytes=3584 | no observable production use detected |
-| `scripts/check-test-quality.py` | DORMANT | callers=0, size_bytes=10421 | no observable production use detected |
-| `scripts/check-test-ratchet.py` | DORMANT | callers=0, size_bytes=4244 | no observable production use detected |
+| `scripts/check-catalog-sync.py` | DORMANT | callers=0, size_bytes=4263 | no observable production use detected |
+| `scripts/check-hook-registration.py` | DORMANT | callers=0, size_bytes=3706 | no observable production use detected |
+| `scripts/check-lib-wiring.py` | DORMANT | callers=0, size_bytes=3598 | no observable production use detected |
+| `scripts/check-test-quality.py` | DORMANT | callers=0, size_bytes=10435 | no observable production use detected |
+| `scripts/check-test-ratchet.py` | DORMANT | callers=0, size_bytes=4258 | no observable production use detected |
 | `scripts/check-upstream-changes.sh` | DORMANT | callers=0, size_bytes=851 | no observable production use detected |
 | `scripts/component-lint.sh` | DORMANT | callers=0, size_bytes=9712 | no observable production use detected |
-| `scripts/compose-agent-prompt.py` | DORMANT | callers=0, size_bytes=7526 | no observable production use detected |
+| `scripts/compose-agent-prompt.py` | DORMANT | callers=0, size_bytes=7540 | no observable production use detected |
 | `scripts/cos-bootstrap.sh` | DORMANT | callers=0, size_bytes=16903 | no observable production use detected |
+| `scripts/cos-build-self-knowledge.py` | DORMANT | callers=0, size_bytes=14449 | no observable production use detected |
+| `scripts/cos-chaos-template.py` | DORMANT | callers=0, size_bytes=14967 | no observable production use detected |
+| `scripts/cos-classify-coverage.py` | REAL | writes_jsonl=True, size_bytes=9297 | writes to an existing metrics JSONL file |
 | `scripts/cos-core-skills-check.sh` | DORMANT | callers=0, size_bytes=8437 | no observable production use detected |
+| `scripts/cos-executor.py` | REAL | writes_jsonl=True, size_bytes=14660 | writes to an existing metrics JSONL file |
 | `scripts/cos-ghost-skills.sh` | REAL | writes_jsonl=True, size_bytes=3222 | writes to an existing metrics JSONL file |
 | `scripts/cos-init-global.sh` | DORMANT | callers=0, size_bytes=4626 | no observable production use detected |
 | `scripts/cos-init.sh` | DORMANT | callers=0, size_bytes=21246 | no observable production use detected |
 | `scripts/cos-registry.sh` | DORMANT | callers=0, size_bytes=6642 | no observable production use detected |
 | `scripts/cos-release-check.sh` | DORMANT | callers=0, size_bytes=20638 | no observable production use detected |
 | `scripts/cos-sessions.sh` | REAL | writes_jsonl=True, size_bytes=5519 | writes to an existing metrics JSONL file |
+| `scripts/cos-smoke.sh` | DORMANT | callers=0, size_bytes=1416 | no observable production use detected |
+| `scripts/cos-sprint.py` | REAL | writes_jsonl=True, size_bytes=8987 | writes to an existing metrics JSONL file |
 | `scripts/cos-status.sh` | DORMANT | callers=0, size_bytes=17088 | no observable production use detected |
+| `scripts/cos-test-quality-audit.py` | REAL | writes_jsonl=True, size_bytes=17618 | writes to an existing metrics JSONL file |
 | `scripts/cos-update.sh` | DORMANT | callers=0, size_bytes=20816 | no observable production use detected |
 | `scripts/cos-usage-report.sh` | REAL | writes_jsonl=True, size_bytes=9125 | writes to an existing metrics JSONL file |
+| `scripts/cos-valkey-local.sh` | REAL | writes_jsonl=True, size_bytes=9587 | writes to an existing metrics JSONL file |
+| `scripts/cos-watch.py` | REAL | writes_jsonl=True, size_bytes=12194 | writes to an existing metrics JSONL file |
+| `scripts/cos-work-queue.py` | DORMANT | callers=0, size_bytes=6151 | no observable production use detected |
 | `scripts/create-release.sh` | DORMANT | callers=0, size_bytes=5275 | no observable production use detected |
 | `scripts/doctor.sh` | DORMANT | callers=0, size_bytes=9622 | no observable production use detected |
 | `scripts/engram-sync.sh` | DORMANT | callers=0, size_bytes=4328 | no observable production use detected |
 | `scripts/extract-agent-output.sh` | DORMANT | callers=0, size_bytes=4369 | no observable production use detected |
-| `scripts/generate-compact-catalog.py` | DORMANT | callers=0, size_bytes=5663 | no observable production use detected |
+| `scripts/generate-compact-catalog.py` | DORMANT | callers=0, size_bytes=5677 | no observable production use detected |
 | `scripts/generate-project-settings.sh` | DORMANT | callers=0, size_bytes=5532 | no observable production use detected |
 | `scripts/ide-bridge.sh` | DORMANT | callers=0, size_bytes=15015 | no observable production use detected |
 | `scripts/install-aguara.sh` | DORMANT | callers=0, size_bytes=1265 | no observable production use detected |
@@ -366,16 +390,17 @@
 | `scripts/manifest-check.sh` | DORMANT | callers=0, size_bytes=5574 | no observable production use detected |
 | `scripts/merge-settings.sh` | DORMANT | callers=0, size_bytes=3117 | no observable production use detected |
 | `scripts/migrate-to-cognitive-os.sh` | DORMANT | callers=0, size_bytes=3232 | no observable production use detected |
-| `scripts/orchestrator.py` | REAL | writes_jsonl=True, size_bytes=8114 | writes to an existing metrics JSONL file |
+| `scripts/orchestrator.py` | REAL | writes_jsonl=True, size_bytes=8128 | writes to an existing metrics JSONL file |
 | `scripts/register-mcps.sh` | DORMANT | callers=0, size_bytes=15569 | no observable production use detected |
 | `scripts/run-all-tests.sh` | DORMANT | callers=0, size_bytes=4048 | no observable production use detected |
-| `scripts/set-security-profile.sh` | DORMANT | callers=0, size_bytes=7807 | no observable production use detected |
+| `scripts/scope-tag-backfill.py` | DORMANT | callers=0, size_bytes=4137 | no observable production use detected |
+| `scripts/set-security-profile.sh` | DORMANT | callers=0, size_bytes=8750 | no observable production use detected |
 | `scripts/setup-git-hooks.sh` | DORMANT | callers=0, size_bytes=7018 | no observable production use detected |
 | `scripts/setup-langfuse.sh` | DORMANT | callers=0, size_bytes=10713 | no observable production use detected |
 | `scripts/setup.sh` | DORMANT | callers=0, size_bytes=11084 | no observable production use detected |
 | `scripts/so-emergency-stop.sh` | DORMANT | callers=0, size_bytes=5181 | no observable production use detected |
 | `scripts/so-reaper.sh` | DORMANT | callers=0, size_bytes=2341 | no observable production use detected |
-| `scripts/so-vitals.sh` | DORMANT | callers=0, size_bytes=7252 | no observable production use detected |
+| `scripts/so-vitals.sh` | REAL | writes_jsonl=True, size_bytes=8138 | writes to an existing metrics JSONL file |
 | `scripts/test-agent-teams-hooks.sh` | DORMANT | callers=0, size_bytes=4384 | no observable production use detected |
 | `scripts/test-all.sh` | DORMANT | callers=0, size_bytes=8267 | no observable production use detected |
 | `scripts/test-cognitive-os-full.sh` | DORMANT | callers=0, size_bytes=6493 | no observable production use detected |
@@ -384,6 +409,7 @@
 | `scripts/uninstall.sh` | DORMANT | callers=0, size_bytes=5796 | no observable production use detected |
 | `scripts/upgrade.sh` | DORMANT | callers=0, size_bytes=6400 | no observable production use detected |
 | `scripts/version.sh` | DORMANT | callers=0, size_bytes=5158 | no observable production use detected |
+| `scripts/weekly-aspirational-audit.sh` | DORMANT | callers=0, size_bytes=998 | no observable production use detected |
 | `skills/add-hook/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/add-mcp/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/add-rule/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
@@ -391,8 +417,8 @@
 | `skills/agent-dashboard/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/agent-kpis/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/agent-stress-test/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/analyze-improvements/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
-| `skills/apply-improvements/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
+| `skills/analyze-improvements/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/apply-improvements/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/arena/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/audit-integrity/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/audit-website/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
@@ -400,12 +426,12 @@
 | `skills/auto-rollback/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/automaker-bridge/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/batch-runner/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/bump-version/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
+| `skills/bump-version/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/capability-snapshot/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/catalog-full/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/caveman/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
-| `skills/caveman-compress/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
-| `skills/caveman-es/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
+| `skills/caveman/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/caveman-compress/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
+| `skills/caveman-es/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/code-review/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/cognee-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/cognee-search/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
@@ -424,7 +450,7 @@
 | `skills/deep-research/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/deepeval-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/detect-patterns/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/detect-stack/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
+| `skills/detect-stack/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/devbox-checkpoint/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/doc-sync/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/document-feature/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
@@ -433,7 +459,7 @@
 | `skills/eval-repo/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/evaluate-plan/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/exhaustive-prompt/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/generate-changelog/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
+| `skills/generate-changelog/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/generate-config/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
 | `skills/gpu-sandbox/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/harness-audit/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
@@ -453,10 +479,10 @@
 | `skills/plan-bug/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/plan-feature/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/planning-poker/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/pr-review/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
+| `skills/pr-review/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/private-mode/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/promptfoo-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/push-release/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
+| `skills/push-release/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/queue-drain/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/ragas-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/readiness-check/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
@@ -498,12 +524,12 @@
 | `skills/sre-agent/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/strands-evals-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/systematic-debugging/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/tag-release/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
+| `skills/tag-release/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/test-driven-development/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/tool-discovery/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/trust-audit/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/validate-config/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/validate-release/SKILL.md` | ASPIRATIONAL | invocations_30d=0, referenced_in_docs=False | no invocations and not referenced in rules or docs |
+| `skills/validate-release/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/verification-before-completion/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/vulnerability-scan/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/web-crawler/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
