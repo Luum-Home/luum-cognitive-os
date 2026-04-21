@@ -167,6 +167,62 @@ class HeartbeatTick(CanonicalEvent):
 
 
 @dataclass
+class ToolUseStart(CanonicalEvent):
+    """Emitted when a specific tool invocation begins (ADR-034 live events).
+
+    Distinct from :class:`ToolUse` (which is a combined start+end record emitted
+    post-hoc by the Claude Code adapter). ``ToolUseStart`` is used by streaming
+    adapters that can detect the *beginning* of a tool call in real-time.
+    """
+
+    event_type: ClassVar[str] = "tool_use_start"
+
+    agent_id: str = ""
+    tool_name: str = ""
+    started_at: float = 0.0
+    tool_input_summary: Optional[str] = None
+    session_id: Optional[str] = None
+
+
+@dataclass
+class ToolUseEnd(CanonicalEvent):
+    """Emitted when a specific tool invocation completes (ADR-034 live events).
+
+    Pairs with :class:`ToolUseStart`. Streaming adapters emit this when they
+    detect the end of a tool call (e.g. Aider's "Ran shell command" line).
+    """
+
+    event_type: ClassVar[str] = "tool_use_end"
+
+    agent_id: str = ""
+    tool_name: str = ""
+    ended_at: float = 0.0
+    duration_ms: Optional[int] = None
+    exit_status: str = "unknown"
+    session_id: Optional[str] = None
+
+
+@dataclass
+class ProgressMarker(CanonicalEvent):
+    """Emitted when a ``PROGRESS: [N/M] message`` line is detected (ADR-034).
+
+    Sub-agents are required by ``rules/responsiveness.md`` to emit PROGRESS
+    markers so the orchestrator can track live execution. Streaming adapters
+    translate these into :class:`ProgressMarker` canonical events for
+    downstream consumers (Agent Bus, SLO probes, dashboards).
+    """
+
+    event_type: ClassVar[str] = "progress_marker"
+
+    agent_id: str = ""
+    ts: float = 0.0
+    step_current: int = 0
+    step_total: int = 0
+    message: str = ""
+    session_id: Optional[str] = None
+
+
+@dataclass
 class ParseError(CanonicalEvent):
     """Emitted when a line does not match any known pattern in a passive adapter.
 
