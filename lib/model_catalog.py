@@ -81,7 +81,7 @@ _ENTRIES: Tuple[ModelEntry, ...] = (
         output_price_per_m=75.0,
         context_window=1_000_000,
         capabilities={"reasoning": 9, "speed": 3, "code": 8},
-        aliases=("opus", "claude-opus-4", "claude-opus", "claude-opus-4-20250514"),
+        aliases=("opus", "claude-opus-4", "claude-opus", "claude-opus-4-20250514", "claude-opus-4-7"),
     ),
     ModelEntry(
         id="claude-sonnet-4",
