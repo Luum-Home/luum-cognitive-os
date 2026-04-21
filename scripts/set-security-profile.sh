@@ -8,9 +8,11 @@
 #   paranoid — full safety mesh + governance + all event types
 #
 # Source of truth: .cognitive-os/plans/features/hook-architecture-v2-settings*.json
-# ADR-028 D1.B: reaper-heartbeat.sh — SessionStart, schedules periodic process reaper
+# ADR-028 D1.B: reaper-daemon-launcher.sh — SessionStart, schedules periodic process reaper
+#               (renamed from reaper-heartbeat.sh in v0.15; symlink preserved for backwards compat)
 # ADR-028b D1.C: native-agent-heartbeat.sh — PreToolUse:Agent + PostToolUse:Agent, heartbeats for native mode
-# ADR-034: cos-executor-heartbeat.sh — SessionStart, ensures live-streaming daemon (scripts/cos-executor.py)
+# ADR-034: cos-executor-daemon-launcher.sh — SessionStart, ensures live-streaming daemon (scripts/cos-executor.py)
+#           (renamed from cos-executor-heartbeat.sh in v0.15; symlink preserved for backwards compat)
 #          Registration (cross-profile): standard + paranoid. Minimal profile SHOULD skip it (live telemetry
 #          is advisory, not a safety control).
 
