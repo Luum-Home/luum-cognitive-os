@@ -117,12 +117,41 @@ Deferred to a future phase (not blocking):
 - Reuse `templates/agent-mandatory-rules.md` and `agent-preamble.md`
 - Honor `subagent-context-injector.sh` equivalent at the loop entry point
 
-### Phase 4 — Parity test harness (follow-up)
+### Phase 4 — Parity test harness (DELIVERED 2026-04-21)
 
-- Run the same task through both the Claude Agent tool and the Qwen loop
-- Compare: final output diff, files modified, tool-calls made, token cost
-- Establish quality-vs-cost tradeoff data to drive the `--providers` routing
-  decision in `scripts/orchestrator.py` (worked in parallel — out of scope here)
+Shipped in commit `feat(parity): ADR-051 Phase 4 — Agent() vs Qwen loop parity harness`.
+
+Deliverables:
+
+- `scripts/parity-harness.py` — CLI that takes a YAML task-set and runs every
+  task through BOTH `lib.qwen_agent_loop.run_agent(...)` and
+  `lib.claude_executor.ClaudeExecutor.run(...)`. Emits CSV (stable columns) +
+  Markdown report (per-task winner on cost/latency) + one JSONL record per
+  `(task, provider)` pair to `.cognitive-os/metrics/parity-results.jsonl`.
+- `docs/benchmarks/parity-smoke.yaml` — 4-task smoke set (read-file, grep,
+  glob, no-tool reasoning). Designed to stress each tool path once.
+- `tests/unit/test_parity_harness.py` — 14 tests. Dependency-injected
+  providers (`qwen_fn`, `claude_fn` args on `run_task`) so the suite NEVER
+  calls a real API. CLI dry-run path + renderers + snapshot-diff + task-set
+  loader all covered.
+
+Measured dimensions per (task, provider) pair:
+- `tokens_in` / `tokens_out` (provider-reported usage)
+- `cost_usd` (Qwen via `qwen_provider.estimate_cost`; Claude via executor's
+  `ModelCatalog.estimate_cost`)
+- `latency_ms` (wall-clock)
+- `tool_calls` (count)
+- `files_modified` (sha256 snapshot diff over `watch_paths`)
+- `success_cmd_exit` (optional per-task shell assertion)
+- `text_hash` (md5 of final text — cheap output-diff signal)
+
+Feeds ADR-052 benchmark harness (same JSONL schema) and ADR-053
+auto-optimizer (cost/latency per task_type over time).
+
+Extension hooks (deferred, out of scope here):
+- Content-quality scoring (embed-similarity, LLM-as-judge)
+- Multi-run averaging for variance bars
+- Parallel execution of the two legs
 
 ### Rationale
 
