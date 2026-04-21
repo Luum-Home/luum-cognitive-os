@@ -237,6 +237,12 @@ GROUPEOF
   )
 
   # PostToolUse
+  # context-watchdog.sh fires on ALL PostToolUse events (empty matcher = wildcard)
+  # for context usage monitoring per rules/context-management.md. ≤50ms, always exit 0.
+  # Emits threshold warnings at 50/70/85% tool-call counts.
+  local post_all
+  post_all=$(hook_group "" \
+    "context-watchdog.sh")
   local post_bash
   post_bash=$(hook_group "Bash" \
     "error-pipeline.sh" \
@@ -364,7 +370,7 @@ GROUPEOF
 
   printf '    "PostToolUse": [\n'
   local post_first=true
-  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_todo" "$post_skill" "$post_agent"; do
+  for group in "$post_all" "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_todo" "$post_skill" "$post_agent"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
@@ -396,7 +402,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh pre-compaction-flush.sh mcp-scan.sh aguara-scan.sh parry-scan.sh semgrep-scan.sh agent-bash-cwd-enforcer.sh session-start-worktree-nudge.sh session-heartbeat.sh session-watchdog-launcher.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh pre-compaction-flush.sh mcp-scan.sh aguara-scan.sh parry-scan.sh semgrep-scan.sh agent-bash-cwd-enforcer.sh session-start-worktree-nudge.sh session-heartbeat.sh session-watchdog-launcher.sh context-watchdog.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -409,6 +415,7 @@ echo "  SessionStart: self-install.sh, session-init.sh, reaper-daemon-launcher.s
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  UserPromptSubmit: user-prompt-capture.sh, session-wrapup-trigger.sh, session-heartbeat.sh (ADR-047: liveness)"
 echo "  PreToolUse *: session-heartbeat.sh (ADR-047: liveness signal on all tool calls)"
+echo "  PostToolUse *: context-watchdog.sh (ADR-027/rules/context-management: 50/70/85% thresholds)"
 echo "  PreToolUse Bash: rate-limit-precheck.sh (D45 gap B: sidecar retry_count lift), agent-bash-cwd-enforcer.sh (cwd mismatch advisory for git ops), rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh, destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
