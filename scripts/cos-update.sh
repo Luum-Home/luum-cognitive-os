@@ -53,6 +53,8 @@ COMPOSE_FILE="${PROJECT_ROOT}/docker-compose.cognitive-os.yml"
 PYPROJECT_FILE="${PROJECT_ROOT}/pyproject.toml"
 STATE_DIR="${COS_DIR}/state"
 PYPROJECT_SHA_FILE="${STATE_DIR}/pyproject.sha"
+APPLY_EFF_PROFILE_SCRIPT="${SCRIPT_DIR}/apply-efficiency-profile.sh"
+APPLY_EFF_PROFILE_SHA_FILE="${STATE_DIR}/apply-efficiency-profile.sha"
 REGISTER_MCPS_SCRIPT="${SCRIPT_DIR}/register-mcps.sh"
 COGNITIVE_OS_YAML="${PROJECT_ROOT}/cognitive-os.yaml"
 
@@ -340,6 +342,63 @@ sync_python_deps_if_changed() {
 }
 
 # ---------------------------------------------------------------------------
+# Settings regeneration — re-runs scripts/apply-efficiency-profile.sh when that
+# script changes. Mirrors sync_python_deps_if_changed: caches the SHA-256 of
+# apply-efficiency-profile.sh in .cognitive-os/state/apply-efficiency-profile.sha
+# so subsequent updates without upstream changes are no-ops.
+#
+# This closes the downstream-project drift gap: when cos-update.sh copies a
+# new apply-efficiency-profile.sh (e.g. adding a hook registration), the
+# downstream's .claude/settings.json would otherwise stay stale because
+# cos-update.sh only runs self-install — not the profile generator.
+#
+# Failure is non-fatal (WARN + continue), same pattern as uv sync.
+# Missing script (edge case: minimal install) is a silent skip.
+# ---------------------------------------------------------------------------
+regenerate_settings_if_profile_changed() {
+  if [[ ! -f "$APPLY_EFF_PROFILE_SCRIPT" ]]; then
+    # Silent skip — minimal install may not ship the profile generator.
+    return 0
+  fi
+
+  local current_sha previous_sha=""
+  current_sha="$(sha256_of "$APPLY_EFF_PROFILE_SCRIPT")"
+  if [[ -f "$APPLY_EFF_PROFILE_SHA_FILE" ]]; then
+    previous_sha="$(cat "$APPLY_EFF_PROFILE_SHA_FILE" 2>/dev/null || echo "")"
+  fi
+
+  if [[ "$current_sha" == "$previous_sha" && "$FORCE" != "true" ]]; then
+    note "apply-efficiency-profile.sh unchanged (sha ${current_sha:0:8}); skipping settings regen"
+    return 0
+  fi
+
+  # Resolve current profile from cognitive-os.yaml; default to 'default'.
+  # Use grep+awk for bash 3.2 compatibility (no yq/python dependency here).
+  local profile=""
+  if [[ -f "$COGNITIVE_OS_YAML" ]]; then
+    profile="$(grep -A1 '^efficiency:' "$COGNITIVE_OS_YAML" 2>/dev/null \
+      | grep 'profile:' \
+      | awk '{print $2}' \
+      | tr -d "'\"" \
+      | head -1)"
+  fi
+  if [[ -z "$profile" ]]; then
+    profile="default"
+  fi
+
+  note "apply-efficiency-profile.sh changed (${previous_sha:0:8}→${current_sha:0:8}); regenerating settings.json with profile '${profile}'"
+  if bash "$APPLY_EFF_PROFILE_SCRIPT" "$profile" >&2; then
+    mkdir -p "$STATE_DIR"
+    printf '%s\n' "$current_sha" > "$APPLY_EFF_PROFILE_SHA_FILE"
+    note "apply-efficiency-profile.sha cache updated"
+    return 0
+  else
+    warn "apply-efficiency-profile.sh failed; not updating sha cache (will retry on next update)"
+    return 1
+  fi
+}
+
+# ---------------------------------------------------------------------------
 # MCP registration — calls scripts/register-mcps.sh with the profile from
 # cognitive-os.yaml. Caching is handled inside register-mcps.sh (mcps.sha).
 # Failure is non-fatal (WARN + continue), matching the uv sync behavior.
@@ -521,6 +580,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
   say "  - create backup at .cognitive-os/backups/pre-update-<UTC>/"
   say "  - rotate backups to last ${MAX_BACKUPS}"
   say "  - sync Python deps via uv sync if pyproject.toml changed"
+  say "  - regenerate settings.json via scripts/apply-efficiency-profile.sh if the profile script changed"
   say "  - register mcps via scripts/register-mcps.sh if manifest changed"
   say "  - run hooks/self-install.sh"
   say "  - capture post-state snapshot and diff against pre-state"
@@ -548,6 +608,11 @@ pull_images_if_requested
 # Failure here is a WARN (does not abort the update) so that partial offline
 # environments still get the self-install updates applied.
 sync_python_deps_if_changed || warn "python dependency sync encountered errors (see log above)"
+
+# Regenerate .claude/settings.json when apply-efficiency-profile.sh has changed.
+# Done BEFORE self-install so self-install operates on the refreshed settings.
+# Placed after file sync (sync_python_deps_if_changed above) and before verify.
+regenerate_settings_if_profile_changed || warn "settings regeneration encountered errors (see log above)"
 
 register_mcps_if_changed
 
