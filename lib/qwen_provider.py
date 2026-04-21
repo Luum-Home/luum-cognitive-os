@@ -161,7 +161,7 @@ def call(
         return QwenResult(
             success=False,
             model=model,
-            error="openai SDK not installed (run: pip install openai)",
+            error="openai SDK not installed (run: uv sync --extra direct_providers)",
         )
 
     kwargs: Dict[str, Any] = {
