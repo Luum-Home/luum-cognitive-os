@@ -183,8 +183,31 @@ This addendum formalises the precedence rule:
 
 ## Action items (for orchestrator before ADR-027 execution)
 
-- [x] Update ADR-027 D3 KPI row per §4: replace "≤ 18 total" with "Agent-matcher subset ≤ 2" — PENDING: line 265 in ADR-027 still shows "≤ 18"
-- [x] Remove D2 task bullet for `scripts/compact-claude-md.py` per §2 — PENDING: line 339 in ADR-027 still present
-- [x] Replace D2 KPI target "CLAUDE.md ≤ 400 tokens" with "≤ 1,200 tokens" per §2 — PENDING: line 205 in ADR-027 still shows "≤ 400 tokens/launch"
-- [x] Add ws9 dependency to ADR-027 Phase 1 §Risks per §3: "ws9-test-errors must be resolved first" — PENDING: Not yet added to ADR-027
+- [x] Update ADR-027 D3 KPI row per §4: replace "≤ 18 total" with "Agent-matcher subset ≤ 2" — RESOLVED 2026-04-21 (commit `<pending-commit>`)
+- [x] Remove D2 task bullet for `scripts/compact-claude-md.py` per §2 — RESOLVED 2026-04-21 (commit `<pending-commit>`)
+- [x] Replace D2 KPI target "CLAUDE.md ≤ 400 tokens" with "≤ 1,200 tokens" per §2 — RESOLVED 2026-04-21 (commit `<pending-commit>`)
+- [x] Add ws9 dependency to ADR-027 Phase 1 §Risks per §3: "ws9-test-errors must be resolved first" — RESOLVED 2026-04-21 (commit `<pending-commit>`)
 - [x] Update `.cognitive-os/work-queue.json`: mark `ws9-test-errors` as `"blocks": "ADR-027/Phase-1"` — ws9 already resolved per queue.json:122
+
+---
+
+## Resolution Log — 2026-04-21
+
+All four pending action items from the "Action items (for orchestrator before ADR-027 execution)" list have been executed against `docs/adrs/ADR-027.md`. Resolution details:
+
+| # | Item | Target in ADR-027 | Action taken |
+|---|------|-------------------|--------------|
+| 1 | KPI "Registered hook entries ≤ 18" contradicted hook-architecture-v2 | KPI row (formerly line 265) in §KPIs | Row rewritten to "Registered hook entries (Agent-matcher subset) — baseline 7 (4 PreToolUse Agent + 3 PostToolUse Agent), target ≤ 2". Measurement `jq` query scoped to the Agent matcher subset. Explicit note added that total entry count is governed by the efficiency profile and is orthogonal. Cross-reference to ADR-027a §4 included. |
+| 2 | D2 bullet referencing `scripts/compact-claude-md.py` (redundant with EXCLUDED_RULES) | Phase 2 §Surface (formerly line 339); Phase 2 §Tasks item 2 | Surface bullet struck through with explicit removal rationale citing commit `1ee19a4`. Task 2 rewritten from "Draft compact CLAUDE.md via `scripts/compact-claude-md.py`; manual review" to "Manually deduplicate SDD/engram prose blocks in `~/.claude/CLAUDE.md` to reach ≤ 1,200 tokens". |
+| 3 | KPI "CLAUDE.md ≤ 400 tokens" (infeasible — remaining tokens are session-mandatory inline prose) | KPI row (formerly line 259) in §KPIs | Baseline corrected from ~6,031 to ~1,904 (stale baseline discovered per ADR-027a §1). Target changed from ≤ 400 to ≤ 1,200. Measurement note updated from "after compact migration" to "after SDD/engram prose deduplication". |
+| 4 | Phase 1 depended on ws9-test-errors but the dependency was not documented in-situ | Phase 1 §Risks & mitigations (circa line 309) | New **Prerequisite** sub-section inserted above Risks, including the orchestrator gating command (`pytest --collect-only ... \| grep error \| wc -l == 0`) and noting that ws9 has since been resolved per `work-queue.json:122`. |
+
+**Scope not touched (intentional):**
+
+- `.cognitive-os/work-queue.json` — item 5 says "ws9 already resolved per queue.json:122" so no edit needed.
+- `rules/so-slo.md` — no new SLO row required. The four resolved items are ADR-level doc corrections / task-list corrections; none of them introduces a new measurable SLO beyond what ADR-027 §KPIs already defines.
+- Existing code/hooks — none of the four items required a code change. The `EXCLUDED_RULES` mechanism they defer to already exists (commit `1ee19a4`).
+
+**Smoke test:**
+
+`python3 -m pytest tests/unit/test_cos_config_audit.py -q` — no edits touched `cognitive-os.yaml` or the config schema, so the audit suite should be unaffected. Test result captured in the resolution session log.
