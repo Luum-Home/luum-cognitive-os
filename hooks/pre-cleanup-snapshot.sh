@@ -7,6 +7,7 @@
 set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 
 _HOOK_NAME="pre-cleanup-snapshot"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
@@ -55,7 +56,7 @@ fi
 # Check if a recent snapshot exists (within last hour = 3600 seconds)
 LATEST_SNAPSHOT=$(ls -t "$CHECKPOINTS_DIR"/capability-snapshot-*.json 2>/dev/null | head -1 || true)
 if [[ -n "$LATEST_SNAPSHOT" ]]; then
-  SNAPSHOT_AGE=$(( $(date +%s) - $(stat -f %m "$LATEST_SNAPSHOT" 2>/dev/null || stat -c %Y "$LATEST_SNAPSHOT" 2>/dev/null || echo 0) ))
+  SNAPSHOT_AGE=$(( $(date +%s) - $(portable_stat_mtime "$LATEST_SNAPSHOT" 2>/dev/null || echo 0) ))
   if [[ "$SNAPSHOT_AGE" -lt 3600 ]]; then
     # Recent snapshot exists, no need to warn again
     exit 0

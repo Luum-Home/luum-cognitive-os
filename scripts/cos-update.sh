@@ -41,6 +41,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+source "${PROJECT_ROOT}/hooks/_lib/portable.sh"
 CLAUDE_DIR="${PROJECT_ROOT}/.claude"
 COS_DIR="${PROJECT_ROOT}/.cognitive-os"
 BACKUP_ROOT="${COS_DIR}/backups"

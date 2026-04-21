@@ -18,6 +18,13 @@
 
 set -uo pipefail
 
+# ─── Portable helpers ─────────────────────────────────────────────────────────
+# Source portable.sh if not already loaded (safe-jsonl is itself in _lib/).
+if [ "${_PORTABLE_SH_LOADED:-}" != "true" ]; then
+  _SAFE_JSONL_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  source "${_SAFE_JSONL_LIB_DIR}/portable.sh"
+fi
+
 # ─── Configuration (0 subprocesses) ──────────────────────────────────────────
 
 _FLOCK_TIMEOUT="${COGNITIVE_OS_FLOCK_TIMEOUT:-5}"
@@ -60,7 +67,7 @@ safe_jsonl_append() {
     if [ "$retries" -ge "$max_retries" ]; then
       # Force-remove stale lock (>30s old)
       if [ -d "$lock_path" ]; then
-        local lock_age=$(( $(date +%s) - $(stat -f %m "$lock_path" 2>/dev/null || stat -c %Y "$lock_path" 2>/dev/null || echo 0) ))
+        local lock_age=$(( $(date +%s) - $(portable_stat_mtime "$lock_path" 2>/dev/null || echo 0) ))
         [ "$lock_age" -gt 30 ] && rmdir "$lock_path" 2>/dev/null && continue
       fi
       return 1

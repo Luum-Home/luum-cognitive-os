@@ -25,6 +25,7 @@ set -uo pipefail  # NOTE: no -e — we want to keep running through optional che
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+source "${SCRIPT_DIR}/../hooks/_lib/portable.sh"
 
 # ── Flag parsing ───────────────────────────────────────────────────────
 
@@ -255,11 +256,11 @@ get_last_session() {
   latest=$(find "$sessions_dir" -name meta.json -type f 2>/dev/null | xargs ls -t 2>/dev/null | head -1)
   [ -z "$latest" ] && { echo ""; return; }
   # Use stat to get mtime; macOS vs Linux differ.
-  if stat -f '%Sm' "$latest" >/dev/null 2>&1; then
-    stat -f '%Sm' -t '%Y-%m-%d %H:%M:%S' "$latest"
-  else
-    stat -c '%y' "$latest" 2>/dev/null | cut -d. -f1
-  fi
+  portable_stat_mtime "$latest" | python3 -c "
+import sys, datetime, time
+epoch = int(sys.stdin.read().strip())
+print(datetime.datetime.fromtimestamp(epoch).strftime('%Y-%m-%d %H:%M:%S'))
+"
 }
 
 # Install source — currently we derive "self-hosted" (repo root matches

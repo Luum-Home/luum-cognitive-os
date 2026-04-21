@@ -25,6 +25,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+source "${PROJECT_ROOT}/hooks/_lib/portable.sh"
 ENV_FILE="${PROJECT_ROOT}/.env"
 ENV_EXAMPLE="${PROJECT_ROOT}/env.example"
 COMPOSE_FILE="${PROJECT_ROOT}/docker-compose.cognitive-os.yml"
@@ -124,11 +125,7 @@ env_set() {
   local key="$1"
   local val="$2"
   if grep -q "^${key}=" "${ENV_FILE}" 2>/dev/null; then
-    if [[ "$(uname)" == "Darwin" ]]; then
-      sed -i '' "s|^${key}=.*|${key}=${val}|" "${ENV_FILE}"
-    else
-      sed -i "s|^${key}=.*|${key}=${val}|" "${ENV_FILE}"
-    fi
+    portable_sed_inplace "s|^${key}=.*|${key}=${val}|" "${ENV_FILE}"
   else
     echo "${key}=${val}" >> "${ENV_FILE}"
   fi
