@@ -49,7 +49,7 @@ TOOL_SCHEMAS: List[Dict[str, Any]] = [
         "type": "function",
         "function": {
             "name": "read_file",
-            "description": "Read the contents of a file from the local filesystem. Returns the file text.",
+            "description": "Read the contents of a file from the local filesystem. Returns the file text (auto-paginated for files >40KB via lib/smart_reader).",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -100,6 +100,63 @@ TOOL_SCHEMAS: List[Dict[str, Any]] = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "web_fetch",
+            "description": (
+                "Fetch a URL and return its content as markdown. Delegates to "
+                "lib/web_crawler for consistent HTML→markdown conversion. Use for "
+                "reading docs, API references, or external content."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "url":       {"type": "string", "description": "HTTP(S) URL to fetch."},
+                    "timeout_s": {"type": "integer", "description": "Timeout in seconds (default 30, max 60).", "default": 30},
+                },
+                "required": ["url"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "grep_files",
+            "description": (
+                "Search file contents for a regex pattern. Uses ripgrep when "
+                "available (falls back to grep). Returns matching lines with "
+                "file:line prefixes. Equivalent to the Grep tool."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "pattern": {"type": "string", "description": "Regex pattern to search for."},
+                    "path":    {"type": "string", "description": "Directory or file to search (default: current directory).", "default": "."},
+                    "glob":    {"type": "string", "description": "Optional file glob filter (e.g. '*.py')."},
+                },
+                "required": ["pattern"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "glob_files",
+            "description": (
+                "List files matching a glob pattern via pathlib. Returns newline-"
+                "separated file paths. Equivalent to the Glob tool."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "pattern": {"type": "string", "description": "Glob pattern (e.g. '**/*.py' or 'src/*.ts')."},
+                    "path":    {"type": "string", "description": "Root directory for the glob (default: current directory).", "default": "."},
+                },
+                "required": ["pattern"],
+            },
+        },
+    },
 ]
 
 ALL_TOOL_NAMES = {s["function"]["name"] for s in TOOL_SCHEMAS}
@@ -127,6 +184,10 @@ class AgentLoopResult:
 
 
 def _tool_read_file(args: Dict[str, Any]) -> str:
+    """Read a file. Delegates to lib.smart_reader.SmartReader for auto-pagination
+    on files >40KB (consistent with the rest of the OS). Returns file text or
+    head+tail snippet with truncation notice for large files.
+    """
     path = args.get("path", "")
     if not path:
         return "ERROR: missing required argument 'path'"
@@ -136,9 +197,29 @@ def _tool_read_file(args: Dict[str, Any]) -> str:
             return f"ERROR: file does not exist: {path}"
         if not p.is_file():
             return f"ERROR: not a regular file: {path}"
-        return p.read_text()
-    except Exception as exc:  # noqa: BLE001 — surface error to model
+    except Exception as exc:  # noqa: BLE001
         return f"ERROR: {type(exc).__name__}: {exc}"
+
+    # Reuse existing SmartReader (ADR-044 infra) — avoids duplicating
+    # auto-paginate / head+tail logic here.
+    try:
+        from lib.smart_reader import SmartReader
+    except ImportError:
+        # Fallback — stdlib only if SmartReader isn't importable
+        try:
+            return p.read_text()
+        except Exception as exc:  # noqa: BLE001
+            return f"ERROR: {type(exc).__name__}: {exc}"
+
+    try:
+        result = SmartReader().read_file(str(p))
+        return result.content if hasattr(result, "content") else str(result)
+    except Exception as exc:  # noqa: BLE001
+        # Fallback to direct read if SmartReader misbehaves
+        try:
+            return p.read_text()
+        except Exception as exc2:  # noqa: BLE001
+            return f"ERROR: {type(exc2).__name__}: {exc2}"
 
 
 def _tool_edit_file(args: Dict[str, Any]) -> str:
@@ -196,17 +277,163 @@ def _tool_run_bash(args: Dict[str, Any]) -> str:
     except Exception as exc:  # noqa: BLE001
         return f"ERROR: {type(exc).__name__}: {exc}"
 
+    # Reuse lib.smart_truncator to bound output size — avoids feeding huge
+    # test/build dumps back to Qwen (which would blow token budget).
+    raw_output = f"{proc.stdout}\n{proc.stderr}" if proc.stderr else proc.stdout
+    try:
+        from lib.smart_truncator import smart_truncate
+        compact = smart_truncate(command, raw_output, max_chars=5000)
+    except Exception:  # noqa: BLE001 — don't crash tool on truncator bug
+        compact = raw_output[:5000] + (f"\n\n[truncated, {len(raw_output)} total chars]"
+                                        if len(raw_output) > 5000 else "")
+
     return (
         f"exit_code: {proc.returncode}\n"
-        f"--- stdout ---\n{proc.stdout}\n"
-        f"--- stderr ---\n{proc.stderr}"
+        f"--- output ---\n{compact}"
     )
 
 
+def _tool_web_fetch(args: Dict[str, Any]) -> str:
+    """Fetch a URL as markdown. Delegates to lib/web_crawler.fetch_markdown_sync.
+
+    The web_crawler module wraps crawl4ai with timeout + URL validation.
+    """
+    url = args.get("url", "")
+    timeout_s = int(args.get("timeout_s", 30) or 30)
+    if not url:
+        return "ERROR: missing required argument 'url'"
+    timeout_s = max(1, min(timeout_s, 120))
+
+    try:
+        from lib.web_crawler import fetch_markdown_sync
+    except ImportError as exc:
+        return f"ERROR: web_crawler module unavailable: {exc}"
+
+    try:
+        markdown = fetch_markdown_sync(url, timeout=timeout_s)
+    except Exception as exc:  # noqa: BLE001 — surface any crawler error
+        return f"ERROR: fetch failed: {type(exc).__name__}: {exc}"
+
+    # Bound the response — don't feed 100K of scraped HTML back to the model
+    try:
+        from lib.smart_truncator import _head_tail
+        compact = _head_tail(markdown, max_chars=8000)
+    except Exception:  # noqa: BLE001
+        compact = markdown[:8000]
+
+    return compact
+
+
+def _tool_grep_files(args: Dict[str, Any]) -> str:
+    """Search file contents using ripgrep when available, falling back to grep.
+
+    Args:
+        pattern (str, required): regex (ripgrep/grep-compatible).
+        path (str): directory to search (default: .).
+        glob (str): optional glob pattern to restrict files.
+        max_matches (int): cap on number of matching lines returned (default 100).
+    """
+    pattern = args.get("pattern", "")
+    path = args.get("path", ".")
+    glob = args.get("glob", "")
+    max_matches = int(args.get("max_matches", 100) or 100)
+    max_matches = max(1, min(max_matches, 500))
+
+    if not pattern:
+        return "ERROR: missing required argument 'pattern'"
+
+    # Prefer ripgrep for speed; fall back to grep -rn.
+    import shutil
+    rg = shutil.which("rg")
+    if rg:
+        cmd = [rg, "-n", "--no-heading", "--color=never", pattern, path]
+        if glob:
+            cmd += ["-g", glob]
+    else:
+        if not shutil.which("grep"):
+            return "ERROR: neither rg nor grep found on PATH"
+        cmd = ["grep", "-rn", "--color=never", pattern, path]
+        # grep doesn't have --glob; apply client-side if requested.
+
+    try:
+        proc = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=30,
+        )
+    except subprocess.TimeoutExpired:
+        return "ERROR: search timed out after 30s (narrow your pattern or path)"
+    except Exception as exc:  # noqa: BLE001
+        return f"ERROR: {type(exc).__name__}: {exc}"
+
+    # grep/rg exit code 1 = no matches (not an error)
+    if proc.returncode not in (0, 1):
+        return f"ERROR: search exit {proc.returncode}: {proc.stderr.strip()[:200]}"
+
+    lines = proc.stdout.strip().splitlines()
+    if glob and not rg:
+        # Client-side glob filter for grep fallback
+        from fnmatch import fnmatch
+        lines = [ln for ln in lines if fnmatch(ln.split(":", 1)[0], glob)]
+
+    if not lines:
+        return "no matches"
+
+    truncated = lines[:max_matches]
+    suffix = ""
+    if len(lines) > max_matches:
+        suffix = f"\n[truncated — {len(lines)} total matches, showing first {max_matches}]"
+    return "\n".join(truncated) + suffix
+
+
+def _tool_glob_files(args: Dict[str, Any]) -> str:
+    """Find files by glob pattern. Returns a list of paths (one per line).
+
+    Args:
+        pattern (str, required): glob (e.g. '**/*.py', 'tests/**/*.json').
+        root (str): root directory (default: .).
+        max_results (int): cap (default 200).
+    """
+    pattern = args.get("pattern", "")
+    # Accept both "path" (matches schema + grep_files) and legacy "root"
+    root = args.get("path") or args.get("root") or "."
+    max_results = int(args.get("max_results", 200) or 200)
+    max_results = max(1, min(max_results, 1000))
+
+    if not pattern:
+        return "ERROR: missing required argument 'pattern'"
+
+    try:
+        root_path = Path(root)
+        if not root_path.exists():
+            return f"ERROR: root does not exist: {root}"
+        if not root_path.is_dir():
+            return f"ERROR: root is not a directory: {root}"
+    except Exception as exc:  # noqa: BLE001
+        return f"ERROR: {type(exc).__name__}: {exc}"
+
+    try:
+        matches = [str(p) for p in root_path.glob(pattern)]
+    except Exception as exc:  # noqa: BLE001
+        return f"ERROR: glob failed: {type(exc).__name__}: {exc}"
+
+    if not matches:
+        return "no matches"
+
+    # Sort for determinism (glob doesn't guarantee order)
+    matches.sort()
+    truncated = matches[:max_results]
+    suffix = ""
+    if len(matches) > max_results:
+        suffix = f"\n[truncated — {len(matches)} total matches, showing first {max_results}]"
+    return "\n".join(truncated) + suffix
+
+
 TOOL_IMPLS: Dict[str, Callable[[Dict[str, Any]], str]] = {
-    "read_file": _tool_read_file,
-    "edit_file": _tool_edit_file,
-    "run_bash":  _tool_run_bash,
+    "read_file":   _tool_read_file,
+    "edit_file":   _tool_edit_file,
+    "run_bash":    _tool_run_bash,
+    "web_fetch":   _tool_web_fetch,
+    "grep_files":  _tool_grep_files,
+    "glob_files":  _tool_glob_files,
 }
 
 

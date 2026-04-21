@@ -50,12 +50,21 @@ on richer features:
 - `tools_allowed` subset filter fed back to the model as a tool-result error (not a Python exception)
 - Tests: 13 unit tests, all mocked (no real API), pytest passes
 
-### Phase 2 — Tool-set expansion (follow-up)
+### Phase 2 — Tool-set expansion (DELIVERED 2026-04-21)
 
-- Port `Grep` (ripgrep-backed content search)
-- Port `Glob` (fast path pattern matching)
-- Port `WebFetch` (URL fetch + HTML-to-markdown extraction)
-- Each tool gets the same safety envelope (timeout, result-as-string errors)
+Shipped:
+- `web_fetch`: delegates to `lib/web_crawler.fetch_markdown_sync` (NO duplication — reuses existing HTML→markdown pipeline). Response bounded via `smart_truncate._head_tail` at 8000 chars.
+- `grep_files`: ripgrep when available (`shutil.which("rg")`), `grep -rn` fallback. Returns `file:line:content` lines with 100-match default cap (configurable up to 500).
+- `glob_files`: `pathlib.Path.glob` — stdlib, no external dep. Results sorted for determinism, default cap 200.
+- `read_file` refactored to delegate to `lib/smart_reader.SmartReader` (ADR-044 reuse) with direct-read fallback if SmartReader unavailable.
+- `run_bash` output now piped through `lib/smart_truncator.smart_truncate` (max_chars=5000) to prevent token-budget blowouts on large test/build dumps.
+
+Reuse audit (before implementation — caught by user asking "no duplicamos?"):
+- `SmartReader` already handles auto-pagination for large files → read_file delegates.
+- `fetch_markdown_sync` already wraps crawl4ai with URL validation → web_fetch delegates.
+- `smart_truncate` already knows how to preserve head+tail with head_tail logic → run_bash/web_fetch use it.
+
+Tests: 16 new tests in `tests/unit/test_qwen_agent_loop.py` (29 total for the module). All passing. Safety envelope preserved: 30s default timeout, result-as-string errors, no Python exceptions leak.
 
 ### Phase 3 — Context injection (follow-up)
 
