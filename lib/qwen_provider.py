@@ -209,10 +209,48 @@ def call(
         )
 
 
+# Mapping of Claude model tier → best-match model in the Qwen Coding Plan
+# Pro bundle. Consulted by callers that know the skill's declared Claude
+# model (via frontmatter `model:` key) and want to route the fallback
+# sensibly rather than always landing on qwen3.6-plus.
+#
+# Rationale per tier:
+#   opus   — frontier reasoning/code   → qwen3.6-plus (1M ctx, SWE-bench 64.8, vision)
+#   sonnet — balanced code + reason    → qwen3-coder-plus (code-specialist, cheaper)
+#   haiku  — cheap + fast + simple     → minimax-m2.5 (cheapest in bundle)
+#
+# Unknown tier → qwen3.6-plus (safe default — highest quality available).
+CLAUDE_TO_QWEN_MAP = {
+    "opus": "qwen3.6-plus",
+    "sonnet": "qwen3-coder-plus",
+    "haiku": "minimax-m2.5",
+}
+
+
+def map_claude_model_to_qwen(claude_model: Optional[str]) -> str:
+    """Map a Claude model tier or full model name to a Qwen bundle equivalent.
+
+    Accepts short names (opus/sonnet/haiku) or full model IDs (claude-opus-4-7,
+    claude-sonnet-4-6, claude-haiku-4-5) — matches by substring.
+
+    Returns the best-match model name from the Qwen Coding Plan Pro bundle.
+    Falls back to qwen3.6-plus if input is None, empty, or unrecognized.
+    """
+    if not claude_model:
+        return DEFAULT_MODEL
+    name = claude_model.lower()
+    # Substring match so "claude-opus-4-7" and "opus" both map to opus bucket
+    for claude_tier, qwen_model in CLAUDE_TO_QWEN_MAP.items():
+        if claude_tier in name:
+            return qwen_model
+    return DEFAULT_MODEL
+
+
 def select_model(
     task: str = "general",
     need_vision: bool = False,
     need_long_context: bool = False,
+    claude_model_hint: Optional[str] = None,
 ) -> str:
     """Pick a model from the subscription bundle based on task needs.
 
@@ -220,10 +258,20 @@ def select_model(
         task: "general" | "code" | "reasoning" | "bulk"
         need_vision: if True, only vision-capable models are returned
         need_long_context: if True, prefers 1M context models (qwen3.6-plus)
+        claude_model_hint: if provided, takes priority over task heuristic.
+            Maps the Claude tier (opus/sonnet/haiku or full model ID) to
+            the best-match Qwen bundle model. Used by the orchestrator
+            fallback to honor skill frontmatter `model:` declarations.
 
     Returns:
         Model name string.
     """
+    # Claude hint takes priority — we're in fallback context, honor the
+    # skill's declared tier rather than guessing from task category.
+    # long_context + vision still override because they're hard requirements.
+    if claude_model_hint and not need_long_context and not need_vision:
+        return map_claude_model_to_qwen(claude_model_hint)
+
     if need_long_context:
         # Only qwen3.6-plus has 1M context
         return "qwen3.6-plus"
