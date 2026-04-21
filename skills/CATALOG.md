@@ -300,3 +300,10 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **cos-status** — Display current Cognitive OS state — active profile, skills exposed, hooks wired, rules loaded, packages installed, and health checks. Use when a user asks about OS state, installation verification, or troubleshooting.
 - **caveman-compress** — No description
 - **invariant-check** — No description
+- **llm-status** — No description
+- **pattern-audit** — No description
+- **project-scaffold** — No description
+- **rules-export** — No description
+- **domain-model** — No description
+- **risk-register** — No description
+- **ops-runbook** — No description
