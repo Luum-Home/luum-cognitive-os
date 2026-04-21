@@ -237,10 +237,48 @@ else
   check "Repairs" "OK"
 fi
 
+# 14. Runtime daemons — verify expected singletons are alive (ADR-047 Phase A)
+# Each daemon has: name, pidfile path, cmdline substring to match (defends against PID reuse).
+RUNTIME_DIR="$AOS/runtime"
+daemon_summary=""
+_daemon_check() {
+  local name="$1" pidfile="$2" cmdline_match="$3"
+  if [ ! -f "$pidfile" ]; then
+    # Absence of pidfile is only a WARN if the corresponding launcher hook is registered
+    # (i.e. the OS claims to run this daemon). Cheap heuristic: grep settings.json.
+    if grep -q "${name}-launcher.sh\|${name}-daemon-launcher.sh" "$PROJECT_DIR/.claude/settings.json" 2>/dev/null; then
+      check "daemon:$name" "WARN"
+      daemon_summary="${daemon_summary:+$daemon_summary }${name}✗"
+    fi
+    # If not registered → silently skip (daemon intentionally off)
+    return
+  fi
+  local pid
+  pid=$(cat "$pidfile" 2>/dev/null | tr -d '[:space:]')
+  if [ -z "$pid" ] || ! kill -0 "$pid" 2>/dev/null; then
+    check "daemon:$name" "FAIL"
+    daemon_summary="${daemon_summary:+$daemon_summary }${name}✗"
+    return
+  fi
+  # PID alive — verify it's actually our daemon (PID reuse defense)
+  local cmd
+  cmd=$(ps -p "$pid" -o command= 2>/dev/null || true)
+  if ! echo "$cmd" | grep -q "$cmdline_match"; then
+    check "daemon:$name" "FAIL"
+    daemon_summary="${daemon_summary:+$daemon_summary }${name}✗(stale-pid)"
+    return
+  fi
+  check "daemon:$name" "OK"
+  daemon_summary="${daemon_summary:+$daemon_summary }${name}✓"
+}
+_daemon_check "session-watchdog" "$RUNTIME_DIR/session-watchdog.pid" "so-session-watchdog.py"
+_daemon_check "reaper"           "$RUNTIME_DIR/reaper-heartbeat.pid" "so-reaper"
+
 # Summary line
 summary="Cognitive OS: ${ok}/${total} OK"
 [ "$warn" -gt 0 ] && summary="$summary | ${warn} WARN"
 [ "$fail" -gt 0 ] && summary="$summary | ${fail} FAIL"
+[ -n "$daemon_summary" ] && summary="$summary | Daemons: ${daemon_summary}"
 summary="$summary | Phase: ${phase} | Budget: \$0/\$${budget}"
 [ -n "$failures" ] && summary="$summary | Down: ${failures}"
 [ "$hook_errors" -gt 0 ] && summary="$summary | HookErrors: ${hook_errors}"
