@@ -317,34 +317,93 @@ def _cmd_stop() -> int:
         return 0
     try:
         os.kill(pid, signal.SIGTERM)
-        print(f"sent SIGTERM to {pid}")
-        return 0
     except OSError as exc:
         print(f"kill failed: {exc}", file=sys.stderr)
         return 2
+
+    # Wait up to 5 s for the daemon to clean up the PID file.
+    deadline = time.time() + 5.0
+    while time.time() < deadline:
+        time.sleep(0.1)
+        try:
+            os.kill(pid, 0)
+        except OSError:
+            break  # process is gone
+    else:
+        # Process still alive after 5 s — force-kill.
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except OSError:
+            pass
+        _release_pid()
+
+    print(f"stopped pid={pid}")
+    return 0
 
 
 def _cmd_daemon() -> int:
     if _existing_pid():
         return 0  # idempotent — already running
+
+    # Double-fork pattern: fully detach from the terminal so the daemon
+    # cannot accidentally reacquire a controlling terminal.
     try:
-        pid = os.fork()
+        pid1 = os.fork()
     except OSError as exc:
         print(f"fork failed: {exc}", file=sys.stderr)
         return 3
-    if pid > 0:
-        # Parent returns immediately; the PID we print is the child pid.
-        print(f"started pid={pid}")
+
+    if pid1 > 0:
+        # First parent: wait for the intermediate child to exit (fast — it
+        # forks a grandchild and immediately calls os._exit(0)).
+        os.waitpid(pid1, 0)
+        # Poll for the PID file written by the grandchild.  The grandchild
+        # runs _claim_pid() before entering CosExecutor.run(), so this loop
+        # should complete in well under 1 s under any normal load.
+        deadline = time.time() + 3.0
+        while time.time() < deadline:
+            pid = _existing_pid()
+            if pid:
+                print(f"started pid={pid}")
+                return 0
+            time.sleep(0.05)
+        print("daemon started (pid unknown — PID file not yet written)", file=sys.stderr)
         return 0
-    # Child: detach and run.
-    os.setsid()
-    _claim_pid()
-    _install_signal_handlers()
+
+    # --- intermediate child ---
+    os.setsid()  # new session — detach from terminal
+
+    # Redirect std file descriptors to /dev/null so the daemon is fully
+    # detached from the parent's stdio.
+    devnull_fd = os.open(os.devnull, os.O_RDWR)
+    os.dup2(devnull_fd, 0)  # stdin
+    log_path = str(_log_path())
+    log_fd = os.open(log_path, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+    os.dup2(log_fd, 1)  # stdout → log
+    os.dup2(log_fd, 2)  # stderr → log
+    if log_fd > 2:
+        os.close(log_fd)
+    if devnull_fd > 2:
+        os.close(devnull_fd)
+
     try:
-        CosExecutor().run()
+        pid2 = os.fork()
+    except OSError:
+        os._exit(1)  # noqa: SLF001
+
+    if pid2 > 0:
+        # Intermediate child exits so the grandchild is re-parented to init.
+        os._exit(0)  # noqa: SLF001
+
+    # --- grandchild (the real daemon) ---
+    _claim_pid()
+    daemon_executor = CosExecutor()
+    _install_signal_handlers(daemon_executor)
+    try:
+        daemon_executor.run()
     finally:
         _release_pid()
-    os._exit(0)  # noqa: SLF001 — child must not run atexit again
+    os._exit(0)  # noqa: SLF001 — never run atexit handlers in daemon
 
 
 def _cmd_foreground() -> int:
@@ -352,21 +411,20 @@ def _cmd_foreground() -> int:
         print("already running", file=sys.stderr)
         return 1
     _claim_pid()
-    _install_signal_handlers()
+    executor = CosExecutor()
+    _install_signal_handlers(executor)
     try:
-        CosExecutor().run()
+        executor.run()
     finally:
         _release_pid()
     return 0
 
 
-_EXECUTOR: Optional[CosExecutor] = None
+def _install_signal_handlers(executor: "CosExecutor") -> None:
+    """Install SIGTERM/SIGINT handlers that stop *executor* and clean up."""
 
-
-def _install_signal_handlers() -> None:
     def _graceful(_sig, _frm):
-        if _EXECUTOR is not None:
-            _EXECUTOR.stop()
+        executor.stop()
         _release_pid()
         _clear_mode()
 
