@@ -40,6 +40,14 @@ jupyter = [
 crawling = [
     "crawl4ai>=0.8.0",
 ]
+# ADR-029b Phase B-β (ADR-039) — reinvention-gate semantic embeddings.
+# Optional: adds ~90MB model + PyTorch CPU wheel (~200MB). Hook falls back
+# to Jaccard (Phase B-α) when this extra is not installed.
+# Install with: pip install 'luum-cognitive-os[semantic]'
+semantic = [
+    "sentence-transformers>=3.0",
+    "numpy>=1.26",
+]
 testing = [
     "pytest>=8.0",
     "pytest-asyncio>=0.23",
@@ -70,6 +78,9 @@ enforcement = [
     "diff-cover>=9.0",
 ]
 dev = [
+    # Note: `semantic` extra is OPTIONAL and NOT in `dev` on purpose — Phase B-β
+    # embeddings pull in PyTorch (~200MB) which bloats CI. Opt in explicitly with
+    # `pip install '.[semantic]'`.
     "luum-cognitive-os[llm,web,observability,memory,guardrails,jupyter,crawling,testing,enforcement]",
 ]
 
