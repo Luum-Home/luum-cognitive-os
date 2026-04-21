@@ -3,6 +3,73 @@
 All notable changes to Cognitive OS are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.10.0] - 2026-04-21 — "ADR-047 Phase A + Decision Depth Gate"
+
+### Added — ADR-047 Session Lifecycle Management (Phase A shipped)
+
+- `scripts/so-session-watchdog.py` — Phase A log-only daemon. Classifies sessions (HEALTHY / IDLE_OVER_TTL / ORPHANED / RESUMED_RECENTLY), writes `session-watchdog.jsonl`. NEVER kills.
+- `lib/session_watchdog_lib.py` — layered Phase B liveness predicate: `should_kill() = parent_dead OR (ttl_exceeded AND heartbeat_stale AND metric_writes_stale AND cpu_idle_sustained)`. 4 checks, each tested independently.
+- `hooks/session-heartbeat.sh` — PRIMARY liveness signal. Fires on `UserPromptSubmit` + `PreToolUse` wildcard. Atomic epoch write to `.cognitive-os/sessions/{id}/heartbeat`. Distinct from `state-heartbeat.sh` (crash recovery) and `agent_bus_metrics` (sub-agent watchdog).
+- `hooks/session-watchdog-launcher.sh` — SessionStart singleton launcher (mirrors reaper-daemon-launcher pattern). mkdir-lock + pidfile guard with cmdline verification. Respects `COS_SESSION_WATCHDOG_DISABLE=1` opt-out.
+- 39 new unit tests + 12 E2E smoke tests (zero daemon leaks verified).
+
+### Added — Decision Depth Gate
+
+- `rules/decision-depth-gate.md` — Q1-Q4 coherence analysis mandatory before closing "two values inconsistent" findings. Caught a real threshold bug (Phase A 1.0% vs Phase B 5.0% CPU — Phase A was under-predicting Phase B kills).
+- `skills/invariant-check/` — scans ADR+lib pairs, emits pytest assertions for proposed invariants. On ADR-047 produces 7 invariants.
+- `hooks/surface-fix-detector.sh` — PostToolUse advisory. Detects ~100% additive diffs with clarify/note trigger words.
+- Cross-phase invariant test: Phase A threshold ≥ Phase B threshold (enforced in CI).
+
+### Added — cos-config-audit validator
+
+- `scripts/cos-config-audit.sh` — reports each cognitive-os.yaml section as IMPL / PARTIAL / ASPIR by checking component wiring. Data-driven CONTRACTS list.
+- `# STATUS:` annotations on 9 cognitive-os.yaml sections (indent-aware parser).
+- `--strict` flag — exits 1 on DRIFT (annotation vs runtime mismatch).
+- `meta.settings_freshness` contract — detects `apply-efficiency-profile.sh` changes without settings regen.
+- CI workflow `.github/workflows/cos-config-audit.yml` — weekly cron + PR-triggered + drift comment.
+- Current snapshot: **8 IMPL / 0 PARTIAL / 2 ASPIR** (ttft_watchdog + engram_mcp intentionally Phase B scope).
+
+### Added — Startup Protocol
+
+- `rules/startup-protocol.md` + `hooks/session-startup-protocol.sh` — 5-step checklist (mem_search → plans↔ADRs → work-queue → validator → execute). Fires on SessionStart, 55ms, advisory only.
+
+### Added — Cross-platform CI discipline
+
+- `hooks/_lib/portable.sh` — BSD/GNU abstraction with Python3 fallback (date arithmetic, sed in-place, stat mtime, readlink, timeout, sha256).
+- 17 hooks + scripts migrated off direct BSD-only invocations.
+- `.github/workflows/cross-platform.yml` + `Dockerfile.ci-linux` — Linux CI smoke job prevents regressions.
+- `scripts/shellcheck-baseline.txt` captures known-acceptable violations.
+
+### Added — Startup baseline + ADR-044 Phase 2
+
+- `scripts/startup-benchmark.sh` + SLO 10 (≤50k tokens core payload) and SLO 11 (TTFT p95 <5s) in `rules/so-slo.md`.
+- ADR-044 Phase 2: 85 skills gained `summary_line` frontmatter (-270 tokens / -8% in `CATALOG-COMPACT.md`).
+- 4 slash commands (`/engram-help`, `/sdd-help`, `/skills-search`, `/rules-expand`) for lazy-load on demand.
+
+### Added — `cos-update` auto-regen + runtime daemons visibility
+
+- `cos-update.sh` auto-regenerates `.claude/settings.json` when `apply-efficiency-profile.sh` changes (SHA-tracked at `.cognitive-os/state/apply-efficiency-profile.sha`). Mirrors `uv sync` pattern.
+- `hooks/cognitive-os-health.sh` + `scripts/cos-status.sh` gain Daemons section (watchdog, reaper) with PID/uptime/cmdline-match verification.
+- `hooks/context-watchdog.sh` REGISTERED (was an existing gap: rule said "NOT registered" — now fires on PostToolUse wildcard with 50/70/85% thresholds).
+
+### Fixed
+
+- 4 files with unresolved merge conflict markers: `hooks/self-install.sh`, `hooks/_lib/dispatch_gate_check.py`, `lib/agent_health_monitor.py`, `lib/dispatch_helper.py`. Resolved favoring "Stashed changes" side.
+- `tests/unit/test_nemo_integration.py::test_skill_has_frontmatter` — tolerates leading `<!-- SCOPE: -->` comment (scope-governance convention).
+- `tests/unit/test_repomix_integration.py::test_config_in_yaml` — tolerates documented section removal.
+- Reconciliation: 20 plans in `.cognitive-os/plans/features/` mapped against ADRs. 11 SUPERSEDED / 4 LIVE / 3 STALE. Summary at `docs/architecture/plans-reconciliation-2026-04-21.md`.
+- ADR-038 + ADR-039 published to canonical `docs/adrs/` (publication gap closed).
+- ADR-003 duplicate deleted (wrong path). ADR-027a 4 PENDING items resolved. ADR-028a 6 PENDING items resolved (6 done, 2 deferred, 1 partial).
+- work-queue.json rotated (44 completed entries to Engram, 3 stale parked removed).
+
+### Metrics this release
+
+- **22 commits** over one session.
+- 6177 / 6209 tests pass (99.5%). 32 remaining failures are pre-existing (tracked in `docs/reports/pre-existing-test-failures-2026-04-21.md`).
+- Engram observations added: 15+ under `adr-047/*`, `cos-config-audit/*`, `plans-reconciliation/*`, `decision-depth-gate/*`.
+
+---
+
 ## [0.12.0] - 2026-04-20 — "SO Reliability Framework"
 
 ### Added — ADR-028 (full 6-pillar reliability framework)
