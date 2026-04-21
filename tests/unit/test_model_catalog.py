@@ -308,23 +308,10 @@ class TestPricingMatchesExisting:
                 f"Context window mismatch for {model_id}"
             )
 
-    def test_matches_workload_scheduler(self) -> None:
-        from lib.workload_scheduler import MODEL_COSTS
-
-        for name, (inp, out) in MODEL_COSTS.items():
-            try:
-                entry = ModelCatalog.get(name)
-            except KeyError:
-                pytest.fail(
-                    f"workload_scheduler.MODEL_COSTS has model {name!r} "
-                    f"which is missing from ModelCatalog"
-                )
-            assert entry.input_price_per_m == inp, (
-                f"Input price mismatch for {name}"
-            )
-            assert entry.output_price_per_m == out, (
-                f"Output price mismatch for {name}"
-            )
+    # NOTE: test_matches_workload_scheduler was deleted on 2026-04-21.
+    # lib.workload_scheduler was removed from the codebase (phantom module).
+    # The test's intent (verify MODEL_COSTS prices match ModelCatalog) is
+    # no longer applicable. See Engram: bugfix/tests/workload-scheduler-phantom
 
 
 # ---------------------------------------------------------------------------
