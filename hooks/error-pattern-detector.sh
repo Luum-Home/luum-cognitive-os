@@ -7,6 +7,7 @@
 set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_FILE="$PROJECT_DIR/.cognitive-os/metrics/error-learning.jsonl"
@@ -15,7 +16,7 @@ METRICS_FILE="$PROJECT_DIR/.cognitive-os/metrics/error-learning.jsonl"
 [ ! -s "$METRICS_FILE" ] && exit 0
 
 # Calculate 24-hour cutoff (epoch seconds)
-CUTOFF=$(date -v-24H +%s 2>/dev/null || date -d '24 hours ago' +%s 2>/dev/null || echo "0")
+CUTOFF=$(portable_date_minus 1)
 
 # Read recent entries (last 100 lines max for speed) and filter to last 24h
 RECENT=$(tail -100 "$METRICS_FILE" 2>/dev/null | jq -c --argjson cutoff "$CUTOFF" \

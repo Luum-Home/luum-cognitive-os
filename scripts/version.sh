@@ -11,6 +11,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+source "${PROJECT_ROOT}/hooks/_lib/portable.sh"
 VERSION_FILE="$PROJECT_ROOT/VERSION"
 
 # Files that contain the version string:
@@ -80,19 +81,19 @@ update_all_locations() {
 
   # 2. cos CLI root.go
   if [ -f "$COS_ROOT_GO" ]; then
-    sed -i '' "s/Version: \"${old_ver}\"/Version: \"${new_ver}\"/" "$COS_ROOT_GO"
+    portable_sed_inplace "s/Version: \"${old_ver}\"/Version: \"${new_ver}\"/" "$COS_ROOT_GO"
     echo "  Updated cmd/cos/internal/cli/root.go"
   fi
 
   # 3. cos-test CLI root.go
   if [ -f "$COS_TEST_ROOT_GO" ]; then
-    sed -i '' "s/Version: \"${old_ver}\"/Version: \"${new_ver}\"/" "$COS_TEST_ROOT_GO"
+    portable_sed_inplace "s/Version: \"${old_ver}\"/Version: \"${new_ver}\"/" "$COS_TEST_ROOT_GO"
     echo "  Updated cmd/cos-test/internal/cli/root.go"
   fi
 
   # 4. docs/INDEX.md
   if [ -f "$INDEX_MD" ]; then
-    sed -i '' "s/Cognitive OS v${old_ver}/Cognitive OS v${new_ver}/g" "$INDEX_MD"
+    portable_sed_inplace "s/Cognitive OS v${old_ver}/Cognitive OS v${new_ver}/g" "$INDEX_MD"
     echo "  Updated docs/INDEX.md"
   fi
 }

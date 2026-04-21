@@ -18,6 +18,7 @@
 set -euo pipefail
 
 COS_SOURCE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+source "$COS_SOURCE_DIR/hooks/_lib/portable.sh"
 
 # Resolve the active hooks directory.
 #
@@ -101,8 +102,7 @@ _remove_cos_block() {
     return 0
   fi
 
-  sed -i '' "/$MARKER BEGIN/,/$MARKER END/d" "$hook_file" 2>/dev/null || \
-    sed -i "/$MARKER BEGIN/,/$MARKER END/d" "$hook_file" 2>/dev/null
+  portable_sed_inplace "/$MARKER BEGIN/,/$MARKER END/d" "$hook_file"
 
   non_empty_lines=$(grep -cv '^\s*$\|^#!/' "$hook_file" 2>/dev/null || echo 0)
   if [ "$non_empty_lines" -eq 0 ]; then
