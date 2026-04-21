@@ -357,3 +357,158 @@ def test_full_api_schema_valid():
     schema_names = {s["function"]["name"] for s in qal.TOOL_SCHEMAS}
     assert schema_names == set(qal.TOOL_IMPLS.keys())
     assert schema_names == qal.ALL_TOOL_NAMES
+
+
+# ---------------------------------------------------------------------------
+# 10. Phase 2 tools — web_fetch, grep_files, glob_files + refactored read_file/run_bash.
+# ---------------------------------------------------------------------------
+
+
+def test_phase2_all_tools_registered():
+    """The six tools of Phase 2 must all be present with matching impls."""
+    expected = {"read_file", "edit_file", "run_bash", "web_fetch", "grep_files", "glob_files"}
+    assert expected == set(qal.TOOL_IMPLS.keys())
+    assert expected == qal.ALL_TOOL_NAMES
+
+
+def test_read_file_uses_smart_reader(tmp_path, monkeypatch):
+    """read_file should delegate to SmartReader (ADR-044 reuse)."""
+    target = tmp_path / "hello.txt"
+    target.write_text("hello world")
+
+    called = {"count": 0}
+
+    class _StubReader:
+        def read_file(self, path):
+            called["count"] += 1
+            return SimpleNamespace(content=f"STUB:{path}")
+
+    import lib.smart_reader as sr
+    monkeypatch.setattr(sr, "SmartReader", _StubReader)
+
+    out = qal._tool_read_file({"path": str(target)})
+    assert called["count"] == 1
+    assert out == f"STUB:{target}"
+
+
+def test_read_file_fallback_when_smart_reader_raises(tmp_path, monkeypatch):
+    """If SmartReader throws, fall back to direct read."""
+    target = tmp_path / "hi.txt"
+    target.write_text("raw content")
+
+    class _BrokenReader:
+        def read_file(self, path):
+            raise RuntimeError("smart reader broken")
+
+    import lib.smart_reader as sr
+    monkeypatch.setattr(sr, "SmartReader", _BrokenReader)
+
+    out = qal._tool_read_file({"path": str(target)})
+    assert out == "raw content"
+
+
+def test_read_file_missing_path():
+    out = qal._tool_read_file({"path": "/nonexistent/path/abc.xyz"})
+    assert out.startswith("ERROR:")
+    assert "does not exist" in out
+
+
+def test_run_bash_truncates_large_output(tmp_path):
+    # Generate >5000 chars of output via printf
+    result = qal._tool_run_bash({"command": "python3 -c 'print(\"x\"*6000)'", "timeout_s": 10})
+    assert "exit_code: 0" in result
+    # smart_truncate should have bounded it
+    assert len(result) < 7000  # well below 6000+header if no truncation
+
+
+def test_run_bash_blocklist_rm_rf():
+    result = qal._tool_run_bash({"command": "echo hi && rm -rf /tmp/foo"})
+    assert result.startswith("ERROR:")
+    assert "blocklist" in result
+
+
+def test_web_fetch_delegates_to_crawler(monkeypatch):
+    """web_fetch must call lib.web_crawler.fetch_markdown_sync."""
+    calls = {"url": None, "timeout": None}
+
+    def _fake_fetch(url, timeout=30):
+        calls["url"] = url
+        calls["timeout"] = timeout
+        return "# Markdown\ncontent here"
+
+    import lib.web_crawler as wc
+    monkeypatch.setattr(wc, "fetch_markdown_sync", _fake_fetch)
+
+    out = qal._tool_web_fetch({"url": "https://example.com", "timeout_s": 15})
+    assert calls["url"] == "https://example.com"
+    assert calls["timeout"] == 15
+    assert "# Markdown" in out
+
+
+def test_web_fetch_missing_url():
+    out = qal._tool_web_fetch({})
+    assert out.startswith("ERROR:")
+    assert "url" in out
+
+
+def test_web_fetch_surfaces_crawler_error(monkeypatch):
+    def _fake_fetch(url, timeout=30):
+        raise ValueError("invalid URL scheme")
+
+    import lib.web_crawler as wc
+    monkeypatch.setattr(wc, "fetch_markdown_sync", _fake_fetch)
+
+    out = qal._tool_web_fetch({"url": "ftp://nope"})
+    assert out.startswith("ERROR: fetch failed")
+    assert "ValueError" in out
+
+
+def test_grep_files_finds_matches(tmp_path):
+    f = tmp_path / "sample.py"
+    f.write_text("def foo():\n    pass\n\ndef bar():\n    return foo()\n")
+
+    out = qal._tool_grep_files({"pattern": "def foo", "path": str(tmp_path)})
+    assert "def foo" in out
+    assert "sample.py" in out
+
+
+def test_grep_files_no_matches(tmp_path):
+    f = tmp_path / "sample.py"
+    f.write_text("nothing here\n")
+
+    out = qal._tool_grep_files({"pattern": "zzz_never_found", "path": str(tmp_path)})
+    assert out == "no matches"
+
+
+def test_grep_files_missing_pattern():
+    out = qal._tool_grep_files({"path": "."})
+    assert out.startswith("ERROR:")
+    assert "pattern" in out
+
+
+def test_glob_files_finds_files(tmp_path):
+    (tmp_path / "a.py").write_text("")
+    (tmp_path / "b.py").write_text("")
+    (tmp_path / "c.txt").write_text("")
+
+    out = qal._tool_glob_files({"pattern": "*.py", "path": str(tmp_path)})
+    assert "a.py" in out
+    assert "b.py" in out
+    assert "c.txt" not in out
+
+
+def test_glob_files_no_matches(tmp_path):
+    out = qal._tool_glob_files({"pattern": "*.nonexistent", "path": str(tmp_path)})
+    assert out == "no matches"
+
+
+def test_glob_files_missing_pattern():
+    out = qal._tool_glob_files({"path": "."})
+    assert out.startswith("ERROR:")
+    assert "pattern" in out
+
+
+def test_glob_files_bad_root():
+    out = qal._tool_glob_files({"pattern": "*.py", "path": "/definitely/does/not/exist/xyz123"})
+    assert out.startswith("ERROR:")
+    assert "does not exist" in out
