@@ -40,6 +40,17 @@ def _run(
     else:
         env.pop("CLAUDE_AGENT_ID", None)
 
+    # Scrub bypass / override vars inherited from host (pytest sets
+    # PYTEST_CURRENT_TEST; CI pipelines set CI=1). These must not bypass the
+    # blocker during its own behavior tests.
+    for var in (
+        "CI",
+        "PYTEST_CURRENT_TEST",
+        "COS_GIT_BYPASS",
+        "COS_ALLOW_DESTRUCTIVE_GIT",
+    ):
+        env.pop(var, None)
+
     return subprocess.run(
         ["bash", str(HOOK)],
         input=json.dumps(payload),
@@ -137,15 +148,40 @@ class TestSafeOpsAllowed:
 
 
 class TestUserContext:
-    """Without CLAUDE_AGENT_ID, destructive ops warn but are allowed."""
+    """Without CLAUDE_AGENT_ID, destructive ops are BLOCKED (exit 2) per ADR-055b."""
 
-    def test_warns_user_context_but_allows(self, tmp_path: Path):
-        result = _run("git stash pop", tmp_path, agent_id=None)
-        assert result.returncode == 0, (
-            f"expected allowed (exit 0) for user context, got {result.returncode}\n"
+    def test_blocks_user_context_by_default(self, tmp_path: Path):
+        # ADR-055b: elevated from warn (exit 0) to block (exit 2). Must scrub
+        # bypass context vars that the test host may have set.
+        env_overrides = {
+            "CI": "",
+            "PYTEST_CURRENT_TEST": "",
+            "COS_GIT_BYPASS": "",
+            "COS_ALLOW_DESTRUCTIVE_GIT": "",
+        }
+        payload = {"tool_name": "Bash", "tool_input": {"command": "git stash pop"}}
+        env = os.environ.copy()
+        env.update({
+            "CLAUDE_PROJECT_DIR": str(tmp_path),
+            "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
+            "COGNITIVE_OS_HOOK_HEARTBEAT": "false",
+        })
+        env.pop("CLAUDE_AGENT_ID", None)
+        for k, v in env_overrides.items():
+            if v == "":
+                env.pop(k, None)
+            else:
+                env[k] = v
+        result = subprocess.run(
+            ["bash", str(HOOK)],
+            input=json.dumps(payload),
+            capture_output=True, text=True, env=env, timeout=10,
+        )
+        assert result.returncode == 2, (
+            f"expected block (exit 2) per ADR-055b, got {result.returncode}\n"
             f"stderr={result.stderr}"
         )
-        assert "WARN" in result.stderr
+        assert "BLOCKED" in result.stderr
         assert "git stash pop" in result.stderr
 
 

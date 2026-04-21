@@ -197,7 +197,8 @@ GROUPEOF
     "large-file-advisor.sh")
   local pre_edit_write
   pre_edit_write=$(hook_group "Edit|Write|MultiEdit" \
-    "secret-detector.sh")
+    "secret-detector.sh" \
+    "project-docs-convention.sh")
   # ADR-022: prompt-quality-llm.sh and completeness-check-llm.sh are
   # Haiku-evaluated advisories that run alongside the regex variants.
   # D35: aguara-scan.sh + parry-scan.sh — security hooks, standard profile.
@@ -404,7 +405,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm the regression guards are wired.
-for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh pre-compaction-flush.sh mcp-scan.sh aguara-scan.sh parry-scan.sh semgrep-scan.sh agent-bash-cwd-enforcer.sh session-start-worktree-nudge.sh session-heartbeat.sh session-watchdog-launcher.sh context-watchdog.sh docker-drift-detector.sh rate-limit-detector.sh; do
+for hook in auto-verify.sh auto-refine.sh dod-gate.sh session-sanity.sh confidentiality-enforcer.sh skill-usage-tracker.sh skill-invocation-logger.sh audit-id-enricher.sh confidence-gate.sh auto-rollback-trigger.sh destructive-git-blocker.sh destructive-rm-blocker.sh session-wrapup-trigger.sh pre-compaction-flush.sh mcp-scan.sh aguara-scan.sh parry-scan.sh semgrep-scan.sh agent-bash-cwd-enforcer.sh session-start-worktree-nudge.sh session-heartbeat.sh session-watchdog-launcher.sh context-watchdog.sh docker-drift-detector.sh rate-limit-detector.sh project-docs-convention.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -418,7 +419,7 @@ echo "  PreCompact: pre-compaction-flush.sh"
 echo "  UserPromptSubmit: user-prompt-capture.sh, session-wrapup-trigger.sh, session-heartbeat.sh (ADR-047: liveness)"
 echo "  PreToolUse *: session-heartbeat.sh (ADR-047: liveness signal on all tool calls)"
 echo "  PostToolUse *: context-watchdog.sh (ADR-027/rules/context-management: 50/70/85% thresholds)"
-echo "  PreToolUse Bash: rate-limit-precheck.sh (D45 gap B: sidecar retry_count lift), agent-bash-cwd-enforcer.sh (cwd mismatch advisory for git ops), rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh, destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
+echo "  PreToolUse Bash: rate-limit-precheck.sh (D45 gap B: sidecar retry_count lift), agent-bash-cwd-enforcer.sh (cwd mismatch advisory for git ops), rate-limiter.sh, secret-detector.sh (ADR-023 redact), destructive-git-blocker.sh (ADR-003 + ADR-055b: user-context BLOCK w/ override), destructive-rm-blocker.sh (ADR-003 R1/R2 safety)"
 echo "  PreToolUse Read: large-file-advisor.sh"
 echo "  PreToolUse Edit|Write|MultiEdit: secret-detector.sh (ADR-023 redact)"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check-llm.sh, prompt-quality-llm.sh, reinvention-check.sh, aguara-scan.sh (D35: 189-rule prompt injection), parry-scan.sh (D35: ML injection scanner), auto-refine.sh, registration-check.sh, agent-work-tracker.sh, global-verify.sh before"

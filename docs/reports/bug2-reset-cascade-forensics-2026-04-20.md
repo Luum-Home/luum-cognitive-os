@@ -97,9 +97,11 @@ Line 31 of `destructive-git-blocker.sh` sources `_lib/killswitch_check.sh` and e
 
 If `CLAUDE_AGENT_ID` is empty, blocker only warns. Mis-propagated env (sub-shell, `env -i`, direct `bash -c`, nested invocation) makes destructive op look user-initiated → allowed. Future harness refactor dropping env-propagation would silently re-open the hole.
 
-### R5 — Stash-residue reuse (LOW)
+### R5 — Stash-residue reuse (LOW) — CLOSED 2026-04-21
 
 Reflog entries 2026-04-17 show "stash WIP before agent work, pop after" pattern persisted past the incident. User's own WIP stash parallel to auto-pre-agent stashes can `git stash pop` the wrong entry and re-enact from user context.
+
+**Resolution (ADR-055b, 2026-04-21)**: elevated `hooks/destructive-git-blocker.sh` from warn-only to BLOCK in user context. Destructive git ops (stash pop/drop/apply, reset --hard, checkout --, clean -f[dx], branch -D, rebase --abort, restore, revert, worktree) now fail with exit 2 unless the user explicitly opts in via `COS_ALLOW_DESTRUCTIVE_GIT=1` env or `--allow-destructive` inline flag. SO-internal bypass contexts (CI=1, PYTEST_CURRENT_TEST, COS_GIT_BYPASS=1) do NOT apply when agent context is active. See `docs/adrs/ADR-055b-destructive-git-block.md`. Work-queue item `r5-stash-residue` moved to `completed_2026_04_21`.
 
 ## Fixes landed in this commit
 
