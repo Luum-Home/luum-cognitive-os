@@ -16,6 +16,17 @@ version: 1.0.0
 audience: project
 last-updated: 2026-03-28
 summary_line: Explore and investigate ideas before committing to a change — deep feasibility…
+# ADR-050 per-skill routing: exploration needs frontier reasoning for risk
+# analysis and feasibility. Prefer Claude; allow Qwen fallback on Claude
+# rate-limit but not on other errors (we want real signal, not a weaker
+# model silently taking over).
+routing:
+  tier: frontier
+  need_long_context: true
+  providers_preferred: [claude, qwen]
+  fallback_on_rate_limit: true
+  fallback_on_any_error: false
+  budget_max_usd_per_call: 1.50
 
 ---
 
