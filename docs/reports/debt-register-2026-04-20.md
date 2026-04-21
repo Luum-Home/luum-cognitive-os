@@ -57,7 +57,7 @@ Age in days from 2026-04-20. Effort in session-units (1 session ≈ 3-4h Opus).
 | D31 | work-queue `plugin-caveman-review` | parked_task | >14 | LOW | 92 new commits in caveman plugin never triaged. Review-by 2026-05-01 (11 days). | Run `/eval-repo` on caveman | 0.5 |
 | D32 | FROZEN-BACKLOG #14 | uncommitted_note | >30 | LOW | Onboarding wizard TUI — `cos setup` partial, full polish deferred | Scope-out full polish OR accept `cos setup` as final | 0.5 |
 | D33 | FROZEN-BACKLOG #17 | uncommitted_note | >30 | LOW | Plans directory consolidation decision pending (`plans/` vs `.cognitive-os/plans/`) | Pick one; move and delete other | 0.25 |
-| D34 | FROZEN-BACKLOG #21 | uncommitted_note | >30 | MEDIUM | Docker→pip phase 3 pending: Paperclip, PostgreSQL, Valkey still in docker-compose | Design migration per service | 2 |
+| D34 | FROZEN-BACKLOG #21 | uncommitted_note | >30 | ~~MEDIUM~~ **PARTIAL** | Docker→pip phase 3 — **Valkey RESOLVED** (ADR-042, local daemon via `cos-valkey-local.sh`; Docker container demoted to `profiles: [legacy]`). Paperclip + PostgreSQL still Docker-only. | Migrate Paperclip and Langfuse-PG per service | 1.5 |
 | D35 | FROZEN-BACKLOG #23 | uncommitted_note | >30 | ~~MEDIUM~~ **RESOLVED** | ~~Security tools partially wired~~ mcp-scan (SessionStart), aguara-scan + parry-scan (PreToolUse Agent), semgrep-scan (PostToolUse Agent) added to `default` profile. All 4 exit 0 when CLI absent. | — | — |
 | D36 | FROZEN-BACKLOG #19 | uncommitted_note | >30 | LOW | 5 rules still without hook equivalent — decide: keep as rule OR implement hook. | Audit 5 rules; per-rule decision | 0.5 |
 | D37 | tests/audit/test_install_scripts.py:392-409 | skip | ~10 | NOISE→LOW | 3 install tests skipped (network, Docker, HOME mutation). Documented gaps, not real debt. | Set up CI sandbox with Docker + redirected HOME | 1 |
@@ -152,8 +152,8 @@ Ranked by cost-of-inaction × ease-of-decide.
 ### 4. DEFER-WITH-DATE — Cluster C3 xfail triage, capped at 1 sprint
 **Why**: Six xfails are real product gaps but none are BLOCKING today. Set a hard cap: "all six resolved or converted to accepted LOW by 2026-05-15." xfail debt grows silently — the rule is one sprint max.
 
-### 5. ESCALATE — D07 (ADR-029 Phase B) + D34 (Docker→pip phase 3)
-**Why**: Both require architectural decisions beyond fix-it work. D07 (Phase B reinvention-check hard-block) needs a similarity-mechanism design call (embeddings vs Jaccard vs abandon). D34 (3 remaining services off docker-compose) is a blocker for the "pip-first ALWAYS" user concern in work-queue.json. Both are ≥2 sessions with design uncertainty. User should pick the next pilar explicitly.
+### 5. ESCALATE — D07 (ADR-029 Phase B) + D34 (Docker→pip phase 3 — partial)
+**Why**: D07 (Phase B reinvention-check hard-block) needs a similarity-mechanism design call. D34 is now partially resolved (Valkey extracted to local daemon — ADR-042). Remaining: Paperclip + Langfuse-PG still Docker-only. Paperclip migration is the next logical step (no cross-service deps beyond its own PG).
 
 ---
 
