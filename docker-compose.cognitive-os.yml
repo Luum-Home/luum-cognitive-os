@@ -225,59 +225,16 @@ services:
       - cognitive-os-network
 
   # ---------------------------------------------------------------------------
-  # LiteLLM Proxy — LLM Gateway for cost control and model routing (MIT)
-  # https://github.com/BerriAI/litellm
-  # MIGRATED TO PIP: pip install litellm>=1.0. Container kept for reference/CI.
-  # Run locally: litellm --config infra/litellm/config.yaml (or use Python API directly)
+  # REMOVED 2026-04-21 per ADR-049:
+  #   - litellm:  supply chain compromise (Trend Micro, Mar 2026) + proxy
+  #               concentrates API keys. Replaced by lib/qwen_provider.py
+  #               (direct SDK, no proxy). See ADR-049 rationale.
+  #   - bifrost:  safer than LiteLLM but still a proxy; overengineering for
+  #               single-operator sub-agent orchestration. Removed alongside
+  #               LiteLLM to keep the security perimeter minimal.
+  # If you find yourself needing a gateway again, re-evaluate Bifrost
+  # (Apache 2.0, Go binary) — but strongly prefer direct SDKs first.
   # ---------------------------------------------------------------------------
-  litellm:
-    image: ghcr.io/berriai/litellm:main-stable@sha256:9e1536c6a9219519f024f221706b20b012ca5176988164798adc5c7fe011e5d5  # pinned 2026-03-28
-    container_name: cognitive-os-litellm
-    restart: unless-stopped
-    ports:
-      - "${LITELLM_PORT:-4000}:4000"
-    volumes:
-      - ./infra/litellm/config.yaml:/app/config.yaml:ro
-    environment:
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
-      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:-sk-cognitive-os-local-dev-key}
-    command: ["--config", "/app/config.yaml", "--port", "4000"]
-    healthcheck:
-      test: ["CMD-SHELL", "python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness')\" || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
-    networks:
-      - cognitive-os-network
-
-  # ---------------------------------------------------------------------------
-  # Bifrost — High-Performance AI Gateway (Apache 2.0)
-  # https://github.com/maximhq/bifrost
-  # DISABLED Phase 2: Replaced by litellm pip library. Bifrost offered 11us latency
-  # but litellm covers 90%+ of use cases for dev. Container kept for reference only.
-  # ---------------------------------------------------------------------------
-  bifrost:
-    image: maximhq/bifrost:latest@sha256:799ac05fa78a368ca000d41ac321c147fc78d6219f12d4faffba12ea762ec05c  # pinned 2026-03-28
-    container_name: cognitive-os-bifrost
-    restart: unless-stopped
-    ports:
-      - "${BIFROST_PORT:-8081}:8080"
-    environment:
-      APP_PORT: "8080"
-      APP_HOST: "0.0.0.0"
-      LOG_LEVEL: ${BIFROST_LOG_LEVEL:-info}
-      LOG_STYLE: json
-    volumes:
-      - bifrost-data:/app/data
-    healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1"]
-      interval: 15s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    networks:
-      - cognitive-os-network
 
   # ---------------------------------------------------------------------------
   # NeMo Guardrails — AI security guardrails server (Apache 2.0)
@@ -667,8 +624,8 @@ services:
       - cognitive-os-network
 
 volumes:
-  bifrost-data:
-    name: cognitive-os-bifrost-data
+  # bifrost-data removed 2026-04-21 per ADR-049 (gateway removal).
+  # Volume is retained on disk until user runs: docker volume rm cognitive-os-bifrost-data
   jupyter-data:
     name: cognitive-os-jupyter-data
   langfuse-pg-data:
