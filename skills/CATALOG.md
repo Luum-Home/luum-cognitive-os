@@ -64,6 +64,7 @@
 | session-backlog | Inventory all pending work across plans, engram, tasks, audits, and git — produces prioritized backlog for future sessions | `/session-backlog` | both |
 | session-wrapup | End-of-session routine: backlog inventory + engram save + session summary | `/session-wrapup` | both |
 | doc-sync | Detect and update stale documentation after code changes | `/doc-sync` | project |
+| doc-review-personas | Multi-persona adversarial doc review: N lenses in parallel, severity-tiered consolidation | `/doc-review-personas` | both |
 | private-mode | Toggle private conversation (no persistence, no metrics) | `/private` | project |
 | optimize-skill | Iteratively improve a skill using evals and feedback | `/optimize-skill` | project |
 | auto-refine | PITER loop: analyze failed agent output, re-launch with refined instructions | `/auto-refine` | project |
