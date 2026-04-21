@@ -263,6 +263,78 @@ print(datetime.datetime.fromtimestamp(epoch).strftime('%Y-%m-%d %H:%M:%S'))
 "
 }
 
+# Runtime daemons — for each expected singleton (defined by the launcher
+# hook being registered in settings.json), report alive/down status plus
+# PID and uptime. Zero-dependency: uses kill -0 + ps for cross-platform.
+#
+# Emits TSV: name<TAB>status<TAB>pid<TAB>uptime_sec<TAB>reason
+# status ∈ {OK, DOWN, STALE, UNREGISTERED}
+get_daemons() {
+  local settings="$PROJECT_ROOT/.claude/settings.json"
+  local runtime_dir="$PROJECT_ROOT/.cognitive-os/runtime"
+
+  # Known daemons: name | pidfile | cmdline_match | launcher_hook_pattern
+  # Add a row per daemon we care about. Order matters for display.
+  local rows=(
+    "session-watchdog|session-watchdog.pid|so-session-watchdog.py|session-watchdog-launcher.sh"
+    "reaper|reaper-heartbeat.pid|so-reaper|reaper-daemon-launcher.sh|reaper-heartbeat.sh"
+  )
+
+  for row in "${rows[@]}"; do
+    local name pidfile match launcher_patterns
+    name="${row%%|*}"; row="${row#*|}"
+    pidfile="${row%%|*}"; row="${row#*|}"
+    match="${row%%|*}"; row="${row#*|}"
+    launcher_patterns="$row"
+
+    # Is the launcher registered? If not, daemon is intentionally off.
+    local registered=0
+    if [ -f "$settings" ]; then
+      local IFS='|'
+      for pat in $launcher_patterns; do
+        if grep -q "$pat" "$settings" 2>/dev/null; then
+          registered=1
+          break
+        fi
+      done
+      unset IFS
+    fi
+    if [ "$registered" -eq 0 ]; then
+      printf '%s\tUNREGISTERED\t-\t-\tlauncher not in settings.json\n' "$name"
+      continue
+    fi
+
+    local pf="$runtime_dir/$pidfile"
+    if [ ! -f "$pf" ]; then
+      printf '%s\tDOWN\t-\t-\tno pidfile at %s\n' "$name" "$pf"
+      continue
+    fi
+
+    local pid
+    pid=$(tr -d '[:space:]' < "$pf" 2>/dev/null)
+    if [ -z "$pid" ] || ! kill -0 "$pid" 2>/dev/null; then
+      printf '%s\tSTALE\t%s\t-\tpidfile references dead PID\n' "$name" "${pid:-?}"
+      continue
+    fi
+
+    # PID alive — verify cmdline (defends against PID reuse)
+    local cmd
+    cmd=$(ps -p "$pid" -o command= 2>/dev/null || true)
+    if ! echo "$cmd" | grep -q "$match"; then
+      printf '%s\tSTALE\t%s\t-\tPID alive but not %s\n' "$name" "$pid" "$match"
+      continue
+    fi
+
+    # Uptime = now - pidfile mtime (approximation; process start time
+    # extraction is platform-specific, pidfile mtime is close enough).
+    local now pfile_mtime uptime
+    now=$(date +%s)
+    pfile_mtime=$(portable_stat_mtime "$pf" 2>/dev/null || echo "$now")
+    uptime=$((now - pfile_mtime))
+    printf '%s\tOK\t%s\t%s\talive\n' "$name" "$pid" "$uptime"
+  done
+}
+
 # Install source — currently we derive "self-hosted" (repo root matches
 # package root). Future: read from a state file written by install.sh.
 get_install_source() {
@@ -284,6 +356,7 @@ get_install_source() {
 PROFILE="$(get_profile)"
 [ -z "$PROFILE" ] && PROFILE="unknown"
 
+DAEMONS_TSV="$(get_daemons)"
 SKILLS_DRIVER=$(count_skills "$PROJECT_ROOT/.claude/skills")
 SKILLS_KERNEL_COS=$(count_skills "$PROJECT_ROOT/.cognitive-os/skills/cos")
 SKILLS_KERNEL_ROOT=$(count_skills "$PROJECT_ROOT/.cognitive-os/skills")
@@ -434,6 +507,37 @@ pretty_print() {
       [ -z "$ev" ] && continue
       case " $emitted " in *" $ev "*) continue ;; esac
       printf '  %-14s %s\n' "${ev}:" "$cnt"
+    done
+  fi
+
+  # Daemons section (runtime singletons)
+  if [ -n "$DAEMONS_TSV" ]; then
+    local daemon_count daemon_ok daemon_bad
+    daemon_count=$(printf '%s\n' "$DAEMONS_TSV" | grep -c . || echo 0)
+    daemon_ok=$(printf '%s\n' "$DAEMONS_TSV" | awk -F'\t' '$2=="OK"' | wc -l | tr -d ' ')
+    daemon_bad=$(printf '%s\n' "$DAEMONS_TSV" | awk -F'\t' '$2=="DOWN" || $2=="STALE"' | wc -l | tr -d ' ')
+    local line_color
+    if [ "$daemon_bad" -eq 0 ]; then
+      line_color="${C_GREEN}${daemon_ok}/${daemon_count} alive${C_RESET}"
+    else
+      line_color="${C_RED}${daemon_bad} down${C_RESET} / ${daemon_ok} alive"
+    fi
+    printf '%-16s %s\n' "Daemons:" "$line_color"
+    printf '%s\n' "$DAEMONS_TSV" | while IFS=$'\t' read -r name status pid uptime reason; do
+      [ -z "$name" ] && continue
+      local status_color
+      case "$status" in
+        OK)           status_color="${C_GREEN}alive${C_RESET}" ;;
+        DOWN)         status_color="${C_RED}down${C_RESET}" ;;
+        STALE)        status_color="${C_RED}stale${C_RESET}" ;;
+        UNREGISTERED) status_color="${C_DIM}off${C_RESET}" ;;
+        *)            status_color="$status" ;;
+      esac
+      if [ "$status" = "OK" ]; then
+        printf '  %-14s %s  %spid=%s uptime=%ds%s\n' "${name}:" "$status_color" "${C_DIM}" "$pid" "$uptime" "${C_RESET}"
+      elif [ "$VERBOSE" -eq 1 ] || [ "$status" = "DOWN" ] || [ "$status" = "STALE" ]; then
+        printf '  %-14s %s  %s%s%s\n' "${name}:" "$status_color" "${C_DIM}" "$reason" "${C_RESET}"
+      fi
     done
   fi
 
