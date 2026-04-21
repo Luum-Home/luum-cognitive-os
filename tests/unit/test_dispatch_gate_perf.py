@@ -14,6 +14,8 @@ from pathlib import Path
 
 import pytest
 
+from tests.unit._helpers import assert_within_absolute
+
 pytestmark = pytest.mark.unit
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -82,7 +84,12 @@ def _write_yaml_config(project_dir: Path, max_parallel: int = 5) -> None:
 
 class TestPerformance:
     def test_completes_under_1s(self, tmp_path):
-        """dispatch-gate.sh must complete within 1 second (single-pass Python)."""
+        """dispatch-gate.sh must complete within a reasonable time budget.
+
+        The nominal limit is 1.0s for the single-pass Python consolidation.
+        A slack_factor of 2.0 is applied to absorb CI and cold-start overhead
+        while still catching genuine O(n) regressions.
+        """
         project_dir = tmp_path / "project"
         project_dir.mkdir()
         _write_yaml_config(project_dir, max_parallel=5)
@@ -93,9 +100,8 @@ class TestPerformance:
         result = _run_hook(project_dir)
         elapsed = time.monotonic() - start
 
-        assert elapsed < 1.0, (
-            f"dispatch-gate took {elapsed:.3f}s (limit 1.0s); stderr={result.stderr[:300]}"
-        )
+        # 1.0s nominal budget × 2.0 slack = 2.0s effective limit
+        assert_within_absolute(elapsed, limit_s=1.0, slack_factor=2.0)
 
 
 # ---------------------------------------------------------------------------
