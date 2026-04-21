@@ -6,6 +6,8 @@ invoke: /gpu-sandbox
 version: 1.0.0
 model: sonnet
 audience: project
+summary_line: "Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data…"
+
 ---
 
 # GPU Sandbox — Jupyter Compute Runtime

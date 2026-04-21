@@ -7,6 +7,8 @@ command: /catalog-full
 last-updated: 2026-04-16
 audience: both
 tags: [catalog, skills, context-optimization]
+summary_line: Load and display the full skills catalog (skills/CATALOG.md) with invocations…
+
 ---
 
 # Catalog Full

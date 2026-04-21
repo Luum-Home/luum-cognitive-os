@@ -16,6 +16,8 @@ metadata:
   tool-ring: ADOPT
   tool-score: null
 audience: project
+summary_line: Fetch and convert web pages to LLM-ready markdown using Crawl4AI.
+
 ---
 
 ## Purpose

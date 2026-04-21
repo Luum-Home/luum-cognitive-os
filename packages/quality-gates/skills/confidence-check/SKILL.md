@@ -14,6 +14,8 @@ metadata:
   author: luum
   pattern: superclaude-confidence
 audience: project
+summary_line: Pre-implementation confidence assessment.
+
 ---
 
 ## Purpose

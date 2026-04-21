@@ -13,6 +13,8 @@ license: MIT
 metadata:
   author: luum
 audience: project
+summary_line: "Perform a comprehensive 6-category website audit (SEO, Performance, Security…"
+
 ---
 
 ## Purpose

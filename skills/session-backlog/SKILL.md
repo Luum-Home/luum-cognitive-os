@@ -7,6 +7,8 @@ version: 1.0.0
 last-updated: 2026-04-10
 audience: both
 tags: [session, planning, backlog, inventory]
+summary_line: "Inventory all pending work across plans, engram, tasks, todos, audits, and git."
+
 ---
 
 # Session Backlog — Pending Work Inventory

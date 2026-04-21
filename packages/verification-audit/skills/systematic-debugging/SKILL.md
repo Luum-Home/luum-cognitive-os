@@ -8,6 +8,8 @@ source: superpowers (obra/superpowers)
 tech: debugging
 audience: project
 effort: opus
+summary_line: "Use when encountering any bug, test failure, or unexpected behavior, before…"
+
 ---
 
 # Systematic Debugging

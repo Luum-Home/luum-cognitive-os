@@ -15,6 +15,8 @@ triggers:
   - qué hizo el SO
   - audit report
   - reporte ejecutivo
+summary_line: Generate an executive-level session report translating technical metrics into…
+
 ---
 
 # Session Report — Executive View

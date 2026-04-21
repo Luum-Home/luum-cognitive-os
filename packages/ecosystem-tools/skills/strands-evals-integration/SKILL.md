@@ -16,6 +16,8 @@ metadata:
   tool-ring: TRIAL
   tool-score: 7.40
 audience: os-dev
+summary_line: Configure Strands Evals for trace-based agent trajectory evaluation using…
+
 ---
 
 ## Purpose

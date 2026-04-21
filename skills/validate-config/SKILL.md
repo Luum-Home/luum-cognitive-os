@@ -7,6 +7,8 @@ version: 1.0.0
 model: sonnet
 tags: [validation, config, health]
 audience: both
+summary_line: "Validate all Cognitive OS configuration files — agents, squads, skills, rules…"
+
 ---
 
 # Schema Validation for Cognitive OS Configuration (BMAD v6 Pattern 12)

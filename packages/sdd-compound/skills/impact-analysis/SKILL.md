@@ -4,6 +4,8 @@ name: impact-analysis
 description: "Analyze change impact: imports, tests, configs, services, and SDD artifacts affected"
 triggers: ["/impact-analysis"]
 audience: project
+summary_line: "\"Analyze change impact: imports, tests, configs, services, and SDD artifacts…"
+
 ---
 
 # /impact-analysis

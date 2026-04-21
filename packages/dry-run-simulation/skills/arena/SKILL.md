@@ -26,6 +26,8 @@ args:
     description: "Generate report from latest results"
     flag: true
 audience: os-dev
+summary_line: "\"Run competitive benchmarks comparing Cognitive OS against other AI coding…"
+
 ---
 
 # Arena — Competitive Benchmark Skill
