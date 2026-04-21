@@ -37,6 +37,14 @@ _DEFAULT_VALKEY_URL = os.environ.get(
     os.environ.get("COS_VALKEY_URL", "redis://localhost:6379"),
 )
 
+# Localhost candidate URLs tried when the primary URL is unreachable.
+# Order: local daemon preferred port (6380 if 6379 taken), then 6379.
+# ADR-042: local daemon may start on 6380 when 6379 is bound by Docker.
+_LOCAL_FALLBACK_URLS = [
+    "redis://localhost:6380",
+    "redis://localhost:6379",
+]
+
 # Channel prefix
 _CHANNEL_PREFIX = "cos:agent"
 
@@ -104,11 +112,84 @@ def _ensure_valkey_via_smart_infra() -> bool:
         return False
 
 
+def _ping_url(url: str, timeout: float = 1.0) -> bool:
+    """Return True if a Redis-compatible server answers PING at *url*."""
+    try:
+        import redis
+
+        client = redis.Redis.from_url(url, socket_connect_timeout=timeout)
+        return bool(client.ping())
+    except Exception:
+        return False
+
+
+def _resolve_valkey_url(primary_url: str = _DEFAULT_VALKEY_URL) -> Optional[str]:
+    """Return the first reachable Valkey/Redis URL from a prioritised list.
+
+    Resolution order (ADR-042):
+      1. *primary_url* (from env var or default localhost:6379)
+      2. Local daemon candidates: localhost:6380, localhost:6379
+         — covers the case where cos-valkey-local.sh started on 6380 because
+           Docker Valkey was already holding 6379.
+
+    Returns the URL string if reachable, None if nothing responds.
+    """
+    if _ping_url(primary_url):
+        logger.debug("agent_bus: connected to primary Valkey URL %s", primary_url)
+        return primary_url
+
+    # Probe localhost fallbacks (local daemon — ADR-042)
+    for candidate in _LOCAL_FALLBACK_URLS:
+        if candidate == primary_url:
+            continue  # already tried
+        if _ping_url(candidate):
+            logger.info(
+                "agent_bus: primary URL %s unreachable; connected to local daemon at %s",
+                primary_url,
+                candidate,
+            )
+            _emit_local_daemon_metric(candidate)
+            return candidate
+
+    return None
+
+
+def _emit_local_daemon_metric(url: str) -> None:
+    """Append a valkey-health metric for local-daemon connection (best-effort)."""
+    try:
+        import json
+        import time
+        from pathlib import Path
+
+        port = url.rsplit(":", 1)[-1] if ":" in url else "unknown"
+        project_dir = os.environ.get(
+            "COGNITIVE_OS_PROJECT_DIR",
+            os.environ.get("CLAUDE_PROJECT_DIR", "."),
+        )
+        p = Path(project_dir) / ".cognitive-os" / "metrics" / "valkey-health.jsonl"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        record = {
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "source": "agent_bus",
+            "event_type": "local-daemon-hit",
+            "severity": "info",
+            "connection_type": "local-daemon",
+            "port": int(port) if port.isdigit() else port,
+            "detail": f"fell back to local daemon at {url}",
+        }
+        with p.open("a") as fh:
+            fh.write(json.dumps(record) + "\n")
+    except Exception:
+        pass  # metric emission must never raise
+
+
 def is_valkey_available(valkey_url: str = _DEFAULT_VALKEY_URL) -> bool:
     """Check if Valkey/Redis is reachable.
 
-    If not reachable on first try, attempts to start Valkey via
-    smart_infra on-demand infrastructure and retries once.
+    Resolution order (ADR-042):
+      1. Primary URL (env-configured or default localhost:6379)
+      2. Local daemon fallback: localhost:6380 / localhost:6379
+      3. smart_infra Docker start, then re-probe (1) + (2)
 
     Args:
         valkey_url: Redis-compatible connection URL.
@@ -116,24 +197,13 @@ def is_valkey_available(valkey_url: str = _DEFAULT_VALKEY_URL) -> bool:
     Returns:
         True if a PING succeeds, False otherwise.
     """
-    try:
-        import redis
+    if _resolve_valkey_url(valkey_url) is not None:
+        return True
 
-        client = redis.Redis.from_url(valkey_url, socket_connect_timeout=2)
-        if client.ping():
-            return True
-    except Exception:
-        pass
-
-    # Valkey not reachable -- try starting it via smart_infra
+    # Last resort: try starting Valkey via smart_infra (Docker)
     if _ensure_valkey_via_smart_infra():
-        try:
-            import redis
-
-            client = redis.Redis.from_url(valkey_url, socket_connect_timeout=2)
-            return client.ping()
-        except Exception:
-            pass
+        if _resolve_valkey_url(valkey_url) is not None:
+            return True
 
     return False
 
@@ -223,42 +293,38 @@ class AgentPublisher:
     def _connect(self) -> None:
         """Attempt to connect to Valkey. Falls back to file if unavailable.
 
-        On first failure, tries to start Valkey via smart_infra on-demand
-        infrastructure before falling back to file-based signaling.
+        Resolution order (ADR-042):
+          1. Primary URL (env-configured or localhost:6379)
+          2. Local daemon fallbacks: localhost:6380 / localhost:6379
+          3. smart_infra Docker start, then re-probe
+          4. File-based FallbackBus
         """
-        try:
-            import redis
+        resolved = _resolve_valkey_url(self.valkey_url)
+        if resolved is None:
+            # Try starting Valkey via smart_infra (Docker) before giving up
+            if _ensure_valkey_via_smart_infra():
+                resolved = _resolve_valkey_url(self.valkey_url)
 
-            self._client = redis.Redis.from_url(
-                self.valkey_url, socket_connect_timeout=2, decode_responses=True
-            )
-            self._client.ping()
-            self._use_valkey = True
-            logger.debug("AgentPublisher(%s): connected to Valkey", self.agent_id)
-            return
-        except Exception:
-            pass
-
-        # Try starting Valkey via smart_infra before giving up
-        if _ensure_valkey_via_smart_infra():
+        if resolved is not None:
             try:
                 import redis
 
                 self._client = redis.Redis.from_url(
-                    self.valkey_url, socket_connect_timeout=2, decode_responses=True
+                    resolved, socket_connect_timeout=2, decode_responses=True
                 )
                 self._client.ping()
                 self._use_valkey = True
                 logger.debug(
-                    "AgentPublisher(%s): connected to Valkey after smart_infra start",
+                    "AgentPublisher(%s): connected to Valkey at %s",
                     self.agent_id,
+                    resolved,
                 )
                 return
-            except Exception as e:
+            except Exception as exc:
                 logger.warning(
-                    "AgentPublisher(%s): Valkey still unavailable after smart_infra (%s)",
+                    "AgentPublisher(%s): Valkey connect failed after resolution (%s)",
                     self.agent_id,
-                    e,
+                    exc,
                 )
 
         self._use_valkey = False
@@ -549,42 +615,35 @@ class OrchestratorSubscriber:
     def _connect(self) -> None:
         """Attempt to connect to Valkey.
 
-        On first failure, tries to start Valkey via smart_infra on-demand
-        infrastructure before falling back to file-based signaling.
+        Resolution order (ADR-042):
+          1. Primary URL (env-configured or localhost:6379)
+          2. Local daemon fallbacks: localhost:6380 / localhost:6379
+          3. smart_infra Docker start, then re-probe
+          4. File-based FallbackBus
         """
-        try:
-            import redis
+        resolved = _resolve_valkey_url(self.valkey_url)
+        if resolved is None:
+            if _ensure_valkey_via_smart_infra():
+                resolved = _resolve_valkey_url(self.valkey_url)
 
-            self._client = redis.Redis.from_url(
-                self.valkey_url, socket_connect_timeout=2, decode_responses=True
-            )
-            self._client.ping()
-            self._pubsub = self._client.pubsub()
-            self._use_valkey = True
-            logger.debug("OrchestratorSubscriber: connected to Valkey")
-            return
-        except Exception:
-            pass
-
-        # Try starting Valkey via smart_infra before giving up
-        if _ensure_valkey_via_smart_infra():
+        if resolved is not None:
             try:
                 import redis
 
                 self._client = redis.Redis.from_url(
-                    self.valkey_url, socket_connect_timeout=2, decode_responses=True
+                    resolved, socket_connect_timeout=2, decode_responses=True
                 )
                 self._client.ping()
                 self._pubsub = self._client.pubsub()
                 self._use_valkey = True
                 logger.debug(
-                    "OrchestratorSubscriber: connected to Valkey after smart_infra start"
+                    "OrchestratorSubscriber: connected to Valkey at %s", resolved
                 )
                 return
-            except Exception as e:
+            except Exception as exc:
                 logger.warning(
-                    "OrchestratorSubscriber: Valkey still unavailable after smart_infra (%s)",
-                    e,
+                    "OrchestratorSubscriber: Valkey connect failed after resolution (%s)",
+                    exc,
                 )
 
         self._use_valkey = False
