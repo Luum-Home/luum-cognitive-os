@@ -106,8 +106,15 @@ def _check_session_watchdog(root: Path):
         return ("ASPIR", "lib/session_watchdog_lib.py missing — no implementation")
     if not script_ok:
         return ("ASPIR", "lib exists but scripts/so-session-watchdog.py missing")
-    # Check for auto-start wiring: launchd plist, systemd unit, Makefile target,
-    # or a hook that launches the watchdog.
+    # Singleton launcher hook (ADR-047 Phase A auto-start) is the canonical
+    # auto-start mechanism. Fall back to launchd/systemd/Makefile or any
+    # hook referencing so-session-watchdog for backwards compatibility.
+    launcher_hook = root / "hooks" / "session-watchdog-launcher.sh"
+    if launcher_hook.exists():
+        return (
+            "IMPL",
+            "lib + script present; auto-start wired via hooks/session-watchdog-launcher.sh",
+        )
     autostart = (
         list((root / "launchd").glob("*watchdog*"))
         + list((root / "systemd").glob("*watchdog*"))
