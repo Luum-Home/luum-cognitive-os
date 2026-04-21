@@ -575,10 +575,20 @@ services:
   # Valkey — General-purpose Redis-compatible cache/pubsub (BSD-3)
   # Used by: Agent Communication Bus (lib/agent_bus.py), rate limiter queue
   # NOT the same as langfuse-valkey (which is Langfuse-internal with auth)
+  #
+  # ADR-042 (2026-04-20): MIGRATED TO LOCAL DAEMON.
+  # cos-valkey-local.sh starts redis-server/valkey-server on localhost:6379 (or 6380).
+  # This container is kept for legacy compatibility and CI environments where a
+  # local binary is unavailable. It is NOT started by default.
+  #
+  # To use Docker Valkey explicitly:
+  #   docker compose -f docker-compose.cognitive-os.yml --profile legacy up -d valkey
   # ---------------------------------------------------------------------------
   valkey:
     image: valkey/valkey:8-alpine@sha256:cb3339abbd6e18942cd8ac3349f0c371a82ba5b6204b242563ba299e7956cbd0  # pinned 2026-03-28
     container_name: cognitive-os-valkey
+    profiles:
+      - legacy
     restart: unless-stopped
     command: >
       --maxmemory-policy noeviction
