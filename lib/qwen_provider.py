@@ -217,13 +217,19 @@ def call(
 # Rationale per tier:
 #   opus   — frontier reasoning/code   → qwen3.6-plus (1M ctx, SWE-bench 64.8, vision)
 #   sonnet — balanced code + reason    → qwen3-coder-plus (code-specialist, cheaper)
-#   haiku  — cheap + fast + simple     → minimax-m2.5 (cheapest in bundle)
+#   haiku  — cheap + fast + simple     → qwen3-coder-plus (see NOTE below)
+#
+# NOTE (2026-04-21): minimax-m2.5 appears in the Coding Plan Pro bundle docs
+# but is NOT callable on the current subscription — live calls return an error.
+# Until Alibaba enables it, haiku is remapped to qwen3-coder-plus (same as
+# sonnet). Slightly oversized for haiku-tier tasks but reliably callable.
+# Revert to "minimax-m2.5" once confirmed callable via smoke test.
 #
 # Unknown tier → qwen3.6-plus (safe default — highest quality available).
 CLAUDE_TO_QWEN_MAP = {
     "opus": "qwen3.6-plus",
     "sonnet": "qwen3-coder-plus",
-    "haiku": "minimax-m2.5",
+    "haiku": "qwen3-coder-plus",  # minimax-m2.5 not callable on current plan — see NOTE above
 }
 
 
