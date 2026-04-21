@@ -217,9 +217,16 @@ class TestNemoSkillFile:
 
     def test_skill_has_frontmatter(self):
         content = self.SKILL_FILE.read_text()
-        assert content.startswith("---"), "SKILL.md must start with YAML frontmatter"
+        # SCOPE tags (HTML comments) are allowed before frontmatter — they're
+        # processed by the scope-governance tooling, not by YAML parsers.
+        # Strip a leading `<!-- ... -->` block (single-line) before the check.
+        stripped = content.lstrip()
+        if stripped.startswith("<!--"):
+            end = stripped.index("-->") + 3
+            stripped = stripped[end:].lstrip()
+        assert stripped.startswith("---"), "SKILL.md must start with YAML frontmatter (after optional SCOPE comment)"
         # Find second --- delimiter
-        second_delim = content.index("---", 3)
+        second_delim = stripped.index("---", 3)
         assert second_delim > 0, "SKILL.md must have closing frontmatter delimiter"
 
     def test_skill_has_invocation(self):
