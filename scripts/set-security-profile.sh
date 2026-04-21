@@ -147,7 +147,7 @@ case "$PROFILE" in
     echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, rate-limit-drain.sh (D45 drainer/executor), auto-checkpoint, content-policy,"
     echo "               doc-sync-detector, surface-fix-detector.sh (decision-depth-gate advisory), claim-validator, completion-gate, agent-checkpoint,"
     echo "               trust-score-validator, confidence-gate.sh, confidence-gate-llm, audit-id-enricher.sh, auto-rollback-trigger.sh, auto-repair-dispatcher, dequeue-notify,"
-    echo "               state-heartbeat, context-watchdog, global-verify.sh after"
+    echo "               state-heartbeat, context-watchdog, rate-limit-detector.sh (ADR-049: Claude Max limit detection), global-verify.sh after"
     echo "  PostToolUse Skill: skill-usage-tracker.sh, skill-invocation-logger.sh"
     echo "  PostToolUse TodoWrite+Agent: work-queue-sync.sh (task-tracking)"
     echo "  PreCompact: pre-compaction-flush"
