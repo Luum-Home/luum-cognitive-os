@@ -15,6 +15,7 @@
 set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 
 # Skip if override is set
 if [[ "${RATE_LIMIT_OVERRIDE:-false}" == "true" ]]; then
@@ -34,7 +35,7 @@ AGENTS_LIMIT="${RATE_LIMIT_MAX_AGENTS:-30}"
 
 TOKENS_USED=0
 AGENTS_USED=0
-CUTOFF_EPOCH=$(date -v-1H +%s 2>/dev/null || date -d '1 hour ago' +%s 2>/dev/null || echo 0)
+CUTOFF_EPOCH=$(python3 -c "import time; print(int(time.time()) - 3600)")
 
 if [[ -f "$COST_EVENTS" ]]; then
     read -r TOKENS_USED AGENTS_USED < <(python3 - "$COST_EVENTS" "$CUTOFF_EPOCH" <<'PYEOF'
