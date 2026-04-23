@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Shared settings-driver helpers for shell tooling.
+# Bash 3.x compatible.
+
+cos_detect_harness() {
+  local project_root="${1:-.}"
+  local explicit="${COGNITIVE_OS_HARNESS:-}"
+
+  if [ -n "$explicit" ]; then
+    printf '%s\n' "$explicit"
+    return
+  fi
+
+  if [ -f "$project_root/.codex/hooks.json" ] && [ ! -f "$project_root/.claude/settings.json" ]; then
+    printf '%s\n' "codex"
+    return
+  fi
+
+  if [ -f "$project_root/.claude/settings.json" ] && [ ! -f "$project_root/.codex/hooks.json" ]; then
+    printf '%s\n' "claude"
+    return
+  fi
+
+  if [ -n "${CODEX_PROJECT_DIR:-}" ] || [ -n "${CODEX_SESSION_ID:-}" ] || [ -n "${CODEX_HOME:-}" ]; then
+    printf '%s\n' "codex"
+    return
+  fi
+
+  printf '%s\n' "claude"
+}
+
+cos_settings_driver_relpath() {
+  local harness="${1:-claude}"
+  case "$harness" in
+    codex) printf '%s\n' ".codex/hooks.json" ;;
+    *) printf '%s\n' ".claude/settings.json" ;;
+  esac
+}
+
+cos_settings_driver_label() {
+  cos_settings_driver_relpath "$1"
+}
+
+cos_settings_driver_path() {
+  local project_root="${1:-.}"
+  local harness="${2:-$(cos_detect_harness "$project_root")}"
+  printf '%s/%s\n' "$project_root" "$(cos_settings_driver_relpath "$harness")"
+}

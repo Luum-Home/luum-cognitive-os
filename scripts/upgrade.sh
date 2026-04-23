@@ -9,6 +9,9 @@
 # Author: luum
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/_lib/settings-driver.sh"
+
 FORCE=false
 for arg in "$@"; do
   case "$arg" in
@@ -52,10 +55,12 @@ current_version=$(jq -r '.version // "unknown"' "$META_FILE")
 current_mode=$(jq -r '.mode // "standard"' "$META_FILE")
 source_dir=$(jq -r '.source // ""' "$META_FILE")
 installed_at=$(jq -r '.installed_at // "unknown"' "$META_FILE")
+active_harness="$(cos_detect_harness "$(pwd)")"
 
 echo "Current installation:"
 echo "  Version:  $current_version"
 echo "  Mode:     $current_mode"
+echo "  Harness:  $active_harness"
 echo "  Source:   $source_dir"
 echo "  Installed: $installed_at"
 echo ""
@@ -107,6 +112,7 @@ echo "Upgrade plan:"
 echo "  From:  $current_version"
 echo "  To:    $latest_version"
 echo "  Mode:  $current_mode"
+echo "  Harness: $active_harness"
 echo ""
 
 # Count available components
@@ -153,8 +159,10 @@ if [ -d ".cognitive-os/templates" ]; then
   rm -rf .cognitive-os/templates
 fi
 
-# Re-run init
-bash "$source_dir/scripts/cos-init.sh" "--$current_mode"
+# Re-run init through the active harness projection
+COGNITIVE_OS_PROJECT_DIR="$(pwd)" \
+COGNITIVE_OS_HARNESS="$active_harness" \
+  bash "$source_dir/scripts/cos-init.sh" "--$current_mode" "--harness=$active_harness"
 
 # ── 8. Update global registry ──────────────────────────────────
 REGISTRY_SCRIPT="$source_dir/scripts/cos-registry.sh"
