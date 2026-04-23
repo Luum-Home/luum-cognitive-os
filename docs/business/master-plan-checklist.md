@@ -60,7 +60,7 @@
 
 ## 5. Onboarding and Operational Simplicity
 
-- [ ] First-run installation is one-pass and low-friction.
+- [x] First-run installation is one-pass and low-friction through [First-Run Onboarding Proof](../manual-tests/first-run-onboarding.md).
 - [ ] Autodetection reduces required configuration for new users.
 - [x] Settings projection supports more than one harness target in bootstrap paths.
 - [x] CLI runtime reads canonical skill/rule artifacts when the Claude projection is absent.
@@ -69,8 +69,8 @@
 - [ ] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
 - [x] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
-- [ ] Setup and onboarding flows have visible performance budgets and regression tests.
-- [ ] A non-expert can reach a working baseline without reading deep architecture docs.
+- [x] Setup and onboarding flows have visible performance budgets and regression tests through `scripts/demo-first-run-onboarding.sh` and `tests/integration/test_first_run_onboarding.py`.
+- [x] A non-expert can reach a working baseline without reading deep architecture docs through [First-Run Onboarding Proof](../manual-tests/first-run-onboarding.md).
 
 ## 6. Complexity Compression
 
@@ -103,6 +103,6 @@
 ## Success Signal
 
 - [x] A new user can understand the product quickly.
-- [ ] A new user can install it without pain.
+- [x] A new user can install it without pain.
 - [x] A new user can see real evidence of value quickly.
 - [x] A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.
