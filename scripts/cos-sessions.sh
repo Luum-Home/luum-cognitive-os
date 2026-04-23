@@ -14,7 +14,7 @@
 
 set -uo pipefail
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 SESSION_LOG="$PROJECT_DIR/.cognitive-os/metrics/session-log.jsonl"
 REGISTRY_DIRS=()
 
