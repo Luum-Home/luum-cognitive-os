@@ -25,7 +25,7 @@
 - [x] The canonicalization risk of moving skills/rules out of `.claude/` is documented in [Skills and Rules Canonicalization Risk Analysis](../architecture/skills-rules-canonicalization-risk-analysis.md).
 - [x] A step-by-step migration plan exists in [Skills and Rules Canonicalization Workplan](../architecture/skills-rules-canonicalization-workplan.md).
 - [x] Status and diagnostic tooling can read canonical-first artifact surfaces without changing install destinations.
-- [ ] Core versus compatibility versus extension versus experimental taxonomy is documented across major product docs.
+- [x] Core versus compatibility versus extension versus experimental taxonomy is documented in [Product Zones](../product-zones.md).
 - [ ] New runtime additions are consistently classified by zone.
 - [ ] Central runtime paths avoid hardcoding non-core subsystems by default.
 
@@ -74,7 +74,7 @@
 
 ## 6. Complexity Compression
 
-- [ ] The repo is explicitly classified into core, compatibility, extensions, and experimental zones.
+- [x] The repo is explicitly classified into core, compatibility, extensions, and experimental zones through [manifests/product-zones.yaml](../../manifests/product-zones.yaml).
 - [ ] Major docs present non-core systems as optional or secondary.
 - [ ] Dashboard-heavy messaging is de-emphasized in top-level product docs.
 - [ ] Squad and organization-heavy messaging is de-emphasized in top-level product docs.
@@ -97,7 +97,7 @@
 - [x] Fix `CONTRIBUTING.md` references from `tests/run-all-tests.sh` to `scripts/run-all-tests.sh`.
 - [x] Redesign `.github/workflows/ci.yml` around the real product core.
 - [x] Triage and improve `hooks/self-install.sh` performance against behavior-test expectations.
-- [ ] Publish a simple “core vs extension” taxonomy document or section.
+- [x] Publish a simple “core vs extension” taxonomy document or section.
 - [ ] Prepare a canonical five-minute product demo path.
 
 ## Success Signal

@@ -13,6 +13,7 @@ The system is modeled after Kubernetes-style declarative configuration: organiza
 - [Architecture Principles](architecture-principles.md) — dependency model and layer boundaries
 - [Design Philosophy](design-philosophy.md) — biological-system framing for the OS
 - [Product Principles](product-principles.md) — product-level constraints and value focus
+- [Product Zones](product-zones.md) — core, compatibility, extensions, and experimental taxonomy for keeping the product focused
 - [Product Messaging](business/product-messaging.md) — how to present Cognitive OS as easy to adopt without making it feel simplistic
 - [Model Evolution Resilience](model-evolution-resilience.md) — how to keep the system durable as models, vendors, and tools change
 - [Kernel Contract](kernel-contract.md) — minimal inviolable core and where the machine-readable boundary lives
