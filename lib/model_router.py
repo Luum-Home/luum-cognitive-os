@@ -23,6 +23,7 @@ from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
+from lib.execution_profile import resolve_execution_profile
 from lib.model_catalog import ModelCatalog
 
 # Model capabilities dict — derived from ModelCatalog (single source of truth).
@@ -185,16 +186,20 @@ def select_model(
     ):
         return SONNET_ADVISOR_TIER
 
-    primary_capability = _TASK_TO_CAPABILITY.get(task_type)
+    profile = resolve_execution_profile(
+        task_type,
+        budget_remaining=budget_remaining,
+        prefer_local=prefer_local,
+    )
 
     candidates = dict(MODEL_CAPABILITIES)
-
-    # Filter for local models if preferred
-    if prefer_local:
-        candidates = {k: v for k, v in candidates.items() if v.get("local", False)}
-        if not candidates:
-            # Fall back to cheapest cloud model if no local models available
-            candidates = dict(MODEL_CAPABILITIES)
+    profile_matches = {
+        model_name: caps
+        for model_name, caps in candidates.items()
+        if profile.matches_capabilities(caps)
+    }
+    if profile_matches:
+        candidates = profile_matches
 
     # Filter by budget constraint using a reference call estimate
     if budget_remaining is not None:
@@ -224,31 +229,11 @@ def select_model(
     if not candidates:
         candidates = dict(MODEL_CAPABILITIES)
 
-    # Score and rank
-    if primary_capability == "long_context":
-        # For long context tasks, prioritize context window size
-        scored = sorted(
-            candidates.items(),
-            key=lambda x: (-x[1].get("context", 0), _total_cost(x[1])),
-        )
-    elif primary_capability == "budget":
-        # For budget tasks, prioritize cost efficiency
-        scored = sorted(
-            candidates.items(),
-            key=lambda x: (_total_cost(x[1]), -x[1].get("code", 0)),
-        )
-    elif primary_capability in ("reasoning", "code", "speed"):
-        # Score by the primary capability, break ties with cost
-        scored = sorted(
-            candidates.items(),
-            key=lambda x: (-x[1].get(primary_capability, 0), _total_cost(x[1])),
-        )
-    else:
-        # Unknown task type: default to best reasoning model
-        scored = sorted(
-            candidates.items(),
-            key=lambda x: (-x[1].get("reasoning", 0), _total_cost(x[1])),
-        )
+    scored = sorted(
+        candidates.items(),
+        key=lambda x: profile.rank_key(x[1]),
+        reverse=True,
+    )
 
     return scored[0][0]
 
