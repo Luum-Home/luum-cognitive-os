@@ -140,6 +140,7 @@ correction:
 - secondary user-facing scripts such as `component-lint.sh`, `startup-benchmark.sh`, `benchmark-hooks.sh`, `cos-usage-report.sh`, `cos-sessions.sh`, `engram-sync.sh`, and `session-leak-diagnostic.sh` now use canonical project-root precedence where they read project runtime state
 - `cos-update.sh` now backs up, restores, and fingerprints the active settings driver, and skips Claude-only profile regeneration when the active driver is not Claude
 - `auto-update-projects.sh` now preserves each project's detected harness when it re-runs `cos-init.sh`
+- driver-specific user-facing scripts are now classified in [Driver-Specific Script Surfaces](driver-specific-script-surfaces.md), with tests ensuring Codex-hosted runs do not silently write Claude settings or invoke Claude-only profile projection
 
 This is not the full migration, but it is the correct direction.
 
