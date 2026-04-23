@@ -17,7 +17,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Product Principles](product-principles.md) — product-level constraints and value focus
 - [Product Zones](product-zones.md) — core, compatibility, extensions, and experimental taxonomy for keeping the product focused
 - [Product Messaging](business/product-messaging.md) — how to present Cognitive OS as easy to adopt without making it feel simplistic
-- [Five-Minute Demo](manual-tests/five-minute-demo.md) — a short manual path for proving install, harness projection, quality checks, and status visibility
+- [Five-Minute Demo](manual-tests/five-minute-demo.md) — a short executable/manual path for proving install, harness projection, quality checks, provider contracts, and status visibility
 - [Product Proof Paths](manual-tests/proof-paths.md) — product claims mapped to files, commands, tests, and manual checks
 - [Model Evolution Resilience](model-evolution-resilience.md) — how to keep the system durable as models, vendors, and tools change
 - [Kernel Contract](kernel-contract.md) — minimal inviolable core and where the machine-readable boundary lives
