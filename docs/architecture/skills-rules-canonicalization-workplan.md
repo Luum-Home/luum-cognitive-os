@@ -69,7 +69,7 @@ Claude.
 
 ### Deliverables
 
-- [ ] Installer writes canonical artifacts plus driver projection
+- [x] Installer writes canonical artifacts plus driver projection
 - [ ] Runtime can read canonical artifacts even if Claude projection is absent
 - [ ] Tests prove canonical artifacts are sufficient as source-of-truth
 
@@ -103,9 +103,9 @@ At the end of each session:
 2. Update any contract docs that changed.
 3. Record what is now safe to do next and what remains dangerous.
 
-Current safe next step: begin Phase 3 with additive dual-read/dual-write in the
-installer and projection paths, now that the main status, release, health,
-audit, and wiring surfaces can reason about canonical-first artifacts.
+Current safe next step: extend the new dual-write installer behavior into the
+remaining runtime consumers so canonical artifacts stay usable even when the
+Claude projection is absent.
 
 Still dangerous: changing install destinations or removing `.claude/...`
 projection paths before dual-write lands.
