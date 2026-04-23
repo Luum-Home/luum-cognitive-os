@@ -462,3 +462,53 @@ class TestUninstallDeregistration:
         # Verify it was deregistered
         data = _read_registry(registry_file)
         assert len(data["installations"]) == 0
+
+    def test_uninstall_deregisters_canonical_only_project(self, tmp_path):
+        """uninstall.sh should work even when only canonical COS artifacts exist."""
+        project_dir = tmp_path / "canonical-only-project"
+        project_dir.mkdir()
+
+        registry_file = _create_registry(
+            tmp_path,
+            installations=[
+                {
+                    "path": str(project_dir),
+                    "mode": "minimal",
+                    "version": "0.2.1",
+                    "project_name": "canonical-only-project",
+                    "source": str(PROJECT_ROOT),
+                    "installed_at": "2026-01-01T00:00:00Z",
+                    "updated_at": "2026-01-01T00:00:00Z",
+                }
+            ],
+        )
+
+        cos_dir = project_dir / ".cognitive-os"
+        canonical_skill = cos_dir / "skills" / "cos" / "test-skill"
+        canonical_skill.mkdir(parents=True)
+        (canonical_skill / "SKILL.md").write_text("# Test Skill Canonical\n")
+
+        canonical_rules = cos_dir / "rules" / "cos"
+        canonical_rules.mkdir(parents=True)
+        (canonical_rules / "test-rule.md").write_text("# Test Rule Canonical\n")
+
+        (cos_dir / "install-meta.json").write_text(
+            json.dumps(
+                {
+                    "source": str(PROJECT_ROOT),
+                    "mode": "minimal",
+                }
+            )
+        )
+
+        result = _run_script(
+            UNINSTALL_SCRIPT,
+            ["--keep-config"],
+            cwd=str(project_dir),
+            env_overrides={"COS_REGISTRY_FILE": str(registry_file)},
+        )
+        assert result.returncode == 0, result.stderr
+        assert not (project_dir / ".cognitive-os").exists()
+
+        data = _read_registry(registry_file)
+        assert len(data["installations"]) == 0
