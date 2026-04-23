@@ -35,5 +35,6 @@ When referencing ADRs in code or documentation, use the full path to avoid ambig
 | [ADR-035](ADR-035-worktree-cwd-enforcement.md) | Worktree CWD Enforcement |
 | [ADR-036](ADR-036-sprint-orchestration-primitives.md) | Sprint Orchestration Primitives |
 | [ADR-037](ADR-037-self-knowledge-base.md) | Self-Knowledge Base |
+| [ADR-057](ADR-057-cross-harness-authoring-and-driver-projection.md) | Cross-Harness Authoring and Driver Projection |
 | [ADR-041](ADR-041.md) | (see file) |
 | [ADR-042](ADR-042-valkey-local-daemon.md) | Valkey Local Daemon |
