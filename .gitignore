@@ -44,8 +44,11 @@ rate-limit-state.json
 
 # ── Environment & secrets ───────────────────────────────────────────────────
 .env
+.env.local
 .env.*
 !.env.example
+*.pem
+*.key
 infra/seaweedfs/s3.json
 
 # ── Python ──────────────────────────────────────────────────────────────────
