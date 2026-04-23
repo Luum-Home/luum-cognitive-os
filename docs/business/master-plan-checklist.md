@@ -26,7 +26,7 @@
 - [x] A step-by-step migration plan exists in [Skills and Rules Canonicalization Workplan](../architecture/skills-rules-canonicalization-workplan.md).
 - [x] Status and diagnostic tooling can read canonical-first artifact surfaces without changing install destinations.
 - [x] Core versus compatibility versus extension versus experimental taxonomy is documented in [Product Zones](../product-zones.md).
-- [ ] New runtime additions are consistently classified by zone.
+- [x] New runtime additions are consistently classified by zone through root guardrails in [Product Zones Manifest](../../manifests/product-zones.yaml).
 - [ ] Central runtime paths avoid hardcoding non-core subsystems by default.
 
 ## 3. Capability-Centric Enforcement
