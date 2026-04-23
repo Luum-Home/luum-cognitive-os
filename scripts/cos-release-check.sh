@@ -33,7 +33,7 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SOURCE_ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+SOURCE_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}}}"
 
 # ── Flag parsing ───────────────────────────────────────────────────────
 DRY_RUN=false
@@ -184,7 +184,7 @@ for _event, groups in (data.get("hooks") or {}).items():
         for h in g.get("hooks", []) or []:
             cmd = h.get("command", "") or ""
             total += 1
-            m = re.search(r'"\$CLAUDE_PROJECT_DIR/([^"]+)"', cmd)
+            m = re.search(r'"\$[A-Z_]*PROJECT_DIR/([^"]+)"', cmd)
             path = ""
             if m:
                 path = os.path.join(project_root, m.group(1))
@@ -208,7 +208,7 @@ run_cos_status() {
   fi
   # cos-status always exits 0; we capture its JSON output to parse health failures.
   local out
-  out=$(CLAUDE_PROJECT_DIR="$dir" bash "$status_script" --json 2>/dev/null || true)
+  out=$(COGNITIVE_OS_PROJECT_DIR="$dir" bash "$status_script" --json 2>/dev/null || true)
   local fails
   fails=$(python3 -c "
 import json, sys
@@ -221,11 +221,29 @@ print(int(data.get('health', {}).get('failures', 0)))
   echo "$fails"
 }
 
-# Count skills in a canary dir's .claude/skills/
+# Count skills in a canary dir's active skill surface.
+find_canary_skills_surface() {
+  local dir="$1"
+  local candidate=""
+  for candidate in \
+    "$dir/.cognitive-os/skills/cos" \
+    "$dir/.claude/skills" \
+    "$dir/.cognitive-os/skills"
+  do
+    if [ -d "$candidate" ]; then
+      echo "$candidate"
+      return 0
+    fi
+  done
+  echo ""
+}
+
 count_canary_skills() {
   local dir="$1"
-  [ -d "$dir/.claude/skills" ] || { echo 0; return; }
-  find "$dir/.claude/skills" -mindepth 1 -maxdepth 1 ! -name '.*' 2>/dev/null | wc -l | tr -d ' '
+  local skills_dir
+  skills_dir="$(find_canary_skills_surface "$dir")"
+  [ -n "$skills_dir" ] && [ -d "$skills_dir" ] || { echo 0; return; }
+  find "$skills_dir" -mindepth 1 -maxdepth 1 ! -name '.*' 2>/dev/null | wc -l | tr -d ' '
 }
 
 # ── Scenario 1: default-profile install ────────────────────────────────
@@ -381,12 +399,12 @@ scenario_upgrade() {
   local snap_pre; snap_pre=$(
     {
       [ -f "$dir/.claude/settings.json" ] && shasum -a 256 "$dir/.claude/settings.json" | awk '{print $1}'
-      find "$dir/.claude/skills" -maxdepth 2 \( -type l -o -type f \) 2>/dev/null | LC_ALL=C sort | shasum -a 256 | awk '{print $1}'
+      hash_canary_skills_surface "$dir"
     } | tr -d '\n'
   )
 
   # Re-run self-install against the canary — this is what cos-update.sh does in step 4.
-  if ! CLAUDE_PROJECT_DIR="$dir" bash "$self_install" >>"$log" 2>&1; then
+  if ! COGNITIVE_OS_PROJECT_DIR="$dir" bash "$self_install" >>"$log" 2>&1; then
     local tl; tl=$(tail -30 "$log" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))" 2>/dev/null || echo '""')
     add_check "upgrade_idempotent" "false" "{\"phase\": \"self-install-rerun\", \"log_tail\": $tl}"
     rm -f "$log"
@@ -397,7 +415,7 @@ scenario_upgrade() {
   local snap_post; snap_post=$(
     {
       [ -f "$dir/.claude/settings.json" ] && shasum -a 256 "$dir/.claude/settings.json" | awk '{print $1}'
-      find "$dir/.claude/skills" -maxdepth 2 \( -type l -o -type f \) 2>/dev/null | LC_ALL=C sort | shasum -a 256 | awk '{print $1}'
+      hash_canary_skills_surface "$dir"
     } | tr -d '\n'
   )
 
@@ -570,3 +588,10 @@ if [ "$KEEP" != "true" ] && [ "$DRY_RUN" != "true" ]; then
 fi
 
 [ "${FAIL_COUNT:-0}" -eq 0 ] && exit 0 || exit 1
+hash_canary_skills_surface() {
+  local dir="$1"
+  local skills_dir
+  skills_dir="$(find_canary_skills_surface "$dir")"
+  [ -n "$skills_dir" ] && [ -d "$skills_dir" ] || return 0
+  find "$skills_dir" -maxdepth 2 \( -type l -o -type f \) 2>/dev/null | LC_ALL=C sort | shasum -a 256 | awk '{print $1}'
+}

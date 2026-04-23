@@ -4,7 +4,8 @@
 # cos-core-skills-check.sh — Verify the 10 core skills are reachable.
 # =============================================================================
 # For each core skill, verifies:
-#   - SKILL.md exists under .claude/skills/<name>/ OR skills/<name>/
+#   - SKILL.md exists under one of the supported skill surfaces
+#     (repo source, canonical .cognitive-os, or harness projection)
 #   - YAML frontmatter parses
 #   - `name:` field in frontmatter matches the directory name
 #
@@ -24,7 +25,7 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+PROJECT_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}}}"
 MODE="pretty"
 
 usage() {
@@ -98,11 +99,12 @@ check_skill() {
     return
   fi
 
-  # Candidate SKILL.md locations (in priority order):
+  # Candidate SKILL.md locations (in priority order).
+  # Prefer canonical and repo-authored surfaces before harness projections.
   local candidates=(
-    "$PROJECT_ROOT/.claude/skills/$name/SKILL.md"
     "$PROJECT_ROOT/skills/$name/SKILL.md"
     "$PROJECT_ROOT/.cognitive-os/skills/cos/$name/SKILL.md"
+    "$PROJECT_ROOT/.claude/skills/$name/SKILL.md"
     "$PROJECT_ROOT/.cognitive-os/skills/$name/SKILL.md"
   )
 
@@ -112,7 +114,7 @@ check_skill() {
   done
 
   if [ -z "$skill_md" ]; then
-    printf '%s\tMISSING\t%s\t%s\n' "$name" "SKILL.md not found in any known path" ""
+    printf '%s\tMISSING\t%s\t%s\n' "$name" "SKILL.md not found in repo, canonical, or driver skill surfaces" ""
     return
   fi
 
