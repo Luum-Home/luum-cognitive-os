@@ -6,6 +6,7 @@ VERSION="0.1.0"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PACKAGE_DIR="$(dirname "$SCRIPT_DIR")"
 CONFIG_FILE="cognitive-os.yaml"
+source "$PACKAGE_DIR/scripts/_lib/settings-driver.sh"
 
 # ── Helpers ────────────────────────────────────────────────────────────
 
@@ -64,6 +65,18 @@ driver_rules_dir() {
   else
     printf '%s' ".claude/rules"
   fi
+}
+
+active_settings_harness() {
+  cos_detect_harness "."
+}
+
+active_settings_driver_label() {
+  cos_settings_driver_label "$(active_settings_harness)"
+}
+
+active_settings_driver_path() {
+  cos_settings_driver_path "." "$(active_settings_harness)"
 }
 
 dir_has_skill_files() {
@@ -324,11 +337,16 @@ cmd_doctor() {
     issues=$((issues + 1))
   fi
 
-  # Check .claude/settings.json
-  if [ -f ".claude/settings.json" ]; then
-    echo "[OK] .claude/settings.json found (hooks registered)"
+  local settings_driver_label
+  local settings_driver_path
+  settings_driver_label="$(active_settings_driver_label)"
+  settings_driver_path="$(active_settings_driver_path)"
+
+  # Check active settings driver
+  if [ -f "$settings_driver_path" ]; then
+    echo "[OK] $settings_driver_label found (hooks registered)"
   else
-    echo "[--] .claude/settings.json not found — run /cognitive-os-init in Claude Code"
+    echo "[--] $settings_driver_label not found — run /cognitive-os-init for the active harness"
   fi
 
   # Check Docker
@@ -807,7 +825,7 @@ _install_hook() {
   # Check local source
   if [ -f ".cognitive-os/hooks/${filename}" ]; then
     echo "Hook '$filename' is available in .cognitive-os/hooks/"
-    echo "Hooks are registered in .claude/settings.json, not copied."
+    echo "Hooks are registered in $(active_settings_driver_label), not copied."
     echo "Use /cognitive-os-init or scripts/apply-efficiency-profile.sh to register hooks."
     return
   fi
@@ -968,7 +986,7 @@ _install_mcp_server() {
   echo ""
 
   if [ -n "$remote_url" ]; then
-    echo "Add this MCP server to .claude/settings.json under mcpServers:"
+    echo "Add this MCP server to $(active_settings_driver_label) under mcpServers:"
     echo ""
     # Generate a safe key name from the server name
     local key_name
@@ -1030,13 +1048,13 @@ cmd_uninstall() {
       fi
       ;;
     hook)
-      echo "Hooks are managed via .claude/settings.json, not as individual files." >&2
+      echo "Hooks are managed via $(active_settings_driver_label), not as individual files." >&2
       echo "Use scripts/apply-efficiency-profile.sh to configure hook sets." >&2
       return 1
       ;;
     mcp-server)
       echo "MCP server uninstallation not yet implemented." >&2
-      echo "Remove the server entry manually from .claude/settings.json" >&2
+      echo "Remove the server entry manually from $(active_settings_driver_label)" >&2
       return 1
       ;;
     preset)
@@ -1199,18 +1217,23 @@ _list_installed_rules() {
 _list_installed_hooks() {
   echo "=== Installed Hooks ==="
 
+  local settings_driver_label
+  local settings_driver_path
+  settings_driver_label="$(active_settings_driver_label)"
+  settings_driver_path="$(active_settings_driver_path)"
+
   if [ -d ".cognitive-os/hooks" ]; then
     local count
     count=$(find .cognitive-os/hooks -name '*.sh' -not -path '*/_lib/*' 2>/dev/null | wc -l | tr -d ' ')
     echo "  Available: $count hook(s) in .cognitive-os/hooks/"
 
     # Show which are registered
-    if [ -f ".claude/settings.json" ]; then
+    if [ -f "$settings_driver_path" ]; then
       local registered
-      registered=$(grep -c '"command"' .claude/settings.json 2>/dev/null || echo "0")
-      echo "  Registered: $registered hook command(s) in .claude/settings.json"
+      registered=$(grep -c '"command"' "$settings_driver_path" 2>/dev/null || echo "0")
+      echo "  Registered: $registered hook command(s) in $settings_driver_label"
     else
-      echo "  No .claude/settings.json — hooks not registered"
+      echo "  No $settings_driver_label — hooks not registered"
     fi
   else
     echo "  No hooks directory found"
