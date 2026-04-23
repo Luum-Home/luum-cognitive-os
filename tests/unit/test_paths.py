@@ -281,13 +281,23 @@ class TestArtifactContractPaths:
         assert claude_skills_projection_dir("/proj") == Path("/proj/.claude/skills")
         assert claude_rules_projection_dir("/proj") == Path("/proj/.claude/rules/cos")
 
-    def test_skill_lookup_candidates_preserve_current_precedence(self, tmp_path):
+    def test_skill_lookup_candidates_are_canonical_first(self, tmp_path):
         from lib.paths import skill_lookup_candidates
 
         candidates = skill_lookup_candidates("demo", tmp_path)
         assert candidates[0] == tmp_path / "skills" / "demo" / "SKILL.md"
-        assert candidates[-2] == tmp_path / ".claude" / "skills" / "demo" / "SKILL.md"
-        assert candidates[-1] == tmp_path / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
+        assert candidates[-2] == tmp_path / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
+        assert candidates[-1] == tmp_path / ".claude" / "skills" / "demo" / "SKILL.md"
+
+    def test_canonical_first_skill_lookup_swaps_projection_order(self, tmp_path):
+        from lib.paths import canonical_first_skill_lookup_candidates, skill_lookup_candidates
+
+        candidates = canonical_first_skill_lookup_candidates("demo", tmp_path)
+        default_candidates = skill_lookup_candidates("demo", tmp_path)
+        assert candidates == default_candidates
+        assert candidates[0] == tmp_path / "skills" / "demo" / "SKILL.md"
+        assert candidates[-2] == tmp_path / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
+        assert candidates[-1] == tmp_path / ".claude" / "skills" / "demo" / "SKILL.md"
 
     def test_preferred_rules_dirs_are_canonical_first(self, tmp_path):
         from lib.paths import preferred_rules_dirs
