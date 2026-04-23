@@ -14,6 +14,7 @@ set -euo pipefail
 
 # ── Resolve COS source directory ────────────────────────────────────
 COS_SOURCE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+source "$COS_SOURCE_DIR/scripts/_lib/settings-driver.sh"
 RAW_MODE="--default"
 PROJECT_DIR="$(pwd)"
 VERSION_FILE="$COS_SOURCE_DIR/VERSION"
@@ -82,22 +83,7 @@ detect_harness() {
     return
   fi
 
-  if [ -f ".codex/hooks.json" ] && [ ! -f ".claude/settings.json" ]; then
-    echo "codex"
-    return
-  fi
-
-  if [ -f ".claude/settings.json" ] && [ ! -f ".codex/hooks.json" ]; then
-    echo "claude"
-    return
-  fi
-
-  if [ -n "${CODEX_PROJECT_DIR:-}" ] || [ -n "${CODEX_SESSION_ID:-}" ] || [ -n "${CODEX_HOME:-}" ]; then
-    echo "codex"
-    return
-  fi
-
-  echo "claude"
+  cos_detect_harness "."
 }
 
 HARNESS="$(detect_harness)"

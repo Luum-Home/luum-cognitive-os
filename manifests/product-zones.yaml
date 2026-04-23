@@ -146,6 +146,47 @@ path_classification:
     zone: experimental
     reason: "Reference material and research inputs."
 
+root_guardrails:
+  - root: hooks
+    default_zone: core
+    rule: "New hook runtime paths must either be kernel-critical or move into an installable extension package."
+  - root: lib
+    default_zone: core
+    rule: "New Python runtime modules must document whether they are core contracts, compatibility adapters, or extension support."
+  - root: scripts
+    default_zone: core
+    rule: "New user-facing scripts must declare whether they are cross-harness, harness-specific, or experimental."
+  - root: cmd/cos
+    default_zone: core
+    rule: "New CLI and installer surfaces must stay aligned with the protected core unless explicitly scoped as package-manager extensions."
+  - root: internal
+    default_zone: compatibility
+    rule: "New provider, validator, or adapter internals must keep vendor assumptions behind explicit contracts."
+  - root: pkg
+    default_zone: core
+    rule: "New exported Go packages must be stable product contracts or remain internal."
+  - root: skills
+    default_zone: extensions
+    rule: "New skills are extensions by default and must not become implicit kernel requirements."
+  - root: rules
+    default_zone: extensions
+    rule: "New rules are extensions by default unless they are added to the compact core governance index."
+  - root: templates
+    default_zone: extensions
+    rule: "New prompt templates must be optional composition assets, not hidden core behavior."
+  - root: packages
+    default_zone: extensions
+    rule: "New packages must be installable and removable without weakening the core."
+  - root: dashboard
+    default_zone: extensions
+    rule: "New dashboard work must remain optional and avoid becoming the main product narrative."
+  - root: squads
+    default_zone: experimental
+    rule: "New squad surfaces remain experimental until they have repeatable operator workflows and tests."
+  - root: agents
+    default_zone: experimental
+    rule: "New agent-organization surfaces remain experimental until promoted through proof paths."
+
 promotion_rules:
   extensions_to_core:
     - "The surface directly strengthens governance, verification, or portability in real repositories."
