@@ -85,7 +85,7 @@
 
 - [x] Provider compatibility is explicitly inventoried.
 - [x] Provider-agnostic outcome metrics exist.
-- [ ] A canonical demo shows provider switching without system rewrites.
+- [x] A canonical demo shows provider and harness switching without system rewrites through [Five-Minute Demo](../manual-tests/five-minute-demo.md) and `scripts/demo-portability-proof.sh`.
 - [x] A canonical demo shows real quality gates in action through [Five-Minute Demo](../manual-tests/five-minute-demo.md).
 - [x] A canonical demo shows the core becoming usable in minutes through [Five-Minute Demo](../manual-tests/five-minute-demo.md).
 - [x] The repo contains a short proof path for “easy to adopt, serious to trust” through [Product Proof Paths](../manual-tests/proof-paths.md).
