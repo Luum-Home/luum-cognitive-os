@@ -1,92 +1,94 @@
-# Merge Readiness: Master Plan Portability
+# Merge Readiness: Master Plan Onboarding Proof
 
-> Snapshot for deciding when `codex/master-plan-portability` is ready to merge into `main` and when local/remote branches can be deleted.
+> Final merge-readiness snapshot for `codex/master-plan-onboarding-proof`.
 
 ## Branch State
 
 Current branch:
 
-- `codex/master-plan-portability`
+- `codex/master-plan-onboarding-proof`
 
-Observed comparison after fetching remotes, before committing this report:
+Observed comparison after fetching remotes on 2026-04-23:
 
-- `codex/master-plan-portability` is at least 4 commits ahead of `origin/codex/master-plan-portability`.
-- `codex/master-plan-portability` is 32 commits ahead of local `main`.
-- `codex/master-plan-portability` is 58 commits ahead of `origin/main`.
-- local `main` is ahead of `origin/main`, so the merge target must be clarified before deleting remote branches.
+- `codex/master-plan-onboarding-proof` is 11 commits ahead of `origin/main`.
+- `codex/master-plan-onboarding-proof` is 0 commits behind `origin/main`.
+- The worktree was clean before final validation.
 
-## Validation Completed
+## Master Plan Status
 
-The following checks passed on this branch:
+The executable master plan checklist is complete:
 
-- Representative Python CI lane:
-  - `1288 passed, 21 skipped, 16 xfailed`
-- Go kernel/provider lane:
+- `docs/business/master-plan-checklist.md` has no unchecked items.
+- `docs/architecture/skills-rules-canonicalization-workplan.md` has no unchecked deliverables.
+
+Completed product guarantees now have artifacts and tests:
+
+- Product promise and positioning are documented.
+- Kernel contract exists in docs, manifest, and contract tests.
+- Product zones classify the repository into `core`, `compatibility`, `extensions`, and `experimental`.
+- Runtime hardcoding guardrails prevent new central-runtime promotion of non-core subsystems without an allowlist.
+- Compatibility layer and provider inventory distinguish implemented adapters from documented targets.
+- Bootstrap and settings-driver flows are harness-aware for Claude and Codex.
+- Capability-centric routing is enforced in dispatch, gateway selection, skill routing, and metrics.
+- Skills and rules now use `.cognitive-os/skills/cos` and `.cognitive-os/rules/cos` as canonical artifact contracts, while `.claude/...` remains a Claude Code driver projection.
+- Product proof paths exist for onboarding, portability, provider/kernel checks, quality gates, and five-minute demo flow.
+
+## Automated Validation
+
+The following validation passed locally on this branch:
+
+- Exact declared Python CI lane:
+  - `python3 -m pytest tests/contracts/test_kernel_contract.py tests/contracts/test_product_zones.py tests/contracts/test_killswitch.py tests/unit/test_execution_profile.py tests/unit/test_compatibility_layer.py tests/unit/test_outcome_metrics.py tests/unit/test_model_router.py tests/unit/test_config_loader.py tests/unit/test_cross_platform_discipline.py tests/behavior/test_self_install.py -q`
+  - Result: `1302 passed, 21 skipped, 16 xfailed`
+- Expanded merge lane covering runtime, bootstrap, contracts, installers, status, and proof-path tests:
+  - `342 passed`
+- Go provider/kernel and installer/CLI/wizard lanes:
   - `go test ./internal/provider/... ./internal/validator/... ./pkg/hook/... -count=1`
+  - `(cd cmd/cos && go test ./internal/installer/... ./internal/cli/... ./internal/wizard/... -count=1)`
+- Shell syntax:
+  - `bash -n hooks/*.sh scripts/*.sh bin/cognitive-os.sh install.sh`
 - Product-facing documentation link integrity:
   - `README.md`
   - `CONTRIBUTING.md`
   - `docs/README.md`
 - YAML configuration parsing:
   - all `*.yaml` and `*.yml`
-- Pytest cache warning cleanup:
-  - removed `-c /dev/null` from CI, mutmut, and Codex fast paths
-  - no remaining `-c /dev/null` or `/dev/.pytest_cache` patterns in project validation surfaces
+- Docker Compose config:
+  - `docker compose -f docker-compose.cognitive-os.yml config --quiet`
+- Security CI check:
+  - `hooks/secret-detector.sh`
+  - `.gitignore` coverage for `.env`, `.env.local`, `*.pem`, and `*.key`
 
-## Master Plan Completed In This Branch
+## Manual Proofs
 
-Evidence-backed items now completed:
+The following manual/executable proof paths passed locally:
 
-- Product promise and positioning are documented.
-- Kernel contract exists in docs, manifest, and contract tests.
-- Product zones classify the repository into `core`, `compatibility`, `extensions`, and `experimental`.
-- Compatibility layer explicitly distinguishes implemented adapters from documented targets.
-- Bootstrap and settings-driver flows are substantially less Claude-first.
-- Driver-specific scripts are classified so Claude-only behavior does not masquerade as Codex support.
-- Capability-centric routing is enforced in dispatch, gateway selection, skill routing, and metrics.
-- Default CI now includes representative contract tests.
-- Product-facing docs links fail visibly in automation.
+- First-run onboarding proof:
+  - `bash scripts/demo-first-run-onboarding.sh --harness=codex`
+  - Result: install, status, and total first-run budgets passed.
+- Cross-harness portability proof:
+  - `bash scripts/demo-portability-proof.sh`
+  - Result: Codex and Claude projections produced matching canonical core fingerprints while keeping driver settings separate.
 
-## Remaining Master Plan Work
+## Non-CI Suite Note
 
-These are real remaining product-work items, not merge blockers for this branch:
+`python3 -m pytest tests/ -q` was attempted as an exploratory full-repository run on local Python 3.14. It is not the declared CI lane and began surfacing broad failures from non-merge lanes while also mutating `.claude/settings.json`. The run was stopped to prevent further worktree contamination, the generated settings diff was reverted, and the declared CI plus expanded merge lanes were run cleanly afterward.
 
-- Classify new runtime additions consistently by zone.
-- Reduce central runtime hardcoding of non-core subsystems.
-- Map product claims in README/pitch to explicit verification paths.
-- Make first-run installation one-pass and lower-friction.
-- Improve autodetection and user-facing setup messages.
-- Move skills/rules toward canonical-first discovery instead of `.claude/` projection gravity.
-- Add visible performance budgets for setup/onboarding flows.
-- De-emphasize dashboard, squad, organization, and broad control-plane messaging in top-level docs.
-- Freeze, archive, or demote experimental subsystems that compete with the wedge.
-- Build canonical proof/demo paths:
-  - provider switching without system rewrites
-  - real quality gates
-  - core usable in minutes
-  - easy to adopt, serious to trust
-  - resilience under ecosystem churn
+This should be treated as a follow-up test-suite hygiene issue, not as a hidden pass. The merge signal for this branch is the declared CI lane, expanded product merge lane, Go lanes, documentation/config checks, security checks, and manual proof paths above.
 
 ## Merge Recommendation
 
-This branch is close to mergeable as a portability/master-plan foundation branch, but do not delete branches yet.
+This branch is ready to merge into `main` after a clean merge dry-run.
 
-Before merge:
+Before deleting branches:
 
-1. Push the current branch so `origin/codex/master-plan-portability` includes the latest commits.
-2. Decide whether the target is local `main` or `origin/main`, because they currently differ.
-3. Run one final merge dry-run or PR check against the chosen target.
-4. Review the large diff intentionally; this branch contains product docs, runtime changes, tests, Codex local artifacts, and generated/driver projection changes.
-
-After merge:
-
-1. Verify `main` contains the branch tip.
-2. Push `main` if the remote target is intended to move.
-3. Delete `codex/master-plan-portability` locally.
-4. Delete `origin/codex/master-plan-portability` only after confirming the remote merge is complete.
+1. Confirm `main` contains commit `bb5e962` or a later merge commit containing it.
+2. Push `main`.
+3. Delete the local branch `codex/master-plan-onboarding-proof`.
+4. Delete the remote branch `origin/codex/master-plan-onboarding-proof`.
 
 ## Risk Notes
 
-- The branch is large and crosses runtime, docs, tests, settings projection, and local agent metadata.
-- The remaining unchecked master-plan items are mostly product proof, onboarding polish, and complexity-compression work.
-- The biggest merge coordination risk is branch topology, not test failure: local `main` and `origin/main` are not equivalent.
+- Do not delete `.claude/...` projection paths. They are no longer the source-of-truth, but Claude Code still needs them as a driver surface.
+- Continue treating full-suite pytest failures outside the declared CI lane as test-suite hygiene debt that should be triaged intentionally.
+- New runtime additions must continue to pass product-zone and runtime-hardcoding contracts.
