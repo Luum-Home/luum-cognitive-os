@@ -5,7 +5,7 @@
 # =============================================================================
 # Performs the following checks in throwaway tmp dirs (never touches real projects):
 #
-#   1. Fresh install (default profile)   -> .claude/settings.json valid, hooks exist,
+#   1. Fresh install (default profile)   -> active settings driver valid, hooks exist,
 #                                           cos-status runs cleanly, 10 core skills
 #                                           reachable (where applicable to profile).
 #   2. Fresh install (full profile)      -> same asserts with more skills.
@@ -13,7 +13,7 @@
 #                                           idempotent (second run = no diff).
 #   4. Rate-limiter load test            -> spawn N bash-style calls, verify throttle.
 #                                           Skipped gracefully if rate-limiter not in
-#                                           current settings.json.
+#                                           the current settings driver.
 #
 # Output: JSON report on stdout with { ok, checks_passed, checks_failed, details: [...] }.
 #
@@ -34,6 +34,7 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}}}"
+source "$SCRIPT_DIR/_lib/settings-driver.sh"
 
 # ── Flag parsing ───────────────────────────────────────────────────────
 DRY_RUN=false
@@ -49,7 +50,7 @@ cos-release-check.sh — canary/release verification for v1.0.
 
 What it verifies (before tagging v1.0):
   - Fresh install succeeds in throwaway dirs (default + full profiles).
-  - .claude/settings.json is valid JSON after install.
+  - The active settings driver is valid JSON after install.
   - All wired hooks exist on disk.
   - cos-status.sh runs cleanly on the install.
   - cos-update.sh is idempotent on a fresh install (second run = no diff).
@@ -117,6 +118,16 @@ canary_dir_for() {
   echo "${TMP_ROOT}/cos-canary-${label}"
 }
 
+canary_settings_driver_path() {
+  local dir="$1"
+  cos_settings_driver_path "$dir" "$(cos_detect_harness "$dir")"
+}
+
+canary_settings_driver_label() {
+  local dir="$1"
+  cos_settings_driver_label "$(cos_detect_harness "$dir")"
+}
+
 # Reset a canary dir safely. Refuses to touch anything outside $TMP_ROOT.
 reset_canary_dir() {
   local dir="$1"
@@ -144,11 +155,12 @@ install_into_canary() {
   )
 }
 
-# Validate .claude/settings.json as JSON.
+# Validate the active settings driver as JSON.
 # Echo "OK" | "BAD" to stdout; return 0 either way.
 validate_settings_json() {
   local dir="$1"
-  local f="$dir/.claude/settings.json"
+  local f
+  f="$(canary_settings_driver_path "$dir")"
   if [ ! -f "$f" ]; then
     echo "BAD:missing"
     return 0
@@ -164,7 +176,8 @@ validate_settings_json() {
 # Echoes: <total>\t<missing_count>
 count_hooks_status() {
   local dir="$1"
-  local settings="$dir/.claude/settings.json"
+  local settings
+  settings="$(canary_settings_driver_path "$dir")"
   if [ ! -f "$settings" ]; then echo -e "0\t0"; return; fi
   python3 - "$settings" "$dir" <<'PYEOF'
 import json, os, re, sys
@@ -175,7 +188,16 @@ except Exception:
     print("0\t0"); sys.exit(0)
 total = 0
 missing = 0
-for _event, groups in (data.get("hooks") or {}).items():
+hooks_block = data.get("hooks") or {}
+if not isinstance(hooks_block, dict):
+    hooks_block = {}
+if not hooks_block:
+    hooks_block = {
+        event: groups
+        for event, groups in data.items()
+        if isinstance(groups, list)
+    }
+for _event, groups in hooks_block.items():
     if not isinstance(groups, list):
         continue
     for g in groups:
@@ -184,7 +206,10 @@ for _event, groups in (data.get("hooks") or {}).items():
         for h in g.get("hooks", []) or []:
             cmd = h.get("command", "") or ""
             total += 1
-            m = re.search(r'"\$[A-Z_]*PROJECT_DIR/([^"]+)"', cmd)
+            m = re.search(
+                r'(\.cognitive-os/hooks/cos/[^"\s]+|\.claude/hooks/[^"\s]+|\.codex/hooks/[^"\s]+)',
+                cmd,
+            )
             path = ""
             if m:
                 path = os.path.join(project_root, m.group(1))
@@ -398,7 +423,8 @@ scenario_upgrade() {
   # Snapshot before re-run
   local snap_pre; snap_pre=$(
     {
-      [ -f "$dir/.claude/settings.json" ] && shasum -a 256 "$dir/.claude/settings.json" | awk '{print $1}'
+      local settings_path; settings_path="$(canary_settings_driver_path "$dir")"
+      [ -f "$settings_path" ] && shasum -a 256 "$settings_path" | awk '{print $1}'
       hash_canary_skills_surface "$dir"
     } | tr -d '\n'
   )
@@ -414,7 +440,8 @@ scenario_upgrade() {
   # Snapshot after
   local snap_post; snap_post=$(
     {
-      [ -f "$dir/.claude/settings.json" ] && shasum -a 256 "$dir/.claude/settings.json" | awk '{print $1}'
+      local settings_path; settings_path="$(canary_settings_driver_path "$dir")"
+      [ -f "$settings_path" ] && shasum -a 256 "$settings_path" | awk '{print $1}'
       hash_canary_skills_surface "$dir"
     } | tr -d '\n'
   )
@@ -461,7 +488,8 @@ scenario_rate_limiter_load() {
   fi
 
   local dir; dir=$(canary_dir_for "default")  # reuse the default install
-  local settings="$dir/.claude/settings.json"
+  local settings
+  settings="$(canary_settings_driver_path "$dir")"
   local hook_script="$dir/.cognitive-os/hooks/cos/rate-limiter.sh"
 
   # Fallback to source-repo rate-limiter if canary didn't install it (minimal profiles).
@@ -474,7 +502,7 @@ scenario_rate_limiter_load() {
     return 0
   fi
 
-  # Check whether rate-limiter is actually WIRED in settings.json.
+  # Check whether rate-limiter is actually WIRED in the current settings driver.
   local wired="false"
   if [ -f "$settings" ]; then
     if grep -q 'rate-limiter.sh' "$settings"; then wired="true"; fi
