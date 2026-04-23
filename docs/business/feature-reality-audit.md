@@ -28,6 +28,12 @@ The practical goal of this audit is to separate:
 
 ## Taxonomy
 
+The durable repository taxonomy is defined in [Product Zones](../product-zones.md)
+and [manifests/product-zones.yaml](../../manifests/product-zones.yaml).
+
+This audit uses an additional feature-level lens to evaluate portability,
+current product value, and complexity risk.
+
 ### Portability State
 
 - `core-agnostic`: works through stable internal contracts and does not depend on a specific harness capability
