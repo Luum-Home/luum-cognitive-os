@@ -2,8 +2,9 @@
 # SCOPE: os-only
 # cos-ghost-skills.sh — List skills exposed but never invoked in the last N days.
 #
-# A "ghost" skill is one present under .claude/skills/ that has zero matching
-# records in .cognitive-os/metrics/skill-usage.jsonl within the window.
+# A "ghost" skill is one present in the active skill exposure surface that has
+# zero matching records in .cognitive-os/metrics/skill-usage.jsonl within the
+# window.
 #
 # Intended as the input for the next cleanup sprint: these are candidates for
 # archival / de-exposure.
@@ -16,7 +17,7 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+PROJECT_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}}}"
 
 DAYS=30
 MODE="pretty"
@@ -89,6 +90,16 @@ for r in iter_records(SKILL_USAGE_FILE):
             invoked.add(name)
 
 skills_dir = root / ".claude" / "skills"
+canonical_skills_dir = root / ".cognitive-os" / "skills" / "cos"
+legacy_skills_dir = root / ".cognitive-os" / "skills"
+
+if canonical_skills_dir.is_dir():
+    skills_dir = canonical_skills_dir
+elif skills_dir.is_dir():
+    skills_dir = skills_dir
+elif legacy_skills_dir.is_dir():
+    skills_dir = legacy_skills_dir
+
 exposed = set()
 if skills_dir.is_dir():
     for entry in skills_dir.iterdir():
@@ -100,6 +111,7 @@ ghosts = sorted(exposed - invoked)
 if mode == "json":
     json.dump({
         "window_days": days,
+        "skills_surface": str(skills_dir),
         "exposed_count": len(exposed),
         "invoked_count": len(invoked & exposed),
         "ghost_count":   len(ghosts),
@@ -109,6 +121,7 @@ if mode == "json":
     sys.exit(0)
 
 print(f"Ghost skills — last {days} day(s)")
+print(f"  surface : {skills_dir}")
 print(f"  exposed : {len(exposed)}")
 print(f"  invoked : {len(invoked & exposed)}")
 print(f"  ghosts  : {len(ghosts)}")
