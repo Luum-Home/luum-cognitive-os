@@ -206,6 +206,34 @@ def test_pre_push_hook_runs_auto_update(tmp_path):
     assert "auto-update-projects.sh" in hook.read_text()
 
 
+def test_pre_push_hook_skips_feature_branches(tmp_path):
+    """Feature branch pushes must not update registered projects from unmerged work."""
+    repo = _make_repo(tmp_path, hooks_path=".githooks")
+    _run_setup(repo)
+    hook = repo / ".githooks" / "pre-push"
+
+    proc = subprocess.run(
+        ["bash", str(hook)],
+        input="refs/heads/codex/demo abc refs/heads/codex/demo def\n",
+        capture_output=True,
+        text=True,
+        cwd=repo,
+    )
+    assert proc.returncode == 0
+    assert "Auto-update skipped" in proc.stderr
+
+
+def test_pre_push_hook_allows_main_and_tag_pushes(tmp_path):
+    repo = _make_repo(tmp_path, hooks_path=".githooks")
+    _run_setup(repo)
+    hook = repo / ".githooks" / "pre-push"
+    text = hook.read_text()
+
+    assert "refs/heads/main" in text
+    assert "refs/heads/master" in text
+    assert "refs/tags/" in text
+
+
 # ── Status / remove / idempotency ───────────────────────────────────────
 
 

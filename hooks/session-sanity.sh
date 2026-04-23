@@ -2,9 +2,10 @@
 # SCOPE: os-only
 # CONCERNS: ux, session-health, adr-001-regression-detector
 # Session Sanity Hook — SessionStart
-# Verifies that the .claude/ installation is intact after every session start:
-#   1) .claude/skills/ contains a reasonable number of skill entries
-#   2) every hook referenced by .claude/settings.json exists on disk
+# Verifies that the Cognitive OS runtime installation is intact after every
+# session start:
+#   1) canonical skills exist, falling back to the Claude driver projection
+#   2) every hook referenced by the active settings driver exists on disk
 #
 # Advisory only — always exits 0. Prints actionable guidance to stderr when
 # a check fails so the user sees it at session start.
@@ -17,9 +18,23 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="session-sanity"
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
-SKILLS_DIR="$PROJECT_DIR/.claude/skills"
-SETTINGS_FILE="$PROJECT_DIR/.claude/settings.json"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+CANONICAL_SKILLS_DIR="$PROJECT_DIR/.cognitive-os/skills/cos"
+DRIVER_SKILLS_DIR="$PROJECT_DIR/.claude/skills"
+if [ -d "$CANONICAL_SKILLS_DIR" ]; then
+  SKILLS_DIR="$CANONICAL_SKILLS_DIR"
+  SKILLS_LABEL=".cognitive-os/skills/cos"
+else
+  SKILLS_DIR="$DRIVER_SKILLS_DIR"
+  SKILLS_LABEL=".claude/skills"
+fi
+if [ -f "$PROJECT_DIR/.codex/hooks.json" ] && [ ! -f "$PROJECT_DIR/.claude/settings.json" ]; then
+  SETTINGS_FILE="$PROJECT_DIR/.codex/hooks.json"
+  SETTINGS_LABEL=".codex/hooks.json"
+else
+  SETTINGS_FILE="$PROJECT_DIR/.claude/settings.json"
+  SETTINGS_LABEL=".claude/settings.json"
+fi
 HOOKS_DIR="$PROJECT_DIR/hooks"
 MIN_SKILLS_THRESHOLD=20
 
@@ -36,7 +51,7 @@ if [ -d "$SKILLS_DIR" ]; then
   if [ "$TOTAL_SKILLS" -lt "$MIN_SKILLS_THRESHOLD" ]; then
     echo "" >&2
     echo "=== SESSION-SANITY: WARNING ===" >&2
-    echo "Only $TOTAL_SKILLS skills exposed in .claude/skills/; expected $MIN_SKILLS_THRESHOLD+." >&2
+    echo "Only $TOTAL_SKILLS skills found in $SKILLS_LABEL; expected $MIN_SKILLS_THRESHOLD+." >&2
     echo "Action: run 'bash hooks/self-install.sh' to repopulate the skill catalog." >&2
     echo "" >&2
     FAILED=true
@@ -44,13 +59,13 @@ if [ -d "$SKILLS_DIR" ]; then
 else
   echo "" >&2
   echo "=== SESSION-SANITY: WARNING ===" >&2
-  echo ".claude/skills/ directory is missing." >&2
+  echo "$SKILLS_LABEL directory is missing." >&2
   echo "Action: run 'bash hooks/self-install.sh' to set up the Cognitive OS skill catalog." >&2
   echo "" >&2
   FAILED=true
 fi
 
-# Check 2: every hook in settings.json exists on disk
+# Check 2: every hook in the active settings driver exists on disk
 if [ -f "$SETTINGS_FILE" ]; then
   # Extract every "command" line that references a .sh file, reduce to the
   # basename (e.g. self-install.sh), de-dupe, and check each one exists in

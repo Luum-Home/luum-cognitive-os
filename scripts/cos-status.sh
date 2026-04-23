@@ -270,11 +270,13 @@ run_health_checks() {
   settings="$(active_settings_driver_path)"
   settings_label="$(active_settings_driver_label)"
 
-  # 1. .claude/skills/ non-empty
-  if [ -d "$skills_dir" ] && [ "$(count_skills "$skills_dir")" -gt 0 ]; then
-    printf 'OK\t.claude/skills/ exposed (%d entries)\n' "$(count_skills "$skills_dir")"
+  # 1. Canonical skills are the source-of-truth; driver skills are fallback exposure.
+  if [ -d "$(canonical_skills_dir)" ] && [ "$(count_skills "$(canonical_skills_dir)")" -gt 0 ]; then
+    printf 'OK\t.cognitive-os/skills/cos/ canonical (%d entries)\n' "$(count_skills "$(canonical_skills_dir)")"
+  elif [ -d "$skills_dir" ] && [ "$(count_skills "$skills_dir")" -gt 0 ]; then
+    printf 'OK\t.claude/skills/ driver projection (%d entries)\n' "$(count_skills "$skills_dir")"
   else
-    printf 'FAIL\t.claude/skills/ is empty (expected >0)\tbash hooks/self-install.sh\n'
+    printf 'FAIL\t.cognitive-os/skills/cos/ is empty and driver projection has no skills\tbash hooks/self-install.sh\n'
   fi
 
   # 2. Active settings driver valid JSON

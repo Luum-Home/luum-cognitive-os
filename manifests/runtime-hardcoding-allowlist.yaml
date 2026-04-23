@@ -1,0 +1,102 @@
+version: 1
+purpose: "Track documented exceptions where protected runtime paths still reference non-core subsystems."
+
+protected_runtime_paths:
+  - hooks/self-install.sh
+  - hooks/session-init.sh
+  - install.sh
+  - lib/config_loader.py
+  - lib/dispatch.py
+  - lib/paths.py
+  - lib/record_completion.py
+  - scripts/_lib/settings-driver.sh
+  - scripts/cos-init.sh
+  - scripts/generate-project-settings.sh
+
+blocked_reference_patterns:
+  - id: dashboard_default_skill
+    zone: extensions
+    regex: "\\b(agent-dashboard|paperclip-dashboard)\\b"
+    reason: "Dashboard skills are optional extension surfaces and must not silently become core runtime requirements."
+  - id: experimental_squad_projection
+    zone: experimental
+    regex: "(squads\\|cos\\|flat|\\.cognitive-os/squads|\\bsquad_count\\b)"
+    reason: "Squad organization is experimental and must not silently become part of the protected runtime path."
+  - id: experimental_agent_projection
+    zone: experimental
+    regex: "(agents\\|cos\\|flat|\\.cognitive-os/agents|\\bagent_count\\b)"
+    reason: "Agent-organization assets are experimental and must not silently become part of the protected runtime path."
+
+allowlist:
+  - id: legacy_default_skill_agent_dashboard
+    path: scripts/cos-init.sh
+    pattern_id: dashboard_default_skill
+    required_text: "agent-dashboard"
+    zone: extensions
+    status: legacy_exception
+    reason: "The default skill set still reflects the earlier dashboard-heavy onboarding profile."
+    remediation: "Move dashboard skills behind an explicit extension/profile selection path or replace them with core-proof defaults."
+  - id: legacy_default_skill_paperclip_dashboard
+    path: scripts/cos-init.sh
+    pattern_id: dashboard_default_skill
+    required_text: "paperclip-dashboard"
+    zone: extensions
+    status: legacy_exception
+    reason: "The default skill set still reflects the earlier dashboard-heavy onboarding profile."
+    remediation: "Move dashboard skills behind an explicit extension/profile selection path or replace them with core-proof defaults."
+  - id: self_hosting_squad_sync
+    path: hooks/self-install.sh
+    pattern_id: experimental_squad_projection
+    required_text: "squads|cos|flat"
+    zone: experimental
+    status: self_hosting_exception
+    reason: "Self-hosting currently preserves squad specs for existing installs, but squads are not a first-contact product promise."
+    remediation: "Gate squad sync behind an explicit self-hosting or experimental projection option."
+  - id: self_hosting_agent_sync
+    path: hooks/self-install.sh
+    pattern_id: experimental_agent_projection
+    required_text: "agents|cos|flat"
+    zone: experimental
+    status: self_hosting_exception
+    reason: "Self-hosting currently preserves agent specs for existing installs, but agent organization is not a core wedge."
+    remediation: "Gate agent sync behind an explicit self-hosting or experimental projection option."
+  - id: self_hosting_squad_status_path
+    path: hooks/self-install.sh
+    pattern_id: experimental_squad_projection
+    required_text: ".cognitive-os/squads"
+    zone: experimental
+    status: self_hosting_exception
+    reason: "Status output reports existing squad projection counts for self-hosting visibility."
+    remediation: "Report extension and experimental projection counts separately from core install status."
+  - id: self_hosting_agent_status_path
+    path: hooks/self-install.sh
+    pattern_id: experimental_agent_projection
+    required_text: ".cognitive-os/agents"
+    zone: experimental
+    status: self_hosting_exception
+    reason: "Status output reports existing agent projection counts for self-hosting visibility."
+    remediation: "Report extension and experimental projection counts separately from core install status."
+  - id: self_hosting_squad_status_variable
+    path: hooks/self-install.sh
+    pattern_id: experimental_squad_projection
+    required_text: "squad_count"
+    zone: experimental
+    status: self_hosting_exception
+    reason: "Status output reports existing squad projection counts for self-hosting visibility."
+    remediation: "Report extension and experimental projection counts separately from core install status."
+  - id: self_hosting_agent_status_variable
+    path: hooks/self-install.sh
+    pattern_id: experimental_agent_projection
+    required_text: "agent_count"
+    zone: experimental
+    status: self_hosting_exception
+    reason: "Status output reports existing agent projection counts for self-hosting visibility."
+    remediation: "Report extension and experimental projection counts separately from core install status."
+
+verification:
+  contract_tests:
+    - tests/contracts/test_runtime_hardcoding.py
+  primary_docs:
+    - docs/architecture/runtime-hardcoding-discipline.md
+    - docs/business/master-plan-checklist.md
+

@@ -26,8 +26,8 @@
 - [x] A step-by-step migration plan exists in [Skills and Rules Canonicalization Workplan](../architecture/skills-rules-canonicalization-workplan.md).
 - [x] Status and diagnostic tooling can read canonical-first artifact surfaces without changing install destinations.
 - [x] Core versus compatibility versus extension versus experimental taxonomy is documented in [Product Zones](../product-zones.md).
-- [ ] New runtime additions are consistently classified by zone.
-- [ ] Central runtime paths avoid hardcoding non-core subsystems by default.
+- [x] New runtime additions are consistently classified by zone through root guardrails in [Product Zones Manifest](../../manifests/product-zones.yaml).
+- [x] Central runtime paths avoid hardcoding non-core subsystems by default through [Runtime Hardcoding Discipline](../architecture/runtime-hardcoding-discipline.md) and `tests/contracts/test_runtime_hardcoding.py`.
 
 ## 3. Capability-Centric Enforcement
 
@@ -56,40 +56,40 @@
 - [x] Update and auto-update paths preserve the active harness/settings driver instead of silently assuming Claude.
 - [x] Driver-specific user-facing scripts are explicitly classified so Claude-only registration/profile flows do not masquerade as Codex support.
 - [x] Broken product-facing links fail visibly in automation.
-- [ ] Product claims in README and pitch map to explicit verification paths.
+- [x] Product claims in README and pitch map to explicit verification paths through [Product Proof Paths](../manual-tests/proof-paths.md).
 
 ## 5. Onboarding and Operational Simplicity
 
-- [ ] First-run installation is one-pass and low-friction.
-- [ ] Autodetection reduces required configuration for new users.
+- [x] First-run installation is one-pass and low-friction through [First-Run Onboarding Proof](../manual-tests/first-run-onboarding.md).
+- [x] Autodetection reduces required configuration for new users through shared harness detection and Codex-driver bootstrap coverage in `tests/integration/test_project_settings_generation.py`.
 - [x] Settings projection supports more than one harness target in bootstrap paths.
 - [x] CLI runtime reads canonical skill/rule artifacts when the Claude projection is absent.
 - [x] Upgrade paths preserve the active harness instead of silently falling back to Claude-first settings projection.
 - [x] Emergency-stop keeps the core safety path cross-harness while marking Claude-only profile projection honestly.
-- [ ] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
-- [ ] User-facing setup messages are clear and product-grade.
+- [x] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
+- [x] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
-- [ ] Setup and onboarding flows have visible performance budgets and regression tests.
-- [ ] A non-expert can reach a working baseline without reading deep architecture docs.
+- [x] Setup and onboarding flows have visible performance budgets and regression tests through `scripts/demo-first-run-onboarding.sh` and `tests/integration/test_first_run_onboarding.py`.
+- [x] A non-expert can reach a working baseline without reading deep architecture docs through [First-Run Onboarding Proof](../manual-tests/first-run-onboarding.md).
 
 ## 6. Complexity Compression
 
 - [x] The repo is explicitly classified into core, compatibility, extensions, and experimental zones through [manifests/product-zones.yaml](../../manifests/product-zones.yaml).
-- [ ] Major docs present non-core systems as optional or secondary.
-- [ ] Dashboard-heavy messaging is de-emphasized in top-level product docs.
-- [ ] Squad and organization-heavy messaging is de-emphasized in top-level product docs.
-- [ ] Experimental subsystems that compete with the wedge are archived, frozen, or clearly demoted.
+- [x] Major docs present non-core systems as optional or secondary through [README](../../README.md), [Docs Index](../README.md), and [Product Zones](../product-zones.md).
+- [x] Dashboard-heavy messaging is de-emphasized in top-level product docs.
+- [x] Squad and organization-heavy messaging is de-emphasized in top-level product docs.
+- [x] Experimental subsystems that compete with the wedge are archived, frozen, or clearly demoted through the product-zone taxonomy and top-level docs.
 - [x] A feature reality audit exists to classify core, optional, and overextended surfaces.
 
 ## 7. Visible Proof
 
 - [x] Provider compatibility is explicitly inventoried.
 - [x] Provider-agnostic outcome metrics exist.
-- [ ] A canonical demo shows provider switching without system rewrites.
-- [ ] A canonical demo shows real quality gates in action.
-- [ ] A canonical demo shows the core becoming usable in minutes.
-- [ ] The repo contains a short proof path for “easy to adopt, serious to trust.”
-- [ ] The repo contains a short proof path for resilience under ecosystem churn.
+- [x] A canonical demo shows provider and harness switching without system rewrites through [Five-Minute Demo](../manual-tests/five-minute-demo.md) and `scripts/demo-portability-proof.sh`.
+- [x] A canonical demo shows real quality gates in action through [Five-Minute Demo](../manual-tests/five-minute-demo.md).
+- [x] A canonical demo shows the core becoming usable in minutes through [Five-Minute Demo](../manual-tests/five-minute-demo.md).
+- [x] The repo contains a short proof path for “easy to adopt, serious to trust” through [Product Proof Paths](../manual-tests/proof-paths.md).
+- [x] The repo contains a short proof path for resilience under ecosystem churn through [Product Proof Paths](../manual-tests/proof-paths.md).
 
 ## 8. Immediate Known Gaps
 
@@ -98,11 +98,11 @@
 - [x] Redesign `.github/workflows/ci.yml` around the real product core.
 - [x] Triage and improve `hooks/self-install.sh` performance against behavior-test expectations.
 - [x] Publish a simple “core vs extension” taxonomy document or section.
-- [ ] Prepare a canonical five-minute product demo path.
+- [x] Prepare a canonical five-minute product demo path through [Five-Minute Demo](../manual-tests/five-minute-demo.md).
 
 ## Success Signal
 
-- [ ] A new user can understand the product quickly.
-- [ ] A new user can install it without pain.
-- [ ] A new user can see real evidence of value quickly.
-- [ ] A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.
+- [x] A new user can understand the product quickly.
+- [x] A new user can install it without pain.
+- [x] A new user can see real evidence of value quickly.
+- [x] A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.

@@ -47,7 +47,7 @@ try:  # PyYAML is already required by other lib/* modules
 except ImportError:  # pragma: no cover — handled at call site
     yaml = None  # type: ignore
 
-from lib.paths import skill_lookup_candidates
+from lib.paths import canonical_first_skill_lookup_candidates, skill_lookup_candidates
 
 
 # Recognised tier labels (validated loosely — unknown tiers warned + accepted)
@@ -262,14 +262,23 @@ def load_skill_requirements(skill_md_path: str | Path) -> Optional[SkillRequirem
     return parse_routing_block(fm if isinstance(fm, dict) else {})
 
 
-def find_skill_md(skill_name: str, project_root: str | Path | None = None) -> Optional[Path]:
+def find_skill_md(
+    skill_name: str,
+    project_root: str | Path | None = None,
+    *,
+    prefer_canonical: bool = False,
+) -> Optional[Path]:
     """Resolve a skill NAME (e.g. "sdd-archive") to its SKILL.md path.
 
     Search order (first hit wins):
       1. `skills/{name}/SKILL.md` at project root
       2. `packages/*/skills/{name}/SKILL.md` (nested package skills)
-      3. `.claude/skills/{name}/SKILL.md` (current Claude projection)
-      4. `.cognitive-os/skills/cos/{name}/SKILL.md` (canonical fallback)
+      3. `.cognitive-os/skills/cos/{name}/SKILL.md` (canonical source-of-truth)
+      4. `.claude/skills/{name}/SKILL.md` (Claude driver projection fallback)
+
+    ``prefer_canonical`` remains for compatibility with older callers. The
+    default is canonical-first; setting it to ``False`` no longer promotes
+    `.claude/` over the canonical artifact contract.
 
     Returns `None` when the skill cannot be located. Never raises — the bridge
     hook degrades to no-op on unknown skills per ADR-056 L3 contract.
@@ -280,7 +289,8 @@ def find_skill_md(skill_name: str, project_root: str | Path | None = None) -> Op
     if "/" in skill_name or ".." in skill_name or skill_name.startswith("."):
         return None
 
-    for candidate in skill_lookup_candidates(skill_name, project_root):
+    candidates = canonical_first_skill_lookup_candidates(skill_name, project_root)
+    for candidate in candidates:
         if candidate.is_file():
             return candidate
 
@@ -288,7 +298,10 @@ def find_skill_md(skill_name: str, project_root: str | Path | None = None) -> Op
 
 
 def load_skill_requirements_by_name(
-    skill_name: str, project_root: str | Path | None = None
+    skill_name: str,
+    project_root: str | Path | None = None,
+    *,
+    prefer_canonical: bool = False,
 ) -> Optional[SkillRequirements]:
     """Convenience wrapper: resolve skill name → SKILL.md → SkillRequirements.
 
@@ -296,7 +309,7 @@ def load_skill_requirements_by_name(
     Used by `hooks/agent-qwen-bridge.sh` to avoid open-coding the name→path
     lookup in shell.
     """
-    md = find_skill_md(skill_name, project_root)
+    md = find_skill_md(skill_name, project_root, prefer_canonical=prefer_canonical)
     if md is None:
         return None
     return load_skill_requirements(md)
