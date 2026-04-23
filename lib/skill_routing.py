@@ -46,6 +46,8 @@ try:  # PyYAML is already required by other lib/* modules
 except ImportError:  # pragma: no cover — handled at call site
     yaml = None  # type: ignore
 
+from lib.paths import skill_lookup_candidates
+
 
 # Recognised tier labels (validated loosely — unknown tiers warned + accepted)
 VALID_TIERS = ("frontier", "balanced", "cheap")
@@ -254,7 +256,8 @@ def find_skill_md(skill_name: str, project_root: str | Path | None = None) -> Op
     Search order (first hit wins):
       1. `skills/{name}/SKILL.md` at project root
       2. `packages/*/skills/{name}/SKILL.md` (nested package skills)
-      3. `.claude/skills/{name}/SKILL.md` (user-overridden skills)
+      3. `.claude/skills/{name}/SKILL.md` (current Claude projection)
+      4. `.cognitive-os/skills/cos/{name}/SKILL.md` (canonical fallback)
 
     Returns `None` when the skill cannot be located. Never raises — the bridge
     hook degrades to no-op on unknown skills per ADR-056 L3 contract.
@@ -265,27 +268,9 @@ def find_skill_md(skill_name: str, project_root: str | Path | None = None) -> Op
     if "/" in skill_name or ".." in skill_name or skill_name.startswith("."):
         return None
 
-    root = Path(project_root) if project_root else Path.cwd()
-
-    # 1. skills/{name}/SKILL.md
-    candidate = root / "skills" / skill_name / "SKILL.md"
-    if candidate.is_file():
-        return candidate
-
-    # 2. packages/*/skills/{name}/SKILL.md
-    packages_dir = root / "packages"
-    if packages_dir.is_dir():
-        for pkg in packages_dir.iterdir():
-            if not pkg.is_dir():
-                continue
-            candidate = pkg / "skills" / skill_name / "SKILL.md"
-            if candidate.is_file():
-                return candidate
-
-    # 3. .claude/skills/{name}/SKILL.md
-    candidate = root / ".claude" / "skills" / skill_name / "SKILL.md"
-    if candidate.is_file():
-        return candidate
+    for candidate in skill_lookup_candidates(skill_name, project_root):
+        if candidate.is_file():
+            return candidate
 
     return None
 

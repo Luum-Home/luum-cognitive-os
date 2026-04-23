@@ -10,6 +10,7 @@ from pathlib import Path
 from lib.context_diet import (
     ALWAYS_INCLUDED,
     CHARS_PER_TOKEN,
+    ContextDiet,
     PREAMBLE_TOKENS,
     TASK_PROMPT_TOKENS,
     TASK_RULES,
@@ -279,3 +280,34 @@ class TestModuleConstants:
     def test_task_rules_values_are_lists(self) -> None:
         for task, rules in TASK_RULES.items():
             assert isinstance(rules, list), f"{task} rules should be a list"
+
+
+class TestContextDietRulesDirResolution:
+    def test_from_yaml_prefers_canonical_rules_dir(self, tmp_path: Path) -> None:
+        config = tmp_path / "cognitive-os.yaml"
+        config.write_text("project:\n  phase: reconstruction\n")
+        canonical = tmp_path / ".cognitive-os" / "rules" / "cos"
+        driver = tmp_path / ".claude" / "rules" / "cos"
+        canonical.mkdir(parents=True)
+        driver.mkdir(parents=True)
+
+        diet = ContextDiet.from_yaml(str(config))
+        assert diet.rules_dir == str(canonical)
+
+    def test_from_yaml_falls_back_to_claude_rules(self, tmp_path: Path) -> None:
+        config = tmp_path / "cognitive-os.yaml"
+        config.write_text("project:\n  phase: reconstruction\n")
+        driver = tmp_path / ".claude" / "rules" / "cos"
+        driver.mkdir(parents=True)
+
+        diet = ContextDiet.from_yaml(str(config))
+        assert diet.rules_dir == str(driver)
+
+    def test_from_yaml_falls_back_to_repo_rules_source(self, tmp_path: Path) -> None:
+        config = tmp_path / "cognitive-os.yaml"
+        config.write_text("project:\n  phase: reconstruction\n")
+        repo_rules = tmp_path / "rules"
+        repo_rules.mkdir(parents=True)
+
+        diet = ContextDiet.from_yaml(str(config))
+        assert diet.rules_dir == str(repo_rules)
