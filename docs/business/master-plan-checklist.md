@@ -43,7 +43,7 @@
 
 - [x] Default CI covers representative Python product tests.
 - [x] Default CI covers Go kernel and provider tests.
-- [ ] Default CI covers contract tests.
+- [x] Default CI covers representative contract tests.
 - [x] Default CI covers key behavior tests.
 - [x] Default CI includes documentation integrity checks.
 - [x] Release-plumbing checks can reason about canonical-first skill surfaces without changing install destinations.
