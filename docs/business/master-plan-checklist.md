@@ -34,10 +34,10 @@
 - [x] Capability profiles exist in the runtime.
 - [x] Model routing uses capability-centric execution profiles before model choice.
 - [x] Compatibility inventory explicitly distinguishes implemented and documented surfaces.
-- [ ] Dispatch uses capability-centric execution paths.
-- [ ] Gateway selection is capability-centric before vendor-centric.
-- [ ] Skill routing is capability-centric before vendor-centric.
-- [ ] Execution records and metrics are organized around capabilities, not model branding.
+- [x] Dispatch uses capability-centric execution paths.
+- [x] Gateway selection is capability-centric before vendor-centric.
+- [x] Skill routing is capability-centric before vendor-centric.
+- [x] Execution records and metrics include execution-profile data, not only model branding.
 
 ## 4. CI and Validation Integrity
 
