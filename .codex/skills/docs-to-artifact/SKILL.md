@@ -38,6 +38,15 @@ Every significant analysis should become at least one of:
 
 Prefer adding the document first, then adding enforcement when the behavior is expected to remain stable.
 
+Durable memory should follow this order:
+
+1. repository artifact
+2. checklist or contract
+3. `.codex/` compressed memory
+4. MCP memory such as Engram when the tool is actually available
+
+Never claim that memory was persisted to an MCP tool unless that tool is surfaced in the current environment.
+
 ## Completion Step
 
 When a new artifact is created, link it from:
