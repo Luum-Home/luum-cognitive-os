@@ -57,6 +57,7 @@ Evidence:
 - provider adapters: `internal/provider/`
 - compatibility inventory: `lib/compatibility_layer.py`
 - harness-aware settings projection: `scripts/generate-project-settings.sh`
+- executable portability demo: `scripts/demo-portability-proof.sh`
 - settings-driver helpers: `scripts/_lib/settings-driver.sh`
 - bootstrap portability analysis: `docs/architecture/bootstrap-portability.md`
 - cross-harness authoring guide: `docs/architecture/cross-harness-authoring.md`
@@ -64,11 +65,13 @@ Evidence:
 Verification:
 
 ```bash
+bash scripts/demo-portability-proof.sh
 go test ./internal/provider/... ./internal/validator/... ./pkg/hook/... -count=1
 python3 -m pytest \
   tests/unit/test_compatibility_layer.py \
   tests/integration/test_project_settings_generation.py \
-  tests/integration/test_installer.py -q
+  tests/integration/test_installer.py \
+  tests/integration/test_portability_demo.py -q
 ```
 
 ## Claim: Capability-Centric, Not Model-Centric
