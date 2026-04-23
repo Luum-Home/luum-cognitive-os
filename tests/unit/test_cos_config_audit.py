@@ -339,6 +339,53 @@ class TestSettingsFreshness:
         assert status == "ASPIR", f"expected ASPIR, got {status}: {reason}"
         assert "apply-efficiency-profile.sh changed" in reason
 
+
+class TestSettingsDriverResolution:
+    """Audit settings parsing should tolerate more than one harness driver."""
+
+    def test_settings_commands_read_codex_hooks_when_codex_is_active(self, tmp_path, monkeypatch):
+        mod = _load_audit_module()
+
+        codex = tmp_path / ".codex" / "hooks.json"
+        codex.parent.mkdir(parents=True)
+        codex.write_text(
+            json.dumps(
+                {
+                    "SessionStart": [
+                        {
+                            "matcher": "startup",
+                            "hooks": [
+                                {
+                                    "type": "command",
+                                    "command": 'bash "$PWD/hooks/self-install.sh"',
+                                }
+                            ],
+                        }
+                    ]
+                }
+            )
+        )
+
+        monkeypatch.setenv("COGNITIVE_OS_HARNESS", "codex")
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+
+        commands = mod._settings_commands()
+        assert commands == ['bash "$PWD/hooks/self-install.sh"']
+
+    def test_settings_candidates_prefer_claude_projection_by_default(self, tmp_path, monkeypatch):
+        mod = _load_audit_module()
+
+        (tmp_path / ".claude").mkdir(parents=True)
+        (tmp_path / ".codex").mkdir(parents=True)
+        monkeypatch.delenv("COGNITIVE_OS_HARNESS", raising=False)
+        monkeypatch.delenv("CODEX_PROJECT_DIR", raising=False)
+        monkeypatch.delenv("CODEX_SESSION_ID", raising=False)
+        monkeypatch.delenv("CODEX_HOME", raising=False)
+
+        candidates = mod._settings_driver_candidates(tmp_path)
+        assert candidates[0] == tmp_path / ".claude" / "settings.local.json"
+        assert candidates[1] == tmp_path / ".claude" / "settings.json"
+
     def test_settings_freshness_partial_when_no_sha_tracked(self, tmp_path):
         """settings.json present but no SHA file → PARTIAL."""
         mod = _load_audit_module()

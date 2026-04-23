@@ -108,6 +108,7 @@ class TestHookValidation:
         assert result["in_security_profile"] is True
         assert result["in_efficiency_profile"] is True
         assert result["in_settings_json"] is True
+        assert result["settings_driver"] == ".claude/settings.json"
         assert result["wiring_score"] == 1.0
         assert result["issues"] == []
 
@@ -128,6 +129,28 @@ class TestHookValidation:
         assert result["in_efficiency_profile"] is False
         # file=1, security=1, efficiency=0, settings=0 → 0.5
         assert result["wiring_score"] == pytest.approx(0.5)
+
+    def test_hook_uses_codex_driver_when_explicitly_selected(self, mock_project: Path, monkeypatch) -> None:
+        claude_settings = mock_project / ".claude" / "settings.json"
+        if claude_settings.exists():
+            claude_settings.unlink()
+
+        codex = mock_project / ".codex"
+        codex.mkdir()
+        (codex / "hooks.json").write_text(
+            '{"SessionStart":[{"matcher":"startup","hooks":[{"type":"command","command":"hooks/fully-wired.sh"}]}]}'
+        )
+
+        monkeypatch.setenv("COGNITIVE_OS_HARNESS", "codex")
+        v = WiringValidator(str(mock_project))
+        result = v.validate_hook("fully-wired.sh")
+        assert result["in_settings_json"] is True
+        assert result["settings_driver"] == ".codex/hooks.json"
+
+    def test_missing_hook_mentions_active_settings_driver(self, mock_project: Path) -> None:
+        v = WiringValidator(str(mock_project))
+        result = v.validate_hook("missing-efficiency.sh")
+        assert any(".claude/settings.json" in issue for issue in result["issues"])
 
     def test_hook_internal_skipped(self, mock_project: Path) -> None:
         """_lib hooks are skipped from validate_all_hooks but can still be validated."""
