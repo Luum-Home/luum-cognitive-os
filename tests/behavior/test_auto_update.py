@@ -395,7 +395,7 @@ class TestCosInitRegistration:
     """Tests that cos-init.sh registers the project in the global registry."""
 
     def test_cos_init_registers_project(self, tmp_path):
-        """cos-init.sh should register the project in the registry."""
+        """cos-init.sh should register the project using the canonicalized mode."""
         project_dir = tmp_path / "test-project"
         project_dir.mkdir()
         (project_dir / "package.json").write_text('{"name": "test-project"}')
@@ -413,8 +413,9 @@ class TestCosInitRegistration:
         assert len(data["installations"]) == 1
         entry = data["installations"][0]
         assert entry["project_name"] == "test-project"
-        assert entry["mode"] == "minimal"
+        assert entry["mode"] == "default"
         assert entry["source"] == str(PROJECT_ROOT)
+        assert "collapsed '--minimal' into '--default'" in result.stderr
 
 
 # ── Integration: uninstall.sh deregisters project ──────────────────
