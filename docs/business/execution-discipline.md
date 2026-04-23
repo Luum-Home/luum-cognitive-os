@@ -55,6 +55,24 @@ The standard is:
 
 **do not let the same rule silently fork across Bash, Python, Go, and docs without declaring the shared source of truth.**
 
+## 2.5 Found Bugs Become Work
+
+If a bug is discovered during adjacent work, it should not be dismissed as
+"outside the current task" by default.
+
+The repository should follow a broken-window discipline:
+
+- if the bug is small and safe to fix now, fix it now
+- if the bug changes the contract, document the decision and then fix it
+- if the bug is large or risky, record it explicitly in the active workplan or checklist before moving on
+
+The important rule is:
+
+**a discovered bug is product work, not background noise.**
+
+This prevents false progress where new work lands on top of known defects that
+the current session already touched closely enough to understand.
+
 ## 3. Durable Memory Hierarchy
 
 Session continuity must not depend on remembering the repository from scratch.
