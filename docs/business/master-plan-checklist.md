@@ -48,6 +48,7 @@
 - [x] Default CI includes documentation integrity checks.
 - [x] Release-plumbing checks can reason about canonical-first skill surfaces without changing install destinations.
 - [x] Audit and wiring validation can read the active settings driver instead of assuming `.claude/settings.json` is the only runtime surface.
+- [x] CLI health and hook reporting can read the active settings driver instead of assuming `.claude/settings.json` is the only user-facing runtime surface.
 - [ ] Broken product-facing links fail visibly in automation.
 - [ ] Product claims in README and pitch map to explicit verification paths.
 
@@ -57,6 +58,7 @@
 - [ ] Autodetection reduces required configuration for new users.
 - [x] Settings projection supports more than one harness target in bootstrap paths.
 - [x] CLI runtime reads canonical skill/rule artifacts when the Claude projection is absent.
+- [x] Upgrade paths preserve the active harness instead of silently falling back to Claude-first settings projection.
 - [ ] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
 - [ ] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.

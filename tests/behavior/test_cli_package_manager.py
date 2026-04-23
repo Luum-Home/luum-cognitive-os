@@ -82,6 +82,7 @@ def _setup_minimal_project(tmp_path: Path) -> Path:
     claude_dir.mkdir()
     (claude_dir / "rules").mkdir()
     (claude_dir / "skills").mkdir()
+    (project / ".codex").mkdir()
 
     # Presets directory
     presets_dir = project / "presets"
@@ -193,6 +194,20 @@ class TestCLIList:
         result = _run_cli("list", "hooks", cwd=str(project))
         assert result.returncode == 0
         assert "Installed Hooks" in result.stdout
+
+    def test_list_hooks_uses_codex_driver_when_active(self, tmp_path):
+        """'cos list hooks' should report the active Codex settings driver when present."""
+        project = _setup_minimal_project(tmp_path)
+        codex_hooks = project / ".codex" / "hooks.json"
+        codex_hooks.write_text(
+            '{"hooks":{"Stop":[{"matcher":"*","hooks":[{"type":"command","command":"echo stop"}]}]}}\n'
+        )
+
+        result = _run_cli("list", "hooks", cwd=str(project))
+
+        assert result.returncode == 0
+        assert ".codex/hooks.json" in result.stdout
+        assert "Registered: 1 hook command" in result.stdout
 
     def test_list_presets(self, tmp_path):
         """'cos list presets' should show available presets."""
@@ -501,6 +516,38 @@ class TestCLIUpdate:
         empty_dir.mkdir()
         result = _run_cli("update", cwd=str(empty_dir))
         assert result.returncode != 0
+
+
+# ── Doctor ────────────────────────────────────────────────────────────
+
+
+class TestCLIDoctor:
+    """Tests for 'cos doctor' subcommand."""
+
+    def test_doctor_reports_codex_driver_when_present(self, tmp_path):
+        """'cos doctor' should report .codex/hooks.json for Codex-first projects."""
+        project = _setup_minimal_project(tmp_path)
+        codex_hooks = project / ".codex" / "hooks.json"
+        codex_hooks.write_text('{"hooks": {}}\n')
+
+        result = _run_cli("doctor", cwd=str(project))
+
+        assert result.returncode == 0
+        assert ".codex/hooks.json found (hooks registered)" in result.stdout
+
+    def test_doctor_reports_missing_codex_driver_for_active_codex_harness(self, tmp_path):
+        """'cos doctor' should not tell Codex users to look for Claude settings."""
+        project = _setup_minimal_project(tmp_path)
+
+        result = _run_cli(
+            "doctor",
+            cwd=str(project),
+            env_overrides={"COGNITIVE_OS_HARNESS": "codex"},
+        )
+
+        assert result.returncode == 0
+        assert ".codex/hooks.json not found" in result.stdout
+        assert ".claude/settings.json not found" not in result.stdout
 
 
 # ── Version ───────────────────────────────────────────────────────────
