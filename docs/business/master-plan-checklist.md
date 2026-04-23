@@ -27,7 +27,7 @@
 - [x] Status and diagnostic tooling can read canonical-first artifact surfaces without changing install destinations.
 - [x] Core versus compatibility versus extension versus experimental taxonomy is documented in [Product Zones](../product-zones.md).
 - [x] New runtime additions are consistently classified by zone through root guardrails in [Product Zones Manifest](../../manifests/product-zones.yaml).
-- [ ] Central runtime paths avoid hardcoding non-core subsystems by default.
+- [x] Central runtime paths avoid hardcoding non-core subsystems by default through [Runtime Hardcoding Discipline](../architecture/runtime-hardcoding-discipline.md) and `tests/contracts/test_runtime_hardcoding.py`.
 
 ## 3. Capability-Centric Enforcement
 
