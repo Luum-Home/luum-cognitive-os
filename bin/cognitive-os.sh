@@ -990,6 +990,7 @@ _install_mcp_server() {
 cmd_uninstall() {
   local comp_type="${1:-}"
   local comp_name="${2:-}"
+  local targets=()
 
   if [ -z "$comp_type" ] || [ -z "$comp_name" ]; then
     echo "Usage: cognitive-os uninstall <type> <name>" >&2
@@ -999,11 +1000,11 @@ cmd_uninstall() {
 
   require_config
 
-  local target=""
   case "$comp_type" in
     skill)
-      target=".claude/skills/${comp_name}"
-      if [ ! -d "$target" ]; then
+      targets+=("$(canonical_skills_dir)/${comp_name}")
+      targets+=("$(driver_skills_dir)/${comp_name}")
+      if [ ! -d "${targets[0]}" ] && [ ! -d "${targets[1]}" ]; then
         echo "Skill '$comp_name' is not installed." >&2
         return 1
       fi
@@ -1011,9 +1012,10 @@ cmd_uninstall() {
     rule)
       local filename="${comp_name}"
       [[ "$filename" != *.md ]] && filename="${filename}.md"
-      target=".claude/rules/${filename}"
-      if [ ! -f "$target" ]; then
-        echo "Rule '$comp_name' is not installed in .claude/rules/." >&2
+      targets+=("$(canonical_rules_dir)/${filename}")
+      targets+=("$(driver_rules_dir)/${filename}")
+      if [ ! -f "${targets[0]}" ] && [ ! -f "${targets[1]}" ]; then
+        echo "Rule '$comp_name' is not installed in canonical or driver rule surfaces." >&2
         return 1
       fi
       ;;
@@ -1038,14 +1040,22 @@ cmd_uninstall() {
       ;;
   esac
 
-  echo "About to remove: $target"
+  echo "About to remove:"
+  for target in "${targets[@]}"; do
+    if [ -e "$target" ]; then
+      echo "  - $target"
+    fi
+  done
   read -rp "Confirm? (y/N): " confirm
   if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
     echo "Aborted."
     return
   fi
 
-  rm -rf "$target"
+  for target in "${targets[@]}"; do
+    [ -e "$target" ] || continue
+    rm -rf "$target"
+  done
   echo "Removed $comp_type '$comp_name'."
 }
 
