@@ -118,10 +118,11 @@ func RunInstall(spec string, projectRoot string, opts InstallOptions) (*InstallR
 		return nil, fmt.Errorf("installing exports: %w", err)
 	}
 
-	// Step 10: Register hooks in settings.json.
-	settingsPath := filepath.Join(projectRoot, ".claude", "settings.json")
+	// Step 10: Register hooks in the active harness settings driver.
+	driver := ResolveSettingsDriver(projectRoot)
+	settingsPath := filepath.Join(projectRoot, driver.SettingsRelPath)
 	hookBasePath := filepath.Join(".cognitive-os", "hooks", "cos", m.Name)
-	if err := RegisterHooks(settingsPath, m.Exports, hookBasePath); err != nil {
+	if err := RegisterHooksWithDriver(settingsPath, m.Exports, hookBasePath, driver); err != nil {
 		return nil, fmt.Errorf("registering hooks: %w", err)
 	}
 

@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
-# generate-project-settings.sh — Generate a clean settings.json for external projects
+# generate-project-settings.sh — Generate harness-aware hook settings for external projects
 #
-# Reads the COS source settings.json, transforms hook paths for external project layout,
-# and filters by mode (minimal/standard/full). Removes self-hosting-only hooks.
+# Reads the COS source settings.json, transforms hook paths for external
+# project layout, filters by mode (minimal/standard/full), removes
+# self-hosting-only hooks, and projects the result into a harness-specific
+# settings driver.
 #
 # Usage:
 #   bash scripts/generate-project-settings.sh --standard > settings.json
 #   bash scripts/generate-project-settings.sh --full --output /path/to/settings.json
+#   bash scripts/generate-project-settings.sh --full --harness codex > hooks.json
 #
 # Requires: jq
 # Bash 3.x compatible.
@@ -19,26 +22,64 @@ SOURCE_SETTINGS="$COS_SOURCE_DIR/.claude/settings.json"
 # --standard, --lean) are silently remapped to --default.
 MODE="--default"
 OUTPUT=""
+HARNESS="${COGNITIVE_OS_HARNESS:-claude}"
 
-for arg in "$@"; do
-  case "$arg" in
-    --default|--full) MODE="$arg" ;;
-    --minimal|--standard|--lean)
-      echo "Note: ADR-002 collapsed '$arg' into '--default'. Using '--default'." >&2
-      MODE="--default"
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --default|--full)
+      MODE="$1"
+      shift
       ;;
-    --output=*) OUTPUT="${arg#--output=}" ;;
+    --minimal|--standard|--lean)
+      echo "Note: ADR-002 collapsed '$1' into '--default'. Using '--default'." >&2
+      MODE="--default"
+      shift
+      ;;
+    --harness)
+      if [ -z "${2:-}" ]; then
+        echo "Error: --harness requires a value (claude or codex)." >&2
+        exit 1
+      fi
+      HARNESS="$2"
+      shift 2
+      ;;
+    --harness=*)
+      HARNESS="${1#--harness=}"
+      shift
+      ;;
+    --output=*)
+      OUTPUT="${1#--output=}"
+      shift
+      ;;
     --help|-h)
-      echo "Usage: bash $0 [--default|--full] [--output FILE]"
+      echo "Usage: bash $0 [--default|--full] [--harness HARNESS] [--output FILE]"
       echo ""
       echo "  --default  ADR-002 default tier (curated hook set)"
       echo "  --full     Full hook coverage"
+      echo "  --harness  Projection target: claude or codex (default: claude)"
       echo ""
       echo "  Legacy (remapped to --default): --minimal, --standard, --lean"
       exit 0
       ;;
+    *)
+      echo "Error: unknown argument: $1" >&2
+      exit 1
+      ;;
   esac
 done
+
+case "$HARNESS" in
+  claude)
+    DRIVER_PROJECT_EXPR='${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$PWD}}'
+    ;;
+  codex)
+    DRIVER_PROJECT_EXPR='${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}'
+    ;;
+  *)
+    echo "Error: unsupported harness '$HARNESS' (expected claude or codex)." >&2
+    exit 1
+    ;;
+esac
 
 if ! command -v jq >/dev/null 2>&1; then
   echo "Error: jq is required" >&2
@@ -67,14 +108,16 @@ DEFAULT_HOOKS="error-pipeline.sh session-init.sh session-cleanup.sh result-trunc
   session-learning.sh crash-recovery.sh teammate-idle.sh task-created.sh task-completed.sh"
 
 # ── Step 1: Transform paths ─────────────────────────────────────────
-# $CLAUDE_PROJECT_DIR/hooks/X.sh -> $CLAUDE_PROJECT_DIR/.cognitive-os/hooks/cos/X.sh
-transformed=$(jq '
+# $CLAUDE_PROJECT_DIR/hooks/X.sh -> ${driver_project_expr}/.cognitive-os/hooks/cos/X.sh
+transformed=$(jq --arg project_expr "$DRIVER_PROJECT_EXPR" '
   .hooks |= (
     to_entries | map(
       .value |= map(
         .hooks |= map(
           if (.command | test("\\$CLAUDE_PROJECT_DIR/hooks/")) then
-            .command |= gsub("\\$CLAUDE_PROJECT_DIR/hooks/"; "$CLAUDE_PROJECT_DIR/.cognitive-os/hooks/cos/")
+            .command |= gsub("\\$CLAUDE_PROJECT_DIR/hooks/"; ($project_expr + "/.cognitive-os/hooks/cos/"))
+          elif (.command | test("\\$CLAUDE_PROJECT_DIR/\\.claude/hooks/")) then
+            .command |= gsub("\\$CLAUDE_PROJECT_DIR/\\.claude/hooks/"; ($project_expr + "/.claude/hooks/"))
           else
             .
           end

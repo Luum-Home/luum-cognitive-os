@@ -70,15 +70,16 @@ class TestFindConfigPath:
         result = cl.find_config_path()
         assert result == os.path.join(".cognitive-os", "cognitive-os.yaml")
 
-    def test_claude_project_dir_takes_precedence_over_cwd(
+    def test_runtime_project_dir_takes_precedence_over_cwd(
         self, tmp_path, monkeypatch
     ):
         monkeypatch.chdir(tmp_path)
         _write(tmp_path / "cognitive-os.yaml", "x: 1\n")
         proj = tmp_path / "proj"
         proj_cfg = _write(proj / "cognitive-os.yaml", "x: 2\n")
-        monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(proj))
-        monkeypatch.delenv("COGNITIVE_OS_PROJECT_DIR", raising=False)
+        monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
+        monkeypatch.delenv("CODEX_PROJECT_DIR", raising=False)
+        monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(proj))
         assert cl.find_config_path() == str(proj_cfg)
 
     def test_cognitive_os_project_dir_used_when_claude_unset(
@@ -91,17 +92,30 @@ class TestFindConfigPath:
         monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(proj))
         assert cl.find_config_path() == str(proj_cfg)
 
-    def test_claude_project_dir_wins_over_cognitive_os_project_dir(
+    def test_cognitive_os_project_dir_wins_over_claude_project_dir(
         self, tmp_path, monkeypatch
     ):
         monkeypatch.chdir(tmp_path)
         cp = tmp_path / "cp"
         op = tmp_path / "op"
-        cp_cfg = _write(cp / "cognitive-os.yaml", "x: claude\n")
-        _write(op / "cognitive-os.yaml", "x: oldenv\n")
+        _write(cp / "cognitive-os.yaml", "x: claude\n")
+        op_cfg = _write(op / "cognitive-os.yaml", "x: cognitive\n")
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(cp))
         monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(op))
-        assert cl.find_config_path() == str(cp_cfg)
+        assert cl.find_config_path() == str(op_cfg)
+
+    def test_codex_project_dir_used_before_claude_project_dir(
+        self, tmp_path, monkeypatch
+    ):
+        monkeypatch.chdir(tmp_path)
+        cp = tmp_path / "cp"
+        xp = tmp_path / "xp"
+        _write(cp / "cognitive-os.yaml", "x: claude\n")
+        xp_cfg = _write(xp / "cognitive-os.yaml", "x: codex\n")
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(cp))
+        monkeypatch.setenv("CODEX_PROJECT_DIR", str(xp))
+        monkeypatch.delenv("COGNITIVE_OS_PROJECT_DIR", raising=False)
+        assert cl.find_config_path() == str(xp_cfg)
 
 
 # ===========================================================================
@@ -261,16 +275,10 @@ class TestLoadStructured:
 
 
 class TestEnvVarPrecedence:
-    """Verify that COGNITIVE_OS_PROJECT_DIR is now honoured as a fallback.
+    """Verify canonical runtime project-root precedence for config loading.
 
-    This test class exists specifically to pin the D2.2 fix (ADR-026a).
-    Before the fix, dispatch_gate_check.py only read CLAUDE_PROJECT_DIR.
-    After the fix, COGNITIVE_OS_PROJECT_DIR serves as a fallback when
-    CLAUDE_PROJECT_DIR is unset.
-
-    These tests verify the behaviour at the config_loader level; the
-    integration-level check (subprocess) is covered by test_cos_yaml_readers.py
-    via the existing TestDispatchGateCheckYaml suite.
+    The config loader now uses the cross-harness runtime precedence:
+    COGNITIVE_OS_PROJECT_DIR -> CODEX_PROJECT_DIR -> CLAUDE_PROJECT_DIR -> cwd.
     """
 
     def test_cognitive_os_project_dir_finds_config_when_claude_unset(
@@ -310,20 +318,37 @@ class TestEnvVarPrecedence:
             "(D2.2 regression: env var precedence fix)"
         )
 
-    def test_claude_project_dir_still_beats_cognitive_os_project_dir(
+    def test_codex_project_dir_is_used_when_cognitive_os_unset(
         self, tmp_path, monkeypatch
     ):
-        """CLAUDE_PROJECT_DIR takes precedence over COGNITIVE_OS_PROJECT_DIR."""
+        """CODEX_PROJECT_DIR is used before the Claude compatibility fallback."""
         monkeypatch.chdir(tmp_path)
-        cp = tmp_path / "cp"
-        op = tmp_path / "op"
+        monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
+        monkeypatch.delenv("COGNITIVE_OS_PROJECT_DIR", raising=False)
+        proj = tmp_path / "proj"
+        _write(proj / "cognitive-os.yaml", "max_parallel_agents: 88\n")
+        monkeypatch.setenv("CODEX_PROJECT_DIR", str(proj))
+
+        result = cl.read_top_level_int("max_parallel_agents", 5)
+        assert result == 88
+
+    def test_cognitive_os_project_dir_beats_codex_and_claude(
+        self, tmp_path, monkeypatch
+    ):
+        """COGNITIVE_OS_PROJECT_DIR is the canonical runtime winner."""
+        monkeypatch.chdir(tmp_path)
+        cp = tmp_path / "claude"
+        xp = tmp_path / "codex"
+        op = tmp_path / "cos"
         _write(cp / "cognitive-os.yaml", "max_parallel_agents: 11\n")
-        _write(op / "cognitive-os.yaml", "max_parallel_agents: 22\n")
+        _write(xp / "cognitive-os.yaml", "max_parallel_agents: 22\n")
+        _write(op / "cognitive-os.yaml", "max_parallel_agents: 33\n")
         monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(cp))
+        monkeypatch.setenv("CODEX_PROJECT_DIR", str(xp))
         monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(op))
 
         result = cl.read_top_level_int("max_parallel_agents", 5)
-        assert result == 11
+        assert result == 33
 
     def test_both_env_vars_absent_falls_back_to_cwd(
         self, tmp_path, monkeypatch
