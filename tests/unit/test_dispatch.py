@@ -235,12 +235,14 @@ class TestMetricsLogging(unittest.TestCase):
         required = [
             "ts", "dispatch_id", "providers_requested", "providers_tried",
             "provider_used", "model", "task_type", "skill_name",
-            "tokens_in", "tokens_out", "cost_usd", "latency_ms", "success", "error",
+            "execution_profile", "tokens_in", "tokens_out", "cost_usd",
+            "latency_ms", "success", "error",
         ]
         for f in required:
             self.assertIn(f, rec, f"Missing required field: {f}")
         self.assertEqual(rec["task_type"], "code")
         self.assertEqual(rec["skill_name"], "test-skill")
+        self.assertEqual(rec["execution_profile"]["id"], "balanced_general")
 
     def test_metric_latency_is_positive_int(self):
         sink = []

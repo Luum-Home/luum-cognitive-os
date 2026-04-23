@@ -4,9 +4,13 @@ import pytest
 
 from lib.execution_profile import (
     BALANCED_GENERAL,
+    FAST_TURNAROUND,
+    FRONTIER_REASONING,
     LONG_CONTEXT_ANALYSIS,
     LOW_COST_BULK,
+    provider_cascade_for_profile,
     resolve_execution_profile,
+    resolve_runtime_execution_profile,
 )
 
 pytestmark = pytest.mark.unit
@@ -32,6 +36,27 @@ class TestResolveExecutionProfile:
         assert profile.prefer_free is True
         assert profile.max_total_cost_per_1m == 0.0
 
+    def test_skill_tier_frontier_maps_to_frontier_profile(self):
+        profile = resolve_runtime_execution_profile(
+            "unknown-task",
+            skill_requirements={"tier": "frontier"},
+        )
+        assert profile.id == FRONTIER_REASONING.id
+
+    def test_skill_long_context_overrides_tier(self):
+        profile = resolve_runtime_execution_profile(
+            "unknown-task",
+            skill_requirements={"tier": "cheap", "need_long_context": True},
+        )
+        assert profile.id == LONG_CONTEXT_ANALYSIS.id
+
+    def test_explicit_skill_execution_profile_wins(self):
+        profile = resolve_runtime_execution_profile(
+            "sdd-propose",
+            skill_requirements={"execution_profile": "fast_turnaround"},
+        )
+        assert profile.id == FAST_TURNAROUND.id
+
 
 class TestExecutionProfileMatching:
     def test_budget_profile_rejects_expensive_candidate(self):
@@ -55,3 +80,17 @@ class TestExecutionProfileMatching:
             "cost_per_1m_out": 5.0,
         }
         assert LONG_CONTEXT_ANALYSIS.matches_capabilities(candidate) is True
+
+
+class TestProviderCascadeForProfile:
+    def test_frontier_profile_prefers_claude_before_qwen(self):
+        cascade = provider_cascade_for_profile(FRONTIER_REASONING, ["qwen", "claude"])
+        assert cascade == ["claude", "qwen"]
+
+    def test_low_cost_profile_prefers_qwen_before_claude(self):
+        cascade = provider_cascade_for_profile(LOW_COST_BULK, ["claude", "qwen"])
+        assert cascade == ["qwen", "claude"]
+
+    def test_balanced_profile_preserves_existing_order(self):
+        cascade = provider_cascade_for_profile(BALANCED_GENERAL, ["claude", "qwen"])
+        assert cascade == ["claude", "qwen"]

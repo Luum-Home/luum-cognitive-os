@@ -77,6 +77,7 @@ class TestParseRoutingBlock(unittest.TestCase):
     def test_full_routing_block(self):
         fm = {
             "routing": {
+                "execution_profile": "frontier_reasoning",
                 "tier": "frontier",
                 "need_vision": False,
                 "need_long_context": True,
@@ -89,6 +90,7 @@ class TestParseRoutingBlock(unittest.TestCase):
         }
         req = _sr.parse_routing_block(fm)
         self.assertIsNotNone(req)
+        self.assertEqual(req.execution_profile, "frontier_reasoning")
         self.assertEqual(req.tier, "frontier")
         self.assertTrue(req.need_long_context)
         self.assertEqual(req.providers_preferred, ["claude"])
@@ -118,6 +120,11 @@ class TestParseRoutingBlock(unittest.TestCase):
     def test_malformed_budget_ignored(self):
         req = _sr.parse_routing_block({"routing": {"budget_max_usd_per_call": "not-a-number"}})
         self.assertIsNone(req.budget_max_usd_per_call)
+
+    def test_bad_execution_profile_type_ignored(self):
+        req = _sr.parse_routing_block({"routing": {"execution_profile": ["frontier_reasoning"]}})
+        self.assertIsNotNone(req)
+        self.assertIsNone(req.execution_profile)
 
     def test_non_string_providers_filtered(self):
         req = _sr.parse_routing_block(
@@ -355,6 +362,31 @@ class TestDispatchSkillRequirements(unittest.TestCase):
         self.assertTrue(r.success)
         self.assertEqual(r.provider_used, "alibaba_qwen")
 
+    def test_frontier_tier_shapes_cascade_when_provider_preference_absent(self):
+        sink: list[dict] = []
+        _d.dispatch(
+            "hi", providers=None,
+            claude_executor=MagicMock(),
+            skill_requirements={"tier": "frontier"},
+            _qwen_fn=lambda p, **k: _success("alibaba_qwen"),
+            _claude_fn=lambda p, m, e, t: _success("claude"),
+            _metric_sink=lambda rec: sink.append(rec),
+        )
+        self.assertEqual(sink[0]["providers_requested"], ["claude", "qwen"])
+        self.assertEqual(sink[0]["execution_profile"]["id"], "frontier_reasoning")
+
+    def test_explicit_provider_preference_wins_over_capability_profile(self):
+        sink: list[dict] = []
+        _d.dispatch(
+            "hi", providers=None,
+            claude_executor=MagicMock(),
+            skill_requirements={"tier": "frontier", "providers_preferred": ["qwen", "claude"]},
+            _qwen_fn=lambda p, **k: _success("alibaba_qwen"),
+            _claude_fn=lambda p, m, e, t: _success("claude"),
+            _metric_sink=lambda rec: sink.append(rec),
+        )
+        self.assertEqual(sink[0]["providers_requested"], ["qwen", "claude"])
+
     def test_none_skill_requirements_is_backward_compatible(self):
         """skill_requirements=None must behave identically to legacy dispatch."""
         sink_legacy: list[dict] = []
@@ -398,6 +430,7 @@ class TestDispatchSkillRequirements(unittest.TestCase):
         self.assertEqual(sr["tier"], "cheap")
         self.assertEqual(sr["providers_preferred"], ["qwen"])
         self.assertEqual(sr["budget_max_usd_per_call"], 0.50)
+        self.assertEqual(sink[0]["execution_profile"]["id"], "low_cost_bulk")
 
     def test_empty_skill_requirements_dict_is_noop(self):
         """An empty dict {} should behave like None — no routing applied."""
@@ -428,6 +461,7 @@ class TestToDispatchDict(unittest.TestCase):
         )
         d = _sr.to_dispatch_dict(req)
         self.assertEqual(d["tier"], "frontier")
+        self.assertEqual(d["execution_profile"], None)
         self.assertEqual(d["providers_preferred"], ["claude"])
         self.assertEqual(d["providers_excluded"], ["minimax"])
         self.assertFalse(d["fallback_on_rate_limit"])

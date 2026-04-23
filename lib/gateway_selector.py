@@ -25,6 +25,8 @@ import time
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
+from lib.execution_profile import ExecutionProfile
+
 logger = logging.getLogger(__name__)
 
 
@@ -177,7 +179,19 @@ def select_gateway(
                 return litellm
             logger.debug("LiteLLM not available for model %s", model)
 
-    # Step 4: Fallback to Claude
+    # Step 4: Fallback to Claude unless explicitly excluded by capability policy
+    if "claude" in excluded:
+        logger.warning(
+            "No gateway available for model %s (excluded=%s), and Claude fallback is excluded",
+            model,
+            excluded,
+        )
+        return GatewayConfig(
+            name="unavailable",
+            base_url="",
+            is_available=False,
+        )
+
     logger.warning(
         "No gateway available for model %s (excluded=%s), falling back to Claude",
         model,
@@ -188,6 +202,18 @@ def select_gateway(
         base_url="",
         is_available=True,
     )
+
+
+def select_gateway_for_profile(
+    model: str,
+    profile: ExecutionProfile,
+    exclude: Optional[List[str]] = None,
+) -> GatewayConfig:
+    """Pick a gateway while respecting execution-profile constraints."""
+    excluded = list(exclude or [])
+    if profile.require_local and "claude" not in excluded:
+        excluded.append("claude")
+    return select_gateway(model, exclude=excluded)
 
 
 def get_gateway_status() -> Dict[str, GatewayConfig]:
