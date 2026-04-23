@@ -289,6 +289,14 @@ class TestArtifactContractPaths:
         assert candidates[-2] == tmp_path / ".claude" / "skills" / "demo" / "SKILL.md"
         assert candidates[-1] == tmp_path / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
 
+    def test_canonical_first_skill_lookup_swaps_projection_order(self, tmp_path):
+        from lib.paths import canonical_first_skill_lookup_candidates
+
+        candidates = canonical_first_skill_lookup_candidates("demo", tmp_path)
+        assert candidates[0] == tmp_path / "skills" / "demo" / "SKILL.md"
+        assert candidates[-2] == tmp_path / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
+        assert candidates[-1] == tmp_path / ".claude" / "skills" / "demo" / "SKILL.md"
+
     def test_preferred_rules_dirs_are_canonical_first(self, tmp_path):
         from lib.paths import preferred_rules_dirs
 
