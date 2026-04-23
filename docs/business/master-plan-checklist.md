@@ -67,7 +67,7 @@
 - [x] Upgrade paths preserve the active harness instead of silently falling back to Claude-first settings projection.
 - [x] Emergency-stop keeps the core safety path cross-harness while marking Claude-only profile projection honestly.
 - [ ] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
-- [ ] User-facing setup messages are clear and product-grade.
+- [x] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
 - [ ] Setup and onboarding flows have visible performance budgets and regression tests.
 - [ ] A non-expert can reach a working baseline without reading deep architecture docs.
