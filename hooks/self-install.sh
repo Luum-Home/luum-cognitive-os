@@ -59,7 +59,7 @@ SETTINGS_TARGET="$(detect_settings_target)"
 # To add a new directory, just append a line here.
 # rules/ is intentionally excluded — managed by sync_core_rules() below.
 SYNC_DIRS=(
-  "skills|cos|tree|"
+  "skills|cos_skills_contract|tree|"
   "skills|claude|tree|"
   "squads|cos|flat|*.yaml"
   "templates|cos|flat|*.md"
@@ -75,6 +75,8 @@ resolve_dest() {
     claude)     echo "$PROJECT_DIR/.claude/$name" ;;
     claude_cos) echo "$PROJECT_DIR/.claude/$name/cos" ;;
     cos)        echo "$PROJECT_DIR/.cognitive-os/$name" ;;
+    cos_skills_contract) echo "$PROJECT_DIR/.cognitive-os/skills/cos" ;;
+    cos_rules_contract)  echo "$PROJECT_DIR/.cognitive-os/rules/cos" ;;
     *)          echo "$PROJECT_DIR/$base/$name" ;;
   esac
 }
@@ -341,7 +343,10 @@ else
 fi
 
 cos_rules_dir="$PROJECT_DIR/.claude/rules/cos"
-mkdir -p "$cos_rules_dir"
+canonical_rules_dir="$PROJECT_DIR/.cognitive-os/rules/cos"
+mkdir -p "$cos_rules_dir" "$canonical_rules_dir"
+
+rule_projection_dirs=("$canonical_rules_dir" "$cos_rules_dir")
 
 # Add missing symlinks
 if [[ "$SYNC_ALL_RULES" == "true" ]]; then
@@ -358,30 +363,36 @@ if [[ "$SYNC_ALL_RULES" == "true" ]]; then
       fi
     done
     [[ "$is_excluded" == "true" ]] && continue
-    link="$cos_rules_dir/$base"
-    if [ ! -e "$link" ]; then
-      ln_rel "$src" "$link"
-      added=$((added + 1))
-    fi
+    for rule_dir in "${rule_projection_dirs[@]}"; do
+      link="$rule_dir/$base"
+      if [ ! -e "$link" ]; then
+        ln_rel "$src" "$link"
+        added=$((added + 1))
+      fi
+    done
   done
   # Remove symlinks for excluded rules if they were previously created
   for excl in "${EXCLUDED_RULES[@]}"; do
-    link="$cos_rules_dir/$excl"
-    if [ -L "$link" ]; then
-      rm "$link"
-      removed=$((removed + 1))
-    fi
+    for rule_dir in "${rule_projection_dirs[@]}"; do
+      link="$rule_dir/$excl"
+      if [ -L "$link" ]; then
+        rm "$link"
+        removed=$((removed + 1))
+      fi
+    done
   done
 else
   # Only symlink CORE_RULES (or lean subset)
   for rule in "${ALLOWED_RULES[@]}"; do
     src="$PROJECT_DIR/rules/$rule"
-    link="$cos_rules_dir/$rule"
     [ -f "$src" ] || continue
-    if [ ! -e "$link" ]; then
-      ln_rel "$src" "$link"
-      added=$((added + 1))
-    fi
+    for rule_dir in "${rule_projection_dirs[@]}"; do
+      link="$rule_dir/$rule"
+      if [ ! -e "$link" ]; then
+        ln_rel "$src" "$link"
+        added=$((added + 1))
+      fi
+    done
   done
 fi
 
@@ -389,8 +400,9 @@ fi
 # - Always remove broken symlinks (target gone)
 # - In standard/lean mode: also remove symlinks not in ALLOWED_RULES
 # - In self-hosting/full mode: only remove broken symlinks (all rules are valid)
-if [ -d "$cos_rules_dir" ]; then
-  for link in "$cos_rules_dir"/*.md; do
+for rule_dir in "${rule_projection_dirs[@]}"; do
+if [ -d "$rule_dir" ]; then
+  for link in "$rule_dir"/*.md; do
     [ -L "$link" ] || continue
     base="${link##*/}"
     # Always remove broken symlinks
@@ -415,6 +427,7 @@ if [ -d "$cos_rules_dir" ]; then
     fi
   done
 fi
+done
 
 # ── Migration: clean up old flat symlinks in .claude/rules/ ──────────
 # Before namespacing, COS rules were symlinked flat into .claude/rules/.
@@ -509,9 +522,9 @@ if [ ! -d "$PROJECT_DIR/.cognitive-os/pipeline-state" ]; then
 fi
 
 # ── Counts for status ────────────────────────────────────────────────
-rule_count=0;  [ -d "$PROJECT_DIR/.claude/rules/cos" ]      && rule_count=$(find "$PROJECT_DIR/.claude/rules/cos" -maxdepth 1 -name '*.md' | wc -l | tr -d ' ')
+rule_count=0;  [ -d "$PROJECT_DIR/.cognitive-os/rules/cos" ] && rule_count=$(find "$PROJECT_DIR/.cognitive-os/rules/cos" -maxdepth 1 -name '*.md' | wc -l | tr -d ' ')
 hook_count=0;  [ -d "$PROJECT_DIR/hooks" ]                  && hook_count=$(find "$PROJECT_DIR/hooks" -maxdepth 1 -name '*.sh' | wc -l | tr -d ' ')
-skill_count=0; [ -d "$PROJECT_DIR/.cognitive-os/skills" ]   && skill_count=$(find "$PROJECT_DIR/.cognitive-os/skills" -maxdepth 1 -type l | wc -l | tr -d ' ')
+skill_count=0; [ -d "$PROJECT_DIR/.cognitive-os/skills/cos" ] && skill_count=$(find "$PROJECT_DIR/.cognitive-os/skills/cos" -maxdepth 1 -type l | wc -l | tr -d ' ')
 squad_count=0; [ -d "$PROJECT_DIR/.cognitive-os/squads" ]   && squad_count=$(find "$PROJECT_DIR/.cognitive-os/squads" -maxdepth 1 -name '*.yaml' | wc -l | tr -d ' ')
 agent_count=0; [ -d "$PROJECT_DIR/.cognitive-os/agents" ]   && agent_count=$(find "$PROJECT_DIR/.cognitive-os/agents" -maxdepth 1 -name '*.md' | wc -l | tr -d ' ')
 doc_count=0;   [ -d "$PROJECT_DIR/.cognitive-os/docs" ]     && doc_count=$(find "$PROJECT_DIR/.cognitive-os/docs" -maxdepth 1 -type l | wc -l | tr -d ' ')
