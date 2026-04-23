@@ -17,6 +17,7 @@
 set -euo pipefail
 
 COS_SOURCE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+source "$COS_SOURCE_DIR/scripts/_lib/settings-driver.sh"
 REGISTRY_FILE="${COS_REGISTRY_FILE:-$HOME/.cognitive-os/installations.json}"
 DRY_RUN=false
 LIST_ONLY=false
@@ -216,8 +217,13 @@ while IFS= read -r project_path; do
       fi
     fi
 
-    # Re-run cos-init with original mode
-    COS_SOURCE_DIR="$COS_SOURCE_DIR" bash "$COS_SOURCE_DIR/scripts/cos-init.sh" "--$project_mode" > /dev/null 2>&1
+    active_harness="$(cos_detect_harness "$(pwd)")"
+
+    # Re-run cos-init with original mode and the active project harness.
+    COS_SOURCE_DIR="$COS_SOURCE_DIR" \
+    COGNITIVE_OS_PROJECT_DIR="$(pwd)" \
+    COGNITIVE_OS_HARNESS="$active_harness" \
+      bash "$COS_SOURCE_DIR/scripts/cos-init.sh" "--$project_mode" "--harness=$active_harness" > /dev/null 2>&1
   )
 
   if [ $? -eq 0 ]; then

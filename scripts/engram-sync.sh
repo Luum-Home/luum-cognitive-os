@@ -14,7 +14,7 @@
 
 set -euo pipefail
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/.." && pwd)}}}"
 EXPORT_DIR="$PROJECT_DIR/.engram/exports"
 DB_PATH="${ENGRAM_DB:-$HOME/.engram/engram.db}"
 

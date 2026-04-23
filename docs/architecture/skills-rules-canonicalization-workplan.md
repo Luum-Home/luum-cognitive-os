@@ -97,6 +97,14 @@ Claude.
 - `cos-release-check.sh` now validates hook wiring and settings JSON through the
   canary project's active settings driver instead of hardcoding
   `.claude/settings.json`.
+- secondary user-facing scripts now follow canonical project-root precedence
+  when they read project runtime state, including usage reports, session
+  reports, startup benchmarks, hook benchmarks, and Engram export/import.
+- `cos-update.sh` now treats the active settings driver as the backup,
+  rollback, and fingerprint target, while avoiding Claude-only profile
+  regeneration for Codex-first projects.
+- `auto-update-projects.sh` now preserves each project's detected harness when
+  it re-runs `cos-init.sh`.
 
 ## Phase 4 — Tooling and Validation Migration
 

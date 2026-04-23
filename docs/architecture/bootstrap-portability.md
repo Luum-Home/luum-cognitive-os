@@ -137,6 +137,9 @@ correction:
 - `scripts/cos-status.sh` now reads hook wiring from the active settings driver, so transparency output reflects `.codex/hooks.json` when Codex owns the project surface
 - `scripts/uninstall.sh` now strips COS hook registrations from the active settings driver, so Codex-first projects uninstall cleanly instead of leaving stale hook wiring behind
 - `scripts/cos-release-check.sh` now validates and snapshots the canary project's active settings driver, so release plumbing can follow Codex and Claude without hardcoded Claude-only settings assumptions
+- secondary user-facing scripts such as `component-lint.sh`, `startup-benchmark.sh`, `benchmark-hooks.sh`, `cos-usage-report.sh`, `cos-sessions.sh`, `engram-sync.sh`, and `session-leak-diagnostic.sh` now use canonical project-root precedence where they read project runtime state
+- `cos-update.sh` now backs up, restores, and fingerprints the active settings driver, and skips Claude-only profile regeneration when the active driver is not Claude
+- `auto-update-projects.sh` now preserves each project's detected harness when it re-runs `cos-init.sh`
 
 This is not the full migration, but it is the correct direction.
 
