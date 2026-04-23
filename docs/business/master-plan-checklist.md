@@ -54,6 +54,7 @@
 - [x] Uninstall paths clean the active settings driver instead of assuming `.claude/settings.json` is the only hook-registration surface.
 - [x] Secondary user-facing scripts use canonical project-root precedence when reading runtime state.
 - [x] Update and auto-update paths preserve the active harness/settings driver instead of silently assuming Claude.
+- [x] Driver-specific user-facing scripts are explicitly classified so Claude-only registration/profile flows do not masquerade as Codex support.
 - [ ] Broken product-facing links fail visibly in automation.
 - [ ] Product claims in README and pitch map to explicit verification paths.
 
@@ -64,6 +65,7 @@
 - [x] Settings projection supports more than one harness target in bootstrap paths.
 - [x] CLI runtime reads canonical skill/rule artifacts when the Claude projection is absent.
 - [x] Upgrade paths preserve the active harness instead of silently falling back to Claude-first settings projection.
+- [x] Emergency-stop keeps the core safety path cross-harness while marking Claude-only profile projection honestly.
 - [ ] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
 - [ ] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.

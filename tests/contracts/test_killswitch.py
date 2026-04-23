@@ -82,6 +82,46 @@ def test_killswitch_flag_created(tmp_project: Path) -> None:
     assert "activated_by" in data, "Flag JSON missing 'activated_by' key"
 
 
+def test_emergency_stop_is_codex_safe_without_claude_profile_projection(tmp_path: Path) -> None:
+    """Codex-hosted projects get the core kill-switch without Claude profile writes."""
+    project = tmp_path / "codex-project"
+    (project / ".codex").mkdir(parents=True)
+    (project / ".cognitive-os" / "runtime").mkdir(parents=True)
+    (project / ".cognitive-os" / "metrics").mkdir(parents=True)
+    (project / ".codex" / "hooks.json").write_text('{"hooks": {}}\n')
+
+    scripts_dir = project / "scripts"
+    scripts_dir.mkdir()
+    _write_stub(scripts_dir / "so-reaper.sh", exit_code=0)
+
+    marker = project / "set-security-profile-called"
+    set_profile = scripts_dir / "set-security-profile.sh"
+    set_profile.write_text(
+        "#!/usr/bin/env bash\n"
+        f"echo called > {marker}\n"
+        "exit 0\n"
+    )
+    set_profile.chmod(0o755)
+
+    result = subprocess.run(
+        ["bash", str(EMERGENCY_STOP), "codex emergency"],
+        capture_output=True,
+        text=True,
+        cwd=str(project),
+        env={
+            **os.environ,
+            "PROJECT_DIR": str(project),
+            "COGNITIVE_OS_HARNESS": "codex",
+        },
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert _flag_path(project).exists(), "Core kill-switch flag was not created"
+    assert (project / ".codex" / "hooks.json.bak").exists(), "Codex settings driver was not backed up"
+    assert not marker.exists(), "Claude-only set-security-profile path ran for a Codex project"
+    assert "minimal security profile projection is Claude-driver-only" in result.stdout
+
+
 # ── Test 2: non-critical hook is suppressed ───────────────────────────
 
 def test_killswitch_check_suppresses_non_critical(tmp_project: Path) -> None:
