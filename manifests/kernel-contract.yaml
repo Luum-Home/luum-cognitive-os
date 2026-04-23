@@ -1,0 +1,65 @@
+product_promise: "Cognitive OS makes coding agents more governable, verifiable, and portable across providers."
+
+kernel:
+  contracts:
+    - name: canonical_hook_context
+      path: pkg/hook/context.go
+      role: "Canonical provider-agnostic event, tool, and context model."
+    - name: policy_engine
+      path: internal/validator/validator.go
+      role: "Provider-agnostic validation result and validator interface."
+    - name: policy_registry
+      path: internal/validator/registry.go
+      role: "Predicate-driven policy dispatch against canonical context."
+    - name: package_spec
+      path: cmd/cos/internal/manifest/types.go
+      role: "Installable package/manifest contract for reusable OS components."
+
+compatibility_layer:
+  module: lib/compatibility_layer.py
+  providers:
+    - name: claude
+      adapter_path: internal/provider/claude.go
+    - name: codex
+      adapter_path: internal/provider/codex.go
+    - name: gemini
+      adapter_path: internal/provider/gemini.go
+    - name: cursor
+      adapter_path: internal/provider/cursor.go
+    - name: windsurf
+      adapter_path: internal/provider/windsurf.go
+  gateways:
+    - name: bifrost
+      adapter_path: lib/gateway_selector.py
+    - name: litellm
+      adapter_path: lib/gateway_selector.py
+    - name: claude_direct
+      adapter_path: lib/gateway_selector.py
+
+execution_profiles:
+  module: lib/execution_profile.py
+  profiles:
+    - frontier_reasoning
+    - high_code_generation
+    - fast_turnaround
+    - long_context_analysis
+    - low_cost_bulk
+    - balanced_general
+    - local_private_execution
+
+outcome_metrics:
+  module: lib/outcome_metrics.py
+  metrics:
+    - success_rate
+    - average_latency_ms
+    - p95_latency_ms
+    - average_cost_usd
+    - cost_per_successful_dispatch
+
+verification:
+  automated_tests:
+    - tests/contracts/test_kernel_contract.py
+    - tests/unit/test_execution_profile.py
+    - tests/unit/test_compatibility_layer.py
+    - tests/unit/test_outcome_metrics.py
+  manual_guide: docs/manual-tests/durable-product-verification.md
