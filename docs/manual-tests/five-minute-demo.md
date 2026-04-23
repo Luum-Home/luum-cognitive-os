@@ -27,6 +27,12 @@ The executable version of this demo is:
 bash scripts/demo-portability-proof.sh
 ```
 
+For a narrower first-run onboarding proof with explicit performance budgets:
+
+```bash
+bash scripts/demo-first-run-onboarding.sh
+```
+
 For a faster local run that skips provider/kernel Go tests:
 
 ```bash
