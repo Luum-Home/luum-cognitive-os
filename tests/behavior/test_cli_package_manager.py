@@ -165,6 +165,28 @@ class TestCLIList:
         assert result.returncode == 0
         assert "Installed Rules" in result.stdout
 
+    def test_list_skills_uses_canonical_surface_when_driver_missing(self, tmp_path):
+        """'cos list skills' should still work from canonical artifacts without .claude projection."""
+        project = _setup_minimal_project(tmp_path)
+        shutil.rmtree(project / ".claude" / "skills")
+
+        result = _run_cli("list", "skills", cwd=str(project))
+
+        assert result.returncode == 0
+        assert "test-skill" in result.stdout
+        assert "(canonical: .cognitive-os/skills/cos/)" in result.stdout
+
+    def test_list_rules_uses_canonical_surface_when_driver_missing(self, tmp_path):
+        """'cos list rules' should still work from canonical artifacts without .claude projection."""
+        project = _setup_minimal_project(tmp_path)
+        shutil.rmtree(project / ".claude" / "rules")
+
+        result = _run_cli("list", "rules", cwd=str(project))
+
+        assert result.returncode == 0
+        assert "test-rule" in result.stdout
+        assert "(canonical: .cognitive-os/rules/cos/)" in result.stdout
+
     def test_list_hooks(self, tmp_path):
         """'cos list hooks' should show installed hooks."""
         project = _setup_minimal_project(tmp_path)
