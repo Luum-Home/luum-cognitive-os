@@ -24,6 +24,7 @@
 - [x] The skills/rules portability gap is documented in [Skills and Rules Portability Gap](../architecture/skills-rules-portability-gap.md).
 - [x] The canonicalization risk of moving skills/rules out of `.claude/` is documented in [Skills and Rules Canonicalization Risk Analysis](../architecture/skills-rules-canonicalization-risk-analysis.md).
 - [x] A step-by-step migration plan exists in [Skills and Rules Canonicalization Workplan](../architecture/skills-rules-canonicalization-workplan.md).
+- [x] Status and diagnostic tooling can read canonical-first artifact surfaces without changing install destinations.
 - [ ] Core versus compatibility versus extension versus experimental taxonomy is documented across major product docs.
 - [ ] New runtime additions are consistently classified by zone.
 - [ ] Central runtime paths avoid hardcoding non-core subsystems by default.
