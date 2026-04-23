@@ -25,6 +25,7 @@ def _run_cli(
     cwd: Optional[str] = None,
     timeout: int = 10,
     env_overrides: Optional[Dict[str, str]] = None,
+    input_text: Optional[str] = None,
 ) -> subprocess.CompletedProcess:
     """Run the cognitive-os CLI with given arguments."""
     run_env = os.environ.copy()
@@ -34,6 +35,7 @@ def _run_cli(
         ["bash", str(CLI_PATH), *args],
         capture_output=True,
         text=True,
+        input=input_text,
         cwd=cwd or str(PROJECT_ROOT),
         timeout=timeout,
         env=run_env,
@@ -411,6 +413,39 @@ class TestCLIUninstall:
         result = _run_cli("uninstall", "preset", "lean", cwd=str(project))
         assert result.returncode != 0
         assert "cannot be" in result.stderr
+
+    def test_uninstall_skill_removes_canonical_and_driver_surfaces(self, tmp_path):
+        project = _setup_minimal_project(tmp_path)
+        driver_skill = project / ".claude" / "skills" / "test-skill"
+        driver_skill.mkdir(parents=True)
+        (driver_skill / "SKILL.md").write_text("# Driver Skill\n")
+
+        result = _run_cli(
+            "uninstall",
+            "skill",
+            "test-skill",
+            cwd=str(project),
+            input_text="y\n",
+        )
+        assert result.returncode == 0
+        assert not (project / ".cognitive-os" / "skills" / "cos" / "test-skill").exists()
+        assert not driver_skill.exists()
+
+    def test_uninstall_rule_removes_canonical_and_driver_surfaces(self, tmp_path):
+        project = _setup_minimal_project(tmp_path)
+        driver_rule = project / ".claude" / "rules" / "test-rule.md"
+        driver_rule.write_text("# Driver Rule\n")
+
+        result = _run_cli(
+            "uninstall",
+            "rule",
+            "test-rule",
+            cwd=str(project),
+            input_text="y\n",
+        )
+        assert result.returncode == 0
+        assert not (project / ".cognitive-os" / "rules" / "cos" / "test-rule.md").exists()
+        assert not driver_rule.exists()
 
 
 # ── Update ────────────────────────────────────────────────────────────
