@@ -13,7 +13,9 @@ tags: [development, extension, rules]
 
 ## Trigger
 
-When you need to add a new constraint, protocol, or behavioral guideline that should be always loaded by Claude during sessions.
+When you need to add a new constraint, protocol, or behavioral guideline that
+should apply at the system level and may later be projected into more than one
+harness.
 
 ## Inputs
 
@@ -66,18 +68,21 @@ Rule writing guidelines:
 - Reference other rules by filename if there are dependencies
 - Keep under 200 lines; split into multiple rules if longer
 - Include a "Contextual Trigger" section even for always-active rules (helps with search)
+- Author the rule as policy first. Treat harness-specific loading or
+  enforcement as a projection concern, not the definition of the rule itself.
 
-### 2. Symlink into `.claude/rules/` (self-hosting)
+### 2. Keep projection separate from policy
 
-The self-install hook handles this automatically at session start. To apply immediately:
+The self-install hook handles current self-hosting symlinks automatically. That
+projection is an implementation detail, not the rule definition.
+
+If you need to validate the current Claude driver surface immediately:
 
 ```bash
 ln -sf "$(pwd)/rules/{rule-name}.md" .claude/rules/{rule-name}.md
 ```
 
 Verify: `ls -la .claude/rules/{rule-name}.md`
-
-Claude auto-loads all files in `.claude/rules/` at session start — no additional registration needed.
 
 ### 3. Add to RULES-COMPACT.md (if always-active)
 
@@ -130,3 +135,4 @@ cat rules/{rule-name}.md | head -5  # should show frontmatter-free content
 - [ ] Rule appears in `rules/RULES-COMPACT.md` under the correct section
 - [ ] If always-active: rule has no "Contextual Trigger" requirement that would prevent loading
 - [ ] Rule uses imperative language (MUST/NEVER/SHOULD), not descriptive language
+- [ ] Harness-specific enforcement details do not replace the policy definition
