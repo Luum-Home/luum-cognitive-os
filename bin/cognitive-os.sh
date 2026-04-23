@@ -1129,11 +1129,11 @@ _list_installed_skills() {
   skills_canonical="$(canonical_skills_dir)"
   skills_legacy="$(legacy_builtin_skills_dir)"
 
-  if dir_has_skill_files "$skills_driver"; then
-    active_surface="$skills_driver"
-  elif dir_has_skill_files "$skills_canonical"; then
+  if dir_has_skill_files "$skills_canonical"; then
     active_surface="$skills_canonical"
     surface_label="canonical"
+  elif dir_has_skill_files "$skills_driver"; then
+    active_surface="$skills_driver"
   elif dir_has_skill_files "$skills_legacy"; then
     active_surface="$skills_legacy"
     surface_label="legacy"
@@ -1176,11 +1176,11 @@ _list_installed_rules() {
   rules_canonical="$(canonical_rules_dir)"
   rules_legacy="$(legacy_builtin_rules_dir)"
 
-  if dir_has_rule_files "$rules_driver"; then
-    active_surface="$rules_driver"
-  elif dir_has_rule_files "$rules_canonical"; then
+  if dir_has_rule_files "$rules_canonical"; then
     active_surface="$rules_canonical"
     surface_label="canonical"
+  elif dir_has_rule_files "$rules_driver"; then
+    active_surface="$rules_driver"
   elif dir_has_rule_files "$rules_legacy"; then
     active_surface="$rules_legacy"
     surface_label="legacy"
