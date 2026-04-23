@@ -52,7 +52,7 @@ artifact layout yet.
 - [x] Canonical path helper surface in Python
 - [x] Canonical path helper surface in Go installer code
 - [x] Runtime readers use the new helpers where safe
-- [ ] Status/diagnostic tooling can reason about canonical-first paths
+- [x] Status/diagnostic tooling can reason about canonical-first paths
 - [x] Contract docs explain source-of-truth vs projection clearly
 
 ### Required Behavior
@@ -102,6 +102,12 @@ At the end of each session:
 1. Update this checklist.
 2. Update any contract docs that changed.
 3. Record what is now safe to do next and what remains dangerous.
+
+Current safe next step: extend canonical-first reasoning to release and health
+checks that only read artifact state.
+
+Still dangerous: changing install destinations or removing `.claude/...`
+projection paths before dual-write lands.
 
 ## References
 
