@@ -115,6 +115,30 @@ class TestReleaseCheckPlumbing:
         # Dry-run: everything should "pass" trivially.
         assert report["ok"] is True
 
+    def test_release_check_dry_run_uses_canonical_runtime_env(self, tmp_path):
+        env = os.environ.copy()
+        env["COGNITIVE_OS_PROJECT_DIR"] = str(PROJECT_ROOT)
+        env.pop("CODEX_PROJECT_DIR", None)
+        env.pop("CLAUDE_PROJECT_DIR", None)
+
+        result = subprocess.run(
+            [
+                "bash",
+                str(RELEASE_CHECK),
+                "--dry-run",
+                "--tmp-root",
+                str(tmp_path),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            env=env,
+        )
+
+        assert result.returncode == 0, result.stderr
+        report = json.loads(result.stdout)
+        assert report["ok"] is True
+
     def test_core_skills_check_json_parses(self):
         out = subprocess.run(
             ["bash", str(CORE_SKILLS_CHECK), "--json"],
