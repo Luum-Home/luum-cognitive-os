@@ -13,7 +13,8 @@ tags: [development, extension, hooks]
 
 ## Trigger
 
-When you need to add a new hook to intercept Claude tool usage at a specific lifecycle point.
+When you need to add a new hook to intercept tool usage at a specific
+lifecycle point and keep its behavior portable across harnesses when possible.
 
 ## Inputs
 
@@ -53,6 +54,9 @@ Key conventions:
 - Read stdin JSON via `INPUT=$(cat)` — contains `tool_name`, `tool_input`, and (PostToolUse) `tool_response`
 - Exit 0 = pass, exit 2 = BLOCK (PreToolUse only)
 - Always complete in under 200ms for PreToolUse, under 500ms for PostToolUse
+- Prefer canonical env/path/session resolvers over harness-specific variables
+- If the hook depends on a harness-specific event shape, isolate that fact in an
+  adapter or document it explicitly as a projection constraint
 
 ### 2. Make it executable
 
@@ -60,9 +64,9 @@ Key conventions:
 chmod +x hooks/{hook-name}.sh
 ```
 
-### 3. Register in `.claude/settings.local.json`
+### 3. Register through the current harness driver
 
-Add under the appropriate trigger key:
+For the current Claude driver, add under the appropriate trigger key:
 
 ```json
 {
@@ -83,6 +87,9 @@ Add under the appropriate trigger key:
 ```
 
 If the trigger key already exists, add a new entry to the array. If a matching `matcher` block already exists, add the command to its `hooks` array.
+
+Do not treat `.claude/settings.local.json` as the universal definition of the
+hook. It is only one projection surface.
 
 ### 4. Add to efficiency profile (if always-active)
 
@@ -146,3 +153,4 @@ Run `bash tests/run-all-tests.sh` to verify.
 - [ ] Hook is listed in `.claude/settings.local.json` under the correct trigger
 - [ ] `bash tests/unit/test-{hook-name}.sh` passes
 - [ ] Hook fires correctly: `echo '{"tool_name":"X","tool_input":{}}' | bash hooks/{hook-name}.sh`
+- [ ] Any harness-specific assumptions are isolated or explicitly documented
