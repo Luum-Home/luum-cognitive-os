@@ -24,6 +24,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Kernel Contract](kernel-contract.md) — minimal inviolable core and where the machine-readable boundary lives
 - [Bootstrap Portability](architecture/bootstrap-portability.md) — where the system is still Claude-first and how to make Codex and other harnesses first-class bootstrap hosts
 - [Capability-Centric Runtime Enforcement](architecture/capability-centric-runtime-enforcement.md) — how dispatch, skills, gateways, and metrics choose execution intent before vendors
+- [Runtime Hardcoding Discipline](architecture/runtime-hardcoding-discipline.md) — contract for keeping protected runtime paths from silently promoting non-core subsystems
 - [Driver-Specific Script Surfaces](architecture/driver-specific-script-surfaces.md) — which user-facing scripts are truly cross-harness today and which remain Claude-driver-only by contract
 - [Cross-Harness Authoring](architecture/cross-harness-authoring.md) — how to author skills, rules, hooks, and workflows once and project them through harness drivers
 - [Skills and Rules Portability Gap](architecture/skills-rules-portability-gap.md) — why compatibility is not enough and where `.claude/` gravity still weakens real portability
