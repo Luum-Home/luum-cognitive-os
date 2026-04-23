@@ -106,13 +106,14 @@ Claude.
   regeneration for Codex-first projects.
 - `auto-update-projects.sh` now preserves each project's detected harness when
   it re-runs `cos-init.sh`.
-- `lib.paths.canonical_first_skill_lookup_candidates` and
-  `lib.skill_routing.find_skill_md(..., prefer_canonical=True)` allow
-  diagnostics and future runtime paths to prefer `.cognitive-os/skills/cos`
-  over `.claude/skills` without breaking current Claude-first lookup defaults.
+- `lib.paths.skill_lookup_candidates` and `lib.skill_routing.find_skill_md`
+  now prefer `.cognitive-os/skills/cos` over `.claude/skills` by default.
+  Claude remains supported as a driver projection fallback.
 - `cos list skills` and `cos list rules` now prefer canonical artifacts over
   `.claude/` projection when both exist, while still falling back to the active
   driver projection if canonical artifacts are absent.
+- `hooks/self-install.sh` now syncs rules to `.cognitive-os/rules/cos` as the
+  canonical contract while preserving `.claude/rules/cos` for Claude Code.
 
 ## Phase 4 — Tooling and Validation Migration
 
@@ -132,9 +133,9 @@ center of the system.
 
 ### Deliverables
 
-- [ ] Claude remains fully supported through projection
-- [ ] Canonical artifact contract is the documented source-of-truth
-- [ ] Product messaging no longer depends on Claude-centric artifact language
+- [x] Claude remains fully supported through projection
+- [x] Canonical artifact contract is the documented source-of-truth
+- [x] Product messaging no longer depends on Claude-centric artifact language
 
 ## Session Rule
 
@@ -144,12 +145,12 @@ At the end of each session:
 2. Update any contract docs that changed.
 3. Record what is now safe to do next and what remains dangerous.
 
-Current safe next step: keep expanding canonical-only characterization coverage
-around upgrade, release, and uninstall consumers so the canonical artifact
-contract is provably sufficient before any path demotion begins.
+Current safe next step: remove remaining Claude-only wording from lower-level
+tests and legacy comments where those references describe projection behavior
+rather than product truth.
 
-Still dangerous: changing install destinations or removing `.claude/...`
-projection paths before dual-write lands.
+Still dangerous: removing `.claude/...` projection paths. Claude Code still
+needs that driver surface even though it is no longer the source-of-truth.
 
 ## References
 

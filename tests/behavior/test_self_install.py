@@ -274,10 +274,16 @@ class TestSymlinkContent:
         link = project / ".claude" / "rules" / "cos" / "RULES-COMPACT.md"
         assert link.read_text() == "# Compact\n"
 
+    def test_canonical_rule_symlink_resolves_to_source(self, tmp_path):
+        project = _setup_full_project(tmp_path)
+        _run_hook(str(project))
+        link = project / ".cognitive-os" / "rules" / "cos" / "RULES-COMPACT.md"
+        assert link.read_text() == "# Compact\n"
+
     def test_skill_symlink_resolves_to_skill_md(self, tmp_path):
         project = _setup_full_project(tmp_path)
         _run_hook(str(project))
-        skill_link = project / ".cognitive-os" / "skills" / "eval-repo"
+        skill_link = project / ".cognitive-os" / "skills" / "cos" / "eval-repo"
         assert (skill_link / "SKILL.md").read_text() == "# eval-repo\n"
 
 

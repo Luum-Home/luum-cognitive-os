@@ -66,7 +66,7 @@
 - [x] CLI runtime reads canonical skill/rule artifacts when the Claude projection is absent.
 - [x] Upgrade paths preserve the active harness instead of silently falling back to Claude-first settings projection.
 - [x] Emergency-stop keeps the core safety path cross-harness while marking Claude-only profile projection honestly.
-- [ ] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
+- [x] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
 - [x] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
 - [x] Setup and onboarding flows have visible performance budgets and regression tests through `scripts/demo-first-run-onboarding.sh` and `tests/integration/test_first_run_onboarding.py`.
