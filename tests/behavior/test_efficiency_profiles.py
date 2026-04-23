@@ -1,11 +1,10 @@
-"""Tests for scripts/apply-efficiency-profile.sh.
+"""Behavior tests for scripts/apply-efficiency-profile.sh.
 
 Validates:
-- lean profile generates settings.json with a minimum number of hook commands
-- standard profile generates settings.json with more hook commands than lean
-- full profile exits 0 and prints count without modifying settings.json
-- invalid profile exits 1
-- lean/standard/full hook sets are strictly additive subsets
+- invalid profiles fail fast
+- legacy profiles are remapped to `default`
+- default profile regenerates the committed baseline Claude projection
+- full profile is non-destructive
 """
 
 import json
@@ -17,11 +16,12 @@ import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = PROJECT_ROOT / "scripts" / "apply-efficiency-profile.sh"
+SETTINGS_FILE = PROJECT_ROOT / ".claude" / "settings.json"
 
 pytestmark = pytest.mark.behavior
 
 
-def _run_profile(profile: str, project_dir: Path = PROJECT_ROOT) -> subprocess.CompletedProcess:
+def _run_profile(profile: str, project_dir: Path) -> subprocess.CompletedProcess:
     """Run apply-efficiency-profile.sh with the given profile in a project dir."""
     return subprocess.run(
         ["bash", str(SCRIPT), profile],
@@ -33,25 +33,23 @@ def _run_profile(profile: str, project_dir: Path = PROJECT_ROOT) -> subprocess.C
     )
 
 
-def _count_hook_commands(settings_path: Path) -> int:
-    """Count 'command' entries in a settings.json file."""
-    raw = settings_path.read_text()
-    return raw.count('"command":')
+def _load_settings(path: Path) -> dict:
+    """Load a settings.json file as a dictionary."""
+    return json.loads(path.read_text())
 
 
-def _collect_hook_scripts(settings_path: Path) -> set:
-    """Return the set of hook script filenames referenced in settings.json."""
-    raw = settings_path.read_text()
-    # Extract filenames like session-init.sh, error-pipeline.sh, etc.
-    import re
-    return set(re.findall(r'hooks/([a-z0-9_\-]+\.sh)', raw))
-
-
-# ─── Script exists ────────────────────────────────────────────────────────────
+def _make_profile_workspace(tmp_path: Path) -> Path:
+    """Create a minimal project directory where the profile script can run."""
+    workspace = tmp_path / "workspace"
+    workspace.mkdir(parents=True)
+    src_yaml = PROJECT_ROOT / "cognitive-os.yaml"
+    if src_yaml.exists():
+        shutil.copy(src_yaml, workspace / "cognitive-os.yaml")
+    (workspace / ".claude").mkdir(exist_ok=True)
+    return workspace
 
 
 class TestScriptExists:
-
     def test_script_is_valid_bash(self):
         result = subprocess.run(
             ["bash", "-n", str(SCRIPT)],
@@ -61,202 +59,74 @@ class TestScriptExists:
         assert result.returncode == 0, f"Bash syntax error: {result.stderr}"
 
 
-# ─── Invalid profile ─────────────────────────────────────────────────────────
-
-
 class TestInvalidProfile:
     def test_invalid_profile_exits_nonzero(self, tmp_path):
-        result = subprocess.run(
-            ["bash", str(SCRIPT), "ultramax"],
-            capture_output=True,
-            text=True,
-            cwd=str(tmp_path),
-            timeout=10,
-        )
+        result = _run_profile("ultramax", tmp_path)
         assert result.returncode != 0, "Invalid profile should exit non-zero"
 
     def test_invalid_profile_prints_error(self, tmp_path):
-        result = subprocess.run(
-            ["bash", str(SCRIPT), "badprofile"],
-            capture_output=True,
-            text=True,
-            cwd=str(tmp_path),
-            timeout=10,
-        )
+        result = _run_profile("badprofile", tmp_path)
         combined = result.stdout + result.stderr
         assert "ERROR" in combined or "Unknown" in combined or "Invalid" in combined
 
 
-# ─── Lean profile (7 hooks) ───────────────────────────────────────────────────
-
-
-class TestLeanProfile:
-    """lean profile must produce settings.json with exactly 7 hook commands."""
-
+class TestDefaultProfile:
     @pytest.fixture
-    def lean_settings(self, tmp_path):
-        """Create a minimal project directory with needed files, run lean profile."""
-        # Copy cognitive-os.yaml so the script can read it
-        src_yaml = PROJECT_ROOT / "cognitive-os.yaml"
-        if src_yaml.exists():
-            shutil.copy(src_yaml, tmp_path / "cognitive-os.yaml")
-        # Create .claude dir so settings.json can be written
-        (tmp_path / ".claude").mkdir(exist_ok=True)
-        _run_profile("lean", tmp_path)
-        return tmp_path / ".claude" / "settings.json"
+    def generated_settings(self, tmp_path) -> Path:
+        workspace = _make_profile_workspace(tmp_path)
+        result = _run_profile("default", workspace)
+        assert result.returncode == 0, result.stderr
+        settings_path = workspace / ".claude" / "settings.json"
+        assert settings_path.exists(), "default profile should create settings.json"
+        return settings_path
 
-    def test_lean_exits_zero(self, lean_settings):
-        # Fixture runs the lean profile; if it raises, the test fails.
-        # Additionally, the settings.json must have been created.
-        assert lean_settings.exists(), "lean profile should create settings.json"
+    def test_default_matches_committed_baseline(self, generated_settings):
+        generated = _load_settings(generated_settings)
+        committed = _load_settings(SETTINGS_FILE)
+        assert generated == committed
 
-
-    def test_lean_has_minimum_hook_commands(self, lean_settings):
-        if not lean_settings.exists():
-            pytest.skip("settings.json not created")
-        count = _count_hook_commands(lean_settings)
-        assert count >= 5, f"lean profile should have at least 5 hook commands, got {count}"
-
-
-# ─── Standard profile ────────────────────────────────────────────────────────
+    def test_default_contains_current_projection_surfaces(self, generated_settings):
+        settings = _load_settings(generated_settings)["hooks"]
+        assert "SubagentStart" in settings
+        assert settings["SessionStart"][0]["hooks"][4]["command"].endswith("infra-health.sh\"")
+        assert settings["SessionStart"][0]["hooks"][4]["async"] is True
+        assert any(
+            hook["command"].endswith("skill-usage-tracker.sh\"") and hook.get("async") is True
+            for hook in settings["PostToolUse"][4]["hooks"]
+        )
 
 
-class TestStandardProfile:
-    """standard profile must produce settings.json with hook commands."""
-
-    @pytest.fixture
-    def standard_settings(self):
-        """Run standard profile against real project dir; save/restore settings.json."""
-        settings_path = PROJECT_ROOT / ".claude" / "settings.json"
-        # Save original content
-        original_content = settings_path.read_text() if settings_path.exists() else None
-        # Run standard profile
-        _run_profile("standard", PROJECT_ROOT)
-        yield settings_path
-        # Restore original content
-        if original_content is not None:
-            settings_path.write_text(original_content)
-        elif settings_path.exists():
-            settings_path.unlink()
-
-    def test_standard_exits_zero(self, standard_settings):
-        # Fixture runs the standard profile; if it raises, the test fails.
-        # Additionally, settings.json must exist at the project root.
-        assert standard_settings.exists(), "standard profile should create settings.json"
-
-
-    def test_standard_has_minimum_hook_commands(self, standard_settings):
-        if not standard_settings.exists():
-            pytest.skip("settings.json not created")
-        count = _count_hook_commands(standard_settings)
-        assert count >= 20, f"standard profile should have at least 20 hook commands, got {count}"
-
-
-# ─── Full profile (reports, no-op) ───────────────────────────────────────────
+class TestLegacyProfiles:
+    @pytest.mark.parametrize("profile", ["lean", "standard", "minimal"])
+    def test_legacy_profiles_remap_to_default(self, tmp_path, profile):
+        workspace = _make_profile_workspace(tmp_path / profile)
+        result = _run_profile(profile, workspace)
+        assert result.returncode == 0, result.stderr
+        combined = result.stdout + result.stderr
+        assert "collapsed" in combined.lower()
+        assert _load_settings(workspace / ".claude" / "settings.json") == _load_settings(SETTINGS_FILE)
 
 
 class TestFullProfile:
-    """full profile must exit 0 and report count without modifying settings.json."""
-
     def test_full_exits_zero(self):
-        result = subprocess.run(
-            ["bash", str(SCRIPT), "full"],
-            capture_output=True,
-            text=True,
-            cwd=str(PROJECT_ROOT),
-            timeout=15,
-        )
+        result = _run_profile("full", PROJECT_ROOT)
         assert result.returncode == 0, f"full profile exited {result.returncode}: {result.stderr}"
 
     def test_full_prints_hook_count(self):
-        result = subprocess.run(
-            ["bash", str(SCRIPT), "full"],
-            capture_output=True,
-            text=True,
-            cwd=str(PROJECT_ROOT),
-            timeout=15,
-        )
+        result = _run_profile("full", PROJECT_ROOT)
         combined = result.stdout + result.stderr
-        # Should mention hook commands and a number
         assert "hook" in combined.lower() or "command" in combined.lower()
 
     def test_full_does_not_overwrite_settings_in_real_project(self):
-        """Full profile should leave settings.json unchanged."""
-        settings_path = PROJECT_ROOT / ".claude" / "settings.json"
-        if not settings_path.exists():
+        if not SETTINGS_FILE.exists():
             pytest.skip("No settings.json in real project")
 
-        original_content = settings_path.read_text()
-        subprocess.run(
-            ["bash", str(SCRIPT), "full"],
-            capture_output=True,
-            text=True,
-            cwd=str(PROJECT_ROOT),
-            timeout=15,
-        )
-        after_content = settings_path.read_text()
-        assert original_content == after_content, (
-            "full profile must not modify settings.json"
-        )
+        original_content = SETTINGS_FILE.read_text()
+        result = _run_profile("full", PROJECT_ROOT)
+        assert result.returncode == 0, result.stderr
+        assert SETTINGS_FILE.read_text() == original_content
 
     def test_full_mentions_profile_name(self):
-        result = subprocess.run(
-            ["bash", str(SCRIPT), "full"],
-            capture_output=True,
-            text=True,
-            cwd=str(PROJECT_ROOT),
-            timeout=15,
-        )
+        result = _run_profile("full", PROJECT_ROOT)
         combined = result.stdout + result.stderr
         assert "full" in combined.lower()
-
-
-# ─── Subset ordering (lean ⊆ standard ⊆ full) ────────────────────────────────
-
-
-class TestProfileSubsets:
-    """Every hook in lean must also appear in standard (additive property)."""
-
-    @pytest.fixture
-    def lean_settings(self, tmp_path):
-        copy = tmp_path / "lean"
-        copy.mkdir()
-        src_yaml = PROJECT_ROOT / "cognitive-os.yaml"
-        if src_yaml.exists():
-            shutil.copy(src_yaml, copy / "cognitive-os.yaml")
-        (copy / ".claude").mkdir()
-        _run_profile("lean", copy)
-        return copy / ".claude" / "settings.json"
-
-    @pytest.fixture
-    def standard_settings(self, tmp_path):
-        copy = tmp_path / "standard"
-        copy.mkdir()
-        src_yaml = PROJECT_ROOT / "cognitive-os.yaml"
-        if src_yaml.exists():
-            shutil.copy(src_yaml, copy / "cognitive-os.yaml")
-        (copy / ".claude").mkdir()
-        _run_profile("standard", copy)
-        return copy / ".claude" / "settings.json"
-
-    def test_all_lean_hooks_present_in_standard(self, lean_settings, standard_settings):
-        if not lean_settings.exists() or not standard_settings.exists():
-            pytest.skip("settings.json files not created")
-
-        lean_scripts = _collect_hook_scripts(lean_settings)
-        standard_scripts = _collect_hook_scripts(standard_settings)
-
-        missing = lean_scripts - standard_scripts
-        assert not missing, (
-            f"standard is missing hooks from lean: {missing}"
-        )
-
-    def test_standard_has_more_hooks_than_lean(self, lean_settings, standard_settings):
-        if not lean_settings.exists() or not standard_settings.exists():
-            pytest.skip("settings.json files not created")
-
-        lean_count = _count_hook_commands(lean_settings)
-        standard_count = _count_hook_commands(standard_settings)
-        assert standard_count > lean_count, (
-            f"standard ({standard_count}) must have more hooks than lean ({lean_count})"
-        )
