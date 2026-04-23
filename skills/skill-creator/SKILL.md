@@ -31,13 +31,17 @@ Follow the standard skill creation process:
    - Step-by-step instructions
    - Success criteria
    - Examples (if applicable)
+   - A short portability note when the skill is not fully core-agnostic
 4. Update `CATALOG.md` with a one-line entry for the new skill
+5. Keep harness-specific trigger syntax, instruction surfaces, and file-path
+   assumptions out of the main behavior unless they are explicitly marked as a
+   driver projection
 
 ### Phase 2: Generate cos Package Scaffolding
 
 After the skill SKILL.md is created, generate cos package files to make the skill publishable:
 
-5. Create `cos-package.yaml` in the skill directory:
+6. Create `cos-package.yaml` in the skill directory:
 
 ```yaml
 name: "@luum/{skill-name}"
@@ -57,7 +61,7 @@ keywords:
 cos_version: ">=0.1.0"
 ```
 
-6. Create a minimal `README.md` for the package:
+7. Create a minimal `README.md` for the package:
 
 ```markdown
 # {Skill Name}
@@ -79,7 +83,7 @@ cos install @luum/{skill-name}
 MIT
 ```
 
-7. Inform the user:
+8. Inform the user:
    - The skill is ready to use locally
    - To share it: `cos publish` (when cos CLI is available)
    - To score it: `cos score skills/{skill-name}/`
@@ -87,7 +91,7 @@ MIT
 
 ### Phase 3: Register in Skill Registry
 
-8. If the project has a skill registry in Engram, save the new skill:
+9. If the project has a skill registry in Engram, save the new skill:
 
 ```
 mem_save(
@@ -106,6 +110,8 @@ mem_save(
 - [ ] `skills/{skill-name}/README.md` exists with installation instructions
 - [ ] CATALOG.md updated with new skill entry
 - [ ] Skill is functional (can be invoked)
+- [ ] The skill is authored once at the behavioral level and any harness
+      projection is explicit
 
 ## Notes
 

@@ -75,6 +75,20 @@ Structure guidelines:
 - `audience: os` for OS development skills (adding hooks, rules, skills, MCP servers)
 - `audience: project` for project work skills (debugging, SDD phases, etc.)
 - `audience: both` for universal skills (formatting, capability snapshot, etc.)
+- Author the skill once at the behavioral level. Keep harness-specific triggers,
+  driver files, and projection notes separate from the main procedure.
+
+### 2b. Add a portability note
+
+Decide whether the skill is:
+
+- `core-agnostic`
+- `driver-projected`
+- `harness-advantaged`
+- `harness-only`
+
+If the skill depends on one harness for triggers, file layout, or workflow
+surface, state that explicitly in a short `## Portability` section.
 
 ### 3. Add to `skills/CATALOG.md`
 
@@ -137,6 +151,9 @@ fi
 echo "PASS: {skill-name} skill structure valid"
 ```
 
+If the skill is `driver-projected`, also add at least one characterization test
+or verification note for the projection behavior.
+
 ## Operational Skills (command-style frontmatter)
 
 For skills that are invoked as slash commands rather than loaded as context, use this alternative frontmatter format:
@@ -162,4 +179,5 @@ This is used for skills like `daily-health-check` that have a direct invocation 
 - [ ] `grep "{skill-name}" skills/CATALOG.md` returns a matching entry
 - [ ] Frontmatter has `name`, `description`, `version`, `audience` fields
 - [ ] Steps are numbered, imperative, and verifiable
+- [ ] Harness-specific assumptions are either absent or explicitly documented
 - [ ] Skill loads without error: `cat skills/{skill-name}/SKILL.md | head -10`
