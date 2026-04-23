@@ -16,7 +16,9 @@ from lib.gateway_selector import (
     get_gateway_status,
     invalidate_health_cache,
     select_gateway,
+    select_gateway_for_profile,
 )
+from lib.execution_profile import LOCAL_PRIVATE_EXECUTION
 
 pytestmark = pytest.mark.unit
 
@@ -160,6 +162,36 @@ class TestSelectGatewayExclusion:
     def test_exclude_both_falls_to_claude(self, mock_bifrost, mock_litellm):
         gw = select_gateway("gpt-4o", exclude=["bifrost", "litellm"])
         assert gw.name == "claude"
+
+    @patch("lib.gateway_selector._check_litellm_health")
+    @patch("lib.gateway_selector._check_bifrost_health")
+    def test_exclude_claude_returns_unavailable_instead_of_fallback(self, mock_bifrost, mock_litellm):
+        mock_bifrost.return_value = GatewayConfig(
+            name="bifrost",
+            base_url="http://localhost:8081",
+            is_available=False,
+            last_checked=time.time(),
+        )
+        mock_litellm.return_value = GatewayConfig(
+            name="litellm",
+            base_url="http://localhost:4000",
+            is_available=False,
+            last_checked=time.time(),
+        )
+        gw = select_gateway("gpt-4o", exclude=["bifrost", "litellm", "claude"])
+        assert gw.name == "unavailable"
+        assert gw.is_available is False
+
+    @patch("lib.gateway_selector._check_litellm_health")
+    def test_profile_local_requirement_excludes_claude_fallback(self, mock_litellm):
+        mock_litellm.return_value = GatewayConfig(
+            name="litellm",
+            base_url="http://localhost:4000",
+            is_available=False,
+            last_checked=time.time(),
+        )
+        gw = select_gateway_for_profile("llama-3-70b", LOCAL_PRIVATE_EXECUTION)
+        assert gw.name == "unavailable"
 
 
 # ---------------------------------------------------------------------------
