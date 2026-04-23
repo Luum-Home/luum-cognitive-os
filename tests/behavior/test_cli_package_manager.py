@@ -177,6 +177,20 @@ class TestCLIList:
         assert "test-skill" in result.stdout
         assert "(canonical: .cognitive-os/skills/cos/)" in result.stdout
 
+    def test_list_skills_prefers_canonical_surface_over_driver_projection(self, tmp_path):
+        """'cos list skills' should show the canonical source-of-truth before driver projection."""
+        project = _setup_minimal_project(tmp_path)
+        driver_skill = project / ".claude" / "skills" / "test-skill" / "SKILL.md"
+        driver_skill.parent.mkdir(parents=True, exist_ok=True)
+        driver_skill.write_text("# Test Skill Driver Projection\n")
+
+        result = _run_cli("list", "skills", cwd=str(project))
+
+        assert result.returncode == 0
+        assert "test-skill" in result.stdout
+        assert "(canonical: .cognitive-os/skills/cos/)" in result.stdout
+        assert "(project: .claude/skills/)" not in result.stdout
+
     def test_list_rules_uses_canonical_surface_when_driver_missing(self, tmp_path):
         """'cos list rules' should still work from canonical artifacts without .claude projection."""
         project = _setup_minimal_project(tmp_path)
@@ -187,6 +201,20 @@ class TestCLIList:
         assert result.returncode == 0
         assert "test-rule" in result.stdout
         assert "(canonical: .cognitive-os/rules/cos/)" in result.stdout
+
+    def test_list_rules_prefers_canonical_surface_over_driver_projection(self, tmp_path):
+        """'cos list rules' should show the canonical source-of-truth before driver projection."""
+        project = _setup_minimal_project(tmp_path)
+        driver_rule = project / ".claude" / "rules" / "cos" / "test-rule.md"
+        driver_rule.parent.mkdir(parents=True, exist_ok=True)
+        driver_rule.write_text("# Test Rule Driver Projection\n")
+
+        result = _run_cli("list", "rules", cwd=str(project))
+
+        assert result.returncode == 0
+        assert "test-rule" in result.stdout
+        assert "(canonical: .cognitive-os/rules/cos/)" in result.stdout
+        assert "(project: .claude/rules/cos/)" not in result.stdout
 
     def test_list_hooks(self, tmp_path):
         """'cos list hooks' should show installed hooks."""

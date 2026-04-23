@@ -63,7 +63,7 @@ fi
 
 # 2. Rules
 os_rules=$(find "$AOS/rules" -name '*.md' ! -name 'RULES-COMPACT.md' 2>/dev/null | wc -l | tr -d ' ')
-proj_rules=$(find "$PROJECT_DIR/.claude/rules" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+proj_rules=$(find "$PROJECT_DIR/.cognitive-os/rules/cos" "$PROJECT_DIR/.claude/rules" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
 [ -f "$AOS/rules/RULES-COMPACT.md" ] && check "Rules" "OK" || check "Rules" "WARN"
 
 # 3. Skills
