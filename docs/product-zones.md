@@ -64,6 +64,17 @@ When adding or changing a major runtime surface, classify it first.
 
 If the classification is unclear, default away from core. Put the work in compatibility, extensions, or experimental until evidence proves it belongs closer to the product center.
 
+## Root Guardrails
+
+The taxonomy also defines root-level guardrails in [manifests/product-zones.yaml](../manifests/product-zones.yaml). These guardrails do not classify every file one by one. Instead, they set the default expectation for new work under major roots:
+
+- `hooks`, `lib`, `scripts`, `cmd/cos`, and `pkg` are treated as protected runtime surfaces.
+- `internal` is treated as the compatibility boundary for provider and adapter churn unless a stable contract is explicitly promoted.
+- `skills`, `rules`, `templates`, `packages`, `dashboard`, and `workflows` are extension-first.
+- `squads`, `agents`, and future control-plane surfaces stay experimental until they have repeatable operator workflows, tests, and proof paths.
+
+The contract test fails if those root guardrails disappear. This keeps new work from quietly drifting into the product center without an explicit decision.
+
 ## Current Product Interpretation
 
 The top-level product should be described as:
@@ -80,4 +91,3 @@ The taxonomy is backed by:
 - [tests/contracts/test_product_zones.py](../tests/contracts/test_product_zones.py)
 - [docs/business/feature-reality-audit.md](business/feature-reality-audit.md)
 - [docs/business/master-plan-checklist.md](business/master-plan-checklist.md)
-
