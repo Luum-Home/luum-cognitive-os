@@ -32,67 +32,83 @@ func ResolveTargets(exports []manifest.Export, projectRoot, packageDir, packageN
 			return nil, fmt.Errorf("export source %q does not exist: %w", exp.Source, err)
 		}
 
-		target, err := resolveTarget(exp, projectRoot, packageName)
+		resolvedTargets, err := resolveTargetsForExport(exp, projectRoot, packageName)
 		if err != nil {
 			return nil, fmt.Errorf("resolving target for %q: %w", exp.Source, err)
 		}
 
-		targets = append(targets, ExportTarget{
-			Export: exp,
-			Source: source,
-			Target: target,
-		})
+		for _, target := range resolvedTargets {
+			targets = append(targets, ExportTarget{
+				Export: exp,
+				Source: source,
+				Target: target,
+			})
+		}
 	}
 
 	return targets, nil
 }
 
-// resolveTarget computes the absolute destination path for an export.
-func resolveTarget(exp manifest.Export, projectRoot, packageName string) (string, error) {
+// resolveTargetsForExport computes all destination paths for an export.
+//
+// Skills and rules are written additively to:
+//   1. the canonical .cognitive-os source-of-truth
+//   2. the active Claude projection
+//
+// Other export types still have a single destination.
+func resolveTargetsForExport(exp manifest.Export, projectRoot, packageName string) ([]string, error) {
 	switch exp.Type {
 	case "skill":
-		return resolveSkillTarget(exp.Source, projectRoot, packageName), nil
+		return resolveSkillTargets(exp.Source, projectRoot, packageName), nil
 	case "rule":
 		filename := filepath.Base(exp.Source)
-		return filepath.Join(claudeRulesProjectionDir(projectRoot), packageName, filename), nil
+		return []string{
+			filepath.Join(canonicalRulesDir(projectRoot), packageName, filename),
+			filepath.Join(claudeRulesProjectionDir(projectRoot), packageName, filename),
+		}, nil
 	case "hook":
 		filename := filepath.Base(exp.Source)
-		return filepath.Join(projectRoot, ".cognitive-os", "hooks", "cos", packageName, filename), nil
+		return []string{filepath.Join(projectRoot, ".cognitive-os", "hooks", "cos", packageName, filename)}, nil
 	case "template":
 		filename := filepath.Base(exp.Source)
-		return filepath.Join(projectRoot, ".cognitive-os", "templates", packageName, filename), nil
+		return []string{filepath.Join(projectRoot, ".cognitive-os", "templates", packageName, filename)}, nil
 	case "agent":
 		filename := filepath.Base(exp.Source)
-		return filepath.Join(projectRoot, ".cognitive-os", "agents", packageName, filename), nil
+		return []string{filepath.Join(projectRoot, ".cognitive-os", "agents", packageName, filename)}, nil
 	default:
-		return "", fmt.Errorf("unsupported export type %q", exp.Type)
+		return nil, fmt.Errorf("unsupported export type %q", exp.Type)
 	}
 }
 
-// resolveSkillTarget handles skill exports by preserving the skill directory name.
-// If source is "skills/my-skill/SKILL.md", target is ".claude/skills/my-skill/SKILL.md".
-// If source is "SKILL.md" (root), target is ".claude/skills/{packageName}/SKILL.md".
-func resolveSkillTarget(source, projectRoot, packageName string) string {
-	skillsRoot := claudeSkillsProjectionDir(projectRoot)
+// resolveSkillTargets handles skill exports by preserving the skill directory name
+// across both the canonical source-of-truth and the Claude projection.
+func resolveSkillTargets(source, projectRoot, packageName string) []string {
+	canonicalRoot := canonicalSkillsDir(projectRoot)
+	projectionRoot := claudeSkillsProjectionDir(projectRoot)
 	// Normalize path separators.
 	normalized := filepath.ToSlash(source)
 
 	// Check if it has a skills/*/SKILL.md structure.
 	parts := strings.Split(normalized, "/")
 	if len(parts) >= 3 && parts[0] == "skills" {
-		// Preserve directory structure under skills/.
-		// e.g., skills/my-skill/SKILL.md -> .claude/skills/my-skill/SKILL.md
 		relPath := strings.Join(parts[1:], string(filepath.Separator))
-		return filepath.Join(skillsRoot, relPath)
+		return []string{
+			filepath.Join(canonicalRoot, relPath),
+			filepath.Join(projectionRoot, relPath),
+		}
 	}
 
-	// For skills/SKILL.md (two parts), use the skill directory name.
 	if len(parts) == 2 && parts[0] == "skills" {
-		return filepath.Join(skillsRoot, packageName, parts[1])
+		return []string{
+			filepath.Join(canonicalRoot, packageName, parts[1]),
+			filepath.Join(projectionRoot, packageName, parts[1]),
+		}
 	}
 
-	// Root-level SKILL.md or other structure: use packageName as directory.
-	return filepath.Join(skillsRoot, packageName, filepath.Base(source))
+	return []string{
+		filepath.Join(canonicalRoot, packageName, filepath.Base(source)),
+		filepath.Join(projectionRoot, packageName, filepath.Base(source)),
+	}
 }
 
 // Install copies all export targets to their destinations.
