@@ -134,6 +134,8 @@ correction:
 - `scripts/apply-efficiency-profile.sh` now regenerates the same committed default Claude projection that the repository ships in `.claude/settings.json`, so pre-commit and installer flows no longer depend on a stale legacy hook mesh
 - `scripts/upgrade.sh` now preserves the active harness when it re-runs `cos-init.sh`, instead of silently falling back to the Claude path
 - `bin/cognitive-os.sh` now reports hook registration through the active settings driver, so Codex-first projects no longer receive Claude-only health messages
+- `scripts/cos-status.sh` now reads hook wiring from the active settings driver, so transparency output reflects `.codex/hooks.json` when Codex owns the project surface
+- `scripts/uninstall.sh` now strips COS hook registrations from the active settings driver, so Codex-first projects uninstall cleanly instead of leaving stale hook wiring behind
 
 This is not the full migration, but it is the correct direction.
 

@@ -8,6 +8,9 @@
 # Author: luum
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/_lib/settings-driver.sh"
+
 KEEP_CONFIG=false
 for arg in "$@"; do
   case "$arg" in
@@ -18,7 +21,7 @@ for arg in "$@"; do
       echo "  --keep-config  Preserve cognitive-os.yaml"
       echo ""
       echo "This script removes Cognitive OS components from the current project."
-      echo "It NEVER touches project files outside .claude/rules/cos/, .claude/settings.json,"
+      echo "It NEVER touches project files outside .claude/rules/cos/, the active settings driver,"
       echo "and .cognitive-os/."
       exit 0
       ;;
@@ -34,6 +37,10 @@ echo "=== Cognitive OS Uninstaller ==="
 echo ""
 
 removed_items=""
+settings_driver_harness="$(cos_detect_harness "$(pwd)")"
+settings_driver_label="$(cos_settings_driver_label "$settings_driver_harness")"
+settings_driver_path="$(cos_settings_driver_path "$(pwd)" "$settings_driver_harness")"
+settings_backup_path="${settings_driver_path}.cos-backup"
 
 # ── 1. Remove .claude/rules/cos/ (COS namespaced rules) ─────────
 if [ -d ".claude/rules/cos" ]; then
@@ -42,31 +49,39 @@ if [ -d ".claude/rules/cos" ]; then
   removed_items="${removed_items:+$removed_items\n}  - .claude/rules/cos/ ($rule_count rules)"
 fi
 
-# ── 2. Remove COS hooks from .claude/settings.json ──────────────
+# ── 2. Remove COS hooks from the active settings driver ─────────
 # COS hooks reference paths containing ".cognitive-os/hooks/" or "hooks/" with COS patterns.
 # We remove hook entries that point to COS paths but preserve project hooks.
-if [ -f ".claude/settings.json" ] && command -v jq >/dev/null 2>&1; then
+if [ -f "$settings_driver_path" ] && command -v jq >/dev/null 2>&1; then
   # Check if there are any COS hook references
-  if jq -e '.hooks' .claude/settings.json >/dev/null 2>&1; then
+  if jq -e '.hooks // .' "$settings_driver_path" >/dev/null 2>&1; then
     # Create a backup
-    cp .claude/settings.json .claude/settings.json.cos-backup
+    cp "$settings_driver_path" "$settings_backup_path"
 
     # Remove hook entries whose command contains ".cognitive-os/hooks/"
     # This is a best-effort removal — complex hook configs may need manual cleanup.
     jq '
-      if .hooks then
-        .hooks |= with_entries(
-          .value |= map(
-            if .hooks then
-              .hooks |= map(select(.command | test("\\.cognitive-os/hooks/") | not))
-            else . end
-          )
-        )
-      else . end
-    ' .claude/settings.json > .claude/settings.json.tmp 2>/dev/null && \
-      mv .claude/settings.json.tmp .claude/settings.json && \
-      removed_items="${removed_items:+$removed_items\n}  - COS hooks from .claude/settings.json (backup: settings.json.cos-backup)" || \
-      rm -f .claude/settings.json.tmp
+      def prune_groups:
+        with_entries(
+          if (.value | type) == "array" then
+            .value |= map(
+              if (.hooks // null) != null and (.hooks | type) == "array" then
+                .hooks |= map(select((.command // "") | test("\\.cognitive-os/hooks/") | not))
+              else .
+              end
+            )
+          else .
+          end
+        );
+      if (.hooks // null) != null and (.hooks | type) == "object" then
+        .hooks |= prune_groups
+      else
+        prune_groups
+      end
+    ' "$settings_driver_path" > "${settings_driver_path}.tmp" 2>/dev/null && \
+      mv "${settings_driver_path}.tmp" "$settings_driver_path" && \
+      removed_items="${removed_items:+$removed_items\n}  - COS hooks from ${settings_driver_label} (backup: $(basename "$settings_backup_path"))" || \
+      rm -f "${settings_driver_path}.tmp"
   fi
 fi
 
@@ -134,7 +149,7 @@ echo "Cognitive OS has been uninstalled."
 echo ""
 echo "Your project files were NOT modified."
 echo "Your .claude/CLAUDE.md was NOT touched."
-if [ -f ".claude/settings.json.cos-backup" ]; then
+if [ -f "$settings_backup_path" ]; then
   echo ""
-  echo "A backup of your settings was saved to .claude/settings.json.cos-backup"
+  echo "A backup of your settings was saved to ${settings_backup_path#$(pwd)/}"
 fi
