@@ -22,7 +22,7 @@ go test ./internal/provider/... ./internal/validator/... ./pkg/hook/... -count=1
 ## Portability Slice
 
 ```bash
-python3 -m pytest -c /dev/null tests/integration/test_project_settings_generation.py tests/behavior/test_self_install.py -q
+python3 -m pytest tests/integration/test_project_settings_generation.py tests/behavior/test_self_install.py -q
 (cd cmd/cos && go test ./internal/installer/... ./internal/cli/... ./internal/wizard/... -count=1)
 ```
 
