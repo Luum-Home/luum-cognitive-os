@@ -67,7 +67,7 @@ jobs:
           import re, sys
           from pathlib import Path
 
-          docs = [Path('README.md'), Path('CONTRIBUTING.md')]
+          docs = [Path('README.md'), Path('CONTRIBUTING.md'), Path('docs/README.md')]
           errors = 0
 
           def normalize(target: str) -> str:
