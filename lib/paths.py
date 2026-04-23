@@ -40,6 +40,7 @@ __all__ = [
     "claude_skills_projection_dir",
     "claude_rules_projection_dir",
     "skill_lookup_candidates",
+    "canonical_first_skill_lookup_candidates",
     "preferred_rules_dirs",
 ]
 
@@ -166,6 +167,30 @@ def skill_lookup_candidates(skill_name: str, project_root: str | Path | None = N
     This preserves current override semantics while introducing a canonical
     fallback for future migrations.
     """
+    return _skill_lookup_candidates(skill_name, project_root, prefer_canonical=False)
+
+
+def canonical_first_skill_lookup_candidates(
+    skill_name: str, project_root: str | Path | None = None
+) -> tuple[Path, ...]:
+    """Return skill lookup candidates with canonical artifacts before drivers.
+
+    Repo-local source skills and package exports still win because they are
+    authored source surfaces. The canonical-first switch only changes the
+    ordering between installed canonical artifacts and harness projections.
+    This lets diagnostics and future runtime paths opt in without breaking
+    current Claude projection semantics.
+    """
+    return _skill_lookup_candidates(skill_name, project_root, prefer_canonical=True)
+
+
+def _skill_lookup_candidates(
+    skill_name: str,
+    project_root: str | Path | None = None,
+    *,
+    prefer_canonical: bool,
+) -> tuple[Path, ...]:
+    """Build ordered skill lookup candidates."""
     root = _artifact_project_root(project_root)
     candidates: list[Path] = [root / "skills" / skill_name / "SKILL.md"]
 
@@ -175,8 +200,12 @@ def skill_lookup_candidates(skill_name: str, project_root: str | Path | None = N
             if pkg.is_dir():
                 candidates.append(pkg / "skills" / skill_name / "SKILL.md")
 
-    candidates.append(claude_skills_projection_dir(root) / skill_name / "SKILL.md")
-    candidates.append(canonical_skills_dir(root) / skill_name / "SKILL.md")
+    driver_candidate = claude_skills_projection_dir(root) / skill_name / "SKILL.md"
+    canonical_candidate = canonical_skills_dir(root) / skill_name / "SKILL.md"
+    if prefer_canonical:
+        candidates.extend([canonical_candidate, driver_candidate])
+    else:
+        candidates.extend([driver_candidate, canonical_candidate])
     return tuple(candidates)
 
 
