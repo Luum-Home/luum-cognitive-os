@@ -57,11 +57,18 @@ def _setup_minimal_project(tmp_path: Path) -> Path:
     rules_dir.mkdir()
     (rules_dir / "test-rule.md").write_text("# Test Rule\n")
     (rules_dir / "another-rule.md").write_text("# Another Rule\n")
+    canonical_rules_dir = rules_dir / "cos"
+    canonical_rules_dir.mkdir()
+    (canonical_rules_dir / "test-rule.md").write_text("# Test Rule Canonical\n")
+    (canonical_rules_dir / "another-rule.md").write_text("# Another Rule Canonical\n")
 
     # Skills
     skill_dir = cos_dir / "skills" / "test-skill"
     skill_dir.mkdir(parents=True)
     (skill_dir / "SKILL.md").write_text("# Test Skill\n")
+    canonical_skill_dir = cos_dir / "skills" / "cos" / "test-skill"
+    canonical_skill_dir.mkdir(parents=True)
+    (canonical_skill_dir / "SKILL.md").write_text("# Test Skill Canonical\n")
 
     # Hooks
     hooks_dir = cos_dir / "hooks"
@@ -281,6 +288,22 @@ class TestCLIInstall:
         assert "Installed rule" in result.stdout
         installed = project / ".claude" / "rules" / "test-rule.md"
         assert installed.exists()
+
+    def test_install_skill_reads_canonical_surface_first(self, tmp_path):
+        """'cos install skill' should accept the canonical .cognitive-os/skills/cos layout."""
+        project = _setup_minimal_project(tmp_path)
+        shutil.rmtree(project / ".cognitive-os" / "skills" / "test-skill")
+        result = _run_cli("install", "skill", "test-skill", cwd=str(project))
+        assert result.returncode == 0
+        assert (project / ".claude" / "skills" / "test-skill" / "SKILL.md").exists()
+
+    def test_install_rule_reads_canonical_surface_first(self, tmp_path):
+        """'cos install rule' should accept the canonical .cognitive-os/rules/cos layout."""
+        project = _setup_minimal_project(tmp_path)
+        (project / ".cognitive-os" / "rules" / "test-rule.md").unlink()
+        result = _run_cli("install", "rule", "test-rule", cwd=str(project))
+        assert result.returncode == 0
+        assert (project / ".claude" / "rules" / "test-rule.md").exists()
 
     def test_install_rule_not_found(self, tmp_path):
         """'cos install rule nonexistent' should fail."""

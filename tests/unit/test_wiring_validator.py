@@ -51,10 +51,15 @@ def mock_project(tmp_path: Path) -> Path:
     (rules / "excluded-rule.md").write_text("# Excluded rule")
     (rules / "nowhere-rule.md").write_text("# Nowhere")
 
-    # .claude/rules/ symlink for in-compact.md
-    claude_rules = tmp_path / ".claude" / "rules"
+    # Canonical and driver rule projections
+    canonical_rules = tmp_path / ".cognitive-os" / "rules" / "cos"
+    canonical_rules.mkdir(parents=True)
+    (canonical_rules / "in-compact.md").write_text("# In compact canonical")
+
+    claude_rules = tmp_path / ".claude" / "rules" / "cos"
     claude_rules.mkdir(parents=True)
     (claude_rules / "in-compact.md").symlink_to(rules / "in-compact.md")
+    (claude_rules / "legacy-driver.md").write_text("# Legacy driver")
 
     # hooks/self-install.sh with EXCLUDED_RULES
     (hooks / "self-install.sh").write_text(textwrap.dedent("""\
@@ -173,8 +178,16 @@ class TestRuleValidation:
         v = WiringValidator(str(mock_project))
         result = v.validate_rule("in-compact.md")
         assert result["in_rules_compact"] is True
+        assert result["in_canonical_rules"] is True
         assert result["in_claude_rules"] is True
         assert result["wiring_score"] == pytest.approx(1.0)
+
+    def test_rule_driver_projection_is_still_accepted(self, mock_project: Path) -> None:
+        v = WiringValidator(str(mock_project))
+        result = v.validate_rule("legacy-driver.md")
+        assert result["in_canonical_rules"] is False
+        assert result["in_claude_rules"] is True
+        assert result["wiring_score"] < 1.0
 
     def test_rule_excluded(self, mock_project: Path) -> None:
         v = WiringValidator(str(mock_project))
