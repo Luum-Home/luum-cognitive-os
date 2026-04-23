@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
-# merge-settings.sh — Merge Cognitive OS hooks into an existing .claude/settings.json
+# merge-settings.sh — Merge Cognitive OS hooks into an existing harness settings file
 #
-# Usage: bash merge-settings.sh <existing_settings.json> <cos_hooks.json> [output_file]
+# Usage: bash merge-settings.sh <existing_settings_file> <cos_hooks_file> [output_file]
 #
 # If output_file is omitted, writes to stdout.
 #
@@ -26,7 +26,7 @@ COS_HOOKS="${2:-}"
 OUTPUT="${3:-/dev/stdout}"
 
 if [ -z "$EXISTING" ] || [ -z "$COS_HOOKS" ]; then
-  echo "Usage: merge-settings.sh <existing_settings.json> <cos_hooks.json> [output_file]" >&2
+  echo "Usage: merge-settings.sh <existing_settings_file> <cos_hooks_file> [output_file]" >&2
   exit 1
 fi
 

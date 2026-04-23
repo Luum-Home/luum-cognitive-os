@@ -24,10 +24,11 @@ Variant 3 — ``find_config_path()``
     without changing their search semantics.
 
 Search-path order (all three variants):
-    1. ``${CLAUDE_PROJECT_DIR}/cognitive-os.yaml``          (if env var set)
-    2. ``${COGNITIVE_OS_PROJECT_DIR}/cognitive-os.yaml``    (if first absent)
-    3. ``cognitive-os.yaml``                                (cwd-relative)
-    4. ``.cognitive-os/cognitive-os.yaml``                  (cwd-relative)
+    1. ``${COGNITIVE_OS_PROJECT_DIR}/cognitive-os.yaml``    (if env var set)
+    2. ``${CODEX_PROJECT_DIR}/cognitive-os.yaml``           (if first absent)
+    3. ``${CLAUDE_PROJECT_DIR}/cognitive-os.yaml``          (if first absent)
+    4. ``cognitive-os.yaml``                                (cwd-relative)
+    5. ``.cognitive-os/cognitive-os.yaml``                  (cwd-relative)
 
     This matches ``dispatch_helper._find_config_path()`` exactly (after the
     R1 ``project_root()`` migration).  The ``find_config_path()`` function
@@ -45,7 +46,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from lib.paths import project_root
+from lib.paths import runtime_project_root
 
 __all__ = ["find_config_path", "read_top_level_int", "load_structured", "read_int_from_file"]
 
@@ -62,10 +63,11 @@ def find_config_path() -> Optional[str]:
     """Return the first readable ``cognitive-os.yaml`` found on the search path.
 
     Search order:
-    1. ``${CLAUDE_PROJECT_DIR}/cognitive-os.yaml``
-    2. ``${COGNITIVE_OS_PROJECT_DIR}/cognitive-os.yaml``
-    3. ``cognitive-os.yaml`` (cwd-relative)
-    4. ``.cognitive-os/cognitive-os.yaml`` (cwd-relative)
+    1. ``${COGNITIVE_OS_PROJECT_DIR}/cognitive-os.yaml``
+    2. ``${CODEX_PROJECT_DIR}/cognitive-os.yaml``
+    3. ``${CLAUDE_PROJECT_DIR}/cognitive-os.yaml``
+    4. ``cognitive-os.yaml`` (cwd-relative)
+    5. ``.cognitive-os/cognitive-os.yaml`` (cwd-relative)
 
     Returns
     -------
@@ -79,7 +81,7 @@ def find_config_path() -> Optional[str]:
         os.path.join(_COGNITIVE_OS_DIR, _CONFIG_FILENAME),
     ]
 
-    project_dir: Optional[Path] = project_root()
+    project_dir: Optional[Path] = runtime_project_root()
     if project_dir:
         candidates.insert(0, os.path.join(str(project_dir), _CONFIG_FILENAME))
 

@@ -7,7 +7,8 @@ Replaces 3 separate python3 cold starts with a single invocation:
 2. Load user model from engram
 3. Check work queue pending items
 
-Reads env vars: CLAUDE_PROJECT_DIR, SESSION_DIR, SELF_IMPROVE_FLAG
+Reads env vars: COGNITIVE_OS_PROJECT_DIR, CODEX_PROJECT_DIR, CLAUDE_PROJECT_DIR,
+SESSION_DIR, SELF_IMPROVE_FLAG
 Writes to: SESSION_DIR/user-profile.txt
 Outputs to stderr: self-improve reason, work queue warnings
 Always exits 0 — failures are silent.
@@ -79,7 +80,12 @@ def _check_work_queue(project_dir: str) -> None:
 
 
 def main() -> int:
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd())
+    project_dir = (
+        os.environ.get("COGNITIVE_OS_PROJECT_DIR")
+        or os.environ.get("CODEX_PROJECT_DIR")
+        or os.environ.get("CLAUDE_PROJECT_DIR")
+        or os.getcwd()
+    )
     session_dir = os.environ.get("SESSION_DIR", "")
     self_improve_flag = os.environ.get(
         "SELF_IMPROVE_FLAG",

@@ -94,6 +94,20 @@ class TestFreshInstall:
         content = settings.read_text()
         assert "hooks" in content, "settings.json missing hooks section"
 
+    def test_creates_codex_hooks_when_harness_is_codex(self, install_dir, cos_source):
+        """install.sh projects hooks into .codex/hooks.json when Codex is selected."""
+        result = subprocess.run(
+            [str(INSTALLER), "--force", "--harness=codex"],
+            cwd=install_dir,
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, f"Installer failed:\n{result.stderr}\n{result.stdout}"
+        hooks_path = install_dir / ".codex" / "hooks.json"
+        assert hooks_path.is_file(), ".codex/hooks.json not created"
+        content = hooks_path.read_text()
+        assert "CODEX_PROJECT_DIR" in content, "Codex hooks.json missing Codex project expression"
+
     def test_creates_cognitive_os_yaml(self, install_dir, cos_source):
         """install.sh creates cognitive-os.yaml config."""
         subprocess.run(
@@ -115,6 +129,20 @@ class TestFreshInstall:
         )
         claude_md = install_dir / ".claude" / "CLAUDE.md"
         assert claude_md.is_file(), ".claude/CLAUDE.md not created"
+
+    def test_installs_cross_harness_authoring_template(self, install_dir, cos_source):
+        """install.sh installs the cross-harness authoring guide into templates/cos."""
+        result = subprocess.run(
+            [str(INSTALLER), "--force"],
+            cwd=install_dir,
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, f"Installer failed:\n{result.stderr}\n{result.stdout}"
+        guide = install_dir / ".cognitive-os" / "templates" / "cos" / "cross-harness-authoring.md"
+        assert guide.is_file(), "cross-harness-authoring.md not installed"
+        content = guide.read_text()
+        assert "Author behavior once" in content
 
     def test_output_reports_success(self, install_dir, cos_source):
         """install.sh prints success message on completion."""
@@ -144,7 +172,8 @@ class TestSelfInstallGuard:
             text=True,
         )
         assert result.returncode != 0, "Self-install should be blocked"
-        assert "CURRENT DIRECTORY" in result.stdout or "project directory" in result.stderr or "FROM the Cognitive OS repo" in result.stdout
+        combined = f"{result.stdout}\n{result.stderr}"
+        assert "CURRENT DIRECTORY" in combined or "project directory" in combined or "FROM the Cognitive OS repo" in combined
 
     def test_blocks_self_install_with_from(self, cos_source):
         """--from pointing to the same dir as cwd should be blocked."""

@@ -326,6 +326,22 @@ class TestJsonlFileIntegration(unittest.TestCase):
             self.assertEqual(parsed["provider_used"], "alibaba_qwen")
             self.assertTrue(parsed["success"])
 
+    def test_default_sink_honors_codex_project_dir(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.dict(
+                os.environ,
+                {"CODEX_PROJECT_DIR": tmp},
+                clear=False,
+            ):
+                os.environ.pop("COGNITIVE_OS_PROJECT_DIR", None)
+                os.environ.pop("CLAUDE_PROJECT_DIR", None)
+                _d.dispatch(
+                    "hi", providers=["qwen"],
+                    _qwen_fn=lambda p, **k: _success_response("alibaba_qwen"),
+                )
+            jsonl = Path(tmp) / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl"
+            self.assertTrue(jsonl.exists())
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
