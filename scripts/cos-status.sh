@@ -21,11 +21,46 @@
 set -uo pipefail  # NOTE: no -e — we want to keep running through optional checks
 
 # ── Locate project root ────────────────────────────────────────────────
-# Uses $CLAUDE_PROJECT_DIR if set; otherwise derives from script location.
+# Uses canonical runtime precedence when available; otherwise derives from the
+# script location.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+PROJECT_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}}}"
 source "${SCRIPT_DIR}/../hooks/_lib/portable.sh"
+
+canonical_skills_dir() {
+  printf '%s/.cognitive-os/skills/cos' "$PROJECT_ROOT"
+}
+
+legacy_skills_dir() {
+  printf '%s/.cognitive-os/skills' "$PROJECT_ROOT"
+}
+
+driver_skills_dir() {
+  printf '%s/.claude/skills' "$PROJECT_ROOT"
+}
+
+canonical_rules_dir() {
+  printf '%s/.cognitive-os/rules/cos' "$PROJECT_ROOT"
+}
+
+driver_rules_dir() {
+  if [ -d "$PROJECT_ROOT/.claude/rules/cos" ]; then
+    printf '%s/.claude/rules/cos' "$PROJECT_ROOT"
+  else
+    printf '%s/.claude/rules' "$PROJECT_ROOT"
+  fi
+}
+
+source_rules_dir() {
+  if [ -d "$(canonical_rules_dir)" ]; then
+    printf '%s' "$(canonical_rules_dir)"
+  elif [ -d "$PROJECT_ROOT/rules" ]; then
+    printf '%s/rules' "$PROJECT_ROOT"
+  else
+    printf '%s' "$(canonical_rules_dir)"
+  fi
+}
 
 # ── Flag parsing ───────────────────────────────────────────────────────
 
@@ -48,8 +83,9 @@ Reads:
   - cognitive-os.yaml         (profile)
   - .claude/settings.json     (wired hooks)
   - .claude/skills/           (driver-exposed skills)
-  - .cognitive-os/skills/     (installed skills)
-  - rules/                    (source rules)
+  - .cognitive-os/skills/cos/ (canonical installed skills, when present)
+  - .cognitive-os/rules/cos/  (canonical rules, when present)
+  - rules/                    (repo rule source fallback)
   - packages/                 (installed packages)
 
 Exit code: 0 always (health issues are reported in the output, not via exit code).
@@ -129,7 +165,7 @@ list_skills() {
 
 # Count rule files in rules/ (*.md, excluding RULES-COMPACT.md index).
 count_rules() {
-  local dir="$PROJECT_ROOT/rules"
+  local dir="${1:-$(source_rules_dir)}"
   [ -d "$dir" ] || { echo 0; return; }
   local n
   n=$(find "$dir" -maxdepth 1 -name '*.md' ! -name 'RULES-COMPACT.md' 2>/dev/null | wc -l | tr -d ' ')
@@ -202,7 +238,8 @@ PYEOF
 
 # Health checks — three asserts. Each emits "OK<TAB>msg" or "FAIL<TAB>msg<TAB>hint".
 run_health_checks() {
-  local skills_dir="$PROJECT_ROOT/.claude/skills"
+  local skills_dir
+  skills_dir="$(driver_skills_dir)"
   local settings="$PROJECT_ROOT/.claude/settings.json"
 
   # 1. .claude/skills/ non-empty
@@ -357,9 +394,10 @@ PROFILE="$(get_profile)"
 [ -z "$PROFILE" ] && PROFILE="unknown"
 
 DAEMONS_TSV="$(get_daemons)"
-SKILLS_DRIVER=$(count_skills "$PROJECT_ROOT/.claude/skills")
-SKILLS_KERNEL_COS=$(count_skills "$PROJECT_ROOT/.cognitive-os/skills/cos")
-SKILLS_KERNEL_ROOT=$(count_skills "$PROJECT_ROOT/.cognitive-os/skills")
+SKILLS_DRIVER_PATH="$(driver_skills_dir)"
+SKILLS_DRIVER=$(count_skills "$SKILLS_DRIVER_PATH")
+SKILLS_KERNEL_COS=$(count_skills "$(canonical_skills_dir)")
+SKILLS_KERNEL_ROOT=$(count_skills "$(legacy_skills_dir)")
 # Prefer the canonical kernel path if populated, else the flat install path
 if [ "$SKILLS_KERNEL_COS" -gt 0 ]; then
   SKILLS_KERNEL=$SKILLS_KERNEL_COS
@@ -369,7 +407,10 @@ else
   SKILLS_KERNEL_PATH=".cognitive-os/skills/"
 fi
 
-RULES_COUNT=$(count_rules)
+RULES_SOURCE_PATH="$(source_rules_dir)"
+RULES_DRIVER_PATH="$(driver_rules_dir)"
+RULES_COUNT=$(count_rules "$RULES_SOURCE_PATH")
+RULES_DRIVER_COUNT=$(count_rules "$RULES_DRIVER_PATH")
 PACKAGES_COUNT=$(count_packages)
 INSTALL_SOURCE="$(get_install_source)"
 LAST_SESSION="$(get_last_session)"
@@ -403,9 +444,13 @@ import json, sys, os
 
 profile = "$PROFILE"
 skills_driver = int("$SKILLS_DRIVER")
+skills_driver_path = "$SKILLS_DRIVER_PATH"
 skills_kernel = int("$SKILLS_KERNEL")
 skills_kernel_path = "$SKILLS_KERNEL_PATH"
 rules_count = int("$RULES_COUNT")
+rules_driver_count = int("$RULES_DRIVER_COUNT")
+rules_driver_path = "$RULES_DRIVER_PATH"
+rules_source_path = "$RULES_SOURCE_PATH"
 packages_count = int("$PACKAGES_COUNT")
 install_source = """$INSTALL_SOURCE"""
 last_session = """$LAST_SESSION"""
@@ -442,6 +487,7 @@ out = {
     "profile": profile,
     "skills": {
         "driver_exposed": skills_driver,
+        "driver_path": skills_driver_path,
         "kernel_installed": skills_kernel,
         "kernel_path": skills_kernel_path,
     },
@@ -449,7 +495,12 @@ out = {
         "total": total_hooks,
         "by_event": hooks_by_event,
     },
-    "rules": {"source_count": rules_count},
+    "rules": {
+        "driver_exposed": rules_driver_count,
+        "driver_path": rules_driver_path,
+        "source_count": rules_count,
+        "source_path": rules_source_path,
+    },
     "packages": {"count": packages_count},
     "install": {"source": install_source},
     "session": {"last_end": last_session},
@@ -478,10 +529,10 @@ pretty_print() {
   else
     skills_line="${C_RED}EMPTY${C_RESET}"
   fi
-  printf '%-16s %d exposed -> .claude/skills/  %s\n' "Skills:" "$SKILLS_DRIVER" "$skills_line"
+  printf '%-16s %d exposed -> %s/  %s\n' "Skills:" "$SKILLS_DRIVER" "${SKILLS_DRIVER_PATH#$PROJECT_ROOT/}" "$skills_line"
   printf '%-16s %d installed -> %s\n' "" "$SKILLS_KERNEL" "$SKILLS_KERNEL_PATH"
   if [ "$VERBOSE" -eq 1 ] && [ "$SKILLS_DRIVER" -gt 0 ]; then
-    list_skills "$PROJECT_ROOT/.claude/skills" | head -20 | awk '{printf "                   - %s\n", $0}'
+    list_skills "$SKILLS_DRIVER_PATH" | head -20 | awk '{printf "                   - %s\n", $0}'
     if [ "$SKILLS_DRIVER" -gt 20 ]; then
       printf '                   ... (%d more, use --json for full list)\n' "$((SKILLS_DRIVER - 20))"
     fi
@@ -542,9 +593,10 @@ pretty_print() {
   fi
 
   # Rules section
-  printf '%-16s %d total\n' "Rules:" "$RULES_COUNT"
+  printf '%-16s %d source -> %s/\n' "Rules:" "$RULES_COUNT" "${RULES_SOURCE_PATH#$PROJECT_ROOT/}"
+  printf '%-16s %d projected -> %s/\n' "" "$RULES_DRIVER_COUNT" "${RULES_DRIVER_PATH#$PROJECT_ROOT/}"
   if [ "$VERBOSE" -eq 1 ]; then
-    find "$PROJECT_ROOT/rules" -maxdepth 1 -name '*.md' ! -name 'RULES-COMPACT.md' 2>/dev/null \
+    find "$RULES_SOURCE_PATH" -maxdepth 1 -name '*.md' ! -name 'RULES-COMPACT.md' 2>/dev/null \
       | xargs -n1 basename 2>/dev/null | sort | head -15 \
       | awk '{printf "                   - %s\n", $0}'
     if [ "$RULES_COUNT" -gt 15 ]; then

@@ -23,10 +23,16 @@ STATUS_SCRIPT = PROJECT_ROOT / "scripts" / "cos-status.sh"
 WRAPPER_SCRIPT = PROJECT_ROOT / "scripts" / "cos"
 
 
-def _run(args: list[str], timeout: int = 30) -> subprocess.CompletedProcess:
+def _run(
+    args: list[str],
+    timeout: int = 30,
+    env_overrides: dict[str, str] | None = None,
+) -> subprocess.CompletedProcess:
     """Run cos-status.sh with the given args and return the completed process."""
     env = os.environ.copy()
     env["CLAUDE_PROJECT_DIR"] = str(PROJECT_ROOT)
+    if env_overrides:
+        env.update(env_overrides)
     return subprocess.run(
         ["bash", str(STATUS_SCRIPT), *args],
         capture_output=True,
@@ -96,6 +102,8 @@ def test_status_counts_are_numeric():
 
     assert isinstance(data["rules"]["source_count"], int)
     assert data["rules"]["source_count"] >= 0
+    assert isinstance(data["rules"]["driver_exposed"], int)
+    assert data["rules"]["driver_exposed"] >= 0
 
     assert isinstance(data["packages"]["count"], int)
     assert data["packages"]["count"] >= 0
@@ -109,6 +117,9 @@ def test_status_json_output_is_valid_json():
 
     for key in ("profile", "skills", "hooks", "rules", "packages", "install", "health"):
         assert key in data, f"top-level key {key!r} missing from JSON output"
+    assert "driver_path" in data["skills"]
+    assert "driver_path" in data["rules"]
+    assert "source_path" in data["rules"]
 
     # health.checks must be a list; each check has status/message.
     checks = data["health"]["checks"]
@@ -162,3 +173,18 @@ def test_wrapper_dispatches_status_subcommand():
     assert result.returncode == 0, f"stderr: {result.stderr}"
     data = json.loads(result.stdout)
     assert "profile" in data
+
+
+def test_status_uses_canonical_runtime_env_resolution():
+    """Status should work when only canonical runtime env vars are present."""
+    result = _run(
+        ["--json"],
+        env_overrides={
+            "CLAUDE_PROJECT_DIR": "",
+            "CODEX_PROJECT_DIR": "",
+            "COGNITIVE_OS_PROJECT_DIR": str(PROJECT_ROOT),
+        },
+    )
+    assert result.returncode == 0, f"stderr: {result.stderr}"
+    data = json.loads(result.stdout)
+    assert data["profile"]

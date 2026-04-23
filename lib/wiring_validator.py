@@ -184,7 +184,15 @@ class WiringValidator:
 
         in_compact = name.replace(".md", "") in self._compact() or name in self._compact()
         in_excluded = name in self._get_excluded_rules()
-        in_claude = (self.root / ".claude" / "rules" / name).exists()
+        in_canonical = (self.root / ".cognitive-os" / "rules" / "cos" / name).exists()
+        in_claude = any(
+            candidate.exists()
+            for candidate in (
+                self.root / ".claude" / "rules" / "cos" / name,
+                self.root / ".claude" / "rules" / name,
+            )
+        )
+        in_runtime_surface = in_canonical or in_claude
 
         # Excluded by design counts as fully wired
         if in_excluded:
@@ -193,7 +201,7 @@ class WiringValidator:
             score = (
                 (1 if file_exists else 0)
                 + (1 if in_compact else 0)
-                + (1 if in_claude else 0)
+                + (1 if in_runtime_surface else 0)
             ) / 3
 
         issues: list[str] = []
@@ -201,14 +209,15 @@ class WiringValidator:
             issues.append(f"rules/{name} does not exist")
         if not in_excluded and not in_compact:
             issues.append("not referenced in rules/RULES-COMPACT.md")
-        if not in_excluded and not in_claude:
-            issues.append("not symlinked in .claude/rules/")
+        if not in_excluded and not in_runtime_surface:
+            issues.append("not present in canonical or driver rule surfaces")
 
         return {
             "name": name,
             "file_exists": file_exists,
             "in_rules_compact": in_compact,
             "in_excluded_rules": in_excluded,
+            "in_canonical_rules": in_canonical,
             "in_claude_rules": in_claude,
             "wiring_score": score,
             "issues": issues,
