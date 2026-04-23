@@ -106,6 +106,7 @@ class TestReleaseCheckPlumbing:
         assert any(kw in out.stdout.lower() for kw in ("canary", "release", "verify")), (
             f"help output missing canary/release/verify keyword: {out.stdout!r}"
         )
+        assert "settings driver" in out.stdout.lower()
 
     def test_release_check_dry_run_emits_valid_json(self, tmp_path):
         report = _run_release_check(tmp_path, dry_run=True, keep=False)
@@ -143,6 +144,11 @@ class TestReleaseCheckPlumbing:
         """Rate-limiter load checks should invoke hooks via the canonical project env."""
         script_text = RELEASE_CHECK.read_text()
         assert 'COGNITIVE_OS_PROJECT_DIR="$dir" bash "$hook_script"' in script_text
+
+    def test_release_check_resolves_settings_driver_from_canary_dir(self):
+        """Settings validation and hook counting should use the canary's active driver."""
+        script_text = RELEASE_CHECK.read_text()
+        assert 'canary_settings_driver_path "$dir"' in script_text
 
     def test_core_skills_check_json_parses(self):
         out = subprocess.run(
