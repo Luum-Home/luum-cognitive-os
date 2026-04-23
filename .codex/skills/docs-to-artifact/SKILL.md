@@ -1,0 +1,46 @@
+---
+name: docs-to-artifact
+description: Convert important reasoning into durable repository artifacts. Use when an analysis, diagnosis, tradeoff, or decision should outlive the conversation.
+version: 1.0.0
+audience: both
+tags: [documentation, decisions, process]
+---
+
+# Docs To Artifact
+
+## Trigger
+
+Use when a conversation produces any of the following:
+
+- a product diagnosis
+- a portability conclusion
+- a focus or wedge decision
+- a taxonomy
+- a checklist
+- a testing or verification doctrine
+
+## Placement Rules
+
+- `docs/business/` — product strategy, wedge, risk, messaging, feature audits
+- `docs/architecture/` — technical boundaries, portability, driver layers, runtime decisions
+- `docs/adrs/` — durable architectural decisions with alternatives and consequences
+- `docs/manual-tests/` — explicit human verification flows
+- tests/contracts — when the document should become enforceable
+
+## Operating Rule
+
+Every significant analysis should become at least one of:
+
+- a document
+- a checklist
+- a contract
+- a test
+
+Prefer adding the document first, then adding enforcement when the behavior is expected to remain stable.
+
+## Completion Step
+
+When a new artifact is created, link it from:
+
+- `docs/README.md`
+- and, if it advances execution, `docs/business/master-plan-checklist.md`
