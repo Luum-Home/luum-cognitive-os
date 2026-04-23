@@ -36,6 +36,8 @@ Call `mem_session_summary` with: Goal, Discoveries, Accomplished, Next Steps, Re
 - Rules loaded from `.claude/rules/` -- RULES-COMPACT.md is the index
 - Full rule details loaded on-demand when context triggers match
 - Skills available in `.cognitive-os/skills/` -- invoke with `/skill-name`
+- Cross-harness authoring lives in `.cognitive-os/templates/cos/cross-harness-authoring.md`
+- Author behavior once, then project it through harness-specific drivers
 
 ## Adaptive Workflow
 
