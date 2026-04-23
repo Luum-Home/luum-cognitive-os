@@ -73,6 +73,15 @@ Claude.
 - [x] Runtime can read canonical artifacts even if Claude projection is absent
 - [ ] Tests prove canonical artifacts are sufficient as source-of-truth
 
+### Current evidence
+
+- `cos list skills` and `cos list rules` work from canonical artifacts when the
+  Claude projection is absent.
+- `cos-status --json` can describe a canonical-only project without
+  `.claude/skills` or `.claude/rules`.
+- `uninstall.sh` works for a canonical-only project and still deregisters the
+  installation correctly.
+
 ## Phase 4 — Tooling and Validation Migration
 
 Purpose: update the wider ecosystem around the new contract.
