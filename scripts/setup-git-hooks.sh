@@ -185,12 +185,25 @@ _install_cos_block() {
 # COS_AUTO_UPDATE BEGIN — Do not edit this block manually
 # Auto-updates all registered COS installations after git push completes.
 # Runs in background so the push is not delayed, and uses the new HEAD.
+# Skips feature branches so registered projects are not upgraded from
+# unmerged work. Main/master and tag pushes are allowed.
 # Installed by: bash scripts/setup-git-hooks.sh
 # Remove with:  bash scripts/setup-git-hooks.sh --remove
 _COS_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
-if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
+_COS_PUSH_ALLOWED=false
+while read -r _local_ref _local_sha _remote_ref _remote_sha; do
+  _tag_ref="${_local_ref#refs/tags/}"
+  if [ "$_local_ref" = "refs/heads/main" ] || \
+     [ "$_local_ref" = "refs/heads/master" ] || \
+     [ "$_tag_ref" != "$_local_ref" ]; then
+    _COS_PUSH_ALLOWED=true
+  fi
+done
+if [ "$_COS_PUSH_ALLOWED" = true ] && [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
   (sleep 2 && echo "" && echo "[COS] Updating projects after push..." && \
    bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /') &
+else
+  echo "[COS] Auto-update skipped for this push (only main/master/tag pushes propagate)." >&2
 fi
 # COS_AUTO_UPDATE END
 HOOKEOF
