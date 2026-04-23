@@ -55,7 +55,7 @@
 - [x] Secondary user-facing scripts use canonical project-root precedence when reading runtime state.
 - [x] Update and auto-update paths preserve the active harness/settings driver instead of silently assuming Claude.
 - [x] Driver-specific user-facing scripts are explicitly classified so Claude-only registration/profile flows do not masquerade as Codex support.
-- [ ] Broken product-facing links fail visibly in automation.
+- [x] Broken product-facing links fail visibly in automation.
 - [ ] Product claims in README and pitch map to explicit verification paths.
 
 ## 5. Onboarding and Operational Simplicity
