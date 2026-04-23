@@ -47,6 +47,7 @@
 - [x] Default CI covers key behavior tests.
 - [x] Default CI includes documentation integrity checks.
 - [x] Release-plumbing checks can reason about canonical-first skill surfaces without changing install destinations.
+- [x] Release-plumbing checks can validate the active settings driver instead of assuming `.claude/settings.json` is the only settings surface.
 - [x] Audit and wiring validation can read the active settings driver instead of assuming `.claude/settings.json` is the only runtime surface.
 - [x] CLI health and hook reporting can read the active settings driver instead of assuming `.claude/settings.json` is the only user-facing runtime surface.
 - [x] Transparency/status reporting can read the active settings driver instead of assuming `.claude/settings.json` is the only hook-wiring surface.
