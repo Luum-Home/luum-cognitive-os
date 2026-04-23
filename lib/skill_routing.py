@@ -11,6 +11,7 @@ Frontmatter schema (all fields optional, conservative defaults):
     name: sdd-design
     model: opus
     routing:
+      execution_profile: frontier_reasoning  # optional explicit capability profile
       tier: frontier | balanced | cheap
       need_vision: false
       need_long_context: true
@@ -63,6 +64,7 @@ class SkillRequirements:
     """
 
     tier: Optional[str] = None  # "frontier" | "balanced" | "cheap" | None
+    execution_profile: Optional[str] = None
     need_vision: bool = False
     need_long_context: bool = False
     providers_preferred: list[str] = field(default_factory=list)
@@ -154,6 +156,16 @@ def parse_routing_block(frontmatter_yaml: dict) -> Optional[SkillRequirements]:
                 file=sys.stderr,
             )
         req.tier = tier
+
+    execution_profile = routing.get("execution_profile") or routing.get("capability_profile")
+    if isinstance(execution_profile, str):
+        req.execution_profile = execution_profile
+    elif execution_profile is not None:
+        print(
+            f"[skill_routing] WARN: execution_profile must be a string "
+            f"(got {type(execution_profile).__name__})",
+            file=sys.stderr,
+        )
 
     req.need_vision = bool(routing.get("need_vision", False))
     req.need_long_context = bool(routing.get("need_long_context", False))
@@ -298,6 +310,7 @@ def to_dispatch_dict(req: SkillRequirements) -> dict:
     """
     return {
         "tier": req.tier,
+        "execution_profile": req.execution_profile,
         "need_vision": req.need_vision,
         "need_long_context": req.need_long_context,
         "providers_preferred": list(req.providers_preferred),

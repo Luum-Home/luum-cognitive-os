@@ -532,12 +532,26 @@ def route_and_execute(
     Returns:
         RoutedResult with the response or routing guidance.
     """
-    from lib.gateway_selector import invalidate_health_cache, select_gateway
+    from lib.gateway_selector import invalidate_health_cache, select_gateway_for_profile
 
+    profile = resolve_execution_profile(
+        task_type,
+        budget_remaining=budget_remaining,
+        prefer_local=prefer_local,
+    )
     model = select_model(task_type, budget_remaining=budget_remaining, prefer_local=prefer_local)
 
     # Use gateway selector to pick the best path
-    gateway = select_gateway(model)
+    gateway = select_gateway_for_profile(model, profile)
+
+    if gateway.name == "unavailable":
+        return RoutedResult(
+            success=False,
+            text="",
+            model=model,
+            provider="none",
+            error=f"No gateway available for execution profile {profile.id}",
+        )
 
     # --- Claude path (direct CLI) ---
     if gateway.name == "claude":
@@ -575,7 +589,7 @@ def route_and_execute(
             invalidate_health_cache("bifrost")
 
             # Try LiteLLM as fallback
-            fallback_gw = select_gateway(model, exclude=["bifrost"])
+            fallback_gw = select_gateway_for_profile(model, profile, exclude=["bifrost"])
             if fallback_gw.name == "litellm":
                 gateway = fallback_gw
                 # Fall through to LiteLLM execution below
