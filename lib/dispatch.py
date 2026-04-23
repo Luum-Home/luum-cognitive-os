@@ -45,6 +45,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Optional
 
+from lib.execution_profile import provider_cascade_for_profile, resolve_runtime_execution_profile
 from lib.paths import runtime_project_root_or_cwd
 
 # Rate-limit patterns for cascade advance logic. Kept in sync with
@@ -199,7 +200,8 @@ def dispatch(
       task_type: freeform tag for metrics (e.g. "general", "code", "reasoning")
       skill_name: optional skill name for metrics — enables per-skill routing
       skill_requirements: ADR-050 per-skill routing dict. Recognised keys:
-        providers_preferred (list), providers_excluded (list),
+        execution_profile/capability_profile (str), tier (str),
+        need_long_context (bool), providers_preferred (list), providers_excluded (list),
         fallback_on_rate_limit (bool, default True),
         fallback_on_any_error (bool, default False),
         budget_max_usd_per_call (float | None). When present, overrides the
@@ -213,13 +215,22 @@ def dispatch(
     # Resolve providers list
     if providers is None:
         providers = ["qwen", "claude"]
+
+    # Capability intent is resolved before provider choice. Explicit provider
+    # preferences below still win, but absent those preferences the profile can
+    # shape the cascade without callers hardcoding vendor names.
+    _skill_req = skill_requirements if isinstance(skill_requirements, dict) else {}
+    execution_profile = resolve_runtime_execution_profile(
+        task_type,
+        skill_requirements=_skill_req,
+    )
+
     # Honor COS_FORCE_CLAUDE_PRIMARY override at the dispatch boundary too
     if os.environ.get("COS_FORCE_CLAUDE_PRIMARY", "").strip() == "1":
         providers = ["claude"]
 
     # ADR-050: apply per-skill routing if provided. Env override (COS_FORCE_CLAUDE_PRIMARY)
     # takes precedence — it's a hard kill-switch.
-    _skill_req = skill_requirements if isinstance(skill_requirements, dict) else {}
     if _skill_req and os.environ.get("COS_FORCE_CLAUDE_PRIMARY", "").strip() != "1":
         pref = _skill_req.get("providers_preferred") or []
         if isinstance(pref, list) and pref:
@@ -231,6 +242,17 @@ def dispatch(
         if verbose:
             print(f"[dispatch] ADR-050 skill routing applied → providers={providers}",
                   file=sys.stderr)
+
+    if (
+        os.environ.get("COS_FORCE_CLAUDE_PRIMARY", "").strip() != "1"
+        and not (_skill_req.get("providers_preferred") if _skill_req else None)
+    ):
+        providers = provider_cascade_for_profile(execution_profile, providers)
+        if verbose:
+            print(
+                f"[dispatch] capability profile {execution_profile.id} → providers={providers}",
+                file=sys.stderr,
+            )
 
     # Fallback policy (ADR-050) — defaults preserve legacy cascade semantics
     _fallback_on_rate_limit = bool(_skill_req.get("fallback_on_rate_limit", True))
@@ -369,6 +391,16 @@ def dispatch(
         "model": result.model,
         "task_type": task_type,
         "skill_name": skill_name,
+        "execution_profile": {
+            "id": execution_profile.id,
+            "min_reasoning": execution_profile.min_reasoning,
+            "min_speed": execution_profile.min_speed,
+            "min_code": execution_profile.min_code,
+            "min_context_window": execution_profile.min_context_window,
+            "require_local": execution_profile.require_local,
+            "prefer_free": execution_profile.prefer_free,
+            "allow_advisor": execution_profile.allow_advisor,
+        },
         "tokens_in": result.input_tokens,
         "tokens_out": result.output_tokens,
         "cost_usd": result.cost_usd,
@@ -378,6 +410,7 @@ def dispatch(
         # ADR-050: surface the routing policy that shaped this dispatch
         "skill_routing": {
             "tier": _skill_req.get("tier") if _skill_req else None,
+            "execution_profile": _skill_req.get("execution_profile") if _skill_req else None,
             "providers_preferred": list(_skill_req.get("providers_preferred") or []) if _skill_req else [],
             "providers_excluded": list(_skill_req.get("providers_excluded") or []) if _skill_req else [],
             "fallback_on_rate_limit": _fallback_on_rate_limit if _skill_req else None,

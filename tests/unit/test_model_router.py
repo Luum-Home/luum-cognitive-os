@@ -5,6 +5,7 @@ local preference, cost estimation, and routing table formatting.
 """
 
 import pytest
+from unittest.mock import patch
 
 from lib.model_router import (
     MODEL_CAPABILITIES,
@@ -12,6 +13,7 @@ from lib.model_router import (
     estimate_cost,
     format_routing_table,
     get_model_capabilities,
+    route_and_execute,
     select_model,
 )
 
@@ -231,6 +233,29 @@ class TestSelectModelLocal:
         caps = get_model_capabilities(model)
         assert caps.get("local", False) is True
         assert caps["cost_per_1m_in"] == 0.0
+
+
+class TestRouteAndExecuteCapabilityProfile:
+    @patch("lib.gateway_selector._check_litellm_health")
+    def test_prefer_local_does_not_fall_back_to_claude_when_local_gateway_down(self, mock_litellm):
+        """Local/private execution must fail closed instead of using Claude fallback."""
+        from lib.gateway_selector import GatewayConfig
+
+        mock_litellm.return_value = GatewayConfig(
+            name="litellm",
+            base_url="http://localhost:4000",
+            is_available=False,
+        )
+
+        result = route_and_execute(
+            "sdd-apply",
+            messages=[{"role": "user", "content": "hello"}],
+            prefer_local=True,
+        )
+
+        assert result.success is False
+        assert result.provider == "none"
+        assert "+local" in result.error
 
 
 # ---------------------------------------------------------------------------
