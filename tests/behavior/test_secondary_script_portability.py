@@ -61,6 +61,26 @@ def test_secondary_scripts_have_valid_bash_syntax():
         assert result.returncode == 0, f"{script}: {result.stderr}"
 
 
+def test_set_security_profile_refuses_non_claude_driver(tmp_path):
+    """set-security-profile must not pretend to manage Codex hook settings."""
+    project = tmp_path / "project"
+    (project / ".codex").mkdir(parents=True)
+    (project / ".codex" / "hooks.json").write_text('{"hooks": {}}\n')
+
+    result = _run_script(
+        PROJECT_ROOT / "scripts" / "set-security-profile.sh",
+        ["minimal"],
+        env_overrides={
+            "COGNITIVE_OS_PROJECT_DIR": str(project),
+            "COGNITIVE_OS_HARNESS": "codex",
+        },
+    )
+
+    assert result.returncode == 1
+    assert "Claude settings driver only" in result.stderr
+    assert "Active driver: .codex/hooks.json" in result.stderr
+
+
 def test_cos_sessions_uses_canonical_project_dir(tmp_path):
     """cos-sessions should read metrics from COGNITIVE_OS_PROJECT_DIR first."""
     project = tmp_path / "project"
