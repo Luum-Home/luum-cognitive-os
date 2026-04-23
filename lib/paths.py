@@ -157,17 +157,17 @@ def claude_rules_projection_dir(project_root: str | Path | None = None) -> Path:
 def skill_lookup_candidates(skill_name: str, project_root: str | Path | None = None) -> tuple[Path, ...]:
     """Return ordered candidate locations for a skill's ``SKILL.md``.
 
-    The order is intentionally conservative:
+    The order is canonical-first:
 
     1. repo-local ``skills/{name}/SKILL.md``
     2. package skill exports ``packages/*/skills/{name}/SKILL.md``
-    3. Claude driver projection ``.claude/skills/{name}/SKILL.md``
-    4. canonical OS skill path ``.cognitive-os/skills/cos/{name}/SKILL.md``
+    3. canonical OS skill path ``.cognitive-os/skills/cos/{name}/SKILL.md``
+    4. Claude driver projection ``.claude/skills/{name}/SKILL.md``
 
-    This preserves current override semantics while introducing a canonical
-    fallback for future migrations.
+    Claude remains fully supported as a driver projection, but it is no longer
+    the runtime center of truth when canonical artifacts exist.
     """
-    return _skill_lookup_candidates(skill_name, project_root, prefer_canonical=False)
+    return _skill_lookup_candidates(skill_name, project_root, prefer_canonical=True)
 
 
 def canonical_first_skill_lookup_candidates(
@@ -175,11 +175,9 @@ def canonical_first_skill_lookup_candidates(
 ) -> tuple[Path, ...]:
     """Return skill lookup candidates with canonical artifacts before drivers.
 
-    Repo-local source skills and package exports still win because they are
-    authored source surfaces. The canonical-first switch only changes the
-    ordering between installed canonical artifacts and harness projections.
-    This lets diagnostics and future runtime paths opt in without breaking
-    current Claude projection semantics.
+    Kept as an explicit helper for callers that want to state the contract
+    directly. It now matches ``skill_lookup_candidates`` because canonical
+    artifacts are the default runtime source-of-truth.
     """
     return _skill_lookup_candidates(skill_name, project_root, prefer_canonical=True)
 

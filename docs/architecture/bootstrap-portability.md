@@ -141,6 +141,7 @@ correction:
 - `cos-update.sh` now backs up, restores, and fingerprints the active settings driver, and skips Claude-only profile regeneration when the active driver is not Claude
 - `auto-update-projects.sh` now preserves each project's detected harness when it re-runs `cos-init.sh`
 - driver-specific user-facing scripts are now classified in [Driver-Specific Script Surfaces](driver-specific-script-surfaces.md), with tests ensuring Codex-hosted runs do not silently write Claude settings or invoke Claude-only profile projection
+- skills and rules now use `.cognitive-os/skills/cos` and `.cognitive-os/rules/cos` as the canonical artifact contract, while `.claude/skills` and `.claude/rules/cos` remain Claude Code driver projections
 
 This is not the full migration, but it is the correct direction.
 
