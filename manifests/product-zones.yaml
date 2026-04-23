@@ -1,0 +1,167 @@
+version: 1
+purpose: "Classify Cognitive OS surfaces so product focus, compatibility work, and experimental scope do not blur together."
+
+zones:
+  core:
+    description: "Stable product surfaces that directly support governable, verifiable, portable coding agents."
+    default_change_policy: "Conservative changes, explicit tests, and no vendor-specific assumptions without a driver boundary."
+  compatibility:
+    description: "Adapters and projections that absorb provider, harness, IDE, gateway, and tool-schema churn."
+    default_change_policy: "Add or change behavior behind explicit driver contracts; never leak vendor-specific assumptions into core."
+  extensions:
+    description: "Optional packages, skills, dashboards, MCP helpers, and workflow layers that add value without defining the kernel."
+    default_change_policy: "Keep installable, removable, and secondary to the core product promise."
+  experimental:
+    description: "Future-facing or high-variance systems that should not be presented as current product guarantees."
+    default_change_policy: "Document as incubating, keep out of first-contact product messaging, and require proof before promotion."
+
+path_classification:
+  - path: cognitive-os.yaml
+    zone: core
+    reason: "Project-level runtime configuration and phase state."
+  - path: pkg/hook
+    zone: core
+    reason: "Canonical hook context and provider-agnostic event model."
+  - path: internal/validator
+    zone: core
+    reason: "Provider-agnostic policy engine and validation registry."
+  - path: cmd/cos/internal/manifest
+    zone: core
+    reason: "Package specification contract for installable OS components."
+  - path: lib/execution_profile.py
+    zone: core
+    reason: "Capability-centric execution profile contract."
+  - path: lib/outcome_metrics.py
+    zone: core
+    reason: "Provider-agnostic outcome metrics contract."
+  - path: hooks/self-install.sh
+    zone: core
+    reason: "Bootstrap synchronization path required for self-hosting."
+  - path: hooks/session-init.sh
+    zone: core
+    reason: "Runtime session initialization and canonical project/session resolution."
+  - path: hooks/_lib
+    zone: core
+    reason: "Shared hook runtime helpers used by critical safety and lifecycle hooks."
+  - path: scripts/cos-init.sh
+    zone: core
+    reason: "Primary onboarding and project initialization path."
+  - path: scripts/generate-project-settings.sh
+    zone: core
+    reason: "Settings projection compiler for supported harness drivers."
+  - path: scripts/_lib/settings-driver.sh
+    zone: core
+    reason: "Shared active harness/settings-driver resolver."
+  - path: manifests/kernel-contract.yaml
+    zone: core
+    reason: "Machine-readable kernel boundary."
+  - path: manifests/product-zones.yaml
+    zone: core
+    reason: "Machine-readable product taxonomy boundary."
+  - path: rules/RULES-COMPACT.md
+    zone: core
+    reason: "Compact always-active governance index."
+
+  - path: internal/provider
+    zone: compatibility
+    reason: "Provider adapters normalize vendor payloads into the canonical hook context."
+  - path: lib/compatibility_layer.py
+    zone: compatibility
+    reason: "Compatibility inventory for providers, gateways, and schema churn."
+  - path: lib/gateway_selector.py
+    zone: compatibility
+    reason: "Gateway adapter selection and provider indirection."
+  - path: .claude
+    zone: compatibility
+    reason: "Claude Code settings and rule projection driver."
+  - path: .codex
+    zone: compatibility
+    reason: "Codex settings, skills, and local agent memory projection driver."
+  - path: .cursor
+    zone: compatibility
+    reason: "Cursor projection surface."
+  - path: .windsurf
+    zone: compatibility
+    reason: "Windsurf projection surface."
+  - path: .kiro
+    zone: compatibility
+    reason: "Kiro projection surface."
+  - path: scripts/register-mcps.sh
+    zone: compatibility
+    reason: "Claude MCP registration driver; not a core portability contract until non-Claude drivers exist."
+  - path: scripts/set-security-profile.sh
+    zone: compatibility
+    reason: "Claude security-profile projection driver."
+  - path: docs/architecture/driver-specific-script-surfaces.md
+    zone: compatibility
+    reason: "Driver-specific script classification and portability boundary."
+
+  - path: skills
+    zone: extensions
+    reason: "Reusable agent procedures that should be installable and optional outside the kernel."
+  - path: rules
+    zone: extensions
+    reason: "Governance content packs beyond the compact core index."
+  - path: templates
+    zone: extensions
+    reason: "Prompt and workflow composition templates."
+  - path: packages
+    zone: extensions
+    reason: "Installable package ecosystem."
+  - path: mcp-server
+    zone: extensions
+    reason: "Optional MCP server surface."
+  - path: dashboard
+    zone: extensions
+    reason: "Operational visualization layer, useful but not the core wedge."
+  - path: workflows
+    zone: extensions
+    reason: "Optional workflow automation layer."
+  - path: examples
+    zone: extensions
+    reason: "Adoption examples and demos."
+  - path: presets
+    zone: extensions
+    reason: "Optional configuration presets."
+  - path: customizations
+    zone: extensions
+    reason: "Project-specific customization templates."
+
+  - path: squads
+    zone: experimental
+    reason: "Software-factory organization model; future-facing and not part of the current wedge."
+  - path: agents
+    zone: experimental
+    reason: "Agent organization surface that should not define current product adoption."
+  - path: infra
+    zone: experimental
+    reason: "Production-control-plane infrastructure experiments."
+  - path: plans
+    zone: experimental
+    reason: "Future roadmap and incubating design material."
+  - path: generated
+    zone: experimental
+    reason: "Generated artifacts that should not become source-of-truth product contracts."
+  - path: reference
+    zone: experimental
+    reason: "Reference material and research inputs."
+
+promotion_rules:
+  extensions_to_core:
+    - "The surface directly strengthens governance, verification, or portability in real repositories."
+    - "The surface has automated tests and a manual proof path."
+    - "The surface does not require a specific vendor unless routed through a compatibility driver."
+  experimental_to_extensions:
+    - "The surface has at least one working demo or repeatable operator workflow."
+    - "The surface can be installed, disabled, or ignored without weakening the core."
+    - "The surface is documented as optional."
+  compatibility_to_core:
+    - "Only stable, provider-agnostic contracts may move to core."
+    - "Vendor-specific code remains compatibility even when it is critical for adoption."
+
+verification:
+  contract_tests:
+    - tests/contracts/test_product_zones.py
+  primary_docs:
+    - docs/product-zones.md
+    - docs/business/master-plan-checklist.md
