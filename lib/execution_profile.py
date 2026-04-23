@@ -133,6 +133,25 @@ TASK_EXECUTION_PROFILES: Dict[str, ExecutionProfile] = {
     "openrouter/free": LOW_COST_BULK,
 }
 
+PROFILE_REGISTRY: Dict[str, ExecutionProfile] = {
+    profile.id: profile
+    for profile in (
+        FRONTIER_REASONING,
+        HIGH_CODE_GENERATION,
+        FAST_TURNAROUND,
+        LONG_CONTEXT_ANALYSIS,
+        LOW_COST_BULK,
+        BALANCED_GENERAL,
+        LOCAL_PRIVATE_EXECUTION,
+    )
+}
+
+SKILL_TIER_PROFILES: Dict[str, ExecutionProfile] = {
+    "frontier": FRONTIER_REASONING,
+    "balanced": BALANCED_GENERAL,
+    "cheap": LOW_COST_BULK,
+}
+
 
 def resolve_execution_profile(
     task_type: str,
@@ -166,3 +185,74 @@ def resolve_execution_profile(
         )
 
     return profile
+
+
+def resolve_runtime_execution_profile(
+    task_type: str,
+    *,
+    skill_requirements: Optional[dict] = None,
+    budget_remaining: Optional[float] = None,
+    prefer_local: bool = False,
+) -> ExecutionProfile:
+    """Resolve runtime intent from task type plus optional skill routing data.
+
+    This is the dispatch-facing resolver. It keeps provider/model names out of
+    the first decision by translating skill frontmatter such as `tier:` and
+    `need_long_context:` into the same stable execution profile contract used by
+    model routing.
+    """
+    req = skill_requirements if isinstance(skill_requirements, dict) else {}
+
+    explicit_profile = req.get("execution_profile") or req.get("capability_profile")
+    if isinstance(explicit_profile, str) and explicit_profile in PROFILE_REGISTRY:
+        profile = PROFILE_REGISTRY[explicit_profile]
+    elif bool(req.get("need_long_context", False)):
+        profile = LONG_CONTEXT_ANALYSIS
+    else:
+        tier = req.get("tier")
+        profile = SKILL_TIER_PROFILES.get(tier, resolve_execution_profile(task_type))
+
+    if prefer_local:
+        return replace(
+            LOCAL_PRIVATE_EXECUTION,
+            id=f"{profile.id}+local",
+            description=f"{profile.description} Routed through a local/private requirement.",
+            min_reasoning=min(profile.min_reasoning, LOCAL_PRIVATE_EXECUTION.min_reasoning),
+            min_speed=min(profile.min_speed, LOCAL_PRIVATE_EXECUTION.min_speed),
+            min_code=max(profile.min_code, LOCAL_PRIVATE_EXECUTION.min_code),
+        )
+
+    if budget_remaining is not None and budget_remaining <= 0.01:
+        return replace(
+            profile,
+            id=f"{profile.id}+budget_floor",
+            prefer_free=True,
+            max_total_cost_per_1m=0.0,
+        )
+
+    return profile
+
+
+def provider_cascade_for_profile(
+    profile: ExecutionProfile,
+    default_cascade: list[str],
+) -> list[str]:
+    """Return a provider cascade shaped by execution capability intent.
+
+    Explicit provider overrides are handled by callers before this helper.
+    """
+    cascade = list(default_cascade)
+    if len(cascade) <= 1:
+        return cascade
+
+    provider_names = ("claude", "qwen")
+    other = [provider for provider in cascade if provider not in provider_names]
+
+    if profile.id.startswith((FRONTIER_REASONING.id, LONG_CONTEXT_ANALYSIS.id)):
+        ordered_known = [provider for provider in ("claude", "qwen") if provider in cascade]
+    elif profile.id.startswith((LOW_COST_BULK.id, FAST_TURNAROUND.id)):
+        ordered_known = [provider for provider in ("qwen", "claude") if provider in cascade]
+    else:
+        return cascade
+
+    return ordered_known + other
