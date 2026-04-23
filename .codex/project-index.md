@@ -63,3 +63,4 @@ The strongest current wedge is:
 - When uncertain, make the product simpler rather than more total.
 - Prefer shared contracts and resolvers over re-implementing the same rule in multiple layers.
 - Treat repository artifacts as primary durable memory and use MCP memory only when it is actually available in the current session.
+- If we discover a real bug while touching adjacent code, fix it or record it explicitly before moving on.
