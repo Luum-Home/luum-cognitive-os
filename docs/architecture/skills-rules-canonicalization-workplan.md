@@ -72,7 +72,7 @@ Claude.
 - [x] Installer writes canonical artifacts plus driver projection
 - [x] Runtime can read canonical artifacts even if Claude projection is absent
 - [x] Skill routing has an opt-in canonical-first resolver without changing Claude projection defaults
-- [ ] Tests prove canonical artifacts are sufficient as source-of-truth
+- [x] Tests prove canonical artifacts are sufficient as source-of-truth
 
 ### Current evidence
 
@@ -110,6 +110,9 @@ Claude.
   `lib.skill_routing.find_skill_md(..., prefer_canonical=True)` allow
   diagnostics and future runtime paths to prefer `.cognitive-os/skills/cos`
   over `.claude/skills` without breaking current Claude-first lookup defaults.
+- `cos list skills` and `cos list rules` now prefer canonical artifacts over
+  `.claude/` projection when both exist, while still falling back to the active
+  driver projection if canonical artifacts are absent.
 
 ## Phase 4 — Tooling and Validation Migration
 
