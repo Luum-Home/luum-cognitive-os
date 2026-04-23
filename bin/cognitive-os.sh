@@ -66,6 +66,16 @@ driver_rules_dir() {
   fi
 }
 
+dir_has_skill_files() {
+  local dir="${1:-}"
+  [ -n "$dir" ] && [ -d "$dir" ] && find "$dir" -name 'SKILL.md' -print -quit 2>/dev/null | grep -q .
+}
+
+dir_has_rule_files() {
+  local dir="${1:-}"
+  [ -n "$dir" ] && [ -d "$dir" ] && find "$dir" -name '*.md' -print -quit 2>/dev/null | grep -q .
+}
+
 resolve_local_skill_source() {
   local name="$1"
   if [ -f "$(canonical_skills_dir)/${name}/SKILL.md" ]; then
@@ -1092,28 +1102,46 @@ _list_installed_skills() {
   echo "=== Installed Skills ==="
 
   local skills_driver
+  local skills_canonical
+  local skills_legacy
+  local active_surface=""
+  local surface_label="project"
+
   skills_driver="$(driver_skills_dir)"
-  if [ -d "$skills_driver" ]; then
+  skills_canonical="$(canonical_skills_dir)"
+  skills_legacy="$(legacy_builtin_skills_dir)"
+
+  if dir_has_skill_files "$skills_driver"; then
+    active_surface="$skills_driver"
+  elif dir_has_skill_files "$skills_canonical"; then
+    active_surface="$skills_canonical"
+    surface_label="canonical"
+  elif dir_has_skill_files "$skills_legacy"; then
+    active_surface="$skills_legacy"
+    surface_label="legacy"
+  fi
+
+  if [ -n "$active_surface" ]; then
     local count=0
     while IFS= read -r skill_file; do
       local skill_name
       skill_name=$(basename "$(dirname "$skill_file")")
-      printf "  %-30s %s\n" "$skill_name" "(project: ${skills_driver}/)"
+      printf "  %-30s %s\n" "$skill_name" "(${surface_label}: ${active_surface}/)"
       count=$((count + 1))
-    done < <(find "$skills_driver" -name 'SKILL.md' 2>/dev/null | sort)
-    echo "  Total: $count project skill(s)"
+    done < <(find "$active_surface" -name 'SKILL.md' 2>/dev/null | sort)
+    echo "  Total: $count ${surface_label} skill(s)"
   else
-    echo "  No project skills installed (${skills_driver}/ not found)"
+    echo "  No project skills installed (${skills_driver}/ not found, canonical fallback empty)"
   fi
 
-  if [ -d "$(canonical_skills_dir)" ]; then
+  if [ -d "$skills_canonical" ] && [ "$active_surface" != "$skills_canonical" ]; then
     local builtin_count
-    builtin_count=$(find "$(canonical_skills_dir)" -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
-    echo "  Canonical: $builtin_count skill(s) in $(canonical_skills_dir)/"
-  elif [ -d "$(legacy_builtin_skills_dir)" ]; then
+    builtin_count=$(find "$skills_canonical" -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
+    echo "  Canonical: $builtin_count skill(s) in ${skills_canonical}/"
+  elif [ -d "$skills_legacy" ] && [ "$active_surface" != "$skills_legacy" ]; then
     local builtin_count
-    builtin_count=$(find "$(legacy_builtin_skills_dir)" -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
-    echo "  Built-in: $builtin_count skill(s) in $(legacy_builtin_skills_dir)/"
+    builtin_count=$(find "$skills_legacy" -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
+    echo "  Built-in: $builtin_count skill(s) in ${skills_legacy}/"
   fi
 }
 
@@ -1121,28 +1149,46 @@ _list_installed_rules() {
   echo "=== Installed Rules ==="
 
   local rules_driver
+  local rules_canonical
+  local rules_legacy
+  local active_surface=""
+  local surface_label="project"
+
   rules_driver="$(driver_rules_dir)"
-  if [ -d "$rules_driver" ]; then
+  rules_canonical="$(canonical_rules_dir)"
+  rules_legacy="$(legacy_builtin_rules_dir)"
+
+  if dir_has_rule_files "$rules_driver"; then
+    active_surface="$rules_driver"
+  elif dir_has_rule_files "$rules_canonical"; then
+    active_surface="$rules_canonical"
+    surface_label="canonical"
+  elif dir_has_rule_files "$rules_legacy"; then
+    active_surface="$rules_legacy"
+    surface_label="legacy"
+  fi
+
+  if [ -n "$active_surface" ]; then
     local count=0
     while IFS= read -r rule_file; do
       local rule_name
       rule_name=$(basename "$rule_file" .md)
-      printf "  %-30s %s\n" "$rule_name" "(project: ${rules_driver}/)"
+      printf "  %-30s %s\n" "$rule_name" "(${surface_label}: ${active_surface}/)"
       count=$((count + 1))
-    done < <(find "$rules_driver" -name '*.md' 2>/dev/null | sort)
-    echo "  Total: $count project rule(s)"
+    done < <(find "$active_surface" -name '*.md' 2>/dev/null | sort)
+    echo "  Total: $count ${surface_label} rule(s)"
   else
-    echo "  No project rules installed (${rules_driver}/ not found)"
+    echo "  No project rules installed (${rules_driver}/ not found, canonical fallback empty)"
   fi
 
-  if [ -d "$(canonical_rules_dir)" ]; then
+  if [ -d "$rules_canonical" ] && [ "$active_surface" != "$rules_canonical" ]; then
     local builtin_count
-    builtin_count=$(find "$(canonical_rules_dir)" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
-    echo "  Canonical: $builtin_count rule(s) in $(canonical_rules_dir)/"
-  elif [ -d "$(legacy_builtin_rules_dir)" ]; then
+    builtin_count=$(find "$rules_canonical" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+    echo "  Canonical: $builtin_count rule(s) in ${rules_canonical}/"
+  elif [ -d "$rules_legacy" ] && [ "$active_surface" != "$rules_legacy" ]; then
     local builtin_count
-    builtin_count=$(find "$(legacy_builtin_rules_dir)" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
-    echo "  Built-in: $builtin_count rule(s) in $(legacy_builtin_rules_dir)/"
+    builtin_count=$(find "$rules_legacy" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+    echo "  Built-in: $builtin_count rule(s) in ${rules_legacy}/"
   elif [ -d "rules" ]; then
     local builtin_count
     builtin_count=$(find rules -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
