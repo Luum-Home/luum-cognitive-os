@@ -10,6 +10,7 @@ Validates three component types:
 from __future__ import annotations
 
 import re
+import os
 from pathlib import Path
 from typing import Any
 
@@ -22,6 +23,7 @@ class WiringValidator:
         self._security_content: str | None = None
         self._efficiency_content: str | None = None
         self._settings_content: str | None = None
+        self._settings_path: Path | None = None
         self._compact_content: str | None = None
         self._excluded_rules: set[str] | None = None
 
@@ -41,14 +43,43 @@ class WiringValidator:
 
     def _settings(self) -> str:
         if self._settings_content is None:
-            for name in ("settings.local.json", "settings.json"):
-                p = self.root / ".claude" / name
+            self._settings_path = None
+            for p in self._settings_candidates():
                 if p.exists():
+                    self._settings_path = p
                     self._settings_content = p.read_text()
                     break
-            else:
+            if self._settings_content is None:
                 self._settings_content = ""
         return self._settings_content
+
+    def _settings_candidates(self) -> tuple[Path, ...]:
+        """Return settings driver candidates in the current harness order."""
+        claude_local = self.root / ".claude" / "settings.local.json"
+        claude = self.root / ".claude" / "settings.json"
+        codex = self.root / ".codex" / "hooks.json"
+
+        explicit = os.environ.get("COGNITIVE_OS_HARNESS", "").strip().lower()
+        if explicit == "codex":
+            return (codex, claude_local, claude)
+        if explicit == "claude":
+            return (claude_local, claude, codex)
+
+        codex_hints = any(
+            os.environ.get(name, "")
+            for name in ("CODEX_PROJECT_DIR", "CODEX_SESSION_ID", "CODEX_HOME")
+        )
+        if codex_hints:
+            return (codex, claude_local, claude)
+
+        return (claude_local, claude, codex)
+
+    def _settings_label(self) -> str:
+        """Return a human-readable label for the active settings driver."""
+        self._settings()
+        if self._settings_path is None:
+            return "current settings driver"
+        return self._settings_path.relative_to(self.root).as_posix()
 
     def _compact(self) -> str:
         if self._compact_content is None:
@@ -99,8 +130,8 @@ class WiringValidator:
             issues.append("not registered in scripts/apply-efficiency-profile.sh")
             fixes.append(f"Add '{name}' to apply-efficiency-profile.sh (standard + full)")
         if not in_settings:
-            issues.append("not active in current .claude/settings.json")
-            fixes.append("Re-run: bash scripts/set-security-profile.sh standard")
+            issues.append(f"not active in current {self._settings_label()}")
+            fixes.append("Re-run the appropriate harness settings generation flow for the active driver")
 
         return {
             "name": name,
@@ -108,6 +139,7 @@ class WiringValidator:
             "in_security_profile": in_security,
             "in_efficiency_profile": in_efficiency,
             "in_settings_json": in_settings,
+            "settings_driver": self._settings_label(),
             "wiring_score": score,
             "issues": issues,
             "fix_commands": fixes,

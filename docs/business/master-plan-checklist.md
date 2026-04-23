@@ -47,6 +47,7 @@
 - [x] Default CI covers key behavior tests.
 - [x] Default CI includes documentation integrity checks.
 - [x] Release-plumbing checks can reason about canonical-first skill surfaces without changing install destinations.
+- [x] Audit and wiring validation can read the active settings driver instead of assuming `.claude/settings.json` is the only runtime surface.
 - [ ] Broken product-facing links fail visibly in automation.
 - [ ] Product claims in README and pitch map to explicit verification paths.
 

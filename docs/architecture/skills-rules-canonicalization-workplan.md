@@ -79,10 +79,10 @@ Purpose: update the wider ecosystem around the new contract.
 
 ### Deliverables
 
-- [ ] `cos-status` understands canonical-first artifact layout
-- [ ] health checks understand canonical-first artifact layout
+- [x] `cos-status` understands canonical-first artifact layout
+- [x] health checks understand canonical-first artifact layout
 - [x] release checks understand canonical-first artifact layout
-- [ ] audit and wiring tools stop assuming `.claude/...` is the only source
+- [x] audit and wiring tools stop assuming `.claude/...` is the only source
 
 ## Phase 5 — Demote `.claude/` From Center to Driver
 
@@ -103,9 +103,9 @@ At the end of each session:
 2. Update any contract docs that changed.
 3. Record what is now safe to do next and what remains dangerous.
 
-Current safe next step: extend canonical-first reasoning to the remaining
-health and audit checks that still assume `.claude/...` is the only runtime
-surface.
+Current safe next step: begin Phase 3 with additive dual-read/dual-write in the
+installer and projection paths, now that the main status, release, health,
+audit, and wiring surfaces can reason about canonical-first artifacts.
 
 Still dangerous: changing install destinations or removing `.claude/...`
 projection paths before dual-write lands.

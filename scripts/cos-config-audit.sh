@@ -74,25 +74,84 @@ def _grep(pattern: str, *rel_dirs, include_glob: str = "*.sh") -> list[str]:
 
 
 def _settings_commands() -> list[str]:
-    """Return all hook command strings from .claude/settings.json."""
-    settings_path = REPO_ROOT / ".claude" / "settings.json"
-    if not settings_path.exists():
+    """Return all hook command strings from the active settings driver."""
+    settings_path = _active_settings_driver_path(REPO_ROOT)
+    if settings_path is None:
         return []
-    try:
-        data = json.loads(settings_path.read_text())
-    except (json.JSONDecodeError, OSError):
+    data = _load_settings_driver(settings_path)
+    if data is None:
         return []
     cmds = []
-    hooks_block = data.get("hooks", {})
-    # settings.json format: {"hooks": {"EventName": [{"matcher": ..., "hooks": [...]}]}}
-    if isinstance(hooks_block, dict):
-        for _event, entries in hooks_block.items():
-            for entry in (entries or []):
-                if isinstance(entry, dict):
-                    for h in entry.get("hooks", []):
-                        if isinstance(h, dict) and "command" in h:
-                            cmds.append(h["command"])
+    for _event, entries in _iter_settings_hook_groups(data):
+        for entry in (entries or []):
+            if isinstance(entry, dict):
+                for h in entry.get("hooks", []):
+                    if isinstance(h, dict) and "command" in h:
+                        cmds.append(h["command"])
     return cmds
+
+
+def _script_mentions(root: Path, rel_path: str, needle: str) -> bool:
+    """Return True when the given repo script mentions ``needle``."""
+    path = root / rel_path
+    if not path.exists():
+        return False
+    try:
+        return needle in path.read_text()
+    except OSError:
+        return False
+
+
+def _settings_driver_candidates(root: Path) -> list[Path]:
+    """Return settings-driver candidates in resolution order."""
+    claude_local = root / ".claude" / "settings.local.json"
+    claude = root / ".claude" / "settings.json"
+    codex = root / ".codex" / "hooks.json"
+
+    explicit = os.environ.get("COGNITIVE_OS_HARNESS", "").strip().lower()
+    if explicit == "codex":
+        return [codex, claude_local, claude]
+    if explicit == "claude":
+        return [claude_local, claude, codex]
+
+    codex_hints = any(
+        os.environ.get(name, "")
+        for name in ("CODEX_PROJECT_DIR", "CODEX_SESSION_ID", "CODEX_HOME")
+    )
+    if codex_hints:
+        return [codex, claude_local, claude]
+
+    return [claude_local, claude, codex]
+
+
+def _active_settings_driver_path(root: Path) -> Path | None:
+    """Return the first existing settings-driver path for the current harness."""
+    for candidate in _settings_driver_candidates(root):
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def _load_settings_driver(path: Path) -> dict | None:
+    """Load a settings driver JSON file, returning None on parse errors."""
+    try:
+        return json.loads(path.read_text())
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
+def _iter_settings_hook_groups(data: dict) -> list[tuple[str, list]]:
+    """Yield event/group pairs across Claude and Codex settings formats."""
+    hooks_block = data.get("hooks")
+    if isinstance(hooks_block, dict):
+        return list(hooks_block.items())
+
+    # Codex hooks.json stores events at the top level.
+    return [
+        (event, entries)
+        for event, entries in data.items()
+        if isinstance(entries, list)
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -170,18 +229,20 @@ def _check_reaper(root: Path):
     hook_ok = _exists("hooks/reaper-daemon-launcher.sh")
     if not script_ok and not hook_ok:
         return ("ASPIR", "neither scripts/so-reaper.sh nor hooks/reaper-daemon-launcher.sh exists")
-    # Check settings.json registration
     cmds = _settings_commands()
-    registered = any("reaper-daemon-launcher" in c for c in cmds)
+    active_registered = any("reaper-daemon-launcher" in c for c in cmds)
+    profile_registered = _script_mentions(root, "scripts/set-security-profile.sh", "reaper-daemon-launcher.sh")
     parts = []
     if script_ok:
         parts.append("scripts/so-reaper.sh")
     if hook_ok:
         parts.append("hooks/reaper-daemon-launcher.sh")
-    if registered:
-        return ("IMPL", f"{', '.join(parts)} present and reaper-daemon-launcher registered in settings.json")
+    if active_registered:
+        return ("IMPL", f"{', '.join(parts)} present and reaper-daemon-launcher active in current settings driver")
+    if hook_ok and profile_registered:
+        return ("IMPL", f"{', '.join(parts)} present and reaper-daemon-launcher is wired through security-profile generation")
     if hook_ok:
-        return ("PARTIAL", f"{', '.join(parts)} exist but reaper-daemon-launcher NOT found in settings.json")
+        return ("PARTIAL", f"{', '.join(parts)} exist but reaper-daemon-launcher is not active in the current settings driver")
     return ("PARTIAL", f"scripts/so-reaper.sh exists but hooks/reaper-daemon-launcher.sh absent")
 
 
@@ -227,12 +288,14 @@ def _check_resources_budget(root: Path):
     monitor_ok = _exists("hooks/token-budget-monitor.sh")
     lib_ok = _exists("lib/budget_calculator.py")
     if monitor_ok and lib_ok:
-        # Confirm monitor is registered in settings.json
         cmds = _settings_commands()
-        registered = any("token-budget-monitor" in c for c in cmds)
-        if registered:
-            return ("IMPL", "hooks/token-budget-monitor.sh + lib/budget_calculator.py present; hook registered in settings.json")
-        return ("PARTIAL", "hook + lib exist but token-budget-monitor NOT registered in settings.json")
+        active_registered = any("token-budget-monitor" in c for c in cmds)
+        profile_registered = _script_mentions(root, "scripts/set-security-profile.sh", "token-budget-monitor.sh")
+        if active_registered:
+            return ("IMPL", "hooks/token-budget-monitor.sh + lib/budget_calculator.py present; hook active in current settings driver")
+        if profile_registered:
+            return ("IMPL", "hooks/token-budget-monitor.sh + lib/budget_calculator.py present; hook wired through security-profile generation")
+        return ("PARTIAL", "hook + lib exist but token-budget-monitor is not wired through profiles or the active settings driver")
     if monitor_ok or lib_ok:
         which = "hooks/token-budget-monitor.sh" if monitor_ok else "lib/budget_calculator.py"
         return ("PARTIAL", f"only {which} found; both expected for full implementation")
@@ -506,10 +569,13 @@ def _check_orchestration(root: Path):
     if not inject_ok:
         return ("ASPIR", "hooks/agent-working-dir-inject.sh missing")
     cmds = _settings_commands()
-    registered = any("agent-working-dir-inject" in c for c in cmds)
-    if registered:
-        return ("IMPL", "hooks/agent-working-dir-inject.sh exists and registered in settings.json")
-    return ("PARTIAL", "hooks/agent-working-dir-inject.sh exists but NOT registered in settings.json")
+    active_registered = any("agent-working-dir-inject" in c for c in cmds)
+    profile_registered = _script_mentions(root, "scripts/apply-efficiency-profile.sh", "agent-working-dir-inject.sh")
+    if active_registered:
+        return ("IMPL", "hooks/agent-working-dir-inject.sh exists and is active in the current settings driver")
+    if profile_registered:
+        return ("IMPL", "hooks/agent-working-dir-inject.sh exists and is wired through efficiency-profile generation")
+    return ("PARTIAL", "hooks/agent-working-dir-inject.sh exists but is not wired through profiles or the active settings driver")
 
 
 def _check_docs_convention_enforcement(root: Path):
