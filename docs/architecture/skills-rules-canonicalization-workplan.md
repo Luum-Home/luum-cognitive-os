@@ -103,9 +103,9 @@ At the end of each session:
 2. Update any contract docs that changed.
 3. Record what is now safe to do next and what remains dangerous.
 
-Current safe next step: add more canonical-only characterization coverage around
-install, audit, and runtime consumers so the canonical artifact contract is
-provably sufficient before any path demotion begins.
+Current safe next step: keep expanding canonical-only characterization coverage
+around install, audit, and runtime consumers so the canonical artifact contract
+is provably sufficient before any path demotion begins.
 
 Still dangerous: changing install destinations or removing `.claude/...`
 projection paths before dual-write lands.
