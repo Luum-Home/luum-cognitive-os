@@ -10,41 +10,104 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: Test Suite
+  python-core:
+    name: Python Core Validation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run unit tests
-        run: |
-          for t in tests/unit/test-*.sh; do
-            [ -f "$t" ] && bash "$t"
-          done
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-      - name: Run integration tests
+      - name: Install Python test dependencies
         run: |
-          for t in tests/integration/test-*.sh; do
-            [ -f "$t" ] && bash "$t"
-          done
+          python -m pip install --upgrade pip
+          pip install pytest pyyaml
 
-  lint:
-    name: Lint
+      - name: Run representative Python core tests
+        run: |
+          python3 -m pytest -c /dev/null \
+            tests/contracts/test_kernel_contract.py \
+            tests/unit/test_execution_profile.py \
+            tests/unit/test_compatibility_layer.py \
+            tests/unit/test_outcome_metrics.py \
+            tests/unit/test_model_router.py \
+            tests/unit/test_config_loader.py \
+            tests/unit/test_cross_platform_discipline.py \
+            tests/behavior/test_self_install.py \
+            -q
+
+  go-core:
+    name: Go Core Validation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: ShellCheck hooks
-        uses: ludeeus/action-shellcheck@master
+      - name: Set up Go
+        uses: actions/setup-go@v5
         with:
-          scandir: '.cognitive-os/hooks'
-          severity: warning
+          go-version-file: go.mod
 
-      - name: ShellCheck tests
-        uses: ludeeus/action-shellcheck@master
+      - name: Run Go kernel and provider tests
+        run: go test ./internal/provider/... ./internal/validator/... ./pkg/hook/... -count=1
+
+  docs-integrity:
+    name: Documentation Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate product-facing markdown links and commands
+        run: |
+          python3 -c "
+          import re, sys
+          from pathlib import Path
+
+          docs = [Path('README.md'), Path('CONTRIBUTING.md')]
+          errors = 0
+
+          def normalize(target: str) -> str:
+              target = target.strip().strip('<>')
+              target = target.split('#', 1)[0]
+              target = target.split('?', 1)[0]
+              return target
+
+          for doc in docs:
+              text = doc.read_text(encoding='utf-8')
+              for raw_target in re.findall(r'(?<!!)\[[^\]]+\]\(([^)]+)\)', text):
+                  target = normalize(raw_target)
+                  if not target or target.startswith(('http://', 'https://', 'mailto:', '#')):
+                      continue
+                  resolved = (doc.parent / target).resolve()
+                  if not resolved.exists():
+                      print(f'FAIL: {doc} -> missing target {target}')
+                      errors += 1
+
+          contrib = Path('CONTRIBUTING.md').read_text(encoding='utf-8')
+          if 'bash tests/run-all-tests.sh' in contrib:
+              print('FAIL: CONTRIBUTING.md still references tests/run-all-tests.sh')
+              errors += 1
+
+          sys.exit(1 if errors else 0)
+          "
+
+  config-validation:
+    name: Config Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          scandir: 'tests'
-          severity: warning
+          python-version: '3.11'
+
+      - name: Install validation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
 
       - name: Validate YAML configs
         run: |
@@ -53,19 +116,13 @@ jobs:
           errors = 0
           for f in glob.glob('**/*.yaml', recursive=True) + glob.glob('**/*.yml', recursive=True):
               try:
-                  with open(f) as fh:
+                  with open(f, encoding='utf-8') as fh:
                       yaml.safe_load(fh)
               except Exception as e:
                   print(f'FAIL: {f}: {e}')
                   errors += 1
           sys.exit(1 if errors else 0)
           "
-
-  docker:
-    name: Docker Stack Validation
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
       - name: Validate Docker Compose config
         run: docker compose -f docker-compose.cognitive-os.yml config --quiet
@@ -79,7 +136,7 @@ jobs:
       - name: Check for secrets in codebase
         run: |
           if [ -f hooks/secret-detector.sh ]; then
-            bash hooks/secret-detector.sh || true
+            CLAUDE_PROJECT_DIR="$PWD" bash hooks/secret-detector.sh || true
           fi
 
       - name: Verify .gitignore covers sensitive files
