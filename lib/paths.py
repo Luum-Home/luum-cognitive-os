@@ -1,5 +1,5 @@
 # SCOPE: both
-"""Canonical project-root resolver for the luum-agent-os kernel.
+"""Project and runtime path resolvers for the luum-agent-os kernel.
 
 Implements **Pattern A** — the dominant resolution strategy used at 10 sites
 across the codebase (as catalogued in the characterisation tests).
@@ -30,7 +30,27 @@ import os
 from pathlib import Path
 from typing import Optional
 
-__all__ = ["project_root"]
+__all__ = [
+    "project_root",
+    "runtime_project_root",
+    "runtime_project_root_or_cwd",
+    "runtime_session_id",
+    "canonical_skills_dir",
+    "canonical_rules_dir",
+    "claude_skills_projection_dir",
+    "claude_rules_projection_dir",
+    "skill_lookup_candidates",
+    "preferred_rules_dirs",
+]
+
+
+def _first_env(*names: str) -> str:
+    """Return the first non-empty environment value from ``names``."""
+    for name in names:
+        value = os.environ.get(name, "")
+        if value:
+            return value
+    return ""
 
 
 def project_root() -> Optional[Path]:
@@ -50,9 +70,130 @@ def project_root() -> Optional[Path]:
         Resolved project root, or ``None`` when both env vars are absent or
         empty (matches Pattern A's ``or ""`` falsy default at the 10 sites).
     """
-    raw: str = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get(
-        "COGNITIVE_OS_PROJECT_DIR", ""
+    raw = _first_env("CLAUDE_PROJECT_DIR", "COGNITIVE_OS_PROJECT_DIR")
+    if not raw:
+        return None
+    return Path(raw)
+
+
+def runtime_project_root() -> Optional[Path]:
+    """Return the canonical runtime project root for cross-harness execution.
+
+    This resolver is the forward-looking bootstrap/runtime contract used when
+    Cognitive OS needs to behave consistently across harnesses such as Codex
+    and Claude Code.
+
+    Precedence:
+
+    1. ``COGNITIVE_OS_PROJECT_DIR``
+    2. ``CODEX_PROJECT_DIR``
+    3. ``CLAUDE_PROJECT_DIR``
+    4. ``None``
+    """
+    raw = _first_env(
+        "COGNITIVE_OS_PROJECT_DIR",
+        "CODEX_PROJECT_DIR",
+        "CLAUDE_PROJECT_DIR",
     )
     if not raw:
         return None
     return Path(raw)
+
+
+def runtime_project_root_or_cwd() -> Path:
+    """Return the canonical runtime project root, defaulting to ``cwd``."""
+    return runtime_project_root() or Path.cwd()
+
+
+def runtime_session_id(default: str = "") -> str:
+    """Return the canonical runtime session id across supported harnesses."""
+    return _first_env(
+        "COGNITIVE_OS_SESSION_ID",
+        "CODEX_SESSION_ID",
+        "CLAUDE_SESSION_ID",
+    ) or default
+
+
+def _artifact_project_root(project_root: str | Path | None = None) -> Path:
+    """Resolve the project root for artifact path helpers.
+
+    Uses the explicit ``project_root`` when provided; otherwise falls back to
+    the canonical cross-harness runtime resolver and finally ``cwd``.
+    """
+    if project_root is not None:
+        return Path(project_root)
+    return runtime_project_root_or_cwd()
+
+
+def canonical_skills_dir(project_root: str | Path | None = None) -> Path:
+    """Return the canonical Cognitive OS skill directory.
+
+    This is the forward-looking source-of-truth location for portable skills.
+    Current harnesses may still require projection into their own driver paths.
+    """
+    root = _artifact_project_root(project_root)
+    return root / ".cognitive-os" / "skills" / "cos"
+
+
+def canonical_rules_dir(project_root: str | Path | None = None) -> Path:
+    """Return the canonical Cognitive OS rules directory."""
+    root = _artifact_project_root(project_root)
+    return root / ".cognitive-os" / "rules" / "cos"
+
+
+def claude_skills_projection_dir(project_root: str | Path | None = None) -> Path:
+    """Return the Claude projection directory for skill exposure."""
+    root = _artifact_project_root(project_root)
+    return root / ".claude" / "skills"
+
+
+def claude_rules_projection_dir(project_root: str | Path | None = None) -> Path:
+    """Return the Claude projection directory for rule exposure."""
+    root = _artifact_project_root(project_root)
+    return root / ".claude" / "rules" / "cos"
+
+
+def skill_lookup_candidates(skill_name: str, project_root: str | Path | None = None) -> tuple[Path, ...]:
+    """Return ordered candidate locations for a skill's ``SKILL.md``.
+
+    The order is intentionally conservative:
+
+    1. repo-local ``skills/{name}/SKILL.md``
+    2. package skill exports ``packages/*/skills/{name}/SKILL.md``
+    3. Claude driver projection ``.claude/skills/{name}/SKILL.md``
+    4. canonical OS skill path ``.cognitive-os/skills/cos/{name}/SKILL.md``
+
+    This preserves current override semantics while introducing a canonical
+    fallback for future migrations.
+    """
+    root = _artifact_project_root(project_root)
+    candidates: list[Path] = [root / "skills" / skill_name / "SKILL.md"]
+
+    packages_dir = root / "packages"
+    if packages_dir.is_dir():
+        for pkg in sorted(packages_dir.iterdir()):
+            if pkg.is_dir():
+                candidates.append(pkg / "skills" / skill_name / "SKILL.md")
+
+    candidates.append(claude_skills_projection_dir(root) / skill_name / "SKILL.md")
+    candidates.append(canonical_skills_dir(root) / skill_name / "SKILL.md")
+    return tuple(candidates)
+
+
+def preferred_rules_dirs(project_root: str | Path | None = None) -> tuple[Path, ...]:
+    """Return ordered rule directory candidates for context/rule consumers.
+
+    Order:
+
+    1. canonical projected rules in ``.cognitive-os/rules/cos``
+    2. Claude namespaced projection in ``.claude/rules/cos``
+    3. broader Claude rules directory ``.claude/rules``
+    4. repo-local source ``rules/``
+    """
+    root = _artifact_project_root(project_root)
+    return (
+        canonical_rules_dir(root),
+        claude_rules_projection_dir(root),
+        root / ".claude" / "rules",
+        root / "rules",
+    )

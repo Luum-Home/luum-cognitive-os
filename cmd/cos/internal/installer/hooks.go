@@ -25,9 +25,14 @@ type matcherGroup struct {
 	Hooks   []hookEntry `json:"hooks"`
 }
 
-// RegisterHooks adds hook exports to .claude/settings.json.
+// RegisterHooks adds hook exports to a settings file.
 // Deduplicates by command string. Creates the file if it doesn't exist.
 func RegisterHooks(settingsPath string, exports []manifest.Export, hookBasePath string) error {
+	return RegisterHooksWithDriver(settingsPath, exports, hookBasePath, settingsDriverForHarness("claude"))
+}
+
+// RegisterHooksWithDriver adds hook exports using a harness-specific settings driver.
+func RegisterHooksWithDriver(settingsPath string, exports []manifest.Export, hookBasePath string, driver SettingsDriver) error {
 	// Filter to hook exports only.
 	hookExports := filterHookExports(exports)
 	if len(hookExports) == 0 {
@@ -57,7 +62,7 @@ func RegisterHooks(settingsPath string, exports []manifest.Export, hookBasePath 
 			matcher = "Bash"
 		}
 
-		command := buildHookCommand(hookBasePath, exp)
+		command := buildHookCommandWithDriver(hookBasePath, exp, driver)
 
 		addHookToEvent(hooksMap, event, matcher, command)
 	}
@@ -65,8 +70,13 @@ func RegisterHooks(settingsPath string, exports []manifest.Export, hookBasePath 
 	return saveSettings(settingsPath, settings)
 }
 
-// UnregisterHooks removes hook entries from .claude/settings.json.
+// UnregisterHooks removes hook entries from a settings file.
 func UnregisterHooks(settingsPath string, exports []manifest.Export, hookBasePath string) error {
+	return UnregisterHooksWithDriver(settingsPath, exports, hookBasePath, settingsDriverForHarness("claude"))
+}
+
+// UnregisterHooksWithDriver removes hook entries using a harness-specific settings driver.
+func UnregisterHooksWithDriver(settingsPath string, exports []manifest.Export, hookBasePath string, driver SettingsDriver) error {
 	hookExports := filterHookExports(exports)
 	if len(hookExports) == 0 {
 		return nil
@@ -92,7 +102,7 @@ func UnregisterHooks(settingsPath string, exports []manifest.Export, hookBasePat
 			event = "PostToolUse"
 		}
 
-		command := buildHookCommand(hookBasePath, exp)
+		command := buildHookCommandWithDriver(hookBasePath, exp, driver)
 		removeHookFromEvent(hooksMap, event, command)
 	}
 
@@ -102,8 +112,13 @@ func UnregisterHooks(settingsPath string, exports []manifest.Export, hookBasePat
 // buildHookCommand creates the hook command string.
 // Example: bash "$CLAUDE_PROJECT_DIR/.cognitive-os/hooks/cos/safety-mesh/check.sh"
 func buildHookCommand(hookBasePath string, export manifest.Export) string {
+	return buildHookCommandWithDriver(hookBasePath, export, settingsDriverForHarness("claude"))
+}
+
+// buildHookCommandWithDriver creates the hook command string for a specific harness.
+func buildHookCommandWithDriver(hookBasePath string, export manifest.Export, driver SettingsDriver) string {
 	filename := filepath.Base(export.Source)
-	return fmt.Sprintf("bash \"$CLAUDE_PROJECT_DIR/%s/%s\"", hookBasePath, filename)
+	return fmt.Sprintf("bash \"%s/%s/%s\"", driver.ProjectExpr, hookBasePath, filename)
 }
 
 // filterHookExports returns only exports of type "hook".

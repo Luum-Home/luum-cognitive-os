@@ -19,14 +19,14 @@ COS_INIT = PROJECT_ROOT / "scripts" / "cos-init.sh"
 COS_SETTINGS = PROJECT_ROOT / ".claude" / "settings.json"
 
 
-def run_generator(mode="--standard", env_extra=None):
+def run_generator(mode="--standard", harness="claude", env_extra=None):
     """Run generate-project-settings.sh and return parsed JSON."""
     env = os.environ.copy()
     env["COS_SOURCE_DIR"] = str(PROJECT_ROOT)
     if env_extra:
         env.update(env_extra)
     result = subprocess.run(
-        ["bash", str(GENERATOR), mode],
+        ["bash", str(GENERATOR), mode, f"--harness={harness}"],
         capture_output=True, text=True, env=env,
     )
     assert result.returncode == 0, f"Generator failed: {result.stderr}"
@@ -74,6 +74,13 @@ class TestGenerateProjectSettings:
                     f"Hook uses COS source path: {cmd}"
                 )
 
+    def test_codex_projection_uses_codex_runtime_expression(self):
+        settings = run_generator("--full", harness="codex")
+        commands = extract_hook_commands(settings)
+        assert commands, "Expected hook commands for codex projection"
+        assert any("CODEX_PROJECT_DIR" in cmd for cmd in commands), commands
+        assert all("$CLAUDE_PROJECT_DIR/hooks/" not in cmd for cmd in commands), commands
+
     def test_self_install_excluded(self):
         """self-install.sh is self-hosting only — must not appear in project settings."""
         for mode in ["--minimal", "--standard", "--full"]:
@@ -90,11 +97,10 @@ class TestGenerateProjectSettings:
                 f"release-guard.sh found in {mode} mode"
             )
 
-    def test_minimal_mode_has_few_hooks(self):
-        settings = run_generator("--minimal")
-        filenames = extract_hook_filenames(settings)
-        assert len(filenames) <= 6, f"Minimal has too many hooks: {filenames}"
-        assert len(filenames) >= 2, f"Minimal has too few hooks: {filenames}"
+    def test_minimal_mode_is_remapped_to_default(self):
+        minimal = set(extract_hook_filenames(run_generator("--minimal")))
+        default = set(extract_hook_filenames(run_generator("--default")))
+        assert minimal == default, f"Legacy --minimal should match --default: {minimal ^ default}"
 
     def test_minimal_includes_session_init(self):
         filenames = extract_hook_filenames(run_generator("--minimal"))
@@ -114,10 +120,10 @@ class TestGenerateProjectSettings:
         full = set(extract_hook_filenames(run_generator("--full")))
         assert standard.issubset(full), f"Standard hooks not in full: {standard - full}"
 
-    def test_minimal_is_subset_of_standard(self):
+    def test_minimal_is_same_as_standard_legacy_alias(self):
         minimal = set(extract_hook_filenames(run_generator("--minimal")))
         standard = set(extract_hook_filenames(run_generator("--standard")))
-        assert minimal.issubset(standard), f"Minimal hooks not in standard: {minimal - standard}"
+        assert minimal == standard, f"Legacy aliases should resolve to the same curated tier: {minimal ^ standard}"
 
     def test_full_mode_has_all_source_hooks_except_self_hosting(self):
         """Full mode should include all hooks from source except self-hosting-only."""
@@ -134,17 +140,22 @@ class TestGenerateProjectSettings:
 class TestCosInitSettingsGeneration:
     """Tests that cos-init.sh generates correct settings.json in projects."""
 
-    def _run_cos_init(self, project_dir, mode="--standard"):
+    def _run_cos_init(self, project_dir, mode="--standard", harness=None):
         """Run cos-init.sh in a directory and return the generated settings."""
         env = os.environ.copy()
         env["COS_SOURCE_DIR"] = str(PROJECT_ROOT)
         # Isolate registry to prevent polluting ~/.cognitive-os/installations.json
         env["COS_REGISTRY_FILE"] = str(project_dir / ".cos-test-registry.json")
+        cmd = ["bash", str(COS_INIT), mode]
+        if harness:
+            cmd.append(f"--harness={harness}")
         result = subprocess.run(
-            ["bash", str(COS_INIT), mode],
+            cmd,
             capture_output=True, text=True, cwd=str(project_dir), env=env,
         )
         settings_path = project_dir / ".claude" / "settings.json"
+        if harness == "codex":
+            settings_path = project_dir / ".codex" / "hooks.json"
         if settings_path.exists():
             return json.loads(settings_path.read_text()), result
         return None, result
@@ -213,6 +224,38 @@ class TestCosInitSettingsGeneration:
         # Verify it's re-parseable
         settings_path = tmp_path / ".claude" / "settings.json"
         json.loads(settings_path.read_text())
+
+    def test_codex_harness_writes_hooks_json(self, tmp_path):
+        settings, result = self._run_cos_init(tmp_path, "--standard", harness="codex")
+        assert settings is not None, f"No codex hooks generated: {result.stderr}"
+        hooks_path = tmp_path / ".codex" / "hooks.json"
+        assert hooks_path.exists(), "Expected .codex/hooks.json to be created"
+        commands = extract_hook_commands(settings)
+        assert any("CODEX_PROJECT_DIR" in cmd for cmd in commands), commands
+
+    def test_codex_harness_preserves_existing_codex_hooks(self, tmp_path):
+        codex_dir = tmp_path / ".codex"
+        codex_dir.mkdir()
+        custom_settings = {
+            "hooks": {
+                "Stop": [
+                    {
+                        "matcher": "shutdown",
+                        "hooks": [
+                            {
+                                "type": "command",
+                                "command": 'bash "${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.codex/hooks/custom-stop.sh"',
+                            }
+                        ],
+                    }
+                ]
+            }
+        }
+        (codex_dir / "hooks.json").write_text(json.dumps(custom_settings))
+
+        settings, _ = self._run_cos_init(tmp_path, "--standard", harness="codex")
+        commands = extract_hook_commands(settings)
+        assert any("custom-stop.sh" in cmd for cmd in commands), commands
 
 
 class TestSettingsNoLegacyPaths:
