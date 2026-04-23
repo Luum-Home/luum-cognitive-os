@@ -24,6 +24,7 @@ The system is modeled after Kubernetes-style declarative configuration: organiza
 - [Skills and Rules Canonicalization Workplan](architecture/skills-rules-canonicalization-workplan.md) — step-by-step migration plan and invariants for phases 1 through 5
 - [Durable Product Master Plan](business/durable-product-master-plan.md) — how to sharpen the wedge, reduce focus drift, and make the repo less aspirational
 - [Master Plan Execution Requirements](business/master-plan-execution-requirements.md) — what must become true in code, CI, onboarding, and product structure to make the master plan real
+- [Execution Discipline](business/execution-discipline.md) — operating rules for keeping the master plan real, avoiding duplicated logic, and preserving durable memory across sessions
 - [Master Plan Checklist](business/master-plan-checklist.md) — living checklist for tracking execution progress against the master plan
 - [Feature Reality Audit](business/feature-reality-audit.md) — which feature areas are genuinely core, portable, and product-worthy versus still overextended or harness-advantaged
 
