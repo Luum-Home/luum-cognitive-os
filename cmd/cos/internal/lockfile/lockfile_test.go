@@ -259,8 +259,10 @@ func TestSaveAndLoad_WithExports(t *testing.T) {
 		Version: "2.0.0",
 		License: "Apache-2.0",
 		Exports: []LockedExport{
+			{Source: "SKILL.md", Type: "skill", Target: ".cognitive-os/skills/cos/pkg/SKILL.md"},
 			{Source: "SKILL.md", Type: "skill", Target: ".claude/skills/pkg/SKILL.md"},
 			{Source: "hooks/check.sh", Type: "hook", Target: ".cognitive-os/hooks/cos/pkg/check.sh", HookEvent: "PostToolUse", HookMatcher: "Bash"},
+			{Source: "rules/safety.md", Type: "rule", Target: ".cognitive-os/rules/cos/pkg/safety.md"},
 			{Source: "rules/safety.md", Type: "rule", Target: ".claude/rules/cos/pkg/safety.md"},
 		},
 	})
@@ -279,12 +281,12 @@ func TestSaveAndLoad_WithExports(t *testing.T) {
 		t.Fatal("expected export-pkg to exist")
 	}
 
-	if len(pkg.Exports) != 3 {
-		t.Fatalf("expected 3 exports, got %d", len(pkg.Exports))
+	if len(pkg.Exports) != 5 {
+		t.Fatalf("expected 5 exports, got %d", len(pkg.Exports))
 	}
 
 	// Verify hook export roundtrips with event/matcher.
-	hookExport := pkg.Exports[1]
+	hookExport := pkg.Exports[2]
 	if hookExport.HookEvent != "PostToolUse" {
 		t.Errorf("expected HookEvent 'PostToolUse', got %q", hookExport.HookEvent)
 	}
