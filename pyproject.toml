@@ -117,7 +117,7 @@ paths = ["lib/"]
 
 [tool.mutmut]
 paths_to_mutate = ["lib/"]
-test_command = "python -m pytest tests/unit/test_rate_limiter.py -x -q --no-header -p no:timeout -c /dev/null"
+test_command = "python -m pytest tests/unit/test_rate_limiter.py -x -q --no-header -p no:timeout"
 
 [build-system]
 requires = ["hatchling"]
