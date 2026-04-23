@@ -496,7 +496,7 @@ scenario_rate_limiter_load() {
   for i in $(seq 1 "$N"); do
     # stdin payload: mock tool_name=Bash
     echo '{"tool_name":"Bash","tool_input":{"command":"echo canary"}}' \
-      | CLAUDE_PROJECT_DIR="$dir" bash "$hook_script" >/dev/null 2>"$tmpout"
+      | COGNITIVE_OS_PROJECT_DIR="$dir" bash "$hook_script" >/dev/null 2>"$tmpout"
     rc=$?
     case "$rc" in
       0) passed=$((passed + 1)) ;;

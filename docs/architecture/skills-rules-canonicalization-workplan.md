@@ -83,6 +83,8 @@ Claude.
   installation correctly.
 - `cos-update.sh` now invokes `self-install` through the canonical project env
   instead of relying on the Claude-specific project env.
+- `cos-release-check.sh` now invokes rate-limiter checks through the canonical
+  project env instead of relying on the Claude-specific project env.
 
 ## Phase 4 — Tooling and Validation Migration
 
