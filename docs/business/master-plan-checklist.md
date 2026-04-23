@@ -56,6 +56,7 @@
 - [ ] First-run installation is one-pass and low-friction.
 - [ ] Autodetection reduces required configuration for new users.
 - [x] Settings projection supports more than one harness target in bootstrap paths.
+- [x] CLI runtime reads canonical skill/rule artifacts when the Claude projection is absent.
 - [ ] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
 - [ ] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
