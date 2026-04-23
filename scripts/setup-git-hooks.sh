@@ -18,7 +18,53 @@
 set -euo pipefail
 
 COS_SOURCE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-source "$COS_SOURCE_DIR/hooks/_lib/portable.sh"
+PORTABLE_SH="$COS_SOURCE_DIR/hooks/_lib/portable.sh"
+if [ -f "$PORTABLE_SH" ]; then
+  source "$PORTABLE_SH"
+else
+  # Degrade gracefully in minimal test or fixture repos that copy only scripts/.
+  portable_sed_inplace() {
+    local expr="$1"
+    local file="$2"
+    if command -v python3 >/dev/null 2>&1; then
+      python3 - "$expr" "$file" <<'PYEOF'
+import os
+import re
+import sys
+
+expr = sys.argv[1]
+path = sys.argv[2]
+with open(path, "r", errors="replace") as fh:
+    lines = fh.readlines()
+
+result = []
+m = re.match(r'^/(.*)/,/(.*)/d$', expr)
+if m:
+    start_pat = re.compile(m.group(1))
+    end_pat = re.compile(m.group(2))
+    in_range = False
+    for line in lines:
+      if not in_range and start_pat.search(line):
+        in_range = True
+        continue
+      if in_range:
+        if end_pat.search(line):
+          in_range = False
+        continue
+      result.append(line)
+else:
+    result = lines
+
+tmp = path + ".portable.tmp"
+with open(tmp, "w", errors="replace") as fh:
+    fh.writelines(result)
+os.replace(tmp, path)
+PYEOF
+    else
+      sed -i.bak "$expr" "$file" && rm -f "${file}.bak"
+    fi
+  }
+fi
 
 # Resolve the active hooks directory.
 #
