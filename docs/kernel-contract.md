@@ -42,3 +42,12 @@ The machine-readable source of truth is:
 
 That manifest is backed by automated contract tests and manual verification
 guidance so the kernel boundary remains explicit, visible, and enforceable.
+
+The broader product taxonomy is intentionally separate:
+
+- [manifests/product-zones.yaml](../manifests/product-zones.yaml)
+- [docs/product-zones.md](product-zones.md)
+
+The kernel contract protects the smallest stable core. Product zones classify
+the rest of the repository so compatibility, extensions, and experimental work
+do not blur back into the kernel.
