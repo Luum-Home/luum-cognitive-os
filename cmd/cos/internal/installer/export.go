@@ -12,8 +12,8 @@ import (
 
 // ExportTarget maps an export to its destination path.
 type ExportTarget struct {
-	Export  manifest.Export
-	Source  string // absolute source path in fetched dir
+	Export manifest.Export
+	Source string // absolute source path in fetched dir
 	Target string // absolute target path in project
 }
 
@@ -54,7 +54,7 @@ func resolveTarget(exp manifest.Export, projectRoot, packageName string) (string
 		return resolveSkillTarget(exp.Source, projectRoot, packageName), nil
 	case "rule":
 		filename := filepath.Base(exp.Source)
-		return filepath.Join(projectRoot, ".claude", "rules", "cos", packageName, filename), nil
+		return filepath.Join(claudeRulesProjectionDir(projectRoot), packageName, filename), nil
 	case "hook":
 		filename := filepath.Base(exp.Source)
 		return filepath.Join(projectRoot, ".cognitive-os", "hooks", "cos", packageName, filename), nil
@@ -73,6 +73,7 @@ func resolveTarget(exp manifest.Export, projectRoot, packageName string) (string
 // If source is "skills/my-skill/SKILL.md", target is ".claude/skills/my-skill/SKILL.md".
 // If source is "SKILL.md" (root), target is ".claude/skills/{packageName}/SKILL.md".
 func resolveSkillTarget(source, projectRoot, packageName string) string {
+	skillsRoot := claudeSkillsProjectionDir(projectRoot)
 	// Normalize path separators.
 	normalized := filepath.ToSlash(source)
 
@@ -82,16 +83,16 @@ func resolveSkillTarget(source, projectRoot, packageName string) string {
 		// Preserve directory structure under skills/.
 		// e.g., skills/my-skill/SKILL.md -> .claude/skills/my-skill/SKILL.md
 		relPath := strings.Join(parts[1:], string(filepath.Separator))
-		return filepath.Join(projectRoot, ".claude", "skills", relPath)
+		return filepath.Join(skillsRoot, relPath)
 	}
 
 	// For skills/SKILL.md (two parts), use the skill directory name.
 	if len(parts) == 2 && parts[0] == "skills" {
-		return filepath.Join(projectRoot, ".claude", "skills", packageName, parts[1])
+		return filepath.Join(skillsRoot, packageName, parts[1])
 	}
 
 	// Root-level SKILL.md or other structure: use packageName as directory.
-	return filepath.Join(projectRoot, ".claude", "skills", packageName, filepath.Base(source))
+	return filepath.Join(skillsRoot, packageName, filepath.Base(source))
 }
 
 // Install copies all export targets to their destinations.
