@@ -61,3 +61,5 @@ The strongest current wedge is:
 - Prefer changing the core only when the benefit is stable and durable.
 - Convert important reasoning into docs, checklists, contracts, or tests.
 - When uncertain, make the product simpler rather than more total.
+- Prefer shared contracts and resolvers over re-implementing the same rule in multiple layers.
+- Treat repository artifacts as primary durable memory and use MCP memory only when it is actually available in the current session.
