@@ -648,9 +648,78 @@ func TestBuildHookCommand(t *testing.T) {
 	exp := manifest.Export{Source: "hooks/check.sh"}
 	cmd := buildHookCommand(".cognitive-os/hooks/cos/my-pkg", exp)
 
-	expected := `bash "$CLAUDE_PROJECT_DIR/.cognitive-os/hooks/cos/my-pkg/check.sh"`
+	expected := `bash "${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/my-pkg/check.sh"`
 	if cmd != expected {
 		t.Errorf("expected %q, got %q", expected, cmd)
+	}
+}
+
+func TestBuildHookCommandWithCodexDriver(t *testing.T) {
+	exp := manifest.Export{Source: "hooks/check.sh"}
+	driver := settingsDriverForHarness("codex")
+	cmd := buildHookCommandWithDriver(".cognitive-os/hooks/cos/my-pkg", exp, driver)
+
+	expected := `bash "${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/my-pkg/check.sh"`
+	if cmd != expected {
+		t.Errorf("expected %q, got %q", expected, cmd)
+	}
+}
+
+func TestResolveSettingsDriver_PrefersCodexEnv(t *testing.T) {
+	projectRoot := t.TempDir()
+	t.Setenv("COGNITIVE_OS_HARNESS", "")
+	t.Setenv("CODEX_HOME", "/tmp/codex-home")
+
+	driver := ResolveSettingsDriver(projectRoot)
+	if driver.Harness != "codex" {
+		t.Fatalf("expected codex driver, got %q", driver.Harness)
+	}
+	if driver.DisplayPath != ".codex/hooks.json" {
+		t.Fatalf("expected .codex/hooks.json, got %q", driver.DisplayPath)
+	}
+}
+
+func TestResolveSettingsDriver_PrefersExistingCodexFile(t *testing.T) {
+	projectRoot := t.TempDir()
+	t.Setenv("COGNITIVE_OS_HARNESS", "")
+	t.Setenv("CODEX_HOME", "")
+	if err := os.MkdirAll(filepath.Join(projectRoot, ".codex"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(projectRoot, ".codex", "hooks.json"), []byte("{}\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	driver := ResolveSettingsDriver(projectRoot)
+	if driver.Harness != "codex" {
+		t.Fatalf("expected codex driver, got %q", driver.Harness)
+	}
+}
+
+func TestRegisterHooksWithCodexDriver(t *testing.T) {
+	projectRoot := t.TempDir()
+	settingsPath := filepath.Join(projectRoot, ".codex", "hooks.json")
+	driver := settingsDriverForHarness("codex")
+
+	exports := []manifest.Export{
+		{Source: "hooks/check.sh", Type: "hook", HookEvent: "SessionStart", HookMatcher: "startup"},
+	}
+
+	if err := RegisterHooksWithDriver(settingsPath, exports, ".cognitive-os/hooks/cos/my-pkg", driver); err != nil {
+		t.Fatalf("RegisterHooksWithDriver error: %v", err)
+	}
+
+	data, err := os.ReadFile(settingsPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	content := string(data)
+	if !strings.Contains(content, "CODEX_PROJECT_DIR") {
+		t.Fatalf("expected codex driver command in output, got: %s", content)
+	}
+	if !strings.Contains(content, `.cognitive-os/hooks/cos/my-pkg/check.sh`) {
+		t.Fatalf("expected codex project expression in output, got: %s", content)
 	}
 }
 

@@ -20,6 +20,7 @@ PROFILE=""             # Resolved profile: default | full
 PROFILE_SOURCE=""      # flag | env | auto
 SKIP_MANIFEST_CHECK="${COGNITIVE_OS_SKIP_MANIFEST_CHECK:-false}"
 INSTALL_DEPS=false
+HARNESS="${COGNITIVE_OS_HARNESS:-}"
 # INSTALL_SCOPE controls which SCOPE-tagged files are copied.
 # Values: project (SCOPE:project + SCOPE:both), both (same as project),
 #         all (everything, including SCOPE:os-only — for COS self-hosting).
@@ -55,6 +56,7 @@ Options:
   --full                 Install everything (see above).
   --profile=NAME         Explicit profile: 'default' or 'full'. Legacy values
                          ('lean', 'standard') are accepted and remapped.
+  --harness=NAME         Settings projection target: 'claude' or 'codex'.
   --from PATH            Use a local Cognitive OS repo instead of cloning.
   --force                Overwrite existing installation without prompting.
   --skip-manifest-check  Skip the post-install dependency report.
@@ -72,6 +74,7 @@ Environment variables:
   COGNITIVE_OS_VERSION              Git branch/tag to install (default: main)
   COGNITIVE_OS_FORCE                Set to "true" to overwrite without prompting
   COGNITIVE_OS_SKIP_MANIFEST_CHECK  Set to "true" to skip the dependency report
+  COGNITIVE_OS_HARNESS              Settings projection target: 'claude' or 'codex'
   COS_PROFILE                       Override profile: 'default' or 'full'.
                                     Legacy values ('lean', 'standard') remapped.
   COS_INSTALL_SCOPE                 Override scope filter: project|both|all.
@@ -114,6 +117,20 @@ normalize_profile() {
       echo "Error: unknown profile '$raw' (from $context)." >&2
       echo "       Valid profiles (ADR-002): default, full." >&2
       echo "       Legacy (remapped to default): lean, standard." >&2
+      exit 1
+      ;;
+  esac
+}
+
+normalize_harness() {
+  local raw="$1"
+  case "$raw" in
+    claude|codex)
+      HARNESS="$raw"
+      ;;
+    *)
+      echo "Error: unsupported harness '$raw'." >&2
+      echo "       Valid harnesses: claude, codex." >&2
       exit 1
       ;;
   esac
@@ -196,12 +213,24 @@ while [[ $# -gt 0 ]]; do
       PROFILE_SOURCE="flag"
       shift 2
       ;;
+    --harness=*)
+      normalize_harness "${1#--harness=}"
+      shift
+      ;;
+    --harness)
+      if [[ -z "${2:-}" ]]; then
+        echo "Error: --harness requires a name argument." >&2
+        exit 1
+      fi
+      normalize_harness "$2"
+      shift 2
+      ;;
     --help|-h)
       show_help
       ;;
     *)
       echo "Unknown option: $1" >&2
-      echo "Valid: --full, --profile=NAME, --from PATH, --force, --skip-manifest-check, --install-deps, --help" >&2
+      echo "Valid: --full, --profile=NAME, --harness=NAME, --from PATH, --force, --skip-manifest-check, --install-deps, --help" >&2
       echo "Legacy (remapped): --lean, --standard" >&2
       echo "Run 'install.sh --help' for full usage." >&2
       exit 1
@@ -391,7 +420,7 @@ COS_INIT_FLAG="--$PROFILE"
 # so auto-update-projects.sh can find projects installed from this repo.
 # COS_INSTALL_SCOPE propagates the --scope flag so cos-init.sh can filter
 # SCOPE-tagged files during copy.
-COS_SOURCE_DIR="$TEMP_DIR" COS_ORIGINAL_SOURCE="${SOURCE_DIR:-}" COS_INSTALL_SCOPE="$INSTALL_SCOPE" bash "$COS_INIT" "$COS_INIT_FLAG"
+COS_SOURCE_DIR="$TEMP_DIR" COS_ORIGINAL_SOURCE="${SOURCE_DIR:-}" COS_INSTALL_SCOPE="$INSTALL_SCOPE" COGNITIVE_OS_HARNESS="$HARNESS" bash "$COS_INIT" "$COS_INIT_FLAG"
 
 # ── Install CLAUDE.md template if not present ─────────────────────────
 if [ ! -f ".claude/CLAUDE.md" ]; then
@@ -419,6 +448,9 @@ echo ""
 echo "Cognitive OS installed successfully."
 echo ""
 echo "Profile:        $PROFILE"
+if [ -n "$HARNESS" ]; then
+  echo "Harness:        $HARNESS"
+fi
 echo "Skills exposed: $skills_exposed (under .claude/skills/)"
 echo ""
 echo "Project structure:"

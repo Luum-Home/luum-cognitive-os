@@ -13,18 +13,19 @@ import (
 
 // InstallResult holds the outcome of the installation.
 type InstallResult struct {
-	SettingsCreated   bool
-	RulesInstalled    int
-	HooksRegistered   int
-	ConfigCreated     bool
-	CosInitRun        bool
-	Errors            []string
+	SettingsCreated bool
+	RulesInstalled  int
+	HooksRegistered int
+	ConfigCreated   bool
+	CosInitRun      bool
+	Errors          []string
 }
 
 // RunInstall executes the installation based on the wizard configuration.
 // It delegates to cos-init.sh and set-security-profile.sh when available.
 func RunInstall(cfg SetupConfig, projectDir, cosSourceDir string) InstallResult {
 	result := InstallResult{}
+	settingsRelPath, settingsLabel := resolveWizardSettingsProjection(projectDir)
 
 	successStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("46"))
 	check := successStyle.Render("+")
@@ -42,6 +43,7 @@ func RunInstall(cfg SetupConfig, projectDir, cosSourceDir string) InstallResult 
 				filepath.Join(projectDir, ".claude"),
 				filepath.Join(projectDir, ".claude", "rules"),
 				filepath.Join(projectDir, ".claude", "settings"),
+				filepath.Join(projectDir, filepath.Dir(settingsRelPath)),
 			}
 			for _, d := range dirs {
 				if mkErr := os.MkdirAll(d, 0755); mkErr != nil {
@@ -143,21 +145,21 @@ func RunInstall(cfg SetupConfig, projectDir, cosSourceDir string) InstallResult 
 		}
 	}
 
-	// Step 5: Write .claude/settings.json if it does not exist.
-	settingsPath := filepath.Join(projectDir, ".claude", "settings.json")
+	// Step 5: Write the active harness settings file if it does not exist.
+	settingsPath := filepath.Join(projectDir, settingsRelPath)
 	if _, err := os.Stat(settingsPath); os.IsNotExist(err) {
 		writeErr := writeSettingsJSON(settingsPath, cfg)
 		if writeErr != nil {
 			result.Errors = append(result.Errors, fmt.Sprintf("settings.json: %v", writeErr))
 		} else {
 			result.SettingsCreated = true
-			fmt.Printf("  %s Created .claude/settings.json\n", check)
+			fmt.Printf("  %s Created %s\n", check, settingsLabel)
 		}
 	}
 
 	// Count what was installed.
 	result.RulesInstalled = countInstalledRules(projectDir)
-	result.HooksRegistered = countRegisteredHooks(projectDir)
+	result.HooksRegistered = countRegisteredHooks(projectDir, settingsRelPath)
 
 	if result.RulesInstalled > 0 {
 		fmt.Printf("  %s Installed %d rules\n", check, result.RulesInstalled)
@@ -217,7 +219,25 @@ resources:
 	return os.WriteFile(path, []byte(content), 0644)
 }
 
-// writeSettingsJSON creates a minimal .claude/settings.json.
+func resolveWizardSettingsProjection(projectDir string) (string, string) {
+	if explicit := os.Getenv("COGNITIVE_OS_HARNESS"); explicit == "codex" {
+		return filepath.Join(".codex", "hooks.json"), ".codex/hooks.json"
+	}
+	if explicit := os.Getenv("COGNITIVE_OS_HARNESS"); explicit == "claude" {
+		return filepath.Join(".claude", "settings.json"), ".claude/settings.json"
+	}
+	if _, err := os.Stat(filepath.Join(projectDir, ".codex", "hooks.json")); err == nil {
+		if _, claudeErr := os.Stat(filepath.Join(projectDir, ".claude", "settings.json")); os.IsNotExist(claudeErr) {
+			return filepath.Join(".codex", "hooks.json"), ".codex/hooks.json"
+		}
+	}
+	if os.Getenv("CODEX_PROJECT_DIR") != "" || os.Getenv("CODEX_SESSION_ID") != "" || os.Getenv("CODEX_HOME") != "" {
+		return filepath.Join(".codex", "hooks.json"), ".codex/hooks.json"
+	}
+	return filepath.Join(".claude", "settings.json"), ".claude/settings.json"
+}
+
+// writeSettingsJSON creates a minimal harness settings file.
 func writeSettingsJSON(path string, cfg SetupConfig) error {
 	content := `{
   "permissions": {
@@ -249,20 +269,20 @@ func countInstalledRules(dir string) int {
 // This must stay in sync with CORE_RULES in hooks/self-install.sh and
 // COS_INIT_CORE_RULES in scripts/cos-init.sh.
 var coreRules = map[string]bool{
-	"RULES-COMPACT.md":       true,
-	"adaptive-bypass.md":     true,
-	"acceptance-criteria.md": true,
-	"agent-quality.md":       true,
-	"trust-score.md":         true,
-	"definition-of-done.md":  true,
-	"phase-aware-agents.md":  true,
-	"closed-loop-prompts.md": true,
-	"token-economy.md":       true,
-	"responsiveness.md":      true,
-	"agent-security.md":      true,
+	"RULES-COMPACT.md":         true,
+	"adaptive-bypass.md":       true,
+	"acceptance-criteria.md":   true,
+	"agent-quality.md":         true,
+	"trust-score.md":           true,
+	"definition-of-done.md":    true,
+	"phase-aware-agents.md":    true,
+	"closed-loop-prompts.md":   true,
+	"token-economy.md":         true,
+	"responsiveness.md":        true,
+	"agent-security.md":        true,
 	"credential-management.md": true,
-	"content-policy.md":      true,
-	"error-learning.md":      true,
+	"content-policy.md":        true,
+	"error-learning.md":        true,
 }
 
 // applyProfileFilter removes rules from .claude/rules/cos/ that do not
@@ -301,20 +321,24 @@ func applyProfileFilter(projectDir string, profile string) error {
 				os.Remove(filepath.Join(cosRulesDir, e.Name()))
 			}
 		}
-	// "paranoid" and "full" keep everything — no filtering needed.
+		// "paranoid" and "full" keep everything — no filtering needed.
 	}
 
 	return nil
 }
 
-// countRegisteredHooks parses .claude/settings.json for hook entries.
+// countRegisteredHooks parses the active settings driver for hook entries.
 // This is a rough count — it looks for "command" keys in the hooks section.
-func countRegisteredHooks(dir string) int {
-	content, err := os.ReadFile(filepath.Join(dir, ".claude", "settings.json"))
+func countRegisteredHooks(dir string, settingsRelPath string) int {
+	content, err := os.ReadFile(filepath.Join(dir, settingsRelPath))
 	if err != nil {
-		// Also try settings.local.json.
-		content, err = os.ReadFile(filepath.Join(dir, ".claude", "settings.local.json"))
-		if err != nil {
+		if settingsRelPath == filepath.Join(".claude", "settings.json") {
+			// Also try settings.local.json for the Claude driver.
+			content, err = os.ReadFile(filepath.Join(dir, ".claude", "settings.local.json"))
+			if err != nil {
+				return 0
+			}
+		} else {
 			return 0
 		}
 	}

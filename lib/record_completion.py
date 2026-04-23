@@ -38,6 +38,7 @@ except Exception:
 
 from lib.learning_pipeline import LearningPipeline
 from lib.metric_event import MetricEvent, append_event
+from lib.paths import runtime_project_root_or_cwd, runtime_session_id
 
 
 def extract_skill_name(data: dict) -> str:
@@ -412,8 +413,8 @@ def main():
     model = detect_model(data)
 
     # Attempt to read real token usage from Claude Code session JSONL
-    project_dir = os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd())
-    session_id = os.environ.get("CLAUDE_SESSION_ID") or data.get("session_id")
+    project_dir = str(runtime_project_root_or_cwd())
+    session_id = runtime_session_id() or data.get("session_id")
     session_jsonl = find_session_jsonl(project_dir, session_id)
     real_usage: Optional[dict] = None
     if session_jsonl and task_id and task_id != "unknown":
