@@ -1,12 +1,14 @@
-# Cognitive OS — Architecture Vision
+# Cognitive OS Documentation
 
-> Blueprint for an open-source Cognitive Operating System providing 13 infrastructure layers for AI agents, from development to production deployment.
+> Documentation for the operating layer that makes coding agents more governable, verifiable, and portable in real repositories.
 
 ## Overview
 
-Cognitive OS is a layered infrastructure that enables organizations to deploy, manage, and govern teams of AI agents. It extends the dev-time agent ecosystem (Engram, SDD, Skills, Hooks) into a full production-grade operating system for autonomous software engineering squads.
+Cognitive OS is product-first infrastructure for real development teams. The adoption path is intentionally small: install the core, project settings through a supported harness driver, verify the active hooks and rules, then grow into optional extensions only when they prove value.
 
-The system is modeled after Kubernetes-style declarative configuration: organizations, squads, and agents are defined as YAML specs and reconciled by control loops.
+The durable product promise is: make coding agents governable, verifiable, and portable without requiring every team to become expert in agent infrastructure.
+
+The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
 
@@ -15,6 +17,8 @@ The system is modeled after Kubernetes-style declarative configuration: organiza
 - [Product Principles](product-principles.md) — product-level constraints and value focus
 - [Product Zones](product-zones.md) — core, compatibility, extensions, and experimental taxonomy for keeping the product focused
 - [Product Messaging](business/product-messaging.md) — how to present Cognitive OS as easy to adopt without making it feel simplistic
+- [Five-Minute Demo](manual-tests/five-minute-demo.md) — a short manual path for proving install, harness projection, quality checks, and status visibility
+- [Product Proof Paths](manual-tests/proof-paths.md) — product claims mapped to files, commands, tests, and manual checks
 - [Model Evolution Resilience](model-evolution-resilience.md) — how to keep the system durable as models, vendors, and tools change
 - [Kernel Contract](kernel-contract.md) — minimal inviolable core and where the machine-readable boundary lives
 - [Bootstrap Portability](architecture/bootstrap-portability.md) — where the system is still Claude-first and how to make Codex and other harnesses first-class bootstrap hosts
@@ -32,7 +36,20 @@ The system is modeled after Kubernetes-style declarative configuration: organiza
 - [Feature Reality Audit](business/feature-reality-audit.md) — which feature areas are genuinely core, portable, and product-worthy versus still overextended or harness-advantaged
 - [Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) — validation snapshot and remaining work before merging the master-plan portability branch
 
-## Architecture Layers
+## Current Product Center
+
+The product center is deliberately smaller than the whole repository:
+
+- `core`: canonical hooks, context, policy, package contracts, capability profiles, and outcome metrics.
+- `compatibility`: provider, harness, IDE, gateway, and tool-schema adapters that absorb ecosystem churn.
+- `extensions`: skills, rules, packages, MCP helpers, dashboards, and workflows that add value without defining the kernel.
+- `experimental`: squads, organization specs, future control-plane designs, and high-variance systems that should not dominate the README.
+
+See [Product Zones](product-zones.md) and [manifests/product-zones.yaml](../manifests/product-zones.yaml) for the enforceable taxonomy.
+
+## Future Architecture Layers
+
+The following model describes the long-range architecture. Treat it as future architecture unless a layer has a linked proof path, test, or operator workflow.
 
 ```
 ┌─────────────────────────────────────────┐
@@ -81,9 +98,9 @@ Each layer builds on the ones below it. The bottom layers (Tools, Memory) are al
 
 ---
 
-## YAML Specifications
+## Future YAML Specifications
 
-Cognitive OS uses Kubernetes-style declarative specs to define the entire agent infrastructure.
+Cognitive OS may use Kubernetes-style declarative specs to define higher-level agent infrastructure. Today these specs are experimental design material, not the minimum product adoption path.
 
 ### Organization
 
