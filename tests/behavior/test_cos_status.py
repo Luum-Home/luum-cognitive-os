@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -41,6 +42,23 @@ def _run(
         timeout=timeout,
         cwd=str(PROJECT_ROOT),
     )
+
+
+def _setup_canonical_only_project(tmp_path: Path) -> Path:
+    """Create a minimal project that only contains canonical COS artifacts."""
+    project = tmp_path / "canonical-only-project"
+    project.mkdir()
+    shutil.copy(PROJECT_ROOT / "cognitive-os.yaml", project / "cognitive-os.yaml")
+
+    canonical_skill_dir = project / ".cognitive-os" / "skills" / "cos" / "test-skill"
+    canonical_skill_dir.mkdir(parents=True)
+    (canonical_skill_dir / "SKILL.md").write_text("# Test Skill Canonical\n")
+
+    canonical_rules_dir = project / ".cognitive-os" / "rules" / "cos"
+    canonical_rules_dir.mkdir(parents=True)
+    (canonical_rules_dir / "test-rule.md").write_text("# Test Rule Canonical\n")
+
+    return project
 
 
 def test_status_script_exists_and_is_executable():
@@ -188,3 +206,25 @@ def test_status_uses_canonical_runtime_env_resolution():
     assert result.returncode == 0, f"stderr: {result.stderr}"
     data = json.loads(result.stdout)
     assert data["profile"]
+
+
+def test_status_reports_canonical_state_without_claude_projection(tmp_path):
+    """Status should still describe runtime state from canonical artifacts alone."""
+    project = _setup_canonical_only_project(tmp_path)
+
+    result = _run(
+        ["--json"],
+        env_overrides={
+            "CLAUDE_PROJECT_DIR": "",
+            "CODEX_PROJECT_DIR": "",
+            "COGNITIVE_OS_PROJECT_DIR": str(project),
+        },
+    )
+
+    assert result.returncode == 0, f"stderr: {result.stderr}"
+    data = json.loads(result.stdout)
+
+    assert data["skills"]["kernel_installed"] >= 1
+    assert data["skills"]["driver_exposed"] == 0
+    assert data["rules"]["source_count"] >= 1
+    assert data["rules"]["source_path"].endswith(".cognitive-os/rules/cos")
