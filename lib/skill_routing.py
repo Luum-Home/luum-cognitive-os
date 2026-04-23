@@ -273,11 +273,12 @@ def find_skill_md(
     Search order (first hit wins):
       1. `skills/{name}/SKILL.md` at project root
       2. `packages/*/skills/{name}/SKILL.md` (nested package skills)
-      3. `.claude/skills/{name}/SKILL.md` (current Claude projection)
-      4. `.cognitive-os/skills/cos/{name}/SKILL.md` (canonical fallback)
+      3. `.cognitive-os/skills/cos/{name}/SKILL.md` (canonical source-of-truth)
+      4. `.claude/skills/{name}/SKILL.md` (Claude driver projection fallback)
 
-    Set ``prefer_canonical=True`` to swap steps 3 and 4. This is opt-in while
-    the Claude projection remains the default runtime path.
+    ``prefer_canonical`` remains for compatibility with older callers. The
+    default is canonical-first; setting it to ``False`` no longer promotes
+    `.claude/` over the canonical artifact contract.
 
     Returns `None` when the skill cannot be located. Never raises — the bridge
     hook degrades to no-op on unknown skills per ADR-056 L3 contract.
@@ -288,11 +289,7 @@ def find_skill_md(
     if "/" in skill_name or ".." in skill_name or skill_name.startswith("."):
         return None
 
-    candidates = (
-        canonical_first_skill_lookup_candidates(skill_name, project_root)
-        if prefer_canonical
-        else skill_lookup_candidates(skill_name, project_root)
-    )
+    candidates = canonical_first_skill_lookup_candidates(skill_name, project_root)
     for candidate in candidates:
         if candidate.is_file():
             return candidate
