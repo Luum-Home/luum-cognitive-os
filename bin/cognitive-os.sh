@@ -38,6 +38,64 @@ require_config() {
   fi
 }
 
+canonical_skills_dir() {
+  printf '%s' ".cognitive-os/skills/cos"
+}
+
+legacy_builtin_skills_dir() {
+  printf '%s' ".cognitive-os/skills"
+}
+
+canonical_rules_dir() {
+  printf '%s' ".cognitive-os/rules/cos"
+}
+
+legacy_builtin_rules_dir() {
+  printf '%s' ".cognitive-os/rules"
+}
+
+driver_skills_dir() {
+  printf '%s' ".claude/skills"
+}
+
+driver_rules_dir() {
+  if [ -d ".claude/rules/cos" ]; then
+    printf '%s' ".claude/rules/cos"
+  else
+    printf '%s' ".claude/rules"
+  fi
+}
+
+resolve_local_skill_source() {
+  local name="$1"
+  if [ -f "$(canonical_skills_dir)/${name}/SKILL.md" ]; then
+    printf '%s' "$(canonical_skills_dir)/${name}"
+    return
+  fi
+  if [ -f "$(legacy_builtin_skills_dir)/${name}/SKILL.md" ]; then
+    printf '%s' "$(legacy_builtin_skills_dir)/${name}"
+    return
+  fi
+  printf '%s' ""
+}
+
+resolve_local_rule_source() {
+  local filename="$1"
+  if [ -f "$(canonical_rules_dir)/${filename}" ]; then
+    printf '%s' "$(canonical_rules_dir)/${filename}"
+    return
+  fi
+  if [ -f "$(legacy_builtin_rules_dir)/${filename}" ]; then
+    printf '%s' "$(legacy_builtin_rules_dir)/${filename}"
+    return
+  fi
+  if [ -f "rules/${filename}" ]; then
+    printf '%s' "rules/${filename}"
+    return
+  fi
+  printf '%s' ""
+}
+
 # ── Usage ──────────────────────────────────────────────────────────────
 
 usage() {
@@ -610,7 +668,8 @@ cmd_install() {
 
 _install_skill() {
   local name="$1"
-  local target=".claude/skills/${name}"
+  local target
+  target="$(driver_skills_dir)/${name}"
 
   if [ -d "$target" ]; then
     echo "Skill '$name' is already installed at $target"
@@ -624,10 +683,11 @@ _install_skill() {
   # Try local sources first
   local installed=false
 
-  # Check .cognitive-os/skills/
-  if [ -d ".cognitive-os/skills/${name}" ] && [ -f ".cognitive-os/skills/${name}/SKILL.md" ]; then
+  local skill_source
+  skill_source="$(resolve_local_skill_source "$name")"
+  if [ -n "$skill_source" ] && [ -d "$skill_source" ] && [ -f "$skill_source/SKILL.md" ]; then
     mkdir -p "$target"
-    cp -r ".cognitive-os/skills/${name}/"* "$target/"
+    cp -r "$skill_source/"* "$target/"
     echo "Installed skill '$name' from cos-builtin (local)"
     installed=true
   fi
@@ -701,7 +761,8 @@ _install_skill() {
 
 _install_rule() {
   local name="$1"
-  local target_dir=".claude/rules"
+  local target_dir
+  target_dir="$(driver_rules_dir)"
   local filename="${name}.md"
 
   # Add .md extension if not present
@@ -712,17 +773,11 @@ _install_rule() {
 
   mkdir -p "$target_dir"
 
-  # Check local source (.cognitive-os/rules/)
-  if [ -f ".cognitive-os/rules/${filename}" ]; then
-    cp ".cognitive-os/rules/${filename}" "$target_dir/${filename}"
-    echo "Installed rule '$name' from cos-builtin (local) -> $target_dir/${filename}"
-    return
-  fi
-
-  # Check rules/ directory (for self-hosted repos)
-  if [ -f "rules/${filename}" ]; then
-    cp "rules/${filename}" "$target_dir/${filename}"
-    echo "Installed rule '$name' from project rules/ -> $target_dir/${filename}"
+  local rule_source
+  rule_source="$(resolve_local_rule_source "$filename")"
+  if [ -n "$rule_source" ] && [ -f "$rule_source" ]; then
+    cp "$rule_source" "$target_dir/${filename}"
+    echo "Installed rule '$name' from local rule surfaces -> $target_dir/${filename}"
     return
   fi
 
@@ -1026,50 +1081,58 @@ cmd_list() {
 _list_installed_skills() {
   echo "=== Installed Skills ==="
 
-  # .claude/skills/ (project-installed)
-  if [ -d ".claude/skills" ]; then
+  local skills_driver
+  skills_driver="$(driver_skills_dir)"
+  if [ -d "$skills_driver" ]; then
     local count=0
     while IFS= read -r skill_file; do
       local skill_name
       skill_name=$(basename "$(dirname "$skill_file")")
-      printf "  %-30s %s\n" "$skill_name" "(project: .claude/skills/)"
+      printf "  %-30s %s\n" "$skill_name" "(project: ${skills_driver}/)"
       count=$((count + 1))
-    done < <(find .claude/skills -name 'SKILL.md' 2>/dev/null | sort)
+    done < <(find "$skills_driver" -name 'SKILL.md' 2>/dev/null | sort)
     echo "  Total: $count project skill(s)"
   else
-    echo "  No project skills installed (.claude/skills/ not found)"
+    echo "  No project skills installed (${skills_driver}/ not found)"
   fi
 
-  # .cognitive-os/skills/ (built-in)
-  if [ -d ".cognitive-os/skills" ]; then
+  if [ -d "$(canonical_skills_dir)" ]; then
     local builtin_count
-    builtin_count=$(find .cognitive-os/skills -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
-    echo "  Built-in: $builtin_count skill(s) in .cognitive-os/skills/"
+    builtin_count=$(find "$(canonical_skills_dir)" -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
+    echo "  Canonical: $builtin_count skill(s) in $(canonical_skills_dir)/"
+  elif [ -d "$(legacy_builtin_skills_dir)" ]; then
+    local builtin_count
+    builtin_count=$(find "$(legacy_builtin_skills_dir)" -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
+    echo "  Built-in: $builtin_count skill(s) in $(legacy_builtin_skills_dir)/"
   fi
 }
 
 _list_installed_rules() {
   echo "=== Installed Rules ==="
 
-  # .claude/rules/ (project rules)
-  if [ -d ".claude/rules" ]; then
+  local rules_driver
+  rules_driver="$(driver_rules_dir)"
+  if [ -d "$rules_driver" ]; then
     local count=0
     while IFS= read -r rule_file; do
       local rule_name
       rule_name=$(basename "$rule_file" .md)
-      printf "  %-30s %s\n" "$rule_name" "(project: .claude/rules/)"
+      printf "  %-30s %s\n" "$rule_name" "(project: ${rules_driver}/)"
       count=$((count + 1))
-    done < <(find .claude/rules -name '*.md' 2>/dev/null | sort)
+    done < <(find "$rules_driver" -name '*.md' 2>/dev/null | sort)
     echo "  Total: $count project rule(s)"
   else
-    echo "  No project rules installed (.claude/rules/ not found)"
+    echo "  No project rules installed (${rules_driver}/ not found)"
   fi
 
-  # .cognitive-os/rules/ or rules/ (built-in)
-  if [ -d ".cognitive-os/rules" ]; then
+  if [ -d "$(canonical_rules_dir)" ]; then
     local builtin_count
-    builtin_count=$(find .cognitive-os/rules -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
-    echo "  Built-in: $builtin_count rule(s) in .cognitive-os/rules/"
+    builtin_count=$(find "$(canonical_rules_dir)" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+    echo "  Canonical: $builtin_count rule(s) in $(canonical_rules_dir)/"
+  elif [ -d "$(legacy_builtin_rules_dir)" ]; then
+    local builtin_count
+    builtin_count=$(find "$(legacy_builtin_rules_dir)" -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+    echo "  Built-in: $builtin_count rule(s) in $(legacy_builtin_rules_dir)/"
   elif [ -d "rules" ]; then
     local builtin_count
     builtin_count=$(find rules -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
