@@ -21,6 +21,20 @@ If the demo exceeds 5 minutes because dependencies are missing, record the missi
 
 ## Demo Script
 
+The executable version of this demo is:
+
+```bash
+bash scripts/demo-portability-proof.sh
+```
+
+For a faster local run that skips provider/kernel Go tests:
+
+```bash
+bash scripts/demo-portability-proof.sh --skip-provider-tests
+```
+
+The manual equivalent is below.
+
 Run from the Cognitive OS source repository:
 
 ```bash
@@ -77,6 +91,12 @@ python3 -m pytest \
   tests/unit/test_outcome_metrics.py -q
 ```
 
+Run the provider/kernel lane when proving ecosystem-churn resilience:
+
+```bash
+go test ./internal/provider/... ./internal/validator/... ./pkg/hook/... -count=1
+```
+
 ## Acceptance Criteria
 
 - Codex harness install exits `0`.
@@ -85,6 +105,8 @@ python3 -m pytest \
 - Claude harness install exits `0`.
 - `.claude/settings.json` exists when `--harness=claude` is selected.
 - `cos-status.sh --json` exits `0`.
+- Core fingerprints under `.cognitive-os/hooks/cos`, `.cognitive-os/skills/cos`, and `.cognitive-os/templates/cos` match between Codex and Claude installs.
+- Codex settings use `CODEX_PROJECT_DIR`; Claude settings use `CLAUDE_PROJECT_DIR`.
 - Product-contract tests pass.
 
 ## What This Does Not Claim
