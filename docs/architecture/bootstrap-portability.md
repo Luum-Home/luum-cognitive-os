@@ -136,6 +136,7 @@ correction:
 - `bin/cognitive-os.sh` now reports hook registration through the active settings driver, so Codex-first projects no longer receive Claude-only health messages
 - `scripts/cos-status.sh` now reads hook wiring from the active settings driver, so transparency output reflects `.codex/hooks.json` when Codex owns the project surface
 - `scripts/uninstall.sh` now strips COS hook registrations from the active settings driver, so Codex-first projects uninstall cleanly instead of leaving stale hook wiring behind
+- `scripts/cos-release-check.sh` now validates and snapshots the canary project's active settings driver, so release plumbing can follow Codex and Claude without hardcoded Claude-only settings assumptions
 
 This is not the full migration, but it is the correct direction.
 

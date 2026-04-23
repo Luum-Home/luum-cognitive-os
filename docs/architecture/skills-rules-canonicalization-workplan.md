@@ -94,6 +94,9 @@ Claude.
 - `uninstall.sh` now removes COS hook registrations from the active settings
   driver, including Codex-first projects that wire hooks through
   `.codex/hooks.json`.
+- `cos-release-check.sh` now validates hook wiring and settings JSON through the
+  canary project's active settings driver instead of hardcoding
+  `.claude/settings.json`.
 
 ## Phase 4 — Tooling and Validation Migration
 
