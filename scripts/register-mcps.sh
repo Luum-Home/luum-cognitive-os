@@ -11,6 +11,8 @@
 #                                  [--dry-run] [--cache-dir <dir>]
 #
 # Registration strategy (in priority order):
+#   0. Claude driver only for now. If the active settings driver is not Claude,
+#      the script exits 0 without writing ~/.claude/settings.json.
 #   1. If `claude` CLI is on PATH: `claude mcp add <name> <command> [args...]`
 #   2. If `claude` is absent: merge mcpServers into ~/.claude/settings.json
 #      via Python (atomic tempfile+mv).
@@ -34,6 +36,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 source "${PROJECT_ROOT}/hooks/_lib/portable.sh"
+source "${PROJECT_ROOT}/scripts/_lib/settings-driver.sh"
 
 # ---------------------------------------------------------------------------
 # Defaults
@@ -89,6 +92,7 @@ FLAGS
   --help            Show this help
 
 REGISTRATION STRATEGY
+  0. Claude driver only for now; non-Claude settings drivers are skipped
   1. If `claude` CLI is on PATH: uses `claude mcp add`
   2. If `claude` is absent: merges mcpServers into ~/.claude/settings.json via Python
   3. If neither is available: WARN and exit 0
@@ -118,6 +122,16 @@ fi
 note() { printf '%s\n' "$*" >&2; }
 warn() { printf 'WARN: %s\n' "$*" >&2; }
 err()  { printf 'ERROR: %s\n' "$*" >&2; }
+
+ACTIVE_PROJECT_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$PROJECT_ROOT}}}"
+ACTIVE_HARNESS="$(cos_detect_harness "$ACTIVE_PROJECT_ROOT")"
+ACTIVE_DRIVER="$(cos_settings_driver_label "$ACTIVE_HARNESS")"
+
+if [[ "$ACTIVE_HARNESS" != "claude" ]]; then
+  warn "register-mcps currently manages Claude MCP registration only; active driver is ${ACTIVE_DRIVER}. Skipping."
+  warn "Codex MCP registration needs a dedicated Codex MCP driver before this script can write portable config."
+  exit 0
+fi
 
 # ---------------------------------------------------------------------------
 # Cross-platform SHA-256 helper (bash 3.2 compat; macOS + Linux)
