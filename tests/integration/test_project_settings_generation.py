@@ -140,12 +140,14 @@ class TestGenerateProjectSettings:
 class TestCosInitSettingsGeneration:
     """Tests that cos-init.sh generates correct settings.json in projects."""
 
-    def _run_cos_init(self, project_dir, mode="--standard", harness=None):
+    def _run_cos_init(self, project_dir, mode="--standard", harness=None, env_overrides=None):
         """Run cos-init.sh in a directory and return the generated settings."""
         env = os.environ.copy()
         env["COS_SOURCE_DIR"] = str(PROJECT_ROOT)
         # Isolate registry to prevent polluting ~/.cognitive-os/installations.json
         env["COS_REGISTRY_FILE"] = str(project_dir / ".cos-test-registry.json")
+        if env_overrides:
+            env.update(env_overrides)
         cmd = ["bash", str(COS_INIT), mode]
         if harness:
             cmd.append(f"--harness={harness}")
@@ -154,7 +156,7 @@ class TestCosInitSettingsGeneration:
             capture_output=True, text=True, cwd=str(project_dir), env=env,
         )
         settings_path = project_dir / ".claude" / "settings.json"
-        if harness == "codex":
+        if harness == "codex" or "Harness: codex" in result.stdout:
             settings_path = project_dir / ".codex" / "hooks.json"
         if settings_path.exists():
             return json.loads(settings_path.read_text()), result
@@ -232,6 +234,40 @@ class TestCosInitSettingsGeneration:
         assert hooks_path.exists(), "Expected .codex/hooks.json to be created"
         commands = extract_hook_commands(settings)
         assert any("CODEX_PROJECT_DIR" in cmd for cmd in commands), commands
+
+    def test_existing_codex_driver_is_autodetected_without_harness_flag(self, tmp_path):
+        codex_dir = tmp_path / ".codex"
+        codex_dir.mkdir()
+        (codex_dir / "hooks.json").write_text(
+            json.dumps(
+                {
+                    "hooks": {
+                        "Stop": [
+                            {
+                                "matcher": "shutdown",
+                                "hooks": [
+                                    {
+                                        "type": "command",
+                                        "command": 'bash "${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.codex/hooks/custom-stop.sh"',
+                                    }
+                                ],
+                            }
+                        ]
+                    }
+                }
+            )
+        )
+
+        settings, result = self._run_cos_init(tmp_path, "--standard")
+
+        assert result.returncode == 0, result.stderr
+        assert "Harness: codex" in result.stdout
+        assert settings is not None, f"No codex hooks generated: {result.stderr}"
+        assert (tmp_path / ".codex" / "hooks.json").exists()
+        assert not (tmp_path / ".claude" / "settings.json").exists()
+        commands = extract_hook_commands(settings)
+        assert any("CODEX_PROJECT_DIR" in cmd for cmd in commands), commands
+        assert any("custom-stop.sh" in cmd for cmd in commands), commands
 
     def test_codex_harness_preserves_existing_codex_hooks(self, tmp_path):
         codex_dir = tmp_path / ".codex"
