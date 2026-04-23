@@ -241,6 +241,10 @@ func TestE2E_InstallSamplePackage(t *testing.T) {
 	if _, err := os.Stat(skillPath); err != nil {
 		t.Errorf("expected skill file at %s: %v", skillPath, err)
 	}
+	canonicalSkillPath := filepath.Join(projectDir, ".cognitive-os", "skills", "cos", "sample", "SKILL.md")
+	if _, err := os.Stat(canonicalSkillPath); err != nil {
+		t.Errorf("expected canonical skill file at %s: %v", canonicalSkillPath, err)
+	}
 
 	// Verify rule file was installed.
 	// Rule target for @luum/sample-skill with source "rules/sample-rule.md"
@@ -248,6 +252,10 @@ func TestE2E_InstallSamplePackage(t *testing.T) {
 	rulePath := filepath.Join(projectDir, ".claude", "rules", "cos", "@luum/sample-skill", "sample-rule.md")
 	if _, err := os.Stat(rulePath); err != nil {
 		t.Errorf("expected rule file at %s: %v", rulePath, err)
+	}
+	canonicalRulePath := filepath.Join(projectDir, ".cognitive-os", "rules", "cos", "@luum/sample-skill", "sample-rule.md")
+	if _, err := os.Stat(canonicalRulePath); err != nil {
+		t.Errorf("expected canonical rule file at %s: %v", canonicalRulePath, err)
 	}
 
 	// Verify lockfile was created.
