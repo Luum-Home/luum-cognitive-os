@@ -80,8 +80,39 @@ class QwenResult:
     raw: Optional[Dict[str, Any]] = None
 
 
+def _load_dotenv_once() -> None:
+    """Best-effort: load repo-root .env into os.environ for ALIBABA_QWEN_* keys.
+    Idempotent (won't overwrite existing env vars). Safe to call multiple times.
+    Silent on any error — env loading must never crash the provider.
+    """
+    flag = "_COS_QWEN_DOTENV_LOADED"
+    if os.environ.get(flag) == "1":
+        return
+    try:
+        from pathlib import Path as _P
+        env_path = _P(__file__).resolve().parent.parent / ".env"
+        if not env_path.exists():
+            os.environ[flag] = "1"
+            return
+        for line in env_path.read_text().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, val = line.partition("=")
+            key, val = key.strip(), val.strip().strip('"').strip("'")
+            if key.startswith("ALIBABA_QWEN_") and key not in os.environ:
+                os.environ[key] = val
+    except Exception:
+        pass  # never crash on env load
+    os.environ[flag] = "1"
+
+
 def _env(name: str, default: str = "") -> str:
-    """Read env var with a safe default. Separated for test monkeypatching."""
+    """Read env var with a safe default. Separated for test monkeypatching.
+    Auto-loads .env for ALIBABA_QWEN_* keys on first access (idempotent).
+    """
+    if name.startswith("ALIBABA_QWEN_"):
+        _load_dotenv_once()
     return os.environ.get(name, default)
 
 
