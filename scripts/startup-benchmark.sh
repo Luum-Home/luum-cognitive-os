@@ -23,8 +23,10 @@
 set -uo pipefail
 
 # ── Configuration ──────────────────────────────────────────────────────────────
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/.." && pwd)}}"
-source "$(cd "$(dirname "$0")/.." && pwd)/hooks/_lib/portable.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$SCRIPT_DIR}}}"
+source "$SCRIPT_DIR/scripts/_lib/settings-driver.sh"
+source "$SCRIPT_DIR/hooks/_lib/portable.sh"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -35,7 +37,7 @@ done
 
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 OUTPUT_JSONL="$METRICS_DIR/startup-benchmark.jsonl"
-SETTINGS="$PROJECT_DIR/.claude/settings.json"
+SETTINGS="$(cos_settings_driver_path "$PROJECT_DIR" "$(cos_detect_harness "$PROJECT_DIR")")"
 TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 RUN_DATE="$(date -u +%Y-%m-%d)"
 
@@ -95,6 +97,7 @@ echo "|---|------|---------------|------|"
 
 # Set up environment that hooks expect
 export CLAUDE_PROJECT_DIR="$PROJECT_DIR"
+export CODEX_PROJECT_DIR="$PROJECT_DIR"
 export COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR"
 export TOOL_NAME="Bash"
 export TOOL_INPUT='{"command":"echo benchmark-probe"}'
@@ -102,7 +105,7 @@ export SESSION_ID="benchmark-$$"
 export RESULT_TEXT="benchmark output"
 export EXIT_CODE="0"
 
-# Extract SessionStart hooks from settings.json into a temp file
+# Extract SessionStart hooks from the active settings driver into a temp file
 HOOKS_TMP="$(mktemp /tmp/startup-bench-hooks.XXXXXX)"
 if [[ -f "$SETTINGS" ]] && command -v python3 >/dev/null 2>&1; then
   python3 - "$SETTINGS" >"$HOOKS_TMP" 2>/dev/null <<'PYEOF'
@@ -110,7 +113,16 @@ import json, sys
 try:
     with open(sys.argv[1]) as f:
         data = json.load(f)
-    for grp in data.get("hooks", {}).get("SessionStart", []):
+    hooks_block = data.get("hooks") or {}
+    if not isinstance(hooks_block, dict):
+        hooks_block = {}
+    if not hooks_block:
+        hooks_block = {
+            event: groups
+            for event, groups in data.items()
+            if isinstance(groups, list)
+        }
+    for grp in hooks_block.get("SessionStart", []):
         for h in grp.get("hooks", []):
             cmd = h.get("command", "")
             if cmd:

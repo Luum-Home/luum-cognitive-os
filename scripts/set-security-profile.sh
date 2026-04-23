@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
-# Set Security Profile — Applies the selected security profile to .claude/settings.json
+# Set Security Profile — Applies the selected security profile to Claude settings
 #
 # Security profiles control which hooks are active for defense-in-depth:
 #   minimal  — core safety only (secret detection, rate limiting, error capture)
@@ -25,7 +25,14 @@
 # Backs up current settings.json before overwriting.
 set -euo pipefail
 
-PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}}}"
+source "$SCRIPT_DIR/_lib/settings-driver.sh"
+if [ "$(cos_detect_harness "$PROJECT_DIR")" != "claude" ]; then
+  echo "ERROR: set-security-profile.sh currently manages the Claude settings driver only." >&2
+  echo "Active driver: $(cos_settings_driver_label "$(cos_detect_harness "$PROJECT_DIR")")" >&2
+  exit 1
+fi
 SETTINGS_FILE="$PROJECT_DIR/.claude/settings.json"
 PROFILES_DIR="$PROJECT_DIR/.cognitive-os/plans/features"
 
