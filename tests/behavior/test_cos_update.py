@@ -641,3 +641,49 @@ def test_register_mcps_runs_between_uv_and_self_install(tmp_path):
         f"uv ts: {entries['uv']}, self-install ts: {entries['self-install']}\n"
         f"Order log:\n{order_log.read_text()}"
     )
+
+
+def test_update_passes_canonical_project_env_to_self_install(tmp_path):
+    """cos-update should invoke self-install with COGNITIVE_OS_PROJECT_DIR."""
+    scratch = _make_scratch_project(tmp_path)
+
+    real_hooks_link = scratch / "hooks"
+    real_hooks_link.unlink()
+    hooks_dir = scratch / "hooks"
+    hooks_dir.mkdir()
+    hooks_lib_dir = hooks_dir / "_lib"
+    hooks_lib_dir.mkdir()
+    shutil.copy2(PROJECT_ROOT / "hooks" / "_lib" / "portable.sh", hooks_lib_dir / "portable.sh")
+
+    env_log = scratch / "self-install-env.log"
+    self_install = hooks_dir / "self-install.sh"
+    self_install.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        f'printf "cognitive=%s\\n" "${{COGNITIVE_OS_PROJECT_DIR:-}}" > {env_log}\n'
+        f'printf "claude=%s\\n" "${{CLAUDE_PROJECT_DIR:-}}" >> {env_log}\n'
+        f'[ "${{COGNITIVE_OS_PROJECT_DIR:-}}" = "{scratch}" ]\n'
+    )
+    self_install.chmod(0o755)
+
+    env = {
+        **os.environ,
+        "CLAUDE_PROJECT_DIR": "/tmp/wrong-driver-root",
+    }
+    result = subprocess.run(
+        ["bash", str(scratch / "scripts" / "cos-update.sh"), "--no-verify", "--force"],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        cwd=str(scratch),
+        env=env,
+    )
+
+    assert result.returncode == 0, (
+        f"cos-update did not pass canonical env to self-install.\n"
+        f"stdout: {result.stdout[-500:]}\n"
+        f"stderr: {result.stderr[-500:]}"
+    )
+    assert env_log.exists(), "self-install env log was not written"
+    log_text = env_log.read_text()
+    assert f"cognitive={scratch}" in log_text
