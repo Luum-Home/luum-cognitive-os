@@ -308,3 +308,4 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **domain-model** — No description
 - **risk-register** — No description
 - **ops-runbook** — No description
+- **doc-review-personas** — No description
