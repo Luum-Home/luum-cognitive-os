@@ -89,6 +89,11 @@ Claude.
   of implicitly assuming the Claude projection.
 - `cognitive-os doctor` and `cognitive-os list hooks` now report the active
   settings driver honestly for Codex-first and Claude-first projects.
+- `cos-status --json` now reports hook wiring through the active settings
+  driver, including Codex-first projects that only ship `.codex/hooks.json`.
+- `uninstall.sh` now removes COS hook registrations from the active settings
+  driver, including Codex-first projects that wire hooks through
+  `.codex/hooks.json`.
 
 ## Phase 4 — Tooling and Validation Migration
 
