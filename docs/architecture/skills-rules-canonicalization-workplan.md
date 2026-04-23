@@ -85,6 +85,10 @@ Claude.
   instead of relying on the Claude-specific project env.
 - `cos-release-check.sh` now invokes rate-limiter checks through the canonical
   project env instead of relying on the Claude-specific project env.
+- `upgrade.sh` now re-runs `cos-init.sh` through the detected harness instead
+  of implicitly assuming the Claude projection.
+- `cognitive-os doctor` and `cognitive-os list hooks` now report the active
+  settings driver honestly for Codex-first and Claude-first projects.
 
 ## Phase 4 — Tooling and Validation Migration
 
@@ -117,8 +121,8 @@ At the end of each session:
 3. Record what is now safe to do next and what remains dangerous.
 
 Current safe next step: keep expanding canonical-only characterization coverage
-around install, audit, and runtime consumers so the canonical artifact contract
-is provably sufficient before any path demotion begins.
+around upgrade, release, and uninstall consumers so the canonical artifact
+contract is provably sufficient before any path demotion begins.
 
 Still dangerous: changing install destinations or removing `.claude/...`
 projection paths before dual-write lands.

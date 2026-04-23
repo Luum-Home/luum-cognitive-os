@@ -132,6 +132,8 @@ correction:
 - `scripts/cos-init.sh` now writes and merges the active harness settings driver instead of assuming `.claude/settings.json`
 - the `cos` package installer resolves a settings driver per harness and can register hooks into `.codex/hooks.json`
 - `scripts/apply-efficiency-profile.sh` now regenerates the same committed default Claude projection that the repository ships in `.claude/settings.json`, so pre-commit and installer flows no longer depend on a stale legacy hook mesh
+- `scripts/upgrade.sh` now preserves the active harness when it re-runs `cos-init.sh`, instead of silently falling back to the Claude path
+- `bin/cognitive-os.sh` now reports hook registration through the active settings driver, so Codex-first projects no longer receive Claude-only health messages
 
 This is not the full migration, but it is the correct direction.
 
