@@ -61,7 +61,7 @@
 ## 5. Onboarding and Operational Simplicity
 
 - [x] First-run installation is one-pass and low-friction through [First-Run Onboarding Proof](../manual-tests/first-run-onboarding.md).
-- [ ] Autodetection reduces required configuration for new users.
+- [x] Autodetection reduces required configuration for new users through shared harness detection and Codex-driver bootstrap coverage in `tests/integration/test_project_settings_generation.py`.
 - [x] Settings projection supports more than one harness target in bootstrap paths.
 - [x] CLI runtime reads canonical skill/rule artifacts when the Claude projection is absent.
 - [x] Upgrade paths preserve the active harness instead of silently falling back to Claude-first settings projection.
