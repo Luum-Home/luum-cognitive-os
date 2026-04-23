@@ -1,4 +1,4 @@
-"""Unit tests for lib/paths.py::project_root().
+"""Unit tests for lib/paths.py project and runtime resolvers.
 
 Covers the four key requirements stated in the Lote-3 R1 task:
 1. CLAUDE_PROJECT_DIR env var honored when set.
@@ -7,7 +7,8 @@ Covers the four key requirements stated in the Lote-3 R1 task:
 4. Idempotent (repeated calls return equal values).
 
 See also: TestLibPathsProjectRoot in tests/unit/test_project_dir_resolution.py,
-which mirrors Pattern A (the characterisation spec) directly against this module.
+which mirrors Pattern A (the characterisation spec) directly against the legacy
+``project_root()`` helper.
 """
 from __future__ import annotations
 
@@ -21,6 +22,10 @@ pytestmark = pytest.mark.unit
 def _clear_env(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
     monkeypatch.delenv("COGNITIVE_OS_PROJECT_DIR", raising=False)
+    monkeypatch.delenv("CODEX_PROJECT_DIR", raising=False)
+    monkeypatch.delenv("CLAUDE_SESSION_ID", raising=False)
+    monkeypatch.delenv("COGNITIVE_OS_SESSION_ID", raising=False)
+    monkeypatch.delenv("CODEX_SESSION_ID", raising=False)
 
 
 class TestProjectRootEnvVarHonoring:
@@ -191,3 +196,104 @@ class TestProjectRootCallerCompatibility:
 
         _clear_env(monkeypatch)
         assert not project_root()  # falsy — gate stays closed
+
+
+class TestRuntimeProjectRoot:
+    """The new canonical runtime precedence is COGNITIVE_OS -> CODEX -> CLAUDE."""
+
+    def test_cognitive_os_wins_over_codex_and_claude(self, monkeypatch):
+        from lib.paths import runtime_project_root
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", "/cognitive-wins")
+        monkeypatch.setenv("CODEX_PROJECT_DIR", "/codex-loses")
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/claude-loses")
+        assert runtime_project_root() == Path("/cognitive-wins")
+
+    def test_codex_wins_when_cognitive_os_unset(self, monkeypatch):
+        from lib.paths import runtime_project_root
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("CODEX_PROJECT_DIR", "/codex-wins")
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/claude-loses")
+        assert runtime_project_root() == Path("/codex-wins")
+
+    def test_claude_used_as_compatibility_fallback(self, monkeypatch):
+        from lib.paths import runtime_project_root
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("CLAUDE_PROJECT_DIR", "/claude-only")
+        assert runtime_project_root() == Path("/claude-only")
+
+    def test_runtime_project_root_or_cwd(self, monkeypatch, tmp_path):
+        from lib.paths import runtime_project_root_or_cwd
+
+        _clear_env(monkeypatch)
+        monkeypatch.chdir(tmp_path)
+        assert runtime_project_root_or_cwd() == tmp_path
+
+
+class TestRuntimeSessionId:
+    """Canonical session resolution is COGNITIVE_OS -> CODEX -> CLAUDE."""
+
+    def test_cognitive_os_session_id_wins(self, monkeypatch):
+        from lib.paths import runtime_session_id
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("COGNITIVE_OS_SESSION_ID", "cos-sess")
+        monkeypatch.setenv("CODEX_SESSION_ID", "codex-sess")
+        monkeypatch.setenv("CLAUDE_SESSION_ID", "claude-sess")
+        assert runtime_session_id() == "cos-sess"
+
+    def test_codex_session_id_is_fallback(self, monkeypatch):
+        from lib.paths import runtime_session_id
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("CODEX_SESSION_ID", "codex-sess")
+        monkeypatch.setenv("CLAUDE_SESSION_ID", "claude-sess")
+        assert runtime_session_id() == "codex-sess"
+
+    def test_default_returned_when_all_unset(self, monkeypatch):
+        from lib.paths import runtime_session_id
+
+        _clear_env(monkeypatch)
+        assert runtime_session_id("default-sess") == "default-sess"
+
+
+class TestArtifactContractPaths:
+    """Canonical artifact paths are additive and do not replace projections yet."""
+
+    def test_canonical_skills_dir_uses_runtime_root(self, monkeypatch):
+        from lib.paths import canonical_skills_dir
+
+        _clear_env(monkeypatch)
+        monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", "/proj")
+        assert canonical_skills_dir() == Path("/proj/.cognitive-os/skills/cos")
+
+    def test_canonical_rules_dir_uses_explicit_root(self):
+        from lib.paths import canonical_rules_dir
+
+        assert canonical_rules_dir("/proj") == Path("/proj/.cognitive-os/rules/cos")
+
+    def test_claude_projection_dirs(self):
+        from lib.paths import claude_rules_projection_dir, claude_skills_projection_dir
+
+        assert claude_skills_projection_dir("/proj") == Path("/proj/.claude/skills")
+        assert claude_rules_projection_dir("/proj") == Path("/proj/.claude/rules/cos")
+
+    def test_skill_lookup_candidates_preserve_current_precedence(self, tmp_path):
+        from lib.paths import skill_lookup_candidates
+
+        candidates = skill_lookup_candidates("demo", tmp_path)
+        assert candidates[0] == tmp_path / "skills" / "demo" / "SKILL.md"
+        assert candidates[-2] == tmp_path / ".claude" / "skills" / "demo" / "SKILL.md"
+        assert candidates[-1] == tmp_path / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
+
+    def test_preferred_rules_dirs_are_canonical_first(self, tmp_path):
+        from lib.paths import preferred_rules_dirs
+
+        dirs = preferred_rules_dirs(tmp_path)
+        assert dirs[0] == tmp_path / ".cognitive-os" / "rules" / "cos"
+        assert dirs[1] == tmp_path / ".claude" / "rules" / "cos"
+        assert dirs[2] == tmp_path / ".claude" / "rules"
+        assert dirs[3] == tmp_path / "rules"
