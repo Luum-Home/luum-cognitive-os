@@ -30,6 +30,7 @@ The system is modeled after Kubernetes-style declarative configuration: organiza
 - [Execution Discipline](business/execution-discipline.md) — operating rules for keeping the master plan real, avoiding duplicated logic, and preserving durable memory across sessions
 - [Master Plan Checklist](business/master-plan-checklist.md) — living checklist for tracking execution progress against the master plan
 - [Feature Reality Audit](business/feature-reality-audit.md) — which feature areas are genuinely core, portable, and product-worthy versus still overextended or harness-advantaged
+- [Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) — validation snapshot and remaining work before merging the master-plan portability branch
 
 ## Architecture Layers
 
