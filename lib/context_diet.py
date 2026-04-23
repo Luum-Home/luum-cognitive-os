@@ -39,6 +39,8 @@ form the irreducible baseline of agent governance.
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from lib.paths import preferred_rules_dirs
+
 try:
     import yaml as _yaml
 except ImportError:
@@ -386,7 +388,7 @@ class ContextDiet:
         self._phase: str = project.get("phase", "reconstruction") if isinstance(project, dict) else "reconstruction"
 
         # Resolve the rules directory from the config or fall back to the
-        # canonical .claude/rules location relative to the repo root.
+        # artifact contract's preferred rule directories.
         # We store it as a string; callers may override via from_yaml.
         self._rules_dir: Optional[str] = None
 
@@ -405,8 +407,8 @@ class ContextDiet:
         Args:
             config_path: Path to cognitive-os.yaml.
             rules_dir: Optional override for the rules directory path.
-                If None, defaults to .claude/rules/ relative to the
-                directory containing config_path.
+                If None, defaults to the first existing artifact-contract
+                candidate relative to the directory containing config_path.
 
         Returns:
             Configured ContextDiet instance.
@@ -418,9 +420,10 @@ class ContextDiet:
             instance._rules_dir = rules_dir
         else:
             config_file = Path(config_path)
-            candidate = config_file.parent / ".claude" / "rules"
-            if candidate.is_dir():
-                instance._rules_dir = str(candidate)
+            for candidate in preferred_rules_dirs(config_file.parent):
+                if candidate.is_dir():
+                    instance._rules_dir = str(candidate)
+                    break
 
         return instance
 
@@ -553,7 +556,7 @@ class ContextDiet:
         lines = [
             f"# Context Diet — {task_type} task (phase: {self._phase})",
             "",
-            "Selected rules for this task (load from .claude/rules/):",
+            "Selected rules for this task (load from canonical/project rule surfaces):",
         ]
         for f in rule_files:
             lines.append(f"  - {f}")

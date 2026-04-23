@@ -214,6 +214,41 @@ class TestLoadSkillRequirements(unittest.TestCase):
         self.assertTrue(req.fallback_on_any_error)
 
 
+class TestFindSkillMdPrecedence(unittest.TestCase):
+    def test_repo_skill_wins_over_driver_and_canonical(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            repo_skill = root / "skills" / "demo" / "SKILL.md"
+            driver_skill = root / ".claude" / "skills" / "demo" / "SKILL.md"
+            canonical_skill = root / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
+            repo_skill.parent.mkdir(parents=True)
+            driver_skill.parent.mkdir(parents=True)
+            canonical_skill.parent.mkdir(parents=True)
+            repo_skill.write_text("# repo")
+            driver_skill.write_text("# driver")
+            canonical_skill.write_text("# canonical")
+            self.assertEqual(_sr.find_skill_md("demo", root), repo_skill)
+
+    def test_driver_projection_wins_over_canonical_fallback(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            driver_skill = root / ".claude" / "skills" / "demo" / "SKILL.md"
+            canonical_skill = root / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
+            driver_skill.parent.mkdir(parents=True)
+            canonical_skill.parent.mkdir(parents=True)
+            driver_skill.write_text("# driver")
+            canonical_skill.write_text("# canonical")
+            self.assertEqual(_sr.find_skill_md("demo", root), driver_skill)
+
+    def test_canonical_fallback_used_when_other_surfaces_missing(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            canonical_skill = root / ".cognitive-os" / "skills" / "cos" / "demo" / "SKILL.md"
+            canonical_skill.parent.mkdir(parents=True)
+            canonical_skill.write_text("# canonical")
+            self.assertEqual(_sr.find_skill_md("demo", root), canonical_skill)
+
+
 # --------------------------------------------------------------------------- #
 # Dispatch integration (ADR-050 enforcement)
 # --------------------------------------------------------------------------- #
