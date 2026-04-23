@@ -28,8 +28,10 @@ jobs:
 
       - name: Run representative Python core tests
         run: |
-          python3 -m pytest -c /dev/null \
+          python3 -m pytest \
             tests/contracts/test_kernel_contract.py \
+            tests/contracts/test_product_zones.py \
+            tests/contracts/test_killswitch.py \
             tests/unit/test_execution_profile.py \
             tests/unit/test_compatibility_layer.py \
             tests/unit/test_outcome_metrics.py \
