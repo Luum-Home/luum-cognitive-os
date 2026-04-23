@@ -81,6 +81,8 @@ Claude.
   `.claude/skills` or `.claude/rules`.
 - `uninstall.sh` works for a canonical-only project and still deregisters the
   installation correctly.
+- `cos-update.sh` now invokes `self-install` through the canonical project env
+  instead of relying on the Claude-specific project env.
 
 ## Phase 4 — Tooling and Validation Migration
 
