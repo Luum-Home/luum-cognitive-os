@@ -61,6 +61,39 @@ def _setup_canonical_only_project(tmp_path: Path) -> Path:
     return project
 
 
+def _setup_codex_status_project(tmp_path: Path) -> Path:
+    """Create a minimal Codex-first project with a harness settings driver."""
+    project = _setup_canonical_only_project(tmp_path)
+
+    hooks_dir = project / ".cognitive-os" / "hooks" / "cos"
+    hooks_dir.mkdir(parents=True)
+    (hooks_dir / "test-stop.sh").write_text("#!/usr/bin/env bash\nexit 0\n")
+
+    codex_dir = project / ".codex"
+    codex_dir.mkdir()
+    (codex_dir / "hooks.json").write_text(
+        json.dumps(
+            {
+                "hooks": {
+                    "Stop": [
+                        {
+                            "matcher": "*",
+                            "hooks": [
+                                {
+                                    "type": "command",
+                                    "command": 'bash "${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/test-stop.sh"',
+                                }
+                            ],
+                        }
+                    ]
+                }
+            }
+        )
+    )
+
+    return project
+
+
 def test_status_script_exists_and_is_executable():
     """The script must exist and have the executable bit set."""
     assert STATUS_SCRIPT.is_file(), f"{STATUS_SCRIPT} not found"
@@ -136,6 +169,7 @@ def test_status_json_output_is_valid_json():
     for key in ("profile", "skills", "hooks", "rules", "packages", "install", "health"):
         assert key in data, f"top-level key {key!r} missing from JSON output"
     assert "driver_path" in data["skills"]
+    assert "driver_path" in data["hooks"]
     assert "driver_path" in data["rules"]
     assert "source_path" in data["rules"]
 
@@ -228,3 +262,24 @@ def test_status_reports_canonical_state_without_claude_projection(tmp_path):
     assert data["skills"]["driver_exposed"] == 0
     assert data["rules"]["source_count"] >= 1
     assert data["rules"]["source_path"].endswith(".cognitive-os/rules/cos")
+
+
+def test_status_reads_hooks_from_codex_settings_driver(tmp_path):
+    """Status should report the active Codex settings driver when it owns hook wiring."""
+    project = _setup_codex_status_project(tmp_path)
+
+    result = _run(
+        ["--json"],
+        env_overrides={
+            "CLAUDE_PROJECT_DIR": "",
+            "CODEX_PROJECT_DIR": "",
+            "COGNITIVE_OS_PROJECT_DIR": str(project),
+        },
+    )
+
+    assert result.returncode == 0, f"stderr: {result.stderr}"
+    data = json.loads(result.stdout)
+
+    assert data["hooks"]["driver_path"] == ".codex/hooks.json"
+    assert data["hooks"]["total"] == 1
+    assert data["hooks"]["by_event"].get("Stop") == 1
