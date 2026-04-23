@@ -139,6 +139,11 @@ class TestReleaseCheckPlumbing:
         report = json.loads(result.stdout)
         assert report["ok"] is True
 
+    def test_release_check_uses_canonical_env_for_rate_limiter_hook(self):
+        """Rate-limiter load checks should invoke hooks via the canonical project env."""
+        script_text = RELEASE_CHECK.read_text()
+        assert 'COGNITIVE_OS_PROJECT_DIR="$dir" bash "$hook_script"' in script_text
+
     def test_core_skills_check_json_parses(self):
         out = subprocess.run(
             ["bash", str(CORE_SKILLS_CHECK), "--json"],
