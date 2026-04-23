@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 # SCOPE: project
 # install-mcp-scan.sh — Install MCP-Scan (Invariant Labs) MCP server configuration scanner
+#
+# Driver status: Claude Code only for hook wiring examples. The scanner itself
+# is portable, but this installer currently documents Claude settings paths.
 set -euo pipefail
 
 echo "Installing mcp-scan (MCP server configuration scanner)..."
+echo "Driver status: Claude Code hook wiring only for now."
 echo ""
 
 # Try pip first, then npx
@@ -29,6 +33,7 @@ echo "Installation complete!"
 echo ""
 echo "Next steps:"
 echo "  1. Enable in cognitive-os.yaml: security.mcp_scan.enabled = true"
-echo "  2. (Optional) Register hook in .claude/settings.json:"
+echo "  2. (Optional, Claude driver only) Register hook in .claude/settings.json:"
 echo '     SessionStart: {"command": "bash \"$CLAUDE_PROJECT_DIR/hooks/mcp-scan.sh\""}'
-echo "  3. Run manually: mcp-scan scan .claude/settings.json"
+echo "  3. Run manually against the active driver file, for example:"
+echo "     mcp-scan scan .claude/settings.json"

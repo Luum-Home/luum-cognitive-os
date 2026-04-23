@@ -23,19 +23,22 @@
 # To restore:
 #   rm -f .cognitive-os/runtime/hook-killswitch.flag
 #   unset SO_KILLSWITCH
-#   cp .claude/settings.json.bak .claude/settings.json
-#   bash scripts/apply-efficiency-profile.sh default   # optional: re-apply full profile
+#   restore the active settings driver backup when one was created
+#   bash scripts/apply-efficiency-profile.sh default   # Claude driver only
 
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Respect PROJECT_DIR override for tests; otherwise derive from script location.
-PROJECT_DIR="${PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+PROJECT_DIR="${PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}}}}"
+source "$SCRIPT_DIR/_lib/settings-driver.sh"
 
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
 FLAG_FILE="$RUNTIME_DIR/hook-killswitch.flag"
-SETTINGS_FILE="$PROJECT_DIR/.claude/settings.json"
-SETTINGS_BAK="$PROJECT_DIR/.claude/settings.json.bak"
+SETTINGS_HARNESS="$(cos_detect_harness "$PROJECT_DIR")"
+SETTINGS_LABEL="$(cos_settings_driver_label "$SETTINGS_HARNESS")"
+SETTINGS_FILE="$(cos_settings_driver_path "$PROJECT_DIR" "$SETTINGS_HARNESS")"
+SETTINGS_BAK="${SETTINGS_FILE}.bak"
 
 REASON="${1:-manual invocation}"
 TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -61,19 +64,23 @@ else
   echo "[so-emergency-stop] WARNING: so-reaper.sh not found at $REAPER — skipping reaper step."
 fi
 
-# ── 4. Backup current settings and apply minimal profile ─────────────
+# ── 4. Backup current settings and apply minimal profile when supported ──
 SET_PROFILE="$_scripts_dir/set-security-profile.sh"
 if [ ! -f "$SET_PROFILE" ]; then SET_PROFILE="$SCRIPT_DIR/set-security-profile.sh"; fi
 if [ -f "$SET_PROFILE" ]; then
   if [ -f "$SETTINGS_FILE" ] && [ ! -f "$SETTINGS_BAK" ]; then
     cp "$SETTINGS_FILE" "$SETTINGS_BAK"
-    echo "[so-emergency-stop] settings.json backed up to settings.json.bak"
+    echo "[so-emergency-stop] $SETTINGS_LABEL backed up to ${SETTINGS_LABEL}.bak"
   elif [ -f "$SETTINGS_FILE" ] && [ -f "$SETTINGS_BAK" ]; then
-    echo "[so-emergency-stop] settings.json.bak already exists — skipping backup (idempotent)."
+    echo "[so-emergency-stop] ${SETTINGS_LABEL}.bak already exists — skipping backup (idempotent)."
   fi
-  echo "[so-emergency-stop] Applying minimal security profile..."
-  bash "$SET_PROFILE" minimal || true
-  echo "[so-emergency-stop] Minimal profile applied."
+  if [ "$SETTINGS_HARNESS" = "claude" ]; then
+    echo "[so-emergency-stop] Applying minimal security profile..."
+    COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" COGNITIVE_OS_HARNESS="$SETTINGS_HARNESS" bash "$SET_PROFILE" minimal || true
+    echo "[so-emergency-stop] Minimal profile applied."
+  else
+    echo "[so-emergency-stop] Active driver is $SETTINGS_LABEL; minimal security profile projection is Claude-driver-only for now."
+  fi
 else
   echo "[so-emergency-stop] WARNING: set-security-profile.sh not found — settings not changed."
 fi
@@ -95,8 +102,10 @@ echo ""
 echo "  To restore normal operation:"
 echo "    1. Resolve the underlying issue"
 echo "    2. rm -f $FLAG_FILE"
-echo "    3. cp $SETTINGS_BAK $SETTINGS_FILE"
-echo "       OR: bash scripts/apply-efficiency-profile.sh default"
+echo "    3. restore $SETTINGS_LABEL from ${SETTINGS_LABEL}.bak if that backup exists"
+if [ "$SETTINGS_HARNESS" = "claude" ]; then
+  echo "       OR: bash scripts/apply-efficiency-profile.sh default"
+fi
 echo "    4. pytest tests/contracts/ -v --tb=short"
 echo "════════════════════════════════════════════════════════"
 

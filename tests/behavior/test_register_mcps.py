@@ -187,6 +187,30 @@ def test_help_documents_flags():
         assert flag in combined, f"--help missing {flag!r}. output:\n{combined}"
 
 
+def test_register_mcps_skips_non_claude_driver(tmp_path):
+    """Codex-hosted runs must not silently write Claude MCP settings."""
+    project = tmp_path / "project"
+    project.mkdir()
+    (project / ".codex").mkdir()
+    (project / ".codex" / "hooks.json").write_text('{"hooks": {}}\n')
+    scratch_home = tmp_path / "home"
+    scratch_home.mkdir()
+
+    result = _run_script(
+        ["--profile", "default"],
+        env={
+            "COGNITIVE_OS_PROJECT_DIR": str(project),
+            "COGNITIVE_OS_HARNESS": "codex",
+        },
+        home=scratch_home,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "Claude MCP registration only" in result.stderr
+    assert "active driver is .codex/hooks.json" in result.stderr
+    assert not (scratch_home / ".claude" / "settings.json").exists()
+
+
 # ---------------------------------------------------------------------------
 # --dry-run immutability
 # ---------------------------------------------------------------------------
