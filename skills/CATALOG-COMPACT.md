@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 129
+Total skills: 133
 
 ## os (12)
 
@@ -55,7 +55,7 @@ Total skills: 129
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
-## both (23)
+## both (24)
 
 | Skill | Description |
 |-------|-------------|
@@ -70,6 +70,7 @@ Total skills: 129
 | compress | Compress natural language memory files (CLAUDE.md, todos, preferences) into… |
 | cos-status | Display current Cognitive OS state — active profile, skills exposed, hooks… |
 | detect-stack | Scan a project root and produce detected-stack.json with detected languages… |
+| doc-review-personas | N-persona parallel doc review with severity-tiered consolidation. |
 | generate-config | Read detected-stack.json and generate or update cognitive-os.yaml with detected… |
 | llm-status | Inspect LLM dispatch state — providers configured, kill-switches, recent dispatch totals. |
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
@@ -83,7 +84,7 @@ Total skills: 129
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 
-## project (64)
+## project (67)
 
 | Skill | Description |
 |-------|-------------|
@@ -103,6 +104,7 @@ Total skills: 129
 | doc-sync | Synchronize documentation that became stale after code changes |
 | document-feature | Generate or update structured feature documentation using 3-layer detection… |
 | dod-check | Verify Definition of Done criteria for a task at a given complexity level |
+| domain-model | Scaffold DDD domain-model.md (bounded contexts + entities + language) idempotently. |
 | error-analyzer | Analyze accumulated errors from test/lint/build runs and propose skill… |
 | eval-repo | Evaluate external git repositories for potential inclusion in the tech radar. |
 | evaluate-plan | Evaluate any existing plan file with a 0-50 scoring system. |
@@ -114,6 +116,7 @@ Total skills: 129
 | issue-pipeline | Fetch a GitHub issue, run the SDD pipeline, and open a pull request |
 | jupyter-execute | Execute code in a Jupyter kernel sandbox for data analysis, Python snippets… |
 | memu-context | Query memU proactive memory for relevant context before starting work |
+| ops-runbook | Scaffold deploy/rollback/on-call/monitoring runbooks idempotently under 06-backoffice. |
 | optimize-skill | Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras… |
 | persistent-agent | Create persistent agents that maintain their own state across sessions. |
 | plan-bug | Create a bug fix plan with root cause analysis and evaluation scoring. |
@@ -131,6 +134,7 @@ Total skills: 129
 | resource-governor | Master resource optimizer — coordinates budget, infrastructure, agents, skills… |
 | resume-tasks | Check for incomplete tasks from previous sessions and offer to resume them. |
 | retrospective | Weekly analysis of all squads with trend analysis and auto-reconfiguration… |
+| risk-register | Scaffold STRIDE risk register with impact/likelihood matrix idempotently. |
 | run-tests | Auto-detect project test framework and run tests with structured reporting |
 | sandbox-sample | Classify, sample, sandbox-verify, then scale changes across large file sets |
 | scout | Quick pre-implementation codebase reconnaissance with 3 depth levels |

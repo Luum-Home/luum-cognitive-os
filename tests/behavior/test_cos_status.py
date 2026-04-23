@@ -94,6 +94,55 @@ def _setup_codex_status_project(tmp_path: Path) -> Path:
     return project
 
 
+def _setup_codex_pwd_hooks_project(tmp_path: Path) -> Path:
+    """Create a Codex project wired through $PWD/hooks commands."""
+    project = _setup_canonical_only_project(tmp_path)
+
+    hooks_dir = project / "hooks"
+    hooks_dir.mkdir()
+    for hook_name in ("self-install.sh", "session-init.sh", "session-cleanup.sh"):
+        hook = hooks_dir / hook_name
+        hook.write_text("#!/usr/bin/env bash\nexit 0\n")
+        hook.chmod(0o755)
+
+    codex_dir = project / ".codex"
+    codex_dir.mkdir()
+    (codex_dir / "hooks.json").write_text(
+        json.dumps(
+            {
+                "SessionStart": [
+                    {
+                        "matcher": "startup",
+                        "hooks": [
+                            {
+                                "type": "command",
+                                "command": 'export COGNITIVE_OS_HARNESS=codex; [ -x "$PWD/hooks/self-install.sh" ] && bash "$PWD/hooks/self-install.sh" || true',
+                            },
+                            {
+                                "type": "command",
+                                "command": 'export COGNITIVE_OS_HARNESS=codex; [ -x "$PWD/hooks/session-init.sh" ] && bash "$PWD/hooks/session-init.sh" || true',
+                            },
+                        ],
+                    }
+                ],
+                "Stop": [
+                    {
+                        "matcher": "shutdown",
+                        "hooks": [
+                            {
+                                "type": "command",
+                                "command": 'export COGNITIVE_OS_HARNESS=codex; [ -x "$PWD/hooks/session-cleanup.sh" ] && bash "$PWD/hooks/session-cleanup.sh" || true',
+                            }
+                        ],
+                    }
+                ],
+            }
+        )
+    )
+
+    return project
+
+
 def test_status_script_exists_and_is_executable():
     """The script must exist and have the executable bit set."""
     assert STATUS_SCRIPT.is_file(), f"{STATUS_SCRIPT} not found"
@@ -283,3 +332,25 @@ def test_status_reads_hooks_from_codex_settings_driver(tmp_path):
     assert data["hooks"]["driver_path"] == ".codex/hooks.json"
     assert data["hooks"]["total"] == 1
     assert data["hooks"]["by_event"].get("Stop") == 1
+
+
+def test_status_resolves_codex_pwd_hook_commands_without_false_missing_hooks(tmp_path):
+    """Status should resolve Codex $PWD/hooks commands instead of treating trailing 'true' as the hook path."""
+    project = _setup_codex_pwd_hooks_project(tmp_path)
+
+    result = _run(
+        ["--json"],
+        env_overrides={
+            "CLAUDE_PROJECT_DIR": "",
+            "CODEX_PROJECT_DIR": "",
+            "COGNITIVE_OS_PROJECT_DIR": str(project),
+            "COGNITIVE_OS_HARNESS": "codex",
+        },
+    )
+
+    assert result.returncode == 0, f"stderr: {result.stderr}"
+    data = json.loads(result.stdout)
+
+    assert data["hooks"]["driver_path"] == ".codex/hooks.json"
+    assert data["hooks"]["total"] == 3
+    assert data["health"]["failures"] == 0

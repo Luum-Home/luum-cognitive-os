@@ -191,6 +191,22 @@ class TestCLIList:
         assert "(canonical: .cognitive-os/skills/cos/)" in result.stdout
         assert "(project: .claude/skills/)" not in result.stdout
 
+    def test_list_skills_follows_canonical_symlinked_skill_dirs(self, tmp_path):
+        """'cos list skills' should follow symlinked skill directories in the canonical surface."""
+        project = _setup_minimal_project(tmp_path)
+        canonical_skill = project / ".cognitive-os" / "skills" / "cos" / "test-skill"
+        shutil.rmtree(canonical_skill)
+        source_skill = project / "skills" / "test-skill"
+        source_skill.mkdir(parents=True)
+        (source_skill / "SKILL.md").write_text("# Source Skill\n")
+        canonical_skill.symlink_to(source_skill, target_is_directory=True)
+
+        result = _run_cli("list", "skills", cwd=str(project))
+
+        assert result.returncode == 0
+        assert "test-skill" in result.stdout
+        assert "(canonical: .cognitive-os/skills/cos/)" in result.stdout
+
     def test_list_rules_uses_canonical_surface_when_driver_missing(self, tmp_path):
         """'cos list rules' should still work from canonical artifacts without .claude projection."""
         project = _setup_minimal_project(tmp_path)
