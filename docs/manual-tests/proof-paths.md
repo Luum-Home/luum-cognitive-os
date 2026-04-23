@@ -14,14 +14,19 @@ Evidence:
 
 - installer entry point: `install.sh`
 - onboarding status command: `scripts/cos-status.sh`
+- executable first-run proof: `scripts/demo-first-run-onboarding.sh`
 - fresh-install tests: `tests/integration/test_installer.py`
+- first-run budget tests: `tests/integration/test_first_run_onboarding.py`
 - install manifest tests: `tests/integration/test_install_manifest_integration.py`
+- manual proof: `docs/manual-tests/first-run-onboarding.md`
 - manual demo: `docs/manual-tests/five-minute-demo.md`
 
 Verification:
 
 ```bash
+bash scripts/demo-first-run-onboarding.sh
 python3 -m pytest \
+  tests/integration/test_first_run_onboarding.py \
   tests/integration/test_installer.py \
   tests/integration/test_install_manifest_integration.py -q
 ```
