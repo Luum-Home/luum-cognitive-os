@@ -26,6 +26,7 @@ set -uo pipefail  # NOTE: no -e — we want to keep running through optional che
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}}}"
+source "${SCRIPT_DIR}/_lib/settings-driver.sh"
 source "${SCRIPT_DIR}/../hooks/_lib/portable.sh"
 
 canonical_skills_dir() {
@@ -62,6 +63,18 @@ source_rules_dir() {
   fi
 }
 
+active_settings_harness() {
+  cos_detect_harness "$PROJECT_ROOT"
+}
+
+active_settings_driver_label() {
+  cos_settings_driver_label "$(active_settings_harness)"
+}
+
+active_settings_driver_path() {
+  cos_settings_driver_path "$PROJECT_ROOT" "$(active_settings_harness)"
+}
+
 # ── Flag parsing ───────────────────────────────────────────────────────
 
 MODE="pretty"   # pretty | json
@@ -81,7 +94,7 @@ Flags:
 
 Reads:
   - cognitive-os.yaml         (profile)
-  - .claude/settings.json     (wired hooks)
+  - current settings driver   (wired hooks, harness-aware)
   - .claude/skills/           (driver-exposed skills)
   - .cognitive-os/skills/cos/ (canonical installed skills, when present)
   - .cognitive-os/rules/cos/  (canonical rules, when present)
@@ -187,13 +200,14 @@ list_packages() {
     | xargs -n1 basename 2>/dev/null | sort
 }
 
-# Parse .claude/settings.json for hooks. Uses python3 for JSON — always
+# Parse the active settings driver for hooks. Uses python3 for JSON — always
 # available on macOS and linux. If python3 missing, we fall back to a
 # "unknown — jq not available" mode.
 #
 # Emits one line per hook: "EVENT<TAB>COMMAND<TAB>HOOK_PATH_OR_EMPTY"
 parse_hooks() {
-  local settings="$PROJECT_ROOT/.claude/settings.json"
+  local settings
+  settings="$(active_settings_driver_path)"
   if [ ! -f "$settings" ]; then
     return
   fi
@@ -213,6 +227,15 @@ except Exception:
     sys.exit(0)
 
 hooks_block = data.get("hooks", {}) or {}
+if not isinstance(hooks_block, dict):
+    hooks_block = {}
+if not hooks_block:
+    hooks_block = {
+        event: groups
+        for event, groups in data.items()
+        if isinstance(groups, list)
+    }
+
 for event, matcher_groups in hooks_block.items():
     if not isinstance(matcher_groups, list):
         continue
@@ -221,9 +244,11 @@ for event, matcher_groups in hooks_block.items():
             continue
         for h in group.get("hooks", []) or []:
             cmd = h.get("command", "") or ""
-            # Extract the script path — the token inside the first quoted path,
-            # or the last argument of the command.
-            m = re.search(r'"\$CLAUDE_PROJECT_DIR/([^"]+)"', cmd)
+            # Extract a COS-managed script path from the command.
+            m = re.search(
+                r'(\.cognitive-os/hooks/cos/[^"\s]+|\.claude/hooks/[^"\s]+|\.codex/hooks/[^"\s]+)',
+                cmd,
+            )
             path = ""
             if m:
                 path = os.path.join(project_root, m.group(1))
@@ -240,7 +265,10 @@ PYEOF
 run_health_checks() {
   local skills_dir
   skills_dir="$(driver_skills_dir)"
-  local settings="$PROJECT_ROOT/.claude/settings.json"
+  local settings
+  local settings_label
+  settings="$(active_settings_driver_path)"
+  settings_label="$(active_settings_driver_label)"
 
   # 1. .claude/skills/ non-empty
   if [ -d "$skills_dir" ] && [ "$(count_skills "$skills_dir")" -gt 0 ]; then
@@ -249,19 +277,19 @@ run_health_checks() {
     printf 'FAIL\t.claude/skills/ is empty (expected >0)\tbash hooks/self-install.sh\n'
   fi
 
-  # 2. .claude/settings.json valid JSON
+  # 2. Active settings driver valid JSON
   if [ -f "$settings" ]; then
     if command -v python3 >/dev/null 2>&1; then
       if python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$settings" >/dev/null 2>&1; then
-        printf 'OK\t.claude/settings.json is valid JSON\n'
+        printf 'OK\t%s is valid JSON\n' "$settings_label"
       else
-        printf 'FAIL\t.claude/settings.json is not valid JSON\tfix JSON syntax or regenerate via bash hooks/self-install.sh\n'
+        printf 'FAIL\t%s is not valid JSON\tfix JSON syntax or regenerate via bash hooks/self-install.sh\n' "$settings_label"
       fi
     else
-      printf 'OK\t.claude/settings.json present (JSON not verified — python3 missing)\n'
+      printf 'OK\t%s present (JSON not verified — python3 missing)\n' "$settings_label"
     fi
   else
-    printf 'FAIL\t.claude/settings.json missing\tbash hooks/self-install.sh\n'
+    printf 'FAIL\t%s missing\tbash hooks/self-install.sh\n' "$settings_label"
   fi
 
   # 3. Every wired hook exists on disk
@@ -307,7 +335,8 @@ print(datetime.datetime.fromtimestamp(epoch).strftime('%Y-%m-%d %H:%M:%S'))
 # Emits TSV: name<TAB>status<TAB>pid<TAB>uptime_sec<TAB>reason
 # status ∈ {OK, DOWN, STALE, UNREGISTERED}
 get_daemons() {
-  local settings="$PROJECT_ROOT/.claude/settings.json"
+  local settings
+  settings="$(active_settings_driver_path)"
   local runtime_dir="$PROJECT_ROOT/.cognitive-os/runtime"
 
   # Known daemons: name | pidfile | cmdline_match | launcher_hook_pattern
@@ -337,7 +366,7 @@ get_daemons() {
       unset IFS
     fi
     if [ "$registered" -eq 0 ]; then
-      printf '%s\tUNREGISTERED\t-\t-\tlauncher not in settings.json\n' "$name"
+      printf '%s\tUNREGISTERED\t-\t-\tlauncher not in current settings driver\n' "$name"
       continue
     fi
 
@@ -414,6 +443,7 @@ RULES_DRIVER_COUNT=$(count_rules "$RULES_DRIVER_PATH")
 PACKAGES_COUNT=$(count_packages)
 INSTALL_SOURCE="$(get_install_source)"
 LAST_SESSION="$(get_last_session)"
+HOOKS_DRIVER_PATH="$(active_settings_driver_label)"
 
 # Collect hook events into associative array (via temp file — macOS bash 3 has
 # no associative arrays on older systems, but we use bash 4 features below
@@ -492,6 +522,7 @@ out = {
         "kernel_path": skills_kernel_path,
     },
     "hooks": {
+        "driver_path": "$HOOKS_DRIVER_PATH",
         "total": total_hooks,
         "by_event": hooks_by_event,
     },
@@ -539,7 +570,7 @@ pretty_print() {
   fi
 
   # Hooks section
-  printf '%-16s %d wired\n' "Hooks:" "$TOTAL_HOOKS"
+  printf '%-16s %d wired -> %s\n' "Hooks:" "$TOTAL_HOOKS" "$HOOKS_DRIVER_PATH"
   if [ -n "$HOOK_EVENTS_TSV" ]; then
     # Preferred event order
     local preferred="SessionStart UserPromptSubmit SubagentStart PreCompact PreToolUse PostToolUse Stop TeammateIdle TaskCreated TaskCompleted"

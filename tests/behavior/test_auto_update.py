@@ -513,3 +513,84 @@ class TestUninstallDeregistration:
 
         data = _read_registry(registry_file)
         assert len(data["installations"]) == 0
+
+    def test_uninstall_strips_cos_hooks_from_active_codex_driver(self, tmp_path):
+        """uninstall.sh should clean the active Codex settings driver, not only Claude."""
+        project_dir = tmp_path / "codex-project"
+        project_dir.mkdir()
+
+        registry_file = _create_registry(
+            tmp_path,
+            installations=[
+                {
+                    "path": str(project_dir),
+                    "mode": "default",
+                    "version": "0.2.1",
+                    "project_name": "codex-project",
+                    "source": str(PROJECT_ROOT),
+                    "installed_at": "2026-01-01T00:00:00Z",
+                    "updated_at": "2026-01-01T00:00:00Z",
+                }
+            ],
+        )
+
+        codex_dir = project_dir / ".codex"
+        codex_dir.mkdir()
+        hooks_path = codex_dir / "hooks.json"
+        hooks_path.write_text(
+            json.dumps(
+                {
+                    "hooks": {
+                        "Stop": [
+                            {
+                                "matcher": "*",
+                                "hooks": [
+                                    {
+                                        "type": "command",
+                                        "command": 'bash "${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/test-stop.sh"',
+                                    },
+                                    {
+                                        "type": "command",
+                                        "command": 'bash "${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.codex/hooks/custom-stop.sh"',
+                                    },
+                                ],
+                            }
+                        ]
+                    }
+                }
+            )
+        )
+
+        cos_dir = project_dir / ".cognitive-os"
+        (cos_dir / "hooks" / "cos").mkdir(parents=True)
+        (cos_dir / "hooks" / "cos" / "test-stop.sh").write_text("#!/usr/bin/env bash\nexit 0\n")
+        (cos_dir / "install-meta.json").write_text(
+            json.dumps(
+                {
+                    "source": str(PROJECT_ROOT),
+                    "mode": "default",
+                }
+            )
+        )
+
+        result = _run_script(
+            UNINSTALL_SCRIPT,
+            ["--keep-config"],
+            cwd=str(project_dir),
+            env_overrides={"COS_REGISTRY_FILE": str(registry_file)},
+        )
+
+        assert result.returncode == 0, result.stderr
+        assert (codex_dir / "hooks.json.cos-backup").exists()
+
+        hooks_data = json.loads(hooks_path.read_text())
+        commands = [
+            hook["command"]
+            for group in hooks_data["hooks"]["Stop"]
+            for hook in group["hooks"]
+        ]
+        assert all(".cognitive-os/hooks/" not in cmd for cmd in commands)
+        assert any(".codex/hooks/custom-stop.sh" in cmd for cmd in commands)
+
+        data = _read_registry(registry_file)
+        assert len(data["installations"]) == 0
