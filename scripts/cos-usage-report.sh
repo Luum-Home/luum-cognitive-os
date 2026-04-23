@@ -25,7 +25,7 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+PROJECT_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}}}"
 
 DAYS=7
 MODE="pretty"
@@ -141,7 +141,12 @@ hook_counter = Counter(r.get("name", "?") for r in hook_rec)
 top_hooks = hook_counter.most_common(10)
 
 # ── Zero-invocation skills (candidates for archive) ───────────────────────
-skills_dir = root / ".claude" / "skills"
+skill_surface_candidates = [
+    root / ".cognitive-os" / "skills" / "cos",
+    root / ".claude" / "skills",
+    root / ".cognitive-os" / "skills",
+]
+skills_dir = next((p for p in skill_surface_candidates if p.is_dir()), skill_surface_candidates[0])
 exposed = set()
 if skills_dir.is_dir():
     for entry in skills_dir.iterdir():
