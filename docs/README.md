@@ -523,14 +523,14 @@ All components MUST be Apache 2.0 or MIT (SaaS-safe per license-policy.md).
 | OpenTelemetry | Apache 2.0 | Standard |
 | kagent | Apache 2.0 | Candidate |
 
-No AGPL, SSPL, BSL, or ELv2 components are permitted. See `docs/research/license-analysis.md` for the full license matrix.
+No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocked-tools.md) and [Component Sources](component-sources.md) for license decisions and source tracking.
 
 ---
 
 ## Related Documents
 
 - [Cognitive OS Index](INDEX.md) — Sub-document index for the Cognitive OS section
-- [AI Ecosystem Overview](../ai-ecosystem/overview.md) — Current dev-time ecosystem
-- [Research: AI Dev Tools](../research/ai-dev-tools.md) — Evaluated tools and their licenses
-- [License Analysis](../research/license-analysis.md) — SaaS safety verdicts
-- [Architecture Vision](../research/architecture-vision.md) — How all pieces fit together
+- [Overview](overview.md) — Current system overview
+- [Tool Stack](tool-stack.md) — Evaluated tools and integration posture
+- [Blocked Tools](blocked-tools.md) — SaaS safety verdicts and blocked licenses
+- [Architecture Principles](architecture-principles.md) — How the durable product boundaries fit together
