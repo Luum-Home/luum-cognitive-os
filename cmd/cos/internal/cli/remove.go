@@ -83,11 +83,12 @@ func runRemove(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("removing files: %w", err)
 	}
 
-	// Unregister hooks from settings.json.
-	settingsPath := filepath.Join(projectRoot, ".claude", "settings.json")
+	// Unregister hooks from the active harness settings driver.
+	driver := installer.ResolveSettingsDriver(projectRoot)
+	settingsPath := filepath.Join(projectRoot, driver.SettingsRelPath)
 	hookBasePath := filepath.Join(".cognitive-os", "hooks", "cos", pkgName)
 	hookExports := extractHookManifestExports(pkg.Exports)
-	if err := installer.UnregisterHooks(settingsPath, hookExports, hookBasePath); err != nil {
+	if err := installer.UnregisterHooksWithDriver(settingsPath, hookExports, hookBasePath, driver); err != nil {
 		return fmt.Errorf("unregistering hooks: %w", err)
 	}
 

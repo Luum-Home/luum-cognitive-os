@@ -7,7 +7,7 @@
 
 set -uo pipefail
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 SESSIONS_DIR="$PROJECT_DIR/.cognitive-os/sessions"
 ACTIVE_FILE="$SESSIONS_DIR/active-sessions.json"
@@ -85,6 +85,7 @@ _register_session
 # session directory. Without the explicit export, COGNITIVE_OS_SESSION_ID was
 # unset in hook subprocesses and 7 metrics files never landed on disk (ADR-028a §5.3).
 export COGNITIVE_OS_SESSION_ID="$SESSION_ID"
+export COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR"
 echo ""
 echo "=== COGNITIVE OS SESSION INITIALIZED ==="
 echo "Session ID: $SESSION_ID"
@@ -112,7 +113,7 @@ echo "$SESSION_ID" > "$SESSIONS_DIR/.current-session-$$"
 # Consolidated into a single python3 call (was 3 cold starts).
 SELF_IMPROVE_FLAG="$PROJECT_DIR/.cognitive-os/metrics/.self-improve-recommended" \
 SESSION_DIR="$SESSION_DIR" \
-CLAUDE_PROJECT_DIR="$PROJECT_DIR" \
+COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" \
 python3 "$(dirname "$0")/_lib/session_init_helper.py" 2>/dev/null || true
 
 # ─── Singularity auto-suggestion ─────────────────────────────────────────────

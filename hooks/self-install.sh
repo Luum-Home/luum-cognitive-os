@@ -13,7 +13,7 @@
 # overhead at ~21K tokens instead of ~94K tokens.
 set -euo pipefail
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/.." && pwd)}}}"
 
 # ── Self-hosting detection ──────────────────────────────────────────────
 # We are in the luum-agent-os repo if this very script exists relative to root.
@@ -24,6 +24,30 @@ fi
 added=0
 removed=0
 fixes=""
+
+detect_settings_target() {
+  if [ -n "${COGNITIVE_OS_HARNESS:-}" ]; then
+    case "$COGNITIVE_OS_HARNESS" in
+      codex) echo ".codex/hooks.json" ;;
+      *) echo ".claude/settings.json" ;;
+    esac
+    return
+  fi
+
+  if [ -n "${CODEX_PROJECT_DIR:-}" ] || [ -n "${CODEX_SESSION_ID:-}" ] || [ -n "${CODEX_HOME:-}" ]; then
+    echo ".codex/hooks.json"
+    return
+  fi
+
+  if [ -f "$PROJECT_DIR/.codex/hooks.json" ] && [ ! -f "$PROJECT_DIR/.claude/settings.json" ]; then
+    echo ".codex/hooks.json"
+    return
+  fi
+
+  echo ".claude/settings.json"
+}
+
+SETTINGS_TARGET="$(detect_settings_target)"
 
 # ── Sync directory registry ──────────────────────────────────────────────
 # FORMAT:  "src_dir|dest_base|strategy|pattern"
@@ -55,28 +79,15 @@ resolve_dest() {
   esac
 }
 
-# ── Helper: portable relative path from dir_of_link -> target ─────────
-# Usage: rel_path <target_abs> <link_abs>
-# Emits a path relative to dirname(link) that resolves to target.
-# Portable across macOS and Linux (no GNU-only flags).
-rel_path() {
-  local target="$1" link="$2"
-  local link_dir
-  link_dir=$(dirname "$link")
-  python3 - "$target" "$link_dir" <<'PY'
-import os, sys
-target, start = sys.argv[1], sys.argv[2]
-print(os.path.relpath(target, start))
-PY
-}
-
-# ── Helper: create a relative symlink (replaces `ln -sf abs_src link`) ─
+# ── Helper: create a symlink quickly and idempotently ─────────────────
 # Usage: ln_rel <target_abs> <link_abs>
+# We intentionally use absolute targets here: self-install runs inside a
+# single project root, so fast and reliable links matter more than
+# relocatable relative paths. Re-running self-install after moving the repo
+# rehydrates the links.
 ln_rel() {
   local target="$1" link="$2"
-  local rel
-  rel=$(rel_path "$target" "$link")
-  ln -sf "$rel" "$link"
+  ln -sfn "$target" "$link"
 }
 
 # ── Helper: sync directory as flat symlinks ───────────────────────────
@@ -99,7 +110,7 @@ sync_dir() {
   for file in "$src"/$pattern; do
     [ -e "$file" ] || continue
     local base
-    base=$(basename "$file")
+    base="${file##*/}"
     local link="$dst/$base"
     if [ ! -e "$link" ]; then
       ln_rel "$file" "$link"
@@ -128,7 +139,8 @@ sync_tree() {
   for dir in "$src"/*/; do
     [ -d "$dir" ] || continue
     local base
-    base=$(basename "$dir")
+    base="${dir%/}"
+    base="${base##*/}"
     local link="$dst/$base"
     if [ ! -e "$link" ]; then
       ln_rel "$dir" "$link"
@@ -140,7 +152,7 @@ sync_tree() {
   for file in "$src"/*; do
     [ -f "$file" ] || continue
     local base
-    base=$(basename "$file")
+    base="${file##*/}"
     local link="$dst/$base"
     if [ ! -e "$link" ]; then
       ln_rel "$file" "$link"
@@ -336,7 +348,7 @@ if [[ "$SYNC_ALL_RULES" == "true" ]]; then
   # Symlink every .md file in rules/ EXCEPT those that are hook-enforced (EXCLUDED_RULES)
   for src in "$PROJECT_DIR/rules"/*.md; do
     [ -f "$src" ] || continue
-    base=$(basename "$src")
+    base="${src##*/}"
     # Skip rules that are fully enforced by registered hooks
     is_excluded=false
     for excl in "${EXCLUDED_RULES[@]}"; do
@@ -380,7 +392,7 @@ fi
 if [ -d "$cos_rules_dir" ]; then
   for link in "$cos_rules_dir"/*.md; do
     [ -L "$link" ] || continue
-    base=$(basename "$link")
+    base="${link##*/}"
     # Always remove broken symlinks
     if [ ! -e "$link" ]; then
       rm -f "$link"
@@ -426,8 +438,8 @@ if [ -d "$old_rules_dir" ]; then
 fi
 
 # ── Verify infrastructure ────────────────────────────────────────────
-if [ ! -f "$PROJECT_DIR/.claude/settings.json" ]; then
-  fixes="${fixes:+$fixes, }settings.json missing"
+if [ ! -f "$PROJECT_DIR/$SETTINGS_TARGET" ]; then
+  fixes="${fixes:+$fixes, }$SETTINGS_TARGET missing"
 fi
 
 if [ ! -f "$PROJECT_DIR/cognitive-os.yaml" ] && [ ! -f "$PROJECT_DIR/.cognitive-os/cognitive-os.yaml" ]; then
@@ -460,15 +472,15 @@ if [ -d "$PROJECT_DIR/lib" ]; then
 fi
 
 # Check 2: settings.json matches current efficiency profile
-if [ -f "$PROJECT_DIR/scripts/apply-efficiency-profile.sh" ] && [ -f "$PROJECT_DIR/.claude/settings.json" ]; then
+if [ -f "$PROJECT_DIR/scripts/apply-efficiency-profile.sh" ] && [ -f "$PROJECT_DIR/$SETTINGS_TARGET" ]; then
   current_profile=$(grep -A1 '^efficiency:' "$PROJECT_DIR/cognitive-os.yaml" 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || echo "standard")
   if [ "$current_profile" != "full" ]; then
     # Count hooks that should exist for this profile
     expected_hooks=$(grep -c "hook_entry\|hook_group" "$PROJECT_DIR/scripts/apply-efficiency-profile.sh" 2>/dev/null || echo 0)
-    actual_hooks=$(grep -c '"command":' "$PROJECT_DIR/.claude/settings.json" 2>/dev/null || echo 0)
+    actual_hooks=$(grep -c '"command":' "$PROJECT_DIR/$SETTINGS_TARGET" 2>/dev/null || echo 0)
     # Simple sanity: if actual is 0 but expected > 0, something is wrong
     if [ "$actual_hooks" -eq 0 ] && [ "$expected_hooks" -gt 0 ]; then
-      fixes="${fixes:+$fixes, }settings.json has 0 hooks — run: bash scripts/apply-efficiency-profile.sh $current_profile"
+      fixes="${fixes:+$fixes, }$SETTINGS_TARGET has 0 hooks — run: bash scripts/apply-efficiency-profile.sh $current_profile"
     fi
   fi
 fi

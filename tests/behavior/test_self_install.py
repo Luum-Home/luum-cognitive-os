@@ -19,9 +19,16 @@ pytestmark = pytest.mark.behavior
 HOOK_PATH = Path(__file__).resolve().parents[2] / "hooks" / "self-install.sh"
 
 
-def _run_hook(project_dir: str, env_overrides: Optional[Dict[str, str]] = None) -> subprocess.CompletedProcess:
+def _run_hook(
+    project_dir: str,
+    env_overrides: Optional[Dict[str, str]] = None,
+    project_env_var: str = "CLAUDE_PROJECT_DIR",
+) -> subprocess.CompletedProcess:
     env = os.environ.copy()
-    env["CLAUDE_PROJECT_DIR"] = project_dir
+    env.pop("COGNITIVE_OS_PROJECT_DIR", None)
+    env.pop("CODEX_PROJECT_DIR", None)
+    env.pop("CLAUDE_PROJECT_DIR", None)
+    env[project_env_var] = project_dir
     if env_overrides:
         env.update(env_overrides)
     return subprocess.run(
@@ -117,6 +124,35 @@ class TestDetection:
         result = _run_hook(str(project))
         assert result.returncode == 0
         assert "Self-hosting:" in result.stdout
+
+    def test_detects_self_hosting_via_codex_project_dir(self, tmp_path):
+        project = _setup_full_project(tmp_path)
+        result = _run_hook(str(project), project_env_var="CODEX_PROJECT_DIR")
+        assert result.returncode == 0
+        assert "Self-hosting:" in result.stdout
+
+    def test_cognitive_os_project_dir_takes_precedence(self, tmp_path):
+        project = _setup_full_project(tmp_path)
+        other = tmp_path / "other"
+        other.mkdir()
+        result = _run_hook(
+            str(other),
+            env_overrides={"COGNITIVE_OS_PROJECT_DIR": str(project)},
+            project_env_var="CLAUDE_PROJECT_DIR",
+        )
+        assert result.returncode == 0
+        assert "Self-hosting:" in result.stdout
+
+    def test_codex_settings_target_is_accepted(self, tmp_path):
+        project = _setup_full_project(tmp_path)
+        (project / ".claude" / "settings.json").unlink()
+        codex_dir = project / ".codex"
+        codex_dir.mkdir()
+        (codex_dir / "hooks.json").write_text('{"hooks": {}}\n')
+
+        result = _run_hook(str(project), project_env_var="CODEX_PROJECT_DIR")
+        assert result.returncode == 0
+        assert ".codex/hooks.json missing" not in result.stdout
 
     def test_skips_non_self_hosted(self, tmp_path):
         (tmp_path / ".claude").mkdir()
@@ -341,5 +377,3 @@ class TestRealRepo:
         assert "Self-hosting:" in result.stdout
         assert "rules" in result.stdout
         assert "skills" in result.stdout
-
-

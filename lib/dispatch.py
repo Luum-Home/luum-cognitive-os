@@ -45,6 +45,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Optional
 
+from lib.paths import runtime_project_root_or_cwd
+
 # Rate-limit patterns for cascade advance logic. Kept in sync with
 # scripts/orchestrator.py _RATE_LIMIT_PATTERNS and hooks/rate-limit-detector.sh.
 # If any of these substrings appear (case-insensitive) in a provider error,
@@ -92,9 +94,9 @@ def _fallback_disabled() -> bool:
 
 
 def _metrics_path(project_dir: Path | None = None) -> Path:
-    """Resolve the JSONL metrics file path. Honors CLAUDE_PROJECT_DIR."""
+    """Resolve the JSONL metrics file path using the canonical runtime root."""
     if project_dir is None:
-        project_dir = Path(os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd()))
+        project_dir = runtime_project_root_or_cwd()
     return project_dir / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl"
 
 

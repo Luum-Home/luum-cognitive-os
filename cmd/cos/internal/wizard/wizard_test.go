@@ -221,7 +221,7 @@ func TestCountRegisteredHooks(t *testing.T) {
 }`
 	os.WriteFile(filepath.Join(dir, ".claude", "settings.json"), []byte(settingsContent), 0644)
 
-	count := countRegisteredHooks(dir)
+	count := countRegisteredHooks(dir, filepath.Join(".claude", "settings.json"))
 	if count != 3 {
 		t.Errorf("expected 3 registered hooks, got %d", count)
 	}

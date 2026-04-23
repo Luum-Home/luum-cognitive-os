@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
 # cos init — Bootstrap Cognitive OS in any project
-# Usage: bash /path/to/luum-agent-os/scripts/cos-init.sh [--default|--full]
+# Usage: bash /path/to/luum-agent-os/scripts/cos-init.sh [--default|--full] [--harness claude|codex]
 #
 # ADR-002 collapsed the 3-tier profile system to 2 tiers:
 #   --default (canonical) — 10 curated core skills, ~29 standard hooks, 14 core rules
@@ -14,9 +14,35 @@ set -euo pipefail
 
 # ── Resolve COS source directory ────────────────────────────────────
 COS_SOURCE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-RAW_MODE="${1:---default}"
+RAW_MODE="--default"
 PROJECT_DIR="$(pwd)"
 VERSION_FILE="$COS_SOURCE_DIR/VERSION"
+HARNESS="${COGNITIVE_OS_HARNESS:-}"
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --default|--full|--minimal|--standard|--lean)
+      RAW_MODE="$1"
+      shift
+      ;;
+    --harness)
+      if [ -z "${2:-}" ]; then
+        echo "Error: --harness requires a value (claude or codex)." >&2
+        exit 1
+      fi
+      HARNESS="$2"
+      shift 2
+      ;;
+    --harness=*)
+      HARNESS="${1#--harness=}"
+      shift
+      ;;
+    *)
+      RAW_MODE="$1"
+      shift
+      ;;
+  esac
+done
 
 # ── Self-hosting guard ──────────────────────────────────────────────
 # If running inside luum-agent-os itself, refuse (use self-install.sh instead).
@@ -46,6 +72,46 @@ case "$RAW_MODE" in
     echo "  --full     Everything (~142K tokens/session)" >&2
     echo "" >&2
     echo "  Legacy (remapped to --default): --minimal, --standard, --lean" >&2
+    exit 1
+    ;;
+esac
+
+detect_harness() {
+  if [ -n "$HARNESS" ]; then
+    echo "$HARNESS"
+    return
+  fi
+
+  if [ -f ".codex/hooks.json" ] && [ ! -f ".claude/settings.json" ]; then
+    echo "codex"
+    return
+  fi
+
+  if [ -f ".claude/settings.json" ] && [ ! -f ".codex/hooks.json" ]; then
+    echo "claude"
+    return
+  fi
+
+  if [ -n "${CODEX_PROJECT_DIR:-}" ] || [ -n "${CODEX_SESSION_ID:-}" ] || [ -n "${CODEX_HOME:-}" ]; then
+    echo "codex"
+    return
+  fi
+
+  echo "claude"
+}
+
+HARNESS="$(detect_harness)"
+case "$HARNESS" in
+  claude)
+    SETTINGS_RELATIVE_PATH=".claude/settings.json"
+    SETTINGS_LABEL=".claude/settings.json"
+    ;;
+  codex)
+    SETTINGS_RELATIVE_PATH=".codex/hooks.json"
+    SETTINGS_LABEL=".codex/hooks.json"
+    ;;
+  *)
+    echo "Error: unsupported harness '$HARNESS' (expected claude or codex)." >&2
     exit 1
     ;;
 esac
@@ -87,6 +153,7 @@ scope_allows() {
 }
 
 echo "=== Cognitive OS Init ($MODE) ==="
+echo "Harness: $HARNESS"
 echo "Scope filter: $INSTALL_SCOPE"
 echo ""
 
@@ -180,7 +247,7 @@ DEFAULT_SKILLS="compose-prompt exhaustive-prompt agent-dashboard auto-refine
 # SAFETY: if .cognitive-os or .claude is a symlink (e.g. pointing to COS source),
 # mkdir -p would follow the symlink and create dirs inside the source repo.
 # This is a known misconfiguration — fix it by replacing the symlink.
-for dir_check in ".cognitive-os" ".claude"; do
+for dir_check in ".cognitive-os" ".claude" ".codex"; do
   if [ -L "$dir_check" ]; then
     echo "WARNING: $dir_check is a symlink ($(readlink "$dir_check")) — replacing with real directory"
     rm "$dir_check"
@@ -189,6 +256,7 @@ done
 
 mkdir -p .claude/rules/cos
 mkdir -p .claude/commands
+mkdir -p "$(dirname "$SETTINGS_RELATIVE_PATH")"
 mkdir -p .cognitive-os/hooks/cos
 mkdir -p .cognitive-os/skills/cos
 mkdir -p .cognitive-os/templates/cos
@@ -434,40 +502,40 @@ if [ -d "$RULES_DIR" ] && [ "$EFFICIENCY_PROFILE" = "default" ]; then
 fi
 # full profile: keep everything (no filtering)
 
-# ── 9. Create/merge .claude/settings.json ─────────────────────────
-# Generate a project-appropriate settings.json with correct hook paths.
+# ── 9. Create/merge harness settings ───────────────────────────────
+# Generate a project-appropriate settings file with correct hook paths.
 # Self-hosting hooks (self-install.sh, release-guard.sh) are excluded.
 # Hook paths use .cognitive-os/hooks/cos/ (not hooks/ which is COS source layout).
 GENERATOR="$COS_SOURCE_DIR/scripts/generate-project-settings.sh"
 if [ -f "$GENERATOR" ] && command -v jq >/dev/null 2>&1; then
   generated_tmp=$(mktemp)
-  if bash "$GENERATOR" "$MODE" --output="$generated_tmp" 2>/dev/null; then
-    if [ -f ".claude/settings.json" ]; then
+  if bash "$GENERATOR" "$MODE" "--harness=$HARNESS" --output="$generated_tmp" 2>/dev/null; then
+    if [ -f "$SETTINGS_RELATIVE_PATH" ]; then
       # Merge: keep project hooks, replace COS hooks
       if [ -f "$COS_SOURCE_DIR/scripts/merge-settings.sh" ]; then
         merged_tmp=$(mktemp)
-        bash "$COS_SOURCE_DIR/scripts/merge-settings.sh" ".claude/settings.json" "$generated_tmp" "$merged_tmp" 2>/dev/null && \
-          mv "$merged_tmp" ".claude/settings.json" && \
-          echo "Merged COS hooks into existing .claude/settings.json" || \
-          echo "Warning: Could not merge settings. Your .claude/settings.json preserved."
+        bash "$COS_SOURCE_DIR/scripts/merge-settings.sh" "$SETTINGS_RELATIVE_PATH" "$generated_tmp" "$merged_tmp" 2>/dev/null && \
+          mv "$merged_tmp" "$SETTINGS_RELATIVE_PATH" && \
+          echo "Merged COS hooks into existing $SETTINGS_LABEL" || \
+          echo "Warning: Could not merge settings. Your $SETTINGS_LABEL was preserved."
         rm -f "$merged_tmp"
       else
-        echo "Warning: merge-settings.sh not found. Your .claude/settings.json preserved."
+        echo "Warning: merge-settings.sh not found. Your $SETTINGS_LABEL was preserved."
       fi
     else
-      mv "$generated_tmp" ".claude/settings.json"
-      echo "Created .claude/settings.json with project-appropriate hook paths"
+      mv "$generated_tmp" "$SETTINGS_RELATIVE_PATH"
+      echo "Created $SETTINGS_LABEL with project-appropriate hook paths"
     fi
   else
-    echo "Warning: generate-project-settings.sh failed. Falling back to copy."
-    cp "$COS_SOURCE_DIR/.claude/settings.json" ".claude/settings.json" 2>/dev/null || true
+    echo "Warning: generate-project-settings.sh failed. Falling back to copy for $SETTINGS_LABEL."
+    cp "$COS_SOURCE_DIR/.claude/settings.json" "$SETTINGS_RELATIVE_PATH" 2>/dev/null || true
   fi
   rm -f "$generated_tmp"
 else
   # No generator or no jq — fallback to direct copy
-  if [ -f "$COS_SOURCE_DIR/.claude/settings.json" ] && [ ! -f ".claude/settings.json" ]; then
-    cp "$COS_SOURCE_DIR/.claude/settings.json" ".claude/settings.json"
-    echo "Warning: Created settings.json without path transformation (jq missing)"
+  if [ -f "$COS_SOURCE_DIR/.claude/settings.json" ] && [ ! -f "$SETTINGS_RELATIVE_PATH" ]; then
+    cp "$COS_SOURCE_DIR/.claude/settings.json" "$SETTINGS_RELATIVE_PATH"
+    echo "Warning: Created $SETTINGS_LABEL without path transformation (jq missing)"
   fi
 fi
 
