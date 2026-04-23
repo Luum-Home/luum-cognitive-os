@@ -246,12 +246,15 @@ for event, matcher_groups in hooks_block.items():
             cmd = h.get("command", "") or ""
             # Extract a COS-managed script path from the command.
             m = re.search(
-                r'(\.cognitive-os/hooks/cos/[^"\s]+|\.claude/hooks/[^"\s]+|\.codex/hooks/[^"\s]+)',
+                r'(\$PWD/hooks/[^"\s]+|hooks/[^"\s]+|\.cognitive-os/hooks/cos/[^"\s]+|\.claude/hooks/[^"\s]+|\.codex/hooks/[^"\s]+)',
                 cmd,
             )
             path = ""
             if m:
-                path = os.path.join(project_root, m.group(1))
+                matched = m.group(1)
+                if matched.startswith("$PWD/"):
+                    matched = matched[len("$PWD/") :]
+                path = os.path.join(project_root, matched)
             else:
                 # Fallback: last whitespace-separated token
                 toks = cmd.split()

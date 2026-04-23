@@ -81,7 +81,7 @@ active_settings_driver_path() {
 
 dir_has_skill_files() {
   local dir="${1:-}"
-  [ -n "$dir" ] && [ -d "$dir" ] && find "$dir" -name 'SKILL.md' -print -quit 2>/dev/null | grep -q .
+  [ -n "$dir" ] && [ -d "$dir" ] && find -L "$dir" -name 'SKILL.md' -print -quit 2>/dev/null | grep -q .
 }
 
 dir_has_rule_files() {
@@ -1146,7 +1146,7 @@ _list_installed_skills() {
       skill_name=$(basename "$(dirname "$skill_file")")
       printf "  %-30s %s\n" "$skill_name" "(${surface_label}: ${active_surface}/)"
       count=$((count + 1))
-    done < <(find "$active_surface" -name 'SKILL.md' 2>/dev/null | sort)
+    done < <(find -L "$active_surface" -name 'SKILL.md' 2>/dev/null | sort)
     echo "  Total: $count ${surface_label} skill(s)"
   else
     echo "  No project skills installed (${skills_driver}/ not found, canonical fallback empty)"
@@ -1154,11 +1154,11 @@ _list_installed_skills() {
 
   if [ -d "$skills_canonical" ] && [ "$active_surface" != "$skills_canonical" ]; then
     local builtin_count
-    builtin_count=$(find "$skills_canonical" -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
+    builtin_count=$(find -L "$skills_canonical" -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
     echo "  Canonical: $builtin_count skill(s) in ${skills_canonical}/"
   elif [ -d "$skills_legacy" ] && [ "$active_surface" != "$skills_legacy" ]; then
     local builtin_count
-    builtin_count=$(find "$skills_legacy" -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
+    builtin_count=$(find -L "$skills_legacy" -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ')
     echo "  Built-in: $builtin_count skill(s) in ${skills_legacy}/"
   fi
 }
