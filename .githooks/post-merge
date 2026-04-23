@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# COS_AUTO_UPDATE BEGIN — Do not edit this block manually
+# Auto-updates all registered COS installations after git pull/merge.
+# Installed by: bash scripts/setup-git-hooks.sh
+# Remove with:  bash scripts/setup-git-hooks.sh --remove
+_COS_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
+  echo ""
+  echo "[COS] Checking for projects to update..."
+  bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /'
+fi
+# COS_AUTO_UPDATE END
