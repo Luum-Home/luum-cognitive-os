@@ -1,0 +1,6 @@
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+COS_AUTO_REDIRECT_AGENT = "1"
+COS_AUTO_REDIRECT_PRESSURE_THRESHOLD = "0.7"
