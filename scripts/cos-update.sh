@@ -299,7 +299,7 @@ run_self_install() {
     warn "hooks/self-install.sh not found — nothing to apply"
     return 0
   fi
-  if CLAUDE_PROJECT_DIR="$PROJECT_ROOT" bash "$SELF_INSTALL_SCRIPT" >&2; then
+  if COGNITIVE_OS_PROJECT_DIR="$PROJECT_ROOT" bash "$SELF_INSTALL_SCRIPT" >&2; then
     return 0
   else
     return $?
@@ -542,7 +542,7 @@ verify_installation() {
   local failures=0
 
   note "Verify 1/3: re-running self-install (must exit 0)"
-  if ! CLAUDE_PROJECT_DIR="$PROJECT_ROOT" bash "$SELF_INSTALL_SCRIPT" >&2; then
+  if ! COGNITIVE_OS_PROJECT_DIR="$PROJECT_ROOT" bash "$SELF_INSTALL_SCRIPT" >&2; then
     err "self-install re-run failed"
     failures=$((failures + 1))
   fi
