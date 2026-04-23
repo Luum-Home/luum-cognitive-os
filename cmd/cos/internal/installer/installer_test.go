@@ -31,13 +31,18 @@ func TestResolveTargets_Skill(t *testing.T) {
 		t.Fatalf("ResolveTargets error: %v", err)
 	}
 
-	if len(targets) != 1 {
-		t.Fatalf("expected 1 target, got %d", len(targets))
+	if len(targets) != 2 {
+		t.Fatalf("expected 2 targets, got %d", len(targets))
 	}
 
-	expected := filepath.Join(projectRoot, ".claude", "skills", "my-pkg", "SKILL.md")
-	if targets[0].Target != expected {
-		t.Errorf("expected target %q, got %q", expected, targets[0].Target)
+	expected := map[string]bool{
+		filepath.Join(projectRoot, ".cognitive-os", "skills", "cos", "my-pkg", "SKILL.md"): true,
+		filepath.Join(projectRoot, ".claude", "skills", "my-pkg", "SKILL.md"):             true,
+	}
+	for _, target := range targets {
+		if !expected[target.Target] {
+			t.Errorf("unexpected target %q", target.Target)
+		}
 	}
 }
 
@@ -56,13 +61,18 @@ func TestResolveTargets_Rule(t *testing.T) {
 		t.Fatalf("ResolveTargets error: %v", err)
 	}
 
-	if len(targets) != 1 {
-		t.Fatalf("expected 1 target, got %d", len(targets))
+	if len(targets) != 2 {
+		t.Fatalf("expected 2 targets, got %d", len(targets))
 	}
 
-	expected := filepath.Join(projectRoot, ".claude", "rules", "cos", "my-pkg", "safety.md")
-	if targets[0].Target != expected {
-		t.Errorf("expected target %q, got %q", expected, targets[0].Target)
+	expected := map[string]bool{
+		filepath.Join(projectRoot, ".cognitive-os", "rules", "cos", "my-pkg", "safety.md"): true,
+		filepath.Join(projectRoot, ".claude", "rules", "cos", "my-pkg", "safety.md"):       true,
+	}
+	for _, target := range targets {
+		if !expected[target.Target] {
+			t.Errorf("unexpected target %q", target.Target)
+		}
 	}
 }
 
@@ -156,14 +166,18 @@ func TestResolveTargets_SkillPreservesDir(t *testing.T) {
 		t.Fatalf("ResolveTargets error: %v", err)
 	}
 
-	if len(targets) != 1 {
-		t.Fatalf("expected 1 target, got %d", len(targets))
+	if len(targets) != 2 {
+		t.Fatalf("expected 2 targets, got %d", len(targets))
 	}
 
-	// Should preserve "my-skill" directory, not use package name.
-	expected := filepath.Join(projectRoot, ".claude", "skills", "my-skill", "SKILL.md")
-	if targets[0].Target != expected {
-		t.Errorf("expected target %q, got %q", expected, targets[0].Target)
+	expected := map[string]bool{
+		filepath.Join(projectRoot, ".cognitive-os", "skills", "cos", "my-skill", "SKILL.md"): true,
+		filepath.Join(projectRoot, ".claude", "skills", "my-skill", "SKILL.md"):               true,
+	}
+	for _, target := range targets {
+		if !expected[target.Target] {
+			t.Errorf("unexpected target %q", target.Target)
+		}
 	}
 }
 
@@ -225,24 +239,28 @@ func TestInstall_CopiesFiles(t *testing.T) {
 	content := "# Test Skill Content"
 	writeTestFile(t, srcDir, "SKILL.md", content)
 
-	targets := []ExportTarget{
-		{
-			Export: manifest.Export{Source: "SKILL.md", Type: "skill"},
-			Source: filepath.Join(srcDir, "SKILL.md"),
-			Target: filepath.Join(projectRoot, ".claude", "skills", "test-pkg", "SKILL.md"),
-		},
+	targets, err := ResolveTargets(
+		[]manifest.Export{{Source: "SKILL.md", Type: "skill"}},
+		projectRoot,
+		srcDir,
+		"test-pkg",
+	)
+	if err != nil {
+		t.Fatalf("ResolveTargets error: %v", err)
 	}
 
 	if err := Install(targets); err != nil {
 		t.Fatalf("Install error: %v", err)
 	}
 
-	data, err := os.ReadFile(targets[0].Target)
-	if err != nil {
-		t.Fatalf("expected target file to exist: %v", err)
-	}
-	if string(data) != content {
-		t.Errorf("expected content %q, got %q", content, string(data))
+	for _, target := range targets {
+		data, err := os.ReadFile(target.Target)
+		if err != nil {
+			t.Fatalf("expected target file %q to exist: %v", target.Target, err)
+		}
+		if string(data) != content {
+			t.Errorf("expected content %q at %q, got %q", content, target.Target, string(data))
+		}
 	}
 }
 
@@ -980,30 +998,36 @@ func TestComputeManifestIntegrity_Missing(t *testing.T) {
 // Skill path resolution edge cases
 // ---------------------------------------------------------------------------
 
-func TestResolveSkillTarget_TwoPartPath(t *testing.T) {
-	// "skills/SKILL.md" (two parts) should use packageName.
-	target := resolveSkillTarget("skills/SKILL.md", "/project", "my-pkg")
-	expected := filepath.Join("/project", ".claude", "skills", "my-pkg", "SKILL.md")
-	if target != expected {
-		t.Errorf("expected %q, got %q", expected, target)
+func TestResolveSkillTargets_TwoPartPath(t *testing.T) {
+	targets := resolveSkillTargets("skills/SKILL.md", "/project", "my-pkg")
+	expected := []string{
+		filepath.Join("/project", ".cognitive-os", "skills", "cos", "my-pkg", "SKILL.md"),
+		filepath.Join("/project", ".claude", "skills", "my-pkg", "SKILL.md"),
+	}
+	if strings.Join(targets, "|") != strings.Join(expected, "|") {
+		t.Errorf("expected %q, got %q", expected, targets)
 	}
 }
 
-func TestResolveSkillTarget_ThreePartPath(t *testing.T) {
-	// "skills/deep-skill/SKILL.md" preserves directory.
-	target := resolveSkillTarget("skills/deep-skill/SKILL.md", "/project", "my-pkg")
-	expected := filepath.Join("/project", ".claude", "skills", "deep-skill", "SKILL.md")
-	if target != expected {
-		t.Errorf("expected %q, got %q", expected, target)
+func TestResolveSkillTargets_ThreePartPath(t *testing.T) {
+	targets := resolveSkillTargets("skills/deep-skill/SKILL.md", "/project", "my-pkg")
+	expected := []string{
+		filepath.Join("/project", ".cognitive-os", "skills", "cos", "deep-skill", "SKILL.md"),
+		filepath.Join("/project", ".claude", "skills", "deep-skill", "SKILL.md"),
+	}
+	if strings.Join(targets, "|") != strings.Join(expected, "|") {
+		t.Errorf("expected %q, got %q", expected, targets)
 	}
 }
 
-func TestResolveSkillTarget_RootSkill(t *testing.T) {
-	// "SKILL.md" at root uses packageName.
-	target := resolveSkillTarget("SKILL.md", "/project", "my-pkg")
-	expected := filepath.Join("/project", ".claude", "skills", "my-pkg", "SKILL.md")
-	if target != expected {
-		t.Errorf("expected %q, got %q", expected, target)
+func TestResolveSkillTargets_RootSkill(t *testing.T) {
+	targets := resolveSkillTargets("SKILL.md", "/project", "my-pkg")
+	expected := []string{
+		filepath.Join("/project", ".cognitive-os", "skills", "cos", "my-pkg", "SKILL.md"),
+		filepath.Join("/project", ".claude", "skills", "my-pkg", "SKILL.md"),
+	}
+	if strings.Join(targets, "|") != strings.Join(expected, "|") {
+		t.Errorf("expected %q, got %q", expected, targets)
 	}
 }
 
