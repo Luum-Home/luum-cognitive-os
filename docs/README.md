@@ -8,6 +8,25 @@ Cognitive OS is a layered infrastructure that enables organizations to deploy, m
 
 The system is modeled after Kubernetes-style declarative configuration: organizations, squads, and agents are defined as YAML specs and reconciled by control loops.
 
+## Key Documents
+
+- [Architecture Principles](architecture-principles.md) — dependency model and layer boundaries
+- [Design Philosophy](design-philosophy.md) — biological-system framing for the OS
+- [Product Principles](product-principles.md) — product-level constraints and value focus
+- [Product Messaging](business/product-messaging.md) — how to present Cognitive OS as easy to adopt without making it feel simplistic
+- [Model Evolution Resilience](model-evolution-resilience.md) — how to keep the system durable as models, vendors, and tools change
+- [Kernel Contract](kernel-contract.md) — minimal inviolable core and where the machine-readable boundary lives
+- [Bootstrap Portability](architecture/bootstrap-portability.md) — where the system is still Claude-first and how to make Codex and other harnesses first-class bootstrap hosts
+- [Cross-Harness Authoring](architecture/cross-harness-authoring.md) — how to author skills, rules, hooks, and workflows once and project them through harness drivers
+- [Skills and Rules Portability Gap](architecture/skills-rules-portability-gap.md) — why compatibility is not enough and where `.claude/` gravity still weakens real portability
+- [Skills and Rules Canonicalization Risk Analysis](architecture/skills-rules-canonicalization-risk-analysis.md) — why moving skills and rules out of `.claude/` is a contract migration, not a simple path change
+- [Why Skills and Rules Became Claude-Centered](architecture/why-skills-and-rules-became-claude-centered.md) — historical root-cause analysis of why the current `.claude/` gravity emerged in the first place
+- [Skills and Rules Canonicalization Workplan](architecture/skills-rules-canonicalization-workplan.md) — step-by-step migration plan and invariants for phases 1 through 5
+- [Durable Product Master Plan](business/durable-product-master-plan.md) — how to sharpen the wedge, reduce focus drift, and make the repo less aspirational
+- [Master Plan Execution Requirements](business/master-plan-execution-requirements.md) — what must become true in code, CI, onboarding, and product structure to make the master plan real
+- [Master Plan Checklist](business/master-plan-checklist.md) — living checklist for tracking execution progress against the master plan
+- [Feature Reality Audit](business/feature-reality-audit.md) — which feature areas are genuinely core, portable, and product-worthy versus still overextended or harness-advantaged
+
 ## Architecture Layers
 
 ```
