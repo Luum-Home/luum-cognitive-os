@@ -37,8 +37,8 @@ Usage: install.sh [OPTIONS]
 Install Cognitive OS into the CURRENT DIRECTORY (your project).
 
 IMPORTANT: Run this command FROM your project directory, not from the
-Cognitive OS repo. The installer creates .cognitive-os/ and updates
-.claude/ in the current working directory.
+Cognitive OS repo. The installer creates .cognitive-os/ and writes the
+selected harness driver settings in the current working directory.
 
 Profiles (ADR-002):
   (default)      10 curated core skills, ~29 standard hooks, 14 core rules
@@ -56,7 +56,8 @@ Options:
   --full                 Install everything (see above).
   --profile=NAME         Explicit profile: 'default' or 'full'. Legacy values
                          ('lean', 'standard') are accepted and remapped.
-  --harness=NAME         Settings projection target: 'claude' or 'codex'.
+  --harness=NAME         Settings projection target: 'claude' or 'codex'
+                         (default: claude).
   --from PATH            Use a local Cognitive OS repo instead of cloning.
   --force                Overwrite existing installation without prompting.
   --skip-manifest-check  Skip the post-install dependency report.
@@ -80,9 +81,12 @@ Environment variables:
   COS_INSTALL_SCOPE                 Override scope filter: project|both|all.
 
 Examples:
-  # Default install (no flag — recommended for first time)
+  # Default install (Claude driver)
   cd /path/to/your-project
   /path/to/luum-agent-os/install.sh
+
+  # Codex driver install
+  /path/to/luum-agent-os/install.sh --harness=codex
 
   # Full install (everything)
   /path/to/luum-agent-os/install.sh --full
@@ -250,6 +254,14 @@ if [ -z "$PROFILE" ]; then
   PROFILE_SOURCE="auto"
 fi
 
+# Default harness: Claude remains the default for backwards compatibility, but
+# the installer now surfaces the active driver explicitly in the summary.
+if [ -z "$HARNESS" ]; then
+  HARNESS="claude"
+else
+  normalize_harness "$HARNESS"
+fi
+
 # ── Source detection ──────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -275,6 +287,7 @@ fi
 echo "=== Cognitive OS Installer ==="
 echo ""
 echo "Profile: $PROFILE (source: $PROFILE_SOURCE)"
+echo "Harness: $HARNESS"
 echo ""
 
 # Guard: prevent installing COS into its own repo
@@ -435,8 +448,9 @@ else
 fi
 
 # ── Post-install summary (UX1) ────────────────────────────────────────
-# Count what actually landed under .claude/skills/ — the driver surface
-# that the Claude Code harness reads (ADR-001).
+# Count what actually landed under .claude/skills/ - currently the skill
+# projection surface for Claude Code and the compatibility fallback for other
+# harnesses until canonical-first skill projection is complete.
 skills_exposed=0
 if [ -d ".claude/skills" ]; then
   for d in .claude/skills/*/; do
@@ -448,18 +462,25 @@ echo ""
 echo "Cognitive OS installed successfully."
 echo ""
 echo "Profile:        $PROFILE"
-if [ -n "$HARNESS" ]; then
-  echo "Harness:        $HARNESS"
-fi
-echo "Skills exposed: $skills_exposed (under .claude/skills/)"
+echo "Harness:        $HARNESS"
+case "$HARNESS" in
+  claude)
+    settings_driver=".claude/settings.json"
+    ;;
+  codex)
+    settings_driver=".codex/hooks.json"
+    ;;
+esac
+echo "Settings:       $settings_driver"
+echo "Skills exposed: $skills_exposed (under .claude/skills/ compatibility projection)"
 echo ""
 echo "Project structure:"
-echo "  .cognitive-os/hooks/cos/     — COS hooks (namespaced)"
-echo "  .cognitive-os/skills/cos/    — COS skills (kernel path, namespaced)"
-echo "  .cognitive-os/templates/cos/ — COS templates (namespaced)"
-echo "  .claude/skills/              — Skills exposed to the harness (flat, ADR-001)"
-echo "  .claude/rules/cos/           — COS rules (namespaced)"
-echo "  .claude/settings.json        — Hooks (project + COS merged)"
+echo "  .cognitive-os/hooks/cos/     - COS hooks (namespaced)"
+echo "  .cognitive-os/skills/cos/    - COS skills (kernel path, namespaced)"
+echo "  .cognitive-os/templates/cos/ - COS templates (namespaced)"
+echo "  $settings_driver        - Active harness settings driver"
+echo "  .claude/skills/              - Compatibility skill projection (ADR-001)"
+echo "  .claude/rules/cos/           - Claude-compatible rule projection"
 echo ""
 
 if [ "$skills_exposed" -eq 0 ]; then
@@ -469,7 +490,15 @@ if [ "$skills_exposed" -eq 0 ]; then
   echo "" >&2
 fi
 
-echo "Your existing .claude/ configuration is preserved."
+echo "Next checks:"
+echo "  COGNITIVE_OS_PROJECT_DIR=\"\$PWD\" bash <cos-source>/scripts/cos-status.sh"
+if [ "$HARNESS" = "claude" ]; then
+  echo "  claude  # then run /cognitive-os-init when you want project-specific generation"
+else
+  echo "  Open Codex in this project; hooks are projected in .codex/hooks.json."
+fi
+echo ""
+echo "Existing harness configuration is preserved and merged where supported."
 echo ""
 
 # ── Manifest check (advisory) ─────────────────────────────────────────

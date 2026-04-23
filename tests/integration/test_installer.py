@@ -107,6 +107,8 @@ class TestFreshInstall:
         assert hooks_path.is_file(), ".codex/hooks.json not created"
         content = hooks_path.read_text()
         assert "CODEX_PROJECT_DIR" in content, "Codex hooks.json missing Codex project expression"
+        assert "Harness:        codex" in result.stdout
+        assert "Settings:       .codex/hooks.json" in result.stdout
 
     def test_creates_cognitive_os_yaml(self, install_dir, cos_source):
         """install.sh creates cognitive-os.yaml config."""
@@ -153,6 +155,9 @@ class TestFreshInstall:
             text=True,
         )
         assert "installed successfully" in result.stdout
+        assert "Harness:        claude" in result.stdout
+        assert "Settings:       .claude/settings.json" in result.stdout
+        assert "Next checks:" in result.stdout
 
 
 # ---------------------------------------------------------------------------
@@ -582,6 +587,19 @@ class TestHelpFlag:
         )
         assert result.returncode == 0
         assert "CURRENT DIRECTORY" in result.stdout or "project directory" in result.stdout
+
+    def test_help_documents_harness_drivers(self):
+        """--help should document supported harness drivers and the default."""
+        result = subprocess.run(
+            [str(INSTALLER), "--help"],
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0
+        assert "--harness=NAME" in result.stdout
+        assert "claude" in result.stdout
+        assert "codex" in result.stdout
+        assert "default: claude" in result.stdout
 
     def test_help_explains_from_flag(self):
         """--help should explain when --from is needed."""
