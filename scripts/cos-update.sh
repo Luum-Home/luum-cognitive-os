@@ -42,10 +42,13 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 source "${PROJECT_ROOT}/hooks/_lib/portable.sh"
+source "${PROJECT_ROOT}/scripts/_lib/settings-driver.sh"
 CLAUDE_DIR="${PROJECT_ROOT}/.claude"
 COS_DIR="${PROJECT_ROOT}/.cognitive-os"
 BACKUP_ROOT="${COS_DIR}/backups"
-SETTINGS_FILE="${CLAUDE_DIR}/settings.json"
+SETTINGS_HARNESS="$(cos_detect_harness "$PROJECT_ROOT")"
+SETTINGS_FILE="$(cos_settings_driver_path "$PROJECT_ROOT" "$SETTINGS_HARNESS")"
+SETTINGS_LABEL="$(cos_settings_driver_label "$SETTINGS_HARNESS")"
 SELF_INSTALL_SCRIPT="${PROJECT_ROOT}/hooks/self-install.sh"
 ENV_FILE="${PROJECT_ROOT}/.env"
 ENV_EXAMPLE="${PROJECT_ROOT}/env.example"
@@ -257,6 +260,7 @@ make_backup() {
   {
     echo "timestamp_utc=${ts}"
     echo "project_root=${PROJECT_ROOT}"
+    echo "settings_driver=${SETTINGS_LABEL}"
     echo "settings_sha=$(sha256_of "$SETTINGS_FILE")"
     echo "git_head=$(git -C "$PROJECT_ROOT" rev-parse --short HEAD 2>/dev/null || echo unknown)"
   } > "$dir/meta.txt"
@@ -351,7 +355,7 @@ sync_python_deps_if_changed() {
 #
 # This closes the downstream-project drift gap: when cos-update.sh copies a
 # new apply-efficiency-profile.sh (e.g. adding a hook registration), the
-# downstream's .claude/settings.json would otherwise stay stale because
+# downstream's settings driver would otherwise stay stale because
 # cos-update.sh only runs self-install — not the profile generator.
 #
 # Failure is non-fatal (WARN + continue), same pattern as uv sync.
@@ -360,6 +364,11 @@ sync_python_deps_if_changed() {
 regenerate_settings_if_profile_changed() {
   if [[ ! -f "$APPLY_EFF_PROFILE_SCRIPT" ]]; then
     # Silent skip — minimal install may not ship the profile generator.
+    return 0
+  fi
+
+  if [[ "$SETTINGS_HARNESS" != "claude" ]]; then
+    note "active settings driver is ${SETTINGS_LABEL}; skipping Claude profile regeneration"
     return 0
   fi
 
@@ -388,7 +397,7 @@ regenerate_settings_if_profile_changed() {
     profile="default"
   fi
 
-  note "apply-efficiency-profile.sh changed (${previous_sha:0:8}→${current_sha:0:8}); regenerating settings.json with profile '${profile}'"
+  note "apply-efficiency-profile.sh changed (${previous_sha:0:8}→${current_sha:0:8}); regenerating ${SETTINGS_LABEL} with profile '${profile}'"
   if bash "$APPLY_EFF_PROFILE_SCRIPT" "$profile" >&2; then
     mkdir -p "$STATE_DIR"
     printf '%s\n' "$current_sha" > "$APPLY_EFF_PROFILE_SHA_FILE"
@@ -597,7 +606,7 @@ perform_rollback() {
 
   if [[ -f "$backup_dir/settings.json" ]]; then
     cp "$backup_dir/settings.json" "$SETTINGS_FILE"
-    note "  restored .claude/settings.json"
+    note "  restored ${SETTINGS_LABEL}"
   fi
 
   note "  NOTE: symlinks under .claude/skills/, .claude/rules/cos/, and"
@@ -621,7 +630,7 @@ prompt_or_auto_rollback() {
   fi
 
   local reply
-  printf 'Verify failed. Roll back settings.json from %s? [y/N] ' "$backup_dir" >&2
+  printf 'Verify failed. Roll back %s from %s? [y/N] ' "$SETTINGS_LABEL" "$backup_dir" >&2
   read -r reply || reply=""
   case "$reply" in
     y|Y|yes|YES) perform_rollback "$backup_dir" ;;
@@ -667,7 +676,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
   say "  - create backup at .cognitive-os/backups/pre-update-<UTC>/"
   say "  - rotate backups to last ${MAX_BACKUPS}"
   say "  - sync Python deps via uv sync if pyproject.toml changed"
-  say "  - regenerate settings.json via scripts/apply-efficiency-profile.sh if the profile script changed"
+  say "  - regenerate active settings driver if the profile script changed"
   say "  - register mcps via scripts/register-mcps.sh if manifest changed"
   say "  - run hooks/self-install.sh"
   say "  - capture post-state snapshot and diff against pre-state"
@@ -677,7 +686,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
     say "  - verify: re-run install hooks, pytest audit, go build"
   fi
   if [[ "$AUTO_ROLLBACK" == "true" ]]; then
-    say "  - on verify failure: auto-rollback settings.json"
+    say "  - on verify failure: auto-rollback active settings driver"
   fi
   rm -f "$PRE_SNAPSHOT"
   exit 0
@@ -696,7 +705,7 @@ pull_images_if_requested
 # environments still get the self-install updates applied.
 sync_python_deps_if_changed || warn "python dependency sync encountered errors (see log above)"
 
-# Regenerate .claude/settings.json when apply-efficiency-profile.sh has changed.
+# Regenerate the active Claude settings driver when apply-efficiency-profile.sh has changed.
 # Done BEFORE self-install so self-install operates on the refreshed settings.
 # Placed after file sync (sync_python_deps_if_changed above) and before verify.
 regenerate_settings_if_profile_changed || warn "settings regeneration encountered errors (see log above)"

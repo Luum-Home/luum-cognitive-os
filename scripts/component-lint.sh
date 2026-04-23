@@ -5,6 +5,7 @@
 set -uo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+source "$PROJECT_ROOT/scripts/_lib/settings-driver.sh"
 FIX_MODE="${1:-}"
 ISSUES=0
 WARNINGS=0
@@ -116,7 +117,8 @@ done
 echo ""
 echo "## Check 5: Unregistered hooks"
 
-settings="$PROJECT_ROOT/.claude/settings.json"
+settings="$(cos_settings_driver_path "$PROJECT_ROOT" "$(cos_detect_harness "$PROJECT_ROOT")")"
+settings_label="$(cos_settings_driver_label "$(cos_detect_harness "$PROJECT_ROOT")")"
 if [ -f "$settings" ]; then
     unregistered=0
     for hook in "$PROJECT_ROOT"/hooks/*.sh; do
@@ -125,13 +127,13 @@ if [ -f "$settings" ]; then
         # Skip _lib helpers and _archived
         [[ "$hook_name" == _* ]] && continue
         if ! grep -q "$hook_name" "$settings" 2>/dev/null; then
-            warn "Hook '$hook_name' exists but NOT registered in settings.json"
+            warn "Hook '$hook_name' exists but NOT registered in $settings_label"
             ((unregistered++))
         fi
     done
     [ "$unregistered" -eq 0 ] && ok "All hooks registered"
 else
-    warn "No .claude/settings.json found"
+    warn "No active settings driver found at $settings_label"
 fi
 
 # ─────────────────────────────────────

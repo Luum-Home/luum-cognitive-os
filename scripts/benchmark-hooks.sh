@@ -30,11 +30,14 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-SETTINGS="$SCRIPT_DIR/.claude/settings.json"
+SOURCE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECT_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$SOURCE_ROOT}}}"
+source "$SOURCE_ROOT/scripts/_lib/settings-driver.sh"
+SETTINGS="$(cos_settings_driver_path "$PROJECT_ROOT" "$(cos_detect_harness "$PROJECT_ROOT")")"
+SETTINGS_LABEL="$(cos_settings_driver_label "$(cos_detect_harness "$PROJECT_ROOT")")"
 
 if [ ! -f "$SETTINGS" ]; then
-  echo "ERROR: No settings.json found at $SETTINGS"
+  echo "ERROR: No active settings driver found at $SETTINGS_LABEL"
   exit 1
 fi
 
@@ -70,8 +73,9 @@ STOP_MS=0
 OTHER_MS=0
 
 # Set up environment for hooks
-export CLAUDE_PROJECT_DIR="$SCRIPT_DIR"
-export COGNITIVE_OS_PROJECT_DIR="$SCRIPT_DIR"
+export CODEX_PROJECT_DIR="$PROJECT_ROOT"
+export CLAUDE_PROJECT_DIR="$PROJECT_ROOT"
+export COGNITIVE_OS_PROJECT_DIR="$PROJECT_ROOT"
 export TOOL_NAME="Bash"
 export TOOL_INPUT='{"command":"echo benchmark"}'
 export SESSION_ID="benchmark-$$"
@@ -165,7 +169,7 @@ fi
 echo ""
 
 # Write machine-readable results
-RESULTS_FILE="$SCRIPT_DIR/.cognitive-os/metrics/hook-benchmark.json"
+RESULTS_FILE="$PROJECT_ROOT/.cognitive-os/metrics/hook-benchmark.json"
 mkdir -p "$(dirname "$RESULTS_FILE")" 2>/dev/null
 cat > "$RESULTS_FILE" <<EOJSON
 {

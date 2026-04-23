@@ -687,3 +687,51 @@ def test_update_passes_canonical_project_env_to_self_install(tmp_path):
     assert env_log.exists(), "self-install env log was not written"
     log_text = env_log.read_text()
     assert f"cognitive={scratch}" in log_text
+
+
+def test_update_does_not_run_claude_profile_regen_for_codex_driver(tmp_path):
+    """cos-update should not create Claude settings while updating a Codex-first project."""
+    scratch = tmp_path / "codex-update"
+    scratch.mkdir()
+
+    scripts_dir = scratch / "scripts"
+    shutil.copytree(PROJECT_ROOT / "scripts", scripts_dir)
+
+    hooks_dir = scratch / "hooks"
+    hooks_dir.mkdir()
+    hooks_lib_dir = hooks_dir / "_lib"
+    hooks_lib_dir.mkdir()
+    shutil.copy2(PROJECT_ROOT / "hooks" / "_lib" / "portable.sh", hooks_lib_dir / "portable.sh")
+    self_install = hooks_dir / "self-install.sh"
+    self_install.write_text("#!/usr/bin/env bash\nset -euo pipefail\nexit 0\n")
+    self_install.chmod(0o755)
+
+    (scratch / "cognitive-os.yaml").write_text("efficiency:\n  profile: default\n")
+    (scratch / ".cognitive-os" / "state").mkdir(parents=True)
+    (scratch / ".codex").mkdir()
+    (scratch / ".codex" / "hooks.json").write_text('{"hooks": {}}\n')
+
+    marker = scratch / "claude-profile-ran"
+    apply_profile = scripts_dir / "apply-efficiency-profile.sh"
+    apply_profile.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        f"touch {marker}\n"
+        "mkdir -p .claude\n"
+        "printf '{\"hooks\":{}}\\n' > .claude/settings.json\n"
+    )
+    apply_profile.chmod(0o755)
+
+    result = subprocess.run(
+        ["bash", str(scripts_dir / "cos-update.sh"), "--no-verify", "--force"],
+        capture_output=True,
+        text=True,
+        timeout=90,
+        cwd=str(scratch),
+    )
+
+    assert result.returncode == 0, result.stderr[-1000:]
+    assert "skipping Claude profile regeneration" in result.stderr
+    assert not marker.exists(), "Claude profile generator should not run for Codex driver"
+    assert not (scratch / ".claude" / "settings.json").exists()
+    assert (scratch / ".codex" / "hooks.json").exists()
