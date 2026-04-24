@@ -63,8 +63,8 @@ for pkg_yaml in "$PACKAGES_DIR"/*/cos-package.yaml; do
       continue
     fi
     if [ "$in_keywords" = true ]; then
-      if echo "$line" | grep -qE '^\s+-'; then
-        tag=$(echo "$line" | sed 's/^\s*- *//' | tr -d '"' | tr -d "'")
+      if echo "$line" | grep -qE '^[[:space:]]*-'; then
+        tag=$(echo "$line" | sed 's/^[[:space:]]*-[[:space:]]*//' | tr -d '"' | tr -d "'")
         tags="${tags:+$tags, }$tag"
       else
         break

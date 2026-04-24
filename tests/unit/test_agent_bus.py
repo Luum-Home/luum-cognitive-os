@@ -1008,8 +1008,14 @@ class TestSmartInfraIntegration:
         """AgentPublisher calls ensure_service('valkey') when initial connect fails."""
         mock_redis_cls = MagicMock()
         mock_client = MagicMock()
-        # First ping fails (not running), second ping succeeds (after smart_infra)
-        mock_client.ping.side_effect = [ConnectionError("refused"), True]
+        # ADR-042 resolution order: primary URL -> local daemon fallback -> smart_infra.
+        # We must fail both pre-smart_infra probes so the Docker ensure path runs.
+        mock_client.ping.side_effect = [
+            ConnectionError("primary refused"),
+            ConnectionError("local daemon refused"),
+            True,
+            True,
+        ]
         mock_redis_cls.from_url.return_value = mock_client
 
         with patch.dict("sys.modules", {"redis": MagicMock(Redis=mock_redis_cls)}), \
@@ -1047,7 +1053,12 @@ class TestSmartInfraIntegration:
         """OrchestratorSubscriber calls ensure_service('valkey') when initial connect fails."""
         mock_redis_cls = MagicMock()
         mock_client = MagicMock()
-        mock_client.ping.side_effect = [ConnectionError("refused"), True]
+        mock_client.ping.side_effect = [
+            ConnectionError("primary refused"),
+            ConnectionError("local daemon refused"),
+            True,
+            True,
+        ]
         mock_client.pubsub.return_value = MagicMock()
         mock_redis_cls.from_url.return_value = mock_client
 
@@ -1061,8 +1072,12 @@ class TestSmartInfraIntegration:
         """is_valkey_available() tries smart_infra when Valkey is not reachable."""
         mock_redis_mod = MagicMock()
         mock_client = MagicMock()
-        # First ping fails, second succeeds after smart_infra
-        mock_client.ping.side_effect = [ConnectionError("refused"), True]
+        # ADR-042 tries the local daemon fallback before smart_infra.
+        mock_client.ping.side_effect = [
+            ConnectionError("primary refused"),
+            ConnectionError("local daemon refused"),
+            True,
+        ]
         mock_redis_mod.Redis.from_url.return_value = mock_client
 
         with patch.dict("sys.modules", {"redis": mock_redis_mod}), \

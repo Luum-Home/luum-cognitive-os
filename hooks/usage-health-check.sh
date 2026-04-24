@@ -18,12 +18,13 @@ if [ -f "$LAST_RUN_FILE" ]; then
     fi
 fi
 
-# Run the health check
-timeout 30 python3 -c "
+# Run the lightweight startup check.
+# The full usage report is intentionally too heavy for a SessionStart hook.
+timeout 10 python3 -c "
 from lib.component_usage_tracker import ComponentUsageTracker
-t = ComponentUsageTracker()
-r = t.generate_usage_report()
-health = r.get('dead_weight', {}).get('health_pct', 0)
+t = ComponentUsageTracker('.')
+r = t.generate_quick_health_report()
+health = r.get('dead_weight', {}).get('health_pct', 100)
 if health < 60:
     import sys
     print(f'COMPONENT HEALTH WARNING: {health:.0f}% — run /usage-report for details', file=sys.stderr)

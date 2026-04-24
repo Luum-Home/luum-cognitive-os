@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 133
+Total skills: 134
 
 ## os (12)
 
@@ -84,7 +84,7 @@ Total skills: 133
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 
-## project (67)
+## project (68)
 
 | Skill | Description |
 |-------|-------------|
@@ -98,6 +98,7 @@ Total skills: 133
 | confidence-check | Pre-implementation confidence assessment. |
 | contract-drift | Detect drift between HTTP calls in source code and OpenAPI/Swagger contract… |
 | conversation-memory | Search and learn from past Cognitive OS sessions — the system's long-term memory |
+| cost-predict | Estimate task cost from historical metrics and default phase routing. |
 | coverage-enforcement | Run Go test coverage for all services, enforce thresholds from… |
 | deep-research | Multi-hop research skill for deep investigation of topics. |
 | devbox-checkpoint | Save and restore environment state snapshots using devbox |
