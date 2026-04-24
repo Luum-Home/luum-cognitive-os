@@ -15,6 +15,12 @@
 # its 5 dependency containers have been removed. LLM observability migrated
 # to Arize Phoenix (pip: arize-phoenix). Run UI via:
 #   uv run phoenix serve    (http://localhost:6006). See ADR-058.
+#
+# NOTE (ADR-060, 2026-04-24): the cloud-only observability tracing stack
+# was removed — its supported mode violated the new local-only
+# optional-services policy. MemU Docker path now ships with a
+# self-contained `memu-pg` backend so the `memory` profile is a fully
+# local lane. See ADR-060.
 # =============================================================================
 
 services:
@@ -138,14 +144,33 @@ services:
   # 3-layer hierarchical memory: Resource → Item → Category
   # MIGRATED TO PIP: pip install memu>=2.0. Container kept for reference/CI.
   # Container was just a pip install wrapper anyway. Run: python -m memu.server
-  # ---------------------------------------------------------------------------
   #
-  # ADR-058 (2026-04-24): Postgres backend previously provided by the
-  # retired observability-pg container has been removed. If you need memu
-  # with a Docker Postgres, bring your own (e.g., add a dedicated memu-pg
-  # service) or use the pip path
-  # (`pip install memu-ai && python -m memu.server`) which is the supported
-  # mode per cognitive-os.yaml (`services.memu.mode: pip`).
+  # ADR-060 (2026-04-24): the Docker path now ships with a self-contained
+  # `memu-pg` Postgres backend (below) so `docker compose --profile memory up`
+  # is a fully local, zero-cloud lane. Default supported path remains pip
+  # (`services.memu.mode: pip`). External DBs can still be wired via
+  # MEMU_DB_URL override.
+  # ---------------------------------------------------------------------------
+  memu-pg:
+    image: postgres:17-alpine@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1  # pinned 2026-03-28 (shared with paperclip-pg)
+    container_name: cognitive-os-memu-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${MEMU_PG_USER:-memu}
+      POSTGRES_PASSWORD: ${MEMU_PG_PASS:-memu_pass}
+      POSTGRES_DB: ${MEMU_PG_DB:-memu}
+    volumes:
+      - memu-pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - memory
+    networks:
+      - cognitive-os-network
+
   memu:
     image: python:3.13-slim@sha256:739e7213785e88c0f702dcdc12c0973afcbd606dbf021a589cab77d6b00b579d  # pinned 2026-03-28
     container_name: cognitive-os-memu
@@ -157,11 +182,15 @@ services:
     ports:
       - "127.0.0.1:${COGNITIVE_OS_MEMU_PORT:-8765}:8765"
     environment:
-      # MEMU_DB_URL must be supplied by the user (see ADR-058 note above).
-      MEMU_DB_URL: ${MEMU_DB_URL:-}
+      # Default backend is the self-contained memu-pg container (ADR-060).
+      # Override MEMU_DB_URL to point at an external DB or switch to SQLite.
+      MEMU_DB_URL: ${MEMU_DB_URL:-postgres://${MEMU_PG_USER:-memu}:${MEMU_PG_PASS:-memu_pass}@memu-pg:5432/${MEMU_PG_DB:-memu}}
       MEMU_LLM_PROVIDER: ${MEMU_LLM_PROVIDER:-openai}
       MEMU_LLM_API_KEY: ${MEMU_LLM_API_KEY:-}
       MEMU_LOG_LEVEL: ${MEMU_LOG_LEVEL:-INFO}
+    depends_on:
+      memu-pg:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:8765/health || exit 1"]
       interval: 15s
@@ -227,99 +256,12 @@ services:
       - cognitive-os-network
 
   # ---------------------------------------------------------------------------
-  # Opik — LLM Observability, Tracing & Evaluation (ADOPT)
-  # MIGRATED TO PIP: pip install opik>=1.0. Container kept for reference/CI.
-  # Already configured to use Comet cloud API (comet.com/opik). No local server needed.
-  #
-  # ADR-058 (2026-04-24): ClickHouse and Valkey backends previously provided
-  # by the retired observability-stack containers have been removed. Users
-  # who want to run the self-hosted opik stack must supply their own
-  # ClickHouse + Redis (hostnames/credentials via OPIK_CLICKHOUSE_HOST /
-  # OPIK_REDIS_URL). The supported path is pip + Comet cloud
-  # (cognitive-os.yaml `services.opik.mode: cloud`).
+  # ADR-060 (2026-04-24): the cloud-only observability stack (3 containers +
+  # MySQL volume) has been removed — its supported mode was `cloud`, which
+  # violates the new local-only optional-services policy. LLM observability
+  # is now provided by Arize Phoenix (pip, Apache 2.0) — see ADR-058. For
+  # rationale see ADR-060-local-only-optional-services.md.
   # ---------------------------------------------------------------------------
-  opik-backend:
-    image: ghcr.io/comet-ml/opik/opik-backend:latest@sha256:60d310f4180f05b09c1cd4b1bcf2f94025c8b5ae4644e969efc12551397ed70a  # pinned 2026-03-28 — was :latest (mutable)
-    container_name: cognitive-os-opik-backend
-    restart: unless-stopped
-    environment:
-      # ClickHouse host must be user-supplied (see ADR-058 note above).
-      ANALYTICS_DB_MIGRATIONS_URL: jdbc:clickhouse://${OPIK_CLICKHOUSE_HOST:-clickhouse}:${OPIK_CLICKHOUSE_HTTP_PORT:-8123}/opik
-      ANALYTICS_DB_MIGRATIONS_USER: ${OPIK_CH_USER:-clickhouse}
-      ANALYTICS_DB_MIGRATIONS_PASS: ${OPIK_CH_PASS:-clickhouse}
-      ANALYTICS_DB_PROTOCOL: HTTP
-      ANALYTICS_DB_HOST: ${OPIK_CLICKHOUSE_HOST:-clickhouse}
-      ANALYTICS_DB_PORT: "${OPIK_CLICKHOUSE_HTTP_PORT:-8123}"
-      ANALYTICS_DB_USERNAME: ${OPIK_CH_USER:-clickhouse}
-      ANALYTICS_DB_PASS: ${OPIK_CH_PASS:-clickhouse}
-      ANALYTICS_DB_DATABASE_NAME: opik
-      # Redis/Valkey URL must be user-supplied.
-      REDIS_URL: ${OPIK_REDIS_URL:-redis://localhost:6379/0}
-      STATE_DB_PROTOCOL: jdbc:mysql://
-      STATE_DB_URL: opik-mysql:3306/opik?createDatabaseIfNotExist=true
-      STATE_DB_USER: ${OPIK_MYSQL_USER:-opik}
-      STATE_DB_PASS: ${OPIK_MYSQL_PASS:-opik_pass}
-      STATE_DB_DATABASE_NAME: opik
-      JAVA_OPTS: "-Xms256m -Xmx512m"
-    ports:
-      - "${OPIK_PORT:-5173}:8080"
-    depends_on:
-      opik-mysql:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/is-alive/ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    profiles:
-      - observability
-    networks:
-      - cognitive-os-network
-
-  opik-mysql:
-    image: mysql:8.4@sha256:da906917ca4ace3ba55538b7c2ee97a9bc865ef14a4b6920b021f0249d603f3d  # pinned 2026-03-28
-    container_name: cognitive-os-opik-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: ${OPIK_MYSQL_ROOT_PASS:-opik_root_pass}
-      MYSQL_DATABASE: opik
-      MYSQL_USER: ${OPIK_MYSQL_USER:-opik}
-      MYSQL_PASSWORD: ${OPIK_MYSQL_PASS:-opik_pass}
-    volumes:
-      - opik-mysql-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 20s
-    profiles:
-      - observability
-    networks:
-      - cognitive-os-network
-
-  opik-frontend:
-    image: ghcr.io/comet-ml/opik/opik-frontend:latest@sha256:007cb7d328caa4d5d08411585a9fc8fa1120580b4fba6a9dc124e967bcc79b64  # pinned 2026-03-28 — was :latest (mutable)
-    container_name: cognitive-os-opik-frontend
-    restart: unless-stopped
-    environment:
-      OPIK_API_URL: http://opik-backend:8080/api
-    ports:
-      - "${OPIK_UI_PORT:-5174}:5173"
-    depends_on:
-      opik-backend:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:5173"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-    profiles:
-      - observability
-    networks:
-      - cognitive-os-network
 
   # ---------------------------------------------------------------------------
   # Webhook Trigger — GitHub webhook server for automated SDD pipelines
@@ -454,8 +396,11 @@ volumes:
     name: cognitive-os-paperclip-pg-data
   paperclip-data:
     name: cognitive-os-paperclip-data
-  opik-mysql-data:
-    name: cognitive-os-opik-mysql-data
+  # ADR-060 (2026-04-24): former observability MySQL data volume removed with
+  # the cloud-only stack. Operator can reclaim disk via:
+  #   docker volume ls -q | grep -E 'cognitive-os-.*-mysql-data' | xargs -r docker volume rm
+  memu-pg-data:
+    name: cognitive-os-memu-pg-data
   cognee-data:
     name: cognitive-os-cognee-data
 

@@ -35,7 +35,6 @@ check for their Docker containers — they run as Python libraries or local proc
 | nemo-guardrails | `pip install nemoguardrails>=0.10` | `from nemoguardrails import RailsConfig, LLMRails` |
 | memu | `pip install memu>=2.0` | `python -m memu.server` |
 | jupyter | `pip install jupyter>=1.0 notebook>=7.0` | `jupyter lab` |
-| opik | `pip install opik>=1.0` | Uses Comet cloud API — no local server needed |
 
 ## Services and Profiles
 
@@ -61,11 +60,9 @@ Services are defined in `docker-compose.cognitive-os.yml`. Some run by default, 
 
 ### Profile: `observability`
 
-| Service | Purpose | When Needed | Status |
-|---------|---------|-------------|--------|
-| opik-backend | Opik tracing backend | LLM evaluation and tracing | **MIGRATED TO PIP** (cloud) |
-| opik-mysql | Opik MySQL database | Required by opik-backend | **MIGRATED TO PIP** |
-| opik-frontend | Opik web UI | Trace visualization | **MIGRATED TO PIP** (Comet UI) |
+ADR-060 (2026-04-24): the cloud-only observability trace UI was removed under
+the local-only optional-services policy. LLM observability is now provided by
+Arize Phoenix (pip, Apache 2.0) — see ADR-058 and ADR-060.
 
 ### Profile: `ui`
 
