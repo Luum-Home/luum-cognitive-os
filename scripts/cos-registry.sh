@@ -44,6 +44,12 @@ cos_registry_register() {
   local project_name="$4"
   local source_dir="$5"
 
+  # Skip writing to the production registry when running inside a pytest session.
+  # Tests that need registry behaviour must set COS_REGISTRY_FILE to a tmp path.
+  if [ -n "${PYTEST_CURRENT_TEST:-}" ] && [ "${COS_REGISTRY_FILE:-}" = "$HOME/.cognitive-os/installations.json" ]; then
+    return 0
+  fi
+
   if ! command -v jq >/dev/null 2>&1; then
     echo "Warning: jq not available, skipping registry update." >&2
     return 0
