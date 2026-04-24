@@ -173,6 +173,13 @@ def _compose_services_for_profiles(compose_file: Path, profiles: tuple[str, ...]
     return [line for line in result.stdout.strip().splitlines() if line]
 
 
+def _declared_compose_services() -> set[str]:
+    declared: set[str] = set()
+    for contract in SERVICE_CONTRACTS + UNMANAGED_COMPOSE_CONTRACTS:
+        declared.update(contract["compose_services"])
+    return declared
+
+
 @pytest.mark.integration
 @pytest.mark.docker
 class TestServiceHealth:
@@ -252,6 +259,30 @@ class TestServiceHealth:
             assert not image.startswith("redis:"), (
                 f"{name} must use Valkey or a service-specific backend, not Redis"
             )
+
+    def test_every_compose_service_has_explicit_product_contract(
+        self,
+        compose_file,
+    ):
+        compose = yaml.safe_load(compose_file.read_text(encoding="utf-8"))
+        actual_services = set(compose.get("services", {}))
+        undeclared = actual_services - _declared_compose_services()
+        assert undeclared == set(), (
+            "Every docker-compose.cognitive-os.yml service must be classified "
+            f"in SERVICE_CONTRACTS or UNMANAGED_COMPOSE_CONTRACTS: {sorted(undeclared)}"
+        )
+
+    def test_runtime_managed_services_are_declared_in_cognitive_os_yaml(
+        self,
+        runtime_config,
+    ):
+        managed = {contract["runtime_service"] for contract in SERVICE_CONTRACTS}
+        configured = set(runtime_config["resources"]["infrastructure"]["services"])
+        missing = managed - configured
+        assert missing == set(), (
+            "Every runtime-managed infrastructure service must have an explicit "
+            f"mode in cognitive-os.yaml: {sorted(missing)}"
+        )
 
     @pytest.mark.parametrize(
         "contract",

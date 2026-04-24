@@ -102,6 +102,8 @@ Before adding or promoting a tool, answer these questions in the PR:
 
 If a tool cannot pass this review, it can still be documented as research, but it should not move into runtime, CI, or first-run onboarding.
 
+For services, the stricter rule is: no classification, no service. Any new `docker-compose.cognitive-os.yml` service must be classified in [Infrastructure Service Catalog](infrastructure-service-catalog.md) and covered by `tests/integration/test_service_health.py` before it is accepted.
+
 ## Next Inventory Pass
 
 The next pass should evaluate each non-core tool with the same rigor:
