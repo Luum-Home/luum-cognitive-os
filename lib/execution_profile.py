@@ -126,7 +126,7 @@ TASK_EXECUTION_PROFILES: Dict[str, ExecutionProfile] = {
     "doc-sync": FAST_TURNAROUND,
     "format": FAST_TURNAROUND,
     "sdd-explore": LONG_CONTEXT_ANALYSIS,
-    "eval-repo": LONG_CONTEXT_ANALYSIS,
+    "repo-scout": LONG_CONTEXT_ANALYSIS,
     "exhaustive-prompt": LONG_CONTEXT_ANALYSIS,
     "document-feature": LOW_COST_BULK,
     "skill-creator": LOW_COST_BULK,

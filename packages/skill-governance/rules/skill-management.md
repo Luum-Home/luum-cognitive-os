@@ -56,8 +56,8 @@ to skills using pattern-based intent detection (English + Spanish).
 
 | Context Signal | Primary Skill | Fallback | Confidence |
 |---|---|---|---|
-| GitHub URL in message | `/repo-forensics` | `/eval-repo` | 0.95 |
-| "evaluate repo", "tech radar" | `/eval-repo` | -- | 0.85 |
+| GitHub URL in message | `/repo-forensics` | `/repo-scout` | 0.95 |
+| "evaluate repo", "scout repo", "tech radar" | `/repo-scout` | -- | 0.85 |
 | "fix bug", "arreglá el bug", "hay un error" | `/plan-bug` | `/systematic-debugging` | 0.90 |
 | "debug", "no funciona", "doesn't work" | `/systematic-debugging` | -- | 0.85 |
 | "new feature", "agregar", "necesito crear" | `/sdd-new` | `/plan-feature` | 0.85 |

@@ -1,19 +1,19 @@
 <!-- SCOPE: both -->
 ---
-name: eval-repo
+name: repo-scout
 description: >
-  Evaluate external git repositories for potential inclusion in the tech radar.
+  Scout external git repositories for potential inclusion in the tech radar.
   Three-level assessment: DeepWiki summary, shallow clone analysis, deep evaluation.
   Supports bulk mode (--batch <file>) for evaluating multiple repos in one pass.
-version: 2.0.0
+version: 2.0.1
 user-invocable: true
 auto-generated: false
 last-updated: 2026-04-24
 license: MIT
 metadata:
   author: luum
-audience: project
-summary_line: Evaluate external git repositories for tech radar classification (bulk mode, markdown artifacts, adoption signals).
+audience: both
+summary_line: Scout external git repositories for tech radar classification (bulk mode, markdown artifacts, adoption signals).
 
 ---
 
@@ -24,8 +24,8 @@ Structured evaluation of external repositories for tech radar classification. Pr
 ## Invocation
 
 ```
-/eval-repo <github-url> [--level=shallow|deep] [--no-cleanup]
-/eval-repo --batch <file> [--force] [--level=shallow|deep] [--no-cleanup]
+/repo-scout <github-url> [--level=shallow|deep] [--no-cleanup]
+/repo-scout --batch <file> [--force] [--level=shallow|deep] [--no-cleanup]
 ```
 
 `<file>` accepted formats:

@@ -83,19 +83,20 @@ def _build_default_routing_table() -> List[_RoutingEntry]:
             ]),
             skill_name="repo-forensics",
             invoke_command="/repo-forensics",
-            fallback_command="/eval-repo",
+            fallback_command="/repo-scout",
             reason_template="Repository analysis detected",
         ),
         _RoutingEntry(
             patterns=_compile([
                 (r"\beval[- ]?repo\b", 0.95),
+                (r"\brepo[- ]?scout\b", 0.95),
                 (r"\b(evalua[rt]\w*|evaluate)\s+(this|the|ese?|este?)?\s*repo", 0.85),
                 (r"\btech\s*radar\b", 0.80),
             ]),
-            skill_name="eval-repo",
-            invoke_command="/eval-repo",
+            skill_name="repo-scout",
+            invoke_command="/repo-scout",
             fallback_command=None,
-            reason_template="Repository evaluation detected",
+            reason_template="Repository scouting/evaluation detected",
         ),
 
         # --- Bug fixing ---

@@ -329,7 +329,7 @@ All Go source files under `cmd/cos/` and `cmd/cos-test/` are CORE. They implemen
 - skills/document-feature/
 - skills/deep-research/
 - skills/research-protocol/
-- skills/eval-repo/
+- skills/repo-scout/
 - skills/recommend-library/
 - hooks/doc-sync-detector.sh
 - lib/research_scoring.py

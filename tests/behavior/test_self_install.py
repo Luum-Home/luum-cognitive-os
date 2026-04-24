@@ -58,7 +58,7 @@ def _setup_full_project(tmp_path: Path) -> Path:
     (rules_dir / "adaptive-bypass.md").write_text("# Adaptive Bypass\n")
 
     # Skills (subdirs with SKILL.md)
-    for name in ["eval-repo", "contract-drift", "sdd-apply"]:
+    for name in ["repo-scout", "contract-drift", "sdd-apply"]:
         skill = tmp_path / "skills" / name
         skill.mkdir(parents=True)
         (skill / "SKILL.md").write_text(f"# {name}\n")
@@ -255,7 +255,7 @@ class TestBulkUpgrade:
         for f in (project / "rules").glob("*.md"):
             f.unlink()
         import shutil
-        shutil.rmtree(project / "skills" / "eval-repo")
+        shutil.rmtree(project / "skills" / "repo-scout")
 
         result = _run_hook(str(project))
         assert "FIXED" in result.stdout
@@ -283,8 +283,8 @@ class TestSymlinkContent:
     def test_skill_symlink_resolves_to_skill_md(self, tmp_path):
         project = _setup_full_project(tmp_path)
         _run_hook(str(project))
-        skill_link = project / ".cognitive-os" / "skills" / "cos" / "eval-repo"
-        assert (skill_link / "SKILL.md").read_text() == "# eval-repo\n"
+        skill_link = project / ".cognitive-os" / "skills" / "cos" / "repo-scout"
+        assert (skill_link / "SKILL.md").read_text() == "# repo-scout\n"
 
 
     def test_squad_symlink_resolves(self, tmp_path):
