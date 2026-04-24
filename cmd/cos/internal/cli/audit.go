@@ -85,4 +85,3 @@ func detectLicense(fetchedDir string) string {
 	}
 	return m.License
 }
-

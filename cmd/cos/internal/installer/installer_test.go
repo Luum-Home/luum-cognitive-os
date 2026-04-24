@@ -37,7 +37,7 @@ func TestResolveTargets_Skill(t *testing.T) {
 
 	expected := map[string]bool{
 		filepath.Join(projectRoot, ".cognitive-os", "skills", "cos", "my-pkg", "SKILL.md"): true,
-		filepath.Join(projectRoot, ".claude", "skills", "my-pkg", "SKILL.md"):             true,
+		filepath.Join(projectRoot, ".claude", "skills", "my-pkg", "SKILL.md"):              true,
 	}
 	for _, target := range targets {
 		if !expected[target.Target] {
@@ -172,7 +172,7 @@ func TestResolveTargets_SkillPreservesDir(t *testing.T) {
 
 	expected := map[string]bool{
 		filepath.Join(projectRoot, ".cognitive-os", "skills", "cos", "my-skill", "SKILL.md"): true,
-		filepath.Join(projectRoot, ".claude", "skills", "my-skill", "SKILL.md"):               true,
+		filepath.Join(projectRoot, ".claude", "skills", "my-skill", "SKILL.md"):              true,
 	}
 	for _, target := range targets {
 		if !expected[target.Target] {
