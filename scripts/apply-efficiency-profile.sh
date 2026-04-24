@@ -111,12 +111,9 @@ GROUPEOF
 # ── Profile: full ───────────────────────────────────────────────────
 if [ "$PROFILE" = "full" ]; then
   # Full tier keeps the committed settings.json (maximum hook coverage, all
-  # registered events). If a backup exists from a previous 'default' run,
-  # restore it so the fix for confidentiality-enforcer regressions is visible.
-  if [ -f "$SETTINGS_FILE.bak" ]; then
-    cp "$SETTINGS_FILE.bak" "$SETTINGS_FILE"
-    echo "Restored full settings from $SETTINGS_FILE.bak"
-  fi
+  # registered events). It is intentionally non-destructive: backup files are
+  # diagnostic artifacts, not a hidden source of truth that can rewrite the
+  # committed Claude projection during tests or status checks.
   echo "Profile 'full' keeps settings.json as-is (all hooks active, including confidentiality-enforcer)."
   echo ""
   if [ -f "$SETTINGS_FILE" ]; then

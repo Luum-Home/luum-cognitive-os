@@ -105,6 +105,22 @@ Validate configuration files, container state, and runtime consistency.
 
 ## Running Tests
 
+### Persistent Local Run Artifacts
+
+Use `scripts/pytest-with-summary.sh` for any repair-oriented partial or full
+test run. It preserves the full output, a short summary, failure snippets,
+JUnit XML, metadata, and the exit code under
+`.cognitive-os/reports/test-runs/`, which is ignored by git.
+
+```bash
+bash scripts/pytest-with-summary.sh -- tests/unit/test_example.py -q -ra
+bash scripts/pytest-with-summary.sh -- tests/ -q --tb=short
+```
+
+The latest run is linked at `.cognitive-os/reports/test-runs/latest`.
+Prefer this wrapper while reducing broad-suite failures so interrupted or
+partial runs remain analyzable across sessions.
+
 ### Without Docker (unit + behavior + system)
 
 ```bash
