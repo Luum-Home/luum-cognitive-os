@@ -3,8 +3,12 @@
 [![CI](https://github.com/luum-home/luum-cognitive-os/actions/workflows/ci.yml/badge.svg)](https://github.com/luum-home/luum-cognitive-os/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](CHANGELOG.md)
-<!-- badge:dogfood-score placeholder -->
-<!-- badge:aspirational-audit placeholder -->
+<!-- BADGES:START -->
+![Dogfood Score](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/dogfood.json)
+![REAL Components](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/real-components.json)
+![Harness Portability](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/portability.json)
+![Hook Wiring](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/hook-wiring.json)
+<!-- BADGES:END -->
 
 Cognitive OS is a **governance layer for coding agents**. It is NOT an agent
 framework (like pi-mono), NOT a skill catalog (like hermes-agent), NOT a
