@@ -103,7 +103,7 @@ if [ "$DIR_COUNT" -gt 0 ]; then
 fi
 
 # Cross-service keywords (multiplier)
-if echo "$AGENT_PROMPT" | grep -qiE '\b(all services|every endpoint|across the project|across services|every service|all endpoints|all controllers|all repositories|every module)\b'; then
+if echo "$AGENT_PROMPT" | grep -qiE '\b(all( [a-zA-Z-]+)? (services|endpoints|controllers|repositories)|every( [a-zA-Z-]+)? (endpoint|service|module)|across the project|across services)\b'; then
   FILE_SCORE=$((FILE_SCORE + 50))
   add_signal "CROSS-SERVICE: broad scope keywords detected (all services/endpoints/controllers)"
 fi

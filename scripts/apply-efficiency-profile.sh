@@ -244,6 +244,18 @@ build_settings() {
     "session-changelog.sh" \
     "kpi-trigger.sh|async")
 
+  local teammate_idle
+  teammate_idle=$(hook_group "" \
+    "teammate-idle.sh")
+
+  local task_created
+  task_created=$(hook_group "" \
+    "task-created.sh")
+
+  local task_completed
+  task_completed=$(hook_group "" \
+    "task-completed.sh")
+
   # ── Assemble JSON ───────────────────────────────────────────────
   printf '{\n  "hooks": {\n    "SessionStart": [\n'
   printf '%s\n' "$session_start"
@@ -289,6 +301,18 @@ build_settings() {
 
   printf '    "Stop": [\n'
   printf '%s\n' "$stop_hooks"
+  printf '    ],\n'
+
+  printf '    "TeammateIdle": [\n'
+  printf '%s\n' "$teammate_idle"
+  printf '    ],\n'
+
+  printf '    "TaskCreated": [\n'
+  printf '%s\n' "$task_created"
+  printf '    ],\n'
+
+  printf '    "TaskCompleted": [\n'
+  printf '%s\n' "$task_completed"
   printf '    ]\n  }\n}\n'
 }
 
@@ -308,7 +332,7 @@ new_hook_count=$(grep -c '"command":' "$SETTINGS_FILE" || true)
 echo "Applied profile 'default': $new_hook_count hook commands in settings.json"
 
 # Sanity: confirm representative hooks from the committed baseline are wired.
-for hook in self-install.sh session-init.sh infra-health.sh subagent-context-injector.sh pre-compaction-flush.sh agent-bash-cwd-enforcer.sh rate-limiter.sh secret-detector.sh dispatch-gate.sh clarification-gate.sh blast-radius.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh content-policy.sh doc-sync-detector.sh claim-validator.sh completion-gate.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh skill-usage-tracker.sh context-watchdog.sh kpi-trigger.sh; do
+for hook in self-install.sh session-init.sh infra-health.sh subagent-context-injector.sh pre-compaction-flush.sh agent-bash-cwd-enforcer.sh rate-limiter.sh secret-detector.sh dispatch-gate.sh clarification-gate.sh blast-radius.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh content-policy.sh doc-sync-detector.sh claim-validator.sh completion-gate.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh skill-usage-tracker.sh context-watchdog.sh kpi-trigger.sh teammate-idle.sh task-created.sh task-completed.sh; do
   if ! grep -q "$hook" "$SETTINGS_FILE"; then
     echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
   fi
@@ -333,6 +357,9 @@ echo "  PostToolUse TodoWrite: work-queue-sync.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh (async), skill-invocation-logger.sh"
 echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async)"
 echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, kpi-trigger.sh (async)"
+echo "  TeammateIdle: teammate-idle.sh"
+echo "  TaskCreated: task-created.sh"
+echo "  TaskCompleted: task-completed.sh"
 echo "  Total hook commands: $new_hook_count"
 
 echo ""

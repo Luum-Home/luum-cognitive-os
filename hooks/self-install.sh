@@ -89,17 +89,57 @@ resolve_dest() {
 ln_rel() {
   local target="$1" link="$2"
   local link_dir rel_target
-  link_dir="$(dirname "$link")"
-  rel_target="$target"
-  if command -v python3 >/dev/null 2>&1; then
-    rel_target="$(python3 - "$target" "$link_dir" <<'PY'
-import os
-import sys
+  local -a target_parts base_parts rel_parts
+  local target_trimmed base_trimmed
+  local i common_len up_count idx
 
-print(os.path.relpath(sys.argv[1], sys.argv[2]))
-PY
-)"
+  target_trimmed="${target%/}"
+  link_dir="${link%/*}"
+  base_trimmed="${link_dir%/}"
+
+  if [ -z "$target_trimmed" ] || [ -z "$base_trimmed" ]; then
+    ln -sfn "$target" "$link"
+    return
   fi
+
+  if [ "${target_trimmed#/}" = "$target_trimmed" ] || [ "${base_trimmed#/}" = "$base_trimmed" ]; then
+    ln -sfn "$target" "$link"
+    return
+  fi
+
+  IFS='/' read -r -a target_parts <<< "${target_trimmed#/}"
+  IFS='/' read -r -a base_parts <<< "${base_trimmed#/}"
+
+  common_len=0
+  while [ "$common_len" -lt "${#target_parts[@]}" ] && [ "$common_len" -lt "${#base_parts[@]}" ] && [ "${target_parts[$common_len]}" = "${base_parts[$common_len]}" ]; do
+    common_len=$((common_len + 1))
+  done
+
+  rel_parts=()
+  up_count=$((${#base_parts[@]} - common_len))
+  idx=0
+  while [ "$idx" -lt "$up_count" ]; do
+    rel_parts+=("..")
+    idx=$((idx + 1))
+  done
+
+  i=$common_len
+  while [ "$i" -lt "${#target_parts[@]}" ]; do
+    rel_parts+=("${target_parts[$i]}")
+    i=$((i + 1))
+  done
+
+  if [ "${#rel_parts[@]}" -eq 0 ]; then
+    rel_target="."
+  else
+    rel_target="${rel_parts[0]}"
+    i=1
+    while [ "$i" -lt "${#rel_parts[@]}" ]; do
+      rel_target="$rel_target/${rel_parts[$i]}"
+      i=$((i + 1))
+    done
+  fi
+
   ln -sfn "$rel_target" "$link"
 }
 
