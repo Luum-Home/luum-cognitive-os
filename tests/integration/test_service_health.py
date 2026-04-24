@@ -53,18 +53,12 @@ SERVICE_CONTRACTS = (
         "runtime_service": "memu",
         "expected_mode": "pip",
         "classification": "reference-stack",
-        "compose_services": ("memu",),
+        "compose_services": ("memu", "memu-pg"),
         "profiles": ("memory",),
         "local_health": ("memu", "http://localhost:8765/health"),
     },
-    {
-        "runtime_service": "opik",
-        "expected_mode": "cloud",
-        "classification": "reference-stack",
-        "compose_services": ("opik-backend", "opik-mysql", "opik-frontend"),
-        "profiles": ("observability",),
-        "local_health": ("opik-backend", "http://localhost:5173/is-alive/ping"),
-    },
+    # ADR-060 (2026-04-24): opik removed — local-only policy (was mode:cloud,
+    # Phoenix covers observability locally via pip).
     {
         "runtime_service": "cognee",
         "expected_mode": "pip",

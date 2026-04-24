@@ -95,7 +95,7 @@ def _heuristic_tags(item: TestItem) -> list[str]:
     tags: list[str] = []
     patterns: list[tuple[str, str]] = [
         ("timeout", r"\btimeout|timed out|exceeded \d+-second"),
-        ("optional-lane", r"docker|service|daemon|not installed|unavailable|credential|api key|localhost|valkey|opik|cognee|mlflow"),
+        ("optional-lane", r"docker|service|daemon|not installed|unavailable|credential|api key|localhost|valkey|cognee|mlflow|phoenix"),
         ("drift", r"\bdrift\b|stale|mismatch|out[- ]?of[- ]?date|catalog|settings|freshness|regenerate"),
         ("aspirational", r"aspirational|dormant|future|placeholder|not implemented|stub|todo"),
         ("false-positive-risk", r"exists|heading|frontmatter|catalog|grep|file_count|count_|structural|shape"),
