@@ -116,7 +116,7 @@ fi
 
 # ── Step 2c: docker start for known container names (legacy path) ────
 if command -v docker >/dev/null 2>&1; then
-    for name in valkey cognitive-os-valkey langfuse-valkey; do
+    for name in valkey cognitive-os-valkey; do
         docker start "$name" >/dev/null 2>&1 || true
     done
     sleep 1

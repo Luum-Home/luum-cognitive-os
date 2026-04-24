@@ -28,13 +28,25 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 logger = logging.getLogger(__name__)
 
-# Langfuse integration — graceful if not installed or not configured
-_langfuse_client = None
+# Phoenix OTel integration — graceful if not installed or collector not reachable.
+# ADR-058 (2026-04-24): former observability trace-UI removed; Phoenix is the
+# LLM-native trace UI. We emit OTel spans to the Phoenix collector at
+# localhost:6006 by default.
+_otel_tracer = None
 try:
-    from langfuse import Langfuse as _LangfuseClass
-    _langfuse_client = _LangfuseClass()
+    from phoenix.otel import register as _phoenix_register  # type: ignore
+
+    # register() configures the global OTel tracer provider and returns a tracer.
+    # Endpoint defaults to http://localhost:6006/v1/traces; overridable via
+    # PHOENIX_COLLECTOR_ENDPOINT env var inside phoenix.otel.register().
+    _otel_tracer = _phoenix_register(
+        project_name="cognitive-os",
+        auto_instrument=False,
+    ).get_tracer(__name__)
 except Exception:
-    pass  # Langfuse not installed or not configured — skip silently
+    # Phoenix not installed, OTel deps missing, or collector not reachable —
+    # skip silently (observability must never block completion recording).
+    pass
 
 from lib.learning_pipeline import LearningPipeline
 from lib.metric_event import MetricEvent, append_event
@@ -337,7 +349,7 @@ def append_cost_event(
         pass
 
 
-def _send_langfuse_trace(
+def _send_otel_trace(
     skill_name: str,
     task_type: str,
     trust_score: int,
@@ -345,41 +357,36 @@ def _send_langfuse_trace(
     success: bool,
     task_id: str,
 ) -> None:
-    """Send agent completion trace to Langfuse v3 (OTEL-based). Silent on failure."""
-    if _langfuse_client is None:
+    """Send agent completion trace to Phoenix via OTel. Silent on failure.
+
+    ADR-058 (2026-04-24): replaces the previous remote-trace sink. All fields
+    from the former trace are preserved as OTel span attributes so downstream
+    dashboards / evals can filter by skill, task_type, trust_score, tokens,
+    success, and task_id exactly as before.
+    """
+    if _otel_tracer is None:
         return
     try:
-        # v3 API: start_as_current_span creates trace + span
-        with _langfuse_client.start_as_current_span(name=skill_name) as span:
-            trace_id = _langfuse_client.get_current_trace_id()
-            _langfuse_client.update_current_trace(
-                metadata={
-                    "task_type": task_type,
-                    "trust_score": trust_score,
-                    "tokens_used": tokens_used,
-                    "success": success,
-                    "task_id": task_id,
-                },
-            )
-            with _langfuse_client.start_as_current_generation(
-                name="agent-completion",
-                input={"task_id": task_id, "task_type": task_type},
-                metadata={"tokens": tokens_used},
-            ) as gen:
-                _langfuse_client.update_current_generation(
-                    output={"trust_score": trust_score, "success": success},
-                    usage_details={"input": tokens_used // 2, "output": tokens_used // 2},
-                )
+        with _otel_tracer.start_as_current_span(name=skill_name) as span:
+            # Semantic-style attributes — preserve every field of the former trace.
+            span.set_attribute("skill.name", skill_name)
+            span.set_attribute("task.type", task_type)
+            span.set_attribute("task.id", task_id)
+            span.set_attribute("trust.score", int(trust_score))
+            span.set_attribute("trust.score_normalized", trust_score / 100.0)
+            span.set_attribute("tokens.used", int(tokens_used))
+            span.set_attribute("tokens.input_estimate", tokens_used // 2)
+            span.set_attribute("tokens.output_estimate", tokens_used // 2)
+            span.set_attribute("completion.success", bool(success))
+            # OTel status — RED for failures makes Phoenix UI filter trivially.
+            try:
+                from opentelemetry.trace import Status, StatusCode  # type: ignore
 
-        # Record trust score as a first-class Langfuse Score via REST-backed method
-        if trace_id:
-            _langfuse_client.create_score(
-                name="trust-score",
-                value=trust_score / 100.0,
-                trace_id=trace_id,
-                comment=f"{'success' if success else 'failure'}: {skill_name}",
-            )
-        _langfuse_client.flush()
+                span.set_status(
+                    Status(StatusCode.OK if success else StatusCode.ERROR)
+                )
+            except Exception:
+                pass
     except Exception:
         pass  # Never block completion recording for observability
 
@@ -461,8 +468,8 @@ def main():
     metrics_dir = os.path.join(project_dir, ".cognitive-os", "metrics")
     append_cost_event(metrics_dir, skill_name, tokens_used, model=model, real_usage=real_usage)
 
-    # Send trace to Langfuse (if available)
-    _send_langfuse_trace(
+    # Send trace to Phoenix via OTel (if available)
+    _send_otel_trace(
         skill_name=skill_name,
         task_type=classify_task_type(skill_name),
         trust_score=trust_score,

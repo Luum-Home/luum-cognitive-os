@@ -666,7 +666,7 @@ class TestInfraHealth:
             "    services:\n"
             "      litellm:\n"
             "        mode: always\n"
-            "      langfuse:\n"
+            "      paperclip:\n"
             "        mode: on_demand\n"
         )
 
@@ -676,7 +676,7 @@ class TestInfraHealth:
             "services:\n"
             "  litellm:\n"
             "    image: alpine\n"
-            "  langfuse-web:\n"
+            "  paperclip:\n"
             "    image: alpine\n"
         )
 

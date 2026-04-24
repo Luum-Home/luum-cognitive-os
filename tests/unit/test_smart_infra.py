@@ -33,7 +33,7 @@ def smart_infra(tmp_path):
         "    services:\n"
         "      litellm:\n"
         "        mode: always\n"
-        "      langfuse:\n"
+        "      paperclip:\n"
         "        mode: on_demand\n"
         "        idle_timeout_minutes: 30\n"
         "      mlflow:\n"
@@ -103,7 +103,9 @@ class TestServiceComposeMap:
 
     def test_default_profile_services(self):
         assert SERVICE_COMPOSE_MAP["litellm"]["profile"] is None
-        assert SERVICE_COMPOSE_MAP["langfuse"]["profile"] is None
+        # ADR-058: the former observability trace-UI entry was removed from the
+        # service map; paperclip is a representative default-profile service.
+        assert SERVICE_COMPOSE_MAP["paperclip"]["profile"] is None
 
 
 # ---------------------------------------------------------------------------
@@ -161,12 +163,12 @@ class TestServiceConfig:
             "resources:\n"
             "  infrastructure:\n"
             "    services:\n"
-            "      langfuse:\n"
+            "      paperclip:\n"
             "        mode: on_demand\n"
             "        idle_timeout_minutes: 45\n"
         )
         si = SmartInfra(project_dir=str(tmp_path), config_file=str(config))
-        cfg = si._get_service_config("langfuse")
+        cfg = si._get_service_config("paperclip")
         assert cfg["mode"] == "on_demand"
         assert cfg["idle_timeout_minutes"] == 45
 
@@ -175,7 +177,7 @@ class TestServiceConfig:
             project_dir=str(tmp_path),
             config_file=str(tmp_path / "nonexistent.yaml"),
         )
-        cfg = si._get_service_config("langfuse")
+        cfg = si._get_service_config("paperclip")
         assert cfg["mode"] == "on_demand"
         assert cfg["idle_timeout_minutes"] == 30
 
@@ -208,21 +210,21 @@ class TestIsServiceRunning:
         mock_result.returncode = 0
         mock_result.stdout = "running\n"
         with patch("subprocess.run", return_value=mock_result):
-            assert smart_infra.is_service_running("langfuse") is True
+            assert smart_infra.is_service_running("paperclip") is True
 
     def test_exited_returns_false(self, smart_infra):
         mock_result = MagicMock()
         mock_result.returncode = 0
         mock_result.stdout = "exited\n"
         with patch("subprocess.run", return_value=mock_result):
-            assert smart_infra.is_service_running("langfuse") is False
+            assert smart_infra.is_service_running("paperclip") is False
 
     def test_missing_container_returns_false(self, smart_infra):
         mock_result = MagicMock()
         mock_result.returncode = 1
         mock_result.stdout = ""
         with patch("subprocess.run", return_value=mock_result):
-            assert smart_infra.is_service_running("langfuse") is False
+            assert smart_infra.is_service_running("paperclip") is False
 
 
 # ---------------------------------------------------------------------------
@@ -238,14 +240,14 @@ class TestIsServiceHealthy:
         mock_result.returncode = 0
         mock_result.stdout = "healthy\n"
         with patch("subprocess.run", return_value=mock_result):
-            assert smart_infra.is_service_healthy("langfuse") is True
+            assert smart_infra.is_service_healthy("paperclip") is True
 
     def test_unhealthy_returns_false(self, smart_infra):
         mock_result = MagicMock()
         mock_result.returncode = 0
         mock_result.stdout = "unhealthy\n"
         with patch("subprocess.run", return_value=mock_result):
-            assert smart_infra.is_service_healthy("langfuse") is False
+            assert smart_infra.is_service_healthy("paperclip") is False
 
     def test_no_healthcheck_returns_true(self, smart_infra):
         """When container has no healthcheck, falls back to running check."""
@@ -259,7 +261,7 @@ class TestIsServiceHealthy:
         running_result.stdout = "running\n"
 
         with patch("subprocess.run", side_effect=[health_result, running_result]):
-            assert smart_infra.is_service_healthy("langfuse") is True
+            assert smart_infra.is_service_healthy("paperclip") is True
 
 
 # ---------------------------------------------------------------------------
@@ -275,7 +277,7 @@ class TestEnsureService:
              patch.object(smart_infra, "is_service_running", return_value=True), \
              patch.object(smart_infra, "is_service_healthy", return_value=True), \
              patch("subprocess.run") as mock_run:
-            result = smart_infra.ensure_service("langfuse")
+            result = smart_infra.ensure_service("paperclip")
             assert result is True
             mock_run.assert_not_called()
 
@@ -289,7 +291,7 @@ class TestEnsureService:
              patch.object(smart_infra, "is_service_healthy", side_effect=[False, True]), \
              patch("subprocess.run", return_value=compose_result), \
              patch("time.sleep"):
-            result = smart_infra.ensure_service("langfuse", timeout_secs=10)
+            result = smart_infra.ensure_service("paperclip", timeout_secs=10)
             assert result is True
 
     def test_includes_profile_for_memu(self, smart_infra):
@@ -318,12 +320,12 @@ class TestEnsureService:
              patch.object(smart_infra, "is_service_healthy", return_value=False), \
              patch("subprocess.run", return_value=compose_result), \
              patch("time.sleep"):
-            result = smart_infra.ensure_service("langfuse", timeout_secs=1)
+            result = smart_infra.ensure_service("paperclip", timeout_secs=1)
             assert result is False
 
     def test_no_docker_returns_false(self, smart_infra):
         with patch.object(smart_infra, "_is_docker_available", return_value=False):
-            result = smart_infra.ensure_service("langfuse")
+            result = smart_infra.ensure_service("paperclip")
             assert result is False
 
     def test_pip_service_does_not_start_docker(self, smart_infra):
@@ -342,9 +344,9 @@ class TestEnsureService:
         with patch.object(smart_infra, "_is_docker_available", return_value=True), \
              patch.object(smart_infra, "is_service_running", return_value=True), \
              patch.object(smart_infra, "is_service_healthy", return_value=True):
-            smart_infra.ensure_service("langfuse")
-            assert "langfuse" in smart_infra._last_access
-            assert smart_infra._last_access["langfuse"] > 0
+            smart_infra.ensure_service("paperclip")
+            assert "paperclip" in smart_infra._last_access
+            assert smart_infra._last_access["paperclip"] > 0
 
     def test_logs_event_to_metrics(self, smart_infra, tmp_path):
         compose_result = MagicMock()
@@ -356,14 +358,14 @@ class TestEnsureService:
              patch.object(smart_infra, "is_service_healthy", side_effect=[False, True]), \
              patch("subprocess.run", return_value=compose_result), \
              patch("time.sleep"):
-            smart_infra.ensure_service("langfuse", timeout_secs=10)
+            smart_infra.ensure_service("paperclip", timeout_secs=10)
 
         log_path = tmp_path / ".cognitive-os" / "metrics" / "infra-usage.jsonl"
         assert log_path.exists()
         lines = log_path.read_text().strip().split("\n")
         assert len(lines) >= 1
         entry = json.loads(lines[-1])
-        assert entry["container"] == "langfuse"
+        assert entry["container"] == "paperclip"
         assert entry["event"] == "start"
 
 
@@ -376,17 +378,17 @@ class TestStopIdleServices:
     """Tests for SmartInfra.stop_idle_services()."""
 
     def test_stops_past_timeout(self, smart_infra):
-        # Set last access 31 minutes ago (timeout is 30 min for langfuse).
-        smart_infra._last_access["langfuse"] = time.time() - 31 * 60
+        # Set last access 31 minutes ago (timeout is 30 min for paperclip).
+        smart_infra._last_access["paperclip"] = time.time() - 31 * 60
 
         with patch.object(smart_infra, "stop_service", return_value=True) as mock_stop:
             stopped = smart_infra.stop_idle_services()
-            assert "langfuse" in stopped
-            mock_stop.assert_called_with("langfuse")
+            assert "paperclip" in stopped
+            mock_stop.assert_called_with("paperclip")
 
     def test_keeps_within_timeout(self, smart_infra):
         # Set last access 5 minutes ago.
-        smart_infra._last_access["langfuse"] = time.time() - 5 * 60
+        smart_infra._last_access["paperclip"] = time.time() - 5 * 60
 
         with patch.object(smart_infra, "stop_service") as mock_stop:
             stopped = smart_infra.stop_idle_services()
@@ -403,11 +405,11 @@ class TestStopIdleServices:
             mock_stop.assert_not_called()
 
     def test_returns_stopped_list(self, smart_infra):
-        smart_infra._last_access["langfuse"] = time.time() - 31 * 60
+        smart_infra._last_access["paperclip"] = time.time() - 31 * 60
 
         with patch.object(smart_infra, "stop_service", return_value=True):
             stopped = smart_infra.stop_idle_services()
-            assert stopped == ["langfuse"]
+            assert stopped == ["paperclip"]
 
 
 # ---------------------------------------------------------------------------
@@ -421,18 +423,18 @@ class TestRequiresServiceDecorator:
     def test_calls_ensure_service(self):
         with patch("lib.smart_infra.ensure_service") as mock_ensure:
 
-            @requires_service("langfuse")
+            @requires_service("paperclip")
             def my_func():
                 return "ok"
 
             result = my_func()
             assert result == "ok"
-            mock_ensure.assert_called_once_with("langfuse")
+            mock_ensure.assert_called_once_with("paperclip")
 
     def test_function_runs_on_ensure_failure(self):
         with patch("lib.smart_infra.ensure_service", side_effect=Exception("boom")):
 
-            @requires_service("langfuse")
+            @requires_service("paperclip")
             def my_func():
                 return "still ok"
 
@@ -442,13 +444,13 @@ class TestRequiresServiceDecorator:
     def test_multiple_services(self):
         with patch("lib.smart_infra.ensure_service") as mock_ensure:
 
-            @requires_service("langfuse", "litellm")
+            @requires_service("paperclip", "litellm")
             def my_func():
                 return "ok"
 
             my_func()
             assert mock_ensure.call_count == 2
-            mock_ensure.assert_any_call("langfuse")
+            mock_ensure.assert_any_call("paperclip")
             mock_ensure.assert_any_call("litellm")
 
 

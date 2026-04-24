@@ -204,7 +204,7 @@ class MLflowBridge:
         model: str = "unknown",
         cost_usd: float = 0,
     ) -> None:
-        """Log the agent-completion contract formerly covered by Langfuse traces."""
+        """Log the agent-completion contract (agent metrics mirror)."""
         if not self._mlflow:
             return
         try:

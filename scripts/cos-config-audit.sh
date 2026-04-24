@@ -375,8 +375,8 @@ def _check_docker_container_freshness(root: Path):
       * all running match their pin   → IMPL
       * at least one drift            → ASPIR with drift list
 
-    Real incident that motivated this (2026-04-21): cognitive-os-langfuse-worker
-    kept crash-looping with `./worker/entrypoint.sh: No such file or directory`.
+    Real incident that motivated this (2026-04-21): a worker container kept
+    crash-looping with `./worker/entrypoint.sh: No such file or directory`.
     Compose was pinned to sha 0e7a6d86 (new), container ran sha 50674bb0 (old).
     Recreating with --force-recreate fixed it.
     """

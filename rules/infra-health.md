@@ -29,7 +29,8 @@ check for their Docker containers — they run as Python libraries or local proc
 
 | Service | pip package | How to run |
 |---------|-------------|------------|
-| langfuse-web + deps | `pip install mlflow>=2.0` | `mlflow server --backend-store-uri sqlite:///mlflow.db` |
+| Phoenix (LLM trace UI) | `pip install arize-phoenix` | `uv run phoenix serve` (UI at http://localhost:6006) |
+| mlflow (agent metrics) | `pip install mlflow-skinny>=2.0` | `mlflow server --backend-store-uri sqlite:///mlflow.db` |
 | litellm | `pip install litellm>=1.0` | `litellm --config infra/litellm/config.yaml` or Python API |
 | nemo-guardrails | `pip install nemoguardrails>=0.10` | `from nemoguardrails import RailsConfig, LLMRails` |
 | memu | `pip install memu>=2.0` | `python -m memu.server` |
@@ -44,12 +45,7 @@ Services are defined in `docker-compose.cognitive-os.yml`. Some run by default, 
 
 | Service | Purpose | When Needed | Status |
 |---------|---------|-------------|--------|
-| langfuse-web | LLM observability and tracing | Metrics, agent KPIs | **MIGRATED TO PIP** (mlflow) |
-| langfuse-pg | Langfuse PostgreSQL database | Required by langfuse-web | **MIGRATED TO PIP** |
-| langfuse-valkey | Langfuse cache | Required by langfuse-web | **MIGRATED TO PIP** |
-| langfuse-clickhouse | Langfuse analytics | Required by langfuse-web | **MIGRATED TO PIP** |
-| langfuse-seaweedfs | Langfuse object storage | Required by langfuse-web | **MIGRATED TO PIP** |
-| langfuse-worker | Langfuse background worker | Required by langfuse-web | **MIGRATED TO PIP** |
+| Phoenix (pip) | LLM trace UI — replaces the former observability stack | Metrics, agent KPIs, LLM evals | **PIP** (ADR-058) |
 | litellm | LLM proxy and model routing | Model routing, cost tracking | **MIGRATED TO PIP** |
 | nemo-guardrails | NeMo Guardrails for content safety | PII detection, content filtering | **MIGRATED TO PIP** |
 | paperclip | Governance and compliance dashboard | Squad reports, governance reviews | Docker (no pip equiv) |
@@ -91,7 +87,7 @@ When `smart_start: true` is set in `cognitive-os.yaml`, Docker services start au
 
 1. A skill or hook triggers (e.g., `/agent-kpis`)
 2. `lib/smart_infra.py` looks up the skill→service map
-3. If the required service (e.g., langfuse) is not running, it starts via `docker compose up -d`
+3. If the required service (e.g., paperclip) is not running, it starts via `docker compose up -d`
 4. The system polls for healthy status (up to 120s)
 5. Once healthy, the skill proceeds normally
 6. On session exit, `idle-service-cleanup.sh` stops services past their `idle_timeout_minutes`
@@ -100,7 +96,7 @@ When `smart_start: true` is set in `cognitive-os.yaml`, Docker services start au
 
 | Skill/Hook | Required Service |
 |---|---|
-| agent-kpis, observability-trace | langfuse |
+| agent-kpis, observability-trace | phoenix (pip) + mlflow (pip) |
 | sdd-apply, sdd-verify, sdd-pipeline, model-routing | litellm |
 | guardrails-validator, content-policy | nemo-guardrails |
 | squad-report, paperclip-sync | paperclip |
@@ -112,7 +108,7 @@ This map is configurable in `cognitive-os.yaml` under `resources.infrastructure.
 
 ### Graceful Degradation
 
-If Docker is not available or a service fails to start, the system logs a warning and continues. Skills still execute — they may produce degraded results (e.g., no traces sent to Langfuse) but never crash.
+If Docker is not available or a service fails to start, the system logs a warning and continues. Skills still execute — they may produce degraded results (e.g., no traces sent to Phoenix) but never crash.
 
 ### Usage in Python
 
@@ -120,10 +116,10 @@ If Docker is not available or a service fails to start, the system logs a warnin
 from lib.smart_infra import ensure_service, requires_service
 
 # Explicit
-ensure_service("langfuse")
+ensure_service("paperclip")
 
 # Decorator
-@requires_service("langfuse")
+@requires_service("paperclip")
 def send_trace(...):
     ...
 ```
@@ -131,7 +127,7 @@ def send_trace(...):
 ### Usage in Bash Hooks
 
 ```bash
-python3 -c "from lib.smart_infra import ensure_service; ensure_service('langfuse')" 2>/dev/null || true
+python3 -c "from lib.smart_infra import ensure_service; ensure_service('paperclip')" 2>/dev/null || true
 ```
 
 ## Configuration
@@ -142,7 +138,7 @@ In `cognitive-os.yaml`, services are configured under `resources.infrastructure.
 resources:
   infrastructure:
     services:
-      langfuse:
+      paperclip:
         mode: on_demand
         idle_timeout_minutes: 30
       litellm:
