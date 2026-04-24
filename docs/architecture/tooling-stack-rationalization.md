@@ -33,7 +33,10 @@ See [Infrastructure Service Catalog](infrastructure-service-catalog.md) for the 
 | MemU | `pip` | Memory extension. | Keep optional until a clear non-overlapping role versus Engram/Cognee is proven. |
 | NeMo Guardrails | `pip` | Guardrail policy runtime. | Keep optional and in-process by default. |
 | Paperclip | `on_demand` | Governance/compliance dashboard. | Keep as extension; not part of the minimum wedge unless backed by a visible operator workflow. |
+| AutoMaker | `on_demand` | Kanban/agent studio UI. | Keep as optional UI reference; do not let Claude-oriented UI workflows define portability. |
 | Jupyter | `pip` | Compute sandbox. | Keep optional; useful for data/ML tasks but not core agent governance. |
+| Webhook Trigger | profile-gated | GitHub event automation. | Keep as automation extension, not default local runtime. |
+| COS Dashboard | profile-gated | Web management UI. | Keep optional until backed by proof paths and operator workflows. |
 | Crawl4AI | `cli` | Research/web crawling extension. | Keep optional and task-triggered. |
 | DeepEval/RAGAS/Promptfoo | package/skill surfaces | Evaluation and red-team tooling. | Keep as explicit evaluation extensions; avoid making every project install all of them. |
 

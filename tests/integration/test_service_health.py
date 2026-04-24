@@ -100,6 +100,29 @@ SERVICE_CONTRACTS = (
         "profiles": (),
         "local_health": ("jupyter", "http://localhost:8888/api/status"),
     },
+    {
+        "runtime_service": "automaker",
+        "expected_mode": "on_demand",
+        "classification": "optional-ui-extension",
+        "compose_services": ("automaker",),
+        "profiles": ("ui",),
+        "local_health": ("automaker", "http://localhost:4200/health"),
+    },
+)
+
+UNMANAGED_COMPOSE_CONTRACTS = (
+    {
+        "runtime_service": "webhook-trigger",
+        "classification": "optional-automation-extension",
+        "compose_services": ("webhook-trigger",),
+        "profiles": ("automation",),
+    },
+    {
+        "runtime_service": "cos-dashboard",
+        "classification": "optional-ui-extension",
+        "compose_services": ("cos-dashboard",),
+        "profiles": ("ui",),
+    },
 )
 
 
@@ -197,6 +220,37 @@ class TestServiceHealth:
             assert service in services, (
                 f"{service} should remain defined as a {contract['classification']} "
                 "stack in docker-compose.cognitive-os.yml"
+            )
+
+    @pytest.mark.parametrize(
+        "contract",
+        UNMANAGED_COMPOSE_CONTRACTS,
+        ids=[contract["runtime_service"] for contract in UNMANAGED_COMPOSE_CONTRACTS],
+    )
+    def test_unmanaged_compose_extensions_remain_profile_gated(
+        self,
+        contract,
+        compose_file,
+        docker_compose_available,
+    ):
+        services = _compose_services_for_profiles(compose_file, contract["profiles"])
+        for service in contract["compose_services"]:
+            assert service in services, (
+                f"{service} should remain defined as a {contract['classification']} "
+                "stack in docker-compose.cognitive-os.yml"
+            )
+
+    def test_compose_does_not_define_redis_service_or_image(
+        self,
+        compose_file,
+    ):
+        compose = yaml.safe_load(compose_file.read_text(encoding="utf-8"))
+        services = compose.get("services", {})
+        assert "redis" not in services
+        for name, service in services.items():
+            image = str(service.get("image", ""))
+            assert not image.startswith("redis:"), (
+                f"{name} must use Valkey or a service-specific backend, not Redis"
             )
 
     @pytest.mark.parametrize(
