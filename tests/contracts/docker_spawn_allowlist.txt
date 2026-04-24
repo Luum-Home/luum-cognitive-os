@@ -1,0 +1,13 @@
+# docker_spawn_allowlist.txt
+#
+# Format: <hook_path>: <justification>
+#
+# Listed hooks are permitted to spawn docker containers during SessionStart.
+# Lines beginning with `#` and blank lines are ignored.
+#
+# The catalog doctrine (docs/architecture/infrastructure-service-catalog.md)
+# says SessionStart hooks MUST NOT spawn containers by default. Empty
+# allowlist is the expected steady state.
+#
+# Example (none today):
+# hooks/_example_gated.sh: profile-gated behind efficiency.profile=full
