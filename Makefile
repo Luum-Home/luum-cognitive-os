@@ -2,7 +2,7 @@
 # All python invocations go through `uv run` so UV-managed deps
 # (fastmcp, openai SDK, etc.) are visible. See docs/reports/next-session-handoff-2026-04-20.md.
 
-.PHONY: help test test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention
+.PHONY: help test test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -16,6 +16,9 @@ help:
 	@echo "  test-e2e          E2E smoke + full e2e suite."
 	@echo "  test-chaos        Chaos tests."
 	@echo "  test-all          Full suite serial (slowest, most complete)."
+	@echo "  test-no-docker    Sharded non-Docker lane (shard-a + shard-b sequential)."
+	@echo "  test-no-docker-shard-a  Shard A: tests/unit/ with xdist (~114s)."
+	@echo "  test-no-docker-shard-b  Shard B: behavior/chaos/hooks/e2e/audit/contracts/architecture/system serial (~350s)."
 	@echo "  test-changed      Only tests affected by git diff HEAD."
 	@echo "  smoke             bash scripts/cos-smoke.sh — critical path e2e."
 	@echo "  audit             Aspirational audit + self-knowledge refresh."
@@ -67,6 +70,17 @@ clean:
 # ADR-054/055 — check an adopting project follows the 10-category docs convention.
 # Override PROJECT_DIR to target an external project; defaults to the SO repo.
 # Soft-warn by default; pass STRICT=1 to fail on missing categories.
+# Non-Docker lane — sharded to fit under 900s CI timeout.
+# Measured 2026-04-24: shard-a ~114s (xdist), shard-b ~350s (serial). Combined <500s.
+# Run shards in parallel on CI (2 jobs) for wall-clock ~350s; serial locally.
+test-no-docker-shard-a:
+	$(PYTEST) tests/unit/ -n auto --timeout=60 --tb=short -q
+
+test-no-docker-shard-b:
+	$(PYTEST) tests/behavior/ tests/chaos/ tests/hooks/ tests/e2e/ tests/audit/ tests/contracts/ tests/architecture/ tests/system/ -m "not docker" --timeout=60 --tb=short -q
+
+test-no-docker: test-no-docker-shard-a test-no-docker-shard-b
+
 check-docs-convention:
 	@PROJECT_DIR="$${PROJECT_DIR:-$$(pwd)}"; \
 	if [ "$${STRICT:-0}" = "1" ]; then \
