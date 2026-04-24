@@ -312,3 +312,4 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **ops-runbook** — No description
 - **doc-review-personas** — No description
 - **cost-predictor** — No description
+- **test-contract-repair** — No description

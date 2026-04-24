@@ -26,11 +26,12 @@ if [ -f "/tmp/claude-private-mode-active" ]; then
 fi
 
 # Require mcp-scan — graceful degradation if not installed
-# Check for both pip-installed and npx-available versions
+# Prefer a locally installed binary. The npx fallback is opt-in because probing
+# npx during SessionStart can add seconds of latency or hit the network.
 MCP_SCAN_CMD=""
 if command -v mcp-scan &>/dev/null; then
   MCP_SCAN_CMD="mcp-scan"
-elif command -v npx &>/dev/null && npx --yes @invariantlabs/mcp-scan --help &>/dev/null 2>&1; then
+elif [ "${COS_MCP_SCAN_ALLOW_NPX:-0}" = "1" ] && command -v npx &>/dev/null; then
   MCP_SCAN_CMD="npx --yes @invariantlabs/mcp-scan"
 else
   exit 0
