@@ -61,8 +61,8 @@ type fakeValidator struct {
 	result *validator.Result
 }
 
-func (f *fakeValidator) Name() string                             { return f.name }
-func (f *fakeValidator) Category() validator.ValidatorCategory   { return validator.CategoryCPU }
+func (f *fakeValidator) Name() string                          { return f.name }
+func (f *fakeValidator) Category() validator.ValidatorCategory { return validator.CategoryCPU }
 func (f *fakeValidator) Validate(_ context.Context, _ *hook.Context) *validator.Result {
 	return f.result
 }

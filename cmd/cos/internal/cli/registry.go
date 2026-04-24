@@ -270,4 +270,3 @@ func runRegistryToggle(enable bool) func(cmd *cobra.Command, args []string) erro
 		return nil
 	}
 }
-

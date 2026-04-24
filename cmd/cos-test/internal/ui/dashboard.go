@@ -12,15 +12,15 @@ import (
 // DashboardModel is the interactive Bubbletea dashboard.
 type DashboardModel struct {
 	// State.
-	Categories     []string
-	SelectedCat    int
-	Tests          []DashboardTest
-	Running        bool
-	ShowFailures   bool
-	Width          int
-	Height         int
-	StartTime      time.Time
-	spinIdx        int
+	Categories   []string
+	SelectedCat  int
+	Tests        []DashboardTest
+	Running      bool
+	ShowFailures bool
+	Width        int
+	Height       int
+	StartTime    time.Time
+	spinIdx      int
 
 	// Counters.
 	TotalTests  int

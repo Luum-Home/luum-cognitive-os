@@ -27,15 +27,15 @@ type Lockfile struct {
 type LockedPackage struct {
 	Version      string            `yaml:"version"`
 	Source       string            `yaml:"source"`
-	SourceType   string            `yaml:"source_type"`        // local, github, url
-	Resolved     string            `yaml:"resolved"`           // full resolved path/URL
-	Commit       string            `yaml:"commit,omitempty"`   // git commit hash
-	Integrity    string            `yaml:"integrity"`                // sha256 of manifest
+	SourceType   string            `yaml:"source_type"`      // local, github, url
+	Resolved     string            `yaml:"resolved"`         // full resolved path/URL
+	Commit       string            `yaml:"commit,omitempty"` // git commit hash
+	Integrity    string            `yaml:"integrity"`        // sha256 of manifest
 	License      string            `yaml:"license"`
 	InstalledAt  string            `yaml:"installed_at"`
 	Exports      []LockedExport    `yaml:"exports"`
 	Dependencies map[string]string `yaml:"dependencies,omitempty"`
-	FileHashes   map[string]string `yaml:"file_hashes,omitempty"`    // per-file SHA256 for integrity verification
+	FileHashes   map[string]string `yaml:"file_hashes,omitempty"` // per-file SHA256 for integrity verification
 	Audit        AuditResult       `yaml:"audit"`
 	Forced       bool              `yaml:"forced,omitempty"`
 }
@@ -51,7 +51,7 @@ type LockedExport struct {
 
 // AuditResult stores the outcome of each audit check at install time.
 type AuditResult struct {
-	License   string `yaml:"license"`   // pass, fail, warning, skipped
+	License   string `yaml:"license"` // pass, fail, warning, skipped
 	Secrets   string `yaml:"secrets"`
 	Injection string `yaml:"injection"`
 	Sandbox   string `yaml:"sandbox"`
