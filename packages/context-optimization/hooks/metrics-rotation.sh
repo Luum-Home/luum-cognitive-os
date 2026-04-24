@@ -25,7 +25,8 @@ AGE_DAYS="${COGNITIVE_OS_METRICS_AGE_DAYS:-7}"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
-ARCHIVE_DIR="$METRICS_DIR/archive"
+ARCHIVE_DIR="$METRICS_DIR/.archive"
+LEGACY_ARCHIVE_DIR="$METRICS_DIR/archive"
 
 # ─── Helper ──────────────────────────────────────────────────────────────────
 
@@ -60,6 +61,10 @@ _rotate_file() {
 [ ! -d "$METRICS_DIR" ] && exit 0
 
 mkdir -p "$ARCHIVE_DIR" 2>/dev/null
+if [ -d "$LEGACY_ARCHIVE_DIR" ] && [ "$LEGACY_ARCHIVE_DIR" != "$ARCHIVE_DIR" ]; then
+  mkdir -p "$ARCHIVE_DIR" 2>/dev/null
+  find "$LEGACY_ARCHIVE_DIR" -type f -name '*.gz' -exec mv {} "$ARCHIVE_DIR"/ \; 2>/dev/null || true
+fi
 
 ROTATED=0
 ROTATED_AGE=0

@@ -13,10 +13,18 @@ A passing test is not automatically trusted. Every test family touched during th
 
 ## Current Evidence
 
-- Latest full run: `177 failed, 10625 passed, 1281 skipped, 18 xfailed`.
-- Command: `python3 -m pytest tests/ -n auto -q --tb=short -ra --disable-warnings --timeout=120 --timeout-method=thread --session-timeout=2400 --durations=50`.
+- Latest full run: `102 failed, 10735 passed, 1283 skipped, 18 xfailed`.
+- Previous comparison point during the same repair effort: `177 failed, 10625 passed, 1281 skipped, 18 xfailed`.
+- Command: `python3 -m pytest tests/ -n auto -q --tb=short -ra --disable-warnings --timeout=120 --timeout-method=thread --session-timeout=2400 --durations=25`.
 - Log: `.cognitive-os/reports/pytest-full-latest.log`.
-- Focused repair lane after canonical projection work: orphan/registration subset now green (`46 passed`) and native heartbeat integration still green (`4 passed`).
+- Focused repair lanes after canonical projection work:
+  - orphan/registration subset: `46 passed`
+  - native heartbeat integration: `4 passed`
+  - usage-health + quick tracker subset: `2 passed`
+  - metrics rotation: `5 passed`
+  - cos-index: `13 passed`
+  - agent-bus smart-infra subset: `6 passed`
+  - orchestrator capabilities live: `9 passed`
 
 ## Decisions So Far
 
@@ -34,6 +42,11 @@ A passing test is not automatically trusted. Every test family touched during th
 | Claude settings projection drift | `settings.json.bak-before-regen` proved the repository previously projected a wider Claude default hook surface. A later regeneration collapsed `scripts/apply-efficiency-profile.sh default`, dropping real hooks such as `docker-drift-detector.sh`, `session-startup-protocol.sh`, `session-heartbeat.sh`, `native-agent-heartbeat.sh`, `rate-limit-detector.sh`, `work-queue-sync.sh`, and stop/audit hooks. That created false orphan-hook failures plus multiple registration regressions. | active-contract + runtime bug | Restore the lost default projection from the historical baseline, keep the remaining truly opt-in ADR-056 quota hooks and compatibility heartbeat aliases explicitly whitelisted, and regenerate committed `.claude/settings.json` from the repaired script so the installer and repo baseline converge again. | `tests/contracts/test_orphan_hooks.py tests/unit/test_docker_drift_detector.py tests/unit/test_rate_limit_detector.py tests/unit/test_startup_protocol.py tests/unit/test_work_queue_sync.py tests/unit/test_surface_fix_detector.py`: 46 passed. `tests/integration/test_native_agent_heartbeat.py`: 4 passed. |
 | Cost prediction discoverability | Routing/tests treated `cost-predict` as a public command alias, but the repository had no real skill implementation behind it. | false-positive-risk + active bug | Materialize the command as a real skill (`skills/cost-predictor/SKILL.md`) and a runnable CLI wrapper (`scripts/cost-predict.py`) backed by `lib.cost_predictor.py`, then re-register it in `skills/CATALOG.md`. | `tests/behavior/test_skill_auto_selection.py::TestSkillsExistOnFilesystem::test_every_routing_skill_is_known tests/unit/test_skill_router.py::TestRoutingTableIntegrity::test_all_routing_entries_have_existing_skills`: 2 passed. CLI smoke output validated locally. |
 | Package integrity drift | `packages/cos-self-knowledge/` had runtime code but no top-level package documentation, so integrity tests correctly treated it as an undocumented stub. | active-contract | Add package README describing purpose, contents, and ADR reference so the package is both discoverable and auditable. | `tests/audit/test_integrity.py::test_every_package_has_readme_or_skill_md[cos-self-knowledge]`: 1 passed. |
+| Usage health startup timeout | `hooks/usage-health-check.sh` called `ComponentUsageTracker.generate_usage_report()` from SessionStart. That code scans lib imports across the full repo and was taking long enough to trip multiple hook timeout tests. | active-contract + runtime bug | Keep the full report for explicit analysis, but add `generate_quick_health_report()` for startup use and switch the hook to the fast path. The hook now behaves like a real SessionStart advisory instead of a full dead-weight audit. | `tests/behavior/test_usage_health_check.py tests/hooks/test_hook_graceful_degradation.py -k usage-health-check`: 2 passed. Manual runtime check: ~25 ms. |
+| cos-index generation drift | `packages/cos-index/index/packages.yaml` missed `@cos/advisory-llm`, and the generator's bash parser produced invalid YAML when `keywords:` used multiline bullets. | active-contract + runtime bug | Fix the generator to parse bullet-list keywords with portable whitespace handling, regenerate the index, and validate it from source instead of hand-editing only the output. | `packages/cos-index/scripts/generate-index.sh && validate-index.sh` passed; `tests/behavior/test_cos_index_and_global_init.py`: 13 passed. |
+| Metrics rotation archive path | `hooks/metrics-rotation.sh` wrote archives to `metrics/archive/` while the active integration contract expected `.cognitive-os/metrics/.archive/`. Archive creation and retention cleanup therefore appeared broken to the tests. | active-contract + runtime bug | Align the hook to `.archive/` for the current contract and migrate legacy `archive/` gzip files into the active location so existing data is not stranded. | `tests/integration/test_metrics_rotation.py`: 5 passed. |
+| Agent bus smart-infra tests vs ADR-042 | ADR-042 changed Valkey resolution order to `primary -> local daemon fallback -> smart_infra`, but the smart-infra unit tests still modeled “first failure goes straight to Docker start.” | stale-contract | Update the tests to fail both pre-smart-infra probes before asserting the `ensure_service('valkey')` path. Preserve the runtime's daemon-first behavior. | `tests/unit/test_agent_bus.py -k SmartInfraIntegration`: 6 passed. |
+| Executor capability live check | `OrchestratorCapabilities._check_executor()` now accepts either `ORCHESTRATOR_MODE=executor` or a live executor daemon marker in `.cognitive-os/runtime/`, but the integration test still asserted env-var-only behavior. | stale-contract | Update the live integration test to reflect the current runtime contract: env var OR a live daemon state file with an alive PID. | `tests/integration/test_orchestrator_capabilities_live.py`: 9 passed. |
 
 ## Passes Still Needing Trust Review
 
