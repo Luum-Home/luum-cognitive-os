@@ -1,1 +1,0 @@
-../../../rules/so-slo.md
