@@ -1,45 +1,38 @@
 # SCOPE: both
 # scope: both
-"""Observability tracing module (Opik + Phoenix).
+"""Observability tracing module (Phoenix-only, post-ADR-058 / ADR-060).
 
-Provides functions to send execution traces to the optional observability
-backends. All providers are disabled by default and controlled via
-environment variables.
+Emits OTel spans via Phoenix. No cloud sinks. Compliant with the SO's
+local-only policy (ADR-060): Phoenix is the supported trace surface;
+Langfuse (ADR-058) and Opik (ADR-060) were removed.
 
-ADR-058 (2026-04-24): the former remote-ingestion sink was retired. Trace
-export now has two modes:
-
-- **Opik** (cloud or self-hosted, see `OPIK_ENABLED`): unchanged.
-- **Phoenix (pip, OTel)**: the new LLM-native trace UI. Emitted from
-  ``lib/record_completion.py::_send_otel_trace`` using the
-  ``arize-phoenix-otel`` bridge. This file's ``trace()`` helper forwards
-  to that OTel path when Phoenix is installed.
+Most callers should use ``lib/record_completion.py::_send_otel_trace``
+directly; this module is a thin helper for ad-hoc tracing from scripts
+and hooks that want to emit a single span with arbitrary metadata
+(e.g., `trace_claude_result` below).
 
 Usage:
-    from lib.observability import trace, is_opik_available
+    from lib.observability import trace, is_phoenix_available
 
-    trace(
-        name="sdd-apply",
-        start="2026-03-27T10:00:00Z",
-        end="2026-03-27T10:05:00Z",
-        metadata={"agent": "sdd-apply", "phase": "reconstruction", "tokens": 1500},
-        input_text="Apply the spec changes...",
-        output_text="Changes applied successfully.",
-    )
+    if is_phoenix_available():
+        trace(
+            name="sdd-apply",
+            start="2026-03-27T10:00:00Z",
+            end="2026-03-27T10:05:00Z",
+            metadata={"agent": "sdd-apply", "phase": "reconstruction", "tokens": 1500},
+            input_text="Apply the spec changes...",
+            output_text="Changes applied successfully.",
+        )
 
 Python 3.9+ compatible.
 """
 
 import json
 import logging
-import os
-import uuid
+import time
 from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
-
-# Default endpoints matching docker-compose.cognitive-os.yml
-_OPIK_DEFAULT_HOST = "http://localhost:5173"
 
 # Timeout for HTTP requests (seconds)
 _CONNECT_TIMEOUT = 3
@@ -53,8 +46,10 @@ def _http_post(
 ) -> int:
     """POST JSON to a URL and return the HTTP status code.
 
+    Generic helper retained for any future HTTP-based observability sink;
+    not currently used by the Phoenix OTel path (OTel handles transport).
     Uses urllib to avoid external dependencies. Returns 0 on connection
-    failure (service unreachable).
+    failure (service unreachable). Tested by `test_observability.py`.
     """
     import urllib.request
     import urllib.error
@@ -74,28 +69,6 @@ def _http_post(
     except (urllib.error.URLError, OSError, TimeoutError) as e:
         logger.debug("HTTP POST to %s failed: %s", url, e)
         return 0
-
-
-def is_opik_available() -> bool:
-    """Check if Opik is enabled and reachable.
-
-    Returns True if OPIK_ENABLED=true and the health endpoint responds.
-    """
-    if os.environ.get("OPIK_ENABLED", "false").lower() != "true":
-        return False
-
-    host = os.environ.get("OPIK_HOST", _OPIK_DEFAULT_HOST)
-    try:
-        import urllib.request
-        import urllib.error
-
-        req = urllib.request.Request(
-            "%s/is-alive/ping" % host, method="GET"
-        )
-        with urllib.request.urlopen(req, timeout=_CONNECT_TIMEOUT) as resp:
-            return resp.status == 200
-    except Exception:
-        return False
 
 
 def is_phoenix_available() -> bool:
@@ -154,51 +127,6 @@ def trace_to_phoenix(
         return False
 
 
-def trace_to_opik(
-    name: str,
-    start: str,
-    end: str,
-    metadata: Dict[str, Any],
-    input_text: Optional[str] = None,
-    output_text: Optional[str] = None,
-) -> bool:
-    """Send a trace to Opik.
-
-    Args:
-        name: Trace name (e.g., agent or skill name).
-        start: ISO 8601 start timestamp.
-        end: ISO 8601 end timestamp.
-        metadata: Arbitrary metadata dict.
-        input_text: Optional input/prompt text.
-        output_text: Optional output/result text.
-
-    Returns:
-        True if the trace was accepted (HTTP 2xx), False otherwise.
-    """
-    host = os.environ.get("OPIK_HOST", _OPIK_DEFAULT_HOST)
-
-    trace_id = str(uuid.uuid4())
-    payload = {
-        "id": trace_id,
-        "name": name,
-        "start_time": start,
-        "end_time": end,
-        "input": {"text": input_text or ""},
-        "output": {"text": output_text or ""},
-        "metadata": metadata,
-    }
-
-    url = "%s/api/v1/private/traces" % host
-    status = _http_post(url, payload)
-
-    if 200 <= status < 300:
-        logger.debug("Opik trace sent: %s (HTTP %d)", name, status)
-        return True
-    else:
-        logger.warning("Opik trace failed: %s (HTTP %d)", name, status)
-        return False
-
-
 def trace(
     name: str,
     start: str,
@@ -207,11 +135,9 @@ def trace(
     input_text: Optional[str] = None,
     output_text: Optional[str] = None,
 ) -> Dict[str, bool]:
-    """Send a trace to all enabled observability providers.
+    """Send a trace to the active observability provider (Phoenix, if available).
 
-    Checks OPIK_ENABLED and, if the Phoenix OTel bridge is installed,
-    emits a Phoenix span too. Failures are logged but never raise
-    exceptions.
+    Failures are logged but never raise exceptions.
 
     Args:
         name: Trace name.
@@ -223,7 +149,7 @@ def trace(
 
     Returns:
         Dict with provider names as keys and success booleans as values.
-        Only includes providers that were enabled.
+        Only includes providers that were available.
     """
     results: Dict[str, bool] = {}
 
@@ -236,16 +162,6 @@ def trace(
         except Exception as e:
             logger.warning("Phoenix trace error: %s", e)
             results["phoenix"] = False
-
-    if os.environ.get("OPIK_ENABLED", "false").lower() == "true":
-        try:
-            results["opik"] = trace_to_opik(
-                name, start, end, metadata,
-                input_text=input_text, output_text=output_text,
-            )
-        except Exception as e:
-            logger.warning("Opik trace error: %s", e)
-            results["opik"] = False
 
     return results
 
@@ -268,8 +184,6 @@ def trace_claude_result(
     Returns:
         Dict with provider results (same as trace()).
     """
-    import time
-
     # Build timestamps from duration
     end_epoch = time.time()
     start_epoch = end_epoch - getattr(result, "duration_secs", 0)

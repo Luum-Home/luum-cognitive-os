@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 135
+Total skills: 137
 
 ## os (12)
 
@@ -22,7 +22,7 @@ Total skills: 135
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 
-## os-dev (29)
+## os-dev (30)
 
 | Skill | Description |
 |-------|-------------|
@@ -32,15 +32,16 @@ Total skills: 135
 | capability-snapshot | \"Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss… |
 | cognee-integration | Configure and use Cognee for knowledge graph memory. |
 | cognitive-os-benchmark | Run benchmark comparisons between Cognitive OS and BMAD METHOD v6 |
-| cognitive-os-test | Run the Cognitive OS automated test suite (infra, behavior, quality) |
+| cognitive-os-test | Run the Cognitive OS test suite with persisted summary (junit + failures + tails). |
 | compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI… |
 | component-classifier | \"Classify a new component (skill, hook, rule, lib) as CORE or PACKAGE. |
+| component-reality-check | Classify every SO component into REAL / DORMANT / ASPIRATIONAL / METADATA — catch drift between declarations and observable runtime. |
 | deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
 | detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
+| dogfood-score | Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs). |
 | harness-audit | Evaluate harness components (hooks, rules, skills) for continued relevance. |
 | metrics-calibrator | Analyze KPI history and auto-calibrate thresholds for meaningful alerting |
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules. |
-| opik-integration | Configure and use Opik for LLM observability, tracing, and evaluation. |
 | paperclip-dashboard | View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent… |
 | pattern-audit | Grep/regex audit with mandatory sampling — forbids unverified severity counts. |
 | pentest-self | Self-penetration testing for Cognitive OS safety mesh. |
@@ -85,7 +86,7 @@ Total skills: 135
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 
-## project (68)
+## project (69)
 
 | Skill | Description |
 |-------|-------------|
@@ -121,6 +122,7 @@ Total skills: 135
 | ops-runbook | Scaffold deploy/rollback/on-call/monitoring runbooks idempotently under 06-backoffice. |
 | optimize-skill | Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras… |
 | persistent-agent | Create persistent agents that maintain their own state across sessions. |
+| phoenix-trace-ui | Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker) |
 | plan-bug | Create a bug fix plan with root cause analysis and evaluation scoring. |
 | plan-feature | Create a feature implementation plan with evaluation scoring. |
 | planning-poker | Multi-agent complexity estimation via planning-poker rounds. |
