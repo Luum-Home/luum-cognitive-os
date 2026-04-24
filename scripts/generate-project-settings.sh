@@ -94,6 +94,32 @@ fi
 # ── Hook lists ──────────────────────────────────────────────────────
 # Self-hosting-only hooks: never included in external projects
 SELF_HOSTING_ONLY="self-install.sh release-guard.sh"
+INSTALL_SCOPE="${COS_INSTALL_SCOPE:-both}"
+
+scope_allows() {
+  local f="$1"
+  [ -f "$f" ] || return 0
+  [ "$INSTALL_SCOPE" = "all" ] && return 0
+
+  local scope_val
+  scope_val=$(head -3 "$f" 2>/dev/null | grep -m1 -oE '(# SCOPE:|<!-- SCOPE:) [a-zA-Z_/-]+' | awk '{print $NF}' | tr -d ' ' | head -1 || true)
+  [ -z "$scope_val" ] && return 0
+
+  case "$scope_val" in
+    project|both) return 0 ;;
+    os-only)      return 1 ;;
+    *)            return 0 ;;
+  esac
+}
+
+project_scoped_hooks() {
+  local hook_file
+  for hook_file in "$COS_SOURCE_DIR/hooks"/*.sh; do
+    [ -f "$hook_file" ] || continue
+    scope_allows "$hook_file" || continue
+    basename "$hook_file"
+  done
+}
 
 # ADR-002 default tier hook set (~29 hooks). Includes the regression guards:
 # auto-verify, auto-refine, dod-gate, session-sanity, confidentiality-enforcer.
@@ -182,8 +208,10 @@ case "$MODE" in
     result=$(build_jq_filter "$DEFAULT_HOOKS")
     ;;
   --full)
-    # Full: include all except self-hosting-only
-    result=$(build_jq_filter "")
+    # Full: include every hook installable under the active scope, then remove
+    # self-hosting-only hooks inside build_jq_filter. This keeps generated
+    # settings aligned with the files cos-init actually copies.
+    result=$(build_jq_filter "$(project_scoped_hooks)")
     ;;
 esac
 

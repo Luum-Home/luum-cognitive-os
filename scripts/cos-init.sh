@@ -138,6 +138,27 @@ scope_allows() {
   esac
 }
 
+# skill_scope_allows DIR → returns 0 (allow) or 1 (skip)
+# Skills declare audience in SKILL.md frontmatter. Treat `project`, `both`,
+# `adopters`, and `human` as project-installable; keep OS development skills
+# out of external project installs unless COS_INSTALL_SCOPE=all.
+skill_scope_allows() {
+  local skill_dir="$1"
+  local skill_md="$skill_dir/SKILL.md"
+  [ -f "$skill_md" ] || return 0
+  [ "$INSTALL_SCOPE" = "all" ] && return 0
+
+  local audience
+  audience=$(grep -E '^(audience|scope):' "$skill_md" 2>/dev/null | head -1 | awk -F: '{print $2}' | tr -d " '\"\r" || true)
+  [ -z "$audience" ] && return 0
+
+  case "$audience" in
+    project|both|adopters|human) return 0 ;;
+    os|os-dev|os-only)           return 1 ;;
+    *)                           return 0 ;;
+  esac
+}
+
 echo "=== Cognitive OS Init ($MODE) ==="
 echo "Harness: $HARNESS"
 echo "Scope filter: $INSTALL_SCOPE"
@@ -219,7 +240,8 @@ DEFAULT_HOOKS="error-learning error-pipeline result-truncator session-init sessi
   clarification-interceptor agent-checkpoint session-sanity confidentiality-enforcer
   session-learning crash-recovery teammate-idle task-created task-completed"
 
-# DEFAULT_SKILLS: the 10 curated "vanilla value" skills from ADR-002.
+# DEFAULT_SKILLS: the curated "vanilla value" skills from ADR-002. Audience
+# filtering may skip OS-development dashboards for external project installs.
 # These deliver the core primitives an orchestrator needs on first run.
 DEFAULT_SKILLS="compose-prompt exhaustive-prompt agent-dashboard auto-refine
   verification-before-completion plan-feature session-backlog resource-governor
@@ -243,6 +265,7 @@ done
 mkdir -p .claude/rules/cos
 mkdir -p .claude/commands
 mkdir -p "$(dirname "$SETTINGS_RELATIVE_PATH")"
+mkdir -p .cognitive-os/rules/cos
 mkdir -p .cognitive-os/hooks/cos
 mkdir -p .cognitive-os/skills/cos
 mkdir -p .cognitive-os/templates/cos
@@ -253,12 +276,17 @@ mkdir -p .cognitive-os/tasks
 # ── 4. Install rules ──────────────────────────────────────────────
 rules_installed=0
 rules_source="$COS_SOURCE_DIR/rules"
+RULE_DEST_KERNEL=".cognitive-os/rules/cos"
+RULE_DEST_DRIVER=".claude/rules/cos"
+RULE_DESTS=("$RULE_DEST_KERNEL" "$RULE_DEST_DRIVER")
 
 install_rule() {
   local name="$1"
   local src="$rules_source/${name}.md"
   if [ -f "$src" ]; then
-    cp "$src" ".claude/rules/cos/${name}.md"
+    for rules_dest in "${RULE_DESTS[@]}"; do
+      cp "$src" "$rules_dest/${name}.md"
+    done
     rules_installed=$((rules_installed + 1))
   fi
 }
@@ -268,7 +296,9 @@ if [ "$MODE" = "--full" ]; then
   for rule in "$rules_source"/*.md; do
     [ -f "$rule" ] || continue
     scope_allows "$rule" || continue
-    cp "$rule" ".claude/rules/cos/$(basename "$rule")"
+    for rules_dest in "${RULE_DESTS[@]}"; do
+      cp "$rule" "$rules_dest/$(basename "$rule")"
+    done
     rules_installed=$((rules_installed + 1))
   done
 else
@@ -280,7 +310,9 @@ fi
 
 # Always install RULES-COMPACT.md if it exists
 if [ -f "$rules_source/RULES-COMPACT.md" ]; then
-  cp "$rules_source/RULES-COMPACT.md" ".claude/rules/cos/RULES-COMPACT.md"
+  for rules_dest in "${RULE_DESTS[@]}"; do
+    cp "$rules_source/RULES-COMPACT.md" "$rules_dest/RULES-COMPACT.md"
+  done
 fi
 
 # ── 5. Install hooks ─────────────────────────────────────────────
@@ -323,49 +355,55 @@ else
 fi
 
 # ── 6. Install skills (both default and full tiers — ADR-002) ─────
-# Skills are installed to BOTH destinations with DIFFERENT layouts (see ADR-001):
-#   .cognitive-os/skills/cos/<name>/  → vendor-agnostic kernel path, namespaced under `cos/` to
-#                                       avoid collision when multiple OS sources populate this path
-#   .claude/skills/<name>/            → Claude Code harness driver path, FLAT layout
-#                                       (empirically verified by ADR-001 Experiment 1 that the
-#                                       harness reads {project}/.claude/skills/<name>/SKILL.md;
-#                                       the nested `cos/` wrapper would hide skills from discovery)
-# Only driver-path skills count toward skills_installed (that is what the harness sees).
+# Skills are installed to canonical storage and projected into the Claude driver
+# with a flat symlink layout (see ADR-001):
+#   .cognitive-os/skills/cos/<name>/  → vendor-agnostic kernel path
+#   .claude/skills/<name>/            → Claude Code flat driver symlink
+# The flat driver layout is load-bearing: the nested `cos/` wrapper would hide
+# skills from Claude discovery. Symlinks keep canonical as the source of truth
+# and avoid duplicating skill content in external projects.
 skills_installed=0
 skills_source="$COS_SOURCE_DIR/skills"
 SKILL_DEST_KERNEL=".cognitive-os/skills/cos"
 SKILL_DEST_DRIVER=".claude/skills"
-SKILL_DESTS=("$SKILL_DEST_KERNEL" "$SKILL_DEST_DRIVER")
+
+install_skill_dir() {
+  local skill_dir="$1"
+  local skill_name
+  skill_name=$(basename "$skill_dir")
+  skill_scope_allows "$skill_dir" || return 0
+
+  rm -rf "$SKILL_DEST_KERNEL/$skill_name" "$SKILL_DEST_DRIVER/$skill_name"
+  cp -r "$skill_dir" "$SKILL_DEST_KERNEL/$skill_name"
+
+  # Relative symlink: .claude/skills/<name> -> ../../.cognitive-os/skills/cos/<name>
+  ln -s "../../.cognitive-os/skills/cos/$skill_name" "$SKILL_DEST_DRIVER/$skill_name"
+  skills_installed=$((skills_installed + 1))
+}
 
 if [ -d "$skills_source" ]; then
-  for skills_dest in "${SKILL_DESTS[@]}"; do
-    mkdir -p "$skills_dest"
+  mkdir -p "$SKILL_DEST_KERNEL" "$SKILL_DEST_DRIVER"
 
-    if [ "$MODE" = "--full" ]; then
-      # Install all skills
-      for skill_dir in "$skills_source"/*/; do
-        [ -d "$skill_dir" ] || continue
-        skill_name=$(basename "$skill_dir")
-        cp -r "$skill_dir" "$skills_dest/$skill_name"
-        [ "$skills_dest" = "$SKILL_DEST_DRIVER" ] && skills_installed=$((skills_installed + 1))
-      done
-      # Copy CATALOG.md if exists
-      if [ -f "$skills_source/CATALOG.md" ]; then
-        cp "$skills_source/CATALOG.md" "$skills_dest/CATALOG.md"
-      fi
-    else
-      # Default: install the 10 curated core skills (ADR-002).
-      for name in $DEFAULT_SKILLS; do
-        if [ -d "$skills_source/$name" ]; then
-          cp -r "$skills_source/$name" "$skills_dest/$name"
-          [ "$skills_dest" = "$SKILL_DEST_DRIVER" ] && skills_installed=$((skills_installed + 1))
-        fi
-      done
-      if [ -f "$skills_source/CATALOG.md" ]; then
-        cp "$skills_source/CATALOG.md" "$skills_dest/CATALOG.md"
-      fi
-    fi
-  done
+  if [ "$MODE" = "--full" ]; then
+    # Install all project-allowed skills.
+    for skill_dir in "$skills_source"/*/; do
+      [ -d "$skill_dir" ] || continue
+      install_skill_dir "${skill_dir%/}"
+    done
+  else
+    # Default: install the curated core skills that are project-allowed.
+    for name in $DEFAULT_SKILLS; do
+      [ -d "$skills_source/$name" ] || continue
+      install_skill_dir "$skills_source/$name"
+    done
+  fi
+
+  # Copy the catalog once into canonical storage and project it into the driver.
+  if [ -f "$skills_source/CATALOG.md" ]; then
+    cp "$skills_source/CATALOG.md" "$SKILL_DEST_KERNEL/CATALOG.md"
+    rm -f "$SKILL_DEST_DRIVER/CATALOG.md"
+    ln -s "../../.cognitive-os/skills/cos/CATALOG.md" "$SKILL_DEST_DRIVER/CATALOG.md"
+  fi
 fi
 
 # ── 7. Install templates (both default and full tiers) ──────────
@@ -433,14 +471,21 @@ fi
 # After rules are installed AND cognitive-os.yaml exists, re-apply the
 # profile filter from cognitive-os.yaml. ADR-002 collapsed to 2 tiers
 # (default + full); legacy values (lean/standard/minimal) map to default.
-EFFICIENCY_PROFILE="default"
+if [ "$MODE" = "--full" ]; then
+  EFFICIENCY_PROFILE="full"
+else
+  EFFICIENCY_PROFILE="default"
+fi
 if [ -f "cognitive-os.yaml" ]; then
   _ep=$(grep -A1 '^efficiency:' cognitive-os.yaml 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || true)
   case "$_ep" in
     default|full)     EFFICIENCY_PROFILE="$_ep" ;;
-    lean|standard|minimal|"")
-      [ -n "$_ep" ] && echo "Note: cognitive-os.yaml efficiency.profile='$_ep' → 'default' (ADR-002)." >&2
+    lean|standard|minimal)
+      echo "Note: cognitive-os.yaml efficiency.profile='$_ep' → 'default' (ADR-002)." >&2
       EFFICIENCY_PROFILE="default"
+      ;;
+    "")
+      # No explicit efficiency profile: keep the install mode-derived default.
       ;;
     *)
       echo "Warning: unknown efficiency.profile='$_ep' in cognitive-os.yaml → treating as 'default'." >&2
@@ -468,23 +513,27 @@ COS_INIT_CORE_RULES=(
   "error-learning.md"
 )
 
-RULES_DIR=".claude/rules/cos"
-if [ -d "$RULES_DIR" ] && [ "$EFFICIENCY_PROFILE" = "default" ]; then
+if [ "$EFFICIENCY_PROFILE" = "default" ]; then
   # Keep only core rules (default tier).
-  for rule in "$RULES_DIR"/*.md; do
-    [ -f "$rule" ] || continue
-    base=$(basename "$rule")
-    is_core=false
-    for core in "${COS_INIT_CORE_RULES[@]}"; do
-      [ "$base" = "$core" ] && is_core=true && break
+  for rules_dir in "${RULE_DESTS[@]}"; do
+    [ -d "$rules_dir" ] || continue
+    for rule in "$rules_dir"/*.md; do
+      [ -f "$rule" ] || continue
+      base=$(basename "$rule")
+      is_core=false
+      for core in "${COS_INIT_CORE_RULES[@]}"; do
+        [ "$base" = "$core" ] && is_core=true && break
+      done
+      [ "$is_core" = false ] && rm -f "$rule"
     done
-    [ "$is_core" = false ] && rm -f "$rule"
   done
   # Recount
   rules_installed=0
-  for rule in "$RULES_DIR"/*.md; do
-    [ -f "$rule" ] && rules_installed=$((rules_installed + 1))
-  done
+  if [ -d "$RULE_DEST_DRIVER" ]; then
+    for rule in "$RULE_DEST_DRIVER"/*.md; do
+      [ -f "$rule" ] && rules_installed=$((rules_installed + 1))
+    done
+  fi
 fi
 # full profile: keep everything (no filtering)
 
