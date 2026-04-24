@@ -62,8 +62,9 @@ Notes: <optional 1-2 sentences on scope or trade-offs>.
 
 | Runtime service | Compose services | Mode in `cognitive-os.yaml` | Product position | Purpose |
 |-----------------|------------------|-----------------------------|------------------|---------|
-| `langfuse` | `langfuse-pg`, `langfuse-valkey`, `langfuse-clickhouse`, `langfuse-seaweedfs`, `langfuse-worker`, `langfuse-web` | `disabled` | Legacy/reference observability stack | Full Langfuse self-hosting for teams that explicitly opt into rich LLM traces and UI. Not the default observability path. |
+| `langfuse` | `langfuse-pg`, `langfuse-valkey`, `langfuse-clickhouse`, `langfuse-seaweedfs`, `langfuse-worker`, `langfuse-web` | `disabled` | **Deprecated (phase 2 removal) — see ADR-058** | Full Langfuse self-hosting. Deprecated 2026-04-24 due to 1.34 GiB RAM idle footprint and ClickHouse weight; superseded by Arize Phoenix (pip). Containers stopped; volumes retained until 2026-06-30 for rollback. |
 | `mlflow` | none | `pip` | Default lightweight exporter | Local outcome metrics, completion summaries, cost/session sync, and low-friction run evidence without Docker. |
+| `phoenix` | none | `pip` | Optional observability extension | Arize Phoenix LLM-native trace UI (OTel-backed, Apache 2.0). Replaces Langfuse as the self-hosted trace surface. Launched on-demand via `skills/phoenix-trace-ui/` (Phase 1 pending). See ADR-058. |
 | `opik` | `opik-backend`, `opik-mysql`, `opik-frontend` | `cloud` | Optional observability extension | Cloud-first LLM tracing/evaluation surface. Local stack remains reference/test material because it depends on MySQL, ClickHouse, and Valkey. |
 | `nemo_guardrails` | `nemo-guardrails` | `pip` | Optional in-process guardrails extension | Jailbreak, policy, and PII guardrail runtime. Docker server exists for reference/CI, but default use should be Python API/in-process. |
 | `paperclip` | `paperclip-pg`, `paperclip` | `on_demand` | Optional governance/coordination extension | Agent coordination and governance dashboard. Valuable for advanced workflows, not part of the minimum wedge. |
@@ -112,14 +113,42 @@ Decision:
 
 ### Observability
 
-`mlflow` is the lightweight default exporter. `langfuse` and `opik` are optional/reference observability platforms.
+`mlflow` is the lightweight default exporter. `phoenix` is the new optional
+self-hosted trace UI extension. `langfuse` is **deprecated** as of 2026-04-24
+(see ADR-058); `opik` remains cloud-first.
 
 Decision:
 
 - Keep `mlflow.mode: pip`.
-- Keep `langfuse.mode: disabled`.
+- **Deprecate `langfuse`** — mode stays `disabled` and `status: deprecated`.
+  Compose entries removed in Phase 3 of ADR-058 (target 2026-06-15). Volumes
+  held for rollback until Phase 4 (2026-06-30).
+- **Adopt `phoenix.mode: pip`** — no Docker, launched on-demand by
+  `skills/phoenix-trace-ui/` (Phase 1 of ADR-058).
 - Keep `opik.mode: cloud`.
-- Keep local Langfuse/Opik Compose stacks for explicit integration/reference lanes only.
+- Keep local Opik Compose stack for explicit integration/reference lanes only.
+
+#### phoenix
+
+phoenix meets Necessity Gate criterion 3: optional extension with a concrete
+skill/command/workflow users can intentionally activate. Evidence:
+`skills/phoenix-trace-ui/` (Phase 1 pending) plus direct OTel instrumentation
+in `lib/record_completion.py::_send_phoenix_trace` (Phase 2 pending). Mode
+granted: `pip`. Review: 2026-08-15. Notes: replaces Langfuse's self-hosted
+trace UX with a single-process (~150 MiB), Apache 2.0, LLM-native alternative.
+Spans are OTel-standard so future backend swaps do not require
+re-instrumentation. See ADR-058.
+
+#### langfuse (deprecated)
+
+langfuse no longer meets the Necessity Gate. Deprecated 2026-04-24 per ADR-058.
+Evidence of obsolescence: 1.34 GiB idle RAM footprint across 6 containers
+(ClickHouse, SeaweedFS, Postgres, Valkey, worker, web); zero mandatory
+consumers in `skills/`, `hooks/`, or `lib/` (trace sink in
+`lib/record_completion.py` is a silent-no-op optional import, not a
+self-improvement feedback source). Mode stays `disabled` with `status: deprecated`.
+Review: 2026-06-30 (Phase 4 of the ADR-058 migration — at which point the
+service is removed, not re-reviewed).
 
 ### Automation
 
@@ -235,6 +264,7 @@ Current enforcement lives in:
 - `tests/unit/test_smart_infra.py`: unit contract for service mapping and non-Docker skip behavior.
 - `tests/integration/test_service_health.py`: Docker reference-stack contract, complete Compose-service classification, Valkey-only backend guard, and opt-in local health probes.
 - `tests/contracts/test_service_sunset_policy.py`: enforces that every reference/optional service declares a future-dated `review_by` in `cognitive-os.yaml`.
-- `docs/architecture/observability-backend-evaluation-2026-04-24.md`: observability-specific backend decision.
+- `docs/architecture/observability-backend-evaluation-2026-04-24.md`: observability-specific backend decision (pinned outcome — 2026-04-24 §Decision).
+- `docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`: Langfuse → Phoenix migration ADR and phased plan.
 
 Future service additions must update this catalog and include a test proving whether the service is core, optional, reference-only, or disabled.
