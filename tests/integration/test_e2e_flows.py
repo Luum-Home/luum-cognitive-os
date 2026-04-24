@@ -40,6 +40,7 @@ import pytest
 # Testcontainers imports — skip entire module if not installed
 # ---------------------------------------------------------------------------
 _tc_available = True
+_RUN_E2E_REFERENCE_FLOWS = _os.environ.get("COS_RUN_E2E_REFERENCE_FLOWS") == "1"
 try:
     from testcontainers.core.container import DockerContainer
     from testcontainers.core.network import Network
@@ -52,6 +53,13 @@ pytestmark = [
     pytest.mark.e2e,
     pytest.mark.slow,
     pytest.mark.skipif(not _tc_available, reason="testcontainers not installed"),
+    pytest.mark.skipif(
+        not _RUN_E2E_REFERENCE_FLOWS,
+        reason=(
+            "optional multi-service reference flow lane; set "
+            "COS_RUN_E2E_REFERENCE_FLOWS=1 to run"
+        ),
+    ),
 ]
 
 logger = logging.getLogger(__name__)
@@ -76,7 +84,7 @@ def _docker_ok() -> bool:
         return False
 
 
-if not _docker_ok():
+if _RUN_E2E_REFERENCE_FLOWS and not _docker_ok():
     pytest.skip("Docker not available", allow_module_level=True)
 
 

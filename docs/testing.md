@@ -135,6 +135,10 @@ You can regenerate the inventory without rerunning pytest:
 python3 scripts/test-run-inventory.py --run-dir .cognitive-os/reports/test-runs/latest
 ```
 
+If pytest times out before writing JUnit XML, the inventory falls back to the
+captured stack trace and records a synthetic timeout item. That keeps timeout
+failures visible instead of turning them into empty reports.
+
 This wrapper is part of the Cognitive OS development workflow. It is paired
 with the OS-only `test-contract-repair` skill and should be used whenever
 maintainers repair or classify this repository's own test suite. Projects that
@@ -153,6 +157,35 @@ maintainer tooling.
 ```bash
 ./run -m pytest tests/ -v -m docker
 ```
+
+Some Docker lanes are optional reference stacks rather than default product
+requirements. For example, `tests/integration/test_app_services.py` starts
+heavy application services with testcontainers and only runs when explicitly
+requested:
+
+```bash
+COS_RUN_OPTIONAL_APP_SERVICES=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_app_services.py -q -ra
+```
+
+The heavier multi-service E2E reference flows are also opt-in:
+
+```bash
+COS_RUN_E2E_REFERENCE_FLOWS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_e2e_flows.py -q -ra
+```
+
+Other testcontainers lanes are also explicit opt-ins:
+
+```bash
+COS_RUN_DATABASE_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_databases.py -q -ra
+COS_RUN_PLATFORM_SERVICES=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_platform_services.py -q -ra
+COS_RUN_OPIK_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integration/test-opik-integration.py -q -ra
+COS_RUN_COGNEE_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integration/test-cognee-integration.py -q -ra
+COS_RUN_SMART_INFRA_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_smart_infra_containers.py -q -ra
+```
+
+`tests/contracts/test_optional_docker_lanes.py` enforces this policy so any new
+integration test that creates testcontainers must declare and document a
+`COS_RUN_*` opt-in flag before it can enter the repository.
 
 ### Specific category
 
