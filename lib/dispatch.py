@@ -113,6 +113,88 @@ def _log_metric(record: dict[str, Any], project_dir: Path | None = None) -> None
         pass
 
 
+def _try_registry_provider(
+    provider: str,
+    prompt: str,
+    claude_model: Optional[str] = None,
+    verbose: bool = False,
+) -> Optional[dict]:
+    """Call a provider from lib/providers/REGISTRY.
+
+    Returns dict with response fields or None if the provider is unavailable,
+    disabled via kill-switch, or not in the registry.
+
+    Per-provider kill-switch: COS_DISABLE_<PROVIDER_UPPER>=1 (e.g. COS_DISABLE_OPENROUTER=1).
+    """
+    # Per-provider kill-switch (same pattern as COS_DISABLE_QWEN=1)
+    kill_switch = f"COS_DISABLE_{provider.upper()}"
+    if os.environ.get(kill_switch, "").strip() == "1":
+        if verbose:
+            print(f"[dispatch] {kill_switch}=1 — skipping {provider}", file=sys.stderr)
+        return None
+
+    try:
+        from lib.providers import REGISTRY
+    except ImportError:
+        if verbose:
+            print("[dispatch] lib/providers not available", file=sys.stderr)
+        return None
+
+    mod = REGISTRY.get(provider)
+    if mod is None:
+        if verbose:
+            print(f"[dispatch] provider {provider!r} not in REGISTRY — skipping", file=sys.stderr)
+        return None
+
+    try:
+        if not mod.is_configured():
+            if verbose:
+                print(f"[dispatch] {provider} not configured — advancing", file=sys.stderr)
+            return None
+    except Exception:  # noqa: BLE001
+        return None
+
+    # Resolve model hint
+    model_hint = None
+    if claude_model:
+        # Extract abstract tier from full model names (e.g. "claude-opus-4-7" → "opus")
+        name = claude_model.lower()
+        if "opus" in name:
+            model_hint = "opus"
+        elif "sonnet" in name:
+            model_hint = "sonnet"
+        elif "haiku" in name:
+            model_hint = "haiku"
+        else:
+            model_hint = claude_model  # pass through if already abstract
+
+    messages = [{"role": "user", "content": prompt}]
+    try:
+        r = mod.call(messages, model_hint=model_hint)
+    except Exception as exc:  # noqa: BLE001
+        return {
+            "success": False,
+            "text": "",
+            "tokens_in": 0,
+            "tokens_out": 0,
+            "cost_usd": 0.0,
+            "error": str(exc)[:500],
+            "model": "",
+            "provider_label": provider,
+        }
+
+    return {
+        "success": r.get("success", False),
+        "text": r.get("text", ""),
+        "tokens_in": r.get("tokens_in", 0),
+        "tokens_out": r.get("tokens_out", 0),
+        "cost_usd": r.get("cost_usd", 0.0),
+        "error": r.get("error", ""),
+        "model": r.get("model", ""),
+        "provider_label": provider,
+    }
+
+
 def _try_qwen(
     prompt: str,
     claude_model: Optional[str] = None,
@@ -291,7 +373,7 @@ def dispatch(
         #   - Otherwise: Qwen failure → ALWAYS advance; Claude failure → ONLY
         #     advance if rate-limit.
         if is_fallback and response is not None:
-            prev_was_claude = response.get("provider_label") == "claude"
+            prev_provider = response.get("provider_label", "")
             prev_err = response.get("error")
             prev_was_rate_limit = _is_rate_limit_error(prev_err)
 
@@ -304,13 +386,25 @@ def dispatch(
                     )
                 break
 
-            if prev_was_claude and not prev_was_rate_limit and not _fallback_on_any_error:
+            # ADR-062: advance-on-rate-limit-only for paid/quality providers
+            # (openai, claude_sdk, and claude all follow this policy)
+            try:
+                from lib.providers import ADVANCE_ON_RATE_LIMIT_ONLY
+                _rl_only_providers = ADVANCE_ON_RATE_LIMIT_ONLY | {"claude"}
+            except ImportError:
+                _rl_only_providers = {"claude"}
+
+            prev_is_strict = prev_provider in _rl_only_providers
+            if prev_is_strict and not prev_was_rate_limit and not _fallback_on_any_error:
                 if verbose:
                     print(
-                        "[dispatch] Claude failed non-rate-limit — not advancing to cheaper fallback",
+                        f"[dispatch] {prev_provider} failed non-rate-limit — not advancing to cheaper fallback",
                         file=sys.stderr,
                     )
                 break
+
+            # Legacy compatibility: keep old variable name for any code that might reference it
+            prev_was_claude = prev_provider == "claude"  # noqa: F841  (preserved for clarity)
 
         # ADR-050 budget cap: if we've already spent at/above the cap, stop cascade
         # (this prevents a cheap fallback from still being cost-capped blind).
@@ -346,11 +440,19 @@ def dispatch(
                 continue
             response = claude_fn(prompt, claude_model, claude_executor, timeout)
         else:
-            # Future providers (deepseek, minimax, glm, etc.) — scaffold here
-            if verbose:
-                print(f"[dispatch] provider {provider!r} not implemented — skipping",
-                      file=sys.stderr)
-            continue
+            # ADR-062: N-provider cascade via lib/providers/REGISTRY
+            attempt = _try_registry_provider(
+                provider=provider,
+                prompt=prompt,
+                claude_model=claude_model,
+                verbose=verbose,
+            )
+            if attempt is None:
+                # Provider unavailable (not configured / SDK missing / disabled) — advance
+                if verbose:
+                    print(f"[dispatch] provider {provider!r} unavailable — advancing", file=sys.stderr)
+                continue
+            response = attempt
 
         if response.get("success"):
             break

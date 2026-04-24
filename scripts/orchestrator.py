@@ -336,13 +336,16 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--show-text", action="store_true", help="Print the agent's text output.")
     r.add_argument(
         "--providers",
-        default="qwen,claude",
-        help="Comma-separated priority-cascade list of providers. Default 'qwen,claude' "
-             "preserves Claude Max quota for the main user↔Claude Code chat (ADR-049 Option B). "
-             "Primary = first, fallbacks = rest in order. Examples: 'qwen' (solo Qwen), "
-             "'claude' (solo Claude), 'claude,qwen' (invert priority), "
-             "'deepseek,qwen,claude' (future 3-tier). Override session-wide with "
-             "COS_FORCE_CLAUDE_PRIMARY=1 (rewrites list to 'claude'). "
+        default="qwen,openrouter,gemini,ollama,claude",
+        help="Comma-separated priority-cascade list of providers (ADR-062). "
+             "Default: 'qwen,openrouter,gemini,ollama,claude' — preserves Claude Max "
+             "quota for the main user↔Claude Code chat; Claude is last-resort only. "
+             "Primary = first, fallbacks = rest in order. "
+             "Unconfigured providers (missing API keys / daemon not running) are skipped. "
+             "Examples: 'qwen,claude' (legacy 2-tier), 'qwen' (solo Qwen), "
+             "'qwen,openai,claude' (opt-in OpenAI tier). "
+             "Opt-in providers (openai, deepseek, claude_sdk) require their API keys set. "
+             "Override session-wide with COS_FORCE_CLAUDE_PRIMARY=1 (rewrites list to 'claude'). "
              "Ensemble (parallel multi-provider) is a separate future flag '--ensemble'.",
     )
     r.add_argument("--verbose", action="store_true")
