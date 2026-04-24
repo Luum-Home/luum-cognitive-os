@@ -655,7 +655,9 @@ class TestPipelineIntegrationFullChain:
             model="sonnet",
         )
 
-        env = {**os.environ, "CLAUDE_PROJECT_DIR": str(tmp_path)}
+        env = {**os.environ, "COGNITIVE_OS_PROJECT_DIR": str(tmp_path)}
+        env.pop("CODEX_PROJECT_DIR", None)
+        env.pop("CLAUDE_PROJECT_DIR", None)
         result = subprocess.run(
             [sys.executable, "-c",
              "import sys, os; sys.path.insert(0, os.environ.get('REPO_ROOT', '.')); "
@@ -752,7 +754,9 @@ class TestPipelineIntegrationFullChain:
         metrics_dir.mkdir(parents=True, exist_ok=True)
 
         stdin_payload = self._make_stdin_json(score=70, description="debug-api-error")
-        env = {**os.environ, "CLAUDE_PROJECT_DIR": str(tmp_path), "REPO_ROOT": _REPO_ROOT}
+        env = {**os.environ, "COGNITIVE_OS_PROJECT_DIR": str(tmp_path), "REPO_ROOT": _REPO_ROOT}
+        env.pop("CODEX_PROJECT_DIR", None)
+        env.pop("CLAUDE_PROJECT_DIR", None)
 
         result = subprocess.run(
             [sys.executable, "-c",
