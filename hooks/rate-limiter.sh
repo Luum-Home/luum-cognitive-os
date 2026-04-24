@@ -35,6 +35,8 @@ set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 source "$(dirname "$0")/_lib/common.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+COGNITIVE_OS_HOOK_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Skip in private mode
 check_private_mode
@@ -64,10 +66,26 @@ case "$RETRY_COUNT" in
     ''|*[!0-9]*) RETRY_COUNT=0 ;;
 esac
 
+BLOCKED_COMMAND=""
+BLOCKED_COMMAND_HASH=""
+if [ "$ACTION" = "bash_command" ]; then
+    BLOCKED_COMMAND=$(echo "$_STDIN_JSON" | jq -r '.tool_input.command // ""' 2>/dev/null)
+    if [ -n "$BLOCKED_COMMAND" ]; then
+        if command -v sha256sum >/dev/null 2>&1; then
+            BLOCKED_COMMAND_HASH=$(printf '%s' "$BLOCKED_COMMAND" | sha256sum | cut -c1-16)
+        else
+            BLOCKED_COMMAND_HASH=$(printf '%s' "$BLOCKED_COMMAND" | shasum -a 256 | cut -c1-16)
+        fi
+    fi
+fi
+export COGNITIVE_OS_HOOK_ROOT
+export RATE_LIMIT_BLOCKED_COMMAND="$BLOCKED_COMMAND"
+export RATE_LIMIT_BLOCKED_COMMAND_HASH="$BLOCKED_COMMAND_HASH"
+
 # Check rate limit via Python (passing phase for modifier calculation)
 RESULT=$(python3 -c "
 import sys, os
-sys.path.insert(0, '$_PROJECT_DIR')
+sys.path.insert(0, os.environ['COGNITIVE_OS_HOOK_ROOT'])
 os.environ.setdefault('CLAUDE_PROJECT_DIR', '$_PROJECT_DIR')
 from lib.rate_limiter import RateLimiter, RateLimitQueue
 
@@ -78,6 +96,16 @@ rl = RateLimiter(
 allowed, reason = rl.check('$ACTION')
 
 if not allowed:
+    context = {
+        'description': '$TOOL_NAME action',
+        'blocked_reason': reason,
+    }
+    blocked_command = os.environ.get('RATE_LIMIT_BLOCKED_COMMAND', '')
+    blocked_command_hash = os.environ.get('RATE_LIMIT_BLOCKED_COMMAND_HASH', '')
+    if blocked_command:
+        context['command'] = blocked_command
+    if blocked_command_hash:
+        context['command_hash'] = blocked_command_hash
     # Enqueue the blocked action for automatic retry.
     # D45: pass retry_count from the env hand-off so re-blocks are counted
     # against MAX_RETRY_COUNT. Fresh user bash → retry_count=0.
@@ -85,10 +113,7 @@ if not allowed:
         state_path='$_PROJECT_DIR/.cognitive-os/rate-limit-queue.json',
         cooldown_seconds=rl.config.cooldown_seconds,
     )
-    queue_id = queue.enqueue('$ACTION', {
-        'description': '$TOOL_NAME action',
-        'blocked_reason': reason,
-    }, retry_count=$RETRY_COUNT)
+    queue_id = queue.enqueue('$ACTION', context, retry_count=$RETRY_COUNT)
     queued_items = queue.peek()
     queued_count = len(queued_items)
     cooldown = rl.config.cooldown_seconds

@@ -19,6 +19,7 @@ Python 3.9+ compatible.
 import logging
 import os
 import uuid
+from pathlib import Path
 from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
@@ -41,6 +42,29 @@ def _get_model_for_phase(phase: str) -> str:
     Falls back to ``"sonnet"`` when the router is unavailable or the phase
     is not in the table.
     """
+    if phase.startswith("sdd-"):
+        phase_name = phase[4:]
+        config_path = None
+        for parent in Path(__file__).resolve().parents:
+            candidate = parent / "cognitive-os.yaml"
+            if candidate.is_file():
+                config_path = candidate
+                break
+        if config_path is not None:
+            try:
+                import yaml
+
+                data = yaml.safe_load(config_path.read_text()) or {}
+                configured = (
+                    data.get("sdd", {})
+                    .get("phases", {})
+                    .get(phase_name, {})
+                    .get("model")
+                )
+                if isinstance(configured, str) and configured.strip():
+                    return configured.strip()
+            except Exception:
+                pass
     try:
         from lib.model_router import select_model
 

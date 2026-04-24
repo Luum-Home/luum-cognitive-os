@@ -27,16 +27,23 @@ SETTINGS_FILE = PROJECT_ROOT / ".claude" / "settings.json"
 
 def _generate_profile(profile: str) -> dict:
     """Run set-security-profile.sh for a profile and return parsed JSON."""
-    result = subprocess.run(
-        ["bash", str(GENERATOR_SCRIPT), profile],
-        capture_output=True,
-        text=True,
-        cwd=str(PROJECT_ROOT),
-    )
-    assert result.returncode == 0, f"Generator failed for {profile}: {result.stderr}"
-    # Read the generated settings.json
-    assert SETTINGS_FILE.exists(), "settings.json was not created"
-    return json.loads(SETTINGS_FILE.read_text())
+    original_exists = SETTINGS_FILE.exists()
+    original_text = SETTINGS_FILE.read_text() if original_exists else None
+    try:
+        result = subprocess.run(
+            ["bash", str(GENERATOR_SCRIPT), profile],
+            capture_output=True,
+            text=True,
+            cwd=str(PROJECT_ROOT),
+        )
+        assert result.returncode == 0, f"Generator failed for {profile}: {result.stderr}"
+        assert SETTINGS_FILE.exists(), "settings.json was not created"
+        return json.loads(SETTINGS_FILE.read_text())
+    finally:
+        if original_exists and original_text is not None:
+            SETTINGS_FILE.write_text(original_text)
+        elif SETTINGS_FILE.exists():
+            SETTINGS_FILE.unlink()
 
 
 def _extract_hooks(settings: dict) -> set:
@@ -81,17 +88,7 @@ def test_generator_syntax_valid():
 def test_all_profiles_defined():
     """Calling the generator with each profile name must succeed."""
     for profile in ("minimal", "standard", "paranoid"):
-        result = subprocess.run(
-            ["bash", str(GENERATOR_SCRIPT), profile],
-            capture_output=True,
-            text=True,
-            cwd=str(PROJECT_ROOT),
-        )
-        assert result.returncode == 0, (
-            f"Profile '{profile}' failed: {result.stderr}"
-        )
-        assert SETTINGS_FILE.exists(), f"settings.json not created for {profile}"
-        data = json.loads(SETTINGS_FILE.read_text())
+        data = _generate_profile(profile)
         assert "hooks" in data, f"No 'hooks' key in settings.json for {profile}"
 
 
