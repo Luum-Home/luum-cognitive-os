@@ -407,17 +407,18 @@ for mcp in mcps:
     args_json = json.dumps(args)
 
     if has_claude:
-        # Check if already registered
-        try:
-            result = subprocess.run(
-                ['claude', 'mcp', 'list'],
-                capture_output=True, text=True, timeout=10
-            )
-            if name in result.stdout:
-                print(f"  '{name}' already registered (claude mcp list); skipping", file=sys.stderr)
-                continue
-        except Exception:
-            pass  # If we can't check, proceed with registration
+        # Check if already registered (skip in dry-run to avoid mutating HOME)
+        if not dry_run:
+            try:
+                result = subprocess.run(
+                    ['claude', 'mcp', 'list'],
+                    capture_output=True, text=True, timeout=10
+                )
+                if name in result.stdout:
+                    print(f"  '{name}' already registered (claude mcp list); skipping", file=sys.stderr)
+                    continue
+            except Exception:
+                pass  # If we can't check, proceed with registration
 
         print(f"  registering '{name}' via claude mcp add", file=sys.stderr)
         if dry_run:

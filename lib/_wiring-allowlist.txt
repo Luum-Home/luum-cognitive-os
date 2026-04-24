@@ -58,3 +58,7 @@ smart_truncator
 # Webhook trigger — not yet wired to a hook
 webhook_trigger
 return_contract_validator
+
+# OpenAI-compatible agent loop — standalone backend loop for non-Anthropic providers
+# (mirrors qwen_agent_loop.py but for OpenAI-compatible endpoints); not yet wired to a hook
+openai_compatible_agent_loop
