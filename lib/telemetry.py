@@ -110,21 +110,20 @@ def _append(filename: str, payload: Dict[str, Any]) -> Optional[Path]:
     try:
         target = _metrics_dir() / filename
         _rotate_if_needed(target)
+        record = dict(payload)
         # Extract or generate timestamp (MetricEvent handles it if empty)
-        timestamp = payload.pop("timestamp", _utc_iso())
+        timestamp = record.pop("timestamp", _utc_iso())
         # Use the 'event' field as event_type suffix; keep it in payload for readers
-        event_label = payload.get("event", filename.replace(".jsonl", ""))
+        event_label = record.get("event", filename.replace(".jsonl", ""))
         # Determine source from filename stem
         source = Path(filename).stem
-        payload_copy = dict(payload)  # preserve original; pop was only for timestamp
         event = MetricEvent(
             source=source,
             event_type=f"telemetry.{event_label}",
-            payload=payload_copy,
+            payload=record,
             timestamp=timestamp,
         )
-        _me_append_event(str(target), event)
-        return target
+        return target if _me_append_event(str(target), event) else None
     except Exception:
         return None
 
