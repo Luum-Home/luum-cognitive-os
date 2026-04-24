@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 138
+Total skills: 139
 
 ## os (12)
 
@@ -22,7 +22,7 @@ Total skills: 138
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 
-## os-dev (30)
+## os-dev (31)
 
 | Skill | Description |
 |-------|-------------|
@@ -55,6 +55,7 @@ Total skills: 138
 | strands-evals-integration | Configure Strands Evals for trace-based agent trajectory evaluation using… |
 | test-contract-repair | Repair failing or misleading tests without greenwashing. |
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
+| deps-update | Audit and upgrade project dependencies (Python, engram, plugins, Docker) |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
 ## both (24)
