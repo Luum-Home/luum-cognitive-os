@@ -10,7 +10,7 @@ Usage:
     from lib.smart_infra import ensure_service, ensure_for_skill, stop_idle_services
 
     # Ensure a single service is running
-    ok = ensure_service("langfuse")
+    ok = ensure_service("paperclip")
 
     # Ensure all services required by a skill
     results = ensure_for_skill("agent-kpis")  # {"mlflow": True}
@@ -21,7 +21,7 @@ Usage:
     # Decorator for functions that need a service
     from lib.smart_infra import requires_service
 
-    @requires_service("langfuse", "litellm")
+    @requires_service("paperclip", "litellm")
     def my_function():
         ...
 
@@ -79,11 +79,6 @@ SKILL_SERVICE_MAP: Dict[str, List[str]] = {
 # ---------------------------------------------------------------------------
 
 SERVICE_COMPOSE_MAP: Dict[str, Dict[str, Any]] = {
-    "langfuse": {
-        "compose_services": ["langfuse-web"],
-        "health_container": "cognitive-os-langfuse",
-        "profile": None,
-    },
     "litellm": {
         "compose_services": ["litellm"],
         "health_container": "cognitive-os-litellm",
@@ -673,7 +668,7 @@ def requires_service(*service_names: str):
 
     Example::
 
-        @requires_service("langfuse", "litellm")
+        @requires_service("paperclip", "litellm")
         def run_observability():
             ...
     """

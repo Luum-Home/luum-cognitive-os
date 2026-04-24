@@ -361,7 +361,6 @@ MIGRATED_FILES = [
     "hooks/error-pipeline.sh",
     "hooks/token-budget-monitor.sh",
     "scripts/setup-git-hooks.sh",
-    "scripts/setup-langfuse.sh",
     "scripts/cos-bootstrap.sh",
     "scripts/version.sh",
     "scripts/register-mcps.sh",
