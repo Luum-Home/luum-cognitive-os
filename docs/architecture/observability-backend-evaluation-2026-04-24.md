@@ -138,3 +138,47 @@ For this repository:
 - [Athina Documentation](https://docs.athina.ai/)
 - [Galileo Documentation](https://docs.galileo.ai/)
 - [Humanloop Prompt Management](https://humanloop.com/docs/prompt-management)
+
+---
+
+## Decision — 2026-04-24
+
+**Outcome: Arize Phoenix is adopted as the new optional self-hosted observability
+extension, replacing Langfuse.** Langfuse is deprecated with a phased removal
+plan through 2026-06-30.
+
+Recorded in: `docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`.
+
+### Summary
+
+- **Langfuse** — deprecated 2026-04-24. Containers stopped (the 6-service stack
+  consumed ~1.34 GiB RAM and ~1380 % CPU aggregate idle). Volumes preserved
+  until Phase 4 of the migration for rollback. Compose entries removed in
+  Phase 3 (target 2026-06-15).
+- **Arize Phoenix** — adopted as `mode: pip`. Launched on-demand via
+  `skills/phoenix-trace-ui/` (Phase 1 pending). Wins on: Apache 2.0, no Docker,
+  LLM-native OTel spans, ~150 MiB single-process footprint, active maintenance,
+  ecosystem portability.
+- **MLflow** — unchanged. Remains the default lightweight outcome exporter.
+- **Opik / Helicone / OpenLIT / Laminar / Logfire / Weave / OpenLLMetry** —
+  unchanged relative to the analysis above. None displaced as a result of
+  this decision.
+- **Self-improvement loop** — unchanged. `skills/analyze-improvements/`
+  continues to read JSONL from `.cognitive-os/metrics/` as the authoritative
+  feedback source. No trace-sink backend participates in PITER.
+
+### Phased migration
+
+1. **Phase 0 — 2026-04-24 (this doc pin):** containers stopped; catalog +
+   config updated; ADR-058 recorded.
+2. **Phase 1 — target 2026-05-15:** Phoenix package added to
+   `pyproject.toml` observability extras, `skills/phoenix-trace-ui/` authored.
+3. **Phase 2 — target 2026-05-30:** `lib/record_completion.py` trace sink
+   migrated from Langfuse SDK to OTel exporter (Phoenix).
+4. **Phase 3 — target 2026-06-15:** Langfuse removed from
+   `docker-compose.cognitive-os.yml` and `hooks/*`.
+5. **Phase 4 — target 2026-06-30:** Langfuse volumes deleted; ADR-058 closed
+   as Implemented.
+
+See ADR-058 for full rationale, alternatives analysis, consequences, and
+rollback strategy.
