@@ -20,6 +20,8 @@ set -uo pipefail
 # Respect killswitch
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 source "$(dirname "$0")/_lib/common.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+COGNITIVE_OS_HOOK_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 check_private_mode
 
@@ -32,7 +34,8 @@ CMD=$(echo "$_STDIN_JSON" | jq -r '.tool_input.command // ""' 2>/dev/null)
 [ -n "$CMD" ] || exit 0
 
 QUEUE_FILE="$_PROJECT_DIR/.cognitive-os/rate-limit-queue.json"
-[ -f "$QUEUE_FILE" ] || exit 0
+QUEUE_JSONL="${QUEUE_FILE%.json}.jsonl"
+[ -f "$QUEUE_FILE" ] || [ -f "$QUEUE_JSONL" ] || exit 0
 
 # Compute command hash (sha256, first 16 hex chars).
 # sha256sum (Linux) vs shasum -a 256 (macOS).
@@ -47,37 +50,29 @@ fi
 # Uses python3 -c to avoid heredoc/stdin conflicts.
 RESULT=$(python3 -c "
 import json, sys, os
+sys.path.insert(0, os.environ['COGNITIVE_OS_HOOK_ROOT'])
+
+from lib.rate_limiter import RateLimitQueue
 
 queue_file = sys.argv[1]
 cmd_hash = sys.argv[2]
-
 try:
-    with open(queue_file, 'r') as f:
-        items = json.load(f)
+    queue = RateLimitQueue(state_path=queue_file)
 except Exception:
     sys.exit(0)
 
-if not isinstance(items, list):
-    sys.exit(0)
-
 matched = None
-remaining = []
-for item in items:
+for item in queue.peek():
     ctx = item.get('context') or {}
-    if ctx.get('command_hash') == cmd_hash and matched is None:
+    if ctx.get('command_hash') == cmd_hash:
         matched = item
-    else:
-        remaining.append(item)
+        break
 
 if matched is None:
     sys.exit(0)
 
-# Write back queue without the matched item (atomic tmp+replace).
-tmp = queue_file + '.tmp'
 try:
-    with open(tmp, 'w') as f:
-        json.dump(remaining, f)
-    os.replace(tmp, queue_file)
+    queue.cancel(matched.get('queue_id', ''))
 except Exception:
     pass
 
