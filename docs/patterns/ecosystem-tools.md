@@ -1,1 +1,1 @@
-../packages/ecosystem-tools/rules/ecosystem-tools.md
+../../packages/ecosystem-tools/rules/ecosystem-tools.md

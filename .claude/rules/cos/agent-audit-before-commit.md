@@ -1,1 +1,0 @@
-../../../rules/agent-audit-before-commit.md

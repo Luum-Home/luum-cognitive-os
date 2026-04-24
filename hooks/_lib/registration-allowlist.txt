@@ -116,6 +116,55 @@ orchestrator-mode-detect.sh
 usage-health-check.sh
 wiring-check.sh
 completeness-check.sh
+
+# Master-plan canonical-first audit refresh (2026-04-23).
+# These hooks exist on disk but are not part of the protected default
+# cross-harness core. They must stay explicit until each is either promoted
+# through product-zones proof paths or moved into an installable extension.
+adr-detector.sh
+agent-quota-advisor.sh
+agent-quota-redirect.sh
+agent-qwen-bridge.sh
+aspirational-audit-weekly.sh
+auto-refine.sh
+auto-verify.sh
+completeness-check-llm.sh
+confidence-gate-llm.sh
+cos-executor-daemon-launcher.sh
+cos-executor-heartbeat.sh
+destructive-git-blocker.sh
+destructive-rm-blocker.sh
+docker-drift-detector.sh
+dod-gate.sh
+global-verify.sh
+native-agent-heartbeat.sh
+pattern-check.sh
+post-agent-verify.sh
+pre-agent-snapshot.sh
+project-docs-convention.sh
+prompt-quality-llm.sh
+rate-limit-detector.sh
+rate-limit-drain.sh
+rate-limit-precheck.sh
+rate-limit-protection.sh
+reaper-daemon-launcher.sh
+reaper-heartbeat.sh
+recap-sync.sh
+self-knowledge-refresh.sh
+session-end-reap.sh
+session-heartbeat.sh
+session-sanity.sh
+session-start-worktree-nudge.sh
+session-startup-protocol.sh
+session-watchdog-launcher.sh
+skill-invocation-logger.sh
+skill-usage-tracker.sh
+surface-fix-detector.sh
+task-bridge-notify.sh
+task-panel-sync.sh
+valkey-ensure.sh
+work-queue-sync.sh
+
 # Hooks below are registered in settings.json and apply-efficiency-profile.sh,
 # but set-security-profile.sh reads from JSON source files (not inline text),
 # so the hook names don't appear literally in the script text.

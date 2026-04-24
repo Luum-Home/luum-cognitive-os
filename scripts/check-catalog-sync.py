@@ -18,7 +18,7 @@ def get_project_root() -> Path:
 
 
 def get_skills_on_disk(root: Path) -> set[str]:
-    """Return set of skill names from .cognitive-os/skills/*/SKILL.md"""
+    """Return skill directory names and frontmatter names from disk."""
     skills_dir = root / ".cognitive-os" / "skills"
     if not skills_dir.exists():
         return set()
@@ -26,11 +26,21 @@ def get_skills_on_disk(root: Path) -> set[str]:
     for entry in skills_dir.iterdir():
         if entry.is_dir() and (entry / "SKILL.md").exists():
             result.add(entry.name)
+            text = (entry / "SKILL.md").read_text(encoding="utf-8", errors="ignore")
+            text = re.sub(r"^(\s*<!--.*?-->\s*)+", "", text, flags=re.DOTALL)
+            m = re.search(r"^name:\s*([A-Za-z0-9_-]+)\s*$", text, flags=re.MULTILINE)
+            if m:
+                result.add(m.group(1))
     return result
 
 
 def get_skills_in_catalog(root: Path) -> set[str]:
-    """Return set of skill names from skills/CATALOG.md (excluding header/separator rows)."""
+    """Return set of skill names from skills/CATALOG.md.
+
+    The full catalog contains both legacy table rows and newer bullet entries
+    (`- **skill-name** — ...`). Treat both as first-class catalog references so
+    the sync check validates discoverability, not a single Markdown layout.
+    """
     catalog = root / "skills" / "CATALOG.md"
     if not catalog.exists():
         return set()
@@ -53,6 +63,12 @@ def get_skills_in_catalog(root: Path) -> set[str]:
         if re.match(r"^[-]+$", cell):
             continue
         result.add(cell)
+
+    for line in catalog.read_text().splitlines():
+        line = line.strip()
+        m = re.match(r"^-\s+\*\*([\w][\w\-]*)\*\*\s+[—-]", line)
+        if m:
+            result.add(m.group(1))
     return result
 
 
