@@ -22,6 +22,8 @@ set -uo pipefail
 # Respect killswitch
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 source "$(dirname "$0")/_lib/common.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+COGNITIVE_OS_HOOK_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 check_private_mode
 
@@ -51,7 +53,7 @@ import time
 
 PROJECT_DIR = os.environ.get("_DRAIN_PROJECT_DIR", ".")
 PHASE = os.environ.get("_DRAIN_PHASE", "stabilization")
-sys.path.insert(0, PROJECT_DIR)
+sys.path.insert(0, os.environ["_DRAIN_HOOK_ROOT"])
 os.environ.setdefault("CLAUDE_PROJECT_DIR", PROJECT_DIR)
 
 try:
@@ -251,6 +253,7 @@ PYEOF
 # Pass variables via environment to the Python script (avoids shell injection).
 export _DRAIN_PROJECT_DIR="$_PROJECT_DIR"
 export _DRAIN_PHASE="$PHASE"
+export _DRAIN_HOOK_ROOT="$COGNITIVE_OS_HOOK_ROOT"
 
 python3 "$_DRAIN_SCRIPT" 2>/dev/null || true
 
