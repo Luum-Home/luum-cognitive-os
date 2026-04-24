@@ -22,6 +22,7 @@ Requires:
 import shutil
 import subprocess
 import time
+import os
 
 import pytest
 
@@ -29,6 +30,7 @@ import pytest
 # Guard: skip everything if testcontainers is missing
 # ---------------------------------------------------------------------------
 tc_available = True
+RUN_DATABASE_CONTAINERS = os.environ.get("COS_RUN_DATABASE_CONTAINERS") == "1"
 try:
     from testcontainers.postgres import PostgresContainer
     from testcontainers.core.container import DockerContainer
@@ -39,6 +41,13 @@ pytestmark = [
     pytest.mark.docker,
     pytest.mark.slow,
     pytest.mark.skipif(not tc_available, reason="testcontainers not installed"),
+    pytest.mark.skipif(
+        not RUN_DATABASE_CONTAINERS,
+        reason=(
+            "optional database container lane; set "
+            "COS_RUN_DATABASE_CONTAINERS=1 to run"
+        ),
+    ),
 ]
 
 
@@ -61,7 +70,7 @@ def _docker_ok() -> bool:
         return False
 
 
-if not _docker_ok():
+if RUN_DATABASE_CONTAINERS and not _docker_ok():
     pytest.skip("Docker not available", allow_module_level=True)
 
 

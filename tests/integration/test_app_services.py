@@ -39,6 +39,13 @@ pytestmark = [
     pytest.mark.docker,
     pytest.mark.slow,
     pytest.mark.skipif(not _tc_available, reason="testcontainers not installed"),
+    pytest.mark.skipif(
+        os.environ.get("COS_RUN_OPTIONAL_APP_SERVICES") != "1",
+        reason=(
+            "optional Docker reference service lane; set "
+            "COS_RUN_OPTIONAL_APP_SERVICES=1 to run"
+        ),
+    ),
 ]
 
 

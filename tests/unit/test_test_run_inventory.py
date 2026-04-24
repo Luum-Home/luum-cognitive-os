@@ -123,3 +123,45 @@ def test_nodeids_preserve_pytest_class_segments(tmp_path: Path) -> None:
         "tests/unit/test_catalog_loading.py::"
         "TestGenerator::test_generator_script_runs"
     )
+
+
+def test_inventory_falls_back_to_timeout_stack_without_junit(tmp_path: Path) -> None:
+    mod = _load_module()
+    run_dir = tmp_path / "timeout-run"
+    run_dir.mkdir()
+    (run_dir / "exit-code.txt").write_text("1\n")
+    (run_dir / "metadata.txt").write_text("args=tests/ -q\n")
+    (run_dir / "full-output.txt").write_text(
+        "+++++++++++++++++++++++++++++++++++ Timeout ++++++++++++++++++++++++++++++++++++\n"
+        '  File "/repo/tests/integration/test_app_services.py", line 244, in test_opik_is_alive\n'
+        "    body = wait_for_http(url, timeout=120)\n"
+        '  File "/repo/tests/integration/test_app_services.py", line 66, in wait_for_http\n'
+        "    time.sleep(interval)\n"
+    )
+
+    inventory = mod.build_inventory(run_dir)
+
+    assert inventory["counts"] == {"error": 1}
+    item = inventory["items"][0]
+    assert item["nodeid"].endswith("tests/integration/test_app_services.py::test_opik_is_alive")
+    assert "timeout" in item["heuristic_tags"]
+    assert "optional-lane" in item["heuristic_tags"]
+
+
+def test_inventory_fallback_uses_fixture_file_when_no_test_function(tmp_path: Path) -> None:
+    mod = _load_module()
+    run_dir = tmp_path / "fixture-timeout-run"
+    run_dir.mkdir()
+    (run_dir / "exit-code.txt").write_text("1\n")
+    (run_dir / "metadata.txt").write_text("args=tests/ -q\n")
+    (run_dir / "full-output.txt").write_text(
+        "+++++++++++++++++++++++++++++++++++ Timeout ++++++++++++++++++++++++++++++++++++\n"
+        '  File "/repo/tests/integration/test_e2e_flows.py", line 355, in observability_stack\n'
+        "    seaweedfs.start()\n"
+    )
+
+    inventory = mod.build_inventory(run_dir)
+
+    item = inventory["items"][0]
+    assert item["nodeid"].endswith("tests/integration/test_e2e_flows.py::observability_stack")
+    assert "timeout" in item["heuristic_tags"]

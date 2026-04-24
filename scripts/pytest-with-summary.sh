@@ -87,7 +87,7 @@ printf '%s\n' "$status" > "$exit_code_file"
 
 ln -sfn "$run_dir" "$latest_link" 2>/dev/null || true
 
-if [ -f "$inventory_tool" ] && [ -f "$junit" ]; then
+if [ -f "$inventory_tool" ]; then
   python3 "$inventory_tool" --run-dir "$run_dir" >/dev/null 2>&1 || true
 fi
 
