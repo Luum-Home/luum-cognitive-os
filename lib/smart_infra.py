@@ -50,7 +50,6 @@ logger = logging.getLogger(__name__)
 SKILL_SERVICE_MAP: Dict[str, List[str]] = {
     "agent-kpis": ["mlflow"],
     "observability": ["mlflow"],
-    "observability-trace": ["mlflow"],
     "sdd-pipeline": ["litellm"],
     "sdd-apply": ["litellm"],
     "sdd-verify": ["litellm"],

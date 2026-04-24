@@ -1,1 +1,0 @@
-../packages/verification-audit/hooks/observability-trace.sh
