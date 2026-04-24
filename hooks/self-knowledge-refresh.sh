@@ -14,7 +14,7 @@ PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 KNOWLEDGE_DIR="$PROJECT_DIR/.cognitive-os/self-knowledge"
 MTIME_FILE="$KNOWLEDGE_DIR/.mtime"
 METRICS_FILE="$PROJECT_DIR/.cognitive-os/metrics/self-knowledge-refresh.jsonl"
-GENERATOR="$PROJECT_DIR/scripts/cos-build-self-knowledge.py"
+GENERATOR="$PROJECT_DIR/scripts/cos_build_self_knowledge.py"
 LOGFILE="$PROJECT_DIR/.cognitive-os/self-knowledge/build.log"
 
 NOW_EPOCH=$(date +%s 2>/dev/null || echo 0)

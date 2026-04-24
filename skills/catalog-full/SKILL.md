@@ -47,7 +47,7 @@ None. The catalog is a static file.
 
 - The full catalog is ~7K tokens. Only load it when needed.
 - If the skill the user is asking about is missing from both `CATALOG.md` and
-  `CATALOG-COMPACT.md`, run `python3 scripts/generate-compact-catalog.py` to
+  `CATALOG-COMPACT.md`, run `python3 scripts/generate_compact_catalog.py` to
   regenerate the compact catalog from SKILL.md frontmatter.
 - The compact catalog groups skills by audience (`os`, `os-dev`, `both`, `project`).
   The full catalog groups by theme (Universal, Pre-Development, Caveman, Trail of Bits,
@@ -58,4 +58,4 @@ None. The catalog is a static file.
 - `skills/CATALOG-COMPACT.md` — Level-1, always loaded at session start
 - `skills/CATALOG.md` — full catalog with invocations and examples
 - `rules/context-optimization.md` — progressive skill loading protocol
-- `scripts/generate-compact-catalog.py` — regenerator
+- `scripts/generate_compact_catalog.py` — regenerator

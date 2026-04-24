@@ -161,7 +161,7 @@ staged_tests_new=$(git diff --cached --name-only --diff-filter=A -- 'tests/*.py'
 if [ -n "$staged_tests_new" ]; then
   if [ "$_scope_only_commit" = true ]; then
     echo "[mutation-gate] scope-tag-only commit: skipping structural check" >&2
-  elif python3 "$COS_ROOT/scripts/check-test-quality.py" --pre-commit 2>/dev/null; then
+  elif python3 "$COS_ROOT/scripts/check_test_quality.py" --pre-commit 2>/dev/null; then
     : # tests have behavioral assertions
   else
     echo "BLOCKED: New test file(s) contain only structural assertions (path.exists, is_file, 'in content')."

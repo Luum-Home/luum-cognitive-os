@@ -23,9 +23,9 @@ import pytest
 
 
 def _load_executor(project_dir: Path):
-    """Load scripts/cos-executor.py into a named module with patched cwd."""
+    """Load scripts/cos_executor.py into a named module with patched cwd."""
     repo_root = Path(__file__).resolve().parents[2]
-    path = repo_root / "scripts" / "cos-executor.py"
+    path = repo_root / "scripts" / "cos_executor.py"
     assert path.exists(), f"missing {path}"
 
     # cos-executor uses CLAUDE_PROJECT_DIR / COGNITIVE_OS_PROJECT_DIR.

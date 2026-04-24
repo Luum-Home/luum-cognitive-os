@@ -47,7 +47,7 @@ Categories:
 ## Invocation
 
 ```bash
-uv run python3 scripts/project-scaffold.py \
+uv run python3 scripts/project_scaffold.py \
     --project-dir /path/to/project \
     --project-name "My Project" \
     [--overwrite] [--json]
@@ -71,7 +71,7 @@ uv run python3 scripts/project-scaffold.py \
 ## Related
 
 - `lib/project_scaffolder.py` — implementation
-- `scripts/project-scaffold.py` — CLI
+- `scripts/project_scaffold.py` — CLI
 - `docs/adrs/ADR-054-project-docs-convention.md` — convention standard
 - `tests/unit/test_project_scaffolder.py` — 19 behavior tests
 

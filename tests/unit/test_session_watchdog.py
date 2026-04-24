@@ -217,11 +217,11 @@ class TestClassifySession(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 def _load_watchdog_module(alias: str = "so_session_watchdog"):
-    """Load so-session-watchdog.py via importlib (handles hyphen in filename)."""
+    """Load so_session_watchdog.py via importlib (no longer needed — snake_case)."""
     import importlib.util
     spec = importlib.util.spec_from_file_location(
         alias,
-        _REPO / "scripts" / "so-session-watchdog.py",
+        _REPO / "scripts" / "so_session_watchdog.py",
     )
     mod = importlib.util.module_from_spec(spec)  # type: ignore[arg-type]
     spec.loader.exec_module(mod)  # type: ignore[union-attr]

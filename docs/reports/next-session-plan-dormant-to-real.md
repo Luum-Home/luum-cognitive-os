@@ -194,7 +194,7 @@ Expected post-sweep metrics:
 cat docs/reports/next-session-plan-dormant-to-real.md | head -60
 
 # 2. Re-run the audit to get current baseline
-python3 scripts/aspirational-audit.py --dry-run
+python3 scripts/aspirational_audit.py --dry-run
 
 # 3. Pick an agent-1 / agent-2 / agent-3 track and go
 ```

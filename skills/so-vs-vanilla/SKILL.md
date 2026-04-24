@@ -19,7 +19,7 @@ the overhead, producing *data*, not claims.
 ## What it does
 
 1. Loads task set from `docs/benchmarks/so-vs-vanilla-tasks.yaml`
-2. For each task, invokes `scripts/so-vs-vanilla-benchmark.py` to run it
+2. For each task, invokes `scripts/so_vs_vanilla_benchmark.py` to run it
    twice — once with `COS_DISABLE_ALL_GOVERNANCE=1` (vanilla) and once
    with full governance (SO)
 3. Captures tokens, cost, latency, trust-score, and a "success signal"
@@ -33,13 +33,13 @@ the overhead, producing *data*, not claims.
 
 ```bash
 # Plan only — no API calls, no cost
-python scripts/so-vs-vanilla-benchmark.py --dry-run
+python scripts/so_vs_vanilla_benchmark.py --dry-run
 
 # Smoke test — one task, two LLM calls
-python scripts/so-vs-vanilla-benchmark.py --task simple-fix
+python scripts/so_vs_vanilla_benchmark.py --task simple-fix
 
 # Full matrix (6 tasks × 2 modes = 12 calls per repeat)
-python scripts/so-vs-vanilla-benchmark.py --repeats 1
+python scripts/so_vs_vanilla_benchmark.py --repeats 1
 ```
 
 ## Acceptance (what "done" means for a benchmark run)
@@ -66,7 +66,7 @@ prepared to execute.
 
 ## Related
 
-- `scripts/so-vs-vanilla-benchmark.py` — harness
+- `scripts/so_vs_vanilla_benchmark.py` — harness
 - `docs/benchmarks/so-vs-vanilla-tasks.yaml` — task set
 - `tests/unit/test_so_vs_vanilla_benchmark.py` — unit tests
 - `hooks/_lib/killswitch_check.sh` — master kill-switch

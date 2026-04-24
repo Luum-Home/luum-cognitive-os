@@ -340,24 +340,24 @@
 | `lib/wiring_validator.py` | DORMANT | callers=0, size_bytes=12299 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/work_queue.py` | REAL | callers=5, size_bytes=6414 | imported by 5 non-test caller(s) |
 | `scripts/apply-efficiency-profile.sh` | DORMANT | callers=0, size_bytes=17521 | no observable production use detected |
-| `scripts/aspirational-audit.py` | REAL | writes_jsonl=True, size_bytes=30661 | writes to an existing metrics JSONL file |
+| `scripts/aspirational_audit.py` | REAL | writes_jsonl=True, size_bytes=30661 | writes to an existing metrics JSONL file |
 | `scripts/auto-update-projects.sh` | DORMANT | callers=0, size_bytes=9854 | no observable production use detected |
-| `scripts/backfill-cost-events.py` | REAL | writes_jsonl=True, size_bytes=2862 | writes to an existing metrics JSONL file |
+| `scripts/backfill_cost_events.py` | REAL | writes_jsonl=True, size_bytes=2862 | writes to an existing metrics JSONL file |
 | `scripts/benchmark-hooks.sh` | DORMANT | callers=0, size_bytes=5747 | no observable production use detected |
-| `scripts/check-catalog-sync.py` | DORMANT | callers=0, size_bytes=4263 | no observable production use detected |
-| `scripts/check-hook-registration.py` | DORMANT | callers=0, size_bytes=3706 | no observable production use detected |
-| `scripts/check-lib-wiring.py` | DORMANT | callers=0, size_bytes=3598 | no observable production use detected |
-| `scripts/check-test-quality.py` | DORMANT | callers=0, size_bytes=10435 | no observable production use detected |
-| `scripts/check-test-ratchet.py` | DORMANT | callers=0, size_bytes=4258 | no observable production use detected |
+| `scripts/check_catalog_sync.py` | DORMANT | callers=0, size_bytes=4263 | no observable production use detected |
+| `scripts/check_hook_registration.py` | DORMANT | callers=0, size_bytes=3706 | no observable production use detected |
+| `scripts/check_lib_wiring.py` | DORMANT | callers=0, size_bytes=3598 | no observable production use detected |
+| `scripts/check_test_quality.py` | DORMANT | callers=0, size_bytes=10435 | no observable production use detected |
+| `scripts/check_test_ratchet.py` | DORMANT | callers=0, size_bytes=4258 | no observable production use detected |
 | `scripts/check-upstream-changes.sh` | DORMANT | callers=0, size_bytes=851 | no observable production use detected |
 | `scripts/component-lint.sh` | DORMANT | callers=0, size_bytes=9712 | no observable production use detected |
-| `scripts/compose-agent-prompt.py` | DORMANT | callers=0, size_bytes=7540 | no observable production use detected |
+| `scripts/compose_agent_prompt.py` | DORMANT | callers=0, size_bytes=7540 | no observable production use detected |
 | `scripts/cos-bootstrap.sh` | DORMANT | callers=0, size_bytes=16903 | no observable production use detected |
-| `scripts/cos-build-self-knowledge.py` | DORMANT | callers=0, size_bytes=14449 | no observable production use detected |
-| `scripts/cos-chaos-template.py` | DORMANT | callers=0, size_bytes=14967 | no observable production use detected |
-| `scripts/cos-classify-coverage.py` | REAL | writes_jsonl=True, size_bytes=9297 | writes to an existing metrics JSONL file |
+| `scripts/cos_build_self_knowledge.py` | DORMANT | callers=0, size_bytes=14449 | no observable production use detected |
+| `scripts/cos_chaos_template.py` | DORMANT | callers=0, size_bytes=14967 | no observable production use detected |
+| `scripts/cos_classify_coverage.py` | REAL | writes_jsonl=True, size_bytes=9297 | writes to an existing metrics JSONL file |
 | `scripts/cos-core-skills-check.sh` | DORMANT | callers=0, size_bytes=8437 | no observable production use detected |
-| `scripts/cos-executor.py` | REAL | writes_jsonl=True, size_bytes=14660 | writes to an existing metrics JSONL file |
+| `scripts/cos_executor.py` | REAL | writes_jsonl=True, size_bytes=14660 | writes to an existing metrics JSONL file |
 | `scripts/cos-ghost-skills.sh` | REAL | writes_jsonl=True, size_bytes=3222 | writes to an existing metrics JSONL file |
 | `scripts/cos-init-global.sh` | DORMANT | callers=0, size_bytes=4626 | no observable production use detected |
 | `scripts/cos-init.sh` | DORMANT | callers=0, size_bytes=21246 | no observable production use detected |
@@ -365,19 +365,19 @@
 | `scripts/cos-release-check.sh` | DORMANT | callers=0, size_bytes=20638 | no observable production use detected |
 | `scripts/cos-sessions.sh` | REAL | writes_jsonl=True, size_bytes=5519 | writes to an existing metrics JSONL file |
 | `scripts/cos-smoke.sh` | DORMANT | callers=0, size_bytes=1416 | no observable production use detected |
-| `scripts/cos-sprint.py` | REAL | writes_jsonl=True, size_bytes=8987 | writes to an existing metrics JSONL file |
+| `scripts/cos_sprint.py` | REAL | writes_jsonl=True, size_bytes=8987 | writes to an existing metrics JSONL file |
 | `scripts/cos-status.sh` | DORMANT | callers=0, size_bytes=17088 | no observable production use detected |
-| `scripts/cos-test-quality-audit.py` | REAL | writes_jsonl=True, size_bytes=17618 | writes to an existing metrics JSONL file |
+| `scripts/cos_test_quality_audit.py` | REAL | writes_jsonl=True, size_bytes=17618 | writes to an existing metrics JSONL file |
 | `scripts/cos-update.sh` | DORMANT | callers=0, size_bytes=20816 | no observable production use detected |
 | `scripts/cos-usage-report.sh` | REAL | writes_jsonl=True, size_bytes=9125 | writes to an existing metrics JSONL file |
 | `scripts/cos-valkey-local.sh` | REAL | writes_jsonl=True, size_bytes=9587 | writes to an existing metrics JSONL file |
-| `scripts/cos-watch.py` | REAL | writes_jsonl=True, size_bytes=12194 | writes to an existing metrics JSONL file |
-| `scripts/cos-work-queue.py` | DORMANT | callers=0, size_bytes=6151 | no observable production use detected |
+| `scripts/cos_watch.py` | REAL | writes_jsonl=True, size_bytes=12194 | writes to an existing metrics JSONL file |
+| `scripts/cos_work_queue.py` | DORMANT | callers=0, size_bytes=6151 | no observable production use detected |
 | `scripts/create-release.sh` | DORMANT | callers=0, size_bytes=5275 | no observable production use detected |
 | `scripts/doctor.sh` | DORMANT | callers=0, size_bytes=9622 | no observable production use detected |
 | `scripts/engram-sync.sh` | DORMANT | callers=0, size_bytes=4328 | no observable production use detected |
 | `scripts/extract-agent-output.sh` | DORMANT | callers=0, size_bytes=4369 | no observable production use detected |
-| `scripts/generate-compact-catalog.py` | DORMANT | callers=0, size_bytes=5677 | no observable production use detected |
+| `scripts/generate_compact_catalog.py` | DORMANT | callers=0, size_bytes=5677 | no observable production use detected |
 | `scripts/generate-project-settings.sh` | DORMANT | callers=0, size_bytes=5532 | no observable production use detected |
 | `scripts/ide-bridge.sh` | DORMANT | callers=0, size_bytes=15015 | no observable production use detected |
 | `scripts/install-aguara.sh` | DORMANT | callers=0, size_bytes=1265 | no observable production use detected |
@@ -393,7 +393,7 @@
 | `scripts/orchestrator.py` | REAL | writes_jsonl=True, size_bytes=8128 | writes to an existing metrics JSONL file |
 | `scripts/register-mcps.sh` | DORMANT | callers=0, size_bytes=15569 | no observable production use detected |
 | `scripts/run-all-tests.sh` | DORMANT | callers=0, size_bytes=4048 | no observable production use detected |
-| `scripts/scope-tag-backfill.py` | DORMANT | callers=0, size_bytes=4137 | no observable production use detected |
+| `scripts/scope_tag_backfill.py` | DORMANT | callers=0, size_bytes=4137 | no observable production use detected |
 | `scripts/set-security-profile.sh` | DORMANT | callers=0, size_bytes=8750 | no observable production use detected |
 | `scripts/setup-git-hooks.sh` | DORMANT | callers=0, size_bytes=7018 | no observable production use detected |
 | `scripts/setup-langfuse.sh` | DORMANT | callers=0, size_bytes=10713 | no observable production use detected |

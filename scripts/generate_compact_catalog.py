@@ -1,0 +1,184 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Generate skills/CATALOG-COMPACT.md from SKILL.md frontmatter.
+
+Walks skills/*/SKILL.md and packages/*/skills/*/SKILL.md, extracts
+name, audience, and description (first line) from YAML frontmatter,
+and emits a compact table grouped by audience.
+"""
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+OUTPUT = PROJECT_ROOT / "skills" / "CATALOG-COMPACT.md"
+
+
+def parse_frontmatter(text: str) -> dict:
+    """Minimal YAML frontmatter parser (handles simple key: value, and key: > multiline).
+
+    SKILL.md files may begin with an HTML comment (e.g. ``<!-- SCOPE: both -->``)
+    before the YAML front-matter fence.  Strip all leading HTML comments so that
+    the ``---`` fence is always at position 0 before parsing.
+    """
+    # Strip any leading HTML comments (<!-- ... -->) before the frontmatter fence.
+    stripped = re.sub(r"^(\s*<!--.*?-->\s*)+", "", text, flags=re.DOTALL)
+    if not stripped.startswith("---"):
+        return {}
+    end = stripped.find("\n---", 3)
+    if end < 0:
+        return {}
+    fm = stripped[3:end].strip("\n")
+
+    result: dict[str, str] = {}
+    lines = fm.splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        m = re.match(r"^([A-Za-z_][A-Za-z0-9_-]*)\s*:\s*(.*)$", line)
+        if not m:
+            i += 1
+            continue
+        key, val = m.group(1), m.group(2).rstrip()
+        # Block scalars: >, |
+        if val in (">", "|", ">-", "|-", ">+", "|+"):
+            i += 1
+            collected = []
+            while i < len(lines):
+                next_line = lines[i]
+                # continuation if indented or empty
+                if next_line.startswith(" ") or next_line.startswith("\t") or next_line == "":
+                    collected.append(next_line.strip())
+                    i += 1
+                else:
+                    break
+            folded = " ".join(c for c in collected if c)
+            result[key] = folded
+            continue
+        # Strip quotes
+        if len(val) >= 2 and ((val[0] == val[-1] == '"') or (val[0] == val[-1] == "'")):
+            val = val[1:-1]
+        result[key] = val
+        i += 1
+    return result
+
+
+def first_sentence(s: str, max_len: int = 100) -> str:
+    """Return first sentence (up to period or newline), truncated to max_len."""
+    s = s.strip()
+    # split on period followed by space, or on newline
+    parts = re.split(r"(?<=[.!?])\s+", s)
+    first = parts[0] if parts else s
+    first = first.strip()
+    if len(first) > max_len:
+        first = first[: max_len - 1].rstrip() + "…"
+    return first
+
+
+def collect_skills(root: Path = PROJECT_ROOT) -> list[dict]:
+    """Scan skills/*/SKILL.md and packages/*/skills/*/SKILL.md."""
+    skills: list[dict] = []
+
+    # Per ADR-044 Phase 2 L2: prefer `summary_line` (≤80 chars) when present;
+    # fall back to first-sentence of `description` otherwise.
+    def _describe(fm: dict) -> str:
+        sl = (fm.get("summary_line") or "").strip()
+        if sl:
+            return sl
+        return first_sentence(fm.get("description", ""))
+
+    for skill_md in sorted(root.glob("skills/*/SKILL.md")):
+        fm = parse_frontmatter(skill_md.read_text())
+        if not fm:
+            continue
+        skills.append({
+            "name": fm.get("name", skill_md.parent.name),
+            "audience": fm.get("audience", "project"),
+            "description": _describe(fm),
+            "path": str(skill_md.relative_to(root)),
+            "package": None,
+        })
+
+    for skill_md in sorted(root.glob("packages/*/skills/*/SKILL.md")):
+        fm = parse_frontmatter(skill_md.read_text())
+        if not fm:
+            continue
+        pkg = skill_md.parts[skill_md.parts.index("packages") + 1]
+        skills.append({
+            "name": fm.get("name", skill_md.parent.name),
+            "audience": fm.get("audience", "project"),
+            "description": _describe(fm),
+            "path": str(skill_md.relative_to(root)),
+            "package": pkg,
+        })
+
+    return skills
+
+
+def dedupe(skills: list[dict]) -> list[dict]:
+    """Deduplicate by skill name, preferring the entry with the longer description."""
+    seen: dict[str, dict] = {}
+    for s in skills:
+        if s["name"] not in seen:
+            seen[s["name"]] = s
+            continue
+        if len(s["description"]) > len(seen[s["name"]]["description"]):
+            seen[s["name"]] = s
+    return list(seen.values())
+
+
+def render_compact(skills: list[dict]) -> str:
+    groups: dict[str, list[dict]] = {}
+    for s in skills:
+        groups.setdefault(s["audience"], []).append(s)
+
+    # Preferred ordering
+    preferred = ["os", "os-dev", "both", "project"]
+    ordered_keys = [k for k in preferred if k in groups] + [
+        k for k in sorted(groups) if k not in preferred
+    ]
+
+    lines: list[str] = []
+    lines.append("<!-- AUTO-GENERATED by scripts/generate_compact_catalog.py — DO NOT EDIT BY HAND -->")
+    lines.append("# Cognitive OS Skills — Compact Catalog")
+    lines.append("")
+    lines.append(
+        "> Level-1 catalog: loaded at session start. Each row is `name | audience | "
+        "1-line description`. Full SKILL.md is loaded on demand via the skill-loader. "
+        "See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog."
+    )
+    lines.append("")
+    lines.append(f"Total skills: {len(skills)}")
+    lines.append("")
+
+    for aud in ordered_keys:
+        items = sorted(groups[aud], key=lambda x: x["name"])
+        lines.append(f"## {aud} ({len(items)})")
+        lines.append("")
+        lines.append("| Skill | Description |")
+        lines.append("|-------|-------------|")
+        for s in items:
+            # Escape any pipes in description
+            desc = s["description"].replace("|", "\\|")
+            lines.append(f"| {s['name']} | {desc} |")
+        lines.append("")
+
+    return "\n".join(lines) + "\n"
+
+
+def main() -> int:
+    skills = dedupe(collect_skills())
+    content = render_compact(skills)
+    OUTPUT.write_text(content)
+    approx_tokens = len(content) // 4
+    print(
+        f"Wrote {OUTPUT.relative_to(PROJECT_ROOT)} "
+        f"({len(skills)} skills, {len(content)} chars, ~{approx_tokens} tokens)"
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

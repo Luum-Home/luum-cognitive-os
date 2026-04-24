@@ -27,16 +27,16 @@ forcing evidence-based self-assessment instead of confident claims.
 
 ```bash
 # Pretty breakdown
-uv run python3 scripts/dogfood-score.py
+uv run python3 scripts/dogfood_score.py
 
 # JSON for scripting
-uv run python3 scripts/dogfood-score.py --json
+uv run python3 scripts/dogfood_score.py --json
 
 # Persist to trend file + show delta vs previous run
-uv run python3 scripts/dogfood-score.py --trend
+uv run python3 scripts/dogfood_score.py --trend
 
 # Fail CI if score drops below a floor
-uv run python3 scripts/dogfood-score.py --fail-below 70
+uv run python3 scripts/dogfood_score.py --fail-below 70
 ```
 
 ## Dimensions

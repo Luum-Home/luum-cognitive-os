@@ -1,4 +1,4 @@
-"""Tests for scripts/update-readme-badges.py.
+"""Tests for scripts/update_readme_badges.py.
 
 Covers:
 - Score extraction from dogfood + aspirational JSON
@@ -19,7 +19,7 @@ import pytest
 
 # ── Load module under test ─────────────────────────────────────────────────────
 
-_SCRIPT = Path(__file__).parent.parent.parent / "scripts" / "update-readme-badges.py"
+_SCRIPT = Path(__file__).parent.parent.parent / "scripts" / "update_readme_badges.py"
 
 
 def _load_module():
@@ -32,7 +32,7 @@ def _load_module():
 try:
     _mod = _load_module()
 except Exception as exc:
-    pytest.skip(f"Could not load update-readme-badges.py: {exc}", allow_module_level=True)
+    pytest.skip(f"Could not load update_readme_badges.py: {exc}", allow_module_level=True)
 
 
 # Re-export functions under test for convenience

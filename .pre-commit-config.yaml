@@ -16,28 +16,28 @@ repos:
     hooks:
       - id: catalog-sync
         name: Skill catalog sync
-        entry: python3 scripts/check-catalog-sync.py
+        entry: python3 scripts/check_catalog_sync.py
         language: python
         pass_filenames: false
         always_run: true
 
       - id: hook-registration
         name: Hook registration check
-        entry: python3 scripts/check-hook-registration.py
+        entry: python3 scripts/check_hook_registration.py
         language: python
         pass_filenames: false
         always_run: true
 
       - id: lib-wiring
         name: Lib wiring check
-        entry: python3 scripts/check-lib-wiring.py
+        entry: python3 scripts/check_lib_wiring.py
         language: python
         pass_filenames: false
         stages: [pre-push]
 
       - id: test-ratchet
         name: Test count ratchet
-        entry: python3 scripts/check-test-ratchet.py
+        entry: python3 scripts/check_test_ratchet.py
         language: python
         pass_filenames: false
         stages: [pre-push]
