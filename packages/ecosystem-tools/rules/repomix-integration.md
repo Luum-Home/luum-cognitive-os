@@ -3,7 +3,7 @@
 
 ## Purpose
 
-Repomix packs entire repositories into single AI-friendly files with tree-sitter compression (~70% token reduction). Integrated as an optional tool for repo analysis, deep research, and eval-repo tasks.
+Repomix packs entire repositories into single AI-friendly files with tree-sitter compression (~70% token reduction). Integrated as an optional tool for repo analysis, deep research, and repo-scout tasks.
 
 ## Installation
 
@@ -51,7 +51,7 @@ Add to `.claude/settings.json`:
 
 | Skill | How Repomix Helps |
 |---|---|
-| `/eval-repo` | Pack external repos for analysis without cloning |
+| `/repo-scout` | Pack external repos for analysis without cloning |
 | `/deep-research` | Compress large codebases into digestible context |
 | `/sdd-explore` | Quick project overview via token count tree |
 | Context optimization | Tree-sitter compression reduces context window usage |

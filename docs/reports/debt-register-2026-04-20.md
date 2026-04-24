@@ -54,7 +54,7 @@ Age in days from 2026-04-20. Effort in session-units (1 session ≈ 3-4h Opus).
 | D28 | work-queue `ws5-doc-conversions` | parked_task | >14 | LOW | 0 of 11 doc→skill conversions done. | Decide if still valuable; close or execute | 1 |
 | D29 | work-queue `multi-device-portability` | parked_task | >14 | LOW | Pure research. No infrastructure. Partially superseded by engram-sync git export. | Close; mark superseded by Apr-16 engram-sync | 0.1 |
 | D30 | work-queue `os-visual-ui` | parked_task | >14 | LOW | MLflow pip not installed; mlflow-sync.sh silent no-op on every Stop. | `pip install mlflow` or remove hook registration | 0.25 |
-| D31 | work-queue `plugin-caveman-review` | parked_task | >14 | LOW | 92 new commits in caveman plugin never triaged. Review-by 2026-05-01 (11 days). | Run `/eval-repo` on caveman | 0.5 |
+| D31 | work-queue `plugin-caveman-review` | parked_task | >14 | LOW | 92 new commits in caveman plugin never triaged. Review-by 2026-05-01 (11 days). | Run `/repo-scout` on caveman | 0.5 |
 | D32 | FROZEN-BACKLOG #14 | uncommitted_note | >30 | LOW | Onboarding wizard TUI — `cos setup` partial, full polish deferred | Scope-out full polish OR accept `cos setup` as final | 0.5 |
 | D33 | FROZEN-BACKLOG #17 | uncommitted_note | >30 | LOW | Plans directory consolidation decision pending (`plans/` vs `.cognitive-os/plans/`) | Pick one; move and delete other | 0.25 |
 | D34 | FROZEN-BACKLOG #21 | uncommitted_note | >30 | ~~MEDIUM~~ **PARTIAL** | Docker→pip phase 3 — **Valkey RESOLVED** (ADR-042, local daemon via `cos-valkey-local.sh`; Docker container demoted to `profiles: [legacy]`). Paperclip + PostgreSQL still Docker-only. | Migrate Paperclip and Langfuse-PG per service | 1.5 |

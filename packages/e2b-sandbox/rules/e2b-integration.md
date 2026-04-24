@@ -89,7 +89,7 @@ E2B sandboxes can be used in the `sdd-apply` and `sdd-verify` phases:
 
 1. **sdd-apply**: When generating code that needs runtime validation, execute in sandbox first
 2. **sdd-verify**: Run generated tests in sandbox to verify correctness before committing
-3. **Eval tasks**: Use sandboxes for `/eval-repo` when evaluating untrusted external repositories
+3. **Eval tasks**: Use sandboxes for `/repo-scout` when evaluating untrusted external repositories
 
 ### Security Model
 

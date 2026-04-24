@@ -65,7 +65,7 @@ adopting projects. Ship tooling to:
 | 04-seguridad | `security-audit`, `pentest-self`, `red-team` |
 | 05-features | `document-feature`, `sdd-propose` |
 | 06-backoffice | — (primarily human-curated; ops runbooks) |
-| 07-investigacion | `deep-research`, `eval-repo`, `repo-forensics` |
+| 07-investigacion | `deep-research`, `repo-scout`, `repo-forensics` |
 | 08-estandares | mirrors `rules/*.md` — can be generated |
 | 09-plan-ejecucion | `sdd-tasks`, `exhaustive-prompt`, `cos-sprint` |
 | 10-resumenes | `session-wrapup`, `compress`, `generate-changelog` |
