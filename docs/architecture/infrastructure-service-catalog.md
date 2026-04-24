@@ -144,6 +144,59 @@ Required behavior:
 - Optional services must be started only through explicit skill intent, explicit profile, or explicit user command.
 - Tests must distinguish absent optional infrastructure from functional failure.
 
+## Sunset Policy
+
+Reference and optional-extension services must not be allowed to accumulate
+without periodic re-justification. Every service with `product position: reference-only`
+OR `optional extension` (any variant: "Optional X extension", "Legacy/reference …",
+"optional local backend") MUST declare a `review_by: YYYY-MM-DD` field in its
+`cognitive-os.yaml` services block entry.
+
+### Keep-Criteria (evaluated on `review_by` date)
+
+A service survives the review if **at least one** of these holds:
+
+1. **Activation evidence**: at least one recorded activation in the trailing 90 days.
+   Sources: `.cognitive-os/metrics/infra-usage.jsonl`, `docker-drift.jsonl`, or
+   the service's own JSONL feed if any.
+2. **Dependent workflow**: at least one user-visible skill, command, or hook in
+   `skills/`, `.claude/commands/`, or `hooks/` explicitly invokes the service
+   by name. Measured by grep over those directories.
+3. **Covered integration test**: at least one test in `tests/integration/` or
+   `tests/contracts/` asserts the service's contract or classification.
+
+### Failure Disposition
+
+A service failing all three criteria is:
+
+- Removed from `docker-compose.cognitive-os.yml` if the compose entry has no
+  downstream consumers, OR
+- Downgraded to `mode: disabled` in `cognitive-os.yaml` with a decision note
+  referencing the review outcome (date + rationale).
+
+### Default Review Cycle
+
+90 days (3 months). Dates are **staggered** across the 6-month horizon so
+reviews never stack on the same day and the operator is never forced into
+one big sunset sprint.
+
+### Memory — MemU review 2026-07-15
+
+MemU is the first service on the sunset calendar. On 2026-07-15 the keep-decision
+is evaluated as follows:
+
+- **Keep-criterion (primary)**: `grep -riE 'memu' skills/ hooks/ .claude/commands/`
+  must return at least one non-comment invocation beyond the existing
+  `skills/memu-context/` reference scaffolding.
+- **Keep-criterion (secondary)**: `.cognitive-os/metrics/infra-usage.jsonl`
+  must contain at least one `container:"memu"` activation event in the 90-day
+  window preceding 2026-07-15.
+
+If both criteria fail, MemU is removed from `docker-compose.cognitive-os.yml`
+and downgraded to `mode: disabled` in `cognitive-os.yaml` with a note pointing
+at this subsection. The decision outcome MUST be recorded in an addendum
+immediately below this paragraph on the review date.
+
 ## Enforcement
 
 Current enforcement lives in:
@@ -152,6 +205,7 @@ Current enforcement lives in:
 - `lib/smart_infra.py`: runtime lazy-start behavior and non-Docker mode handling.
 - `tests/unit/test_smart_infra.py`: unit contract for service mapping and non-Docker skip behavior.
 - `tests/integration/test_service_health.py`: Docker reference-stack contract, complete Compose-service classification, Valkey-only backend guard, and opt-in local health probes.
+- `tests/contracts/test_service_sunset_policy.py`: enforces that every reference/optional service declares a future-dated `review_by` in `cognitive-os.yaml`.
 - `docs/architecture/observability-backend-evaluation-2026-04-24.md`: observability-specific backend decision.
 
 Future service additions must update this catalog and include a test proving whether the service is core, optional, reference-only, or disabled.
