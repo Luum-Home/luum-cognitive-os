@@ -44,20 +44,28 @@ def _run_hook(stdin_json: dict, env_overrides: dict | None = None) -> dict:
     return json.loads(stdout)
 
 
+def _additional_context(output: dict) -> str:
+    """Return additionalContext from current Claude hook output shape."""
+    return output.get("hookSpecificOutput", {}).get(
+        "additionalContext",
+        output.get("additionalContext", ""),
+    )
+
+
 class TestMandatoryRulesInjection:
     """Every sub-agent MUST receive mandatory project rules."""
 
     def test_hook_returns_additional_context(self):
         """The hook must return a JSON object with additionalContext."""
         output = _run_hook({"prompt": "test agent prompt"})
-        assert "additionalContext" in output, (
+        assert _additional_context(output), (
             "Hook did not return additionalContext — sub-agents will not receive project rules"
         )
 
     def test_symlink_rules_injected(self):
         """The symlink warning MUST be in every sub-agent's context."""
         output = _run_hook({"prompt": "audit the codebase"})
-        context = output.get("additionalContext", "")
+        context = _additional_context(output)
         assert "readlink -f" in context, (
             "Symlink resolution rule not injected — agents will report false 'missing' files"
         )
@@ -68,7 +76,7 @@ class TestMandatoryRulesInjection:
     def test_no_structural_tests_rule_injected(self):
         """The rule against structural-only tests MUST be injected."""
         output = _run_hook({"prompt": "write tests for the module"})
-        context = output.get("additionalContext", "")
+        context = _additional_context(output)
         assert "verify file existence" in context.lower() or "execute code" in context.lower(), (
             "Test quality rule not injected — agents may create structural-only tests"
         )
@@ -76,7 +84,7 @@ class TestMandatoryRulesInjection:
     def test_no_dead_metadata_rule_injected(self):
         """The rule against dead metadata MUST be injected."""
         output = _run_hook({"prompt": "add a new field to skills"})
-        context = output.get("additionalContext", "")
+        context = _additional_context(output)
         assert "metadata" in context.lower() and "consume" in context.lower(), (
             "Dead metadata prevention rule not injected"
         )
@@ -84,7 +92,7 @@ class TestMandatoryRulesInjection:
     def test_performance_rules_injected(self):
         """The rule against O(n) subprocess spawns MUST be injected."""
         output = _run_hook({"prompt": "create a new hook"})
-        context = output.get("additionalContext", "")
+        context = _additional_context(output)
         assert "python3" in context and "while" in context.lower(), (
             "Performance anti-pattern rule not injected — agents may create O(n) subprocess hooks"
         )
@@ -92,7 +100,7 @@ class TestMandatoryRulesInjection:
     def test_engram_save_rule_injected(self):
         """The rule to save discoveries to engram MUST be injected."""
         output = _run_hook({"prompt": "investigate the bug"})
-        context = output.get("additionalContext", "")
+        context = _additional_context(output)
         assert "engram" in context.lower() and "mem_save" in context.lower(), (
             "Engram save rule not injected — agents will not persist discoveries"
         )
