@@ -7,6 +7,35 @@ The short version:
 
 **author behavior once, project it into each harness through explicit drivers.**
 
+## Agent Self-Check Before Authoring (os-only)
+
+Before writing or modifying any SO code, test, or script, run this
+checklist mentally. If any item is uncertain, pause and resolve it before
+typing.
+
+1. **Paths**: do I have `.claude/`, `.codex/`, `settings.json`, or any
+   harness-specific path as a hardcoded string? If yes, replace with
+   `lib/harness_adapter` / `scripts/_lib/settings-driver.sh` lookup.
+2. **Settings**: am I reading or writing `settings.json` directly? Use
+   the active settings driver instead (`cos_detect_harness`, driver
+   dispatch). Projection, not assumption.
+3. **Scripts**: is the script I'm creating driver-specific (talks to
+   `.claude/` or equivalent) or canonical (pure behavior, driver-agnostic)?
+   Driver-specific goes under its driver surface; canonical goes under
+   `scripts/` with no driver references.
+4. **Tests**: does the test fixture assume `.claude/settings.json` exists?
+   If yes, use `tests/_helpers` or driver-abstracted fixtures so the test
+   runs under Codex, Cursor, etc.
+5. **Docs**: am I documenting Claude-specific mechanics without the Codex
+   equivalent? Either cross-reference both harnesses or mark the section
+   explicitly as "Claude driver projection".
+
+This checklist is agent-behavioral (no hook enforcement). The cost of a
+single forgotten bullet is a vendor lock-in regression; the cost of
+checking is seconds.
+
+Reference from `rules/RULES-COMPACT.md`: `[cross-harness-authoring]`.
+
 ## Why This Exists
 
 The repo already contains real portability work:
