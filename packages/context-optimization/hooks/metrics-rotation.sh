@@ -16,6 +16,9 @@ set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
+# Cross-platform helpers (portable_stat_mtime, etc.)
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
+
 # ─── Configuration ───────────────────────────────────────────────────────────
 
 MAX_LINES="${COGNITIVE_OS_METRICS_MAX_LINES:-5000}"
@@ -65,7 +68,8 @@ _exceeds_max_lines() {
 
 _mtime_epoch() {
   local path="$1"
-  stat -f %m "$path" 2>/dev/null || stat -c %Y "$path" 2>/dev/null || echo 0
+  # Use portable_stat_mtime from hooks/_lib/portable.sh (already sourced above)
+  portable_stat_mtime "$path" 2>/dev/null || echo 0
 }
 
 # ─── Main ────────────────────────────────────────────────────────────────────

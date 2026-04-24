@@ -64,7 +64,6 @@ memu-sync.sh
 metrics-calibrator-trigger.sh
 metrics-rotation.sh
 notify.sh
-observability-trace.sh
 package-sync.sh
 paperclip-sync.sh
 parry-scan.sh

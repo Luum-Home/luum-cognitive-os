@@ -30,6 +30,7 @@
 | pentest-self | Self-penetration testing: validate safety mesh across 6 categories | `/pentest-self` | os-dev |
 | arena | Run competitive benchmarks against AI coding tools | `/arena` | os-dev |
 | simulation-arena | Run scripted scenarios simulating developer workflows, measure safety mesh | `/simulate` | os-dev |
+| so-vs-vanilla | A/B governance value benchmark: compare full SO governance vs ungoverned baseline | `/so-vs-vanilla` | os-dev |
 | tool-discovery | Discover new open-source tools via GitHub scan, classify, evaluate, propose | `/tool-discovery` | os-dev |
 | release-os | META — orchestrate full OS release by chaining 5 atomic release skills | `/release-os` | os |
 | validate-release | Pre-release readiness check: clean tree, correct branch, VERSION, CHANGELOG | `/validate-release` | os |
@@ -311,3 +312,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **doc-review-personas** — No description
 - **cost-predictor** — No description
 - **test-contract-repair** — No description
+- **component-reality-check** — No description
+- **dogfood-score** — No description
+- **phoenix-trace-ui** — No description
+- **so-vs-vanilla** — No description

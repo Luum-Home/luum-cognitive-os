@@ -6,13 +6,13 @@
 > hooks. Previous code-dead entries (`auto-verify.sh`, `auto-refine.sh`,
 > `dod-gate.sh`) now exist on disk and are tracked as allowlisted/non-default
 > until promoted into an active driver profile.
-> **Scope**: `hooks/*.sh` (155 files) + `hooks/_lib/*.sh` helpers.
+> **Scope**: `hooks/*.sh` (154 files) + `hooks/_lib/*.sh` helpers.
 > **Data sources**: `.claude/settings.json`, `scripts/apply-efficiency-profile.sh`,
 > repo-wide grep of skill/rule/doc references.
 
 User's question: **"of the hooks, how many actually fire and produce the documented effect?"**
 
-Refresh answer: the checkout now has **155 hook files**. The current audit
+Refresh answer: the checkout now has **154 hook files**. The current audit
 distinguishes active driver wiring from intentionally non-default hooks via
 `hooks/_lib/registration-allowlist.txt`. Missing-code risk is currently **0**;
 the remaining risk is promotion/wiring debt, not nonexistent hook files.
@@ -23,7 +23,7 @@ the remaining risk is promotion/wiring debt, not nonexistent hook files.
 
 | Metric | Count | Notes |
 |---|---|---|
-| Total hook files on disk (`hooks/*.sh`) | **155** | Flat invocable hook scripts under `hooks/` |
+| Total hook files on disk (`hooks/*.sh`) | **154** | Flat invocable hook scripts under `hooks/` |
 | Library helpers (`hooks/_lib/*.sh`) | **13** | Sourced by other hooks, not invocable directly (cache.sh, common.sh, etc.) |
 | Invocable hooks (`hooks/*.sh`, excl. `_lib/`) | **118** (flat list) | `_lib/` is a subdir, so counts unchanged |
 | **Functional-wired** (full profile) | **55** | Registered in `.claude/settings.json` |

@@ -1,4 +1,4 @@
-# SCOPE: os-only
+<!-- SCOPE: os-only -->
 ---
 name: so-vs-vanilla
 description: >
@@ -57,7 +57,7 @@ The `COS_DISABLE_ALL_GOVERNANCE=1` flag is checked at the TOP of
 (143/154 hooks today) early-exits with code 0. Safety-critical hooks
 that don't source the library (`destructive-git-blocker.sh`,
 `destructive-rm-blocker.sh`, `secret-detector.sh`,
-`credential-guard.sh`, `license-guard.sh`) ARE still bypassed — the
+credential-guard.sh, license-guard.sh) ARE still bypassed — the
 master flag is checked BEFORE the critical whitelist. This is
 intentional: vanilla mode MUST reflect a truly ungovernen baseline,
 including the absence of safety blockers. Do NOT run the benchmark
