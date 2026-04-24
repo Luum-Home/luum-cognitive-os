@@ -16,6 +16,7 @@ import pytest
 import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+NON_RULE_DOCS = {"ROADMAP.md"}
 
 pytestmark = pytest.mark.unit
 
@@ -56,7 +57,7 @@ def get_all_rule_files() -> list[Path]:
     """Return all .md files in rules/ excluding RULES-COMPACT.md."""
     return sorted(
         f for f in PROJECT_ROOT.glob("rules/*.md")
-        if f.name != "RULES-COMPACT.md"
+        if f.name != "RULES-COMPACT.md" and f.name not in NON_RULE_DOCS
     )
 
 
@@ -496,51 +497,49 @@ class TestHookPerformance:
 class TestProfiles:
 
     def test_efficiency_profiles_exist(self):
-        """cognitive-os.yaml must define lean, standard, full profiles."""
+        """cognitive-os.yaml must define the current ADR-002 profiles."""
         config = load_config()
         assert "efficiency" in config, "Missing efficiency section"
         profiles = config["efficiency"].get("profiles", {})
-        for name in ["lean", "standard", "full"]:
+        for name in ["default", "full"]:
             assert name in profiles, f"Missing efficiency profile: {name}"
 
-    def test_lean_profile_has_required_fields(self):
-        """Lean profile must define rules_loading, hooks, capability_level."""
+    def test_default_profile_has_required_fields(self):
+        """Default profile must define rules_loading, hooks, capability_level."""
         config = load_config()
-        lean = config["efficiency"]["profiles"]["lean"]
-        assert "rules_loading" in lean, "lean profile missing rules_loading"
-        assert "hooks" in lean, "lean profile missing hooks"
-        assert "capability_level" in lean, "lean profile missing capability_level"
-        assert lean["capability_level"] == 4, (
-            f"lean capability_level should be 4, got {lean['capability_level']}"
+        default = config["efficiency"]["profiles"]["default"]
+        assert "rules_loading" in default, "default profile missing rules_loading"
+        assert "hooks" in default, "default profile missing hooks"
+        assert "capability_level" in default, "default profile missing capability_level"
+        assert default["capability_level"] == 3, (
+            f"default capability_level should be 3, got {default['capability_level']}"
         )
 
-    def test_standard_profile_has_required_fields(self):
-        """Standard profile must define rules_loading, hooks, capability_level."""
+    def test_full_profile_has_required_fields(self):
+        """Full profile must define rules_loading, hooks, capability_level."""
         config = load_config()
-        standard = config["efficiency"]["profiles"]["standard"]
-        assert "rules_loading" in standard, "standard profile missing rules_loading"
-        assert "hooks" in standard, "standard profile missing hooks"
-        assert "capability_level" in standard, "standard profile missing capability_level"
-        assert standard["capability_level"] == 3, (
-            f"standard capability_level should be 3, got {standard['capability_level']}"
+        full = config["efficiency"]["profiles"]["full"]
+        assert "rules_loading" in full, "full profile missing rules_loading"
+        assert "hooks" in full, "full profile missing hooks"
+        assert "capability_level" in full, "full profile missing capability_level"
+        assert full["capability_level"] == 2, (
+            f"full capability_level should be 2, got {full['capability_level']}"
         )
 
-    def test_lean_profile_hook_count(self):
-        """Lean profile should specify 'minimal' hooks — settings.json should have few hooks."""
+    def test_default_profile_hook_count(self):
+        """Default profile should specify the committed default hook projection."""
         config = load_config()
-        lean = config["efficiency"]["profiles"]["lean"]
-        # Lean specifies hooks: minimal — the actual count is enforced by
-        # self-install.sh when profile is lean/standard (it uses fewer hooks)
-        assert lean["hooks"] in ("minimal", "lean"), (
-            f"lean hooks should be 'minimal', got '{lean['hooks']}'"
+        default = config["efficiency"]["profiles"]["default"]
+        assert default["hooks"] == "default", (
+            f"default hooks should be 'default', got '{default['hooks']}'"
         )
 
-    def test_standard_profile_hook_count(self):
-        """Standard profile should specify 'standard' hooks."""
+    def test_full_profile_hook_count(self):
+        """Full profile should specify full hooks."""
         config = load_config()
-        standard = config["efficiency"]["profiles"]["standard"]
-        assert standard["hooks"] == "standard", (
-            f"standard hooks should be 'standard', got '{standard['hooks']}'"
+        full = config["efficiency"]["profiles"]["full"]
+        assert full["hooks"] == "full", (
+            f"full hooks should be 'full', got '{full['hooks']}'"
         )
 
     def test_self_hosting_always_full(self):
@@ -616,12 +615,12 @@ class TestCostProjections:
             "Full profile missing target_cost_per_session_usd"
         )
         # Full profile cost should be higher than lean/standard
-        lean_cost = config["efficiency"]["profiles"]["lean"].get(
+        default_cost = config["efficiency"]["profiles"]["default"].get(
             "target_cost_per_session_usd", 0
         )
         full_cost = full_profile["target_cost_per_session_usd"]
-        assert full_cost > lean_cost, (
-            f"Full profile cost (${full_cost}) should exceed lean (${lean_cost})"
+        assert full_cost > default_cost, (
+            f"Full profile cost (${full_cost}) should exceed default (${default_cost})"
         )
 
 
@@ -661,12 +660,13 @@ class TestCompleteness:
 
         missing = []
         for rule_name in triggers.keys():
-            path = PROJECT_ROOT / "rules" / f"{rule_name}.md"
-            if not path.exists():
+            rule_path = PROJECT_ROOT / "rules" / f"{rule_name}.md"
+            pattern_path = PROJECT_ROOT / "docs" / "patterns" / f"{rule_name}.md"
+            if not rule_path.exists() and not pattern_path.exists():
                 missing.append(rule_name)
 
         assert not missing, (
-            f"Contextual triggers reference non-existent rule files: {missing}"
+            f"Contextual triggers reference non-existent rule/pattern files: {missing}"
         )
 
     def test_capability_level_components_match_hooks(self):

@@ -197,8 +197,8 @@ done
 # are managed here.
 #
 # Efficiency profile controls which subset is active:
-#   lean     — RULES-COMPACT.md only
-#   standard/full/self-hosting — the 16 CORE_RULES below
+#   default — curated CORE_RULES below
+#   full/self-hosting — every non-excluded rule file
 #
 # See docs/rules-loading-architecture.md for the rationale.
 
@@ -211,7 +211,7 @@ if [ -f "$PROJECT_DIR/hooks/self-install.sh" ]; then
   IS_SELF_HOSTING=true
 fi
 
-EFFICIENCY_PROFILE="standard"
+EFFICIENCY_PROFILE="default"
 if [ "$IS_SELF_HOSTING" = "true" ]; then
   EFFICIENCY_PROFILE="full"
 elif [ -f "$CONFIG_FILE" ]; then
@@ -352,8 +352,9 @@ EXCLUDED_RULES=(
 )
 
 # Build the effective allowed-rules list based on profile.
-# In self-hosting/full mode, ALL rules in rules/ are symlinked (not just CORE_RULES).
-# In standard mode, only CORE_RULES are synced. In lean mode, only RULES-COMPACT.md.
+# In self-hosting/full mode, every non-excluded rules/ file is symlinked.
+# In default mode, only CORE_RULES are synced. Legacy lean still maps to the
+# compact index when present in older project configs.
 if [[ "$EFFICIENCY_PROFILE" == "lean" ]]; then
   ALLOWED_RULES=("RULES-COMPACT.md")
   SYNC_ALL_RULES=false
