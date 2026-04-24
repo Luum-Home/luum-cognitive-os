@@ -82,6 +82,7 @@
 - [x] Experimental subsystems that compete with the wedge are archived, frozen, or clearly demoted through the product-zone taxonomy and top-level docs.
 - [x] A feature reality audit exists to classify core, optional, and overextended surfaces.
 - [x] External infrastructure is evaluated through a lightweight/default versus optional/reference decision frame in [Tooling Stack Rationalization](../architecture/tooling-stack-rationalization.md).
+- [x] Docker, Python, cloud, and reference services are cataloged in [Infrastructure Service Catalog](../architecture/infrastructure-service-catalog.md).
 - [x] Observability backends are evaluated through a backend-neutral event-contract decision in [Observability Backend Evaluation](../architecture/observability-backend-evaluation-2026-04-24.md).
 
 ## 7. Visible Proof
