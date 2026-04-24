@@ -8,6 +8,11 @@ last-updated: 2026-04-10
 audience: both
 tags: [session, closing, summary, backlog]
 summary_line: "End-of-session routine — run session-backlog inventory, save to engram, write…"
+routing:
+  # ADR-056 L3 opt-in. session-wrapup is mechanical (inventory + engram save
+  # + summary write) — tolerates loss of Skill/TodoWrite/MCP ecosystem.
+  auto_fallback_to_qwen: true
+  fallback_min_pressure: 0.7
 
 ---
 
