@@ -76,6 +76,13 @@ def _host_port(container: DockerContainer, container_port: Union[int, str]) -> T
     return host, port
 
 
+def _wait_for_clickhouse(container: DockerContainer, timeout: int = 90) -> None:
+    """Wait until ClickHouse responds on its stable HTTP ping endpoint."""
+    host, port = _host_port(container, 8123)
+    body = wait_for_http(f"http://{host}:{port}/ping", timeout=timeout, interval=2)
+    assert body.strip() == "Ok.", f"Unexpected ClickHouse ping response: {body!r}"
+
+
 # ===========================================================================
 # 1. Jupyter
 # ===========================================================================
@@ -168,6 +175,17 @@ class TestOpikBackendService:
         mysql.start()
         wait_for_logs(mysql, "ready for connections", timeout=60)
 
+        # --- Valkey for Opik runtime (Opik still expects REDIS_URL env name) ---
+        valkey = (
+            DockerContainer("valkey/valkey:8-alpine")
+            .with_network(network)
+            .with_network_aliases("langfuse-valkey")
+            .with_exposed_ports(6379)
+            .with_command("--requirepass langfuse_redis --maxmemory-policy noeviction")
+        )
+        valkey.start()
+        wait_for_logs(valkey, "Ready to accept connections", timeout=30)
+
         # --- ClickHouse for analytics ---
         clickhouse = (
             DockerContainer("clickhouse/clickhouse-server")
@@ -175,38 +193,46 @@ class TestOpikBackendService:
             .with_network_aliases("opik-clickhouse")
             .with_exposed_ports(8123)
             .with_env("CLICKHOUSE_DB", "opik")
-            .with_env("CLICKHOUSE_USER", "default")
-            .with_env("CLICKHOUSE_PASSWORD", "")
+            .with_env("CLICKHOUSE_USER", "clickhouse")
+            .with_env("CLICKHOUSE_PASSWORD", "clickhouse")
         )
         clickhouse.start()
-        wait_for_logs(clickhouse, "Ready for connections", timeout=60)
+        _wait_for_clickhouse(clickhouse)
 
         # --- Opik backend ---
         opik = (
             DockerContainer("ghcr.io/comet-ml/opik/opik-backend:latest")
             .with_network(network)
             .with_exposed_ports(8080)
-            .with_env("STATE_DB_URL", "jdbc:mysql://opik-mysql:3306/opik?createDatabaseIfNotExist=true")
-            .with_env("STATE_DB_USERNAME", "opik")
-            .with_env("STATE_DB_PASSWORD", "opik_pass")
+            .with_env("STATE_DB_PROTOCOL", "jdbc:mysql://")
+            .with_env("STATE_DB_URL", "opik-mysql:3306/opik?createDatabaseIfNotExist=true")
+            .with_env("STATE_DB_USER", "opik")
+            .with_env("STATE_DB_PASS", "opik_pass")
             .with_env("STATE_DB_DATABASE_NAME", "opik")
             .with_env("ANALYTICS_DB_MIGRATIONS_URL", "jdbc:clickhouse://opik-clickhouse:8123/opik")
-            .with_env("ANALYTICS_DB_URL", "jdbc:clickhouse://opik-clickhouse:8123/opik")
-            .with_env("ANALYTICS_DB_USERNAME", "default")
-            .with_env("ANALYTICS_DB_PASSWORD", "")
+            .with_env("ANALYTICS_DB_MIGRATIONS_USER", "clickhouse")
+            .with_env("ANALYTICS_DB_MIGRATIONS_PASS", "clickhouse")
+            .with_env("ANALYTICS_DB_PROTOCOL", "HTTP")
+            .with_env("ANALYTICS_DB_HOST", "opik-clickhouse")
+            .with_env("ANALYTICS_DB_PORT", "8123")
+            .with_env("ANALYTICS_DB_USERNAME", "clickhouse")
+            .with_env("ANALYTICS_DB_PASS", "clickhouse")
             .with_env("ANALYTICS_DB_DATABASE_NAME", "opik")
+            .with_env("REDIS_URL", "redis://:langfuse_redis@langfuse-valkey:6379/0")
             .with_env("JAVA_OPTS", "-Xms256m -Xmx512m")
         )
         opik.start()
 
         yield {
             "mysql": mysql,
+            "valkey": valkey,
             "clickhouse": clickhouse,
             "opik": opik,
             "network": network,
         }
 
         opik.stop()
+        valkey.stop()
         clickhouse.stop()
         mysql.stop()
         network.remove()
