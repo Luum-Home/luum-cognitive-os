@@ -41,6 +41,7 @@ junit="$run_dir/junit.xml"
 metadata="$run_dir/metadata.txt"
 exit_code_file="$run_dir/exit-code.txt"
 latest_link="$REPORT_ROOT/latest"
+inventory_tool="$SCRIPT_DIR/test-run-inventory.py"
 
 {
   echo "timestamp_utc=$timestamp"
@@ -86,9 +87,16 @@ printf '%s\n' "$status" > "$exit_code_file"
 
 ln -sfn "$run_dir" "$latest_link" 2>/dev/null || true
 
+if [ -f "$inventory_tool" ] && [ -f "$junit" ]; then
+  python3 "$inventory_tool" --run-dir "$run_dir" >/dev/null 2>&1 || true
+fi
+
 echo "[pytest-with-summary] Summary: $summary"
 echo "[pytest-with-summary] Failures: $failures"
 echo "[pytest-with-summary] JUnit: $junit"
+if [ -f "$run_dir/inventory.md" ]; then
+  echo "[pytest-with-summary] Inventory: $run_dir/inventory.md"
+fi
 echo "[pytest-with-summary] Exit code: $status"
 
 exit "$status"

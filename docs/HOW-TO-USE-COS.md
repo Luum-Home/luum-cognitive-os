@@ -91,6 +91,13 @@ This copies:
 - `skills/` — filtered by `audience: project|both|human` (os-dev skills stay home)
 - `cognitive-os.yaml` — config template
 
+Some skills are intentionally internal to the Cognitive OS repository. For
+example, `test-contract-repair` is tagged `SCOPE: os-only` and
+`audience: os-dev` because it governs how maintainers repair this OS's own test
+suite with persistent run artifacts. It can appear in this repository's
+self-hosted harness projection, but it is not part of the default project
+adopter surface.
+
 What stays in your project vs COS:
 - Your project's CLAUDE.md — untouched
 - Your project's `.claude/rules/*.md` — untouched
