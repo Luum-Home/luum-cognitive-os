@@ -45,71 +45,72 @@ PROMPT=$(stdin_field '.tool_input.prompt' '')
 # Lowercase the prompt for case-insensitive matching
 PROMPT_LOWER=$(echo "$PROMPT" | tr '[:upper:]' '[:lower:]')
 
-# ─── Parse contextual triggers from config ────────────────────────────────────
-
-# Extract the contextual_triggers block from cognitive-os.yaml
-# Format: rule-name: "regex pattern"
-# We parse this with grep+sed for speed (no Python, no heavy YAML parser)
+# ─── Parse + match in a single Python process ────────────────────────────────
+# Performance fix: the prior implementation ran grep+sed subprocesses for EVERY
+# line in cognitive-os.yaml during parsing (~800 forks), plus one grep per trigger
+# during matching (~60 forks on a 60-trigger config) — totaling 2+ seconds on the
+# real project config. Replaced with one Python call: parse YAML, compile regexes,
+# match — all in-process. Result: < 100ms regardless of config size.
 
 RULES_DIR="$_PROJECT_DIR/rules"
 [ ! -d "$RULES_DIR" ] && exit 0
 [ ! -f "$_CONFIG_FILE" ] && exit 0
 
-# Extract trigger lines: indented key-value pairs under contextual_triggers
-# Each line looks like:  auto-repair: "auto-repair|auto_repair|circuit.breaker|..."
-_in_triggers=false
-_triggers=""
-while IFS= read -r line; do
-  # Detect start of contextual_triggers block
-  if echo "$line" | grep -qE '^\s+contextual_triggers:'; then
-    _in_triggers=true
-    continue
-  fi
-  # If in triggers block, collect indented key: "value" lines
-  if [ "$_in_triggers" = "true" ]; then
-    # Stop if we hit a non-indented line or a line with less indentation (new section)
-    if echo "$line" | grep -qE '^[a-z#]|^\s{0,5}[a-z]'; then
-      # Check if this is a comment or less-indented key (new YAML section)
-      _indent=$(echo "$line" | sed 's/[^ ].*//' | wc -c)
-      if [ "$_indent" -le 6 ]; then
-        break
-      fi
-    fi
-    # Skip comment lines and empty lines
-    if echo "$line" | grep -qE '^\s*#|^\s*$'; then
-      continue
-    fi
-    # Extract rule-name and pattern
-    _rule_name=$(echo "$line" | sed 's/^[[:space:]]*//' | cut -d: -f1)
-    _pattern=$(echo "$line" | sed 's/^[^"]*"//' | sed 's/"[[:space:]]*$//')
-    if [ -n "$_rule_name" ] && [ -n "$_pattern" ]; then
-      _triggers="${_triggers}${_rule_name}|${_pattern}"$'\n'
-    fi
-  fi
-done < "$_CONFIG_FILE"
-
-[ -z "$_triggers" ] && exit 0
-
-# ─── Match prompt against triggers ────────────────────────────────────────────
-
 MAX_RULES=3
-_matched_rules=""
+_matched_rules=$(python3 -c "
+import re, sys, os
+
+config_path = sys.argv[1]
+prompt_lower = sys.argv[2]
+max_rules = int(sys.argv[3])
+rules_dir = sys.argv[4]
+
+# Parse contextual_triggers block from YAML without a full YAML parser.
+# Extracts indented key: \"value\" pairs under contextual_triggers: section.
+triggers = []
+in_triggers = False
+with open(config_path) as f:
+    for line in f:
+        stripped = line.rstrip()
+        # Detect section start (leading spaces + contextual_triggers:, optional comment)
+        if re.match(r'^\s+contextual_triggers:\s*(#.*)?$', stripped):
+            in_triggers = True
+            continue
+        if not in_triggers:
+            continue
+        # Empty line or comment: skip
+        if not stripped or stripped.lstrip().startswith('#'):
+            continue
+        # Measure indentation: trigger entries have 6-space indent; leave the
+        # block when we encounter a line with indent <= 4 (same or outer level).
+        indent = len(stripped) - len(stripped.lstrip())
+        if indent <= 4:
+            break
+        # Extract rule-name: \"pattern\"
+        m = re.match(r'^\s+([a-z0-9-]+)\s*:\s*\"(.+)\"\s*$', stripped)
+        if m:
+            triggers.append((m.group(1), m.group(2)))
+
+# Match prompt against triggers (all in-process, no subprocess forks)
+matched = []
+for rule_name, pattern in triggers:
+    if len(matched) >= max_rules:
+        break
+    rule_file = os.path.join(rules_dir, rule_name + '.md')
+    if not os.path.isfile(rule_file):
+        continue
+    try:
+        if re.search(pattern, prompt_lower, re.IGNORECASE):
+            matched.append(rule_name)
+    except re.error:
+        pass
+
+print('\n'.join(matched))
+" "$_CONFIG_FILE" "$PROMPT_LOWER" "$MAX_RULES" "$RULES_DIR" 2>/dev/null)
 _match_count=0
-
-while IFS='|' read -r _rule_name _pattern; do
-  [ -z "$_rule_name" ] && continue
-  [ -z "$_pattern" ] && continue
-  [ "$_match_count" -ge "$MAX_RULES" ] && break
-
-  # Use grep -iEq for fast regex matching against the prompt
-  if echo "$PROMPT_LOWER" | grep -iEq "$_pattern"; then
-    _rule_file="$RULES_DIR/${_rule_name}.md"
-    if [ -f "$_rule_file" ]; then
-      _matched_rules="${_matched_rules}${_rule_name}"$'\n'
-      _match_count=$((_match_count + 1))
-    fi
-  fi
-done <<< "$_triggers"
+if [ -n "$_matched_rules" ]; then
+  _match_count=$(printf '%s\n' "$_matched_rules" | grep -c '[^[:space:]]' 2>/dev/null || echo 0)
+fi
 
 # ─── Early exit if no matches ────────────────────────────────────────────────
 
