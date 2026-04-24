@@ -384,6 +384,32 @@ def _send_langfuse_trace(
         pass  # Never block completion recording for observability
 
 
+def _send_mlflow_completion(
+    skill_name: str,
+    task_type: str,
+    trust_score: int,
+    tokens_used: int,
+    success: bool,
+    task_id: str,
+    model: str,
+) -> None:
+    """Send agent completion metrics to MLflow. Silent on failure."""
+    try:
+        from lib.mlflow_bridge import MLflowBridge
+
+        MLflowBridge().log_agent_completion(
+            skill_name=skill_name,
+            task_type=task_type,
+            trust_score=trust_score,
+            tokens_used=tokens_used,
+            success=success,
+            task_id=task_id,
+            model=model,
+        )
+    except Exception:
+        pass
+
+
 def main():
     raw = sys.stdin.read()
     try:
@@ -443,6 +469,15 @@ def main():
         tokens_used=tokens_used,
         success=success,
         task_id=task_id,
+    )
+    _send_mlflow_completion(
+        skill_name=skill_name,
+        task_type=classify_task_type(skill_name),
+        trust_score=trust_score,
+        tokens_used=tokens_used,
+        success=success,
+        task_id=task_id,
+        model=model,
     )
 
     print(json.dumps({
