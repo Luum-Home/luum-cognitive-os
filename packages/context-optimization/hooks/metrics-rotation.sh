@@ -27,6 +27,8 @@ PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 ARCHIVE_DIR="$METRICS_DIR/.archive"
 LEGACY_ARCHIVE_DIR="$METRICS_DIR/archive"
+STAMP_FILE="$METRICS_DIR/.last-metrics-rotation"
+MIN_INTERVAL_SECONDS="${COGNITIVE_OS_METRICS_ROTATION_INTERVAL_SECONDS:-3600}"
 
 # ─── Helper ──────────────────────────────────────────────────────────────────
 
@@ -56,11 +58,30 @@ _rotate_file() {
   return 0
 }
 
+_exceeds_max_lines() {
+  local jsonl_file="$1"
+  awk -v max="$MAX_LINES" 'NR > max { found = 1; exit } END { exit found ? 0 : 1 }' "$jsonl_file" 2>/dev/null
+}
+
+_mtime_epoch() {
+  local path="$1"
+  stat -f %m "$path" 2>/dev/null || stat -c %Y "$path" 2>/dev/null || echo 0
+}
+
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 [ ! -d "$METRICS_DIR" ] && exit 0
 
 mkdir -p "$ARCHIVE_DIR" 2>/dev/null
+if [ "${COGNITIVE_OS_METRICS_ROTATION_FORCE:-0}" != "1" ] && [ -f "$STAMP_FILE" ]; then
+  now_epoch=$(date +%s)
+  last_epoch=$(_mtime_epoch "$STAMP_FILE")
+  if [ $((now_epoch - last_epoch)) -lt "$MIN_INTERVAL_SECONDS" ]; then
+    exit 0
+  fi
+fi
+touch "$STAMP_FILE" 2>/dev/null || true
+
 if [ -d "$LEGACY_ARCHIVE_DIR" ] && [ "$LEGACY_ARCHIVE_DIR" != "$ARCHIVE_DIR" ]; then
   mkdir -p "$ARCHIVE_DIR" 2>/dev/null
   find "$LEGACY_ARCHIVE_DIR" -type f -name '*.gz' -exec mv {} "$ARCHIVE_DIR"/ \; 2>/dev/null || true
@@ -75,8 +96,10 @@ CLEANED=0
 for jsonl_file in "$METRICS_DIR"/*.jsonl; do
   [ -f "$jsonl_file" ] || continue
 
+  if ! _exceeds_max_lines "$jsonl_file"; then
+    continue
+  fi
   line_count=$(wc -l < "$jsonl_file" 2>/dev/null | tr -d ' ')
-  [ "$line_count" -le "$MAX_LINES" ] && continue
 
   if _rotate_file "$jsonl_file" "$line_count"; then
     ROTATED=$((ROTATED + 1))
