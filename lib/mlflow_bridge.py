@@ -193,6 +193,43 @@ class MLflowBridge:
         except Exception:
             pass
 
+    def log_agent_completion(
+        self,
+        skill_name: str,
+        task_type: str,
+        trust_score: int,
+        tokens_used: int,
+        success: bool,
+        task_id: str,
+        model: str = "unknown",
+        cost_usd: float = 0,
+    ) -> None:
+        """Log the agent-completion contract formerly covered by Langfuse traces."""
+        if not self._mlflow:
+            return
+        try:
+            normalized_trust = max(0, min(100, int(trust_score))) / 100.0
+            with self._mlflow.start_run(
+                run_name=f"completion:{skill_name[:40]}",
+                experiment_id=self._get_or_create_experiment("cos/agent-completions"),
+            ):
+                self._mlflow.log_metrics({
+                    "trust_score": float(trust_score),
+                    "trust_score_normalized": normalized_trust,
+                    "tokens_used": float(tokens_used),
+                    "success": 1.0 if success else 0.0,
+                    "cost_usd": float(cost_usd),
+                })
+                self._mlflow.log_params({
+                    "skill_name": skill_name[:250],
+                    "task_type": task_type[:250],
+                    "task_id": task_id[:250],
+                    "model": model[:250],
+                    "status": "success" if success else "failure",
+                })
+        except Exception:
+            pass
+
     def log_session_summary(
         self,
         session_id: str,

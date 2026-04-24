@@ -112,6 +112,85 @@ class TestLogAgentRunSchema:
         assert metrics_call["success"] == 1.0
 
 
+class TestLogAgentCompletionSchema:
+    def _bridge_with_fake_mlflow(self):
+        fake_mlflow = MagicMock()
+        fake_mlflow.start_run.return_value.__enter__ = MagicMock(return_value=MagicMock())
+        fake_mlflow.start_run.return_value.__exit__ = MagicMock(return_value=False)
+        fake_mlflow.get_experiment_by_name.return_value = MagicMock(experiment_id="4")
+
+        from lib.mlflow_bridge import MLflowBridge
+        bridge = MLflowBridge.__new__(MLflowBridge)
+        bridge._mlflow = fake_mlflow
+        bridge._tracking_uri = "sqlite:///mlflow.db"
+        return bridge, fake_mlflow
+
+    def test_logs_completion_contract_formerly_covered_by_langfuse(self):
+        bridge, fake_mlflow = self._bridge_with_fake_mlflow()
+
+        bridge.log_agent_completion(
+            skill_name="sdd-apply",
+            task_type="implementation",
+            trust_score=85,
+            tokens_used=8000,
+            success=True,
+            task_id="task-42",
+            model="sonnet",
+        )
+
+        fake_mlflow.start_run.assert_called_once()
+        start_kwargs = fake_mlflow.start_run.call_args.kwargs
+        assert start_kwargs["experiment_id"] == "4"
+        assert start_kwargs["run_name"] == "completion:sdd-apply"
+
+        metrics = fake_mlflow.log_metrics.call_args.args[0]
+        assert metrics["trust_score"] == 85.0
+        assert metrics["trust_score_normalized"] == 0.85
+        assert metrics["tokens_used"] == 8000.0
+        assert metrics["success"] == 1.0
+
+        params = fake_mlflow.log_params.call_args.args[0]
+        assert params["skill_name"] == "sdd-apply"
+        assert params["task_type"] == "implementation"
+        assert params["task_id"] == "task-42"
+        assert params["model"] == "sonnet"
+        assert params["status"] == "success"
+
+    def test_failure_status_is_preserved(self):
+        bridge, fake_mlflow = self._bridge_with_fake_mlflow()
+
+        bridge.log_agent_completion(
+            skill_name="broken-skill",
+            task_type="fix",
+            trust_score=35,
+            tokens_used=2000,
+            success=False,
+            task_id="task-99",
+        )
+
+        metrics = fake_mlflow.log_metrics.call_args.args[0]
+        assert metrics["trust_score_normalized"] == 0.35
+        assert metrics["success"] == 0.0
+        params = fake_mlflow.log_params.call_args.args[0]
+        assert params["status"] == "failure"
+        assert params["skill_name"] == "broken-skill"
+
+    def test_completion_noops_without_mlflow(self):
+        from lib.mlflow_bridge import MLflowBridge
+        bridge = MLflowBridge.__new__(MLflowBridge)
+        bridge._mlflow = None
+        bridge._tracking_uri = "sqlite:///mlflow.db"
+
+        bridge.log_agent_completion(
+            skill_name="skill",
+            task_type="impl",
+            trust_score=75,
+            tokens_used=1000,
+            success=True,
+            task_id="task-1",
+        )
+
+
 class TestSyncCostEventsReadsJsonl:
     def test_reads_real_jsonl_format(self):
         fake_mlflow = MagicMock()
