@@ -103,12 +103,6 @@ class TestFileLocking:
         lock_files = list(lock_env["locks_dir"].glob("*.lock"))
         assert len(lock_files) > 0, "at least one lock file should be created"
 
-    @pytest.mark.xfail(
-        reason="Surfaced 2026-04-24 after path fix: concurrent-write-guard.sh "
-        "does not emit the expected warning text. Behavioral contract of the "
-        "hook may have drifted; separate investigation required.",
-        strict=False,
-    )
     def test_cross_session_warning(self, guard_hook, lock_env):
         test_file = "/tmp/test-file-for-locking.txt"
         mock_input = json.dumps({
@@ -116,8 +110,21 @@ class TestFileLocking:
             "tool_input": {"file_path": test_file, "old_string": "a", "new_string": "b"},
         })
 
-        # Session 1 acquires the lock
+        # Session 1 acquires the lock (subprocess exits, leaving a dead PID).
         _run_guard(guard_hook, lock_env["project_root"], lock_env["session1"], mock_input)
+
+        # Simulate a live session-1: rewrite the lock metadata with a live PID
+        # (the current test process). Without this the guard would mark the
+        # lock stale on PID-liveness check and silently auto-remove it —
+        # masking the cross-session contention path. See
+        # .cognitive-os/reports/xfailure-investigation-2026-04-24.md.
+        file_hash = hashlib.md5(test_file.encode()).hexdigest()
+        lock_file = lock_env["locks_dir"] / f"{file_hash}.lock"
+        if lock_file.exists():
+            data = json.loads(lock_file.read_text())
+            data["pid"] = os.getpid()
+            data["timestamp_epoch"] = int(time.time())
+            lock_file.write_text(json.dumps(data))
 
         # Session 2 should get a warning
         result = _run_guard(
