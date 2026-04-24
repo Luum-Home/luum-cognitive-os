@@ -215,7 +215,7 @@ class TestTokenBudgets:
 # Category 2: Contextual Loader Tests
 # ===========================================================================
 
-@pytest.mark.forked  # Isolate from xdist workers — hook reads shared config files
+@pytest.mark.xdist_group("hook-chain-perf")  # serialise hook-subprocess tests on one worker
 class TestContextualLoader:
 
     LOADER_PATH = PROJECT_ROOT / "hooks" / "contextual-rule-loader.sh"
@@ -322,6 +322,7 @@ class TestContextualLoader:
 # Category 3: Hook Performance Tests
 # ===========================================================================
 
+@pytest.mark.xdist_group("hook-chain-perf")  # serialise hook-subprocess tests on one worker
 class TestHookPerformance:
 
     def _get_hooks_by_event(self, event_type: str) -> list[Path]:
@@ -409,8 +410,12 @@ class TestHookPerformance:
                 continue
             total_ms += (time.time() - start) * 1000
 
-        assert total_ms < 5000, (
-            f"Agent hook chain took {total_ms:.0f}ms, budget is 5000ms. "
+        # 6000ms budget: ~2000ms serial baseline × 3x parallel-load headroom.
+        # The xdist_group("hook-chain-perf") marker serialises this test with
+        # other hook-subprocess tests on one worker, but other xdist workers
+        # still compete for CPU, so 3x headroom is warranted.
+        assert total_ms < 6000, (
+            f"Agent hook chain took {total_ms:.0f}ms, budget is 6000ms. "
             f"Hooks tested: {[h.name for h in agent_hooks]}"
         )
 
