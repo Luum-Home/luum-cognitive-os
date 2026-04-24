@@ -41,6 +41,12 @@ Priority: project>global>auto [`skill-management`]. [`skill-rewrite`]+[`auto-ski
 ### 12. Naming Conventions
 [`python-naming`]: Python scripts in `scripts/`, `lib/`, `packages/*/lib/` MUST use snake_case (underscores). Hyphens break pytest collection and require `importlib` hacks. Enforced by `tests/audit/test_python_naming.py`. Bash scripts (`.sh`) MAY use hyphens.
 
+### 13. Language Quality Gates (CI-enforced)
+Polyglot drift caught in PRs (ADR-066). Three tiers:
+- **Python** (live): snake_case via `rules/python-naming.md` + `tests/audit/test_python_naming.py`
+- **Go** (live): `gofmt -l` (no unformatted files) + `go vet ./...` (no issues) via `.github/workflows/go-quality.yml` — covers root module, `cmd/cos`, `cmd/cos-test`; existing gofmt debt on HEAD is pre-existing
+- **Bash** (future): `shellcheck` enforcement — tracked as follow-up; current state: advisory only via `scripts/lint-shell.sh --new-only`
+
 ## Contextual (loaded on trigger)
 
 **Team**: [`squad-protocol`] auto-reconfig <0.80. [`estimation-calibration`] medium+. [`self-improvement-protocol`] weekly, max 5 changes.

@@ -1,0 +1,81 @@
+name: Go Quality
+
+# Catches gofmt and go vet drift in PRs.
+# Companion to Python snake_case enforcement (ADR-066 polyglot policy).
+# Runs only when Go source or module files change to preserve CI minutes.
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '**.go'
+      - '**/go.mod'
+      - '**/go.sum'
+      - '.github/workflows/go-quality.yml'
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # ── Root module: internal/ + cmd/cos-dispatch/ ────────────────────────────
+  go-quality-root:
+    name: Go Quality (root module)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: gofmt check
+        run: |
+          fmt_out=$(gofmt -l .)
+          if [ -n "$fmt_out" ]; then
+            echo "Unformatted Go files found (run: gofmt -w .):"
+            echo "$fmt_out"
+            exit 1
+          fi
+
+      - name: go vet
+        run: go vet ./...
+
+  # ── cmd submodules (matrix) ────────────────────────────────────────────────
+  go-quality-submodules:
+    name: Go Quality (${{ matrix.module }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - module: cmd/cos
+            go_mod: cmd/cos/go.mod
+          - module: cmd/cos-test
+            go_mod: cmd/cos-test/go.mod
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ matrix.go_mod }}
+          cache: true
+          cache-dependency-path: ${{ matrix.go_mod }}
+
+      - name: gofmt check
+        run: |
+          fmt_out=$(gofmt -l ${{ matrix.module }})
+          if [ -n "$fmt_out" ]; then
+            echo "Unformatted Go files found (run: gofmt -w ${{ matrix.module }}):"
+            echo "$fmt_out"
+            exit 1
+          fi
+
+      - name: go vet
+        run: |
+          cd ${{ matrix.module }}
+          go vet ./...
