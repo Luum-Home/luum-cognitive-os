@@ -383,8 +383,8 @@ resources:
     auto_scale: true
     smart_start: true              # Lazy-load Docker services when skills need them
     skill_service_map:
-      agent-kpis: [mlflow]             # MIGRATED Phase 1: langfuse -> mlflow (pip)
-      observability-trace: [mlflow]    # MIGRATED Phase 1: langfuse -> mlflow (pip)
+      agent-kpis: [mlflow]             # Phase 1: mlflow (pip) for agent metrics
+      observability-trace: [mlflow]    # Phase 1: mlflow (pip) for agent metrics
       sdd-apply: [litellm]            # MIGRATED Phase 2: removed bifrost, litellm runs as pip library
       sdd-verify: [litellm]           # MIGRATED Phase 2: removed bifrost, litellm runs as pip library
       sdd-pipeline: [litellm]         # MIGRATED Phase 2: removed bifrost, litellm runs as pip library
@@ -399,11 +399,8 @@ resources:
       agent-bus: [valkey]
       agent-communication: [valkey]
     services:
-      langfuse:
-        mode: disabled             # Replaced by MLflow (pip install mlflow>=2.0). Run: mlflow server --backend-store-uri sqlite:///mlflow.db
-        status: deprecated         # ADR-058 (2026-04-24): Langfuse -> Phoenix migration. Containers stopped; volumes retained through Phase 4.
-        idle_timeout_minutes: 30
-        review_by: 2026-06-30      # ADR-058 Phase 4 target — at review date, service is REMOVED, not re-reviewed.
+      # ADR-058 (2026-04-24): former observability trace-UI service entry
+      # removed. Migrated to Phoenix (pip). See `phoenix:` below and ADR-058.
       nemo_guardrails:
         mode: pip                  # MIGRATED: pip install nemoguardrails>=0.10. Use RailsConfig + LLMRails in-process.
         idle_timeout_minutes: 15
@@ -438,14 +435,14 @@ resources:
           vector_store: "${COGNEE_VECTOR_STORE:-lancedb}"
           mcp_enabled: true
       mlflow:
-        mode: pip                  # Phase 1 migration target: replaces langfuse-web + 5 dep containers. pip install mlflow>=2.0
+        mode: pip                  # Agent metrics mirror (pip install mlflow-skinny>=2.0)
         config:
           backend_store_uri: "sqlite:///mlflow.db"
           host: "0.0.0.0"
           port: 5000
       phoenix:
         mode: pip                  # ADR-058 (2026-04-24): Arize Phoenix LLM-native trace UI. pip install arize-phoenix>=7.0. Run: phoenix serve (UI at localhost:6006).
-        review_by: 2026-08-15      # ADR-058 Phase 1/2 adoption window — validates Phoenix covers Langfuse's role before Compose cleanup (Phase 3).
+        review_by: 2026-08-15      # ADR-058 Phase 1/2 adoption window — validates Phoenix covers the former trace-UI role.
         config:
           host: "0.0.0.0"
           port: 6006

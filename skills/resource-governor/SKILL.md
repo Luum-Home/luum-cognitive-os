@@ -220,7 +220,7 @@ spend:
   monthly: 124.00
 actions:
   - trigger: "infra_utilization < 50%"
-    action: "Stop idle containers: langfuse, paperclip"
+    action: "Stop idle containers: paperclip (optional observability backend runs as pip process — no container to stop)"
     priority: MEDIUM
     impact: "Reduce memory usage by ~2GB"
 next_recommended: "/model-optimizer (if budget pressure)" or "/error-analyzer (if recurrence)"

@@ -168,7 +168,7 @@ else
 fi
 
 # 9. Docker services (quick check, non-blocking)
-for svc in langfuse-web litellm nemo-guardrails paperclip; do
+for svc in nemo-guardrails paperclip; do
   status=$($DOCKER compose -f "$PROJECT_DIR/docker-compose.cognitive-os.yml" ps --format '{{.State}}' "$svc" 2>/dev/null || true)
   if echo "$status" | grep -qi "running"; then
     check "$svc" "OK"

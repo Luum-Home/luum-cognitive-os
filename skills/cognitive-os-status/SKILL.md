@@ -78,7 +78,7 @@ Run:
 docker compose -f docker-compose.cognitive-os.yml ps --format json 2>/dev/null
 ```
 
-Check status for: langfuse-web, litellm, nemo-guardrails, paperclip. Report healthy/unhealthy/not running for each.
+Check status for: nemo-guardrails, paperclip. Report healthy/unhealthy/not running for each. (ADR-058: the former observability trace-UI stack was removed; LLM observability is now Phoenix via `uv run phoenix serve`, checked separately as a pip process.)
 
 If docker compose fails or file not found, report all as "not running".
 
@@ -130,7 +130,7 @@ Print the results as an ASCII table:
 ║ Metrics           ║ WARN   ║ 3/10 files have data          ║
 ║ Phase             ║ OK     ║ reconstruction                ║
 ║ Budget            ║ OK     ║ $0/$200 monthly               ║
-║ Langfuse          ║ FAIL   ║ not running                   ║
+║ Phoenix (pip)     ║ OK     ║ reachable on :6006            ║
 ║ LiteLLM           ║ OK     ║ healthy on :4000              ║
 ║ NeMo Guardrails   ║ FAIL   ║ not running                   ║
 ║ Paperclip         ║ FAIL   ║ not running                   ║

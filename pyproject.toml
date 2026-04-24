@@ -22,9 +22,13 @@ web = [
 ]
 observability = [
     "opik>=1.0",
-    "langfuse>=3.0",
+    # ADR-058 (2026-04-24): Phoenix is the LLM-native trace UI (former backend retired).
+    # arize-phoenix: full UI server (run via `uv run phoenix serve`).
+    # arize-phoenix-otel: OTel exporter used by lib/record_completion.py.
+    "arize-phoenix>=4.0",
+    "arize-phoenix-otel>=0.6",
     # mlflow-skinny: lightweight mlflow without pyarrow/pandas (which fail on Python 3.14).
-    # Use mlflow-skinny for tracking/observability; full mlflow requires pyarrow to build.
+    # Use mlflow-skinny for agent-metrics mirror; full mlflow requires pyarrow to build.
     "mlflow-skinny>=2.0",
 ]
 memory = [

@@ -43,9 +43,9 @@ if is_executor_mode():
 ## Valkey Backend
 
 The agent bus (`lib/agent_bus.py`) requires Valkey for heartbeat and pub/sub.
-It runs via OrbStack Docker (stack `luum-agent-os`, container `valkey`; also
-`langfuse-valkey`). When not running, `agent_bus.py` falls back to the
-file-based `FallbackBus` automatically.
+It runs via OrbStack Docker (stack `luum-agent-os`, container `valkey`).
+When not running, `agent_bus.py` falls back to the file-based `FallbackBus`
+automatically.
 
 Set `ORCHESTRATOR_MODE=executor` to have session-start auto-start Valkey via
 `hooks/valkey-ensure.sh` (tries `orb start` then `docker start valkey`).
