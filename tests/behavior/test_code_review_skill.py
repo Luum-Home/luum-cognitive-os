@@ -14,6 +14,18 @@ pytestmark = pytest.mark.behavior
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
+def _parse_frontmatter(content: str) -> dict:
+    """Parse skill frontmatter after optional leading SCOPE metadata."""
+    stripped = content.lstrip()
+    if stripped.startswith("<!--"):
+        stripped = stripped.split("-->", 1)[1].lstrip()
+    if stripped.startswith("---"):
+        parts = stripped.split("---", 2)
+        if len(parts) >= 3:
+            return yaml.safe_load(parts[1]) or {}
+    return {}
+
+
 # ---------------------------------------------------------------------------
 # Code Review Skill
 # ---------------------------------------------------------------------------
@@ -34,11 +46,7 @@ class TestCodeReviewSkill:
     @pytest.fixture
     def frontmatter(self, skill_content) -> dict:
         """Extract YAML frontmatter from skill file."""
-        if skill_content.startswith("---"):
-            parts = skill_content.split("---", 2)
-            if len(parts) >= 3:
-                return yaml.safe_load(parts[1])
-        return {}
+        return _parse_frontmatter(skill_content)
 
     def test_skill_file_exists(self, skill_path):
         assert skill_path.exists(), "skills/code-review/SKILL.md must exist"
@@ -121,11 +129,7 @@ class TestPRReviewSkill:
 
     @pytest.fixture
     def frontmatter(self, skill_content) -> dict:
-        if skill_content.startswith("---"):
-            parts = skill_content.split("---", 2)
-            if len(parts) >= 3:
-                return yaml.safe_load(parts[1])
-        return {}
+        return _parse_frontmatter(skill_content)
 
     def test_skill_file_exists(self, skill_path):
         assert skill_path.exists(), "skills/pr-review/SKILL.md must exist"
