@@ -12,7 +12,9 @@ set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
+REAPER="$PROJECT_DIR/scripts/so-reaper.sh"
 
-bash "$PROJECT_DIR/scripts/so-reaper.sh" 2>&1 || true
+[ -f "$REAPER" ] || exit 0
+bash "$REAPER" 2>&1 || true
 
 exit 0

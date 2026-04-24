@@ -1,1 +1,0 @@
-../../../rules/startup-protocol.md

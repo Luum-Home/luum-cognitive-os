@@ -43,6 +43,7 @@ CORE_RULES = {
     "agent-quality.md",
     "trust-score.md",
     "token-economy.md",
+    "definition-of-done.md",
     "phase-aware-agents.md",
     "closed-loop-prompts.md",
     "error-learning.md",

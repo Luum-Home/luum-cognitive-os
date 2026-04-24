@@ -1,1 +1,0 @@
-../../../rules/responsiveness.md
