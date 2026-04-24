@@ -11,10 +11,46 @@ stdlib only — no external dependencies.
 from __future__ import annotations
 
 import json
+import os
 import re
+import shutil
 import subprocess
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, ClassVar, Optional
+
+
+def _resolve_engram_bin() -> Optional[str]:
+    """Resolve the engram binary path, preferring the Homebrew-installed version.
+
+    The ``go install`` build (typically at ``~/go/bin/engram``) may be rejected
+    by the macOS security framework when spawned as a subprocess from a sandboxed
+    application (e.g. Claude Code desktop). The Homebrew-installed binary at
+    ``~/.local/bin/engram`` is properly notarised and works reliably.
+
+    Resolution order:
+    1. ``ENGRAM_BIN`` environment variable (explicit override)
+    2. ``~/.local/bin/engram``  (Homebrew / official installer path)
+    3. ``shutil.which("engram")``  (first match on PATH)
+
+    Returns the resolved path string, or ``None`` if no working binary is found.
+    """
+    # 1. Explicit override
+    env_bin = os.environ.get("ENGRAM_BIN", "")
+    if env_bin and Path(env_bin).is_file():
+        return env_bin
+
+    # 2. Homebrew / official installer path (notarised, survives app-sandbox spawning)
+    local_bin = Path.home() / ".local" / "bin" / "engram"
+    if local_bin.is_file():
+        return str(local_bin)
+
+    # 3. First match on PATH
+    which = shutil.which("engram")
+    if which:
+        return which
+
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -209,13 +245,17 @@ class AnchoredSummary:
         Returns:
             True if saved successfully, False otherwise.
         """
+        engram_bin = _resolve_engram_bin()
+        if not engram_bin:
+            return False
+
         payload = json.dumps(self.get_summary(), ensure_ascii=False)
         # Title embeds a sentinel prefix so search can find it unambiguously.
         title = f"anchored-summary::{session_key}"
         try:
             result = subprocess.run(
                 [
-                    "engram", "save", title, payload,
+                    engram_bin, "save", title, payload,
                     "--type", "architecture",
                     "--project", "luum-cognitive-os",
                 ],
@@ -241,10 +281,14 @@ class AnchoredSummary:
             A new :class:`AnchoredSummary` instance populated with the saved
             state, or ``None`` if loading fails.
         """
+        engram_bin = _resolve_engram_bin()
+        if not engram_bin:
+            return None
+
         search_title = f"anchored-summary::{session_key}"
         try:
             result = subprocess.run(
-                ["engram", "search", search_title, "--limit", "1"],
+                [engram_bin, "search", search_title, "--limit", "1"],
                 capture_output=True,
                 text=True,
                 timeout=10,
