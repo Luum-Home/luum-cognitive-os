@@ -10,6 +10,8 @@ A service may exist in Docker Compose without being part of the default Cognitiv
 
 No classification, no service. A new Docker Compose service must be added to this catalog and to the service-health contract before it is accepted.
 
+Cognitive OS supported paths are pip-first, Docker-fallback — **never cloud**. A service may exist in cloud form (for example, Phoenix has Arize SaaS, Cognee has cognee.ai), but that path is NOT supported by Cognitive OS. Local-only is the contract. Services requiring proprietary cloud to function are removed from the catalog. See ADR-060.
+
 ## Necessity Gate
 
 Before adding or promoting a service, answer yes to at least one of these:
@@ -64,10 +66,9 @@ Notes: <optional 1-2 sentences on scope or trade-offs>.
 |-----------------|------------------|-----------------------------|------------------|---------|
 | `mlflow` | none | `pip` | Default lightweight exporter | Local outcome metrics, completion summaries, cost/session sync, and low-friction run evidence without Docker. |
 | `phoenix` | none | `pip` | Optional observability extension | Arize Phoenix LLM-native trace UI (OTel-backed, Apache 2.0). Replaces Langfuse as the self-hosted trace surface. Launched on-demand via `skills/phoenix-trace-ui/` (Phase 1 pending). See ADR-058. |
-| `opik` | `opik-backend`, `opik-mysql`, `opik-frontend` | `cloud` | Optional observability extension | Cloud-first LLM tracing/evaluation surface. Local stack remains reference/test material because it depends on MySQL, ClickHouse, and Valkey. |
 | `nemo_guardrails` | `nemo-guardrails` | `pip` | Optional in-process guardrails extension | Jailbreak, policy, and PII guardrail runtime. Docker server exists for reference/CI, but default use should be Python API/in-process. |
 | `paperclip` | `paperclip-pg`, `paperclip` | `on_demand` | Optional governance/coordination extension | Agent coordination and governance dashboard. Valuable for advanced workflows, not part of the minimum wedge. |
-| `memu` | `memu` | `pip` | Optional memory extension | Proactive agent memory. Docker container is a reference wrapper; default use should be Python package or explicit server. |
+| `memu` | `memu`, `memu-pg` | `pip` (default) / local Docker with self-contained `memu-pg` backend (ADR-060 local-first) | Optional memory extension | Proactive agent memory. Default supported mode is pip. The Docker `memory` profile now ships with a self-contained Postgres backend (`memu-pg`) so the local lane is zero-cloud. |
 | `cognee` | `cognee` | `pip` | Optional memory/knowledge extension | Knowledge graph and memory retrieval. Default path should not require a running HTTP service. |
 | `valkey` | `valkey` | `on_demand` | Optional local backend | Redis-compatible bus/cache backend. Valkey is the only allowed Redis-compatible server; file fallback remains valid for single-session use. |
 | `jupyter` | `jupyter` | `pip` | Optional compute extension | Notebook/data/ML sandbox. Useful for compute tasks, not required for governance or portability. |
@@ -110,11 +111,31 @@ Decision:
 - MemU is an optional proactive-memory extension and must prove a non-overlapping role before it is promoted.
 - Neither Cognee nor MemU may become a default HTTP dependency for core operation.
 
+#### memu — local-first backend (ADR-060, 2026-04-24)
+
+memu meets Necessity Gate criterion 3: optional extension with a concrete
+skill/workflow users can intentionally activate. Evidence:
+`skills/memu-context/` plus `services.memu.mode: pip` in `cognitive-os.yaml`.
+Mode granted: `pip` (default) / `memory` Docker profile (fallback). Review:
+2026-06-01 (pre-existing sunset deadline under catalog §Memory review).
+
+ADR-060 addendum: the Docker fallback previously depended on the retired
+observability-pg container for its Postgres backend (ADR-058 Phase 3 left
+`MEMU_DB_URL` unset). ADR-060 restores a complete local lane by adding a
+self-contained `memu-pg` (postgres:17-alpine, `memory` profile-gated,
+healthchecked, `memu-pg-data` volume). `memu` now declares
+`depends_on: memu-pg (condition: service_healthy)` and defaults `MEMU_DB_URL`
+to the local container. Operators who want an external DB can still override
+`MEMU_DB_URL`. Principle: no supported path requires cloud — pip-first,
+Docker-fallback with local backend, never cloud.
+
 ### Observability
 
-`mlflow` is the lightweight default exporter. `phoenix` is the new optional
+`mlflow` is the lightweight default exporter. `phoenix` is the optional
 self-hosted trace UI extension. `langfuse` is **deprecated** as of 2026-04-24
-(see ADR-058); `opik` remains cloud-first.
+(see ADR-058). The former cloud-only observability entry was **removed
+entirely** on 2026-04-24 under ADR-060 — its `mode: cloud` classification
+violated the new local-only optional-services policy.
 
 Decision:
 
@@ -124,8 +145,10 @@ Decision:
   held for rollback until Phase 4 (2026-06-30).
 - **Adopt `phoenix.mode: pip`** — no Docker, launched on-demand by
   `skills/phoenix-trace-ui/` (Phase 1 of ADR-058).
-- Keep `opik.mode: cloud`.
-- Keep local Opik Compose stack for explicit integration/reference lanes only.
+- **Remove the cloud-only LLM tracing entry** — all 3 compose services, the
+  MySQL volume, the `OPIK_*` env block, the `pyproject.toml` observability
+  dep, and the `skills/opik-integration/` skill were deleted per ADR-060.
+  Phoenix is the single observability surface going forward.
 
 #### phoenix
 

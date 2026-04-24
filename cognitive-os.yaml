@@ -401,6 +401,10 @@ resources:
     services:
       # ADR-058 (2026-04-24): former observability trace-UI service entry
       # removed. Migrated to Phoenix (pip). See `phoenix:` below and ADR-058.
+      # ADR-060 (2026-04-24): local-only optional-services policy — the
+      # former cloud-only observability entry was removed entirely. Phoenix
+      # (pip) is the single observability surface. See ADR-060 and
+      # infrastructure-service-catalog.md §Operating Rule.
       nemo_guardrails:
         mode: pip                  # MIGRATED: pip install nemoguardrails>=0.10. Use RailsConfig + LLMRails in-process.
         idle_timeout_minutes: 15
@@ -413,13 +417,6 @@ resources:
         idle_timeout_minutes: 30
       litellm:
         mode: pip                  # MIGRATED Phase 2: pip install litellm>=1.0. Use litellm.completion() directly or `litellm --config config.yaml` as local process.
-      opik:
-        mode: cloud                # MIGRATED: pip install opik>=1.0. Uses Comet cloud API by default — no local container needed.
-        idle_timeout_minutes: 30
-        review_by: 2026-08-15      # Sunset policy (catalog §Sunset Policy) — optional observability extension, cloud-first
-        config:
-          api_url: "${OPIK_API_URL:-https://www.comet.com/opik/api}"
-          project_name: "cognitive-os"
       valkey:
         mode: on_demand            # Phase 3: keep as optional Docker. File fallback (agent_bus.py) handles single-session use.
         idle_timeout_minutes: 30
