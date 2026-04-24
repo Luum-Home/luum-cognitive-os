@@ -174,6 +174,17 @@ def _start_container_safe(container: DockerContainer, name: str) -> bool:
         return False
 
 
+def _wait_for_clickhouse(container: DockerContainer, timeout: int = 90) -> None:
+    """Wait until ClickHouse responds on its HTTP ping endpoint.
+
+    Log messages have drifted across upstream image versions; `/ping` is the
+    stable readiness contract we actually care about.
+    """
+    host, port = _host_port(container, 8123)
+    body = wait_for_http(f"http://{host}:{port}/ping", timeout=timeout, interval=2)
+    assert body.strip() == "Ok.", f"Unexpected ClickHouse ping response: {body!r}"
+
+
 def _build_langfuse_env() -> dict[str, str]:
     """Return the common Langfuse environment variables (mirrors &langfuse-env YAML anchor)."""
     return {
@@ -250,7 +261,7 @@ class TestObservabilityFlow:
                 .with_env("CLICKHOUSE_PASSWORD", "clickhouse")
             )
             clickhouse.start()
-            wait_for_logs(clickhouse, "Ready for connections", timeout=60)
+            _wait_for_clickhouse(clickhouse)
             containers["clickhouse"] = clickhouse
             startup_times["clickhouse"] = time.monotonic() - t0
 
@@ -270,29 +281,6 @@ class TestObservabilityFlow:
             wait_for_logs(mysql, "ready for connections", timeout=60)
             containers["mysql"] = mysql
             startup_times["mysql"] = time.monotonic() - t0
-
-            # --- Opik Backend ---
-            t0 = time.monotonic()
-            opik = (
-                DockerContainer("ghcr.io/comet-ml/opik/opik-backend:latest")
-                .with_network(network)
-                .with_network_aliases("opik-backend")
-                .with_exposed_ports(8080)
-                .with_env("STATE_DB_URL", "jdbc:mysql://opik-mysql:3306/opik?createDatabaseIfNotExist=true")
-                .with_env("STATE_DB_USERNAME", "opik")
-                .with_env("STATE_DB_PASSWORD", "opik_pass")
-                .with_env("STATE_DB_DATABASE_NAME", "opik")
-                .with_env("ANALYTICS_DB_MIGRATIONS_URL", "jdbc:clickhouse://langfuse-clickhouse:8123/opik")
-                .with_env("ANALYTICS_DB_URL", "jdbc:clickhouse://langfuse-clickhouse:8123/opik")
-                .with_env("ANALYTICS_DB_USERNAME", "default")
-                .with_env("ANALYTICS_DB_PASSWORD", "")
-                .with_env("ANALYTICS_DB_DATABASE_NAME", "opik")
-                .with_env("JAVA_OPTS", "-Xms256m -Xmx512m")
-            )
-            if not _start_container_safe(opik, "opik-backend"):
-                pytest.skip("opik-backend image not available")
-            containers["opik"] = opik
-            startup_times["opik"] = time.monotonic() - t0
 
             # --- PostgreSQL for Langfuse ---
             t0 = time.monotonic()
@@ -325,6 +313,35 @@ class TestObservabilityFlow:
             wait_for_logs(valkey, "Ready to accept connections", timeout=30)
             containers["valkey"] = valkey
             startup_times["valkey"] = time.monotonic() - t0
+
+            # --- Opik Backend ---
+            t0 = time.monotonic()
+            opik = (
+                DockerContainer("ghcr.io/comet-ml/opik/opik-backend:latest")
+                .with_network(network)
+                .with_network_aliases("opik-backend")
+                .with_exposed_ports(8080)
+                .with_env("STATE_DB_PROTOCOL", "jdbc:mysql://")
+                .with_env("STATE_DB_URL", "opik-mysql:3306/opik?createDatabaseIfNotExist=true")
+                .with_env("STATE_DB_USER", "opik")
+                .with_env("STATE_DB_PASS", "opik_pass")
+                .with_env("STATE_DB_DATABASE_NAME", "opik")
+                .with_env("ANALYTICS_DB_MIGRATIONS_URL", "jdbc:clickhouse://langfuse-clickhouse:8123/opik")
+                .with_env("ANALYTICS_DB_MIGRATIONS_USER", "clickhouse")
+                .with_env("ANALYTICS_DB_MIGRATIONS_PASS", "clickhouse")
+                .with_env("ANALYTICS_DB_PROTOCOL", "HTTP")
+                .with_env("ANALYTICS_DB_HOST", "langfuse-clickhouse")
+                .with_env("ANALYTICS_DB_PORT", "8123")
+                .with_env("ANALYTICS_DB_USERNAME", "clickhouse")
+                .with_env("ANALYTICS_DB_PASS", "clickhouse")
+                .with_env("ANALYTICS_DB_DATABASE_NAME", "opik")
+                .with_env("REDIS_URL", "redis://:langfuse_redis@langfuse-valkey:6379/0")
+                .with_env("JAVA_OPTS", "-Xms256m -Xmx512m")
+            )
+            if not _start_container_safe(opik, "opik-backend"):
+                pytest.skip("opik-backend image not available")
+            containers["opik"] = opik
+            startup_times["opik"] = time.monotonic() - t0
 
             # --- SeaweedFS for Langfuse ---
             t0 = time.monotonic()
@@ -488,7 +505,7 @@ class TestObservabilityFlow:
 class TestMemoryFlow:
     """Validate the Cognee knowledge graph memory lifecycle.
 
-    Services: Cognee (python:3.13-slim based)
+    Services: Cognee (python:3.12-slim based)
 
     Tests the ECL (Extract, Cognify, Load) pipeline:
       1. Add text knowledge to Cognee
@@ -504,7 +521,7 @@ class TestMemoryFlow:
     def cognee_stack(self, docker_available):
         """Start Cognee with its dependencies.
 
-        Cognee runs on python:3.13-slim with pip install at startup,
+        Cognee runs on python:3.12-slim with pip install at startup,
         so it has a long startup time.
         """
         network = Network()
@@ -515,7 +532,7 @@ class TestMemoryFlow:
             # Cognee uses networkx + lancedb by default (no external DB needed)
             t0 = time.monotonic()
             cognee = (
-                DockerContainer("python:3.13-slim")
+                DockerContainer("python:3.12-slim")
                 .with_network(network)
                 .with_network_aliases("cognee")
                 .with_exposed_ports(8000)
@@ -528,8 +545,8 @@ class TestMemoryFlow:
                 .with_env("OPENAI_API_KEY", "")
                 .with_command(
                     "bash -c '"
-                    "pip install cognee[api] 2>/dev/null && "
-                    "python -m cognee.api.server --host 0.0.0.0 --port 8000"
+                    "pip install --quiet cognee[api] litellm==1.83.0 && "
+                    "uvicorn cognee.api.client:app --host 0.0.0.0 --port 8000"
                     "'"
                 )
             )
@@ -900,7 +917,7 @@ class TestFullStackSmoke:
                 .with_env("CLICKHOUSE_PASSWORD", "clickhouse")
             )
             clickhouse.start()
-            wait_for_logs(clickhouse, "Ready for connections", timeout=60)
+            _wait_for_clickhouse(clickhouse)
             containers["clickhouse"] = clickhouse
             startup_times["clickhouse"] = time.monotonic() - t0
 
@@ -1018,15 +1035,21 @@ class TestFullStackSmoke:
                 .with_network(network)
                 .with_network_aliases("opik-backend")
                 .with_exposed_ports(8080)
-                .with_env("STATE_DB_URL", "jdbc:mysql://opik-mysql:3306/opik?createDatabaseIfNotExist=true")
-                .with_env("STATE_DB_USERNAME", "opik")
-                .with_env("STATE_DB_PASSWORD", "opik_pass")
+                .with_env("STATE_DB_PROTOCOL", "jdbc:mysql://")
+                .with_env("STATE_DB_URL", "opik-mysql:3306/opik?createDatabaseIfNotExist=true")
+                .with_env("STATE_DB_USER", "opik")
+                .with_env("STATE_DB_PASS", "opik_pass")
                 .with_env("STATE_DB_DATABASE_NAME", "opik")
                 .with_env("ANALYTICS_DB_MIGRATIONS_URL", "jdbc:clickhouse://langfuse-clickhouse:8123/opik")
-                .with_env("ANALYTICS_DB_URL", "jdbc:clickhouse://langfuse-clickhouse:8123/opik")
-                .with_env("ANALYTICS_DB_USERNAME", "default")
-                .with_env("ANALYTICS_DB_PASSWORD", "")
+                .with_env("ANALYTICS_DB_MIGRATIONS_USER", "clickhouse")
+                .with_env("ANALYTICS_DB_MIGRATIONS_PASS", "clickhouse")
+                .with_env("ANALYTICS_DB_PROTOCOL", "HTTP")
+                .with_env("ANALYTICS_DB_HOST", "langfuse-clickhouse")
+                .with_env("ANALYTICS_DB_PORT", "8123")
+                .with_env("ANALYTICS_DB_USERNAME", "clickhouse")
+                .with_env("ANALYTICS_DB_PASS", "clickhouse")
                 .with_env("ANALYTICS_DB_DATABASE_NAME", "opik")
+                .with_env("REDIS_URL", "redis://:langfuse_redis@langfuse-valkey:6379/0")
                 .with_env("JAVA_OPTS", "-Xms256m -Xmx512m")
             )
             if _start_container_safe(opik, "opik-backend"):
@@ -1297,7 +1320,7 @@ class TestCOSLangfuseIntegration:
                 .with_env("CLICKHOUSE_PASSWORD", "clickhouse")
             )
             clickhouse.start()
-            wait_for_logs(clickhouse, "Ready for connections", timeout=60)
+            _wait_for_clickhouse(clickhouse)
             containers["clickhouse"] = clickhouse
 
             # ── PostgreSQL ─────────────────────────────────────────────────

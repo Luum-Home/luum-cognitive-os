@@ -430,13 +430,19 @@ services:
     restart: unless-stopped
     environment:
       ANALYTICS_DB_MIGRATIONS_URL: jdbc:clickhouse://langfuse-clickhouse:8123/opik
-      ANALYTICS_DB_URL: jdbc:clickhouse://langfuse-clickhouse:8123/opik
-      ANALYTICS_DB_USERNAME: ${OPIK_CH_USER:-default}
-      ANALYTICS_DB_PASSWORD: ${OPIK_CH_PASS:-}
+      ANALYTICS_DB_MIGRATIONS_USER: ${OPIK_CH_USER:-clickhouse}
+      ANALYTICS_DB_MIGRATIONS_PASS: ${OPIK_CH_PASS:-clickhouse}
+      ANALYTICS_DB_PROTOCOL: HTTP
+      ANALYTICS_DB_HOST: langfuse-clickhouse
+      ANALYTICS_DB_PORT: "8123"
+      ANALYTICS_DB_USERNAME: ${OPIK_CH_USER:-clickhouse}
+      ANALYTICS_DB_PASS: ${OPIK_CH_PASS:-clickhouse}
       ANALYTICS_DB_DATABASE_NAME: opik
-      STATE_DB_URL: jdbc:mysql://opik-mysql:3306/opik?createDatabaseIfNotExist=true
-      STATE_DB_USERNAME: ${OPIK_MYSQL_USER:-opik}
-      STATE_DB_PASSWORD: ${OPIK_MYSQL_PASS:-opik_pass}
+      REDIS_URL: redis://:langfuse_redis@langfuse-valkey:6379/0  # Opik compatibility env; backend is Valkey
+      STATE_DB_PROTOCOL: jdbc:mysql://
+      STATE_DB_URL: opik-mysql:3306/opik?createDatabaseIfNotExist=true
+      STATE_DB_USER: ${OPIK_MYSQL_USER:-opik}
+      STATE_DB_PASS: ${OPIK_MYSQL_PASS:-opik_pass}
       STATE_DB_DATABASE_NAME: opik
       JAVA_OPTS: "-Xms256m -Xmx512m"
     ports:
@@ -445,6 +451,8 @@ services:
       opik-mysql:
         condition: service_healthy
       langfuse-clickhouse:
+        condition: service_healthy
+      langfuse-valkey:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:8080/is-alive/ping"]
