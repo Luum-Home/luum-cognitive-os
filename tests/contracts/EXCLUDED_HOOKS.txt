@@ -161,7 +161,6 @@ guardrails-validator.sh | CONDITIONAL: NeMo Guardrails integration, fires via /g
 infra-health.sh | CONDITIONAL: SessionStart in full profile; default profile uses usage-health-check.sh
 kpi-trigger.sh | FUTURE: Stop hook in full profile; wires to kpi_collector
 mcp-scan.sh | CONDITIONAL: MCP server audit, fires on demand
-observability-trace.sh | CONDITIONAL: OTel/Phoenix integration (ADR-058), fires only when observability deps installed
 parry-scan.sh | CONDITIONAL: Parry security integration
 pre-compaction-flush.sh | CONDITIONAL: PreCompact event — registered in full profile only
 prompt-quality.sh | FUTURE: regex variant superseded by prompt-quality-llm.sh
