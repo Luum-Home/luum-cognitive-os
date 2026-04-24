@@ -69,3 +69,12 @@ Do not delete or relax tests just to make the suite green.
 - `tests/integration/test_project_settings_generation.py`
 - `tests/integration/test_auto_update_safety.py`
 - `docs/reports/test-suite-repair-ledger-2026-04-24.md`
+
+## Operational Component
+
+This doctrine is also operationalized as the `test-contract-repair` skill:
+
+- `skills/test-contract-repair/SKILL.md`
+
+That skill turns the doctrine into a repeatable repair workflow for future
+sessions so the repository does not rely on conversational memory alone.

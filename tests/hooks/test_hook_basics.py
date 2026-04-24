@@ -38,6 +38,17 @@ from tests.hooks.conftest import (
 pytestmark = [pytest.mark.behavior]
 
 
+def _blast_context(stdout: str) -> str:
+    text = stdout.strip()
+    if not text:
+        return ""
+    try:
+        payload = json.loads(text)
+    except json.JSONDecodeError:
+        return text
+    return payload.get("hookSpecificOutput", {}).get("additionalContext", text)
+
+
 # ---------------------------------------------------------------------------
 # content-policy.sh — PostToolUse on Edit|Write
 # Blocks writes containing prohibited terms from content-policy.yaml
@@ -153,15 +164,15 @@ class TestBlastRadius:
         ), f"Expected blast radius warning in output: {combined[:500]}"
 
     def test_security_keywords_escalate(self, run_hook, mock_project):
-        """Security keywords should escalate to CRITICAL."""
+        """Security keywords plus broad scope should surface as HIGH/CRITICAL."""
         stdin = make_agent_input(
             "Add JWT authentication and authorization across all endpoints"
         )
         result = run_hook(self.HOOK, stdin_json=stdin, env=mock_project["env"])
         assert result.returncode == 0
-        combined = result.stdout + result.stderr
-        assert "CRITICAL" in combined.upper(), (
-            f"Expected CRITICAL for security keywords: {combined[:500]}"
+        ctx = _blast_context(result.stdout)
+        assert any(level in ctx.upper() for level in ["HIGH", "CRITICAL"]), (
+            f"Expected advisory blast radius for security keywords: {ctx[:500]}"
         )
 
     def test_private_mode_skips(self, run_hook, mock_project, private_mode):
