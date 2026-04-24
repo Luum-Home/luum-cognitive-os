@@ -27,6 +27,8 @@ def pytest_configure(config):
         "arena: Competitive arena benchmark tests",
         "benchmark: Performance benchmark tests",
         "quality: LLM-evaluated quality tests",
+        "contract: Product contract tests that validate durable behavior",
+        "timeout(seconds): Per-test hard timeout override used by pytest-timeout and conftest SIGALRM",
     ]
     for marker in markers:
         config.addinivalue_line("markers", marker)
@@ -147,21 +149,28 @@ def real_engram():
 
 
 @pytest.fixture(autouse=True)
-def _enforce_test_timeout():
-    """30-second hard timeout per test via SIGALRM.
+def _enforce_test_timeout(request):
+    """Hard timeout per test via SIGALRM.
 
     Prevents subprocesses or I/O waits from hanging the entire suite.
-    Adopted from Hermes conftest.py pattern.  No-op on Windows (no SIGALRM).
+    Adopted from Hermes conftest.py pattern. No-op on Windows (no SIGALRM).
+    Tests can opt into a larger budget with ``@pytest.mark.timeout(seconds)``;
+    otherwise the historic 30-second guard remains in place.
     """
     if sys.platform == "win32":
         yield
         return
 
+    seconds = 30
+    timeout_marker = request.node.get_closest_marker("timeout")
+    if timeout_marker and timeout_marker.args:
+        seconds = int(timeout_marker.args[0])
+
     def _timeout_handler(signum, frame):
-        raise TimeoutError("Test exceeded 30-second timeout")
+        raise TimeoutError(f"Test exceeded {seconds}-second timeout")
 
     old_handler = signal.signal(signal.SIGALRM, _timeout_handler)
-    signal.alarm(30)
+    signal.alarm(seconds)
     yield
     signal.alarm(0)
     signal.signal(signal.SIGALRM, old_handler)
