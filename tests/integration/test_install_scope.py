@@ -58,6 +58,7 @@ def test_scope_project_excludes_os_only(tmp_path):
         **os.environ,
         "COGNITIVE_OS_FORCE": "true",
         "COGNITIVE_OS_SKIP_MANIFEST_CHECK": "true",
+        "COS_REGISTRY_FILE": str(tmp_path / ".cos-test-registry.json"),
     }
 
     result = subprocess.run(
@@ -103,6 +104,7 @@ def test_scope_project_file_count_under_300(tmp_path):
         **os.environ,
         "COGNITIVE_OS_FORCE": "true",
         "COGNITIVE_OS_SKIP_MANIFEST_CHECK": "true",
+        "COS_REGISTRY_FILE": str(tmp_path / ".cos-test-registry.json"),
     }
 
     result = subprocess.run(
@@ -148,6 +150,7 @@ def test_scope_all_includes_os_only(tmp_path):
         **os.environ,
         "COGNITIVE_OS_FORCE": "true",
         "COGNITIVE_OS_SKIP_MANIFEST_CHECK": "true",
+        "COS_REGISTRY_FILE": str(tmp_path / ".cos-test-registry.json"),
     }
 
     result = subprocess.run(
