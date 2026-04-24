@@ -33,9 +33,40 @@ SERVICE_CONTRACTS = (
         "runtime_service": "langfuse",
         "expected_mode": "disabled",
         "classification": "legacy-reference",
-        "compose_services": ("langfuse-pg", "langfuse-web"),
+        "compose_services": (
+            "langfuse-pg",
+            "langfuse-valkey",
+            "langfuse-clickhouse",
+            "langfuse-seaweedfs",
+            "langfuse-worker",
+            "langfuse-web",
+        ),
         "profiles": (),
         "local_health": ("langfuse-web", "http://localhost:3100"),
+    },
+    {
+        "runtime_service": "nemo_guardrails",
+        "expected_mode": "pip",
+        "classification": "reference-stack",
+        "compose_services": ("nemo-guardrails",),
+        "profiles": (),
+        "local_health": ("nemo-guardrails", "http://localhost:8088/v1/rails/configs"),
+    },
+    {
+        "runtime_service": "paperclip",
+        "expected_mode": "on_demand",
+        "classification": "optional-extension",
+        "compose_services": ("paperclip-pg", "paperclip"),
+        "profiles": (),
+        "local_health": ("paperclip", "http://localhost:3200/api/health"),
+    },
+    {
+        "runtime_service": "memu",
+        "expected_mode": "pip",
+        "classification": "reference-stack",
+        "compose_services": ("memu",),
+        "profiles": ("memory",),
+        "local_health": ("memu", "http://localhost:8765/health"),
     },
     {
         "runtime_service": "opik",
@@ -52,6 +83,22 @@ SERVICE_CONTRACTS = (
         "compose_services": ("cognee",),
         "profiles": ("memory",),
         "local_health": ("cognee", "http://localhost:8100/health"),
+    },
+    {
+        "runtime_service": "valkey",
+        "expected_mode": "on_demand",
+        "classification": "optional-local-backend",
+        "compose_services": ("valkey",),
+        "profiles": ("legacy",),
+        "local_health": ("valkey", None),
+    },
+    {
+        "runtime_service": "jupyter",
+        "expected_mode": "pip",
+        "classification": "reference-stack",
+        "compose_services": ("jupyter",),
+        "profiles": (),
+        "local_health": ("jupyter", "http://localhost:8888/api/status"),
     },
 )
 
@@ -166,6 +213,8 @@ class TestServiceHealth:
         if not HAS_REQUESTS:
             pytest.skip("requests library not installed")
         label, url = contract["local_health"]
+        if url is None:
+            pytest.skip(f"{label} does not expose an HTTP health endpoint")
         try:
             resp = requests.get(url, timeout=5)
             assert resp.status_code < 500, f"{label} returned {resp.status_code}"
