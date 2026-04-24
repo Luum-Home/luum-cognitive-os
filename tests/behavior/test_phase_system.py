@@ -19,7 +19,7 @@ MOCK_INPUT = json.dumps({"tool_name": "Agent", "tool_input": {"prompt": "test"}}
 @pytest.fixture
 def phase_hook(project_root):
     """Return the path to inject-phase-context.sh and skip if not executable."""
-    hook = project_root / ".cognitive-os" / "hooks" / "inject-phase-context.sh"
+    hook = project_root / "hooks" / "inject-phase-context.sh"
     if not hook.exists() or not os.access(hook, os.X_OK):
         pytest.skip("inject-phase-context.sh not found or not executable")
     return hook

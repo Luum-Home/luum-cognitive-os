@@ -17,7 +17,7 @@ import pytest
 
 @pytest.fixture
 def session_init_hook(project_root):
-    hook = project_root / ".cognitive-os" / "hooks" / "session-init.sh"
+    hook = project_root / "hooks" / "session-init.sh"
     if not hook.exists() or not os.access(hook, os.X_OK):
         pytest.skip("session-init.sh not found or not executable")
     return hook
