@@ -11,12 +11,12 @@ Agent B). Targets the active breach of `rules/so-slo.md` SLO 4
 
 | Phase | Status | Evidence |
 |-------|--------|----------|
-| Phase A (log-only) | **DELIVERED** | `lib/session_watchdog_lib.py`, `scripts/so-session-watchdog.py`, 50 unit tests pass |
+| Phase A (log-only) | **DELIVERED** | `lib/session_watchdog_lib.py`, `scripts/so_session_watchdog.py`, 50 unit tests pass |
 | Phase B (enforce) | **BLOCKED by gate — DO NOT ENABLE** | See §"Phase B gate evaluation 2026-04-21" below |
 
 ### Phase B gate evaluation — 2026-04-21
 
-Measured via `scripts/so-session-watchdog.py --gate-report` against
+Measured via `scripts/so_session_watchdog.py --gate-report` against
 `.cognitive-os/metrics/session-watchdog.jsonl` (162 records collected
 2026-04-21 14:03Z → 21:03Z).
 
@@ -50,7 +50,7 @@ gate fails, with or without config changes):
 
 - `lib/session_watchdog_lib.py::compute_gate_metric()` — pure computation
   of the gate metric from a list of watchdog records.
-- `scripts/so-session-watchdog.py::evaluate_gate()` — reads the live JSONL
+- `scripts/so_session_watchdog.py::evaluate_gate()` — reads the live JSONL
   and returns a `GateMetric` dataclass.
 - CLI: `--gate-report` (prints report, exits 2 on FAIL), `--kill-mode`
   (requests Phase B; refused with log-only fallback while gate fails).
@@ -62,7 +62,7 @@ gate fails, with or without config changes):
   (`TestGateMetric*`, `TestLoadWatchdogJsonl`, `TestKillModeRefusal`).
 
 **Re-evaluation protocol**: once Phase A has run for 2 weeks on a
-production host, run `uv run python3 scripts/so-session-watchdog.py
+production host, run `uv run python3 scripts/so_session_watchdog.py
 --gate-report`. If the report prints `GATE: PASS`, the owner may
 proceed to wire the actual kill implementation (not yet coded — the
 current code only logs the refusal).
@@ -124,7 +124,7 @@ current code only logs the refusal).
 
 Introduce a **Session Lifecycle Management (SLM) subsystem** comprising:
 
-1. A long-running Python daemon (`scripts/so-session-watchdog.py`, psutil-based,
+1. A long-running Python daemon (`scripts/so_session_watchdog.py`, psutil-based,
    cross-platform) that enforces TTL + idle heuristics + TTFT alerts.
 2. A session registry (`.cognitive-os/state/sessions.jsonl`) populated by a
    new `SessionStart` hook.
@@ -148,7 +148,7 @@ Rollout is two-phase:
 
 ## Components
 
-### 1. `scripts/so-session-watchdog.py` — **Phase A: DELIVERED** / Phase B: pending Phase A gate
+### 1. `scripts/so_session_watchdog.py` — **Phase A: DELIVERED** / Phase B: pending Phase A gate
 
 Python 3 daemon using `psutil` (already a project dependency). Runs as a
 launchd/systemd user service, or on-demand via `scripts/so-vitals.sh`
@@ -326,7 +326,7 @@ become load-bearing.
 ## Liveness Signal Specification
 
 > This section is the normative definition for the layered predicate used in Phase B.
-> Implementation target: `scripts/so-session-watchdog.py` → `should_kill()`.
+> Implementation target: `scripts/so_session_watchdog.py` → `should_kill()`.
 > Phase B is **blocked** until the predicate and its tests land (see acceptance criteria below).
 
 ### Kill Predicate (AND/OR composition)
@@ -356,7 +356,7 @@ all_activity_stale(session) =
 
 1. `grep -c "parent_dead_or_orphaned" docs/adrs/ADR-047-session-lifecycle-management.md` ≥ 2
 2. `hooks/session-heartbeat.sh` exists, is executable, and is registered in `scripts/apply-efficiency-profile.sh`
-3. `should_kill()` exported from `scripts/so-session-watchdog.py` with all 4 checks
+3. `should_kill()` exported from `scripts/so_session_watchdog.py` with all 4 checks
 4. All 6 new unit tests pass: `python3 -m pytest tests/unit/test_session_watchdog.py -v`
 5. `SO_WATCHDOG_DRY_RUN=1` defaults to true (no actual kills in Phase A)
 
@@ -492,7 +492,7 @@ Ordered by blast radius (least-destructive first):
    `.cognitive-os/state/engram-mcp.sem` and point sessions back at
    `engram mcp` directly (env var
    `COS_ENGRAM_MCP_WRAPPER_DISABLE=1`).
-5. **Full uninstall**: delete `scripts/so-session-watchdog.py`,
+5. **Full uninstall**: delete `scripts/so_session_watchdog.py`,
    `scripts/engram-mcp-wrapper.sh`, `hooks/_lib/portable.sh`,
    hooks 3/4/5 above, and the three `runtime.*` feature flags from
    `cognitive-os.yaml`.
@@ -676,7 +676,7 @@ direct invocation with the `portable_*` helper:
 | 11 | `hooks/session-changelog.sh` | `date -v` | P2 | Stop event |
 | 12 | `hooks/metrics-rotation.sh` | `stat -f`, `find -mtime` | P2 | Rotation logic |
 | 13 | `scripts/extract-agent-output.sh` | `sed -i ''` | P3 | Manual tool |
-| 14 | `scripts/compose-agent-prompt.py` (shell fallback) | `sed -i ''` | P3 | Has Python path already |
+| 14 | `scripts/compose_agent_prompt.py` (shell fallback) | `sed -i ''` | P3 | Has Python path already |
 | 15 | `hooks/large-file-advisor.sh` | `stat -f` | P3 | Advisory only |
 
 Migration is mechanical: source `portable.sh`, replace the call, add a

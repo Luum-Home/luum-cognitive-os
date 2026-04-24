@@ -31,7 +31,7 @@ When one drifts without the other, nothing complains — until production. The A
 ## How It Works
 
 ### Step 1 — Extract numeric constants from both files
-The helper (`scripts/invariant-check-helper.py`) parses each file for assignments of the form `NAME = <number>` (Python-style). For ADRs, it extracts backtick-quoted constant names near numeric literals.
+The helper (`scripts/invariant_check_helper.py`) parses each file for assignments of the form `NAME = <number>` (Python-style). For ADRs, it extracts backtick-quoted constant names near numeric literals.
 
 ### Step 2 — Pair by name similarity
 Constants are paired when their names share a suffix or semantic stem:
@@ -69,7 +69,7 @@ The skill review step appends these to the appropriate test file (e.g., `tests/u
 
 ### Run
 ```bash
-python3 scripts/invariant-check-helper.py \
+python3 scripts/invariant_check_helper.py \
   docs/adrs/ADR-047-session-lifecycle-management.md \
   lib/session_watchdog_lib.py
 ```
@@ -87,7 +87,7 @@ The helper emits the `test_cpu_idle_threshold_matches_adr_047` test above. Appen
 ## Helper CLI
 
 ```
-python3 scripts/invariant-check-helper.py <file-a> <file-b> [--min-similarity 0.5]
+python3 scripts/invariant_check_helper.py <file-a> <file-b> [--min-similarity 0.5]
 ```
 
 Emits assertions to stdout. The agent/human reviews them, then appends to the chosen test file.

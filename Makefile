@@ -57,8 +57,8 @@ smoke:
 	bash scripts/cos-smoke.sh -v
 
 audit:
-	$(PY) scripts/aspirational-audit.py --dry-run
-	$(PY) scripts/cos-build-self-knowledge.py
+	$(PY) scripts/aspirational_audit.py --dry-run
+	$(PY) scripts/cos_build_self_knowledge.py
 
 ci-deps:
 	@bash scripts/ci-setup.sh

@@ -1,6 +1,6 @@
 """Unit tests for the 2-tier skill catalog (compact + full).
 
-Behavioral tests: they execute scripts/generate-compact-catalog.py and assert on
+Behavioral tests: they execute scripts/generate_compact_catalog.py and assert on
 its output. They verify consistency between the committed skills/CATALOG-COMPACT.md
 and the SKILL.md files on disk.
 """
@@ -15,13 +15,13 @@ from pathlib import Path
 import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-GENERATOR = PROJECT_ROOT / "scripts" / "generate-compact-catalog.py"
+GENERATOR = PROJECT_ROOT / "scripts" / "generate_compact_catalog.py"
 COMPACT_CATALOG = PROJECT_ROOT / "skills" / "CATALOG-COMPACT.md"
 FULL_CATALOG = PROJECT_ROOT / "skills" / "CATALOG.md"
 
 
 def _load_generator_module():
-    """Import scripts/generate-compact-catalog.py as a module for direct use."""
+    """Import scripts/generate_compact_catalog.py as a module for direct use."""
     spec = importlib.util.spec_from_file_location("gen_compact_catalog", GENERATOR)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -90,7 +90,7 @@ class TestGenerator:
         """Header identifies file as auto-generated."""
         text = COMPACT_CATALOG.read_text()
         assert "AUTO-GENERATED" in text
-        assert "generate-compact-catalog.py" in text
+        assert "generate_compact_catalog.py" in text
 
     def test_compact_smaller_than_full(self):
         """Compact catalog must be smaller than full catalog."""
@@ -160,7 +160,7 @@ class TestConsistency:
         """Regenerating the compact catalog reproduces the committed file exactly.
 
         If this fails, someone added/renamed a skill but forgot to regenerate the
-        compact catalog. Run: python3 scripts/generate-compact-catalog.py
+        compact catalog. Run: python3 scripts/generate_compact_catalog.py
         """
         committed = COMPACT_CATALOG.read_text()
         result = subprocess.run(
@@ -173,7 +173,7 @@ class TestConsistency:
         regenerated = COMPACT_CATALOG.read_text()
         assert committed == regenerated, (
             "CATALOG-COMPACT.md is stale — regenerate:\n"
-            "  python3 scripts/generate-compact-catalog.py"
+            "  python3 scripts/generate_compact_catalog.py"
         )
 
 

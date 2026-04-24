@@ -102,19 +102,19 @@ Actions:
 Run the companion script:
 
 ```bash
-python3 scripts/llm-status.py
+python3 scripts/llm_status.py
 ```
 
 or via `uv run` if providers SDK not in system Python:
 
 ```bash
-uv run python3 scripts/llm-status.py
+uv run python3 scripts/llm_status.py
 ```
 
 For provider inventory (ADR-062 REGISTRY + config):
 
 ```bash
-uv run python3 scripts/llm-status.py --providers
+uv run python3 scripts/llm_status.py --providers
 ```
 
 ## Implementation notes

@@ -23,13 +23,13 @@ The GitHub Actions workflow `.github/workflows/test-quality.yml` runs two checks
 
 ```bash
 # Check all test files
-python scripts/check-test-quality.py
+python scripts/check_test_quality.py
 
 # Check specific files
-python scripts/check-test-quality.py tests/test_rate_limiter.py
+python scripts/check_test_quality.py tests/test_rate_limiter.py
 
 # Simulate CI mode (only new tests vs main)
-python scripts/check-test-quality.py --ci
+python scripts/check_test_quality.py --ci
 ```
 
 ### Mutation testing with cosmic-ray

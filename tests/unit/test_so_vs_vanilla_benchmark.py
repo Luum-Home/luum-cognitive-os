@@ -1,4 +1,4 @@
-"""Unit tests for scripts/so-vs-vanilla-benchmark.py.
+"""Unit tests for scripts/so_vs_vanilla_benchmark.py.
 
 Covers:
   - Task YAML loading + filtering
@@ -24,7 +24,7 @@ from pathlib import Path
 import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SCRIPT_PATH = PROJECT_ROOT / "scripts" / "so-vs-vanilla-benchmark.py"
+SCRIPT_PATH = PROJECT_ROOT / "scripts" / "so_vs_vanilla_benchmark.py"
 TASKS_YAML = PROJECT_ROOT / "docs" / "benchmarks" / "so-vs-vanilla-tasks.yaml"
 KILLSWITCH = PROJECT_ROOT / "hooks" / "_lib" / "killswitch_check.sh"
 

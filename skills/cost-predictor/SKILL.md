@@ -54,13 +54,13 @@ If the task spans multiple types, choose the dominant cost driver and say so exp
 Use the executable wrapper:
 
 ```bash
-python3 scripts/cost-predict.py --type feature "Add codex-first settings projection to bootstrap"
+python3 scripts/cost_predict.py --type feature "Add codex-first settings projection to bootstrap"
 ```
 
 If you need structured output for follow-on automation, use:
 
 ```bash
-python3 scripts/cost-predict.py --json --type feature "Add codex-first settings projection to bootstrap"
+python3 scripts/cost_predict.py --json --type feature "Add codex-first settings projection to bootstrap"
 ```
 
 ### Step 3: Read the evidence

@@ -22,7 +22,7 @@ fi
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "${SCRIPT_DIR}/.." && pwd)}"
 METRICS_DIR="${PROJECT_DIR}/.cognitive-os/metrics"
 MARKER_FILE="${METRICS_DIR}/.last-aspirational-audit"
-AUDIT_SCRIPT="${PROJECT_DIR}/scripts/aspirational-audit.py"
+AUDIT_SCRIPT="${PROJECT_DIR}/scripts/aspirational_audit.py"
 SEVEN_DAYS_S=$((7 * 24 * 3600))
 
 # ── Throttle: skip if last run < 7 days ago ──────────────────────────────────

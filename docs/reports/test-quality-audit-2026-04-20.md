@@ -1,6 +1,6 @@
 # Test Quality Audit — 2026-04-20
 
-**Script**: `scripts/cos-test-quality-audit.py`
+**Script**: `scripts/cos_test_quality_audit.py`
 **Output**: `.cognitive-os/metrics/test-quality-audit.jsonl`
 **Scope**: `tests/**/*.py` (excluding `conftest.py`, `__pycache__`)
 

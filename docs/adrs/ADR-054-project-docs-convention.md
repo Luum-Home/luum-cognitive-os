@@ -3,7 +3,7 @@
 ## Status
 
 **Accepted** — 2026-04-21. Implementation lives in `lib/project_scaffolder.py`
-+ `scripts/project-scaffold.py` + `skills/project-scaffold/`. Behavior
++ `scripts/project_scaffold.py` + `skills/project-scaffold/`. Behavior
 tested via 19 real-filesystem tests.
 
 ## Context
@@ -98,7 +98,7 @@ adopting projects. Ship tooling to:
 ## Verification
 
 - `uv run pytest tests/unit/test_project_scaffolder.py -v` — 19/19 pass.
-- Manual smoke: `uv run python3 scripts/project-scaffold.py --project-dir /tmp/xyz --project-name Demo --json` — should create 34 files across 10 dirs.
+- Manual smoke: `uv run python3 scripts/project_scaffold.py --project-dir /tmp/xyz --project-name Demo --json` — should create 34 files across 10 dirs.
 - Every category's README references at least one SO skill or points to
   a human-curated section.
 
@@ -106,7 +106,7 @@ adopting projects. Ship tooling to:
 
 - `lib/project_scaffolder.py` — single source of truth for categories.
 - `skills/project-scaffold/SKILL.md` — user-invocable entry point.
-- `scripts/project-scaffold.py` — CLI.
+- `scripts/project_scaffold.py` — CLI.
 - Engram: `gap/project-doc-scaffolding-skills` — the gap audit that
   motivated this ADR.
 - ADR-027 — SO slimming (keeps scaffolder lean, no LLM calls in v1).

@@ -7,7 +7,7 @@ Provides:
       watchdog PIDs before the suite and warns/fails if any new daemon is still
       alive after the suite finishes (defensive against test leaks).
 
-The guard uses `pgrep -f so-session-watchdog.py` — no psutil dependency.
+The guard uses `pgrep -f so_session_watchdog.py` — no psutil dependency.
 """
 
 from __future__ import annotations
@@ -26,13 +26,13 @@ import pytest
 # ──────────────────────────────────────────────────────────────────────────
 
 def _watchdog_pids() -> set[int]:
-    """Return the set of PIDs whose cmdline contains so-session-watchdog.py.
+    """Return the set of PIDs whose cmdline contains so_session_watchdog.py.
 
     Uses pgrep -f (POSIX on Linux/macOS). Returns empty set on failure.
     """
     try:
         result = subprocess.run(
-            ["pgrep", "-f", "so-session-watchdog.py"],
+            ["pgrep", "-f", "so_session_watchdog.py"],
             capture_output=True,
             text=True,
             timeout=5,
@@ -101,7 +101,7 @@ def lingering_watchdog_guard(repo_root: Path):
     leaked = after - before
     if leaked:
         warnings.warn(
-            f"tests/e2e leaked {len(leaked)} so-session-watchdog.py "
+            f"tests/e2e leaked {len(leaked)} so_session_watchdog.py "
             f"process(es): {sorted(leaked)}. Auto-killing now.",
             stacklevel=1,
         )

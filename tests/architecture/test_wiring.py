@@ -27,7 +27,7 @@ def _run(script: str) -> subprocess.CompletedProcess:
 
 def test_every_skill_in_catalog():
     """Every skill directory under .cognitive-os/skills/ has a matching CATALOG.md entry."""
-    result = _run("check-catalog-sync.py")
+    result = _run("check_catalog_sync.py")
     assert result.returncode == 0, (
         "Skill catalog is out of sync.\n"
         f"STDOUT:\n{result.stdout}\n"
@@ -37,7 +37,7 @@ def test_every_skill_in_catalog():
 
 def test_every_hook_registered():
     """Every hook in hooks/*.sh is registered in security/efficiency profiles."""
-    result = _run("check-hook-registration.py")
+    result = _run("check_hook_registration.py")
     assert result.returncode == 0, (
         "Unregistered hooks detected.\n"
         f"STDOUT:\n{result.stdout}\n"
@@ -47,7 +47,7 @@ def test_every_hook_registered():
 
 def test_no_new_unwired_libs():
     """No lib/*.py module added after the allowlist baseline is unwired."""
-    result = _run("check-lib-wiring.py")
+    result = _run("check_lib_wiring.py")
     assert result.returncode == 0, (
         "Unwired lib modules detected.\n"
         f"STDOUT:\n{result.stdout}\n"
@@ -58,10 +58,10 @@ def test_no_new_unwired_libs():
 def test_scripts_are_executable():
     """Validation scripts exist and are Python files."""
     scripts = [
-        "check-catalog-sync.py",
-        "check-hook-registration.py",
-        "check-lib-wiring.py",
-        "check-test-ratchet.py",
+        "check_catalog_sync.py",
+        "check_hook_registration.py",
+        "check_lib_wiring.py",
+        "check_test_ratchet.py",
     ]
     for script in scripts:
         path = PROJECT_ROOT / "scripts" / script

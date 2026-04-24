@@ -27,7 +27,7 @@ Errors to `error-learning.jsonl` [`error-learning`], deduped 60s; 3+ same=warnin
 Audit trail hook-enforced [`agent-identity`]. [`agent-security`]: TTL 120min; blocks `.env`,`*.key`,secrets. [`agent-kpis`]: quality>90%, efficiency -20% MoM. [`agent-customization`] overrides. [`agent-sidecars`]. [`agent-communication`] Valkey(OFF). Harness-agnostic event capture [ADR-033]: canonical schema in `lib/harness_adapter/`; CC adapter preserves legacy `agent-heartbeat.jsonl`, new harnesses add one adapter file.
 
 ### 8. Prompt Engineering
-[`closed-loop-prompts`]: criteria+verification+fallback. [`agent-escalation`]: stuck→diagnose; 5-15% rate, max 3 retries. HALT for multi-service/migration/auth. [`prompt-composition`] templates. [`responsiveness`]: no silence >10s, `run_in_background` for >5s cmds, 10-15 agents/sprint. [`split-and-resume`]: `NEEDS_CLARIFICATION:`, max 2 rounds. [`orchestrator-prompt-compose`] (ADR-032): pipe draft through `scripts/compose-agent-prompt.py` before Agent call when task touches settings.json/lib/*.py/packages/efficiency-profile.
+[`closed-loop-prompts`]: criteria+verification+fallback. [`agent-escalation`]: stuck→diagnose; 5-15% rate, max 3 retries. HALT for multi-service/migration/auth. [`prompt-composition`] templates. [`responsiveness`]: no silence >10s, `run_in_background` for >5s cmds, 10-15 agents/sprint. [`split-and-resume`]: `NEEDS_CLARIFICATION:`, max 2 rounds. [`orchestrator-prompt-compose`] (ADR-032): pipe draft through `scripts/compose_agent_prompt.py` before Agent call when task touches settings.json/lib/*.py/packages/efficiency-profile.
 
 ### 9. Context Efficiency
 [`context-management`]: 50%=concise, 70%=save+reduce, 85%=stop+summary. [`context-optimization`]: L1 catalog, L2 on-demand, L3 rare; max 5 active. Result truncation hook-enforced: >5K chars [`result-management`] [`response-compression`]. [`agent-output-reading`]: `<result>` first, then Engram — NEVER Read JSONL. [`capability-levels`]: L3 disables context-mgmt, L4 disables clarification/confidence/blast-radius. [`cognitive-load`].
@@ -37,6 +37,9 @@ Credentials in env only [`credential-management`]. Content policy + confidential
 
 ### 11. Skill Lifecycle
 Priority: project>global>auto [`skill-management`]. [`skill-rewrite`]+[`auto-skill-generation`] hooks active. Consequence hook-enforced [`consequence-system`]. Dynamic tools [`dynamic-tool-creation`]: mid-task creation, promote if useful. Task DAG [`task-dag`]: dependency graph for multi-agent workflows. [`doc-sync`] [`user-prompt-capture`].
+
+### 12. Naming Conventions
+[`python-naming`]: Python scripts in `scripts/`, `lib/`, `packages/*/lib/` MUST use snake_case (underscores). Hyphens break pytest collection and require `importlib` hacks. Enforced by `tests/audit/test_python_naming.py`. Bash scripts (`.sh`) MAY use hyphens.
 
 ## Contextual (loaded on trigger)
 

@@ -15,7 +15,7 @@ import pytest
 
 def _load_watch(project_dir: Path):
     repo_root = Path(__file__).resolve().parents[2]
-    path = repo_root / "scripts" / "cos-watch.py"
+    path = repo_root / "scripts" / "cos_watch.py"
     assert path.exists(), f"missing {path}"
     os.environ["COGNITIVE_OS_PROJECT_DIR"] = str(project_dir)
     mod_name = "cos_watch_under_test"
