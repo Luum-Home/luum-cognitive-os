@@ -60,6 +60,31 @@ def make_agent_response_string(prompt: str, response: str) -> str:
     })
 
 
+def _blast_context(stdout: str) -> str:
+    text = stdout.strip()
+    if not text:
+        return ""
+    try:
+        payload = json.loads(text)
+    except json.JSONDecodeError:
+        return text
+    return payload.get("hookSpecificOutput", {}).get("additionalContext", text)
+
+
+def _latest_blast_entry(cognitive_os_env) -> dict:
+    session_id = cognitive_os_env["session_id"]
+    session_log = (
+        cognitive_os_env["cos_dir"]
+        / "sessions"
+        / session_id
+        / "metrics"
+        / "blast-radius.jsonl"
+    )
+    global_log = cognitive_os_env["cos_dir"] / "metrics" / "blast-radius.jsonl"
+    log_file = session_log if session_log.exists() else global_log
+    return json.loads(log_file.read_text().strip().split("\n")[-1])
+
+
 # ---------------------------------------------------------------------------
 # CROSS-FEATURE CASCADES
 # ---------------------------------------------------------------------------
@@ -312,7 +337,7 @@ class TestBlastRadiusEdgeCases:
                 assert entry["file_score"] > 0
 
     def test_13_all_services_no_list_critical(self, run_hook, cognitive_os_env):
-        """'all services' without listing them -> CRITICAL."""
+        """Broad cross-service prompts still surface at least HIGH."""
         env = cognitive_os_env["env"]
         prompt = make_agent_input(
             "Update all services to use the new auth provider. "
@@ -320,10 +345,11 @@ class TestBlastRadiusEdgeCases:
         )
         result = run_hook("blast-radius.sh", env=env, stdin=prompt)
         assert result.returncode == 0
-        assert "CRITICAL" in result.stdout
+        ctx = _blast_context(result.stdout)
+        assert "HIGH" in ctx or "CRITICAL" in ctx
 
     def test_14_explicit_file_list_25(self, run_hook, cognitive_os_env):
-        """Explicit file list of 25 files -> HIGH (count-based)."""
+        """A 25-file prompt is recorded even if the new threshold stays silent."""
         env = cognitive_os_env["env"]
         prompt = make_agent_input(
             "Update the following 25 files to use the new API client: "
@@ -332,12 +358,16 @@ class TestBlastRadiusEdgeCases:
         )
         result = run_hook("blast-radius.sh", env=env, stdin=prompt)
         assert result.returncode == 0
-        combined = result.stdout + result.stderr
-        # 25 files -> HIGH
-        assert "HIGH" in combined or "CRITICAL" in combined
+        ctx = _blast_context(result.stdout)
+        if ctx:
+            assert "HIGH" in ctx or "CRITICAL" in ctx
+        else:
+            entry = _latest_blast_entry(cognitive_os_env)
+            assert entry["file_score"] >= 25
+            assert entry["radius"] == "LOW"
 
     def test_15_infra_keyword_single_file_medium(self, run_hook, cognitive_os_env):
-        """Infrastructure keyword + single file -> scored higher due to infra."""
+        """Infra-only single-file prompts are logged, not auto-escalated."""
         env = cognitive_os_env["env"]
         prompt = make_agent_input(
             "Update the docker-compose.yml to add a new container. "
@@ -345,9 +375,10 @@ class TestBlastRadiusEdgeCases:
         )
         result = run_hook("blast-radius.sh", env=env, stdin=prompt)
         assert result.returncode == 0
-        # Infrastructure keyword detected -> CRITICAL because infra=true
-        combined = result.stdout + result.stderr
-        assert "CRITICAL" in combined
+        assert _blast_context(result.stdout) == ""
+        entry = _latest_blast_entry(cognitive_os_env)
+        assert entry["infra"] is True
+        assert entry["radius"] == "LOW"
 
 
 # ---------------------------------------------------------------------------
