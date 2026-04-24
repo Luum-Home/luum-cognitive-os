@@ -20,6 +20,7 @@ import pytest
 # Testcontainers availability guard
 # ---------------------------------------------------------------------------
 tc_available = True
+RUN_PLATFORM_SERVICES = os.environ.get("COS_RUN_PLATFORM_SERVICES") == "1"
 try:
     from testcontainers.core.container import DockerContainer
     from testcontainers.core.network import Network
@@ -33,6 +34,13 @@ pytestmark = [
     pytest.mark.docker,
     pytest.mark.slow,
     pytest.mark.skipif(not tc_available, reason="testcontainers not installed"),
+    pytest.mark.skipif(
+        not RUN_PLATFORM_SERVICES,
+        reason=(
+            "optional platform service lane; set "
+            "COS_RUN_PLATFORM_SERVICES=1 to run"
+        ),
+    ),
 ]
 
 

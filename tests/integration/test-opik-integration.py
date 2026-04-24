@@ -16,6 +16,7 @@ import urllib.error
 
 # Skip all tests if testcontainers not available
 tc_available = True
+RUN_OPIK_REFERENCE = os.environ.get("COS_RUN_OPIK_REFERENCE") == "1"
 try:
     from testcontainers.mysql import MySqlContainer
     from testcontainers.core.container import DockerContainer
@@ -24,7 +25,18 @@ try:
 except ImportError:
     tc_available = False
 
-pytestmark = pytest.mark.skipif(not tc_available, reason="testcontainers not installed")
+pytestmark = [
+    pytest.mark.docker,
+    pytest.mark.slow,
+    pytest.mark.skipif(not tc_available, reason="testcontainers not installed"),
+    pytest.mark.skipif(
+        not RUN_OPIK_REFERENCE,
+        reason=(
+            "optional Opik reference lane; set "
+            "COS_RUN_OPIK_REFERENCE=1 to run"
+        ),
+    ),
+]
 
 
 class TestOpikService:
