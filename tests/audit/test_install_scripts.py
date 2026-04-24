@@ -217,8 +217,8 @@ def test_self_install_also_creates_cos_skills_dir(tmp_path: Path):
     result = _run_self_install(project)
     assert result.returncode == 0
 
-    cos_skills = project / ".cognitive-os" / "skills"
-    assert_path_exists(cos_skills, ".cognitive-os/skills")
+    cos_skills = project / ".cognitive-os" / "skills" / "cos"
+    assert_path_exists(cos_skills, ".cognitive-os/skills/cos")
     assert count_skills_at(cos_skills) >= 3
 
 
@@ -301,11 +301,13 @@ def test_adr001_cos_init_dual_dest_flat_driver(tmp_path: Path):
 
     The flat driver layout is load-bearing — if the skill ends up at
     `.claude/skills/cos/<name>/` the harness does NOT discover it (ADR-001
-    Experiment 1).
+    Experiment 1). The driver entry may be a symlink to canonical storage; the
+    contract is discoverability, not duplicated bytes.
 
     This test runs cos-init.sh against a throwaway project dir using the
-    REAL repo as COS_SOURCE_DIR (read-only).  The script copies (not
-    symlinks) — so nothing in the real repo is mutated.
+    REAL repo as COS_SOURCE_DIR (read-only).  The script copies canonical skill
+    content and projects flat driver symlinks, so nothing in the real repo is
+    mutated or duplicated in the target project.
     """
     # Throwaway target project — does NOT contain hooks/self-install.sh, so the
     # self-hosting guard in cos-init.sh does NOT trigger.
