@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 
 from lib.session_hygiene import (
+    _fm,
     mark_plan_completed,
     prune_completed_tasks,
     run_full_hygiene,
@@ -195,3 +196,73 @@ class TestRunFullHygiene:
         assert isinstance(report, str)
         assert "session-hygiene" in report
         assert "pruned=1" in report
+
+
+# ---------------------------------------------------------------------------
+# _fm — frontmatter parser
+# ---------------------------------------------------------------------------
+
+class TestFm:
+    """Tests for the _fm() helper — covers HTML comment prefix, quoted values,
+    multi-line block scalars, and missing keys."""
+
+    def _skill(self, frontmatter_body: str, prefix: str = "") -> str:
+        """Wrap frontmatter_body in --- delimiters with optional prefix."""
+        return f"{prefix}---\n{frontmatter_body}\n---\n\n# Body\n"
+
+    # --- Bug 1: HTML comment prefix before opening --- ---
+
+    def test_html_comment_prefix_inline_description(self):
+        text = self._skill(
+            "name: my-skill\ndescription: Inline description text\nversion: 1.0.0\n",
+            prefix="<!-- SCOPE: both -->\n",
+        )
+        assert _fm(text, "description") == "Inline description text"
+
+    def test_html_comment_prefix_name_key(self):
+        text = self._skill(
+            "name: my-skill\ndescription: Some text\n",
+            prefix="<!-- SCOPE: os-only -->\n",
+        )
+        assert _fm(text, "name") == "my-skill"
+
+    # --- Quoted values ---
+
+    def test_quoted_double_description(self):
+        text = self._skill('description: "quoted text here"\n')
+        assert _fm(text, "description") == "quoted text here"
+
+    def test_quoted_single_description(self):
+        text = self._skill("description: 'single quoted'\n")
+        assert _fm(text, "description") == "single quoted"
+
+    # --- Multi-line YAML block scalars ---
+
+    def test_block_scalar_gt_returns_joined_text(self):
+        text = self._skill(
+            "name: skill\ndescription: >\n  First line of description.\n  Second line.\nversion: 1.0.0\n",
+            prefix="<!-- SCOPE: both -->\n",
+        )
+        result = _fm(text, "description")
+        assert result is not None
+        assert "First line" in result
+        assert "Second line" in result
+
+    def test_block_scalar_bare_gt_no_continuation_returns_none(self):
+        # description: > with nothing beneath (next line is another top-level key)
+        text = self._skill(
+            "name: skill\ndescription: >\nversion: 1.0.0\n",
+        )
+        assert _fm(text, "description") is None
+
+    # --- Missing key ---
+
+    def test_missing_key_returns_none(self):
+        text = self._skill("name: only-name\nversion: 1.0.0\n")
+        assert _fm(text, "description") is None
+
+    # --- No frontmatter at all ---
+
+    def test_no_frontmatter_returns_none(self):
+        text = "# Just a markdown file\n\nNo frontmatter here.\n"
+        assert _fm(text, "description") is None
