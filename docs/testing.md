@@ -117,6 +117,17 @@ bash scripts/pytest-with-summary.sh -- tests/unit/test_example.py -q -ra
 bash scripts/pytest-with-summary.sh -- tests/ -q --tb=short
 ```
 
+While the repair effort is still separating core behavior from optional
+reference stacks, prefer a broad non-Docker lane before running the full suite:
+
+```bash
+bash scripts/pytest-with-summary.sh -- tests/ -m 'not docker' -q --tb=short -ra --disable-warnings --timeout=120 --timeout-method=thread --session-timeout=900 --maxfail=40
+```
+
+This lane is still intentionally broad and can be slow, but it should not start
+testcontainers stacks. Use its `inventory.md` as the next repair queue instead
+of rerunning `tests/` just to recover the failure list.
+
 The latest run is linked at `.cognitive-os/reports/test-runs/latest`.
 Prefer this wrapper while reducing broad-suite failures so interrupted or
 partial runs remain analyzable across sessions.

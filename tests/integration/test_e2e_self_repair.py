@@ -708,7 +708,9 @@ class TestPipelineIntegrationFullChain:
             description="review-code-quality",
             model="sonnet",
         )
-        env = {**os.environ, "CLAUDE_PROJECT_DIR": str(tmp_path), "REPO_ROOT": _REPO_ROOT}
+        env = {**os.environ, "COGNITIVE_OS_PROJECT_DIR": str(tmp_path), "REPO_ROOT": _REPO_ROOT}
+        env.pop("CODEX_PROJECT_DIR", None)
+        env.pop("CLAUDE_PROJECT_DIR", None)
 
         result = subprocess.run(
             [sys.executable, "-c",

@@ -49,7 +49,7 @@ def _require_hook_and_rule():
 class TestRefKeyExpansion:
     """A1 — ref_key_loader expansion inside inject-phase-context.sh."""
 
-    def test_expansion_produces_adaptive_bypass_content(self, tmp_path):
+    def test_expansion_produces_adaptive_bypass_content(self, tmp_path, monkeypatch):
         """[`adaptive-bypass`] marker in preamble is expanded to rule content.
 
         Strategy: create a minimal preamble that contains the marker, point the
@@ -70,6 +70,9 @@ class TestRefKeyExpansion:
         as a library test (still validates the hook's code path).
         """
         # Direct library test of the function the hook calls.
+        monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(PROJECT_DIR))
+        monkeypatch.delenv("CODEX_PROJECT_DIR", raising=False)
+        monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
         sys.path.insert(0, str(PROJECT_DIR))
         from lib.ref_key_loader import expand  # noqa: PLC0415
 
@@ -131,13 +134,16 @@ class TestRefKeyExpansion:
             # Marker present but not expanded — this is a failure.
             pytest.fail("[`adaptive-bypass`] marker was not expanded in additionalContext")
 
-    def test_fallback_when_ref_key_loader_import_fails(self, tmp_path):
+    def test_fallback_when_ref_key_loader_import_fails(self, tmp_path, monkeypatch):
         """CONTEXT_BUF stays unchanged if ref_key_loader import fails.
 
         Simulate by setting PYTHONPATH to an empty temp dir so `lib` is not importable.
         The hook has: try: from lib.ref_key_loader import expand; except Exception: sys.stdout.write(buf)
         So on import failure, the unexpanded text is preserved.
         """
+        monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(PROJECT_DIR))
+        monkeypatch.delenv("CODEX_PROJECT_DIR", raising=False)
+        monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
         sys.path.insert(0, str(PROJECT_DIR))
         from lib.ref_key_loader import expand  # noqa: PLC0415
 

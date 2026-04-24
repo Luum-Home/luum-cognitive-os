@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SCOPE: both
-"""Validate that skills on disk match CATALOG.md entries.
+"""Validate that versioned and installed skills match CATALOG.md entries.
 
 Exit 0 if in sync, exit 1 with details if mismatched.
 Run as pre-commit hook to prevent phantom/invisible skills.
@@ -18,57 +18,72 @@ def get_project_root() -> Path:
 
 
 def get_skills_on_disk(root: Path) -> set[str]:
-    """Return skill directory names and frontmatter names from disk."""
-    skills_dir = root / ".cognitive-os" / "skills"
-    if not skills_dir.exists():
-        return set()
+    """Return skill directory names and frontmatter names from disk.
+
+    Cognitive OS has two relevant skill surfaces:
+
+    - ``skills/`` is the versioned authoring source of truth.
+    - ``.cognitive-os/skills/`` is the generated/installed runtime surface.
+
+    Catalog sync must accept a skill that is present in either surface. Requiring
+    the ignored runtime surface only would create false failures for freshly
+    cloned repositories and false greens on machines with local generated files.
+    """
+    skills_dirs = [root / "skills", root / ".cognitive-os" / "skills"]
     result = set()
-    for entry in skills_dir.iterdir():
-        if entry.is_dir() and (entry / "SKILL.md").exists():
-            result.add(entry.name)
-            text = (entry / "SKILL.md").read_text(encoding="utf-8", errors="ignore")
-            text = re.sub(r"^(\s*<!--.*?-->\s*)+", "", text, flags=re.DOTALL)
-            m = re.search(r"^name:\s*([A-Za-z0-9_-]+)\s*$", text, flags=re.MULTILINE)
-            if m:
-                result.add(m.group(1))
+    for skills_dir in skills_dirs:
+        if not skills_dir.exists():
+            continue
+        for entry in skills_dir.iterdir():
+            if entry.name in {"auto-generated"}:
+                continue
+            if entry.is_dir() and (entry / "SKILL.md").exists():
+                result.add(entry.name)
+                text = (entry / "SKILL.md").read_text(encoding="utf-8", errors="ignore")
+                text = re.sub(r"^(\s*<!--.*?-->\s*)+", "", text, flags=re.DOTALL)
+                m = re.search(r"^name:\s*([A-Za-z0-9_-]+)\s*$", text, flags=re.MULTILINE)
+                if m:
+                    result.add(m.group(1))
     return result
 
 
 def get_skills_in_catalog(root: Path) -> set[str]:
-    """Return set of skill names from skills/CATALOG.md.
+    """Return set of skill names from skills/CATALOG*.md.
 
     The full catalog contains both legacy table rows and newer bullet entries
     (`- **skill-name** — ...`). Treat both as first-class catalog references so
     the sync check validates discoverability, not a single Markdown layout.
     """
-    catalog = root / "skills" / "CATALOG.md"
-    if not catalog.exists():
-        return set()
+    catalogs = [root / "skills" / "CATALOG.md", root / "skills" / "CATALOG-COMPACT.md"]
 
     result = set()
     # Skip known non-skill table cell values
     _skip = {"Skill", "-------", ""}
-    for line in catalog.read_text().splitlines():
-        line = line.strip()
-        if not line.startswith("|"):
+    for catalog in catalogs:
+        if not catalog.exists():
             continue
-        # Extract first column of a table row
-        m = re.match(r"\|\s*([\w][\w\-]*)\s*\|", line)
-        if not m:
-            continue
-        cell = m.group(1)
-        if cell in _skip:
-            continue
-        # Skip separator rows like |-------|
-        if re.match(r"^[-]+$", cell):
-            continue
-        result.add(cell)
+        text = catalog.read_text()
+        for line in text.splitlines():
+            line = line.strip()
+            if not line.startswith("|"):
+                continue
+            # Extract first column of a table row
+            m = re.match(r"\|\s*([\w][\w\-]*)\s*\|", line)
+            if not m:
+                continue
+            cell = m.group(1)
+            if cell in _skip:
+                continue
+            # Skip separator rows like |-------|
+            if re.match(r"^[-]+$", cell):
+                continue
+            result.add(cell)
 
-    for line in catalog.read_text().splitlines():
-        line = line.strip()
-        m = re.match(r"^-\s+\*\*([\w][\w\-]*)\*\*\s+[—-]", line)
-        if m:
-            result.add(m.group(1))
+        for line in text.splitlines():
+            line = line.strip()
+            m = re.match(r"^-\s+\*\*([\w][\w\-]*)\*\*\s+[—-]", line)
+            if m:
+                result.add(m.group(1))
     return result
 
 
