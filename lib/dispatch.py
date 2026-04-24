@@ -94,6 +94,56 @@ def _fallback_disabled() -> bool:
     return os.environ.get("COS_DISABLE_LLM_FALLBACK", "").strip() == "1"
 
 
+def _load_llm_providers_config() -> dict[str, Any]:
+    """Read the ``llm_providers:`` block from cognitive-os.yaml.
+
+    Returns a dict keyed by provider name, each value being the provider's
+    config sub-dict (``enabled``, ``tier``, ``advance_on``, ``model_map``, …).
+    Returns ``{}`` if the config file is absent or the block is missing.
+
+    This is the authoritative wiring between the static YAML cascade definition
+    and runtime dispatch — satisfying the ADR-062 Phase 4 requirement that at
+    least one Python file in the dispatch path references ``llm_providers``.
+    """
+    try:
+        from lib.config_loader import load_structured
+        cfg = load_structured()
+        return dict(cfg.get("llm_providers") or {})
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _enabled_providers_from_config(providers: list[str]) -> list[str]:
+    """Filter *providers* to only those whose ``enabled: true`` in cognitive-os.yaml.
+
+    Providers NOT present in the ``llm_providers:`` block are left in the list
+    unchanged — absence from config does not mean disabled (backward compat).
+    Only providers explicitly set to ``enabled: false`` are removed.
+
+    Args:
+        providers: ordered cascade list (e.g. ``["qwen", "openrouter", "claude"]``).
+
+    Returns:
+        The same list with ``enabled: false`` providers removed.
+    """
+    cfg = _load_llm_providers_config()
+    if not cfg:
+        return providers  # config unavailable — pass through unchanged
+
+    filtered: list[str] = []
+    for p in providers:
+        provider_cfg = cfg.get(p)
+        if provider_cfg is None:
+            # Not in config (e.g. "claude" native fallback) — always keep
+            filtered.append(p)
+        elif provider_cfg.get("enabled", True) is False:
+            # Explicitly disabled in config — skip
+            pass
+        else:
+            filtered.append(p)
+    return filtered
+
+
 def _metrics_path(project_dir: Path | None = None) -> Path:
     """Resolve the JSONL metrics file path using the canonical runtime root."""
     if project_dir is None:
@@ -295,8 +345,15 @@ def dispatch(
     Returns DispatchResult. Always writes one JSONL record per invocation.
     """
     # Resolve providers list
+    _explicit_providers = providers is not None
     if providers is None:
         providers = ["qwen", "claude"]
+
+    # Filter out providers disabled in cognitive-os.yaml llm_providers block.
+    # Only applied to the default cascade (providers=None) — explicit provider
+    # lists from callers/tests are honoured as-is so injection works correctly.
+    if not _explicit_providers:
+        providers = _enabled_providers_from_config(providers)
 
     # Capability intent is resolved before provider choice. Explicit provider
     # preferences below still win, but absent those preferences the profile can
