@@ -407,6 +407,8 @@ resources:
       # infrastructure-service-catalog.md §Operating Rule.
       nemo_guardrails:
         mode: pip                  # MIGRATED: pip install nemoguardrails>=0.10. Use RailsConfig + LLMRails in-process.
+        enabled: false             # ADR-060: opt-in only. Docker path: --profile guardrails
+        profile: guardrails        # docker compose --profile guardrails up
         idle_timeout_minutes: 15
       paperclip:
         mode: on_demand
@@ -426,6 +428,8 @@ resources:
           COS_VALKEY_URL: "redis://localhost:6379"   # Alias — checked if VALKEY_URL unset
       cognee:
         mode: pip                  # MIGRATED Phase 2: pip install cognee>=0.1. Use Python API in-process instead of HTTP server.
+        enabled: false             # ADR-060: opt-in only. Docker path: --profile memory
+        profile: memory            # docker compose --profile memory up (shared with memu)
         idle_timeout_minutes: 15
         config:
           graph_backend: "${COGNEE_GRAPH_BACKEND:-networkx}"
@@ -474,6 +478,8 @@ resources:
         review_by: 2026-09-01          # Sunset policy (catalog §Sunset Policy) — optional UI extension; needs product proof path
       jupyter:
         mode: pip                  # MIGRATED: pip install jupyter>=1.0 notebook>=7.0. Run: jupyter lab
+        enabled: false             # ADR-060: opt-in only. Docker path: --profile jupyter
+        profile: jupyter           # docker compose --profile jupyter up
         idle_timeout_minutes: 30
 
   compute:
