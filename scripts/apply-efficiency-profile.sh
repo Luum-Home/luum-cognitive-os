@@ -142,14 +142,24 @@ build_settings() {
   session_start=$(hook_group "" \
     "self-install.sh" \
     "session-init.sh" \
+    "reaper-daemon-launcher.sh" \
+    "session-watchdog-launcher.sh" \
+    "docker-drift-detector.sh" \
+    "cos-executor-daemon-launcher.sh" \
     "crash-recovery.sh" \
     "session-resume.sh" \
-    "infra-health.sh|async")
+    "infra-health.sh|async" \
+    "aspirational-audit-weekly.sh" \
+    "self-knowledge-refresh.sh" \
+    "session-start-worktree-nudge.sh" \
+    "session-startup-protocol.sh" \
+    "mcp-scan.sh|async")
 
   local user_prompt_submit
   user_prompt_submit=$(hook_group "" \
     "user-prompt-capture.sh|async" \
-    "session-wrapup-trigger.sh|async")
+    "session-wrapup-trigger.sh|async" \
+    "session-heartbeat.sh")
 
   local subagent_start
   subagent_start=$(hook_group "" \
@@ -159,13 +169,19 @@ build_settings() {
   pre_compact=$(hook_group "" \
     "pre-compaction-flush.sh")
 
+  local pre_all
+  pre_all=$(hook_group "" \
+    "session-heartbeat.sh")
   local pre_bash
   pre_bash=$(hook_group "Bash" \
+    "rate-limit-precheck.sh" \
     "agent-bash-cwd-enforcer.sh" \
-    "rate-limiter.sh")
+    "rate-limiter.sh" \
+    "destructive-rm-blocker.sh")
   local pre_edit_write
   pre_edit_write=$(hook_group "Edit|Write" \
-    "secret-detector.sh")
+    "secret-detector.sh" \
+    "project-docs-convention.sh")
   local pre_agent
   pre_agent=$(hook_group "Agent" \
     "dispatch-gate.sh" \
@@ -175,39 +191,57 @@ build_settings() {
     "agent-working-dir-inject.sh" \
     "agent-prelaunch.sh" \
     "error-pattern-detector.sh" \
-    "reinvention-check.sh")
+    "predev-completeness-check.sh" \
+    "reinvention-check.sh" \
+    "native-agent-heartbeat.sh")
 
+  local post_all
+  post_all=$(hook_group "" \
+    "context-watchdog.sh|async" \
+    "rate-limit-detector.sh")
   local post_bash
   post_bash=$(hook_group "Bash" \
     "error-pipeline.sh" \
-    "result-truncator.sh")
+    "result-truncator.sh" \
+    "rate-limit-drain.sh" \
+    "audit-id-enricher.sh")
   local post_bash_edit_write
   post_bash_edit_write=$(hook_group "Bash|Edit|Write" \
     "auto-checkpoint.sh|async")
   local post_edit
   post_edit=$(hook_group "Edit|Write" \
     "content-policy.sh" \
+    "confidentiality-enforcer.sh" \
+    "surface-fix-detector.sh" \
     "doc-sync-detector.sh|async")
+  local post_todowrite
+  post_todowrite=$(hook_group "TodoWrite" \
+    "work-queue-sync.sh")
   local post_agent
   post_agent=$(hook_group "Agent" \
     "claim-validator.sh" \
     "completion-gate.sh" \
     "agent-checkpoint.sh" \
     "trust-score-validator.sh" \
+    "confidence-gate.sh" \
+    "audit-id-enricher.sh" \
+    "auto-rollback-trigger.sh" \
+    "native-agent-heartbeat.sh" \
+    "work-queue-sync.sh" \
     "auto-repair-dispatcher.sh|async" \
     "dequeue-notify.sh|async" \
     "state-heartbeat.sh|async")
   local post_skill
   post_skill=$(hook_group "Skill" \
-    "skill-usage-tracker.sh|async")
-  local post_all
-  post_all=$(hook_group "" \
-    "context-watchdog.sh|async")
+    "skill-usage-tracker.sh|async" \
+    "skill-invocation-logger.sh")
 
   local stop_hooks
   stop_hooks=$(hook_group "" \
     "session-learning.sh" \
     "session-cleanup.sh" \
+    "git-context-capture.sh" \
+    "session-changelog.sh" \
     "kpi-trigger.sh|async")
 
   # ── Assemble JSON ───────────────────────────────────────────────
@@ -229,7 +263,7 @@ build_settings() {
 
   printf '    "PreToolUse": [\n'
   local pre_first=true
-  for group in "$pre_bash" "$pre_edit_write" "$pre_agent"; do
+  for group in "$pre_all" "$pre_bash" "$pre_edit_write" "$pre_agent"; do
     [ -z "$group" ] && continue
     if [ "$pre_first" = true ]; then
       pre_first=false
@@ -242,7 +276,7 @@ build_settings() {
 
   printf '    "PostToolUse": [\n'
   local post_first=true
-  for group in "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_agent" "$post_skill" "$post_all"; do
+  for group in "$post_all" "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_todowrite" "$post_skill" "$post_agent"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
@@ -283,20 +317,22 @@ done
 # ── Summary ─────────────────────────────────────────────────────────
 echo ""
 echo "Hook summary for profile 'default' (committed Claude projection):"
-echo "  SessionStart: self-install.sh, session-init.sh, crash-recovery.sh, session-resume.sh, infra-health.sh (async)"
-echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async)"
+echo "  SessionStart: self-install.sh, session-init.sh, reaper/session watchdogs, docker drift, executor daemon, crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards"
+echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh"
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
-echo "  PreToolUse Bash: agent-bash-cwd-enforcer.sh, rate-limiter.sh"
-echo "  PreToolUse Edit|Write: secret-detector.sh"
-echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, reinvention-check.sh"
-echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh"
+echo "  PreToolUse *: session-heartbeat.sh"
+echo "  PreToolUse Bash: rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh"
+echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh"
+echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, reinvention-check.sh, native-agent-heartbeat.sh"
+echo "  PostToolUse *: context-watchdog.sh (async), rate-limit-detector.sh"
+echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh (async)"
-echo "  PostToolUse Edit|Write: content-policy.sh, doc-sync-detector.sh (async)"
-echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async)"
-echo "  PostToolUse Skill: skill-usage-tracker.sh (async)"
-echo "  PostToolUse *: context-watchdog.sh (async)"
-echo "  Stop: session-learning.sh, session-cleanup.sh, kpi-trigger.sh (async)"
+echo "  PostToolUse Edit|Write: content-policy.sh, confidentiality-enforcer.sh, surface-fix-detector.sh, doc-sync-detector.sh (async)"
+echo "  PostToolUse TodoWrite: work-queue-sync.sh"
+echo "  PostToolUse Skill: skill-usage-tracker.sh (async), skill-invocation-logger.sh"
+echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async)"
+echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, kpi-trigger.sh (async)"
 echo "  Total hook commands: $new_hook_count"
 
 echo ""
