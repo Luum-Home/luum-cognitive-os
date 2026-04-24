@@ -75,6 +75,8 @@ def _run_session_init(repo: Path) -> subprocess.CompletedProcess:
         pytest.skip("session-init.sh not found")
 
     env = os.environ.copy()
+    env["COGNITIVE_OS_PROJECT_DIR"] = str(repo)
+    env.pop("CODEX_PROJECT_DIR", None)
     env["CLAUDE_PROJECT_DIR"] = str(repo)
     env["COGNITIVE_OS_SESSION_ID"] = f"test-{os.getpid()}"
 

@@ -1,5 +1,5 @@
 # SCOPE: both
-"""Ref-key loader — ADR-027 Phase 2.
+r"""Ref-key loader — ADR-027 Phase 2.
 
 Resolves `[\`ref-key\`]` markers in text to the corresponding rule file
 content under `rules/*.md`. Enables contextual rule inclusion: compact
@@ -46,8 +46,11 @@ def _project_root() -> Path:
         os.environ.get(
             "COGNITIVE_OS_PROJECT_DIR",
             os.environ.get(
-                "CLAUDE_PROJECT_DIR",
-                str(Path(__file__).resolve().parent.parent),
+                "CODEX_PROJECT_DIR",
+                os.environ.get(
+                    "CLAUDE_PROJECT_DIR",
+                    str(Path(__file__).resolve().parent.parent),
+                ),
             ),
         )
     )
