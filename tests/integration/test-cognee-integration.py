@@ -29,12 +29,12 @@ class TestCogneeService:
     @pytest.fixture(scope="class")
     def cognee_container(self):
         """Start Cognee in a Docker container."""
-        container = DockerContainer("python:3.13-slim")
+        container = DockerContainer("python:3.12-slim")
         container.with_exposed_ports(8000)
         container.with_env("COGNEE_GRAPH_BACKEND", "networkx")
         container.with_env("COGNEE_VECTOR_STORE", "lancedb")
         container.with_command(
-            "bash -c 'pip install cognee[server] --quiet && python -m cognee.api.server --host 0.0.0.0 --port 8000'"
+            "bash -c 'pip install --quiet cognee[api] litellm==1.83.0 && uvicorn cognee.api.client:app --host 0.0.0.0 --port 8000'"
         )
         # Long start period — pip install takes time
         container.start()
