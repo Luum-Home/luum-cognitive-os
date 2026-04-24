@@ -3,7 +3,7 @@
 self_knowledge.py — Query interface for the COS self-knowledge index.
 
 The index lives at .cognitive-os/self-knowledge/ and is built by
-scripts/cos-build-self-knowledge.py.
+scripts/cos_build_self_knowledge.py.
 
 Public API:
     query(term)          -> List[dict]  — substring search across all artifacts

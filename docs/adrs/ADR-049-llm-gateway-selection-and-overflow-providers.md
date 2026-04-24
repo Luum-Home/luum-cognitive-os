@@ -643,7 +643,7 @@ Corrected architecture (Option B, implemented as mega-plan C1-C7):
 | C1 | `--providers` CLI (Option B cascade) + kill-switches | ✅ |
 | C2 | `lib/dispatch.py` abstract router + JSONL metrics foundation | ✅ |
 | C3 | `rules/llm-dispatch.md` + gotcha + ref-key | ✅ |
-| C4 | `/llm-status` skill (`scripts/llm-status.py`) | ✅ |
+| C4 | `/llm-status` skill (`scripts/llm_status.py`) | ✅ |
 | C5 | `docs/runbooks/llm-dispatch.md` operational guide | ✅ |
 | C6 | ADR-049 update (this section) + ADR-050/052/053 stubs | ✅ |
 | C6.5 | `claude-code-router` research (NO-GO verdict) | ✅ |

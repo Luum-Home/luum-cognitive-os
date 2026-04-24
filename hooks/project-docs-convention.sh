@@ -135,7 +135,7 @@ if [ "$JSON_OUT" != "1" ]; then
         for m in "${missing[@]}"; do
             echo "  - docs/$m/"
         done
-        echo "  Fix: uv run python3 scripts/project-scaffold.py --project-dir $PROJECT_DIR --project-name '<name>'"
+        echo "  Fix: uv run python3 scripts/project_scaffold.py --project-dir $PROJECT_DIR --project-name '<name>'"
     } >&2
 fi
 

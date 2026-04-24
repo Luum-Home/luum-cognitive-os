@@ -18,13 +18,13 @@ jobs:
         run: curl -LsSf https://astral.sh/uv/install.sh | sh && echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
 
       - name: Run dogfood-score
-        run: uv run python3 scripts/dogfood-score.py --json > public-metrics-dogfood.json
+        run: uv run python3 scripts/dogfood_score.py --json > public-metrics-dogfood.json
 
       - name: Run aspirational-audit
-        run: uv run python3 scripts/aspirational-audit.py --json > public-metrics-aspirational.json
+        run: uv run python3 scripts/aspirational_audit.py --json > public-metrics-aspirational.json
 
       - name: Update README badges
-        run: uv run python3 scripts/update-readme-badges.py
+        run: uv run python3 scripts/update_readme_badges.py
 
       - name: Commit metrics
         run: |

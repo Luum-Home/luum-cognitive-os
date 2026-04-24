@@ -16,7 +16,7 @@ Reduce baseline token overhead from ~17,500 tokens to ~3,500 tokens per session 
 ### Loading Rules
 
 - ONLY `skills/CATALOG-COMPACT.md` is loaded at session start (Level 1). Regenerate it
-  with `python3 scripts/generate-compact-catalog.py` whenever a skill is added, renamed,
+  with `python3 scripts/generate_compact_catalog.py` whenever a skill is added, renamed,
   or retired.
 - `skills/CATALOG.md` (the full catalog with invocations, audience columns, and section
   notes) is NOT loaded at session start. Invoke `/catalog-full` on demand to load it.

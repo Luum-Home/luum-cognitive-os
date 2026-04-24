@@ -62,7 +62,7 @@ EOF
 echo "[smoke] running /doc-review-personas with cfo + editor_qa against $TMP_DIR/docs"
 OUTPUT_FILE="$TMP_DIR/report.md"
 
-if ! uv run python3 scripts/doc-review-personas.py \
+if ! uv run python3 scripts/doc_review_personas.py \
       --docs-dir "$TMP_DIR/docs" \
       --personas cfo,editor_qa \
       --output-file "$OUTPUT_FILE" \

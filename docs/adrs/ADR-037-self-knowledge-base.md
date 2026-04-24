@@ -66,7 +66,7 @@ of each ADR section. Deduped. Sorted alphabetically. Enables fast "what does X m
 
 ## Generator
 
-`scripts/cos-build-self-knowledge.py` — pure Python 3, no third-party deps.
+`scripts/cos_build_self_knowledge.py` — pure Python 3, no third-party deps.
 
 - Scans all four source trees.
 - Writes all four artifacts plus `.cognitive-os/self-knowledge/.mtime`.
@@ -110,7 +110,7 @@ callers = get_importers("lib/circuit_breaker.py")
 
 ## Rollout
 
-1. `scripts/cos-build-self-knowledge.py` runs once manually to seed the index.
+1. `scripts/cos_build_self_knowledge.py` runs once manually to seed the index.
 2. `hooks/self-knowledge-refresh.sh` registered in `scripts/apply-efficiency-profile.sh`
    under SessionStart — rebuilds stale index automatically.
 3. Sub-agent prompts can include: "Check `lib/self_knowledge.py` for module lookups before grepping."
@@ -120,7 +120,7 @@ callers = get_importers("lib/circuit_breaker.py")
 | Trigger | Mechanism |
 |---------|-----------|
 | SessionStart (stale) | `self-knowledge-refresh.sh` detects mtime delta, rebuilds in background |
-| Manual | `python3 scripts/cos-build-self-knowledge.py` |
+| Manual | `python3 scripts/cos_build_self_knowledge.py` |
 | CI (future) | Can be added as a post-merge step |
 
 ## Consequences

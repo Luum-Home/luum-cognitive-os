@@ -102,7 +102,7 @@ CATALOG_COMPACT="$PROJECT_DIR/skills/CATALOG-COMPACT.md"
 if [ -f "$CATALOG_COMPACT" ]; then
   echo "Skills catalog: skills/CATALOG-COMPACT.md (run /catalog-full for details)"
 else
-  echo "WARN: skills/CATALOG-COMPACT.md missing — run: python3 scripts/generate-compact-catalog.py" >&2
+  echo "WARN: skills/CATALOG-COMPACT.md missing — run: python3 scripts/generate_compact_catalog.py" >&2
 fi
 echo ""
 

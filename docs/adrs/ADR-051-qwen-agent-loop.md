@@ -123,7 +123,7 @@ Shipped in commit `feat(parity): ADR-051 Phase 4 — Agent() vs Qwen loop parity
 
 Deliverables:
 
-- `scripts/parity-harness.py` — CLI that takes a YAML task-set and runs every
+- `scripts/parity_harness.py` — CLI that takes a YAML task-set and runs every
   task through BOTH `lib.qwen_agent_loop.run_agent(...)` and
   `lib.claude_executor.ClaudeExecutor.run(...)`. Emits CSV (stable columns) +
   Markdown report (per-task winner on cost/latency) + one JSONL record per

@@ -136,7 +136,7 @@ Both `status` and `list` read the manifest + `canonical-live.jsonl` only — no 
 └──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Implementation sketch: extend `scripts/cos-watch.py` to accept `--sprint <id>`, group events by `sprint_id` + `task_id`, render with the existing rich/textual stack. The data feeding the table is already emitted by MVP events — only the rendering is deferred.
+Implementation sketch: extend `scripts/cos_watch.py` to accept `--sprint <id>`, group events by `sprint_id` + `task_id`, render with the existing rich/textual stack. The data feeding the table is already emitted by MVP events — only the rendering is deferred.
 
 ### Test aggregation algorithm (follow-up)
 
@@ -201,7 +201,7 @@ MVP provides `consolidate_commits_stub()` so callers can import a stable symbol.
 
 ## Follow-up tasks
 
-1. **TUI — `cos watch --sprint <id>`**: extend `scripts/cos-watch.py` with a sprint-grouping table. Data source: `canonical-live.jsonl` filtered by `sprint_id`. Implement as Textual/rich table; reuse existing cost/token formatters.
+1. **TUI — `cos watch --sprint <id>`**: extend `scripts/cos_watch.py` with a sprint-grouping table. Data source: `canonical-live.jsonl` filtered by `sprint_id`. Implement as Textual/rich table; reuse existing cost/token formatters.
 2. **Test aggregator — `lib/sprint_aggregator.py`**: implement `aggregate_test_results()` (pytest, go test, jest, vitest parsers), add `SprintTestSummary` canonical event, wire into `SprintCompleted` emission.
 3. **Consolidated commits — `lib.sprint_commit`**: implement `squash` strategy with safe rollback, capture base ref at `SprintStarted`, enforce file-scope guardrails.
 4. **Orchestrator dispatch wiring**: replace the `launch.md` hand-off with a direct orchestrator hook (`cos sprint run --dispatch`) that invokes the current harness's agent-launch primitive per task.

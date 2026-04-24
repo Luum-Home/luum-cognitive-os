@@ -191,7 +191,7 @@ Mapped to each root cause:
 - CI gate rejects schema additions without reader code
 
 ### For "test theater"
-- `scripts/check-test-quality.py`: AST-based classifier, flags structural tests
+- `scripts/check_test_quality.py`: AST-based classifier, flags structural tests
 - `.cosmic-ray.toml`: mutation testing config
 - Pre-commit + CI gates enforce minimum test quality
 

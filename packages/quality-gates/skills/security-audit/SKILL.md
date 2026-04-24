@@ -44,7 +44,7 @@ final report into `<path>/docs/04-seguridad/` per the ADR-054/055
 
 When `--project-dir` is set, the skill runs the 8 scan steps as usual
 and, after the inline report is generated, pipes it into
-`scripts/security-audit-writer.py`, which writes:
+`scripts/security_audit_writer.py`, which writes:
 
 ```
 <project-dir>/docs/04-seguridad/security-audit-<YYYY-MM-DD>-<HHMMSS>.md
@@ -57,7 +57,7 @@ Example:
 
 ```bash
 # Persist a rendered report into an adopting project.
-uv run python3 scripts/security-audit-writer.py \
+uv run python3 scripts/security_audit_writer.py \
     --project-dir /path/to/adopting-project \
     --report-file /tmp/audit.md
 ```

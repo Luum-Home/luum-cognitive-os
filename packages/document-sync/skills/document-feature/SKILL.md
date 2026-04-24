@@ -43,7 +43,7 @@ Generate or incrementally update structured documentation for project features. 
 When `--project-dir` is set, invoke:
 
 ```
-uv run python3 scripts/document-feature-append.py \
+uv run python3 scripts/document_feature_append.py \
   --project-dir <path> \
   --feature "<feature name>" \
   [--status backlog|in-progress|done|blocked] \

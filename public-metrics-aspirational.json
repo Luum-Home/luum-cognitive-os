@@ -15,7 +15,7 @@
     "hooks/agent-quota-advisor.sh",
     "hooks/agent-quota-redirect.sh",
     "lib/jupyter_client.py",
-    "scripts/check-test-quality.py",
+    "scripts/check_test_quality.py",
     "scripts/check-upstream-changes.sh",
     "scripts/ci-setup.sh",
     "scripts/ci-smoke-linux.sh"

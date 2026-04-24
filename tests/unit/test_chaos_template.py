@@ -1,4 +1,4 @@
-"""Unit tests for scripts/cos-chaos-template.py (ADR-041).
+"""Unit tests for scripts/cos_chaos_template.py (ADR-041).
 
 Tests: skeleton syntactically valid, placeholders present, writes to correct path.
 """
@@ -14,7 +14,7 @@ import pytest
 
 # Load module directly (filename has hyphens, not importable as package name)
 _SCRIPTS_DIR = Path(__file__).resolve().parent.parent.parent / "scripts"
-_MOD_PATH = _SCRIPTS_DIR / "cos-chaos-template.py"
+_MOD_PATH = _SCRIPTS_DIR / "cos_chaos_template.py"
 
 _spec = importlib.util.spec_from_file_location("cos_chaos_template", _MOD_PATH)
 _mod = importlib.util.module_from_spec(_spec)  # type: ignore[arg-type]

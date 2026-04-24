@@ -99,7 +99,7 @@ def test_overwrite_replaces_unmarked(tmp_path: Path):
 
 
 def test_cli_end_to_end(tmp_path: Path):
-    script = Path(__file__).resolve().parents[2] / "scripts" / "ops-runbook.py"
+    script = Path(__file__).resolve().parents[2] / "scripts" / "ops_runbook.py"
     result = subprocess.run(
         [sys.executable, str(script),
          "--project-dir", str(tmp_path / "cli"),
