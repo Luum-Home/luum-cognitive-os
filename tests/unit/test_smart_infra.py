@@ -10,6 +10,7 @@ from lib.smart_infra import (
     SmartInfra,
     SKILL_SERVICE_MAP,
     SERVICE_COMPOSE_MAP,
+    NON_DOCKER_SERVICE_NAMES,
     requires_service,
 )
 
@@ -35,6 +36,8 @@ def smart_infra(tmp_path):
         "      langfuse:\n"
         "        mode: on_demand\n"
         "        idle_timeout_minutes: 30\n"
+        "      mlflow:\n"
+        "        mode: pip\n"
     )
 
     cos_dir = tmp_path / ".cognitive-os" / "metrics"
@@ -61,7 +64,7 @@ class TestSkillServiceMap:
     """Tests for SKILL_SERVICE_MAP constants."""
 
     def test_known_skill_returns_services(self):
-        assert SKILL_SERVICE_MAP["agent-kpis"] == ["langfuse"]
+        assert SKILL_SERVICE_MAP["agent-kpis"] == ["mlflow"]
 
     def test_unknown_skill_returns_empty(self):
         assert SKILL_SERVICE_MAP.get("nonexistent", []) == []
@@ -71,12 +74,12 @@ class TestSkillServiceMap:
         assert "litellm" in SKILL_SERVICE_MAP["sdd-verify"]
 
     def test_all_mapped_services_exist_in_compose_map(self):
-        """Every service referenced in SKILL_SERVICE_MAP must exist in SERVICE_COMPOSE_MAP."""
+        """Every mapped service must be a Docker service or an explicit non-Docker service."""
         for skill, services in SKILL_SERVICE_MAP.items():
             for svc in services:
-                assert svc in SERVICE_COMPOSE_MAP, (
+                assert svc in SERVICE_COMPOSE_MAP or svc in NON_DOCKER_SERVICE_NAMES, (
                     f"Skill '{skill}' references service '{svc}' "
-                    f"not found in SERVICE_COMPOSE_MAP"
+                    "not found in SERVICE_COMPOSE_MAP or NON_DOCKER_SERVICE_NAMES"
                 )
 
 
@@ -323,6 +326,13 @@ class TestEnsureService:
             result = smart_infra.ensure_service("langfuse")
             assert result is False
 
+    def test_pip_service_does_not_start_docker(self, smart_infra):
+        with patch("subprocess.run") as mock_run:
+            result = smart_infra.ensure_service("mlflow")
+            assert result is True
+            assert "mlflow" in smart_infra._last_access
+            mock_run.assert_not_called()
+
     def test_unknown_service_returns_false(self, smart_infra):
         with patch.object(smart_infra, "_is_docker_available", return_value=True):
             result = smart_infra.ensure_service("nonexistent")
@@ -453,8 +463,8 @@ class TestEnsureForSkill:
     def test_maps_skill_to_services(self, smart_infra):
         with patch.object(smart_infra, "ensure_service", return_value=True) as mock_ensure:
             results = smart_infra.ensure_for_skill("agent-kpis")
-            assert results == {"langfuse": True}
-            mock_ensure.assert_called_once_with("langfuse", timeout_secs=120)
+            assert results == {"mlflow": True}
+            mock_ensure.assert_called_once_with("mlflow", timeout_secs=120)
 
     def test_unknown_skill_returns_empty(self, smart_infra):
         results = smart_infra.ensure_for_skill("nonexistent-skill")
