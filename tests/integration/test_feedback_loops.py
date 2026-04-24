@@ -20,6 +20,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
+from tests.utils.jsonl import read_first_jsonl, read_jsonl
 
 # ---------------------------------------------------------------------------
 # Path setup — ensure repo root is on sys.path
@@ -228,7 +229,7 @@ class TestPromoteLoopOnConsecutiveHighScores:
         archive_file = tmp_metrics / "skill-archive.jsonl"
         assert archive_file.exists(), "skill-archive.jsonl must exist after 5 completions"
 
-        lines = [json.loads(l) for l in archive_file.read_text().splitlines() if l.strip()]
+        lines = read_jsonl(archive_file)
         skill_b_entries = [e for e in lines if e.get("skill_name") == "skill-B"]
         assert len(skill_b_entries) == 5, (
             f"Expected 5 archive entries for skill-B, got {len(skill_b_entries)}"
@@ -258,7 +259,7 @@ class TestPromoteLoopOnConsecutiveHighScores:
             engine.apply_consequence(action)
 
         history_file = tmp_metrics / "consequence-history.jsonl"
-        lines = [json.loads(l) for l in history_file.read_text().splitlines() if l.strip()]
+        lines = read_jsonl(history_file)
         promotion_entries = [l for l in lines if l.get("record_type") == "promotion"]
         assert len(promotion_entries) >= 1, (
             "At least one 'promotion' record_type entry must be in consequence-history.jsonl"
@@ -311,7 +312,7 @@ class TestPromoteResetsOnLowScore:
             _record(engine, "skill-C", trust_score=90.0)
 
         history_file = tmp_metrics / "consequence-history.jsonl"
-        lines = [json.loads(l) for l in history_file.read_text().splitlines() if l.strip()]
+        lines = read_jsonl(history_file)
         perf_entries = [
             l for l in lines
             if l.get("record_type") == "performance"
@@ -447,7 +448,7 @@ class TestFullPipelineIntegration:
 
         cost_file = tmp_metrics / "cost-events.jsonl"
         assert cost_file.exists(), "cost-events.jsonl must exist"
-        entry = json.loads(cost_file.read_text().strip())
+        entry = read_first_jsonl(cost_file)
         assert entry["estimated_cost_usd"] > 0
         assert entry["tokens_estimated"] == tokens
 
@@ -493,7 +494,7 @@ class TestFullPipelineIntegration:
 
         archive_file = tmp_metrics / "skill-archive.jsonl"
         assert archive_file.exists(), "skill-archive.jsonl must be written"
-        lines = [json.loads(l) for l in archive_file.read_text().splitlines() if l.strip()]
+        lines = read_jsonl(archive_file)
         assert len(lines) >= 1
         assert lines[0]["trust_score"] == trust_score
 
@@ -550,7 +551,7 @@ class TestFullPipelineIntegration:
             )
 
         archive_file = tmp_metrics / "skill-archive.jsonl"
-        lines = [json.loads(l) for l in archive_file.read_text().splitlines() if l.strip()]
+        lines = read_jsonl(archive_file)
         skill_entries = [e for e in lines if e.get("skill_name") == skill_name]
         assert len(skill_entries) == 5, (
             f"Expected 5 archive entries after 5 completions, got {len(skill_entries)}"
@@ -587,17 +588,13 @@ class TestFullPipelineIntegration:
         assert history_file.exists(), "consequence-history.jsonl must be written"
         assert archive_file.exists(), "skill-archive.jsonl must be written"
 
-        cost_entry = json.loads(cost_file.read_text().strip())
+        cost_entry = read_first_jsonl(cost_file)
         assert cost_entry["estimated_cost_usd"] > 0
 
-        history_lines = [
-            json.loads(l) for l in history_file.read_text().splitlines() if l.strip()
-        ]
+        history_lines = read_jsonl(history_file)
         perf_entries = [l for l in history_lines if l.get("record_type") == "performance"]
         assert len(perf_entries) >= 1
 
-        archive_lines = [
-            json.loads(l) for l in archive_file.read_text().splitlines() if l.strip()
-        ]
+        archive_lines = read_jsonl(archive_file)
         assert len(archive_lines) >= 1
         assert archive_lines[0]["skill_name"] == skill_name
