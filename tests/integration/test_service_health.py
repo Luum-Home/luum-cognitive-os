@@ -29,21 +29,10 @@ except ImportError:
 
 
 SERVICE_CONTRACTS = (
-    {
-        "runtime_service": "langfuse",
-        "expected_mode": "disabled",
-        "classification": "legacy-reference",
-        "compose_services": (
-            "langfuse-pg",
-            "langfuse-valkey",
-            "langfuse-clickhouse",
-            "langfuse-seaweedfs",
-            "langfuse-worker",
-            "langfuse-web",
-        ),
-        "profiles": (),
-        "local_health": ("langfuse-web", "http://localhost:3100"),
-    },
+    # ADR-058 (2026-04-24): the former observability trace-UI contract and its
+    # 6 backing Docker services were removed. LLM observability is now
+    # provided by the pip package `arize-phoenix` — see the ADR and
+    # skills/phoenix-trace-ui/.
     {
         "runtime_service": "nemo_guardrails",
         "expected_mode": "pip",

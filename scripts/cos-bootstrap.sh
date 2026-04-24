@@ -14,11 +14,9 @@
 #   --help                             Show this help message
 #
 # Profiles:
-#   minimal   Langfuse stack only (6 containers: pg, valkey, clickhouse,
-#             seaweedfs, worker, web)
-#   standard  Langfuse + LiteLLM (7 containers) — recommended
-#   full      All services (langfuse, litellm, nemo-guardrails, paperclip,
-#             jupyter, memu, cognee)
+#   minimal   Paperclip only (1 container)
+#   standard  Paperclip + Valkey
+#   full      All services (paperclip, nemo-guardrails, jupyter, memu, cognee)
 # =============================================================================
 
 set -euo pipefail
@@ -36,7 +34,7 @@ COS_DIR="${PROJECT_ROOT}/.cognitive-os"
 # ---------------------------------------------------------------------------
 PROFILE="standard"
 DRY_RUN=false
-TOTAL_STEPS=9
+TOTAL_STEPS=7
 STEP=0
 
 # ---------------------------------------------------------------------------
@@ -62,9 +60,9 @@ USAGE
 OPTIONS
   --profile minimal|standard|full
       Service profile to start (default: standard)
-      minimal:  Langfuse stack only (LLM observability)
-      standard: Langfuse + LiteLLM (recommended)
-      full:     All services (langfuse, litellm, paperclip, jupyter, etc.)
+      minimal:  Paperclip only
+      standard: Paperclip + Valkey (recommended)
+      full:     All services (paperclip, nemo-guardrails, jupyter, etc.)
 
   --dry-run
       Print each step without executing it.
@@ -228,39 +226,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 2 — Generate LANGFUSE_ENCRYPTION_KEY if missing
-# ---------------------------------------------------------------------------
-step "LANGFUSE_ENCRYPTION_KEY generation"
-
-if [[ "${DRY_RUN}" == "true" ]]; then
-  existing=$(env_get "LANGFUSE_ENCRYPTION_KEY" 2>/dev/null || true)
-  if [[ -z "${existing}" ]]; then
-    info "Would generate LANGFUSE_ENCRYPTION_KEY (openssl rand -hex 32)"
-  else
-    ok "LANGFUSE_ENCRYPTION_KEY already set — skipping"
-  fi
-  done_step
-else
-  existing=$(env_get "LANGFUSE_ENCRYPTION_KEY" 2>/dev/null || true)
-  if [[ -z "${existing}" ]]; then
-    if command -v openssl &>/dev/null; then
-      key=$(openssl rand -hex 32)
-    elif command -v python3 &>/dev/null; then
-      key=$(python3 -c "import secrets; print(secrets.token_hex(32))")
-    else
-      err "Cannot generate encryption key: openssl and python3 are both missing."
-      exit 1
-    fi
-    env_set "LANGFUSE_ENCRYPTION_KEY" "${key}"
-    ok "Generated and saved LANGFUSE_ENCRYPTION_KEY"
-  else
-    ok "LANGFUSE_ENCRYPTION_KEY already set — skipping"
-  fi
-  done_step
-fi
-
-# ---------------------------------------------------------------------------
-# Step 3 — Docker network
+# Step 2 — Docker network
 # ---------------------------------------------------------------------------
 step "Docker network (cognitive-os-network)"
 
@@ -284,18 +250,22 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 4 — Start Docker services
+# Step 3 — Start Docker services
 # ---------------------------------------------------------------------------
 step "Docker services (profile: ${PROFILE})"
 
 # Determine which services to start based on profile
+# ADR-058 (2026-04-24): former observability stack removed — observability is now Phoenix
+# via `uv run phoenix serve` (pip path, no Docker). The minimal/standard
+# profiles are therefore thin; `full` still brings up the remaining Docker
+# services (paperclip, nemo-guardrails, jupyter, etc.).
 get_services_for_profile() {
   case "${PROFILE}" in
     minimal)
-      echo "langfuse-pg langfuse-valkey langfuse-clickhouse langfuse-seaweedfs langfuse-worker langfuse-web"
+      echo "paperclip-pg paperclip"
       ;;
     standard)
-      echo "langfuse-pg langfuse-valkey langfuse-clickhouse langfuse-seaweedfs langfuse-worker langfuse-web litellm"
+      echo "paperclip-pg paperclip valkey"
       ;;
     full)
       # All default services — let compose handle it
@@ -345,51 +315,26 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 5 — Health checks
+# Step 4 — Health checks
 # ---------------------------------------------------------------------------
 step "Health checks"
 
 if [[ "${DRY_RUN}" == "true" ]]; then
-  info "Would check health of: Langfuse (http://localhost:3100), LiteLLM (http://localhost:4000)"
+  info "Would check health of: Paperclip (http://localhost:3200)"
   done_step
 else
   if ! check_docker; then
     warn "Docker not available — skipping health checks."
     done_step
   else
-    # Langfuse is always part of every profile
-    langfuse_port="${LANGFUSE_PORT:-3100}"
-    wait_for_health "Langfuse" "http://localhost:${langfuse_port}/api/public/health" 120
-
-    if [[ "${PROFILE}" == "standard" || "${PROFILE}" == "full" ]]; then
-      litellm_port="${LITELLM_PORT:-4000}"
-      wait_for_health "LiteLLM" "http://localhost:${litellm_port}/health" 60
-    fi
+    paperclip_port="${PAPERCLIP_PORT:-3200}"
+    wait_for_health "Paperclip" "http://localhost:${paperclip_port}/api/health" 120
     done_step
   fi
 fi
 
 # ---------------------------------------------------------------------------
-# Step 6 — Langfuse API key provisioning
-# ---------------------------------------------------------------------------
-step "Langfuse API key provisioning"
-
-LANGFUSE_SETUP_SCRIPT="${SCRIPT_DIR}/setup-langfuse.sh"
-
-if [[ "${DRY_RUN}" == "true" ]]; then
-  info "Would run: bash scripts/setup-langfuse.sh"
-  done_step
-else
-  if [[ -f "${LANGFUSE_SETUP_SCRIPT}" ]]; then
-    bash "${LANGFUSE_SETUP_SCRIPT}" || warn "setup-langfuse.sh encountered an issue — check output above."
-  else
-    warn "setup-langfuse.sh not found at ${LANGFUSE_SETUP_SCRIPT} — skipping."
-  fi
-  done_step
-fi
-
-# ---------------------------------------------------------------------------
-# Step 7 — Rules/hooks symlink sync (self-install)
+# Step 5 — Rules/hooks symlink sync (self-install)
 # ---------------------------------------------------------------------------
 step "Rules and hooks symlink sync (self-install)"
 
@@ -409,7 +354,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 8 — .cognitive-os/ directory structure
+# Step 6 — .cognitive-os/ directory structure
 # ---------------------------------------------------------------------------
 step ".cognitive-os/ directory structure"
 
@@ -449,7 +394,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Step 9 — Summary
+# Step 7 — Summary
 # ---------------------------------------------------------------------------
 step "Summary"
 
@@ -466,12 +411,12 @@ fi
 echo "║  Profile: ${PROFILE}$(printf '%*s' $((49 - ${#PROFILE})) '')║"
 echo "╠══════════════════════════════════════════════════════════╣"
 echo "║  Services & Ports:                                       ║"
-echo "║    Langfuse UI:  http://localhost:3100                   ║"
+echo "║    Phoenix UI:   http://localhost:6006 (uv run phoenix serve) ║"
 if [[ "${PROFILE}" == "standard" || "${PROFILE}" == "full" ]]; then
-echo "║    LiteLLM:      http://localhost:4000                   ║"
+echo "║    Paperclip:    http://localhost:3200                   ║"
 fi
 if [[ "${PROFILE}" == "full" ]]; then
-echo "║    Paperclip:    http://localhost:3200                   ║"
+echo "║    Jupyter:      http://localhost:8888                   ║"
 echo "║    Jupyter:      http://localhost:8888                   ║"
 fi
 echo "╠══════════════════════════════════════════════════════════╣"

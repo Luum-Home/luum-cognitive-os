@@ -38,16 +38,15 @@ After every agent completion, log to `.cognitive-os/metrics/cost-events.jsonl`:
 ## Infrastructure Auto-Scale
 
 - Start Docker services ON DEMAND:
-  - Langfuse: start when `/agent-kpis` or observability needed, stop after 30min idle
+  - Observability (Phoenix): now a pip process, started via `uv run phoenix serve`; stopped with Ctrl+C (not Docker-managed)
   - NeMo Guardrails: start when PII detected in content, stop after 15min idle
   - Paperclip: start when `/squad-report` or governance review, stop after 30min idle
-  - LiteLLM: always running (needed for model routing)
 - Check idle containers: `docker ps --filter status=running` vs actually being called
 - Log infra events to `.cognitive-os/metrics/infra-usage.jsonl`
 
 ### Infra Event Format
 ```json
-{"timestamp":"ISO","container":"langfuse","event":"start|stop|idle_detected","reason":"on_demand|idle_timeout|manual"}
+{"timestamp":"ISO","container":"paperclip","event":"start|stop|idle_detected","reason":"on_demand|idle_timeout|manual"}
 ```
 
 ## Agent Launch Governance
