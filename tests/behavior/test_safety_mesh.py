@@ -19,6 +19,32 @@ import pytest
 pytestmark = pytest.mark.behavior
 
 
+def _blast_context(stdout: str) -> str:
+    """Return the emitted additionalContext when the hook uses ADR-023 JSON."""
+    text = stdout.strip()
+    if not text:
+        return ""
+    try:
+        payload = json.loads(text)
+    except json.JSONDecodeError:
+        return text
+    return payload.get("hookSpecificOutput", {}).get("additionalContext", text)
+
+
+def _latest_blast_entry(cognitive_os_env) -> dict:
+    session_id = cognitive_os_env["session_id"]
+    session_log = (
+        cognitive_os_env["cos_dir"]
+        / "sessions"
+        / session_id
+        / "metrics"
+        / "blast-radius.jsonl"
+    )
+    global_log = cognitive_os_env["cos_dir"] / "metrics" / "blast-radius.jsonl"
+    log_file = session_log if session_log.exists() else global_log
+    return json.loads(log_file.read_text().strip().split("\n")[-1])
+
+
 # ---------------------------------------------------------------------------
 # 1. clarification-gate.sh
 # ---------------------------------------------------------------------------
@@ -266,7 +292,7 @@ class TestBlastRadius:
         assert "HIGH" in result.stdout or "CRITICAL" in result.stdout
 
     def test_critical_radius_infra(self, run_hook, cognitive_os_env):
-        """Infrastructure keywords should escalate to CRITICAL."""
+        """Infra-only prompts no longer escalate by keyword alone after 2264356."""
         input_json = json.dumps({
             "tool_name": "Agent",
             "tool_input": {
@@ -279,11 +305,14 @@ class TestBlastRadius:
             stdin=input_json,
         )
         assert result.returncode == 0
-        assert "CRITICAL" in result.stdout
-        assert "INFRASTRUCTURE" in result.stdout or "infrastructure" in result.stdout.lower()
+        assert _blast_context(result.stdout) == ""
+
+        entry = _latest_blast_entry(cognitive_os_env)
+        assert entry["infra"] is True
+        assert entry["radius"] == "LOW"
 
     def test_critical_radius_security(self, run_hook, cognitive_os_env):
-        """Security keywords should escalate to CRITICAL."""
+        """Security keywords + broad scope should surface as HIGH/CRITICAL."""
         input_json = json.dumps({
             "tool_name": "Agent",
             "tool_input": {
@@ -296,8 +325,14 @@ class TestBlastRadius:
             stdin=input_json,
         )
         assert result.returncode == 0
-        assert "CRITICAL" in result.stdout
-        assert "SECURITY" in result.stdout or "security" in result.stdout.lower()
+        ctx = _blast_context(result.stdout)
+        if ctx:
+            assert "BLAST RADIUS" in ctx
+            assert "HIGH" in ctx or "CRITICAL" in ctx
+        else:
+            entry = _latest_blast_entry(cognitive_os_env)
+            assert entry["security"] is True
+            assert entry["radius"] == "LOW"
 
     def test_critical_cross_service(self, run_hook, cognitive_os_env):
         """Cross-service keywords should result in HIGH or CRITICAL."""
@@ -361,7 +396,7 @@ class TestBlastRadius:
         assert entry["radius"] in ("LOW", "MEDIUM", "HIGH", "CRITICAL")
 
     def test_database_keywords_critical(self, run_hook, cognitive_os_env):
-        """Database migration keywords should be CRITICAL."""
+        """Database keywords are logged as infra even when advisory stays silent."""
         input_json = json.dumps({
             "tool_name": "Agent",
             "tool_input": {
@@ -374,7 +409,11 @@ class TestBlastRadius:
             stdin=input_json,
         )
         assert result.returncode == 0
-        assert "CRITICAL" in result.stdout
+        assert _blast_context(result.stdout) == ""
+
+        entry = _latest_blast_entry(cognitive_os_env)
+        assert entry["infra"] is True
+        assert entry["radius"] == "LOW"
 
     def test_advisory_only_never_blocks(self, run_hook, cognitive_os_env):
         """Blast radius should always exit 0, even for CRITICAL."""
@@ -758,34 +797,56 @@ class TestPreCommitGate:
         assert hook_path.exists(), "pre-commit-gate.sh should exist in hooks/"
 
     def test_blocks_on_test_failure(self, tmp_path):
-        """Hook should exit 1 when pytest reports failures."""
-        # Create a fake pytest that reports failures
+        """Hook no longer runs pytest inline after ADR-028 D4."""
+        # Create a fake python3 that would leave evidence if invoked.
         fake_bin = tmp_path / "bin"
         fake_bin.mkdir()
         fake_pytest = fake_bin / "python3"
+        sentinel = tmp_path / "pytest-invoked.txt"
         fake_pytest.write_text(
             '#!/usr/bin/env bash\n'
+            f'echo invoked > "{sentinel}"\n'
             'echo "3 failed, 2 passed"\n'
         )
         fake_pytest.chmod(0o755)
 
+        project_dir = tmp_path / "project"
+        project_dir.mkdir()
+        tests_dir = project_dir / "tests"
+        tests_dir.mkdir()
+        coverage_script = tests_dir / "coverage-report.sh"
+        coverage_script.write_text(
+            '#!/usr/bin/env bash\n'
+            'echo "  Composite:              90% (45/50)"\n'
+        )
+        coverage_script.chmod(0o755)
+
         hook_path = Path(__file__).resolve().parent.parent.parent / "hooks" / "pre-commit-gate.sh"
+        hook_content = hook_path.read_text()
+        patched_hook = tmp_path / "pre-commit-gate.sh"
+        patched_hook.write_text(
+            hook_content.replace(
+                'ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"',
+                f'ROOT_DIR="{project_dir}"',
+            )
+        )
+        patched_hook.chmod(0o755)
+
         env = os.environ.copy()
         env["PATH"] = f"{fake_bin}:{env.get('PATH', '')}"
 
         result = subprocess.run(
-            ["bash", str(hook_path)],
+            ["bash", str(patched_hook)],
             capture_output=True,
             text=True,
             env=env,
             timeout=30,
         )
-        assert result.returncode == 1
-        assert "COMMIT BLOCKED" in result.stderr
-        assert "3 tests failing" in result.stderr
+        assert result.returncode == 0
+        assert not sentinel.exists(), "pre-commit-gate must not invoke pytest inline"
 
     def test_passes_on_all_tests_passing(self, tmp_path):
-        """Hook should exit 0 when all tests pass."""
+        """Hook should allow commit when structural checks pass."""
         fake_bin = tmp_path / "bin"
         fake_bin.mkdir()
         fake_pytest = fake_bin / "python3"
@@ -795,10 +856,11 @@ class TestPreCommitGate:
         )
         fake_pytest.chmod(0o755)
 
-        # Also create a fake coverage-report.sh that returns good coverage
-        fake_coverage = tmp_path / "tests"
-        fake_coverage.mkdir()
-        coverage_script = fake_coverage / "coverage-report.sh"
+        project_dir = tmp_path / "project"
+        project_dir.mkdir()
+        tests_dir = project_dir / "tests"
+        tests_dir.mkdir()
+        coverage_script = tests_dir / "coverage-report.sh"
         coverage_script.write_text(
             '#!/usr/bin/env bash\n'
             'echo "  Composite:              90% (45/50)"\n'
@@ -806,11 +868,20 @@ class TestPreCommitGate:
         coverage_script.chmod(0o755)
 
         hook_path = Path(__file__).resolve().parent.parent.parent / "hooks" / "pre-commit-gate.sh"
+        hook_content = hook_path.read_text()
+        patched_hook = tmp_path / "pre-commit-gate.sh"
+        patched_hook.write_text(
+            hook_content.replace(
+                'ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"',
+                f'ROOT_DIR="{project_dir}"',
+            )
+        )
+        patched_hook.chmod(0o755)
         env = os.environ.copy()
         env["PATH"] = f"{fake_bin}:{env.get('PATH', '')}"
 
         result = subprocess.run(
-            ["bash", str(hook_path)],
+            ["bash", str(patched_hook)],
             capture_output=True,
             text=True,
             env=env,

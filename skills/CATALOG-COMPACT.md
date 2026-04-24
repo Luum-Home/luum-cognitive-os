@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 134
+Total skills: 135
 
 ## os (12)
 
@@ -22,7 +22,7 @@ Total skills: 134
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 
-## os-dev (28)
+## os-dev (29)
 
 | Skill | Description |
 |-------|-------------|
@@ -52,6 +52,7 @@ Total skills: 134
 | simulation-arena | End-to-end agent workflow simulation for safety-mesh regression. |
 | smoke-test | Run end-to-end smoke tests that validate the real Cognitive OS system works |
 | strands-evals-integration | Configure Strands Evals for trace-based agent trajectory evaluation using… |
+| test-contract-repair | Repair failing or misleading tests without greenwashing. |
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
