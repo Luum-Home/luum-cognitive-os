@@ -34,7 +34,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RULES_DIR = PROJECT_ROOT / "rules"
 SELF_INSTALL = PROJECT_ROOT / "hooks" / "self-install.sh"
 
-# The 16 core rules that the standard/full/self-hosting profiles keep.
+# The core rules that the default/full/self-hosting profiles keep.
 # Must match the CORE_RULES array in hooks/self-install.sh exactly.
 CORE_RULES = {
     "RULES-COMPACT.md",
@@ -204,9 +204,9 @@ class TestProfileFilterLogic:
             f"Core rules reference non-existent files: {missing}"
         )
 
-    def test_core_rules_count_is_16(self):
-        """The CORE_RULES constant must have exactly 12 entries (rate-limiting, content-policy, blast-radius, clarification-gate moved to EXCLUDED_RULES)."""
-        assert len(CORE_RULES) == 12
+    def test_core_rules_count_matches_current_contract(self):
+        """The CORE_RULES constant tracks the current self-install contract."""
+        assert len(CORE_RULES) == 13
 
 
 class TestProfileFilterShellScript:
@@ -226,7 +226,7 @@ class TestProfileFilterShellScript:
 
         In self-hosting mode, self-install.sh syncs all rules EXCEPT those
         in EXCLUDED_RULES (hook-enforced, package-specific, or contextual rules
-        that are loaded on demand). At least the 12 CORE_RULES should be present.
+        that are loaded on demand). At least the CORE_RULES should be present.
         """
         project = _setup_external_project(tmp_path, "standard")
         remaining = _run_profile_filter(project)
@@ -304,7 +304,7 @@ class TestExternalProjectSimulation:
 
         remaining = {f.name for f in cos_rules_dir.glob("*.md")}
 
-        # Must-have rules for any project (all 12 CORE_RULES)
+        # Must-have rules for any project.
         assert "RULES-COMPACT.md" in remaining
         assert "acceptance-criteria.md" in remaining
         assert "trust-score.md" in remaining
@@ -359,8 +359,11 @@ class TestExternalProjectSimulation:
             assert len(content) > 10, (
                 f"Core rule {rule_name} is empty or nearly empty"
             )
-            # Each rule should start with a markdown heading
-            assert content.strip().startswith("#"), (
+            body = content.strip()
+            if body.startswith("<!--"):
+                body = body.split("-->", 1)[1].strip()
+            # Each rule should start with a markdown heading after optional metadata.
+            assert body.startswith("#"), (
                 f"Core rule {rule_name} does not start with a markdown heading"
             )
 
