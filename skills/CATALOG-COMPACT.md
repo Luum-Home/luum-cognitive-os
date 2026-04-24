@@ -110,6 +110,7 @@ Total skills: 139
 | dod-check | Verify Definition of Done criteria for a task at a given complexity level |
 | domain-model | Scaffold DDD domain-model.md (bounded contexts + entities + language) idempotently. |
 | error-analyzer | Analyze accumulated errors from test/lint/build runs and propose skill… |
+| radar-update | Merge /repo-scout evaluations into ecosystem-tools.md and blocked-tools.md, preserving human prose. Dry-run by default, --apply writes. |
 | repo-scout | Scout external git repos for tech radar classification (v2: bulk batch, markdown artifacts, adoption signals). |
 | eval-repo | [DEPRECATED] Renamed to /repo-scout (2026-04-24). |
 | evaluate-plan | Evaluate any existing plan file with a 0-50 scoring system. |
