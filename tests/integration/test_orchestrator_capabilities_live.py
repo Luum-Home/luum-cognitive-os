@@ -68,9 +68,28 @@ def test_live_docker_check(caps):
 
 
 def test_live_executor_check(caps):
-    """Executor check reflects ORCHESTRATOR_MODE env var."""
+    """Executor check reflects env var OR a live executor daemon marker."""
     import os
+    from pathlib import Path
+
     expected = os.environ.get("ORCHESTRATOR_MODE", "").lower() == "executor"
+    if not expected:
+        project = Path(
+            os.environ.get(
+                "COGNITIVE_OS_PROJECT_DIR",
+                os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd()),
+            )
+        )
+        state = project / ".cognitive-os" / "runtime" / "orchestrator-mode"
+        pid_file = project / ".cognitive-os" / "runtime" / "cos-executor.pid"
+        if state.exists() and state.read_text().strip().lower() == "executor":
+            try:
+                pid = int(pid_file.read_text().strip() or "0")
+                if pid > 0:
+                    os.kill(pid, 0)
+                    expected = True
+            except (OSError, ValueError):
+                expected = False
     assert caps._executor_available is expected
 
 

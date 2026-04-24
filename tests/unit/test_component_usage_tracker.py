@@ -282,6 +282,23 @@ def test_health_score_calculation(repo: Path) -> None:
     assert dw["total_components"] > 0
 
 
+def test_generate_quick_health_report_skips_expensive_lib_scan(repo: Path, monkeypatch) -> None:
+    (repo / "hooks" / "registered.sh").write_text("#!/bin/bash")
+    make_settings(repo / ".claude" / "settings.json", ["registered.sh"])
+
+    t = ComponentUsageTracker(str(repo))
+
+    def _boom():
+        raise AssertionError("scan_lib_imports should not run in quick health mode")
+
+    monkeypatch.setattr(t, "scan_lib_imports", _boom)
+    report = t.generate_quick_health_report()
+
+    assert report["dead_weight"]["mode"] == "quick"
+    assert "hooks" in report
+    assert "skills" in report
+
+
 def test_format_report_readable(repo: Path) -> None:
     t = ComponentUsageTracker(str(repo))
     report = t.generate_usage_report()
