@@ -26,6 +26,9 @@ set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
+# Cross-platform helpers (portable_stat_mtime, etc.)
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
+
 # ── Locate project root ──────────────────────────────────────────────────────
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-}"
 if [ -z "$PROJECT_DIR" ]; then
@@ -67,14 +70,8 @@ emit_additional_context() {
 }
 
 portable_stat_mtime_fast() {
-  local path="$1" out
-  if out="$(stat -f %m "$path" 2>/dev/null)"; then
-    printf '%s\n' "$out"
-  elif out="$(stat -c %Y "$path" 2>/dev/null)"; then
-    printf '%s\n' "$out"
-  else
-    python3 -c "import os, sys; print(int(os.path.getmtime(sys.argv[1])))" "$path"
-  fi
+  # Delegate to portable_stat_mtime from hooks/_lib/portable.sh (already sourced above)
+  portable_stat_mtime "$1"
 }
 
 # ── Read stdin / detect Claude Code invocation ───────────────────────────────
