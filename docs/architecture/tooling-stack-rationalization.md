@@ -19,6 +19,8 @@ Every tool must earn one of four positions:
 
 `cognitive-os.yaml` already encodes an important product decision:
 
+See [Infrastructure Service Catalog](infrastructure-service-catalog.md) for the service-by-service contract across Docker Compose, Python package, cloud, and disabled modes.
+
 | Tool | Current mode | Product role | Current conclusion |
 |------|--------------|--------------|--------------------|
 | LiteLLM | `pip` | Model gateway and provider compatibility. | Keep as optional gateway/runtime library, but route through capability profiles first. |

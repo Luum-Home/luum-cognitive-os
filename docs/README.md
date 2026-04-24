@@ -26,6 +26,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Capability-Centric Runtime Enforcement](architecture/capability-centric-runtime-enforcement.md) — how dispatch, skills, gateways, and metrics choose execution intent before vendors
 - [Runtime Hardcoding Discipline](architecture/runtime-hardcoding-discipline.md) — contract for keeping protected runtime paths from silently promoting non-core subsystems
 - [Tooling Stack Rationalization](architecture/tooling-stack-rationalization.md) — how to keep external services lightweight, optional, and aligned with the product promise
+- [Infrastructure Service Catalog](architecture/infrastructure-service-catalog.md) — what each Docker/Python/cloud service is for and whether it is core, optional, or reference-only
 - [Observability Backend Evaluation](architecture/observability-backend-evaluation-2026-04-24.md) — 2026 decision record for MLflow, Langfuse, Opik, OpenTelemetry, and other observability options
 - [Driver-Specific Script Surfaces](architecture/driver-specific-script-surfaces.md) — which user-facing scripts are truly cross-harness today and which remain Claude-driver-only by contract
 - [Cross-Harness Authoring](architecture/cross-harness-authoring.md) — how to author skills, rules, hooks, and workflows once and project them through harness drivers
