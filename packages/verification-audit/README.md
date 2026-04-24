@@ -11,7 +11,6 @@ cos install @luum/verification-audit
 ## Components
 
 - `hooks/result-truncator.sh` (hook) -- Truncate large command outputs to preserve context window
-- `hooks/observability-trace.sh` (hook) -- Send traces to observability backend (Langfuse)
 - `hooks/assumption-tracker.sh` (hook) -- Track assumption language in agent outputs
 - `hooks/architecture-compliance.sh` (hook) -- Check architecture pattern compliance in agent outputs
 

@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 137
+Total skills: 138
 
 ## os (12)
 
@@ -35,7 +35,7 @@ Total skills: 137
 | cognitive-os-test | Run the Cognitive OS test suite with persisted summary (junit + failures + tails). |
 | compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI… |
 | component-classifier | \"Classify a new component (skill, hook, rule, lib) as CORE or PACKAGE. |
-| component-reality-check | Classify every SO component into REAL / DORMANT / ASPIRATIONAL / METADATA — catch drift between declarations and observable runtime. |
+| component-reality-check | Classify every SO component into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime. |
 | deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
 | detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
 | dogfood-score | Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs). |
@@ -74,7 +74,7 @@ Total skills: 137
 | detect-stack | Scan a project root and produce detected-stack.json with detected languages… |
 | doc-review-personas | N-persona parallel doc review with severity-tiered consolidation. |
 | generate-config | Read detected-stack.json and generate or update cognitive-os.yaml with detected… |
-| llm-status | Inspect LLM dispatch state — providers configured, kill-switches, recent dispatch totals. |
+| llm-status | Inspect LLM dispatch state — provider inventory, kill-switches, cascade config, recent dispatch totals. |
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
 | repo-forensics | Deep forensic analysis of git repositories. |
 | reverse-engineer | Deep source code analysis of a dependency to understand its internal APIs… |
@@ -86,7 +86,7 @@ Total skills: 137
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 
-## project (69)
+## project (70)
 
 | Skill | Description |
 |-------|-------------|
@@ -151,6 +151,7 @@ Total skills: 137
 | semgrep-scan | Run Semgrep SAST security scanning on a path or changed files. |
 | session-manager | Manage concurrent Cognitive OS sessions — list, inspect, and clean up |
 | singularity | Codebase Singularity — autonomous MAPE-K control loop that monitors… |
+| so-vs-vanilla | A/B benchmark harness that measures Cognitive OS governance value by running the same task under fu… |
 | sprint | Lightweight agent-managed sprint tracking — plan, status, retro, course-correct |
 | squad-manager | Evaluate squad performance and propose reconfigurations |
 | sre-agent | SRE auto-repair agent. |
