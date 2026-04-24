@@ -422,9 +422,8 @@ regenerate_settings_if_profile_changed() {
 #
 # Without this, downstream projects update compose via cos-update but their
 # containers keep running the old images indefinitely (restart: unless-stopped
-# doesn't recreate with the new pin). The 2026-04-21 langfuse-worker incident
-# (crash loop from old entrypoint that was removed upstream) was exactly this
-# scenario.
+# doesn't recreate with the new pin). A 2026-04 worker-container crash loop
+# (old entrypoint removed upstream) was exactly this scenario.
 #
 # Graceful degradation:
 #   - compose file missing → silent skip
