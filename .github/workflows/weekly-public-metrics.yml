@@ -1,0 +1,36 @@
+name: Weekly Public Metrics
+on:
+  schedule:
+    - cron: '0 12 * * MON'  # every Monday 12:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  update-metrics:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh && echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - name: Run dogfood-score
+        run: uv run python3 scripts/dogfood-score.py --json > public-metrics-dogfood.json
+
+      - name: Run aspirational-audit
+        run: uv run python3 scripts/aspirational-audit.py --json > public-metrics-aspirational.json
+
+      - name: Update README badges
+        run: uv run python3 scripts/update-readme-badges.py
+
+      - name: Commit metrics
+        run: |
+          git config user.name "cognitive-os-bot"
+          git config user.email "bot@luum.ai"
+          git add public-metrics-dogfood.json public-metrics-aspirational.json README.md
+          git add .cognitive-os/metrics/badges/ .cognitive-os/metrics/public-trend.jsonl 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "chore(metrics): weekly public update $(date -u +%Y-%m-%d)"
+          git push

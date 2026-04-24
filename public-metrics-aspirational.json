@@ -1,0 +1,23 @@
+{
+  "total": 585,
+  "counts": {
+    "METADATA": 45,
+    "ASPIRATIONAL": 71,
+    "REAL": 163,
+    "ON_DEMAND": 156,
+    "DORMANT": 150
+  },
+  "dormant_aspirational_ratio": 0.3778,
+  "worst_offenders": [
+    "hooks/adr-detector.sh",
+    "hooks/agent-bus-monitor.sh",
+    "hooks/agent-output-verifier.sh",
+    "hooks/agent-quota-advisor.sh",
+    "hooks/agent-quota-redirect.sh",
+    "lib/jupyter_client.py",
+    "scripts/check-test-quality.py",
+    "scripts/check-upstream-changes.sh",
+    "scripts/ci-setup.sh",
+    "scripts/ci-smoke-linux.sh"
+  ]
+}
