@@ -1,0 +1,63 @@
+"""Tests for lib/providers/deepseek.py (ADR-062 opt-in)."""
+
+from unittest.mock import MagicMock, patch
+
+
+def test_is_configured_false_when_no_key(monkeypatch):
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
+    from lib.providers import deepseek
+    assert deepseek.is_configured() is False
+
+
+def test_is_configured_true_when_key_set(monkeypatch):
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "sk-ds-test")
+    from lib.providers import deepseek
+    assert deepseek.is_configured() is True
+
+
+def test_model_map_has_all_tiers():
+    from lib.providers.deepseek import MODEL_MAP
+    assert "opus" in MODEL_MAP
+    assert "sonnet" in MODEL_MAP
+    assert "haiku" in MODEL_MAP
+    assert MODEL_MAP["opus"] == "deepseek-reasoner"
+
+
+def test_call_returns_error_when_no_key(monkeypatch):
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
+    from lib.providers import deepseek
+    result = deepseek.call([{"role": "user", "content": "hi"}])
+    assert result["success"] is False
+    assert result["error"]
+
+
+def test_call_with_mocked_client_normalized_response(monkeypatch):
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "sk-ds-test")
+
+    mock_msg = MagicMock()
+    mock_msg.content = "response from deepseek"
+    mock_msg.reasoning_content = None
+    mock_choice = MagicMock()
+    mock_choice.message = mock_msg
+    mock_usage = MagicMock()
+    mock_usage.prompt_tokens = 5
+    mock_usage.completion_tokens = 10
+    mock_response = MagicMock()
+    mock_response.choices = [mock_choice]
+    mock_response.usage = mock_usage
+
+    mock_client = MagicMock()
+    mock_client.chat.completions.create.return_value = mock_response
+
+    from lib.providers import deepseek
+    with patch.object(deepseek, "get_client", return_value=mock_client):
+        result = deepseek.call([{"role": "user", "content": "hi"}], model_hint="haiku")
+
+    assert result["success"] is True
+    assert result["text"] == "response from deepseek"
+    assert result["model"] == "deepseek-chat"  # haiku maps to deepseek-chat
+
+
+def test_base_url_correct():
+    from lib.providers.deepseek import BASE_URL
+    assert "deepseek.com" in BASE_URL
