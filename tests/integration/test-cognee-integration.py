@@ -14,13 +14,25 @@ import asyncio
 
 # Skip all tests if testcontainers not available
 tc_available = True
+RUN_COGNEE_REFERENCE = os.environ.get("COS_RUN_COGNEE_REFERENCE") == "1"
 try:
     from testcontainers.core.container import DockerContainer
     from testcontainers.core.network import Network
 except ImportError:
     tc_available = False
 
-pytestmark = pytest.mark.skipif(not tc_available, reason="testcontainers not installed")
+pytestmark = [
+    pytest.mark.docker,
+    pytest.mark.slow,
+    pytest.mark.skipif(not tc_available, reason="testcontainers not installed"),
+    pytest.mark.skipif(
+        not RUN_COGNEE_REFERENCE,
+        reason=(
+            "optional Cognee reference lane; set "
+            "COS_RUN_COGNEE_REFERENCE=1 to run"
+        ),
+    ),
+]
 
 
 class TestCogneeService:

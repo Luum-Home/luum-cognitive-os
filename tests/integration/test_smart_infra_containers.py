@@ -24,10 +24,19 @@ except ImportError:
 
 from lib.smart_infra import SmartInfra, SERVICE_COMPOSE_MAP
 
+RUN_SMART_INFRA_CONTAINERS = os.environ.get("COS_RUN_SMART_INFRA_CONTAINERS") == "1"
+
 pytestmark = [
     pytest.mark.docker,
     pytest.mark.slow,
     pytest.mark.skipif(not tc_available, reason="testcontainers not installed"),
+    pytest.mark.skipif(
+        not RUN_SMART_INFRA_CONTAINERS,
+        reason=(
+            "optional SmartInfra container lifecycle lane; set "
+            "COS_RUN_SMART_INFRA_CONTAINERS=1 to run"
+        ),
+    ),
 ]
 
 # ---------------------------------------------------------------------------

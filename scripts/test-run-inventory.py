@@ -132,6 +132,50 @@ def parse_junit(junit_path: Path) -> list[TestItem]:
     return items
 
 
+def parse_timeout_fallback(full_output: str) -> list[TestItem]:
+    """Extract a synthetic timeout item when pytest died before writing JUnit."""
+    if " Timeout " not in full_output and "TimeoutError" not in full_output:
+        return []
+
+    matches = re.findall(
+        r'File "([^"]+/tests/[^"]+)", line \d+, in ([A-Za-z_][A-Za-z0-9_]*)',
+        full_output,
+    )
+    test_file = "pytest-session"
+    test_name = "timeout"
+    for file_path, function in reversed(matches):
+        if function.startswith("test_"):
+            try:
+                test_file = str(Path(file_path).resolve().relative_to(PROJECT_ROOT))
+            except ValueError:
+                test_file = file_path
+            test_name = function
+            break
+    else:
+        for file_path, function in reversed(matches):
+            try:
+                test_file = str(Path(file_path).resolve().relative_to(PROJECT_ROOT))
+            except ValueError:
+                marker = "/tests/"
+                test_file = f"tests/{file_path.split(marker, 1)[1]}" if marker in file_path else file_path
+            test_name = function or "timeout"
+            break
+
+    message_match = re.search(r"(\+{3,} Timeout \+{3,}.*)", full_output, re.DOTALL)
+    message = "pytest run timed out before JUnit XML was completed"
+    details = message_match.group(1).strip() if message_match else full_output[-2000:]
+    item = TestItem(
+        nodeid=f"{test_file}::{test_name}",
+        outcome="error",
+        file=test_file,
+        test=test_name,
+        duration_seconds=0.0,
+        message=message,
+        details=details,
+    )
+    return [TestItem(**{**asdict(item), "heuristic_tags": _heuristic_tags(item)})]
+
+
 def _read(path: Path) -> str:
     return path.read_text(errors="replace") if path.exists() else ""
 
@@ -181,10 +225,10 @@ def _interesting(items: list[TestItem]) -> list[TestItem]:
 def build_inventory(run_dir: Path) -> dict[str, object]:
     run_dir = _resolve_run_dir(run_dir)
     junit = run_dir / "junit.xml"
-    if not junit.exists():
-        raise FileNotFoundError(f"JUnit XML not found: {junit}")
-
-    items = parse_junit(junit)
+    full_output = _read(run_dir / "full-output.txt")
+    items = parse_junit(junit) if junit.exists() else parse_timeout_fallback(full_output)
+    if not items and not junit.exists():
+        raise FileNotFoundError(f"JUnit XML not found and no fallback events detected: {junit}")
     counts = _summary_counts(items)
     tag_counts: Counter[str] = Counter()
     for item in items:
