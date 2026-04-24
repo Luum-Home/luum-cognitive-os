@@ -103,7 +103,7 @@ def test_empty_brief_injects_todo_placeholder(tmp_path: Path):
 
 
 def test_cli_end_to_end(tmp_path: Path):
-    script = Path(__file__).resolve().parents[2] / "scripts" / "domain-model.py"
+    script = Path(__file__).resolve().parents[2] / "scripts" / "domain_model.py"
     assert script.exists()
     result = subprocess.run(
         [sys.executable, str(script),

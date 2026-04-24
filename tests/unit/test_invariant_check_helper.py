@@ -1,4 +1,4 @@
-"""Tests for scripts/invariant-check-helper.py — invariant proposal generator."""
+"""Tests for scripts/invariant_check_helper.py — invariant proposal generator."""
 from __future__ import annotations
 
 import os
@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-HELPER = REPO_ROOT / "scripts" / "invariant-check-helper.py"
+HELPER = REPO_ROOT / "scripts" / "invariant_check_helper.py"
 
 # Make the helper's functions importable for unit-level tests.
 import types  # noqa: E402

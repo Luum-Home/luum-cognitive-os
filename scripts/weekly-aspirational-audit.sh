@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # weekly-aspirational-audit.sh — ws8 weekly cron runner
 #
-# Runs aspirational-audit.py (which now auto-calls cos-classify-coverage.py)
+# Runs aspirational_audit.py (which now auto-calls cos_classify_coverage.py)
 # and writes outputs to standard locations.
 #
 # Recommended cron (run Sunday at 02:00 local time):
@@ -9,7 +9,7 @@
 #
 # Or via CronCreate (in a Claude Code session):
 #   /schedule "Run weekly aspirational audit" --cron "0 2 * * 0" \
-#     --command "python3 scripts/aspirational-audit.py"
+#     --command "python3 scripts/aspirational_audit.py"
 
 set -euo pipefail
 
@@ -20,7 +20,7 @@ cd "$PROJECT_DIR"
 
 echo "[weekly-aspirational-audit] $(date -u +%Y-%m-%dT%H:%M:%SZ) — starting"
 
-python3 "$SCRIPT_DIR/aspirational-audit.py" "$@"
+python3 "$SCRIPT_DIR/aspirational_audit.py" "$@"
 
 EXIT_CODE=$?
 

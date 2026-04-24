@@ -82,7 +82,7 @@ def test_status_and_priority_propagate(tmp_path: Path):
 
 
 def test_cli_end_to_end(tmp_path: Path):
-    script = Path(__file__).resolve().parents[2] / "scripts" / "document-feature-append.py"
+    script = Path(__file__).resolve().parents[2] / "scripts" / "document_feature_append.py"
     assert script.exists()
     result = subprocess.run(
         [sys.executable, str(script),

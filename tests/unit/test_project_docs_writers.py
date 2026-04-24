@@ -3,8 +3,8 @@
 
 Covers:
     - lib.docs_writer primitives (slugify, resolve_category_dir, write_doc)
-    - scripts/security-audit-writer.py (CLI, via subprocess)
-    - scripts/rules-export.py (CLI, via subprocess)
+    - scripts/security_audit_writer.py (CLI, via subprocess)
+    - scripts/rules_export.py (CLI, via subprocess)
     - hooks/project-docs-convention.sh (soft-warn + strict modes)
 
 Real filesystem (tmp_path). No mocks. UV runs the subprocesses so
@@ -112,7 +112,7 @@ def test_security_audit_writer_writes_from_file(tmp_path):
     proj = tmp_path / "proj"
 
     result = _run_py_script(
-        "scripts/security-audit-writer.py",
+        "scripts/security_audit_writer.py",
         ["--project-dir", str(proj), "--report-file", str(report), "--json"],
     )
     assert result.returncode == 0, result.stderr
@@ -127,7 +127,7 @@ def test_security_audit_writer_reads_stdin(tmp_path):
     proj = tmp_path / "proj"
     body = "# From stdin\n\nNothing critical.\n"
     result = _run_py_script(
-        "scripts/security-audit-writer.py",
+        "scripts/security_audit_writer.py",
         ["--project-dir", str(proj), "--slug", "initial"],
         stdin=body,
     )
@@ -140,7 +140,7 @@ def test_security_audit_writer_reads_stdin(tmp_path):
 def test_security_audit_writer_rejects_empty_stdin(tmp_path):
     proj = tmp_path / "proj"
     result = _run_py_script(
-        "scripts/security-audit-writer.py",
+        "scripts/security_audit_writer.py",
         ["--project-dir", str(proj)],
         stdin="",
     )
@@ -156,7 +156,7 @@ def test_security_audit_writer_rejects_empty_stdin(tmp_path):
 def test_rules_export_default_set(tmp_path):
     proj = tmp_path / "adopter"
     result = _run_py_script(
-        "scripts/rules-export.py",
+        "scripts/rules_export.py",
         ["--project-dir", str(proj), "--json"],
     )
     assert result.returncode == 0, result.stderr
@@ -174,7 +174,7 @@ def test_rules_export_default_set(tmp_path):
 def test_rules_export_custom_subset(tmp_path):
     proj = tmp_path / "adopter"
     result = _run_py_script(
-        "scripts/rules-export.py",
+        "scripts/rules_export.py",
         ["--project-dir", str(proj), "--rules", "so-slo", "responsiveness", "--json"],
     )
     assert result.returncode == 0, result.stderr
@@ -189,7 +189,7 @@ def test_rules_export_custom_subset(tmp_path):
 def test_rules_export_rejects_unknown_rule(tmp_path):
     proj = tmp_path / "adopter"
     result = _run_py_script(
-        "scripts/rules-export.py",
+        "scripts/rules_export.py",
         ["--project-dir", str(proj), "--rules", "this-does-not-exist"],
     )
     assert result.returncode == 1

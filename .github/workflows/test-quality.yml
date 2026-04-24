@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Check new tests for structural-only patterns
-        run: python scripts/check-test-quality.py --ci
+        run: python scripts/check_test_quality.py --ci
 
   mutation-test:
     name: Mutation testing on changed files

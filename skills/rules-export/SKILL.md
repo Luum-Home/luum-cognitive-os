@@ -35,12 +35,12 @@ in the SO repo. Re-run `/rules-export` periodically to refresh.
 /rules-export --project-dir <path> --rules so-slo definition-of-done
 ```
 
-The underlying CLI is `scripts/rules-export.py`, invoked via `uv run`.
+The underlying CLI is `scripts/rules_export.py`, invoked via `uv run`.
 
 ## CLI
 
 ```bash
-uv run python3 scripts/rules-export.py \
+uv run python3 scripts/rules_export.py \
     --project-dir /path/to/adopting-project \
     [--rules so-slo definition-of-done credential-management] \
     [--so-root /path/to/cognitive-os-repo] \
@@ -81,7 +81,7 @@ If `--rules` is not given, these rules are exported:
 ```bash
 # Smoke test in tmp dir
 TMPDIR=$(mktemp -d)
-uv run python3 scripts/rules-export.py --project-dir "$TMPDIR" --json
+uv run python3 scripts/rules_export.py --project-dir "$TMPDIR" --json
 ls "$TMPDIR/docs/08-estandares/"        # exactly one .md file
 grep -q "Rules Snapshot" "$TMPDIR"/docs/08-estandares/*.md
 ```

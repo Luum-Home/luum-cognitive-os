@@ -152,7 +152,7 @@ preset when you want the legacy view.
 ## Related
 
 - `scripts/pytest-with-summary.sh` — the underlying runner (SCOPE: os-only)
-- `scripts/test-run-inventory.py` — aggregates historical runs
+- `scripts/test_run_inventory.py` — aggregates historical runs
 - `scripts/sprint-test-summary.sh` — sprint-level aggregation
 - `Makefile`: `make test-no-docker`, `make test-skip-report` (operator surface)
 - `skills/run-tests` — the equivalent for adopting projects (SCOPE: both)

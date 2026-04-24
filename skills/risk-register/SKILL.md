@@ -30,7 +30,7 @@ Scaffolds `docs/03-dominio-riesgo/risk-register.md` with a STRIDE-organized tabl
 ## Invocation
 
 ```
-uv run python3 scripts/risk-register.py \
+uv run python3 scripts/risk_register.py \
   --project-dir /path/to/adopter-project \
   --assets "user database, API keys, payment processor credentials"
 ```
@@ -68,7 +68,7 @@ Same as `/domain-model`:
 ## Verification
 
 ```bash
-uv run python3 scripts/risk-register.py --project-dir /tmp/test-rr --assets "user db, API keys"
+uv run python3 scripts/risk_register.py --project-dir /tmp/test-rr --assets "user db, API keys"
 grep -q "STRIDE threats" /tmp/test-rr/docs/03-dominio-riesgo/risk-register.md
 grep -cE '^\| R-0[1-6]' /tmp/test-rr/docs/03-dominio-riesgo/risk-register.md   # expect 6
 ```

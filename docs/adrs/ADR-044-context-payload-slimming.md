@@ -157,7 +157,7 @@ A "startup minimal context" mode:
 
 **Scope executed**:
 - L2 frontmatter convention: added `summary_line` (≤80 chars) to every SKILL.md whose `description` exceeds 80 chars. 85 skills migrated in one pass (+ 2 fixed skills that were previously missing `description` entirely: `simulation-arena`, `planning-poker`, + 1 existing `skill-creator` description recovered). Post-migration inventory: 125 skills total, 125 have `name`, 125 have `description`, 88 have `summary_line`. 0 YAML parse errors.
-- Catalog generator (`scripts/generate-compact-catalog.py`) updated to prefer `summary_line` over `first_sentence(description)` when rendering the compact catalog. Output regenerated: `skills/CATALOG-COMPACT.md` 13,019 → 11,941 chars (~270-token reduction, ~8% shrink on the catalog file alone).
+- Catalog generator (`scripts/generate_compact_catalog.py`) updated to prefer `summary_line` over `first_sentence(description)` when rendering the compact catalog. Output regenerated: `skills/CATALOG-COMPACT.md` 13,019 → 11,941 chars (~270-token reduction, ~8% shrink on the catalog file alone).
 
 **Scope BLOCKED (sandbox write-permission)**:
 - L1 `/engram-help` slash command (`.claude/commands/engram-help.md`)

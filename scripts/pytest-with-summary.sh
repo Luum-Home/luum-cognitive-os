@@ -41,7 +41,7 @@ junit="$run_dir/junit.xml"
 metadata="$run_dir/metadata.txt"
 exit_code_file="$run_dir/exit-code.txt"
 latest_link="$REPORT_ROOT/latest"
-inventory_tool="$SCRIPT_DIR/test-run-inventory.py"
+inventory_tool="$SCRIPT_DIR/test_run_inventory.py"
 
 {
   echo "timestamp_utc=$timestamp"

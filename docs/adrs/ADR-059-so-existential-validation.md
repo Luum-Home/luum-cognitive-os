@@ -171,8 +171,8 @@ See plan file `.cognitive-os/plans/features/so-existential-validation-2026-04-24
 for the day-by-day execution ledger with KPI snapshots per milestone.
 
 Primary metrics (queryable any time):
-- `scripts/aspirational-audit.py --json | jq .dormant_aspirational_ratio`
-- `scripts/dogfood-score.py --json | jq .overall`
+- `scripts/aspirational_audit.py --json | jq .dormant_aspirational_ratio`
+- `scripts/dogfood_score.py --json | jq .overall`
 - `.cognitive-os/metrics/install-timing.jsonl` (after Phase 2)
 
 ## Rollback

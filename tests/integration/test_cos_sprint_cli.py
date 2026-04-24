@@ -1,4 +1,4 @@
-"""Integration tests for scripts/cos-sprint.py (ADR-036 MVP)."""
+"""Integration tests for scripts/cos_sprint.py (ADR-036 MVP)."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 _REPO = Path(__file__).resolve().parents[2]
-SCRIPT = _REPO / "scripts" / "cos-sprint.py"
+SCRIPT = _REPO / "scripts" / "cos_sprint.py"
 EXAMPLE = _REPO / ".cognitive-os" / "sprints" / "example-sprint.yaml"
 
 

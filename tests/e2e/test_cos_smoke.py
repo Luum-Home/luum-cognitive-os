@@ -6,7 +6,7 @@ Steps exercised:
   3. lib.rate_limiter.RateLimitQueue.enqueue() + dequeue_ready (JSONL events)
   4. lib.harness_adapter.dispatch.dispatch_event with fake CC Pre event
      (canonical event written to metrics/)
-  5. scripts/cos-sprint.py run <fixture.yaml> (manifest created)
+  5. scripts/cos_sprint.py run <fixture.yaml> (manifest created)
   6. lib.self_knowledge.query("rate limiter") returns a list
 
 Each step is isolated via tmp_path; no global state leaks.
@@ -245,19 +245,19 @@ def test_step4_canonical_event_emission(project_dir: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Step 5 — cos-sprint.py run
+# Step 5 — cos_sprint.py run
 # ---------------------------------------------------------------------------
 
 
 @pytest.mark.e2e
 @pytest.mark.timeout(30)
 def test_step5_sprint_cli_run(project_dir: Path) -> None:
-    """cos-sprint.py run <fixture.yaml> creates a manifest."""
+    """cos_sprint.py run <fixture.yaml> creates a manifest."""
     fixture = _repo("tests/fixtures/e2e/sprint-smoke.yaml")
     assert fixture.exists(), f"Sprint fixture not found: {fixture}"
 
-    sprint_script = _repo("scripts/cos-sprint.py")
-    assert sprint_script.exists(), f"cos-sprint.py not found: {sprint_script}"
+    sprint_script = _repo("scripts/cos_sprint.py")
+    assert sprint_script.exists(), f"cos_sprint.py not found: {sprint_script}"
 
     result = subprocess.run(
         [sys.executable, str(sprint_script), "run", str(fixture)],
@@ -273,7 +273,7 @@ def test_step5_sprint_cli_run(project_dir: Path) -> None:
     )
 
     assert result.returncode == 0, (
-        f"cos-sprint.py run exited {result.returncode}:\n"
+        f"cos_sprint.py run exited {result.returncode}:\n"
         f"stdout: {result.stdout[:800]}\nstderr: {result.stderr[:800]}"
     )
 
@@ -293,7 +293,7 @@ def test_step5_sprint_cli_run(project_dir: Path) -> None:
         f"Expected 2 tasks, got {len(manifest.get('tasks', []))}"
     )
 
-    # cos-sprint.py list should also succeed
+    # cos_sprint.py list should also succeed
     result2 = subprocess.run(
         [sys.executable, str(sprint_script), "list"],
         capture_output=True,
@@ -307,7 +307,7 @@ def test_step5_sprint_cli_run(project_dir: Path) -> None:
         },
     )
     assert result2.returncode == 0, (
-        f"cos-sprint.py list failed: {result2.stderr[:400]}"
+        f"cos_sprint.py list failed: {result2.stderr[:400]}"
     )
     # Output should reference our sprint name
     assert "smoke-sprint" in result2.stdout, (
@@ -340,7 +340,7 @@ def test_step6_self_knowledge_query(project_dir: Path) -> None:
     except FileNotFoundError:
         # Index not built in this environment — that is acceptable for the smoke
         # test.  The important thing is the function is importable and callable.
-        pytest.skip("self-knowledge index not built (run cos-build-self-knowledge.py)")
+        pytest.skip("self-knowledge index not built (run cos_build_self_knowledge.py)")
 
     assert isinstance(results, list), (
         f"query() must return a list, got {type(results)}"

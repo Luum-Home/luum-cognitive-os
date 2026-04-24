@@ -143,7 +143,7 @@ Each run also gets a test inventory:
 You can regenerate the inventory without rerunning pytest:
 
 ```bash
-python3 scripts/test-run-inventory.py --run-dir .cognitive-os/reports/test-runs/latest
+python3 scripts/test_run_inventory.py --run-dir .cognitive-os/reports/test-runs/latest
 ```
 
 If pytest times out before writing JUnit XML, the inventory falls back to the
@@ -189,8 +189,8 @@ Other testcontainers lanes are also explicit opt-ins:
 ```bash
 COS_RUN_DATABASE_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_databases.py -q -ra
 COS_RUN_PLATFORM_SERVICES=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_platform_services.py -q -ra
-COS_RUN_OPIK_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integration/test-opik-integration.py -q -ra
-COS_RUN_COGNEE_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integration/test-cognee-integration.py -q -ra
+COS_RUN_OPIK_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_opik_integration.py -q -ra
+COS_RUN_COGNEE_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_cognee_integration.py -q -ra
 COS_RUN_SMART_INFRA_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_smart_infra_containers.py -q -ra
 ```
 

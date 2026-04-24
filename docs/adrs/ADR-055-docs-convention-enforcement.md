@@ -3,8 +3,8 @@
 ## Status
 
 **Accepted** — 2026-04-21. Addendum to ADR-054. Implementation lives in
-`lib/docs_writer.py`, `scripts/security-audit-writer.py`,
-`scripts/rules-export.py`, `skills/rules-export/`,
+`lib/docs_writer.py`, `scripts/security_audit_writer.py`,
+`scripts/rules_export.py`, `skills/rules-export/`,
 `hooks/project-docs-convention.sh`, and a new validator contract in
 `scripts/cos-config-audit.sh`.
 
@@ -28,8 +28,8 @@ into the correct category:
 
 | Skill | Category | Writer |
 |---|---|---|
-| `security-audit` | `04-seguridad` | `scripts/security-audit-writer.py` |
-| `rules-export` (NEW) | `08-estandares` | `scripts/rules-export.py` |
+| `security-audit` | `04-seguridad` | `scripts/security_audit_writer.py` |
+| `rules-export` (NEW) | `08-estandares` | `scripts/rules_export.py` |
 
 The third target (`sdd-design` → `02-arquitectura`) lives OUTSIDE this
 repo (`~/.claude/skills/sdd-design` and `~/Tools/agent-teams-lite/`).

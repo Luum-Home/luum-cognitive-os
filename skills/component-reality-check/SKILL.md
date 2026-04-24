@@ -34,7 +34,7 @@ Today (2026-04-24 baseline): **27.7% REAL / 64.5% Dormant+Unwired**.
 
 ## What it measures
 
-The classifier `scripts/aspirational-audit.py` scans every hook, lib
+The classifier `scripts/aspirational_audit.py` scans every hook, lib
 module, script, and skill and assigns one of four labels:
 
 | Label | Criterion |
@@ -50,7 +50,7 @@ When invoked:
 
 1. Run:
    ```bash
-   uv run python3 scripts/aspirational-audit.py --dry-run --json
+   uv run python3 scripts/aspirational_audit.py --dry-run --json
    ```
    (omit `--dry-run` if user passed `--persist`).
 
@@ -112,7 +112,7 @@ Next steps:
 
 ## Related
 
-- `scripts/aspirational-audit.py` — underlying classifier (SCOPE: os-only)
+- `scripts/aspirational_audit.py` — underlying classifier (SCOPE: os-only)
 - `scripts/weekly-aspirational-audit.sh` — cron wrapper for automatic weekly run
 - `skills/dogfood-score` (in progress) — composite metric; this skill is a drill-down
 - ADR-031 / ADR-041 — continuous classifier design (supersedes one-shot `dead-weight-audit` plan)

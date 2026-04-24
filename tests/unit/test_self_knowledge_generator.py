@@ -1,4 +1,4 @@
-"""Unit tests for cos-build-self-knowledge.py generator (ADR-037)."""
+"""Unit tests for cos_build_self_knowledge.py generator (ADR-037)."""
 from __future__ import annotations
 
 import importlib.util
@@ -14,7 +14,7 @@ import pytest
 # ---------------------------------------------------------------------------
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
-_GEN_PATH = _REPO_ROOT / "scripts" / "cos-build-self-knowledge.py"
+_GEN_PATH = _REPO_ROOT / "scripts" / "cos_build_self_knowledge.py"
 
 
 def _load_generator():

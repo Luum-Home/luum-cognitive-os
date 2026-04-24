@@ -71,8 +71,8 @@ step. No item is "documented as future work"; all land in this ADR's scope.
 - README badges for: dogfood-score, aspirational-audit REAL%, harness-portability,
   hook-wiring.
 - Weekly GitHub Actions cron that:
-  1. Runs `scripts/dogfood-score.py --json`
-  2. Runs `scripts/aspirational-audit.py --json`
+  1. Runs `scripts/dogfood_score.py --json`
+  2. Runs `scripts/aspirational_audit.py --json`
   3. Commits updated badge values to README
   4. Appends JSONL to `.cognitive-os/metrics/public-trend.jsonl`
 - Badges use shields.io dynamic JSON endpoint (no hosted service).

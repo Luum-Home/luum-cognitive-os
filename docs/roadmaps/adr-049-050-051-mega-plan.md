@@ -113,7 +113,7 @@ Changes:
 
 **Commit**: `feat(skills): /llm-status user-invocable provider inspector`
 
-**Files**: `skills/llm-status/SKILL.md`, possibly a helper `scripts/llm-status.py`
+**Files**: `skills/llm-status/SKILL.md`, possibly a helper `scripts/llm_status.py`
 
 ---
 
