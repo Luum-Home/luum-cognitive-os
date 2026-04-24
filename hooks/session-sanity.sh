@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # CONCERNS: ux, session-health, adr-001-regression-detector
 # Session Sanity Hook — SessionStart
 # Verifies that the Cognitive OS runtime installation is intact after every

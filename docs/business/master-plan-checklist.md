@@ -57,6 +57,7 @@
 - [x] Driver-specific user-facing scripts are explicitly classified so Claude-only registration/profile flows do not masquerade as Codex support.
 - [x] Broken product-facing links fail visibly in automation.
 - [x] Product claims in README and pitch map to explicit verification paths through [Product Proof Paths](../manual-tests/proof-paths.md).
+- [x] Structural tests that support product claims are being converted into behavioral contracts through [Behavioral Test Contracts](../architecture/behavioral-test-contracts.md) and `tests/contracts/test_canonical_projection_behavior.py`.
 
 ## 5. Onboarding and Operational Simplicity
 

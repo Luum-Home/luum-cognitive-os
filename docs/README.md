@@ -27,6 +27,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Runtime Hardcoding Discipline](architecture/runtime-hardcoding-discipline.md) — contract for keeping protected runtime paths from silently promoting non-core subsystems
 - [Driver-Specific Script Surfaces](architecture/driver-specific-script-surfaces.md) — which user-facing scripts are truly cross-harness today and which remain Claude-driver-only by contract
 - [Cross-Harness Authoring](architecture/cross-harness-authoring.md) — how to author skills, rules, hooks, and workflows once and project them through harness drivers
+- [Behavioral Test Contracts](architecture/behavioral-test-contracts.md) — doctrine for converting structural checks into runtime, projection, and discovery proof
 - [Skills and Rules Portability Gap](architecture/skills-rules-portability-gap.md) — why compatibility is not enough and where `.claude/` gravity still weakens real portability
 - [Skills and Rules Canonicalization Risk Analysis](architecture/skills-rules-canonicalization-risk-analysis.md) — why moving skills and rules out of `.claude/` is a contract migration, not a simple path change
 - [Why Skills and Rules Became Claude-Centered](architecture/why-skills-and-rules-became-claude-centered.md) — historical root-cause analysis of why the current `.claude/` gravity emerged in the first place
