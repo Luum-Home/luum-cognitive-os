@@ -743,3 +743,68 @@ paperclip:
     - cost_events
     - agent_status
     - sdd_pipeline
+
+# ADR-062 — Multi-provider agent loop configuration
+# Provider keys map to lib/providers/<name>.py modules.
+# Default cascade: qwen → openrouter → gemini → ollama → claude
+# Opt-in providers (openai, deepseek, claude_sdk) require explicit API keys.
+llm_providers:
+  qwen:
+    enabled: true
+    tier: 1
+    advance_on: any_failure
+    model_map:
+      opus: qwen3.6-plus
+      sonnet: qwen3-coder-plus
+      haiku: qwen3-coder-plus
+  openrouter:
+    enabled: true
+    tier: 2
+    advance_on: any_failure
+    default_model: "openrouter/auto"
+    model_map:
+      opus: "anthropic/claude-3-opus"
+      sonnet: "meta-llama/llama-3-70b"
+      haiku: "openrouter/auto"
+  gemini:
+    enabled: true
+    tier: 3
+    advance_on: any_failure
+    base_url: "https://generativelanguage.googleapis.com/v1beta/openai/"
+    model_map:
+      opus: gemini-2.0-pro
+      sonnet: gemini-2.0-flash
+      haiku: gemini-2.0-flash-lite
+  ollama:
+    enabled: false  # opt-in: requires local Ollama daemon at http://localhost:11434
+    tier: 4
+    advance_on: any_failure
+    base_url: "http://localhost:11434/v1"
+    model_map:
+      opus: "llama3.3:70b"    # requires ~40GB RAM
+      sonnet: "qwen3:32b"     # requires ~20GB RAM
+      haiku: "llama3.2:3b"    # requires ~2GB RAM
+  openai:
+    enabled: false  # opt-in, paid per-token — set OPENAI_API_KEY to activate
+    tier: 5
+    advance_on: rate_limit_only
+    model_map:
+      opus: gpt-5.5
+      sonnet: gpt-5.4
+      haiku: gpt-5.4-mini
+  deepseek:
+    enabled: false  # opt-in, paid per-token — set DEEPSEEK_API_KEY to activate
+    tier: 5
+    advance_on: any_failure
+    model_map:
+      opus: deepseek-reasoner
+      sonnet: deepseek-chat
+      haiku: deepseek-chat
+  claude_sdk:
+    enabled: false  # opt-in — requires ANTHROPIC_API_KEY + `uv sync --extra claude-sdk`
+    tier: 6
+    advance_on: rate_limit_only
+    model_map:
+      opus: claude-opus-4-7
+      sonnet: claude-sonnet-4-6
+      haiku: claude-haiku-3-5

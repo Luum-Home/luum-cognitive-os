@@ -345,5 +345,93 @@ class TestJsonlFileIntegration(unittest.TestCase):
             self.assertTrue(jsonl.exists())
 
 
+class TestNProviderCascadeADR062(unittest.TestCase):
+    """ADR-062: N-provider cascade advance rules via _try_registry_provider."""
+
+    def _registry_fn(self, provider_responses: dict):
+        """Build a _qwen_fn-compatible shim that routes to registry provider responses."""
+        # Returns None for "qwen" (simulating unavailable Qwen) and delegates to
+        # _try_registry_provider for other providers via the mock.
+        return None  # Qwen unavailable → advance to registry providers
+
+    def test_registry_provider_advances_on_any_failure_for_openrouter(self):
+        """openrouter (ADVANCE_ON_ANY_FAILURE) — failure → advance to next provider."""
+        calls = {"openrouter": 0, "gemini": 0}
+
+        def fake_registry(provider, prompt, claude_model=None, verbose=False):
+            if provider == "openrouter":
+                calls["openrouter"] += 1
+                return _failure_response("openrouter", "connection error")
+            if provider == "gemini":
+                calls["gemini"] += 1
+                return _success_response("gemini", "ok from gemini")
+            return None
+
+        with patch.object(_d, "_try_registry_provider", side_effect=fake_registry):
+            r = _d.dispatch(
+                "hi",
+                providers=["openrouter", "gemini"],
+                _qwen_fn=lambda p, **k: None,  # qwen not in this list
+                _metric_sink=lambda rec: None,
+            )
+
+        self.assertTrue(r.success)
+        self.assertEqual(r.provider_used, "gemini")
+        self.assertEqual(calls["openrouter"], 1)
+        self.assertEqual(calls["gemini"], 1)
+
+    def test_registry_provider_does_not_advance_on_non_rate_limit_for_claude_sdk(self):
+        """claude_sdk (ADVANCE_ON_RATE_LIMIT_ONLY) — non-rate-limit failure → stop cascade."""
+        calls = {"claude_sdk": 0, "gemini": 0}
+
+        def fake_registry(provider, prompt, claude_model=None, verbose=False):
+            if provider == "claude_sdk":
+                calls["claude_sdk"] += 1
+                return _failure_response("claude_sdk", "authentication error")  # NOT rate limit
+            if provider == "gemini":
+                calls["gemini"] += 1
+                return _success_response("gemini", "ok from gemini")
+            return None
+
+        with patch.object(_d, "_try_registry_provider", side_effect=fake_registry):
+            r = _d.dispatch(
+                "hi",
+                providers=["claude_sdk", "gemini"],
+                _qwen_fn=lambda p, **k: None,
+                _metric_sink=lambda rec: None,
+            )
+
+        # Cascade should NOT advance to gemini after claude_sdk non-rate-limit failure
+        self.assertFalse(r.success)
+        self.assertEqual(calls["claude_sdk"], 1)
+        self.assertEqual(calls["gemini"], 0)
+
+    def test_registry_provider_advances_on_rate_limit_for_claude_sdk(self):
+        """claude_sdk rate-limit → advance to next provider."""
+        calls = {"claude_sdk": 0, "gemini": 0}
+
+        def fake_registry(provider, prompt, claude_model=None, verbose=False):
+            if provider == "claude_sdk":
+                calls["claude_sdk"] += 1
+                return _failure_response("claude_sdk", "rate limit exceeded")
+            if provider == "gemini":
+                calls["gemini"] += 1
+                return _success_response("gemini", "ok from gemini")
+            return None
+
+        with patch.object(_d, "_try_registry_provider", side_effect=fake_registry):
+            r = _d.dispatch(
+                "hi",
+                providers=["claude_sdk", "gemini"],
+                _qwen_fn=lambda p, **k: None,
+                _metric_sink=lambda rec: None,
+            )
+
+        self.assertTrue(r.success)
+        self.assertEqual(r.provider_used, "gemini")
+        self.assertEqual(calls["claude_sdk"], 1)
+        self.assertEqual(calls["gemini"], 1)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
