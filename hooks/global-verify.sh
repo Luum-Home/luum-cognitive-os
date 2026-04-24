@@ -24,6 +24,10 @@
 
 set -uo pipefail
 
+# A/B benchmark master kill-switch (vanilla baseline mode) — see
+# hooks/_lib/killswitch_check.sh for the canonical check.
+[ "${COS_DISABLE_ALL_GOVERNANCE:-}" = "1" ] && exit 0
+
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 cd "$PROJECT_DIR" || exit 0
 
