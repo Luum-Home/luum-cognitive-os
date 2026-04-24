@@ -47,6 +47,9 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SKILLS_DIR = REPO_ROOT / "skills"
 CATALOG_FILES = (SKILLS_DIR / "CATALOG.md", SKILLS_DIR / "CATALOG-COMPACT.md")
+NON_SKILL_DIRS = {
+    "auto-generated",  # container for generated skills, not itself a callable skill
+}
 
 
 # ── Discovery ──────────────────────────────────────────────────────────────
@@ -56,7 +59,9 @@ def _skill_dirs() -> list[Path]:
     """Return all skill directories under skills/ (sorted, excludes catalog .md files)."""
     if not SKILLS_DIR.exists():
         return []
-    return sorted(d for d in SKILLS_DIR.iterdir() if d.is_dir())
+    return sorted(
+        d for d in SKILLS_DIR.iterdir() if d.is_dir() and d.name not in NON_SKILL_DIRS
+    )
 
 
 SKILL_DIRS = _skill_dirs()
@@ -148,6 +153,10 @@ def _strip_code_and_strings(text: str) -> str:
 def _parse_frontmatter(text: str) -> dict | None:
     """Parse YAML frontmatter. Returns dict of top-level keys, or None if malformed
     or the block does not start at line 1."""
+    # The repository uses `<!-- SCOPE: ... -->` as a loader hint before YAML
+    # frontmatter. The catalog generator accepts that form, so the audit should
+    # enforce the same portable SKILL.md contract instead of a stricter variant.
+    text = re.sub(r"^(\s*<!--.*?-->\s*)+", "", text, flags=re.DOTALL)
     if not text.startswith("---"):
         return None
     lines = text.split("\n")

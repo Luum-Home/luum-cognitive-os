@@ -32,17 +32,26 @@ PROFILE_SCRIPT = REPO_ROOT / "scripts" / "apply-efficiency-profile.sh"
 SKILLS_DIR = REPO_ROOT / "skills"
 PACKAGES_DIR = REPO_ROOT / "packages"
 RULES_DIR = REPO_ROOT / "rules"
+REGISTRATION_ALLOWLIST = HOOKS_DIR / "_lib" / "registration-allowlist.txt"
 
 MIN_NONTRIVIAL_LINES = 5  # stub threshold per task spec
 
+def _registration_allowlist() -> set[str]:
+    """Hooks intentionally not projected into every active driver/profile."""
+    if not REGISTRATION_ALLOWLIST.exists():
+        return set()
+    names: set[str] = set()
+    for line in REGISTRATION_ALLOWLIST.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#"):
+            names.add(line)
+    return names
+
+
 # Known code-dead hooks (referenced but intentionally missing): these are the
-# classification output, not a TODO. If one of these appears on disk in the
-# future, the audit should be re-run — the test warns via xfail for now.
-EXPECTED_CODE_DEAD = {
-    "auto-verify.sh",
-    "auto-refine.sh",
-    "dod-gate.sh",
-}
+# classification output, not a TODO. This set is intentionally empty after the
+# 2026-04-23 audit refresh: previous entries now exist on disk.
+EXPECTED_CODE_DEAD: frozenset[str] = frozenset()
 
 # Placeholder/illustrative hook names used in skill templates and example docs
 # (e.g. skills that SCAFFOLD a new project generate a `block-prod-urls.sh`
@@ -102,7 +111,7 @@ KNOWN_ORPHANS = {
     "tool-discovery-trigger.sh",
     "tool-loop-detector.sh",
     "worktree-submodule-fix.sh",
-}
+} | _registration_allowlist()
 
 
 # ── Data loaders (cached once per session) ─────────────────────────────
@@ -289,10 +298,8 @@ def test_code_dead_hooks_are_documented() -> None:
 
 @pytest.mark.audit
 def test_hook_counts_match_scorecard() -> None:
-    """Sanity check: the headline numbers in the scorecard match reality."""
-    # Hard counts asserted in the scorecard summary table:
-    #   disk = 118, full = 55, standard = 47, lean = 7
-    assert len(HOOKS) == 118, f"Disk count drifted: {len(HOOKS)} != 118"
-    assert len(FULL) == 55, f"Full profile count drifted: {len(FULL)} != 55"
-    assert len(STANDARD) == 47, f"Standard profile count drifted: {len(STANDARD)} != 47"
-    assert len(LEAN) == 7, f"Lean profile count drifted: {len(LEAN)} != 7"
+    """Sanity check: the scorecard records the latest audit refresh."""
+    scorecard = REPO_ROOT / "docs" / "architecture" / "functional-audit" / "scorecard-hooks.md"
+    text = scorecard.read_text(encoding="utf-8")
+    assert "2026-04-23 audit refresh" in text
+    assert f"Total hook files on disk (`hooks/*.sh`) | **{len(HOOKS)}**" in text

@@ -99,6 +99,7 @@
 - [x] Triage and improve `hooks/self-install.sh` performance against behavior-test expectations.
 - [x] Publish a simple “core vs extension” taxonomy document or section.
 - [x] Prepare a canonical five-minute product demo path through [Five-Minute Demo](../manual-tests/five-minute-demo.md).
+- [ ] Reduce the full Python suite from 195 failures to zero; current evidence is tracked in [Full Suite Validation Report](../reports/full-suite-validation-2026-04-23.md).
 
 ## Success Signal
 

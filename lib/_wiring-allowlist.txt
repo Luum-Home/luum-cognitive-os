@@ -22,6 +22,15 @@ batch_runner
 cognee_client
 litellm_client
 
+# Optional memory/provider helpers surfaced through skills or future adapters.
+memory
+qwen_agent_loop
+self_knowledge
+
+# Rate-limit protection helper exists for a non-default hook path that is still
+# allowlisted until the cross-harness profile story is promoted.
+rate_limit_protection
+
 # Advanced tool creation — future feature, not yet wired
 dynamic_tool_creator
 

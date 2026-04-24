@@ -1,17 +1,21 @@
 # Hooks Functional Audit — Capa 3 Scorecard
 
 > **Phase**: reconstruction — empirical verification, no fixes applied.
-> **Scope**: `hooks/*.sh` (118 files) + `hooks/_lib/*.sh` helpers (13 files).
+> **2026-04-23 audit refresh**: audit contracts now use the canonical hook
+> registration allowlist as the source of truth for intentionally non-default
+> hooks. Previous code-dead entries (`auto-verify.sh`, `auto-refine.sh`,
+> `dod-gate.sh`) now exist on disk and are tracked as allowlisted/non-default
+> until promoted into an active driver profile.
+> **Scope**: `hooks/*.sh` (155 files) + `hooks/_lib/*.sh` helpers.
 > **Data sources**: `.claude/settings.json`, `scripts/apply-efficiency-profile.sh`,
 > repo-wide grep of skill/rule/doc references.
 
-User's question: **"of the 118 hooks, how many actually fire and produce the documented effect?"**
+User's question: **"of the hooks, how many actually fire and produce the documented effect?"**
 
-Short answer: **55 fire on the `full` profile** (the currently installed wiring).
-**41 never fire in any profile** (orphans or contextual-only).
-**2 are referenced but do not exist on disk** (code-dead).
-Remaining 20 = helpers, profile-gated hooks that only fire in `standard`/`full`,
-or run on their own lifecycle events not governed by the efficiency matrix.
+Refresh answer: the checkout now has **155 hook files**. The current audit
+distinguishes active driver wiring from intentionally non-default hooks via
+`hooks/_lib/registration-allowlist.txt`. Missing-code risk is currently **0**;
+the remaining risk is promotion/wiring debt, not nonexistent hook files.
 
 ---
 
@@ -19,7 +23,7 @@ or run on their own lifecycle events not governed by the efficiency matrix.
 
 | Metric | Count | Notes |
 |---|---|---|
-| Total hook files on disk (`hooks/*.sh`) | **118** | Includes library helpers named `.sh` |
+| Total hook files on disk (`hooks/*.sh`) | **155** | Flat invocable hook scripts under `hooks/` |
 | Library helpers (`hooks/_lib/*.sh`) | **13** | Sourced by other hooks, not invocable directly (cache.sh, common.sh, etc.) |
 | Invocable hooks (`hooks/*.sh`, excl. `_lib/`) | **118** (flat list) | `_lib/` is a subdir, so counts unchanged |
 | **Functional-wired** (full profile) | **55** | Registered in `.claude/settings.json` |
@@ -28,7 +32,7 @@ or run on their own lifecycle events not governed by the efficiency matrix.
 | **Functional-unwired-by-design** | **22** | In `full` but NOT in `standard`/`lean` — only active at top tier |
 | **Orphan** (in no profile anywhere) | **41** | Exist on disk, never wired — incl. 3 cluster-D names |
 | **Stub** (placeholder-only bodies) | **0** | Inspected all `<10 non-comment-line` hooks; all three have real logic |
-| **Code-dead** (ref'd by skill/rule/doc but no file) | **3 distinct names** | `auto-verify.sh`, `auto-refine.sh`, `dod-gate.sh` |
+| **Code-dead** (ref'd by skill/rule/doc but no file) | **0 distinct names** | Prior code-dead hooks now exist; non-default wiring is tracked by `hooks/_lib/registration-allowlist.txt` |
 | **Referenced-but-unused** (wired but matcher rarely triggers) | **unknown** | Requires runtime telemetry — flagged for Capa 4 |
 
 Project-gotchas claim is **"48/93 hooks intentionally not wired"**. Current reality is
@@ -39,7 +43,7 @@ stale (predates growth to 118), but the design intent is consistent with the dat
 
 ## Profile Coverage Table
 
-Only listing hooks that appear in at least one profile OR have a code-dead reference.
+Only listing hooks that appear in at least one profile OR previously had a code-dead reference.
 Full orphan list in the dedicated section below.
 
 | Hook | lean | standard | full (settings.json) | Notes |
@@ -250,17 +254,13 @@ Three hooks had < 10 non-comment non-empty lines and were manually inspected:
 
 **Stub count: 0.** All invocable hooks have non-trivial logic.
 
-### Code-dead references (3)
+### Code-dead references (0 after 2026-04-23 refresh)
 
-Referenced by a skill / rule / doc / generator script, but the `.sh` file does not exist
-on disk. Running the referenced code path would fail silently (bash treats a missing
-script as "not found" but most of these references are documentation, not executed).
-
-| Missing hook | Referenced by | Severity |
-|---|---|---|
-| `hooks/auto-verify.sh` | `rules/acceptance-criteria.md:142`, `rules/trust-score.md:124`, `rules/agent-quality.md:31/82`, `rules/confidence-gate.md:89`, `packages/context-optimization/skills/exhaustive-prompt/SKILL.md:180`, `docs/hooks.md:55/87/240`, `docs/agent-quality.md:40/90/96`, `docs/execution-backends.md:176`, `scripts/generate-project-settings.sh:49` | **HIGH** (widespread documentation promises functionality that doesn't exist) |
-| `hooks/auto-refine.sh` | `skills/auto-refine/SKILL.md` (flagged by cluster D), `docs/piter-framework.md:80`, `docs/hooks.md:54`, `docs/agent-quality.md:90`, `scripts/generate-project-settings.sh:49` | **HIGH** (cluster D flagged) |
-| `hooks/dod-gate.sh` | `docs/agent-quality.md:90` (illustrative settings.json snippet) | **LOW** (docs only; no skill/rule depends on it) |
+Previous missing hook names (`auto-verify.sh`, `auto-refine.sh`, `dod-gate.sh`)
+now exist on disk. Their remaining risk is no longer "referenced but missing";
+it is "implemented but not part of every active driver/profile". That status is
+tracked in `hooks/_lib/registration-allowlist.txt` and should shrink only when
+the hook is promoted through a tested product-zone path.
 
 No lean / standard / full profile references any missing file
 (`profile_refs_missing_on_disk = []`).
@@ -324,9 +324,10 @@ architecturally meaningful (closes the PITER Evaluate→Refine edge).
    `resource-check.sh`, `auto-rollback-trigger.sh` (operationalizes `rules/auto-rollback.md`),
    `reinvention-check.sh` (`rules/reinvention-prevention.md`), `pre-commit-gate.sh`
    (`rules/pre-commit-gate.md`). Each is referenced as active behavior in its rule.
-2. **Resolve code-dead**: create `hooks/auto-verify.sh` + `hooks/auto-refine.sh`, or
-   purge all stale references. Current state promises behavior to the user via rules
-   that the infrastructure cannot deliver.
+2. **Promote or demote allowlisted hooks intentionally**: `auto-verify.sh`,
+   `auto-refine.sh`, and `dod-gate.sh` now exist, so the next decision is whether
+   each belongs in an active driver profile, an installable extension, or
+   experimental/deferred documentation.
 3. **Delete truly unreferenced orphans**: hooks with zero skill/rule/doc/script/CI
    references are dead code. Candidates from quick scan: `memu-sync.sh`, `notify.sh`,
    `singularity-check.sh`, `tool-discovery-trigger.sh`, `session-state-save.sh`,

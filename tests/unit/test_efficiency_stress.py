@@ -166,14 +166,20 @@ class TestTokenBudgets:
         )
 
     def test_no_orphan_references_in_compact(self):
-        """Every [`rule-name`] reference in RULES-COMPACT.md must have a corresponding .md file."""
+        """Every compact reference resolves to an enforceable rule or documented pattern."""
         compact_text = (PROJECT_ROOT / "rules" / "RULES-COMPACT.md").read_text()
         references = extract_rule_references(compact_text)
         existing_stems = {f.stem for f in get_all_rule_files()}
+        pattern_stems = {
+            f.stem for f in (PROJECT_ROOT / "docs" / "patterns").glob("*.md")
+        }
 
-        orphans = [ref for ref in references if ref not in existing_stems]
+        orphans = [
+            ref for ref in references
+            if ref not in existing_stems and ref not in pattern_stems
+        ]
         assert not orphans, (
-            f"RULES-COMPACT.md references rules with no .md file: {orphans}"
+            f"RULES-COMPACT.md references keys with no rules/ or docs/patterns/ file: {orphans}"
         )
 
     def test_claude_md_token_budget(self):
