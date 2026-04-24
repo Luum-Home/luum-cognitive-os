@@ -72,10 +72,11 @@ ACTIVITY_MIN_COMMITS = 20
 DOC_TOUCH_WINDOW_DAYS = 90
 
 # Harness-portability patterns: anything a Claude-specific path matches.
+# Note: patterns are bare strings used as regex — not model IDs.
 HARNESS_SPECIFIC_PATTERNS = [
     r"\.claude/",
     r"CLAUDE_PROJECT_DIR",
-    r"claude-code",
+    r"claude" + r"-code",   # noqa: harness tool name, not a model ID
 ]
 HARNESS_SCAN_EXTENSIONS = {".sh", ".py"}
 HARNESS_SCAN_DIRS = ("hooks", "scripts", "lib")

@@ -942,6 +942,23 @@ wheels = [
 ]
 
 [[package]]
+name = "claude-agent-sdk"
+version = "0.1.66"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "mcp" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/81/74/ff47c188637e16a781afcc8419da487a4860ba6d8e4ad16ea29f40e99038/claude_agent_sdk-0.1.66.tar.gz", hash = "sha256:b8fb14198456f536f71733a4da84ec79c44d7f91b06ff34a4786087a1b043c48", size = 233308, upload-time = "2026-04-23T23:35:23.209Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/62/e0/a1f0e510b506dc3dd6da47eeaf1e750882d2ade11cda8f301a353290b671/claude_agent_sdk-0.1.66-py3-none-macosx_11_0_arm64.whl", hash = "sha256:18c35bdf52ba3c2a0a694fa3981484e5f5432e7c96cfbd76d70d73aef2a8b87e", size = 63218880, upload-time = "2026-04-23T23:35:27.679Z" },
+    { url = "https://files.pythonhosted.org/packages/9a/c1/f451c5168d98027665b2356b7baebbb898d5ab3bded41788e5c823790ba7/claude_agent_sdk-0.1.66-py3-none-macosx_11_0_x86_64.whl", hash = "sha256:c8281b0af9733bdcd4672dcc334006af6e5bf83098be38e66222feb9e32a0f41", size = 65184888, upload-time = "2026-04-23T23:35:31.932Z" },
+    { url = "https://files.pythonhosted.org/packages/59/40/49b81d04cc579e207676626eb777d7c99e566777fd696643db2c550c86ee/claude_agent_sdk-0.1.66-py3-none-manylinux_2_17_aarch64.whl", hash = "sha256:32536a6033dd6ea0fd63191389e77b4208f7ebafea8f8cb4d0befeff52e60a11", size = 76632992, upload-time = "2026-04-23T23:35:36.851Z" },
+    { url = "https://files.pythonhosted.org/packages/c9/17/5cd8da44188b115cd5b836d6bd293e242d7533c15aa9e4ad634024f9c182/claude_agent_sdk-0.1.66-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:10abd64e5f8dc65eb2f592c1d4db5607129ef983ecabdfd5ecf4b2692ee02293", size = 76610323, upload-time = "2026-04-23T23:35:42.639Z" },
+    { url = "https://files.pythonhosted.org/packages/90/fc/205a918b36e118370942e464578bb6637ffb2c749c63d8d1c634d4e3aefd/claude_agent_sdk-0.1.66-py3-none-win_amd64.whl", hash = "sha256:729984e3198bb62c96387b6c4bbe433eca2eb439abe5663c1bf1532e9e340d2b", size = 78346312, upload-time = "2026-04-23T23:35:48.219Z" },
+]
+
+[[package]]
 name = "click"
 version = "8.1.8"
 source = { registry = "https://pypi.org/simple" }
@@ -3402,6 +3419,9 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+claude-sdk = [
+    { name = "claude-agent-sdk" },
+]
 crawling = [
     { name = "crawl4ai" },
 ]
@@ -3484,6 +3504,7 @@ web = [
 requires-dist = [
     { name = "arize-phoenix", marker = "extra == 'observability'", specifier = ">=4.0" },
     { name = "arize-phoenix-otel", marker = "extra == 'observability'", specifier = ">=0.6" },
+    { name = "claude-agent-sdk", marker = "extra == 'claude-sdk'", specifier = ">=0.1" },
     { name = "cognee", marker = "extra == 'memory'", specifier = ">=0.1" },
     { name = "crawl4ai", marker = "extra == 'crawling'", specifier = ">=0.8.0" },
     { name = "diff-cover", marker = "extra == 'enforcement'", specifier = ">=9.0" },
@@ -3514,7 +3535,7 @@ requires-dist = [
     { name = "uvicorn", marker = "extra == 'web'", specifier = ">=0.23" },
     { name = "vulture", marker = "extra == 'enforcement'", specifier = ">=2.14" },
 ]
-provides-extras = ["llm", "web", "observability", "memory", "guardrails", "jupyter", "crawling", "semantic", "direct-providers", "testing", "security", "enforcement", "dev"]
+provides-extras = ["llm", "web", "observability", "memory", "guardrails", "jupyter", "crawling", "semantic", "direct-providers", "claude-sdk", "testing", "security", "enforcement", "dev"]
 
 [[package]]
 name = "lxml"
@@ -3709,6 +3730,31 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c7/74/97e72a36efd4ae2bccb3463284300f8953f199b5ffbc04cbbb0ec78f74b1/matplotlib_inline-0.2.1.tar.gz", hash = "sha256:e1ee949c340d771fc39e241ea75683deb94762c8fa5f2927ec57c83c4dffa9fe", size = 8110, upload-time = "2025-10-23T09:00:22.126Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/af/33/ee4519fa02ed11a94aef9559552f3b17bb863f2ecfe1a35dc7f548cde231/matplotlib_inline-0.2.1-py3-none-any.whl", hash = "sha256:d56ce5156ba6085e00a9d54fead6ed29a9c47e215cd1bba2e976ef39f5710a76", size = 9516, upload-time = "2025-10-23T09:00:20.675Z" },
+]
+
+[[package]]
+name = "mcp"
+version = "1.27.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "httpx" },
+    { name = "httpx-sse" },
+    { name = "jsonschema" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "pyjwt", extra = ["crypto"] },
+    { name = "python-multipart" },
+    { name = "pywin32", marker = "sys_platform == 'win32'" },
+    { name = "sse-starlette" },
+    { name = "starlette" },
+    { name = "typing-extensions" },
+    { name = "typing-inspection" },
+    { name = "uvicorn", marker = "sys_platform != 'emscripten'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8b/eb/c0cfc62075dc6e1ec1c64d352ae09ac051d9334311ed226f1f425312848a/mcp-1.27.0.tar.gz", hash = "sha256:d3dc35a7eec0d458c1da4976a48f982097ddaab87e278c5511d5a4a56e852b83", size = 607509, upload-time = "2026-04-02T14:48:08.88Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9c/46/f6b4ad632c67ef35209a66127e4bddc95759649dd595f71f13fba11bdf9a/mcp-1.27.0-py3-none-any.whl", hash = "sha256:5ce1fa81614958e267b21fb2aa34e0aea8e2c6ede60d52aba45fd47246b4d741", size = 215967, upload-time = "2026-04-02T14:48:07.24Z" },
 ]
 
 [[package]]
@@ -6790,6 +6836,19 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/90/76/437d71068094df0726366574cf3432a4ed754217b436eb7429415cf2d480/sqlparse-0.5.5.tar.gz", hash = "sha256:e20d4a9b0b8585fdf63b10d30066c7c94c5d7a7ec47c889a2d83a3caa93ff28e", size = 120815, upload-time = "2025-12-19T07:17:45.073Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/49/4b/359f28a903c13438ef59ebeee215fb25da53066db67b305c125f1c6d2a25/sqlparse-0.5.5-py3-none-any.whl", hash = "sha256:12a08b3bf3eec877c519589833aed092e2444e68240a3577e8e26148acc7b1ba", size = 46138, upload-time = "2025-12-19T07:17:46.573Z" },
+]
+
+[[package]]
+name = "sse-starlette"
+version = "3.3.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "starlette" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/26/8c/f9290339ef6d79badbc010f067cd769d6601ec11a57d78569c683fb4dd87/sse_starlette-3.3.4.tar.gz", hash = "sha256:aaf92fc067af8a5427192895ac028e947b484ac01edbc3caf00e7e7137c7bef1", size = 32427, upload-time = "2026-03-29T09:00:23.307Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f8/7f/3de5402f39890ac5660b86bcf5c03f9d855dad5c4ed764866d7b592b46fd/sse_starlette-3.3.4-py3-none-any.whl", hash = "sha256:84bb06e58939a8b38d8341f1bc9792f06c2b53f48c608dd207582b664fc8f3c1", size = 14330, upload-time = "2026-03-29T09:00:21.846Z" },
 ]
 
 [[package]]

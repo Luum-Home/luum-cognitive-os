@@ -408,10 +408,12 @@ class TestRealMetrics:
         return project_root / ".cognitive-os" / "metrics"
 
     def test_can_read_real_skill_metrics(self, real_metrics_dir: Path) -> None:
-        """Smoke test: if the real skill-metrics.jsonl exists, we can read it."""
+        """Smoke test: if the real skill-metrics.jsonl exists and has data, we can read it."""
         path = real_metrics_dir / "skill-metrics.jsonl"
         if not path.exists():
             pytest.skip("No real skill-metrics.jsonl found")
+        if path.stat().st_size == 0:
+            pytest.skip("skill-metrics.jsonl exists but is empty (no skill runs yet)")
         entries = _read_jsonl(path)
         assert isinstance(entries, list)
         assert len(entries) > 0

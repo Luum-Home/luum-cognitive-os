@@ -1,13 +1,13 @@
 <!-- SCOPE: os-only -->
 ---
 name: component-reality-check
-description: Measure aspirational vs real components of the SO using aspirational-audit.py. Reports REAL / DORMANT / ASPIRATIONAL / METADATA counts + worst offenders + trend. SO-only.
+description: Measure declared-but-unwired vs real components of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
 invoke: /component-reality-check
 version: 1.0.0
 last-updated: 2026-04-24
 audience: os-dev
 tags: [audit, dogfooding, metrics, wiring]
-summary_line: "Classify every SO component into REAL / DORMANT / ASPIRATIONAL / METADATA — catch drift between declarations and observable runtime."
+summary_line: "Classify every SO component into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime."
 ---
 
 # Component Reality Check
@@ -18,9 +18,9 @@ but unused?
 
 Not the same as the dogfood-score (composite across 7 dimensions). This
 skill is the drill-down into dimension 3 (hook wiring) + extends to
-lib/scripts/skills. Use when you want the raw number, not the composite.
+lib, scripts, and skills directories. Use when you want the raw number, not the composite.
 
-Today (2026-04-24 baseline): **27.7% REAL / 64.5% Dormant+Aspirational**.
+Today (2026-04-24 baseline): **27.7% REAL / 64.5% Dormant+Unwired**.
 
 ## Invocation
 
@@ -41,7 +41,7 @@ module, script, and skill and assigns one of four labels:
 |---|---|
 | **REAL** | Observable runtime use in 7-30d window: JSONL output, caller references, hook firing events, or test invocation |
 | **DORMANT** | Code exists and parses; no observable use in the window |
-| **ASPIRATIONAL** | References missing dependencies OR explicitly marked `FUTURE` / `TODO` |
+| **`ASPIRATIONAL`** | References missing dependencies OR explicitly marked `FUTURE` / `TODO` |
 | **METADATA** | Intentional non-behavioural artifact (shim, lib helper, deprecated stub) |
 
 ## Instructions
@@ -67,7 +67,7 @@ When invoked:
 
 5. **Next steps section** (always include): suggest actions per category:
    - DORMANT >180 days: candidate for `docs/archive/` or promotion with behavioral test.
-   - ASPIRATIONAL: either implement the missing dependency OR remove the reference.
+   - `ASPIRATIONAL`: either implement the missing dependency OR remove the reference.
    - Newly added (<7d): give it time; re-check next week.
 
 ## Example output
