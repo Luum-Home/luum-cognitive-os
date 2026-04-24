@@ -81,6 +81,7 @@
 - [x] Squad and organization-heavy messaging is de-emphasized in top-level product docs.
 - [x] Experimental subsystems that compete with the wedge are archived, frozen, or clearly demoted through the product-zone taxonomy and top-level docs.
 - [x] A feature reality audit exists to classify core, optional, and overextended surfaces.
+- [x] External infrastructure is evaluated through a lightweight/default versus optional/reference decision frame in [Tooling Stack Rationalization](../architecture/tooling-stack-rationalization.md).
 
 ## 7. Visible Proof
 
