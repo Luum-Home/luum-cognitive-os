@@ -14,9 +14,9 @@ type stubValidator struct {
 	category ValidatorCategory
 }
 
-func (s *stubValidator) Name() string                                            { return s.name }
-func (s *stubValidator) Validate(_ context.Context, _ *hook.Context) *Result     { return Pass() }
-func (s *stubValidator) Category() ValidatorCategory                             { return s.category }
+func (s *stubValidator) Name() string                                        { return s.name }
+func (s *stubValidator) Validate(_ context.Context, _ *hook.Context) *Result { return Pass() }
+func (s *stubValidator) Category() ValidatorCategory                         { return s.category }
 
 func newStub(name string) *stubValidator {
 	return &stubValidator{name: name, category: CategoryCPU}

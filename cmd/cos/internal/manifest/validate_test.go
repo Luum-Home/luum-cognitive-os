@@ -7,9 +7,9 @@ import (
 // validManifest returns a minimal valid manifest for testing.
 func validManifest() *Manifest {
 	return &Manifest{
-		Name:    "@test/my-skill",
-		Version: "1.0.0",
-		License: "MIT",
+		Name:     "@test/my-skill",
+		Version:  "1.0.0",
+		License:  "MIT",
 		Provides: []string{"skill"},
 		Exports: []Export{
 			{Source: "SKILL.md", Type: "skill"},
@@ -158,8 +158,8 @@ func TestValidateExportPaths(t *testing.T) {
 
 func TestValidateNameFormat(t *testing.T) {
 	tests := []struct {
-		name    string
-		valid   bool
+		name  string
+		valid bool
 	}{
 		// Scoped names.
 		{"@community/code-reviewer", true},
@@ -177,7 +177,7 @@ func TestValidateNameFormat(t *testing.T) {
 
 		// Invalid names.
 		{"", false},
-		{"My-Skill", false},       // uppercase
+		{"My-Skill", false},        // uppercase
 		{"@/missing-scope", false}, // empty scope
 		{"-starts-with-dash", false},
 		{"has spaces", false},

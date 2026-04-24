@@ -17,19 +17,19 @@ import (
 // This validator is advisory and never blocks.
 type PromptQualityValidator struct {
 	// Specificity
-	specFile     *regexp.Regexp
-	specPath     *regexp.Regexp
-	specSymbol   *regexp.Regexp
+	specFile   *regexp.Regexp
+	specPath   *regexp.Regexp
+	specSymbol *regexp.Regexp
 	// Actionability
-	actVerb      *regexp.Regexp
-	actInPath    *regexp.Regexp
+	actVerb   *regexp.Regexp
+	actInPath *regexp.Regexp
 	// Context
 	ctxBackground *regexp.Regexp
 	ctxConvention *regexp.Regexp
 	// Measurability
-	measAccept   *regexp.Regexp
-	measExit     *regexp.Regexp
-	measVerify   *regexp.Regexp
+	measAccept *regexp.Regexp
+	measExit   *regexp.Regexp
+	measVerify *regexp.Regexp
 	// Scope
 	scopeCount   *regexp.Regexp
 	scopeBounded *regexp.Regexp
@@ -41,20 +41,20 @@ type PromptQualityValidator struct {
 // pre-compiled.
 func NewPromptQualityValidator() *PromptQualityValidator {
 	return &PromptQualityValidator{
-		specFile:     regexp.MustCompile(`\.(go|ts|py|js|sh|yaml|yml|json|md)\b`),
-		specPath:     regexp.MustCompile(`(src/|internal/|pkg/|lib/|hooks/|rules/|skills/|tests/|templates/)`),
-		specSymbol:   regexp.MustCompile(`[A-Z][a-z]+[A-Z][a-z]+|[a-z]+_[a-z]+|func |function |class |def `),
-		actVerb:      regexp.MustCompile(`(?i)\b(implement|create|add|fix|refactor|migrate|remove|update|write|delete|replace|extract|move)\b`),
-		actInPath:    regexp.MustCompile(`(?i)\b(in|for|to|at|within)\b.*\.(go|ts|py|js|sh|yaml|json|md)\b`),
+		specFile:      regexp.MustCompile(`\.(go|ts|py|js|sh|yaml|yml|json|md)\b`),
+		specPath:      regexp.MustCompile(`(src/|internal/|pkg/|lib/|hooks/|rules/|skills/|tests/|templates/)`),
+		specSymbol:    regexp.MustCompile(`[A-Z][a-z]+[A-Z][a-z]+|[a-z]+_[a-z]+|func |function |class |def `),
+		actVerb:       regexp.MustCompile(`(?i)\b(implement|create|add|fix|refactor|migrate|remove|update|write|delete|replace|extract|move)\b`),
+		actInPath:     regexp.MustCompile(`(?i)\b(in|for|to|at|within)\b.*\.(go|ts|py|js|sh|yaml|json|md)\b`),
 		ctxBackground: regexp.MustCompile(`(?i)\b(because|since|due to|context|background|constraint|requirement|decision|previously|existing|current)\b`),
 		ctxConvention: regexp.MustCompile(`(?i)\b(pattern|convention|architecture|standard|follow|use the|using the)\b`),
-		measAccept:   regexp.MustCompile(`(?i)(acceptance criteria|success criteria|definition of done|ACCEPTANCE CRITERIA)`),
-		measExit:     regexp.MustCompile(`(?i)(exits? 0|should pass|must pass|returns? [0-9]|wc -l|grep -c)`),
-		measVerify:   regexp.MustCompile(`(?i)(verify|verification|expected result|expected output|test that)`),
-		scopeCount:   regexp.MustCompile(`(?i)[0-9]+\s*(file|endpoint|service|item|route|test|module|function|component|line)`),
-		scopeBounded: regexp.MustCompile(`(?i)\b(only|just|single|specific|this|one|the following)\b`),
-		scopeUnbound: regexp.MustCompile(`(?i)\b(all|every|entire|whole|everything|complete the)\b`),
-		scopeNumber:  regexp.MustCompile(`[0-9]+`),
+		measAccept:    regexp.MustCompile(`(?i)(acceptance criteria|success criteria|definition of done|ACCEPTANCE CRITERIA)`),
+		measExit:      regexp.MustCompile(`(?i)(exits? 0|should pass|must pass|returns? [0-9]|wc -l|grep -c)`),
+		measVerify:    regexp.MustCompile(`(?i)(verify|verification|expected result|expected output|test that)`),
+		scopeCount:    regexp.MustCompile(`(?i)[0-9]+\s*(file|endpoint|service|item|route|test|module|function|component|line)`),
+		scopeBounded:  regexp.MustCompile(`(?i)\b(only|just|single|specific|this|one|the following)\b`),
+		scopeUnbound:  regexp.MustCompile(`(?i)\b(all|every|entire|whole|everything|complete the)\b`),
+		scopeNumber:   regexp.MustCompile(`[0-9]+`),
 	}
 }
 
