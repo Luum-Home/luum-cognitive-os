@@ -100,8 +100,11 @@ class TestServiceComposeMap:
     def test_profiled_services(self):
         # ADR-060 (2026-04-24): opik removed per local-only policy
         # (was mode:cloud; Phoenix covers observability locally via pip).
+        # cognee/nemo/jupyter gated behind profile flags per ADR-060.
         assert SERVICE_COMPOSE_MAP["memu"]["profile"] == "memory"
         assert SERVICE_COMPOSE_MAP["cognee"]["profile"] == "memory"
+        assert SERVICE_COMPOSE_MAP["nemo-guardrails"]["profile"] == "guardrails"
+        assert SERVICE_COMPOSE_MAP["jupyter"]["profile"] == "jupyter"
 
     def test_default_profile_services(self):
         assert SERVICE_COMPOSE_MAP["litellm"]["profile"] is None
