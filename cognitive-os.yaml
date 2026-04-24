@@ -402,12 +402,14 @@ resources:
       langfuse:
         mode: disabled             # Replaced by MLflow (pip install mlflow>=2.0). Run: mlflow server --backend-store-uri sqlite:///mlflow.db
         idle_timeout_minutes: 30
+        review_by: 2026-09-15      # Sunset policy (catalog §Sunset Policy) — reference-only observability stack
       nemo_guardrails:
         mode: pip                  # MIGRATED: pip install nemoguardrails>=0.10. Use RailsConfig + LLMRails in-process.
         idle_timeout_minutes: 15
       paperclip:
         mode: on_demand
         idle_timeout_minutes: 30
+        review_by: 2026-06-30      # Sunset policy (catalog §Sunset Policy) — optional governance extension
       bifrost:
         mode: disabled             # MIGRATED Phase 2: removed in favor of litellm pip library. Bifrost had 11us latency but litellm covers 90% of use cases.
         idle_timeout_minutes: 30
@@ -416,12 +418,14 @@ resources:
       opik:
         mode: cloud                # MIGRATED: pip install opik>=1.0. Uses Comet cloud API by default — no local container needed.
         idle_timeout_minutes: 30
+        review_by: 2026-08-15      # Sunset policy (catalog §Sunset Policy) — optional observability extension, cloud-first
         config:
           api_url: "${OPIK_API_URL:-https://www.comet.com/opik/api}"
           project_name: "cognitive-os"
       valkey:
         mode: on_demand            # Phase 3: keep as optional Docker. File fallback (agent_bus.py) handles single-session use.
         idle_timeout_minutes: 30
+        review_by: 2026-10-01      # Sunset policy (catalog §Sunset Policy) — optional local backend; file fallback always valid
         env_vars:
           VALKEY_URL: "redis://localhost:6379"       # Primary override (agent_bus.py, agent_dashboard.py, agent_output_to_bus.py)
           COS_VALKEY_URL: "redis://localhost:6379"   # Alias — checked if VALKEY_URL unset
@@ -441,6 +445,7 @@ resources:
       memu:
         mode: pip                  # MIGRATED: pip install memu>=2.0. Run: python -m memu.server
         idle_timeout_minutes: 15
+        review_by: 2026-07-15      # Sunset policy — MemU sunset deadline, see catalog §Memory "MemU review 2026-07-15"
       # --- Agent Testing & Evaluation (Python packages, not Docker services) ---
       deepeval:
         status: planned                # Python package, not a Docker service
@@ -464,6 +469,7 @@ resources:
         mode: on_demand
         idle_timeout_minutes: 30
         profile: ui                    # docker compose --profile ui
+        review_by: 2026-09-01          # Sunset policy (catalog §Sunset Policy) — optional UI extension; needs product proof path
       jupyter:
         mode: pip                  # MIGRATED: pip install jupyter>=1.0 notebook>=7.0. Run: jupyter lab
         idle_timeout_minutes: 30
