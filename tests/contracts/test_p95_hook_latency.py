@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import os
 import statistics
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List
 
@@ -23,6 +24,7 @@ import pytest
 _ROOT = Path(__file__).resolve().parent.parent.parent
 _P95_CEILING_MS = int(os.environ.get("COS_HOOK_P95_CEILING_MS", "1500"))
 _MIN_SAMPLES = int(os.environ.get("COS_HOOK_MIN_SAMPLES", "10"))
+_MAX_SAMPLE_AGE_HOURS = int(os.environ.get("COS_HOOK_MAX_SAMPLE_AGE_HOURS", "6"))
 _HOOK_HEALTH = _ROOT / ".cognitive-os" / "metrics" / "hook-health.jsonl"
 
 
@@ -49,10 +51,36 @@ def _load_samples() -> List[dict]:
         if hook is None or dur is None:
             continue
         try:
-            rows.append({"hook": str(hook), "duration_ms": float(dur)})
+            rows.append({
+                "hook": str(hook),
+                "duration_ms": float(dur),
+                "timestamp": row.get("timestamp") or payload.get("timestamp"),
+            })
         except (TypeError, ValueError):
             continue
-    return rows
+    return _fresh_rows(rows)
+
+
+def _fresh_rows(rows: List[dict]) -> List[dict]:
+    """Keep recent telemetry so stale local history does not fail current runs."""
+    parsed = []
+    for row in rows:
+        ts = row.get("timestamp")
+        if not ts:
+            continue
+        try:
+            parsed_ts = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if parsed_ts.tzinfo is None:
+            parsed_ts = parsed_ts.replace(tzinfo=timezone.utc)
+        parsed.append((parsed_ts, row))
+    if not parsed:
+        return rows
+    latest = max(ts for ts, _ in parsed)
+    cutoff = latest - timedelta(hours=_MAX_SAMPLE_AGE_HOURS)
+    fresh = [row for ts, row in parsed if ts >= cutoff]
+    return fresh
 
 
 def _percentile(values: List[float], p: float) -> float:
