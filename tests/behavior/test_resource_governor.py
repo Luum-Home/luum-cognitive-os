@@ -69,12 +69,6 @@ class TestResourceGovernor:
         result = _run_check(resource_hook, project_root)
         assert result.returncode == 0, "should allow with low spend"
 
-    @pytest.mark.xfail(
-        reason="Surfaced 2026-04-24 after path fix: resource-check.sh does not "
-        "emit the expected BUDGET/DOWNGRADE/SONNET/PRESSURE warning. "
-        "Behavioral contract drift; separate investigation required.",
-        strict=False,
-    )
     def test_high_spend_triggers_warning(self, resource_hook, cost_file, project_root):
         today = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         entries = "\n".join(
@@ -88,12 +82,6 @@ class TestResourceGovernor:
             "should trigger budget warning at >80% spend"
         )
 
-    @pytest.mark.xfail(
-        reason="Surfaced 2026-04-24 after path fix: resource-check.sh does not "
-        "emit the expected BLOCKED/EXCEEDED/DENY output when over budget. "
-        "Behavioral contract drift; separate investigation required.",
-        strict=False,
-    )
     def test_over_budget_blocks(self, resource_hook, cost_file, project_root):
         today = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         entries = "\n".join(
