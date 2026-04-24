@@ -188,7 +188,6 @@ class TestCognitiveOsConfig:
 
     def test_config_promptfoo_disabled_by_default(self):
         data = yaml.safe_load(self.CONFIG_PATH.read_text())
-        assert data["security"]["promptfoo"]["enabled"] is False, (
-            "promptfoo must be disabled by default"
+        assert "promptfoo" not in data["security"], (
+            "promptfoo security config was intentionally removed; dead config must stay absent"
         )
-

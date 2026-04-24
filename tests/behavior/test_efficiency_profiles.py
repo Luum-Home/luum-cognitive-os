@@ -82,17 +82,19 @@ class TestDefaultProfile:
 
     def test_default_matches_committed_baseline(self, generated_settings):
         generated = _load_settings(generated_settings)
-        committed = _load_settings(SETTINGS_FILE)
-        assert generated == committed
+        assert generated == _load_settings(SETTINGS_FILE)
 
     def test_default_contains_current_projection_surfaces(self, generated_settings):
         settings = _load_settings(generated_settings)["hooks"]
         assert "SubagentStart" in settings
-        assert settings["SessionStart"][0]["hooks"][4]["command"].endswith("infra-health.sh\"")
-        assert settings["SessionStart"][0]["hooks"][4]["async"] is True
+        assert any(
+            hook["command"].endswith("infra-health.sh\"") and hook.get("async") is True
+            for hook in settings["SessionStart"][0]["hooks"]
+        )
         assert any(
             hook["command"].endswith("skill-usage-tracker.sh\"") and hook.get("async") is True
-            for hook in settings["PostToolUse"][4]["hooks"]
+            for group in settings["PostToolUse"]
+            for hook in group["hooks"]
         )
 
 
