@@ -63,6 +63,22 @@ Before changing a failing test, classify it against repository history:
 
 Do not delete or relax tests just to make the suite green.
 
+## Infrastructure Test Pattern
+
+When a test touches infrastructure, first classify the dependency:
+
+- `core-default`: required for the default product lane and should fail if the
+  runtime contract is broken;
+- `optional-integration`: supported but opt-in; document the command and
+  dependency explicitly;
+- `legacy-reference`: kept for migration compatibility, demos, or isolated
+  validation, but not a default-lane requirement.
+
+Use `testcontainers` for isolated proof that optional/reference stacks really
+boot and behave correctly. Use lightweight compose/runtime-contract tests to
+assert that those stacks remain modeled correctly without implying they must be
+running on every developer machine.
+
 ## Current Enforcing Examples
 
 - `tests/contracts/test_canonical_projection_behavior.py`

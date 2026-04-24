@@ -76,12 +76,20 @@ Require Docker. Use testcontainers to spin up **17 Docker services** on demand. 
 | `test_app_services.py` | Application services | Langfuse web + worker, LiteLLM, Jupyter, Opik backend |
 | `test_platform_services.py` | Platform services | Paperclip, MemU, Cognee, SeaweedFS, Automaker, NeMo, Opik frontend |
 | `test_eval_frameworks.py` | Eval frameworks | DeepEval + RAGAS import and API validation |
-| `test_e2e_flows.py` | End-to-end flows | 5 multi-service flows: observability, memory, routing, coordination, full-stack smoke |
-| `test_service_health.py` | Service health | Docker Compose validation |
+| `test_e2e_flows.py` | End-to-end flows | 5 multi-service flows using `testcontainers` for isolated observability/memory/reference stacks |
+| `test_service_health.py` | Service health | Compose contract + opt-in localhost probes for reference stacks; does not start optional services |
 | `test_repair_chain.py` | Repair chain | Error learning and dispatch across services |
 | `test_metrics_rotation.py` | Metrics rotation | Truncation and archiving pipelines |
 | `test_opik_integration.py` | Opik SDK | Opik SDK validation against running service |
 | `test_cognee_integration.py` | Cognee SDK | Cognee SDK validation against running service |
+
+`test_service_health.py` is intentionally lighter than the `testcontainers`
+lanes. It verifies that reference stacks such as Opik and Cognee remain modeled
+correctly in `docker-compose.cognitive-os.yml` and in `cognitive-os.yaml`, but
+it does not imply they are part of the default local product path. If a test
+needs to prove those stacks actually boot and serve traffic in isolation, prefer
+the `testcontainers` integration lanes instead of turning default-lane smoke
+tests into implicit Docker bring-up.
 
 ### System Tests (25 tests, 5 files)
 
