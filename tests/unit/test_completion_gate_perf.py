@@ -90,15 +90,17 @@ class TestNonAgentFastExit:
         assert result.returncode == 0
 
     def test_non_agent_empty_input_exits_fast(self, tmp_path):
-        """Empty stdin must exit immediately (< 400 ms)."""
+        """Empty stdin must exit immediately (< 500 ms)."""
         project_dir = _setup_project(tmp_path)
 
         start = time.monotonic()
         result = _run_hook(project_dir, stdin="")
         elapsed = time.monotonic() - start
 
-        assert elapsed < 0.4, (
-            f"Empty-input hook took {elapsed*1000:.1f} ms (limit 400 ms)"
+        # 500ms: empty-stdin fast-exit path is near-instant but bash startup +
+        # _lib sourcing under parallel load can take 200-300ms on macOS.
+        assert elapsed < 0.5, (
+            f"Empty-input hook took {elapsed*1000:.1f} ms (limit 500 ms)"
         )
         assert result.returncode == 0
 
