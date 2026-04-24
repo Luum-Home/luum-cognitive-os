@@ -70,6 +70,8 @@ STATE_DIR="$COS_DIR/state"
 APPLY_EFF_PROFILE_SCRIPT="$SCRIPT_DIR/apply-efficiency-profile.sh"
 APPLY_EFF_PROFILE_SHA_FILE="$STATE_DIR/apply-efficiency-profile.sha"
 COGNITIVE_OS_YAML="$PROJECT_ROOT/cognitive-os.yaml"
+SETTINGS_HARNESS="${{SETTINGS_HARNESS:-claude}}"
+SETTINGS_LABEL="${{SETTINGS_LABEL:-.claude/settings.json}}"
 FORCE={force}
 
 note() {{ printf '%s\\n' "$*" >&2; }}
