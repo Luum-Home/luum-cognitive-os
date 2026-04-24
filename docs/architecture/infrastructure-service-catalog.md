@@ -62,7 +62,6 @@ Notes: <optional 1-2 sentences on scope or trade-offs>.
 
 | Runtime service | Compose services | Mode in `cognitive-os.yaml` | Product position | Purpose |
 |-----------------|------------------|-----------------------------|------------------|---------|
-| `langfuse` | `langfuse-pg`, `langfuse-valkey`, `langfuse-clickhouse`, `langfuse-seaweedfs`, `langfuse-worker`, `langfuse-web` | `disabled` | **Deprecated (phase 2 removal) — see ADR-058** | Full Langfuse self-hosting. Deprecated 2026-04-24 due to 1.34 GiB RAM idle footprint and ClickHouse weight; superseded by Arize Phoenix (pip). Containers stopped; volumes retained until 2026-06-30 for rollback. |
 | `mlflow` | none | `pip` | Default lightweight exporter | Local outcome metrics, completion summaries, cost/session sync, and low-friction run evidence without Docker. |
 | `phoenix` | none | `pip` | Optional observability extension | Arize Phoenix LLM-native trace UI (OTel-backed, Apache 2.0). Replaces Langfuse as the self-hosted trace surface. Launched on-demand via `skills/phoenix-trace-ui/` (Phase 1 pending). See ADR-058. |
 | `opik` | `opik-backend`, `opik-mysql`, `opik-frontend` | `cloud` | Optional observability extension | Cloud-first LLM tracing/evaluation surface. Local stack remains reference/test material because it depends on MySQL, ClickHouse, and Valkey. |
@@ -268,3 +267,8 @@ Current enforcement lives in:
 - `docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`: Langfuse → Phoenix migration ADR and phased plan.
 
 Future service additions must update this catalog and include a test proving whether the service is core, optional, reference-only, or disabled.
+
+## Historical
+
+- **Langfuse** (`langfuse`, plus 5 supporting containers) — previously provided the self-hosted LLM trace UI. Retired 2026-04-24 per ADR-058; the row is removed from the service table above. Kept in this history section for context only. All Langfuse compose services, volumes, env vars, and auto-provisioning scripts were deleted; the migration target is **Arize Phoenix** (pip) — see `phoenix` row above and `skills/phoenix-trace-ui/`.
+

@@ -92,7 +92,7 @@ _TIER_C_PATTERNS: list[re.Pattern] = [re.compile(p, re.IGNORECASE) for p in [
     r"paperclip",
     r"parry",
     r"aguara",
-    r"langfuse",
+    r"phoenix",
     r"singularity",
 ]]
 

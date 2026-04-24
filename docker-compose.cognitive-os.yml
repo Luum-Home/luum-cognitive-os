@@ -8,221 +8,23 @@
 #
 # Usage:
 #   docker-compose -f docker-compose.cognitive-os.yml up -d           # All services
-#   docker-compose -f docker-compose.cognitive-os.yml up -d langfuse-web litellm  # Only what you need
+#   docker-compose -f docker-compose.cognitive-os.yml up -d paperclip # Only what you need
 #   docker-compose -f docker-compose.cognitive-os.yml down             # Shut down
+#
+# NOTE (ADR-058, 2026-04-24): the former observability trace-UI stack and
+# its 5 dependency containers have been removed. LLM observability migrated
+# to Arize Phoenix (pip: arize-phoenix). Run UI via:
+#   uv run phoenix serve    (http://localhost:6006). See ADR-058.
 # =============================================================================
 
 services:
 
   # ---------------------------------------------------------------------------
-  # Langfuse PostgreSQL — Database for Langfuse
+  # ADR-058 (2026-04-24): former observability trace-UI stack removed —
+  # migrated to Arize Phoenix (pip). See ADR-058 for rationale and the
+  # Phoenix activation runbook.
   # ---------------------------------------------------------------------------
-  langfuse-pg:
-    image: postgres:17-alpine@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1  # pinned 2026-03-28
-    container_name: cognitive-os-langfuse-pg
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${LANGFUSE_PG_USER:-langfuse}
-      POSTGRES_PASSWORD: ${LANGFUSE_PG_PASS:-langfuse_pass}
-      POSTGRES_DB: ${LANGFUSE_PG_DB:-langfuse}
-      TZ: UTC
-      PGTZ: UTC
-    ports:
-      - "127.0.0.1:${LANGFUSE_PG_PORT:-5434}:5432"
-    volumes:
-      - langfuse-pg-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U langfuse -d langfuse"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - cognitive-os-network
 
-  # ---------------------------------------------------------------------------
-  # Langfuse Valkey — Cache/queue for Langfuse worker (Redis-compatible, BSD-3)
-  # ---------------------------------------------------------------------------
-  langfuse-valkey:
-    image: valkey/valkey:8-alpine@sha256:cb3339abbd6e18942cd8ac3349f0c371a82ba5b6204b242563ba299e7956cbd0  # pinned 2026-03-28
-    container_name: cognitive-os-langfuse-valkey
-    restart: unless-stopped
-    command: >
-      --requirepass langfuse_redis
-      --maxmemory-policy noeviction
-    ports:
-      - "127.0.0.1:${LANGFUSE_REDIS_PORT:-6380}:6379"
-    volumes:
-      - langfuse-valkey-data:/data
-    healthcheck:
-      test: ["CMD", "valkey-cli", "-a", "langfuse_redis", "ping"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-    networks:
-      - cognitive-os-network
-
-  # ---------------------------------------------------------------------------
-  # Langfuse ClickHouse — Analytics storage for Langfuse
-  # ---------------------------------------------------------------------------
-  langfuse-clickhouse:
-    image: clickhouse/clickhouse-server@sha256:80fdbc9e6ebcb2cc381712744aef3346565fba30a1452570f6d2f4b6b9492bf4  # pinned 2026-03-28
-    container_name: cognitive-os-langfuse-clickhouse
-    restart: unless-stopped
-    user: "101:101"
-    environment:
-      CLICKHOUSE_DB: default
-      CLICKHOUSE_USER: ${LANGFUSE_CH_USER:-clickhouse}
-      CLICKHOUSE_PASSWORD: ${LANGFUSE_CH_PASS:-clickhouse}
-    ports:
-      - "127.0.0.1:${LANGFUSE_CH_HTTP_PORT:-8123}:8123"
-      - "127.0.0.1:${LANGFUSE_CH_NATIVE_PORT:-9001}:9000"
-    volumes:
-      - langfuse-clickhouse-data:/var/lib/clickhouse
-      - langfuse-clickhouse-logs:/var/log/clickhouse-server
-    healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 5s
-    networks:
-      - cognitive-os-network
-
-  # ---------------------------------------------------------------------------
-  # Langfuse SeaweedFS — S3-compatible object storage for Langfuse (Apache-2.0)
-  # Setup: cp infra/seaweedfs/s3.json.example infra/seaweedfs/s3.json
-  #        then set accessKey/secretKey to match LANGFUSE_S3_ACCESS_KEY/SECRET_KEY
-  # ---------------------------------------------------------------------------
-  langfuse-seaweedfs:
-    image: chrislusf/seaweedfs:latest@sha256:203e6f6f5a593a8335fb6c6b440005069595b4273216528ef2a4d3d1ab0a0ed4  # pinned 2026-03-28 — CRITICAL: was :latest (mutable)
-    container_name: cognitive-os-langfuse-seaweedfs
-    restart: unless-stopped
-    entrypoint: ["/bin/sh", "/opt/seaweedfs/docker-entrypoint.sh"]
-    command: >
-      server -dir=/data
-      -s3
-      -s3.port=8333
-      -s3.config=/etc/seaweedfs/s3.json
-      -filer
-      -master.volumeSizeLimitMB=100
-    ports:
-      - "${LANGFUSE_S3_PORT:-8333}:8333"
-      - "127.0.0.1:${LANGFUSE_SEAWEEDFS_MASTER_PORT:-9333}:9333"
-      - "127.0.0.1:${LANGFUSE_SEAWEEDFS_FILER_PORT:-8888}:8888"
-    volumes:
-      - langfuse-seaweedfs-data:/data
-      - ./infra/seaweedfs/docker-entrypoint.sh:/opt/seaweedfs/docker-entrypoint.sh:ro
-    healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:9333/cluster/status || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
-    networks:
-      - cognitive-os-network
-
-  # ---------------------------------------------------------------------------
-  # Langfuse Worker — Background job processor
-  # ---------------------------------------------------------------------------
-  langfuse-worker:
-    image: langfuse/langfuse-worker:3@sha256:0e7a6d86db72e804f8422af2b15d9b443aa67d33a5193941ddf7b5babd4fd518  # pinned 2026-03-28
-    container_name: cognitive-os-langfuse-worker
-    restart: unless-stopped
-    depends_on:
-      langfuse-pg:
-        condition: service_healthy
-      langfuse-valkey:
-        condition: service_healthy
-      langfuse-clickhouse:
-        condition: service_healthy
-      langfuse-seaweedfs:
-        condition: service_healthy
-    ports:
-      - "127.0.0.1:${LANGFUSE_WORKER_PORT:-3030}:3030"
-    environment: &langfuse-env
-      DATABASE_URL: postgresql://${LANGFUSE_PG_USER:-langfuse}:${LANGFUSE_PG_PASS:-langfuse_pass}@langfuse-pg:5432/${LANGFUSE_PG_DB:-langfuse}
-      NEXTAUTH_URL: ${LANGFUSE_URL:-http://localhost:3100}
-      NEXTAUTH_SECRET: ${LANGFUSE_NEXTAUTH_SECRET:-langfuse_local_dev_secret_change_me}
-      SALT: ${LANGFUSE_SALT:-langfuse_local_dev_salt_change_me}
-      ENCRYPTION_KEY: ${LANGFUSE_ENCRYPTION_KEY:?Set LANGFUSE_ENCRYPTION_KEY in .env (64-char hex string)}
-      TELEMETRY_ENABLED: ${LANGFUSE_TELEMETRY:-false}
-      LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "false"
-      # ClickHouse
-      CLICKHOUSE_MIGRATION_URL: clickhouse://langfuse-clickhouse:9000
-      CLICKHOUSE_URL: http://langfuse-clickhouse:8123
-      CLICKHOUSE_USER: ${LANGFUSE_CH_USER:-clickhouse}
-      CLICKHOUSE_PASSWORD: ${LANGFUSE_CH_PASS:-clickhouse}
-      CLICKHOUSE_CLUSTER_ENABLED: "false"
-      # Valkey (Redis-compatible)
-      REDIS_HOST: langfuse-valkey
-      REDIS_PORT: 6379
-      REDIS_AUTH: langfuse_redis
-      REDIS_TLS_ENABLED: "false"
-      # SeaweedFS / S3 — event upload
-      LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
-      LANGFUSE_S3_EVENT_UPLOAD_REGION: us-east-1
-      LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: ${LANGFUSE_S3_ACCESS_KEY:-agentosadmin}
-      LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: ${LANGFUSE_S3_SECRET_KEY:-agentossecret}
-      LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://langfuse-seaweedfs:8333
-      LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: "true"
-      LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
-      # SeaweedFS / S3 — media upload
-      LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
-      LANGFUSE_S3_MEDIA_UPLOAD_REGION: us-east-1
-      LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: ${LANGFUSE_S3_ACCESS_KEY:-agentosadmin}
-      LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: ${LANGFUSE_S3_SECRET_KEY:-agentossecret}
-      LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://localhost:${LANGFUSE_S3_PORT:-8333}
-      LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: "true"
-      LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
-      # Batch export disabled for local dev
-      LANGFUSE_S3_BATCH_EXPORT_ENABLED: "false"
-    networks:
-      - cognitive-os-network
-
-  # ---------------------------------------------------------------------------
-  # Langfuse Web — LLM Observability UI (MIT, self-hosted)
-  # https://github.com/langfuse/langfuse
-  # UI: http://localhost:3100
-  # MIGRATED TO PIP: pip install mlflow>=2.0. Container kept for reference/CI.
-  # Run locally: mlflow server --backend-store-uri sqlite:///mlflow.db --host 0.0.0.0 --port 5000
-  # ---------------------------------------------------------------------------
-  langfuse-web:
-    image: langfuse/langfuse:3@sha256:018a38c957d8cb51094bd28154a8cb0b0fb587e5bf4e00df75602b7ebe7933fa  # pinned 2026-03-28
-    container_name: cognitive-os-langfuse
-    restart: unless-stopped
-    depends_on:
-      langfuse-pg:
-        condition: service_healthy
-      langfuse-valkey:
-        condition: service_healthy
-      langfuse-clickhouse:
-        condition: service_healthy
-      langfuse-seaweedfs:
-        condition: service_healthy
-    ports:
-      - "${LANGFUSE_PORT:-3100}:3000"
-    environment:
-      <<: *langfuse-env
-      HOSTNAME: "0.0.0.0"
-      # Headless init — auto-provision org/project/user/API keys on first start
-      # All values are idempotent: re-running with same IDs is a no-op
-      LANGFUSE_INIT_ORG_ID: ${LANGFUSE_INIT_ORG_ID:-cognitive-os-org}
-      LANGFUSE_INIT_ORG_NAME: ${LANGFUSE_INIT_ORG_NAME:-AgentOS}
-      LANGFUSE_INIT_PROJECT_ID: ${LANGFUSE_INIT_PROJECT_ID:-cognitive-os-project}
-      LANGFUSE_INIT_PROJECT_NAME: ${LANGFUSE_INIT_PROJECT_NAME:-cognitive-os-dev}
-      LANGFUSE_INIT_PROJECT_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:-}
-      LANGFUSE_INIT_PROJECT_SECRET_KEY: ${LANGFUSE_SECRET_KEY:-}
-      LANGFUSE_INIT_USER_EMAIL: ${LANGFUSE_INIT_USER_EMAIL:-}
-      LANGFUSE_INIT_USER_NAME: ${LANGFUSE_INIT_USER_NAME:-}
-      LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_USER_PASSWORD:-}
-    healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --timeout=10 --spider http://127.0.0.1:3000/api/public/health || exit 1"]
-      interval: 15s
-      timeout: 15s
-      retries: 10
-      start_period: 60s
-    networks:
-      - cognitive-os-network
 
   # ---------------------------------------------------------------------------
   # REMOVED 2026-04-21 per ADR-049:
@@ -337,6 +139,13 @@ services:
   # MIGRATED TO PIP: pip install memu>=2.0. Container kept for reference/CI.
   # Container was just a pip install wrapper anyway. Run: python -m memu.server
   # ---------------------------------------------------------------------------
+  #
+  # ADR-058 (2026-04-24): Postgres backend previously provided by the
+  # retired observability-pg container has been removed. If you need memu
+  # with a Docker Postgres, bring your own (e.g., add a dedicated memu-pg
+  # service) or use the pip path
+  # (`pip install memu-ai && python -m memu.server`) which is the supported
+  # mode per cognitive-os.yaml (`services.memu.mode: pip`).
   memu:
     image: python:3.13-slim@sha256:739e7213785e88c0f702dcdc12c0973afcbd606dbf021a589cab77d6b00b579d  # pinned 2026-03-28
     container_name: cognitive-os-memu
@@ -348,13 +157,11 @@ services:
     ports:
       - "127.0.0.1:${COGNITIVE_OS_MEMU_PORT:-8765}:8765"
     environment:
-      MEMU_DB_URL: postgresql://memu:memu_pass@cognitive-os-langfuse-pg:5432/memu
+      # MEMU_DB_URL must be supplied by the user (see ADR-058 note above).
+      MEMU_DB_URL: ${MEMU_DB_URL:-}
       MEMU_LLM_PROVIDER: ${MEMU_LLM_PROVIDER:-openai}
       MEMU_LLM_API_KEY: ${MEMU_LLM_API_KEY:-}
       MEMU_LOG_LEVEL: ${MEMU_LOG_LEVEL:-INFO}
-    depends_on:
-      langfuse-pg:
-        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:8765/health || exit 1"]
       interval: 15s
@@ -423,22 +230,31 @@ services:
   # Opik — LLM Observability, Tracing & Evaluation (ADOPT)
   # MIGRATED TO PIP: pip install opik>=1.0. Container kept for reference/CI.
   # Already configured to use Comet cloud API (comet.com/opik). No local server needed.
+  #
+  # ADR-058 (2026-04-24): ClickHouse and Valkey backends previously provided
+  # by the retired observability-stack containers have been removed. Users
+  # who want to run the self-hosted opik stack must supply their own
+  # ClickHouse + Redis (hostnames/credentials via OPIK_CLICKHOUSE_HOST /
+  # OPIK_REDIS_URL). The supported path is pip + Comet cloud
+  # (cognitive-os.yaml `services.opik.mode: cloud`).
   # ---------------------------------------------------------------------------
   opik-backend:
     image: ghcr.io/comet-ml/opik/opik-backend:latest@sha256:60d310f4180f05b09c1cd4b1bcf2f94025c8b5ae4644e969efc12551397ed70a  # pinned 2026-03-28 — was :latest (mutable)
     container_name: cognitive-os-opik-backend
     restart: unless-stopped
     environment:
-      ANALYTICS_DB_MIGRATIONS_URL: jdbc:clickhouse://langfuse-clickhouse:8123/opik
+      # ClickHouse host must be user-supplied (see ADR-058 note above).
+      ANALYTICS_DB_MIGRATIONS_URL: jdbc:clickhouse://${OPIK_CLICKHOUSE_HOST:-clickhouse}:${OPIK_CLICKHOUSE_HTTP_PORT:-8123}/opik
       ANALYTICS_DB_MIGRATIONS_USER: ${OPIK_CH_USER:-clickhouse}
       ANALYTICS_DB_MIGRATIONS_PASS: ${OPIK_CH_PASS:-clickhouse}
       ANALYTICS_DB_PROTOCOL: HTTP
-      ANALYTICS_DB_HOST: langfuse-clickhouse
-      ANALYTICS_DB_PORT: "8123"
+      ANALYTICS_DB_HOST: ${OPIK_CLICKHOUSE_HOST:-clickhouse}
+      ANALYTICS_DB_PORT: "${OPIK_CLICKHOUSE_HTTP_PORT:-8123}"
       ANALYTICS_DB_USERNAME: ${OPIK_CH_USER:-clickhouse}
       ANALYTICS_DB_PASS: ${OPIK_CH_PASS:-clickhouse}
       ANALYTICS_DB_DATABASE_NAME: opik
-      REDIS_URL: redis://:langfuse_redis@langfuse-valkey:6379/0  # Opik compatibility env; backend is Valkey
+      # Redis/Valkey URL must be user-supplied.
+      REDIS_URL: ${OPIK_REDIS_URL:-redis://localhost:6379/0}
       STATE_DB_PROTOCOL: jdbc:mysql://
       STATE_DB_URL: opik-mysql:3306/opik?createDatabaseIfNotExist=true
       STATE_DB_USER: ${OPIK_MYSQL_USER:-opik}
@@ -449,10 +265,6 @@ services:
       - "${OPIK_PORT:-5173}:8080"
     depends_on:
       opik-mysql:
-        condition: service_healthy
-      langfuse-clickhouse:
-        condition: service_healthy
-      langfuse-valkey:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:8080/is-alive/ping"]
@@ -539,7 +351,7 @@ services:
   # ---------------------------------------------------------------------------
   # Valkey — General-purpose Redis-compatible cache/pubsub (BSD-3)
   # Used by: Agent Communication Bus (lib/agent_bus.py), rate limiter queue
-  # NOT the same as langfuse-valkey (which is Langfuse-internal with auth)
+  # (ADR-058: the auth-guarded observability-valkey container was removed.)
   #
   # ADR-042 (2026-04-20): MIGRATED TO LOCAL DAEMON.
   # cos-valkey-local.sh starts redis-server/valkey-server on localhost:6379 (or 6380).
@@ -636,16 +448,8 @@ volumes:
   # Volume is retained on disk until user runs: docker volume rm cognitive-os-bifrost-data
   jupyter-data:
     name: cognitive-os-jupyter-data
-  langfuse-pg-data:
-    name: cognitive-os-langfuse-pg-data
-  langfuse-valkey-data:
-    name: cognitive-os-langfuse-valkey-data
-  langfuse-clickhouse-data:
-    name: cognitive-os-langfuse-clickhouse-data
-  langfuse-clickhouse-logs:
-    name: cognitive-os-langfuse-clickhouse-logs
-  langfuse-seaweedfs-data:
-    name: cognitive-os-langfuse-seaweedfs-data
+  # Former observability-stack data volumes removed 2026-04-24 per ADR-058.
+  # User must run `docker volume rm` for each removed volume; see ADR-058 Phase 3.
   paperclip-pg-data:
     name: cognitive-os-paperclip-pg-data
   paperclip-data:

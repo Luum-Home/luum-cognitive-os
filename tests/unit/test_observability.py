@@ -1,9 +1,12 @@
 """Behavioral tests for lib/observability.py.
 
-Covers:
-- trace() returns an empty dict when both providers are disabled (noop)
-- is_langfuse_available() returns False when LANGFUSE_ENABLED is unset
-- _http_post() returns gracefully (0) on connection timeout / unreachable host
+ADR-058 (2026-04-24): the former remote-trace sink was retired.
+These tests now cover:
+- trace() returns an empty dict when no providers are enabled AND the
+  Phoenix OTel bridge is not installed (pure noop).
+- is_phoenix_available() returns True/False honestly based on whether
+  ``phoenix.otel`` can be imported.
+- _http_post() returns gracefully (0) on connection timeout / unreachable host.
 """
 
 import os
@@ -21,7 +24,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from lib.observability import (
     trace,
-    is_langfuse_available,
+    is_phoenix_available,
     _http_post,
 )
 
@@ -48,60 +51,55 @@ def _clean_env(*keys: str) -> dict:
 
 class TestTraceBothDisabled:
     def test_trace_both_disabled_is_noop(self, monkeypatch):
-        """trace() must return {} when LANGFUSE_ENABLED and OPIK_ENABLED are unset."""
-        monkeypatch.delenv("LANGFUSE_ENABLED", raising=False)
+        """trace() must return {} when OPIK_ENABLED is unset and Phoenix is unavailable."""
         monkeypatch.delenv("OPIK_ENABLED", raising=False)
 
-        result = trace(
-            name="test-agent",
-            start="2026-01-01T00:00:00Z",
-            end="2026-01-01T00:01:00Z",
-            metadata={"phase": "reconstruction"},
-        )
+        # Force the Phoenix branch to report unavailable so this is a true noop.
+        with patch("lib.observability.is_phoenix_available", return_value=False):
+            result = trace(
+                name="test-agent",
+                start="2026-01-01T00:00:00Z",
+                end="2026-01-01T00:01:00Z",
+                metadata={"phase": "reconstruction"},
+            )
 
         assert result == {}, (
-            f"Expected empty dict when both providers disabled, got: {result}"
+            f"Expected empty dict when no providers enabled, got: {result}"
         )
 
     def test_trace_returns_dict_type(self, monkeypatch):
         """trace() always returns a dict, never None."""
-        monkeypatch.delenv("LANGFUSE_ENABLED", raising=False)
         monkeypatch.delenv("OPIK_ENABLED", raising=False)
 
-        result = trace(
-            name="noop",
-            start="2026-01-01T00:00:00Z",
-            end="2026-01-01T00:00:01Z",
-            metadata={},
-        )
+        with patch("lib.observability.is_phoenix_available", return_value=False):
+            result = trace(
+                name="noop",
+                start="2026-01-01T00:00:00Z",
+                end="2026-01-01T00:00:01Z",
+                metadata={},
+            )
         assert isinstance(result, dict)
 
 
-class TestIsLangfuseAvailable:
-    def test_is_langfuse_available_false_when_env_unset(self, monkeypatch):
-        """is_langfuse_available() must return False when LANGFUSE_ENABLED is not set."""
-        monkeypatch.delenv("LANGFUSE_ENABLED", raising=False)
+class TestIsPhoenixAvailable:
+    def test_returns_bool(self):
+        """is_phoenix_available() always returns a bool based on import status."""
+        result = is_phoenix_available()
+        assert isinstance(result, bool)
 
-        assert is_langfuse_available() is False, (
-            "Expected False when LANGFUSE_ENABLED is not in environment"
-        )
+    def test_returns_false_when_import_fails(self, monkeypatch):
+        """When `phoenix.otel` import raises, the helper must report False."""
+        import builtins
 
-    def test_is_langfuse_available_false_when_set_to_false(self, monkeypatch):
-        """is_langfuse_available() must return False when LANGFUSE_ENABLED=false."""
-        monkeypatch.setenv("LANGFUSE_ENABLED", "false")
+        real_import = builtins.__import__
 
-        assert is_langfuse_available() is False
+        def fake_import(name, *args, **kwargs):
+            if name == "phoenix.otel" or name.startswith("phoenix"):
+                raise ImportError("simulated: phoenix not installed")
+            return real_import(name, *args, **kwargs)
 
-    def test_is_langfuse_available_false_when_enabled_but_unreachable(self, monkeypatch):
-        """is_langfuse_available() returns False when LANGFUSE_ENABLED=true but host is down."""
-        monkeypatch.setenv("LANGFUSE_ENABLED", "true")
-        monkeypatch.setenv("LANGFUSE_HOST", "http://localhost:19999")  # nothing listening
-
-        # Should return False, not raise
-        result = is_langfuse_available()
-        assert result is False, (
-            "Expected False when host is unreachable, got True"
-        )
+        monkeypatch.setattr(builtins, "__import__", fake_import)
+        assert is_phoenix_available() is False
 
 
 class TestHttpPostTimeout:

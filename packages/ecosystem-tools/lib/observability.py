@@ -1,13 +1,22 @@
 # SCOPE: both
 # scope: both
-"""Observability tracing module for Langfuse and Opik.
+"""Observability tracing module (Opik + Phoenix).
 
-Provides functions to send execution traces to Langfuse and/or Opik
-observability backends. Both providers are disabled by default and
-controlled via environment variables.
+Provides functions to send execution traces to the optional observability
+backends. All providers are disabled by default and controlled via
+environment variables.
+
+ADR-058 (2026-04-24): the former remote-ingestion sink was retired. Trace
+export now has two modes:
+
+- **Opik** (cloud or self-hosted, see `OPIK_ENABLED`): unchanged.
+- **Phoenix (pip, OTel)**: the new LLM-native trace UI. Emitted from
+  ``lib/record_completion.py::_send_otel_trace`` using the
+  ``arize-phoenix-otel`` bridge. This file's ``trace()`` helper forwards
+  to that OTel path when Phoenix is installed.
 
 Usage:
-    from lib.observability import trace, is_langfuse_available, is_opik_available
+    from lib.observability import trace, is_opik_available
 
     trace(
         name="sdd-apply",
@@ -30,7 +39,6 @@ from typing import Any, Dict, Optional
 logger = logging.getLogger(__name__)
 
 # Default endpoints matching docker-compose.cognitive-os.yml
-_LANGFUSE_DEFAULT_HOST = "http://localhost:3100"
 _OPIK_DEFAULT_HOST = "http://localhost:5173"
 
 # Timeout for HTTP requests (seconds)
@@ -68,35 +76,6 @@ def _http_post(
         return 0
 
 
-def _base64_encode(text: str) -> str:
-    """Base64 encode a string."""
-    import base64
-
-    return base64.b64encode(text.encode("utf-8")).decode("utf-8")
-
-
-def is_langfuse_available() -> bool:
-    """Check if Langfuse is enabled and reachable.
-
-    Returns True if LANGFUSE_ENABLED=true and the health endpoint responds.
-    """
-    if os.environ.get("LANGFUSE_ENABLED", "false").lower() != "true":
-        return False
-
-    host = os.environ.get("LANGFUSE_HOST", _LANGFUSE_DEFAULT_HOST)
-    try:
-        import urllib.request
-        import urllib.error
-
-        req = urllib.request.Request(
-            "%s/api/public/health" % host, method="GET"
-        )
-        with urllib.request.urlopen(req, timeout=_CONNECT_TIMEOUT) as resp:
-            return resp.status == 200
-    except Exception:
-        return False
-
-
 def is_opik_available() -> bool:
     """Check if Opik is enabled and reachable.
 
@@ -119,66 +98,59 @@ def is_opik_available() -> bool:
         return False
 
 
-def trace_to_langfuse(
+def is_phoenix_available() -> bool:
+    """Check if the Phoenix OTel bridge is importable.
+
+    Returns True if ``phoenix.otel`` can be imported; does NOT test whether
+    the collector is actually reachable (OTel exporters buffer + retry
+    transparently, so reachability is not a gate).
+    """
+    try:
+        import phoenix.otel  # type: ignore  # noqa: F401
+
+        return True
+    except Exception:
+        return False
+
+
+def trace_to_phoenix(
     name: str,
-    start: str,
-    end: str,
+    start: str,  # kept for API compatibility; OTel spans capture start automatically
+    end: str,    # kept for API compatibility; OTel spans capture end automatically
     metadata: Dict[str, Any],
     input_text: Optional[str] = None,
     output_text: Optional[str] = None,
 ) -> bool:
-    """Send a trace to Langfuse.
+    """Send a trace to Phoenix via OTel. Returns True on success.
 
-    Args:
-        name: Trace name (e.g., agent or skill name).
-        start: ISO 8601 start timestamp.
-        end: ISO 8601 end timestamp.
-        metadata: Arbitrary metadata dict (agent, phase, tokens, cost, etc.).
-        input_text: Optional input/prompt text.
-        output_text: Optional output/result text.
-
-    Returns:
-        True if the trace was accepted (HTTP 2xx), False otherwise.
+    Silent no-op when ``arize-phoenix-otel`` is not installed — observability
+    must never block the calling code.
     """
-    host = os.environ.get("LANGFUSE_HOST", _LANGFUSE_DEFAULT_HOST)
-    public_key = os.environ.get("LANGFUSE_PUBLIC_KEY", "")
-    secret_key = os.environ.get("LANGFUSE_SECRET_KEY", "")
+    try:
+        from phoenix.otel import register as _phoenix_register  # type: ignore
 
-    if not public_key or not secret_key:
-        logger.warning(
-            "Langfuse trace skipped: LANGFUSE_PUBLIC_KEY or LANGFUSE_SECRET_KEY not set"
-        )
-        return False
-
-    trace_id = str(uuid.uuid4())
-    payload = {
-        "batch": [
-            {
-                "id": trace_id,
-                "type": "trace-create",
-                "timestamp": end,
-                "body": {
-                    "id": trace_id,
-                    "name": name,
-                    "input": input_text,
-                    "output": output_text,
-                    "metadata": metadata,
-                },
-            }
-        ]
-    }
-
-    auth = _base64_encode("%s:%s" % (public_key, secret_key))
-    headers = {"Authorization": "Basic %s" % auth}
-
-    url = "%s/api/public/ingestion" % host
-    status = _http_post(url, payload, headers=headers)
-
-    if 200 <= status < 300:
-        logger.debug("Langfuse trace sent: %s (HTTP %d)", name, status)
+        tracer = _phoenix_register(
+            project_name="cognitive-os",
+            auto_instrument=False,
+        ).get_tracer(__name__)
+        with tracer.start_as_current_span(name=name) as span:
+            for key, value in metadata.items():
+                # OTel attributes must be scalar or sequence-of-scalar.
+                try:
+                    span.set_attribute(str(key), value)
+                except Exception:
+                    span.set_attribute(str(key), str(value))
+            if input_text is not None:
+                span.set_attribute("input.value", input_text[:4000])
+            if output_text is not None:
+                span.set_attribute("output.value", output_text[:4000])
+            # Duration is derived from span lifecycle; the caller-supplied
+            # start/end strings are captured verbatim for downstream queries.
+            span.set_attribute("trace.start", start)
+            span.set_attribute("trace.end", end)
         return True
-    else:
-        logger.warning("Langfuse trace failed: %s (HTTP %d)", name, status)
+    except Exception as e:
+        logger.debug("Phoenix trace failed: %s", e)
         return False
 
 
@@ -237,9 +209,9 @@ def trace(
 ) -> Dict[str, bool]:
     """Send a trace to all enabled observability providers.
 
-    Checks LANGFUSE_ENABLED and OPIK_ENABLED environment variables.
-    Sends to each enabled provider independently. Failures are logged
-    but never raise exceptions.
+    Checks OPIK_ENABLED and, if the Phoenix OTel bridge is installed,
+    emits a Phoenix span too. Failures are logged but never raise
+    exceptions.
 
     Args:
         name: Trace name.
@@ -255,15 +227,15 @@ def trace(
     """
     results: Dict[str, bool] = {}
 
-    if os.environ.get("LANGFUSE_ENABLED", "false").lower() == "true":
+    if is_phoenix_available():
         try:
-            results["langfuse"] = trace_to_langfuse(
+            results["phoenix"] = trace_to_phoenix(
                 name, start, end, metadata,
                 input_text=input_text, output_text=output_text,
             )
         except Exception as e:
-            logger.warning("Langfuse trace error: %s", e)
-            results["langfuse"] = False
+            logger.warning("Phoenix trace error: %s", e)
+            results["phoenix"] = False
 
     if os.environ.get("OPIK_ENABLED", "false").lower() == "true":
         try:
