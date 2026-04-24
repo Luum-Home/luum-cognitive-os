@@ -271,6 +271,14 @@ count_canary_skills() {
   find "$skills_dir" -mindepth 1 -maxdepth 1 ! -name '.*' 2>/dev/null | wc -l | tr -d ' '
 }
 
+hash_canary_skills_surface() {
+  local dir="$1"
+  local skills_dir
+  skills_dir="$(find_canary_skills_surface "$dir")"
+  [ -n "$skills_dir" ] && [ -d "$skills_dir" ] || return 0
+  find "$skills_dir" -maxdepth 2 \( -type l -o -type f \) 2>/dev/null | LC_ALL=C sort | shasum -a 256 | awk '{print $1}'
+}
+
 # ── Scenario 1: default-profile install ────────────────────────────────
 scenario_default_install() {
   local label="default"
@@ -448,6 +456,8 @@ scenario_upgrade() {
 
   local idempotent="false"
   [ "$snap_pre" = "$snap_post" ] && idempotent="true"
+  local idempotent_py="False"
+  [ "$idempotent" = "true" ] && idempotent_py="True"
 
   local post_hooks; post_hooks=$(count_hooks_status "$dir" | awk -F'\t' '{print $1}')
   local post_skills; post_skills=$(count_canary_skills "$dir")
@@ -462,7 +472,7 @@ scenario_upgrade() {
 import json
 print(json.dumps({
   "canary_dir": "$dir",
-  "idempotent": $idempotent,
+  "idempotent": $idempotent_py,
   "pre_hooks": int("$pre_hooks" or 0),
   "post_hooks": int("$post_hooks" or 0),
   "pre_skills": int("$pre_skills" or 0),
@@ -616,10 +626,3 @@ if [ "$KEEP" != "true" ] && [ "$DRY_RUN" != "true" ]; then
 fi
 
 [ "${FAIL_COUNT:-0}" -eq 0 ] && exit 0 || exit 1
-hash_canary_skills_surface() {
-  local dir="$1"
-  local skills_dir
-  skills_dir="$(find_canary_skills_surface "$dir")"
-  [ -n "$skills_dir" ] && [ -d "$skills_dir" ] || return 0
-  find "$skills_dir" -maxdepth 2 \( -type l -o -type f \) 2>/dev/null | LC_ALL=C sort | shasum -a 256 | awk '{print $1}'
-}
