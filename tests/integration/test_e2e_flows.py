@@ -5,6 +5,13 @@ Unlike the unit-style integration tests in test_databases.py and test_app_servic
 (which validate each service individually), these tests validate that services
 WORK TOGETHER correctly through complete user-facing workflows.
 
+# Langfuse e2e tests removed per ADR-058 (2026-04-24).
+# The legacy ingestion-API tests (`test_send_trace_to_langfuse`,
+# `test_record_completion_sends_trace_to_langfuse`) were removed because
+# Langfuse is deprecated and record_completion now emits OTel spans.
+# The Phoenix OTel integration test lives in
+# tests/integration/test_record_completion_sends_trace_to_phoenix.py.
+
 Flows tested:
   1. Observability Pipeline — Opik + Langfuse receive and store LLM traces
   2. Memory Pipeline       — Cognee ECL pipeline produces queryable knowledge
@@ -425,46 +432,9 @@ class TestObservabilityFlow:
             "dependencies such as ClickHouse config initialization."
         )
 
-    def test_send_trace_to_langfuse(self, observability_stack):
-        """POST a mock trace to Langfuse ingestion API."""
-        host, port = _host_port(observability_stack["langfuse_web"], 3000)
-        base_url = f"http://{host}:{port}"
-
-        # Wait for Langfuse to be ready
-        wait_for_http(f"{base_url}/api/public/health", timeout=180)
-
-        trace_id = str(uuid.uuid4())
-        ingestion_payload = {
-            "batch": [
-                {
-                    "id": str(uuid.uuid4()),
-                    "type": "trace-create",
-                    "timestamp": "2025-01-01T00:00:00.000Z",
-                    "body": {
-                        "id": trace_id,
-                        "name": "e2e-test-trace",
-                        "input": {"prompt": "What is the meaning of life?"},
-                        "output": {"response": "42"},
-                        "metadata": {"test": True, "flow": "observability-e2e"},
-                    },
-                }
-            ],
-        }
-
-        # Langfuse public API requires basic auth (public key + secret key)
-        # Without pre-created API keys, we test that the endpoint accepts requests
-        status, body = http_request(
-            f"{base_url}/api/public/ingestion",
-            method="POST",
-            data=ingestion_payload,
-            headers={"Content-Type": "application/json"},
-        )
-
-        # 401 means auth is required (expected without API keys) — endpoint is alive
-        # 200/207 means ingestion was accepted
-        assert status in (200, 207, 401), (
-            f"Langfuse ingestion endpoint unexpected status: {status}, body={body[:300]}"
-        )
+    # test_send_trace_to_langfuse removed per ADR-058 (2026-04-24): Langfuse
+    # ingestion API is deprecated. See test_record_completion_sends_trace_to_phoenix.py
+    # for the Phoenix OTel replacement.
 
     def test_both_systems_reachable(self, observability_stack):
         """Both Opik and Langfuse must be simultaneously reachable.
@@ -1456,112 +1426,10 @@ class TestCOSLangfuseIntegration:
         )
 
     # ------------------------------------------------------------------
-    # Test 1: record_completion sends a trace to Langfuse
+    # Test 1: record_completion sends a trace to Langfuse — REMOVED per ADR-058.
+    # Replaced by tests/integration/test_record_completion_sends_trace_to_phoenix.py
+    # which verifies the OTel sink against a live Phoenix collector.
     # ------------------------------------------------------------------
-
-    @pytest.mark.skipif(
-        not _langfuse_sdk_available,
-        reason="langfuse Python SDK not installed",
-    )
-    def test_record_completion_sends_trace_to_langfuse(
-        self, langfuse_stack, tmp_path, monkeypatch
-    ):
-        """record_completion._send_langfuse_trace must deliver a trace to Langfuse.
-
-        Steps:
-          1. Point env vars at the testcontainer Langfuse instance.
-          2. Reload record_completion so it picks up the live client.
-          3. Call _send_langfuse_trace with a realistic payload.
-          4. Flush the SDK client so the trace is ingested synchronously.
-          5. Query GET /api/public/traces and assert the trace is present.
-        """
-        import importlib
-        import lib.record_completion as rc_mod
-        from langfuse import Langfuse
-
-        base_url = langfuse_stack["base_url"]
-        public_key = langfuse_stack["public_key"]
-        secret_key = langfuse_stack["secret_key"]
-
-        # -- Configure env vars so the langfuse SDK finds the testcontainer --
-        monkeypatch.setenv("LANGFUSE_PUBLIC_KEY", public_key)
-        monkeypatch.setenv("LANGFUSE_SECRET_KEY", secret_key)
-        monkeypatch.setenv("LANGFUSE_HOST", base_url)
-        # Override metrics dir so we don't write to the real project
-        monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(tmp_path))
-
-        # Build a direct SDK client (bypass record_completion's module-level init)
-        lf_client = Langfuse(
-            public_key=public_key,
-            secret_key=secret_key,
-            host=base_url,
-        )
-
-        skill_name = "implement-user-endpoint"
-        trust_score = 82
-        tokens_used = 1234
-        task_id = f"toolu_{uuid.uuid4().hex[:16]}"
-
-        # Send trace directly via SDK (same call path as _send_langfuse_trace)
-        trace = lf_client.trace(
-            name=skill_name,
-            id=task_id,
-            metadata={
-                "task_type": "implementation",
-                "trust_score": trust_score,
-                "tokens_used": tokens_used,
-                "success": True,
-                "cost_usd": round(tokens_used * 0.000015, 6),
-            },
-            tags=["cos-agent", "implementation", "success"],
-        )
-        trace.span(
-            name="agent-completion",
-            input={"task_id": task_id, "task_type": "implementation"},
-            output={"trust_score": trust_score, "success": True},
-            metadata={"tokens": tokens_used},
-        )
-        lf_client.flush()
-
-        # Allow Langfuse worker a moment to process the ingested batch
-        time.sleep(5)
-
-        # -- Verify via REST API --
-        import base64
-        auth = base64.b64encode(f"{public_key}:{secret_key}".encode()).decode()
-        status, body = http_request(
-            f"{base_url}/api/public/traces",
-            method="GET",
-            headers={"Authorization": f"Basic {auth}"},
-        )
-
-        # 200 = traces exist, 401 = auth not yet valid (SDK still flushing to queue)
-        # We accept both; the important thing is the endpoint is reachable
-        assert status in (200, 207, 401), (
-            f"Langfuse /api/public/traces returned unexpected status {status}: {body[:400]}"
-        )
-
-        if status == 200:
-            data = json.loads(body)
-            traces = data if isinstance(data, list) else data.get("data", [])
-            # Find our trace by name or id
-            matching = [
-                t for t in traces
-                if t.get("name") == skill_name or t.get("id") == task_id
-            ]
-            assert matching, (
-                f"Trace '{skill_name}' not found in Langfuse. "
-                f"Got {len(traces)} traces: {[t.get('name') for t in traces[:5]]}"
-            )
-            trace_record = matching[0]
-            assert trace_record.get("name") == skill_name, (
-                f"Expected name={skill_name!r}, got {trace_record.get('name')!r}"
-            )
-            logger.info(
-                "Trace found in Langfuse: id=%s name=%s",
-                trace_record.get("id"),
-                trace_record.get("name"),
-            )
 
     # ------------------------------------------------------------------
     # Test 2: record_completion is graceful when Langfuse is unreachable
