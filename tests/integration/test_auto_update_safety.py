@@ -138,6 +138,11 @@ def create_fake_cos_source(base_path: Path, version: str = "0.3.0") -> Path:
     # Scripts directory — copy real scripts so cos-init.sh works
     scripts_dst = cos_src / "scripts"
     scripts_dst.mkdir(exist_ok=True)
+    scripts_lib_dst = scripts_dst / "_lib"
+    scripts_lib_dst.mkdir(exist_ok=True)
+    settings_driver = SCRIPTS_DIR / "_lib" / "settings-driver.sh"
+    if settings_driver.exists():
+        shutil.copy2(settings_driver, scripts_lib_dst / "settings-driver.sh")
     for script_name in [
         "cos-init.sh", "cos-registry.sh", "auto-update-projects.sh",
         "merge-settings.sh",

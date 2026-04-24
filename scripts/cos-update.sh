@@ -367,8 +367,11 @@ regenerate_settings_if_profile_changed() {
     return 0
   fi
 
-  if [[ "$SETTINGS_HARNESS" != "claude" ]]; then
-    note "active settings driver is ${SETTINGS_LABEL}; skipping Claude profile regeneration"
+  local settings_harness settings_label
+  settings_harness="${SETTINGS_HARNESS:-claude}"
+  settings_label="${SETTINGS_LABEL:-.claude/settings.json}"
+  if [[ "$settings_harness" != "claude" ]]; then
+    note "active settings driver is ${settings_label}; skipping Claude profile regeneration"
     return 0
   fi
 
@@ -397,7 +400,7 @@ regenerate_settings_if_profile_changed() {
     profile="default"
   fi
 
-  note "apply-efficiency-profile.sh changed (${previous_sha:0:8}→${current_sha:0:8}); regenerating ${SETTINGS_LABEL} with profile '${profile}'"
+  note "apply-efficiency-profile.sh changed (${previous_sha:0:8}→${current_sha:0:8}); regenerating ${settings_label} with profile '${profile}'"
   if bash "$APPLY_EFF_PROFILE_SCRIPT" "$profile" >&2; then
     mkdir -p "$STATE_DIR"
     printf '%s\n' "$current_sha" > "$APPLY_EFF_PROFILE_SHA_FILE"
