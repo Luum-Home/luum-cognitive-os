@@ -56,7 +56,9 @@ def _run_release_check(
         cmd.append("--keep")
 
     env = os.environ.copy()
-    env.setdefault("COGNITIVE_OS_PROJECT_DIR", str(PROJECT_ROOT))
+    env["COGNITIVE_OS_PROJECT_DIR"] = str(PROJECT_ROOT)
+    env.pop("CODEX_PROJECT_DIR", None)
+    env.pop("CLAUDE_PROJECT_DIR", None)
 
     result = subprocess.run(
         cmd,
