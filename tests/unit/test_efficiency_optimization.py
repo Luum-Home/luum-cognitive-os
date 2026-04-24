@@ -215,12 +215,13 @@ def test_claude_md_no_sdd_duplication():
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.xdist_group("hook-chain-perf")  # serialise hook-subprocess timing tests
 def test_contextual_rule_loader_fast(tmp_path):
     """contextual-rule-loader.sh must complete in under 500ms.
 
     Uses an isolated project directory with a minimal cognitive-os.yaml
-    (a small number of contextual_triggers) so the bash while-read loop
-    over the config file stays fast regardless of real-project config size.
+    (a small number of contextual_triggers) so the Python-based matcher loop
+    stays fast regardless of real-project config size.
     """
     hook = PROJECT_ROOT / "hooks" / "contextual-rule-loader.sh"
     if not hook.exists():
