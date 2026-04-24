@@ -26,7 +26,7 @@ def cleanup_flag():
 
 @pytest.fixture
 def gate_hook(project_root):
-    hook = project_root / ".cognitive-os" / "hooks" / "private-mode-gate.sh"
+    hook = project_root / "hooks" / "private-mode-gate.sh"
     if not hook.exists() or not os.access(hook, os.X_OK):
         pytest.skip("private-mode-gate.sh not found or not executable")
     return hook
@@ -34,7 +34,7 @@ def gate_hook(project_root):
 
 @pytest.fixture
 def metrics_gate_hook(project_root):
-    hook = project_root / ".cognitive-os" / "hooks" / "private-mode-metrics-gate.sh"
+    hook = project_root / "hooks" / "private-mode-metrics-gate.sh"
     if not hook.exists() or not os.access(hook, os.X_OK):
         pytest.skip("private-mode-metrics-gate.sh not found or not executable")
     return hook

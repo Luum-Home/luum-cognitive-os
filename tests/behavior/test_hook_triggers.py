@@ -17,17 +17,21 @@ pytestmark = pytest.mark.behavior
 
 
 def _hooks_dir() -> Path:
-    """Return the .cognitive-os/hooks directory under the project."""
+    """Return the canonical hooks/ directory under the project root.
+
+    Note: historically this pointed at .cognitive-os/hooks/, but canonical
+    hook scripts live under hooks/. The legacy path produced spurious skips.
+    """
     project_root = Path(__file__).resolve().parent.parent.parent
-    return project_root / ".cognitive-os" / "hooks"
+    return project_root / "hooks"
 
 
 @pytest.fixture
 def cos_hooks_dir():
-    """Return the .cognitive-os/hooks directory."""
+    """Return the canonical hooks/ directory."""
     d = _hooks_dir()
     if not d.exists():
-        pytest.skip(".cognitive-os/hooks directory not found")
+        pytest.skip("hooks/ directory not found")
     return d
 
 
@@ -44,7 +48,7 @@ def run_cos_hook(
     env: Optional[dict] = None,
     stdin: Optional[str] = None,
 ) -> subprocess.CompletedProcess:
-    """Run a hook from the .cognitive-os/hooks directory."""
+    """Run a hook from the canonical hooks/ directory."""
     hook_path = hooks_dir / hook_name
     if not hook_path.exists():
         pytest.skip(f"{hook_name} not found")
