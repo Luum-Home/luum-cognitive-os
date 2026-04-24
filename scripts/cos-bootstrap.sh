@@ -16,7 +16,10 @@
 # Profiles:
 #   minimal   Paperclip only (1 container)
 #   standard  Paperclip + Valkey
-#   full      All services (paperclip, nemo-guardrails, jupyter, memu, cognee)
+#   full      All services including ADR-060-gated optional containers:
+#               --profile guardrails  → nemo-guardrails
+#               --profile jupyter     → jupyter
+#               --profile memory      → cognee + memu-pg
 # =============================================================================
 
 set -euo pipefail
@@ -62,7 +65,9 @@ OPTIONS
       Service profile to start (default: standard)
       minimal:  Paperclip only
       standard: Paperclip + Valkey (recommended)
-      full:     All services (paperclip, nemo-guardrails, jupyter, etc.)
+      full:     All services — activates compose profiles guardrails
+                (nemo-guardrails), jupyter, and memory (cognee + memu-pg)
+                in addition to the standard base services.
 
   --dry-run
       Print each step without executing it.
@@ -280,7 +285,9 @@ get_services_for_profile() {
 
 if [[ "${DRY_RUN}" == "true" ]]; then
   services=$(get_services_for_profile)
-  if [[ -z "${services}" ]]; then
+  if [[ "${PROFILE}" == "full" ]]; then
+    info "Would run: docker compose -f docker-compose.cognitive-os.yml --profile guardrails --profile jupyter --profile memory up -d"
+  elif [[ -z "${services}" ]]; then
     info "Would run: docker compose -f docker-compose.cognitive-os.yml up -d"
   else
     info "Would run: docker compose -f docker-compose.cognitive-os.yml up -d ${services}"
@@ -301,7 +308,11 @@ else
     set +a
 
     services=$(get_services_for_profile)
-    if [[ -z "${services}" ]]; then
+    if [[ "${PROFILE}" == "full" ]]; then
+      info "Starting all services (including guardrails, jupyter, memory profiles)..."
+      docker compose -f "${COMPOSE_FILE}" --env-file "${ENV_FILE}" \
+        --profile guardrails --profile jupyter --profile memory up -d
+    elif [[ -z "${services}" ]]; then
       info "Starting all services..."
       docker compose -f "${COMPOSE_FILE}" --env-file "${ENV_FILE}" up -d
     else
@@ -417,7 +428,8 @@ echo "║    Paperclip:    http://localhost:3200                   ║"
 fi
 if [[ "${PROFILE}" == "full" ]]; then
 echo "║    Jupyter:      http://localhost:8888                   ║"
-echo "║    Jupyter:      http://localhost:8888                   ║"
+echo "║    NeMo Guard.:  http://localhost:8000                   ║"
+echo "║    Cognee/Memu:  (memory profile — no public HTTP port)  ║"
 fi
 echo "╠══════════════════════════════════════════════════════════╣"
 echo "║  Next steps:                                             ║"
