@@ -97,8 +97,11 @@ if [ -f "$LOCK_FILE" ]; then
     # Remove stale lock, proceed to acquire
     rm -f "$LOCK_FILE"
   else
-    # --- REAL BLOCKING: Wait for flock release ---
-    echo "WRITE QUEUED: File $FILE_PATH locked by session $LOCK_SESSION (${LOCK_AGE}s). Waiting up to 10s..." >&2
+    # --- Cross-session contention: advisory warning + real blocking ---
+    # Advisory message preserves the historical contract (matched by
+    # tests/behavior/test_file_locking.py::test_cross_session_warning).
+    echo "CONCURRENT WRITE WARNING: $FILE_PATH is being edited by session $LOCK_SESSION (${LOCK_AGE}s old)." >&2
+    echo "WRITE QUEUED: Waiting up to 10s for lock release..." >&2
     exec 200>"$LOCK_FILE.flock"
     if ! flock -w 10 200; then
       echo "WRITE BLOCKED: Could not acquire lock for $FILE_PATH after 10s" >&2
