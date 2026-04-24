@@ -166,7 +166,7 @@ func (g *SQLGenerator) Generate(patterns []DetectedPattern) ([]GeneratedArtifact
 		}
 		_ = short // used inside artifactName
 
-			// source_pattern_id is 0: DetectedPattern carries no persisted ID.
+		// source_pattern_id is 0: DetectedPattern carries no persisted ID.
 		// Phase 5.3 will wire this to the detected_patterns table.
 		structName, fileName := artifactName(p.Type, 0, p.Suggestion)
 		kebabName := structToKebab(structName)

@@ -47,11 +47,11 @@ func runChangelog(cmd *cobra.Command, args []string) error {
 	}
 
 	type pkgChangelog struct {
-		Name       string
-		Version    string
-		PkgDir     string
-		LastTag    string
-		Commits    []string
+		Name    string
+		Version string
+		PkgDir  string
+		LastTag string
+		Commits []string
 	}
 
 	var entries []pkgChangelog

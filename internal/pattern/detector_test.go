@@ -232,9 +232,9 @@ func TestDetector_FilterByConfidence(t *testing.T) {
 	// Exactly MinRepeats failures => baseline confidence (~0.5).
 	for i := 0; i < 3; i++ {
 		recs = append(recs, ExecutionRecord{
-			Timestamp:     now,
-			SessionID:     "s1",
-			EventType:     "before_tool", ToolType: "Bash",
+			Timestamp: now,
+			SessionID: "s1",
+			EventType: "before_tool", ToolType: "Bash",
 			ValidatorName: "marginal",
 			Result:        ResultFail,
 			ErrorCode:     "X",
