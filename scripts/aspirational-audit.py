@@ -5,7 +5,10 @@ aspirational-audit.py — COS Component Classification Audit
 
 Classifies every COS component (hooks, lib, scripts, skills) into:
   REAL        — observable production use (fires, callers, JSONL output, invocations)
-  DORMANT     — code exists, no observable use in the measurement window
+  ON_DEMAND   — dormant in the window but KNOWN to be rarely-fired AND proven by test
+                OR explicitly marked @on-demand (rate-limit handlers, crash-recovery,
+                weekly/monthly cron, etc.) — not smoke, just sleeping legitimately
+  DORMANT     — code exists, no observable use, no test, no on-demand marker
   ASPIRATIONAL — references missing dependencies or is explicitly marked FUTURE
   METADATA    — intentional non-behavioural artifact (shim, lib helper, deprecated stub)
 
@@ -50,9 +53,62 @@ DEPRECATED_PATTERN = re.compile(r"\bDEPRECATED\b", re.IGNORECASE)
 # ──────────────────────────────────────────────────────────────────────────────
 
 class Classification(NamedTuple):
-    classification: str   # REAL | DORMANT | ASPIRATIONAL | METADATA
+    classification: str   # REAL | ON_DEMAND | DORMANT | ASPIRATIONAL | METADATA
     signals: dict
     reason: str
+
+
+# On-demand markers — components carrying these inline are legit sleepers,
+# not smoke. Matched against file content (case-insensitive).
+ON_DEMAND_MARKERS = re.compile(
+    r"@on[- ]demand\b|@seasonal\b|@crash[- ]handler\b|@rate[- ]limit[- ]handler\b"
+    r"|@weekly\b|@monthly\b|@cron\b|@rare\b|@manual[- ]trigger\b"
+    r"|ON[- ]DEMAND:|SEASONAL:|MANUAL TRIGGER:",
+    re.IGNORECASE,
+)
+
+
+def has_on_demand_marker(path: Path) -> bool:
+    """Detect @on-demand style markers in file content."""
+    try:
+        content = path.read_text(errors="replace")
+    except OSError:
+        return False
+    return ON_DEMAND_MARKERS.search(content) is not None
+
+
+def has_covering_test(path: Path, project_root: Path) -> bool:
+    """True if a test file exists that looks like it covers this component.
+
+    Heuristic: tests/**/test_<stem>.py or tests/**/*test*<stem>* that contains
+    the component's name as a literal string.
+    """
+    stem = path.stem  # strip extension
+    # Normalize hook/script names: kebab-case → snake_case for test files
+    stem_snake = stem.replace("-", "_")
+    tests_dir = project_root / "tests"
+    if not tests_dir.is_dir():
+        return False
+    # Fast path: exact test file naming
+    for candidate in (
+        tests_dir.rglob(f"test_{stem_snake}.py"),
+        tests_dir.rglob(f"test_{stem}.py"),
+    ):
+        for f in candidate:
+            if f.is_file():
+                return True
+    # Slower path: any test file mentioning the component name literally
+    try:
+        for f in tests_dir.rglob("test_*.py"):
+            try:
+                text = f.read_text(errors="replace")
+            except OSError:
+                continue
+            if stem in text or stem_snake in text:
+                return True
+    except (OSError, RecursionError):
+        pass
+    return False
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -390,10 +446,23 @@ class Auditor:
                     {"fire_count_7d": 0, "registered": True, "writes_jsonl": True},
                     "registered + writes metrics JSONL (fires may be outside 7d window)"
                 )
+            # Intercept DORMANT → ON_DEMAND when test covers OR marker present
+            if has_on_demand_marker(path):
+                return Classification(
+                    "ON_DEMAND",
+                    {"fire_count_7d": fire_count, "registered": True, "on_demand_marker": True},
+                    "registered + @on-demand marker — legit sleeper (not smoke)"
+                )
+            if has_covering_test(path, self.project_root):
+                return Classification(
+                    "ON_DEMAND",
+                    {"fire_count_7d": fire_count, "registered": True, "has_test": True},
+                    "registered + covered by test — legit sleeper (fires when triggered)"
+                )
             return Classification(
                 "DORMANT",
                 {"fire_count_7d": fire_count, "registered": True},
-                "registered in settings.json but no fire events in last 7 days"
+                "registered in settings.json but no fire events in last 7 days + no test/marker"
             )
 
         # Not registered — check excluded list
@@ -456,10 +525,23 @@ class Auditor:
                 "writes to an existing metrics JSONL file"
             )
 
+        # DORMANT but covered by test OR marked @on-demand → ON_DEMAND
+        if has_on_demand_marker(path):
+            return Classification(
+                "ON_DEMAND",
+                {"callers": 0, "on_demand_marker": True, "size_bytes": size},
+                "@on-demand marker — legit sleeper module"
+            )
+        if has_covering_test(path, self.project_root):
+            return Classification(
+                "ON_DEMAND",
+                {"callers": 0, "has_test": True, "size_bytes": size},
+                "covered by test — legit sleeper (imported by test only)"
+            )
         return Classification(
             "DORMANT",
             {"callers": 0, "size_bytes": size},
-            "no non-test callers found in hooks/, packages/, scripts/"
+            "no non-test callers found, no test coverage, no on-demand marker"
         )
 
     def classify_script(self, path: Path) -> Classification:
@@ -497,10 +579,23 @@ class Auditor:
                 f"referenced by {caller_count} other component(s)"
             )
 
+        # DORMANT but covered by test OR @on-demand marker → ON_DEMAND
+        if has_on_demand_marker(path):
+            return Classification(
+                "ON_DEMAND",
+                {"callers": 0, "on_demand_marker": True, "size_bytes": size},
+                "@on-demand marker — legit rarely-invoked script"
+            )
+        if has_covering_test(path, self.project_root):
+            return Classification(
+                "ON_DEMAND",
+                {"callers": 0, "has_test": True, "size_bytes": size},
+                "covered by test — legit sleeper (test proves it works when called)"
+            )
         return Classification(
             "DORMANT",
             {"callers": 0, "size_bytes": size},
-            "no observable production use detected"
+            "no observable production use, no test, no on-demand marker"
         )
 
     def classify_skill(self, skill_md: Path) -> Classification:
