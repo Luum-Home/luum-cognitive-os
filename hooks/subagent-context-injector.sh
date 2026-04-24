@@ -22,6 +22,9 @@ check_private_mode
 
 # Read stdin JSON (subagent details)
 read_stdin_json
+if [ -n "$_STDIN_JSON" ] && ! echo "$_STDIN_JSON" | jq -e 'type == "object"' >/dev/null 2>&1; then
+  exit 0
+fi
 
 # ─── Load preamble template ─────────────────────────────────────────────────
 
