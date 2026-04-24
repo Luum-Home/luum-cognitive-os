@@ -75,7 +75,7 @@ TASK_REQUIREMENTS: Dict[str, List[str]] = {
     ],
     "long_context": [
         "sdd-explore",
-        "eval-repo",
+        "repo-scout",
         "exhaustive-prompt",
     ],
     "budget": [

@@ -137,6 +137,6 @@ callers = get_importers("lib/circuit_breaker.py")
 
 ## Alternatives Considered
 
-- **repomix / eval-repo**: External tools, not always installed, produce token-heavy output.
+- **repomix / repo-scout**: External tools, not always installed, produce token-heavy output.
 - **Engram per-file**: Too granular, not queryable as a surface, drift-prone.
 - **Language server (pyright/pylsp)**: Heavy dependency, overkill for discovery queries.

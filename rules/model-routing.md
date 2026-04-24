@@ -70,7 +70,7 @@ The `lib/model_router.py` module extends static routing with dynamic, multi-prov
 | reasoning | sdd-propose, sdd-design, systematic-debugging, sdd-improve |
 | speed | sdd-archive, doc-sync, format |
 | code | sdd-apply, sdd-tasks, test-driven-development |
-| long_context | sdd-explore, eval-repo, exhaustive-prompt |
+| long_context | sdd-explore, repo-scout, exhaustive-prompt |
 | budget | document-feature, skill-creator, sdd-archive, openrouter/free fallback |
 
 ### Python API

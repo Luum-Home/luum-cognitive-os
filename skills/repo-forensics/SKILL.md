@@ -168,7 +168,7 @@ artifacts:
   - type: forensic-report
     location: "Engram: docs/research/repo-forensics/{repo-name}"
 next_recommended:
-  - "Review dependency licenses with /eval-repo if adoption is planned"
+  - "Review dependency licenses with /repo-scout if adoption is planned"
   - "Compare architecture patterns with current project"
 risks:
   - "{any license concerns}"
