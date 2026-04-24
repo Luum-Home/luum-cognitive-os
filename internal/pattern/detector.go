@@ -31,10 +31,10 @@ type SQLDetector struct {
 	ErrorClusterSess  int     // ErrorCluster distinct-session threshold (default 3)
 
 	// Phase 5.1 tunables.
-	FalsePositiveThreshold    float64 // FalsePositive: override/(fail+warn) ratio (default 0.5)
-	FalsePositiveMinSample    int     // FalsePositive: min total events to avoid tiny-sample noise (default 5)
-	MissingCoverageThreshold  int     // MissingCoverage: uncovered events per tool_type (default 10)
-	SequenceCorrelationThreshold int  // SequenceCorrelation: min pair count in failure_sequences (default 3)
+	FalsePositiveThreshold       float64 // FalsePositive: override/(fail+warn) ratio (default 0.5)
+	FalsePositiveMinSample       int     // FalsePositive: min total events to avoid tiny-sample noise (default 5)
+	MissingCoverageThreshold     int     // MissingCoverage: uncovered events per tool_type (default 10)
+	SequenceCorrelationThreshold int     // SequenceCorrelation: min pair count in failure_sequences (default 3)
 }
 
 // NewDetector returns a SQLDetector wired to the given database.

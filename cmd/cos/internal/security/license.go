@@ -31,26 +31,26 @@ func (v LicenseVerdict) String() string {
 
 // blockedLicenses maps SPDX identifiers to explanations for blocked licenses.
 var blockedLicenses = map[string]string{
-	"AGPL-3.0":           "Network copyleft -- forces open-sourcing all SaaS code",
-	"AGPL-3.0-only":      "Network copyleft -- forces open-sourcing all SaaS code",
-	"AGPL-3.0-or-later":  "Network copyleft -- forces open-sourcing all SaaS code",
-	"SSPL-1.0":           "Server-side copyleft -- blocks SaaS deployment entirely",
-	"GPL-2.0":            "Viral copyleft -- derivative works must be GPL",
-	"GPL-2.0-only":       "Viral copyleft -- derivative works must be GPL",
-	"GPL-3.0":            "Viral copyleft -- derivative works must be GPL",
-	"GPL-3.0-only":       "Viral copyleft -- derivative works must be GPL",
-	"BSL-1.1":            "Business source -- cannot compete with vendor",
-	"ELv2":               "Elastic License -- cannot offer as managed service",
-	"Commons-Clause":     "Cannot sell the software as a service",
-	"FSL-1.0":            "Functional Source License -- commercial restrictions",
-	"FSL-1.1":            "Functional Source License -- commercial restrictions",
+	"AGPL-3.0":          "Network copyleft -- forces open-sourcing all SaaS code",
+	"AGPL-3.0-only":     "Network copyleft -- forces open-sourcing all SaaS code",
+	"AGPL-3.0-or-later": "Network copyleft -- forces open-sourcing all SaaS code",
+	"SSPL-1.0":          "Server-side copyleft -- blocks SaaS deployment entirely",
+	"GPL-2.0":           "Viral copyleft -- derivative works must be GPL",
+	"GPL-2.0-only":      "Viral copyleft -- derivative works must be GPL",
+	"GPL-3.0":           "Viral copyleft -- derivative works must be GPL",
+	"GPL-3.0-only":      "Viral copyleft -- derivative works must be GPL",
+	"BSL-1.1":           "Business source -- cannot compete with vendor",
+	"ELv2":              "Elastic License -- cannot offer as managed service",
+	"Commons-Clause":    "Cannot sell the software as a service",
+	"FSL-1.0":           "Functional Source License -- commercial restrictions",
+	"FSL-1.1":           "Functional Source License -- commercial restrictions",
 }
 
 // cautionLicenses maps SPDX identifiers to explanations for caution licenses.
 var cautionLicenses = map[string]string{
-	"LGPL-2.1":    "Dynamic linking only -- do not modify or statically link",
-	"LGPL-3.0":    "Dynamic linking only -- do not modify or statically link",
-	"MPL-2.0":     "File-level copyleft -- changes to MPL files must be open-sourced",
+	"LGPL-2.1":     "Dynamic linking only -- do not modify or statically link",
+	"LGPL-3.0":     "Dynamic linking only -- do not modify or statically link",
+	"MPL-2.0":      "File-level copyleft -- changes to MPL files must be open-sourced",
 	"Artistic-2.0": "Similar to MPL -- changes to original must be published",
 }
 

@@ -233,7 +233,7 @@ func TestGenerate_SkipsUnsupportedPatternTypes(t *testing.T) {
 	}
 }
 
-// TestGenerate_InsertsDisabledArtifact confirms enabled=0 and feedback='' in
+// TestGenerate_InsertsDisabledArtifact confirms enabled=0 and feedback=” in
 // the DB row after generation (ADR-004 mandate).
 func TestGenerate_InsertsDisabledArtifact(t *testing.T) {
 	db := openTestDB(t)

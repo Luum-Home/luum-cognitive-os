@@ -83,7 +83,7 @@ type ExecutionRecord struct {
 	ToolType      string    `db:"tool_type"`  // 'Bash', 'Write', 'Edit', 'Agent', etc.
 	ToolInputHash string    `db:"tool_input_hash"`
 	ValidatorName string    `db:"validator_name"`
-	Result        string    `db:"result"`      // pass|fail|warn|transform
+	Result        string    `db:"result"` // pass|fail|warn|transform
 	DurationMs    int64     `db:"duration_ms"`
 	ErrorCode     string    `db:"error_code"`
 	ErrorMessage  string    `db:"error_message"`
@@ -131,14 +131,14 @@ const (
 // a DetectedPattern. Enabled is always false when first created (ADR-004).
 type GeneratedArtifact struct {
 	Name            string
-	ArtifactType    string           // "validator" | "transformer" | "plugin" | "rule"
-	SourcePatternID int64            // FK → detected_patterns.id (0 if not persisted)
-	Language        string           // always "go" in Phase 5.2 (ADR-009)
-	Code            string           // Go source text
-	ConfigSnippet   string           // TOML registration snippet
+	ArtifactType    string // "validator" | "transformer" | "plugin" | "rule"
+	SourcePatternID int64  // FK → detected_patterns.id (0 if not persisted)
+	Language        string // always "go" in Phase 5.2 (ADR-009)
+	Code            string // Go source text
+	ConfigSnippet   string // TOML registration snippet
 	Confidence      float64
-	Enabled         bool             // always false at creation time
-	Feedback        string           // empty until ApplyFeedback is called
+	Enabled         bool   // always false at creation time
+	Feedback        string // empty until ApplyFeedback is called
 }
 
 // Generator creates validator stubs from detected patterns and manages their

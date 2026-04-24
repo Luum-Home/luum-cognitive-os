@@ -52,8 +52,8 @@ func ResolveTargets(exports []manifest.Export, projectRoot, packageDir, packageN
 // resolveTargetsForExport computes all destination paths for an export.
 //
 // Skills and rules are written additively to:
-//   1. the canonical .cognitive-os source-of-truth
-//   2. the active Claude projection
+//  1. the canonical .cognitive-os source-of-truth
+//  2. the active Claude projection
 //
 // Other export types still have a single destination.
 func resolveTargetsForExport(exp manifest.Export, projectRoot, packageName string) ([]string, error) {
