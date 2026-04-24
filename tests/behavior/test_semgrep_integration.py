@@ -152,4 +152,7 @@ class TestSemgrepSkillFile:
 
     def test_skill_has_frontmatter(self):
         content = self.SKILL_FILE.read_text()
-        assert content.startswith("---"), "Must have YAML frontmatter"
+        stripped = content.lstrip()
+        if stripped.startswith("<!--"):
+            stripped = stripped.split("-->", 1)[1].lstrip()
+        assert stripped.startswith("---"), "Must have YAML frontmatter"
