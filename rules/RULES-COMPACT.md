@@ -46,7 +46,7 @@ Priority: project>global>auto [`skill-management`]. [`skill-rewrite`]+[`auto-ski
 
 **Persistence**: [`fault-tolerance`] 4-tier. [`engram-organization`] prefixes. [`session-concurrency`]. [`step-files`] long phases.
 
-**Change Safety**: [`hook-security-profiles`] minimal/standard/paranoid. [`capability-protection`] snapshot before cleanup. [`plan-first`] [`cognitive-os-changes`] plan-first for OS mods. [`dogfooding`] SDD for substantial changes. [`component-classification`] CORE vs PACKAGE.
+**Change Safety**: [`hook-security-profiles`] minimal/standard/paranoid. [`capability-protection`] snapshot before cleanup. [`plan-first`] [`cognitive-os-changes`] plan-first for OS mods. [`dogfooding`] SDD for substantial changes. [`component-classification`] CORE vs PACKAGE. [`cross-harness-authoring`] (os-only) 5-item self-check before touching SO paths/settings/scripts — see `docs/architecture/cross-harness-authoring.md` §Agent Self-Check.
 
 **Modes & Tools**: [`dry-run`] `DRY_RUN=true`. [`private-mode`] `/private`. [`ecosystem-tools`] [`library-selection`] [`reinvention-prevention`]. [`parry-integration`] [`e2b-integration`] [`tero-integration`] [`repomix-integration`] [`trailofbits-skills`] [`hcom-integration`] [`context7-auto-trigger`].
 
