@@ -44,7 +44,17 @@ def telemetry(tmp_path, monkeypatch):
 
 
 def _read_lines(path: Path) -> list[dict]:
-    return [json.loads(ln) for ln in path.read_text().splitlines() if ln.strip()]
+    rows = []
+    for line in path.read_text().splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        if "schema_version" in row and "event_type" in row and "payload" in row:
+            flat = dict(row["payload"])
+            flat.setdefault("timestamp", row.get("timestamp", ""))
+            row = flat
+        rows.append(row)
+    return rows
 
 
 # ─── record_skill_invocation ────────────────────────────────────────────────
