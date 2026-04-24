@@ -29,6 +29,35 @@ Every accepted service must declare:
 - degradation behavior when absent;
 - the smallest test that proves the service does not become an accidental default.
 
+## Decision Log Requirement
+
+The Necessity Gate is binary (yes/no on ≥1 criterion), deliberately avoiding a
+0-2 scoring rubric that would be overkill for this scale. To keep the gate
+honest without numeric overhead, every accepted service must have a **decision
+log paragraph** in this catalog explaining:
+
+- which Necessity Gate criterion it satisfies (1 of the 4 above);
+- the concrete evidence for that criterion: a specific skill path, CLI
+  command, or workflow — not a generalisation;
+- the assigned `review_by` date and the mode that was granted.
+
+Missing decision log paragraph = service does NOT enter the catalog, no
+exceptions. The paragraph lives under the `## Service-by-Service Decisions`
+section for that service. This is an audit trail requirement, not a governance
+burden — it prevents "it seemed useful" entries and forces sunset review to
+have prior context.
+
+Template:
+
+```
+### <service-name>
+
+<service-name> meets Necessity Gate criterion <N>: <1-line restatement>.
+Evidence: <exact path to skill, command, or integration test that uses it>.
+Mode granted: <pip|cloud|cli|on_demand|always|disabled>. Review: <YYYY-MM-DD>.
+Notes: <optional 1-2 sentences on scope or trade-offs>.
+```
+
 ## Service Positions
 
 | Runtime service | Compose services | Mode in `cognitive-os.yaml` | Product position | Purpose |
@@ -180,9 +209,9 @@ A service failing all three criteria is:
 reviews never stack on the same day and the operator is never forced into
 one big sunset sprint.
 
-### Memory — MemU review 2026-07-15
+### Memory — MemU review 2026-06-01
 
-MemU is the first service on the sunset calendar. On 2026-07-15 the keep-decision
+MemU is the first service on the sunset calendar. On 2026-06-01 the keep-decision
 is evaluated as follows:
 
 - **Keep-criterion (primary)**: `grep -riE 'memu' skills/ hooks/ .claude/commands/`
@@ -190,7 +219,7 @@ is evaluated as follows:
   `skills/memu-context/` reference scaffolding.
 - **Keep-criterion (secondary)**: `.cognitive-os/metrics/infra-usage.jsonl`
   must contain at least one `container:"memu"` activation event in the 90-day
-  window preceding 2026-07-15.
+  window preceding 2026-06-01.
 
 If both criteria fail, MemU is removed from `docker-compose.cognitive-os.yml`
 and downgraded to `mode: disabled` in `cognitive-os.yaml` with a note pointing

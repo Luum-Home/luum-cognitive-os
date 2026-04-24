@@ -445,7 +445,7 @@ resources:
       memu:
         mode: pip                  # MIGRATED: pip install memu>=2.0. Run: python -m memu.server
         idle_timeout_minutes: 15
-        review_by: 2026-07-15      # Sunset policy — MemU sunset deadline, see catalog §Memory "MemU review 2026-07-15"
+        review_by: 2026-06-01      # Sunset policy — MemU sunset deadline, see catalog §Memory "MemU review 2026-06-01"
       # --- Agent Testing & Evaluation (Python packages, not Docker services) ---
       deepeval:
         status: planned                # Python package, not a Docker service
