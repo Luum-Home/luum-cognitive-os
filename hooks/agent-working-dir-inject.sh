@@ -25,7 +25,6 @@ set -euo pipefail
 
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
-source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 
 # ── Locate project root ──────────────────────────────────────────────────────
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-}"
@@ -50,9 +49,42 @@ log_event() {
     "$ts" "$event" "$detail" >> "$METRICS_FILE" 2>/dev/null || true
 }
 
+json_escape() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  s="${s//$'\n'/\\n}"
+  s="${s//$'\r'/\\r}"
+  s="${s//$'\t'/\\t}"
+  printf '%s' "$s"
+}
+
+emit_additional_context() {
+  local ctx escaped
+  ctx="$1"
+  escaped="$(json_escape "$ctx")"
+  printf '{"hookSpecificOutput":{"hookEventName":"PreToolUse","additionalContext":"%s"}}\n' "$escaped"
+}
+
+portable_stat_mtime_fast() {
+  local path="$1" out
+  if out="$(stat -f %m "$path" 2>/dev/null)"; then
+    printf '%s\n' "$out"
+  elif out="$(stat -c %Y "$path" 2>/dev/null)"; then
+    printf '%s\n' "$out"
+  else
+    python3 -c "import os, sys; print(int(os.path.getmtime(sys.argv[1])))" "$path"
+  fi
+}
+
 # ── Read stdin / detect Claude Code invocation ───────────────────────────────
 INPUT=$(cat)
-TOOL_NAME=$(printf '%s' "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null || true)
+TOOL_NAME=""
+case "$INPUT" in
+  *'"tool_name"'*'"Agent"'*) TOOL_NAME="Agent" ;;
+  *'"tool_name"'*'"task"'*) TOOL_NAME="task" ;;
+  *'"tool_name"'*'"delegate"'*) TOOL_NAME="delegate" ;;
+esac
 
 # Only process Agent tool calls (task / delegate are aliases used in some setups)
 if [ -n "$TOOL_NAME" ] && [ "$TOOL_NAME" != "Agent" ] && \
@@ -71,15 +103,20 @@ CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 
 POLICY="main_worktree"  # safe default
 if [ -f "$CONFIG_FILE" ]; then
-  extracted=$(grep -A5 '^orchestration:' "$CONFIG_FILE" 2>/dev/null \
-    | grep 'sub_agent_cwd:' \
-    | head -1 \
-    | sed 's/.*sub_agent_cwd:\s*//' \
-    | sed 's/\s*#.*//' \
-    | tr -d '[:space:]' || true)
-  if [ -n "$extracted" ]; then
-    POLICY="$extracted"
-  fi
+  in_orchestration=0
+  while IFS= read -r line; do
+    case "$line" in
+      orchestration:*) in_orchestration=1; continue ;;
+      [![:space:]]*) [ "$in_orchestration" -eq 1 ] && break ;;
+    esac
+    if [ "$in_orchestration" -eq 1 ] && [[ "$line" == *sub_agent_cwd:* ]]; then
+      extracted="${line#*:}"
+      extracted="${extracted%%#*}"
+      extracted="${extracted//[[:space:]]/}"
+      [ -n "$extracted" ] && POLICY="$extracted"
+      break
+    fi
+  done < "$CONFIG_FILE"
 else
   log_event "yaml_missing" "cognitive-os.yaml not found"
   exit 0
@@ -102,11 +139,11 @@ CACHE_FILE="${CWD_INJECT_CACHE_FILE:-$COS_DIR/cwd-inject-cache.json}"
 _worktrees_mtime() {
   local wt_dir="$PROJECT_DIR/.git/worktrees"
   if [ -d "$wt_dir" ]; then
-    portable_stat_mtime "$wt_dir" 2>/dev/null || echo "0"
+    portable_stat_mtime_fast "$wt_dir" 2>/dev/null || echo "0"
   else
     # No worktrees dir (single-worktree repo) — use mtime of .git itself as
     # a stable proxy; changes only when repo structure changes.
-    portable_stat_mtime "$PROJECT_DIR/.git" 2>/dev/null || echo "0"
+    portable_stat_mtime_fast "$PROJECT_DIR/.git" 2>/dev/null || echo "0"
   fi
 }
 
@@ -116,16 +153,17 @@ _worktrees_mtime() {
 _cache_read() {
   [ ! -f "$CACHE_FILE" ] && return 0
 
-  local cached_path cached_mtime current_mtime
-  # Use jq if available for reliable JSON parsing; fall back to grep+sed.
-  if command -v jq >/dev/null 2>&1; then
-    cached_path=$(jq -r '.path // empty' "$CACHE_FILE" 2>/dev/null || true)
-    cached_mtime=$(jq -r '.mtime // empty' "$CACHE_FILE" 2>/dev/null || true)
+  local cache_content cached_path cached_mtime current_mtime
+  cache_content="$(< "$CACHE_FILE")"
+  if [[ "$cache_content" =~ \"path\"[[:space:]]*:[[:space:]]*\"([^\"]*)\" ]]; then
+    cached_path="${BASH_REMATCH[1]}"
   else
-    cached_path=$(grep '"path"' "$CACHE_FILE" 2>/dev/null \
-      | sed 's/.*"path"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/' || true)
-    cached_mtime=$(grep '"mtime"' "$CACHE_FILE" 2>/dev/null \
-      | sed 's/.*"mtime"[[:space:]]*:[[:space:]]*\([0-9]*\).*/\1/' || true)
+    cached_path=""
+  fi
+  if [[ "$cache_content" =~ \"mtime\"[[:space:]]*:[[:space:]]*([0-9]+) ]]; then
+    cached_mtime="${BASH_REMATCH[1]}"
+  else
+    cached_mtime=""
   fi
 
   [ -z "$cached_path" ] && return 0
@@ -136,7 +174,6 @@ _cache_read() {
   # Cache is valid when stored mtime >= current mtime (no new worktree events)
   if [ "$cached_mtime" -ge "$current_mtime" ] 2>/dev/null; then
     TARGET_DIR="$cached_path"
-    log_event "cache_hit" "policy=$POLICY target=$cached_path mtime=$cached_mtime"
   fi
   return 0
 }
@@ -150,17 +187,8 @@ _cache_write() {
   local ts
   ts="$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo "unknown")"
   mkdir -p "$(dirname "$CACHE_FILE")" 2>/dev/null || return 0
-  if command -v jq >/dev/null 2>&1; then
-    jq -n \
-      --arg path "$path" \
-      --argjson mtime "$mtime" \
-      --arg cached_at "$ts" \
-      '{"path":$path,"mtime":$mtime,"cached_at":$cached_at}' \
-      > "$CACHE_FILE" 2>/dev/null || true
-  else
-    printf '{"path":"%s","mtime":%s,"cached_at":"%s"}\n' \
-      "$path" "$mtime" "$ts" > "$CACHE_FILE" 2>/dev/null || true
-  fi
+  printf '{"path":"%s","mtime":%s,"cached_at":"%s"}\n' \
+    "$(json_escape "$path")" "$mtime" "$ts" > "$CACHE_FILE" 2>/dev/null || true
 }
 
 # ── Parse worktree list once ─────────────────────────────────────────────────
@@ -231,27 +259,21 @@ if [ -z "$TARGET_DIR" ]; then
   exit 0
 fi
 
-log_event "injected" "policy=$POLICY target=$TARGET_DIR"
+if [ "${CWD_INJECT_VERBOSE_METRICS:-0}" = "1" ]; then
+  log_event "injected" "policy=$POLICY target=$TARGET_DIR"
+fi
 
 # ── Build and emit additionalContext ─────────────────────────────────────────
 CONTEXT="WORKING DIR: $TARGET_DIR
 (Auto-resolved by agent-working-dir-inject.sh per cognitive-os.yaml orchestration.sub_agent_cwd=$POLICY)
-Use absolute paths under this directory. Commits land on the branch checked out at that path."
+MUST scope git operations to this worktree, not the caller cwd.
+Example: git -C \"$TARGET_DIR\" status
+Alternative: cd \"$TARGET_DIR\" && git status
+Use absolute paths under $TARGET_DIR.
+Commits land on the branch checked out at $TARGET_DIR."
 
 if [ "$HAS_VALID_INPUT" -eq 1 ]; then
-  # Prefer jq (no python3 startup cost); fall back to python3 if jq unavailable.
-  if command -v jq >/dev/null 2>&1; then
-    jq -n \
-      --arg ctx "$CONTEXT" \
-      '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:$ctx}}'
-  else
-    printf '%s' "$CONTEXT" | python3 -c "
-import json, sys
-ctx = sys.stdin.read()
-out = {'hookSpecificOutput': {'hookEventName': 'PreToolUse', 'additionalContext': ctx}}
-sys.stdout.write(json.dumps(out))
-"
-  fi
+  emit_additional_context "$CONTEXT"
 else
   # Manual / test invocation — emit to stderr for diagnostic visibility
   printf '%s\n' "$CONTEXT" >&2
