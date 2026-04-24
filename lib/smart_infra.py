@@ -87,7 +87,7 @@ SERVICE_COMPOSE_MAP: Dict[str, Dict[str, Any]] = {
     "nemo-guardrails": {
         "compose_services": ["nemo-guardrails"],
         "health_container": "cognitive-os-nemo-guardrails",
-        "profile": None,
+        "profile": "guardrails",  # ADR-060: opt-in only. docker compose --profile guardrails up
     },
     "paperclip": {
         "compose_services": ["paperclip"],
@@ -107,7 +107,7 @@ SERVICE_COMPOSE_MAP: Dict[str, Dict[str, Any]] = {
     "jupyter": {
         "compose_services": ["jupyter"],
         "health_container": "cognitive-os-jupyter",
-        "profile": None,
+        "profile": "jupyter",  # ADR-060: opt-in only. docker compose --profile jupyter up
     },
     # ADR-060 (2026-04-24): cloud-only observability compose entry removed.
     "automaker": {
