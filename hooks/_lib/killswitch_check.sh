@@ -50,6 +50,16 @@ if [ -z "$_ks_project_dir" ]; then
 fi
 _ks_flag="${_ks_project_dir:-.}/.cognitive-os/runtime/hook-killswitch.flag"
 
+# ── A/B benchmark master kill-switch ─────────────────────────────────
+# COS_DISABLE_ALL_GOVERNANCE=1 disables EVERY hook (including the critical
+# whitelist below). This is the "vanilla baseline" mode used by the
+# so-vs-vanilla benchmark harness to measure governance value empirically.
+# Only literal "1" disables — empty/"0"/"false" are NO-OPs.
+if [ "${COS_DISABLE_ALL_GOVERNANCE:-}" = "1" ]; then
+  unset _ks_project_dir _ks_flag _ks_dir
+  exit 0
+fi
+
 # ── Check killswitch: flag file OR SO_KILLSWITCH=1 env var (ADR-028 Q#5) ─────
 # The env-var fallback preserves emergency-stop capability when the disk is full
 # and the flag file cannot be written.
