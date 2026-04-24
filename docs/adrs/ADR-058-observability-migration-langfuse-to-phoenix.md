@@ -196,6 +196,35 @@ Exit criterion: `grep -riE 'langfuse' docker-compose.cognitive-os.yml scripts/ h
 Exit criterion: Langfuse leaves zero artifacts on operator workstations and in
 the repository except for historical references in ADRs.
 
+### Phase 4 — Integration coverage (DELIVERED 2026-04-24)
+
+> Parallel-track milestone alongside "Phase 4 — Final cleanup" above. The
+> cleanup phase targets operator workstation hygiene (volume + catalog
+> cleanup); this phase targets *developer-side* test coverage of the new
+> trace sink.
+
+tests/integration/test_record_completion_sends_trace_to_phoenix.py
+verifies the OTel sink reaches a live Phoenix collector end-to-end
+(span created → flushed → queryable via phoenix.Client).
+
+Fixtures start `phoenix serve` as a subprocess (no Docker required)
+and query back using the arize-phoenix Python client. Gated by
+`arize-phoenix` installation; skips cleanly when the optional extra
+isn't enabled. Target runtime: <60s.
+
+Closes the Phase 4 gap noted in earlier commits: the sink migration
+had unit-level mocks but no end-to-end validation that OTel attrs
+actually round-trip through a real collector.
+
+Companion change: the two Langfuse e2e tests in
+`tests/integration/test_e2e_flows.py`
+(`test_send_trace_to_langfuse` and
+`test_record_completion_sends_trace_to_langfuse`) were removed in the
+same commit since they exercised the deprecated ingestion path. Shared
+fixtures (`_build_langfuse_env`, `observability_stack`, `langfuse_stack`)
+were retained because they are still consumed by sibling health-check
+tests which Phase 3 will remove wholesale.
+
 ---
 
 ## Consequences
