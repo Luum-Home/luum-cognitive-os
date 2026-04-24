@@ -109,6 +109,7 @@
 | audit-website | 6-category website audit (SEO, Performance, Security, Content/UX, Accessibility, Schema.org) | `/audit-website` | project |
 | persistent-agent | Create persistent agents with state across sessions: identity profile, event log | `/create-persistent-agent` | project |
 | planning-poker | Multi-agent Planning Poker: 3 independent complexity estimates, divergence detection | `/planning-poker` | project |
+| cost-predictor | Predict task cost from historical metrics, routing defaults, and measured model prices | `/cost-predict` | project |
 | run-tests | Auto-detect project test framework and run tests with structured pass/fail reporting | `/run-tests` | project |
 | install-recommended | Detect project stack and recommend relevant skills to install | `/install-recommended` | project |
 | repo-forensics | Deep forensic analysis of git repos: clone, scan all code, deps, architecture, tools, features, COS comparison | `/repo-forensics` | both |
