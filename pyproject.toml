@@ -61,6 +61,13 @@ semantic = [
 direct_providers = [
     "openai>=1.50",
 ]
+# ADR-062 Phase 3 / ADR-063 — Official Claude Agent SDK (Python, MIT license).
+# Opt-in: only needed when ANTHROPIC_API_KEY is set and claude_sdk provider is used.
+# Required: Python ≥ 3.10, live ANTHROPIC_API_KEY (pay-per-token).
+# Install with: uv sync --extra claude-sdk
+claude-sdk = [
+    "claude-agent-sdk>=0.1",
+]
 testing = [
     "pytest>=8.0",
     "pytest-asyncio>=0.23",
