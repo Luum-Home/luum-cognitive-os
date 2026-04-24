@@ -21,9 +21,86 @@ A service may exist in Docker Compose without being part of the default Cognitiv
 | `cognee` | `cognee` | `pip` | Optional memory/knowledge extension | Knowledge graph and memory retrieval. Default path should not require a running HTTP service. |
 | `valkey` | `valkey` | `on_demand` | Optional local backend | Redis-compatible bus/cache backend. Valkey is the only allowed Redis-compatible server; file fallback remains valid for single-session use. |
 | `jupyter` | `jupyter` | `pip` | Optional compute extension | Notebook/data/ML sandbox. Useful for compute tasks, not required for governance or portability. |
-| `automaker` | `automaker` | not managed by smart infrastructure | Reference UI integration | Kanban-style AI development studio reference. It should not become a default OS dependency without a product proof path. |
+| `automaker` | `automaker` | `on_demand` | Optional UI extension | Kanban-style AI development studio reference. It should not become a default OS dependency without a product proof path. |
 | `webhook-trigger` | `webhook-trigger` | not managed by smart infrastructure | Optional automation extension | GitHub webhook automation for SDD-style pipelines. It is profile-gated and should remain opt-in. |
 | `cos-dashboard` | `cos-dashboard` | not managed by smart infrastructure | Optional UI extension | Web management UI. It should support, not define, the core product promise. |
+
+## Service-by-Service Decisions
+
+### Guardrails
+
+`nemo_guardrails` is an optional in-process guardrails extension. The Docker server is reference material for compatibility and integration testing. Runtime and default onboarding should prefer Python package usage through `lib/guardrails_validators.py` and `hooks/guardrails-validator.sh`, with regex/local fallbacks when optional packages are absent.
+
+Decision:
+
+- Keep `nemo_guardrails.mode: pip`.
+- Do not require `nemo-guardrails` HTTP server in default tests.
+- Treat the HTTP server as a reference stack, not a core policy engine.
+
+### Governance And Dashboards
+
+`paperclip`, `automaker`, and `cos-dashboard` are UI or coordination extensions. They may become valuable product surfaces later, but they are not the durable kernel and should not dominate first-run docs.
+
+Decision:
+
+- Keep `paperclip.mode: on_demand` because it has a real governance/dashboard role.
+- Keep `automaker.mode: on_demand` and profile-gated.
+- Keep `cos-dashboard` profile-gated and unmanaged by default until it has a product proof path.
+- Do not make dashboard availability a default CI or self-install requirement.
+
+### Memory
+
+Engram, MemU, and Cognee should not all compete as equal memory centers.
+
+Decision:
+
+- Engram is the session/decision memory path for durable human-agent continuity when the MCP/tool is available.
+- JSONL/local files remain the always-on fallback and source of audit truth.
+- Cognee is an optional knowledge-graph/retrieval extension for projects that need structured memory or graph search.
+- MemU is an optional proactive-memory extension and must prove a non-overlapping role before it is promoted.
+- Neither Cognee nor MemU may become a default HTTP dependency for core operation.
+
+### Observability
+
+`mlflow` is the lightweight default exporter. `langfuse` and `opik` are optional/reference observability platforms.
+
+Decision:
+
+- Keep `mlflow.mode: pip`.
+- Keep `langfuse.mode: disabled`.
+- Keep `opik.mode: cloud`.
+- Keep local Langfuse/Opik Compose stacks for explicit integration/reference lanes only.
+
+### Automation
+
+`webhook-trigger` is an automation extension for GitHub-driven SDD pipelines. It should remain profile-gated because webhook infrastructure is not needed for local agent governance.
+
+Decision:
+
+- Keep `webhook-trigger` out of the default runtime manager until a concrete installation path exists.
+- Keep it behind the `automation` Compose profile.
+- Test that it remains available as an explicit extension, not as a default product claim.
+
+### Compute
+
+`jupyter` is a compute extension for notebook/data/ML work. It is useful, but it does not define coding-agent governance.
+
+Decision:
+
+- Keep `jupyter.mode: pip`.
+- Treat the Docker notebook as reference/CI material.
+- Do not start Jupyter from default hooks or onboarding.
+
+### Bus And Cache
+
+`valkey` is the only Redis-compatible backend allowed for Cognitive OS local bus/cache behavior.
+
+Decision:
+
+- Keep `valkey.mode: on_demand`.
+- Keep Docker Valkey profile-gated for legacy/CI use.
+- Do not add a `redis` service or `redis:*` image.
+- Code may use Redis-protocol clients when necessary, but the running backend contract is Valkey.
 
 ## Heavy Stack Boundaries
 
