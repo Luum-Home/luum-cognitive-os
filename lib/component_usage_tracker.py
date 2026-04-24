@@ -238,6 +238,65 @@ class ComponentUsageTracker:
             "usage_pct": round(usage_pct, 1),
         }
 
+    def generate_quick_health_report(self) -> dict:
+        """Fast health snapshot for startup hooks.
+
+        This intentionally avoids the expensive lib import scan so SessionStart
+        hooks can emit a lightweight advisory without walking the entire repo.
+        """
+        hooks = self.scan_hook_registrations()
+        skills = self.scan_skill_metrics()
+
+        total_rules = 0
+        referenced_rules = 0
+        if self.rules_dir.exists():
+            total_rules = len(
+                [
+                    p for p in self.rules_dir.glob("*.md")
+                    if p.name != "RULES-COMPACT.md"
+                ]
+            )
+        if self.rules_compact.exists():
+            referenced_rules = total_rules
+
+        dead_hooks = len(hooks["exists_but_unregistered"])
+        dead_skills = len(skills["never_invoked"])
+        dead_rules = 0 if referenced_rules == total_rules else total_rules - referenced_rules
+
+        total_components = (
+            len(hooks["files_exist"])
+            + total_rules
+            + skills["total_skills"]
+        )
+        total_dead = dead_hooks + dead_rules + dead_skills
+        health_pct = (
+            (total_components - total_dead) / total_components * 100
+            if total_components
+            else 100.0
+        )
+
+        return {
+            "hooks": hooks,
+            "rules": {
+                "total_rules": total_rules,
+                "referenced_rules": referenced_rules,
+                "coverage_pct": round(
+                    (referenced_rules / total_rules * 100) if total_rules else 100.0,
+                    1,
+                ),
+            },
+            "skills": skills,
+            "dead_weight": {
+                "hooks": hooks["exists_but_unregistered"],
+                "rules": [] if referenced_rules == total_rules else ["rules-drift"],
+                "skills": skills["never_invoked"],
+                "total_dead": total_dead,
+                "total_components": total_components,
+                "health_pct": round(health_pct, 1),
+                "mode": "quick",
+            },
+        }
+
     def generate_usage_report(self) -> dict:
         """Run all scans and generate a comprehensive report."""
         hooks = self.scan_hook_registrations()
