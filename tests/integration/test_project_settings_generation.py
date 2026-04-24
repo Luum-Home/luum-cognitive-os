@@ -55,6 +55,15 @@ def extract_hook_filenames(settings_json):
     return filenames
 
 
+def source_hook_allows_default_scope(filename):
+    """Mirror cos-init project/both scope filtering for full external installs."""
+    hook = PROJECT_ROOT / "hooks" / filename
+    if not hook.exists():
+        return True
+    first_lines = "\n".join(hook.read_text(errors="replace").splitlines()[:3])
+    return "SCOPE: os-only" not in first_lines
+
+
 class TestGenerateProjectSettings:
     """Tests for scripts/generate-project-settings.sh."""
 
@@ -126,12 +135,15 @@ class TestGenerateProjectSettings:
         assert minimal == standard, f"Legacy aliases should resolve to the same curated tier: {minimal ^ standard}"
 
     def test_full_mode_has_all_source_hooks_except_self_hosting(self):
-        """Full mode should include all hooks from source except self-hosting-only."""
+        """Full mode should include all project-installable hooks from source."""
         source_settings = json.loads(COS_SETTINGS.read_text())
         source_hooks = set(extract_hook_filenames(source_settings))
         full_hooks = set(extract_hook_filenames(run_generator("--full")))
         self_hosting = {"self-install.sh", "release-guard.sh"}
-        expected = source_hooks - self_hosting
+        expected = {
+            hook for hook in source_hooks
+            if hook not in self_hosting and source_hook_allows_default_scope(hook)
+        }
         assert expected == full_hooks, (
             f"Missing: {expected - full_hooks}, Extra: {full_hooks - expected}"
         )

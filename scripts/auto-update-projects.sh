@@ -197,6 +197,7 @@ while IFS= read -r project_path; do
     # Remove ONLY COS-managed components (namespaced under cos/).
     # Project-specific hooks/skills/templates outside cos/ are preserved.
     [ -d ".claude/rules/cos" ] && rm -rf .claude/rules/cos
+    [ -d ".cognitive-os/rules/cos" ] && rm -rf .cognitive-os/rules/cos
     [ -d ".cognitive-os/hooks/cos" ] && rm -rf .cognitive-os/hooks/cos
     [ -d ".cognitive-os/skills/cos" ] && rm -rf .cognitive-os/skills/cos
     [ -d ".cognitive-os/templates/cos" ] && rm -rf .cognitive-os/templates/cos
