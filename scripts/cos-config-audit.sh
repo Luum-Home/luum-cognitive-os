@@ -160,11 +160,11 @@ def _iter_settings_hook_groups(data: dict) -> list[tuple[str, list]]:
 
 def _check_session_watchdog(root: Path):
     lib_ok = _exists("lib/session_watchdog_lib.py")
-    script_ok = _exists("scripts/so-session-watchdog.py")
+    script_ok = _exists("scripts/so_session_watchdog.py")
     if not lib_ok:
         return ("ASPIR", "lib/session_watchdog_lib.py missing — no implementation")
     if not script_ok:
-        return ("ASPIR", "lib exists but scripts/so-session-watchdog.py missing")
+        return ("ASPIR", "lib exists but scripts/so_session_watchdog.py missing")
     # Singleton launcher hook (ADR-047 Phase A auto-start) is the canonical
     # auto-start mechanism. Fall back to launchd/systemd/Makefile or any
     # hook referencing so-session-watchdog for backwards compatibility.
@@ -185,7 +185,7 @@ def _check_session_watchdog(root: Path):
         return ("IMPL", f"lib + script present; auto-start wired via {autostart[0]}")
     return (
         "PARTIAL",
-        "lib/session_watchdog_lib.py + scripts/so-session-watchdog.py exist "
+        "lib/session_watchdog_lib.py + scripts/so_session_watchdog.py exist "
         "but no auto-start found (no hook launch, no launchd/systemd/Makefile target)",
     )
 
@@ -585,18 +585,18 @@ def _check_docs_convention_enforcement(root: Path):
     Required pieces:
       - lib/docs_writer.py (shared writer utility)
       - lib/project_scaffolder.py (already shipped by ADR-054)
-      - scripts/project-scaffold.py (CLI)
-      - scripts/security-audit-writer.py (persistence sidecar)
-      - scripts/rules-export.py (standards exporter)
+      - scripts/project_scaffold.py (CLI)
+      - scripts/security_audit_writer.py (persistence sidecar)
+      - scripts/rules_export.py (standards exporter)
       - hooks/project-docs-convention.sh (soft-warn hook)
       - skills/rules-export/SKILL.md
     """
     required = [
         "lib/docs_writer.py",
         "lib/project_scaffolder.py",
-        "scripts/project-scaffold.py",
-        "scripts/security-audit-writer.py",
-        "scripts/rules-export.py",
+        "scripts/project_scaffold.py",
+        "scripts/security_audit_writer.py",
+        "scripts/rules_export.py",
         "hooks/project-docs-convention.sh",
         "skills/rules-export/SKILL.md",
     ]

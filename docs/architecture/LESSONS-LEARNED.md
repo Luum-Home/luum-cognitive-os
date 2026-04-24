@@ -57,7 +57,7 @@
 
 **Prevention:**
 - CI gate with mutation score threshold (cosmic-ray in `.github/workflows/test-quality.yml`)
-- Pre-commit blocker for structural-only tests (`scripts/check-test-quality.py`)
+- Pre-commit blocker for structural-only tests (`scripts/check_test_quality.py`)
 - Rule: tests must execute code (subprocess, import, function call) — file existence is not enough
 
 ---

@@ -30,7 +30,7 @@ Emits three structured runbook templates under `docs/06-backoffice/`:
 ## Invocation
 
 ```
-uv run python3 scripts/ops-runbook.py \
+uv run python3 scripts/ops_runbook.py \
   --project-dir /path/to/adopter-project \
   [--project-name "Human Name"]
 ```
@@ -56,7 +56,7 @@ Each of the three files has its own `<!-- ops-runbook:autogen-header -->` … `<
 ## Verification
 
 ```bash
-uv run python3 scripts/ops-runbook.py --project-dir /tmp/test-ops
+uv run python3 scripts/ops_runbook.py --project-dir /tmp/test-ops
 ls /tmp/test-ops/docs/06-backoffice/  # operations.md admin-processes.md monitoring.md
 grep -q "Rollback" /tmp/test-ops/docs/06-backoffice/operations.md
 grep -q "SLOs" /tmp/test-ops/docs/06-backoffice/monitoring.md

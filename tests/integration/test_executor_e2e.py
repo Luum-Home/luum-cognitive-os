@@ -32,7 +32,7 @@ import pytest
 # ---------------------------------------------------------------------------
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-EXECUTOR_SCRIPT = REPO_ROOT / "scripts" / "cos-executor.py"
+EXECUTOR_SCRIPT = REPO_ROOT / "scripts" / "cos_executor.py"
 
 # Ensure lib/ symlinks are resolvable for OrchestratorCapabilities import.
 if str(REPO_ROOT) not in sys.path:
@@ -40,7 +40,7 @@ if str(REPO_ROOT) not in sys.path:
 
 
 def _load_executor_module(project_dir: Path):
-    """Load scripts/cos-executor.py as an isolated module bound to *project_dir*."""
+    """Load scripts/cos_executor.py as an isolated module bound to *project_dir*."""
     assert EXECUTOR_SCRIPT.exists(), f"missing {EXECUTOR_SCRIPT}"
     os.environ["COGNITIVE_OS_PROJECT_DIR"] = str(project_dir)
 

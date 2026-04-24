@@ -1,7 +1,7 @@
 """Tests for hooks/session-watchdog-launcher.sh — ADR-047 Phase A auto-start.
 
 The launcher is a bash SessionStart hook that ensures a singleton daemon for
-scripts/so-session-watchdog.py is running. It MUST:
+scripts/so_session_watchdog.py is running. It MUST:
 
   * be idempotent — re-running with a live pidfile does NOT spawn a new daemon
   * clean up stale pidfiles (process dead) and spawn a fresh daemon
@@ -33,7 +33,7 @@ def _make_project(tmp_path: Path, *, yaml_enabled: bool | None = True,
                   include_watchdog_script: bool = True) -> Path:
     """Create a minimal fake project dir that the launcher can operate on.
 
-    - Writes a stub scripts/so-session-watchdog.py that exits immediately
+    - Writes a stub scripts/so_session_watchdog.py that exits immediately
       (so no real daemon lingers during tests).
     - Writes cognitive-os.yaml with the requested session_watchdog.enabled.
     - Creates hooks/_lib/killswitch_check.sh as a no-op source file.
@@ -59,7 +59,7 @@ def _make_project(tmp_path: Path, *, yaml_enabled: bool | None = True,
             time.sleep(0.5)
             sys.exit(0)
         """)
-        script_path = tmp_path / "scripts" / "so-session-watchdog.py"
+        script_path = tmp_path / "scripts" / "so_session_watchdog.py"
         script_path.write_text(stub)
         script_path.chmod(0o755)
 
@@ -169,10 +169,10 @@ def test_skips_if_daemon_already_running(tmp_path):
     runtime = project / ".cognitive-os" / "runtime"
 
     # Spawn a fake long-running process whose cmdline contains the watchdog signature.
-    # Use python so the cmdline reliably includes 'so-session-watchdog.py'.
+    # Use python so the cmdline reliably includes 'so_session_watchdog.py'.
     fake = subprocess.Popen(
         ["python3", "-c",
-         "import sys, time; sys.argv.append('so-session-watchdog.py'); time.sleep(30)"],
+         "import sys, time; sys.argv.append('so_session_watchdog.py'); time.sleep(30)"],
     )
     try:
         # Write pidfile pointing at the fake process

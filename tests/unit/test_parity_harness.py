@@ -1,4 +1,4 @@
-"""Tests for scripts/parity-harness.py (ADR-051 Phase 4).
+"""Tests for scripts/parity_harness.py (ADR-051 Phase 4).
 
 Covers:
   - YAML task-set loading (PyYAML path + minimal fallback)
@@ -26,8 +26,8 @@ if str(_REPO) not in sys.path:
 
 
 def _load_harness_module():
-    """Load scripts/parity-harness.py as a module (has a dash in the name)."""
-    path = _REPO / "scripts" / "parity-harness.py"
+    """Load scripts/parity_harness.py as a module (has a dash in the name)."""
+    path = _REPO / "scripts" / "parity_harness.py"
     spec = importlib.util.spec_from_file_location("parity_harness", str(path))
     module = importlib.util.module_from_spec(spec)
     # Register before exec so dataclasses' type lookups can find the module

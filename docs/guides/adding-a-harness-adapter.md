@@ -153,7 +153,7 @@ Reference: `packages/agent-lifecycle/lib/harness_adapter/aider_streaming.py`. It
 
 ### Routing to consumers
 
-The `cos-executor` daemon (`scripts/cos-executor.py`) subscribes to `cos:agent:*:*` and re-publishes normalised events on `cos:canonical:live`. Your adapter writes to `cos:agent:<id>:<suffix>` via `AgentPublisher` or falls through to the FallbackBus JSONL files — either way the daemon picks it up.
+The `cos-executor` daemon (`scripts/cos_executor.py`) subscribes to `cos:agent:*:*` and re-publishes normalised events on `cos:canonical:live`. Your adapter writes to `cos:agent:<id>:<suffix>` via `AgentPublisher` or falls through to the FallbackBus JSONL files — either way the daemon picks it up.
 
 ### Back-pressure
 

@@ -19,7 +19,7 @@ import pytest
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _HOOK = _REPO_ROOT / "hooks" / "self-knowledge-refresh.sh"
-_GENERATOR = _REPO_ROOT / "scripts" / "cos-build-self-knowledge.py"
+_GENERATOR = _REPO_ROOT / "scripts" / "cos_build_self_knowledge.py"
 
 
 def _run_hook(project_dir: Path, env: dict | None = None) -> subprocess.CompletedProcess:

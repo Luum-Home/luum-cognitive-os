@@ -1,4 +1,4 @@
-"""Tests for scripts/cos-test-quality-audit.py — classifier correctness.
+"""Tests for scripts/cos_test_quality_audit.py — classifier correctness.
 
 Five tests, each verifying a different classification tier on a known snippet.
 """
@@ -15,7 +15,7 @@ import pytest
 # Load the auditor module without triggering its __main__ block
 # ---------------------------------------------------------------------------
 
-_AUDITOR_PATH = Path(__file__).parent.parent.parent / "scripts" / "cos-test-quality-audit.py"
+_AUDITOR_PATH = Path(__file__).parent.parent.parent / "scripts" / "cos_test_quality_audit.py"
 
 
 def _load_auditor():

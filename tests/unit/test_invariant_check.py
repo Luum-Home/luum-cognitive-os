@@ -1,7 +1,7 @@
 """Behavioral tests for skills/invariant-check — ADR-059 Phase 1 pilot.
 
 The invariant-check skill has a real backing script:
-    scripts/invariant-check-helper.py
+    scripts/invariant_check_helper.py
 
 Tests validate the helper's contract directly (no LLM calls needed).
 """
@@ -15,7 +15,7 @@ from textwrap import dedent
 import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-HELPER = PROJECT_ROOT / "scripts" / "invariant-check-helper.py"
+HELPER = PROJECT_ROOT / "scripts" / "invariant_check_helper.py"
 
 pytestmark = pytest.mark.unit
 
@@ -27,7 +27,7 @@ pytestmark = pytest.mark.unit
 
 class TestInvariantCheckHelperExists:
     def test_helper_script_exists(self):
-        """SKILL.md references scripts/invariant-check-helper.py — it must exist."""
+        """SKILL.md references scripts/invariant_check_helper.py — it must exist."""
         assert HELPER.exists(), f"Missing backing script: {HELPER}"
 
     def test_helper_importable(self):

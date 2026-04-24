@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = PROJECT_ROOT / "scripts" / "test-run-inventory.py"
+SCRIPT = PROJECT_ROOT / "scripts" / "test_run_inventory.py"
 
 
 def _load_module():

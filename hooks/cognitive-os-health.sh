@@ -271,7 +271,7 @@ _daemon_check() {
   check "daemon:$name" "OK"
   daemon_summary="${daemon_summary:+$daemon_summary }${name}✓"
 }
-_daemon_check "session-watchdog" "$RUNTIME_DIR/session-watchdog.pid" "so-session-watchdog.py"
+_daemon_check "session-watchdog" "$RUNTIME_DIR/session-watchdog.pid" "so_session_watchdog.py"
 _daemon_check "reaper"           "$RUNTIME_DIR/reaper-heartbeat.pid" "so-reaper"
 
 # Summary line

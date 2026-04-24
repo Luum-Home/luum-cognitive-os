@@ -16,7 +16,7 @@ Expected: `ALL 4 CHECKS PASS`. If any fails, go to §5 Troubleshooting.
 ### 1.2 Check provider state
 
 ```bash
-python3 scripts/llm-status.py
+python3 scripts/llm_status.py
 ```
 
 Verify:
@@ -280,13 +280,13 @@ patterns (spike in claude calls, unknown skill_name) = investigate.
 ### 7.1 Daily totals
 
 ```bash
-python3 scripts/llm-status.py --days 1
+python3 scripts/llm_status.py --days 1
 ```
 
 ### 7.2 Monthly totals by provider
 
 ```bash
-python3 scripts/llm-status.py --days 30
+python3 scripts/llm_status.py --days 30
 ```
 
 ### 7.3 Raw ingestion for custom analysis
@@ -315,7 +315,7 @@ print(f'\${total:.4f}')
 |---|---|
 | `meta.llm_providers_reachable` in `cos-config-audit` | IMPL |
 | `scripts/smoke-qwen-fallback.sh` | 4/4 PASS |
-| `python3 scripts/llm-status.py` | ≥1 provider configured, no kill-switches |
+| `python3 scripts/llm_status.py` | ≥1 provider configured, no kill-switches |
 | `.cognitive-os/metrics/llm-dispatch.jsonl` | Writing records on each dispatch |
 | Unit tests | `pytest tests/unit/test_dispatch.py` all pass |
 

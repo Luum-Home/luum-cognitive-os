@@ -20,7 +20,7 @@ The COS currently operates in FIRE_AND_FORGET mode (banner: "Valkey ✅, Executo
 
 ## Decision
 
-Add a lightweight CLI helper `scripts/compose-agent-prompt.py` that the orchestrator calls **before** invoking the Agent tool. The script:
+Add a lightweight CLI helper `scripts/compose_agent_prompt.py` that the orchestrator calls **before** invoking the Agent tool. The script:
 
 1. Reads a draft task description from stdin (or a file).
 2. Scans for keyword matches against the traps defined in `templates/project-gotchas.md`.
@@ -41,7 +41,7 @@ This approach is:
 - Orchestrator's prompt and the hook's `additionalContext` no longer conflict; they say the same thing.
 - Trap warnings appear at the TOP of the prompt (highest attention), not appended as a footnote after hundreds of tokens.
 - Works today in FIRE_AND_FORGET mode without any infrastructure change.
-- Script is trivially testable: `echo "edit settings.json" | python3 scripts/compose-agent-prompt.py`.
+- Script is trivially testable: `echo "edit settings.json" | python3 scripts/compose_agent_prompt.py`.
 
 **Negative**:
 - Requires the orchestrator to consciously route draft prompts through the script. It is a behavioural mandate (`rules/orchestrator-prompt-compose.md`), not an automated gate. Violation is possible if the orchestrator skips the step.
@@ -73,7 +73,7 @@ Replace "edit settings.json" with "run apply-efficiency-profile.sh" inline in th
 
 ## Implementation plan
 
-1. `scripts/compose-agent-prompt.py` — CLI implementation (this ADR's primary deliverable).
+1. `scripts/compose_agent_prompt.py` — CLI implementation (this ADR's primary deliverable).
 2. `rules/orchestrator-prompt-compose.md` — mandates usage, lists trigger keywords.
 3. Entry in `rules/RULES-COMPACT.md` under "Prompt Engineering".
 
@@ -86,13 +86,13 @@ The script reads traps from `templates/project-gotchas.md` at runtime. No hardco
 test -f docs/adrs/ADR-032-orchestrator-trap-preview.md
 
 # AC2: script exists and is executable
-test -x scripts/compose-agent-prompt.py
+test -x scripts/compose_agent_prompt.py
 
 # AC3: trap match produces warning
-echo "edit .claude/settings.json" | python3 scripts/compose-agent-prompt.py | grep -q "apply-efficiency-profile"
+echo "edit .claude/settings.json" | python3 scripts/compose_agent_prompt.py | grep -q "apply-efficiency-profile"
 
 # AC4: no match passes through unchanged
-output=$(echo "refactor user.go" | python3 scripts/compose-agent-prompt.py)
+output=$(echo "refactor user.go" | python3 scripts/compose_agent_prompt.py)
 echo "$output" | grep -qv "TRAPS DETECTED"
 
 # AC5: RULES-COMPACT entry exists

@@ -1,7 +1,7 @@
 """
 tests/integration/test_aspirational_audit.py
 
-Behavioral tests for scripts/aspirational-audit.py.
+Behavioral tests for scripts/aspirational_audit.py.
 All tests use tmp_path with synthetic project structures.
 """
 from __future__ import annotations
@@ -24,7 +24,7 @@ import importlib.util as _ilu
 
 _spec = _ilu.spec_from_file_location(
     "aspirational_audit",
-    REPO_ROOT / "scripts" / "aspirational-audit.py",
+    REPO_ROOT / "scripts" / "aspirational_audit.py",
 )
 aa = _ilu.module_from_spec(_spec)  # type: ignore[arg-type]
 _spec.loader.exec_module(aa)  # type: ignore[union-attr]

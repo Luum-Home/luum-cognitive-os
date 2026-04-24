@@ -75,7 +75,7 @@ Symlink at old path, detected by wiring-check:
 hooks/engram-auto-sync.sh -> ../packages/cos-memory-engram/hooks/engram-auto-sync.sh
 ```
 
-`hooks/registration-check.sh` resolves symlinks before checking file presence. `scripts/check-hook-registration.py` logs a DEPRECATION warning whenever it sees a symlink. At v1.0+2, the `check-upstream-changes.sh` pipeline fails the build if any shim remains.
+`hooks/registration-check.sh` resolves symlinks before checking file presence. `scripts/check_hook_registration.py` logs a DEPRECATION warning whenever it sees a symlink. At v1.0+2, the `check-upstream-changes.sh` pipeline fails the build if any shim remains.
 
 ---
 
