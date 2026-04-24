@@ -21,7 +21,8 @@ web = [
     "uvicorn>=0.23",
 ]
 observability = [
-    "opik>=1.0",
+    # ADR-060 (2026-04-24): cloud-only observability backend removed — see
+    # ADR-060 for the local-only policy. Phoenix is the single surface.
     # ADR-058 (2026-04-24): Phoenix is the LLM-native trace UI (former backend retired).
     # arize-phoenix: full UI server (run via `uv run phoenix serve`).
     # arize-phoenix-otel: OTel exporter used by lib/record_completion.py.

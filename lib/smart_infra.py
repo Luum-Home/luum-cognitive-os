@@ -66,7 +66,8 @@ SKILL_SERVICE_MAP: Dict[str, List[str]] = {
     "knowledge-graph": ["cognee"],
     "cognee-search": ["cognee"],
     "jupyter": ["jupyter"],
-    "opik": ["opik"],
+    # ADR-060 (2026-04-24): cloud-only observability entry removed; Phoenix
+    # (pip) is the single observability surface now.
     "automaker": ["automaker"],
     "webhook-trigger": ["webhook-trigger"],
     "agent-bus": ["valkey"],
@@ -109,11 +110,7 @@ SERVICE_COMPOSE_MAP: Dict[str, Dict[str, Any]] = {
         "health_container": "cognitive-os-jupyter",
         "profile": None,
     },
-    "opik": {
-        "compose_services": ["opik-backend"],
-        "health_container": "cognitive-os-opik-backend",
-        "profile": "observability",
-    },
+    # ADR-060 (2026-04-24): cloud-only observability compose entry removed.
     "automaker": {
         "compose_services": ["automaker"],
         "health_container": "cognitive-os-automaker",

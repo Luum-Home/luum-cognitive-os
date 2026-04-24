@@ -37,7 +37,6 @@
 | generate-changelog | Move [Unreleased] CHANGELOG entries into a versioned release section | `/generate-changelog` | os |
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag | `/tag-release` | os |
 | push-release | Push the release commit and tags to remote — always requires explicit confirmation | `/push-release` | os |
-| opik-integration | Configure Opik for LLM observability, tracing, and evaluation | `/opik-setup` | os-dev |
 | cognee-integration | Configure Cognee for knowledge graph memory and MCP integration | `/cognee-setup` | os-dev |
 | deepeval-integration | LLM unit testing, trajectory eval, red teaming (60+ metrics) | `/deepeval-setup` | os-dev |
 | ragas-integration | Memory quality testing, retrieval eval, synthetic test generation | `/ragas-setup` | os-dev |
@@ -234,7 +233,6 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **metrics-calibrator** — Analyze KPI history and auto-calibrate thresholds for meaningful alerting
 - **model-optimizer** — Analyze skill execution metrics and recommend optimal model routing
 - **nemo-guardrails** — >
-- **opik-integration** — >
 - **optimize-skill** — Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras y refinando el prompt
 - **paperclip-dashboard** — View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent status, spend, org chart, notifications)
 - **pentest-self** — >
