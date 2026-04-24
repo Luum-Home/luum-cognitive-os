@@ -121,6 +121,27 @@ The latest run is linked at `.cognitive-os/reports/test-runs/latest`.
 Prefer this wrapper while reducing broad-suite failures so interrupted or
 partial runs remain analyzable across sessions.
 
+Each run also gets a test inventory:
+
+- `inventory.md` — human-readable repair queue, skipped/xfail/failure list,
+  slowest tests, and heuristic tags such as `optional-lane`, `drift`,
+  `aspirational`, `timeout`, and `false-positive-risk`.
+- `inventory.json` — machine-readable version for later dashboards, agents, or
+  repair automation.
+
+You can regenerate the inventory without rerunning pytest:
+
+```bash
+python3 scripts/test-run-inventory.py --run-dir .cognitive-os/reports/test-runs/latest
+```
+
+This wrapper is part of the Cognitive OS development workflow. It is paired
+with the OS-only `test-contract-repair` skill and should be used whenever
+maintainers repair or classify this repository's own test suite. Projects that
+install Cognitive OS should keep using their own test command, or a
+project-facing testing skill, unless they explicitly opt into Cognitive OS
+maintainer tooling.
+
 ### Without Docker (unit + behavior + system)
 
 ```bash
