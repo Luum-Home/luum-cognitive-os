@@ -37,6 +37,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Master Plan Checklist](business/master-plan-checklist.md) — living checklist for tracking execution progress against the master plan
 - [Feature Reality Audit](business/feature-reality-audit.md) — which feature areas are genuinely core, portable, and product-worthy versus still overextended or harness-advantaged
 - [Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) — validation snapshot and remaining work before merging the master-plan portability branch
+- [Full Suite Validation Report](reports/full-suite-validation-2026-04-23.md) — current full-suite evidence, passing proof paths, and remaining failure families
 
 ## Current Product Center
 

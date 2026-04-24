@@ -83,13 +83,24 @@ resolve_dest() {
 
 # ── Helper: create a symlink quickly and idempotently ─────────────────
 # Usage: ln_rel <target_abs> <link_abs>
-# We intentionally use absolute targets here: self-install runs inside a
-# single project root, so fast and reliable links matter more than
-# relocatable relative paths. Re-running self-install after moving the repo
-# rehydrates the links.
+# Prefer relative links inside the project so tracked self-hosting projections
+# do not capture a developer-specific absolute path. Fall back to absolute
+# targets only when python3 is unavailable.
 ln_rel() {
   local target="$1" link="$2"
-  ln -sfn "$target" "$link"
+  local link_dir rel_target
+  link_dir="$(dirname "$link")"
+  rel_target="$target"
+  if command -v python3 >/dev/null 2>&1; then
+    rel_target="$(python3 - "$target" "$link_dir" <<'PY'
+import os
+import sys
+
+print(os.path.relpath(sys.argv[1], sys.argv[2]))
+PY
+)"
+  fi
+  ln -sfn "$rel_target" "$link"
 }
 
 # ── Helper: sync directory as flat symlinks ───────────────────────────
@@ -114,9 +125,9 @@ sync_dir() {
     local base
     base="${file##*/}"
     local link="$dst/$base"
-    if [ ! -e "$link" ]; then
+    if [ ! -e "$link" ] || [ -L "$link" ]; then
+      [ ! -e "$link" ] && added=$((added + 1))
       ln_rel "$file" "$link"
-      added=$((added + 1))
     fi
   done
 }
@@ -215,6 +226,7 @@ CORE_RULES=(
   "agent-quality.md"
   "trust-score.md"
   "token-economy.md"
+  "definition-of-done.md"
   "phase-aware-agents.md"
   "closed-loop-prompts.md"
   "error-learning.md"
@@ -325,6 +337,18 @@ EXCLUDED_RULES=(
   "decomposition.md"               # contextual: covered by token-economy + model-routing
   "license-policy.md"              # contextual: license table reference
   "context-optimization.md"        # contextual: progressive loading reference
+  "context-management.md"          # contextual: context budget protocol; compact index carries active thresholds
+  "resource-governance.md"         # contextual: budget escalation reference; compact index carries active thresholds
+  "adversarial-review.md"          # contextual: review workflow detail; compact index carries requirement
+  "decision-depth-gate.md"         # contextual: deep-fix trigger; compact index carries summary
+  "agent-audit-before-commit.md"   # contextual: pre-commit audit workflow detail
+  "agent-output-reading.md"        # contextual: result-reading protocol reference
+  "llm-dispatch.md"                # contextual: dispatch runtime reference; compact index carries active kill-switches
+  "observability.md"               # contextual: observability reference
+  "orchestrator-prompt-compose.md" # contextual: prompt composition reference
+  "responsiveness.md"              # contextual: interaction timing guidance
+  "so-slo.md"                      # contextual: SO reliability SLO catalogue
+  "startup-protocol.md"            # contextual: session-start protocol detail; compact index carries reference
 )
 
 # Build the effective allowed-rules list based on profile.
@@ -365,9 +389,9 @@ if [[ "$SYNC_ALL_RULES" == "true" ]]; then
     [[ "$is_excluded" == "true" ]] && continue
     for rule_dir in "${rule_projection_dirs[@]}"; do
       link="$rule_dir/$base"
-      if [ ! -e "$link" ]; then
+      if [ ! -e "$link" ] || [ -L "$link" ]; then
+        [ ! -e "$link" ] && added=$((added + 1))
         ln_rel "$src" "$link"
-        added=$((added + 1))
       fi
     done
   done
@@ -388,9 +412,9 @@ else
     [ -f "$src" ] || continue
     for rule_dir in "${rule_projection_dirs[@]}"; do
       link="$rule_dir/$rule"
-      if [ ! -e "$link" ]; then
+      if [ ! -e "$link" ] || [ -L "$link" ]; then
+        [ ! -e "$link" ] && added=$((added + 1))
         ln_rel "$src" "$link"
-        added=$((added + 1))
       fi
     done
   done

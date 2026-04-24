@@ -1,7 +1,9 @@
 # Rules Functional Audit — Capa 3 Scorecard
 
 > **Read-only audit.** Project phase: `reconstruction` (empirical verification, no fixing).
-> **Generated:** 2026-04-16.
+> **Generated:** 2026-04-16. **Refresh note 2026-04-23:** previous missing
+> hooks `auto-verify.sh`, `auto-refine.sh`, and `dod-gate.sh` now exist on disk.
+> Remaining risk is non-default/allowlisted wiring unless noted otherwise.
 > **Scope:** every `.md` file in `rules/` (excluding `RULES-COMPACT.md` which is the index itself).
 
 ## Summary
@@ -11,7 +13,7 @@
 - **Hook-enforced-BROKEN (rule claims hook, hook exists but NOT registered)**: 8
 - **Agent-instruction-only (injected via `agent-preamble.md` / `agent-mandatory-rules.md` / referenced in `RULES-COMPACT.md`)**: 52
 - **Declarative-only (described as policy but no hook, no auto-injection, not in COMPACT)**: 19
-- **Code-dead (references hooks/scripts that do not exist)**: 6
+- **Code-dead (references hooks/scripts that do not exist)**: 2 known references remain in this historical scorecard (`response-length-check.sh`, `context-budget.sh`)
 
 > The user's question was "do the 20 rules in `rules/` enforce behavior or ornament?"
 > Reality: there are **107 rule files**, not 20. Only **21** are hook-enforced end-to-end.
@@ -147,16 +149,19 @@ Observed in the rules dir but NOT in COMPACT and NOT in CORE_RULES and NOT hook-
 > `RULES-COMPACT.md`. The pytest contract (`tests/audit/test_rules_enforcement.py`)
 > does this check exhaustively.
 
-### Code-dead (6)
+### Code-dead / Non-default wiring refresh
 
-Rule references a hook or script that **does not exist on disk**.
+This historical section originally mixed two risks: missing files and hooks that
+exist but are not in the active driver profile. After the 2026-04-23 refresh,
+`auto-verify.sh`, `auto-refine.sh`, and `dod-gate.sh` exist; they are tracked as
+non-default wiring debt until promoted or demoted explicitly.
 
 | Rule | Broken reference | What was meant? |
 |---|---|---|
-| `acceptance-criteria.md` | `hooks/auto-verify.sh` | Hook never built |
-| `agent-quality.md` | `hooks/auto-verify.sh` + `hooks/dod-gate.sh` | Both never built |
-| `closed-loop-prompts.md` | `hooks/auto-refine.sh` | Hook never built |
-| `phase-aware-agents.md` | `hooks/auto-refine.sh` | Same as above |
+| `acceptance-criteria.md` | `hooks/auto-verify.sh` | Exists; non-default wiring debt |
+| `agent-quality.md` | `hooks/auto-verify.sh` + `hooks/dod-gate.sh` | Exist; non-default wiring debt |
+| `closed-loop-prompts.md` | `hooks/auto-refine.sh` | Exists; non-default wiring debt |
+| `phase-aware-agents.md` | `hooks/auto-refine.sh` | Exists; non-default wiring debt |
 | `response-compression.md` | `hooks/response-length-check.sh` (via EXCLUDED_RULES comment) | Hook never built |
 | `context-optimization.md` | `hooks/context-budget.sh` | Hook never built (rule acknowledges: "not currently registered") |
 
@@ -169,7 +174,7 @@ Rule references a hook or script that **does not exist on disk**.
 | `clarification-gate` | yes | yes | no | yes | **YES** |
 | `content-policy` | yes | yes | no | yes | **YES** |
 | `trust-score` | yes (validator) | yes | partial (format in preamble) | yes | **YES** |
-| `acceptance-criteria` | NO (`auto-verify.sh`) | no | symlink only | yes | **NO** (code-dead) |
+| `acceptance-criteria` | yes (`auto-verify.sh`) | non-default | symlink only | yes | **PARTIAL** (allowlisted wiring debt) |
 | `audit-trail` | yes | NO | no | yes | **NO** (broken) |
 | `auto-rollback` | yes | NO | no | yes | **NO** (broken) |
 | `confidentiality-protection` | yes | NO | no | yes | **NO** (broken) |
@@ -193,18 +198,18 @@ readiness). Believing they are enforced while they are not is a trust violation.
 **Recommendation**: Either register the hooks in `settings.json`, or update the rule
 markdown to say "hook exists but not wired — run manually via `bash hooks/X.sh`".
 
-### [S1 BLOCKER] 6 rules reference nonexistent hooks
+### [S1 BLOCKER] Historical code-dead rules now partly resolved
 **Location**: `rules/acceptance-criteria.md` (`auto-verify.sh`),
 `rules/agent-quality.md` (`auto-verify.sh` + `dod-gate.sh`),
 `rules/closed-loop-prompts.md` (`auto-refine.sh`),
 `rules/phase-aware-agents.md` (`auto-refine.sh`),
 `rules/response-compression.md` (`response-length-check.sh`),
 `rules/context-optimization.md` (`context-budget.sh`).
-**What**: Rules describe a closed-loop verification mechanism that requires hooks which
-were never built.
+**What**: The first four hook references now exist but are not default active
+driver guarantees; the final two remain historical/future references.
 **Why**: Agents reading these rules may assume the verification runs automatically.
 It does not. Any agent self-claim of "DoD passed" has no automated evidence.
-**Recommendation**: Either build the hooks or rewrite the rules to make the verification
+**Recommendation**: Either promote hooks through driver/profile tests or rewrite the rules to make the verification
 explicitly manual (agent must run the commands itself and paste output).
 
 ### [S2 CONCERN] Only 9 rules of 107 are auto-injected into sub-agent context
