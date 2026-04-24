@@ -216,7 +216,7 @@ class TestMemuService:
 
 
 # ===========================================================================
-# 3. Cognee server (python:3.13-slim + pip install cognee[server])
+# 3. Cognee server (python:3.12-slim + pip install cognee[api])
 # ===========================================================================
 
 class TestCogneeServerService:
@@ -226,7 +226,7 @@ class TestCogneeServerService:
     Slow startup due to pip install at container boot.
     """
 
-    IMAGE = "python:3.13-slim"
+    IMAGE = "python:3.12-slim"
 
     @pytest.fixture(scope="class")
     def cognee_container(self, docker_available):
@@ -238,8 +238,8 @@ class TestCogneeServerService:
             .with_env("COGNEE_VECTOR_STORE", "lancedb")
             .with_command(
                 "bash -c '"
-                "pip install --quiet cognee[server] && "
-                "python -m cognee.api.server --host 0.0.0.0 --port 8000"
+                "pip install --quiet cognee[api] litellm==1.83.0 && "
+                "uvicorn cognee.api.client:app --host 0.0.0.0 --port 8000"
                 "'"
             )
         )
