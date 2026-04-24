@@ -50,6 +50,7 @@ def _run_precheck_python(queue_file: str, cmd_hash: str) -> str:
 
     result = sp.run(
         ["python3", "-c", py_code, queue_file, cmd_hash],
+        env={**os.environ, "COGNITIVE_OS_HOOK_ROOT": str(_PROJ_ROOT)},
         capture_output=True,
         text=True,
         timeout=5,
@@ -64,8 +65,8 @@ def _write_queue(queue_file: Path, items: list) -> None:
 
 
 def _read_queue(queue_file: Path) -> list:
-    with open(queue_file) as f:
-        return json.load(f)
+    queue = RateLimitQueue(state_path=str(queue_file))
+    return queue.peek()
 
 
 # ---------------------------------------------------------------------------
