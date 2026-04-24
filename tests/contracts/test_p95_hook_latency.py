@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import os
 import statistics
+import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List
@@ -28,6 +29,14 @@ _MAX_SAMPLE_AGE_HOURS = int(os.environ.get("COS_HOOK_MAX_SAMPLE_AGE_HOURS", "6")
 _HOOK_HEALTH = _ROOT / ".cognitive-os" / "metrics" / "hook-health.jsonl"
 
 
+def _first_present(mapping: dict, *names: str):
+    """Return the first present value, preserving legitimate zero values."""
+    for name in names:
+        if name in mapping:
+            return mapping.get(name)
+    return None
+
+
 def _load_samples() -> List[dict]:
     if not _HOOK_HEALTH.is_file():
         pytest.skip(f"no hook-health data at {_HOOK_HEALTH}")
@@ -40,21 +49,22 @@ def _load_samples() -> List[dict]:
             row = json.loads(line)
         except (json.JSONDecodeError, ValueError):
             continue
+        payload = {}
         # MetricEvent rows wrap fields in `payload`; legacy rows are flat.
         if "schema_version" in row and "payload" in row:
             payload = row["payload"] or {}
-            hook = payload.get("hook") or payload.get("hook_name") or payload.get("script")
-            dur = payload.get("duration_ms") or payload.get("elapsed_ms")
+            hook = _first_present(payload, "hook", "hook_name", "script")
+            dur = _first_present(payload, "duration_ms", "elapsed_ms")
         else:
-            hook = row.get("hook") or row.get("hook_name") or row.get("script")
-            dur = row.get("duration_ms") or row.get("elapsed_ms")
+            hook = _first_present(row, "hook", "hook_name", "script")
+            dur = _first_present(row, "duration_ms", "elapsed_ms")
         if hook is None or dur is None:
             continue
         try:
             rows.append({
                 "hook": str(hook),
                 "duration_ms": float(dur),
-                "timestamp": row.get("timestamp") or payload.get("timestamp"),
+                "timestamp": _first_present(row, "timestamp") or _first_present(payload, "timestamp"),
             })
         except (TypeError, ValueError):
             continue
@@ -153,3 +163,23 @@ def test_percentile_helper_handles_edges():
     assert _percentile([1, 2, 3, 4, 5], 1.0) == 5
     # p50 of evenly spaced values = the middle value
     assert _percentile([1, 2, 3, 4, 5], 0.5) == 3
+
+
+def test_load_samples_preserves_zero_duration_legacy_rows(tmp_path, monkeypatch):
+    """Regression: zero-ms hook samples are valid performance evidence."""
+    metrics = tmp_path / "hook-health.jsonl"
+    metrics.write_text(
+        "\n".join(
+            [
+                '{"timestamp":"2026-04-24T15:00:00Z","hook":"fast","duration_ms":0}',
+                '{"timestamp":"2026-04-24T15:00:01Z","hook":"slow","duration_ms":1000}',
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(sys.modules[__name__], "_HOOK_HEALTH", metrics)
+
+    rows = _load_samples()
+
+    assert [row["duration_ms"] for row in rows] == [0.0, 1000.0]
