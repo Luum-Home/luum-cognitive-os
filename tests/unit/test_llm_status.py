@@ -1,4 +1,4 @@
-"""Tests for scripts/llm-status.py — /llm-status skill (C4 of mega-plan).
+"""Tests for scripts/llm_status.py — /llm-status skill (C4 of mega-plan).
 
 Covers:
 - Env var detection (configured / unconfigured / redacted key display)
@@ -27,8 +27,8 @@ _REPO = Path(__file__).resolve().parent.parent.parent
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-# Load scripts/llm-status.py as a module (it's a script, not a package)
-_STATUS_PATH = _REPO / "scripts" / "llm-status.py"
+# Load scripts/llm_status.py as a module (it's a script, not a package)
+_STATUS_PATH = _REPO / "scripts" / "llm_status.py"
 _spec = importlib.util.spec_from_file_location("llm_status_under_test", _STATUS_PATH)
 _ls = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_ls)

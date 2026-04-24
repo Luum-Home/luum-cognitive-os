@@ -4,7 +4,7 @@
 # Renamed from cos-executor-heartbeat.sh (v0.15): this script launches a daemon, not a heartbeat.
 # Backwards-compat symlink: hooks/cos-executor-heartbeat.sh -> cos-executor-daemon-launcher.sh
 #
-# Starts scripts/cos-executor.py --daemon once per project. Single-instance
+# Starts scripts/cos_executor.py --daemon once per project. Single-instance
 # guard is inside the Python daemon itself (cos-executor.pid file).
 # On first run, also exports ORCHESTRATOR_MODE=executor for this session's
 # banner detection via .cognitive-os/runtime/orchestrator-mode.
@@ -13,7 +13,7 @@ set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
-DAEMON="$PROJECT_DIR/scripts/cos-executor.py"
+DAEMON="$PROJECT_DIR/scripts/cos_executor.py"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
 mkdir -p "$RUNTIME_DIR"
 

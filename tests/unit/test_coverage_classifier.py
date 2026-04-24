@@ -1,4 +1,4 @@
-"""Unit tests for scripts/cos-classify-coverage.py (ADR-041).
+"""Unit tests for scripts/cos_classify_coverage.py (ADR-041).
 
 Tests: path heuristics, override via tags, tier count sanity.
 """
@@ -14,7 +14,7 @@ import pytest
 
 # Load the module directly (filename has hyphens, not importable as package name)
 _SCRIPTS_DIR = Path(__file__).resolve().parent.parent.parent / "scripts"
-_MOD_PATH = _SCRIPTS_DIR / "cos-classify-coverage.py"
+_MOD_PATH = _SCRIPTS_DIR / "cos_classify_coverage.py"
 
 _spec = importlib.util.spec_from_file_location("cos_classify_coverage", _MOD_PATH)
 _mod = importlib.util.module_from_spec(_spec)  # type: ignore[arg-type]

@@ -49,20 +49,20 @@ This skill packages that technique into a repeatable, provider-agnostic tool.
 
 ```bash
 # Run the full 5-persona review over docs/
-uv run python3 scripts/doc-review-personas.py --docs-dir docs/
+uv run python3 scripts/doc_review_personas.py --docs-dir docs/
 
 # Pick specific lenses
-uv run python3 scripts/doc-review-personas.py --docs-dir docs/ \
+uv run python3 scripts/doc_review_personas.py --docs-dir docs/ \
     --personas cfo,editor_qa
 
 # JSON for programmatic consumption
-uv run python3 scripts/doc-review-personas.py --docs-dir docs/ --json
+uv run python3 scripts/doc_review_personas.py --docs-dir docs/ --json
 
 # Dry-run (no API calls; returns a plan)
-uv run python3 scripts/doc-review-personas.py --docs-dir docs/ --dry-run
+uv run python3 scripts/doc_review_personas.py --docs-dir docs/ --dry-run
 
 # Write to file
-uv run python3 scripts/doc-review-personas.py --docs-dir docs/ \
+uv run python3 scripts/doc_review_personas.py --docs-dir docs/ \
     --output-file review.md
 ```
 
@@ -161,8 +161,8 @@ severity** when two personas independently flag the same file+topic.
 
 ```bash
 uv run pytest tests/unit/test_doc_review_personas.py -v
-uv run python3 scripts/doc-review-personas.py --help
-uv run python3 scripts/doc-review-personas.py --docs-dir docs/ --personas editor_qa --dry-run
+uv run python3 scripts/doc_review_personas.py --help
+uv run python3 scripts/doc_review_personas.py --docs-dir docs/ --personas editor_qa --dry-run
 # Optional (requires ALIBABA_QWEN_API_KEY):
 bash scripts/smoke-doc-review-personas.sh
 ```

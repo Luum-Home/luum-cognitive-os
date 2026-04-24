@@ -30,7 +30,7 @@ Scaffolds `docs/03-dominio-riesgo/domain-model.md` in an adopting project. This 
 ## Invocation
 
 ```
-uv run python3 scripts/domain-model.py \
+uv run python3 scripts/domain_model.py \
   --project-dir /path/to/adopter-project \
   --brief "Describe the domain in one sentence"
 ```
@@ -66,7 +66,7 @@ A markdown file with these sections (all TODO-filled):
 ## Verification
 
 ```bash
-uv run python3 scripts/domain-model.py --project-dir /tmp/test-dm --brief "simple ecommerce" --json
+uv run python3 scripts/domain_model.py --project-dir /tmp/test-dm --brief "simple ecommerce" --json
 test -f /tmp/test-dm/docs/03-dominio-riesgo/domain-model.md
 grep -q "Bounded Contexts" /tmp/test-dm/docs/03-dominio-riesgo/domain-model.md
 ```

@@ -57,7 +57,7 @@ Before merging any significant change, check `docs/architecture/LESSONS-LEARNED.
 4. Add `disable-model-invocation: true` if user-only
 5. Add `effort: opus|sonnet|haiku` if model-specific
 6. Add entry to `skills/CATALOG.md`
-7. Run `scripts/generate-compact-catalog.py` to regenerate `CATALOG-COMPACT.md`
+7. Run `scripts/generate_compact_catalog.py` to regenerate `CATALOG-COMPACT.md`
 
 **Adding a config flag:**
 1. **DO NOT** add a flag without the code that reads it. `detect_dead_metadata` will flag it.
@@ -161,8 +161,8 @@ cr-report /tmp/mut.db
 - `scripts/setup.sh` — one-command environment setup
 - `scripts/doctor.sh` — 12 health checks
 - `scripts/engram-sync.sh` — cross-device memory
-- `scripts/check-test-quality.py` — AST-based test classifier
-- `scripts/generate-compact-catalog.py` — skill catalog regen
+- `scripts/check_test_quality.py` — AST-based test classifier
+- `scripts/generate_compact_catalog.py` — skill catalog regen
 - `hooks/_lib/file_checker.sh` — symlink-aware file checks
 - `hooks/_lib/dispatch_gate_check.py` — consolidated dispatch logic
 - `hooks/_lib/session_init_helper.py` — consolidated session init

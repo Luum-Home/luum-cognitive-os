@@ -46,7 +46,7 @@ bash scripts/pytest-with-summary.sh -- <pytest args>
 ```
 
 The wrapper automatically writes `inventory.md` and `inventory.json` via
-`scripts/test-run-inventory.py`. Use those files as the first triage surface
+`scripts/test_run_inventory.py`. Use those files as the first triage surface
 before rerunning a broad suite. They list failures, errors, skips, xfails,
 slow tests, and heuristic tags such as `optional-lane`, `drift`,
 `aspirational`, `timeout`, and `false-positive-risk`.

@@ -4,7 +4,7 @@
 ## Rule (Always Active)
 
 Before calling the Agent tool, the orchestrator MUST pipe the draft task prompt
-through `scripts/compose-agent-prompt.py` when the task description mentions any
+through `scripts/compose_agent_prompt.py` when the task description mentions any
 of the following trap-sensitive targets:
 
 | Keyword / pattern | Why dangerous |
@@ -21,7 +21,7 @@ of the following trap-sensitive targets:
 
 ```bash
 # Compose then pass to Agent tool
-augmented=$(echo "register new hook in settings.json" | python3 scripts/compose-agent-prompt.py)
+augmented=$(echo "register new hook in settings.json" | python3 scripts/compose_agent_prompt.py)
 # Use $augmented as the Agent prompt
 ```
 

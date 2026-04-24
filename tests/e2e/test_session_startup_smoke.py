@@ -549,7 +549,7 @@ def test_phase_a_ge_phase_b_threshold_invariant(repo_root: Path):
 
 def test_no_watchdog_process_leak_post_module(repo_root: Path):
     """PROGRESS: [step 7/7] After all tests in this module ran, the
-    global `pgrep -f so-session-watchdog.py` count MUST NOT be greater
+    global `pgrep -f so_session_watchdog.py` count MUST NOT be greater
     than what `lingering_watchdog_guard` observed at session start.
 
     This is a belt-and-braces check. The session-scoped fixture in
@@ -559,7 +559,7 @@ def test_no_watchdog_process_leak_post_module(repo_root: Path):
     """
     try:
         res = subprocess.run(
-            ["pgrep", "-f", "so-session-watchdog.py"],
+            ["pgrep", "-f", "so_session_watchdog.py"],
             capture_output=True,
             text=True,
             timeout=5,

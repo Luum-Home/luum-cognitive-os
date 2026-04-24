@@ -256,8 +256,8 @@ def test_expected_category_paths_returns_10(tmp_path: Path):
 
 
 def test_cli_scaffolds_in_tmp(tmp_path: Path):
-    """End-to-end: invoke scripts/project-scaffold.py as a real subprocess."""
-    script = Path(__file__).resolve().parents[2] / "scripts" / "project-scaffold.py"
+    """End-to-end: invoke scripts/project_scaffold.py as a real subprocess."""
+    script = Path(__file__).resolve().parents[2] / "scripts" / "project_scaffold.py"
     assert script.exists()
 
     result = subprocess.run(

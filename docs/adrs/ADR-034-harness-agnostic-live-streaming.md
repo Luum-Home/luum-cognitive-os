@@ -36,7 +36,7 @@ surface symptom that no daemon is bridging Valkey ↔ consumer.
 Introduce three components that together promote ADR-033's schema from a
 write-only sink to a **live, subscribable stream**:
 
-1. **`scripts/cos-executor.py`** — background daemon started at
+1. **`scripts/cos_executor.py`** — background daemon started at
    `SessionStart`, PID-locked like `hooks/reaper-heartbeat.sh`. It
    subscribes to the Valkey pattern `cos:agent:*:*` (or tails the
    `_FileFallback` JSONL when Valkey is down) and re-publishes
@@ -45,7 +45,7 @@ write-only sink to a **live, subscribable stream**:
    `ORCHESTRATOR_MODE=executor` for child processes via a state file so
    `orchestrator_capabilities.py` flips Executor to ✅.
 
-2. **`scripts/cos-watch.py`** — TUI consumer. `cos-watch <agent_id>` or
+2. **`scripts/cos_watch.py`** — TUI consumer. `cos-watch <agent_id>` or
    `cos-watch --latest`. Uses `rich.live` when available, falls back to
    a `\r`-refreshed plain-text panel. Shows: `agent_id`, elapsed,
    model, token usage (in/out/cache), tool count, last 5 `PROGRESS`
@@ -214,9 +214,9 @@ W3 proven).
 
 1. `docs/adrs/ADR-034-harness-agnostic-live-streaming.md` exists and
    contains sections 1-7 (this file).
-2. `scripts/cos-executor.py --daemon` starts, writes PID file,
+2. `scripts/cos_executor.py --daemon` starts, writes PID file,
    replies `ALIVE` to `cos-executor.py --status`.
-3. `scripts/cos-watch.py --agent-id test-123 --once` renders a single
+3. `scripts/cos_watch.py --agent-id test-123 --once` renders a single
    snapshot of a fed event stream without crashing (both rich and
    plain-text modes).
 4. `pytest tests/integration/test_executor_publishes_live.py

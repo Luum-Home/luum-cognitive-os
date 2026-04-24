@@ -3,7 +3,7 @@
 # session-watchdog-launcher.sh — SessionStart hook: ensure singleton Phase A
 # session lifecycle watchdog daemon (ADR-047 Phase A).
 #
-# Starts `python3 scripts/so-session-watchdog.py --daemon --interval 60` in
+# Starts `python3 scripts/so_session_watchdog.py --daemon --interval 60` in
 # the background if (and only if) no live daemon is already tracked by the
 # pidfile. Pattern mirrors `hooks/reaper-daemon-launcher.sh`:
 #
@@ -24,7 +24,7 @@ PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
 PID_FILE="$RUNTIME_DIR/session-watchdog.pid"
 LOCKDIR="$RUNTIME_DIR/session-watchdog.lockdir"
-WATCHDOG="$PROJECT_DIR/scripts/so-session-watchdog.py"
+WATCHDOG="$PROJECT_DIR/scripts/so_session_watchdog.py"
 CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 
 mkdir -p "$RUNTIME_DIR"
@@ -67,7 +67,7 @@ if [ -f "$PID_FILE" ]; then
     if [ -n "$OLD_PID" ] && kill -0 "$OLD_PID" 2>/dev/null; then
         # Confirm the process cmdline actually references so-session-watchdog
         # (defensive — guards against PID reuse).
-        if ps -p "$OLD_PID" -o command= 2>/dev/null | grep -q "so-session-watchdog"; then
+        if ps -p "$OLD_PID" -o command= 2>/dev/null | grep -q "so.session.watchdog"; then
             echo "[session-watchdog] daemon ensured (PID=$OLD_PID)" >&2
             exit 0
         fi
@@ -86,7 +86,7 @@ if command -v pgrep &>/dev/null; then
         if kill -0 "$candidate_pid" 2>/dev/null; then
             kill "$candidate_pid" 2>/dev/null || true
         fi
-    done < <(pgrep -f "so-session-watchdog.py" 2>/dev/null || true)
+    done < <(pgrep -f "so_session_watchdog.py" 2>/dev/null || true)
 fi
 
 # ── Sanity check ────────────────────────────────────────────────────────────

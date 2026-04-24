@@ -26,7 +26,7 @@
 
 | # | Task | Effort | Why |
 |---|------|--------|-----|
-| 9 | **ADR-041 Wave B** (~50 Tier B chaos tests) | 2 sessions | Use `scripts/cos-chaos-template.py` from MVP; drops aspirational ratio substantially |
+| 9 | **ADR-041 Wave B** (~50 Tier B chaos tests) | 2 sessions | Use `scripts/cos_chaos_template.py` from MVP; drops aspirational ratio substantially |
 | 10 | **ADR-040 Query-tailored context** | 1.5 sessions | Depends on ADR-037 + ADR-039 done |
 | 11 | **ADR-038 Wave 2** (typed input_schema + 4-layer context budget) | 1 session | Industry alignment continues |
 | 12 | **ADR-038 Wave 3** (Pydantic TrustReport + typed handoff tool) | 1 session | Breaking change; v0.16.0 |
@@ -79,10 +79,10 @@ git status                                           # should be clean
 bash scripts/cos-smoke.sh
 
 # 3. Baseline audit
-python3 scripts/aspirational-audit.py --dry-run
+python3 scripts/aspirational_audit.py --dry-run
 
 # 4. Rebuild self-knowledge index
-python3 scripts/cos-build-self-knowledge.py
+python3 scripts/cos_build_self_knowledge.py
 ```
 
 ## Total Effort Estimate

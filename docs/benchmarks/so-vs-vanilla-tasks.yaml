@@ -1,6 +1,6 @@
 # so-vs-vanilla baseline task set
 # ---------------------------------
-# Used by scripts/so-vs-vanilla-benchmark.py to compare Cognitive OS
+# Used by scripts/so_vs_vanilla_benchmark.py to compare Cognitive OS
 # governance (full hooks/rules) against vanilla Claude Code
 # (COS_DISABLE_ALL_GOVERNANCE=1, all hooks no-op).
 #

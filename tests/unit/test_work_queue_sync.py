@@ -40,7 +40,7 @@ def _make_queue(tmp_path: Path, entries: list[dict]) -> Path:
 # ── 2. CLI list ───────────────────────────────────────────────────────────────
 
 def test_cli_list_prints_entries(tmp_path):
-    """cos-work-queue.py list must print all entries from work-queue.jsonl."""
+    """cos_work_queue.py list must print all entries from work-queue.jsonl."""
     entries = [
         {
             "timestamp": "2026-04-20T10:00:00Z", "epoch": 1000,
@@ -58,7 +58,7 @@ def test_cli_list_prints_entries(tmp_path):
     result = subprocess.run(
         [
             sys.executable,
-            str(PROJECT_ROOT / "scripts" / "cos-work-queue.py"),
+            str(PROJECT_ROOT / "scripts" / "cos_work_queue.py"),
             "--project-dir", str(project_dir),
             "list",
         ],
@@ -74,7 +74,7 @@ def test_cli_list_prints_entries(tmp_path):
 # ── 3. CLI mark-done ──────────────────────────────────────────────────────────
 
 def test_cli_mark_done_updates_state(tmp_path):
-    """cos-work-queue.py mark-done 0 must set done=true on the newest entry."""
+    """cos_work_queue.py mark-done 0 must set done=true on the newest entry."""
     entries = [
         {
             "id": "entry-001",
@@ -88,7 +88,7 @@ def test_cli_mark_done_updates_state(tmp_path):
     result = subprocess.run(
         [
             sys.executable,
-            str(PROJECT_ROOT / "scripts" / "cos-work-queue.py"),
+            str(PROJECT_ROOT / "scripts" / "cos_work_queue.py"),
             "--project-dir", str(project_dir),
             "mark-done", "0",
         ],

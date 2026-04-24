@@ -50,10 +50,10 @@ def make_minimal_project(tmp_path: Path, *, with_audit_script: bool = True) -> P
     (tmp_path / "docs").mkdir()
     if with_audit_script:
         # Copy real script so the hook can actually run it
-        real_script = REPO_ROOT / "scripts" / "aspirational-audit.py"
+        real_script = REPO_ROOT / "scripts" / "aspirational_audit.py"
         if real_script.exists():
             import shutil
-            shutil.copy(real_script, tmp_path / "scripts" / "aspirational-audit.py")
+            shutil.copy(real_script, tmp_path / "scripts" / "aspirational_audit.py")
     return tmp_path
 
 
@@ -77,9 +77,9 @@ class TestHookExitBehavior:
         assert result.returncode == 0
 
     def test_hook_fail_safe_on_missing_script(self, tmp_path):
-        """Hook exits 0 when aspirational-audit.py is missing (fail-open)."""
+        """Hook exits 0 when aspirational_audit.py is missing (fail-open)."""
         project = make_minimal_project(tmp_path, with_audit_script=False)
-        # Do NOT create scripts/aspirational-audit.py
+        # Do NOT create scripts/aspirational_audit.py
         result = run_hook(project)
         assert result.returncode == 0
 

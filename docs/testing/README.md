@@ -138,13 +138,13 @@ See `docs/testing/mutation-testing.md` for details.
 
 ```bash
 # Scan for structural-only tests (would be blocked in CI)
-python scripts/check-test-quality.py tests/unit/test_X.py
+python scripts/check_test_quality.py tests/unit/test_X.py
 
 # CI mode (used in .github/workflows/test-quality.yml)
-python scripts/check-test-quality.py --ci
+python scripts/check_test_quality.py --ci
 
 # Pre-commit mode (blocks commit)
-python scripts/check-test-quality.py --pre-commit
+python scripts/check_test_quality.py --pre-commit
 ```
 
 A test is **structural** (bad) if it only uses:
@@ -339,5 +339,5 @@ Skip (dangerously): `git commit --no-verify` — don't do this.
 - `docs/architecture/LESSONS-LEARNED.md` — wound 3 (false coverage) + prevention
 - `.cosmic-ray.toml` — mutation testing config
 - `.github/workflows/test-quality.yml` — CI gate
-- `scripts/check-test-quality.py` — AST-based classifier
+- `scripts/check_test_quality.py` — AST-based classifier
 - `scripts/doctor.sh` — 12 health checks including test infrastructure
