@@ -619,11 +619,16 @@ class TestCosInitNamespacing:
         template_files = list(templates_cos.glob("*.md"))
         assert len(template_files) > 0, "No templates installed in cos/ namespace"
 
-        # Rules must be under .claude/rules/cos/
-        rules_cos = project / ".claude" / "rules" / "cos"
-        assert rules_cos.is_dir(), "rules/cos/ directory not created"
-        rule_files = list(rules_cos.glob("*.md"))
-        assert len(rule_files) > 0, "No rules installed in cos/ namespace"
+        # Rules must be written to the canonical contract and the Claude driver.
+        canonical_rules_cos = project / ".cognitive-os" / "rules" / "cos"
+        assert canonical_rules_cos.is_dir(), "canonical rules/cos/ directory not created"
+        canonical_rule_files = list(canonical_rules_cos.glob("*.md"))
+        assert len(canonical_rule_files) > 0, "No rules installed in canonical cos/ namespace"
+
+        driver_rules_cos = project / ".claude" / "rules" / "cos"
+        assert driver_rules_cos.is_dir(), "Claude driver rules/cos/ directory not created"
+        driver_rule_files = list(driver_rules_cos.glob("*.md"))
+        assert len(driver_rule_files) > 0, "No rules installed in Claude driver cos/ namespace"
 
         # Verify NO hooks/skills/templates installed outside cos/ namespace
         # (only the cos/ subdir should be there, plus possibly _lib from hooks)
