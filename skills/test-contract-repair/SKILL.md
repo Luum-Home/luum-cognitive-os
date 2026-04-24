@@ -27,6 +27,34 @@ proxy for a product claim.
 - the closest ADR, architecture doc, or repair-ledger evidence;
 - the smallest trustworthy validation lane.
 
+## Scope
+
+This is an OS-maintainer skill, not a project-adopter skill.
+
+- `<!-- SCOPE: os-only -->` keeps it internal to Cognitive OS development.
+- `audience: os-dev` keeps it out of normal project installations.
+- Self-hosted harness projections inside this repository may expose it under
+  `.claude/skills/` or another active driver because the OS is developing
+  itself. That does not make it a project-facing contract.
+
+When repairing Cognitive OS tests, always run pytest through the persistent
+summary wrapper so partial, interrupted, and full runs leave analyzable local
+evidence:
+
+```bash
+bash scripts/pytest-with-summary.sh -- <pytest args>
+```
+
+The wrapper automatically writes `inventory.md` and `inventory.json` via
+`scripts/test-run-inventory.py`. Use those files as the first triage surface
+before rerunning a broad suite. They list failures, errors, skips, xfails,
+slow tests, and heuristic tags such as `optional-lane`, `drift`,
+`aspirational`, `timeout`, and `false-positive-risk`.
+
+For projects that install Cognitive OS, use the project's own test command or a
+project-facing test skill. Do not impose this OS-internal runner unless the
+project explicitly opts into Cognitive OS development tooling.
+
 ## Classification
 
 Classify each touched test before editing it:
@@ -49,7 +77,8 @@ further before deciding the repair:
 
 ## Workflow
 
-1. Reproduce the failure in the smallest targeted lane.
+1. Reproduce the failure in the smallest targeted lane with
+   `scripts/pytest-with-summary.sh`.
 2. Read the enforcing runtime files, not only the test.
 3. Check repository history, ADRs, and architecture docs before changing a
    failing expectation.
@@ -66,7 +95,11 @@ further before deciding the repair:
    - use `testcontainers` when you need isolated proof that a stack really boots;
    - keep localhost probes opt-in unless the service is truly core-default.
 7. Re-run the narrow lane first, then the closest higher-confidence lane.
-8. Record the decision in `docs/reports/test-suite-repair-ledger-2026-04-24.md`
+8. Record the generated run directory or `latest/summary.txt` when handing off
+   evidence across sessions.
+9. Use `inventory.md` to pick the next repair batch instead of scanning terminal
+   scrollback or rerunning a slow suite just to recover the list.
+10. Record the decision in `docs/reports/test-suite-repair-ledger-2026-04-24.md`
    if the change affects doctrine, historical interpretation, or future repair work.
 
 ## Guardrails
@@ -90,4 +123,6 @@ further before deciding the repair:
 - the failure is classified with evidence;
 - runtime and tests agree with current product behavior;
 - the validation lane passes;
+- the run artifact under `.cognitive-os/reports/test-runs/` can be inspected;
+- `inventory.md` exists for the validation run;
 - the repository now proves more real behavior than before the repair.
