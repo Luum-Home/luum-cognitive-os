@@ -58,6 +58,31 @@ This is not a rejection of Opik. It is a boundary: Opik can be a strong extensio
 | Langfuse | Strong all-in-one observability and cost tracing. | Heavy local stack; currently disabled by product contract. |
 | Helicone/Portkey-style gateway observability | Useful when the LLM gateway is the control point. | Can pull Cognitive OS back toward model/vendor-centric architecture if not wrapped by capability profiles. |
 
+## Langfuse To MLflow Replacement Boundary
+
+MLflow is not a drop-in replacement for every Langfuse feature. It is a replacement for the lightweight Cognitive OS default observability contract: local, low-friction outcome metrics that survive without Docker.
+
+| Langfuse-era contract | MLflow replacement status | Evidence |
+|-----------------------|---------------------------|----------|
+| Completion trust score | Covered | `MLflowBridge.log_agent_completion()` logs `trust_score` and `trust_score_normalized`. |
+| Completion success/failure | Covered | `log_agent_completion()` logs numeric `success` and `status` params. |
+| Skill/task identity | Covered | `skill_name`, `task_type`, `task_id`, and `model` are logged as MLflow params. |
+| Cost and token summaries | Covered | `sync_cost_events()`, `sync_skill_metrics()`, `log_agent_run()`, and `log_session_summary()` cover JSONL-backed cost/session data. |
+| No-crash degraded mode | Covered | MLflow bridge methods are safe no-ops when MLflow is absent. |
+| Langfuse spans/generations UI | Not equivalent | MLflow does not model Langfuse trace/span/generation semantics one-for-one. |
+| Hosted collaboration dashboard | Not equivalent | MLflow local mode is lighter but less agent-native. |
+| Authenticated ingestion API | Not equivalent | Langfuse keeps this as an optional extension/cloud/self-host lane. |
+
+Before removing Langfuse runtime support, any Langfuse test that expresses a Cognitive OS product claim should either:
+
+- move to MLflow when it is about outcome metrics, scores, costs, or completion summaries;
+- move to JSONL/local reporting when it is about durable local auditability;
+- remain Langfuse-specific only when it proves an optional Langfuse extension.
+
+The default product claim should be: Cognitive OS has local outcome observability by default, with optional full tracing integrations when a team wants them.
+
+See [Observability Backend Evaluation](observability-backend-evaluation-2026-04-24.md) for the 2026 research matrix and backend-neutral observability contract.
+
 ## Product Rule For Future Tool Additions
 
 Before adding or promoting a tool, answer these questions in the PR:
