@@ -56,8 +56,8 @@ type pytestJSONReport struct {
 		Outcome  string  `json:"outcome"`
 		Duration float64 `json:"duration"`
 		Call     *struct {
-			Stdout  string `json:"stdout"`
-			Stderr  string `json:"stderr"`
+			Stdout   string `json:"stdout"`
+			Stderr   string `json:"stderr"`
 			Longrepr string `json:"longrepr"`
 		} `json:"call"`
 	} `json:"tests"`

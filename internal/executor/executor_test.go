@@ -17,8 +17,8 @@ type fakeValidator struct {
 	delay    time.Duration
 }
 
-func (f *fakeValidator) Name() string                                            { return f.name }
-func (f *fakeValidator) Category() validator.ValidatorCategory                   { return f.category }
+func (f *fakeValidator) Name() string                          { return f.name }
+func (f *fakeValidator) Category() validator.ValidatorCategory { return f.category }
 func (f *fakeValidator) Validate(ctx context.Context, _ *hook.Context) *validator.Result {
 	if f.delay > 0 {
 		select {

@@ -19,9 +19,9 @@ type InjectionFinding struct {
 
 // injectionRule pairs a compiled regex with a label and type.
 type injectionRule struct {
-	re      *regexp.Regexp
-	label   string
-	iType   string
+	re    *regexp.Regexp
+	label string
+	iType string
 }
 
 var promptInjectionRules = []injectionRule{

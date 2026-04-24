@@ -15,12 +15,12 @@ import (
 
 // Config is the top-level cos-dispatch configuration.
 type Config struct {
-	Dispatch     DispatchConfig     `toml:"dispatch"`
-	CognitiveOS CognitiveOSConfig  `toml:"cognitive_os"`
-	Transformers []TransformerDef   `toml:"transformers"`
-	Plugins      []PluginDef        `toml:"plugins"`
-	Overrides    OverridesConfig    `toml:"overrides"`
-	Patterns     PatternsConfig     `toml:"patterns"`
+	Dispatch     DispatchConfig    `toml:"dispatch"`
+	CognitiveOS  CognitiveOSConfig `toml:"cognitive_os"`
+	Transformers []TransformerDef  `toml:"transformers"`
+	Plugins      []PluginDef       `toml:"plugins"`
+	Overrides    OverridesConfig   `toml:"overrides"`
+	Patterns     PatternsConfig    `toml:"patterns"`
 }
 
 // DispatchConfig controls the core dispatch behavior.
@@ -73,17 +73,17 @@ type OverridesConfig struct {
 
 // PatternsConfig controls pattern tracking behavior.
 type PatternsConfig struct {
-	Enabled          bool             `toml:"enabled"`
-	DBPath           string           `toml:"db_path"`
-	MinCount         int              `toml:"min_count"`
-	AnalysisInterval string           `toml:"analysis_interval"`
+	Enabled          bool               `toml:"enabled"`
+	DBPath           string             `toml:"db_path"`
+	MinCount         int                `toml:"min_count"`
+	AnalysisInterval string             `toml:"analysis_interval"`
 	AutoGenerate     AutoGenerateConfig `toml:"auto_generate"`
 
 	// Phase 5.1 detector thresholds.
-	FalsePositiveThreshold    float64 `toml:"false_positive_threshold"`    // default 0.5
-	FalsePositiveMinSample    int     `toml:"false_positive_min_sample"`   // default 5
-	MissingCoverageThreshold  int     `toml:"missing_coverage_threshold"`  // default 10
-	SequenceCorrelationThreshold int  `toml:"sequence_correlation_threshold"` // default 3
+	FalsePositiveThreshold       float64 `toml:"false_positive_threshold"`       // default 0.5
+	FalsePositiveMinSample       int     `toml:"false_positive_min_sample"`      // default 5
+	MissingCoverageThreshold     int     `toml:"missing_coverage_threshold"`     // default 10
+	SequenceCorrelationThreshold int     `toml:"sequence_correlation_threshold"` // default 3
 }
 
 // AutoGenerateConfig controls auto-generation of validators from patterns.
