@@ -3,6 +3,102 @@
 All notable changes to Cognitive OS are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+## [0.16.0] - 2026-04-24 — "Multi-Provider + Harness-Agnostic"
+
+### Added — ADR-062 Multi-Provider Agent Loop
+
+- `packages/llm-providers/` — 7 provider wrappers (qwen, openrouter, gemini, ollama, openai, deepseek, claude_sdk) behind uniform `REGISTRY` interface. Symlinked at `lib/providers`.
+- `lib/openai_compatible_agent_loop.py` — generalized loop (renamed from `qwen_agent_loop.py`, which remains as a 65-line backward-compat shim).
+- `lib/dispatch.py` — N-provider cascade with `ADVANCE_ON_ANY_FAILURE` vs `ADVANCE_ON_RATE_LIMIT_ONLY` policies; reads `llm_providers:` config block from `cognitive-os.yaml`.
+- `scripts/smoke-multi-provider-fallback.sh` — per-provider smoke test with SIGALRM timeout (Unix-only).
+- `/llm-status` skill v2.0.0 — provider inventory (tier, configured Y/N, advance policy, model_map); env key names detected (never values).
+- Default cascade: `qwen,openrouter,gemini,ollama,claude` (zero ANTHROPIC_API_KEY path). `openai`, `deepseek`, `claude_sdk` are opt-in.
+
+### Added — ADR-063 Agent() Replication Strategy
+
+- `docs/adrs/ADR-063-agent-tool-replication-strategy.md` — reject full Agent() clone; adopt Python `claude-agent-sdk` (MIT) as triple-gated opt-in provider.
+- `pyproject.toml` — `claude-sdk = ["claude-agent-sdk>=0.1"]` optional dep.
+
+### Added — ADR-064 Harness-Agnostic Cognitive OS
+
+- `docs/adrs/ADR-064-harness-agnostic-cognitive-os.md` — architectural decision for Codex/Cursor/bare-CLI support. Names 4 integration surfaces (event capture, hook registration, skill invocation, sub-agent spawning). 10-15 session roadmap.
+
+### Added — ADR-058 Phoenix Observability
+
+- Langfuse purged. Phoenix OTel replaces it as the observability backend.
+- `/phoenix-trace-ui` skill.
+
+### Added — ADR-060 Local-Only Policy
+
+- `docs/adrs/ADR-060-local-only-optional-services.md` — pip-first, Docker-fallback, never-cloud-default.
+- Opik removed. MemU wired with self-contained `memu-pg` backend.
+- Profile-gated services: `cognee`, `nemo-guardrails`, `jupyter` behind `--profile memory|guardrails|jupyter`.
+- `scripts/cos-bootstrap.sh` `--profile full` now correctly activates all three profiles (was silent no-op).
+
+### Added — ADR-061 Focus Narrative + External Evidence
+
+- `README.md` rewritten governance-first (leads with "governance layer for coding agents").
+- `docs/vs-alternatives.md` — comparison with Hermes, Agent Zero, OpenClaw.
+- `docs/migration-from/{vanilla-claude-code,hermes}.md` — recipe-style migration docs.
+- `scripts/demo-governance.sh` — 5-minute governance value demo.
+- `.github/workflows/weekly-public-metrics.yml` — Monday cron, updates badges (dogfood-score, REAL%, hook-wiring).
+
+### Added — Measurement & Observability
+
+- `/dogfood-score` — composite SO self-build maturity score (7 dimensions).
+- `/component-reality-check` — drill-down into REAL/DORMANT/ASPIRATIONAL/METADATA classification.
+- `aspirational-audit.py` — new `ON_DEMAND` classification label.
+- `scripts/so-vs-vanilla-benchmark.py` — A/B test harness with `COS_DISABLE_ALL_GOVERNANCE=1` master kill-switch.
+
+### Added — Dependency Maintenance
+
+- `scripts/deps-update.sh` — automated audit + upgrade (Python/engram binary/plugins/Docker). Modes: `--audit` (default), `--apply`, `--apply --major`, `--dry-run`. Handles GOBIN-versioned-path trap.
+- `/deps-update` skill (os-only, haiku).
+- `/validate-release` paso 6: advisory deps audit call (non-blocking).
+
+### Added — Project Scaffold
+
+- 10 pilot skill unit tests (+7.12 skill_coverage): `audit-integrity`, `bump-version`, `compat-test`, `doc-sync`, `dod-check`, `evaluate-plan`, `exhaustive-prompt`, `invariant-check`, `session-backlog`, `validate-config`.
+
+### Changed — Breaking (pre-1.0)
+
+- **Langfuse removed** — replaced by Phoenix OTel (ADR-058).
+- **Opik removed** — replaced by MemU self-contained backend (ADR-060).
+- `lib/qwen_agent_loop.py` → `lib/openai_compatible_agent_loop.py` (shim preserves backward compat but file is now deprecated).
+- `lib/providers/` is a symlink into `packages/llm-providers/lib/` (new package).
+
+### Changed — Dependencies
+
+- `uv sync --upgrade`: pydantic 2.12.5 → 2.13.3, openai 2.30.0 → 2.32.0, click 8.1.8 → 8.3.3, certifi 2026.2.25 → 2026.4.22 (CA bundle), +transitives. Skipped major bumps: wrapt 1→2, rich 14→15, cryptography 46→47 (queued for dedicated review).
+- engram binary: `dev` build → `v1.13.1` (via `go install`). `~/.local/bin/engram v1.10.2` remains as MCP server path (macOS Operon sandbox blocks the go-installed binary — documented in code).
+
+### Fixed
+
+- **Hook chain 17x speedup**: `contextual-rule-loader.sh` 2200ms → 130ms. Root cause: O(n×m) subprocess forks iterating rules × patterns. Fix: in-process regex indent detection.
+- **`completion-gate.sh` crash**: `packages/quality-gates/hooks/_lib` symlink to root `hooks/_lib` was missing. Fix: created symlink. Follow-up: audit other `packages/*/hooks/` for same bug.
+- **Project registry pollution**: 241 stale pytest fixture entries in `~/.cognitive-os/installations.json` (251 → 10 real projects). Root cause: `tests/integration/test_install_scope.py` didn't set `COS_REGISTRY_FILE`. Fix: env var in tests + `PYTEST_CURRENT_TEST` guard in `cos_registry_register` as belt-and-suspenders.
+- **engram roundtrip test**: failed after upgrade to v1.13.1. Root cause: macOS Operon sandbox SIGKILL'd `~/go/bin/engram` spawned from Claude Code. Fix: `_resolve_engram_bin()` prefers `~/.local/bin/engram` (has Gatekeeper allow-list) over `~/go/bin/engram`.
+- `cos-bootstrap.sh --profile full` — was silent no-op for nemo/jupyter/cognee. Now passes the three profile flags.
+- 15 unit perf test failures root-caused (not marked flaky). Result: 7155 pass / 0 fail.
+- Empty-stdin fast-exit budget: 200ms → 500ms (documented with rationale).
+- `observability-trace.sh` orphan symlink (post-ADR-058 cleanup).
+- `test_profiled_services` post-Opik removal (ADR-060).
+- `test_rules_enforcement`: registered 6 previously hook-enforced-BROKEN rules (audit-trail, auto-rollback, confidence-gate, confidentiality-protection, agent-identity, pre-dev-readiness-gate, reinvention-prevention).
+
+### Documentation
+
+- `docs/adrs/ADR-059-existential-validation.md` — 3-phase plan (prune humo / install-timing / core-extensions split).
+- `docs/patterns/cross-harness-authoring.md` — self-check protocol for SO-path changes.
+- Package migration plan — 10 integrations mapped to future `cos` packages.
+- Plugin marketplace design — `cos install` with 6-gate security audit pipeline.
+- `install.sh` dual-mode installer (local source auto-detection + `--from` flag).
+- Tech radar update — 26 Claude Code ecosystem tools analyzed (7 ADOPT, 19 WATCH, 5 BLOCK).
+- Multi-tool architecture — adapter layer for OpenCode, Aider, Cursor support (foundation for ADR-064).
+- 7 ecosystem integrations documented (agnix, claude-code-action, parry, Trail of Bits, recall, Usage Monitor, hcom).
+- 19 WATCH repos deep-analyzed — 22 extractable patterns prioritized (P0-P3).
+
 ## [0.15.0] - 2026-04-21 — "ADR-047 Phase A + Decision Depth Gate"
 
 > Note: VERSION file was stale at 0.9.0 when this release was cut, but
@@ -356,17 +452,6 @@ detect its own degradation patterns. See docs/architecture/POST-MORTEM-2026-04.m
 - fix: pre-commit hook Gate 3e made advisory (warn, not block) on malformed workflow YAML
 - fix: pre-commit hook gate labels standardized (Gate 3a–3e) for consistent detection
 - fix: docs/INDEX.md version updated to v0.8.4
-
-## [Unreleased]
-
-### Added
-- docs: package migration plan — 10 integrations mapped to future cos packages
-- docs: plugin marketplace design -- cos install with 6-gate security audit pipeline
-- feat: dual-mode installer -- local source auto-detection + `--from` flag for `install.sh`
-- docs: tech radar update — 26 Claude Code ecosystem tools analyzed (7 ADOPT, 19 WATCH, 5 BLOCK)
-- docs: multi-tool architecture — adapter layer for OpenCode, Aider, Cursor support
-- docs: 7 ecosystem integrations documented (agnix, claude-code-action, parry, Trail of Bits, recall, Usage Monitor, hcom)
-- docs: 19 WATCH repos deep-analyzed — 22 extractable patterns prioritized (P0-P3)
 
 ## [0.1.0] - 2026-03-27
 
