@@ -1,0 +1,33 @@
+{
+  "dimensions": {
+    "adr_discipline": 90.91,
+    "doc_freshness": 64.47,
+    "harness_portability": 54.63,
+    "hook_wiring": 43.51,
+    "self_build_activity": 66.59,
+    "skill_coverage": 16.67,
+    "test_health": 0.0
+  },
+  "evidence": {
+    "adr_discipline": "with_proof=20/22 accepted ADRs",
+    "doc_freshness": "adr_healthy=11/38 plans_fresh=10/10 (window=90d)",
+    "harness_portability": "clean=248/454 files (dirty=206)",
+    "hook_wiring": "good=67/154 hooks (registered+tested)",
+    "self_build_activity": "commits=615 feat=270 fix=115 test=51 docs=70 other=109 test_pct=0.08 docs_pct=0.11",
+    "skill_coverage": "covered=23/138 skills (heuristic FP~5-10%)",
+    "test_health": "tests=4423 passed=3280 failed=12 xfailed=0 skipped=1131 pass_rate=99.6% penalty=1250.0"
+  },
+  "missing_signals": [],
+  "overall": 41.23,
+  "partial": false,
+  "timestamp": "2026-04-24T19:30:16.355659+00:00",
+  "weights": {
+    "adr_discipline": 15,
+    "doc_freshness": 10,
+    "harness_portability": 10,
+    "hook_wiring": 15,
+    "self_build_activity": 10,
+    "skill_coverage": 15,
+    "test_health": 25
+  }
+}
