@@ -142,6 +142,6 @@ Excluded: */mocks/*, */test/*, cmd/*
 
 ## Integration
 
-- **Hook**: `coverage-gate.sh` runs a lightweight version on `go test` / `git commit` / `git push`
+- **Local command**: `bash tests/coverage-report.sh` runs the coverage gate locally
 - **GitHub Action**: `claude-pr-review.yml` runs the full version and blocks PRs
 - **Agent**: `test-coverage-enforcer.md` auto-triggers on Go file changes

@@ -19,7 +19,7 @@ dispatches looked like (totals per provider, cost, latency, success rate).
 - User asks "what providers are configured?" or "is Qwen working?"
 - Debugging a rate-limit or dispatch failure
 - Before committing a cost-sensitive change — verify budget impact
-- Verifying ADR-049 is actually wired and not aspirational
+- Verifying ADR-049 is actually wired and not merely documented
 - User says "llm status" / "provider status" / "show dispatch state"
 
 ## Data sources

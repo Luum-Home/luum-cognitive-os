@@ -1,1 +1,0 @@
-../../../rules/observability.md

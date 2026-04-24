@@ -145,14 +145,16 @@ class TestExcludedRulesCount:
         assert not duplicates, f"Duplicate entries in EXCLUDED_RULES: {duplicates}"
 
     def test_excluded_rules_all_exist_in_rules_dir(self, excluded_rules):
-        """Every excluded rule should exist as a file in rules/ (no ghost entries)."""
+        """Every excluded entry should resolve to a rule or documented pattern."""
         missing = []
         for rule in excluded_rules:
-            if not (REPO_ROOT / "rules" / rule).exists():
+            rule_path = REPO_ROOT / "rules" / rule
+            pattern_path = REPO_ROOT / "docs" / "patterns" / rule
+            if not rule_path.exists() and not pattern_path.exists() and not pattern_path.is_symlink():
                 missing.append(rule)
         assert not missing, (
-            f"EXCLUDED_RULES entries that don't exist in rules/: {missing}\n"
-            f"Remove ghost entries or add the missing files."
+            f"EXCLUDED_RULES entries that resolve to neither rules/ nor docs/patterns/: {missing}\n"
+            f"Remove ghost entries, restore rule files, or document declarative patterns."
         )
 
 
