@@ -153,9 +153,49 @@ def _atomic_write(path: Path, content: str) -> None:
 
 
 def _fm(text: str, key: str) -> str | None:
-    """Extract a key from YAML frontmatter (--- delimited)."""
-    m = re.search(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
+    """Extract a key from YAML frontmatter (--- delimited).
+
+    Handles SKILL.md files that begin with an HTML comment before the opening
+    ``---`` delimiter (e.g. ``<!-- SCOPE: both -->``).  The outer regex uses
+    ``re.MULTILINE`` so that ``^---`` matches the start of *any* line, not only
+    the very start of the string.
+
+    Multi-line YAML block scalars (``description: >`` or ``description: |``)
+    are supported: the indented continuation lines are joined and returned as a
+    single normalised string.  If the field contains only a bare ``>`` or ``|``
+    with no continuation lines inside the frontmatter block, ``None`` is
+    returned so that callers' ``or "No description"`` fallback fires correctly.
+    """
+    m = re.search(r"^---\s*\n(.*?)\n^---", text, re.DOTALL | re.MULTILINE)
     if not m:
         return None
-    km = re.search(rf"^{re.escape(key)}\s*:\s*(.+)$", m.group(1), re.MULTILINE)
-    return km.group(1).strip().strip('"').strip("'") if km else None
+    block = m.group(1)
+
+    # Match the key on its own line. Value may be inline or a YAML block scalar.
+    km = re.search(
+        rf"^{re.escape(key)}\s*:\s*(.*)$",
+        block,
+        re.MULTILINE,
+    )
+    if not km:
+        return None
+
+    inline = km.group(1).strip()
+
+    # Plain inline value (not a block scalar indicator)
+    if inline and inline not in (">", "|", ">-", "|-", ">+", "|+"):
+        return inline.strip('"').strip("'")
+
+    # YAML block scalar: collect indented continuation lines that follow
+    # the key's line, stopping at the next top-level key (no leading space).
+    key_line_end = km.end()
+    remainder = block[key_line_end:]
+    continuation_lines: list[str] = []
+    for line in remainder.splitlines():
+        if line == "" or line[0] == " " or line[0] == "\t":
+            continuation_lines.append(line.strip())
+        else:
+            break  # next top-level YAML key reached
+
+    joined = " ".join(l for l in continuation_lines if l)
+    return joined if joined else None
