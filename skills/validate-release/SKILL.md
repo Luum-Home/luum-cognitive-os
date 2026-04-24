@@ -84,6 +84,14 @@ cos release --check 2>/dev/null && echo "PASS" || echo "skipped (cos not install
 
 Failure here is advisory — report it but do NOT fail the overall check.
 
+### Step 6: Dependency Freshness (Advisory)
+
+```bash
+bash scripts/deps-update.sh --audit 2>&1 | tail -15
+```
+
+Run the dependency audit and include its summary in the release readiness report. This is **advisory only** — stale deps warn but do NOT block the release. Operators should review and decide whether to upgrade before tagging.
+
 ## Safety Rules
 
 - NEVER modify any files — this skill is read-only
