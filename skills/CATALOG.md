@@ -32,6 +32,7 @@
 | simulation-arena | Run scripted scenarios simulating developer workflows, measure safety mesh | `/simulate` | os-dev |
 | so-vs-vanilla | A/B governance value benchmark: compare full SO governance vs ungoverned baseline | `/so-vs-vanilla` | os-dev |
 | tool-discovery | Discover new open-source tools via GitHub scan, classify, evaluate, propose | `/tool-discovery` | os-dev |
+| deps-update | Audit and optionally upgrade project dependencies — Python, engram binary, Claude Code plugins, Docker images | `/deps-update` | os-dev |
 | release-os | META — orchestrate full OS release by chaining 5 atomic release skills | `/release-os` | os |
 | validate-release | Pre-release readiness check: clean tree, correct branch, VERSION, CHANGELOG | `/validate-release` | os |
 | bump-version | Calculate and write new version to VERSION file (patch/minor/major or explicit) | `/bump-version` | os |
