@@ -64,6 +64,11 @@ mlflow-sync.sh | CONDITIONAL: syncs metrics to MLflow at session end; only activ
 package-sync.sh | CONDITIONAL: syncs package.json dependencies; triggered by CI or developer, not by Claude hooks
 worktree-submodule-fix.sh | CONDITIONAL: fixes git submodule state in worktrees; invoked manually after worktree operations
 orchestrator-mode-detect.sh | CONDITIONAL: detects ORCHESTRATOR_MODE env var; sourced by other hooks, not registered independently
+agent-quota-advisor.sh | CONDITIONAL: ADR-056 Level 1 advisory is only enabled when quota-aware dispatch control is turned on
+agent-quota-redirect.sh | CONDITIONAL: ADR-056 Level 2 intentionally remains opt-in because it blocks native Agent launches
+agent-qwen-bridge.sh | CONDITIONAL: ADR-056 Level 3 is a per-skill transparent bridge, not a global default hook
+cos-executor-heartbeat.sh | DEPRECATED: compatibility alias for cos-executor-daemon-launcher.sh; registering both would launch duplicate daemon checks
+reaper-heartbeat.sh | DEPRECATED: compatibility alias for reaper-daemon-launcher.sh; registering both would duplicate daemon scheduling
 
 # ── Deprecated / superseded hooks (DEPRECATED) ──────────────────────────────
 agnix-lint.sh | DEPRECATED: superseded by architecture-compliance.sh for lint enforcement
