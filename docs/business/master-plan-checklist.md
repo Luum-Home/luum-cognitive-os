@@ -58,6 +58,7 @@
 - [x] Broken product-facing links fail visibly in automation.
 - [x] Product claims in README and pitch map to explicit verification paths through [Product Proof Paths](../manual-tests/proof-paths.md).
 - [x] Structural tests that support product claims are being converted into behavioral contracts through [Behavioral Test Contracts](../architecture/behavioral-test-contracts.md) and `tests/contracts/test_canonical_projection_behavior.py`.
+- [x] Slow full-suite repair runs leave persistent summaries and actionable inventories through `scripts/pytest-with-summary.sh`, `scripts/test-run-inventory.py`, and [Testing Guide](../testing.md).
 
 ## 5. Onboarding and Operational Simplicity
 

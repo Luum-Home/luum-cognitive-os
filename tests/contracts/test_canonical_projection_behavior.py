@@ -21,7 +21,7 @@ from lib.paths import preferred_rules_dirs
 from lib.skill_routing import find_skill_md
 
 
-pytestmark = pytest.mark.contract
+pytestmark = [pytest.mark.contract, pytest.mark.timeout(120)]
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 COS_INIT = PROJECT_ROOT / "scripts" / "cos-init.sh"
@@ -40,7 +40,7 @@ def _run_cos_init(project: Path, mode: str = "--full", harness: str = "claude") 
         env=env,
         capture_output=True,
         text=True,
-        timeout=30,
+        timeout=120,
         check=False,
     )
 
