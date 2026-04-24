@@ -38,6 +38,20 @@ python3 -m pytest tests/behavior/test_self_install.py tests/integration/test_pro
 go test ./internal/provider/... ./internal/validator/... ./pkg/hook/... -count=1
 ```
 
+### Infrastructure contract changes
+
+Use this when touching service classification, compose/reference stacks, or
+local health semantics.
+
+```bash
+python3 -m pytest tests/integration/test_service_health.py tests/integration/test_e2e_flows.py -q -ra
+```
+
+Interpretation:
+
+- `test_service_health.py` proves compose/runtime contract and opt-in localhost probes.
+- `test_e2e_flows.py` is the isolated `testcontainers` lane for real stack boot.
+
 ### Documentation/product-claim changes
 
 Verify links and claims manually against:
