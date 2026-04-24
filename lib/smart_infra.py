@@ -13,7 +13,7 @@ Usage:
     ok = ensure_service("langfuse")
 
     # Ensure all services required by a skill
-    results = ensure_for_skill("agent-kpis")  # {"langfuse": True}
+    results = ensure_for_skill("agent-kpis")  # {"mlflow": True}
 
     # Stop services that have been idle past their timeout
     stopped = stop_idle_services()
@@ -48,9 +48,9 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 SKILL_SERVICE_MAP: Dict[str, List[str]] = {
-    "agent-kpis": ["langfuse"],
-    "observability": ["langfuse"],
-    "observability-trace": ["langfuse"],
+    "agent-kpis": ["mlflow"],
+    "observability": ["mlflow"],
+    "observability-trace": ["mlflow"],
     "sdd-pipeline": ["litellm"],
     "sdd-apply": ["litellm"],
     "sdd-verify": ["litellm"],
@@ -135,6 +135,9 @@ SERVICE_COMPOSE_MAP: Dict[str, Dict[str, Any]] = {
         "profile": None,
     },
 }
+
+NON_DOCKER_SERVICE_MODES = {"pip", "cloud", "cli"}
+NON_DOCKER_SERVICE_NAMES = {"mlflow"}
 
 
 # Default idle timeout when not specified in config (minutes).
@@ -334,6 +337,16 @@ class SmartInfra:
 
         Returns True on success, False on failure.  Never raises.
         """
+        svc_cfg = self._get_service_config(service_name)
+        mode = svc_cfg["mode"]
+        if mode in NON_DOCKER_SERVICE_MODES:
+            self._last_access[service_name] = time.time()
+            self._log_event("skip_docker", service_name, reason=f"mode:{mode}")
+            return True
+        if mode == "disabled":
+            logger.info("Service %s is disabled in cognitive-os.yaml", service_name)
+            return False
+
         if not self._is_docker_available():
             logger.warning(
                 "Docker not available — cannot ensure service %s", service_name
