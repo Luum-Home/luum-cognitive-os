@@ -21,6 +21,7 @@ import tempfile
 from pathlib import Path
 
 import pytest
+from tests.utils.jsonl import read_first_jsonl, read_jsonl
 
 # ---------------------------------------------------------------------------
 # Testcontainers availability guard (follow existing project pattern)
@@ -215,7 +216,7 @@ class TestLearningPipelineProcessesCompletion:
         archive_file = tmp_metrics / "skill-archive.jsonl"
         assert archive_file.exists(), "skill-archive.jsonl must be created"
 
-        lines = [json.loads(l) for l in archive_file.read_text().splitlines() if l.strip()]
+        lines = read_jsonl(archive_file)
         assert len(lines) >= 1, "At least one entry must be written"
 
         entry = lines[0]
@@ -253,7 +254,7 @@ class TestLearningPipelineProcessesCompletion:
             tokens_used=1234,
         )
         archive_file = tmp_metrics / "skill-archive.jsonl"
-        lines = [json.loads(l) for l in archive_file.read_text().splitlines() if l.strip()]
+        lines = read_jsonl(archive_file)
         entry = lines[0]
         assert entry.get("tokens_used", 0) == 1234, (
             f"tokens_used must be 1234, got {entry.get('tokens_used')}"
@@ -345,7 +346,7 @@ class TestConsequenceEngineEvaluatesPerformance:
         history_file = tmp_metrics / "consequence-history.jsonl"
         assert history_file.exists(), "consequence-history.jsonl must be created"
 
-        lines = [json.loads(l) for l in history_file.read_text().splitlines() if l.strip()]
+        lines = read_jsonl(history_file)
         assert len(lines) >= 2, "At least 2 performance entries must be written"
 
         perf_entries = [l for l in lines if l.get("record_type") == "performance"]
@@ -484,7 +485,7 @@ class TestCostEventsWrittenWithRealValues:
         cost_file = tmp_metrics / "cost-events.jsonl"
         assert cost_file.exists(), "cost-events.jsonl must be created"
 
-        lines = [json.loads(l) for l in cost_file.read_text().splitlines() if l.strip()]
+        lines = read_jsonl(cost_file)
         assert len(lines) == 1
 
         entry = lines[0]
@@ -506,12 +507,8 @@ class TestCostEventsWrittenWithRealValues:
         append_cost_event(str(small_dir), "agent", 100)
         append_cost_event(str(large_dir), "agent", 10_000)
 
-        small_cost = json.loads(
-            (small_dir / "cost-events.jsonl").read_text().strip()
-        )["estimated_cost_usd"]
-        large_cost = json.loads(
-            (large_dir / "cost-events.jsonl").read_text().strip()
-        )["estimated_cost_usd"]
+        small_cost = read_first_jsonl(small_dir / "cost-events.jsonl")["estimated_cost_usd"]
+        large_cost = read_first_jsonl(large_dir / "cost-events.jsonl")["estimated_cost_usd"]
 
         assert large_cost > small_cost, (
             f"Cost for 10K tokens ({large_cost}) must exceed cost for 100 tokens ({small_cost})"
@@ -541,7 +538,7 @@ class TestCostEventsWrittenWithRealValues:
 
         cost_file = metrics_dir / "cost-events.jsonl"
         assert cost_file.exists()
-        entry = json.loads(cost_file.read_text().strip())
+        entry = read_first_jsonl(cost_file)
         assert entry["estimated_cost_usd"] > 0
         assert entry["tokens_estimated"] > 0
         assert entry["tokens_estimated"] == tokens

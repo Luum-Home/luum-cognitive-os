@@ -28,6 +28,7 @@ from pathlib import Path
 from typing import List
 
 import pytest
+from tests.utils.jsonl import read_jsonl
 
 # ---------------------------------------------------------------------------
 # Path setup — ensure repo root is on sys.path
@@ -173,17 +174,7 @@ def _build_completion_json(
 
 def _read_jsonl(path: Path) -> List[dict]:
     """Read all valid JSON lines from a JSONL file."""
-    if not path.exists():
-        return []
-    entries = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if line:
-            try:
-                entries.append(json.loads(line))
-            except json.JSONDecodeError:
-                continue
-    return entries
+    return read_jsonl(path)
 
 
 # ---------------------------------------------------------------------------
