@@ -50,7 +50,12 @@ def _make_yaml(tmp_path: Path, policy: str) -> Path:
     return config
 
 
-def _fake_git_shim(tmp_path: Path, worktree_output: str) -> Path:
+def _fake_git_shim(
+    tmp_path: Path,
+    worktree_output: str,
+    *,
+    counter_file: Path | None = None,
+) -> Path:
     """
     Create a directory with a fake `git` script that returns the given
     worktree_output for `git worktree list --porcelain` and falls through
@@ -61,11 +66,27 @@ def _fake_git_shim(tmp_path: Path, worktree_output: str) -> Path:
     shim_dir.mkdir()
     fake_git = shim_dir / "git"
     real_git = shutil.which("git") or "/usr/bin/git"
+    counter_snippet = ""
+    if counter_file is not None:
+        counter_snippet = (
+            f"count_file={str(counter_file)!r}\n"
+            "count=0\n"
+            "[ -f \"$count_file\" ] && count=$(cat \"$count_file\" 2>/dev/null || echo 0)\n"
+            "printf '%s\\n' \"$((count + 1))\" > \"$count_file\"\n"
+        )
     fake_git.write_text(
         f"""#!/usr/bin/env bash
-if [ "${{@}}" = "worktree list --porcelain" ] || \
-   ([ "$2" = "worktree" ] && [ "$3" = "list" ] && [ "$4" = "--porcelain" ]); then
-  printf '%s' {repr(worktree_output)}
+is_worktree_list=false
+args=("$@")
+for ((i=0; i<${{#args[@]}}-2; i++)); do
+  if [ "${{args[$i]}}" = "worktree" ] && [ "${{args[$((i+1))]}}" = "list" ] && [ "${{args[$((i+2))]}}" = "--porcelain" ]; then
+    is_worktree_list=true
+    break
+  fi
+done
+if [ "$is_worktree_list" = "true" ]; then
+  {counter_snippet}
+  printf '%b' {repr(worktree_output)}
   exit 0
 fi
 exec {real_git} "$@"
@@ -348,7 +369,8 @@ def test_latency_under_50ms_cached(tmp_path: Path) -> None:
     _make_yaml(tmp_path, "main_worktree")
 
     wt_output = f"worktree {tmp_path}\nHEAD abc123\nbranch refs/heads/main\n\n"
-    shim = _fake_git_shim(tmp_path, wt_output)
+    git_worktree_count = tmp_path / "git-worktree-count.txt"
+    shim = _fake_git_shim(tmp_path, wt_output, counter_file=git_worktree_count)
     cache_file = tmp_path / "test-cache.json"
 
     # ── Step 1: Cold run — no cache exists ───────────────────────────────────
@@ -358,6 +380,9 @@ def test_latency_under_50ms_cached(tmp_path: Path) -> None:
     r = _run_hook(tmp_path, path_prepend=shim, cache_file=cache_file)
     cold_ms = (time.perf_counter() - cold_start) * 1000
     assert r.returncode == 0, f"Cold run failed; stderr={r.stderr}"
+    assert git_worktree_count.read_text().strip() == "1", (
+        "Cold run should resolve the worktree exactly once"
+    )
 
     # Cache must be created after first run.
     assert cache_file.exists(), "Cache file should be created after first (cold) run"
@@ -388,6 +413,11 @@ def test_latency_under_50ms_cached(tmp_path: Path) -> None:
         warm_durations.append(elapsed_ms)
 
     warm_p95 = _percentile(warm_durations, 95)
+    warm_median = _percentile(warm_durations, 50)
+
+    assert git_worktree_count.read_text().strip() == "1", (
+        "Warm cached runs must not call `git worktree list` again"
+    )
 
     # Warm runs should not be dramatically slower than cold (process overhead is fixed).
     # We don't assert warm < cold since the cold run might be fast due to OS caching;
@@ -411,6 +441,9 @@ def test_latency_under_50ms_cached(tmp_path: Path) -> None:
     # ── Step 4: Post-invalidation run re-resolves and rewrites cache ──────────
     r2 = _run_hook(tmp_path, path_prepend=shim, cache_file=cache_file)
     assert r2.returncode == 0, f"Post-invalidation run failed; stderr={r2.stderr}"
+    assert git_worktree_count.read_text().strip() == "2", (
+        "Invalidation should force one fresh worktree resolution"
+    )
     context2 = _parse_context(r2)
     assert f"WORKING DIR: {tmp_path}" in context2, (
         f"Post-invalidation context wrong: {context2!r}"
@@ -433,8 +466,19 @@ def test_latency_under_50ms_cached(tmp_path: Path) -> None:
         rewarmed.append(elapsed_ms)
 
     rewarmed_p95 = _percentile(rewarmed, 95)
-    # Allow 20ms slack for jitter vs the original warm p95.
-    assert rewarmed_p95 < warm_p95 + 20.0, (
-        f"Re-warmed p95 {rewarmed_p95:.1f}ms exceeds warm_p95 + 20ms ({warm_p95 + 20.0:.1f}ms). "
+    rewarmed_median = _percentile(rewarmed, 50)
+    assert git_worktree_count.read_text().strip() == "2", (
+        "Re-warmed cached runs must not call `git worktree list` again"
+    )
+
+    # Process launch jitter can produce one-off outliers in Python subprocess
+    # timings. The behavioral cache proof above is the contract; latency remains
+    # a sanity ceiling plus median recovery check.
+    assert rewarmed_p95 < 150.0, (
+        f"Re-warmed p95 {rewarmed_p95:.1f}ms exceeds 150ms sanity ceiling. "
+        f"Runs: {[f'{d:.1f}ms' for d in rewarmed]}"
+    )
+    assert rewarmed_median < warm_median + 20.0, (
+        f"Re-warmed median {rewarmed_median:.1f}ms exceeds warm median + 20ms ({warm_median + 20.0:.1f}ms). "
         f"Runs: {[f'{d:.1f}ms' for d in rewarmed]}"
     )
