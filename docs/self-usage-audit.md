@@ -152,7 +152,7 @@ These hooks exist but are NOT in settings.json. Sorted by criticality.
 | `/plan-feature`, `/plan-bug` | Yes | Should auto-suggest for medium+ tasks |
 | `/recommend-library` | Yes | Should auto-trigger on new dependency detection |
 | `/deep-research` | Yes | Should auto-trigger on unknown topics |
-| `/eval-repo` | Yes | Should auto-trigger on GitHub URLs |
+| `/repo-scout` | Yes | Should auto-trigger on GitHub URLs |
 | `/run-tests` | Yes | Should auto-trigger after code changes |
 
 ### Skills Never Used (Likely Dead Code)

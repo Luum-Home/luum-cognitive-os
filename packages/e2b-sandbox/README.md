@@ -75,7 +75,7 @@ Once configured, the following MCP tools become available to agents:
 ## When to Use
 
 - Running agent-generated code that has not been reviewed
-- Executing code from untrusted external repositories (`/eval-repo`)
+- Executing code from untrusted external repositories (`/repo-scout`)
 - Data analysis with untrusted datasets
 - Testing code changes before committing to host
 

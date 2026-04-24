@@ -390,7 +390,7 @@ Tools, extensions, and frameworks built around Claude Code. Evaluated for integr
 | **Everything Claude Code** | MIT | 113.8K | Complete agent harness with skills, memory, security | Battle-tested patterns from 10+ months daily use | Instinct extraction (`/evolve`), 3-agent red-team security, memory consolidation |
 | **Ruflo/claude-flow** | MIT | 27.7K | Multi-agent swarm orchestration | Swarm patterns, AgentDB controllers | Task claiming protocol for active-tasks.json, memory forgetting curves |
 | **OpenAI Swarm** | MIT | 21K | Educational multi-agent framework | Agent handoff architecture reference | Agent-to-agent handoff via return value, dynamic/callable skills |
-| **Repomix** | MIT | 22.7K | Pack repo into single AI-friendly file | Context packing for eval-repo/deep-research | MCP server integration for eval-repo context packing |
+| **Repomix** | MIT | 22.7K | Pack repo into single AI-friendly file | Context packing for repo-scout/deep-research | MCP server integration for repo-scout context packing |
 | **Context7** | MIT | 50.9K | Library docs via MCP | Deeper MCP integration (already referenced) | Auto-trigger rule: check library docs before implementation |
 | **cc-sessions** | MIT | 1.6K | Session management with todo validation | Scope creep prevention patterns | PostToolUse hook: detect edits outside approved scope |
 | **Claude Code System Prompts** | MIT | 6.9K | Internal system prompt documentation | Claude Code internals reference | Active cross-session knowledge synthesis patterns |
@@ -416,7 +416,7 @@ Actionable patterns identified from deep analysis of WATCH repos.
 | Pattern | Source | What | Effort |
 |---|---|---|---|
 | Context7 auto-trigger | Context7 (50.9K⭐) | Rule: check library docs before implementation | 1h |
-| Repomix MCP for eval-repo | Repomix (22.7K⭐) | Add as MCP server for repo context packing | 2h |
+| Repomix MCP for repo-scout | Repomix (22.7K⭐) | Add as MCP server for repo context packing | 2h |
 | Session JSONL parser | claude-esp | `lib/session_parser.py` — real metrics from Claude Code sessions | 4h |
 
 #### P1 — Next sprint (good ROI)

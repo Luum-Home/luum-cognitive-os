@@ -193,7 +193,7 @@ Skills are domain-specific knowledge packages.
 | **Development** | doc-sync, coverage-enforcement, recommend-library, skill-creator (now called compose-prompt) |
 | **Automation** | issue-pipeline, webhook-trigger, batch-runner, singularity |
 | **Infrastructure** | cognitive-os-init, validate-config, capability-snapshot, tool-discovery |
-| **Evaluation** | arena, eval-repo, cognitive-os-benchmark |
+| **Evaluation** | arena, repo-scout, cognitive-os-benchmark |
 | **Auto-generated** | Created automatically by `auto-skill-generator.sh` after complex tasks |
 
 ### Squads

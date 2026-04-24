@@ -233,7 +233,7 @@ Remaining 107 skills → destination pack based on their trigger:
 - `self-improve`, `self-review`, `metrics-calibrator`, `model-optimizer`, `singularity`, `analyze-improvements`, `apply-improvements`, `optimize-skill`, `detect-patterns` → cos-performance-intelligence
 - `release-os`, `push-release`, `tag-release`, `validate-release`, `bump-version`, `generate-changelog` → cos-release-automation
 - `webhook-trigger`, `web-crawler`, `batch-runner`, `jupyter-execute`, `gpu-sandbox` → cos-ecosystem-integrations
-- `repo-forensics`, `reverse-engineer`, `research-protocol`, `deep-research`, `recommend-library`, `scout`, `sandbox-sample`, `eval-repo`, `contract-drift`, `impact-analysis`, `readiness-check`, `pr-review`, `code-review` → cos-scope-governance / split across
+- `repo-forensics`, `reverse-engineer`, `research-protocol`, `deep-research`, `recommend-library`, `scout`, `sandbox-sample`, `repo-scout`, `contract-drift`, `impact-analysis`, `readiness-check`, `pr-review`, `code-review` → cos-scope-governance / split across
 - `private-mode` → cos-privacy-mode
 - `conversation-memory`, `recall-search`, `memu-context`, `cognee-*` → cos-memory-engram
 - `harness-audit`, `component-classifier`, `audit-website`, `trust-audit` → cos-verification-audit

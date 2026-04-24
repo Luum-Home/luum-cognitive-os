@@ -23,7 +23,7 @@ The OS has 5 self-awareness mechanisms. When you work with it, **let them do the
 2. **Work:** Use the OS's own skills whenever possible:
    - `/audit-integrity` — before classifying any file as missing
    - `/detect-patterns` — before adding a new field/flag (checks if it'd be aspirational)
-   - `/eval-repo <url>` — before evaluating new dependencies
+   - `/repo-scout <url>` — before evaluating new dependencies
    - `/reverse-engineer <path>` — before guessing how an external tool works
 
 3. **Commit:**
