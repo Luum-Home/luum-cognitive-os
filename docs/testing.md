@@ -33,8 +33,8 @@ Fast, isolated tests with no external dependencies. Validate individual function
 | `test_safe_jsonl.py` | JSONL append safety | Safe append operations, concurrent writes, flock-based locking |
 | `test_execute_repair.py` | Repair execution | Repair dispatch, language detection heuristics |
 | `test_semantic_search.py` | Fuzzy matching | Registry lookup, semantic similarity scoring |
-| `test_eval_repo_parsing.py` | GitHub URL parsing | Repository URL normalization and component extraction |
-| `test_eval_repo_scoring.py` | Repository scoring | License validation, activity scoring, auto-reject criteria |
+| `test_eval_repo_parsing.py` | GitHub URL parsing | Repository URL normalization and component extraction (skill: repo-scout) |
+| `test_eval_repo_scoring.py` | Repository scoring | License validation, activity scoring, auto-reject criteria (skill: repo-scout) |
 | `test_remediation.py` | Remediation registry | CRUD operations on the remediation registry |
 
 ### Behavior Tests (~1636 tests, 73 files)

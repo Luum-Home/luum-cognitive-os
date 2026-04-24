@@ -286,7 +286,7 @@ cos remove @luum/safety-mesh         # Uninstall
 | `hooks/secret-detector.sh` | Gate 2: Secret scanning |
 | `parry-guard` | Gate 3: Prompt injection scanning |
 | `skill-creator` skill | Generated mode: auto-create skills |
-| `eval-repo` skill | Generated mode: analyze repo structure |
+| `repo-scout` skill | Generated mode: analyze repo structure |
 | `cognitive-os-init` skill | Generated mode: detect stack |
 | Git worktrees | Gate 5: Sandbox testing |
 

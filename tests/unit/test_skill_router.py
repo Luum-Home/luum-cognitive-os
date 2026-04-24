@@ -28,7 +28,7 @@ def router() -> SkillRouter:
 
 
 class TestGitHubUrlDetection:
-    """GitHub URLs should match /repo-forensics or /eval-repo."""
+    """GitHub URLs should match /repo-forensics or /repo-scout."""
 
     def test_github_url_matches_repo_forensics(self, router: SkillRouter):
         match = router.best_match(
@@ -434,11 +434,11 @@ class TestFallbackHandling:
         )
         names = [m.skill_name for m in matches]
         assert "repo-forensics" in names
-        assert "eval-repo" in names
+        assert "repo-scout" in names
 
         # Fallback should have lower confidence
         primary = next(m for m in matches if m.skill_name == "repo-forensics")
-        fallback = next(m for m in matches if m.skill_name == "eval-repo")
+        fallback = next(m for m in matches if m.skill_name == "repo-scout")
         assert primary.confidence > fallback.confidence
 
     def test_bug_fix_fallback(self, router: SkillRouter):

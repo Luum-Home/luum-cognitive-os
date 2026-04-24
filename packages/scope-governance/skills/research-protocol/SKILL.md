@@ -20,7 +20,7 @@ summary_line: Meta-skill that teaches agents HOW to investigate any source mater
 
 ## Purpose
 
-A research methodology framework that ensures consistent, thorough investigation of any source material. This is the META-SKILL: it defines HOW to research. Other skills like `eval-repo` (GitHub repos) and `deep-research` (multi-hop topics) SHOULD follow this protocol internally.
+A research methodology framework that ensures consistent, thorough investigation of any source material. This is the META-SKILL: it defines HOW to research. Other skills like `repo-scout` (GitHub repos) and `deep-research` (multi-hop topics) SHOULD follow this protocol internally.
 
 ## Invocation
 
@@ -325,7 +325,7 @@ Every research output MUST include all 6 sections. No section may be omitted eve
 
 | Skill | Relationship |
 |---|---|
-| `eval-repo` | Workflow for GitHub repos. SHOULD follow research-protocol internally for the analysis methodology. |
+| `repo-scout` | Workflow for GitHub repos. SHOULD follow research-protocol internally for the analysis methodology. |
 | `deep-research` | Multi-hop research for non-repo sources. SHOULD follow research-protocol for reading protocols and comparison framework. |
 | `recommend-library` | Library selection. Can use research-protocol's quality rubric for deeper evaluation. |
 | `tool-discovery` | Tool scanning. Uses research-protocol's comparison matrix to assess against Cognitive OS. |

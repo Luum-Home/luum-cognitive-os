@@ -85,7 +85,8 @@
 | devbox-checkpoint | Save/restore environment state snapshots | `/checkpoint` | project |
 | repair-status | Report auto-repair system health, circuit breaker states, registry stats | `/repair-status` | project |
 | conversation-memory | Search past sessions, surface patterns, self-referential learning | `/conversation-memory` | project |
-| eval-repo | Evaluate external git repos for tech radar classification (bulk mode, markdown artifacts, adoption signals) | `/eval-repo` | project |
+| repo-scout | Scout external git repos for tech radar classification (bulk mode, markdown artifacts, adoption signals) | `/repo-scout` | both |
+| eval-repo | [DEPRECATED] Renamed to /repo-scout (2026-04-24) | `/eval-repo` | both |
 | batch-runner | Execute multiple SDD changes sequentially with timing, reporting, and failure handling | `/batch-run` | project |
 | contract-drift | Detect drift between HTTP calls in source code and OpenAPI/Swagger contract definitions | `/contract-drift` | project |
 | document-feature | Generate or update structured feature documentation using 3-layer detection | `/document-feature` | project |
@@ -220,7 +221,8 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **document-feature** — Generate or update structured feature documentation using 3-layer detection (SDD spec, git diff, CLI arg)
 - **dod-check** — Verify Definition of Done criteria for a task at a given complexity level
 - **error-analyzer** — Analyze accumulated errors from test/lint/build runs and propose skill improvements. Use when error patterns repeat.
-- **eval-repo** — Evaluate external git repos for tech radar classification; supports bulk batch mode, writes per-repo markdown artifacts, and gathers adoption signals (issue velocity, release cadence, CI health)
+- **eval-repo** — [DEPRECATED] Renamed to `/repo-scout` on 2026-04-24. Use `/repo-scout` for new work.
+- **repo-scout** — Scout external git repos for tech radar classification; supports bulk batch mode, writes per-repo markdown artifacts, and gathers adoption signals (issue velocity, release cadence, CI health)
 - **evaluate-plan** — Evaluate any existing plan file with a 0-50 scoring system. Proposes improvements if score is low.
 - **exhaustive-prompt** — Generate exhaustive agent prompts with scope enumeration and acceptance criteria
 - **generate-changelog** — Move [Unreleased] CHANGELOG entries into a versioned release section
