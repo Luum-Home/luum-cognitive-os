@@ -28,7 +28,7 @@ from lib import qwen_provider  # noqa: E402
 
 class TestConfigDetection(unittest.TestCase):
     def test_is_configured_false_without_env(self):
-        with patch.dict(os.environ, {}, clear=True):
+        with patch.dict(os.environ, {"_COS_QWEN_DOTENV_LOADED": "1"}, clear=True):
             self.assertFalse(qwen_provider.is_configured())
 
     def test_is_configured_true_with_env(self):
@@ -60,14 +60,14 @@ class TestClientFactory(unittest.TestCase):
         """Even if openai SDK is present, no key → no client."""
         mock_openai = MagicMock()
         with patch.dict(sys.modules, {"openai": mock_openai}):
-            with patch.dict(os.environ, {}, clear=True):
+            with patch.dict(os.environ, {"_COS_QWEN_DOTENV_LOADED": "1"}, clear=True):
                 client = qwen_provider._get_openai_client()
                 self.assertIsNone(client)
 
 
 class TestCallErrorPaths(unittest.TestCase):
     def test_call_returns_error_result_when_not_configured(self):
-        with patch.dict(os.environ, {}, clear=True):
+        with patch.dict(os.environ, {"_COS_QWEN_DOTENV_LOADED": "1"}, clear=True):
             result = qwen_provider.call([{"role": "user", "content": "hi"}])
             self.assertFalse(result.success)
             self.assertIn("ALIBABA_QWEN_API_KEY", result.error)

@@ -63,7 +63,15 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+case "${BASH_SOURCE[0]}" in
+  */*)
+    SCRIPT_DIR="${BASH_SOURCE[0]%/*}"
+    ;;
+  *)
+    SCRIPT_DIR="."
+    ;;
+esac
+SCRIPT_DIR="$(cd "$SCRIPT_DIR" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 if [[ -n "$MANIFEST_OVERRIDE" ]]; then
