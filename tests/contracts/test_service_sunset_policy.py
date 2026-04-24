@@ -48,7 +48,7 @@ REVIEW_REQUIRED_CLASSIFICATIONS = {
 }
 
 # Explicit inclusions that don't fit the mode filter but are required by
-# catalog policy (Part B — MemU has explicit sunset deadline 2026-07-15).
+# catalog policy (Part B — MemU has explicit sunset deadline 2026-06-01).
 ALWAYS_REQUIRED = {"memu"}
 
 
@@ -190,11 +190,11 @@ def test_review_by_dates_are_staggered():
 
 
 def test_memu_has_explicit_sunset_deadline():
-    """Part B: MemU sunset deadline is hard-coded to 2026-07-15."""
+    """Part B: MemU sunset deadline is hard-coded to 2026-06-01."""
     services = _load_cognitive_os_services()
     memu = services.get("memu")
     assert memu, "memu entry missing from cognitive-os.yaml services block"
     assert "review_by" in memu, "memu must declare review_by per Part B"
-    assert _parse_review_by(memu["review_by"]) == _dt.date(2026, 7, 15), (
-        "MemU sunset deadline is fixed at 2026-07-15 per catalog §Memory."
+    assert _parse_review_by(memu["review_by"]) == _dt.date(2026, 6, 1), (
+        "MemU sunset deadline is fixed at 2026-06-01 per catalog §Memory."
     )
