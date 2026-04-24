@@ -2,7 +2,7 @@
 # All python invocations go through `uv run` so UV-managed deps
 # (fastmcp, openai SDK, etc.) are visible. See docs/reports/next-session-handoff-2026-04-20.md.
 
-.PHONY: help test test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b
+.PHONY: help test test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -19,6 +19,7 @@ help:
 	@echo "  test-no-docker    Sharded non-Docker lane (shard-a + shard-b sequential)."
 	@echo "  test-no-docker-shard-a  Shard A: tests/unit/ with xdist (~114s)."
 	@echo "  test-no-docker-shard-b  Shard B: behavior/chaos/hooks/e2e/audit/contracts/architecture/system serial (~350s)."
+	@echo "  test-skip-report  Full suite with -rs (prints every skip reason). On-demand only — noisy in CI."
 	@echo "  test-changed      Only tests affected by git diff HEAD."
 	@echo "  smoke             bash scripts/cos-smoke.sh — critical path e2e."
 	@echo "  audit             Aspirational audit + self-knowledge refresh."
@@ -80,6 +81,11 @@ test-no-docker-shard-b:
 	$(PYTEST) tests/behavior/ tests/chaos/ tests/hooks/ tests/e2e/ tests/audit/ tests/contracts/ tests/architecture/ tests/system/ -m "not docker" --timeout=60 --tb=short -q
 
 test-no-docker: test-no-docker-shard-a test-no-docker-shard-b
+
+# On-demand skip-reason dump. The shard targets intentionally omit -rs to keep
+# CI output clean; use this target locally to inspect which tests skip and why.
+test-skip-report:
+	$(PYTEST) tests/unit/ tests/behavior/ tests/chaos/ tests/hooks/ tests/e2e/ tests/audit/ tests/contracts/ tests/architecture/ tests/system/ -m "not docker" --timeout=60 --tb=short -rs -q
 
 check-docs-convention:
 	@PROJECT_DIR="$${PROJECT_DIR:-$$(pwd)}"; \
