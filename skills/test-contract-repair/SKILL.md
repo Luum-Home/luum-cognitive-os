@@ -40,6 +40,13 @@ Classify each touched test before editing it:
 - `false-positive-risk`: the test can pass while proving only shape, headings,
   existence, or stale counts. Strengthen it into a behavioral contract.
 
+If the failing test touches infrastructure, classify the dependency one step
+further before deciding the repair:
+
+- `core-default`: required for the default product path;
+- `optional-integration`: supported but opt-in;
+- `legacy-reference`: kept for migration, demos, or isolated validation only.
+
 ## Workflow
 
 1. Reproduce the failure in the smallest targeted lane.
@@ -53,8 +60,13 @@ Classify each touched test before editing it:
    - execute a hook or script;
    - read/write canonical metrics or state;
    - prove a real safety guard blocks or preserves something.
-6. Re-run the narrow lane first, then the closest higher-confidence lane.
-7. Record the decision in `docs/reports/test-suite-repair-ledger-2026-04-24.md`
+6. For infrastructure tests, do not silently promote optional/reference stacks
+   into the default lane:
+   - use lightweight contract tests for compose/runtime classification;
+   - use `testcontainers` when you need isolated proof that a stack really boots;
+   - keep localhost probes opt-in unless the service is truly core-default.
+7. Re-run the narrow lane first, then the closest higher-confidence lane.
+8. Record the decision in `docs/reports/test-suite-repair-ledger-2026-04-24.md`
    if the change affects doctrine, historical interpretation, or future repair work.
 
 ## Guardrails
@@ -65,6 +77,8 @@ Classify each touched test before editing it:
   canonical-first or harness-aware.
 - Do not keep file-existence checks as the only evidence for portability,
   governance, verification, or installability claims.
+- Do not make optional or legacy Docker stacks look like default-lane product
+  requirements just because they still exist in `docker-compose.cognitive-os.yml`.
 
 ## Required References
 
