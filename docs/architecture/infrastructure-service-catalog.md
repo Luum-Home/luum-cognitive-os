@@ -8,6 +8,27 @@
 
 A service may exist in Docker Compose without being part of the default Cognitive OS path. If the product contract says `pip`, `cloud`, or `disabled`, runtime code and default tests must not require the local container.
 
+No classification, no service. A new Docker Compose service must be added to this catalog and to the service-health contract before it is accepted.
+
+## Necessity Gate
+
+Before adding or promoting a service, answer yes to at least one of these:
+
+- It is required for the minimum product promise and cannot be replaced by JSONL/local files.
+- It is an explicit compatibility adapter that absorbs ecosystem churn behind a stable Cognitive OS contract.
+- It is an optional extension with a concrete skill, command, or workflow that users can intentionally activate.
+- It is reference-only infrastructure needed to verify an adapter, and tests prove it is not a default requirement.
+
+If none are true, do not add the service.
+
+Every accepted service must declare:
+
+- product position: core, compatibility, optional extension, or reference-only;
+- runtime mode: `pip`, `cloud`, `cli`, `on_demand`, `always`, or `disabled`;
+- startup owner: runtime manager, Compose profile, manual command, or external/cloud provider;
+- degradation behavior when absent;
+- the smallest test that proves the service does not become an accidental default.
+
 ## Service Positions
 
 | Runtime service | Compose services | Mode in `cognitive-os.yaml` | Product position | Purpose |
@@ -130,7 +151,7 @@ Current enforcement lives in:
 - `cognitive-os.yaml`: service mode and skill-to-service contract.
 - `lib/smart_infra.py`: runtime lazy-start behavior and non-Docker mode handling.
 - `tests/unit/test_smart_infra.py`: unit contract for service mapping and non-Docker skip behavior.
-- `tests/integration/test_service_health.py`: Docker reference-stack contract and opt-in local health probes.
+- `tests/integration/test_service_health.py`: Docker reference-stack contract, complete Compose-service classification, Valkey-only backend guard, and opt-in local health probes.
 - `docs/architecture/observability-backend-evaluation-2026-04-24.md`: observability-specific backend decision.
 
 Future service additions must update this catalog and include a test proving whether the service is core, optional, reference-only, or disabled.
