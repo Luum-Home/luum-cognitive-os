@@ -401,8 +401,9 @@ resources:
     services:
       langfuse:
         mode: disabled             # Replaced by MLflow (pip install mlflow>=2.0). Run: mlflow server --backend-store-uri sqlite:///mlflow.db
+        status: deprecated         # ADR-058 (2026-04-24): Langfuse -> Phoenix migration. Containers stopped; volumes retained through Phase 4.
         idle_timeout_minutes: 30
-        review_by: 2026-09-15      # Sunset policy (catalog §Sunset Policy) — reference-only observability stack
+        review_by: 2026-06-30      # ADR-058 Phase 4 target — at review date, service is REMOVED, not re-reviewed.
       nemo_guardrails:
         mode: pip                  # MIGRATED: pip install nemoguardrails>=0.10. Use RailsConfig + LLMRails in-process.
         idle_timeout_minutes: 15
@@ -442,6 +443,13 @@ resources:
           backend_store_uri: "sqlite:///mlflow.db"
           host: "0.0.0.0"
           port: 5000
+      phoenix:
+        mode: pip                  # ADR-058 (2026-04-24): Arize Phoenix LLM-native trace UI. pip install arize-phoenix>=7.0. Run: phoenix serve (UI at localhost:6006).
+        review_by: 2026-08-15      # ADR-058 Phase 1/2 adoption window — validates Phoenix covers Langfuse's role before Compose cleanup (Phase 3).
+        config:
+          host: "0.0.0.0"
+          port: 6006
+          otel_endpoint: "http://localhost:6006/v1/traces"
       memu:
         mode: pip                  # MIGRATED: pip install memu>=2.0. Run: python -m memu.server
         idle_timeout_minutes: 15
