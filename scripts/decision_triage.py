@@ -48,17 +48,40 @@ REPORT_SECTION_PATTERNS = [
 ADR_SECTION_PATTERN = re.compile(r"^##\s+open\s+questions?$", re.IGNORECASE)
 
 # Urgency keyword patterns
-CRITICAL_PATTERNS = re.compile(
-    r"\b(blocker|critical|must decide|decision needed before|blocks|required before)\b",
+#
+# CRITICAL — explicit operator marker OR strong "blocks work" language.
+# These FORCE critical regardless of score.
+EXPLICIT_CRITICAL = re.compile(
+    r"(\*\*priority:\s*critical\*\*|\[critical\]|\[blocker\]|\bMUST\s+decide\b)",
     re.IGNORECASE,
 )
+HARD_CRITICAL_PATTERNS = re.compile(
+    r"\b(blocker|must decide before|blocks\s+(?:implementation|phase|work)|required before|critical to|critical decision)\b",
+    re.IGNORECASE,
+)
+# SOFT — future-tense, low-urgency. FORCES soft regardless of score.
 SOFT_PATTERNS = re.compile(
-    r"\b(future|post-1\.0|next session|eventually|someday|later|whenever|optional)\b",
+    r"\b(future\s+(?:work|session)|post-1\.0|next session|eventually|someday|nice-to-have|whenever\s+convenient|low priority)\b",
+    re.IGNORECASE,
+)
+# IMPORTANT — language that pushes score up (not forcing).
+IMPORTANT_BOOST = re.compile(
+    r"\b(biggest\s+(?:gap|issue|risk|ambiguity|scope|stakes)|highest[-\s]stakes|answers?\s+needed|answer\s+pending|implementation\s+depends|phase\s+\d+\s+depends|before\s+(?:phase|implementation|merge|commit)|operator\s+decision)\b",
+    re.IGNORECASE,
+)
+# HEDGE — softens score (not forcing).
+HEDGE_BOOST = re.compile(
+    r"\b(might|consider(?:ed)?|possibly|could|maybe|perhaps|in\s+the\s+future)\b",
     re.IGNORECASE,
 )
 
-RECENT_DAYS = 7   # Files modified within this many days are "recent"
-OLD_ADR_DAYS = 30  # ADR questions older than this are downgraded to soft
+RECENT_DAYS = 7    # Files modified within this many days are "recent"
+VERY_RECENT_DAYS = 3  # Files modified within this many days score higher
+OLD_ADR_DAYS = 30  # ADR questions older than this are downgraded toward soft
+
+# Score thresholds (>= → tier)
+CRITICAL_SCORE = 3
+IMPORTANT_SCORE = 1
 
 
 # ---------------------------------------------------------------------------
@@ -100,21 +123,53 @@ def _is_recent(mtime: Optional[float], days: int = RECENT_DAYS) -> bool:
     return age_days <= days
 
 
-def _classify_urgency(text: str, source_type: str, mtime: Optional[float]) -> str:
-    """Apply simple heuristic to classify urgency tier."""
-    if CRITICAL_PATTERNS.search(text):
+def _classify_urgency(text: str, source_type: str, mtime: Optional[float], section_name: str = "") -> str:
+    """Score-based heuristic to classify urgency tier.
+
+    Forced overrides (regardless of score):
+      - Explicit `**Priority: critical**` / `[CRITICAL]` / `[BLOCKER]` markers → critical
+      - Hard "blocks implementation" language → critical
+      - "future work" / "next session" / "post-1.0" language → soft
+
+    Otherwise, score signals:
+      +2  research report from last 3 days (very fresh — needs decision soon)
+      +1  research report from last 7 days
+      +1  section is "Decision Points" (more imperative than "Open questions")
+      +2  body mentions "biggest", "highest stakes", "answers needed",
+          "implementation depends", "phase X depends", "before phase/implementation"
+      -1  body uses hedging language ("might", "consider", "possibly")
+      -2  ADR older than 30 days (low decay)
+
+    Tiers: score >= 3 critical, >= 1 important, < 1 soft.
+    """
+    # FORCED overrides
+    if EXPLICIT_CRITICAL.search(text) or HARD_CRITICAL_PATTERNS.search(text):
         return "critical"
     if SOFT_PATTERNS.search(text):
         return "soft"
-    # Recent research reports default to important
-    if source_type == "report" and _is_recent(mtime):
-        return "important"
-    # Old ADR questions default to soft
+
+    # Score-based
+    score = 0
+    if source_type == "report" and _is_recent(mtime, days=VERY_RECENT_DAYS):
+        score += 2
+    elif source_type == "report" and _is_recent(mtime, days=RECENT_DAYS):
+        score += 1
+    if "decision" in (section_name or "").lower():
+        score += 1
+    if IMPORTANT_BOOST.search(text):
+        score += 2
+    if HEDGE_BOOST.search(text):
+        score -= 1
     if source_type == "adr" and mtime is not None:
         age_days = (datetime.now(timezone.utc).timestamp() - mtime) / 86400
         if age_days > OLD_ADR_DAYS:
-            return "soft"
-    return "important"
+            score -= 2
+
+    if score >= CRITICAL_SCORE:
+        return "critical"
+    if score >= IMPORTANT_SCORE:
+        return "important"
+    return "soft"
 
 
 def _parse_section_items(lines: list[str], section_name: str) -> list[str]:
@@ -218,7 +273,7 @@ def _extract_decisions_from_file(
 
             items = _parse_section_items(section_lines, matched_section)
             for idx, item_text in enumerate(items, start=1):
-                urgency = _classify_urgency(item_text, source_type, mtime)
+                urgency = _classify_urgency(item_text, source_type, mtime, matched_section)
                 decisions.append(Decision(
                     source_path=rel_path,
                     source_type=source_type,
