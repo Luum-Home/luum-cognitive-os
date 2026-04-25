@@ -84,6 +84,7 @@ Total skills: 141
 | reverse-engineer | Deep source code analysis of a dependency to understand its internal APIs… |
 | scaffold-project | Create the .claude/ directory structure, symlink rules, and generate… |
 | self-improve | META skill — orchestrates analyze-improvements → (human reviews) →… |
+| decision-triage | Aggregate unanswered operator decisions across research reports + ADRs. |
 | session-backlog | Inventory all pending work across plans, engram, tasks, todos, audits, and git. |
 | session-wrapup | End-of-session routine — run session-backlog inventory, save to engram, write… |
 | skill-creator | Create new AI agent skills + cos package scaffolding. |
