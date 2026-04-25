@@ -427,3 +427,49 @@ class TestRunAll:
         assert "WARNING" in report
         # CRITICAL should appear before WARNING
         assert report.index("CRITICAL") < report.index("WARNING")
+
+
+# ---------------------------------------------------------------------------
+# _parse_frontmatter_keys — real-file integration (B1 parser audit fix)
+# ---------------------------------------------------------------------------
+
+
+class TestParseFrontmatterKeysRealFiles:
+    """Integration tests that exercise _parse_frontmatter_keys against actual
+    SKILL.md files in the repo, including those with HTML-comment prefixes."""
+
+    def test_plain_frontmatter_returns_keys(self, tmp_path):
+        """Standard ``---`` delimited frontmatter returns the expected keys."""
+        skill_md = tmp_path / "SKILL.md"
+        skill_md.write_text("---\nname: my-skill\ndescription: Does stuff\nversion: 1.0\n---\n# Body\n")
+        keys = PatternDetector._parse_frontmatter_keys(skill_md.read_text())
+        assert "name" in keys
+        assert "description" in keys
+        assert "version" in keys
+
+    def test_html_comment_prefix_frontmatter_returns_keys(self, tmp_path):
+        """SKILL.md with ``<!-- SCOPE: both -->`` before the opening fence is parsed correctly."""
+        skill_md = tmp_path / "SKILL.md"
+        skill_md.write_text("<!-- SCOPE: both -->\n---\nname: add-hook\ndescription: Step-by-step guide\nversion: 0.1.0\n---\n")
+        keys = PatternDetector._parse_frontmatter_keys(skill_md.read_text())
+        assert "name" in keys
+        assert "description" in keys
+        assert "version" in keys
+
+    def test_no_frontmatter_returns_empty(self, tmp_path):
+        """Files without YAML frontmatter return an empty list."""
+        skill_md = tmp_path / "SKILL.md"
+        skill_md.write_text("# Just a heading\nSome body text.\n")
+        keys = PatternDetector._parse_frontmatter_keys(skill_md.read_text())
+        assert keys == []
+
+    def test_real_skill_with_html_prefix(self):
+        """Smoke test: parse a real SKILL.md that has an HTML comment prefix."""
+        import pathlib
+        repo_root = pathlib.Path(__file__).parent.parent.parent
+        skill_md = repo_root / "skills" / "add-hook" / "SKILL.md"
+        if not skill_md.exists():
+            pytest.skip("skills/add-hook/SKILL.md not present")
+        keys = PatternDetector._parse_frontmatter_keys(skill_md.read_text())
+        assert "name" in keys, f"Expected 'name' key, got: {keys}"
+        assert "description" in keys, f"Expected 'description' key, got: {keys}"
