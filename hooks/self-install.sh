@@ -273,6 +273,7 @@ CORE_RULES=(
   "credential-management.md"
   "model-routing.md"
   "result-management.md"
+  "python-naming.md"
 )
 # NOTE: rate-limiting, content-policy, blast-radius, clarification-gate were previously kept
 # in CORE_RULES (proactive defence-in-depth). They are now moved to EXCLUDED_RULES so their
