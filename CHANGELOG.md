@@ -5,6 +5,100 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-04-25 — "Defense-in-Depth + Research-First"
+
+### Added — ADR-065 Tech Radar Curation Pipeline
+
+- `docs/adrs/ADR-065-radar-update-curation-pipeline.md` — design for `/radar-update` skill
+- `skills/radar-update/SKILL.md` + `scripts/radar_merge.py` — Phase 1: skill + merge engine + dry-run
+- `tests/unit/test_radar_merge.py` — 28 tests covering dedup, human-field preservation, classification routing, classification shift, fuzzy match, artifact parser, CHANGELOG updater, diff generation
+
+### Added — ADR-066 Polyglot Language Boundaries
+
+- `docs/adrs/ADR-066-polyglot-language-boundaries.md` — bash/Python/Go role matrix + naming conventions + migration triggers
+- `rules/python-naming.md` + `tests/audit/test_python_naming.py` — Python `snake_case` enforcement
+- `rules/bash-naming.md` + `tests/audit/test_bash_naming.py` — bash kebab-case enforcement
+- `.github/workflows/go-quality.yml` — `gofmt -l` + `go vet` CI gates for 3 Go modules
+
+### Added — ADR-067 SKILL.md Defense-in-Depth (Phase 1)
+
+- `docs/adrs/ADR-067-frontmatter-defense-in-depth.md` — 3-layer defense pattern (template + hook + audit)
+- `templates/skill-template.md` — canonical SKILL.md skeleton with explicit `<REQUIRED>` placeholders
+- `hooks/skill-frontmatter-validator.sh` — PostToolUse Edit/Write hook (advisory by default, blocks on `COS_STRICT_SKILL_VALIDATION=1`); fast-path skips Python startup when input doesn't contain `SKILL.md` (17ms vs 70ms)
+- `tests/audit/test_skill_descriptions_nonempty.py` — 3 audit tests using fixed `_fm()` parser
+- Hook registered in 5 places (apply-efficiency-profile + set-security-profile + 3 hook-architecture-v2 profile JSONs)
+
+### Added — ADR-068 Adaptive Test Runner Capacity
+
+- `docs/adrs/ADR-068-adaptive-test-runner-capacity.md` — cross-platform heuristic for choosing `-n auto|N|0` based on CPU/memory/load/battery/CI
+
+### Added — ADR-069 Research-First Protocol
+
+- `docs/adrs/ADR-069-research-first-protocol.md` — 3-phase cycle (research → operator triage → implementation) for high-risk changes (4-dimensional risk scoring)
+- `templates/agent-research-only.md` — boilerplate for research-only agent prompts
+- `rules/research-first-protocol.md` + `tests/audit/test_research_reports_format.py` — operational policy + audit gate
+- 3 research reports landed using the protocol:
+  - `docs/reports/cos-init-migration-2026-04-24.md` — feasibility analysis (9 decision points)
+  - `docs/reports/adr-067-phase-2-2026-04-24.md` — defense-in-depth Phase 2 scope (15 decisions)
+  - `docs/reports/python-major-bumps-2026-04-24.md` — wrapt/rich/cryptography probe
+
+### Added — Skills
+
+- `/repo-scout` (renamed from `/eval-repo`, v2.0): scout external git repos for tech radar with bulk mode (`--batch <file>`), per-repo markdown artifacts, adoption signals (issue velocity, release cadence, CI health). Old `/eval-repo` kept as deprecated alias stub.
+- `/radar-update` (Phase 1): merge `/repo-scout` evaluations into `docs/patterns/ecosystem-tools.md` + `docs/blocked-tools.md` with dry-run by default
+- `/decision-triage`: aggregate unanswered operator decisions across research reports + ADRs into a single ranked view. Score-based urgency heuristic (initial 0/125 critical → 33/125 critical after improved scoring).
+- `/deps-update`: automated audit + upgrade across Python deps, engram binary, Claude Code plugins, Docker images. Modes: `--audit` (default), `--apply`, `--apply --major`, `--dry-run`.
+
+### Added — Auditing
+
+- `tests/audit/test_python_naming.py`, `tests/audit/test_bash_naming.py` — naming convention enforcement
+- `tests/audit/test_skill_descriptions_nonempty.py` — frontmatter contract enforcement
+- `tests/audit/test_research_reports_format.py` — research report structure validation
+- `tests/audit/test_packages_hooks_lib_symlinks.py` — packages/*/hooks/_lib symlink integrity
+- `docs/architecture/parser-coverage-audit-2026-04-24.md` — audit of 12 sibling parsers for `_fm()`-class gaps
+
+### Changed — Breaking (pre-1.0)
+
+- **35 Python scripts renamed** from kebab-case to snake_case (`scripts/*-*.py` → `scripts/*_*.py`). 143 caller files updated atomically. Backward compat: zero (no aliases). See `rules/python-naming.md` for migration table.
+- **`/eval-repo` → `/repo-scout`** (skill rename). Old name kept as deprecated alias.
+- **`cognee` removed from `[dev]` extra** — moved to `[memory]` extra. Reason: `kuzu` (cognee transitive) fails to build with `make clean` errors, blocking normal `uv sync --extra dev`. Opt-in explicitly with `uv sync --extra memory`.
+
+### Fixed
+
+- **`lib/session_hygiene._fm()` parser**: regex required `^---` at absolute file start, but every SKILL.md begins with `<!-- SCOPE: ... -->\n---`. 18 skills appeared as "No description" in CATALOG.md. Fix: `re.MULTILINE` flag + multi-line block scalar handling. Result: 0 "No description" entries.
+- **2 sibling parsers had same bug**: `lib/pattern_detector._parse_frontmatter_keys` + `lib/smart_access.get_skill_frontmatter`. Same fix applied.
+- **`packages/quality-gates/hooks/_lib` symlink missing** — caused `completion-gate.sh` crash. Fix: created symlink + audit test. Bonus: 17 OTHER `packages/*/hooks/` directories had the same latent bug — all fixed in one pass.
+- **35 hyphenated Python script names** caused pytest importlib hacks + Python 3.14 dataclass resolution failures. Fix: snake_case rename + enforcement rule.
+- **17 `gofmt` debt files** — cleared with `gofmt -w` (precondition for go-quality.yml CI to be green).
+- **5 perf flakes under `-n auto`** — `@pytest.mark.xdist_group("perf")` to serialize within xdist (not `@pytest.mark.flaky`).
+- **Project registry pollution** (post-v0.16.0): 3 stale "target" duplicates from pytest fixtures removed. Registry: 10 → 7 real entries.
+- **Hook bookkeeping after `skill-frontmatter-validator.sh` add**: scorecard 154→155, baselines regenerated, orphan-hooks contract restored.
+- **Rule bookkeeping after `bash-naming.md` add**: classified in CORE_RULES, stale file refs in pedagogical examples removed.
+
+### Documentation
+
+- `docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md` — bash orchestrator vs Go package manager scope clarity (commit `583dc5c`)
+- `rules/research-first-protocol.md` — when to use research-first vs background agents (4-dim scoring)
+
+### Performance
+
+- `hooks/contextual-rule-loader.sh` — already shipped in 0.16.0 (17x speedup); no regressions in 0.17.0
+- `hooks/skill-frontmatter-validator.sh` fast-path — 70ms → 17ms per non-skill invocation
+- `scripts/decision_triage.py` urgency heuristic — score-based (was returning 0 critical for 125 real decisions)
+
+### Verified
+
+- Python 7148/7154 unit tests pass (6 perf flakes confirmed under `-n auto`, all pass `-p no:xdist`)
+- Shard-B 3967/3988 pass (21 pre-existing flakes from install-test resource contention, all pass `-p no:xdist`)
+- 162 provider tests pass post-refactor
+
+### Known issues (deferred)
+
+- **Research report dual-location**: `.cognitive-os/reports/research/` (gitignored) vs `docs/reports/` — 3 reports exist in both, causing duplicates in `/decision-triage` output. Will be unified in next session.
+- **rich 14→15 upgrade blocked**: `cognee[memory]` pins `rich<13.7.0`, breaking `[dev]+[memory]` combo. Reverted to `rich>=14`. Pending: cognee upstream upgrade.
+- **wrapt 1→2** + **cryptography deprecated `default_backend()` in hermes-agent**: deferred per `docs/reports/python-major-bumps-2026-04-24.md`.
+- **125 unanswered operator decisions** surfaced by `/decision-triage` (33 critical from today's research reports).
+
 ## [0.16.0] - 2026-04-24 — "Multi-Provider + Harness-Agnostic"
 
 ### Added — ADR-062 Multi-Provider Agent Loop
