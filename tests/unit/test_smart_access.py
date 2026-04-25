@@ -328,3 +328,49 @@ def test_files_never_fully_read():
     joined = " ".join(result)
     assert "active-tasks.json" in joined
     assert "cognitive-os.yaml" in joined
+
+
+# ---------------------------------------------------------------------------
+# get_skill_frontmatter — real-file integration (B2 parser audit fix)
+# ---------------------------------------------------------------------------
+
+
+class TestGetSkillFrontmatterRealFiles:
+    """Integration tests for the _fm()-pattern fix in get_skill_frontmatter.
+
+    Covers plain frontmatter, HTML-comment prefix, and multi-key extraction
+    against real SKILL.md files in the repo.
+    """
+
+    def test_plain_frontmatter(self, tmp_path):
+        """Standard ``---`` frontmatter is parsed correctly."""
+        skill_md = tmp_path / "SKILL.md"
+        skill_md.write_text("---\nname: test-skill\ndescription: A test\nversion: 2.0\n---\n# Body\n")
+        fm = SmartAccess.get_skill_frontmatter(str(skill_md))
+        assert fm.get("name") == "test-skill"
+        assert fm.get("description") == "A test"
+        assert fm.get("version") == "2.0"
+
+    def test_html_comment_prefix_frontmatter(self, tmp_path):
+        """``<!-- SCOPE: both -->`` before the opening fence is tolerated."""
+        skill_md = tmp_path / "SKILL.md"
+        skill_md.write_text("<!-- SCOPE: both -->\n---\nname: add-hook\ndescription: Step-by-step guide\nversion: 0.1.0\n---\n")
+        fm = SmartAccess.get_skill_frontmatter(str(skill_md))
+        assert fm.get("name") == "add-hook"
+        assert fm.get("description") == "Step-by-step guide"
+
+    def test_missing_file_returns_empty_dict(self, tmp_path):
+        """Missing file returns an empty dict without raising."""
+        fm = SmartAccess.get_skill_frontmatter(str(tmp_path / "nonexistent.md"))
+        assert fm == {}
+
+    def test_real_skill_add_hook(self):
+        """Smoke test: parse skills/add-hook/SKILL.md which has an HTML comment prefix."""
+        import pathlib
+        repo_root = pathlib.Path(__file__).parent.parent.parent
+        skill_md = repo_root / "skills" / "add-hook" / "SKILL.md"
+        if not skill_md.exists():
+            pytest.skip("skills/add-hook/SKILL.md not present")
+        fm = SmartAccess.get_skill_frontmatter(str(skill_md))
+        assert fm.get("name") == "add-hook", f"Unexpected frontmatter: {fm}"
+        assert "description" in fm
