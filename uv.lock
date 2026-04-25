@@ -1665,16 +1665,16 @@ name = "fastembed"
 version = "0.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "huggingface-hub", marker = "python_full_version < '3.14' or sys_platform == 'win32'" },
-    { name = "loguru", marker = "python_full_version < '3.14' or sys_platform == 'win32'" },
-    { name = "mmh3", marker = "python_full_version < '3.14' or sys_platform == 'win32'" },
-    { name = "numpy", marker = "python_full_version < '3.14' or sys_platform == 'win32'" },
-    { name = "onnxruntime", marker = "python_full_version < '3.14' or sys_platform == 'win32'" },
-    { name = "pillow", marker = "python_full_version < '3.14' or sys_platform == 'win32'" },
-    { name = "py-rust-stemmers", marker = "python_full_version < '3.14' or sys_platform == 'win32'" },
-    { name = "requests", marker = "python_full_version < '3.14' or sys_platform == 'win32'" },
-    { name = "tokenizers", marker = "python_full_version < '3.14' or sys_platform == 'win32'" },
-    { name = "tqdm", marker = "python_full_version < '3.14' or sys_platform == 'win32'" },
+    { name = "huggingface-hub", marker = "python_full_version < '3.14'" },
+    { name = "loguru", marker = "python_full_version < '3.14'" },
+    { name = "mmh3", marker = "python_full_version < '3.14'" },
+    { name = "numpy", marker = "python_full_version < '3.14'" },
+    { name = "onnxruntime", marker = "python_full_version < '3.14'" },
+    { name = "pillow", marker = "python_full_version < '3.14'" },
+    { name = "py-rust-stemmers", marker = "python_full_version < '3.14'" },
+    { name = "requests", marker = "python_full_version < '3.14'" },
+    { name = "tokenizers", marker = "python_full_version < '3.14'" },
+    { name = "tqdm", marker = "python_full_version < '3.14'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/26/25/58865e36b6e8a9a0d0ff905b5601aa30db97956327c0df42ec4ed6accc21/fastembed-0.8.0.tar.gz", hash = "sha256:75966edfa8b006ee78514c726bd7f6a50721dadc89305279052be9db72fd53e8", size = 75115, upload-time = "2026-03-23T16:34:41.699Z" }
 wheels = [
@@ -3326,8 +3326,8 @@ name = "loguru"
 version = "0.7.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
-    { name = "win32-setctime", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "python_full_version < '3.14' and sys_platform == 'win32'" },
+    { name = "win32-setctime", marker = "python_full_version < '3.14' and sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/3a/05/a1dae3dffd1116099471c643b8924f5aa6524411dc6c63fdae648c4f1aca/loguru-0.7.3.tar.gz", hash = "sha256:19480589e77d47b8d85b2c827ad95d49bf31b0dcde16593892eb51dd18706eb6", size = 63559, upload-time = "2024-12-06T11:20:56.608Z" }
 wheels = [
@@ -3400,6 +3400,7 @@ source = { editable = "." }
 dependencies = [
     { name = "jinja2" },
     { name = "pyyaml" },
+    { name = "rich" },
 ]
 
 [package.optional-dependencies]
@@ -3412,7 +3413,6 @@ crawling = [
 dev = [
     { name = "arize-phoenix" },
     { name = "arize-phoenix-otel" },
-    { name = "cognee" },
     { name = "crawl4ai" },
     { name = "diff-cover" },
     { name = "fastapi" },
@@ -3497,7 +3497,7 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1" },
     { name = "jupyter", marker = "extra == 'jupyter'" },
     { name = "litellm", marker = "extra == 'llm'", specifier = ">=1.0" },
-    { name = "luum-cognitive-os", extras = ["llm", "web", "observability", "memory", "guardrails", "jupyter", "crawling", "testing", "enforcement"], marker = "extra == 'dev'" },
+    { name = "luum-cognitive-os", extras = ["llm", "web", "observability", "guardrails", "jupyter", "crawling", "testing", "enforcement"], marker = "extra == 'dev'" },
     { name = "mlflow-skinny", marker = "extra == 'observability'", specifier = ">=2.0" },
     { name = "mutmut", marker = "extra == 'testing'", specifier = ">=3.0" },
     { name = "nemoguardrails", marker = "extra == 'guardrails'" },
@@ -3513,6 +3513,7 @@ requires-dist = [
     { name = "pytest-xdist", marker = "extra == 'testing'", specifier = ">=3.5" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "redis", marker = "extra == 'llm'", specifier = ">=5.0.0" },
+    { name = "rich", specifier = ">=14" },
     { name = "ruff", marker = "extra == 'enforcement'", specifier = ">=0.9.0" },
     { name = "sentence-transformers", marker = "extra == 'semantic'", specifier = ">=3.0" },
     { name = "testcontainers", extras = ["redis"], marker = "extra == 'testing'", specifier = ">=4.0" },
