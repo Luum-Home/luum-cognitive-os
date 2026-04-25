@@ -23,8 +23,18 @@
 
 set -euo pipefail
 
-# Read stdin JSON and extract file_path
+# Read stdin JSON
 INPUT="$(cat)"
+
+# FAST PATH: skip Python startup entirely if input doesn't contain SKILL.md.
+# Most PostToolUse Edit|Write fires are NOT against SKILL.md — this saves
+# ~70ms per non-skill invocation by avoiding python3 startup.
+case "$INPUT" in
+  *"SKILL.md"*) ;;
+  *) exit 0 ;;
+esac
+
+# Possible match — parse JSON to extract exact file_path
 FILE_PATH="$(printf '%s' "$INPUT" | python3 -c "
 import json, sys
 try:
