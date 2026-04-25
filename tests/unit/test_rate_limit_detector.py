@@ -12,6 +12,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 HOOK = REPO_ROOT / "hooks" / "rate-limit-detector.sh"
 
@@ -119,6 +121,7 @@ class TestDetection(unittest.TestCase):
             self.assertEqual(len(metric_file.read_text().strip().splitlines()), 2)
 
 
+@pytest.mark.xdist_group("perf")
 class TestConfiguredAdvice(unittest.TestCase):
     def test_advice_varies_when_api_key_set(self):
         with tempfile.TemporaryDirectory() as tmp:
