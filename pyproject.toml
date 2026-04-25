@@ -6,6 +6,7 @@ requires-python = ">=3.11"
 dependencies = [
     "pyyaml>=6.0",
     "jinja2>=3.1",
+    "rich>=15",
 ]
 
 [project.optional-dependencies]
@@ -101,7 +102,10 @@ dev = [
     # Note: `semantic` extra is OPTIONAL and NOT in `dev` on purpose — Phase B-β
     # embeddings pull in PyTorch (~200MB) which bloats CI. Opt in explicitly with
     # `pip install '.[semantic]'`.
-    "luum-cognitive-os[llm,web,observability,memory,guardrails,jupyter,crawling,testing,enforcement]",
+    # Note: `memory` extra (cognee/kuzu) is OPTIONAL and NOT in `dev` on purpose — kuzu
+    # fails to build on Python 3.14, blocking normal dev workflow. Opt in explicitly with
+    # `uv sync --extra memory`.
+    "luum-cognitive-os[llm,web,observability,guardrails,jupyter,crawling,testing,enforcement]",
 ]
 
 [tool.pytest.ini_options]
