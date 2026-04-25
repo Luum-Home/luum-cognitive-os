@@ -56,3 +56,8 @@ Ignoring AUTO-TRIGGER is a trust-report violation (falls under "what I
 verified").
 
 Full reference: `rules/agent-escalation.md`, `rules/trust-score.md`, `rules/closed-loop-prompts.md`.
+
+**Research-first check:** If your task scores 5+ on the 4-dimensional risk classification
+(acceptance-criteria clarity, blast radius, reversibility, decision count), use the
+research-only template instead of implementing directly. See `rules/research-first-protocol.md`
+for the scoring table and `templates/agent-research-only.md` for the Phase 0 prompt boilerplate.
