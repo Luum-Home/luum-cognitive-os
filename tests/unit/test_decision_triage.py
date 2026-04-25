@@ -411,3 +411,209 @@ class TestRealFilesIntegration:
         assert parsed["total"] > 0, (
             "Expected at least one decision in the real repo — check scan logic"
         )
+
+
+# ---------------------------------------------------------------------------
+# Spec-mandated test suite (6 tests, synthetic fixtures only — no real files)
+# ---------------------------------------------------------------------------
+
+class TestSpecMandated:
+    """The 6 tests explicitly required by the decision-triage feature spec.
+
+    ALL tests use tmp_path + synthetic markdown. No real docs/reports/, docs/adrs/,
+    or .cognitive-os/reports/research/ files are read or modified.
+    """
+
+    # ── Spec test 1: scan_research_reports ──────────────────────────────────
+
+    def test_scan_research_reports_extracts_from_both_dirs(self, tmp_path):
+        """scan_research_reports extracts decisions from both docs/reports/ and
+        .cognitive-os/reports/research/ using synthetic fixtures."""
+        reports_dir = tmp_path / "reports"
+        research_dir = tmp_path / "research"
+        reports_dir.mkdir()
+        research_dir.mkdir()
+
+        (reports_dir / "report-2026-04-01.md").write_text(
+            "## Open Questions for Operator\n\n1. Should we migrate first?\n",
+            encoding="utf-8",
+        )
+        (research_dir / "cos-init-2026-04-10.md").write_text(
+            "## Open Questions for Operator\n\n1. Is backwards compat required?\n",
+            encoding="utf-8",
+        )
+
+        decisions = dt.scan_research_reports(
+            reports_dir=reports_dir, research_dir=research_dir
+        )
+        assert len(decisions) == 2
+        texts = {d.text for d in decisions}
+        assert "Should we migrate first?" in texts
+        assert "Is backwards compat required?" in texts
+
+    # ── Spec test 2: scan_adrs ───────────────────────────────────────────────
+
+    def test_scan_adrs_extracts_bullet_questions(self, tmp_path):
+        """scan_adrs with a fake ADR containing ## Open questions with 3 bullets
+        must return exactly 3 Decision objects."""
+        adr_dir = tmp_path / "adrs"
+        adr_dir.mkdir()
+
+        (adr_dir / "ADR-001-test.md").write_text(
+            "# ADR-001: Test\n\n## Status\nProposed\n\n"
+            "## Open questions\n\n"
+            "- Should we grandfather old hooks?\n"
+            "- What is the cleanup timeline?\n"
+            "- Is backfill required for all 36 ADRs?\n",
+            encoding="utf-8",
+        )
+
+        decisions = dt.scan_adrs(adr_dir)
+        assert len(decisions) == 3
+        texts = [d.text for d in decisions]
+        assert "Should we grandfather old hooks?" in texts
+        assert "What is the cleanup timeline?" in texts
+        assert "Is backfill required for all 36 ADRs?" in texts
+        assert all(d.source_type == "adr" for d in decisions)
+
+    # ── Spec test 3: filter_unanswered ───────────────────────────────────────
+
+    def test_filter_unanswered_drops_answered_decisions(self, tmp_path):
+        """filter_unanswered removes decisions whose topic_slug is in answered map."""
+        decision = dt.Decision(
+            source_path="docs/reports/test.md",
+            source_type="report",
+            section="Open Questions",
+            text="Should we do X?",
+            index=1,
+        )
+        topic_slug = dt._infer_topic_key(decision).removeprefix("decision/")
+        answered = {topic_slug: True}
+
+        result = dt.filter_unanswered([decision], answered)
+        assert len(result) == 0, "Answered decision should be filtered out"
+
+    def test_filter_unanswered_keeps_unanswered_decisions(self, tmp_path):
+        """filter_unanswered retains decisions not in the answered map."""
+        decision = dt.Decision(
+            source_path="docs/reports/test.md",
+            source_type="report",
+            section="Open Questions",
+            text="Should we do Y?",
+            index=1,
+        )
+        answered: dict[str, bool] = {}  # nothing answered
+
+        result = dt.filter_unanswered([decision], answered)
+        assert len(result) == 1, "Unanswered decision should be retained"
+
+    # ── Spec test 4: sort_by_urgency ─────────────────────────────────────────
+
+    def test_sort_by_urgency_orders_high_medium_low(self, tmp_path):
+        """sort_by_urgency returns HIGH (critical) → MEDIUM (important) → LOW (soft)."""
+        low = dt.Decision(
+            source_path="docs/reports/old.md",
+            source_type="report",
+            section="Open Questions",
+            text="eventually we should decide this",
+            index=1,
+            urgency="soft",
+        )
+        high = dt.Decision(
+            source_path="docs/reports/new.md",
+            source_type="report",
+            section="Decision Points",
+            text="this is a blocker for release",
+            index=1,
+            urgency="critical",
+        )
+        medium = dt.Decision(
+            source_path="docs/reports/mid.md",
+            source_type="report",
+            section="Open Questions",
+            text="should we use option A or B?",
+            index=1,
+            urgency="important",
+        )
+
+        # Pass in reverse order: low, high, medium
+        sorted_decisions = dt.sort_by_urgency([low, high, medium])
+        urgencies = [d.urgency for d in sorted_decisions]
+
+        # HIGH must come before MEDIUM, MEDIUM before LOW
+        assert urgencies.index("critical") < urgencies.index("important"), (
+            "critical must precede important"
+        )
+        assert urgencies.index("important") < urgencies.index("soft"), (
+            "important must precede soft"
+        )
+
+    # ── Spec test 5: read-only guarantee ─────────────────────────────────────
+
+    def test_read_only_guarantee(self, tmp_path):
+        """Running main() against a tmp_path repo must NOT modify any input file."""
+        reports_dir = tmp_path / "docs" / "reports"
+        adrs_dir = tmp_path / "docs" / "adrs"
+        research_dir = tmp_path / ".cognitive-os" / "reports" / "research"
+        reports_dir.mkdir(parents=True)
+        adrs_dir.mkdir(parents=True)
+        research_dir.mkdir(parents=True)
+
+        report_file = reports_dir / "test-2026-04-01.md"
+        adr_file = adrs_dir / "ADR-001-test.md"
+
+        report_file.write_text(
+            "## Open Questions\n\n1. Is the approach correct?\n",
+            encoding="utf-8",
+        )
+        adr_file.write_text(
+            "# ADR-001\n\n## Open questions\n\n- What is the default?\n",
+            encoding="utf-8",
+        )
+
+        mtime_report_before = report_file.stat().st_mtime
+        mtime_adr_before = adr_file.stat().st_mtime
+
+        output_file = tmp_path / "decisions.md"
+
+        with (
+            patch.object(dt, "REPORTS_DIR", reports_dir),
+            patch.object(dt, "RESEARCH_REPORTS_DIR", research_dir),
+            patch.object(dt, "ADRS_DIR", adrs_dir),
+        ):
+            rc = dt.main(["--output", str(output_file)])
+
+        assert rc == 0
+        time.sleep(0.05)  # filesystem settle
+
+        assert report_file.stat().st_mtime == mtime_report_before, (
+            "READ-ONLY violation: report file was modified"
+        )
+        assert adr_file.stat().st_mtime == mtime_adr_before, (
+            "READ-ONLY violation: ADR file was modified"
+        )
+        assert output_file.exists(), "--output file should have been created"
+
+    # ── Spec test 6: empty case ───────────────────────────────────────────────
+
+    def test_empty_repo_produces_zero_pending_report(self, tmp_path, capsys):
+        """Empty tmp_path repo produces a report with 0 pending decisions and exits 0."""
+        empty_reports = tmp_path / "reports"
+        empty_adrs = tmp_path / "adrs"
+        empty_research = tmp_path / "research"
+        empty_reports.mkdir()
+        empty_adrs.mkdir()
+        empty_research.mkdir()
+
+        with (
+            patch.object(dt, "REPORTS_DIR", empty_reports),
+            patch.object(dt, "RESEARCH_REPORTS_DIR", empty_research),
+            patch.object(dt, "ADRS_DIR", empty_adrs),
+        ):
+            rc = dt.main([])
+
+        assert rc == 0
+        captured = capsys.readouterr()
+        assert "0 decisions" in captured.out or "**0 decisions**" in captured.out or "Total unanswered: **0" in captured.out, (
+            f"Expected '0 decisions' in output, got:\n{captured.out}"
+        )

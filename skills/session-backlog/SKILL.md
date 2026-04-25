@@ -265,3 +265,7 @@ Saved to engram: session/backlog/{TODAY}
 - **Active tasks file absent**: Skip Step 4, note in document.
 - **Git not available**: Skip Step 7, note in document.
 - **Large number of items (> 50)**: Limit each priority table to 10 items and append a count: "_and N more items not shown_".
+
+## See also
+
+- `/decision-triage` — companion skill that counts pending decisions (this skill counts pending tasks)
