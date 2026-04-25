@@ -58,21 +58,29 @@ class SmartAccess:
 
     @staticmethod
     def get_skill_frontmatter(skill_path: str) -> dict:
-        """Read ONLY the YAML frontmatter from a SKILL.md (stop at closing ---)."""
+        """Read ONLY the YAML frontmatter from a SKILL.md (stop at closing ---).
+
+        Handles SKILL.md files that begin with an HTML comment before the
+        opening ``---`` delimiter (e.g. ``<!-- SCOPE: both -->``).  Uses a
+        regex search so the opening fence can appear on any line, not only
+        the very first line of the file.
+        """
+        import re as _re
         result: dict = {}
         try:
             with open(skill_path) as f:
-                lines = iter(f)
-                if next(lines, "").rstrip() != "---":
-                    return result
-                for line in lines:
-                    line = line.rstrip()
-                    if line == "---":
-                        break
-                    if ":" in line:
-                        k, _, v = line.partition(":")
-                        result[k.strip()] = v.strip().strip('"').strip("'")
-        except (FileNotFoundError, OSError, StopIteration):
+                content = f.read()
+            m = _re.search(r"^---\s*\n(.*?)\n^---", content, _re.DOTALL | _re.MULTILINE)
+            if not m:
+                return result
+            for line in m.group(1).splitlines():
+                line = line.rstrip()
+                if ":" in line and not line.startswith(" ") and not line.startswith("\t"):
+                    k, _, v = line.partition(":")
+                    k = k.strip()
+                    if k and not k.startswith("#"):
+                        result[k] = v.strip().strip('"').strip("'")
+        except (FileNotFoundError, OSError):
             pass
         return result
 
