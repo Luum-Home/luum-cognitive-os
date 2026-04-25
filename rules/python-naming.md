@@ -12,8 +12,8 @@ another module requires `importlib` hacks (`spec_from_file_location`, `sys.modul
 registration) that:
 
 - Break under Python 3.14 dataclass type resolution
-- Fail under pytest collection intermittently (confirmed: `scripts/radar-merge.py` → fixed
-  by rename to `scripts/radar_merge.py` in commit 23b2ff5)
+- Fail under pytest collection intermittently (confirmed via commit 23b2ff5: hyphenated
+  names prevented direct import and broke pytest collection in some environments)
 - Add boilerplate to every consumer
 
 Snake-case names are directly importable with `import foo_bar` — no wiring needed.
