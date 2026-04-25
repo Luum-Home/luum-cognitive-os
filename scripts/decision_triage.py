@@ -2,13 +2,15 @@
 """decision_triage.py — Aggregate unanswered operator decisions from research reports
 and ADRs into a unified, ranked view.
 
-READ-ONLY against source files (docs/reports/*.md, docs/adrs/ADR-*.md).
-Never deletes or modifies those files.
+READ-ONLY against source files (docs/reports/*.md, docs/adrs/ADR-*.md,
+.cognitive-os/reports/research/*.md). Never deletes or modifies those files.
 
 Usage:
     python3 scripts/decision_triage.py
-    python3 scripts/decision_triage.py --source reports
-    python3 scripts/decision_triage.py --source adrs
+    python3 scripts/decision_triage.py --since 2026-04-01
+    python3 scripts/decision_triage.py --only-research
+    python3 scripts/decision_triage.py --only-adrs
+    python3 scripts/decision_triage.py --output path/to/decisions.md
     python3 scripts/decision_triage.py --critical-only
     python3 scripts/decision_triage.py --json
 """
@@ -32,6 +34,7 @@ from typing import Optional
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 REPORTS_DIR = REPO_ROOT / "docs" / "reports"
+RESEARCH_REPORTS_DIR = REPO_ROOT / ".cognitive-os" / "reports" / "research"
 ADRS_DIR = REPO_ROOT / "docs" / "adrs"
 
 # Section headers we scan for decisions (case-insensitive)
@@ -232,24 +235,47 @@ def _extract_decisions_from_file(
     return decisions
 
 
-def scan_reports(reports_dir: Path) -> list[Decision]:
-    """Scan all research reports in docs/reports/."""
+def scan_reports(reports_dir: Path, since: Optional[datetime] = None) -> list[Decision]:
+    """Scan all research reports in a given directory."""
     decisions: list[Decision] = []
     if not reports_dir.exists():
         return decisions
     for md_file in sorted(reports_dir.glob("*.md")):
+        if since is not None:
+            mtime = _file_mtime(md_file)
+            if mtime is not None and mtime < since.timestamp():
+                continue
         decisions.extend(
             _extract_decisions_from_file(md_file, "report", REPORT_SECTION_PATTERNS)
         )
     return decisions
 
 
-def scan_adrs(adrs_dir: Path) -> list[Decision]:
+def scan_research_reports(
+    reports_dir: Path = REPORTS_DIR,
+    research_dir: Path = RESEARCH_REPORTS_DIR,
+    since: Optional[datetime] = None,
+) -> list[Decision]:
+    """Scan all research reports from docs/reports/ AND .cognitive-os/reports/research/.
+
+    This is the canonical entry point used by main(). scan_reports() scans a single dir.
+    """
+    decisions: list[Decision] = []
+    decisions.extend(scan_reports(reports_dir, since=since))
+    decisions.extend(scan_reports(research_dir, since=since))
+    return decisions
+
+
+def scan_adrs(adrs_dir: Path, since: Optional[datetime] = None) -> list[Decision]:
     """Scan all ADRs in docs/adrs/."""
     decisions: list[Decision] = []
     if not adrs_dir.exists():
         return decisions
     for md_file in sorted(adrs_dir.glob("ADR-*.md")):
+        if since is not None:
+            mtime = _file_mtime(md_file)
+            if mtime is not None and mtime < since.timestamp():
+                continue
         decisions.extend(
             _extract_decisions_from_file(md_file, "adr", [ADR_SECTION_PATTERN])
         )
@@ -257,7 +283,128 @@ def scan_adrs(adrs_dir: Path) -> list[Decision]:
 
 
 # ---------------------------------------------------------------------------
-# Engram cross-reference
+# Engram answers (canonical spec interface)
+# ---------------------------------------------------------------------------
+
+def scan_engram_answers() -> dict[str, bool]:
+    """Try to retrieve answered decisions from engram.
+
+    Returns {topic_slug: True} for decisions that have been answered.
+    Returns {} gracefully when engram is unavailable.
+    """
+    try:
+        result = subprocess.run(
+            ["engram", "search", "decision/", "--json"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            try:
+                data = json.loads(result.stdout)
+                answered: dict[str, bool] = {}
+                items = data if isinstance(data, list) else data.get("results", [])
+                for item in items:
+                    key = item.get("topic_key", "") or item.get("key", "")
+                    if key.startswith("decision/"):
+                        slug = key[len("decision/"):]
+                        answered[slug] = True
+                return answered
+            except (json.JSONDecodeError, AttributeError):
+                return {}
+        return {}
+    except Exception as exc:
+        print(f"WARNING: engram unavailable for cross-reference: {exc}", file=sys.stderr)
+        return {}
+
+
+def filter_unanswered(
+    decisions: list[Decision], answered: dict[str, bool]
+) -> list[Decision]:
+    """Drop decisions whose topic_slug appears in the answered map."""
+    if not answered:
+        return decisions
+    result: list[Decision] = []
+    for d in decisions:
+        slug = _infer_topic_key(d).removeprefix("decision/")
+        if answered.get(slug):
+            d.status = "ANSWERED"
+        else:
+            result.append(d)
+    return result
+
+
+def sort_by_urgency(decisions: list[Decision]) -> list[Decision]:
+    """Sort decisions: HIGH → MEDIUM → LOW; newest file first within each tier.
+
+    The urgency field uses two naming conventions internally:
+    - "critical" maps to HIGH
+    - "important" maps to MEDIUM
+    - "soft" maps to LOW
+    """
+    _order = {"critical": 0, "high": 0, "important": 1, "medium": 1, "soft": 2, "low": 2}
+
+    def _key(d: Decision) -> tuple[int, float]:
+        tier = _order.get(d.urgency.lower(), 1)
+        recency = -(d.file_mtime or 0.0)  # negative = newest first
+        return (tier, recency)
+
+    return sorted(decisions, key=_key)
+
+
+def write_report(decisions: list[Decision], output_path: Path) -> None:
+    """Write the triage report markdown to output_path (creates parent dirs)."""
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    urgency_buckets: dict[str, list[Decision]] = {
+        "high": [],
+        "medium": [],
+        "low": [],
+    }
+    _map = {"critical": "high", "high": "high", "important": "medium", "medium": "medium", "soft": "low", "low": "low"}
+    for d in decisions:
+        bucket = _map.get(d.urgency.lower(), "medium")
+        urgency_buckets[bucket].append(d)
+
+    lines: list[str] = []
+    lines.append(f"# Decision Triage — {today}")
+    lines.append("")
+    lines.append("> Generated by /decision-triage. Sources: docs/reports/, docs/adrs/, engram (decision/* topics).")
+    lines.append("")
+    lines.append(f"## Pending decisions: {len(decisions)}")
+    lines.append("")
+
+    emoji = {"high": "🔴 HIGH urgency", "medium": "🟡 MEDIUM urgency", "low": "🟢 LOW urgency"}
+    for tier in ("high", "medium", "low"):
+        tier_decisions = urgency_buckets[tier]
+        lines.append(f"### {emoji[tier]} ({len(tier_decisions)})")
+        if tier_decisions:
+            lines.append("| # | Source | Topic | Question | Date |")
+            lines.append("|---|---|---|---|---|")
+            for n, d in enumerate(tier_decisions, start=1):
+                src = Path(d.source_path).name
+                topic = Path(d.source_path).stem
+                q_short = d.text[:80] + ("…" if len(d.text) > 80 else "")
+                date_str = ""
+                if d.file_mtime:
+                    date_str = datetime.fromtimestamp(d.file_mtime, tz=timezone.utc).strftime("%Y-%m-%d")
+                lines.append(f"| {n} | {src} | {topic} | {q_short} | {date_str} |")
+        else:
+            lines.append("_No decisions in this tier._")
+        lines.append("")
+
+    # Answered count
+    lines.append("---")
+    lines.append(f"*Generated: {ts}*")
+    lines.append("*To answer a decision: save engram observation under `decision/<topic_slug>` with your answer*")
+
+    output_path.write_text("\n".join(lines), encoding="utf-8")
+
+
+# ---------------------------------------------------------------------------
+# Engram cross-reference (legacy — used by enrich_with_engram)
 # ---------------------------------------------------------------------------
 
 def _engram_search(query: str, timeout: int = 5) -> Optional[str]:
@@ -419,6 +566,28 @@ def main(argv: list[str] | None = None) -> int:
         help="Which sources to scan (default: all)",
     )
     parser.add_argument(
+        "--only-research",
+        action="store_true",
+        help="Scan only research reports (alias for --source reports)",
+    )
+    parser.add_argument(
+        "--only-adrs",
+        action="store_true",
+        help="Scan only ADRs (alias for --source adrs)",
+    )
+    parser.add_argument(
+        "--since",
+        metavar="DATE",
+        default=None,
+        help="Only include decisions from files modified on or after DATE (YYYY-MM-DD)",
+    )
+    parser.add_argument(
+        "--output",
+        metavar="PATH",
+        default=None,
+        help="Write report to this file path (in addition to stdout)",
+    )
+    parser.add_argument(
         "--critical-only",
         action="store_true",
         help="Show only critical-tier decisions",
@@ -431,13 +600,34 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    # Resolve source filter
+    if args.only_research:
+        source = "reports"
+    elif args.only_adrs:
+        source = "adrs"
+    else:
+        source = args.source
+
+    # Parse --since date
+    since_dt: Optional[datetime] = None
+    if args.since:
+        try:
+            since_dt = datetime.strptime(args.since, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        except ValueError:
+            print(f"ERROR: --since date must be YYYY-MM-DD, got: {args.since!r}", file=sys.stderr)
+            return 1
+
     decisions: list[Decision] = []
 
-    if args.source in ("reports", "all"):
-        decisions.extend(scan_reports(REPORTS_DIR))
+    if source in ("reports", "all"):
+        decisions.extend(scan_research_reports(
+            reports_dir=REPORTS_DIR,
+            research_dir=RESEARCH_REPORTS_DIR,
+            since=since_dt,
+        ))
 
-    if args.source in ("adrs", "all"):
-        decisions.extend(scan_adrs(ADRS_DIR))
+    if source in ("adrs", "all"):
+        decisions.extend(scan_adrs(ADRS_DIR, since=since_dt))
 
     # Engram enrichment — must not crash on failure
     try:
@@ -462,16 +652,26 @@ def main(argv: list[str] | None = None) -> int:
 
     print(output)
 
-    # Optional: write to session dir if env var is set
-    session_id = os.environ.get("COGNITIVE_OS_SESSION_ID")
-    if session_id:
-        session_dir = REPO_ROOT / ".cognitive-os" / "sessions" / session_id
-        if session_dir.is_dir():
-            out_file = session_dir / "decision-triage.md"
-            try:
-                out_file.write_text(output, encoding="utf-8")
-            except OSError as exc:
-                print(f"WARNING: could not write session output: {exc}", file=sys.stderr)
+    # Write to --output path if specified
+    if args.output:
+        out_path = Path(args.output)
+        try:
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(output, encoding="utf-8")
+        except OSError as exc:
+            print(f"WARNING: could not write output file: {exc}", file=sys.stderr)
+
+    # Optional: write to session dir if env var is set (and no explicit --output)
+    if not args.output:
+        session_id = os.environ.get("COGNITIVE_OS_SESSION_ID")
+        if session_id:
+            session_dir = REPO_ROOT / ".cognitive-os" / "sessions" / session_id
+            if session_dir.is_dir():
+                out_file = session_dir / "decision-triage.md"
+                try:
+                    out_file.write_text(output, encoding="utf-8")
+                except OSError as exc:
+                    print(f"WARNING: could not write session output: {exc}", file=sys.stderr)
 
     return 0
 
