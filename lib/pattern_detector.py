@@ -193,23 +193,23 @@ class PatternDetector:
 
     @staticmethod
     def _parse_frontmatter_keys(content: str) -> List[str]:
-        """Extract top-level keys from YAML frontmatter delimited by ---."""
-        lines = content.split("\n")
-        if not lines or lines[0].strip() != "---":
-            return []
+        """Extract top-level keys from YAML frontmatter delimited by ---.
 
+        Handles SKILL.md files that begin with an HTML comment before the
+        opening ``---`` delimiter (e.g. ``<!-- SCOPE: both -->``).  Uses
+        ``re.MULTILINE`` so ``^---`` matches the start of any line, not only
+        the very start of the string.
+        """
+        import re as _re
+        m = _re.search(r"^---\s*\n(.*?)\n^---", content, _re.DOTALL | _re.MULTILINE)
+        if not m:
+            return []
+        block = m.group(1)
         found_keys = []
-        in_frontmatter = False
-        for line in lines:
-            stripped = line.strip()
-            if stripped == "---":
-                if in_frontmatter:
-                    break  # end of frontmatter
-                in_frontmatter = True
-                continue
-            if in_frontmatter and ":" in line and not line.startswith(" "):
+        for line in block.split("\n"):
+            if ":" in line and not line.startswith(" ") and not line.startswith("\t"):
                 key = line.split(":", 1)[0].strip()
-                if key:
+                if key and not key.startswith("#"):
                     found_keys.append(key)
         return found_keys
 
