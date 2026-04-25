@@ -1,13 +1,13 @@
 <!-- SCOPE: both -->
 ---
 name: decision-triage
-description: Aggregate unanswered operator decisions from research reports and ADRs into a single ranked view. Complements /session-backlog (tasks) — this counts decisions.
-version: 1.0.0
-last-updated: 2026-04-24
+description: Surface all pending operator decisions across research reports and ADRs. Companion to /session-backlog — counts decisions instead of tasks. Read-only inventory.
+command: /decision-triage
 audience: both
-tags: [triage, decisions, research, governance]
-summary_line: "Aggregate unanswered operator decisions across research reports + ADRs."
-user-invocable: true
+version: 0.1.0
+last-updated: 2026-04-25
+summary_line: Surface pending operator decisions across research reports + ADR open questions in unified urgency-sorted view.
+tags: [triage, decisions, research, governance, operator]
 script: scripts/decision_triage.py
 ---
 
@@ -16,105 +16,136 @@ script: scripts/decision_triage.py
 ## Purpose
 
 Scan research reports and ADRs for unanswered operator decision questions and produce
-a unified, ranked view of what needs a decision. Prevents decisions from accumulating
-scattered across N files, invisible and forgotten.
+a unified, urgency-sorted view of what needs a decision before work can continue.
+Prevents decisions from accumulating scattered across N files, invisible and forgotten.
 
 Complements `/session-backlog` (which surfaces pending tasks) — this surfaces pending
 **decisions**. A task can be blocked behind an unanswered decision; this skill makes
-the blocker visible.
+that blocker visible in one place.
 
-## Sources Scanned
-
-### 1. Research reports — `docs/reports/*.md`
-
-Section headers matched (case-insensitive):
-- `## Open Questions`
-- `## Open Questions for Operator`
-- `## Decision Points`
-- `## Operator Decisions Pending`
-- `## Decisions for Operator`
-
-Each bullet (`-`) or numbered item (`1.`) in the matched section is one decision.
-Table rows in Decision Points sections are also parsed (each data row = one decision).
-
-### 2. ADRs — `docs/adrs/ADR-*.md`
-
-Section header matched: `## Open questions` (case-insensitive).
-Each numbered item or bullet = one decision.
-
-### 3. Engram cross-reference (optional, degrades gracefully)
-
-If the engram MCP is reachable, decisions are cross-referenced against
-`decision/<inferred-topic>` observations to mark them "ANSWERED".
-Engram failure is non-fatal — all decisions fall back to "PENDING (engram unavailable)".
-
-**CRITICAL**: engram unavailability does NOT prevent the skill from running.
-
-## Output Format
-
-```
-# Decision Triage — YYYY-MM-DD
-
-Total unanswered: N decisions across M sources.
-
-## By urgency
-
-### Critical (block other work)
-| # | Source | Decision | Mentioned by |
-...
-
-### Important (decide this session or next)
-...
-
-### Soft (whenever)
-...
-
-## By source
-...
-
-## Engram cross-ref status
-...
-```
-
-## Ranking Heuristic
-
-**More urgent** when:
-- Source explicitly says "blocker", "critical", "must decide", "decision needed before X"
-- Source is a research report tied to in-flight implementation (recent, < 7 days)
-- Multiple decisions share a topic cluster
-- Source file was modified in the last 7 days
-
-**Less urgent** when:
-- Decision marked "future", "post-1.0", "next session"
-- ADR open question has stood unanswered for > 30 days
-- Decision is already a recommendation (not a question)
-
-## Usage
+## Invocation
 
 ```bash
-python3 scripts/decision_triage.py                  # all sources, full output
-python3 scripts/decision_triage.py --source reports # only research reports
-python3 scripts/decision_triage.py --source adrs    # only ADRs
-python3 scripts/decision_triage.py --critical-only  # red-tier only
-python3 scripts/decision_triage.py --json           # machine-readable JSON
+# Default: scan all sources, full output
+/decision-triage
+
+# Filter by date (only decisions from reports/ADRs modified since this date)
+/decision-triage --since 2026-04-01
+
+# Filter by source type
+/decision-triage --only-research
+/decision-triage --only-adrs
+
+# Write output to a specific file
+/decision-triage --output .cognitive-os/sessions/my-session/decisions.md
 ```
 
-Or via slash command: `/decision-triage`
+Or invoke the backing script directly:
+
+```bash
+python3 scripts/decision_triage.py                          # all sources
+python3 scripts/decision_triage.py --since 2026-04-01       # date filter
+python3 scripts/decision_triage.py --only-research          # reports only
+python3 scripts/decision_triage.py --only-adrs              # ADRs only
+python3 scripts/decision_triage.py --output /path/to/out.md # write to file
+python3 scripts/decision_triage.py --critical-only          # red-tier only
+python3 scripts/decision_triage.py --json                   # machine-readable JSON
+```
+
+## Process
+
+1. **Parse arguments** — resolve `--since`, `--only-research`/`--only-adrs`, `--output`
+2. **Scan research reports** (`scan_research_reports`) — glob `docs/reports/*-2026-*-*.md`
+   AND `.cognitive-os/reports/research/*-2026-*-*.md`; extract items from:
+   - `## Open Questions for Operator`
+   - `## Decision Points`
+   - `## Open Questions` (legacy)
+   Each item becomes a Decision `{source, file, section, question_text, date}`
+3. **Scan ADRs** (`scan_adrs`) — glob `docs/adrs/ADR-*.md`; extract items from
+   `## Open questions` (case-insensitive); urgency derived from ADR Status field
+4. **Cross-reference engram** (`scan_engram_answers`) — attempt
+   `engram search "decision/" --json`; if unavailable, return `{}` and log warning;
+   topics under `decision/<slug>` that exist in engram are considered answered
+5. **Filter unanswered** (`filter_unanswered`) — drop decisions whose `topic_slug`
+   appears in the engram answered map
+6. **Sort by urgency** (`sort_by_urgency`) — order: HIGH → MEDIUM → LOW; within tier,
+   newest file first
+7. **Write report** (`write_report`) — produce markdown with urgency-bucketed tables;
+   optionally write to `--output` path (creates parent dirs as needed)
+8. **Mirror to engram** — save report under `decisions/triage/<YYYY-MM-DD>`
+
+## Output Format Example
+
+```markdown
+# Decision Triage — 2026-04-25
+
+> Generated by /decision-triage. Sources: docs/reports/, docs/adrs/, engram (decision/* topics).
+
+## Pending decisions: 7
+
+### 🔴 HIGH urgency (2)
+| # | Source | Topic | Question | Date |
+|---|---|---|---|---|
+| 1 | report | cos-init-migration | Decision point #2: Should we require... | 2026-04-24 |
+| 2 | report | adr-067-phase-2 | Hook validation failure mode: WARN or BLOCK? | 2026-04-24 |
+
+### 🟡 MEDIUM urgency (3)
+...
+
+### 🟢 LOW urgency (2)
+...
+
+## Already answered (1)
+1 answered decisions (from engram `decision/*` topics)
+
+---
+*Generated: 2026-04-25T10:00:00Z*
+*To answer a decision: save engram observation under `decision/<topic_slug>` with your answer*
+```
 
 ## Read-Only Guarantee
 
-This skill NEVER writes to, deletes from, or modifies `docs/reports/*.md` or
-`docs/adrs/ADR-*.md`. All source files are opened in read mode only. The only
-optional write is `.cognitive-os/sessions/{COGNITIVE_OS_SESSION_ID}/decision-triage.md`
-when the session env var is set.
+This skill NEVER writes to, deletes from, or modifies any source file:
+- `docs/reports/*.md` — opened in read mode only
+- `docs/adrs/ADR-*.md` — opened in read mode only
+- `.cognitive-os/reports/research/*.md` — opened in read mode only
+
+The ONLY writes this skill performs are:
+1. The `--output` file (new file, specified by the operator)
+2. The engram observation under `decisions/triage/<date>` (append-only memory)
+
+**To mark a decision as answered**, the operator saves an engram observation under
+`decision/<topic_slug>` with their answer. The skill reads that marker and filters the
+decision out on the next run. The skill never writes the answer itself.
+
+If engram MCP is unavailable, `scan_engram_answers()` returns `{}` gracefully — every
+decision shows as unanswered. This is the safe-by-default behavior.
+
+## Urgency Heuristic
+
+| Signal | Urgency |
+|--------|---------|
+| Text contains "blocker", "critical", "must decide", "blocks" | HIGH |
+| Report file dated < 7 days AND section is "Decision Points" | HIGH |
+| Report file dated < 30 days | MEDIUM |
+| ADR Status: Proposed | MEDIUM |
+| ADR Status: Accepted with open questions | LOW |
+| Text contains "future", "post-1.0", "eventually", "someday" | LOW |
+| ADR open question standing > 30 days unanswered | LOW |
+| ADR Status: Superseded | SKIP |
 
 ## Edge Cases
 
 - **Empty section body**: section matched but no items found → skipped silently
 - **ADR with no `## Open questions`**: skipped silently, not an error
 - **Malformed table rows**: best-effort parse; unparseable rows logged to stderr
-- **Engram timeout/error**: caught, logged to stderr, skill continues with degraded output
-- **No source files found**: emits empty triage with zero count, exits 0
+- **Engram timeout/error**: caught, logged to stderr, skill continues
+- **No source files found**: emits report with 0 pending decisions, exits 0
+- **`--since` date**: decisions from files modified before the cutoff are excluded
+
+## See also
+
+- `/session-backlog` — companion skill that counts pending tasks (this skill counts pending decisions)
 
 ## Contextual Trigger
 
