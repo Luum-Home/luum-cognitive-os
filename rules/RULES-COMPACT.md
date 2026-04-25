@@ -38,10 +38,13 @@ Credentials in env only [`credential-management`]. Content policy + confidential
 ### 11. Skill Lifecycle
 Priority: project>global>auto [`skill-management`]. [`skill-rewrite`]+[`auto-skill-generation`] hooks active. Consequence hook-enforced [`consequence-system`]. Dynamic tools [`dynamic-tool-creation`]: mid-task creation, promote if useful. Task DAG [`task-dag`]: dependency graph for multi-agent workflows. [`doc-sync`] [`user-prompt-capture`].
 
-### 12. Naming Conventions
+### 12. Research & Decision Protocols
+Score task risk on 4 dimensions (AC clarity, blast radius, reversibility, decision count) before launching agents. Score 5-8 → research-first 3-phase cycle: Phase 0 read-only agent → Phase 1 operator triage → Phase 2 implementation. Reports land at `.cognitive-os/reports/research/<topic>-YYYY-MM-DD.md`. Operator decisions persisted to Engram (`research/<topic>`) or new ADR. Template: `templates/agent-research-only.md`. [`research-first-protocol`]
+
+### 13. Naming Conventions
 [`python-naming`]: Python scripts in `scripts/`, `lib/`, `packages/*/lib/` MUST use snake_case (underscores). Hyphens break pytest collection and require `importlib` hacks. Enforced by `tests/audit/test_python_naming.py`. Bash scripts (`.sh`) MAY use hyphens.
 
-### 13. Language Quality Gates (CI-enforced)
+### 14. Language Quality Gates (CI-enforced)
 Polyglot drift caught in PRs (ADR-066). Three tiers:
 - **Python** (live): snake_case via `rules/python-naming.md` + `tests/audit/test_python_naming.py`
 - **Go** (live): `gofmt -l` (no unformatted files) + `go vet ./...` (no issues) via `.github/workflows/go-quality.yml` — covers root module, `cmd/cos`, `cmd/cos-test`; existing gofmt debt on HEAD is pre-existing
