@@ -249,8 +249,8 @@ def test_watchdog_launcher_spawns_when_flag_on(tmp_path: Path, repo_root: Path):
         assert spawned_pid > 0
         # Daemon is alive and is the watchdog (not a PID-reuse victim).
         assert _is_alive(spawned_pid), f"daemon PID {spawned_pid} not alive"
-        assert _cmdline_matches(spawned_pid, "so-session-watchdog"), (
-            f"PID {spawned_pid} cmdline does not reference so-session-watchdog"
+        assert _cmdline_matches(spawned_pid, "so_session_watchdog"), (
+            f"PID {spawned_pid} cmdline does not reference so_session_watchdog"
         )
     finally:
         # CRITICAL: never leak processes across tests.
@@ -291,7 +291,7 @@ def test_watchdog_launcher_singleton_second_invocation(
         # other test runs might have siblings, we don't count global pgrep —
         # we assert the tracked PID is still the one running.
         assert _is_alive(first_pid)
-        assert _cmdline_matches(first_pid, "so-session-watchdog")
+        assert _cmdline_matches(first_pid, "so_session_watchdog")
     finally:
         if first_pid is not None:
             _kill_and_wait(first_pid)
