@@ -8,12 +8,14 @@ Bash scripts in `scripts/`, `hooks/`, `packages/*/hooks/`, and `packages/*/scrip
 MUST use kebab-case filenames (lowercase letters, digits, and hyphens between words).
 Functions inside `.sh` files MUST use snake_case.
 
-Examples:
-- `scripts/cos-bootstrap.sh` — correct
-- `hooks/auto-rollback-trigger.sh` — correct
-- `scripts/cos_bootstrap.sh` — wrong (use hyphens, not underscores, in filenames)
-- `hooks/AutoRollbackTrigger.sh` — wrong (no PascalCase)
-- `scripts/setup.sh` — correct (single word, no separator needed)
+Examples (correct):
+- `scripts/cos-bootstrap.sh`
+- `hooks/auto-rollback-trigger.sh`
+- `scripts/setup.sh` (single word, no separator needed)
+
+Examples (wrong — do not use):
+- `cos_bootstrap.sh` — wrong (snake\_case: use hyphens, not underscores)
+- `AutoRollbackTrigger.sh` — wrong (PascalCase: use all-lowercase-kebab)
 
 ## Rationale
 
