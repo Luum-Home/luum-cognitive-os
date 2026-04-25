@@ -276,6 +276,7 @@ grep -l "ADR-069" docs/adrs/*.md                  # future ADRs cite this one
   altitude (operator IS the loop)
 - `templates/agent-preamble.md` — `templates/agent-research-only.md` will be
   added as part of Phase 5 (see §13)
+- `/decision-triage` skill — surfaces all unanswered operator decisions produced by research-first reports (and ADR open questions) in a unified ranked view
 
 ## Open questions
 
