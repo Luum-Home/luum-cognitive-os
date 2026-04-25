@@ -390,6 +390,7 @@ EXCLUDED_RULES=(
   "responsiveness.md"              # contextual: interaction timing guidance
   "so-slo.md"                      # contextual: SO reliability SLO catalogue
   "startup-protocol.md"            # contextual: session-start protocol detail; compact index carries reference
+  "research-first-protocol.md"     # contextual: os-only; 3-phase research cycle for high-risk tasks; compact index §12
 )
 
 # Build the effective allowed-rules list based on profile.
