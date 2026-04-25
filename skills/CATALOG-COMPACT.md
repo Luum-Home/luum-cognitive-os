@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 141
+Total skills: 142
 
 ## os (12)
 
@@ -59,7 +59,7 @@ Total skills: 141
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
-## both (26)
+## both (27)
 
 | Skill | Description |
 |-------|-------------|
@@ -73,6 +73,7 @@ Total skills: 141
 | cognitive-os-status | Full health check of all Cognitive OS components |
 | compress | Compress natural language memory files (CLAUDE.md, todos, preferences) into… |
 | cos-status | Display current Cognitive OS state — active profile, skills exposed, hooks… |
+| decision-triage | Aggregate unanswered operator decisions across research reports + ADRs. |
 | detect-stack | Scan a project root and produce detected-stack.json with detected languages… |
 | doc-review-personas | N-persona parallel doc review with severity-tiered consolidation. |
 | eval-repo | DEPRECATED alias for /repo-scout |
@@ -84,7 +85,6 @@ Total skills: 141
 | reverse-engineer | Deep source code analysis of a dependency to understand its internal APIs… |
 | scaffold-project | Create the .claude/ directory structure, symlink rules, and generate… |
 | self-improve | META skill — orchestrates analyze-improvements → (human reviews) →… |
-| decision-triage | Aggregate unanswered operator decisions across research reports + ADRs. |
 | session-backlog | Inventory all pending work across plans, engram, tasks, todos, audits, and git. |
 | session-wrapup | End-of-session routine — run session-backlog inventory, save to engram, write… |
 | skill-creator | Create new AI agent skills + cos package scaffolding. |
