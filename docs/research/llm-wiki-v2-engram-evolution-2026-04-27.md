@@ -146,3 +146,14 @@ Once Phases 1–3 are stable, implement an export hook that renders engram obser
 12. claude-mem — lightweight session memory for Claude — https://github.com/sethlford/claude-mem
 13. agentmemory (rohitg00) — persistent memory engine that produced the v2 gist patterns — **LOAD-BEARING**: direct source of crystallization and lifecycle patterns — https://github.com/rohitg00/agentmemory
 14. Ebbinghaus forgetting curve — foundational cognitive science model for retention decay — https://en.wikipedia.org/wiki/Forgetting_curve
+
+---
+
+## Post-implementation status (2026-04-27)
+
+**Phases 1, 2, 3 implemented and verified** (89 tests: 75 unit + 14 e2e against a real sandboxed engram daemon). The original analysis held: lifecycle is the bottleneck, Obsidian remains optional Phase 4. Two pieces of the analysis were corrected during execution:
+
+- The Phase 1 caveat ("engram CLI lacks `get`/`update` so `reinforce()` returns False") was **wrong**. Engram's HTTP API at port 7437 exposes both. Discovered on 2026-04-27 after a PATCH probe accidentally overwrote a real observation (#13283); now governed by `rules/engram-api-safety.md`.
+- The engram `cloud` branch is BEHIND `main` (10 commits) — cloud sync is already merged. The lifecycle trailer survives sync because it lives in `content`, but cross-device reinforcement aggregation is **not** implemented (each device reinforces locally only).
+
+For honest limitations of the shipped implementation (heuristic synthesis without LLM, `mem_judge` supersedes not written, threshold tuning unvalidated, hooks dormant until profile re-applied), see the **Honest Limitations** section in [ADR-071](../adrs/ADR-071-engram-lifecycle-evolution.md).
