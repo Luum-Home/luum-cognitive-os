@@ -14,6 +14,10 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/profile-drift-autoapply.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/reaper-daemon-launcher.sh\""
           },
           {
@@ -27,6 +31,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cos-executor-daemon-launcher.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-daemon-launcher.sh\"",
+            "async": true
           },
           {
             "type": "command",
@@ -361,6 +370,16 @@
             "async": true
           }
         ]
+      },
+      {
+        "matcher": "mcp__plugin_engram_engram__mem_search|mcp__plugin_engram_engram__mem_get_observation",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-reinforce-on-access.sh\"",
+            "async": true
+          }
+        ]
       }
     ],
     "Stop": [
@@ -386,6 +405,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/kpi-trigger.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-crystallize-on-session-end.sh\"",
             "async": true
           }
         ]
