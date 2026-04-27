@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Pre-Development Readiness Gate
 
 ## Purpose
