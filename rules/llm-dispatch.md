@@ -1,3 +1,5 @@
+<!-- SCOPE: both -->
+
 # LLM Dispatch Policy (ADR-049 Option B)
 
 ## Purpose

@@ -1,3 +1,5 @@
+<!-- SCOPE: both -->
+
 # Decision Depth Gate
 
 ## Purpose
