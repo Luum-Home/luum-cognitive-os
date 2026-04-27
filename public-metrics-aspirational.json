@@ -1,23 +1,23 @@
 {
-  "total": 585,
+  "total": 597,
   "counts": {
     "METADATA": 45,
-    "ASPIRATIONAL": 71,
-    "REAL": 163,
-    "ON_DEMAND": 156,
-    "DORMANT": 150
+    "ASPIRATIONAL": 69,
+    "ON_DEMAND": 227,
+    "DORMANT": 165,
+    "REAL": 91
   },
-  "dormant_aspirational_ratio": 0.3778,
+  "dormant_aspirational_ratio": 0.392,
   "worst_offenders": [
     "hooks/adr-detector.sh",
     "hooks/agent-bus-monitor.sh",
     "hooks/agent-output-verifier.sh",
     "hooks/agent-quota-advisor.sh",
     "hooks/agent-quota-redirect.sh",
+    "hooks/dequeue-notify.sh",
+    "hooks/skill-frontmatter-validator.sh",
     "lib/jupyter_client.py",
-    "scripts/check_test_quality.py",
-    "scripts/check-upstream-changes.sh",
-    "scripts/ci-setup.sh",
-    "scripts/ci-smoke-linux.sh"
+    "scripts/backfill_cost_events.py",
+    "scripts/check-upstream-changes.sh"
   ]
 }
