@@ -1,3 +1,5 @@
+<!-- SCOPE: both -->
+
 # Python Script Naming — Snake Case Required
 
 ## Rule
