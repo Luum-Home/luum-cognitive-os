@@ -91,9 +91,9 @@ Reinforcement is implemented via hook `hooks/engram-reinforce-on-access.sh` (Pos
 
 | Phase | Scope | Status |
 |---|---|---|
-| 1 | Confidence + decay (`lib/engram_lifecycle.py`, trailer schema, ranking, reinforcement hook) | **This sprint** |
-| 2 | Crystallization pipeline (auto-promote N+ observations on same topic\_key → digest → `type=pattern`) | Planned — see feature plan |
-| 3 | Graph traversal in queries (walk `mem_judge` edges, 2-hop max, merge into ranked results) | Planned — see feature plan |
+| 1 | Confidence + decay (`lib/engram_lifecycle.py`, trailer schema, ranking, reinforcement hook) | **Done** (Wave 3a) |
+| 2 | Crystallization pipeline (auto-promote N+ observations on same topic\_key → digest → `type=pattern`) | **Done** (Wave 3b) |
+| 3 | Graph traversal in queries (walk `memory_relations` SQLite table, 2-hop max, merge into ranked results) | **Done** (Wave 3b) |
 | 4 | Obsidian export as human-readable layer (read-only; no writes from Obsidian to engram) | Deferred — after Phases 1–3 ship |
 
 Feature plan: [`.cognitive-os/plans/features/engram-lifecycle-evolution.md`](../../.cognitive-os/plans/features/engram-lifecycle-evolution.md).
@@ -202,11 +202,87 @@ print('PASS: missing-trailer returns None (fallback handled by caller)')
 "
 ```
 
+## Addendum — 2026-04-27: HTTP API discovery + Phase 1 caveat correction
+
+The original Phase 1 commit (d48dcb8) claimed `reinforce()` would return False in production "until engram CLI exposes get/update". This was incorrect. The engram daemon at port 7437 exposes `GET /observations/<id>`, `PATCH /observations/<id>`, `GET /search`, `GET /stats`, and `GET /health`. Phase 1's `reinforce()` was migrated to use HTTP and is fully functional today.
+
+A safety policy was ratified the same day after an accidental overwrite of observation #13283 during API discovery: see `rules/engram-api-safety.md`. Production daemon mutation is restricted to typed clients (`lib/engram_http_client.py`); ad-hoc curl experiments must target a sandboxed daemon (alternate port + temp `ENGRAM_DATA_DIR`).
+
+New files introduced in this addendum:
+- `lib/engram_http_client.py` — HTTP wrapper (`is_available`, `get_observation`, `search_observations`, `update_observation`). Falls back to `urllib` when `requests` is not installed.
+- `tests/unit/test_engram_http_client.py` — 12+ unit tests with mocked HTTP transport.
+- `tests/e2e/test_engram_lifecycle_e2e.py` — 5 e2e tests against a real sandboxed daemon.
+- `rules/engram-api-safety.md` — safety policy for production daemon mutation.
+
+`lib/engram_lifecycle.py` `reinforce()` now: checks `engram_http_client.is_available()`, fetches via `get_observation()`, updates the trailer in-memory, and writes back via `update_observation()`. The re-save workaround (which created duplicate observations under new IDs) has been removed.
+
+## Addendum — 2026-04-27: Phase 2 (Crystallization) + Phase 3 (Graph Traversal) shipped
+
+### Phase 2: Crystallization
+
+`lib/engram_crystallizer.py` implements the consolidation pipeline:
+- `candidates()` fetches recent observations via `GET /observations/recent` and groups by `topic_key`, using `revision_count` as a proxy for multi-save count (engram deduplicates topic_keys into a single observation).
+- `crystallize()` synthesises a deterministic text digest (no LLM call in v1), saves it as a new observation with `type=pattern`, `topic_key=<original>/crystallized`, and a trailer with `crystallized: true`, `confidence: 0.85`, `decay_class: pattern`, and `superseded_obs_ids`.
+- `crystallize_all()` iterates all candidates with short-circuit when empty (target: ≤500ms at session end).
+- `hooks/engram-crystallize-on-session-end.sh` fires at the Stop event and calls `crystallize_all()` asynchronously.
+
+**Cloud branch finding**: `lib/engram_http_client.get_recent()` was added (GET `/observations/recent`) to support `_search_all()`. The lifecycle trailer survives cloud sync because it lives in the `content` field, which engram stores and returns unchanged.
+
+**Engram deduplication caveat**: engram deduplicates observations with the same `topic_key` into a single observation, incrementing `revision_count` on each save. The crystallizer uses `revision_count` as the effective observation count for threshold evaluation.
+
+### Phase 3: Graph Traversal
+
+`lib/engram_graph_walker.py` implements BFS over the `memory_relations` SQLite table:
+- Opens the DB read-only via `sqlite3.connect(f"file:{path}?mode=ro", uri=True)`.
+- `walk()` performs BFS up to `max_depth=2` hops, excluding rejected relations and starting nodes.
+- `merge_into_results()` re-ranks base results with `final = original * (1 - alpha_graph)` and adds graph-only neighbors at `graph_boost=0.3`.
+- `EngramLifecycle.search()` accepts `graph_walk=True` to trigger traversal after initial search.
+
+**`memory_relations` not in HTTP API**: the table is only accessible via the engram MCP server (`mem_judge` tool), not via the HTTP REST API at port 7437. The graph walker reads SQLite directly for compatibility.
+
+## Honest Limitations (post-implementation, 2026-04-27)
+
+The implementation works end-to-end (89 tests passing: 75 unit + 14 e2e against a real sandboxed engram daemon). What follows is what does **not** work, what is **partial**, and what is **best-effort** — documented so future readers don't inherit false confidence.
+
+### What is partial
+
+1. **Crystallizer uses no LLM.** Synthesis is deterministic concat + dedup of constituent contents, capped at 4000 chars. The output is browsable as a digest but is not a smart summary. Upgrading to an LLM call (via `scripts/orchestrator.py` per ADR-049) is left for a future revision when the heuristic version produces evidence of insufficient signal density. Not aspirational — the current behaviour is what runs.
+
+2. **`mem_judge` supersedes is not written.** Engram's HTTP API does not expose `/relations` writes; the `mem_judge` MCP tool is the only path, and we do not invoke MCP from Python in this implementation. Phase 2 stores `crystallized: true` and `superseded_obs_ids: [...]` in the digest trailer instead. Downstream consumers must read the trailer to know which observations were folded in. The `memory_relations` graph itself does not show the supersedes edge from constituents to digest.
+
+3. **Reinforcement is local-only.** `engram-reinforce-on-access.sh` updates `last_reinforced` and `reinforcement_count` on the local DB. Engram cloud sync replicates the `content` field (trailer included) but does not aggregate reinforcement counters across devices. Two laptops both accessing the same observation reinforce independently; merging across devices is not implemented.
+
+4. **Graph walker reads SQLite directly.** The walker bypasses the HTTP API by opening `~/.engram/engram.db` in read-only mode. This couples the walker to engram's schema. If engram changes the `memory_relations` schema (column rename, type change, table split) the walker will silently return wrong results until updated. Mitigation: read-only mode prevents corruption; the walker fails closed (returns `{}`) if the DB is missing or the schema mismatch causes a SQL error.
+
+5. **Crystallizer uses `revision_count` as the count proxy.** Engram deduplicates observations sharing a `topic_key` into a single row, incrementing `revision_count` per save instead of inserting new rows. The crystallizer threshold (`N≥5 in 30 days` OR `N≥10 total`) reads `revision_count` to know "how many times has this been saved." This is a proxy: it counts saves, not distinct events. A topic that is saved-then-edited 5 times triggers crystallization the same as one saved 5 times by 5 distinct discoveries.
+
+### What is dormant until activated
+
+6. **Hooks are registered but only fire under matching profiles.** `hooks/engram-reinforce-on-access.sh` and `hooks/engram-crystallize-on-session-end.sh` are listed in `scripts/apply-efficiency-profile.sh` and `scripts/set-security-profile.sh`. They activate when the user runs `bash scripts/apply-efficiency-profile.sh default` (or any of the security profiles). In a fresh checkout that has not re-applied a profile, the hooks exist on disk but `.claude/settings.json` does not yet route events to them.
+
+7. **`reinforce()` requires the engram daemon to be running.** If `engram serve` (port 7437) is not up, `reinforce()` returns `False` silently. The hook logs to `.cognitive-os/metrics/lifecycle-reinforcement.jsonl` regardless, so failures are observable. There is no auto-start; the daemon is the user's responsibility.
+
+### What is unvalidated
+
+8. **Threshold tuning is a starting heuristic.** `N≥5 in 30 days` and `N≥10 total` for crystallization, and τ values per decay class (`architecture=365d, decision=180d, pattern=180d, discovery=90d, bugfix=60d, manual=90d`), are defensible defaults but not empirically calibrated. Phase 2 logging should accumulate data to retune these.
+
+9. **Cloud sync compat is structurally sound but not e2e-tested.** The trailer lives in `content` which engram cloud sync round-trips unchanged (verified by reading engram's source). No e2e test exercises a sync chunk through the lifecycle wrapper.
+
+10. **Trailer parse is best-effort.** If a user manually edits an observation and corrupts the `<engram-lifecycle>{...}</engram-lifecycle>` JSON, `_parse_trailer()` returns `None` and the wrapper falls back to default-trailer behaviour (confidence=0.5, retention=1.0). The corrupted observation is not penalised but its lifecycle state is silently lost. There is no repair tool.
+
+### Scope decisions, deliberately
+
+11. **No Obsidian export in this ADR.** The original research recommended Obsidian as Phase 4 (optional, deferred). This ADR ships only Phases 1–3. Phase 4 remains in `.cognitive-os/plans/features/engram-lifecycle-evolution.md` as deferred work, not a missing feature.
+
+12. **No fork of engram.** The integration uses engram as-is. If a future need requires `mem_judge` write access from Python, the path is to (a) spawn engram in MCP mode and pipe stdin, or (b) propose an HTTP endpoint upstream — not to fork the binary.
+
 ## Related
 
 - `docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` — full analysis backing this decision
 - `.cognitive-os/plans/features/engram-lifecycle-evolution.md` — phased implementation plan
 - `lib/engram_client.py` — existing engram wrapper; `lib/engram_lifecycle.py` wraps this
+- `lib/engram_http_client.py` — HTTP REST API wrapper (added in addendum 2026-04-27)
 - `hooks/engram-reinforce-on-access.sh` — PostToolUse hook implementing reinforcement (Phase 1)
+- `rules/engram-api-safety.md` — safety policy for production daemon mutation (added in addendum)
 - `rules/RULES-COMPACT.md` — reinvention-prevention rule that excluded Mem0/Zep/Cognee migration
 - `docs/adrs/ADR-070-convention-enforcement-mechanism.md` — adjacent ADR for context on enforcement patterns

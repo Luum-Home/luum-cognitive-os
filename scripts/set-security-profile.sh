@@ -120,7 +120,7 @@ case "$PROFILE" in
     echo "  PreToolUse: rate-limit-precheck.sh (D45 sidecar), rate-limiter, secret-detector"
     echo "  PostToolUse: error-pipeline, result-truncator, rate-limit-drain.sh (D45 drainer), content-policy, skill-frontmatter-validator.sh, rule-frontmatter-validator.sh, hook-header-validator.sh, adr-section-validator.sh, auto-checkpoint"
     echo "  PreCompact: pre-compaction-flush"
-    echo "  Stop: session-cleanup"
+    echo "  Stop: session-cleanup, engram-crystallize-on-session-end.sh (async, ADR-071 Phase 2)"
     echo "  Overhead: ~100-200ms per tool call"
     ;;
   standard)
@@ -160,7 +160,7 @@ case "$PROFILE" in
     echo "  PostToolUse mem_search|mem_get_observation: engram-reinforce-on-access.sh (async, ADR-071 lifecycle)"
     echo "  PostToolUse TodoWrite+Agent: work-queue-sync.sh (task-tracking)"
     echo "  PreCompact: pre-compaction-flush"
-    echo "  Stop: session-learning, session-cleanup, session-end-reap.sh, kpi-trigger, recap-sync"
+    echo "  Stop: session-learning, session-cleanup, session-end-reap.sh, kpi-trigger, recap-sync, engram-crystallize-on-session-end (async)"
     echo "  Safety mesh layers: 5/12"
     echo "  Overhead: ~300-500ms per tool call"
     ;;
