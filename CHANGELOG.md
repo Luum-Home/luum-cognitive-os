@@ -5,6 +5,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-04-27 — "ADR-068 Phase 1: Adaptive Pytest"
+
+### Added — ADR-068 Phase 1: adaptive pytest worker selection
+
+- `scripts/detect_runner_capacity.py` — cross-platform helper implementing the 6-row heuristic table (cores≤2→serial, load>70%→2, mem<2GB→4, battery<30% off-AC→serial, CI=true→auto, default→auto). Emits scalar token to stdout (`auto`/`0`/integer); `--json` flag exposes full diagnostics dict.
+- `scripts/pytest-with-summary.sh` now invokes the detector when no `-n`/`--numprocesses` flag is present, preventing the 21-min serial regression that triggered the ADR. Explicit `-n` and `COS_PYTEST_WORKERS` env var both short-circuit detection per the override precedence chain.
+- `tests/unit/test_detect_runner_capacity.py` — 9 unit tests covering each heuristic row, override precedence, and JSON diagnostics. psutil-missing path is exercised via mocked import failure; production path degrades to `auto` with a stderr warning.
+- ADR-068 status: **Proposed → Accepted**.
+
 ## [0.18.0] - 2026-04-27 — "cos-init Python + Defense-in-Depth Complete"
 
 ### Added — cos-init.sh fully migrated to Python (strangler-fig complete)
