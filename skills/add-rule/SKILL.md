@@ -28,36 +28,42 @@ harness.
 
 ### 1. Create the rule file
 
-Create `rules/{rule-name}.md`:
+Use `templates/rule-template.md` as the starting point:
+
+```bash
+cp templates/rule-template.md rules/{rule-name}.md
+```
+
+Then fill in the template. The field contract (ADR-067 Phase 2) requires:
+
+| Field | Requirement |
+|---|---|
+| `<!-- SCOPE: ... -->` | Line 1. Must be one of: `os-only`, `project`, `both` |
+| `# Title` | H1 heading present |
+| Opening section | One of: `## Purpose`, `## Rule`, `## Principle`, `## Mandate` |
+| `## Contextual Trigger` | Required if body mentions "Contextual Trigger" or has `<!-- STATUS: contextual -->` |
+
+Example structure:
 
 ```markdown
+<!-- SCOPE: both -->
+
 # Rule Name
 
 ## Purpose
 
 What this rule enforces and why it exists.
 
-## Rule (Always Active)
+## Rule
 
 The specific constraint or protocol. Use imperative language:
 - MUST, MUST NOT, SHOULD, NEVER
-- Keep rules actionable, not descriptive
 
-## Behavior
+## Rationale
 
-| Condition | Action |
-|-----------|--------|
-| Case A    | Do X   |
-| Case B    | Do Y   |
+Why this rule exists; what goes wrong without it.
 
-## Integration
-
-| Component | Role |
-|-----------|------|
-| `hooks/related-hook.sh` | Enforces this rule at the tool level |
-| `rules/related-rule.md` | Complementary constraint |
-
-## Contextual Trigger (if applicable)
+## Contextual Trigger (if contextual rule)
 
 This rule is loaded when: keyword1, keyword2, keyword3.
 ```
@@ -67,9 +73,10 @@ Rule writing guidelines:
 - Use tables for structured constraints
 - Reference other rules by filename if there are dependencies
 - Keep under 200 lines; split into multiple rules if longer
-- Include a "Contextual Trigger" section even for always-active rules (helps with search)
 - Author the rule as policy first. Treat harness-specific loading or
   enforcement as a projection concern, not the definition of the rule itself.
+- The `hooks/rule-frontmatter-validator.sh` PostToolUse hook will warn
+  if the field contract is violated when you Write/Edit a rules/*.md file.
 
 ### 2. Keep projection separate from policy
 
