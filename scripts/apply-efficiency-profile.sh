@@ -139,10 +139,12 @@ build_settings() {
   session_start=$(hook_group "" \
     "self-install.sh" \
     "session-init.sh" \
+    "profile-drift-autoapply.sh" \
     "reaper-daemon-launcher.sh" \
     "session-watchdog-launcher.sh" \
     "docker-drift-detector.sh" \
     "cos-executor-daemon-launcher.sh" \
+    "engram-daemon-launcher.sh|async" \
     "crash-recovery.sh" \
     "session-resume.sh" \
     "infra-health.sh|async" \
@@ -346,7 +348,7 @@ done
 # ── Summary ─────────────────────────────────────────────────────────
 echo ""
 echo "Hook summary for profile 'default' (committed Claude projection):"
-echo "  SessionStart: self-install.sh, session-init.sh, reaper/session watchdogs, docker drift, executor daemon, crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards"
+echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh (ADR-071 F8), reaper/session watchdogs, docker drift, executor daemon, engram-daemon-launcher.sh (async, ADR-071 F7), crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards"
 echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh"
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"

@@ -114,7 +114,7 @@ echo ""
 echo "Hook summary for security profile '$PROFILE':"
 case "$PROFILE" in
   minimal)
-    echo "  SessionStart: self-install, session-init, crash-recovery, session-resume"
+    echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, profile-drift-autoapply.sh (ADR-071 F8), engram-daemon-launcher.sh (ADR-071 F7, async)"
     echo "  UserPromptSubmit: user-prompt-capture, session-wrapup-trigger.sh"
     echo "  SubagentStart: subagent-context-injector"
     echo "  PreToolUse: rate-limit-precheck.sh (D45 sidecar), rate-limiter, secret-detector"
