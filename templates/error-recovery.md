@@ -1,3 +1,5 @@
+<!-- SCOPE: both -->
+
 # Error Recovery
 
 When a task step fails:
