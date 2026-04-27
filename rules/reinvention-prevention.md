@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Reinvention Prevention
 
 ## Rule: Check Before Building
