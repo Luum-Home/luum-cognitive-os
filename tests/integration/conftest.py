@@ -73,26 +73,21 @@ def _integration_test_timeout():
 # ---------------------------------------------------------------------------
 
 @pytest.fixture
-def cognitive_os_env():
+def cognitive_os_env(tmp_path, monkeypatch):
     """Set up Cognitive OS environment variables for testing."""
+    project_dir = tmp_path / "cognitive-os-test"
+    project_dir.mkdir()
     env = {
-        "COGNITIVE_OS_PROJECT_DIR": "/tmp/cognitive-os-test",
+        "COGNITIVE_OS_PROJECT_DIR": str(project_dir),
         "COGNITIVE_OS_SESSION_ID": f"test-session-{os.getpid()}",
         "OPIK_API_URL": "http://localhost:5173/api",
         "OPIK_PROJECT_NAME": "cognitive-os-test",
         "COGNEE_GRAPH_BACKEND": "networkx",
         "COGNEE_VECTOR_STORE": "lancedb",
     }
-    old_env = {}
     for k, v in env.items():
-        old_env[k] = os.environ.get(k)
-        os.environ[k] = v
+        monkeypatch.setenv(k, v)
     yield env
-    for k, v in old_env.items():
-        if v is None:
-            os.environ.pop(k, None)
-        else:
-            os.environ[k] = v
 
 
 # ---------------------------------------------------------------------------
