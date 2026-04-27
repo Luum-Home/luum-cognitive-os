@@ -203,3 +203,18 @@ def test_memu_has_explicit_sunset_deadline():
     assert _parse_review_by(memu["review_by"]) == _dt.date(2026, 6, 1), (
         "MemU sunset deadline is fixed at 2026-06-01 per catalog §Memory."
     )
+
+
+def test_legacy_langfuse_record_completion_e2e_lane_is_retired():
+    """ADR-058 moved record-completion trace proof to Phoenix/OTel.
+
+    The optional E2E reference file may still keep infrastructure health checks
+    for migration context, but it must not resurrect the removed
+    record_completion -> Langfuse ingestion lane or call the deleted private
+    sender API.
+    """
+    e2e_file = _repo_root() / "tests" / "integration" / "test_e2e_flows.py"
+    text = e2e_file.read_text(encoding="utf-8")
+
+    assert "TestCOSLangfuseIntegration" not in text
+    assert "_send_langfuse_trace" not in text
