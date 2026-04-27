@@ -1,3 +1,5 @@
+<!-- SCOPE: both -->
+
 # ADR-NNN — <Title>
 
 ## Status

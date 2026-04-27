@@ -1,3 +1,5 @@
+<!-- SCOPE: os-only -->
+
 # Rebranding Checklist
 
 When touching code that references old brand names:

@@ -1,3 +1,5 @@
+<!-- SCOPE: project -->
+
 # Industry-Specific Gates (Example Template)
 
 This is an EXAMPLE template. Projects should create their own industry-specific gates.

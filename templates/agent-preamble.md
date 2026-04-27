@@ -1,3 +1,5 @@
+<!-- SCOPE: os-only -->
+
 # Agent Preamble (compact)
 
 Sub-agent in Cognitive OS. Phase: `{{phase}}`.

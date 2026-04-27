@@ -1,3 +1,5 @@
+<!-- SCOPE: both -->
+
 # Generator + Validator Pair Template
 
 ## Pattern

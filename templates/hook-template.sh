@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: <REQUIRED — both | os-only | project>
+# SCOPE: os-only
 # PURPOSE: <REQUIRED — one-line description of what this hook does>
 # EVENT: <REQUIRED — PreToolUse | PostToolUse | UserPromptSubmit | Stop | SessionStart>
 # MATCHER: <optional — tool name regex if PreToolUse/PostToolUse, e.g. Edit|Write>
