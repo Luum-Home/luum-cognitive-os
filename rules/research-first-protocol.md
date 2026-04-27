@@ -53,7 +53,7 @@ Launch a read-only research agent using `templates/agent-research-only.md` as
 the base prompt. The agent:
 
 1. Explores the codebase and relevant context
-2. Produces a structured report at `.cognitive-os/reports/research/<topic>-<YYYY-MM-DD>.md`
+2. Produces a structured report at `docs/reports/<topic>-<YYYY-MM-DD>.md`
 3. Saves key findings to Engram under `research/<topic>`
 4. Does NOT implement, commit code, or modify anything outside the reports dir
 
@@ -93,7 +93,7 @@ ambiguity was resolved in Phase 1.
 All Phase 0 research reports live under:
 
 ```
-.cognitive-os/reports/research/<topic>-<YYYY-MM-DD>.md
+docs/reports/<topic>-<YYYY-MM-DD>.md
 ```
 
 - `<topic>`: slug form, lowercase hyphens (e.g., `cos-init-migration`,
@@ -101,6 +101,9 @@ All Phase 0 research reports live under:
 - `<YYYY-MM-DD>`: date the research agent ran (not the implementation date)
 - One report per topic per run. If a topic is re-researched, create a new file
   with the new date — do not overwrite the old one (history matters).
+- Reports MUST go in `docs/reports/` (git-tracked). Do NOT write to
+  `.cognitive-os/reports/research/` — that path is gitignored and causes
+  duplicate-counting in `/decision-triage`.
 
 ---
 
