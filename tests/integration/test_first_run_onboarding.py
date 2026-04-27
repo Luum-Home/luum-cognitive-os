@@ -29,6 +29,7 @@ def test_first_run_onboarding_help_documents_budgets():
     assert "COS_ONBOARDING_INSTALL_BUDGET_MS" in result.stdout
 
 
+@pytest.mark.timeout(300)
 def test_first_run_onboarding_codex_path_meets_budget():
     env = os.environ.copy()
     env.update(

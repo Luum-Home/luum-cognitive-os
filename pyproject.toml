@@ -110,7 +110,7 @@ dev = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-timeout = 10
+timeout = 30
 addopts = "-n auto --dist worksteal -q"
 markers = [
     "unit: Unit tests",

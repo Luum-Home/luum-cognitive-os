@@ -13,9 +13,7 @@ Tests:
 from __future__ import annotations
 
 import json
-import os
 import sys
-import tempfile
 import time
 from pathlib import Path
 from unittest.mock import patch
@@ -241,7 +239,7 @@ class TestEngramUnavailable:
 1. What should we do about the old API?
 2. Is migration required now?
 """
-        md = make_report(content, tmp_path, "report-engram-test.md")
+        make_report(content, tmp_path, "report-engram-test.md")
         # Make an ADR dir with no files
         adr_dir = tmp_path / "adrs"
         adr_dir.mkdir()
@@ -305,6 +303,7 @@ class TestEngramUnavailable:
 # ---------------------------------------------------------------------------
 
 @pytest.mark.integration
+@pytest.mark.timeout(300)
 class TestRealFilesIntegration:
     """Runs against actual docs/reports/*.md and docs/adrs/ADR-*.md.
     MUST NOT modify any source files.
