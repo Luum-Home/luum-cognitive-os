@@ -246,7 +246,8 @@ build_settings() {
     "session-cleanup.sh" \
     "git-context-capture.sh" \
     "session-changelog.sh" \
-    "kpi-trigger.sh|async")
+    "kpi-trigger.sh|async" \
+    "engram-crystallize-on-session-end.sh|async")
 
   local teammate_idle
   teammate_idle=$(hook_group "" \
@@ -361,7 +362,7 @@ echo "  PostToolUse TodoWrite: work-queue-sync.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh (async), skill-invocation-logger.sh"
 echo "  PostToolUse mem_search|mem_get_observation: engram-reinforce-on-access.sh (async)"
 echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async)"
-echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, kpi-trigger.sh (async)"
+echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, kpi-trigger.sh (async), engram-crystallize-on-session-end.sh (async)"
 echo "  TeammateIdle: teammate-idle.sh"
 echo "  TaskCreated: task-created.sh"
 echo "  TaskCompleted: task-completed.sh"
