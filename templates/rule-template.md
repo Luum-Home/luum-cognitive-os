@@ -1,4 +1,4 @@
-<!-- SCOPE: <REQUIRED — both | os-only | project> -->
+<!-- SCOPE: os-only -->
 
 # <Rule Name>
 

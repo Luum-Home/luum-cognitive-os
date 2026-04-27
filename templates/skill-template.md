@@ -1,4 +1,4 @@
-<!-- SCOPE: <REQUIRED — both | os-only | project> -->
+<!-- SCOPE: os-only -->
 ---
 name: <REQUIRED — kebab-case skill name matching directory>
 description: <REQUIRED — 30-300 chars describing what this skill does and when to invoke it>
