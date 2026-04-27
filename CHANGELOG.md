@@ -5,6 +5,48 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-04-27 — "ADR-071: Engram Lifecycle Evolution (Phases 1–3)"
+
+### Added — confidence + Ebbinghaus decay (Phase 1, commit `d48dcb8`)
+
+- `lib/engram_lifecycle.py` — wrapper layer with `save`/`search`/`reinforce`, `decay_retention(t,τ)`, `reinforce_confidence(c,β=0.15)`, `adjusted_score(base,conf,ret,α=0.3)`. Six decay classes (architecture=365d, decision=180d, pattern=180d, discovery=90d, bugfix=60d, manual=90d). Lifecycle metadata stored as a `<engram-lifecycle>{...}</engram-lifecycle>` trailer in observation `content` so engram passes it through unchanged.
+- `tests/unit/test_engram_lifecycle.py` — 22+ unit tests (trailer round-trip, decay math, reinforcement asymptote, ranking bounds, search re-ranking, decay-class mapping, malformed-trailer fallback).
+- `hooks/engram-reinforce-on-access.sh` — async PostToolUse hook for `mem_search`/`mem_get_observation`. Registered in both `apply-efficiency-profile.sh` and `set-security-profile.sh`.
+
+### Added — HTTP correction + safety policy (Wave 3a, commit `f2cd0aa`)
+
+- `lib/engram_http_client.py` — REST wrapper for the engram daemon at port 7437. `is_available`, `get_observation`, `search_observations`, `get_recent`, `update_observation`, `create_observation`. `urllib` fallback when `requests` is absent. **Empty-PATCH raises `ValueError`** as a destructive-op preflight.
+- `lib/engram_lifecycle.py` `reinforce()` rewritten to use HTTP `PATCH /observations/{id}` — true in-place update, no duplicate observations. The Phase 1 caveat ("engram CLI lacks `get`/`update`") was wrong; HTTP API exposes both. Corrected with addendum in ADR-071.
+- `rules/engram-api-safety.md` — ratified after observation #13283 was accidentally overwritten during API discovery. Production daemon mutation only via typed clients; ad-hoc `curl PATCH/POST/DELETE` must target a sandboxed daemon (`ENGRAM_DATA_DIR=$tmp ENGRAM_PORT=7438 engram serve`).
+
+### Added — crystallization (Phase 2, commit `f2cd0aa`)
+
+- `lib/engram_crystallizer.py` — deterministic synthesis (no LLM in v1) when a `topic_key` crosses thresholds (`revision_count ≥ 5` in 30 days OR `≥ 10` total). Saves digest as `type=pattern`, `topic_key=<original>/crystallized`, with `crystallized:true` + `superseded_obs_ids: [...]` in trailer. Idempotent via topic-key check.
+- `hooks/engram-crystallize-on-session-end.sh` — async Stop hook calling `crystallize_all()`. Latency budget ≤500ms with short-circuit on empty candidates.
+- `tests/unit/test_engram_crystallizer.py` — coverage for thresholds, candidate detection, idempotence, synthesize_content determinism, force=True replacement.
+
+### Added — graph traversal (Phase 3, commit `f2cd0aa`)
+
+- `lib/engram_graph_walker.py` — BFS over the `memory_relations` SQLite table opened **read-only** (`sqlite3.connect(f"file:{path}?mode=ro", uri=True)`). Excludes `judgment_status='rejected'`. Default `max_depth=2`, `graph_boost=0.3`, `alpha_graph=0.2`.
+- `EngramLifecycle.search(graph_walk=True)` triggers traversal and merges neighbors into the ranked result set.
+- `tests/unit/test_engram_graph_walker.py` — BFS correctness, depth limit, deduplication, rejected-relation skip, score merging.
+
+### Added — end-to-end test harness
+
+- `tests/e2e/test_engram_lifecycle_e2e.py` — 14 e2e tests against a **real sandboxed engram daemon** spawned on a free port with `ENGRAM_DATA_DIR=tempdir`. Marked `@pytest.mark.e2e`. Skipped automatically when the `engram` binary is absent. Total test count: **135 pass** (121 unit + 14 e2e).
+
+### Documentation
+
+- `docs/adrs/ADR-071-engram-lifecycle-evolution.md` — full decision (schema, formulas, decay classes, ranking weight α=0.3, asymptotic confidence β=0.15) + two addendums (HTTP discovery + Phase 2/3 shipped) + **Honest Limitations** section listing 12 caveats: heuristic synthesis, supersedes-not-written, local-only reinforcement, schema coupling, save-count proxy, dormant hooks, unvalidated thresholds, structural-only cloud-sync compat, etc.
+- `docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` — analysis of the LLM Wiki v2 gist (rohitg00/agentmemory) + 14 sources + post-implementation status footer.
+- `.cognitive-os/plans/features/engram-lifecycle-evolution.md` — phased plan, marked SHIPPED for Phases 1–3, Phase 4 (Obsidian export) deferred.
+
+### Notes
+
+- Engram cloud branch (`feat/integrate-engram-cloud`) was inspected and confirmed **behind main by 10 commits** — cloud is already merged. The lifecycle trailer survives sync because it lives in `content`, but cross-device reinforcement aggregation is **not** implemented.
+- The hook `engram-reinforce-on-access.sh` requires `engram serve` (port 7437) to be running. If down, `reinforce()` returns `False` silently and the failure is observable in `.cognitive-os/metrics/lifecycle-reinforcement.jsonl`.
+- This is the implementation referenced in [LLM Wiki v2](https://gist.github.com/rohitg00/2067ab416f7bbe447c1977edaaa681e2). Phases 1–3 cover lifecycle (confidence + decay), crystallization, and graph traversal — i.e. everything the gist identifies as the load-bearing additions to a flat-page Karpathy wiki.
+
 ## [0.19.0] - 2026-04-27 — "ADR-068 Phase 1: Adaptive Pytest"
 
 ### Added — ADR-068 Phase 1: adaptive pytest worker selection
