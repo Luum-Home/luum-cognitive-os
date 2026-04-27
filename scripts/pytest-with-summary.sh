@@ -28,11 +28,14 @@ fi
 # --- Adaptive worker injection (ADR-068 Phase 1) ---
 # If the caller already specified -n / --numprocesses, respect it and skip detection.
 _has_n_flag=0
-case " $* " in
-  *" -n "* | *" --numprocesses "*)
-    _has_n_flag=1
-    ;;
-esac
+for _arg in "$@"; do
+  case "$_arg" in
+    -n | --numprocesses | -n=* | --numprocesses=* | -n[0-9]* | -nauto)
+      _has_n_flag=1
+      break
+      ;;
+  esac
+done
 
 if [ "$_has_n_flag" -eq 0 ]; then
   _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"

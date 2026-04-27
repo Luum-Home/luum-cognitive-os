@@ -302,13 +302,15 @@ def install_skill_dir(
 ) -> str:
     """Port from scripts/cos-init.sh::install_skill_dir().
 
-    Takes a full skill directory path, kernel dest, driver dest.
+    Takes a full skill directory path, kernel dest, optional driver dest.
     Calls skill_scope_allows() to filter. Then:
-      - rm -rf kernel/<name> driver/<name>
+      - rm -rf kernel/<name> [driver/<name>]
       - cp -r skill_dir kernel/<name>
-      - ln -s ../../.cognitive-os/skills/cos/<name> driver/<name>  (relative symlink)
+      - when a driver dest is provided:
+        ln -s ../../.cognitive-os/skills/cos/<name> driver/<name>  (relative symlink)
 
-    Byte-for-byte port — do NOT optimise the bash logic.
+    Codex and future hosts use canonical `.cognitive-os/skills/cos` as the
+    install surface until they have an explicit skills driver contract.
 
     Returns one of: "installed", "skipped" (scope-filtered), "error".
     """
@@ -320,27 +322,31 @@ def install_skill_dir(
         return "skipped"
 
     kernel_dest = Path(skill_dest_kernel) / skill_name
-    driver_dest = Path(skill_dest_driver) / skill_name
+    driver_dest = Path(skill_dest_driver) / skill_name if skill_dest_driver else None
 
     try:
-        # rm -rf "$SKILL_DEST_KERNEL/$skill_name" "$SKILL_DEST_DRIVER/$skill_name"
+        # rm -rf "$SKILL_DEST_KERNEL/$skill_name" ["$SKILL_DEST_DRIVER/$skill_name"]
         if kernel_dest.exists() or kernel_dest.is_symlink():
             if kernel_dest.is_symlink() or kernel_dest.is_file():
                 kernel_dest.unlink()
             else:
                 shutil.rmtree(str(kernel_dest))
-        if driver_dest.exists() or driver_dest.is_symlink():
-            driver_dest.unlink()
+        if driver_dest is not None and (driver_dest.exists() or driver_dest.is_symlink()):
+            if driver_dest.is_symlink() or driver_dest.is_file():
+                driver_dest.unlink()
+            else:
+                shutil.rmtree(str(driver_dest))
 
         # cp -r "$skill_dir" "$SKILL_DEST_KERNEL/$skill_name"
         Path(skill_dest_kernel).mkdir(parents=True, exist_ok=True)
         shutil.copytree(str(skill_path), str(kernel_dest))
 
-        # ln -s "../../.cognitive-os/skills/cos/$skill_name" "$SKILL_DEST_DRIVER/$skill_name"
-        # Relative symlink (matches bash exactly)
-        Path(skill_dest_driver).mkdir(parents=True, exist_ok=True)
-        symlink_target = f"../../.cognitive-os/skills/cos/{skill_name}"
-        driver_dest.symlink_to(symlink_target)
+        if driver_dest is not None:
+            # ln -s "../../.cognitive-os/skills/cos/$skill_name" "$SKILL_DEST_DRIVER/$skill_name"
+            # Relative symlink (matches bash exactly)
+            Path(skill_dest_driver).mkdir(parents=True, exist_ok=True)
+            symlink_target = f"../../.cognitive-os/skills/cos/{skill_name}"
+            driver_dest.symlink_to(symlink_target)
     except OSError as exc:
         print(f"cos_init.py: install_skill_dir '{skill_name}' failed: {exc}", file=sys.stderr)
         return "error"
@@ -933,7 +939,6 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     # ── Resolve directories ───────────────────────────────────────────
     cos_source = COS_SOURCE_DIR
     project_dir = Path.cwd().resolve()
-    version_file = cos_source / "VERSION"
 
     # ── Self-hosting guard ────────────────────────────────────────────
     # If running inside luum-agent-os itself, refuse (use self-install.sh instead).
@@ -1000,10 +1005,12 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
             print(f"WARNING: {dir_check} is a symlink ({target}) — replacing with real directory")
             p.unlink()
 
+    driver_dirs = [str(Path(settings_relative_path).parent)]
+    if harness == "claude":
+        driver_dirs.extend([".claude/rules/cos", ".claude/commands"])
+
     for d in [
-        ".claude/rules/cos",
-        ".claude/commands",
-        str(Path(settings_relative_path).parent),
+        *driver_dirs,
         ".cognitive-os/rules/cos",
         ".cognitive-os/hooks/cos",
         ".cognitive-os/skills/cos",
@@ -1018,8 +1025,14 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     rules_installed = 0
     rules_source = str(cos_source / "rules")
     rule_dest_kernel = str(project_dir / ".cognitive-os" / "rules" / "cos")
-    rule_dest_driver = str(project_dir / ".claude" / "rules" / "cos")
-    rule_dests = [rule_dest_kernel, rule_dest_driver]
+    rule_dest_driver = (
+        str(project_dir / ".claude" / "rules" / "cos")
+        if harness == "claude"
+        else ""
+    )
+    rule_dests = [rule_dest_kernel]
+    if rule_dest_driver:
+        rule_dests.append(rule_dest_driver)
 
     if mode == "--full":
         # Install all rules (respecting scope filter)
@@ -1081,11 +1094,16 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     skills_installed = 0
     skills_source = cos_source / "skills"
     skill_dest_kernel = str(project_dir / ".cognitive-os" / "skills" / "cos")
-    skill_dest_driver = str(project_dir / ".claude" / "skills")
+    skill_dest_driver = (
+        str(project_dir / ".claude" / "skills")
+        if harness == "claude"
+        else ""
+    )
 
     if skills_source.is_dir():
         Path(skill_dest_kernel).mkdir(parents=True, exist_ok=True)
-        Path(skill_dest_driver).mkdir(parents=True, exist_ok=True)
+        if skill_dest_driver:
+            Path(skill_dest_driver).mkdir(parents=True, exist_ok=True)
 
         if mode == "--full":
             for skill_dir in sorted(skills_source.iterdir()):
@@ -1108,15 +1126,16 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
                 if status == "installed":
                     skills_installed += 1
 
-        # Copy CATALOG.md with symlink projection
+        # Copy CATALOG.md with optional driver symlink projection
         catalog_src = skills_source / "CATALOG.md"
         if catalog_src.is_file():
             catalog_kernel = Path(skill_dest_kernel) / "CATALOG.md"
-            catalog_driver = Path(skill_dest_driver) / "CATALOG.md"
             shutil.copy2(str(catalog_src), str(catalog_kernel))
-            if catalog_driver.exists() or catalog_driver.is_symlink():
-                catalog_driver.unlink()
-            catalog_driver.symlink_to("../../.cognitive-os/skills/cos/CATALOG.md")
+            if skill_dest_driver:
+                catalog_driver = Path(skill_dest_driver) / "CATALOG.md"
+                if catalog_driver.exists() or catalog_driver.is_symlink():
+                    catalog_driver.unlink()
+                catalog_driver.symlink_to("../../.cognitive-os/skills/cos/CATALOG.md")
 
     # ── 7. Install templates ──────────────────────────────────────────
     templates_source = cos_source / "templates"
@@ -1130,7 +1149,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     _write_cognitive_os_yaml(project_dir, project_name, detected_stack, mode)
 
     # ── 8b. Apply efficiency profile filtering ────────────────────────
-    rules_installed = _apply_efficiency_profile(mode, project_dir, [rule_dest_driver, rule_dest_kernel])
+    rules_installed = _apply_efficiency_profile(mode, project_dir, rule_dests)
 
     # ── 9. Create/merge harness settings ─────────────────────────────
     _apply_harness_settings(

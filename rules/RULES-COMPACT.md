@@ -56,7 +56,7 @@ Polyglot drift caught in PRs (ADR-066). Three tiers:
 
 **Infra**: [`infra-health`] Docker check. [`singularity`] MAPE-K(inactive). [`performance-monitoring`] p50/p95/p99. [`observability`] MLflow. [`so-slo`] ADR-028 SLO catalogue + error budget + cadence. [`infra-intent`] [`model-compatibility`].
 
-**Persistence**: [`fault-tolerance`] 4-tier. [`engram-organization`] prefixes. [`session-concurrency`]. [`step-files`] long phases.
+**Persistence**: [`fault-tolerance`] 4-tier. [`engram-organization`] prefixes. [`engram-api-safety`] sandbox mutating API probes. [`session-concurrency`]. [`step-files`] long phases.
 
 **Change Safety**: [`hook-security-profiles`] minimal/standard/paranoid. [`capability-protection`] snapshot before cleanup. [`plan-first`] [`cognitive-os-changes`] plan-first for OS mods. [`dogfooding`] SDD for substantial changes. [`component-classification`] CORE vs PACKAGE. [`cross-harness-authoring`] (os-only) 5-item self-check before touching SO paths/settings/scripts — see `docs/architecture/cross-harness-authoring.md` §Agent Self-Check.
 
