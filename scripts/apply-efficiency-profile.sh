@@ -236,6 +236,9 @@ build_settings() {
   post_skill=$(hook_group "Skill" \
     "skill-usage-tracker.sh|async" \
     "skill-invocation-logger.sh")
+  local post_engram_mcp
+  post_engram_mcp=$(hook_group "mcp__plugin_engram_engram__mem_search|mcp__plugin_engram_engram__mem_get_observation" \
+    "engram-reinforce-on-access.sh|async")
 
   local stop_hooks
   stop_hooks=$(hook_group "" \
@@ -289,7 +292,7 @@ build_settings() {
 
   printf '    "PostToolUse": [\n'
   local post_first=true
-  for group in "$post_all" "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_todowrite" "$post_skill" "$post_agent"; do
+  for group in "$post_all" "$post_bash" "$post_bash_edit_write" "$post_edit" "$post_todowrite" "$post_skill" "$post_agent" "$post_engram_mcp"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
@@ -356,6 +359,7 @@ echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh (async)"
 echo "  PostToolUse Edit|Write: content-policy.sh, skill-frontmatter-validator.sh, rule-frontmatter-validator.sh, hook-header-validator.sh, adr-section-validator.sh, confidentiality-enforcer.sh, surface-fix-detector.sh, doc-sync-detector.sh (async)"
 echo "  PostToolUse TodoWrite: work-queue-sync.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh (async), skill-invocation-logger.sh"
+echo "  PostToolUse mem_search|mem_get_observation: engram-reinforce-on-access.sh (async)"
 echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async)"
 echo "  Stop: session-learning.sh, session-cleanup.sh, git-context-capture.sh, session-changelog.sh, kpi-trigger.sh (async)"
 echo "  TeammateIdle: teammate-idle.sh"
