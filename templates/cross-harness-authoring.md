@@ -1,3 +1,5 @@
+<!-- SCOPE: os-only -->
+
 # Cross-Harness Authoring
 
 Use this document when creating or modifying Cognitive OS components inside a

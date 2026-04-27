@@ -1,3 +1,5 @@
+<!-- SCOPE: both -->
+
 # Research-Only Agent Template
 
 > Paste this section into any research-phase agent prompt (Phase 0 of the

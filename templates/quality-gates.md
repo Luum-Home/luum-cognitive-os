@@ -1,3 +1,5 @@
+<!-- SCOPE: both -->
+
 # Quality Gates
 
 Before marking work complete, verify ALL of these:

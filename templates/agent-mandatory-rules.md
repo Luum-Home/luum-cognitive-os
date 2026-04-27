@@ -1,3 +1,5 @@
+<!-- SCOPE: os-only -->
+
 ## MANDATORY PROJECT RULES (injected by subagent-context-injector)
 
 These rules are automatically injected into every sub-agent's context via the SubagentStart hook. They are non-negotiable.
