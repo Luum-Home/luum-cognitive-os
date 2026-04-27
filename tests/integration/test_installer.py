@@ -10,9 +10,7 @@ Validates:
 """
 
 import os
-import shutil
 import subprocess
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -35,12 +33,10 @@ def install_dir(tmp_path):
 
 
 @pytest.fixture(autouse=True)
-def isolate_registry(tmp_path):
+def isolate_registry(tmp_path, monkeypatch):
     """Use a temp registry so tests don't pollute ~/.cognitive-os/installations.json."""
     registry = tmp_path / "test-registry.json"
-    os.environ["COS_REGISTRY_FILE"] = str(registry)
-    yield
-    os.environ.pop("COS_REGISTRY_FILE", None)
+    monkeypatch.setenv("COS_REGISTRY_FILE", str(registry))
 
 
 @pytest.fixture
@@ -317,7 +313,6 @@ class TestUpdate:
         )
 
         cos_rules = install_dir / ".claude" / "rules" / "cos"
-        rules_before = set(f.name for f in cos_rules.glob("*.md")) if cos_rules.is_dir() else set()
 
         # Update
         subprocess.run(
@@ -537,7 +532,6 @@ class TestProjectGitignore:
         )
 
         gitignore = install_dir / ".gitignore"
-        content_before = gitignore.read_text()
 
         # Second install (update)
         subprocess.run(
