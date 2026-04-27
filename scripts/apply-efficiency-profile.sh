@@ -209,6 +209,9 @@ build_settings() {
   post_edit=$(hook_group "Edit|Write" \
     "content-policy.sh" \
     "skill-frontmatter-validator.sh" \
+    "rule-frontmatter-validator.sh" \
+    "hook-header-validator.sh" \
+    "adr-section-validator.sh" \
     "confidentiality-enforcer.sh" \
     "surface-fix-detector.sh" \
     "doc-sync-detector.sh|async")
@@ -350,7 +353,7 @@ echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.
 echo "  PostToolUse *: context-watchdog.sh (async), rate-limit-detector.sh"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh (async)"
-echo "  PostToolUse Edit|Write: content-policy.sh, skill-frontmatter-validator.sh, confidentiality-enforcer.sh, surface-fix-detector.sh, doc-sync-detector.sh (async)"
+echo "  PostToolUse Edit|Write: content-policy.sh, skill-frontmatter-validator.sh, rule-frontmatter-validator.sh, hook-header-validator.sh, adr-section-validator.sh, confidentiality-enforcer.sh, surface-fix-detector.sh, doc-sync-detector.sh (async)"
 echo "  PostToolUse TodoWrite: work-queue-sync.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh (async), skill-invocation-logger.sh"
 echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async)"

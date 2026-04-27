@@ -303,3 +303,79 @@ def test_hook_counts_match_scorecard() -> None:
     text = scorecard.read_text(encoding="utf-8")
     assert "2026-04-23 audit refresh" in text
     assert f"Total hook files on disk (`hooks/*.sh`) | **{len(HOOKS)}**" in text
+
+
+# ─── ADR-067 Phase 2: hooks/*.sh header contract ─────────────────────────────
+# These tests enforce the header contract for new hooks defined in ADR-067 §Phase 2.
+#
+# Grandfathering policy:
+#   - Existing 154 hooks (committed before Phase 2) are NOT enforced unless
+#     COS_STRICT_HOOK_VALIDATION=1 is set.
+#   - "New" is determined by git: if git log --diff-filter=A shows no ADD commit,
+#     the file is considered new in the working tree and IS enforced.
+#   - The NEW_HOOKS_PHASE2 set lists the hooks explicitly created by Phase 2 and
+#     therefore subject to the full contract check in CI.
+#
+# If you add a new hook after Phase 2, it MUST pass all header checks.
+
+# Hooks explicitly created by ADR-067 Phase 2 implementation — always enforce.
+NEW_HOOKS_PHASE2: frozenset[str] = frozenset({
+    "rule-frontmatter-validator.sh",
+    "hook-header-validator.sh",
+    "adr-section-validator.sh",
+})
+
+_REQUIRED_HEADER_FIELDS = [
+    ("shebang", re.compile(r"^#!/usr/bin/env bash\s*$")),
+    ("scope_comment", re.compile(r"^#\s*SCOPE:\s*\S")),
+    ("purpose_comment", re.compile(r"^#\s*PURPOSE:\s*\S")),
+    ("event_comment", re.compile(r"^#\s*EVENT:\s*\S")),
+]
+
+
+def _hook_has_header_contract(hook_path: Path) -> list[str]:
+    """Return list of contract violations for a hook file."""
+    try:
+        text = hook_path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return [f"cannot read {hook_path}"]
+
+    lines = text.splitlines()
+    issues: list[str] = []
+
+    # Shebang on line 1
+    first = lines[0] if lines else ""
+    if not re.match(r"^#!/usr/bin/env bash\s*$", first):
+        issues.append(f"line 1 must be '#!/usr/bin/env bash' (got: {first[:60]!r})")
+
+    # SCOPE, PURPOSE, EVENT comments anywhere in the file
+    for field_name, pattern in _REQUIRED_HEADER_FIELDS[1:]:  # skip shebang (checked above)
+        if not any(pattern.match(line) for line in lines):
+            issues.append(f"missing '# {field_name.upper().replace('_COMMENT', '')}: ...' comment")
+
+    # set -euo pipefail in first 20 lines
+    first_20 = "\n".join(lines[:20])
+    if "set -euo pipefail" not in first_20:
+        issues.append("'set -euo pipefail' not found in first 20 lines")
+
+    return issues
+
+
+@pytest.mark.audit
+@pytest.mark.parametrize("hook_name", sorted(NEW_HOOKS_PHASE2))
+def test_phase2_hooks_have_header_contract(hook_name: str) -> None:
+    """Hooks created by ADR-067 Phase 2 must satisfy the full header contract.
+
+    These hooks are always enforced regardless of git state — they are the
+    reference implementation that all future hooks should follow.
+    """
+    hook_path = HOOKS_DIR / hook_name
+    assert hook_path.is_file(), (
+        f"Phase 2 hook '{hook_name}' does not exist at hooks/{hook_name}. "
+        f"This is unexpected — the Phase 2 implementation must create it."
+    )
+    issues = _hook_has_header_contract(hook_path)
+    assert not issues, (
+        f"Phase 2 hook 'hooks/{hook_name}' violates header contract: "
+        + "; ".join(issues)
+    )

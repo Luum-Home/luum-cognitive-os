@@ -207,18 +207,31 @@ keep only if real data shows them necessary.
 
 ## Verification
 
-- `python3 scripts/detect_runner_capacity.py` outputs a single token (e.g., `auto`,
-  `0`, `4`) — usable directly in bash command substitution.
-- `python3 scripts/detect_runner_capacity.py --json` outputs a full diagnostics dict
-  with at least: `cores`, `mem_available_gb`, `load_pct`, `battery_pct`, `on_ac`,
-  `ci`, `workers`, `rule_fired`.
+```bash
+# Capacity script outputs a valid worker token
+python3 scripts/detect_runner_capacity.py
+# Expected: a single token — "auto", "0", or a positive integer string
+
+# JSON diagnostics dict includes all required keys
+python3 scripts/detect_runner_capacity.py --json | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+required = ['cores', 'mem_available_gb', 'load_pct', 'battery_pct', 'on_ac', 'ci', 'workers', 'rule_fired']
+missing = [k for k in required if k not in d]
+assert not missing, f'Missing keys: {missing}'
+print('OK')
+"
+
+# Override env var respected
+COS_PYTEST_WORKERS=4 bash scripts/pytest-with-summary.sh -- --collect-only -q 2>&1 | grep -q "\-n 4"
+```
+
+Additional behavioral assertions:
 - `bash scripts/pytest-with-summary.sh -- tests/unit/ -q` (without `-n`) automatically
   receives `-n auto` on a healthy laptop, and `-n 0` on a stress-tested machine. The
   decision is logged.
 - Phase 1 unit tests cover at minimum: 2-core case, low-memory case, on-battery-low
   case, `CI=true` case, and the default healthy-machine case.
-- Override env var: `COS_PYTEST_WORKERS=4 bash scripts/pytest-with-summary.sh ...`
-  produces `-n 4` regardless of detected state.
 - Explicit `-n` flag wins over env var: `COS_PYTEST_WORKERS=4 bash
   scripts/pytest-with-summary.sh -- -n 8 tests/unit/` produces `-n 8`.
 
