@@ -1,7 +1,8 @@
-"""Unit tests for scripts/cos_init.py — Phase 2.1 + 2.2 bootstrap.
+"""Unit tests for scripts/cos_init.py — Phase 2.1 + 2.2 + 2.3 bootstrap.
 
 Phase 2.1: detect_harness() port from scripts/_lib/settings-driver.sh::cos_detect_harness.
 Phase 2.2: scope_allows() and skill_scope_allows() ports from scripts/cos-init.sh.
+Phase 2.3: install_rule(), install_hook(), install_skill_dir() ports from scripts/cos-init.sh.
 All tests are pure Python (no subprocess) — they test the Python logic in isolation.
 """
 from __future__ import annotations
@@ -243,3 +244,242 @@ class TestSkillScopeAllows:
         skill_dir.mkdir()
         (skill_dir / "SKILL.md").write_text("---\ntitle: My Skill\n---\n# Skill\n")
         assert cos_init.skill_scope_allows(str(skill_dir), install_scope="both") is True
+
+
+# ── Phase 2.3: install_rule() unit tests ─────────────────────────────
+
+class TestInstallRule:
+    def _make_source(self, src_dir: Path, name: str, content: str = "# rule") -> Path:
+        src_dir.mkdir(parents=True, exist_ok=True)
+        f = src_dir / f"{name}.md"
+        f.write_text(content)
+        return f
+
+    def test_symlink_mode_installs_to_single_dest(self, tmp_path: Path) -> None:
+        """install_rule copies the rule file to the destination directory."""
+        src = tmp_path / "src"
+        dest = tmp_path / "dest"
+        self._make_source(src, "trust-score")
+        dest.mkdir()
+        status = cos_init.install_rule("trust-score", str(src), [str(dest)])
+        assert status == "installed"
+        assert (dest / "trust-score.md").is_file()
+
+    def test_copy_mode_installs_to_multiple_dests(self, tmp_path: Path) -> None:
+        """install_rule copies to all provided destination directories."""
+        src = tmp_path / "src"
+        dest1 = tmp_path / "dest1"
+        dest2 = tmp_path / "dest2"
+        self._make_source(src, "adaptive-bypass")
+        dest1.mkdir()
+        dest2.mkdir()
+        status = cos_init.install_rule("adaptive-bypass", str(src), [str(dest1), str(dest2)])
+        assert status == "installed"
+        assert (dest1 / "adaptive-bypass.md").is_file()
+        assert (dest2 / "adaptive-bypass.md").is_file()
+
+    def test_missing_source_returns_skipped(self, tmp_path: Path) -> None:
+        """Source file missing → 'skipped' (matches bash: [ -f ] || return)."""
+        src = tmp_path / "src"
+        src.mkdir()
+        dest = tmp_path / "dest"
+        dest.mkdir()
+        status = cos_init.install_rule("nonexistent", str(src), [str(dest)])
+        assert status == "skipped"
+        assert not (dest / "nonexistent.md").exists()
+
+    def test_target_dir_created_if_missing(self, tmp_path: Path) -> None:
+        """Destination directory is created automatically if it does not exist."""
+        src = tmp_path / "src"
+        self._make_source(src, "token-economy")
+        dest = tmp_path / "deep" / "nested" / "dest"
+        # dest does NOT exist yet
+        status = cos_init.install_rule("token-economy", str(src), [str(dest)])
+        assert status == "installed"
+        assert (dest / "token-economy.md").is_file()
+
+    def test_idempotent_reinstall(self, tmp_path: Path) -> None:
+        """Re-installing over an existing file succeeds without error."""
+        src = tmp_path / "src"
+        dest = tmp_path / "dest"
+        self._make_source(src, "definition-of-done", "# v1")
+        dest.mkdir()
+        cos_init.install_rule("definition-of-done", str(src), [str(dest)])
+        # Overwrite source and reinstall
+        (src / "definition-of-done.md").write_text("# v2")
+        status = cos_init.install_rule("definition-of-done", str(src), [str(dest)])
+        assert status == "installed"
+        assert (dest / "definition-of-done.md").read_text() == "# v2"
+
+    def test_content_preserved(self, tmp_path: Path) -> None:
+        """Rule file content is preserved exactly after copy."""
+        src = tmp_path / "src"
+        dest = tmp_path / "dest"
+        content = "# Trust Score\n\nSome content.\n"
+        self._make_source(src, "trust-score", content)
+        dest.mkdir()
+        cos_init.install_rule("trust-score", str(src), [str(dest)])
+        assert (dest / "trust-score.md").read_text() == content
+
+
+# ── Phase 2.3: install_hook() unit tests ─────────────────────────────
+
+class TestInstallHook:
+    def _make_source(self, src_dir: Path, name: str, content: str = "#!/bin/bash\necho hi\n") -> Path:
+        src_dir.mkdir(parents=True, exist_ok=True)
+        f = src_dir / f"{name}.sh"
+        f.write_text(content)
+        return f
+
+    def test_installs_hook_to_dest(self, tmp_path: Path) -> None:
+        """install_hook copies the hook file to the destination directory."""
+        src = tmp_path / "src"
+        dest = tmp_path / "dest"
+        self._make_source(src, "auto-refine")
+        dest.mkdir()
+        status = cos_init.install_hook("auto-refine", str(src), str(dest))
+        assert status == "installed"
+        assert (dest / "auto-refine.sh").is_file()
+
+    def test_executable_bit_set_on_sh_file(self, tmp_path: Path) -> None:
+        """install_hook sets executable bit on the installed .sh file."""
+        src = tmp_path / "src"
+        dest = tmp_path / "dest"
+        self._make_source(src, "error-learning")
+        dest.mkdir()
+        cos_init.install_hook("error-learning", str(src), str(dest))
+        installed = dest / "error-learning.sh"
+        assert os.access(str(installed), os.X_OK), "Installed hook should be executable"
+
+    def test_missing_source_returns_skipped(self, tmp_path: Path) -> None:
+        """Source file missing → 'skipped' (matches bash: [ -f ] || return)."""
+        src = tmp_path / "src"
+        src.mkdir()
+        dest = tmp_path / "dest"
+        dest.mkdir()
+        status = cos_init.install_hook("nonexistent", str(src), str(dest))
+        assert status == "skipped"
+        assert not (dest / "nonexistent.sh").exists()
+
+    def test_target_dir_created_if_missing(self, tmp_path: Path) -> None:
+        """Destination directory is created automatically if it does not exist."""
+        src = tmp_path / "src"
+        self._make_source(src, "dod-gate")
+        dest = tmp_path / "deep" / "hooks"
+        status = cos_init.install_hook("dod-gate", str(src), str(dest))
+        assert status == "installed"
+        assert (dest / "dod-gate.sh").is_file()
+
+    def test_idempotent_reinstall(self, tmp_path: Path) -> None:
+        """Re-installing over an existing hook succeeds without error."""
+        src = tmp_path / "src"
+        dest = tmp_path / "dest"
+        self._make_source(src, "blast-radius", "#!/bin/bash\n# v1\n")
+        dest.mkdir()
+        cos_init.install_hook("blast-radius", str(src), str(dest))
+        (src / "blast-radius.sh").write_text("#!/bin/bash\n# v2\n")
+        status = cos_init.install_hook("blast-radius", str(src), str(dest))
+        assert status == "installed"
+        assert (dest / "blast-radius.sh").read_text() == "#!/bin/bash\n# v2\n"
+
+    def test_content_preserved(self, tmp_path: Path) -> None:
+        """Hook file content is preserved exactly after copy."""
+        src = tmp_path / "src"
+        dest = tmp_path / "dest"
+        content = "#!/bin/bash\n# test hook\necho done\n"
+        self._make_source(src, "session-init", content)
+        dest.mkdir()
+        cos_init.install_hook("session-init", str(src), str(dest))
+        assert (dest / "session-init.sh").read_text() == content
+
+
+# ── Phase 2.3: install_skill_dir() unit tests ────────────────────────
+
+class TestInstallSkillDir:
+    def _make_skill(self, skills_src: Path, name: str, audience: str = "project") -> Path:
+        """Create a minimal skill directory with SKILL.md."""
+        skill_dir = skills_src / name
+        skill_dir.mkdir(parents=True, exist_ok=True)
+        (skill_dir / "SKILL.md").write_text(f"---\naudience: {audience}\n---\n# Skill\n")
+        (skill_dir / "README.md").write_text(f"# {name}\n")
+        return skill_dir
+
+    def test_installs_to_kernel_and_creates_driver_symlink(self, tmp_path: Path) -> None:
+        """install_skill_dir copies to kernel and creates relative symlink in driver."""
+        src = tmp_path / "skills"
+        kernel = tmp_path / ".cognitive-os" / "skills" / "cos"
+        driver = tmp_path / ".claude" / "skills"
+        skill_dir = self._make_skill(src, "plan-feature")
+        kernel.mkdir(parents=True)
+        driver.mkdir(parents=True)
+        status = cos_init.install_skill_dir(str(skill_dir), str(kernel), str(driver))
+        assert status == "installed"
+        assert (kernel / "plan-feature" / "SKILL.md").is_file()
+        assert (driver / "plan-feature").is_symlink()
+
+    def test_full_copy_mode_copies_contents(self, tmp_path: Path) -> None:
+        """Skill directory is fully copied to kernel dest (all files preserved)."""
+        src = tmp_path / "skills"
+        kernel = tmp_path / "kernel"
+        driver = tmp_path / "driver"
+        skill_dir = self._make_skill(src, "exhaustive-prompt")
+        # Add a subdirectory
+        (skill_dir / "examples").mkdir()
+        (skill_dir / "examples" / "sample.md").write_text("example")
+        kernel.mkdir()
+        driver.mkdir()
+        cos_init.install_skill_dir(str(skill_dir), str(kernel), str(driver))
+        assert (kernel / "exhaustive-prompt" / "examples" / "sample.md").is_file()
+
+    def test_scope_filtered_returns_skipped(self, tmp_path: Path) -> None:
+        """Skill with audience: os-only → 'skipped' (not installed)."""
+        src = tmp_path / "skills"
+        kernel = tmp_path / "kernel"
+        driver = tmp_path / "driver"
+        skill_dir = self._make_skill(src, "os-internal", audience="os-only")
+        kernel.mkdir()
+        driver.mkdir()
+        status = cos_init.install_skill_dir(
+            str(skill_dir), str(kernel), str(driver), install_scope="both"
+        )
+        assert status == "skipped"
+        assert not (kernel / "os-internal").exists()
+
+    def test_missing_source_dir_returns_error(self, tmp_path: Path) -> None:
+        """Source directory does not exist → 'error'."""
+        kernel = tmp_path / "kernel"
+        driver = tmp_path / "driver"
+        kernel.mkdir()
+        driver.mkdir()
+        status = cos_init.install_skill_dir(
+            str(tmp_path / "nonexistent-skill"),
+            str(kernel),
+            str(driver),
+        )
+        assert status == "error"
+
+    def test_target_dirs_created_if_missing(self, tmp_path: Path) -> None:
+        """Kernel and driver destination directories are created if they don't exist."""
+        src = tmp_path / "skills"
+        kernel = tmp_path / "deep" / "kernel"
+        driver = tmp_path / "deep" / "driver"
+        skill_dir = self._make_skill(src, "compose-prompt")
+        # Neither kernel nor driver exist yet
+        status = cos_init.install_skill_dir(str(skill_dir), str(kernel), str(driver))
+        assert status == "installed"
+        assert (kernel / "compose-prompt" / "SKILL.md").is_file()
+
+    def test_idempotent_reinstall(self, tmp_path: Path) -> None:
+        """Re-installing an already installed skill succeeds without error."""
+        src = tmp_path / "skills"
+        kernel = tmp_path / "kernel"
+        driver = tmp_path / "driver"
+        skill_dir = self._make_skill(src, "agent-dashboard")
+        kernel.mkdir()
+        driver.mkdir()
+        cos_init.install_skill_dir(str(skill_dir), str(kernel), str(driver))
+        # Add a new file and reinstall
+        (skill_dir / "extra.md").write_text("extra")
+        status = cos_init.install_skill_dir(str(skill_dir), str(kernel), str(driver))
+        assert status == "installed"
+        assert (kernel / "agent-dashboard" / "extra.md").is_file()
