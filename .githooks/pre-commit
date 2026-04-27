@@ -72,12 +72,19 @@ if [ -n "$staged_hooks" ]; then
     if ! grep -q "$hookname" "$COS_ROOT/scripts/apply-efficiency-profile.sh" 2>/dev/null; then
       echo "BLOCKED: New hook $hookname is NOT registered in apply-efficiency-profile.sh — it will never fire"
       echo "  Add it to the appropriate profile (lean/standard/full) in scripts/apply-efficiency-profile.sh"
-      echo "  Also add it to scripts/set-security-profile.sh (minimal/standard/paranoid)"
+      echo "  Also add it to templates/security-profiles/*.json (minimal/standard/paranoid)"
       exit 1
     fi
-    if ! grep -q "$hookname" "$COS_ROOT/scripts/set-security-profile.sh" 2>/dev/null; then
-      echo "BLOCKED: New hook $hookname is NOT registered in set-security-profile.sh"
-      echo "  Add it to the appropriate profile (minimal/standard/paranoid)"
+    profile_sources=()
+    if [ -d "$COS_ROOT/templates/security-profiles" ]; then
+      profile_sources+=("$COS_ROOT"/templates/security-profiles/*.json)
+    fi
+    if [ "${#profile_sources[@]}" -eq 0 ] || [ ! -e "${profile_sources[0]}" ]; then
+      profile_sources+=("$COS_ROOT"/.cognitive-os/plans/features/hook-architecture-v2-settings*.json)
+    fi
+    if ! grep -q "$hookname" "${profile_sources[@]}" 2>/dev/null; then
+      echo "BLOCKED: New hook $hookname is NOT registered in security profile JSON"
+      echo "  Add it to templates/security-profiles/*.json (minimal/standard/paranoid)"
       exit 1
     fi
   done <<< "$staged_hooks"

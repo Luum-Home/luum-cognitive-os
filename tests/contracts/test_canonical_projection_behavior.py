@@ -198,3 +198,24 @@ def test_codex_projection_commands_point_to_installed_hooks(tmp_path: Path) -> N
 
     assert not missing, f"Codex projection references hooks not installed in canonical storage: {missing}"
     assert not not_executable, f"Codex projection references non-executable hooks: {not_executable}"
+
+
+def test_codex_install_keeps_rules_and_skills_out_of_claude_driver(tmp_path: Path) -> None:
+    """Codex installs canonical artifacts without making `.claude/` a center of gravity."""
+    project = tmp_path / "codex-client"
+    project.mkdir()
+    (project / "package.json").write_text('{"name": "codex-client"}\n')
+
+    result = _run_cos_init(project, "--full", "codex")
+    assert result.returncode == 0, result.stderr
+
+    canonical_rules = project / ".cognitive-os" / "rules" / "cos"
+    canonical_skills = project / ".cognitive-os" / "skills" / "cos"
+
+    assert (project / ".codex" / "hooks.json").is_file()
+    assert (canonical_rules / "RULES-COMPACT.md").is_file()
+    assert (canonical_skills / "CATALOG.md").is_file()
+    assert any((canonical_skills / name / "SKILL.md").is_file() for name in _source_skill_names())
+
+    assert not (project / ".claude" / "rules" / "cos").exists()
+    assert not (project / ".claude" / "skills").exists()
