@@ -1,3 +1,5 @@
+<!-- SCOPE: project -->
+
 # Project Gotchas — Read BEFORE acting
 
 > Compact index of traps that have broken agents. ~30 lines, ~500 tokens.

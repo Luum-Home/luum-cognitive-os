@@ -1,3 +1,5 @@
+<!-- SCOPE: project -->
+
 # Framework-Specific Context (Example Template)
 
 This is an EXAMPLE template. Projects should create their own framework context.
