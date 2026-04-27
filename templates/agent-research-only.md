@@ -8,9 +8,9 @@
 ## Hard Constraints (MANDATORY — read before doing anything)
 
 - **READ-ONLY task.** No code changes. No commits. No edits outside
-  `.cognitive-os/reports/research/`.
+  `docs/reports/`.
 - The ONLY file you may create or modify is the research report:
-  `.cognitive-os/reports/research/{{topic}}-{{date}}.md`
+  `docs/reports/{{topic}}-{{date}}.md`
 - Do NOT implement, fix, refactor, or delete anything. If you discover something
   that needs fixing, note it in the report under "Decision Points" or
   "Open Questions" — do not act on it.
@@ -25,7 +25,7 @@
 Produce a structured research report at:
 
 ```
-.cognitive-os/reports/research/{{topic}}-{{date}}.md
+docs/reports/{{topic}}-{{date}}.md
 ```
 
 The report arms the human operator with enough context to make decisions. It does

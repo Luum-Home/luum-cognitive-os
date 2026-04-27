@@ -81,7 +81,7 @@ once Phase 1 lands.
 Spawned automatically with research-only constraints:
 
 - No commits
-- No file modifications outside `.cognitive-os/reports/research/`
+- No file modifications outside `docs/reports/` (git-tracked; NOT `.cognitive-os/reports/research/` which is gitignored)
 - No invocation of side-effecting scripts
 - Output is a single Markdown file under that directory
 
@@ -131,13 +131,21 @@ re-running Phase 1". This is rare but the escape hatch must exist.
 
 ## Decision — Where reports live
 
-- Path: `.cognitive-os/reports/research/<topic>-<YYYY-MM-DD>.md`
+- Path: `docs/reports/<topic>-<YYYY-MM-DD>.md` (git-tracked, NOT gitignored)
 - Engram topic key: `research/<topic>` (one report per topic; updates upsert)
 - Cross-link: the spawning ADR (or task) MUST add the report path under its
   "Related" section so future readers can trace the decision trail
 - Reports are durable artifacts, not throwaway. They're the rationale record
   the team will read 6 months from now to remember "why did we choose Click
   over argparse for cos-init.py?"
+
+### §5b — Auto-create `decision/<topic>` engram observations
+
+When an operator accepts a recommendation (Phase 1), the orchestrator MUST call
+`lib/decision_tracker.record_decision(topic_key, decision_text, recommendation)` to
+persist an engram observation under `decision/<topic_key>`. This allows
+`/decision-triage` to cross-reference answered decisions and mark them ANSWERED
+instead of surfacing them as PENDING indefinitely.
 
 ## Decision — When NOT to use research-first
 
@@ -170,7 +178,7 @@ above is the discriminator — if all four dimensions are "Low", skip research.
 1. **Phase 1 — codify (this ADR).** Land the protocol so the next session can
    reference it.
 2. **Phase 2 — pilot with H/I/J.** Each spawns a research agent today. Reports
-   land in `.cognitive-os/reports/research/`.
+   land in `docs/reports/` (git-tracked; see §5 fix 2026-04-27).
 3. **Phase 3 — operator triage.** Per-report decisions captured (Engram
    observation OR follow-up ADR per item).
 4. **Phase 4 — implementation.** Only starts after Phase 3. Standard
@@ -246,21 +254,21 @@ Acceptance criteria for this ADR landing:
 
 - [x] `docs/adrs/ADR-069-research-first-protocol.md` exists at the documented
   path
-- [ ] Each of H, I, J produces a `.cognitive-os/reports/research/*.md` report
-  in this same session
+- [ ] Each of H, I, J produces a `docs/reports/<topic>-<date>.md` report
+  in this same session (NOT `.cognitive-os/reports/research/` — that path is gitignored)
 - [ ] Reports contain the §0-skeleton structure: Inventory + Decision points +
   Open questions + Recommended path
 - [ ] After this session, operator decisions land in a queryable place
-  (Engram observation under `research/<topic>/decision` OR a follow-up ADR
-  per item)
+  (Engram observation under `decision/<topic>` via `lib/decision_tracker.record_decision()`)
 - [ ] Future research-first invocations cite this ADR by number
 
 Verification commands:
 
 ```bash
 test -f docs/adrs/ADR-069-research-first-protocol.md
-ls .cognitive-os/reports/research/*.md | wc -l   # >=3 after H/I/J land
-grep -l "ADR-069" docs/adrs/*.md                  # future ADRs cite this one
+ls docs/reports/*.md | wc -l                       # >=3 after H/I/J land
+grep -l "ADR-069" docs/adrs/*.md                   # future ADRs cite this one
+python3 scripts/decision_triage.py --critical-only 2>&1 | grep "Total unanswered"
 ```
 
 ## Related
