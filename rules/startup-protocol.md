@@ -1,3 +1,5 @@
+<!-- SCOPE: both -->
+
 # Session Startup Protocol
 
 ## Purpose
