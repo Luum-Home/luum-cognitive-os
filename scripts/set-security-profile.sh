@@ -7,7 +7,7 @@
 #   standard — safety + quality gates + observability (recommended)
 #   paranoid — full safety mesh + governance + all event types
 #
-# Source of truth: .cognitive-os/plans/features/hook-architecture-v2-settings*.json
+# Source of truth: templates/security-profiles/{minimal,standard,paranoid}.json
 # ADR-028 D1.B: reaper-daemon-launcher.sh — SessionStart, schedules periodic process reaper
 #               (renamed from reaper-heartbeat.sh in v0.15; symlink preserved for backwards compat)
 # ADR-028b D1.C: native-agent-heartbeat.sh — PreToolUse:Agent + PostToolUse:Agent, heartbeats for native mode
@@ -34,7 +34,7 @@ if [ "$(cos_detect_harness "$PROJECT_DIR")" != "claude" ]; then
   exit 1
 fi
 SETTINGS_FILE="$PROJECT_DIR/.claude/settings.json"
-PROFILES_DIR="$PROJECT_DIR/.cognitive-os/plans/features"
+PROFILES_DIR="$PROJECT_DIR/templates/security-profiles"
 
 # ── Show current profile ──────────────────────────────────────────
 if [ "${1:-}" = "--current" ]; then
@@ -57,9 +57,9 @@ PROFILE="${1:-standard}"
 
 # Validate profile and resolve source file
 case "$PROFILE" in
-  minimal)  SOURCE="$PROFILES_DIR/hook-architecture-v2-settings-minimal.json" ;;
-  standard) SOURCE="$PROFILES_DIR/hook-architecture-v2-settings.json" ;;
-  paranoid) SOURCE="$PROFILES_DIR/hook-architecture-v2-settings-paranoid.json" ;;
+  minimal)  SOURCE="$PROFILES_DIR/minimal.json" ;;
+  standard) SOURCE="$PROFILES_DIR/standard.json" ;;
+  paranoid) SOURCE="$PROFILES_DIR/paranoid.json" ;;
   *)
     echo "ERROR: Unknown profile '$PROFILE'. Valid: minimal, standard, paranoid" >&2
     echo "Usage: bash scripts/set-security-profile.sh [minimal|standard|paranoid|--current]" >&2
