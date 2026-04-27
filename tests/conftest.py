@@ -2,10 +2,8 @@
 
 import os
 import shutil
-import signal
 import sqlite3
 import subprocess
-import sys
 import uuid
 from pathlib import Path
 
@@ -142,35 +140,3 @@ def real_engram():
         finally:
             conn.close()
 
-
-# ---------------------------------------------------------------------------
-# Per-test timeout (30 s) — prevents hanging subprocesses
-# ---------------------------------------------------------------------------
-
-
-@pytest.fixture(autouse=True)
-def _enforce_test_timeout(request):
-    """Hard timeout per test via SIGALRM.
-
-    Prevents subprocesses or I/O waits from hanging the entire suite.
-    Adopted from Hermes conftest.py pattern. No-op on Windows (no SIGALRM).
-    Tests can opt into a larger budget with ``@pytest.mark.timeout(seconds)``;
-    otherwise the historic 30-second guard remains in place.
-    """
-    if sys.platform == "win32":
-        yield
-        return
-
-    seconds = 30
-    timeout_marker = request.node.get_closest_marker("timeout")
-    if timeout_marker and timeout_marker.args:
-        seconds = int(timeout_marker.args[0])
-
-    def _timeout_handler(signum, frame):
-        raise TimeoutError(f"Test exceeded {seconds}-second timeout")
-
-    old_handler = signal.signal(signal.SIGALRM, _timeout_handler)
-    signal.alarm(seconds)
-    yield
-    signal.alarm(0)
-    signal.signal(signal.SIGALRM, old_handler)

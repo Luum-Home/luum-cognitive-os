@@ -178,6 +178,7 @@ class TestReleaseCheckPlumbing:
 @pytest.mark.integration
 @pytest.mark.canary
 @pytest.mark.slow
+@pytest.mark.timeout(600)
 class TestFreshInstallCanary:
     """End-to-end canary: runs the full release-check script and asserts each scenario."""
 

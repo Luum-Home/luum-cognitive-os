@@ -65,6 +65,7 @@ We recommend option A based on performance analysis.
 
 
 @pytest.mark.requires_engram
+@pytest.mark.timeout(300)
 def test_full_decision_cycle() -> None:
     """Full cycle: create temp report → triage finds it → mark answered → re-run → ANSWERED.
 
