@@ -77,13 +77,15 @@ case "$RAW_MODE" in
     ;;
 esac
 
+# Phase 2.1 strangler: cos_detect_harness migrated to Python.
+# Override detect_harness to route through Python instead of bash.
 detect_harness() {
   if [ -n "$HARNESS" ]; then
     echo "$HARNESS"
     return
   fi
 
-  cos_detect_harness "."
+  python3 "$(dirname "$0")/cos_init.py" --internal-call detect_harness "."
 }
 
 HARNESS="$(detect_harness)"
