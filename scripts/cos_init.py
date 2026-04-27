@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
 """cos_init.py — Python bootstrap for Cognitive OS project initialization.
 
-Strangler-fig migration of scripts/cos-init.sh (Phase 2.1).
+Strangler-fig migration of scripts/cos-init.sh (Phase 2.1 → 2.2).
 This module replaces bash functions one at a time while the bash shim in
 cos-init.sh delegates individual functions here via --internal-call.
 
-Migration status (Phase 2.1):
-  MIGRATED:   detect_harness  (inlined from scripts/_lib/settings-driver.sh::cos_detect_harness)
-  BASH-SHELL: scope_allows, skill_scope_allows, install_rule, install_hook, install_skill_dir
+Migration status (Phase 2.2):
+  MIGRATED:   detect_harness       (inlined from scripts/_lib/settings-driver.sh::cos_detect_harness)
+  MIGRATED:   scope_allows         (cos-init.sh lines 121-143)
+  MIGRATED:   skill_scope_allows   (cos-init.sh lines 147-167)
+  BASH-SHELL: install_rule, install_hook, install_skill_dir
 
 Usage (direct):
     python3 scripts/cos_init.py [--default|--full] [--harness claude|codex]
 
 Usage (internal dispatcher — called by bash shim):
     python3 scripts/cos_init.py --internal-call detect_harness [project_root]
+    python3 scripts/cos_init.py --internal-call scope_allows <file_path>
+    python3 scripts/cos_init.py --internal-call skill_scope_allows <skill_dir>
 """
 from __future__ import annotations
 
@@ -74,6 +78,103 @@ def detect_harness(project_root: str = ".") -> str:
     return "claude"
 
 
+def scope_allows(file_path: str, install_scope: str = "both") -> bool:
+    """Port from scripts/cos-init.sh::scope_allows() (lines 121-143).
+
+    Returns True if the file's SCOPE header allows installation under the
+    given install_scope. Files without a SCOPE header are universal (always allowed).
+
+    Byte-for-byte port — do NOT optimise the bash logic.
+    """
+    import re as _re
+
+    path = Path(file_path)
+
+    # Non-files always pass (matches: [ -f "$f" ] || return 0)
+    if not path.is_file():
+        return True
+
+    # If scope is "all", never filter
+    if install_scope == "all":
+        return True
+
+    # Extract SCOPE header from first 3 lines only (fast, matches head -3 | grep -m1 -oE)
+    # Bash pattern: '(# SCOPE:|<!-- SCOPE:) [a-zA-Z_/-]+'  then awk '{print $NF}' | tr -d ' '
+    try:
+        with path.open(encoding="utf-8", errors="replace") as fh:
+            head = [fh.readline() for _ in range(3)]
+    except OSError:
+        return True
+
+    scope_val = ""
+    pattern = _re.compile(r'(?:# SCOPE:|<!-- SCOPE:)\s+([a-zA-Z_/-]+)')
+    for line in head:
+        m = pattern.search(line)
+        if m:
+            scope_val = m.group(1).strip()
+            break
+
+    # No SCOPE header → include unconditionally
+    if not scope_val:
+        return True
+
+    # project/both scopes: allow "project" or "both", block "os-only"
+    if scope_val in ("project", "both"):
+        return True
+    if scope_val == "os-only":
+        return False
+    # Unknown tag → include (be permissive)
+    return True
+
+
+def skill_scope_allows(skill_dir: str, install_scope: str = "both") -> bool:
+    """Port from scripts/cos-init.sh::skill_scope_allows() (lines 147-167).
+
+    Returns True if the skill's `audience:` or `scope:` SKILL.md frontmatter
+    allows installation. Mirror the bash logic exactly.
+
+    Byte-for-byte port — do NOT optimise the bash logic.
+    """
+    skill_md = Path(skill_dir) / "SKILL.md"
+
+    # No SKILL.md → allow (matches: [ -f "$skill_md" ] || return 0)
+    if not skill_md.is_file():
+        return True
+
+    # If scope is "all", never filter
+    if install_scope == "all":
+        return True
+
+    # Extract audience/scope field from frontmatter.
+    # Bash: grep -E '^(audience|scope):' | head -1 | awk -F: '{print $2}' | tr -d " '\"\r"
+    audience = ""
+    try:
+        with skill_md.open(encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                stripped = line.rstrip("\n")
+                if stripped.startswith(("audience:", "scope:")):
+                    # awk -F: '{print $2}' gives everything after the first colon
+                    parts = stripped.split(":", 1)
+                    if len(parts) == 2:
+                        audience = parts[1].translate(
+                            str.maketrans("", "", " '\"\r")
+                        )
+                    break
+    except OSError:
+        return True
+
+    # No audience field → allow
+    if not audience:
+        return True
+
+    if audience in ("project", "both", "adopters", "human"):
+        return True
+    if audience in ("os", "os-dev", "os-only"):
+        return False
+    # Unknown → allow (be permissive)
+    return True
+
+
 # ── Bash subprocess shim (unmigrated functions) ───────────────────────
 
 def _call_bash_function(function_name: str, *args: str) -> int:
@@ -95,6 +196,8 @@ def _call_bash_function(function_name: str, *args: str) -> int:
 
 _INTERNAL_DISPATCH: dict[str, callable] = {
     "detect_harness": detect_harness,
+    "scope_allows": scope_allows,
+    "skill_scope_allows": skill_scope_allows,
 }
 
 
@@ -106,7 +209,22 @@ def _run_internal_call(function_name: str, extra_args: list[str]) -> int:
             file=sys.stderr,
         )
         return 1
+
     fn = _INTERNAL_DISPATCH[function_name]
+
+    # scope_allows and skill_scope_allows: read INSTALL_SCOPE from env, return exit code
+    if function_name in ("scope_allows", "skill_scope_allows"):
+        install_scope = os.environ.get("INSTALL_SCOPE", "both")
+        if not extra_args:
+            print(
+                f"cos_init.py: {function_name} requires a path argument",
+                file=sys.stderr,
+            )
+            return 1
+        result = fn(extra_args[0], install_scope)
+        # True → allowed → exit 0, False → blocked → exit 1
+        return 0 if result else 1
+
     result = fn(*extra_args) if extra_args else fn()
     if result is not None:
         print(result)
