@@ -25,6 +25,27 @@ if [ "$#" -eq 0 ]; then
   set -- tests/
 fi
 
+# --- Adaptive worker injection (ADR-068 Phase 1) ---
+# If the caller already specified -n / --numprocesses, respect it and skip detection.
+_has_n_flag=0
+case " $* " in
+  *" -n "* | *" --numprocesses "*)
+    _has_n_flag=1
+    ;;
+esac
+
+if [ "$_has_n_flag" -eq 0 ]; then
+  _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
+  if [ "$_workers" != "0" ] && [ -n "$_workers" ]; then
+    set -- -n "$_workers" "$@"
+    echo "[pytest-with-summary] Adaptive workers: $_workers (use COS_PYTEST_WORKERS=0 to force serial)"
+  else
+    echo "[pytest-with-summary] Adaptive workers: serial (0)"
+  fi
+fi
+unset _has_n_flag _workers
+# --- end adaptive worker injection ---
+
 timestamp="$(date -u +"%Y%m%dT%H%M%SZ")"
 slug="$(printf '%s' "$*" | tr -c 'A-Za-z0-9._=-' '-' | sed 's/--*/-/g' | cut -c1-80)"
 if [ -z "$slug" ]; then

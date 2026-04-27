@@ -2,7 +2,7 @@
 
 ## Status
 
-**Proposed** — 2026-04-24. Implementation tracked separately as Phase 1 (see §8).
+**Accepted** — 2026-04-27 (Phase 1 implemented). Original proposal: 2026-04-24.
 
 ## Context
 
