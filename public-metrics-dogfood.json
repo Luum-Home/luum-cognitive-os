@@ -1,26 +1,28 @@
 {
   "dimensions": {
-    "adr_discipline": 90.91,
-    "doc_freshness": 64.47,
-    "harness_portability": 54.63,
-    "hook_wiring": 43.51,
-    "self_build_activity": 66.59,
-    "skill_coverage": 16.67,
-    "test_health": 0.0
+    "adr_discipline": 87.5,
+    "doc_freshness": 21.74,
+    "harness_portability": 54.98,
+    "hook_wiring": 43.23,
+    "self_build_activity": 2.5,
+    "skill_coverage": 24.65,
+    "test_health": null
   },
   "evidence": {
-    "adr_discipline": "with_proof=20/22 accepted ADRs",
-    "doc_freshness": "adr_healthy=11/38 plans_fresh=10/10 (window=90d)",
-    "harness_portability": "clean=248/454 files (dirty=206)",
-    "hook_wiring": "good=67/154 hooks (registered+tested)",
-    "self_build_activity": "commits=615 feat=270 fix=115 test=51 docs=70 other=109 test_pct=0.08 docs_pct=0.11",
-    "skill_coverage": "covered=23/138 skills (heuristic FP~5-10%)",
-    "test_health": "tests=4423 passed=3280 failed=12 xfailed=0 skipped=1131 pass_rate=99.6% penalty=1250.0"
+    "adr_discipline": "with_proof=21/24 accepted ADRs",
+    "doc_freshness": "adr_healthy=10/46 plans_fresh=0/0 (window=90d)",
+    "harness_portability": "clean=254/462 files (dirty=208)",
+    "hook_wiring": "good=67/155 hooks (registered+tested)",
+    "self_build_activity": "commits=1 feat=0 fix=0 test=0 docs=1 other=0 test_pct=0.00 docs_pct=1.00",
+    "skill_coverage": "covered=35/142 skills (heuristic FP~5-10%)",
+    "test_health": "no cached junit.xml"
   },
-  "missing_signals": [],
-  "overall": 41.23,
-  "partial": false,
-  "timestamp": "2026-04-24T19:30:16.355659+00:00",
+  "missing_signals": [
+    "test_health"
+  ],
+  "overall": 41.64,
+  "partial": true,
+  "timestamp": "2026-04-27T13:19:38.697082+00:00",
   "weights": {
     "adr_discipline": 15,
     "doc_freshness": 10,
