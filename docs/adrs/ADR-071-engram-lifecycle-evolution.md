@@ -276,6 +276,54 @@ The implementation works end-to-end (89 tests passing: 75 unit + 14 e2e against 
 
 12. **No fork of engram.** The integration uses engram as-is. If a future need requires `mem_judge` write access from Python, the path is to (a) spawn engram in MCP mode and pipe stdin, or (b) propose an HTTP endpoint upstream — not to fork the binary.
 
+## Future Work — Conditional, Concrete
+
+These are not "someday" items. Each has a **trigger** (the observable signal that justifies the work), an **action** (concrete first step), and an **estimated cost**. None of them block the v0.20.0 release; all of them have a defensible reason to be deferred today.
+
+### F1. Crystallizer LLM upgrade (heuristic → real synthesis)
+- **Trigger**: heuristic digests in `.cognitive-os/metrics/crystallization-events.jsonl` are reviewed and judged "low signal" by the operator (e.g. constituent contents are paraphrases of each other, dedup leaves a list rather than a paragraph). Expected at 30+ crystallized digests.
+- **Action**: route `EngramCrystallizer.synthesize_content()` through `scripts/orchestrator.py` per ADR-049 (LLM dispatch). Use Sonnet (cheap, sufficient for summarization). Keep heuristic path as fallback when LLM is unavailable.
+- **Cost**: 2–4 hours. Single-file change in `lib/engram_crystallizer.py` plus a fixture in unit tests.
+- **Risk**: cost + latency at session-end. Mitigate by gating on N≥20 constituents (the threshold where heuristic visibly fails).
+
+### F2. `mem_judge` supersedes writes
+- **Trigger**: engram exposes `POST /relations` over HTTP, OR a downstream consumer (other than the trailer-aware crystallizer) needs the supersedes edge to be queryable through `mem_judge`.
+- **Action (option A — preferred)**: replace the trailer-only flag with an actual relation row by calling the new HTTP endpoint after crystallize() saves the digest. **Action (option B — fallback)**: spawn `engram mcp --tools=admin` in subprocess, pipe a `mem_judge` JSON-RPC request via stdin. B is doable today but adds 200ms per crystallize call and a long-lived subprocess.
+- **Cost**: 1 hour for option A (when endpoint exists), 4 hours for option B (subprocess management).
+- **Risk**: option B couples to engram's MCP protocol version.
+
+### F3. Cross-device reinforcement aggregation
+- **Trigger**: two operators (or two laptops of the same operator) both reading the same `topic_key` and the in-cloud `reinforcement_count` not summing. Observable when comparing `lifecycle-reinforcement.jsonl` across devices and the trailer in cloud-synced obs.
+- **Action**: extend `reinforce()` to PATCH the trailer with `reinforcement_count = max(local, remote) + 1` instead of `local + 1`. Requires a fetch-then-update pattern (already what `reinforce()` does — small change to the merge math).
+- **Cost**: 1–2 hours, plus an e2e test that simulates two HTTP clients hitting the same observation.
+- **Risk**: lost-update race if two devices reinforce simultaneously. Mitigation: engram's PATCH is last-write-wins; idempotency key based on `(observation_id, device_id, timestamp)` is overkill for the dev case.
+
+### F4. Threshold calibration with real data
+- **Trigger**: ≥4 weeks of `crystallization-events.jsonl` and `lifecycle-reinforcement.jsonl` accumulated, or ≥100 crystallized digests, whichever comes first.
+- **Action**: write a one-off analysis script (`scripts/calibrate_engram_lifecycle.py`) that reads the JSONL logs and answers: (a) what fraction of crystallized digests get queried in the next 30 days? (signal that the threshold is right), (b) what is the half-life of "discovery"-type observations measured by access? (validates τ=90d), (c) histogram of `revision_count` distribution per topic_key (validates N≥5/N≥10). Re-tune the `DECAY_TAU` and `THRESHOLD_*` constants in `lib/engram_lifecycle.py` and `lib/engram_crystallizer.py` based on findings. Open a follow-up ADR if the changes are significant.
+- **Cost**: 4–6 hours including the analysis + retune + tests.
+- **Risk**: re-tuning silently changes ranking for everyone — must be a tracked ADR change with the empirical justification.
+
+### F5. Phase 4 — Obsidian export
+- **Trigger**: engram crosses ~500 observations for a single project AND the operator reports difficulty browsing memory via `mem_search` alone. Or an explicit operator request driven by a multi-week project where graph view would aid recall.
+- **Action**: implement the export hook sketched in `.cognitive-os/plans/features/engram-lifecycle-evolution.md` §Phase 4. Use the existing `engram obsidian-export --vault=...` CLI command (already in v1.14.5) — wrap it in a Stop hook with project filter + incremental mode. The lifecycle trailer becomes Markdown frontmatter via a small renderer.
+- **Cost**: 1 day. Most of the work is the renderer; engram already ships the Obsidian export CLI.
+- **Risk**: vault path discovery (operator-specific). Make it opt-in via env var `COS_OBSIDIAN_VAULT`.
+
+### F6. Cloud sync e2e test
+- **Trigger**: any cross-device feature (F3) lands, OR a sync-related bug is reported.
+- **Action**: extend `tests/e2e/test_engram_lifecycle_e2e.py` with a fixture that runs `engram cloud serve` on a temp port (auth disabled via `ENGRAM_CLOUD_INSECURE_NO_AUTH=1`), enrolls a project, saves obs on instance A, runs `engram sync --import` on instance B, asserts the trailer round-trips intact.
+- **Cost**: 3–4 hours. The fixture machinery is the bulk of the work; the assertion is one line.
+- **Risk**: cloud serve has more env-var prerequisites than the regular daemon — the test may be skipped in CI if those aren't satisfied. Acceptable; it would still cover the local two-instance case.
+
+### What is explicitly NOT future work
+
+- **Forking engram**. Already rejected (Honest Limitations §12).
+- **Migrating to Mem0/Zep/Cognee**. Already rejected (research doc §"Why NOT migrate").
+- **Replacing the trailer with a separate metadata table**. Engram doesn't expose user metadata; the trailer is the only path until upstream changes. Adding our own SQLite for lifecycle state would split the source of truth.
+- **Adaptive thresholds (ML-tuned)**. Premature without F4 calibration data.
+- **Building our own graph view**. F5 (Obsidian export) covers the human-readable graph need; building one would be reinvention.
+
 ## Related
 
 - `docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` — full analysis backing this decision
