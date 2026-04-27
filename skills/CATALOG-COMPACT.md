@@ -73,7 +73,7 @@ Total skills: 142
 | cognitive-os-status | Full health check of all Cognitive OS components |
 | compress | Compress natural language memory files (CLAUDE.md, todos, preferences) into… |
 | cos-status | Display current Cognitive OS state — active profile, skills exposed, hooks… |
-| decision-triage | Aggregate unanswered operator decisions across research reports + ADRs. |
+| decision-triage | Surface pending operator decisions across research reports + ADR open questions in unified urgency-sorted view. |
 | detect-stack | Scan a project root and produce detected-stack.json with detected languages… |
 | doc-review-personas | N-persona parallel doc review with severity-tiered consolidation. |
 | eval-repo | DEPRECATED alias for /repo-scout |
