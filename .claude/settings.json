@@ -258,6 +258,18 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-frontmatter-validator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/hook-header-validator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-section-validator.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/confidentiality-enforcer.sh\""
           },
           {

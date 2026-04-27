@@ -326,6 +326,201 @@ def test_self_install_classifies_every_rule():
     )
 
 
+# ─── ADR-067 Phase 2: rules/*.md field contract ──────────────────────────────
+# These tests enforce the field contract for rules/*.md defined in ADR-067 §Phase 2.
+# Grandfathering: files that predate this enforcement are listed in allowlists
+# below so the test suite is green against current repo state. New rules added
+# after ADR-067 Phase 2 must comply without exception.
+
+# Rules that existed before ADR-067 Phase 2 and lack the <!-- SCOPE: ... --> header.
+# These are explicitly grandfathered — do NOT add new rules here.
+SCOPE_COMMENT_EXEMPT: set[str] = {
+    "decision-depth-gate.md",
+    "llm-dispatch.md",
+    "python-naming.md",
+    "startup-protocol.md",
+}
+
+# Rules that predate Phase 2 and don't have a standard opening section
+# (## Purpose | ## Rule | ## Principle | ## Mandate).
+# Many older rules use domain-specific sections. Grandfathered here.
+# New rules MUST use one of the four standard opening sections.
+OPENING_SECTION_EXEMPT: set[str] = {
+    # Meta-files (not rules)
+    "ROADMAP.md",
+    "RULES-COMPACT.md",
+    # Rules that predate ADR-067 Phase 2 and use domain-specific section headings.
+    # Do NOT add new rules here — new rules must use standard opening sections.
+    "agent-communication.md",
+    "agent-identity.md",
+    "agent-kpis.md",
+    "agent-quality.md",
+    "aguara-integration.md",
+    "auto-repair.md",
+    "auto-skill-generation.md",
+    "capability-protection.md",
+    "context-management.md",
+    "context-optimization.md",
+    "cost-prediction.md",
+    "credential-management.md",
+    "doc-sync.md",
+    "e2b-integration.md",
+    "error-learning.md",
+    "fault-tolerance.md",
+    "hcom-integration.md",
+    "infra-health.md",
+    "invariant-check.md",
+    "license-policy.md",
+    "llm-dispatch.md",
+    "model-compatibility.md",
+    "model-routing.md",
+    "non-blocking-retry.md",
+    "observability.md",
+    "ops-runbook.md",
+    "orchestrator-mode.md",
+    "parry-integration.md",
+    "pentesting-readiness.md",
+    "performance-monitoring.md",
+    "phase-aware-agents.md",
+    "private-mode.md",
+    "prompt-composition.md",
+    "queue-advisor.md",
+    "queue-drain.md",
+    "rate-limiting.md",
+    "rate-limit-protection.md",
+    "reinvention-prevention.md",
+    "repomix-integration.md",
+    "resource-governance.md",
+    "response-compression.md",
+    "result-management.md",
+    "sandbox-sampling.md",
+    "scope-creep-detection.md",
+    "security-scanning.md",
+    "self-improvement-protocol.md",
+    "session-concurrency.md",
+    "singularity.md",
+    "skill-management.md",
+    "so-slo.md",
+    "squad-protocol.md",
+    "startup-protocol.md",
+    "step-files.md",
+    "supply-chain-defense.md",
+    "tero-integration.md",
+    "token-economy.md",
+    "tool-loop-detector.md",
+    "trailofbits-skills.md",
+    "user-prompt-capture.md",
+    "workload-scheduling.md",
+}
+
+# Rules that mention "Contextual Trigger" in their text but use a non-standard
+# section heading (e.g., ### Contextual Triggers as a sub-section, not a top-level
+# ## Contextual Trigger). Grandfathered — they convey the concept differently.
+CONTEXTUAL_TRIGGER_EXEMPT: set[str] = {
+    "context-optimization.md",  # uses ### Contextual Triggers (H3 sub-section)
+}
+
+
+@pytest.mark.audit
+@pytest.mark.parametrize("rule_path", RULE_PATHS, ids=RULE_IDS)
+def test_every_rule_has_scope_comment(rule_path: Path) -> None:
+    """Every rule/*.md must have <!-- SCOPE: os-only|project|both --> at line 1.
+
+    Grandfathering: files in SCOPE_COMMENT_EXEMPT are skipped (predate Phase 2).
+    New rules added after ADR-067 Phase 2 must comply without exception.
+    """
+    name = _rule_name(rule_path)
+    if name in SCOPE_COMMENT_EXEMPT:
+        pytest.skip(f"{name} grandfathered (predates ADR-067 Phase 2 SCOPE requirement)")
+
+    text = rule_path.read_text(encoding="utf-8", errors="replace")
+    lines = text.splitlines()
+    first = lines[0] if lines else ""
+    scope_m = re.match(r"^\s*<!--\s*SCOPE:\s*([a-z-]+)\s*-->\s*$", first)
+    valid_scopes = {"os-only", "project", "both"}
+
+    assert scope_m is not None, (
+        f"{name}: line 1 must be <!-- SCOPE: os-only|project|both --> "
+        f"(got: {first[:80]!r}). Add the SCOPE comment or add {name!r} to "
+        f"SCOPE_COMMENT_EXEMPT with justification."
+    )
+    assert scope_m.group(1) in valid_scopes, (
+        f"{name}: <!-- SCOPE: {scope_m.group(1)} --> value not in "
+        f"{sorted(valid_scopes)}. Use one of the valid scope values."
+    )
+
+
+@pytest.mark.audit
+@pytest.mark.parametrize("rule_path", RULE_PATHS, ids=RULE_IDS)
+def test_every_rule_has_h1(rule_path: Path) -> None:
+    """Every rule/*.md must have an H1 title (# Title)."""
+    text = rule_path.read_text(encoding="utf-8", errors="replace")
+    assert re.search(r"^# \S", text, re.MULTILINE), (
+        f"{_rule_name(rule_path)}: missing H1 title. Every rule must start with "
+        f"'# Rule Name' somewhere in the document."
+    )
+
+
+@pytest.mark.audit
+@pytest.mark.parametrize("rule_path", RULE_PATHS, ids=RULE_IDS)
+def test_every_rule_has_opening_section(rule_path: Path) -> None:
+    """Every NEW rule/*.md must have one of: ## Purpose | ## Rule | ## Principle | ## Mandate.
+
+    Grandfathering: files in OPENING_SECTION_EXEMPT predate ADR-067 Phase 2
+    and use domain-specific section names. Do NOT add new rules to this exemption
+    list — new rules must use the canonical opening sections.
+    """
+    name = _rule_name(rule_path)
+    if name in OPENING_SECTION_EXEMPT:
+        pytest.skip(
+            f"{name} grandfathered (uses non-standard opening section; "
+            f"predates ADR-067 Phase 2)"
+        )
+
+    text = rule_path.read_text(encoding="utf-8", errors="replace")
+    opening_sections = {"Purpose", "Rule", "Principle", "Mandate"}
+    found = any(re.search(rf"^## {s}\b", text, re.MULTILINE) for s in opening_sections)
+    assert found, (
+        f"{_rule_name(rule_path)}: missing opening section. "
+        f"New rules must have one of: ## Purpose | ## Rule | ## Principle | ## Mandate. "
+        f"If this rule predates ADR-067 Phase 2, add it to OPENING_SECTION_EXEMPT with "
+        f"justification."
+    )
+
+
+@pytest.mark.audit
+@pytest.mark.parametrize("rule_path", RULE_PATHS, ids=RULE_IDS)
+def test_contextual_rules_have_trigger_section(rule_path: Path) -> None:
+    """Rules that mention 'Contextual Trigger' must have a ## Contextual Trigger section.
+
+    Grandfathering: files in CONTEXTUAL_TRIGGER_EXEMPT use alternative section
+    naming (e.g., ### Contextual Triggers as a sub-section). Do NOT add new files
+    to this exemption list — new contextual rules must use the standard section.
+    """
+    name = _rule_name(rule_path)
+    text = rule_path.read_text(encoding="utf-8", errors="replace")
+
+    needs_trigger = (
+        "Contextual Trigger" in text
+        or "<!-- STATUS: contextual -->" in text
+    )
+    if not needs_trigger:
+        pytest.skip(f"{name} does not mention Contextual Trigger — skip")
+
+    if name in CONTEXTUAL_TRIGGER_EXEMPT:
+        pytest.skip(
+            f"{name} grandfathered (uses non-standard contextual trigger section; "
+            f"predates ADR-067 Phase 2)"
+        )
+
+    has_section = bool(re.search(r"^## Contextual Trigger\b", text, re.MULTILINE))
+    assert has_section, (
+        f"{name}: mentions 'Contextual Trigger' but lacks a ## Contextual Trigger "
+        f"section. Add the section or add {name!r} to CONTEXTUAL_TRIGGER_EXEMPT "
+        f"with justification."
+    )
+
+
 @pytest.mark.audit
 def test_excluded_hook_enforced_rules_actually_have_registered_hooks():
     """EXCLUDED_RULES block A in self-install.sh lists rules 'replaced by their hook'.

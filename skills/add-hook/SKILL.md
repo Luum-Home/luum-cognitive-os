@@ -27,33 +27,33 @@ lifecycle point and keep its behavior portable across harnesses when possible.
 
 ### 1. Create the hook script
 
-Create `hooks/{hook-name}.sh`:
+Use `templates/hook-template.sh` as the starting point:
 
 ```bash
-#!/usr/bin/env bash
-# {EventType} hook: {Hook Name} — {short description}
-# Matcher: {matcher_pattern}
-# Can block: yes/no (PreToolUse only can block with exit 2)
-# Must complete in <200ms
-
-set -uo pipefail
-
-_HOOK_NAME="{hook-name}"
-source "$(dirname "$0")/_lib/safe-jsonl.sh"
-source "$(dirname "$0")/_lib/common.sh"
-
-INPUT=$(cat)
-
-# Your logic here
-
-exit 0
+cp templates/hook-template.sh hooks/{hook-name}.sh
+chmod +x hooks/{hook-name}.sh
 ```
 
+Then fill in the template placeholders. The field contract (ADR-067 Phase 2) requires
+for all NEW hooks:
+
+| Field | Requirement |
+|---|---|
+| Shebang | Line 1 must be `#!/usr/bin/env bash` |
+| `# SCOPE:` | One of: `os-only`, `project`, `both` |
+| `# PURPOSE:` | One-line description of what the hook does |
+| `# EVENT:` | One of: `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `Stop`, `SessionStart` |
+| `set -euo pipefail` | Within first 20 lines |
+
+The `hooks/hook-header-validator.sh` PostToolUse hook will warn if these are missing
+when you Write/Edit a hooks/*.sh file.
+
 Key conventions:
-- Source `_lib/safe-jsonl.sh` and `_lib/common.sh` for shared utilities
 - Read stdin JSON via `INPUT=$(cat)` — contains `tool_name`, `tool_input`, and (PostToolUse) `tool_response`
-- Exit 0 = pass, exit 2 = BLOCK (PreToolUse only)
+- Add a FAST PATH: `case "$INPUT" in *"TRIGGER"*) ;; *) exit 0 ;; esac` to avoid Python startup overhead
+- Exit 0 = pass/advisory, exit 2 = BLOCK (PreToolUse only)
 - Always complete in under 200ms for PreToolUse, under 500ms for PostToolUse
+- Use `COS_STRICT_<NAME>_VALIDATION=1` env var for opt-in blocking mode (mirrors ADR-067 pattern)
 - Prefer canonical env/path/session resolvers over harness-specific variables
 - If the hook depends on a harness-specific event shape, isolate that fact in an
   adapter or document it explicitly as a projection constraint
