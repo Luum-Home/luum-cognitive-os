@@ -28,6 +28,7 @@ def test_portability_demo_help_documents_claims():
     assert "core .cognitive-os artifacts are identical" in result.stdout
 
 
+@pytest.mark.timeout(300)
 def test_portability_demo_runs_without_provider_tests():
     result = subprocess.run(
         ["bash", str(DEMO_SCRIPT), "--skip-provider-tests"],

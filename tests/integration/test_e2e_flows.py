@@ -34,7 +34,6 @@ import os as _os
 import pathlib as _pathlib
 import shutil
 import subprocess
-import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -456,6 +455,7 @@ class TestObservabilityFlow:
 # Flow 2: Memory Pipeline
 # ===========================================================================
 
+@pytest.mark.timeout(300)
 class TestMemoryFlow:
     """Validate the Cognee knowledge graph memory lifecycle.
 
@@ -1527,7 +1527,7 @@ class TestCOSLangfuseIntegration:
         task_id = f"toolu_{uuid.uuid4().hex[:16]}"
 
         # Send trace with trust score in metadata (current record_completion behaviour)
-        trace = lf_client.trace(
+        lf_client.trace(
             name=skill_name,
             id=task_id,
             metadata={

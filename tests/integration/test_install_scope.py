@@ -41,6 +41,7 @@ def _count_tagged(tag: str, source_dirs: list[Path]) -> int:
     return count
 
 
+@pytest.mark.timeout(300)
 @pytest.mark.skipif(not _COS_INIT_SH.exists(), reason="cos-init.sh not found")
 def test_scope_project_excludes_os_only(tmp_path):
     """install.sh --scope=project must not install SCOPE:os-only files."""
@@ -94,6 +95,7 @@ def test_scope_project_excludes_os_only(tmp_path):
     )
 
 
+@pytest.mark.timeout(300)
 @pytest.mark.skipif(not _COS_INIT_SH.exists(), reason="cos-init.sh not found")
 def test_scope_project_file_count_under_300(tmp_path):
     """Total installed files with --scope=project must be <= 300."""
@@ -136,6 +138,7 @@ def test_scope_project_file_count_under_300(tmp_path):
     )
 
 
+@pytest.mark.timeout(300)
 @pytest.mark.skipif(not _COS_INIT_SH.exists(), reason="cos-init.sh not found")
 def test_scope_all_includes_os_only(tmp_path):
     """--scope=all must include SCOPE:os-only files."""
