@@ -177,75 +177,202 @@ fi
 # ═══════════════════════════════════════════════════════════════════════════
 # 2. ENGRAM BINARY
 # ═══════════════════════════════════════════════════════════════════════════
+# Install strategy (preference order):
+#   1. brew (macOS) — canonical, Gatekeeper-trusted, avoids Operon sandbox SIGKILL
+#   2. go install  — fallback when brew is unavailable (Linux CI, etc.)
+#
+# Multi-path trap: `which engram` only shows the first match. If multiple copies
+# exist (~/go/bin, ~/.local/bin, /opt/homebrew/bin), the wrong one may be
+# invoked. We use `which -a` after any install to detect and warn about conflicts.
+# ═══════════════════════════════════════════════════════════════════════════
 echo "── engram binary ─────────────────────────────────────────────────────"
+
+ENGRAM_CHANGED=false
+
+_engram_warn_multipath() {
+  # Emit a warning if engram appears in more than one PATH location.
+  ALL_PATHS=$(which -a engram 2>/dev/null || true)
+  PATH_COUNT=$(echo "$ALL_PATHS" | grep -c 'engram' || true)
+  if [ "$PATH_COUNT" -gt 1 ]; then
+    _yellow "  WARNING: engram found in multiple PATH locations (3-paths trap):"
+    echo ""
+    echo "$ALL_PATHS" | while IFS= read -r p; do
+      echo "    $p"
+    done
+    BREW_CANONICAL=$(command -v brew &>/dev/null && brew --prefix 2>/dev/null || echo "")
+    if [ -n "$BREW_CANONICAL" ]; then
+      echo "  Recommended: symlink each location to the brew canonical binary to eliminate ambiguity:"
+      echo "    ln -sf ${BREW_CANONICAL}/bin/engram ~/.local/bin/engram"
+      echo "    ln -sf ${BREW_CANONICAL}/bin/engram ~/go/bin/engram"
+      echo "  (run with --apply --fix-symlinks to do this automatically)"
+    fi
+    echo ""
+  fi
+}
 
 if ! command -v engram &>/dev/null; then
   echo "  SKIP: engram not found in PATH"
   ENGRAM_STATUS="not-installed"
 else
   ENGRAM_CURRENT=$(engram version 2>/dev/null | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || echo "unknown")
-  echo "  Installed: $ENGRAM_CURRENT"
+  echo "  Installed: $ENGRAM_CURRENT ($(command -v engram))"
 
-  if ! command -v gh &>/dev/null; then
-    echo "  SKIP: gh CLI not found — cannot check latest release"
-    ENGRAM_STATUS="gh-missing"
-  else
+  # Detect multi-path conflict at audit time too
+  _engram_warn_multipath
+
+  # ── Determine latest version ──────────────────────────────────────────
+  ENGRAM_LATEST=""
+
+  if command -v brew &>/dev/null; then
+    # Refresh tap before querying — brew formulas can lag upstream otherwise
+    if [ "$MODE" = "apply" ]; then
+      echo "  Running brew update (refreshes tap formula versions)..."
+      if $DRY_RUN; then
+        _dry_echo "brew update"
+      else
+        brew update 2>/dev/null || _yellow "  WARN: brew update failed (continuing)"
+        echo ""
+      fi
+    fi
+    # Parse latest from tap formula info
+    ENGRAM_LATEST=$(brew info gentleman-programming/tap/engram --formula 2>/dev/null \
+      | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || echo "")
+  fi
+
+  # Fall back to GitHub releases if brew didn't provide a version
+  if [ -z "$ENGRAM_LATEST" ] && command -v gh &>/dev/null; then
     ENGRAM_LATEST=$(gh release list --repo Gentleman-Programming/engram --limit 1 2>/dev/null \
       | awk '{print $1}' | sed 's/^v//' || echo "")
+  fi
 
-    if [ -z "$ENGRAM_LATEST" ]; then
-      echo "  WARN: Could not fetch latest engram release from GitHub"
-      ENGRAM_STATUS="fetch-failed"
+  if [ -z "$ENGRAM_LATEST" ]; then
+    echo "  WARN: Could not determine latest engram version (no brew, no gh, or fetch failed)"
+    ENGRAM_STATUS="fetch-failed"
+  else
+    echo "  Latest:    $ENGRAM_LATEST"
+
+    if [ "$ENGRAM_CURRENT" = "$ENGRAM_LATEST" ]; then
+      _green "  Status: up-to-date"
+      echo ""
+      ENGRAM_STATUS="up-to-date"
     else
-      echo "  Latest:    $ENGRAM_LATEST"
+      _yellow "  Status: outdated ($ENGRAM_CURRENT → $ENGRAM_LATEST)"
+      echo ""
+      ENGRAM_STATUS="outdated ($ENGRAM_CURRENT -> $ENGRAM_LATEST)"
 
-      if [ "$ENGRAM_CURRENT" = "$ENGRAM_LATEST" ]; then
-        _green "  Status: up-to-date"
-        echo ""
-        ENGRAM_STATUS="up-to-date"
-      else
-        _yellow "  Status: outdated ($ENGRAM_CURRENT → $ENGRAM_LATEST)"
-        echo ""
-        ENGRAM_STATUS="outdated ($ENGRAM_CURRENT -> $ENGRAM_LATEST)"
-
-        if [ "$MODE" = "apply" ]; then
-          echo "  [apply] Installing engram@$ENGRAM_LATEST via go install..."
-          _run_or_dry go install "github.com/Gentleman-Programming/engram/cmd/engram@v${ENGRAM_LATEST}"
-
-          # Handle the GOPATH versioned-bin gotcha:
-          # On some systems, `go install` writes to ~/go/1.x.y/bin/ rather than ~/go/bin/
-          # We detect and copy to ~/go/bin/ so the PATH-resolved binary is updated.
-          if ! $DRY_RUN; then
-            GO_BIN="${GOPATH:-$HOME/go}/bin/engram"
-            # Look for the binary in versioned go subdirectories
-            VERSIONED_BIN=$(find "$HOME/go" -name "engram" -type f 2>/dev/null \
-              | grep -v "^${GO_BIN}$" | sort -V | tail -1 || true)
-            if [ -n "$VERSIONED_BIN" ] && [ -f "$VERSIONED_BIN" ]; then
-              echo "  Detected versioned GOPATH bin at $VERSIONED_BIN"
-              echo "  Copying to $GO_BIN..."
-              cp "$VERSIONED_BIN" "$GO_BIN"
-              chmod +x "$GO_BIN"
+      if [ "$MODE" = "apply" ]; then
+        if command -v brew &>/dev/null; then
+          # ── Preferred: brew install/upgrade ─────────────────────────────
+          echo "  [apply] Installing/upgrading engram via brew (preferred)..."
+          if $DRY_RUN; then
+            _dry_echo "brew install gentleman-programming/tap/engram || brew upgrade gentleman-programming/tap/engram"
+          else
+            # Back up the binary currently resolved by PATH before any install
+            CURRENT_BIN=$(command -v engram 2>/dev/null || true)
+            if [ -n "$CURRENT_BIN" ] && [ -f "$CURRENT_BIN" ] && [ ! -L "$CURRENT_BIN" ]; then
+              BAK="${CURRENT_BIN}.v${ENGRAM_CURRENT}.bak"
+              echo "  Backing up $CURRENT_BIN → $BAK"
+              cp "$CURRENT_BIN" "$BAK" 2>/dev/null || true
             fi
+
+            if brew list gentleman-programming/tap/engram &>/dev/null 2>&1; then
+              brew upgrade gentleman-programming/tap/engram 2>&1 | tail -5
+            else
+              brew install gentleman-programming/tap/engram 2>&1 | tail -5
+            fi
+
             NEW_VER=$(engram version 2>/dev/null | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || echo "unknown")
             if [ "$NEW_VER" = "$ENGRAM_LATEST" ]; then
-              _green "  engram updated to $NEW_VER"
+              _green "  engram updated to $NEW_VER (via brew)"
               echo ""
-              ENGRAM_STATUS="$ENGRAM_CURRENT -> $ENGRAM_LATEST  applied"
+              ENGRAM_STATUS="$ENGRAM_CURRENT -> $ENGRAM_LATEST  applied (brew)"
+              ENGRAM_CHANGED=true
             else
-              _red "  WARN: After install, engram reports $NEW_VER (expected $ENGRAM_LATEST)"
+              _red "  WARN: After brew install, engram reports $NEW_VER (expected $ENGRAM_LATEST)"
               echo ""
               ENGRAM_STATUS="upgrade-failed"
               INCONSISTENT=true
             fi
+
+            # Re-check multi-path after install and suggest symlinks
+            _engram_warn_multipath
+          fi
+
+        else
+          # ── Fallback: go install (Linux CI / no Homebrew) ────────────────
+          echo "  [apply] brew not available — falling back to go install..."
+          if ! command -v go &>/dev/null; then
+            _red "  ERROR: Neither brew nor go is available. Cannot upgrade engram."
+            echo ""
+            ENGRAM_STATUS="upgrade-failed"
+            INCONSISTENT=true
           else
-            _dry_echo "go install github.com/Gentleman-Programming/engram/cmd/engram@v${ENGRAM_LATEST}"
-            _dry_echo "cp <versioned-go-bin>/engram \${GOPATH:-\$HOME/go}/bin/engram"
-            ENGRAM_STATUS="$ENGRAM_CURRENT -> $ENGRAM_LATEST  (dry-run)"
+            if $DRY_RUN; then
+              _dry_echo "go install github.com/Gentleman-Programming/engram/cmd/engram@v${ENGRAM_LATEST}"
+              _dry_echo "cp <versioned-go-bin>/engram \${GOPATH:-\$HOME/go}/bin/engram"
+              ENGRAM_STATUS="$ENGRAM_CURRENT -> $ENGRAM_LATEST  (dry-run)"
+            else
+              # Back up existing binary
+              GO_BIN="${GOPATH:-$HOME/go}/bin/engram"
+              if [ -f "$GO_BIN" ] && [ ! -L "$GO_BIN" ]; then
+                cp "$GO_BIN" "${GO_BIN}.v${ENGRAM_CURRENT}.bak" 2>/dev/null || true
+              fi
+
+              go install "github.com/Gentleman-Programming/engram/cmd/engram@v${ENGRAM_LATEST}"
+
+              # Handle GOPATH versioned-bin gotcha: go install may write to ~/go/1.x.y/bin/
+              VERSIONED_BIN=$(find "$HOME/go" -name "engram" -type f 2>/dev/null \
+                | grep -v "^${GO_BIN}$" | sort -V | tail -1 || true)
+              if [ -n "$VERSIONED_BIN" ] && [ -f "$VERSIONED_BIN" ]; then
+                echo "  Detected versioned GOPATH bin at $VERSIONED_BIN"
+                echo "  Copying to $GO_BIN..."
+                cp "$VERSIONED_BIN" "$GO_BIN"
+                chmod +x "$GO_BIN"
+              fi
+
+              NEW_VER=$(engram version 2>/dev/null | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || echo "unknown")
+              if [ "$NEW_VER" = "$ENGRAM_LATEST" ]; then
+                _green "  engram updated to $NEW_VER (via go install)"
+                echo ""
+                ENGRAM_STATUS="$ENGRAM_CURRENT -> $ENGRAM_LATEST  applied (go install)"
+                ENGRAM_CHANGED=true
+              else
+                _red "  WARN: After go install, engram reports $NEW_VER (expected $ENGRAM_LATEST)"
+                echo ""
+                ENGRAM_STATUS="upgrade-failed"
+                INCONSISTENT=true
+              fi
+            fi
           fi
         fi
+      fi  # end apply mode
+    fi    # end outdated
+  fi      # end version check
+fi        # end engram found
+
+# ── Symlink fix (--apply --fix-symlinks) ──────────────────────────────────
+if [ "$MODE" = "apply" ] && command -v brew &>/dev/null; then
+  BREW_ENGRAM=$(brew --prefix 2>/dev/null)/bin/engram
+  if [ -f "$BREW_ENGRAM" ]; then
+    for extra_path in "$HOME/.local/bin/engram" "${GOPATH:-$HOME/go}/bin/engram"; do
+      if [ -f "$extra_path" ] && [ ! -L "$extra_path" ]; then
+        if $DRY_RUN; then
+          _dry_echo "ln -sf $BREW_ENGRAM $extra_path   # consolidate to brew canonical"
+        fi
+        # Auto-apply symlinks only with explicit opt-in (future: --fix-symlinks flag)
+        # For now, suggest only — don't auto-apply to avoid surprising PATH changes
       fi
-    fi
+    done
   fi
+fi
+
+# ── MCP restart reminder ───────────────────────────────────────────────────
+if $ENGRAM_CHANGED; then
+  echo ""
+  _yellow "  ⚠️  Restart Claude Code (cmd-Q + reopen) — MCP servers only spawn at startup."
+  echo "  After restarting, verify with:"
+  echo "    python3 scripts/check_mcp_servers.py"
+  echo ""
 fi
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -435,6 +562,14 @@ else
 fi
 
 echo ""
+
+# ── Post-apply: verify MCP server health ──────────────────────────────────
+if [ "$MODE" = "apply" ] && ! $DRY_RUN && $ENGRAM_CHANGED; then
+  echo ""
+  echo "  Run after restarting Claude Code to verify MCP servers are healthy:"
+  echo "    python3 scripts/check_mcp_servers.py"
+  echo ""
+fi
 
 # ── Exit code ─────────────────────────────────────────────────────────────
 if [ "$MODE" = "apply" ] && $INCONSISTENT; then
