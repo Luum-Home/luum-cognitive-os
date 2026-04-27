@@ -370,6 +370,7 @@ EXCLUDED_RULES=(
   "model-compatibility.md"         # contextual: model switch checklist
   "model-directive.md"             # contextual: dispatch-gate directive protocol
   "orchestrator-mode.md"           # contextual: executor mode activation
+  "engram-api-safety.md"           # contextual: safe Engram API exploration / no prod mutation
   "engram-organization.md"         # contextual: engram prefix system reference
   "cognitive-os-changes.md"        # contextual: plan-first for OS mods
   "library-selection.md"           # contextual: library evaluation checklist
