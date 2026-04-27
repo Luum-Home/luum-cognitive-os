@@ -77,6 +77,16 @@ case "$RAW_MODE" in
     ;;
 esac
 
+# Phase 2.2 strangler: scope_allows + skill_scope_allows migrated to Python.
+scope_allows() {
+  local f="$1"
+  INSTALL_SCOPE="$INSTALL_SCOPE" python3 "$(dirname "$0")/cos_init.py" --internal-call scope_allows "$f"
+}
+skill_scope_allows() {
+  local d="$1"
+  INSTALL_SCOPE="$INSTALL_SCOPE" python3 "$(dirname "$0")/cos_init.py" --internal-call skill_scope_allows "$d"
+}
+
 # Phase 2.1 strangler: cos_detect_harness migrated to Python.
 # Override detect_harness to route through Python instead of bash.
 detect_harness() {
