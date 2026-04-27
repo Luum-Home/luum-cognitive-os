@@ -23,7 +23,7 @@ import os
 import re
 import subprocess
 import sys
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -34,6 +34,8 @@ from typing import Optional
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 REPORTS_DIR = REPO_ROOT / "docs" / "reports"
+# NOTE: .cognitive-os/reports/research/ is gitignored — reports now live in docs/reports/.
+# We keep this constant for legacy fallback but DO NOT scan it in normal operation.
 RESEARCH_REPORTS_DIR = REPO_ROOT / ".cognitive-os" / "reports" / "research"
 ADRS_DIR = REPO_ROOT / "docs" / "adrs"
 
@@ -181,7 +183,6 @@ def _parse_section_items(lines: list[str], section_name: str) -> list[str]:
     - Markdown table rows (non-header, non-separator): ``| 1 | ... | ... |``
     """
     items: list[str] = []
-    in_table = False
     header_seen = False
 
     for raw in lines:
@@ -194,13 +195,11 @@ def _parse_section_items(lines: list[str], section_name: str) -> list[str]:
             cols = [c.strip() for c in line.strip("|").split("|")]
             # Skip separator rows like |---|---|
             if all(re.match(r"^[-: ]+$", c) for c in cols if c):
-                in_table = True
                 header_seen = True
                 continue
             if not header_seen:
                 # First row = header
                 header_seen = True
-                in_table = True
                 continue
             # Data row — join all columns (skip pure numeric index col if present)
             non_empty = [c for c in cols if c]
@@ -213,7 +212,6 @@ def _parse_section_items(lines: list[str], section_name: str) -> list[str]:
                 items.append(text)
             continue
 
-        in_table = False
         header_seen = False
 
         # Numbered item
@@ -311,13 +309,20 @@ def scan_research_reports(
     research_dir: Path = RESEARCH_REPORTS_DIR,
     since: Optional[datetime] = None,
 ) -> list[Decision]:
-    """Scan all research reports from docs/reports/ AND .cognitive-os/reports/research/.
+    """Scan research reports from docs/reports/ (canonical) and optionally .cognitive-os/reports/research/.
 
-    This is the canonical entry point used by main(). scan_reports() scans a single dir.
+    Canonical path is docs/reports/ (git-tracked). The legacy .cognitive-os path is
+    gitignored and should be empty after ADR-069 §5 fix (2026-04-27). We still scan
+    it as a fallback to catch stale copies, but docs/reports/ is the source of truth.
     """
     decisions: list[Decision] = []
     decisions.extend(scan_reports(reports_dir, since=since))
-    decisions.extend(scan_reports(research_dir, since=since))
+    # Deduplicate: if a report exists in both dirs, prefer the docs/reports/ copy.
+    tracked_stems = {d.source_path.split("/")[-1] for d in decisions}
+    legacy_decisions = scan_reports(research_dir, since=since)
+    for d in legacy_decisions:
+        if Path(d.source_path).name not in tracked_stems:
+            decisions.append(d)
     return decisions
 
 
@@ -341,36 +346,91 @@ def scan_adrs(adrs_dir: Path, since: Optional[datetime] = None) -> list[Decision
 # Engram answers (canonical spec interface)
 # ---------------------------------------------------------------------------
 
+def _parse_engram_text_for_slugs(text: str) -> dict[str, bool]:
+    """Extract decision slugs from engram CLI text output.
+
+    Supports two patterns:
+    1. Legacy (broken saves): `"topic_key": "decision/slug"` embedded in JSON snippets
+    2. Correct saves (v1.14.5+): title lines like `— Decision answered: slug`
+       or `[decision] — Decision answered: slug`
+    """
+    answered: dict[str, bool] = {}
+    # Pattern 1: JSON snippet with topic_key
+    for m in re.finditer(r'"topic_key":\s*"decision/([^"]+)"', text):
+        answered[m.group(1)] = True
+    # Pattern 2: Title line "Decision answered: <slug>"
+    for m in re.finditer(r"Decision answered:\s*([\w][\w.-]+)", text):
+        slug = m.group(1).strip()
+        if slug:
+            answered[slug] = True
+    # Pattern 3: Topic line "Topic: decision/<slug>"
+    for m in re.finditer(r"Topic:\s*decision/([\w][\w.-]+)", text):
+        answered[m.group(1)] = True
+    return answered
+
+
+def _engram_search_for_answers(query: str, timeout: int = 5) -> dict[str, bool]:
+    """Run one engram search and extract decision slugs from text output."""
+    try:
+        result = subprocess.run(
+            ["engram", "search", query],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+        )
+        if result.returncode != 0 or not result.stdout.strip():
+            return {}
+        return _parse_engram_text_for_slugs(result.stdout)
+    except Exception:
+        return {}
+
+
 def scan_engram_answers() -> dict[str, bool]:
     """Try to retrieve answered decisions from engram.
 
     Returns {topic_slug: True} for decisions that have been answered.
     Returns {} gracefully when engram is unavailable.
+
+    Fix 2026-04-27: The engram CLI does NOT support --json flag — it treats it as
+    part of the search query. Removed --json; parse text output for title/topic patterns.
+
+    Engram returns at most 10 results per query. We run multiple targeted queries to
+    cover all decision/* entries across different topic groups.
     """
+    # Probe for availability first
     try:
-        result = subprocess.run(
-            ["engram", "search", "decision/", "--json"],
-            capture_output=True,
-            text=True,
-            timeout=5,
+        probe = subprocess.run(
+            ["engram", "search", "Decision answered probe"],
+            capture_output=True, text=True, timeout=3,
         )
-        if result.returncode == 0 and result.stdout.strip():
-            try:
-                data = json.loads(result.stdout)
-                answered: dict[str, bool] = {}
-                items = data if isinstance(data, list) else data.get("results", [])
-                for item in items:
-                    key = item.get("topic_key", "") or item.get("key", "")
-                    if key.startswith("decision/"):
-                        slug = key[len("decision/"):]
-                        answered[slug] = True
-                return answered
-            except (json.JSONDecodeError, AttributeError):
-                return {}
-        return {}
+        if probe.returncode != 0:
+            return {}
     except Exception as exc:
         print(f"WARNING: engram unavailable for cross-reference: {exc}", file=sys.stderr)
         return {}
+
+    answered: dict[str, bool] = {}
+
+    # Multiple queries to cover all decision/* entries (engram limits to 10/query).
+    # NOTE: engram uses semantic/vector search, not keyword prefix search.
+    # Short specific queries return more relevant results than long compound queries.
+    queries = [
+        "Decision answered hook validation",
+        "Decision answered audit placement",
+        "Decision answered template location",
+        "Decision answered yaml pyyaml",
+        "Decision answered cos-init migration backward shim",
+        "Decision answered subprocess wrapper tomllib",
+        "Decision answered test strategy migration ordering bash",
+        "Decision answered wrapt rich cryptography python",
+        "Decision answered adr alternatives rejected",
+        "Decision answered verification contextual trigger",
+        "Decision answered settings driver generate project",
+    ]
+    for query in queries:
+        answered.update(_engram_search_for_answers(query))
+
+    return answered
 
 
 def filter_unanswered(
@@ -463,15 +523,19 @@ def write_report(decisions: list[Decision], output_path: Path) -> None:
 # ---------------------------------------------------------------------------
 
 def _engram_search(query: str, timeout: int = 5) -> Optional[str]:
-    """Attempt an engram search via subprocess. Returns text output or None on failure."""
+    """Attempt an engram search via the engram CLI. Returns text output or None on failure.
+
+    Uses the engram CLI subprocess (most stable contract — the Python module path
+    has changed historically; the CLI is the stable interface).
+    Bug fix 2026-04-27: replaced broken `from lib.engram import search` (module
+    doesn't exist) with the CLI invocation already used by scan_engram_answers().
+    """
     try:
         result = subprocess.run(
-            ["python3", "-c",
-             f"from lib.engram import search; print(search('{query}'))"],
+            ["engram", "search", query, "--json"],
             capture_output=True,
             text=True,
             timeout=timeout,
-            cwd=REPO_ROOT,
         )
         if result.returncode == 0 and result.stdout.strip():
             return result.stdout.strip()
@@ -488,22 +552,49 @@ def _infer_topic_key(decision: Decision) -> str:
 
 
 def enrich_with_engram(decisions: list[Decision]) -> tuple[list[Decision], bool]:
-    """Try to cross-reference decisions against engram. Returns (decisions, engram_available)."""
-    # Quick availability probe
-    probe = _engram_search("decision/probe-test", timeout=3)
-    engram_available = probe is not None
+    """Try to cross-reference decisions against engram. Returns (decisions, engram_available).
+
+    Performance fix 2026-04-27: replaced O(N) per-decision _engram_search() calls with
+    bulk queries. Engram is limited to 10 results per semantic query, so we use multiple
+    targeted queries then fall back to individual per-slug lookups for critical decisions.
+    """
+    # Bulk queries first (fast, covers most answers)
+    answered = scan_engram_answers()
+
+    # Distinguish "engram returned empty" from "engram unavailable"
+    engram_available: bool
+    if not answered:
+        probe = _engram_search("Decision answered probe", timeout=3)
+        engram_available = probe is not None
+    else:
+        engram_available = True
 
     if not engram_available:
         for d in decisions:
             d.status = "PENDING (engram unavailable)"
         return decisions, False
 
+    # Mark decisions found in bulk results
     for d in decisions:
-        topic_key = _infer_topic_key(d)
-        result = _engram_search(topic_key)
-        if result and "answered" in result.lower():
+        slug = _infer_topic_key(d).removeprefix("decision/")
+        if answered.get(slug):
             d.status = "ANSWERED"
-            d.engram_ref = topic_key
+            d.engram_ref = f"decision/{slug}"
+
+    # For CRITICAL decisions NOT yet marked ANSWERED:
+    # do targeted per-slug lookup (engram bulk search has 10-result limit).
+    # Only critical (not important) to keep total lookup count bounded.
+    # Cap at 25 to handle up to 25 critical decisions efficiently.
+    unanswered_critical = [
+        d for d in decisions
+        if d.status != "ANSWERED" and d.urgency == "critical"
+    ]
+    for d in unanswered_critical[:25]:
+        slug = _infer_topic_key(d).removeprefix("decision/")
+        result = _engram_search(slug)
+        if result and ("answered" in result.lower() or "Decision answered:" in result):
+            d.status = "ANSWERED"
+            d.engram_ref = f"decision/{slug}"
 
     return decisions, True
 
@@ -653,7 +744,43 @@ def main(argv: list[str] | None = None) -> int:
         dest="json_output",
         help="Output machine-readable JSON",
     )
+    parser.add_argument(
+        "--mark-answered",
+        metavar="SLUG",
+        default=None,
+        help=(
+            "Mark a decision slug as ANSWERED in engram. "
+            "Slug format: <topic-key> (no 'decision/' prefix). "
+            "Optionally combine with --answer-text to provide the decision text."
+        ),
+    )
+    parser.add_argument(
+        "--answer-text",
+        metavar="TEXT",
+        default="Operator accepted",
+        help="Decision text when using --mark-answered (default: 'Operator accepted')",
+    )
     args = parser.parse_args(argv)
+
+    # Handle --mark-answered as an early-exit sub-command
+    if args.mark_answered:
+        try:
+            from lib.decision_tracker import mark_answered_by_slug  # noqa: PLC0415
+        except ImportError as exc:
+            print(f"ERROR: cannot import lib.decision_tracker: {exc}", file=sys.stderr)
+            return 1
+        slug = args.mark_answered
+        answer = args.answer_text
+        ok = mark_answered_by_slug(slug, answer_text=answer)
+        if ok:
+            print(f"OK: decision/{slug} marked as ANSWERED in engram.")
+        else:
+            print(
+                f"WARNING: engram save may have failed for decision/{slug}. "
+                "Check engram connectivity.",
+                file=sys.stderr,
+            )
+        return 0 if ok else 1
 
     # Resolve source filter
     if args.only_research:

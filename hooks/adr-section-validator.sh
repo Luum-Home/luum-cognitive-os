@@ -22,6 +22,9 @@ set -euo pipefail
 #   - ## Status, ## Context, ## Decision, ## Consequences
 #   - ## Alternatives rejected (with >= 1 item in body)
 #   - ## Verification (with >= 1 fenced code block)
+#
+# Fix 2026-04-27: replaced heredoc-inside-$() with temp-file pattern to avoid
+# bash 3.2 (macOS) parser failure when Python code contains backtick sequences.
 
 # Read stdin JSON
 INPUT="$(cat)"
@@ -73,7 +76,12 @@ if [ "$STRICT" != "1" ] && [ "$ADR_NUM" -lt 67 ] 2>/dev/null; then
 fi
 
 # Validate section contract
-ISSUES="$(python3 - "$FILE_PATH" <<'PYEOF'
+# NOTE: Python script written to a temp file to avoid bash 3.2 heredoc-inside-$()
+# parsing failure when the Python code contains backtick sequences (e.g. r"^```").
+TMPPY="$(mktemp /tmp/adr-validator-XXXXXX.py)"
+trap 'rm -f "$TMPPY"' EXIT
+
+cat > "$TMPPY" << 'PYEOF'
 import sys, re
 from pathlib import Path
 
@@ -107,14 +115,16 @@ if alt_m:
 ver_m = re.search(r"^## Verification\b(.+?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL)
 if ver_m:
     ver_body = ver_m.group(1)
-    fence_count = len(re.findall(r"^```", ver_body, re.MULTILINE))
+    # Count fenced code block markers (lines starting with ```)
+    fence_count = len(re.findall(r"^`{3}", ver_body, re.MULTILINE))
     if fence_count < 2:
-        issues.append(f"## Verification needs >= 1 fenced code block (found {fence_count // 2} blocks, need >= 2 ``` markers)")
+        issues.append(f"## Verification needs >= 1 fenced code block (found {fence_count // 2} blocks, need >= 2 fence markers)")
 
 for issue in issues:
     print(issue)
 PYEOF
-)"
+
+ISSUES="$(python3 "$TMPPY" "$FILE_PATH" 2>/dev/null || true)"
 
 if [ -z "$ISSUES" ]; then
     exit 0

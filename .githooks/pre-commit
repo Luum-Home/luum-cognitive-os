@@ -20,12 +20,15 @@ if [ -n "$staged_py" ]; then
   COS_ROOT="$(git rev-parse --show-toplevel)"
 
   if command -v ruff &>/dev/null; then
-    # ruff: catches syntax errors (E9) and undefined names (F821)
+    # ruff: catches syntax errors (E9), undefined imports (F401), redefinitions (F811),
+    # undefined names (F821), unused variables (F841).
+    # F401 added 2026-04-27: catches `from lib.nonexistent import x` — the exact
+    # anti-pattern that caused Cause 3 of the 33-fake-criticals bug (ADR-069 §5 fix).
     while IFS= read -r file; do
       [ -z "$file" ] && continue
       [ ! -f "$file" ] && continue
-      if ! ruff check --select E9,F821 --no-fix --quiet "$file" 2>/dev/null; then
-        ruff check --select E9,F821 --no-fix "$file" 2>&1 || true
+      if ! ruff check --select E9,F401,F811,F821,F841 --no-fix --quiet "$file" 2>/dev/null; then
+        ruff check --select E9,F401,F811,F821,F841 --no-fix "$file" 2>&1 || true
         errors=$((errors + 1))
       fi
     done <<< "$staged_py"
