@@ -256,6 +256,29 @@ test "$(grep -c 'description: >' skills/*/SKILL.md | grep -v ':0' | wc -l)" -eq 
 grep -c "No description" skills/CATALOG.md  # = 0
 ```
 
+## Phase 2 — Extension to rules/, hooks/, ADRs/
+
+Phase 2 extends the defense-in-depth pattern (template + hook + audit) from
+`skills/*/SKILL.md` to:
+
+| Artifact | Template | Hook | Audit test |
+|---|---|---|---|
+| `rules/*.md` | `templates/rule-template.md` | `hooks/rule-frontmatter-validator.sh` | `tests/audit/test_rules_enforcement.py` (extended) |
+| `hooks/*.sh` | `templates/hook-template.sh` | `hooks/hook-header-validator.sh` | `tests/audit/test_hooks_contracts.py` (extended) |
+| `docs/adrs/ADR-*.md` | `templates/adr-template.md` | `hooks/adr-section-validator.sh` | `tests/audit/test_adr_contracts.py` (new) |
+
+Operator decisions ratified for Phase 2:
+- Hooks default to WARN; opt-in BLOCK via `COS_STRICT_RULE_VALIDATION=1` /
+  `COS_STRICT_HOOK_VALIDATION=1` / `COS_STRICT_ADR_VALIDATION=1`.
+- ADR `## Alternatives rejected` backfill: cutoff at ADR-067. Pre-067 ADRs
+  grandfathered.
+- Hook PURPOSE/EVENT backfill: existing 154 hooks grandfathered. Required
+  for new hooks only.
+- ADR enforcement cutoff: ADR-067+. Pre-067 ADRs grandfathered.
+
+For the full research, operator triage decisions, and open questions resolved in
+Phase 2, see `docs/reports/adr-067-phase-2-2026-04-24.md`.
+
 ## Related
 
 - `lib/session_hygiene.py` — parser whose bug surfaced today (in-flight fix

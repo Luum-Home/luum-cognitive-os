@@ -118,7 +118,7 @@ case "$PROFILE" in
     echo "  UserPromptSubmit: user-prompt-capture, session-wrapup-trigger.sh"
     echo "  SubagentStart: subagent-context-injector"
     echo "  PreToolUse: rate-limit-precheck.sh (D45 sidecar), rate-limiter, secret-detector"
-    echo "  PostToolUse: error-pipeline, result-truncator, rate-limit-drain.sh (D45 drainer), content-policy, skill-frontmatter-validator.sh, auto-checkpoint"
+    echo "  PostToolUse: error-pipeline, result-truncator, rate-limit-drain.sh (D45 drainer), content-policy, skill-frontmatter-validator.sh, rule-frontmatter-validator.sh, hook-header-validator.sh, adr-section-validator.sh, auto-checkpoint"
     echo "  PreCompact: pre-compaction-flush"
     echo "  Stop: session-cleanup"
     echo "  Overhead: ~100-200ms per tool call"
@@ -152,7 +152,7 @@ case "$PROFILE" in
     echo "              reinvention-check.sh (ADR-029 anti-duplication), prompt-quality-llm, completeness-check-llm, global-verify.sh before,"
     echo "              session-heartbeat.sh (ADR-047: liveness signal on every tool call, wildcard matcher)"
     # Hooks: recap-sync.sh (async, Stop, ADR-021 adapter for native /recap)
-    echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, rate-limit-drain.sh (D45 drainer/executor), auto-checkpoint, content-policy, skill-frontmatter-validator.sh,"
+    echo "  PostToolUse: error-pipeline, result-truncator, adr-detector, rate-limit-drain.sh (D45 drainer/executor), auto-checkpoint, content-policy, skill-frontmatter-validator.sh, rule-frontmatter-validator.sh, hook-header-validator.sh, adr-section-validator.sh,"
     echo "               doc-sync-detector, surface-fix-detector.sh (decision-depth-gate advisory), claim-validator, completion-gate, agent-checkpoint,"
     echo "               trust-score-validator, confidence-gate.sh, confidence-gate-llm, audit-id-enricher.sh, auto-rollback-trigger.sh, auto-repair-dispatcher, dequeue-notify,"
     echo "               state-heartbeat, context-watchdog, rate-limit-detector.sh (ADR-049: Claude Max limit detection), global-verify.sh after"
