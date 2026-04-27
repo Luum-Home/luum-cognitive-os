@@ -157,6 +157,7 @@ case "$PROFILE" in
     echo "               trust-score-validator, confidence-gate.sh, confidence-gate-llm, audit-id-enricher.sh, auto-rollback-trigger.sh, auto-repair-dispatcher, dequeue-notify,"
     echo "               state-heartbeat, context-watchdog, rate-limit-detector.sh (ADR-049: Claude Max limit detection), global-verify.sh after"
     echo "  PostToolUse Skill: skill-usage-tracker.sh, skill-invocation-logger.sh"
+    echo "  PostToolUse mem_search|mem_get_observation: engram-reinforce-on-access.sh (async, ADR-071 lifecycle)"
     echo "  PostToolUse TodoWrite+Agent: work-queue-sync.sh (task-tracking)"
     echo "  PreCompact: pre-compaction-flush"
     echo "  Stop: session-learning, session-cleanup, session-end-reap.sh, kpi-trigger, recap-sync"
