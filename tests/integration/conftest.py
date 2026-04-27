@@ -24,10 +24,8 @@ Each fixture first inspects ``docker ps`` for the compose service container
 ``_ExistingContainer`` shim that exposes the same interface as a
 ``testcontainers`` container, allowing zero-startup-time reuse.
 """
-import signal
 import shutil
 import subprocess
-import sys
 import time
 import socket
 from typing import Optional
@@ -44,28 +42,6 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "slow: marks tests as slow (deselect with '-m \"not slow\"')")
     config.addinivalue_line("markers", "docker: marks tests requiring Docker")
     config.addinivalue_line("markers", "e2e: marks end-to-end tests spanning multiple services")
-
-
-# ---------------------------------------------------------------------------
-# Timeout override — all integration tests need 300 s
-# ---------------------------------------------------------------------------
-
-@pytest.fixture(autouse=True)
-def _integration_test_timeout():
-    """Override the global 30s timeout with 300s for integration tests.
-
-    Docker containers need 60-120s to start. The global conftest.py sets 30s
-    via SIGALRM which kills testcontainers fixtures during setup.
-    """
-    if sys.platform == "win32":
-        yield
-        return
-    old_handler = signal.getsignal(signal.SIGALRM)
-    signal.alarm(300)  # 5 minutes for container startup + test
-    yield
-    signal.alarm(0)
-    if callable(old_handler):
-        signal.signal(signal.SIGALRM, old_handler)
 
 
 # ---------------------------------------------------------------------------
