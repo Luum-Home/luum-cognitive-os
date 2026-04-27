@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """cos_init.py — Python bootstrap for Cognitive OS project initialization.
 
-Strangler-fig migration of scripts/cos-init.sh (Phase 2.1 → 2.2).
+Strangler-fig migration of scripts/cos-init.sh (Phase 2.1 → 2.3).
 This module replaces bash functions one at a time while the bash shim in
 cos-init.sh delegates individual functions here via --internal-call.
 
-Migration status (Phase 2.2):
+Migration status (Phase 2.3):
   MIGRATED:   detect_harness       (inlined from scripts/_lib/settings-driver.sh::cos_detect_harness)
   MIGRATED:   scope_allows         (cos-init.sh lines 121-143)
   MIGRATED:   skill_scope_allows   (cos-init.sh lines 147-167)
-  BASH-SHELL: install_rule, install_hook, install_skill_dir
+  MIGRATED:   install_rule         (cos-init.sh install_rule function)
+  MIGRATED:   install_hook         (cos-init.sh install_hook function)
+  MIGRATED:   install_skill_dir    (cos-init.sh install_skill_dir function)
 
 Usage (direct):
     python3 scripts/cos_init.py [--default|--full] [--harness claude|codex]
@@ -18,11 +20,15 @@ Usage (internal dispatcher — called by bash shim):
     python3 scripts/cos_init.py --internal-call detect_harness [project_root]
     python3 scripts/cos_init.py --internal-call scope_allows <file_path>
     python3 scripts/cos_init.py --internal-call skill_scope_allows <skill_dir>
+    python3 scripts/cos_init.py --internal-call install_rule <name> <rules_source> <dest1>[:<dest2>...]
+    python3 scripts/cos_init.py --internal-call install_hook <name> <hooks_source> <hooks_dest>
+    python3 scripts/cos_init.py --internal-call install_skill_dir <skill_dir> <kernel_dest> <driver_dest>
 """
 from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -175,6 +181,129 @@ def skill_scope_allows(skill_dir: str, install_scope: str = "both") -> bool:
     return True
 
 
+# ── Phase 2.3: install workhorses ────────────────────────────────────
+
+def install_rule(
+    name: str,
+    rules_source: str,
+    rule_dests: list[str],
+) -> str:
+    """Port from scripts/cos-init.sh::install_rule().
+
+    Takes a rule name (no extension), source directory, and list of destination
+    directories. Copies <rules_source>/<name>.md to each destination.
+
+    Byte-for-byte port — do NOT optimise the bash logic.
+
+    Returns one of: "installed", "skipped" (source missing → bash used [ -f ] || return),
+    "error".
+    """
+    src = Path(rules_source) / f"{name}.md"
+    if not src.is_file():
+        # Matches bash: [ -f "$src" ] || return (no-op exit 0 in bash, counter not incremented)
+        return "skipped"
+
+    try:
+        for dest_dir in rule_dests:
+            dest = Path(dest_dir)
+            dest.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(src), str(dest / f"{name}.md"))
+    except OSError as exc:
+        print(f"cos_init.py: install_rule '{name}' failed: {exc}", file=sys.stderr)
+        return "error"
+
+    return "installed"
+
+
+def install_hook(
+    name: str,
+    hooks_source: str,
+    hooks_dest: str,
+) -> str:
+    """Port from scripts/cos-init.sh::install_hook().
+
+    Takes a hook name (no extension), source directory, and destination directory.
+    Copies <hooks_source>/<name>.sh to <hooks_dest>/<name>.sh and sets executable bit.
+
+    Byte-for-byte port — do NOT optimise the bash logic.
+
+    Returns one of: "installed", "skipped" (source missing), "error".
+    """
+    src = Path(hooks_source) / f"{name}.sh"
+    if not src.is_file():
+        # Matches bash: [ -f "$src" ] || return
+        return "skipped"
+
+    dest_dir = Path(hooks_dest)
+    dest_path = dest_dir / f"{name}.sh"
+
+    try:
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(str(src), str(dest_path))
+        # chmod +x — set executable bits for user/group/other (matches bash chmod +x)
+        current_mode = dest_path.stat().st_mode
+        dest_path.chmod(current_mode | 0o111)
+    except OSError as exc:
+        print(f"cos_init.py: install_hook '{name}' failed: {exc}", file=sys.stderr)
+        return "error"
+
+    return "installed"
+
+
+def install_skill_dir(
+    skill_dir: str,
+    skill_dest_kernel: str,
+    skill_dest_driver: str,
+    install_scope: str = "both",
+) -> str:
+    """Port from scripts/cos-init.sh::install_skill_dir().
+
+    Takes a full skill directory path, kernel dest, driver dest.
+    Calls skill_scope_allows() to filter. Then:
+      - rm -rf kernel/<name> driver/<name>
+      - cp -r skill_dir kernel/<name>
+      - ln -s ../../.cognitive-os/skills/cos/<name> driver/<name>  (relative symlink)
+
+    Byte-for-byte port — do NOT optimise the bash logic.
+
+    Returns one of: "installed", "skipped" (scope-filtered), "error".
+    """
+    skill_path = Path(skill_dir)
+    skill_name = skill_path.name
+
+    # skill_scope_allows "$skill_dir" || return 0
+    if not skill_scope_allows(str(skill_path), install_scope=install_scope):
+        return "skipped"
+
+    kernel_dest = Path(skill_dest_kernel) / skill_name
+    driver_dest = Path(skill_dest_driver) / skill_name
+
+    try:
+        # rm -rf "$SKILL_DEST_KERNEL/$skill_name" "$SKILL_DEST_DRIVER/$skill_name"
+        if kernel_dest.exists() or kernel_dest.is_symlink():
+            if kernel_dest.is_symlink() or kernel_dest.is_file():
+                kernel_dest.unlink()
+            else:
+                shutil.rmtree(str(kernel_dest))
+        if driver_dest.exists() or driver_dest.is_symlink():
+            driver_dest.unlink()
+
+        # cp -r "$skill_dir" "$SKILL_DEST_KERNEL/$skill_name"
+        Path(skill_dest_kernel).mkdir(parents=True, exist_ok=True)
+        shutil.copytree(str(skill_path), str(kernel_dest))
+
+        # ln -s "../../.cognitive-os/skills/cos/$skill_name" "$SKILL_DEST_DRIVER/$skill_name"
+        # Relative symlink (matches bash exactly)
+        Path(skill_dest_driver).mkdir(parents=True, exist_ok=True)
+        symlink_target = f"../../.cognitive-os/skills/cos/{skill_name}"
+        driver_dest.symlink_to(symlink_target)
+    except OSError as exc:
+        print(f"cos_init.py: install_skill_dir '{skill_name}' failed: {exc}", file=sys.stderr)
+        return "error"
+
+    return "installed"
+
+
 # ── Bash subprocess shim (unmigrated functions) ───────────────────────
 
 def _call_bash_function(function_name: str, *args: str) -> int:
@@ -198,6 +327,9 @@ _INTERNAL_DISPATCH: dict[str, callable] = {
     "detect_harness": detect_harness,
     "scope_allows": scope_allows,
     "skill_scope_allows": skill_scope_allows,
+    "install_rule": install_rule,
+    "install_hook": install_hook,
+    "install_skill_dir": install_skill_dir,
 }
 
 
@@ -224,6 +356,46 @@ def _run_internal_call(function_name: str, extra_args: list[str]) -> int:
         result = fn(extra_args[0], install_scope)
         # True → allowed → exit 0, False → blocked → exit 1
         return 0 if result else 1
+
+    # install_rule: <name> <rules_source> <dest1>[:<dest2>...]
+    if function_name == "install_rule":
+        if len(extra_args) < 3:
+            print(
+                "cos_init.py: install_rule requires <name> <rules_source> <dest1>[:<dest2>...]",
+                file=sys.stderr,
+            )
+            return 1
+        name, rules_source = extra_args[0], extra_args[1]
+        # dests are passed as colon-separated string in arg 3
+        rule_dests = extra_args[2].split(":")
+        status = install_rule(name, rules_source, rule_dests)
+        print(status)
+        return 0 if status != "error" else 1
+
+    # install_hook: <name> <hooks_source> <hooks_dest>
+    if function_name == "install_hook":
+        if len(extra_args) < 3:
+            print(
+                "cos_init.py: install_hook requires <name> <hooks_source> <hooks_dest>",
+                file=sys.stderr,
+            )
+            return 1
+        status = install_hook(extra_args[0], extra_args[1], extra_args[2])
+        print(status)
+        return 0 if status != "error" else 1
+
+    # install_skill_dir: <skill_dir> <kernel_dest> <driver_dest>
+    if function_name == "install_skill_dir":
+        if len(extra_args) < 3:
+            print(
+                "cos_init.py: install_skill_dir requires <skill_dir> <kernel_dest> <driver_dest>",
+                file=sys.stderr,
+            )
+            return 1
+        install_scope = os.environ.get("INSTALL_SCOPE", "both")
+        status = install_skill_dir(extra_args[0], extra_args[1], extra_args[2], install_scope)
+        print(status)
+        return 0 if status != "error" else 1
 
     result = fn(*extra_args) if extra_args else fn()
     if result is not None:

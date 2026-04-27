@@ -87,6 +87,39 @@ skill_scope_allows() {
   INSTALL_SCOPE="$INSTALL_SCOPE" python3 "$(dirname "$0")/cos_init.py" --internal-call skill_scope_allows "$d"
 }
 
+# Phase 2.3 strangler: install_rule + install_hook + install_skill_dir migrated to Python.
+# Counter increments stay in bash (global vars). Python does the filesystem work.
+install_rule() {
+  local name="$1"
+  local result
+  result=$(python3 "$(dirname "$0")/cos_init.py" --internal-call install_rule "$name" "$rules_source" "$RULE_DEST_KERNEL:$RULE_DEST_DRIVER")
+  case "$result" in
+    installed) rules_installed=$((rules_installed + 1)) ;;
+    skipped)   ;;
+    error)     return 1 ;;
+  esac
+}
+install_hook() {
+  local name="$1"
+  local result
+  result=$(python3 "$(dirname "$0")/cos_init.py" --internal-call install_hook "$name" "$hooks_source" "$hooks_dest")
+  case "$result" in
+    installed) hooks_installed=$((hooks_installed + 1)) ;;
+    skipped)   ;;
+    error)     return 1 ;;
+  esac
+}
+install_skill_dir() {
+  local skill_dir="$1"
+  local result
+  result=$(INSTALL_SCOPE="$INSTALL_SCOPE" python3 "$(dirname "$0")/cos_init.py" --internal-call install_skill_dir "$skill_dir" "$SKILL_DEST_KERNEL" "$SKILL_DEST_DRIVER")
+  case "$result" in
+    installed) skills_installed=$((skills_installed + 1)) ;;
+    skipped)   ;;
+    error)     return 1 ;;
+  esac
+}
+
 # Phase 2.1 strangler: cos_detect_harness migrated to Python.
 # Override detect_harness to route through Python instead of bash.
 detect_harness() {
