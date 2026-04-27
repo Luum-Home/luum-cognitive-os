@@ -6,6 +6,26 @@
 ADR-062 (multi-provider agent loop), and ADR-063 (Agent() replication scope)
 to the remaining harness-coupled surfaces of the Cognitive OS.
 
+**Status review 2026-04-27**: Remains Proposed. Surface 1 (event capture via
+`lib/harness_adapter/`) is exercised in production with `ClaudeCodeAdapter` and
+`AiderAdapter`. Web evidence confirms Codex (v0.124.0+, OpenAI Codex Hooks)
+and Cursor both ship compatible hook vocabularies (same five lifecycle events
+as Claude Code: SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, Stop),
+validating the canonical-event abstraction this ADR proposes. However, Surfaces
+2–4 (per-harness settings-driver matrix, `cos-skill` CLI, `cos-agent` spawner)
+and the Codex/Cursor adapter files (`lib/harness_adapter/codex.py`,
+`lib/harness_adapter/cursor.py`) are not yet implemented. The verification
+suite this ADR mandates (`cos-skill`, `pytest tests/integration/test_harness_agnostic_skill_run.py`,
+`scripts/demo-portability-proof.sh`) does not exist in the repo. **Flip to
+Accepted** when Phase 2 ships and at least one non-CC harness produces
+byte-identical canonical events for a reference skill.
+
+**Adapter gap to track when implementing `codex.py`**: as of Codex v0.124.0,
+`PreToolUse`/`PostToolUse` are emitted only for the Bash tool (per
+github.com/openai/codex#16732). The adapter must handle the tool-coverage gap
+explicitly — either by surfacing it as a known limitation or by polling other
+tool channels — until Codex closes parity with Claude Code's full tool surface.
+
 ## Context
 
 ADR-062 made the LLM layer provider-agnostic: seven providers run behind a
