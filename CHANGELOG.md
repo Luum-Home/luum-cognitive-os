@@ -5,6 +5,83 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-04-27 — "cos-init Python + Defense-in-Depth Complete"
+
+### Added — cos-init.sh fully migrated to Python (strangler-fig complete)
+
+- `scripts/cos_init.py` — full Python implementation of cos-init flow (Python 3.11+, stdlib + pyyaml)
+- `scripts/cos-init.sh` collapsed from **711 → 5 lines** (exec shim for backward compat with `bash scripts/cos-init.sh`)
+- 6 functions migrated through strangler-fig phases (2.1 → 2.final):
+  - Phase 2.1 (`8a4778c`): `detect_harness()`
+  - Phase 2.2 (`39dd40c`): `scope_allows()` + `skill_scope_allows()`
+  - Phase 2.3 (`7fde5f9`): `install_rule()` + `install_hook()` + `install_skill_dir()`
+  - Phase 2.final (`31f0002`): all 12 procedural sections (stack detection, mode components, dir structure, rules/hooks/skills install, templates, cognitive-os.yaml write, efficiency profile filtering, settings.json merge, install-meta, registry registration, gitignore update, summary)
+- 47 unit tests + 29 parity tests + 72 integration tests pass post-migration
+- Per ADR-066 polyglot policy: bash kebab-case shim retained, Python snake_case implementation owns the logic
+
+### Added — ADR-067 Phase 2 defense-in-depth (rules + hooks + ADRs)
+
+Extends the template + hook + audit pattern from `skills/*/SKILL.md` (Phase 1) to 3 more artifact types:
+
+- `templates/rule-template.md`, `templates/hook-template.sh`, `templates/adr-template.md` — canonical skeletons with `<REQUIRED>` placeholders
+- `hooks/rule-frontmatter-validator.sh` — PostToolUse Edit/Write hook for `rules/*.md`. Validates SCOPE, H1, opening section, conditional `## Contextual Trigger`. Advisory by default; BLOCK opt-in via `COS_STRICT_RULE_VALIDATION=1`.
+- `hooks/hook-header-validator.sh` — for `hooks/*.sh`. Validates shebang, SCOPE, PURPOSE, EVENT, `set -euo pipefail`. Grandfathers existing 154 hooks (only enforces for new). `COS_STRICT_HOOK_VALIDATION=1`.
+- `hooks/adr-section-validator.sh` — for `docs/adrs/ADR-*.md`. Validates required sections (Status, Context, Decision, Consequences, Alternatives rejected, Verification with ≥1 fenced code block). Cutoff at ADR-067 — pre-067 ADRs grandfathered. `COS_STRICT_ADR_VALIDATION=1`.
+- All 3 hooks: fast-path filter (skip Python startup if input doesn't match path pattern), bash 3.x compatible
+- Hook registration in: `apply-efficiency-profile.sh` + `set-security-profile.sh` + 3 hook-architecture-v2 profile JSONs
+- Audit tests extended: `test_rules_enforcement.py` (+4 tests), `test_hooks_contracts.py` (+1 contract), new `test_adr_contracts.py` (+5 tests)
+- `/add-rule` and `/add-hook` skills updated to reference their templates
+- ADR-068 self-bootstrap fix: its own `## Verification` section now has a code block (caught by the new audit test)
+
+### Added — deps-update v2 (MCP-aware)
+
+Lessons from the 2026-04-27 engram MCP outage codified into tooling:
+
+- `scripts/deps-update.sh` — engram section rewritten brew-first (instead of `go install`):
+  - `brew update` + `brew install/upgrade` preferred (Operon-safe path)
+  - `which -a engram` multi-path conflict detection with symlink fix suggestions
+  - Backup-before-replace (timestamped `.bak`)
+  - `⚠️  Restart Claude Code` reminder when binary changed
+- `scripts/check_mcp_servers.py` — diagnostic script: reads MCP configs, resolves binaries via `which -a`, checks process via `pgrep`, reports version. `--json` mode for machine readers.
+- `tests/unit/test_check_mcp_servers.py` — 8 tests covering standalone config, mcpServers format, plugin-bundled config, multi-path detection, missing-process WARN, missing-binary ERROR, JSON output validity.
+- `docs/tooling-update-protocol.md` (new, 147 lines) — protocol for updating any Claude Code-integrated tool. Covers 3-paths trap, MCP restart requirement, brew vs go install vs manual, verification post-update, rollback. Living example: engram 2026-04-27 case study.
+- `skills/deps-update/SKILL.md` — adds 4 new sections: brew-first flow, multi-path resolution trap, MCP server lifecycle, backup/rollback.
+
+### Changed — Breaking (pre-1.0)
+
+- **`scripts/cos-init.sh` is now a shim** — all logic lives in `scripts/cos_init.py`. Functionally backward compatible (CI / `install.sh` / docs all invoke `bash scripts/cos-init.sh`), but `--internal-call` dispatcher is the only Python-direct entry point now.
+
+### Fixed
+
+- **engram MCP server outage** (manual fix, no commit): `~/go/bin/engram v1.13.1` was SIGKILL'd by macOS Operon Sandbox when spawned from Claude Code. Resolution: `brew install gentleman-programming/tap/engram` → v1.14.5 + symlinks unified across `~/.local/bin/engram` + `~/go/bin/engram` → both point to brew canonical install. Engram MCP now operational, `mem_save`/`mem_search` available across sessions. Documented in engram observation `tooling/engram-mcp-fix` (#13280).
+
+### Added — Tests
+
+- `tests/unit/test_cos_init_py.py` — 47 unit tests across 6 functions
+- `tests/behavior/test_cos_init_parity_2_1.py` + `_2_2.py` + `_2_3.py` — 29 parity tests (Python output == bash output, byte-for-byte)
+- `tests/audit/test_adr_contracts.py` (new) — 5 tests including monotonic-warn for ADR numbering gaps
+- `tests/unit/test_check_mcp_servers.py` — 8 tests
+
+### Verified
+
+- 76 unit + parity tests pass (2.59s)
+- 72 integration tests pass (3m 26s) including `test_fresh_install_canary` full + idempotent upgrade
+- 1813 audit tests pass, 0 failures (post-Phase-2 add)
+- Live install test: 3 scratch directories (node --default, python --full, go --harness=codex) all produce correct output
+
+### Operator decisions accepted (from research-first triage)
+
+- **9 cos-init migration decisions**: pyyaml, defer generate-project-settings, inline detect_harness, keep bash shim, subprocess.run, tomllib+tomli fallback, both unit+parity tests, strangler-fig, drop bash 3.x constraint
+- **9 ADR-067 Phase 2 decision points + 5 open questions**: WARN advisory default, ADR-067 cutoff (no pre-067 backfill), grandfather 154 existing hooks, flat templates/, extend existing audit tests where possible, CI-gated, integrate with /add-rule + /add-hook skills, conditional Contextual Trigger enforcement, ≥1 fenced code block in ADR Verification, monotonic ADR numbering WARN not BLOCK
+
+### Known issues (deferred)
+
+- **125 unanswered operator decisions** still surfaced by `/decision-triage` (mostly historical ADR open questions; today's research reports' decisions all answered).
+- **`rich 14→15`**: blocked by cognee[memory] pin `rich<13.7.0` — pending cognee upstream upgrade.
+- **`wrapt 1→2`**: deferred until OpenTelemetry transitives validate 2.x.
+- **hermes-agent `default_backend()` cleanup**: 3 files, ~30 min, before cryptography 49.0.0.
+- Phase 2 of `/add-rule` and `/add-hook` skill updates: templates referenced; full automation deferred.
+
 ## [0.17.0] - 2026-04-25 — "Defense-in-Depth + Research-First"
 
 ### Added — ADR-065 Tech Radar Curation Pipeline
