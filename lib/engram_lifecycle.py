@@ -46,6 +46,7 @@ if _LIB_DIR not in sys.path:
     sys.path.insert(0, os.path.dirname(_LIB_DIR))
 
 from lib import engram_client  # noqa: E402 (after sys.path setup)
+from lib import engram_http_client  # noqa: E402 (after sys.path setup)
 
 # Path to engram binary — same override as engram_client
 _ENGRAM_BIN = os.environ.get("ENGRAM_BIN", "engram")
@@ -213,6 +214,7 @@ class EngramLifecycle:
         limit: int = 10,
         lifecycle_weight: bool = True,
         type_filter: str = "",
+        graph_walk: bool = False,
     ) -> list[dict[str, Any]]:
         """Search observations with optional lifecycle-based re-ranking.
 
@@ -222,16 +224,24 @@ class EngramLifecycle:
         Results without a lifecycle trailer are treated as confidence=0.5,
         retention=1.0 (neutral, not penalized).
 
+        When ``graph_walk=True``, the ``memory_relations`` SQLite table is
+        traversed (up to 2 hops) for each result, and connected observations
+        are merged into the ranked set.  Default is OFF so callers from Phase 1
+        and Phase 2 are unaffected.
+
         Args:
             query:            Free-text search query.
             project:          Optional project scope.
             limit:            Maximum results to return.
             lifecycle_weight: Set False to return engram's native ordering.
             type_filter:      Optional type filter forwarded to engram_client.
+            graph_walk:       When True, extend results via graph traversal.
 
         Returns:
             List of observation dicts, each extended with:
             ``confidence``, ``retention``, ``adjusted_score`` (when lifecycle_weight=True).
+            When ``graph_walk=True``, graph-only hits also include ``graph_only=True``
+            and ``hops`` fields.
         """
         kwargs: dict[str, Any] = {"limit": limit, "type_filter": type_filter}
         if project:
@@ -268,23 +278,41 @@ class EngramLifecycle:
             )
 
         enriched.sort(key=lambda x: x["adjusted_score"], reverse=True)
+
+        if not graph_walk:
+            return enriched
+
+        # Phase 3: walk memory_relations graph and merge neighbors
+        try:
+            from lib.engram_graph_walker import EngramGraphWalker
+
+            walker = EngramGraphWalker()
+            all_sync_ids = [
+                obs.get("sync_id", "") for obs in enriched if obs.get("sync_id")
+            ]
+            if all_sync_ids:
+                neighbors = walker.walk(all_sync_ids)
+                if neighbors:
+                    enriched = walker.merge_into_results(enriched, neighbors)
+        except Exception:
+            pass
+
         return enriched
 
     def reinforce(self, observation_id: str | int) -> bool:
-        """Increment reinforcement_count, reset last_reinforced, and boost confidence.
+        """Bump reinforcement_count, reset last_reinforced, and increase confidence.
 
-        Engram v1.14.5 does not expose a native ``update`` CLI command.  This
-        method fetches the observation via ``engram_client.get_observation``,
-        modifies the trailer in-memory, and re-saves the observation under a
-        new ID.  The original observation is left intact (engram has no delete
-        via CLI either).  This is a known limitation documented in ADR-071
-        §Consequences — a future phase may address this once engram exposes an
-        update endpoint.
+        Uses the engram HTTP API (port 7437) to fetch and update the observation
+        in-place via GET /observations/<id> + PATCH /observations/<id>.  This is
+        the correct approach now that the HTTP daemon exposes the full CRUD API.
 
-        Note: Because re-save creates a NEW observation (not an in-place update),
-        the reinforcement_count on the original observation ID is not altered.
-        Callers that fetch by the original ID after reinforce() will see the
-        old trailer.  The new observation carries the updated lifecycle state.
+        Falls back to False when the HTTP daemon is unreachable — callers that
+        do not have an engram daemon running get a no-op rather than an error.
+
+        Phase 1 caveat correction (ADR-071 addendum 2026-04-27): the original
+        implementation re-saved observations under new IDs because the CLI lacked
+        ``get``/``update`` commands.  The HTTP API at port 7437 was discovered to
+        support both operations, so this method now performs a true in-place update.
 
         Args:
             observation_id: Engram observation ID (integer or string).
@@ -292,7 +320,10 @@ class EngramLifecycle:
         Returns:
             True if reinforcement succeeded, False otherwise.
         """
-        obs = engram_client.get_observation(observation_id)
+        if not engram_http_client.is_available():
+            return False
+
+        obs = engram_http_client.get_observation(observation_id)
         if obs is None:
             return False
 
@@ -304,7 +335,7 @@ class EngramLifecycle:
             decay_class = self._decay_class_for_type(obs.get("type", "manual"))
             trailer = {
                 "confidence": 0.5,
-                "last_reinforced": self._iso_now(),
+                "last_reinforced": self._now_iso(),
                 "reinforcement_count": 0,
                 "decay_class": decay_class,
             }
@@ -312,21 +343,14 @@ class EngramLifecycle:
             trailer = dict(trailer)  # copy to avoid mutation of parsed dict
 
         trailer["reinforcement_count"] = int(trailer.get("reinforcement_count", 0)) + 1
-        trailer["last_reinforced"] = self._iso_now()
+        trailer["last_reinforced"] = self._now_iso()
         trailer["confidence"] = reinforce_confidence(
             float(trailer.get("confidence", 0.5)), self.BETA
         )
 
-        # Rebuild content: strip old trailer (if any), append updated trailer
-        base_content = _TRAILER_RE.sub("", content).rstrip()
-        new_content = self._append_trailer_json(base_content, trailer)
-
-        result = engram_client.save_observation(
-            title=obs.get("title", ""),
-            content=new_content,
-            type_=obs.get("type", "manual"),
-            topic_key=obs.get("topic_key", ""),
-            project=obs.get("project", ""),
+        new_content = self._strip_trailer(content) + self._format_trailer(trailer)
+        result = engram_http_client.update_observation(
+            observation_id, content=new_content
         )
         return result is not None
 
@@ -425,6 +449,37 @@ class EngramLifecycle:
     def _iso_now(self) -> str:
         """Return current UTC time as ISO-8601 string with trailing Z."""
         return self._now().strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    def _now_iso(self) -> str:
+        """Alias for _iso_now() — used by reinforce() for readability."""
+        return self._iso_now()
+
+    def _strip_trailer(self, content: str) -> str:
+        """Remove the lifecycle trailer block from content and return the base text.
+
+        Returns the content with the trailer stripped, plus a trailing newline
+        so that ``_format_trailer`` can be concatenated directly.
+
+        Args:
+            content: Raw observation content, may or may not have a trailer.
+
+        Returns:
+            Content without the trailer block, ending with a newline.
+        """
+        stripped = _TRAILER_RE.sub("", content).rstrip()
+        return stripped + "\n" if stripped else ""
+
+    def _format_trailer(self, trailer: dict[str, Any]) -> str:
+        """Serialize a trailer dict as the lifecycle XML block.
+
+        Args:
+            trailer: Lifecycle metadata dict.
+
+        Returns:
+            Formatted ``<engram-lifecycle>...</engram-lifecycle>`` block string.
+        """
+        trailer_json = json.dumps(trailer, separators=(",", ":"))
+        return f"<engram-lifecycle>\n{trailer_json}\n</engram-lifecycle>"
 
     def _append_trailer_json(self, content: str, trailer: dict[str, Any]) -> str:
         """Append a trailer block to content (handles trailing whitespace)."""

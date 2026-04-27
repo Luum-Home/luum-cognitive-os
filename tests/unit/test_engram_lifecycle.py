@@ -318,7 +318,7 @@ class TestSearch:
 
 
 # ---------------------------------------------------------------------------
-# reinforce() integration (engram_client stubbed)
+# reinforce() integration (engram_http_client stubbed)
 # ---------------------------------------------------------------------------
 
 
@@ -335,20 +335,22 @@ class TestReinforce:
         content = f"Body.\n<engram-lifecycle>\n{json.dumps(trailer)}\n</engram-lifecycle>"
         obs = _obs(content=content, obs_id=42, obs_type="decision")
 
-        saved_calls: list[dict[str, Any]] = []
+        updated_calls: list[dict[str, Any]] = []
 
-        def fake_save(title=None, content=None, *, type_="manual", topic_key="", project="", timeout=10):
-            saved_calls.append({"content": content})
-            return {"id": 43, "title": title, "content": content}
+        def fake_update(obs_id, *, content=None, title=None, type_=None, topic_key=None,
+                        base_url=None, timeout=5.0):
+            updated_calls.append({"content": content})
+            return {"id": obs_id, "content": content}
 
-        with patch("lib.engram_lifecycle.engram_client.get_observation", return_value=obs):
-            with patch("lib.engram_lifecycle.engram_client.save_observation", side_effect=fake_save):
-                result = lc.reinforce(42)
+        with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
+            with patch("lib.engram_lifecycle.engram_http_client.get_observation", return_value=obs):
+                with patch("lib.engram_lifecycle.engram_http_client.update_observation", side_effect=fake_update):
+                    result = lc.reinforce(42)
 
         assert result is True
-        assert len(saved_calls) == 1
+        assert len(updated_calls) == 1
 
-        new_trailer = lc._parse_trailer(saved_calls[0]["content"])
+        new_trailer = lc._parse_trailer(updated_calls[0]["content"])
         assert new_trailer is not None
         assert new_trailer["last_reinforced"] == "2026-04-27T12:00:00Z"
         assert new_trailer["reinforcement_count"] == 3
@@ -356,27 +358,65 @@ class TestReinforce:
 
     def test_reinforce_nonexistent_id_returns_false(self):
         lc = _make_lc()
-        with patch("lib.engram_lifecycle.engram_client.get_observation", return_value=None):
-            result = lc.reinforce("nonexistent-999")
+        with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
+            with patch("lib.engram_lifecycle.engram_http_client.get_observation", return_value=None):
+                result = lc.reinforce("nonexistent-999")
         assert result is False
 
     def test_reinforce_observation_without_trailer_gets_default(self):
         lc = _make_lc()
         obs = _obs(content="Plain old content, no trailer", obs_id=77, obs_type="bugfix")
 
-        saved_calls: list[dict[str, Any]] = []
+        updated_calls: list[dict[str, Any]] = []
 
-        def fake_save(title=None, content=None, *, type_="manual", topic_key="", project="", timeout=10):
-            saved_calls.append({"content": content})
-            return {"id": 78, "title": title, "content": content}
+        def fake_update(obs_id, *, content=None, title=None, type_=None, topic_key=None,
+                        base_url=None, timeout=5.0):
+            updated_calls.append({"content": content})
+            return {"id": obs_id, "content": content}
 
-        with patch("lib.engram_lifecycle.engram_client.get_observation", return_value=obs):
-            with patch("lib.engram_lifecycle.engram_client.save_observation", side_effect=fake_save):
-                result = lc.reinforce(77)
+        with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
+            with patch("lib.engram_lifecycle.engram_http_client.get_observation", return_value=obs):
+                with patch("lib.engram_lifecycle.engram_http_client.update_observation", side_effect=fake_update):
+                    result = lc.reinforce(77)
 
         assert result is True
-        new_trailer = lc._parse_trailer(saved_calls[0]["content"])
+        new_trailer = lc._parse_trailer(updated_calls[0]["content"])
         assert new_trailer is not None
         assert new_trailer["reinforcement_count"] == 1
         assert new_trailer["decay_class"] == "bugfix"
         assert new_trailer["confidence"] > 0.5
+
+    def test_reinforce_returns_false_when_daemon_down(self):
+        lc = _make_lc()
+        with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=False):
+            result = lc.reinforce(42)
+        assert result is False
+
+    def test_reinforce_confidence_increases_by_beta(self):
+        """Single reinforce: confidence delta equals (1 - current) * BETA."""
+        lc = _make_lc()
+        initial_confidence = 0.7
+        trailer = {
+            "confidence": initial_confidence,
+            "last_reinforced": "2026-04-20T10:00:00Z",
+            "reinforcement_count": 1,
+            "decay_class": "decision",
+        }
+        content = f"Body.\n<engram-lifecycle>\n{json.dumps(trailer)}\n</engram-lifecycle>"
+        obs = _obs(content=content, obs_id=10, obs_type="decision")
+
+        updated_calls: list[dict[str, Any]] = []
+
+        def fake_update(obs_id, *, content=None, title=None, type_=None, topic_key=None,
+                        base_url=None, timeout=5.0):
+            updated_calls.append({"content": content})
+            return {"id": obs_id, "content": content}
+
+        with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=True):
+            with patch("lib.engram_lifecycle.engram_http_client.get_observation", return_value=obs):
+                with patch("lib.engram_lifecycle.engram_http_client.update_observation", side_effect=fake_update):
+                    lc.reinforce(10)
+
+        new_trailer = lc._parse_trailer(updated_calls[0]["content"])
+        expected_confidence = initial_confidence + (1.0 - initial_confidence) * lc.BETA
+        assert abs(new_trailer["confidence"] - expected_confidence) < 1e-9
