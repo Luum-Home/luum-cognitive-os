@@ -1,4 +1,4 @@
-<!-- SCOPE: both -->
+<!-- SCOPE: os-only -->
 # Capability Protection
 
 > Prevent unintended feature loss during Cognitive OS refactors, cleanups, and consolidations.
