@@ -37,15 +37,23 @@ exit 0
     return fake, capture
 
 
-def _run_wrapper(tmp_path: Path, args: list[str]) -> list[str]:
+def _run_wrapper(
+    tmp_path: Path,
+    args: list[str],
+    *,
+    workers: str | None = "8",
+) -> list[str]:
     fake, capture = _fake_pytest(tmp_path)
     env = {
         **os.environ,
         "PYTEST_BIN": str(fake),
         "CAPTURE_FILE": str(capture),
         "COS_TEST_REPORT_DIR": str(tmp_path / "reports"),
-        "COS_PYTEST_WORKERS": "8",
     }
+    if workers is None:
+        env.pop("COS_PYTEST_WORKERS", None)
+    else:
+        env["COS_PYTEST_WORKERS"] = workers
     result = subprocess.run(
         ["bash", str(WRAPPER), "--", *args],
         cwd=PROJECT_ROOT,
@@ -83,3 +91,19 @@ def test_wrapper_injects_adaptive_workers_when_no_explicit_xdist_arg(tmp_path: P
     captured = _run_wrapper(tmp_path, ["tests/unit/test_detect_runner_capacity.py", "-q"])
 
     assert captured[:2] == ["-n", "8"], captured
+
+
+def test_stateful_broad_lane_defaults_to_serial_without_worker_override(tmp_path: Path) -> None:
+    """Broad/stateful lanes must not become noisy xdist runs by accident."""
+    captured = _run_wrapper(tmp_path, ["tests/", "-m", "not docker", "-q"], workers=None)
+
+    assert captured[:2] != ["-n", "auto"], captured
+    assert captured[:2] != ["-n", "8"], captured
+    assert "tests/" in captured
+
+
+def test_stateful_lane_still_respects_explicit_worker_override(tmp_path: Path) -> None:
+    """Operators can still force parallelism when they intentionally want it."""
+    captured = _run_wrapper(tmp_path, ["tests/", "-q"], workers="4")
+
+    assert captured[:2] == ["-n", "4"], captured
