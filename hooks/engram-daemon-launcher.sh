@@ -29,7 +29,7 @@ if ! command -v engram &>/dev/null; then
 fi
 
 PORT="${ENGRAM_PORT:-7437}"
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
 LOG_FILE="$RUNTIME_DIR/engram-daemon.log"
 

@@ -12,8 +12,16 @@
 # ---------------------------------------------------------------------------
 # Step 1: Run anchored summarizer to persist structured context
 # ---------------------------------------------------------------------------
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
-SESSION_DIR="${CLAUDE_SESSION_DIR:-$PROJECT_DIR/.cognitive-os/sessions/current}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-}}}"
+SESSION_DIR="${COGNITIVE_OS_SESSION_DIR:-${CODEX_SESSION_DIR:-${CLAUDE_SESSION_DIR:-}}}"
+if [ -z "$SESSION_DIR" ]; then
+  if [ -n "$SESSION_ID" ]; then
+    SESSION_DIR="$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID"
+  else
+    SESSION_DIR="$PROJECT_DIR/.cognitive-os/sessions/current"
+  fi
+fi
 
 python3 -c "
 import sys; sys.path.insert(0, '$PROJECT_DIR')
