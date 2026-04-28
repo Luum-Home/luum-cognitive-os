@@ -140,6 +140,34 @@ The latest run is linked at `.cognitive-os/reports/test-runs/latest`.
 Prefer this wrapper while reducing broad-suite failures so interrupted or
 partial runs remain analyzable across sessions.
 
+### Host Tool Doctor
+
+Use `scripts/cos-doctor-tools.sh` when you need proof that the current host can
+see the active harness driver and optional tools such as Engram.
+
+```bash
+COGNITIVE_OS_HARNESS=codex CODEX_PROJECT_DIR="$PWD" bash scripts/cos-doctor-tools.sh
+```
+
+The doctor verifies:
+
+- active harness detection
+- active settings driver presence and JSON shape
+- native Codex lifecycle keys when Codex is active
+- Engram CLI search
+- Engram MCP stdio startup
+- Codex config registration for Engram when Codex is active
+
+Run with `--strict` when optional tool warnings should fail the check:
+
+```bash
+COGNITIVE_OS_HARNESS=codex CODEX_PROJECT_DIR="$PWD" bash scripts/cos-doctor-tools.sh --strict
+```
+
+This command proves local availability and host configuration. If Codex config
+was changed during setup, restart Codex so the host reloads MCP server
+definitions before expecting new MCP tools to appear in-session.
+
 Each run also gets a test inventory:
 
 - `inventory.md` — human-readable repair queue, skipped/xfail/failure list,
