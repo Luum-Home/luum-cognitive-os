@@ -174,6 +174,21 @@ The doctor verifies:
 - Engram CLI search
 - Engram MCP stdio startup
 - Codex config registration for Engram when Codex is active
+- portable memory lifecycle viability through
+  `scripts/cos-doctor-memory-lifecycle.sh`
+
+The memory lifecycle doctor runs a synthetic isolated session. It verifies that
+a Codex or Claude session can start the Engram launcher, detect and recover a
+pending task, capture a relevant user prompt, write session-learning metrics,
+write git context, write a resumable changelog, record session-end
+crystallization, and emit the pre-compaction Engram save reminder. It runs
+against a temporary project and does not run pytest.
+
+To run only that lifecycle check:
+
+```bash
+COGNITIVE_OS_HARNESS=codex CODEX_PROJECT_DIR="$PWD" bash scripts/cos-doctor-memory-lifecycle.sh --harness codex
+```
 
 Use `--profile full` to check the broader optional stack declared for full
 installations:
