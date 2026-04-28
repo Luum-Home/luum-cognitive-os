@@ -101,6 +101,7 @@
 - [x] A feature reality audit exists to classify core, optional, and overextended surfaces.
 - [x] External infrastructure is evaluated through a lightweight/default versus optional/reference decision frame in [Tooling Stack Rationalization](../architecture/tooling-stack-rationalization.md).
 - [x] Docker, Python, cloud, and reference services are cataloged in [Infrastructure Service Catalog](../architecture/infrastructure-service-catalog.md).
+- [x] Local connected-system validation is documented in [Local Connected Systems Validation](../manual-tests/local-connected-systems-validation.md), including dependency manifest checks, setup profiles, MCP wiring, optional-service boundaries, and persistent test summaries.
 - [x] Observability backends are evaluated through a backend-neutral event-contract decision in [Observability Backend Evaluation](../architecture/observability-backend-evaluation-2026-04-24.md).
 
 ## 7. Visible Proof
