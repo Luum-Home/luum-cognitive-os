@@ -139,6 +139,7 @@ build_settings() {
   session_start=$(hook_group "" \
     "self-install.sh" \
     "session-init.sh" \
+    "host-tool-doctor.sh|async" \
     "profile-drift-autoapply.sh" \
     "reaper-daemon-launcher.sh" \
     "session-watchdog-launcher.sh" \

@@ -60,6 +60,7 @@
 - [x] Product claims in README and pitch map to explicit verification paths through [Product Proof Paths](../manual-tests/proof-paths.md).
 - [x] Structural tests that support product claims are being converted into behavioral contracts through [Behavioral Test Contracts](../architecture/behavioral-test-contracts.md) and `tests/contracts/test_canonical_projection_behavior.py`.
 - [x] Slow full-suite repair runs leave persistent summaries and actionable inventories through `scripts/pytest-with-summary.sh`, `scripts/test_run_inventory.py`, and [Testing Guide](../testing.md).
+- [x] SessionStart performs a cached host-tool doctor check through `hooks/host-tool-doctor.sh`, while keeping broad pytest inventory explicit to avoid startup overload.
 
 ## 5. Onboarding and Operational Simplicity
 
@@ -72,6 +73,7 @@
 - [x] Upgrade paths preserve the active harness instead of silently falling back to Claude-first settings projection.
 - [x] Emergency-stop keeps the core safety path cross-harness while marking Claude-only profile projection honestly.
 - [x] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
+- [x] Codex-first projects get automatic advisory detection for active driver, dependency manifest, and Engram/MCP host wiring without requiring users to know the deep verification command.
 - [x] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
 - [x] Setup and onboarding flows have visible performance budgets and regression tests through `scripts/demo-first-run-onboarding.sh` and `tests/integration/test_first_run_onboarding.py`.
