@@ -103,3 +103,28 @@ def test_host_tool_doctor_hook_is_advisory_not_pytest_runner() -> None:
     )
     assert "pytest-with-summary.sh" not in content
     assert "python3 -m pytest" not in content
+
+
+def test_codex_has_no_missing_projection_on_supported_driver_events() -> None:
+    result = subprocess.run(
+        [
+            "python3",
+            str(PROJECT_ROOT / "scripts" / "harness-parity-audit.py"),
+            "--source",
+            "claude",
+            "--target",
+            "codex",
+            "--strict",
+            "--json",
+        ],
+        cwd=str(PROJECT_ROOT),
+        text=True,
+        capture_output=True,
+        timeout=20,
+    )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    report = json.loads(result.stdout)
+    assert report["missing_supported_count"] == 0
+    assert report["target_hook_count"] >= 26
+    assert report["missing_limited_count"] > 0
