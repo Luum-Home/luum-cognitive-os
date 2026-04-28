@@ -13,7 +13,7 @@ Generated files (docs, README, CHANGELOG, markdown) MUST NOT contain:
 
 | Violation Type | Examples | Detection |
 |---|---|---|
-| External project paths | `/Users/*/Projects/other-project/...` | Automatic — any path outside current project |
+| External project paths | `<external-project-root>/...` | Automatic — any path outside current project |
 | Attribution phrases | "based on project-x", "adapted from client-y", "inspired by repo-z" | Pattern matching (EN+ES) |
 | Internal repo URLs | `github.com/private-org/internal-repo` | Org name matching |
 | Protected terms | Project names, client names configured in `confidentiality.yaml` | Term matching |

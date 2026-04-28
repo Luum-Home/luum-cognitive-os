@@ -2,7 +2,7 @@
 
 **Audit date**: 2026-04-16
 **Phase**: reconstruction (empirical, no fixing)
-**Project root**: `<operator-repo-path>`
+**Project root**: `<repo-root>`
 
 ## Executive Summary
 

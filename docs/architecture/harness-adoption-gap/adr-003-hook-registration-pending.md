@@ -105,7 +105,7 @@ the added hooks:
 After the three patches are in:
 
 ```bash
-cd <operator-repo-path>
+cd <repo-root>
 bash -n scripts/apply-efficiency-profile.sh
 bash scripts/apply-efficiency-profile.sh standard
 grep -c 'destructive-git-blocker.sh\|pre-agent-snapshot.sh\|post-agent-verify.sh' .claude/settings.json   # expect 3

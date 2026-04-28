@@ -132,12 +132,12 @@ func TestClaudeBuildResponse(t *testing.T) {
 
 func TestClaudeConfigPaths(t *testing.T) {
 	p := NewClaudeProvider()
-	paths := p.ConfigPaths("/home/user/project")
+	paths := p.ConfigPaths("/workspace/project")
 	if len(paths) != 1 {
 		t.Fatalf("expected 1 config path, got %d", len(paths))
 	}
-	if paths[0] != "/home/user/project/.claude/settings.json" {
-		t.Errorf("config path = %q, want %q", paths[0], "/home/user/project/.claude/settings.json")
+	if paths[0] != "/workspace/project/.claude/settings.json" {
+		t.Errorf("config path = %q, want %q", paths[0], "/workspace/project/.claude/settings.json")
 	}
 }
 
@@ -202,9 +202,9 @@ func TestGeminiParse_BeforeTool(t *testing.T) {
 
 func TestGeminiConfigPaths(t *testing.T) {
 	p := NewGeminiProvider()
-	paths := p.ConfigPaths("/home/dev/myapp")
-	if len(paths) != 1 || paths[0] != "/home/dev/myapp/.gemini/settings.json" {
-		t.Errorf("config paths = %v, want [/home/dev/myapp/.gemini/settings.json]", paths)
+	paths := p.ConfigPaths("/workspace/myapp")
+	if len(paths) != 1 || paths[0] != "/workspace/myapp/.gemini/settings.json" {
+		t.Errorf("config paths = %v, want [/workspace/myapp/.gemini/settings.json]", paths)
 	}
 }
 

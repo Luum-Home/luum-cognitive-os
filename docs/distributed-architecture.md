@@ -96,12 +96,12 @@ COS Instance (single machine)
 projects:
   registry:
     - name: fintech-app
-      path: /home/dev/projects/fintech-app
+      path: <projects-root>/fintech-app
       phase: production
       profile: full
       repo: git@github.com:org/fintech-app.git
     - name: startup-mvp
-      path: /home/dev/projects/startup-mvp
+      path: <projects-root>/startup-mvp
       phase: reconstruction
       profile: lean
       repo: git@github.com:org/startup-mvp.git

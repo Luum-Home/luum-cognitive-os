@@ -6,7 +6,7 @@
 
 ## Context
 
-Engram (v1.14.5, third-party Go binary at `<home>/go/bin/engram`, exposed via MCP) is the project's persistent memory backend. It provides `mem_save`, `mem_search`, `mem_get_observation`, `mem_judge` (with typed edges: supersedes, conflicts\_with, related, compatible, scoped, not\_conflict), `mem_session_summary`, and `mem_update`. Its observation schema stores `title`, `content`, `type_`, `topic_key`, `project`, and `created_at`.
+Engram (v1.14.5, third-party Go binary at `<engram-bin>`, exposed via MCP) is the project's persistent memory backend. It provides `mem_save`, `mem_search`, `mem_get_observation`, `mem_judge` (with typed edges: supersedes, conflicts\_with, related, compatible, scoped, not\_conflict), `mem_session_summary`, and `mem_update`. Its observation schema stores `title`, `content`, `type_`, `topic_key`, `project`, and `created_at`.
 
 The schema has no native fields for confidence, decay rate, reinforcement count, or last-reinforced timestamp. As a result, all observations are retrieved with equal weight regardless of age, confirmation count, or whether newer observations have superseded them. A one-year-old ADR about a deprecated dependency competes on equal footing with a two-week-old bugfix about the same module. Observations confirming the same pattern twelve times do not surface before observations seen once.
 

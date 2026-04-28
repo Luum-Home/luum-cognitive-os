@@ -8,7 +8,7 @@ Comprehensive guide for running, writing, and debugging tests in the Cognitive O
 
 ```bash
 # Activate venv and run Python tests
-cd <operator-repo-path>
+cd <repo-root>
 source .venv/bin/activate
 python -m pytest tests/ -q --no-header -p no:timeout -p no:xdist
 
@@ -198,7 +198,7 @@ def test_hook_blocks_on_large_input(tmp_path):
 import subprocess, os, tempfile
 from pathlib import Path
 
-HOOK = Path("<operator-repo-path>/hooks/my-hook.sh")
+HOOK = Path("<repo-root>/hooks/my-hook.sh")
 
 def test_hook_behavior():
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -214,7 +214,7 @@ def test_hook_behavior():
 **Lib function test:**
 ```python
 import sys
-sys.path.insert(0, "<operator-repo-path>")
+sys.path.insert(0, "<repo-root>")
 from lib.my_module import MyClass
 
 def test_function_returns_expected():

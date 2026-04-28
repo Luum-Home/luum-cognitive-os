@@ -16,11 +16,9 @@ Usage:
 from __future__ import annotations
 
 import json
-import os
 import re
 import subprocess
 from pathlib import Path
-from typing import Any
 
 
 class ComponentUsageTracker:
@@ -110,7 +108,12 @@ class ComponentUsageTracker:
         }
 
     def scan_lib_imports(self) -> dict:
-        """Check which libs in lib/ are imported by other components."""
+        """Check which libs in lib/ are imported by other components.
+
+        Scan import-bearing files once instead of spawning one grep process per
+        library module. The previous per-lib grep loop could timeout on the live
+        repo because it rescanned the large test tree hundreds of times.
+        """
         lib_files: list[str] = []
         if self.lib_dir.exists():
             lib_files = sorted(
@@ -125,32 +128,61 @@ class ComponentUsageTracker:
             self.root / "templates",
             self.root / ".cognitive-os" / "skills",
         ]
+        existing_dirs = [d for d in search_dirs if d.exists()]
 
-        imported: list[dict] = []
-        never_imported: list[str] = []
+        importers_by_lib: dict[str, set[str]] = {lib: set() for lib in lib_files}
+        import_re = re.compile(r"(?:from|import)\s+lib\.([A-Za-z_][A-Za-z0-9_]*)\b")
 
-        for lib in lib_files:
-            # Match both 'from lib.X import' and 'import lib.X'
-            pattern = rf"(from lib\.{re.escape(lib)}\b|import lib\.{re.escape(lib)}\b)"
+        def record_line(path: str, line: str) -> None:
+            for match in import_re.finditer(line):
+                lib = match.group(1)
+                if lib in importers_by_lib:
+                    importers_by_lib[lib].add(path)
+
+        if existing_dirs:
             try:
                 result = subprocess.run(
-                    ["grep", "-rl", "--include=*.py", "--include=*.sh", "-E", pattern,
-                     *[str(d) for d in search_dirs if d.exists()]],
-                    capture_output=True, text=True, timeout=15,
+                    [
+                        "grep",
+                        "-R",
+                        "-n",
+                        "--include=*.py",
+                        "--include=*.sh",
+                        "-E",
+                        r"(from|import)[[:space:]]+lib\.",
+                        *[str(d) for d in existing_dirs],
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=15,
                 )
-                importers = [l.strip() for l in result.stdout.splitlines() if l.strip()]
+                for raw in result.stdout.splitlines():
+                    path, _, rest = raw.partition(":")
+                    _line_number, _, text = rest.partition(":")
+                    record_line(path, text)
             except (subprocess.SubprocessError, OSError):
-                importers = []
-            if importers:
-                imported.append({"lib": lib, "importers": len(importers)})
-            else:
-                never_imported.append(lib)
+                for directory in existing_dirs:
+                    for path in directory.rglob("*"):
+                        if path.suffix not in {".py", ".sh"} or not path.is_file():
+                            continue
+                        try:
+                            for line in path.read_text(errors="ignore").splitlines():
+                                record_line(str(path), line)
+                        except OSError:
+                            continue
+
+        imported = [
+            {"lib": lib, "importers": len(paths)}
+            for lib, paths in sorted(importers_by_lib.items())
+            if paths
+        ]
+        never_imported = sorted(lib for lib, paths in importers_by_lib.items() if not paths)
 
         usage_pct = (len(imported) / len(lib_files) * 100) if lib_files else 0.0
         return {
             "total_libs": len(lib_files),
             "imported": imported,
-            "never_imported": sorted(never_imported),
+            "never_imported": never_imported,
             "usage_pct": round(usage_pct, 1),
         }
 

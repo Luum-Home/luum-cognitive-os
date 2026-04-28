@@ -12,7 +12,7 @@ The OS has 5 self-awareness mechanisms. When you work with it, **let them do the
 
 ### Every session
 
-1. **Start:** Open Claude Code in `<operator-repo-path>`. Read the 4 living documents to recover context:
+1. **Start:** Open Claude Code in `<repo-root>`. Read the 4 living documents to recover context:
    ```
    Read docs/architecture/stabilization-roadmap.md
    Read docs/architecture/FROZEN-BACKLOG.md
