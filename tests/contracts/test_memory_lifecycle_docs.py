@@ -52,6 +52,10 @@ def test_memory_lifecycle_doc_points_to_executable_evidence() -> None:
     content = DOC.read_text()
 
     assert "PASS memory lifecycle doctor passed" in content
+    assert "What \"Automatic\" Means" in content
+    assert "Shell hooks cannot directly call" in content
+    assert "mem_session_summary" in content
+    assert "developers do not manually run memory hooks" in content
     assert "tests/contracts/test_memory_lifecycle_portability.py" in content
     assert "tests/behavior/test_cos_doctor_tools.py" in content
 
