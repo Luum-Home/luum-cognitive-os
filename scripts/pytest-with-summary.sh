@@ -28,6 +28,7 @@ fi
 # --- Adaptive worker injection (ADR-068 Phase 1) ---
 # If the caller already specified -n / --numprocesses, respect it and skip detection.
 _has_n_flag=0
+_stateful_lane=0
 for _arg in "$@"; do
   case "$_arg" in
     -n | --numprocesses | -n=* | --numprocesses=* | -n[0-9]* | -nauto)
@@ -35,10 +36,21 @@ for _arg in "$@"; do
       break
       ;;
   esac
+  case "$_arg" in
+    tests | tests/ | tests/behavior | tests/behavior/* | tests/integration | tests/integration/* | tests/e2e | tests/e2e/* | tests/contracts | tests/contracts/* | tests/audit | tests/audit/* | tests/hooks | tests/hooks/* | tests/chaos | tests/chaos/*)
+      _stateful_lane=1
+      ;;
+  esac
 done
 
 if [ "$_has_n_flag" -eq 0 ]; then
-  _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
+  _workers="${COS_PYTEST_WORKERS:-detect}"
+  if [ "$_stateful_lane" -eq 1 ] && { [ -z "${COS_PYTEST_WORKERS:-}" ] || [ "$_workers" = "detect" ]; }; then
+    _workers="0"
+    echo "[pytest-with-summary] Stateful lane detected: serial (use explicit -n or COS_PYTEST_WORKERS to override)"
+  elif [ "$_workers" = "detect" ]; then
+    _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
+  fi
   if [ "$_workers" != "0" ] && [ -n "$_workers" ]; then
     set -- -n "$_workers" "$@"
     echo "[pytest-with-summary] Adaptive workers: $_workers (use COS_PYTEST_WORKERS=0 to force serial)"
@@ -46,7 +58,7 @@ if [ "$_has_n_flag" -eq 0 ]; then
     echo "[pytest-with-summary] Adaptive workers: serial (0)"
   fi
 fi
-unset _has_n_flag _workers
+unset _has_n_flag _stateful_lane _workers
 # --- end adaptive worker injection ---
 
 timestamp="$(date -u +"%Y%m%dT%H%M%SZ")"

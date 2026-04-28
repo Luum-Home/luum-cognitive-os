@@ -2,7 +2,7 @@
 
 ## Status
 
-**Accepted** — 2026-04-27 (Phase 1 implemented). Original proposal: 2026-04-24.
+**Accepted** — 2026-04-27 (Phase 2 implemented). Original proposal: 2026-04-24.
 
 ## Context
 
@@ -77,8 +77,9 @@ Operator must always be able to force a value. Precedence (highest first):
 
 1. Explicit `-n` flag in the user's pytest command line — **always wins**
 2. `COS_PYTEST_WORKERS` environment variable
-3. Heuristic table (§3)
-4. Default `auto`
+3. Stateful broad-lane safety guard
+4. Heuristic table (§3)
+5. Default `auto`
 
 | Env var value | Effect |
 |---|---|
@@ -89,6 +90,28 @@ Operator must always be able to force a value. Precedence (highest first):
 
 Rationale for the `0` semantic: pytest-xdist treats `-n 0` and "no `-n` flag at all" the
 same way (serial). Choosing the absent-flag form keeps the command line minimal in logs.
+
+## Phase 2 Amendment — Stateful lanes default to serial
+
+The Phase 1 implementation made every no-`-n` invocation adaptive. A full-suite run then
+showed why this is too broad: `tests/ -n auto` can combine shared repo state, external
+process pressure, xdist worker death, and session-timeout into one noisy signal. That is
+not a trustworthy repair queue.
+
+Decision:
+
+- Broad/stateful lanes default to serial unless the caller explicitly opts into workers.
+- Explicit `-n` / `--numprocesses` still wins.
+- Explicit `COS_PYTEST_WORKERS=auto|N` still wins.
+- Unit-only lanes can still use adaptive worker detection by default.
+
+Stateful lane selectors currently include:
+
+`tests/`, `tests/behavior`, `tests/integration`, `tests/e2e`, `tests/contracts`,
+`tests/audit`, `tests/hooks`, and `tests/chaos`.
+
+This is intentionally conservative. The cost is slower broad runs; the benefit is that
+their failures are comparable, serializable, and not dominated by xdist shared-state noise.
 
 ## Decision — Cross-platform implementation
 

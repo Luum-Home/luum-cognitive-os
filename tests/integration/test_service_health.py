@@ -38,7 +38,7 @@ SERVICE_CONTRACTS = (
         "expected_mode": "pip",
         "classification": "reference-stack",
         "compose_services": ("nemo-guardrails",),
-        "profiles": (),
+        "profiles": ("guardrails",),
         "local_health": ("nemo-guardrails", "http://localhost:8088/v1/rails/configs"),
     },
     {
@@ -80,7 +80,7 @@ SERVICE_CONTRACTS = (
         "expected_mode": "pip",
         "classification": "reference-stack",
         "compose_services": ("jupyter",),
-        "profiles": (),
+        "profiles": ("jupyter",),
         "local_health": ("jupyter", "http://localhost:8888/api/status"),
     },
     {
