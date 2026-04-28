@@ -52,6 +52,46 @@ observability backends, Paperclip, Jupyter, Cognee HTTP, Opik local, and similar
 systems are extension/reference surfaces unless a specific proof path enables
 them.
 
+
+## Isolated Product-System Mode
+
+Local connected validation must not run against a developer's real production
+workspace or shared service state by accident. When Cognitive OS is connected to
+systems we develop as part of a product, the run must use an explicit isolation
+contract:
+
+| Surface | Isolation requirement |
+| --- | --- |
+| Repository | Use a disposable git worktree, temp clone, or mounted sandbox workspace. |
+| Runtime state | Write only under `.cognitive-os/` inside the isolated workspace or an explicit artifact directory. |
+| Service state | Use Docker Compose project names, local ports, or testcontainers namespaces that cannot collide with developer services. |
+| Data | Seed synthetic fixtures; never connect to production data by default. |
+| Secrets | Use fake/local secrets from env vars or a secret-manager test namespace; never generate secrets into repo files. |
+| Registry | Temporary/canary installs must not enter the default COS registry. |
+| Outputs | Patches, logs, summaries, and traces must be written as artifacts that can be deleted with the sandbox. |
+
+This mode is the local precursor to the future headless worker runtime. It lets
+Cognitive OS repair or build against real product-shaped systems while keeping
+side effects bounded and auditable.
+
+### Product-System Connection Contract
+
+A product system may be connected to the local SO only through an explicit
+adapter or profile that declares:
+
+1. required tools and Python groups in `manifests/dependencies.yaml`;
+2. required optional services in the infrastructure service catalog;
+3. the command that starts those services locally;
+4. readiness checks and teardown behavior;
+5. which artifacts prove success;
+6. degraded behavior when the product system is unavailable.
+
+A connected-system proof is incomplete unless it proves both the happy path and
+the isolation boundary. For example, a bug-repair proof should show that the SO
+can reproduce a failing test against the product system, generate a patch in an
+isolated workspace, run quality gates, persist artifacts, and tear everything
+down without leaking host paths, credentials, or temporary installs.
+
 ## Automatic Install Boundary
 
 Cognitive OS may help install or update components, but automatic remediation is
