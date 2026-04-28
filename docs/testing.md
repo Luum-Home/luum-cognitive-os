@@ -164,6 +164,9 @@ outlier with an immediate retry, but it must still fail repeated slow samples
 and report both raw and effective timings. Do not mark latency regressions as
 blanket `xfail`; acknowledged slow hooks belong in explicit allowlists so newly
 slow hooks still fail.
+For subprocess-based hook tests in the broad non-Docker lane, wall-clock p95
+targets should reflect loaded-host execution rather than idle microbenchmarks;
+`agent-working-dir-inject.sh` uses p95 <100ms and p99 <150ms for that reason.
 
 Telemetry-driven hook p95 contracts should require enough samples to be
 statistically meaningful. The default per-hook minimum is 20 samples; below
