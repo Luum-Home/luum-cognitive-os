@@ -30,6 +30,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Infrastructure Service Catalog](architecture/infrastructure-service-catalog.md) — what each Docker/Python/cloud service is for and whether it is core, optional, or reference-only
 - [Observability Backend Evaluation](architecture/observability-backend-evaluation-2026-04-24.md) — 2026 decision record for MLflow, Langfuse, Opik, OpenTelemetry, and other observability options
 - [Driver-Specific Script Surfaces](architecture/driver-specific-script-surfaces.md) — which user-facing scripts are truly cross-harness today and which remain Claude-driver-only by contract
+- [Harness Driver Parity](architecture/harness-driver-parity.md) — how Claude, Codex, and future harness settings projections are compared without pretending every driver has the same capabilities
 - [Cross-Harness Authoring](architecture/cross-harness-authoring.md) — how to author skills, rules, hooks, and workflows once and project them through harness drivers
 - [Behavioral Test Contracts](architecture/behavioral-test-contracts.md) — doctrine for converting structural checks into runtime, projection, and discovery proof
 - [Testing Guide](testing.md) — pytest lanes, persistent run summaries, and test-run inventories for large-suite repair work

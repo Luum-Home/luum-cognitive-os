@@ -74,6 +74,7 @@
 - [x] Emergency-stop keeps the core safety path cross-harness while marking Claude-only profile projection honestly.
 - [x] Skills and rules use canonical-first discovery instead of depending on `.claude/` as the primary surface.
 - [x] Codex-first projects get automatic advisory detection for active driver, dependency manifest, and Engram/MCP host wiring without requiring users to know the deep verification command.
+- [x] Harness driver parity is now audited through `manifests/harness-driver-capabilities.yaml` and `scripts/harness-parity-audit.py`, so supported Codex gaps fail while limited/unsupported hook surfaces remain visible roadmap work.
 - [x] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
 - [x] Setup and onboarding flows have visible performance budgets and regression tests through `scripts/demo-first-run-onboarding.sh` and `tests/integration/test_first_run_onboarding.py`.
