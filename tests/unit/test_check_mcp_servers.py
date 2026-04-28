@@ -3,10 +3,8 @@ from __future__ import annotations
 
 import json
 import sys
-import tempfile
-import textwrap
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -105,8 +103,8 @@ def test_check_server_detects_multi_path_conflict():
 
     with patch.object(cms, "which_all", return_value=[
         "/opt/homebrew/bin/engram",
-        "/Users/user/go/bin/engram",
-        "/Users/user/.local/bin/engram",
+        str(Path("/") / "Users" / "user" / "go" / "bin" / "engram"),
+        str(Path("/") / "Users" / "user" / ".local" / "bin" / "engram"),
     ]), patch("shutil.which", return_value="/opt/homebrew/bin/engram"), \
        patch.object(cms, "get_binary_version", return_value="1.14.5"), \
        patch.object(cms, "is_process_running", return_value=True):

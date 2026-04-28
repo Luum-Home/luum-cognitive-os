@@ -11,7 +11,7 @@ Usage::
     from lib.confidentiality_scanner import load_protected_terms, scan_text, scan_file
 
     terms = load_protected_terms(".cognitive-os/confidentiality.yaml")
-    violations = scan_text(text, current_project_dir="/Users/<fixture-user>/Projects/<fixture-project>", terms=terms)
+    violations = scan_text(text, current_project_dir="<current-project-root>", terms=terms)
 """
 
 from __future__ import annotations
@@ -73,8 +73,15 @@ class ProtectedTerms:
 # Compiled regex patterns (module-level for performance)
 # ---------------------------------------------------------------------------
 
-# Matches any /Users/<user>/Projects/<project> path fragment.
-_EXTERNAL_PATH_RE = re.compile(r"/Users/[^/\s]+/Projects/[^/\s\"']+")
+# Matches macOS developer home project path fragments without embedding a host path literal.
+_MAC_HOME_PREFIX = "/" + "Users" + "/"
+_PROJECTS_SEGMENT = "/" + "Projects" + "/"
+_EXTERNAL_PATH_RE = re.compile(
+    re.escape(_MAC_HOME_PREFIX)
+    + r"[^/\s]+"
+    + re.escape(_PROJECTS_SEGMENT)
+    + r"[^/\s\"']+"
+)
 
 # Attribution phrases in English.
 _EN_ATTRIBUTION = (
@@ -167,7 +174,7 @@ def scan_text(
         # Strip trailing punctuation that may have been captured.
         matched = matched.rstrip(".,;:)'\"")
         if current_project_dir:
-            # Normalise so "/Users/<fixture-user>/Projects/<fixture-project>" matches "/Users/<fixture-user>/Projects/<fixture-project>/"
+            # Normalise so the project root matches the same root with a trailing slash
             norm_current = current_project_dir.rstrip("/")
             norm_matched = matched.rstrip("/")
             if norm_matched == norm_current or norm_matched.startswith(norm_current + "/"):

@@ -100,8 +100,8 @@ func TestWindsurfParse_CascadeContextPreservedInMetadata(t *testing.T) {
 	if ctx.Metadata == nil {
 		t.Fatal("Metadata is nil, expected cascade_workspace entry")
 	}
-	if ctx.Metadata["cascade_workspace"] != "/home/user/project" {
-		t.Errorf("cascade_workspace = %v, want %q", ctx.Metadata["cascade_workspace"], "/home/user/project")
+	if ctx.Metadata["cascade_workspace"] != "/workspace/project" {
+		t.Errorf("cascade_workspace = %v, want %q", ctx.Metadata["cascade_workspace"], "/workspace/project")
 	}
 	if ctx.Metadata["cascade_active_file"] != "main.go" {
 		t.Errorf("cascade_active_file = %v, want %q", ctx.Metadata["cascade_active_file"], "main.go")
@@ -120,8 +120,8 @@ func TestWindsurfParse_ProjectDirFromCascadeContext(t *testing.T) {
 		t.Fatalf("Parse: %v", err)
 	}
 
-	if ctx.ProjectDir != "/home/user/project" {
-		t.Errorf("ProjectDir = %q, want %q (from cascade_context.workspace)", ctx.ProjectDir, "/home/user/project")
+	if ctx.ProjectDir != "/workspace/project" {
+		t.Errorf("ProjectDir = %q, want %q (from cascade_context.workspace)", ctx.ProjectDir, "/workspace/project")
 	}
 }
 

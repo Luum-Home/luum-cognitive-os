@@ -9,7 +9,7 @@
   "exit_code": 0,
   "output": "written",
   "cascade_context": {
-    "workspace": "/home/user/project",
+    "workspace": "/workspace/project",
     "active_file": "config.yaml"
   }
 }

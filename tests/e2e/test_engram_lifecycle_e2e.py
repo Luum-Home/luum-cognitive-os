@@ -31,7 +31,7 @@ import requests
 _ENGRAM_BIN = os.environ.get("ENGRAM_BIN", "engram")
 _ENGRAM_PATHS = [
     _ENGRAM_BIN,
-    "<home>/go/bin/engram",
+    "<engram-bin>",
     shutil.which("engram") or "",
 ]
 _ENGRAM_RESOLVED = next((p for p in _ENGRAM_PATHS if p and shutil.which(p) or (p and os.path.isfile(p))), None)

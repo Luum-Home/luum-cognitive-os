@@ -91,3 +91,6 @@ mutants/
 conftest.py
 cos_mutation.sqlite
 .claude/worktrees/
+
+# Cognitive OS local memory exports (may contain private absolute paths)
+.engram/exports/*.jsonl

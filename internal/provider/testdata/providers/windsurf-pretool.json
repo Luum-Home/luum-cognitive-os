@@ -6,7 +6,7 @@
   },
   "session_id": "windsurf-sess-xyz789",
   "cascade_context": {
-    "workspace": "/home/user/project",
+    "workspace": "/workspace/project",
     "active_file": "main.go"
   }
 }
