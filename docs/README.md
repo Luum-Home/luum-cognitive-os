@@ -17,6 +17,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Product Principles](product-principles.md) — product-level constraints and value focus
 - [Product Zones](product-zones.md) — core, compatibility, extensions, and experimental taxonomy for keeping the product focused
 - [Product Messaging](business/product-messaging.md) — how to present Cognitive OS as easy to adopt without making it feel simplistic
+- [Developer Confidence and DX](business/developer-confidence.md) — why Cognitive OS improves trust, safety, onboarding, and continuity without enabling every subsystem by default
 - [First-Run Onboarding Proof](manual-tests/first-run-onboarding.md) — executable proof that a fresh project can install, report status, and stay within onboarding budgets
 - [Five-Minute Demo](manual-tests/five-minute-demo.md) — a short executable/manual path for proving install, harness projection, quality checks, provider contracts, and status visibility
 - [Product Proof Paths](manual-tests/proof-paths.md) — product claims mapped to files, commands, tests, and manual checks
