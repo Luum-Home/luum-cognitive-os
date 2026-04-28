@@ -36,6 +36,45 @@ def _run(project: Path, env: dict[str, str] | None = None) -> subprocess.Complet
     )
 
 
+def _write_manifest(tmp_path: Path, *, required: list[str] | None = None) -> Path:
+    manifest = tmp_path / "dependencies.yaml"
+    required = required or []
+    tools = [
+        {
+            "name": name,
+            "criticality": "required",
+            "check": f"{name} --version",
+            "install": {"any": f"install {name}"},
+        }
+        for name in required
+    ]
+    manifest.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "python": {"required": ["pyyaml>=6.0"], "groups": {}},
+                "tools": tools,
+                "mcp_servers": [],
+                "profiles": {
+                    "default": {
+                        "python_groups": [],
+                        "tools_required": required,
+                        "tools_recommended": [],
+                        "mcp_servers_recommended": [],
+                    },
+                    "full": {
+                        "python_groups": [],
+                        "tools_required": required,
+                        "tools_recommended": [],
+                        "mcp_servers_recommended": [],
+                    },
+                },
+            }
+        )
+    )
+    return manifest
+
+
 def _codex_project(tmp_path: Path) -> Path:
     project = tmp_path / "project"
     project.mkdir()
@@ -73,23 +112,36 @@ def _fake_engram_bin(tmp_path: Path) -> Path:
 
 def test_codex_project_reports_engram_and_driver_health(tmp_path: Path) -> None:
     project = _codex_project(tmp_path)
+    manifest = _write_manifest(tmp_path)
     codex_home = project / "codex-home"
     codex_home.mkdir()
     (codex_home / "config.toml").write_text('[mcp_servers.engram]\ncommand = "engram"\n')
     bin_dir = _fake_engram_bin(tmp_path)
 
-    result = _run(project, env={"PATH": f"{bin_dir}:{os.environ.get('PATH', '')}"})
+    result = _run(
+        project,
+        env={
+            "PATH": f"{bin_dir}:{os.environ.get('PATH', '')}",
+            "COS_MANIFEST_PATH": str(manifest),
+        },
+    )
 
     assert result.returncode == 0, result.stderr + result.stdout
     assert "PASS active harness is supported: codex" in result.stdout
     assert "PASS settings driver JSON contract is valid" in result.stdout
+    assert "PASS dependency manifest loaded for profile: default" in result.stdout
+    assert "PASS required tools present" in result.stdout
     assert "PASS engram CLI search works" in result.stdout
     assert "PASS engram MCP stdio starts" in result.stdout
 
 
 def test_missing_engram_is_warning_unless_strict(tmp_path: Path) -> None:
     project = _codex_project(tmp_path)
-    result = _run(project, env={"PATH": "/usr/bin:/bin"})
+    manifest = _write_manifest(tmp_path)
+    result = _run(
+        project,
+        env={"PATH": "/usr/bin:/bin", "COS_MANIFEST_PATH": str(manifest)},
+    )
 
     assert result.returncode == 0, result.stderr + result.stdout
     assert "WARN engram CLI not found on PATH" in result.stdout
@@ -101,6 +153,7 @@ def test_missing_engram_is_warning_unless_strict(tmp_path: Path) -> None:
             "COGNITIVE_OS_HARNESS": "codex",
             "CODEX_HOME": str(project / "codex-home"),
             "PATH": "/usr/bin:/bin",
+            "COS_MANIFEST_PATH": str(manifest),
         }
     )
     strict = subprocess.run(
@@ -114,3 +167,16 @@ def test_missing_engram_is_warning_unless_strict(tmp_path: Path) -> None:
 
     assert strict.returncode == 1
     assert "Result: FAIL" in strict.stdout
+
+
+def test_missing_required_manifest_tool_fails_core_check(tmp_path: Path) -> None:
+    project = _codex_project(tmp_path)
+    manifest = _write_manifest(tmp_path, required=["definitely-missing-cos-tool"])
+
+    result = _run(
+        project,
+        env={"PATH": "/usr/bin:/bin", "COS_MANIFEST_PATH": str(manifest)},
+    )
+
+    assert result.returncode == 1
+    assert "FAIL required tools missing: definitely-missing-cos-tool" in result.stdout
