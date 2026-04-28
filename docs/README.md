@@ -20,6 +20,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [First-Run Onboarding Proof](manual-tests/first-run-onboarding.md) — executable proof that a fresh project can install, report status, and stay within onboarding budgets
 - [Five-Minute Demo](manual-tests/five-minute-demo.md) — a short executable/manual path for proving install, harness projection, quality checks, provider contracts, and status visibility
 - [Product Proof Paths](manual-tests/proof-paths.md) — product claims mapped to files, commands, tests, and manual checks
+- [Codex Host Tooling Verification](manual-tests/codex-host-tooling-verification.md) — manual proof path for Codex driver wiring, declared dependencies, and Engram MCP registration
 - [Model Evolution Resilience](model-evolution-resilience.md) — how to keep the system durable as models, vendors, and tools change
 - [Kernel Contract](kernel-contract.md) — minimal inviolable core and where the machine-readable boundary lives
 - [Bootstrap Portability](architecture/bootstrap-portability.md) — where the system is still Claude-first and how to make Codex and other harnesses first-class bootstrap hosts
