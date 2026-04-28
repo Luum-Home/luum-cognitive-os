@@ -13,6 +13,34 @@ pytestmark = pytest.mark.behavior
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = PROJECT_ROOT / "scripts" / "cos-doctor-tools.sh"
+MEMORY_SCRIPT = PROJECT_ROOT / "scripts" / "cos-doctor-memory-lifecycle.sh"
+
+
+def _codex_memory_hooks() -> dict:
+    def entry(script: str) -> dict:
+        return {
+            "matcher": "cos",
+            "hooks": [
+                {
+                    "type": "command",
+                    "command": f'bash "$CODEX_PROJECT_DIR/.cognitive-os/hooks/cos/{script}"',
+                }
+            ],
+        }
+
+    return {
+        "SessionStart": [
+            entry("engram-daemon-launcher.sh"),
+            entry("session-resume.sh"),
+        ],
+        "UserPromptSubmit": [entry("user-prompt-capture.sh")],
+        "Stop": [
+            entry("session-learning.sh"),
+            entry("git-context-capture.sh"),
+            entry("session-changelog.sh"),
+            entry("engram-crystallize-on-session-end.sh"),
+        ],
+    }
 
 
 def _run(project: Path, env: dict[str, str] | None = None) -> subprocess.CompletedProcess:
@@ -79,18 +107,7 @@ def _codex_project(tmp_path: Path) -> Path:
     project = tmp_path / "project"
     project.mkdir()
     (project / ".codex").mkdir()
-    (project / ".codex" / "hooks.json").write_text(
-        json.dumps(
-            {
-                "SessionStart": [
-                    {
-                        "matcher": "startup",
-                        "hooks": [{"type": "command", "command": "true"}],
-                    }
-                ]
-            }
-        )
-    )
+    (project / ".codex" / "hooks.json").write_text(json.dumps(_codex_memory_hooks()))
     return project
 
 
@@ -103,6 +120,7 @@ def _fake_engram_bin(tmp_path: Path) -> Path:
         "case \"${1:-}\" in\n"
         "  search) echo 'Found 1 memories'; exit 0 ;;\n"
         "  mcp) exit 0 ;;\n"
+        "  serve) echo '{\"status\":\"ok\"}'; exit 0 ;;\n"
         "  *) exit 0 ;;\n"
         "esac\n"
     )
@@ -133,6 +151,7 @@ def test_codex_project_reports_engram_and_driver_health(tmp_path: Path) -> None:
     assert "PASS required tools present" in result.stdout
     assert "PASS engram CLI search works" in result.stdout
     assert "PASS engram MCP stdio starts" in result.stdout
+    assert "PASS memory lifecycle doctor passed" in result.stdout
 
 
 def test_missing_engram_is_warning_unless_strict(tmp_path: Path) -> None:
@@ -180,3 +199,36 @@ def test_missing_required_manifest_tool_fails_core_check(tmp_path: Path) -> None
 
     assert result.returncode == 1
     assert "FAIL required tools missing: definitely-missing-cos-tool" in result.stdout
+
+
+def test_memory_lifecycle_doctor_proves_codex_session_without_claude_env(
+    tmp_path: Path,
+) -> None:
+    project = _codex_project(tmp_path)
+    bin_dir = _fake_engram_bin(tmp_path)
+    env = os.environ.copy()
+    env.pop("CLAUDE_PROJECT_DIR", None)
+    env.pop("CLAUDE_SESSION_ID", None)
+    env.update(
+        {
+            "COGNITIVE_OS_HARNESS": "codex",
+            "CODEX_PROJECT_DIR": str(project),
+            "PATH": f"{bin_dir}:{os.environ.get('PATH', '')}",
+        }
+    )
+
+    result = subprocess.run(
+        ["bash", str(MEMORY_SCRIPT), "--harness", "codex"],
+        cwd=str(PROJECT_ROOT),
+        env=env,
+        text=True,
+        capture_output=True,
+        timeout=30,
+    )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert "PASS Engram launcher hook can run for a new codex session" in result.stdout
+    assert "PASS session-resume detects and recovers pending tasks" in result.stdout
+    assert "PASS session-learning saves session summary metrics" in result.stdout
+    assert "PASS session-changelog saves resumable changelog" in result.stdout
+    assert "PASS pre-compaction flush emits durable memory reminder" in result.stdout
