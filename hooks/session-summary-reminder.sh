@@ -1,13 +1,22 @@
 #!/usr/bin/env bash
 # SCOPE: both
-# Stop hook: ensures mem_session_summary was called this session.
-# If not, blocks the stop and reminds the agent to call it.
-# Fires the reminder at most once per session (state file gate).
+# Stop hook: ensures a session_summary observation lands in engram before
+# the session ends. Two-stage protection:
 #
-# Detection: queries engram HTTP API (port 7437) for any observation of
-# type "session_summary" created today. If found, exits silently.
+#   Stage A (first stop): if no summary exists today, block the stop and
+#     remind the agent to call mem_session_summary. State file gates so
+#     the reminder fires at most once per session.
 #
-# Harness-agnostic: works in CC and Codex via shared COGNITIVE_OS_* env vars.
+#   Stage B (second stop, agent ignored A): persist a heuristic summary
+#     via `engram save` so the session is not lost. State file marks the
+#     fallback as fired; subsequent stops exit silently.
+#
+# Detection: queries engram HTTP API at port 7437 for any observation of
+# type "session_summary" created today. If found at any stage, the hook
+# exits silently and lets the stop proceed normally.
+#
+# Harness-agnostic: works in CC and Codex via shared COGNITIVE_OS_* env
+# vars and the engram CLI / HTTP API (no harness-specific dependencies).
 
 set -uo pipefail
 
@@ -16,24 +25,26 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(pwd)}}}"
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CLAUDE_SESSION_ID:-${CODEX_SESSION_ID:-}}}"
+SESSION_START="${COGNITIVE_OS_SESSION_START:-}"
 
 # No session context — nothing to track. Exit silently.
 [ -z "$SESSION_ID" ] && exit 0
 
-STATE_FILE="$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID/.summary-reminder-fired"
+SESSION_DIR="$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID"
+REMINDER_FLAG="$SESSION_DIR/.summary-reminder-fired"
+FALLBACK_FLAG="$SESSION_DIR/.summary-fallback-fired"
 
-# Already reminded once — let the agent stop on its own this time.
-[ -f "$STATE_FILE" ] && exit 0
+# Stage B already auto-saved a heuristic summary — let the stop proceed.
+[ -f "$FALLBACK_FLAG" ] && exit 0
 
-# Engram daemon must be reachable to verify summary presence.
-# If unreachable, exit silently (don't block on infrastructure absence).
+# Engram daemon must be reachable. If not, exit silently — never block a
+# stop because of infrastructure absence.
 curl -sf -m 2 http://127.0.0.1:7437/health >/dev/null 2>&1 || exit 0
 
 PROJECT_NAME=$(basename "$PROJECT_DIR")
 TODAY=$(date -u +%Y-%m-%d)
 
 # Search engram for a session_summary observation created today.
-# Heuristic: today's date prefix on created_at AND type == session_summary.
 RESULT=$(curl -sf -m 5 -G "http://127.0.0.1:7437/search" \
   --data-urlencode "q=session_summary ${PROJECT_NAME}" \
   --data-urlencode "limit=20" 2>/dev/null || echo "[]")
@@ -51,23 +62,106 @@ for obs in items:
         sys.exit(0)
 sys.exit(1)
 " 2>/dev/null; then
-  # Summary already saved today — agent did its job.
+  # Summary already saved today — agent did its job, or Stage B fired earlier today.
   exit 0
 fi
 
-# No summary saved this session — fire the reminder once.
-mkdir -p "$(dirname "$STATE_FILE")"
-touch "$STATE_FILE"
+# No summary today. Decide between Stage A (remind) and Stage B (auto-save).
+if [ ! -f "$REMINDER_FLAG" ]; then
+  # ── Stage A: block the stop and remind the agent ──────────────────
+  mkdir -p "$SESSION_DIR"
+  touch "$REMINDER_FLAG"
 
-# Block the stop and inject reminder. CC + Codex both accept this JSON shape
-# on Stop hooks per the standard hook protocol.
-if command -v jq >/dev/null 2>&1; then
-  jq -c -n '{
-    decision: "block",
-    reason: "Session ending without mem_session_summary. Call it now (Goal, Discoveries, Accomplished, Next Steps, Relevant Files). Engram protocol — see rules/engram-help. This reminder fires at most once per session."
-  }'
-else
-  printf '{"decision":"block","reason":"Session ending without mem_session_summary. Call it now (Goal, Discoveries, Accomplished, Next Steps, Relevant Files). Engram protocol. This reminder fires at most once per session."}\n'
+  if command -v jq >/dev/null 2>&1; then
+    jq -c -n '{
+      decision: "block",
+      reason: "Session ending without mem_session_summary. Call it now with: Goal, Discoveries, Accomplished, Next Steps, Relevant Files. (Cognitive OS engram protocol — auto-fire from session-summary-reminder.sh stage A. If you skip this, stage B will auto-save a heuristic summary.)"
+    }'
+  else
+    printf '{"decision":"block","reason":"Session ending without mem_session_summary. Call it now with Goal, Discoveries, Accomplished, Next Steps, Relevant Files. Stage B will auto-save a heuristic summary if you skip."}\n'
+  fi
+  exit 0
 fi
 
+# ── Stage B: agent ignored the reminder. Auto-save a heuristic summary ──
+mkdir -p "$SESSION_DIR"
+touch "$FALLBACK_FLAG"
+
+# Build heuristic summary content. Keep it small but useful for next session.
+HEURISTIC_TITLE="Auto-saved session summary (heuristic) — $TODAY $SESSION_ID"
+
+build_heuristic_summary() {
+  printf '## Auto-saved heuristic summary\n\n'
+  printf 'This summary was generated by `hooks/session-summary-reminder.sh` (stage B)\n'
+  printf 'because the agent did not call `mem_session_summary` before stopping.\n'
+  printf 'It is a heuristic — content is derived from git state and session\n'
+  printf 'metrics, not from agent reasoning. Treat as last-resort recovery.\n\n'
+
+  printf '## Session metadata\n\n'
+  printf -- '- Session ID: `%s`\n' "$SESSION_ID"
+  printf -- '- Project: `%s`\n' "$PROJECT_NAME"
+  printf -- '- Date (UTC): %s\n' "$TODAY"
+  if [ -n "$SESSION_START" ]; then
+    printf -- '- Session start: %s\n' "$SESSION_START"
+  fi
+  printf -- '- Hook fired at: %s\n\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+  if command -v git >/dev/null 2>&1 && git -C "$PROJECT_DIR" rev-parse --git-dir >/dev/null 2>&1; then
+    printf '## Commits this session\n\n'
+    if [ -n "$SESSION_START" ]; then
+      git -C "$PROJECT_DIR" log --since="$SESSION_START" --oneline 2>/dev/null | head -50 | sed 's/^/- /'
+    else
+      git -C "$PROJECT_DIR" log --since="6 hours ago" --oneline 2>/dev/null | head -50 | sed 's/^/- /'
+    fi
+    printf '\n'
+
+    printf '## Uncommitted changes at session end\n\n'
+    if [ -n "$(git -C "$PROJECT_DIR" status --porcelain 2>/dev/null)" ]; then
+      printf '```\n'
+      git -C "$PROJECT_DIR" status --porcelain 2>/dev/null | head -40
+      printf '```\n\n'
+    else
+      printf '(working tree clean)\n\n'
+    fi
+  fi
+
+  TASKS_FILE="$PROJECT_DIR/.cognitive-os/tasks/active-tasks.json"
+  if [ -f "$TASKS_FILE" ] && command -v jq >/dev/null 2>&1; then
+    pending=$(jq -r '.tasks // [] | map(select(.status != "completed")) | length' "$TASKS_FILE" 2>/dev/null || echo "0")
+    if [ "$pending" -gt 0 ] 2>/dev/null; then
+      printf '## Pending tasks\n\n'
+      printf '%s open task(s) in active-tasks.json. Run `/resume-tasks` next session to inspect.\n\n' "$pending"
+    fi
+  fi
+
+  printf '## Next-session note\n\n'
+  printf 'Agent did not produce a structured handoff. Recover context from:\n'
+  printf '1. The commit list above (most reliable)\n'
+  printf '2. `git log` and `git diff` for un-committed work\n'
+  printf '3. Other engram observations created today: search by date or topic_key prefix\n'
+}
+
+SUMMARY_BODY=$(build_heuristic_summary)
+
+# Persist via engram CLI (preferred — handles project detection automatically).
+# Fallback to silent failure if CLI absent: better than blocking the stop.
+if command -v engram >/dev/null 2>&1; then
+  printf '%s' "$SUMMARY_BODY" | engram save \
+    "$HEURISTIC_TITLE" \
+    "$(printf '%s' "$SUMMARY_BODY")" \
+    --type session_summary \
+    --project "$PROJECT_NAME" \
+    --scope project >/dev/null 2>&1 || true
+fi
+
+# Log the fallback firing for observability.
+METRICS_FILE="$PROJECT_DIR/.cognitive-os/metrics/session-summary-fallback.jsonl"
+mkdir -p "$(dirname "$METRICS_FILE")"
+printf '{"timestamp":"%s","session_id":"%s","project":"%s","reason":"agent_skipped_reminder"}\n' \
+  "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  "$SESSION_ID" \
+  "$PROJECT_NAME" \
+  >> "$METRICS_FILE" 2>/dev/null || true
+
+# Stage B does NOT block — agent already had its chance. Let stop proceed.
 exit 0
