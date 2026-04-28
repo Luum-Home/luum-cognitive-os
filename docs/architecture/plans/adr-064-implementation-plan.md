@@ -24,6 +24,7 @@ ADR-064 declares **four surfaces**. Surface 1 is shipped via ADR-033. Surfaces 2
   - `.claude/settings.json` is the active CC config (events: `SessionStart`, `UserPromptSubmit`, `SubagentStart`, `PreCompact`, `PreToolUse`, `PostToolUse`, `Stop`, `TeammateIdle`, `TaskCreated`, `TaskCompleted`).
   - `.codex/hooks.json` exists and already mirrors most CC hooks for `SessionStart`, `UserPromptSubmit`, `Stop` (verified by inspection — same scripts, prefixed with `COGNITIVE_OS_HARNESS=codex` env exports).
   - A shared helper exists: `scripts/_lib/settings-driver.sh` — but it only does *harness detection*, not *canonical→native projection*. There is no `cognitive-os.yaml > harness.hooks` block (verify; ADR-064 specifies but file may not have section).
+  - Prior art exists in `manifests/harness-driver-capabilities.yaml`: it records driver settings paths, native shapes, supported/limited/unsupported events, and parity policy. It is not the canonical hook source, but Task 2.1 should consume it as the capability input when defining the canonical hooks block.
   - The four ADR-064 drivers (`scripts/_lib/settings-driver-claude-code.sh`, `…-codex.sh`, `…-cursor.sh`, `…-bare.sh`) DO NOT EXIST.
   - Drift between `.claude/settings.json` and `.codex/hooks.json` is currently maintained by hand; nothing prevents them desynchronizing.
 - **Why it matters**: Without canonical→native projection, every new hook must be added in N harness configs by hand. Today's `session-summary-reminder.sh` registration in `.codex/hooks.json` was a manual edit; that won't scale.
@@ -72,6 +73,8 @@ ADR-064 declares **four surfaces**. Surface 1 is shipped via ADR-033. Surfaces 2
 ### Surface 2 — Settings drivers (5+1 tasks)
 
 **Task 2.1 — Define canonical hooks block in `cognitive-os.yaml`** (0.25 session, ~1h)
+- Inputs:
+  - `manifests/harness-driver-capabilities.yaml` for driver settings paths, native settings shapes, supported event coverage, limited event caveats, and unsupported-event policy.
 - Acceptance criteria:
   1. `cognitive-os.yaml` gains a `harness.hooks` block listing every hook currently registered in `.claude/settings.json` (verify via `python3 -c "import json; print(len(json.load(open('.claude/settings.json'))['hooks']))"`).
   2. Each entry has `id`, `event` (canonical name from `before_tool_call|after_tool_call|before_agent_spawn|after_agent_complete|on_session_start|on_session_end|on_user_prompt`), `script`, optional `matcher`.

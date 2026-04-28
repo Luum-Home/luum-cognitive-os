@@ -35,6 +35,7 @@ def _codex_memory_hooks() -> dict:
         ],
         "UserPromptSubmit": [entry("user-prompt-capture.sh")],
         "Stop": [
+            entry("session-summary-reminder.sh"),
             entry("session-learning.sh"),
             entry("git-context-capture.sh"),
             entry("session-changelog.sh"),
@@ -229,6 +230,44 @@ def test_memory_lifecycle_doctor_proves_codex_session_without_claude_env(
     assert result.returncode == 0, result.stderr + result.stdout
     assert "PASS Engram launcher hook can run for a new codex session" in result.stdout
     assert "PASS session-resume detects and recovers pending tasks" in result.stdout
+    assert "PASS session-summary-reminder protects stop with mem_session_summary reminder" in result.stdout
+    assert "PASS session-summary-reminder writes fallback persistence on second stop" in result.stdout
     assert "PASS session-learning saves session summary metrics" in result.stdout
     assert "PASS session-changelog saves resumable changelog" in result.stdout
     assert "PASS pre-compaction flush emits durable memory reminder" in result.stdout
+
+
+def test_memory_lifecycle_doctor_fails_when_session_summary_reminder_not_projected(
+    tmp_path: Path,
+) -> None:
+    project = _codex_project(tmp_path)
+    hooks_data = json.loads((project / ".codex" / "hooks.json").read_text())
+    hooks_data["Stop"] = [
+        group
+        for group in hooks_data["Stop"]
+        if "session-summary-reminder.sh" not in json.dumps(group)
+    ]
+    (project / ".codex" / "hooks.json").write_text(json.dumps(hooks_data))
+
+    env = os.environ.copy()
+    env.pop("CLAUDE_PROJECT_DIR", None)
+    env.pop("CLAUDE_SESSION_ID", None)
+    env.update(
+        {
+            "COGNITIVE_OS_HARNESS": "codex",
+            "CODEX_PROJECT_DIR": str(project),
+        }
+    )
+
+    result = subprocess.run(
+        ["bash", str(MEMORY_SCRIPT), "--harness", "codex", "--skip-engram-start"],
+        cwd=str(PROJECT_ROOT),
+        env=env,
+        text=True,
+        capture_output=True,
+        timeout=30,
+    )
+
+    assert result.returncode == 1
+    assert "FAIL memory lifecycle projection is incomplete for codex" in result.stdout
+    assert "Stop:session-summary-reminder.sh" in result.stderr
