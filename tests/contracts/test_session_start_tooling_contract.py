@@ -105,6 +105,14 @@ def test_host_tool_doctor_hook_is_advisory_not_pytest_runner() -> None:
     assert "python3 -m pytest" not in content
 
 
+def test_host_tool_doctor_includes_memory_lifecycle_doctor_without_pytest() -> None:
+    content = (PROJECT_ROOT / "scripts" / "cos-doctor-tools.sh").read_text()
+
+    assert "cos-doctor-memory-lifecycle.sh" in content
+    assert "pytest-with-summary.sh" not in content
+    assert "python3 -m pytest" not in content
+
+
 def test_codex_has_no_missing_projection_on_supported_driver_events() -> None:
     result = subprocess.run(
         [

@@ -159,6 +159,11 @@ correction:
   (`SessionStart`, `UserPromptSubmit`, `Stop`), while Claude keeps richer
   `PreCompact` and `PostToolUse` memory reinforcement coverage as an explicit
   driver advantage rather than a hidden portability guarantee.
+- `scripts/cos-doctor-memory-lifecycle.sh` now proves that a new Codex session
+  can run the memory lifecycle in an isolated scratch project: Engram launcher,
+  pending-task resume, user-prompt capture, session learning, git context,
+  changelog, crystallization metric, and pre-compaction reminder. The cached
+  SessionStart host doctor invokes this check through `cos-doctor-tools.sh`.
 
 This is not the full migration, but it is the correct direction.
 
