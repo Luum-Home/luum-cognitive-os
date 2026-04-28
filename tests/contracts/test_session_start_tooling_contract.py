@@ -117,7 +117,7 @@ def test_codex_has_no_missing_projection_on_supported_driver_events() -> None:
     result = subprocess.run(
         [
             "python3",
-            str(PROJECT_ROOT / "scripts" / "harness-parity-audit.py"),
+            str(PROJECT_ROOT / "scripts" / "harness_parity_audit.py"),
             "--source",
             "claude",
             "--target",

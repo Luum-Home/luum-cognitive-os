@@ -34,8 +34,8 @@ engram setup codex
 Expected effect in `~/.codex/config.toml`:
 
 ```toml
-model_instructions_file = "/Users/matias.nahuel.amendola/.codex/engram-instructions.md"
-experimental_compact_prompt_file = "/Users/matias.nahuel.amendola/.codex/engram-compact-prompt.md"
+model_instructions_file = "$CODEX_HOME/engram-instructions.md"
+experimental_compact_prompt_file = "$CODEX_HOME/engram-compact-prompt.md"
 
 [mcp_servers.engram]
 command = "/opt/homebrew/Cellar/engram/1.14.5/bin/engram"

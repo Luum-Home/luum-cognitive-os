@@ -2,7 +2,7 @@
 
 **Audit date**: 2026-04-16
 **Phase**: reconstruction (empirical, no fixing)
-**Project root**: `/Users/marialuzmontiel/projects/luum/luum-agent-os`
+**Project root**: `<repo-root>`
 
 ## Executive Summary
 

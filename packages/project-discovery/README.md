@@ -74,7 +74,7 @@ Configure protected terms in `.cognitive-os/confidentiality.yaml`:
 protected_terms:
   - pattern: "ClientNameInternal"
     replacement: "[CLIENT]"
-  - pattern: "/home/dev/internal-projects/"
+  - pattern: "<internal-project-root>/"
     action: block
 ```
 

@@ -100,9 +100,9 @@ originals moved inside the new `for` loop). Under the 30-line HALT threshold on 
 
 **Verification:**
 ```bash
-bash -n /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-init.sh  # → SYNTAX_OK
-grep -c 'SKILL_DESTS' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-init.sh  # → 2
-grep -n '\.claude/skills/cos' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-init.sh  # → 2 matches (array + counter guard)
+bash -n <repo-root>/scripts/cos-init.sh  # → SYNTAX_OK
+grep -c 'SKILL_DESTS' <repo-root>/scripts/cos-init.sh  # → 2
+grep -n '\.claude/skills/cos' <repo-root>/scripts/cos-init.sh  # → 2 matches (array + counter guard)
 ```
 
 Functional verification (external — cannot run in this session without a target project
@@ -110,7 +110,7 @@ directory):
 ```bash
 mkdir /tmp/cos-test && cd /tmp/cos-test
 touch package.json  # create a dummy project
-bash /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-init.sh --standard
+bash <repo-root>/scripts/cos-init.sh --standard
 ls .claude/skills/cos/ | wc -l        # expect: 11 (10 STANDARD_SKILLS + CATALOG.md)
 ls .cognitive-os/skills/cos/ | wc -l  # expect: 11 (same count)
 ```
@@ -148,9 +148,9 @@ project-level install is needed here — that is `cos-init.sh`'s responsibility.
 
 **Verification:**
 ```bash
-grep -nE 'skills|hooks' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-init-global.sh | grep -v '^[0-9]*:#'
+grep -nE 'skills|hooks' <repo-root>/scripts/cos-init-global.sh | grep -v '^[0-9]*:#'
 # (no writes to skills/hooks paths — only comment mentions)
-grep -c 'cp.*rules' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-init-global.sh
+grep -c 'cp.*rules' <repo-root>/scripts/cos-init-global.sh
 # → 1 (single rule install path, line 128)
 ```
 
@@ -186,7 +186,7 @@ self-install.sh or install-cos.sh, the fix may cascade."
 
 **Verification:**
 ```bash
-grep -nE 'self-install|cos-init|install-cos|apply-efficiency-profile' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-bootstrap.sh
+grep -nE 'self-install|cos-init|install-cos|apply-efficiency-profile' <repo-root>/scripts/cos-bootstrap.sh
 # → 4 matches, all referring to self-install.sh (Step 7)
 ```
 

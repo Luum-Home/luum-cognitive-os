@@ -47,7 +47,7 @@ Hooks:           56 wired
   TaskCompleted: 1
 Rules:           106 total
 Packages:        32 installed
-Install:         /Users/.../luum-agent-os (self-hosted)
+Install:         <repo-root> (self-hosted)
 Last session:    2026-04-16 20:44:21
 
 Health:          OK all checks pass

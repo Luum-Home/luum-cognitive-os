@@ -36,7 +36,7 @@ and ship the next minor release. Two consecutive releases shipped today:
   Claude Code. `~/.local/bin/engram v1.10.2` works (Gatekeeper allow-list);
   `~/go/bin/engram v1.13.1` returns exit -9 in 16ms.
 - **GOBIN versioned-path trap**: `go install` writes to
-  `/Users/.../go/1.25.6/bin/`, NOT `~/go/bin/`. `which engram` resolves to
+  `<go-sdk-bin>/`, NOT `~/go/bin/`. `which engram` resolves to
   the OLD binary. `scripts/deps-update.sh` handles this automatically.
 - **`contextual-rule-loader.sh` 17x speedup** (2200ms → 130ms): O(n×m)
   subprocess forks fixed with in-process regex.

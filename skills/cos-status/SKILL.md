@@ -54,7 +54,7 @@ Hooks:      18 wired
   ...
 Rules:      107 total — 21 enforced, 52 auto-injected, 34 docs
 Packages:   32 installed
-Install:    /Users/.../luum-agent-os (self-hosted)
+Install:    <repo-root> (self-hosted)
 
 Health:     ✅ all checks pass
 ```
