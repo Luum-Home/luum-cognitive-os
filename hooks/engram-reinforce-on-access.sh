@@ -46,8 +46,7 @@ case "$INPUT" in
 esac
 
 # Resolve project root for metrics output.
-# CLAUDE_PROJECT_DIR is set by the Claude Code harness when available.
-PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+PROJECT_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 METRICS_DIR="${PROJECT_ROOT}/.cognitive-os/metrics"
 METRICS_FILE="${METRICS_DIR}/lifecycle-reinforcement.jsonl"
 TIMESTAMP="$(date -u '+%Y-%m-%dT%H:%M:%SZ' 2>/dev/null || date '+%Y-%m-%dT%H:%M:%SZ')"
@@ -103,7 +102,12 @@ if not ids:
     sys.exit(0)
 
 # Ensure lib/ is on sys.path regardless of cwd
-project_root = os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd())
+project_root = (
+    os.environ.get("COGNITIVE_OS_PROJECT_DIR")
+    or os.environ.get("CODEX_PROJECT_DIR")
+    or os.environ.get("CLAUDE_PROJECT_DIR")
+    or os.getcwd()
+)
 lib_dir = os.path.join(project_root, "lib")
 if lib_dir not in sys.path:
     sys.path.insert(0, project_root)

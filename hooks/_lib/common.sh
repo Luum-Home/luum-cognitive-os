@@ -18,10 +18,12 @@ _COMMON_SH_LOADED="true"
 
 # ─── Core paths ─────────────────────────────────────────────────────────────
 
-if [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
-  _PROJECT_DIR="$CLAUDE_PROJECT_DIR"
-elif [ -n "${COGNITIVE_OS_PROJECT_DIR:-}" ]; then
+if [ -n "${COGNITIVE_OS_PROJECT_DIR:-}" ]; then
   _PROJECT_DIR="$COGNITIVE_OS_PROJECT_DIR"
+elif [ -n "${CODEX_PROJECT_DIR:-}" ]; then
+  _PROJECT_DIR="$CODEX_PROJECT_DIR"
+elif [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
+  _PROJECT_DIR="$CLAUDE_PROJECT_DIR"
 else
   _PROJECT_DIR="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 fi
