@@ -45,6 +45,7 @@ Supporting lines:
 - **Advanced agent governance with a beginner-safe operational experience.**
 - **A reliable operating layer for coding agents, designed to be easy to adopt and hard to outgrow.**
 - **Simple to start, rigorous under the hood.**
+- **Cognitive OS makes AI-assisted development easier to trust.**
 
 ## Messaging Principles
 
@@ -74,3 +75,6 @@ The ideal user reaction is:
 
 That is the messaging standard to maintain across README, docs, onboarding, and
 product presentation.
+
+For the developer-experience framing by project maturity, see
+[Developer Confidence and DX](developer-confidence.md).

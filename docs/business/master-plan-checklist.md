@@ -82,6 +82,9 @@
   that a new Codex session can start Engram, recover pending work, capture
   prompt/session state, write git context, write a changelog, and emit the
   compaction memory-save reminder.
+- [x] Developer-confidence positioning is documented as a lightweight adoption
+  path: memory, doctor, minimal hooks, safety, changelog/session learning, and
+  checks only where they provide clear value.
 - [x] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
 - [x] Setup and onboarding flows have visible performance budgets and regression tests through `scripts/demo-first-run-onboarding.sh` and `tests/integration/test_first_run_onboarding.py`.
