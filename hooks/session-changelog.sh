@@ -16,15 +16,17 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 # Stop hooks do not receive stdin tool JSON.
 
 # Determine project dir
-if [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
-    PROJECT_DIR="$CLAUDE_PROJECT_DIR"
-elif [ -n "${COGNITIVE_OS_PROJECT_DIR:-}" ]; then
+if [ -n "${COGNITIVE_OS_PROJECT_DIR:-}" ]; then
     PROJECT_DIR="$COGNITIVE_OS_PROJECT_DIR"
+elif [ -n "${CODEX_PROJECT_DIR:-}" ]; then
+    PROJECT_DIR="$CODEX_PROJECT_DIR"
+elif [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
+    PROJECT_DIR="$CLAUDE_PROJECT_DIR"
 else
     PROJECT_DIR="$(pwd)"
 fi
 
-SESSION_ID="${COGNITIVE_OS_SESSION_ID:-}"
+SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-}}}"
 if [ -z "$SESSION_ID" ]; then
     exit 0
 fi
