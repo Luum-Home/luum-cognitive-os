@@ -1,7 +1,6 @@
 """Unit tests for lib/reverse_engineer.py."""
 
 import json
-import os
 import textwrap
 from pathlib import Path
 
@@ -9,13 +8,7 @@ import pytest
 
 from lib.reverse_engineer import (
     AnalysisReport,
-    AuthFlow,
-    CLICommand,
-    ConfigSchema,
-    DockerSetup,
-    EnvVar,
     ReverseEngineer,
-    SchemaField,
     _analyze_dockerfile,
     _analyze_env_vars_in_file,
     _analyze_zod_schema,
@@ -26,7 +19,6 @@ from lib.reverse_engineer import (
     _analyze_cli_in_file,
     _analyze_routes_in_file,
     _analyze_auth_in_file,
-    _find_files,
 )
 
 
@@ -244,8 +236,7 @@ class TestEnvVarAnalysis:
         """Python os.environ and os.getenv references are found."""
         src = tmp_path / "app.py"
         _write(src, """\
-            import os
-
+            
             db_url = os.environ["DATABASE_URL"]
             debug = os.getenv("DEBUG", "false")
             secret = os.environ.get("SECRET_KEY", "changeme")
@@ -637,9 +628,53 @@ class TestFullAnalysis:
 # ---------------------------------------------------------------------------
 
 
+def _is_complete_paperclip_repo(path: str) -> bool:
+    """Return True only when the optional Paperclip fixture is a real checkout.
+
+    A stale empty `/tmp/paperclip-build` directory should not turn this optional
+    integration lane into a false failure. When a real fixture is present, these
+    tests still assert detectable schemas, env vars, and Docker setup.
+    """
+    root = Path(path)
+    if not root.is_dir():
+        return False
+    source_extensions = {".ts", ".tsx", ".js", ".jsx", ".go", ".py", ".json"}
+    has_source = any(
+        child.is_file() and child.suffix.lower() in source_extensions
+        for child in root.rglob("*")
+    )
+    compose_files = (
+        "Dockerfile",
+        "Dockerfile.prod",
+        "Dockerfile.dev",
+        "docker-compose.yml",
+        "docker-compose.yaml",
+        "compose.yml",
+        "compose.yaml",
+    )
+    has_docker = any((root / name).is_file() for name in compose_files)
+    return has_source and has_docker
+
+
+class TestPaperclipIntegrationAvailability:
+    def test_empty_paperclip_fixture_is_not_treated_as_real_repo(self, tmp_path: Path) -> None:
+        stale_fixture = tmp_path / "paperclip-build"
+        (stale_fixture / "src").mkdir(parents=True)
+
+        assert not _is_complete_paperclip_repo(str(stale_fixture))
+
+    def test_paperclip_fixture_requires_source_and_docker_contract(self, tmp_path: Path) -> None:
+        repo = tmp_path / "paperclip-build"
+        _write(repo / "src" / "config.ts", "export interface AppConfig { port: number }")
+        assert not _is_complete_paperclip_repo(str(repo))
+
+        _write(repo / "Dockerfile", "FROM node:20")
+        assert _is_complete_paperclip_repo(str(repo))
+
+
 @pytest.mark.skipif(
-    not os.path.isdir("/tmp/paperclip-build"),
-    reason="Paperclip repo not available at /tmp/paperclip-build",
+    not _is_complete_paperclip_repo("/tmp/paperclip-build"),
+    reason="Complete Paperclip repo fixture not available at /tmp/paperclip-build",
 )
 class TestPaperclipIntegration:
     """Integration tests against the real Paperclip repo."""

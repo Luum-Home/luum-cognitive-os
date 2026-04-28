@@ -269,7 +269,7 @@ class TestEngramUnavailable:
                 index=1,
             )
         ]
-        with patch.object(dt, "_engram_search", return_value=None):
+        with patch.object(dt, "scan_engram_answers_with_status", return_value=({}, False)):
             result, available = dt.enrich_with_engram(decisions)
 
         assert not available
