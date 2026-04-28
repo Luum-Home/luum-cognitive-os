@@ -146,6 +146,9 @@ Use `scripts/cos-doctor-tools.sh` when you need proof that the current host can
 see the active harness driver, declared dependencies, MCP registrations, and
 optional tools such as Engram.
 
+For the full Codex/Engram setup and expected output, see
+[Codex Host Tooling Verification](manual-tests/codex-host-tooling-verification.md).
+
 ```bash
 COGNITIVE_OS_HARNESS=codex CODEX_PROJECT_DIR="$PWD" bash scripts/cos-doctor-tools.sh --profile default
 ```
