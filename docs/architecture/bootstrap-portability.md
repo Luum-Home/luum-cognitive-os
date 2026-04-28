@@ -144,7 +144,9 @@ correction:
 - `scripts/cos-release-check.sh` now validates and snapshots the canary project's active settings driver, so release plumbing can follow Codex and Claude without hardcoded Claude-only settings assumptions
 - secondary user-facing scripts such as `component-lint.sh`, `startup-benchmark.sh`, `benchmark-hooks.sh`, `cos-usage-report.sh`, `cos-sessions.sh`, `engram-sync.sh`, and `session-leak-diagnostic.sh` now use canonical project-root precedence where they read project runtime state
 - `cos-update.sh` now backs up, restores, and fingerprints the active settings driver, and skips Claude-only profile regeneration when the active driver is not Claude
-- `auto-update-projects.sh` now preserves each project's detected harness when it re-runs `cos-init.sh`
+- `cos-init.sh` now records the selected harness and settings driver in `.cognitive-os/install-meta.json`, so future maintenance can preserve the original driver even when both `.codex/` and `.claude/` markers exist during a migration.
+- `auto-update-projects.sh`, `scripts/upgrade.sh`, and Git-triggered update flows now resolve the active harness through shared settings-driver detection, which consults install metadata before falling back to ambiguous filesystem markers.
+- `post-merge` and `pre-push` auto-update paths therefore update Codex-first installations through `.codex/hooks.json` instead of silently regenerating Claude settings when no Codex environment variables are present.
 - driver-specific user-facing scripts are now classified in [Driver-Specific Script Surfaces](driver-specific-script-surfaces.md), with tests ensuring Codex-hosted runs do not silently write Claude settings or invoke Claude-only profile projection
 - skills and rules now use `.cognitive-os/skills/cos` and `.cognitive-os/rules/cos` as the canonical artifact contract, while `.claude/skills` and `.claude/rules/cos` remain Claude Code driver projections
 

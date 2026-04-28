@@ -54,6 +54,7 @@
 - [x] Uninstall paths clean the active settings driver instead of assuming `.claude/settings.json` is the only hook-registration surface.
 - [x] Secondary user-facing scripts use canonical project-root precedence when reading runtime state.
 - [x] Update and auto-update paths preserve the active harness/settings driver instead of silently assuming Claude.
+- [x] Git-triggered `post-merge` and `pre-push` auto-update paths preserve Codex-first installations through install metadata, even when `.claude/` compatibility markers are present.
 - [x] Driver-specific user-facing scripts are explicitly classified so Claude-only registration/profile flows do not masquerade as Codex support.
 - [x] Broken product-facing links fail visibly in automation.
 - [x] Product claims in README and pitch map to explicit verification paths through [Product Proof Paths](../manual-tests/proof-paths.md).

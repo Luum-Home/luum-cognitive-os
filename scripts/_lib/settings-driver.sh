@@ -11,6 +11,21 @@ cos_detect_harness() {
     return
   fi
 
+  # Installation metadata is the durable source of truth after first install.
+  # This matters when a project carries more than one driver marker during a
+  # migration; Git hook auto-update runs without Codex/Claude env hints.
+  local meta_file="$project_root/.cognitive-os/install-meta.json"
+  if [ -f "$meta_file" ] && command -v jq >/dev/null 2>&1; then
+    local meta_harness
+    meta_harness="$(jq -r '.harness // empty' "$meta_file" 2>/dev/null || true)"
+    case "$meta_harness" in
+      claude|codex)
+        printf '%s\n' "$meta_harness"
+        return
+        ;;
+    esac
+  fi
+
   if [ -f "$project_root/.codex/hooks.json" ] && [ ! -f "$project_root/.claude/settings.json" ]; then
     printf '%s\n' "codex"
     return

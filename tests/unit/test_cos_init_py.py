@@ -39,11 +39,11 @@ class TestDetectHarnessClaude:
         monkeypatch.delenv("CODEX_HOME", raising=False)
         assert cos_init.detect_harness(str(tmp_path)) == "claude"
 
-    def test_both_dirs_present_defaults_to_claude(
+    def test_both_dirs_present_defaults_to_claude_without_install_metadata(
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         """When both .claude/settings.json AND .codex/hooks.json exist, neither
-        priority-2 nor priority-3 fires — falls through to default 'claude'."""
+        marker-only branch wins — falls through to default 'claude'."""
         (tmp_path / ".claude").mkdir()
         (tmp_path / ".claude" / "settings.json").write_text("{}")
         (tmp_path / ".codex").mkdir()
@@ -53,6 +53,24 @@ class TestDetectHarnessClaude:
         monkeypatch.delenv("CODEX_SESSION_ID", raising=False)
         monkeypatch.delenv("CODEX_HOME", raising=False)
         assert cos_init.detect_harness(str(tmp_path)) == "claude"
+
+    def test_install_metadata_resolves_dual_marker_projects(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Install metadata preserves the selected harness during migrations."""
+        (tmp_path / ".claude").mkdir()
+        (tmp_path / ".claude" / "settings.json").write_text("{}")
+        (tmp_path / ".codex").mkdir()
+        (tmp_path / ".codex" / "hooks.json").write_text("{}")
+        (tmp_path / ".cognitive-os").mkdir()
+        (tmp_path / ".cognitive-os" / "install-meta.json").write_text(
+            '{"harness": "codex", "settings_driver": ".codex/hooks.json"}'
+        )
+        monkeypatch.delenv("COGNITIVE_OS_HARNESS", raising=False)
+        monkeypatch.delenv("CODEX_PROJECT_DIR", raising=False)
+        monkeypatch.delenv("CODEX_SESSION_ID", raising=False)
+        monkeypatch.delenv("CODEX_HOME", raising=False)
+        assert cos_init.detect_harness(str(tmp_path)) == "codex"
 
 
 class TestDetectHarnessCodex:
