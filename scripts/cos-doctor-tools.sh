@@ -290,7 +290,22 @@ if [ "$ACTIVE_HARNESS" = "codex" ]; then
   if [ -f "$CODEX_CONFIG" ] && grep -qi "engram" "$CODEX_CONFIG"; then
     pass "Codex config mentions Engram"
   else
-    warn "Codex config does not appear to register Engram MCP yet"
+  warn "Codex config does not appear to register Engram MCP yet"
+  fi
+fi
+
+if [ "${COS_DOCTOR_SKIP_MEMORY_LIFECYCLE:-0}" != "1" ]; then
+  MEMORY_DOCTOR="$OS_SOURCE_ROOT/scripts/cos-doctor-memory-lifecycle.sh"
+  if [ -x "$MEMORY_DOCTOR" ]; then
+    MEMORY_OUTPUT="$(mktemp "${TMPDIR:-/tmp}/cos-memory-doctor.XXXXXX")"
+    if bash "$MEMORY_DOCTOR" --harness "$ACTIVE_HARNESS" >"$MEMORY_OUTPUT" 2>&1; then
+      pass "memory lifecycle doctor passed"
+    else
+      fail "memory lifecycle doctor failed: $(tail -20 "$MEMORY_OUTPUT" | tr '\n' ' ')"
+    fi
+    rm -f "$MEMORY_OUTPUT"
+  else
+    fail "memory lifecycle doctor missing: scripts/cos-doctor-memory-lifecycle.sh"
   fi
 fi
 
