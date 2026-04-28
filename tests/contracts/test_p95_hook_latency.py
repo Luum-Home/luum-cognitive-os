@@ -7,7 +7,7 @@ noise).
 
 Thresholds:
   COS_HOOK_P95_CEILING_MS   default 1500 ms  (overall p95 across all hooks)
-  COS_HOOK_MIN_SAMPLES      default 10       (per-hook minimum to include)
+  COS_HOOK_MIN_SAMPLES      default 20       (per-hook minimum to include)
 """
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ import pytest
 
 _ROOT = Path(__file__).resolve().parent.parent.parent
 _P95_CEILING_MS = int(os.environ.get("COS_HOOK_P95_CEILING_MS", "1500"))
-_MIN_SAMPLES = int(os.environ.get("COS_HOOK_MIN_SAMPLES", "10"))
+_MIN_SAMPLES = int(os.environ.get("COS_HOOK_MIN_SAMPLES", "20"))
 _MAX_SAMPLE_AGE_HOURS = int(os.environ.get("COS_HOOK_MAX_SAMPLE_AGE_HOURS", "6"))
 _HOOK_HEALTH = _ROOT / ".cognitive-os" / "metrics" / "hook-health.jsonl"
 
