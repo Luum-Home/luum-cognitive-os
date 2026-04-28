@@ -385,29 +385,32 @@ def _engram_search_for_answers(query: str, timeout: int = 5) -> dict[str, bool]:
         return {}
 
 
-def scan_engram_answers() -> dict[str, bool]:
-    """Try to retrieve answered decisions from engram.
+def _probe_engram_available(timeout: int = 3) -> bool:
+    """Return whether the Engram CLI is reachable for decision cross-reference.
 
-    Returns {topic_slug: True} for decisions that have been answered.
-    Returns {} gracefully when engram is unavailable.
-
-    Fix 2026-04-27: The engram CLI does NOT support --json flag — it treats it as
-    part of the search query. Removed --json; parse text output for title/topic patterns.
-
-    Engram returns at most 10 results per query. We run multiple targeted queries to
-    cover all decision/* entries across different topic groups.
+    This probe is intentionally separate from answer retrieval so callers can
+    distinguish "Engram is up but no matching answers exist" from "Engram is
+    unavailable". That distinction matters for reports: unavailable memory must
+    mark decisions as pending rather than silently treating an empty answer set
+    as authoritative.
     """
-    # Probe for availability first
     try:
         probe = subprocess.run(
             ["engram", "search", "Decision answered probe"],
-            capture_output=True, text=True, timeout=3,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
         )
-        if probe.returncode != 0:
-            return {}
+        return probe.returncode == 0
     except Exception as exc:
         print(f"WARNING: engram unavailable for cross-reference: {exc}", file=sys.stderr)
-        return {}
+        return False
+
+
+def scan_engram_answers_with_status() -> tuple[dict[str, bool], bool]:
+    """Retrieve answered decisions and return `(answers, engram_available)`."""
+    if not _probe_engram_available():
+        return {}, False
 
     answered: dict[str, bool] = {}
 
@@ -430,6 +433,22 @@ def scan_engram_answers() -> dict[str, bool]:
     for query in queries:
         answered.update(_engram_search_for_answers(query))
 
+    return answered, True
+
+
+def scan_engram_answers() -> dict[str, bool]:
+    """Try to retrieve answered decisions from engram.
+
+    Returns {topic_slug: True} for decisions that have been answered.
+    Returns {} gracefully when engram is unavailable.
+
+    Fix 2026-04-27: The engram CLI does NOT support --json flag — it treats it as
+    part of the search query. Removed --json; parse text output for title/topic patterns.
+
+    Engram returns at most 10 results per query. We run multiple targeted queries to
+    cover all decision/* entries across different topic groups.
+    """
+    answered, _available = scan_engram_answers_with_status()
     return answered
 
 
@@ -558,16 +577,10 @@ def enrich_with_engram(decisions: list[Decision]) -> tuple[list[Decision], bool]
     bulk queries. Engram is limited to 10 results per semantic query, so we use multiple
     targeted queries then fall back to individual per-slug lookups for critical decisions.
     """
-    # Bulk queries first (fast, covers most answers)
-    answered = scan_engram_answers()
-
-    # Distinguish "engram returned empty" from "engram unavailable"
-    engram_available: bool
-    if not answered:
-        probe = _engram_search("Decision answered probe", timeout=3)
-        engram_available = probe is not None
-    else:
-        engram_available = True
+    # Bulk queries first (fast, covers most answers). Keep availability separate
+    # from answer count so "Engram up with zero answers" is not confused with
+    # "Engram unavailable".
+    answered, engram_available = scan_engram_answers_with_status()
 
     if not engram_available:
         for d in decisions:
