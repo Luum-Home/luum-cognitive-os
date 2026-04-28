@@ -200,6 +200,58 @@ class TestCosRegistry:
         assert len(data["installations"]) == 1
         assert data["installations"][0]["project_name"] == "exists"
 
+
+    def test_default_registry_skips_ephemeral_tmp_install(self, tmp_path):
+        """Production registry must not retain disposable tmp/canary installs."""
+        home = tmp_path / "home"
+        home.mkdir()
+        ephemeral_project = tmp_path / "cos-canary-default"
+        ephemeral_project.mkdir()
+
+        result = _run_script(
+            REGISTRY_SCRIPT,
+            [
+                "register",
+                str(ephemeral_project),
+                "default",
+                "0.21.0",
+                "cos-canary-default",
+                str(PROJECT_ROOT),
+            ],
+            env_overrides={"HOME": str(home)},
+        )
+
+        assert result.returncode == 0, result.stderr
+        registry_file = home / ".cognitive-os" / "installations.json"
+        assert not registry_file.exists(), (
+            "Disposable canary installs must not create/populate the production registry"
+        )
+
+    def test_explicit_registry_can_register_tmp_install_for_tests(self, tmp_path):
+        """Explicit COS_REGISTRY_FILE remains available for isolated test registries."""
+        registry_file = _create_registry(tmp_path)
+        ephemeral_project = tmp_path / "cos-canary-default"
+        ephemeral_project.mkdir()
+
+        result = _run_script(
+            REGISTRY_SCRIPT,
+            [
+                "register",
+                str(ephemeral_project),
+                "default",
+                "0.21.0",
+                "cos-canary-default",
+                str(PROJECT_ROOT),
+            ],
+            env_overrides={"COS_REGISTRY_FILE": str(registry_file)},
+        )
+
+        assert result.returncode == 0, result.stderr
+        data = _read_registry(registry_file)
+        assert [entry["project_name"] for entry in data["installations"]] == [
+            "cos-canary-default"
+        ]
+
     def test_creates_registry_if_missing(self, tmp_path):
         registry_file = tmp_path / "cos-home" / "installations.json"
         assert not registry_file.exists()
@@ -310,6 +362,38 @@ class TestAutoUpdate:
         )
         assert result.returncode == 0
         assert "No projects installed from" in result.stdout
+
+
+    def test_auto_update_cleans_ephemeral_entries_from_default_registry(self, tmp_path):
+        """Git-triggered auto-update must not process stale canary/tmp entries."""
+        home = tmp_path / "home"
+        registry_file = home / ".cognitive-os" / "installations.json"
+        ephemeral_project = tmp_path / "cos-canary-default"
+        ephemeral_project.mkdir()
+        registry_file.parent.mkdir(parents=True)
+        registry_file.write_text(json.dumps({
+            "installations": [
+                {
+                    "path": str(ephemeral_project),
+                    "mode": "default",
+                    "version": "0.17.0",
+                    "project_name": "cos-canary-default",
+                    "source": str(PROJECT_ROOT),
+                    "installed_at": "2026-01-01T00:00:00Z",
+                    "updated_at": "2026-01-01T00:00:00Z",
+                }
+            ]
+        }))
+
+        result = _run_script(
+            AUTO_UPDATE_SCRIPT,
+            ["--dry-run"],
+            env_overrides={"HOME": str(home)},
+        )
+
+        assert result.returncode == 0, result.stderr
+        assert "cos-canary-default" not in result.stdout
+        assert _read_registry(registry_file)["installations"] == []
 
     def test_auto_update_preserves_codex_driver_from_install_metadata(self, tmp_path):
         """Git-triggered updates must not fall back to Claude in dual-driver projects."""

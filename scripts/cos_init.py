@@ -587,6 +587,22 @@ def _get_cos_version(cos_source: Path) -> str:
     return "unknown"
 
 
+
+
+def _is_ephemeral_install(project_path: str, project_name: str = "") -> bool:
+    """Return True for disposable test/canary installs that must not be globally registered."""
+    name = project_name or ""
+    if name.startswith("cos-canary-") or name == "validate-test":
+        return True
+
+    path = str(Path(project_path).resolve())
+    tmpdir = os.environ.get("TMPDIR", "")
+    prefixes = ["/tmp/", "/var/folders/", "/private/var/folders/"]
+    if tmpdir:
+        prefixes.append(str(Path(tmpdir).resolve()))
+    return any(path.startswith(prefix) for prefix in prefixes)
+
+
 # ── Helper: registry update ───────────────────────────────────────────
 
 def _registry_register(
@@ -602,6 +618,9 @@ def _registry_register(
     registry_file = Path(registry_file_env) if registry_file_env else Path.home() / ".cognitive-os" / "installations.json"
 
     if os.environ.get("PYTEST_CURRENT_TEST", "") and not registry_file_env:
+        return
+
+    if not registry_file_env and _is_ephemeral_install(project_path, project_name):
         return
 
     registry_file.parent.mkdir(parents=True, exist_ok=True)
