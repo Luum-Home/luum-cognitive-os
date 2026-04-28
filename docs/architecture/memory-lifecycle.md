@@ -8,6 +8,11 @@
 Cognitive OS must not rely on one chat window or one vendor harness as the
 place where project memory lives.
 
+For developers, memory should be transparent by default: installing the OS
+should make session continuity, prompt capture, task recovery, and shutdown
+evidence happen through harness hooks and local artifacts without requiring
+developers to understand Engram internals.
+
 The durable memory contract is:
 
 1. capture important user intent while the session is active;
@@ -16,6 +21,33 @@ The durable memory contract is:
 4. record session outcomes at shutdown;
 5. recover pending work and prior context at the next session start;
 6. verify the whole loop with an executable doctor, not only documentation.
+
+## What "Automatic" Means
+
+The memory lifecycle has two automation layers:
+
+1. **Hook automation** — shell hooks run automatically at harness lifecycle
+   events and write local evidence under `.cognitive-os/`.
+2. **Agent-tool automation** — when Engram MCP tools are available in the
+   current agent host, the agent is expected to call `mem_session_summary`,
+   `mem_save`, or related MCP tools at the correct lifecycle points.
+
+Shell hooks cannot directly call the in-process MCP tool named
+`mem_session_summary` on behalf of Codex or Claude Code. They can run CLI
+commands, write local artifacts, launch daemons, and emit instructions. That is
+why the OS keeps local evidence even if a model fails to call the MCP tool, and
+why `hooks/pre-compaction-flush.sh` explicitly instructs the agent to call
+`mem_session_summary` and `mem_save`.
+
+The intended developer experience is:
+
+- developers do not manually run memory hooks during normal work;
+- new sessions automatically get session initialization, host diagnostics,
+  Engram startup, and pending-task recovery;
+- normal prompts and session shutdown automatically leave local evidence;
+- compaction and session closure still require the agent to obey the durable
+  memory protocol when MCP tools are available;
+- the doctor command proves whether the host can support that lifecycle.
 
 ## Quick Verification
 
@@ -92,10 +124,28 @@ Codex currently projects the portable lifecycle on supported events:
 - `UserPromptSubmit`
 - `Stop`
 
+On a new Codex session, the projected SessionStart chain runs:
+
+- `hooks/self-install.sh`
+- `hooks/session-init.sh`
+- `hooks/host-tool-doctor.sh`
+- `hooks/engram-daemon-launcher.sh`
+- `hooks/session-resume.sh`
+
+During the session, Codex projects `hooks/user-prompt-capture.sh` on
+`UserPromptSubmit`. At shutdown, Codex projects `hooks/session-learning.sh`,
+`hooks/git-context-capture.sh`, `hooks/session-changelog.sh`, and
+`hooks/engram-crystallize-on-session-end.sh` on `Stop`.
+
 Claude Code currently has richer event coverage:
 
 - `PreCompact` for `pre-compaction-flush.sh`
 - `PostToolUse` for `engram-reinforce-on-access.sh`
+
+On a new Claude Code session, the same SessionStart memory chain runs through
+`.claude/settings.json`. Claude additionally gets the compaction reminder and
+Engram-access reinforcement hooks because those event surfaces exist in its
+driver projection today.
 
 That is an explicit driver capability difference, not hidden Claude lock-in.
 Codex should only receive equivalent projections when equivalent event semantics
