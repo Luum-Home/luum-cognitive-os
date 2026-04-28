@@ -47,7 +47,7 @@ DEFAULT_RULES = (
 ).split()
 
 DEFAULT_HOOKS = (
-    "error-learning error-pipeline result-truncator session-init session-cleanup "
+    "error-learning error-pipeline result-truncator session-init host-tool-doctor session-cleanup "
     "clarification-gate blast-radius scope-proportionality "
     "error-pattern-detector auto-refine auto-verify completeness-check dod-gate "
     "trust-score-validator skill-metrics-tracker inject-phase-context stack-detector "

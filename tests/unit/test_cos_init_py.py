@@ -105,7 +105,7 @@ class TestDetectHarnessCodex:
         monkeypatch.delenv("COGNITIVE_OS_HARNESS", raising=False)
         monkeypatch.delenv("CODEX_PROJECT_DIR", raising=False)
         monkeypatch.delenv("CODEX_SESSION_ID", raising=False)
-        monkeypatch.setenv("CODEX_HOME", "/home/codex")
+        monkeypatch.setenv("CODEX_HOME", "/workspace/codex-home")
         assert cos_init.detect_harness(str(tmp_path)) == "codex"
 
 

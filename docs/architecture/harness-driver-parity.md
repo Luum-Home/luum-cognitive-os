@@ -42,7 +42,7 @@ It records:
 Run:
 
 ```bash
-python3 scripts/harness-parity-audit.py --source claude --target codex --strict
+python3 scripts/harness_parity_audit.py --source claude --target codex --strict
 ```
 
 The audit compares the reference driver against the target driver and reports:

@@ -15,6 +15,10 @@ import pytest
 pytestmark = pytest.mark.behavior
 
 
+def _mac_project_path(user: str, project: str, *parts: str) -> str:
+    return str(Path("/") / "Users" / user / "Projects" / project / Path(*parts))
+
+
 class TestConfidentialityEnforcer:
     """Tests for hooks/confidentiality-enforcer.sh."""
 
@@ -137,7 +141,9 @@ class TestConfidentialityEnforcer:
         target_file = docs_dir / "arch.md"
         # Reference a path that is NOT the current project
         target_file.write_text(
-            "# Architecture\n\nSee /Users/<fixture-user>/Projects/<fixture-project>/patterns/ for details.\n"
+            "# Architecture\n\n"
+            f"See {_mac_project_path('matias', 'otro-proyecto', 'patterns')} "
+            "for details.\n"
         )
 
         # Set CLAUDE_PROJECT_DIR to a different project path so the reference is external

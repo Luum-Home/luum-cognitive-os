@@ -91,7 +91,7 @@ Total skills: 142
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 
-## project (69)
+## project (68)
 
 | Skill | Description |
 |-------|-------------|
@@ -155,7 +155,6 @@ Total skills: 142
 | semgrep-scan | Run Semgrep SAST security scanning on a path or changed files. |
 | session-manager | Manage concurrent Cognitive OS sessions — list, inspect, and clean up |
 | singularity | Codebase Singularity — autonomous MAPE-K control loop that monitors… |
-| so-vs-vanilla | A/B benchmark harness that measures Cognitive OS governance value by running the same task under fu… |
 | sprint | Lightweight agent-managed sprint tracking — plan, status, retro, course-correct |
 | squad-manager | Evaluate squad performance and propose reconfigurations |
 | sre-agent | SRE auto-repair agent. |
@@ -176,4 +175,10 @@ Total skills: 142
 | Skill | Description |
 |-------|-------------|
 | session-report-executive | Generate an executive-level session report translating technical metrics into… |
+
+## os-only (1)
+
+| Skill | Description |
+|-------|-------------|
+| so-vs-vanilla | A/B benchmark harness that measures Cognitive OS governance value by running the same task under fu… |
 

@@ -7,7 +7,7 @@ command building, subprocess execution (mocked), and JSONL stream parsing.
 import json
 import os
 import subprocess
-from unittest.mock import MagicMock, patch, PropertyMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -24,9 +24,6 @@ from claude_executor import (
     ClaudeResult,
     RetryCode,
     ToolCall,
-    MODEL_MAP,
-    MODEL_COSTS,
-    ENV_ALLOWLIST,
     _classify_error,
     _estimate_cost,
     _get_safe_env,
@@ -139,13 +136,13 @@ class TestModelFamily:
 
 class TestGetSafeEnv:
     def test_allowlisted_vars_pass_through(self):
-        with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "sk-test", "HOME": "/home/user"}, clear=True):
+        with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "sk-test", "HOME": "/workspace/user-home"}, clear=True):
             env = _get_safe_env()
             assert env["ANTHROPIC_API_KEY"] == "sk-test"
-            assert env["HOME"] == "/home/user"
+            assert env["HOME"] == "/workspace/user-home"
 
     def test_non_allowlisted_vars_filtered(self):
-        with patch.dict(os.environ, {"SECRET_KEY": "bad", "HOME": "/home"}, clear=True):
+        with patch.dict(os.environ, {"SECRET_KEY": "bad", "HOME": "/workspace/home"}, clear=True):
             env = _get_safe_env()
             assert "SECRET_KEY" not in env
             assert "HOME" in env

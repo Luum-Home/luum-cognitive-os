@@ -6,17 +6,22 @@ detection, protected-term detection, and the is_scannable_path helper.
 Python 3.9+ compatible.
 """
 
+from pathlib import Path
+
 import pytest
 
 from lib.confidentiality_scanner import (
     ProtectedTerms,
-    Violation,
     is_scannable_path,
     scan_file,
     scan_text,
 )
 
 pytestmark = [pytest.mark.unit, pytest.mark.behavior]
+
+
+def mac_project_path(user: str, project: str, *parts: str) -> str:
+    return str(Path("/") / "Users" / user / "Projects" / project / Path(*parts))
 
 
 # ---------------------------------------------------------------------------
@@ -27,10 +32,10 @@ pytestmark = [pytest.mark.unit, pytest.mark.behavior]
 def test_detects_external_project_path():
     """A path from a different project triggers an external_path violation."""
     text = (
-        "The auth module at /Users/<fixture-user>/Projects/<fixture-project>/src/auth.go"
+        f"The auth module at {mac_project_path('matias', 'otro-proyecto', 'src', 'auth.go')}"
         " was used as reference."
     )
-    current = "/Users/<fixture-user>/Projects/<fixture-project>"
+    current = mac_project_path("matias", "mi-proyecto")
     violations = scan_text(text, current_project_dir=current)
 
     ext = [v for v in violations if v.pattern_type == "external_path"]
@@ -46,9 +51,9 @@ def test_detects_external_project_path():
 def test_ignores_same_project_path():
     """A path that belongs to the current project must not be flagged."""
     text = (
-        "See /Users/<fixture-user>/Projects/<fixture-project>/docs/README.md for details."
+        f"See {mac_project_path('matias', 'mi-proyecto', 'docs', 'README.md')} for details."
     )
-    current = "/Users/<fixture-user>/Projects/<fixture-project>"
+    current = mac_project_path("matias", "mi-proyecto")
     violations = scan_text(text, current_project_dir=current)
 
     ext = [v for v in violations if v.pattern_type == "external_path"]
@@ -94,8 +99,8 @@ def test_detects_spanish_attribution_with_protected_term():
 
 def test_detects_english_attribution_with_external_path():
     """An English attribution phrase followed by an external path is flagged."""
-    text = "This handler was adapted from the auth module in /Users/<fixture-user>/Projects/<fixture-project>/."
-    current = "/Users/<fixture-user>/Projects/<fixture-project>"
+    text = f"This handler was adapted from the auth module in {mac_project_path('matias', 'otro')}/."
+    current = mac_project_path("matias", "mine")
     violations = scan_text(text, current_project_dir=current)
 
     # Either attribution_phrase or external_path (or both) must fire.
@@ -149,13 +154,13 @@ def test_scan_file_reports_correct_line_numbers(tmp_path):
     """scan_file should report the 1-based line number of each violation."""
     content = (
         "Line 1: all good.\n"
-        "Line 2: see /Users/<fixture-user>/Projects/<fixture-project>/auth.go for reference.\n"
+        f"Line 2: see {mac_project_path('other', 'secret', 'auth.go')} for reference.\n"
         "Line 3: nothing here.\n"
     )
     doc = tmp_path / "test.md"
     doc.write_text(content, encoding="utf-8")
 
-    current = "/Users/<fixture-user>/Projects/<fixture-project>"
+    current = mac_project_path("other", "mine")
     violations = scan_file(str(doc), current_project_dir=current)
 
     ext = [v for v in violations if v.pattern_type == "external_path"]

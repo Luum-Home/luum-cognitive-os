@@ -18,7 +18,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 
 # Read stdin into a tempfile to avoid shell quoting issues.
-TMP=$(mktemp /tmp/native-agent-heartbeat-XXXXXX.json)
+TMP=$(mktemp "${TMPDIR:-/tmp}/native-agent-heartbeat-XXXXXX")
 trap 'rm -f "$TMP"' EXIT
 cat > "$TMP"
 

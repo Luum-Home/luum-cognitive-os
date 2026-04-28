@@ -21,7 +21,7 @@
 Evidence:
 1. `.mcp.json` declares `"type": "stdio"` (via the `command`/`args` pattern without `url`):
    ```json
-   // <home>/.claude/plugins/cache/engram/engram/0.1.0/.mcp.json
+   // <claude-plugin-cache>/engram/engram/0.1.0/.mcp.json
    {
      "mcpServers": {
        "engram": {
@@ -56,7 +56,7 @@ From `engram --help` (v1.10.2, installed):
 - `ENGRAM_MCP_SHARED_SOCKET` or similar env vars
 - Any form of shared-client multiplexing
 
-Binary string scan of `<home>/.local/bin/engram` found no strings matching `--transport`, `ENGRAM_MCP`, `shared_socket`, `unix_socket`, or `mcp.*port`. The only transport-related string on the `mcp` path is "stdio".
+Binary string scan of `<engram-bin>` found no strings matching `--transport`, `ENGRAM_MCP`, `shared_socket`, `unix_socket`, or `mcp.*port`. The only transport-related string on the `mcp` path is "stdio".
 
 ---
 
@@ -158,8 +158,8 @@ Given the type is already in the binary (`*server.SessionWithStreamableHTTPConfi
 
 ## File Path Evidence (per acceptance criteria)
 
-1. `<home>/.claude/plugins/cache/engram/engram/0.1.0/.mcp.json` — transport config (stdio, no URL)
-2. `<home>/.claude/plugins/cache/engram/engram/0.1.0/.claude-plugin/plugin.json` — upstream repo URL (`https://github.com/Gentleman-Programming/engram`), license (MIT)
-3. `<home>/.claude/plugins/cache/engram/engram/0.1.0/scripts/session-start.sh` — confirms `engram mcp` is a shim over `engram serve` HTTP API at `:7437`
-4. `<home>/.local/bin/engram` — binary: `engram --help` confirms "stdio transport"; binary strings confirm `*server.SessionWithStreamableHTTPConfig` type (mcp-go library), no `--transport` flag in v1.10.2
+1. `<claude-plugin-cache>/engram/engram/0.1.0/.mcp.json` — transport config (stdio, no URL)
+2. `<claude-plugin-cache>/engram/engram/0.1.0/.claude-plugin/plugin.json` — upstream repo URL (`https://github.com/Gentleman-Programming/engram`), license (MIT)
+3. `<claude-plugin-cache>/engram/engram/0.1.0/scripts/session-start.sh` — confirms `engram mcp` is a shim over `engram serve` HTTP API at `:7437`
+4. `<engram-bin>` — binary: `engram --help` confirms "stdio transport"; binary strings confirm `*server.SessionWithStreamableHTTPConfig` type (mcp-go library), no `--transport` flag in v1.10.2
 5. `https://github.com/gentleman-programming/homebrew-tap` (Formula) — upstream source, v1.12.0 available

@@ -51,6 +51,7 @@ except Exception as exc:  # pragma: no cover — depends on installed extras
 
 pytestmark = [
     pytest.mark.integration,
+    pytest.mark.e2e,
     pytest.mark.skipif(
         not _phoenix_available,
         reason=f"arize-phoenix not installed ({_phoenix_import_error})",

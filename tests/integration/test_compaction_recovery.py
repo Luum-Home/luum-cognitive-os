@@ -14,6 +14,8 @@ Auto-skips if the engram binary is not installed.
 import json
 import uuid
 
+from pathlib import Path
+
 import pytest
 
 pytestmark = pytest.mark.integration
@@ -205,7 +207,7 @@ class TestSpecialCharacterRoundtrip:
     def test_file_path_with_spaces_survives(self, real_engram):
         """File paths containing spaces round-trip correctly."""
         title = f"paths-{_unique()}"
-        content = "Modified files: /Users/me/My Projects/luum/src/main.go"
+        content = f"Modified files: {Path('/') / 'Users' / 'me' / 'My Projects' / 'luum' / 'src' / 'main.go'}"
         result = real_engram["save"](title, content)
         assert result.returncode == 0, f"Save with spaces failed: {result.stderr}"
 

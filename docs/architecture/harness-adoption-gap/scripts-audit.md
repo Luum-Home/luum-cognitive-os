@@ -50,9 +50,9 @@ registered projects in one operation.
 
 **Reproduction command:**
 ```bash
-grep -n 'cos-init.sh' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/auto-update-projects.sh
+grep -n 'cos-init.sh' <repo-root>/scripts/auto-update-projects.sh
 # Line 206: COS_SOURCE_DIR="$COS_SOURCE_DIR" bash "$COS_SOURCE_DIR/scripts/cos-init.sh" "--$project_mode"
-grep -n 'skills_dest' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-init.sh
+grep -n 'skills_dest' <repo-root>/scripts/cos-init.sh
 # Line 221: skills_dest=".cognitive-os/skills/cos"
 ```
 
@@ -91,7 +91,7 @@ invisible to the harness. Unlike the self-hosting fix (ADR-001), there is no
 
 **Reproduction command:**
 ```bash
-grep -n 'skills_dest' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-init.sh
+grep -n 'skills_dest' <repo-root>/scripts/cos-init.sh
 # Line 221: skills_dest=".cognitive-os/skills/cos"
 ls /some-client-project/.claude/skills/ 2>/dev/null || echo "MISSING"  # will print MISSING
 ```

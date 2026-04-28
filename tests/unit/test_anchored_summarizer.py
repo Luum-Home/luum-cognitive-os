@@ -112,7 +112,7 @@ class TestExtractFilePaths:
         assert len(paths) >= 1, f"Expected paths, got: {paths}"
 
     def test_absolute_path(self):
-        text = "The file /home/user/project/config.yaml was updated."
+        text = "The file /workspace/project/config.yaml was updated."
         paths = _make().extract_file_paths(text)
         assert any("config.yaml" in p or "project" in p for p in paths), paths
 
@@ -180,7 +180,7 @@ class TestCreateAnchor:
     def test_timestamp_is_iso_format(self):
         anchor = _make().create_anchor("decided to use Redis.")
         ts = anchor["timestamp"]
-        from datetime import datetime, timezone
+        from datetime import datetime
         # Must parse without raising and be a recent UTC timestamp
         parsed = datetime.fromisoformat(ts.replace("Z", "+00:00"))
         assert parsed.tzinfo is not None, "timestamp must be timezone-aware"
@@ -237,7 +237,7 @@ class TestPersistAnchor:
         assert not session_dir.exists()
         instance = AnchoredSummarizer(session_dir=str(session_dir))
         anchor = instance.create_anchor("decided to use Redis.")
-        result = instance.persist_anchor(anchor, to_file=True, to_engram=False)
+        instance.persist_anchor(anchor, to_file=True, to_engram=False)
         assert session_dir.exists()
 
     def test_file_path_none_when_to_file_false(self, tmp_path):

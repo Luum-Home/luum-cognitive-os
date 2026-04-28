@@ -26,7 +26,7 @@ Spawn a sandboxed daemon on an alternate port with a temporary data directory:
 
 ```bash
 TMPDIR=$(mktemp -d)
-ENGRAM_DATA_DIR="$TMPDIR" <home>/go/bin/engram serve 7438 &
+ENGRAM_DATA_DIR="$TMPDIR" <engram-bin> serve 7438 &
 PROBE_PID=$!
 # Wait for daemon to start
 sleep 1
