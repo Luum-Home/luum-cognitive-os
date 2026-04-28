@@ -18,6 +18,7 @@ set -euo pipefail
 
 COS_SOURCE_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 source "$COS_SOURCE_DIR/scripts/_lib/settings-driver.sh"
+COS_REGISTRY_FILE_EXPLICIT="${COS_REGISTRY_FILE+x}"
 REGISTRY_FILE="${COS_REGISTRY_FILE:-$HOME/.cognitive-os/installations.json}"
 DRY_RUN=false
 LIST_ONLY=false
@@ -58,6 +59,21 @@ if [ ! -f "$REGISTRY_FILE" ]; then
   echo "No installations registered (registry does not exist)."
   echo "Install COS in a project with: bash $COS_SOURCE_DIR/scripts/cos-init.sh"
   exit 0
+fi
+
+
+# ── Production registry hygiene ─────────────────────────────────────
+# The default registry may be touched by git hooks during pull/push. Keep it
+# free of disposable canary/test installs so auto-update never tries to upgrade
+# pytest tmpdirs or release-check scratch projects. Explicit COS_REGISTRY_FILE
+# values are test/local registries and are left untouched.
+if [ -z "${COS_REGISTRY_FILE_EXPLICIT:-}" ]; then
+  REGISTRY_SCRIPT="$COS_SOURCE_DIR/scripts/cos-registry.sh"
+  if [ -f "$REGISTRY_SCRIPT" ]; then
+    # shellcheck source=/dev/null
+    source "$REGISTRY_SCRIPT"
+    cos_registry_cleanup_ephemeral
+  fi
 fi
 
 # ── Get current COS version ────────────────────────────────────────
