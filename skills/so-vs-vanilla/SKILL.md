@@ -1,6 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: so-vs-vanilla
+audience: os-only
 description: >
   A/B benchmark harness that measures Cognitive OS governance value by running
   the same task under full governance AND with all governance disabled

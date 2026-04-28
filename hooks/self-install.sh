@@ -373,6 +373,7 @@ EXCLUDED_RULES=(
   "engram-api-safety.md"           # contextual: safe Engram API exploration / no prod mutation
   "engram-organization.md"         # contextual: engram prefix system reference
   "cognitive-os-changes.md"        # contextual: plan-first for OS mods
+  "cross-harness-authoring.md"     # contextual: harness projection self-check
   "library-selection.md"           # contextual: library evaluation checklist
   "prompt-composition.md"          # contextual: template composition protocol
   "self-improvement-protocol.md"   # contextual: weekly self-improve trigger
