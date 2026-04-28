@@ -161,7 +161,7 @@ def create_fake_cos_source(
     if settings_driver.exists():
         shutil.copy2(settings_driver, scripts_lib_dst / "settings-driver.sh")
     for script_name in [
-        "cos-init.sh", "cos-registry.sh", "auto-update-projects.sh",
+        "cos-init.sh", "cos_init.py", "cos-registry.sh", "auto-update-projects.sh",
         "cos-init-global.sh", "setup-git-hooks.sh",
     ]:
         src = SCRIPTS_DIR / script_name

@@ -144,7 +144,7 @@ def create_fake_cos_source(base_path: Path, version: str = "0.3.0") -> Path:
     if settings_driver.exists():
         shutil.copy2(settings_driver, scripts_lib_dst / "settings-driver.sh")
     for script_name in [
-        "cos-init.sh", "cos-registry.sh", "auto-update-projects.sh",
+        "cos-init.sh", "cos_init.py", "cos-registry.sh", "auto-update-projects.sh",
         "merge-settings.sh",
     ]:
         src = SCRIPTS_DIR / script_name
@@ -239,6 +239,7 @@ class TestAutoUpdateSymlinkSafety:
             env_overrides={"COS_REGISTRY_FILE": str(registry)},
             cwd=str(cos_src),
         )
+        assert result.returncode == 0, result.stderr
 
         # The COS source files MUST still be intact
         source_hooks_after = list_files_recursive(cos_src / "hooks")
@@ -564,6 +565,7 @@ class TestCosInitSymlinkSafety:
             args=["--standard"],
             cwd=str(project),
         )
+        assert result.returncode == 0, result.stderr
 
         claude_path = project / ".claude"
         assert not claude_path.is_symlink(), (
@@ -747,6 +749,7 @@ class TestFullUpdateCycle:
             env_overrides={"COS_REGISTRY_FILE": str(registry)},
             cwd=str(cos_src),
         )
+        assert result.returncode == 0, result.stderr
 
         # 1. COS source must be intact
         assert list_files_recursive(cos_src) == source_snapshot, (

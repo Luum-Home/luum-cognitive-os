@@ -915,6 +915,7 @@ def _fallback_settings(cos_source: Path, settings_path: Path) -> None:
 
 def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity requires length
     """Full Python init — ports all 12 procedural sections from cos-init.sh."""
+    raw_args = list(sys.argv[1:] if argv is None else argv)
     parser = _build_parser()
     parsed, extra = parser.parse_known_args(argv)
 
@@ -924,10 +925,13 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
 
     # ── Resolve mode ──────────────────────────────────────────────────
     mode = parsed.mode or "--default"
+    legacy_mode = next((arg for arg in raw_args if arg in ("--minimal", "--standard", "--lean")), "")
     if extra and extra[0] in ("--default", "--full", "--minimal", "--standard", "--lean"):
         mode = extra.pop(0)
+        legacy_mode = mode if mode in ("--minimal", "--standard", "--lean") else legacy_mode
+    if legacy_mode:
+        print(f"Note: ADR-002 collapsed '{legacy_mode}' into '--default'. Using '--default'.", file=sys.stderr)
     if mode in ("--minimal", "--standard", "--lean"):
-        print(f"Note: ADR-002 collapsed '{mode}' into '--default'. Using '--default'.", file=sys.stderr)
         mode = "--default"
     if mode not in ("--default", "--full"):
         print(f"Usage: cos_init.py [--default|--full]", file=sys.stderr)

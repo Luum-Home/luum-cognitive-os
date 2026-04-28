@@ -31,7 +31,6 @@ import sys
 import time
 import uuid
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
 from typing import Iterator
 
 import pytest
@@ -101,6 +100,7 @@ def phoenix_server() -> Iterator[dict]:
     port = _free_port()
     host = "127.0.0.1"
     endpoint = f"http://{host}:{port}"
+    collector_endpoint = f"{endpoint}/v1/traces"
 
     # Phoenix reads these env vars to decide bind addr and where the UI lives.
     env = {
@@ -108,7 +108,7 @@ def phoenix_server() -> Iterator[dict]:
         "PHOENIX_HOST": host,
         "PHOENIX_PORT": str(port),
         # Ensure no stale env leaks into the subprocess from an outer test run.
-        "PHOENIX_COLLECTOR_ENDPOINT": endpoint,
+        "PHOENIX_COLLECTOR_ENDPOINT": collector_endpoint,
     }
 
     # Prefer invoking `phoenix` via `python -m phoenix.server.main` because the
@@ -141,7 +141,7 @@ def phoenix_server() -> Iterator[dict]:
 
         yield {
             "endpoint": endpoint,
-            "collector_endpoint": endpoint,
+            "collector_endpoint": collector_endpoint,
             "client": client,
             "port": port,
         }
@@ -159,7 +159,7 @@ def phoenix_server() -> Iterator[dict]:
 @pytest.fixture
 def otel_env_for_phoenix(phoenix_server, monkeypatch):
     """Point the OTel exporter at the live phoenix_server instance."""
-    endpoint = phoenix_server["endpoint"]
+    endpoint = phoenix_server["collector_endpoint"]
     # phoenix.otel.register() honours PHOENIX_COLLECTOR_ENDPOINT.
     monkeypatch.setenv("PHOENIX_COLLECTOR_ENDPOINT", endpoint)
     # Clear competing envs that would redirect OTLP elsewhere.
