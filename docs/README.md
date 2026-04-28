@@ -11,6 +11,7 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [Headless and Clustered Runtime Plan](architecture/plans/headless-clustered-runtime-plan.md) — staged path from local harness runtime to EC2/container/Kubernetes workers.
 
 - [Architecture Principles](architecture-principles.md) — dependency model and layer boundaries
 - [Design Philosophy](design-philosophy.md) — biological-system framing for the OS
