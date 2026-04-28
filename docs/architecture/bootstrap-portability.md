@@ -151,6 +151,14 @@ correction:
 - skills and rules now use `.cognitive-os/skills/cos` and `.cognitive-os/rules/cos` as the canonical artifact contract, while `.claude/skills` and `.claude/rules/cos` remain Claude Code driver projections
 - `host-tool-doctor.sh` now runs as a cached SessionStart advisory check for Codex and Claude projections, proving active driver shape, dependency manifest visibility, and MCP/Engram host wiring without making pytest or tool installation implicit startup work.
 - `manifests/harness-driver-capabilities.yaml` and `scripts/harness-parity-audit.py` now separate supported Codex parity gaps from limited/unsupported hook-surface gaps, so `.codex/hooks.json` can be audited without treating `.claude/settings.json` as the universal source of truth.
+- memory lifecycle hooks now follow canonical project/session precedence across
+  Codex and Claude:
+  - project: `COGNITIVE_OS_PROJECT_DIR -> CODEX_PROJECT_DIR -> CLAUDE_PROJECT_DIR -> cwd`
+  - session: `COGNITIVE_OS_SESSION_ID -> CODEX_SESSION_ID -> CLAUDE_SESSION_ID`
+  Codex projections automatically load the memory loop for supported events
+  (`SessionStart`, `UserPromptSubmit`, `Stop`), while Claude keeps richer
+  `PreCompact` and `PostToolUse` memory reinforcement coverage as an explicit
+  driver advantage rather than a hidden portability guarantee.
 
 This is not the full migration, but it is the correct direction.
 

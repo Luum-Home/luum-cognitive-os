@@ -8,7 +8,8 @@ set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
-TASKS_DIR="${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/tasks"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+TASKS_DIR="$PROJECT_DIR/.cognitive-os/tasks"
 TASKS_FILE="$TASKS_DIR/active-tasks.json"
 
 # Exit silently if no tasks file
