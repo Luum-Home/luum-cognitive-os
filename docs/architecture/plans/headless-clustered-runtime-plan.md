@@ -165,3 +165,5 @@ Proof paths:
 - [ ] Phase 4 Kubernetes manifests drafted.
 - [ ] Phase 4 local cluster smoke test implemented.
 - [ ] Phase 5 repair/product-factory workflow proof implemented.
+
+- [Runtime Comparison Benchmark Plan](runtime-comparison-benchmark-plan.md) — compares COS against vanilla Claude/Codex and prior-art tools across workstation, VM, container, pod, and cluster surfaces.
