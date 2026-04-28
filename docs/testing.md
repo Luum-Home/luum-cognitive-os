@@ -143,10 +143,11 @@ partial runs remain analyzable across sessions.
 ### Host Tool Doctor
 
 Use `scripts/cos-doctor-tools.sh` when you need proof that the current host can
-see the active harness driver and optional tools such as Engram.
+see the active harness driver, declared dependencies, MCP registrations, and
+optional tools such as Engram.
 
 ```bash
-COGNITIVE_OS_HARNESS=codex CODEX_PROJECT_DIR="$PWD" bash scripts/cos-doctor-tools.sh
+COGNITIVE_OS_HARNESS=codex CODEX_PROJECT_DIR="$PWD" bash scripts/cos-doctor-tools.sh --profile default
 ```
 
 The doctor verifies:
@@ -154,9 +155,18 @@ The doctor verifies:
 - active harness detection
 - active settings driver presence and JSON shape
 - native Codex lifecycle keys when Codex is active
+- required/recommended tools from `manifests/dependencies.yaml`
+- recommended MCP server dependencies from `manifests/dependencies.yaml`
 - Engram CLI search
 - Engram MCP stdio startup
 - Codex config registration for Engram when Codex is active
+
+Use `--profile full` to check the broader optional stack declared for full
+installations:
+
+```bash
+COGNITIVE_OS_HARNESS=codex CODEX_PROJECT_DIR="$PWD" bash scripts/cos-doctor-tools.sh --profile full
+```
 
 Run with `--strict` when optional tool warnings should fail the check:
 
