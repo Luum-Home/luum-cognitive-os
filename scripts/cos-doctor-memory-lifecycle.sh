@@ -111,6 +111,7 @@ required = {
     "SessionStart": ["engram-daemon-launcher.sh", "session-resume.sh"],
     "UserPromptSubmit": ["user-prompt-capture.sh"],
     "Stop": [
+        "session-summary-reminder.sh",
         "session-learning.sh",
         "git-context-capture.sh",
         "session-changelog.sh",
@@ -282,6 +283,41 @@ if run_hook "engram-crystallize-on-session-end.sh" >/dev/null 2>&1 \
   pass "Engram crystallization records session-end lifecycle event"
 else
   fail "Engram crystallization did not write session-end lifecycle event"
+fi
+
+SUMMARY_FAKE_BIN="$TMP_ROOT/summary-fake-bin"
+mkdir -p "$SUMMARY_FAKE_BIN"
+cat > "$SUMMARY_FAKE_BIN/curl" <<'EOF'
+#!/usr/bin/env bash
+args="$*"
+case "$args" in
+  *127.0.0.1:7437/health*) printf '%s\n' '{"status":"ok"}'; exit 0 ;;
+  *127.0.0.1:7437/search*) printf '%s\n' '[]'; exit 0 ;;
+  *) exit 0 ;;
+esac
+EOF
+cat > "$SUMMARY_FAKE_BIN/engram" <<'EOF'
+#!/usr/bin/env bash
+cat >/dev/null
+exit 0
+EOF
+chmod +x "$SUMMARY_FAKE_BIN/curl" "$SUMMARY_FAKE_BIN/engram"
+
+summary_stage_a_out="$TMP_ROOT/session-summary-stage-a.out"
+if PATH="$SUMMARY_FAKE_BIN:$PATH" run_hook "session-summary-reminder.sh" >"$summary_stage_a_out" 2>/dev/null \
+  && grep -q "mem_session_summary" "$summary_stage_a_out" \
+  && [ -f "$SCRATCH_PROJECT/.cognitive-os/sessions/$SESSION_ID/.summary-reminder-fired" ]; then
+  pass "session-summary-reminder protects stop with mem_session_summary reminder"
+else
+  fail "session-summary-reminder did not emit the stage-A memory reminder"
+fi
+
+if PATH="$SUMMARY_FAKE_BIN:$PATH" run_hook "session-summary-reminder.sh" >/dev/null 2>&1 \
+  && [ -s "$SCRATCH_PROJECT/.cognitive-os/metrics/session-summary-fallback.jsonl" ] \
+  && [ -f "$SCRATCH_PROJECT/.cognitive-os/sessions/$SESSION_ID/.summary-fallback-fired" ]; then
+  pass "session-summary-reminder writes fallback persistence on second stop"
+else
+  fail "session-summary-reminder did not write the stage-B fallback metric"
 fi
 
 if run_hook "pre-compaction-flush.sh" >/tmp/cos-memory-doctor-precompact.$$ 2>/dev/null; then

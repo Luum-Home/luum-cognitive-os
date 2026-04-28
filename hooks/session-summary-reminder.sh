@@ -23,8 +23,8 @@ set -uo pipefail
 # Respect global killswitch (ADR-028 §584)
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(pwd)}}}"
-SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CLAUDE_SESSION_ID:-${CODEX_SESSION_ID:-}}}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-}}}"
 SESSION_START="${COGNITIVE_OS_SESSION_START:-}"
 
 # No session context — nothing to track. Exit silently.
