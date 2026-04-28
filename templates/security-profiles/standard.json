@@ -294,6 +294,15 @@
             "async": true
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-summary-reminder.sh\""
+          }
+        ]
       }
     ],
     "TeammateIdle": [
