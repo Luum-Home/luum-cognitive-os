@@ -30,6 +30,10 @@ The OS follows a 3-layer architecture: universal OS components in `hooks/`, `rul
 
 Hooks wire into the Claude Code hook system. The hook chain is: SessionStart initializes state → PreToolUse gates run before every tool call → PostToolUse validates results → Stop records session metrics.
 
+Memory lifecycle quick map: `docs/architecture/memory-lifecycle.md`. Use it to
+understand which hooks save context, which hooks recover prior state, and which
+doctor proves Codex/Claude session portability.
+
 ---
 
 ## Build & Test
