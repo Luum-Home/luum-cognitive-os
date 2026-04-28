@@ -29,6 +29,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Bootstrap Portability](architecture/bootstrap-portability.md) — where the system is still Claude-first and how to make Codex and other harnesses first-class bootstrap hosts
 - [Capability-Centric Runtime Enforcement](architecture/capability-centric-runtime-enforcement.md) — how dispatch, skills, gateways, and metrics choose execution intent before vendors
 - [Runtime Hardcoding Discipline](architecture/runtime-hardcoding-discipline.md) — contract for keeping protected runtime paths from silently promoting non-core subsystems
+- [Path Portability and Privacy](architecture/path-portability-and-privacy.md) — policy and scanner for blocking developer-home absolute paths in docs, code, scripts, skills, rules, and tests
 - [Tooling Stack Rationalization](architecture/tooling-stack-rationalization.md) — how to keep external services lightweight, optional, and aligned with the product promise
 - [Infrastructure Service Catalog](architecture/infrastructure-service-catalog.md) — what each Docker/Python/cloud service is for and whether it is core, optional, or reference-only
 - [Observability Backend Evaluation](architecture/observability-backend-evaluation-2026-04-24.md) — 2026 decision record for MLflow, Langfuse, Opik, OpenTelemetry, and other observability options

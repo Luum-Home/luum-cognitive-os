@@ -292,32 +292,32 @@ No HALT triggers fired.
 
 ```bash
 # 1. cos-update.sh invokes self-install.sh directly
-grep -n 'self-install\.sh' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-update.sh
+grep -n 'self-install\.sh' <repo-root>/scripts/cos-update.sh
 # Expected: line ~357 — bash "${SELF_INSTALL_SCRIPT}"
 
 # 2. self-install.sh contains both SYNC_DIRS entries
-grep -n 'skills|claude\|skills|cos' /Users/marialuzmontiel/projects/luum/luum-agent-os/hooks/self-install.sh
+grep -n 'skills|claude\|skills|cos' <repo-root>/hooks/self-install.sh
 # Expected: lines 37-38 — "skills|cos|tree|" and "skills|claude|tree|"
 
 # 3. auto-update-projects.sh delegates to cos-init.sh
-grep -n 'cos-init\.sh' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/auto-update-projects.sh
+grep -n 'cos-init\.sh' <repo-root>/scripts/auto-update-projects.sh
 # Expected: line 206 — bash "$COS_SOURCE_DIR/scripts/cos-init.sh" "--$project_mode"
 
 # 4. cos-init.sh dual-installs skills
-grep -n 'SKILL_DESTS' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-init.sh
+grep -n 'SKILL_DESTS' <repo-root>/scripts/cos-init.sh
 # Expected: line 225 — SKILL_DESTS=(".cognitive-os/skills/cos" ".claude/skills/cos")
 
 # 5. post-merge hook invokes auto-update-projects.sh
-grep -n 'auto-update-projects' /Users/marialuzmontiel/projects/luum/luum-agent-os/.git/hooks/post-merge
+grep -n 'auto-update-projects' <repo-root>/.git/hooks/post-merge
 # Expected: line ~12 — bash "$_COS_DIR/scripts/auto-update-projects.sh"
 
 # 6. Self-hosting sanity check: .claude/skills/ is populated
-ls /Users/marialuzmontiel/projects/luum/luum-agent-os/.claude/skills | wc -l
+ls <repo-root>/.claude/skills | wc -l
 # Expected: > 0 (populated by self-install.sh)
 
 # 7. Confirm no reimplemented sync logic in updaters
-grep -n 'ln -sf\|ln -s ' /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/cos-update.sh \
-                        /Users/marialuzmontiel/projects/luum/luum-agent-os/scripts/auto-update-projects.sh
+grep -n 'ln -sf\|ln -s ' <repo-root>/scripts/cos-update.sh \
+                        <repo-root>/scripts/auto-update-projects.sh
 # Expected: no matches (updaters never create symlinks themselves)
 ```
 
@@ -332,7 +332,7 @@ grep -n 'ln -sf\|ln -s ' /Users/marialuzmontiel/projects/luum/luum-agent-os/scri
 
    - **Upstream push required.** If ADR-001 was committed locally but not pushed to
      the remote, projects that pull from that remote will NOT receive the fix until
-     after the push. Verify: `git -C /Users/marialuzmontiel/projects/luum/luum-agent-os
+     after the push. Verify: `git -C <repo-root>
      log --oneline origin/main..main | grep -i 'adr-001\|self-install\|skills'` —
      expected output: empty (fully pushed) or a list of local-only commits (push required).
 
@@ -355,7 +355,7 @@ grep -n 'ln -sf\|ln -s ' /Users/marialuzmontiel/projects/luum/luum-agent-os/scri
 4. **The `.cognitive-os/install-meta.json` version stamp.** The auto-updater skips
    projects where `version` in the registry equals the current OS version
    (line 138-141). If ADR-001 shipped WITHOUT a VERSION bump, the updater will skip
-   projects that need the fix. Verify: `git -C /Users/marialuzmontiel/projects/luum/luum-agent-os
+   projects that need the fix. Verify: `git -C <repo-root>
    log --oneline -- VERSION` — check whether VERSION was updated in the ADR-001 commit.
 
 ---

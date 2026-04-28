@@ -71,7 +71,7 @@ Full specs at `.cognitive-os/pending-tasks/`:
 ## Critical Commands for Next Session Startup
 ```bash
 # 1. Check session starts clean
-cd /Users/matias.nahuel.amendola/Projects/luum/luum-agent-os
+cd <repo-root>
 bash scripts/apply-efficiency-profile.sh standard   # regenerate settings
 git status                                           # should be clean
 

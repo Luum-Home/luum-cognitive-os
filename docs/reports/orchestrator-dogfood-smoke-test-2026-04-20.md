@@ -26,7 +26,7 @@ scripts/orchestrator.py run --task "..."
 
 ## Smoke test runs
 
-All three runs used the real Claude Code CLI at `/Users/matias.nahuel.amendola/.local/bin/claude` v2.1.62, invoked via `CLAUDE_CODE_PATH=...` env var (the `claude` shell alias shadows it to a Mac .app which isn't subprocess-friendly).
+All three runs used the real Claude Code CLI at `<claude-cli-path>` v2.1.62, invoked via `CLAUDE_CODE_PATH=...` env var (the `claude` shell alias shadows it to a Mac .app which isn't subprocess-friendly).
 
 ### Run 1 — `--model haiku` (revealed 2 bugs)
 

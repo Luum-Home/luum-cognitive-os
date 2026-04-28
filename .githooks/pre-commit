@@ -14,6 +14,14 @@ if [ -n "$VIOLATIONS" ]; then
   exit 1
 fi
 
+# --- Gate 1b: Block developer-specific absolute home paths ---
+COS_ROOT="${COS_ROOT:-$(git rev-parse --show-toplevel)}"
+if [ -f "$COS_ROOT/scripts/check_absolute_paths.py" ]; then
+  if ! python3 "$COS_ROOT/scripts/check_absolute_paths.py" --root "$COS_ROOT" --staged; then
+    exit 1
+  fi
+fi
+
 # --- Gate 2: Python syntax + lint (ruff or py_compile) ---
 staged_py=$(git diff --cached --name-only --diff-filter=ACM -- '*.py' || true)
 if [ -n "$staged_py" ]; then
