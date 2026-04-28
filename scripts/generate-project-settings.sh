@@ -216,6 +216,12 @@ case "$MODE" in
 esac
 
 # ── Output ──────────────────────────────────────────────────────────
+if [ "$HARNESS" = "codex" ]; then
+  # Codex hooks.json uses lifecycle events at the top level. Keep Claude's
+  # nested .hooks shape only for Claude settings.json.
+  result=$(echo "$result" | jq '.hooks')
+fi
+
 if [ -n "$OUTPUT" ]; then
   echo "$result" > "$OUTPUT"
 else
