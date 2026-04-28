@@ -140,6 +140,11 @@ The latest run is linked at `.cognitive-os/reports/test-runs/latest`.
 Prefer this wrapper while reducing broad-suite failures so interrupted or
 partial runs remain analyzable across sessions.
 
+`pytest-with-summary.sh` is intentionally not a SessionStart hook. Cognitive OS
+previously ran pytest automatically at session start and produced orphaned
+processes; broad test execution must stay explicit, with persistent artifacts,
+until a bounded test lane is selected by the operator or CI.
+
 ### Host Tool Doctor
 
 Use `scripts/cos-doctor-tools.sh` when you need proof that the current host can
@@ -148,6 +153,12 @@ optional tools such as Engram.
 
 For the full Codex/Engram setup and expected output, see
 [Codex Host Tooling Verification](manual-tests/codex-host-tooling-verification.md).
+
+Installed projects also run `hooks/host-tool-doctor.sh` on SessionStart. That
+hook schedules the doctor with the default dependency profile, caches the result
+for 24 hours, and writes the latest report to
+`.cognitive-os/reports/host-tools/latest.txt`. It is advisory by design: startup
+must continue even when host tooling is incomplete.
 
 ```bash
 COGNITIVE_OS_HARNESS=codex CODEX_PROJECT_DIR="$PWD" bash scripts/cos-doctor-tools.sh --profile default
@@ -181,7 +192,12 @@ This command proves local availability and host configuration. If Codex config
 was changed during setup, restart Codex so the host reloads MCP server
 definitions before expecting new MCP tools to appear in-session.
 
-Each run also gets a test inventory:
+`manifest-check.sh` is consumed by both the manual doctor command and the
+SessionStart host-tool doctor. Required dependency failures are recorded as
+doctor failures; recommended dependency gaps remain warnings unless the manual
+doctor is run with `--strict`.
+
+Each `pytest-with-summary.sh` run also gets a test inventory:
 
 - `inventory.md` — human-readable repair queue, skipped/xfail/failure list,
   slowest tests, and heuristic tags such as `optional-lane`, `drift`,

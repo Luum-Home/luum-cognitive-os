@@ -120,6 +120,15 @@ class TestGenerateProjectSettings:
         filenames = extract_hook_filenames(run_generator("--minimal"))
         assert "session-init.sh" in filenames
 
+    def test_default_includes_host_tool_doctor(self):
+        filenames = extract_hook_filenames(run_generator("--default"))
+        assert "host-tool-doctor.sh" in filenames
+
+    def test_codex_projection_includes_host_tool_doctor(self):
+        settings = run_generator("--default", harness="codex")
+        filenames = extract_hook_filenames(settings)
+        assert "host-tool-doctor.sh" in filenames
+
     def test_minimal_includes_session_cleanup(self):
         filenames = extract_hook_filenames(run_generator("--minimal"))
         assert "session-cleanup.sh" in filenames

@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
   "_description": "Paranoid security profile \u2014 maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 50,
+  "_hook_count": 55,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -23,6 +23,20 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-init.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/host-tool-doctor.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/profile-drift-autoapply.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-daemon-launcher.sh\"",
+            "async": true
           },
           {
             "type": "command",
@@ -317,6 +331,11 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/context-watchdog.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-reinforce-on-access.sh\"",
+            "async": true
           }
         ]
       }
@@ -341,6 +360,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-recorder.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-crystallize-on-session-end.sh\"",
             "async": true
           }
         ]
