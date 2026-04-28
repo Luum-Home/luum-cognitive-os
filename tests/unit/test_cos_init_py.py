@@ -7,6 +7,7 @@ All tests are pure Python (no subprocess) — they test the Python logic in isol
 """
 from __future__ import annotations
 
+import json
 import os
 import sys
 from pathlib import Path
@@ -16,6 +17,8 @@ import pytest
 # Ensure scripts/ is importable without hyphens (snake_case filename per rules/python-naming.md)
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
 import cos_init
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 class TestDetectHarnessClaude:
@@ -501,3 +504,49 @@ class TestInstallSkillDir:
         status = cos_init.install_skill_dir(str(skill_dir), str(kernel), str(driver))
         assert status == "installed"
         assert (kernel / "agent-dashboard" / "extra.md").is_file()
+
+
+def test_registry_register_skips_ephemeral_without_explicit_registry(tmp_path, monkeypatch):
+    """cos-init must not write tmp/canary installs to the production registry."""
+    import scripts.cos_init as cos_init
+
+    home = tmp_path / "home"
+    home.mkdir()
+    project = tmp_path / "cos-canary-default"
+    project.mkdir()
+    monkeypatch.setenv("HOME", str(home))
+    monkeypatch.delenv("COS_REGISTRY_FILE", raising=False)
+    monkeypatch.delenv("PYTEST_CURRENT_TEST", raising=False)
+
+    cos_init._registry_register(
+        str(project),
+        "default",
+        "0.21.0",
+        "cos-canary-default",
+        str(PROJECT_ROOT),
+    )
+
+    assert not (home / ".cognitive-os" / "installations.json").exists()
+
+
+def test_registry_register_honors_explicit_registry_for_tmp_install(tmp_path, monkeypatch):
+    """Test registries can still model tmp installs explicitly."""
+    import scripts.cos_init as cos_init
+
+    registry_file = tmp_path / "registry.json"
+    project = tmp_path / "cos-canary-default"
+    project.mkdir()
+    monkeypatch.setenv("COS_REGISTRY_FILE", str(registry_file))
+    monkeypatch.delenv("PYTEST_CURRENT_TEST", raising=False)
+
+    cos_init._registry_register(
+        str(project),
+        "default",
+        "0.21.0",
+        "cos-canary-default",
+        str(PROJECT_ROOT),
+    )
+
+    data = json.loads(registry_file.read_text())
+    assert data["installations"][0]["project_name"] == "cos-canary-default"
+
