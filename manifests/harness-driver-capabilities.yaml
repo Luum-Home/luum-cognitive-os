@@ -1,0 +1,97 @@
+schema_version: 1
+description: >
+  Driver capability matrix for projecting Cognitive OS hooks into agent
+  harness settings. This is not the hook source of truth; it records what each
+  harness driver can safely express today.
+
+drivers:
+  claude:
+    settings_path: .claude/settings.json
+    shape: nested_hooks
+    supported_events:
+      SessionStart:
+        status: supported
+      UserPromptSubmit:
+        status: supported
+      SubagentStart:
+        status: supported
+      PreCompact:
+        status: supported
+      PreToolUse:
+        status: supported
+        matcher_semantics: tool_pattern
+      PostToolUse:
+        status: supported
+        matcher_semantics: tool_pattern
+      Stop:
+        status: supported
+      TeammateIdle:
+        status: cognitive_os_extension
+      TaskCreated:
+        status: cognitive_os_extension
+      TaskCompleted:
+        status: cognitive_os_extension
+
+  codex:
+    settings_path: .codex/hooks.json
+    shape: native_lifecycle_keys
+    supported_events:
+      SessionStart:
+        status: supported
+      UserPromptSubmit:
+        status: supported
+      Stop:
+        status: supported
+      PreToolUse:
+        status: limited
+        matcher_semantics: evolving
+        limitation: >
+          Codex hook support is still evolving. Treat tool-level events as
+          opt-in only until the local Codex version and hook runtime prove
+          coverage for the tools Cognitive OS needs.
+      PostToolUse:
+        status: limited
+        matcher_semantics: evolving
+        limitation: >
+          Codex hook support is still evolving. Treat tool-level events as
+          opt-in only until the local Codex version and hook runtime prove
+          coverage for the tools Cognitive OS needs.
+      SubagentStart:
+        status: unsupported
+      PreCompact:
+        status: unsupported
+      TeammateIdle:
+        status: cognitive_os_extension
+        projection: requires_cos_runner
+      TaskCreated:
+        status: cognitive_os_extension
+        projection: requires_cos_runner
+      TaskCompleted:
+        status: cognitive_os_extension
+        projection: requires_cos_runner
+
+parity_policy:
+  required_statuses:
+    - supported
+  advisory_statuses:
+    - limited
+    - cognitive_os_extension
+  unsupported_statuses:
+    - unsupported
+
+  rules:
+    - id: supported-events-must-project
+      description: >
+        If a hook is registered in the reference driver for an event that the
+        target driver marks supported, the target driver should either project
+        it or document an explicit exception.
+    - id: limited-events-are-not-parity-failures
+      description: >
+        Missing hooks on limited target events are capability gaps, not parity
+        regressions. They should appear in reports so the roadmap remains
+        honest.
+    - id: unsupported-events-must-not-be-copied-blindly
+      description: >
+        Do not copy unsupported event registrations into a target driver just
+        to make counts match. Add a runner, adapter, or documented projection
+        path first.
