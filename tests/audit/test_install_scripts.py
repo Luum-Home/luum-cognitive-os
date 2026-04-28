@@ -17,7 +17,6 @@ Safety guarantees:
 
 from __future__ import annotations
 
-import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -64,7 +63,7 @@ def test_syntax_bash_n(script_path: Path):
     "script_rel,expected_rc",
     [
         # --help must exit 0 for every user-facing script.
-        ("scripts/cos-init.sh", 1),  # cos-init uses --help via case fallthrough → 1
+        ("scripts/cos-init.sh", 0),
         ("scripts/cos-update.sh", 0),
         ("scripts/auto-update-projects.sh", 0),
         ("scripts/cos-init-global.sh", 0),
@@ -85,9 +84,8 @@ def test_syntax_bash_n(script_path: Path):
 def test_help_flag_exits_cleanly(tmp_path: Path, script_rel: str, expected_rc: int):
     """--help must exit with the documented return code without side effects.
 
-    cos-init.sh is an exception: it has no explicit --help branch, so it falls
-    through to the "Usage" error path (rc=1) when given an unrecognised arg.
-    That is documented, deterministic behaviour, so we assert on it.
+    cos-init.sh used to fall through to the legacy bash usage error path. Since
+    the Python argparse migration, it exposes normal --help semantics.
     """
     script = PROJECT_ROOT / script_rel
     result = run_shell(script, cwd=tmp_path, args=["--help"], timeout=15)

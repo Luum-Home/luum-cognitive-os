@@ -29,7 +29,7 @@ blocked_reference_patterns:
 
 allowlist:
   - id: legacy_default_skill_agent_dashboard
-    path: scripts/cos-init.sh
+    path: scripts/cos_init.py
     pattern_id: dashboard_default_skill
     required_text: "agent-dashboard"
     zone: extensions
@@ -37,7 +37,7 @@ allowlist:
     reason: "The default skill set still reflects the earlier dashboard-heavy onboarding profile."
     remediation: "Move dashboard skills behind an explicit extension/profile selection path or replace them with core-proof defaults."
   - id: legacy_default_skill_paperclip_dashboard
-    path: scripts/cos-init.sh
+    path: scripts/cos_init.py
     pattern_id: dashboard_default_skill
     required_text: "paperclip-dashboard"
     zone: extensions
@@ -99,4 +99,3 @@ verification:
   primary_docs:
     - docs/architecture/runtime-hardcoding-discipline.md
     - docs/business/master-plan-checklist.md
-

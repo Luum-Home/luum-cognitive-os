@@ -42,8 +42,9 @@ def test_so_vitals_survives_fd_pressure(tmp_path):
     """so-vitals.sh must exit 0 under simulated FD pressure."""
     orig_soft, orig_hard = resource.getrlimit(resource.RLIMIT_NOFILE)
 
-    # How many FDs we'll open for pressure (leave headroom for the shell).
-    FD_TARGET = 60
+    # How many FDs we'll open for pressure. Leave enough headroom for Python to
+    # create subprocess pipes; otherwise the test fails before so-vitals runs.
+    FD_TARGET = 45
     FD_CAP = 80  # enforced soft limit we attempt to set
 
     lowered_rlimit = False

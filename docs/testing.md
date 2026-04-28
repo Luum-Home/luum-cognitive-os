@@ -117,6 +117,14 @@ bash scripts/pytest-with-summary.sh -- tests/unit/test_example.py -q -ra
 bash scripts/pytest-with-summary.sh -- tests/ -q --tb=short
 ```
 
+The wrapper intentionally runs broad/stateful lanes serially unless you pass an
+explicit worker override. This keeps full-suite and non-Docker repair evidence
+comparable instead of mixing real failures with xdist worker death or shared
+state races. Unit-only lanes may still use adaptive parallelism by default.
+
+To force parallelism for a known-safe lane, pass `-n` directly or set
+`COS_PYTEST_WORKERS=auto|N`.
+
 While the repair effort is still separating core behavior from optional
 reference stacks, prefer a broad non-Docker lane before running the full suite:
 
