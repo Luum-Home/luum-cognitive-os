@@ -130,6 +130,11 @@ correction:
 - self-install behavior tests include Codex-specific project-root coverage
 - `scripts/generate-project-settings.sh` now supports harness-aware projection for Claude and Codex
 - `scripts/cos-init.sh` now writes and merges the active harness settings driver instead of assuming `.claude/settings.json`
+- Codex projection now writes native `.codex/hooks.json` lifecycle keys instead
+  of wrapping them in Claude's top-level `hooks` object. Merge paths use the
+  generated driver shape as the source of truth, so older wrapped Codex files
+  are migrated back to the native Codex shape instead of preserving Claude as a
+  hidden center of gravity.
 - the `cos` package installer resolves a settings driver per harness and can register hooks into `.codex/hooks.json`
 - `scripts/apply-efficiency-profile.sh` now regenerates the same committed default Claude projection that the repository ships in `.claude/settings.json`, so pre-commit and installer flows no longer depend on a stale legacy hook mesh
 - `scripts/upgrade.sh` now preserves the active harness when it re-runs `cos-init.sh`, instead of silently falling back to the Claude path
