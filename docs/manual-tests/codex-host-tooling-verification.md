@@ -79,6 +79,32 @@ Result: PASS (0 warning(s))
 This verifies the default host contract declared in
 `manifests/dependencies.yaml`.
 
+## Automatic SessionStart Check
+
+`hooks/host-tool-doctor.sh` is registered as a SessionStart hook for both the
+Codex and Claude projections. It resolves the installed Cognitive OS source
+from `.cognitive-os/install-meta.json`, runs `scripts/cos-doctor-tools.sh` with
+the default profile, and records the latest result at:
+
+```text
+.cognitive-os/reports/host-tools/latest.txt
+.cognitive-os/runtime/host-tool-doctor.state.json
+```
+
+The automatic hook is cached for 24 hours by default. Override the cache only
+when diagnosing host wiring:
+
+```bash
+COS_HOST_TOOL_DOCTOR_FORCE=1 \
+COS_HOST_TOOL_DOCTOR_FOREGROUND=1 \
+COGNITIVE_OS_HARNESS=codex CODEX_PROJECT_DIR="$PWD" \
+  bash hooks/host-tool-doctor.sh
+```
+
+The hook is advisory and never installs missing tools or mutates user-level MCP
+configuration. Safe project wiring repair remains the job of `self-install.sh`;
+tool installation and Codex restart remain explicit operator actions.
+
 ## Full Profile Verification
 
 Run:
@@ -118,12 +144,15 @@ have every recommended extension installed.
   current conversation if Codex was not restarted.
 - It does not prove every future harness driver works; it proves the active
   Codex driver and declared dependency profile on this host.
+- The automatic SessionStart hook does not run pytest. Use
+  `scripts/pytest-with-summary.sh` explicitly when test inventory is needed.
 
 ## Related Automated Tests
 
 ```bash
 python3 -m pytest \
   tests/behavior/test_cos_doctor_tools.py \
+  tests/behavior/test_host_tool_doctor_hook.py \
   tests/integration/test_manifest_e2e.py \
   tests/unit/test_safe_engram_contract.py \
   tests/unit/test_cos_mcp_server.py \

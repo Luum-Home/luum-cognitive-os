@@ -1,7 +1,7 @@
 {
   "_profile": "minimal",
   "_description": "Minimal security profile \u2014 core safety only. For exploration and single-dev sessions where speed matters.",
-  "_hook_count": 13,
+  "_hook_count": 14,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -23,6 +23,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-init.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/host-tool-doctor.sh\"",
+            "async": true
           },
           {
             "type": "command",

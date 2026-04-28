@@ -3,7 +3,7 @@
 """Validate that all hooks in hooks/*.sh are registered in security/efficiency profiles.
 
 A hook is considered registered when it appears in ALL of:
-  - scripts/set-security-profile.sh
+  - templates/security-profiles/*.json
   - scripts/apply-efficiency-profile.sh
   - .claude/settings.local.json  (or settings.json)
 
@@ -14,7 +14,6 @@ Exit 0 if all registered (or allowlisted), exit 1 with details of unregistered h
 """
 from __future__ import annotations
 
-import re
 import sys
 from pathlib import Path
 
@@ -51,8 +50,24 @@ def get_settings_content(root: Path) -> str:
     return "\n".join(parts)
 
 
+def get_security_profile_content(root: Path) -> str:
+    """Return combined security profile JSON content.
+
+    Security profiles are the source of truth for set-security-profile.sh.
+    The script applies those JSON artifacts; it should not be treated as the
+    hook registry.
+    """
+    profile_dir = root / "templates" / "security-profiles"
+    if not profile_dir.is_dir():
+        return ""
+    return "\n".join(
+        _read_file_safe(path)
+        for path in sorted(profile_dir.glob("*.json"))
+    )
+
+
 def check_hook_registered(hook_name: str, root: Path) -> dict[str, bool]:
-    security = _read_file_safe(root / "scripts" / "set-security-profile.sh")
+    security = get_security_profile_content(root)
     efficiency = _read_file_safe(root / "scripts" / "apply-efficiency-profile.sh")
     settings = get_settings_content(root)
     return {
@@ -97,7 +112,7 @@ def main() -> int:
             missing = [k for k, v in checks.items() if not v]
             print(f"  - {hook}  (missing: {', '.join(missing)})")
         print(
-            "\nTo register: add to scripts/set-security-profile.sh and "
+            "\nTo register: add to templates/security-profiles/*.json and "
             "scripts/apply-efficiency-profile.sh, then re-run set-security-profile.sh."
         )
         print(
