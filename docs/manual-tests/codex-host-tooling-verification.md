@@ -73,6 +73,7 @@ PASS engram CLI found
 PASS engram CLI search works
 PASS engram MCP stdio starts
 PASS Codex config mentions Engram
+PASS memory lifecycle doctor passed
 Result: PASS (0 warning(s))
 ```
 
@@ -104,6 +105,26 @@ COGNITIVE_OS_HARNESS=codex CODEX_PROJECT_DIR="$PWD" \
 The hook is advisory and never installs missing tools or mutates user-level MCP
 configuration. Safe project wiring repair remains the job of `self-install.sh`;
 tool installation and Codex restart remain explicit operator actions.
+
+`cos-doctor-tools.sh` also invokes the memory lifecycle doctor. For deeper
+manual verification, run the memory check directly:
+
+```bash
+COGNITIVE_OS_HARNESS=codex \
+CODEX_PROJECT_DIR="$PWD" \
+  bash scripts/cos-doctor-memory-lifecycle.sh --harness codex
+```
+
+Expected evidence:
+
+- `PASS Engram launcher hook can run for a new codex session`
+- `PASS session-resume detects and recovers pending tasks`
+- `PASS user prompt capture writes lifecycle metrics`
+- `PASS session-learning saves session summary metrics`
+- `PASS git-context-capture saves session git context`
+- `PASS session-changelog saves resumable changelog`
+- `PASS Engram crystallization records session-end lifecycle event`
+- `PASS pre-compaction flush emits durable memory reminder`
 
 ## Full Profile Verification
 
