@@ -12,12 +12,12 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="session-learning"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 LEARNINGS_FILE="$METRICS_DIR/session-learnings.jsonl"
 
 # Session-aware
-SESSION_ID="${COGNITIVE_OS_SESSION_ID:-}"
+SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-}}}"
 if [ -z "$SESSION_ID" ]; then
   _SESSION_FILE="$PROJECT_DIR/.cognitive-os/sessions/.current-session-$$"
   [ -f "$_SESSION_FILE" ] && SESSION_ID=$(cat "$_SESSION_FILE" 2>/dev/null)
