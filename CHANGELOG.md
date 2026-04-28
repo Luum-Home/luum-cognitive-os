@@ -5,6 +5,39 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-04-28 — "Portable Runtime, Memory Lifecycle, and Developer Confidence"
+
+### Added
+
+- Codex-first host tooling verification with a doctor that checks active harness, settings driver JSON, declared dependencies, Engram CLI, Engram MCP startup, and Codex config wiring.
+- Cached SessionStart host-doctor execution so Codex and Claude installs can surface toolchain drift automatically without paying the full diagnostic cost on every session.
+- Memory lifecycle portability checks and documentation covering SessionStart, UserPromptSubmit, Stop, Engram daemon launch, session resume, session changelog, and crystallization flows.
+- Harness driver parity audit docs/tests to compare canonical Cognitive OS components against Claude/Codex driver projections.
+- Developer-confidence product positioning: Cognitive OS improves trust in AI-assisted development through memory, guardrails, recovery, portable checks, and lightweight defaults.
+- Session summary reminder Stage A/B hooks: first remind/block for missing `mem_session_summary`, then provide a heuristic Engram auto-save fallback on repeated Stop attempts.
+
+### Changed
+
+- Preserved the installed harness and settings driver in `.cognitive-os/install-meta.json` so pull/push auto-update flows do not fall back to Claude when Codex markers are also present.
+- Enforced native Codex projection paths so Codex installs no longer treat `.claude/` as the runtime center of gravity.
+- Canonicalized memory hook environment resolution around `COGNITIVE_OS_*`, `CODEX_*`, and `CLAUDE_*` variables instead of Claude-only project/session assumptions.
+- Dropped an excluded Engram driver projection from rules and clarified automatic memory semantics: shell hooks can persist local lifecycle evidence and reminders, while `mem_session_summary` remains an agent MCP tool call.
+
+### Fixed
+
+- Repaired post-SIGALRM test contract drift and replaced SIGALRM-based timeout fixtures with `pytest-timeout`-compatible behavior.
+- Hardened hook latency tests to avoid flaky wall-clock/observability false signals.
+- Stabilized the broad repair lane by removing stale observability assumptions and aligning hook latency targets.
+- Isolated integration fixtures with `monkeypatch` and `tmp_path` to avoid cross-test state leakage.
+
+### Documentation
+
+- Added Codex host tooling verification runbook and memory lifecycle quick map.
+- Added ADR-064 implementation plan covering remaining harness-agnostic surfaces, P0 sequence, and verification suite design.
+- Documented developer-confidence positioning as a product artifact.
+- Recorded release/handoff context for the v0.20.0-to-v0.21.0 stabilization cycle.
+
+
 ## [0.20.0] - 2026-04-27 — "ADR-071: Engram Lifecycle Evolution (Phases 1–3)"
 
 ### Added — confidence + Ebbinghaus decay (Phase 1, commit `d48dcb8`)
