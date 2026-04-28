@@ -165,6 +165,11 @@ and report both raw and effective timings. Do not mark latency regressions as
 blanket `xfail`; acknowledged slow hooks belong in explicit allowlists so newly
 slow hooks still fail.
 
+Telemetry-driven hook p95 contracts should require enough samples to be
+statistically meaningful. The default per-hook minimum is 20 samples; below
+that, a couple of local synthetic or cold-start rows can dominate p95 and create
+false product regressions.
+
 CLI tests that parse stdout as JSON should treat stdout as a product contract.
 Optional observability initializers, SDK banners, and exporter diagnostics must
 be suppressed or redirected away from stdout. If a command emits machine-readable
