@@ -36,7 +36,10 @@ def run_generator(mode="--standard", harness="claude", env_extra=None):
 def extract_hook_commands(settings_json):
     """Extract all hook command strings from a settings dict."""
     commands = []
-    for event_name, groups in settings_json.get("hooks", {}).items():
+    hook_root = settings_json.get("hooks", settings_json)
+    for event_name, groups in hook_root.items():
+        if not isinstance(groups, list):
+            continue
         for group in groups:
             for hook in group.get("hooks", []):
                 commands.append(hook.get("command", ""))
@@ -85,6 +88,8 @@ class TestGenerateProjectSettings:
 
     def test_codex_projection_uses_codex_runtime_expression(self):
         settings = run_generator("--full", harness="codex")
+        assert "hooks" not in settings, "Codex hooks.json must use top-level lifecycle keys"
+        assert "SessionStart" in settings
         commands = extract_hook_commands(settings)
         assert commands, "Expected hook commands for codex projection"
         assert any("CODEX_PROJECT_DIR" in cmd for cmd in commands), commands
@@ -277,6 +282,7 @@ class TestCosInitSettingsGeneration:
         assert settings is not None, f"No codex hooks generated: {result.stderr}"
         assert (tmp_path / ".codex" / "hooks.json").exists()
         assert not (tmp_path / ".claude" / "settings.json").exists()
+        assert "hooks" not in settings, "Codex hooks.json must stay native, not Claude-wrapped"
         commands = extract_hook_commands(settings)
         assert any("CODEX_PROJECT_DIR" in cmd for cmd in commands), commands
         assert any("custom-stop.sh" in cmd for cmd in commands), commands
