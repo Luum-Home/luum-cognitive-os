@@ -14,6 +14,11 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/host-tool-doctor.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/profile-drift-autoapply.sh\""
           },
           {

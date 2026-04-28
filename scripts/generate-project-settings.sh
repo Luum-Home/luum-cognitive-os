@@ -123,7 +123,7 @@ project_scoped_hooks() {
 
 # ADR-002 default tier hook set (~29 hooks). Includes the regression guards:
 # auto-verify, auto-refine, dod-gate, session-sanity, confidentiality-enforcer.
-DEFAULT_HOOKS="error-pipeline.sh session-init.sh session-cleanup.sh result-truncator.sh
+DEFAULT_HOOKS="error-pipeline.sh session-init.sh host-tool-doctor.sh session-cleanup.sh result-truncator.sh
   clarification-gate.sh blast-radius.sh scope-proportionality.sh
   error-pattern-detector.sh auto-refine.sh auto-verify.sh completeness-check.sh dod-gate.sh
   trust-score-validator.sh skill-metrics-tracker.sh inject-phase-context.sh stack-detector.sh
