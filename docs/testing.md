@@ -158,6 +158,18 @@ If pytest times out before writing JUnit XML, the inventory falls back to the
 captured stack trace and records a synthetic timeout item. That keeps timeout
 failures visible instead of turning them into empty reports.
 
+Latency tests must distinguish product latency from host scheduler noise. When
+an integration test measures a subprocess hook path, it may confirm one isolated
+outlier with an immediate retry, but it must still fail repeated slow samples
+and report both raw and effective timings. Do not mark latency regressions as
+blanket `xfail`; acknowledged slow hooks belong in explicit allowlists so newly
+slow hooks still fail.
+
+CLI tests that parse stdout as JSON should treat stdout as a product contract.
+Optional observability initializers, SDK banners, and exporter diagnostics must
+be suppressed or redirected away from stdout. If a command emits machine-readable
+JSON, tracing setup must not contaminate that stream.
+
 This wrapper is part of the Cognitive OS development workflow. It is paired
 with the OS-only `test-contract-repair` skill and should be used whenever
 maintainers repair or classify this repository's own test suite. Projects that
