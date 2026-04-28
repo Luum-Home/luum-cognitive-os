@@ -311,6 +311,67 @@ class TestAutoUpdate:
         assert result.returncode == 0
         assert "No projects installed from" in result.stdout
 
+    def test_auto_update_preserves_codex_driver_from_install_metadata(self, tmp_path):
+        """Git-triggered updates must not fall back to Claude in dual-driver projects."""
+        project_dir = tmp_path / "codex-project"
+        project_dir.mkdir()
+        (project_dir / "package.json").write_text('{"name": "codex-project"}')
+
+        (project_dir / ".codex").mkdir()
+        (project_dir / ".codex" / "hooks.json").write_text("{}")
+        (project_dir / ".claude").mkdir()
+        (project_dir / ".claude" / "settings.json").write_text("{}")
+        cos_dir = project_dir / ".cognitive-os"
+        cos_dir.mkdir()
+        (cos_dir / "install-meta.json").write_text(
+            json.dumps(
+                {
+                    "mode": "default",
+                    "version": "old",
+                    "source": str(PROJECT_ROOT),
+                    "project_name": "codex-project",
+                    "harness": "codex",
+                    "settings_driver": ".codex/hooks.json",
+                }
+            )
+        )
+
+        registry_file = _create_registry(
+            tmp_path,
+            [
+                {
+                    "path": str(project_dir),
+                    "mode": "default",
+                    "version": "old",
+                    "project_name": "codex-project",
+                    "source": str(PROJECT_ROOT),
+                    "installed_at": "2026-01-01T00:00:00Z",
+                    "updated_at": "2026-01-01T00:00:00Z",
+                }
+            ],
+        )
+
+        result = _run_script(
+            AUTO_UPDATE_SCRIPT,
+            [],
+            env_overrides={"COS_REGISTRY_FILE": str(registry_file)},
+        )
+
+        assert result.returncode == 0, result.stderr
+        hooks_path = project_dir / ".codex" / "hooks.json"
+        hooks_data = json.loads(hooks_path.read_text())
+        assert "hooks" not in hooks_data, "Codex auto-update must preserve native hook shape"
+        commands = [
+            hook["command"]
+            for groups in hooks_data.values()
+            for group in groups
+            for hook in group.get("hooks", [])
+        ]
+        assert any("CODEX_PROJECT_DIR" in command for command in commands)
+        meta = json.loads((project_dir / ".cognitive-os" / "install-meta.json").read_text())
+        assert meta["harness"] == "codex"
+        assert meta["settings_driver"] == ".codex/hooks.json"
+
 
 # ── Git Hook Setup Tests ───────────────────────────────────────────
 

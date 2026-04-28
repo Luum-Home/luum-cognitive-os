@@ -251,6 +251,9 @@ class TestCosInitSettingsGeneration:
         assert hooks_path.exists(), "Expected .codex/hooks.json to be created"
         commands = extract_hook_commands(settings)
         assert any("CODEX_PROJECT_DIR" in cmd for cmd in commands), commands
+        meta = json.loads((tmp_path / ".cognitive-os" / "install-meta.json").read_text())
+        assert meta["harness"] == "codex"
+        assert meta["settings_driver"] == ".codex/hooks.json"
 
     def test_existing_codex_driver_is_autodetected_without_harness_flag(self, tmp_path):
         codex_dir = tmp_path / ".codex"
@@ -286,6 +289,37 @@ class TestCosInitSettingsGeneration:
         commands = extract_hook_commands(settings)
         assert any("CODEX_PROJECT_DIR" in cmd for cmd in commands), commands
         assert any("custom-stop.sh" in cmd for cmd in commands), commands
+
+    def test_install_metadata_preserves_codex_when_both_driver_markers_exist(self, tmp_path):
+        codex_dir = tmp_path / ".codex"
+        codex_dir.mkdir()
+        (codex_dir / "hooks.json").write_text("{}")
+        claude_dir = tmp_path / ".claude"
+        claude_dir.mkdir()
+        (claude_dir / "settings.json").write_text("{}")
+        cos_dir = tmp_path / ".cognitive-os"
+        cos_dir.mkdir()
+        (cos_dir / "install-meta.json").write_text(
+            json.dumps(
+                {
+                    "mode": "default",
+                    "source": str(PROJECT_ROOT),
+                    "harness": "codex",
+                    "settings_driver": ".codex/hooks.json",
+                }
+            )
+        )
+
+        settings, result = self._run_cos_init(tmp_path, "--standard")
+
+        assert result.returncode == 0, result.stderr
+        assert "Harness: codex" in result.stdout
+        assert settings is not None
+        assert (tmp_path / ".codex" / "hooks.json").exists()
+        assert "hooks" not in settings, "Codex hooks.json must stay native after migration"
+        meta = json.loads((tmp_path / ".cognitive-os" / "install-meta.json").read_text())
+        assert meta["harness"] == "codex"
+        assert meta["settings_driver"] == ".codex/hooks.json"
 
     def test_codex_harness_preserves_existing_codex_hooks(self, tmp_path):
         codex_dir = tmp_path / ".codex"
