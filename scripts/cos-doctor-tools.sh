@@ -2,8 +2,9 @@
 # SCOPE: os-only
 # cos-doctor-tools.sh — Verify host tooling visible to Cognitive OS.
 #
-# This command answers a narrow question: "Can this host actually see the
-# harness projection and optional memory/MCP tools the OS claims to use?"
+# This command answers a concrete question: "Can this host actually see the
+# harness projection, declared dependencies, and optional MCP tools the OS
+# claims to use?"
 
 set -uo pipefail
 
@@ -13,22 +14,26 @@ PROJECT_ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_
 source "$OS_SOURCE_ROOT/scripts/_lib/settings-driver.sh"
 
 STRICT=false
+PROFILE="${COGNITIVE_OS_PROFILE:-default}"
 
 usage() {
   cat <<'EOF'
 cos doctor tools — verify active harness and optional tool availability
 
 Usage:
-  bash scripts/cos-doctor-tools.sh [--strict]
+  bash scripts/cos-doctor-tools.sh [--profile default|full] [--strict]
 
 Flags:
-  --strict  Exit non-zero when optional tooling such as Engram is unavailable.
-  --help    Show this help.
+  --profile NAME  Dependency profile to verify from manifests/dependencies.yaml.
+  --strict        Exit non-zero when recommended/optional tooling is unavailable.
+  --help          Show this help.
 
 Checks:
   - active harness detection
   - active settings driver exists and is valid JSON
   - Codex native lifecycle keys when the active harness is codex
+  - required/recommended tools from manifests/dependencies.yaml
+  - recommended MCP registrations from manifests/dependencies.yaml
   - Engram CLI search availability
   - Engram MCP stdio startup availability
 
@@ -40,6 +45,14 @@ EOF
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
+    --profile)
+      [ -z "${2:-}" ] && { echo "Error: --profile requires a value" >&2; exit 2; }
+      PROFILE="$2"
+      shift
+      ;;
+    --profile=*)
+      PROFILE="${1#--profile=}"
+      ;;
     --strict) STRICT=true ;;
     --help|-h) usage; exit 0 ;;
     *) echo "Unknown flag: $1" >&2; usage >&2; exit 2 ;;
@@ -61,6 +74,7 @@ ACTIVE_DRIVER_PATH="$(cos_settings_driver_path "$PROJECT_ROOT" "$ACTIVE_HARNESS"
 printf 'Project: %s\n' "$PROJECT_ROOT"
 printf 'Harness: %s\n' "$ACTIVE_HARNESS"
 printf 'Settings driver: %s\n' "$ACTIVE_DRIVER"
+printf 'Dependency profile: %s\n' "$PROFILE"
 
 case "$ACTIVE_HARNESS" in
   claude|codex) pass "active harness is supported: $ACTIVE_HARNESS" ;;
@@ -109,6 +123,105 @@ PYEOF
   fi
 elif [ -f "$ACTIVE_DRIVER_PATH" ]; then
   warn "python3 unavailable; settings driver JSON contract was not checked"
+fi
+
+if [ -x "$OS_SOURCE_ROOT/scripts/manifest-check.sh" ] && command -v python3 >/dev/null 2>&1; then
+  MANIFEST_JSON="$(mktemp "${TMPDIR:-/tmp}/cos-manifest-check.XXXXXX")"
+  MANIFEST_ERR="$(mktemp "${TMPDIR:-/tmp}/cos-manifest-check.err.XXXXXX")"
+  if bash "$OS_SOURCE_ROOT/scripts/manifest-check.sh" --profile "$PROFILE" --json >"$MANIFEST_JSON" 2>"$MANIFEST_ERR"; then
+    manifest_rc=0
+  else
+    manifest_rc=$?
+  fi
+
+  if [ "$manifest_rc" -eq 2 ]; then
+    fail "dependency manifest is invalid: $(tr '\n' ' ' < "$MANIFEST_ERR")"
+  elif python3 - "$MANIFEST_JSON" >/dev/null <<'PYEOF'
+import json
+import sys
+from pathlib import Path
+
+payload = json.loads(Path(sys.argv[1]).read_text())
+tools = payload.get("tools", [])
+mcps = payload.get("mcp_servers", [])
+
+required_missing = [
+    t["name"]
+    for t in tools
+    if t.get("criticality") == "required" and t.get("status") != "ok"
+]
+recommended_missing = [
+    t["name"]
+    for t in tools
+    if t.get("criticality") != "required" and t.get("status") != "ok"
+]
+mcp_missing = [
+    m["name"]
+    for m in mcps
+    if m.get("status") != "ok"
+]
+
+print(json.dumps({
+    "required_missing": required_missing,
+    "recommended_missing": recommended_missing,
+    "mcp_missing": mcp_missing,
+    "tool_count": len(tools),
+    "mcp_count": len(mcps),
+}))
+PYEOF
+  then
+    manifest_summary="$(python3 - "$MANIFEST_JSON" <<'PYEOF'
+import json
+import sys
+from pathlib import Path
+
+payload = json.loads(Path(sys.argv[1]).read_text())
+tools = payload.get("tools", [])
+mcps = payload.get("mcp_servers", [])
+required_missing = [t["name"] for t in tools if t.get("criticality") == "required" and t.get("status") != "ok"]
+recommended_missing = [t["name"] for t in tools if t.get("criticality") != "required" and t.get("status") != "ok"]
+mcp_missing = [m["name"] for m in mcps if m.get("status") != "ok"]
+print("|".join([
+    ",".join(required_missing),
+    ",".join(recommended_missing),
+    ",".join(mcp_missing),
+    str(len(tools)),
+    str(len(mcps)),
+]))
+PYEOF
+)"
+    required_missing="${manifest_summary%%|*}"
+    rest="${manifest_summary#*|}"
+    recommended_missing="${rest%%|*}"
+    rest="${rest#*|}"
+    mcp_missing="${rest%%|*}"
+    rest="${rest#*|}"
+    tool_count="${rest%%|*}"
+    mcp_count="${rest#*|}"
+
+    pass "dependency manifest loaded for profile: $PROFILE"
+    if [ -n "$required_missing" ]; then
+      fail "required tools missing: $required_missing"
+    else
+      pass "required tools present"
+    fi
+    if [ -n "$recommended_missing" ]; then
+      warn "recommended tools missing: $recommended_missing"
+    else
+      pass "recommended tools present"
+    fi
+    if [ -n "$mcp_missing" ]; then
+      warn "recommended MCP servers not fully available: $mcp_missing"
+    else
+      pass "recommended MCP server dependencies present"
+    fi
+    pass "manifest checked ${tool_count} tool(s) and ${mcp_count} MCP server(s)"
+  else
+    fail "dependency manifest JSON could not be parsed"
+  fi
+  rm -f "$MANIFEST_JSON" "$MANIFEST_ERR"
+else
+  fail "manifest-check.sh or python3 unavailable; dependency manifest was not checked"
 fi
 
 if command -v engram >/dev/null 2>&1; then
