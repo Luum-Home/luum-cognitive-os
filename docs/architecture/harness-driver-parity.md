@@ -65,10 +65,26 @@ Codex must project all Cognitive OS hooks for events currently marked
 - `UserPromptSubmit`
 - `Stop`
 
+That supported surface is enough to auto-load the portable memory lifecycle:
+
+- `SessionStart` starts Engram when available and resumes incomplete task state.
+- `UserPromptSubmit` captures relevant user intent asynchronously.
+- `Stop` records session learning, git context, changelog, and Engram
+  crystallization.
+
 Codex must not blindly project unsupported or incomplete surfaces merely to
 match Claude's hook count. Tool-level events such as `PreToolUse` and
 `PostToolUse` need a proven Codex driver contract before they can carry
 security, quality, or write-coordination guarantees.
+
+Claude currently remains advantaged for two memory-related surfaces:
+
+- `PreCompact` can run `pre-compaction-flush.sh` before context is destroyed.
+- `PostToolUse` can run `engram-reinforce-on-access.sh` after Engram reads.
+
+Those hooks are implemented with canonical env resolution so they are ready for
+future drivers, but they are not projected into Codex until Codex exposes
+equivalent event semantics.
 
 ## Why Not Copy Everything?
 

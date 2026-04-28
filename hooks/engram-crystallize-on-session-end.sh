@@ -23,15 +23,16 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-METRICS_DIR="${REPO_ROOT}/.cognitive-os/metrics"
+HOOK_REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-${HOOK_REPO_ROOT}}}}"
+METRICS_DIR="${PROJECT_DIR}/.cognitive-os/metrics"
 LOG_FILE="${METRICS_DIR}/crystallization-events.jsonl"
 
 run_crystallizer() {
   local count
   count=$(python3 -c "
 import sys
-sys.path.insert(0, '${REPO_ROOT}')
+sys.path.insert(0, '${HOOK_REPO_ROOT}')
 from lib.engram_crystallizer import EngramCrystallizer
 digests = EngramCrystallizer().crystallize_all()
 print(len(digests))
