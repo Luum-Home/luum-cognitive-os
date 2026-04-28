@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import json
 import os
-import statistics
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -131,14 +130,6 @@ _KNOWN_SLOW_HOOKS: frozenset[str] = frozenset({
 })
 
 
-@pytest.mark.xfail(
-    strict=False,
-    reason=(
-        "Known-slow hooks (destructive-rm-blocker, clarification-gate, blast-radius) "
-        "exceed the 1500 ms p95 ceiling due to LLM sub-calls. Tracked in rules/so-slo.md "
-        "SLO-2/3 error budget. Remove xfail when hooks are optimised."
-    ),
-)
 def test_no_hook_p95_exceeds_ceiling():
     """For every hook with >= _MIN_SAMPLES datapoints, p95 must stay under ceiling."""
     rows = _load_samples()

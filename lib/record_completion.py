@@ -20,8 +20,9 @@ import json
 import os
 import re
 import logging
+import contextlib
+import io
 from pathlib import Path
-from datetime import datetime, timezone
 from typing import Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/..")
@@ -39,10 +40,14 @@ try:
     # register() configures the global OTel tracer provider and returns a tracer.
     # Endpoint defaults to http://localhost:6006/v1/traces; overridable via
     # PHOENIX_COLLECTOR_ENDPOINT env var inside phoenix.otel.register().
-    _otel_tracer = _phoenix_register(
-        project_name="cognitive-os",
-        auto_instrument=False,
-    ).get_tracer(__name__)
+    # phoenix.otel.register prints a banner to stdout in some versions. This
+    # module is also used as a JSON-emitting CLI, so observability startup must
+    # never contaminate stdout.
+    with contextlib.redirect_stdout(io.StringIO()):
+        _otel_tracer = _phoenix_register(
+            project_name="cognitive-os",
+            auto_instrument=False,
+        ).get_tracer(__name__)
 except Exception:
     # Phoenix not installed, OTel deps missing, or collector not reachable —
     # skip silently (observability must never block completion recording).
