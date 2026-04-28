@@ -129,3 +129,5 @@
 - [x] A new user can install it without pain.
 - [x] A new user can see real evidence of value quickly.
 - [x] A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.
+
+- [x] Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-027](../architecture/adrs/027-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../architecture/plans/headless-clustered-runtime-plan.md).
