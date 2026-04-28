@@ -16,7 +16,55 @@
 # Author: luum
 set -euo pipefail
 
+COS_REGISTRY_FILE_EXPLICIT="${COS_REGISTRY_FILE+x}"
 COS_REGISTRY_FILE="${COS_REGISTRY_FILE:-$HOME/.cognitive-os/installations.json}"
+
+
+# ── Ephemeral/test installation detection ─────────────────────────
+# Temp/canary installs are useful during tests and release checks, but they must
+# never pollute the production registry because git pull/push auto-update would
+# keep trying to update disposable directories. Custom COS_REGISTRY_FILE values
+# are treated as explicit test registries and are allowed to contain tmp paths.
+_cos_registry_is_default_registry() {
+  [ -z "${COS_REGISTRY_FILE_EXPLICIT:-}" ]
+}
+
+_cos_registry_is_ephemeral_install() {
+  local project_path="$1"
+  local project_name="${2:-}"
+  case "$project_name" in
+    cos-canary-*|validate-test) return 0 ;;
+  esac
+  case "$project_path" in
+    /tmp/*|/var/folders/*|/private/var/folders/*) return 0 ;;
+  esac
+  if [ -n "${TMPDIR:-}" ]; then
+    case "$project_path" in
+      "$TMPDIR"*) return 0 ;;
+    esac
+  fi
+  return 1
+}
+
+cos_registry_cleanup_ephemeral() {
+  _cos_registry_is_default_registry || return 0
+  [ -f "$COS_REGISTRY_FILE" ] || return 0
+  command -v jq >/dev/null 2>&1 || return 0
+
+  local tmp
+  tmp=$(mktemp)
+  jq '
+    .installations |= map(
+      select(
+        (
+          ((.project_name // "") | test("^(cos-canary-|validate-test$)"))
+          or ((.path // "") | test("^(/tmp/|/var/folders/|/private/var/folders/)"))
+        ) | not
+      )
+    )
+  ' "$COS_REGISTRY_FILE" > "$tmp" && mv "$tmp" "$COS_REGISTRY_FILE"
+  rm -f "$tmp"
+}
 
 # ── Ensure registry directory exists ──────────────────────────────
 _ensure_registry_dir() {
@@ -46,7 +94,13 @@ cos_registry_register() {
 
   # Skip writing to the production registry when running inside a pytest session.
   # Tests that need registry behaviour must set COS_REGISTRY_FILE to a tmp path.
-  if [ -n "${PYTEST_CURRENT_TEST:-}" ] && [ "${COS_REGISTRY_FILE:-}" = "$HOME/.cognitive-os/installations.json" ]; then
+  if [ -n "${PYTEST_CURRENT_TEST:-}" ] && _cos_registry_is_default_registry; then
+    return 0
+  fi
+
+  # Never register disposable canary/tmp installs in the production registry.
+  # They may still be registered in explicit test registries via COS_REGISTRY_FILE.
+  if _cos_registry_is_default_registry && _cos_registry_is_ephemeral_install "$project_path" "$project_name"; then
     return 0
   fi
 
@@ -145,6 +199,8 @@ cos_registry_cleanup() {
     echo "No registry file found."
     return 0
   fi
+
+  cos_registry_cleanup_ephemeral
 
   local removed=0
   local paths
