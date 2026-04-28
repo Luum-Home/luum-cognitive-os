@@ -119,6 +119,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/engram-crystallize-on-session-end.sh\" ] && bash \"$PWD/hooks/engram-crystallize-on-session-end.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-summary-reminder.sh\" ] && bash \"$PWD/hooks/session-summary-reminder.sh\" || true"
         }
       ],
       "matcher": "shutdown"
