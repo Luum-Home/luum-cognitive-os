@@ -59,10 +59,11 @@ TIMESTAMP="$(date -u '+%Y-%m-%dT%H:%M:%SZ' 2>/dev/null || date '+%Y-%m-%dT%H:%M:
 # We look for "id" fields in the JSON via a single Python call (no jq dep).
 # ---------------------------------------------------------------------------
 extract_observation_ids() {
-    printf '%s' "$INPUT" | python3 - <<'PYEOF'
+    ENGRAM_HOOK_INPUT="$INPUT" python3 - <<'PYEOF'
 import json, sys
+import os
 
-data = json.load(sys.stdin)
+data = json.loads(os.environ.get("ENGRAM_HOOK_INPUT", "{}"))
 
 # The hook event JSON has top-level keys from the Claude Code hook contract.
 # tool_result (or tool_output) holds the MCP tool's return value.
@@ -147,7 +148,7 @@ batch_reinforce "$IDS_JSON" 2>/dev/null || true
 
 # Log one event per ID to the JSONL metrics file (best-effort)
 if mkdir -p "$METRICS_DIR" 2>/dev/null; then
-    printf '%s' "$RAW_IDS" | while IFS= read -r obs_id; do
+    printf '%s\n' "$RAW_IDS" | while IFS= read -r obs_id; do
         [ -z "$obs_id" ] && continue
         printf '{"timestamp":"%s","observation_id":"%s","tool":"%s"}\n' \
             "$TIMESTAMP" "$obs_id" "$TOOL_NAME" \

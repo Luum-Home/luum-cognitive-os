@@ -19,6 +19,9 @@ typing.
 2. **Settings**: am I reading or writing `settings.json` directly? Use
    the active settings driver instead (`cos_detect_harness`, driver
    dispatch). Projection, not assumption.
+   Claude uses `.claude/settings.json` with a top-level `hooks` object; Codex
+   uses `.codex/hooks.json` with lifecycle events at the top level. Do not reuse
+   Claude JSON shape as a portable abstraction.
 3. **Scripts**: is the script I'm creating driver-specific (talks to
    `.claude/` or equivalent) or canonical (pure behavior, driver-agnostic)?
    Driver-specific goes under its driver surface; canonical goes under

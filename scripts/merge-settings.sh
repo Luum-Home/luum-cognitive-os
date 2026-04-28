@@ -57,46 +57,46 @@ jq -s '
   # $existing = .[0], $cos = .[1]
   .[0] as $existing | .[1] as $cos |
 
-  # Start with existing settings
-  $existing |
+  def hook_root:
+    if has("hooks") and (.hooks | type == "object") then .hooks else . end;
 
-  # Ensure .hooks exists
-  .hooks //= {} |
+  ($existing | has("hooks") and (.hooks | type == "object")) as $wrapped |
+  ($cos | has("hooks") and (.hooks | type == "object")) as $cos_wrapped |
 
-  # For each lifecycle event in COS hooks
-  reduce ($cos.hooks | to_entries[]) as $event (
-    .;
+  # Merge against the active hook root, then restore the original driver shape.
+  (reduce ($cos | hook_root | to_entries[]) as $event (
+    ($existing | hook_root);
     $event.key as $lifecycle |
     $event.value as $cos_groups |
 
-    # Ensure the lifecycle array exists in result
-    .hooks[$lifecycle] //= [] |
+    .[$lifecycle] //= [] |
 
-    # For each matcher group in COS
     reduce ($cos_groups[]) as $cos_group (
       .;
       $cos_group.matcher as $matcher |
       $cos_group.hooks as $cos_hook_list |
-
-      # Find index of matching group in existing
-      (.hooks[$lifecycle] | map(.matcher) | index($matcher)) as $idx |
+      (.[$lifecycle] | map(.matcher) | index($matcher)) as $idx |
 
       if $idx != null then
-        # Group exists — merge hooks (dedup by command)
-        .hooks[$lifecycle][$idx].hooks as $existing_hooks |
+        .[$lifecycle][$idx].hooks as $existing_hooks |
         ($existing_hooks | map(.command)) as $existing_cmds |
         reduce ($cos_hook_list[]) as $h (
           .;
           if ($existing_cmds | index($h.command)) != null then
-            .  # already exists, skip
+            .
           else
-            .hooks[$lifecycle][$idx].hooks += [$h]
+            .[$lifecycle][$idx].hooks += [$h]
           end
         )
       else
-        # Group does not exist — append entire group
-        .hooks[$lifecycle] += [$cos_group]
+        .[$lifecycle] += [$cos_group]
       end
     )
-  )
+  )) as $merged |
+
+  if $cos_wrapped then
+    $existing | .hooks = $merged
+  else
+    ($existing | if $wrapped then del(.hooks) else . end) + $merged
+  end
 ' "$EXISTING" "$COS_HOOKS" > "$OUTPUT"
