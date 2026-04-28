@@ -93,10 +93,11 @@ def detect_harness(project_root: str = ".") -> str:
     exactly (parity required for strangler-fig correctness):
 
       1. COGNITIVE_OS_HARNESS env var (explicit override)
-      2. .codex/hooks.json present AND .claude/settings.json absent  → codex
-      3. .claude/settings.json present AND .codex/hooks.json absent  → claude
-      4. CODEX_PROJECT_DIR / CODEX_SESSION_ID / CODEX_HOME env vars  → codex
-      5. Default → claude
+      2. .cognitive-os/install-meta.json harness field              → installed harness
+      3. .codex/hooks.json present AND .claude/settings.json absent  → codex
+      4. .claude/settings.json present AND .codex/hooks.json absent  → claude
+      5. CODEX_PROJECT_DIR / CODEX_SESSION_ID / CODEX_HOME env vars  → codex
+      6. Default → claude
     """
     root = Path(project_root).resolve()
 
@@ -104,6 +105,15 @@ def detect_harness(project_root: str = ".") -> str:
     explicit = os.environ.get("COGNITIVE_OS_HARNESS", "")
     if explicit:
         return explicit
+
+    meta_path = root / ".cognitive-os" / "install-meta.json"
+    if meta_path.is_file():
+        try:
+            meta_harness = json.loads(meta_path.read_text(encoding="utf-8")).get("harness")
+        except (OSError, json.JSONDecodeError):
+            meta_harness = None
+        if meta_harness in {"claude", "codex"}:
+            return meta_harness
 
     codex_hooks = root / ".codex" / "hooks.json"
     claude_settings = root / ".claude" / "settings.json"
@@ -1168,6 +1178,8 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         "mode": mode.lstrip("-"),
         "version": cos_version,
         "source": registry_source,
+        "harness": harness,
+        "settings_driver": settings_label,
         "installed_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "project_name": project_name,
         "rules_installed": rules_installed,
