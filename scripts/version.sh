@@ -16,8 +16,8 @@ VERSION_FILE="$PROJECT_ROOT/VERSION"
 
 # Files that contain the version string:
 # 1. VERSION (source of truth)
-# 2. cmd/cos/internal/cli/root.go (cos CLI version)
-# 3. cmd/cos-test/internal/cli/root.go (cos-test CLI version)
+# 2. cmd/cos/internal/cli/root.go (dynamic VERSION-file fallback)
+# 3. cmd/cos-test/internal/cli/root.go (dynamic VERSION-file fallback)
 # 4. docs/INDEX.md (version in header)
 
 COS_ROOT_GO="$PROJECT_ROOT/cmd/cos/internal/cli/root.go"
@@ -108,12 +108,19 @@ check_consistency() {
 
   # Check cos CLI
   if [ -f "$COS_ROOT_GO" ]; then
-    local cos_ver
-    cos_ver=$(grep 'Version:' "$COS_ROOT_GO" | head -1 | sed 's/.*"\(.*\)".*/\1/')
-    if [ "$cos_ver" = "$ver" ]; then
-      echo "  [OK] cmd/cos/internal/cli/root.go: $cos_ver"
+    local cos_ver=""
+    cos_ver=$(grep 'Version: "' "$COS_ROOT_GO" | head -1 | sed 's/.*"\(.*\)".*/\1/' || true)
+    if [ -n "$cos_ver" ]; then
+      if [ "$cos_ver" = "$ver" ]; then
+        echo "  [OK] cmd/cos/internal/cli/root.go: $cos_ver"
+      else
+        echo "  [MISMATCH] cmd/cos/internal/cli/root.go: $cos_ver (expected $ver)"
+        ok=false
+      fi
+    elif grep -q 'readVersionFile' "$COS_ROOT_GO"; then
+      echo "  [OK] cmd/cos/internal/cli/root.go: dynamic VERSION-file fallback"
     else
-      echo "  [MISMATCH] cmd/cos/internal/cli/root.go: $cos_ver (expected $ver)"
+      echo "  [MISMATCH] cmd/cos/internal/cli/root.go: no static version or VERSION fallback"
       ok=false
     fi
   else
@@ -122,12 +129,19 @@ check_consistency() {
 
   # Check cos-test CLI
   if [ -f "$COS_TEST_ROOT_GO" ]; then
-    local costest_ver
-    costest_ver=$(grep 'Version:' "$COS_TEST_ROOT_GO" | head -1 | sed 's/.*"\(.*\)".*/\1/')
-    if [ "$costest_ver" = "$ver" ]; then
-      echo "  [OK] cmd/cos-test/internal/cli/root.go: $costest_ver"
+    local costest_ver=""
+    costest_ver=$(grep 'Version: "' "$COS_TEST_ROOT_GO" | head -1 | sed 's/.*"\(.*\)".*/\1/' || true)
+    if [ -n "$costest_ver" ]; then
+      if [ "$costest_ver" = "$ver" ]; then
+        echo "  [OK] cmd/cos-test/internal/cli/root.go: $costest_ver"
+      else
+        echo "  [MISMATCH] cmd/cos-test/internal/cli/root.go: $costest_ver (expected $ver)"
+        ok=false
+      fi
+    elif grep -q 'VERSION' "$COS_TEST_ROOT_GO"; then
+      echo "  [OK] cmd/cos-test/internal/cli/root.go: dynamic VERSION-file fallback"
     else
-      echo "  [MISMATCH] cmd/cos-test/internal/cli/root.go: $costest_ver (expected $ver)"
+      echo "  [MISMATCH] cmd/cos-test/internal/cli/root.go: no static version or VERSION fallback"
       ok=false
     fi
   else
@@ -136,10 +150,10 @@ check_consistency() {
 
   # Check docs/INDEX.md
   if [ -f "$INDEX_MD" ]; then
-    if grep -q "Cognitive OS v${ver}" "$INDEX_MD"; then
-      echo "  [OK] docs/INDEX.md contains version $ver"
+    if head -1 "$INDEX_MD" | grep -q "v${ver}"; then
+      echo "  [OK] docs/INDEX.md heading contains version $ver"
     else
-      echo "  [MISMATCH] docs/INDEX.md does not contain 'Cognitive OS v${ver}'"
+      echo "  [MISMATCH] docs/INDEX.md heading does not contain 'v${ver}'"
       ok=false
     fi
   else
