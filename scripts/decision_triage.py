@@ -33,6 +33,7 @@ from typing import Optional
 # ---------------------------------------------------------------------------
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
 REPORTS_DIR = REPO_ROOT / "docs" / "reports"
 # NOTE: .cognitive-os/reports/research/ is gitignored — reports now live in docs/reports/.
 # We keep this constant for legacy fallback but DO NOT scan it in normal operation.
