@@ -108,23 +108,11 @@ dev = [
     "luum-cognitive-os[llm,web,observability,guardrails,jupyter,crawling,testing,enforcement]",
 ]
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-timeout = 30
-addopts = "-n auto --dist worksteal -q"
-markers = [
-    "unit: Unit tests",
-    "behavior: Behavior tests",
-    "integration: Integration tests",
-    "system: System tests",
-    "docker: Requires Docker",
-    "slow: Slow tests",
-    "e2e: End-to-end tests",
-]
-
 [tool.ruff]
 target-version = "py311"
 line-length = 120
+
+[tool.ruff.lint]
 select = ["F401", "F841", "E711", "E712"]
 
 [tool.vulture]
