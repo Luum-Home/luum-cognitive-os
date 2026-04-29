@@ -14,6 +14,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 COGNITIVE_OS_DIR="$PROJECT_DIR/.cognitive-os"
 COGNITIVE_OS_YAML="$COGNITIVE_OS_DIR/cognitive-os.yaml"
+if [[ ! -f "$COGNITIVE_OS_YAML" && -f "$PROJECT_DIR/cognitive-os.yaml" ]]; then
+  COGNITIVE_OS_YAML="$PROJECT_DIR/cognitive-os.yaml"
+fi
 
 # additionalContext hard limit per Claude Code spec
 MAX_CONTEXT_CHARS=10000
@@ -212,7 +215,11 @@ PROJECT: ${PROJECT_NAME} (${PROJECT_TYPE})
 PHASE: ${PHASE}
 
 PHASE RULES:
-${RULES}"
+${RULES}
+
+CONSTITUTIONAL GATES:
+- Project-specific gates are loaded from the active harness rules when present.
+- If no project gates are present, enforce the universal safety baseline: protect secrets, preserve data integrity, verify claims, and avoid irreversible actions without explicit approval."
 
 if [[ -n "$GOTCHAS" ]]; then
   CONTEXT_BUF+="

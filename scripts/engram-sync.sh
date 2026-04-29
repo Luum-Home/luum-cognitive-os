@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # SCOPE: both
 # Engram Sync — Exports project-scoped observations to JSON for git tracking.
 #

@@ -75,7 +75,7 @@ LIB_DIR="$SCRIPT_DIR/../lib"
 
 # Resolve symlinks for worktree compatibility
 if [ -L "$LIB_DIR/adr_detector.py" ]; then
-    LIB_DIR=$(readlink -f "$LIB_DIR")
+    LIB_DIR=$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$LIB_DIR" 2>/dev/null || echo "$LIB_DIR")
 fi
 
 RESULT=$(timeout 30 python3 -c "

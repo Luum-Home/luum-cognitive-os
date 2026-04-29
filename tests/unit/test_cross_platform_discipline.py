@@ -47,29 +47,9 @@ SHEBANG_EXEMPT_PATTERNS = [
 # Pre-existing violations that are tracked but not yet migrated.
 # These use xfail so CI shows them as expected failures, not hard failures.
 # Remove entries once fixed.
-PRE_EXISTING_GNU_VIOLATIONS: set[str] = {
-    "scripts/doctor.sh",
-    "hooks/_lib/file_checker.sh",
-    "hooks/adr-detector.sh",
-    "hooks/recap-sync.sh",
-    "hooks/subagent-context-injector.sh",
-}
+PRE_EXISTING_GNU_VIOLATIONS: set[str] = set()
 
-PRE_EXISTING_SHEBANG_VIOLATIONS: set[str] = {
-    "scripts/engram-sync.sh",
-    "hooks/doc-sync-detector.sh",
-    "hooks/engram-auto-import.sh",
-    "hooks/engram-auto-sync.sh",
-    "hooks/error-pattern-detector.sh",
-    "hooks/error-pipeline.sh",
-    "hooks/kpi-trigger.sh",
-    "hooks/result-truncator.sh",
-    "hooks/session-learning.sh",
-    "hooks/sync-to-repo.sh",
-    # cos-config-audit.sh is a Python script with .sh extension (polyglot file).
-    # It has #!/usr/bin/env python3 — intentional, not a portability bug.
-    "scripts/cos-config-audit.sh",
-}
+PRE_EXISTING_SHEBANG_VIOLATIONS: set[str] = set()
 
 # Files that contain non-bash shebangs (e.g. Python scripts named .sh).
 # These are excluded from bash -n syntax checks.
@@ -310,12 +290,13 @@ def test_env_shebang(shell_file: Path):
         return  # no shebang — sourced library, not a standalone script
 
     first_line = lines[0]
-    assert first_line in (
-        "#!/usr/bin/env bash",
-        "#!/usr/bin/env sh",
-    ), (
+    allowed_shebangs = {"#!/usr/bin/env bash", "#!/usr/bin/env sh"}
+    if rel in NON_BASH_SH_FILES:
+        allowed_shebangs.add("#!/usr/bin/env python3")
+    assert first_line in allowed_shebangs, (
         f"Non-portable shebang in {rel}: {first_line!r}\n"
-        "Use '#!/usr/bin/env bash' instead of '#!/bin/bash'."
+        "Use '#!/usr/bin/env bash' for shell scripts, or register intentional non-bash .sh files "
+        "in NON_BASH_SH_FILES."
     )
 
 
