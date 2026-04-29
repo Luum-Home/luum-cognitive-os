@@ -12,7 +12,6 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-import tempfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -68,6 +67,8 @@ def _run_checkpoint_hook(
         pytest.skip(f"Hook not found: {CHECKPOINT_HOOK}")
 
     env = os.environ.copy()
+    env["COGNITIVE_OS_PROJECT_DIR"] = str(project_dir)
+    env["CODEX_PROJECT_DIR"] = ""
     env["CLAUDE_PROJECT_DIR"] = str(project_dir)
     env["COGNITIVE_OS_HOOK_HEARTBEAT"] = "false"
     if extra_env:
@@ -327,6 +328,8 @@ class TestSessionCleanupLostAgents:
             pytest.skip(f"Hook not found: {CLEANUP_HOOK}")
 
         env = os.environ.copy()
+        env["COGNITIVE_OS_PROJECT_DIR"] = str(project_dir)
+        env["CODEX_PROJECT_DIR"] = ""
         env["CLAUDE_PROJECT_DIR"] = str(project_dir)
         env["COGNITIVE_OS_SESSION_ID"] = session_id
 
