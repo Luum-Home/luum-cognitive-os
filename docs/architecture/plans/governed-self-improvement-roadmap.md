@@ -30,7 +30,7 @@ runtime behavior is governed by approval and tests.
 - `suggest`: list evidence-backed signals.
 - `draft`: create a draft `SKILL.md` and `improvement.json`.
 - `promote`: copy an approved draft into canonical `.cognitive-os/skills/cos/<skill>/`.
-- Future CLI shape may become `cos skill suggest|draft|promote`; the first slice ships as `scripts/cos-governed-self-improvement.py` so behavior is testable before Go CLI integration.
+- The Go CLI now exposes the governed loop as `cos skill suggest`, `cos skill draft`, `cos skill inspect`, and `cos skill promote`; these commands delegate to the canonical Python implementation so CLI and runtime behavior share one contract.
 
 ### 3. Memory/Profile Bootstrap
 
@@ -63,6 +63,8 @@ Implemented first:
 - `scripts/cos-governed-self-improvement.py`
 - `tests/unit/test_governed_self_improvement.py`
 - `tests/behavior/test_governed_self_improvement_cli.py`
+- `cmd/cos/internal/cli/skill.go`
+- `cmd/cos/internal/cli/skill_test.go`
 
 This slice intentionally does **not** auto-edit live rules or root skills. It
 only writes drafts under `.cognitive-os/improvements/drafts/` and promotes into
