@@ -37,13 +37,15 @@ SKILLS_DIR = ROOT_DIR / "skills"
 HOOKS_DIR = ROOT_DIR / "hooks"
 
 
-def load_test_corpus() -> list[tuple[str, str]]:
-    corpus: list[tuple[str, str]] = []
+def load_test_corpus() -> list[tuple[str, str, str]]:
+    corpus: list[tuple[str, str, str]] = []
     for path in TESTS_DIR.rglob("*.py"):
         if path.name in {"conftest.py", "__init__.py"}:
             continue
         try:
-            corpus.append((path.stem, path.read_text(encoding="utf-8", errors="ignore")))
+            content = path.read_text(encoding="utf-8", errors="ignore")
+            normalized = content.lower().replace("-", "_")
+            corpus.append((path.stem, content, normalized))
         except OSError:
             continue
     return corpus
@@ -53,19 +55,17 @@ TEST_CORPUS = load_test_corpus()
 
 
 def tests_referencing(pattern: str) -> list[str]:
+    if pattern.startswith("TOKEN:"):
+        token = pattern.removeprefix("TOKEN:")
+        hits = [name for name, _content, normalized in TEST_CORPUS if token in normalized]
+        return sorted(set(hits))
     rx = re.compile(pattern, re.IGNORECASE)
-    hits = [name for name, content in TEST_CORPUS if rx.search(content)]
+    hits = [name for name, content, _normalized in TEST_CORPUS if rx.search(content)]
     return sorted(set(hits))
 
 
 def flexible_pattern(name: str) -> str:
-    parts = []
-    for ch in name:
-        if ch in "-_":
-            parts.append("[-_]")
-        else:
-            parts.append(re.escape(ch))
-    return "".join(parts)
+    return "TOKEN:" + name.lower().replace("-", "_")
 
 
 def dim_header(title: str) -> None:
