@@ -195,6 +195,7 @@ class TestClarificationGate:
             env=cognitive_os_env["env"],
             stdin=input_json,
         )
+        assert result.returncode == 2
 
         # Check metrics file was created
         session_id = cognitive_os_env["session_id"]
@@ -377,6 +378,7 @@ class TestBlastRadius:
             env=cognitive_os_env["env"],
             stdin=input_json,
         )
+        assert result.returncode == 0
 
         session_id = cognitive_os_env["session_id"]
         metrics_dir = (
@@ -579,6 +581,7 @@ class TestAssumptionTracker:
             env=cognitive_os_env["env"],
             stdin=input_json,
         )
+        assert result.returncode == 0
 
         session_id = cognitive_os_env["session_id"]
         metrics_dir = (
@@ -631,6 +634,28 @@ class TestAssumptionTracker:
         )
         assert result.returncode == 0
 
+
+
+
+def _install_fake_docker(bin_dir: Path) -> None:
+    """Install a deterministic docker stub for non-Docker behavior tests."""
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    docker = bin_dir / "docker"
+    docker.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "if [ \"${1:-}\" = info ]; then exit 0; fi\n"
+        "if [ \"${1:-}\" = compose ]; then\n"
+        "  shift\n"
+        "  case \"$*\" in\n"
+        "    *'ps --format json'*) exit 0 ;;\n"
+        "    *'config --format json'*) printf '{\"services\":{\"litellm\":{}}}\\n'; exit 0 ;;\n"
+        "    *'up -d'*) exit 0 ;;\n"
+        "  esac\n"
+        "fi\n"
+        "exit 1\n"
+    )
+    docker.chmod(0o755)
 
 # ---------------------------------------------------------------------------
 # 4. infra-health.sh
@@ -712,9 +737,12 @@ class TestInfraHealth:
         assert result.returncode == 0
         assert "WARN" not in result.stdout
 
-    def test_auto_start_true_outputs_auto_start(self, run_hook, cognitive_os_env):
+    def test_auto_start_true_outputs_auto_start(self, run_hook, cognitive_os_env, tmp_path):
         """When INFRA_AUTO_START=true and services are missing, outputs auto-start info."""
         env = cognitive_os_env["env"].copy()
+        fake_bin = tmp_path / "bin"
+        _install_fake_docker(fake_bin)
+        env["PATH"] = f"{fake_bin}:/opt/homebrew/bin:/usr/bin:/bin:{env.get('PATH', '')}"
         env["INFRA_AUTO_START"] = "true"
         project_dir = cognitive_os_env["project_dir"]
         cos_dir = cognitive_os_env["cos_dir"]
@@ -833,7 +861,7 @@ class TestPreCommitGate:
         patched_hook.chmod(0o755)
 
         env = os.environ.copy()
-        env["PATH"] = f"{fake_bin}:{env.get('PATH', '')}"
+        env["PATH"] = f"{fake_bin}:/opt/homebrew/bin:/usr/bin:/bin:{env.get('PATH', '')}"
 
         result = subprocess.run(
             ["bash", str(patched_hook)],
@@ -878,7 +906,7 @@ class TestPreCommitGate:
         )
         patched_hook.chmod(0o755)
         env = os.environ.copy()
-        env["PATH"] = f"{fake_bin}:{env.get('PATH', '')}"
+        env["PATH"] = f"{fake_bin}:/opt/homebrew/bin:/usr/bin:/bin:{env.get('PATH', '')}"
 
         result = subprocess.run(
             ["bash", str(patched_hook)],
@@ -925,7 +953,7 @@ class TestPreCommitGate:
         patched_hook.chmod(0o755)
 
         env = os.environ.copy()
-        env["PATH"] = f"{fake_bin}:{env.get('PATH', '')}"
+        env["PATH"] = f"{fake_bin}:/opt/homebrew/bin:/usr/bin:/bin:{env.get('PATH', '')}"
         env["COVERAGE_THRESHOLD"] = "80"
 
         result = subprocess.run(
@@ -973,7 +1001,7 @@ class TestPreCommitGate:
         patched_hook.chmod(0o755)
 
         env = os.environ.copy()
-        env["PATH"] = f"{fake_bin}:{env.get('PATH', '')}"
+        env["PATH"] = f"{fake_bin}:/opt/homebrew/bin:/usr/bin:/bin:{env.get('PATH', '')}"
         # Set a low threshold so 70% passes
         env["COVERAGE_THRESHOLD"] = "60"
 
