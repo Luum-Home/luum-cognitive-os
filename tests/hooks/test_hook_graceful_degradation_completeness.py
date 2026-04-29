@@ -52,13 +52,12 @@ def _hook_coverage_universe() -> set[str]:
     """
     universe: set[str] = set()
     universe |= gd.NON_STDIN_HOOKS
-    universe |= gd.TestPrivateMode.PRIVATE_MODE_HOOKS
-    universe |= gd.TestToolNameFiltering.PRETOOL_AGENT_HOOKS
-    universe |= gd.TestToolNameFiltering.POSTTOOL_AGENT_HOOKS
-    universe |= gd.TestToolNameFiltering.POSTTOOL_EDIT_WRITE_HOOKS
-    universe |= gd.TestMissingProjectDir.HOOKS_NEEDING_PROJECT
-    universe |= gd.TestJsonParsing.JSON_HOOKS
-    universe |= set(gd.TestExternalToolGracefulDegradation.TOOL_HOOKS.keys())
+    universe |= gd.PRIVATE_MODE_HOOKS
+    universe |= gd.PRETOOL_AGENT_HOOKS
+    universe |= gd.POSTTOOL_EDIT_WRITE_HOOKS
+    universe |= gd.HOOKS_NEEDING_PROJECT
+    universe |= gd.JSON_HOOKS
+    universe |= set(gd.TOOL_HOOKS.keys())
     return universe
 
 
@@ -125,13 +124,12 @@ def test_scenario_classes_reference_only_existing_hooks():
     valid_names = on_disk | package_hooks
 
     buckets: dict[str, set[str]] = {
-        "PRIVATE_MODE_HOOKS": gd.TestPrivateMode.PRIVATE_MODE_HOOKS,
-        "PRETOOL_AGENT_HOOKS": gd.TestToolNameFiltering.PRETOOL_AGENT_HOOKS,
-        "POSTTOOL_AGENT_HOOKS": gd.TestToolNameFiltering.POSTTOOL_AGENT_HOOKS,
-        "POSTTOOL_EDIT_WRITE_HOOKS": gd.TestToolNameFiltering.POSTTOOL_EDIT_WRITE_HOOKS,
-        "HOOKS_NEEDING_PROJECT": gd.TestMissingProjectDir.HOOKS_NEEDING_PROJECT,
-        "JSON_HOOKS": gd.TestJsonParsing.JSON_HOOKS,
-        "TOOL_HOOKS": set(gd.TestExternalToolGracefulDegradation.TOOL_HOOKS.keys()),
+        "PRIVATE_MODE_HOOKS": gd.PRIVATE_MODE_HOOKS,
+        "PRETOOL_AGENT_HOOKS": gd.PRETOOL_AGENT_HOOKS,
+        "POSTTOOL_EDIT_WRITE_HOOKS": gd.POSTTOOL_EDIT_WRITE_HOOKS,
+        "HOOKS_NEEDING_PROJECT": gd.HOOKS_NEEDING_PROJECT,
+        "JSON_HOOKS": gd.JSON_HOOKS,
+        "TOOL_HOOKS": set(gd.TOOL_HOOKS.keys()),
     }
 
     issues: dict[str, list[str]] = {}
@@ -153,13 +151,12 @@ def test_at_least_one_hook_per_scenario():
     that class will skip — a dead scenario. Surface it.
     """
     buckets: dict[str, set] = {
-        "PRIVATE_MODE_HOOKS": gd.TestPrivateMode.PRIVATE_MODE_HOOKS,
-        "PRETOOL_AGENT_HOOKS": gd.TestToolNameFiltering.PRETOOL_AGENT_HOOKS,
-        "POSTTOOL_AGENT_HOOKS": gd.TestToolNameFiltering.POSTTOOL_AGENT_HOOKS,
-        "POSTTOOL_EDIT_WRITE_HOOKS": gd.TestToolNameFiltering.POSTTOOL_EDIT_WRITE_HOOKS,
-        "HOOKS_NEEDING_PROJECT": gd.TestMissingProjectDir.HOOKS_NEEDING_PROJECT,
-        "JSON_HOOKS": gd.TestJsonParsing.JSON_HOOKS,
-        "TOOL_HOOKS": set(gd.TestExternalToolGracefulDegradation.TOOL_HOOKS.keys()),
+        "PRIVATE_MODE_HOOKS": gd.PRIVATE_MODE_HOOKS,
+        "PRETOOL_AGENT_HOOKS": gd.PRETOOL_AGENT_HOOKS,
+        "POSTTOOL_EDIT_WRITE_HOOKS": gd.POSTTOOL_EDIT_WRITE_HOOKS,
+        "HOOKS_NEEDING_PROJECT": gd.HOOKS_NEEDING_PROJECT,
+        "JSON_HOOKS": gd.JSON_HOOKS,
+        "TOOL_HOOKS": set(gd.TOOL_HOOKS.keys()),
     }
     empty = [name for name, bucket in buckets.items() if not bucket]
     assert not empty, (

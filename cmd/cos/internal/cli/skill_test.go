@@ -15,7 +15,7 @@ func copyGovernedSkillRuntime(t *testing.T, projectDir string) {
 		t.Fatal(err)
 	}
 	files := map[string]string{
-		filepath.Join("scripts", "cos-governed-self-improvement.py"): filepath.Join("scripts", "cos-governed-self-improvement.py"),
+		filepath.Join("scripts", "cos_governed_self_improvement.py"): filepath.Join("scripts", "cos_governed_self_improvement.py"),
 		filepath.Join("lib", "governed_self_improvement.py"):         filepath.Join("lib", "governed_self_improvement.py"),
 	}
 	for srcRel, dstRel := range files {
