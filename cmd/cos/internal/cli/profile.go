@@ -78,5 +78,5 @@ func init() {
 }
 
 func runProjectProfileCommand(args ...string) error {
-	return runProjectPythonScript("scripts/cos-profile-bootstrap.py", args...)
+	return runProjectPythonScript("scripts/cos_profile_bootstrap.py", args...)
 }
