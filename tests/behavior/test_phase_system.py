@@ -7,9 +7,7 @@ Migrated from test-phase-system.sh.
 import json
 import os
 import re
-import shutil
 import subprocess
-from pathlib import Path
 
 import pytest
 
@@ -28,10 +26,13 @@ def phase_hook(project_root):
 @pytest.fixture
 def config_path(project_root):
     """Return the config path and skip if not found."""
-    config = project_root / ".cognitive-os" / "cognitive-os.yaml"
-    if not config.exists():
-        pytest.skip("cognitive-os.yaml not found")
-    return config
+    for config in (
+        project_root / ".cognitive-os" / "cognitive-os.yaml",
+        project_root / "cognitive-os.yaml",
+    ):
+        if config.exists():
+            return config
+    pytest.fail("cognitive-os.yaml not found in canonical or legacy root location")
 
 
 @pytest.fixture

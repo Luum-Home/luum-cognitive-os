@@ -52,9 +52,15 @@ print(days*86400 + h*3600 + m*60 + sec)
 # works on macOS (Claude.app bundle), Linux (~/.local/bin), and Windows WSL.
 # We also exclude disclaimer/wrapper processes.
 SESSIONS_TMP=$(mktemp)
-ps -eo pid,ppid,etime,pcpu,command 2>/dev/null | \
-    awk '/--output-format stream-json/ && /--input-format stream-json/ && !/disclaimer/ && !/awk/ {print}' \
-    > "$SESSIONS_TMP"
+if [ -n "${COS_SESSION_LEAK_PS_FILE:-}" ] && [ -f "$COS_SESSION_LEAK_PS_FILE" ]; then
+    cat "$COS_SESSION_LEAK_PS_FILE" | \
+        awk '/--output-format stream-json/ && /--input-format stream-json/ && !/disclaimer/ && !/awk/ {print}' \
+        > "$SESSIONS_TMP"
+else
+    ps -eo pid,ppid,etime,pcpu,command 2>/dev/null | \
+        awk '/--output-format stream-json/ && /--input-format stream-json/ && !/disclaimer/ && !/awk/ {print}' \
+        > "$SESSIONS_TMP"
+fi
 
 SESSION_COUNT=$(wc -l < "$SESSIONS_TMP" | tr -d ' ')
 OLD_SESSIONS=0
