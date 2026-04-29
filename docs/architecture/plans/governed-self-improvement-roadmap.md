@@ -65,6 +65,8 @@ Implemented first:
 - `tests/behavior/test_governed_self_improvement_cli.py`
 - `cmd/cos/internal/cli/skill.go`
 - `cmd/cos/internal/cli/skill_test.go`
+- `cmd/cos/internal/cli/profile.go`
+- `cmd/cos/internal/cli/profile_test.go`
 - `lib/project_profile_bootstrap.py`
 - `scripts/cos-profile-bootstrap.py`
 - `tests/unit/test_project_profile_bootstrap.py`
@@ -84,4 +86,5 @@ canonical `.cognitive-os/skills/cos/` when approval is explicit.
 - Promotion with approval writes only under `.cognitive-os/skills/cos/`.
 - CLI tests cover suggest, draft, inspect, and denied/approved promotion.
 - First-three-session profile bootstrap writes source-linked drafts only under `.cognitive-os/project-profile/`.
-- Profile bootstrap tests prove path sanitization, conflict detection, wipe, and Codex SessionStart execution without `CLAUDE_PROJECT_DIR`.
+- Profile bootstrap tests prove path sanitization, conflict detection, governed promotion, wipe, and Codex SessionStart execution without `CLAUDE_PROJECT_DIR`.
+- The Go CLI exposes profile bootstrap as `cos profile generate|inspect|promote|wipe`.
