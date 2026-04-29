@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # SCOPE: both
 # Error Pattern Detector — PreToolUse for Agent
 # Checks for repeated error patterns and injects warnings into agent context.

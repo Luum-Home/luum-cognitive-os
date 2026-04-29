@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # SCOPE: both
 # CONCERNS: performance, quality, observability
 # Hook: Result Truncator — PostToolUse for Bash

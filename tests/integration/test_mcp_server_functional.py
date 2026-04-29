@@ -20,9 +20,7 @@ Related files:
 from __future__ import annotations
 
 import json
-import os
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -35,18 +33,7 @@ if str(PROJECT_ROOT) not in sys.path:
 if str(PROJECT_ROOT / "mcp-server") not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT / "mcp-server"))
 
-# Detect fastmcp availability — all tests skip gracefully without it.
-HAS_FASTMCP = False
-try:
-    import fastmcp  # noqa: F401
-    HAS_FASTMCP = True
-except ImportError:
-    pass
-
-pytestmark = [
-    pytest.mark.skipif(not HAS_FASTMCP, reason="fastmcp not installed"),
-    pytest.mark.integration,
-]
+pytestmark = [pytest.mark.integration]
 
 
 # ---------------------------------------------------------------------------

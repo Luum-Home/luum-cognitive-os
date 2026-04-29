@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # SCOPE: os-only
 # Hook: Engram Auto-Sync (Stop/SessionEnd)
 # Automatically exports Engram observations and commits to git
