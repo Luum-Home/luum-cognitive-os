@@ -97,6 +97,7 @@ That doctor creates an isolated scratch project and proves:
 | Purpose | Component | Output / Effect |
 |---|---|---|
 | Start Engram daemon when available | `hooks/engram-daemon-launcher.sh` | best-effort Engram HTTP daemon startup and runtime log |
+| Bootstrap project profile draft | `hooks/session-init.sh` + `hooks/_lib/session_init_helper.py` + `lib/project_profile_bootstrap.py` | during the first three sessions, writes `.cognitive-os/project-profile/draft.json` and `draft.md` with source-linked, sanitized signals |
 | Resume incomplete tasks | `hooks/session-resume.sh` | marks verified tasks complete or tells the agent what needs relaunch |
 | Retrieve memory programmatically | `lib/memory_retriever.py` | hybrid ranked retrieval over Engram memory |
 | Talk to Engram from Python | `lib/engram_client.py` | machine-readable Engram CLI wrapper |
@@ -151,6 +152,32 @@ That is an explicit driver capability difference, not hidden Claude lock-in.
 Codex should only receive equivalent projections when equivalent event semantics
 are proven.
 
+## Project Profile Bootstrap
+
+Memory bootstrap starts locally before it becomes durable memory. During the
+first three valid sessions, `session-init.sh` calls the consolidated
+`session_init_helper.py`, which invokes `lib/project_profile_bootstrap.py`. The
+module writes:
+
+- `.cognitive-os/project-profile/draft.json`
+- `.cognitive-os/project-profile/draft.md`
+
+The draft is advisory and editable. It uses small deterministic signals only:
+stack markers such as `go.mod`, `pyproject.toml`, `package.json`, Docker files,
+session metadata count, and prompt-capture categories. It does not scan the full
+repo, does not call Engram/MCP from a shell hook, and does not promote entries
+automatically. Every entry has a source object and the writer sanitizes
+developer-specific home paths before persisting.
+
+Manual commands:
+
+```bash
+python3 scripts/cos-profile-bootstrap.py generate
+python3 scripts/cos-profile-bootstrap.py inspect
+python3 scripts/cos-profile-bootstrap.py wipe
+```
+
+
 ## Tests That Enforce This
 
 | Test | What it proves |
@@ -159,6 +186,8 @@ are proven.
 | `tests/behavior/test_cos_doctor_tools.py` | host doctor and memory lifecycle doctor execute real checks |
 | `tests/behavior/test_engram_reinforce_hook.py` | reinforcement metrics can write under Codex project env |
 | `tests/contracts/test_session_start_tooling_contract.py` | SessionStart host doctor includes memory lifecycle proof and does not run pytest |
+| `tests/unit/test_project_profile_bootstrap.py` | project profile drafts are source-linked, conflict-aware, sanitized, and fail-open on corrupt session metadata |
+| `tests/behavior/test_profile_bootstrap_cli.py` | manual generate/inspect/wipe profile bootstrap commands work without leaking absolute project paths |
 
 ## Related Documents
 

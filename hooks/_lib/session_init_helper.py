@@ -5,11 +5,12 @@
 Replaces 3 separate python3 cold starts with a single invocation:
 1. Read self-improve flag reason
 2. Load user model from engram
-3. Check work queue pending items
+3. Generate early project profile draft
+4. Check work queue pending items
 
 Reads env vars: COGNITIVE_OS_PROJECT_DIR, CODEX_PROJECT_DIR, CLAUDE_PROJECT_DIR,
 SESSION_DIR, SELF_IMPROVE_FLAG
-Writes to: SESSION_DIR/user-profile.txt
+Writes to: SESSION_DIR/user-profile.txt, .cognitive-os/project-profile/draft.*
 Outputs to stderr: self-improve reason, work queue warnings
 Always exits 0 — failures are silent.
 """
@@ -17,6 +18,7 @@ Always exits 0 — failures are silent.
 import json
 import os
 import sys
+from pathlib import Path
 
 
 def _emit_self_improve(flag_path: str) -> None:
@@ -46,6 +48,17 @@ def _load_user_model(project_dir: str, session_dir: str) -> None:
             profile = model.get_profile_summary()
             with open(os.path.join(session_dir, "user-profile.txt"), "w") as f:
                 f.write(profile)
+    except Exception:
+        pass
+
+
+def _maybe_generate_project_profile_draft(project_dir: str) -> None:
+    """Generate a draft project profile during the early bootstrap window."""
+    try:
+        sys.path.insert(0, project_dir)
+        from lib.project_profile_bootstrap import write_project_profile_draft
+
+        write_project_profile_draft(Path(project_dir))
     except Exception:
         pass
 
@@ -97,6 +110,7 @@ def main() -> int:
     if session_dir:
         _load_user_model(project_dir, session_dir)
 
+    _maybe_generate_project_profile_draft(project_dir)
     _check_work_queue(project_dir)
 
     return 0
