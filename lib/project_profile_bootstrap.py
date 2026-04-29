@@ -24,6 +24,7 @@ from lib.memory_scanner import MemoryScanner
 PROFILE_DIR = Path(".cognitive-os") / "project-profile"
 DRAFT_JSON = "draft.json"
 DRAFT_MD = "draft.md"
+ACTIVE_JSON = "profile.json"
 MAX_BOOTSTRAP_SESSIONS = 3
 BLOCKED_PATH_PARTS = {".env", "secrets", ".git"}
 BLOCKED_SUFFIXES = {".key", ".pem"}
@@ -329,6 +330,41 @@ def render_project_profile_markdown(draft: dict[str, Any]) -> str:
         lines.append("- None detected.")
     lines.append("")
     return "\n".join(lines)
+
+
+
+def promote_project_profile(
+    project_dir: Path,
+    approved_by: str | None = None,
+    auto_promote: bool = False,
+) -> Path:
+    """Promote the reviewed local draft into an active local profile artifact.
+
+    Promotion is deliberately local and governed. It does not write to Engram or
+    mutate agent behavior; it creates `.cognitive-os/project-profile/profile.json`
+    as the durable project-owned profile source that future memory sync can use.
+    """
+    if not approved_by and not auto_promote:
+        raise PermissionError("profile promotion requires --approved-by or explicit --auto-promote")
+
+    project_dir = project_dir.resolve()
+    profile_dir = project_dir / PROFILE_DIR
+    draft_json = profile_dir / DRAFT_JSON
+    if not draft_json.exists():
+        write_project_profile_draft(project_dir, force=True)
+    try:
+        draft = json.loads(draft_json.read_text())
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"profile draft is not readable JSON: {draft_json}") from exc
+
+    payload = dict(draft)
+    payload["status"] = "active"
+    payload["promoted_at"] = _utc_now()
+    payload["promoted_by"] = sanitize_text(approved_by or "auto-promote", project_dir)
+    payload["promotion_mode"] = "auto" if auto_promote else "approved"
+    active_json = profile_dir / ACTIVE_JSON
+    active_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    return active_json
 
 
 def wipe_project_profile(project_dir: Path) -> None:
