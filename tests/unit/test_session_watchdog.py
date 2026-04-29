@@ -36,7 +36,6 @@ from lib.session_watchdog_lib import (
     CLASS_RESUMED_RECENTLY,
     ProcessInfo,
     SessionRecord,
-    WatchdogRecord,
     _etime_to_seconds,
     _extract_resume_id,
     _is_claude_session,
@@ -293,8 +292,8 @@ class TestModeEnforce(unittest.TestCase):
             buf = io.StringIO()
 
             with patch.object(mod, "WATCHDOG_JSONL", tmp_path), \
-                 patch("lib.session_watchdog_lib._enumerate_via_ps", return_value=([fake_proc], [])), \
-                 patch("lib.session_watchdog_lib._try_import_psutil", return_value=None), \
+                 patch.object(mod, "_enumerate_via_ps", return_value=([fake_proc], [])), \
+                 patch.object(mod, "_try_import_psutil", return_value=None), \
                  patch("lib.session_watchdog_lib._pid_exists", return_value=True), \
                  patch("sys.stderr", buf):
                 exit_code = mod.run_once(config, verbose=False)
@@ -349,7 +348,6 @@ class TestPhaseALogOnly(unittest.TestCase):
         )
 
         kill_calls: List[Any] = []
-        original_kill = os.kill
 
         def mock_kill(pid: int, sig: int) -> None:
             if sig != 0:  # signal 0 = existence check, allowed
@@ -578,8 +576,6 @@ class TestAppendJsonl(unittest.TestCase):
 from lib.session_watchdog_lib import (  # noqa: E402 (already imported above for others)
     should_kill,
     _heartbeat_stale,
-    _metric_writes_stale,
-    _cpu_idle_sustained,
 )
 
 
