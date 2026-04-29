@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # SCOPE: both
 # CONCERNS: observability, recovery, logging
 # Error Pipeline Hook — PostToolUse for Bash

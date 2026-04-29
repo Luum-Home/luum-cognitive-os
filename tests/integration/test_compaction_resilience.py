@@ -16,15 +16,11 @@ F. Recovery after compaction (crash-recovery patterns)
 from __future__ import annotations
 
 import json
-import os
 import re
-import tempfile
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from unittest.mock import MagicMock, patch
-
-import pytest
+from unittest.mock import patch
 
 # ---------------------------------------------------------------------------
 # Project root on sys.path is already handled by conftest / pytest.ini
@@ -645,11 +641,6 @@ class TestCrashRecovery:
             "Pending user requests must appear in the recovery prompt"
         )
 
-    @pytest.mark.xfail(
-        reason="auto-snapshot-load not yet implemented in session-init.sh: "
-               "crash-recovery.sh is wired to SessionStart but session-init.sh does not "
-               "yet inject state-snapshot.json into the live session context"
-    )
     def test_session_start_hook_loads_snapshot_automatically(self, tmp_path):
         """The session-init SessionStart hook should auto-load the last snapshot.
 

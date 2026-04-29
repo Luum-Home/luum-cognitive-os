@@ -18,7 +18,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 
 # Resolve symlinks (project uses symlinked directories per CLAUDE.md rules)
-PROJECT_DIR=$(readlink -f "$PROJECT_DIR" 2>/dev/null || echo "$PROJECT_DIR")
+PROJECT_DIR=$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$PROJECT_DIR" 2>/dev/null || echo "$PROJECT_DIR")
 
 # Load the symlink-aware file checker (mandatory per CLAUDE.md)
 LIB_DIR="$PROJECT_DIR/hooks/_lib"
