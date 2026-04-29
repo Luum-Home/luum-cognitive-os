@@ -166,7 +166,9 @@ The draft is advisory and editable. It uses small deterministic signals only:
 stack markers such as `go.mod`, `pyproject.toml`, `package.json`, Docker files,
 session metadata count, and prompt-capture categories. It does not scan the full
 repo, does not call Engram/MCP from a shell hook, and does not promote entries
-automatically. Every entry has a source object and the writer sanitizes
+automatically. Promotion is explicit and writes a local active profile to
+`.cognitive-os/project-profile/profile.json`; it does not write to Engram or
+mutate agent behavior. Every entry has a source object and the writer sanitizes
 developer-specific home paths before persisting.
 
 Manual commands:
@@ -174,6 +176,7 @@ Manual commands:
 ```bash
 python3 scripts/cos-profile-bootstrap.py generate
 python3 scripts/cos-profile-bootstrap.py inspect
+python3 scripts/cos-profile-bootstrap.py promote --approved-by <reviewer>
 python3 scripts/cos-profile-bootstrap.py wipe
 ```
 
@@ -187,7 +190,7 @@ python3 scripts/cos-profile-bootstrap.py wipe
 | `tests/behavior/test_engram_reinforce_hook.py` | reinforcement metrics can write under Codex project env |
 | `tests/contracts/test_session_start_tooling_contract.py` | SessionStart host doctor includes memory lifecycle proof and does not run pytest |
 | `tests/unit/test_project_profile_bootstrap.py` | project profile drafts are source-linked, conflict-aware, sanitized, and fail-open on corrupt session metadata |
-| `tests/behavior/test_profile_bootstrap_cli.py` | manual generate/inspect/wipe profile bootstrap commands work without leaking absolute project paths |
+| `tests/behavior/test_profile_bootstrap_cli.py` | manual generate/inspect/promote/wipe profile bootstrap commands work without leaking absolute project paths |
 
 ## Related Documents
 
