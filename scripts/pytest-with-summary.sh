@@ -21,7 +21,7 @@ REPORT_MAX_MIB="${COS_TEST_REPORT_MAX_MIB:-120}"
 
 _prune_test_reports() {
   [ -d "$REPORT_ROOT" ] || return 0
-  REPORT_ROOT="$REPORT_ROOT" REPORT_KEEP="$REPORT_KEEP" REPORT_MAX_MIB="$REPORT_MAX_MIB" python3 - <<'PYPRUNE'
+  REPORT_ROOT="$REPORT_ROOT" REPORT_KEEP="$REPORT_KEEP" REPORT_MAX_MIB="$REPORT_MAX_MIB" REPORT_PROTECT="${REPORT_PROTECT:-}" python3 - <<'PYPRUNE'
 from __future__ import annotations
 
 import os
@@ -29,6 +29,8 @@ import shutil
 from pathlib import Path
 
 root = Path(os.environ["REPORT_ROOT"])
+protect_raw = os.environ.get("REPORT_PROTECT", "")
+protect = Path(protect_raw).resolve() if protect_raw else None
 keep = max(1, int(os.environ.get("REPORT_KEEP", "30")))
 max_bytes = max(1, int(os.environ.get("REPORT_MAX_MIB", "120"))) * 1024 * 1024
 
@@ -43,7 +45,7 @@ def size(path: Path) -> int:
     return total
 
 runs = sorted(
-    [p for p in root.iterdir() if p.is_dir() and p.name != "latest"],
+    [p for p in root.iterdir() if p.is_dir() and p.name != "latest" and (protect is None or p.resolve() != protect)],
     key=lambda p: p.stat().st_mtime,
     reverse=True,
 )
@@ -53,7 +55,7 @@ for stale in runs[keep:]:
     shutil.rmtree(stale, ignore_errors=True)
 
 runs = sorted(
-    [p for p in root.iterdir() if p.is_dir() and p.name != "latest"],
+    [p for p in root.iterdir() if p.is_dir() and p.name != "latest" and (protect is None or p.resolve() != protect)],
     key=lambda p: p.stat().st_mtime,
     reverse=True,
 )
@@ -182,7 +184,7 @@ if [ -f "$inventory_tool" ]; then
   python3 "$inventory_tool" --run-dir "$run_dir" >/dev/null 2>&1 || true
 fi
 
-_prune_test_reports
+REPORT_PROTECT="$run_dir" _prune_test_reports
 
 echo "[pytest-with-summary] Summary: $summary"
 echo "[pytest-with-summary] Failures: $failures"
