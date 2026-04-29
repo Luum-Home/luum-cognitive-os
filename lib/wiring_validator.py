@@ -26,6 +26,7 @@ class WiringValidator:
         self._settings_path: Path | None = None
         self._compact_content: str | None = None
         self._excluded_rules: set[str] | None = None
+        self._python_contents: list[tuple[Path, str]] | None = None
 
     # ── Lazy loaders ─────────────────────────────────────────────────────────
 
@@ -87,6 +88,33 @@ class WiringValidator:
             self._compact_content = p.read_text() if p.exists() else ""
         return self._compact_content
 
+
+    def _first_party_python_contents(self) -> list[tuple[Path, str]]:
+        """Return cached first-party Python file contents for import scans.
+
+        Lib wiring validates every lib module. Re-reading every Python file for
+        every lib scales as modules × files and can exceed the suite timeout in
+        broad serial runs. Cache file contents once per validator instance while
+        keeping validation semantics identical.
+        """
+        if self._python_contents is not None:
+            return self._python_contents
+
+        contents: list[tuple[Path, str]] = []
+        for search_dir in ("lib", "hooks", "tests", "scripts", "skills"):
+            root = self.root / search_dir
+            if not root.exists():
+                continue
+            for py_file in root.rglob("*.py"):
+                if "__pycache__" in py_file.parts:
+                    continue
+                try:
+                    contents.append((py_file, py_file.read_text(errors="ignore")))
+                except OSError:
+                    continue
+        self._python_contents = contents
+        return contents
+
     def _get_excluded_rules(self) -> set[str]:
         if self._excluded_rules is None:
             self._excluded_rules = set()
@@ -107,8 +135,6 @@ class WiringValidator:
     def validate_hook(self, hook_name: str) -> dict[str, Any]:
         """Validate a hook by name (with or without .sh extension)."""
         name = hook_name if hook_name.endswith(".sh") else f"{hook_name}.sh"
-        bare = name[:-3]
-
         file_path = self.root / "hooks" / name
         file_exists = file_path.exists()
 
@@ -163,20 +189,11 @@ class WiringValidator:
             re.compile(rf'from\s+{re.escape(bare)}\s+import'),
             re.compile(rf'import\s+{re.escape(bare)}(?:\s|$)'),
         ]
-        _search_dirs = ["lib", "hooks", "tests", "scripts", "skills"]
-        for _dir in _search_dirs:
-            _search = self.root / _dir
-            if not _search.exists():
+        for py_file, content in self._first_party_python_contents():
+            if py_file == file_path:
                 continue
-            for py_file in _search.rglob("*.py"):
-                if py_file == file_path or "__pycache__" in str(py_file):
-                    continue
-                try:
-                    content = py_file.read_text(errors="ignore")
-                    if any(p.search(content) for p in patterns):
-                        imported_by.append(str(py_file.relative_to(self.root)))
-                except OSError:
-                    continue
+            if any(pattern.search(content) for pattern in patterns):
+                imported_by.append(str(py_file.relative_to(self.root)))
 
         test_file = self.root / "tests" / "unit" / f"test_{bare}.py"
         has_tests = test_file.exists()
