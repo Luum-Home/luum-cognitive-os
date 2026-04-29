@@ -26,7 +26,7 @@ except ImportError:
     minimal = {
         "source": "so-vitals",
         "event_type": "so.vitals",
-        "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z"),
         "degraded": True,
         "degraded_reason": "lib.metric_event not importable",
         "agents_in_flight": 0,

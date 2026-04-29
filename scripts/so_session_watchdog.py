@@ -94,7 +94,7 @@ def run_scan(config: dict) -> List[WatchdogRecord]:
     ttl_hours_cfg = float(config.get("ttl_hours", 6.0))
 
     scan_id = str(uuid.uuid4())
-    now_str = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    now_str = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     records: List[WatchdogRecord] = []
     for raw in sessions_raw:
