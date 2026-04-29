@@ -315,7 +315,15 @@ class TestRateLimitDetection(unittest.TestCase):
 class TestJsonlFileIntegration(unittest.TestCase):
     def test_default_sink_writes_jsonl(self):
         with tempfile.TemporaryDirectory() as tmp:
-            with patch.dict(os.environ, {"CLAUDE_PROJECT_DIR": tmp}):
+            with patch.dict(
+                os.environ,
+                {
+                    "COGNITIVE_OS_PROJECT_DIR": tmp,
+                    "CODEX_PROJECT_DIR": "",
+                    "CLAUDE_PROJECT_DIR": tmp,
+                },
+                clear=False,
+            ):
                 _d.dispatch(
                     "hi", providers=["qwen"],
                     _qwen_fn=lambda p, **k: _success_response("alibaba_qwen"),
@@ -332,11 +340,13 @@ class TestJsonlFileIntegration(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             with patch.dict(
                 os.environ,
-                {"CODEX_PROJECT_DIR": tmp},
+                {
+                    "COGNITIVE_OS_PROJECT_DIR": "",
+                    "CODEX_PROJECT_DIR": tmp,
+                    "CLAUDE_PROJECT_DIR": "",
+                },
                 clear=False,
             ):
-                os.environ.pop("COGNITIVE_OS_PROJECT_DIR", None)
-                os.environ.pop("CLAUDE_PROJECT_DIR", None)
                 _d.dispatch(
                     "hi", providers=["qwen"],
                     _qwen_fn=lambda p, **k: _success_response("alibaba_qwen"),
