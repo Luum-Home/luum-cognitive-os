@@ -7,6 +7,7 @@ from lib.project_profile_bootstrap import (
     build_project_profile_draft,
     detect_conflicts,
     sanitize_text,
+    promote_project_profile,
     wipe_project_profile,
     write_project_profile_draft,
     ProfileEntry,
@@ -123,6 +124,37 @@ def test_conflicting_entries_are_marked_not_overwritten() -> None:
     assert len(conflicts) == 1
     assert conflicts[0].key == "preference:language"
     assert conflicts[0].values == ["English", "Spanish"]
+
+
+def test_promote_requires_approval(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    (project / "go.mod").write_text("module example.com/app\n")
+    _session(project, "s1")
+    write_project_profile_draft(project)
+
+    try:
+        promote_project_profile(project)
+    except PermissionError as exc:
+        assert "requires" in str(exc)
+    else:
+        raise AssertionError("profile promotion without approval should fail")
+
+
+def test_promote_writes_active_profile_without_leaking_approval_path(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    (project / "go.mod").write_text("module example.com/app\n")
+    _session(project, "s1")
+    write_project_profile_draft(project)
+    approver = "/" + "Users" + "/alice"
+
+    active = promote_project_profile(project, approved_by=approver)
+
+    data = json.loads(active.read_text())
+    assert data["status"] == "active"
+    assert data["promoted_by"] == "<developer-home>"
+    assert approver not in active.read_text()
 
 
 def test_wipe_removes_project_profile_dir(tmp_path: Path) -> None:

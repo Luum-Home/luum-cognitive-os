@@ -230,6 +230,10 @@ def test_memory_lifecycle_doctor_proves_codex_session_without_claude_env(
     assert result.returncode == 0, result.stderr + result.stdout
     assert "PASS Engram launcher hook can run for a new codex session" in result.stdout
     assert "PASS session-resume detects and recovers pending tasks" in result.stdout
+    assert (
+        "PASS project profile bootstrap writes draft for new codex session without Claude env"
+        in result.stdout
+    )
     assert "PASS session-summary-reminder protects stop with mem_session_summary reminder" in result.stdout
     assert "PASS session-summary-reminder writes fallback persistence on second stop" in result.stdout
     assert "PASS session-learning saves session summary metrics" in result.stdout

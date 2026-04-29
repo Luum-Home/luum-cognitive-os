@@ -180,6 +180,7 @@ git -C "$SCRATCH_PROJECT" init -q >/dev/null 2>&1 || true
 git -C "$SCRATCH_PROJECT" config user.email "doctor@example.invalid" >/dev/null 2>&1 || true
 git -C "$SCRATCH_PROJECT" config user.name "Cognitive OS Doctor" >/dev/null 2>&1 || true
 printf 'doctor\n' > "$SCRATCH_PROJECT/README.md"
+printf 'module example.com/profile\n' > "$SCRATCH_PROJECT/go.mod"
 git -C "$SCRATCH_PROJECT" add README.md >/dev/null 2>&1 || true
 git -C "$SCRATCH_PROJECT" commit -m "doctor baseline" -q >/dev/null 2>&1 || true
 start_commit="$(git -C "$SCRATCH_PROJECT" rev-parse --short HEAD 2>/dev/null || true)"
@@ -196,6 +197,30 @@ case "$HARNESS" in
 esac
 
 check_driver_projection
+
+
+if run_hook "session-init.sh" >/dev/null 2>&1 \
+  && [ -s "$SCRATCH_PROJECT/.cognitive-os/project-profile/draft.json" ] \
+  && python3 - "$SCRATCH_PROJECT/.cognitive-os/project-profile/draft.json" "$SCRATCH_PROJECT" <<'PYEOF'
+import json
+import sys
+from pathlib import Path
+
+draft_path = Path(sys.argv[1])
+scratch = sys.argv[2]
+draft = json.loads(draft_path.read_text())
+if draft.get("status") != "draft":
+    raise SystemExit(1)
+if not any(entry.get("value") == "go" for entry in draft.get("entries", [])):
+    raise SystemExit(1)
+if scratch in draft_path.read_text():
+    raise SystemExit(1)
+PYEOF
+then
+  pass "project profile bootstrap writes draft for new $HARNESS session without Claude env"
+else
+  fail "project profile bootstrap did not write a sanitized draft for new $HARNESS session without Claude env"
+fi
 
 if [ "$START_ENGRAM" = true ]; then
   if command -v engram >/dev/null 2>&1; then
