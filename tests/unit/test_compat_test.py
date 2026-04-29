@@ -18,6 +18,7 @@ except ImportError:
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 CATALOG_MD = PROJECT_ROOT / "skills" / "CATALOG.md"
+CATALOG_COMPACT_MD = PROJECT_ROOT / "skills" / "CATALOG-COMPACT.md"
 COS_YAML = PROJECT_ROOT / "cognitive-os.yaml"
 
 pytestmark = pytest.mark.unit
@@ -51,15 +52,18 @@ class TestCompatTestSkillExists:
 class TestCompatTestProgressiveLoadingContract:
     @pytest.mark.skipif(not YAML_AVAILABLE, reason="PyYAML not installed")
     def test_catalog_md_token_estimate_within_budget(self):
-        """Test 5 from compat-test: CATALOG.md estimated tokens < level1_budget.
+        """Test 5 from compat-test: compact catalog fits level1, full catalog fits level2.
 
-        NOTE: This test is advisory — a breach indicates CATALOG.md needs compaction
-        via /catalog-full but is not a hard blocker (level2_budget covers overflow).
-        The test records the finding instead of failing the suite.
+        Level 1 loads the progressive `CATALOG-COMPACT.md` index; the full
+        `CATALOG.md` is a level 2 on-demand artifact and may be larger. This
+        test enforces the actual progressive-loading contract instead of
+        warning on a valid full-catalog overflow.
         """
         assert CATALOG_MD.exists(), "CATALOG.md missing"
-        catalog_chars = len(CATALOG_MD.read_text())
-        estimated_tokens = catalog_chars / 4  # chars / 4 approximation
+        assert CATALOG_COMPACT_MD.exists(), "CATALOG-COMPACT.md missing"
+        compact_chars = len(CATALOG_COMPACT_MD.read_text())
+        estimated_tokens = compact_chars / 4  # chars / 4 approximation
+        full_estimated_tokens = len(CATALOG_MD.read_text()) / 4
 
         # Read level1_budget from cognitive-os.yaml
         assert COS_YAML.exists(), "cognitive-os.yaml missing"
@@ -74,24 +78,14 @@ class TestCompatTestProgressiveLoadingContract:
             .get("loading", {})
             .get("level2_budget", 30000)
         )
-        if estimated_tokens >= budget:
-            # Advisory: log the finding but do not block the test suite.
-            # CATALOG.md can overflow level1 and still load under level2.
-            assert estimated_tokens < level2_budget, (
-                f"CATALOG.md estimated tokens ({estimated_tokens:.0f}) "
-                f"exceeds BOTH level1_budget ({budget}) AND level2_budget ({level2_budget}). "
-                "CRITICAL: run /catalog-full immediately."
-            )
-            # Soft warning recorded in test output:
-            import warnings
-            warnings.warn(
-                f"CATALOG.md ({estimated_tokens:.0f} tokens) exceeds level1_budget "
-                f"({budget}). Run /catalog-full to compact it.",
-                UserWarning,
-                stacklevel=2,
-            )
-        else:
-            assert estimated_tokens < budget
+        assert estimated_tokens < budget, (
+            f"CATALOG-COMPACT.md estimated tokens ({estimated_tokens:.0f}) "
+            f"exceeds level1_budget ({budget}). Run scripts/generate_compact_catalog.py."
+        )
+        assert full_estimated_tokens < level2_budget, (
+            f"CATALOG.md estimated tokens ({full_estimated_tokens:.0f}) "
+            f"exceeds level2_budget ({level2_budget}). Run /catalog-full immediately."
+        )
 
     @pytest.mark.skipif(not YAML_AVAILABLE, reason="PyYAML not installed")
     def test_cognitive_os_yaml_has_required_budget_fields(self):

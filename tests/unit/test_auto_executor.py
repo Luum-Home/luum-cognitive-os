@@ -16,6 +16,7 @@ Note on Cat D tests (skip_when_valkey_running):
 """
 
 import os
+import warnings
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -28,10 +29,16 @@ from tests.unit._helpers import skip_when_valkey_running
 # ---------------------------------------------------------------------------
 
 def _import_module():
-    """Fresh import (module may cache env-var state)."""
+    """Fresh import of the deprecated shim without leaking expected warnings."""
     import importlib
-    import lib.auto_executor as m
-    importlib.reload(m)
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message="lib.auto_executor is deprecated.*",
+            category=DeprecationWarning,
+        )
+        m = importlib.import_module("lib.auto_executor")
+        importlib.reload(m)
     return m
 
 
@@ -48,7 +55,7 @@ class TestCheckAndActivate:
         patch.object on lib.auto_executor._is_valkey_reachable does not
         intercept the live call inside AutoExecutor.check_and_activate().
         """
-        import lib.auto_executor as m
+        m = _import_module()
         env = {k: v for k, v in os.environ.items() if k != "ORCHESTRATOR_MODE"}
         with patch.dict(os.environ, env, clear=True):
             with patch.object(m, "_is_valkey_reachable", return_value=False):
@@ -58,7 +65,7 @@ class TestCheckAndActivate:
 
     def test_check_with_valkey(self):
         """Returns connected when Valkey is reachable."""
-        import lib.auto_executor as m
+        m = _import_module()
         env = {k: v for k, v in os.environ.items() if k != "ORCHESTRATOR_MODE"}
         with patch.dict(os.environ, env, clear=True):
             with patch.object(m, "_is_valkey_reachable", return_value=True):
@@ -68,7 +75,7 @@ class TestCheckAndActivate:
 
     def test_auto_activated_flag(self):
         """auto_activated=True when Valkey is up and ORCHESTRATOR_MODE was not set."""
-        import lib.auto_executor as m
+        m = _import_module()
         env = {k: v for k, v in os.environ.items() if k != "ORCHESTRATOR_MODE"}
         with patch.dict(os.environ, env, clear=True):
             with patch.object(m, "_is_valkey_reachable", return_value=True):
@@ -77,7 +84,7 @@ class TestCheckAndActivate:
 
     def test_not_auto_activated_when_already_set(self):
         """auto_activated=False when ORCHESTRATOR_MODE was already 'executor'."""
-        import lib.auto_executor as m
+        m = _import_module()
         with patch.dict(os.environ, {"ORCHESTRATOR_MODE": "executor"}):
             with patch.object(m, "_is_valkey_reachable", return_value=True):
                 result = m.AutoExecutor.check_and_activate()
@@ -90,7 +97,7 @@ class TestCheckAndActivate:
         Skipped when Valkey is running — same shim patch limitation as
         test_check_no_valkey.
         """
-        import lib.auto_executor as m
+        m = _import_module()
         env = {k: v for k, v in os.environ.items() if k != "ORCHESTRATOR_MODE"}
         with patch.dict(os.environ, env, clear=True):
             with patch.object(m, "_is_valkey_reachable", return_value=False):
@@ -99,7 +106,7 @@ class TestCheckAndActivate:
 
     def test_message_present(self):
         """Result dict always contains a non-empty message."""
-        import lib.auto_executor as m
+        m = _import_module()
         with patch.object(m, "_is_valkey_reachable", return_value=False):
             result = m.AutoExecutor.check_and_activate()
         assert result.get("message")
@@ -187,7 +194,7 @@ class TestGracefulDegradation:
         not intercept the real call, so the live Valkey succeeds and the
         mode ends up as 'connected' not 'fire_and_forget'.
         """
-        import lib.auto_executor as m
+        m = _import_module()
         with patch.object(m, "_is_valkey_reachable", side_effect=Exception("network error")):
             # Should not propagate the exception — falls back gracefully
             try:

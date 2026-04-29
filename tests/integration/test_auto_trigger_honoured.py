@@ -28,15 +28,15 @@ To override the data root (e.g. in CI with fixture data):
     AUTO_TRIGGER_DATA_ROOT=/some/path pytest ...
 
 The test does NOT hard-fail on low compliance today (we are bootstrapping data).
-Below 80% rate it logs a warning. A hard-fail threshold will be added after 2
-weeks of data collection.
+Below 80% rate it emits a captured diagnostic report without a Python warning.
+A hard-fail threshold can be enabled explicitly once the production data source is clean.
 """
 
 from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -346,7 +346,6 @@ class TestAutoTriggerComplianceFromFixtures:
         _write_jsonl(invocations_path, [])
 
         emissions = _load_events(emissions_path, "auto_trigger.emitted")
-        invocations = _load_events(invocations_path, "skill.invoked")
 
         if not emissions:
             pytest.skip("no auto-trigger emissions yet — bootstrapping phase")
@@ -458,10 +457,11 @@ def test_auto_trigger_compliance_rate():
     """Measure: of all AUTO-TRIGGER emissions, how many had a matching
     skill invocation within 60 seconds?
 
-    Reports compliance rate; does NOT hard-fail below a threshold today
-    (we are bootstrapping data). Logs a warning if rate < 80%.
-
-    Hard-fail threshold to be tuned after 2 weeks of data accumulation.
+    Reports compliance rate; does NOT hard-fail below a threshold by default
+    because production metrics may contain historical bootstrap data. Low
+    compliance is printed as a diagnostic, not emitted as a warning that makes
+    unrelated broad test lanes noisy. Set AUTO_TRIGGER_ENFORCE=1 to fail low
+    compliance intentionally.
     """
     emissions_path = DEFAULT_DATA_ROOT / "auto-trigger-events.jsonl"
     invocations_path = DEFAULT_DATA_ROOT / "skill-invocations.jsonl"
@@ -497,13 +497,9 @@ def test_auto_trigger_compliance_rate():
     report = "\n".join(report_lines)
 
     if rate < 0.80:
-        # Warn but do not hard-fail during bootstrapping period
-        import warnings
-        warnings.warn(
-            f"AUTO-TRIGGER compliance below 80%: {pct:.1f}%\n{report}",
-            UserWarning,
-            stacklevel=2,
-        )
+        if os.environ.get("AUTO_TRIGGER_ENFORCE") == "1":
+            pytest.fail(f"AUTO-TRIGGER compliance below 80%: {pct:.1f}%\n{report}")
+        print(f"AUTO-TRIGGER diagnostic below 80%: {pct:.1f}%\n{report}")
 
     # Sanity assertions that always hold regardless of rate
     assert 0.0 <= rate <= 1.0, f"compliance rate out of bounds: {rate}"
