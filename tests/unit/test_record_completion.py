@@ -3,8 +3,6 @@ import json
 import os
 import sys
 
-import pytest
-
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../.."))
 from lib.record_completion import (
     extract_skill_name,
@@ -250,10 +248,29 @@ class TestSendOtelTrace:
 class TestSendMLflowCompletion:
     """Verify agent completion is mirrored to the MLflow replacement path."""
 
-    def test_calls_mlflow_completion_contract(self):
+    def test_skips_mlflow_hotpath_by_default(self, monkeypatch):
+        import lib.record_completion as rc
+        from unittest.mock import patch
+
+        monkeypatch.delenv("COS_MLFLOW_HOTPATH_ENABLED", raising=False)
+        with patch("lib.mlflow_bridge.MLflowBridge") as bridge_cls:
+            rc._send_mlflow_completion(
+                skill_name="sdd-apply",
+                task_type="implementation",
+                trust_score=85,
+                tokens_used=8000,
+                success=True,
+                task_id="task-42",
+                model="sonnet",
+            )
+
+        bridge_cls.assert_not_called()
+
+    def test_calls_mlflow_completion_contract_when_enabled(self, monkeypatch):
         import lib.record_completion as rc
         from unittest.mock import MagicMock, patch
 
+        monkeypatch.setenv("COS_MLFLOW_HOTPATH_ENABLED", "1")
         bridge = MagicMock()
         with patch("lib.mlflow_bridge.MLflowBridge", return_value=bridge):
             rc._send_mlflow_completion(
@@ -276,10 +293,11 @@ class TestSendMLflowCompletion:
             model="sonnet",
         )
 
-    def test_survives_mlflow_exception(self):
+    def test_survives_mlflow_exception_when_enabled(self, monkeypatch):
         import lib.record_completion as rc
         from unittest.mock import patch
 
+        monkeypatch.setenv("COS_MLFLOW_HOTPATH_ENABLED", "1")
         with patch("lib.mlflow_bridge.MLflowBridge", side_effect=RuntimeError("mlflow down")):
             rc._send_mlflow_completion("skill", "impl", 75, 1000, True, "task-1", "sonnet")
 

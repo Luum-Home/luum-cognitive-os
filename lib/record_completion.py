@@ -396,6 +396,11 @@ def _send_otel_trace(
         pass  # Never block completion recording for observability
 
 
+def _env_truthy(name: str) -> bool:
+    """Return True when an opt-in environment flag is explicitly enabled."""
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
 def _send_mlflow_completion(
     skill_name: str,
     task_type: str,
@@ -405,7 +410,17 @@ def _send_mlflow_completion(
     task_id: str,
     model: str,
 ) -> None:
-    """Send agent completion metrics to MLflow. Silent on failure."""
+    """Send agent completion metrics to MLflow when hot-path export is enabled.
+
+    Completion recording is a PostToolUse hot path. Durable JSONL metrics are
+    always written before this function is called, while MLflow remains an
+    optional exporter. Direct MLflow writes can import plugins and contend on
+    the default SQLite tracking store under large test/session loads, so they
+    must be explicitly enabled. Stop-time ``mlflow-sync.sh`` remains the default
+    MLflow export path and has a shell timeout wrapper.
+    """
+    if not _env_truthy("COS_MLFLOW_HOTPATH_ENABLED"):
+        return
     try:
         from lib.mlflow_bridge import MLflowBridge
 
