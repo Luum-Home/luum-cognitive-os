@@ -136,3 +136,4 @@
 - [x] Competitive reassessment against OpenClaw and Hermes Agent is documented in [Competitive Reassessment: OpenClaw and Hermes Agent](competitive-reassessment-openclaw-hermes-2026-04.md), including native self-improvement, skill lifecycle, memory/profile bootstrap, and deployment/onboarding gaps.
 
 - [x] Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../architecture/plans/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice is covered by unit and behavior tests.
+- [x] Memory/Profile Bootstrap now creates a local source-linked, sanitized project profile draft during the first three sessions, with manual generate/inspect/wipe commands and Codex SessionStart tests.
