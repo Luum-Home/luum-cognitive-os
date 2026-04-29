@@ -31,6 +31,9 @@ METRICS = PROJECT_DIR / ".cognitive-os" / "metrics" / "session-leak.jsonl"
 
 def _run(extra_env: dict | None = None, mode: str = "--json") -> subprocess.CompletedProcess:
     env = os.environ.copy()
+    env["COGNITIVE_OS_PROJECT_DIR"] = str(PROJECT_DIR)
+    env.pop("CODEX_PROJECT_DIR", None)
+    env.pop("CLAUDE_PROJECT_DIR", None)
     if extra_env:
         env.update(extra_env)
     return subprocess.run(
