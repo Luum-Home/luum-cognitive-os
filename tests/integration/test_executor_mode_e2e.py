@@ -104,7 +104,7 @@ class TestHeartbeatE2E:
     """
 
     def test_step1_auto_executor_detects_valkey(self):
-        """Step 1: auto_executor.check_and_activate() sees Valkey and activates executor mode."""
+        """Step 1: orchestrator_mode_activator.check_and_activate() sees Valkey and activates executor mode."""
         # Save original mode so we can restore it after this test
         original_mode = os.environ.get("ORCHESTRATOR_MODE", "")
         try:
@@ -112,7 +112,7 @@ class TestHeartbeatE2E:
             if "ORCHESTRATOR_MODE" in os.environ:
                 del os.environ["ORCHESTRATOR_MODE"]
 
-            from lib.auto_executor import AutoExecutor
+            from lib.orchestrator_mode_activator import AutoExecutor
             result = AutoExecutor.check_and_activate()
 
             assert result["valkey_available"] is True, (
@@ -234,9 +234,8 @@ class TestHeartbeatE2E:
         - report_complete() publishes a final alive=False heartbeat
         - The lifecycle can be tracked by an OrchestratorSubscriber
         """
-        try:
-            import redis
-        except ImportError:
+        import importlib.util
+        if importlib.util.find_spec("redis") is None:
             pytest.skip("redis package not installed")
 
         from lib.agent_bus import AgentPublisher, OrchestratorSubscriber
@@ -274,7 +273,6 @@ class TestHeartbeatE2E:
 
         # Analyze lifecycle
         heartbeats = [e for e in lifecycle_events if e["type"] == "heartbeat"]
-        completions = [e for e in lifecycle_events if e["type"] == "complete"]
 
         assert len(heartbeats) > 0, (
             "No heartbeat events received by OrchestratorSubscriber.\n"
@@ -356,7 +354,6 @@ class TestExecutorModeFallback:
 
     def test_delegate_task_fallback(self):
         """delegate_task() returns a structured error dict when executor unavailable."""
-        import sys
         from unittest.mock import patch
 
         # Remove ClaudeExecutor from modules to simulate unavailability
@@ -383,7 +380,7 @@ class TestExecutorModeFallback:
 
     def test_auto_executor_no_crash(self):
         """AutoExecutor.check_and_activate() never raises."""
-        from lib.auto_executor import AutoExecutor
+        from lib.orchestrator_mode_activator import AutoExecutor
         result = AutoExecutor.check_and_activate()
         assert "mode" in result
         assert "valkey_available" in result
