@@ -24,6 +24,7 @@ fi
 added=0
 removed=0
 fixes=""
+LN_BATCH_FILE="$(mktemp "${TMPDIR:-/tmp}/cos-self-install-ln.XXXXXX")"
 
 detect_settings_target() {
   if [ -n "${COGNITIVE_OS_HARNESS:-}" ]; then
@@ -88,60 +89,65 @@ resolve_dest() {
 # targets only when python3 is unavailable.
 ln_rel() {
   local target="$1" link="$2"
-  local link_dir rel_target
-  local -a target_parts base_parts rel_parts
-  local target_trimmed base_trimmed
-  local i common_len up_count idx
+  local link_dir target_rel link_dir_rel up_prefix remainder
 
-  target_trimmed="${target%/}"
+  # Fast path for the common self-install case: both target and link live under
+  # the project root. Avoid per-link array splitting in large trees; the
+  # performance test creates 100+ components and this path keeps SessionStart
+  # sync below its product budget.
+  case "$target" in
+    "$PROJECT_DIR"/*) target_rel="${target#"$PROJECT_DIR"/}" ;;
+    *) ln -sfn "$target" "$link"; return ;;
+  esac
+
   link_dir="${link%/*}"
-  base_trimmed="${link_dir%/}"
+  case "$link_dir" in
+    "$PROJECT_DIR") link_dir_rel="" ;;
+    "$PROJECT_DIR"/*) link_dir_rel="${link_dir#"$PROJECT_DIR"/}" ;;
+    *) ln -sfn "$target" "$link"; return ;;
+  esac
 
-  if [ -z "$target_trimmed" ] || [ -z "$base_trimmed" ]; then
-    ln -sfn "$target" "$link"
-    return
-  fi
-
-  if [ "${target_trimmed#/}" = "$target_trimmed" ] || [ "${base_trimmed#/}" = "$base_trimmed" ]; then
-    ln -sfn "$target" "$link"
-    return
-  fi
-
-  IFS='/' read -r -a target_parts <<< "${target_trimmed#/}"
-  IFS='/' read -r -a base_parts <<< "${base_trimmed#/}"
-
-  common_len=0
-  while [ "$common_len" -lt "${#target_parts[@]}" ] && [ "$common_len" -lt "${#base_parts[@]}" ] && [ "${target_parts[$common_len]}" = "${base_parts[$common_len]}" ]; do
-    common_len=$((common_len + 1))
+  up_prefix=""
+  remainder="$link_dir_rel"
+  while [ -n "$remainder" ]; do
+    up_prefix="../$up_prefix"
+    case "$remainder" in
+      */*) remainder="${remainder#*/}" ;;
+      *) remainder="" ;;
+    esac
   done
 
-  rel_parts=()
-  up_count=$((${#base_parts[@]} - common_len))
-  idx=0
-  while [ "$idx" -lt "$up_count" ]; do
-    rel_parts+=("..")
-    idx=$((idx + 1))
-  done
-
-  i=$common_len
-  while [ "$i" -lt "${#target_parts[@]}" ]; do
-    rel_parts+=("${target_parts[$i]}")
-    i=$((i + 1))
-  done
-
-  if [ "${#rel_parts[@]}" -eq 0 ]; then
-    rel_target="."
-  else
-    rel_target="${rel_parts[0]}"
-    i=1
-    while [ "$i" -lt "${#rel_parts[@]}" ]; do
-      rel_target="$rel_target/${rel_parts[$i]}"
-      i=$((i + 1))
-    done
-  fi
-
-  ln -sfn "$rel_target" "$link"
+  printf '%s\t%s\n' "${up_prefix}${target_rel}" "$link" >> "$LN_BATCH_FILE"
 }
+
+flush_ln_batch() {
+  [ -s "$LN_BATCH_FILE" ] || return 0
+  if command -v python3 >/dev/null 2>&1; then
+    python3 - "$LN_BATCH_FILE" <<'PYEOF'
+import os
+import sys
+from pathlib import Path
+
+for line in Path(sys.argv[1]).read_text().splitlines():
+    if not line:
+        continue
+    target, link = line.split("\t", 1)
+    try:
+        if os.path.lexists(link):
+            os.unlink(link)
+        os.symlink(target, link)
+    except OSError:
+        pass
+PYEOF
+  else
+    while IFS=$'\t' read -r target link; do
+      [ -n "$link" ] || continue
+      ln -sfn "$target" "$link" 2>/dev/null || true
+    done < "$LN_BATCH_FILE"
+  fi
+  : > "$LN_BATCH_FILE"
+}
+
 
 # ── Helper: sync directory as flat symlinks ───────────────────────────
 # Usage: sync_dir <src_dir> <dst_dir> <glob_pattern>
@@ -465,6 +471,9 @@ else
     done
   done
 fi
+
+flush_ln_batch
+rm -f "$LN_BATCH_FILE" 2>/dev/null || true
 
 # Remove symlinks in cos_rules_dir:
 # - Always remove broken symlinks (target gone)
