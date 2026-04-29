@@ -42,7 +42,6 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
 
 # ---------------------------------------------------------------------------
 # Project root resolution
@@ -64,8 +63,28 @@ except ImportError:
             file=sys.stderr,
         )
         sys.exit(1)
-    else:
-        raise ImportError("fastmcp not installed — run: pip install fastmcp")
+
+    class _FastMCPCompat:
+        """Tiny import-time stub used for direct tool tests when fastmcp is absent."""
+
+        def __init__(self, name: str, **kwargs):
+            self.name = name
+            self.kwargs = kwargs
+
+        def tool(self, *decorator_args, **decorator_kwargs):
+            if decorator_args and callable(decorator_args[0]) and not decorator_kwargs:
+                return decorator_args[0]
+
+            def _decorator(func):
+                return func
+
+            return _decorator
+
+        def run(self):
+            raise RuntimeError("fastmcp is required to run the MCP server transport")
+
+
+    FastMCP = _FastMCPCompat
 
 # ---------------------------------------------------------------------------
 # Server definition

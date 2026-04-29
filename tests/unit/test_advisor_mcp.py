@@ -28,21 +28,7 @@ PACKAGE_DIR = PROJECT_ROOT / "packages" / "advisor-mcp"
 sys.path.insert(0, str(PACKAGE_DIR))
 sys.path.insert(0, str(PROJECT_ROOT))
 
-# ---------------------------------------------------------------------------
-# Import guard — skip if fastmcp not installed
-# ---------------------------------------------------------------------------
-
-try:
-    import fastmcp  # noqa: F401
-
-    HAS_FASTMCP = True
-except ImportError:
-    HAS_FASTMCP = False
-
-pytestmark = [
-    pytest.mark.unit,
-    pytest.mark.skipif(not HAS_FASTMCP, reason="fastmcp not installed"),
-]
+pytestmark = [pytest.mark.unit]
 
 
 # ---------------------------------------------------------------------------

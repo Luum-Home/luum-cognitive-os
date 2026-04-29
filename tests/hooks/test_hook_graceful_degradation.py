@@ -72,6 +72,67 @@ def _stdin_hook_ids() -> list[str]:
     """Return names of hooks that receive JSON stdin."""
     return [h.name for h in _list_stdin_hooks()]
 
+PRIVATE_MODE_HOOKS = {
+    "blast-radius.sh",
+    "clarification-gate.sh",
+    "rate-limiter.sh",
+    "completeness-check.sh",
+    "infra-intent-detector.sh",
+    "pre-cleanup-snapshot.sh",
+}
+
+PRETOOL_AGENT_HOOKS = {
+    "blast-radius.sh",
+    "clarification-gate.sh",
+    "completeness-check.sh",
+    "infra-intent-detector.sh",
+    "token-budget-monitor.sh",
+}
+
+POSTTOOL_EDIT_WRITE_HOOKS = {
+    "content-policy.sh",
+    "secret-detector.sh",
+}
+
+HOOKS_NEEDING_PROJECT = {
+    "content-policy.sh",
+    "blast-radius.sh",
+    "clarification-gate.sh",
+    "claim-validator.sh",
+    "error-pipeline.sh",
+    "completeness-check.sh",
+    "infra-intent-detector.sh",
+    "token-budget-monitor.sh",
+}
+
+JSON_HOOKS = {
+    "content-policy.sh",
+    "blast-radius.sh",
+    "clarification-gate.sh",
+    "claim-validator.sh",
+    "error-pipeline.sh",
+    "completeness-check.sh",
+    "infra-intent-detector.sh",
+    "token-budget-monitor.sh",
+    "rate-limiter.sh",
+    "large-file-advisor.sh",
+}
+
+TOOL_HOOKS = {
+    "aguara-scan.sh": "aguara",
+    "semgrep-scan.sh": "semgrep",
+    "mcp-scan.sh": "mcp-scan",
+}
+
+
+def _hooks_by_names(names: set[str]) -> list[Path]:
+    """Return existing hooks whose names are in names, preserving sorted hook order."""
+    return [h for h in _list_hooks() if h.name in names]
+
+
+def _hook_names(paths: list[Path]) -> list[str]:
+    return [p.name for p in paths]
+
 
 # ---------------------------------------------------------------------------
 # Parametrized: every hook gets tested with each input pattern
@@ -87,6 +148,36 @@ def hook_path(request) -> Path:
 @pytest.fixture(params=_list_stdin_hooks(), ids=_stdin_hook_ids())
 def stdin_hook_path(request) -> Path:
     """Parametrize over hooks that receive JSON stdin."""
+    return request.param
+
+
+@pytest.fixture(params=_hooks_by_names(PRIVATE_MODE_HOOKS), ids=lambda p: p.name)
+def private_mode_hook_path(request) -> Path:
+    return request.param
+
+
+@pytest.fixture(params=_hooks_by_names(PRETOOL_AGENT_HOOKS), ids=lambda p: p.name)
+def pretool_agent_hook_path(request) -> Path:
+    return request.param
+
+
+@pytest.fixture(params=_hooks_by_names(POSTTOOL_EDIT_WRITE_HOOKS), ids=lambda p: p.name)
+def edit_write_hook_path(request) -> Path:
+    return request.param
+
+
+@pytest.fixture(params=_hooks_by_names(HOOKS_NEEDING_PROJECT), ids=lambda p: p.name)
+def project_dir_hook_path(request) -> Path:
+    return request.param
+
+
+@pytest.fixture(params=_hooks_by_names(JSON_HOOKS), ids=lambda p: p.name)
+def json_hook_path(request) -> Path:
+    return request.param
+
+
+@pytest.fixture(params=_hooks_by_names(set(TOOL_HOOKS)), ids=lambda p: p.name)
+def external_tool_hook_path(request) -> Path:
     return request.param
 
 
@@ -129,24 +220,11 @@ class TestEmptyStdin:
 class TestPrivateMode:
     """Hooks that check private mode should skip when it is active."""
 
-    # Hooks known to check private mode (from code review)
-    PRIVATE_MODE_HOOKS = {
-        "blast-radius.sh",
-        "clarification-gate.sh",
-        "rate-limiter.sh",
-        "completeness-check.sh",
-        "infra-intent-detector.sh",
-        "pre-cleanup-snapshot.sh",
-    }
-
-    def test_private_mode_exit_0(self, hook_path, mock_project, private_mode):
+    def test_private_mode_exit_0(self, private_mode_hook_path, mock_project, private_mode):
         """Hooks that check private mode should exit 0 when it is active."""
-        if hook_path.name not in self.PRIVATE_MODE_HOOKS:
-            pytest.skip(f"{hook_path.name} does not check private mode")
-
         stdin = json.dumps(make_agent_input("Do something drastic"))
         result = subprocess.run(
-            ["bash", str(hook_path)],
+            ["bash", str(private_mode_hook_path)],
             input=stdin,
             capture_output=True,
             text=True,
@@ -154,7 +232,7 @@ class TestPrivateMode:
             timeout=15,
         )
         assert result.returncode == 0, (
-            f"{hook_path.name} did not skip in private mode "
+            f"{private_mode_hook_path.name} did not skip in private mode "
             f"(exit {result.returncode})"
         )
 
@@ -162,30 +240,11 @@ class TestPrivateMode:
 class TestToolNameFiltering:
     """Hooks should only process their target tool types."""
 
-    # Map of hooks to their expected tool type
-    PRETOOL_AGENT_HOOKS = {
-        "blast-radius.sh",
-        "clarification-gate.sh",
-        "completeness-check.sh",
-        "infra-intent-detector.sh",
-        "token-budget-monitor.sh",
-    }
-    POSTTOOL_AGENT_HOOKS = {
-        "claim-validator.sh",
-    }
-    POSTTOOL_EDIT_WRITE_HOOKS = {
-        "content-policy.sh",
-        "secret-detector.sh",
-    }
-
-    def test_agent_hooks_ignore_bash(self, hook_path, mock_project):
+    def test_agent_hooks_ignore_bash(self, pretool_agent_hook_path, mock_project):
         """PreToolUse Agent hooks should exit 0 for Bash tool."""
-        if hook_path.name not in self.PRETOOL_AGENT_HOOKS:
-            pytest.skip(f"{hook_path.name} is not a PreToolUse Agent hook")
-
         stdin = json.dumps(make_bash_input("echo hello"))
         result = subprocess.run(
-            ["bash", str(hook_path)],
+            ["bash", str(pretool_agent_hook_path)],
             input=stdin,
             capture_output=True,
             text=True,
@@ -193,17 +252,14 @@ class TestToolNameFiltering:
             timeout=15,
         )
         assert result.returncode == 0, (
-            f"{hook_path.name} should ignore Bash tool but got exit {result.returncode}"
+            f"{pretool_agent_hook_path.name} should ignore Bash tool but got exit {result.returncode}"
         )
 
-    def test_edit_write_hooks_ignore_agent(self, hook_path, mock_project):
+    def test_edit_write_hooks_ignore_agent(self, edit_write_hook_path, mock_project):
         """PostToolUse Edit|Write hooks should exit 0 for Agent tool."""
-        if hook_path.name not in self.POSTTOOL_EDIT_WRITE_HOOKS:
-            pytest.skip(f"{hook_path.name} is not an Edit|Write hook")
-
         stdin = json.dumps(make_agent_input("Do something"))
         result = subprocess.run(
-            ["bash", str(hook_path)],
+            ["bash", str(edit_write_hook_path)],
             input=stdin,
             capture_output=True,
             text=True,
@@ -211,30 +267,15 @@ class TestToolNameFiltering:
             timeout=15,
         )
         assert result.returncode == 0, (
-            f"{hook_path.name} should ignore Agent tool but got exit {result.returncode}"
+            f"{edit_write_hook_path.name} should ignore Agent tool but got exit {result.returncode}"
         )
 
 
 class TestMissingProjectDir:
     """Hooks should not crash when CLAUDE_PROJECT_DIR points to non-existent dir."""
 
-    # Only test hooks that are likely to check project dir
-    HOOKS_NEEDING_PROJECT = {
-        "content-policy.sh",
-        "blast-radius.sh",
-        "clarification-gate.sh",
-        "claim-validator.sh",
-        "error-pipeline.sh",
-        "completeness-check.sh",
-        "infra-intent-detector.sh",
-        "token-budget-monitor.sh",
-    }
-
-    def test_nonexistent_project_dir(self, hook_path, tmp_path):
+    def test_nonexistent_project_dir(self, project_dir_hook_path, tmp_path):
         """Hook should not crash when project dir does not exist."""
-        if hook_path.name not in self.HOOKS_NEEDING_PROJECT:
-            pytest.skip(f"Skipping {hook_path.name}")
-
         nonexistent = tmp_path / "nonexistent"
         env = {
             **os.environ,
@@ -244,7 +285,7 @@ class TestMissingProjectDir:
 
         stdin = json.dumps(make_agent_input("test"))
         result = subprocess.run(
-            ["bash", str(hook_path)],
+            ["bash", str(project_dir_hook_path)],
             input=stdin,
             capture_output=True,
             text=True,
@@ -253,7 +294,7 @@ class TestMissingProjectDir:
         )
         # Should not crash (exit 1). Exit 0 (skip) or 2 (block) are acceptable.
         assert result.returncode in (0, 2), (
-            f"{hook_path.name} crashed (exit {result.returncode}) with nonexistent project dir.\n"
+            f"{project_dir_hook_path.name} crashed (exit {result.returncode}) with nonexistent project dir.\n"
             f"stderr: {result.stderr[:300]}"
         )
 
@@ -261,32 +302,15 @@ class TestMissingProjectDir:
 class TestJsonParsing:
     """Hooks should handle malformed JSON without crashing."""
 
-    # Only test hooks that read stdin JSON
-    JSON_HOOKS = {
-        "content-policy.sh",
-        "blast-radius.sh",
-        "clarification-gate.sh",
-        "claim-validator.sh",
-        "error-pipeline.sh",
-        "completeness-check.sh",
-        "infra-intent-detector.sh",
-        "token-budget-monitor.sh",
-        "rate-limiter.sh",
-        "large-file-advisor.sh",
-    }
-
-    def test_malformed_json_no_crash(self, hook_path, mock_project):
+    def test_malformed_json_no_crash(self, json_hook_path, mock_project):
         """Feeding invalid JSON should not cause a bash crash (exit 1).
 
         Some hooks may exit with custom codes (e.g., 5 from pipefail),
         which is acceptable as long as it is not a raw crash (exit 1 from
         set -e with no error handling).
         """
-        if hook_path.name not in self.JSON_HOOKS:
-            pytest.skip(f"Skipping {hook_path.name}")
-
         result = subprocess.run(
-            ["bash", str(hook_path)],
+            ["bash", str(json_hook_path)],
             input="this is not json at all {{{",
             capture_output=True,
             text=True,
@@ -297,21 +321,18 @@ class TestJsonParsing:
         # Only exit 1 from set -e with unhandled errors is considered a crash.
         # Some hooks may exit with pipefail codes (e.g., 5) which is not ideal
         # but not a crash.
-        assert result.returncode != 1 or hook_path.name in self._KNOWN_EXIT1_ON_BAD_JSON, (
-            f"{hook_path.name} crashed (exit {result.returncode}) on malformed JSON.\n"
+        assert result.returncode != 1 or json_hook_path.name in self._KNOWN_EXIT1_ON_BAD_JSON, (
+            f"{json_hook_path.name} crashed (exit {result.returncode}) on malformed JSON.\n"
             f"stderr: {result.stderr[:300]}"
         )
 
     # Hooks known to exit 1 on malformed JSON (tracked for future fixing)
     _KNOWN_EXIT1_ON_BAD_JSON: set[str] = set()
 
-    def test_json_missing_tool_name(self, hook_path, mock_project):
+    def test_json_missing_tool_name(self, json_hook_path, mock_project):
         """JSON without tool_name field should not crash."""
-        if hook_path.name not in self.JSON_HOOKS:
-            pytest.skip(f"Skipping {hook_path.name}")
-
         result = subprocess.run(
-            ["bash", str(hook_path)],
+            ["bash", str(json_hook_path)],
             input=json.dumps({"random_field": "value"}),
             capture_output=True,
             text=True,
@@ -319,7 +340,7 @@ class TestJsonParsing:
             timeout=15,
         )
         assert result.returncode in (0, 2), (
-            f"{hook_path.name} crashed (exit {result.returncode}) on JSON without tool_name.\n"
+            f"{json_hook_path.name} crashed (exit {result.returncode}) on JSON without tool_name.\n"
             f"stderr: {result.stderr[:300]}"
         )
 
@@ -334,18 +355,9 @@ class TestJsonParsing:
 class TestExternalToolGracefulDegradation:
     """Hooks depending on external tools should exit 0 when tool is missing."""
 
-    TOOL_HOOKS = {
-        "aguara-scan.sh": "aguara",
-        "semgrep-scan.sh": "semgrep",
-        "mcp-scan.sh": "mcp-scan",
-    }
-
-    def test_missing_external_tool_exits_0(self, hook_path, mock_project):
+    def test_missing_external_tool_exits_0(self, external_tool_hook_path, mock_project):
         """Hook should exit 0 gracefully when its external tool is not found."""
-        if hook_path.name not in self.TOOL_HOOKS:
-            pytest.skip(f"{hook_path.name} does not depend on external tool")
-
-        tool_name = self.TOOL_HOOKS[hook_path.name]
+        tool_name = TOOL_HOOKS[external_tool_hook_path.name]
 
         # Create env with stripped PATH so the tool cannot be found
         env = {
@@ -360,7 +372,7 @@ class TestExternalToolGracefulDegradation:
 
         stdin = json.dumps(make_agent_input("test task"))
         result = subprocess.run(
-            ["bash", str(hook_path)],
+            ["bash", str(external_tool_hook_path)],
             input=stdin,
             capture_output=True,
             text=True,
@@ -368,7 +380,7 @@ class TestExternalToolGracefulDegradation:
             timeout=15,
         )
         assert result.returncode == 0, (
-            f"{hook_path.name} did not degrade gracefully when {tool_name} "
+            f"{external_tool_hook_path.name} did not degrade gracefully when {tool_name} "
             f"is missing (exit {result.returncode}).\n"
             f"stderr: {result.stderr[:300]}"
         )
