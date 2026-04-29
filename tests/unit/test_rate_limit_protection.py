@@ -244,7 +244,6 @@ class TestHourlyReset:
 # ---------------------------------------------------------------------------
 
 import subprocess
-import tempfile
 
 _HOOK_PATH = Path(__file__).resolve().parents[2] / "hooks" / "token-budget-monitor.sh"
 
@@ -252,6 +251,8 @@ _HOOK_PATH = Path(__file__).resolve().parents[2] / "hooks" / "token-budget-monit
 def _run_hook(tmpdir: str, extra_env: dict | None = None, stdin: str = "") -> subprocess.CompletedProcess:
     env = {
         **os.environ,
+        "COGNITIVE_OS_PROJECT_DIR": tmpdir,
+        "CODEX_PROJECT_DIR": "",
         "CLAUDE_PROJECT_DIR": tmpdir,
         "HOME": tmpdir,
     }

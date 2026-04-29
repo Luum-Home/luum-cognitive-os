@@ -92,6 +92,8 @@ def _exhaust_bash_limit(project_dir: Path, limit: int = 2) -> RateLimiter:
 def _run_drainer(project_dir: Path) -> subprocess.CompletedProcess:
     """Invoke rate-limit-drain.sh with a fake Bash PostToolUse payload."""
     env = os.environ.copy()
+    env["COGNITIVE_OS_PROJECT_DIR"] = str(project_dir)
+    env["CODEX_PROJECT_DIR"] = ""
     env["CLAUDE_PROJECT_DIR"] = str(project_dir)
     payload = json.dumps({"tool_name": "Bash", "tool_input": {}})
     return subprocess.run(
