@@ -34,8 +34,8 @@ runtime behavior is governed by approval and tests.
 
 ### 3. Memory/Profile Bootstrap
 
-- First three sessions should produce a project profile draft.
-- Profile entries must be source-linked, conflict-checkable, editable, exportable, and wipeable.
+- First three sessions produce a local project profile draft under `.cognitive-os/project-profile/`.
+- Profile entries are source-linked, conflict-checkable, editable, exportable through JSON/Markdown, and wipeable.
 - No secrets or developer-specific absolute paths may be persisted.
 - Codex and Claude must prove the same memory lifecycle through doctor checks.
 
@@ -65,6 +65,10 @@ Implemented first:
 - `tests/behavior/test_governed_self_improvement_cli.py`
 - `cmd/cos/internal/cli/skill.go`
 - `cmd/cos/internal/cli/skill_test.go`
+- `lib/project_profile_bootstrap.py`
+- `scripts/cos-profile-bootstrap.py`
+- `tests/unit/test_project_profile_bootstrap.py`
+- `tests/behavior/test_profile_bootstrap_cli.py`
 
 This slice intentionally does **not** auto-edit live rules or root skills. It
 only writes drafts under `.cognitive-os/improvements/drafts/` and promotes into
@@ -79,3 +83,5 @@ canonical `.cognitive-os/skills/cos/` when approval is explicit.
 - Promotion without approval fails.
 - Promotion with approval writes only under `.cognitive-os/skills/cos/`.
 - CLI tests cover suggest, draft, inspect, and denied/approved promotion.
+- First-three-session profile bootstrap writes source-linked drafts only under `.cognitive-os/project-profile/`.
+- Profile bootstrap tests prove path sanitization, conflict detection, wipe, and Codex SessionStart execution without `CLAUDE_PROJECT_DIR`.

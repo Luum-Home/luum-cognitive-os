@@ -99,6 +99,52 @@ def test_memory_lifecycle_hooks_do_not_require_claude_project_dir() -> None:
         assert "COGNITIVE_OS_PROJECT_DIR" in content, script
 
 
+def test_session_init_bootstraps_project_profile_under_codex_without_claude_env(
+    tmp_path: Path,
+) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    (project / "lib").symlink_to(PROJECT_ROOT / "lib")
+    (project / "go.mod").write_text("module example.com/profile\n")
+    session_dir = project / ".cognitive-os" / "sessions" / "codex-session"
+    session_dir.mkdir(parents=True)
+    (session_dir / "meta.json").write_text(
+        json.dumps(
+            {
+                "session_id": "codex-session",
+                "start_time": "2026-04-29T00:00:00Z",
+                "working_directory": str(project),
+            }
+        )
+    )
+
+    env = os.environ.copy()
+    env.pop("CLAUDE_PROJECT_DIR", None)
+    env.update(
+        {
+            "CODEX_PROJECT_DIR": str(project),
+            "COGNITIVE_OS_PROJECT_DIR": str(project),
+            "SESSION_DIR": str(session_dir),
+        }
+    )
+
+    result = subprocess.run(
+        ["python3", str(HOOKS_DIR / "_lib" / "session_init_helper.py")],
+        cwd=str(PROJECT_ROOT),
+        text=True,
+        capture_output=True,
+        env=env,
+        timeout=15,
+    )
+
+    assert result.returncode == 0, result.stderr
+    draft_path = project / ".cognitive-os" / "project-profile" / "draft.json"
+    assert draft_path.exists()
+    draft = json.loads(draft_path.read_text())
+    assert any(entry["value"] == "go" for entry in draft["entries"])
+    assert str(project) not in json.dumps(draft)
+
+
 def test_common_project_dir_resolution_prefers_canonical_then_codex_then_claude(
     tmp_path: Path,
 ) -> None:
