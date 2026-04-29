@@ -128,6 +128,8 @@ class TestScopeCreepDetection:
             text=True,
             env={
                 **os.environ,
+                "COGNITIVE_OS_PROJECT_DIR": str(project_dir),
+                "CODEX_PROJECT_DIR": "",
                 "CLAUDE_PROJECT_DIR": str(project_dir),
                 "PATH": os.environ.get("PATH", ""),
             },
