@@ -16,6 +16,59 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 REPORT_ROOT="${COS_TEST_REPORT_DIR:-$PROJECT_DIR/.cognitive-os/reports/test-runs}"
 PYTEST_BIN="${PYTEST_BIN:-$PROJECT_DIR/.venv/bin/python -m pytest}"
+REPORT_KEEP="${COS_TEST_REPORT_KEEP:-30}"
+REPORT_MAX_MIB="${COS_TEST_REPORT_MAX_MIB:-120}"
+
+_prune_test_reports() {
+  [ -d "$REPORT_ROOT" ] || return 0
+  REPORT_ROOT="$REPORT_ROOT" REPORT_KEEP="$REPORT_KEEP" REPORT_MAX_MIB="$REPORT_MAX_MIB" python3 - <<'PYPRUNE'
+from __future__ import annotations
+
+import os
+import shutil
+from pathlib import Path
+
+root = Path(os.environ["REPORT_ROOT"])
+keep = max(1, int(os.environ.get("REPORT_KEEP", "30")))
+max_bytes = max(1, int(os.environ.get("REPORT_MAX_MIB", "120"))) * 1024 * 1024
+
+def size(path: Path) -> int:
+    total = 0
+    for item in path.rglob("*"):
+        if item.is_file() and not item.is_symlink():
+            try:
+                total += item.stat().st_size
+            except OSError:
+                pass
+    return total
+
+runs = sorted(
+    [p for p in root.iterdir() if p.is_dir() and p.name != "latest"],
+    key=lambda p: p.stat().st_mtime,
+    reverse=True,
+)
+
+# Count-based retention first: old runs are useful, but not unbounded.
+for stale in runs[keep:]:
+    shutil.rmtree(stale, ignore_errors=True)
+
+runs = sorted(
+    [p for p in root.iterdir() if p.is_dir() and p.name != "latest"],
+    key=lambda p: p.stat().st_mtime,
+    reverse=True,
+)
+
+# Size-based retention second: keep newest runs until the report store is bounded.
+total = sum(size(p) for p in runs)
+for stale in reversed(runs):
+    if total <= max_bytes or len(runs) <= 1:
+        break
+    stale_size = size(stale)
+    shutil.rmtree(stale, ignore_errors=True)
+    total -= stale_size
+    runs.remove(stale)
+PYPRUNE
+}
 
 if [ "${1:-}" = "--" ]; then
   shift
@@ -66,6 +119,8 @@ slug="$(printf '%s' "$*" | tr -c 'A-Za-z0-9._=-' '-' | sed 's/--*/-/g' | cut -c1
 if [ -z "$slug" ]; then
   slug="pytest"
 fi
+
+_prune_test_reports
 
 run_dir="$REPORT_ROOT/${timestamp}-${slug}"
 mkdir -p "$run_dir"
@@ -126,6 +181,8 @@ ln -sfn "$run_dir" "$latest_link" 2>/dev/null || true
 if [ -f "$inventory_tool" ]; then
   python3 "$inventory_tool" --run-dir "$run_dir" >/dev/null 2>&1 || true
 fi
+
+_prune_test_reports
 
 echo "[pytest-with-summary] Summary: $summary"
 echo "[pytest-with-summary] Failures: $failures"
