@@ -133,3 +133,4 @@
 
 - [x] Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-027](../architecture/adrs/027-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../architecture/plans/headless-clustered-runtime-plan.md).
 - [x] Competitive/runtime benchmark direction is documented in [Runtime Comparison Benchmark Plan](../architecture/plans/runtime-comparison-benchmark-plan.md), covering vanilla Claude/Codex, COS-enabled harnesses, and prior-art tools across workstation, VM, container, pod, and worker-cluster surfaces.
+- [x] Competitive reassessment against OpenClaw and Hermes Agent is documented in [Competitive Reassessment: OpenClaw and Hermes Agent](competitive-reassessment-openclaw-hermes-2026-04.md), including native self-improvement, skill lifecycle, memory/profile bootstrap, and deployment/onboarding gaps.
