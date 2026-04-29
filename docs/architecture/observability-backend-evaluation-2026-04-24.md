@@ -93,7 +93,7 @@ For this repository:
 
 1. Keep `langfuse.mode: disabled` in `cognitive-os.yaml` unless a team explicitly opts into it.
 2. Keep `mlflow.mode: pip` as the lightweight default observability exporter.
-3. Mirror completion outcomes from `record_completion` to MLflow without removing JSONL.
+3. Mirror completion outcomes from JSONL to MLflow through the Stop-time `mlflow-sync.sh` exporter by default; direct `record_completion` hot-path MLflow writes are opt-in with `COS_MLFLOW_HOTPATH_ENABLED=1` so optional observability cannot block agent completion recording.
 4. Keep Langfuse tests only for Langfuse-specific optional-extension behavior.
 5. Move product-claim tests from Langfuse to JSONL/MLflow when they assert outcome metrics rather than Langfuse UI semantics.
 6. Add an explicit OpenTelemetry exporter only after the Cognitive OS event contract is stable enough to avoid duplicated trace logic.
