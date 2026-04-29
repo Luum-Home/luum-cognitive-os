@@ -14,8 +14,27 @@ CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 METRICS_FILE="$METRICS_DIR/infra-health.jsonl"
 INFRA_AUTO_START="${INFRA_AUTO_START:-false}"
+INFRA_START_TIMEOUT="${INFRA_START_TIMEOUT:-10}"
 DOCKER="$(command -v docker 2>/dev/null || echo "")"
 TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+run_compose_start() {
+  # SessionStart infrastructure checks are advisory. Docker compose can block on
+  # image pulls or daemon contention, so auto-start attempts must be bounded.
+  "$DOCKER" compose "$@" &
+  local pid=$!
+  local waited=0
+  while kill -0 "$pid" 2>/dev/null; do
+    if [ "$waited" -ge "$INFRA_START_TIMEOUT" ]; then
+      kill "$pid" 2>/dev/null || true
+      wait "$pid" 2>/dev/null || true
+      return 124
+    fi
+    sleep 1
+    waited=$((waited + 1))
+  done
+  wait "$pid"
+}
 
 # Ensure metrics directory exists
 mkdir -p "$METRICS_DIR"
@@ -162,11 +181,11 @@ if [ -n "$missing_services" ]; then
   if [ "$INFRA_AUTO_START" = "true" ]; then
     action="auto_start"
     # Start default (no-profile) services first
-    "$DOCKER" compose -f "$COMPOSE_FILE" up -d 2>/dev/null || true
+    run_compose_start -f "$COMPOSE_FILE" up -d 2>/dev/null || true
     # Start services with specific profiles
     if [ -n "$missing_profiles" ]; then
       for profile in $missing_profiles; do
-        "$DOCKER" compose -f "$COMPOSE_FILE" --profile "$profile" up -d 2>/dev/null || true
+        run_compose_start -f "$COMPOSE_FILE" --profile "$profile" up -d 2>/dev/null || true
         echo "  Auto-started profile: $profile"
       done
     fi
