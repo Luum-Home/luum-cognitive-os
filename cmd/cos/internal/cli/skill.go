@@ -74,5 +74,5 @@ func init() {
 }
 
 func runGovernedSkillCommand(args ...string) error {
-	return runProjectPythonScript("scripts/cos-governed-self-improvement.py", args...)
+	return runProjectPythonScript("scripts/cos_governed_self_improvement.py", args...)
 }
