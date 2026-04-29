@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = PROJECT_ROOT / "scripts" / "cos-profile-bootstrap.py"
+SCRIPT = PROJECT_ROOT / "scripts" / "cos_profile_bootstrap.py"
 
 
 def _session(project: Path, session_id: str) -> None:

@@ -14,7 +14,7 @@ func copyProfileBootstrapRuntime(t *testing.T, projectDir string) {
 		t.Fatal(err)
 	}
 	files := map[string]string{
-		filepath.Join("scripts", "cos-profile-bootstrap.py"): filepath.Join("scripts", "cos-profile-bootstrap.py"),
+		filepath.Join("scripts", "cos_profile_bootstrap.py"): filepath.Join("scripts", "cos_profile_bootstrap.py"),
 		filepath.Join("lib", "project_profile_bootstrap.py"): filepath.Join("lib", "project_profile_bootstrap.py"),
 		filepath.Join("lib", "memory_scanner.py"):            filepath.Join("lib", "memory_scanner.py"),
 	}
