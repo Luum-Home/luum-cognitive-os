@@ -1,13 +1,7 @@
 package cli
 
 import (
-	"fmt"
-	"os"
-	"os/exec"
-
 	"github.com/spf13/cobra"
-
-	"luum-agent-os/cmd/cos/internal/project"
 )
 
 var (
@@ -80,17 +74,5 @@ func init() {
 }
 
 func runGovernedSkillCommand(args ...string) error {
-	projectRoot := project.FindRootOrCwd()
-	script := governedSkillScriptPath(projectRoot)
-	cmdArgs := append([]string{script, "--project-dir", projectRoot}, args...)
-	cmd := exec.Command("python3", cmdArgs...)
-	cmd.Dir = projectRoot
-	cmd.Env = append(os.Environ(), fmt.Sprintf("PYTHONPATH=%s", projectRoot))
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
-}
-
-func governedSkillScriptPath(projectRoot string) string {
-	return projectRoot + string(os.PathSeparator) + "scripts" + string(os.PathSeparator) + "cos-governed-self-improvement.py"
+	return runProjectPythonScript("scripts/cos-governed-self-improvement.py", args...)
 }

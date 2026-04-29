@@ -16,6 +16,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from lib.project_profile_bootstrap import (  # noqa: E402
     build_project_profile_draft,
+    promote_project_profile,
     wipe_project_profile,
     write_project_profile_draft,
 )
@@ -41,6 +42,10 @@ def main(argv: list[str] | None = None) -> int:
     generate.add_argument("--force", action="store_true", help="Regenerate even after the early bootstrap window.")
 
     sub.add_parser("inspect", help="Print the computed draft JSON without writing files.")
+    promote = sub.add_parser("promote", help="Promote draft.json to profile.json after explicit approval.")
+    promote.add_argument("--approved-by", help="Reviewer or system approving profile promotion.")
+    promote.add_argument("--auto-promote", action="store_true", help="Promote without reviewer approval only when explicitly opted in.")
+
     sub.add_parser("wipe", help="Remove .cognitive-os/project-profile/.")
 
     args = parser.parse_args(argv)
@@ -55,6 +60,13 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "inspect":
         print(json.dumps(build_project_profile_draft(project), indent=2, sort_keys=True))
+        return 0
+    if args.command == "promote":
+        try:
+            print(promote_project_profile(project, approved_by=args.approved_by, auto_promote=args.auto_promote))
+        except (PermissionError, ValueError) as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
         return 0
     if args.command == "wipe":
         wipe_project_profile(project)

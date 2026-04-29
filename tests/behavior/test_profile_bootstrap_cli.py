@@ -46,6 +46,36 @@ def test_profile_bootstrap_cli_generate_inspect_and_wipe(tmp_path: Path) -> None
     assert any(entry["value"] == "python" for entry in data["entries"])
     assert str(project) not in inspect.stdout
 
+    denied = subprocess.run(
+        ["python3", str(SCRIPT), "--project-dir", str(project), "promote"],
+        cwd=str(PROJECT_ROOT),
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+    assert denied.returncode == 1
+    assert "profile promotion requires" in denied.stderr
+
+    promoted = subprocess.run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--project-dir",
+            str(project),
+            "promote",
+            "--approved-by",
+            "cli-test",
+        ],
+        cwd=str(PROJECT_ROOT),
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+    assert promoted.returncode == 0, promoted.stderr
+    active_path = project / ".cognitive-os" / "project-profile" / "profile.json"
+    assert active_path.exists()
+    assert json.loads(active_path.read_text())["status"] == "active"
+
     wipe = subprocess.run(
         ["python3", str(SCRIPT), "--project-dir", str(project), "wipe"],
         cwd=str(PROJECT_ROOT),
@@ -55,3 +85,4 @@ def test_profile_bootstrap_cli_generate_inspect_and_wipe(tmp_path: Path) -> None
     )
     assert wipe.returncode == 0, wipe.stderr
     assert not draft_path.exists()
+    assert not active_path.exists()
