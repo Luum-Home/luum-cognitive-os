@@ -5,11 +5,9 @@ and handles edge cases (missing files, empty data, bad inputs).
 """
 
 import json
-import os
 import sys
-import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -18,10 +16,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "mcp-server"))
 sys.path.insert(0, str(PROJECT_ROOT))
 
-# Skip if fastmcp not installed (cos_mcp.py sys.exit(1) on import failure)
-try:
-    from cos_mcp import (
-    _count_files,
+from cos_mcp import (
     _read_json,
     _read_jsonl,
     cos_check_quality,
@@ -31,16 +26,10 @@ try:
     cos_save_memory,
     cos_search_memory,
     cos_status,
-        cos_suggest_skill,
-    )
-    HAS_FASTMCP = True
-except (ImportError, SystemExit):
-    HAS_FASTMCP = False
+    cos_suggest_skill,
+)
 
-pytestmark = [
-    pytest.mark.unit,
-    pytest.mark.skipif(not HAS_FASTMCP, reason="fastmcp not installed"),
-]
+pytestmark = [pytest.mark.unit]
 
 
 # ---------------------------------------------------------------------------

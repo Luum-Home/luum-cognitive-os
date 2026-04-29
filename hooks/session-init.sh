@@ -94,6 +94,14 @@ echo ""
 echo "COGNITIVE_OS_SESSION_ID exported to child hooks."
 echo ""
 
+# ─── Previous state snapshot recovery ────────────────────────────────────────
+# Surface orphaned state-snapshot.json recovery context on SessionStart before
+# the new session continues. This keeps compaction/crash recovery visible across
+# harnesses while leaving the dedicated crash-recovery hook as the implementation.
+if [ -x "$(dirname "$0")/crash-recovery.sh" ]; then
+  COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" bash "$(dirname "$0")/crash-recovery.sh" 2>/dev/null || true
+fi
+
 # ─── Level-1 skills catalog pointer ──────────────────────────────────────────
 # The compact catalog (CATALOG-COMPACT.md) is the Level-1 index loaded at
 # session start. Full SKILL.md files load on demand. The full catalog with

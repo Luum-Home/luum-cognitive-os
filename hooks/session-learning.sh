@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # SCOPE: both
 # Session Learning Hook — Stop hook (runs at session end)
 # Summarizes what went WRONG this session: failed tasks, failed acceptance criteria,

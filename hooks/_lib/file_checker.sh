@@ -14,22 +14,22 @@ file_exists() {
     [ -f "$1" ] || [ -L "$1" ]
 }
 
+# Resolve a path through symlinks to its canonical location.
+# Returns the resolved path on stdout, or the original path if resolution fails.
+resolve_path() {
+    python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$1" 2>/dev/null || echo "$1"
+}
+
 # Check if a file exists AND if it's a symlink, the target also exists.
 # Returns 0 only if the final resolved path is a real file.
 file_exists_strict() {
     if [ -L "$1" ]; then
         local target
-        target=$(readlink -f "$1" 2>/dev/null) || return 1
+        target=$(resolve_path "$1") || return 1
         [ -f "$target" ]
     else
         [ -f "$1" ]
     fi
-}
-
-# Resolve a path through symlinks to its canonical location.
-# Returns the resolved path on stdout, or the original path if resolution fails.
-resolve_path() {
-    readlink -f "$1" 2>/dev/null || echo "$1"
 }
 
 # Check if a path is a symlink with a broken target.

@@ -108,10 +108,10 @@ else
 
 ### Filesystem: Symlinks
 This project uses symlinks extensively (hooks/ → packages/*/hooks/, tests/ → packages/*/tests/).
-- ALWAYS use \`readlink -f <path>\` before classifying any file as missing
+- ALWAYS resolve symlinks to a canonical path before classifying any file as missing
 - ALWAYS use \`ls -la <path>\` to verify symlinks before reporting absence
 - Use \`file_exists_strict()\` from \`hooks/_lib/file_checker.sh\` for file checks
-- NEVER report a file as 'missing' or 'ghost' without verifying with readlink -f
+- NEVER report a file as 'missing' or 'ghost' without resolving symlinks first
 - Previous audits reported false 'missing' files due to naive checks — do NOT repeat this
 
 ### Auditing

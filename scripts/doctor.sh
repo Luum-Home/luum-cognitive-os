@@ -39,6 +39,10 @@ fail_msg() {
 
 has_cmd() { command -v "$1" &>/dev/null; }
 
+resolve_path() {
+  python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$1" 2>/dev/null || echo "$1"
+}
+
 $QUIET || echo "======================================"
 $QUIET || echo "  Cognitive OS Doctor"
 $QUIET || echo "======================================"
@@ -218,7 +222,7 @@ if [ -d "$HOOKS_DIR" ]; then
     TOTAL_HOOKS=$((TOTAL_HOOKS + 1))
 
     # Resolve symlinks before checking
-    RESOLVED=$(readlink -f "$hook" 2>/dev/null || echo "$hook")
+    RESOLVED=$(resolve_path "$hook")
 
     if [ ! -e "$RESOLVED" ]; then
       BROKEN_LINKS=$((BROKEN_LINKS + 1))
@@ -250,7 +254,7 @@ CHECKED=0
 for link in "$HOOKS_DIR"/*.sh; do
   [ -L "$link" ] || continue
   CHECKED=$((CHECKED + 1))
-  TARGET=$(readlink -f "$link" 2>/dev/null || echo "")
+  TARGET=$(resolve_path "$link")
   if [ -z "$TARGET" ] || [ ! -e "$TARGET" ]; then
     BROKEN=$((BROKEN + 1))
     $QUIET || fail_msg "Broken symlink: $link"
