@@ -174,10 +174,10 @@ developer-specific home paths before persisting.
 Manual commands:
 
 ```bash
-python3 scripts/cos-profile-bootstrap.py generate
-python3 scripts/cos-profile-bootstrap.py inspect
-python3 scripts/cos-profile-bootstrap.py promote --approved-by <reviewer>
-python3 scripts/cos-profile-bootstrap.py wipe
+python3 scripts/cos_profile_bootstrap.py generate
+python3 scripts/cos_profile_bootstrap.py inspect
+python3 scripts/cos_profile_bootstrap.py promote --approved-by <reviewer>
+python3 scripts/cos_profile_bootstrap.py wipe
 ```
 
 

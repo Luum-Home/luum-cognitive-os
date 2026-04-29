@@ -60,7 +60,7 @@ runtime behavior is governed by approval and tests.
 Implemented first:
 
 - `lib/governed_self_improvement.py`
-- `scripts/cos-governed-self-improvement.py`
+- `scripts/cos_governed_self_improvement.py`
 - `tests/unit/test_governed_self_improvement.py`
 - `tests/behavior/test_governed_self_improvement_cli.py`
 - `cmd/cos/internal/cli/skill.go`
@@ -68,7 +68,7 @@ Implemented first:
 - `cmd/cos/internal/cli/profile.go`
 - `cmd/cos/internal/cli/profile_test.go`
 - `lib/project_profile_bootstrap.py`
-- `scripts/cos-profile-bootstrap.py`
+- `scripts/cos_profile_bootstrap.py`
 - `tests/unit/test_project_profile_bootstrap.py`
 - `tests/behavior/test_profile_bootstrap_cli.py`
 
