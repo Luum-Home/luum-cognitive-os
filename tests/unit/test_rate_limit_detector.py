@@ -21,7 +21,11 @@ HOOK = REPO_ROOT / "hooks" / "rate-limit-detector.sh"
 def _run(stdin: str, env: dict | None = None, timeout: float = 5.0) -> subprocess.CompletedProcess:
     merged_env = dict(os.environ)
     if env:
-        merged_env.update(env)
+        for key, value in env.items():
+            if value is None:
+                merged_env.pop(key, None)
+            else:
+                merged_env[key] = value
     # Always set CLAUDE_PROJECT_DIR so the hook doesn't pollute the repo
     merged_env.setdefault("CLAUDE_PROJECT_DIR", merged_env.get("CLAUDE_PROJECT_DIR", str(REPO_ROOT)))
     return subprocess.run(
@@ -124,37 +128,35 @@ class TestDetection(unittest.TestCase):
 @pytest.mark.xdist_group("perf")
 class TestConfiguredAdvice(unittest.TestCase):
     def test_advice_varies_when_api_key_set(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            env = {
-                "CLAUDE_PROJECT_DIR": str(REPO_ROOT),  # real repo so qwen_provider.py exists
-                "COGNITIVE_OS_SESSION_ID": "test-configured",
-                "ALIBABA_QWEN_API_KEY": "sk-fake-for-test",
-            }
-            # Clean up any stale flag from prior runs
-            flag = REPO_ROOT / ".cognitive-os" / "sessions" / "test-configured" / "rate-limit-advised.flag"
-            if flag.exists():
-                flag.unlink()
-            r = _run("out of extra usage · resets 2pm", env=env)
-            self.assertIn("Dispatch via lib/qwen_provider.py", r.stderr)
-            # Cleanup
-            if flag.exists():
-                flag.unlink()
+        env = {
+            "CLAUDE_PROJECT_DIR": str(REPO_ROOT),  # real repo so qwen_provider.py exists
+            "COGNITIVE_OS_SESSION_ID": "test-configured",
+            "ALIBABA_QWEN_API_KEY": "sk-fake-for-test",
+        }
+        # Clean up any stale flag from prior runs
+        flag = REPO_ROOT / ".cognitive-os" / "sessions" / "test-configured" / "rate-limit-advised.flag"
+        if flag.exists():
+            flag.unlink()
+        r = _run("out of extra usage · resets 2pm", env=env)
+        self.assertIn("Dispatch via lib/qwen_provider.py", r.stderr)
+        # Cleanup
+        if flag.exists():
+            flag.unlink()
 
     def test_advice_varies_when_not_configured(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            env = {
-                "CLAUDE_PROJECT_DIR": str(REPO_ROOT),
-                "COGNITIVE_OS_SESSION_ID": "test-not-configured",
-            }
-            env.pop("ALIBABA_QWEN_API_KEY", None)
-            flag = REPO_ROOT / ".cognitive-os" / "sessions" / "test-not-configured" / "rate-limit-advised.flag"
-            if flag.exists():
-                flag.unlink()
-            r = _run("out of extra usage · resets 2pm", env=env)
-            self.assertIn("NOT configured", r.stderr)
-            self.assertIn("Alibaba Qwen Coding Plan Pro", r.stderr)
-            if flag.exists():
-                flag.unlink()
+        env = {
+            "CLAUDE_PROJECT_DIR": str(REPO_ROOT),
+            "COGNITIVE_OS_SESSION_ID": "test-not-configured",
+            "ALIBABA_QWEN_API_KEY": None,
+        }
+        flag = REPO_ROOT / ".cognitive-os" / "sessions" / "test-not-configured" / "rate-limit-advised.flag"
+        if flag.exists():
+            flag.unlink()
+        r = _run("out of extra usage · resets 2pm", env=env)
+        self.assertIn("NOT configured", r.stderr)
+        self.assertIn("Alibaba Qwen Coding Plan Pro", r.stderr)
+        if flag.exists():
+            flag.unlink()
 
 
 class TestRegistration(unittest.TestCase):
