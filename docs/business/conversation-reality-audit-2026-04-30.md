@@ -404,12 +404,30 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 - [ ] Pick one docs claim correction batch.
 - [ ] Define monthly measurement cadence.
 
+
+### Growth Prevention Principle
+
+The audit is not only retrospective. New OS growth should satisfy a prevention rule:
+
+> A new agentic primitive must add at least proportional evidence: runtime wiring, behavioral proof, metric ownership, and a consumer or explicit optional-package boundary.
+
+The weekly primitive-gap workflow now enforces this at family level by comparing each snapshot with the previous tracked baseline. It fails on regressions such as:
+
+- overall risk worsening;
+- family severity worsening;
+- proven signal decreasing;
+- aspirational signal increasing;
+- unproven surface area growing;
+- hook p95 latency regressing beyond the configured tolerance.
+
+This keeps current known debt visible while preventing the SO from growing new unverified surface by default.
+
 ### 13. Periodic Automation
 
 - [x] Add a repository script that generates a primitive gap snapshot from current repo evidence.
 - [x] Append periodic snapshots to `docs/reports/primitive-gap-history.jsonl` in CI, or `.cognitive-os/metrics/primitive-gap-snapshot.jsonl` for local runs.
 - [x] Generate a latest Markdown report at `docs/reports/primitive-gap-latest.md`.
 - [x] Add a scheduled GitHub Actions workflow for weekly primitive gap snapshots.
-- [ ] Add threshold-based escalation once baseline noise is reduced.
+- [x] Add regression-based escalation so new primitive gaps fail against the tracked baseline.
 - [ ] Add issue/PR creation for new blocker/high regressions.
 - [ ] Add row-level hook audit automation beyond family-level snapshot.
