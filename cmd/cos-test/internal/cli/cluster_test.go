@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"luum-agent-os/cmd/cos-test/internal/config"
+	"luum-agent-os/cmd/cos-test/internal/resourcepolicy"
 )
 
 func writeResourcePolicy(t *testing.T, root, body string) {
@@ -240,4 +241,26 @@ func sliceContains(xs []string, target string) bool {
 		}
 	}
 	return false
+}
+
+func TestEnforceResourcePolicyBlocksCostBearingWithoutOptIn(t *testing.T) {
+	resources := resourcepolicy.ResourcePolicy{CostPolicy: "cost_bearing", DockerPolicy: "allowed", TimeoutSeconds: 10, Workers: "0", ArtifactPolicy: "keep_full"}
+	if err := enforceResourcePolicy(resources); err == nil {
+		t.Fatal("expected cost-bearing lane to require opt-in")
+	}
+	t.Setenv("COS_ALLOW_COST_BEARING_TESTS", "1")
+	if err := enforceResourcePolicy(resources); err != nil {
+		t.Fatalf("expected opt-in to allow cost-bearing lane, got %v", err)
+	}
+}
+
+func TestEnforceResourcePolicyBlocksDockerRequiredWithoutOptIn(t *testing.T) {
+	resources := resourcepolicy.ResourcePolicy{CostPolicy: "free_only", DockerPolicy: "required", TimeoutSeconds: 10, Workers: "0", ArtifactPolicy: "keep_summary"}
+	if err := enforceResourcePolicy(resources); err == nil {
+		t.Fatal("expected docker-required lane to require opt-in")
+	}
+	t.Setenv("COS_ALLOW_DOCKER_TESTS", "1")
+	if err := enforceResourcePolicy(resources); err != nil {
+		t.Fatalf("expected opt-in to allow docker-required lane, got %v", err)
+	}
 }
