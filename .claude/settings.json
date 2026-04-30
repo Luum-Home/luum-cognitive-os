@@ -6,74 +6,74 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/self-install.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/self-install.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-init.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/session-init.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/host-tool-doctor.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/host-tool-doctor.sh\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/profile-drift-autoapply.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/profile-drift-autoapply.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/reaper-daemon-launcher.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/reaper-daemon-launcher.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-watchdog-launcher.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/session-watchdog-launcher.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/docker-drift-detector.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/docker-drift-detector.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cos-executor-daemon-launcher.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/cos-executor-daemon-launcher.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-daemon-launcher.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/engram-daemon-launcher.sh\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/crash-recovery.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/crash-recovery.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-resume.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/session-resume.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/infra-health.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/infra-health.sh\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aspirational-audit-weekly.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/aspirational-audit-weekly.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/self-knowledge-refresh.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/self-knowledge-refresh.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-start-worktree-nudge.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/session-start-worktree-nudge.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-startup-protocol.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/session-startup-protocol.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/mcp-scan.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/mcp-scan.sh\"",
             "async": true
           }
         ]
@@ -85,21 +85,21 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/user-prompt-capture.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" UserPromptSubmit \"$CLAUDE_PROJECT_DIR/hooks/user-prompt-capture.sh\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-wrapup-trigger.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" UserPromptSubmit \"$CLAUDE_PROJECT_DIR/hooks/session-wrapup-trigger.sh\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-heartbeat.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" UserPromptSubmit \"$CLAUDE_PROJECT_DIR/hooks/session-heartbeat.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/memory-prefetch.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" UserPromptSubmit \"$CLAUDE_PROJECT_DIR/hooks/memory-prefetch.sh\"",
             "async": true
           }
         ]
@@ -111,7 +111,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/subagent-context-injector.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SubagentStart \"$CLAUDE_PROJECT_DIR/hooks/subagent-context-injector.sh\"",
             "async": true
           }
         ]
@@ -123,7 +123,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pre-compaction-flush.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreCompact \"$CLAUDE_PROJECT_DIR/hooks/pre-compaction-flush.sh\""
           }
         ]
       }
@@ -134,7 +134,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-heartbeat.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/session-heartbeat.sh\""
           }
         ]
       },
@@ -143,19 +143,19 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limit-precheck.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/rate-limit-precheck.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-bash-cwd-enforcer.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/agent-bash-cwd-enforcer.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limiter.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/rate-limiter.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/destructive-rm-blocker.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/destructive-rm-blocker.sh\""
           }
         ]
       },
@@ -164,11 +164,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/secret-detector.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/secret-detector.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/project-docs-convention.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/project-docs-convention.sh\""
           }
         ]
       },
@@ -177,43 +177,43 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dispatch-gate.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/dispatch-gate.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/clarification-gate.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/clarification-gate.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/blast-radius.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/blast-radius.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/inject-phase-context.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/inject-phase-context.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-working-dir-inject.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/agent-working-dir-inject.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-prelaunch.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/agent-prelaunch.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/error-pattern-detector.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/error-pattern-detector.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/predev-completeness-check.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/predev-completeness-check.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/reinvention-check.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/reinvention-check.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/native-agent-heartbeat.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/native-agent-heartbeat.sh\""
           }
         ]
       }
@@ -224,12 +224,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/context-watchdog.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/context-watchdog.sh\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limit-detector.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/rate-limit-detector.sh\""
           }
         ]
       },
@@ -238,19 +238,19 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/error-pipeline.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/error-pipeline.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rate-limit-drain.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/rate-limit-drain.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/audit-id-enricher.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/audit-id-enricher.sh\""
           }
         ]
       },
@@ -259,7 +259,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-checkpoint.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/auto-checkpoint.sh\"",
             "async": true
           }
         ]
@@ -269,35 +269,35 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/content-policy.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/content-policy.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-frontmatter-validator.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/skill-frontmatter-validator.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-frontmatter-validator.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/rule-frontmatter-validator.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/hook-header-validator.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/hook-header-validator.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-section-validator.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/adr-section-validator.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/confidentiality-enforcer.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/confidentiality-enforcer.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/surface-fix-detector.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/surface-fix-detector.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/doc-sync-detector.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/doc-sync-detector.sh\"",
             "async": true
           }
         ]
@@ -307,7 +307,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/work-queue-sync.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/work-queue-sync.sh\""
           }
         ]
       },
@@ -316,12 +316,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-usage-tracker.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/skill-usage-tracker.sh\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-invocation-logger.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/skill-invocation-logger.sh\""
           }
         ]
       },
@@ -330,57 +330,57 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/claim-validator.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/claim-validator.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/completion-gate.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/completion-gate.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-checkpoint.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/agent-checkpoint.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/trust-score-validator.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/trust-score-validator.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/confidence-gate.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/confidence-gate.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/audit-id-enricher.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/audit-id-enricher.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-rollback-trigger.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/auto-rollback-trigger.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/native-agent-heartbeat.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/native-agent-heartbeat.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/work-queue-sync.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/work-queue-sync.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-feedback-tracker.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/skill-feedback-tracker.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/auto-repair-dispatcher.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/auto-repair-dispatcher.sh\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dequeue-notify.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/dequeue-notify.sh\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/state-heartbeat.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/state-heartbeat.sh\"",
             "async": true
           }
         ]
@@ -390,7 +390,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-reinforce-on-access.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/engram-reinforce-on-access.sh\"",
             "async": true
           }
         ]
@@ -402,32 +402,32 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-summary-reminder.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/session-summary-reminder.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-learning.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/session-learning.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-cleanup.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/session-cleanup.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/git-context-capture.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/git-context-capture.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-changelog.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/session-changelog.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/kpi-trigger.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/kpi-trigger.sh\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-crystallize-on-session-end.sh\"",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/engram-crystallize-on-session-end.sh\"",
             "async": true
           }
         ]
@@ -439,7 +439,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/teammate-idle.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" TeammateIdle \"$CLAUDE_PROJECT_DIR/hooks/teammate-idle.sh\""
           }
         ]
       }
@@ -450,7 +450,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-created.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" TaskCreated \"$CLAUDE_PROJECT_DIR/hooks/task-created.sh\""
           }
         ]
       }
@@ -461,7 +461,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" TaskCompleted \"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\""
           }
         ]
       }

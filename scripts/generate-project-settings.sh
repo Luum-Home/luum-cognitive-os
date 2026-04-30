@@ -124,6 +124,7 @@ project_scoped_hooks() {
 # ADR-002 default tier hook set (~29 hooks). Includes the regression guards:
 # auto-verify, auto-refine, dod-gate, session-sanity, confidentiality-enforcer.
 DEFAULT_HOOKS="error-pipeline.sh session-init.sh host-tool-doctor.sh session-cleanup.sh result-truncator.sh
+  user-prompt-capture.sh session-wrapup-trigger.sh session-heartbeat.sh memory-prefetch.sh
   clarification-gate.sh blast-radius.sh scope-proportionality.sh
   error-pattern-detector.sh auto-refine.sh auto-verify.sh completeness-check.sh dod-gate.sh
   trust-score-validator.sh skill-metrics-tracker.sh inject-phase-context.sh stack-detector.sh
@@ -140,13 +141,9 @@ transformed=$(jq --arg project_expr "$DRIVER_PROJECT_EXPR" '
     to_entries | map(
       .value |= map(
         .hooks |= map(
-          if (.command | test("\\$CLAUDE_PROJECT_DIR/hooks/")) then
-            .command |= gsub("\\$CLAUDE_PROJECT_DIR/hooks/"; ($project_expr + "/.cognitive-os/hooks/cos/"))
-          elif (.command | test("\\$CLAUDE_PROJECT_DIR/\\.claude/hooks/")) then
-            .command |= gsub("\\$CLAUDE_PROJECT_DIR/\\.claude/hooks/"; ($project_expr + "/.claude/hooks/"))
-          else
-            .
-          end
+          .command |= gsub("\\$CLAUDE_PROJECT_DIR/hooks/"; ($project_expr + "/.cognitive-os/hooks/cos/")) |
+          .command |= gsub("\\$CLAUDE_PROJECT_DIR/scripts/"; ($project_expr + "/scripts/")) |
+          .command |= gsub("\\$CLAUDE_PROJECT_DIR/\\.claude/hooks/"; ($project_expr + "/.claude/hooks/"))
         )
       )
     ) | from_entries
