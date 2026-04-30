@@ -318,6 +318,67 @@ inventory_tool="$SCRIPT_DIR/test_run_inventory.py"
 echo "[pytest-with-summary] Writing artifacts to: $run_dir"
 echo "[pytest-with-summary] Command: $PYTEST_BIN $* --junitxml $junit"
 
+# --- ADR-068 Phase 2: capacity decision logging ---
+# Write .cognitive-os/metrics/test-runs/<timestamp>/capacity.json for post-hoc analysis.
+# detect_runner_capacity.py --json emits: cores, mem_available_gb, load_pct, battery_pct,
+# on_ac, ci, workers, rule_fired.  We inject timestamp_utc, workers_chosen,
+# pytest_args_inferred, session_id, and junit_xml_path here in bash.
+_metrics_dir="${COS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics/test-runs}/${timestamp}"
+mkdir -p "$_metrics_dir"
+_capacity_json="$_metrics_dir/capacity.json"
+_capacity_raw="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" --json 2>/dev/null || echo '{}')"
+python3 - "$_capacity_json" "$timestamp" "${_effective_workers:-}" "$junit" "${COGNITIVE_OS_SESSION_ID:-}" "$_capacity_raw" <<'PYCAPACITY'
+from __future__ import annotations
+
+import json
+import os
+import sys
+
+out_path = sys.argv[1]
+timestamp_utc = sys.argv[2]
+workers_chosen = sys.argv[3]  # effective workers string ("auto", "0", integer, or "")
+junit_xml_path = sys.argv[4]
+session_id = sys.argv[5]
+raw = sys.argv[6]
+
+try:
+    base = json.loads(raw)
+except Exception:
+    base = {}
+
+# Map legacy key name from detect script ("workers") to ADR-068 schema ("workers_chosen").
+# Also expose rule_fired. Remaining keys: cores, mem_available_gb, load_pct, battery_pct, ci.
+rule_fired = base.pop("rule_fired", "unknown")
+# Remove internal 'workers' key — we replace it with workers_chosen below.
+base.pop("workers", None)
+base.pop("on_ac", None)  # internal; not in ADR-068 capacity.json schema
+
+# Infer pytest_args from workers_chosen
+if workers_chosen == "0" or workers_chosen == "":
+    pytest_args_inferred = ""  # serial — no -n flag added
+elif workers_chosen:
+    pytest_args_inferred = f"-n {workers_chosen}"
+else:
+    pytest_args_inferred = ""
+
+payload = {
+    "timestamp_utc": timestamp_utc,
+    **base,
+    "workers_chosen": workers_chosen if workers_chosen else "0",
+    "rule_fired": rule_fired,
+    "pytest_args_inferred": pytest_args_inferred,
+    "session_id": session_id,
+    "junit_xml_path": junit_xml_path,
+}
+
+with open(out_path, "w", encoding="utf-8") as fh:
+    json.dump(payload, fh, indent=2, sort_keys=True)
+    fh.write("\n")
+PYCAPACITY
+echo "[pytest-with-summary] Capacity log: $_capacity_json"
+unset _metrics_dir _capacity_json _capacity_raw
+# --- end ADR-068 Phase 2 ---
+
 set +e
 # shellcheck disable=SC2086
 $PYTEST_BIN "$@" --junitxml "$junit" 2>&1 | tee "$full_output"
