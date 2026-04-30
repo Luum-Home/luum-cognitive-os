@@ -7,10 +7,27 @@ Structural tests check things like path.exists(), is_file(), is_dir(), or
 never exercise the code's logic. These tests survive 100% of mutations and
 provide a false sense of coverage.
 
+SCOPE CONTRACT
+--------------
+This script operates ONLY on the file list it is given. It does NOT auto-scan
+the working tree. The caller (pre-commit hook or CI script) is responsible for
+computing the correct file list from `git diff --cached --name-only --diff-filter=A`
+and passing it as positional arguments.
+
+Auto-scan is available only via the explicit --working-tree flag (manual debug).
+
 Usage:
-    python scripts/check_test_quality.py              # scan all test files
-    python scripts/check_test_quality.py --ci         # scan only new tests in PR
-    python scripts/check_test_quality.py tests/foo.py # scan specific file
+    # Pre-commit: pass staged files explicitly (hook does this automatically)
+    python scripts/check_test_quality.py tests/unit/test_foo.py tests/unit/test_bar.py
+
+    # CI mode: check new tests added since origin/main
+    python scripts/check_test_quality.py --ci
+
+    # Manual debug: scan entire working tree (opt-in only)
+    python scripts/check_test_quality.py --working-tree
+
+    # Legacy --pre-commit (still works, but hook now passes files directly)
+    python scripts/check_test_quality.py --pre-commit
 """
 from __future__ import annotations
 
@@ -187,7 +204,7 @@ def analyze_test_file(filepath: Path) -> TestFileReport:
 
             report.total_tests += 1
 
-            is_structural = _name_suggests_structural(node.name)
+            _name_suggests_structural(node.name)  # informational; influences naming heuristics
             has_behavioral = _has_behavioral_assertion(node.body, source_lines)
 
             # A test is structural if it has no behavioral assertions
@@ -232,21 +249,37 @@ def get_changed_test_files_cached() -> list[Path]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Detect structural-only test files")
-    parser.add_argument("files", nargs="*", help="Specific test files to check")
-    parser.add_argument("--ci", action="store_true", help="CI mode: check only new tests in PR")
-    parser.add_argument("--pre-commit", action="store_true", help="Pre-commit mode: check staged new tests")
+    parser.add_argument("files", nargs="*", help="Explicit list of test files to check (preferred — no auto-scan)")
+    parser.add_argument("--ci", action="store_true", help="CI mode: check only new tests in PR (vs origin/main)")
+    parser.add_argument("--pre-commit", action="store_true", help="Legacy pre-commit mode: derive staged files internally")
+    parser.add_argument("--working-tree", action="store_true", help="Debug mode: scan entire working tree (opt-in only, never default)")
     parser.add_argument("--threshold", type=float, default=1.0,
                         help="Max structural ratio before failure (0.0-1.0, default 1.0 = fail only if 100%% structural)")
     args = parser.parse_args()
 
     if args.files:
+        # Explicit file list — primary interface used by the pre-commit hook.
+        # Only these files are examined; working tree is never touched.
         test_files = [Path(f) for f in args.files]
     elif args.ci:
         test_files = get_new_test_files_in_pr()
     elif args.pre_commit:
+        # Legacy mode: derive staged files internally (kept for backwards compat).
+        # Prefer passing files explicitly from the hook instead.
         test_files = get_changed_test_files_cached()
-    else:
+    elif args.working_tree:
+        # Opt-in working-tree scan for manual debugging only.
         test_files = list(Path("tests").rglob("*.py")) if Path("tests").exists() else []
+    else:
+        # No file list and no mode flag: refuse to auto-scan.
+        # This prevents silent whole-tree scans when invoked without arguments.
+        print(
+            "check_test_quality.py: no files specified.\n"
+            "Pass explicit file paths, or use --ci / --working-tree.\n"
+            "The pre-commit hook passes files directly; --pre-commit is kept for legacy use.",
+            file=sys.stderr,
+        )
+        return 0
 
     if not test_files:
         print("No test files to analyze.")
@@ -267,7 +300,6 @@ def main() -> int:
     # Print results
     failures = []
     for r in reports:
-        status = "STRUCTURAL" if r.is_structural_only else "OK"
         ratio_pct = f"{r.structural_ratio * 100:.0f}%"
 
         if r.is_structural_only:
