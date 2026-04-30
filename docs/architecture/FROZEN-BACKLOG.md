@@ -57,7 +57,7 @@ Agentic primitives that already exist (Apache-2.0):
 **Status (2026-04-20):** MVP delivered — audit complete, migration plan approved, first extension (`cos-advisory-llm`) extracted as proof-of-concept with backwards-compat symlinks. 14 packs and shim cleanup remain (21 waves → v1.0).
 
 - Audit: `docs/architecture/core-vs-extensions-audit-2026-04-20.md` (581 agentic primitives classified: 126 CORE, 453 EXTENSION, 2 REMOVE).
-- Plan: `docs/architecture/core-vs-extensions-migration-plan.md` (21 waves, one pack per minor version).
+- Plan: `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md` (21 waves, one pack per minor version).
 - POC: `packages/cos-advisory-llm/` (3 LLM hooks moved, symlinks at `hooks/*-llm.sh`, both profiles smoke-tested green).
 - Debt row D43 → PARTIAL.
 

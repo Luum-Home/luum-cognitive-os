@@ -8,7 +8,7 @@
   - `docs/architecture/bootstrap-portability.md`
   - `docs/architecture/capability-centric-runtime-enforcement.md`
   - `docs/architecture/runtime-hardcoding-discipline.md`
-  - `docs/architecture/plans/headless-clustered-runtime-plan.md`
+  - `.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md`
 
 ## Context
 

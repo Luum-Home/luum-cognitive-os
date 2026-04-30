@@ -1,3 +1,7 @@
+---
+related-adr: ADR-083
+---
+
 # Governed Self-Improvement Roadmap
 
 > Date: 2026-04-29  

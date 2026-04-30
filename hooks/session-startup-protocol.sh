@@ -81,10 +81,14 @@ fi
 
 # ── 2. Plans <-> ADRs cross-reference ───────────────────────────────────────
 PLANS_DIR="$PROJECT_DIR/.cognitive-os/plans/features"
-ARCH_PLANS_DIR="$PROJECT_DIR/docs/architecture/plans"
+RESEARCH_PLANS_DIR="$PROJECT_DIR/.cognitive-os/plans/research"
+ARCH_PLANS_DIR="$PROJECT_DIR/.cognitive-os/plans/architecture"
+ROADMAPS_DIR="$PROJECT_DIR/.cognitive-os/plans/roadmaps"
 ADRS_DIR="$PROJECT_DIR/docs/adrs"
 PLAN_COUNT=$(_count_md "$PLANS_DIR")
+RESEARCH_PLAN_COUNT=$(_count_md_plans "$RESEARCH_PLANS_DIR")
 ARCH_PLAN_COUNT=$(_count_md_plans "$ARCH_PLANS_DIR")
+ROADMAP_COUNT=$(_count_md_plans "$ROADMAPS_DIR")
 ADR_COUNT=$(_count_md "$ADRS_DIR")
 
 # ── 3. Work queue state ────────────────────────────────────────────────────
@@ -139,7 +143,7 @@ fi
 cat <<SUMMARY
 [startup-protocol] Context check (rules/startup-protocol.md):
   - Engram: ${ENGRAM_STATUS} — ${ENGRAM_HINT}
-  - Plans: ${PLAN_COUNT} in .cognitive-os/plans/features/ + ${ARCH_PLAN_COUNT} in docs/architecture/plans/ (cross-ref ${ADR_COUNT} ADRs in docs/adrs/)
+  - Plans: ${PLAN_COUNT} features + ${RESEARCH_PLAN_COUNT} research + ${ARCH_PLAN_COUNT} arch + ${ROADMAP_COUNT} roadmaps (cross-ref ${ADR_COUNT} ADRs)
   - Work queue: ${LIVE_COUNT} live, ${PARKED_COUNT} parked
   - Validator: ${VALIDATOR_LINE}
   - Suggested first action: ${SUGGESTION}

@@ -607,7 +607,7 @@ detect its own degradation patterns. See docs/architecture/POST-MORTEM-2026-04.m
 - ADR-024: Task Panel Bridge (tool_use_id correlation)
 
 **Institutional memory (4 living documents):**
-- docs/architecture/stabilization-roadmap.md — status tracker
+- .cognitive-os/plans/roadmaps/stabilization-roadmap.md — status tracker
 - docs/architecture/FROZEN-BACKLOG.md — 30+ deferred plans
 - docs/architecture/LESSONS-LEARNED.md — 5 wounds + red flags
 - docs/architecture/POST-MORTEM-2026-04.md — full retrospective

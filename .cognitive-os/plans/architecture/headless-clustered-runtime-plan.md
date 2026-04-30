@@ -1,3 +1,7 @@
+---
+related-adr: ADR-084
+---
+
 # Headless and Clustered Runtime Plan
 
 This plan implements ADR-027 in phases. It is intentionally staged so Cognitive

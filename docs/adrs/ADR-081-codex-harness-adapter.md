@@ -11,7 +11,7 @@
 ## Status
 
 Accepted.
-Consumes-plan: docs/architecture/plans/adr-064-implementation-plan.md
+Consumes-plan: .cognitive-os/plans/architecture/adr-064-implementation-plan.md
 
 Unblocks the ADR-064 advancement path by making Codex a second canonical
 harness with captured native payload fixtures. It also unblocks ADR-080 Tier 1
@@ -20,7 +20,7 @@ working Codex adapter.
 
 ## Context
 
-An implementation plan for ADR-064 already exists at `docs/architecture/plans/adr-064-implementation-plan.md` (2026-04-28), enumerating 9 P0 tasks across 4 surfaces. ADR-081 does NOT redefine that work; it scopes the Codex adapter (Task 4 of that plan, listed as Task 1.1 in Section 2) and the surrounding driver projection (Tasks 2.1–2.3) into a single ADR-level decision. The plan's task estimates (~7-9 sessions total, ~3h for the adapter alone) are authoritative.
+An implementation plan for ADR-064 already exists at `.cognitive-os/plans/architecture/adr-064-implementation-plan.md` (2026-04-28), enumerating 9 P0 tasks across 4 surfaces. ADR-081 does NOT redefine that work; it scopes the Codex adapter (Task 4 of that plan, listed as Task 1.1 in Section 2) and the surrounding driver projection (Tasks 2.1–2.3) into a single ADR-level decision. The plan's task estimates (~7-9 sessions total, ~3h for the adapter alone) are authoritative.
 
 ### The portability gap
 
