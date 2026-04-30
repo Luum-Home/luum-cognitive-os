@@ -829,3 +829,567 @@ llm_providers:
       opus: claude-opus-4-7
       sonnet: claude-sonnet-4-6
       haiku: claude-haiku-3-5
+
+# ── ADR-064: Canonical Hook Registry ─────────────────────────────────────────
+# Single source of truth for all hook registrations. Settings drivers
+# (scripts/_lib/settings-driver-claude-code.sh, settings-driver-codex.sh)
+# project this block into harness-native configs.
+#
+# Event name mapping (canonical → Claude Code native):
+#   SessionStart      → SessionStart
+#   UserPromptSubmit  → UserPromptSubmit
+#   SubagentStart     → SubagentStart
+#   PreCompact        → PreCompact
+#   PreToolUse        → PreToolUse
+#   PostToolUse       → PostToolUse
+#   Stop              → Stop
+#   TeammateIdle      → TeammateIdle  (COS extension)
+#   TaskCreated       → TaskCreated   (COS extension)
+#   TaskCompleted     → TaskCompleted (COS extension)
+#
+# Event support per harness (see manifests/harness-driver-capabilities.yaml):
+#   Claude Code: all events fully supported
+#   Codex: SessionStart, UserPromptSubmit, Stop supported;
+#          PreToolUse/PostToolUse limited (Bash matcher only);
+#          SubagentStart, PreCompact unsupported;
+#          TeammateIdle/TaskCreated/TaskCompleted require cos-runner
+#
+# IMPORTANT: New hooks MUST be registered here first, then re-run both drivers.
+# DO NOT edit .claude/settings.json or .codex/hooks.json directly.
+#
+# Fields:
+#   script:   path relative to project root (hooks/<name>.sh)
+#   event:    canonical CC event name
+#   matcher:  optional tool-name filter (PreToolUse/PostToolUse only)
+#   async:    true = fire-and-forget, does not block hook chain
+#   scope:    os-only | both  (from SCOPE comment in script header)
+harness:
+  hooks:
+    # ── SessionStart ─────────────────────────────────────────────────────────
+    self-install:
+      script: hooks/self-install.sh
+      event: SessionStart
+      scope: os-only
+
+    session-init:
+      script: hooks/session-init.sh
+      event: SessionStart
+      scope: os-only
+
+    host-tool-doctor:
+      script: hooks/host-tool-doctor.sh
+      event: SessionStart
+      async: true
+      scope: os-only
+
+    profile-drift-autoapply:
+      script: hooks/profile-drift-autoapply.sh
+      event: SessionStart
+      scope: os-only
+
+    reaper-daemon-launcher:
+      script: hooks/reaper-daemon-launcher.sh
+      event: SessionStart
+      scope: os-only
+
+    session-watchdog-launcher:
+      script: hooks/session-watchdog-launcher.sh
+      event: SessionStart
+      scope: os-only
+
+    docker-drift-detector:
+      script: hooks/docker-drift-detector.sh
+      event: SessionStart
+      scope: os-only
+
+    cos-executor-daemon-launcher:
+      script: hooks/cos-executor-daemon-launcher.sh
+      event: SessionStart
+      scope: os-only
+
+    engram-daemon-launcher:
+      script: hooks/engram-daemon-launcher.sh
+      event: SessionStart
+      async: true
+      scope: os-only
+
+    crash-recovery:
+      script: hooks/crash-recovery.sh
+      event: SessionStart
+      scope: os-only
+
+    session-resume:
+      script: hooks/session-resume.sh
+      event: SessionStart
+      scope: os-only
+
+    infra-health:
+      script: hooks/infra-health.sh
+      event: SessionStart
+      async: true
+      scope: os-only
+
+    aspirational-audit-weekly:
+      script: hooks/aspirational-audit-weekly.sh
+      event: SessionStart
+      scope: os-only
+
+    self-knowledge-refresh:
+      script: hooks/self-knowledge-refresh.sh
+      event: SessionStart
+      scope: os-only
+
+    session-start-worktree-nudge:
+      script: hooks/session-start-worktree-nudge.sh
+      event: SessionStart
+      scope: os-only
+
+    session-startup-protocol:
+      script: hooks/session-startup-protocol.sh
+      event: SessionStart
+      scope: os-only
+
+    mcp-scan:
+      script: hooks/mcp-scan.sh
+      event: SessionStart
+      async: true
+      scope: os-only
+
+    # ── UserPromptSubmit ──────────────────────────────────────────────────────
+    user-prompt-capture:
+      script: hooks/user-prompt-capture.sh
+      event: UserPromptSubmit
+      async: true
+      scope: os-only
+
+    session-wrapup-trigger:
+      script: hooks/session-wrapup-trigger.sh
+      event: UserPromptSubmit
+      async: true
+      scope: os-only
+
+    session-heartbeat-on-prompt:
+      script: hooks/session-heartbeat.sh
+      event: UserPromptSubmit
+      scope: os-only
+
+    memory-prefetch:
+      script: hooks/memory-prefetch.sh
+      event: UserPromptSubmit
+      async: true
+      scope: os-only
+
+    # ── SubagentStart ─────────────────────────────────────────────────────────
+    # Codex: unsupported (SubagentStart not emitted by Codex v0.126.0-alpha.8)
+    subagent-context-injector:
+      script: hooks/subagent-context-injector.sh
+      event: SubagentStart
+      async: true
+      scope: os-only
+
+    # ── PreCompact ────────────────────────────────────────────────────────────
+    # Codex: unsupported (PreCompact not emitted by Codex v0.126.0-alpha.8)
+    pre-compaction-flush:
+      script: hooks/pre-compaction-flush.sh
+      event: PreCompact
+      scope: os-only
+
+    # ── PreToolUse — all tools ────────────────────────────────────────────────
+    session-heartbeat-pre:
+      script: hooks/session-heartbeat.sh
+      event: PreToolUse
+      matcher: ""
+      scope: os-only
+
+    # ── PreToolUse — Bash only ────────────────────────────────────────────────
+    # Codex: limited (Bash matcher only — these project to Codex PreToolUse)
+    rate-limit-precheck:
+      script: hooks/rate-limit-precheck.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: os-only
+
+    agent-bash-cwd-enforcer:
+      script: hooks/agent-bash-cwd-enforcer.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: os-only
+
+    rate-limiter:
+      script: hooks/rate-limiter.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: os-only
+
+    destructive-rm-blocker:
+      script: hooks/destructive-rm-blocker.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: os-only
+
+    git-commit-scope-guard:
+      script: hooks/git-commit-scope-guard.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: os-only
+
+    # ── PreToolUse — Edit|Write ───────────────────────────────────────────────
+    # Codex: OMITTED — Edit|Write matcher not supported by Codex v0.126.0-alpha.8
+    secret-detector:
+      script: hooks/secret-detector.sh
+      event: PreToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    project-docs-convention:
+      script: hooks/project-docs-convention.sh
+      event: PreToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    # ── PreToolUse — Agent ────────────────────────────────────────────────────
+    # Codex: OMITTED — Agent matcher not supported by Codex v0.126.0-alpha.8
+    dispatch-gate:
+      script: hooks/dispatch-gate.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    clarification-gate:
+      script: hooks/clarification-gate.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    blast-radius:
+      script: hooks/blast-radius.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    inject-phase-context:
+      script: hooks/inject-phase-context.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    agent-working-dir-inject:
+      script: hooks/agent-working-dir-inject.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    query-tailored-context-inject:
+      script: hooks/query-tailored-context-inject.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    agent-prelaunch:
+      script: hooks/agent-prelaunch.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    error-pattern-detector:
+      script: hooks/error-pattern-detector.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    predev-completeness-check:
+      script: hooks/predev-completeness-check.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    reinvention-check:
+      script: hooks/reinvention-check.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    native-agent-heartbeat-pre:
+      script: hooks/native-agent-heartbeat.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    # ── PostToolUse — all tools ───────────────────────────────────────────────
+    context-watchdog:
+      script: hooks/context-watchdog.sh
+      event: PostToolUse
+      matcher: ""
+      async: true
+      scope: os-only
+
+    rate-limit-detector:
+      script: hooks/rate-limit-detector.sh
+      event: PostToolUse
+      matcher: ""
+      scope: os-only
+
+    # ── PostToolUse — Bash only ───────────────────────────────────────────────
+    # Codex: limited (Bash matcher only — these project to Codex PostToolUse)
+    error-pipeline:
+      script: hooks/error-pipeline.sh
+      event: PostToolUse
+      matcher: Bash
+      scope: os-only
+
+    result-truncator:
+      script: hooks/result-truncator.sh
+      event: PostToolUse
+      matcher: Bash
+      scope: os-only
+
+    rate-limit-drain:
+      script: hooks/rate-limit-drain.sh
+      event: PostToolUse
+      matcher: Bash
+      scope: os-only
+
+    audit-id-enricher-bash:
+      script: hooks/audit-id-enricher.sh
+      event: PostToolUse
+      matcher: Bash
+      scope: os-only
+
+    # ── PostToolUse — Bash|Edit|Write ─────────────────────────────────────────
+    # Codex: OMITTED — Edit|Write matcher not supported by Codex v0.126.0-alpha.8
+    auto-checkpoint:
+      script: hooks/auto-checkpoint.sh
+      event: PostToolUse
+      matcher: "Bash|Edit|Write"
+      async: true
+      scope: os-only
+
+    # ── PostToolUse — Edit|Write ──────────────────────────────────────────────
+    # Codex: OMITTED — Edit|Write matcher not supported by Codex v0.126.0-alpha.8
+    content-policy:
+      script: hooks/content-policy.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    skill-frontmatter-validator:
+      script: hooks/skill-frontmatter-validator.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    rule-frontmatter-validator:
+      script: hooks/rule-frontmatter-validator.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    hook-header-validator:
+      script: hooks/hook-header-validator.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    adr-section-validator:
+      script: hooks/adr-section-validator.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    confidentiality-enforcer:
+      script: hooks/confidentiality-enforcer.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    surface-fix-detector:
+      script: hooks/surface-fix-detector.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    doc-sync-detector:
+      script: hooks/doc-sync-detector.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      async: true
+      scope: os-only
+
+    # ── PostToolUse — TodoWrite ───────────────────────────────────────────────
+    # Codex: OMITTED — TodoWrite matcher not supported by Codex v0.126.0-alpha.8
+    work-queue-sync-todo:
+      script: hooks/work-queue-sync.sh
+      event: PostToolUse
+      matcher: TodoWrite
+      scope: os-only
+
+    # ── PostToolUse — Skill ───────────────────────────────────────────────────
+    # Codex: OMITTED — Skill matcher not supported by Codex v0.126.0-alpha.8
+    skill-usage-tracker:
+      script: hooks/skill-usage-tracker.sh
+      event: PostToolUse
+      matcher: Skill
+      async: true
+      scope: os-only
+
+    skill-invocation-logger:
+      script: hooks/skill-invocation-logger.sh
+      event: PostToolUse
+      matcher: Skill
+      scope: os-only
+
+    # ── PostToolUse — Agent ───────────────────────────────────────────────────
+    # Codex: OMITTED — Agent matcher not supported by Codex v0.126.0-alpha.8
+    claim-validator:
+      script: hooks/claim-validator.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    completion-gate:
+      script: hooks/completion-gate.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    agent-checkpoint:
+      script: hooks/agent-checkpoint.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    trust-score-validator:
+      script: hooks/trust-score-validator.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    confidence-gate:
+      script: hooks/confidence-gate.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    audit-id-enricher-agent:
+      script: hooks/audit-id-enricher.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    auto-rollback-trigger:
+      script: hooks/auto-rollback-trigger.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    native-agent-heartbeat-post:
+      script: hooks/native-agent-heartbeat.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    work-queue-sync-agent:
+      script: hooks/work-queue-sync.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    skill-feedback-tracker:
+      script: hooks/skill-feedback-tracker.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    auto-repair-dispatcher:
+      script: hooks/auto-repair-dispatcher.sh
+      event: PostToolUse
+      matcher: Agent
+      async: true
+      scope: os-only
+
+    dequeue-notify:
+      script: hooks/dequeue-notify.sh
+      event: PostToolUse
+      matcher: Agent
+      async: true
+      scope: os-only
+
+    state-heartbeat:
+      script: hooks/state-heartbeat.sh
+      event: PostToolUse
+      matcher: Agent
+      async: true
+      scope: os-only
+
+    # ── PostToolUse — Engram MCP ──────────────────────────────────────────────
+    # Codex: OMITTED — MCP tool matcher not supported by Codex v0.126.0-alpha.8
+    engram-reinforce-on-access:
+      script: hooks/engram-reinforce-on-access.sh
+      event: PostToolUse
+      matcher: "mcp__plugin_engram_engram__mem_search|mcp__plugin_engram_engram__mem_get_observation"
+      async: true
+      scope: os-only
+
+    # ── Stop ──────────────────────────────────────────────────────────────────
+    session-summary-reminder:
+      script: hooks/session-summary-reminder.sh
+      event: Stop
+      scope: os-only
+
+    session-learning:
+      script: hooks/session-learning.sh
+      event: Stop
+      scope: os-only
+
+    session-cleanup:
+      script: hooks/session-cleanup.sh
+      event: Stop
+      scope: os-only
+
+    git-context-capture:
+      script: hooks/git-context-capture.sh
+      event: Stop
+      scope: os-only
+
+    session-changelog:
+      script: hooks/session-changelog.sh
+      event: Stop
+      scope: os-only
+
+    skill-failure-monitor:
+      script: hooks/skill-failure-monitor.sh
+      event: Stop
+      scope: os-only
+
+    kpi-trigger:
+      script: hooks/kpi-trigger.sh
+      event: Stop
+      async: true
+      scope: os-only
+
+    engram-crystallize-on-session-end:
+      script: hooks/engram-crystallize-on-session-end.sh
+      event: Stop
+      async: true
+      scope: os-only
+
+    # ── TeammateIdle (COS extension) ──────────────────────────────────────────
+    # Codex: cognitive_os_extension — requires cos-runner (not yet implemented)
+    teammate-idle:
+      script: hooks/teammate-idle.sh
+      event: TeammateIdle
+      scope: os-only
+
+    # ── TaskCreated (COS extension) ───────────────────────────────────────────
+    # Codex: cognitive_os_extension — requires cos-runner (not yet implemented)
+    task-created:
+      script: hooks/task-created.sh
+      event: TaskCreated
+      scope: os-only
+
+    # ── TaskCompleted (COS extension) ─────────────────────────────────────────
+    # Codex: cognitive_os_extension — requires cos-runner (not yet implemented)
+    task-completed:
+      script: hooks/task-completed.sh
+      event: TaskCompleted
+      scope: os-only

@@ -97,6 +97,56 @@
       "matcher": "prompt"
     }
   ],
+  "PreToolUse": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/rate-limit-precheck.sh\" ] && bash \"$PWD/hooks/rate-limit-precheck.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/agent-bash-cwd-enforcer.sh\" ] && bash \"$PWD/hooks/agent-bash-cwd-enforcer.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/rate-limiter.sh\" ] && bash \"$PWD/hooks/rate-limiter.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/destructive-rm-blocker.sh\" ] && bash \"$PWD/hooks/destructive-rm-blocker.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/git-commit-scope-guard.sh\" ] && bash \"$PWD/hooks/git-commit-scope-guard.sh\" || true"
+        }
+      ],
+      "matcher": "bash"
+    }
+  ],
+  "PostToolUse": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/error-pipeline.sh\" ] && bash \"$PWD/hooks/error-pipeline.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/result-truncator.sh\" ] && bash \"$PWD/hooks/result-truncator.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/rate-limit-drain.sh\" ] && bash \"$PWD/hooks/rate-limit-drain.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/audit-id-enricher.sh\" ] && bash \"$PWD/hooks/audit-id-enricher.sh\" || true"
+        }
+      ],
+      "matcher": "bash"
+    }
+  ],
   "Stop": [
     {
       "hooks": [
