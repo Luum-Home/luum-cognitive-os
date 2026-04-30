@@ -16,6 +16,8 @@ metadata:
 audience: project
 summary_line: Pre-implementation confidence assessment.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

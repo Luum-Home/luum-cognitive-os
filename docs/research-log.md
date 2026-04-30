@@ -362,3 +362,16 @@ full 85% reduction must explicitly set `expansion.tier_filter: [0]` in
 - `cognitive-os.yaml` — `expansion.tier_filter: [0, 1]` feature flag
 - `tests/unit/test_ref_key_loader.py` — 10 new tier-filtering tests (23 total, all pass)
 - `docs/adrs/ADR-075-stage2-selective-expansion.md` — decision record
+
+## 2026-04-30: Tier 2 Hermes alignment (ADRs + skill frontmatter)
+
+- **ADR-076** (`docs/adrs/ADR-076-skill-frontmatter-alignment.md`): Accepted.
+  Aligns all COS SKILL.md files with the Hermes spec (tools/skills_tool.py lines 28-46,
+  MIT). Three optional fields added: `version: "1.0.0"`, `platforms: ["claude-code"]`,
+  `prerequisites: []`. Executed by `scripts/align_skill_frontmatter.py` — **142 skills updated**.
+- **ADR-077** (`docs/adrs/ADR-077-peer-card-local-model.md`): Proposed (design only).
+  Local peer-card model as a Honcho replacement using Engram as backing store. Schema:
+  name, role, preferences, communication_patterns, domain_expertise, recent_topics.
+  Phase 1: FTS5 keyword search. Phase 2 (deferred): embedding-based retrieval.
+  Implementation blocked on three open questions (embed model, update cadence, UX).
+  Engram topic: `cos/tier2-hermes-alignment`.

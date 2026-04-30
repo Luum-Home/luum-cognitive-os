@@ -8,6 +8,8 @@ model: sonnet
 audience: project
 summary_line: "Scan all services for env var usage, cross-reference with definitions, report…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Secret Audit — Environment Variable Cross-Reference

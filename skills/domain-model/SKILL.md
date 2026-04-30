@@ -15,6 +15,8 @@ triggers:
   - domain-model.md
 summary_line: Scaffold DDD domain-model.md (bounded contexts + entities + language) idempotently.
 model: haiku
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Domain Model Scaffolder

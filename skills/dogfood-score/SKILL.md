@@ -9,6 +9,9 @@ audience: os-dev
 effort: haiku
 summary_line: "Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs)."
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Dogfood Maturity Score

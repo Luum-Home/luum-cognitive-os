@@ -6,6 +6,9 @@ trigger: repair status, repair report, auto-repair, circuit breaker status
 model: haiku
 effort: haiku
 audience: project
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Repair Status

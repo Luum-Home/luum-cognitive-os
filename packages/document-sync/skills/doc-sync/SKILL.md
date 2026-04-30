@@ -6,6 +6,8 @@ description: Synchronize documentation that became stale after code changes
 invocation: /doc-sync
 last-updated: 2026-03-22
 audience: project
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Doc Sync — Stale Documentation Updater

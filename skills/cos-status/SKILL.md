@@ -7,6 +7,8 @@ audience: both
 version: 1.0.0
 summary_line: "Display current Cognitive OS state — active profile, skills exposed, hooks…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /cos-status — Cognitive OS State Transparency

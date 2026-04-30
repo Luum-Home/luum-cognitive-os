@@ -16,6 +16,8 @@ metadata:
 audience: adopters
 summary_line: "Export SO rules/ as a point-in-time snapshot into docs/08-estandares/."
 model: haiku
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

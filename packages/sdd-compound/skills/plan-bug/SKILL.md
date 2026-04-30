@@ -8,6 +8,8 @@ audience: project
 effort: opus
 summary_line: Create a bug fix plan with root cause analysis and evaluation scoring.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Plan Bug Fix

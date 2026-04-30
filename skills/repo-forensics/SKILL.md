@@ -17,6 +17,8 @@ audience: both
 effort: opus
 summary_line: Deep forensic analysis of git repositories.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

@@ -5,6 +5,8 @@ description: Step-by-step guide for adding a new hook to the Cognitive OS
 version: 0.1.0
 audience: os
 tags: [development, extension, hooks]
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Add Hook

@@ -24,6 +24,8 @@ routing:
   fallback_on_any_error: true
   budget_max_usd_per_call: 0.25
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # SDD Resume

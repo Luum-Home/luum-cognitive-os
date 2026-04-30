@@ -14,6 +14,8 @@ triggers:
   - agent simulation
   - evolution test
 audience: os-dev
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Simulation Arena — End-to-End Agent Workflow Simulation

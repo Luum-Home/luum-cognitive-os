@@ -18,6 +18,8 @@ metadata:
 audience: project
 summary_line: Fetch and convert web pages to LLM-ready markdown using Crawl4AI.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

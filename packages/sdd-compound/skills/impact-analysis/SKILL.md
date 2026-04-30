@@ -6,6 +6,9 @@ triggers: ["/impact-analysis"]
 audience: project
 summary_line: "\"Analyze change impact: imports, tests, configs, services, and SDD artifacts…"
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /impact-analysis

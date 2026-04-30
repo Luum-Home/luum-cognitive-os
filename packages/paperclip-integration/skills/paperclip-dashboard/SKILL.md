@@ -7,6 +7,9 @@ model: haiku
 audience: os-dev
 summary_line: "View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent…"
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Paperclip Dashboard

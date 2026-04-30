@@ -15,6 +15,8 @@ metadata:
 audience: project
 summary_line: Create persistent agents that maintain their own state across sessions.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

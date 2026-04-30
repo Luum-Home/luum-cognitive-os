@@ -25,6 +25,8 @@ metadata:
 audience: project
 summary_line: Automatically resolve blockers reported by readiness-check.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Resolve Blockers

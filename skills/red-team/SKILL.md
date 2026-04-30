@@ -7,6 +7,8 @@ audience: os-dev
 version: 1.0.0
 summary_line: "\"Red team testing for agent prompts — detects injection, jailbreak, and…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /red-team

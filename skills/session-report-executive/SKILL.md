@@ -17,6 +17,8 @@ triggers:
   - reporte ejecutivo
 summary_line: Generate an executive-level session report translating technical metrics into…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Session Report — Executive View

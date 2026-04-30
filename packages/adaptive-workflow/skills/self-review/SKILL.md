@@ -15,6 +15,8 @@ metadata:
 audience: project
 summary_line: Lightweight 4-question post-implementation checklist for non-SDD work.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose
