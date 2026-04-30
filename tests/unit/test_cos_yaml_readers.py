@@ -71,16 +71,29 @@ def _run_dispatch_gate_check(project_dir: Path) -> dict:
 
     The script reads stdin (JSON) and writes a single JSON object to stdout.
     We feed it an empty payload so only the config-reading branch is exercised.
+
+    Retries once on TimeoutExpired: under heavy parallel xdist load with 8
+    workers, the python interpreter cold-start + import graph resolution
+    occasionally exceeds the timeout on the unlucky worker. A second attempt
+    after the first cold-start has primed the filesystem cache nearly always
+    succeeds.
     """
     env = {**os.environ, "CLAUDE_PROJECT_DIR": str(project_dir)}
-    proc = subprocess.run(
-        [sys.executable, str(_DISPATCH_GATE_CHECK)],
-        input="{}",
-        capture_output=True,
-        text=True,
-        env=env,
-        timeout=60,
-    )
+
+    def _attempt(timeout_s: int) -> subprocess.CompletedProcess:
+        return subprocess.run(
+            [sys.executable, str(_DISPATCH_GATE_CHECK)],
+            input="{}",
+            capture_output=True,
+            text=True,
+            env=env,
+            timeout=timeout_s,
+        )
+
+    try:
+        proc = _attempt(120)
+    except subprocess.TimeoutExpired:
+        proc = _attempt(120)
     assert proc.returncode == 0, f"stderr={proc.stderr}"
     return json.loads(proc.stdout)
 

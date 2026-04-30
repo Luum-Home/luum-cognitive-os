@@ -382,12 +382,15 @@ def test_cognitive_os_health_does_not_crash(tmp_path: Path, repo_root: Path):
         pytest.skip("cognitive-os-health.sh not present")
     env = os.environ.copy()
     env["CLAUDE_PROJECT_DIR"] = str(repo_root)  # read real state, don't pollute
+    # 60s: cognitive-os-health.sh enumerates 164 hooks + 145 skills + 17 rules
+    # under full SO load and validates each. macOS bash startup + per-component
+    # check legitimately exceeds 15s on first run; 60s gives stable headroom.
     result = subprocess.run(
         ["bash", str(hook)],
         env=env,
         capture_output=True,
         text=True,
-        timeout=15,
+        timeout=60,
     )
     # Health script may exit 0 (OK) or with warn/fail codes. The contract is
     # "must not crash": we tolerate any deterministic exit ≤ 2. Signals produce
