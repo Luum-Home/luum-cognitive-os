@@ -625,7 +625,7 @@ The AI agent ecosystem has developed specialized infrastructure patterns. Cognit
 | **Self-healing (MAPE-K)** | Auto-detect, classify, fix errors → register known fixes | Any gateway or orchestrator |
 | **Persistent memory (Engram)** | Cross-session knowledge with FTS5 search | Any gateway |
 | **Consequence system** | Skills promoted (>=85%) or disabled (<60%) based on trust scores | Any framework |
-| **Package manager (cos)** | Install/audit/remove agent components with 6-gate security | Any agent OS |
+| **Package manager (cos)** | Install/audit/remove agentic primitives with 6-gate security | Any agent OS |
 | **Broken window policy** | Fix broken tests even if "pre-existing" | Any agent framework |
 | **Supply chain defense** | SHA256 Docker pins, git commit pinning, per-file integrity | Most agent tools |
 

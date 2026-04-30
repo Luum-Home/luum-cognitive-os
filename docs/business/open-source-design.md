@@ -139,7 +139,7 @@ cognitive-os/
 |   +-- generate-health.sh       # Parse docker-compose, generate health check skill
 |   +-- generate-hooks.sh        # Generate auto-test, block-prod based on project
 |   +-- generate-gates.sh        # Interactive: choose domain, generate constitutional gates
-|   +-- generate-claude-md.sh    # Generate CLAUDE.md referencing installed components
+|   +-- generate-claude-md.sh    # Generate CLAUDE.md referencing installed agentic primitives
 |   +-- templates/
 |       +-- CLAUDE.md.tmpl       # Template for project CLAUDE.md
 |       +-- settings.json.tmpl   # Template for settings.json with hook wiring
@@ -278,7 +278,7 @@ $ cognitive-os init
     custom     -- Define your own gates interactively
     none       -- Core only, no domain plugin
 
-[3/7] Installing core components...
+[3/7] Installing core agentic primitives...
   Copied: core/memory/protocol.md -> .claude/rules/memory-protocol.md
   Copied: core/fault-tolerance/hooks/* -> .claude/hooks/
   Copied: core/safety/hooks/* -> .claude/hooks/
@@ -301,7 +301,7 @@ $ cognitive-os init
   Generated: .claude/skills/check-health/SKILL.md
 
 [7/7] Generating CLAUDE.md and settings.json...
-  Generated: .claude/CLAUDE.md (project overview + installed components)
+  Generated: .claude/CLAUDE.md (project overview + installed agentic primitives)
   Generated: .claude/settings.json (hook wiring + permissions)
 
 Done. Cognitive OS installed.
@@ -362,7 +362,7 @@ The `generate-health.sh` script reads `docker-compose.yml` and:
 Combines:
 - Project name and description (from package.json, build.gradle, or user input)
 - Detected stack summary
-- Installed component references
+- Installed agentic primitive references
 - Anti-patterns relevant to detected stack
 
 ### 4.3 Configuration File
@@ -519,7 +519,7 @@ These are the hardcoded values in project-specific files that must become variab
 
 ### What makes something CORE?
 
-A component is core if it satisfies ALL of these:
+An agentic primitive is core if it satisfies ALL of these:
 
 1. It works on any software project regardless of domain
 2. It does not reference specific business rules, services, or technologies
@@ -530,7 +530,7 @@ Examples: memory protocol, fault tolerance, dangerous command blocking, debuggin
 
 ### What makes something a PLUGIN?
 
-A component is a plugin if it satisfies ANY of these:
+An agentic primitive is a plugin if it satisfies ANY of these:
 
 1. It encodes domain-specific business rules (fintech gates, ecommerce inventory rules)
 2. It provides domain-specific agent personas (compliance auditor, product manager)
@@ -539,7 +539,7 @@ A component is a plugin if it satisfies ANY of these:
 
 ### What stays PROJECT-SPECIFIC?
 
-A component stays in the project's `.claude/` if:
+An agentic primitive stays in the project's `.claude/` if:
 
 1. It references specific service names, ports, paths, or credentials for this project
 2. It would not make sense in another project even within the same domain

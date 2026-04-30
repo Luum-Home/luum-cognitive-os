@@ -112,7 +112,7 @@ for full step-by-step instructions.
 
 ## Integration
 
-| Component | Role |
+| Primitive | Role |
 |-----------|------|
 | `hooks/dispatch-gate.sh` | Enqueues blocked launches (PreToolUse) |
 | `lib/queue_drainer.py` | Queue management: enqueue, get_ready, mark_dispatched, remove_completed |

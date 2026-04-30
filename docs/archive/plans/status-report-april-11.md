@@ -79,7 +79,7 @@ Based on git status showing 74 deleted symlinks in .claude/rules/cos/ and modifi
 
 | ID | Description | Plan | Priority |
 |---|---|---|---|
-| WS6 | Component scope tags — add scope: frontmatter to ~260 files, filter by scope in self-install.sh and cos install | self-optimizing-pipeline.md | P3 |
+| WS6 | Agentic primitive scope tags — add scope: frontmatter to ~260 files, filter by scope in self-install.sh and cos install | self-optimizing-pipeline.md | P3 |
 | WS8 | Auto-classification detector hook (component-classification-detector.sh) | self-optimizing-pipeline.md | P4; depends on WS6 |
 | WS9 | Test error ratchet — fix 292 pytest errors, extend pre-commit-gate.sh with error tracking | self-optimizing-pipeline.md | P1; 292 errors blocking quality |
 | WS10 | Security tool activation — enable semgrep, register aguara-scan.sh, validate garak/promptfoo | self-optimizing-pipeline.md | P2 |
@@ -91,7 +91,7 @@ Based on git status showing 74 deleted symlinks in .claude/rules/cos/ and modifi
 | Commit | Description | Notes |
 |---|---|---|
 | c5e3d70 | Host resource monitor — adaptive agent throttling (lib/host_monitor.py) | 54 tests; macOS+Linux; pressure levels map to max agent count |
-| 92c8f72 | Component usage tracker — dead weight detection (lib/component_usage_tracker.py) | 22 tests; WS3-inspired dead-weight scan |
+| 92c8f72 | Agentic primitive usage tracker — dead weight detection (lib/component_usage_tracker.py) | 22 tests; WS3-inspired dead-weight scan |
 | 872c6d6 | Orchestrator capability detector — auto-detect comm mode | lib/orchestrator_capability_detector.py |
 | cd7ecdb | Release analyzer — intelligent release planning tool | lib/release_analyzer.py |
 | bd67cef, d05b23a | packages/project-discovery + packages/project-audit | Pre-development planning pipeline |
