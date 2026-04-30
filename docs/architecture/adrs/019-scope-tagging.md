@@ -24,13 +24,13 @@ Add scope tags to all agentic primitives across three categories:
 
 > **Note:** Python libs in `lib/` use `# scope:` (lowercase) comment headers, not `# SCOPE:` (uppercase) like hooks. The `from __future__ import annotations` annotation was added to 66 lib files for Python 3.9 compatibility.
 
-The scope classification was deferred during the initial rules-to-hooks plan (decision ID 3086) and implemented during stabilization once the full component audit was complete.
+The scope classification was deferred during the initial rules-to-hooks plan (decision ID 3086) and implemented during stabilization once the full agentic primitive audit was complete.
 
 ## Alternatives Considered
 
 - **Directory-based separation**: Move os-only agentic primitives to an `internal/` directory. Rejected because it would break all existing imports, symlinks, and references.
 - **Runtime filtering**: Check scope at execution time and skip inapplicable agentic primitives. Rejected because it adds overhead to every hook execution and still installs unnecessary files.
-- **Ignore the problem**: Let users see all agentic primitives. Rejected because OS-internal tooling (release management, component registration) is confusing and potentially harmful when run in user project context.
+- **Ignore the problem**: Let users see all agentic primitives. Rejected because OS-internal tooling (release management, agentic primitive registration) is confusing and potentially harmful when run in user project context.
 
 ## Consequences
 
