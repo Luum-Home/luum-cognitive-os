@@ -219,6 +219,12 @@ def _try_registry_provider(
             model_hint = claude_model  # pass through if already abstract
 
     messages = [{"role": "user", "content": prompt}]
+    if os.environ.get("COS_PROMPT_CACHE", "").strip() == "1":
+        try:
+            from lib.prompt_cache import maybe_apply_cache
+            messages = maybe_apply_cache(messages, provider=provider)
+        except Exception:  # noqa: BLE001
+            pass  # cache injection must never block dispatch
     try:
         r = mod.call(messages, model_hint=model_hint)
     except Exception as exc:  # noqa: BLE001
@@ -270,6 +276,12 @@ def _try_qwen(
 
     chosen_model = select_model(claude_model_hint=claude_model)
     messages = [{"role": "user", "content": prompt}]
+    if os.environ.get("COS_PROMPT_CACHE", "").strip() == "1":
+        try:
+            from lib.prompt_cache import maybe_apply_cache
+            messages = maybe_apply_cache(messages, provider="qwen")
+        except Exception:  # noqa: BLE001
+            pass  # cache injection must never block dispatch
     r = qwen_call(messages, model=chosen_model)
 
     return {
