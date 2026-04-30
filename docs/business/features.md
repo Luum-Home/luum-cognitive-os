@@ -88,7 +88,7 @@ Quality gates enforced by infrastructure, not by hope.
 6. Idempotent financial operations (via transaction IDs)
 7. Audit trails for all critical operations
 
-**Additional enforcement:**
+**Additional enforcement proof paths:**
 - Control manifest: forbidden zones, performance constraints, security constraints
 - License policy: automatically blocks AGPL, SSPL, BSL, ELv2 dependencies
 - 21 hooks that fire at runtime (SessionStart, PreToolUse, PostToolUse)
@@ -97,7 +97,7 @@ Quality gates enforced by infrastructure, not by hope.
 **What exists today:**
 - 19 rule files covering architecture, security, testing, licensing, fault tolerance, and more
 - 21 hook scripts enforcing rules at runtime
-- 3 security hooks: block-dangerous.sh, protect-env-files.sh, audit-commands.sh
+- Security hook family: see `hooks/secret-detector.sh`, `hooks/destructive-git-blocker.sh`, and `hooks/destructive-rm-blocker.sh`
 - Coverage gate hook with configurable thresholds
 
 ---
@@ -238,13 +238,15 @@ Your investment in rules, skills, and memory is not tied to any single tool.
 
 ---
 
-## 10. SRE and Self-Healing
+## 10. SRE and Repair Guardrails
 
-Autonomous service monitoring and repair.
+Service monitoring and repair guardrails. Treat this as a partially implemented
+SRE direction unless a project has wired the relevant health checks, remediation
+hooks, and approval policy.
 
-- The SRE agent monitors all services in the development stack
+- Health hooks can monitor services in the development stack
 - Known fixes stored in Engram
-- Safe actions executed automatically (restart container, clear cache)
+- Safe actions may be automated only when an explicit project policy allows them
 - Unsafe actions require human approval
 - 4-tier escalation policy
 

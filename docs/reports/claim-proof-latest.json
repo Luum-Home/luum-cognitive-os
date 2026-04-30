@@ -1,0 +1,1548 @@
+{
+  "rows": [
+    {
+      "claim": "Codex, Cursor) and prevents fabricated results, destructive operations, and",
+      "evidence": "codex, cursor, destructive, operations, prevents, results",
+      "line": 16,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "results without running tests (Layer 6, blocks in production mode).",
+      "evidence": "blocks, layer, mode, production, results, running, tests, without",
+      "line": 28,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "prints a single-screen summary of what hook fired and what was prevented.",
+      "evidence": "fired, hook, prints, summary, what",
+      "line": 44,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **NOT an autonomous agent society** \u2014 there is no self-directed orchestration",
+      "evidence": "autonomous, orchestration, there",
+      "line": 55,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "After install, hooks fire automatically on every Claude Code session. No further",
+      "evidence": "after, automatically, claude, code, every, fire, further, hooks",
+      "line": 80,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "(harness drivers), and self-healing (MAPE-K loop).",
+      "evidence": "drivers, harness, loop, mape-k",
+      "line": 106,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [Governed Self-Improvement Roadmap](architecture/plans/governed-self-improvement-roadmap.md) \u2014 executable plan for detect\u2192draft\u2192verify\u2192approve\u2192promote self-improvement with tests.",
+      "evidence": "approve, architecture, detect, draft, executable, governed, plan, plans",
+      "line": 14,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [Test Resource Governance Sprint](architecture/plans/test-resource-governance-sprint.md) \u2014 resource policy manifest and staged enforcement plan for safe local/CI/headless test execution.",
+      "evidence": "architecture, enforcement, execution, governance, headless, local, manifest, plan",
+      "line": 16,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [Competitive Reassessment: OpenClaw and Hermes Agent](business/competitive-reassessment-openclaw-hermes-2026-04.md) \u2014 current evidence-based comparison of self-improvement, memory, skills, deployment, and governance ga",
+      "evidence": "business, comparison, competitive, competitive-reassessment-openclaw-hermes-2026-04, current, deployment, gaps, governance",
+      "line": 18,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [Local Connected Systems Validation](manual-tests/local-connected-systems-validation.md) \u2014 proof path for dependency readiness, automatic install boundaries, MCP wiring, optional services, and persistent test summaries",
+      "evidence": "automatic, boundaries, connected, dependency, install, local, local-connected-systems-validation, manual-tests",
+      "line": 21,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [Harness Transparency Status](architecture/harness-transparency-status.md) \u2014 honest matrix of what is automatic today across Claude Code, Codex, and consumer projects, and what remains in ADR-064 surfaces",
+      "evidence": "across, adr-064, architecture, automatic, claude, code, codex, consumer",
+      "line": 34,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [Capability-Centric Runtime Enforcement](architecture/capability-centric-runtime-enforcement.md) \u2014 how dispatch, skills, gateways, and metrics choose execution intent before vendors",
+      "evidence": "architecture, before, capability-centric, choose, dispatch, enforcement, execution, gateways",
+      "line": 39,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [Path Portability and Privacy](architecture/path-portability-and-privacy.md) \u2014 policy and scanner for blocking developer-home absolute paths in docs, code, scripts, skills, rules, and tests",
+      "evidence": "absolute, architecture, blocking, code, developer-home, docs, path, path-portability-and-privacy",
+      "line": 41,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [Documentation Duplicate Audit](reports/docs-duplicate-latest.md) \u2014 latest duplicate-documentation baseline and prevention report",
+      "evidence": "audit, baseline, docs-duplicate-latest, documentation, duplicate, latest, prevention, report",
+      "line": 61,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "See [Product Zones](product-zones.md) and [manifests/product-zones.yaml](../manifests/product-zones.yaml) for the enforceable taxonomy.",
+      "evidence": "enforceable, manifests, product, product-zones, taxonomy, yaml, zones",
+      "line": 74,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Each layer builds on the ones below it. The bottom layers (Tools, Memory) are already operational in dev-time. The upper layers (Governance, Organization) represent the production target.",
+      "evidence": "already, below, bottom, builds, each, governance, layer, layers",
+      "line": 123,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Manager Agents** sit between the organization and operational agents \u2014 they enforce governance and evaluate performance",
+      "evidence": "between, enforce, evaluate, governance, manager, operational, organization, performance",
+      "line": 324,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The self-improvement loop is a closed feedback cycle where every agent execution produces data that improves future executions:",
+      "evidence": "closed, cycle, data, every, execution, executions, feedback, future",
+      "line": 353,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Skills system with auto-detection, auto-improvement, and 13+ skills",
+      "evidence": "auto-detection, skills, system",
+      "line": 512,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- 41 hooks: stack-detector, session-resume, block-prod-urls, error-pattern-detector, agent-prelaunch, auto-test-on-edit, skill-feedback-tracker, skill-metrics-tracker, error-learning, agent-checkpoint, auto-repair-dispat",
+      "evidence": "agent-checkpoint, agent-prelaunch, auto-repair-dispatcher, block-prod-urls, conversation-capture, error-learning, error-pattern-detector, hooks",
+      "line": 513,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- 44 rules: constitutional-gates, control-manifest, license-policy, skill-adaptation, skill-auto-loader, skill-registry, model-routing, error-learning, fault-tolerance, agent-kpis, services-config, auto-repair, metrics-c",
+      "evidence": "agent-kpis, auto-repair, constitutional-gates, error-learning, fault-tolerance, license-policy, model-routing, more",
+      "line": 514,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Self-improvement loop: error learning -> pattern detection -> skill updates -> model optimization -> KPI measurement",
+      "evidence": "detection, error, learning, loop, measurement, model, optimization, pattern",
+      "line": 516,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Fault tolerance: task registration, checkpointing, automatic recovery",
+      "evidence": "automatic, fault, recovery, registration, task, tolerance",
+      "line": 517,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Agent identity (Phase 1 rules + 6-layer stack designed \u2014 see [identity-stack.md](identity-stack.md))",
+      "evidence": "designed, identity, layer, phase, rules, stack",
+      "line": 530,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Target architecture for production-grade autonomous agent infrastructure",
+      "evidence": "architecture, autonomous, infrastructure, target",
+      "line": 545,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Self-improving organization (retrospective engine proposes and applies org changes)",
+      "evidence": "applies, changes, engine, organization, proposes, retrospective",
+      "line": 551,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocked-tools.md) and [Component Sources](component-sources.md) for license decisions and source tracking.",
+      "evidence": "agpl, blocked, blocked-tools, component, components, decisions, elv2, license",
+      "line": 571,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [Blocked Tools](blocked-tools.md) \u2014 SaaS safety verdicts and blocked licenses",
+      "evidence": "blocked, blocked-tools, licenses, saas, safety, tools, verdicts",
+      "line": 580,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/README.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "5. **Automatic skill generation**: Complex solutions were converted into reusable skills",
+      "evidence": "automatic, complex, converted, generation, reusable, skill, skills, solutions",
+      "line": 121,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/case-study.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "6. **Constitutional gates**: Quality was enforced automatically (no manual review needed)",
+      "evidence": "automatically, constitutional, enforced, gates, manual, needed, quality, review",
+      "line": 122,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/case-study.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Hermes Agent** is positioning around native self-improvement: experience capture, skill creation/update, persistent user memory, messaging gateway, and portable execution surfaces.",
+      "evidence": "around, capture, creation, execution, experience, gateway, hermes, memory",
+      "line": 12,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "> Cognitive OS must make self-improvement and memory feel native while keeping the governance, verification, and portability discipline that those tools do not make central.",
+      "evidence": "central, discipline, governance, keeping, make, memory, must, native",
+      "line": 17,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The user supplied a video transcript that claims OpenClaw is stronger for production/community/workflows, while Hermes wins on native self-improvement. Because those are current-market claims, this reassessment uses exte",
+      "evidence": "because, claims, community, external, hermes, native, openclaw, possible",
+      "line": 21,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- self-improvement is a first-class product promise;",
+      "evidence": "first-class, product, promise, self-improvement",
+      "line": 65,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "4. Require approval before promotion unless the project explicitly opts into auto-promote.",
+      "evidence": "approval, auto-promote, before, explicitly, opts, project, promotion, require",
+      "line": 101,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "This is the safe version of Hermes-style self-improvement: native, but governed.",
+      "evidence": "governed, native, safe, self-improvement, version",
+      "line": 104,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Hermes self-improvement blog: <https://hermes-agent.ai/blog/self-improving-ai-guide>",
+      "evidence": "hermes, hermes-agent, https, self-improvement",
+      "line": 190,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- ClawHub self-improvement example: <https://clawhub.ai/skills/self-improver>",
+      "evidence": "clawhub, example, https, self-improvement, skills",
+      "line": 191,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "5. How automatic is the system in practice, without hidden manual rituals?",
+      "evidence": "automatic, hidden, manual, practice, system, without",
+      "line": 17,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Can failures explain what blocked and how to fix it?",
+      "evidence": "blocked, explain, failures, what",
+      "line": 145,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Define final severity taxonomy for gaps: blocker, high, medium, low.",
+      "evidence": "blocker, define, final, gaps, high, medium, severity, taxonomy",
+      "line": 276,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Identify rules with enforcement hooks or tests.",
+      "evidence": "enforcement, hooks, identify, rules, tests",
+      "line": 309,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Verify which memory writes happen automatically versus manually.",
+      "evidence": "automatically, happen, manually, memory, verify, versus, which, writes",
+      "line": 331,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Identify profile drift between default, standard, full, and self-hosting.",
+      "evidence": "between, default, drift, full, identify, profile, self-hosting, standard",
+      "line": 356,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Identify quality gates that block real failures versus advisory-only gates.",
+      "evidence": "advisory-only, block, failures, gates, identify, quality, real, versus",
+      "line": 377,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The weekly primitive-gap workflow now enforces this at family level by comparing each snapshot with the previous tracked baseline. It fails on regressions such as:",
+      "evidence": "baseline, comparing, each, enforces, fails, family, level, previous",
+      "line": 417,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "This keeps current known debt visible while preventing the SO from growing new unverified surface by default.",
+      "evidence": "current, debt, default, growing, keeps, known, preventing, surface",
+      "line": 426,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Add issue/PR creation for new blocker/high regressions.",
+      "evidence": "blocker, creation, high, issue, regressions",
+      "line": 437,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Add automated near-duplicate Markdown scan.",
+      "evidence": "automated, markdown, near-duplicate, scan",
+      "line": 444,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Confirm commit provenance trailers were not previously enforced.",
+      "evidence": "commit, confirm, enforced, previously, provenance, trailers, were",
+      "line": 452,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/conversation-reality-audit-2026-04-30.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Production and maintenance phases should favor safety and human review over",
+      "evidence": "favor, human, maintenance, over, phases, production, review, safety",
+      "line": 98,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/developer-confidence.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- advanced auto-repair narratives that exceed proven behavior",
+      "evidence": "advanced, auto-repair, behavior, exceed, proven",
+      "line": 320,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/durable-product-master-plan.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- product-facing claims map to automated tests",
+      "evidence": "automated, claims, product-facing, tests",
+      "line": 354,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/durable-product-master-plan.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- self-hosting initialization and core hooks have explicit budgets",
+      "evidence": "budgets, core, explicit, have, hooks, initialization, self-hosting",
+      "line": 359,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/durable-product-master-plan.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "This prevents false progress where new work lands on top of known defects that",
+      "evidence": "defects, false, known, lands, prevents, progress, where, work",
+      "line": 73,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/execution-discipline.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Lowest-trust layer. Useful, but never the only source of truth.",
+      "evidence": "layer, never, only, source, truth, useful",
+      "line": 89,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/execution-discipline.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **No quality control**: Nothing prevents an agent from introducing bugs, skipping tests, or violating the architecture.",
+      "evidence": "architecture, bugs, control, nothing, prevents, quality, skipping, tests",
+      "line": 12,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/executive-summary.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The result: developers spend 30-50% of their AI time re-establishing context, verifying quality, and fixing errors \u2014 work that the AI should be handling.",
+      "evidence": "context, developers, errors, fixing, handling, quality, result, should",
+      "line": 17,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/executive-summary.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "3. **Self-improving** \u2014 A feedback loop that runs continuously: errors detected, patterns learned, skills improved, models optimized, fewer errors.",
+      "evidence": "continuously, detected, errors, feedback, fewer, improved, learned, loop",
+      "line": 70,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/executive-summary.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Automatic save triggers fire after decisions, bug fixes, discoveries, and conventions",
+      "evidence": "after, automatic, conventions, decisions, discoveries, fire, fixes, save",
+      "line": 34,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Session summaries are automatically saved before each session close and context compaction",
+      "evidence": "automatically, before, close, compaction, context, each, saved, session",
+      "line": 36,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- OpenSpec alternative (4 skills for lighter change tracking)",
+      "evidence": "alternative, change, lighter, openspec, skills, tracking",
+      "line": 72,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Quality gates enforced by infrastructure, not by hope.",
+      "evidence": "enforced, gates, infrastructure, quality",
+      "line": 80,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "1. Mobile never talks directly to microservices (always through the BFF)",
+      "evidence": "always, directly, microservices, mobile, never, through",
+      "line": 83,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "4. Secrets never in code (always environment variables)",
+      "evidence": "always, code, environment, never, secrets, variables",
+      "line": 86,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Additional enforcement proof paths:**",
+      "evidence": "additional, enforcement, paths, proof",
+      "line": 91,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- License policy: automatically blocks AGPL, SSPL, BSL, ELv2 dependencies",
+      "evidence": "agpl, automatically, blocks, dependencies, elv2, license, policy, sspl",
+      "line": 93,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- 21 hooks that fire at runtime (SessionStart, PreToolUse, PostToolUse)",
+      "evidence": "fire, hooks, posttooluse, pretooluse, runtime, sessionstart",
+      "line": 94,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Configurable coverage thresholds per industry (80% fintech, 90% healthcare, 50% startup MVP)",
+      "evidence": "configurable, coverage, fintech, industry, startup, thresholds",
+      "line": 95,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Error learning**: Automatic capture of test, lint, and build failures",
+      "evidence": "automatic, build, capture, error, failures, learning, lint, test",
+      "line": 132,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Automatic skill generation**: Complex solutions are converted into reusable skills",
+      "evidence": "automatic, complex, converted, generation, reusable, skill, skills, solutions",
+      "line": 135,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Agent KPIs**: 20 metrics across 5 OKRs (quality, efficiency, self-improvement, velocity, security)",
+      "evidence": "across, efficiency, kpis, metrics, okrs, quality, security, self-improvement",
+      "line": 137,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Production URL blocking**: Hook that prevents accidental interactions with production systems",
+      "evidence": "accidental, blocking, hook, interactions, prevents, production, systems",
+      "line": 172,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **License compliance**: Automatic blocking of incompatible dependencies",
+      "evidence": "automatic, blocking, compliance, dependencies, incompatible, license",
+      "line": 176,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Dangerous command blocking**: Prevents rm -rf, force push, DROP TABLE, docker push to production",
+      "evidence": "blocking, command, dangerous, docker, drop, force, prevents, production",
+      "line": 177,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Identity stack (6 layers, designed):**",
+      "evidence": "designed, identity, layers, stack",
+      "line": 179,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Model routing**: Automatic selection of the right model per task",
+      "evidence": "automatic, model, right, routing, selection, task",
+      "line": 200,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "1. **Always loaded**: Rules (19) \u2014 active constraints",
+      "evidence": "active, always, constraints, loaded, rules",
+      "line": 218,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "3. **Auto-detected**: Stack-specific skills generated based on detected technologies",
+      "evidence": "auto-detected, based, detected, generated, skills, technologies",
+      "line": 220,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Safe actions may be automated only when an explicit project policy allows them",
+      "evidence": "actions, allows, automated, explicit, only, policy, project, safe",
+      "line": 249,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/features.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Kubernetes didn't invent containers. It made them **manageable at scale**. Cognitive OS doesn't invent AI agents. It makes them **manageable, composable, and self-improving at scale**.",
+      "evidence": "containers, didn, doesn, invent, kubernetes, made, makes, scale",
+      "line": 5,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Auto-reconfiguration based on performance metrics",
+      "evidence": "based, metrics, performance",
+      "line": 325,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Self-improving with error learning and skill adaptation",
+      "evidence": "adaptation, error, learning, skill",
+      "line": 326,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Skills system \u2014 versioned, discoverable, auto-improving",
+      "evidence": "discoverable, skills, system, versioned",
+      "line": 438,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] SRE agent \u2014 auto-repair with 4-tier escalation",
+      "evidence": "auto-repair, escalation, tier",
+      "line": 442,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Quality certification (marketplace skills pass automated tests)",
+      "evidence": "automated, pass, quality, skills, tests",
+      "line": 488,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Self-hosted deployment (Helm chart for K8s \u2014 how fitting)",
+      "evidence": "chart, deployment, helm, self-hosted",
+      "line": 497,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] SLA guarantees (99.9% uptime for control plane)",
+      "evidence": "control, guarantees, plane",
+      "line": 502,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Kubernetes became the standard because it solved a universal problem with an opinionated but extensible architecture. Every company that runs containers runs Kubernetes (or something built on it).",
+      "evidence": "architecture, became, because, built, containers, every, extensible, kubernetes",
+      "line": 511,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Kubernetes has 110,000+ GitHub stars, 3,500+ contributors, and runs in 96% of organizations. It took 8 years to get there.",
+      "evidence": "contributors, github, kubernetes, runs, stars, there, took",
+      "line": 520,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Cognitive OS starts with a stronger foundation: a battle-tested implementation on a real fintech platform, a clear commercial model from day one, and a market that's growing 10x faster than containers ever did.",
+      "evidence": "clear, commercial, containers, ever, faster, fintech, foundation, growing",
+      "line": 522,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/kubernetes-for-agents.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Update and auto-update paths preserve the active harness/settings driver instead of silently assuming Claude.",
+      "evidence": "active, assuming, auto-update, claude, driver, harness, instead, paths",
+      "line": 56,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/master-plan-checklist.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Git-triggered `post-merge` and `pre-push` auto-update paths preserve Codex-first installations through install metadata, even when `.claude/` compatibility markers are present.",
+      "evidence": "auto-update, claude, codex-first, compatibility, even, git-triggered, install, installations",
+      "line": 57,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/master-plan-checklist.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Codex-first projects get automatic advisory detection for active driver, dependency manifest, and Engram/MCP host wiring without requiring users to know the deep verification command.",
+      "evidence": "active, advisory, automatic, codex-first, command, deep, dependency, detection",
+      "line": 85,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/master-plan-checklist.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Codex and Claude sessions now auto-load the portable memory lifecycle on",
+      "evidence": "auto-load, claude, codex, lifecycle, memory, portable, sessions",
+      "line": 87,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/master-plan-checklist.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Competitive reassessment against OpenClaw and Hermes Agent is documented in [Competitive Reassessment: OpenClaw and Hermes Agent](competitive-reassessment-openclaw-hermes-2026-04.md), including native self-improvem",
+      "evidence": "against, bootstrap, competitive, competitive-reassessment-openclaw-hermes-2026-04, deployment, documented, gaps, hermes",
+      "line": 145,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/master-plan-checklist.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../architecture/plans/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice is covered by unit",
+      "evidence": "architecture, behavior, covered, detect, documented, draft, execution, first",
+      "line": 147,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/master-plan-checklist.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "That requires enforcement in code, automation, onboarding, and product",
+      "evidence": "automation, code, enforcement, onboarding, product, requires",
+      "line": 14,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/master-plan-execution-requirements.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The next step is to make that boundary enforceable across more of the runtime.",
+      "evidence": "across, boundary, enforceable, make, more, next, runtime, step",
+      "line": 59,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/master-plan-execution-requirements.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "4. Optimize self-install and onboarding flows.",
+      "evidence": "flows, onboarding, optimize, self-install",
+      "line": 182,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/master-plan-execution-requirements.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "> Extracting a universal Agent Operating System from a real-world platform.",
+      "evidence": "extracting, operating, platform, real-world, system, universal",
+      "line": 3,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/open-source-design.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Step 1: detect-stack.sh** (already exists, nearly production-ready)",
+      "evidence": "already, detect-stack, exists, nearly, step",
+      "line": 313,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/open-source-design.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Examples: memory protocol, fault tolerance, dangerous command blocking, debugging methodology.",
+      "evidence": "blocking, command, dangerous, debugging, examples, fault, memory, protocol",
+      "line": 529,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/open-source-design.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Decision**: Plugins can only depend on core, never on other plugins. If two domains share logic, that logic should be promoted to core.",
+      "evidence": "core, decision, depend, domains, logic, never, only, other",
+      "line": 614,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/open-source-design.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Consequences**: Files can be customized per-project after installation. Updates require explicit `cognitive-os update` command. Projects are self-contained even if `~/.cognitive-os/` is removed.",
+      "evidence": "after, cognitive-os, command, consequences, even, explicit, files, installation",
+      "line": 626,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/open-source-design.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Context**: Project configuration (service list, production URLs, etc.) could live in environment variables, a JSON file, or a YAML file.",
+      "evidence": "configuration, context, could, environment, file, json, list, live",
+      "line": 632,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/open-source-design.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Batch alerts to prevent notification flooding during high-activity periods.",
+      "evidence": "alerts, batch, during, flooding, notification, periods, prevent",
+      "line": 130,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Add bypass for CRITICAL severity (never debounced)",
+      "evidence": "bypass, critical, never, severity",
+      "line": 137,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Success criteria:** During simulated high-alert scenarios (100+ alerts in 1 minute), output is batched into manageable summaries. Critical alerts always pass through immediately.",
+      "evidence": "alerts, always, batched, criteria, critical, during, immediately, minute",
+      "line": 140,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Add completion marker (flag file or engram entry to prevent re-run)",
+      "evidence": "completion, engram, entry, file, flag, marker, prevent, re-run",
+      "line": 196,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Success criteria:** New workspace initializes automatically on first agent run, steps validated, never re-runs after completion.",
+      "evidence": "after, automatically, completion, criteria, first, initializes, never, re-runs",
+      "line": 200,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Implement envelope builder (auto-wraps outgoing messages)",
+      "evidence": "builder, envelope, implement, messages, outgoing",
+      "line": 227,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Add failure handling (warn vs block depending on check criticality)",
+      "evidence": "block, check, criticality, depending, failure, handling, warn",
+      "line": 246,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Success criteria:** Every agent restart validates environment health, critical failures prevent operation, warnings are logged.",
+      "evidence": "criteria, critical, environment, every, failures, health, logged, operation",
+      "line": 249,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Success criteria:** Agent configuration portable between environments, conflicts handled gracefully, dry-run prevents accidents.",
+      "evidence": "between, configuration, conflicts, criteria, dry-run, environments, gracefully, handled",
+      "line": 307,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Implement test generators from API schemas (auto-create basic tests)",
+      "evidence": "auto-create, basic, implement, schemas, test, tests",
+      "line": 319,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] Add coverage enforcement (minimum thresholds per agentic primitive)",
+      "evidence": "agentic, coverage, enforcement, minimum, primitive, thresholds",
+      "line": 320,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Success criteria:** All agentic primitives have tests, coverage meets thresholds, CI blocks merges below threshold.",
+      "evidence": "agentic, below, blocks, coverage, criteria, have, meets, merges",
+      "line": 324,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [ ] **Release Workflow** (Pattern 19) \u2014 Automated releases. 4-5 days.",
+      "evidence": "automated, days, pattern, release, releases, workflow",
+      "line": 337,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-implementation-roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Fintech relevance:** CRITICAL \u2014 Portfolio monitoring (threshold alerts when positions move), settlement window tracking, regulatory deadline enforcement, balance reconciliation triggers.",
+      "evidence": "alerts, balance, critical, deadline, enforcement, fintech, monitoring, move",
+      "line": 15,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**What it does:** Batches rapid-fire alerts into consolidated messages, caps queue depth to prevent flooding, and applies drop strategies (oldest-first, lowest-priority-first) when the queue overflows. Configurable per c",
+      "evidence": "alerts, applies, batch, batches, caps, channel, configurable, consolidated",
+      "line": 81,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**What it does:** Event-driven hook system with 10+ event types: `command:new`, `session:start`, `session:compact`, `session:end`, `agent:bootstrap`, `message:send`, `message:receive`, `error:*`, `tool:before`, `tool:aft",
+      "evidence": "after, async, before, blocking, bootstrap, command, compact, does",
+      "line": 95,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Fintech relevance:** CRITICAL \u2014 Compliance audit trail (log every command and tool use), security monitoring (track auth events), cost tracking (measure token usage per operation), error recovery (auto-retry on transie",
+      "evidence": "audit, auth, auto-retry, cleanup, command, compact, compliance, cost",
+      "line": 99,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**What it does:** A first-run ritual file that executes once when the agent initializes in a new workspace for the first time. Contains setup instructions, environment checks, and initialization steps. Self-deletes or ma",
+      "evidence": "after, checks, completed, contains, does, environment, executes, execution",
+      "line": 109,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Fintech relevance:** MEDIUM \u2014 Automated onboarding for new developers (verify toolchain, create local DBs, seed test data, configure mock flags), first-time compliance setup (initialize audit logs, verify encryption ke",
+      "evidence": "audit, automated, compliance, configure, create, data, developers, encryption",
+      "line": 113,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Fintech relevance:** LOW \u2014 Could restrict dangerous tools in production (no direct DB access), enable mock tools in dev, configure tool-specific rate limits.",
+      "evidence": "access, configure, could, dangerous, direct, enable, fintech, limits",
+      "line": 141,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Dependencies:** Hooks lifecycle (pattern 7) for automatic envelope wrapping.",
+      "evidence": "automatic, dependencies, envelope, hooks, lifecycle, pattern, wrapping",
+      "line": 187,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**What it does:** Monitors credential expiration dates across all integrated services, sends proactive alerts before credentials expire, and can trigger automated rotation workflows. Tracks OAuth tokens, API keys, certif",
+      "evidence": "account, across, alerts, automated, before, certificates, credential, credentials",
+      "line": 207,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Fintech relevance:** HIGH \u2014 Auth provider token rotation monitoring, payment provider API key expiration, SSL certificate expiration, cloud credential rotation, prevents service outages from expired credentials.",
+      "evidence": "auth, certificate, cloud, credential, credentials, expiration, expired, fintech",
+      "line": 211,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**What it does:** Comprehensive test infrastructure using Vitest with V8 coverage, supporting live tests (run against real services), mock tests (isolated), and snapshot tests. Includes test generators that create tests ",
+      "evidence": "against, comprehensive, coverage, create, does, enforcement, includes, infrastructure",
+      "line": 249,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**What it does:** Automated release pipeline with changelog generation, GitHub Security Advisory (GHSA) integration, version coordination across multiple packages, and release notes. Supports major/minor/patch semantics ",
+      "evidence": "across, advisory, automated, breaking, change, changelog, coordination, detection",
+      "line": 263,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Fintech relevance:** MEDIUM \u2014 Audit trail for all releases (compliance requirement), coordinated version bumps across microservices, security advisory tracking for dependencies, automated changelog for stakeholders.",
+      "evidence": "across, advisory, audit, automated, bumps, changelog, compliance, dependencies",
+      "line": 267,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**What it does:** Delegates coding tasks to background agent sessions running in PTY (pseudo-terminal) environments. The orchestrator agent can spawn worker agents, assign tasks, monitor progress, and collect results \u2014 a",
+      "evidence": "assign, background, blocking, coding, collect, delegates, does, environments",
+      "line": 277,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/openclaw-remaining-patterns.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- 14 hooks, 17 rules, 25+ skills, 16 agents",
+      "evidence": "hooks, rules, skills",
+      "line": 8,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/portability-plan.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- AGENTS.md as universal standard (Linux Foundation AAIF)",
+      "evidence": "foundation, linux, standard, universal",
+      "line": 28,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/portability-plan.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Our 17 rules in canonical markdown, auto-generated per-tool configs",
+      "evidence": "auto-generated, canonical, configs, markdown, per-tool, rules",
+      "line": 30,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/portability-plan.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Problem**: None \u2014 SKILL.md is already the universal standard.",
+      "evidence": "already, none, problem, skill, standard, universal",
+      "line": 39,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/portability-plan.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Problem**: MCP config location differs per tool, but the protocol is universal.",
+      "evidence": "config, differs, location, problem, protocol, tool, universal",
+      "line": 48,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/portability-plan.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Why AGENTS.md?** Linux Foundation AAIF is pushing it as the universal standard. Multiple tools already support it.",
+      "evidence": "already, foundation, linux, multiple, pushing, standard, support, tools",
+      "line": 166,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/portability-plan.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Cognitive OS brings production-grade agent operations to teams without requiring expert-level agent engineering.**",
+      "evidence": "engineering, operations, requiring, teams, without",
+      "line": 43,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/product-messaging.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Self-improvement feedback loop (error learning -> skill adaptation -> KPI measurement)",
+      "evidence": "adaptation, error, feedback, learning, loop, measurement, self-improvement, skill",
+      "line": 27,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Quality enforcement via hooks and constitutional gates",
+      "evidence": "constitutional, enforcement, gates, hooks, quality",
+      "line": 28,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Goal:** Extract the universal Cognitive OS from the original project's specific code and publish it.",
+      "evidence": "code, extract, goal, original, project, publish, specific, universal",
+      "line": 37,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Goal:** Enterprise readiness with self-hosted deployment, compliance, and support.",
+      "evidence": "compliance, deployment, enterprise, goal, readiness, self-hosted, support",
+      "line": 130,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Kubernetes Helm chart for production deployments",
+      "evidence": "chart, deployments, helm, kubernetes, production",
+      "line": 135,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- License compliance reports (dependency scanning with AGPL/SSPL blocking)",
+      "evidence": "agpl, blocking, compliance, dependency, license, reports, scanning, sspl",
+      "line": 144,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Dedicated Engram instances with data isolation guarantees",
+      "evidence": "data, dedicated, engram, guarantees, instances, isolation",
+      "line": 153,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/roadmap.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **No quality control**: The AI generates code without guardrails. It doesn't verify tests, doesn't respect architecture conventions, doesn't block dependencies with incompatible licenses. Quality depends on the develop",
+      "evidence": "architecture, block, code, control, conventions, dependencies, depends, developer",
+      "line": 12,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/value-proposition.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "2. **Guaranteed quality** \u2014 Immutable rules that prevent errors. Mandatory tests. Automatic blocking of dependencies with problematic licenses. Coverage thresholds configurable by industry.",
+      "evidence": "automatic, blocking, configurable, coverage, dependencies, errors, guaranteed, immutable",
+      "line": 37,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/value-proposition.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "4. **Self-improving** \u2014 Learns from its mistakes. Detects failure patterns, updates its procedures, and optimizes which AI model to use for each type of task. Each session is more efficient than the last.",
+      "evidence": "detects, each, efficient, failure, last, model, more, patterns",
+      "line": 41,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/value-proposition.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "5. **Enterprise security** \u2014 Sensitive data detection, dangerous action blocking, complete audit trail. Agents cannot access production, leak secrets, or execute destructive commands.",
+      "evidence": "access, action, audit, blocking, cannot, commands, complete, dangerous",
+      "line": 43,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/value-proposition.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Regulated enterprises** (fintech, healthcare) that need audit trails, automated compliance, and enterprise security from day one.",
+      "evidence": "audit, automated, compliance, enterprise, enterprises, fintech, need, security",
+      "line": 67,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/value-proposition.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Cognitive OS is the first system to combine coding agent capabilities, MAPE-K self-healing, persistent cross-session memory, self-improving metrics, quality governance (44 rules, 41 hooks), and autonomous tool discovery ",
+      "evidence": "autonomous, capabilities, coding, combine, cross-session, discovery, first, governance",
+      "line": 74,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/business/value-proposition.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "2. Manually deduplicate SDD/engram prose blocks in `~/.claude/CLAUDE.md` to reach \u2264 1,200 tokens (per ADR-027a \u00a72). Sub-agents load rule files independently, so inline restatements are safe to remove.",
+      "evidence": "adr-027a, blocks, claude, deduplicate, engram, files, independently, inline",
+      "line": 359,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-027.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- [x] Update `.cognitive-os/work-queue.json`: mark `ws9-test-errors` as `\"blocks\": \"ADR-027/Phase-1\"` \u2014 ws9 already resolved per queue.json:122",
+      "evidence": "adr-027, already, blocks, cognitive-os, json, mark, queue, resolved",
+      "line": 190,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-027a.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "> **Note (2026-04-18)**: Baseline claim about `hook-health.jsonl` ~40% unparseable rows refuted by metrics census \u2014 file is currently clean. See ADR-028a \u00a75.1. The MetricEvent schema migration remains valuable; only the ",
+      "evidence": "about, adr-028a, baseline, changed, claim, clean, currently, example",
+      "line": 95,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-028.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Impact: auto-repair system accumulates no history; error-pattern-detector never fires; singularity never triggers; cognitive-os-health shows empty data silently.",
+      "evidence": "accumulates, auto-repair, cognitive-os-health, data, empty, error-pattern-detector, fires, history",
+      "line": 238,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-028a.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Root cause hypothesis: `COGNITIVE_OS_SESSION_ID` is unset when the writing hooks fire, so they write to session-scoped `$SESSION_DIR/metrics/` which is never created, or `session-cleanup.sh` exits at line 23 without merg",
+      "evidence": "because, cause, cognitive_os_session_id, created, directory, exits, fire, hooks",
+      "line": 240,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-028a.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Scope change: Add D1.A.0 as a PREREQUISITE to D1.A. Before writing `lib/metric_event.py` or extending rotation, diagnose and fix the write path for these 7 files. Without this, the new MetricEvent schema will also never ",
+      "evidence": "also, before, change, diagnose, disk, extending, files, land",
+      "line": 242,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-028a.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Wire two opt-in auto-trigger mechanisms. Each is advisory-only: the skill is **suggested** to the orchestrator, never forced. Neither replaces the manual invocation path.",
+      "evidence": "advisory-only, auto-trigger, each, forced, invocation, manual, mechanisms, neither",
+      "line": 15,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-030.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- `hooks/session-init.sh` (extend existing nudge block): if `commit-nudge` exists AND any commit in it is from the current day, append to the SessionStart advisory:",
+      "evidence": "advisory, append, block, commit, commit-nudge, current, existing, exists",
+      "line": 49,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-030.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Q2 is NOT a direct auto-trigger** (the orchestrator can't invoke a skill mid-commit). It is a *delayed* trigger: the banner at the next session start nudges the orchestrator / user to archive. This is the arch-limit: g",
+      "evidence": "archive, auto-trigger, banner, call, cannot, claude, code, context",
+      "line": 56,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-030.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The part that is **not unit-testable** is whether the orchestrator actually honours the auto-trigger \u2014 that is a runtime behaviour only observable in a real Claude Code session.",
+      "evidence": "actually, auto-trigger, behaviour, claude, code, honours, observable, only",
+      "line": 72,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-030.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **R-A (over-trigger)**: regex in Q1 fires on false positives (e.g. \"cerremos **este file**\"). Mitigation: require whole-word match + negative lookahead for common false-positives. Measure false-positive rate over 2 wee",
+      "evidence": "cerremos, common, este, false, false-positive, false-positives, file, fires",
+      "line": 138,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-030.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **R-C (orchestrator disobedience)**: orchestrator ignores `AUTO-TRIGGER:` advisory. Fails open \u2014 worst case the skill just isn't invoked, same as today. Detected via integration test above.",
+      "evidence": "above, advisory, auto-trigger, case, detected, fails, ignores, integration",
+      "line": 140,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-030.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "3. **Concrete failure observed**: in the 2026-04-20 session the orchestrator's prompt said \"register in `.claude/settings.json`\" while the trap says \"never edit `settings.json` directly \u2014 use `scripts/apply-efficiency-pr",
+      "evidence": "appended, apply-efficiency-profile, both, chose, claude, concrete, description, directly",
+      "line": 15,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Zero-risk to add**: adding a warning section to a prompt cannot break a working task; it can only prevent broken ones.",
+      "evidence": "adding, break, broken, cannot, ones, only, prevent, prompt",
+      "line": 36,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Requires the orchestrator to consciously route draft prompts through the script. It is a behavioural mandate (`rules/orchestrator-prompt-compose.md`), not an automated gate. Violation is possible if the orchestrator sk",
+      "evidence": "automated, behavioural, draft, gate, mandate, orchestrator, orchestrator-prompt-compose, possible",
+      "line": 47,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Trap list is static (read from `templates/project-gotchas.md`). Adding a new trap requires updating that file; the script picks it up automatically on the next run, but there is no real-time sync.",
+      "evidence": "adding, automatically, file, list, next, picks, project-gotchas, read",
+      "line": 48,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Testability**: canonical events are pure dataclasses; adapters are unit-testable without running a harness. The ABC enforces the contract at import time.",
+      "evidence": "adapters, canonical, contract, dataclasses, enforces, events, harness, import",
+      "line": 134,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-033-harness-agnostic-event-capture.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Migration guarantee**: at no point is there a gap. Until v0.15.0, the CC adapter writes both streams. Consumers that upgrade to canonical events can do so at their own pace.",
+      "evidence": "adapter, both, canonical, consumers, events, guarantee, migration, pace",
+      "line": 171,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-033-harness-agnostic-event-capture.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "What is missing is the **sprint** as a first-class artifact: a declarative YAML that names a batch of tasks, a durable manifest that records their state, canonical events that describe sprint lifecycle, and a CLI that dr",
+      "evidence": "artifact, batch, canonical, declarative, describe, drives, durable, events",
+      "line": 15,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-036-sprint-orchestration-primitives.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "All events subclass `CanonicalEvent`, auto-register under `CanonicalEvent._registry`, and round-trip via `to_dict` / `from_dict`. They MUST be importable via `lib.harness_adapter.base` after `sprint_orchestrator` is impo",
+      "evidence": "after, auto-register, base, canonicalevent, events, from_dict, harness_adapter, importable",
+      "line": 94,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-036-sprint-orchestration-primitives.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "3. **Consolidated commits \u2014 `lib.sprint_commit`**: implement `squash` strategy with safe rollback, capture base ref at `SprintStarted`, enforce file-scope guardrails.",
+      "evidence": "base, capture, commits, consolidated, enforce, guardrails, implement, rollback",
+      "line": 206,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-036-sprint-orchestration-primitives.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Status**: Phase 2 RESOLVED (frontmatter migration + catalog generator) \u2014 Phase 2 slash commands BLOCKED (sandbox write-permission on `.claude/commands/`)",
+      "evidence": "blocked, catalog, claude, commands, frontmatter, generator, migration, phase",
+      "line": 3,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Related**: ADR-043 (rule classification \u2014 Agent B, paired work), ADR-032 (orchestrator-prompt-compose), ADR-037 (self-knowledge-base)",
+      "evidence": "adr-037, classification, orchestrator-prompt-compose, paired, related, rule, work",
+      "line": 6,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- If the harness uses the frontmatter `description` field for the listing, we shorten that field. 80 chars \u00d7 126 skills \u2248 10KB \u2248 2,500 tokens (vs. current ~3,500). Save: ~1,000 tokens.",
+      "evidence": "chars, current, description, field, frontmatter, harness, listing, save",
+      "line": 79,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Newer models that benefit from rich context may see a small quality regression on first turn. Mitigated by keeping pointers visible \u2014 model can always pull the text.",
+      "evidence": "always, benefit, context, first, keeping, mitigated, model, models",
+      "line": 107,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Conservative savings**: ~3,375 tokens (~41% non-rule reduction). Stacks multiplicatively with Agent B's rule slimming.",
+      "evidence": "conservative, reduction, rule, savings, stacks, tokens",
+      "line": 123,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "2. **Hook coordination**: `session-init.sh` and `self-knowledge-refresh.sh` audit pass \u2014 strip narrative status output; emit only when something actionable (new error pattern, stale index).",
+      "evidence": "actionable, audit, coordination, emit, error, hook, index, narrative",
+      "line": 136,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Interaction with context-watchdog thresholds (50/70/85%) \u2014 slim startup pushes the 70% warning later, which is desirable.",
+      "evidence": "context-watchdog, interaction, later, pushes, slim, startup, thresholds, warning",
+      "line": 151,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- L2 frontmatter convention: added `summary_line` (\u226480 chars) to every SKILL.md whose `description` exceeds 80 chars. 85 skills migrated in one pass (+ 2 fixed skills that were previously missing `description` entirely: ",
+      "evidence": "added, chars, convention, description, entirely, errors, every, exceeds",
+      "line": 159,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Catalog generator (`scripts/generate_compact_catalog.py`) updated to prefer `summary_line` over `first_sentence(description)` when rendering the compact catalog. Output regenerated: `skills/CATALOG-COMPACT.md` 13,019 \u2192",
+      "evidence": "alone, catalog, catalog-compact, chars, compact, description, file, first_sentence",
+      "line": 160,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-044-context-payload-slimming.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- `run_bash` output now piped through `lib/smart_truncator.smart_truncate` (max_chars=5000) to prevent token-budget blowouts on large test/build dumps.",
+      "evidence": "build, dumps, large, max_chars, output, piped, prevent, run_bash",
+      "line": 60,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-051-qwen-agent-loop.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The asymptotic formula ensures confidence never reaches exactly 1.0 (no observation becomes \"perfectly certain\"), and converges toward ~0.98 after 20+ reinforcements.",
+      "evidence": "after, asymptotic, becomes, certain, confidence, converges, ensures, exactly",
+      "line": 88,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Reinforcement on access creates a self-reinforcing signal: observations the system actually uses become more visible over time.",
+      "evidence": "access, actually, become, creates, more, observations, over, reinforcement",
+      "line": 109,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Each search call through the wrapper incurs ~10ms additional overhead for trailer parsing, decay computation, and re-ranking. Acceptable for interactive use; may accumulate in high-frequency automated hooks.",
+      "evidence": "acceptable, accumulate, additional, automated, call, computation, decay, each",
+      "line": 115,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The original Phase 1 commit (d48dcb8) claimed `reinforce()` would return False in production \"until engram CLI exposes get/update\". This was incorrect. The engram daemon at port 7437 exposes `GET /observations/<id>`, `PA",
+      "evidence": "claimed, commit, daemon, engram, exposes, false, fully, functional",
+      "line": 209,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "A safety policy was ratified the same day after an accidental overwrite of observation #13283 during API discovery: see `rules/engram-api-safety.md`. Production daemon mutation is restricted to typed clients (`lib/engram",
+      "evidence": "accidental, ad-hoc, after, alternate, clients, curl, daemon, discovery",
+      "line": 211,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The implementation works end-to-end (89 tests passing: 75 unit + 14 e2e against a real sandboxed engram daemon). What follows is what does **not** work, what is **partial**, and what is **best-effort** \u2014 documented so fu",
+      "evidence": "against, best-effort, confidence, daemon, documented, does, end-to-end, engram",
+      "line": 247,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "4. **Graph walker reads SQLite directly.** The walker bypasses the HTTP API by opening `~/.engram/engram.db` in read-only mode. This couples the walker to engram's schema. If engram changes the `memory_relations` schema ",
+      "evidence": "bypasses, causes, change, changes, closed, column, corruption, directly",
+      "line": 257,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "7. **`reinforce()` requires the engram daemon to be running.** If `engram serve` (port 7437) is not up, `reinforce()` returns `False` silently. The hook logs to `.cognitive-os/metrics/lifecycle-reinforcement.jsonl` regar",
+      "evidence": "auto-start, cognitive-os, daemon, engram, failures, false, hook, jsonl",
+      "line": 265,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "These are not \"someday\" items. Each has a **trigger** (the observable signal that justifies the work), an **action** (concrete first step), and an **estimated cost**. None of them block the v0.20.0 release; all of them h",
+      "evidence": "action, block, concrete, cost, defensible, deferred, each, estimated",
+      "line": 283,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
+      "status": "mapped"
+    }
+  ]
+}
