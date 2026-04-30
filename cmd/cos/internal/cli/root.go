@@ -26,7 +26,7 @@ var rootCmd = &cobra.Command{
 	Short: "cos — Cognitive OS Package Manager",
 	Long: `cos — Cognitive OS Package Manager
 
-A package manager for AI agent components: skills, rules, hooks, agents, and templates.
+A package manager for agentic primitives: skills, rules, hooks, agents, and templates.
 
 Commands:
   new         Create a new project with COS pre-configured

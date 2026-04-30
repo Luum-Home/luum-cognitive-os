@@ -20,17 +20,17 @@ var (
 )
 
 var mapCmd = &cobra.Command{
-	Use:   "map [component]",
+	Use:   "map [primitive]",
 	Short: "Show the system knowledge graph",
-	Long: `Show dependency trees and relationships between Cognitive OS components.
+	Long: `Show dependency trees and relationships between Cognitive OS agentic primitives.
 
 Examples:
-  cos map trust-score          Show dependency tree for one component
+  cos map trust-score          Show dependency tree for one agentic primitive
   cos map --affected hooks/trust-score-validator.sh
                                Show what breaks if this file changes
   cos map --full               Full system summary
-  cos map --orphans            Show disconnected components
-  cos map --hotspots           Show most-connected components (risk)
+  cos map --orphans            Show disconnected agentic primitives
+  cos map --hotspots           Show most-connected agentic primitives (risk)
   cos map --json               Export as JSON to stdout`,
 	RunE: runMap,
 }
@@ -38,8 +38,8 @@ Examples:
 func init() {
 	mapCmd.Flags().StringVar(&mapAffected, "affected", "", "Show what breaks if this file changes")
 	mapCmd.Flags().BoolVar(&mapFull, "full", false, "Full system summary")
-	mapCmd.Flags().BoolVar(&mapOrphans, "orphans", false, "Show disconnected components")
-	mapCmd.Flags().BoolVar(&mapHotspots, "hotspots", false, "Show most-connected components (risk)")
+	mapCmd.Flags().BoolVar(&mapOrphans, "orphans", false, "Show disconnected agentic primitives")
+	mapCmd.Flags().BoolVar(&mapHotspots, "hotspots", false, "Show most-connected agentic primitives (risk)")
 	mapCmd.Flags().BoolVar(&mapJSON, "json", false, "Export as JSON")
 	rootCmd.AddCommand(mapCmd)
 }
@@ -83,13 +83,13 @@ func runMap(cmd *cobra.Command, args []string) error {
 		pyCommand = fmt.Sprintf(
 			"g = build_graph('%s'); affected = get_affected_components(g, '%s')\n"+
 				"if affected:\n"+
-				"    print(f'Affected components ({len(affected)}):')\n"+
+				"    print(f'Affected agentic primitives ({len(affected)}):')\n"+
 				"    for a in affected:\n"+
 				"        comp = g.components.get(a)\n"+
 				"        layer = comp.layer.name if comp else '?'\n"+
 				"        print(f'  - {a} ({layer})')\n"+
 				"else:\n"+
-				"    print(f'No components found matching \\'%s\\'')",
+				"    print(f'No agentic primitives found matching \\'%s\\'')",
 			projectRoot, mapAffected, mapAffected,
 		)
 
@@ -103,11 +103,11 @@ func runMap(cmd *cobra.Command, args []string) error {
 		pyCommand = fmt.Sprintf(
 			"g = build_graph('%s'); orphans = find_orphans(g)\n"+
 				"if orphans:\n"+
-				"    print(f'Orphan components ({len(orphans)}):')\n"+
+				"    print(f'Orphan agentic primitives ({len(orphans)}):')\n"+
 				"    for o in orphans:\n"+
 				"        print(f'  - {o.name} ({o.layer.name}) @ {o.path}')\n"+
 				"else:\n"+
-				"    print('No orphan components found.')",
+				"    print('No orphan agentic primitives found.')",
 			projectRoot,
 		)
 
@@ -115,11 +115,11 @@ func runMap(cmd *cobra.Command, args []string) error {
 		pyCommand = fmt.Sprintf(
 			"g = build_graph('%s'); hotspots = find_hotspots(g)\n"+
 				"if hotspots:\n"+
-				"    print(f'Hotspot components ({len(hotspots)}):')\n"+
+				"    print(f'Hotspot agentic primitives ({len(hotspots)}):')\n"+
 				"    for name, count, risk in hotspots:\n"+
 				"        print(f'  - {name}: {count} edges [{risk}]')\n"+
 				"else:\n"+
-				"    print('No hotspots found (all components have <5 edges).')",
+				"    print('No hotspots found (all agentic primitives have <5 edges).')",
 			projectRoot,
 		)
 
@@ -133,10 +133,10 @@ func runMap(cmd *cobra.Command, args []string) error {
 		)
 
 	default:
-		// Single component tree
+		// Single agentic primitive tree
 		if len(args) == 0 {
-			fmt.Fprintln(os.Stderr, "Error: provide a component name or use --full, --orphans, --hotspots, --affected, --json")
-			return fmt.Errorf("no component specified")
+			fmt.Fprintln(os.Stderr, "Error: provide an agentic primitive name or use --full, --orphans, --hotspots, --affected, --json")
+			return fmt.Errorf("no agentic primitive specified")
 		}
 		component := args[0]
 		pyCommand = fmt.Sprintf(
