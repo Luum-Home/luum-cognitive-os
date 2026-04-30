@@ -38,7 +38,7 @@ from lib.rate_limiter import (  # noqa: E402
 )
 from lib.rate_limit_queue_migration import migrate_queue_on_boot, migration_status
 
-pytestmark = pytest.mark.integration
+pytestmark = [pytest.mark.integration, pytest.mark.docker]
 
 
 # ---------------------------------------------------------------------------
