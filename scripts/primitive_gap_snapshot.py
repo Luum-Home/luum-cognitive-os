@@ -284,7 +284,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--project-root", default=".", help="Repository root")
     parser.add_argument("--json", action="store_true", help="Print JSON to stdout")
     parser.add_argument("--markdown", help="Write markdown report to this path")
-    parser.add_argument("--trend", action="store_true", help="Append JSON snapshot to .cognitive-os/metrics/primitive-gap-snapshot.jsonl")
+    parser.add_argument("--trend", action="store_true", help="Append JSON snapshot to a JSONL trend file")
+    parser.add_argument(
+        "--trend-path",
+        default=".cognitive-os/metrics/primitive-gap-snapshot.jsonl",
+        help="Trend JSONL path, relative to project root",
+    )
     parser.add_argument("--fail-high-risk", action="store_true", help="Exit 1 when overall risk is high")
     return parser.parse_args()
 
@@ -296,7 +301,7 @@ def main() -> int:
     data = asdict(snapshot)
 
     if args.trend:
-        trend_path = root / ".cognitive-os/metrics/primitive-gap-snapshot.jsonl"
+        trend_path = root / args.trend_path
         trend_path.parent.mkdir(parents=True, exist_ok=True)
         with trend_path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(data, sort_keys=True) + "\n")
