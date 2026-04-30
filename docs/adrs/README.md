@@ -1,38 +1,61 @@
-# ADRs index
+# ADRs — Canonical Index
 
-This directory contains ADR-027+ (post-2026-04 architecture decisions).
-ADR-001 through ADR-026 live in `docs/architecture/adrs/` (legacy path from pre-consolidation).
-Both are tracked. New ADRs land here.
+**Status**: This is the single canonical root for all project-level ADRs.
 
-For a chronological index, see `docs/adrs/INDEX.md` (auto-generated on SessionStart via hooks/self-knowledge-refresh.sh).
+All ADRs (ADR-001 through ADR-094+) now live in this directory, consolidated by
+ADR-087 (ADR Namespace Consolidation, executed 2026-04-30). The legacy split between
+`docs/architecture/adrs/` (ADR-006 through ADR-026) and `docs/adrs/` (ADR-027+) has
+been eliminated. Redirect stubs at the old paths remain for one release cycle.
 
-## Split rationale
+For a chronological index, see `docs/adrs/INDEX.md` (auto-generated on SessionStart).
 
-The two directories reflect a historical consolidation boundary:
-- `docs/architecture/adrs/` — ADR-006 through ADR-026, written during the stabilization phase (2026-03 to 2026-04-16)
-- `docs/adrs/` — ADR-027 onwards, written during reconstruction and beyond (2026-04-16+)
+## Naming convention
 
-When referencing ADRs in code or documentation, use the full path to avoid ambiguity.
+- **File names**: `ADR-NNN-kebab-slug.md` — `ADR-` prefix uppercase, three-digit
+  zero-padded number, lowercase kebab slug.
+- **Addenda**: `ADR-NNNa-slug.md` (letter suffix directly after number).
+- **No-slug files**: `ADR-NNN.md` tolerated for pre-convention files.
+- **Forbidden**: lowercase prefix (`027-topic.md`), no prefix, spaces.
+- **Renumbered files**: carry a `<!-- Renumbered-from: ... -->` comment in front matter.
 
-## NOTE: Low-numbered ADR references
+## CD- prefix policy (cos-dispatch subsystem)
 
-Short-form citations like "ADR-002" or "ADR-012" appearing in `docs/adrs/` files refer to
-decisions that were written before this directory existed and live in subdirectory namespaces:
+ADRs in `docs/architecture/cos-dispatch/adrs/` use the `CD-NNN` prefix (e.g.
+`CD-001-reuse-klaudiush-predicates.md`). These are subsystem-internal decisions for the
+cos-dispatch Go module — **not project-level ADRs**. They must not be cited by bare
+`ADR-NNN` references. The `CD-` prefix makes the namespace boundary machine-readable.
 
-- **ADR-002** (profile simplification / install profiles) — canonical file:
-  `docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md`.
-  A separate `ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md` exists in
-  `docs/architecture/adrs/` and covers an earlier docker/pip phase; cross-reference context to
-  disambiguate. A cos-dispatch-internal `ADR-002` also exists at
-  `docs/architecture/cos-dispatch/adrs/002-transformer-separate-interface.md` — that series is
-  a local namespace for the dispatch subsystem only.
-  These were pre-convention decisions never filed in `docs/adrs/`; no stub ADR is created here
-  because the actual decision documents exist at the paths above.
+See `docs/architecture/cos-dispatch/adrs/README.md` for their index.
 
-- **ADR-012** (prompt-driven governance) — canonical file:
-  `docs/architecture/adrs/012-prompt-driven-governance.md`.
-  Referenced by ADR-021 and ADR-022 in this directory. The decision is fully documented at that
-  path and is not missing; only the number is ambiguous without a full path citation.
+## Renumbered-from / Renumbered-to fields
+
+When an ADR was migrated with a number change (due to collision), it carries:
+
+```
+<!-- Renumbered-from: ADR-NNN (original/path/here) -->
+<!-- Renumbered-to: ADR-NNN (ADR-087 migration, 2026-04-30) -->
+```
+
+An ADR linter must not flag these as invalid fields and must not treat the
+`Renumbered-from` value as a live pointer (the old path may no longer exist after
+stub removal).
+
+## ADR-087 migration: slot reassignment table
+
+ADR-087 originally planned slots 088/089/090/091 for migrated files. Sessions B had
+already claimed 088, 089, and 090 before this migration executed. Actual slots used:
+
+| Original location | Planned slot (ADR-087) | Actual slot |
+|---|---|---|
+| `docs/architecture/adrs/027-headless-clustered-runtime-direction.md` | ADR-088 | **ADR-091** |
+| `harness-adoption-gap/ADR-001-harness-skills-sync-path.md` | ADR-089 | **ADR-092** |
+| `harness-adoption-gap/ADR-002-simplify-profiles.md` | ADR-090 | **ADR-093** |
+| `harness-adoption-gap/ADR-003-agent-git-safety.md` | ADR-091 | **ADR-094** |
+
+## Enforcement
+
+`tests/audit/test_adr_locations.py` (ADR-087) — walks the repo and fails CI if any
+ADR-pattern file appears outside this directory without being a CD- file or redirect stub.
 
 ## ADRs in this directory
 

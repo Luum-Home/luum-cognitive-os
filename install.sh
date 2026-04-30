@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # install.sh — Install Cognitive OS into the current project
 #
-# UX1 + UX8 — ADR-002 collapsed the 3-tier profile system to 2 tiers:
+# UX1 + UX8 — ADR-093 collapsed the 3-tier profile system to 2 tiers:
 #   default  — 10 curated core skills, ~29 standard hooks, 14 core rules (~8000 tokens/session)
 #   --full   — every skill, hook, and rule (~142000 tokens/session)
 #
 # Legacy flags (--lean, --standard) are silently remapped to `default` with a
-# stderr migration notice. See docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md.
+# stderr migration notice. See docs/adrs/ADR-093-simplify-profiles.md.
 set -euo pipefail
 
 REPO_URL="https://github.com/luum-home/luum-cognitive-os.git"
@@ -40,7 +40,7 @@ IMPORTANT: Run this command FROM your project directory, not from the
 Cognitive OS repo. The installer creates .cognitive-os/ and writes the
 selected harness driver settings in the current working directory.
 
-Profiles (ADR-002):
+Profiles (ADR-093):
   (default)      10 curated core skills, ~29 standard hooks, 14 core rules
                    (~8000 tokens/session overhead). Works out of the box.
   --full         Every skill, hook, and rule available
@@ -103,7 +103,7 @@ USAGE
   exit 0
 }
 
-# Normalize a raw profile value (from flag or env) to the ADR-002 canonical
+# Normalize a raw profile value (from flag or env) to the ADR-093 canonical
 # set. Legacy values are remapped with a stderr note. Unknown values fail.
 normalize_profile() {
   local raw="$1"
@@ -113,13 +113,13 @@ normalize_profile() {
       PROFILE="$raw"
       ;;
     lean|standard|minimal)
-      echo "Note: ADR-002 collapsed '$raw' into 'default'. Using 'default'." >&2
-      echo "      Drop the flag next time: https://github.com/.../ADR-002-simplify-profiles.md" >&2
+      echo "Note: ADR-093 collapsed '$raw' into 'default'. Using 'default'." >&2
+      echo "      Drop the flag next time: see docs/adrs/ADR-093-simplify-profiles.md" >&2
       PROFILE="default"
       ;;
     *)
       echo "Error: unknown profile '$raw' (from $context)." >&2
-      echo "       Valid profiles (ADR-002): default, full." >&2
+      echo "       Valid profiles (ADR-093): default, full." >&2
       echo "       Legacy (remapped to default): lean, standard." >&2
       exit 1
       ;;
@@ -248,7 +248,7 @@ if [ -z "$PROFILE" ] && [ -n "${COS_PROFILE:-}" ]; then
   PROFILE_SOURCE="env"
 fi
 
-# Auto default: ADR-002 removed auto-detection. Default is always `default`.
+# Auto default: ADR-093 removed auto-detection. Default is always `default`.
 if [ -z "$PROFILE" ]; then
   PROFILE="default"
   PROFILE_SOURCE="auto"
@@ -425,7 +425,7 @@ if [ ! -f "$COS_INIT" ]; then
 fi
 
 echo "Running cos-init.sh..."
-# Map canonical profile → cos-init.sh flag. ADR-002: default + full only.
+# Map canonical profile → cos-init.sh flag. ADR-093: default + full only.
 COS_INIT_FLAG="--$PROFILE"
 
 # COS_SOURCE_DIR tells cos-init.sh where to copy files from (temp dir).

@@ -1,4 +1,7 @@
-# ADR-001: Harness Skills Sync Path — Add `.claude/skills/` as Second Sync Destination
+# ADR-092: Harness Skills Sync Path — Add `.claude/skills/` as Second Sync Destination
+
+<!-- Renumbered-from: ADR-001 (docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md) -->
+<!-- Renumbered-to: ADR-092 (ADR-087 migration, 2026-04-30) -->
 
 ## Status
 

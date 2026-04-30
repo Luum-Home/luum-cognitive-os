@@ -141,12 +141,12 @@ while IFS= read -r project_path; do
   project_mode=$(jq -r --arg path "$project_path" \
     '.installations[] | select(.path == $path) | .mode // "default"' \
     "$REGISTRY_FILE" 2>/dev/null || echo "default")
-  # ADR-002: normalize legacy profile names to 'default' before re-running cos-init.
+  # ADR-093: normalize legacy profile names to 'default' before re-running cos-init.
   case "$project_mode" in
     default|full)
       ;;
     lean|standard|minimal)
-      echo "    Note: normalizing legacy mode '$project_mode' → 'default' (ADR-002)"
+      echo "    Note: normalizing legacy mode '$project_mode' → 'default' (ADR-093)"
       project_mode="default"
       ;;
     *)
