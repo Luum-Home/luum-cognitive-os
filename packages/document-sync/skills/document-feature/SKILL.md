@@ -22,6 +22,8 @@ routing:
   fallback_min_pressure: 0.6
   tier: cheap
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Document Feature

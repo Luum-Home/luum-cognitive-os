@@ -10,6 +10,8 @@ audience: both
 tags: [self-improvement, meta, kpis]
 summary_line: META skill — orchestrates analyze-improvements → (human reviews) →…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Self-Improve Skill (META)

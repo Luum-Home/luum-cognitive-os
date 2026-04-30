@@ -15,6 +15,8 @@ metadata:
 audience: os
 summary_line: "Symlink-aware integrity audit of hooks, libs, and skills."
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

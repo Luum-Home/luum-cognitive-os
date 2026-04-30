@@ -9,6 +9,9 @@ description: >
 audience: both
 summary_line: "Compress natural language memory files (CLAUDE.md, todos, preferences) into…"
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Caveman Compress

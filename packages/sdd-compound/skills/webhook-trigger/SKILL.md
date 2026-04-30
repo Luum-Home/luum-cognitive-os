@@ -10,6 +10,8 @@ tech: python, fastapi
 audience: project
 summary_line: GitHub webhook server that receives issue events and launches SDD pipelines…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Webhook Trigger

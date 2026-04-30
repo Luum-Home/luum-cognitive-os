@@ -9,6 +9,8 @@ triggers:
   - e2e test
   - take it out of the garage
 audience: os-dev
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Smoke Test

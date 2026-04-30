@@ -7,6 +7,8 @@ last-updated: 2026-03-21
 source: superpowers (obra/superpowers)
 tech: testing
 audience: project
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Test-Driven Development (TDD)

@@ -23,6 +23,8 @@ triggers:
   - "N occurrences"
   - fragility
   - "find all"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

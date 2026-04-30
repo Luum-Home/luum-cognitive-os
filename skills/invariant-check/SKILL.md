@@ -6,6 +6,8 @@ version: 1.0
 audience: project
 summary_line: "Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # invariant-check

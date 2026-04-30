@@ -5,6 +5,9 @@ description: Query memU proactive memory for relevant context before starting wo
 trigger: what do I know about, context for, remember, prior context, memu, proactive context
 model: haiku
 audience: project
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # memU Context Loader

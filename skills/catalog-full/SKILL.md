@@ -9,6 +9,8 @@ audience: both
 tags: [catalog, skills, context-optimization]
 summary_line: Load and display the full skills catalog (skills/CATALOG.md) with invocations…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Catalog Full

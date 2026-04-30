@@ -8,6 +8,9 @@ triggers:
   - /compare-bmad
 tags: [testing, benchmark, comparison, quality]
 audience: os-dev
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Cognitive OS Benchmark Skill

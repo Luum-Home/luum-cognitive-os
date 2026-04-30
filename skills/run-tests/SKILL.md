@@ -6,6 +6,8 @@ invoke: /run-tests
 version: 1.1.0
 audience: project
 triggers: ["/run-tests", "/test", "/tests"]
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /run-tests

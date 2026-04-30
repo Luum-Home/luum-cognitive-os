@@ -8,6 +8,8 @@ last-updated: 2026-03-21
 audience: project
 summary_line: Check for incomplete tasks from previous sessions and offer to resume them.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Resume Tasks — Fault Tolerance Recovery

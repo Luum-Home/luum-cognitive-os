@@ -8,6 +8,8 @@ last-updated: 2026-04-24
 audience: os-dev
 tags: [audit, dogfooding, metrics, wiring]
 summary_line: "Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime."
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Agentic Primitive Reality Check

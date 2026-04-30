@@ -6,6 +6,8 @@ triggers: ["/llm-status", "llm status", "provider status", "/provider-status"]
 audience: both
 version: 2.0.0
 summary_line: "Inspect LLM dispatch state — provider inventory, kill-switches, cascade config, recent dispatch totals."
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /llm-status — LLM Dispatch Transparency

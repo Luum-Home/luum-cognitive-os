@@ -18,6 +18,8 @@ metadata:
 audience: project
 summary_line: Run Semgrep SAST security scanning on a path or changed files.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

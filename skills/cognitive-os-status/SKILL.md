@@ -4,6 +4,9 @@ name: cognitive-os-status
 description: "Full health check of all Cognitive OS agentic primitives"
 triggers: ["/cognitive-os-status", "/aos-status", "/health"]
 audience: both
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /cognitive-os-status

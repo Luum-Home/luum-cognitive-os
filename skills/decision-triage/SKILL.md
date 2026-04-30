@@ -9,6 +9,8 @@ last-updated: 2026-04-25
 summary_line: Surface pending operator decisions across research reports + ADR open questions in unified urgency-sorted view.
 tags: [triage, decisions, research, governance, operator]
 script: scripts/decision_triage.py
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Decision Triage

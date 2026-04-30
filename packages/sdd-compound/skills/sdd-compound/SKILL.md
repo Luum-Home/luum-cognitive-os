@@ -12,6 +12,9 @@ allowed-tools:
 audience: project
 summary_line: "\"Extract learnings and compound knowledge after completing an SDD change."
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # SDD Compound — Post-Archive Learning Extraction

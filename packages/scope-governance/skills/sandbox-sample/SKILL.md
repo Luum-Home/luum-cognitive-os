@@ -14,6 +14,9 @@ outputs:
   - sandbox-result: PASS | PARTIAL | FAIL per type
   - final-result: PASS | FAIL after full-scale application
 audience: project
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Sandbox Sampling

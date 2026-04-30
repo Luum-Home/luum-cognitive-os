@@ -21,6 +21,8 @@ triggers:
   - new project
   - project structure
   - 10 categories
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

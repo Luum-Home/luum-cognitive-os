@@ -10,6 +10,8 @@ tags: [maintenance, dependencies, audit, upgrade]
 last-updated: 2026-04-24
 effort: haiku
 script: scripts/deps-update.sh
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Deps Update

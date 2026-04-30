@@ -9,6 +9,9 @@ description: >
 audience: both
 summary_line: Ultra-compressed communication mode.
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 Respond terse like smart caveman. All technical substance stay. Only fluff die.
