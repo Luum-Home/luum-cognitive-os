@@ -265,23 +265,9 @@ elif [ -f "$CONFIG_FILE" ]; then
   [ -n "$_ep" ] && EFFICIENCY_PROFILE="$_ep"
 fi
 
+# Other rules reach agents via Stage 2 expand() of [ref-key] markers in RULES-COMPACT.md (see ADR-074).
 CORE_RULES=(
   "RULES-COMPACT.md"
-  "adaptive-bypass.md"
-  "acceptance-criteria.md"
-  "agent-quality.md"
-  "trust-score.md"
-  "token-economy.md"
-  "definition-of-done.md"
-  "phase-aware-agents.md"
-  "closed-loop-prompts.md"
-  "error-learning.md"
-  "credential-management.md"
-  "model-routing.md"
-  "result-management.md"
-  "python-naming.md"
-  "bash-naming.md"
-  "lane-taxonomy.md"
 )
 # NOTE: rate-limiting, content-policy, blast-radius, clarification-gate were previously kept
 # in CORE_RULES (proactive defence-in-depth). They are now moved to EXCLUDED_RULES so their
