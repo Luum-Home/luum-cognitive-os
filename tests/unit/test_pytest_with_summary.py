@@ -42,6 +42,7 @@ def _run_wrapper(
     args: list[str],
     *,
     workers: str | None = "8",
+    wrapper_args: list[str] | None = None,
 ) -> list[str]:
     fake, capture = _fake_pytest(tmp_path)
     env = {
@@ -55,7 +56,7 @@ def _run_wrapper(
     else:
         env["COS_PYTEST_WORKERS"] = workers
     result = subprocess.run(
-        ["bash", str(WRAPPER), "--", *args],
+        ["bash", str(WRAPPER), *(wrapper_args or []), "--", *args],
         cwd=PROJECT_ROOT,
         env=env,
         capture_output=True,
@@ -84,6 +85,33 @@ def test_explicit_xdist_worker_forms_prevent_adaptive_injection(
 
     assert explicit_args[0] in captured
     assert captured[:2] != ["-n", "8"], captured
+
+
+@pytest.mark.parametrize(
+    ("wrapper_args", "expected_prefix"),
+    [
+        (["--workers", "0", "--lane", "unit"], []),
+        (["--workers=4", "--lane=unit"], ["-n", "4"]),
+    ],
+)
+def test_wrapper_worker_lane_scalars_bypass_adaptive_policy(
+    tmp_path: Path,
+    wrapper_args: list[str],
+    expected_prefix: list[str],
+) -> None:
+    """cos-test passes scalar policy; wrapper must not infer lane/resource policy."""
+    captured = _run_wrapper(
+        tmp_path,
+        ["tests/unit/test_detect_runner_capacity.py", "-q"],
+        workers="8",
+        wrapper_args=wrapper_args,
+    )
+
+    if expected_prefix:
+        assert captured[:2] == expected_prefix, captured
+    else:
+        assert captured[:2] != ["-n", "8"], captured
+        assert captured[:2] != ["-n", "auto"], captured
 
 
 def test_wrapper_injects_adaptive_workers_when_no_explicit_xdist_arg(tmp_path: Path) -> None:

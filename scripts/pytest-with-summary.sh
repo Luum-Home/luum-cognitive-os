@@ -83,24 +83,39 @@ fi
 # N can be: a positive integer, "0" (serial), or "auto" (let xdist decide).
 # When present, all adaptive detection below is skipped entirely.
 _caller_workers=""
+_caller_lane=""
 _remaining_args=()
-_skip_next=0
-for _arg in "$@"; do
-  if [ "$_skip_next" = "1" ]; then
-    _caller_workers="$_arg"
-    _skip_next=0
-  elif [ "$_arg" = "--workers" ]; then
-    _skip_next=1
-  elif [[ "$_arg" == --workers=* ]]; then
-    _caller_workers="${_arg#--workers=}"
-  else
-    _remaining_args+=("$_arg")
-  fi
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --)
+      shift
+      _remaining_args+=("$@")
+      break
+      ;;
+    --workers)
+      shift
+      _caller_workers="${1:-}"
+      ;;
+    --workers=*)
+      _caller_workers="${1#--workers=}"
+      ;;
+    --lane)
+      shift
+      _caller_lane="${1:-}"
+      ;;
+    --lane=*)
+      _caller_lane="${1#--lane=}"
+      ;;
+    *)
+      _remaining_args+=("$1")
+      ;;
+  esac
+  shift || true
 done
-if [ -n "$_caller_workers" ]; then
-  set -- "${_remaining_args[@]+"${_remaining_args[@]}"}"
-fi
-unset _remaining_args _skip_next _arg
+# Always restore the pytest argv after stripping wrapper-only flags.
+# This also preserves ordinary invocations that use `--` without --workers.
+set -- "${_remaining_args[@]+"${_remaining_args[@]}"}"
+unset _remaining_args
 
 if [ "$#" -eq 0 ]; then
   set -- tests/
@@ -123,7 +138,11 @@ if [ "$_has_n_flag" -eq 0 ]; then
     # Caller (e.g. cos-test) passed --workers explicitly.  Skip all detection.
     # Per ADR-069 polyglot boundary: cos-test reads test-lanes.yaml; bash receives scalars.
     _workers="$_caller_workers"
-    echo "[pytest-with-summary] Workers: $_workers (caller-supplied)"
+    if [ -n "$_caller_lane" ]; then
+      echo "[pytest-with-summary] Lane: $_caller_lane | workers: $_workers (caller-supplied)"
+    else
+      echo "[pytest-with-summary] Workers: $_workers (caller-supplied)"
+    fi
   else
     # No --workers flag: run adaptive detection (ADR-068 Phase 1).
     _workers="${COS_PYTEST_WORKERS:-detect}"
@@ -222,7 +241,7 @@ PYLANE
     echo "[pytest-with-summary] Injected: serial (workers=0)"
   fi
 fi
-unset _has_n_flag _caller_workers _workers _lane_parallel _lane_name _lane_result _LANES_YAML 2>/dev/null || true
+unset _has_n_flag _caller_workers _caller_lane _workers _lane_parallel _lane_name _lane_result _LANES_YAML 2>/dev/null || true
 # --- end adaptive worker injection ---
 
 timestamp="$(date -u +"%Y%m%dT%H%M%SZ")"
