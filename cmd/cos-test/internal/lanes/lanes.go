@@ -29,6 +29,11 @@ type Lane struct {
 	Parallel       ParallelMode
 	MarkerSerial   string
 	StatefulReason string
+	// Optional lanes are excluded from BroadOrder() by default. They are still
+	// runnable explicitly via `cos-test cluster --lane <name>` or by passing
+	// includeOptional=true to BroadOrderWith. Used for cost-bearing or
+	// non-deterministic lanes (arena, benchmark, quality).
+	Optional bool
 }
 
 // Registry holds the parsed lane registry.
@@ -61,16 +66,27 @@ func (r *Registry) Names() []string {
 	return out
 }
 
-// BroadOrder returns the deterministic broad-run order: parallel-safe lanes
-// first (parallel == true), then marker lanes, then serial. Within each group,
-// declaration order is preserved.
+// BroadOrder returns the default broad-run order, EXCLUDING optional lanes.
+// Use BroadOrderWith(true) to include them.
 func (r *Registry) BroadOrder() []string {
+	return r.BroadOrderWith(false)
+}
+
+// BroadOrderWith returns the broad-run order: parallel-safe lanes first
+// (parallel == true), then marker lanes, then serial. Within each group,
+// declaration order is preserved. When includeOptional is false, lanes
+// marked optional: true are excluded — they are runnable explicitly via
+// `cos-test cluster --lane <name>` but never on the default broad sweep.
+func (r *Registry) BroadOrderWith(includeOptional bool) []string {
 	if r == nil {
 		return nil
 	}
 	var safe, marker, serial []string
 	for _, name := range r.Order {
 		l := r.Lanes[name]
+		if l.Optional && !includeOptional {
+			continue
+		}
 		switch l.Parallel {
 		case ParallelTrue:
 			safe = append(safe, name)
@@ -84,6 +100,21 @@ func (r *Registry) BroadOrder() []string {
 	out = append(out, safe...)
 	out = append(out, marker...)
 	out = append(out, serial...)
+	return out
+}
+
+// OptionalNames returns optional lane names in declaration order. Useful for
+// banner output ("not running: arena, benchmark, quality (optional)").
+func (r *Registry) OptionalNames() []string {
+	if r == nil {
+		return nil
+	}
+	var out []string
+	for _, name := range r.Order {
+		if r.Lanes[name].Optional {
+			out = append(out, name)
+		}
+	}
 	return out
 }
 
@@ -105,8 +136,11 @@ func Load(path string) (*Registry, error) {
 //	    parallel: true|false|marker
 //	    marker_serial: <name>
 //	    stateful_reason: "<text>"
+//	    optional: true|false
 //
 // All other top-level keys are ignored. Indentation is two-space significant.
+// optional: true excludes the lane from BroadOrder() default — it is still
+// runnable via cluster --lane <name> or BroadOrderWith(true).
 func Parse(r io.Reader) (*Registry, error) {
 	scanner := bufio.NewScanner(r)
 	scanner.Buffer(make([]byte, 64*1024), 1024*1024)
@@ -192,6 +226,16 @@ func Parse(r io.Reader) (*Registry, error) {
 				current.MarkerSerial = strings.Trim(value, `"' `)
 			case "stateful_reason":
 				current.StatefulReason = strings.Trim(value, `"' `)
+			case "optional":
+				v := strings.Trim(value, `"' `)
+				switch v {
+				case "true":
+					current.Optional = true
+				case "false", "":
+					current.Optional = false
+				default:
+					return nil, fmt.Errorf("lane %s optional: expected true|false, got %q", currentName, v)
+				}
 			default:
 				// Unknown keys are accepted (forward compat) but ignored.
 			}

@@ -14,7 +14,10 @@ import (
 	"luum-agent-os/cmd/cos-test/internal/runner"
 )
 
-var broadDryRun bool
+var (
+	broadDryRun          bool
+	broadIncludeOptional bool
+)
 
 var broadCmd = &cobra.Command{
 	Use:   "broad",
@@ -24,18 +27,24 @@ var broadCmd = &cobra.Command{
 Lanes are ordered: parallel-safe (parallel=true) first, then marker lanes,
 then serial (parallel=false). Within each group declaration order is
 preserved. The exit code is non-zero if any lane fails; later lanes still
-run so the operator gets a complete picture.`,
+run so the operator gets a complete picture.
+
+Optional lanes (arena, benchmark, quality) are EXCLUDED by default because
+they are cost-bearing or non-deterministic. Include them explicitly with
+--include-optional or run a single one via "cos-test cluster --lane <name>".`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg := config.DefaultConfig()
 		cfg.CIMode = ciMode
 		cfg.Verbose = verbose
-		return runBroad(cfg, broadDryRun)
+		return runBroad(cfg, broadDryRun, broadIncludeOptional)
 	},
 }
 
 func init() {
 	broadCmd.Flags().BoolVar(&broadDryRun, "dry-run", false,
 		"Print resolved plan, do not execute")
+	broadCmd.Flags().BoolVar(&broadIncludeOptional, "include-optional", false,
+		"Include optional lanes (arena, benchmark, quality). Off by default.")
 	rootCmd.AddCommand(broadCmd)
 }
 
@@ -45,15 +54,22 @@ type laneOutcome struct {
 	Failed bool
 }
 
-func runBroad(cfg *config.Config, dryRun bool) error {
+func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 	regPath := lanes.DefaultPath(cfg.ProjectRoot)
 	reg, err := lanes.Load(regPath)
 	if err != nil {
 		return fmt.Errorf("load lane registry: %w", err)
 	}
 
-	order := reg.BroadOrder()
+	order := reg.BroadOrderWith(includeOptional)
 	pr := runner.NewPytestRunner(cfg)
+
+	reason := fmt.Sprintf("running %d lanes: %s", len(order), strings.Join(order, ", "))
+	if !includeOptional {
+		if opt := reg.OptionalNames(); len(opt) > 0 {
+			reason += fmt.Sprintf(" | skipping optional: %s (use --include-optional)", strings.Join(opt, ", "))
+		}
+	}
 
 	intro := banner.Render(banner.Info{
 		Subcommand: "broad",
@@ -61,7 +77,7 @@ func runBroad(cfg *config.Config, dryRun bool) error {
 		Paths:      laneAllPaths(reg, order),
 		TestCount:  -1,
 		Workers:    "per-lane (mixed)",
-		Reason:     fmt.Sprintf("running %d lanes: %s", len(order), strings.Join(order, ", ")),
+		Reason:     reason,
 		ETA:        banner.AggregateETA(filepath.Join(cfg.ProjectRoot, ".cognitive-os", "reports", "test-runs"), "broad", 5),
 		KillSwitch: "COS_FORCE_SERIAL_LANES=*",
 	})
