@@ -200,15 +200,16 @@ def test_spawns_if_pid_stale(tmp_path):
     project = _make_project(tmp_path, yaml_enabled=True)
     runtime = project / ".cognitive-os" / "runtime"
 
-    # Find a PID that definitely does not exist. Spawn+reap a short-lived process.
-    dead = subprocess.Popen(["true"])
-    dead.wait()
-    dead_pid = dead.pid
-    # Guard: ensure it's really gone
+    # Find a PID that does not exist. Earlier strategy reaped a real process,
+    # but under parallel xdist load the OS can recycle the freed PID before
+    # this test reaches the kill check, causing flake. A reserved high PID
+    # is always above any allocated PID and definitively non-existent.
+    dead_pid = 99_999_999
+    # Sanity: must indeed not exist.
     try:
         os.kill(dead_pid, 0)
-        pytest.skip(f"PID {dead_pid} unexpectedly still alive; cannot test stale path")
-    except ProcessLookupError:
+        pytest.skip(f"PID {dead_pid} unexpectedly alive (kernel max-PID raised?)")
+    except (ProcessLookupError, OverflowError):
         pass
 
     (runtime / "session-watchdog.pid").write_text(str(dead_pid))
