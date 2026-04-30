@@ -11,7 +11,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"luum-agent-os/cmd/cos-test/internal/config"
-	"luum-agent-os/cmd/cos-test/internal/runner"
 	"luum-agent-os/cmd/cos-test/internal/ui"
 )
 
@@ -81,8 +80,6 @@ func runWatch(cfg *config.Config) error {
 	ui.Info("Press Ctrl+C to stop").Print()
 	fmt.Println()
 
-	pytestRunner := runner.NewPytestRunner(cfg)
-
 	// Debounce timer.
 	var debounceTimer *time.Timer
 	debounceInterval := 500 * time.Millisecond
@@ -106,7 +103,7 @@ func runWatch(cfg *config.Config) error {
 
 			changedFile := event.Name
 			debounceTimer = time.AfterFunc(debounceInterval, func() {
-				runAffectedTests(pytestRunner, cfg, changedFile)
+				runAffectedTests(cfg, changedFile)
 			})
 
 		case err, ok := <-watcher.Errors:
@@ -141,34 +138,21 @@ func isRelevantChange(event fsnotify.Event) bool {
 	return false
 }
 
-func runAffectedTests(pytestRunner *runner.PytestRunner, cfg *config.Config, changedFile string) {
+func runAffectedTests(cfg *config.Config, changedFile string) {
 	ui.Separator()
 	ui.Info(fmt.Sprintf("Change detected: %s", filepath.Base(changedFile))).Print()
 
-	// Determine which category/filter to use based on the changed file.
-	filter, categories := mapFileToTests(cfg, changedFile)
-
-	rc := &runner.RunConfig{
-		Categories: categories,
-		Filter:     filter,
-		Verbose:    cfg.Verbose,
-	}
-
-	ui.Progress("Running affected tests...").Print()
-	suite, err := pytestRunner.RunSync(rc)
+	relPath, err := filepath.Rel(cfg.ProjectRoot, changedFile)
 	if err != nil {
-		ui.Error("Test run failed").WithDetails(err.Error()).Print()
-		return
+		relPath = changedFile
 	}
 
-	// Print results.
-	if suite.IsSuccess() {
-		ui.Success(fmt.Sprintf("All %d tests passed (%s)", suite.Total, suite.Duration)).Print()
-	} else {
-		ui.Error(fmt.Sprintf("%d failed, %d passed (%s)", suite.Failed, suite.Passed, suite.Duration)).Print()
-		for _, f := range suite.FailedTests() {
-			fmt.Printf("  FAIL: %s\n", f.NodeID)
-		}
+	ui.Progress("Running focused test plan...").Print()
+	if err := runFocusedWithOptions(cfg, nil, focusedRunOptions{
+		UseTestmon:   false,
+		ChangedFiles: []string{relPath},
+	}); err != nil {
+		ui.Error("Focused test run failed").WithDetails(err.Error()).Print()
 	}
 	fmt.Println()
 	ui.Info("Watching for changes...").Print()
