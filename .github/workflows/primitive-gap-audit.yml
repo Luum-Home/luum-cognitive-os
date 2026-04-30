@@ -52,7 +52,8 @@ jobs:
             --row-audit docs/reports/primitive-row-audit-latest.json \
             --claim-audit docs/reports/claim-proof-latest.json \
             --json-out docs/reports/reduction-backlog-latest.json \
-            --md-out docs/reports/reduction-backlog-latest.md
+            --md-out docs/reports/reduction-backlog-latest.md \
+            --fail-nonzero
 
       - name: Upload primitive gap snapshot artifact
         if: always()

@@ -542,7 +542,8 @@ Organizational structure for agent teams:
 
 ### Phase 4 — Full Cognitive OS (Long-term)
 
-Production-grade autonomous agent infrastructure:
+Target architecture for production-grade autonomous agent infrastructure
+(not current default behavior):
 
 - kagent for Kubernetes-native agent deployment
 - Auto-scaling agents based on workload

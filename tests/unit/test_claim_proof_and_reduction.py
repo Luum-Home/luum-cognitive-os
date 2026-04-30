@@ -107,3 +107,52 @@ def test_reduction_backlog_uses_row_and_claim_audits(tmp_path: Path) -> None:
     payload = json.loads((reports / "reduction-backlog-latest.json").read_text())
     assert [item["action"] for item in payload["items"]] == ["delete-or-wire", "demote-or-prove-claim"]
     assert "Reduction Sprint Backlog" in (reports / "reduction-backlog-latest.md").read_text()
+
+
+def test_reduction_backlog_fail_nonzero_blocks_pending_items(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    reports = root / "docs" / "reports"
+    reports.mkdir(parents=True)
+    (reports / "primitive-row-audit-latest.json").write_text(
+        json.dumps(
+            {
+                "rows": [
+                    {
+                        "family": "skills",
+                        "path": "skills/unwired/SKILL.md",
+                        "status": "aspirational",
+                        "severity": "medium",
+                        "evidence": "no runtime path",
+                        "next_action": "archive",
+                    }
+                ]
+            }
+        )
+    )
+    (reports / "claim-proof-latest.json").write_text(json.dumps({"rows": []}))
+
+    result = subprocess.run(
+        [sys.executable, str(BACKLOG_PATH), "--project-dir", str(root), "--fail-nonzero"],
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 2
+    payload = json.loads((reports / "reduction-backlog-latest.json").read_text())
+    assert payload["items"][0]["action"] == "demote-or-archive"
+
+
+def test_reduction_backlog_fail_nonzero_passes_clean_backlog(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    reports = root / "docs" / "reports"
+    reports.mkdir(parents=True)
+    (reports / "primitive-row-audit-latest.json").write_text(json.dumps({"rows": []}))
+    (reports / "claim-proof-latest.json").write_text(json.dumps({"rows": []}))
+
+    result = subprocess.run(
+        [sys.executable, str(BACKLOG_PATH), "--project-dir", str(root), "--fail-nonzero"],
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 0
