@@ -88,11 +88,15 @@ def register(tool_use_id: str, description: str, task_id: Optional[str] = None) 
         if existing.get("toolUseId") == tool_use_id:
             return existing
 
+    # Fix 1 (ADR-097): write "pending" at registration time.
+    # Status flips to "in_progress" when write_context_marker.py runs inside
+    # the subagent (at that point the PID is known).
     entry = {
         "id": task_id,
         "toolUseId": tool_use_id,
         "description": description[:500],
-        "status": "in_progress",
+        "status": "pending",
+        "requested_at": now,
         "launchedAt": now,
         "started_at": now,
         "pid": None,
@@ -137,8 +141,9 @@ def panel_context() -> str:
     tasks = _load_tasks().get("tasks", [])
     queue = _load_queue()
 
-    # Classify tasks
-    in_progress = [t for t in tasks if t.get("status") == "in_progress"]
+    # Classify tasks — pending tasks (registered but not yet started) are shown
+    # alongside in_progress so the orchestrator can see the full active set.
+    in_progress = [t for t in tasks if t.get("status") in ("in_progress", "pending")]
     failed = [t for t in tasks if t.get("status") == "failed"]
 
     sections = []
