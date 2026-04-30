@@ -10,6 +10,8 @@ audience: both
 tags: [init, setup, meta]
 summary_line: META skill — initialize Cognitive OS for a project by chaining detect-stack →…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Cognitive OS Init

@@ -11,6 +11,8 @@ effort: opus
 tags: [self-improvement, analysis, kpis]
 summary_line: "Analyze KPIs, error patterns, and skill metrics to identify improvement…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Analyze Improvements Skill

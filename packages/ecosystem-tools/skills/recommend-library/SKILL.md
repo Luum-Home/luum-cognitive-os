@@ -5,6 +5,9 @@ description: Search package registries and rank by relevance, adoption, maintena
 audience: project
 summary_line: "Search package registries and rank by relevance, adoption, maintenance, and…"
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Skill: recommend-library

@@ -18,6 +18,8 @@ audience: project
 effort: opus
 summary_line: Engram-integrated code review with adversarial protocol.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

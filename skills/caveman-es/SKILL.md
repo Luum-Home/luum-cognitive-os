@@ -9,6 +9,9 @@ description: >
 audience: both
 summary_line: Modo cavernícola en español.
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 Responder breve como cavernícola listo. Toda sustancia técnica queda. Solo relleno muere.

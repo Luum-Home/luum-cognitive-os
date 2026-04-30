@@ -14,6 +14,8 @@ outputs:
 version: 1.0.0
 last-updated: 2026-03-28
 audience: project
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Scout -- Pre-Implementation Codebase Reconnaissance

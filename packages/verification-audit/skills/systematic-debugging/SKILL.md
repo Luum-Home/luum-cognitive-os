@@ -10,6 +10,8 @@ audience: project
 effort: opus
 summary_line: "Use when encountering any bug, test failure, or unexpected behavior, before…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Systematic Debugging

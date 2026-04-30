@@ -4,6 +4,9 @@ name: phoenix-trace-ui
 description: "Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker)"
 triggers: ["/phoenix-trace-ui", "/phoenix", "/trace-ui"]
 audience: project
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /phoenix-trace-ui

@@ -6,6 +6,9 @@ triggers: ["/capability-snapshot"]
 audience: os-dev
 summary_line: "\"Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss…"
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /capability-snapshot

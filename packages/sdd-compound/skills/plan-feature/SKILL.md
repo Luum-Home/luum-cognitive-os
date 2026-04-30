@@ -8,6 +8,8 @@ audience: project
 effort: opus
 summary_line: Create a feature implementation plan with evaluation scoring.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Plan Feature

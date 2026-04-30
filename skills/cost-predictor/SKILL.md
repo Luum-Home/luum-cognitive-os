@@ -14,6 +14,8 @@ triggers:
   - budget forecast
   - how much will this cost
 audience: project
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Cost Predict

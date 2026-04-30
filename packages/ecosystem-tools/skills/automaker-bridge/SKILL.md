@@ -9,6 +9,8 @@ auto-generated: false
 trigger: automaker, setup automaker, kanban, visual board, automaker bridge
 model: sonnet
 audience: os-dev
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # AutoMaker Bridge

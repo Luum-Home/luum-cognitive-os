@@ -9,6 +9,9 @@ audience: both
 effort: haiku
 summary_line: "Analyze trust scores across agents and tasks, identify patterns, recommend…"
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Trust Audit Skill

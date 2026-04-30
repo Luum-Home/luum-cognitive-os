@@ -9,6 +9,8 @@ tags: [validation, config, health]
 audience: both
 summary_line: "Validate all Cognitive OS configuration files — agents, squads, skills, rules…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Schema Validation for Cognitive OS Configuration (BMAD v6 Pattern 12)

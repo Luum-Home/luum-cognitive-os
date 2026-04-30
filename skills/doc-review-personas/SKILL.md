@@ -27,6 +27,8 @@ triggers:
   - "multi-persona"
   - "hallazgos"
   - "findings from different lenses"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

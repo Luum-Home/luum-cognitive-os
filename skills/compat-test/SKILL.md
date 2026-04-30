@@ -9,6 +9,8 @@ invoke: /cognitive-os-compat-test
 audience: os-dev
 summary_line: Smoke test suite verifying Cognitive OS works correctly with the current AI…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Model Compatibility Test

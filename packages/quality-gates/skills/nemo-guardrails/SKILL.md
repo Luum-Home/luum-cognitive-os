@@ -19,6 +19,8 @@ metadata:
 audience: os-dev
 summary_line: Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

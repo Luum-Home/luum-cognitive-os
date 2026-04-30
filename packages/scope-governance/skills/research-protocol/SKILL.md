@@ -16,6 +16,8 @@ metadata:
 audience: project
 summary_line: Meta-skill that teaches agents HOW to investigate any source material…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

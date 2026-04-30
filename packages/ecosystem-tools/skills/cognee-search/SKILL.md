@@ -19,6 +19,8 @@ requires:
 audience: project
 summary_line: Semantic knowledge graph search via Cognee — complements Engram FTS5 with…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Cognee Search

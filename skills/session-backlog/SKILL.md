@@ -9,6 +9,8 @@ audience: both
 tags: [session, planning, backlog, inventory]
 summary_line: "Inventory all pending work across plans, engram, tasks, todos, audits, and git."
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Session Backlog — Pending Work Inventory

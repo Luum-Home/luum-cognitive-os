@@ -15,6 +15,8 @@ metadata:
 audience: project
 summary_line: Detect drift between HTTP calls in source code and OpenAPI/Swagger contract…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

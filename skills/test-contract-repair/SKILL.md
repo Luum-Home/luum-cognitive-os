@@ -5,6 +5,8 @@ description: Repair failing or misleading tests without greenwashing. Classify t
 invoke: /test-contract-repair
 version: 1.0.0
 audience: os-dev
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Test Contract Repair
