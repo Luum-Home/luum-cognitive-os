@@ -235,6 +235,9 @@ Reduction triage notes:
 The weekly primitive gap workflow now runs the row audit, claim-to-proof audit,
 and reduction backlog generator after the family-level snapshot and duplicate
 docs audit. It also uploads and commits the generated row/claim/backlog reports.
+It blocks any non-zero backlog via `scripts/reduction_backlog.py --fail-nonzero`,
+so newly introduced unclassified primitive debt must be fixed, proven, or
+explicitly demoted before the audit can pass.
 
 ## Alternatives Comparison
 

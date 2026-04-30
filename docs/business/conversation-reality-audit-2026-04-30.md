@@ -434,6 +434,7 @@ This keeps current known debt visible while preventing the SO from growing new u
 - [x] Add regression-based escalation so new primitive gaps fail against the tracked baseline.
 - [x] Wire row-level primitive audit, claim-to-proof audit, and reduction backlog generation into the weekly workflow.
 - [x] Block unmapped strong product claims in the weekly workflow via `claim_proof_audit.py --fail-unmapped`.
+- [x] Block any non-zero reduction backlog in the weekly workflow via `reduction_backlog.py --fail-nonzero`.
 - [ ] Add issue/PR creation for new blocker/high regressions.
 - [x] Add row-level hook audit automation beyond family-level snapshot.
 
