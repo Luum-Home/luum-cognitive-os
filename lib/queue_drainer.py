@@ -325,25 +325,156 @@ class QueueDrainer:
 
         return candidates[:limit]
 
-    def mark_dispatched(self, agent_id: str) -> bool:
-        """Mark a queued agent as 'dispatching' (launch is in progress).
+    # ------------------------------------------------------------------ #
+    # Fix 4 (ADR-097): Queue ↔ active-tasks.json sync helpers            #
+    # ------------------------------------------------------------------ #
+
+    def _sync_active_tasks(
+        self,
+        tool_use_id: Optional[str],
+        new_status: str,
+        note: str = "",
+    ) -> bool:
+        """Update the active-tasks.json record matching tool_use_id.
+
+        If tool_use_id is None or not found, searches for the most-recent
+        'pending' record (best-effort fallback).
+
+        new_status values used by this module:
+          - "cancelled-dequeued": queue item cancelled before dispatch
+          - "in_progress": queue item was dispatched
+
+        Uses the same flock + atomic-rename pattern as agent-prelaunch.sh.
+        Returns True if a record was updated, False otherwise.
+        Never raises.
+        """
+        if not os.path.isfile(self.tasks_path):
+            return False
+
+        lock_path = os.path.join(os.path.dirname(self.tasks_path), ".active-tasks.lock")
+        os.makedirs(os.path.dirname(lock_path), exist_ok=True)
+        try:
+            with open(lock_path, "w") as lock_fh:
+                fcntl.flock(lock_fh, fcntl.LOCK_EX)
+                try:
+                    with open(self.tasks_path) as fh:
+                        data = json.load(fh)
+                    tasks: List[Dict[str, Any]] = data.get("tasks", [])
+                    now = _now_iso()
+
+                    matched_idx: Optional[int] = None
+
+                    if tool_use_id:
+                        for idx, t in enumerate(tasks):
+                            if (
+                                t.get("toolUseId") == tool_use_id
+                                and t.get("status") == "pending"
+                            ):
+                                matched_idx = idx
+                                break
+
+                    if matched_idx is None:
+                        # Fallback: most recently created pending record
+                        pending = [
+                            (idx, t)
+                            for idx, t in enumerate(tasks)
+                            if t.get("status") == "pending"
+                        ]
+                        if pending:
+                            pending.sort(
+                                key=lambda x: x[1].get("launchedAt", ""),
+                                reverse=True,
+                            )
+                            matched_idx = pending[0][0]
+
+                    if matched_idx is None:
+                        return False
+
+                    tasks[matched_idx]["status"] = new_status
+                    tasks[matched_idx]["lastUpdated"] = now
+                    if new_status in ("cancelled-dequeued",):
+                        tasks[matched_idx]["completedAt"] = now
+                    if note:
+                        tasks[matched_idx]["outputSummary"] = note
+
+                    data["lastUpdated"] = now
+
+                    tmp_path = self.tasks_path + ".tmp"
+                    with open(tmp_path, "w") as fh:
+                        json.dump(data, fh, indent=2)
+                    os.replace(tmp_path, self.tasks_path)
+                    return True
+                finally:
+                    fcntl.flock(lock_fh, fcntl.LOCK_UN)
+        except Exception:
+            return False
+
+    def cancel_queued(self, agent_id: str, tool_use_id: Optional[str] = None) -> bool:
+        """Remove an agent from the dispatch queue and mark its active-tasks record.
+
+        When a queued item is cancelled (e.g., user interrupt or explicit cancel):
+          - dispatch-queue.json: item is removed
+          - active-tasks.json: matching 'pending' record → 'cancelled-dequeued'
 
         Args:
-            agent_id: The id returned by enqueue().
+            agent_id:    The id returned by enqueue().
+            tool_use_id: Optional Claude Code tool_use_id for precise matching.
+
+        Returns:
+            True if the queue item was found and removed, False otherwise.
+        """
+        items = self._load_locked()
+        target: Optional[Dict[str, Any]] = None
+        remaining = []
+        for item in items:
+            if item.get("id") == agent_id:
+                target = item
+            else:
+                remaining.append(item)
+
+        if target is None:
+            return False
+
+        self._save_queue(remaining)
+
+        # Sync active-tasks.json — use provided tool_use_id or fall back
+        tui = tool_use_id or target.get("tool_use_id")
+        self._sync_active_tasks(
+            tui,
+            "cancelled-dequeued",
+            note=f"queue item {agent_id} cancelled before dispatch",
+        )
+        return True
+
+    def mark_dispatched(self, agent_id: str, tool_use_id: Optional[str] = None) -> bool:
+        """Mark a queued agent as 'dispatching' and sync active-tasks.
+
+        When the agent is about to be launched from the queue:
+          - dispatch-queue.json: status → 'dispatching'
+          - active-tasks.json:   matching 'pending' record → 'in_progress'
+
+        Args:
+            agent_id:    The id returned by enqueue().
+            tool_use_id: Optional Claude Code tool_use_id for precise matching.
 
         Returns:
             True if the item was found and updated, False otherwise.
         """
         items = self._load_locked()
         updated = False
+        target: Optional[Dict[str, Any]] = None
         for item in items:
             if item.get("id") == agent_id and item.get("status") == "queued":
                 item["status"] = "dispatching"
                 item["dispatched_at"] = _now_iso()
+                target = item
                 updated = True
                 break
         if updated:
             self._save_queue(items)
+            # Sync active-tasks.json
+            tui = tool_use_id or (target.get("tool_use_id") if target else None)
+            self._sync_active_tasks(tui, "in_progress", note="dispatched from queue")
         return updated
 
     def remove_completed(self, agent_id: str) -> bool:
