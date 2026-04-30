@@ -115,11 +115,11 @@ JUnit, inventories, and resource-policy metadata under
 |---|---|
 | Local quick iteration | `make test-local-fast` or `cos-test focused` |
 | Laptop-friendly broad validation | `make test-laptop` |
-| Laptop-friendly split integration validation | `make test-laptop-integration` |
+| Laptop-friendly integration validation | `make test-laptop-integration` |
 | Local broad without Docker | `make test-local-wide-no-docker` or `cos-test broad --no-docker` |
 | CI / pre-merge default | `make test-ci-default` or `cos-test broad --no-docker --ci` |
 | Release gate | `make test-release` |
-| Split integration without Docker | `make test-integration-no-docker` or one `cos-test cluster --lane integration-*` sublane |
+| Slow integration without Docker | `make test-integration-no-docker` or `cos-test cluster --lane integration` |
 | Docker/testcontainers explicit | `make test-docker` |
 | Optional/cost-bearing explicit | `make test-optional` |
 
@@ -136,12 +136,11 @@ integration, e2e, optional/cost-bearing lanes, and chaos. Use it for normal
 local confidence after multi-file changes.
 
 `make test-laptop-integration` is still explicit and SO-maintainer-only. It runs
-five narrower non-Docker integration sublanes serially with lower CPU priority
-(`nice -n 10`) so the laptop stays usable and failures identify the affected
-surface: memory, installer, hooks, provider, or runtime. Use it only after
-touching Cognitive OS installation, hooks, memory, harness drivers,
-provider/runtime behavior, or session lifecycle code. For a single suspected
-surface, prefer one sublane or a specific `tests/integration/test_*.py` file
+`cos-test cluster --lane integration` serially with lower CPU priority
+(`nice -n 10`) so the laptop stays usable, but it still exercises real
+integration flows and can be slow. Use it only after touching Cognitive OS installation, hooks, memory,
+harness drivers, provider/runtime behavior, or session lifecycle code. For a
+single suspected surface, prefer a specific `tests/integration/test_*.py` file
 through `scripts/pytest-with-summary.sh`.
 
 `make test-ci-default` is a CI/pre-merge gate, not a tight development loop.
@@ -157,36 +156,43 @@ lanes remain separate under `make test-optional`.
 
 ### Cognitive OS Integration Lane Semantics
 
-The compatibility `integration` lane is not a lightweight local smoke test. It
-still exists as an umbrella for all non-Docker integration tests, but day-to-day
-SO maintenance should use the split lanes:
+The integration lane is not a lightweight local smoke test. It is an explicit,
+stateful Cognitive OS maintainer lane for real SO integration behavior. Today it
+resolves to the equivalent of:
 
-| Sublane | Scope |
-|---|---|
-| `integration-memory` | Engram, decision triage, compaction recovery, persistence, MCP memory surfaces. |
-| `integration-installer` | Install/update/projection, first-run, manifests, git hook path, project settings. |
-| `integration-hooks` | CWD enforcement, prompt/context injection, rate-limit hooks, reaper/heartbeat, session nudges. |
-| `integration-provider` | Codex/harness adapter dispatch, orchestrator/provider capability checks, Phoenix trace emission. |
-| `integration-runtime` | Executors, repair chain, metrics, sprint/watch CLIs, host monitor, Valkey, wiring validation. |
+```bash
+bash scripts/pytest-with-summary.sh \
+  --workers 0 \
+  --lane integration \
+  --timeout-seconds 900 \
+  --docker-policy forbidden \
+  --cost-policy free_only \
+  --artifact-policy keep_summary \
+  -- tests/integration/ -m not docker
+```
 
-Each sublane resolves to `scripts/pytest-with-summary.sh` with serial workers,
-Docker forbidden, free-only cost policy, and persisted summary/JUnit/inventory
-artifacts. The split keeps the same safety assumptions as the old umbrella lane
-while making failures diagnosable and letting maintainers validate only the
-surface they touched.
+It is slow because it scans the full non-Docker integration directory and runs in
+serial. That is intentional: the lane covers live install/session workflows,
+Engram/Phoenix-adjacent checks, hook subprocesses, git operations, TCP waits,
+artifact generation, and other shared-state surfaces that are unsafe to blend
+with xdist by default.
 
-Do not run these lanes constantly while editing. Use them before merge/release,
-after touching the relevant surface, or when a focused integration file is no
+Do not run this lane constantly while editing. Use it before merge/release, after
+touching installation or lifecycle code, or when a focused integration file is no
 longer enough evidence. The normal SO-builder escalation path is:
 
 1. `./cos-test focused`
 2. `./cos-test cluster --lane unit|audit|contract|behavior|hooks`
 3. `make test-laptop`
 4. targeted `scripts/pytest-with-summary.sh -- tests/integration/test_name.py`
-5. one split lane, for example `./cos-test cluster --lane integration-hooks`
-6. `make test-laptop-integration` when all non-Docker integration surfaces need a pass
-7. `make test-ci-default` for pre-merge confidence
-8. `make test-release` for release gates
+5. `make test-laptop-integration`
+6. `make test-ci-default` for pre-merge confidence
+7. `make test-release` for release gates
+
+Future work should split this lane into narrower SO-maintainer sublanes such as
+`integration-memory`, `integration-installer`, `integration-hooks`,
+`integration-provider`, and `integration-runtime` before making integration part
+of any frequent laptop workflow.
 
 
 ### Governance Gates Consume Persisted Artifacts
