@@ -2,7 +2,10 @@
 
 ## Status
 
-In progress — RG-1 resource policy manifest implemented; RG-2 timeout and opt-in gates for cost-bearing/docker-required lanes implemented.
+In progress — RG-1 resource policy manifest implemented; RG-2 timeout and
+opt-in gates for cost-bearing/docker-required lanes implemented; RG-3
+machine-readable resource outcome artifacts implemented for normal failures,
+policy blocks, and timeout exhaustion.
 
 ## Product intent
 
@@ -79,21 +82,47 @@ Acceptance criteria:
 
 ### RG-3 — Report schema extension
 
+Implemented: every `cos-test` invocation that reaches
+`scripts/pytest-with-summary.sh` now persists `resource-policy.json` beside the
+normal run artifacts. Outcomes that happen before or around the wrapper — policy
+blocks and timeout exhaustion — are persisted by the Go runner in the same
+report tree.
+
 Extend test-run artifacts with resource metadata:
 
-- lane name;
-- requested workers vs effective workers;
-- timeout budget;
-- docker policy;
+- lane name; ✅
+- effective workers; ✅
+- timeout budget; ✅
+- docker policy; ✅
+- cost policy; ✅
+- artifact policy; ✅
 - resource outcome (`ok`, `functional_failure`, `resource_exhausted`,
-  `skipped_optional`, `blocked_policy`);
-- host snapshot when available.
+  `blocked_policy`); ✅
+- host snapshot when available. ⏳
+
+Current artifact shape:
+
+```json
+{
+  "artifact_policy": "keep_summary",
+  "cost_policy": "free_only",
+  "docker_policy": "forbidden",
+  "lane": "unit",
+  "outcome": "ok",
+  "timeout_seconds": 180,
+  "workers": "0"
+}
+```
 
 Acceptance criteria:
 
-- `inventory.json` or equivalent machine-readable artifact contains the fields.
-- Governance checks consume the persisted metadata instead of parsing stdout.
-- Resource failures are distinguishable from failing assertions.
+- `resource-policy.json` contains the fields for successful and failing pytest
+  executions. ✅
+- Timeout exhaustion writes `outcome=resource_exhausted` even when the wrapper is
+  killed. ✅
+- Policy blocks write `outcome=blocked_policy` before returning. ✅
+- Governance checks consume the persisted metadata instead of parsing stdout. ⏳
+- Resource failures are distinguishable from failing assertions. ✅
 
 ### RG-4 — CI and local defaults
 
