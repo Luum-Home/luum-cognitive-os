@@ -2,12 +2,11 @@
 """component_registry.py — Detect unregistered hooks, rules, skills, and packages.
 
 Used by the /register-component skill and registration-check.sh hook to surface
-OS components that are missing from the central registration files.
+OS agentic primitives that are missing from the central registration files.
 """
 
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List

@@ -16,7 +16,7 @@ from typing import Any
 
 
 class WiringValidator:
-    """Validates that Cognitive OS components are wired, not just existing."""
+    """Validates that Cognitive OS agentic primitives are wired, not just existing."""
 
     def __init__(self, project_root: str = ".") -> None:
         self.root = Path(project_root).resolve()
