@@ -83,7 +83,7 @@ That doctor creates an isolated scratch project and proves:
 
 ## Save Surfaces
 
-| Purpose | Component | Output / Effect |
+| Purpose | Primitive | Output / Effect |
 |---|---|---|
 | Capture actionable user prompts | `hooks/user-prompt-capture.sh` | `.cognitive-os/metrics/prompt-captures.jsonl` and downstream user-message processing |
 | Flush before compaction | `hooks/pre-compaction-flush.sh` | anchored summary attempt plus explicit `mem_session_summary` / `mem_save` reminder |
@@ -94,7 +94,7 @@ That doctor creates an isolated scratch project and proves:
 
 ## Recovery Surfaces
 
-| Purpose | Component | Output / Effect |
+| Purpose | Primitive | Output / Effect |
 |---|---|---|
 | Start Engram daemon when available | `hooks/engram-daemon-launcher.sh` | best-effort Engram HTTP daemon startup and runtime log |
 | Bootstrap project profile draft | `hooks/session-init.sh` + `hooks/_lib/session_init_helper.py` + `lib/project_profile_bootstrap.py` | during the first three sessions, writes `.cognitive-os/project-profile/draft.json` and `draft.md` with source-linked, sanitized signals |
@@ -104,7 +104,7 @@ That doctor creates an isolated scratch project and proves:
 
 ## Protection Surfaces
 
-| Purpose | Component | Contract |
+| Purpose | Primitive | Contract |
 |---|---|---|
 | Scan before user-facing saves | `lib/safe_engram.py` | blocks suspicious content before invoking Engram writes |
 | Detect memory threats | `lib/memory_scanner.py` | classifies prompt-injection, credential, and unsafe-memory patterns |

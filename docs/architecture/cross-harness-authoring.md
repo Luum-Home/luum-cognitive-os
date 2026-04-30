@@ -49,16 +49,16 @@ The repo already contains real portability work:
 - compatibility inventories
 
 But authoring still tends to inherit the ergonomics of the dominant harness.
-When that happens, new components look portable in theory while staying tied to
+When that happens, new agentic primitives look portable in theory while staying tied to
 one file layout, one instruction surface, or one event shape in practice.
 
 ## Behavioral Core vs Driver Projection
 
-Every significant component should be split mentally into two layers.
+Every significant agentic primitive should be split mentally into two layers.
 
 ### Behavioral Core
 
-The stable meaning of the component:
+The stable meaning of the agentic primitive:
 
 - what it does
 - what inputs it expects
@@ -96,7 +96,7 @@ Projection belongs in:
 
 ## Portability Taxonomy
 
-Use these states when evaluating a feature or component.
+Use these states when evaluating a feature or agentic primitive.
 
 ### `core-agnostic`
 
@@ -160,7 +160,7 @@ projected into harness-specific invocation surfaces.
 
 ## Required Checks Before Declaring Something Portable
 
-Before calling a new component portable, verify:
+Before calling a new agentic primitive portable, verify:
 
 1. The behavioral core is written without harness-specific assumptions.
 2. Projection details are explicit.
@@ -181,7 +181,7 @@ reference without copying large architecture documents into every install.
 
 ## Review Questions
 
-- Is this component authored once at the behavioral level?
+- Is this agentic primitive authored once at the behavioral level?
 - What part is true system behavior?
 - What part is only a harness projection?
 - Are we relying on Claude conventions without saying so?

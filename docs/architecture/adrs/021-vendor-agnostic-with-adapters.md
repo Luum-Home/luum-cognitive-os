@@ -87,7 +87,7 @@ Tasks:
 
 ### Migration
 
-Existing OS components stay as-is. Adapters are added incrementally:
+Existing OS agentic primitives stay as-is. Adapters are added incrementally:
 - Phase A: Claude Task panel sync (highest user visibility)
 - Phase B: Claude TodoWrite sync
 - Phase C: Claude memory sync
@@ -95,7 +95,7 @@ Existing OS components stay as-is. Adapters are added incrementally:
 
 ## Features that should use this pattern
 
-| OS component | Claude Code equivalent | Status |
+| OS primitive | Claude Code equivalent | Status |
 |---|---|---|
 | `.cognitive-os/tasks/active-tasks.json` | Task panel | To adapt (Phase A) |
 | Engram `work_queue` | TodoWrite | To adapt (Phase B) |

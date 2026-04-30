@@ -10,7 +10,7 @@ COS is 80% portable today. The kernel (rules, skills, SDD pipeline, Engram/MCP, 
 
 ### Portable Today (80%)
 
-| Component | Count | Coupling | Notes |
+| Primitive | Count | Coupling | Notes |
 |-----------|-------|----------|-------|
 | Rules (markdown) | 94 files | None | Pure behavioral contracts |
 | Skills (SKILL.md) | 103 files | Low | Markdown + YAML frontmatter, 16+ tools support |
@@ -22,7 +22,7 @@ COS is 80% portable today. The kernel (rules, skills, SDD pipeline, Engram/MCP, 
 
 ### Claude Code-Specific (20%)
 
-| Component | Issue | Fix |
+| Primitive | Issue | Fix |
 |-----------|-------|-----|
 | .claude/settings.json | Proprietary hook registration format | Config generator per tool |
 | Hook event names | PreToolUse, PostToolUse, Stop, SessionStart, etc. | Event name mapping table |

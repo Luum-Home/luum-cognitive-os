@@ -38,7 +38,7 @@ The two systems operate at **different layers**: `cos-update.sh` is self-hosting
 - Referenced in release criteria
 
 ### Go `cos` CLI (from cmd/cos/internal/cli/)
-**Purpose**: Package manager for reusable AI agent components.
+**Purpose**: Package manager for reusable agentic primitives.
 
 **Subcommands** (31 total):
 - **Package management**: `init`, `validate`, `install`, `remove`, `update`, `list`, `search`, `info`, `audit`, `publish`, `add`

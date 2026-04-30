@@ -14,9 +14,9 @@
 
 **What happened:** v0.1.0 generated 60+ hooks, 80+ skills, 30+ libs in ONE commit. Nobody reviewed performance. The worst hook (`rate-limit-protection.sh`) had O(n) Python subprocess spawning from day one — never caught because nobody measured. It was silently adding 30-90 seconds per agent call for months.
 
-**Why it hurt:** "Tests pass, ship it" is not enough when you're shipping 60+ components. Each one can have invisible degradation.
+**Why it hurt:** "Tests pass, ship it" is not enough when you're shipping 60+ agentic primitives. Each one can have invisible degradation.
 
-**How we know we're repeating it:** When a session produces >20 new components without benchmarking. When commits are `feat: X + Y + Z` instead of single-concern.
+**How we know we're repeating it:** When a session produces >20 new agentic primitives without benchmarking. When commits are `feat: X + Y + Z` instead of single-concern.
 
 **Prevention:**
 - Hook benchmark in pre-commit (measures latency of modified hooks)
@@ -31,7 +31,7 @@
 
 **The pattern:** Design a schema → add fields to N files → write tests that verify "field exists" → declare victory → forget to write the code that *reads* the field.
 
-**Scale of the damage:** 353 aspirational components discovered in the audit:
+**Scale of the damage:** 353 aspirational agentic primitives discovered in the audit:
 - 84 hook SCOPE tags never read
 - 95 lib scope tags never read
 - 5 of 6 SKILL.md frontmatter fields never consumed
@@ -119,7 +119,7 @@ None of these existed before the April 2026 stabilization sessions. All of them 
 
 Warning signs that we're regressing to pre-stabilization habits:
 
-- [ ] More than 10 components added in a single commit
+- [ ] More than 10 agentic primitives added in a single commit
 - [ ] A field/flag added without a PR showing the code that reads it
 - [ ] A test name containing "_exists", "_has_section", "_is_valid_yaml" (without behavior)
 - [ ] An agent report whose numbers conflict with a previous audit
