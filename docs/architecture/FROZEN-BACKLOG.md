@@ -31,7 +31,7 @@ Consolidated inventory of all plans, decisions, and queued work from engram that
 
 **Solution: Activate existing `packages/engram-sync` package**
 
-Components that already exist (Apache-2.0):
+Agentic primitives that already exist (Apache-2.0):
 - `hooks/engram-auto-sync.sh` — Stop event, exports observations to `.engram/exports/*.json`
 - `hooks/engram-auto-import.sh` — SessionStart event, imports JSONs into local engram
 - `hooks/memu-sync.sh` — memU bridge (optional)
@@ -56,12 +56,12 @@ Components that already exist (Apache-2.0):
 
 **Status (2026-04-20):** MVP delivered — audit complete, migration plan approved, first extension (`cos-advisory-llm`) extracted as proof-of-concept with backwards-compat symlinks. 14 packs and shim cleanup remain (21 waves → v1.0).
 
-- Audit: `docs/architecture/core-vs-extensions-audit-2026-04-20.md` (581 components classified: 126 CORE, 453 EXTENSION, 2 REMOVE).
+- Audit: `docs/architecture/core-vs-extensions-audit-2026-04-20.md` (581 agentic primitives classified: 126 CORE, 453 EXTENSION, 2 REMOVE).
 - Plan: `docs/architecture/core-vs-extensions-migration-plan.md` (21 waves, one pack per minor version).
 - POC: `packages/cos-advisory-llm/` (3 LLM hooks moved, symlinks at `hooks/*-llm.sh`, both profiles smoke-tested green).
 - Debt row D43 → PARTIAL.
 
-**Why:** 141 commits between v0.8.7 and v0.9.0 added many components directly to root. Some are core (vendor-agnostic, always-loaded) but others are extensions that should live in `packages/` for optional installation.
+**Why:** 141 commits between v0.8.7 and v0.9.0 added many agentic primitives directly to root. Some are core (vendor-agnostic, always-loaded) but others are extensions that should live in `packages/` for optional installation.
 
 ### Candidates to move to `packages/`
 
@@ -242,7 +242,7 @@ Not detailed in session summaries; check engram when resuming.
 
 ---
 
-## COMPONENTS WAITING FOR ACTIVATION
+## AGENTIC PRIMITIVES WAITING FOR ACTIVATION
 
 ### 23. Security tools implementation gap — engram #3155
 Hooks exist for: Semgrep, MCP-Scan, Promptfoo, Garak, Aguara, Parry

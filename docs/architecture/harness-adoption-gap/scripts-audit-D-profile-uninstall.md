@@ -31,7 +31,7 @@ left untouched per scope guard (no wiring-behavior change needed).
 | Script | What it does | Destination(s) | Correct post-ADR-001? | Risk | Recommendation |
 |---|---|---|---|---|---|
 | `scripts/apply-efficiency-profile.sh` | Generates `.claude/settings.json` with a hook matrix by tier (`lean`/`standard`/`full`) | `.claude/settings.json` only | Yes — hook paths use `$CLAUDE_PROJECT_DIR/hooks/` (portable); no skill-sync dependency | LOW | Fix dead code at lines 303–311 (cosmetic). Reconcile summary block with actual wiring (cosmetic). |
-| `scripts/uninstall.sh` | Removes COS components from project | `.claude/rules/cos/`, COS hooks in `settings.json`, `cognitive-os.yaml`, `.cognitive-os/` | **NO** — misses `.claude/skills/` directory | HIGH | Add explicit removal of `.claude/skills/` after the `.cognitive-os/` removal block |
+| `scripts/uninstall.sh` | Removes COS agentic primitives from project | `.claude/rules/cos/`, COS hooks in `settings.json`, `cognitive-os.yaml`, `.cognitive-os/` | **NO** — misses `.claude/skills/` directory | HIGH | Add explicit removal of `.claude/skills/` after the `.cognitive-os/` removal block |
 
 ---
 

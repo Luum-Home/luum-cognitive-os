@@ -10,7 +10,7 @@
 
 ## TL;DR
 
-The Cognitive OS grew from zero to 375+ components in 18 days. During that growth, three patterns emerged:
+The Cognitive OS grew from zero to 375+ agentic primitives in 18 days. During that growth, three patterns emerged:
 1. **Aspirational logic** — schemas, metadata, and flags added but never consumed
 2. **False coverage** — 67 test files (19% of suite) that only verified file existence, giving confidence that masked real regressions
 3. **Invisible performance debt** — a single hook was adding 30-90 seconds per agent call for weeks before anyone noticed
@@ -53,7 +53,7 @@ This session (April 15-16) built those measurement systems. The OS is now *self-
 ### Phase 5: Awareness (April 15, 2026)
 - **April 15:** Deep audit session. Five parallel Opus agents reveal the truth:
   - Hook overhead estimated at ~97s/session (later measured accurately as ~36.5s — first audit inflated by symlink confusion)
-  - 353 aspirational components cataloged
+  - 353 aspirational agentic primitives cataloged
   - 67 test files purely structural
   - 252 commits with zero ADRs
   - Only 3 of 13 "missing libs" actually missing
@@ -139,7 +139,7 @@ Credit where due — despite the wounds, several things were solid:
 - 342 test files, test quality unknown
 - Hook overhead: unmeasured, later found to be ~36.5s/session (peak 90s+ on agent calls)
 - ADRs: 0
-- Aspirational components: 353+ undocumented
+- Aspirational agentic primitives: 353+ undocumented
 - Mutation score: unmeasured
 - Agent amnesia: guaranteed — no injection mechanism
 
@@ -147,7 +147,7 @@ Credit where due — despite the wounds, several things were solid:
 - 274 test files, 94% behavioral (structural ones deleted)
 - Hook overhead: ~20s/session (44% reduction, verified)
 - ADRs: 22 (full decision history)
-- Aspirational components: 0 of the discovered 353 remain (removed or implemented)
+- Aspirational agentic primitives: 0 of the discovered 353 remain (removed or implemented)
 - Mutation score: 34% baseline on rate_limiter.py (measured, CI gate set at 40%)
 - Agent amnesia: prevented via SubagentStart injection of mandatory rules
 
@@ -204,7 +204,7 @@ Mapped to each root cause:
 
 ## LESSONS DISTILLED
 
-1. **AI-scale code generation needs AI-scale measurement**: if you can generate 60 components in one commit, you need automated checks that scale with generation, not with human review capacity.
+1. **AI-scale code generation needs AI-scale measurement**: if you can generate 60 agentic primitives in one commit, you need automated checks that scale with generation, not with human review capacity.
 
 2. **Schema additions are not progress**: adding a field to 100 files is not work — it's negative work unless code reads that field. The metric of progress is *behavior change*, not *file change*.
 
@@ -233,7 +233,7 @@ Honest acknowledgment of what could still go wrong:
 - **cos-dispatch Phases 3-5 not yet built** — the mature dispatcher that would make pattern detection production-quality is partial
 - **Mutation score is measured but not enforced on existing code** — CI gate only applies to new changes
 - **Engram sync not activated** — single-machine local state, cross-device access manual
-- **Documentation of components is uneven** — many skills/hooks/libs still have stale docs (partial sweep in this session)
+- **Documentation of agentic primitives is uneven** — many skills/hooks/libs still have stale docs (partial sweep in this session)
 - **Subagent context injection depends on orchestrator remembering to use the hook** — if disabled, we lose the amnesia prevention
 - **Human reviewer is still single-point-of-failure** — only one person reviews auto-ADR drafts
 
@@ -260,7 +260,7 @@ This post-mortem was written during the stabilization session on April 16, 2026,
 
 > "incluso hacer un post mortem producto de un crecimiento enorme durante el tiempo que nació el proyecto y a la velocidad que se desarrollaba dejaba lógica aspiracional vs comportamental, y todos los detalles que hablamos acá"
 
-That request triggered this document. It exists because the user recognized that the *malestar* — the discomfort of discovering 353 aspirational components, 67 false tests, three wrong audits — is itself valuable knowledge. Losing that discomfort would mean losing the motivation for self-awareness.
+That request triggered this document. It exists because the user recognized that the *malestar* — the discomfort of discovering 353 aspirational agentic primitives, 67 false tests, three wrong audits — is itself valuable knowledge. Losing that discomfort would mean losing the motivation for self-awareness.
 
 The post-mortem joins `LESSONS-LEARNED.md`, `FROZEN-BACKLOG.md`, and `stabilization-roadmap.md` as the four living documents that preserve institutional memory across sessions. Each captures a different dimension:
 
