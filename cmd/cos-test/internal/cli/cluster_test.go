@@ -40,6 +40,10 @@ const clusterYAML = `lanes:
     paths: [tests/integration/]
     parallel: marker
     marker_serial: docker
+  integration-docker:
+    paths: [tests/integration/]
+    parallel: false
+    marker_include: docker
   behavior:
     paths: [tests/behavior/]
     parallel: false
@@ -119,6 +123,26 @@ func TestBuildClusterPlan_MarkerSplit(t *testing.T) {
 	}
 	if plan.Invokes[1].Workers != "0" {
 		t.Errorf("second invocation workers = %q, want 0", plan.Invokes[1].Workers)
+	}
+}
+
+func TestBuildClusterPlan_MarkerInclude(t *testing.T) {
+	cfg := config.DefaultConfig()
+	cfg.ProjectRoot = t.TempDir()
+	writeRegistry(t, cfg.ProjectRoot, clusterYAML)
+
+	plan, err := buildClusterPlan(cfg, "integration-docker")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(plan.Invokes) != 1 {
+		t.Fatalf("marker-include lane should produce 1 invocation, got %d", len(plan.Invokes))
+	}
+	if !containsPair(plan.Invokes[0].Args, "-m", "docker") {
+		t.Fatalf("expected marker include docker in args, got %v", plan.Invokes[0].Args)
+	}
+	if !strings.Contains(plan.Reason, "including") {
+		t.Fatalf("expected reason to mention include filter, got %q", plan.Reason)
 	}
 }
 

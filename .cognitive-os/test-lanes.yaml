@@ -20,7 +20,14 @@ lanes:
   integration:
     paths: [tests/integration/]
     parallel: false
-    stateful_reason: "Heterogeneous lane: real services (Engram, Phoenix, testcontainers), session-scoped containers, TCP-port waits. Marker-based parallelization (docker subset only) flaked 2-4 tests + 9 errors in 3 smoke runs — needs finer-grained classification before parallel safety holds. Tracked as ADR-072 follow-up."
+    stateful_reason: "Heterogeneous lane: real services (Engram, Phoenix, testcontainers), session-scoped containers, TCP-port waits. Default lane excludes docker-marked tests; Docker subset is explicit via integration-docker."
+    marker_exclude: docker
+  integration-docker:
+    paths: [tests/integration/]
+    parallel: false
+    stateful_reason: "Docker/testcontainers integration subset. Explicit only; requires COS_ALLOW_DOCKER_TESTS=1."
+    marker_include: docker
+    optional: true
   behavior:
     paths: [tests/behavior/]
     parallel: false
@@ -33,6 +40,7 @@ lanes:
     paths: [tests/e2e/]
     parallel: false
     stateful_reason: "full system"
+    optional: true
   chaos:
     paths: [tests/chaos/]
     parallel: false
