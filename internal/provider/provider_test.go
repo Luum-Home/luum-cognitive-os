@@ -171,8 +171,65 @@ func TestCodexParse_BashTool(t *testing.T) {
 func TestCodexConfigPaths(t *testing.T) {
 	p := NewCodexProvider()
 	paths := p.ConfigPaths("/project")
-	if len(paths) != 1 || paths[0] != "/project/hooks.json" {
-		t.Errorf("config paths = %v, want [/project/hooks.json]", paths)
+	if len(paths) != 1 || paths[0] != "/project/.codex/hooks.json" {
+		t.Errorf("config paths = %v, want [/project/.codex/hooks.json]", paths)
+	}
+}
+
+func TestCodexParse_UserPromptSubmit(t *testing.T) {
+	raw := []byte(`{
+		"hook_event": "UserPromptSubmit",
+		"tool_input": {"prompt": "ship ADR-081"},
+		"session_id": "codex-002"
+	}`)
+
+	p := NewCodexProvider()
+	ctx, err := p.Parse(raw)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if ctx.Event != hook.CanonicalEventPromptSubmit {
+		t.Errorf("event = %q, want %q", ctx.Event, hook.CanonicalEventPromptSubmit)
+	}
+	if ctx.ToolInput.Prompt != "ship ADR-081" {
+		t.Errorf("prompt = %q, want %q", ctx.ToolInput.Prompt, "ship ADR-081")
+	}
+}
+
+func TestCodexParse_StopMapsToSessionEnd(t *testing.T) {
+	raw := []byte(`{"hook_event":"Stop","session_id":"codex-stop"}`)
+	p := NewCodexProvider()
+	ctx, err := p.Parse(raw)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if ctx.Event != hook.CanonicalEventSessionEnd {
+		t.Errorf("event = %q, want %q", ctx.Event, hook.CanonicalEventSessionEnd)
+	}
+}
+
+func TestCodexParse_NonBashToolCoverageGapIsExplicit(t *testing.T) {
+	raw := []byte(`{"hook_event":"PreToolUse","tool_name":"Edit","session_id":"codex-gap"}`)
+	p := NewCodexProvider()
+	ctx, err := p.Parse(raw)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if ctx.Metadata["parse_error_reason"] != "codex_tool_coverage_gap" {
+		t.Fatalf("metadata = %v, want codex_tool_coverage_gap", ctx.Metadata)
+	}
+}
+
+func TestCodexSupportedEvents(t *testing.T) {
+	p := NewCodexProvider()
+	supported := p.SupportedEvents()
+	for _, event := range []string{"SessionStart", "UserPromptSubmit", "PreToolUse", "PostToolUse", "Stop"} {
+		if !supported[event] {
+			t.Fatalf("expected Codex event %s to be supported", event)
+		}
+	}
+	if supported["PreCompact"] {
+		t.Fatal("PreCompact must not be advertised for Codex")
 	}
 }
 
