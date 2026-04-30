@@ -1,0 +1,40 @@
+You are a sub-agent porting an external integration.
+
+## Task
+Port the existing Aguara security scanner integration from the legacy Python
+wrapper (`scripts/legacy-aguara.py`) to the new Go service
+(`svc-security/internal/aguara/`).  Add Parry vulnerability scanning as a
+secondary integration and wire Repomix for repository analysis context.
+
+## Context
+This is a Large-complexity task involving two external tool integrations and
+one repository analysis tool.  All three are Tier-2 contextual rules that are
+only expanded on-demand.
+
+Required integration rules:
+- [`aguara-integration`] — 189-rule security scanner; read the integration guide
+- [`parry-integration`] — vulnerability scanning; see auth requirements
+- [`repomix-integration`] — repository context tool; configure for the new service
+
+Optionally useful:
+- [`e2b-integration`] — sandbox execution (needed if you want to test scanner output)
+- [`tero-integration`] — trace evaluation (advanced; only if scan pipeline is instrumented)
+
+Governance rules (always active):
+- [`acceptance-criteria`] — define measurable criteria before starting
+- [`blast-radius`] — this touches svc-security and two external services
+- [`impact-analysis`] — run before applying
+
+## Acceptance Criteria
+1. `ls svc-security/internal/aguara/*.go | wc -l` >= 3 (client, models, integration_test)
+2. `ls svc-security/internal/parry/*.go | wc -l` >= 2
+3. `go build ./svc-security/...` exits 0
+4. `go test ./svc-security/... -tags=integration` exits 0
+5. `grep -r "legacy-aguara" scripts/ --include="*.py" | wc -l` = 0 (legacy removed)
+
+## HALT Protocol
+This task triggers HALT (multi-service, external API contracts).
+Output PLAN + SCOPE + RISK before executing.
+
+## Auto-Refine
+Retry up to 3 times on build/test failure.  Escalate per [`agent-escalation`].
