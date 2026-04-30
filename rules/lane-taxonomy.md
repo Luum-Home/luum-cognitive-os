@@ -58,7 +58,7 @@ places:
 | Execution | `cmd/cos-test` |
 | Reporting | `scripts/pytest-with-summary.sh` |
 | Governance | `auto-verify`, `dod-gate`, `coverage-enforcement`, `test-quality-audit` |
-| Lifecycle | `.cognitive-os/reports/test-runs/`, metrics JSONL, repair ledgers |
+| Lifecycle | metrics JSONL, baselines, repair ledgers |
 
 Legacy scripts (`cos-smoke.sh`, `test-cognitive-os*.sh`, `test-all.sh`,
 `run-all-tests.sh`) MUST declare `ROLE` and `CANONICAL` headers and must not be

@@ -18,7 +18,7 @@ contributors should be able to answer two questions quickly:
 | Execution | Run the selected test set with the right worker policy. | `cmd/cos-test` | `cos-test` is the user-facing entry point. |
 | Reporting | Persist summaries, failures, inventory, JUnit, and run history. | `scripts/pytest-with-summary.sh` | Transport/reporting wrapper. It should not own lane policy. |
 | Governance | Enforce Definition of Done, coverage, auto-verify, quality gates, and budgets. | hooks/skills such as `auto-verify`, `dod-gate`, `coverage-enforcement`, `test-quality-audit` | Governance consumes test evidence; it should not duplicate selection logic. |
-| Lifecycle | Track quality ratchets, baselines, repair ledgers, and historical drift. | `.cognitive-os/reports/test-runs/`, metrics JSONL, repair ledgers | Lifecycle artifacts explain whether the suite is improving over time. |
+| Lifecycle | Track quality ratchets, baselines, repair ledgers, and historical drift. | metrics JSONL, baselines, repair ledgers | Lifecycle artifacts explain whether the suite is improving over time. |
 
 ## Canonical developer flow
 
