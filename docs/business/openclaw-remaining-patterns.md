@@ -316,7 +316,7 @@
 
 ## 23. Migration Tools
 
-**What it does:** Workspace portability tools that export and import agent configurations, memory, and state between environments. Supports partial migration (only specific agentic primitives), conflict resolution, and dry-run mode.
+**What it does:** Workspace portability tools that export and import agent configurations, memory, and state between environments. Supports partial migration (only specific workspace assets), conflict resolution, and dry-run mode.
 
 **OpenClaw reference:** `scripts/migration/`, exporter, importer, conflict resolver, dry-run engine.
 
