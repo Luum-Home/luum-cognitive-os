@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -21,8 +22,11 @@ import (
 var gitDiffFn = defaultGitDiff
 
 var (
-	focusedDryRun   bool
-	focusedPathsArg []string
+	focusedDryRun     bool
+	focusedPlanJSON   bool
+	focusedNoTestmon  bool
+	focusedPathsArg   []string
+	focusedChangedArg []string
 )
 
 var focusedCmd = &cobra.Command{
@@ -32,21 +36,28 @@ var focusedCmd = &cobra.Command{
 
 Default mode: derives changed files from git (merge-base..HEAD ∪ uncommitted ∪
 staged), maps them to test files via same-name heuristic, and runs those tests
-with -n auto. If a pytest-testmon DB exists at
+with the canonical worker policy. If a pytest-testmon DB exists at
 .cognitive-os/cache/testmon/.testmondata, testmon is preferred. If no matches
 are found and testmon is unavailable, falls back to "pytest --lf --ff -x".
 
 Examples:
   cos-test focused                       # diff-driven
   cos-test focused tests/unit/test_x.py  # explicit
-  cos-test focused --dry-run             # print resolved plan, no execute`,
+  cos-test focused --dry-run             # print resolved plan, no execute
+  cos-test focused --plan-json --no-testmon --changed-files lib/foo.py`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg := config.DefaultConfig()
 		cfg.CIMode = ciMode
 		cfg.Verbose = verbose
 		explicit := append([]string(nil), focusedPathsArg...)
 		explicit = append(explicit, args...)
-		return runFocused(cfg, explicit, focusedDryRun)
+		opts := focusedRunOptions{
+			DryRun:       focusedDryRun,
+			PlanJSON:     focusedPlanJSON,
+			UseTestmon:   !focusedNoTestmon,
+			ChangedFiles: focusedChangedArg,
+		}
+		return runFocusedWithOptions(cfg, explicit, opts)
 	},
 }
 
@@ -54,21 +65,46 @@ func init() {
 	focusedCmd.Flags().BoolVar(&focusedDryRun, "dry-run", false,
 		"Print resolved test list and pytest command, do not execute")
 	focusedCmd.Flags().StringSliceVar(&focusedPathsArg, "paths", nil,
-		"Override git-diff with explicit paths (repeatable / comma-separated)")
+		"Override git-diff with explicit test paths (repeatable / comma-separated)")
+	focusedCmd.Flags().StringSliceVar(&focusedChangedArg, "changed-files", nil,
+		"Override git-diff with changed source paths for plan resolution (repeatable / comma-separated)")
+	focusedCmd.Flags().BoolVar(&focusedNoTestmon, "no-testmon", false,
+		"Disable pytest-testmon plan preference and use diff mapping/fallback")
+	focusedCmd.Flags().BoolVar(&focusedPlanJSON, "plan-json", false,
+		"Print the resolved focused test plan as JSON and exit")
 	rootCmd.AddCommand(focusedCmd)
 }
 
 // focusedPlan is the resolved invocation strategy.
 type focusedPlan struct {
-	Mode      string   // "explicit" | "testmon" | "mapped" | "fallback"
-	TestPaths []string // pytest positional args (paths or nodeids)
-	ExtraArgs []string // -m, --testmon, --lf, etc. Worker policy is InvocationOptions.
-	Workers   string   // wrapper --workers scalar
-	Reason    string
+	Mode      string   `json:"mode"`       // "explicit" | "testmon" | "mapped" | "fallback"
+	TestPaths []string `json:"test_paths"` // pytest positional args (paths or nodeids)
+	ExtraArgs []string `json:"extra_args"` // -m, --testmon, --lf, etc. Worker policy is InvocationOptions.
+	Workers   string   `json:"workers"`    // wrapper --workers scalar
+	Reason    string   `json:"reason"`
+}
+
+type focusedRunOptions struct {
+	DryRun       bool
+	PlanJSON     bool
+	UseTestmon   bool
+	ChangedFiles []string
+}
+
+type focusedPlanBuildOptions struct {
+	UseTestmon   bool
+	ChangedFiles []string
 }
 
 func runFocused(cfg *config.Config, explicit []string, dryRun bool) error {
-	plan, err := buildFocusedPlan(cfg, explicit, gitDiffFn)
+	return runFocusedWithOptions(cfg, explicit, focusedRunOptions{DryRun: dryRun, UseTestmon: true})
+}
+
+func runFocusedWithOptions(cfg *config.Config, explicit []string, runOpts focusedRunOptions) error {
+	plan, err := buildFocusedPlanWithOptions(cfg, explicit, gitDiffFn, focusedPlanBuildOptions{
+		UseTestmon:   runOpts.UseTestmon,
+		ChangedFiles: runOpts.ChangedFiles,
+	})
 	if err != nil {
 		return err
 	}
@@ -78,6 +114,10 @@ func runFocused(cfg *config.Config, explicit []string, dryRun bool) error {
 	pr := runner.NewPytestRunner(cfg)
 	opts := runner.InvocationOptions{Workers: plan.Workers, Lane: "focused"}
 	cmdLine := strings.Join(pr.PytestArgsWithOptions(args, opts), " ")
+
+	if runOpts.PlanJSON {
+		return json.NewEncoder(os.Stdout).Encode(plan)
+	}
 
 	info := banner.Info{
 		Subcommand: "focused",
@@ -94,7 +134,7 @@ func runFocused(cfg *config.Config, explicit []string, dryRun bool) error {
 	fmt.Printf("[cos-test focused] mode=%s\n", plan.Mode)
 	fmt.Printf("[cos-test focused] cmd: %s\n", cmdLine)
 
-	if dryRun {
+	if runOpts.DryRun {
 		fmt.Println("[cos-test focused] dry-run: not executing")
 		return nil
 	}
@@ -105,6 +145,10 @@ func runFocused(cfg *config.Config, explicit []string, dryRun bool) error {
 // buildFocusedPlan resolves the strategy: explicit > testmon > mapped >
 // fallback. The diffFn is injectable for tests.
 func buildFocusedPlan(cfg *config.Config, explicit []string, diffFn func(projectRoot string) ([]string, error)) (*focusedPlan, error) {
+	return buildFocusedPlanWithOptions(cfg, explicit, diffFn, focusedPlanBuildOptions{UseTestmon: true})
+}
+
+func buildFocusedPlanWithOptions(cfg *config.Config, explicit []string, diffFn func(projectRoot string) ([]string, error), opts focusedPlanBuildOptions) (*focusedPlan, error) {
 	plan := &focusedPlan{Workers: focusedWorkerPolicy()}
 
 	if len(explicit) > 0 {
@@ -114,25 +158,31 @@ func buildFocusedPlan(cfg *config.Config, explicit []string, diffFn func(project
 		return plan, nil
 	}
 
-	changed, err := diffFn(cfg.ProjectRoot)
-	if err != nil {
-		// Soft-fail to fallback when git diff is unusable.
-		plan.Mode = "fallback"
-		plan.Reason = fmt.Sprintf("git diff unusable (%v); using --lf --ff -x", err)
-		plan.ExtraArgs = []string{"--lf", "--ff", "-x"}
-		return plan, nil
+	changed := uniqueSorted(opts.ChangedFiles)
+	if len(changed) == 0 {
+		var err error
+		changed, err = diffFn(cfg.ProjectRoot)
+		if err != nil {
+			// Soft-fail to fallback when git diff is unusable.
+			plan.Mode = "fallback"
+			plan.Reason = fmt.Sprintf("git diff unusable (%v); using --lf --ff -x", err)
+			plan.ExtraArgs = []string{"--lf", "--ff", "-x"}
+			return plan, nil
+		}
 	}
 
 	mapped := mapChangedToTests(cfg, changed)
 
 	testmonDB := filepath.Join(cfg.ProjectRoot, ".cognitive-os", "cache", "testmon", ".testmondata")
-	if _, err := os.Stat(testmonDB); err == nil {
-		plan.Mode = "testmon"
-		plan.Reason = fmt.Sprintf("testmon DB present (%s)", testmonDB)
-		plan.ExtraArgs = []string{"--testmon"}
-		// Testmon decides selection itself; pass mapped as additional context only.
-		plan.TestPaths = mapped
-		return plan, nil
+	if opts.UseTestmon {
+		if _, err := os.Stat(testmonDB); err == nil {
+			plan.Mode = "testmon"
+			plan.Reason = fmt.Sprintf("testmon DB present (%s)", testmonDB)
+			plan.ExtraArgs = []string{"--testmon"}
+			// Testmon decides selection itself; pass mapped as additional context only.
+			plan.TestPaths = mapped
+			return plan, nil
+		}
 	}
 
 	if len(mapped) == 0 {
