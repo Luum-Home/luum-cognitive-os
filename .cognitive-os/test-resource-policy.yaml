@@ -33,26 +33,6 @@ lanes:
     workers: 0
     timeout_seconds: 900
     docker_policy: forbidden
-  integration-memory:
-    workers: 0
-    timeout_seconds: 420
-    docker_policy: forbidden
-  integration-installer:
-    workers: 0
-    timeout_seconds: 900
-    docker_policy: forbidden
-  integration-hooks:
-    workers: 0
-    timeout_seconds: 600
-    docker_policy: forbidden
-  integration-provider:
-    workers: 0
-    timeout_seconds: 600
-    docker_policy: forbidden
-  integration-runtime:
-    workers: 0
-    timeout_seconds: 900
-    docker_policy: forbidden
   integration-docker:
     workers: 0
     timeout_seconds: 1200

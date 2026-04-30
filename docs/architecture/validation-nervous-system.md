@@ -59,7 +59,7 @@ canonical command and must not become new centers of gravity.
 
 ## Integration lane semantics
 
-`./cos-test cluster --lane integration --ci` is the compatibility umbrella and is not a lightweight lane. It is an
+`./cos-test cluster --lane integration --ci` is not a lightweight lane. It is an
 explicit, stateful SO-maintainer lane that currently expands to a serial
 non-Docker integration run through `scripts/pytest-with-summary.sh`.
 
@@ -69,16 +69,13 @@ artifacts, and shared-state surfaces. It should be used before merge/release or
 after touching installation, hooks, memory, harness drivers, provider/runtime
 behavior, or session lifecycle code — not as a reflex during normal editing.
 
-The integration lane is now split into narrower optional lanes:
+Future work should split it into narrower lanes such as:
 
-- `integration-memory` — memory/session continuity.
-- `integration-installer` — install/update/projection flows.
-- `integration-hooks` — hook-driven integration surfaces.
-- `integration-provider` — provider and harness adapter behavior.
-- `integration-runtime` — executor, repair, queue, metrics, and runtime flows.
-
-The legacy `integration` lane remains as a compatibility umbrella, but SO
-maintainers should prefer the split lane that matches the changed surface.
+- `integration-memory`
+- `integration-installer`
+- `integration-hooks`
+- `integration-provider`
+- `integration-runtime`
 
 ## Artifact-first governance contract
 
