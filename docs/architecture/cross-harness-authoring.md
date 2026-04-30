@@ -118,7 +118,7 @@ deeper implementation.
 The feature intentionally depends on a harness-specific capability and should
 not be marketed as portable.
 
-## Authoring Rules by Component Type
+## Authoring Rules by Agentic Primitive Type
 
 ### Skills
 

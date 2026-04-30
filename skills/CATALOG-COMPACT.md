@@ -34,13 +34,13 @@ Total skills: 142
 | cognitive-os-benchmark | Run benchmark comparisons between Cognitive OS and BMAD METHOD v6 |
 | cognitive-os-test | Run the Cognitive OS test suite with persisted summary (junit + failures + tails). |
 | compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI… |
-| component-classifier | \"Classify a new component (skill, hook, rule, lib) as CORE or PACKAGE. |
-| component-reality-check | Classify every SO component into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime. |
+| component-classifier | \"Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. |
+| component-reality-check | Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime. |
 | deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
 | deps-update | Audit and optionally upgrade project dependencies — Python, engram binary, Claude Code plugins, Doc… |
 | detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
 | dogfood-score | Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs). |
-| harness-audit | Evaluate harness components (hooks, rules, skills) for continued relevance. |
+| harness-audit | Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance. |
 | metrics-calibrator | Analyze KPI history and auto-calibrate thresholds for meaningful alerting |
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules. |
 | paperclip-dashboard | View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent… |
@@ -70,7 +70,7 @@ Total skills: 142
 | caveman | Ultra-compressed communication mode. |
 | caveman-es | Modo cavernícola en español. |
 | cognitive-os-init | META skill — initialize Cognitive OS for a project by chaining detect-stack →… |
-| cognitive-os-status | Full health check of all Cognitive OS components |
+| cognitive-os-status | Full health check of all Cognitive OS agentic primitives |
 | compress | Compress natural language memory files (CLAUDE.md, todos, preferences) into… |
 | cos-status | Display current Cognitive OS state — active profile, skills exposed, hooks… |
 | decision-triage | Surface pending operator decisions across research reports + ADR open questions in unified urgency-sorted view. |
