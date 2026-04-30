@@ -152,6 +152,15 @@
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-section-validator.sh\""
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/tool-sequence-capture.sh\""
+          }
+        ]
       }
     ],
     "Stop": [
@@ -165,6 +174,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-failure-monitor.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-synthesis-scanner.sh\""
           }
         ]
       },
