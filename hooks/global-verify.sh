@@ -139,7 +139,13 @@ def emit_event(event_type, payload, severity="info"):
         pass  # Graceful degradation: no metric emission if lib unavailable
 
 if mode == "before":
-    files = get_changed_files()
+    # VERIFY_FILES_OVERRIDE lets tests inject a synthetic changed-file list
+    # so the contract tests don't depend on a dirty working tree (colon-separated).
+    override = os.environ.get("VERIFY_FILES_OVERRIDE", "")
+    if override:
+        files = [f for f in override.split(":") if f.strip()]
+    else:
+        files = get_changed_files()
     baseline = run_targeted_tests(files)
     if baseline is None:
         # No tests resolved — write a skip marker so 'after' phase knows to no-op

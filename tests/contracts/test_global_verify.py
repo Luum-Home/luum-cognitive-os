@@ -143,6 +143,10 @@ def test_before_phase_writes_baseline_when_tests_resolve(tmp_path):
             "before", agent_id,
             baseline_dir=isolated_baseline_dir,
             resolver_dir=r.resolver_dir,
+            # Inject a synthetic changed-file list so the resolver gets called
+            # regardless of the working-tree state (this test must work on a
+            # clean checkout in CI).
+            env_extra={"VERIFY_FILES_OVERRIDE": "lib/synthetic_changed.py"},
         )
         # Hook should exit 0 regardless of test results (baseline capture, not blocking)
         assert result.returncode == 0, (
