@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help test test-local-fast test-laptop test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
+.PHONY: help test test-local-fast test-laptop test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -46,6 +46,7 @@ help:
 	@echo "  test-changed      Only tests affected by git diff HEAD."
 	@echo "  smoke             bash scripts/cos-smoke.sh — critical path e2e."
 	@echo "  audit             Aspirational audit + self-knowledge refresh."
+	@echo "  install-test      ADR-059 §Phase 2: clone + time end-to-end install; emits JSONL record."
 	@echo "  clean             Prune metrics + caches (keeps last 1000 JSONL events)."
 	@echo ""
 	@echo "Canonical test entry (ADR-072):"
@@ -131,6 +132,12 @@ smoke:
 audit:
 	$(PY) scripts/aspirational_audit.py --dry-run
 	$(PY) scripts/cos_build_self_knowledge.py
+
+# ADR-059 §Phase 2 — measure end-to-end install time and emit JSONL record.
+# Pass PROFILE= to override (default --standard).
+# e.g. make install-test PROFILE=--minimal
+install-test:
+	@bash scripts/install-timing-test.sh --profile $${PROFILE:---standard}
 
 ci-deps:
 	@bash scripts/ci-setup.sh
