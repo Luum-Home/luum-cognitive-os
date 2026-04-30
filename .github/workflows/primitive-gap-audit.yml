@@ -21,21 +21,24 @@ jobs:
             --trend \
             --trend-path docs/reports/primitive-gap-history.jsonl \
             --markdown docs/reports/primitive-gap-latest.md \
+            --regression-report docs/reports/primitive-gap-regressions.md \
             --json > docs/reports/primitive-gap-latest.json
 
       - name: Upload primitive gap snapshot artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: primitive-gap-snapshot
           path: |
             docs/reports/primitive-gap-latest.json
             docs/reports/primitive-gap-latest.md
+            docs/reports/primitive-gap-regressions.md
             docs/reports/primitive-gap-history.jsonl
 
       - name: Commit primitive gap trend
         run: |
           git config user.name "cognitive-os-bot"
           git config user.email "bot@luum.ai"
-          git add docs/reports/primitive-gap-latest.json docs/reports/primitive-gap-latest.md docs/reports/primitive-gap-history.jsonl
+          git add docs/reports/primitive-gap-latest.json docs/reports/primitive-gap-latest.md docs/reports/primitive-gap-regressions.md docs/reports/primitive-gap-history.jsonl
           git diff --staged --quiet || git commit -m "chore(audit): weekly primitive gap snapshot $(date -u +%Y-%m-%d)"
           git push
