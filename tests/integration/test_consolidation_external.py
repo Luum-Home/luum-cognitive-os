@@ -18,7 +18,7 @@ scenario by:
 Related files:
     - hooks/self-install.sh       (the sync + profile filter logic)
     - rules/                       (the source rule files)
-    - docs/rules-loading-architecture.md (rationale for 16 core rules)
+    - ADR-074 (RULES-COMPACT.md as Stage 1; referenced rules expand in Stage 2)
 """
 
 from __future__ import annotations
@@ -38,21 +38,6 @@ SELF_INSTALL = PROJECT_ROOT / "hooks" / "self-install.sh"
 # Must match the CORE_RULES array in hooks/self-install.sh exactly.
 CORE_RULES = {
     "RULES-COMPACT.md",
-    "adaptive-bypass.md",
-    "acceptance-criteria.md",
-    "agent-quality.md",
-    "trust-score.md",
-    "token-economy.md",
-    "definition-of-done.md",
-    "phase-aware-agents.md",
-    "closed-loop-prompts.md",
-    "error-learning.md",
-    "credential-management.md",
-    "result-management.md",
-    "model-routing.md",
-    "python-naming.md",
-    "bash-naming.md",
-    "lane-taxonomy.md",
 }
 
 # All rule .md files in the source rules/ directory (dynamic count)
@@ -157,7 +142,7 @@ def _apply_profile_filter_pure(rules: set[str], profile: str) -> set[str]:
     implementation for verifying behavior.
 
     lean                  -> RULES-COMPACT.md only
-    standard              -> CORE_RULES (16 core rules)
+    standard              -> CORE_RULES (RULES-COMPACT.md Stage 1)
     full / self-hosting   -> ALL rules (full context for development)
     """
     if profile == "lean":
@@ -177,7 +162,7 @@ def _apply_profile_filter_pure(rules: set[str], profile: str) -> set[str]:
 class TestProfileFilterLogic:
     """Test the profile filtering logic in pure Python."""
 
-    def test_standard_profile_keeps_16_core_rules(self):
+    def test_standard_profile_keeps_stage1_core_rules(self):
         """Standard profile should keep exactly the core rules."""
         filtered = _apply_profile_filter_pure(ALL_RULE_FILES, "standard")
         assert filtered == CORE_RULES
@@ -209,7 +194,7 @@ class TestProfileFilterLogic:
 
     def test_core_rules_count_matches_current_contract(self):
         """The CORE_RULES constant tracks the current self-install contract."""
-        assert len(CORE_RULES) == 16
+        assert len(CORE_RULES) == 1
 
 
 class TestProfileFilterShellScript:
@@ -282,7 +267,7 @@ class TestExternalProjectSimulation:
     logic directly and checking file system results.
     """
 
-    def test_standard_profile_installs_16_core_rules(self, tmp_path):
+    def test_standard_profile_installs_stage1_core_rules(self, tmp_path):
         """Simulate external project install with standard profile."""
         project = _setup_external_project(tmp_path, "standard")
         cos_rules_dir = project / ".claude" / "rules" / "cos"
@@ -307,19 +292,9 @@ class TestExternalProjectSimulation:
 
         remaining = {f.name for f in cos_rules_dir.glob("*.md")}
 
-        # Must-have rules for any project.
-        assert "RULES-COMPACT.md" in remaining
-        assert "acceptance-criteria.md" in remaining
-        assert "trust-score.md" in remaining
-        assert "credential-management.md" in remaining
-        assert "error-learning.md" in remaining
-        assert "phase-aware-agents.md" in remaining
-        assert "closed-loop-prompts.md" in remaining
-        assert "token-economy.md" in remaining
-        assert "adaptive-bypass.md" in remaining
-        assert "agent-quality.md" in remaining
-        assert "result-management.md" in remaining
-        assert "model-routing.md" in remaining
+        # Stage 1 must install the compact index. Referenced rules are loaded
+        # through Stage 2 [ref-key] expansion, not duplicated as symlinks.
+        assert remaining == {"RULES-COMPACT.md"}
 
     def test_lean_profile_installs_only_compact(self, tmp_path):
         """Lean profile should only have RULES-COMPACT.md."""
