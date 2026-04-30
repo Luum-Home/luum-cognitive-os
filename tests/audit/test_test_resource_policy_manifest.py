@@ -54,6 +54,8 @@ def test_docker_and_e2e_lanes_are_explicit_opt_in() -> None:
     policy = _load_yaml(POLICY)
 
     assert lanes["integration"]["marker_exclude"] == "docker"
+    assert lanes["integration"]["optional"] is True
+    assert policy["lanes"]["integration"]["docker_policy"] == "forbidden"
     assert lanes["integration-docker"]["optional"] is True
     assert lanes["integration-docker"]["marker_include"] == "docker"
     assert policy["lanes"]["integration-docker"]["docker_policy"] == "required"
