@@ -91,7 +91,7 @@ Total: **38 CORE**. Meets the <40 target.
 
 ### EXTENSION hook packs (rest)
 
-Rather than enumerate 99 individual rows (too long to be useful), hooks are grouped by pack. Each row = (pattern → destination pack). Full 1:1 mapping lives in `docs/architecture/core-vs-extensions-migration-plan.md` §Appendix A.
+Rather than enumerate 99 individual rows (too long to be useful), hooks are grouped by pack. Each row = (pattern → destination pack). Full 1:1 mapping lives in `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md` §Appendix A.
 
 | current path pattern | class | destination pack | reason |
 |---|---|---|---|

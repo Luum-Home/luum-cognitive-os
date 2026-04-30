@@ -323,7 +323,7 @@ print(f'\${total:.4f}')
 
 - `rules/llm-dispatch.md` — normative rule
 - `docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md` — decision record
-- `docs/roadmaps/adr-049-050-051-mega-plan.md` — checkpoint roadmap
+- `.cognitive-os/plans/roadmaps/adr-049-050-051-mega-plan.md` — checkpoint roadmap
 - `skills/llm-status/SKILL.md` — skill user invokes
 - `lib/dispatch.py` — dispatch implementation
 - `lib/qwen_provider.py` — Qwen direct-SDK

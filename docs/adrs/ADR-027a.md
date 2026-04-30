@@ -113,7 +113,7 @@ returns `0`.
 
 ## 4. C1 — Hook count reconciliation (conflict with hook-architecture-v2)
 
-`docs/plans/features/hook-architecture-v2.md` Phase 2 defines canonical hook counts for each
+`.cognitive-os/plans/features/hook-architecture-v2.md` Phase 2 defines canonical hook counts for each
 efficiency profile:
 
 | Profile | hook-arch-v2 target |
@@ -138,7 +138,7 @@ clarification:
 - The **total** `settings.json` entry count (across all matchers: SessionStart, UserPromptSubmit,
   Bash, Write/Edit, Stop, PreCompact, Notification) is governed by the active efficiency profile
   and is orthogonal to the D3 target.
-- hook-architecture-v2.md's `standard=34` measures total entries across all matchers, which is
+- `.cognitive-os/plans/features/hook-architecture-v2.md`'s `standard=34` measures total entries across all matchers, which is
   consistent with the efficiency profile system, not with D3's subset target.
 
 **ADR-027 D3 KPI row correction:** The KPI row "Registered hook entries | 27 | ≤ 18" is replaced
@@ -146,9 +146,9 @@ with:
 
 > Registered hook entries (Agent-matcher subset) | 7 (4 PreToolUse Agent + 3 PostToolUse Agent) |
 > **≤ 2** (1 merged PreToolUse Agent + 1 merged PostToolUse Agent) | Total settings.json entry
-> count governed by efficiency profile per hook-architecture-v2.md canonical counts.
+> count governed by efficiency profile per `.cognitive-os/plans/features/hook-architecture-v2.md` canonical counts.
 
-This removes the contradiction: ADR-027 D3 owns the Agent-matcher subset; hook-architecture-v2
+This removes the contradiction: ADR-027 D3 owns the Agent-matcher subset; `.cognitive-os/plans/features/hook-architecture-v2.md`
 owns the total profile counts. Both can be satisfied simultaneously.
 
 ---
@@ -176,7 +176,7 @@ This addendum formalises the precedence rule:
 - Commit `1ee19a4` — "Phase 2 EXCLUDED_RULES" — the commit that landed the mechanism making
   ADR-027's 6,031-token CLAUDE.md baseline stale
 - Work-queue: `.cognitive-os/work-queue.json` — `ws9-test-errors` item (prerequisite for Phase 1)
-- `docs/plans/features/hook-architecture-v2.md` — canonical hook count targets per profile
+- `.cognitive-os/plans/features/hook-architecture-v2.md` — canonical hook count targets per profile
 - ADR-028 D1.A — authoritative source for JSONL rotation thresholds
 
 ---
