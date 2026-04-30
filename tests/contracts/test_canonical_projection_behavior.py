@@ -100,11 +100,15 @@ def _hook_commands(settings: dict) -> list[str]:
     return commands
 
 
-def _hook_filename(command: str) -> str | None:
-    match = re.search(r"/([A-Za-z0-9_-]+\.sh)(?:\"|'|\s|$)", command)
-    if match:
-        return match.group(1)
-    return None
+def _shell_script_paths(command: str) -> list[str]:
+    """Return every absolute-ish .sh path embedded in a hook command.
+
+    Commands may invoke instrumentation first and pass the real hook as a later
+    argument, e.g. `bash .../_lib/hook-timing-wrapper.sh Event .../hook.sh`.
+    The projection contract is stronger than "the last hook exists": every COS
+    script referenced by the driver must be installed in canonical storage.
+    """
+    return re.findall(r"((?:\$?\{[^}]+}|\$?[A-Za-z_][A-Za-z0-9_]*|/|[A-Za-z0-9_.:-])+[^\"'\s]*\.sh)(?:\"|'|\s|$)", command)
 
 
 def test_full_install_projects_all_skills_to_canonical_and_runtime_discovery(tmp_path: Path) -> None:
@@ -187,14 +191,16 @@ def test_codex_projection_commands_point_to_installed_hooks(tmp_path: Path) -> N
     missing: list[str] = []
     not_executable: list[str] = []
     for command in commands:
-        filename = _hook_filename(command)
-        if filename is None:
-            continue
-        installed = project / ".cognitive-os" / "hooks" / "cos" / filename
-        if not installed.is_file():
-            missing.append(filename)
-        elif not os.access(installed, os.X_OK):
-            not_executable.append(filename)
+        for script_path in _shell_script_paths(command):
+            filename = Path(script_path).name
+            if filename == "hook-timing-wrapper.sh":
+                installed = project / ".cognitive-os" / "hooks" / "cos" / "_lib" / filename
+            else:
+                installed = project / ".cognitive-os" / "hooks" / "cos" / filename
+            if not installed.is_file():
+                missing.append(str(installed.relative_to(project)))
+            elif not os.access(installed, os.X_OK):
+                not_executable.append(str(installed.relative_to(project)))
 
     assert not missing, f"Codex projection references hooks not installed in canonical storage: {missing}"
     assert not not_executable, f"Codex projection references non-executable hooks: {not_executable}"

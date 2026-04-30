@@ -6,19 +6,25 @@
 # Every hook command in settings.json runs through this wrapper. It logs a
 # structured JSONL record to .cognitive-os/metrics/hook-timing.jsonl with the
 # harness event name, hook name, wall-clock duration, exit code, and PID.
+# It also emits a human-readable summary line to stderr and writes to the
+# FIFO at .cognitive-os/runtime/hook-stream.fifo (non-blocking, best-effort).
 #
 # Usage:
 #   bash scripts/hook-timing-wrapper.sh <event_name> <hook_path> [args...]
 #
 # Environment:
 #   COS_HOOK_TIMING_DISABLE=1   — bypass wrapper entirely (no logging, no fork)
-#   CLAUDE_PROJECT_DIR           — used to locate metrics dir (required by all hooks)
+#   COS_HOOK_TIMING_QUIET=1     — suppress stderr output (JSONL still written)
+#   COGNITIVE_OS_PROJECT_DIR     — canonical project root override
+#   CODEX_PROJECT_DIR            — Codex project root
+#   CLAUDE_PROJECT_DIR           — Claude Code project root
 #
 # Design constraints:
 #   - NEVER block or fail the hook chain; all logging is best-effort
 #   - stdout from the real hook MUST be passed through unchanged (for PreToolUse
 #     additionalContext protocol)
 #   - stderr from the real hook is forwarded to our stderr
+#   - FIFO writes MUST be non-blocking (dropped silently if no reader)
 #   - Overhead target: <10ms median on macOS without GNU coreutils
 
 set -uo pipefail
@@ -41,7 +47,7 @@ shift 2
 HOOK_ARGS=("$@")
 
 # ── Resolve metrics path ─────────────────────────────────────────────────────
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-}}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-}}}"
 if [ -z "$PROJECT_DIR" ]; then
   # Minimal fallback: walk up to find the repo root (cwd at hook invocation time
   # is the project root per harness contract, but be defensive).
@@ -49,9 +55,16 @@ if [ -z "$PROJECT_DIR" ]; then
 fi
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 TIMING_LOG="$METRICS_DIR/hook-timing.jsonl"
+RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
+FIFO_PATH="$RUNTIME_DIR/hook-stream.fifo"
 
 # Ensure metrics dir exists (best-effort; don't fail wrapper if this errors)
 [ -d "$METRICS_DIR" ] || mkdir -p "$METRICS_DIR" 2>/dev/null || true
+# Ensure runtime dir + FIFO exist (best-effort)
+if [ ! -p "$FIFO_PATH" ]; then
+  mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
+  mkfifo "$FIFO_PATH" 2>/dev/null || true
+fi
 
 # ── Millisecond-precision wall-clock ────────────────────────────────────────
 # macOS ships BSD date which lacks %N (nanoseconds). Strategy:
@@ -96,6 +109,39 @@ JSON_LINE="{\"timestamp\":\"$START_TS\",\"event\":\"$SAFE_EVENT\",\"hook\":\"$SA
 # Append to JSONL — redirect all errors to /dev/null so a full disk or
 # read-only filesystem never breaks the hook chain.
 echo "$JSON_LINE" >> "$TIMING_LOG" 2>/dev/null || true
+
+# ── Human-readable stderr summary ───────────────────────────────────────────
+# Format: [hook] <basename> <event> <duration_ms>ms <status> [⚠ if slow]
+# Suppressed when COS_HOOK_TIMING_QUIET=1. Uses stderr to avoid polluting
+# the stdout additionalContext protocol used by PreToolUse hooks.
+if [ "${COS_HOOK_TIMING_QUIET:-}" != "1" ]; then
+  if [ "$HOOK_EXIT" -eq 0 ]; then
+    STATUS_STR="ok"
+  else
+    STATUS_STR="FAIL($HOOK_EXIT)"
+  fi
+  SLOW_MARKER=""
+  [ "$DURATION_MS" -ge 1000 ] && SLOW_MARKER=" ⚠"
+  SUMMARY_LINE="[hook] $HOOK_NAME $EVENT_NAME ${DURATION_MS}ms $STATUS_STR$SLOW_MARKER"
+  printf '%s\n' "$SUMMARY_LINE" >&2
+fi
+
+# ── FIFO write (non-blocking, best-effort) ───────────────────────────────────
+# Use Python's os.O_NONBLOCK because POSIX shell redirection to a FIFO can block
+# forever when no reader is attached. If no reader exists, the write is dropped.
+if [ -p "$FIFO_PATH" ]; then
+  FIFO_PATH="$FIFO_PATH" FIFO_LINE="${SUMMARY_LINE:-[hook] $HOOK_NAME $EVENT_NAME ${DURATION_MS}ms}" python3 - <<'PYFIFO' 2>/dev/null || true
+import os
+
+path = os.environ["FIFO_PATH"]
+line = os.environ["FIFO_LINE"] + "\n"
+fd = os.open(path, os.O_WRONLY | os.O_NONBLOCK)
+try:
+    os.write(fd, line.encode("utf-8", errors="replace"))
+finally:
+    os.close(fd)
+PYFIFO
+fi
 
 # ── Return the hook's exit code ──────────────────────────────────────────────
 exit $HOOK_EXIT

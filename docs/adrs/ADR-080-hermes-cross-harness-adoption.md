@@ -12,7 +12,7 @@ ADR-074 (Tier-0 learning loop), ADR-076 (skill-tier frontmatter), ADR-078 (mid-t
 
 ## Status
 
-Proposed.
+Proposed. Blocked-by: ADR-081.
 
 ---
 
@@ -68,6 +68,31 @@ review is required per item.
 
 Hermes pieces are grouped into four tiers based on cross-harness necessity and
 decision confidence.
+
+### Prerequisite: Codex harness adapter (ADR-081)
+
+Tier 1 of this ADR is **blocked** until ADR-081 (Codex harness adapter) ships
+and produces byte-identical canonical events when compared against the existing
+Claude Code adapter.
+
+**Rationale.** ADR-064 (cross-harness authoring guide) is currently Proposed,
+pending proof that a second real harness can satisfy the canonical event schema
+defined in ADR-033. Claude Code is the only harness with a full adapter today;
+Aider is a passive POC; Codex is operationally in use (`.codex/hooks.json` is
+populated and hand-maintained) but lacks `lib/harness_adapter/codex.py`. Porting
+Hermes pieces to satisfy a contract that no second harness has yet exercised
+means building on an unverified abstraction boundary. If the abstraction turns out
+to be wrong, every Tier 1 item must be reworked simultaneously.
+
+**Exception — harness-independent items.** Items that can be designed without
+coupling to the harness adapter surface MAY proceed in parallel with ADR-081
+work. Specifically, the portable prompt caching layer (Tier 1 #2) is a candidate:
+if `lib/prompt_caching.py` is structured as a pure provider abstraction with no
+harness adapter dependency, it may land before ADR-081 closes. Each such item
+must be explicitly marked harness-independent in its implementation ADR or SDD
+before parallel work begins.
+
+---
 
 ### Tier 1 — Critical cross-harness parity
 
@@ -152,6 +177,25 @@ error learning.
 
 ---
 
+### Sequencing
+
+The mandatory execution order for this ADR is:
+
+1. **ADR-081 Codex harness adapter (BLOCKER)** — separate ADR/change. Must ship
+   and pass byte-identical canonical event comparison against the Claude Code
+   adapter before any harness-coupled Tier 1 item begins.
+2. **Tier 1 in dependency order**: context_compressor → prompt_caching →
+   rate_limit_tracker → batch/cron. (Harness-independent items such as a
+   decoupled prompt_caching layer may proceed in parallel with step 1 if
+   explicitly marked as such in their implementation artifact.)
+3. **Tier 2 only after Tier 1 stabilizes** — batch runner and error classifier
+   build on top of the Tier 1 surface; starting them early creates re-work risk.
+4. **Re-evaluate parking-lot items and Cursor/Continue/other Tier-C harnesses**
+   based on observed demand after Tier 1 is stable. Claude Code and Codex are
+   the two real targets; all others are Tier C / on-demand.
+
+---
+
 ### Parking lot — investigate before deciding
 
 These pieces require further investigation of COS's multi-agent communication
@@ -224,10 +268,11 @@ compute and data dependency.
 
 ## Open questions
 
-1. **Target harness priority list.** Which non-Claude harnesses should be
-   validated first (Cursor, Windsurf, Cline, VS Code Agent)? A forthcoming
-   harness-validation report will establish priority and drive the adapter
-   integration test matrix. This ADR does not pre-empt that report.
+1. **Target harness priority list — resolved.** Claude Code (full adapter) and
+   Codex (ADR-081, in progress) are the two real targets. Cursor, Windsurf,
+   Cline, and VS Code Agent are Tier C / on-demand; they will be addressed based
+   on observed demand after Tier 1 stabilizes. No separate harness-validation
+   report is needed to unblock this ADR.
 
 2. **Parking lot resolution cadence.** Items 7 and 8 should be triaged once
    Tier 1 item 1 lands (because adapter porting clarifies what
