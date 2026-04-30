@@ -47,7 +47,7 @@ Measured on: 2026-04-20 / 2026-04-21 (two runs averaged)
 
 ## 2. Initial Context Payload Sizes
 
-| Component | Bytes | Est. Tokens | Notes |
+| Primitive | Bytes | Est. Tokens | Notes |
 |-----------|-------|-------------|-------|
 | Global `~/.claude/CLAUDE.md` | 11,125 | 2,781 | User-global orchestrator rules |
 | Project `CLAUDE.md` | 0 | 0 | Not present in this project |

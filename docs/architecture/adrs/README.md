@@ -15,7 +15,7 @@ ADRs 001-005 live in `docs/architecture/cos-dispatch/adrs/` and cover the COS di
 | [006](006-agpl-license-compliance.md) | 2026-03-23 | AGPL License Compliance -- Replace Redis and MinIO | Accepted |
 | [007](007-cognitive-os-rebrand.md) | 2026-03-24 | Rebrand from Agent OS to Cognitive OS | Accepted |
 | [008](008-multi-tool-support.md) | 2026-03-28 | Multi-Tool Support -- Not Claude Code-Only | Accepted |
-| [009](009-package-architecture.md) | 2026-03-28 | Package Architecture -- 375 Components Reclassified | Accepted |
+| [009](009-package-architecture.md) | 2026-03-28 | Package Architecture -- 375 Agentic Primitives Reclassified | Accepted |
 | [010](010-hook-architecture-v2.md) | 2026-03-28 | Hook Architecture v2 -- 7 Event Types, 3 Profiles | Accepted |
 | [011](011-dual-gateway-bifrost-litellm.md) | 2026-03-28 | Dual Gateway -- Bifrost Primary, LiteLLM Fallback | Superseded by ADR-018 |
 | [012](012-prompt-driven-governance.md) | 2026-03-29 | Prompt-Driven Governance -- Declarative Hook Logic | Accepted |
@@ -25,7 +25,7 @@ ADRs 001-005 live in `docs/architecture/cos-dispatch/adrs/` and cover the COS di
 | [016](016-context-diet.md) | 2026-03-31 | Context Diet -- Token Optimization Strategy | Accepted |
 | [017](017-stabilization-freeze.md) | 2026-04-11 | Stabilization Freeze -- No New Features | Accepted |
 | [018](018-docker-to-pip-migration.md) | 2026-04-11 | Docker-to-pip Migration -- Service Infrastructure | Accepted |
-| [019](019-scope-tagging.md) | 2026-04-13 | Scope Tagging -- Component Audience Classification | Accepted |
+| [019](019-scope-tagging.md) | 2026-04-13 | Scope Tagging -- Agentic Primitive Audience Classification | Accepted |
 | [020](020-contamination-fix.md) | 2026-04-13 | Contamination Fix -- Remove Project-Specific Code | Accepted |
 | [021](021-vendor-agnostic-with-adapters.md) | 2026-04-16 | Vendor-Agnostic State with Provider Adapters | Accepted |
 | [022](022-prompt-type-hooks-adoption.md) | 2026-04-15 | Prompt-Type Hooks Adoption -- Haiku-Evaluated Advisories | Accepted |

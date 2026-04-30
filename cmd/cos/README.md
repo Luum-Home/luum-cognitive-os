@@ -1,10 +1,10 @@
 # cos -- Cognitive OS Package Manager
 
-A package manager for AI agent components: skills, rules, hooks, agents, and templates. Built in Go with Cobra CLI.
+A package manager for agentic primitives: skills, rules, hooks, agents, and templates. Built in Go with Cobra CLI.
 
 ## Overview
 
-`cos` manages the lifecycle of reusable AI agent components. It handles installation from local paths or GitHub, dependency resolution using Minimum Version Selection (MVS), security auditing, quality scoring, versioning, and publishing.
+`cos` manages the lifecycle of reusable agentic primitives. It handles installation from local paths or GitHub, dependency resolution using Minimum Version Selection (MVS), security auditing, quality scoring, versioning, and publishing.
 
 Packages are installed into namespaced subdirectories (`cos/@org/pkg/`) to coexist safely with user-authored files.
 
@@ -105,7 +105,7 @@ cos registry enable my-org
 |---------|-------------|
 | `cos version` | Show Cognitive OS and package versions |
 | `cos status` | Show release status of all packages in `packages/` |
-| `cos map [component]` | Show the system knowledge graph |
+| `cos map [primitive]` | Show the system knowledge graph |
 | `cos perf` | Show Cognitive OS performance dashboard |
 
 ### Release Management

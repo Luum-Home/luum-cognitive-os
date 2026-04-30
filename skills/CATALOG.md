@@ -17,12 +17,12 @@
 | cognitive-os-benchmark | Run benchmark comparisons | `/benchmark` | os-dev |
 | cognitive-os-status | Report Cognitive OS status: hooks, rules, skills, squads, metrics | `/cognitive-os-status` | both |
 | compat-test | Smoke test: verify model compatibility with Cognitive OS (8 checks, < 30s) | `/cognitive-os-compat-test` | os-dev |
-| component-classifier | Classify new components as CORE or PACKAGE | `/component-classifier` | os-dev |
+| component-classifier | Classify new agentic primitives as CORE or PACKAGE | `/component-classifier` | os-dev |
 | validate-config | Validate all Cognitive OS config files: agents, squads, skills, rules, hooks | `/validate-config` | both |
 | capability-snapshot | Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss | `/capability-snapshot` | os-dev |
 | self-improve | Self-improvement protocol: detect patterns, create/update skills/rules | `/self-improve` | os-dev |
 | metrics-calibrator | Analyze KPI distributions, auto-adjust thresholds, propose derived metrics | `/metrics-calibrator` | os-dev |
-| harness-audit | Evaluate harness components for relevance, identify retirement candidates | `/harness-audit` | os-dev |
+| harness-audit | Evaluate harness agentic primitives for relevance, identify retirement candidates | `/harness-audit` | os-dev |
 | smoke-test | Run end-to-end smoke tests that validate the real Cognitive OS system works | `/smoke-test` | os-dev |
 | test-contract-repair | Repair failing or misleading tests without greenwashing: classify the contract, confirm history, fix runtime when needed, strengthen structural checks into behavioral proof | `/test-contract-repair` | os-dev |
 | detect-patterns | Detect systemic problems: dead metadata, broken chains, phantom entries, structural tests | `/detect-patterns` | os-dev |
@@ -207,11 +207,11 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **cognee-search** — Semantic knowledge graph search via Cognee — complements Engram FTS5 with relationship-aware retrieval
 - **cognitive-os-benchmark** — Run benchmark comparisons between Cognitive OS and BMAD METHOD v6
 - **cognitive-os-init** — META skill — initialize Cognitive OS for a project by chaining detect-stack → generate-config → scaffold-project.
-- **cognitive-os-status** — Full health check of all Cognitive OS components
+- **cognitive-os-status** — Full health check of all Cognitive OS agentic primitives
 - **cognitive-os-test** — Run the Cognitive OS test suite with persisted summary (junit + failures + tails). SO-only; not for adopting projects.
 - **compat-test** — Smoke test suite verifying Cognitive OS works correctly with the current AI model. Checks skill triggers, rule compliance, phase awareness, memory, progressive loading, templates, budget awareness,...
-- **component-classifier** — Classify a new component (skill, hook, rule, lib) as CORE or PACKAGE. Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package.
-- **component-reality-check** — Measure declared-but-unwired vs real components of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
+- **component-classifier** — Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package.
+- **component-reality-check** — Measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
 - **compose-prompt** — Compose a sub-agent prompt from reusable templates. Use when launching sub-agents to ensure consistent instructions.
 - **compress** — Compress natural language memory files (CLAUDE.md, todos, preferences) into caveman format to save input tokens. Preserves all technical substance, code, URLs, and structure. Compressed version ove...
 - **confidence-check** — Pre-implementation confidence assessment. Before writing code, check 5 dimensions to verify readiness: no duplicates, architecture compliance, documentation verified, prior art reviewed, and root c...
@@ -239,7 +239,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **generate-changelog** — Move [Unreleased] CHANGELOG entries into a versioned release section
 - **generate-config** — Read detected-stack.json and generate or update cognitive-os.yaml with detected infrastructure, quality gates, and stack-specific settings.
 - **gpu-sandbox** — Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data processing, financial calculations)
-- **harness-audit** — Evaluate harness components (hooks, rules, skills) for continued relevance. Identify candidates for simplification or retirement as models improve.
+- **harness-audit** — Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance. Identify candidates for simplification or retirement as models improve.
 - **impact-analysis** — Analyze change impact: imports, tests, configs, services, and SDD artifacts affected
 - **install-recommended** — Detect project stack and recommend relevant skills to install
 - **invariant-check** — Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs, proposes invariants between them, and writes pytest assertions that enforce the relationship. Trigger when a review find...
