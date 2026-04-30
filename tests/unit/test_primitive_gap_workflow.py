@@ -25,6 +25,9 @@ def test_weekly_audit_workflow_runs_row_claim_and_backlog_audits() -> None:
     ):
         assert report in text
 
+    assert "--fail-unmapped" in text
+    assert "--fail-nonzero" in text
+
 
 def test_backlog_generator_produces_actionable_item_from_workflow_inputs(tmp_path: Path) -> None:
     reports = tmp_path / "docs" / "reports"
