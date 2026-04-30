@@ -3,7 +3,7 @@
 
 ## Purpose
 
-Higher-capability models do not need the same safety nets as lower-capability ones. Capability levels allow automatic disabling of components (hooks, rules) that become redundant when the model is capable enough to handle those concerns internally.
+Higher-capability models do not need the same safety nets as lower-capability ones. Capability levels allow automatic disabling of agentic primitives (hooks, rules) that become redundant when the model is capable enough to handle those concerns internally.
 
 ## Levels
 

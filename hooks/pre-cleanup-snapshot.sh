@@ -77,6 +77,6 @@ cat <<'ADVISORY'
 {
   "decision": "approve",
   "reason": "Cleanup/refactor of Cognitive OS detected. Recommending capability snapshot.",
-  "message": "CAPABILITY PROTECTION: Cleanup/refactor intent detected targeting Cognitive OS components. Run `/capability-snapshot save` BEFORE proceeding to prevent unintended feature loss. After cleanup, run `/capability-snapshot diff` to verify no capabilities were lost."
+  "message": "CAPABILITY PROTECTION: Cleanup/refactor intent detected targeting Cognitive OS agentic primitives. Run `/capability-snapshot save` BEFORE proceeding to prevent unintended feature loss. After cleanup, run `/capability-snapshot diff` to verify no capabilities were lost."
 }
 ADVISORY
