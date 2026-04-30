@@ -114,7 +114,7 @@ exactly one concern:
 | Execution | `cmd/cos-test` | Run focused, cluster, and broad plans with the correct worker policy. |
 | Reporting | `scripts/pytest-with-summary.sh` | Persist `summary.txt`, `failures.txt`, inventories, JUnit, and run history. |
 | Governance | `auto-verify`, `dod-gate`, `coverage-enforcement`, `test-quality-audit` | Consume test evidence and enforce quality gates without duplicating lane selection. |
-| Lifecycle | `.cognitive-os/reports/test-runs/`, metrics JSONL, repair ledgers | Track baselines, ratchets, skips, xfails, and drift over time. |
+| Lifecycle | metrics JSONL, baselines, repair ledgers | Track baselines, ratchets, skips, xfails, and drift over time. |
 
 Legacy scripts that still exist for compatibility MUST declare `ROLE` and
 `CANONICAL` headers. They are not competing UX surfaces:
