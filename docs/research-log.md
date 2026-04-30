@@ -297,3 +297,36 @@ Ring classifications follow the Technology Radar model:
 - **TRIAL**: Worth pursuing. Use in non-critical paths first.
 - **HOLD**: Wait and see. Interesting but not ready or not needed.
 - **AVOID**: Do not use. License, quality, or domain mismatch.
+
+---
+
+## 2026-04-30: Tier-0 learning-loop closure
+
+**ADR:** [ADR-074](adrs/ADR-074-tier-0-learning-loop-closure.md)  
+**Effort:** ~1 hour  
+
+A 4-agent audit earlier today (Engram: `cos-learning-loop-wiring-audit`) found that
+5/7 learning-loop components were LIVE, 1 was DETACHED (`skill-feedback-tracker.sh`
+never registered), and 1 was PARTIAL (`feedback_detector` — signals captured but
+not consumed downstream). Three Tier-0 gaps were closed in this session:
+
+**Files touched:**
+- `scripts/apply-efficiency-profile.sh` — added `skill-feedback-tracker.sh` to
+  the `standard` profile's PostToolUse[Agent] hook list
+- `.claude/settings.json` — regenerated; hook now present in PostToolUse[Agent] block
+- `lib/feedback_consumer.py` — new module (97 LOC) exposing `read_recent_feedback`,
+  `group_by_classification`, `surface_actionable`, `summarise_for_skill_improvement`
+- `skills/analyze-improvements/SKILL.md` — Step 0 updated to call
+  `feedback_consumer.summarise_for_skill_improvement()` before analysis
+- `skills/self-improve/SKILL.md` — Integration Points table updated to reference
+  `feedback_consumer`
+- `docs/adrs/ADR-074-tier-0-learning-loop-closure.md` — decision record
+
+**Tests added:**
+- `tests/unit/test_feedback_consumer.py` — 22 unit tests covering all public
+  functions of `feedback_consumer`; all pass
+
+**Key finding:** The `CORE_RULES=("RULES-COMPACT.md")` patch from a prior
+investigation has no effect in this (self-hosting) repo because `IS_SELF_HOSTING=true`
+bypasses the CORE_RULES list entirely. The patch is deferred to client-project
+deployment paths only (documented in ADR-074 § Action 3).

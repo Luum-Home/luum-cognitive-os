@@ -109,6 +109,7 @@ Equivalent to loading `skills/apply-improvements/SKILL.md` and following its ins
 | `skills/model-optimizer/` | Model routing recommendations |
 | `rules/self-improvement-protocol.md` | Governance rules |
 | `lib/self_improvement.py` | Pre-built analysis utilities |
+| `lib/feedback_consumer.py` | Reads prompt-captures.jsonl; surfaces correction/escalation/negative signals as skill improvement candidates |
 
 ## Configuration
 
