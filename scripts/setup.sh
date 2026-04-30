@@ -80,7 +80,8 @@ ok "Platform: $OS $ARCH"
 if [ "$OS" = "Darwin" ]; then
   if ! has_cmd brew; then
     info "Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    # NONINTERACTIVE=1 suppresses all interactive prompts (ADR-059 §Phase 2 prerequisite)
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     INSTALLED=$((INSTALLED + 1))
   else
     skip "Homebrew"
