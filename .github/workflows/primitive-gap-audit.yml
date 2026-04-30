@@ -22,6 +22,7 @@ jobs:
             --trend-path docs/reports/primitive-gap-history.jsonl \
             --markdown docs/reports/primitive-gap-latest.md \
             --regression-report docs/reports/primitive-gap-regressions.md \
+            --fail-on-regression \
             --json > docs/reports/primitive-gap-latest.json
 
       - name: Upload primitive gap snapshot artifact

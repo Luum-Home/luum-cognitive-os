@@ -41,14 +41,14 @@
       "total": 9
     },
     {
-      "aspirational_signal": 99,
-      "evidence": "mcp-mentioned-files=166 test-mentioned-files=67",
+      "aspirational_signal": 98,
+      "evidence": "mcp-mentioned-files=165 test-mentioned-files=67",
       "family": "mcp_tools",
       "next_action": "separate installed, optional, reference-only, and missing integrations",
-      "partial_signal": 166,
+      "partial_signal": 165,
       "proven_signal": 67,
       "severity": "high",
-      "total": 166
+      "total": 165
     },
     {
       "aspirational_signal": 0,
@@ -82,21 +82,21 @@
     },
     {
       "aspirational_signal": 11,
-      "evidence": "docs=373 adrs=58 adr-proof-mentions=47",
+      "evidence": "docs=374 adrs=58 adr-proof-mentions=47",
       "family": "docs_adrs",
       "next_action": "map product claims to code, tests, metrics, or manual proof paths",
       "partial_signal": 58,
       "proven_signal": 47,
       "severity": "high",
-      "total": 373
+      "total": 374
     }
   ],
   "hook_latency": {
-    "events": 2314,
+    "events": 2391,
     "max_ms": 13332,
-    "p50_ms": 221,
-    "p95_ms": 1342
+    "p50_ms": 219,
+    "p95_ms": 1325
   },
   "overall_risk": "high",
-  "timestamp": "2026-04-30T17:35:49.895286+00:00"
+  "timestamp": "2026-04-30T17:39:43.137704+00:00"
 }
