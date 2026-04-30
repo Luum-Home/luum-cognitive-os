@@ -1,18 +1,18 @@
 <!-- SCOPE: os-only -->
 ---
 name: component-reality-check
-description: Measure declared-but-unwired vs real components of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
+description: Measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
 invoke: /component-reality-check
 version: 1.0.0
 last-updated: 2026-04-24
 audience: os-dev
 tags: [audit, dogfooding, metrics, wiring]
-summary_line: "Classify every SO component into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime."
+summary_line: "Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime."
 ---
 
-# Component Reality Check
+# Agentic Primitive Reality Check
 
-Run the SO against itself: how many declared components (hooks, lib,
+Run the SO against itself: how many declared agentic primitives (hooks, lib,
 scripts, skills) actually FIRE at runtime, vs how many are declared
 but unused?
 
@@ -55,13 +55,13 @@ When invoked:
    (omit `--dry-run` if user passed `--persist`).
 
 2. Parse the JSON output and present:
-   - **Header**: total components, measurement window
+   - **Header**: total agentic primitives, measurement window
    - **Counts table**: each label with count + percentage
    - **Ratio**: `dormant_aspirational_ratio` — critical metric (target <0.40 per ADR-XX if defined)
    - **Worst offenders**: top N (default 10) with path, type, and reason (e.g., "no JSONL output in 30d", "references missing module X")
-   - **Recent cold-start note**: any component with mtime < 7d is expected to be DORMANT; flag those separately so they don't skew the verdict
+   - **Recent cold-start note**: any agentic primitive with mtime < 7d is expected to be DORMANT; flag those separately so they don't skew the verdict
 
-3. **If `--trend`**: read previous record from `.cognitive-os/metrics/aspirational-audit.jsonl` and report delta (REAL +N, Dormant -N). Flag any newly-DORMANT component.
+3. **If `--trend`**: read previous record from `.cognitive-os/metrics/aspirational-audit.jsonl` and report delta (REAL +N, Dormant -N). Flag any newly-DORMANT agentic primitive.
 
 4. **If `--strict` and ratio > 0.40**: exit with non-zero code so CI can gate on it.
 
@@ -73,7 +73,7 @@ When invoked:
 ## Example output
 
 ```
-Component Reality Check — 2026-04-24
+Agentic Primitive Reality Check — 2026-04-24
 Measurement window: 7-30 days
 
 | Label        | Count | %      |
@@ -120,6 +120,6 @@ Next steps:
 
 ## Contextual Trigger
 
-SO-only. Use after adding/removing components, or on a weekly cadence
+SO-only. Use after adding/removing agentic primitives, or on a weekly cadence
 via `weekly-aspirational-audit.sh`. Adopting projects use their own
 `/dod-check` or `/readiness-check`, not this skill.
