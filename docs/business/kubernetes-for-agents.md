@@ -446,7 +446,8 @@ What exists today, battle-tested on a real-world platform:
 - [x] Fault tolerance — 4-tier resilience model
 - [x] SDD workflow — spec-driven development for large changes
 
-**Status**: Production-ready for single-repo use.
+**Status**: single-repo development path with explicit proof required before
+production claims; see `docs/reports/claim-proof-latest.md`.
 
 ### Phase 2: Multi-Repo (next)
 
