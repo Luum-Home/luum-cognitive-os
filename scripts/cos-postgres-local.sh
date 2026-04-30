@@ -43,24 +43,27 @@ mkdir -p "$RUNTIME_DIR" "$METRICS_DIR"
 
 # ── Detect pg_ctl binary ────────────────────────────────────────────────────
 _pgctl_binary() {
-    if command -v pg_ctl >/dev/null 2>&1; then
-        echo "pg_ctl"
-    else
-        # Homebrew locations
-        for pg_ver in 17 16 15 14; do
-            local candidate="/opt/homebrew/opt/postgresql@${pg_ver}/bin/pg_ctl"
-            if [ -x "$candidate" ]; then
-                echo "$candidate"
-                return
-            fi
-            candidate="/usr/local/opt/postgresql@${pg_ver}/bin/pg_ctl"
-            if [ -x "$candidate" ]; then
+    # Prefer Homebrew postgresql@N (full server) over libpq (client-only).
+    # libpq ships pg_ctl + initdb but NOT the postgres server binary, so initdb fails.
+    for pg_ver in 17 16 15 14; do
+        for prefix in /opt/homebrew/opt /usr/local/opt; do
+            local candidate="${prefix}/postgresql@${pg_ver}/bin/pg_ctl"
+            if [ -x "$candidate" ] && [ -x "$(dirname "$candidate")/postgres" ]; then
                 echo "$candidate"
                 return
             fi
         done
-        echo ""
+    done
+    # Fall back to PATH only if `postgres` server is sibling to `pg_ctl`.
+    if command -v pg_ctl >/dev/null 2>&1; then
+        local resolved
+        resolved="$(command -v pg_ctl)"
+        if [ -x "$(dirname "$resolved")/postgres" ]; then
+            echo "$resolved"
+            return
+        fi
     fi
+    echo ""
 }
 
 PGCTL_BIN="$(_pgctl_binary)"
