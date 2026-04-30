@@ -19,6 +19,7 @@ def test_wrapper_logs_json_without_own_stderr_by_default(tmp_path: Path) -> None
     _write_hook(hook, "echo hook-out\n")
     env = os.environ.copy()
     env["COGNITIVE_OS_PROJECT_DIR"] = str(tmp_path)
+    env["COGNITIVE_OS_SESSION_ID"] = "session-123"
     env.pop("COS_HOOK_TIMING_VERBOSE", None)
     env.pop("COS_HOOK_TIMING_FIFO", None)
 
@@ -40,6 +41,7 @@ def test_wrapper_logs_json_without_own_stderr_by_default(tmp_path: Path) -> None
     row = json.loads(rows[0])
     assert row["event"] == "PostToolUse"
     assert row["hook"] == "sample-hook"
+    assert row["session_id"] == "session-123"
 
 
 def test_wrapper_verbose_stderr_is_opt_in(tmp_path: Path) -> None:
