@@ -34,6 +34,11 @@ type Lane struct {
 	// includeOptional=true to BroadOrderWith. Used for cost-bearing or
 	// non-deterministic lanes (arena, benchmark, quality).
 	Optional bool
+	// MarkerExclude is a pytest marker expression applied as `-m "not <expr>"`
+	// when running the lane. Used to exclude flake-prone or opt-in tests
+	// (e.g. unit lane excludes 'benchmark' so perf-budget tests don't run
+	// under the default -n auto path). Empty = no filter.
+	MarkerExclude string
 }
 
 // Registry holds the parsed lane registry.
@@ -236,6 +241,8 @@ func Parse(r io.Reader) (*Registry, error) {
 				default:
 					return nil, fmt.Errorf("lane %s optional: expected true|false, got %q", currentName, v)
 				}
+			case "marker_exclude":
+				current.MarkerExclude = strings.Trim(value, `"' `)
 			default:
 				// Unknown keys are accepted (forward compat) but ignored.
 			}
