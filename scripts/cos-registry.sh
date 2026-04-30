@@ -36,7 +36,7 @@ _cos_registry_is_ephemeral_install() {
     cos-canary-*|validate-test) return 0 ;;
   esac
   case "$project_path" in
-    /tmp/*|/var/folders/*|/private/var/folders/*) return 0 ;;
+    /tmp/*|/private/tmp/*|/var/folders/*|/private/var/folders/*) return 0 ;;
   esac
   if [ -n "${TMPDIR:-}" ]; then
     case "$project_path" in
@@ -58,7 +58,7 @@ cos_registry_cleanup_ephemeral() {
       select(
         (
           ((.project_name // "") | test("^(cos-canary-|validate-test$)"))
-          or ((.path // "") | test("^(/tmp/|/var/folders/|/private/var/folders/)"))
+          or ((.path // "") | test("^(/tmp/|/private/tmp/|/var/folders/|/private/var/folders/)"))
         ) | not
       )
     )
