@@ -1,3 +1,8 @@
+---
+no-adr-required: true
+rationale: benchmark specification — axes, workloads, metrics, and execution phases with no architectural decision content
+---
+
 # Runtime Comparison Benchmark Plan
 
 This plan extends ADR-027 with a competitive benchmark matrix. The goal is not

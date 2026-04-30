@@ -43,16 +43,24 @@ def test_hook_registered_in_both_profile_scripts() -> None:
 
 
 def test_hook_produces_output(tmp_path: Path) -> None:
-    # Minimal fake project: plans dir with 2 .md, arch plans with 1 .md,
-    # adrs with 1 .md, a work-queue.
+    # Minimal fake project covering all 5 plan directories.
+    # features: 2 plans
     (tmp_path / ".cognitive-os" / "plans" / "features").mkdir(parents=True)
     (tmp_path / ".cognitive-os" / "plans" / "features" / "a.md").write_text("x")
     (tmp_path / ".cognitive-os" / "plans" / "features" / "b.md").write_text("x")
-    (tmp_path / "docs" / "architecture" / "plans").mkdir(parents=True)
-    (tmp_path / "docs" / "architecture" / "plans" / "impl-plan.md").write_text("x")
-    # These should be excluded from the arch count:
-    (tmp_path / "docs" / "architecture" / "plans" / "README.md").write_text("x")
-    (tmp_path / "docs" / "architecture" / "plans" / "foo.template.md").write_text("x")
+    # research: 1 plan
+    (tmp_path / ".cognitive-os" / "plans" / "research").mkdir(parents=True)
+    (tmp_path / ".cognitive-os" / "plans" / "research" / "landscape.md").write_text("x")
+    # arch plans: 1 (README.md and *.template.md excluded)
+    (tmp_path / ".cognitive-os" / "plans" / "architecture").mkdir(parents=True)
+    (tmp_path / ".cognitive-os" / "plans" / "architecture" / "impl-plan.md").write_text("x")
+    (tmp_path / ".cognitive-os" / "plans" / "architecture" / "README.md").write_text("x")
+    (tmp_path / ".cognitive-os" / "plans" / "architecture" / "foo.template.md").write_text("x")
+    # roadmaps: 1 roadmap (archive-named file excluded)
+    (tmp_path / ".cognitive-os" / "plans" / "roadmaps").mkdir(parents=True)
+    (tmp_path / ".cognitive-os" / "plans" / "roadmaps" / "adr-mega-plan.md").write_text("x")
+    (tmp_path / ".cognitive-os" / "plans" / "roadmaps" / "archive-old.md").write_text("x")
+    # adrs: 1
     (tmp_path / "docs" / "adrs").mkdir(parents=True)
     (tmp_path / "docs" / "adrs" / "ADR-001.md").write_text("x")
     (tmp_path / ".cognitive-os" / "work-queue.json").write_text(
@@ -71,10 +79,11 @@ def test_hook_produces_output(tmp_path: Path) -> None:
     assert r.returncode == 0, f"hook exited {r.returncode}: {r.stderr}"
     out = r.stdout
     assert "[startup-protocol]" in out
-    # Primary plans dir count
-    assert "Plans: 2 in .cognitive-os/plans/features/" in out
-    # Arch plans: 1 (README.md and *.template.md excluded)
-    assert "+ 1 in docs/architecture/plans/" in out
+    # New compact format: all 4 canonical dirs on one line (ADR-082)
+    assert "Plans: 2 features" in out
+    assert "1 research" in out
+    assert "1 arch" in out
+    assert "1 roadmaps" in out
     assert "cross-ref 1 ADRs" in out
     assert "1 live, 2 parked" in out
     assert "Validator:" in out
@@ -113,9 +122,11 @@ def test_hook_never_blocks_on_missing_files(tmp_path: Path) -> None:
     assert r.returncode == 0, f"hook blocked on missing files: rc={r.returncode} stderr={r.stderr}"
     out = r.stdout
     assert "[startup-protocol]" in out
-    # Graceful degradation: must still emit all 5 lines
-    # Both plan dirs are absent → both counts are 0
-    assert "Plans: 0 in .cognitive-os/plans/features/ + 0 in docs/architecture/plans/" in out
+    # Graceful degradation: all plan dirs absent → all counts are 0
+    assert "Plans: 0 features" in out
+    assert "0 research" in out
+    assert "0 arch" in out
+    assert "0 roadmaps" in out
     assert "Validator:" in out
     # work-queue missing should say no-queue or similar, not crash
     assert "Work queue:" in out

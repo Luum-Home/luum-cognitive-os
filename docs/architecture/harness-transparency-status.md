@@ -84,7 +84,7 @@ fallback persistence, not a magic shell-level `mem_session_summary` call.
 ## What Still Blocks Full Transparency
 
 The remaining work is tracked in
-[`docs/architecture/plans/adr-064-implementation-plan.md`](plans/adr-064-implementation-plan.md).
+[`.cognitive-os/plans/architecture/adr-064-implementation-plan.md`](../../.cognitive-os/plans/architecture/adr-064-implementation-plan.md).
 
 ### Surface 2 — Canonical hook projection
 

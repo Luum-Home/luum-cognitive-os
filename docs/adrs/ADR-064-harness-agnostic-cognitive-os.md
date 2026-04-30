@@ -2,6 +2,8 @@
 
 ## Status
 
+**Implementation-plan**: `.cognitive-os/plans/architecture/adr-064-implementation-plan.md`
+
 **Proposed** — 2026-04-24. Extends ADR-033 (harness-agnostic event capture),
 ADR-062 (multi-provider agent loop), and ADR-063 (Agent() replication scope)
 to the remaining harness-coupled surfaces of the Cognitive OS.
