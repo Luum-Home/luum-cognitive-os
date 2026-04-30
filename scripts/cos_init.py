@@ -1110,6 +1110,13 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
             if dest_lib.exists():
                 shutil.rmtree(str(dest_lib))
             shutil.copytree(str(hooks_lib), str(dest_lib))
+        wrapper_src = cos_source / "scripts" / "hook-timing-wrapper.sh"
+        if wrapper_src.is_file():
+            dest_lib = Path(hooks_dest) / "_lib"
+            dest_lib.mkdir(parents=True, exist_ok=True)
+            wrapper_dest = dest_lib / "hook-timing-wrapper.sh"
+            shutil.copy2(str(wrapper_src), str(wrapper_dest))
+            wrapper_dest.chmod(wrapper_dest.stat().st_mode | 0o111)
     else:
         # Default mode: the standard hook set
         for name in DEFAULT_HOOKS:
@@ -1123,6 +1130,13 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
             if dest_lib.exists():
                 shutil.rmtree(str(dest_lib))
             shutil.copytree(str(hooks_lib), str(dest_lib))
+        wrapper_src = cos_source / "scripts" / "hook-timing-wrapper.sh"
+        if wrapper_src.is_file():
+            dest_lib = Path(hooks_dest) / "_lib"
+            dest_lib.mkdir(parents=True, exist_ok=True)
+            wrapper_dest = dest_lib / "hook-timing-wrapper.sh"
+            shutil.copy2(str(wrapper_src), str(wrapper_dest))
+            wrapper_dest.chmod(wrapper_dest.stat().st_mode | 0o111)
 
     # ── 6. Install skills ─────────────────────────────────────────────
     skills_installed = 0

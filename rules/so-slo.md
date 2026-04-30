@@ -85,6 +85,9 @@ or search logic on the hot path:
 - `clarification-gate`
 - `blast-radius`
 - `reinvention-check`
+- `trust-score-validator`
+- `confidence-gate`
+- `claim-validator`
 
 This is not a permanent waiver. Each hook remains part of the SLO catalogue and
 should either be optimized, moved behind a cache, or demoted out of the default

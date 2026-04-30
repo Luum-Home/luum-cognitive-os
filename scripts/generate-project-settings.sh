@@ -136,12 +136,19 @@ DEFAULT_HOOKS="error-pipeline.sh session-init.sh host-tool-doctor.sh session-cle
 
 # ── Step 1: Transform paths ─────────────────────────────────────────
 # $CLAUDE_PROJECT_DIR/hooks/X.sh -> ${driver_project_expr}/.cognitive-os/hooks/cos/X.sh
+# $CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh ->
+#   ${driver_project_expr}/.cognitive-os/hooks/cos/_lib/hook-timing-wrapper.sh
+#
+# The wrapper is runtime-critical once settings.json is wrapped. Consumer
+# projects do not own the source repo's scripts/ directory, so generated
+# drivers must point to the canonical installed copy under .cognitive-os/.
 transformed=$(jq --arg project_expr "$DRIVER_PROJECT_EXPR" '
   .hooks |= (
     to_entries | map(
       .value |= map(
         .hooks |= map(
           .command |= gsub("\\$CLAUDE_PROJECT_DIR/hooks/"; ($project_expr + "/.cognitive-os/hooks/cos/")) |
+          .command |= gsub("\\$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper\\.sh"; ($project_expr + "/.cognitive-os/hooks/cos/_lib/hook-timing-wrapper.sh")) |
           .command |= gsub("\\$CLAUDE_PROJECT_DIR/scripts/"; ($project_expr + "/scripts/")) |
           .command |= gsub("\\$CLAUDE_PROJECT_DIR/\\.claude/hooks/"; ($project_expr + "/.claude/hooks/"))
         )
