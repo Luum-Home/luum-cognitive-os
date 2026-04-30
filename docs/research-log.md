@@ -457,3 +457,41 @@ versus a fresh client install. Both modes use `efficiency.profile: default` afte
 3. **ROADMAP.md demotion from Tier-0** (–1,810 T, low risk)
 4. **SessionStart hook stdout consolidation** (–300 T, low risk)
 5. **MCP engram instructions defer** (–400 T, medium risk, upstream dependency)
+
+## 2026-04-30: Hook timing instrumentation
+
+### Context
+
+User reported silent 2-7 minute hangs between turns with zero harness feedback. Existing `hook-health.jsonl` (via `hooks/_lib/safe-jsonl.sh`) logs `{timestamp, hook, exit_code, duration_ms}` for ~147 of 165 hooks, but lacks the harness event type — making it impossible to know whether a slow hook was in Stop, PreToolUse, or PostToolUse.
+
+### What landed
+
+- `scripts/hook-timing-wrapper.sh` — trampoline that wraps every hook command and appends `{timestamp, event, hook, duration_ms, exit_code, pid}` to `.cognitive-os/metrics/hook-timing.jsonl`. Best-effort: logging failures never break the hook chain. Kill-switch: `COS_HOOK_TIMING_DISABLE=1`.
+- `scripts/apply-efficiency-profile.sh` — modified `hook_entry`/`hook_entry_async`/`hook_group` to route all 82 hook commands through the wrapper with the harness event name threaded through as the first wrapper arg.
+- `.claude/settings.json` — regenerated; every command is now `bash "$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh" <EventName> "$CLAUDE_PROJECT_DIR/hooks/<hook>.sh"`.
+- `scripts/hook_timing_report.py` — aggregation tool with p50/p95/p99 per hook, top-N slowest invocations, failure counts, `--live` tail mode, `--event`/`--since` filters, `--json` output.
+- `docs/measurements/hook-timing-runbook.md` — operator runbook with diagnosis workflow.
+
+### First measurements (immediately after landing)
+
+From 536 invocations across 33 hooks (data accumulated during this session):
+
+| Hook | p95 |
+|---|---|
+| content-policy | 4.3s |
+| inject-phase-context | 3.8s |
+| destructive-rm-blocker | 1.6s |
+| confidentiality-enforcer | 1.1s |
+| rate-limiter | 1.1s |
+
+These five are the highest-priority candidates for async reclassification or optimization.
+
+### Wrapper overhead
+
+Measured ~93ms per wrapper invocation on macOS (2x python3 subprocess launches for millisecond timing: ~27ms each + bash overhead). With 82 hooks registered, worst-case blocking overhead from wrapping is ~7.6s but hooks only fire for specific events. The 93ms is negligible against 2-7 minute hangs.
+
+### How to monitor live
+
+```bash
+python3 scripts/hook_timing_report.py --live
+```
