@@ -52,6 +52,7 @@ CORE_RULES = {
     "model-routing.md",
     "python-naming.md",
     "bash-naming.md",
+    "lane-taxonomy.md",
 }
 
 # All rule .md files in the source rules/ directory (dynamic count)
@@ -208,7 +209,7 @@ class TestProfileFilterLogic:
 
     def test_core_rules_count_matches_current_contract(self):
         """The CORE_RULES constant tracks the current self-install contract."""
-        assert len(CORE_RULES) == 15
+        assert len(CORE_RULES) == 16
 
 
 class TestProfileFilterShellScript:
