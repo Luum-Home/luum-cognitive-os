@@ -1,1 +1,0 @@
-../../../rules/adaptive-bypass.md

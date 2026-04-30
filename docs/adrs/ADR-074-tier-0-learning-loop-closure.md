@@ -6,6 +6,10 @@
 
 ---
 
+## Status
+
+Accepted.
+
 ## Context
 
 A 4-agent audit on 2026-04-30 (Engram topics: `cos-learning-loop-wiring-audit`,
@@ -125,13 +129,20 @@ it; that deployment path is tracked as a Tier-1 follow-up.
 
 ---
 
-## Alternatives Considered
+## Alternatives rejected
 
-**Full Hermes verbatim port**: Porting the complete Hermes learning-loop
-(skill review prompts, RLHF-style rating, memory replay) would require replacing
-existing hooks wholesale. Rejected as out of scope; the incremental wiring
-approach achieves 80% of the value at 20% of the risk.
+- **Full Hermes verbatim port**: Porting the complete Hermes learning-loop
+  (skill review prompts, RLHF-style rating, memory replay) would require replacing
+  existing hooks wholesale. Rejected as out of scope; the incremental wiring
+  approach achieves 80% of the value at 20% of the risk.
 
-**Honcho service**: Using Honcho (external session memory service) as a feedback
-store was considered. Rejected: external dependency, network requirement, no
-offline path.
+- **Honcho service**: Using Honcho (external session memory service) as a feedback
+  store was considered. Rejected: external dependency, network requirement, no
+  offline path.
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit/test_feedback_consumer.py -q --tb=short
+python3 -m pytest tests/behavior/test_engram_reinforce_hook.py -q --tb=short
+```

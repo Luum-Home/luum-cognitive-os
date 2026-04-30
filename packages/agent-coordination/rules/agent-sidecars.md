@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Agent Sidecars via Engram (BMAD v6 Pattern 4)
 
 ## Purpose

@@ -1,5 +1,5 @@
-<!-- TIER: 0 -->
 <!-- SCOPE: both -->
+<!-- TIER: 0 -->
 # Agent Quality: Maximum Output, Not Minimum
 
 ## The Core Problem

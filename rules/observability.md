@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Observability — MLflow Integration
 
 ## Always Active (when mlflow installed)

@@ -219,10 +219,10 @@ def test_read_tier_returns_correct_values(tiered_project):
 
 def test_expand_tier_filter_expands_only_allowed_tiers(tmp_project):
     (tmp_project / "rules" / "tier-zero.md").write_text(
-        "<!-- TIER: 0 -->\n# Tier Zero\nAlways loaded.\n"
+        "<!-- SCOPE: both -->\n<!-- TIER: 0 -->\n# Tier Zero\nAlways loaded.\n"
     )
     (tmp_project / "rules" / "tier-two.md").write_text(
-        "<!-- TIER: 2 -->\n# Tier Two\nLazy loaded.\n"
+        "<!-- SCOPE: both -->\n<!-- TIER: 2 -->\n# Tier Two\nLazy loaded.\n"
     )
 
     out = expand("[`tier-zero`] [`tier-two`]", tier_filter={0})

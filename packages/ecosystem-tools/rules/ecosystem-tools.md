@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 <!-- TIER: 1 -->
 # Ecosystem Tools — External Tool Integrations
 

@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # E2B Sandbox -- Secure Agent Code Execution
 
 ## Overview

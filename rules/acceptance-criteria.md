@@ -1,5 +1,5 @@
-<!-- TIER: 0 -->
 <!-- SCOPE: both -->
+<!-- TIER: 0 -->
 # Mandatory Acceptance Criteria
 
 ## Purpose

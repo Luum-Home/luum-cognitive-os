@@ -1,5 +1,5 @@
-<!-- TIER: 1 -->
 <!-- SCOPE: both -->
+<!-- TIER: 1 -->
 # Confidentiality Protection — IP Leak Prevention
 
 ## Purpose

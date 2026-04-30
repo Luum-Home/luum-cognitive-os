@@ -1,1 +1,0 @@
-../../../rules/bash-naming.md

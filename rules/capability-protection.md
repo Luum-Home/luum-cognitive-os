@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: os-only -->
+<!-- TIER: 2 -->
 # Capability Protection
 
 > Prevent unintended feature loss during Cognitive OS refactors, cleanups, and consolidations.

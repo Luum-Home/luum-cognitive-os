@@ -1,5 +1,5 @@
-<!-- TIER: 1 -->
 <!-- SCOPE: both -->
+<!-- TIER: 1 -->
 # Agent Customization via Override Files (BMAD v6 Pattern 9)
 
 ## Purpose

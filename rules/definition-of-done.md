@@ -1,5 +1,5 @@
-<!-- TIER: 0 -->
 <!-- SCOPE: both -->
+<!-- TIER: 0 -->
 # Definition of Done (DoD) by Task Complexity
 
 ## Purpose
