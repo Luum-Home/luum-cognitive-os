@@ -2,7 +2,7 @@
 ---
 name: harness-audit
 description: >
-  Evaluate harness components (hooks, rules, skills) for continued relevance.
+  Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance.
   Identify candidates for simplification or retirement as models improve.
 version: 1.0.0
 user-invocable: true
@@ -12,7 +12,7 @@ license: MIT
 metadata:
   author: luum
 audience: os-dev
-summary_line: "Evaluate harness components (hooks, rules, skills) for continued relevance."
+summary_line: "Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance."
 
 ---
 
@@ -30,7 +30,7 @@ This skill does NOT auto-remove anything. It produces recommendations for human 
 
 ### Step 1: Collect Activity Data
 
-Read metrics files to understand component activity:
+Read metrics files to understand agentic primitive activity:
 
 ```
 Sources:
@@ -157,7 +157,7 @@ Assess readiness for next phase:
 - DORMANT does not mean USELESS. A hook may be dormant because it successfully prevents errors that no longer occur. Removing it could reintroduce those errors.
 - ORPHANED rules may be enforced through CLAUDE.md instructions, not hooks.
 - UNUSED skills may be triggered by auto-loader rules, not direct invocation.
-- These are RECOMMENDATIONS, not directives. Always validate before removing any component.
+- These are RECOMMENDATIONS, not directives. Always validate before removing any agentic primitive.
 ```
 
 ### Step 7: Persist Report
@@ -175,7 +175,7 @@ mem_save(
 ## Rules
 
 - NEVER recommend removing security, constitutional, or license rules
-- NEVER auto-remove any component — recommendations only
+- NEVER auto-remove any agentic primitive — recommendations only
 - Always include the "Important Caveats" section
 - If metrics files don't exist, report "No data available" rather than failing
 - Compare against at least 2 analysis periods if data allows (trend detection)

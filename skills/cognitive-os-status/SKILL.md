@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: cognitive-os-status
-description: "Full health check of all Cognitive OS components"
+description: "Full health check of all Cognitive OS agentic primitives"
 triggers: ["/cognitive-os-status", "/aos-status", "/health"]
 audience: both
 ---
@@ -13,7 +13,7 @@ audience: both
 
 ## Instructions
 
-Run a comprehensive health check of every Cognitive OS subsystem. Output a single ASCII table with component, status, and details. No verbose explanations.
+Run a comprehensive health check of every Cognitive OS subsystem. Output a single ASCII table with primitive, status, and details. No verbose explanations.
 
 ### Step 1: Check Hooks
 
@@ -120,7 +120,7 @@ Print the results as an ASCII table:
 
 ```
 ╔═══════════════════╦════════╦═══════════════════════════════╗
-║ Component         ║ Status ║ Details                       ║
+║ Primitive         ║ Status ║ Details                       ║
 ╠═══════════════════╬════════╬═══════════════════════════════╣
 ║ Hooks             ║ OK     ║ 18 registered, 18 executable  ║
 ║ Rules             ║ OK     ║ 22 rules (16 OS + 6 project)  ║
