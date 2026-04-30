@@ -67,6 +67,8 @@
   timeout exhaustion.
 - [x] Local and CI test defaults are explicit: fast focused, broad non-Docker,
   Docker/e2e opt-in, and cost-bearing optional lanes have separate commands.
+- [x] Slow live integration is explicit rather than part of the default
+  non-Docker broad lane.
 - [x] SessionStart performs a cached host-tool doctor check through `hooks/host-tool-doctor.sh`, while keeping broad pytest inventory explicit to avoid startup overload.
 
 ## 5. Onboarding and Operational Simplicity

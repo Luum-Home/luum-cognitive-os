@@ -17,7 +17,6 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-import sys
 from pathlib import Path
 
 import pytest
@@ -69,6 +68,11 @@ def _run_hook(mode: str, agent_id: str, project_dir: Path) -> subprocess.Complet
     env = os.environ.copy()
     env["COGNITIVE_OS_PROJECT_DIR"] = str(project_dir)
     env["AGENT_ID"] = agent_id
+    # This chaos test intentionally exercises the legacy resolver path. In the
+    # SO repo, global-verify defaults to cos-test focused and only allows the
+    # legacy resolver through an explicit compatibility flag.
+    env["COS_GLOBAL_VERIFY_ALLOW_LEGACY_RESOLVER"] = "1"
+    env["VERIFY_FILES_OVERRIDE"] = "lib/synthetic_changed_for_chaos.py"
     # Ensure killswitch is NOT set (we want the hook to run fully)
     env.pop("COGNITIVE_OS_KILLSWITCH", None)
     return subprocess.run(
@@ -109,7 +113,7 @@ def test_global_verify_catches_regression(tmp_path: Path) -> None:
     # Record the line count of verify-events.jsonl before the test
     events_before = verify_events.read_text(encoding="utf-8").splitlines() if verify_events.exists() else []
 
-    with _FakeResolver([test_path]) as resolver:
+    with _FakeResolver([test_path]):
         # Step 1: run 'before' phase — should capture passing baseline
         before_result = _run_hook("before", agent_id, _PROJ_ROOT)
         assert before_result.returncode == 0, (

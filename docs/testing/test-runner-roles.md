@@ -28,6 +28,7 @@ contributors should be able to answer two questions quickly:
 | Validate one lane | `cos-test cluster --lane <name>` | Runs the lane according to registry parallel-safety policy. |
 | Local broad without Docker | `cos-test broad --no-docker` or `make test-local-wide-no-docker` | Official local broad lane; skips Docker-capable lanes. |
 | CI default | `cos-test broad --no-docker --ci` or `make test-ci-default` | Same policy as local broad, CI output mode. |
+| Slow integration without Docker | `cos-test cluster --lane integration` or `make test-integration-no-docker` | Explicit because integration contains live installer/session workflows. |
 | Docker/e2e explicit | `COS_ALLOW_DOCKER_TESTS=1 cos-test cluster --lane integration-docker` | Docker/testcontainers never start from default broad. |
 | Include cost-bearing or non-deterministic lanes | `COS_ALLOW_COST_BEARING_TESTS=1 cos-test cluster --lane <optional>` | Optional lanes must be explicit. |
 | Need persisted pytest artifacts directly | `bash scripts/pytest-with-summary.sh -- <pytest args>` | Reporting transport fallback; not the primary selection UX. |
