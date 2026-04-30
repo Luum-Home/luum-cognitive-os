@@ -69,3 +69,15 @@ def test_run_tests_skill_points_to_role_taxonomy() -> None:
         "Opt-in startup smoke": "`scripts/cos-smoke.sh`",
         "Legacy compatibility only": "`scripts/test-cognitive-os*.sh`, `scripts/test-all.sh`, `scripts/run-all-tests.sh`",
     }
+
+
+def test_deprecated_cos_test_surfaces_do_not_use_legacy_pytest_runner() -> None:
+    """run/dashboard/watch must proxy to focused/cluster/broad, not old runner.RunConfig paths."""
+    for rel in [
+        "cmd/cos-test/internal/cli/run.go",
+        "cmd/cos-test/internal/cli/dashboard.go",
+        "cmd/cos-test/internal/cli/watch.go",
+    ]:
+        text = (ROOT / rel).read_text(encoding="utf-8")
+        assert "runner.NewPytestRunner" not in text, rel
+        assert "runner.RunConfig" not in text, rel
