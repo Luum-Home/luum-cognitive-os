@@ -108,7 +108,7 @@ Cognitive OS wraps Agent Teams with quality, security, memory, and governance la
 
 ### Hook Integration Map
 
-| COS Component | Integration Point | How It Works |
+| COS Primitive | Integration Point | How It Works |
 |---------------|-------------------|-------------|
 | SubagentStart hook | Teammate context injection | Injects agent-preamble.md + Engram sidecar context into each teammate at launch |
 | TaskCreated hook | Quality gates on task specs | Validates task descriptions have acceptance criteria, scope, and verification commands before creation |

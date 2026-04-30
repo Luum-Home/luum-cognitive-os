@@ -7,6 +7,15 @@ Class B (keep): 15
 Class C (keep): 31
 Ambiguous: 6
 
+Status update: 2026-04-30 — migrated the clear Class A occurrences in
+active docs, skill contracts, package-manager surfaces, runtime messages,
+manifests, and selected archive/business docs. Remaining tracked uses of
+`component` should be treated as one of: generic software terminology
+(UI, infrastructure, K8s, test-pyramid layers), proper nouns/filenames
+(`component-classifier`, `component-scope-classification.md`,
+`component_usage_tracker`), or separate rename work that needs backwards
+compatibility.
+
 ---
 
 ## File: AGENTS.md

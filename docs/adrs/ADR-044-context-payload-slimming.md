@@ -1,4 +1,4 @@
-# ADR-044: Context Payload Slimming — Non-Rule Startup Components
+# ADR-044: Context Payload Slimming — Non-Rule Startup Agentic Primitives
 
 **Status**: Phase 2 RESOLVED (frontmatter migration + catalog generator) — Phase 2 slash commands BLOCKED (sandbox write-permission on `.claude/commands/`)
 **Date**: 2026-04-20 (proposed), 2026-04-21 (Phase 2 partial resolution)
@@ -22,7 +22,7 @@ Agent B is classifying rules (item 3 above). This ADR covers **everything non-ru
 
 Empirical measurement from the live session that produced this ADR (values in bytes on disk, tokens at ~4 chars/token):
 
-| # | Component | Source | Bytes | Est. tokens | Frequency |
+| # | Primitive | Source | Bytes | Est. tokens | Frequency |
 |---|---|---|---|---|---|
 | 1 | Global CLAUDE.md | `~/.claude/CLAUDE.md` | 11,125 | ~2,780 | every session |
 | 2 | Skills catalog listing | harness-injected (reads `skills/*/SKILL.md` metadata) | ~14,000 (observed block) | ~3,500 | every session |
@@ -48,9 +48,9 @@ Adopt a **tiered context loading model** for non-rule payload with three tiers:
 
 Concretely:
 
-### Component-by-component classification
+### Agentic primitive-by-agentic primitive classification
 
-| Component | Current | Decision | Mechanism | Est. tokens saved |
+| Primitive | Current | Decision | Mechanism | Est. tokens saved |
 |---|---|---|---|---|
 | Global CLAUDE.md | ~2,780 tok, full prose | **COMPRESS** → ~500 tok index + pointers | User-owned file; propose a slim `CLAUDE.md` with `/rules-expand`, `/engram-help`, `/sdd-help` pointers | ~2,280 |
 | Skills catalog listing (harness) | ~3,500 tok | **LAZY** | Harness feature (not OS-controllable); until fixed, encourage users to split `SKILL.md` descriptions into one-line summaries; hydrate full descriptions via `Skill` tool invocation | ~0 (harness-controlled) until fix; track as upstream |
@@ -107,12 +107,12 @@ CLAUDE.md embeds the full SDD pipeline spec (dependency graph, fast-path rules, 
 - Newer models that benefit from rich context may see a small quality regression on first turn. Mitigated by keeping pointers visible — model can always pull the text.
 
 ### Risks
-- **Harness-controlled components** (skills catalog, deferred tools list, MCP instructions): we can only shrink what feeds them. If the harness adds new mandatory context, savings erode.
+- **Harness-controlled agentic primitives** (skills catalog, deferred tools list, MCP instructions): we can only shrink what feeds them. If the harness adds new mandatory context, savings erode.
 - **Agent discipline**: if an agent forgets to run `/engram-help` before needing the protocol, it may guess and miscall `mem_save`. Mitigated by keeping the 3-line summary in T1 — enough for correct basic usage.
 
 ## Target Payload
 
-| Tier | Components | Tokens |
+| Tier | Primitives | Tokens |
 |---|---|---|
 | T1 (always) | Slim CLAUDE.md, env, deferred tools list, MCP instructions, session hook 1-liners | ~2,500 |
 | T2 (on trigger) | Full engram protocol, SDD pipeline, per-rule expansion (Agent B), full skill description | on-demand |

@@ -7,12 +7,12 @@ JVM metrics, we monitor every piece of the agent pipeline — hooks, skills, lib
 and the safety mesh.
 
 Tracks:
-- Latency (p50/p95/p99) per component
+- Latency (p50/p95/p99) per agentic primitive
 - Throughput (tasks/hour, tool calls/minute)
 - Overhead (hook chain + safety mesh as % of session time)
 - Efficiency (token, time, cost, error composites)
 - Bottleneck detection with suggestions
-- Per-component health (healthy/degraded/unhealthy)
+- Per-agentic-primitive health (healthy/degraded/unhealthy)
 
 Python 3.9+ compatible. No external dependencies.
 Author: luum
@@ -28,8 +28,7 @@ import time
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Tuple
+from typing import Any, Dict, Iterator, List, Optional
 
 
 @dataclass
@@ -190,7 +189,6 @@ class PerformanceMonitor:
             pct_of_session_time.
         """
         hook_metrics = [m for m in self._session_metrics if m.component.startswith("hook:")]
-        skill_metrics = [m for m in self._session_metrics if m.component.startswith("skill:")]
 
         # Hook breakdown
         hooks_breakdown: Dict[str, float] = {}

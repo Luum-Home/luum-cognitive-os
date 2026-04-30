@@ -96,7 +96,7 @@ Equivalent to loading `skills/apply-improvements/SKILL.md` and following its ins
 
 ## Integration Points
 
-| Component | Role |
+| Primitive | Role |
 |-----------|------|
 | `hooks/error-learning.sh` | Captures raw error data (feeds analyze) |
 | `hooks/auto-refine.sh` | Captures iteration data (feeds analyze) |

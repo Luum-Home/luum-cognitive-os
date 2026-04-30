@@ -77,7 +77,7 @@ A fintech platform with a 170-endpoint Express.js monolith, 3 programming langua
 
 | Task | Traditional Estimate | Actual Time | Agents Used |
 |---|---|---|---|
-| Design 13-component architecture | 2-3 months | ~3 hours | multiple |
+| Design 13-agentic-primitive architecture | 2-3 months | ~3 hours | multiple |
 | Implement 15 hooks | 2-3 weeks | ~2 hours | 5 agents |
 | Implement 17+ rules | 1-2 weeks | ~1 hour | 3 agents |
 | Create 30+ skills | 2-3 weeks | ~2 hours | 4 agents |

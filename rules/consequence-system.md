@@ -40,7 +40,7 @@ All events logged to `.cognitive-os/metrics/consequence-history.jsonl`. Use `Con
 
 ## Integration
 
-| Component | Role |
+| Primitive | Role |
 |-----------|------|
 | `lib/consequence_engine.py` | Core logic: evaluate, apply, query |
 | `hooks/consequence-evaluator.sh` | PostToolUse hook on Agent |

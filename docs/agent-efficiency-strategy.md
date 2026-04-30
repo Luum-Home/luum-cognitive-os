@@ -337,7 +337,7 @@ Add these to the session summary and `/agent-kpis` output:
 
 - `rules/model-routing.md` — routing table and dynamic multi-provider routing
 - `rules/context-optimization.md` — 3-level progressive skill loading, token budget targets
-- `rules/capability-levels.md` — auto-disable components by model capability
+- `rules/capability-levels.md` — auto-disable agentic primitives by model capability
 - `rules/workload-scheduling.md` — WorkloadScheduler API and priority levels
 - `rules/decomposition.md` — cost thresholds and model selection per sub-task
 - `lib/model_router.py` — `select_model(task_type)` implementation

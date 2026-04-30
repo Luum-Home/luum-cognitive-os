@@ -56,7 +56,7 @@ after every agent completion).
 
 ## Integration Points
 
-| Component | Role |
+| Primitive | Role |
 |-----------|------|
 | `lib/consequence_engine.py` | `get_skills_needing_rewrite()` counts recent failures |
 | `packages/quality-gates/hooks/completion-gate.sh` | Calls the method after every Agent completion |
