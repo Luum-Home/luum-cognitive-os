@@ -44,12 +44,13 @@ lanes:
     paths: [tests/smoke/]
     parallel: false
     stateful_reason: "End-to-end smoke validation: full system startup, opt-in only via cos-smoke entry point"
+    optional: true
 
   # Opt-in lanes: not run by default, require explicit env flags or invocation.
-  # arena/benchmark/quality have markers registered in pytest.ini but no test
-  # files yet (or tests are gated behind COS_RUN_* flags). These entries reserve
-  # the lane name and parallelism contract for future use without committing
-  # cos-test broad to running them on every invocation.
+  # smoke/arena/benchmark/quality are intentionally excluded from cos-test broad
+  # unless --include-optional is passed. These entries reserve the lane name and
+  # parallelism contract without committing the default broad sweep to full
+  # startup, cost-bearing, or non-deterministic checks on every invocation.
   arena:
     paths: [tests/arena/]
     parallel: false
