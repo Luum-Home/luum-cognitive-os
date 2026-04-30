@@ -4,10 +4,10 @@
 
 | Family | Total | Proven | Partial | Aspirational | Harmful |
 |---|---:|---:|---:|---:|---:|
-| hooks | 210 | 66 | 144 | 0 | 0 |
+| hooks | 207 | 66 | 141 | 0 | 0 |
 | metrics | 96 | 71 | 25 | 0 | 0 |
 | rules | 112 | 112 | 0 | 0 | 0 |
-| skills | 221 | 170 | 51 | 0 | 0 |
+| skills | 224 | 173 | 51 | 0 | 0 |
 
 ## High-Severity Rows
 

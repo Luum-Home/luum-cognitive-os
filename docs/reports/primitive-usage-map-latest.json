@@ -1,0 +1,1855 @@
+{
+  "summary": {
+    "consumer_reference_totals": {
+      "doc": 81,
+      "hook": 18,
+      "rule": 40,
+      "script": 4,
+      "skill": 24,
+      "test": 85,
+      "workflow": 11
+    },
+    "targets": 61,
+    "without_any_consumer": 0,
+    "without_skill_consumer": 39
+  },
+  "target_family": "scripts",
+  "targets": [
+    {
+      "consumer_families": {
+        "hook": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "hook",
+          "path": "hooks/project-docs-convention.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_adr_reserve.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_project_docs_writers.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/adr_reserve.py",
+      "skill_consumers": 0,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research-log.md"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/align_skill_frontmatter.py",
+      "skill_consumers": 0,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "doc": 3,
+        "hook": 2,
+        "rule": 1,
+        "skill": 1,
+        "test": 1,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-031.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-059-so-existential-validation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-061-focus-narrative-and-external-evidence.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/aspirational-audit-weekly.sh"
+        },
+        {
+          "family": "hook",
+          "path": "tests/hooks/test_aspirational_audit_weekly.py"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/component-reality-check/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_aspirational_audit.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/weekly-public-metrics.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/aspirational_audit.py",
+      "skill_consumers": 1,
+      "total_consumers": 9
+    },
+    {
+      "consumer_families": {
+        "rule": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/backfill_cost_events.py",
+      "skill_consumers": 0,
+      "total_consumers": 1
+    },
+    {
+      "consumer_families": {
+        "doc": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-070-convention-enforcement-mechanism.md"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/backfill_session_decisions.py",
+      "skill_consumers": 0,
+      "total_consumers": 1
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/path-portability-and-privacy.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_check_absolute_paths.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/check_absolute_paths.py",
+      "skill_consumers": 0,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/architecture/test_wiring.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/check_catalog_sync.py",
+      "skill_consumers": 0,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/architecture/test_wiring.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/check_hook_registration.py",
+      "skill_consumers": 0,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/architecture/test_wiring.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/check_lib_wiring.py",
+      "skill_consumers": 0,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/tooling-update-protocol.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/deps-update/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_check_mcp_servers.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/check_mcp_servers.py",
+      "skill_consumers": 1,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 6,
+        "rule": 1,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-073-test-architecture-role-registry.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/LESSONS-LEARNED.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/POST-MORTEM-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing/mutation-testing.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/test-quality.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/check_test_quality.py",
+      "skill_consumers": 0,
+      "total_consumers": 8
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/architecture/test_wiring.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/check_test_ratchet.py",
+      "skill_consumers": 0,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "test": 2,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_claim_proof_and_reduction.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_workflow.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/primitive-gap-audit.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/claim_proof_audit.py",
+      "skill_consumers": 0,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "hook": 1,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-088-provenance-trailer-ppid-chain.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-init.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/write_context_marker.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_commit_provenance.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/commit_provenance.py",
+      "skill_consumers": 0,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "doc": 2,
+        "rule": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-047-session-lifecycle-management.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/orchestrator-prompt-compose.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/compose_agent_prompt.py",
+      "skill_consumers": 0,
+      "total_consumers": 5
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "hook": 1,
+        "rule": 1,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-037-self-knowledge-base.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/self-knowledge-refresh.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/e2e/test_cos_smoke.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_self_knowledge_refresh.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_self_knowledge_generator.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_self_knowledge_query.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_build_self_knowledge.py",
+      "skill_consumers": 0,
+      "total_consumers": 7
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-041.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_chaos_template.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_chaos_template.py",
+      "skill_consumers": 0,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "rule": 1,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-041.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/aspirational_audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_coverage_classifier.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_classify_coverage.py",
+      "skill_consumers": 0,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "doc": 2,
+        "hook": 2,
+        "rule": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-034-harness-agnostic-live-streaming.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/guides/adding-a-harness-adapter.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/cos-executor-daemon-launcher.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/cos-executor-heartbeat.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_executor_e2e.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_executor_publishes_live.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_executor.py",
+      "skill_consumers": 0,
+      "total_consumers": 7
+    },
+    {
+      "consumer_families": {
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/behavior/test_governed_self_improvement_cli.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_governed_self_improvement.py",
+      "skill_consumers": 0,
+      "total_consumers": 1
+    },
+    {
+      "consumer_families": {
+        "script": 1,
+        "test": 6
+      },
+      "consumers": [
+        {
+          "family": "script",
+          "path": "scripts/backfill_session_decisions.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_init_parity_2_1.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_init_parity_2_2.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_init_parity_2_3.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_auto_update_flow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_auto_update_safety.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_init_py.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_init.py",
+      "skill_consumers": 0,
+      "total_consumers": 7
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/memory-lifecycle.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_profile_bootstrap_cli.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_profile_bootstrap.py",
+      "skill_consumers": 0,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/e2e/test_cos_smoke.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_cos_sprint_cli.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_sprint.py",
+      "skill_consumers": 0,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 4,
+        "hook": 3,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-073-test-architecture-role-registry.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/validation-nervous-system.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing/test-runner-roles.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/auto-verify.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/dod-gate.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/pre-commit-gate.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_safety_mesh.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_governance_artifact_consumption.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_test_artifact_status.py",
+      "skill_consumers": 0,
+      "total_consumers": 9
+    },
+    {
+      "consumer_families": {
+        "doc": 4,
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-072-test-lane-taxonomy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-073-test-architecture-role-registry.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing/test-runner-roles.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_test_quality_auditor.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_test_quality_audit.py",
+      "skill_consumers": 0,
+      "total_consumers": 6
+    },
+    {
+      "consumer_families": {
+        "doc": 2,
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-034-harness-agnostic-live-streaming.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-036-sprint-orchestration-primitives.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_cos_watch_renders.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_watch.py",
+      "skill_consumers": 0,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_work_queue_sync.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cos_work_queue.py",
+      "skill_consumers": 0,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/cost-predictor/SKILL.md"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/cost_predict.py",
+      "skill_consumers": 1,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "doc": 2,
+        "skill": 1,
+        "test": 6
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-069-research-first-protocol.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-070-convention-enforcement-mechanism.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/decision-triage/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_decision_tracking_convention.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_no_undefined_imports.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_decision_triage_engram_live.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_decision_triage_full_cycle.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_decision_triage_real_files.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_decision_triage.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/decision_triage.py",
+      "skill_consumers": 1,
+      "total_consumers": 9
+    },
+    {
+      "consumer_families": {
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-04-27.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-068-adaptive-test-runner-capacity.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_detect_runner_capacity.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/detect_runner_capacity.py",
+      "skill_consumers": 0,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "rule": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/doc-review-personas/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_doc_review_personas.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/doc_review_personas.py",
+      "skill_consumers": 1,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "test": 3,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/unit/test_claim_proof_and_reduction.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_docs_duplicate_audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_workflow.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/primitive-gap-audit.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/docs_duplicate_audit.py",
+      "skill_consumers": 0,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "packages/document-sync/skills/document-feature/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_document_feature.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/document_feature_append.py",
+      "skill_consumers": 1,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 4,
+        "rule": 1,
+        "skill": 1,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-059-so-existential-validation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-061-focus-narrative-and-external-evidence.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/dogfood-score/SKILL.md"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/weekly-public-metrics.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/dogfood_score.py",
+      "skill_consumers": 1,
+      "total_consumers": 7
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/domain-model/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_domain_model.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/domain_model.py",
+      "skill_consumers": 1,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 4,
+        "hook": 1,
+        "rule": 2,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-044-context-payload-slimming.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-init.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/context-optimization.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/catalog-full/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_catalog_loading.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_compat_test.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/generate_compact_catalog.py",
+      "skill_consumers": 1,
+      "total_consumers": 10
+    },
+    {
+      "consumer_families": {
+        "doc": 3,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/bootstrap-portability.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-driver-parity.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_session_start_tooling_contract.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/harness_parity_audit.py",
+      "skill_consumers": 0,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "doc": 3,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-086-hook-execution-observability.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/measurements/hook-timing-runbook.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research-log.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/hook-timing/SKILL.md"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/hook_timing_report.py",
+      "skill_consumers": 1,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/invariant-check/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_invariant_check.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_invariant_check_helper.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/invariant_check_helper.py",
+      "skill_consumers": 1,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "doc": 2,
+        "rule": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/runbooks/llm-dispatch.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/llm-status/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_llm_status.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/llm_status.py",
+      "skill_consumers": 1,
+      "total_consumers": 5
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/measurements/stage2-expansion-baseline.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_measure_expansion.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/measure_expansion.py",
+      "skill_consumers": 0,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/ops-runbook/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_ops_runbook.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/ops_runbook.py",
+      "skill_consumers": 1,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 11,
+        "hook": 3,
+        "rule": 2,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-050-per-skill-routing-policy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-051-qwen-agent-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-056-adaptive-agent-dispatch.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-062-multi-provider-agent-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-064-harness-agnostic-cognitive-os.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/claude-code-router-evaluation-2026-04-21.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/runbooks/llm-dispatch.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-quota-advisor.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-quota-redirect.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-qwen-bridge.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/llm-dispatch.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_orchestrator_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_quota_redirect.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_orchestrator_fallback.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/orchestrator.py",
+      "skill_consumers": 0,
+      "total_consumers": 19
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-051-qwen-agent-loop.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_parity_harness.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/parity_harness.py",
+      "skill_consumers": 0,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "script": 1,
+        "test": 3,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "script",
+          "path": "scripts/primitive_surface_reduce.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_snapshot.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_workflow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_surface_reduce.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/primitive-gap-audit.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/primitive_gap_snapshot.py",
+      "skill_consumers": 0,
+      "total_consumers": 5
+    },
+    {
+      "consumer_families": {
+        "test": 2,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_workflow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_row_audit.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/primitive-gap-audit.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/primitive_row_audit.py",
+      "skill_consumers": 0,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "skill": 1,
+        "test": 2,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "skill",
+          "path": "skills/primitive-surface-reduction/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_workflow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_surface_reduce.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/primitive-gap-audit.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/primitive_surface_reduce.py",
+      "skill_consumers": 1,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "skill": 2,
+        "test": 2,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/primitive-surface-reduction/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/primitive-usage-map/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_workflow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_usage_map.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/primitive-gap-audit.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/primitive_usage_map.py",
+      "skill_consumers": 2,
+      "total_consumers": 6
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "hook": 1,
+        "rule": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/project-docs-convention.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/project-scaffold/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_project_scaffolder.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/project_scaffold.py",
+      "skill_consumers": 1,
+      "total_consumers": 5
+    },
+    {
+      "consumer_families": {
+        "doc": 2,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-066-polyglot-language-boundaries.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/radar-update/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_radar_merge.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/radar_merge.py",
+      "skill_consumers": 1,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "test": 2,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_claim_proof_and_reduction.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_workflow.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/primitive-gap-audit.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/reduction_backlog.py",
+      "skill_consumers": 0,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_regen_catalog_bullets.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/regen_catalog_bullets.py",
+      "skill_consumers": 0,
+      "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/risk-register/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_risk_register.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/risk_register.py",
+      "skill_consumers": 1,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "rule": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/rules-export/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_project_docs_writers.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/rules_export.py",
+      "skill_consumers": 1,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "rule": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/scope_tag_backfill.py",
+      "skill_consumers": 0,
+      "total_consumers": 1
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "rule": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "packages/quality-gates/skills/security-audit/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_project_docs_writers.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/security_audit_writer.py",
+      "skill_consumers": 1,
+      "total_consumers": 4
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "hook": 2,
+        "rule": 1,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-047-session-lifecycle-management.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/cognitive-os-health.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-watchdog-launcher.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/e2e/conftest.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/e2e/test_session_startup_smoke.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_session_watchdog.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_session_watchdog_launcher.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/so_session_watchdog.py",
+      "skill_consumers": 0,
+      "total_consumers": 8
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/so-vs-vanilla/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_so_vs_vanilla_benchmark.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/so_vs_vanilla_benchmark.py",
+      "skill_consumers": 1,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 2,
+        "rule": 1,
+        "skill": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/cognitive-os-test/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/test-contract-repair/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_test_run_inventory.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/test_run_inventory.py",
+      "skill_consumers": 2,
+      "total_consumers": 6
+    },
+    {
+      "consumer_families": {
+        "rule": 1,
+        "test": 1,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_update_readme_badges.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/weekly-public-metrics.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/update_readme_badges.py",
+      "skill_consumers": 0,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 2,
+        "hook": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-088-provenance-trailer-ppid-chain.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/measurements/hook-timing-runbook.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-init.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_commit_provenance_chain.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/write_context_marker.py",
+      "skill_consumers": 0,
+      "total_consumers": 4
+    }
+  ]
+}

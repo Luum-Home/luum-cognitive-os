@@ -1,0 +1,6 @@
+adapter: backstage
+families:
+  catalog_entity:
+    patterns: ["catalog-info.yaml", "**/catalog-info.yaml"]
+  techdoc:
+    patterns: ["mkdocs.yml", "docs/**/*.md"]

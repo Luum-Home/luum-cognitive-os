@@ -1,0 +1,17 @@
+adapter: cognitive-os
+extends: generic
+families:
+  skill:
+    patterns: ["skills/**/SKILL.md", ".codex/skills/**/SKILL.md", "packages/**/skills/**/SKILL.md"]
+  hook:
+    patterns: ["hooks/**/*.sh", "packages/**/hooks/**/*.sh"]
+  rule:
+    patterns: ["rules/**/*.md"]
+  script:
+    patterns: ["scripts/**/*.py"]
+  doc:
+    patterns: ["docs/**/*.md", "README.md", "AGENTS.md"]
+  workflow:
+    patterns: [".github/workflows/*.yml", ".github/workflows/*.yaml"]
+  config:
+    patterns: ["cognitive-os.yaml", ".claude/**/*.json", "manifests/**/*.json"]
