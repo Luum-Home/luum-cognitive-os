@@ -104,10 +104,13 @@ func runCluster(cfg *config.Config, laneName string, dryRun bool) error {
 		fmt.Println("[cos-test cluster] dry-run: not executing")
 		return nil
 	}
+	if err := enforceResourcePolicy(plan.Resources); err != nil {
+		return err
+	}
 
 	worst := 0
 	for _, inv := range plan.Invokes {
-		if err := pr.RawInvocationWithOptions(inv.Args, runner.InvocationOptions{Workers: inv.Workers, Lane: laneName}); err != nil {
+		if err := pr.RawInvocationWithOptions(inv.Args, runner.InvocationOptions{Workers: inv.Workers, Lane: laneName, TimeoutSeconds: plan.Resources.TimeoutSeconds}); err != nil {
 			worst = 1
 		}
 	}
@@ -219,6 +222,16 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 		return nil, fmt.Errorf("lane %q: unknown parallel mode %q", laneName, lane.Parallel)
 	}
 	return plan, nil
+}
+
+func enforceResourcePolicy(resources resourcepolicy.ResourcePolicy) error {
+	if resources.CostPolicy == "cost_bearing" && os.Getenv("COS_ALLOW_COST_BEARING_TESTS") != "1" {
+		return fmt.Errorf("blocked by resource policy: cost_bearing lane requires COS_ALLOW_COST_BEARING_TESTS=1")
+	}
+	if resources.DockerPolicy == "required" && os.Getenv("COS_ALLOW_DOCKER_TESTS") != "1" {
+		return fmt.Errorf("blocked by resource policy: docker-required lane requires COS_ALLOW_DOCKER_TESTS=1")
+	}
+	return nil
 }
 
 func workerLabel(workers string) string {

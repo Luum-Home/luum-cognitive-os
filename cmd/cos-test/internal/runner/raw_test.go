@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 
 	"luum-agent-os/cmd/cos-test/internal/config"
@@ -38,5 +39,27 @@ func TestPytestArgsWithOptionsFallsBackToPythonWhenWrapperMissing(t *testing.T) 
 	want := []string{"python", "-m", "pytest", "tests/unit/"}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("fallback args = %#v, want %#v", got, want)
+	}
+}
+
+func TestRawInvocationWithOptionsEnforcesTimeout(t *testing.T) {
+	root := t.TempDir()
+	scripts := filepath.Join(root, "scripts")
+	if err := os.MkdirAll(scripts, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(scripts, "pytest-with-summary.sh"), []byte("#!/usr/bin/env bash\nsleep 2\n"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	cfg := config.DefaultConfig()
+	cfg.ProjectRoot = root
+	r := NewPytestRunner(cfg)
+
+	err := r.RawInvocationWithOptions([]string{"tests/unit/"}, InvocationOptions{Lane: "timeout-test", TimeoutSeconds: 1})
+	if err == nil {
+		t.Fatal("expected timeout error")
+	}
+	if !strings.Contains(err.Error(), "RESOURCE_EXHAUSTED") {
+		t.Fatalf("expected RESOURCE_EXHAUSTED error, got %v", err)
 	}
 }

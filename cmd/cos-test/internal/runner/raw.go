@@ -1,9 +1,12 @@
 package runner
 
 import (
+	"context"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"time"
 )
 
 // wrapperRelPath is the path to the artifact-persisting pytest wrapper,
@@ -16,8 +19,9 @@ const wrapperRelPath = "scripts/pytest-with-summary.sh"
 // the shell wrapper. This keeps lane/resource policy in Go while preserving the
 // wrapper as the persistent-reporting transport.
 type InvocationOptions struct {
-	Workers string
-	Lane    string
+	Workers        string
+	Lane           string
+	TimeoutSeconds int
 }
 
 // RawInvocation runs pytest via scripts/pytest-with-summary.sh so that every
@@ -38,7 +42,21 @@ func (r *PytestRunner) RawInvocation(args []string) error {
 // Focused/cluster/broad should prefer this entry point so
 // pytest-with-summary.sh does not need to infer policy from paths.
 func (r *PytestRunner) RawInvocationWithOptions(args []string, opts InvocationOptions) error {
+	if opts.TimeoutSeconds > 0 {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(opts.TimeoutSeconds)*time.Second)
+		defer cancel()
+		cmd := exec.CommandContext(ctx, r.runnerProgram(), r.runnerArgs(args, opts)...)
+		err := r.runCommand(cmd)
+		if ctx.Err() == context.DeadlineExceeded {
+			return fmt.Errorf("RESOURCE_EXHAUSTED: lane %q exceeded timeout budget %ds", opts.Lane, opts.TimeoutSeconds)
+		}
+		return err
+	}
 	cmd := exec.Command(r.runnerProgram(), r.runnerArgs(args, opts)...)
+	return r.runCommand(cmd)
+}
+
+func (r *PytestRunner) runCommand(cmd *exec.Cmd) error {
 	cmd.Dir = r.cfg.ProjectRoot
 	cmd.Env = append(os.Environ(), "PYTHONDONTWRITEBYTECODE=1")
 	cmd.Stdout = os.Stdout

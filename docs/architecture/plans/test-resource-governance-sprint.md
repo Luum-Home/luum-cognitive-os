@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress — RG-1 resource policy manifest implemented. Runner enforcement beyond dry-run/resource metadata remains planned.
+In progress — RG-1 resource policy manifest implemented; RG-2 timeout and opt-in gates for cost-bearing/docker-required lanes implemented.
 
 ## Product intent
 
@@ -65,17 +65,17 @@ Teach `cmd/cos-test` to enforce the manifest before invoking pytest:
 
 - calculate final workers from lane policy, host pressure, and
   `COS_FORCE_SERIAL_LANES`;
-- enforce lane timeout with a clear `RESOURCE_EXHAUSTED`/`TIMEOUT` outcome;
-- prevent Docker lanes unless explicitly requested in environments where Docker
-  is disabled;
-- keep `scripts/pytest-with-summary.sh` as reporting transport only.
+- enforce lane timeout with a clear `RESOURCE_EXHAUSTED`/`TIMEOUT` outcome; ✅
+- prevent cost-bearing lanes unless `COS_ALLOW_COST_BEARING_TESTS=1`; ✅
+- prevent `docker_policy: required` lanes unless `COS_ALLOW_DOCKER_TESTS=1`; ✅
+- keep `scripts/pytest-with-summary.sh` as reporting transport only. ✅
 
 Acceptance criteria:
 
-- Unit tests cover worker cap precedence.
+- Unit tests cover worker cap precedence. ✅
 - Integration-style tests cover timeout classification without sleeping for real
-  long durations.
-- Dry-run output explains why a lane is serial, capped, skipped, or optional.
+  long durations. ✅
+- Dry-run output explains resource policy by lane; skip/cap explanations remain RG-3/RG-4 follow-up. ⏳
 
 ### RG-3 — Report schema extension
 
