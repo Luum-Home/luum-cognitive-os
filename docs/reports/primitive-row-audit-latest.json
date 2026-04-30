@@ -4888,7 +4888,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "adaptive-bypass.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -4897,7 +4897,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=11019; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "adr-detections.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -4906,7 +4906,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=5772; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "adr-section-warnings.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -4915,7 +4915,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=306600; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "advisor-consultations.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -4924,7 +4924,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=337663; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "agent-heartbeat.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -4933,7 +4933,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "agent-redirect.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -4942,7 +4942,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=4459; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "agent-timeouts.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -4951,7 +4951,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=93168; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "agent-verification.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -4960,7 +4960,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=602054; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "aspirational-audit.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -4969,7 +4969,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "assumptions.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -4978,7 +4978,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=149503; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "auto-trigger-events.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -4987,7 +4987,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=78494; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "auto-verify.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -4996,7 +4996,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=87369; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "blast-radius.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5005,7 +5005,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "canonical-events.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5014,7 +5014,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=96798; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "canonical-live.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5023,7 +5023,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "capability-snapshots.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5032,7 +5032,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=163; mentioned=False",
+      "evidence": "nonempty=True; mentioned=False",
       "family": "metrics",
       "name": "chaos-weekly.jsonl",
       "next_action": "find/add consumer or mark diagnostic-only",
@@ -5041,7 +5041,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=12150; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "clarification-events.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5050,7 +5050,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=34964; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "completeness-check.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5059,7 +5059,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=15994; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "confidentiality-enforcer.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5068,7 +5068,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=964746; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "consequence-history.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5077,7 +5077,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "content-policy.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5086,7 +5086,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=36221; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "context-diet.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5095,7 +5095,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=342556; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "context-watchdog.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5104,7 +5104,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=86886; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "contextual-rules.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5113,7 +5113,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=129760; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "cost-events.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5122,7 +5122,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=168; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "coverage-history.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5131,7 +5131,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=9500; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "crystallization-events.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5140,7 +5140,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=373; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "cwd-enforcer.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5149,7 +5149,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=9632; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "cwd-inject.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5158,7 +5158,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=35550; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "dispatch-gate.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5167,7 +5167,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=9113; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "docker-drift.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5176,7 +5176,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "dod-gate.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5185,7 +5185,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=994; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "dogfood-score.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5194,7 +5194,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "epic-task-detector.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5203,7 +5203,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=9751; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "error-learning.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5212,7 +5212,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=1332; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "expansion-measurements.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5221,7 +5221,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=27078; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "git-op-blocks.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5230,7 +5230,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=2014; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "hallucinations.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5239,7 +5239,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=945; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "hook-header-warnings.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5248,7 +5248,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=665944; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "hook-health.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5257,7 +5257,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=715664; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "hook-timing.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5266,7 +5266,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "infra-detections.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5275,7 +5275,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=24812; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "infra-health.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5284,7 +5284,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "infra-usage.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5293,7 +5293,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "knowledge-graph.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5302,7 +5302,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=95944; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "kpi-history.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5311,7 +5311,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "large-file-reads.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5320,7 +5320,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=80; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "lifecycle-reinforcement.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5329,7 +5329,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=3117; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "llm-dispatch.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5338,7 +5338,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=2295; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "missing-secrets.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5347,7 +5347,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "parity-results.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5356,7 +5356,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "performance.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5365,7 +5365,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=23256; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "predev-completeness.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5374,7 +5374,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=2525; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "primitive-gap-snapshot.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5383,7 +5383,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=26001; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "prompt-captures.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5392,7 +5392,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "prompt-quality.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5401,7 +5401,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=132; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "public-trend.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5410,7 +5410,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "rate-limit-checks.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5419,7 +5419,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=29356; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "rate-limit-drain.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5428,7 +5428,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=24101; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "rate-limit-events.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5437,7 +5437,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=15595; mentioned=False",
+      "evidence": "nonempty=True; mentioned=False",
       "family": "metrics",
       "name": "reasoning-cycle-counts.jsonl",
       "next_action": "find/add consumer or mark diagnostic-only",
@@ -5446,7 +5446,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=19121; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "ref-key-misses.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5455,7 +5455,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=119906; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "reinvention-checks.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5464,7 +5464,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=2956; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "repair-dispatch.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5473,7 +5473,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=17435; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "resource-checks.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5482,7 +5482,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "retry-tracker.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5491,7 +5491,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=38948; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "rm-op-blocks.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5500,7 +5500,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=394; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "rule-frontmatter-warnings.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5509,7 +5509,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "scope-proportionality.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5518,7 +5518,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "secret-redactions.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5527,7 +5527,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=25336; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "self-knowledge-refresh.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5536,7 +5536,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=154322; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "session-leak.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5545,7 +5545,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=234319; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "session-learnings.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5554,7 +5554,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=16821; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "session-log.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5563,7 +5563,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=1214061; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "session-watchdog.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5572,7 +5572,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=1009622; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "skill-archive.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5581,7 +5581,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=1597; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "skill-feedback.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5590,7 +5590,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=364; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "skill-frontmatter-warnings.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5599,7 +5599,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=2183; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "skill-invocations.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5608,7 +5608,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "skill-metrics.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5617,7 +5617,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=2149; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "skill-usage.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5626,7 +5626,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=13659193; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "so-vitals.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5635,7 +5635,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=5187; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "startup-benchmark.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5644,7 +5644,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=6094; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "surface-fix-detector.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5653,7 +5653,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=328; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "symbiosis.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5662,7 +5662,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=3645; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "task-completed.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5671,7 +5671,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=4230; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "task-created.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5680,7 +5680,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "task-history.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5689,7 +5689,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=3825; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "teammate-idle.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5698,7 +5698,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=0; mentioned=True",
+      "evidence": "nonempty=False; mentioned=True",
       "family": "metrics",
       "name": "test-quality-audit.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5707,7 +5707,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=18575; mentioned=False",
+      "evidence": "nonempty=True; mentioned=False",
       "family": "metrics",
       "name": "tool-use-correlation.jsonl",
       "next_action": "find/add consumer or mark diagnostic-only",
@@ -5716,7 +5716,7 @@
       "status": "partial"
     },
     {
-      "evidence": "bytes=73993; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "truncation-events.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5725,7 +5725,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=23239; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "valkey-health.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5734,7 +5734,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=177435; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "verify-events.jsonl",
       "next_action": "keep; assign retention if missing",
@@ -5743,7 +5743,7 @@
       "status": "proven"
     },
     {
-      "evidence": "bytes=10100; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "primitive-gap-history.jsonl",
       "next_action": "keep; assign retention if missing",

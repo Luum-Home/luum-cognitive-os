@@ -248,7 +248,7 @@ def audit_metrics(root: Path, tests: str, runtime: str, demotions: set[tuple[str
                 path=rel_path,
                 status=status,
                 severity=severity,
-                evidence=f"bytes={size}; mentioned={has_consumer}",
+                evidence=f"nonempty={nonempty}; mentioned={has_consumer}",
                 next_action=action,
             )
         )
