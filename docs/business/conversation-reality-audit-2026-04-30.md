@@ -431,3 +431,13 @@ This keeps current known debt visible while preventing the SO from growing new u
 - [x] Add regression-based escalation so new primitive gaps fail against the tracked baseline.
 - [ ] Add issue/PR creation for new blocker/high regressions.
 - [ ] Add row-level hook audit automation beyond family-level snapshot.
+
+### 14. Documentation Reinvention / Duplicate Drift
+
+- [x] Verify existing reinvention barrier scope (`hooks/reinvention-check.sh`).
+- [x] Confirm current barrier is code/file-creation oriented and advisory, not a complete documentation duplicate guard.
+- [x] Add automated near-duplicate Markdown scan.
+- [x] Store current duplicate-doc baseline at `docs/reports/docs-duplicate-baseline.json`.
+- [x] Fail weekly audit on new duplicate documentation pairs versus baseline.
+- [ ] Add row-level doc claim ownership so agents know which existing doc to update instead of creating another.
+- [ ] Add pre-write hook guidance for docs creation prompts: search/update before create.

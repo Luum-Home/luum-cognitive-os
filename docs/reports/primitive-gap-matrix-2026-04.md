@@ -115,3 +115,22 @@ Regression conditions:
 - hook p95 latency grows beyond `--latency-regression-ms` (default 500 ms).
 
 This intentionally permits the current high-risk baseline to exist while blocking additional unproven growth.
+
+## Documentation Duplicate Guard
+
+Existing protection before this audit:
+
+- `hooks/reinvention-check.sh` is registered as a PreToolUse Agent hook and emits `reinvention-checks.jsonl`.
+- It is advisory and primarily detects code/file creation around `lib/`, `hooks/`, scripts, and plugin source matches.
+- It does not fully prevent documentation duplication or ensure agents update previous docs instead of creating parallel docs.
+
+Added protection:
+
+- script: `scripts/docs_duplicate_audit.py`
+- tests: `tests/unit/test_docs_duplicate_audit.py`
+- baseline: `docs/reports/docs-duplicate-baseline.json`
+- latest JSON: `docs/reports/docs-duplicate-latest.json`
+- latest Markdown: `docs/reports/docs-duplicate-latest.md`
+- CI behavior: weekly workflow fails on new near-duplicate Markdown pairs versus baseline.
+
+Current scan: 364 docs scanned, 0 duplicate pairs at threshold 0.72.
