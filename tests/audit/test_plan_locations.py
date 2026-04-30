@@ -47,8 +47,6 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/release/roadmap-v1.0-full-e2e.md",        # release artifact outside plan scope
     "docs/reports/merge-readiness-master-plan-2026-04-23.md",  # report artifact
     "docs/reports/next-session-plan-dormant-to-real.md",        # session artifact
-    # Not-yet-migrated file (not in ADR-082 migration table; surface separately)
-    "docs/architecture/plans/test-resource-governance-sprint.md",
     # docs/archive/plans/ contains files other than token-optimization-masterplan.md
     # that were NOT listed in ADR-082's migration table.  They remain in place.
     "docs/archive/plans/",   # directory prefix — any file under here is exempt
