@@ -5,6 +5,9 @@ description: Analyze KPI history and auto-calibrate thresholds for meaningful al
 trigger: calibrate metrics, adjust thresholds, metric calibration, KPI tuning
 model: sonnet
 audience: os-dev
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Metrics Calibrator

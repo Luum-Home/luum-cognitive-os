@@ -6,6 +6,8 @@ invoke: /checkpoint
 version: 1.0.0
 model: sonnet
 audience: project
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Devbox Checkpoint — State Snapshots

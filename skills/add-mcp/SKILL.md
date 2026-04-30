@@ -5,6 +5,8 @@ description: Step-by-step guide for integrating a new MCP server into the Cognit
 version: 0.1.0
 audience: os
 tags: [development, extension, mcp, integrations]
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Add MCP Server

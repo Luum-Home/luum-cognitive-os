@@ -18,6 +18,8 @@ audience: project
 effort: opus
 summary_line: Pull Request review skill.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

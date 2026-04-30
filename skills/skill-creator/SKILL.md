@@ -7,6 +7,8 @@ version: 1.1.0
 audience: both
 invoke: /skill-creator
 effort: opus
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Skill Creator with cos Packaging

@@ -6,6 +6,8 @@ command: /squad-report
 description: Evaluate squad performance and propose reconfigurations
 last-updated: 2026-03-22
 audience: project
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Squad Manager Skill

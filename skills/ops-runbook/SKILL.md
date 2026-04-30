@@ -15,6 +15,8 @@ triggers:
   - admin processes
 summary_line: Scaffold deploy/rollback/on-call/monitoring runbooks idempotently under 06-backoffice.
 model: haiku
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Ops Runbook Scaffolder

@@ -25,6 +25,8 @@ routing:
   fallback_on_any_error: false
   budget_max_usd_per_call: 2.00
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

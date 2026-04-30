@@ -6,6 +6,8 @@ invoke: /install-recommended
 version: 1.0.0
 audience: project
 triggers: ["/install-recommended", "/recommend-skills", "/stack-skills"]
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /install-recommended

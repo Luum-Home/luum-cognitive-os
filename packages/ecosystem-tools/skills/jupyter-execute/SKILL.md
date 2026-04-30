@@ -9,6 +9,8 @@ audience: project
 paths: ["*.py", "*.ipynb", "pyproject.toml"]
 summary_line: "Execute code in a Jupyter kernel sandbox for data analysis, Python snippets…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Jupyter Execute — Sandboxed Code Execution

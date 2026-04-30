@@ -13,6 +13,8 @@ auto-generated: false
 audience: project
 summary_line: Codebase Singularity — autonomous MAPE-K control loop that monitors…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Singularity — Autonomous MAPE-K Control Loop

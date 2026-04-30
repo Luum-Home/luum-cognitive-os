@@ -6,6 +6,8 @@ description: Fetch a GitHub issue, run the SDD pipeline, and open a pull request
 invoke: /issue-to-pr <number>
 tags: [universal, automation, pipeline]
 audience: project
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Issue-to-PR Pipeline

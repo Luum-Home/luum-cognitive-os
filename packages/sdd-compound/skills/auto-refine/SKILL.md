@@ -8,6 +8,8 @@ auto-generated: false
 audience: project
 summary_line: "Analyze a failed agent's output, determine root cause, and re-launch with…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Auto-Refine Skill

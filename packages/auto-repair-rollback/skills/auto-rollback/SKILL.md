@@ -6,6 +6,9 @@ triggers: ["/auto-rollback", "Verify-apply loop exceeded 3 retries"]
 audience: project
 summary_line: "\"Auto-rollback failed SDD apply commits when verify-apply loop exceeds max…"
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /auto-rollback

@@ -7,6 +7,8 @@ version: 1.0.0
 audience: project
 summary_line: Compose a sub-agent prompt from reusable templates.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Compose Prompt

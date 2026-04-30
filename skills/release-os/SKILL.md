@@ -11,6 +11,8 @@ disable-model-invocation: true
 effort: sonnet
 summary_line: META — orchestrate the full Cognitive OS release by chaining the 5 atomic…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Release OS — META Skill

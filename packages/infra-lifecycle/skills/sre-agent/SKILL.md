@@ -9,6 +9,8 @@ auto-generated: false
 audience: project
 summary_line: SRE auto-repair agent.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # SRE Auto-Repair Agent

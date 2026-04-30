@@ -20,6 +20,8 @@ summary_line: >
   Merge /repo-scout evaluations into ecosystem-tools.md and blocked-tools.md
   while preserving human-authored prose. Dry-run by default, --apply writes.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 <!-- SCOPE: os-only -->

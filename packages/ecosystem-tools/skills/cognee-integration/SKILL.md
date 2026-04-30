@@ -18,6 +18,8 @@ metadata:
 audience: os-dev
 summary_line: Configure and use Cognee for knowledge graph memory.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

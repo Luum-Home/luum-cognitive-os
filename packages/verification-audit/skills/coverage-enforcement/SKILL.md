@@ -12,6 +12,8 @@ effort: haiku
 paths: ["*.go", "go.mod"]
 summary_line: "Run Go test coverage for all services, enforce thresholds from…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Coverage Enforcement Skill

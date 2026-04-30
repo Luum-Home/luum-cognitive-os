@@ -5,6 +5,8 @@ description: "Stress-test agent cognitive health to detect context-induced degra
 triggers: ["/agent-stress-test", "/stress-test", "/cognitive-stress"]
 audience: os-dev
 version: 1.0.0
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /agent-stress-test
