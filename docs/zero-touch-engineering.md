@@ -25,7 +25,7 @@ Human triggers → Agent plans → Agent implements → Agent tests → Human re
 
 **Autonomy level**: Agent executes, human decides.
 
-**Cognitive OS components in play:**
+**Cognitive OS agentic primitives in play:**
 - SDD workflow (all 8 phases)
 - Sub-agent delegation
 - auto-test-on-edit hook
@@ -50,7 +50,7 @@ Event occurs → Agent detects → Agent plans + implements → Agent tests + ve
 
 **What we need to add:**
 
-| Component | Purpose | Effort |
+| Primitive | Purpose | Effort |
 |-----------|---------|--------|
 | Event trigger system | Watch git events, CI results, monitoring alerts | Medium |
 | PITER loop integration | Closed-loop execution for triggered tasks | Medium |
@@ -58,7 +58,7 @@ Event occurs → Agent detects → Agent plans + implements → Agent tests + ve
 | Post-facto review queue | Dashboard of agent-merged changes for human review | Medium |
 | Rollback automation | Auto-revert if production metrics degrade after merge | High |
 
-**Cognitive OS components that enable this:**
+**Cognitive OS agentic primitives that enable this:**
 - SRE agent (monitoring + auto-repair)
 - Scheduled tasks (cron-based triggers)
 - GitHub Actions (CI/CD hooks)
@@ -84,7 +84,7 @@ Monitoring detects need → Agents plan + implement + test + deploy → Human re
 
 **What we need to add:**
 
-| Component | Purpose | Effort |
+| Primitive | Purpose | Effort |
 |-----------|---------|--------|
 | Proactive issue detection | Agents scan codebase for tech debt, security issues, optimization opportunities | High |
 | Autonomous task creation | Agents create and prioritize their own backlog | High |
@@ -92,7 +92,7 @@ Monitoring detects need → Agents plan + implement + test + deploy → Human re
 | Strategic goal decomposition | Break OKRs into executable agent tasks | High |
 | Confidence-based deployment | Deploy based on test coverage + confidence score, not human approval | High |
 
-**Cognitive OS components that enable this:**
+**Cognitive OS agentic primitives that enable this:**
 - Squad system (specialized teams with performance targets)
 - Agent KPIs (performance measurement + trend detection)
 - Resource Governor (budget enforcement)

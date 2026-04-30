@@ -28,9 +28,9 @@ Usage:
   cos status [--verbose|--json|--help]   Show what is active (profile, skills, hooks, rules, health)
   cos init [dir]                         Install Cognitive OS into a project
   cos doctor                             Check installation health
-  cos list [type]                        List installed components
-  cos install <type> <name>              Install a component
-  cos search <query>                     Search components across sources
+  cos list [type]                        List installed agentic primitives
+  cos install <type> <name>              Install an agentic primitive
+  cos search <query>                     Search agentic primitives across sources
   cos version                            Show version
 
   cos help                               This help

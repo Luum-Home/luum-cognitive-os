@@ -119,7 +119,7 @@ KPIs suben -> loop cerrado
 
 ---
 
-## Component Inventory
+## Agentic Primitive Inventory
 
 ### Hooks (46 registered) — Runtime Interceptors
 
