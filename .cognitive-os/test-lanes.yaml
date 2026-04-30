@@ -4,6 +4,11 @@ lanes:
     paths: [tests/unit/]
     parallel: true
     stateful_reason: ""
+    # Exclude perf-budget tests (test_completion_gate_perf, test_efficiency_*,
+    # test_rate_limit_protection, test_dispatch_gate_perf) — they measure
+    # latency under tight budgets that flake under -n auto CPU contention.
+    # Run them explicitly via: cos-test cluster --lane unit -m "unit and benchmark"
+    marker_exclude: benchmark
   audit:
     paths: [tests/audit/]
     parallel: true
