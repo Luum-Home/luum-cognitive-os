@@ -275,9 +275,33 @@ fi
 CONTEXT_BUF+="
 "
 
-# --- Expand [`ref-key`] markers inline (ADR-027 Phase 2) ---
+# --- Expand [`ref-key`] markers inline (ADR-027 Phase 2 / ADR-075 Stage 2) ---
 # Any [`rule-name`] reference in the preamble or phase rules is replaced
 # with the full content of rules/<rule-name>.md (max_depth=1, no recursion).
+# Tier filtering: read expansion.tier_filter from cognitive-os.yaml.
+# Default when key is absent: [0, 1] (Tier-0 + Tier-1; Tier-2 on-demand only).
+_EXPANSION_TIER_FILTER=""
+if [[ -f "$COGNITIVE_OS_YAML" ]] && command -v python3 >/dev/null 2>&1; then
+  _EXPANSION_TIER_FILTER=$(python3 -c "
+import sys
+try:
+    import yaml
+    with open('${COGNITIVE_OS_YAML}') as f:
+        cfg = yaml.safe_load(f) or {}
+    tf = (cfg.get('expansion') or {}).get('tier_filter')
+    if tf is None:
+        print('0,1')
+    else:
+        print(','.join(str(t) for t in tf))
+except Exception:
+    print('0,1')
+" 2>/dev/null || echo "0,1")
+fi
+# Normalise: empty → default
+if [[ -z "$_EXPANSION_TIER_FILTER" ]]; then
+  _EXPANSION_TIER_FILTER="0,1"
+fi
+
 if command -v python3 >/dev/null 2>&1; then
   _EXPANDED=$(printf '%s' "$CONTEXT_BUF" | python3 -c "
 import sys
@@ -285,7 +309,12 @@ sys.path.insert(0, '${PROJECT_DIR}')
 buf = sys.stdin.read()
 try:
     from lib.ref_key_loader import expand
-    sys.stdout.write(expand(buf, max_depth=1))
+    raw_filter = '${_EXPANSION_TIER_FILTER}'.strip()
+    # Parse comma-separated ints into a set; empty or 'all' means no filter.
+    tier_filter = None
+    if raw_filter and raw_filter != 'all':
+        tier_filter = {int(t.strip()) for t in raw_filter.split(',') if t.strip().isdigit()}
+    sys.stdout.write(expand(buf, max_depth=1, tier_filter=tier_filter))
 except Exception:
     sys.stdout.write(buf)
 " 2>/dev/null)
@@ -295,6 +324,7 @@ except Exception:
   fi
   unset _EXPANDED
 fi
+unset _EXPANSION_TIER_FILTER
 
 # --- Truncate to 10K char limit ---
 # additionalContext has a hard cap of 10,000 chars per Claude Code spec.

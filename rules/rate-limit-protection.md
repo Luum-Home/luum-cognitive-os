@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Token Budget Monitor (formerly Rate Limit Protection)
 

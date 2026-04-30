@@ -369,6 +369,13 @@ runtime:
     max_concurrent: 4
     wait_sec: 15
 
+expansion:
+  # Stage 2 PreToolUse[Agent] selective expansion. See ADR-075.
+  # Tier-0 (always-on): ~9 rules. Tier-1 (default): ~95 rules. Tier-2 (on-demand): ~8 rules.
+  # Set to [0] for minimum context (~10-15K tokens), [0,1] for standard (~30-50K),
+  # [0,1,2] for full expansion (backward compat, ~106K tokens).
+  tier_filter: [0, 1]
+
 resources:
   # STATUS: implemented
   budget:

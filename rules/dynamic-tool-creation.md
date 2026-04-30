@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Dynamic Tool Creation -- Mid-Task Tool Generation
 
