@@ -100,15 +100,6 @@
       "status": "partial"
     },
     {
-      "evidence": "events=unregistered; tested=False; emits_metric=False",
-      "family": "hooks",
-      "name": "agent-work-tracker.sh",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": "hooks/agent-work-tracker.sh",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
       "evidence": "events=PreToolUse,projected; tested=True; emits_metric=True",
       "family": "hooks",
       "name": "agent-working-dir-inject.sh",
@@ -1189,15 +1180,6 @@
       "status": "partial"
     },
     {
-      "evidence": "events=unregistered; tested=False; emits_metric=True",
-      "family": "hooks",
-      "name": "session-sanity.sh",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": "hooks/session-sanity.sh",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
       "evidence": "events=SessionStart,projected; tested=True; emits_metric=True",
       "family": "hooks",
       "name": "session-start-worktree-nudge.sh",
@@ -1456,15 +1438,6 @@
       "next_action": "projected profile hook: activate intentionally or demote",
       "path": "hooks/valkey-ensure.sh",
       "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "evidence": "events=unregistered; tested=False; emits_metric=False",
-      "family": "hooks",
-      "name": "wiring-check.sh",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": "hooks/wiring-check.sh",
-      "severity": "low",
       "status": "partial"
     },
     {
@@ -3135,6 +3108,15 @@
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
       "family": "skills",
+      "name": "hook-timing",
+      "next_action": "keep; monitor regression",
+      "path": "skills/hook-timing/SKILL.md",
+      "severity": "low",
+      "status": "proven"
+    },
+    {
+      "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
+      "family": "skills",
       "name": "impact-analysis",
       "next_action": "keep; monitor regression",
       "path": "skills/impact-analysis/SKILL.md",
@@ -3329,6 +3311,24 @@
       "path": "skills/pr-review/SKILL.md",
       "severity": "medium",
       "status": "partial"
+    },
+    {
+      "evidence": "frontmatter=False; trigger=True; runtime_ref=True; tested=True",
+      "family": "skills",
+      "name": "primitive-surface-reduction",
+      "next_action": "keep; monitor regression",
+      "path": "skills/primitive-surface-reduction/SKILL.md",
+      "severity": "low",
+      "status": "proven"
+    },
+    {
+      "evidence": "frontmatter=False; trigger=True; runtime_ref=True; tested=True",
+      "family": "skills",
+      "name": "primitive-usage-map",
+      "next_action": "keep; monitor regression",
+      "path": "skills/primitive-usage-map/SKILL.md",
+      "severity": "low",
+      "status": "proven"
     },
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
@@ -5698,7 +5698,7 @@
       "status": "proven"
     },
     {
-      "evidence": "nonempty=False; mentioned=True",
+      "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
       "name": "test-quality-audit.jsonl",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
@@ -5756,9 +5756,9 @@
     "hooks": {
       "aspirational": 0,
       "harmful-overhead": 0,
-      "partial": 144,
+      "partial": 141,
       "proven": 66,
-      "total": 210
+      "total": 207
     },
     "metrics": {
       "aspirational": 0,
@@ -5778,8 +5778,8 @@
       "aspirational": 0,
       "harmful-overhead": 0,
       "partial": 51,
-      "proven": 170,
-      "total": 221
+      "proven": 173,
+      "total": 224
     }
   }
 }

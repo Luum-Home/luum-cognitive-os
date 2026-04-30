@@ -467,3 +467,22 @@ This keeps current known debt visible while preventing the SO from growing new u
 - [x] Record optional/dormant P2 primitive demotions in `manifests/reduction-demotions.json`.
 - [x] Add skill/rule runtime contract tests so loaded skills and rules have real audit coverage.
 - [x] Regenerate reduction backlog to zero current items.
+
+### 17. Hook Surface Reduction
+
+- [x] Add a family-specific hook surface reducer with plan/apply-safe modes.
+- [x] Apply safe hook reduction for demoted, unregistered, untested root hooks.
+- [x] Move safe hook removals to `archive/primitive-surface/hooks/` instead of deleting them.
+- [x] Generate a durable surface reduction report at `docs/reports/primitive-surface-reduction-latest.md`.
+- [x] Wire the weekly primitive gap workflow to refresh the hook surface reduction plan.
+- [ ] Review optional symlink aliases with package owners before removing aliases.
+
+### 18. Primitive Usage / Consumer Coverage
+
+- [x] Add a static consumer map for Python scripts and other primitive families.
+- [x] Generate `docs/reports/primitive-usage-map-latest.md` and JSON from `scripts/primitive_usage_map.py`.
+- [x] Wire the weekly primitive gap workflow to refresh the scripts usage map.
+- [x] Add an OS-only `/primitive-usage-map` skill so maintainers can ask which skills/hooks/rules/tests/docs consume each primitive.
+- [x] Add an OS-only `/primitive-surface-reduction` skill that wraps the reducer and keeps it out of target projects.
+- [ ] Extend the weekly workflow to emit separate usage maps for hooks, skills, and rules once baseline noise is triaged.
+- [ ] Decide whether scripts with no skill consumer need a new skill, explicit internal-only ownership, or archival.

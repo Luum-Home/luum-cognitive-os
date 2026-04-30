@@ -53,7 +53,7 @@ def _parse_timestamp(ts_str: str) -> float:
         return 0.0
 
 
-def _load_records(path: Path, since_epoch: float = 0.0, event_filter: str = "") -> list[dict]:
+def _load_records(path: Path, since_epoch: float = 0.0, event_filter: str = "", session_filter: str = "") -> list[dict]:
     """Load and filter JSONL records. Skips malformed lines silently."""
     records = []
     if not path.exists():
@@ -71,6 +71,8 @@ def _load_records(path: Path, since_epoch: float = 0.0, event_filter: str = "") 
             if since_epoch and ts < since_epoch:
                 continue
             if event_filter and rec.get("event", "") != event_filter:
+                continue
+            if session_filter and rec.get("session_id", "") != session_filter:
                 continue
             records.append(rec)
     return records
@@ -298,6 +300,7 @@ def main():
     parser.add_argument("--since", default="", help="Only include records from last N (e.g. 1h, 30m, 2d)")
     parser.add_argument("--json", action="store_true", help="Output machine-readable JSON")
     parser.add_argument("--path", default="", help="Override path to hook-timing.jsonl")
+    parser.add_argument("--session", default="", help="Filter by COS session ID (e.g. COGNITIVE_OS_SESSION_ID value)")
     args = parser.parse_args()
 
     log_path = Path(args.path) if args.path else _timing_log_path()
@@ -307,14 +310,14 @@ def main():
         return
 
     since_epoch = _parse_since(args.since) if args.since else 0.0
-    records = _load_records(log_path, since_epoch=since_epoch, event_filter=args.event)
+    records = _load_records(log_path, since_epoch=since_epoch, event_filter=args.event, session_filter=args.session)
 
     if not records:
         if not log_path.exists():
             print(f"No hook-timing.jsonl found at {log_path}")
             print("Start a session to generate data, or run a hook through the wrapper.")
         else:
-            print(f"No records match filters (event={args.event!r}, since={args.since!r})")
+            print(f"No records match filters (event={args.event!r}, since={args.since!r}, session={args.session!r})")
         return
 
     stats = _compute_stats(records)
@@ -324,7 +327,7 @@ def main():
         output = {
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "total_records": len(records),
-            "filters": {"event": args.event, "since": args.since},
+            "filters": {"event": args.event, "since": args.since, "session": args.session},
             "by_hook": {
                 h: {**s, "events": list(s["events"])}
                 for h, s in stats["by_hook"].items()

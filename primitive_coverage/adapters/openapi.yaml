@@ -1,0 +1,6 @@
+adapter: openapi
+families:
+  api_spec:
+    patterns: ["**/openapi*.yaml", "**/openapi*.yml", "**/swagger*.yaml", "**/swagger*.yml"]
+  api_doc:
+    patterns: ["docs/**/*api*.md", "docs/**/*openapi*.md"]
