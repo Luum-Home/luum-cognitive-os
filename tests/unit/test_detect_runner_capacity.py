@@ -112,16 +112,47 @@ def _run_detect(
 # ---------------------------------------------------------------------------
 
 class TestHeuristicTable(unittest.TestCase):
-    """Five cases that cover the heuristic rows in ADR-068 §3."""
+    """Six cases that cover every row in the ADR-068 heuristic table."""
 
     def test_row1_two_core_machine_outputs_serial(self):
-        """Row 1: cores ≤ 2 → workers = '0' (serial)."""
+        """Row 1: cores <= 2 -> workers = '0' (serial)."""
         result = _run_detect(cores=2)
         self.assertEqual(result["workers"], "0")
         self.assertEqual(result["rule_fired"], "cores_le_2")
 
+    def test_row2_high_load_outputs_2(self):
+        """Row 2 (ADR-068): load_pct > 70% -> workers = '2' (sharply restrict contention).
+
+        Audit gap from 2026-04-30 plans audit: this branch existed in the script
+        but had no unit test.  load_pct = (load1 / cores) * 100; 6.0/8*100 = 75%.
+        """
+        result = _run_detect(
+            cores=8,
+            load_avg=(6.0, 5.5, 5.0),  # load_pct = (6.0/8)*100 = 75% > 70%
+            mem_available_bytes=16 * 1024 ** 3,
+            battery_percent=80.0,
+            power_plugged=True,
+            ci=False,
+        )
+        self.assertEqual(result["workers"], "2")
+        self.assertEqual(result["rule_fired"], "load_high")
+
+    def test_row2_boundary_exactly_70_does_not_fire(self):
+        """Row 2: load_pct == 70.0% must NOT trigger load_high (strictly > 70 required)."""
+        # load1 = 0.70 * 8 = 5.6 exactly -> load_pct = 70.0 (not > 70)
+        result = _run_detect(
+            cores=8,
+            load_avg=(5.6, 5.0, 4.5),  # load_pct = (5.6/8)*100 = 70.0
+            mem_available_bytes=16 * 1024 ** 3,
+            battery_percent=80.0,
+            power_plugged=True,
+            ci=False,
+        )
+        # Should fall through to Row 6 (default), NOT load_high
+        self.assertNotEqual(result["rule_fired"], "load_high")
+
     def test_row3_low_memory_outputs_4(self):
-        """Row 3: mem_available < 2 GB on an otherwise healthy 8-core box → workers = '4'."""
+        """Row 3: mem_available < 2 GB on an otherwise healthy 8-core box -> workers = '4'."""
         result = _run_detect(
             cores=8,
             load_avg=(0.4, 0.4, 0.4),  # ~5% on 8 cores
@@ -131,7 +162,7 @@ class TestHeuristicTable(unittest.TestCase):
         self.assertEqual(result["rule_fired"], "mem_low")
 
     def test_row4_battery_low_not_plugged_in(self):
-        """Row 4: battery < 30%, not plugged in, healthy otherwise → workers = '0'."""
+        """Row 4: battery < 30%, not plugged in, healthy otherwise -> workers = '0'."""
         result = _run_detect(
             cores=8,
             load_avg=(0.4, 0.4, 0.4),
@@ -143,7 +174,7 @@ class TestHeuristicTable(unittest.TestCase):
         self.assertEqual(result["rule_fired"], "battery_low")
 
     def test_row5_ci_env_minimal_box(self):
-        """Row 5: CI=true on a 4-core, 4 GB, 10%-load box → workers = 'auto'."""
+        """Row 5: CI=true on a 4-core, 4 GB, 10%-load box -> workers = 'auto'."""
         result = _run_detect(
             cores=4,
             load_avg=(0.4, 0.4, 0.4),  # 10% on 4 cores
@@ -154,7 +185,7 @@ class TestHeuristicTable(unittest.TestCase):
         self.assertEqual(result["rule_fired"], "ci_env")
 
     def test_row6_default_healthy_machine(self):
-        """Row 6: 8 cores, 16 GB, 10% load, on AC, no CI → workers = 'auto'."""
+        """Row 6: 8 cores, 16 GB, 10% load, on AC, no CI -> workers = 'auto' (default)."""
         result = _run_detect(
             cores=8,
             load_avg=(0.8, 0.8, 0.8),  # 10% on 8 cores
@@ -175,19 +206,19 @@ class TestEnvOverride(unittest.TestCase):
     """COS_PYTEST_WORKERS env var takes precedence over heuristic."""
 
     def test_override_auto(self):
-        """COS_PYTEST_WORKERS=auto → workers = 'auto', heuristic skipped."""
+        """COS_PYTEST_WORKERS=auto -> workers = 'auto', heuristic skipped."""
         result = _run_detect(cores=2, env_override="auto")  # would fire row 1
         self.assertEqual(result["workers"], "auto")
         self.assertEqual(result["rule_fired"], "env_override")
 
     def test_override_integer_8(self):
-        """COS_PYTEST_WORKERS=8 → workers = '8'."""
+        """COS_PYTEST_WORKERS=8 -> workers = '8'."""
         result = _run_detect(env_override="8")
         self.assertEqual(result["workers"], "8")
         self.assertEqual(result["rule_fired"], "env_override")
 
     def test_override_zero(self):
-        """COS_PYTEST_WORKERS=0 → workers = '0' (serial via override, not heuristic)."""
+        """COS_PYTEST_WORKERS=0 -> workers = '0' (serial via override, not heuristic)."""
         result = _run_detect(
             cores=8,
             load_avg=(0.8, 0.8, 0.8),
