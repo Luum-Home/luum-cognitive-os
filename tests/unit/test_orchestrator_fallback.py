@@ -244,7 +244,7 @@ class TestPerProviderKillSwitch(unittest.TestCase):
         With the Option B rewrite, the flag no longer blocks Qwen-as-primary —
         it only prevents the orchestrator from advancing to the 2nd+ provider
         in the --providers list. Primary call proceeds normally.
-        (This is the corrected semantic per docs/roadmaps/adr-049-050-051-mega-plan.md
+        (This is the corrected semantic per .cognitive-os/plans/roadmaps/adr-049-050-051-mega-plan.md
         C1 rewrite. The cascade-level behavior is verified in cmd_run tests.)"""
         import os
         # Sanity: _fallback_disabled() is True when env var is set
