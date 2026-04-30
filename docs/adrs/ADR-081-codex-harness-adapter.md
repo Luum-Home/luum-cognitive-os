@@ -11,6 +11,7 @@
 ## Status
 
 Proposed.
+Consumes-plan: docs/architecture/plans/adr-064-implementation-plan.md
 
 Blocks ADR-064 advancement (Harness-Agnostic Cognitive OS cannot exit Proposed
 until a second harness produces byte-identical canonical events). Also blocks
@@ -18,6 +19,8 @@ ADR-080 Tier 1 (Hermes cross-harness adoption, whose `context_compressor` port
 assumes a working Codex adapter).
 
 ## Context
+
+An implementation plan for ADR-064 already exists at `docs/architecture/plans/adr-064-implementation-plan.md` (2026-04-28), enumerating 9 P0 tasks across 4 surfaces. ADR-081 does NOT redefine that work; it scopes the Codex adapter (Task 4 of that plan, listed as Task 1.1 in Section 2) and the surrounding driver projection (Tasks 2.1–2.3) into a single ADR-level decision. The plan's task estimates (~7-9 sessions total, ~3h for the adapter alone) are authoritative.
 
 ### The portability gap
 
@@ -78,11 +81,21 @@ Capability gaps section below.
 
 ## Decision
 
-### 1. Implement `lib/harness_adapter/codex.py`
+### Pre-work: 30-minute spike (before Task 1.1)
 
-Create `packages/agent-lifecycle/lib/harness_adapter/codex.py` implementing
-the same `HarnessAdapter` abstract base class contract as `claude_code.py`.
-The adapter must:
+Before any adapter work begins, instrument an existing `.codex/hooks.json`
+script to dump its stdin to a file during a live Codex session. This captures
+real Codex hook payloads so the adapter is built against actual shapes, not
+assumed ones. The plan (Section 5, risk 8) flags this explicitly: "run a
+30-min spike that captures actual Codex hook payloads so the adapter is built
+against real shapes, not assumed ones."
+
+### 1. Implement `lib/harness_adapter/codex.py` (Plan Task 1.1)
+
+Implement `lib/harness_adapter/codex.py` per plan Task 1.1 (`lib/harness_adapter/codex.py`,
+~1 session, ~3h). The adapter satisfies the `HarnessAdapter` ABC contract from
+`base.py`, the same contract as `claude_code.py`. Per the plan's acceptance
+criteria for Task 1.1:
 
 - Parse the Codex hook stdin payload and emit a canonical `HarnessEvent` for
   each supported lifecycle event.
@@ -96,14 +109,16 @@ The adapter must:
   | `PostToolUse` (Bash only) | `post_tool_use` |
   | `Stop` | `session_end` |
 
-- Emit `None` (not an error) for events the harness physically cannot produce
-  (`pre_compact`, native scheduling events). Callers must handle `None` as
-  "event not available on this harness."
+- For non-Bash tool events (the v0.124.0 coverage gap), emit a `ParseError`
+  canonical event with `reason="codex_tool_coverage_gap"` rather than silent
+  skip (plan Task 1.1 criterion 3).
+- Add `HarnessName.CODEX = "codex"` enum value to `base.py` and register the
+  adapter in the `ADAPTERS` list in `dispatch.py` (plan Task 1.1 criteria 4–5).
 - Expose `SUPPORTED_EVENTS: frozenset[str]` as a class attribute listing only
   the events this adapter can produce. `dispatch.handle_event` must consult
   this set before routing.
 
-### 2. Update `manifests/harness-driver-capabilities.yaml`
+### 2. Update `manifests/harness-driver-capabilities.yaml` (Plan Task 2.1 input)
 
 Add a `codex` entry to the capability matrix referenced by ADR-064. The entry
 must honestly reflect v0.124.0 capabilities. Minimal required shape:
@@ -129,11 +144,12 @@ codex:
 The `claude_code` entry must also be present for comparison. Both entries are
 the source of truth for any tooling that routes hook logic per harness.
 
-### 3. Generate `.codex/hooks.json` from a single source of truth
+### 3. Generate `.codex/hooks.json` from a single source of truth (Plan Tasks 2.1 and 2.3)
 
-`hooks/self-install.sh` already generates `.claude/settings.json` hook
-registrations from the canonical hook list. Extend
-`scripts/_lib/settings-driver-codex.sh` (introduced in ADR-064 §Surface 2) to
+This work maps directly to plan Tasks 2.1 (canonical hooks block in
+`cognitive-os.yaml`, ~0.25 session) and 2.3 (`scripts/_lib/settings-driver-codex.sh`,
+~1 session). Task 2.2 (`settings-driver-claude-code.sh`) is a sibling but not
+scoped to this ADR. Implement `scripts/_lib/settings-driver-codex.sh` to
 project the same canonical list into `.codex/hooks.json`.
 
 After this change:
@@ -152,7 +168,7 @@ the adapter, the generation may be deferred to a follow-up, provided that:
 `.codex/hooks.json`, and (c) the follow-up is tracked as a blocking item for
 ADR-064 advancement.
 
-### 4. Test parity
+### 4. Test parity (Plan Task 1.1 criteria + verification suite)
 
 **Unit tests** — `tests/unit/test_harness_adapter_codex.py`:
 Mirror the structure of the existing `test_harness_adapter_claude_code.py`

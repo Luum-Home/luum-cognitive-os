@@ -97,6 +97,6 @@ A weekly scheduled workflow now runs the family-level primitive gap snapshot:
 - script: `scripts/primitive_gap_snapshot.py`
 - JSON artifact: `primitive-gap-snapshot.json`
 - latest Markdown report: `docs/reports/primitive-gap-latest.md`
-- trend metric: `.cognitive-os/metrics/primitive-gap-snapshot.jsonl`
+- trend metric: `docs/reports/primitive-gap-history.jsonl` in CI, or `.cognitive-os/metrics/primitive-gap-snapshot.jsonl` for local runs
 
 The workflow intentionally does not fail on high risk yet. The current baseline is high-risk, so failing the scheduled job would create noise instead of useful escalation. Once the family-level baseline is cleaned up, enable `--fail-high-risk` or a narrower regression threshold for blocker/high deltas.
