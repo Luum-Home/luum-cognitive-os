@@ -47,6 +47,23 @@ Use `cos-test` (canonical CLI). Three modes, in increasing scope:
 audit, contract, integration-isolated) → integration-shared → behavior → hooks
 → e2e → chaos.
 
+## Role boundaries
+
+Test tooling is split by role; do not re-create selection logic in multiple
+places:
+
+| Role | Owner |
+|---|---|
+| Selection | `.cognitive-os/test-lanes.yaml`, `tests/conftest.py`, `cos-test focused / cluster / broad` |
+| Execution | `cmd/cos-test` |
+| Reporting | `scripts/pytest-with-summary.sh` |
+| Governance | `auto-verify`, `dod-gate`, `coverage-enforcement`, `test-quality-audit` |
+| Lifecycle | `.cognitive-os/reports/test-runs/`, metrics JSONL, repair ledgers |
+
+Legacy scripts (`cos-smoke.sh`, `test-cognitive-os*.sh`, `test-all.sh`,
+`run-all-tests.sh`) MUST declare `ROLE` and `CANONICAL` headers and must not be
+documented as generic default runners.
+
 ## Contributor obligations when adding a new test directory
 
 When adding `tests/<new-dir>/`, you MUST:
@@ -76,3 +93,4 @@ ADR-072 fixes.
   receives scalars).
 - **`tests/conftest.py`** — auto-marker injection site.
 - **`pytest.ini`** — marker registry.
+- **`docs/testing/test-runner-roles.md`** — operator-facing role taxonomy.
