@@ -1,0 +1,6 @@
+adapter: github-actions
+families:
+  workflow:
+    patterns: [".github/workflows/*.yml", ".github/workflows/*.yaml"]
+  action:
+    patterns: ["action.yml", "action.yaml", ".github/actions/**/action.yml", ".github/actions/**/action.yaml"]

@@ -1543,6 +1543,38 @@
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md",
       "status": "mapped"
+    },
+    {
+      "claim": "Total `SessionStart` wall time exceeded 2 minutes in the worst-case session, dominated by sequential hook execution with no timeout enforcement. Related Engram context: `cos/hook-timing-instrumentation` (the original wra",
+      "evidence": "context, design, dominated, enforcement, engram, exceeded, execution, follow-up",
+      "line": 17,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-086-hook-execution-observability.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The wrapper can write compact human-readable lines to `.cognitive-os/runtime/hook-stream.fifo` when `COS_HOOK_TIMING_FIFO=1`. The reader script opens the FIFO O_RDWR | O_NONBLOCK (via Python) to avoid blocking when no wr",
+      "evidence": "avoid, blocking, blocks, cognitive-os, compact, cos_hook_timing_fifo, fifo, hook-stream",
+      "line": 46,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-086-hook-execution-observability.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "1. Optimize the three measured slow hooks (`content-policy`, `inject-phase-context`, `destructive-rm-blocker`) \u2014 latency reduction, not observability.",
+      "evidence": "content-policy, destructive-rm-blocker, hooks, inject-phase-context, latency, measured, observability, optimize",
+      "line": 73,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-086-hook-execution-observability.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Per-hook self-instrumentation**: Every hook would need to record its own start/end time and write to a shared log \u2014 intrusive, inconsistent, and breaks when hooks are updated. Any hook that forgets to instrument itself",
+      "evidence": "blind, breaks, creates, every, hook, hooks, inconsistent, instrument",
+      "line": 81,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-086-hook-execution-observability.md",
+      "status": "mapped"
     }
   ]
 }

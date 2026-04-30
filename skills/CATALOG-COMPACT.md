@@ -3,9 +3,9 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 143
+Total skills: 147
 
-## os (13)
+## os (14)
 
 | Skill | Description |
 |-------|-------------|
@@ -17,13 +17,14 @@ Total skills: 143
 | audit-integrity | Symlink-aware integrity audit of hooks, libs, and skills. |
 | bump-version | Calculate and write the new version to the VERSION file |
 | generate-changelog | Move [Unreleased] CHANGELOG entries into a versioned release section |
+| hook-timing | Analyze hook execution latency — full stats, live tail, per-event or per-session views. |
 | memory-scan | Scan content for memory threats (prompt injection, exfiltration, invisible Unicode). |
 | push-release | Push the release commit and tags to the remote — always requires explicit… |
 | release-os | META — orchestrate the full Cognitive OS release by chaining the 5 atomic… |
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 
-## os-dev (32)
+## os-dev (34)
 
 | Skill | Description |
 |-------|-------------|
@@ -47,6 +48,8 @@ Total skills: 143
 | paperclip-dashboard | View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent… |
 | pattern-audit | Grep/regex audit with mandatory sampling — forbids unverified severity counts. |
 | pentest-self | Self-penetration testing for Cognitive OS safety mesh. |
+| primitive-surface-reduction | Plan/apply safe reduction of unused Cognitive OS primitive surface. |
+| primitive-usage-map | Static primitive consumer map for scripts, hooks, skills, and rules. |
 | promptfoo-integration | Configure Promptfoo for prompt regression testing and red teaming of skills in… |
 | queue-drain | Periodic agent queue drain and health check |
 | radar-update | Merge /repo-scout evaluations into ecosystem-tools.md and blocked-tools.md while preserving human-authored prose. Dry-run by default, --apply writes. |
@@ -92,7 +95,7 @@ Total skills: 143
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 
-## project (68)
+## project (69)
 
 | Skill | Description |
 |-------|-------------|
@@ -137,6 +140,7 @@ Total skills: 143
 | readiness-check | Implementation readiness gate — validates all prerequisites before coding starts |
 | recall-search | \"Search past Claude Code conversations using full-text search. |
 | recommend-library | Search package registries and rank by relevance, adoption, maintenance, and… |
+| repair-skill | Drain the skill repair queue and propose regeneration or deprecation for degraded skills |
 | repair-status | Report on auto-repair system health and statistics |
 | research-protocol | Meta-skill that teaches agents HOW to investigate any source material… |
 | resolve-blockers | Automatically resolve blockers reported by readiness-check. |

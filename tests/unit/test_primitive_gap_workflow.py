@@ -15,6 +15,8 @@ def test_weekly_audit_workflow_runs_row_claim_and_backlog_audits() -> None:
         "scripts/primitive_row_audit.py",
         "scripts/claim_proof_audit.py",
         "scripts/reduction_backlog.py",
+        "scripts/primitive_surface_reduce.py",
+        "scripts/primitive_usage_map.py",
     ):
         assert script in text
 
@@ -22,6 +24,8 @@ def test_weekly_audit_workflow_runs_row_claim_and_backlog_audits() -> None:
         "docs/reports/primitive-row-audit-latest.json",
         "docs/reports/claim-proof-latest.json",
         "docs/reports/reduction-backlog-latest.json",
+        "docs/reports/primitive-surface-reduction-latest.json",
+        "docs/reports/primitive-usage-map-latest.json",
     ):
         assert report in text
 
