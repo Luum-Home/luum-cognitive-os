@@ -74,16 +74,14 @@ jobs:
         run: |
           python3 scripts/primitive_coverage.py \
             --adapter cognitive-os \
-            --format json \
-            --out docs/reports/primitive-coverage-latest.json
-          python3 scripts/primitive_coverage.py \
-            --adapter cognitive-os \
-            --format markdown \
-            --out docs/reports/primitive-coverage-latest.md
-          python3 scripts/primitive_coverage.py \
-            --adapter cognitive-os \
-            --format sarif \
-            --out docs/reports/primitive-coverage-latest.sarif
+            --format all \
+            --out docs/reports/primitive-coverage-latest
+
+      - name: Run documentation execution audit
+        run: |
+          python3 scripts/docs_execution_audit.py \
+            --json-out docs/reports/docs-execution-latest.json \
+            --md-out docs/reports/docs-execution-latest.md
 
       - name: Upload primitive gap snapshot artifact
         if: always()
@@ -111,6 +109,8 @@ jobs:
             docs/reports/primitive-coverage-latest.json
             docs/reports/primitive-coverage-latest.md
             docs/reports/primitive-coverage-latest.sarif
+            docs/reports/docs-execution-latest.json
+            docs/reports/docs-execution-latest.md
 
       - name: Commit primitive gap trend
         run: |
@@ -135,6 +135,8 @@ jobs:
             docs/reports/primitive-usage-map-latest.md \
             docs/reports/primitive-coverage-latest.json \
             docs/reports/primitive-coverage-latest.md \
-            docs/reports/primitive-coverage-latest.sarif
+            docs/reports/primitive-coverage-latest.sarif \
+            docs/reports/docs-execution-latest.json \
+            docs/reports/docs-execution-latest.md
           git diff --staged --quiet || git commit -m "chore(audit): weekly primitive gap snapshot $(date -u +%Y-%m-%d)"
           git push
