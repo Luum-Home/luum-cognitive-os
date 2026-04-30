@@ -18,7 +18,61 @@ failure mode this ADR addresses.
 
 ## Status
 
-Proposed.
+Accepted — executed 2026-04-30 by Session A.
+
+---
+
+## Implementation log
+
+**Implemented**: 2026-04-30 by Session A (`claude-sonnet-4-6`, DevOps Automator agent).
+
+**Pre-check findings**: No layer was pre-implemented. Layer 3 existed as
+`scripts/adr_reserve.py` (with a full test suite at
+`tests/unit/test_adr_reserve.py`) but used a different lock file path
+(`.cognitive-os/locks/adr-reservations.json`) and different CLI interface than
+the ADR specifies. The new `scripts/reserve_adr_slot.py` wraps `adr_reserve.py`
+with the ADR-specified interface (prints slot number by default, uses
+`.cognitive-os/runtime/adr-reservations/reservations.json`).
+
+**Files created**:
+
+| File | Layer | Notes |
+|------|-------|-------|
+| `hooks/git-commit-scope-guard.sh` | Layer 1 | PreToolUse[Bash] hook; Python 3 for scope analysis (macOS-compat); <50ms latency |
+| `scripts/git-coop.sh` | Layer 2 | `acquire`/`release`/`force_unlock`/`status`; POSIX mkdir atomic; stale TTL 5 min; 30s timeout; sourceable (`cos_git_acquire`/`cos_git_release`) |
+| `scripts/reserve_adr_slot.py` | Layer 3 | CLI wrapper over `adr_reserve.py`; `--release`, `--list`, `--cleanup`; default output is slot number |
+| `tests/unit/test_git_coop.py` | Tests | 12 behavioral tests: acquire, release, idempotency, stale auto-clear, concurrent serialization, bypass flag |
+| `tests/unit/test_reserve_adr_slot.py` | Tests | 13 behavioral tests: slot collision, concurrent reservation, TTL, list/release/cleanup |
+
+**Files modified**:
+
+| File | Change |
+|------|--------|
+| `scripts/apply-efficiency-profile.sh` | Added `git-commit-scope-guard.sh` to `pre_bash` hook group (default profile) |
+| `.claude/settings.json` | Added `git-commit-scope-guard.sh` to PreToolUse[Bash] hooks (full profile) |
+
+**Key design decisions made during implementation**:
+
+1. **Layer 1 scope detection via Python 3, not sed**: macOS BSD sed cannot
+   reliably match `[^"]*` inside single-quoted sed programs for quoted strings.
+   Python 3 `shlex.split` correctly tokenizes the git command and strips known
+   flags with their arguments, leaving only genuine pathspec tokens.
+
+2. **Layer 2 session ID fallback uses PPID**: When `COGNITIVE_OS_SESSION_ID` is
+   not set, the lock uses `shell-<PPID>` as the session ID. This makes acquire
+   and release from the same parent shell share an identity, enabling correct
+   idempotency and release authorization without an explicit session env var.
+
+3. **Layer 3 wraps existing `adr_reserve.py`**: Rather than reimplementing
+   atomic reservation logic, `reserve_adr_slot.py` delegates to the proven
+   `adr_reserve.py` module (fcntl-based, already tested). The wrapper maps
+   ADR-089's specified CLI interface (slot number output, `--release NNN`,
+   `.cognitive-os/runtime/adr-reservations/` path) onto the underlying module.
+
+4. **Test suite uses subprocess execution throughout**: All behavioral tests
+   execute scripts as subprocesses and assert on exit codes, output, and
+   file-system side-effects — not on internal function state. This catches
+   shell/Python integration issues that unit tests of functions would miss.
 
 ---
 
