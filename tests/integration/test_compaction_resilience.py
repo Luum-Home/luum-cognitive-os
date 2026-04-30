@@ -26,6 +26,9 @@ from unittest.mock import patch
 # Project root on sys.path is already handled by conftest / pytest.ini
 # ---------------------------------------------------------------------------
 import sys
+import pytest
+
+pytestmark = pytest.mark.docker
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from lib.state_heartbeat import StateHeartbeat
