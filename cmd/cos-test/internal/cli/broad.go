@@ -107,6 +107,7 @@ func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 		laneRendered := banner.Render(bi)
 		laneRendered = strings.Replace(laneRendered, "tests=-1", "tests=?", 1)
 		fmt.Print(laneRendered)
+		fmt.Printf("[cos-test broad] %s/resources: %s\n", name, plan.Resources.Summary())
 		for _, inv := range plan.Invokes {
 			opts := runner.InvocationOptions{Workers: inv.Workers, Lane: name}
 			fmt.Printf("[cos-test broad] %s/%s: %s\n", name, inv.Label, strings.Join(pr.PytestArgsWithOptions(inv.Args, opts), " "))
@@ -116,6 +117,7 @@ func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 			continue
 		}
 		failed := false
+		fmt.Printf("[cos-test broad] %s/resources: %s\n", name, plan.Resources.Summary())
 		for _, inv := range plan.Invokes {
 			if err := pr.RawInvocationWithOptions(inv.Args, runner.InvocationOptions{Workers: inv.Workers, Lane: name}); err != nil {
 				failed = true

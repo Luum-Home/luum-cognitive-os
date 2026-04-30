@@ -60,6 +60,7 @@
 - [x] Product claims in README and pitch map to explicit verification paths through [Product Proof Paths](../manual-tests/proof-paths.md).
 - [x] Structural tests that support product claims are being converted into behavioral contracts through [Behavioral Test Contracts](../architecture/behavioral-test-contracts.md) and `tests/contracts/test_canonical_projection_behavior.py`.
 - [x] Slow full-suite repair runs leave persistent summaries and actionable inventories through `scripts/pytest-with-summary.sh`, `scripts/test_run_inventory.py`, and [Testing Guide](../testing.md).
+- [x] Test resource policy has a first manifest in `.cognitive-os/test-resource-policy.yaml`, with dry-run visibility and audit coverage for lane/resource alignment.
 - [x] SessionStart performs a cached host-tool doctor check through `hooks/host-tool-doctor.sh`, while keeping broad pytest inventory explicit to avoid startup overload.
 
 ## 5. Onboarding and Operational Simplicity

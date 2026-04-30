@@ -2,7 +2,7 @@
 
 ## Status
 
-Planned — this is a separate sprint from ADR-073 role cleanup.
+In progress — RG-1 resource policy manifest implemented. Runner enforcement beyond dry-run/resource metadata remains planned.
 
 ## Product intent
 
@@ -45,7 +45,7 @@ harnesses toward headless and clustered runtimes.
 
 ### RG-1 — Resource policy manifest
 
-Create a small manifest, likely `.cognitive-os/test-resource-policy.yaml`, with:
+Implemented: `.cognitive-os/test-resource-policy.yaml` defines the first resource policy manifest with:
 
 - default worker ceiling;
 - per-lane timeout budget;
@@ -55,9 +55,9 @@ Create a small manifest, likely `.cognitive-os/test-resource-policy.yaml`, with:
 
 Acceptance criteria:
 
-- `cos-test broad --dry-run` prints the active resource policy per lane.
-- Audit tests reject resource policy entries for unknown lanes.
-- Optional/cost-bearing lanes remain excluded from default broad.
+- `cos-test broad --dry-run` prints the active resource policy per lane. ✅
+- Audit tests reject resource policy entries for unknown lanes. ✅
+- Optional/cost-bearing lanes remain excluded from default broad. ✅
 
 ### RG-2 — Runner enforcement
 
@@ -132,8 +132,7 @@ lanes by default.
 
 ## Open decisions
 
-1. Whether the manifest should live in `.cognitive-os/test-resource-policy.yaml`
-   or be folded into `.cognitive-os/test-lanes.yaml`.
+1. Resolved: RG-1 uses a separate `.cognitive-os/test-resource-policy.yaml` so lane selection remains separate from resource/cost policy.
 2. Whether Docker policy should be per-lane or per-marker.
 3. Whether report retention belongs to `cos-test` or to a separate lifecycle
    cleanup primitive.
