@@ -17,6 +17,14 @@ import time
 from pathlib import Path
 from unittest.mock import patch
 
+import pytest
+
+# decision_triage.main() spawns engram subprocesses for enrichment; under
+# parallel xdist load (-n auto) and 30s default timeout, the engram subprocess
+# alone can exceed the budget. 60s gives headroom without making the test slow
+# in isolation (where it takes ~14s).
+pytestmark = pytest.mark.timeout(60)
+
 # Ensure repo root is on sys.path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
