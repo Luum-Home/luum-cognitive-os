@@ -11,6 +11,7 @@ These hooks form a safety mesh:
 
 import json
 import os
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -819,6 +820,34 @@ class TestInfraHealth:
 class TestPreCommitGate:
     """Tests for the pre-commit-gate.sh git pre-commit hook."""
 
+    @staticmethod
+    def _install_artifact_helper(project_dir: Path) -> None:
+        scripts = project_dir / "scripts"
+        scripts.mkdir(parents=True, exist_ok=True)
+        helper = Path(__file__).resolve().parent.parent.parent / "scripts" / "cos_test_artifact_status.py"
+        shutil.copy2(helper, scripts / helper.name)
+
+    @staticmethod
+    def _write_coverage_artifact(project_dir: Path, coverage_pct: int) -> None:
+        run = project_dir / ".cognitive-os" / "reports" / "coverage" / "20260101T000000Z-coverage"
+        run.mkdir(parents=True, exist_ok=True)
+        run.joinpath("summary.txt").write_text(
+            f"=== Summary ===\n  Composite:              {coverage_pct}% ({coverage_pct}/100)\n",
+            encoding="utf-8",
+        )
+        run.joinpath("coverage.json").write_text(
+            json.dumps(
+                {
+                    "composite_pct": coverage_pct,
+                    "composite_covered": coverage_pct,
+                    "composite_total": 100,
+                }
+            ),
+            encoding="utf-8",
+        )
+        latest = run.parent / "latest"
+        latest.symlink_to(run, target_is_directory=True)
+
     def test_hook_exists_and_is_executable(self, hooks_dir):
         """The pre-commit-gate.sh hook should exist."""
         hook_path = hooks_dir / "pre-commit-gate.sh"
@@ -833,18 +862,23 @@ class TestPreCommitGate:
         sentinel = tmp_path / "pytest-invoked.txt"
         fake_pytest.write_text(
             '#!/usr/bin/env bash\n'
-            f'echo invoked > "{sentinel}"\n'
+            'if [ "$1" = "-m" ] && [ "$2" = "pytest" ]; then\n'
+            f'  echo invoked > "{sentinel}"\n'
+            'fi\n'
             'echo "3 failed, 2 passed"\n'
         )
         fake_pytest.chmod(0o755)
 
         project_dir = tmp_path / "project"
         project_dir.mkdir()
+        self._install_artifact_helper(project_dir)
+        self._write_coverage_artifact(project_dir, 90)
         tests_dir = project_dir / "tests"
         tests_dir.mkdir()
         coverage_script = tests_dir / "coverage-report.sh"
         coverage_script.write_text(
             '#!/usr/bin/env bash\n'
+            f'echo invoked > "{sentinel}"\n'
             'echo "  Composite:              90% (45/50)"\n'
         )
         coverage_script.chmod(0o755)
@@ -871,7 +905,7 @@ class TestPreCommitGate:
             timeout=30,
         )
         assert result.returncode == 0
-        assert not sentinel.exists(), "pre-commit-gate must not invoke pytest inline"
+        assert not sentinel.exists(), "pre-commit-gate must not invoke pytest or coverage-report inline"
 
     def test_passes_on_all_tests_passing(self, tmp_path):
         """Hook should allow commit when structural checks pass."""
@@ -886,14 +920,8 @@ class TestPreCommitGate:
 
         project_dir = tmp_path / "project"
         project_dir.mkdir()
-        tests_dir = project_dir / "tests"
-        tests_dir.mkdir()
-        coverage_script = tests_dir / "coverage-report.sh"
-        coverage_script.write_text(
-            '#!/usr/bin/env bash\n'
-            'echo "  Composite:              90% (45/50)"\n'
-        )
-        coverage_script.chmod(0o755)
+        self._install_artifact_helper(project_dir)
+        self._write_coverage_artifact(project_dir, 90)
 
         hook_path = Path(__file__).resolve().parent.parent.parent / "hooks" / "pre-commit-gate.sh"
         hook_content = hook_path.read_text()
@@ -928,17 +956,10 @@ class TestPreCommitGate:
         )
         fake_pytest.chmod(0o755)
 
-        # Create a real-looking project structure with coverage-report.sh
         project_dir = tmp_path / "project"
         project_dir.mkdir()
-        tests_dir = project_dir / "tests"
-        tests_dir.mkdir()
-        coverage_script = tests_dir / "coverage-report.sh"
-        coverage_script.write_text(
-            '#!/usr/bin/env bash\n'
-            'echo "  Composite:              50% (25/50)"\n'
-        )
-        coverage_script.chmod(0o755)
+        self._install_artifact_helper(project_dir)
+        self._write_coverage_artifact(project_dir, 50)
 
         # Write a modified hook that uses our project dir
         hook_path = Path(__file__).resolve().parent.parent.parent / "hooks" / "pre-commit-gate.sh"
@@ -953,7 +974,6 @@ class TestPreCommitGate:
         patched_hook.chmod(0o755)
 
         env = os.environ.copy()
-        env["PATH"] = f"{fake_bin}:/opt/homebrew/bin:/usr/bin:/bin:{env.get('PATH', '')}"
         env["COVERAGE_THRESHOLD"] = "80"
 
         result = subprocess.run(
@@ -981,14 +1001,8 @@ class TestPreCommitGate:
 
         project_dir = tmp_path / "project"
         project_dir.mkdir()
-        tests_dir = project_dir / "tests"
-        tests_dir.mkdir()
-        coverage_script = tests_dir / "coverage-report.sh"
-        coverage_script.write_text(
-            '#!/usr/bin/env bash\n'
-            'echo "  Composite:              70% (35/50)"\n'
-        )
-        coverage_script.chmod(0o755)
+        self._install_artifact_helper(project_dir)
+        self._write_coverage_artifact(project_dir, 70)
 
         hook_path = Path(__file__).resolve().parent.parent.parent / "hooks" / "pre-commit-gate.sh"
         hook_content = hook_path.read_text()
@@ -1001,7 +1015,6 @@ class TestPreCommitGate:
         patched_hook.chmod(0o755)
 
         env = os.environ.copy()
-        env["PATH"] = f"{fake_bin}:/opt/homebrew/bin:/usr/bin:/bin:{env.get('PATH', '')}"
         # Set a low threshold so 70% passes
         env["COVERAGE_THRESHOLD"] = "60"
 
