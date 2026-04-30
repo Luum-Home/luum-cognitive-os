@@ -4,6 +4,24 @@
 >
 > Authored by Plan agent (research-only). Persisted by orchestrator. P0 sequence below is what flips ADR-064 → Accepted.
 
+## Implementation Status
+
+| Task | Status | Completed | Notes |
+|------|--------|-----------|-------|
+| 2.1 — canonical hooks block in cognitive-os.yaml | ✅ DONE | 2026-04-30 | `cognitive-os.yaml > harness.hooks` block, 70 entries; test: `tests/unit/test_cognitive_os_yaml_harness_hooks.py` (15/15 pass) |
+| 2.2 — settings-driver-claude-code.sh | ✅ DONE | 2026-04-30 | `scripts/_lib/settings-driver-claude-code.sh`; CC driver --check confirms byte-identical output |
+| 2.3 — settings-driver-codex.sh | ✅ DONE | 2026-04-30 | `scripts/_lib/settings-driver-codex.sh`; improves .codex/hooks.json (adds PreToolUse:Bash + PostToolUse:Bash, expands SessionStart coverage) |
+| apply-efficiency-profile.sh refactor | ✅ DONE | 2026-04-30 | Now delegates to both drivers; `--harness=claude-code\|codex\|all` flag added |
+| 1.1 — codex.py adapter | pending | — | — |
+| 1.2 — bare_cli.py adapter | pending | — | — |
+| 1.3 — cursor.py / ci.py | pending | — | P2 |
+| 2.4 — settings-driver-bare.sh | pending | — | P1, depends on 3.1 |
+| 2.5 — cos doctor harness | pending | — | P1, depends on 2.2/2.3 |
+| 3.1 — cos-skill list/describe | pending | — | — |
+| 3.2 — cos-skill run | pending | — | — |
+| 4.1 — cos-agent spawn | pending | — | — |
+| Verification suite | pending | — | depends on 1.1, 3.2, 4.1 |
+
 ## Caveat
 
 One ADR claim already needs revision: Codex IS partially wired today. `.codex/hooks.json` projects the same hook scripts CC uses, and `scripts/_lib/settings-driver.sh` already detects `codex` vs `claude`. This means Surface 2 is "partial," not "missing." See Section 1.
