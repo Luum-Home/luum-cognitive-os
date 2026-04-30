@@ -1,16 +1,21 @@
 # Hook Timing Instrumentation — Runbook
 
 > ADR: none (pure instrumentation, no architectural tradeoff).
+> Incident: 2026-04-30 wrapper stderr/FIFO reporting leaked orphaned bash processes; wrapper summary/FIFO output is now opt-in.
 > Log: `.cognitive-os/metrics/hook-timing.jsonl`
 > Wrapper: `scripts/hook-timing-wrapper.sh`
 > Report: `scripts/hook_timing_report.py`
 
 ## What this is
 
-Every hook invocation now writes one JSON line to `hook-timing.jsonl` with
+Every hook invocation writes one JSON line to `hook-timing.jsonl` with
 the harness event name (Stop, PreToolUse, PostToolUse, etc.), hook name,
 wall-clock duration in milliseconds, exit code, and PID. This makes silent
-2-7 minute turn hangs diagnosable in real-time.
+2-7 minute turn hangs diagnosable without adding user-visible hook chatter.
+
+The wrapper is deliberately quiet by default. Do not enable stderr summaries or
+FIFO streaming globally: async hooks can outlive the harness-side reader, and
+inherited stream writes caused orphaned wrapper processes on 2026-04-30.
 
 ## How to see which hook is blocking your turn (live)
 
@@ -20,7 +25,7 @@ Open a second terminal and run:
 python3 scripts/hook_timing_report.py --live
 ```
 
-Output streams each hook invocation as it completes:
+This reads the JSONL file; it does not require FIFO streaming. Output streams each hook invocation as it completes:
 
 ```
   TIMESTAMP               EVENT                 HOOK                                 DUR  EXIT
@@ -95,8 +100,7 @@ not distort rankings.
 
 ## How to disable timing
 
-If the wrapper itself causes problems (unlikely — it is best-effort and never
-fails), disable it without touching settings.json:
+If the wrapper itself causes problems, disable it without touching settings.json:
 
 ```bash
 export COS_HOOK_TIMING_DISABLE=1
@@ -104,6 +108,16 @@ export COS_HOOK_TIMING_DISABLE=1
 
 With this env var set, the wrapper execs the real hook directly with zero
 overhead. Unset to re-enable logging.
+
+Debug-only opt-ins:
+
+```bash
+export COS_HOOK_TIMING_VERBOSE=1  # stderr summary; short local sessions only
+export COS_HOOK_TIMING_FIFO=1     # FIFO stream; only when a reader is attached
+```
+
+Do not set either variable in committed settings or long-running sessions unless
+you are explicitly testing stream behavior.
 
 To permanently disable, regenerate settings.json without the wrapper (revert
 the `hook_entry` functions in `scripts/apply-efficiency-profile.sh`).
