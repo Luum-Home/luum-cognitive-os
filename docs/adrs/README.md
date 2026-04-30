@@ -14,6 +14,26 @@ The two directories reflect a historical consolidation boundary:
 
 When referencing ADRs in code or documentation, use the full path to avoid ambiguity.
 
+## NOTE: Low-numbered ADR references
+
+Short-form citations like "ADR-002" or "ADR-012" appearing in `docs/adrs/` files refer to
+decisions that were written before this directory existed and live in subdirectory namespaces:
+
+- **ADR-002** (profile simplification / install profiles) — canonical file:
+  `docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md`.
+  A separate `ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md` exists in
+  `docs/architecture/adrs/` and covers an earlier docker/pip phase; cross-reference context to
+  disambiguate. A cos-dispatch-internal `ADR-002` also exists at
+  `docs/architecture/cos-dispatch/adrs/002-transformer-separate-interface.md` — that series is
+  a local namespace for the dispatch subsystem only.
+  These were pre-convention decisions never filed in `docs/adrs/`; no stub ADR is created here
+  because the actual decision documents exist at the paths above.
+
+- **ADR-012** (prompt-driven governance) — canonical file:
+  `docs/architecture/adrs/012-prompt-driven-governance.md`.
+  Referenced by ADR-021 and ADR-022 in this directory. The decision is fully documented at that
+  path and is not missing; only the number is ambiguous without a full path citation.
+
 ## ADRs in this directory
 
 | ADR | Title |
