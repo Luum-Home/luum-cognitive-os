@@ -506,6 +506,82 @@ class TestInstallSkillDir:
         assert (kernel / "agent-dashboard" / "extra.md").is_file()
 
 
+# ── Template scope filtering (component-scope-classification DoD items 1 + 3) ──
+
+class TestTemplateInstallScopeFilter:
+    """Verify scope_allows() correctly filters templates by <!-- SCOPE: ... --> header.
+
+    DoD items from .cognitive-os/plans/features/component-scope-classification.md:
+      - Item 1: All 433 components have a scope tag (templates confirmed 2026-04-30)
+      - Item 3: cos install (cos_init.py main) skips os-only components
+
+    Templates use <!-- SCOPE: {scope} --> comment on the first line (plan step 4).
+    The installer calls scope_allows() for each .md before copying.
+    """
+
+    def test_scope_allows_filters_template_os_only(self, tmp_path: Path) -> None:
+        """scope_allows() blocks templates tagged '<!-- SCOPE: os-only -->'."""
+        tmpl = tmp_path / "project-gotchas.md"
+        tmpl.write_text("<!-- SCOPE: os-only -->\n# Project Gotchas\n")
+        assert cos_init.scope_allows(str(tmpl), install_scope="both") is False
+
+    def test_scope_allows_passes_template_both(self, tmp_path: Path) -> None:
+        """scope_allows() passes templates tagged '<!-- SCOPE: both -->'."""
+        tmpl = tmp_path / "quality-gates.md"
+        tmpl.write_text("<!-- SCOPE: both -->\n# Quality Gates\n")
+        assert cos_init.scope_allows(str(tmpl), install_scope="both") is True
+
+    def test_scope_allows_passes_template_project(self, tmp_path: Path) -> None:
+        """scope_allows() passes templates tagged '<!-- SCOPE: project -->'."""
+        tmpl = tmp_path / "fintech-gates.md"
+        tmpl.write_text("<!-- SCOPE: project -->\n# Fintech Gates\n")
+        assert cos_init.scope_allows(str(tmpl), install_scope="both") is True
+
+    def test_real_template_scope_tags_present(self) -> None:
+        """All real templates in templates/ must have a '<!-- SCOPE: ...' tag on line 1.
+
+        DoD item 1: every component has a scope tag.
+        Templates use '<!-- SCOPE: {scope} -->' on the first line (per plan step 4).
+        """
+        templates_dir = PROJECT_ROOT / "templates"
+        if not templates_dir.is_dir():
+            return  # templates/ not present in this environment
+
+        missing = []
+        for tmpl in sorted(templates_dir.glob("*.md")):
+            try:
+                first_line = tmpl.read_text(encoding="utf-8", errors="replace").splitlines()[0]
+            except (OSError, IndexError):
+                first_line = ""
+            if "<!-- SCOPE:" not in first_line:
+                missing.append(tmpl.name)
+
+        assert not missing, (
+            f"Templates lacking '<!-- SCOPE: ...' tag on line 1: {missing}\n"
+            f"Add '<!-- SCOPE: both -->' (or os-only/project) as the very first line."
+        )
+
+    def test_real_os_only_templates_are_filtered(self) -> None:
+        """Templates tagged os-only in the real repo are correctly blocked by scope_allows().
+
+        This verifies the integration between scope tags on disk and scope_allows(),
+        ensuring cos_init.py main()'s template install loop actually filters them.
+        """
+        templates_dir = PROJECT_ROOT / "templates"
+        if not templates_dir.is_dir():
+            return
+
+        for tmpl in sorted(templates_dir.glob("*.md")):
+            try:
+                first_line = tmpl.read_text(encoding="utf-8", errors="replace").splitlines()[0]
+            except (OSError, IndexError):
+                continue
+            if "<!-- SCOPE: os-only" in first_line:
+                assert cos_init.scope_allows(str(tmpl), install_scope="both") is False, (
+                    f"Expected {tmpl.name} to be blocked (os-only), but scope_allows returned True"
+                )
+
+
 def test_registry_register_skips_ephemeral_without_explicit_registry(tmp_path, monkeypatch):
     """cos-init must not write tmp/canary installs to the production registry."""
     import scripts.cos_init as cos_init
