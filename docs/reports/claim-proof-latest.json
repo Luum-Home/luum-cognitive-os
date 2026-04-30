@@ -379,7 +379,7 @@
     {
       "claim": "- [ ] Add issue/PR creation for new blocker/high regressions.",
       "evidence": "blocker, creation, high, issue, regressions",
-      "line": 437,
+      "line": 438,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
@@ -387,7 +387,7 @@
     {
       "claim": "- [x] Add automated near-duplicate Markdown scan.",
       "evidence": "automated, markdown, near-duplicate, scan",
-      "line": 444,
+      "line": 445,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
@@ -395,7 +395,7 @@
     {
       "claim": "- [x] Confirm commit provenance trailers were not previously enforced.",
       "evidence": "commit, confirm, enforced, previously, provenance, trailers, were",
-      "line": 452,
+      "line": 453,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/business/conversation-reality-audit-2026-04-30.md",
       "status": "mapped"
