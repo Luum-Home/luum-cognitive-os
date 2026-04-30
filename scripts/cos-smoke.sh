@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# ROLE: opt-in critical-path startup smoke; not the default broad test runner.
+# CANONICAL: cos-test broad for default validation; use this only for startup wiring smoke.
 # cos-smoke.sh — Run the COS critical-path e2e smoke suite.
 #
 # Usage:
