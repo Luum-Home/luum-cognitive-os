@@ -305,7 +305,7 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 ### Added — Measurement & Observability
 
 - `/dogfood-score` — composite SO self-build maturity score (7 dimensions).
-- `/component-reality-check` — drill-down into REAL/DORMANT/ASPIRATIONAL/METADATA classification.
+- `/component-reality-check` — drill-down into REAL/DORMANT/ASPIRATIONAL/METADATA classification for agentic primitives.
 - `aspirational-audit.py` — new `ON_DEMAND` classification label.
 - `scripts/so-vs-vanilla-benchmark.py` — A/B test harness with `COS_DISABLE_ALL_GOVERNANCE=1` master kill-switch.
 
