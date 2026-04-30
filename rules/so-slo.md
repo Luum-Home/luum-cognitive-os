@@ -1,4 +1,4 @@
-<!-- TIER: 1 -->
+<!-- TIER: 2 -->
 <!-- SCOPE: both -->
 # SO SLO Catalogue — Source of Truth (ADR-028 D5)
 
