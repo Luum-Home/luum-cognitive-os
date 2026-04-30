@@ -1,0 +1,68 @@
+{
+  "generated": "2026-04-30",
+  "context": "Six test files were untracked in the working tree during Session A commits today, causing the pre-commit Gate 3f to incorrectly scan them (or block adjacent commits). Session B later committed all six. This report documents their final state.",
+  "files": [
+    {
+      "path": "tests/unit/test_claim_proof_and_reduction.py",
+      "status": "committed",
+      "owning_commit": "06bfc82b",
+      "commit_subject": "test(audit): fail primitive backlog regressions",
+      "commit_timestamp": "2026-04-30T15:39:57-03:00",
+      "was_untracked_during": "Session A commits before 15:39 -0300",
+      "recommendation": "No action needed. File is legitimately owned by Session B audit work. Keep."
+    },
+    {
+      "path": "tests/unit/test_primitive_gap_workflow.py",
+      "status": "committed",
+      "owning_commit": "00b7f400",
+      "commit_subject": "chore(p0): unblock CI — fix aider_streaming collection + catalog test + cleanup worktree residue",
+      "commit_timestamp": "2026-04-30T16:43:07-03:00",
+      "was_untracked_during": "Session A commits before 16:43 -0300",
+      "recommendation": "No action needed. Committed by Session B as part of CI unblocking. Keep."
+    },
+    {
+      "path": "tests/unit/test_primitive_row_audit.py",
+      "status": "committed",
+      "owning_commit": "23902aa1",
+      "commit_subject": "test(audit): add row-level primitive and claim proof reports",
+      "commit_timestamp": "2026-04-30T15:38:54-03:00",
+      "was_untracked_during": "Session A commits before 15:38 -0300",
+      "recommendation": "No action needed. Session B authored this as part of primitive audit work. Keep."
+    },
+    {
+      "path": "tests/unit/test_registered_hook_behaviors.py",
+      "status": "committed",
+      "owning_commit": "23902aa1",
+      "commit_subject": "test(audit): add row-level primitive and claim proof reports",
+      "commit_timestamp": "2026-04-30T15:38:54-03:00",
+      "was_untracked_during": "Session A commits before 15:38 -0300",
+      "recommendation": "No action needed. Session B authored this as part of primitive audit work. Keep."
+    },
+    {
+      "path": "tests/unit/test_skill_and_rule_runtime_contracts.py",
+      "status": "committed",
+      "owning_commit": "23902aa1",
+      "commit_subject": "test(audit): add row-level primitive and claim proof reports",
+      "commit_timestamp": "2026-04-30T15:38:54-03:00",
+      "was_untracked_during": "Session A commits before 15:38 -0300",
+      "recommendation": "No action needed. Session B authored this as part of primitive audit work. Keep."
+    },
+    {
+      "path": "tests/unit/test_primitive_surface_reduce.py",
+      "status": "committed",
+      "owning_commit": "00b7f400",
+      "commit_subject": "chore(p0): unblock CI — fix aider_streaming collection + catalog test + cleanup worktree residue",
+      "commit_timestamp": "2026-04-30T16:43:07-03:00",
+      "was_untracked_during": "Session A commits before 16:43 -0300",
+      "recommendation": "No action needed. Committed by Session B as part of CI unblocking. Keep."
+    }
+  ],
+  "summary": {
+    "total_files": 6,
+    "untracked": 0,
+    "committed": 6,
+    "deleted": 0,
+    "owning_sessions": ["Session B (primitive audit work)"],
+    "root_cause": "Gate 3f in .githooks/pre-commit called check_test_quality.py --pre-commit which internally re-ran `git diff --cached`. When Session A had adjacent structural test files newly staged (or the fallback triggered), the entire working tree including these untracked files was scanned. Fixed: hook now passes the staged file list explicitly as positional args; script no longer auto-scans working tree by default."
+  }
+}
