@@ -80,22 +80,46 @@ def run_targeted_tests(files_changed):
         test_ids = []
     if not test_ids:
         return None  # no tests resolved, skip
-    # Run pytest on resolved tests
-    cmd = ["python3", "-m", "pytest", "--tb=no", "-q"] + list(test_ids)
+    wrapper = project_dir / "scripts" / "pytest-with-summary.sh"
+    report_root = Path(os.environ.get("COS_TEST_REPORT_DIR", project_dir / ".cognitive-os" / "reports" / "global-verify"))
+    env = os.environ.copy()
+    env["COS_TEST_REPORT_DIR"] = str(report_root)
+    if wrapper.is_file():
+        # Governance delegates execution/reporting to the canonical transport.
+        # It still owns the before/after comparison, but test execution now
+        # persists the same artifacts as cos-test runs.
+        cmd = ["bash", str(wrapper), "--workers", "0", "--lane", "global-verify", "--", "--tb=no", "-q"] + list(test_ids)
+    else:
+        # Compatibility fallback for partially installed consumer projects.
+        cmd = ["python3", "-m", "pytest", "--tb=no", "-q"] + list(test_ids)
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=120, cwd=str(project_dir))
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=120, cwd=str(project_dir), env=env)
         stdout = r.stdout + r.stderr
-        # Parse pytest summary line: "N passed", "N failed", "N passed, M failed in Xs"
         import re
+        import xml.etree.ElementTree as ET
         passed = 0
         failed = 0
-        for line in stdout.splitlines():
-            m = re.search(r'(\d+)\s+passed', line)
-            if m:
-                passed = int(m.group(1))
-            m = re.search(r'(\d+)\s+failed', line)
-            if m:
-                failed = int(m.group(1))
+        junit_files = sorted(report_root.glob("*/junit.xml"), key=lambda p: p.stat().st_mtime, reverse=True)
+        if junit_files:
+            try:
+                root = ET.parse(junit_files[0]).getroot()
+                suites = [root] if root.tag == "testsuite" else list(root.iter("testsuite"))
+                total = sum(int(suite.attrib.get("tests", 0)) for suite in suites)
+                failures = sum(int(suite.attrib.get("failures", 0)) for suite in suites)
+                errors = sum(int(suite.attrib.get("errors", 0)) for suite in suites)
+                skipped = sum(int(suite.attrib.get("skipped", 0)) for suite in suites)
+                failed = failures + errors
+                passed = max(0, total - failed - skipped)
+            except Exception:
+                pass
+        if not junit_files:
+            for line in stdout.splitlines():
+                m = re.search(r'(\d+)\s+passed', line)
+                if m:
+                    passed = int(m.group(1))
+                m = re.search(r'(\d+)\s+failed', line)
+                if m:
+                    failed = int(m.group(1))
         return {
             "test_count": len(test_ids),
             "passed": passed,

@@ -104,8 +104,23 @@ func TestBuildFocusedPlan_Explicit(t *testing.T) {
 	if !reflect.DeepEqual(plan.TestPaths, []string{"tests/unit/test_a.py"}) {
 		t.Errorf("paths = %v", plan.TestPaths)
 	}
-	if !containsPair(plan.ExtraArgs, "-n", "auto") {
-		t.Errorf("expected -n auto in ExtraArgs: %v", plan.ExtraArgs)
+	if plan.Workers != "auto" {
+		t.Errorf("expected workers auto, got %q", plan.Workers)
+	}
+}
+
+func TestBuildFocusedPlan_ForceSerialFocused(t *testing.T) {
+	t.Setenv("COS_FORCE_SERIAL_LANES", "focused")
+	cfg := newTestCfg(t)
+	plan, err := buildFocusedPlan(cfg, []string{"tests/unit/test_a.py"}, func(string) ([]string, error) {
+		t.Fatal("diffFn must not be called for explicit paths")
+		return nil, nil
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plan.Workers != "0" {
+		t.Errorf("expected forced serial workers 0, got %q", plan.Workers)
 	}
 }
 
@@ -159,8 +174,8 @@ func TestBuildFocusedPlan_TestmonPreferred(t *testing.T) {
 	if plan.Mode != "testmon" {
 		t.Errorf("mode = %s, want testmon", plan.Mode)
 	}
-	if !containsPair(plan.ExtraArgs, "-n", "auto") || !containsString(plan.ExtraArgs, "--testmon") {
-		t.Errorf("expected -n auto + --testmon, got %v", plan.ExtraArgs)
+	if plan.Workers != "auto" || !containsString(plan.ExtraArgs, "--testmon") {
+		t.Errorf("expected workers auto + --testmon, got workers=%q args=%v", plan.Workers, plan.ExtraArgs)
 	}
 }
 

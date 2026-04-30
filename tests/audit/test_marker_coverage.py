@@ -35,11 +35,16 @@ def _lane_marker(lane_name: str) -> str:
     return _LANE_TO_MARKER.get(lane_name, lane_name)
 
 
-def _collect_marker_count(marker: str, paths: list[str]) -> int:
-    """Run ``pytest --collect-only -q -m <marker>`` against the given paths and
-    return the number of collected items. Zero on failure."""
+def _collect_marker_files(marker: str, paths: list[str]) -> set[Path]:
+    """Run ``pytest --collect-only -q -m <marker>`` and return unique files.
+
+    Counting collected items can hide drift: one heavily parametrized file can
+    compensate for several unmarked files. ADR-072's contract is file-level
+    classification, so the audit counts distinct test files represented in the
+    collected nodeids.
+    """
     if not paths:
-        return 0
+        return set()
     cmd = [
         sys.executable,
         "-m",
@@ -60,23 +65,18 @@ def _collect_marker_count(marker: str, paths: list[str]) -> int:
         timeout=60,
         cwd=str(PROJECT_ROOT),
     )
-    # Last non-empty line of stdout is the summary, e.g., "123 tests collected in 1.23s"
-    for line in reversed(result.stdout.splitlines()):
+    files: set[Path] = set()
+    for line in result.stdout.splitlines():
         line = line.strip()
         if not line:
             continue
-        # Match the leading integer of summary lines like "123 tests collected"
-        # or "123/456 tests collected".
-        parts = line.split()
-        if parts and parts[0].split("/")[0].isdigit():
-            try:
-                return int(parts[0].split("/")[0])
-            except ValueError:
-                continue
-        # Some pytest versions print "no tests collected"; treat as 0.
-        if "no tests" in line.lower() and "collected" in line.lower():
-            return 0
-    return 0
+        if "::" not in line:
+            continue
+        node_path = line.split("::", 1)[0]
+        candidate = (PROJECT_ROOT / node_path).resolve()
+        if candidate.exists() and candidate.name.startswith("test_") and candidate.suffix == ".py":
+            files.add(candidate)
+    return files
 
 
 def _count_test_files(paths: list[str]) -> int:
@@ -126,16 +126,12 @@ def test_lane_marker_coverage_meets_threshold(lane_name: str) -> None:
     if file_count == 0:
         pytest.skip(f"lane '{lane_name}' has no test_*.py files under {paths}")
 
-    collected = _collect_marker_count(marker, paths)
-    # Collected count includes parametrized expansions; we only need a lower
-    # bound on coverage. If collected ≥ file_count * threshold, every file is
-    # very likely contributing at least one item — sufficient to assert the
-    # marker is being injected.
+    collected_files = _collect_marker_files(marker, paths)
     expected_minimum = max(1, int(file_count * COVERAGE_THRESHOLD))
 
-    assert collected >= expected_minimum, (
+    assert len(collected_files) >= expected_minimum, (
         f"lane '{lane_name}' (marker '{marker}') under {paths}: "
-        f"collected only {collected} items via -m {marker}, "
+        f"collected only {len(collected_files)} files via -m {marker}, "
         f"expected ≥{expected_minimum} (≥{COVERAGE_THRESHOLD:.0%} of {file_count} files). "
         f"Likely cause: new tests added without auto-marker hook matching, "
         f"or a path-prefix collision. See tests/conftest.py and ADR-072."
