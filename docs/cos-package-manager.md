@@ -1,4 +1,4 @@
-# cos -- Package Manager for AI Agent Components
+# cos -- Package Manager for Agentic Primitives
 
 > Design Document v1.0 -- 2026-03-27
 
@@ -22,11 +22,11 @@
 
 ### Problem
 
-AI coding agents (Claude Code, Cursor, Windsurf, Cline) use skills, rules, hooks, and templates to extend their capabilities. Today, sharing these components means copy-pasting files between repos. There is no versioning, no dependency resolution, no quality assurance, and no discovery mechanism.
+AI coding agents (Claude Code, Cursor, Windsurf, Cline) use skills, rules, hooks, and templates to extend their capabilities. Today, sharing these agentic primitives means copy-pasting files between repos. There is no versioning, no dependency resolution, no quality assurance, and no discovery mechanism.
 
 ### Solution
 
-`cos` is a package manager purpose-built for AI agent components. It is to AI coding agents what npm is to JavaScript or cargo is to Rust: a tool for installing, publishing, versioning, and discovering reusable agent components.
+`cos` is a package manager purpose-built for agentic primitives. It is to AI coding agents what npm is to JavaScript or cargo is to Rust: a tool for installing, publishing, versioning, and discovering reusable agentic primitives.
 
 ### Core Principles
 
@@ -902,7 +902,7 @@ The cos-index is one source among many configured in `cognitive-os.yaml`:
 
 | Registry | Type | What It Provides |
 |----------|------|-----------------|
-| cos-builtin | local | Built-in COS components |
+| cos-builtin | local | Built-in COS agentic primitives |
 | cos-community (index) | remote | Curated community packages |
 | skills.sh | remote | Vercel's skills registry (83K+) |
 | mcp-registry | remote | Official MCP servers |
@@ -1939,11 +1939,11 @@ Error: feature conflict in github.com/luum/safety-mesh
 
 | Term | Definition |
 |------|------------|
-| **Package** | A versioned collection of AI agent components (skills, rules, hooks, etc.) with a `cos-package.yaml` manifest. |
+| **Package** | A versioned collection of agentic primitives (skills, rules, hooks, etc.) with a `cos-package.yaml` manifest. |
 | **Manifest** | The `cos-package.yaml` file that describes a package's identity, exports, dependencies, and configuration. |
 | **Export** | A file declared in the manifest that gets installed into the consumer's `.claude/` directory. |
 | **Feature** | A named set of optional exports and dependencies that consumers can enable or disable. |
-| **Bundle** | A package that provides multiple component types (skill + rule + hook). |
+| **Bundle** | A package that provides multiple agentic primitive types (skill + rule + hook). |
 | **Registry** | A source where packages can be fetched. GitHub (git-based) or centralized index. |
 | **Index** | A YAML file mapping scoped package names to their git sources. Hosted in a GitHub repo. |
 | **Lock file** | `cos.lock` -- pins exact versions and integrity hashes for reproducible installs. |
