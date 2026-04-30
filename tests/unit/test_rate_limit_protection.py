@@ -18,6 +18,8 @@ import pytest
 
 from lib.token_budget_monitor import RateLimitProtection, RateLimitStatus
 
+pytestmark = [pytest.mark.xdist_group("perf_budget"), pytest.mark.benchmark]
+
 
 @pytest.fixture
 def tmp_metrics(tmp_path: Path) -> Path:

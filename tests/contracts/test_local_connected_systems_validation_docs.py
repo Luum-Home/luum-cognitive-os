@@ -98,6 +98,8 @@ def test_product_system_connection_contract_requires_happy_path_and_boundary() -
 
 
 def test_manual_proof_path_runs_dependency_doctor_services_and_summary_in_order() -> None:
+    import re
+
     text = DOC.read_text(encoding="utf-8")
     section = _section(text, "## Manual Proof Path")
     commands = "\n".join(_commands(section))
@@ -108,8 +110,18 @@ def test_manual_proof_path_runs_dependency_doctor_services_and_summary_in_order(
     assert commands.index("bash scripts/setup.sh --standard") < commands.index(
         "bash scripts/cos-doctor-tools.sh"
     )
-    assert commands.index("bash scripts/cos-bootstrap.sh --profile full") < commands.index(
-        "bash scripts/pytest-with-summary.sh tests/ -m"
+    # Accepts both legacy wrapper and new cos-test entry during deprecation cycle (ADR-072).
+    canonical_pattern = re.compile(
+        r"bash scripts/pytest-with-summary\.sh|cos-test cluster|cos-test broad"
+    )
+    canonical_match = canonical_pattern.search(commands)
+    assert canonical_match is not None, (
+        "Manual Proof Path must reference either 'bash scripts/pytest-with-summary.sh', "
+        "'cos-test cluster', or 'cos-test broad' as the final test step"
+    )
+    bootstrap_pos = commands.index("bash scripts/cos-bootstrap.sh --profile full")
+    assert bootstrap_pos < canonical_match.start(), (
+        "cos-bootstrap.sh must appear before the canonical test command in Manual Proof Path"
     )
 
 

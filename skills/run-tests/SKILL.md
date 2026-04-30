@@ -3,7 +3,7 @@
 name: run-tests
 description: Auto-detect project test framework and run tests with structured reporting
 invoke: /run-tests
-version: 1.0.0
+version: 1.1.0
 audience: project
 triggers: ["/run-tests", "/test", "/tests"]
 ---
@@ -11,6 +11,26 @@ triggers: ["/run-tests", "/test", "/tests"]
 # /run-tests
 
 > Detect and run the project's test suite with structured pass/fail reporting.
+
+## Cognitive OS canonical entry (ADR-072)
+
+When running inside the Cognitive OS repo (i.e., `cmd/cos-test/` exists or the `cos-test`
+binary is on PATH or built at `./cos-test`), **prefer `cos-test`** over direct pytest:
+
+| Mode | Command | When to use |
+|---|---|---|
+| Focused | `cos-test focused` | Single-file edit or tight iteration loop (<30 s) |
+| Cluster | `cos-test cluster --lane <name>` | Validate one lane (unit, audit, contract, …) |
+| Broad | `cos-test broad` | Full pre-push sweep |
+
+**Fallback**: if the `cos-test` binary is not present and cannot be built (non-COS project
+or Go toolchain absent), fall back to direct pytest as described in the steps below.
+
+Detection order:
+1. `cos-test` on PATH? → use it.
+2. `./cos-test` binary present? → use it.
+3. `cmd/cos-test/` directory present + `go` available? → build with `cd cmd/cos-test && go build -o ../../cos-test .`, then use it.
+4. None of the above? → fall back to framework auto-detection below.
 
 ## What It Does
 

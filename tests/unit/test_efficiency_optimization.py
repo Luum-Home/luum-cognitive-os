@@ -14,9 +14,11 @@ import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
-pytestmark = pytest.mark.unit
-
-
+pytestmark = [
+    pytest.mark.unit,
+    pytest.mark.xdist_group("perf_budget"),
+    pytest.mark.benchmark,
+]
 # ---------------------------------------------------------------------------
 # Test 1: RULES-COMPACT.md token budget
 # ---------------------------------------------------------------------------

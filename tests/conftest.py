@@ -6,8 +6,10 @@ import sqlite3
 import subprocess
 import uuid
 from pathlib import Path
+from typing import Any
 
 import pytest
+import yaml
 
 
 def pytest_configure(config):
@@ -139,4 +141,77 @@ def real_engram():
             conn.commit()
         finally:
             conn.close()
+
+
+# ---------------------------------------------------------------------------
+# Auto-marker injection — lane detection from test path (REQ-3, ADR-069)
+# ---------------------------------------------------------------------------
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_LANES_FILE = _PROJECT_ROOT / ".cognitive-os" / "test-lanes.yaml"
+
+
+def _build_path_to_marker_map() -> dict[str, str]:
+    """Load test-lanes.yaml and return a mapping from normalised path prefix to marker name.
+
+    The marker name for a lane is the lane key, except ``hooks`` which maps to
+    the ``hook`` marker (singular) to match the marker registered in pytest.ini.
+
+    Cached at module level so the YAML file is read once per collection run.
+    """
+    if not _LANES_FILE.exists():
+        return {}
+    try:
+        with _LANES_FILE.open(encoding="utf-8") as fh:
+            data = yaml.safe_load(fh)
+        lanes: dict[str, Any] = data.get("lanes", {})
+    except Exception:
+        return {}
+
+    mapping: dict[str, str] = {}
+    for lane_name, config in lanes.items():
+        # Lane name → marker name.  ``hooks`` lane uses ``hook`` marker (singular).
+        marker_name = "hook" if lane_name == "hooks" else lane_name
+        for path_prefix in config.get("paths", []):
+            # Normalise: strip leading "./" and trailing "/" so startswith works cleanly.
+            normalised = path_prefix.lstrip("./").rstrip("/")
+            mapping[normalised] = marker_name
+    return mapping
+
+
+# Module-level cache — built once at import time so it is available before
+# pytest_collection_modifyitems is called.
+_PATH_TO_MARKER: dict[str, str] = _build_path_to_marker_map()
+
+
+def pytest_collection_modifyitems(config: Any, items: list[Any]) -> None:  # noqa: ANN401
+    """Auto-inject lane markers based on each test's file path (REQ-3, ADR-069).
+
+    Algorithm:
+    1. Derive the path of each test item relative to the project root.
+    2. Match it against the lane path prefixes from ``.cognitive-os/test-lanes.yaml``.
+    3. If the item does not already carry that marker, add it.
+
+    This is idempotent: running it twice does not duplicate markers because we
+    check existing markers before adding.
+    """
+    if not _PATH_TO_MARKER:
+        return  # YAML not available — degrade gracefully, no markers added
+
+    for item in items:
+        try:
+            item_path = Path(item.fspath).resolve()
+            rel = item_path.relative_to(_PROJECT_ROOT)
+            rel_str = str(rel)
+        except (ValueError, TypeError):
+            continue
+
+        for path_prefix, marker_name in _PATH_TO_MARKER.items():
+            # Match on directory boundary: exact equality OR prefix followed by "/".
+            # Prevents tests/unit_extra/ from matching the tests/unit lane.
+            if rel_str == path_prefix or rel_str.startswith(path_prefix + "/"):
+                existing_markers = {m.name for m in item.iter_markers()}
+                if marker_name not in existing_markers:
+                    item.add_marker(getattr(pytest.mark, marker_name))
+                break  # first match wins — a test belongs to exactly one lane
 
