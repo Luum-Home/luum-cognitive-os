@@ -323,3 +323,4 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **web-crawler** — Fetch and convert web pages to LLM-ready markdown using Crawl4AI. Supports single-page fetch, structured data extraction, and multi-page site crawling.
 - **webhook-trigger** — GitHub webhook server that receives issue events and launches SDD pipelines automatically via ClaudeExecutor.
 - **decision-triage** — Aggregate unanswered operator decisions from research reports and ADRs into a single ranked view. Complements /session-backlog (tasks) — this counts decisions.
+- **memory-scan** — Scan text content (or a file) for prompt injection, credential exfiltration, and invisible Unicode threats before persisting to memory.
