@@ -60,33 +60,46 @@ esac
 echo "Efficiency profile: $PROFILE"
 
 # ── Helpers: build hook entries and groups ──────────────────────────
+# hook_entry <script> <event_name>
+# Wraps the hook via hook-timing-wrapper.sh so every invocation is logged with
+# {timestamp, event, hook, duration_ms, exit_code, pid} to hook-timing.jsonl.
+# The wrapper is best-effort: a logging failure never breaks the hook chain.
 hook_entry() {
   local script="$1"
-  printf '          {\n            "type": "command",\n            "command": "bash \\"$CLAUDE_PROJECT_DIR/hooks/%s\\""\n          }' "$script"
+  local event="${2:-unknown}"
+  printf '          {\n            "type": "command",\n            "command": "bash \\"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\\" %s \\"$CLAUDE_PROJECT_DIR/hooks/%s\\""\n          }' "$event" "$script"
 }
 
+# hook_entry_async <script> <event_name>
 hook_entry_async() {
   local script="$1"
-  printf '          {\n            "type": "command",\n            "command": "bash \\"$CLAUDE_PROJECT_DIR/hooks/%s\\"",\n            "async": true\n          }' "$script"
+  local event="${2:-unknown}"
+  printf '          {\n            "type": "command",\n            "command": "bash \\"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\\" %s \\"$CLAUDE_PROJECT_DIR/hooks/%s\\"",\n            "async": true\n          }' "$event" "$script"
 }
 
+# hook_entry_spec <spec> <event_name>
+# spec may be "foo.sh" or "foo.sh|async"
 hook_entry_spec() {
   local spec="$1"
+  local event="${2:-unknown}"
   case "$spec" in
     *"|async")
-      hook_entry_async "${spec%|async}"
+      hook_entry_async "${spec%|async}" "$event"
       ;;
     *)
-      hook_entry "$spec"
+      hook_entry "$spec" "$event"
       ;;
   esac
 }
 
-# Usage: hook_group <matcher> <script1> [script2] ...
-# Suffix entries with `|async` to emit `"async": true`.
+# Usage: hook_group <event_name> <matcher> <script1> [script2] ...
+# event_name — harness lifecycle event (SessionStart, PreToolUse, etc.)
+# matcher    — tool-name filter for PreToolUse/PostToolUse (empty string = all)
+# Suffix script entries with `|async` to emit `"async": true`.
 hook_group() {
-  local matcher="$1"
-  shift
+  local event="$1"
+  local matcher="$2"
+  shift 2
   local entries=""
   local first=true
   for spec in "$@"; do
@@ -95,7 +108,7 @@ hook_group() {
     else
       entries="$entries,"$'\n'
     fi
-    entries="$entries$(hook_entry_spec "$spec")"
+    entries="$entries$(hook_entry_spec "$spec" "$event")"
   done
 
   cat <<GROUPEOF
@@ -136,7 +149,7 @@ fi
 # regeneration preserves the Claude projection that other tooling consumes.
 build_settings() {
   local session_start
-  session_start=$(hook_group "" \
+  session_start=$(hook_group "SessionStart" "" \
     "self-install.sh" \
     "session-init.sh" \
     "host-tool-doctor.sh|async" \
@@ -156,35 +169,35 @@ build_settings() {
     "mcp-scan.sh|async")
 
   local user_prompt_submit
-  user_prompt_submit=$(hook_group "" \
+  user_prompt_submit=$(hook_group "UserPromptSubmit" "" \
     "user-prompt-capture.sh|async" \
     "session-wrapup-trigger.sh|async" \
     "session-heartbeat.sh" \
     "memory-prefetch.sh|async")
 
   local subagent_start
-  subagent_start=$(hook_group "" \
+  subagent_start=$(hook_group "SubagentStart" "" \
     "subagent-context-injector.sh|async")
 
   local pre_compact
-  pre_compact=$(hook_group "" \
+  pre_compact=$(hook_group "PreCompact" "" \
     "pre-compaction-flush.sh")
 
   local pre_all
-  pre_all=$(hook_group "" \
+  pre_all=$(hook_group "PreToolUse" "" \
     "session-heartbeat.sh")
   local pre_bash
-  pre_bash=$(hook_group "Bash" \
+  pre_bash=$(hook_group "PreToolUse" "Bash" \
     "rate-limit-precheck.sh" \
     "agent-bash-cwd-enforcer.sh" \
     "rate-limiter.sh" \
     "destructive-rm-blocker.sh")
   local pre_edit_write
-  pre_edit_write=$(hook_group "Edit|Write" \
+  pre_edit_write=$(hook_group "PreToolUse" "Edit|Write" \
     "secret-detector.sh" \
     "project-docs-convention.sh")
   local pre_agent
-  pre_agent=$(hook_group "Agent" \
+  pre_agent=$(hook_group "PreToolUse" "Agent" \
     "dispatch-gate.sh" \
     "clarification-gate.sh" \
     "blast-radius.sh" \
@@ -197,20 +210,20 @@ build_settings() {
     "native-agent-heartbeat.sh")
 
   local post_all
-  post_all=$(hook_group "" \
+  post_all=$(hook_group "PostToolUse" "" \
     "context-watchdog.sh|async" \
     "rate-limit-detector.sh")
   local post_bash
-  post_bash=$(hook_group "Bash" \
+  post_bash=$(hook_group "PostToolUse" "Bash" \
     "error-pipeline.sh" \
     "result-truncator.sh" \
     "rate-limit-drain.sh" \
     "audit-id-enricher.sh")
   local post_bash_edit_write
-  post_bash_edit_write=$(hook_group "Bash|Edit|Write" \
+  post_bash_edit_write=$(hook_group "PostToolUse" "Bash|Edit|Write" \
     "auto-checkpoint.sh|async")
   local post_edit
-  post_edit=$(hook_group "Edit|Write" \
+  post_edit=$(hook_group "PostToolUse" "Edit|Write" \
     "content-policy.sh" \
     "skill-frontmatter-validator.sh" \
     "rule-frontmatter-validator.sh" \
@@ -220,10 +233,10 @@ build_settings() {
     "surface-fix-detector.sh" \
     "doc-sync-detector.sh|async")
   local post_todowrite
-  post_todowrite=$(hook_group "TodoWrite" \
+  post_todowrite=$(hook_group "PostToolUse" "TodoWrite" \
     "work-queue-sync.sh")
   local post_agent
-  post_agent=$(hook_group "Agent" \
+  post_agent=$(hook_group "PostToolUse" "Agent" \
     "claim-validator.sh" \
     "completion-gate.sh" \
     "agent-checkpoint.sh" \
@@ -238,15 +251,15 @@ build_settings() {
     "dequeue-notify.sh|async" \
     "state-heartbeat.sh|async")
   local post_skill
-  post_skill=$(hook_group "Skill" \
+  post_skill=$(hook_group "PostToolUse" "Skill" \
     "skill-usage-tracker.sh|async" \
     "skill-invocation-logger.sh")
   local post_engram_mcp
-  post_engram_mcp=$(hook_group "mcp__plugin_engram_engram__mem_search|mcp__plugin_engram_engram__mem_get_observation" \
+  post_engram_mcp=$(hook_group "PostToolUse" "mcp__plugin_engram_engram__mem_search|mcp__plugin_engram_engram__mem_get_observation" \
     "engram-reinforce-on-access.sh|async")
 
   local stop_hooks
-  stop_hooks=$(hook_group "" \
+  stop_hooks=$(hook_group "Stop" "" \
     "session-summary-reminder.sh" \
     "session-learning.sh" \
     "session-cleanup.sh" \
@@ -256,15 +269,15 @@ build_settings() {
     "engram-crystallize-on-session-end.sh|async")
 
   local teammate_idle
-  teammate_idle=$(hook_group "" \
+  teammate_idle=$(hook_group "TeammateIdle" "" \
     "teammate-idle.sh")
 
   local task_created
-  task_created=$(hook_group "" \
+  task_created=$(hook_group "TaskCreated" "" \
     "task-created.sh")
 
   local task_completed
-  task_completed=$(hook_group "" \
+  task_completed=$(hook_group "TaskCompleted" "" \
     "task-completed.sh")
 
   # ── Assemble JSON ───────────────────────────────────────────────

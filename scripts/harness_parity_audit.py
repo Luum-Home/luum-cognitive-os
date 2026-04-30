@@ -67,8 +67,10 @@ def extract_registrations(path: Path) -> list[HookRegistration]:
                 if not isinstance(hook, dict):
                     continue
                 command = str(hook.get("command", ""))
-                match = HOOK_RE.search(command)
-                script = match.group(1) if match else command
+                matches = HOOK_RE.findall(command)
+                # Commands may wrap hooks through scripts/hook-timing-wrapper.sh.
+                # The projected hook is the final .sh argument, not the wrapper.
+                script = matches[-1] if matches else command
                 registrations.append(
                     HookRegistration(
                         event=event,
