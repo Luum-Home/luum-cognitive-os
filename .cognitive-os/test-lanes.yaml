@@ -20,7 +20,96 @@ lanes:
   integration:
     paths: [tests/integration/]
     parallel: false
-    stateful_reason: "Heterogeneous lane: live Engram/Phoenix/session workflows, TCP-port waits, installer subprocesses. Explicit non-Docker lane; default broad excludes it to keep CI/local defaults bounded."
+    stateful_reason: "Compatibility umbrella for all non-Docker integration tests. Prefer the narrower integration-* sublanes for local diagnosis."
+    marker_exclude: docker
+    optional: true
+  integration-memory:
+    paths:
+      - tests/integration/test_code_review_engram.py
+      - tests/integration/test_compaction_recovery.py
+      - tests/integration/test_decision_triage_engram_live.py
+      - tests/integration/test_decision_triage_full_cycle.py
+      - tests/integration/test_decision_triage_real_files.py
+      - tests/integration/test_engram_persistence.py
+      - tests/integration/test_mcp_server_functional.py
+      - tests/integration/test_request_persistence.py
+      - tests/integration/test_self_knowledge_refresh.py
+    parallel: false
+    stateful_reason: "Memory/session continuity: Engram, decision triage, compaction recovery, persistence, and MCP memory surfaces."
+    marker_exclude: docker
+    optional: true
+  integration-installer:
+    paths:
+      - tests/integration/test_auto_update_flow.py
+      - tests/integration/test_auto_update_safety.py
+      - tests/integration/test_first_run_onboarding.py
+      - tests/integration/test_fresh_install_canary.py
+      - tests/integration/test_install_manifest_integration.py
+      - tests/integration/test_install_scope.py
+      - tests/integration/test_installer.py
+      - tests/integration/test_manifest_e2e.py
+      - tests/integration/test_portability_demo.py
+      - tests/integration/test_post_commit_banner.py
+      - tests/integration/test_project_settings_generation.py
+      - tests/integration/test_setup_git_hooks_path.py
+    parallel: false
+    stateful_reason: "Install/update/projection workflows: installer, manifest, first-run, auto-update, git hooks path, and project settings generation."
+    marker_exclude: docker
+    optional: true
+  integration-hooks:
+    paths:
+      - tests/integration/test_auto_trigger_honoured.py
+      - tests/integration/test_cwd_enforcement_end_to_end.py
+      - tests/integration/test_cwd_enforcer_rewrite.py
+      - tests/integration/test_cwd_enforcer_warns.py
+      - tests/integration/test_cwd_inject_explicit_git_c.py
+      - tests/integration/test_inject_phase_context_expansion.py
+      - tests/integration/test_native_agent_heartbeat.py
+      - tests/integration/test_preamble_v2_wave1.py
+      - tests/integration/test_rate_limit_drainer_executes.py
+      - tests/integration/test_rate_limit_precheck_lift.py
+      - tests/integration/test_rate_limiter_hook_retry_flow.py
+      - tests/integration/test_reaper_heartbeat.py
+      - tests/integration/test_reaper_single_instance.py
+      - tests/integration/test_session_start_worktree_nudge.py
+    parallel: false
+    stateful_reason: "Hook-driven integration: cwd enforcement, prompt/context injection, rate-limit hooks, reaper/heartbeat, and session-start nudges."
+    marker_exclude: docker
+    optional: true
+  integration-provider:
+    paths:
+      - tests/integration/test_codex_harness_adapter_dispatch.py
+      - tests/integration/test_ecosystem_evaluator_live.py
+      - tests/integration/test_harness_adapter_dispatch.py
+      - tests/integration/test_orchestrator_capabilities_live.py
+      - tests/integration/test_orchestrator_cli.py
+      - tests/integration/test_record_completion_sends_trace_to_phoenix.py
+    parallel: false
+    stateful_reason: "Provider/harness integration: Codex adapter dispatch, harness adapter dispatch, orchestrator/provider capability checks, and Phoenix trace emission."
+    marker_exclude: docker
+    optional: true
+  integration-runtime:
+    paths:
+      - tests/integration/test_agent_working_dir_inject.py
+      - tests/integration/test_aspirational_audit.py
+      - tests/integration/test_component_usage_live.py
+      - tests/integration/test_consolidation_external.py
+      - tests/integration/test_cos_sprint_cli.py
+      - tests/integration/test_cos_watch_renders.py
+      - tests/integration/test_data_pipeline.py
+      - tests/integration/test_e2e_self_repair.py
+      - tests/integration/test_executor_e2e.py
+      - tests/integration/test_executor_mode_e2e.py
+      - tests/integration/test_executor_publishes_live.py
+      - tests/integration/test_feedback_loops.py
+      - tests/integration/test_host_monitor_live.py
+      - tests/integration/test_metrics_rotation.py
+      - tests/integration/test_repair_chain.py
+      - tests/integration/test_release_analyzer_git.py
+      - tests/integration/test_valkey_local_daemon.py
+      - tests/integration/test_wiring_validator_live.py
+    parallel: false
+    stateful_reason: "Runtime orchestration: executor flows, repair chain, metrics, sprint/watch CLIs, host monitor, Valkey daemon, and wiring validation."
     marker_exclude: docker
     optional: true
   integration-docker:

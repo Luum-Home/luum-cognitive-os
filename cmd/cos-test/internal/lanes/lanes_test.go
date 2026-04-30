@@ -239,3 +239,35 @@ func TestParse_OptionalInvalidValue(t *testing.T) {
 		t.Error("expected error for invalid optional value")
 	}
 }
+
+func TestParse_BlockListPaths(t *testing.T) {
+	yaml := `lanes:
+  integration-memory:
+    paths:
+      - tests/integration/test_engram_persistence.py
+      - tests/integration/test_request_persistence.py
+    parallel: false
+    stateful_reason: "memory state"
+    optional: true
+`
+	reg, err := Parse(strings.NewReader(yaml))
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+	lane, ok := reg.Get("integration-memory")
+	if !ok {
+		t.Fatal("integration-memory lane missing")
+	}
+	want := []string{"tests/integration/test_engram_persistence.py", "tests/integration/test_request_persistence.py"}
+	if len(lane.Paths) != len(want) {
+		t.Fatalf("paths = %v, want %v", lane.Paths, want)
+	}
+	for i := range want {
+		if lane.Paths[i] != want[i] {
+			t.Fatalf("paths = %v, want %v", lane.Paths, want)
+		}
+	}
+	if !lane.Optional {
+		t.Fatal("expected optional block-list lane")
+	}
+}
