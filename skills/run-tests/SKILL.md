@@ -32,6 +32,21 @@ Detection order:
 3. `cmd/cos-test/` directory present + `go` available? → build with `cd cmd/cos-test && go build -o ../../cos-test .`, then use it.
 4. None of the above? → fall back to framework auto-detection below.
 
+## Cognitive OS role boundaries
+
+Inside this repo, do not treat every script as a competing “run tests” command:
+
+| Role | Use |
+|---|---|
+| Selection + execution | `cos-test focused / cluster / broad` |
+| Persistent reporting fallback | `scripts/pytest-with-summary.sh -- <pytest args>` |
+| Opt-in startup smoke | `scripts/cos-smoke.sh` |
+| Legacy compatibility only | `scripts/test-cognitive-os*.sh`, `scripts/test-all.sh`, `scripts/run-all-tests.sh` |
+
+Governance hooks such as `auto-verify`, `dod-gate`, `coverage-enforcement`,
+and `test-quality-audit` should consume persisted test evidence instead of
+inventing a separate test selection policy.
+
 ## What It Does
 
 Auto-detects the test framework from project files, runs the test suite, and reports structured results (pass/fail/skip counts, coverage, failure details). Works with any project regardless of language or framework.
