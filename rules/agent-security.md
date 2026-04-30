@@ -1,5 +1,5 @@
-<!-- TIER: 1 -->
 <!-- SCOPE: both -->
+<!-- TIER: 1 -->
 # Agent Security — Least Privilege Protocol
 
 ## Principle of Least Privilege

@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Resource Governance Protocol
 
 ## Budget Enforcement (ALWAYS ACTIVE)

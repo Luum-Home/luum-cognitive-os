@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 
 # LLM Dispatch Policy (ADR-049 Option B)
 

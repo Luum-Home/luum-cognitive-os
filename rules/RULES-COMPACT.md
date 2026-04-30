@@ -1,5 +1,5 @@
-<!-- TIER: 0 -->
 <!-- SCOPE: both -->
+<!-- TIER: 0 -->
 # COS Rules Index
 
 > Compressed index. Full rules loaded on trigger via `[ref-key]`. Hook-enforced rules excluded (see `hooks/self-install.sh:EXCLUDED_RULES`).

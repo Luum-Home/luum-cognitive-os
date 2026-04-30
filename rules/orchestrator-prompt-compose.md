@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Orchestrator Prompt Compose — Trap Preview Before Agent Launch
 
 ## Rule (Always Active)

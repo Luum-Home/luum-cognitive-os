@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Adversarial Review Protocol (BMAD v6 Pattern 1)
 
 ## Mandate

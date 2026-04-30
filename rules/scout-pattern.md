@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Scout Pattern -- Pre-Implementation Reconnaissance
 
 ## Purpose
