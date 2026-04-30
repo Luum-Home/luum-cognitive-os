@@ -39,7 +39,7 @@ The report is designed to be pasted directly into `/apply-improvements` as input
 
 ## Instructions
 
-### Step 0: Quick Analysis via lib/self_improvement.py
+### Step 0: Quick Analysis via lib/self_improvement.py + lib/feedback_consumer.py
 
 Run the pre-built analysis first to get a baseline:
 
@@ -53,7 +53,28 @@ suggestions = suggest_improvements(analysis)
 print(format_improvement_report(analysis, suggestions))
 ```
 
-Use this output as context for the deeper analysis below.
+Then surface recent user feedback signals that should inform the proposals.
+`feedback_consumer` reads `.cognitive-os/metrics/prompt-captures.jsonl`, groups
+entries by classification, and returns the actionable signals (category: feedback,
+correction, escalation):
+
+```python
+from lib.feedback_consumer import summarise_for_skill_improvement
+
+feedback_summary = summarise_for_skill_improvement(limit=50)
+print(f"Feedback window: {feedback_summary['total_entries']} entries, "
+      f"{feedback_summary['actionable_count']} actionable signals")
+for signal in feedback_summary['actionable_signals'][:10]:
+    print(f"  [{signal['recency_rank']}] {signal['signal_category']} "
+          f"(confidence={signal['confidence']:.2f}, ts={signal['timestamp']})")
+```
+
+If `actionable_count > 0`, include the top signals as an additional data source
+in Step 2 (Identify Failure Patterns). Each actionable signal indicates a moment
+where the user corrected, escalated, or gave negative feedback — these are
+high-value inputs for skill repair proposals.
+
+Use both outputs as context for the deeper analysis below.
 
 ### Step 1: Load All Error and Metrics Data
 

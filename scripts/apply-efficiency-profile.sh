@@ -232,6 +232,7 @@ build_settings() {
     "auto-rollback-trigger.sh" \
     "native-agent-heartbeat.sh" \
     "work-queue-sync.sh" \
+    "skill-feedback-tracker.sh" \
     "auto-repair-dispatcher.sh|async" \
     "dequeue-notify.sh|async" \
     "state-heartbeat.sh|async")
