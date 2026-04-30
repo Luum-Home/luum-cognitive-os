@@ -100,3 +100,18 @@ A weekly scheduled workflow now runs the family-level primitive gap snapshot:
 - trend metric: `docs/reports/primitive-gap-history.jsonl` in CI, or `.cognitive-os/metrics/primitive-gap-snapshot.jsonl` for local runs
 
 The workflow intentionally does not fail on high risk yet. The current baseline is high-risk, so failing the scheduled job would create noise instead of useful escalation. Once the family-level baseline is cleaned up, enable `--fail-high-risk` or a narrower regression threshold for blocker/high deltas.
+
+## Growth Prevention Gate
+
+The periodic automation is now preventive, not just observational. `scripts/primitive_gap_snapshot.py --fail-on-regression` compares the current snapshot with the previous trend entry and exits non-zero when new growth worsens the primitive gap profile.
+
+Regression conditions:
+
+- overall risk worsens;
+- a family severity worsens;
+- a family loses proven signal;
+- a family gains aspirational signal;
+- a family unproven surface count grows (`total - proven_signal`);
+- hook p95 latency grows beyond `--latency-regression-ms` (default 500 ms).
+
+This intentionally permits the current high-risk baseline to exist while blocking additional unproven growth.

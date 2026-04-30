@@ -16,6 +16,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 TEXT_SUFFIXES = {".py", ".sh", ".md", ".json", ".yaml", ".yml", ".toml", ".txt"}
+GENERATED_SNAPSHOT_BASENAMES = {
+    "primitive-gap-latest.json",
+    "primitive-gap-latest.md",
+    "primitive-gap-regressions.md",
+    "primitive-gap-history.jsonl",
+}
 
 
 @dataclass(frozen=True)
@@ -54,6 +60,8 @@ def text_files(root: Path, paths: list[str]) -> list[Path]:
         elif base.is_dir():
             for path in base.rglob("*"):
                 if ".git" in path.parts or "__pycache__" in path.parts:
+                    continue
+                if path.name in GENERATED_SNAPSHOT_BASENAMES:
                     continue
                 if path.is_file() and path.suffix in TEXT_SUFFIXES and path.stat().st_size < 2_000_000:
                     files.append(path)
