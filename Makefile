@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help test test-local-fast test-local-wide-no-docker test-ci-default test-integration-no-docker test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
+.PHONY: help test test-local-fast test-laptop test-local-wide-no-docker test-ci-default test-integration-no-docker test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -22,8 +22,9 @@ cos-test:
 help:
 	@echo "Targets:"
 	@echo "  test-local-fast   Official local quick lane: cos-test focused."
+	@echo "  test-laptop       Laptop-friendly broad lane: capped workers, no Docker/cost/integration/chaos."
 	@echo "  test-local-wide-no-docker  Official local broad lane without Docker/cost."
-	@echo "  test-ci-default   Official CI default: broad non-Docker lane."
+	@echo "  test-ci-default   Official CI/pre-release default: broad non-Docker gate; do not run constantly on laptops."
 	@echo "  test-integration-no-docker  Explicit slow integration lane without Docker."
 	@echo "  test-docker-explicit  Explicit Docker/testcontainers lane."
 	@echo "  test-optional-cost    Explicit optional/cost-bearing lanes."
@@ -54,6 +55,16 @@ test: test-fast
 
 test-local-fast: cos-test
 	@./cos-test focused
+
+test-laptop: cos-test
+	@echo "[test-laptop] Laptop-friendly broad validation: max 2 workers, no Docker/cost/integration/e2e/chaos." >&2
+	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane unit
+	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane audit
+	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane contract
+	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane architecture
+	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane system
+	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane behavior
+	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane hooks
 
 test-local-wide-no-docker: cos-test
 	@./cos-test broad --no-docker
