@@ -330,3 +330,35 @@ not consumed downstream). Three Tier-0 gaps were closed in this session:
 investigation has no effect in this (self-hosting) repo because `IS_SELF_HOSTING=true`
 bypasses the CORE_RULES list entirely. The patch is deferred to client-project
 deployment paths only (documented in ADR-074 § Action 3).
+
+---
+
+## 2026-04-30: Stage 2 selective expansion (Tier 1 #4 from ADR-074)
+
+**ADR**: [ADR-075](adrs/ADR-075-stage2-selective-expansion.md)
+
+### Measured token impact
+
+Expansion of `RULES-COMPACT.md` via `hooks/inject-phase-context.sh`:
+
+| Mode | `wc -c` (chars) | Tokens (÷4 est.) | vs full |
+|------|----------------|------------------|---------|
+| Input — RULES-COMPACT alone | 8,561 | ~2,140 | — |
+| `tier_filter=None` (full, no filter) | 428,886 | ~107,221 | baseline |
+| `tier_filter={0}` (Tier-0 only) | 63,067 | ~15,766 | **–85%** |
+| `tier_filter={0,1}` (default) | 408,832 | ~102,208 | –5% |
+
+**Key insight**: The ~90K token savings claim from the task spec is achievable only
+with `tier_filter={0}`. The conservative default `[0, 1]` (which includes the 95
+Tier-1 rules) yields only ~5% savings over full expansion. Operators who need the
+full 85% reduction must explicitly set `expansion.tier_filter: [0]` in
+`cognitive-os.yaml` and monitor escalation rates.
+
+### Files changed
+
+- `rules/*.md` — 112 files: 9 Tier-0, 95 Tier-1, 8 Tier-2 frontmatter added
+- `lib/ref_key_loader.py` — `expand()` gains `tier_filter` param; `_read_tier()` added
+- `hooks/inject-phase-context.sh` — reads `expansion.tier_filter` from YAML
+- `cognitive-os.yaml` — `expansion.tier_filter: [0, 1]` feature flag
+- `tests/unit/test_ref_key_loader.py` — 10 new tier-filtering tests (23 total, all pass)
+- `docs/adrs/ADR-075-stage2-selective-expansion.md` — decision record
