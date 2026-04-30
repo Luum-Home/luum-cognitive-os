@@ -9,8 +9,10 @@ import (
 	"github.com/luum/cos-dispatch/pkg/hook"
 )
 
-// codexPayload represents the JSON structure Codex sends on stdin.
-// Codex adopted Claude Code's hook format, so the structure is nearly identical.
+// codexPayload represents the JSON structure Codex hook drivers send on stdin.
+// Codex hook projection uses Claude-like top-level hook_event names for the
+// lifecycle events it supports, while .codex/hooks.json remains a native
+// Codex settings driver.
 type codexPayload struct {
 	HookEvent string          `json:"hook_event"`
 	ToolName  string          `json:"tool_name"`
@@ -20,7 +22,7 @@ type codexPayload struct {
 	Output    string          `json:"output,omitempty"`
 }
 
-// codexToolInput mirrors Claude's tool_input since Codex copied the format.
+// codexToolInput captures the common tool_input fields Codex hook payloads expose.
 type codexToolInput struct {
 	Command  string `json:"command,omitempty"`
 	FilePath string `json:"file_path,omitempty"`
@@ -31,6 +33,19 @@ type codexToolInput struct {
 
 // CodexProvider adapts OpenAI Codex hook payloads to the canonical format.
 type CodexProvider struct{}
+
+// SupportedEvents is the honest Codex hook surface captured by ADR-081.
+// Pre/Post tool events are represented here because Codex can emit them for
+// Bash; Parse marks non-Bash tools as a coverage gap instead of pretending full
+// Claude parity.
+var CodexSupportedEvents = map[string]bool{
+	"SessionStart":     true,
+	"UserPromptSubmit": true,
+	"PreToolUse":       true,
+	"PostToolUse":      true,
+	"Stop":             true,
+	"SessionEnd":       true,
+}
 
 // NewCodexProvider creates a Codex provider adapter.
 func NewCodexProvider() *CodexProvider {
@@ -80,6 +95,10 @@ func (p *CodexProvider) Parse(raw []byte) (*hook.Context, error) {
 		ctx.ToolOutput = payload.Output
 	}
 
+	if (payload.HookEvent == "PreToolUse" || payload.HookEvent == "PostToolUse") && payload.ToolName != "" && payload.ToolName != string(hook.ToolBash) {
+		ctx.SetMetadata("parse_error_reason", "codex_tool_coverage_gap")
+	}
+
 	if dir := os.Getenv("CODEX_PROJECT_DIR"); dir != "" {
 		ctx.ProjectDir = dir
 	}
@@ -102,12 +121,18 @@ func (p *CodexProvider) BuildResponse(hookCtx *hook.Context, decision string, me
 // ConfigPaths returns Codex config file paths.
 func (p *CodexProvider) ConfigPaths(projectDir string) []string {
 	return []string{
-		filepath.Join(projectDir, "hooks.json"),
+		filepath.Join(projectDir, ".codex", "hooks.json"),
 	}
 }
 
+// SupportedEvents returns Codex native lifecycle event names that this provider
+// can normalize. Consumers use this to avoid routing unsupported Claude-only
+// events into Codex by accident.
+func (p *CodexProvider) SupportedEvents() map[string]bool {
+	return CodexSupportedEvents
+}
+
 // mapCodexEvent maps Codex event names to canonical events.
-// Codex uses the same event names as Claude Code.
 func mapCodexEvent(event string) hook.CanonicalEvent {
 	switch event {
 	case "PreToolUse":
@@ -116,7 +141,9 @@ func mapCodexEvent(event string) hook.CanonicalEvent {
 		return hook.CanonicalEventAfterTool
 	case "SessionStart":
 		return hook.CanonicalEventSessionStart
-	case "SessionEnd":
+	case "UserPromptSubmit":
+		return hook.CanonicalEventPromptSubmit
+	case "Stop", "SessionEnd":
 		return hook.CanonicalEventSessionEnd
 	default:
 		return hook.CanonicalEventUnknown

@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-04-30T17:19:27.729Z",
+  "type": "event_msg",
+  "payload": {
+    "type": "exec_command_end",
+    "call_id": "call_live_exec_001",
+    "process_id": "70265",
+    "turn_id": "codex-turn-001",
+    "command": ["/bin/zsh", "-lc", "git status --short"],
+    "cwd": "/workspace/luum-agent-os",
+    "parsed_cmd": [{"type": "unknown", "cmd": "git status --short"}],
+    "source": "unified_exec_startup",
+    "stdout": "",
+    "stderr": "",
+    "aggregated_output": " M docs/adrs/ADR-081-codex-harness-adapter.md\n"
+  },
+  "capture": {
+    "source": "sanitized ~/.codex/sessions live Codex Desktop session row",
+    "captured_at": "2026-04-30T17:19:27.729Z"
+  }
+}

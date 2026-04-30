@@ -34,11 +34,13 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Type
 
 from .aider import AiderAdapter
-from .base import CanonicalEvent, HarnessAdapter, HarnessName, HeartbeatTick
+from .base import HarnessAdapter, HeartbeatTick
 from .claude_code import ClaudeCodeAdapter
+from .codex import CodexAdapter
 
 #: Order matters: more-specific adapters go first.
 ADAPTERS: List[Type[HarnessAdapter]] = [
+    CodexAdapter,
     ClaudeCodeAdapter,
     AiderAdapter,
 ]
@@ -66,6 +68,7 @@ def _decode(raw: Any) -> Optional[Dict[str, Any]]:
 def _project_dir() -> Path:
     return Path(
         os.environ.get("COGNITIVE_OS_PROJECT_DIR")
+        or os.environ.get("CODEX_PROJECT_DIR")
         or os.environ.get("CLAUDE_PROJECT_DIR")
         or os.getcwd()
     )
