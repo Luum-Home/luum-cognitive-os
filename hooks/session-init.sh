@@ -50,6 +50,74 @@ _register_session() {
       echo '{"sessions":[]}' > "$ACTIVE_FILE"
     fi
 
+    # Prune stale sessions before counting. Without this, active-sessions.json
+    # accumulates dead PIDs and makes concurrent-session diagnosis misleading.
+    ACTIVE_FILE="$ACTIVE_FILE" python3 - <<'PYPRUNE' 2>/dev/null || true
+import json, os, time
+from datetime import datetime, timezone
+from pathlib import Path
+
+path = Path(os.environ["ACTIVE_FILE"])
+try:
+    data = json.loads(path.read_text())
+except Exception:
+    data = {"sessions": []}
+
+sessions = data.get("sessions", [])
+if not isinstance(sessions, list):
+    sessions = []
+
+now = time.time()
+grace_seconds = int(os.environ.get("COS_ACTIVE_SESSION_PRUNE_GRACE_SECONDS", "900"))
+
+def session_age_seconds(session):
+    if not isinstance(session, dict):
+        return 0
+    start_epoch = session.get("start_epoch")
+    if start_epoch is not None:
+        try:
+            return max(0, now - float(start_epoch))
+        except Exception:
+            pass
+    start_time = session.get("start_time")
+    if start_time:
+        try:
+            parsed = datetime.fromisoformat(str(start_time).replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                parsed = parsed.replace(tzinfo=timezone.utc)
+            return max(0, now - parsed.timestamp())
+        except Exception:
+            pass
+    sid = str(session.get("id", ""))
+    try:
+        return max(0, now - float(sid.split("-", 1)[0]))
+    except Exception:
+        return grace_seconds + 1
+
+def alive(pid):
+    try:
+        pid = int(pid)
+    except Exception:
+        return False
+    if pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    except OSError:
+        return False
+
+data["sessions"] = [
+    s for s in sessions
+    if isinstance(s, dict) and (alive(s.get("pid")) or session_age_seconds(s) < grace_seconds)
+]
+path.write_text(json.dumps(data, indent=2) + "\n")
+PYPRUNE
+
     # Read max_concurrent from cognitive-os.yaml (default 10)
     MAX_CONCURRENT=10
     CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
