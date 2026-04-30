@@ -6,10 +6,9 @@ from __future__ import annotations
 
 import ast
 import importlib.util
+import json
 import sys
 from pathlib import Path
-
-import pytest
 
 # ---------------------------------------------------------------------------
 # Load the auditor module without triggering its __main__ block
@@ -30,6 +29,7 @@ def _load_auditor():
 
 _mod = _load_auditor()
 classify_function = _mod.classify_function
+write_report_artifacts = _mod.write_report_artifacts
 TIER_BEHAVIORAL = _mod.TIER_BEHAVIORAL
 TIER_STRUCTURAL = _mod.TIER_STRUCTURAL
 TIER_TRIVIAL = _mod.TIER_TRIVIAL
@@ -139,3 +139,35 @@ def test_raises_on_invalid_input():
         f"Expected BEHAVIORAL for pytest.raises context manager, got {record.tier}. "
         f"Reason: {record.reason}"
     )
+
+
+def test_writes_persisted_quality_artifacts(tmp_path: Path):
+    """Quality audit writes summary/json artifacts for governance consumers."""
+    behavioral = classify_function(
+        _parse_function(
+            """
+def test_hook_exits_zero():
+    import subprocess
+    result = subprocess.run(["true"])
+    assert result.returncode == 0
+"""
+        ),
+        "tests/unit/fake.py",
+    )
+    trivial = classify_function(
+        _parse_function(
+            """
+def test_placeholder():
+    assert True
+"""
+        ),
+        "tests/unit/fake.py",
+    )
+
+    run_dir = write_report_artifacts([behavioral, trivial], tmp_path / "quality")
+
+    assert (run_dir / "summary.txt").is_file()
+    payload = json.loads((run_dir / "quality.json").read_text(encoding="utf-8"))
+    assert payload["total"] == 2
+    assert payload["blocking_count"] == 1
+    assert (tmp_path / "quality" / "latest").exists()

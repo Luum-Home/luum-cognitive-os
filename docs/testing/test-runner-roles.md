@@ -16,8 +16,8 @@ contributors should be able to answer two questions quickly:
 |---|---|---|---|
 | Selection | Decide what should run: focused diff, one lane, broad sweep, optional lanes. | `.cognitive-os/test-lanes.yaml`, `tests/conftest.py`, `cos-test focused / cluster / broad` | Lane policy lives in YAML; pytest markers are runtime selection. |
 | Execution | Run the selected test set with the right worker policy. | `cmd/cos-test` | `cos-test` is the user-facing entry point. |
-| Reporting | Persist summaries, failures, inventory, JUnit, and run history. | `scripts/pytest-with-summary.sh` | Transport/reporting wrapper. It should not own lane policy. |
-| Governance | Enforce Definition of Done, coverage, auto-verify, quality gates, and budgets. | hooks/skills such as `auto-verify`, `dod-gate`, `coverage-enforcement`, `test-quality-audit` | Governance consumes test evidence; it should not duplicate selection logic. |
+| Reporting | Persist summaries, failures, inventory, JUnit, coverage, test-quality artifacts, and run history. | `scripts/pytest-with-summary.sh`, `tests/coverage-report.sh`, `scripts/cos_test_quality_audit.py` | Transport/reporting primitives. They should not own lane policy. |
+| Governance | Enforce Definition of Done, coverage, auto-verify, quality gates, and budgets. | hooks/skills such as `auto-verify`, `dod-gate`, `pre-commit-gate`, `coverage-enforcement`, `test-quality-audit` | Governance consumes persisted evidence; it should not duplicate selection or execution logic. |
 | Lifecycle | Track quality ratchets, baselines, repair ledgers, and historical drift. | metrics JSONL, baselines, repair ledgers | Lifecycle artifacts explain whether the suite is improving over time. |
 
 ## Canonical developer flow
@@ -54,11 +54,16 @@ not be presented as competing default entry points.
 
 1. Selection policy belongs in `.cognitive-os/test-lanes.yaml` and `cos-test`.
 2. Execution UX belongs in `cmd/cos-test`.
-3. Persistent reporting belongs in `scripts/pytest-with-summary.sh`.
+3. Persistent pytest reporting belongs in `scripts/pytest-with-summary.sh`;
+   coverage reporting belongs in `tests/coverage-report.sh`; test-quality
+   reporting belongs in `scripts/cos_test_quality_audit.py`.
 4. Governance hooks may require or inspect test evidence, but must not re-create
-   lane selection logic or launch broad pytest directly. They consume persisted
-   artifacts from `.cognitive-os/reports/test-runs/` through
-   `scripts/cos_test_artifact_status.py` when possible.
+   lane selection logic or launch broad pytest/coverage scans directly. They
+   consume persisted artifacts from:
+   - `.cognitive-os/reports/test-runs/` (`summary.txt`, `inventory.md`, `junit.xml`)
+   - `.cognitive-os/reports/coverage/` (`summary.txt`, `coverage.json`)
+   - `.cognitive-os/reports/test-quality/` (`summary.txt`, `quality.json`)
+   through `scripts/cos_test_artifact_status.py` when possible.
 5. Legacy scripts must declare `ROLE` and `CANONICAL` headers so users and audit
    tests know why they still exist.
 

@@ -22,6 +22,8 @@ SUMMARY_PATTERNS = {
     "xpassed": re.compile(r"(\d+)\s+xpassed"),
 }
 
+COVERAGE_PATTERN = re.compile(r"Composite:\s*(\d+)%\s*\((\d+)/(\d+)\)", re.IGNORECASE)
+
 
 def _latest_run(reports_root: Path) -> Path | None:
     latest = reports_root / "latest"
@@ -116,19 +118,138 @@ def artifact_status(project_root: Path, reports_root: Path | None = None) -> dic
     }
 
 
+def coverage_artifact_status(
+    project_root: Path,
+    reports_root: Path | None = None,
+    threshold: int = 80,
+) -> dict[str, object]:
+    """Read the latest persisted coverage report artifact."""
+    root = reports_root or project_root / ".cognitive-os" / "reports" / "coverage"
+    run_dir = _latest_run(root)
+    if run_dir is None:
+        return {
+            "available": False,
+            "status": "missing",
+            "run_dir": "",
+            "summary_txt": "",
+            "coverage_json": "",
+            "coverage_pct": 0,
+            "covered": 0,
+            "total": 0,
+            "threshold": threshold,
+        }
+
+    summary_path = run_dir / "summary.txt"
+    coverage_json = run_dir / "coverage.json"
+    coverage_pct = 0
+    covered = 0
+    total = 0
+
+    if coverage_json.is_file():
+        try:
+            payload = json.loads(coverage_json.read_text(encoding="utf-8"))
+            coverage_pct = int(payload.get("composite_pct", 0) or 0)
+            covered = int(payload.get("composite_covered", 0) or 0)
+            total = int(payload.get("composite_total", 0) or 0)
+        except (json.JSONDecodeError, OSError, TypeError, ValueError):
+            pass
+
+    if summary_path.is_file() and (not coverage_pct or not total):
+        text = summary_path.read_text(encoding="utf-8", errors="replace")
+        match = COVERAGE_PATTERN.search(text)
+        if match:
+            coverage_pct = int(match.group(1))
+            covered = int(match.group(2))
+            total = int(match.group(3))
+
+    status = "pass" if total and coverage_pct >= threshold else "fail"
+    return {
+        "available": True,
+        "status": status,
+        "run_dir": str(run_dir),
+        "summary_txt": str(summary_path) if summary_path.is_file() else "",
+        "coverage_json": str(coverage_json) if coverage_json.is_file() else "",
+        "coverage_pct": coverage_pct,
+        "covered": covered,
+        "total": total,
+        "threshold": threshold,
+    }
+
+
+def quality_artifact_status(project_root: Path, reports_root: Path | None = None) -> dict[str, object]:
+    """Read the latest persisted test-quality audit artifact."""
+    root = reports_root or project_root / ".cognitive-os" / "reports" / "test-quality"
+    run_dir = _latest_run(root)
+    if run_dir is None:
+        return {
+            "available": False,
+            "status": "missing",
+            "run_dir": "",
+            "summary_txt": "",
+            "quality_json": "",
+            "total": 0,
+            "blocking_count": 0,
+        }
+
+    summary_path = run_dir / "summary.txt"
+    quality_json = run_dir / "quality.json"
+    total = 0
+    blocking_count = 0
+    if quality_json.is_file():
+        try:
+            payload = json.loads(quality_json.read_text(encoding="utf-8"))
+            total = int(payload.get("total", 0) or 0)
+            blocking_count = int(payload.get("blocking_count", 0) or 0)
+        except (json.JSONDecodeError, OSError, TypeError, ValueError):
+            pass
+    status = "pass" if total and blocking_count == 0 else "fail"
+    return {
+        "available": True,
+        "status": status,
+        "run_dir": str(run_dir),
+        "summary_txt": str(summary_path) if summary_path.is_file() else "",
+        "quality_json": str(quality_json) if quality_json.is_file() else "",
+        "total": total,
+        "blocking_count": blocking_count,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-root", default=".")
     parser.add_argument("--reports-root", default="")
+    parser.add_argument(
+        "--artifact-kind",
+        choices=("test", "coverage", "quality"),
+        default="test",
+        help="Persisted artifact family to read.",
+    )
+    parser.add_argument("--coverage-threshold", type=int, default=80)
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
     project_root = Path(args.project_root).resolve()
     reports_root = Path(args.reports_root).resolve() if args.reports_root else None
-    status = artifact_status(project_root, reports_root)
+    if args.artifact_kind == "coverage":
+        status = coverage_artifact_status(project_root, reports_root, args.coverage_threshold)
+    elif args.artifact_kind == "quality":
+        status = quality_artifact_status(project_root, reports_root)
+    else:
+        status = artifact_status(project_root, reports_root)
     if args.json:
         print(json.dumps(status, sort_keys=True))
     else:
-        print(f"{status['status']} passed={status['passed']} failed={status['failed']} errors={status['errors']} run_dir={status['run_dir']}")
+        if args.artifact_kind == "coverage":
+            print(
+                f"{status['status']} coverage={status['coverage_pct']} "
+                f"threshold={status['threshold']} run_dir={status['run_dir']}"
+            )
+        elif args.artifact_kind == "quality":
+            print(
+                f"{status['status']} total={status['total']} "
+                f"blocking={status['blocking_count']} run_dir={status['run_dir']}"
+            )
+        else:
+            print(f"{status['status']} passed={status['passed']} failed={status['failed']} errors={status['errors']} run_dir={status['run_dir']}")
     return 0 if status["available"] else 1
 
 

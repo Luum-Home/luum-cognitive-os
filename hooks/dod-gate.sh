@@ -89,6 +89,9 @@ PASSED=0
 TEST_ARTIFACT_JSON=""
 TEST_ARTIFACT_STATUS="missing"
 TEST_ARTIFACT_RUN=""
+COVERAGE_ARTIFACT_JSON=""
+COVERAGE_ARTIFACT_STATUS="missing"
+COVERAGE_ARTIFACT_RUN=""
 
 _load_test_artifact_status() {
   [ -n "$TEST_ARTIFACT_JSON" ] && return 0
@@ -106,12 +109,31 @@ _test_artifact_passed() {
   [ "$TEST_ARTIFACT_STATUS" = "pass" ]
 }
 
+_load_coverage_artifact_status() {
+  [ -n "$COVERAGE_ARTIFACT_JSON" ] && return 0
+  local helper="$PROJECT_DIR/scripts/cos_test_artifact_status.py"
+  [ -f "$helper" ] || return 1
+  COVERAGE_ARTIFACT_JSON=$(python3 "$helper" --project-root "$PROJECT_DIR" --artifact-kind coverage --coverage-threshold 80 --json 2>/dev/null || true)
+  [ -n "$COVERAGE_ARTIFACT_JSON" ] || return 1
+  COVERAGE_ARTIFACT_STATUS=$(echo "$COVERAGE_ARTIFACT_JSON" | jq -r '.status // "missing"' 2>/dev/null)
+  COVERAGE_ARTIFACT_RUN=$(echo "$COVERAGE_ARTIFACT_JSON" | jq -r '.run_dir // ""' 2>/dev/null)
+  [ "$COVERAGE_ARTIFACT_STATUS" != "missing" ]
+}
+
+_coverage_artifact_passed() {
+  _load_coverage_artifact_status || return 1
+  [ "$COVERAGE_ARTIFACT_STATUS" = "pass" ]
+}
+
 _check() {
   # _check <name> <regex>
   CHECKED=$((CHECKED + 1))
   if echo "$RESPONSE" | grep -qiE "$2"; then
     PASSED=$((PASSED + 1))
-  elif echo "$1" | grep -qiE 'test|coverage' && _test_artifact_passed; then
+  elif echo "$1" | grep -qiE 'coverage|80_percent' && _coverage_artifact_passed; then
+    # Coverage governance consumes the latest persisted coverage artifact.
+    PASSED=$((PASSED + 1))
+  elif echo "$1" | grep -qiE 'test' && _test_artifact_passed; then
     # Governance consumes the latest persisted cos-test/pytest-with-summary
     # artifacts instead of launching a fresh pytest run or trusting prose only.
     PASSED=$((PASSED + 1))

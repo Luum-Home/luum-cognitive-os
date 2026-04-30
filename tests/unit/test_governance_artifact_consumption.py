@@ -39,6 +39,41 @@ def _project_with_artifact(tmp_path: Path, *, failures: int = 0) -> Path:
     return project
 
 
+def _add_coverage_artifact(project: Path, *, coverage_pct: int = 85) -> None:
+    reports = project / ".cognitive-os" / "reports" / "coverage"
+    run = reports / "20260101T000001Z-coverage"
+    run.mkdir(parents=True)
+    run.joinpath("summary.txt").write_text(
+        f"=== Summary ===\n  Composite:              {coverage_pct}% ({coverage_pct}/100)\n",
+        encoding="utf-8",
+    )
+    run.joinpath("coverage.json").write_text(
+        json.dumps(
+            {
+                "composite_pct": coverage_pct,
+                "composite_covered": coverage_pct,
+                "composite_total": 100,
+            }
+        ),
+        encoding="utf-8",
+    )
+    latest = reports / "latest"
+    latest.symlink_to(run, target_is_directory=True)
+
+
+def _add_quality_artifact(project: Path, *, blocking_count: int = 0) -> None:
+    reports = project / ".cognitive-os" / "reports" / "test-quality"
+    run = reports / "20260101T000002Z-quality"
+    run.mkdir(parents=True)
+    run.joinpath("summary.txt").write_text("Test Quality Audit\n", encoding="utf-8")
+    run.joinpath("quality.json").write_text(
+        json.dumps({"total": 10, "blocking_count": blocking_count}),
+        encoding="utf-8",
+    )
+    latest = reports / "latest"
+    latest.symlink_to(run, target_is_directory=True)
+
+
 def _run_hook(hook: Path, project: Path, payload: dict) -> subprocess.CompletedProcess:
     env = os.environ.copy()
     env.update(
@@ -77,6 +112,55 @@ def test_artifact_status_helper_reads_latest_junit(tmp_path: Path):
     assert data["junit_xml"].endswith("junit.xml")
 
 
+def test_artifact_status_helper_reads_latest_coverage_artifact(tmp_path: Path):
+    project = _project_with_artifact(tmp_path)
+    _add_coverage_artifact(project, coverage_pct=79)
+    result = subprocess.run(
+        [
+            "python3",
+            str(HELPER),
+            "--project-root",
+            str(project),
+            "--artifact-kind",
+            "coverage",
+            "--coverage-threshold",
+            "80",
+            "--json",
+        ],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+    assert result.returncode == 0
+    data = json.loads(result.stdout)
+    assert data["status"] == "fail"
+    assert data["coverage_pct"] == 79
+    assert data["summary_txt"].endswith("summary.txt")
+
+
+def test_artifact_status_helper_reads_latest_quality_artifact(tmp_path: Path):
+    project = _project_with_artifact(tmp_path)
+    _add_quality_artifact(project, blocking_count=0)
+    result = subprocess.run(
+        [
+            "python3",
+            str(HELPER),
+            "--project-root",
+            str(project),
+            "--artifact-kind",
+            "quality",
+            "--json",
+        ],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+    assert result.returncode == 0
+    data = json.loads(result.stdout)
+    assert data["status"] == "pass"
+    assert data["blocking_count"] == 0
+
+
 def test_auto_verify_test_criterion_consumes_latest_artifact(tmp_path: Path):
     project = _project_with_artifact(tmp_path)
     payload = {
@@ -90,8 +174,23 @@ def test_auto_verify_test_criterion_consumes_latest_artifact(tmp_path: Path):
     assert "artifact:" in result.stdout
 
 
+def test_auto_verify_coverage_criterion_consumes_latest_coverage_artifact(tmp_path: Path):
+    project = _project_with_artifact(tmp_path)
+    _add_coverage_artifact(project, coverage_pct=85)
+    payload = {
+        "tool_name": "Agent",
+        "tool_input": {"prompt": "verify"},
+        "tool_response": "Implementation complete.\n\nACCEPTANCE CRITERIA:\n1. Coverage >= 80%.\n",
+    }
+    result = _run_hook(AUTO_VERIFY, project, payload)
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert "AUTO-VERIFY: PASS" in result.stdout
+    assert "coverage artifact:" in result.stdout
+
+
 def test_dod_gate_uses_artifacts_for_test_and_coverage_criteria(tmp_path: Path):
     project = _project_with_artifact(tmp_path)
+    _add_coverage_artifact(project, coverage_pct=85)
     response = "\n".join(
         [
             "Complexity: medium",

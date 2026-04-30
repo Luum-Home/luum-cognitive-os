@@ -66,6 +66,7 @@ tracked here instead of hidden in chat notes:
 | P1 | Legacy shell runners are still executable alternatives. | `test-all.sh`, `test-cognitive-os*.sh`, and `cos-smoke.sh` run independent selection/execution. | Keep only explicit niches; redirect or hard-deprecate redundant scripts after the current release cycle. |
 | P1 | Empty shell pyramid can falsely pass. | `test-cognitive-os.sh` loops legacy `tests/infra/test-*.sh`; if none exist it can report zero failures. | Remove from active runner surface or make zero discovered tests a deprecated/non-success status. |
 | P2 | Reporting ownership is split. | Go JSON report parser, shell summary parsing, global-verify parsing, and wrapper artifacts all coexist. | Promote wrapper inventory/JUnit/summary artifacts as the single report schema. |
+| P2 | Governance gates can drift into scanners/runners. | Resolved for the core gates: `auto-verify`, `dod-gate`, and `pre-commit-gate` now consume persisted test/coverage artifacts via `scripts/cos_test_artifact_status.py`; `cos_test_quality_audit.py` writes report artifacts for quality consumers. | Future gates must read `.cognitive-os/reports/**` first and justify any direct scanner/executor fallback. |
 
 ## Deprecation policy
 
