@@ -56,6 +56,11 @@ pytestmark = [
         not _phoenix_available,
         reason=f"arize-phoenix not installed ({_phoenix_import_error})",
     ),
+    # Phoenix fixture spawns a subprocess and waits ≤30s for its TCP port.
+    # The default pytest-timeout (30s) races the fixture wait and kills the
+    # test before phoenix can come up. 120s gives the fixture room + the
+    # actual test time.
+    pytest.mark.timeout(120),
 ]
 
 
