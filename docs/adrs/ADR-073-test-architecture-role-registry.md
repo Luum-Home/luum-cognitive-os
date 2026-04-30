@@ -79,8 +79,9 @@ tracked here instead of hidden in chat notes:
 
 ## Resource governance follow-up
 
-Resource governance is intentionally not solved in this ADR. It becomes a
-separate sprint with these deliverables:
+Resource governance is intentionally not solved in this ADR. It is tracked as a
+separate sprint in `docs/architecture/plans/test-resource-governance-sprint.md`
+with these deliverables:
 
 - time/CPU/Docker budgets for `cos-test broad` and optional lanes;
 - explicit cost gates for LLM-evaluated quality tests;
