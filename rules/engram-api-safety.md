@@ -1,4 +1,4 @@
-<!-- TIER: 1 -->
+<!-- TIER: 2 -->
 <!-- SCOPE: both -->
 
 # Engram API Safety — Never Mutate Production Daemon for Discovery
