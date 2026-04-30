@@ -50,6 +50,29 @@ STATUS bands: HIGH 90+, MEDIUM 70-89, LOW 50-69, CRITICAL <50.
 
 **Optional:** `PROGRESS: [step N/M] description` after each major step.
 
+**INPUT SCHEMA** (ADR-038 Wave 2 — Gap #1):
+When the orchestrator declares an `INPUT SCHEMA:` block in this prompt, validate your inputs at task start:
+```
+INPUT SCHEMA:
+  task_description: str (required) — natural language description of the task
+  acceptance_criteria: list[str] (optional) — verifiable expected outcomes
+  blast_radius: int (optional) — estimated number of files affected
+  working_dir: path (optional) — absolute path to operate in
+  ... custom fields per launch ...
+```
+Validation rule: if a `required` field is missing or empty → output `ESCALATION: missing required input field: <field_name>` and stop.
+Fields not declared in the schema should be treated as informational context.
+
+**CONTEXT BUDGET** (ADR-038 Wave 2 — Gap #2):
+Token budget layers (from `cognitive-os.yaml context_budget`). Informational — enforcement arrives in Wave 3:
+```
+static_max_tokens:  4000   # preamble + KNOWN TRAPS + WORKING DIR (always loaded)
+turn_max_tokens:    8000   # per tool-use round
+user_max_tokens:   12000   # accumulated user-facing content per task
+cache_max_tokens:  32000   # MCP/engram retrievals
+```
+If you observe context growing large, summarise intermediate results and save to Engram before continuing.
+
 **Context:** `SEARCH PERMISSION: no` → don't use mem_search. `yes` → allowed. Replaced by `MEMORY SCOPE:` when present (see below).
 
 **Memory scope tiers** (when `MEMORY SCOPE:` is set):
