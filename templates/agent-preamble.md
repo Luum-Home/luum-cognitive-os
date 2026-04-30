@@ -1,4 +1,9 @@
 <!-- SCOPE: os-only -->
+<!-- CANONICAL SOURCE: templates/agent-preamble.md (git-tracked).
+     .cognitive-os/templates/agent-preamble.md is a symlink → ../../templates/agent-preamble.md.
+     All renderers (subagent-context-injector.sh, inject-phase-context.sh,
+     lib/prompt_builder.py, lib/qwen_context_injector.py) reference the
+     templates/ path directly. Editing here is sufficient — no sync needed. -->
 
 # Agent Preamble (compact)
 
