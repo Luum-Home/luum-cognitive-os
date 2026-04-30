@@ -9,6 +9,8 @@ tech: verification
 audience: project
 summary_line: "Use when about to claim work is complete, fixed, or passing, before committing…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Verification Before Completion

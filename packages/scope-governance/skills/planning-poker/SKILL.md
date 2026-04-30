@@ -14,6 +14,8 @@ triggers:
   - how big is this task
   - estimate effort
 audience: project
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Planning Poker — Multi-Agent Complexity Estimation

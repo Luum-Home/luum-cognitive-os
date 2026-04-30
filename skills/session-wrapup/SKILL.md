@@ -14,6 +14,8 @@ routing:
   auto_fallback_to_qwen: true
   fallback_min_pressure: 0.7
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Session Wrapup — End-of-Session Routine

@@ -8,6 +8,8 @@ auto-generated: false
 audience: project
 summary_line: Analyze accumulated errors from test/lint/build runs and propose skill…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Error Analyzer Skill

@@ -9,6 +9,8 @@ audience: both
 effort: haiku
 summary_line: Calculate and report Cognitive OS KPIs and OKRs.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Agent KPI Dashboard

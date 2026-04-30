@@ -8,6 +8,8 @@ audience: project
 effort: opus
 summary_line: Evaluate any existing plan file with a 0-50 scoring system.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Evaluate Plan

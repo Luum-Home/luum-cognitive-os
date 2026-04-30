@@ -15,6 +15,8 @@ metadata:
 audience: project
 summary_line: "Perform a comprehensive 6-category website audit (SEO, Performance, Security…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

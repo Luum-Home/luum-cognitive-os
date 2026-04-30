@@ -4,6 +4,9 @@ name: agent-dashboard
 description: Show real-time status of all running background agents
 audience: os
 scope: os
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /agent-dashboard

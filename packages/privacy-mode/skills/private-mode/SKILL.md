@@ -6,6 +6,9 @@ user-invocable: true
 audience: project
 summary_line: Toggle private conversation mode.
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Private Mode

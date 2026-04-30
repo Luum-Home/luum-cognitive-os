@@ -28,6 +28,8 @@ args:
 audience: os-dev
 summary_line: "\"Run competitive benchmarks comparing Cognitive OS against other AI coding…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Arena — Competitive Benchmark Skill

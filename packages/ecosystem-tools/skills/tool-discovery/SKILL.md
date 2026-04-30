@@ -5,6 +5,9 @@ description: Discover new open-source tools that could enhance Cognitive OS capa
 trigger: discover tools, find new tools, tool scan, what's new in open source, tool radar
 model: sonnet
 audience: os-dev
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Tool Discovery

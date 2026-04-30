@@ -8,6 +8,8 @@ model: sonnet
 audience: project
 summary_line: "Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # GPU Sandbox — Jupyter Compute Runtime

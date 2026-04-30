@@ -18,6 +18,8 @@ metadata:
 audience: os-dev
 summary_line: "Configure and use DeepEval for LLM unit testing, agent trajectory evaluation…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

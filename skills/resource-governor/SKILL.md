@@ -8,6 +8,8 @@ auto-generated: false
 audience: project
 summary_line: "Master resource optimizer — coordinates budget, infrastructure, agents, skills…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Resource Governor

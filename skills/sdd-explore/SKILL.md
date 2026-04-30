@@ -28,6 +28,8 @@ routing:
   fallback_on_any_error: false
   budget_max_usd_per_call: 1.50
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # SDD Explore -- Deep Feasibility Analysis

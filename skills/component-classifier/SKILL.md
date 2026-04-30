@@ -10,6 +10,9 @@ allowed-tools:
 audience: os-dev
 summary_line: "\"Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE."
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Agentic Primitive Classifier

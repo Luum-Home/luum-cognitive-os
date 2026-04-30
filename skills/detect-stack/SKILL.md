@@ -7,6 +7,8 @@ audience: both
 tags: [init, setup, detection]
 summary_line: Scan a project root and produce detected-stack.json with detected languages…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Detect Stack

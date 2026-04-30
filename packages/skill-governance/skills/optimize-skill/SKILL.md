@@ -9,6 +9,9 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
 audience: project
 summary_line: "Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras…"
 
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /optimize-skill — Karpathy Loop para Skills de Claude Code

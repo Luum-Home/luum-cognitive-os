@@ -13,6 +13,9 @@ outputs:
   - reasoning: Why the recommended action was chosen
 audience: project
 effort: opus
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Enhanced SDD Continue (BMAD v6 Pattern 6)

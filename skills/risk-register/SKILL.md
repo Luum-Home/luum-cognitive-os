@@ -15,6 +15,8 @@ triggers:
   - risk-register.md
 summary_line: Scaffold STRIDE risk register with impact/likelihood matrix idempotently.
 model: haiku
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Risk Register Scaffolder

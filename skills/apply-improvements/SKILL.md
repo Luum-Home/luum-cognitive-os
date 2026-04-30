@@ -12,6 +12,8 @@ disable-model-invocation: true
 effort: sonnet
 summary_line: Apply approved self-improvement changes from an analyze-improvements report.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Apply Improvements Skill
