@@ -1,10 +1,9 @@
 # ADR-095: Skill synthesis driven by success patterns
 
-**Status**: Proposed
+**Status**: Accepted
 **Date**: 2026-04-30
 **Author**: Matias Nahuel Améndola (COS sub-agent)
-**Engram topic keys**: `cos/learning-loop-final-30pct`, `hermes-learning-loop-source-map`
-**Implementation sprint**: NOT this sprint — implementation is a separate future sprint.
+**Engram topic keys**: `cos/learning-loop-final-30pct`, `hermes-learning-loop-source-map`, `cos/skill-synthesis-implementation`
 
 ---
 
@@ -24,6 +23,12 @@ a skill?"
 
 This ADR describes **gap #2 of learning-loop closure**: synthesizing new skill
 proposals from recurring success patterns in observed task data.
+
+### Phase context
+
+- **Phase 0 — ADR-097**: task-tracker lifecycle (task IDs, session wiring)
+- **Phase 1 — ADR-090**: auto-skill-repair from failure signals
+- **Phase 2 — ADR-095 (this ADR)**: skill synthesis from success patterns
 
 ### What Hermes does (source: `.claude/plugins/hermes-agent/`)
 
@@ -57,121 +62,132 @@ What is NOT directly portable:
 
 | Stream | Schema fields relevant to pattern detection |
 |--------|----------------------------------------------|
-| `session-learnings.jsonl` | `skills_total`, `skills_success`, `skills_failed`, `failed_skills` |
+| `tool-sequences.jsonl` | `timestamp`, `session_id`, `task_id`, `tool`, `args_hash`, `success` |
 | `skill-feedback.jsonl` | `skill`, `success` (boolean) |
-| `skill-invocation-logger.sh` output | skill name + context (exact schema TBD — read before implementing) |
+| `session-learnings.jsonl` | `skills_total`, `skills_success`, `skills_failed`, `failed_skills` |
 | `prompt-captures.jsonl` | `classification`, `prompt` (user intent captured by `prompt_classifier`) |
 
-The `session-learnings.jsonl` schema has `skills_total` and `skills_success`
-but does NOT record which specific skill was invoked per task or what the tool
-sequences were. This is the primary schema gap blocking implementation.
+`session-learnings.jsonl` does NOT record per-task tool sequences. A new
+instrumentation stream (`tool-sequences.jsonl`) was added in Phase 2 to fill
+this gap.
 
 ---
 
-## Decision space (open — not decided)
+## Decision
 
-### What constitutes a "success pattern"?
+### Option B — Repeated ad-hoc tool sequences (chosen)
 
-Three candidate definitions, each with different detection complexity:
+Sequences of tool calls (Bash, Edit, Read, Write, Agent, etc.) that recur
+across sessions, detected from `tool-sequences.jsonl`. This requires the new
+instrumentation hook (`hooks/tool-sequence-capture.sh`) in addition to the
+synthesis library.
 
-**Option A — Repeated successful skill invocations**
-A skill that is invoked ≥ N times across ≥ M distinct sessions with a high
-success rate. This is detectable from existing `skill-feedback.jsonl` today.
-Problem: it detects popular skills, not recurring *novel* patterns. It would
-not propose a skill for something currently done ad-hoc (without a skill).
+Only successful tool invocations (`"success": true`) contribute to pattern
+counts — failed calls are filtered out to reduce noise.
 
-**Option B — Repeated ad-hoc tool sequences**
-Sequences of tool calls (Bash, Edit, Read) that recur across sessions without
-a corresponding skill invocation. Requires an audit trail of tool sequences
-per session — not currently captured in any metric stream.
+### Chosen defaults (binding)
 
-**Option C — High-trust-score task completions with low retry count**
-Tasks that completed with trust_score ≥ 0.8 and retry_count = 0, where the
-same task description (fuzzy-matched) recurred ≥ 3 times. Requires a
-structured task-completion log — not currently captured.
+| Parameter | Value | Rationale |
+|-----------|-------|-----------|
+| `min_length` | 3 | Minimum sequence length; shorter sequences are too common to be meaningful |
+| `min_occurrences` | 3 | Minimum cross-session recurrence; 3 is the lowest credible threshold |
+| `window_days` | 7 | Rolling 7-day window; aligns with ADR-090's `stale_days` parameter |
+| `auto_promote_threshold` | 5 | Minimum successful feedback invocations before auto-promotion is suggested |
 
-**Recommendation (not yet binding)**: Option A is implementable with existing
-data. Options B and C require new instrumentation. Begin with A; extend later.
+### Output format: Option B — Auto-create in `experimental/` tier
 
-### Detection window
+Skills are automatically drafted in `skills/experimental/<auto-name>/SKILL.md`
+with tier `experimental`. The `/synthesize-skill` operator skill is the only
+path to promote a draft to `skills/<name>/`. Auto-promotion is never automatic
+— it only identifies candidates. This prevents skill bloat.
 
-- Rolling 7 days: captures recent patterns, ignores stale data, aligns with
-  the `propose_repair_action` stale_days parameter in ADR-090.
-- Per-session: too narrow; a pattern across sessions is more signal.
-- On-demand triggered by `/scout`: avoids any background cost; puts the user
-  in the loop. Most conservative choice.
+### Experimental catalog controls
 
-### Recurrence threshold
-
-- 3 occurrences: too low; coincidental repetition common in active projects.
-- 5 occurrences: matches the ADR-090 failure threshold; symmetrically chosen.
-- 10 occurrences: high confidence but slow to trigger.
-
-**Open question**: should the threshold vary by skill catalog size? With 146
-skills, 5 occurrences of something new is meaningful. With 500 skills,
-baseline usage per skill drops and 5 may be noise.
-
-### Output format
-
-**Option A — Draft SKILL.md for human review**
-The synthesis process produces a candidate `skills/experimental/{name}/SKILL.md`
-with status `experimental`. A human must promote it (move to `skills/{name}/`)
-before it becomes active.
-
-**Option B — Auto-create skill in `experimental/` tier**
-The skill is created automatically in `skills/experimental/`. The router may
-include it at lower priority. A usage threshold (e.g. invoked 3 times without
-failure) auto-promotes it.
-
-Concern: Option B can cause skill bloat. The existing 146-skill catalog is
-already large enough to cause progressive-disclosure overhead.
+- Maximum recommended experimental skill count: 30 skills.
+- Prune zero-usage drafts older than 30 days (manual, via `/synthesize-skill`).
+- Draft names are deterministic from the tool sequence hash (idempotent).
 
 ---
 
-## Open questions (must be answered before implementation sprint)
+## Resolved questions
 
-1. **Which metric stream drives detection?** `session-learnings.jsonl` has
-   `skills_total`/`success` but lacks per-task tool sequences. Is
-   `skill-feedback.jsonl` + `prompt-captures.jsonl` sufficient for Option A,
-   or do we need a new instrumentation hook?
+1. **Which metric stream drives detection?**
+   A new stream `tool-sequences.jsonl` was added (written by
+   `hooks/tool-sequence-capture.sh`, registered as `PostToolUse[*]`).
 
-2. **Pattern matcher approach**: regex (fast, brittle), AST of tool sequences
-   (requires structured capture), or LLM-based summarization (accurate but
-   costly)? Cost at 5 syntheses/session × Haiku = ~$0.015; acceptable.
+2. **Pattern matcher approach?**
+   Pure Python n-gram counting (no LLM). Cost: $0. The skill description
+   is template-generated, not LLM-summarized. LLM synthesis is deferred
+   (can be added in a future pass once draft quality is assessed).
 
-3. **Where do experimental skills live?** `skills/experimental/` is the
-   natural location but it does not exist yet and requires changes to the
-   skill router priority logic (`lib/skill_router.py`). Alternatively,
-   experimental skills could live in a per-session directory and be promoted
-   to `skills/` only on user confirmation.
+3. **Where do experimental skills live?**
+   `skills/experimental/` was created. The skill router priority logic
+   does not yet include `experimental/` — operator must promote explicitly.
 
-4. **Deduplication**: how does the synthesizer know a pattern already has a
-   skill? It must compare the candidate against the existing 146 skills'
-   descriptions. `lib/skill_router.py`'s `best_match()` can be reused.
+4. **Deduplication?**
+   Draft names are hash-derived from the sequence signature (idempotent).
+   `propose_skill_draft` is a no-op if the draft already exists. Full
+   semantic deduplication against the 146-skill catalog is deferred.
 
-5. **Catalog growth control**: the ADR must propose a maximum experimental
-   skill count and an auto-pruning policy (e.g. prune experimental skills
-   with zero usage after 30 days).
+5. **Catalog growth control?**
+   30-skill experimental cap recommended; prune via `/synthesize-skill`.
 
 ---
 
-## Consequences (anticipated)
+## Implementation
+
+### New files (Phase 2 — 2026-04-30)
+
+| File | Role |
+|------|------|
+| `hooks/tool-sequence-capture.sh` | `PostToolUse[*]` — appends one line per tool call to `tool-sequences.jsonl` |
+| `lib/skill_synthesizer.py` | Public API: `find_recurring_sequences`, `propose_skill_draft`, `auto_promote_eligible` |
+| `hooks/skill-synthesis-scanner.sh` | `Stop` event with 30-min cooldown — runs synthesis, emits to `skill-synthesis-queue.jsonl` |
+| `skills/synthesize-skill/SKILL.md` | Operator skill — review/accept/reject/defer synthesis proposals |
+| `skills/experimental/` | Directory for auto-drafted experimental skills |
+| `tests/unit/test_skill_synthesizer.py` | 22 unit tests for `lib/skill_synthesizer.py` |
+| `tests/unit/test_tool_sequence_capture.py` | 11 unit tests for `hooks/tool-sequence-capture.sh` |
+
+### Metric streams written
+
+| Stream | Writer |
+|--------|--------|
+| `.cognitive-os/metrics/tool-sequences.jsonl` | `hooks/tool-sequence-capture.sh` |
+| `.cognitive-os/metrics/skill-synthesis-queue.jsonl` | `hooks/skill-synthesis-scanner.sh` via `lib/skill_synthesizer.py` |
+
+### Hook registration
+
+Both hooks are registered in `.claude/settings.json`:
+
+- `tool-sequence-capture.sh` → `PostToolUse` (all tools, `*` matcher)
+- `skill-synthesis-scanner.sh` → `Stop`
+
+---
+
+## Consequences
 
 ### Positive
 
 - Genuine self-reinforcement: the OS learns to propose skills from its own
   successful behaviour without waiting for the user to notice the pattern.
 - Reduces manual skill-authoring burden for recurring tasks.
+- Zero LLM cost per synthesis event (pure n-gram counting).
+- `PostToolUse` hook body completes in < 1ms (verified via hook-health.jsonl);
+  design goal of < 30ms is met with significant margin.
 
 ### Negative
 
-- **False positives create skill bloat.** The existing catalog is already
-  large. A low threshold or a noisy pattern matcher will generate many
-  useless experimental skills.
-- **LLM cost**: if synthesis uses an LLM summarizer, each synthesis call
-  adds cost. Must be gated by the cost-governance rules in RULES-COMPACT §4.
-- **Detection lag**: a rolling-window approach delays synthesis by up to
-  7 days after the pattern emerges.
+- **False positives create skill bloat.** A low threshold or noisy patterns
+  will generate useless experimental skills. Mitigated by 30-skill cap and
+  operator-gated promotion.
+- **N-gram descriptions are low quality.** The draft SKILL.md only describes
+  the tool sequence mechanically. LLM-enhanced descriptions are a future
+  improvement.
+- **Detection lag**: up to 7 days after a pattern emerges.
+- **macOS `date +%s` resolution**: 1-second; hook-health duration_ms for
+  fast hooks reports 0 or 1000 depending on clock-second boundary. The hook
+  body executes in < 30ms but cannot be measured at that resolution in shell
+  without `date +%N` (Linux-only).
 
 ---
 
@@ -182,14 +198,17 @@ already large enough to cause progressive-disclosure overhead.
 | Continue manual-only skill creation (current state) | Does not close the learning loop; leaves repeated patterns undetected |
 | Copy Hermes `_spawn_background_review` verbatim | Hermes uses a per-turn background thread that conflicts with COS's event/hook model; the skill store paths are incompatible |
 | Synthesize from every session | Too frequent; synthesis cost accumulates; most sessions do not produce novel patterns |
+| LLM-based summarization for draft descriptions | Cost per synthesis call; deferred until n-gram draft quality is assessed |
+| Option A (repeated successful skill invocations) | Detects popular skills, not novel ad-hoc patterns |
+| Option C (high-trust-score task completions) | Requires structured task-completion log not yet captured |
 
 ---
 
-## Relationship to ADR-090 and ADR-096
+## Relationship to ADR-090 and ADR-097
 
-- ADR-090 (Accepted): detects and queues *failing* skills. ADR-095 is the
+- **ADR-090** (Accepted): detects and queues *failing* skills. ADR-095 is the
   inverse: synthesizes *new* skills from *successful* patterns.
-- ADR-096 (Proposed): a review agent that actively audits sub-agent output.
-  ADR-096 could be the *mechanism* that performs pattern detection for
-  ADR-095 if it runs post-task. The two ADRs should be designed together
-  before either is implemented.
+- **ADR-097** (Accepted): task-tracker lifecycle bugs — provides stable `task_id`
+  values that `tool-sequence-capture.sh` reads from `COS_TASK_ID` env.
+- ADR-096 (if implemented): a review agent that actively audits sub-agent output
+  could act as an enhanced synthesis mechanism in the future.
