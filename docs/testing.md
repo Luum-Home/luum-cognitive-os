@@ -116,12 +116,15 @@ JUnit, inventories, and resource-policy metadata under
 | Local quick iteration | `make test-local-fast` or `cos-test focused` |
 | Local broad without Docker | `make test-local-wide-no-docker` or `cos-test broad --no-docker` |
 | CI default | `make test-ci-default` or `cos-test broad --no-docker --ci` |
+| Slow integration without Docker | `make test-integration-no-docker` or `cos-test cluster --lane integration` |
 | Docker/testcontainers explicit | `make test-docker-explicit` |
 | Optional/cost-bearing explicit | `make test-optional-cost` |
 
 The default broad lane is intentionally non-optional. Docker-capable and
 cost-bearing lanes are opt-in so local laptops and CI jobs do not start heavy
-services or hosted evaluations by surprise.
+services or hosted evaluations by surprise. The integration lane is also
+explicit because it exercises live session/install workflows and can exceed the
+bounded CI default even when Docker tests are excluded.
 
 ### Persistent Local Run Artifacts
 

@@ -20,8 +20,9 @@ lanes:
   integration:
     paths: [tests/integration/]
     parallel: false
-    stateful_reason: "Heterogeneous lane: real services (Engram, Phoenix, testcontainers), session-scoped containers, TCP-port waits. Default lane excludes docker-marked tests; Docker subset is explicit via integration-docker."
+    stateful_reason: "Heterogeneous lane: live Engram/Phoenix/session workflows, TCP-port waits, installer subprocesses. Explicit non-Docker lane; default broad excludes it to keep CI/local defaults bounded."
     marker_exclude: docker
+    optional: true
   integration-docker:
     paths: [tests/integration/]
     parallel: false
