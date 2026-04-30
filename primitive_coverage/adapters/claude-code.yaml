@@ -1,0 +1,10 @@
+adapter: claude-code
+families:
+  skill:
+    patterns: [".claude/skills/**/SKILL.md", "skills/**/SKILL.md"]
+  hook:
+    patterns: [".claude/hooks/**/*.sh", "hooks/**/*.sh"]
+  rule:
+    patterns: [".claude/rules/**/*.md", "rules/**/*.md"]
+  config:
+    patterns: [".claude/settings.json"]

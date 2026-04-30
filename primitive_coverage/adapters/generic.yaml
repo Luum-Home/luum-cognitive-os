@@ -1,0 +1,10 @@
+adapter: generic
+families:
+  script:
+    patterns: ["scripts/**/*.py", "bin/**/*"]
+  doc:
+    patterns: ["docs/**/*.md", "README.md"]
+  workflow:
+    patterns: [".github/workflows/*.yml", ".github/workflows/*.yaml"]
+  config:
+    patterns: ["*.yaml", "*.yml", "*.json"]
