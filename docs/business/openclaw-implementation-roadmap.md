@@ -298,7 +298,7 @@ npm-distributable collections of hooks.
 Workspace portability and state export/import.
 
 - [ ] Design export format (JSON/YAML bundle of configs, memory, state)
-- [ ] Implement exporter (selective: choose which agentic primitives to export)
+- [ ] Implement exporter (selective: choose which workspace assets to export)
 - [ ] Implement importer with conflict resolution (skip, overwrite, merge)
 - [ ] Add dry-run mode (show what would change without applying)
 - [ ] Support partial migration (only hooks, only cron jobs, only standing orders)
