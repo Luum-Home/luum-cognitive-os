@@ -27,7 +27,7 @@ path_classification:
     reason: "Provider-agnostic policy engine and validation registry."
   - path: cmd/cos/internal/manifest
     zone: core
-    reason: "Package specification contract for installable OS components."
+    reason: "Package specification contract for installable OS agentic primitives."
   - path: lib/execution_profile.py
     zone: core
     reason: "Capability-centric execution profile contract."

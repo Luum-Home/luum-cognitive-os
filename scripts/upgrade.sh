@@ -145,7 +145,7 @@ echo ""
 echo "Running cos-init --$current_mode ..."
 echo ""
 
-# Remove existing COS components (but keep project files)
+# Remove existing COS agentic primitives (but keep project files)
 if [ -d ".claude/rules/cos" ]; then
   rm -rf .claude/rules/cos
 fi
