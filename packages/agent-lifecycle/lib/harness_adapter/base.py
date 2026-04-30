@@ -347,3 +347,45 @@ class HarnessAdapter(ABC):
 def now_epoch() -> float:
     """Monotonic-friendly wall-clock timestamp used across adapters."""
     return time.time()
+
+
+# ---------------------------------------------------------------------------
+# Optional context compression (ADR-080 Tier 1 #3)
+# ---------------------------------------------------------------------------
+
+
+def maybe_compress_context(
+    messages: List[Dict[str, Any]],
+    budget: int,
+    *,
+    previous_summary: Optional[str] = None,
+) -> tuple[List[Dict[str, Any]], Optional[str]]:
+    """Compress messages when context budget is running low.
+
+    Delegates to ``lib.context_compressor`` (portable Hermes port). This method
+    is intentionally a thin adapter shim — it adds the harness adapter boundary
+    without imposing any policy of its own.
+
+    Activation: set ``COS_CONTEXT_COMPRESS=1``. Without it this is a no-op and
+    the original messages are returned unchanged. Claude Code harnesses should
+    NOT set this env var (native PreCompact handles it). Codex and other harnesses
+    that lack auto-compaction should set it.
+
+    Args:
+        messages: current conversation message list.
+        budget: context window size in tokens.
+        previous_summary: prior summary string for iterative updates.
+
+    Returns:
+        (messages, summary_text) — original messages if compression skipped or
+        dispatch unavailable. summary_text is None if no compression occurred.
+    """
+    try:
+        from lib.context_compressor import should_compress, compress as do_compress
+    except ImportError:
+        return messages, previous_summary
+
+    if not should_compress(messages, budget):
+        return messages, previous_summary
+
+    return do_compress(messages, budget, previous_summary=previous_summary)
