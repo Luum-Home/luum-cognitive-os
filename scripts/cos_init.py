@@ -1191,6 +1191,8 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         tmpl_dest = project_dir / ".cognitive-os" / "templates" / "cos"
         tmpl_dest.mkdir(parents=True, exist_ok=True)
         for tmpl in sorted(templates_source.glob("*.md")):
+            if not scope_allows(str(tmpl), install_scope):
+                continue
             shutil.copy2(str(tmpl), str(tmpl_dest / tmpl.name))
 
     # ── 8. Create cognitive-os.yaml ──────────────────────────────────
