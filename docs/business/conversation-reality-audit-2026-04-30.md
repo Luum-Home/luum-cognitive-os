@@ -277,11 +277,11 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 
 ### 1. Hooks
 
-- [ ] Inventory all hook files and map each to lifecycle event: SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, or unsupported.
-- [ ] Mark each hook as registered, unregistered, generated-only, deprecated, or optional-package.
+- [x] Inventory all hook files and map each to lifecycle event: SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, or unsupported.
+- [x] Mark each hook as registered, unregistered, generated-only, deprecated, or optional-package.
 - [ ] Identify hooks with non-empty metrics output.
 - [ ] Identify hooks with empty metrics output despite being registered.
-- [ ] Identify hooks with behavioral tests versus existence/config-only tests.
+- [x] Identify hooks with behavioral tests versus existence/config-only tests.
 - [ ] Identify hooks that emit signals nobody consumes.
 - [ ] Identify hooks whose latency contributes materially to p95 turn delay.
 - [ ] Identify overlapping hooks that should be merged.
@@ -290,9 +290,9 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 
 ### 2. Skills
 
-- [ ] Inventory all skills and frontmatter quality.
-- [ ] Map each skill to actual invocation path: manual-only, contextual trigger, hook/router selected, or undocumented.
-- [ ] Identify skills with behavioral tests.
+- [x] Inventory all skills and frontmatter quality.
+- [x] Map each skill to actual invocation path: manual-only, contextual trigger, hook/router selected, or undocumented.
+- [x] Identify skills with behavioral tests.
 - [ ] Identify skills with only catalog/frontmatter tests.
 - [ ] Identify skills never referenced outside their own `SKILL.md`.
 - [ ] Identify overlapping or duplicate skills.
@@ -302,8 +302,8 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 
 ### 3. Rules
 
-- [ ] Inventory all rules and compact-index references.
-- [ ] Verify tier metadata using the actual loader contract (`<!-- TIER: N -->`).
+- [x] Inventory all rules and compact-index references.
+- [x] Verify tier metadata using the actual loader contract (`<!-- TIER: N -->`).
 - [ ] Identify rules loaded by default versus contextual only.
 - [ ] Identify rules referenced in docs but not loaded by runtime.
 - [ ] Identify rules with enforcement hooks or tests.
@@ -318,7 +318,9 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 - [ ] Identify which agent behaviors are harness-native versus COS-defined.
 - [ ] Verify whether agent prelaunch/context-injection hooks fire.
 - [ ] Measure context payload added per delegated agent.
-- [ ] Identify coordination gaps such as ADR number collisions.
+- [x] Identify coordination gaps such as ADR number collisions.
+- [x] Add an atomic ADR reservation lock so parallel sessions cannot silently claim the same ADR number.
+- [x] Add inter-process concurrency tests for ADR reservation, not just filename existence checks.
 - [ ] Classify agent primitives as proven, partial, aspirational, or DX-risk.
 - [ ] Recommend boundaries for what COS should and should not own.
 
@@ -357,11 +359,12 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 
 ### 8. Metrics and Observability
 
-- [ ] Inventory JSONL metric streams and owning primitive.
+- [x] Inventory JSONL metric streams and owning primitive.
 - [ ] Identify streams that are non-empty, empty, stale, or ownerless.
 - [ ] Identify metrics consumed by dashboards, scorecards, gates, or docs.
 - [ ] Identify metrics that only accumulate noise.
 - [ ] Verify append safety and rotation behavior for high-volume streams.
+- [x] Add session provenance to hook timing rows so timing evidence can be attributed to a specific session.
 - [ ] Classify metrics as decision-grade, diagnostic-only, dead, or harmful-noise.
 - [ ] Recommend retention, aggregation, deletion, or owner assignment.
 
@@ -378,8 +381,8 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 
 ### 10. Docs, ADRs, and Product Claims
 
-- [ ] Inventory product-facing claims in README, docs overview, business docs, and ADRs.
-- [ ] Map each claim to code, tests, metrics, or manual proof path.
+- [x] Inventory product-facing claims in README, docs overview, business docs, and ADRs.
+- [x] Map each claim to code, tests, metrics, or manual proof path.
 - [ ] Identify obsolete ADRs or accepted ADRs without implementation evidence.
 - [ ] Identify roadmap/future docs presented as current behavior.
 - [ ] Identify terminology drift from `agentic primitive`.
@@ -388,16 +391,16 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 
 ### 11. Alternatives and Prior Art
 
-- [ ] Compile prior research findings for Hermes, OpenClaw, vanilla Claude/Codex, and other investigated tools.
-- [ ] Define comparison axes: governance, memory, skill discovery, setup, latency, portability, proof quality, deletion discipline.
-- [ ] Score COS against alternatives using current evidence only.
+- [x] Compile prior research findings for Hermes, OpenClaw, vanilla Claude/Codex, and other investigated tools.
+- [x] Define comparison axes: governance, memory, skill discovery, setup, latency, portability, proof quality, deletion discipline.
+- [x] Score COS against alternatives using current evidence only.
 - [ ] Identify copied/adopted patterns that are genuinely better.
 - [ ] Identify alternative patterns COS should still adopt.
 - [ ] Identify areas where COS loses and should stop pretending otherwise.
 
 ### 12. Final Reduction Sprint Backlog
 
-- [ ] Produce keep/harden/demote/delete backlog ordered by DX and runtime impact.
+- [x] Produce keep/harden/demote/delete backlog ordered by DX and runtime impact.
 - [ ] Pick default-profile changes that reduce daily friction immediately.
 - [ ] Pick one hook merge candidate.
 - [ ] Pick one skill-catalog simplification candidate.
@@ -429,8 +432,10 @@ This keeps current known debt visible while preventing the SO from growing new u
 - [x] Generate a latest Markdown report at `docs/reports/primitive-gap-latest.md`.
 - [x] Add a scheduled GitHub Actions workflow for weekly primitive gap snapshots.
 - [x] Add regression-based escalation so new primitive gaps fail against the tracked baseline.
+- [x] Wire row-level primitive audit, claim-to-proof audit, and reduction backlog generation into the weekly workflow.
+- [x] Block unmapped strong product claims in the weekly workflow via `claim_proof_audit.py --fail-unmapped`.
 - [ ] Add issue/PR creation for new blocker/high regressions.
-- [ ] Add row-level hook audit automation beyond family-level snapshot.
+- [x] Add row-level hook audit automation beyond family-level snapshot.
 
 ### 14. Documentation Reinvention / Duplicate Drift
 
@@ -440,4 +445,24 @@ This keeps current known debt visible while preventing the SO from growing new u
 - [x] Store current duplicate-doc baseline at `docs/reports/docs-duplicate-baseline.json`.
 - [x] Fail weekly audit on new duplicate documentation pairs versus baseline.
 - [ ] Add row-level doc claim ownership so agents know which existing doc to update instead of creating another.
-- [ ] Add pre-write hook guidance for docs creation prompts: search/update before create.
+- [x] Add pre-write hook guidance for docs creation prompts: search/update before create.
+
+### 15. Provenance and Concurrent-Session Coordination
+
+- [x] Confirm commit provenance trailers were not previously enforced.
+- [x] Add `prepare-commit-msg` provenance trailers for session, harness, and origin kind.
+- [x] Test provenance through a real temporary git repository commit, not only a string formatter.
+- [x] Confirm ADR number reservation was not previously protected by a lock.
+- [x] Add atomic ADR reservation records with owner/session/TTL/path metadata.
+- [x] Test ADR reservations under concurrent subprocesses to prove cross-process locking behavior.
+- [x] Add a pre-write ADR guard that warns when an ADR file is created without a matching active reservation.
+- [x] Add a cleanup/report command for expired ADR reservations.
+
+### 16. Reduction Batch Closure
+
+- [x] Resolve P1 `delete-or-wire` hook rows by separating dormant-tested hooks, projected profile hooks, and optional package aliases from truly dead surface.
+- [x] Add behavior tests for registered/projection hooks that lacked row-level proof: `dequeue-notify.sh`, `memory-prefetch.sh`, `profile-drift-autoapply.sh`, and `skill-frontmatter-validator.sh`.
+- [x] Resolve P2 weak claims by demoting overconfident product wording and filtering code/config fragments that are not product claims.
+- [x] Record optional/dormant P2 primitive demotions in `manifests/reduction-demotions.json`.
+- [x] Add skill/rule runtime contract tests so loaded skills and rules have real audit coverage.
+- [x] Regenerate reduction backlog to zero current items.
