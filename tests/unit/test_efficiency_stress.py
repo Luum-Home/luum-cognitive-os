@@ -549,23 +549,32 @@ class TestProfiles:
             f"full hooks should be 'full', got '{full['hooks']}'"
         )
 
-    def test_self_hosting_always_full(self):
-        """self-install.sh must force full profile when inside COS repo."""
+    def test_self_hosting_detects_but_no_longer_forces_full(self):
+        """self-install.sh detects self-hosting but does NOT force full profile (ADR-079).
+
+        Since CORE_RULES was reduced to a single compact index, self-hosting mode
+        no longer needs to override the profile to 'full'.  The default profile
+        (RULES-COMPACT.md only) applies to all projects including self-hosting.
+        COS_SYNC_ALL_RULES=1 is the explicit opt-in for developers who want full sync.
+        """
         path = PROJECT_ROOT / "hooks" / "self-install.sh"
         assert path.exists(), "self-install.sh not found"
         content = path.read_text()
 
-        # Must detect self-hosting
+        # Must still detect self-hosting (used for logging / opt-in logic)
         assert "IS_SELF_HOSTING" in content, (
             "self-install.sh missing IS_SELF_HOSTING detection"
         )
-        # Must default to full for self-hosting
-        assert 'EFFICIENCY_PROFILE="full"' in content, (
-            "self-install.sh does not default EFFICIENCY_PROFILE to full"
+        assert 'IS_SELF_HOSTING=false' in content, (
+            "self-install.sh must initialise IS_SELF_HOSTING to false"
         )
-        # Must only read config profile when NOT self-hosting
-        assert "IS_SELF_HOSTING" in content and "false" in content, (
-            "self-install.sh should only read config profile when not self-hosting"
+        # Must NOT force full profile just because we are self-hosting (ADR-079)
+        assert 'IS_SELF_HOSTING" = "true" ]; then\n  EFFICIENCY_PROFILE="full"' not in content, (
+            "self-install.sh must not force EFFICIENCY_PROFILE=full for self-hosting (ADR-079)"
+        )
+        # COS_SYNC_ALL_RULES opt-in must be present
+        assert "COS_SYNC_ALL_RULES" in content, (
+            "self-install.sh must honour COS_SYNC_ALL_RULES=1 opt-in (ADR-079)"
         )
 
 
