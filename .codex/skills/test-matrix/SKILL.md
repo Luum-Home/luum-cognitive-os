@@ -1,8 +1,8 @@
 ---
 name: test-matrix
-description: Targeted validation matrix for Cognitive OS changes. Use to pick the smallest trustworthy test set for a given edit.
+description: Targeted validation matrix for Cognitive OS maintainer changes. Use to pick the smallest trustworthy test set for building this SO without over-running local machines.
 version: 1.0.0
-audience: both
+audience: cognitive-os-maintainers
 tags: [testing, validation, workflow]
 ---
 
@@ -11,6 +11,11 @@ tags: [testing, validation, workflow]
 ## Trigger
 
 Use when choosing verification scope after a change.
+
+## Scope
+
+This skill is for building and maintaining Cognitive OS itself. Do not present
+these commands as default guidance for projects that merely consume the SO.
 
 ## Fast Lanes
 
@@ -38,6 +43,40 @@ python3 -m pytest tests/behavior/test_self_install.py tests/integration/test_pro
 go test ./internal/provider/... ./internal/validator/... ./pkg/hook/... -count=1
 ```
 
+### Laptop-friendly broad validation
+
+Use this for normal local confidence after multi-file Cognitive OS changes. It
+caps parallel workers and skips integration, e2e, chaos, Docker, and
+cost-bearing lanes.
+
+```bash
+make test-laptop
+```
+
+### Integration lane changes
+
+`./cos-test cluster --lane integration --ci` is not a lightweight laptop lane. It
+is explicit, optional, stateful, serial, and SO-maintainer-only. It runs the full
+non-Docker integration directory through `pytest-with-summary.sh` with
+`--workers 0`, a 900s timeout, Docker forbidden, and cost-bearing tests blocked.
+
+Use it before merge/release or after touching installation, hooks, memory,
+harness drivers, provider/runtime behavior, or session lifecycle code. For local
+work, prefer lower priority:
+
+```bash
+make test-laptop-integration
+```
+
+For one suspected surface, run the specific integration file instead:
+
+```bash
+bash scripts/pytest-with-summary.sh --workers 0 --lane integration -- tests/integration/test_name.py
+```
+
+Future split target: integration-memory, integration-installer,
+integration-hooks, integration-provider, and integration-runtime.
+
 ### Infrastructure contract changes
 
 Use this when touching service classification, compose/reference stacks, or
@@ -63,6 +102,6 @@ Verify links and claims manually against:
 
 ## Rule
 
-Pick the smallest lane that still matches the changed surface.
+Pick the smallest lane that still matches the changed surface. Do not jump to `integration --ci` or `test-ci-default` as a reflex on a laptop.
 
 If a claim changes, docs-only validation is not enough when code behavior is implied.

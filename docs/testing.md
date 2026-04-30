@@ -115,6 +115,7 @@ JUnit, inventories, and resource-policy metadata under
 |---|---|
 | Local quick iteration | `make test-local-fast` or `cos-test focused` |
 | Laptop-friendly broad validation | `make test-laptop` |
+| Laptop-friendly integration validation | `make test-laptop-integration` |
 | Local broad without Docker | `make test-local-wide-no-docker` or `cos-test broad --no-docker` |
 | CI / pre-release default | `make test-ci-default` or `cos-test broad --no-docker --ci` |
 | Slow integration without Docker | `make test-integration-no-docker` or `cos-test cluster --lane integration` |
@@ -133,10 +134,58 @@ non-Docker lanes with `COS_TEST_WORKERS_MAX=2` and intentionally skips
 integration, e2e, optional/cost-bearing lanes, and chaos. Use it for normal
 local confidence after multi-file changes.
 
+`make test-laptop-integration` is still explicit and SO-maintainer-only. It runs
+`cos-test cluster --lane integration` serially with lower CPU priority
+(`nice -n 10`) so the laptop stays usable, but it still exercises real
+integration flows and can be slow. Use it only after touching Cognitive OS installation, hooks, memory,
+harness drivers, provider/runtime behavior, or session lifecycle code. For a
+single suspected surface, prefer a specific `tests/integration/test_*.py` file
+through `scripts/pytest-with-summary.sh`.
+
 `make test-ci-default` is a CI/pre-release gate, not a tight development loop.
 It runs the canonical broad non-Docker plan with CI settings and may take long
 enough to slow a laptop. Use it before push/release or in CI; do not run it
 constantly during day-to-day edits.
+
+
+### Cognitive OS Integration Lane Semantics
+
+The integration lane is not a lightweight local smoke test. It is an explicit,
+stateful Cognitive OS maintainer lane for real SO integration behavior. Today it
+resolves to the equivalent of:
+
+```bash
+bash scripts/pytest-with-summary.sh \
+  --workers 0 \
+  --lane integration \
+  --timeout-seconds 900 \
+  --docker-policy forbidden \
+  --cost-policy free_only \
+  --artifact-policy keep_summary \
+  -- tests/integration/ -m not docker
+```
+
+It is slow because it scans the full non-Docker integration directory and runs in
+serial. That is intentional: the lane covers live install/session workflows,
+Engram/Phoenix-adjacent checks, hook subprocesses, git operations, TCP waits,
+artifact generation, and other shared-state surfaces that are unsafe to blend
+with xdist by default.
+
+Do not run this lane constantly while editing. Use it before merge/release, after
+touching installation or lifecycle code, or when a focused integration file is no
+longer enough evidence. The normal SO-builder escalation path is:
+
+1. `./cos-test focused`
+2. `./cos-test cluster --lane unit|audit|contract|behavior|hooks`
+3. `make test-laptop`
+4. targeted `scripts/pytest-with-summary.sh -- tests/integration/test_name.py`
+5. `make test-laptop-integration`
+6. `make test-ci-default` or CI/release gates
+
+Future work should split this lane into narrower SO-maintainer sublanes such as
+`integration-memory`, `integration-installer`, `integration-hooks`,
+`integration-provider`, and `integration-runtime` before making integration part
+of any frequent laptop workflow.
 
 ### Persistent Local Run Artifacts
 
