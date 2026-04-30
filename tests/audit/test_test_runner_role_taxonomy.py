@@ -47,7 +47,7 @@ def test_test_runner_role_taxonomy_maps_concerns_to_distinct_owners() -> None:
         "Execution": "`cmd/cos-test`",
         "Reporting": "`scripts/pytest-with-summary.sh`",
         "Governance": "hooks/skills such as `auto-verify`, `dod-gate`, `coverage-enforcement`, `test-quality-audit`",
-        "Lifecycle": "`.cognitive-os/reports/test-runs/`, metrics JSONL, repair ledgers",
+        "Lifecycle": "metrics JSONL, baselines, repair ledgers",
     }
 
 
