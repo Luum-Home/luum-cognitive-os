@@ -108,7 +108,8 @@ func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 		laneRendered = strings.Replace(laneRendered, "tests=-1", "tests=?", 1)
 		fmt.Print(laneRendered)
 		for _, inv := range plan.Invokes {
-			fmt.Printf("[cos-test broad] %s/%s: %s\n", name, inv.Label, strings.Join(pr.PytestArgs(inv.Args), " "))
+			opts := runner.InvocationOptions{Workers: inv.Workers, Lane: name}
+			fmt.Printf("[cos-test broad] %s/%s: %s\n", name, inv.Label, strings.Join(pr.PytestArgsWithOptions(inv.Args, opts), " "))
 		}
 		if dryRun {
 			outcomes = append(outcomes, laneOutcome{Lane: name, Failed: false})
@@ -116,7 +117,7 @@ func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 		}
 		failed := false
 		for _, inv := range plan.Invokes {
-			if err := pr.RawInvocation(inv.Args); err != nil {
+			if err := pr.RawInvocationWithOptions(inv.Args, runner.InvocationOptions{Workers: inv.Workers, Lane: name}); err != nil {
 				failed = true
 			}
 		}

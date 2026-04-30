@@ -160,6 +160,30 @@ def test_before_phase_writes_baseline_when_tests_resolve(tmp_path):
         assert baseline["test_count"] >= 1
 
 
+def test_before_phase_persists_canonical_summary_artifacts(tmp_path):
+    """Global verify delegates test execution/reporting to pytest-with-summary."""
+    agent_id = "test-baseline-summary-artifacts"
+    isolated_baseline_dir = tmp_path / "verify-baseline"
+    report_dir = tmp_path / "global-verify-reports"
+    existing_test = str(PROJECT_DIR / "tests" / "contracts" / "test_process_registry.py")
+
+    with _FakeResolver([existing_test]) as r:
+        result = run_hook(
+            "before",
+            agent_id,
+            baseline_dir=isolated_baseline_dir,
+            resolver_dir=r.resolver_dir,
+            env_extra={
+                "VERIFY_FILES_OVERRIDE": "lib/synthetic_changed.py",
+                "COS_TEST_REPORT_DIR": str(report_dir),
+            },
+        )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert list(report_dir.glob("*/summary.txt")), "expected canonical summary artifact"
+    assert list(report_dir.glob("*/junit.xml")), "expected canonical junit artifact"
+
+
 # ---------------------------------------------------------------------------
 # Test 3: after-phase computes delta, exits 0 for no regression, 1 for regression
 # ---------------------------------------------------------------------------

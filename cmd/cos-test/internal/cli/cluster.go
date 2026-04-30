@@ -63,8 +63,9 @@ type clusterPlan struct {
 }
 
 type invokeSpec struct {
-	Args  []string // pytest args (positional + flags)
-	Label string   // human label, e.g. "parallel" / "serial" / "marker:not docker"
+	Args    []string // pytest args (positional + flags)
+	Label   string   // human label, e.g. "parallel" / "serial" / "marker:not docker"
+	Workers string   // wrapper --workers scalar: "auto", "0", or explicit integer
 }
 
 func runCluster(cfg *config.Config, laneName string, dryRun bool) error {
@@ -92,7 +93,8 @@ func runCluster(cfg *config.Config, laneName string, dryRun bool) error {
 	fmt.Println()
 
 	for _, inv := range plan.Invokes {
-		fmt.Printf("[cos-test cluster] %s: %s\n", inv.Label, strings.Join(pr.PytestArgs(inv.Args), " "))
+		opts := runner.InvocationOptions{Workers: inv.Workers, Lane: laneName}
+		fmt.Printf("[cos-test cluster] %s: %s\n", inv.Label, strings.Join(pr.PytestArgsWithOptions(inv.Args, opts), " "))
 	}
 
 	if dryRun {
@@ -102,7 +104,7 @@ func runCluster(cfg *config.Config, laneName string, dryRun bool) error {
 
 	worst := 0
 	for _, inv := range plan.Invokes {
-		if err := pr.RawInvocation(inv.Args); err != nil {
+		if err := pr.RawInvocationWithOptions(inv.Args, runner.InvocationOptions{Workers: inv.Workers, Lane: laneName}); err != nil {
 			worst = 1
 		}
 	}
@@ -128,6 +130,7 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 	}
 
 	plan := &clusterPlan{Lane: lane}
+	forcedSerial := isLaneForcedSerial(laneName)
 	// excludeFilter returns the "-m" args to apply the lane's MarkerExclude,
 	// if any, optionally combined with an existing "not X" expression.
 	withExclude := func(existingNot string) []string {
@@ -145,15 +148,20 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 
 	switch lane.Parallel {
 	case lanes.ParallelTrue:
+		worker := "auto"
 		plan.Workers = "auto:n (parallel-safe per registry)"
 		plan.Reason = "lane parallel=true"
+		if forcedSerial {
+			worker = "0"
+			plan.Workers = "serial (forced by COS_FORCE_SERIAL_LANES)"
+			plan.Reason += " (forced serial by COS_FORCE_SERIAL_LANES)"
+		}
 		if lane.MarkerExclude != "" {
 			plan.Reason += fmt.Sprintf(" (excluding -m %q)", lane.MarkerExclude)
 		}
 		args := append([]string{}, lane.Paths...)
 		args = append(args, withExclude("")...)
-		args = append(args, "-n", "auto")
-		plan.Invokes = []invokeSpec{{Args: args, Label: "parallel"}}
+		plan.Invokes = []invokeSpec{{Args: args, Label: "parallel", Workers: worker}}
 	case lanes.ParallelFalse:
 		plan.Workers = "serial (stateful)"
 		reason := lane.StatefulReason
@@ -166,20 +174,25 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 		plan.Reason = reason
 		args := append([]string{}, lane.Paths...)
 		args = append(args, withExclude("")...)
-		plan.Invokes = []invokeSpec{{Args: args, Label: "serial"}}
+		plan.Invokes = []invokeSpec{{Args: args, Label: "serial", Workers: "0"}}
 	case lanes.ParallelMarker:
 		marker := lane.MarkerSerial
 		if marker == "" {
 			return nil, fmt.Errorf("lane %q is parallel:marker but marker_serial is empty", laneName)
 		}
+		parallelWorker := "auto"
 		plan.Workers = "split (marker:" + marker + ")"
 		plan.Reason = fmt.Sprintf("parallel-safe except marker %q (run serial)", marker)
+		if forcedSerial {
+			parallelWorker = "0"
+			plan.Workers = "serial (forced by COS_FORCE_SERIAL_LANES)"
+			plan.Reason += " (forced serial by COS_FORCE_SERIAL_LANES)"
+		}
 		if lane.MarkerExclude != "" {
 			plan.Reason += fmt.Sprintf(" + excluding -m %q", lane.MarkerExclude)
 		}
 		parallelArgs := append([]string{}, lane.Paths...)
 		parallelArgs = append(parallelArgs, withExclude(marker)...)
-		parallelArgs = append(parallelArgs, "-n", "auto")
 		serialArgs := append([]string{}, lane.Paths...)
 		if lane.MarkerExclude != "" {
 			serialArgs = append(serialArgs, "-m", fmt.Sprintf("%s and not %s", marker, lane.MarkerExclude))
@@ -187,11 +200,25 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 			serialArgs = append(serialArgs, "-m", marker)
 		}
 		plan.Invokes = []invokeSpec{
-			{Args: parallelArgs, Label: "marker:not " + marker},
-			{Args: serialArgs, Label: "marker:" + marker},
+			{Args: parallelArgs, Label: "marker:not " + marker, Workers: parallelWorker},
+			{Args: serialArgs, Label: "marker:" + marker, Workers: "0"},
 		}
 	default:
 		return nil, fmt.Errorf("lane %q: unknown parallel mode %q", laneName, lane.Parallel)
 	}
 	return plan, nil
+}
+
+func isLaneForcedSerial(laneName string) bool {
+	raw := os.Getenv("COS_FORCE_SERIAL_LANES")
+	if raw == "" {
+		return false
+	}
+	for _, part := range strings.Split(raw, ",") {
+		part = strings.TrimSpace(part)
+		if part == "*" || part == laneName {
+			return true
+		}
+	}
+	return false
 }

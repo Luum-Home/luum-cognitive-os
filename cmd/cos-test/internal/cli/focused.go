@@ -62,7 +62,8 @@ func init() {
 type focusedPlan struct {
 	Mode      string   // "explicit" | "testmon" | "mapped" | "fallback"
 	TestPaths []string // pytest positional args (paths or nodeids)
-	ExtraArgs []string // -n auto, -m, --testmon, --lf, etc.
+	ExtraArgs []string // -m, --testmon, --lf, etc. Worker policy is InvocationOptions.
+	Workers   string   // wrapper --workers scalar
 	Reason    string
 }
 
@@ -75,14 +76,15 @@ func runFocused(cfg *config.Config, explicit []string, dryRun bool) error {
 	args := append([]string{}, plan.TestPaths...)
 	args = append(args, plan.ExtraArgs...)
 	pr := runner.NewPytestRunner(cfg)
-	cmdLine := strings.Join(pr.PytestArgs(args), " ")
+	opts := runner.InvocationOptions{Workers: plan.Workers, Lane: "focused"}
+	cmdLine := strings.Join(pr.PytestArgsWithOptions(args, opts), " ")
 
 	info := banner.Info{
 		Subcommand: "focused",
 		Lane:       "auto",
 		Paths:      plan.TestPaths,
 		TestCount:  len(plan.TestPaths),
-		Workers:    "auto:n (parallel-safe)",
+		Workers:    focusedWorkerLabel(plan.Workers),
 		Reason:     plan.Reason,
 		ETA:        banner.AggregateETA(filepath.Join(cfg.ProjectRoot, ".cognitive-os", "reports", "test-runs"), "focused", 5),
 		KillSwitch: "COS_FORCE_SERIAL_LANES=focused",
@@ -97,13 +99,13 @@ func runFocused(cfg *config.Config, explicit []string, dryRun bool) error {
 		return nil
 	}
 
-	return pr.RawInvocation(args)
+	return pr.RawInvocationWithOptions(args, opts)
 }
 
 // buildFocusedPlan resolves the strategy: explicit > testmon > mapped >
 // fallback. The diffFn is injectable for tests.
 func buildFocusedPlan(cfg *config.Config, explicit []string, diffFn func(projectRoot string) ([]string, error)) (*focusedPlan, error) {
-	plan := &focusedPlan{ExtraArgs: []string{"-n", "auto"}}
+	plan := &focusedPlan{Workers: focusedWorkerPolicy()}
 
 	if len(explicit) > 0 {
 		plan.Mode = "explicit"
@@ -127,7 +129,7 @@ func buildFocusedPlan(cfg *config.Config, explicit []string, diffFn func(project
 	if _, err := os.Stat(testmonDB); err == nil {
 		plan.Mode = "testmon"
 		plan.Reason = fmt.Sprintf("testmon DB present (%s)", testmonDB)
-		plan.ExtraArgs = []string{"-n", "auto", "--testmon"}
+		plan.ExtraArgs = []string{"--testmon"}
 		// Testmon decides selection itself; pass mapped as additional context only.
 		plan.TestPaths = mapped
 		return plan, nil
@@ -144,6 +146,24 @@ func buildFocusedPlan(cfg *config.Config, explicit []string, diffFn func(project
 	plan.Reason = fmt.Sprintf("same-name mapping resolved %d test paths from %d changed files", len(mapped), len(changed))
 	plan.TestPaths = mapped
 	return plan, nil
+}
+
+func focusedWorkerLabel(workers string) string {
+	switch workers {
+	case "0":
+		return "serial (forced by COS_FORCE_SERIAL_LANES)"
+	case "auto":
+		return "auto:n (parallel-safe)"
+	default:
+		return workers
+	}
+}
+
+func focusedWorkerPolicy() string {
+	if isLaneForcedSerial("focused") {
+		return "0"
+	}
+	return "auto"
 }
 
 // mapChangedToTests turns a list of repo-relative changed paths into a
