@@ -1,4 +1,4 @@
-# ADR-086 — ADR Namespace Consolidation
+# ADR-087 — ADR Namespace Consolidation
 
 <!-- SCOPE: OS -->
 
@@ -230,10 +230,10 @@ must be renumbered. The policy:
   the more recent and more complete treatment of that topic.
 
 `docs/architecture/adrs/027-headless-clustered-runtime-direction.md` gets
-renumbered to **ADR-087** (next free slot after ADR-086, this ADR). Its
-migrated filename becomes `ADR-087-headless-clustered-runtime-direction.md`.
+renumbered to **ADR-088** (next free slot after ADR-087, this ADR). Its
+migrated filename becomes `ADR-088-headless-clustered-runtime-direction.md`.
 The file receives `Renumbered-from: ADR-027 (docs/architecture/adrs/)` in its
-front matter. A note is added to ADR-084 cross-referencing ADR-087 as the
+front matter. A note is added to ADR-084 cross-referencing ADR-088 as the
 earlier direction document.
 
 ---
@@ -283,7 +283,7 @@ Rationale:
 - They do not have a subsystem lifecycle justification comparable to
   cos-dispatch. They belong in the project namespace.
 
-Assigned slots: **ADR-088**, **ADR-089**, **ADR-090** (see migration table).
+Assigned slots: **ADR-089**, **ADR-090**, **ADR-091** (see migration table).
 
 ---
 
@@ -326,15 +326,15 @@ receive only a rename to uppercase-prefix format.
 | `docs/architecture/adrs/025-*.md` | `docs/adrs/ADR-025-*.md` | None | Rename prefix |
 | `docs/architecture/adrs/026-*.md` | `docs/adrs/ADR-026-*.md` | None | Rename prefix |
 | `docs/architecture/adrs/026a-decisions.md` | `docs/adrs/ADR-026a-decisions.md` | None | Addendum, rename prefix |
-| `docs/architecture/adrs/027-headless-clustered-runtime-direction.md` | `docs/adrs/ADR-087-headless-clustered-runtime-direction.md` | **027 → 087** | Collision with `docs/adrs/ADR-027.md` (SO Slimming, keeps 027); add `Renumbered-from: ADR-027 (docs/architecture/adrs/)` to front matter |
+| `docs/architecture/adrs/027-headless-clustered-runtime-direction.md` | `docs/adrs/ADR-088-headless-clustered-runtime-direction.md` | **027 → 088** | Collision with `docs/adrs/ADR-027.md` (SO Slimming, keeps 027); add `Renumbered-from: ADR-027 (docs/architecture/adrs/)` to front matter |
 
 ### Files from `docs/architecture/harness-adoption-gap/` — migrate to `docs/adrs/`
 
 | Current path | Target path | Number change | Rationale |
 |---|---|---|---|
-| `docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md` | `docs/adrs/ADR-088-harness-skills-sync-path.md` | **001 → 088** | Local number 001 collides with architecture/adrs ADR-001 and cos-dispatch CD-001; add `Renumbered-from: ADR-001 (harness-adoption-gap)` |
-| `docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md` | `docs/adrs/ADR-089-simplify-profiles.md` | **002 → 089** | Collision with architecture/adrs ADR-002 and cos-dispatch CD-002; add `Renumbered-from: ADR-002 (harness-adoption-gap)` |
-| `docs/architecture/harness-adoption-gap/ADR-003-agent-git-safety.md` | `docs/adrs/ADR-090-agent-git-safety.md` | **003 → 090** | Collision with cos-dispatch CD-003; add `Renumbered-from: ADR-003 (harness-adoption-gap)` |
+| `docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md` | `docs/adrs/ADR-089-harness-skills-sync-path.md` | **001 → 089** | Local number 001 collides with architecture/adrs ADR-001 and cos-dispatch CD-001; add `Renumbered-from: ADR-001 (harness-adoption-gap)` |
+| `docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md` | `docs/adrs/ADR-090-simplify-profiles.md` | **002 → 090** | Collision with architecture/adrs ADR-002 and cos-dispatch CD-002; add `Renumbered-from: ADR-002 (harness-adoption-gap)` |
+| `docs/architecture/harness-adoption-gap/ADR-003-agent-git-safety.md` | `docs/adrs/ADR-091-agent-git-safety.md` | **003 → 091** | Collision with cos-dispatch CD-003; add `Renumbered-from: ADR-003 (harness-adoption-gap)` |
 
 ### Files in `docs/architecture/cos-dispatch/adrs/` — rename in place
 
@@ -354,7 +354,7 @@ After each `git mv`, a one-line stub is created at the old path:
 ```markdown
 # Moved
 
-This ADR has moved to `docs/adrs/ADR-NNN-slug.md` (ADR-086 migration, 2026-04-30).
+This ADR has moved to `docs/adrs/ADR-NNN-slug.md` (ADR-087 migration, 2026-04-30).
 ```
 
 Stubs are removed after one release cycle (v0.13.0 or equivalent).
@@ -377,7 +377,7 @@ that resolves unambiguously within `docs/adrs/` (i.e., no two files in
 
 | File | Current citation | Required change |
 |---|---|---|
-| `install.sh` (lines 4, 43, 106, 116, 117, 122, 251, 428) | `ADR-002` (bare) | Update to full path `docs/adrs/ADR-002-docker-pip-...md` or `docs/adrs/ADR-089-simplify-profiles.md` depending on which decision each line actually invokes — verify per-line during migration |
+| `install.sh` (lines 4, 43, 106, 116, 117, 122, 251, 428) | `ADR-002` (bare) | Update to full path `docs/adrs/ADR-002-docker-pip-...md` or `docs/adrs/ADR-090-simplify-profiles.md` depending on which decision each line actually invokes — verify per-line during migration |
 | `cognitive-os.yaml` (lines 538, 541) | `ADR-002` (bare) | Same per-line verification and full-path update |
 | `tests/unit/test_efficiency_optimization.py` (line 88) | `ADR-002` (bare) | Same per-line verification |
 | `docs/prompt-driven-governance.md` | `ADR-012` (bare) | Update to `docs/adrs/ADR-012-prompt-driven-governance.md` after migration |
@@ -511,7 +511,7 @@ prefix makes that future migration straightforward.
 The audit identified three candidate files. The per-line verification during
 migration will produce a definitive answer. If the install.sh citations actually
 refer to `docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md`
-(now ADR-089), the migration team should also update the comment text in
+(now ADR-090), the migration team should also update the comment text in
 `install.sh` to reference the migrated path explicitly so future readers do not
 face the same ambiguity.
 
@@ -564,11 +564,11 @@ find docs/architecture/adrs docs/architecture/harness-adoption-gap -name "*.md" 
 - ADR-082: Plan Location Convention (sibling decision; migration pattern reused here)
 - ADR-027: SO Slimming — Test Strategy, Context Overhead (keeps number 027)
 - ADR-027a: SO Slimming addendum (unaffected; in canonical directory)
-- ADR-084: Headless and Clustered Runtime Shape (thematic successor to ADR-087)
-- ADR-087: Headless and Clustered Runtime Direction (renumbered from `docs/architecture/adrs/027`)
-- ADR-088: Harness Skills Sync Path (renumbered from `harness-adoption-gap/ADR-001`)
-- ADR-089: Simplify Install Profiles (renumbered from `harness-adoption-gap/ADR-002`)
-- ADR-090: Agent Git Operations Safety (renumbered from `harness-adoption-gap/ADR-003`)
+- ADR-084: Headless and Clustered Runtime Shape (thematic successor to ADR-088)
+- ADR-088: Headless and Clustered Runtime Direction (renumbered from `docs/architecture/adrs/027`)
+- ADR-089: Harness Skills Sync Path (renumbered from `harness-adoption-gap/ADR-001`)
+- ADR-090: Simplify Install Profiles (renumbered from `harness-adoption-gap/ADR-002`)
+- ADR-091: Agent Git Operations Safety (renumbered from `harness-adoption-gap/ADR-003`)
 - Namespace audit: `docs/measurements/cos-adr-namespace-audit-2026-04-30.md`
 - Duplication audit: `docs/measurements/cos-duplication-audit-2026-04-30.md`
 - `hooks/session-startup-protocol.sh` (verification target post-migration)
