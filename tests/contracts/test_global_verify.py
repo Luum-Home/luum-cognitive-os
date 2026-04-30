@@ -112,6 +112,7 @@ def test_before_phase_writes_skipped_marker_when_no_tests_resolve(tmp_path):
             "before", agent_id,
             baseline_dir=isolated_baseline_dir,
             resolver_dir=r.resolver_dir,
+            env_extra={"VERIFY_FILES_OVERRIDE": "docs/no_matching_tests.md"},
         )
         # Hook should exit 0 (safe skip)
         assert result.returncode == 0, (
@@ -158,6 +159,29 @@ def test_before_phase_writes_baseline_when_tests_resolve(tmp_path):
         baseline = data["baseline"]
         assert "test_count" in baseline
         assert baseline["test_count"] >= 1
+
+
+def test_before_phase_uses_cos_test_focused_plan_without_legacy_resolver(tmp_path):
+    """Global verify resolves tests through cos-test focused before legacy resolver fallback."""
+    agent_id = "test-cos-focused-plan"
+    isolated_baseline_dir = tmp_path / "verify-baseline"
+    report_dir = tmp_path / "global-verify-reports"
+
+    result = run_hook(
+        "before",
+        agent_id,
+        baseline_dir=isolated_baseline_dir,
+        env_extra={
+            "VERIFY_FILES_OVERRIDE": "tests/contracts/test_process_registry.py",
+            "COS_TEST_REPORT_DIR": str(report_dir),
+        },
+    )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    baseline_file = isolated_baseline_dir / f"{agent_id}.json"
+    data = json.loads(baseline_file.read_text())
+    assert data["baseline"]["tests"] == ["tests/contracts/test_process_registry.py"]
+    assert list(report_dir.glob("*/summary.txt")), "expected canonical summary artifact"
 
 
 def test_before_phase_persists_canonical_summary_artifacts(tmp_path):

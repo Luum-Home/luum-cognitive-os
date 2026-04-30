@@ -52,7 +52,7 @@ if ! python3 -m pytest --version >/dev/null 2>&1; then
 fi
 
 python3 - "$MODE" "$PROJECT_DIR" "$AGENT_ID" "$BASELINE_FILE" "${VERIFY_RESOLVER_DIR:-}" <<'PYEOF'
-import sys, json, os, subprocess, hashlib
+import sys, json, os, subprocess, hashlib, shutil
 from pathlib import Path
 
 mode, project_dir, agent_id, baseline_file, verify_resolver_dir = sys.argv[1:6]
@@ -72,12 +72,51 @@ except ImportError:
     resolve_tests_for_changes = None
     resolver_available = False
 
+def cos_test_focused_plan(files_changed):
+    """Return focused test paths from the canonical cos-test plan API, or None."""
+    if not files_changed:
+        return None
+    args = ["focused", "--plan-json", "--no-testmon"]
+    for path in files_changed:
+        args.extend(["--changed-files", str(path)])
+
+    override = os.environ.get("COS_TEST_BIN", "")
+    if override:
+        cmd = [override] + args
+        cwd = project_dir
+    elif (project_dir / "cmd" / "cos-test" / "go.mod").is_file() and shutil.which("go"):
+        cmd = ["go", "run", "."] + args
+        cwd = project_dir / "cmd" / "cos-test"
+    else:
+        return None
+
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=60, cwd=str(cwd))
+    except Exception:
+        return None
+    if r.returncode != 0:
+        return None
+    try:
+        plan = json.loads(r.stdout)
+    except Exception:
+        return None
+    paths = [p for p in (plan.get("test_paths") or []) if p]
+    if plan.get("mode") in {"mapped", "explicit"} and paths:
+        return paths
+    return None
+
+def resolve_targeted_tests(files_changed):
+    """Resolve tests through cos-test focused first, with legacy resolver fallback."""
+    test_ids = cos_test_focused_plan(files_changed)
+    if test_ids:
+        return test_ids
+    if resolver_available and files_changed:
+        return resolve_tests_for_changes(files_changed)
+    return []
+
 def run_targeted_tests(files_changed):
     """Return dict with (passed, failed, test_ids_list) or None if no tests resolved."""
-    if resolver_available and files_changed:
-        test_ids = resolve_tests_for_changes(files_changed)
-    else:
-        test_ids = []
+    test_ids = resolve_targeted_tests(files_changed)
     if not test_ids:
         return None  # no tests resolved, skip
     wrapper = project_dir / "scripts" / "pytest-with-summary.sh"
