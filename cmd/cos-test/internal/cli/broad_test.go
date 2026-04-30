@@ -85,3 +85,21 @@ func TestLaneOutcomeFailedAggregation(t *testing.T) {
 		t.Errorf("expected 1 failed, got %d", failed)
 	}
 }
+
+func TestShouldSkipForNoDocker(t *testing.T) {
+	cases := []struct {
+		policy   string
+		noDocker bool
+		want     bool
+	}{
+		{policy: "forbidden", noDocker: true, want: false},
+		{policy: "allowed", noDocker: true, want: true},
+		{policy: "required", noDocker: true, want: true},
+		{policy: "required", noDocker: false, want: false},
+	}
+	for _, tc := range cases {
+		if got := shouldSkipForNoDocker(tc.policy, tc.noDocker); got != tc.want {
+			t.Fatalf("shouldSkipForNoDocker(%q, %v) = %v, want %v", tc.policy, tc.noDocker, got, tc.want)
+		}
+	}
+}

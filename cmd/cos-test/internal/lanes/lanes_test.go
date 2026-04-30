@@ -18,6 +18,7 @@ lanes:
     paths: [tests/integration/]
     parallel: marker
     marker_serial: docker
+    marker_include: integration
   behavior:
     paths: [tests/behavior/]
     parallel: false
@@ -49,6 +50,9 @@ func TestParse_BasicSchema(t *testing.T) {
 	}
 	if integ.MarkerSerial != "docker" {
 		t.Errorf("integration marker_serial = %q", integ.MarkerSerial)
+	}
+	if integ.MarkerInclude != "integration" {
+		t.Errorf("integration marker_include = %q", integ.MarkerInclude)
 	}
 
 	beh, _ := reg.Get("behavior")

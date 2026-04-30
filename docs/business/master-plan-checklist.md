@@ -65,6 +65,8 @@
 - [x] Test runs persist resource-policy metadata and outcome classification in
   `resource-policy.json`, including functional failures, policy blocks, and
   timeout exhaustion.
+- [x] Local and CI test defaults are explicit: fast focused, broad non-Docker,
+  Docker/e2e opt-in, and cost-bearing optional lanes have separate commands.
 - [x] SessionStart performs a cached host-tool doctor check through `hooks/host-tool-doctor.sh`, while keeping broad pytest inventory explicit to avoid startup overload.
 
 ## 5. Onboarding and Operational Simplicity
