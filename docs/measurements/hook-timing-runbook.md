@@ -156,6 +156,55 @@ python3 scripts/hook_timing_report.py --event Stop --since 2h
 5. If a hook is consistently slow, check its logs (most hooks write to
    `.cognitive-os/metrics/<hook-name>.jsonl`) and consider making it `async`.
 
+## Commit provenance trailer — known limitations (ADR-088)
+
+The `X-COS-Origin` / `X-COS-Session` / `X-COS-Harness` trailers added by
+`.githooks/prepare-commit-msg` are best-effort heuristics. They will be accurate
+for the vast majority of commits, but the following edge cases can produce wrong
+attribution:
+
+**Cases where attribution may be wrong:**
+
+- **Deeply nested process chains beyond depth 10.** The PPID walk is capped at
+  10 levels. An orchestrator that spawned through more than 10 intermediate
+  processes (unusual, but possible in complex CI pipelines) will not be found.
+  The fallback then uses env vars or the most-recently-modified JSON marker,
+  which may belong to a different session.
+
+- **Processes that fork and orphan before the marker is written.** If a process
+  forks and the child commits before `write_context_marker.py` runs (e.g., a
+  background job), the PPID chain will not contain a matching marker and the
+  trailer falls through to last-mtime, which is the most-recently-written
+  orchestrator.
+
+- **Manual `git commit` from inside `screen` / `tmux` with stripped env.**
+  Session multiplexers reset the environment. If you run `git commit` inside a
+  screen/tmux pane that was opened outside the active session, env vars will be
+  empty and no marker file will exist for the shell's PID chain. The trailer
+  will read `kind=manual session=unknown harness=unknown`, which is correct
+  (it genuinely is a manual commit).
+
+- **The commit that introduces the fix itself.** The very commit that installs
+  the JSON marker writer shows `kind=manual` because the hook ran before the
+  marker was written by `session-init.sh`. This is a one-time artifact.
+
+**How to verify suspicious attribution:**
+
+```bash
+# Check the raw trailer of any commit
+git log --format=%B <hash> | grep X-COS
+
+# Cross-reference with hook-timing.jsonl by timestamp
+python3 scripts/hook_timing_report.py --since 24h | grep prepare-commit-msg
+
+# Check which JSON markers existed at commit time
+ls -la .cognitive-os/sessions/.context-*.json
+```
+
+The `started_at` field in `.context-<pid>.json` and the timestamp in
+`hook-timing.jsonl` can be cross-referenced to confirm which session owned
+a given commit.
+
 ## Async vs sync hook classification
 
 All slow hooks that do not need to block Claude should be marked `|async` in

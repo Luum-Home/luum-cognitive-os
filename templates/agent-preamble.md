@@ -4,6 +4,14 @@
 
 Sub-agent in Cognitive OS. Phase: `{{phase}}`.
 
+**Provenance marker (ADR-088):** On your very first Bash call, run:
+```bash
+python3 scripts/write_context_marker.py subagent 2>/dev/null || true
+```
+This writes `.cognitive-os/sessions/.context-<pid>.json` so commit_provenance.py
+can attribute any commits you make to `kind=subagent` via PPID-chain lookup.
+Fail-silent — skip if the script is unavailable.
+
 **Rules (concise):**
 - No flattery. Fragments OK. Disagree directly.
 - MAX 50 tool calls per task. If approaching limit: save state to Engram and escalate. (Prevents 476-call cascades.)
