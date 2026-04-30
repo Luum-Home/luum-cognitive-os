@@ -157,9 +157,9 @@ SPIFFE (Secure Production Identity Framework For Everyone) provides:
 
 ## Integration with Cognitive OS
 
-The identity stack integrates with existing Cognitive OS agentic primitives:
+The identity stack integrates with existing Cognitive OS surfaces and subsystems:
 
-| Cognitive OS Primitive | Identity Integration |
+| Cognitive OS Surface / Subsystem | Identity Integration |
 |---|---|
 | Control Plane | Agent registration includes AIM key pair generation |
 | Multi-Agent | Orchestrator creates DCTs (Agent Passport) when spawning sub-agents |

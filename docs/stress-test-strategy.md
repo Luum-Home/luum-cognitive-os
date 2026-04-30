@@ -1,11 +1,11 @@
 # Stress Test Strategy: Cognitive OS Decomposing a Production Monolith
 
 > Use the Cognitive OS itself to decompose the 170-endpoint monolith into Go microservices.
-> This is the ultimate validation: a 13-agentic-primitive system proving itself on a massive, real-world task.
+> This is the ultimate validation: a 13-capability system proving itself on a massive, real-world task.
 
 ## 1. The Idea
 
-We built a 13-agentic-primitive Cognitive OS. The best way to prove it works is to use it for a massive real task: decomposing a 170-endpoint monolith into Go microservices.
+We built a 13-capability Cognitive OS. The best way to prove it works is to use it for a massive real task: decomposing a 170-endpoint monolith into Go microservices.
 
 Instead of manually extracting each domain, we let the Cognitive OS orchestrate the entire process -- using its own memory, skills, error learning, fault tolerance, and self-improvement loops to get better at each successive extraction.
 

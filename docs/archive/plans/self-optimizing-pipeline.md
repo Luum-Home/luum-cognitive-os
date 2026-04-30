@@ -396,11 +396,11 @@ Phase 4 (template dedup, 11 integrations):
 4. **Agent status** — which agents are running, what they're doing, expected completion
 5. **Plan progress** — which workstreams advanced this session
 
-**Phase 0 (REQUIRED before implementation): Agentic Primitive Audit for Heartbeat**
+**Phase 0 (REQUIRED before implementation): State Surface Audit for Heartbeat**
 
-Before building the heartbeat, audit ALL existing agentic primitives to determine which need heartbeat integration. For each agentic primitive, ask: "If the session dies right now, would this agentic primitive's state be lost?"
+Before building the heartbeat, audit ALL existing session state surfaces to determine which need heartbeat integration. For each state surface, ask: "If the session dies right now, would this state be lost?"
 
-| Primitive | State to persist? | Currently persisted? | Needs heartbeat? |
+| State surface | State to persist? | Currently persisted? | Needs heartbeat? |
 |---|---|---|---|
 | `TodoWrite` state | Current task list | NO (context only) | **YES** |
 | Active sub-agents | Agent IDs, descriptions, prompts | NO (context only) | **YES** |
@@ -417,7 +417,7 @@ Before building the heartbeat, audit ALL existing agentic primitives to determin
 | Queue advisor state | Last scoring, reorder decisions | NO (ephemeral) | Low priority |
 | Hook tuning state | False positive rates | NO (not built yet, see WS7c) | Future |
 
-This audit must be RE-RUN when new agentic primitives are added. The heartbeat's `register()` mechanism makes this extensible — each new agentic primitive registers its own collector.
+This audit must be RE-RUN when new stateful surfaces or collectors are added. The heartbeat's `register()` mechanism makes this extensible — each new collector registers the state it owns.
 
 **Implementation**:
 - `lib/state_heartbeat.py` — pluggable collector architecture, writes snapshot
@@ -431,7 +431,7 @@ This audit must be RE-RUN when new agentic primitives are added. The heartbeat's
 - Write snapshot to BOTH local file AND engram (belt + suspenders)
 - Engram save is async (non-blocking) — `mem_save` in background
 
-**Integration with existing agentic primitives**:
+**Integration with existing session lifecycle surfaces**:
 - Extends `auto-checkpoint.sh` (code) with state checkpoint (context)
 - Extends `pre-compaction-flush.sh` (last resort) with continuous protection
 - Extends `crash-recovery.sh` (detection) with rich state to recover from
