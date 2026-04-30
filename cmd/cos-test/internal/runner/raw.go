@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"time"
 )
 
@@ -61,8 +62,12 @@ func (r *PytestRunner) RawInvocationWithOptions(args []string, opts InvocationOp
 		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(opts.TimeoutSeconds)*time.Second)
 		defer cancel()
 		cmd := exec.CommandContext(ctx, r.runnerProgram(), r.runnerArgs(args, opts)...)
+		cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 		err := r.runCommand(cmd)
 		if ctx.Err() == context.DeadlineExceeded {
+			if cmd.Process != nil {
+				_ = syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
+			}
 			_ = r.WriteResourceOutcome(opts, "resource_exhausted")
 			return fmt.Errorf("RESOURCE_EXHAUSTED: lane %q exceeded timeout budget %ds", opts.Lane, opts.TimeoutSeconds)
 		}
