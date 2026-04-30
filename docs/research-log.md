@@ -375,3 +375,39 @@ full 85% reduction must explicitly set `expansion.tier_filter: [0]` in
   Phase 1: FTS5 keyword search. Phase 2 (deferred): embedding-based retrieval.
   Implementation blocked on three open questions (embed model, update cadence, UX).
   Engram topic: `cos/tier2-hermes-alignment`.
+
+## 2026-04-30: Mid-task memory tool (Tier 1 #5)
+
+**ADR**: [ADR-078](adrs/ADR-078-mid-task-memory-tool.md)
+
+Closed the Hermes "mid-task memory scan as a tool" gap identified in ADR-074's
+Tier-1 backlog. The Hermes design has agents invoke memory scanning mid-task as a
+callable tool — this ADR ports that primitive.
+
+### Ported
+
+| File | LOC | Source |
+|------|-----|--------|
+| `lib/memory_manager.py` | ~420 | Hermes `agent/memory_manager.py:83-374` (verbatim) + thin local `MemoryProvider` ABC (~50 LOC) + `EngramMemoryProvider` concrete impl (~90 LOC) |
+| `skills/memory-scan/SKILL.md` | ~100 | New — exposes `lib.memory_scanner` as agent-callable skill |
+| `hooks/memory-prefetch.sh` | ~50 | New — async UserPromptSubmit hook |
+| `tests/unit/test_memory_manager.py` | ~230 | 30 unit tests covering MemoryManager + context fencing |
+| `tests/unit/test_engram_memory_provider.py` | ~170 | 23 unit tests covering EngramMemoryProvider + scanner smoke |
+
+### Key decisions
+
+- Honcho / Hindsight / Mem0 providers rejected (out of scope, SaaS dependencies).
+- `EngramMemoryProvider` gracefully degrades when Engram binary is absent (CI-safe).
+- Hook registered under `UserPromptSubmit` (async) — not `PreToolUse[Agent]` — to
+  avoid adding latency to every tool sub-call.
+- Mid-task invocation is **opt-in**: no automated injection per turn (follow-up item).
+
+### Files changed
+
+- `lib/memory_manager.py` (new)
+- `skills/memory-scan/SKILL.md` (new)
+- `hooks/memory-prefetch.sh` (new)
+- `scripts/apply-efficiency-profile.sh` (hook registered)
+- `tests/unit/test_memory_manager.py` (new, 30 tests)
+- `tests/unit/test_engram_memory_provider.py` (new, 23 tests)
+- `docs/adrs/ADR-078-mid-task-memory-tool.md` (new)
