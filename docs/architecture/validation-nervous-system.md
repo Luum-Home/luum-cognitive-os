@@ -137,7 +137,7 @@ base.
 - `docs/testing/test-runner-roles.md`
 - `docs/adrs/ADR-072-test-lane-taxonomy.md`
 - `docs/adrs/ADR-073-test-architecture-role-registry.md`
-- `docs/architecture/plans/test-resource-governance-sprint.md`
+- `.cognitive-os/plans/architecture/test-resource-governance-sprint.md`
 - `.codex/skills/test-matrix/SKILL.md`
 - `.cognitive-os/test-lanes.yaml`
 - `.cognitive-os/test-resource-policy.yaml`
