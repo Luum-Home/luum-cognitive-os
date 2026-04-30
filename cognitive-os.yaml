@@ -535,10 +535,10 @@ orchestration:
 
 efficiency:
   # STATUS: implemented
-  profile: default               # default | full  (ADR-002: collapsed 3-tier system)
+  profile: default               # default | full  (ADR-093: collapsed 3-tier system)
   profiles:
     default:
-      description: "10 curated core skills, ~29 standard hooks, 14 core rules. ADR-002 vanilla default."
+      description: "10 curated core skills, ~29 standard hooks, 14 core rules. ADR-093 vanilla default."
       rules_loading: core_rules
       hooks: default
       capability_level: 3

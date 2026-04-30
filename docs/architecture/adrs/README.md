@@ -1,35 +1,41 @@
-# Architecture Decision Records (ADR-006 – ADR-026)
+# Architecture Decision Records — DEPRECATED LOCATION
 
-> **Note**: This directory contains ADR-006 through ADR-026 only (stabilization phase, 2026-03 to 2026-04-16).
-> ADR-027 and later live in `docs/adrs/` (the canonical path for new decisions).
-> Both paths are tracked; cross-reference the other README at `docs/adrs/README.md`.
+> **MIGRATED (ADR-087, 2026-04-30)**: All files in this directory have been moved to
+> `docs/adrs/` — the canonical location for all project-level ADRs.
+> One-line redirect stubs remain here for one release cycle.
+> See `docs/adrs/README.md` for the current index.
 
-Retroactive ADRs reconstructed from engram memory (309 decision/architecture entries) and git history (252 commits, Mar 23 - Apr 13, 2026).
+The files below are redirect stubs pointing to their new canonical locations.
 
-ADRs 001-005 live in `docs/architecture/cos-dispatch/adrs/` and cover the COS dispatch subsystem.
+## Historical Index (redirects to `docs/adrs/`)
 
-## Project-Level ADRs
-
-| ADR | Date | Title | Status |
-|-----|------|-------|--------|
-| [006](006-agpl-license-compliance.md) | 2026-03-23 | AGPL License Compliance -- Replace Redis and MinIO | Accepted |
-| [007](007-cognitive-os-rebrand.md) | 2026-03-24 | Rebrand from Agent OS to Cognitive OS | Accepted |
-| [008](008-multi-tool-support.md) | 2026-03-28 | Multi-Tool Support -- Not Claude Code-Only | Accepted |
-| [009](009-package-architecture.md) | 2026-03-28 | Package Architecture -- 375 Agentic Primitives Reclassified | Accepted |
-| [010](010-hook-architecture-v2.md) | 2026-03-28 | Hook Architecture v2 -- 7 Event Types, 3 Profiles | Accepted |
-| [011](011-dual-gateway-bifrost-litellm.md) | 2026-03-28 | Dual Gateway -- Bifrost Primary, LiteLLM Fallback | Superseded by ADR-018 |
-| [012](012-prompt-driven-governance.md) | 2026-03-29 | Prompt-Driven Governance -- Declarative Hook Logic | Accepted |
-| [013](013-security-stack.md) | 2026-03-29 | Security Stack -- 8 Layers, 32 Tools | Accepted |
-| [014](014-sdd-fast-path.md) | 2026-03-31 | SDD Fast Path -- Skip Phases for Capable Models | Accepted |
-| [015](015-rules-to-hooks-migration.md) | 2026-04-10 | Rules-to-Hooks Migration -- Context to Enforcement | Accepted |
-| [016](016-context-diet.md) | 2026-03-31 | Context Diet -- Token Optimization Strategy | Accepted |
-| [017](017-stabilization-freeze.md) | 2026-04-11 | Stabilization Freeze -- No New Features | Accepted |
-| [018](018-docker-to-pip-migration.md) | 2026-04-11 | Docker-to-pip Migration -- Service Infrastructure | Accepted |
-| [019](019-scope-tagging.md) | 2026-04-13 | Scope Tagging -- Agentic Primitive Audience Classification | Accepted |
-| [020](020-contamination-fix.md) | 2026-04-13 | Contamination Fix -- Remove Project-Specific Code | Accepted |
-| [021](021-vendor-agnostic-with-adapters.md) | 2026-04-16 | Vendor-Agnostic State with Provider Adapters | Accepted |
-| [022](022-prompt-type-hooks-adoption.md) | 2026-04-15 | Prompt-Type Hooks Adoption -- Haiku-Evaluated Advisories | Accepted |
-| [023](023-updated-input-pattern.md) | 2026-04-16 | updatedInput Pattern -- Mutate Tool Input Instead of Blocking | Accepted |
+| Old path | New canonical path |
+|---|---|
+| [006-agpl-license-compliance.md](006-agpl-license-compliance.md) | `docs/adrs/ADR-006-agpl-license-compliance.md` |
+| [007-cognitive-os-rebrand.md](007-cognitive-os-rebrand.md) | `docs/adrs/ADR-007-cognitive-os-rebrand.md` |
+| [008-multi-tool-support.md](008-multi-tool-support.md) | `docs/adrs/ADR-008-multi-tool-support.md` |
+| [009-package-architecture.md](009-package-architecture.md) | `docs/adrs/ADR-009-package-architecture.md` |
+| [010-hook-architecture-v2.md](010-hook-architecture-v2.md) | `docs/adrs/ADR-010-hook-architecture-v2.md` |
+| [011-dual-gateway-bifrost-litellm.md](011-dual-gateway-bifrost-litellm.md) | `docs/adrs/ADR-011-dual-gateway-bifrost-litellm.md` |
+| [012-prompt-driven-governance.md](012-prompt-driven-governance.md) | `docs/adrs/ADR-012-prompt-driven-governance.md` |
+| [013-security-stack.md](013-security-stack.md) | `docs/adrs/ADR-013-security-stack.md` |
+| [014-sdd-fast-path.md](014-sdd-fast-path.md) | `docs/adrs/ADR-014-sdd-fast-path.md` |
+| [015-rules-to-hooks-migration.md](015-rules-to-hooks-migration.md) | `docs/adrs/ADR-015-rules-to-hooks-migration.md` |
+| [016-context-diet.md](016-context-diet.md) | `docs/adrs/ADR-016-context-diet.md` |
+| [017-stabilization-freeze.md](017-stabilization-freeze.md) | `docs/adrs/ADR-017-stabilization-freeze.md` |
+| [018-docker-to-pip-migration.md](018-docker-to-pip-migration.md) | `docs/adrs/ADR-018-docker-to-pip-migration.md` |
+| [019-scope-tagging.md](019-scope-tagging.md) | `docs/adrs/ADR-019-scope-tagging.md` |
+| [020-contamination-fix.md](020-contamination-fix.md) | `docs/adrs/ADR-020-contamination-fix.md` |
+| [021-vendor-agnostic-with-adapters.md](021-vendor-agnostic-with-adapters.md) | `docs/adrs/ADR-021-vendor-agnostic-with-adapters.md` |
+| [022-prompt-type-hooks-adoption.md](022-prompt-type-hooks-adoption.md) | `docs/adrs/ADR-022-prompt-type-hooks-adoption.md` |
+| [023-updated-input-pattern.md](023-updated-input-pattern.md) | `docs/adrs/ADR-023-updated-input-pattern.md` |
+| [024-task-panel-bridge.md](024-task-panel-bridge.md) | `docs/adrs/ADR-024-task-panel-bridge.md` |
+| [025-install-update-loop.md](025-install-update-loop.md) | `docs/adrs/ADR-025-install-update-loop.md` |
+| [026-r2-r3-design-review.md](026-r2-r3-design-review.md) | `docs/adrs/ADR-026-r2-r3-design-review.md` |
+| [026a-decisions.md](026a-decisions.md) | `docs/adrs/ADR-026a-decisions.md` |
+| [027-headless-clustered-runtime-direction.md](027-headless-clustered-runtime-direction.md) | `docs/adrs/ADR-091-headless-clustered-runtime-direction.md` (renumbered: 027→091 due to collision) |
+| [ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md](ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md) | `docs/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md` |
+| [ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md](ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md) | `docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md` |
 
 ## Decision Timeline
 
