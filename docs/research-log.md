@@ -495,3 +495,33 @@ Measured ~93ms per wrapper invocation on macOS (2x python3 subprocess launches f
 ```bash
 python3 scripts/hook_timing_report.py --live
 ```
+
+## 2026-04-30: Learning loop final 30% (Phase 1 ship + Phases 2/3 design)
+
+**Session goal**: close the remaining 30% of the COS learning loop across three gaps.
+
+**Gap #1 — Auto-action on skill failures (SHIPPED)**
+
+- Verified `skill-feedback.jsonl` schema: `{timestamp, skill, success: bool}` (boolean, not string).
+- Created `lib/skill_failure_repair.py`: three public functions (`find_failing_skills`, `propose_repair_action`, `emit_repair_signal`). Handles window filtering, stale-skill detection (deprecate heuristic), and error-uniformity heuristic (regenerate vs investigate).
+- Created `hooks/skill-failure-monitor.sh`: Stop-event hook with 5-minute cooldown guard. Calls the Python module; emits signals to `skill-repair-queue.jsonl`. Does NOT auto-regenerate.
+- Registered in `scripts/apply-efficiency-profile.sh` (Stop group, sync).
+- Created `skills/repair-skill/SKILL.md`: gated consumer skill that reads queue and delegates to `/add-skill`, `/skill-creator`, or marks deprecation.
+- 19 unit tests, all passing (`tests/unit/test_skill_failure_repair.py`).
+- ADR-090 (Accepted): documents the detect→signal→gated-action design, the runaway-loop rationale, and threshold choices.
+
+**Gap #2 — Skill synthesis from success patterns (ADR DESIGN ONLY)**
+
+- ADR-095 (Proposed): documents three candidate definitions of "success pattern" (Options A/B/C), detection windows, recurrence thresholds, output formats (draft SKILL.md vs auto-create experimental tier).
+- Key finding: `session-learnings.jsonl` does NOT capture per-task tool sequences; Option A (repeated successful skill invocations) is the only option implementable with current data. Options B/C require new instrumentation.
+- Five open questions documented; must be answered before implementation sprint.
+- NO code written for this gap.
+
+**Gap #3 — Review-agent pattern (ADR DESIGN ONLY)**
+
+- Researched Hermes `_spawn_background_review` in `.claude/plugins/hermes-agent/run_agent.py` (lines 2749–2828). Documented what is portable (prompt templates, iteration cap, pattern) vs what is not (AIAgent fork, threading.Thread, shared `_memory_store`).
+- ADR-096 (Proposed): documents four design dimensions (when/what/output/cost gate), five open questions, and cost analysis (Haiku ≈ $0.075/day at 50 agents; Sonnet exceeds governance threshold).
+- Key finding: review agent and skill synthesis (ADR-095) should be co-designed — reviewer is the natural detector for success patterns.
+- NO code written for this gap.
+
+**ADR numbers used**: 090, 095, 096 (089 was already taken by multi-session git coordination; 091-094 were taken by a concurrent ADR rename migration).
