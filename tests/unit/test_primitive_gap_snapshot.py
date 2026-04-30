@@ -132,3 +132,18 @@ def test_cli_fails_on_regression_against_trend(tmp_path: Path, monkeypatch) -> N
 
     assert exit_code == 1
     assert "Regressions" in (tmp_path / "docs/reports/regressions.md").read_text(encoding="utf-8")
+
+
+def test_generated_snapshot_reports_do_not_influence_evidence_counts(tmp_path: Path) -> None:
+    write(tmp_path / "docs/reports/primitive-gap-latest.json", '{"family":"mcp_tools"}\n')
+    write(tmp_path / "docs/reports/primitive-gap-latest.md", "mcp_tools\n")
+    write(tmp_path / "docs/reports/primitive-gap-regressions.md", "mcp regression\n")
+    write(tmp_path / "docs/reports/ordinary.md", "mcp\n")
+
+    files = primitive_gap_snapshot.text_files(tmp_path, ["docs"])
+    names = {path.name for path in files}
+
+    assert "ordinary.md" in names
+    assert "primitive-gap-latest.json" not in names
+    assert "primitive-gap-latest.md" not in names
+    assert "primitive-gap-regressions.md" not in names
