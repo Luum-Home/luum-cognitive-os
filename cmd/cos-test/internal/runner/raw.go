@@ -2,10 +2,12 @@ package runner
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -22,6 +24,19 @@ type InvocationOptions struct {
 	Workers        string
 	Lane           string
 	TimeoutSeconds int
+	DockerPolicy   string
+	CostPolicy     string
+	ArtifactPolicy string
+}
+
+type resourceOutcomeArtifact struct {
+	Lane           string `json:"lane"`
+	Workers        string `json:"workers"`
+	TimeoutSeconds int    `json:"timeout_seconds"`
+	DockerPolicy   string `json:"docker_policy"`
+	CostPolicy     string `json:"cost_policy"`
+	ArtifactPolicy string `json:"artifact_policy"`
+	Outcome        string `json:"outcome"`
 }
 
 // RawInvocation runs pytest via scripts/pytest-with-summary.sh so that every
@@ -48,6 +63,7 @@ func (r *PytestRunner) RawInvocationWithOptions(args []string, opts InvocationOp
 		cmd := exec.CommandContext(ctx, r.runnerProgram(), r.runnerArgs(args, opts)...)
 		err := r.runCommand(cmd)
 		if ctx.Err() == context.DeadlineExceeded {
+			_ = r.WriteResourceOutcome(opts, "resource_exhausted")
 			return fmt.Errorf("RESOURCE_EXHAUSTED: lane %q exceeded timeout budget %ds", opts.Lane, opts.TimeoutSeconds)
 		}
 		return err
@@ -94,6 +110,18 @@ func (r *PytestRunner) runnerArgs(args []string, opts InvocationOptions) []strin
 		if opts.Lane != "" {
 			out = append(out, "--lane", opts.Lane)
 		}
+		if opts.TimeoutSeconds > 0 {
+			out = append(out, "--timeout-seconds", fmt.Sprintf("%d", opts.TimeoutSeconds))
+		}
+		if opts.DockerPolicy != "" {
+			out = append(out, "--docker-policy", opts.DockerPolicy)
+		}
+		if opts.CostPolicy != "" {
+			out = append(out, "--cost-policy", opts.CostPolicy)
+		}
+		if opts.ArtifactPolicy != "" {
+			out = append(out, "--artifact-policy", opts.ArtifactPolicy)
+		}
 		// "--" separator preserves any args that look like wrapper flags
 		// (e.g. -k, -m). Wrapper strips its own --workers before this point.
 		out = append(out, "--")
@@ -115,4 +143,82 @@ func (r *PytestRunner) wrapperAvailable() bool {
 		return false
 	}
 	return info.Mode().IsRegular()
+}
+
+// WriteResourceOutcome persists resource-policy metadata for outcomes that
+// happen outside the shell wrapper (for example policy blocks and process
+// timeouts). Normal pytest exits are written by scripts/pytest-with-summary.sh.
+func (r *PytestRunner) WriteResourceOutcome(opts InvocationOptions, outcome string) error {
+	reportRoot := os.Getenv("COS_TEST_REPORT_DIR")
+	if reportRoot == "" {
+		reportRoot = filepath.Join(r.cfg.ProjectRoot, ".cognitive-os", "reports", "test-runs")
+	}
+	lane := opts.Lane
+	if strings.TrimSpace(lane) == "" {
+		lane = "unknown"
+	}
+	if strings.TrimSpace(outcome) == "" {
+		outcome = "unknown"
+	}
+	runDir := filepath.Join(reportRoot, fmt.Sprintf("%s-%s-%s", time.Now().UTC().Format("20060102T150405Z"), slug(lane), slug(outcome)))
+	if err := os.MkdirAll(runDir, 0o755); err != nil {
+		return err
+	}
+	artifact := resourceOutcomeArtifact{
+		Lane:           opts.Lane,
+		Workers:        opts.Workers,
+		TimeoutSeconds: opts.TimeoutSeconds,
+		DockerPolicy:   opts.DockerPolicy,
+		CostPolicy:     opts.CostPolicy,
+		ArtifactPolicy: opts.ArtifactPolicy,
+		Outcome:        outcome,
+	}
+	body, err := json.MarshalIndent(artifact, "", "  ")
+	if err != nil {
+		return err
+	}
+	body = append(body, '\n')
+	if err := os.WriteFile(filepath.Join(runDir, "resource-policy.json"), body, 0o644); err != nil {
+		return err
+	}
+	summary := fmt.Sprintf("# Resource Policy Outcome\n\n- Lane: %s\n- Workers: %s\n- Timeout seconds: %d\n- Docker policy: %s\n- Cost policy: %s\n- Artifact policy: %s\n- Resource outcome: %s\n",
+		artifact.Lane,
+		artifact.Workers,
+		artifact.TimeoutSeconds,
+		artifact.DockerPolicy,
+		artifact.CostPolicy,
+		artifact.ArtifactPolicy,
+		artifact.Outcome,
+	)
+	if err := os.WriteFile(filepath.Join(runDir, "summary.txt"), []byte(summary), 0o644); err != nil {
+		return err
+	}
+	if err := os.WriteFile(filepath.Join(runDir, "exit-code.txt"), []byte("2\n"), 0o644); err != nil {
+		return err
+	}
+	latest := filepath.Join(reportRoot, "latest")
+	_ = os.Remove(latest)
+	_ = os.Symlink(runDir, latest)
+	return nil
+}
+
+func slug(value string) string {
+	value = strings.ToLower(strings.TrimSpace(value))
+	if value == "" {
+		return "unknown"
+	}
+	var b strings.Builder
+	lastDash := false
+	for _, r := range value {
+		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
+			b.WriteRune(r)
+			lastDash = false
+			continue
+		}
+		if !lastDash {
+			b.WriteByte('-')
+			lastDash = true
+		}
+	}
+	return strings.Trim(b.String(), "-")
 }

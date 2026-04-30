@@ -96,7 +96,7 @@ func runCluster(cfg *config.Config, laneName string, dryRun bool) error {
 	fmt.Println()
 
 	for _, inv := range plan.Invokes {
-		opts := runner.InvocationOptions{Workers: inv.Workers, Lane: laneName}
+		opts := invocationOptionsFor(plan, inv, laneName)
 		fmt.Printf("[cos-test cluster] %s: %s\n", inv.Label, strings.Join(pr.PytestArgsWithOptions(inv.Args, opts), " "))
 	}
 
@@ -105,12 +105,15 @@ func runCluster(cfg *config.Config, laneName string, dryRun bool) error {
 		return nil
 	}
 	if err := enforceResourcePolicy(plan.Resources); err != nil {
+		if len(plan.Invokes) > 0 {
+			_ = pr.WriteResourceOutcome(invocationOptionsFor(plan, plan.Invokes[0], laneName), "blocked_policy")
+		}
 		return err
 	}
 
 	worst := 0
 	for _, inv := range plan.Invokes {
-		if err := pr.RawInvocationWithOptions(inv.Args, runner.InvocationOptions{Workers: inv.Workers, Lane: laneName, TimeoutSeconds: plan.Resources.TimeoutSeconds}); err != nil {
+		if err := pr.RawInvocationWithOptions(inv.Args, invocationOptionsFor(plan, inv, laneName)); err != nil {
 			worst = 1
 		}
 	}
@@ -222,6 +225,17 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 		return nil, fmt.Errorf("lane %q: unknown parallel mode %q", laneName, lane.Parallel)
 	}
 	return plan, nil
+}
+
+func invocationOptionsFor(plan *clusterPlan, inv invokeSpec, laneName string) runner.InvocationOptions {
+	return runner.InvocationOptions{
+		Workers:        inv.Workers,
+		Lane:           laneName,
+		TimeoutSeconds: plan.Resources.TimeoutSeconds,
+		DockerPolicy:   plan.Resources.DockerPolicy,
+		CostPolicy:     plan.Resources.CostPolicy,
+		ArtifactPolicy: plan.Resources.ArtifactPolicy,
+	}
 }
 
 func enforceResourcePolicy(resources resourcepolicy.ResourcePolicy) error {
