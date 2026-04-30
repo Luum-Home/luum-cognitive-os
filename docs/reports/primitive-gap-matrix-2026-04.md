@@ -134,3 +134,113 @@ Added protection:
 - CI behavior: weekly workflow fails on new near-duplicate Markdown pairs versus baseline.
 
 Current scan: 364 docs scanned, 0 duplicate pairs at threshold 0.72.
+
+Pre-write guard added:
+
+- hook: `hooks/project-docs-convention.sh`
+- trigger: PreToolUse `Edit|Write` docs Markdown target that does not exist yet
+- behavior: soft-warns agents to search/update existing docs before creating a new one and lists candidate docs by filename/content terms
+- strict opt-in: `COS_STRICT_DOCS_REINVENTION=1` returns exit 2 for new docs creation
+- tests: `tests/unit/test_project_docs_writers.py`
+
+## Provenance and ADR Coordination Guards
+
+Two live DX regressions came from parallel sessions producing indistinguishable
+commits and racing for ADR numbers. These are now treated as coordination
+primitives with behavioral proof.
+
+Commit provenance:
+
+- hook: `.githooks/prepare-commit-msg`
+- script: `scripts/commit_provenance.py`
+- behavior: appends `X-COS-Origin`, `X-COS-Session`, and `X-COS-Harness`
+  trailers to local commit messages, using session/harness environment when
+  available and safe `unknown` fallbacks otherwise
+- tests: `tests/unit/test_commit_provenance.py`
+- proof standard: includes a real temporary git repository commit with
+  `core.hooksPath=.githooks`, then verifies trailers in `git log`
+
+ADR reservation:
+
+- script: `scripts/adr_reserve.py`
+- state: `.cognitive-os/locks/adr-reservations.json`
+- lock: `.cognitive-os/locks/adr-reservations.json.lock`
+- behavior: reserves the next monotonic ADR number with title, slug,
+  session, owner, expiry, and target path metadata
+- tests: `tests/unit/test_adr_reserve.py`
+- proof standard: includes concurrent subprocess reservations to verify
+  cross-process uniqueness under the file lock
+
+Remaining gap:
+
+- ADR file creation now gets a PreToolUse warning/block path when the target ADR
+  number has no active reservation (`COS_STRICT_ADR_RESERVATION=1` to block).
+- Expired ADR reservations can be listed and cleaned up with
+  `scripts/adr_reserve.py --list --json` and
+  `scripts/adr_reserve.py --cleanup-expired --json`.
+- `lib/adr_detector.py` now writes generated drafts under canonical `docs/adrs/`
+  and reserves the ADR number before writing.
+
+## Row-Level Primitive Audit
+
+Family-level counts were useful but too coarse. The row-level audit now emits a
+concrete keep/harden/demote/delete queue for hooks, skills, rules, and metrics.
+
+- script: `scripts/primitive_row_audit.py`
+- latest JSON: `docs/reports/primitive-row-audit-latest.json`
+- latest Markdown: `docs/reports/primitive-row-audit-latest.md`
+- tests: `tests/unit/test_primitive_row_audit.py`
+- current rows: 639
+
+The audit maps:
+
+- hook file → registered lifecycle events → test mention → metric emission
+- skill file → frontmatter/trigger → runtime reference → test mention
+- rule file → compact-index/load reference → `<!-- TIER: N -->` metadata → test mention
+- metric stream → size/non-empty signal → producer/consumer mentions
+
+## Claim-to-Proof and Reduction Backlog
+
+Product claims are now audited separately from primitive files.
+
+- claim audit script: `scripts/claim_proof_audit.py`
+- latest claim JSON: `docs/reports/claim-proof-latest.json`
+- latest claim Markdown: `docs/reports/claim-proof-latest.md`
+- reduction backlog script: `scripts/reduction_backlog.py`
+- latest backlog JSON: `docs/reports/reduction-backlog-latest.json`
+- latest backlog Markdown: `docs/reports/reduction-backlog-latest.md`
+- tests: `tests/unit/test_claim_proof_and_reduction.py`
+
+Current outputs:
+
+- claim rows: 193
+- unmapped claim rows: 0 (`--fail-unmapped` now blocks regressions)
+- reduction backlog items: 0
+
+Reduction triage notes:
+
+- P1 `delete-or-wire` hook rows are now resolved by distinguishing dormant
+  behavior-tested hooks, projected profile hooks, and optional package aliases
+  from truly dead surface.
+- P1 registered-hook hardening is covered by behavior tests for
+  `dequeue-notify.sh`, `memory-prefetch.sh`, `profile-drift-autoapply.sh`, and
+  `skill-frontmatter-validator.sh`.
+- P2 weak claims are resolved by demoting overconfident product language and
+  filtering code/config fragments that are not product claims.
+- P2 optional/dormant primitives are recorded in
+  `manifests/reduction-demotions.json`.
+- Skill/rule runtime contracts are covered by
+  `tests/unit/test_skill_and_rule_runtime_contracts.py`.
+
+The weekly primitive gap workflow now runs the row audit, claim-to-proof audit,
+and reduction backlog generator after the family-level snapshot and duplicate
+docs audit. It also uploads and commits the generated row/claim/backlog reports.
+
+## Alternatives Comparison
+
+Evidence-bound alternatives comparison now lives at:
+
+- `docs/reports/alternatives-comparison-2026-04.md`
+
+It explicitly marks where COS wins, where it loses, and where it should stop
+presenting aspirational behavior as current product behavior.
