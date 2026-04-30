@@ -35,4 +35,4 @@ The three-model architecture for project consumption was documented:
 - The `cognitive-os.yaml` config file became the single customization surface, replacing scattered hardcoded values.
 - The three consumption models provided clear documentation for how projects should integrate with the OS at different sophistication levels.
 - 5 skills were parameterized (ADR-019 scope tagging commit) to read from config instead of assuming project context.
-- Future contamination is prevented by the scope tagging system (ADR-019) and the component registration hook, which validates that os-only agentic primitives do not reference project-specific paths.
+- Future contamination is prevented by the scope tagging system (ADR-019) and the agentic primitive registration hook, which validates that os-only agentic primitives do not reference project-specific paths.
