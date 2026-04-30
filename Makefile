@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help test test-local-fast test-laptop test-local-wide-no-docker test-ci-default test-integration-no-docker test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
+.PHONY: help test test-local-fast test-laptop test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -23,6 +23,7 @@ help:
 	@echo "Targets:"
 	@echo "  test-local-fast   Official local quick lane: cos-test focused."
 	@echo "  test-laptop       Laptop-friendly broad lane: capped workers, no Docker/cost/integration/chaos."
+	@echo "  test-laptop-integration  Laptop-friendly explicit integration lane: serial + nice, still slow/stateful."
 	@echo "  test-local-wide-no-docker  Official local broad lane without Docker/cost."
 	@echo "  test-ci-default   Official CI/pre-release default: broad non-Docker gate; do not run constantly on laptops."
 	@echo "  test-integration-no-docker  Explicit slow integration lane without Docker."
@@ -65,6 +66,10 @@ test-laptop: cos-test
 	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane system
 	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane behavior
 	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane hooks
+
+test-laptop-integration: cos-test
+	@echo "[test-laptop-integration] Explicit SO integration validation: serial, no Docker, lower CPU priority. Still slow/stateful." >&2
+	@nice -n 10 ./cos-test cluster --lane integration
 
 test-local-wide-no-docker: cos-test
 	@./cos-test broad --no-docker
