@@ -11,6 +11,7 @@ import (
 	"luum-agent-os/cmd/cos-test/internal/banner"
 	"luum-agent-os/cmd/cos-test/internal/config"
 	"luum-agent-os/cmd/cos-test/internal/lanes"
+	"luum-agent-os/cmd/cos-test/internal/resourcepolicy"
 	"luum-agent-os/cmd/cos-test/internal/runner"
 )
 
@@ -56,10 +57,11 @@ func init() {
 
 // clusterPlan is one or two pytest invocations to run for a lane.
 type clusterPlan struct {
-	Lane    lanes.Lane
-	Workers string // "auto:n", "serial", "split (marker)"
-	Reason  string
-	Invokes []invokeSpec // one entry for parallel:true|false, two for marker
+	Lane      lanes.Lane
+	Resources resourcepolicy.ResourcePolicy
+	Workers   string // "auto:n", "serial", "split (marker)"
+	Reason    string
+	Invokes   []invokeSpec // one entry for parallel:true|false, two for marker
 }
 
 type invokeSpec struct {
@@ -90,6 +92,7 @@ func runCluster(cfg *config.Config, laneName string, dryRun bool) error {
 	rendered := banner.Render(info)
 	rendered = strings.Replace(rendered, "tests=-1", "tests=?", 1)
 	fmt.Print(rendered)
+	fmt.Printf("[cos-test cluster] resources: %s\n", plan.Resources.Summary())
 	fmt.Println()
 
 	for _, inv := range plan.Invokes {
@@ -129,7 +132,16 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 		return nil, fmt.Errorf("lane %q has no paths configured", laneName)
 	}
 
-	plan := &clusterPlan{Lane: lane}
+	pol, err := resourcepolicy.Load(cfg.ProjectRoot)
+	if err != nil {
+		return nil, err
+	}
+	if err := pol.ValidateLaneNames(reg.Names()); err != nil {
+		return nil, err
+	}
+	resources := pol.Effective(laneName)
+
+	plan := &clusterPlan{Lane: lane, Resources: resources}
 	forcedSerial := isLaneForcedSerial(laneName)
 	// excludeFilter returns the "-m" args to apply the lane's MarkerExclude,
 	// if any, optionally combined with an existing "not X" expression.
@@ -148,8 +160,8 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 
 	switch lane.Parallel {
 	case lanes.ParallelTrue:
-		worker := "auto"
-		plan.Workers = "auto:n (parallel-safe per registry)"
+		worker := resources.Workers
+		plan.Workers = workerLabel(worker) + " (parallel-safe per registry)"
 		plan.Reason = "lane parallel=true"
 		if forcedSerial {
 			worker = "0"
@@ -180,8 +192,8 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 		if marker == "" {
 			return nil, fmt.Errorf("lane %q is parallel:marker but marker_serial is empty", laneName)
 		}
-		parallelWorker := "auto"
-		plan.Workers = "split (marker:" + marker + ")"
+		parallelWorker := resources.Workers
+		plan.Workers = "split (marker:" + marker + ", parallel=" + workerLabel(parallelWorker) + ")"
 		plan.Reason = fmt.Sprintf("parallel-safe except marker %q (run serial)", marker)
 		if forcedSerial {
 			parallelWorker = "0"
@@ -207,6 +219,17 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 		return nil, fmt.Errorf("lane %q: unknown parallel mode %q", laneName, lane.Parallel)
 	}
 	return plan, nil
+}
+
+func workerLabel(workers string) string {
+	switch workers {
+	case "0":
+		return "serial"
+	case "auto":
+		return "auto:n"
+	default:
+		return workers
+	}
 }
 
 func isLaneForcedSerial(laneName string) bool {
