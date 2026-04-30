@@ -6,12 +6,13 @@ Reads .cognitive-os/metrics/hook-timing.jsonl and prints per-hook statistics
 individual invocations list.
 
 Usage:
-  python3 scripts/hook_timing_report.py              # full report
-  python3 scripts/hook_timing_report.py --live       # tail -f the JSONL, human-readable
-  python3 scripts/hook_timing_report.py --event Stop # filter by harness event
-  python3 scripts/hook_timing_report.py --top 20     # show top 20 slowest (default 10)
-  python3 scripts/hook_timing_report.py --since 1h   # only records from last hour
-  python3 scripts/hook_timing_report.py --json       # machine-readable JSON output
+  python3 scripts/hook_timing_report.py                    # full report
+  python3 scripts/hook_timing_report.py --live             # tail -f the JSONL, human-readable
+  python3 scripts/hook_timing_report.py --event Stop       # filter by harness event
+  python3 scripts/hook_timing_report.py --top 20           # show top 20 slowest (default 10)
+  python3 scripts/hook_timing_report.py --since 1h         # only records from last hour
+  python3 scripts/hook_timing_report.py --json             # machine-readable JSON output
+  python3 scripts/hook_timing_report.py --threshold-only   # show only budget violators
 """
 
 import argparse
@@ -153,6 +154,30 @@ def _compute_stats(records: list[dict]) -> dict:
     return {"by_hook": stats_by_hook, "slowest": slowest}
 
 
+# ── Latency budgets (ms) per event ──────────────────────────────────────────
+# PreToolUse hooks must not introduce >2s latency (they block every tool call)
+# PostToolUse hooks have up to 5s before they degrade interactivity
+# Stop / SessionStart / SubagentStart / UserPromptSubmit / PreCompact budgets
+# are more relaxed because they do not sit on the hot path of tool execution.
+LATENCY_BUDGETS_MS: dict[str, float] = {
+    "PreToolUse": 2_000,
+    "PostToolUse": 5_000,
+    "Stop": 10_000,
+    "SessionStart": 3_000,
+    "SubagentStart": 3_000,
+    "UserPromptSubmit": 3_000,
+    "PreCompact": 5_000,
+    "TeammateIdle": 3_000,
+    "TaskCreated": 3_000,
+    "TaskCompleted": 3_000,
+}
+DEFAULT_BUDGET_MS: float = 5_000  # fallback for unlisted events
+
+
+def _budget_for_event(event: str) -> float:
+    return LATENCY_BUDGETS_MS.get(event, DEFAULT_BUDGET_MS)
+
+
 # ── Formatting ───────────────────────────────────────────────────────────────
 
 def _bar(value: float, max_val: float, width: int = 20) -> str:
@@ -170,31 +195,58 @@ def _format_ms(ms: float) -> str:
     return f"{ms:.0f}ms"
 
 
-def _print_report(stats: dict, top_n: int = 10, event_filter: str = "", total_records: int = 0):
+def _print_report(
+    stats: dict,
+    top_n: int = 10,
+    event_filter: str = "",
+    total_records: int = 0,
+    threshold_only: bool = False,
+):
     by_hook = stats["by_hook"]
     slowest = stats["slowest"]
 
     # Sort hooks by p95 descending
     ranked = sorted(by_hook.items(), key=lambda kv: kv[1]["p95"], reverse=True)
+
+    # When --threshold-only: keep only hooks whose p95 exceeds the budget for their event
+    if threshold_only:
+        def _exceeds_budget(hook: str, s: dict) -> bool:
+            events = s.get("events", [])
+            if not events:
+                return False
+            # If a hook fires on multiple events, flag it if p95 exceeds the tightest budget
+            tightest = min(_budget_for_event(e) for e in events)
+            return s["p95"] > tightest
+
+        ranked = [(h, s) for h, s in ranked if _exceeds_budget(h, s)]
+        if not ranked:
+            print("All hooks within latency budget. No violators.")
+            return
+
     max_p95 = max((v["p95"] for v in by_hook.values()), default=1.0)
 
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     filter_note = f"  event={event_filter}" if event_filter else ""
+    threshold_note = "  [violators only]" if threshold_only else ""
     print(f"\n{'═'*80}")
-    print(f"  Hook Timing Report — {now_str}{filter_note}")
+    print(f"  Hook Timing Report — {now_str}{filter_note}{threshold_note}")
     print(f"  Total records: {total_records:,}  |  Unique hooks: {len(by_hook)}")
     print(f"{'═'*80}\n")
 
-    print(f"  {'HOOK':<35} {'COUNT':>6} {'FAIL':>5} {'p50':>8} {'p95':>8} {'p99':>8} {'MAX':>8}  {'p95 bar'}")
-    print(f"  {'─'*35} {'─'*6} {'─'*5} {'─'*8} {'─'*8} {'─'*8} {'─'*8}  {'─'*20}")
+    print(f"  {'HOOK':<35} {'COUNT':>6} {'FAIL':>5} {'p50':>8} {'p95':>8} {'p99':>8} {'MAX':>8}  {'BUDGET':>8}  {'p95 bar'}")
+    print(f"  {'─'*35} {'─'*6} {'─'*5} {'─'*8} {'─'*8} {'─'*8} {'─'*8}  {'─'*8}  {'─'*20}")
 
     for hook, s in ranked:
         bar = _bar(s["p95"], max_p95)
         fail_str = f"{s['failures']}" if s["failures"] > 0 else "  ."
+        events = s.get("events", [])
+        budget = min((_budget_for_event(e) for e in events), default=DEFAULT_BUDGET_MS) if events else DEFAULT_BUDGET_MS
+        budget_str = _format_ms(budget)
+        over_budget = "⚠" if s["p95"] > budget else " "
         print(
             f"  {hook:<35} {s['count']:>6} {fail_str:>5} "
             f"{_format_ms(s['p50']):>8} {_format_ms(s['p95']):>8} "
-            f"{_format_ms(s['p99']):>8} {_format_ms(s['max']):>8}  {bar}"
+            f"{_format_ms(s['p99']):>8} {_format_ms(s['max']):>8}  {budget_str:>8}{over_budget} {bar}"
         )
 
     # Top slowest
@@ -301,6 +353,12 @@ def main():
     parser.add_argument("--json", action="store_true", help="Output machine-readable JSON")
     parser.add_argument("--path", default="", help="Override path to hook-timing.jsonl")
     parser.add_argument("--session", default="", help="Filter by COS session ID (e.g. COGNITIVE_OS_SESSION_ID value)")
+    parser.add_argument(
+        "--threshold-only",
+        action="store_true",
+        help="Show only hooks whose p95 latency exceeds the event budget "
+             "(PreToolUse <2s, PostToolUse <5s, Stop <10s, SessionStart/SubagentStart/UserPromptSubmit/TeammateIdle/TaskCreated/TaskCompleted <3s, PreCompact <5s)",
+    )
     args = parser.parse_args()
 
     log_path = Path(args.path) if args.path else _timing_log_path()
@@ -323,21 +381,41 @@ def main():
     stats = _compute_stats(records)
 
     if args.json:
-        # Serialize — convert sets to sorted lists
+        # Serialize — convert sets to sorted lists, annotate budget violations
+        by_hook_out = {}
+        for h, s in stats["by_hook"].items():
+            events_list = list(s["events"])
+            budget = min((_budget_for_event(e) for e in events_list), default=DEFAULT_BUDGET_MS) if events_list else DEFAULT_BUDGET_MS
+            by_hook_out[h] = {
+                **s,
+                "events": events_list,
+                "budget_ms": budget,
+                "over_budget": s["p95"] > budget,
+            }
+        violators = {h: v for h, v in by_hook_out.items() if v["over_budget"]}
         output = {
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "total_records": len(records),
-            "filters": {"event": args.event, "since": args.since, "session": args.session},
-            "by_hook": {
-                h: {**s, "events": list(s["events"])}
-                for h, s in stats["by_hook"].items()
+            "filters": {
+                "event": args.event,
+                "since": args.since,
+                "session": args.session,
+                "threshold_only": args.threshold_only,
             },
+            "by_hook": violators if args.threshold_only else by_hook_out,
+            "violator_count": len(violators),
             "slowest": stats["slowest"][: args.top],
         }
         print(json.dumps(output, indent=2))
         return
 
-    _print_report(stats, top_n=args.top, event_filter=args.event, total_records=len(records))
+    _print_report(
+        stats,
+        top_n=args.top,
+        event_filter=args.event,
+        total_records=len(records),
+        threshold_only=args.threshold_only,
+    )
 
 
 if __name__ == "__main__":
