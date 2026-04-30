@@ -27,7 +27,7 @@ command -v jq >/dev/null 2>&1 || exit 0
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)
 [ "$TOOL_NAME" != "Agent" ] && exit 0
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
 [ ! -f "$CONFIG_FILE" ] && CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 
@@ -86,11 +86,34 @@ fi
 MISSING=""
 CHECKED=0
 PASSED=0
+TEST_ARTIFACT_JSON=""
+TEST_ARTIFACT_STATUS="missing"
+TEST_ARTIFACT_RUN=""
+
+_load_test_artifact_status() {
+  [ -n "$TEST_ARTIFACT_JSON" ] && return 0
+  local helper="$PROJECT_DIR/scripts/cos_test_artifact_status.py"
+  [ -f "$helper" ] || return 1
+  TEST_ARTIFACT_JSON=$(python3 "$helper" --project-root "$PROJECT_DIR" --json 2>/dev/null || true)
+  [ -n "$TEST_ARTIFACT_JSON" ] || return 1
+  TEST_ARTIFACT_STATUS=$(echo "$TEST_ARTIFACT_JSON" | jq -r '.status // "missing"' 2>/dev/null)
+  TEST_ARTIFACT_RUN=$(echo "$TEST_ARTIFACT_JSON" | jq -r '.run_dir // ""' 2>/dev/null)
+  [ "$TEST_ARTIFACT_STATUS" != "missing" ]
+}
+
+_test_artifact_passed() {
+  _load_test_artifact_status || return 1
+  [ "$TEST_ARTIFACT_STATUS" = "pass" ]
+}
 
 _check() {
   # _check <name> <regex>
   CHECKED=$((CHECKED + 1))
   if echo "$RESPONSE" | grep -qiE "$2"; then
+    PASSED=$((PASSED + 1))
+  elif echo "$1" | grep -qiE 'test|coverage' && _test_artifact_passed; then
+    # Governance consumes the latest persisted cos-test/pytest-with-summary
+    # artifacts instead of launching a fresh pytest run or trusting prose only.
     PASSED=$((PASSED + 1))
   else
     MISSING="${MISSING:+$MISSING, }$1"
