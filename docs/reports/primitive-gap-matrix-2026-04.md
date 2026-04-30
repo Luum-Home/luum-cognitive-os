@@ -239,6 +239,62 @@ It blocks any non-zero backlog via `scripts/reduction_backlog.py --fail-nonzero`
 so newly introduced unclassified primitive debt must be fixed, proven, or
 explicitly demoted before the audit can pass.
 
+## Hook Surface Reduction
+
+The first family-specific reducer now exists for hooks:
+
+- reducer: `scripts/primitive_surface_reduce.py --family hooks`
+- latest JSON: `docs/reports/primitive-surface-reduction-latest.json`
+- latest Markdown: `docs/reports/primitive-surface-reduction-latest.md`
+- tests: `tests/unit/test_primitive_surface_reduce.py`
+
+Modes:
+
+- `--plan`: reports safe/unsafe surface reduction actions without modifying files.
+- `--apply-safe`: only applies mechanical actions that are explicitly safe:
+  unregistered root-level hooks that are listed in
+  `manifests/reduction-demotions.json` and have no test coverage signal are
+  moved to `archive/primitive-surface/hooks/`.
+
+Current hook surface reduction result:
+
+- planned actions: 33
+- safe actions applied: 3
+- archived hooks:
+  - `archive/primitive-surface/hooks/agent-work-tracker.sh`
+  - `archive/primitive-surface/hooks/session-sanity.sh`
+  - `archive/primitive-surface/hooks/wiring-check.sh`
+- remaining actions: 30 optional symlink aliases requiring package-owner review
+
+The weekly primitive gap workflow runs the hook reducer in `--plan` mode so the
+surface report stays current without surprising file moves in CI.
+
+## Primitive Usage Map
+
+Static consumer coverage is now tracked for Python scripts and can be run for
+hooks, skills, and rules:
+
+- mapper: `scripts/primitive_usage_map.py`
+- latest JSON: `docs/reports/primitive-usage-map-latest.json`
+- latest Markdown: `docs/reports/primitive-usage-map-latest.md`
+- tests: `tests/unit/test_primitive_usage_map.py`
+- skills: `/primitive-usage-map`, `/primitive-surface-reduction`
+
+Current scripts usage-map output:
+
+- script targets: 61
+- scripts without any scanned consumer: 0
+- scripts without a skill consumer: 39
+
+Interpretation: this is static reachability, not runtime execution proof. A
+script with only docs/tests consumers may still be valid internal machinery, but
+it now has an auditable owner question: add a skill, wire it from another
+primitive, mark it internal-only, or archive it through the surface reducer.
+
+The weekly primitive gap workflow refreshes the scripts usage map together with
+the family gap snapshot, row audit, claim proof audit, reduction backlog, and
+hook surface reduction plan.
+
 ## Alternatives Comparison
 
 Evidence-bound alternatives comparison now lives at:

@@ -55,6 +55,36 @@ jobs:
             --md-out docs/reports/reduction-backlog-latest.md \
             --fail-nonzero
 
+      - name: Plan hook surface reduction
+        run: |
+          python3 scripts/primitive_surface_reduce.py \
+            --family hooks \
+            --plan \
+            --json-out docs/reports/primitive-surface-reduction-latest.json \
+            --md-out docs/reports/primitive-surface-reduction-latest.md
+
+      - name: Map primitive consumers
+        run: |
+          python3 scripts/primitive_usage_map.py \
+            --target-family scripts \
+            --json-out docs/reports/primitive-usage-map-latest.json \
+            --md-out docs/reports/primitive-usage-map-latest.md
+
+      - name: Generate generic primitive coverage reports
+        run: |
+          python3 scripts/primitive_coverage.py \
+            --adapter cognitive-os \
+            --format json \
+            --out docs/reports/primitive-coverage-latest.json
+          python3 scripts/primitive_coverage.py \
+            --adapter cognitive-os \
+            --format markdown \
+            --out docs/reports/primitive-coverage-latest.md
+          python3 scripts/primitive_coverage.py \
+            --adapter cognitive-os \
+            --format sarif \
+            --out docs/reports/primitive-coverage-latest.sarif
+
       - name: Upload primitive gap snapshot artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -74,6 +104,13 @@ jobs:
             docs/reports/claim-proof-latest.md
             docs/reports/reduction-backlog-latest.json
             docs/reports/reduction-backlog-latest.md
+            docs/reports/primitive-surface-reduction-latest.json
+            docs/reports/primitive-surface-reduction-latest.md
+            docs/reports/primitive-usage-map-latest.json
+            docs/reports/primitive-usage-map-latest.md
+            docs/reports/primitive-coverage-latest.json
+            docs/reports/primitive-coverage-latest.md
+            docs/reports/primitive-coverage-latest.sarif
 
       - name: Commit primitive gap trend
         run: |
@@ -91,6 +128,13 @@ jobs:
             docs/reports/claim-proof-latest.json \
             docs/reports/claim-proof-latest.md \
             docs/reports/reduction-backlog-latest.json \
-            docs/reports/reduction-backlog-latest.md
+            docs/reports/reduction-backlog-latest.md \
+            docs/reports/primitive-surface-reduction-latest.json \
+            docs/reports/primitive-surface-reduction-latest.md \
+            docs/reports/primitive-usage-map-latest.json \
+            docs/reports/primitive-usage-map-latest.md \
+            docs/reports/primitive-coverage-latest.json \
+            docs/reports/primitive-coverage-latest.md \
+            docs/reports/primitive-coverage-latest.sarif
           git diff --staged --quiet || git commit -m "chore(audit): weekly primitive gap snapshot $(date -u +%Y-%m-%d)"
           git push
