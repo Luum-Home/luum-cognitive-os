@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help test test-local-fast test-laptop test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
+.PHONY: help test test-local-fast test-laptop test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -25,10 +25,13 @@ help:
 	@echo "  test-laptop       Laptop-friendly broad lane: capped workers, no Docker/cost/integration/chaos."
 	@echo "  test-laptop-integration  Laptop-friendly explicit integration lane: serial + nice, still slow/stateful."
 	@echo "  test-local-wide-no-docker  Official local broad lane without Docker/cost."
-	@echo "  test-ci-default   Official CI/pre-release default: broad non-Docker gate; do not run constantly on laptops."
+	@echo "  test-ci-default   Official CI/pre-merge default: broad non-Docker gate; do not run constantly on laptops."
+	@echo "  test-release      Release gate: CI default + integration + Docker/e2e explicit."
 	@echo "  test-integration-no-docker  Explicit slow integration lane without Docker."
-	@echo "  test-docker-explicit  Explicit Docker/testcontainers lane."
-	@echo "  test-optional-cost    Explicit optional/cost-bearing lanes."
+	@echo "  test-docker       Explicit Docker/testcontainers lane."
+	@echo "  test-optional     Explicit optional/cost-bearing lanes."
+	@echo "  test-docker-explicit  [DEPRECATED → test-docker] Explicit Docker/testcontainers lane."
+	@echo "  test-optional-cost    [DEPRECATED → test-optional] Explicit optional/cost-bearing lanes."
 	@echo "  ci-deps           Install optional CI deps (flock + Paperclip stub) to unblock skipped tests."
 	@echo "  test-fast         [DEPRECATED → cos-test cluster --lane unit] Unit tests, parallel (-n auto). <30s."
 	@echo "  test-unit         [DEPRECATED → cos-test cluster --lane unit] Unit tests serial."
@@ -77,17 +80,23 @@ test-local-wide-no-docker: cos-test
 test-ci-default: cos-test
 	@./cos-test broad --no-docker --ci
 
+test-release: test-ci-default test-integration-no-docker test-docker
+
 test-integration-no-docker: cos-test
 	@./cos-test cluster --lane integration
 
-test-docker-explicit: cos-test
+test-docker: cos-test
 	@COS_ALLOW_DOCKER_TESTS=1 ./cos-test cluster --lane integration-docker
 	@COS_ALLOW_DOCKER_TESTS=1 ./cos-test cluster --lane e2e
 
-test-optional-cost: cos-test
+test-optional: cos-test
 	@COS_ALLOW_COST_BEARING_TESTS=1 ./cos-test cluster --lane arena
 	@COS_ALLOW_COST_BEARING_TESTS=1 ./cos-test cluster --lane benchmark
 	@COS_ALLOW_COST_BEARING_TESTS=1 ./cos-test cluster --lane quality
+
+test-docker-explicit: test-docker
+
+test-optional-cost: test-optional
 
 test-fast: cos-test
 	@echo "[deprecated] 'make test-fast' will be removed in next minor; use 'cos-test focused' or 'cos-test cluster --lane unit'" >&2

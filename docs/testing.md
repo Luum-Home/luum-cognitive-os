@@ -117,10 +117,11 @@ JUnit, inventories, and resource-policy metadata under
 | Laptop-friendly broad validation | `make test-laptop` |
 | Laptop-friendly integration validation | `make test-laptop-integration` |
 | Local broad without Docker | `make test-local-wide-no-docker` or `cos-test broad --no-docker` |
-| CI / pre-release default | `make test-ci-default` or `cos-test broad --no-docker --ci` |
+| CI / pre-merge default | `make test-ci-default` or `cos-test broad --no-docker --ci` |
+| Release gate | `make test-release` |
 | Slow integration without Docker | `make test-integration-no-docker` or `cos-test cluster --lane integration` |
-| Docker/testcontainers explicit | `make test-docker-explicit` |
-| Optional/cost-bearing explicit | `make test-optional-cost` |
+| Docker/testcontainers explicit | `make test-docker` |
+| Optional/cost-bearing explicit | `make test-optional` |
 
 The default broad lane is intentionally non-optional. Docker-capable and
 cost-bearing lanes are opt-in so local laptops and CI jobs do not start heavy
@@ -142,10 +143,15 @@ harness drivers, provider/runtime behavior, or session lifecycle code. For a
 single suspected surface, prefer a specific `tests/integration/test_*.py` file
 through `scripts/pytest-with-summary.sh`.
 
-`make test-ci-default` is a CI/pre-release gate, not a tight development loop.
+`make test-ci-default` is a CI/pre-merge gate, not a tight development loop.
 It runs the canonical broad non-Docker plan with CI settings and may take long
-enough to slow a laptop. Use it before push/release or in CI; do not run it
+enough to slow a laptop. Use it before push/merge or in CI; do not run it
 constantly during day-to-day edits.
+
+`make test-release` is heavier than CI default. It runs the CI default, the
+explicit non-Docker integration lane, and the explicit Docker/e2e lane. Use it
+for release preparation, not routine local iteration. Cost-bearing optional
+lanes remain separate under `make test-optional`.
 
 
 ### Cognitive OS Integration Lane Semantics
@@ -180,12 +186,35 @@ longer enough evidence. The normal SO-builder escalation path is:
 3. `make test-laptop`
 4. targeted `scripts/pytest-with-summary.sh -- tests/integration/test_name.py`
 5. `make test-laptop-integration`
-6. `make test-ci-default` or CI/release gates
+6. `make test-ci-default` for pre-merge confidence
+7. `make test-release` for release gates
 
 Future work should split this lane into narrower SO-maintainer sublanes such as
 `integration-memory`, `integration-installer`, `integration-hooks`,
 `integration-provider`, and `integration-runtime` before making integration part
 of any frequent laptop workflow.
+
+
+### Governance Gates Consume Persisted Artifacts
+
+Governance hooks must not invent their own test selection or launch broad pytest
+runs. The ownership split is:
+
+- `cos-test` owns selection and lane execution.
+- `scripts/pytest-with-summary.sh` owns reporting transport.
+- Governance hooks such as `global-verify`, `auto-verify`, and `dod-gate`
+  consume persisted artifacts from `.cognitive-os/reports/test-runs/`.
+
+The canonical machine-readable surfaces are:
+
+- `summary.txt` — human summary and pytest totals.
+- `inventory.md` / `inventory.json` — repair queue and classified failures.
+- `junit.xml` — authoritative test counts for gates.
+
+When a hook needs test evidence, it should read the latest persisted run through
+`scripts/cos_test_artifact_status.py` instead of executing pytest directly. If no
+artifact exists, the hook should degrade to advisory/skip and ask for an explicit
+`cos-test` or `pytest-with-summary.sh` run.
 
 ### Persistent Local Run Artifacts
 

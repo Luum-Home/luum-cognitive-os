@@ -68,6 +68,9 @@ work, prefer lower priority:
 make test-laptop-integration
 ```
 
+Use `make test-release` only for release preparation; it chains CI default,
+non-Docker integration, and Docker/e2e checks.
+
 For one suspected surface, run the specific integration file instead:
 
 ```bash
@@ -102,6 +105,6 @@ Verify links and claims manually against:
 
 ## Rule
 
-Pick the smallest lane that still matches the changed surface. Do not jump to `integration --ci` or `test-ci-default` as a reflex on a laptop.
+Pick the smallest lane that still matches the changed surface. Do not jump to `integration --ci`, `test-ci-default`, or `test-release` as a reflex on a laptop.
 
 If a claim changes, docs-only validation is not enough when code behavior is implied.
