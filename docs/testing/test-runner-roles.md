@@ -26,11 +26,14 @@ contributors should be able to answer two questions quickly:
 |---|---|---|
 | Tight iteration after editing one or a few files | `cos-test focused` | Uses changed files or explicit paths. |
 | Validate one lane | `cos-test cluster --lane <name>` | Runs the lane according to registry parallel-safety policy. |
+| Laptop-friendly broad validation | `make test-laptop` | Caps workers and skips integration/e2e/chaos/Docker/cost-bearing lanes. |
 | Local broad without Docker | `cos-test broad --no-docker` or `make test-local-wide-no-docker` | Official local broad lane; skips Docker-capable lanes. |
-| CI default | `cos-test broad --no-docker --ci` or `make test-ci-default` | Same policy as local broad, CI output mode. |
+| CI / pre-merge default | `cos-test broad --no-docker --ci` or `make test-ci-default` | Same policy as local broad, CI output mode. |
+| Release gate | `make test-release` | CI default + explicit integration + Docker/e2e. |
 | Slow integration without Docker | `cos-test cluster --lane integration` or `make test-integration-no-docker` | Explicit because integration contains live installer/session workflows. |
-| Docker/e2e explicit | `COS_ALLOW_DOCKER_TESTS=1 cos-test cluster --lane integration-docker` | Docker/testcontainers never start from default broad. |
-| Include cost-bearing or non-deterministic lanes | `COS_ALLOW_COST_BEARING_TESTS=1 cos-test cluster --lane <optional>` | Optional lanes must be explicit. |
+| Lower-priority laptop integration | `make test-laptop-integration` | Still slow/stateful; uses lower CPU priority. |
+| Docker/e2e explicit | `make test-docker` | Docker/testcontainers never start from default broad. |
+| Include cost-bearing or non-deterministic lanes | `make test-optional` | Optional lanes must be explicit. |
 | Need persisted pytest artifacts directly | `bash scripts/pytest-with-summary.sh -- <pytest args>` | Reporting transport fallback; not the primary selection UX. |
 
 ## Legacy and compatibility scripts
@@ -53,7 +56,9 @@ not be presented as competing default entry points.
 2. Execution UX belongs in `cmd/cos-test`.
 3. Persistent reporting belongs in `scripts/pytest-with-summary.sh`.
 4. Governance hooks may require or inspect test evidence, but must not re-create
-   lane selection logic.
+   lane selection logic or launch broad pytest directly. They consume persisted
+   artifacts from `.cognitive-os/reports/test-runs/` through
+   `scripts/cos_test_artifact_status.py` when possible.
 5. Legacy scripts must declare `ROLE` and `CANONICAL` headers so users and audit
    tests know why they still exist.
 
@@ -64,3 +69,7 @@ not be presented as competing default entry points.
 - A new governance hook consumes existing summaries instead of invoking ad-hoc
   pytest commands unless it documents why.
 - Optional/cost-bearing lanes never run in the default broad sweep.
+
+## Validation nervous system
+
+For the full Cognitive OS maintainer doctrine, see [Validation Nervous System](../architecture/validation-nervous-system.md).
