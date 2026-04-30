@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PLAN = ROOT / "docs" / "architecture" / "plans" / "test-resource-governance-sprint.md"
+PLAN = ROOT / ".cognitive-os" / "plans" / "architecture" / "test-resource-governance-sprint.md"
 ADR_073 = ROOT / "docs" / "adrs" / "ADR-073-test-architecture-role-registry.md"
 
 
@@ -69,5 +69,5 @@ def test_resource_governance_sprint_plan_keeps_role_boundaries() -> None:
 
 def test_adr_073_links_resource_governance_sprint() -> None:
     text = ADR_073.read_text(encoding="utf-8")
-    assert "docs/architecture/plans/test-resource-governance-sprint.md" in text
+    assert ".cognitive-os/plans/architecture/test-resource-governance-sprint.md" in text
     assert "Resource governance is intentionally not solved in this ADR" in text
