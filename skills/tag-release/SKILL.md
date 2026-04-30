@@ -9,6 +9,8 @@ tags: [release, git]
 last-updated: 2026-04-10
 disable-model-invocation: true
 effort: haiku
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Tag Release

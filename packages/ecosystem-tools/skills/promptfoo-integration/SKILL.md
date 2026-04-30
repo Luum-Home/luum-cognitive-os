@@ -18,6 +18,8 @@ metadata:
 audience: os-dev
 summary_line: Configure Promptfoo for prompt regression testing and red teaming of skills in…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

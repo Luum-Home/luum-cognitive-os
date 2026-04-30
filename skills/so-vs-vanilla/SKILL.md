@@ -9,6 +9,9 @@ description: >
   cost/quality deltas. Trigger: user asks to "prove the SO works",
   "compare SO vs vanilla", "benchmark governance", or runs `/so-vs-vanilla`.
 model: sonnet
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /so-vs-vanilla — Governance Value Benchmark

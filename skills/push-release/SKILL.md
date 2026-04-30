@@ -11,6 +11,8 @@ disable-model-invocation: true
 effort: haiku
 summary_line: Push the release commit and tags to the remote — always requires explicit…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Push Release

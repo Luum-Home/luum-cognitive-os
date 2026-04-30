@@ -7,6 +7,8 @@ audience: both
 tags: [init, setup, scaffold]
 summary_line: "Create the .claude/ directory structure, symlink rules, and generate…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Scaffold Project

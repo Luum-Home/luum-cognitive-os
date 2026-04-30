@@ -16,6 +16,8 @@ audience: project
 effort: opus
 summary_line: Multi-hop research skill for deep investigation of topics.
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

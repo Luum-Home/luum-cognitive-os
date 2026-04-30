@@ -11,6 +11,9 @@ outputs:
   - checklist: detailed results per check
   - blockers: list of items that must be fixed before implementing
 audience: project
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Implementation Readiness Check

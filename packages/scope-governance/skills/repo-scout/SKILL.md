@@ -15,6 +15,8 @@ metadata:
 audience: both
 summary_line: Scout external git repositories for tech radar classification (bulk mode, markdown artifacts, adoption signals).
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

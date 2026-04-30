@@ -18,6 +18,8 @@ metadata:
 audience: os-dev
 summary_line: "Configure and use RAGAS for memory quality testing, retrieval evaluation, and…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

@@ -6,6 +6,8 @@ invoke: /cognitive-os-test
 version: 2.0.0
 audience: os-dev
 triggers: ["/cognitive-os-test", "/cos-test", "/os-test"]
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Cognitive OS Test Runner

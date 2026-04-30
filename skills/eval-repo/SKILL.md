@@ -9,6 +9,8 @@ version: 2.0.1
 audience: both
 last-updated: 2026-04-24
 summary_line: "DEPRECATED alias for /repo-scout"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # /eval-repo (DEPRECATED)

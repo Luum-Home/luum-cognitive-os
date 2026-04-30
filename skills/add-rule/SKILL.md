@@ -5,6 +5,8 @@ description: Step-by-step guide for adding a new rule to the Cognitive OS
 version: 0.1.0
 audience: os
 tags: [development, extension, rules]
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Add Rule

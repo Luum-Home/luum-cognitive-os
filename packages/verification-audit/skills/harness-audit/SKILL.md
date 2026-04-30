@@ -14,6 +14,8 @@ metadata:
 audience: os-dev
 summary_line: "Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance."
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose

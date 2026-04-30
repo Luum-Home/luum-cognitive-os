@@ -5,6 +5,9 @@ description: Search and learn from past Cognitive OS sessions — the system's l
 trigger: what did we do, remember session, past sessions, conversation history, session search, recall
 model: sonnet
 audience: project
+version: "1.0.0"
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Conversation Memory

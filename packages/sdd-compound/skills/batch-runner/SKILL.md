@@ -12,6 +12,8 @@ auto-generated: false
 audience: project
 summary_line: "Execute multiple SDD changes sequentially with timing, reporting, and failure…"
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 # Batch Runner

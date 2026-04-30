@@ -18,6 +18,8 @@ metadata:
 audience: os-dev
 summary_line: Configure Strands Evals for trace-based agent trajectory evaluation using…
 
+platforms: ["claude-code"]
+prerequisites: []
 ---
 
 ## Purpose
