@@ -5,6 +5,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.22.0] - 2026-04-30
+
 - **Test runner ergonomics** (ADR-072): Lane taxonomy with `.cognitive-os/test-lanes.yaml` as source of truth. New `cos-test focused/cluster/broad` escalation ladder. Auto-marker injection in conftest. Audit and contracts lanes now parallel (~40% wall-time reduction observed). Makefile `test-*` targets deprecated; redirect to cos-test (1 release cycle). Originally proposed as ADR-069; renumbered after the slot was claimed by `research-first-protocol`.
 
 ## [0.21.0] - 2026-04-28 — "Portable Runtime, Memory Lifecycle, and Developer Confidence"
