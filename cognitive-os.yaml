@@ -648,13 +648,13 @@ packages:
       priority: 0  # highest priority (local overrides)
 
 sources:
-  # External data sources — like /etc/apt/sources.list for agent components
+  # External data sources — like /etc/apt/sources.list for agentic primitives
   # Each source provides skills, rules, hooks, presets, or MCP servers
   registries:
     - name: cos-builtin
       type: local
       path: .cognitive-os/
-      description: "Built-in Cognitive OS components"
+      description: "Built-in Cognitive OS agentic primitives"
       enabled: true
 
     - name: skills-sh
