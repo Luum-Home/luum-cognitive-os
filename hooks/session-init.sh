@@ -185,6 +185,50 @@ echo ""
 # Write session ID to a discoverable file so other hooks can read it
 echo "$SESSION_ID" > "$SESSIONS_DIR/.current-session-$$"
 
+# ─── Rich JSON context marker (ADR-088) ───────────────────────────────────────
+# Writes .context-<pid>.json with session/kind/harness/parent_chain so that
+# commit_provenance.py can resolve accurate attribution via PPID-chain lookup
+# rather than env-var guessing (which fails when env is stripped by sub-shells).
+# Fail-silent: if write_context_marker.py is unavailable the legacy plain-text
+# marker above is still present as backwards-compat fallback.
+COGNITIVE_OS_SESSION_ID="$SESSION_ID" \
+  python3 "$PROJECT_DIR/scripts/write_context_marker.py" orchestrator 2>/dev/null || true
+
+# ─── Prune stale context markers (ADR-088) ────────────────────────────────────
+# Drop .context-<pid>.json files whose PID is no longer running OR that are
+# older than 24 hours. Runs inline (< 50ms on typical repos) to keep the
+# sessions dir tidy without a separate cron job.
+python3 - <<'PRUNE_CONTEXT_MARKERS' 2>/dev/null || true
+import os, time
+from pathlib import Path
+
+sessions_dir = Path(os.environ.get("COGNITIVE_OS_PROJECT_DIR", ".")) / ".cognitive-os" / "sessions"
+max_age_seconds = 86400  # 24 hours
+now = time.time()
+
+def pid_alive(pid: int) -> bool:
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True  # exists but we can't signal it
+    except OSError:
+        return False
+
+for marker in sessions_dir.glob(".context-*.json"):
+    try:
+        # Extract PID from filename .context-<pid>.json
+        stem = marker.stem  # ".context-<pid>"
+        pid = int(stem.split("-")[-1])
+        age = now - marker.stat().st_mtime
+        if not pid_alive(pid) or age > max_age_seconds:
+            marker.unlink(missing_ok=True)
+    except Exception:
+        pass
+PRUNE_CONTEXT_MARKERS
+
 # ─── Self-improve + user model + work queue (consolidated) ────────────────────
 # Consolidated into a single python3 call (was 3 cold starts).
 SELF_IMPROVE_FLAG="$PROJECT_DIR/.cognitive-os/metrics/.self-improve-recommended" \
