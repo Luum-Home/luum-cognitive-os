@@ -11,12 +11,12 @@ lanes:
     marker_exclude: benchmark
   audit:
     paths: [tests/audit/]
-    parallel: true
-    stateful_reason: ""
+    parallel: false
+    stateful_reason: "Install-touching tests (test_install_scripts.py Layer 3-4) execute hooks/self-install.sh and cos-init.sh against COS_SOURCE_DIR=PROJECT_ROOT (the real repo). Under -n auto, multiple xdist workers walk rules/ skills/ hooks/ of the same source tree concurrently while the hooks rsync into per-worker tmp dirs — causes >20 intermittent flakes. Diagnosed 2026-04-30 (engram topic_key adr-072/install-flakes-rootcause). Surgical xdist_group fix tracked as follow-up; flipping to serial is the safety floor."
   contract:
     paths: [tests/contracts/]
-    parallel: true
-    stateful_reason: ""
+    parallel: false
+    stateful_reason: "test_self_install_no_container_spawn runs SessionStart hooks with cwd=_repo_root() and CLAUDE_PROJECT_DIR=_repo_root() — concurrent xdist workers race on .git/config.lock when self-install writes git config. Same root cause as audit lane (real repo root shared across workers). Diagnosed 2026-04-30."
   integration:
     paths: [tests/integration/]
     parallel: false
