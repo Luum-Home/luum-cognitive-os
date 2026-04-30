@@ -1,4 +1,8 @@
-# ADR-027: Headless and Clustered Runtime Direction
+# ADR-091: Headless and Clustered Runtime Direction
+
+<!-- Renumbered-from: ADR-027 (docs/architecture/adrs/027-headless-clustered-runtime-direction.md) -->
+<!-- Renumbered-to: ADR-091 (ADR-087 migration, 2026-04-30) -->
+<!-- Note: ADR-027 in docs/adrs/ is a different decision (SO Slimming — Test Strategy). -->
 
 - **Status**: Accepted as direction, not yet implemented as a production cluster
 - **Date**: 2026-04-28

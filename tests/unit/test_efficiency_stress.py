@@ -504,7 +504,7 @@ class TestHookPerformance:
 class TestProfiles:
 
     def test_efficiency_profiles_exist(self):
-        """cognitive-os.yaml must define the current ADR-002 profiles."""
+        """cognitive-os.yaml must define the current ADR-093 profiles."""
         config = load_config()
         assert "efficiency" in config, "Missing efficiency section"
         profiles = config["efficiency"].get("profiles", {})
