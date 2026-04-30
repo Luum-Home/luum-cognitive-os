@@ -243,26 +243,31 @@ done
 # are managed here.
 #
 # Efficiency profile controls which subset is active:
-#   default — curated CORE_RULES below
-#   full/self-hosting — every non-excluded rule file
+#   default — curated CORE_RULES below (applies to ALL projects, incl. self-hosting; ADR-079)
+#   full    — every non-excluded rule file (opt-in: COS_SYNC_ALL_RULES=1 or config)
+#   lean    — RULES-COMPACT.md only (legacy)
 #
 # See docs/rules-loading-architecture.md for the rationale.
 
 CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 
 # Detect whether we are running inside the luum-agent-os repo itself.
-# When self-hosting, always use the full profile so all rules are loaded.
+# Self-hosting detection is kept for informational/opt-in use; it no longer
+# forces full profile (ADR-079).  COS_SYNC_ALL_RULES=1 is the explicit opt-in
+# for developers who need every non-excluded rule symlinked locally.
 IS_SELF_HOSTING=false
 if [ -f "$PROJECT_DIR/hooks/self-install.sh" ]; then
   IS_SELF_HOSTING=true
 fi
 
 EFFICIENCY_PROFILE="default"
-if [ "$IS_SELF_HOSTING" = "true" ]; then
-  EFFICIENCY_PROFILE="full"
-elif [ -f "$CONFIG_FILE" ]; then
+if [ -f "$CONFIG_FILE" ]; then
   _ep=$(grep -A1 '^efficiency:' "$CONFIG_FILE" 2>/dev/null | grep 'profile:' | awk '{print $2}' | tr -d "'\"\r" || true)
   [ -n "$_ep" ] && EFFICIENCY_PROFILE="$_ep"
+fi
+# Explicit opt-in: COS_SYNC_ALL_RULES=1 overrides to full regardless of profile.
+if [ "${COS_SYNC_ALL_RULES:-0}" = "1" ]; then
+  EFFICIENCY_PROFILE="full"
 fi
 
 # Other rules reach agents via Stage 2 expand() of [ref-key] markers in RULES-COMPACT.md (see ADR-074).
@@ -390,14 +395,14 @@ EXCLUDED_RULES=(
 )
 
 # Build the effective allowed-rules list based on profile.
-# In self-hosting/full mode, every non-excluded rules/ file is symlinked.
-# In default mode, only CORE_RULES are synced. Legacy lean still maps to the
-# compact index when present in older project configs.
+# full/COS_SYNC_ALL_RULES=1: every non-excluded rules/ file is symlinked.
+# default: only CORE_RULES are synced (Stage 1 = compact index only; ADR-079).
+# lean: RULES-COMPACT.md only (legacy tier).
 if [[ "$EFFICIENCY_PROFILE" == "lean" ]]; then
   ALLOWED_RULES=("RULES-COMPACT.md")
   SYNC_ALL_RULES=false
-elif [[ "$IS_SELF_HOSTING" == "true" ]] || [[ "$EFFICIENCY_PROFILE" == "full" ]]; then
-  # Self-hosting and full profile: symlink every rule file that exists
+elif [[ "$EFFICIENCY_PROFILE" == "full" ]]; then
+  # Full profile (opt-in via COS_SYNC_ALL_RULES=1 or config): symlink every non-excluded rule
   ALLOWED_RULES=("${CORE_RULES[@]}")
   SYNC_ALL_RULES=true
 else
