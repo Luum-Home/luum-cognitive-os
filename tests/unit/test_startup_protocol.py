@@ -18,6 +18,8 @@ REPO = Path(__file__).resolve().parents[2]
 HOOK = REPO / "hooks" / "session-startup-protocol.sh"
 RULE = REPO / "rules" / "startup-protocol.md"
 EFF_SCRIPT = REPO / "scripts" / "apply-efficiency-profile.sh"
+# ADR-064: projection logic moved to per-harness drivers; apply-efficiency-profile.sh delegates.
+CC_DRIVER = REPO / "scripts" / "_lib" / "settings-driver-claude-code.sh"
 SEC_SCRIPT = REPO / "scripts" / "set-security-profile.sh"
 
 
@@ -32,10 +34,15 @@ def test_hook_exists_and_executable() -> None:
 
 
 def test_hook_registered_in_both_profile_scripts() -> None:
+    # ADR-064: hook registrations live in settings-driver-claude-code.sh (not in
+    # apply-efficiency-profile.sh which now delegates). Check the driver + apply script
+    # together — either one containing the hook name satisfies the registration requirement.
     eff = EFF_SCRIPT.read_text()
+    driver_text = CC_DRIVER.read_text() if CC_DRIVER.is_file() else ""
     sec = SEC_SCRIPT.read_text()
-    assert "session-startup-protocol.sh" in eff, (
-        "session-startup-protocol.sh not registered in apply-efficiency-profile.sh"
+    assert "session-startup-protocol.sh" in (eff + driver_text), (
+        "session-startup-protocol.sh not registered in apply-efficiency-profile.sh "
+        "or scripts/_lib/settings-driver-claude-code.sh (ADR-064 canonical source)"
     )
     assert "session-startup-protocol.sh" in sec, (
         "session-startup-protocol.sh not referenced in set-security-profile.sh"
