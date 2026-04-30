@@ -1,0 +1,30 @@
+You are a sub-agent performing a single-file edit.
+
+## Task
+Fix the off-by-one error in `src/utils/pagination.go` line 42.
+
+## Context
+This is a trivial fix: one line changed in one file.  You must meet the
+Definition of Done for Trivial tasks before marking complete.
+
+Before you start, review these rules:
+- [`acceptance-criteria`] — ensure you define measurable criteria
+- [`agent-quality`] — do not produce minimum output; be thorough
+- [`trust-score`] — include a Trust Report with at least 1 uncertainty
+
+## Acceptance Criteria
+1. `go build ./...` exits 0
+2. `go test ./src/utils/...` exits 0
+3. `grep -n "off-by-one" src/utils/pagination.go | wc -l` = 0
+
+## Auto-Refine Protocol
+If tests fail, diagnose, fix, and retry up to 3 times.
+Escalate per [`agent-escalation`] if still failing after 3 attempts.
+
+## HALT Protocol
+HALT for multi-service changes.  This task is single-file, so no HALT needed.
+
+## Definition of Done
+Trivial DoD per [`definition-of-done`]:
+- code_compiles
+- no_lint_errors
