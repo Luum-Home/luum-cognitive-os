@@ -6,15 +6,17 @@
 # Every hook command in settings.json runs through this wrapper. It logs a
 # structured JSONL record to .cognitive-os/metrics/hook-timing.jsonl with the
 # harness event name, hook name, wall-clock duration, exit code, and PID.
-# It also emits a human-readable summary line to stderr and writes to the
-# FIFO at .cognitive-os/runtime/hook-stream.fifo (non-blocking, best-effort).
+# By default it does not emit hook summaries to stderr and does not touch the
+# FIFO. Hook invocations may run async and outlive the harness-side reader; any
+# inherited stdout/stderr/FIFO write can leak an orphaned wrapper process.
 #
 # Usage:
 #   bash scripts/hook-timing-wrapper.sh <event_name> <hook_path> [args...]
 #
 # Environment:
 #   COS_HOOK_TIMING_DISABLE=1   — bypass wrapper entirely (no logging, no fork)
-#   COS_HOOK_TIMING_QUIET=1     — suppress stderr output (JSONL still written)
+#   COS_HOOK_TIMING_VERBOSE=1   — emit stderr summary (JSONL still written)
+#   COS_HOOK_TIMING_FIFO=1      — write to hook-stream.fifo (best-effort)
 #   COGNITIVE_OS_PROJECT_DIR     — canonical project root override
 #   CODEX_PROJECT_DIR            — Codex project root
 #   CLAUDE_PROJECT_DIR           — Claude Code project root
@@ -24,7 +26,7 @@
 #   - stdout from the real hook MUST be passed through unchanged (for PreToolUse
 #     additionalContext protocol)
 #   - stderr from the real hook is forwarded to our stderr
-#   - FIFO writes MUST be non-blocking (dropped silently if no reader)
+#   - wrapper's own stderr/FIFO reporting is opt-in to avoid orphan leaks
 #   - Overhead target: <10ms median on macOS without GNU coreutils
 
 set -uo pipefail
@@ -60,8 +62,9 @@ FIFO_PATH="$RUNTIME_DIR/hook-stream.fifo"
 
 # Ensure metrics dir exists (best-effort; don't fail wrapper if this errors)
 [ -d "$METRICS_DIR" ] || mkdir -p "$METRICS_DIR" 2>/dev/null || true
-# Ensure runtime dir + FIFO exist (best-effort)
-if [ ! -p "$FIFO_PATH" ]; then
+# FIFO setup is opt-in. Async hooks can outlive the harness reader, so touching
+# inherited streams or FIFOs by default is unsafe.
+if [ "${COS_HOOK_TIMING_FIFO:-}" = "1" ] && [ ! -p "$FIFO_PATH" ]; then
   mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
   mkfifo "$FIFO_PATH" 2>/dev/null || true
 fi
@@ -112,9 +115,10 @@ echo "$JSON_LINE" >> "$TIMING_LOG" 2>/dev/null || true
 
 # ── Human-readable stderr summary ───────────────────────────────────────────
 # Format: [hook] <basename> <event> <duration_ms>ms <status> [⚠ if slow]
-# Suppressed when COS_HOOK_TIMING_QUIET=1. Uses stderr to avoid polluting
-# the stdout additionalContext protocol used by PreToolUse hooks.
-if [ "${COS_HOOK_TIMING_QUIET:-}" != "1" ]; then
+# Disabled by default: async/orphaned hooks can block forever on inherited
+# stderr sockets after the harness reader exits. Use COS_HOOK_TIMING_VERBOSE=1
+# only for short local debugging sessions.
+if [ "${COS_HOOK_TIMING_VERBOSE:-}" = "1" ]; then
   if [ "$HOOK_EXIT" -eq 0 ]; then
     STATUS_STR="ok"
   else
@@ -129,7 +133,7 @@ fi
 # ── FIFO write (non-blocking, best-effort) ───────────────────────────────────
 # Use Python's os.O_NONBLOCK because POSIX shell redirection to a FIFO can block
 # forever when no reader is attached. If no reader exists, the write is dropped.
-if [ -p "$FIFO_PATH" ]; then
+if [ "${COS_HOOK_TIMING_FIFO:-}" = "1" ] && [ -p "$FIFO_PATH" ]; then
   FIFO_PATH="$FIFO_PATH" FIFO_LINE="${SUMMARY_LINE:-[hook] $HOOK_NAME $EVENT_NAME ${DURATION_MS}ms}" python3 - <<'PYFIFO' 2>/dev/null || true
 import os
 
