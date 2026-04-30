@@ -128,6 +128,9 @@ _KNOWN_SLOW_HOOKS: frozenset[str] = frozenset({
     "clarification-gate",
     "blast-radius",
     "reinvention-check",
+    "trust-score-validator",
+    "confidence-gate",
+    "claim-validator",
 })
 
 
