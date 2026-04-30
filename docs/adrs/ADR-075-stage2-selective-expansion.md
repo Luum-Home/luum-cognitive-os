@@ -111,6 +111,40 @@ the full 85% savings:
 
 ---
 
+## 2026-04-30: Tier-1 reclassification
+
+**Before**: 95 of 112 rule files were Tier-1. Default `tier_filter: [0, 1]` excluded
+only 8 pre-existing Tier-2 files, saving at most ~5K tokens — negligible.
+
+**After**: Tier-1 shrunk to 38 curated rules. 57 rules demoted to Tier-2.
+
+| Tier | Before | After |
+|------|--------|-------|
+| 0    | 9      | 9     |
+| 1    | 95     | 38    |
+| 2    | 8      | 65    |
+
+**Keep-list criteria** (rules retained at Tier-1): rules that govern agent behavior
+on every call — safety gates (credential-management, confidentiality-protection,
+content-policy, agent-security), naming enforcement (python-naming, bash-naming),
+error handling (error-learning, auto-rollback, auto-repair, crash-recovery), cost
+controls (token-economy, model-routing, model-directive, decomposition,
+rate-limiting, context-management), quality gates (prompt-quality, anti-hallucination,
+blast-radius, clarification-gate, confidence-gate), and output/skill lifecycle
+(result-management, response-compression, skill-management, audit-trail, responsiveness).
+
+**Demoted to Tier-2** (loaded only when explicitly referenced): contextual/infrequent
+rules — squad-protocol, SDD governance, infra health, dry-run, private-mode,
+capability-levels, performance-monitoring, observability, pre-commit-gate, etc.
+
+**Token impact**: The 57 demoted files total ~224 KB (~56K tokens). Default
+`tier_filter: [0, 1]` now saves ~56K additional tokens per Agent call vs
+pre-reclassification. Combined with the Tier-0-only setting (`tier_filter: [0]`),
+the original 85% reduction target is now achievable in two steps: step 1 (`[0,1]`)
+delivers ~56K savings immediately; step 2 (`[0]`) adds another ~15K for the Tier-1 set.
+
+---
+
 ## Related
 
 - ADR-027 Phase 2 — original ref-key loader  

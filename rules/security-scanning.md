@@ -1,4 +1,4 @@
-<!-- TIER: 1 -->
+<!-- TIER: 2 -->
 <!-- SCOPE: both -->
 # Security Scanning — Semgrep SAST Integration
 

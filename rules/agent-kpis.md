@@ -1,4 +1,4 @@
-<!-- TIER: 1 -->
+<!-- TIER: 2 -->
 <!-- SCOPE: both -->
 # Agent KPI Protocol
 
