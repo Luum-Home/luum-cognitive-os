@@ -49,7 +49,7 @@ def test_harness_transparency_status_maps_adr_064_surfaces() -> None:
         "Surface 2 — Canonical hook projection",
         "Surface 3 — Portable skill execution",
         "Surface 4 — Harness-neutral sub-agent spawning",
-        "docs/architecture/plans/adr-064-implementation-plan.md",
+        ".cognitive-os/plans/architecture/adr-064-implementation-plan.md",
         ".claude/settings.json",
         ".codex/hooks.json",
         "cos-skill run <name>",
@@ -59,9 +59,9 @@ def test_harness_transparency_status_maps_adr_064_surfaces() -> None:
 
     assert (
         PROJECT_ROOT
-        / "docs"
-        / "architecture"
+        / ".cognitive-os"
         / "plans"
+        / "architecture"
         / "adr-064-implementation-plan.md"
     ).exists()
 
