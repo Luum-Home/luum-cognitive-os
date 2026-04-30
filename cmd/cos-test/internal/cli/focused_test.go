@@ -197,6 +197,37 @@ func TestBuildFocusedPlan_MappedHappy(t *testing.T) {
 	}
 }
 
+func TestBuildFocusedPlan_ChangedFilesOverrideNoTestmon(t *testing.T) {
+	cfg := newTestCfg(t)
+	writeFile(t, filepath.Join(cfg.TestsDir, "unit", "test_foo.py"))
+	tm := filepath.Join(cfg.ProjectRoot, ".cognitive-os", "cache", "testmon")
+	if err := os.MkdirAll(tm, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(tm, ".testmondata"), []byte("x"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	plan, err := buildFocusedPlanWithOptions(
+		cfg,
+		nil,
+		func(string) ([]string, error) {
+			t.Fatal("diffFn must not be called when changed files are provided")
+			return nil, nil
+		},
+		focusedPlanBuildOptions{UseTestmon: false, ChangedFiles: []string{"lib/foo.py"}},
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plan.Mode != "mapped" {
+		t.Fatalf("mode = %s, want mapped", plan.Mode)
+	}
+	if !reflect.DeepEqual(plan.TestPaths, []string{"tests/unit/test_foo.py"}) {
+		t.Fatalf("paths = %v", plan.TestPaths)
+	}
+}
+
 // --- helpers ---
 
 var errFake = errFakeT{}
