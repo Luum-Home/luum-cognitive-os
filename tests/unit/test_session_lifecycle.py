@@ -200,6 +200,33 @@ class TestSessionInit:
             "Two init runs did not register two sessions"
         )
 
+    def test_init_prunes_stale_dead_sessions_before_counting(self, tmp_path):
+        """Dead sessions older than the grace window must be pruned on startup."""
+        if not FLOCK_AVAILABLE:
+            pytest.skip("flock not available — registration uses flock")
+        sessions_dir = _sessions_dir(tmp_path)
+        sessions_dir.mkdir(parents=True, exist_ok=True)
+        _active_sessions_file(tmp_path).write_text(
+            json.dumps({
+                "sessions": [
+                    {
+                        "id": "1-999999-stale",
+                        "pid": 999999,
+                        "start_epoch": 1,
+                        "start_time": "1970-01-01T00:00:01Z",
+                        "working_directory": str(tmp_path),
+                    }
+                ]
+            })
+        )
+
+        _run_hook(INIT_HOOK, tmp_path, extra_env={"COS_ACTIVE_SESSION_PRUNE_GRACE_SECONDS": "1"})
+
+        data = json.loads(_active_sessions_file(tmp_path).read_text())
+        ids = [entry["id"] for entry in data["sessions"]]
+        assert "1-999999-stale" not in ids
+        assert len(data["sessions"]) == 1
+
     def test_init_corrupted_active_sessions_json_reinitialized(self, tmp_path):
         """Hook must reinitialise active-sessions.json when it is corrupted."""
         if not FLOCK_AVAILABLE:

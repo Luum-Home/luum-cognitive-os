@@ -106,8 +106,10 @@ DURATION_MS=$(( END_MS - START_MS ))
 # but guard defensively).
 SAFE_HOOK=$(printf '%s' "$HOOK_NAME" | tr -d '"\\')
 SAFE_EVENT=$(printf '%s' "$EVENT_NAME" | tr -d '"\\')
+SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-}}}"
+SAFE_SESSION=$(printf '%s' "$SESSION_ID" | tr -d '"\\')
 
-JSON_LINE="{\"timestamp\":\"$START_TS\",\"event\":\"$SAFE_EVENT\",\"hook\":\"$SAFE_HOOK\",\"duration_ms\":$DURATION_MS,\"exit_code\":$HOOK_EXIT,\"pid\":$HOOK_PID}"
+JSON_LINE="{\"timestamp\":\"$START_TS\",\"event\":\"$SAFE_EVENT\",\"hook\":\"$SAFE_HOOK\",\"duration_ms\":$DURATION_MS,\"exit_code\":$HOOK_EXIT,\"pid\":$HOOK_PID,\"session_id\":\"$SAFE_SESSION\"}"
 
 # Append to JSONL — redirect all errors to /dev/null so a full disk or
 # read-only filesystem never breaks the hook chain.
