@@ -55,7 +55,7 @@ make test-laptop
 
 ### Integration lane changes
 
-`./cos-test cluster --lane integration --ci` is the compatibility umbrella and is not a lightweight laptop lane. It
+`./cos-test cluster --lane integration --ci` is not a lightweight laptop lane. It
 is explicit, optional, stateful, serial, and SO-maintainer-only. It runs the full
 non-Docker integration directory through `pytest-with-summary.sh` with
 `--workers 0`, a 900s timeout, Docker forbidden, and cost-bearing tests blocked.
@@ -77,18 +77,8 @@ For one suspected surface, run the specific integration file instead:
 bash scripts/pytest-with-summary.sh --workers 0 --lane integration -- tests/integration/test_name.py
 ```
 
-Prefer split integration lanes before the compatibility umbrella:
-
-```bash
-./cos-test cluster --lane integration-memory
-./cos-test cluster --lane integration-installer
-./cos-test cluster --lane integration-hooks
-./cos-test cluster --lane integration-provider
-./cos-test cluster --lane integration-runtime
-```
-
-Use `make test-laptop-integration` only when all five non-Docker integration
-surfaces need a local pass.
+Future split target: integration-memory, integration-installer,
+integration-hooks, integration-provider, and integration-runtime.
 
 ### Infrastructure contract changes
 
