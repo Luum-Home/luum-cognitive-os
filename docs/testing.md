@@ -114,8 +114,9 @@ JUnit, inventories, and resource-policy metadata under
 | Use case | Command |
 |---|---|
 | Local quick iteration | `make test-local-fast` or `cos-test focused` |
+| Laptop-friendly broad validation | `make test-laptop` |
 | Local broad without Docker | `make test-local-wide-no-docker` or `cos-test broad --no-docker` |
-| CI default | `make test-ci-default` or `cos-test broad --no-docker --ci` |
+| CI / pre-release default | `make test-ci-default` or `cos-test broad --no-docker --ci` |
 | Slow integration without Docker | `make test-integration-no-docker` or `cos-test cluster --lane integration` |
 | Docker/testcontainers explicit | `make test-docker-explicit` |
 | Optional/cost-bearing explicit | `make test-optional-cost` |
@@ -125,6 +126,17 @@ cost-bearing lanes are opt-in so local laptops and CI jobs do not start heavy
 services or hosted evaluations by surprise. The integration lane is also
 explicit because it exercises live session/install workflows and can exceed the
 bounded CI default even when Docker tests are excluded.
+
+`make test-laptop` is the preferred broad local command when you want useful
+coverage without making the workstation feel unusable. It runs the core
+non-Docker lanes with `COS_TEST_WORKERS_MAX=2` and intentionally skips
+integration, e2e, optional/cost-bearing lanes, and chaos. Use it for normal
+local confidence after multi-file changes.
+
+`make test-ci-default` is a CI/pre-release gate, not a tight development loop.
+It runs the canonical broad non-Docker plan with CI settings and may take long
+enough to slow a laptop. Use it before push/release or in CI; do not run it
+constantly during day-to-day edits.
 
 ### Persistent Local Run Artifacts
 
