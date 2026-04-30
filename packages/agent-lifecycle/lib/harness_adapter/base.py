@@ -31,6 +31,7 @@ class HarnessName(str, Enum):
     """Known agent harnesses. Extend when adding a new adapter."""
 
     CLAUDE_CODE = "claude_code"
+    CODEX = "codex"
     OPENCODE = "opencode"
     AIDER = "aider"
     CURSOR = "cursor"
@@ -82,6 +83,46 @@ class CanonicalEvent:
         valid = {f.name for f in fields(target)}
         filtered = {k: v for k, v in payload.items() if k in valid}
         return target(**filtered)  # type: ignore[arg-type]
+
+
+@dataclass
+class SessionStart(CanonicalEvent):
+    """Emitted when a harness session begins."""
+
+    event_type: ClassVar[str] = "session_start"
+
+    session_id: str = ""
+    started_at: float = 0.0
+    harness: str = ""
+    cwd: Optional[str] = None
+    source: Optional[str] = None
+    version: Optional[str] = None
+
+
+@dataclass
+class UserPromptSubmit(CanonicalEvent):
+    """Emitted when a user prompt enters the harness."""
+
+    event_type: ClassVar[str] = "user_prompt_submit"
+
+    session_id: Optional[str] = None
+    submitted_at: float = 0.0
+    harness: str = ""
+    prompt_summary: Optional[str] = None
+    prompt_hash: Optional[str] = None
+
+
+@dataclass
+class SessionEnd(CanonicalEvent):
+    """Emitted when a harness session or turn completes."""
+
+    event_type: ClassVar[str] = "session_end"
+
+    session_id: str = ""
+    ended_at: float = 0.0
+    harness: str = ""
+    exit_status: str = "unknown"
+    duration_ms: Optional[int] = None
 
 
 @dataclass

@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted
 **Date**: 2026-04-30
 **Author**: Maintainer
 
@@ -10,13 +10,13 @@
 
 ## Status
 
-Proposed.
+Accepted.
 Consumes-plan: docs/architecture/plans/adr-064-implementation-plan.md
 
-Blocks ADR-064 advancement (Harness-Agnostic Cognitive OS cannot exit Proposed
-until a second harness produces byte-identical canonical events). Also blocks
-ADR-080 Tier 1 (Hermes cross-harness adoption, whose `context_compressor` port
-assumes a working Codex adapter).
+Unblocks the ADR-064 advancement path by making Codex a second canonical
+harness with captured native payload fixtures. It also unblocks ADR-080 Tier 1
+(Hermes cross-harness adoption), whose `context_compressor` port assumes a
+working Codex adapter.
 
 ## Context
 
@@ -31,8 +31,10 @@ design. In practice, only `lib/harness_adapter/claude_code.py` has full
 coverage: 14/14 unit tests and 4/4 integration tests pass. `aider.py` is a
 passive file-watcher POC. No other adapter exists.
 
-This means the OS remains **"portable in principle, Claude Code in practice"**
-— exactly the state ADR-064 committed to exit.
+This meant the OS was **"portable in principle, Claude Code in practice"**
+— exactly the state ADR-064 committed to exit. This ADR is the first accepted
+implementation slice that moves Codex from projected driver to canonical
+harness adapter.
 
 ### Codex is the operator's live secondary harness
 
@@ -61,8 +63,9 @@ sync has already caused observable drift. The file is proof that Codex is an
 
 ADR-064 §Status review 2026-04-27 states verbatim: *"Flip to Accepted when
 Phase 2 ships and at least one non-CC harness produces byte-identical canonical
-events for a reference skill."* Codex is the natural candidate. Until this
-adapter ships, that condition cannot be satisfied.
+events for a reference skill."* Codex is the natural candidate. This ADR
+delivers the adapter and fixture corpus needed for that condition; the
+reference-skill parity test remains tied to ADR-064 Surface 3 (`cos-skill run`).
 
 ### What ADR-080 gated on
 
@@ -319,23 +322,40 @@ The following must all pass before this ADR advances to Accepted:
 6. The Claude Code regression suite (`pytest tests/unit/test_harness_adapter_claude_code.py
    tests/integration/`) remains green — no existing test may regress.
 
+## Implementation status
+
+Accepted implementation slice shipped on 2026-04-30:
+
+- `lib/harness_adapter/codex.py` normalizes live Codex Desktop session rows and
+  Codex hook stdin payloads into canonical events.
+- `tests/fixtures/codex-live-session/` stores sanitized payloads captured from
+  an actual Codex Desktop session JSONL stream. Absolute paths, long prompts,
+  and operator content are replaced with stable placeholders.
+- `lib/harness_adapter/dispatch.py` registers `CodexAdapter` before Claude Code
+  so native Codex session rows do not fall through to `none` or Claude.
+- `internal/provider/codex.go` maps Codex `UserPromptSubmit` and `Stop`, reports
+  non-Bash tool-event coverage as `codex_tool_coverage_gap`, and uses
+  `.codex/hooks.json` as the settings driver path.
+- `manifests/harness-driver-capabilities.yaml` records Codex v0.126.0-alpha.8
+  as the observed baseline and points to the captured fixture corpus.
+
+Deferred from this slice:
+
+- Generating `.codex/hooks.json` from `scripts/_lib/settings-driver-codex.sh`
+  remains ADR-064/ADR-057 follow-up work. Current projection is already
+  tested, but the driver file is not yet generated from a single canonical
+  block with a `DO NOT EDIT` header.
+- The cross-harness reference skill parity test is represented by dispatch and
+  adapter tests here; a higher-level `test_harness_agnostic_skill_run.py` remains
+  a follow-up once Surface 3 (`cos-skill run`) is canonical.
+
 ## Verification
 
-This ADR is Proposed; the implementation is not complete yet. While it remains
-Proposed, verification is limited to document-contract and projection-safety
-checks:
+Required focused verification for this ADR:
 
 ```bash
-python3 -m pytest tests/audit/test_adr_contracts.py -q --tb=short
-python3 -m pytest tests/contracts/test_canonical_projection_behavior.py::test_codex_projection_commands_point_to_installed_hooks -q --tb=short
-```
-
-When the ADR is implemented, the required acceptance verification expands to:
-
-```bash
-python3 -m pytest tests/unit/test_harness_adapter_codex.py -q --tb=short
-python3 -m pytest tests/integration/test_harness_agnostic_skill_run.py -q --tb=short
-python3 -m pytest tests/unit/test_harness_adapter_claude_code.py tests/integration/ -q --tb=short
+python3 -m pytest tests/unit/test_harness_adapter_base.py tests/unit/test_harness_adapter_claude_code.py tests/unit/test_harness_adapter_codex.py tests/integration/test_harness_adapter_dispatch.py tests/integration/test_codex_harness_adapter_dispatch.py -q
+go test ./internal/provider ./pkg/hook -count=1
 ```
 
 ## Open questions
@@ -382,5 +402,4 @@ python3 -m pytest tests/unit/test_harness_adapter_claude_code.py tests/integrati
 - `lib/harness_adapter/base.py` — ABC contract this adapter must satisfy
 - `.codex/hooks.json` — existing hand-maintained hook registration (to be
   generated)
-- `manifests/harness-driver-capabilities.yaml` — capability matrix (to be
-  extended)
+- `manifests/harness-driver-capabilities.yaml` — capability matrix with Codex v0.126.0-alpha.8 evidence

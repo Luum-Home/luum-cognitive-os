@@ -35,6 +35,11 @@ drivers:
   codex:
     settings_path: .codex/hooks.json
     shape: native_lifecycle_keys
+    version_baseline: "0.126.0-alpha.8"
+    evidence:
+      - tests/fixtures/codex-live-session/
+      - lib/harness_adapter/codex.py
+      - internal/provider/codex.go
     supported_events:
       SessionStart:
         status: supported
@@ -44,18 +49,18 @@ drivers:
         status: supported
       PreToolUse:
         status: limited
-        matcher_semantics: evolving
+        matcher_semantics: bash_only
         limitation: >
-          Codex hook support is still evolving. Treat tool-level events as
-          opt-in only until the local Codex version and hook runtime prove
-          coverage for the tools Cognitive OS needs.
+          Codex tool hook coverage is treated as Bash-only until live local
+          payloads prove broader coverage. The adapter emits an explicit
+          codex_tool_coverage_gap parse error for non-Bash tool events.
       PostToolUse:
         status: limited
-        matcher_semantics: evolving
+        matcher_semantics: bash_only
         limitation: >
-          Codex hook support is still evolving. Treat tool-level events as
-          opt-in only until the local Codex version and hook runtime prove
-          coverage for the tools Cognitive OS needs.
+          Codex tool hook coverage is treated as Bash-only until live local
+          payloads prove broader coverage. The adapter emits an explicit
+          codex_tool_coverage_gap parse error for non-Bash tool events.
       SubagentStart:
         status: unsupported
       PreCompact:

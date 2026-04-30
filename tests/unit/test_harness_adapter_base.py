@@ -9,11 +9,13 @@ from lib.harness_adapter.base import (
     AgentStart,
     CanonicalEvent,
     HarnessAdapter,
-    HarnessName,
     HeartbeatTick,
     ParseError,
+    SessionEnd,
+    SessionStart,
     TokenUsage,
     ToolUse,
+    UserPromptSubmit,
 )
 
 
@@ -36,6 +38,9 @@ class TestCanonicalEvents:
             ToolUse(agent_id="a1", tool_name="Bash", started_at=3.0, exit_status="success"),
             TokenUsage(agent_id="a1", ts=4.0, input_tokens=100, output_tokens=50),
             HeartbeatTick(agent_id="a1", ts=5.0, alive=False),
+            SessionStart(session_id="s1", started_at=6.0, harness="codex"),
+            UserPromptSubmit(session_id="s1", submitted_at=7.0, harness="codex", prompt_hash="abc"),
+            SessionEnd(session_id="s1", ended_at=8.0, harness="codex", exit_status="success"),
             ParseError(source_line="unknown line", adapter="aider", reason="no_match"),
         ]
         for original in samples:

@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-04-30T17:19:04.329Z",
+  "type": "session_meta",
+  "payload": {
+    "id": "codex-live-session-001",
+    "timestamp": "2026-04-30T17:18:42.839Z",
+    "cwd": "/workspace/luum-agent-os",
+    "originator": "Codex Desktop",
+    "cli_version": "0.126.0-alpha.8",
+    "source": "vscode",
+    "model_provider": "openai",
+    "base_instructions": {"text": "<redacted>"}
+  },
+  "capture": {
+    "source": "sanitized ~/.codex/sessions live Codex Desktop session row",
+    "captured_at": "2026-04-30T17:19:04.329Z"
+  }
+}
