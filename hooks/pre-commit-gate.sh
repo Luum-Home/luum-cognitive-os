@@ -8,7 +8,7 @@
 # indefinitely and re-introduces the WS11 orphan-process pattern.
 #
 # This hook now performs only structural checks:
-#   1. Coverage measurement (advisory warn only, never blocks)
+#   1. Coverage artifact check (advisory warn only, never blocks)
 #   2. Content-policy check on staged files
 #
 # Full test verification: run `bash hooks/global-verify.sh` before committing,
@@ -31,20 +31,32 @@ COVERAGE_THRESHOLD="${COVERAGE_THRESHOLD:-80}"
 METRICS_DIR="$ROOT_DIR/.cognitive-os/metrics"
 COVERAGE_HISTORY="$METRICS_DIR/coverage-history.jsonl"
 
-# ─── Step 1 (formerly Step 2): Check coverage ───────────────────────────────
+# ─── Step 1 (formerly Step 2): Check persisted coverage artifact ─────────────
+#
+# This git hook must not launch test or coverage runs. Coverage measurement is
+# produced explicitly by tests/coverage-report.sh; the gate only consumes the
+# latest persisted summary/json artifact.
 
-coverage_report="$ROOT_DIR/tests/coverage-report.sh"
+artifact_helper="$ROOT_DIR/scripts/cos_test_artifact_status.py"
 
-if [ -f "$coverage_report" ]; then
-  composite_line=$(bash "$coverage_report" 2>&1 | grep -i 'Composite')
+if [ -f "$artifact_helper" ] && command -v python3 >/dev/null 2>&1; then
+  coverage_status_json=$(
+    python3 "$artifact_helper" \
+      --project-root "$ROOT_DIR" \
+      --artifact-kind coverage \
+      --coverage-threshold "$COVERAGE_THRESHOLD" \
+      --json 2>/dev/null || true
+  )
 
-  if [ -n "$composite_line" ]; then
-    # Extract the percentage number from the Composite line
-    coverage_pct=$(echo "$composite_line" | grep -oE '[0-9]+%' | head -1 | tr -d '%')
+  if [ -n "$coverage_status_json" ]; then
+    coverage_pct=$(printf '%s' "$coverage_status_json" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("coverage_pct",""))' 2>/dev/null || true)
+    coverage_status=$(printf '%s' "$coverage_status_json" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("status","missing"))' 2>/dev/null || echo "missing")
+    coverage_run=$(printf '%s' "$coverage_status_json" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("run_dir",""))' 2>/dev/null || true)
 
-    if [ -n "$coverage_pct" ] && [ "$coverage_pct" -lt "$COVERAGE_THRESHOLD" ]; then
-      echo "WARNING: Composite coverage ${coverage_pct}% is below threshold ${COVERAGE_THRESHOLD}%" >&2
-      echo "Consider adding tests before committing." >&2
+    if [ -n "$coverage_pct" ] && [ "$coverage_status" = "fail" ]; then
+      echo "WARNING: Persisted composite coverage ${coverage_pct}% is below threshold ${COVERAGE_THRESHOLD}%" >&2
+      [ -n "$coverage_run" ] && echo "  Artifact: $coverage_run" >&2
+      echo "Run tests/coverage-report.sh to refresh coverage evidence before release." >&2
       # Warning only — does NOT block the commit
     fi
 
@@ -53,8 +65,9 @@ if [ -f "$coverage_report" ]; then
       mkdir -p "$METRICS_DIR"
       COMMIT_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
       TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-      printf '{"timestamp":"%s","source":"pre-commit-gate","event_type":"coverage_measurement","payload":{"coverage_pct":%s,"commit_sha":"%s","threshold":%s}}\n' \
-        "$TIMESTAMP" "$coverage_pct" "$COMMIT_SHA" "$COVERAGE_THRESHOLD" \
+      artifact_run_json=$(printf '%s' "$coverage_run" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || echo '""')
+      printf '{"timestamp":"%s","source":"pre-commit-gate","event_type":"coverage_measurement","payload":{"coverage_pct":%s,"commit_sha":"%s","threshold":%s,"artifact_run":%s}}\n' \
+        "$TIMESTAMP" "$coverage_pct" "$COMMIT_SHA" "$COVERAGE_THRESHOLD" "$artifact_run_json" \
         >> "$COVERAGE_HISTORY"
     fi
   fi
