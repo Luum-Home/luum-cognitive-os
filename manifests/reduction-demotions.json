@@ -1,0 +1,372 @@
+{
+  "demotions": [
+    {
+      "decision": "demoted-optional",
+      "family": "hooks",
+      "path": "hooks/agent-work-tracker.sh",
+      "reason": "aspirational/medium: events=unregistered; tested=False; emits_metric=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "hooks",
+      "path": "hooks/session-sanity.sh",
+      "reason": "aspirational/medium: events=unregistered; tested=False; emits_metric=True -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "hooks",
+      "path": "hooks/wiring-check.sh",
+      "reason": "aspirational/medium: events=unregistered; tested=False; emits_metric=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "hooks",
+      "path": "packages/paperclip-integration/hooks/paperclip-cost-stream.sh",
+      "reason": "aspirational/medium: events=unregistered; tested=False; emits_metric=True -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "hooks",
+      "path": "packages/paperclip-integration/hooks/paperclip-task-sync.sh",
+      "reason": "aspirational/medium: events=unregistered; tested=False; emits_metric=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": ".codex/skills/docs-to-artifact/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=True; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": ".codex/skills/portability-work/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=True; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": ".codex/skills/repo-map/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=True; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": ".codex/skills/test-matrix/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=True; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "packages/ecosystem-tools/skills/automaker-bridge/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "packages/ecosystem-tools/skills/cognee-integration/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "packages/ecosystem-tools/skills/deepeval-integration/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "packages/ecosystem-tools/skills/promptfoo-integration/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "packages/ecosystem-tools/skills/ragas-integration/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "packages/recall-search/skills/memu-context/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "packages/scope-governance/skills/research-protocol/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "packages/sdd-compound/skills/sdd-compound/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "packages/verification-audit/skills/cognitive-os-benchmark/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/add-mcp/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/apply-improvements/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/automaker-bridge/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/cognee-integration/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/cognitive-os-benchmark/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/component-classifier/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/deepeval-integration/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/deps-update/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/install-recommended/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/memory-scan/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/memu-context/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/promptfoo-integration/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/push-release/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/ragas-integration/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/research-protocol/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/reverse-engineer/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/sdd-compound/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/strands-evals-integration/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/tag-release/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "skills",
+      "path": "skills/validate-release/SKILL.md",
+      "reason": "aspirational/medium: frontmatter=False; trigger=False; runtime_ref=False; tested=False -> archive, wire, or delete"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/adaptive-bypass.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/agent-redirect.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/assumptions.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/canonical-events.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/capability-snapshots.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/content-policy.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/dod-gate.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/epic-task-detector.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/infra-detections.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/infra-usage.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/knowledge-graph.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/large-file-reads.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/parity-results.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/performance.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/prompt-quality.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/rate-limit-checks.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/retry-tracker.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/scope-proportionality.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/secret-redactions.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/skill-metrics.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/task-history.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    },
+    {
+      "decision": "demoted-optional",
+      "family": "metrics",
+      "path": ".cognitive-os/metrics/test-quality-audit.jsonl",
+      "reason": "aspirational/medium: bytes=0; mentioned=True -> delete, wire producer, or document owner"
+    }
+  ],
+  "description": "Primitive rows intentionally demoted from reduction backlog after audit triage. These are optional, diagnostic, or dormant surfaces; re-promote by adding runtime wiring and behavioral tests.",
+  "version": 1
+}
