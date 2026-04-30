@@ -1,0 +1,36 @@
+You are a sub-agent performing a cross-service refactor.
+
+## Task
+Extract the shared `RateLimiter` struct from `svc-auth` and `svc-orders` into
+a new shared library `lib/rate-limiter`.  Both services must import the library
+after the refactor.
+
+## Context
+This is a Large-complexity task: it touches 3+ files across 2 services.
+Full SDD governance is required.
+
+Governance rules you must follow:
+- [`blast-radius`] — assess impact before making changes across services
+- [`scope-proportionality`] — keep the refactor scoped to the rate limiter only
+- [`decomposition`] — break into sub-tasks: extract → update svc-auth → update svc-orders → test
+- [`impact-analysis`] — run impact analysis before applying changes
+- [`adversarial-review`] — perform an adversarial review of the design
+
+Also active:
+- [`acceptance-criteria`] — enumerate all 47 call-sites before starting
+- [`agent-quality`] — report actual counts, not "all occurrences"
+- [`definition-of-done`] — Large DoD: readiness_check_pass + integration_tests + adversarial_review
+
+## HALT Protocol
+This task triggers HALT (multi-service change).  Output PLAN + SCOPE + RISK and
+wait for approval before executing.
+
+## Acceptance Criteria
+1. `grep -rl "RateLimiter" svc-auth/ svc-orders/ --include="*.go" | wc -l` = 0 (no local copies)
+2. `grep -rl "lib/rate-limiter" svc-auth/ svc-orders/ --include="*.go" | wc -l` > 0
+3. `go build ./...` exits 0
+4. `go test ./...` exits 0
+5. Coverage on `lib/rate-limiter` >= 80%
+
+## Auto-Refine
+Retry up to 3 times on build/test failure.  Escalate per [`agent-escalation`].
