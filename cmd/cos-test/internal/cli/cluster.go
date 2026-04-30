@@ -128,11 +128,30 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 	}
 
 	plan := &clusterPlan{Lane: lane}
+	// excludeFilter returns the "-m" args to apply the lane's MarkerExclude,
+	// if any, optionally combined with an existing "not X" expression.
+	withExclude := func(existingNot string) []string {
+		if lane.MarkerExclude == "" {
+			if existingNot == "" {
+				return nil
+			}
+			return []string{"-m", "not " + existingNot}
+		}
+		if existingNot == "" {
+			return []string{"-m", "not " + lane.MarkerExclude}
+		}
+		return []string{"-m", fmt.Sprintf("not %s and not %s", existingNot, lane.MarkerExclude)}
+	}
+
 	switch lane.Parallel {
 	case lanes.ParallelTrue:
 		plan.Workers = "auto:n (parallel-safe per registry)"
 		plan.Reason = "lane parallel=true"
+		if lane.MarkerExclude != "" {
+			plan.Reason += fmt.Sprintf(" (excluding -m %q)", lane.MarkerExclude)
+		}
 		args := append([]string{}, lane.Paths...)
+		args = append(args, withExclude("")...)
 		args = append(args, "-n", "auto")
 		plan.Invokes = []invokeSpec{{Args: args, Label: "parallel"}}
 	case lanes.ParallelFalse:
@@ -141,8 +160,13 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 		if reason == "" {
 			reason = "lane parallel=false"
 		}
+		if lane.MarkerExclude != "" {
+			reason += fmt.Sprintf(" (excluding -m %q)", lane.MarkerExclude)
+		}
 		plan.Reason = reason
-		plan.Invokes = []invokeSpec{{Args: append([]string{}, lane.Paths...), Label: "serial"}}
+		args := append([]string{}, lane.Paths...)
+		args = append(args, withExclude("")...)
+		plan.Invokes = []invokeSpec{{Args: args, Label: "serial"}}
 	case lanes.ParallelMarker:
 		marker := lane.MarkerSerial
 		if marker == "" {
@@ -150,10 +174,18 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 		}
 		plan.Workers = "split (marker:" + marker + ")"
 		plan.Reason = fmt.Sprintf("parallel-safe except marker %q (run serial)", marker)
+		if lane.MarkerExclude != "" {
+			plan.Reason += fmt.Sprintf(" + excluding -m %q", lane.MarkerExclude)
+		}
 		parallelArgs := append([]string{}, lane.Paths...)
-		parallelArgs = append(parallelArgs, "-m", "not "+marker, "-n", "auto")
+		parallelArgs = append(parallelArgs, withExclude(marker)...)
+		parallelArgs = append(parallelArgs, "-n", "auto")
 		serialArgs := append([]string{}, lane.Paths...)
-		serialArgs = append(serialArgs, "-m", marker)
+		if lane.MarkerExclude != "" {
+			serialArgs = append(serialArgs, "-m", fmt.Sprintf("%s and not %s", marker, lane.MarkerExclude))
+		} else {
+			serialArgs = append(serialArgs, "-m", marker)
+		}
 		plan.Invokes = []invokeSpec{
 			{Args: parallelArgs, Label: "marker:not " + marker},
 			{Args: serialArgs, Label: "marker:" + marker},
