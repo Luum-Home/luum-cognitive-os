@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# prepare-commit-msg — add COS provenance trailers to every local commit.
+set -uo pipefail
+
+REPO_DIR=$(git rev-parse --show-toplevel 2>/dev/null || exit 0)
+MSG_FILE="$1"
+
+[ -n "$MSG_FILE" ] || exit 0
+[ -f "$MSG_FILE" ] || exit 0
+
+python3 "$REPO_DIR/scripts/commit_provenance.py" "$MSG_FILE" 2>/dev/null || true
+exit 0

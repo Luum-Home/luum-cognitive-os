@@ -14,6 +14,7 @@ package imports (`lib.docs_writer`) resolve the same way agents do.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from datetime import datetime
@@ -235,6 +236,125 @@ def test_hook_passes_when_all_categories_present(tmp_path):
     assert result.returncode == 0
     assert "OK" in result.stdout or result.stderr == ""
 
+
+
+def _docs_payload(file_path: Path, tool_name: str = "Write") -> str:
+    return json.dumps({"tool_name": tool_name, "tool_input": {"file_path": str(file_path)}})
+
+
+def _make_category_docs(project_dir: Path) -> None:
+    (project_dir / "docs").mkdir(parents=True, exist_ok=True)
+    for cat in CATEGORY_DIR_NAMES:
+        (project_dir / "docs" / cat).mkdir(parents=True, exist_ok=True)
+
+
+def test_prewrite_guard_warns_before_creating_new_markdown_doc(tmp_path):
+    proj = tmp_path / "guard"
+    _make_category_docs(proj)
+    existing = proj / "docs" / "02-arquitectura" / "primitive-gap-matrix.md"
+    existing.write_text("# Primitive Gap Matrix\n\nGovernance primitive gap audit evidence.\n")
+    target = proj / "docs" / "02-arquitectura" / "primitive-gap-followup.md"
+
+    result = _run_hook([], stdin=_docs_payload(target))
+
+    assert result.returncode == 0
+    assert "DOC REINVENTION GUARD" in result.stderr
+    assert "search/update existing documentation" in result.stderr
+    assert "docs/02-arquitectura/primitive-gap-matrix.md" in result.stderr
+
+
+def test_prewrite_guard_skips_existing_markdown_doc(tmp_path):
+    proj = tmp_path / "existing"
+    _make_category_docs(proj)
+    target = proj / "docs" / "02-arquitectura" / "existing.md"
+    target.write_text("# Existing\n")
+
+    result = _run_hook([], stdin=_docs_payload(target, tool_name="Edit"))
+
+    assert result.returncode == 0
+    assert "DOC REINVENTION GUARD" not in result.stderr
+
+
+def test_prewrite_guard_strict_blocks_new_markdown_doc(tmp_path):
+    proj = tmp_path / "strict"
+    _make_category_docs(proj)
+    target = proj / "docs" / "02-arquitectura" / "new-doc.md"
+
+    result = subprocess.run(
+        ["bash", str(REPO_ROOT / "hooks/project-docs-convention.sh")],
+        capture_output=True,
+        text=True,
+        input=_docs_payload(target),
+        check=False,
+        env={**os.environ, "COS_STRICT_DOCS_REINVENTION": "1"},
+    )
+
+    assert result.returncode == 2
+    assert "DOC REINVENTION GUARD" in result.stderr
+
+
+def test_adr_reservation_guard_warns_for_unreserved_new_adr(tmp_path):
+    proj = tmp_path / "adr-guard"
+    _make_category_docs(proj)
+    (proj / "docs" / "adrs").mkdir()
+    target = proj / "docs" / "adrs" / "ADR-001-unreserved.md"
+
+    result = _run_hook([], stdin=_docs_payload(target))
+
+    assert result.returncode == 0
+    assert "ADR RESERVATION GUARD" in result.stderr
+    assert "adr_reserve.py" in result.stderr
+
+
+def test_adr_reservation_guard_allows_active_reserved_adr(tmp_path):
+    proj = tmp_path / "adr-reserved"
+    _make_category_docs(proj)
+    (proj / "docs" / "adrs").mkdir()
+    locks = proj / ".cognitive-os" / "locks"
+    locks.mkdir(parents=True)
+    target = proj / "docs" / "adrs" / "ADR-001-reserved.md"
+    (locks / "adr-reservations.json").write_text(
+        json.dumps(
+            {
+                "reservations": [
+                    {
+                        "number": 1,
+                        "adr_id": "ADR-001",
+                        "title": "Reserved",
+                        "slug": "reserved",
+                        "session_id": "s1",
+                        "owner": "test",
+                        "expires_at": "2999-01-01T00:00:00+00:00",
+                        "path": "docs/adrs/ADR-001-reserved.md",
+                    }
+                ]
+            }
+        )
+    )
+
+    result = _run_hook([], stdin=_docs_payload(target))
+
+    assert result.returncode == 0
+    assert "ADR RESERVATION GUARD" not in result.stderr
+
+
+def test_adr_reservation_guard_strict_blocks_unreserved_new_adr(tmp_path):
+    proj = tmp_path / "adr-strict"
+    _make_category_docs(proj)
+    (proj / "docs" / "adrs").mkdir()
+    target = proj / "docs" / "adrs" / "ADR-002-unreserved.md"
+
+    result = subprocess.run(
+        ["bash", str(REPO_ROOT / "hooks/project-docs-convention.sh")],
+        capture_output=True,
+        text=True,
+        input=_docs_payload(target),
+        check=False,
+        env={**os.environ, "COS_STRICT_ADR_RESERVATION": "1"},
+    )
+
+    assert result.returncode == 2
+    assert "ADR RESERVATION GUARD" in result.stderr
 
 def test_hook_json_output_shape(tmp_path):
     proj = tmp_path / "partial"
