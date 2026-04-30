@@ -2,7 +2,7 @@
 
 ## Status
 
-**Accepted** — 2026-04-27 (Phase 2 implemented). Original proposal: 2026-04-24.
+**Accepted** — Phase 2 implemented 2026-04-30. Original proposal: 2026-04-24.
 
 ## Context
 
@@ -167,12 +167,12 @@ capacity-awareness everywhere now is overkill — premature generalization. Phas
 
 The actual implementation is out of scope for this ADR. This is the sketch:
 
-| Phase | Scope | Cost estimate |
-|---|---|---|
-| 1 | `scripts/detect_runner_capacity.py` + `pytest-with-summary.sh` edits + 5 unit tests covering the heuristic table | ~30 min |
-| 2 | Capacity logging to `.cognitive-os/metrics/test-runs/.../capacity.json` + a small dashboard viewer (read-only) | ~30 min |
-| 3 | Cross-platform CI: add a Windows runner job that exercises the Windows fallback path (no `os.getloadavg`) | ~60 min |
-| 4 | Generalize: extract the detection into `lib/runner_capacity.py` for reuse by other tools (cos-init, dispatch). Only do this once a second real consumer exists. | future |
+| Phase | Scope | Cost estimate | Status |
+|---|---|---|---|
+| 1 | `scripts/detect_runner_capacity.py` + `pytest-with-summary.sh` edits + 5 unit tests covering the heuristic table | ~30 min | **Done** (2026-04-24) |
+| 2 | Capacity logging to `.cognitive-os/metrics/test-runs/.../capacity.json` + a small dashboard viewer (read-only) | ~30 min | **Done** (2026-04-30): `pytest-with-summary.sh` writes capacity.json with 11-key schema (timestamp_utc, cores, mem_available_gb, load_pct, battery_pct, ci, workers_chosen, rule_fired, pytest_args_inferred, session_id, junit_xml_path); 3 unit tests in `tests/unit/test_capacity_logging.py`; dashboard viewer deferred (not needed until data accumulates) |
+| 3 | Cross-platform CI: add a Windows runner job that exercises the Windows fallback path (no `os.getloadavg`) | ~60 min | Queued |
+| 4 | Generalize: extract the detection into `lib/runner_capacity.py` for reuse by other tools (cos-init, dispatch). Only do this once a second real consumer exists. | future | Queued |
 
 **Phase 1 is the only deliverable for the immediate operator request.** Phases 2–4 are
 queued, not committed. The split is deliberate: Phase 1 fixes today's specific pain
