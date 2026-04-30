@@ -411,3 +411,25 @@ callable tool — this ADR ports that primitive.
 - `tests/unit/test_memory_manager.py` (new, 30 tests)
 - `tests/unit/test_engram_memory_provider.py` (new, 23 tests)
 - `docs/adrs/ADR-078-mid-task-memory-tool.md` (new)
+
+## 2026-04-30: CORE_RULES applies to self-hosting (ADR-079)
+
+**Finding**: `hooks/self-install.sh` contained a hard-coded override
+`IS_SELF_HOSTING=true → EFFICIENCY_PROFILE=full → SYNC_ALL_RULES=true` that
+bypassed the CORE_RULES reduction from commit `991b24a`. Every COS development
+SessionStart loaded 16 extra rule files that are already covered by Stage-2
+expansion via `RULES-COMPACT.md`.
+
+**Measured token savings**: 83,118 chars ÷ 4 ≈ **~20,779 tokens per SessionStart**
+saved by removing the override. The 16 files are: ROADMAP.md,
+acceptance-criteria.md, adaptive-bypass.md, agent-quality.md, bash-naming.md,
+closed-loop-prompts.md, credential-management.md, definition-of-done.md,
+error-learning.md, lane-taxonomy.md, model-routing.md, phase-aware-agents.md,
+python-naming.md, result-management.md, token-economy.md, trust-score.md.
+
+**Decision**: Remove the IS_SELF_HOSTING force; add `COS_SYNC_ALL_RULES=1`
+opt-in env var for developers who need full symlink set. Fixed
+`test_self_hosting_always_full` → `test_self_hosting_detects_but_no_longer_forces_full`.
+
+**Files changed**: `hooks/self-install.sh`, `tests/unit/test_efficiency_stress.py`,
+`docs/adrs/ADR-079-corerules-applies-to-self-hosting.md` (new)

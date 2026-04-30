@@ -232,8 +232,19 @@ class TestSymlinkCountAfterInstall:
             f"Currently symlinked: {sorted(f.name for f in symlinks)}"
         )
 
-    def test_core_rules_are_symlinked_after_install(self):
-        """After self-install.sh, all core behavioral rules must be symlinked."""
+    def test_core_rules_reachable_after_install(self):
+        """After self-install.sh, all core behavioral rules must be reachable.
+
+        Stage 1 (SessionStart) symlinks only RULES-COMPACT.md.  Stage 2 expands
+        [ref-key] markers on demand.  Core rules are reachable even if they are
+        not symlinked at Stage 1 (ADR-079 / ADR-074) as long as they are:
+          (a) symlinked at Stage 1 (in CORE_RULES), OR
+          (b) in EXCLUDED_RULES (accessible via hook enforcement), OR
+          (c) referenced via [`key-name`] markers in RULES-COMPACT.md (Stage 2).
+
+        This test verifies RULES-COMPACT.md is symlinked and all other
+        CORE_RULES_REQUIRED entries are reachable through one of the three paths.
+        """
         if not HOOK_PATH.exists():
             pytest.skip("self-install.sh not found")
 
@@ -242,14 +253,35 @@ class TestSymlinkCountAfterInstall:
         if not COS_RULES_DIR.exists():
             pytest.skip(".claude/rules/cos/ not found after self-install")
 
-        missing = []
-        for rule in CORE_RULES_REQUIRED:
-            link = COS_RULES_DIR / rule
-            if not link.is_symlink():
-                missing.append(rule)
+        import re as _re
+        hook_text = HOOK_PATH.read_text()
+        excluded = set(_extract_excluded_rules(hook_text))
 
-        assert not missing, (
-            f"Core rules missing from .claude/rules/cos/ after self-install: {missing}"
+        # Parse compact-indexed keys: [`key-name`] markers in RULES-COMPACT.md
+        compact_path = REPO_ROOT / "rules" / "RULES-COMPACT.md"
+        compact_text = compact_path.read_text() if compact_path.exists() else ""
+        compact_keys = {f"{k}.md" for k in _re.findall(r"\[`([a-z][a-z0-9-]+)`\]", compact_text)}
+
+        missing_from_repo = []
+        not_reachable = []
+        for rule in CORE_RULES_REQUIRED:
+            rule_path = REPO_ROOT / "rules" / rule
+            if not rule_path.exists():
+                missing_from_repo.append(rule)
+                continue
+            symlinked = (COS_RULES_DIR / rule).is_symlink()
+            stage2_excluded = rule in excluded
+            stage2_compact = rule in compact_keys
+            if not symlinked and not stage2_excluded and not stage2_compact:
+                not_reachable.append(rule)
+
+        assert not missing_from_repo, (
+            f"Core rules missing from rules/ directory: {missing_from_repo}"
+        )
+        assert not not_reachable, (
+            f"Core rules are unreachable — not symlinked, not in EXCLUDED_RULES, "
+            f"and not referenced in RULES-COMPACT.md: {not_reachable}. "
+            f"Each must be reachable via Stage 1 (symlink) or Stage 2 (ref-key)."
         )
 
     def test_excluded_package_rules_not_symlinked(self):
