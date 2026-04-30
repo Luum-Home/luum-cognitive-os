@@ -221,9 +221,18 @@ def test_real_guard_gracefully_handles_missing_submodules(
 def test_real_hermes_compressor_if_present(
     real_guard: ReinventionGuard,
 ) -> None:
-    """If Hermes is cloned, context_compressor.py should be discoverable."""
+    """If Hermes is fully cloned with context_compressor.py present, it should be discoverable."""
+    # Skip when Hermes is absent OR partially-cloned without the specific file
+    # we're asserting on. The previous skip-if-not-exists check accepted a stub
+    # directory and then failed the assertion when the file wasn't there.
     if not real_guard.hermes_path.exists():
         pytest.skip("Hermes submodule not cloned — skipping integration check")
+    expected = real_guard.hermes_path / "agent" / "context_compressor.py"
+    if not expected.is_file():
+        pytest.skip(
+            f"Hermes cloned but {expected.relative_to(real_guard.hermes_path)} "
+            f"missing — partial install, skipping integration check"
+        )
     results = real_guard.check(
         "context compressor",
         keywords=["compaction", "compress"],
@@ -235,9 +244,18 @@ def test_real_hermes_compressor_if_present(
 def test_real_pi_mutation_queue_if_present(
     real_guard: ReinventionGuard,
 ) -> None:
-    """If Pi is cloned, file-mutation-queue.ts should be discoverable."""
+    """If Pi is fully cloned with file-mutation-queue.ts present, it should be discoverable."""
     if not real_guard.pi_path.exists():
         pytest.skip("Pi submodule not cloned — skipping integration check")
+    expected = (
+        real_guard.pi_path
+        / "packages" / "coding-agent" / "src" / "core" / "tools"
+        / "file-mutation-queue.ts"
+    )
+    if not expected.is_file():
+        pytest.skip(
+            f"Pi cloned but {expected.name} missing — partial install, skipping"
+        )
     # "mutation" and "queue" both appear in file-mutation-queue.ts; "FileMutationQueue"
     # is the exported class name, so search for the actual terms in the file
     results = real_guard.check(
