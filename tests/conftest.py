@@ -175,7 +175,11 @@ def _build_path_to_marker_map() -> dict[str, str]:
         for path_prefix in config.get("paths", []):
             # Normalise: strip leading "./" and trailing "/" so startswith works cleanly.
             normalised = path_prefix.lstrip("./").rstrip("/")
-            mapping[normalised] = marker_name
+            # A directory can have explicit sublanes (for example
+            # integration-docker). The first declared lane owns automatic
+            # path-based marking; sublanes must select via marker_include so
+            # they do not overwrite the default directory marker.
+            mapping.setdefault(normalised, marker_name)
     return mapping
 
 
@@ -214,4 +218,3 @@ def pytest_collection_modifyitems(config: Any, items: list[Any]) -> None:  # noq
                 if marker_name not in existing_markers:
                     item.add_marker(getattr(pytest.mark, marker_name))
                 break  # first match wins — a test belongs to exactly one lane
-

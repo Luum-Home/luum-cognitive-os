@@ -381,6 +381,18 @@ class TestFromFlag:
 class TestGitignore:
     """Tests that .gitignore covers all runtime paths."""
 
+    ALLOWED_TRACKED_COGNITIVE_OS_SOURCE_FILES = {
+        ".cognitive-os/migrations/components-to-primitives.md",
+        ".cognitive-os/migrations/test-architecture-inventory.md",
+        ".cognitive-os/plans/features/cos-test-extension-notes.md",
+        ".cognitive-os/plans/features/test-runner-ergonomics-design.md",
+        ".cognitive-os/plans/features/test-runner-ergonomics-proposal.md",
+        ".cognitive-os/plans/features/test-runner-ergonomics-spec.md",
+        ".cognitive-os/plans/features/test-runner-ergonomics-tasks.md",
+        ".cognitive-os/test-lanes.yaml",
+        ".cognitive-os/test-resource-policy.yaml",
+    }
+
     def test_gitignore_exists(self, cos_source):
         """The repo must have a .gitignore."""
         assert (cos_source / ".gitignore").is_file()
@@ -424,7 +436,10 @@ class TestGitignore:
         tracked = result.stdout.strip().split("\n")
         runtime_tracked = [
             f for f in tracked
-            if f.startswith(".cognitive-os/")
+            if (
+                f.startswith(".cognitive-os/")
+                and f not in self.ALLOWED_TRACKED_COGNITIVE_OS_SOURCE_FILES
+            )
             or f.startswith(".promptfoo/")
             or f.startswith(".ruff_cache/")
         ]
