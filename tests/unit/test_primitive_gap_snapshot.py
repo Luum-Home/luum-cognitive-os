@@ -73,3 +73,62 @@ def test_cli_writes_trend_and_markdown(tmp_path: Path, monkeypatch) -> None:
     assert exit_code == 0
     assert (tmp_path / ".cognitive-os/metrics/primitive-gap-snapshot.jsonl").exists()
     assert (tmp_path / "docs/reports/snapshot.md").exists()
+
+
+def test_compare_regressions_detects_unproven_growth() -> None:
+    previous = {
+        "overall_risk": "medium",
+        "families": [
+            {"family": "hooks", "total": 10, "proven_signal": 6, "aspirational_signal": 1, "severity": "medium"}
+        ],
+        "hook_latency": {"p95_ms": 100},
+    }
+    current = {
+        "overall_risk": "high",
+        "families": [
+            {"family": "hooks", "total": 12, "proven_signal": 6, "aspirational_signal": 2, "severity": "high"}
+        ],
+        "hook_latency": {"p95_ms": 800},
+    }
+
+    regressions = primitive_gap_snapshot.compare_regressions(previous, current, latency_regression_ms=500)
+
+    assert "overall risk worsened: medium -> high" in regressions
+    assert "hooks: severity worsened medium -> high" in regressions
+    assert "hooks: aspirational signal increased 1 -> 2" in regressions
+    assert "hooks: unproven surface grew 4 -> 6" in regressions
+    assert "hook latency p95 regressed by >500ms: 100ms -> 800ms" in regressions
+
+
+def test_cli_fails_on_regression_against_trend(tmp_path: Path, monkeypatch) -> None:
+    write(tmp_path / "hooks/example.sh", "#!/usr/bin/env bash\n")
+    previous = {
+        "timestamp": "2026-01-01T00:00:00+00:00",
+        "overall_risk": "low",
+        "families": [
+            {"family": "hooks", "total": 0, "proven_signal": 0, "aspirational_signal": 0, "severity": "low"}
+        ],
+        "hook_latency": {"p95_ms": 0},
+    }
+    write(tmp_path / "docs/reports/history.jsonl", primitive_gap_snapshot.json.dumps(previous) + "\n")
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "primitive_gap_snapshot.py",
+            "--project-root",
+            str(tmp_path),
+            "--trend-path",
+            "docs/reports/history.jsonl",
+            "--fail-on-regression",
+            "--regression-report",
+            "docs/reports/regressions.md",
+            "--markdown",
+            "docs/reports/snapshot.md",
+        ],
+    )
+
+    exit_code = primitive_gap_snapshot.main()
+
+    assert exit_code == 1
+    assert "Regressions" in (tmp_path / "docs/reports/regressions.md").read_text(encoding="utf-8")
