@@ -189,7 +189,6 @@ def _print_report(stats: dict, top_n: int = 10, event_filter: str = "", total_re
     for hook, s in ranked:
         bar = _bar(s["p95"], max_p95)
         fail_str = f"{s['failures']}" if s["failures"] > 0 else "  ."
-        events_str = ",".join(s["events"][:2])  # show up to 2 event types
         print(
             f"  {hook:<35} {s['count']:>6} {fail_str:>5} "
             f"{_format_ms(s['p50']):>8} {_format_ms(s['p95']):>8} "
