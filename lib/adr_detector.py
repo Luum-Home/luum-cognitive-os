@@ -17,6 +17,8 @@ import json
 import os
 import re
 import subprocess
+import importlib.util
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -63,7 +65,7 @@ BREAKING_CHANGE_PATTERNS = re.compile(
     r"|(swagger\.json$)"
 )
 
-ADR_PATH_PATTERN = re.compile(r"^docs/architecture/adrs/")
+ADR_PATH_PATTERN = re.compile(r"^docs/(?:architecture/)?adrs/")
 
 
 # ---------------------------------------------------------------------------
@@ -151,10 +153,8 @@ def generate_adr_draft(
     Returns the path to the created ADR file.
     """
     project_dir = str(project_dir)
-    adrs_dir = os.path.join(project_dir, "docs", "architecture", "adrs")
+    adrs_dir = os.path.join(project_dir, "docs", "adrs")
     os.makedirs(adrs_dir, exist_ok=True)
-
-    number = get_next_adr_number(adrs_dir)
 
     commit_message = _git(
         ["git", "log", "-1", "--format=%s", commit_hash],
@@ -167,9 +167,7 @@ def generate_adr_draft(
     ).strip()
 
     title = _build_title(commit_message, signals)
-    slug = _slugify(title)
-    filename = f"ADR-{number:03d}-{slug}.md"
-    filepath = os.path.join(adrs_dir, filename)
+    number, filepath = _reserve_adr_path(project_dir, title, adrs_dir)
 
     date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
@@ -220,6 +218,43 @@ Draft
         f.write(content)
 
     return filepath
+
+
+def _reserve_adr_path(project_dir: str, title: str, adrs_dir: str) -> Tuple[int, str]:
+    """Reserve the next ADR path with the cross-session reservation lock.
+
+    Falls back to scan-only numbering when running outside a full COS checkout.
+    """
+    script = Path(project_dir) / "scripts" / "adr_reserve.py"
+    if not script.exists():
+        script = Path(__file__).resolve().parents[1] / "scripts" / "adr_reserve.py"
+    if script.exists():
+        try:
+            spec = importlib.util.spec_from_file_location("adr_reserve", script)
+            if spec and spec.loader:
+                adr_reserve = importlib.util.module_from_spec(spec)
+                sys.modules["adr_reserve"] = adr_reserve
+                spec.loader.exec_module(adr_reserve)
+                reservation = adr_reserve.reserve(
+                    project_dir=Path(project_dir),
+                    title=title,
+                    session_id=(
+                        os.environ.get("COGNITIVE_OS_SESSION_ID")
+                        or os.environ.get("CODEX_SESSION_ID")
+                        or os.environ.get("CLAUDE_SESSION_ID")
+                        or "adr-detector"
+                    ),
+                    owner=os.environ.get("USER", "unknown"),
+                    ttl_seconds=86400,
+                    adrs_dir=Path(adrs_dir),
+                )
+                return int(reservation.number), str(Path(project_dir) / reservation.path)
+        except Exception:
+            pass
+
+    number = get_next_adr_number(adrs_dir)
+    slug = _slugify(title)
+    return number, os.path.join(adrs_dir, f"ADR-{number:03d}-{slug}.md")
 
 
 def get_next_adr_number(adrs_dir: str) -> int:
