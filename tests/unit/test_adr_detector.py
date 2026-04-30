@@ -9,10 +9,8 @@ Behavioral tests covering:
 """
 import json
 import os
-import re
-import textwrap
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 import pytest
 
@@ -326,7 +324,7 @@ class TestADRTemplate:
             True: "feat: add new auth system\n",  # commit message
         }.get("--format=%s" in " ".join(cmd), "Added OAuth2 flow\n")
 
-        adrs_dir = tmp_path / "docs" / "architecture" / "adrs"
+        adrs_dir = tmp_path / "docs" / "adrs"
         adrs_dir.mkdir(parents=True)
 
         signals = [
@@ -350,7 +348,7 @@ class TestADRTemplate:
     def test_adr_filename_format(self, mock_git, tmp_path):
         mock_git.return_value = "feat: migrate to pip\n"
 
-        adrs_dir = tmp_path / "docs" / "architecture" / "adrs"
+        adrs_dir = tmp_path / "docs" / "adrs"
         adrs_dir.mkdir(parents=True)
 
         signals = [{"type": "dependency_change", "weight": 0.40, "description": "Deps changed", "files": ["requirements.txt"]}]
@@ -364,7 +362,7 @@ class TestADRTemplate:
     def test_adr_number_increments(self, mock_git, tmp_path):
         mock_git.return_value = "feat: change\n"
 
-        adrs_dir = tmp_path / "docs" / "architecture" / "adrs"
+        adrs_dir = tmp_path / "docs" / "adrs"
         adrs_dir.mkdir(parents=True)
         (adrs_dir / "ADR-020-existing.md").touch()
 
@@ -374,10 +372,23 @@ class TestADRTemplate:
         assert "ADR-021-" in os.path.basename(path)
 
     @patch("lib.adr_detector._git")
+    def test_adr_generation_creates_reservation_record(self, mock_git, tmp_path):
+        mock_git.return_value = "feat: reserve adr\n"
+        (tmp_path / "docs" / "adrs").mkdir(parents=True)
+
+        signals = [{"type": "license_change", "weight": 0.60, "description": "License changed", "files": ["LICENSE"]}]
+        path = generate_adr_draft("ccc3333", signals, str(tmp_path))
+
+        state = tmp_path / ".cognitive-os" / "locks" / "adr-reservations.json"
+        assert state.exists()
+        data = json.loads(state.read_text())
+        assert data["reservations"][0]["path"] == Path(path).relative_to(tmp_path).as_posix()
+
+    @patch("lib.adr_detector._git")
     def test_adr_signal_table_in_output(self, mock_git, tmp_path):
         mock_git.return_value = "feat: big change\n"
 
-        adrs_dir = tmp_path / "docs" / "architecture" / "adrs"
+        adrs_dir = tmp_path / "docs" / "adrs"
         adrs_dir.mkdir(parents=True)
 
         signals = [
@@ -539,7 +550,7 @@ class TestAnalyzeCommitIntegration:
             if "--format=%s" in " ".join(cmd):
                 return "docs: update ADR-001\n"
             if "diff-tree" in " ".join(cmd):
-                return "M\tdocs/architecture/adrs/ADR-001-test.md\n"
+                return "M\tdocs/adrs/ADR-001-test.md\n"
             return ""
 
         mock_git.side_effect = git_side_effect
