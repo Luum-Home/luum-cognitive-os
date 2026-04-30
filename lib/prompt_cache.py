@@ -22,7 +22,7 @@ For full message-level caching (system + last 3 messages), use
 """
 
 import copy
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List
 
 
 # ---------------------------------------------------------------------------
@@ -328,3 +328,237 @@ class PromptCacheManager:
         if idx == -1:
             return text, ""
         return text[:idx], text[idx:]
+
+
+# ---------------------------------------------------------------------------
+# Provider-agnostic portable layer (ADR-080 Tier 1 #2)
+# Ported from hermes-agent/agent/prompt_caching.py (MIT).
+# Harness-independent: no harness adapter dependency, works across
+# Claude Code, Codex, and any future harness.
+# ---------------------------------------------------------------------------
+
+import threading
+from dataclasses import dataclass
+
+
+@dataclass
+class CacheableSegment:
+    """A prompt segment marked for caching with provider-agnostic metadata.
+
+    Provider adapters translate this into the appropriate wire format:
+    - Anthropic: cache_control ephemeral breakpoints
+    - OpenAI/Codex: no-op (logged, not injected)
+    - Ollama: no-op (silent)
+    """
+
+    text: str
+    ttl: str = "5m"  # "5m" or "1h"
+    role: str = "system"  # "system" | "user" | "assistant"
+
+
+@dataclass
+class ProviderRequest:
+    """Provider-agnostic prompt request with cache metadata attached.
+
+    Each provider adapter converts this into the wire format it expects.
+    The ``segments`` list is ordered (earlier = more stable = cache first).
+    """
+
+    segments: list  # list[CacheableSegment]
+    raw_messages: list  # original message list, mutated by adapters
+    provider: str = "unknown"
+    cache_applied: bool = False
+
+
+# ---------------------------------------------------------------------------
+# Process-local cache metrics — no shared state across sessions (ADR-089)
+# ---------------------------------------------------------------------------
+
+_metrics_lock = threading.Lock()
+_metrics: dict = {"hits": 0, "misses": 0, "writes": 0, "noop_openai": 0, "noop_ollama": 0}
+
+
+def cache_metrics() -> dict:
+    """Return a snapshot of process-local cache hit/miss counters.
+
+    Counters are process-local and reset on restart. No cross-session state.
+
+    Returns:
+        Dict with keys: hits, misses, writes, noop_openai, noop_ollama, hit_rate_pct.
+    """
+    with _metrics_lock:
+        snap = dict(_metrics)
+    total = snap["hits"] + snap["misses"]
+    snap["hit_rate_pct"] = round(snap["hits"] / total * 100, 1) if total else 0.0
+    return snap
+
+
+def _increment_metric(key: str) -> None:
+    with _metrics_lock:
+        _metrics[key] = _metrics.get(key, 0) + 1
+
+
+def mark_cacheable(text: str, ttl: str = "5m", role: str = "system") -> CacheableSegment:
+    """Mark a prompt segment as cacheable with provider-agnostic metadata.
+
+    This function is provider-neutral. The returned ``CacheableSegment`` is
+    consumed by ``compose_cached_prompt`` which selects the right adapter.
+
+    Args:
+        text: The prompt text to mark for caching.
+        ttl:  Cache time-to-live. ``"5m"`` (default, Anthropic min-TTL) or ``"1h"``.
+        role: Message role this segment belongs to. Default ``"system"``.
+
+    Returns:
+        CacheableSegment ready for ``compose_cached_prompt``.
+    """
+    return CacheableSegment(text=text, ttl=ttl, role=role)
+
+
+# ---------------------------------------------------------------------------
+# Provider adapters
+# ---------------------------------------------------------------------------
+
+
+def _to_anthropic(segments: "list[CacheableSegment]") -> "list[dict]":
+    """Convert CacheableSegments to Anthropic Messages API cache_control format.
+
+    Implements the system_and_3 strategy: up to 4 ephemeral cache breakpoints.
+    Segments beyond the 4-breakpoint limit are included as plain text blocks.
+
+    Returns:
+        List of Anthropic content blocks with cache_control injected on the
+        first min(len(segments), 4) entries.
+    """
+    blocks = []
+    for i, seg in enumerate(segments):
+        marker: dict = {"type": "ephemeral"}
+        if seg.ttl == "1h":
+            marker["ttl"] = "1h"
+        block: dict = {"type": "text", "text": seg.text}
+        if i < 4:  # Anthropic allows max 4 cache_control breakpoints
+            block["cache_control"] = marker
+            _increment_metric("writes")
+        blocks.append(block)
+    return blocks
+
+
+def _to_openai(segments: "list[CacheableSegment]") -> "list[dict]":
+    """No-op adapter for OpenAI/Codex providers.
+
+    OpenAI's prompt caching is implicit (server-side prefix caching) and does
+    not accept client-side cache_control markers. Returning plain text blocks
+    is the correct behaviour — caching happens automatically when the prefix
+    is identical across requests.
+
+    Increments the noop_openai counter so callers can observe the no-op.
+
+    Returns:
+        List of plain text content blocks (no cache_control).
+    """
+    _increment_metric("noop_openai")
+    return [{"type": "text", "text": seg.text} for seg in segments]
+
+
+def _to_ollama_noop(segments: "list[CacheableSegment]") -> "list[dict]":
+    """Silent no-op adapter for Ollama.
+
+    Ollama does not support prompt caching. Returns plain text blocks without
+    any cache markers or logging. Increments noop_ollama for observability.
+
+    Returns:
+        List of plain text content blocks.
+    """
+    _increment_metric("noop_ollama")
+    return [{"type": "text", "text": seg.text} for seg in segments]
+
+
+_PROVIDER_ADAPTERS = {
+    "anthropic": _to_anthropic,
+    "claude": _to_anthropic,      # COS 'claude' provider uses Anthropic API
+    "openai": _to_openai,
+    "codex": _to_openai,          # Codex uses OpenAI-compatible format
+    "openrouter": _to_openai,     # OpenRouter proxies OpenAI-compatible format
+    "qwen": _to_openai,           # Qwen uses OpenAI-compatible format
+    "ollama": _to_ollama_noop,
+}
+
+
+def compose_cached_prompt(
+    segments: "list[CacheableSegment]",
+    provider: str = "anthropic",
+) -> ProviderRequest:
+    """Compose a provider-specific request from cacheable segments.
+
+    Selects the correct provider adapter and injects cache markers (or no-ops).
+    Unknown providers fall back to the Ollama no-op to avoid silent failures.
+
+    Args:
+        segments: Ordered list of CacheableSegment (most stable first).
+        provider: Target provider name. Recognised values: ``anthropic``,
+            ``claude``, ``openai``, ``codex``, ``openrouter``, ``qwen``,
+            ``ollama``. Unrecognised names → no-op.
+
+    Returns:
+        ProviderRequest with ``raw_messages`` populated by the adapter.
+        Pass ``raw_messages`` directly to the provider's messages parameter.
+    """
+    adapter = _PROVIDER_ADAPTERS.get(provider.lower(), _to_ollama_noop)
+    raw_messages = adapter(segments)
+    cache_applied = adapter is _to_anthropic
+    return ProviderRequest(
+        segments=segments,
+        raw_messages=raw_messages,
+        provider=provider,
+        cache_applied=cache_applied,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Dispatch integration helper
+# ---------------------------------------------------------------------------
+
+
+def maybe_apply_cache(
+    messages: "list[dict]",
+    provider: str = "claude",
+    cache_ttl: str = "5m",
+    native_anthropic: bool = False,
+) -> "list[dict]":
+    """Opt-in cache injection for the dispatch layer.
+
+    Called by ``lib/dispatch.py`` when ``COS_PROMPT_CACHE=1``. Returns the
+    message list with cache_control markers injected for Anthropic, or the
+    original list unchanged for other providers.
+
+    This is the primary integration point between the portable cache layer
+    and the LLM dispatch cascade (ADR-049 / ADR-080 Tier 1 #2).
+
+    Args:
+        messages:         List of message dicts (role/content pairs).
+        provider:         Provider name from the dispatch cascade.
+        cache_ttl:        ``"5m"`` (default) or ``"1h"``.
+        native_anthropic: Pass ``True`` when calling the Anthropic SDK directly.
+
+    Returns:
+        Message list — mutated copy for Anthropic, original reference for others.
+    """
+    if not messages:
+        return messages
+
+    provider_lower = provider.lower()
+
+    if provider_lower in ("anthropic", "claude"):
+        _increment_metric("writes")
+        return apply_message_cache(
+            messages, cache_ttl=cache_ttl, native_anthropic=native_anthropic
+        )
+
+    # OpenAI-compatible providers: no-op, implicit server-side caching
+    if provider_lower in ("openai", "codex", "openrouter", "qwen"):
+        _increment_metric("noop_openai")
+        return messages
+
+    # Ollama and unknown: silent no-op
+    _increment_metric("noop_ollama")
+    return messages

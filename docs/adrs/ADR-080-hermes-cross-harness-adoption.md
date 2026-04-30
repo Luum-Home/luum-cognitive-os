@@ -14,6 +14,12 @@ ADR-074 (Tier-0 learning loop), ADR-076 (skill-tier frontmatter), ADR-078 (mid-t
 
 Proposed. Blocked-by: ADR-081.
 
+### Implementation Status
+
+| Item | Status | Executed | Artifacts |
+|------|--------|----------|-----------|
+| Tier 1 #2 — portable prompt caching layer | **Accepted (executed 2026-04-30 by Session A)** | 2026-04-30 | `lib/prompt_cache.py` (portable layer appended), `lib/dispatch.py` (opt-in integration), `tests/unit/test_prompt_cache.py` (73 tests, +34 new for portable layer) |
+
 ---
 
 ## Context
@@ -122,16 +128,29 @@ without knowing whether the underlying provider supports it, and the adapter
 degrades gracefully. Without this, prompt-caching benefits are silently lost on
 non-Anthropic harnesses and cost models become inaccurate.
 
-**3. Context and trajectory compressors**
-Source: `.claude/plugins/hermes-agent/agent/context_compressor.py`,
-`trajectory_compressor.py`
-Target: `lib/context_compressor.py`, `lib/trajectory_compressor.py`
+**3. Context and trajectory compressors** — `Accepted (executed 2026-04-30 by Session A)`
+Source: `.claude/plugins/hermes-agent/agent/context_compressor.py`
+  (`trajectory_compressor.py` was absent in the Hermes plugin;
+  `compress_trajectory` implemented as a first-class COS primitive)
+Target: `lib/context_compressor.py` (trajectory compression included)
+Adapter wiring: `lib/harness_adapter/base.py::maybe_compress_context()`
+Tests: `tests/unit/test_context_compressor.py` (10 behavioral tests)
 
 Claude Code performs automatic compaction when context approaches the window
 limit. No other harness does. In non-Claude harnesses, unchecked context growth
 causes silent truncation or hard failures. These modules provide the only
 portable compaction vehicle. They complement the existing `context-management`
 rule, which governs when to compress but has no implementation to call.
+
+Implementation notes (2026-04-30):
+- Activated via `COS_CONTEXT_COMPRESS=1`. Claude Code harnesses MUST NOT set
+  this (native PreCompact handles it). Codex and other harnesses should set it.
+- Summarization routes through `lib/dispatch.py` (qwen→claude cascade, ADR-049).
+  If dispatch unavailable: degrades to returning uncompressed messages with
+  a warning — never crashes.
+- Recency bias: tail (~20% of token budget) preserved verbatim. Hermes pattern.
+- Iterative updates: `previous_summary` enables second-compaction summary updates.
+- `compress_trajectory` collapses ADR-033 canonical event lists into a summary dict.
 
 **4. Rate-limit instrumentation**
 Source: `.claude/plugins/hermes-agent/agent/rate_limit_tracker.py`,
@@ -295,7 +314,7 @@ own follow-up ADR or SDD change:
 |------|------------------------------|
 | Tier 1 #1 — multi-provider adapters | ADR-081 or `sdd-new hermes-provider-adapters` |
 | Tier 1 #2 — prompt caching layer | ADR or SDD task under #1's umbrella |
-| Tier 1 #3 — context/trajectory compressors | ADR or SDD task |
+| Tier 1 #3 — context/trajectory compressors | **Shipped 2026-04-30** `lib/context_compressor.py`, `tests/unit/test_context_compressor.py` |
 | Tier 1 #4 — rate-limit instrumentation | ADR or SDD task |
 | Tier 2 #5 — batch runner / cron | SDD change once Tier 1 is stable |
 | Tier 2 #6 — error classifier / insights | SDD change |
