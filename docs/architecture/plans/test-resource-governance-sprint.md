@@ -138,6 +138,13 @@ Implemented defaults:
 | Docker/testcontainers explicit | `make test-docker-explicit` | Runs `integration-docker` and `e2e` only with `COS_ALLOW_DOCKER_TESTS=1`. |
 | Optional/cost-bearing explicit | `make test-optional-cost` | Runs arena/benchmark/quality only with `COS_ALLOW_COST_BEARING_TESTS=1`. |
 
+The default unit lane currently runs serially under the resource policy despite
+being parallel-safe in the lane taxonomy. Broad validation found repeated
+pytest-xdist worker exits on macOS when thousands of subprocess-heavy unit tests
+ran with 4+ workers. The taxonomy still says the lane can be parallelized; the
+resource policy chooses the safer default until worker-pressure governance is
+more granular.
+
 Define safe defaults:
 
 - local default broad: non-optional, no surprise heavy services; ✅

@@ -9,7 +9,7 @@ defaults:
 
 lanes:
   unit:
-    workers: 4
+    workers: 0
     timeout_seconds: 900
   audit:
     workers: 4
