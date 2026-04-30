@@ -145,7 +145,7 @@ python3 -m pytest tests/audit/test_install_scripts.py::test_adr001_self_install_
 When a new install/update/uninstall script is added:
 1. Append it to `TARGET_SCRIPTS` in `tests/audit/shell_test_utils.py` → L1 coverage is automatic.
 2. Add a `--help` expectation to the L2 parametrize if it is user-facing.
-3. If it has side effects on `.claude/skills/`, extend `test_uninstall_removes_cos_components` or add a new regression test.
+3. If it has side effects on `.claude/skills/`, extend `test_uninstall_removes_cos_primitives` or add a new regression test.
 
 When a new ADR pins a behavioural invariant:
 1. Add a test named `test_<adr-number>_<invariant>` to layer 4.

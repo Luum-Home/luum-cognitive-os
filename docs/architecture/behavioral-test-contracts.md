@@ -86,7 +86,7 @@ running on every developer machine.
 - `tests/integration/test_auto_update_safety.py`
 - `docs/reports/test-suite-repair-ledger-2026-04-24.md`
 
-## Operational Component
+## Operational Agentic Primitive
 
 This doctrine is also operationalized as the `test-contract-repair` skill:
 
