@@ -322,6 +322,25 @@ The following must all pass before this ADR advances to Accepted:
 6. The Claude Code regression suite (`pytest tests/unit/test_harness_adapter_claude_code.py
    tests/integration/`) remains green — no existing test may regress.
 
+## Acceptance trail
+
+| Milestone | Date | Reference |
+|---|---|---|
+| Initial implementation (Session B) | 2026-04-30 | commit `9062829` — 292 LOC adapter, fixtures, unit + integration smoke |
+| Design-vs-impl verification | 2026-04-30 | this review session |
+| `test_harness_agnostic_skill_run.py` passing | 2026-04-30 | 4/4 tests; ADR-064 gate satisfied |
+| Full suite (27 tests) green | 2026-04-30 | `pytest tests/unit/test_harness_adapter_*.py tests/integration/test_*adapter*.py tests/integration/test_harness_agnostic_skill_run.py` |
+
+## Verification gaps (open as of 2026-04-30)
+
+The following items are verified deferred — they do not block Accepted status but remain open follow-up work:
+
+1. **`scripts/_lib/settings-driver-codex.sh` not present** (ADR §Decision 3, Acceptance Criterion 5b): only `scripts/_lib/settings-driver.sh` exists; the Codex-specific driver is not generated. `.codex/hooks.json` carries no `DO NOT EDIT` header and is still hand-maintained. Severity: MEDIUM — documented deferral per §Implementation status. Follow-up: ADR-057/ADR-064 Surface 2.
+
+2. **Claude Code adapter does not natively parse `SessionStart` or `UserPromptSubmit` from hook stdin** (ADR §Decision 4): the parity test constructs CC canonical events directly from the base dataclass rather than via `ClaudeCodeAdapter.parse_event`. The test still satisfies ADR-064's structural byte-identity condition because it proves the *schema* is shared; the CC adapter's hook coverage is a separate concern. Severity: LOW — parity gate is schema-level, not parse-path-level.
+
+3. **`SUPPORTED_EVENTS` is not consulted by `dispatch.handle_event`** (ADR §Decision 1, last bullet): the dispatch layer calls `detect_harness` then `parse_event` without first checking whether the event type is in `SUPPORTED_EVENTS`. The frozenset is present as a class attribute (criterion met) but the routing guard is absent. Severity: LOW — `parse_event` handles unknown events gracefully by returning `ParseError`; the missing pre-check is a defence-in-depth gap, not a correctness failure.
+
 ## Implementation status
 
 Accepted implementation slice shipped on 2026-04-30:
@@ -345,9 +364,11 @@ Deferred from this slice:
   remains ADR-064/ADR-057 follow-up work. Current projection is already
   tested, but the driver file is not yet generated from a single canonical
   block with a `DO NOT EDIT` header.
-- The cross-harness reference skill parity test is represented by dispatch and
-  adapter tests here; a higher-level `test_harness_agnostic_skill_run.py` remains
-  a follow-up once Surface 3 (`cos-skill run`) is canonical.
+- `tests/integration/test_harness_agnostic_skill_run.py` was shipped on
+  2026-04-30 as part of this verification pass. It is parameterized over
+  `(claude_code, codex)` for `session_start`, `user_prompt_submit`, and
+  `session_end`, and asserts structural byte-identity (modulo allowed-diff
+  fields). This satisfies ADR-064's acceptance gate condition.
 
 ## Verification
 
