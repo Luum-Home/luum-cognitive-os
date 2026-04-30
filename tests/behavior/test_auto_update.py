@@ -227,6 +227,28 @@ class TestCosRegistry:
             "Disposable canary installs must not create/populate the production registry"
         )
 
+    def test_default_registry_skips_private_tmp_install(self, tmp_path):
+        """macOS /private/tmp release validation projects are disposable."""
+        home = tmp_path / "home"
+        home.mkdir()
+        project_path = "/private/tmp/cos-init-final-validate-node-abc"
+
+        result = _run_script(
+            REGISTRY_SCRIPT,
+            [
+                "register",
+                project_path,
+                "default",
+                "0.22.0",
+                "test-node-app",
+                str(PROJECT_ROOT),
+            ],
+            env_overrides={"HOME": str(home)},
+        )
+
+        assert result.returncode == 0, result.stderr
+        assert not (home / ".cognitive-os" / "installations.json").exists()
+
     def test_explicit_registry_can_register_tmp_install_for_tests(self, tmp_path):
         """Explicit COS_REGISTRY_FILE remains available for isolated test registries."""
         registry_file = _create_registry(tmp_path)
@@ -326,6 +348,32 @@ class TestAutoUpdate:
         assert result.returncode == 0
         assert "WOULD UPDATE" in result.stdout
 
+    def test_dry_run_skips_projects_already_at_current_version(self, tmp_path):
+        """Dry-run should not report no-op updates as release work."""
+        project_dir = tmp_path / "my-project"
+        project_dir.mkdir()
+        (project_dir / ".cognitive-os").mkdir()
+        current_version = (PROJECT_ROOT / "VERSION").read_text(encoding="utf-8").strip()
+        registry_file = _create_registry(tmp_path, [{
+            "path": str(project_dir),
+            "mode": "default",
+            "version": current_version,
+            "project_name": "my-project",
+            "source": str(PROJECT_ROOT),
+            "installed_at": "2026-01-01T00:00:00Z",
+            "updated_at": "2026-01-01T00:00:00Z",
+        }])
+
+        result = _run_script(
+            AUTO_UPDATE_SCRIPT,
+            ["--dry-run"],
+            env_overrides={"COS_REGISTRY_FILE": str(registry_file)},
+        )
+
+        assert result.returncode == 0
+        assert "OK   my-project" in result.stdout
+        assert "WOULD UPDATE my-project" not in result.stdout
+
     def test_skips_nonexistent_project(self, tmp_path):
         registry_file = _create_registry(tmp_path, [{
             "path": "/nonexistent/project",
@@ -393,6 +441,35 @@ class TestAutoUpdate:
 
         assert result.returncode == 0, result.stderr
         assert "cos-canary-default" not in result.stdout
+        assert _read_registry(registry_file)["installations"] == []
+
+    def test_auto_update_cleans_private_tmp_entries_from_default_registry(self, tmp_path):
+        """Stale macOS /private/tmp release-validation installs are registry noise."""
+        home = tmp_path / "home"
+        registry_file = home / ".cognitive-os" / "installations.json"
+        registry_file.parent.mkdir(parents=True)
+        registry_file.write_text(json.dumps({
+            "installations": [
+                {
+                    "path": "/private/tmp/cos-init-final-validate-cC9",
+                    "mode": "default",
+                    "version": "0.22.0",
+                    "project_name": "test-node-app",
+                    "source": str(PROJECT_ROOT),
+                    "installed_at": "2026-01-01T00:00:00Z",
+                    "updated_at": "2026-01-01T00:00:00Z",
+                }
+            ]
+        }))
+
+        result = _run_script(
+            AUTO_UPDATE_SCRIPT,
+            ["--dry-run"],
+            env_overrides={"HOME": str(home)},
+        )
+
+        assert result.returncode == 0, result.stderr
+        assert "test-node-app" not in result.stdout
         assert _read_registry(registry_file)["installations"] == []
 
     def test_auto_update_preserves_codex_driver_from_install_metadata(self, tmp_path):

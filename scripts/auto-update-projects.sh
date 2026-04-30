@@ -166,7 +166,7 @@ while IFS= read -r project_path; do
   fi
 
   # ── Check if already up to date ────────────────────────────────
-  if [ "$project_version" = "$cos_version" ] && [ "$DRY_RUN" = false ]; then
+  if [ "$project_version" = "$cos_version" ]; then
     echo "  OK   $project_name — already at v$cos_version"
     skipped=$((skipped + 1))
     continue

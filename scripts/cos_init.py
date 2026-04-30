@@ -598,7 +598,7 @@ def _is_ephemeral_install(project_path: str, project_name: str = "") -> bool:
 
     path = str(Path(project_path).resolve())
     tmpdir = os.environ.get("TMPDIR", "")
-    prefixes = ["/tmp/", "/var/folders/", "/private/var/folders/"]
+    prefixes = ["/tmp/", "/private/tmp/", "/var/folders/", "/private/var/folders/"]
     if tmpdir:
         prefixes.append(str(Path(tmpdir).resolve()))
     return any(path.startswith(prefix) for prefix in prefixes)
