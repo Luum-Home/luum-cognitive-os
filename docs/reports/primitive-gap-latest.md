@@ -1,12 +1,12 @@
 # Primitive Gap Snapshot
 
-Generated: `2026-04-30T17:33:07.759359+00:00`
+Generated: `2026-04-30T17:35:49.895286+00:00`
 
 Overall risk: **high**
 
 ## Hook Latency
 
-events=1687 p50_ms=295 p95_ms=1579 max_ms=13332
+events=2314 p50_ms=221 p95_ms=1342 max_ms=13332
 
 ## Family Summary
 

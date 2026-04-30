@@ -279,6 +279,117 @@ def render_markdown(snapshot: Snapshot) -> str:
     )
 
 
+SEVERITY_RANK = {"low": 0, "medium": 1, "high": 2}
+
+
+def load_last_trend_entry(path: Path) -> dict[str, object] | None:
+    if not path.exists():
+        return None
+    lines = [line for line in read_text(path).splitlines() if line.strip()]
+    if not lines:
+        return None
+    try:
+        return json.loads(lines[-1])
+    except json.JSONDecodeError:
+        return None
+
+
+def _families_by_name(snapshot_data: dict[str, object]) -> dict[str, dict[str, object]]:
+    families = snapshot_data.get("families", [])
+    if not isinstance(families, list):
+        return {}
+    result: dict[str, dict[str, object]] = {}
+    for family in families:
+        if isinstance(family, dict) and isinstance(family.get("family"), str):
+            result[family["family"]] = family
+    return result
+
+
+def compare_regressions(
+    previous: dict[str, object] | None,
+    current: dict[str, object],
+    *,
+    latency_regression_ms: int = 500,
+) -> list[str]:
+    """Return human-readable primitive-gap regressions from previous to current.
+
+    This is deliberately conservative: it catches growth in unproven surface area
+    instead of trying to prove exact causality.
+    """
+    if previous is None:
+        return []
+
+    regressions: list[str] = []
+    previous_risk = str(previous.get("overall_risk", "low"))
+    current_risk = str(current.get("overall_risk", "low"))
+    if SEVERITY_RANK.get(current_risk, 0) > SEVERITY_RANK.get(previous_risk, 0):
+        regressions.append(f"overall risk worsened: {previous_risk} -> {current_risk}")
+
+    previous_families = _families_by_name(previous)
+    current_families = _families_by_name(current)
+    for family_name, current_family in current_families.items():
+        previous_family = previous_families.get(family_name)
+        if previous_family is None:
+            if current_family.get("severity") == "high":
+                regressions.append(f"{family_name}: new high-severity primitive family appeared")
+            continue
+
+        previous_severity = str(previous_family.get("severity", "low"))
+        current_severity = str(current_family.get("severity", "low"))
+        if SEVERITY_RANK.get(current_severity, 0) > SEVERITY_RANK.get(previous_severity, 0):
+            regressions.append(f"{family_name}: severity worsened {previous_severity} -> {current_severity}")
+
+        previous_total = int(previous_family.get("total", 0) or 0)
+        current_total = int(current_family.get("total", 0) or 0)
+        previous_proven = int(previous_family.get("proven_signal", 0) or 0)
+        current_proven = int(current_family.get("proven_signal", 0) or 0)
+        previous_aspirational = int(previous_family.get("aspirational_signal", 0) or 0)
+        current_aspirational = int(current_family.get("aspirational_signal", 0) or 0)
+
+        if current_proven < previous_proven:
+            regressions.append(f"{family_name}: proven signal decreased {previous_proven} -> {current_proven}")
+        if current_aspirational > previous_aspirational:
+            regressions.append(
+                f"{family_name}: aspirational signal increased {previous_aspirational} -> {current_aspirational}"
+            )
+
+        previous_unproven = previous_total - previous_proven
+        current_unproven = current_total - current_proven
+        if current_unproven > previous_unproven:
+            regressions.append(f"{family_name}: unproven surface grew {previous_unproven} -> {current_unproven}")
+
+    previous_latency = previous.get("hook_latency", {})
+    current_latency = current.get("hook_latency", {})
+    if isinstance(previous_latency, dict) and isinstance(current_latency, dict):
+        previous_p95 = previous_latency.get("p95_ms")
+        current_p95 = current_latency.get("p95_ms")
+        if isinstance(previous_p95, int) and isinstance(current_p95, int):
+            if current_p95 > previous_p95 + latency_regression_ms:
+                regressions.append(
+                    f"hook latency p95 regressed by >{latency_regression_ms}ms: {previous_p95}ms -> {current_p95}ms"
+                )
+
+    return regressions
+
+
+def render_regression_report(regressions: list[str], previous: dict[str, object] | None, current: dict[str, object]) -> str:
+    rows = [f"- {item}" for item in regressions] or ["- No primitive gap regressions detected."]
+    previous_timestamp = previous.get("timestamp") if previous else "<none>"
+    return "\n".join(
+        [
+            "# Primitive Gap Regression Report",
+            "",
+            f"Previous snapshot: `{previous_timestamp}`",
+            f"Current snapshot: `{current.get('timestamp')}`",
+            "",
+            "## Regressions",
+            "",
+            *rows,
+            "",
+        ]
+    )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate periodic primitive gap snapshot")
     parser.add_argument("--project-root", default=".", help="Repository root")
@@ -291,6 +402,9 @@ def parse_args() -> argparse.Namespace:
         help="Trend JSONL path, relative to project root",
     )
     parser.add_argument("--fail-high-risk", action="store_true", help="Exit 1 when overall risk is high")
+    parser.add_argument("--fail-on-regression", action="store_true", help="Exit 1 when current snapshot regresses against previous trend entry")
+    parser.add_argument("--regression-report", help="Write Markdown regression report to this path")
+    parser.add_argument("--latency-regression-ms", type=int, default=500, help="Allowed hook p95 latency increase before regression")
     return parser.parse_args()
 
 
@@ -299,9 +413,11 @@ def main() -> int:
     root = Path(args.project_root).resolve()
     snapshot = collect(root)
     data = asdict(snapshot)
+    trend_path = root / args.trend_path
+    previous = load_last_trend_entry(trend_path)
+    regressions = compare_regressions(previous, data, latency_regression_ms=args.latency_regression_ms)
 
     if args.trend:
-        trend_path = root / args.trend_path
         trend_path.parent.mkdir(parents=True, exist_ok=True)
         with trend_path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(data, sort_keys=True) + "\n")
@@ -311,9 +427,16 @@ def main() -> int:
         markdown_path.parent.mkdir(parents=True, exist_ok=True)
         markdown_path.write_text(render_markdown(snapshot), encoding="utf-8")
 
+    if args.regression_report:
+        regression_path = root / args.regression_report
+        regression_path.parent.mkdir(parents=True, exist_ok=True)
+        regression_path.write_text(render_regression_report(regressions, previous, data), encoding="utf-8")
+
     if args.json or not args.markdown:
         print(json.dumps(data, indent=2, sort_keys=True))
 
+    if args.fail_on_regression and regressions:
+        return 1
     return 1 if args.fail_high_risk and snapshot.overall_risk == "high" else 0
 
 
