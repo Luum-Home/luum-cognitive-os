@@ -46,8 +46,8 @@ func TestBuildClusterPlan_Parallel(t *testing.T) {
 	if len(plan.Invokes) != 1 {
 		t.Fatalf("parallel lane should produce 1 invocation, got %d", len(plan.Invokes))
 	}
-	if !containsPair(plan.Invokes[0].Args, "-n", "auto") {
-		t.Errorf("missing -n auto: %v", plan.Invokes[0].Args)
+	if plan.Invokes[0].Workers != "auto" {
+		t.Errorf("parallel lane workers = %q, want auto", plan.Invokes[0].Workers)
 	}
 	if !strings.Contains(plan.Workers, "parallel-safe") {
 		t.Errorf("workers = %s", plan.Workers)
@@ -69,6 +69,9 @@ func TestBuildClusterPlan_Serial(t *testing.T) {
 	if containsPair(plan.Invokes[0].Args, "-n", "auto") {
 		t.Errorf("serial lane must not pass -n auto: %v", plan.Invokes[0].Args)
 	}
+	if plan.Invokes[0].Workers != "0" {
+		t.Errorf("serial lane workers = %q, want 0", plan.Invokes[0].Workers)
+	}
 	if !strings.Contains(plan.Reason, "hook chain state") {
 		t.Errorf("expected stateful reason, got %s", plan.Reason)
 	}
@@ -86,13 +89,13 @@ func TestBuildClusterPlan_MarkerSplit(t *testing.T) {
 	if len(plan.Invokes) != 2 {
 		t.Fatalf("marker lane should produce 2 invocations, got %d", len(plan.Invokes))
 	}
-	// First invocation should run "not <marker>" with -n auto.
+	// First invocation should run "not <marker>" with wrapper workers=auto.
 	first := plan.Invokes[0].Args
 	if !sliceContains(first, "-m") || !sliceContains(first, "not docker") {
 		t.Errorf("first invocation missing -m 'not docker': %v", first)
 	}
-	if !containsPair(first, "-n", "auto") {
-		t.Errorf("first invocation missing -n auto: %v", first)
+	if plan.Invokes[0].Workers != "auto" {
+		t.Errorf("first invocation workers = %q, want auto", plan.Invokes[0].Workers)
 	}
 	// Second invocation runs marker serial.
 	second := plan.Invokes[1].Args
@@ -101,6 +104,44 @@ func TestBuildClusterPlan_MarkerSplit(t *testing.T) {
 	}
 	if containsPair(second, "-n", "auto") {
 		t.Errorf("second invocation must be serial: %v", second)
+	}
+	if plan.Invokes[1].Workers != "0" {
+		t.Errorf("second invocation workers = %q, want 0", plan.Invokes[1].Workers)
+	}
+}
+
+func TestBuildClusterPlan_ForceSerialLane(t *testing.T) {
+	cfg := config.DefaultConfig()
+	cfg.ProjectRoot = t.TempDir()
+	writeRegistry(t, cfg.ProjectRoot, clusterYAML)
+	t.Setenv("COS_FORCE_SERIAL_LANES", "unit,audit")
+
+	plan, err := buildClusterPlan(cfg, "unit")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plan.Invokes[0].Workers != "0" {
+		t.Errorf("forced serial workers = %q, want 0", plan.Invokes[0].Workers)
+	}
+	if !strings.Contains(plan.Reason, "forced serial") {
+		t.Errorf("reason should mention forced serial, got %q", plan.Reason)
+	}
+}
+
+func TestBuildClusterPlan_ForceSerialAll(t *testing.T) {
+	cfg := config.DefaultConfig()
+	cfg.ProjectRoot = t.TempDir()
+	writeRegistry(t, cfg.ProjectRoot, clusterYAML)
+	t.Setenv("COS_FORCE_SERIAL_LANES", "*")
+
+	plan, err := buildClusterPlan(cfg, "integration")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, inv := range plan.Invokes {
+		if inv.Workers != "0" {
+			t.Errorf("%s workers = %q, want 0", inv.Label, inv.Workers)
+		}
 	}
 }
 

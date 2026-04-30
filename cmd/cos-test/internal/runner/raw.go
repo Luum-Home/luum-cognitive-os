@@ -12,6 +12,14 @@ import (
 // .cognitive-os/reports/test-runs/ (ADR-072 transparency contract).
 const wrapperRelPath = "scripts/pytest-with-summary.sh"
 
+// InvocationOptions are scalar execution-policy inputs passed from cos-test to
+// the shell wrapper. This keeps lane/resource policy in Go while preserving the
+// wrapper as the persistent-reporting transport.
+type InvocationOptions struct {
+	Workers string
+	Lane    string
+}
+
 // RawInvocation runs pytest via scripts/pytest-with-summary.sh so that every
 // cos-test focused/cluster/broad invocation persists analyzable artifacts
 // (full-output.txt, summary.txt, failures.txt, junit.xml, inventory.md).
@@ -23,7 +31,14 @@ const wrapperRelPath = "scripts/pytest-with-summary.sh"
 // Returns the underlying *exec.ExitError (if any). Callers should treat any
 // non-nil error as a non-zero exit.
 func (r *PytestRunner) RawInvocation(args []string) error {
-	cmd := exec.Command(r.runnerProgram(), r.runnerArgs(args)...)
+	return r.RawInvocationWithOptions(args, InvocationOptions{})
+}
+
+// RawInvocationWithOptions is RawInvocation plus explicit lane/worker scalars.
+// Focused/cluster/broad should prefer this entry point so
+// pytest-with-summary.sh does not need to infer policy from paths.
+func (r *PytestRunner) RawInvocationWithOptions(args []string, opts InvocationOptions) error {
+	cmd := exec.Command(r.runnerProgram(), r.runnerArgs(args, opts)...)
 	cmd.Dir = r.cfg.ProjectRoot
 	cmd.Env = append(os.Environ(), "PYTHONDONTWRITEBYTECODE=1")
 	cmd.Stdout = os.Stdout
@@ -34,7 +49,13 @@ func (r *PytestRunner) RawInvocation(args []string) error {
 // PytestArgs returns the fully-qualified argv for the dry-run printer. Mirrors
 // what RawInvocation will exec — wrapper if present, direct pytest otherwise.
 func (r *PytestRunner) PytestArgs(args []string) []string {
-	return append([]string{r.runnerProgram()}, r.runnerArgs(args)...)
+	return r.PytestArgsWithOptions(args, InvocationOptions{})
+}
+
+// PytestArgsWithOptions returns the fully-qualified argv for the dry-run
+// printer, including wrapper-only --workers/--lane flags when available.
+func (r *PytestRunner) PytestArgsWithOptions(args []string, opts InvocationOptions) []string {
+	return append([]string{r.runnerProgram()}, r.runnerArgs(args, opts)...)
 }
 
 // runnerProgram picks the wrapper if it exists in ProjectRoot, else direct python.
@@ -46,11 +67,20 @@ func (r *PytestRunner) runnerProgram() string {
 }
 
 // runnerArgs builds the argv tail for whichever runner was selected.
-func (r *PytestRunner) runnerArgs(args []string) []string {
+func (r *PytestRunner) runnerArgs(args []string, opts InvocationOptions) []string {
 	if r.wrapperAvailable() {
+		out := []string{wrapperRelPath}
+		if opts.Workers != "" {
+			out = append(out, "--workers", opts.Workers)
+		}
+		if opts.Lane != "" {
+			out = append(out, "--lane", opts.Lane)
+		}
 		// "--" separator preserves any args that look like wrapper flags
 		// (e.g. -k, -m). Wrapper strips its own --workers before this point.
-		return append([]string{wrapperRelPath, "--"}, args...)
+		out = append(out, "--")
+		out = append(out, args...)
+		return out
 	}
 	return append([]string{"-m", "pytest"}, args...)
 }
