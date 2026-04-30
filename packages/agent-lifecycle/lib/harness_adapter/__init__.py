@@ -17,8 +17,13 @@ from .base import (
     HarnessName,
     HeartbeatTick,
     ParseError,
+    SessionEnd,
+    SessionStart,
     ToolUse,
+    ToolUseEnd,
+    ToolUseStart,
     TokenUsage,
+    UserPromptSubmit,
 )
 
 __all__ = [
@@ -29,6 +34,11 @@ __all__ = [
     "HarnessName",
     "HeartbeatTick",
     "ParseError",
+    "SessionEnd",
+    "SessionStart",
     "ToolUse",
+    "ToolUseEnd",
+    "ToolUseStart",
     "TokenUsage",
+    "UserPromptSubmit",
 ]
