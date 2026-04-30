@@ -3,13 +3,11 @@ package cli
 import (
 	"fmt"
 	"os"
+	"strings"
 
-	tea "github.com/charmbracelet/bubbletea"
 	"github.com/spf13/cobra"
 
 	"luum-agent-os/cmd/cos-test/internal/config"
-	"luum-agent-os/cmd/cos-test/internal/runner"
-	"luum-agent-os/cmd/cos-test/internal/ui"
 )
 
 var (
@@ -24,48 +22,60 @@ var (
 
 var runCmd = &cobra.Command{
 	Use:   "run [filter]",
-	Short: "Run tests with live TUI progress",
-	Long: `Run tests with live TUI progress.
+	Short: "Deprecated compatibility shim for focused/cluster/broad",
+	Long: `Deprecated compatibility shim.
 
-Executes pytest with streaming output, showing a progress bar,
-pass/fail counts, current test name, and elapsed time.
-
-Use flags to select test categories, or --all to run everything.
+ADR-073 makes cos-test focused / cluster / broad the canonical test ladder.
+This command now delegates to that ladder instead of maintaining a separate
+pytest execution stack.
 
 Examples:
-  cos-test run                      # Run all tests
-  cos-test run --unit               # Run unit tests only
-  cos-test run --behavior           # Run behavior tests only
-  cos-test run -k test_hook_        # Filter by keyword
-  cos-test run --ci                 # CI mode (plain text)`,
+  cos-test run              # proxies to cos-test broad
+  cos-test run --unit       # proxies to cos-test cluster --lane unit
+  cos-test run --behavior   # proxies to cos-test cluster --lane behavior`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if filter := strings.TrimSpace(strings.Join(args, " ")); filter != "" {
+			return fmt.Errorf("cos-test run filters are deprecated; use 'cos-test focused --paths ...' or 'cos-test cluster --lane <name>'")
+		}
+
 		cfg := config.DefaultConfig()
-		cfg.Categories = selectedCategories()
 		cfg.Verbose = verbose
-		cfg.CIMode = ciMode || ui.IsCIMode()
+		cfg.CIMode = ciMode
 
-		filter := ""
-		if len(args) > 0 {
-			filter = args[0]
+		fmt.Fprintln(os.Stderr, "[cos-test run] DEPRECATED: use 'cos-test focused', 'cos-test cluster', or 'cos-test broad'")
+		if runDocker {
+			fmt.Fprintln(os.Stderr, "[cos-test run] NOTE: --docker is deprecated here; lane policy is owned by .cognitive-os/test-lanes.yaml")
 		}
 
-		if cfg.CIMode {
-			return runTestsCI(cfg, filter)
+		if runAll || !hasRunSelection() {
+			return runBroad(cfg, false, false)
 		}
-		return runTestsTUI(cfg, filter)
+
+		var firstErr error
+		for _, cat := range selectedCategories() {
+			lane := string(cat)
+			if err := runCluster(cfg, lane, false); err != nil && firstErr == nil {
+				firstErr = err
+			}
+		}
+		return firstErr
 	},
 }
 
 func init() {
-	runCmd.Flags().BoolVar(&runUnit, "unit", false, "Run unit tests")
-	runCmd.Flags().BoolVar(&runBehavior, "behavior", false, "Run behavior tests")
-	runCmd.Flags().BoolVar(&runIntegration, "integration", false, "Run integration tests")
-	runCmd.Flags().BoolVar(&runSystem, "system", false, "Run system tests")
-	runCmd.Flags().BoolVar(&runE2E, "e2e", false, "Run e2e tests")
-	runCmd.Flags().BoolVar(&runDocker, "docker", false, "Include tests that require Docker")
-	runCmd.Flags().BoolVar(&runAll, "all", false, "Run all test categories")
+	runCmd.Flags().BoolVar(&runUnit, "unit", false, "Run unit lane")
+	runCmd.Flags().BoolVar(&runBehavior, "behavior", false, "Run behavior lane")
+	runCmd.Flags().BoolVar(&runIntegration, "integration", false, "Run integration lane")
+	runCmd.Flags().BoolVar(&runSystem, "system", false, "Run system lane")
+	runCmd.Flags().BoolVar(&runE2E, "e2e", false, "Run e2e lane")
+	runCmd.Flags().BoolVar(&runDocker, "docker", false, "Deprecated: lane policy now owns Docker selection")
+	runCmd.Flags().BoolVar(&runAll, "all", false, "Run broad default lanes")
 
 	rootCmd.AddCommand(runCmd)
+}
+
+func hasRunSelection() bool {
+	return runUnit || runBehavior || runIntegration || runSystem || runE2E
 }
 
 func selectedCategories() []config.TestCategory {
@@ -90,110 +100,8 @@ func selectedCategories() []config.TestCategory {
 		cats = append(cats, config.CategoryE2E)
 	}
 
-	// Default: run all if none selected.
 	if len(cats) == 0 {
 		cats = config.AllCategories()
 	}
 	return cats
-}
-
-// runTestsTUI runs tests with the Bubbletea TUI.
-func runTestsTUI(cfg *config.Config, filter string) error {
-	// Discover tests first for progress count.
-	disc, err := runner.DiscoverTests(cfg)
-	if err != nil {
-		ui.Warn("Could not discover tests, progress may be inaccurate").Print()
-	}
-
-	total := 0
-	if disc != nil {
-		total = disc.TotalFiles
-	}
-	if total == 0 {
-		total = 100 // estimate
-	}
-
-	// Create the progress model.
-	model := ui.NewProgressModel(total)
-
-	// Create the program.
-	p := tea.NewProgram(model, tea.WithAltScreen())
-
-	// Run pytest in background.
-	pytestRunner := runner.NewPytestRunner(cfg)
-	rc := &runner.RunConfig{
-		Categories: cfg.Categories,
-		Filter:     filter,
-		Verbose:    cfg.Verbose,
-	}
-
-	go func() {
-		events := make(chan runner.PytestEvent, 100)
-		go func() {
-			for evt := range events {
-				if evt.Type == runner.EventTestResult {
-					p.Send(ui.TestProgressMsg{
-						TestName: evt.TestName,
-						Status:   string(evt.Status),
-					})
-				}
-			}
-		}()
-
-		suite, err := pytestRunner.Run(rc, events)
-		_ = suite
-		p.Send(ui.TestDoneMsg{Err: err})
-	}()
-
-	finalModel, err := p.Run()
-	if err != nil {
-		return fmt.Errorf("TUI error: %w", err)
-	}
-
-	// Show summary after TUI exits.
-	m := finalModel.(ui.ProgressModel)
-	if m.Failed > 0 {
-		os.Exit(1)
-	}
-	return nil
-}
-
-// runTestsCI runs tests in CI mode (plain text).
-func runTestsCI(cfg *config.Config, filter string) error {
-	ui.Title("Cognitive OS Test Runner (CI Mode)")
-	ui.Separator()
-
-	pytestRunner := runner.NewPytestRunner(cfg)
-	rc := &runner.RunConfig{
-		Categories: cfg.Categories,
-		Filter:     filter,
-		Verbose:    cfg.Verbose,
-	}
-
-	suite, err := pytestRunner.RunSync(rc)
-	if err != nil {
-		ui.Error("Test execution failed").WithDetails(err.Error()).Print()
-		return err
-	}
-
-	// Print summary.
-	fmt.Println()
-	ui.Separator()
-	fmt.Printf("Results: %d passed, %d failed, %d skipped (total: %d)\n",
-		suite.Passed, suite.Failed, suite.Skipped, suite.Total)
-	fmt.Printf("Duration: %s\n", suite.Duration.Round(1))
-
-	if !suite.IsSuccess() {
-		fmt.Println()
-		failures := suite.FailedTests()
-		for _, f := range failures {
-			fmt.Printf("  FAIL: %s\n", f.NodeID)
-			if f.Message != "" {
-				fmt.Printf("        %s\n", f.Message)
-			}
-		}
-		os.Exit(1)
-	}
-
-	return nil
 }
