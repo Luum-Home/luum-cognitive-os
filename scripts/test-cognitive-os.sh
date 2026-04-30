@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# ROLE: legacy Layer-1 shell infrastructure runner.
+# CANONICAL: cos-test cluster --lane hooks or targeted shell checks; keep this for compatibility with legacy infra tests.
 # Cognitive OS Infrastructure Test Runner (Layer 1 only)
 # Runs all infra tests and outputs a summary.
 set -uo pipefail

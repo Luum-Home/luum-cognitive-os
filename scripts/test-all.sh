@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# ROLE: legacy composite pytest + bash runner.
+# CANONICAL: cos-test focused|cluster|broad; this script remains only for compatibility.
 # =============================================================================
 # test-all.sh — Unified Cognitive OS Test Runner
 # =============================================================================

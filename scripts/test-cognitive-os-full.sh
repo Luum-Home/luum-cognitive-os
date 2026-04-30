@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# ROLE: legacy three-layer shell pyramid runner (infra + behavior + optional quality).
+# CANONICAL: cos-test broad for default validation; run quality/LLM checks explicitly as optional governance.
 # Cognitive OS Full Test Suite Runner
 # Runs all 3 layers: Infrastructure, Behavior, Quality
 # Usage: bash .cognitive-os/scripts/test-cognitive-os-full.sh [--skip-quality] [--skip-behavior]
