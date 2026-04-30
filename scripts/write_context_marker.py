@@ -20,6 +20,7 @@ Backwards compat:
 
 from __future__ import annotations
 
+import fcntl
 import json
 import os
 import subprocess
@@ -30,6 +31,103 @@ from pathlib import Path
 
 VALID_KINDS = ("orchestrator", "subagent", "cron", "hook", "human")
 MAX_PARENT_DEPTH = 10
+
+
+# ---------------------------------------------------------------------------
+# Fix 2 (ADR-097): PID capture — update active-tasks.json when subagent starts
+# ---------------------------------------------------------------------------
+
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _active_tasks_path(repo: Path) -> Path:
+    return repo / ".cognitive-os" / "tasks" / "active-tasks.json"
+
+
+def _claim_pending_task(repo: Path, pid: int, tool_use_id: str | None) -> bool:
+    """Find the most recent 'pending' task in active-tasks.json and claim it.
+
+    Sets status='in_progress', pid=<pid>, started_at=now on the matched record.
+    Matching priority:
+      1. If tool_use_id is provided: match by toolUseId (most reliable).
+      2. Otherwise: take the most recently created 'pending' record (best-effort).
+
+    Uses fcntl exclusive lock for concurrent-safe writes.
+    Returns True if a record was updated, False otherwise.
+    Intentionally swallows all errors — this is best-effort.
+    """
+    tasks_path = _active_tasks_path(repo)
+    if not tasks_path.is_file():
+        return False
+
+    lock_path = tasks_path.parent / ".active-tasks.lock"
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+
+    try:
+        with open(lock_path, "w") as lock_fh:
+            fcntl.flock(lock_fh, fcntl.LOCK_EX)
+            try:
+                data = json.loads(tasks_path.read_text())
+                tasks = data.get("tasks", [])
+
+                matched_idx: int | None = None
+
+                if tool_use_id:
+                    # Prefer exact toolUseId match in any pending record
+                    for idx, t in enumerate(tasks):
+                        if (
+                            t.get("toolUseId") == tool_use_id
+                            and t.get("status") == "pending"
+                        ):
+                            matched_idx = idx
+                            break
+
+                if matched_idx is None:
+                    # Fall back to most recently created pending record
+                    # (heuristic: highest launchedAt or last in list)
+                    pending = [
+                        (idx, t)
+                        for idx, t in enumerate(tasks)
+                        if t.get("status") == "pending"
+                    ]
+                    if pending:
+                        # Sort by launchedAt descending (latest first)
+                        pending.sort(
+                            key=lambda x: x[1].get("launchedAt", ""),
+                            reverse=True,
+                        )
+                        matched_idx = pending[0][0]
+
+                if matched_idx is None:
+                    return False
+
+                now = _now_iso()
+                tasks[matched_idx]["status"] = "in_progress"
+                tasks[matched_idx]["pid"] = pid
+                tasks[matched_idx]["started_at"] = now
+                data["lastUpdated"] = now
+
+                # Atomic write: temp + rename
+                tmp_fd, tmp_str = tempfile.mkstemp(
+                    dir=tasks_path.parent, prefix=".active-tasks-tmp-", suffix=".json"
+                )
+                try:
+                    with os.fdopen(tmp_fd, "w") as fh:
+                        json.dump(data, fh, indent=2)
+                    os.replace(tmp_str, tasks_path)
+                except Exception:
+                    try:
+                        os.unlink(tmp_str)
+                    except OSError:
+                        pass
+                    raise
+
+                return True
+            finally:
+                fcntl.flock(lock_fh, fcntl.LOCK_UN)
+    except Exception:
+        return False
 
 
 def detect_harness() -> str:
@@ -129,6 +227,16 @@ def write_context_marker(kind: str) -> Path:
         except OSError:
             pass
         raise
+
+    # Fix 2 (ADR-097): when running as subagent, claim the pending task record
+    # in active-tasks.json — set status=in_progress and capture our PID.
+    # We read CLAUDE_TOOL_USE_ID from env if the harness injects it; otherwise
+    # fall back to best-effort (most recent pending record).
+    if kind == "subagent":
+        tool_use_id = os.environ.get("CLAUDE_TOOL_USE_ID") or os.environ.get(
+            "COS_TOOL_USE_ID"
+        )
+        _claim_pending_task(repo, pid, tool_use_id)
 
     return target_path
 
