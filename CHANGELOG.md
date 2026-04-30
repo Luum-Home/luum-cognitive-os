@@ -5,6 +5,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+- **Test runner ergonomics** (ADR-072): Lane taxonomy with `.cognitive-os/test-lanes.yaml` as source of truth. New `cos-test focused/cluster/broad` escalation ladder. Auto-marker injection in conftest. Audit and contracts lanes now parallel (~40% wall-time reduction observed). Makefile `test-*` targets deprecated; redirect to cos-test (1 release cycle). Originally proposed as ADR-069; renumbered after the slot was claimed by `research-first-protocol`.
+
 ## [0.21.0] - 2026-04-28 — "Portable Runtime, Memory Lifecycle, and Developer Confidence"
 
 ### Added
@@ -12,7 +14,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - Codex-first host tooling verification with a doctor that checks active harness, settings driver JSON, declared dependencies, Engram CLI, Engram MCP startup, and Codex config wiring.
 - Cached SessionStart host-doctor execution so Codex and Claude installs can surface toolchain drift automatically without paying the full diagnostic cost on every session.
 - Memory lifecycle portability checks and documentation covering SessionStart, UserPromptSubmit, Stop, Engram daemon launch, session resume, session changelog, and crystallization flows.
-- Harness driver parity audit docs/tests to compare canonical Cognitive OS components against Claude/Codex driver projections.
+- Harness driver parity audit docs/tests to compare canonical Cognitive OS agentic primitives against Claude/Codex driver projections.
 - Developer-confidence product positioning: Cognitive OS improves trust in AI-assisted development through memory, guardrails, recovery, portable checks, and lightweight defaults.
 - Session summary reminder Stage A/B hooks: first remind/block for missing `mem_session_summary`, then provide a heuristic Engram auto-save fallback on repeated Stop attempts.
 
@@ -379,7 +381,7 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 
 ### Added — cos-config-audit validator
 
-- `scripts/cos-config-audit.sh` — reports each cognitive-os.yaml section as IMPL / PARTIAL / ASPIR by checking component wiring. Data-driven CONTRACTS list.
+- `scripts/cos-config-audit.sh` — reports each cognitive-os.yaml section as IMPL / PARTIAL / ASPIR by checking agentic primitive wiring. Data-driven CONTRACTS list.
 - `# STATUS:` annotations on 9 cognitive-os.yaml sections (indent-aware parser).
 - `--strict` flag — exits 1 on DRIFT (annotation vs runtime mismatch).
 - `meta.settings_freshness` contract — detects `apply-efficiency-profile.sh` changes without settings regen.
@@ -650,7 +652,7 @@ detect its own degradation patterns. See docs/architecture/POST-MORTEM-2026-04.m
 ### Notes
 
 - Stabilization reached 98% per stabilization-roadmap.md
-- 4 components identified for reclassification to packages/ (deferred to v1.0 — see FROZEN-BACKLOG)
+- 4 agentic primitives identified for reclassification to packages/ (deferred to v1.0 — see FROZEN-BACKLOG)
 - 50+ commits in the 2-session stabilization effort
 
 ## [0.7.0] - 2026-04-09
@@ -719,14 +721,14 @@ detect its own degradation patterns. See docs/architecture/POST-MORTEM-2026-04.m
 - Token Economy: cost dashboard, decomposition rule, 5 token principles
 - Cost Predictor: historical predictions based on real API response data
 - Planning Poker: multi-agent task estimation with consensus algorithm
-- System Knowledge Graph: 232 components, 430 edges, `cos map` command
+- System Knowledge Graph: 232 agentic primitives, 430 edges, `cos map` command
 - Agent Bus: Valkey pub/sub with heartbeat, progress tracking, file lock registry
 - Estimation Calibration: predict -> actual -> adjust loop with per-agent factors
 - Singularity Controller: MAPE-K autonomous loop (7 monitors, 9 event types)
 - Issue-to-PR Pipeline: GitHub issue -> SDD -> PR (automated)
 - Webhook Trigger: FastAPI server for GitHub event-driven automation
 - Batch Runner: sequential multi-change SDD execution
-- Component Linter: overlap detection, size warnings, registration checks
+- Primitive Linter: overlap detection, size warnings, registration checks
 - Research Protocol: systematic investigation methodology (DISCOVER -> ANALYZE -> COMPARE -> SYNTHESIZE)
 - 80+ skills including: contract-drift, deep-research, audit-website, confidence-check, self-review, persistent-agent, security-audit, pentest-self
 - 60+ rules covering: quality, security, performance, cost, architecture

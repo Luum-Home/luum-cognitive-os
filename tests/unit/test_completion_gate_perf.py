@@ -16,7 +16,11 @@ from pathlib import Path
 
 import pytest
 
-pytestmark = pytest.mark.unit
+pytestmark = [
+    pytest.mark.unit,
+    pytest.mark.xdist_group("perf_budget"),
+    pytest.mark.benchmark,
+]
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 HOOK_PATH = _PROJECT_ROOT / "packages" / "quality-gates" / "hooks" / "completion-gate.sh"

@@ -33,7 +33,14 @@ from pathlib import Path
 
 import pytest
 
-pytestmark = pytest.mark.unit
+pytestmark = [
+    pytest.mark.unit,
+    # Pin all subprocess-spawning tests in this file to the same xdist worker
+    # so parallel runs don't fight for CPU on dispatch_gate_check.py startup
+    # (Python interpreter cold start + import graph). Without this, a 15s
+    # subprocess timeout becomes flaky under -n auto on 8+ workers.
+    pytest.mark.xdist_group("dispatch_gate_check_subprocess"),
+]
 
 # Make the project's lib/ importable without installing anything.
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -72,7 +79,7 @@ def _run_dispatch_gate_check(project_dir: Path) -> dict:
         capture_output=True,
         text=True,
         env=env,
-        timeout=15,
+        timeout=60,
     )
     assert proc.returncode == 0, f"stderr={proc.stderr}"
     return json.loads(proc.stdout)

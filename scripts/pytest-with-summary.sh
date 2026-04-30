@@ -76,14 +76,37 @@ if [ "${1:-}" = "--" ]; then
   shift
 fi
 
+# --- Caller-supplied --workers flag (ADR-068 Phase 2, ADR-069 polyglot boundary) ---
+# cos-test passes --workers N explicitly so bash never needs to parse YAML.
+# N can be: a positive integer, "0" (serial), or "auto" (let xdist decide).
+# When present, all adaptive detection below is skipped entirely.
+_caller_workers=""
+_remaining_args=()
+_skip_next=0
+for _arg in "$@"; do
+  if [ "$_skip_next" = "1" ]; then
+    _caller_workers="$_arg"
+    _skip_next=0
+  elif [ "$_arg" = "--workers" ]; then
+    _skip_next=1
+  elif [[ "$_arg" == --workers=* ]]; then
+    _caller_workers="${_arg#--workers=}"
+  else
+    _remaining_args+=("$_arg")
+  fi
+done
+if [ -n "$_caller_workers" ]; then
+  set -- "${_remaining_args[@]+"${_remaining_args[@]}"}"
+fi
+unset _remaining_args _skip_next _arg
+
 if [ "$#" -eq 0 ]; then
   set -- tests/
 fi
 
-# --- Adaptive worker injection (ADR-068 Phase 1) ---
+# --- Adaptive worker injection (ADR-068 Phase 1, ADR-069 lane registry) ---
 # If the caller already specified -n / --numprocesses, respect it and skip detection.
 _has_n_flag=0
-_stateful_lane=0
 for _arg in "$@"; do
   case "$_arg" in
     -n | --numprocesses | -n=* | --numprocesses=* | -n[0-9]* | -nauto)
@@ -91,29 +114,113 @@ for _arg in "$@"; do
       break
       ;;
   esac
-  case "$_arg" in
-    tests | tests/ | tests/behavior | tests/behavior/* | tests/integration | tests/integration/* | tests/e2e | tests/e2e/* | tests/contracts | tests/contracts/* | tests/audit | tests/audit/* | tests/hooks | tests/hooks/* | tests/chaos | tests/chaos/*)
-      _stateful_lane=1
-      ;;
-  esac
 done
 
 if [ "$_has_n_flag" -eq 0 ]; then
-  _workers="${COS_PYTEST_WORKERS:-detect}"
-  if [ "$_stateful_lane" -eq 1 ] && { [ -z "${COS_PYTEST_WORKERS:-}" ] || [ "$_workers" = "detect" ]; }; then
-    _workers="0"
-    echo "[pytest-with-summary] Stateful lane detected: serial (use explicit -n or COS_PYTEST_WORKERS to override)"
-  elif [ "$_workers" = "detect" ]; then
-    _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
-  fi
+  if [ -n "$_caller_workers" ]; then
+    # Caller (e.g. cos-test) passed --workers explicitly.  Skip all detection.
+    # Per ADR-069 polyglot boundary: cos-test reads test-lanes.yaml; bash receives scalars.
+    _workers="$_caller_workers"
+    echo "[pytest-with-summary] Workers: $_workers (caller-supplied)"
+  else
+    # No --workers flag: run adaptive detection (ADR-068 Phase 1).
+    _workers="${COS_PYTEST_WORKERS:-detect}"
+    if [ -z "${COS_PYTEST_WORKERS:-}" ] || [ "$_workers" = "detect" ]; then
+      # Resolve lane from path arg(s) via test-lanes.yaml (ADR-069).
+      # Fall back to legacy case-based behavior when YAML is absent.
+      _LANES_YAML="$PROJECT_DIR/.cognitive-os/test-lanes.yaml"
+      _lane_parallel=""
+      _lane_name=""
+      if [ -f "$_LANES_YAML" ]; then
+        _lane_result="$(python3 - "$_LANES_YAML" "$@" <<'PYLANE'
+import sys, yaml, pathlib
+
+lanes_yaml = sys.argv[1]
+path_args = sys.argv[2:]
+
+with open(lanes_yaml) as f:
+    config = yaml.safe_load(f)
+
+lanes = config.get("lanes", {})
+
+# Find which lane the first path arg matches (longest prefix wins).
+best_lane = None
+best_match_len = -1
+for lane_name, lane in lanes.items():
+    for prefix in lane.get("paths", []):
+        prefix_clean = prefix.rstrip("/")
+        for arg in path_args:
+            arg_clean = arg.rstrip("/")
+            if arg_clean == prefix_clean or arg_clean.startswith(prefix_clean + "/"):
+                if len(prefix_clean) > best_match_len:
+                    best_match_len = len(prefix_clean)
+                    best_lane = (lane_name, lane)
+
+if best_lane is None:
+    print("none:none")
+else:
+    lane_name, lane = best_lane
+    parallel = lane.get("parallel", False)
+    print(f"{lane_name}:{parallel}")
+PYLANE
+        2>/dev/null)"
+        _lane_name="${_lane_result%%:*}"
+        _lane_parallel="${_lane_result##*:}"
+      fi
+
+      if [ -n "$_lane_parallel" ] && [ "$_lane_name" != "none" ]; then
+        # YAML lane registry is present and matched a lane.
+        case "$_lane_parallel" in
+          true | True)
+            _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
+            echo "[pytest-with-summary] Lane: $_lane_name | parallel: true | workers: $_workers (adaptive)"
+            ;;
+          false | False)
+            _workers="0"
+            echo "[pytest-with-summary] Lane: $_lane_name | parallel: false (stateful) | workers: 0 (adaptive)"
+            ;;
+          marker | Marker)
+            # The cos-test cluster command splits by marker; this wrapper sees one
+            # path arg at a time — run serial so shared-state tests are safe.
+            _workers="0"
+            echo "[pytest-with-summary] Lane: $_lane_name | parallel: marker-split | workers: 0 (adaptive)"
+            ;;
+          *)
+            _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
+            echo "[pytest-with-summary] Lane: $_lane_name | parallel: unknown ($_lane_parallel) | workers: $_workers (adaptive fallback)"
+            ;;
+        esac
+      else
+        # YAML absent or no lane matched — legacy fallback: stateful path detection.
+        _stateful_lane=0
+        for _arg in "$@"; do
+          case "$_arg" in
+            tests | tests/ | tests/behavior | tests/behavior/* | tests/integration | tests/integration/* | tests/e2e | tests/e2e/* | tests/contracts | tests/contracts/* | tests/audit | tests/audit/* | tests/hooks | tests/hooks/* | tests/chaos | tests/chaos/*)
+              _stateful_lane=1
+              break
+              ;;
+          esac
+        done
+        if [ "$_stateful_lane" -eq 1 ]; then
+          _workers="0"
+          echo "[pytest-with-summary] Lane: legacy-stateful | parallel: false | workers: 0 (stateful-default)"
+        else
+          _workers="$(python3 "$SCRIPT_DIR/detect_runner_capacity.py" 2>/dev/null || echo "auto")"
+          echo "[pytest-with-summary] Lane: legacy-unknown | parallel: true | workers: $_workers (stateful-default)"
+        fi
+        unset _stateful_lane
+      fi
+    fi
+  fi  # end caller-supplied vs adaptive
+
   if [ "$_workers" != "0" ] && [ -n "$_workers" ]; then
     set -- -n "$_workers" "$@"
-    echo "[pytest-with-summary] Adaptive workers: $_workers (use COS_PYTEST_WORKERS=0 to force serial)"
+    echo "[pytest-with-summary] Injected: -n $_workers (use explicit -n or --workers N or COS_PYTEST_WORKERS to override)"
   else
-    echo "[pytest-with-summary] Adaptive workers: serial (0)"
+    echo "[pytest-with-summary] Injected: serial (workers=0)"
   fi
 fi
-unset _has_n_flag _stateful_lane _workers
+unset _has_n_flag _caller_workers _workers _lane_parallel _lane_name _lane_result _LANES_YAML 2>/dev/null || true
 # --- end adaptive worker injection ---
 
 timestamp="$(date -u +"%Y%m%dT%H%M%SZ")"

@@ -50,6 +50,9 @@ Polyglot drift caught in PRs (ADR-066). Three tiers:
 - **Go** (live): `gofmt -l` (no unformatted files) + `go vet ./...` (no issues) via `.github/workflows/go-quality.yml` — covers root module, `cmd/cos`, `cmd/cos-test`; existing gofmt debt on HEAD is pre-existing
 - **Bash** (future): `shellcheck` enforcement — tracked as follow-up; current state: advisory only via `scripts/lint-shell.sh --new-only`
 
+### 15. Test Lane Taxonomy
+Lane registry at `.cognitive-os/test-lanes.yaml` is single source of truth (read by Go+Python; bash receives scalars per ADR-066). Auto-marker injection in `tests/conftest.py` (additive, idempotent). Escalation ladder via `cos-test focused/cluster/broad`. New test dirs MUST register a lane with written parallel-safety reason. [`lane-taxonomy`] — see ADR-072.
+
 ## Contextual (loaded on trigger)
 
 **Team**: [`squad-protocol`] auto-reconfig <0.80. [`estimation-calibration`] medium+. [`self-improvement-protocol`] weekly, max 5 changes.

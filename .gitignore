@@ -94,3 +94,4 @@ cos_mutation.sqlite
 
 # Cognitive OS local memory exports (may contain private absolute paths)
 .engram/exports/*.jsonl
+/cos-test

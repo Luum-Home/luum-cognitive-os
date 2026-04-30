@@ -1,0 +1,67 @@
+# Test lane registry — source of truth for parallelism. ADR-072. Consumers: scripts/pytest-with-summary.sh, cmd/cos-test.
+lanes:
+  unit:
+    paths: [tests/unit/]
+    parallel: true
+    stateful_reason: ""
+  audit:
+    paths: [tests/audit/]
+    parallel: true
+    stateful_reason: ""
+  contract:
+    paths: [tests/contracts/]
+    parallel: true
+    stateful_reason: ""
+  integration:
+    paths: [tests/integration/]
+    parallel: false
+    stateful_reason: "Heterogeneous lane: real services (Engram, Phoenix, testcontainers), session-scoped containers, TCP-port waits. Marker-based parallelization (docker subset only) flaked 2-4 tests + 9 errors in 3 smoke runs — needs finer-grained classification before parallel safety holds. Tracked as ADR-072 follow-up."
+  behavior:
+    paths: [tests/behavior/]
+    parallel: false
+    stateful_reason: "hook chain state"
+  hooks:
+    paths: [tests/hooks/]
+    parallel: false
+    stateful_reason: ".claude/settings.json mutation"
+  e2e:
+    paths: [tests/e2e/]
+    parallel: false
+    stateful_reason: "full system"
+  chaos:
+    paths: [tests/chaos/]
+    parallel: false
+    stateful_reason: "fault injection"
+  architecture:
+    paths: [tests/architecture/]
+    parallel: true
+    stateful_reason: ""
+  system:
+    paths: [tests/system/]
+    parallel: true
+    stateful_reason: ""
+  smoke:
+    paths: [tests/smoke/]
+    parallel: false
+    stateful_reason: "End-to-end smoke validation: full system startup, opt-in only via cos-smoke entry point"
+
+  # Opt-in lanes: not run by default, require explicit env flags or invocation.
+  # arena/benchmark/quality have markers registered in pytest.ini but no test
+  # files yet (or tests are gated behind COS_RUN_* flags). These entries reserve
+  # the lane name and parallelism contract for future use without committing
+  # cos-test broad to running them on every invocation.
+  arena:
+    paths: [tests/arena/]
+    parallel: false
+    stateful_reason: "Competitive arena benchmarks: opt-in via COS_RUN_ARENA=1, real LLM calls, non-deterministic"
+    optional: true
+  benchmark:
+    paths: [tests/benchmark/]
+    parallel: false
+    stateful_reason: "Performance benchmarks: opt-in via COS_RUN_BENCHMARK=1, timing-sensitive (cannot share CPU)"
+    optional: true
+  quality:
+    paths: [tests/quality/]
+    parallel: false
+    stateful_reason: "LLM-evaluated quality tests: opt-in via COS_RUN_QUALITY=1, real model calls, cost-bounded"
+    optional: true
