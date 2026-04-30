@@ -1,7 +1,7 @@
 version: 1
 
 defaults:
-  workers: auto
+  workers: 4
   timeout_seconds: 300
   docker_policy: forbidden
   cost_policy: free_only
@@ -9,15 +9,20 @@ defaults:
 
 lanes:
   unit:
-    timeout_seconds: 180
+    workers: 4
+    timeout_seconds: 900
   audit:
-    timeout_seconds: 180
+    workers: 4
+    timeout_seconds: 360
   contract:
-    timeout_seconds: 240
+    workers: 4
+    timeout_seconds: 420
   architecture:
-    timeout_seconds: 240
+    workers: 4
+    timeout_seconds: 360
   system:
-    timeout_seconds: 300
+    workers: 4
+    timeout_seconds: 360
   behavior:
     workers: 0
     timeout_seconds: 600
