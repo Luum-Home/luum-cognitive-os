@@ -112,8 +112,8 @@ exactly one concern:
 |---|---|---|
 | Selection | `.cognitive-os/test-lanes.yaml`, `tests/conftest.py`, `cos-test focused / cluster / broad` | Decide the test set and marker policy. |
 | Execution | `cmd/cos-test` | Run focused, cluster, and broad plans with the correct worker policy. |
-| Reporting | `scripts/pytest-with-summary.sh` | Persist `summary.txt`, `failures.txt`, inventories, JUnit, and run history. |
-| Governance | `auto-verify`, `dod-gate`, `coverage-enforcement`, `test-quality-audit` | Consume test evidence and enforce quality gates without duplicating lane selection. |
+| Reporting | `scripts/pytest-with-summary.sh`, `tests/coverage-report.sh`, `scripts/cos_test_quality_audit.py` | Persist `summary.txt`, `failures.txt`, inventories, JUnit, coverage summaries, test-quality summaries, and run history. |
+| Governance | `auto-verify`, `dod-gate`, `pre-commit-gate`, `coverage-enforcement`, `test-quality-audit` | Consume persisted evidence and enforce quality gates without duplicating lane selection or execution. |
 | Lifecycle | metrics JSONL, baselines, repair ledgers | Track baselines, ratchets, skips, xfails, and drift over time. |
 
 Legacy scripts that still exist for compatibility MUST declare `ROLE` and
