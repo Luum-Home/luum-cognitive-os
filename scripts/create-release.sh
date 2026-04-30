@@ -82,7 +82,7 @@ bash scripts/cos-init.sh --full       # Everything
 - **Multi-Model Factory**: 3-layer orchestration (strategic/execution/worker)
 - **Agent Bus**: Valkey pub/sub with heartbeat and progress tracking
 - **Singularity Controller**: MAPE-K autonomous loop for self-healing
-- **cos CLI**: Package manager for AI agent components (v${COS_VERSION:-0.1.0})
+- **cos CLI**: Package manager for agentic primitives (v${COS_VERSION:-0.1.0})
 - **Performance Monitor**: p50/p95/p99 latency, bottleneck detection
 - **Token Economy**: Cost dashboard with real-price predictions
 - **Crash Recovery**: Periodic checkpoints via git stash

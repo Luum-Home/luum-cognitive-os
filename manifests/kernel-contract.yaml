@@ -13,7 +13,7 @@ kernel:
       role: "Predicate-driven policy dispatch against canonical context."
     - name: package_spec
       path: cmd/cos/internal/manifest/types.go
-      role: "Installable package/manifest contract for reusable OS components."
+      role: "Installable package/manifest contract for reusable OS agentic primitives."
 
 compatibility_layer:
   module: lib/compatibility_layer.py

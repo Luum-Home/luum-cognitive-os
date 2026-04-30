@@ -83,8 +83,8 @@ Every tool gets a ring + quadrant placement.
 
 ### 5. Check against existing capabilities
 
-Cross-reference against Cognitive OS components:
-- Does this replace an existing component? (check license improvement)
+Cross-reference against Cognitive OS agentic primitives:
+- Does this replace an existing agentic primitive? (check license improvement)
 - Does this fill a known gap? (check `architecture/self-repair-audit` in Engram)
 - Does this complement an existing skill? (check skills/ directory)
 - Is this already in reference/? (already known)

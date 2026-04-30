@@ -3,7 +3,7 @@
 # Uninstall Cognitive OS from a project
 # Usage: bash scripts/uninstall.sh [--keep-config]
 #
-# Removes COS components without touching project files.
+# Removes COS agentic primitives without touching project files.
 # Bash 3.x compatible (no associative arrays, no bash 4+ features).
 # Author: luum
 set -euo pipefail
@@ -20,7 +20,7 @@ for arg in "$@"; do
       echo ""
       echo "  --keep-config  Preserve cognitive-os.yaml"
       echo ""
-      echo "This script removes Cognitive OS components from the current project."
+      echo "This script removes Cognitive OS agentic primitives from the current project."
       echo "It NEVER touches project files outside .claude/rules/cos/, the active settings driver,"
       echo "and .cognitive-os/."
       exit 0
