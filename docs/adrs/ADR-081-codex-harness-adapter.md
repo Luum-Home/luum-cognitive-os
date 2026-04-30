@@ -290,7 +290,7 @@ maintained alongside the adapter.
 | Keep `.codex/hooks.json` hand-maintained indefinitely | Already causing drift and 2× edit burden at 28 entries. The count grows with every new hook; the cost compounds. |
 | Implement a polling shim for non-Bash tool events on Codex | Brittle (requires syscall tracing or Codex internals), unsanctioned, and creates a false sense of parity. Better to document the gap honestly. |
 | Wait for Codex to close tool-event parity before implementing | ADR-064 and ADR-080 are blocked today. The gap is a known Codex limitation, not an implementation blocker for the adapter itself. |
-| Implement Cursor adapter before Codex | Operator identified Codex as the primary non-CC harness. Cursor is lower priority (ADR-064 §Open questions). |
+| Implement Cursor adapter before Codex | Operator identified Codex as the primary non-CC harness. Cursor is P2 in the implementation plan (Tasks 1.3/2.6) pending operator commitment, per plan Section 5 risk 3. |
 | Inline the Codex event mapping into `dispatch.py` without a separate adapter file | Violates the ADR-033 pattern (one file per harness); harder to test in isolation; coupling grows as mapping rules accumulate. |
 
 ## Acceptance criteria
@@ -340,31 +340,34 @@ python3 -m pytest tests/unit/test_harness_adapter_claude_code.py tests/integrati
 
 ## Open questions
 
-1. **`.codex/hooks.json` generation scope**: should the generation pipeline
-   (`settings-driver-codex.sh`) be part of this ADR's delivery or deferred to
-   a follow-up? Delivering it together closes the drift risk immediately but
-   widens scope. Deferring keeps the adapter scope tight but leaves 28 entries
-   hand-maintained.
+1. **Pre-existing clarification (from plan)** — `.codex/hooks.json` vs
+   `.codex/config.toml`: ADR-064 line 122 references `.codex/config.toml` but
+   the actual file in the repo is `.codex/hooks.json` (Codex v0.124.0+).
+   The plan (Section 5, risk 2 and Task 2.3 note) flags this and recommends
+   pinning to the `hooks.json` format since it is what production currently
+   uses. Either ADR-064 must be corrected or the driver must document the
+   deviation explicitly. This predates ADR-081 and is tracked in the plan.
 
 2. **Testing `PreToolUse`/`PostToolUse` without the Codex binary**: the
    integration test must simulate Codex's stdin for these events. The canonical
-   approach is a JSON fixture matching Codex's documented hook schema. If
-   Codex's schema is not publicly documented for the full hook payload, a
-   session capture from a live Codex run should be used as the fixture source.
+   approach is a JSON fixture matching Codex's documented hook schema. The
+   30-min spike (see Decision §Pre-work) is the authoritative source for the
+   fixture payload shape — do not use assumed schemas.
 
 3. **Fallback event schema for physically absent events**: when a harness
    cannot emit a given canonical event (e.g., `pre_compact` on Codex), the
-   adapter returns `None`. Should `dispatch.handle_event` log a structured
-   warning to `canonical-events.jsonl` as `event_type: skipped, reason:
-   harness_unsupported`? Or silently skip? A structured skip aids
-   observability but creates noise in the event stream. Decision deferred to
-   implementation.
+   adapter emits a `ParseError` with `reason="codex_tool_coverage_gap"` for
+   tool events and returns `None` for events with no equivalent. Should
+   `dispatch.handle_event` additionally log a structured skip record to
+   `canonical-events.jsonl` as `event_type: skipped, reason: harness_unsupported`?
+   A structured skip aids observability but creates noise in the event stream.
+   Decision deferred to implementation.
 
 4. **Capability matrix ownership**: `manifests/harness-driver-capabilities.yaml`
    must reflect each harness's actual version, not a static declaration.
-   Should `cos doctor harness` read the installed Codex CLI version and
-   compare against `version_baseline`, warning on mismatch? Likely yes; scope
-   in ADR-064 Phase 3 follow-up.
+   Should `cos doctor harness` (plan Task 2.5) read the installed Codex CLI
+   version and compare against `version_baseline`, warning on mismatch?
+   Likely yes; scope in ADR-064 Phase 3 follow-up per the plan.
 
 ## Related
 
