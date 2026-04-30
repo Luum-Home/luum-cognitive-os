@@ -96,6 +96,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-heartbeat.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/memory-prefetch.sh\"",
+            "async": true
           }
         ]
       }

@@ -159,7 +159,8 @@ build_settings() {
   user_prompt_submit=$(hook_group "" \
     "user-prompt-capture.sh|async" \
     "session-wrapup-trigger.sh|async" \
-    "session-heartbeat.sh")
+    "session-heartbeat.sh" \
+    "memory-prefetch.sh|async")
 
   local subagent_start
   subagent_start=$(hook_group "" \
@@ -352,7 +353,7 @@ done
 echo ""
 echo "Hook summary for profile 'default' (committed Claude projection):"
 echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh (ADR-071 F8), reaper/session watchdogs, docker drift, executor daemon, engram-daemon-launcher.sh (async, ADR-071 F7), crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards"
-echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh"
+echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh, memory-prefetch.sh (async)"
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  PreToolUse *: session-heartbeat.sh"
