@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-04-30T17:19:11.954Z",
+  "type": "event_msg",
+  "payload": {
+    "type": "mcp_tool_call_end",
+    "call_id": "call_live_mcp_001",
+    "invocation": {
+      "server": "engram",
+      "tool": "mem_current_project",
+      "arguments": {}
+    },
+    "duration": {"secs": 0, "nanos": 26506459},
+    "result": {"Ok": {"content": [{"type": "text", "text": "{\"project\":\"luum-cognitive-os\",\"project_path\":\"/workspace/luum-agent-os\"}"}]}}
+  },
+  "capture": {
+    "source": "sanitized ~/.codex/sessions live Codex Desktop session row",
+    "captured_at": "2026-04-30T17:19:11.954Z"
+  }
+}

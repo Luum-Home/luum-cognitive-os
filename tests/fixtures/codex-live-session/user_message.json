@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-04-30T17:19:04.332Z",
+  "type": "response_item",
+  "payload": {
+    "type": "message",
+    "role": "user",
+    "content": [
+      {"type": "input_text", "text": "Implement ADR-081 Codex harness adapter using captured payloads."}
+    ]
+  },
+  "capture": {
+    "source": "sanitized ~/.codex/sessions live Codex Desktop session row",
+    "captured_at": "2026-04-30T17:19:04.332Z"
+  }
+}

@@ -31,6 +31,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Codex Host Tooling Verification](manual-tests/codex-host-tooling-verification.md) — manual proof path for Codex driver wiring, declared dependencies, and Engram MCP registration
 - [Memory Lifecycle](architecture/memory-lifecycle.md) — simple map of the hooks, libraries, tests, and doctors that save and recover cross-session context
 - [Harness Transparency Status](architecture/harness-transparency-status.md) — honest matrix of what is automatic today across Claude Code, Codex, and consumer projects, and what remains in ADR-064 surfaces
+- [ADR-081: Codex Harness Adapter](adrs/ADR-081-codex-harness-adapter.md) — accepted Codex adapter backed by sanitized live Codex Desktop payload fixtures, making Codex a first-class canonical harness surface
 - [Model Evolution Resilience](model-evolution-resilience.md) — how to keep the system durable as models, vendors, and tools change
 - [Kernel Contract](kernel-contract.md) — minimal inviolable core and where the machine-readable boundary lives
 - [Bootstrap Portability](architecture/bootstrap-portability.md) — where the system is still Claude-first and how to make Codex and other harnesses first-class bootstrap hosts

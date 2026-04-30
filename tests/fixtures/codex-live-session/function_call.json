@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-04-30T17:19:27.552Z",
+  "type": "response_item",
+  "payload": {
+    "type": "function_call",
+    "name": "exec_command",
+    "arguments": "{\"cmd\":\"git status --short\",\"workdir\":\"/workspace/luum-agent-os\"}",
+    "call_id": "call_live_exec_001"
+  },
+  "capture": {
+    "source": "sanitized ~/.codex/sessions live Codex Desktop session row",
+    "captured_at": "2026-04-30T17:19:27.552Z"
+  }
+}
