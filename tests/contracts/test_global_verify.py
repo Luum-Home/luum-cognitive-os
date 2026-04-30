@@ -13,6 +13,7 @@ from pathlib import Path
 
 PROJECT_DIR = Path(__file__).resolve().parents[2]
 HOOK = PROJECT_DIR / "hooks" / "global-verify.sh"
+LEGACY_RESOLVER_ENV = {"COS_GLOBAL_VERIFY_ALLOW_LEGACY_RESOLVER": "1"}
 
 
 def run_hook(
@@ -112,7 +113,7 @@ def test_before_phase_writes_skipped_marker_when_no_tests_resolve(tmp_path):
             "before", agent_id,
             baseline_dir=isolated_baseline_dir,
             resolver_dir=r.resolver_dir,
-            env_extra={"VERIFY_FILES_OVERRIDE": "docs/no_matching_tests.md"},
+            env_extra={**LEGACY_RESOLVER_ENV, "VERIFY_FILES_OVERRIDE": "docs/no_matching_tests.md"},
         )
         # Hook should exit 0 (safe skip)
         assert result.returncode == 0, (
@@ -147,7 +148,7 @@ def test_before_phase_writes_baseline_when_tests_resolve(tmp_path):
             # Inject a synthetic changed-file list so the resolver gets called
             # regardless of the working-tree state (this test must work on a
             # clean checkout in CI).
-            env_extra={"VERIFY_FILES_OVERRIDE": "lib/synthetic_changed.py"},
+            env_extra={**LEGACY_RESOLVER_ENV, "VERIFY_FILES_OVERRIDE": "lib/synthetic_changed.py"},
         )
         # Hook should exit 0 regardless of test results (baseline capture, not blocking)
         assert result.returncode == 0, (
@@ -184,6 +185,28 @@ def test_before_phase_uses_cos_test_focused_plan_without_legacy_resolver(tmp_pat
     assert list(report_dir.glob("*/summary.txt")), "expected canonical summary artifact"
 
 
+def test_before_phase_does_not_use_legacy_resolver_when_cos_test_available(tmp_path):
+    """In the SO repo, global-verify must not fall back to legacy resolver by default."""
+    agent_id = "test-no-legacy-fallback"
+    isolated_baseline_dir = tmp_path / "verify-baseline"
+    existing_test = str(PROJECT_DIR / "tests" / "contracts" / "test_process_registry.py")
+
+    with _FakeResolver([existing_test]) as r:
+        result = run_hook(
+            "before",
+            agent_id,
+            baseline_dir=isolated_baseline_dir,
+            resolver_dir=r.resolver_dir,
+            env_extra={"VERIFY_FILES_OVERRIDE": "docs/no_matching_tests.md"},
+        )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    baseline_file = isolated_baseline_dir / f"{agent_id}.json"
+    data = json.loads(baseline_file.read_text())
+    assert data.get("skipped") is True
+    assert "no tests resolved" in data["reason"]
+
+
 def test_before_phase_persists_canonical_summary_artifacts(tmp_path):
     """Global verify delegates test execution/reporting to pytest-with-summary."""
     agent_id = "test-baseline-summary-artifacts"
@@ -198,6 +221,7 @@ def test_before_phase_persists_canonical_summary_artifacts(tmp_path):
             baseline_dir=isolated_baseline_dir,
             resolver_dir=r.resolver_dir,
             env_extra={
+                **LEGACY_RESOLVER_ENV,
                 "VERIFY_FILES_OVERRIDE": "lib/synthetic_changed.py",
                 "COS_TEST_REPORT_DIR": str(report_dir),
             },
@@ -245,6 +269,7 @@ def test_after_phase_no_regression_exits_0(tmp_path):
             "after", agent_id,
             baseline_dir=isolated_baseline_dir,
             resolver_dir=r.resolver_dir,
+            env_extra=LEGACY_RESOLVER_ENV,
         )
         # Passing test → 1 passed, 0 failed → delta_failed=0 → exit 0
         assert result.returncode == 0, (
@@ -287,6 +312,7 @@ def test_after_phase_regression_exits_1(tmp_path):
             "after", agent_id,
             baseline_dir=isolated_baseline_dir,
             resolver_dir=r.resolver_dir,
+            env_extra=LEGACY_RESOLVER_ENV,
         )
         # Baseline had 0 failures, fake_test has 1 failure → delta_failed = 1 > 0 → exit 1
         assert result.returncode == 1, (

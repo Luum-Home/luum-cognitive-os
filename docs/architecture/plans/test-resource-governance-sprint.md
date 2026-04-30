@@ -5,7 +5,8 @@
 In progress — RG-1 resource policy manifest implemented; RG-2 timeout and
 opt-in gates for cost-bearing/docker-required lanes implemented; RG-3
 machine-readable resource outcome artifacts implemented for normal failures,
-policy blocks, and timeout exhaustion.
+policy blocks, and timeout exhaustion; RG-4 local/CI default commands and
+Docker-explicit lane split implemented.
 
 ## Product intent
 
@@ -126,19 +127,29 @@ Acceptance criteria:
 
 ### RG-4 — CI and local defaults
 
+Implemented defaults:
+
+| Use case | Command | Contract |
+|---|---|---|
+| Local quick iteration | `make test-local-fast` / `cos-test focused` | Diff-aware, persisted focused artifacts. |
+| Local broad without Docker | `make test-local-wide-no-docker` / `cos-test broad --no-docker` | Non-optional lanes only; skips Docker-capable lanes. |
+| CI default | `make test-ci-default` / `cos-test broad --no-docker --ci` | Same default policy, with CI output mode. |
+| Docker/testcontainers explicit | `make test-docker-explicit` | Runs `integration-docker` and `e2e` only with `COS_ALLOW_DOCKER_TESTS=1`. |
+| Optional/cost-bearing explicit | `make test-optional-cost` | Runs arena/benchmark/quality only with `COS_ALLOW_COST_BEARING_TESTS=1`. |
+
 Define safe defaults:
 
-- local default broad: non-optional, no surprise heavy services;
-- CI default broad: deterministic non-Docker lane unless explicitly configured;
-- Docker lane: explicit flag or dedicated workflow;
-- optional/cost-bearing lane: explicit flag only.
+- local default broad: non-optional, no surprise heavy services; ✅
+- CI default broad: deterministic non-Docker lane unless explicitly configured; ✅
+- Docker lane: explicit flag or dedicated workflow; ✅
+- optional/cost-bearing lane: explicit flag only. ✅
 
 Acceptance criteria:
 
-- CI docs name the exact default command.
-- A contract test proves optional lanes are absent from default broad.
+- CI docs name the exact default command. ✅
+- A contract test proves optional lanes are absent from default broad. ✅
 - A contract test proves Docker-heavy lanes are not silently started in the
-  default non-Docker lane.
+  default non-Docker lane. ✅
 
 ## Proof path
 
@@ -153,7 +164,7 @@ bash scripts/pytest-with-summary.sh --workers 0 --lane unit -- tests/unit/test_p
 Then run a representative broad dry-run:
 
 ```bash
-cd cmd/cos-test && go run . broad --dry-run
+cd cmd/cos-test && go run . broad --no-docker --dry-run
 ```
 
 The dry-run must show resource policy without executing Docker-heavy or optional
