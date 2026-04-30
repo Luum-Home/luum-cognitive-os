@@ -208,8 +208,8 @@ source of truth going forward."**
 
 ## References
 
-- `docs/architecture/adrs/008-multi-tool-support.md`
-- `docs/architecture/adrs/015-rules-to-hooks-migration.md`
+- `docs/adrs/ADR-008-multi-tool-support.md`
+- `docs/adrs/ADR-015-rules-to-hooks-migration.md`
 - `docs/rules-loading-architecture.md`
 - `docs/global-vs-project-config.md`
 - `docs/os-vs-project-separation.md`

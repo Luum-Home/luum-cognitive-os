@@ -7,7 +7,7 @@
 # hooks/_lib/killswitch_check.sh — sourced by hooks; exempt from hook-matcher wiring
 # ─────────────────────────────────────────────────────────────────────────────
 #
-# ADR-002 collapsed the 3-tier profile system (lean/standard/full) to two tiers:
+# ADR-093 collapsed the 3-tier profile system (lean/standard/full) to two tiers:
 #   default  — committed baseline Claude projection used by the repository
 #   full     — preserve/restore the currently installed settings surface as-is
 #
@@ -41,13 +41,13 @@ if [ -z "$RAW_PROFILE" ]; then
   RAW_PROFILE="${RAW_PROFILE:-default}"
 fi
 
-# Normalize profile (ADR-002 collapse). Legacy → default with stderr note.
+# Normalize profile (ADR-093 collapse). Legacy → default with stderr note.
 case "$RAW_PROFILE" in
   default|full)
     PROFILE="$RAW_PROFILE"
     ;;
   lean|standard|minimal)
-    echo "Note: ADR-002 collapsed '$RAW_PROFILE' into 'default'. Using 'default'." >&2
+    echo "Note: ADR-093 collapsed '$RAW_PROFILE' into 'default'. Using 'default'." >&2
     PROFILE="default"
     ;;
   *)

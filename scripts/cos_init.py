@@ -38,7 +38,7 @@ from pathlib import Path
 # ── Repository root (cos source directory) ───────────────────────────
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
 
-# ── ADR-002 canonical mode constants ─────────────────────────────────
+# ── ADR-093 canonical mode constants ─────────────────────────────────
 DEFAULT_RULES = (
     "trust-score acceptance-criteria closed-loop-prompts definition-of-done "
     "agent-quality adaptive-bypass phase-aware-agents token-economy "
@@ -831,7 +831,7 @@ def _apply_efficiency_profile(
                     efficiency_profile = ep
                 elif ep in ("lean", "standard", "minimal"):
                     print(
-                        f"Note: cognitive-os.yaml efficiency.profile='{ep}' → 'default' (ADR-002).",
+                        f"Note: cognitive-os.yaml efficiency.profile='{ep}' → 'default' (ADR-093).",
                         file=sys.stderr,
                     )
                     efficiency_profile = "default"
@@ -960,7 +960,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         mode = extra.pop(0)
         legacy_mode = mode if mode in ("--minimal", "--standard", "--lean") else legacy_mode
     if legacy_mode:
-        print(f"Note: ADR-002 collapsed '{legacy_mode}' into '--default'. Using '--default'.", file=sys.stderr)
+        print(f"Note: ADR-093 collapsed '{legacy_mode}' into '--default'. Using '--default'.", file=sys.stderr)
     if mode in ("--minimal", "--standard", "--lean"):
         mode = "--default"
     if mode not in ("--default", "--full"):

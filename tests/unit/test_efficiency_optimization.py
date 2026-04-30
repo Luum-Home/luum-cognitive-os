@@ -85,7 +85,7 @@ def test_efficiency_profiles_defined():
     """cognitive-os.yaml must define at least one efficiency profile.
 
     The original three-tier system (lean/standard/full) was collapsed to a
-    two-tier system (default/full) in ADR-002.  This test validates the
+    two-tier system (default/full) in ADR-093.  This test validates the
     invariant that matters: the efficiency section exists and has at least one
     named profile, regardless of which specific names are used.
     """

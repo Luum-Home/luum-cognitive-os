@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted (executed 2026-04-30 by Session A)
 **Date**: 2026-04-30
 **Author**: Maintainer
 **Related**: ADR-082 (sibling for plans), ADR-027, ADR-027a, ADR-084
@@ -13,7 +13,15 @@
 
 ## Status
 
-Proposed.
+Accepted. Executed 2026-04-30 by Session A.
+
+Slot note: ADR-087 planned slots 088/089/090/091 for the four migrated files.
+Session B claimed 088 (provenance-trailer-ppid-chain), 089 (multi-session-git-coordination),
+and 090 (auto-skill-repair) before this migration ran. Actual slots used:
+- `docs/architecture/adrs/027-headless-clustered-runtime-direction.md` → **ADR-091**
+- `harness-adoption-gap/ADR-001-harness-skills-sync-path.md` → **ADR-092**
+- `harness-adoption-gap/ADR-002-simplify-profiles.md` → **ADR-093**
+- `harness-adoption-gap/ADR-003-agent-git-safety.md` → **ADR-094**
 
 ---
 
@@ -564,12 +572,80 @@ find docs/architecture/adrs docs/architecture/harness-adoption-gap -name "*.md" 
 - ADR-082: Plan Location Convention (sibling decision; migration pattern reused here)
 - ADR-027: SO Slimming — Test Strategy, Context Overhead (keeps number 027)
 - ADR-027a: SO Slimming addendum (unaffected; in canonical directory)
-- ADR-084: Headless and Clustered Runtime Shape (thematic successor to ADR-088)
-- ADR-088: Headless and Clustered Runtime Direction (renumbered from `docs/architecture/adrs/027`)
-- ADR-089: Harness Skills Sync Path (renumbered from `harness-adoption-gap/ADR-001`)
-- ADR-090: Simplify Install Profiles (renumbered from `harness-adoption-gap/ADR-002`)
-- ADR-091: Agent Git Operations Safety (renumbered from `harness-adoption-gap/ADR-003`)
+- ADR-084: Headless and Clustered Runtime Shape (thematic successor to ADR-091)
+- ADR-091: Headless and Clustered Runtime Direction (renumbered from `docs/architecture/adrs/027`; planned 088, actual 091 due to slot conflicts)
+- ADR-092: Harness Skills Sync Path (renumbered from `harness-adoption-gap/ADR-001`; planned 089, actual 092)
+- ADR-093: Simplify Install Profiles (renumbered from `harness-adoption-gap/ADR-002`; planned 090, actual 093)
+- ADR-094: Agent Git Operations Safety (renumbered from `harness-adoption-gap/ADR-003`; planned 091, actual 094)
 - Namespace audit: `docs/measurements/cos-adr-namespace-audit-2026-04-30.md`
 - Duplication audit: `docs/measurements/cos-duplication-audit-2026-04-30.md`
-- `hooks/session-startup-protocol.sh` (verification target post-migration)
-- `tests/audit/test_adr_locations.py` (to be created)
+- `hooks/session-startup-protocol.sh` (verified: no legacy directory scan after migration)
+- `tests/audit/test_adr_locations.py` (created; 4 tests pass)
+
+---
+
+## Migration log (2026-04-30, Session A)
+
+### File moves (git mv)
+
+| Old path | New path | Number change |
+|---|---|---|
+| `docs/architecture/adrs/006-agpl-license-compliance.md` | `docs/adrs/ADR-006-agpl-license-compliance.md` | none |
+| `docs/architecture/adrs/007-cognitive-os-rebrand.md` | `docs/adrs/ADR-007-cognitive-os-rebrand.md` | none |
+| `docs/architecture/adrs/008-multi-tool-support.md` | `docs/adrs/ADR-008-multi-tool-support.md` | none |
+| `docs/architecture/adrs/009-package-architecture.md` | `docs/adrs/ADR-009-package-architecture.md` | none |
+| `docs/architecture/adrs/010-hook-architecture-v2.md` | `docs/adrs/ADR-010-hook-architecture-v2.md` | none |
+| `docs/architecture/adrs/011-dual-gateway-bifrost-litellm.md` | `docs/adrs/ADR-011-dual-gateway-bifrost-litellm.md` | none |
+| `docs/architecture/adrs/012-prompt-driven-governance.md` | `docs/adrs/ADR-012-prompt-driven-governance.md` | none |
+| `docs/architecture/adrs/013-security-stack.md` | `docs/adrs/ADR-013-security-stack.md` | none |
+| `docs/architecture/adrs/014-sdd-fast-path.md` | `docs/adrs/ADR-014-sdd-fast-path.md` | none |
+| `docs/architecture/adrs/015-rules-to-hooks-migration.md` | `docs/adrs/ADR-015-rules-to-hooks-migration.md` | none |
+| `docs/architecture/adrs/016-context-diet.md` | `docs/adrs/ADR-016-context-diet.md` | none |
+| `docs/architecture/adrs/017-stabilization-freeze.md` | `docs/adrs/ADR-017-stabilization-freeze.md` | none |
+| `docs/architecture/adrs/018-docker-to-pip-migration.md` | `docs/adrs/ADR-018-docker-to-pip-migration.md` | none |
+| `docs/architecture/adrs/019-scope-tagging.md` | `docs/adrs/ADR-019-scope-tagging.md` | none |
+| `docs/architecture/adrs/020-contamination-fix.md` | `docs/adrs/ADR-020-contamination-fix.md` | none |
+| `docs/architecture/adrs/021-vendor-agnostic-with-adapters.md` | `docs/adrs/ADR-021-vendor-agnostic-with-adapters.md` | none |
+| `docs/architecture/adrs/022-prompt-type-hooks-adoption.md` | `docs/adrs/ADR-022-prompt-type-hooks-adoption.md` | none |
+| `docs/architecture/adrs/023-updated-input-pattern.md` | `docs/adrs/ADR-023-updated-input-pattern.md` | none |
+| `docs/architecture/adrs/024-task-panel-bridge.md` | `docs/adrs/ADR-024-task-panel-bridge.md` | none |
+| `docs/architecture/adrs/025-install-update-loop.md` | `docs/adrs/ADR-025-install-update-loop.md` | none |
+| `docs/architecture/adrs/026-r2-r3-design-review.md` | `docs/adrs/ADR-026-r2-r3-design-review.md` | none |
+| `docs/architecture/adrs/026a-decisions.md` | `docs/adrs/ADR-026a-decisions.md` | none |
+| `docs/architecture/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md` | `docs/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md` | none |
+| `docs/architecture/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md` | `docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md` | none |
+| `docs/architecture/adrs/027-headless-clustered-runtime-direction.md` | `docs/adrs/ADR-091-headless-clustered-runtime-direction.md` | **027 → 091** |
+| `docs/architecture/harness-adoption-gap/ADR-001-harness-skills-sync-path.md` | `docs/adrs/ADR-092-harness-skills-sync-path.md` | **001 → 092** |
+| `docs/architecture/harness-adoption-gap/ADR-002-simplify-profiles.md` | `docs/adrs/ADR-093-simplify-profiles.md` | **002 → 093** |
+| `docs/architecture/harness-adoption-gap/ADR-003-agent-git-safety.md` | `docs/adrs/ADR-094-agent-git-safety.md` | **003 → 094** |
+
+### cos-dispatch renames (in-place, CD- prefix added)
+
+`001-*.md` through `011-*.md` → `CD-001-*.md` through `CD-011-*.md` (11 files).
+
+### Citation sites updated
+
+| File | Lines | Old citation | New citation |
+|---|---|---|---|
+| `install.sh` | 4, 9 | `ADR-002` | `ADR-093` |
+| `install.sh` | 43 | `ADR-002` | `ADR-093` |
+| `install.sh` | 106 | `ADR-002` | `ADR-093` |
+| `install.sh` | 116, 117 | `ADR-002` | `ADR-093` |
+| `install.sh` | 122 | `ADR-002` | `ADR-093` |
+| `install.sh` | 251 | `ADR-002` | `ADR-093` |
+| `install.sh` | 428 | `ADR-002` | `ADR-093` |
+| `cognitive-os.yaml` | 538, 541 | `ADR-002` | `ADR-093` |
+| `tests/unit/test_efficiency_optimization.py` | 88 | `ADR-002` | `ADR-093` |
+| `docs/prompt-driven-governance.md` | 3 | `ADR-012` (bare) | `ADR-012 (docs/adrs/ADR-012-prompt-driven-governance.md)` |
+| `docs/HOW-TO-USE-COS.md` | 170 | `ADR-021` (bare) | `ADR-021 (docs/adrs/ADR-021-vendor-agnostic-with-adapters.md)` |
+| `docs/architecture/why-skills-and-rules-became-claude-centered.md` | 211, 212 | `docs/architecture/adrs/008-*.md`, `015-*.md` | `docs/adrs/ADR-008-*.md`, `ADR-015-*.md` |
+| `docs/adrs/ADR-026a-decisions.md` | 5 | `./026-r2-r3-design-review.md` | `./ADR-026-r2-r3-design-review.md` |
+
+### Tests added
+
+- `tests/audit/test_adr_locations.py` — 4 tests, all passing
+
+### Startup hook
+
+`hooks/session-startup-protocol.sh` — verified no change needed. The hook already
+scans `docs/adrs/` exclusively. No scan of `docs/architecture/adrs/` was present.

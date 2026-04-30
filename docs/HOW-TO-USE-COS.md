@@ -167,7 +167,7 @@ cr-report /tmp/mut.db
 - `hooks/_lib/dispatch_gate_check.py` — consolidated dispatch logic
 - `hooks/_lib/session_init_helper.py` — consolidated session init
 - `hooks/_lib/singularity-suggestion.sh` — extracted for testability
-- `hooks/_lib/task_panel_adapter.py` — ADR-021 first impl
+- `hooks/_lib/task_panel_adapter.py` — ADR-021 (docs/adrs/ADR-021-vendor-agnostic-with-adapters.md) first impl
 - `hooks/_lib/recap_adapter.py` — /recap integration
 - `templates/agent-mandatory-rules.md` — injected into every sub-agent
 

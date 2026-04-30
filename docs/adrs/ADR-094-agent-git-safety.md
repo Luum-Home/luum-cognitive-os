@@ -1,4 +1,7 @@
-# ADR-003: Agent Git Operations Safety — Layered Prevention of Destructive Git Ops
+# ADR-094: Agent Git Operations Safety — Layered Prevention of Destructive Git Ops
+
+<!-- Renumbered-from: ADR-003 (docs/architecture/harness-adoption-gap/ADR-003-agent-git-safety.md) -->
+<!-- Renumbered-to: ADR-094 (ADR-087 migration, 2026-04-30) -->
 
 ## Status
 

@@ -40,7 +40,7 @@ Flags:
   --root DIR  Override project root (default: parent of this script).
   --help, -h  Show this help.
 
-The 10 core skills (per ADR-002 / ADR-001 harness-adoption-gap):
+The 10 core skills (per ADR-093 / ADR-001 harness-adoption-gap):
   compose-prompt, exhaustive-prompt, agent-dashboard, auto-refine,
   verification-before-completion, plan-feature, session-backlog,
   resource-governor, paperclip-dashboard, cos-status (script-only).
