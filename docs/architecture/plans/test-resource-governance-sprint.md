@@ -122,7 +122,7 @@ Acceptance criteria:
 - Timeout exhaustion writes `outcome=resource_exhausted` even when the wrapper is
   killed. ✅
 - Policy blocks write `outcome=blocked_policy` before returning. ✅
-- Governance checks consume the persisted metadata instead of parsing stdout. ⏳
+- Governance checks consume the persisted metadata instead of parsing stdout. ✅
 - Resource failures are distinguishable from failing assertions. ✅
 
 ### RG-4 — CI and local defaults
@@ -132,11 +132,14 @@ Implemented defaults:
 | Use case | Command | Contract |
 |---|---|---|
 | Local quick iteration | `make test-local-fast` / `cos-test focused` | Diff-aware, persisted focused artifacts. |
+| Laptop-friendly broad validation | `make test-laptop` | Capped workers; skips integration/e2e/chaos/Docker/cost-bearing lanes. |
 | Local broad without Docker | `make test-local-wide-no-docker` / `cos-test broad --no-docker` | Non-optional lanes only; skips Docker-capable lanes. |
-| CI default | `make test-ci-default` / `cos-test broad --no-docker --ci` | Same default policy, with CI output mode. |
+| CI / pre-merge default | `make test-ci-default` / `cos-test broad --no-docker --ci` | Same default policy, with CI output mode. |
+| Release gate | `make test-release` | CI default + explicit integration + Docker/e2e. |
 | Slow integration without Docker | `make test-integration-no-docker` / `cos-test cluster --lane integration` | Explicit because live integration workflows exceed the default CI budget. |
-| Docker/testcontainers explicit | `make test-docker-explicit` | Runs `integration-docker` and `e2e` only with `COS_ALLOW_DOCKER_TESTS=1`. |
-| Optional/cost-bearing explicit | `make test-optional-cost` | Runs arena/benchmark/quality only with `COS_ALLOW_COST_BEARING_TESTS=1`. |
+| Laptop-friendly integration | `make test-laptop-integration` | Same integration lane at lower CPU priority; still explicit/stateful. |
+| Docker/testcontainers explicit | `make test-docker` | Runs `integration-docker` and `e2e` only with `COS_ALLOW_DOCKER_TESTS=1`. |
+| Optional/cost-bearing explicit | `make test-optional` | Runs arena/benchmark/quality only with `COS_ALLOW_COST_BEARING_TESTS=1`. |
 
 The default unit lane currently runs serially under the resource policy despite
 being parallel-safe in the lane taxonomy. Broad validation found repeated
@@ -186,3 +189,10 @@ lanes by default.
    cleanup primitive.
 4. How to represent host pressure portably across macOS, Linux, CI, and future
    Kubernetes workers.
+
+## Follow-up doctrine artifact
+
+The maintainers-facing summary of this sprint now lives at
+[Validation Nervous System](../validation-nervous-system.md). That document is
+the compact index for SO-builder commands, role ownership, artifact-first gates,
+and what this validation front does and does not own.
