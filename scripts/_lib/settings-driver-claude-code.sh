@@ -185,8 +185,9 @@ cc_driver_emit() {
 
   local post_all
   post_all=$(_cc_hook_group "PostToolUse" "" \
-    "hooks/context-watchdog.sh"    "true"  \
-    "hooks/rate-limit-detector.sh" "false" \
+    "hooks/context-watchdog.sh"       "true"  \
+    "hooks/rate-limit-detector.sh"    "false" \
+    "hooks/tool-sequence-capture.sh"  "false" \
   )
 
   local post_bash
@@ -256,6 +257,7 @@ cc_driver_emit() {
     "hooks/git-context-capture.sh"            "false" \
     "hooks/session-changelog.sh"              "false" \
     "hooks/skill-failure-monitor.sh"          "false" \
+    "hooks/skill-synthesis-scanner.sh"        "false" \
     "hooks/kpi-trigger.sh"                    "true"  \
     "hooks/engram-crystallize-on-session-end.sh" "true" \
   )
