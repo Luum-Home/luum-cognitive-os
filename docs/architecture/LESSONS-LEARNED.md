@@ -152,7 +152,7 @@ Derived from these wounds. Apply before adding new code:
 
 - Session summaries in engram (topic_key `session/*`, `audit/*`)
 - ADRs documenting the fixes: ADR-001 to ADR-022
-- Stabilization roadmap: `docs/architecture/stabilization-roadmap.md`
+- Stabilization roadmap: `.cognitive-os/plans/roadmaps/stabilization-roadmap.md`
 - Frozen backlog: `docs/architecture/FROZEN-BACKLOG.md`
 - Memory files: `~/.claude/projects/.../memory/` (loaded every session)
 

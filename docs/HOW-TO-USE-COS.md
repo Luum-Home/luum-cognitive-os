@@ -14,7 +14,7 @@ The OS has 5 self-awareness mechanisms. When you work with it, **let them do the
 
 1. **Start:** Open Claude Code in `<repo-root>`. Read the 4 living documents to recover context:
    ```
-   Read docs/architecture/stabilization-roadmap.md
+   Read .cognitive-os/plans/roadmaps/stabilization-roadmap.md
    Read docs/architecture/FROZEN-BACKLOG.md
    Read docs/architecture/LESSONS-LEARNED.md
    Read memory files in ~/.claude/projects/.../memory/
@@ -174,7 +174,7 @@ cr-report /tmp/mut.db
 ## For Next Sessions
 
 See:
-- `docs/architecture/stabilization-roadmap.md` — current status
+- `.cognitive-os/plans/roadmaps/stabilization-roadmap.md` — current status
 - `docs/architecture/FROZEN-BACKLOG.md` — what to unfreeze
 - `docs/architecture/LESSONS-LEARNED.md` — what NOT to repeat
 - `docs/architecture/POST-MORTEM-2026-04.md` — history
