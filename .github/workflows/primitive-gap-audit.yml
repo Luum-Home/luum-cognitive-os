@@ -1,0 +1,41 @@
+name: Primitive Gap Audit
+
+on:
+  schedule:
+    - cron: '30 12 * * MON'  # every Monday 12:30 UTC, after public metrics
+  workflow_dispatch: {}
+
+jobs:
+  primitive-gap-snapshot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+
+      - name: Generate primitive gap snapshot
+        run: |
+          python3 scripts/primitive_gap_snapshot.py \
+            --trend \
+            --trend-path docs/reports/primitive-gap-history.jsonl \
+            --markdown docs/reports/primitive-gap-latest.md \
+            --json > docs/reports/primitive-gap-latest.json
+
+      - name: Upload primitive gap snapshot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: primitive-gap-snapshot
+          path: |
+            docs/reports/primitive-gap-latest.json
+            docs/reports/primitive-gap-latest.md
+            docs/reports/primitive-gap-history.jsonl
+
+      - name: Commit primitive gap trend
+        run: |
+          git config user.name "cognitive-os-bot"
+          git config user.email "bot@luum.ai"
+          git add docs/reports/primitive-gap-latest.json docs/reports/primitive-gap-latest.md docs/reports/primitive-gap-history.jsonl
+          git diff --staged --quiet || git commit -m "chore(audit): weekly primitive gap snapshot $(date -u +%Y-%m-%d)"
+          git push

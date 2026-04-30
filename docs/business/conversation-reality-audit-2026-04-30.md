@@ -407,7 +407,7 @@ Use this checklist as the working board for the primitive-by-primitive reality a
 ### 13. Periodic Automation
 
 - [x] Add a repository script that generates a primitive gap snapshot from current repo evidence.
-- [x] Append periodic snapshots to `.cognitive-os/metrics/primitive-gap-snapshot.jsonl`.
+- [x] Append periodic snapshots to `docs/reports/primitive-gap-history.jsonl` in CI, or `.cognitive-os/metrics/primitive-gap-snapshot.jsonl` for local runs.
 - [x] Generate a latest Markdown report at `docs/reports/primitive-gap-latest.md`.
 - [x] Add a scheduled GitHub Actions workflow for weekly primitive gap snapshots.
 - [ ] Add threshold-based escalation once baseline noise is reduced.
