@@ -128,6 +128,14 @@ quality:
     # Populated by /cognitive-os-init based on detected stack
     []
 
+# ADR-038 Wave 2 — 4-layer context budget (Google ADK pattern, Gap #2)
+# Enforcement arrives in Wave 3 (Pydantic TrustReport). Declared here as schema.
+context_budget:
+  static_max_tokens: 4000      # preamble + KNOWN TRAPS + WORKING DIR (always loaded)
+  turn_max_tokens: 8000        # per tool-use round
+  user_max_tokens: 12000       # accumulated user-facing content per task
+  cache_max_tokens: 32000      # MCP/engram retrievals
+
 sessions:
   concurrency: true                # Enable multi-session support
   isolation: per-session           # Each session gets its own tasks/metrics
