@@ -433,3 +433,27 @@ opt-in env var for developers who need full symlink set. Fixed
 
 **Files changed**: `hooks/self-install.sh`, `tests/unit/test_efficiency_stress.py`,
 `docs/adrs/ADR-079-corerules-applies-to-self-hosting.md` (new)
+
+## 2026-04-30: SessionStart deep audit (self-host vs client)
+
+Full measurement doc: [`docs/measurements/sessionstart-baseline.md`](measurements/sessionstart-baseline.md)
+
+Component-by-component audit of what gets loaded at SessionStart for this self-hosted repo
+versus a fresh client install. Both modes use `efficiency.profile: default` after ADR-079.
+
+### Key findings
+
+- **Total SessionStart context (self-host, post-ADR-079)**: ~37,917 bytes / ~9,480 tokens
+- **Total SessionStart context (client default)**: ~39,917 bytes / ~9,980 tokens
+- **Largest components**: `~/.claude/CLAUDE.md` (11,125 B / ~2,781 T) and `CATALOG-COMPACT.md` (14,280 B / ~3,570 T)
+- **CATALOG-COMPACT is always injected** via claudeMd (`.claude/skills/CATALOG-COMPACT.md` symlink), not lazy-loaded
+- Commits today that affect SessionStart: only `991b24a` (client –16,775 T) and ADR-079 staged (self-host –20,779 T)
+- Commits `c8a5259`, `e93e3b7`, `f360fe4` affect Stage-2 PreToolUse[Agent] expansion only, not SessionStart
+
+### Top unexplored levers
+
+1. **CATALOG-COMPACT lazy-load** (–3,570 T, medium risk)
+2. **Global CLAUDE.md user trim** (–1,500–2,000 T, user-controlled)
+3. **ROADMAP.md demotion from Tier-0** (–1,810 T, low risk)
+4. **SessionStart hook stdout consolidation** (–300 T, low risk)
+5. **MCP engram instructions defer** (–400 T, medium risk, upstream dependency)
