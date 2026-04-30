@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Orchestrator Prompt Compose — Trap Preview Before Agent Launch
 

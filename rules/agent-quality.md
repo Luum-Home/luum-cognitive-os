@@ -1,3 +1,4 @@
+<!-- TIER: 0 -->
 <!-- SCOPE: both -->
 # Agent Quality: Maximum Output, Not Minimum
 

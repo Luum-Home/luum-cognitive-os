@@ -1,3 +1,4 @@
+<!-- TIER: 0 -->
 <!-- SCOPE: both -->
 # Closed-Loop Prompts — Self-Correcting Agent Execution
 

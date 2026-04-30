@@ -1,3 +1,4 @@
+<!-- TIER: 2 -->
 <!-- SCOPE: both -->
 # Parry -- Prompt Injection Scanner
 

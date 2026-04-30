@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Adversarial Review Protocol (BMAD v6 Pattern 1)
 

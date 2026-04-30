@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Orchestrator Mode — Subprocess-Based Delegation
 
