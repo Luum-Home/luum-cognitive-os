@@ -1,0 +1,12 @@
+{
+  "docs_scanned": 364,
+  "duplicate_pairs": 0,
+  "findings": [],
+  "min_tokens": 120,
+  "new_duplicate_pairs": 0,
+  "new_findings": [],
+  "pair_keys": [],
+  "shingle_size": 7,
+  "threshold": 0.72,
+  "timestamp": "2026-04-30T17:40:20.726898+00:00"
+}
