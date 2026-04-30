@@ -55,6 +55,33 @@ jobs:
       - name: Run Go kernel and provider tests
         run: go test ./internal/provider/... ./internal/validator/... ./pkg/hook/... -count=1
 
+  test-runner-defaults:
+    name: Test Runner Default Policy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: cmd/cos-test/go.mod
+
+      - name: Install Python test-runner dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-xdist pytest-timeout pyyaml
+
+      - name: Validate cos-test defaults
+        run: |
+          cd cmd/cos-test
+          go test ./... -count=1
+          go run . broad --no-docker --dry-run
+
   docs-integrity:
     name: Documentation Integrity
     runs-on: ubuntu-latest
