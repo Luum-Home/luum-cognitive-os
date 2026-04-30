@@ -139,20 +139,27 @@ This is the durable artifact. Copied from spec §4 (Engram observation #14953).
 | unit | `tests/unit/` | yes | No shared state; all fixtures use `tmp_path` or `monkeypatch`; pure in-process logic. |
 | audit | `tests/audit/` | yes | No pytest fixtures at all; pure `Path.rglob()` file scans; no side effects. |
 | contract | `tests/contracts/` | yes (after REQ-6 fix) | Mostly pure file reads; one shared-state offender (`test_global_verify.py`) fixed by REQ-6 (baseline written to `tmp_path`). |
-| integration-isolated | `tests/integration/` marked `not docker` | yes | Uses `tmp_path` only; no session-scoped fixtures; isolated subprocess calls. |
-| integration-shared | `tests/integration/` marked `docker` | no | Requires session-scoped Docker containers (PostgreSQL, Valkey, ClickHouse); must be serial. |
+| integration | `tests/integration/` marked `not docker` | no | Compatibility umbrella for all non-Docker integration tests; prefer split sublanes for local diagnosis. |
+| integration-memory | selected `tests/integration/test_*.py` files | no | Engram, decision triage, compaction recovery, persistence, and MCP memory surfaces. |
+| integration-installer | selected `tests/integration/test_*.py` files | no | Install/update/projection workflows, first-run, manifests, git hooks path, and project settings. |
+| integration-hooks | selected `tests/integration/test_*.py` files | no | CWD enforcement, prompt/context injection, rate-limit hooks, heartbeat/reaper, and session nudges. |
+| integration-provider | selected `tests/integration/test_*.py` files | no | Codex/harness adapter dispatch, orchestrator/provider capability checks, and Phoenix trace emission. |
+| integration-runtime | selected `tests/integration/test_*.py` files | no | Executors, repair chain, queues, metrics, sprint/watch CLIs, host monitor, Valkey, and wiring validation. |
+| integration-docker | `tests/integration/` marked `docker` | no | Requires explicit Docker/testcontainers opt-in; must be serial. |
 | behavior | `tests/behavior/` | no | Hook chain state is process-global; parallel execution would corrupt hook invocation order. |
 | hooks | `tests/hooks/` | no | Mutates `settings.json`; shared real-file state between tests. |
 | e2e | `tests/e2e/` | no | Full system under test; single instance; ordering matters. |
 | chaos | `tests/chaos/` | no | Fault injection against real infra; concurrent faults would interfere. |
 
-**Escalation order for `cos-test broad`**: `unit` + `audit` + `contract` (parallel
-group) → `integration-isolated` (parallel) → `integration-shared` (serial) →
-`behavior` → `hooks` → `e2e` → `chaos`.
+**Escalation order for default `cos-test broad`**: `unit` + `audit` +
+`contract` + `architecture` + `system` (parallel group) → `behavior` → `hooks`
+→ `chaos`. Optional lanes, including all integration sublanes, are explicit.
 
-The four parallel-safe lanes (unit, audit, contract, integration-isolated) run
-together when the worker pool has capacity per ADR-068. Stateful lanes always
-run serially after, in the order shown.
+For integration diagnosis, run the narrowest matching lane first:
+`integration-memory`, `integration-installer`, `integration-hooks`,
+`integration-provider`, or `integration-runtime`. The legacy `integration` lane
+remains as a non-Docker compatibility umbrella for release validation, and
+`integration-docker` remains the explicit Docker/testcontainers lane.
 
 ## Consequences
 

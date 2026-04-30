@@ -142,6 +142,10 @@ func Load(path string) (*Registry, error) {
 //	lanes:
 //	  <name>:
 //	    paths: [a, b]
+//	    # or:
+//	    paths:
+//	      - a
+//	      - b
 //	    parallel: true|false|marker
 //	    marker_serial: <name>
 //	    stateful_reason: "<text>"
@@ -159,8 +163,10 @@ func Parse(r io.Reader) (*Registry, error) {
 	inLanes := false
 	var current *Lane
 	var currentName string
+	var pendingListKey string
 
 	flush := func() {
+		pendingListKey = ""
 		if current != nil {
 			current.Name = currentName
 			reg.Lanes[currentName] = *current
@@ -206,6 +212,7 @@ func Parse(r io.Reader) (*Registry, error) {
 			current = &Lane{Name: name}
 			currentName = name
 		case 4:
+			pendingListKey = ""
 			if current == nil {
 				return nil, fmt.Errorf("lane field outside lane block: %q", line)
 			}
@@ -215,6 +222,11 @@ func Parse(r io.Reader) (*Registry, error) {
 			}
 			switch key {
 			case "paths":
+				if strings.TrimSpace(value) == "" {
+					current.Paths = nil
+					pendingListKey = "paths"
+					continue
+				}
 				paths, err := parseInlineList(value)
 				if err != nil {
 					return nil, fmt.Errorf("lane %s paths: %w", currentName, err)
@@ -252,6 +264,20 @@ func Parse(r io.Reader) (*Registry, error) {
 				current.MarkerInclude = strings.Trim(value, `"' `)
 			default:
 				// Unknown keys are accepted (forward compat) but ignored.
+			}
+		case 6:
+			if current == nil || pendingListKey == "" {
+				continue
+			}
+			if !strings.HasPrefix(body, "- ") {
+				return nil, fmt.Errorf("lane %s %s list: malformed item %q", currentName, pendingListKey, line)
+			}
+			item := strings.Trim(strings.TrimPrefix(body, "- "), `"' `)
+			if item == "" {
+				return nil, fmt.Errorf("lane %s %s list: empty item", currentName, pendingListKey)
+			}
+			if pendingListKey == "paths" {
+				current.Paths = append(current.Paths, item)
 			}
 		default:
 			// Deeper indentation not supported in current schema; tolerate.

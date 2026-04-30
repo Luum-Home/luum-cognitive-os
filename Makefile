@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help test test-local-fast test-laptop test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
+.PHONY: help test test-local-fast test-laptop test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-integration-memory test-integration-installer test-integration-hooks test-integration-provider test-integration-runtime test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -27,7 +27,8 @@ help:
 	@echo "  test-local-wide-no-docker  Official local broad lane without Docker/cost."
 	@echo "  test-ci-default   Official CI/pre-merge default: broad non-Docker gate; do not run constantly on laptops."
 	@echo "  test-release      Release gate: CI default + integration + Docker/e2e explicit."
-	@echo "  test-integration-no-docker  Explicit slow integration lane without Docker."
+	@echo "  test-integration-no-docker  Explicit split integration lanes without Docker."
+	@echo "  test-integration-{memory,installer,hooks,provider,runtime}  One integration surface."
 	@echo "  test-docker       Explicit Docker/testcontainers lane."
 	@echo "  test-optional     Explicit optional/cost-bearing lanes."
 	@echo "  test-docker-explicit  [DEPRECATED → test-docker] Explicit Docker/testcontainers lane."
@@ -71,8 +72,12 @@ test-laptop: cos-test
 	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane hooks
 
 test-laptop-integration: cos-test
-	@echo "[test-laptop-integration] Explicit SO integration validation: serial, no Docker, lower CPU priority. Still slow/stateful." >&2
-	@nice -n 10 ./cos-test cluster --lane integration
+	@echo "[test-laptop-integration] Explicit SO integration validation: split sublanes, serial, no Docker, lower CPU priority. Still slow/stateful." >&2
+	@nice -n 10 ./cos-test cluster --lane integration-memory
+	@nice -n 10 ./cos-test cluster --lane integration-installer
+	@nice -n 10 ./cos-test cluster --lane integration-hooks
+	@nice -n 10 ./cos-test cluster --lane integration-provider
+	@nice -n 10 ./cos-test cluster --lane integration-runtime
 
 test-local-wide-no-docker: cos-test
 	@./cos-test broad --no-docker
@@ -82,8 +87,22 @@ test-ci-default: cos-test
 
 test-release: test-ci-default test-integration-no-docker test-docker
 
-test-integration-no-docker: cos-test
-	@./cos-test cluster --lane integration
+test-integration-no-docker: test-integration-memory test-integration-installer test-integration-hooks test-integration-provider test-integration-runtime
+
+test-integration-memory: cos-test
+	@./cos-test cluster --lane integration-memory
+
+test-integration-installer: cos-test
+	@./cos-test cluster --lane integration-installer
+
+test-integration-hooks: cos-test
+	@./cos-test cluster --lane integration-hooks
+
+test-integration-provider: cos-test
+	@./cos-test cluster --lane integration-provider
+
+test-integration-runtime: cos-test
+	@./cos-test cluster --lane integration-runtime
 
 test-docker: cos-test
 	@COS_ALLOW_DOCKER_TESTS=1 ./cos-test cluster --lane integration-docker
