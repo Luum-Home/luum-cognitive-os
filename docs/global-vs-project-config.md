@@ -184,12 +184,12 @@ Components tied to this project's infrastructure, architecture, or phase:
 | Command | Action |
 |---------|--------|
 | `cos init` (current) | Install COS to current project. Same as today. |
-| `cos init --global` | Install global COS components to `~/.claude/`. Installs: global rules to `~/.claude/rules/cos/`, global agents to `~/.claude/agents/cos/`, global skills to `~/.claude/skills/cos/`. Does NOT install hooks (they need project context). |
+| `cos init --global` | Install global COS agentic primitives to `~/.claude/`. Installs: global rules to `~/.claude/rules/cos/`, global agents to `~/.claude/agents/cos/`, global skills to `~/.claude/skills/cos/`. Does NOT install hooks (they need project context). |
 | `cos config --global` | Manage global config (`~/.claude/CLAUDE.md`, `~/.claude/settings.json`). |
 | `cos config --project` | Manage project config (`.claude/settings.json`, `cognitive-os.yaml`). |
 | `cos status` | Show both global and project COS state. |
-| `cos upgrade --global` | Upgrade global COS components. |
-| `cos upgrade --project` | Upgrade project COS components. |
+| `cos upgrade --global` | Upgrade global COS agentic primitives. |
+| `cos upgrade --project` | Upgrade project COS agentic primitives. |
 
 ### Global Install Flow
 
