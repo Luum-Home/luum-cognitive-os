@@ -2,7 +2,7 @@
 
 # Cross-Harness Authoring
 
-Use this document when creating or modifying Cognitive OS components inside a
+Use this document when creating or modifying Cognitive OS agentic primitives inside a
 project.
 
 ## Principle

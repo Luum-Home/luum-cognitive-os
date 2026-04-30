@@ -15,7 +15,7 @@ Show the current state of the Cognitive OS installation: what is active, what is
 
 ## When to use
 
-- A user asks "what COS components are active in this project?"
+- A user asks "what COS agentic primitives are active in this project?"
 - After installation to verify everything landed correctly
 - When something feels broken and you need to diagnose
 - Before tagging a release (sanity check)
