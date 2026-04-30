@@ -69,6 +69,9 @@ AGENT_DESC=$(echo "$AGENT_PROMPT" | head -c 100)
 TEST_ARTIFACT_JSON=""
 TEST_ARTIFACT_STATUS="missing"
 TEST_ARTIFACT_RUN=""
+COVERAGE_ARTIFACT_JSON=""
+COVERAGE_ARTIFACT_STATUS="missing"
+COVERAGE_ARTIFACT_RUN=""
 
 _load_test_artifact_status() {
   [ -n "$TEST_ARTIFACT_JSON" ] && return 0
@@ -79,6 +82,17 @@ _load_test_artifact_status() {
   TEST_ARTIFACT_STATUS=$(echo "$TEST_ARTIFACT_JSON" | jq -r '.status // "missing"' 2>/dev/null)
   TEST_ARTIFACT_RUN=$(echo "$TEST_ARTIFACT_JSON" | jq -r '.run_dir // ""' 2>/dev/null)
   [ "$TEST_ARTIFACT_STATUS" != "missing" ]
+}
+
+_load_coverage_artifact_status() {
+  [ -n "$COVERAGE_ARTIFACT_JSON" ] && return 0
+  local helper="$PROJECT_DIR/scripts/cos_test_artifact_status.py"
+  [ -f "$helper" ] || return 1
+  COVERAGE_ARTIFACT_JSON=$(python3 "$helper" --project-root "$PROJECT_DIR" --artifact-kind coverage --coverage-threshold 80 --json 2>/dev/null || true)
+  [ -n "$COVERAGE_ARTIFACT_JSON" ] || return 1
+  COVERAGE_ARTIFACT_STATUS=$(echo "$COVERAGE_ARTIFACT_JSON" | jq -r '.status // "missing"' 2>/dev/null)
+  COVERAGE_ARTIFACT_RUN=$(echo "$COVERAGE_ARTIFACT_JSON" | jq -r '.run_dir // ""' 2>/dev/null)
+  [ "$COVERAGE_ARTIFACT_STATUS" != "missing" ]
 }
 
 if [ -z "$CRITERIA_SOURCE" ]; then
@@ -130,6 +144,23 @@ while IFS= read -r line; do
   [ -z "$line" ] && continue
   DESC=$(echo "$line" | sed 's/^[[:space:]]*[0-9]*\.[[:space:]]*//' | sed 's/^[[:space:]]*[-*][[:space:]]*//' | head -c 100)
   TOTAL=$((TOTAL + 1))
+
+  # Pattern -1: coverage evidence criteria consume persisted coverage artifacts.
+  if echo "$line" | grep -qiE 'coverage|cover.*[0-9]+%|>=?[[:space:]]*80%'; then
+    if _load_coverage_artifact_status; then
+      if [ "$COVERAGE_ARTIFACT_STATUS" = "pass" ]; then
+        PASSED=$((PASSED + 1)); PASS_LINES="${PASS_LINES}
+  PASS: $DESC (coverage artifact: $COVERAGE_ARTIFACT_RUN)"
+      else
+        FAILED=$((FAILED + 1)); FAIL_LINES="${FAIL_LINES}
+  FAIL: $DESC (coverage artifact status=$COVERAGE_ARTIFACT_STATUS, run=$COVERAGE_ARTIFACT_RUN)"
+      fi
+    else
+      SKIPPED=$((SKIPPED + 1)); TOTAL=$((TOTAL - 1)); SKIP_LINES="${SKIP_LINES}
+  SKIP: $DESC (no persisted coverage artifact found)"
+    fi
+    continue
+  fi
 
   # Pattern 0: test evidence criteria consume persisted artifacts instead of
   # launching pytest/cos-test again from a governance hook.

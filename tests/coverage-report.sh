@@ -26,8 +26,10 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 ROOT_DIR="$ROOT_DIR" python3 - <<'PYEOF'
 from __future__ import annotations
 
+import json
 import os
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT_DIR = Path(os.environ["ROOT_DIR"])
@@ -35,6 +37,13 @@ TESTS_DIR = ROOT_DIR / "tests"
 HOOK_LIB_DIR = ROOT_DIR / "hooks" / "_lib"
 SKILLS_DIR = ROOT_DIR / "skills"
 HOOKS_DIR = ROOT_DIR / "hooks"
+REPORT_ROOT = Path(os.environ.get("COS_COVERAGE_REPORT_DIR", ROOT_DIR / ".cognitive-os" / "reports" / "coverage"))
+RUN_ID = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+LINES: list[str] = []
+
+
+def emit(line: str = "") -> None:
+    LINES.append(line)
 
 
 def load_test_corpus() -> list[tuple[str, str, str]]:
@@ -69,21 +78,21 @@ def flexible_pattern(name: str) -> str:
 
 
 def dim_header(title: str) -> None:
-    print()
-    print(title)
+    emit()
+    emit(title)
 
 
 def cov_line(item: str, matches: list[str]) -> None:
     if matches:
         detail = ", ".join(matches)
-        print(f"  {item:<38} ✅ {detail}")
+        emit(f"  {item:<38} ✅ {detail}")
     else:
-        print(f"  {item:<38} ❌ no test")
+        emit(f"  {item:<38} ❌ no test")
 
 
 def dim_summary(covered: int, total: int) -> None:
     pct = int((covered * 100 / total)) if total else 0
-    print(f"  Coverage: {covered}/{total} ({pct}%)")
+    emit(f"  Coverage: {covered}/{total} ({pct}%)")
 
 
 def walk_dimension(items: list[tuple[str, str]]) -> tuple[int, int]:
@@ -158,19 +167,60 @@ def pct(covered: int, total: int) -> int:
     return int((covered * 100 / total)) if total else 0
 
 
-print()
-print("=== Summary ===")
+emit()
+emit("=== Summary ===")
 infra_cov = len([1 for _, pattern in infra_items if tests_referencing(pattern)])
 skills_cov = len([1 for _, pattern in skill_items if tests_referencing(pattern)])
 trans_cov = len([1 for _, pattern in transitions if tests_referencing(pattern)])
 hooks_cov = len([1 for _, pattern in hook_items if tests_referencing(pattern)])
-print(f"  {'Infrastructure:':<22} {pct(infra_cov, len(infra_items)):>3}% ({infra_cov}/{len(infra_items)})")
-print(f"  {'Skills:':<22} {pct(skills_cov, len(skill_items)):>3}% ({skills_cov}/{len(skill_items)})")
-print(f"  {'State Transition:':<22} {pct(trans_cov, len(transitions)):>3}% ({trans_cov}/{len(transitions)})")
-print(f"  {'Hooks:':<22} {pct(hooks_cov, len(hook_items)):>3}% ({hooks_cov}/{len(hook_items)})")
-print("  ──────────────────────────────")
-print(f"  {'Composite:':<22} {pct(total_covered, total_items):>3}% ({total_covered}/{total_items})")
-print()
+composite_pct = pct(total_covered, total_items)
+emit(f"  {'Infrastructure:':<22} {pct(infra_cov, len(infra_items)):>3}% ({infra_cov}/{len(infra_items)})")
+emit(f"  {'Skills:':<22} {pct(skills_cov, len(skill_items)):>3}% ({skills_cov}/{len(skill_items)})")
+emit(f"  {'State Transition:':<22} {pct(trans_cov, len(transitions)):>3}% ({trans_cov}/{len(transitions)})")
+emit(f"  {'Hooks:':<22} {pct(hooks_cov, len(hook_items)):>3}% ({hooks_cov}/{len(hook_items)})")
+emit("  ──────────────────────────────")
+emit(f"  {'Composite:':<22} {composite_pct:>3}% ({total_covered}/{total_items})")
+emit()
+
+report_text = "\n".join(LINES) + "\n"
+print(report_text, end="")
+
+run_dir = REPORT_ROOT / RUN_ID
+run_dir.mkdir(parents=True, exist_ok=True)
+(run_dir / "summary.txt").write_text(report_text, encoding="utf-8")
+(run_dir / "coverage.json").write_text(
+    json.dumps(
+        {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "composite_pct": composite_pct,
+            "composite_covered": total_covered,
+            "composite_total": total_items,
+            "dimensions": {
+                "infrastructure": {"pct": pct(infra_cov, len(infra_items)), "covered": infra_cov, "total": len(infra_items)},
+                "skills": {"pct": pct(skills_cov, len(skill_items)), "covered": skills_cov, "total": len(skill_items)},
+                "state_transition": {"pct": pct(trans_cov, len(transitions)), "covered": trans_cov, "total": len(transitions)},
+                "hooks": {"pct": pct(hooks_cov, len(hook_items)), "covered": hooks_cov, "total": len(hook_items)},
+            },
+        },
+        sort_keys=True,
+        indent=2,
+    )
+    + "\n",
+    encoding="utf-8",
+)
+latest = REPORT_ROOT / "latest"
+if latest.exists() or latest.is_symlink():
+    if latest.is_dir() and not latest.is_symlink():
+        # Avoid deleting an unexpected real directory; the status helper can still
+        # fall back to newest run by mtime.
+        pass
+    else:
+        latest.unlink()
+try:
+    if not latest.exists():
+        latest.symlink_to(run_dir, target_is_directory=True)
+except OSError:
+    pass
 PYEOF
 
 exit 0

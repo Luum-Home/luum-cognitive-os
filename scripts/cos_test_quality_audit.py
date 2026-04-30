@@ -45,6 +45,7 @@ ROOT = Path(__file__).parent.parent
 TESTS_DIR = ROOT / "tests"
 METRICS_DIR = ROOT / ".cognitive-os" / "metrics"
 OUTPUT_FILE = METRICS_DIR / "test-quality-audit.jsonl"
+REPORTS_DIR = ROOT / ".cognitive-os" / "reports" / "test-quality"
 
 # Calls that indicate structural-only checks (no behaviour)
 _STRUCTURAL_CALL_ATTRS = frozenset({
@@ -403,7 +404,7 @@ def scan_file(path: Path, root: Path) -> list[TestRecord]:
     try:
         source = path.read_text(encoding="utf-8", errors="replace")
         tree = ast.parse(source, filename=str(path))
-    except SyntaxError as exc:
+    except SyntaxError:
         return []
 
     rel = str(path.relative_to(root))
@@ -419,7 +420,6 @@ def scan_file(path: Path, root: Path) -> list[TestRecord]:
             # Skip-decorated stubs are placeholders, not real tests — mark as TRIVIAL
             # but with a clear label so they can be tracked separately
             if _has_skip_decorator(node):  # type: ignore[arg-type]
-                all_nodes = list(ast.walk(node))
                 is_empty_body = all(isinstance(s, (ast.Pass, ast.Expr)) for s in node.body)
                 if is_empty_body:
                     rec = TestRecord(
@@ -463,18 +463,33 @@ def write_jsonl(records: list[TestRecord], output: Path) -> None:
             fh.write(json.dumps(asdict(rec)) + "\n")
 
 
-def print_summary(records: list[TestRecord]) -> None:
+def quality_summary(records: list[TestRecord]) -> dict[str, object]:
     from collections import Counter
+
     tier_counts: Counter[str] = Counter(r.tier for r in records)
     total = len(records)
+    return {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "total": total,
+        "tiers": {tier: tier_counts.get(tier, 0) for tier in (TIER_BEHAVIORAL, TIER_STRUCTURAL, TIER_TRIVIAL, TIER_MOCK_HEAVY)},
+        "blocking_count": tier_counts.get(TIER_TRIVIAL, 0) + tier_counts.get(TIER_MOCK_HEAVY, 0),
+    }
+
+
+def render_summary(records: list[TestRecord]) -> str:
+    summary = quality_summary(records)
+    tier_counts = summary["tiers"]
+    total = int(summary["total"])
+    lines: list[str] = []
 
     tiers = [TIER_BEHAVIORAL, TIER_STRUCTURAL, TIER_TRIVIAL, TIER_MOCK_HEAVY]
-    print(f"\nTest Quality Audit — {datetime.now(timezone.utc).strftime('%Y-%m-%d')}")
-    print(f"{'='*55}")
-    print(f"{'Tier':<14} {'Count':>7}  {'%':>6}  {'Meaning'}")
-    print(f"{'-'*55}")
+    lines.append("")
+    lines.append(f"Test Quality Audit — {datetime.now(timezone.utc).strftime('%Y-%m-%d')}")
+    lines.append(f"{'='*55}")
+    lines.append(f"{'Tier':<14} {'Count':>7}  {'%':>6}  {'Meaning'}")
+    lines.append(f"{'-'*55}")
     for tier in tiers:
-        cnt = tier_counts.get(tier, 0)
+        cnt = tier_counts.get(tier, 0)  # type: ignore[union-attr]
         pct = cnt / total * 100 if total else 0
         meaning = {
             TIER_BEHAVIORAL: "A — keep (verifies side-effects)",
@@ -482,18 +497,44 @@ def print_summary(records: list[TestRecord]) -> None:
             TIER_MOCK_HEAVY: "C — rewrite (mocked business logic)",
             TIER_TRIVIAL:    "D — delete or rewrite (no real check)",
         }[tier]
-        print(f"{tier:<14} {cnt:>7}  {pct:>5.1f}%  {meaning}")
-    print(f"{'-'*55}")
-    print(f"{'TOTAL':<14} {total:>7}")
+        lines.append(f"{tier:<14} {cnt:>7}  {pct:>5.1f}%  {meaning}")
+    lines.append(f"{'-'*55}")
+    lines.append(f"{'TOTAL':<14} {total:>7}")
 
     # Top worst offenders
     bad = [r for r in records if r.tier in (TIER_TRIVIAL, TIER_MOCK_HEAVY)]
     if bad:
-        print(f"\nTop 20 Tier C/D offenders:")
-        print(f"{'File':<60} {'Line':>5}  {'Function':<40}  {'Reason'}")
-        print("-" * 120)
+        lines.append(f"\nTop 20 Tier C/D offenders:")
+        lines.append(f"{'File':<60} {'Line':>5}  {'Function':<40}  {'Reason'}")
+        lines.append("-" * 120)
         for r in sorted(bad, key=lambda r: (r.tier, r.file, r.line))[:20]:
-            print(f"{r.file:<60} {r.line:>5}  {r.function:<40}  {r.reason}")
+            lines.append(f"{r.file:<60} {r.line:>5}  {r.function:<40}  {r.reason}")
+    return "\n".join(lines) + "\n"
+
+
+def print_summary(records: list[TestRecord]) -> None:
+    print(render_summary(records), end="")
+
+
+def write_report_artifacts(records: list[TestRecord], reports_dir: Path = REPORTS_DIR) -> Path:
+    run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    run_dir = reports_dir / run_id
+    run_dir.mkdir(parents=True, exist_ok=True)
+    (run_dir / "summary.txt").write_text(render_summary(records), encoding="utf-8")
+    (run_dir / "quality.json").write_text(
+        json.dumps(quality_summary(records), sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    latest = reports_dir / "latest"
+    if latest.exists() or latest.is_symlink():
+        if latest.is_dir() and not latest.is_symlink():
+            return run_dir
+        latest.unlink()
+    try:
+        latest.symlink_to(run_dir, target_is_directory=True)
+    except OSError:
+        pass
+    return run_dir
 
 
 # ---------------------------------------------------------------------------
@@ -505,6 +546,8 @@ def main() -> int:
     parser.add_argument("--summary", action="store_true", help="Print tier counts to stdout")
     parser.add_argument("--file", metavar="PATH", help="Scan a single file instead of all tests")
     parser.add_argument("--no-write", action="store_true", help="Skip writing JSONL output")
+    parser.add_argument("--no-artifact", action="store_true", help="Skip writing persisted report artifacts")
+    parser.add_argument("--artifact-dir", metavar="PATH", help="Override persisted report artifact directory")
     args = parser.parse_args()
 
     root = ROOT
@@ -520,6 +563,11 @@ def main() -> int:
     if not args.no_write:
         write_jsonl(records, OUTPUT_FILE)
         print(f"Wrote {len(records)} records to {OUTPUT_FILE}", file=sys.stderr)
+
+    if not args.no_artifact:
+        reports_dir = Path(args.artifact_dir) if args.artifact_dir else REPORTS_DIR
+        run_dir = write_report_artifacts(records, reports_dir)
+        print(f"Wrote test quality artifacts to {run_dir}", file=sys.stderr)
 
     if args.summary:
         print_summary(records)
