@@ -1,5 +1,5 @@
-<!-- TIER: 1 -->
 <!-- SCOPE: both -->
+<!-- TIER: 1 -->
 # Model Routing — Auto-Updated by /model-optimizer
 
 ## Routing Table

@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # License Policy
 
 For commercial/closed-source projects, ALL dependencies must comply with this policy. Adjust based on your project's licensing model.

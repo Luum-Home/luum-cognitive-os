@@ -1,5 +1,5 @@
-<!-- TIER: 1 -->
 <!-- SCOPE: both -->
+<!-- TIER: 1 -->
 # Token Economy — Cost Transparency and Waste Prevention
 
 ## The 5 Token Principles (ALWAYS ACTIVE)

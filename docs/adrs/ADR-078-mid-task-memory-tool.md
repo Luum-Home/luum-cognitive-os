@@ -7,6 +7,10 @@
 
 ---
 
+## Status
+
+Accepted.
+
 ## Context
 
 Engram topic: `hermes-learning-loop-source-map` (see Engram for full source map)
@@ -69,16 +73,6 @@ when Engram is unavailable.
 - `EngramMemoryProvider` uses `engram search --json` rather than Hermes's
   built-in memory file. The query/prefetch/tool-call surface is equivalent.
 
-### What was rejected (out of scope)
-
-- **Honcho provider** — requires Honcho API credentials and cloud infrastructure.
-  Not applicable to local COS development environments.
-- **Hindsight / Mem0 providers** — third-party SaaS providers; excluded to keep
-  the dependency surface minimal.
-- **`run_agent.py` wiring** — Hermes wires `MemoryManager` at agent startup in
-  its run loop. COS uses Claude Code hooks instead; the manager is instantiated
-  on-demand by callers (skill or hook).
-
 ---
 
 ## Consequences
@@ -132,6 +126,23 @@ does not block this ADR.
 | `docs/research-log.md` | Appended section "2026-04-30: Mid-task memory tool (Tier 1 #5)" |
 
 ---
+
+## Alternatives rejected
+
+- **Honcho provider**: Rejected because it requires Honcho API credentials and
+  cloud infrastructure, which conflicts with COS's local-first memory model.
+- **Hindsight / Mem0 providers**: Rejected because third-party SaaS providers
+  expand the dependency and credential surface for a core memory path.
+- **`run_agent.py` wiring**: Rejected because Hermes wires `MemoryManager` at
+  agent startup in its run loop, while COS uses harness hooks and should keep
+  the manager invokable on demand by skills/hooks.
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit/test_memory_manager.py tests/unit/test_engram_memory_provider.py -q --tb=short
+python3 -m pytest tests/behavior/test_core_skills_check.py -q --tb=short
+```
 
 ## References
 

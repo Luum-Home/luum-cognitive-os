@@ -1,1 +1,0 @@
-../../../rules/closed-loop-prompts.md

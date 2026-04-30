@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Self-Improvement Protocol
 
 ## When to Run `/self-improve`

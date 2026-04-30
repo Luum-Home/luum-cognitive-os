@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # SO SLO Catalogue — Source of Truth (ADR-028 D5)
 
 > Adopted: 2026-04-20. Owner: ADR-028 coordinator.
@@ -74,6 +74,21 @@ incident response regardless of accumulated budget.
 | Daily (cron / on-demand) | `scripts/so-slo-report.sh` reads `hook-health.jsonl` and emits p95 roll-up (stub — not yet built; reference only) |
 | Per-hook invocation | `hooks/_lib/hook-runtime-probe.sh` wraps duration; appends to `hook-health.jsonl` |
 | Agent completion | `lib/agent_heartbeat.py` stamps `agent-heartbeat.jsonl`; watchdog checks staleness |
+
+### Acknowledged slow hooks
+
+The p95 contract excludes a small set of hooks whose current implementation is
+known to exceed the generic 1500 ms ceiling because they run heavyweight safety
+or search logic on the hot path:
+
+- `destructive-rm-blocker`
+- `clarification-gate`
+- `blast-radius`
+- `reinvention-check`
+
+This is not a permanent waiver. Each hook remains part of the SLO catalogue and
+should either be optimized, moved behind a cache, or demoted out of the default
+hot path once an equivalent safety signal exists.
 
 ---
 

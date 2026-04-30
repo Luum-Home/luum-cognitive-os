@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Workload Scheduling
 
 > **REMOVED 2026-04-20**: `lib/workload_scheduler.py` was deleted (0 production callers, 16KB dead code).

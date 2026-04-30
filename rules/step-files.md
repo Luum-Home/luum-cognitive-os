@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Step-File Architecture for Long Phases (BMAD v6 Pattern 5)
 
 ## Purpose
