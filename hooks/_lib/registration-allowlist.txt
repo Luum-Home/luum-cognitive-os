@@ -176,3 +176,8 @@ self-install.sh
 crash-recovery.sh
 completion-gate.sh
 trust-score-validator.sh
+# ADR-095 Phase 2 hooks — registered via settings-driver-claude-code.sh which
+# generates settings.json; text-scan in check-hook-registration.py cannot
+# find them in apply-efficiency-profile.sh (which delegates to the driver).
+tool-sequence-capture.sh
+skill-synthesis-scanner.sh

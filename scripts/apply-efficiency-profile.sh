@@ -12,6 +12,11 @@
 # hooks/_lib/killswitch_check.sh — sourced by hooks; exempt from hook-matcher wiring
 # ─────────────────────────────────────────────────────────────────────────────
 #
+# ── Hooks delegated to settings-driver-claude-code.sh (ADR-095 Phase 2) ──────
+# tool-sequence-capture.sh  — PostToolUse[*]; appends JSONL to tool-sequences.jsonl
+# skill-synthesis-scanner.sh  — Stop; 30-min cooldown synthesis scanner
+# ─────────────────────────────────────────────────────────────────────────────
+#
 # ADR-093 collapsed the 3-tier profile system (lean/standard/full) to two tiers:
 #   default  — committed baseline Claude projection used by the repository
 #   full     — preserve/restore the currently installed settings surface as-is
