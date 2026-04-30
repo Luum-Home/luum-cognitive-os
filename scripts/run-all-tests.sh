@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# ROLE: legacy release/integrity sweep (Python + Go + file integrity).
+# CANONICAL: cos-test broad for normal validation; use this only for release hardening or integrity audits.
 # =============================================================================
 # Cognitive OS — Full Test Suite (Python + Go + File Integrity)
 # =============================================================================

@@ -103,6 +103,33 @@ Iteration runs `focused`.
 Makefile becomes a deprecation shim that proxies to `cos-test` for one release
 cycle and prints a `[deprecated]` warning to stderr.
 
+### 6. Test primitives are separated by role
+
+The test system is not a flat collection of runner scripts. Each primitive owns
+exactly one concern:
+
+| Role | Owner | Contract |
+|---|---|---|
+| Selection | `.cognitive-os/test-lanes.yaml`, `tests/conftest.py`, `cos-test focused / cluster / broad` | Decide the test set and marker policy. |
+| Execution | `cmd/cos-test` | Run focused, cluster, and broad plans with the correct worker policy. |
+| Reporting | `scripts/pytest-with-summary.sh` | Persist `summary.txt`, `failures.txt`, inventories, JUnit, and run history. |
+| Governance | `auto-verify`, `dod-gate`, `coverage-enforcement`, `test-quality-audit` | Consume test evidence and enforce quality gates without duplicating lane selection. |
+| Lifecycle | `.cognitive-os/reports/test-runs/`, metrics JSONL, repair ledgers | Track baselines, ratchets, skips, xfails, and drift over time. |
+
+Legacy scripts that still exist for compatibility MUST declare `ROLE` and
+`CANONICAL` headers. They are not competing UX surfaces:
+
+| Script | Role | Canonical replacement / usage |
+|---|---|---|
+| `scripts/cos-smoke.sh` | Opt-in critical-path startup smoke | `cos-test broad` for default validation; use smoke only for startup wiring. |
+| `scripts/test-cognitive-os.sh` | Legacy Layer-1 shell infrastructure runner | `cos-test cluster --lane hooks` or targeted shell checks. |
+| `scripts/test-cognitive-os-full.sh` | Legacy three-layer shell pyramid runner | `cos-test broad`; optional quality checks stay explicit. |
+| `scripts/test-all.sh` | Legacy composite pytest + bash runner | `cos-test focused / cluster / broad`. |
+| `scripts/run-all-tests.sh` | Legacy release/integrity sweep | Release hardening only; not daily iteration. |
+
+The operator-facing role taxonomy lives in
+`docs/testing/test-runner-roles.md`.
+
 ## Lane registry
 
 This is the durable artifact. Copied from spec §4 (Engram observation #14953).
