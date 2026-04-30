@@ -5,7 +5,7 @@
 Cognitive OS must not commit developer-specific absolute home paths. A path like
 `<developer-home>/Projects/private-app` leaks machine identity, makes docs and
 fixtures non-portable, and teaches consumer projects to copy local workstation
-state into AI-facing components.
+state into AI-facing agentic primitives.
 
 ## Policy
 
@@ -60,12 +60,12 @@ Therefore:
 
 ## Consumer Projects
 
-Projects that install Cognitive OS inherit the same rule: AI-facing components
+Projects that install Cognitive OS inherit the same rule: AI-facing agentic primitives
 such as hooks, skills, rules, docs, MCP config snippets, and tests should not
 embed workstation-specific absolute paths.
 
 The scanner can be copied or executed from the installed OS source to validate a
-consumer project before committing AI components.
+consumer project before committing agentic primitives.
 
 ## Proof Paths
 

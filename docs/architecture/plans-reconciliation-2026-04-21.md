@@ -14,7 +14,7 @@ Settings JSONs (`hook-architecture-v2-settings*.json`) are consumed by `scripts/
 | Plan | Status | Superseded by / Related ADR | Reconciliation reason |
 |------|--------|-----------------------------|----------------------|
 | `agent-escalation-capabilities.md` | LIVE | ADR-036, ADR-038 | Preamble-level escalation shipped; capability-aware horizontal escalation (model-tier upgrade + structured handoff) still open. |
-| `component-scope-classification.md` | SUPERSEDED | ADR-031, ws6 (3f6a5c1, 5acb797), install scope-filter (1f5911c) | 506+ components tagged, filter wired. |
+| `component-scope-classification.md` | SUPERSEDED | ADR-031, ws6 (3f6a5c1, 5acb797), install scope-filter (1f5911c) | 506+ agentic primitives tagged, filter wired. |
 | `dead-weight-audit.md` | SUPERSEDED | ADR-041, ADR-031 | One-shot audit replaced by continuous classifier. |
 | `docker-to-pip-migration.md` | SUPERSEDED | ADR-042, ADR-002 | Valkey extracted; Paperclip + Langfuse-PG are on-demand-only. |
 | `docs-hook-rule-candidates.md` | STALE | — | 2026-04-11 one-shot audit; no downstream adoption. |

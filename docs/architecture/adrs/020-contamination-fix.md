@@ -7,16 +7,16 @@
 
 ## Context
 
-During the rapid development of Cognitive OS, some components accumulated project-specific references -- hardcoded project names, paths to specific client projects, business-specific terminology, and configuration values that assumed a particular deployment. This "contamination" violated the OS's core architectural principle: it should be a generic operating system layer that any project can adopt, not a tool tailored to one project. The contamination was discovered during stabilization (ADR-017) when components were being audited for wiring and scope.
+During the rapid development of Cognitive OS, some agentic primitives accumulated project-specific references -- hardcoded project names, paths to specific client projects, business-specific terminology, and configuration values that assumed a particular deployment. This "contamination" violated the OS's core architectural principle: it should be a generic operating system layer that any project can adopt, not a tool tailored to one project. The contamination was discovered during stabilization (ADR-017) when agentic primitives were being audited for wiring and scope.
 
 ## Decision
 
-Systematically remove all project-specific contamination from OS components:
+Systematically remove all project-specific contamination from OS agentic primitives:
 
 - Replace hardcoded project names with config references (`cognitive-os.yaml` lookups).
 - Remove references to specific client projects, deployment environments, or business domains.
 - Parameterize skills and hooks that assumed specific project context.
-- Ensure all OS components work generically across any project that installs the OS.
+- Ensure all OS agentic primitives work generically across any project that installs the OS.
 
 The three-model architecture for project consumption was documented:
 - **Model A (Minimal)**: Works with any AI tool. Just rules and docs.
@@ -31,8 +31,8 @@ The three-model architecture for project consumption was documented:
 
 ## Consequences
 
-- All OS components became truly generic and reusable across projects.
+- All OS agentic primitives became truly generic and reusable across projects.
 - The `cognitive-os.yaml` config file became the single customization surface, replacing scattered hardcoded values.
 - The three consumption models provided clear documentation for how projects should integrate with the OS at different sophistication levels.
 - 5 skills were parameterized (ADR-019 scope tagging commit) to read from config instead of assuming project context.
-- Future contamination is prevented by the scope tagging system (ADR-019) and the component registration hook, which validates that os-only components do not reference project-specific paths.
+- Future contamination is prevented by the scope tagging system (ADR-019) and the component registration hook, which validates that os-only agentic primitives do not reference project-specific paths.

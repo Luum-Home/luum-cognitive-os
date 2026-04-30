@@ -56,7 +56,7 @@ The real dispatcher usage:
 - cos-dispatch README: Phase 1+2 marked DONE, ADR-021 linked
 - getting-started.md: added goenv/.go-version, setup.sh, doctor.sh
 - stabilization-roadmap.md: updated status to reflect completed work
-- Stale references to deleted components: no active docs contamination found (references in ADRs and competitive-landscape are historical, kept intentionally)
+- Stale references to deleted agentic primitives: no active docs contamination found (references in ADRs and competitive-landscape are historical, kept intentionally)
 
 ### Deferred items from earlier
 
@@ -106,7 +106,7 @@ The real dispatcher usage:
 | Test pass rate | 99.9% | 100% |
 | Mutation score | 34% | 60%+ |
 | Hook overhead/session | ~20s | <10s |
-| Aspirational components | ~150 | <20 |
+| Aspirational agentic primitives | ~150 | <20 |
 | ADR coverage of decisions | 20/30 major | 100% |
 | Guardrails (CI + hooks + rules) | 5/7 | 7/7 |
 | Cross-device capability | Manual | Automated |
