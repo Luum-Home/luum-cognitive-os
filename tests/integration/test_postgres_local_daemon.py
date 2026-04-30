@@ -33,14 +33,24 @@ BASH_BIN = shutil.which("bash") or "/bin/bash"
 
 
 def _pgctl_available() -> bool:
-    """Return True if pg_ctl is discoverable in PATH or common Homebrew paths."""
-    if shutil.which("pg_ctl") is not None:
-        return True
+    """Return True if a FULL PostgreSQL server (pg_ctl + postgres + initdb) is available.
+
+    Note: libpq Homebrew formula ships pg_ctl + initdb but NOT the postgres server,
+    so we require the `postgres` binary alongside `pg_ctl`.
+    """
+    # Prefer Homebrew postgresql@N (server-complete)
     for ver in (17, 16, 15, 14):
         for prefix in ("/opt/homebrew/opt", "/usr/local/opt"):
-            candidate = Path(f"{prefix}/postgresql@{ver}/bin/pg_ctl")
-            if candidate.exists():
+            pgctl = Path(f"{prefix}/postgresql@{ver}/bin/pg_ctl")
+            postgres = Path(f"{prefix}/postgresql@{ver}/bin/postgres")
+            if pgctl.exists() and postgres.exists():
                 return True
+    # PATH fallback — only if `postgres` is sibling to `pg_ctl`
+    pgctl_path = shutil.which("pg_ctl")
+    if pgctl_path:
+        sibling = Path(pgctl_path).parent / "postgres"
+        if sibling.exists():
+            return True
     return False
 
 
