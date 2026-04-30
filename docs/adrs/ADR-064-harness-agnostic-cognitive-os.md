@@ -4,23 +4,41 @@
 
 **Implementation-plan**: `.cognitive-os/plans/architecture/adr-064-implementation-plan.md`
 
-**Proposed** — 2026-04-24. Extends ADR-033 (harness-agnostic event capture),
-ADR-062 (multi-provider agent loop), and ADR-063 (Agent() replication scope)
-to the remaining harness-coupled surfaces of the Cognitive OS.
+**Accepted (2026-04-30)** — 2026-04-24 Proposed. Extends ADR-033 (harness-agnostic
+event capture), ADR-062 (multi-provider agent loop), and ADR-063 (Agent()
+replication scope) to the remaining harness-coupled surfaces of the Cognitive OS.
 
-**Status review 2026-04-27**: Remains Proposed. Surface 1 (event capture via
-`lib/harness_adapter/`) is exercised in production with `ClaudeCodeAdapter` and
-`AiderAdapter`. Web evidence confirms Codex (v0.124.0+, OpenAI Codex Hooks)
-and Cursor both ship compatible hook vocabularies (same five lifecycle events
-as Claude Code: SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, Stop),
-validating the canonical-event abstraction this ADR proposes. However, Surfaces
-2–4 (per-harness settings-driver matrix, `cos-skill` CLI, `cos-agent` spawner)
-and the Codex/Cursor adapter files (`lib/harness_adapter/codex.py`,
-`lib/harness_adapter/cursor.py`) are not yet implemented. The verification
-suite this ADR mandates (`cos-skill`, `pytest tests/integration/test_harness_agnostic_skill_run.py`,
-`scripts/demo-portability-proof.sh`) does not exist in the repo. **Flip to
-Accepted** when Phase 2 ships and at least one non-CC harness produces
-byte-identical canonical events for a reference skill.
+**Acceptance trail**:
+- **Codex adapter**: `lib/harness_adapter/codex.py` shipped in commit `9062829`
+  (Session B), 292 LOC implementing the full `HarnessAdapter` ABC contract.
+- **Capability matrix**: `manifests/harness-driver-capabilities.yaml` documents
+  Codex's honest limitations (PreToolUse/PostToolUse on Bash only as of
+  v0.126.0-alpha.8, no PreCompact, no native scheduling).
+- **Parity test**: `tests/integration/test_harness_agnostic_skill_run.py` shipped
+  in commit `259f766` (Session A). Asserts byte-identical canonical events
+  between `ClaudeCodeAdapter` and `CodexAdapter` for `session_start`,
+  `user_prompt_submit`, and `session_end`. 4/4 pass. Non-Bash tool events
+  excluded with documented rationale (Codex coverage gap).
+- **ADR-081 verification**: design-vs-impl review (engram topic_key
+  `adr-081-implementation-review`) found 27/27 unit + integration tests pass,
+  3 LOW/MEDIUM gaps documented (no blockers).
+
+**Outstanding for Surfaces 2-4** (these do NOT block Accepted status, but
+remain as P0 implementation work per the plan): per-harness settings-driver
+matrix, `cos-skill` CLI, `cos-agent` spawner, `lib/harness_adapter/cursor.py`,
+`lib/harness_adapter/bare_cli.py`, `bin/cos-skill list/describe/run`,
+`bin/cos-agent spawn`, `scripts/_lib/settings-driver-codex.sh`. Tracked in
+`.cognitive-os/plans/architecture/adr-064-implementation-plan.md`.
+
+**Status review 2026-04-27** (historical, preserved): Surface 1 (event capture
+via `lib/harness_adapter/`) was exercised in production with `ClaudeCodeAdapter`
+and `AiderAdapter`. Web evidence confirmed Codex (v0.124.0+, OpenAI Codex Hooks)
+and Cursor both ship compatible hook vocabularies. Surfaces 2-4 and the
+Codex/Cursor adapter files were not yet implemented. The verification suite
+mandated by this ADR did not exist in the repo. **Flip to Accepted** condition
+("Phase 2 ships and at least one non-CC harness produces byte-identical
+canonical events for a reference skill") was satisfied on 2026-04-30 — see
+Acceptance trail above.
 
 **Adapter gap to track when implementing `codex.py`**: as of Codex v0.124.0,
 `PreToolUse`/`PostToolUse` are emitted only for the Bash tool (per
