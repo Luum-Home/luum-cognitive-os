@@ -11,7 +11,7 @@ The Cognitive OS core is fully operational as a development framework:
 
 | Category | Count | Status |
 |---|---|---|
-| Infrastructure components | 13 | All operational |
+| Infrastructure services | 13 | All operational |
 | Skills (project + global) | 42+ | Production-ready |
 | Hooks | 21 | Production-ready |
 | Rules | 19 | Production-ready |
@@ -166,7 +166,7 @@ The Cognitive OS core is fully operational as a development framework:
 | Risk | Severity | Mitigation |
 |---|---|---|
 | AI assistant market consolidation | High | Portability (7+ IDE support) reduces single-vendor dependency |
-| Competitor launches similar product | Medium | Integration depth (13 components) and real case study are hard to replicate quickly |
+| Competitor launches similar product | Medium | Integration depth (13 integrated primitives) and real case study are hard to replicate quickly |
 | Open-source sustainability | Medium | SaaS revenue model proven by GitLab, Supabase, PostHog |
 | Community adoption slower than projected | Low | The product works standalone (no community needed for individual value) |
 | Changes in the MCP protocol | Low | MCP is an open standard with broad industry backing |

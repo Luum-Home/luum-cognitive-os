@@ -12,7 +12,7 @@ assumptions when contributors create new skills, rules, hooks, workflows, and
 harness-facing instructions.
 
 Without an explicit model, behavior and projection get mixed together. That
-produces components that look portable in theory while still depending on one
+produces agentic primitives that look portable in theory while still depending on one
 harness layout, one instruction file, or one event shape in practice.
 
 ## Decision
@@ -33,7 +33,7 @@ This applies to:
 
 ### 1. Separate behavior from projection
 
-Every significant component must be split conceptually into:
+Every significant agentic primitive must be split conceptually into:
 
 - behavioral core: the stable procedure, policy, or invariant
 - driver projection: the harness-specific registration, trigger syntax, file
@@ -58,7 +58,7 @@ Harness-facing files such as `.claude/settings.json`, `.claude/CLAUDE.md`, or
 
 ### 3. Use explicit portability states
 
-Every major feature or component should be understood as one of:
+Every major feature or agentic primitive should be understood as one of:
 
 - `core-agnostic`
 - `driver-projected`

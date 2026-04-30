@@ -1,12 +1,12 @@
-# Component Classification Protocol
+# Agentic Primitive Classification Protocol
 
 ## Purpose
-Every new component added to Cognitive OS must be classified as CORE or PACKAGE before being committed. This prevents the OS kernel from growing unbounded with optional functionality.
+Every new agentic primitive added to Cognitive OS must be classified as CORE or PACKAGE before being committed. This prevents the OS kernel from growing unbounded with optional functionality.
 
 ## Rule (Always Active for OS Development)
 
 When a PR or agent task adds a new skill, hook, rule, or lib:
-1. Run `/component-classifier` on the new component
+1. Run `/component-classifier` on the new agentic primitive
 2. If CORE: place in the appropriate root directory (skills/, hooks/, rules/, lib/)
 3. If PACKAGE: create or update a cos package in packages/{name}/
 4. Document the classification in docs/component-audit.md
@@ -18,17 +18,17 @@ When a PR or agent task adds a new skill, hook, rule, or lib:
 | OS boots without it? | No | Yes |
 | External tool dependency? | No | Yes |
 | Domain-specific? | No | Yes |
-| Used by >50% of components? | Yes | No |
+| Used by >50% of agentic primitives? | Yes | No |
 | Can be installed/removed? | No | Yes |
 
 ## Versioning Rules
 
-### CORE Components
+### CORE Agentic Primitives
 - Versioned with the OS itself (v0.1.0, v0.2.0, etc.)
 - Breaking changes require major version bump
 - No independent versioning
 
-### PACKAGE Components
+### PACKAGE Agentic Primitives
 - Each package has its own semver version in cos-package.yaml
 - Follows semver 2.0: MAJOR.MINOR.PATCH
 - MAJOR: breaking changes (incompatible API)

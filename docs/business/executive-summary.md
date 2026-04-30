@@ -63,7 +63,7 @@ a large production monolith was decomposed into 14+ microservices in ~24 hours u
 
 ## What Makes It Different
 
-1. **Depth of integration** — 13 components that work as a system, not as standalone tools. Memory feeds error learning, which feeds skill adaptation, which feeds KPIs.
+1. **Depth of integration** — 13 integrated primitives that work as a system, not as standalone tools. Memory feeds error learning, which feeds skill adaptation, which feeds KPIs.
 
 2. **Proven on real software** — Not a demo project. Built and validated on a fintech platform with many endpoints, 3 programming languages, and several integrations with external providers.
 

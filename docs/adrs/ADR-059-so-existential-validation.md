@@ -7,7 +7,7 @@ tracked in `.cognitive-os/plans/features/so-existential-validation-2026-04-24.md
 
 ## Context
 
-The SO has grown to 578 classified components (hooks, lib, scripts, skills).
+The SO has grown to 578 classified agentic primitives (hooks, lib, scripts, skills).
 Aspirational-audit 2026-04-24 baseline:
 
 - **REAL 27.8%** — observable runtime use
@@ -132,7 +132,7 @@ is small and digestible.
   - Every file in `hooks/core/` is registered in default profile.
   - Every file in `skills/core/` has a test that asserts behavior.
   - No file in `hooks/extensions/` or `skills/extensions/` is referenced by
-    default profile or by any `core/` component.
+    default profile or by any `core/` agentic primitive.
 
 ## Consequences
 
@@ -147,7 +147,7 @@ is small and digestible.
 ### Negative
 - Migration work: 114 skills + 88 hooks to classify and potentially move.
   ~20-30 hours of human+agent effort distributed over 3 weeks.
-- Risk of archiving legitimate rarely-used components (mitigated by 180-day
+- Risk of archiving legitimate rarely-used agentic primitives (mitigated by 180-day
   window + test-coverage filter).
 - Extensions on-demand install adds UX complexity. Users must know which
   skill they need.
@@ -161,7 +161,7 @@ is small and digestible.
 | Alternative | Why rejected |
 |---|---|
 | Keep status quo + add a "featured skills" doc | Doesn't reduce install size, doesn't change the measurable ratio. Cosmetic only. |
-| Rewrite SO from scratch as minimal kernel | Destroys 160 REAL components that work today. Throwing the baby out. |
+| Rewrite SO from scratch as minimal kernel | Destroys 160 REAL agentic primitives that work today. Throwing the baby out. |
 | Only do Phase 1 (prune) | Misses the install-timing reality check. Can't answer "vale vs vanilla" without Phase 2+3. |
 | Only do Phase 3 (split) | Doesn't address ASPIRATIONAL items. They need prune (Phase 1) even after split. |
 

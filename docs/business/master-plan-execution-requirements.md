@@ -142,7 +142,7 @@ The repository should be classified into four explicit zones:
 
 That taxonomy only matters if it changes decisions.
 
-The repo should archive, freeze, or de-emphasize components that compete for
+The repo should archive, freeze, or de-emphasize agentic primitives that compete for
 attention with the main wedge without strengthening it directly.
 
 ### Enforcement standard

@@ -5,22 +5,22 @@ Reconciled: 2026-04-21
 Reason: the workstreams (WS1–WS13) substantially shipped; ADR-028 replaced the MAPE-K framing with a reliability/SLO framework. Individual workstreams remaining are tracked under their own plans (skill-atomicity-audit) or ADRs (ADR-041).
 -->
 
-# Master Plan: Self-Optimizing Component Pipeline
+# Master Plan: Self-Optimizing Agentic Primitive Pipeline
 
 **Date**: 2026-04-10
 **Status**: APPROVED
 **Scope**: Cognitive OS recursive self-optimization infrastructure
 **Estimated total effort**: ~15-20 sessions across 10 workstreams
-**Prerequisite**: All audits completed (rules-to-hooks, skill atomicity, docs-to-skills, hook architecture, context compaction, component scope)
+**Prerequisite**: All audits completed (rules-to-hooks, skill atomicity, docs-to-skills, hook architecture, context compaction, agentic primitive scope)
 
 ---
 
 ## Vision
 
-A Cognitive OS that recursively optimizes its own components using its own optimization tools. The MAPE-K loop (Monitor, Analyze, Plan, Execute, Knowledge) drives continuous improvement without human intervention for safe changes.
+A Cognitive OS that recursively optimizes its own agentic primitives using its own optimization tools. The MAPE-K loop (Monitor, Analyze, Plan, Execute, Knowledge) drives continuous improvement without human intervention for safe changes.
 
 ```
-MONITOR: hooks observe component performance (tokens, latency, failures)
+MONITOR: hooks observe agentic primitive performance (tokens, latency, failures)
     |
 ANALYZE: skills detect degradation patterns (fat skills, stale docs, drift)
     |
@@ -38,7 +38,7 @@ KNOWLEDGE: Engram records what worked, consequence system scores results
 1. **"como=skill, por que=doc, no hagas X=hook"** -- Procedures are skills (active, on-demand). Knowledge is docs (passive, reference). Prohibitions are hooks (automatic, zero-token enforcement).
 2. **Proactive > Reactive** -- Rules in agent context enable anticipation. Hooks enforce after the fact. Both together = defense in depth. Never remove one layer without confirming the other covers it (ref: engram #2977).
 3. **Atomicity** -- One skill = one concern = one output artifact. Fat skills get split. Sub-commands become separate skills composed by the orchestrator.
-4. **Recursive self-improvement** -- The OS uses /optimize-skill to improve skills, /self-improve to improve rules, and the consequence system to promote/degrade/disable components automatically.
+4. **Recursive self-improvement** -- The OS uses /optimize-skill to improve skills, /self-improve to improve rules, and the consequence system to promote/degrade/disable agentic primitives automatically.
 5. **Defense in depth** -- Security profiles (minimal/standard/paranoid) control hook registration. Capability levels auto-disable redundant gates. Neither replaces the other.
 6. **Decision broadcast** -- Architectural decisions saved to Engram propagate to all future sessions and sub-agents. No decision lives only in conversation context.
 
@@ -190,13 +190,13 @@ Phase 4 (template dedup, 11 integrations):
 
 ---
 
-### WS6: Component Scope Tags
+### WS6: Agentic Primitive Scope Tags
 
 **Ref**: `.cognitive-os/plans/features/component-scope-classification.md`, engram #3086
 
-**What**: Add `scope: os-only|project|both` to every component's frontmatter/header. Modify `self-install.sh` and `cos install` to filter by scope.
+**What**: Add `scope: os-only|project|both` to every agentic primitive's frontmatter/header. Modify `self-install.sh` and `cos install` to filter by scope.
 
-**Current state**: Classification audit complete (all ~400 components classified in plan doc). Implementation deferred to refactor phase.
+**Current state**: Classification audit complete (all ~400 agentic primitives classified in plan doc). Implementation deferred to refactor phase.
 
 **Remaining work**:
 - Add `scope:` frontmatter to all 103 SKILL.md files
@@ -209,7 +209,7 @@ Phase 4 (template dedup, 11 integrations):
 **Files affected**: ~260 files (frontmatter additions), `hooks/self-install.sh`, `cmd/cos/`
 **Effort**: ~2 sessions (bulk frontmatter addition is mechanical)
 **Dependencies**: WS1 (EXCLUDED_RULES mechanism informs scope filtering)
-**Success metric**: Every component has a scope tag; target projects receive only `project` + `both` components
+**Success metric**: Every agentic primitive has a scope tag; target projects receive only `project` + `both` agentic primitives
 
 ---
 
@@ -241,7 +241,7 @@ Phase 4 (template dedup, 11 integrations):
 
 ### WS8: Auto-Classification Detector
 
-**What**: A PostToolUse hook that detects when a new component (skill, hook, rule, lib module) is created WITHOUT a scope tag or CORE/PACKAGE classification. Nudges the agent to classify before committing.
+**What**: A PostToolUse hook that detects when a new agentic primitive (skill, hook, rule, lib module) is created WITHOUT a scope tag or CORE/PACKAGE classification. Nudges the agent to classify before committing.
 
 **Current state**: Concept only. `/register-component` exists for manual consistency checking. No automated detection on file creation.
 
@@ -258,7 +258,7 @@ Phase 4 (template dedup, 11 integrations):
 
 **Effort**: ~0.5 sessions
 **Dependencies**: WS6 (scope tags must exist to validate against)
-**Success metric**: Zero new components committed without scope tags
+**Success metric**: Zero new agentic primitives committed without scope tags
 
 ---
 
@@ -396,11 +396,11 @@ Phase 4 (template dedup, 11 integrations):
 4. **Agent status** — which agents are running, what they're doing, expected completion
 5. **Plan progress** — which workstreams advanced this session
 
-**Phase 0 (REQUIRED before implementation): Component Audit for Heartbeat**
+**Phase 0 (REQUIRED before implementation): Agentic Primitive Audit for Heartbeat**
 
-Before building the heartbeat, audit ALL existing components to determine which need heartbeat integration. For each component, ask: "If the session dies right now, would this component's state be lost?"
+Before building the heartbeat, audit ALL existing agentic primitives to determine which need heartbeat integration. For each agentic primitive, ask: "If the session dies right now, would this agentic primitive's state be lost?"
 
-| Component | State to persist? | Currently persisted? | Needs heartbeat? |
+| Primitive | State to persist? | Currently persisted? | Needs heartbeat? |
 |---|---|---|---|
 | `TodoWrite` state | Current task list | NO (context only) | **YES** |
 | Active sub-agents | Agent IDs, descriptions, prompts | NO (context only) | **YES** |
@@ -417,7 +417,7 @@ Before building the heartbeat, audit ALL existing components to determine which 
 | Queue advisor state | Last scoring, reorder decisions | NO (ephemeral) | Low priority |
 | Hook tuning state | False positive rates | NO (not built yet, see WS7c) | Future |
 
-This audit must be RE-RUN when new components are added. The heartbeat's `register()` mechanism makes this extensible — each new component registers its own collector.
+This audit must be RE-RUN when new agentic primitives are added. The heartbeat's `register()` mechanism makes this extensible — each new agentic primitive registers its own collector.
 
 **Implementation**:
 - `lib/state_heartbeat.py` — pluggable collector architecture, writes snapshot
@@ -431,7 +431,7 @@ This audit must be RE-RUN when new components are added. The heartbeat's `regist
 - Write snapshot to BOTH local file AND engram (belt + suspenders)
 - Engram save is async (non-blocking) — `mem_save` in background
 
-**Integration with existing components**:
+**Integration with existing agentic primitives**:
 - Extends `auto-checkpoint.sh` (code) with state checkpoint (context)
 - Extends `pre-compaction-flush.sh` (last resort) with continuous protection
 - Extends `crash-recovery.sh` (detection) with rich state to recover from
@@ -556,7 +556,7 @@ WS13 (continuous state persistence) -- complements WS2 + WS11
 | SPLIT-CANDIDATE skills | 25 | 0 | Count from skill atomicity audit |
 | SKILL-CANDIDATE docs | 10 | 0 | Count from docs-to-skills audit |
 | Test errors baseline | 292 | < 50 | pytest error count |
-| Components without scope tag | ~400 | 0 | /register-component audit |
+| Agentic primitives without scope tag | ~400 | 0 | /register-component audit |
 | Hook profile generator parity | 4/7 events | 7/7 events | set-security-profile.sh event count |
 | Security tools active | 1 (content-policy) | 5+ | ecosystem-tools status check |
 
