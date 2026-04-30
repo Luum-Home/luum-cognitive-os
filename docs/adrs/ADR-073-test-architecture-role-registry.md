@@ -83,7 +83,7 @@ Resource governance is intentionally not solved in this ADR. It is tracked as a
 separate sprint in `docs/architecture/plans/test-resource-governance-sprint.md`
 with these deliverables:
 
-- time/CPU/Docker budgets for `cos-test broad` and optional lanes;
+- time/CPU/Docker budgets for `cos-test broad` and optional lanes, starting with `.cognitive-os/test-resource-policy.yaml`;
 - explicit cost gates for LLM-evaluated quality tests;
 - a Docker/testcontainers concurrency policy;
 - report fields that distinguish functional failure from resource exhaustion;

@@ -9,6 +9,17 @@ import (
 	"luum-agent-os/cmd/cos-test/internal/config"
 )
 
+func writeResourcePolicy(t *testing.T, root, body string) {
+	t.Helper()
+	dir := filepath.Join(root, ".cognitive-os")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "test-resource-policy.yaml"), []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func writeRegistry(t *testing.T, root, body string) {
 	t.Helper()
 	dir := filepath.Join(root, ".cognitive-os")
@@ -142,6 +153,60 @@ func TestBuildClusterPlan_ForceSerialAll(t *testing.T) {
 		if inv.Workers != "0" {
 			t.Errorf("%s workers = %q, want 0", inv.Label, inv.Workers)
 		}
+	}
+}
+
+func TestBuildClusterPlan_ResourcePolicyOverridesParallelWorkers(t *testing.T) {
+	cfg := config.DefaultConfig()
+	cfg.ProjectRoot = t.TempDir()
+	writeRegistry(t, cfg.ProjectRoot, clusterYAML)
+	writeResourcePolicy(t, cfg.ProjectRoot, `version: 1
+defaults:
+  workers: auto
+  timeout_seconds: 300
+  docker_policy: forbidden
+  cost_policy: free_only
+  artifact_policy: keep_summary
+lanes:
+  unit:
+    workers: 2
+    timeout_seconds: 120
+`)
+
+	plan, err := buildClusterPlan(cfg, "unit")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plan.Invokes[0].Workers != "2" {
+		t.Fatalf("workers = %q, want policy override 2", plan.Invokes[0].Workers)
+	}
+	if plan.Resources.TimeoutSeconds != 120 || plan.Resources.DockerPolicy != "forbidden" {
+		t.Fatalf("resources = %+v", plan.Resources)
+	}
+}
+
+func TestBuildClusterPlan_RejectsUnknownResourcePolicyLane(t *testing.T) {
+	cfg := config.DefaultConfig()
+	cfg.ProjectRoot = t.TempDir()
+	writeRegistry(t, cfg.ProjectRoot, clusterYAML)
+	writeResourcePolicy(t, cfg.ProjectRoot, `version: 1
+defaults:
+  workers: auto
+  timeout_seconds: 300
+  docker_policy: forbidden
+  cost_policy: free_only
+  artifact_policy: keep_summary
+lanes:
+  ghost:
+    timeout_seconds: 120
+`)
+
+	_, err := buildClusterPlan(cfg, "unit")
+	if err == nil {
+		t.Fatal("expected unknown resource policy lane to fail")
+	}
+	if !strings.Contains(err.Error(), "unknown lane") {
+		t.Fatalf("unexpected error: %v", err)
 	}
 }
 
