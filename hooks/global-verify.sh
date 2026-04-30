@@ -32,7 +32,9 @@ PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 cd "$PROJECT_DIR" || exit 0
 
 AGENT_ID="${AGENT_ID:-unknown-$$}"
-BASELINE_DIR="$PROJECT_DIR/.cognitive-os/runtime/verify-baseline"
+# VERIFY_BASELINE_DIR can be overridden (e.g. in tests) to write baseline files
+# into an isolated directory rather than the live project tree.
+BASELINE_DIR="${VERIFY_BASELINE_DIR:-$PROJECT_DIR/.cognitive-os/runtime/verify-baseline}"
 BASELINE_FILE="$BASELINE_DIR/$AGENT_ID.json"
 mkdir -p "$BASELINE_DIR" 2>/dev/null || true
 
@@ -49,14 +51,18 @@ if ! python3 -m pytest --version >/dev/null 2>&1; then
   exit 0
 fi
 
-python3 - "$MODE" "$PROJECT_DIR" "$AGENT_ID" "$BASELINE_FILE" <<'PYEOF'
+python3 - "$MODE" "$PROJECT_DIR" "$AGENT_ID" "$BASELINE_FILE" "${VERIFY_RESOLVER_DIR:-}" <<'PYEOF'
 import sys, json, os, subprocess, hashlib
 from pathlib import Path
 
-mode, project_dir, agent_id, baseline_file = sys.argv[1:5]
+mode, project_dir, agent_id, baseline_file, verify_resolver_dir = sys.argv[1:6]
 project_dir = Path(project_dir)
 
-sys.path.insert(0, str(project_dir))
+# VERIFY_RESOLVER_DIR (5th arg) lets tests inject a per-worker resolver without
+# mutating the shared lib/targeted_test_resolver.py on disk.
+if verify_resolver_dir:
+    sys.path.insert(0, verify_resolver_dir)
+sys.path.insert(0 if not verify_resolver_dir else 1, str(project_dir))
 
 # Try to import the targeted test resolver (if it exists)
 try:

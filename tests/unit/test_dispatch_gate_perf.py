@@ -16,7 +16,16 @@ import pytest
 
 from tests.unit._helpers import assert_within_absolute
 
-pytestmark = pytest.mark.unit
+pytestmark = [
+    pytest.mark.unit,
+    # Perf-budget tests measure latency — incompatible with -n auto CPU contention.
+    # cos-test cluster --lane unit excludes 'benchmark' by default; opt-in via
+    # cos-test cluster --lane unit -m "unit and benchmark" or COS_RUN_BENCHMARK=1.
+    pytest.mark.benchmark,
+    # Pin to same worker as test_cos_yaml_readers to coordinate dispatch_gate_check.py
+    # subprocess startup cost.
+    pytest.mark.xdist_group("dispatch_gate_check_subprocess"),
+]
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 HOOK_PATH = _PROJECT_ROOT / "hooks" / "dispatch-gate.sh"
