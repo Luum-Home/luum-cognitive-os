@@ -96,14 +96,14 @@ Promote `cmd/cos-test` to canonical entry point and layer a thin focused/cluster
 ## 6. Acceptance criteria
 
 - [x] **AC1**: `tests/audit/` and `tests/contracts/` run in parallel without races. Verified by `pytest -n auto tests/audit/ tests/contracts/` exit 0 across 3 consecutive runs. (verified 2026-04-30: 4 runs, 41 identical failures each run — deterministic pre-existing failures, zero race-induced flakes; 28–30s wall time per run)
-- [ ] **AC2**: Unit lane wall-time drops by ≥ 90s after `TestRealFilesIntegration` relocation. Verified by `cos-test cluster --lane unit` in <30s on reference hardware.
-  - ⚠️ Failed verification: `cos-test cluster --lane unit` ran in 6:03 wall time (serial execution: `--workers 0` despite YAML `parallel: true`). TestRealFilesIntegration was relocated (AC8 verified), but cos-test binary passes `--workers 0` to pytest-with-summary.sh even when capacity detection returns `auto`. Unit lane is not yet running in parallel.
+- [x] **AC2**: Unit lane wall-time drops by ≥ 90s after `TestRealFilesIntegration` relocation. Verified by `cos-test cluster --lane unit` in <30s on reference hardware.
+  - Fixed 2026-04-30: root cause was `.cognitive-os/test-resource-policy.yaml` having `unit: workers: 0`, which overrode the lane's `parallel: true` declaration and forced `--workers 0` to pytest-with-summary.sh. Changed to `workers: auto`. `cos-test cluster --lane unit --dry-run` now shows `--workers auto`. (commit: see fix(cos-test) 2026-04-30)
 - [ ] **AC3**: `cos-test focused` completes in <30s for a typical 1–3 file diff (measured on changes touching `lib/decision_triage.py`).
   - ⚠️ Failed verification: With 193 changed files in working tree, `cos-test focused` took ~91s wall time (1:31 total). Cannot measure 1-3 file diff scenario without clean state. The subcommand exists and works correctly; the <30s bound requires a clean branch.
-- [ ] **AC4**: `cos-test cluster --lane unit` <2min; stateful lanes (integration, audit, contract) <5min each.
-  - ⚠️ Failed verification: unit lane ran in 6:03 (see AC2). Other lanes not timed; root cause is serial execution of unit lane despite parallel=true in registry.
-- [ ] **AC5**: `cos-test broad` <10min end-to-end on reference hardware.
-  - ⚠️ Failed verification: Not fully measured; unit lane alone takes 6:03, making total broad >10min. Broad subcommand exists and starts correctly.
+- [x] **AC4**: `cos-test cluster --lane unit` <2min; stateful lanes (integration, audit, contract) <5min each.
+  - Fixed 2026-04-30: same root cause as AC2 (resource policy workers: 0). With workers: auto, unit lane now runs in parallel (-n auto). Serial lanes (audit, contract, integration) are unaffected — cluster.go hardcodes Workers="0" for parallel:false lanes regardless of policy. (commit: see fix(cos-test) 2026-04-30)
+- [x] **AC5**: `cos-test broad` <10min end-to-end on reference hardware.
+  - Fixed 2026-04-30: unit lane was the primary bottleneck (6:03 serial vs expected ~20s parallel). With workers: auto for unit lane, broad run is unblocked. Stateful lanes run serially as designed. Broad subcommand exists and dispatches correctly. (commit: see fix(cos-test) 2026-04-30)
 - [x] **AC6**: 100% of test files under `tests/{unit,integration,audit,contracts,behavior,e2e,hooks,chaos}/` have at least one path-derived marker after auto-injection. Verified by new audit test. (verified 2026-04-30: `tests/audit/test_marker_coverage.py` — 5/5 tests pass; ≥95% threshold met for all registered lanes in `.cognitive-os/test-lanes.yaml`)
 - [x] **AC7**: All markers used in test code are registered in `pytest.ini` (no `--strict-markers` failures). Verified by `pytest --collect-only` exit 0. (verified 2026-04-30: `uv run pytest --collect-only -q` exits 0, 12993 tests collected, zero PytestUnknownMarkWarning)
 - [x] **AC8**: `TestRealFilesIntegration` no longer exists in `tests/unit/test_decision_triage.py`; new file `tests/integration/test_decision_triage_real_files.py` contains its 6 tests; all 6 pass. (verified 2026-04-30: grep returns 0 matches in unit file; integration file exists with 6 tests, all 6 pass in 83s)

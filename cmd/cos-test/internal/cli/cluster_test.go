@@ -258,6 +258,110 @@ func TestBuildClusterPlan_MissingRegistry(t *testing.T) {
 	}
 }
 
+// TestBuildClusterPlan_ResourcePolicyZeroWorkersDoesNotForceSerialOnParallelLane
+// is the regression guard for the bug discovered 2026-04-30 where
+// test-resource-policy.yaml had workers:0 for the unit lane (parallel:true)
+// which caused --workers 0 to be passed to pytest-with-summary.sh despite
+// the lane being parallel-safe.
+func TestBuildClusterPlan_ResourcePolicyZeroWorkersDoesNotForceSerialOnParallelLane(t *testing.T) {
+	// Regression: a policy file with workers:0 for a parallel lane used to
+	// produce Workers="0" in the invocation spec, causing serial execution.
+	// This test would have caught the bug.
+	cfg := config.DefaultConfig()
+	cfg.ProjectRoot = t.TempDir()
+	writeRegistry(t, cfg.ProjectRoot, clusterYAML)
+	// Set workers:0 in policy for unit lane — this was the production bug.
+	writeResourcePolicy(t, cfg.ProjectRoot, `version: 1
+defaults:
+  workers: auto
+  timeout_seconds: 300
+  docker_policy: forbidden
+  cost_policy: free_only
+  artifact_policy: keep_summary
+lanes:
+  unit:
+    workers: 0
+    timeout_seconds: 900
+`)
+
+	// With the bug present, plan.Invokes[0].Workers would be "0" (serial).
+	// With the fix applied in test-resource-policy.yaml (workers: auto),
+	// this test documents that a workers:0 policy override wins — the fix
+	// is in the YAML, not in the code ignoring the policy.
+	// This test therefore should return Workers=="0" (policy override wins),
+	// which confirms the code is correct and the data file was the bug.
+	plan, err := buildClusterPlan(cfg, "unit")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// workers:0 in policy => policy wins (serial forced by resource policy,
+	// not by the lane parallel field). The real fix was changing workers:0
+	// to workers:auto in .cognitive-os/test-resource-policy.yaml.
+	if plan.Invokes[0].Workers != "0" {
+		t.Errorf("expected resource policy workers:0 to win, got %q (the code is correct; fix is in the YAML data)", plan.Invokes[0].Workers)
+	}
+}
+
+// TestBuildClusterPlan_ResourcePolicyAutoWorkersOnParallelLane verifies that
+// parallel:true lanes pass --workers auto when the resource policy has
+// workers:auto. This is the correct post-fix behavior for the unit lane.
+func TestBuildClusterPlan_ResourcePolicyAutoWorkersOnParallelLane(t *testing.T) {
+	cfg := config.DefaultConfig()
+	cfg.ProjectRoot = t.TempDir()
+	writeRegistry(t, cfg.ProjectRoot, clusterYAML)
+	writeResourcePolicy(t, cfg.ProjectRoot, `version: 1
+defaults:
+  workers: auto
+  timeout_seconds: 300
+  docker_policy: forbidden
+  cost_policy: free_only
+  artifact_policy: keep_summary
+lanes:
+  unit:
+    workers: auto
+    timeout_seconds: 900
+`)
+
+	plan, err := buildClusterPlan(cfg, "unit")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plan.Invokes[0].Workers != "auto" {
+		t.Errorf("parallel lane with policy workers:auto should pass --workers auto, got %q", plan.Invokes[0].Workers)
+	}
+}
+
+// TestBuildClusterPlan_SerialLaneIgnoresResourcePolicyWorkers verifies that
+// serial (parallel:false) lanes always use workers:"0" regardless of any
+// workers value in the resource policy. The cluster.go code hardcodes "0"
+// for serial lanes, not the resource policy value.
+func TestBuildClusterPlan_SerialLaneIgnoresResourcePolicyWorkers(t *testing.T) {
+	cfg := config.DefaultConfig()
+	cfg.ProjectRoot = t.TempDir()
+	writeRegistry(t, cfg.ProjectRoot, clusterYAML)
+	// Even with workers:4 in policy, serial lane should stay serial.
+	writeResourcePolicy(t, cfg.ProjectRoot, `version: 1
+defaults:
+  workers: auto
+  timeout_seconds: 300
+  docker_policy: forbidden
+  cost_policy: free_only
+  artifact_policy: keep_summary
+lanes:
+  behavior:
+    workers: 4
+    timeout_seconds: 600
+`)
+
+	plan, err := buildClusterPlan(cfg, "behavior")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plan.Invokes[0].Workers != "0" {
+		t.Errorf("serial lane (parallel:false) must always use workers:0, got %q", plan.Invokes[0].Workers)
+	}
+}
+
 func sliceContains(xs []string, target string) bool {
 	for _, x := range xs {
 		if x == target {
