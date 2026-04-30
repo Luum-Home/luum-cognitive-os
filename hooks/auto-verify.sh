@@ -27,7 +27,7 @@ command -v jq >/dev/null 2>&1 || exit 0
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)
 [ "$TOOL_NAME" != "Agent" ] && exit 0
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 
 # Resolve session-scoped metrics dir (fall back to global)
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
@@ -66,6 +66,20 @@ fi
 
 mkdir -p "$METRICS_DIR" 2>/dev/null
 AGENT_DESC=$(echo "$AGENT_PROMPT" | head -c 100)
+TEST_ARTIFACT_JSON=""
+TEST_ARTIFACT_STATUS="missing"
+TEST_ARTIFACT_RUN=""
+
+_load_test_artifact_status() {
+  [ -n "$TEST_ARTIFACT_JSON" ] && return 0
+  local helper="$PROJECT_DIR/scripts/cos_test_artifact_status.py"
+  [ -f "$helper" ] || return 1
+  TEST_ARTIFACT_JSON=$(python3 "$helper" --project-root "$PROJECT_DIR" --json 2>/dev/null || true)
+  [ -n "$TEST_ARTIFACT_JSON" ] || return 1
+  TEST_ARTIFACT_STATUS=$(echo "$TEST_ARTIFACT_JSON" | jq -r '.status // "missing"' 2>/dev/null)
+  TEST_ARTIFACT_RUN=$(echo "$TEST_ARTIFACT_JSON" | jq -r '.run_dir // ""' 2>/dev/null)
+  [ "$TEST_ARTIFACT_STATUS" != "missing" ]
+}
 
 if [ -z "$CRITERIA_SOURCE" ]; then
   safe_jsonl_append "$VERIFY_LOG" "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"status\":\"NO_CRITERIA\",\"agent\":$(echo "$AGENT_DESC" | jq -Rs .),\"checks\":0,\"passed\":0,\"failed\":0}"
@@ -116,6 +130,25 @@ while IFS= read -r line; do
   [ -z "$line" ] && continue
   DESC=$(echo "$line" | sed 's/^[[:space:]]*[0-9]*\.[[:space:]]*//' | sed 's/^[[:space:]]*[-*][[:space:]]*//' | head -c 100)
   TOTAL=$((TOTAL + 1))
+
+  # Pattern 0: test evidence criteria consume persisted artifacts instead of
+  # launching pytest/cos-test again from a governance hook.
+  if echo "$line" | grep -qiE '(test|pytest|cos-test|junit|inventory|summary).*(pass|passed|0 failed|no failures|green)' || \
+     echo "$line" | grep -qiE '(pass|passed|0 failed|no failures|green).*(test|pytest|cos-test|junit|inventory|summary)'; then
+    if _load_test_artifact_status; then
+      if [ "$TEST_ARTIFACT_STATUS" = "pass" ]; then
+        PASSED=$((PASSED + 1)); PASS_LINES="${PASS_LINES}
+  PASS: $DESC (artifact: $TEST_ARTIFACT_RUN)"
+      else
+        FAILED=$((FAILED + 1)); FAIL_LINES="${FAIL_LINES}
+  FAIL: $DESC (artifact status=$TEST_ARTIFACT_STATUS, run=$TEST_ARTIFACT_RUN)"
+      fi
+    else
+      SKIPPED=$((SKIPPED + 1)); TOTAL=$((TOTAL - 1)); SKIP_LINES="${SKIP_LINES}
+  SKIP: $DESC (no persisted test artifact found)"
+    fi
+    continue
+  fi
 
   # Pattern A: `cmd` = N  (exact numeric match)
   if echo "$line" | grep -qE '`[^`]+`[[:space:]]*=[[:space:]]*[0-9]+'; then
@@ -204,6 +237,7 @@ else
   safe_jsonl_append "$VERIFY_LOG" "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"status\":\"PASS\",\"agent\":$(echo "$AGENT_DESC" | jq -Rs .),\"checks\":$TOTAL,\"passed\":$PASSED,\"failed\":0,\"skipped\":$SKIPPED}"
   echo ""
   echo "=== AUTO-VERIFY: PASS ($PASSED/$TOTAL) ==="
+  [ -n "$PASS_LINES" ] && echo -e "$PASS_LINES"
   [ "$SKIPPED" -gt 0 ] && echo "  ($SKIPPED criteria skipped — no parseable command found)"
   echo ""
 fi
