@@ -134,6 +134,7 @@ Implemented defaults:
 | Local quick iteration | `make test-local-fast` / `cos-test focused` | Diff-aware, persisted focused artifacts. |
 | Local broad without Docker | `make test-local-wide-no-docker` / `cos-test broad --no-docker` | Non-optional lanes only; skips Docker-capable lanes. |
 | CI default | `make test-ci-default` / `cos-test broad --no-docker --ci` | Same default policy, with CI output mode. |
+| Slow integration without Docker | `make test-integration-no-docker` / `cos-test cluster --lane integration` | Explicit because live integration workflows exceed the default CI budget. |
 | Docker/testcontainers explicit | `make test-docker-explicit` | Runs `integration-docker` and `e2e` only with `COS_ALLOW_DOCKER_TESTS=1`. |
 | Optional/cost-bearing explicit | `make test-optional-cost` | Runs arena/benchmark/quality only with `COS_ALLOW_COST_BEARING_TESTS=1`. |
 
