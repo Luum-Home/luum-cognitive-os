@@ -1,0 +1,60 @@
+version: 1
+
+defaults:
+  workers: auto
+  timeout_seconds: 300
+  docker_policy: forbidden
+  cost_policy: free_only
+  artifact_policy: keep_summary
+
+lanes:
+  unit:
+    timeout_seconds: 180
+  audit:
+    timeout_seconds: 180
+  contract:
+    timeout_seconds: 240
+  architecture:
+    timeout_seconds: 240
+  system:
+    timeout_seconds: 300
+  behavior:
+    workers: 0
+    timeout_seconds: 600
+  hooks:
+    workers: 0
+    timeout_seconds: 600
+  integration:
+    workers: 0
+    timeout_seconds: 900
+    docker_policy: allowed
+  e2e:
+    workers: 0
+    timeout_seconds: 1200
+    docker_policy: allowed
+  chaos:
+    workers: 0
+    timeout_seconds: 1200
+    docker_policy: allowed
+  smoke:
+    workers: 0
+    timeout_seconds: 900
+    docker_policy: allowed
+  arena:
+    workers: 0
+    timeout_seconds: 1800
+    docker_policy: allowed
+    cost_policy: cost_bearing
+    artifact_policy: keep_full
+  benchmark:
+    workers: 0
+    timeout_seconds: 1800
+    docker_policy: allowed
+    cost_policy: cost_bearing
+    artifact_policy: keep_full
+  quality:
+    workers: 0
+    timeout_seconds: 1800
+    docker_policy: allowed
+    cost_policy: cost_bearing
+    artifact_policy: keep_full
