@@ -45,7 +45,7 @@ def test_resource_policy_keeps_default_broad_free_and_non_docker() -> None:
         merged = {**policy["defaults"], **policy["lanes"][lane]}
         if not lane_spec.get("optional", False):
             assert merged["cost_policy"] == "free_only", lane
-        if lane in {"unit", "audit", "contract", "architecture", "system", "integration", "behavior", "hooks", "chaos"}:
+        if lane in {"unit", "audit", "contract", "architecture", "system", "integration", "integration-memory", "integration-installer", "integration-hooks", "integration-provider", "integration-runtime", "behavior", "hooks", "chaos"}:
             assert merged["docker_policy"] == "forbidden", lane
 
 
@@ -55,6 +55,7 @@ def test_docker_and_e2e_lanes_are_explicit_opt_in() -> None:
 
     assert lanes["integration"]["marker_exclude"] == "docker"
     assert lanes["integration"]["optional"] is True
+    assert "Compatibility umbrella" in lanes["integration"]["stateful_reason"]
     assert policy["lanes"]["integration"]["docker_policy"] == "forbidden"
     assert lanes["integration-docker"]["optional"] is True
     assert lanes["integration-docker"]["marker_include"] == "docker"
@@ -72,3 +73,51 @@ def test_resource_policy_summary_is_machine_derivable() -> None:
         r"workers=0 timeout=900s docker=forbidden cost=free_only artifacts=keep_summary",
         summary,
     )
+
+
+def test_split_integration_lanes_partition_non_docker_files() -> None:
+    """Narrow integration lanes must cover every non-Docker integration file once."""
+    lanes = _load_yaml(LANES)["lanes"]
+    split_lanes = [
+        "integration-memory",
+        "integration-installer",
+        "integration-hooks",
+        "integration-provider",
+        "integration-runtime",
+    ]
+    assigned: list[str] = []
+    for lane in split_lanes:
+        assert lanes[lane]["optional"] is True
+        assert lanes[lane]["marker_exclude"] == "docker"
+        assigned.extend(lanes[lane]["paths"])
+
+    assert len(assigned) == len(set(assigned)), "integration split lanes must not overlap"
+
+    docker_files = {
+        str(path.relative_to(ROOT))
+        for path in (ROOT / "tests" / "integration").glob("test_*.py")
+        if "pytest.mark.docker" in path.read_text(encoding="utf-8", errors="ignore")
+    }
+    non_docker_files = {
+        str(path.relative_to(ROOT))
+        for path in (ROOT / "tests" / "integration").glob("test_*.py")
+        if str(path.relative_to(ROOT)) not in docker_files
+    }
+
+    assert set(assigned) == non_docker_files
+
+
+def test_split_integration_lanes_have_resource_policies() -> None:
+    lanes = _load_yaml(LANES)["lanes"]
+    policy = _load_yaml(POLICY)
+    for lane in (
+        "integration-memory",
+        "integration-installer",
+        "integration-hooks",
+        "integration-provider",
+        "integration-runtime",
+    ):
+        assert lane in lanes
+        assert lane in policy["lanes"]
+        assert policy["lanes"][lane]["workers"] == 0
+        assert policy["lanes"][lane]["docker_policy"] == "forbidden"
