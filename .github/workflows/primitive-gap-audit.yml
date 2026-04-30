@@ -33,6 +33,27 @@ jobs:
             --fail-new \
             --json > docs/reports/docs-duplicate-latest.json
 
+      - name: Run primitive row audit
+        run: |
+          python3 scripts/primitive_row_audit.py \
+            --json-out docs/reports/primitive-row-audit-latest.json \
+            --md-out docs/reports/primitive-row-audit-latest.md
+
+      - name: Run claim-to-proof audit
+        run: |
+          python3 scripts/claim_proof_audit.py \
+            --json-out docs/reports/claim-proof-latest.json \
+            --md-out docs/reports/claim-proof-latest.md \
+            --fail-unmapped
+
+      - name: Generate reduction backlog
+        run: |
+          python3 scripts/reduction_backlog.py \
+            --row-audit docs/reports/primitive-row-audit-latest.json \
+            --claim-audit docs/reports/claim-proof-latest.json \
+            --json-out docs/reports/reduction-backlog-latest.json \
+            --md-out docs/reports/reduction-backlog-latest.md
+
       - name: Upload primitive gap snapshot artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,11 +67,29 @@ jobs:
             docs/reports/docs-duplicate-baseline.json
             docs/reports/docs-duplicate-latest.json
             docs/reports/docs-duplicate-latest.md
+            docs/reports/primitive-row-audit-latest.json
+            docs/reports/primitive-row-audit-latest.md
+            docs/reports/claim-proof-latest.json
+            docs/reports/claim-proof-latest.md
+            docs/reports/reduction-backlog-latest.json
+            docs/reports/reduction-backlog-latest.md
 
       - name: Commit primitive gap trend
         run: |
           git config user.name "cognitive-os-bot"
           git config user.email "bot@luum.ai"
-          git add docs/reports/primitive-gap-latest.json docs/reports/primitive-gap-latest.md docs/reports/primitive-gap-regressions.md docs/reports/primitive-gap-history.jsonl docs/reports/docs-duplicate-latest.json docs/reports/docs-duplicate-latest.md
+          git add \
+            docs/reports/primitive-gap-latest.json \
+            docs/reports/primitive-gap-latest.md \
+            docs/reports/primitive-gap-regressions.md \
+            docs/reports/primitive-gap-history.jsonl \
+            docs/reports/docs-duplicate-latest.json \
+            docs/reports/docs-duplicate-latest.md \
+            docs/reports/primitive-row-audit-latest.json \
+            docs/reports/primitive-row-audit-latest.md \
+            docs/reports/claim-proof-latest.json \
+            docs/reports/claim-proof-latest.md \
+            docs/reports/reduction-backlog-latest.json \
+            docs/reports/reduction-backlog-latest.md
           git diff --staged --quiet || git commit -m "chore(audit): weekly primitive gap snapshot $(date -u +%Y-%m-%d)"
           git push
