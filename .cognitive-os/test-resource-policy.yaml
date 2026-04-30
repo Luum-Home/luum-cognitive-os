@@ -27,15 +27,19 @@ lanes:
   integration:
     workers: 0
     timeout_seconds: 900
-    docker_policy: allowed
+    docker_policy: forbidden
+  integration-docker:
+    workers: 0
+    timeout_seconds: 1200
+    docker_policy: required
   e2e:
     workers: 0
     timeout_seconds: 1200
-    docker_policy: allowed
+    docker_policy: required
   chaos:
     workers: 0
     timeout_seconds: 1200
-    docker_policy: allowed
+    docker_policy: forbidden
   smoke:
     workers: 0
     timeout_seconds: 900

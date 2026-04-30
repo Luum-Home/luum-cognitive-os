@@ -105,6 +105,24 @@ Validate configuration files, container state, and runtime consistency.
 
 ## Running Tests
 
+### Official `cos-test` Defaults
+
+Use these entry points before reaching for raw pytest. They preserve summaries,
+JUnit, inventories, and resource-policy metadata under
+`.cognitive-os/reports/test-runs/`.
+
+| Use case | Command |
+|---|---|
+| Local quick iteration | `make test-local-fast` or `cos-test focused` |
+| Local broad without Docker | `make test-local-wide-no-docker` or `cos-test broad --no-docker` |
+| CI default | `make test-ci-default` or `cos-test broad --no-docker --ci` |
+| Docker/testcontainers explicit | `make test-docker-explicit` |
+| Optional/cost-bearing explicit | `make test-optional-cost` |
+
+The default broad lane is intentionally non-optional. Docker-capable and
+cost-bearing lanes are opt-in so local laptops and CI jobs do not start heavy
+services or hosted evaluations by surprise.
+
 ### Persistent Local Run Artifacts
 
 Use `scripts/pytest-with-summary.sh` for any repair-oriented partial or full

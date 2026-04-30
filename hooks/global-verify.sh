@@ -105,12 +105,24 @@ def cos_test_focused_plan(files_changed):
         return paths
     return None
 
+def cos_test_available():
+    """Return true when this project can use the canonical focused selector."""
+    if os.environ.get("COS_TEST_BIN", ""):
+        return True
+    return (project_dir / "cmd" / "cos-test" / "go.mod").is_file() and shutil.which("go")
+
 def resolve_targeted_tests(files_changed):
-    """Resolve tests through cos-test focused first, with legacy resolver fallback."""
+    """Resolve tests through cos-test focused first.
+
+    Legacy resolver fallback is reserved for consumer projects that do not yet
+    have cos-test installed. Tests/debug can opt in with
+    COS_GLOBAL_VERIFY_ALLOW_LEGACY_RESOLVER=1.
+    """
     test_ids = cos_test_focused_plan(files_changed)
     if test_ids:
         return test_ids
-    if resolver_available and files_changed:
+    allow_legacy = os.environ.get("COS_GLOBAL_VERIFY_ALLOW_LEGACY_RESOLVER") == "1" or not cos_test_available()
+    if allow_legacy and resolver_available and files_changed:
         return resolve_tests_for_changes(files_changed)
     return []
 

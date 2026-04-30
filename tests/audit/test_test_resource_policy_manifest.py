@@ -45,8 +45,21 @@ def test_resource_policy_keeps_default_broad_free_and_non_docker() -> None:
         merged = {**policy["defaults"], **policy["lanes"][lane]}
         if not lane_spec.get("optional", False):
             assert merged["cost_policy"] == "free_only", lane
-        if lane in {"unit", "audit", "contract", "architecture", "system"}:
+        if lane in {"unit", "audit", "contract", "architecture", "system", "integration", "behavior", "hooks", "chaos"}:
             assert merged["docker_policy"] == "forbidden", lane
+
+
+def test_docker_and_e2e_lanes_are_explicit_opt_in() -> None:
+    lanes = _load_yaml(LANES)["lanes"]
+    policy = _load_yaml(POLICY)
+
+    assert lanes["integration"]["marker_exclude"] == "docker"
+    assert lanes["integration-docker"]["optional"] is True
+    assert lanes["integration-docker"]["marker_include"] == "docker"
+    assert policy["lanes"]["integration-docker"]["docker_policy"] == "required"
+
+    assert lanes["e2e"]["optional"] is True
+    assert policy["lanes"]["e2e"]["docker_policy"] == "required"
 
 
 def test_resource_policy_summary_is_machine_derivable() -> None:
@@ -54,6 +67,6 @@ def test_resource_policy_summary_is_machine_derivable() -> None:
     summary = _policy_summary(policy, "integration")
 
     assert re.fullmatch(
-        r"workers=0 timeout=900s docker=allowed cost=free_only artifacts=keep_summary",
+        r"workers=0 timeout=900s docker=forbidden cost=free_only artifacts=keep_summary",
         summary,
     )

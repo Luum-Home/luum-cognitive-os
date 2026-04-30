@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help test test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
+.PHONY: help test test-local-fast test-local-wide-no-docker test-ci-default test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -21,6 +21,11 @@ cos-test:
 
 help:
 	@echo "Targets:"
+	@echo "  test-local-fast   Official local quick lane: cos-test focused."
+	@echo "  test-local-wide-no-docker  Official local broad lane without Docker/cost."
+	@echo "  test-ci-default   Official CI default: broad non-Docker lane."
+	@echo "  test-docker-explicit  Explicit Docker/testcontainers lane."
+	@echo "  test-optional-cost    Explicit optional/cost-bearing lanes."
 	@echo "  ci-deps           Install optional CI deps (flock + Paperclip stub) to unblock skipped tests."
 	@echo "  test-fast         [DEPRECATED → cos-test cluster --lane unit] Unit tests, parallel (-n auto). <30s."
 	@echo "  test-unit         [DEPRECATED → cos-test cluster --lane unit] Unit tests serial."
@@ -45,6 +50,24 @@ help:
 	@echo "All python commands run via 'uv run' — plain 'python3' or 'pytest' will miss UV-managed deps."
 
 test: test-fast
+
+test-local-fast: cos-test
+	@./cos-test focused
+
+test-local-wide-no-docker: cos-test
+	@./cos-test broad --no-docker
+
+test-ci-default: cos-test
+	@./cos-test broad --no-docker --ci
+
+test-docker-explicit: cos-test
+	@COS_ALLOW_DOCKER_TESTS=1 ./cos-test cluster --lane integration-docker
+	@COS_ALLOW_DOCKER_TESTS=1 ./cos-test cluster --lane e2e
+
+test-optional-cost: cos-test
+	@COS_ALLOW_COST_BEARING_TESTS=1 ./cos-test cluster --lane arena
+	@COS_ALLOW_COST_BEARING_TESTS=1 ./cos-test cluster --lane benchmark
+	@COS_ALLOW_COST_BEARING_TESTS=1 ./cos-test cluster --lane quality
 
 test-fast: cos-test
 	@echo "[deprecated] 'make test-fast' will be removed in next minor; use 'cos-test focused' or 'cos-test cluster --lane unit'" >&2

@@ -48,7 +48,7 @@ Examples:
 		}
 
 		if runAll || !hasRunSelection() {
-			return runBroad(cfg, false, false)
+			return runBroad(cfg, false, false, false)
 		}
 
 		var firstErr error

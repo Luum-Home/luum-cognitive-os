@@ -26,8 +26,10 @@ contributors should be able to answer two questions quickly:
 |---|---|---|
 | Tight iteration after editing one or a few files | `cos-test focused` | Uses changed files or explicit paths. |
 | Validate one lane | `cos-test cluster --lane <name>` | Runs the lane according to registry parallel-safety policy. |
-| Pre-push/default broad validation | `cos-test broad` | Runs all non-optional lanes in dependency order. |
-| Include cost-bearing or non-deterministic lanes | `cos-test broad --include-optional` or `cos-test cluster --lane <optional>` | Optional lanes must be explicit. |
+| Local broad without Docker | `cos-test broad --no-docker` or `make test-local-wide-no-docker` | Official local broad lane; skips Docker-capable lanes. |
+| CI default | `cos-test broad --no-docker --ci` or `make test-ci-default` | Same policy as local broad, CI output mode. |
+| Docker/e2e explicit | `COS_ALLOW_DOCKER_TESTS=1 cos-test cluster --lane integration-docker` | Docker/testcontainers never start from default broad. |
+| Include cost-bearing or non-deterministic lanes | `COS_ALLOW_COST_BEARING_TESTS=1 cos-test cluster --lane <optional>` | Optional lanes must be explicit. |
 | Need persisted pytest artifacts directly | `bash scripts/pytest-with-summary.sh -- <pytest args>` | Reporting transport fallback; not the primary selection UX. |
 
 ## Legacy and compatibility scripts

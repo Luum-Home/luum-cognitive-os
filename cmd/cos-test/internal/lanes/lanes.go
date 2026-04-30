@@ -39,6 +39,10 @@ type Lane struct {
 	// (e.g. unit lane excludes 'benchmark' so perf-budget tests don't run
 	// under the default -n auto path). Empty = no filter.
 	MarkerExclude string
+	// MarkerInclude is a pytest marker expression applied as `-m "<expr>"`.
+	// It is used for explicit sublanes such as integration-docker where the
+	// same directory is split by marker without making bash own selection.
+	MarkerInclude string
 }
 
 // Registry holds the parsed lane registry.
@@ -142,6 +146,7 @@ func Load(path string) (*Registry, error) {
 //	    marker_serial: <name>
 //	    stateful_reason: "<text>"
 //	    optional: true|false
+//	    marker_include: <pytest marker expression>
 //
 // All other top-level keys are ignored. Indentation is two-space significant.
 // optional: true excludes the lane from BroadOrder() default — it is still
@@ -243,6 +248,8 @@ func Parse(r io.Reader) (*Registry, error) {
 				}
 			case "marker_exclude":
 				current.MarkerExclude = strings.Trim(value, `"' `)
+			case "marker_include":
+				current.MarkerInclude = strings.Trim(value, `"' `)
 			default:
 				// Unknown keys are accepted (forward compat) but ignored.
 			}

@@ -17,6 +17,7 @@ import (
 var (
 	broadDryRun          bool
 	broadIncludeOptional bool
+	broadNoDocker        bool
 )
 
 var broadCmd = &cobra.Command{
@@ -31,12 +32,16 @@ run so the operator gets a complete picture.
 
 Optional lanes (arena, benchmark, quality) are EXCLUDED by default because
 they are cost-bearing or non-deterministic. Include them explicitly with
---include-optional or run a single one via "cos-test cluster --lane <name>".`,
+--include-optional or run a single one via "cos-test cluster --lane <name>".
+
+Use --no-docker for the official local/CI broad lane. It skips any lane whose
+resource policy can require Docker so default validation never starts
+testcontainers or compose stacks by surprise.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg := config.DefaultConfig()
 		cfg.CIMode = ciMode
 		cfg.Verbose = verbose
-		return runBroad(cfg, broadDryRun, broadIncludeOptional)
+		return runBroad(cfg, broadDryRun, broadIncludeOptional, broadNoDocker)
 	},
 }
 
@@ -45,16 +50,20 @@ func init() {
 		"Print resolved plan, do not execute")
 	broadCmd.Flags().BoolVar(&broadIncludeOptional, "include-optional", false,
 		"Include optional lanes (arena, benchmark, quality). Off by default.")
+	broadCmd.Flags().BoolVar(&broadNoDocker, "no-docker", false,
+		"Skip lanes whose resource policy is not docker=forbidden")
 	rootCmd.AddCommand(broadCmd)
 }
 
 // laneOutcome captures one lane's run result.
 type laneOutcome struct {
-	Lane   string
-	Failed bool
+	Lane    string
+	Failed  bool
+	Skipped bool
+	Reason  string
 }
 
-func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
+func runBroad(cfg *config.Config, dryRun, includeOptional, noDocker bool) error {
 	regPath := lanes.DefaultPath(cfg.ProjectRoot)
 	reg, err := lanes.Load(regPath)
 	if err != nil {
@@ -69,6 +78,9 @@ func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 		if opt := reg.OptionalNames(); len(opt) > 0 {
 			reason += fmt.Sprintf(" | skipping optional: %s (use --include-optional)", strings.Join(opt, ", "))
 		}
+	}
+	if noDocker {
+		reason += " | skipping docker-capable lanes (--no-docker)"
 	}
 
 	intro := banner.Render(banner.Info{
@@ -94,6 +106,11 @@ func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 			outcomes = append(outcomes, laneOutcome{Lane: name, Failed: true})
 			continue
 		}
+		if shouldSkipForNoDocker(plan.Resources.DockerPolicy, noDocker) {
+			fmt.Printf("[cos-test broad] %s: SKIP docker_policy=%s (--no-docker)\n", name, plan.Resources.DockerPolicy)
+			outcomes = append(outcomes, laneOutcome{Lane: name, Skipped: true, Reason: "docker_policy=" + plan.Resources.DockerPolicy})
+			continue
+		}
 		bi := banner.Info{
 			Subcommand: "broad",
 			Lane:       name,
@@ -109,7 +126,7 @@ func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 		fmt.Print(laneRendered)
 		fmt.Printf("[cos-test broad] %s/resources: %s\n", name, plan.Resources.Summary())
 		for _, inv := range plan.Invokes {
-			opts := runner.InvocationOptions{Workers: inv.Workers, Lane: name}
+			opts := invocationOptionsFor(plan, inv, name)
 			fmt.Printf("[cos-test broad] %s/%s: %s\n", name, inv.Label, strings.Join(pr.PytestArgsWithOptions(inv.Args, opts), " "))
 		}
 		if dryRun {
@@ -118,8 +135,16 @@ func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 		}
 		failed := false
 		fmt.Printf("[cos-test broad] %s/resources: %s\n", name, plan.Resources.Summary())
+		if err := enforceResourcePolicy(plan.Resources); err != nil {
+			if len(plan.Invokes) > 0 {
+				_ = pr.WriteResourceOutcome(invocationOptionsFor(plan, plan.Invokes[0], name), "blocked_policy")
+			}
+			fmt.Fprintf(os.Stderr, "[cos-test broad] lane %s resource policy block: %v\n", name, err)
+			outcomes = append(outcomes, laneOutcome{Lane: name, Failed: true})
+			continue
+		}
 		for _, inv := range plan.Invokes {
-			if err := pr.RawInvocationWithOptions(inv.Args, runner.InvocationOptions{Workers: inv.Workers, Lane: name}); err != nil {
+			if err := pr.RawInvocationWithOptions(inv.Args, invocationOptionsFor(plan, inv, name)); err != nil {
 				failed = true
 			}
 		}
@@ -131,11 +156,17 @@ func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 	failedCount := 0
 	for _, o := range outcomes {
 		status := "OK"
-		if o.Failed {
+		if o.Skipped {
+			status = "SKIP"
+		} else if o.Failed {
 			status = "FAIL"
 			failedCount++
 		}
-		fmt.Printf("[cos-test broad]   %-14s %s\n", o.Lane, status)
+		if o.Reason != "" {
+			fmt.Printf("[cos-test broad]   %-14s %s (%s)\n", o.Lane, status, o.Reason)
+		} else {
+			fmt.Printf("[cos-test broad]   %-14s %s\n", o.Lane, status)
+		}
 	}
 	fmt.Printf("[cos-test broad] %d/%d lanes failed\n", failedCount, len(outcomes))
 
@@ -147,6 +178,10 @@ func runBroad(cfg *config.Config, dryRun, includeOptional bool) error {
 		os.Exit(1)
 	}
 	return nil
+}
+
+func shouldSkipForNoDocker(dockerPolicy string, noDocker bool) bool {
+	return noDocker && dockerPolicy != "forbidden"
 }
 
 func laneAllPaths(reg *lanes.Registry, order []string) []string {
