@@ -18,7 +18,7 @@ set -euo pipefail
 
 COS_SOURCE_DIR="${COS_SOURCE_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
 SOURCE_SETTINGS="$COS_SOURCE_DIR/.claude/settings.json"
-# ADR-002: canonical modes are --default and --full. Legacy (--minimal,
+# ADR-093: canonical modes are --default and --full. Legacy (--minimal,
 # --standard, --lean) are silently remapped to --default.
 MODE="--default"
 OUTPUT=""
@@ -31,7 +31,7 @@ while [ "$#" -gt 0 ]; do
       shift
       ;;
     --minimal|--standard|--lean)
-      echo "Note: ADR-002 collapsed '$1' into '--default'. Using '--default'." >&2
+      echo "Note: ADR-093 collapsed '$1' into '--default'. Using '--default'." >&2
       MODE="--default"
       shift
       ;;
@@ -54,7 +54,7 @@ while [ "$#" -gt 0 ]; do
     --help|-h)
       echo "Usage: bash $0 [--default|--full] [--harness HARNESS] [--output FILE]"
       echo ""
-      echo "  --default  ADR-002 default tier (curated hook set)"
+      echo "  --default  ADR-093 default tier (curated hook set)"
       echo "  --full     Full hook coverage"
       echo "  --harness  Projection target: claude or codex (default: claude)"
       echo ""
@@ -121,7 +121,7 @@ project_scoped_hooks() {
   done
 }
 
-# ADR-002 default tier hook set (~29 hooks). Includes the regression guards:
+# ADR-093 default tier hook set (~29 hooks). Includes the regression guards:
 # auto-verify, auto-refine, dod-gate, session-sanity, confidentiality-enforcer.
 DEFAULT_HOOKS="error-pipeline.sh session-init.sh host-tool-doctor.sh session-cleanup.sh result-truncator.sh
   user-prompt-capture.sh session-wrapup-trigger.sh session-heartbeat.sh memory-prefetch.sh
