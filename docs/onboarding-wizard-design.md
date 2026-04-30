@@ -408,7 +408,7 @@ Configure where `cos search` and `cos install` look for packages.
 
 ```
 ? External skill sources: (space to toggle)
-  [x] cos-builtin           Built-in COS components
+  [x] cos-builtin           Built-in COS agentic primitives
   [x] skills.sh             Vercel's agent skills registry (83K+ skills)
   [x] MCP Registry          Official MCP server registry
   [ ] SkillsMP              Community skills marketplace (350K+ skills)

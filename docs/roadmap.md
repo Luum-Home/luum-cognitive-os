@@ -279,7 +279,7 @@ cos remove @luum/safety-mesh         # Uninstall
 
 #### Existing Infrastructure to Leverage
 
-| Component | Role in Marketplace |
+| Primitive | Role in Marketplace |
 |---|---|
 | `cmd/cos/` (Go CLI) | Package manager CLI already exists (v0.1) |
 | `lib/license_guard.py` | Gate 1: License verification |

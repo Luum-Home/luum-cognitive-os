@@ -1,6 +1,6 @@
 # Architecture Principles: Clean Architecture for Agent Operating Systems
 
-> The 5-layer dependency model that governs how Cognitive OS components relate to each other.
+> The 5-layer dependency model that governs how Cognitive OS agentic primitives relate to each other.
 > This is a novel architectural pattern adapted from Clean Architecture for AI agent systems.
 
 ---
@@ -234,7 +234,7 @@ Append-only observation logs in JSONL format.
 | Hooks | Write metrics entries after each tool use |
 | Libs | Read metrics for analysis (singularity, self-improvement) |
 
-Pattern: hooks write, skills and libs read. Rules define what is measured. No component writes metrics upstream of its layer.
+Pattern: hooks write, skills and libs read. Rules define what is measured. No agentic primitive writes metrics upstream of its layer.
 
 ### Testing
 
@@ -411,7 +411,7 @@ The further inward the layer, the more stable it is. Rules almost never change. 
 
 ## Layer Migration Guide
 
-When a component is in the wrong layer, follow this process:
+When an agentic primitive is in the wrong layer, follow this process:
 
 ### Step 1: Identify the Antipattern
 
@@ -492,30 +492,30 @@ The dependency rule is the single most important principle. Every architectural 
 
 > "If you don't understand the whole system, you make bad decisions." -- James Gosling
 
-The System Knowledge Graph maps every component in Cognitive OS and their relationships across all 5 layers. It answers the question agents need before modifying anything: "What else will break if I change this?"
+The System Knowledge Graph maps every agentic primitive in Cognitive OS and their relationships across all 5 layers. It answers the question agents need before modifying anything: "What else will break if I change this?"
 
 ### Why It Exists
 
-Agents modify components in isolation. A hook change might silently break a rule's enforcement. A lib refactor might orphan a metrics file that three skills depend on. The knowledge graph makes these invisible dependencies visible.
+Agents modify agentic primitives in isolation. A hook change might silently break a rule's enforcement. A lib refactor might orphan a metrics file that three skills depend on. The knowledge graph makes these invisible dependencies visible.
 
 ### How to Use
 
 The `cos map` CLI command provides several views into the graph:
 
 ```bash
-# Show dependency tree for one component
+# Show dependency tree for one agentic primitive
 cos map trust-score
 
 # Show what breaks if a file changes
 cos map --affected hooks/trust-score-validator.sh
 
-# Full system summary (component counts, cross-layer edges, orphans)
+# Full system summary (agentic primitive counts, cross-layer edges, orphans)
 cos map --full
 
-# Show disconnected components (no edges — potential dead code)
+# Show disconnected agentic primitives (no edges — potential dead code)
 cos map --orphans
 
-# Show most-connected components (highest modification risk)
+# Show most-connected agentic primitives (highest modification risk)
 cos map --hotspots
 
 # Export as JSON for visualization tools
@@ -533,7 +533,7 @@ trust-score (Layer 1 -- RULES)
 +-- COMPACTED IN: RULES-COMPACT.md
 +-- SYMLINKED: .claude/rules/cos/trust-score.md
 
-IMPACT: 6 components across 3 layers
+IMPACT: 6 agentic primitives across 3 layers
 RISK: HIGH
 ```
 
@@ -557,7 +557,7 @@ RISK: HIGH
 | Level | Dependents | Action |
 |-------|-----------|--------|
 | LOW | 0-2 | Modify freely |
-| MEDIUM | 3-5 | Review affected components |
+| MEDIUM | 3-5 | Review affected agentic primitives |
 | HIGH | 6-10 | Run `cos map` first, review carefully |
 | CRITICAL | 10+ or 3+ layers | Full impact analysis required |
 
@@ -566,11 +566,11 @@ RISK: HIGH
 The knowledge graph complements two existing tools:
 
 - **Blast Radius** (`rules/blast-radius.md`): estimates impact from prompt text before an agent launches. The graph provides the actual dependency data.
-- **Impact Analysis** (`lib/impact_analysis.py`): analyzes changed source code files (imports, tests, Docker services). The graph analyzes Cognitive OS components (rules, skills, hooks, libs).
+- **Impact Analysis** (`lib/impact_analysis.py`): analyzes changed source code files (imports, tests, Docker services). The graph analyzes Cognitive OS agentic primitives (rules, skills, hooks, libs).
 
 ### The Rule
 
-Before modifying a component with >5 dependents, run `cos map <component>` first. This is enforced by convention, not by a hook -- the graph itself is a diagnostic tool, not a gate.
+Before modifying an agentic primitive with >5 dependents, run `cos map <primitive>` first. This is enforced by convention, not by a hook -- the graph itself is a diagnostic tool, not a gate.
 
 ### Implementation
 

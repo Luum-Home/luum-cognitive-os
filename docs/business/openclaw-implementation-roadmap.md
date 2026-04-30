@@ -298,7 +298,7 @@ npm-distributable collections of hooks.
 Workspace portability and state export/import.
 
 - [ ] Design export format (JSON/YAML bundle of configs, memory, state)
-- [ ] Implement exporter (selective: choose which components to export)
+- [ ] Implement exporter (selective: choose which agentic primitives to export)
 - [ ] Implement importer with conflict resolution (skip, overwrite, merge)
 - [ ] Add dry-run mode (show what would change without applying)
 - [ ] Support partial migration (only hooks, only cron jobs, only standing orders)
@@ -314,14 +314,14 @@ Workspace portability and state export/import.
 
 Comprehensive test infrastructure for agent behaviors.
 
-- [ ] Set up Vitest with V8 coverage for agent components
+- [ ] Set up Vitest with V8 coverage for agentic primitives
 - [ ] Create test categories: unit (isolated), integration (with services), live (against real APIs)
 - [ ] Implement test generators from API schemas (auto-create basic tests)
-- [ ] Add coverage enforcement (minimum thresholds per component)
+- [ ] Add coverage enforcement (minimum thresholds per agentic primitive)
 - [ ] Create mock service helpers (spin up mock providers for testing)
 - [ ] Integrate with CI pipeline
 
-**Success criteria:** All agent components have tests, coverage meets thresholds, CI blocks merges below threshold.
+**Success criteria:** All agentic primitives have tests, coverage meets thresholds, CI blocks merges below threshold.
 
 **Dependencies:** None.
 

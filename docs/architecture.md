@@ -1,6 +1,6 @@
 # Cognitive OS Architecture
 
-> System architecture, component inventory, data flow, and technology stack.
+> System architecture, agentic primitive inventory, data flow, and technology stack.
 
 ---
 
@@ -82,7 +82,7 @@ KNOWLEDGE: Engram stores outcomes for future reference
 
 ### Concrete implementation:
 
-| MAPE-K Phase | Cognitive OS Component |
+| MAPE-K Phase | Cognitive OS Primitive |
 |--------------|----------------------|
 | Monitor | `error-learning.sh`, `skill-tracker.sh`, `kpi-trigger.sh`, `doc-sync-detector.sh` |
 | Analyze | `error-pattern-detector.sh`, `epic-task-detector.sh`, `singularity.py` event classification |
@@ -138,7 +138,7 @@ GitHub Issue #42 ("Add password reset flow")
 
 ---
 
-## Component Inventory
+## Agentic Primitive Inventory
 
 ### Hooks (46 registered, 94 scripts)
 
@@ -227,7 +227,7 @@ Key modules (see `lib/` for full list):
 | `agent_bus.py` | Bidirectional real-time agent communication via Valkey pub/sub |
 | `agent_dashboard.py` | Terminal dashboard for live agent status monitoring |
 | `batch_runner.py` | Batch execution of multiple pipelines |
-| `capability_levels.py` | Auto-disable components based on model capability level |
+| `capability_levels.py` | Auto-disable agentic primitives based on model capability level |
 | `claude_executor.py` | Programmatic Claude Code invocation via CLI subprocess |
 | `cognee_client.py` | Client for Cognee knowledge graph and RAG engine |
 | `domain_router.py` | Route issues to the right squad/pipeline |

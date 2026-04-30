@@ -1,8 +1,8 @@
 <!--
 RECONCILIATION STATUS: SUPERSEDED
-Superseded by: ADR-044 (context payload slimming — non-rule startup components), ADR-027 (context overhead pillar), ws2 SmartTruncator (commit 9bd895b), ws3 prompt cache (commit 15d67eb)
+Superseded by: ADR-044 (context payload slimming — non-rule startup agentic primitives), ADR-027 (context overhead pillar), ws2 SmartTruncator (commit 9bd895b), ws3 prompt cache (commit 15d67eb)
 Reconciled: 2026-04-21
-Reason: the three largest pillars — smart truncation, prompt cache, and payload slimming — all have shipped components and an ADR framework. Remaining micro-optimizations fold into ADR-044 execution.
+Reason: the three largest pillars — smart truncation, prompt cache, and payload slimming — all have shipped agentic primitives and an ADR framework. Remaining micro-optimizations fold into ADR-044 execution.
 -->
 
 # Plan: Intelligent Context Compaction
@@ -24,7 +24,7 @@ Over a moderate session (50 tool calls, 5 sub-agents), this wastes **60-100K tok
 
 ### What Exists
 
-| Component | File | What It Does | Gap |
+| Primitive | File | What It Does | Gap |
 |---|---|---|---|
 | Result truncator | `hooks/result-truncator.sh` | Head+tail char truncation (first 2K + last 1K) | No command-type awareness; discards structured data |
 | Context watchdog | `hooks/context-watchdog.sh` | Counts tool calls, warns at 50/70/85% thresholds | Advisory only; agent must act manually |

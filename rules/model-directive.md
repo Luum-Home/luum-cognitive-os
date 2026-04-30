@@ -61,7 +61,7 @@ lower cost + lower expectations → either recovers or gets disabled for rewrite
 
 ## Integration
 
-| Component | Role |
+| Primitive | Role |
 |-----------|------|
 | `hooks/dispatch-gate.sh` | Emits MODEL_DIRECTIVE on every allowed agent launch |
 | `lib/dispatch_model_advisor.py` | `format_model_directive()` formats the marker |

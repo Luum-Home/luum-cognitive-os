@@ -23,12 +23,11 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 import sys
 import time
 from collections import defaultdict
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator, NamedTuple
 
@@ -305,8 +304,8 @@ def build_skill_references(project_root: Path) -> set[str]:
 
 def check_jsonl_output(component_path: Path, metrics_dir: Path) -> bool:
     """
-    Check if a component writes to a known metrics JSONL file that exists and has rows.
-    Reads the component source for file path literals ending in .jsonl.
+    Check if an agentic primitive writes to a known metrics JSONL file that exists and has rows.
+    Reads the agentic primitive source for file path literals ending in .jsonl.
     """
     try:
         content = component_path.read_text(errors="replace")
@@ -407,7 +406,6 @@ class Auditor:
     def classify_hook(self, path: Path) -> Classification:
         basename = path.name
         stem = path.stem  # without .sh
-        rel = str(path.relative_to(self.project_root))
 
         # _lib/ helpers → always METADATA
         if "_lib" in path.parts:

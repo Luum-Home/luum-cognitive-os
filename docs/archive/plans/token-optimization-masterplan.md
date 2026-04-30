@@ -1,8 +1,8 @@
 <!--
 RECONCILIATION STATUS: SUPERSEDED
-Superseded by: ADR-027 (SO slimming — context overhead pillar), ADR-044 (context payload slimming — non-rule components), ws1 EXCLUDED_RULES (14→87 rules excluded), ws2 SmartTruncator, ws3 prompt cache (78.5% input cost reduction)
+Superseded by: ADR-027 (SO slimming — context overhead pillar), ADR-044 (context payload slimming — non-rule agentic primitives), ws1 EXCLUDED_RULES (14→87 rules excluded), ws2 SmartTruncator, ws3 prompt cache (78.5% input cost reduction)
 Reconciled: 2026-04-21
-Reason: the 8 largest waste sources enumerated (TO-1 through TO-8) all have shipped components or ADR coverage. The target ">95% efficiency" is being measured via SLO 10/11 (startup-benchmark.sh) rather than this plan's KPIs.
+Reason: the 8 largest waste sources enumerated (TO-1 through TO-8) all have shipped agentic primitives or ADR coverage. The target ">95% efficiency" is being measured via SLO 10/11 (startup-benchmark.sh) rather than this plan's KPIs.
 -->
 
 # Master Plan: Token Optimization — Orchestrator Efficiency

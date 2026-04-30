@@ -128,7 +128,7 @@ Pattern detector injects warnings into upcoming agents
 Improved skills --> more efficient agents --> KPIs improve --> closed loop
 ```
 
-**Components:**
+**Agentic primitives:**
 - **Error learning**: Automatic capture of test, lint, and build failures
 - **Pattern detection**: 3+ similar errors within 24h trigger warnings
 - **Skill adaptation**: After 3+ failures, suggests skill rewrite
@@ -206,7 +206,7 @@ Know exactly what your AI is doing and how much it costs.
 
 A rich ecosystem of specialized capabilities available out of the box.
 
-| Component | Count | Examples |
+| Primitive | Count | Examples |
 |---|---|---|
 | Skills (project) | 27 | /sdd-new, /coverage-report, /sre-agent, /error-analyzer, /model-optimizer |
 | Skills (global) | 15+ | SDD phases (9), skill-creator, skill-registry, go-testing, webapp-testing |

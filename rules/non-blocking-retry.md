@@ -55,7 +55,7 @@ When the rate limiter returns `RATE_LIMIT_QUEUED`:
 
 ## Integration
 
-| Component | Role |
+| Primitive | Role |
 |-----------|------|
 | `lib/rate_limiter.py` | RateLimitQueue enqueues blocked actions |
 | `lib/retry_scheduler.py` | Formats CronCreate-compatible retry schedule |

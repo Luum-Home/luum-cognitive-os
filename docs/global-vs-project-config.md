@@ -246,8 +246,8 @@ This naturally separates "how COS works" (global) from "how this project works" 
 
 For users who want to move to global install:
 
-1. Run `cos init --global` to install global components.
-2. In each project, run `cos upgrade --project` to detect and skip globally-installed components.
+1. Run `cos init --global` to install global agentic primitives.
+2. In each project, run `cos upgrade --project` to detect and skip globally-installed agentic primitives.
 3. The project `.claude/rules/cos/` will only contain project-specific rules.
 4. Global rules are loaded automatically via `~/.claude/rules/cos/`.
 

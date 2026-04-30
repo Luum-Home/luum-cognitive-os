@@ -253,9 +253,9 @@ See `docs/roadmap.md` Phase 1 for the detailed implementation plan.
 
 ---
 
-## Relationship to Existing Components
+## Relationship to Existing Agentic Primitives
 
-| Component | Role in Factory | Location |
+| Primitive | Role in Factory | Location |
 |---|---|---|
 | `model_router.py` | Static routing table with dynamic selection logic | `lib/model_router.py` |
 | `planning_poker.py` | Multi-model estimation -- uses all 3 layers independently | `lib/planning_poker.py` |
