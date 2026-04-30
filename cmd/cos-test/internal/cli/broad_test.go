@@ -103,3 +103,29 @@ func TestShouldSkipForNoDocker(t *testing.T) {
 		}
 	}
 }
+
+func TestCapWorkers(t *testing.T) {
+	t.Setenv("COS_TEST_WORKERS_MAX", "2")
+	cases := []struct {
+		in   string
+		want string
+	}{
+		{in: "auto", want: "2"},
+		{in: "4", want: "2"},
+		{in: "2", want: "2"},
+		{in: "1", want: "1"},
+		{in: "0", want: "0"},
+	}
+	for _, tc := range cases {
+		if got := capWorkers(tc.in); got != tc.want {
+			t.Fatalf("capWorkers(%q) = %q, want %q", tc.in, got, tc.want)
+		}
+	}
+}
+
+func TestCapWorkersInvalidEnvIsIgnored(t *testing.T) {
+	t.Setenv("COS_TEST_WORKERS_MAX", "not-a-number")
+	if got := capWorkers("4"); got != "4" {
+		t.Fatalf("capWorkers with invalid env = %q, want 4", got)
+	}
+}

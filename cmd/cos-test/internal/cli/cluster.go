@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -146,6 +147,7 @@ func buildClusterPlan(cfg *config.Config, laneName string) (*clusterPlan, error)
 		return nil, err
 	}
 	resources := pol.Effective(laneName)
+	resources.Workers = capWorkers(resources.Workers)
 
 	plan := &clusterPlan{Lane: lane, Resources: resources}
 	forcedSerial := isLaneForcedSerial(laneName)
@@ -260,6 +262,31 @@ func enforceResourcePolicy(resources resourcepolicy.ResourcePolicy) error {
 		return fmt.Errorf("blocked by resource policy: docker-required lane requires COS_ALLOW_DOCKER_TESTS=1")
 	}
 	return nil
+}
+
+func capWorkers(workers string) string {
+	capRaw := strings.TrimSpace(os.Getenv("COS_TEST_WORKERS_MAX"))
+	if capRaw == "" {
+		return workers
+	}
+	capN, err := strconv.Atoi(capRaw)
+	if err != nil || capN <= 0 {
+		return workers
+	}
+	if workers == "0" {
+		return workers
+	}
+	if workers == "auto" {
+		return strconv.Itoa(capN)
+	}
+	workerN, err := strconv.Atoi(workers)
+	if err != nil {
+		return workers
+	}
+	if workerN > capN {
+		return strconv.Itoa(capN)
+	}
+	return workers
 }
 
 func workerLabel(workers string) string {
