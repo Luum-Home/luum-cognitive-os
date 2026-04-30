@@ -45,3 +45,55 @@ Each wave has its own AC; full v2 preamble when all 4 merged.
 ## Dependencies
 - Wave 3 touches ADR-033 harness_adapter base schema (breaking)
 - Wave 4 optional — only if precomputation benefit justifies complexity
+
+---
+
+## Wave 2 — Implemented (2026-04-30)
+
+Closed Gap #1 (typed input schema) and Gap #2 (4-layer context budget).
+
+### Gap #1 — Typed input variable contract (`INPUT SCHEMA:`)
+
+**Problem**: Sub-agents had no machine-readable schema for the fields they receive.
+Peer frameworks (Semantic Kernel, LlamaIndex) declare typed `input_variables[]`.
+
+**Solution**: `templates/agent-preamble.md` now contains an `INPUT SCHEMA:` block
+(lines added after the CONTEXT BUDGET block) that:
+- Documents the canonical fields (`task_description`, `acceptance_criteria`,
+  `blast_radius`, `working_dir`) with types and required/optional markers.
+- States the validation rule: missing `required` fields → `ESCALATION:` and stop.
+- Allows per-launch custom fields declared by the orchestrator.
+
+No library changes required for Wave 2; enforcement is convention-based until
+Wave 3 ships Pydantic validation.
+
+### Gap #2 — 4-layer context budget (`CONTEXT BUDGET:`)
+
+**Problem**: Only `MAX 50 tool calls` existed. Google ADK uses 4 layers:
+static / turn / user / cache.
+
+**Solution**:
+- `cognitive-os.yaml` — new top-level `context_budget:` block with four integer keys:
+  `static_max_tokens: 4000`, `turn_max_tokens: 8000`,
+  `user_max_tokens: 12000`, `cache_max_tokens: 32000`.
+- `templates/agent-preamble.md` — new `CONTEXT BUDGET:` block surfaces these
+  values to sub-agents and instructs them to summarise + save to Engram when
+  context grows large.
+
+Enforcement (Pydantic, hard stop) is **out of scope** — deferred to Wave 3.
+
+### Verification
+
+```
+grep -c "INPUT SCHEMA" templates/agent-preamble.md   # >= 1
+grep -c "CONTEXT BUDGET" templates/agent-preamble.md  # >= 1
+grep -c "context_budget" cognitive-os.yaml            # >= 1
+pytest tests/integration/test_preamble_v2_wave2.py -v # 4+ pass
+pytest tests/integration/test_preamble_v2_wave1.py -v # all pass (no regression)
+```
+
+### Files changed
+- `templates/agent-preamble.md` — INPUT SCHEMA block + CONTEXT BUDGET block
+- `cognitive-os.yaml` — `context_budget:` section (before `sessions:`)
+- `docs/adrs/ADR-038-preamble-v2-industry-aligned.md` — this section
+- `tests/integration/test_preamble_v2_wave2.py` — new test file (4 tests)
