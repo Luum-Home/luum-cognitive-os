@@ -31,11 +31,11 @@ Files moved via `git mv` and all citations updated in the same changeset:
 | `docs/architecture/stabilization-roadmap.md` | `.cognitive-os/plans/roadmaps/stabilization-roadmap.md` |
 | `docs/archive/plans/token-optimization-masterplan.md` | `.cognitive-os/plans/archive/token-optimization-masterplan.md` |
 
-**Anomaly surfaced**: `docs/architecture/plans/test-resource-governance-sprint.md` was
-found in the source directory but is not in this ADR's migration table. It was NOT moved.
-The directory `docs/architecture/plans/` therefore could not be removed. A follow-up task
-should classify this file and either move it to `.cognitive-os/plans/architecture/` or
-add it to the allowlist in `tests/audit/test_plan_locations.py`.
+**Anomaly resolved (2026-04-30 follow-up)**: `docs/architecture/plans/test-resource-governance-sprint.md`
+was not in this ADR's migration table but was discovered during execution. It is a sprint plan
+tied to ADR-072/073 (test lane taxonomy) and was moved to
+`.cognitive-os/plans/architecture/test-resource-governance-sprint.md`. The directory
+`docs/architecture/plans/` was then removed.
 
 Hook updated: `hooks/session-startup-protocol.sh` now indexes
 `.cognitive-os/plans/architecture/` and `.cognitive-os/plans/roadmaps/` instead of
