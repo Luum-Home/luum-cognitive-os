@@ -291,10 +291,13 @@ def test_mandatory_rules_template_exists_and_non_empty():
 
 @pytest.mark.audit
 def test_self_install_classifies_every_rule():
-    """Every rule file must be in CORE_RULES, EXCLUDED_RULES, or the compact-only list.
+    """Every rule file must be in CORE_RULES, EXCLUDED_RULES, or RULES-COMPACT.
 
     self-install.sh decides which rules are symlinked into .claude/rules/cos/.
-    If a rule is in neither list, its injection status is undefined.
+    Stage-1 installs only RULES-COMPACT by default; Stage-2 ref-key expansion
+    makes compact-indexed rules reachable without listing every file in
+    CORE_RULES. EXCLUDED_RULES still documents files that must not be projected
+    by full/self-hosting sync.
     """
     if not SELF_INSTALL.exists():
         pytest.skip("self-install.sh not present")
@@ -315,14 +318,15 @@ def test_self_install_classifies_every_rule():
 
     core = extract_array("CORE_RULES")
     excluded = extract_array("EXCLUDED_RULES")
-    classified = core | excluded
+    compact_indexed = {f"{key}.md" for key in _compact_index_keys()}
+    classified = core | excluded | compact_indexed
 
     all_rules = {p.name for p in RULE_PATHS}
     unclassified = all_rules - classified - COMPACT_EXEMPT
     assert not unclassified, (
-        f"Rules not classified in CORE_RULES or EXCLUDED_RULES: {sorted(unclassified)}. "
-        f"Add each to the appropriate array in hooks/self-install.sh or mark them as "
-        f"COMPACT_EXEMPT here."
+        f"Rules not classified in CORE_RULES, EXCLUDED_RULES, or RULES-COMPACT: "
+        f"{sorted(unclassified)}. Add each to the compact index, the appropriate "
+        f"hooks/self-install.sh array, or mark it as COMPACT_EXEMPT here."
     )
 
 

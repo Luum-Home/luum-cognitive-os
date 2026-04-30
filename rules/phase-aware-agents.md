@@ -1,5 +1,5 @@
-<!-- TIER: 0 -->
 <!-- SCOPE: both -->
+<!-- TIER: 0 -->
 # Phase-Aware Agent Protocol
 
 ## Current Phase: RECONSTRUCTION

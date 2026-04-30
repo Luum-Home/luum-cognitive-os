@@ -22,7 +22,8 @@ Contract:
     by `expand()`.
 
 Tier filtering (ADR-075 Stage 2):
-  Rules carry a `<!-- TIER: N -->` comment on their first line.
+  Rules carry a `<!-- TIER: N -->` comment near the top of the file, after
+  the mandatory `<!-- SCOPE: ... -->` comment when present.
   When `tier_filter` is provided to `expand()`, only rules whose tier is
   in the filter set are expanded; others keep their marker intact.
   Rules without frontmatter are treated as Tier-1 (safe default).
@@ -48,7 +49,7 @@ from typing import Dict, List, Optional, Set
 # allow letters, digits, hyphens, underscores, dots.
 _REF_KEY_RE = re.compile(r"\[`([A-Za-z][A-Za-z0-9_.\-]{0,80})`\]")
 
-# Matches the tier frontmatter comment on line 1: <!-- TIER: N -->
+# Matches the tier frontmatter comment: <!-- TIER: N -->
 _TIER_RE = re.compile(r"^<!--\s*TIER:\s*(\d+)\s*-->")
 
 
@@ -76,17 +77,20 @@ def _miss_log_path() -> Path:
 
 
 def _read_tier(rule_path: Path) -> int:
-    """Read only line 1 of a rule file and return its tier (0, 1, or 2).
+    """Read a rule file header and return its tier (0, 1, or 2).
 
-    If no ``<!-- TIER: N -->`` frontmatter is present, returns 1 (safe default).
-    Never raises; returns 1 on any I/O error.
+    If no ``<!-- TIER: N -->`` frontmatter is present in the first 5 lines,
+    returns 1 (safe default). Never raises; returns 1 on any I/O error.
     """
     try:
         with rule_path.open(encoding="utf-8") as fh:
-            first_line = fh.readline()
-        m = _TIER_RE.match(first_line)
-        if m:
-            return int(m.group(1))
+            for _ in range(5):
+                line = fh.readline()
+                if not line:
+                    break
+                m = _TIER_RE.match(line)
+                if m:
+                    return int(m.group(1))
     except OSError:
         pass
     return 1  # default: Tier-1
@@ -173,8 +177,8 @@ def expand(
         fence: optional string wrapper placed around inserted content so
                callers can visually distinguish inlined text (e.g. "\\n---\\n").
         tier_filter: when provided, only expand rules whose ``<!-- TIER: N -->``
-                     frontmatter tier is in this set.  Rules without frontmatter
-                     are treated as Tier-1.  When None (default), all rules are
+                     frontmatter tier is in this set. Rules without frontmatter
+                     are treated as Tier-1. When None (default), all rules are
                      expanded (backward-compatible behaviour).
 
     Misses keep the original `[\\`key\\`]` marker intact.

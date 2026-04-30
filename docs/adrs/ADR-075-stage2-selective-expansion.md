@@ -7,6 +7,10 @@
 
 ---
 
+## Status
+
+Accepted.
+
 ## Context
 
 ADR-027 Phase 2 introduced `expand()` in `lib/ref_key_loader.py` which inlines
@@ -153,3 +157,24 @@ delivers ~56K savings immediately; step 2 (`[0]`) adds another ~15K for the Tier
 - `hooks/inject-phase-context.sh` — hook wiring  
 - `.cognitive-os/test-lanes.yaml` — lane registry for tests  
 - `tests/unit/test_ref_key_loader.py` — unit tests (23 pass)
+
+## Alternatives rejected
+
+- **Expand all rules on every Agent call**: Rejected because it preserved the
+  pre-existing ~107K-token expansion cost and made `additionalContext` truncation
+  likely on every real task.
+
+- **Hard-code only Tier-0 rules in `RULES-COMPACT.md`**: Rejected because it would
+  make the compact index brittle and would hide useful Tier-1 behavior contracts
+  from normal sessions.
+
+- **Runtime semantic selection by LLM**: Rejected because selecting rules with an
+  LLM before every tool call would add latency, cost, and non-determinism to the
+  hot path.
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit/test_ref_key_loader.py -q --tb=short
+python3 -m pytest tests/integration/test_inject_phase_context_expansion.py -q --tb=short
+```

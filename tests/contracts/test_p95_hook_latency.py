@@ -127,6 +127,7 @@ _KNOWN_SLOW_HOOKS: frozenset[str] = frozenset({
     "destructive-rm-blocker",
     "clarification-gate",
     "blast-radius",
+    "reinvention-check",
 })
 
 

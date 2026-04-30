@@ -1,5 +1,5 @@
-<!-- TIER: 1 -->
 <!-- SCOPE: both -->
+<!-- TIER: 1 -->
 # Response Compression — Orchestrator Output Discipline
 
 ## Rule (Always Active)

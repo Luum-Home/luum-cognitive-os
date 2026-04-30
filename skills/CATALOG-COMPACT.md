@@ -3,9 +3,9 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 142
+Total skills: 143
 
-## os (12)
+## os (13)
 
 | Skill | Description |
 |-------|-------------|
@@ -17,6 +17,7 @@ Total skills: 142
 | audit-integrity | Symlink-aware integrity audit of hooks, libs, and skills. |
 | bump-version | Calculate and write the new version to the VERSION file |
 | generate-changelog | Move [Unreleased] CHANGELOG entries into a versioned release section |
+| memory-scan | Scan content for memory threats (prompt injection, exfiltration, invisible Unicode). |
 | push-release | Push the release commit and tags to the remote — always requires explicit… |
 | release-os | META — orchestrate the full Cognitive OS release by chaining the 5 atomic… |
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |

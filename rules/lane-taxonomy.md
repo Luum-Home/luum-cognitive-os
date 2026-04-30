@@ -1,5 +1,5 @@
-<!-- TIER: 1 -->
 <!-- SCOPE: os-only -->
+<!-- TIER: 1 -->
 # Test Lane Taxonomy
 
 > Source: ADR-072 (`docs/adrs/ADR-072-test-lane-taxonomy.md`).

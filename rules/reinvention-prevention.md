@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: os-only -->
+<!-- TIER: 2 -->
 # Reinvention Prevention
 
 ## Rule: Check Before Building

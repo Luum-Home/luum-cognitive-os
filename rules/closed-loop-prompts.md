@@ -1,5 +1,5 @@
-<!-- TIER: 0 -->
 <!-- SCOPE: both -->
+<!-- TIER: 0 -->
 # Closed-Loop Prompts — Self-Correcting Agent Execution
 
 > Source: "Tactical Agentic Coding" by IndyDevDan (agenticengineer.com)
