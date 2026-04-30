@@ -6,7 +6,7 @@
 
 ## Inventory snapshot
 
-| Surface | Components | File count | Target at v1.0 | Feasibility |
+| Surface | Primitives | File count | Target at v1.0 | Feasibility |
 |---|---|---|---|---|
 | `hooks/*.sh` | shell hooks | 137 | < 40 CORE | **TIGHT but feasible** (see §1 — 38 CORE identified) |
 | `lib/*.py` | Python libraries | 150 | < 25 CORE | **FEASIBLE** (24 CORE identified; most libs already support specific extensions) |
@@ -14,7 +14,7 @@
 | `skills/*/` | skills | 127 | < 20 CORE | **AT LIMIT** (20 CORE identified; every additional skill belongs in an extension) |
 | `scripts/*` | CLI scripts | 64 | no target | 16 CORE; 48 move to extensions or remove |
 
-**Aggregate result:** 126 CORE components of 581 total = **22% core, 78% extensions/remove**. This confirms the FROZEN-BACKLOG thesis that the core is bloated today and that the extraction is structurally sound.
+**Aggregate result:** 126 CORE agentic primitives of 581 total = **22% core, 78% extensions/remove**. This confirms the FROZEN-BACKLOG thesis that the core is bloated today and that the extraction is structurally sound.
 
 ## Proposed extension pack taxonomy
 
@@ -46,7 +46,7 @@ That is **15 extension packs**. Core retains only the minimum scaffolding to ini
 
 ### CORE hooks (38) — required for `cos init` + `session start` + trivial task bypass to work
 
-| component | current path | class | new path | reason |
+| primitive | current path | class | new path | reason |
 |---|---|---|---|---|
 | session-init.sh | hooks/session-init.sh | CORE | hooks/session-init.sh | Session bootstrap (SLO 1, SLO 5 owner) |
 | session-resume.sh | hooks/session-resume.sh | CORE | hooks/session-resume.sh | Crash-recovery bootstrap |
@@ -121,7 +121,7 @@ Rather than enumerate 99 individual rows (too long to be useful), hooks are grou
 
 ### REMOVE (superseded or dead)
 
-| component | current path | class | reason |
+| primitive | current path | class | reason |
 |---|---|---|---|
 | task-panel-sync.sh | hooks/task-panel-sync.sh | REMOVE | Superseded by task-bridge-notify.sh (ADR-024, FROZEN-BACKLOG) |
 | agnix-lint.sh | hooks/agnix-lint.sh | REMOVE (if agnix retired) or EXTENSION_ecosystem-integrations | Unused per registry |
@@ -259,7 +259,7 @@ Remaining 48 scripts move with their owning pack:
 
 ## §6 — REMOVE list (pre-v1.0 cleanup)
 
-| component | reason |
+| primitive | reason |
 |---|---|
 | `hooks/task-panel-sync.sh` | Superseded by task-bridge-notify (ADR-024). |
 | `hooks/_lib/task_panel_adapter.py` | Folded into task_bridge.py. |
@@ -279,4 +279,4 @@ Remaining 48 scripts move with their owning pack:
 | Scripts | 16 | 48 | 0 | n/a |
 | **Total** | **126** | **453** | **2** | **22% CORE** |
 
-Every component has a class. Zero "unclassified". Acceptance criterion #1 met.
+Every agentic primitive has a class. Zero "unclassified". Acceptance criterion #1 met.

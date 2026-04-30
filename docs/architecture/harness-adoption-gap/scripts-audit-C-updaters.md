@@ -184,7 +184,7 @@ source repo (confirmed present at `.git/hooks/post-merge`, calls
   if [ -L ".cognitive-os" ]; then ...; fi
   if [ -L ".claude" ]; then ...; fi
 
-  # Remove ONLY COS-managed components (namespaced under cos/).
+  # Remove ONLY COS-managed agentic primitives (namespaced under cos/).
   [ -d ".claude/rules/cos" ] && rm -rf .claude/rules/cos
   [ -d ".cognitive-os/hooks/cos" ] && rm -rf .cognitive-os/hooks/cos
   [ -d ".cognitive-os/skills/cos" ] && rm -rf .cognitive-os/skills/cos

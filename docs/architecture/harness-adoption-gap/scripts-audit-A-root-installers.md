@@ -19,7 +19,7 @@ modifications. The real fix for external-project installs lives in `scripts/cos-
 - **Synced**: None directly. Script handles arg parsing (`--from`, `--force`, `--help`),
   source-repo detection, conflict warning for existing `.claude/`, preparing a temp
   source copy (via rsync excluding `.venv`, `node_modules`, `reference`, `.git`,
-  `__pycache__`), delegates all component sync to `cos-init.sh --standard` (line 248),
+  `__pycache__`), delegates all agentic primitive sync to `cos-init.sh --standard` (line 248),
   then copies `CLAUDE.md` template into `.claude/CLAUDE.md` if not present (line 254-256).
 - **Destinations**: The only destination this script writes directly is
   `.claude/CLAUDE.md`. All other destinations (skills, rules, hooks, commands, templates,

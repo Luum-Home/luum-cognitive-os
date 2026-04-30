@@ -63,7 +63,7 @@ first useful versions of the system.
 
 The repo's own architecture documented a three-layer model:
 
-- `.cognitive-os/` for universal OS components
+- `.cognitive-os/` for universal OS agentic primitives
 - `{project}/.claude/` for project extensions
 - generated project artifacts under `.claude/`
 

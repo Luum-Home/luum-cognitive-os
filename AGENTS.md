@@ -10,13 +10,13 @@
 
 Cognitive OS is a portable, framework-agnostic operating system for AI coding agents. It provides self-improving skills, automated quality gates, fault tolerance, SRE auto-repair, cost tracking, and squad-based agent organization for **any** project (Go, Node.js, Python, Java, Rust, or any stack).
 
-The OS follows a 3-layer architecture: universal OS components in `hooks/`, `rules/`, `skills/`; project-specific extensions in `{project}/.claude/`; and auto-generated config via `/cognitive-os-init`. Project-specific content is never hardcoded into the OS itself.
+The OS follows a 3-layer architecture: universal OS agentic primitives in `hooks/`, `rules/`, `skills/`; project-specific extensions in `{project}/.claude/`; and auto-generated config via `/cognitive-os-init`. Project-specific content is never hardcoded into the OS itself.
 
 ---
 
 ## Architecture
 
-| Component | Location | Purpose |
+| Primitive | Location | Purpose |
 |-----------|----------|---------|
 | **Hooks** | `hooks/` | Claude Code lifecycle hooks (SessionStart, PreToolUse, PostToolUse, Stop) |
 | **Rules** | `rules/` | Governance rules loaded contextually — compact index at `rules/RULES-COMPACT.md` |
@@ -33,6 +33,41 @@ Hooks wire into the Claude Code hook system. The hook chain is: SessionStart ini
 Memory lifecycle quick map: `docs/architecture/memory-lifecycle.md`. Use it to
 understand which hooks save context, which hooks recover prior state, and which
 doctor proves Codex/Claude session portability.
+
+---
+
+## Vocabulary
+
+### Canonical term: "agentic primitive"
+
+The layer of OS constructs that agents compose at runtime is called **agentic primitives**. This aligns with Anthropic's published SDK vocabulary ([Agent SDK overview](https://platform.claude.com/docs/en/agent-sdk/overview), [hooks guide](https://docs.anthropic.com/en/docs/claude-code/hooks-guide), [agent skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)) and with broad industry usage (LangChain, AutoGen, Semantic Kernel all use "primitive" for atomic agentic building blocks).
+
+| Agentic primitive | This repo's slot |
+|---|---|
+| Skill | `skills/` + `.cognitive-os/skills/` |
+| Hook | `hooks/` |
+| Rule | `rules/` |
+| Agent | `agents/` |
+| Subagent | spawned at runtime via the `Agent` tool |
+| Memory | Engram via `mcp__plugin_engram_engram` tools |
+| MCP server | configured in `.claude/settings.json` |
+
+### Carve-out: "component" remains valid
+
+"Component" is **not** banned — it is reserved for generic software-engineering contexts where the term is established and unambiguous:
+
+- UI/frontend components (React, Vue, Web Components)
+- Microservice components in a service mesh
+- Build or test components (pytest component, Makefile component)
+- Third-party library components
+
+Within agentic-layer documentation, **always prefer "agentic primitive"** (or the specific slot name: skill, hook, rule, agent). Writing "OS component" when the referent is a skill or hook is imprecise and will confuse readers migrating from generic software-engineering backgrounds.
+
+### Enforcement
+
+This decision is recorded as `decision/terminology/agentic-primitives` in Engram. A future audit test (`tests/audit/test_vocabulary_agentic_primitives.py`) will flag the phrase "OS component" in `rules/`, `skills/`, `hooks/`, and `docs/` files as a vocabulary drift violation. Until that test exists, authors are expected to self-enforce.
+
+Cross-reference: ADR-072 (`docs/adrs/ADR-072-test-lane-taxonomy.md`) uses "primitive" for lane-taxonomy entities — consistent with this decision.
 
 ---
 
