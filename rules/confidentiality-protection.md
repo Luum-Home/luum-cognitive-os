@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Confidentiality Protection — IP Leak Prevention
 

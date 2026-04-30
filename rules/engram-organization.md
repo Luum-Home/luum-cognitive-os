@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Engram Organization — Path Segregation (BMAD v6 Pattern 8)
 

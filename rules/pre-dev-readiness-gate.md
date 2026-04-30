@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: os-only -->
 # Pre-Development Readiness Gate
 

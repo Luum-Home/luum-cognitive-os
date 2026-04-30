@@ -1,3 +1,4 @@
+<!-- TIER: 0 -->
 <!-- SCOPE: both -->
 # COS Rules Index
 

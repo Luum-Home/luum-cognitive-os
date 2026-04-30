@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Task DAG — Dependency-Aware Agent Orchestration
 

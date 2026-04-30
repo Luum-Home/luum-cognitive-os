@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Result Management — Large Output Prevention
 
