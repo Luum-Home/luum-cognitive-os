@@ -39,6 +39,26 @@ _count_md() {
   fi
 }
 
+# ── Helper: count .md files in a directory, excluding README/templates/archive
+# Scans top-level only (no recursion into subdirs) to stay within budget.
+_count_md_plans() {
+  local dir="$1"
+  if [ ! -d "$dir" ]; then
+    echo 0
+    return
+  fi
+  local count=0
+  local f
+  while IFS= read -r f; do
+    # Skip README.md, *.template.md, and any archive-named file
+    case "$f" in
+      README.md|*.template.md|*archive*|*ARCHIVE*) continue ;;
+      *.md) count=$((count + 1)) ;;
+    esac
+  done < <(ls -1 "$dir" 2>/dev/null)
+  echo "$count"
+}
+
 # ── 1. Engram memory (filesystem heuristic only — no live query) ───────────
 # We don't call mem_search from a hook (too slow, would need MCP). Instead we
 # report whether the Engram DB file appears to exist under the usual paths.
@@ -61,8 +81,10 @@ fi
 
 # ── 2. Plans <-> ADRs cross-reference ───────────────────────────────────────
 PLANS_DIR="$PROJECT_DIR/.cognitive-os/plans/features"
+ARCH_PLANS_DIR="$PROJECT_DIR/docs/architecture/plans"
 ADRS_DIR="$PROJECT_DIR/docs/adrs"
 PLAN_COUNT=$(_count_md "$PLANS_DIR")
+ARCH_PLAN_COUNT=$(_count_md_plans "$ARCH_PLANS_DIR")
 ADR_COUNT=$(_count_md "$ADRS_DIR")
 
 # ── 3. Work queue state ────────────────────────────────────────────────────
@@ -117,7 +139,7 @@ fi
 cat <<SUMMARY
 [startup-protocol] Context check (rules/startup-protocol.md):
   - Engram: ${ENGRAM_STATUS} — ${ENGRAM_HINT}
-  - Plans: ${PLAN_COUNT} in .cognitive-os/plans/features/ (cross-ref ${ADR_COUNT} ADRs in docs/adrs/)
+  - Plans: ${PLAN_COUNT} in .cognitive-os/plans/features/ + ${ARCH_PLAN_COUNT} in docs/architecture/plans/ (cross-ref ${ADR_COUNT} ADRs in docs/adrs/)
   - Work queue: ${LIVE_COUNT} live, ${PARKED_COUNT} parked
   - Validator: ${VALIDATOR_LINE}
   - Suggested first action: ${SUGGESTION}
