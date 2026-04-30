@@ -84,6 +84,10 @@ fi
 # When present, all adaptive detection below is skipped entirely.
 _caller_workers=""
 _caller_lane=""
+_caller_timeout_seconds=""
+_caller_docker_policy=""
+_caller_cost_policy=""
+_caller_artifact_policy=""
 _remaining_args=()
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -105,6 +109,34 @@ while [ "$#" -gt 0 ]; do
       ;;
     --lane=*)
       _caller_lane="${1#--lane=}"
+      ;;
+    --timeout-seconds)
+      shift
+      _caller_timeout_seconds="${1:-}"
+      ;;
+    --timeout-seconds=*)
+      _caller_timeout_seconds="${1#--timeout-seconds=}"
+      ;;
+    --docker-policy)
+      shift
+      _caller_docker_policy="${1:-}"
+      ;;
+    --docker-policy=*)
+      _caller_docker_policy="${1#--docker-policy=}"
+      ;;
+    --cost-policy)
+      shift
+      _caller_cost_policy="${1:-}"
+      ;;
+    --cost-policy=*)
+      _caller_cost_policy="${1#--cost-policy=}"
+      ;;
+    --artifact-policy)
+      shift
+      _caller_artifact_policy="${1:-}"
+      ;;
+    --artifact-policy=*)
+      _caller_artifact_policy="${1#--artifact-policy=}"
       ;;
     *)
       _remaining_args+=("$1")
@@ -241,7 +273,8 @@ PYLANE
     echo "[pytest-with-summary] Injected: serial (workers=0)"
   fi
 fi
-unset _has_n_flag _caller_workers _caller_lane _workers _lane_parallel _lane_name _lane_result _LANES_YAML 2>/dev/null || true
+_effective_workers="${_workers:-}"
+unset _has_n_flag _caller_workers _workers _lane_parallel _lane_name _lane_result _LANES_YAML 2>/dev/null || true
 # --- end adaptive worker injection ---
 
 timestamp="$(date -u +"%Y%m%dT%H%M%SZ")"
@@ -261,6 +294,7 @@ failures="$run_dir/failures.txt"
 junit="$run_dir/junit.xml"
 metadata="$run_dir/metadata.txt"
 exit_code_file="$run_dir/exit-code.txt"
+resource_policy_json="$run_dir/resource-policy.json"
 latest_link="$REPORT_ROOT/latest"
 inventory_tool="$SCRIPT_DIR/test_run_inventory.py"
 
@@ -270,6 +304,12 @@ inventory_tool="$SCRIPT_DIR/test_run_inventory.py"
   echo "cwd=$(pwd)"
   echo "pytest_bin=$PYTEST_BIN"
   echo "args=$*"
+  [ -n "${_caller_lane:-}" ] && echo "lane=$_caller_lane"
+  [ -n "${_effective_workers:-}" ] && echo "workers=$_effective_workers"
+  [ -n "${_caller_timeout_seconds:-}" ] && echo "timeout_seconds=$_caller_timeout_seconds"
+  [ -n "${_caller_docker_policy:-}" ] && echo "docker_policy=$_caller_docker_policy"
+  [ -n "${_caller_cost_policy:-}" ] && echo "cost_policy=$_caller_cost_policy"
+  [ -n "${_caller_artifact_policy:-}" ] && echo "artifact_policy=$_caller_artifact_policy"
   git -C "$PROJECT_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null | sed 's/^/git_branch=/'
   git -C "$PROJECT_DIR" rev-parse --short HEAD 2>/dev/null | sed 's/^/git_commit=/'
   git -C "$PROJECT_DIR" status --short 2>/dev/null | sed 's/^/git_status=/'
@@ -286,6 +326,42 @@ set -e
 
 printf '%s\n' "$status" > "$exit_code_file"
 
+if [ "$status" -eq 0 ]; then
+  _resource_outcome="ok"
+else
+  _resource_outcome="functional_failure"
+fi
+
+COS_TEST_RESOURCE_LANE="${_caller_lane:-}" \
+COS_TEST_RESOURCE_WORKERS="${_effective_workers:-}" \
+COS_TEST_RESOURCE_TIMEOUT_SECONDS="${_caller_timeout_seconds:-}" \
+COS_TEST_RESOURCE_DOCKER_POLICY="${_caller_docker_policy:-}" \
+COS_TEST_RESOURCE_COST_POLICY="${_caller_cost_policy:-}" \
+COS_TEST_RESOURCE_ARTIFACT_POLICY="${_caller_artifact_policy:-}" \
+COS_TEST_RESOURCE_OUTCOME="$_resource_outcome" \
+python3 - "$resource_policy_json" <<'PYRESOURCE'
+from __future__ import annotations
+
+import json
+import os
+import sys
+
+out = {
+    "lane": os.environ.get("COS_TEST_RESOURCE_LANE", ""),
+    "workers": os.environ.get("COS_TEST_RESOURCE_WORKERS", ""),
+    "timeout_seconds": os.environ.get("COS_TEST_RESOURCE_TIMEOUT_SECONDS", ""),
+    "docker_policy": os.environ.get("COS_TEST_RESOURCE_DOCKER_POLICY", ""),
+    "cost_policy": os.environ.get("COS_TEST_RESOURCE_COST_POLICY", ""),
+    "artifact_policy": os.environ.get("COS_TEST_RESOURCE_ARTIFACT_POLICY", ""),
+    "outcome": os.environ.get("COS_TEST_RESOURCE_OUTCOME", ""),
+}
+if out["timeout_seconds"]:
+    out["timeout_seconds"] = int(out["timeout_seconds"])
+with open(sys.argv[1], "w", encoding="utf-8") as fh:
+    json.dump(out, fh, indent=2, sort_keys=True)
+    fh.write("\n")
+PYRESOURCE
+
 {
   echo "# Pytest Run Summary"
   echo
@@ -293,6 +369,13 @@ printf '%s\n' "$status" > "$exit_code_file"
   echo "- Exit code: $status"
   echo "- Artifacts: $run_dir"
   echo "- Command: $PYTEST_BIN $* --junitxml $junit"
+  echo "- Resource outcome: $_resource_outcome"
+  [ -n "${_caller_lane:-}" ] && echo "- Lane: $_caller_lane"
+  [ -n "${_effective_workers:-}" ] && echo "- Workers: $_effective_workers"
+  [ -n "${_caller_timeout_seconds:-}" ] && echo "- Timeout seconds: $_caller_timeout_seconds"
+  [ -n "${_caller_docker_policy:-}" ] && echo "- Docker policy: $_caller_docker_policy"
+  [ -n "${_caller_cost_policy:-}" ] && echo "- Cost policy: $_caller_cost_policy"
+  [ -n "${_caller_artifact_policy:-}" ] && echo "- Artifact policy: $_caller_artifact_policy"
   echo
   echo "## Result Lines"
   grep -E "^(=+ .* =+|[0-9]+ (failed|passed|skipped|xfailed|xpassed|error|errors)|FAILED |ERROR )" "$full_output" | tail -80 || true
