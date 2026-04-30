@@ -5,6 +5,7 @@
 - **Owner**: Observability / Infrastructure
 - **Supersedes (partially)**: ADR-034 (observability backend selection — Langfuse portion only)
 - **Relates to**: ADR-054 (docs convention), ADR-055 (docs convention enforcement)
+- **Implementation-plan**: `.cognitive-os/plans/features/phoenix-migration-plan.md`
 
 > Note on numbering: ADR-057 was already assigned to
 > `ADR-057-cross-harness-authoring-and-driver-projection.md` at the time this

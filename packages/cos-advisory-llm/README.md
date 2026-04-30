@@ -14,7 +14,7 @@ These gates activate automatically when `ANTHROPIC_API_KEY` is set AND the effic
 
 ## Wave 1 POC notes
 
-This is the first extension extracted from monolithic `hooks/` per `docs/architecture/core-vs-extensions-migration-plan.md`. Source files remain importable at the old `hooks/*.sh` paths via backwards-compatibility symlinks; symlinks are scheduled for removal in v0.15.2.
+This is the first extension extracted from monolithic `hooks/` per `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md`. Source files remain importable at the old `hooks/*.sh` paths via backwards-compatibility symlinks; symlinks are scheduled for removal in v0.15.2.
 
 ## Migration debt
 

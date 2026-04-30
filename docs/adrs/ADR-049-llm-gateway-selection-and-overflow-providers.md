@@ -639,7 +639,7 @@ Corrected architecture (Option B, implemented as mega-plan C1-C7):
 
 | Checkpoint | Deliverable | Status |
 |---|---|---|
-| C0 | `docs/roadmaps/adr-049-050-051-mega-plan.md` persisted | ✅ |
+| C0 | `.cognitive-os/plans/roadmaps/adr-049-050-051-mega-plan.md` persisted | ✅ |
 | C1 | `--providers` CLI (Option B cascade) + kill-switches | ✅ |
 | C2 | `lib/dispatch.py` abstract router + JSONL metrics foundation | ✅ |
 | C3 | `rules/llm-dispatch.md` + gotcha + ref-key | ✅ |
