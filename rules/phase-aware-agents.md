@@ -1,3 +1,4 @@
+<!-- TIER: 0 -->
 <!-- SCOPE: both -->
 # Phase-Aware Agent Protocol
 

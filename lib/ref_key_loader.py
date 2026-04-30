@@ -21,11 +21,19 @@ Contract:
   - Hits: returned as {key: content} by `resolve()`, substituted inline
     by `expand()`.
 
+Tier filtering (ADR-075 Stage 2):
+  Rules carry a `<!-- TIER: N -->` comment on their first line.
+  When `tier_filter` is provided to `expand()`, only rules whose tier is
+  in the filter set are expanded; others keep their marker intact.
+  Rules without frontmatter are treated as Tier-1 (safe default).
+
 Public API:
-  find_ref_keys(text)                 -> list[str]
-  resolve(text, overrides=None)       -> dict[str, str | None]  (None = miss)
+  find_ref_keys(text)                        -> list[str]
+  resolve(text, overrides=None)              -> dict[str, str | None]  (None = miss)
   expand(text, overrides=None,
-         max_depth=1, fence=None)     -> str
+         max_depth=1, fence=None,
+         tier_filter=None)                   -> str
+  _read_tier(rule_path)                      -> int
 
 Python 3.9+ stdlib + lib.metric_event.
 """
@@ -34,11 +42,14 @@ from __future__ import annotations
 import os
 import re
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional
+from typing import Dict, List, Optional, Set
 
 # Pattern: [`word-with-hyphens`] — enforce at least 2 chars, no whitespace,
 # allow letters, digits, hyphens, underscores, dots.
 _REF_KEY_RE = re.compile(r"\[`([A-Za-z][A-Za-z0-9_.\-]{0,80})`\]")
+
+# Matches the tier frontmatter comment on line 1: <!-- TIER: N -->
+_TIER_RE = re.compile(r"^<!--\s*TIER:\s*(\d+)\s*-->")
 
 
 def _project_root() -> Path:
@@ -62,6 +73,23 @@ def _rules_dir() -> Path:
 
 def _miss_log_path() -> Path:
     return _project_root() / ".cognitive-os" / "metrics" / "ref-key-misses.jsonl"
+
+
+def _read_tier(rule_path: Path) -> int:
+    """Read only line 1 of a rule file and return its tier (0, 1, or 2).
+
+    If no ``<!-- TIER: N -->`` frontmatter is present, returns 1 (safe default).
+    Never raises; returns 1 on any I/O error.
+    """
+    try:
+        with rule_path.open(encoding="utf-8") as fh:
+            first_line = fh.readline()
+        m = _TIER_RE.match(first_line)
+        if m:
+            return int(m.group(1))
+    except OSError:
+        pass
+    return 1  # default: Tier-1
 
 
 def find_ref_keys(text: str) -> List[str]:
@@ -133,6 +161,7 @@ def expand(
     overrides: Optional[Dict[str, str]] = None,
     max_depth: int = 1,
     fence: Optional[str] = None,
+    tier_filter: Optional[Set[int]] = None,
 ) -> str:
     """Expand [`key`] markers inline with the referenced rule content.
 
@@ -143,8 +172,13 @@ def expand(
                    refs that appear inside expanded content.
         fence: optional string wrapper placed around inserted content so
                callers can visually distinguish inlined text (e.g. "\\n---\\n").
+        tier_filter: when provided, only expand rules whose ``<!-- TIER: N -->``
+                     frontmatter tier is in this set.  Rules without frontmatter
+                     are treated as Tier-1.  When None (default), all rules are
+                     expanded (backward-compatible behaviour).
 
     Misses keep the original `[\\`key\\`]` marker intact.
+    Rules excluded by tier_filter also keep their marker intact.
     """
     if not isinstance(text, str) or not text:
         return text
@@ -157,11 +191,22 @@ def expand(
         if not resolved:
             break
 
-        def _sub(match: "re.Match[str]") -> str:
+        def _sub(match: "re.Match[str]", _resolved: Dict = resolved) -> str:
             key = match.group(1)
-            content = resolved.get(key)
+            content = _resolved.get(key)
             if content is None:
                 return match.group(0)  # preserve the marker on miss
+
+            # Tier filtering: if a filter is active, check the rule's tier.
+            if tier_filter is not None:
+                rule_path = _rules_dir() / f"{key}.md"
+                # overrides bypass tier filtering (they have no file to read)
+                if not (overrides and key in overrides):
+                    if rule_path.is_file():
+                        tier = _read_tier(rule_path)
+                        if tier not in tier_filter:
+                            return match.group(0)  # keep marker, skip expansion
+
             if fence:
                 return f"{fence}{content}{fence}"
             return content
@@ -177,4 +222,5 @@ __all__ = [
     "find_ref_keys",
     "resolve",
     "expand",
+    "_read_tier",
 ]

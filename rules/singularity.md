@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Singularity Rule — Autonomous MAPE-K Control Loop
 

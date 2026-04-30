@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 
 # Bash Script Naming — Kebab-Case Required

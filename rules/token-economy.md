@@ -1,3 +1,4 @@
+<!-- TIER: 1 -->
 <!-- SCOPE: both -->
 # Token Economy — Cost Transparency and Waste Prevention
 

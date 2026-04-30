@@ -1,3 +1,4 @@
+<!-- TIER: 2 -->
 <!-- SCOPE: both -->
 # Repomix Integration — Repository Context Packing
 
