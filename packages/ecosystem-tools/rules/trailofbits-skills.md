@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Trail of Bits Security Skills
 
 ## Overview

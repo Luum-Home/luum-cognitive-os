@@ -1,5 +1,5 @@
-<!-- TIER: 0 -->
 <!-- SCOPE: os-only -->
+<!-- TIER: 0 -->
 # Rules Roadmap — Pending Work
 
 > Created Sprint 2A, 2026-04-16. Tracks rules whose enforcement promise exceeds

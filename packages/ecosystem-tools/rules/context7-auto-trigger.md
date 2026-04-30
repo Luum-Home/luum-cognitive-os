@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Context7 Auto-Trigger — Library Documentation Lookup
 
 ## Purpose

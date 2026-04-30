@@ -1,1 +1,0 @@
-../../../rules/python-naming.md

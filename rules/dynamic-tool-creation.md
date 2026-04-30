@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Dynamic Tool Creation -- Mid-Task Tool Generation
 
 ## Purpose

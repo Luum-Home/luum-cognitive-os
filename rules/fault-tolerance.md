@@ -1,5 +1,5 @@
-<!-- TIER: 2 -->
 <!-- SCOPE: both -->
+<!-- TIER: 2 -->
 # Fault Tolerance Protocol
 
 ## 4-Tier Resilience Model

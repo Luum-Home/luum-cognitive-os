@@ -1,5 +1,5 @@
-<!-- TIER: 1 -->
 <!-- SCOPE: both -->
+<!-- TIER: 1 -->
 # Responsiveness Protocol
 
 ## Rule: Never Appear Stuck

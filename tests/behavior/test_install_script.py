@@ -10,7 +10,6 @@ network). They verify behavioral contracts:
 from __future__ import annotations
 
 import os
-import shutil
 import subprocess
 from pathlib import Path
 
@@ -107,6 +106,7 @@ def _make_scratch_install_env(tmp_path: Path) -> tuple[Path, Path, Path]:
     return scratch, bin_dir, log_path
 
 
+@pytest.mark.timeout(90)
 def test_install_deps_flag_runs_uv_sync_and_mcp_register(tmp_path):
     """With stubs, --install-deps must invoke both uv sync and MCP registration.
 
@@ -122,8 +122,8 @@ def test_install_deps_flag_runs_uv_sync_and_mcp_register(tmp_path):
         **os.environ,
         "PATH": f"{bin_dir}:{os.environ.get('PATH', '')}",
         "HOME": str(tmp_path / "fake-home"),
-        # Skip manifest check to speed up — we only care about --install-deps
-        "COGNITIVE_OS_SKIP_MANIFEST_CHECK": "false",
+        # Skip manifest check to keep this test focused on --install-deps.
+        "COGNITIVE_OS_SKIP_MANIFEST_CHECK": "true",
         # Force so no interactive prompt
         "COGNITIVE_OS_FORCE": "true",
     }
