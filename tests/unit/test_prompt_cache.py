@@ -1,11 +1,16 @@
 """Unit tests for lib/prompt_cache.py
 
-Validates Anthropic prompt caching adapter: system prompt caching,
-message-level caching (system_and_3 strategy), and savings estimation.
-Also tests PromptCacheManager for ClaudeExecutor integration.
+Validates:
+  A. Legacy Anthropic adapter: system prompt caching, message-level caching
+     (system_and_3 strategy), savings estimation, PromptCacheManager.
+  B. Portable provider-agnostic layer (ADR-080 Tier 1 #2): mark_cacheable,
+     compose_cached_prompt, cache_metrics, maybe_apply_cache, and provider
+     adapters (Anthropic, OpenAI/Codex, Ollama).
 """
 
 import copy
+import threading
+
 import pytest
 
 from lib.prompt_cache import (
@@ -14,9 +19,29 @@ from lib.prompt_cache import (
     apply_message_cache,
     estimate_cache_savings,
     PromptCacheManager,
+    # Portable layer (ADR-080 Tier 1 #2)
+    CacheableSegment,
+    ProviderRequest,
+    mark_cacheable,
+    compose_cached_prompt,
+    cache_metrics,
+    maybe_apply_cache,
 )
 
 pytestmark = pytest.mark.unit
+
+
+# ---------------------------------------------------------------------------
+# Metrics reset helper
+# ---------------------------------------------------------------------------
+
+
+def _fresh_metrics():
+    """Reset process-local cache metrics between tests to avoid cross-test leakage."""
+    import lib.prompt_cache as pc
+    with pc._metrics_lock:
+        for k in list(pc._metrics.keys()):
+            pc._metrics[k] = 0
 
 MARKER = {"type": "ephemeral"}
 
@@ -351,3 +376,285 @@ class TestPromptCacheManager:
         report = self.mgr.format_cache_report(invocations=10, cached_tokens=5000)
         # savings should be non-zero for 10 invocations
         assert "0%" not in report or "saved" in report
+
+
+# ===========================================================================
+# Section B: Portable provider-agnostic layer (ADR-080 Tier 1 #2)
+# ===========================================================================
+
+
+# ---------------------------------------------------------------------------
+# mark_cacheable
+# ---------------------------------------------------------------------------
+
+
+class TestMarkCacheable:
+    def test_returns_cacheable_segment(self):
+        seg = mark_cacheable("You are an agent.")
+        assert isinstance(seg, CacheableSegment)
+        assert seg.text == "You are an agent."
+        assert seg.ttl == "5m"
+        assert seg.role == "system"
+
+    def test_custom_ttl_and_role(self):
+        seg = mark_cacheable("rules block", ttl="1h", role="user")
+        assert seg.ttl == "1h"
+        assert seg.role == "user"
+
+
+# ---------------------------------------------------------------------------
+# compose_cached_prompt — Anthropic adapter
+# ---------------------------------------------------------------------------
+
+
+class TestComposeAnthropicAdapter:
+    def setup_method(self):
+        _fresh_metrics()
+
+    def test_returns_provider_request(self):
+        seg = mark_cacheable("You are an agent.")
+        req = compose_cached_prompt([seg], provider="anthropic")
+        assert isinstance(req, ProviderRequest)
+        assert req.provider == "anthropic"
+        assert req.cache_applied is True
+
+    def test_anthropic_cache_control_type_ephemeral(self):
+        """Anthropic adapter must produce cache_control with type=ephemeral."""
+        seg = mark_cacheable("Stable system prompt.")
+        req = compose_cached_prompt([seg], provider="anthropic")
+        assert req.raw_messages, "raw_messages must not be empty"
+        block = req.raw_messages[0]
+        assert block["type"] == "text"
+        assert "cache_control" in block, "Anthropic adapter must inject cache_control"
+        cc = block["cache_control"]
+        assert cc.get("type") == "ephemeral", f"Expected ephemeral, got {cc}"
+
+    def test_anthropic_1h_ttl_propagated(self):
+        seg = mark_cacheable("Long-lived rules.", ttl="1h")
+        req = compose_cached_prompt([seg], provider="anthropic")
+        cc = req.raw_messages[0]["cache_control"]
+        assert cc.get("ttl") == "1h"
+
+    def test_anthropic_max_4_breakpoints_enforced(self):
+        """Segments beyond 4 must NOT receive cache_control (Anthropic hard limit)."""
+        segs = [mark_cacheable(f"seg {i}") for i in range(6)]
+        req = compose_cached_prompt(segs, provider="anthropic")
+        assert len(req.raw_messages) == 6
+        for i, block in enumerate(req.raw_messages):
+            if i < 4:
+                assert "cache_control" in block, f"Block {i} should have cache_control"
+            else:
+                assert "cache_control" not in block, (
+                    f"Block {i} must NOT have cache_control (exceeds 4-breakpoint limit)"
+                )
+
+    def test_claude_alias_uses_anthropic_adapter(self):
+        """'claude' provider must use the Anthropic adapter (COS 'claude' = Anthropic API)."""
+        seg = mark_cacheable("System.")
+        req = compose_cached_prompt([seg], provider="claude")
+        assert "cache_control" in req.raw_messages[0]
+        assert req.cache_applied is True
+
+    def test_writes_metric_incremented_for_anthropic(self):
+        seg = mark_cacheable("content")
+        compose_cached_prompt([seg], provider="anthropic")
+        m = cache_metrics()
+        assert m["writes"] >= 1
+
+
+# ---------------------------------------------------------------------------
+# compose_cached_prompt — OpenAI/Codex adapter (documented no-op)
+# ---------------------------------------------------------------------------
+
+
+class TestComposeOpenAIAdapter:
+    def setup_method(self):
+        _fresh_metrics()
+
+    def test_openai_no_cache_control_injected(self):
+        """OpenAI adapter is a documented no-op: must NOT inject cache_control."""
+        seg = mark_cacheable("System prompt for openai.")
+        req = compose_cached_prompt([seg], provider="openai")
+        block = req.raw_messages[0]
+        assert "cache_control" not in block, "OpenAI adapter must not inject cache_control"
+
+    def test_openai_returns_plain_text_blocks(self):
+        seg = mark_cacheable("Hello openai")
+        req = compose_cached_prompt([seg], provider="openai")
+        assert req.raw_messages[0]["type"] == "text"
+        assert req.raw_messages[0]["text"] == "Hello openai"
+
+    def test_openai_cache_applied_false(self):
+        seg = mark_cacheable("System.")
+        req = compose_cached_prompt([seg], provider="openai")
+        assert req.cache_applied is False
+
+    def test_codex_alias_is_no_op(self):
+        """'codex' provider must be a no-op (OpenAI-compatible format)."""
+        seg = mark_cacheable("Codex system.")
+        req = compose_cached_prompt([seg], provider="codex")
+        assert "cache_control" not in req.raw_messages[0]
+
+    def test_noop_openai_metric_incremented(self):
+        seg = mark_cacheable("content")
+        compose_cached_prompt([seg], provider="openai")
+        m = cache_metrics()
+        assert m["noop_openai"] >= 1
+
+
+# ---------------------------------------------------------------------------
+# compose_cached_prompt — Ollama adapter (silent no-op)
+# ---------------------------------------------------------------------------
+
+
+class TestComposeOllamaAdapter:
+    def setup_method(self):
+        _fresh_metrics()
+
+    def test_ollama_no_cache_control(self):
+        seg = mark_cacheable("Ollama system.")
+        req = compose_cached_prompt([seg], provider="ollama")
+        assert "cache_control" not in req.raw_messages[0]
+
+    def test_ollama_returns_plain_text(self):
+        seg = mark_cacheable("Hello ollama")
+        req = compose_cached_prompt([seg], provider="ollama")
+        assert req.raw_messages[0]["text"] == "Hello ollama"
+
+    def test_unknown_provider_falls_back_to_noop(self):
+        """Unknown provider must not raise — falls back to Ollama no-op."""
+        seg = mark_cacheable("content")
+        req = compose_cached_prompt([seg], provider="unknown_future_provider_xyz")
+        assert "cache_control" not in req.raw_messages[0]
+
+    def test_noop_ollama_metric_incremented(self):
+        seg = mark_cacheable("content")
+        compose_cached_prompt([seg], provider="ollama")
+        m = cache_metrics()
+        assert m["noop_ollama"] >= 1
+
+
+# ---------------------------------------------------------------------------
+# cache_metrics
+# ---------------------------------------------------------------------------
+
+
+class TestCacheMetrics:
+    def setup_method(self):
+        _fresh_metrics()
+
+    def test_initial_state_all_zeros(self):
+        m = cache_metrics()
+        assert m["hits"] == 0
+        assert m["misses"] == 0
+        assert m["writes"] == 0
+        assert m["hit_rate_pct"] == 0.0
+
+    def test_hit_rate_computed_correctly(self):
+        import lib.prompt_cache as pc
+        with pc._metrics_lock:
+            pc._metrics["hits"] = 3
+            pc._metrics["misses"] = 1
+        m = cache_metrics()
+        assert m["hit_rate_pct"] == 75.0
+
+    def test_metrics_snapshot_is_independent_of_internal_state(self):
+        """Mutating the returned dict must not affect internal state."""
+        m = cache_metrics()
+        m["hits"] = 9999
+        import lib.prompt_cache as pc
+        with pc._metrics_lock:
+            assert pc._metrics["hits"] == 0
+
+    def test_metrics_thread_safe(self):
+        """Concurrent metric increments must not corrupt the counter."""
+        import lib.prompt_cache as pc
+        errors = []
+
+        def bump():
+            try:
+                for _ in range(50):
+                    pc._increment_metric("hits")
+            except Exception as e:
+                errors.append(e)
+
+        threads = [threading.Thread(target=bump) for _ in range(4)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        assert not errors
+        m = cache_metrics()
+        assert m["hits"] == 200  # 4 threads × 50
+
+
+# ---------------------------------------------------------------------------
+# maybe_apply_cache — dispatch integration
+# ---------------------------------------------------------------------------
+
+
+class TestMaybeApplyCache:
+    def setup_method(self):
+        _fresh_metrics()
+
+    def _make_messages(self):
+        return [
+            {"role": "system", "content": "You are a sub-agent."},
+            {"role": "user", "content": "Run the task."},
+        ]
+
+    def test_anthropic_injects_cache_control_in_system_message(self):
+        msgs = self._make_messages()
+        result = maybe_apply_cache(msgs, provider="claude")
+        sys_content = result[0].get("content")
+        assert isinstance(sys_content, list), "System message content must be a list after caching"
+        assert any(
+            "cache_control" in b for b in sys_content if isinstance(b, dict)
+        ), "At least one block must carry cache_control"
+
+    def test_openai_returns_original_reference_unchanged(self):
+        """OpenAI no-op must return the same object (no copy, no mutation)."""
+        msgs = self._make_messages()
+        result = maybe_apply_cache(msgs, provider="openai")
+        assert result is msgs, "OpenAI no-op must return the original reference unchanged"
+
+    def test_ollama_returns_original_reference_unchanged(self):
+        msgs = self._make_messages()
+        result = maybe_apply_cache(msgs, provider="ollama")
+        assert result is msgs
+
+    def test_empty_messages_returns_empty(self):
+        result = maybe_apply_cache([], provider="anthropic")
+        assert result == []
+
+    def test_anthropic_does_not_mutate_original(self):
+        """Anthropic path must return a deep copy, not mutate the input."""
+        msgs = self._make_messages()
+        original_content = msgs[0]["content"]
+        maybe_apply_cache(msgs, provider="anthropic")
+        assert msgs[0]["content"] == original_content, "Original messages must not be mutated"
+
+    def test_qwen_is_noop(self):
+        """Qwen uses OpenAI-compatible format; must be a no-op returning original ref."""
+        msgs = self._make_messages()
+        result = maybe_apply_cache(msgs, provider="qwen")
+        assert result is msgs
+
+    def test_writes_metric_for_anthropic(self):
+        msgs = self._make_messages()
+        maybe_apply_cache(msgs, provider="anthropic")
+        m = cache_metrics()
+        assert m["writes"] >= 1
+
+    def test_noop_openai_metric_for_openai(self):
+        msgs = self._make_messages()
+        maybe_apply_cache(msgs, provider="openai")
+        m = cache_metrics()
+        assert m["noop_openai"] >= 1
+
+    def test_noop_ollama_metric_for_ollama(self):
+        msgs = self._make_messages()
+        maybe_apply_cache(msgs, provider="ollama")
+        m = cache_metrics()
+        assert m["noop_ollama"] >= 1
