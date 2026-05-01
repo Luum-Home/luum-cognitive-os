@@ -48,9 +48,9 @@ Prevent Claude Code startup hangs, duplicate first prompts, and re-spawn loops f
 
 ### Phase 4 — Documentation
 
-- ADR-101 records decision.
+- ADR-104 records decision.
 - Manual test doc references circuit breaker behavior.
-- Incident doc references ADR-101.
+- Incident doc references ADR-104.
 
 ## Validation Commands
 

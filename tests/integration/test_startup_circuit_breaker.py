@@ -1,4 +1,4 @@
-"""Integration tests for ADR-101 startup circuit breaker and safe mode."""
+"""Integration tests for ADR-104 startup circuit breaker and safe mode."""
 from __future__ import annotations
 
 import json
