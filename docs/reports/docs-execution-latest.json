@@ -53,6 +53,19 @@
       "path": "docs/HOW-TO-USE-COS.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:auto-detection,flag,harness,overrides,resolved,without"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "The `--harness` flag overrides auto-detection. Without it, harness is resolved from:",
+      "kind": "prose",
+      "line": 107,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/HOW-TO-USE-COS.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -62,7 +75,7 @@
       "inferred_status": "planned",
       "item": "`docs/architecture/FROZEN-BACKLOG.md` \u2014 what to unfreeze",
       "kind": "bullet",
-      "line": 178,
+      "line": 226,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/HOW-TO-USE-COS.md"
     },
@@ -70,12 +83,12 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:design,design-philosophy,framing,philosophy"
+        "terms:design,framing,philosophy"
       ],
       "inferred_status": "proposed",
       "item": "[Design Philosophy](design-philosophy.md) \u2014 biological-system framing for the OS",
       "kind": "bullet",
-      "line": 24,
+      "line": 25,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -88,7 +101,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-081: Codex Harness Adapter](adrs/ADR-081-codex-harness-adapter.md) \u2014 accepted Codex adapter backed by sanitized live Codex Desktop payload fixtures, making Codex a first-class canonical harness surface",
       "kind": "bullet",
-      "line": 35,
+      "line": 36,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -101,7 +114,7 @@
       "inferred_status": "planned",
       "item": "[Harness Driver Parity](architecture/harness-driver-parity.md) \u2014 how Claude, Codex, and future harness settings projections are compared without pretending every driver has the same capabilities",
       "kind": "bullet",
-      "line": 46,
+      "line": 47,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -114,7 +127,7 @@
       "inferred_status": "planned",
       "item": "[Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) \u2014 validation snapshot and remaining work before merging the master-plan portability branch",
       "kind": "bullet",
-      "line": 64,
+      "line": 65,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -127,7 +140,7 @@
       "inferred_status": "planned",
       "item": "[Full Suite Validation Report](reports/full-suite-validation-2026-04-23.md) \u2014 current full-suite evidence, passing proof paths, and remaining failure families",
       "kind": "bullet",
-      "line": 65,
+      "line": 66,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -140,7 +153,7 @@
       "inferred_status": "planned",
       "item": "`experimental`: squads, organization specs, future control-plane designs, and high-variance systems that should not dominate the README.",
       "kind": "bullet",
-      "line": 74,
+      "line": 75,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -153,7 +166,7 @@
       "inferred_status": "planned",
       "item": "The following model describes the long-range architecture. Treat it as future architecture unless a layer has a linked proof path, test, or operator workflow.",
       "kind": "prose",
-      "line": 80,
+      "line": 81,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -166,7 +179,7 @@
       "inferred_status": "done_weak_proof",
       "item": "The self-improvement loop is a closed feedback cycle where every agent execution produces data that improves future executions:",
       "kind": "prose",
-      "line": 355,
+      "line": 356,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -179,7 +192,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Extending from dev-time to production-capable (partially done):",
       "kind": "prose",
-      "line": 527,
+      "line": 528,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -986,7 +999,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:garak,immediately,implemented,installation,integrations,mantis,mcp-scan,optional"
+        "terms:garak,immediately,implemented,installation,integrations,mcp-scan,optional,packaged"
       ],
       "inferred_status": "done_weak_proof",
       "item": "P0 integrations (Semgrep AI, MCP-Scan, Promptfoo) were implemented immediately. P1/P2 tools (Garak, tero, mantis) were packaged for optional installation.",
@@ -1365,7 +1378,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:adopt,advisory,composable,future,hooks,pattern,same"
+        "terms:adopt,advisory,future,hooks,pattern,same"
       ],
       "inferred_status": "planned",
       "item": "**Composable.** Future advisory hooks can adopt the same pattern with ~30",
@@ -1945,7 +1958,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:designing,exists,first,lines,none,option,parent,requires"
+        "terms:exists,first,lines,none,option,parent,requires,schema"
       ],
       "inferred_status": "proposed",
       "item": "Parent ADR lines 114\u2013122: Option C requires designing a schema first; none exists today.",
@@ -2320,7 +2333,7 @@
       "declared_status": "done",
       "evidence": [
         "path:rules/so-slo.md",
-        "terms:adr-027,adr-level,already,beyond,corrections,defines,four,introduces"
+        "terms:adr-027,already,beyond,corrections,defines,four,introduces,items"
       ],
       "inferred_status": "done_with_proof",
       "item": "`rules/so-slo.md` \u2014 no new SLO row required. The four resolved items are ADR-level doc corrections / task-list corrections; none of them introduces a new measurable SLO beyond what ADR-027 \u00a7KPIs already defines.",
@@ -2938,7 +2951,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:item,next-phase,reference,replace,work-queue"
+        "terms:item,reference,replace,work-queue"
       ],
       "inferred_status": "planned",
       "item": "Replace work-queue item `d1a1-metric-event` next-phase reference",
@@ -3661,7 +3674,6 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "path:.cognitive-os/pending-tasks/adr-038-preamble-v2-industry-aligned.md",
         "path:docs/adrs/",
         "terms:adrs,canonical,cognitive-os,drafted,location,originally,pending-tasks"
       ],
@@ -3702,7 +3714,6 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "path:.cognitive-os/pending-tasks/adr-039-reinvention-phase-b-beta.md",
         "path:docs/adrs/",
         "terms:adr-039-reinvention-phase-b-beta,adrs,canonical,cognitive-os,drafted,location,originally,pending-tasks"
       ],
@@ -5341,7 +5352,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:accepted,block,outstanding,surfaces,these"
+        "terms:accepted,block,surfaces,these"
       ],
       "inferred_status": "done_weak_proof",
       "item": "**Outstanding for Surfaces 2-4** (these do NOT block Accepted status, but",
@@ -6502,7 +6513,7 @@
       "inferred_status": "planned",
       "item": "future harness that executes the SKILLS + RULES surface. The practical",
       "kind": "prose",
-      "line": 42,
+      "line": 43,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
     },
@@ -6515,7 +6526,7 @@
       "inferred_status": "planned",
       "item": "All future ports under this umbrella inherit that clearance \u2014 no new license",
       "kind": "prose",
-      "line": 68,
+      "line": 69,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
     },
@@ -6528,7 +6539,7 @@
       "inferred_status": "planned",
       "item": "pending proof that a second real harness can satisfy the canonical event schema",
       "kind": "prose",
-      "line": 85,
+      "line": 86,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
     },
@@ -6541,7 +6552,7 @@
       "inferred_status": "done_weak_proof",
       "item": "must land before items 2\u20134 can be wired to a provider surface.",
       "kind": "prose",
-      "line": 107,
+      "line": 108,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
     },
@@ -6554,7 +6565,7 @@
       "inferred_status": "done_weak_proof",
       "item": "**3. Context and trajectory compressors** \u2014 `Accepted (executed 2026-04-30 by Session A)`",
       "kind": "prose",
-      "line": 131,
+      "line": 132,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
     },
@@ -6567,7 +6578,20 @@
       "inferred_status": "done_weak_proof",
       "item": "`compress_trajectory` implemented as a first-class COS primitive)",
       "kind": "prose",
-      "line": 134,
+      "line": 135,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:accepted,executed,instrumentation,rate-limit,session"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**4. Rate-limit instrumentation** \u2014 `Accepted (executed 2026-05-01 by Session A)`",
+      "kind": "prose",
+      "line": 156,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
     },
@@ -6580,7 +6604,7 @@
       "inferred_status": "done_weak_proof",
       "item": "before the others can be wired. If adapter porting stalls, items 2\u20134 cannot",
       "kind": "prose",
-      "line": 275,
+      "line": 292,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
     },
@@ -6593,7 +6617,7 @@
       "inferred_status": "done_weak_proof",
       "item": "1. **Target harness priority list \u2014 resolved.** Claude Code (full adapter) and",
       "kind": "prose",
-      "line": 290,
+      "line": 307,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
     },
@@ -7618,7 +7642,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:adr-095,inverse,patterns,proposed,skill,success,synthesis"
+        "terms:adr-095,patterns,proposed,skill,success,synthesis"
       ],
       "inferred_status": "proposed",
       "item": "ADR-095 (Proposed): skill synthesis from success patterns \u2014 the inverse",
@@ -8556,6 +8580,32 @@
       "path": "docs/adrs/ADR-100-resource-governed-test-execution.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Status**: Accepted",
+      "kind": "prose",
+      "line": 5,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted,implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Accepted and implemented on 2026-05-01.",
+      "kind": "prose",
+      "line": 12,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -8897,7 +8947,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:april,executed,phases,remaining,sessions"
+        "terms:executed,phases,remaining,sessions"
       ],
       "inferred_status": "planned",
       "item": "**Status:** Sessions 1-2 executed (April 13-16); 4 phases remaining",
@@ -9079,7 +9129,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:april,listing,pending,plans,scope"
+        "terms:listing,pending,plans,scope"
       ],
       "inferred_status": "planned",
       "item": "**Scope:** Meta-plan listing all pending plans as of April 2026",
@@ -9627,7 +9677,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:added,april,audit,behavioral,claim,later,many,maturation"
+        "terms:added,audit,behavioral,claim,later,many,reveals,sprint"
       ],
       "inferred_status": "done_weak_proof",
       "item": "**April 8-9:** \"Maturation sprint\" v0.4.0-v0.7.0. 472 behavioral tests claim to be added. Later audit reveals many are structural.",
@@ -9640,7 +9690,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:adding,advisor,april,breaker,circuit,cold,consequence,dispatch-gate"
+        "terms:adding,advisor,breaker,circuit,cold,consequence,dispatch-gate,doubles"
       ],
       "inferred_status": "done_weak_proof",
       "item": "**April 9:** dispatch-gate.sh doubles from 86 lines to 270 in two hours. Circuit breaker + consequence engine + model advisor wired independently, each adding its own Python cold start.",
@@ -10937,7 +10987,7 @@
       "inferred_status": "proposed",
       "item": "what outcome it should produce",
       "kind": "bullet",
-      "line": 66,
+      "line": 82,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/architecture/cross-harness-authoring.md"
     },
@@ -11209,7 +11259,7 @@
       "declared_status": "proposed",
       "evidence": [
         "path:hooks/auto-refine.sh",
-        "terms:auto-refine,hooks,implement,option,piter-framework,spec"
+        "terms:auto-refine,hooks,implement,option,spec"
       ],
       "inferred_status": "proposed",
       "item": "**Option B**: Implement `hooks/auto-refine.sh` per `docs/piter-framework.md:80` spec",
@@ -12356,7 +12406,7 @@
       "declared_status": "planned",
       "evidence": [
         "path:lib/record_completion.py",
-        "terms:mode,pending,phase,record_completion,send_phoenix_trace"
+        "terms:mode,pending,phase,record_completion"
       ],
       "inferred_status": "planned",
       "item": "in `lib/record_completion.py::_send_phoenix_trace` (Phase 2 pending). Mode",
@@ -12631,7 +12681,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:completed,crash,last,on-disk,phase,pipeline,resumability,resume"
+        "terms:completed,crash,last,on-disk,phase,pipeline,resume,state"
       ],
       "inferred_status": "done_weak_proof",
       "item": "**Pipeline resumability**: SDD pipeline crash \u2192 resume from last completed phase via on-disk state",
@@ -13744,7 +13794,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:actual,contextual,each,hook,invocation,manual-only,path,router"
+        "terms:actual,contextual,each,hook,invocation,path,router,selected"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Map each skill to actual invocation path: manual-only, contextual trigger, hook/router selected, or undocumented.",
@@ -14472,7 +14522,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:classify,dead,decision-grade,diagnostic-only,metrics"
+        "terms:classify,dead,diagnostic-only,metrics"
       ],
       "inferred_status": "planned",
       "item": "Classify metrics as decision-grade, diagnostic-only, dead, or harmful-noise.",
@@ -17128,7 +17178,7 @@
       "declared_status": "done",
       "evidence": [
         "path:docs/architecture/observability-backend-evaluation-2026-04-24.md",
-        "terms:architecture,backend,backends,decision,evaluated,evaluation,observability,observability-backend-evaluation-2026-04-24"
+        "terms:architecture,backend,backends,decision,evaluated,evaluation,observability,through"
       ],
       "inferred_status": "done_with_proof",
       "item": "Observability backends are evaluated through a backend-neutral event-contract decision in [Observability Backend Evaluation](../architecture/observability-backend-evaluation-2026-04-24.md).",
@@ -17238,7 +17288,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:benchmark-results,missing,readme,reference"
+        "terms:missing,readme,reference"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Fix `README.md` reference to missing `docs/benchmark-results.md`.",
@@ -17373,7 +17423,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:capabilities,deeper,expertise,first,grow,needing,user,without"
+        "terms:capabilities,deeper,first,grow,needing,user,without"
       ],
       "inferred_status": "done_weak_proof",
       "item": "A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.",
@@ -17448,6 +17498,19 @@
       "item": "Memory/Profile Bootstrap now creates a local source-linked, sanitized project profile draft during the first three sessions, with manual and Go CLI generate/inspect/promote/wipe commands, doctor coverage, and Codex SessionStart tests.",
       "kind": "checkbox",
       "line": 148,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/business/master-plan-checklist.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:action-count,adr-101,buckets,diversity,limiting,operator,penalty,rate"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Action-count rate limiting uses token buckets with soft warnings, operator reserve, and diversity penalty (ADR-101).",
+      "kind": "checkbox",
+      "line": 150,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -17545,9 +17608,7 @@
     {
       "confidence": 0.9,
       "declared_status": "planned",
-      "evidence": [
-        "weak_terms:openclaw-remaining-patterns"
-      ],
+      "evidence": [],
       "inferred_status": "planned",
       "item": "> Documento companero: [openclaw-remaining-patterns.md](openclaw-remaining-patterns.md)",
       "kind": "prose",
@@ -18521,7 +18582,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:hours,market,scheduling,support,timezone-aware,windows"
+        "terms:hours,scheduling,support,timezone-aware,windows"
       ],
       "inferred_status": "planned",
       "item": "Support timezone-aware scheduling (market hours, settlement windows)",
@@ -19106,7 +19167,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:days,guided,onboarding,pattern,setup,wizard"
+        "terms:days,guided,onboarding,pattern,setup"
       ],
       "inferred_status": "planned",
       "item": "**Onboarding Wizard** (Pattern 22) \u2014 Guided CLI setup. 4-5 days.",
@@ -19171,7 +19232,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:code,cognitive-os,core,open-source-design,project-specific,separate"
+        "terms:code,cognitive-os,core,project-specific,separate"
       ],
       "inferred_status": "proposed",
       "item": "Separate the cognitive-os core from project-specific code (see open-source-design.md)",
@@ -19184,7 +19245,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:open-source-design,repository,structure"
+        "weak_terms:repository,structure"
       ],
       "inferred_status": "proposed",
       "item": "Repository structure per open-source-design.md",
@@ -19379,7 +19440,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:cloud,drop,future,instances,learn,market,parallel,pressure"
+        "terms:cloud,drop,future,instances,learn,parallel,pressure,price"
       ],
       "inferred_status": "planned",
       "item": "**What we can learn**: The price drop from $500 to $20 shows the market pressure. Parallel agent instances in cloud is the future.",
@@ -20212,7 +20273,7 @@
       "declared_status": "proposed",
       "evidence": [
         "path:docs/component-sources.md",
-        "terms:component-sources,design,influences,openclaw,referenced,research,under"
+        "terms:design,influences,openclaw,referenced,research,under"
       ],
       "inferred_status": "proposed",
       "item": "OpenClaw: Referenced in `docs/component-sources.md` under Research and Design Influences",
@@ -20291,7 +20352,7 @@
       "declared_status": "proposed",
       "evidence": [
         "path:docs/integrations/cursor-cloud-agents.md",
-        "terms:cursor,cursor-cloud-agents,design,integration,integrations"
+        "terms:cursor,design,integration,integrations"
       ],
       "inferred_status": "proposed",
       "item": "`docs/integrations/cursor-cloud-agents.md` -- Cursor integration design",
@@ -20918,7 +20979,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:auto-fix,does,failures,integrated,loop,piter,piter-framework,refinement"
+        "terms:auto-fix,does,failures,integrated,loop,piter,refinement,reports"
       ],
       "inferred_status": "planned",
       "item": "**Gap**: Tests run but are not yet integrated into a PITER refinement loop. Agent reports test failures but does not auto-fix. See `piter-framework.md`.",
@@ -23188,7 +23249,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:design,externalize,file,format,locale,spanish,strings,translate"
+        "terms:design,file,format,locale,spanish,strings,translate"
       ],
       "inferred_status": "proposed",
       "item": "**i18n**: Translate documentation to Spanish. Externalize CLI strings. Design locale file format.",
@@ -24069,7 +24130,7 @@
         "done_weak_proof": 1
       },
       "docs/HOW-TO-USE-COS.md": {
-        "done_weak_proof": 1,
+        "done_weak_proof": 2,
         "planned": 1
       },
       "docs/README.md": {
@@ -24436,7 +24497,7 @@
         "done_weak_proof": 2
       },
       "docs/adrs/ADR-080-hermes-cross-harness-adoption.md": {
-        "done_weak_proof": 5,
+        "done_weak_proof": 6,
         "planned": 3
       },
       "docs/adrs/ADR-081-codex-harness-adapter.md": {
@@ -24530,6 +24591,9 @@
       },
       "docs/adrs/ADR-100-resource-governed-test-execution.md": {
         "done_weak_proof": 3
+      },
+      "docs/adrs/ADR-101-intent-aware-rate-limiter.md": {
+        "done_weak_proof": 2
       },
       "docs/adrs/README.md": {
         "planned": 1
@@ -24847,7 +24911,7 @@
         "planned": 27
       },
       "docs/business/master-plan-checklist.md": {
-        "done_weak_proof": 61,
+        "done_weak_proof": 62,
         "done_with_proof": 37,
         "planned": 2
       },
@@ -25189,9 +25253,9 @@
         "planned": 1
       }
     },
-    "items": 1835,
+    "items": 1840,
     "statuses": {
-      "done_weak_proof": 766,
+      "done_weak_proof": 771,
       "done_with_proof": 119,
       "planned": 745,
       "proposed": 205
