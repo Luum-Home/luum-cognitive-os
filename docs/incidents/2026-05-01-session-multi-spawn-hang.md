@@ -187,7 +187,7 @@ The wrapper now redirects stdout to stderr for diagnostic hooks on context-beari
 - Orchestrator `SessionStart` still runs and receives the original stdin, with diagnostic stdout quarantined from model context.
 
 
-### Fix 6: startup circuit breaker / bounded safe mode (ADR-101)
+### Fix 6: startup circuit breaker / bounded safe mode (ADR-104)
 
 `scripts/hook-timing-wrapper.sh` now detects `SessionStart` storms and activates bounded safe mode via `.cognitive-os/runtime/startup-safe-mode.json`. While active, `SessionStart` hook bodies are skipped before they can mutate watched settings, launch daemons, or write model-visible stdout. Operators can force recovery with `bash scripts/cos-startup-recover.sh` or a manual kill-switch file `.cognitive-os/runtime/disable-sessionstart-hooks`. Timing records include `safe_mode` and `skip_reason` for RCA.
 

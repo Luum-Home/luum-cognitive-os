@@ -128,7 +128,7 @@ def test_manual_proof_path_runs_dependency_doctor_services_and_summary_in_order(
 def test_local_connected_systems_validation_is_linked_from_entrypoints() -> None:
     docs_readme = (PROJECT_ROOT / "docs" / "README.md").read_text(encoding="utf-8")
     runtime_plan = (
-        PROJECT_ROOT / "docs" / "architecture" / "plans" / "headless-clustered-runtime-plan.md"
+        PROJECT_ROOT / ".cognitive-os" / "plans" / "architecture" / "headless-clustered-runtime-plan.md"
     ).read_text(encoding="utf-8")
     checklist = (PROJECT_ROOT / "docs" / "business" / "master-plan-checklist.md").read_text(
         encoding="utf-8"

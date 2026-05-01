@@ -85,6 +85,7 @@ def _run_detect(
 
     env = dict(os.environ)  # copy
     env.pop("COS_PYTEST_WORKERS", None)
+    env.pop("COS_PYTEST_HEADROOM", None)
     env.pop("CI", None)
 
     if ci:
@@ -184,8 +185,8 @@ class TestHeuristicTable(unittest.TestCase):
         self.assertEqual(result["workers"], "auto")
         self.assertEqual(result["rule_fired"], "ci_env")
 
-    def test_row6_default_healthy_machine(self):
-        """Row 6: 8 cores, 16 GB, 10% load, on AC, no CI -> workers = 'auto' (default)."""
+    def test_row6_default_healthy_machine_leaves_headroom(self):
+        """Row 6 + ADR-100: 8 healthy local cores -> workers = cores - 2."""
         result = _run_detect(
             cores=8,
             load_avg=(0.8, 0.8, 0.8),  # 10% on 8 cores
@@ -194,8 +195,8 @@ class TestHeuristicTable(unittest.TestCase):
             power_plugged=True,
             ci=False,
         )
-        self.assertEqual(result["workers"], "auto")
-        self.assertEqual(result["rule_fired"], "default")
+        self.assertEqual(result["workers"], "6")
+        self.assertEqual(result["rule_fired"], "default_headroom")
 
 
 # ---------------------------------------------------------------------------

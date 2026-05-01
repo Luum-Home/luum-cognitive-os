@@ -8534,7 +8534,7 @@
         "terms:cron,daily,hook,periodic,registered,sessionend"
       ],
       "inferred_status": "proposed",
-      "item": "`cleanup_snapshots.sh` could be registered as a periodic hook (SessionEnd or daily cron).",
+      "item": "`cleanup-snapshots.sh` could be registered as a periodic hook (SessionEnd or daily cron).",
       "kind": "bullet",
       "line": 112,
       "next_action": "keep as proposal until accepted/implemented",
