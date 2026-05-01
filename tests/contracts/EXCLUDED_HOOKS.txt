@@ -59,11 +59,11 @@ singularity-check.sh | MANUAL_TRIGGER: checks MAPE-K loop state; invoked by /sin
 # ── Conditional / optional integrations (CONDITIONAL) ───────────────────────
 valkey-ensure.sh | CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed
 agent-bus-monitor.sh | CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running
-idle-service-cleanup.sh | CONDITIONAL: cleans up idle Docker services; run by cron or manually, not on every Claude event
+idle-service-cleanup.sh | MANUAL_TRIGGER: cleans up idle Docker services; run by cron or operator on demand, not a Claude event hook — @manual-trigger
 mlflow-sync.sh | CONDITIONAL: syncs metrics to MLflow at session end; only active when mlflow Python package is installed
-package-sync.sh | CONDITIONAL: syncs package.json dependencies; triggered by CI or developer, not by Claude hooks
-worktree-submodule-fix.sh | CONDITIONAL: fixes git submodule state in worktrees; invoked manually after worktree operations
-orchestrator-mode-detect.sh | CONDITIONAL: detects ORCHESTRATOR_MODE env var; sourced by other hooks, not registered independently
+package-sync.sh | MANUAL_TRIGGER: syncs package dependencies; triggered by CI or developer on demand, not by Claude hooks — @manual-trigger
+worktree-submodule-fix.sh | MANUAL_TRIGGER: fixes git submodule state in worktrees; invoked manually after worktree operations — @manual-trigger
+orchestrator-mode-detect.sh | MANUAL_TRIGGER: sourced library helper; not registered independently, sourced by other hooks on demand — @on-demand
 agent-quota-advisor.sh | CONDITIONAL: ADR-056 Level 1 advisory is only enabled when quota-aware dispatch control is turned on
 agent-quota-redirect.sh | CONDITIONAL: ADR-056 Level 2 intentionally remains opt-in because it blocks native Agent launches
 agent-qwen-bridge.sh | CONDITIONAL: ADR-056 Level 3 is a per-skill transparent bridge, not a global default hook
@@ -99,7 +99,7 @@ session-end-reap.sh | FUTURE: reaps stale session artefacts at Stop; ADR-028 Pha
 # ── Agent lifecycle helpers ──────────────────────────────────────────────────
 post-agent-verify.sh | FUTURE: post-agent verification; superceded by completion-gate.sh in current wiring
 pre-agent-snapshot.sh | FUTURE: snapshot before agent launch; planned for PreToolUse Agent — not yet wired
-pre-cleanup-snapshot.sh | FUTURE: snapshot before cleanup operations; invoked manually or by admin scripts
+pre-cleanup-snapshot.sh | MANUAL_TRIGGER: snapshot before cleanup operations; invoked manually or by admin scripts on demand — @manual-trigger
 agent-work-tracker.sh | FUTURE: tracks in-progress agent work; planned integration with task-recorder.sh — not yet wired
 agent-output-verifier.sh | FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired
 background-agent-reminder.sh | FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired
@@ -132,7 +132,7 @@ release-guard.sh | FUTURE: guards release operations; planned for PreToolUse Bas
 # File no longer exists. Pytest responsibility consolidated into
 # hooks/global-verify.sh (ADR-027 Phase 1).
 token-budget-monitor.sh | FUTURE: monitors token budget mid-session; planned for PostToolUse — not yet wired
-global-verify.sh | CONDITIONAL: global verification pass at PreToolUse/PostToolUse Agent; registered at apply-efficiency-profile.sh:365 (PreToolUse Agent before) and line 370 (PostToolUse Agent after), per commit 92cf485
+global-verify.sh | MANUAL_TRIGGER: wired conditionally by apply-efficiency-profile.sh; not a global default — registered only when a profile is active — @on-demand
 
 # ── Hooks discovered during initial audit run (not in earlier survey) ────────
 adr-detector.sh | FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired
@@ -157,7 +157,7 @@ consequence-evaluator.sh | MANUAL_TRIGGER: invoked by /consequence skill
 context-watchdog.sh | CONDITIONAL: PostToolUse in full profile only; default uses context-diet.sh
 dequeue-notify.sh | CONDITIONAL: fires only when dispatch-gate emits queue events
 epic-task-detector.sh | FUTURE: heuristic detector, not yet wired to any matcher
-guardrails-validator.sh | CONDITIONAL: NeMo Guardrails integration, fires via /guardrails skill
+guardrails-validator.sh | MANUAL_TRIGGER: NeMo Guardrails integration; fires via /guardrails skill on demand, GUARDRAILS_ENABLED=true required — @on-demand
 infra-health.sh | CONDITIONAL: SessionStart in full profile; default profile uses usage-health-check.sh
 kpi-trigger.sh | FUTURE: Stop hook in full profile; wires to kpi_collector
 mcp-scan.sh | CONDITIONAL: MCP server audit, fires on demand
@@ -167,7 +167,7 @@ prompt-quality.sh | FUTURE: regex variant superseded by prompt-quality-llm.sh
 rate-limit-protection.sh | DEPRECATED: renamed to token-budget-monitor.sh; shim remains for back-compat
 scope-creep-detector.sh | FUTURE: PostToolUse Agent, planned but not wired
 scope-proportionality.sh | FUTURE: PostToolUse Agent, planned
-semgrep-scan.sh | CONDITIONAL: fires via /semgrep-scan skill
+semgrep-scan.sh | MANUAL_TRIGGER: fires via /semgrep-scan skill on demand; not a global default hook — @on-demand
 subagent-context-injector.sh | INFRA: SubagentStart event — not included by default profile
 task-recorder.sh | LIBRARY: sourced by dispatch-gate; not a standalone matcher
 user-prompt-capture.sh | INFRA: UserPromptSubmit event — full profile only

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# @manual-trigger: CI or developer-triggered; not a Claude event hook default
 # package-sync.sh — PostToolUse on Write
 # Auto-syncs package rules when package files change:
 #   1. Creates missing symlinks in rules/ for new package rules

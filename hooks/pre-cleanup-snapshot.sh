@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: project
+# @manual-trigger: manual/admin-triggered; not a default Claude event hook
 # PreToolUse hook on Agent — detects cleanup/refactor intent and triggers capability snapshot
 # Logs detections to .cognitive-os/metrics/capability-snapshots.jsonl
 # Must complete in <3 seconds

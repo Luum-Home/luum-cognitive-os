@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# @manual-trigger: run by cron or operator on demand; not a default Claude event hook
 # idle-service-cleanup.sh — Stop idle Docker services on session exit
 # Type: Stop hook
 # Runs stop_idle_services() from smart_infra to clean up services
