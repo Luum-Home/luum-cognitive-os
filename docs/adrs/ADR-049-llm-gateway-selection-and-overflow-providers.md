@@ -443,7 +443,7 @@ providers:
   anthropic_api_direct:
     enabled: false                      # STATUS: implemented — opt-in for critical only
     priority: 6
-    api_key_env: ANTHROPIC_API_KEY
+    api_key_env: direct Anthropic API credential env var
     default_model: claude-opus-4-7
     notes: "Reserved for critical tasks — $15/$75 per 1M tokens"
 ```

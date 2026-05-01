@@ -82,7 +82,7 @@ installed), we adopt `@anthropic-ai/claude-agent-sdk` directly:
   Python equivalent when stable.
 - Wrapper at `lib/providers/claude_sdk.py` (new) that exposes the same
   interface as other providers.
-- Uses `ANTHROPIC_API_KEY` (pay-per-token) — opt-in per ADR-060 doctrine.
+- Uses the direct Anthropic API credential (pay-per-token) — opt-in per ADR-060 doctrine.
 
 **Operator preference 2026-04-24**: "evitando usar las API keys de claude
 ya que son carísimas las consultas via api". So Claude-SDK via API
@@ -127,7 +127,7 @@ AND prefers Claude Code native (subscription-billed) over API (token-billed).
    → Report goes to `.cognitive-os/reports/claude-agent-sdk-surface-<date>.md`.
 
 2. **ADR-062 Phase 3** adds `providers/claude_sdk.py` as opt-in provider
-   (only when `ANTHROPIC_API_KEY` is set). Default cascade does NOT
+   (only when the direct Anthropic API credential is set and current policy allows it). Default cascade does NOT
    include it.
 
 3. **No further Agent() replication work** beyond ADR-062 phases.

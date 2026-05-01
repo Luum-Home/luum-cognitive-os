@@ -1,8 +1,8 @@
 """Audit remaining ANTHROPIC_API_KEY references by policy category.
 
 This is intentionally stricter than a grep ban: explicit CI, explicit direct API
-providers, tests, and historical docs may mention the variable, but default
-local/operator surfaces must not introduce unclassified references.
+providers and tests may mention the variable, but default local/operator
+surfaces and historical docs should not introduce unclassified references.
 """
 
 from __future__ import annotations
@@ -61,14 +61,8 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     # Optional service docs with explicit non-default override.
     AllowedReference("infra/cognee/README.md", "optional_service_override_docs", "Anthropic override example only"),
 
-    # Direct policy and historical decision docs.
+    # Direct policy docs. Historical docs intentionally avoid the exact string.
     AllowedReference("docs/architecture/direct-anthropic-api-policy.md", "policy_docs", "canonical policy"),
-    AllowedReference("docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md", "historical_adr", "historical provider ADR"),
-    AllowedReference("docs/adrs/ADR-063-agent-tool-replication-strategy.md", "historical_adr", "historical provider ADR"),
-    AllowedReference("CHANGELOG.md", "historical_release_note", "release note"),
-    AllowedReference("docs/SESSION-HANDOFF-2026-04-25.md", "historical_handoff", "session handoff"),
-    AllowedReference("docs/SESSION-HANDOFF-2026-04-27.md", "historical_handoff", "session handoff"),
-    AllowedReference("docs/SESSION-HANDOFF-2026-05-01.md", "historical_handoff", "session handoff"),
 
     # Explicit examples / benchmark / arena / tests.
     AllowedReference("docs/benchmarks/so-vs-vanilla-tasks.yaml", "fake_benchmark_secret", "fake key example"),
