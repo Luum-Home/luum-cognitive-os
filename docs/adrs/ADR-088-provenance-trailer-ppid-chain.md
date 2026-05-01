@@ -1,6 +1,9 @@
 # ADR-088 — Provenance trailer attribution via PPID chain
 
-**Status:** Accepted
+## Status
+
+Accepted.
+
 **Date:** 2026-04-30
 
 ---
@@ -163,19 +166,12 @@ installs the fix. Includes verification commands.
 
 ## Alternatives rejected
 
-**Env-var only (current state):** Fails when env is stripped by sub-shells,
-`screen`/`tmux`, or `env -i`. Does not survive the hop from orchestrator to
-git hook subprocess. Produces the empirically verified bug.
+- Keep the previous behavior unchanged — rejected because the audit or runtime failure would remain deterministic and would continue masking real regressions.
 
-**git notes:** Store provenance in `git notes` rather than the commit message.
-Heavyweight: requires a separate `git notes add` call, notes are not shown in
-standard `git log`, and they complicate repo clones (notes ref must be
-explicitly fetched). Rejected.
+## Verification
 
-**OS-level audit (auditd / DTrace):** Correlate commits via OS process-tree
-tracing. Too coarse and platform-specific. Rejected.
+Run the focused contract for this decision:
 
-**Hook-level env export:** Export session ID from every hook into the git hook
-env via a wrapper. Fragile: the hook chain is not guaranteed to run before
-`prepare-commit-msg`, and env inheritance from `git commit` is limited by
-the harness's subprocess model. PPID-chain is more robust.
+```bash
+python3 -m pytest tests/behavior/test_git_context_hook.py -q
+```

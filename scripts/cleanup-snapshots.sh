@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# cleanup_snapshots.sh — Prune expired pre-agent snapshots (ADR-099)
+# cleanup-snapshots.sh — Prune expired pre-agent snapshots (ADR-099)
 #
 # Reads ttl_days from cognitive-os.yaml (key: snapshots.ttl_days, default: 30).
 # Deletes snapshot directories older than ttl_days from .cognitive-os/snapshots/.
 #
 # Usage:
-#   ./scripts/cleanup_snapshots.sh [--ttl-days N] [--dry-run] [--project-dir PATH]
+#   ./scripts/cleanup-snapshots.sh [--ttl-days N] [--dry-run] [--project-dir PATH]
 #
 # Options:
 #   --ttl-days N       Override TTL (days). Default: read from cognitive-os.yaml or 30.
