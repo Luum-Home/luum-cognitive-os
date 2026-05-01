@@ -16,9 +16,12 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="clarification-gate"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "$0")/_lib/hook-pipe.sh"
 
 # Auto-disabled at capability level 4
 check_capability_level "clarification-gate"
+# Runtime disable: DISABLE_HOOK_CLARIFICATION_GATE=true skips this hook for the session
+check_disabled_env "clarification-gate"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
@@ -155,6 +158,10 @@ fi
 if [ "$SCORE" -gt 100 ]; then
   SCORE=100
 fi
+
+# --- Hook Pipe: emit clarification score for downstream hooks ---
+# blast-radius.sh reads this to adjust its threshold when ambiguity is high.
+hook_emit "clarification_score" "$SCORE" "PreToolUse"
 
 # --- Logging and Output ---
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
