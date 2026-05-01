@@ -32,6 +32,7 @@ class HarnessName(str, Enum):
 
     CLAUDE_CODE = "claude_code"
     CODEX = "codex"
+    BARE_CLI = "bare_cli"
     OPENCODE = "opencode"
     AIDER = "aider"
     CURSOR = "cursor"

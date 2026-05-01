@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "informationUri": "https://github.com/luum-ai/luum-agent-os",
+          "name": "primitive-coverage",
+          "rules": [
+            {
+              "id": "primitive-coverage-gap",
+              "name": "Primitive coverage gap",
+              "shortDescription": {
+                "text": "Primitive is missing coverage evidence"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "version": "2.1.0"
+}
