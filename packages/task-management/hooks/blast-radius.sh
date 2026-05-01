@@ -15,9 +15,12 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="blast-radius"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "$0")/_lib/hook-pipe.sh"
 
 # Auto-disabled at capability level 4
 check_capability_level "blast-radius"
+# Runtime disable: DISABLE_HOOK_BLAST_RADIUS=true skips this hook for the session
+check_disabled_env "blast-radius"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
@@ -138,16 +141,32 @@ if echo "$AGENT_PROMPT" | grep -qiE '\b(auth|authentication|authorization|permis
   add_signal "SECURITY: auth/security keywords detected"
 fi
 
+# --- Hook Pipe: read clarification score from clarification-gate.sh ---
+# When clarification_gate emitted a high ambiguity score, we lower the HIGH
+# threshold so that even a moderate blast radius triggers a warning.
+# Rationale: high ambiguity + broad scope is more dangerous than either alone.
+CLARIFICATION_SCORE=$(hook_read "clarification_score" "0" "PreToolUse")
+# Strip any trailing whitespace (pipe stores single-line values)
+CLARIFICATION_SCORE=$(echo "$CLARIFICATION_SCORE" | tr -d '[:space:]')
+# Default to 0 if non-numeric
+echo "$CLARIFICATION_SCORE" | grep -qE '^[0-9]+$' || CLARIFICATION_SCORE=0
+
+# Adjust HIGH threshold: if clarification score >= 30, lower HIGH threshold from 40 to 20
+HIGH_THRESHOLD=40
+if [ "$CLARIFICATION_SCORE" -ge 30 ]; then
+  HIGH_THRESHOLD=20
+fi
+
 # --- Classification ---
 # Thresholds tuned up: the old rules flagged every doc/test agent as CRITICAL
 # because "migration" or "auth" keyword alone triggered it. Noise > signal.
 # CRITICAL now requires: (infra AND security) OR file_score > 100.
-# HIGH: file_score > 40.
+# HIGH: file_score > HIGH_THRESHOLD (default 40; lowered to 20 when clarification score >= 30).
 # Below that: silent (do not emit advisory).
 RADIUS="LOW"
 if { [ "$INFRA_HIT" = true ] && [ "$SECURITY_HIT" = true ]; } || [ "$FILE_SCORE" -gt 100 ]; then
   RADIUS="CRITICAL"
-elif [ "$FILE_SCORE" -gt 40 ]; then
+elif [ "$FILE_SCORE" -gt "$HIGH_THRESHOLD" ]; then
   RADIUS="HIGH"
 fi
 
