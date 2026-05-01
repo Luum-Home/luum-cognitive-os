@@ -43,3 +43,29 @@ def test_cli_writes_reports_and_can_fail_on_unproved_done(tmp_path: Path) -> Non
     payload = json.loads((root / "reports" / "docs-execution.json").read_text())
     assert payload["summary"]["statuses"]["claimed_done_no_proof"] == 1
     assert "Documentation Execution Audit" in (root / "reports" / "docs-execution.md").read_text()
+
+
+def test_cli_fail_hard_gaps_blocks_stale_done(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    write(root / "docs" / "plan.md", "# Plan\n\n- [x] Implement stale feature in `scripts/stale_feature.py`.\n")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(MODULE_PATH),
+            "--project-dir",
+            str(root),
+            "--json-out",
+            "reports/docs-execution.json",
+            "--md-out",
+            "reports/docs-execution.md",
+            "--fail-hard-gaps",
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 2
+    payload = json.loads((root / "reports" / "docs-execution.json").read_text())
+    assert payload["summary"]["statuses"]["stale"] == 1
