@@ -3,8 +3,11 @@
 import pytest
 
 from lib.anthropic_direct_policy import (
+    ANTHROPIC_API_KEY_ENV,
     advisor_strategy_enabled,
     direct_anthropic_api_enabled,
+    direct_anthropic_api_key,
+    direct_anthropic_api_key_present,
 )
 
 pytestmark = pytest.mark.unit
@@ -50,3 +53,13 @@ def test_advisor_strategy_requires_direct_api_config(tmp_path, monkeypatch):
     cfg = _write_config(tmp_path, "false")
     monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
     assert advisor_strategy_enabled(cfg) is False
+
+
+def test_direct_api_key_helpers_use_canonical_env_name(monkeypatch):
+    monkeypatch.delenv(ANTHROPIC_API_KEY_ENV, raising=False)
+    assert direct_anthropic_api_key_present() is False
+    assert direct_anthropic_api_key() == ""
+
+    monkeypatch.setenv(ANTHROPIC_API_KEY_ENV, "sk-test-key")
+    assert direct_anthropic_api_key_present() is True
+    assert direct_anthropic_api_key() == "sk-test-key"

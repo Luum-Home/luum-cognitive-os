@@ -3,13 +3,15 @@
 
 Claude Code native execution and direct Anthropic API execution are separate
 runtime paths. A local logged-in Claude Code account should remain the default;
-an ambient ANTHROPIC_API_KEY must not silently enable pay-per-token calls.
+an ambient Anthropic API key must not silently enable pay-per-token calls.
 """
 
 from __future__ import annotations
 
 import os
 from typing import Any, Optional
+
+ANTHROPIC_API_KEY_ENV = "ANTHROPIC_API_KEY"
 
 
 def _load_config(config_path: Optional[str] = None) -> dict[str, Any]:
@@ -33,6 +35,16 @@ def direct_anthropic_api_enabled(config_path: Optional[str] = None) -> bool:
     cfg = _load_config(config_path=config_path)
     provider_cfg = (cfg.get("llm_providers") or {}).get("claude_sdk") or {}
     return provider_cfg.get("enabled") is True
+
+
+def direct_anthropic_api_key_present() -> bool:
+    """Return True when the direct Anthropic API credential env var is set."""
+    return bool(os.environ.get(ANTHROPIC_API_KEY_ENV, "").strip())
+
+
+def direct_anthropic_api_key() -> str:
+    """Return the direct Anthropic API key value, or an empty string."""
+    return os.environ.get(ANTHROPIC_API_KEY_ENV, "")
 
 
 def advisor_strategy_enabled(config_path: Optional[str] = None) -> bool:

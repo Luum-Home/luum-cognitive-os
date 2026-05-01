@@ -212,7 +212,9 @@ async def _call_anthropic(
             0,
         )
 
-    client = anthropic.AsyncAnthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+    from lib.anthropic_direct_policy import direct_anthropic_api_key
+
+    client = anthropic.AsyncAnthropic(api_key=direct_anthropic_api_key())
     user_content = f"Context:\n{context}\n\nQuestion:\n{question}"
     response = await client.messages.create(
         model=model,
@@ -373,12 +375,15 @@ def _env_present(*names: str) -> bool:
 
 def _anthropic_provider_available() -> bool:
     """Return True when Anthropic direct API use is explicitly allowed."""
-    if not _module_available("anthropic") or not _env_present("ANTHROPIC_API_KEY"):
+    if not _module_available("anthropic"):
         return False
     try:
-        from lib.anthropic_direct_policy import direct_anthropic_api_enabled
+        from lib.anthropic_direct_policy import (
+            direct_anthropic_api_enabled,
+            direct_anthropic_api_key_present,
+        )
 
-        return direct_anthropic_api_enabled()
+        return direct_anthropic_api_enabled() and direct_anthropic_api_key_present()
     except Exception:
         return False
 
@@ -481,7 +486,7 @@ async def _resolve_auto_provider(model: str = "") -> tuple[str, str]:
         f"Checked: {checked}. Start Ollama for provider=local, configure LiteLLM, "
         "or set a provider explicitly with its SDK and credentials. Anthropic is "
         "eligible only when llm_providers.claude_sdk.enabled: true and "
-        "ANTHROPIC_API_KEY is set."
+        "the direct Anthropic API credential is set."
     )
 
 
