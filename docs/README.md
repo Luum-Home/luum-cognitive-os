@@ -63,6 +63,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Conversation Reality Audit — 2026-04-30](business/conversation-reality-audit-2026-04-30.md) — investigation plan for validating real behavior, daily efficiency, DX, automagic claims, and competitive alternatives
 - [Primitive Gap Matrix — 2026-04](reports/primitive-gap-matrix-2026-04.md) — living evidence matrix for hook, skill, rule, memory, MCP, config, metrics, test, and docs gaps
 - [Primitive Coverage Tooling Research — 2026-04](architecture/primitive-coverage-tooling-research-2026-04.md) — external tooling research and architecture for coverage of agentic primitives/docs without loading whole repos into agent context.
+- [Primitive Coverage Backend Benchmark Research — 2026-05](architecture/primitive-coverage-backend-benchmark-2026-05.md) — local benchmark protocol and findings for Qartez, jCodeMunch MCP, Repowise, and CodeGraphContext as possible primitive coverage backends.
 - [Primitive Coverage Spike Plan — 2026-04](../.cognitive-os/plans/research/primitive-coverage-spike-plan-2026-04.md) — executable plan for a generic primitive coverage framework with graph, rule, and CI report surfaces.
 - [Documentation Duplicate Audit](reports/docs-duplicate-latest.md) — latest duplicate-documentation baseline and prevention report
 - [Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) — validation snapshot and remaining work before merging the master-plan portability branch
