@@ -66,6 +66,15 @@ def load_demotions(root: Path) -> set[tuple[str, str]]:
     return rows
 
 
+def load_optional_aliases(root: Path) -> set[tuple[str, str]]:
+    data = load_json(root / "manifests" / "optional-hook-aliases.json")
+    rows: set[tuple[str, str]] = set()
+    for item in data.get("aliases", []):
+        if isinstance(item, dict) and item.get("family") and item.get("path"):
+            rows.add((str(item["family"]), str(item["path"])))
+    return rows
+
+
 def test_corpus(root: Path) -> str:
     chunks: list[str] = []
     for path in repo_files(root, "tests/**/*.py"):
@@ -97,6 +106,7 @@ def is_cognitive_os_root(root: Path) -> bool:
         root / "scripts" / "primitive_surface_reduce.py",
         root / "scripts" / "primitive_gap_snapshot.py",
         root / "manifests" / "reduction-demotions.json",
+        root / "manifests" / "optional-hook-aliases.json",
         root / "docs" / "business" / "durable-product-master-plan.md",
     )
     return all(path.exists() for path in required)
@@ -105,6 +115,7 @@ def is_cognitive_os_root(root: Path) -> bool:
 def plan_hooks(root: Path) -> list[ReductionAction]:
     registered = load_registered_hooks(root)
     demotions = load_demotions(root)
+    optional_aliases = load_optional_aliases(root)
     tests = test_corpus(root)
     actions: list[ReductionAction] = []
     for path in repo_files(root, "hooks/*.sh"):
@@ -114,8 +125,9 @@ def plan_hooks(root: Path) -> list[ReductionAction]:
         is_demoted = ("hooks", rel) in demotions
         is_tested = has_test_signal(tests, name, rel)
         is_symlink = path.is_symlink()
+        is_optional_alias = ("hooks", rel) in optional_aliases
 
-        if is_registered:
+        if is_registered or is_optional_alias:
             continue
         if is_demoted and not is_tested:
             dest = archive_destination(root, rel).relative_to(root).as_posix()
