@@ -20,6 +20,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Competitive Reassessment: OpenClaw and Hermes Agent](business/competitive-reassessment-openclaw-hermes-2026-04.md) — current evidence-based comparison of self-improvement, memory, skills, deployment, and governance gaps.
 - [Runtime Comparison Benchmark Plan](architecture/plans/runtime-comparison-benchmark-plan.md) — benchmark matrix for Claude/Codex vanilla, COS-enabled harnesses, and prior-art tools across deployment surfaces.
 - [Headless and Clustered Runtime Plan](architecture/plans/headless-clustered-runtime-plan.md) — staged path from local harness runtime to EC2/container/Kubernetes workers.
+- [Cloud Worker Runtime Tooling Research — 2026-05](architecture/cloud-worker-runtime-tooling-research-2026-05.md) — queue, event-bus, and durable-execution options for the cloud/headless worker path.
+- [`cos run-task` Contract](architecture/cos-run-task-contract.md) — Phase 1 task payload, provider/agent command, artifact, exit-code, and security contract for headless single-node execution.
 - [Local Connected Systems Validation](manual-tests/local-connected-systems-validation.md) — proof path for dependency readiness, automatic install boundaries, MCP wiring, optional services, and persistent test summaries.
 - [Claude Code Startup Hang Regression](manual-tests/claude-code-startup-hang-regression.md) — manual proof path for the 2026-05-01 startup hang/duplicate-prompt hardening and its automated regression tests.
 

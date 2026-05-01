@@ -141,6 +141,7 @@
 - [x] A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.
 
 - [x] Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-027](../architecture/adrs/027-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../../.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md).
+- [x] Cloud/headless worker tooling research is documented in [Cloud Worker Runtime Tooling Research — 2026-05](../architecture/cloud-worker-runtime-tooling-research-2026-05.md), with lightweight queue and durable-execution options staged behind `cos run-task`.
 - [x] Competitive/runtime benchmark direction is documented in [Runtime Comparison Benchmark Plan](../../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md), covering vanilla Claude/Codex, COS-enabled harnesses, and prior-art tools across workstation, VM, container, pod, and worker-cluster surfaces.
 - [x] Competitive reassessment against OpenClaw and Hermes Agent is documented in [Competitive Reassessment: OpenClaw and Hermes Agent](competitive-reassessment-openclaw-hermes-2026-04.md), including native self-improvement, skill lifecycle, memory/profile bootstrap, and deployment/onboarding gaps.
 
