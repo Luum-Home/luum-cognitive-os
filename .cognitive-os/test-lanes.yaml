@@ -12,11 +12,11 @@ lanes:
   audit:
     paths: [tests/audit/]
     parallel: false
-    stateful_reason: "Install-touching tests (test_install_scripts.py Layer 3-4) execute hooks/self-install.sh and cos-init.sh against COS_SOURCE_DIR=PROJECT_ROOT (the real repo). Under -n auto, multiple xdist workers walk rules/ skills/ hooks/ of the same source tree concurrently while the hooks rsync into per-worker tmp dirs — causes >20 intermittent flakes. Diagnosed 2026-04-30 (engram topic_key adr-072/install-flakes-rootcause). Surgical xdist_group fix tracked as follow-up; flipping to serial is the safety floor."
+    stateful_reason: "ADR-072 Phase 1 of re-paralelization: xdist_group('self_install') applied to tests/audit/test_install_scripts.py (the install-touching offender). However a parallel smoke on 2026-05-01 surfaced ~47 deterministic pre-existing failures in doc-contract tests (test_local_connected_systems_validation_docs, test_headless_runtime_direction_docs, test_runtime_comparison_benchmark_plan) unrelated to the install-test race. Lane stays serial until those pre-existing issues are fixed; xdist_group is in place ready for the flip."
   contract:
     paths: [tests/contracts/]
     parallel: false
-    stateful_reason: "test_self_install_no_container_spawn runs SessionStart hooks with cwd=_repo_root() and CLAUDE_PROJECT_DIR=_repo_root() — concurrent xdist workers race on .git/config.lock when self-install writes git config. Same root cause as audit lane (real repo root shared across workers). Diagnosed 2026-04-30."
+    stateful_reason: "ADR-072 Phase 1 of re-paralelization: xdist_group('self_install') applied to test_self_install_no_container_spawn.py (the .git/config.lock racer). Parallel smoke on 2026-05-01 still showed ~10 deterministic doc-contract failures unrelated to lock racing. Lane stays serial until those pre-existing issues are fixed; xdist_group is in place ready for the flip."
   integration:
     paths: [tests/integration/]
     parallel: false
