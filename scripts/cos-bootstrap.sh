@@ -433,7 +433,7 @@ echo "║    Cognee/Memu:  (memory profile — no public HTTP port)  ║"
 fi
 echo "╠══════════════════════════════════════════════════════════╣"
 echo "║  Next steps:                                             ║"
-echo "║    1. Set ANTHROPIC_API_KEY in .env                      ║"
+echo "║    1. Optional: set provider keys you explicitly enable   ║"
 echo "║    2. Open Claude Code:  claude                          ║"
 echo "║    3. Initialize COS:    /cognitive-os-init              ║"
 echo "║    4. Check health:      /cognitive-os-status            ║"

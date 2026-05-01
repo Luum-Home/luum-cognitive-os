@@ -61,7 +61,7 @@ SESSION END
 4. Identifies affected services by file paths
 5. Posts structured review: Summary, Architecture Compliance, Security, Test Coverage, Suggestions
 
-**Required secret**: `ANTHROPIC_API_KEY`
+**Required secret for this CI-only Claude action**: `ANTHROPIC_API_KEY`
 
 ### Issue Triage (`claude-issue-triage.yml`)
 
@@ -76,7 +76,7 @@ SESSION END
 5. Estimates priority: `priority:critical`, `priority:high`, `priority:medium`, `priority:low`
 6. Adds labels and posts a comment with context
 
-**Required secret**: `ANTHROPIC_API_KEY`
+**Required secret for this CI-only Claude action**: `ANTHROPIC_API_KEY`
 
 ---
 

@@ -40,9 +40,10 @@ DeepEval is the primary evaluation framework for Cognitive OS. It provides pytes
 
 ### Configuration
 ```bash
-# Set your LLM provider for evaluation
-export DEEPEVAL_LLM_PROVIDER=anthropic
-export ANTHROPIC_API_KEY=<your-key>
+# Set your LLM provider for evaluation. Prefer a non-Anthropic provider unless
+# direct Anthropic API use is explicitly enabled for this project.
+export DEEPEVAL_LLM_PROVIDER=openai
+export OPENAI_API_KEY=<your-key>
 
 # Optional: Confident AI platform for dashboards
 # export DEEPEVAL_API_KEY=<your-confident-ai-key>

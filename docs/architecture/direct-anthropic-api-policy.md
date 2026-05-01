@@ -42,6 +42,19 @@ The policy has two levels:
   boundary: `sonnet+advisor` is executor-mode functionality, not normal local
   Claude Code account usage.
 
+
+## Flow Classification
+
+| Flow | Classification | Policy |
+|---|---|---|
+| Claude Code local/operator sessions | Native harness account | Never require `ANTHROPIC_API_KEY`. |
+| `claude_sdk` provider and `sonnet+advisor` executor path | Direct Anthropic API | Requires `llm_providers.claude_sdk.enabled: true`, SDK, key, and executor-mode when advisor is used. |
+| `packages/advisor-mcp` | Optional external-advisor MCP transport | Defaults to safe `provider=auto`; Anthropic is last and policy-gated. |
+| `packages/cos-advisory-llm` prompt hooks | Harness-native prompt hook extension | Uses prompt-type hook output; no direct provider API key required. |
+| Cognee reference Docker profile | Optional memory service | Defaults to local Ollama + Fastembed; Anthropic only via explicit Cognee override. |
+| GitHub Claude workflows | Explicit CI direct API | May use repository secret because CI has no local logged-in Claude Code account. |
+| Promptfoo/DeepEval examples | Optional eval tooling | Examples should be provider-neutral or explicitly marked cost-bearing. |
+
 ## Consequences
 
 - Ambient `ANTHROPIC_API_KEY` is not propagated to Claude CLI subprocess safe
@@ -56,6 +69,9 @@ The policy has two levels:
 - GitHub Actions may still use repository secrets explicitly because CI cannot
   rely on a local logged-in Claude Code account. Those workflows are separate
   from local/operator defaults.
+- Optional service defaults must not select Anthropic direct API. Cognee defaults
+  to local Ollama/Fastembed, and `cos-advisory-llm` uses harness-native prompt
+  hooks rather than SDK calls.
 
 ## Rejected alternatives
 
