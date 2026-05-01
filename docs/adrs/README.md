@@ -81,3 +81,4 @@ ADR-pattern file appears outside this directory without being a CD- file or redi
 | [ADR-057](ADR-057-cross-harness-authoring-and-driver-projection.md) | Cross-Harness Authoring and Driver Projection |
 | [ADR-041](ADR-041.md) | (see file) |
 | [ADR-042](ADR-042-valkey-local-daemon.md) | Valkey Local Daemon |
+| [ADR-101](ADR-101-intent-aware-rate-limiter.md) | Intent-Aware Rate Limiter Flow Control |

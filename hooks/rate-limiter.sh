@@ -35,6 +35,8 @@ set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 source "$(dirname "$0")/_lib/common.sh"
+# Runtime disable: DISABLE_HOOK_RATE_LIMITER=true skips this hook for the session.
+check_disabled_env "rate-limiter"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 COGNITIVE_OS_HOOK_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
@@ -79,8 +81,17 @@ if [ "$ACTION" = "bash_command" ]; then
     fi
 fi
 export COGNITIVE_OS_HOOK_ROOT
+if [ -n "${COS_RATE_LIMIT_PRIORITY_LANE:-}" ]; then
+    PRIORITY_LANE="$COS_RATE_LIMIT_PRIORITY_LANE"
+elif [ "$RETRY_COUNT" != "0" ]; then
+    PRIORITY_LANE="orchestrator"
+else
+    PRIORITY_LANE="operator"
+fi
+
 export RATE_LIMIT_BLOCKED_COMMAND="$BLOCKED_COMMAND"
 export RATE_LIMIT_BLOCKED_COMMAND_HASH="$BLOCKED_COMMAND_HASH"
+export RATE_LIMIT_PRIORITY_LANE="$PRIORITY_LANE"
 
 # Check rate limit via Python (passing phase for modifier calculation)
 RESULT=$(python3 -c "
@@ -93,7 +104,7 @@ rl = RateLimiter(
     state_path='$_PROJECT_DIR/.cognitive-os/rate-limit-state.json',
     phase='$PHASE',
 )
-allowed, reason = rl.check('$ACTION')
+allowed, reason = rl.check('$ACTION', priority_lane=os.environ.get('RATE_LIMIT_PRIORITY_LANE', 'normal'), signature=os.environ.get('RATE_LIMIT_BLOCKED_COMMAND_HASH') or None)
 
 if not allowed:
     context = {
@@ -133,9 +144,16 @@ if not allowed:
     print(f'ORCHESTRATOR ACTION: Check queue with RateLimitQueue.dequeue_ready() after {cooldown}s')
     print(f'BLOCKED: {reason}')
 else:
-    rl.record('$ACTION')
+    rl.record('$ACTION', signature=os.environ.get('RATE_LIMIT_BLOCKED_COMMAND_HASH') or None)
+    warnings = rl.warnings()
+    for warning in warnings:
+        print(f'RATE_LIMIT_WARNING: {warning}')
     print('OK')
 " 2>/dev/null || echo "OK")
+
+if [[ "$RESULT" == *"RATE_LIMIT_WARNING:"* ]]; then
+    echo "$RESULT" | grep "^RATE_LIMIT_WARNING:" >&2 || true
+fi
 
 if [[ "$RESULT" == *"BLOCKED"* ]]; then
     # Preserve machine-parseable lines for orchestrator polling
