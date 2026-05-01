@@ -37,7 +37,6 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Iterable
 
 import pytest
 
@@ -253,7 +252,7 @@ def _catalog_names() -> set[str]:
         if not cat.exists():
             continue
         for line in cat.read_text(encoding="utf-8", errors="ignore").split("\n"):
-            m = re.match(r"\|\s*([a-z0-9][a-z0-9\-_]*)\s*\|", line)
+            m = re.match(r"\|\s*([a-z0-9_][a-z0-9\-_]*)\s*\|", line)
             if m:
                 names.add(m.group(1))
     return names
