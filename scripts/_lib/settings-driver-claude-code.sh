@@ -132,10 +132,11 @@ cc_driver_emit() {
 
   local user_prompt_submit
   user_prompt_submit=$(_cc_hook_group "UserPromptSubmit" "" \
-    "hooks/user-prompt-capture.sh"     "true"  \
-    "hooks/session-wrapup-trigger.sh"  "true"  \
-    "hooks/session-heartbeat.sh"       "false" \
-    "hooks/memory-prefetch.sh"         "true"  \
+    "hooks/user-prompt-capture.sh"                "true"  \
+    "hooks/session-wrapup-trigger.sh"             "true"  \
+    "hooks/session-heartbeat.sh"                  "false" \
+    "hooks/memory-prefetch.sh"                    "true"  \
+    "hooks/edit-lock-process-negotiations.sh"     "false" \
   )
 
   local subagent_start
@@ -214,6 +215,7 @@ cc_driver_emit() {
     "hooks/confidentiality-enforcer.sh"     "false" \
     "hooks/surface-fix-detector.sh"         "false" \
     "hooks/doc-sync-detector.sh"            "true"  \
+    "hooks/edit-lock-drain-parked.sh"       "false" \
   )
 
   local post_todowrite
@@ -242,6 +244,7 @@ cc_driver_emit() {
     "hooks/auto-repair-dispatcher.sh" "true"  \
     "hooks/dequeue-notify.sh"         "true"  \
     "hooks/state-heartbeat.sh"        "true"  \
+    "hooks/review-spawner.sh"         "false" \
   )
 
   local post_engram_mcp
@@ -374,12 +377,21 @@ else:
     exit 0
   fi
 
-  # Normal mode: write .claude/settings.json
-  mkdir -p "$(dirname "$SETTINGS_FILE")"
+  # Normal mode: write .claude/settings.json atomically.
+  #
+  # Atomicity matters because the IDE watches settings.json: a partial / half-written
+  # file triggers session re-spawn (incident 2026-05-01-session-3-spawn-hang). To keep
+  # the rename atomic we must place the temp file on the SAME filesystem as the
+  # destination — `mktemp` without args defaults to $TMPDIR (often /tmp), which on
+  # some setups is a different filesystem (tmpfs vs APFS). Cross-filesystem `mv`
+  # degrades to copy+unlink — NOT atomic. Forcing tmp into the destination directory
+  # guarantees a true rename(2) on the same volume.
+  SETTINGS_DIR="$(dirname "$SETTINGS_FILE")"
+  mkdir -p "$SETTINGS_DIR"
   if [ -f "$SETTINGS_FILE" ]; then
     cp "$SETTINGS_FILE" "$SETTINGS_FILE.bak"
   fi
-  TMP_OUT="$(mktemp)"
+  TMP_OUT="$(mktemp "$SETTINGS_DIR/.settings.json.XXXXXX")"
   trap 'rm -f "$TMP_OUT"' EXIT
   cc_driver_emit > "$TMP_OUT"
   mv "$TMP_OUT" "$SETTINGS_FILE"
