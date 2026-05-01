@@ -982,6 +982,11 @@ harness:
       async: true
       scope: os-only
 
+    lazy-catalog-auto-revert:
+      script: hooks/lazy-catalog-auto-revert.sh
+      event: SessionStart
+      scope: os-only
+
     # ── UserPromptSubmit ──────────────────────────────────────────────────────
     user-prompt-capture:
       script: hooks/user-prompt-capture.sh
@@ -1004,6 +1009,16 @@ harness:
       script: hooks/memory-prefetch.sh
       event: UserPromptSubmit
       async: true
+      scope: os-only
+
+    edit-lock-process-negotiations:
+      script: hooks/edit-lock-process-negotiations.sh
+      event: UserPromptSubmit
+      scope: os-only
+
+    lazy-catalog-injector:
+      script: hooks/lazy-catalog-injector.sh
+      event: UserPromptSubmit
       scope: os-only
 
     # ── SubagentStart ─────────────────────────────────────────────────────────
@@ -1070,6 +1085,12 @@ harness:
 
     project-docs-convention:
       script: hooks/project-docs-convention.sh
+      event: PreToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    edit-lock-pre-tool:
+      script: hooks/edit-lock-pre-tool.sh
       event: PreToolUse
       matcher: "Edit|Write"
       scope: os-only
@@ -1156,6 +1177,19 @@ harness:
       matcher: ""
       scope: os-only
 
+    tool-sequence-capture:
+      script: hooks/tool-sequence-capture.sh
+      event: PostToolUse
+      matcher: ""
+      scope: os-only
+
+    skill-discovery-telemetry:
+      script: hooks/skill-discovery-telemetry.sh
+      event: PostToolUse
+      matcher: ""
+      async: true
+      scope: os-only
+
     # ── PostToolUse — Bash only ───────────────────────────────────────────────
     # Codex: limited (Bash matcher only — these project to Codex PostToolUse)
     error-pipeline:
@@ -1240,6 +1274,12 @@ harness:
       event: PostToolUse
       matcher: "Edit|Write"
       async: true
+      scope: os-only
+
+    edit-lock-drain-parked:
+      script: hooks/edit-lock-drain-parked.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
       scope: os-only
 
     # ── PostToolUse — TodoWrite ───────────────────────────────────────────────
@@ -1348,6 +1388,12 @@ harness:
       async: true
       scope: os-only
 
+    review-spawner:
+      script: hooks/review-spawner.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
     # ── PostToolUse — Engram MCP ──────────────────────────────────────────────
     # Codex: OMITTED — MCP tool matcher not supported by Codex v0.126.0-alpha.8
     engram-reinforce-on-access:
@@ -1370,6 +1416,11 @@ harness:
 
     session-cleanup:
       script: hooks/session-cleanup.sh
+      event: Stop
+      scope: os-only
+
+    edit-lock-session-end:
+      script: hooks/edit-lock-session-end.sh
       event: Stop
       scope: os-only
 
@@ -1398,6 +1449,11 @@ harness:
       script: hooks/engram-crystallize-on-session-end.sh
       event: Stop
       async: true
+      scope: os-only
+
+    skill-synthesis-scanner:
+      script: hooks/skill-synthesis-scanner.sh
+      event: Stop
       scope: os-only
 
     # ── TeammateIdle (COS extension) ──────────────────────────────────────────
