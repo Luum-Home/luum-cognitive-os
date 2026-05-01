@@ -173,6 +173,35 @@ _lock_holder() {
 cmd_acquire() {
   if [ "${COS_BYPASS_EDIT_LOCK:-}" = "1" ]; then
     echo "[edit-coop] BYPASS: COS_BYPASS_EDIT_LOCK=1, no lock taken on $1" >&2
+
+    # ── D3: Bypass audit log ──────────────────────────────────────────────────
+    # If a live lock exists and a bypass is being used, record to the audit log.
+    # The log is append-only and NEVER deleted automatically.
+    local _bypass_file_path="$1"
+    local _bypass_lock_dir
+    _bypass_lock_dir="$(_lock_dir_for "$_bypass_file_path")"
+    if [ -d "$_bypass_lock_dir" ] && ! _lock_is_stale "$_bypass_file_path"; then
+      local _bypassed_session
+      _bypassed_session="$(_lock_holder "$_bypass_file_path")"
+      if [ -n "$_bypassed_session" ] && [ "$_bypassed_session" != "$(_session_id)" ]; then
+        local _audit_dir
+        _audit_dir="$(_resolve_project_dir)/.cognitive-os/runtime"
+        mkdir -p "$_audit_dir"
+        local _audit_file="$_audit_dir/edit-locks-audit.jsonl"
+        local _entry
+        _entry="$(printf '{"timestamp":"%s","bypassed_session":"%s","bypasser_session":"%s","file_path":"%s","reason":"%s","agent_id":"%s","pid":%s}\n' \
+          "$(_iso8601)" \
+          "$_bypassed_session" \
+          "$(_session_id)" \
+          "$_bypass_file_path" \
+          "${COS_BYPASS_EDIT_LOCK_REASON:-no reason given}" \
+          "$(_agent_id)" \
+          "$$")"
+        printf '%s\n' "$_entry" >> "$_audit_file"
+        echo "[edit-coop] BYPASS AUDIT: logged bypass of session=$_bypassed_session on $_bypass_file_path" >&2
+      fi
+    fi
+    # ─────────────────────────────────────────────────────────────────────────
     return 0
   fi
 
