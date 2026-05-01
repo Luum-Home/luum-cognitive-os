@@ -13,6 +13,8 @@ source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
 check_capability_level "architecture-compliance"
+# Runtime disable: DISABLE_HOOK_ARCHITECTURE_COMPLIANCE=true skips this hook for the session
+check_disabled_env "architecture-compliance"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 COGNITIVE_OS_YAML="$PROJECT_DIR/cognitive-os.yaml"

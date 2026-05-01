@@ -22,6 +22,8 @@ source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
 check_capability_level "scope-proportionality"
+# Runtime disable: DISABLE_HOOK_SCOPE_PROPORTIONALITY=true skips this hook for the session
+check_disabled_env "scope-proportionality"
 
 check_private_mode
 

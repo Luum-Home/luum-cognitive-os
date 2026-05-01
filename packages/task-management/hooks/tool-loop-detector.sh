@@ -15,6 +15,8 @@ source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
 check_capability_level "tool-loop-detector"
+# Runtime disable: DISABLE_HOOK_TOOL_LOOP_DETECTOR=true skips this hook for the session
+check_disabled_env "tool-loop-detector"
 
 # Use a session-stable temp file (PPID stays constant within a session)
 HISTORY_FILE="/tmp/claude-tool-history-${PPID}.log"

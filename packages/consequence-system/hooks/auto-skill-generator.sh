@@ -12,6 +12,8 @@ source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
 check_capability_level "auto-skill-generator"
+# Runtime disable: DISABLE_HOOK_AUTO_SKILL_GENERATOR=true skips this hook for the session
+check_disabled_env "auto-skill-generator"
 
 SKILLS_DIR="${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/skills/auto-generated"
 METRICS_DIR="${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/metrics"

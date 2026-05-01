@@ -22,6 +22,8 @@ _PAPERCLIP_LIB="$(dirname "$0")/_lib/paperclip-notify.sh"
 
 # Auto-disabled at capability level 4
 check_capability_level "confidence-gate"
+# Runtime disable: DISABLE_HOOK_CONFIDENCE_GATE=true skips this hook for the session
+check_disabled_env "confidence-gate"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 METRICS_DIR="$(_resolve_metrics_dir)"
