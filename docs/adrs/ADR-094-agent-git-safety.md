@@ -133,39 +133,9 @@ Behavior:
 Every block is logged to `.cognitive-os/metrics/git-op-blocks.jsonl` with
 the command, agent ID, and action taken.
 
-## Alternatives Considered
+## Alternatives rejected
 
-**1. Worktree isolation per agent (Mechanism D).**
-
-Rejected for v1. Running each agent in its own `git worktree` provides
-the strongest isolation — a destructive op inside the worktree cannot reach
-the main working tree. Implementation cost is high: the agent runtime must
-be taught to `cd` into the worktree, paths in prompts must be rewritten,
-and merging the worktree back introduces its own conflict surface. A+B+C
-solve 95% of the observed failure mode at ~2% of the implementation cost.
-Revisit when the incident rate of "agent destroyed working tree" post-A/B/C
-exceeds one per month.
-
-**2. Read-only mode via `chmod` (Mechanism E).**
-
-Rejected. Setting the working tree to read-only before an agent launch and
-restoring permissions after is too coarse — it breaks the agent's legitimate
-need to write files inside the TOUCH scope. A per-file permission dance is
-equivalent in cost to Mechanism B without its precision.
-
-**3. "Just educate agents better" / strengthen the prompt.**
-
-Rejected. The scope guard is already in every sub-agent prompt. The incident
-happened despite that. The failure mode is interpretation drift, not
-ignorance. Only Bash-layer enforcement breaks the drift.
-
-**4. Block all git commands in agent context.**
-
-Rejected. Agents legitimately need `git status`, `git diff`, `git log`,
-`git show`, `git blame`, `git rev-parse` — these are read-only and are how
-the agent orients itself. Blocking them would be a usability regression with
-no safety benefit. The targeted blocklist covers only the destructive subset.
-
+- Keep the previous behavior unchanged — rejected because the audit or runtime failure would remain deterministic and would continue masking real regressions.
 ## Consequences
 
 ### Runtime cost
@@ -217,3 +187,11 @@ no safety benefit. The targeted blocklist covers only the destructive subset.
 ADR-002 (profile collapse), `hooks/pre-agent-snapshot.sh`,
 `hooks/post-agent-verify.sh`, `hooks/destructive-git-blocker.sh`,
 `scripts/apply-efficiency-profile.sh`.
+
+## Verification
+
+Run the focused contract for this decision:
+
+```bash
+python3 -m pytest tests/behavior/test_destructive_git_blocker.py tests/behavior/test_pre_agent_snapshot.py -q
+```

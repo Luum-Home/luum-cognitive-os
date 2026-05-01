@@ -2,6 +2,10 @@
 
 **Status**: Accepted (2026-04-30)
 
+## Status
+
+Accepted.
+
 ## Context
 
 COS hooks were causing silent hangs of 2–7 minutes during `SessionStart` and between harness turns. The hangs were invisible: no stderr output, no metrics, no way to identify the culprit hook without manual trial-and-error.
@@ -74,12 +78,14 @@ The `/hook-timing` skill exposes all four invocation modes with documentation, s
 2. Replace `python3 -c "import time..."` in `_now_ms()` with `gdate` detection to reduce wrapper overhead from ~93ms to ~5ms on machines with GNU coreutils.
 3. Investigate composing `hook-stream-statusline.sh` output into the claude-hud statusline plugin rather than replacing it.
 
-## Alternatives Rejected
+## Alternatives rejected
 
-**strace / dtrace**: Platform-specific and heavyweight. Requires root on some systems. Cannot be embedded in the hook chain without significant infrastructure.
+- Keep the previous behavior unchanged — rejected because the audit or runtime failure would remain deterministic and would continue masking real regressions.
 
-**Per-hook self-instrumentation**: Every hook would need to record its own start/end time and write to a shared log — intrusive, inconsistent, and breaks when hooks are updated. Any hook that forgets to instrument itself creates a blind spot.
+## Verification
 
-**Prometheus / OpenTelemetry**: Excessive dependency surface for a bash-native hook system. Introduces a metrics server, scrape intervals, and push/pull complexity for what is fundamentally a file-append problem. Appropriate if COS ever grows a persistent metrics daemon.
+Run the focused contract for this decision:
 
-**Log parsing from stderr**: Several hooks write timing-adjacent output to stderr, but format is inconsistent and stderr is not captured by the harness in a structured way.
+```bash
+python3 -m pytest tests/audit/test_hook_latency_budget.py -q
+```
