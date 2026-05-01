@@ -237,7 +237,7 @@ def test_self_install_is_idempotent(tmp_path: Path):
     )
 
 
-def test_uninstall_removes_cos_components(tmp_path: Path):
+def test_uninstall_removes_cos_primitives(tmp_path: Path):
     """uninstall.sh removes .cognitive-os/, .claude/rules/cos/, .claude/skills/
     when run from a project that was just installed.
     """
