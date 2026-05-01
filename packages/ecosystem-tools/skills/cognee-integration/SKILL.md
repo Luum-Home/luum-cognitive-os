@@ -51,7 +51,7 @@ services:
     config:
       graph_backend: "${COGNEE_GRAPH_BACKEND:-networkx}"  # networkx | neo4j
       vector_store: "${COGNEE_VECTOR_STORE:-lancedb}"
-      llm_provider: "${COGNEE_LLM_PROVIDER:-anthropic}"
+      llm_provider: "${COGNEE_LLM_PROVIDER:-ollama}"
       mcp_enabled: true
       mcp_port: 8100
 ```
@@ -60,8 +60,13 @@ services:
 ```
 COGNEE_GRAPH_BACKEND=networkx     # or neo4j
 COGNEE_VECTOR_STORE=lancedb       # or qdrant, weaviate, pgvector
-COGNEE_LLM_PROVIDER=anthropic
-COGNEE_LLM_MODEL=claude-sonnet-4-5-20250514
+COGNEE_LLM_PROVIDER=ollama
+COGNEE_LLM_MODEL=llama3.1:8b
+COGNEE_LLM_ENDPOINT=http://localhost:11434/v1
+COGNEE_LLM_API_KEY=ollama
+COGNEE_EMBEDDING_PROVIDER=fastembed
+COGNEE_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+COGNEE_EMBEDDING_DIMENSIONS=384
 ```
 
 ## What to Do
