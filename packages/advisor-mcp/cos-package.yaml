@@ -1,7 +1,7 @@
 name: "@luum/advisor-mcp"
 version: "1.0.0"
 cos_version: ">=0.2.0"
-description: "Model-agnostic advisor MCP server for mid-task strategic consultation"
+description: "Optional external-advisor MCP server for mid-task strategic consultation"
 authors: ["luum"]
 license: "Apache-2.0"
 keywords: ["mcp", "advisor", "strategic", "multi-provider", "llm"]
@@ -14,7 +14,7 @@ provides:
 exports:
   - source: "advisor_server.py"
     type: mcp-server
-    description: "FastMCP server exposing the consult_advisor tool"
+    description: "FastMCP server exposing the external consult_advisor tool"
 
 dependencies:
   fastmcp:
@@ -48,11 +48,15 @@ tools:
     inputs:
       - context: "What the executor has learned so far"
       - question: "Specific strategic question for the advisor"
-      - provider: "local | litellm | openai | google | anthropic (default: local)"
+      - provider: "auto | local | litellm | openai | google | anthropic (default: auto)"
       - model: "Override model (empty = provider default)"
       - max_tokens: "Max response tokens (default: 500)"
 
 providers:
+  auto:
+    default_model: null
+    env_var: null
+    notes: "Safe resolver: local, explicit LiteLLM, OpenAI, Google, then policy-gated Anthropic"
   anthropic:
     default_model: "claude-opus-4-6"
     env_var: "ANTHROPIC_API_KEY"
