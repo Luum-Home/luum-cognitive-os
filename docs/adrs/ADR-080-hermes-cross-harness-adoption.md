@@ -20,6 +20,8 @@ Proposed. Blocked-by: ADR-081.
 |------|--------|----------|-----------|
 | Tier 1 #2 — portable prompt caching layer | **Accepted (executed 2026-04-30 by Session A)** | 2026-04-30 | `lib/prompt_cache.py` (portable layer appended), `lib/dispatch.py` (opt-in integration), `tests/unit/test_prompt_cache.py` (73 tests, +34 new for portable layer) |
 | Tier 1 #4 — rate-limit instrumentation | **Accepted (executed 2026-05-01 by Session A)** | 2026-05-01 | `lib/rate_limit_tracker.py` (new portable module), `lib/dispatch.py` (precheck + record hooks, opt-in), `tests/unit/test_rate_limit_tracker.py` (40 tests) |
+| Tier 2 #5 — batch runner / cron | **Accepted (executed 2026-05-01 by Session A)** | 2026-05-01 | `lib/cos_batch_runner.py` (single-shot parallel batch), `lib/cos_cron.py` (recurring scheduler), `bin/cos-batch` (CLI), `bin/cos-cron` (CLI), `tests/unit/test_cos_batch_runner.py` (16 tests), `tests/unit/test_cos_cron.py` (37 tests), `tests/integration/test_cos_batch_cli.py` (5 tests), `tests/integration/test_cos_cron_cli.py` (9 tests). Daemon opt-in only (`cos-cron daemon`). Jobs default `enabled=false`. Harness-independent. |
+| Tier 2 #6 — error classifier + insights | **Accepted (executed 2026-05-01 by Session A)** | 2026-05-01 | `lib/error_classifier.py` (JSONL taxonomy layer appended), `lib/error_insights.py` (new), `bin/cos-errors` (CLI: classify + insights), `lib/feedback_consumer.py` (opt-in `summarise_error_insights()`), `tests/unit/test_error_classifier.py` (+50 tests for JSONL API), `tests/unit/test_error_insights.py` (40 tests). **Tier 2 closed.** |
 
 ---
 
@@ -187,21 +189,42 @@ Implementation notes (2026-05-01):
 These pieces port COS features that currently depend on Claude Code-specific
 scheduler or taxonomy primitives. They are not blockers for Tier 1.
 
-**5. Batch runner and cron primitives**
-Source: `.claude/plugins/hermes-agent/agent/batch_runner.py`,
+**5. Batch runner and cron primitives** — `Accepted (executed 2026-05-01 by Session A)`
+Source: `.claude/plugins/hermes-agent/batch_runner.py`,
 `.claude/plugins/hermes-agent/cron/`
-Target: `lib/batch_runner.py`, harness adapter event hooks
+Target: `lib/cos_batch_runner.py`, `lib/cos_cron.py`, `bin/cos-batch`, `bin/cos-cron`
 
 The `/schedule`, `/loop`, and `CronCreate` semantics work in Claude Code via
 the harness scheduler. Non-Claude harnesses have no equivalent scheduler. The
-`batch_runner.py` and cron primitives give COS a portable scheduling surface.
-The existing `batch-runner` skill shells out to these; this tier makes that
-skill cross-harness-functional.
+batch runner and cron primitives give COS a portable scheduling surface.
 
-**6. Error classifier and insights layer**
+Implementation notes (2026-05-01):
+- `lib/cos_batch_runner.py`: threadpool-based single-shot parallel batch execution.
+  API: `BatchPlan(tasks, concurrency, retry)` → `run_batch(plan) → BatchResult`.
+  Output captured per task in `.cognitive-os/runtime/batch-runs/<run_id>/`.
+  Named `cos_batch_runner` (not `batch_runner`) to avoid collision with the
+  existing SDD pipeline runner (`lib/batch_runner.py`).
+- `lib/cos_cron.py`: recurring job scheduler. Cron parser uses `croniter` when
+  available; falls back to a minimal 5-field parser (`*`, `digit`, `*/N`) without.
+  Job storage: `.cognitive-os/runtime/cron-jobs.json` (atomic rename).
+  Audit log: `.cognitive-os/runtime/cron-runs.jsonl` (append-only).
+  Output: `.cognitive-os/runtime/cron-output/<name>/`.
+  Jobs default to `enabled=false` — user must explicitly enable via `cos-cron enable`.
+- Daemon (`cos-cron daemon`): opt-in only. NOT started automatically. Runs every
+  60s by default (override with `--interval`).
+- Integration: `cos-cron` commands accept any shell command, including
+  `cos-skill run <name>` and `cos-agent spawn ...`.
+- Relationship to Claude Code scheduler: complementary. CC users continue using
+  `CronCreate` / `/loop` / `/schedule`. This module is the portable fallback for
+  Codex, bare-cli, and any harness without a native scheduler.
+- Tests: 16 unit (batch) + 37 unit (cron) + 5 integration (batch CLI) + 9
+  integration (cron CLI) = 67 behavioral tests, all green.
+
+**6. Error classifier and insights layer** — `Accepted (executed 2026-05-01 by Session A)`
 Source: `.claude/plugins/hermes-agent/agent/error_classifier.py`,
 `insights.py`
-Target: `lib/error_classifier.py`, `lib/insights.py`
+Target: `lib/error_classifier.py` (JSONL taxonomy layer appended to existing module),
+`lib/error_insights.py` (new), `bin/cos-errors` (CLI)
 
 `error-learning.jsonl` records raw error events (ADR-074 §2). There is no
 semantic taxonomy on top: identical root causes appear as distinct error
@@ -210,6 +233,34 @@ error classifier adds structured labeling (transient vs. permanent, provider vs.
 tool vs. logic). The insights module aggregates classified events into
 actionable summaries. Together they close the gap between error recording and
 error learning.
+
+Implementation notes (2026-05-01):
+- `lib/error_classifier.py`: JSONL taxonomy layer appended alongside the
+  existing text/exit-code classifier. New public API: `classify(record) →
+  ErrorClass`, `classify_jsonl(path) → list[ClassifiedError]`, `RecordCategory`,
+  `RecordSeverity`, `Transience`, `ErrorClass`, `ClassifiedError`. Existing
+  `classify_error()` / `get_retry_strategy()` callers are unaffected.
+- `lib/error_insights.py`: new module. API: `summarize(classified, window_hours)
+  → InsightReport`. Aggregations: top categories, rolling rate, cluster detection
+  (5+ errors/category within 1h), trend (increasing/stable/decreasing),
+  suspected root causes, actionable recommendations.
+- `bin/cos-errors`: CLI with two subcommands:
+  `cos-errors classify [<path>]` → JSON array of classified records
+  `cos-errors insights [--window=24h] [--json]` → text or JSON insight report
+- `lib/feedback_consumer.py`: `summarise_error_insights()` added as an opt-in
+  step; returns `InsightReport.as_dict()` under key `error_insights`. Called
+  by `/analyze-improvements` skill as an additional data source. Never raises —
+  returns a sentinel dict on failure so the existing learning loop is unaffected.
+- Classification pipeline: (1) TYPE field fast-path → (2) regex pattern matching
+  on command/message fields → (3) optional LLM deep classify
+  (`COS_ERROR_DEEP_CLASSIFY=1`) → (4) unknown fallback.
+- Default behaviour unchanged: `error-learning.jsonl` keeps appending raw
+  entries via `hooks/error-pipeline.sh`. Classification is strictly on-demand.
+- Tests: 50 new tests in `tests/unit/test_error_classifier.py` (JSONL API),
+  40 new tests in `tests/unit/test_error_insights.py`. All pass.
+
+**Tier 2 is now closed.** Items #5 (batch/cron, 2026-05-01) and #6
+(error classifier + insights, 2026-05-01) are both Accepted and shipped.
 
 ---
 
@@ -333,8 +384,8 @@ own follow-up ADR or SDD change:
 | Tier 1 #2 — prompt caching layer | ADR or SDD task under #1's umbrella |
 | Tier 1 #3 — context/trajectory compressors | **Shipped 2026-04-30** `lib/context_compressor.py`, `tests/unit/test_context_compressor.py` |
 | Tier 1 #4 — rate-limit instrumentation | **Shipped 2026-05-01** `lib/rate_limit_tracker.py`, `tests/unit/test_rate_limit_tracker.py` (40 tests) |
-| Tier 2 #5 — batch runner / cron | SDD change once Tier 1 is stable |
-| Tier 2 #6 — error classifier / insights | SDD change |
+| Tier 2 #5 — batch runner / cron | **Shipped 2026-05-01** `lib/cos_batch_runner.py`, `lib/cos_cron.py`, `bin/cos-batch`, `bin/cos-cron` |
+| Tier 2 #6 — error classifier / insights | **Shipped 2026-05-01** `lib/error_classifier.py` (JSONL layer), `lib/error_insights.py`, `bin/cos-errors`, 90 tests |
 | Parking lot #7, #8 | Investigation report → dedicated ADR if adopted |
 
 The ordering within Tier 1 is fixed: item 1 first, items 2–4 in any order after

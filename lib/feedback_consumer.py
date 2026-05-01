@@ -161,3 +161,45 @@ def summarise_for_skill_improvement(
         "period": {"from": period_from, "to": period_to},
         "data_source": os.path.join(metrics_dir, "prompt-captures.jsonl"),
     }
+
+
+def summarise_error_insights(
+    window_hours: int = 24,
+    metrics_dir: str | None = None,
+) -> Dict[str, Any]:
+    """Opt-in step: classify error-learning.jsonl and return an insight report dict.
+
+    Non-breaking: if error_classifier or error_insights are unavailable (e.g.
+    in a stripped deployment), returns an empty sentinel rather than crashing.
+
+    Called by /analyze-improvements as an additional data source alongside
+    prompt-captures.jsonl feedback signals.
+
+    Args:
+        window_hours: How many hours back to analyse (default: 24).
+        metrics_dir: Override for the metrics directory.
+
+    Returns:
+        Dict with 'error_insights' key containing InsightReport.as_dict(),
+        or {'error_insights': None, 'error': '<reason>'} on failure.
+    """
+    if metrics_dir is None:
+        metrics_dir = _default_metrics_dir()
+
+    try:
+        from lib.error_classifier import classify_jsonl  # type: ignore
+        from lib.error_insights import summarize  # type: ignore
+    except ImportError as exc:
+        return {"error_insights": None, "error": f"error_classifier not available: {exc}"}
+
+    import pathlib
+    errors_path = pathlib.Path(metrics_dir) / "error-learning.jsonl"
+    if not errors_path.exists():
+        return {"error_insights": None, "error": "error-learning.jsonl not found"}
+
+    try:
+        classified = classify_jsonl(errors_path)
+        report = summarize(classified, window_hours=window_hours)
+        return {"error_insights": report.as_dict()}
+    except Exception as exc:  # noqa: BLE001
+        return {"error_insights": None, "error": str(exc)}
