@@ -16,6 +16,14 @@
 #
 # Opt-out: COS_DISABLE_PROFILE_AUTOAPPLY=1
 # Force-once: rm .cognitive-os/runtime/last-applied-profile.sha
+#
+# Concurrency (incident 2026-05-01-session-3-spawn-hang): when N parallel sub-agents
+# all fire SessionStart simultaneously and the hash is stale, all N detect drift and
+# concurrently call apply-efficiency-profile.sh, racing to write .claude/settings.json.
+# The IDE detects the partial writes and re-spawns the session, which fires another
+# round of SessionStart hooks. Mitigation: non-blocking flock on a runtime lock file —
+# the first invocation re-applies; the others exit 0 silently. Combined with the
+# atomic write in apply-efficiency-profile.sh this eliminates the partial-write race.
 
 set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
@@ -29,6 +37,7 @@ PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 SCRIPT_PATH="$PROJECT_DIR/scripts/apply-efficiency-profile.sh"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
 HASH_FILE="$RUNTIME_DIR/last-applied-profile.sha"
+LOCK_FILE="$RUNTIME_DIR/profile-autoapply.lock"
 LOG_FILE="$RUNTIME_DIR/profile-autoapply.log"
 
 # Skip if the script doesn't exist (not a cos repo, or fresh clone before bootstrap)
@@ -48,14 +57,30 @@ else
     exit 0
 fi
 
-# ── Compare with last applied ───────────────────────────────────────────────
+# ── Acquire non-blocking flock; concurrent invocations exit 0 silently ──────
+# flock requires a file descriptor open on the lock file. exec 9>... opens fd 9
+# for writing without truncating existing content (the lock file is opaque).
+# `flock -n 9` returns immediately: 0 if acquired, 1 if another holder exists.
+# When `flock` itself is unavailable, fall through to the direct path; this is
+# the macOS-without-util-linux scenario, accepted because the race window is
+# narrow enough to be a soft hazard rather than a hard incident.
+exec 9>"$LOCK_FILE"
+if command -v flock &>/dev/null; then
+    if ! flock -n 9; then
+        # Another process is already re-applying. No-op.
+        exit 0
+    fi
+fi
+# Lock held until process exit (fd 9 closes automatically).
+
+# ── Compare with last applied (re-read UNDER LOCK to avoid TOCTOU) ──────────
 last_hash=""
 if [ -f "$HASH_FILE" ]; then
     last_hash=$(cat "$HASH_FILE" 2>/dev/null || echo "")
 fi
 
 if [ "$current_hash" = "$last_hash" ]; then
-    # No drift — nothing to do
+    # No drift — nothing to do (someone else may have just applied while we waited)
     exit 0
 fi
 
