@@ -256,3 +256,59 @@ Hooks are shell scripts that fire at specific points in the Claude Code session 
 ```
 
 See `.claude/settings.json` for the complete 46-hook registration.
+
+---
+
+## Hook Composition (Inter-Hook Data Sharing)
+
+Hooks within the same event chain can pass structured data to downstream hooks
+via `hooks/_lib/hook-pipe.sh`. This enables context-aware decisions: for
+example, `clarification-gate.sh` emits its ambiguity score so that
+`blast-radius.sh` can lower its HIGH-radius threshold when the prompt is vague.
+
+### Library: `hooks/_lib/hook-pipe.sh`
+
+Source this library in any hook that needs to produce or consume pipe data:
+
+```bash
+source "$(dirname "$0")/_lib/hook-pipe.sh"
+```
+
+**Functions**:
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `hook_emit` | `hook_emit <key> <value> [event]` | Write a value for downstream hooks in the same event |
+| `hook_read` | `hook_read <key> [default] [event]` | Read a value emitted by a prior hook; returns default if absent |
+| `hook_pipe_clear` | `hook_pipe_clear [event]` | Clear pipe values (all events, or a specific event) |
+
+**Storage**: Values are written to `.cognitive-os/.hook-pipe/<event>-<key>.val`.
+Each file holds one line (newlines in values are collapsed to spaces).
+
+**Key naming**: Keys must match `^[a-zA-Z_][a-zA-Z0-9_]*$`. Use descriptive
+names like `clarification_score`, `blast_radius_level`.
+
+**Lifecycle**: Pipe files persist for the duration of the session. They are
+NOT automatically cleared between invocations — hooks that need a clean slate
+should call `hook_pipe_clear` at the start of each PreToolUse invocation.
+
+### Active pipe data flows
+
+| Producer | Key | Event | Consumer | Effect |
+|----------|-----|-------|----------|--------|
+| `clarification-gate.sh` | `clarification_score` | `PreToolUse` | `blast-radius.sh` | Lowers HIGH threshold from 40→20 when score ≥ 30 |
+
+### Adding a new pipe data flow
+
+1. In the producer hook, source hook-pipe.sh and call `hook_emit`:
+   ```bash
+   source "$(dirname "$0")/_lib/hook-pipe.sh"
+   hook_emit "my_score" "$MY_SCORE" "PreToolUse"
+   ```
+2. In the consumer hook (must run after the producer), source and call `hook_read`:
+   ```bash
+   source "$(dirname "$0")/_lib/hook-pipe.sh"
+   MY_SCORE=$(hook_read "my_score" "0" "PreToolUse")
+   ```
+3. Ensure the producer is registered before the consumer in `settings.json`.
+4. Document the new flow in the table above.
