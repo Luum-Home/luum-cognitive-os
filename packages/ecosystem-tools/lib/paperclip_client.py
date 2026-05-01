@@ -472,6 +472,68 @@ class PaperclipClient:
 
 
 # ---------------------------------------------------------------------------
+# Local daemon discovery (ADR-043)
+# ---------------------------------------------------------------------------
+
+def get_url(port_override: Optional[int] = None) -> Optional[str]:
+    """Return the Paperclip URL, trying local daemon first then Docker fallback.
+
+    Discovery order:
+      1. ``port_override`` if provided (for testing)
+      2. Port file at ``.cognitive-os/runtime/paperclip.port``
+      3. Env-configured URL (``PAPERCLIP_URL`` / ``COGNITIVE_OS_PAPERCLIP_URL``)
+      4. Default ``http://localhost:3200``
+
+    Returns the first reachable URL, or ``None`` if all candidates are unreachable.
+    """
+    import socket
+    from pathlib import Path
+
+    def _reachable(url: str, timeout: float = 0.5) -> bool:
+        try:
+            # Extract host/port from URL
+            host = url.split("//")[-1].split(":")[0]
+            port_str = url.split(":")[-1].split("/")[0]
+            p = int(port_str)
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(timeout)
+            s.connect((host, p))
+            s.close()
+            return True
+        except Exception:
+            return False
+
+    candidates: list[str] = []
+
+    if port_override is not None:
+        candidates.append(f"http://localhost:{port_override}")
+
+    # Check local daemon port file
+    project_dir = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.environ.get("CLAUDE_PROJECT_DIR") or "."
+    port_file = Path(project_dir) / ".cognitive-os" / "runtime" / "paperclip.port"
+    if port_file.exists():
+        try:
+            local_port = int(port_file.read_text().strip())
+            candidates.append(f"http://localhost:{local_port}")
+        except (ValueError, OSError):
+            pass
+
+    # Env-configured URL
+    env_url = os.environ.get("PAPERCLIP_URL") or os.environ.get("COGNITIVE_OS_PAPERCLIP_URL")
+    if env_url:
+        candidates.append(env_url.rstrip("/"))
+
+    # Default fallback
+    candidates.append(_DEFAULT_BASE_URL)
+
+    for url in candidates:
+        if _reachable(url):
+            return url
+
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Module-level convenience functions (backward compatibility)
 # ---------------------------------------------------------------------------
 
