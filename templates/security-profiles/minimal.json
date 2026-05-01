@@ -161,6 +161,15 @@
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/tool-sequence-capture.sh\""
           }
         ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/review-spawner.sh\""
+          }
+        ]
       }
     ],
     "Stop": [

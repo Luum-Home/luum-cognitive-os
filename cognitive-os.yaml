@@ -55,6 +55,14 @@ environment:
   config: devbox.json
   checkpoint_dir: .cognitive-os/checkpoints
 
+# ADR-096: Review-agent pattern configuration
+review:
+  sample_rate: 0.2          # Fraction of sub-agent outputs to review (0.0=never, 1.0=always)
+  max_per_day: 50           # Daily budget cap; excess reviews are queued, not dispatched
+  default_model: haiku      # Default reviewer model tier (overridden by cross-review matrix)
+  always_review_kinds: []   # Task kinds that always get reviewed regardless of sample_rate
+                            # e.g. ["sdd-verify", "sdd-apply"] for high-stakes phases
+
 # ADR-099: Pre-agent snapshot configuration
 snapshots:
   ttl_days: 30          # Prune snapshots older than this many days
