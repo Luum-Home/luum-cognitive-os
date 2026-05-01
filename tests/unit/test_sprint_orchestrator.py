@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import sys
 from pathlib import Path
 
@@ -35,7 +34,7 @@ from lib.sprint_orchestrator import (  # noqa: E402
 )
 
 
-EXAMPLE_SPEC = _REPO / ".cognitive-os/sprints/example-sprint.yaml"
+EXAMPLE_SPEC = _REPO / "tests" / "fixtures" / "e2e" / "example-sprint.yaml"
 
 
 def test_load_spec_parses_example(tmp_path: Path) -> None:
