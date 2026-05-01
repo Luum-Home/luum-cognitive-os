@@ -17,6 +17,8 @@ source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
 check_capability_level "consequence-evaluator"
+# Runtime disable: DISABLE_HOOK_CONSEQUENCE_EVALUATOR=true skips this hook for the session
+check_disabled_env "consequence-evaluator"
 
 INPUT=$(cat)
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // ""')

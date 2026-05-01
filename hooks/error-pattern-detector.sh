@@ -8,6 +8,9 @@ set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/common.sh"
+# Runtime disable: DISABLE_HOOK_ERROR_PATTERN_DETECTOR=true skips this hook for the session
+check_disabled_env "error-pattern-detector"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_FILE="$PROJECT_DIR/.cognitive-os/metrics/error-learning.jsonl"
