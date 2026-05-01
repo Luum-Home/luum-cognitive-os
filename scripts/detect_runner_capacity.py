@@ -80,11 +80,38 @@ def _get_metrics() -> dict:
     }
 
 
+def _headroom_cores() -> int:
+    """How many cores to leave free for OS + other apps on local dev machines.
+
+    Default 2 (leaves room for IDE, browser, Claude/Codex helper, etc.). Override
+    via COS_PYTEST_HEADROOM=N to tune for headless rigs (0) or shared workstations
+    where more headroom is desired (3+).
+
+    Added by ADR-100 (resource-governed test execution): xdist's "auto" expands
+    to os.cpu_count(), which on an 8-core laptop running Claude Helper, IDE, and
+    a browser saturated CPU and starved the host. The cap keeps parallelism
+    high while leaving the machine responsive.
+    """
+    raw = os.environ.get("COS_PYTEST_HEADROOM", "2").strip()
+    try:
+        return max(0, int(raw))
+    except ValueError:
+        return 2
+
+
 def _apply_heuristic(metrics: dict) -> tuple[str, str]:
     """
-    Apply the heuristic table from ADR-068.
+    Apply the heuristic table from ADR-068, with headroom cap from ADR-100
+    (resource-governed test execution).
+
     Returns (workers_token, rule_fired) where workers_token is "auto", "0",
     or a positive integer string.
+
+    Key change vs ADR-068 Phase 1: the default row no longer returns "auto"
+    on local dev machines. xdist's "auto" expands to os.cpu_count(), which on
+    an 8-core laptop saturates CPU and starves the host. Default now returns
+    str(max(2, cores - headroom)) to keep parallelism high while leaving the
+    machine responsive. CI keeps "auto" because runners are typically dedicated.
     """
     cores = metrics["cores"]
     mem_gb = metrics["mem_available_gb"]
@@ -97,7 +124,7 @@ def _apply_heuristic(metrics: dict) -> tuple[str, str]:
     if cores <= 2:
         return "0", "cores_le_2"
 
-    # Row 2: high load
+    # Row 2: high load — already saturated, sharply restrict
     if load_pct > 70:
         return "2", "load_high"
 
@@ -109,12 +136,15 @@ def _apply_heuristic(metrics: dict) -> tuple[str, str]:
     if battery_pct is not None and battery_pct < 30 and not on_ac:
         return "0", "battery_low"
 
-    # Row 5: CI environment
+    # Row 5: CI environment — runners are dedicated, full parallelism is fine
     if ci:
         return "auto", "ci_env"
 
-    # Row 6: default — healthy dev machine
-    return "auto", "default"
+    # Row 6: default — healthy dev machine, but cap to leave headroom for
+    # the host's other workloads (ADR-100). Floor at 2 so we still parallelize.
+    headroom = _headroom_cores()
+    safe = max(2, cores - headroom)
+    return str(safe), "default_headroom"
 
 
 def detect() -> dict:
