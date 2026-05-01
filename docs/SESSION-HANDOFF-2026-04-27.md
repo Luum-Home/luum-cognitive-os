@@ -10,7 +10,7 @@ Result: **one minor release** (v0.20.0) covering ADR-071 Phases 1+2+3, plus oper
 
 ## Operator instructions (still active from prior handoff)
 
-- **Avoid `ANTHROPIC_API_KEY` billing**: provider cascade unchanged.
+- **Avoid direct Anthropic API billing**: provider cascade unchanged.
 - **Provider-agnostic AND harness-agnostic** (ADR-062 + ADR-064 — ADR-064 reviewed today, kept Proposed).
 - **Engram is the source of truth for memory**; lifecycle metadata lives in observation `content` as a `<engram-lifecycle>{...}</engram-lifecycle>` trailer.
 - **Production engram daemon is read-only-friendly only**: do not `PATCH/POST/DELETE` for API exploration. See `rules/engram-api-safety.md`. (Real incident this session: obs #13283 was overwritten during HTTP discovery and reconstructed from git + session preview.)

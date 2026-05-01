@@ -13,7 +13,7 @@ and ship the next minor release. Two consecutive releases shipped today:
 
 ## Operator Instructions (still active)
 
-- **Avoid `ANTHROPIC_API_KEY` billing**: claude_sdk provider is triple-gated
+- **Avoid direct Anthropic API billing**: claude_sdk provider is triple-gated
   opt-in. Default cascade: qwen → openrouter → gemini → ollama → claude
   (Claude Max subscription, NOT API).
 - **Provider-agnostic AND harness-agnostic** (ADR-062 + ADR-064).

@@ -11,7 +11,7 @@ Result: **2 commits**, **30 engram decisions closed**, **5 install-timing baseli
 
 ## Operator instructions (still active)
 
-- Avoid `ANTHROPIC_API_KEY` billing — provider cascade unchanged.
+- Avoid direct Anthropic API billing — provider cascade unchanged.
 - Provider-AND-harness-agnostic. **ADR-064 was flipped to Accepted on 2026-04-30** (Codex adapter shipped in commit `9062829`, parity test in `259f766`).
 - Engram = source of truth for memory. Lifecycle metadata in `<engram-lifecycle>` trailer.
 - Never `PATCH/POST/DELETE` against production engram daemon for API discovery (`rules/engram-api-safety.md`).

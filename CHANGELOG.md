@@ -273,7 +273,7 @@ Lessons from the 2026-04-27 engram MCP outage codified into tooling:
 - `lib/dispatch.py` — N-provider cascade with `ADVANCE_ON_ANY_FAILURE` vs `ADVANCE_ON_RATE_LIMIT_ONLY` policies; reads `llm_providers:` config block from `cognitive-os.yaml`.
 - `scripts/smoke-multi-provider-fallback.sh` — per-provider smoke test with SIGALRM timeout (Unix-only).
 - `/llm-status` skill v2.0.0 — provider inventory (tier, configured Y/N, advance policy, model_map); env key names detected (never values).
-- Default cascade: `qwen,openrouter,gemini,ollama,claude` (zero ANTHROPIC_API_KEY path). `openai`, `deepseek`, `claude_sdk` are opt-in.
+- Default cascade: `qwen,openrouter,gemini,ollama,claude` (zero direct Anthropic API key path). `openai`, `deepseek`, `claude_sdk` are opt-in.
 
 ### Added — ADR-063 Agent() Replication Strategy
 
