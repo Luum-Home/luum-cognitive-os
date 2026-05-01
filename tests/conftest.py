@@ -188,33 +188,90 @@ def _build_path_to_marker_map() -> dict[str, str]:
 _PATH_TO_MARKER: dict[str, str] = _build_path_to_marker_map()
 
 
-def pytest_collection_modifyitems(config: Any, items: list[Any]) -> None:  # noqa: ANN401
-    """Auto-inject lane markers based on each test's file path (REQ-3, ADR-069).
+# ---------------------------------------------------------------------------
+# Quarantine registry — ADR-100 last-line-of-defense for known flakes
+# ---------------------------------------------------------------------------
 
-    Algorithm:
-    1. Derive the path of each test item relative to the project root.
-    2. Match it against the lane path prefixes from ``.cognitive-os/test-lanes.yaml``.
-    3. If the item does not already carry that marker, add it.
+_QUARANTINE_FILE = Path(__file__).resolve().parent / "quarantine.yaml"
 
-    This is idempotent: running it twice does not duplicate markers because we
-    check existing markers before adding.
+
+def _load_quarantine() -> dict[str, dict[str, Any]]:
+    """Load tests/quarantine.yaml into a {nodeid: entry} mapping.
+
+    Tests with a quarantine entry are auto-skipped at collection time. Each
+    entry records the reason, when it was added, and the ticket that owns the
+    fix. Empty/missing file → empty registry (no skips).
     """
-    if not _PATH_TO_MARKER:
-        return  # YAML not available — degrade gracefully, no markers added
-
-    for item in items:
-        try:
-            item_path = Path(item.fspath).resolve()
-            rel = item_path.relative_to(_PROJECT_ROOT)
-            rel_str = str(rel)
-        except (ValueError, TypeError):
+    if not _QUARANTINE_FILE.exists():
+        return {}
+    try:
+        with _QUARANTINE_FILE.open(encoding="utf-8") as fh:
+            data = yaml.safe_load(fh) or {}
+        entries = data.get("quarantine") or []
+    except Exception:
+        return {}
+    out: dict[str, dict[str, Any]] = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
             continue
+        nodeid = entry.get("nodeid")
+        if not nodeid:
+            continue
+        out[nodeid] = entry
+    return out
 
-        for path_prefix, marker_name in _PATH_TO_MARKER.items():
-            # Match on directory boundary: exact equality OR prefix followed by "/".
-            # Prevents tests/unit_extra/ from matching the tests/unit lane.
-            if rel_str == path_prefix or rel_str.startswith(path_prefix + "/"):
-                existing_markers = {m.name for m in item.iter_markers()}
-                if marker_name not in existing_markers:
-                    item.add_marker(getattr(pytest.mark, marker_name))
-                break  # first match wins — a test belongs to exactly one lane
+
+_QUARANTINE: dict[str, dict[str, Any]] = _load_quarantine()
+
+
+def pytest_collection_modifyitems(config: Any, items: list[Any]) -> None:  # noqa: ANN401
+    """Auto-inject lane markers + apply quarantine skips.
+
+    Two passes over the collected items:
+
+    1. Lane marker injection (REQ-3, ADR-072): match item path against lane
+       prefixes from ``.cognitive-os/test-lanes.yaml`` and add the lane's
+       marker if not already present. Boundary-safe (tests/unit_extra/ does
+       NOT match the unit lane).
+
+    2. Quarantine skip (ADR-100): if the item's nodeid is listed in
+       ``tests/quarantine.yaml``, add ``pytest.mark.skip`` with a
+       ``[QUARANTINE]`` reason that includes the ticket. Quarantine is
+       the LAST line of defense — root-fix when possible, retry via
+       pytest-rerunfailures when transient, quarantine only when both fail.
+
+    Both passes are idempotent.
+    """
+    # Pass 1: lane markers
+    if _PATH_TO_MARKER:
+        for item in items:
+            try:
+                item_path = Path(item.fspath).resolve()
+                rel = item_path.relative_to(_PROJECT_ROOT)
+                rel_str = str(rel)
+            except (ValueError, TypeError):
+                continue
+
+            for path_prefix, marker_name in _PATH_TO_MARKER.items():
+                # Match on directory boundary: exact equality OR prefix followed by "/".
+                # Prevents tests/unit_extra/ from matching the tests/unit lane.
+                if rel_str == path_prefix or rel_str.startswith(path_prefix + "/"):
+                    existing_markers = {m.name for m in item.iter_markers()}
+                    if marker_name not in existing_markers:
+                        item.add_marker(getattr(pytest.mark, marker_name))
+                    break  # first match wins — a test belongs to exactly one lane
+
+    # Pass 2: quarantine skips
+    if _QUARANTINE:
+        for item in items:
+            entry = _QUARANTINE.get(item.nodeid)
+            if entry is None:
+                continue
+            reason = entry.get("reason", "no reason given")
+            ticket = entry.get("ticket", "no ticket")
+            since = entry.get("since", "?")
+            item.add_marker(
+                pytest.mark.skip(
+                    reason=f"[QUARANTINE since {since} | {ticket}] {reason}"
+                )
+            )

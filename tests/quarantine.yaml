@@ -1,0 +1,24 @@
+# Test Quarantine Registry — ADR-100
+#
+# Tests listed here are auto-skipped at collection time with a [QUARANTINE]
+# reason. Use this for known-flaky or environment-dependent tests that
+# pytest-rerunfailures (--reruns 2) cannot rescue.
+#
+# Quarantine is the LAST line of defense, not a way to ignore real bugs.
+# Every entry MUST have:
+#   - nodeid:  full pytest nodeid (path::class::method)
+#   - reason:  one-line root cause (not symptom)
+#   - since:   YYYY-MM-DD when added
+#   - ticket:  ADR / issue / PR that owns the fix (NEVER "TBD")
+#
+# Quarantine review cadence: every release. Entries older than 1 release
+# cycle without ticket progress are surfaced by the audit test.
+#
+# To unquarantine: delete the entry, rerun the test 3x parallel, ensure pass,
+# document the fix in the ticket.
+
+quarantine:
+  # Currently empty. New flakes go through the rerun layer first; only
+  # tests that fail consistently across 3+ runs and 2+ environments earn
+  # quarantine. The 7 flakes addressed in commit 86c79e5b were root-fixed
+  # (timeout bumps, skipif gating, PID safety) instead of being skipped.
