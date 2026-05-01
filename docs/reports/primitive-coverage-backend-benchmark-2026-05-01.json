@@ -1,0 +1,423 @@
+{
+  "candidates": [
+    {
+      "answers": {
+        "adapter_fit": {
+          "answer": "no",
+          "evidence": [
+            "Adapter fit requires compatible license plus local CLI/MCP/code graph."
+          ],
+          "notes": "Would need licensing clearance and/or an additional COS semantic adapter before use.",
+          "score": 0
+        },
+        "first_class_primitives": {
+          "answer": "no",
+          "evidence": [
+            "Looked for explicit skills/hooks/rules/agentic primitive semantics in README/package metadata."
+          ],
+          "notes": "Detects code/docs entities, but not COS skills/hooks/rules as first-class rows.",
+          "score": 0
+        },
+        "json_sarif": {
+          "answer": "no",
+          "evidence": [
+            "Scanned README/package metadata for JSON/SARIF/structured output claims."
+          ],
+          "notes": "No SARIF/JSON reporting claim found.",
+          "score": 0
+        },
+        "license_compatible": {
+          "answer": "no",
+          "evidence": [
+            "License gate blocks AGPL/SSPL/BSL/ELv2-style terms for embedding."
+          ],
+          "notes": "License gate blocks AGPL/SSPL/BSL/ELv2-style terms for embedding.",
+          "score": 0
+        },
+        "local_offline": {
+          "answer": "yes",
+          "evidence": [
+            "Local install/index/server terms found."
+          ],
+          "notes": "Designed to run as a local CLI/MCP indexing backend.",
+          "score": 10
+        },
+        "primitive_context_query": {
+          "answer": "no",
+          "evidence": [
+            "Question requires a primitive-to-file evidence map, not just code search."
+          ],
+          "notes": "No native evidence that it maps files to primitive-level context-saving affordances.",
+          "score": 0
+        },
+        "stale_docs": {
+          "answer": "yes",
+          "evidence": [
+            "Docs/wiki/decision-intelligence terms present."
+          ],
+          "notes": "Documentation intelligence appears close enough to support stale-doc signals.",
+          "score": 15
+        },
+        "token_savings": {
+          "answer": "yes",
+          "evidence": [
+            "27\u00d7 fewer tokens per query"
+          ],
+          "notes": "README contains explicit token/cost/context reduction claims.",
+          "score": 10
+        },
+        "unused_consumers": {
+          "answer": "yes",
+          "evidence": [
+            "Graph/reference terms present in docs."
+          ],
+          "notes": "Graph/index can likely support consumer-gap detection with a COS adapter.",
+          "score": 15
+        }
+      },
+      "license_compatible": false,
+      "license_kind": "blocked",
+      "license_notes": "License gate blocks AGPL/SSPL/BSL/ELv2-style terms for embedding.",
+      "local_path": "/private/tmp/cos-code-intel-candidates/repowise",
+      "max_score": 110,
+      "name": "repowise",
+      "package": {
+        "package_json": {
+          "license": null,
+          "name": "repowise-root",
+          "version": "0.1.0"
+        },
+        "pyproject": {
+          "license": "AGPL-3.0-only",
+          "name": "repowise",
+          "version": "0.4.1"
+        }
+      },
+      "present": true,
+      "recommendation": "evaluate-only-license-blocked",
+      "repo_url": "https://github.com/repowise-dev/repowise",
+      "total_score": 50
+    },
+    {
+      "answers": {
+        "adapter_fit": {
+          "answer": "yes",
+          "evidence": [
+            "Adapter fit requires compatible license plus local CLI/MCP/code graph."
+          ],
+          "notes": "Good backend candidate for primitive_coverage adapters without rewriting the framework.",
+          "score": 10
+        },
+        "first_class_primitives": {
+          "answer": "no",
+          "evidence": [
+            "Looked for explicit skills/hooks/rules/agentic primitive semantics in README/package metadata."
+          ],
+          "notes": "Detects code/docs entities, but not COS skills/hooks/rules as first-class rows.",
+          "score": 0
+        },
+        "json_sarif": {
+          "answer": "no",
+          "evidence": [
+            "Scanned README/package metadata for JSON/SARIF/structured output claims."
+          ],
+          "notes": "No SARIF/JSON reporting claim found.",
+          "score": 0
+        },
+        "license_compatible": {
+          "answer": "yes",
+          "evidence": [
+            "Permissive license detected."
+          ],
+          "notes": "License is compatible with the repo allowlist.",
+          "score": 10
+        },
+        "local_offline": {
+          "answer": "yes",
+          "evidence": [
+            "Local install/index/server terms found."
+          ],
+          "notes": "Designed to run as a local CLI/MCP indexing backend.",
+          "score": 10
+        },
+        "primitive_context_query": {
+          "answer": "no",
+          "evidence": [
+            "Question requires a primitive-to-file evidence map, not just code search."
+          ],
+          "notes": "No native evidence that it maps files to primitive-level context-saving affordances.",
+          "score": 0
+        },
+        "stale_docs": {
+          "answer": "no",
+          "evidence": [
+            "Docs/wiki/decision-intelligence terms present."
+          ],
+          "notes": "No native stale-doc or docs-vs-code freshness signal found.",
+          "score": 0
+        },
+        "token_savings": {
+          "answer": "no",
+          "evidence": [
+            "No token-saving benchmark claim found in README."
+          ],
+          "notes": "No explicit token-saving claim found.",
+          "score": 0
+        },
+        "unused_consumers": {
+          "answer": "yes",
+          "evidence": [
+            "Graph/reference terms present in docs."
+          ],
+          "notes": "Graph/index can likely support consumer-gap detection with a COS adapter.",
+          "score": 15
+        }
+      },
+      "license_compatible": true,
+      "license_kind": "compatible",
+      "license_notes": "Permissive license detected.",
+      "local_path": "/private/tmp/cos-code-intel-candidates/CodeGraphContext",
+      "max_score": 110,
+      "name": "codegraphcontext",
+      "package": {
+        "pyproject": {
+          "license": null,
+          "name": "codegraphcontext",
+          "version": "0.4.5"
+        }
+      },
+      "present": true,
+      "recommendation": "secondary-or-reference-only",
+      "repo_url": "https://github.com/CodeGraphContext/CodeGraphContext",
+      "total_score": 45
+    },
+    {
+      "answers": {
+        "adapter_fit": {
+          "answer": "no",
+          "evidence": [
+            "Adapter fit requires compatible license plus local CLI/MCP/code graph."
+          ],
+          "notes": "Would need licensing clearance and/or an additional COS semantic adapter before use.",
+          "score": 0
+        },
+        "first_class_primitives": {
+          "answer": "no",
+          "evidence": [
+            "Looked for explicit skills/hooks/rules/agentic primitive semantics in README/package metadata."
+          ],
+          "notes": "Detects code/docs entities, but not COS skills/hooks/rules as first-class rows.",
+          "score": 0
+        },
+        "json_sarif": {
+          "answer": "partial",
+          "evidence": [
+            "Scanned README/package metadata for JSON/SARIF/structured output claims."
+          ],
+          "notes": "SARIF not found; JSON/structured output may be available via MCP/tool protocol.",
+          "score": 5
+        },
+        "license_compatible": {
+          "answer": "no",
+          "evidence": [
+            "Custom/commercial or non-commercial terms require legal/commercial approval."
+          ],
+          "notes": "Custom/commercial or non-commercial terms require legal/commercial approval.",
+          "score": 0
+        },
+        "local_offline": {
+          "answer": "yes",
+          "evidence": [
+            "Local install/index/server terms found."
+          ],
+          "notes": "Designed to run as a local CLI/MCP indexing backend.",
+          "score": 10
+        },
+        "primitive_context_query": {
+          "answer": "no",
+          "evidence": [
+            "Question requires a primitive-to-file evidence map, not just code search."
+          ],
+          "notes": "No native evidence that it maps files to primitive-level context-saving affordances.",
+          "score": 0
+        },
+        "stale_docs": {
+          "answer": "no",
+          "evidence": [
+            "Docs/wiki/decision-intelligence terms present."
+          ],
+          "notes": "No native stale-doc or docs-vs-code freshness signal found.",
+          "score": 0
+        },
+        "token_savings": {
+          "answer": "yes",
+          "evidence": [
+            "2x avg) | Limited (~40% claim) | No | Yes (arXiv paper, 10x tokens) | No | No | Partial (criterion) |"
+          ],
+          "notes": "README contains explicit token/cost/context reduction claims.",
+          "score": 10
+        },
+        "unused_consumers": {
+          "answer": "yes",
+          "evidence": [
+            "Graph/reference terms present in docs."
+          ],
+          "notes": "Graph/index can likely support consumer-gap detection with a COS adapter.",
+          "score": 15
+        }
+      },
+      "license_compatible": false,
+      "license_kind": "review-required",
+      "license_notes": "Custom/commercial or non-commercial terms require legal/commercial approval.",
+      "local_path": "/private/tmp/cos-code-intel-candidates/qartez-mcp",
+      "max_score": 110,
+      "name": "qartez",
+      "package": {
+        "cargo": {
+          "license": null,
+          "name": "qartez-mcp",
+          "version": "0.9.9"
+        }
+      },
+      "present": true,
+      "recommendation": "license-review-before-spike",
+      "repo_url": "https://github.com/kuberstar/qartez-mcp",
+      "total_score": 40
+    },
+    {
+      "answers": {
+        "adapter_fit": {
+          "answer": "no",
+          "evidence": [
+            "Adapter fit requires compatible license plus local CLI/MCP/code graph."
+          ],
+          "notes": "Would need licensing clearance and/or an additional COS semantic adapter before use.",
+          "score": 0
+        },
+        "first_class_primitives": {
+          "answer": "no",
+          "evidence": [
+            "Looked for explicit skills/hooks/rules/agentic primitive semantics in README/package metadata."
+          ],
+          "notes": "Detects code/docs entities, but not COS skills/hooks/rules as first-class rows.",
+          "score": 0
+        },
+        "json_sarif": {
+          "answer": "partial",
+          "evidence": [
+            "Scanned README/package metadata for JSON/SARIF/structured output claims."
+          ],
+          "notes": "SARIF not found; JSON/structured output may be available via MCP/tool protocol.",
+          "score": 5
+        },
+        "license_compatible": {
+          "answer": "no",
+          "evidence": [
+            "Custom/commercial or non-commercial terms require legal/commercial approval."
+          ],
+          "notes": "Custom/commercial or non-commercial terms require legal/commercial approval.",
+          "score": 0
+        },
+        "local_offline": {
+          "answer": "yes",
+          "evidence": [
+            "Local install/index/server terms found."
+          ],
+          "notes": "Designed to run as a local CLI/MCP indexing backend.",
+          "score": 10
+        },
+        "primitive_context_query": {
+          "answer": "no",
+          "evidence": [
+            "Question requires a primitive-to-file evidence map, not just code search."
+          ],
+          "notes": "No native evidence that it maps files to primitive-level context-saving affordances.",
+          "score": 0
+        },
+        "stale_docs": {
+          "answer": "no",
+          "evidence": [
+            "Docs/wiki/decision-intelligence terms present."
+          ],
+          "notes": "No native stale-doc or docs-vs-code freshness signal found.",
+          "score": 0
+        },
+        "token_savings": {
+          "answer": "yes",
+          "evidence": [
+            "95%+** because the agent stops brute-reading giant files just to find one useful implementation",
+            "80% fewer tokens, or 5\u00d7 more efficient \u2014 index once, query cheaply forever\"* \u00b7 [GitHub All-Stars #15](https://virtuslab",
+            "5\u00d7 improvement\"* \u00b7 [JCodeMunch AI Token Saver](https://www"
+          ],
+          "notes": "README contains explicit token/cost/context reduction claims.",
+          "score": 10
+        },
+        "unused_consumers": {
+          "answer": "no",
+          "evidence": [
+            "Graph/reference terms present in docs."
+          ],
+          "notes": "No enough cross-reference evidence to detect scripts/primitives without consumers.",
+          "score": 0
+        }
+      },
+      "license_compatible": false,
+      "license_kind": "review-required",
+      "license_notes": "Custom/commercial or non-commercial terms require legal/commercial approval.",
+      "local_path": "/private/tmp/cos-code-intel-candidates/jcodemunch-mcp",
+      "max_score": 110,
+      "name": "jcodemunch",
+      "package": {
+        "pyproject": {
+          "license": null,
+          "name": "jcodemunch-mcp",
+          "version": "1.80.3"
+        }
+      },
+      "present": true,
+      "recommendation": "license-review-before-spike",
+      "repo_url": "https://github.com/jgravelle/jcodemunch-mcp",
+      "total_score": 25
+    }
+  ],
+  "candidates_dir": "/private/tmp/cos-code-intel-candidates",
+  "generated_at": "2026-05-01T15:18:20.014525+00:00",
+  "project_dir": "<repo-root>",
+  "questions": {
+    "adapter_fit": 10,
+    "first_class_primitives": 15,
+    "json_sarif": 10,
+    "license_compatible": 10,
+    "local_offline": 10,
+    "primitive_context_query": 15,
+    "stale_docs": 15,
+    "token_savings": 10,
+    "unused_consumers": 15
+  },
+  "token_baseline": {
+    "evidence_to_repo_ratio": 0.028732,
+    "primitive_evidence_bytes": 4996978,
+    "primitive_evidence_files": [
+      "docs/architecture/primitive-coverage-backend-benchmark-2026-05.md",
+      "docs/architecture/primitive-coverage-tooling-research-2026-04.md",
+      "docs/reports/primitive-coverage-backend-benchmark-2026-05-01.json",
+      "docs/reports/primitive-coverage-backend-benchmark-2026-05-01.md",
+      "docs/reports/primitive-coverage-latest.json",
+      "docs/reports/primitive-coverage-latest.md",
+      "docs/reports/primitive-gap-history.jsonl",
+      "docs/reports/primitive-gap-latest.json",
+      "docs/reports/primitive-gap-latest.md",
+      "docs/reports/primitive-gap-matrix-2026-04.md",
+      "docs/reports/primitive-gap-regressions.md",
+      "docs/reports/primitive-row-audit-latest.json",
+      "docs/reports/primitive-row-audit-latest.md",
+      "docs/reports/primitive-surface-reduction-latest.json",
+      "docs/reports/primitive-surface-reduction-latest.md",
+      "docs/reports/primitive-usage-map-latest.json",
+      "docs/reports/primitive-usage-map-latest.md"
+    ],
+    "repo_text_bytes": 173914388,
+    "rough_token_savings_vs_read_all": 0.9713,
+    "text_file_count": 10588
+  }
+}
