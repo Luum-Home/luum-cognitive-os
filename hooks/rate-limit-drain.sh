@@ -255,7 +255,7 @@ export _DRAIN_PROJECT_DIR="$_PROJECT_DIR"
 export _DRAIN_PHASE="$PHASE"
 export _DRAIN_HOOK_ROOT="$COGNITIVE_OS_HOOK_ROOT"
 
-python3 "$_DRAIN_SCRIPT" 2>/dev/null || true
+python3 "$_DRAIN_SCRIPT" || true
 
 # Always succeed — never block the original Bash completion path.
 exit 0
