@@ -16,7 +16,7 @@ Prompts MUST have `ACCEPTANCE CRITERIA:` with verifiable commands [`acceptance-c
 Trust Report mandatory: evidence(40%)+criteria(30%)+self-awareness(20%)+proportionality(10%) [`trust-score`]. 1+ uncertainty required. Confidence gate hook-enforced [`confidence-gate`]. Staged: SYNTAX→LINT→BUILD→UNIT→INTEGRATION→ADVERSARIAL, stop on first fail.
 
 ### 4. Cost Governance
-[`token-economy`]: transparency, worthiness, decomposition, memory-first, optimize-by-default. >$1→decompose <$0.50 [`decomposition`]. [`model-routing`]: opus=propose/design, sonnet=impl/verify, haiku=archive. [`model-directive`]: MUST follow; MODEL_DISABLED blocks. Queue [`queue-drain`]+[`queue-advisor`]. [`resource-governance`]: >80%=sonnet, >95%=haiku, >100%=BLOCK. Rate limits: [`rate-limiting`] [`rate-limit-protection`]. [`non-blocking-retry`]: CronCreate. [`cost-prediction`] [`workload-scheduling`]. [`llm-dispatch`] (ADR-049): `scripts/orchestrator.py` + `lib/dispatch.py` default `--providers qwen,claude` (Qwen primary preserves Claude Max). Kill-switches: `COS_DISABLE_LLM_FALLBACK=1`, `COS_FORCE_CLAUDE_PRIMARY=1`. Skill model hints (opus/sonnet/haiku) mapped to Qwen bundle. Metrics→`llm-dispatch.jsonl`.
+[`token-economy`]: transparency, worthiness, decomposition, memory-first, optimize-by-default. >$1→decompose <$0.50 [`decomposition`]. [`model-routing`]: opus=propose/design, sonnet=impl/verify, haiku=archive. [`model-directive`]: MUST follow; MODEL_DISABLED blocks. Queue [`queue-drain`]+[`queue-advisor`]. [`resource-governance`]: >80%=sonnet, >95%=haiku, >100%=BLOCK. Rate limits: [`rate-limiting`] [`rate-limit-protection`]. [`non-blocking-retry`]: CronCreate. [`cost-prediction`] [`workload-scheduling`]. Cost estimates grounded in project history via `/cost-predict` (`scripts/cost_predict.py` + `lib/cost_predictor.py`) [`cost-predictor`]. [`llm-dispatch`] (ADR-049): `scripts/orchestrator.py` + `lib/dispatch.py` default `--providers qwen,claude` (Qwen primary preserves Claude Max). Kill-switches: `COS_DISABLE_LLM_FALLBACK=1`, `COS_FORCE_CLAUDE_PRIMARY=1`. Skill model hints (opus/sonnet/haiku) mapped to Qwen bundle. Metrics→`llm-dispatch.jsonl`.
 
 ### 5. Impact Assessment
 Blast radius hook-enforced [`blast-radius`]. Scope proportionality hook-enforced [`scope-proportionality`]. Decision depth gate [`decision-depth-gate`] prevents shallow fixes when blast radius is high. Impact analysis [`impact-analysis`] MUST run before large/critical sdd-apply. >100 files sample [`sandbox-sampling`]. Scout [`scout-pattern`]: recon before medium+.
@@ -56,13 +56,13 @@ Lane registry at `.cognitive-os/test-lanes.yaml` is single source of truth (read
 
 ## Contextual (loaded on trigger)
 
-**Team**: [`squad-protocol`] auto-reconfig <0.80. [`estimation-calibration`] medium+. [`self-improvement-protocol`] weekly, max 5 changes.
+**Team**: [`squad-protocol`] auto-reconfig <0.80. [`estimation-calibration`] medium+. [`self-improvement-protocol`] weekly, max 5 changes. SO self-build maturity tracked via `/dogfood-score` (`scripts/dogfood_score.py` + `lib/dogfood_scorer.py`; ADR-059 §KPI ledger) [`dogfood-score`].
 
 **Infra**: [`infra-health`] Docker check. [`singularity`] MAPE-K(inactive). [`performance-monitoring`] p50/p95/p99. [`observability`] MLflow. [`so-slo`] ADR-028 SLO catalogue + error budget + cadence. [`infra-intent`] [`model-compatibility`].
 
 **Persistence**: [`fault-tolerance`] 4-tier. [`engram-organization`] prefixes. [`engram-api-safety`] sandbox mutating API probes. [`session-concurrency`]. [`step-files`] long phases.
 
-**Change Safety**: [`hook-security-profiles`] minimal/standard/paranoid. [`capability-protection`] snapshot before cleanup. [`plan-first`] [`cognitive-os-changes`] plan-first for OS mods. [`dogfooding`] SDD for substantial changes. [`component-classification`] CORE vs PACKAGE. [`cross-harness-authoring`] (os-only) 5-item self-check before touching SO paths/settings/scripts — see `docs/architecture/cross-harness-authoring.md` §Agent Self-Check.
+**Change Safety**: [`hook-security-profiles`] minimal/standard/paranoid. [`capability-protection`] snapshot before cleanup. [`plan-first`] [`cognitive-os-changes`] plan-first for OS mods. [`dogfooding`] SDD for substantial changes. [`component-classification`] CORE vs PACKAGE. REAL/DORMANT/ASPIRATIONAL classification via `/component-reality-check` (`scripts/aspirational_audit.py`) [`component-reality-check`]. [`cross-harness-authoring`] (os-only) 5-item self-check before touching SO paths/settings/scripts — see `docs/architecture/cross-harness-authoring.md` §Agent Self-Check.
 
 **Modes & Tools**: [`dry-run`] `DRY_RUN=true`. [`private-mode`] `/private`. [`ecosystem-tools`] [`library-selection`] [`reinvention-prevention`]. [`parry-integration`] [`e2b-integration`] [`tero-integration`] [`repomix-integration`] [`trailofbits-skills`] [`hcom-integration`] [`context7-auto-trigger`].
 
