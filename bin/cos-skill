@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# cos-skill — harness-agnostic Cognitive OS skill CLI (ADR-064, Surface 3)
+#
+# Usage:
+#   cos-skill list [--json]
+#   cos-skill describe <name> [--json]
+#   cos-skill run <name> [--key=value ...] [--harness=<harness>]
+#   cos-skill --help
+#
+# Harness auto-detection uses COGNITIVE_OS_HARNESS env var; override with
+#   --harness=claude_code|codex|bare_cli
+#
+# Examples:
+#   cos-skill list
+#   cos-skill list --json | jq '.[].name'
+#   cos-skill describe verification-before-completion
+#   cos-skill run simplify --harness=bare_cli
+
+set -euo pipefail
+
+# Anchor to repo root so lib/ is always on the path
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)")"
+export COGNITIVE_OS_PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-$REPO_ROOT}"
+
+PYTHON="${PYTHON:-python3}"
+
+# Invoke the Python engine, passing all arguments through
+exec "$PYTHON" -c "
+import sys
+sys.path.insert(0, '$REPO_ROOT')
+from lib.skill_runner import main_cli
+sys.exit(main_cli())
+" "$@"
