@@ -1,0 +1,5 @@
+{"timestamp": "2026-05-01T13:29:04Z", "profile": "--standard", "elapsed_s": 43, "manual_steps": 0, "errors": 0, "docker_required": 0, "final_hook_count": 20, "exit_code": 0}
+{"timestamp": "2026-05-01T13:29:44Z", "profile": "--standard", "elapsed_s": 35, "manual_steps": 0, "errors": 0, "docker_required": 0, "final_hook_count": 20, "exit_code": 0}
+{"timestamp": "2026-05-01T13:30:28Z", "profile": "--standard", "elapsed_s": 39, "manual_steps": 0, "errors": 0, "docker_required": 0, "final_hook_count": 20, "exit_code": 0}
+{"timestamp": "2026-05-01T13:31:11Z", "profile": "--standard", "elapsed_s": 38, "manual_steps": 0, "errors": 0, "docker_required": 0, "final_hook_count": 20, "exit_code": 0}
+{"timestamp": "2026-05-01T13:31:54Z", "profile": "--standard", "elapsed_s": 39, "manual_steps": 0, "errors": 0, "docker_required": 0, "final_hook_count": 20, "exit_code": 0}
