@@ -7,6 +7,10 @@
 
 ---
 
+## Status
+
+Accepted.
+
 ## Context
 
 The COS learning loop was ~70% complete after the Tier-0 closure sprint
@@ -158,3 +162,11 @@ would add latency to every response.
 | `hooks/skill-failure-monitor.sh` | Stop-event hook that calls the Python module |
 | `skills/repair-skill/SKILL.md` | Gated consumer skill for queue entries |
 | `tests/unit/test_skill_failure_repair.py` | 19 unit tests covering all three public functions |
+
+## Verification
+
+Run the focused contract for this decision:
+
+```bash
+python3 -m pytest tests/behavior/test_self_improvement.py -q
+```

@@ -14,6 +14,10 @@
   - `docs/architecture/runtime-hardcoding-discipline.md`
   - `.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md`
 
+## Status
+
+Accepted.
+
 ## Context
 
 Cognitive OS started as a local operating layer for AI coding agents, with
@@ -201,6 +205,10 @@ Disallowed until implemented and tested:
 
 > Cognitive OS is a Kubernetes-native autonomous repair cluster.
 
+## Alternatives rejected
+
+- Keep the previous behavior unchanged — rejected because the audit or runtime failure would remain deterministic and would continue masking real regressions.
+
 ## Consequences
 
 ### Positive
@@ -229,3 +237,11 @@ Disallowed until implemented and tested:
 - Driver projections (`.claude/`, `.codex/`, etc.) remain adapters, not the
   source of truth.
 - Every new headless claim needs a runnable proof path or a test.
+
+## Verification
+
+Run the focused contract for this decision:
+
+```bash
+python3 -m pytest tests/contracts/test_headless_runtime_direction_docs.py -q
+```
