@@ -85,10 +85,10 @@ class TestToolDefinition:
         assert "model" in params
         assert "max_tokens" in params
 
-    def test_default_provider_is_anthropic(self, advisor):
+    def test_default_provider_is_local(self, advisor):
         import inspect
         sig = inspect.signature(advisor.consult_advisor)
-        assert sig.parameters["provider"].default == "anthropic"
+        assert sig.parameters["provider"].default == "local"
 
     def test_default_max_tokens_is_500(self, advisor):
         import inspect
@@ -235,6 +235,21 @@ class TestGracefulDegradation:
             ))
         assert "ERROR:" in result
         assert "anthropic" in result.lower()
+
+    def test_anthropic_provider_disabled_by_config(self, advisor):
+        """Anthropic direct API cannot run unless the shared policy enables it."""
+        with patch(
+            "lib.anthropic_direct_policy.direct_anthropic_api_enabled",
+            return_value=False,
+        ):
+            result = _run(advisor._call_anthropic(
+                context="ctx",
+                question="q?",
+                model="claude-opus-4-6",
+                max_tokens=50,
+            ))
+        assert result[0].startswith("ERROR:")
+        assert "disabled" in result[0]
 
     def test_openai_sdk_missing_returns_error(self, advisor):
         async def missing_sdk(ctx, q, model, max_tokens):
