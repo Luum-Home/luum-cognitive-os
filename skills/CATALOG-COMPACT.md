@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 148
+Total skills: 153
 
 ## os (14)
 
@@ -24,10 +24,11 @@ Total skills: 148
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 
-## os-dev (35)
+## os-dev (38)
 
 | Skill | Description |
 |-------|-------------|
+| __contracts__ | Internal namespace for harness-contract skills that define executable reference contracts for Cogni… |
 | agent-stress-test | Stress-test agent cognitive health to detect context-induced degradation |
 | arena | \"Run competitive benchmarks comparing Cognitive OS against other AI coding… |
 | automaker-bridge | Configure AutoMaker to use Cognitive OS as its execution brain |
@@ -36,19 +37,21 @@ Total skills: 148
 | cognitive-os-benchmark | Run benchmark comparisons between Cognitive OS and BMAD METHOD v6 |
 | cognitive-os-test | Run the Cognitive OS test suite with persisted summary (junit + failures + tails). |
 | compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI… |
-| component-classifier | \"Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. |
 | component-reality-check | Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime. |
+| coordination-status | List who is editing what across concurrent COS sessions. |
 | deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
 | deps-update | Audit and optionally upgrade project dependencies — Python, engram binary, Claude Code plugins, Doc… |
 | detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
 | docs-execution-audit | Audit what the docs say is done vs what repo evidence proves. |
 | dogfood-score | Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs). |
+| experimental | Internal holding area for experimental skill drafts awaiting synthesis, review, promotion, or rejec… |
 | harness-audit | Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance. |
 | metrics-calibrator | Analyze KPI history and auto-calibrate thresholds for meaningful alerting |
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules. |
 | paperclip-dashboard | View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent… |
 | pattern-audit | Grep/regex audit with mandatory sampling — forbids unverified severity counts. |
 | pentest-self | Self-penetration testing for Cognitive OS safety mesh. |
+| primitive-classifier | Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. |
 | primitive-surface-reduction | Plan/apply safe reduction of unused Cognitive OS primitive surface. |
 | primitive-usage-map | Static primitive consumer map for scripts, hooks, skills, and rules. |
 | promptfoo-integration | Configure Promptfoo for prompt regression testing and red teaming of skills in… |
@@ -64,7 +67,7 @@ Total skills: 148
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
-## both (27)
+## both (28)
 
 | Skill | Description |
 |-------|-------------|
@@ -88,6 +91,7 @@ Total skills: 148
 | repo-forensics | Deep forensic analysis of git repositories. |
 | repo-scout | Scout external git repositories for tech radar classification (bulk mode, markdown artifacts, adoption signals). |
 | reverse-engineer | Deep source code analysis of a dependency to understand its internal APIs… |
+| review-output | Manually trigger review of a specific past sub-agent output or the most recent N outputs. |
 | scaffold-project | Create the .claude/ directory structure, symlink rules, and generate… |
 | self-improve | META skill — orchestrates analyze-improvements → (human reviews) →… |
 | session-backlog | Inventory all pending work across plans, engram, tasks, todos, audits, and git. |
@@ -96,7 +100,7 @@ Total skills: 148
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 
-## project (69)
+## project (70)
 
 | Skill | Description |
 |-------|-------------|
@@ -164,6 +168,7 @@ Total skills: 148
 | sprint | Lightweight agent-managed sprint tracking — plan, status, retro, course-correct |
 | squad-manager | Evaluate squad performance and propose reconfigurations |
 | sre-agent | SRE auto-repair agent. |
+| synthesize-skill | Review the skill synthesis queue, list proposed drafts, and accept/reject/defer promotion candidates |
 | systematic-debugging | Use when encountering any bug, test failure, or unexpected behavior, before… |
 | test-driven-development | Use when implementing any feature or bugfix, before writing implementation code |
 | verification-before-completion | Use when about to claim work is complete, fixed, or passing, before committing… |
