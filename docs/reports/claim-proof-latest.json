@@ -67,7 +67,7 @@
     {
       "claim": "- [Competitive Reassessment: OpenClaw and Hermes Agent](business/competitive-reassessment-openclaw-hermes-2026-04.md) \u2014 current evidence-based comparison of self-improvement, memory, skills, deployment, and governance ga",
       "evidence": "business, comparison, competitive, competitive-reassessment-openclaw-hermes-2026-04, current, deployment, gaps, governance",
-      "line": 18,
+      "line": 19,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -75,7 +75,7 @@
     {
       "claim": "- [Local Connected Systems Validation](manual-tests/local-connected-systems-validation.md) \u2014 proof path for dependency readiness, automatic install boundaries, MCP wiring, optional services, and persistent test summaries",
       "evidence": "automatic, boundaries, connected, dependency, install, local, local-connected-systems-validation, manual-tests",
-      "line": 21,
+      "line": 22,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -83,7 +83,7 @@
     {
       "claim": "- [Harness Transparency Status](architecture/harness-transparency-status.md) \u2014 honest matrix of what is automatic today across Claude Code, Codex, and consumer projects, and what remains in ADR-064 surfaces",
       "evidence": "across, adr-064, architecture, automatic, claude, code, codex, consumer",
-      "line": 34,
+      "line": 35,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -91,7 +91,7 @@
     {
       "claim": "- [Capability-Centric Runtime Enforcement](architecture/capability-centric-runtime-enforcement.md) \u2014 how dispatch, skills, gateways, and metrics choose execution intent before vendors",
       "evidence": "architecture, before, capability-centric, choose, dispatch, enforcement, execution, gateways",
-      "line": 39,
+      "line": 40,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -99,7 +99,7 @@
     {
       "claim": "- [Path Portability and Privacy](architecture/path-portability-and-privacy.md) \u2014 policy and scanner for blocking developer-home absolute paths in docs, code, scripts, skills, rules, and tests",
       "evidence": "absolute, architecture, blocking, code, developer-home, docs, path, path-portability-and-privacy",
-      "line": 41,
+      "line": 42,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -107,7 +107,7 @@
     {
       "claim": "- [Documentation Duplicate Audit](reports/docs-duplicate-latest.md) \u2014 latest duplicate-documentation baseline and prevention report",
       "evidence": "audit, baseline, docs-duplicate-latest, documentation, duplicate, latest, prevention, report",
-      "line": 61,
+      "line": 64,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -115,7 +115,7 @@
     {
       "claim": "See [Product Zones](product-zones.md) and [manifests/product-zones.yaml](../manifests/product-zones.yaml) for the enforceable taxonomy.",
       "evidence": "enforceable, manifests, product, product-zones, taxonomy, yaml, zones",
-      "line": 74,
+      "line": 77,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -123,7 +123,7 @@
     {
       "claim": "Each layer builds on the ones below it. The bottom layers (Tools, Memory) are already operational in dev-time. The upper layers (Governance, Organization) represent the production target.",
       "evidence": "already, below, bottom, builds, each, governance, layer, layers",
-      "line": 123,
+      "line": 126,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -131,7 +131,7 @@
     {
       "claim": "- **Manager Agents** sit between the organization and operational agents \u2014 they enforce governance and evaluate performance",
       "evidence": "between, enforce, evaluate, governance, manager, operational, organization, performance",
-      "line": 324,
+      "line": 327,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -139,7 +139,7 @@
     {
       "claim": "The self-improvement loop is a closed feedback cycle where every agent execution produces data that improves future executions:",
       "evidence": "closed, cycle, data, every, execution, executions, feedback, future",
-      "line": 353,
+      "line": 356,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -147,7 +147,7 @@
     {
       "claim": "- Skills system with auto-detection, auto-improvement, and 13+ skills",
       "evidence": "auto-detection, skills, system",
-      "line": 512,
+      "line": 515,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -155,7 +155,7 @@
     {
       "claim": "- 41 hooks: stack-detector, session-resume, block-prod-urls, error-pattern-detector, agent-prelaunch, auto-test-on-edit, skill-feedback-tracker, skill-metrics-tracker, error-learning, agent-checkpoint, auto-repair-dispat",
       "evidence": "agent-checkpoint, agent-prelaunch, auto-repair-dispatcher, block-prod-urls, conversation-capture, error-learning, error-pattern-detector, hooks",
-      "line": 513,
+      "line": 516,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -163,7 +163,7 @@
     {
       "claim": "- 44 rules: constitutional-gates, control-manifest, license-policy, skill-adaptation, skill-auto-loader, skill-registry, model-routing, error-learning, fault-tolerance, agent-kpis, services-config, auto-repair, metrics-c",
       "evidence": "agent-kpis, auto-repair, constitutional-gates, error-learning, fault-tolerance, license-policy, model-routing, more",
-      "line": 514,
+      "line": 517,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -171,7 +171,7 @@
     {
       "claim": "- Self-improvement loop: error learning -> pattern detection -> skill updates -> model optimization -> KPI measurement",
       "evidence": "detection, error, learning, loop, measurement, model, optimization, pattern",
-      "line": 516,
+      "line": 519,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -179,7 +179,7 @@
     {
       "claim": "- Fault tolerance: task registration, checkpointing, automatic recovery",
       "evidence": "automatic, fault, recovery, registration, task, tolerance",
-      "line": 517,
+      "line": 520,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -187,7 +187,7 @@
     {
       "claim": "- Agent identity (Phase 1 rules + 6-layer stack designed \u2014 see [identity-stack.md](identity-stack.md))",
       "evidence": "designed, identity, layer, phase, rules, stack",
-      "line": 530,
+      "line": 533,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -195,7 +195,7 @@
     {
       "claim": "Target architecture for production-grade autonomous agent infrastructure",
       "evidence": "architecture, autonomous, infrastructure, target",
-      "line": 545,
+      "line": 548,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -203,7 +203,7 @@
     {
       "claim": "- Self-improving organization (retrospective engine proposes and applies org changes)",
       "evidence": "applies, changes, engine, organization, proposes, retrospective",
-      "line": 551,
+      "line": 554,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -211,7 +211,7 @@
     {
       "claim": "No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocked-tools.md) and [Component Sources](component-sources.md) for license decisions and source tracking.",
       "evidence": "agpl, blocked, blocked-tools, component, components, decisions, elv2, license",
-      "line": 571,
+      "line": 574,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -219,7 +219,7 @@
     {
       "claim": "- [Blocked Tools](blocked-tools.md) \u2014 SaaS safety verdicts and blocked licenses",
       "evidence": "blocked, blocked-tools, licenses, saas, safety, tools, verdicts",
-      "line": 580,
+      "line": 583,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/README.md",
       "status": "mapped"
@@ -769,8 +769,8 @@
       "status": "mapped"
     },
     {
-      "claim": "- [x] Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../architecture/plans/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice is covered by unit",
-      "evidence": "architecture, behavior, covered, detect, documented, draft, execution, first",
+      "claim": "- [x] Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../../.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice i",
+      "evidence": "architecture, behavior, cognitive-os, covered, detect, documented, draft, execution",
       "line": 147,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/business/master-plan-checklist.md",
@@ -1225,6 +1225,470 @@
       "status": "mapped"
     },
     {
+      "claim": "Cognitive OS was being prepared for SaaS distribution. A full license audit of the Docker infrastructure stack revealed three RED issues: Redis had changed to tri-license (AGPL/RSAL/SSPL) in 2025, MinIO was AGPL-3.0, and",
+      "evidence": "agpl, agpl-3, apache, audit, being, block, changed, commercial",
+      "line": 10,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "A blanket policy was established: block AGPL/SSPL/GPL dependencies for any component distributed with the OS. CI-only tools are exempt.",
+      "evidence": "agpl, block, component, dependencies, established, exempt, policy, sspl",
+      "line": 21,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Use cloud S3 instead of SeaweedFS**: Cloud S3 removes the self-hosted requirement but adds external dependency and cost. SeaweedFS maintains the self-contained Docker stack.",
+      "evidence": "adds, cloud, cost, dependency, docker, external, instead, maintains",
+      "line": 26,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- The AGPL blocking policy was later codified into the `cos` package manager's security audit pipeline, which automatically rejects packages with AGPL/SSPL/GPL licenses at install time.",
+      "evidence": "agpl, audit, automatically, blocking, install, later, licenses, manager",
+      "line": 32,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Five additional tools were later blocked during the tech radar evaluation (Mar 28) for AGPL violations: Firecrawl, and four others from the awesome-claude-code ecosystem scan.",
+      "evidence": "additional, agpl, blocked, during, ecosystem, evaluation, five, four",
+      "line": 33,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-006-agpl-license-compliance.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "An OS analogy table was added mapping traditional OS concepts (kernel, scheduler, memory, filesystem, drivers, syscalls, networking, self-healing, package manager, init system) to their Cognitive OS equivalents, establis",
+      "evidence": "added, concepts, conceptual, drivers, filesystem, framework, init, kernel",
+      "line": 21,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-007-cognitive-os-rebrand.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "2. **MCP as universal bridge**: MCP is supported by Claude Code, Cursor, Continue, Cline, and a growing list of tools. Existing MCP servers (Engram, Context7) already work everywhere. The plan is to expose more capabilit",
+      "evidence": "already, bridge, capabilities, claude, cline, code, context7, continue",
+      "line": 17,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-008-multi-tool-support.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "3. **Rules portability**: Auto-transform `.claude/rules/*.md` to `.cursorrules`, `.aider`, and OpenCode formats. The content is the same -- only the file format and location change.",
+      "evidence": "aider, change, claude, content, file, format, formats, location",
+      "line": 18,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-008-multi-tool-support.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Build a universal hook runtime**: Create a new hook execution engine that all tools use. Rejected as too ambitious -- the adapter pattern is cheaper and preserves native tool performance.",
+      "evidence": "adapter, build, cheaper, create, engine, execution, hook, native",
+      "line": 25,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-008-multi-tool-support.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Target only MCP-compatible tools**: MCP is the most portable layer, but not all tools support it fully. Hooks provide enforcement that MCP cannot (blocking dangerous operations). Both layers are needed.",
+      "evidence": "blocking, both, cannot, dangerous, enforcement, fully, hooks, layer",
+      "line": 26,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-008-multi-tool-support.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **CORE (82 agentic primitives)**: 9 skills, 24 hooks, 38 rules, 8 libs, 3 templates, plus the Go CLI. These are the irreducible OS kernel \u2014 agentic primitives every installation needs.",
+      "evidence": "agentic, core, every, hooks, installation, irreducible, kernel, libs",
+      "line": 16,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-009-package-architecture.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **PACKAGE (227 agentic primitives)**: 93 skills, 41 hooks, 44 rules, 41 libs, 3 agents, 5 templates. Optional add-ons organized into 23 packages under `packages/`, each with a `cos-package.yaml` manifest.",
+      "evidence": "agentic, cos-package, each, hooks, libs, manifest, optional, organized",
+      "line": 17,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-009-package-architecture.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Package examples**: `@luum/ecosystem-tools`, `@luum/safety-mesh`, `@luum/auto-repair`, `@luum/document-sync`, `@luum/privacy-mode`, `@luum/paperclip-integration`.",
+      "evidence": "auto-repair, document-sync, ecosystem-tools, examples, luum, package, paperclip-integration, privacy-mode",
+      "line": 21,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-009-package-architecture.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Security was built in: every package goes through a license check (block AGPL/SSPL/GPL), secret scanning, prompt injection scanning (via parry), and dependency analysis before installation.",
+      "evidence": "agpl, analysis, before, block, built, check, dependency, every",
+      "line": 27,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-009-package-architecture.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Cognitive OS was using approximately 10% of Claude Code's hook capabilities. The initial hook architecture supported only 4 event types (PreToolUse, PostToolUse, SessionStart, Stop) with 13 hooks. All hooks were synchron",
+      "evidence": "advisory, approximately, architecture, between, block, blocking, capabilities, claude",
+      "line": 10,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-010-hook-architecture-v2.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Async support**: ~23 advisory hooks marked with `async: true` to eliminate latency penalties. Only enforcement hooks (gates, blockers) remain synchronous.",
+      "evidence": "advisory, async, blockers, eliminate, enforcement, gates, hooks, latency",
+      "line": 24,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-010-hook-architecture-v2.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Plugin-style hook loading**: Hooks auto-discover and register themselves. Rejected because it makes the security profile non-deterministic -- you can't audit what's running without inspecting each hook file.",
+      "evidence": "audit, auto-discover, because, each, file, hook, hooks, inspecting",
+      "line": 39,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-010-hook-architecture-v2.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Cognitive OS used LiteLLM as its sole AI gateway/LLM proxy. In March 2026, LiteLLM was compromised in the TeamPCP supply chain attack (PyPI versions 1.82.7-8 contained malicious code). The Cognitive OS installation was s",
+      "evidence": "apache, attack, because, bifrost, budget, chain, code, comprehensive",
+      "line": 10,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-011-dual-gateway-bifrost-litellm.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Use a cloud gateway (AWS Bedrock, Azure OpenAI)**: Adds external dependency, cost, and latency. Self-hosted gateways maintain the self-contained architecture.",
+      "evidence": "adds, architecture, azure, bedrock, cloud, cost, dependency, external",
+      "line": 28,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-011-dual-gateway-bifrost-litellm.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Convert 4 hooks**: clarification-gate, assumption-tracker, prompt-quality, scope-creep-detector. These require natural language understanding that regex approximates poorly.",
+      "evidence": "assumption-tracker, clarification-gate, convert, hooks, language, natural, poorly, prompt-quality",
+      "line": 16,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-012-prompt-driven-governance.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Keep ~70% of hooks in bash**: Deterministic checks (rate-limiter, content-policy, secret-detector, error-learning, registration-check) are better served by exact matching. No LLM evaluation needed.",
+      "evidence": "bash, better, checks, content-policy, deterministic, error-learning, evaluation, exact",
+      "line": 18,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-012-prompt-driven-governance.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "1. **Code Analysis**: Semgrep with AI Best Practices ruleset (58 rules for hardcoded keys, injection, MCP hooks), plus Semgrep `--config auto`.",
+      "evidence": "analysis, auto, best, code, config, hardcoded, hooks, injection",
+      "line": 16,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-013-security-stack.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Implementation in `lib/sdd_pipeline.py` uses the `_ANTHROPIC_CHAIN` ordering from model_catalog for tier comparison. Non-Anthropic models (GPT-4o, Gemini) never get fast path since they are not in the tier chain.",
+      "evidence": "anthropic_chain, chain, comparison, fast, gemini, gpt-4o, implementation, model_catalog",
+      "line": 24,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-014-sdd-fast-path.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The most critical Anthropic finding preserved: the evaluator (verify phase) must ALWAYS be separate from the generator (apply phase). This separation is maintained in both fast and full paths.",
+      "evidence": "always, anthropic, apply, both, critical, evaluator, fast, finding",
+      "line": 26,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-014-sdd-fast-path.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Auto-detect model capability at runtime**: Let the pipeline dynamically decide. Partially adopted -- the pipeline checks model tier at runtime, but the threshold is configurable rather than auto-calibrated.",
+      "evidence": "adopted, auto-detect, capability, checks, configurable, decide, dynamically, model",
+      "line": 31,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-014-sdd-fast-path.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Let the model choose its own path**: Ask the model whether it needs detailed specs. Rejected because this adds an LLM call to decide and the model has no reliable self-assessment of planning needs.",
+      "evidence": "adds, because, call, choose, decide, detailed, model, needs",
+      "line": 33,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-014-sdd-fast-path.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Cognitive OS loaded ~94 rules as markdown files into the agent's context window, consuming approximately 73,000 tokens per session. The WISC framework research (arxiv 2507.11538) confirmed that loading more than 150 inst",
+      "evidence": "approximately, arxiv, automatically, because, behavior, compacts, confirmed, consuming",
+      "line": 10,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Tier 1: Hooks** (~50 rules converted to hooks). Enforcement runs automatically, costs 0 tokens. Examples: rate limiting, content policy, secret detection, registration checks.",
+      "evidence": "automatically, checks, content, converted, costs, detection, enforcement, examples",
+      "line": 16,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Tier 2: Skills** (~20 rules converted to on-demand skills). Loaded only when invoked, not kept in persistent context. Examples: release procedures, evaluation workflows.",
+      "evidence": "context, converted, evaluation, examples, invoked, kept, loaded, on-demand",
+      "line": 17,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Tier 3: RULES-COMPACT** (~10-15 irreducible rules, target ~500 tokens). Behavioral contracts that cannot be mechanically enforced -- they require the agent to internalize guidelines. Examples: commit message style, c",
+      "evidence": "behavioral, cannot, commit, communication, contracts, enforced, examples, guidelines",
+      "line": 18,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**EXCLUDED_RULES mechanism**: `self-install.sh` maintains an array of ~22 rules that are fully mechanically enforced by registered hooks. These rules are excluded from symlink installation, removing them from agent conte",
+      "evidence": "array, context, enforced, entirely, excluded, excluded_rules, fully, hooks",
+      "line": 20,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Result**: Context reduced from 92 loaded rules to 20 (78% reduction). RULES-COMPACT trimmed from 73K tokens to under 1.5K tokens (5,494 characters, ~1,374 tokens).",
+      "evidence": "characters, context, loaded, reduced, reduction, result, rules, rules-compact",
+      "line": 22,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Keep all rules in context but compress them**: Shorter rules still consume tokens and still rely on agent memory. Rejected because the fundamental problem is passive vs active enforcement.",
+      "evidence": "active, because, compress, consume, context, enforcement, fundamental, keep",
+      "line": 26,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Remove rules entirely, rely only on hooks**: Not all behavioral guidelines can be mechanically enforced. Tone, style, and decision-making principles require agent internalization.",
+      "evidence": "behavioral, enforced, entirely, guidelines, hooks, mechanically, only, principles",
+      "line": 27,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Dynamic rule loading based on task**: Load only relevant rules per task. Partially adopted (the contextual rule loader exists), but the primary strategy is eliminating the need for rules where hooks can enforce inste",
+      "evidence": "adopted, based, contextual, dynamic, enforce, exists, hooks, instead",
+      "line": 28,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- The EXCLUDED_RULES array in self-install.sh became a maintenance point -- adding a new hook requires updating the exclusion list.",
+      "evidence": "adding, array, became, excluded_rules, exclusion, hook, list, maintenance",
+      "line": 34,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Rules that were converted to hooks gained deterministic enforcement: they cannot be forgotten, skipped, or interpreted differently by the agent.",
+      "evidence": "cannot, converted, deterministic, differently, enforcement, hooks, interpreted, rules",
+      "line": 35,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- RULES-COMPACT with \"(enforced by hook)\" annotations serves as documentation of what the hook system guarantees, even though agents no longer need to act on those rules.",
+      "evidence": "annotations, documentation, enforced, even, guarantees, hook, longer, need",
+      "line": 36,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-015-rules-to-hooks-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Each sub-agent launch loaded approximately 100,000 tokens of context: 20K system prompt, 5K CLAUDE.md, 73K rules, plus the task itself. At Opus 4.6 pricing, this cost $1.50-$7.50 per agent just for context loading, befor",
+      "evidence": "approximately, arxiv, before, claude, confirmed, context, cost, degradation",
+      "line": 10,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-016-context-diet.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Set `model_capability.level: 4` to auto-disable 5 redundant hooks (clarification-gate, assumption-tracking, confidence-gate, model-routing, blast-radius) that are unnecessary for Opus 4.6.",
+      "evidence": "assumption-tracking, auto-disable, blast-radius, clarification-gate, confidence-gate, hooks, level, model-routing",
+      "line": 22,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-016-context-diet.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Compress rules into a single dense document**: RULES-COMPACT already exists as this compressed form. The diet strategy is the enforcement of using it exclusively for sub-agents.",
+      "evidence": "already, compress, compressed, diet, document, enforcement, exclusively, exists",
+      "line": 35,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-016-context-diet.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "After 18 days of rapid development, the OS had accumulated 375+ agentic primitives but many were not wired into the running system. A reality audit revealed: 82 unwired libs, 17 unregistered hooks, 14 phantom skills (ref",
+      "evidence": "accumulated, accumulating, added, after, agentic, audit, automated, because",
+      "line": 10,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-017-stabilization-freeze.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- The enforcement gates (pre-commit, registration check) created a ratchet effect: once wired, agentic primitives cannot silently become unwired.",
+      "evidence": "agentic, become, cannot, check, created, effect, enforcement, gates",
+      "line": 39,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-017-stabilization-freeze.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "> **Note:** Commits after the freeze date include `feat:` prefixes for stabilization work (scope tagging, Docker-to-pip Phase 2, audit enforcement). These are stabilization/wiring tasks, not new user-facing features. The",
+      "evidence": "after, audit, commit, commits, date, dropped, enforcement, failures",
+      "line": 43,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-017-stabilization-freeze.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Cloud-hosted alternatives for everything**: Remove self-hosted entirely. Rejected because it defeats the self-contained architecture goal and adds external dependencies.",
+      "evidence": "adds, alternatives, architecture, because, dependencies, entirely, everything, external",
+      "line": 38,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-018-docker-to-pip-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- The migration established a preference: pip-first for development, Docker for production deployment. Smart infrastructure (`lib/smart_infra.py`) manages the distinction.",
+      "evidence": "deployment, development, distinction, docker, established, infrastructure, manages, migration",
+      "line": 46,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-018-docker-to-pip-migration.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Cognitive OS agentic primitives serve two distinct audiences: the OS itself (internal tooling for development and maintenance) and projects that install the OS (user-facing capabilities). Without scope classification, `s",
+      "evidence": "added, adr-015, agentic, always, audiences, being, capabilities, classification",
+      "line": 10,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-019-scope-tagging.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Model C (Full Pipeline)**: Requires Claude CLI for subprocess invocation from Python. Most sophisticated, with per-agent MEMORY.md files to prevent cross-agent pattern contamination.",
+      "evidence": "claude, files, full, invocation, memory, model, most, pattern",
+      "line": 24,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-020-contamination-fix.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Fork the OS per project**: Each project gets its own copy with customizations. Rejected because it prevents upstream updates and fragments maintenance.",
+      "evidence": "because, copy, customizations, each, fork, fragments, gets, maintenance",
+      "line": 29,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-020-contamination-fix.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Future contamination is prevented by the scope tagging system (ADR-019) and the agentic primitive registration hook, which validates that os-only agentic primitives do not reference project-specific paths.",
+      "evidence": "agentic, future, hook, os-only, paths, primitive, primitives, project-specific",
+      "line": 38,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-020-contamination-fix.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "`tests/unit/test_cos_yaml_readers.py` has **43 tests** pinning current behavior. `tests/unit/test_dispatch_helper.py`, `tests/unit/test_agent_health_monitor.py`, `tests/unit/test_agent_timeout.py`, `tests/unit/test_dispa",
+      "evidence": "behavior, changes, current, exercise, fewest, force, most, need",
+      "line": 84,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Effort**: High. ~6 files touched (3 current sites + queue_drainer + singularity + prompt_builder). ~15-20 tests to rewrite.",
+      "evidence": "current, effort, files, high, prompt_builder, queue_drainer, rewrite, singularity",
+      "line": 92,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Q3.3 \u2014 Which contract tests would stay green under Option A?** Only the `blocked=True` scanner path (tests in `TestScanBlockContract`). All CLI-shape tests (`TestCliCommandShape`), returncode classification tests (`Tes",
+      "evidence": "behavior, binary-missing, blocked, classification, consumer, contract, dataclass, fail",
+      "line": 204,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **Risk**: **BLOCKING**. Requires either (a) removing `--json` from `engram_client.save_observation` (which breaks its own consumers in `lib/memory.py` that expect a dict) or (b) synthesizing a human-readable string fro",
+      "evidence": "blocking, breaks, consumers, dict, either, engram_client, expect, format",
+      "line": 214,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- Single import site for YAML reads. New readers in the future MUST choose one of the three variants \u2014 enforced by lint (no direct `open(\"cognitive-os.yaml\")` except in `config_loader.py`).",
+      "evidence": "choose, cognitive-os, config_loader, direct, enforced, except, future, import",
+      "line": 265,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- PR #7 (`540998a`) \u2014 R3 characterization: `tests/unit/test_safe_engram_contract.py` (33 tests) + `tests/unit/test_engram_client.py` (46 tests).",
+      "evidence": "characterization, test_engram_client, test_safe_engram_contract, tests, unit",
+      "line": 287,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-026-r2-r3-design-review.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- The cos_mcp consumer at `mcp-server/cos_mcp.py:213-219` genuinely depends on the three-way branch (`blocked`, `returncode==127`, `returncode!=0 and !=127`) that only `safe_save`'s `SafeEngramResult` exposes.",
+      "evidence": "blocked, branch, consumer, cos_mcp, depends, exposes, genuinely, mcp-server",
+      "line": 141,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-026a-decisions.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "**Verdict: CONFIRMED.** No production file imports both. `lib/memory.py` docstring mentions `safe_engram` at line 11 but only imports `engram_client` at line 19. `lib/anchored_summarizer.py:274` is a string literal embed",
+      "evidence": "accurate, anchored_summarizer, both, confirmed, docstring, embedded, engram_client, file",
+      "line": 234,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-026a-decisions.md",
+      "status": "mapped"
+    },
+    {
       "claim": "2. Manually deduplicate SDD/engram prose blocks in `~/.claude/CLAUDE.md` to reach \u2264 1,200 tokens (per ADR-027a \u00a72). Sub-agents load rule files independently, so inline restatements are safe to remove.",
       "evidence": "adr-027a, blocks, claude, deduplicate, engram, files, independently, inline",
       "line": 359,
@@ -1393,6 +1857,14 @@
       "status": "mapped"
     },
     {
+      "claim": "ADR-037 shipped `.cognitive-os/self-knowledge/api-surface.json`, `glossary.md`, and `dep-graph.json`. ADR-029b/039 shipped `lib/reinvention_semantic.py` with `SemanticIndex` (Jaccard, stdlib-only) and `EmbeddingsIndex` (",
+      "evidence": "adr-029b, adr-037, api-surface, assets, cognitive-os, cosine, dep-graph, embeddingsindex",
+      "line": 19,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-040-query-tailored-context-injection.md",
+      "status": "mapped"
+    },
+    {
       "claim": "**Status**: Phase 2 RESOLVED (frontmatter migration + catalog generator) \u2014 Phase 2 slash commands BLOCKED (sandbox write-permission on `.claude/commands/`)",
       "evidence": "blocked, catalog, claude, commands, frontmatter, generator, migration, phase",
       "line": 3,
@@ -1402,7 +1874,7 @@
     },
     {
       "claim": "**Related**: ADR-043 (rule classification \u2014 Agent B, paired work), ADR-032 (orchestrator-prompt-compose), ADR-037 (self-knowledge-base)",
-      "evidence": "adr-037, classification, orchestrator-prompt-compose, paired, related, rule, work",
+      "evidence": "adr-037, adr-043, classification, orchestrator-prompt-compose, paired, related, rule, work",
       "line": 6,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/adrs/ADR-044-context-payload-slimming.md",
@@ -1554,7 +2026,7 @@
     },
     {
       "claim": "The wrapper can write compact human-readable lines to `.cognitive-os/runtime/hook-stream.fifo` when `COS_HOOK_TIMING_FIFO=1`. The reader script opens the FIFO O_RDWR | O_NONBLOCK (via Python) to avoid blocking when no wr",
-      "evidence": "avoid, blocking, blocks, cognitive-os, compact, cos_hook_timing_fifo, fifo, hook-stream",
+      "evidence": "attached, avoid, blocking, blocks, cognitive-os, compact, cos_hook_timing_fifo, fifo",
       "line": 46,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/adrs/ADR-086-hook-execution-observability.md",
@@ -1574,6 +2046,102 @@
       "line": 81,
       "next_action": "keep claim but ensure proof remains current",
       "path": "docs/adrs/ADR-086-hook-execution-observability.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Add a Documentation Execution Audit that scans Markdown items and classifies them using repository evidence. The first version is advisory/report-only and must not rewrite checkboxes automatically.",
+      "evidence": "advisory, audit, automatically, classifies, documentation, evidence, execution, first",
+      "line": 13,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-097-documentation-execution-audit.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "`hooks/agent-prelaunch.sh` and `hooks/_lib/task_bridge.py::register()` wrote `status: \"in_progress\"` at PreToolUse time \u2014 before the agent process existed. When an agent failed to start (harness crash, cancel), the recor",
+      "evidence": "agent-prelaunch, before, block, cancel, caused, count, crash, diagnosis",
+      "line": 14,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "All records in `active-tasks.json` had `pid: null`, even for successfully-completed tasks. `agent_health_monitor.py::_classify_task()` has dead-PID detection logic that was never reachable because `pid` was always `null`",
+      "evidence": "active-tasks, agent_health_monitor, always, because, check, classify_task, code, dead",
+      "line": 17,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "`scripts/so-reaper.sh` delegates to `lib.process_registry` which only processes PIDs in the registry. Records with `pid=null` are invisible to it. Stale `pending`/`in_progress` records with no PID accumulated without any",
+      "evidence": "accumulated, automatic, cleanup, delegates, in_progress, invisible, null, only",
+      "line": 20,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The reaper **never kills processes** \u2014 it only marks records. The 30-minute stale threshold is intentionally generous to cover slow subagent startup.",
+      "evidence": "cover, generous, intentionally, kills, marks, minute, never, only",
+      "line": 59,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **30-minute stale threshold means slow cleanup:** a crashed subagent that never ran its preamble leaves a `pending` record for up to 30 minutes before the reaper cleans it. This is acceptable given the reaper runs ever",
+      "evidence": "acceptable, before, cleans, cleanup, crashed, every, given, leaves",
+      "line": 88,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The 9 `cos-YYYYMMDD-HHMMSS` stashes were created by the old path. They are **not auto-recovered** (risky without knowing original context). To inspect and selectively recover:",
+      "evidence": "auto-recovered, context, created, inspect, knowing, original, path, recover",
+      "line": 70,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "- **WT stability**: untracked files are never ghosted by an agent launch. The invariant \"WT is stable until I explicitly touch it\" is restored.",
+      "evidence": "explicitly, files, invariant, launch, never, restored, stability, stable",
+      "line": 98,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The prior design was phase-aware and tool-aware, and it already queued blocked work instead of dropping it. The missing layer was behavioral flow control: the limiter needed to preserve throughput for normal bursts while",
+      "evidence": "already, behavioral, blocked, bursts, control, design, detecting, dropping",
+      "line": 21,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "The project phase multiplier still applies to the refill rate. Bucket capacity is `ceil(effective_limit * burst_multiplier)`, default `1.5x`.",
+      "evidence": "applies, bucket, burst_multiplier, capacity, ceil, default, effective_limit, multiplier",
+      "line": 38,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "Normal/orchestrator work may not consume the bottom `operator_reserve_ratio` of the bucket, default `20%`. The `operator` priority lane can use those reserved tokens.",
+      "evidence": "bottom, bucket, consume, default, lane, normal, operator, operator_reserve_ratio",
+      "line": 44,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md",
+      "status": "mapped"
+    },
+    {
+      "claim": "7. Edge matrix covers controlled refill, malformed bucket/signature state, invalid and partial config parser boundaries, concurrent persisted writes, hook warnings, hook lane override, hook disable bypass, legacy state c",
+      "evidence": "block, boundaries, bucket, bypass, compatibility, concurrent, config, controlled",
+      "line": 125,
+      "next_action": "keep claim but ensure proof remains current",
+      "path": "docs/adrs/ADR-101-intent-aware-rate-limiter.md",
       "status": "mapped"
     }
   ]

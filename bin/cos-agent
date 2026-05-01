@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+# cos-agent — portable sub-agent CLI (ADR-064 Task 4.1 / Surface 4)
+#
+# Usage:
+#   cos-agent spawn --prompt "..." [--model=auto|opus|sonnet|haiku] \
+#                                  [--tools=read_file,run_bash] \
+#                                  [--timeout=300] [--json]
+#   cos-agent spawn --prompt -     (read prompt from stdin)
+#   cos-agent --help
+#
+# Exit codes:
+#   0  success
+#   1  error
+#   124  timeout
+#
+# Environment:
+#   COGNITIVE_OS_PROJECT_DIR  override project root for event files
+#   COS_AGENT_DEPTH           depth guard (auto-managed; 0 = top-level)
+#   COS_DISABLE_QWEN=1        skip Qwen, force Claude fallback
+#   COS_FORCE_CLAUDE_PRIMARY=1  override cascade order
+#
+# Examples:
+#   cos-agent spawn --prompt "List all Python files"
+#   echo "Summarise CLAUDE.md" | cos-agent spawn --prompt -
+#   cos-agent spawn --prompt "Read pyproject.toml" --model=haiku --json
+#
+# Reference: docs/adrs/ADR-064-harness-agnostic-cognitive-os.md Surface 4
+
+set -euo pipefail
+
+# ── Resolve project root (symlink-safe) ────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+export PYTHONPATH="${PROJECT_ROOT}:${PYTHONPATH:-}"
+export COGNITIVE_OS_PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${PROJECT_ROOT}}"
+export COGNITIVE_OS_HARNESS="${COGNITIVE_OS_HARNESS:-bare_cli}"
+
+# ── Helpers ────────────────────────────────────────────────────────────────────
+usage() {
+  cat <<'COS_AGENT_HELP'
+cos-agent - portable sub-agent spawner (ADR-064)
+
+SYNTAX
+  cos-agent spawn --prompt TEXT [OPTIONS]
+  cos-agent spawn --prompt -    [OPTIONS]   (read prompt from stdin)
+  cos-agent --help | -h
+
+SUBCOMMANDS
+  spawn   Launch a sub-agent with the given prompt
+
+OPTIONS (spawn)
+  --prompt TEXT     Natural-language task (required; use "-" for stdin)
+  --model MODEL     Model hint: auto (default), opus, sonnet, haiku,
+                    or a provider-native name
+  --tools LIST      Comma-separated allowed tool names
+                    Default: read_file,glob_files,grep_files,run_bash
+  --timeout SECS    Hard wall-clock timeout in seconds (default: 300)
+  --json            Emit full JSON result to stdout (events + tokens)
+                    instead of plain final-response text
+
+EXIT CODES
+  0    success
+  1    error
+  124  timeout
+
+ENVIRONMENT
+  COGNITIVE_OS_PROJECT_DIR   override project root for event files
+  COS_DISABLE_QWEN=1         skip Qwen, force Claude fallback
+  COS_FORCE_CLAUDE_PRIMARY=1 override cascade order
+COS_AGENT_HELP
+}
+
+die() { echo "cos-agent: $*" >&2; exit 1; }
+
+# ── Argument parsing ───────────────────────────────────────────────────────────
+SUBCOMMAND=""
+PROMPT=""
+MODEL="auto"
+TOOLS=""
+TIMEOUT=300
+JSON_OUTPUT=0
+
+if [[ $# -eq 0 ]]; then
+  usage
+  exit 0
+fi
+
+case "${1:-}" in
+  -h|--help) usage; exit 0 ;;
+  spawn) SUBCOMMAND="spawn"; shift ;;
+  *) die "Unknown subcommand '${1}'.  Run 'cos-agent --help' for usage." ;;
+esac
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --prompt=*)   PROMPT="${1#*=}"; shift ;;
+    --prompt)     PROMPT="${2:-}"; shift 2 ;;
+    --model=*)    MODEL="${1#*=}"; shift ;;
+    --model)      MODEL="${2:-}"; shift 2 ;;
+    --tools=*)    TOOLS="${1#*=}"; shift ;;
+    --tools)      TOOLS="${2:-}"; shift 2 ;;
+    --timeout=*)  TIMEOUT="${1#*=}"; shift ;;
+    --timeout)    TIMEOUT="${2:-}"; shift 2 ;;
+    --json)       JSON_OUTPUT=1; shift ;;
+    -h|--help)    usage; exit 0 ;;
+    *) die "Unknown option '$1'" ;;
+  esac
+done
+
+# ── Validate subcommand ────────────────────────────────────────────────────────
+if [[ "${SUBCOMMAND}" != "spawn" ]]; then
+  die "Unknown subcommand '${SUBCOMMAND}'"
+fi
+
+# ── Read prompt from stdin if requested ───────────────────────────────────────
+if [[ "${PROMPT}" == "-" ]]; then
+  PROMPT="$(cat)"
+fi
+[[ -z "${PROMPT}" ]] && die "--prompt is required (or use '--prompt -' to read from stdin)"
+
+# ── Build Python invocation ───────────────────────────────────────────────────
+PYTHON_SCRIPT="$(cat <<'PYEOF'
+import sys, os, json
+
+prompt     = os.environ["_COS_AGENT_PROMPT"]
+model      = os.environ.get("_COS_AGENT_MODEL", "auto")
+tools_raw  = os.environ.get("_COS_AGENT_TOOLS", "")
+timeout_s  = int(os.environ.get("_COS_AGENT_TIMEOUT", "300") or 300)
+json_mode  = os.environ.get("_COS_AGENT_JSON", "0") == "1"
+
+tools = [t.strip() for t in tools_raw.split(",") if t.strip()] if tools_raw else None
+
+from lib.agent_runner import spawn
+result = spawn(prompt=prompt, model=model, allowed_tools=tools, timeout_s=timeout_s)
+
+if json_mode:
+    print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2))
+else:
+    if result.final_response:
+        print(result.final_response)
+    elif result.error:
+        print(result.error, file=sys.stderr)
+
+if result.status == "timeout":
+    sys.exit(124)
+elif result.status != "success":
+    sys.exit(1)
+sys.exit(0)
+PYEOF
+)"
+
+export _COS_AGENT_PROMPT="${PROMPT}"
+export _COS_AGENT_MODEL="${MODEL}"
+export _COS_AGENT_TOOLS="${TOOLS}"
+export _COS_AGENT_TIMEOUT="${TIMEOUT}"
+export _COS_AGENT_JSON="${JSON_OUTPUT}"
+
+exec python3 -c "${PYTHON_SCRIPT}"

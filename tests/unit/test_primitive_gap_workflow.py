@@ -17,6 +17,8 @@ def test_weekly_audit_workflow_runs_row_claim_and_backlog_audits() -> None:
         "scripts/reduction_backlog.py",
         "scripts/primitive_surface_reduce.py",
         "scripts/primitive_usage_map.py",
+        "scripts/primitive_coverage.py",
+        "scripts/docs_execution_audit.py",
     ):
         assert script in text
 
@@ -26,11 +28,19 @@ def test_weekly_audit_workflow_runs_row_claim_and_backlog_audits() -> None:
         "docs/reports/reduction-backlog-latest.json",
         "docs/reports/primitive-surface-reduction-latest.json",
         "docs/reports/primitive-usage-map-latest.json",
+        "docs/reports/primitive-coverage-latest.json",
+        "docs/reports/primitive-coverage-latest.md",
+        "docs/reports/primitive-coverage-latest.sarif",
+        "docs/reports/docs-execution-latest.json",
     ):
         assert report in text
 
     assert "--fail-unmapped" in text
     assert "--fail-nonzero" in text
+    assert "--fail-on-gap" in text
+    assert "--fail-hard-gaps" in text
+    assert "--fail-actionable-gaps" in text
+    assert "--format all" not in text
 
 
 def test_backlog_generator_produces_actionable_item_from_workflow_inputs(tmp_path: Path) -> None:

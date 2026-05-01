@@ -75,6 +75,44 @@ drivers:
         status: cognitive_os_extension
         projection: requires_cos_runner
 
+  bare_cli:
+    settings_path: .cognitive-os/cos-runner-hooks.json
+    shape: cos_runner_event_json
+    description: >
+      Bare-CLI / CI harness: cos-agent and cos-skill run in plain shell with
+      no surrounding harness.  Events are emitted as canonical JSON to stdin
+      of the BareCliAdapter.  Adapter file: lib/harness_adapter/bare_cli.py.
+    version_baseline: "adr-064-p0"
+    evidence:
+      - lib/harness_adapter/bare_cli.py
+      - lib/agent_runner.py
+      - bin/cos-agent
+      - tests/unit/test_harness_adapter_bare_cli.py
+    supported_events:
+      SessionStart:
+        status: supported
+      UserPromptSubmit:
+        status: supported
+      ToolUseStart:
+        status: supported
+      ToolUseEnd:
+        status: supported
+      SessionEnd:
+        status: supported
+      PreCompact:
+        status: unsupported
+        limitation: >
+          Bare CLI has no native context-compaction; COS_CONTEXT_COMPRESS=1
+          triggers lib.context_compressor manually if needed.
+      SubagentStart:
+        status: unsupported
+      TeammateIdle:
+        status: unsupported
+      TaskCreated:
+        status: unsupported
+      TaskCompleted:
+        status: unsupported
+
 parity_policy:
   required_statuses:
     - supported
