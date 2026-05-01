@@ -189,5 +189,5 @@ flowchart TD
 - Hermes learning loop docs: <https://hermes-agent.ai/features/learning-loop>
 - Hermes self-improvement blog: <https://hermes-agent.ai/blog/self-improving-ai-guide>
 - ClawHub self-improvement example: <https://clawhub.ai/skills/self-improver>
-- Cognitive OS runtime benchmark plan: [runtime-comparison-benchmark-plan.md](../architecture/plans/runtime-comparison-benchmark-plan.md)
+- Cognitive OS runtime benchmark plan: [runtime-comparison-benchmark-plan.md](../../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md)
 - Cognitive OS alternatives comparison: [vs-alternatives.md](../vs-alternatives.md)

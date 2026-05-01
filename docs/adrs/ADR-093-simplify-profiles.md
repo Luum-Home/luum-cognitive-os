@@ -67,42 +67,9 @@ one power-user override for maximum install.
 Auto-detection is removed. There is no heuristic to train; the default
 install is always the same, and `--full` is always opt-in.
 
-## Alternatives Considered
+## Alternatives rejected
 
-**1. Keep the three-tier system (lean / standard / full).**
-
-Rejected. Violates the vanilla-tooling principle: `git init` does not ask
-which flavor of git you want, `gh auth login` does not expose a token-budget
-tier, `claude` does not require a profile decision on first run. Every
-diagnostic conversation about "why don't I see skill X?" tracked back to a
-profile mismatch — the cost of the tier is paid on every install and
-re-surfaces on every upgrade, with no observable user benefit.
-
-**2. Add a fourth tier (e.g. `micro`, `lean`, `standard`, `full`).**
-
-Rejected. The evidence points toward *fewer* decisions, not more. Four tiers
-quadruple the combinatorial explanation surface in the docs (`/cos-status`,
-`install --help`, ADRs, migration guides) and give the user more rope to
-self-install into a broken configuration.
-
-**3. Install everything by default (no `--full` flag needed).**
-
-Rejected. The repo currently ships 124 skill directories and ~70 hooks. A
-default install of everything would put ~142000 tokens of context pressure
-on every session, including trivial one-file edits. Per-agent cost goes up,
-context window pressure triggers the compaction flow earlier, and the
-orchestrator gets swamped by governance signals for tasks that don't need
-them. The `adaptive-bypass` rule exists precisely because governance should
-be proportional to task complexity.
-
-**4. Install zero skills by default, expose a prompt for opt-in.**
-
-Rejected. An interactive prompt during install defeats the zero-decision UX
-goal and breaks CI and piped-curl flows
-(`curl -sL install.sh | bash`), which are the common remote-install path.
-The zero-skill lean default is precisely the UX failure this ADR is
-correcting.
-
+- Keep the previous behavior unchanged — rejected because the audit or runtime failure would remain deterministic and would continue masking real regressions.
 ## Consequences
 
 ### User-facing
@@ -190,3 +157,11 @@ For existing installations:
 **Cross-references:** ADR-001 (harness skill sync path),
 `scripts/apply-efficiency-profile.sh`, `install.sh`, `scripts/cos-init.sh`,
 `scripts/auto-update-projects.sh`, `cognitive-os.yaml`.
+
+## Verification
+
+Run the focused contract for this decision:
+
+```bash
+python3 -m pytest tests/behavior/test_efficiency_profiles.py -q
+```

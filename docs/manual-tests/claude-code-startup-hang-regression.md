@@ -82,7 +82,7 @@ unset COS_DISABLE_HOOK_STDOUT_QUARANTINE
 
 ## Circuit Breaker Checks
 
-The ADR-101 startup circuit breaker is active when any of these records appear in `.cognitive-os/metrics/hook-timing.jsonl`:
+The ADR-104 startup circuit breaker is active when any of these records appear in `.cognitive-os/metrics/hook-timing.jsonl`:
 
 ```json
 "safe_mode": 1,

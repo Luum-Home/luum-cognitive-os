@@ -65,7 +65,7 @@ pointing into `skills/` subdirs, the same tree structure already created in
 `.cognitive-os/skills/`. Both destinations stay in sync automatically. The change is
 idempotent: re-running the installer does not duplicate symlinks.
 
-## Alternatives Considered
+## Alternatives rejected
 
 **1. Sync to `~/.claude/skills/` (user-level global install)**
 
@@ -124,3 +124,11 @@ when skills require a manual install step — they fall behind.
 **Cross-references:** `docs/architecture/harness-adoption-gap/diagnosis.md` (root cause
 analysis, hypothesis ranking, Experiment 1 confirmation); `docs/os-vs-project-separation.md`
 (kernel vs driver layer convention).
+
+## Verification
+
+Run the focused contract for this decision:
+
+```bash
+python3 -m pytest tests/behavior/test_core_skills_check.py -q
+```

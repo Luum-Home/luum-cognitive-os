@@ -1,8 +1,8 @@
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-ADR = PROJECT_ROOT / "docs" / "architecture" / "adrs" / "027-headless-clustered-runtime-direction.md"
-PLAN = PROJECT_ROOT / "docs" / "architecture" / "plans" / "headless-clustered-runtime-plan.md"
+ADR = PROJECT_ROOT / "docs" / "adrs" / "ADR-091-headless-clustered-runtime-direction.md"
+PLAN = PROJECT_ROOT / ".cognitive-os" / "plans" / "architecture" / "headless-clustered-runtime-plan.md"
 
 
 def _headings(markdown: str, level: int) -> list[str]:
@@ -79,4 +79,4 @@ def test_headless_runtime_docs_are_linked_from_entrypoints() -> None:
     )
 
     assert docs_readme.count("headless-clustered-runtime-plan.md") == 1
-    assert checklist.count("027-headless-clustered-runtime-direction.md") == 1
+    assert checklist.count("ADR-091-headless-clustered-runtime-direction.md") == 1

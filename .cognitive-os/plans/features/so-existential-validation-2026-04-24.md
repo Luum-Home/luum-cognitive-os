@@ -51,7 +51,7 @@ Target end-date: 2026-05-15. Exit metric: honest number on file.
 ### Days 9-10 — Baseline runs
 
 - [x] Run `make install-test` 5× on fresh tmpdirs. Record mean + p95. — Done 2026-05-01: 5 runs via file:// clone; mean=38.8s, p95=43s, all PASS (budget=300s); bug in count_errors() fixed (grep -c || echo 0 double-print)
-- [x] Document errors + manual steps (if any) in `.cognitive-os/reports/install-timing-baseline-2026-05-XX.md`. — Done 2026-05-01: .cognitive-os/reports/install-timing-baseline-2026-05-01.md written
+- [x] Document errors + manual steps (if any) in `.cognitive-os/reports/install-timing-baseline-2026-05-XX.md`. — Done 2026-05-01: docs/reports/install-timing-baseline-2026-05-01.md written
 
 ### Day 11 — Verdict
 
