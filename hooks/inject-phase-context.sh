@@ -12,6 +12,53 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
+
+# ── Strategy B: TTL cache (60s) ──────────────────────────────────────────────
+# inject-phase-context was hitting p95 ~3674ms (budget: 2000ms) because it ran
+# multiple synchronous Python subprocesses (engram search + ref_key expansion)
+# on every PreToolUse fire.  Phase and project config change rarely (at most once
+# per session), so we cache the full context output for 60 seconds keyed on:
+#   {yaml_mtime}:{session_id}:{tool_name}
+# A cache hit exits in <10ms, well within the 2000ms budget.
+_PHASE_CACHE_DIR="${PROJECT_DIR}/.cognitive-os/cache/inject-phase-context"
+_PHASE_CACHE_TTL=60  # seconds
+
+_cache_key_for_context() {
+  local yaml_mtime session_id tool_name
+  yaml_mtime=$(stat -f "%m" "${COGNITIVE_OS_YAML:-/dev/null}" 2>/dev/null \
+    || stat -c "%Y" "${COGNITIVE_OS_YAML:-/dev/null}" 2>/dev/null \
+    || echo "0")
+  session_id="${COGNITIVE_OS_SESSION_ID:-default}"
+  tool_name="${1:-any}"
+  printf '%s:%s:%s' "$yaml_mtime" "$session_id" "$tool_name" \
+    | shasum -a 256 2>/dev/null | cut -d' ' -f1 \
+    || printf '%s:%s:%s' "$yaml_mtime" "$session_id" "$tool_name" | md5 2>/dev/null \
+    || echo "nocache"
+}
+
+_cache_hit() {
+  # Returns 0 (hit) and prints cached content if still within TTL, else 1 (miss).
+  local key="$1"
+  local cache_file="$_PHASE_CACHE_DIR/${key}.ctx"
+  local ts_file="$_PHASE_CACHE_DIR/${key}.ts"
+  [[ -f "$cache_file" && -f "$ts_file" ]] || return 1
+  local stored_ts now elapsed
+  stored_ts=$(cat "$ts_file" 2>/dev/null || echo 0)
+  now=$(date +%s 2>/dev/null || echo 0)
+  elapsed=$(( now - stored_ts ))
+  [[ "$elapsed" -le "$_PHASE_CACHE_TTL" ]] || return 1
+  cat "$cache_file"
+  return 0
+}
+
+_cache_store() {
+  local key="$1"
+  local content="$2"
+  mkdir -p "$_PHASE_CACHE_DIR" 2>/dev/null || return 0
+  printf '%s' "$content" > "$_PHASE_CACHE_DIR/${key}.ctx" 2>/dev/null || true
+  date +%s > "$_PHASE_CACHE_DIR/${key}.ts" 2>/dev/null || true
+}
+
 COGNITIVE_OS_DIR="$PROJECT_DIR/.cognitive-os"
 COGNITIVE_OS_YAML="$COGNITIVE_OS_DIR/cognitive-os.yaml"
 if [[ ! -f "$COGNITIVE_OS_YAML" && -f "$PROJECT_DIR/cognitive-os.yaml" ]]; then
@@ -36,6 +83,17 @@ fi
 # Only process Agent tool calls
 if [[ -n "$TOOL_NAME" ]] && [[ "$TOOL_NAME" != "Agent" && "$TOOL_NAME" != "task" && "$TOOL_NAME" != "delegate" ]]; then
   exit 0
+fi
+
+# ── Cache check (Strategy B) ─────────────────────────────────────────────────
+# If a valid cached context exists, emit it and exit immediately (<10ms path).
+_CACHE_KEY=$(_cache_key_for_context "$TOOL_NAME")
+if [[ "$HAS_VALID_INPUT" -eq 1 ]]; then
+  _CACHED_OUTPUT=$(_cache_hit "$_CACHE_KEY" 2>/dev/null || true)
+  if [[ -n "$_CACHED_OUTPUT" ]]; then
+    printf '%s' "$_CACHED_OUTPUT"
+    exit 0
+  fi
 fi
 
 # --- Phase Context ---
@@ -356,7 +414,7 @@ if [[ "$HAS_VALID_INPUT" -eq 1 ]]; then
   # Claude Code: emit hookSpecificOutput JSON on stdout
   if command -v python3 >/dev/null 2>&1; then
     # Use printf (no trailing newline) to preserve exact char count
-    printf '%s' "$CONTEXT_BUF" | python3 -c "
+    _JSON_OUTPUT=$(printf '%s' "$CONTEXT_BUF" | python3 -c "
 import json, sys
 ctx = sys.stdin.read()
 out = {
@@ -367,12 +425,18 @@ out = {
     }
 }
 sys.stdout.write(json.dumps(out))
-"
+")
+    # Store the serialized JSON in the TTL cache so subsequent calls skip all
+    # the expensive Python subprocess work.
+    _cache_store "$_CACHE_KEY" "$_JSON_OUTPUT" 2>/dev/null || true
+    printf '%s' "$_JSON_OUTPUT"
   else
     # No python3 fallback — use jq
-    jq -n \
+    _JSON_OUTPUT=$(jq -n \
       --arg ctx "$CONTEXT_BUF" \
-      '{hookSpecificOutput: {hookEventName: "PreToolUse", additionalContext: $ctx, permissionDecision: "allow"}}'
+      '{hookSpecificOutput: {hookEventName: "PreToolUse", additionalContext: $ctx, permissionDecision: "allow"}}')
+    _cache_store "$_CACHE_KEY" "$_JSON_OUTPUT" 2>/dev/null || true
+    printf '%s' "$_JSON_OUTPUT"
   fi
 else
   # No valid Claude Code input — degrade to stderr for manual/test invocations
