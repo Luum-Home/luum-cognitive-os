@@ -273,7 +273,7 @@ All 3 were judged as justified independent development. No consolidation require
 **What we took** (4 patterns):
 1. File mutation queue — `lib/file_mutation_queue.py`
 2. Compaction cut-points — influenced `hooks/pre-compaction-flush.sh`
-3. Structural tests — added `tests/structural/` directory
+3. Structural-test detection — now enforced through `tests/unit/test_cos_test_quality_audit_scope.py`
 4. Settings override — influenced `cognitive-os.yaml` phase-aware config
 
 **What we skipped**: TypeScript runtime, Pi's memory system, double-while loop architecture.
