@@ -7,16 +7,16 @@
 ### Pattern 7: HALT-and-WAIT for Ambiguous Tasks
 
 **Status**: Implemented
-**File**: `.cognitive-os/rules/closed-loop-prompts.md` (HALT-and-WAIT Protocol section)
-**Also in**: `.cognitive-os/rules/RULES-COMPACT.md` (compact reference)
+**File**: `rules/closed-loop-prompts.md` (HALT-and-WAIT Protocol section)
+**Also in**: `rules/RULES-COMPACT.md` (compact reference)
 
 Agents MUST present their plan and WAIT before executing ambiguous or high-risk tasks. HALT triggers include: multi-service changes, data migration, API contract changes, auth/security modifications. Phase-dependent behavior: reconstruction only halts for data-destructive ops; production halts for all ambiguous tasks.
 
 ### Pattern 8: Path Segregation in Engram
 
 **Status**: Implemented
-**File**: `.cognitive-os/rules/engram-organization.md`
-**Also in**: `.cognitive-os/rules/RULES-COMPACT.md` (compact reference)
+**File**: `rules/engram-organization.md`
+**Also in**: `rules/RULES-COMPACT.md` (compact reference)
 
 Structured topic key prefixes: `planning/`, `implementation/`, `docs/`, `agent/`, `sre/`, `architecture/`, `sprint/`, `config/`, `bugfix/`. Includes migration guide from legacy `sdd/` flat keys. Gradual migration strategy (re-save on read).
 
@@ -26,7 +26,7 @@ Structured topic key prefixes: `planning/`, `implementation/`, `docs/`, `agent/`
 **Files**:
 - `.cognitive-os/rules/agent-customization.md` (rule definition)
 - `.cognitive-os/customizations/example.yaml` (example override)
-**Also in**: `.cognitive-os/rules/RULES-COMPACT.md` (compact reference)
+**Also in**: `rules/RULES-COMPACT.md` (compact reference)
 
 Per-agent behavioral overrides in `customizations/{agent-name}.yaml`. Deep merge semantics. Override fields: model, temperature, max_tokens, tools, skills, budget, phase behavior, custom instructions. Customizations directory survives Cognitive OS updates.
 
@@ -44,7 +44,7 @@ Lightweight agent-managed sprint tracking. Sub-commands: `/sprint plan`, `/sprin
 
 **Status**: Implemented
 **File**: `.cognitive-os/rules/context-optimization.md` (Dual-Search Protocol section)
-**Also in**: `.cognitive-os/rules/RULES-COMPACT.md` (compact reference)
+**Also in**: `rules/RULES-COMPACT.md` (compact reference)
 
 Three-step search: (1) complete file, (2) sharded version (index + sections), (3) Engram (topic key -> legacy key -> keyword). Handles both small projects (single files) and large projects (sharded docs). Respects token budgets.
 

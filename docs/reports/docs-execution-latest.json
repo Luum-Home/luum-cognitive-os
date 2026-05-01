@@ -57,7 +57,7 @@
       "declared_status": "planned",
       "evidence": [
         "path:docs/architecture/FROZEN-BACKLOG.md",
-        "weak_terms:architecture,what"
+        "terms:architecture,frozen-backlog,what"
       ],
       "inferred_status": "planned",
       "item": "`docs/architecture/FROZEN-BACKLOG.md` \u2014 what to unfreeze",
@@ -70,7 +70,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "weak_terms:design,framing"
+        "terms:design,design-philosophy,framing,philosophy"
       ],
       "inferred_status": "proposed",
       "item": "[Design Philosophy](design-philosophy.md) \u2014 biological-system framing for the OS",
@@ -374,7 +374,7 @@
       "declared_status": "proposed",
       "evidence": [
         "path:docs/adrs/ADR-064-harness-agnostic-cognitive-os.md",
-        "terms:adrs,codex,compatible,confirmed,cursor,evidence,hook,kept"
+        "terms:adr-064-harness-agnostic-cognitive-os,adrs,codex,compatible,confirmed,cursor,evidence,hook"
       ],
       "inferred_status": "proposed",
       "item": "`docs/adrs/ADR-064-harness-agnostic-cognitive-os.md` \u2014 status review note 2026-04-27. Kept Proposed (Surfaces 2-4 unimplemented, verification suite missing). Codex/Cursor hook vocabularies confirmed compatible (web evidence).",
@@ -452,6 +452,163 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
+        "terms:baseline,closed,commits,decisions,engram,generated,install-timing,lists"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Result: **2 commits**, **30 engram decisions closed**, **5 install-timing baseline records logged**, **4 punch lists generated**.",
+      "kind": "prose",
+      "line": 10,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:accepted,adapter,adr-064,codex,commit,f766,flipped,parity"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Provider-AND-harness-agnostic. **ADR-064 was flipped to Accepted on 2026-04-30** (Codex adapter shipped in commit `9062829`, parity test in `259f766`).",
+      "kind": "bullet",
+      "line": 15,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:accepted,addenda,adr-028,adr-050,adr-067,adr-068,adr-069,answered"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "`decision-triage/2026-05-01-batch` (id 16018) \u2014 **30 decisions closed** out of 121 pending. Closures grouped: 14 cos-init-related answered (Python migration shipped), 7 ADR-028 stale (ADR Accepted with addenda), 7 ADR-067 / ADR-068 / ADR-069 related-and-resolv",
+      "kind": "bullet",
+      "line": 49,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:fixes,session,shipped"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Fixes shipped** (this session):",
+      "kind": "prose",
+      "line": 71,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:action,already,aspirational,batch,dormant,exist,implement,input"
+      ],
+      "inferred_status": "proposed",
+      "item": "**so-existential prune-triage** \u2014 next plan item is `Issue prune-triage-2026-04-24.md` (1 row per item, action = REMOVE / PROVE / IMPLEMENT / REFERENCE-OK) for ~236 DORMANT+ASPIRATIONAL items. Mechanical row-by-row but substantial scope; should be its own batc",
+      "kind": "bullet",
+      "line": 105,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:archive,phase,prove,prune-triage,readme,remaining,remove,so-existential"
+      ],
+      "inferred_status": "planned",
+      "item": "so-existential remaining ~29 tasks (Day 1-7 remove/prove window, prune-triage, Day 11 README verdict, Day 14 archive, Phase 3). Target 2026-05-15.",
+      "kind": "bullet",
+      "line": 110,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:engram-daemon-launcher,profile-drift-autoapply,shipped"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "F7+F8: shipped 2026-04-27 (engram-daemon-launcher + profile-drift-autoapply).",
+      "kind": "bullet",
+      "line": 121,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:addenda,adr-028,closed,confidence,decisions,full,needed,questions"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**30 decisions closed conservatively** \u2014 ADR-028 questions 5-6 were closed as \"stale\" without reading addenda 28a/28b/28c in full. Confidence on those two: 0.75. Reopenable if needed.",
+      "kind": "bullet",
+      "line": 138,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:scripts/decision_triage.py",
+        "terms:accepted,adr-028,adrs,currently,decision_triage,follow-up,pending,questions"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "**`scripts/decision_triage.py` should skip ACCEPTED ADRs** \u2014 the script currently scans all ADR sections and re-surfaces questions from ACCEPTED ADRs (e.g. ADR-028) as \"pending.\" Follow-up tracked.",
+      "kind": "bullet",
+      "line": 139,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:auto-start,curl,engram-daemon-launcher,health,http"
+      ],
+      "inferred_status": "proposed",
+      "item": "`curl -s http://127.0.0.1:7437/health` (engram-daemon-launcher should auto-start).",
+      "kind": "bullet",
+      "line": 148,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:already,batch,closed,decision,decision-triage,mem_search,pending,picking"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "5. **If picking up decision triage round 2**: `mem_search \"decision triage pending\"` then read `decision-triage/2026-05-01-batch` (id 16018) to see what's already closed.",
+      "kind": "prose",
+      "line": 153,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:baseline,between,decisions,flakes,none,operational,other,session"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**None this session** \u2014 work was operational (flakes fix, baseline, decisions). v0.22.0 was shipped by other sessions between 2026-04-27 and today.",
+      "kind": "bullet",
+      "line": 157,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
         "terms:added,integration,package"
       ],
       "inferred_status": "done_weak_proof",
@@ -475,17 +632,16 @@
       "path": "docs/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md"
     },
     {
-      "confidence": 0.86,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "path:packages/agent-coordination/lib/agent_dashboard.py",
         "terms:added,agent-coordination,agent_dashboard,packages"
       ],
-      "inferred_status": "done_with_proof",
+      "inferred_status": "done_weak_proof",
       "item": "packages/agent-coordination/lib/agent_dashboard.py: added",
       "kind": "prose",
       "line": 18,
-      "next_action": "keep marked done; maintain proof links",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md"
     },
     {
@@ -515,17 +671,16 @@
       "path": "docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md"
     },
     {
-      "confidence": 0.86,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "path:rules/orchestrator-mode.md",
         "terms:added,comment,orchestrator-mode,package,pointing,rules,unused"
       ],
-      "inferred_status": "done_with_proof",
+      "inferred_status": "done_weak_proof",
       "item": "package was unused. Comment added pointing to rules/orchestrator-mode.md.",
       "kind": "prose",
       "line": 52,
-      "next_action": "keep marked done; maintain proof links",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md"
     },
     {
@@ -545,7 +700,6 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "path:tests/contracts/EXCLUDED_HOOKS.txt",
         "terms:contracts,excluded_hooks,future,global-verify,marks,tests"
       ],
       "inferred_status": "planned",
@@ -556,17 +710,16 @@
       "path": "docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md"
     },
     {
-      "confidence": 0.86,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "path:packages/agent-coordination/lib/agent_dashboard.py",
         "terms:added,agent-coordination,agent_dashboard,packages"
       ],
-      "inferred_status": "done_with_proof",
+      "inferred_status": "done_weak_proof",
       "item": "packages/agent-coordination/lib/agent_dashboard.py: added",
       "kind": "prose",
       "line": 67,
-      "next_action": "keep marked done; maintain proof links",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md"
     },
     {
@@ -596,17 +749,16 @@
       "path": "docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md"
     },
     {
-      "confidence": 0.86,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "path:rules/orchestrator-mode.md",
         "terms:added,comment,orchestrator-mode,package,pointing,rules,unused"
       ],
-      "inferred_status": "done_with_proof",
+      "inferred_status": "done_weak_proof",
       "item": "package was unused. Comment added pointing to rules/orchestrator-mode.md.",
       "kind": "prose",
       "line": 101,
-      "next_action": "keep marked done; maintain proof links",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md"
     },
     {
@@ -626,7 +778,6 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "path:tests/contracts/EXCLUDED_HOOKS.txt",
         "terms:contracts,excluded_hooks,future,global-verify,marks,tests"
       ],
       "inferred_status": "planned",
@@ -835,7 +986,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:garak,immediately,implemented,installation,integrations,mcp-scan,optional,packaged"
+        "terms:garak,immediately,implemented,installation,integrations,mantis,mcp-scan,optional"
       ],
       "inferred_status": "done_weak_proof",
       "item": "P0 integrations (Semgrep AI, MCP-Scan, Promptfoo) were implemented immediately. P1/P2 tools (Garak, tero, mantis) were packaged for optional installation.",
@@ -874,7 +1025,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:apply,because,benefit,design,entirely,haiku,just,phases"
+        "terms:apply,because,benefit,demonstrably,design,entirely,haiku,just"
       ],
       "inferred_status": "proposed",
       "item": "**Remove spec/design/tasks entirely**: Simplify the pipeline to just apply+verify. Rejected because Sonnet and Haiku demonstrably benefit from the structured phases.",
@@ -952,7 +1103,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:declare,existing,features,fully,phase,reconstruction,stabilization,system"
+        "terms:declare,existing,features,freeze,fully,phase,reconstruction,stabilization"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Declare a stabilization freeze: no new features until the existing system is fully wired, tested, and validated. The phase transition was from \"reconstruction\" to \"stabilization.\"",
@@ -1027,16 +1178,18 @@
       "path": "docs/adrs/ADR-019-scope-tagging.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:skills/",
+        "path:packages/",
         "terms:added,audience,files,frontmatter,packages,skill,skills"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "Skills: `audience:` frontmatter tag added to all ~120 SKILL.md files (45 in `skills/` + 75 in `packages/`).",
       "kind": "bullet",
       "line": 21,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-019-scope-tagging.md"
     },
     {
@@ -1108,7 +1261,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:agentic,future,hook,os-only,paths,prevented,primitive,primitives"
+        "terms:agentic,contamination,future,hook,os-only,paths,prevented,primitive"
       ],
       "inferred_status": "planned",
       "item": "Future contamination is prevented by the scope tagging system (ADR-019) and the agentic primitive registration hook, which validates that os-only agentic primitives do not reference project-specific paths.",
@@ -1212,7 +1365,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:adopt,advisory,future,hooks,pattern,same"
+        "terms:adopt,advisory,composable,future,hooks,pattern,same"
       ],
       "inferred_status": "planned",
       "item": "**Composable.** Future advisory hooks can adopt the same pattern with ~30",
@@ -1316,7 +1469,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "weak_terms:listed"
+        "weak_terms:frozen-backlog,listed"
       ],
       "inferred_status": "planned",
       "item": "Listed in FROZEN-BACKLOG",
@@ -1739,7 +1892,6 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "path:lib/dispatch_helper.py",
         "terms:comment,cost,current,dispatch_helper,every,explicitly,force,invocation"
       ],
       "inferred_status": "proposed",
@@ -1767,7 +1919,6 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "path:lib/queue_drainer.py",
         "terms:candidate,default,dispatch_helper,identical,max_parallel_agents,paths,queue_drainer,read_max_parallel_agents"
       ],
       "inferred_status": "proposed",
@@ -1794,7 +1945,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:exists,first,lines,none,option,parent,requires,schema"
+        "terms:designing,exists,first,lines,none,option,parent,requires"
       ],
       "inferred_status": "proposed",
       "item": "Parent ADR lines 114\u2013122: Option C requires designing a schema first; none exists today.",
@@ -1804,19 +1955,18 @@
       "path": "docs/adrs/ADR-026a-decisions.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:lib/config_*.py",
         "path:lib/config_loader.py",
-        "terms:added,config_,config_loader,config_schema,disk,glob,only,verified",
-        "missing_path:lib/config_schema.py",
-        "missing_path:lib/config_"
+        "terms:added,config_,config_loader,config_schema,disk,glob,only,verified"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "No `lib/config_schema.py` on disk (verified via glob `lib/config_*.py` \u2014 only `lib/config_loader.py` would be added by this work).",
       "kind": "bullet",
       "line": 111,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-026a-decisions.md"
     },
     {
@@ -1875,6 +2025,8 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
+        "path:lib/",
+        "path:packages/*/lib/",
         "terms:before,call,canonical,cognitive-os,config_loader,covers,current,enumerate"
       ],
       "inferred_status": "proposed",
@@ -1926,16 +2078,17 @@
       "path": "docs/adrs/ADR-027.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:.cognitive-os/metrics/archive/",
         "terms:archive,cognitive-os,days,implemented,metrics"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "`.cognitive-os/metrics/archive/` for 30 days. Implemented as a",
       "kind": "prose",
       "line": 216,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-027.md"
     },
     {
@@ -2082,17 +2235,16 @@
       "path": "docs/adrs/ADR-027a.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:bullet,commit,remove,resolved,scripts,task",
-        "missing_path:scripts/compact-claude-md.py"
+        "terms:bullet,commit,remove,resolved,scripts,task"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_weak_proof",
       "item": "Remove D2 task bullet for `scripts/compact-claude-md.py` per \u00a72 \u2014 RESOLVED 2026-04-21 (commit `<pending-commit>`)",
       "kind": "checkbox",
       "line": 187,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-027a.md"
     },
     {
@@ -2122,16 +2274,17 @@
       "path": "docs/adrs/ADR-027a.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:.cognitive-os/work-queue.json",
         "terms:adr-027,already,blocks,cognitive-os,json,mark,queue,resolved"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "Update `.cognitive-os/work-queue.json`: mark `ws9-test-errors` as `\"blocks\": \"ADR-027/Phase-1\"` \u2014 ws9 already resolved per queue.json:122",
       "kind": "checkbox",
       "line": 190,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-027a.md"
     },
     {
@@ -2149,16 +2302,17 @@
       "path": "docs/adrs/ADR-027a.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:.cognitive-os/work-queue.json",
         "terms:already,cognitive-os,edit,item,json,needed,queue,resolved"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "`.cognitive-os/work-queue.json` \u2014 item 5 says \"ws9 already resolved per queue.json:122\" so no edit needed.",
       "kind": "bullet",
       "line": 207,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-027a.md"
     },
     {
@@ -2166,7 +2320,7 @@
       "declared_status": "done",
       "evidence": [
         "path:rules/so-slo.md",
-        "terms:adr-027,already,beyond,corrections,defines,four,introduces,items"
+        "terms:adr-027,adr-level,already,beyond,corrections,defines,four,introduces"
       ],
       "inferred_status": "done_with_proof",
       "item": "`rules/so-slo.md` \u2014 no new SLO row required. The four resolved items are ADR-level doc corrections / task-list corrections; none of them introduces a new measurable SLO beyond what ADR-027 \u00a7KPIs already defines.",
@@ -2192,7 +2346,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:added,baseline,capture,features,isolation"
+        "terms:added,baseline,capture,features,isolation,well-intentioned"
       ],
       "inferred_status": "done_weak_proof",
       "item": "3. **Well-intentioned features added in isolation.** Baseline capture,",
@@ -2362,7 +2516,7 @@
       "declared_status": "planned",
       "evidence": [
         "path:docs/reports/metrics-census.md",
-        "terms:appears,hook,reports"
+        "terms:appears,hook,hook-audit,metrics-census,reports"
       ],
       "inferred_status": "planned",
       "item": "Hook appears in `docs/reports/metrics-census.md` or `hook-audit`",
@@ -2442,7 +2596,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:build,coordination,future,parallel,paths,query,them,tooling"
+        "terms:build,conflate,coordination,future,parallel,paths,query,them"
       ],
       "inferred_status": "planned",
       "item": "coordination, future tooling will conflate them or build parallel query paths.",
@@ -2547,7 +2701,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:adr-028,appended,open,phase,prompts,question,questions,resolved"
+        "terms:adr-028,appended,drafted,open,phase,prompts,question,questions"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Phase D agent prompts are drafted. \u2014 RESOLVED 2026-04-21 (appended as question #9 in ADR-028 \"Open questions\")",
@@ -2583,17 +2737,16 @@
       "path": "docs/adrs/ADR-028a.md"
     },
     {
-      "confidence": 0.86,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "path:docs/adrs/ADR-028a.md",
         "terms:adr-028,adr-028a,adrs,complements,heartbeat"
       ],
-      "inferred_status": "done_with_proof",
+      "inferred_status": "done_weak_proof",
       "item": "Add `# Complements ADR-028 D1.C agent heartbeat; see docs/adrs/ADR-028a.md \u00a72` to",
       "kind": "checkbox",
       "line": 320,
-      "next_action": "keep marked done; maintain proof links",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-028a.md"
     },
     {
@@ -2637,17 +2790,16 @@
       "path": "docs/adrs/ADR-028a.md"
     },
     {
-      "confidence": 0.86,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "path:docs/adrs/",
         "terms:adr-027a,adr-028,adr-028a,adrs,before,cognitive-os,command,executable"
       ],
-      "inferred_status": "done_with_proof",
+      "inferred_status": "done_weak_proof",
       "item": "Before Phase A exit, run the \u00a73 verification command and resolve any matches. \u2014 RESOLVED 2026-04-21: ran `grep -rn '2 \\* 1024 \\* 1024\\|2097152\\|2 MiB\\|2MiB' hooks/ lib/ scripts/ .cognitive-os/ docs/adrs/ --include='*.sh' --include='*.py' --include='*.md' --inc",
       "kind": "checkbox",
       "line": 326,
-      "next_action": "keep marked done; maintain proof links",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-028a.md"
     },
     {
@@ -2786,7 +2938,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:item,reference,replace,work-queue"
+        "terms:item,next-phase,reference,replace,work-queue"
       ],
       "inferred_status": "planned",
       "item": "Replace work-queue item `d1a1-metric-event` next-phase reference",
@@ -2982,7 +3134,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:default,escalation,installed,phase,still,wired"
+        "terms:default,escalation,hard-block,installed,phase,still,wired"
       ],
       "inferred_status": "done_weak_proof",
       "item": "wired, not installed by default\". Hard-block escalation (Phase B-\u03b3) still",
@@ -3509,8 +3661,9 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
+        "path:.cognitive-os/pending-tasks/adr-038-preamble-v2-industry-aligned.md",
         "path:docs/adrs/",
-        "terms:adrs,canonical,cognitive-os,location,originally,pending-tasks"
+        "terms:adrs,canonical,cognitive-os,drafted,location,originally,pending-tasks"
       ],
       "inferred_status": "planned",
       "item": "> Originally drafted in `.cognitive-os/pending-tasks/adr-038-preamble-v2-industry-aligned.md`; canonical location is `docs/adrs/`.",
@@ -3549,8 +3702,9 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
+        "path:.cognitive-os/pending-tasks/adr-039-reinvention-phase-b-beta.md",
         "path:docs/adrs/",
-        "terms:adr-039-reinvention-phase-b-beta,adrs,canonical,cognitive-os,location,originally,pending-tasks"
+        "terms:adr-039-reinvention-phase-b-beta,adrs,canonical,cognitive-os,drafted,location,originally,pending-tasks"
       ],
       "inferred_status": "planned",
       "item": "> Originally drafted in `.cognitive-os/pending-tasks/adr-039-reinvention-phase-b-beta.md`; canonical location is `docs/adrs/`.",
@@ -3628,7 +3782,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:each,invocation,part,shipped,skill,target,tests"
+        "terms:each,invocation,ongoing,part,shipped,skill,target,tests"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Target: Ongoing. Add skill invocation tests as part of each new skill shipped.",
@@ -3667,7 +3821,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:agentic,executor,follow-up,passes,primitives,remaining,tier"
+        "terms:agentic,executor,follow-up,passes,primarily,primitives,remaining,tier"
       ],
       "inferred_status": "planned",
       "item": "**Remaining for follow-up passes**: ~38 Tier B agentic primitives, primarily executor",
@@ -4533,7 +4687,6 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "path:scripts/project_scaffold.py",
         "terms:across,create,demo,dirs,files,json,manual,project-dir"
       ],
       "inferred_status": "proposed",
@@ -4570,16 +4723,17 @@
       "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:docs/",
         "terms:adr-054,category,convention,shipped"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "ADR-054 formalized the 10-category `docs/` convention and shipped the",
       "kind": "prose",
       "line": 13,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
     },
     {
@@ -4700,17 +4854,16 @@
       "path": "docs/adrs/ADR-056-adaptive-agent-dispatch.md"
     },
     {
-      "confidence": 0.86,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "path:scripts/orchestrator.py",
         "terms:added,adr-049,cascade,orchestrator,overflow,providers,scripts"
       ],
-      "inferred_status": "done_with_proof",
+      "inferred_status": "done_weak_proof",
       "item": "ADR-049 added an overflow cascade (`scripts/orchestrator.py --providers",
       "kind": "prose",
       "line": 11,
-      "next_action": "keep marked done; maintain proof links",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-056-adaptive-agent-dispatch.md"
     },
     {
@@ -4899,7 +5052,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:extensions,hooks,name,opt-in,remaining"
+        "terms:extensions,hooks,install-hook,name,opt-in,remaining"
       ],
       "inferred_status": "planned",
       "item": "`hooks/extensions/` \u2014 the ~88 remaining. Opt-in via `/install-hook <name>`.",
@@ -4912,7 +5065,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:extensions,name,opt-in,remaining,skills"
+        "terms:extensions,install-skill,name,opt-in,remaining,skills"
       ],
       "inferred_status": "planned",
       "item": "`skills/extensions/` \u2014 the ~114 remaining. Opt-in via `/install-skill <name>`.",
@@ -4938,7 +5091,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:adr-027,predecessor,shipped"
+        "terms:adr-027,predecessor,shipped,slimming"
       ],
       "inferred_status": "done_weak_proof",
       "item": "ADR-027 \u2014 SO Slimming (predecessor, WS1-WS3 shipped)",
@@ -5003,7 +5156,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:accepted,during,fills,gaps,identified"
+        "terms:accepted,during,existential,fills,gaps,identified"
       ],
       "inferred_status": "done_weak_proof",
       "item": "**Accepted** \u2014 2026-04-24. Fills the 5 gaps identified during the existential",
@@ -5134,7 +5287,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:remaining,scope,surfaces"
+        "terms:remaining,replication,scope,surfaces"
       ],
       "inferred_status": "planned",
       "item": "replication scope) to the remaining harness-coupled surfaces of the Cognitive OS.",
@@ -5188,7 +5341,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:accepted,block,surfaces,these"
+        "terms:accepted,block,outstanding,surfaces,these"
       ],
       "inferred_status": "done_weak_proof",
       "item": "**Outstanding for Surfaces 2-4** (these do NOT block Accepted status, but",
@@ -5634,7 +5787,6 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "path:docs/reports/",
         "terms:date,each,produces,reports,topic"
       ],
       "inferred_status": "planned",
@@ -5871,7 +6023,6 @@
       "declared_status": "done",
       "evidence": [
         "path:hooks/engram-reinforce-on-access.sh",
-        "path:lib/engram_lifecycle.py",
         "terms:calls,engram-reinforce-on-access,engram_lifecycle,events,hook,hooks,implemented,matching"
       ],
       "inferred_status": "done_with_proof",
@@ -6242,7 +6393,6 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "path:skills/skill-creator",
         "terms:add-skill,created,future,include,must,skill-creator,skills"
       ],
       "inferred_status": "planned",
@@ -6696,30 +6846,30 @@
       "path": "docs/adrs/ADR-082-plan-location-convention.md"
     },
     {
-      "confidence": 0.82,
-      "declared_status": "done",
-      "evidence": [
-        "terms:anomaly,architecture,follow-up,plans,resolved,test-resource-governance-sprint",
-        "missing_path:docs/architecture/plans/test-resource-governance-sprint.md"
-      ],
-      "inferred_status": "stale",
-      "item": "**Anomaly resolved (2026-04-30 follow-up)**: `docs/architecture/plans/test-resource-governance-sprint.md`",
-      "kind": "prose",
-      "line": 34,
-      "next_action": "update stale path or demote completion claim",
-      "path": "docs/adrs/ADR-082-plan-location-convention.md"
-    },
-    {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:accepted,after,cognitive-os,plans,violation"
+        "terms:anomaly,follow-up,plan,resolved,sprint,test-resource-governance"
       ],
       "inferred_status": "done_weak_proof",
+      "item": "**Anomaly resolved (2026-04-30 follow-up)**: the test-resource-governance sprint plan",
+      "kind": "prose",
+      "line": 34,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-082-plan-location-convention.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:.cognitive-os/plans/",
+        "terms:accepted,after,cognitive-os,plans,violation"
+      ],
+      "inferred_status": "done_with_proof",
       "item": "`.cognitive-os/plans/` after this ADR is accepted is a violation.",
       "kind": "prose",
       "line": 164,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-082-plan-location-convention.md"
     },
     {
@@ -6843,7 +6993,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:before,command,design,must,phase,run-task"
+        "terms:before,command,design,finalized,must,phase,run-task"
       ],
       "inferred_status": "proposed",
       "item": "The `cos run-task` command design must be finalized before Phase 1 can be",
@@ -7078,7 +7228,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:added,adr-088,front,matter,note"
+        "terms:added,adr-084,adr-088,front,matter,note"
       ],
       "inferred_status": "done_weak_proof",
       "item": "front matter. A note is added to ADR-084 cross-referencing ADR-088 as the",
@@ -7468,7 +7618,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:adr-095,patterns,proposed,skill,success,synthesis"
+        "terms:adr-095,inverse,patterns,proposed,skill,success,synthesis"
       ],
       "inferred_status": "proposed",
       "item": "ADR-095 (Proposed): skill synthesis from success patterns \u2014 the inverse",
@@ -7481,7 +7631,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:active,auditing,pattern,proposed,second"
+        "terms:active,adr-096,auditing,pattern,proposed,review-agent,second"
       ],
       "inferred_status": "proposed",
       "item": "ADR-096 (Proposed): review-agent pattern \u2014 active auditing by a second",
@@ -7673,16 +7823,17 @@
       "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:skills/",
         "terms:added,after,date,install,skill,skills"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "at the 2026-03-21 install date. Any skill added to `skills/` after that date \u2014 110 skills \u2014 has",
       "kind": "prose",
       "line": 43,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
     },
     {
@@ -7725,16 +7876,17 @@
       "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:skills/",
         "terms:added,after,immediately,runs,self-install,skill,skills,usable"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "skill added to `skills/` should be usable immediately after `self-install.sh` runs, without",
       "kind": "prose",
       "line": 95,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
     },
     {
@@ -7936,7 +8088,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:actively,audits,implemented,output,review,sub-agent"
+        "terms:actively,adr-096,audits,implemented,output,review,sub-agent"
       ],
       "inferred_status": "done_weak_proof",
       "item": "ADR-096 (if implemented): a review agent that actively audits sub-agent output",
@@ -7959,16 +8111,16 @@
       "path": "docs/adrs/ADR-095-skill-synthesis-success-patterns.md"
     },
     {
-      "confidence": 0.9,
-      "declared_status": "planned",
+      "confidence": 0.62,
+      "declared_status": "done",
       "evidence": [
-        "terms:future,implementation,separate,sprint"
+        "weak_terms:accepted"
       ],
-      "inferred_status": "planned",
-      "item": "**Implementation sprint**: NOT this sprint \u2014 implementation is a separate future sprint.",
+      "inferred_status": "done_weak_proof",
+      "item": "**Status**: Accepted",
       "kind": "prose",
-      "line": 7,
-      "next_action": "keep planned or add implementation proof when complete",
+      "line": 3,
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-096-review-agent-pattern.md"
     },
     {
@@ -7988,13 +8140,79 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:block,done,sync,until"
+        "terms:after,done,fires,never,parent,reports,review,task"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "it be sync (block until done)?",
+      "item": "Review fires AFTER the parent agent reports done. The parent task is never",
       "kind": "prose",
-      "line": 135,
+      "line": 69,
       "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-096-review-agent-pattern.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:lib/review_agent.py",
+        "terms:enforced,implemented,review_agent,select_reviewer_model"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `lib/review_agent.py::select_reviewer_model` and enforced in",
+      "kind": "prose",
+      "line": 94,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-096-review-agent-pattern.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:async,block,cost,document,done,latency,review,sync"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "1. **Sync or async?** v1: sync (block until review done, document latency cost).",
+      "kind": "prose",
+      "line": 142,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-096-review-agent-pattern.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:async,complex,design,nothing,pending,shipping,something,useful"
+      ],
+      "inferred_status": "planned",
+      "item": "something useful now > shipping nothing pending a complex async design.",
+      "kind": "prose",
+      "line": 144,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-096-review-agent-pattern.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:follow-up,future,quality"
+      ],
+      "inferred_status": "planned",
+      "item": "quality is a future follow-up.",
+      "kind": "prose",
+      "line": 202,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-096-review-agent-pattern.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:async,background,cognitive-os,dispatch,json,runtime"
+      ],
+      "inferred_status": "planned",
+      "item": "v2 async: background dispatch + `.cognitive-os/runtime/review-pending-*.json`",
+      "kind": "bullet",
+      "line": 208,
+      "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/adrs/ADR-096-review-agent-pattern.md"
     },
     {
@@ -8006,7 +8224,7 @@
       "inferred_status": "done_weak_proof",
       "item": "ADR-090 (Accepted): detects and queues *failing skills* from metric data.",
       "kind": "bullet",
-      "line": 206,
+      "line": 231,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-096-review-agent-pattern.md"
     },
@@ -8019,8 +8237,34 @@
       "inferred_status": "proposed",
       "item": "ADR-095 (Proposed): synthesizes *new skills* from success patterns.",
       "kind": "bullet",
-      "line": 208,
+      "line": 233,
       "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/adrs/ADR-096-review-agent-pattern.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:accepted,adr-097,findings,lifecycle,reference,review"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "ADR-097 (Accepted): task-tracker lifecycle. Review findings reference",
+      "kind": "bullet",
+      "line": 237,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-096-review-agent-pattern.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:accepted,adr-099,files,pre-agent,snapshot,survive,untracked"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "ADR-099 (Accepted): pre-agent snapshot fix. Untracked files now survive",
+      "kind": "bullet",
+      "line": 239,
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-096-review-agent-pattern.md"
     },
     {
@@ -8219,6 +8463,97 @@
       "line": 191,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-098-multi-agent-file-coordination.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Status**: Accepted",
+      "kind": "prose",
+      "line": 5,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:accumulate,bounded,busy,copies,disk,files,frequent,grow"
+      ],
+      "inferred_status": "proposed",
+      "item": "**Disk usage**: snapshot copies accumulate until pruned. On a busy system with large untracked files and frequent agent launches, this could grow. Bounded by:",
+      "kind": "bullet",
+      "line": 105,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:future,improvement,repo,snapshot"
+      ],
+      "inferred_status": "planned",
+      "item": "Future improvement: size-cap per snapshot or per repo",
+      "kind": "bullet",
+      "line": 108,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:cron,daily,hook,periodic,registered,sessionend"
+      ],
+      "inferred_status": "proposed",
+      "item": "`cleanup_snapshots.sh` could be registered as a periodic hook (SessionEnd or daily cron).",
+      "kind": "bullet",
+      "line": 112,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Status**: Accepted",
+      "kind": "prose",
+      "line": 5,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-100-resource-governed-test-execution.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:accepted,attempt,first,implemented,landed,verified"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Accepted. Implemented and verified 2026-05-01. The first attempt landed in",
+      "kind": "prose",
+      "line": 14,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-100-resource-governed-test-execution.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:adaptive,adr-068,adr-072,after,lane,shipped,taxonomy,three"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "After ADR-068 (adaptive workers) and ADR-072 (lane taxonomy) shipped, three",
+      "kind": "prose",
+      "line": 21,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-100-resource-governed-test-execution.md"
     },
     {
       "confidence": 0.9,
@@ -8562,7 +8897,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:executed,phases,remaining,sessions"
+        "terms:april,executed,phases,remaining,sessions"
       ],
       "inferred_status": "planned",
       "item": "**Status:** Sessions 1-2 executed (April 13-16); 4 phases remaining",
@@ -8744,7 +9079,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:listing,pending,plans,scope"
+        "terms:april,listing,pending,plans,scope"
       ],
       "inferred_status": "planned",
       "item": "**Scope:** Meta-plan listing all pending plans as of April 2026",
@@ -8835,6 +9170,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
+        "path:.cognitive-os/plans/",
         "terms:cognitive-os,decision,pending,plans,root"
       ],
       "inferred_status": "planned",
@@ -8861,7 +9197,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:auto-trigger,context7,loading,remaining,tuning"
+        "terms:auto-trigger,context7,loading,remaining,scope-aware,tuning"
       ],
       "inferred_status": "planned",
       "item": "**Remaining:** Context7 auto-trigger tuning, scope-aware loading",
@@ -9239,7 +9575,7 @@
       "declared_status": "planned",
       "evidence": [
         "path:docs/architecture/FROZEN-BACKLOG.md",
-        "terms:architecture,backlog,frozen"
+        "terms:architecture,backlog,frozen,frozen-backlog"
       ],
       "inferred_status": "planned",
       "item": "Frozen backlog: `docs/architecture/FROZEN-BACKLOG.md`",
@@ -9291,7 +9627,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:added,audit,behavioral,claim,later,many,reveals,sprint"
+        "terms:added,april,audit,behavioral,claim,later,many,maturation"
       ],
       "inferred_status": "done_weak_proof",
       "item": "**April 8-9:** \"Maturation sprint\" v0.4.0-v0.7.0. 472 behavioral tests claim to be added. Later audit reveals many are structural.",
@@ -9304,7 +9640,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:adding,advisor,breaker,circuit,cold,consequence,dispatch-gate,doubles"
+        "terms:adding,advisor,april,breaker,circuit,cold,consequence,dispatch-gate"
       ],
       "inferred_status": "done_weak_proof",
       "item": "**April 9:** dispatch-gate.sh doubles from 86 lines to 270 in two hours. Circuit breaker + consequence engine + model advisor wired independently, each adding its own Python cold start.",
@@ -9434,7 +9770,8 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:cognitive-os,living,plans,remaining,roadmaps,tracker,work"
+        "path:.cognitive-os/plans/roadmaps/stabilization-roadmap.md",
+        "terms:cognitive-os,living,plans,remaining,roadmaps,stabilization-roadmap,tracker,work"
       ],
       "inferred_status": "planned",
       "item": "`.cognitive-os/plans/roadmaps/stabilization-roadmap.md`: living tracker of remaining work",
@@ -9448,7 +9785,7 @@
       "declared_status": "planned",
       "evidence": [
         "path:docs/architecture/FROZEN-BACKLOG.md",
-        "terms:architecture,consolidated,deferred,plans,work"
+        "terms:architecture,consolidated,deferred,frozen-backlog,plans,work"
       ],
       "inferred_status": "planned",
       "item": "`docs/architecture/FROZEN-BACKLOG.md`: consolidated deferred work (30+ plans)",
@@ -9487,7 +9824,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:backlog,carefully,check,items,monthly,review"
+        "terms:backlog,carefully,check,frozen-backlog,items,monthly,review"
       ],
       "inferred_status": "planned",
       "item": "6. **Monthly backlog review**: check `FROZEN-BACKLOG.md`, unfreeze items carefully",
@@ -9500,7 +9837,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:across,captures,different,dimension,documents,each,four,living"
+        "terms:across,captures,different,dimension,documents,each,four,frozen-backlog"
       ],
       "inferred_status": "planned",
       "item": "The post-mortem joins `LESSONS-LEARNED.md`, `FROZEN-BACKLOG.md`, and `stabilization-roadmap.md` as the four living documents that preserve institutional memory across sessions. Each captures a different dimension:",
@@ -9539,7 +9876,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:current,remaining,work"
+        "terms:current,remaining,stabilization-roadmap,work"
       ],
       "inferred_status": "planned",
       "item": "`../stabilization-roadmap.md` \u2014 current status and remaining work",
@@ -9552,7 +9889,8 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:deferred,order,plans,resume"
+        "path:docs/architecture/FROZEN-BACKLOG.md",
+        "terms:deferred,frozen-backlog,order,plans,resume"
       ],
       "inferred_status": "planned",
       "item": "`../FROZEN-BACKLOG.md` \u2014 30+ deferred plans, resume order",
@@ -9683,7 +10021,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:core,source,surface,truth"
+        "terms:core,deliverable,frozen-backlog,source,surface,truth"
       ],
       "inferred_status": "planned",
       "item": "> **Status:** FROZEN-BACKLOG P1 MVP deliverable. Source of truth for v1.0 CORE surface.",
@@ -9696,7 +10034,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:adr-002,collapse,debt,owner,prep,profile,wave"
+        "terms:adr-002,collapse,debt,frozen-backlog,owner,prep,profile,wave"
       ],
       "inferred_status": "planned",
       "item": "> **Owner:** v1.0-prep wave. **Predecessors:** FROZEN-BACKLOG \u00a7P1, debt row D43, ADR-002 (profile collapse).",
@@ -9709,7 +10047,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:agentic,aggregate,bloated,confirms,core,extensions,extraction,primitives"
+        "terms:agentic,aggregate,bloated,confirms,core,extensions,extraction,frozen-backlog"
       ],
       "inferred_status": "planned",
       "item": "**Aggregate result:** 126 CORE agentic primitives of 581 total = **22% core, 78% extensions/remove**. This confirms the FROZEN-BACKLOG thesis that the core is bloated today and that the extraction is structurally sound.",
@@ -9917,7 +10255,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:addresses,cross-session,future,missed,sequences,tracking,until"
+        "terms:addresses,cross-batch,cross-session,future,missed,sequences,tracking,until"
       ],
       "inferred_status": "planned",
       "item": "Cross-session sequences and cross-batch sequences are missed until a future ADR addresses multi-flush tracking.",
@@ -10073,7 +10411,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:days,detectors,exploration,facts,invalidated,last,ordering,original"
+        "terms:auto-generator,days,detectors,exploration,facts,invalidated,last,ordering"
       ],
       "inferred_status": "planned",
       "item": "Phase 5 was originally scoped as \"auto-generator + remaining providers + last 3 detectors\" over ~8 days. Planning-phase exploration surfaced two facts that invalidated the original ordering:",
@@ -10871,8 +11209,7 @@
       "declared_status": "proposed",
       "evidence": [
         "path:hooks/auto-refine.sh",
-        "path:docs/piter-framework.md",
-        "terms:auto-refine,hooks,implement,option,spec"
+        "terms:auto-refine,hooks,implement,option,piter-framework,spec"
       ],
       "inferred_status": "proposed",
       "item": "**Option B**: Implement `hooks/auto-refine.sh` per `docs/piter-framework.md:80` spec",
@@ -10947,17 +11284,16 @@
       "path": "docs/architecture/functional-audit/scorecard-hooks.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:count,hooks,intent,intentionally,project-gotchas,rules,stale,wired",
-        "missing_path:rules/project-gotchas.md"
+        "terms:count,hooks,intent,intentionally,project-gotchas,rules,stale,wired"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_weak_proof",
       "item": "`rules/project-gotchas.md` \u2014 \"48/93 hooks intentionally not wired\" (stale count; intent",
       "kind": "bullet",
       "line": 355,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture/functional-audit/scorecard-hooks.md"
     },
     {
@@ -10975,16 +11311,17 @@
       "path": "docs/architecture/functional-audit/scorecard-install-scripts.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:skills/",
         "terms:added,keeps,robust,skills,tests,when"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "This keeps the tests robust when new skills are added to `skills/`.",
       "kind": "prose",
       "line": 72,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/architecture/functional-audit/scorecard-install-scripts.md"
     },
     {
@@ -11055,16 +11392,17 @@
       "path": "docs/architecture/functional-audit/scorecard-packages-squads-agents.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:.cognitive-os/agents/",
         "terms:cognitive-os,count,dispatcher,guides,health,human-readable,none,reports"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "**F9 (no dispatcher)**: None of the 3 agents are runtime-wired. They are human-readable guides, symlinked into `.cognitive-os/agents/`, surfaced in health reports by count.",
       "kind": "bullet",
       "line": 120,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/architecture/functional-audit/scorecard-packages-squads-agents.md"
     },
     {
@@ -11120,17 +11458,16 @@
       "path": "docs/architecture/functional-audit/scorecard-rules.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:bash,exists,hook,hooks,manually,markdown,wired",
-        "missing_path:hooks/X.sh"
+        "terms:bash,exists,hook,hooks,manually,markdown,wired"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_weak_proof",
       "item": "markdown to say \"hook exists but not wired \u2014 run manually via `bash hooks/X.sh`\".",
       "kind": "prose",
       "line": 199,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture/functional-audit/scorecard-rules.md"
     },
     {
@@ -11322,7 +11659,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:data,future,historic,keeps,retention,rotation"
+        "terms:data,future,historic,keeps,retention,rotation,sweeper"
       ],
       "inferred_status": "planned",
       "item": "**Retention**: rotation keeps all historic data. A future sweeper can",
@@ -11462,17 +11799,16 @@
       "path": "docs/architecture/functional-audit/ux6-idempotent-update.md"
     },
     {
-      "confidence": 0.86,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "path:scripts/cos-update.sh",
         "terms:bash,cos-update,exits,scripts"
       ],
-      "inferred_status": "done_with_proof",
+      "inferred_status": "done_weak_proof",
       "item": "`bash -n scripts/cos-update.sh` exits 0",
       "kind": "checkbox",
       "line": 171,
-      "next_action": "keep marked done; maintain proof links",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture/functional-audit/ux6-idempotent-update.md"
     },
     {
@@ -11581,18 +11917,17 @@
       "path": "docs/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:added,claude,cognitive-os,destination,only,second,skills",
-        "missing_path:skills/cos/",
-        "missing_path:skills/cos/"
+        "path:.cognitive-os/skills/cos/",
+        "terms:added,claude,cognitive-os,destination,only,second,skills"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "`.cognitive-os/skills/cos/` only. Added `.claude/skills/cos/` as a second destination so",
       "kind": "prose",
       "line": 11,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md"
     },
     {
@@ -11661,16 +11996,17 @@
       "path": "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:.cognitive-os/",
         "terms:added,after,block,cognitive-os,dedicated,removal,renumbered,stage"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "Added a dedicated removal block after stage 5 (`.cognitive-os/` removal), stages renumbered so",
       "kind": "prose",
       "line": 86,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
     },
     {
@@ -11783,6 +12119,7 @@
       "declared_status": "planned",
       "evidence": [
         "path:scripts/uninstall.sh",
+        "path:.cognitive-os/skills/cos/",
         "terms:because,claude,cognitive-os,cos-init,does,exist,fixed,line"
       ],
       "inferred_status": "planned",
@@ -12019,7 +12356,7 @@
       "declared_status": "planned",
       "evidence": [
         "path:lib/record_completion.py",
-        "terms:mode,pending,phase,record_completion"
+        "terms:mode,pending,phase,record_completion,send_phoenix_trace"
       ],
       "inferred_status": "planned",
       "item": "in `lib/record_completion.py::_send_phoenix_trace` (Phase 2 pending). Mode",
@@ -12294,7 +12631,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:completed,crash,last,on-disk,phase,pipeline,resume,state"
+        "terms:completed,crash,last,on-disk,phase,pipeline,resumability,resume"
       ],
       "inferred_status": "done_weak_proof",
       "item": "**Pipeline resumability**: SDD pipeline crash \u2192 resume from last completed phase via on-disk state",
@@ -12504,7 +12841,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:canonical,flows,hooks,templates,they,unlike"
+        "terms:canonical,centered,flows,hooks,templates,they,unlike"
       ],
       "inferred_status": "planned",
       "item": "flows. Unlike hooks and templates, they are not yet centered on a canonical",
@@ -12517,6 +12854,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
+        "path:.cognitive-os/",
         "terms:become,clearer,cognitive-os,source,truth"
       ],
       "inferred_status": "proposed",
@@ -12582,6 +12920,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
+        "path:.cognitive-os/skills/cos/",
         "terms:already,behave,cognitive-os,does,exists,fully,skills"
       ],
       "inferred_status": "planned",
@@ -12804,7 +13143,7 @@
       "declared_status": "done",
       "evidence": [
         "path:rules/closed-loop-prompts.md",
-        "terms:closed-loop-prompts,configuration,examples,lines,matters,must,rule,rules"
+        "terms:closed-loop-prompts,configuration,examples,lines,matters,must,philosophy,rule"
       ],
       "inferred_status": "done_with_proof",
       "item": "**Symptom:** `rules/closed-loop-prompts.md` is 270 lines. It mixes the rule (what agents must do), documentation (how the system works), philosophy (why this matters), and configuration examples.",
@@ -12814,17 +13153,16 @@
       "path": "docs/architecture-principles.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:behavioral,closed-loop-prompts,constraint,itself,lines,moves,plus,reference",
-        "missing_path:docs/closed-loop-prompts.md"
+        "terms:behavioral,closed-loop-prompts,constraint,itself,lines,moves,plus,reference"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_weak_proof",
       "item": "**Fix:** The rule itself should be ~60 lines: the behavioral constraint plus severity tiers. The rest moves to `docs/closed-loop-prompts.md` as reference documentation.",
       "kind": "prose",
       "line": 276,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture-principles.md"
     },
     {
@@ -12897,10 +13235,10 @@
       "declared_status": "done",
       "evidence": [
         "path:rules/closed-loop-prompts.md",
-        "terms:closed-loop-prompts,cognitive-os,file,halt-and-wait,protocol,rules,section"
+        "terms:closed-loop-prompts,file,halt-and-wait,protocol,rules,section"
       ],
       "inferred_status": "done_with_proof",
-      "item": "**File**: `.cognitive-os/rules/closed-loop-prompts.md` (HALT-and-WAIT Protocol section)",
+      "item": "**File**: `rules/closed-loop-prompts.md` (HALT-and-WAIT Protocol section)",
       "kind": "prose",
       "line": 10,
       "next_action": "keep marked done; maintain proof links",
@@ -12975,6 +13313,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
+        "path:.cognitive-os/",
         "terms:cognitive-os,decision,discovered,document,evaluate,filtering,future,here"
       ],
       "inferred_status": "planned",
@@ -13206,17 +13545,16 @@
       "path": "docs/business/conversation-reality-audit-2026-04-30.md"
     },
     {
-      "confidence": 0.86,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "path:docs/ADRs",
         "terms:adrs,config,count,families,hooks,memory,metrics,primitive"
       ],
-      "inferred_status": "done_with_proof",
+      "inferred_status": "done_weak_proof",
       "item": "Count primitive families: hooks, rules, skills, agents, memory, MCP/tools, config/projection, metrics, tests, docs/ADRs.",
       "kind": "checkbox",
       "line": 273,
-      "next_action": "keep marked done; maintain proof links",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/conversation-reality-audit-2026-04-30.md"
     },
     {
@@ -13640,7 +13978,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:behaviors,identify,versus,which"
+        "terms:behaviors,harness-native,identify,versus,which"
       ],
       "inferred_status": "planned",
       "item": "Identify which agent behaviors are harness-native versus COS-defined.",
@@ -14134,7 +14472,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:classify,dead,diagnostic-only,metrics"
+        "terms:classify,dead,decision-grade,diagnostic-only,metrics"
       ],
       "inferred_status": "planned",
       "item": "Classify metrics as decision-grade, diagnostic-only, dead, or harmful-noise.",
@@ -14369,7 +14707,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:comparison,define,deletion,discipline,discovery,governance,latency,memory"
+        "terms:axes,comparison,define,deletion,discipline,discovery,governance,latency"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Define comparison axes: governance, memory, skill discovery, setup, latency, portability, proof quality, deletion discipline.",
@@ -14526,6 +14864,7 @@
       "declared_status": "done",
       "evidence": [
         "path:docs/reports/primitive-gap-history.jsonl",
+        "path:.cognitive-os/metrics/primitive-gap-snapshot.jsonl",
         "terms:append,cognitive-os,jsonl,local,metrics,periodic,primitive-gap-history,primitive-gap-snapshot"
       ],
       "inferred_status": "done_with_proof",
@@ -15037,17 +15376,16 @@
       "path": "docs/business/conversation-reality-audit-2026-04-30.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:consume,each,hooks,maintainers,os-only,primitive,primitive-usage-map,rules",
-        "missing_path:skills/hooks/rules/tests/docs"
+        "terms:consume,each,hooks,maintainers,os-only,primitive,primitive-usage-map,rules"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_weak_proof",
       "item": "Add an OS-only `/primitive-usage-map` skill so maintainers can ask which skills/hooks/rules/tests/docs consume each primitive.",
       "kind": "checkbox",
       "line": 485,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/conversation-reality-audit-2026-04-30.md"
     },
     {
@@ -15080,7 +15418,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:consumer,decide,explicit,need,ownership,scripts,skill,whether"
+        "terms:archival,consumer,decide,explicit,need,ownership,scripts,skill"
       ],
       "inferred_status": "planned",
       "item": "Decide whether scripts with no skill consumer need a new skill, explicit internal-only ownership, or archival.",
@@ -15652,7 +15990,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:automated,pass,quality,skills,tests"
+        "terms:automated,certification,pass,quality,skills,tests"
       ],
       "inferred_status": "planned",
       "item": "Quality certification (marketplace skills pass automated tests)",
@@ -15848,7 +16186,6 @@
       "declared_status": "done",
       "evidence": [
         "path:manifests/kernel-contract.yaml",
-        "path:manifests/kernel-contract.yaml",
         "terms:contract,exists,kernel,kernel-contract,machine-readable,manifests,yaml"
       ],
       "inferred_status": "done_with_proof",
@@ -15859,16 +16196,17 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:docs/kernel-contract.md",
         "terms:contract,documented,kernel,kernel-contract,scope"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "Kernel scope is documented in [Kernel Contract](../kernel-contract.md).",
       "kind": "checkbox",
       "line": 22,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
@@ -15885,44 +16223,45 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:architecture,documented,portability,rules,skills",
-        "missing_path:skills/rules"
+        "path:docs/architecture/skills-rules-portability-gap.md",
+        "terms:architecture,documented,portability,rules,skills,skills-rules-portability-gap"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "The skills/rules portability gap is documented in [Skills and Rules Portability Gap](../architecture/skills-rules-portability-gap.md).",
       "kind": "checkbox",
       "line": 24,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:analysis,architecture,claude,documented,moving,risk,rules,skills",
-        "missing_path:skills/rules"
+        "path:docs/architecture/skills-rules-canonicalization-risk-analysis.md",
+        "terms:analysis,architecture,canonicalization,claude,documented,moving,risk,rules"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "The canonicalization risk of moving skills/rules out of `.claude/` is documented in [Skills and Rules Canonicalization Risk Analysis](../architecture/skills-rules-canonicalization-risk-analysis.md).",
       "kind": "checkbox",
       "line": 25,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:architecture,exists,migration,plan,rules,skills,step-by-step"
+        "path:.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md",
+        "terms:architecture,canonicalization,cognitive-os,exists,migration,plan,plans,rules"
       ],
-      "inferred_status": "done_weak_proof",
-      "item": "A step-by-step migration plan exists in [Skills and Rules Canonicalization Workplan](../architecture/skills-rules-canonicalization-workplan.md).",
+      "inferred_status": "done_with_proof",
+      "item": "A step-by-step migration plan exists in [Skills and Rules Canonicalization Workplan](../../.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md).",
       "kind": "checkbox",
       "line": 26,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
@@ -15939,16 +16278,17 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:docs/product-zones.md",
         "terms:compatibility,core,documented,experimental,extension,product,product-zones,taxonomy"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "Core versus compatibility versus extension versus experimental taxonomy is documented in [Product Zones](../product-zones.md).",
       "kind": "checkbox",
       "line": 28,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
@@ -15969,6 +16309,7 @@
       "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:docs/architecture/runtime-hardcoding-discipline.md",
         "path:tests/contracts/test_runtime_hardcoding.py",
         "terms:architecture,avoid,central,contracts,default,discipline,hardcoding,non-core"
       ],
@@ -16279,23 +16620,24 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:claims,explicit,manual-tests,paths,pitch,product,proof,proof-paths",
-        "missing_path:tests/proof-paths.md"
+        "path:docs/manual-tests/proof-paths.md",
+        "terms:claims,explicit,manual-tests,paths,pitch,product,proof,proof-paths"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "Product claims in README and pitch map to explicit verification paths through [Product Proof Paths](../manual-tests/proof-paths.md).",
       "kind": "checkbox",
       "line": 60,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
       "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:docs/architecture/behavioral-test-contracts.md",
         "path:tests/contracts/test_canonical_projection_behavior.py",
         "terms:architecture,behavioral,behavioral-test-contracts,being,claims,contracts,converted,product"
       ],
@@ -16310,6 +16652,7 @@
       "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:docs/testing.md",
         "path:scripts/pytest-with-summary.sh",
         "path:scripts/test_run_inventory.py",
         "terms:actionable,full-suite,guide,leave,persistent,pytest-with-summary,repair,runs"
@@ -16322,23 +16665,24 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:.cognitive-os/test-resource-policy.yaml",
         "terms:alignment,audit,cognitive-os,coverage,dry-run,first,lane,manifest"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "Test resource policy has a first manifest in `.cognitive-os/test-resource-policy.yaml`, with dry-run visibility and audit coverage for lane/resource alignment.",
       "kind": "checkbox",
       "line": 63,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:cos-test,cost-bearing,enforces,explicit,gates,lanes,opt-in,policy"
+        "terms:cos-test,cost-bearing,docker-required,enforces,explicit,gates,lanes,opt-in"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Test resource policy enforces timeout and explicit opt-in gates for cost-bearing and docker-required lanes in `cos-test`.",
@@ -16401,17 +16745,17 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:first-run,first-run-onboarding,installation,manual-tests,onboarding,proof,through",
-        "missing_path:tests/first-run-onboarding.md"
+        "path:docs/manual-tests/first-run-onboarding.md",
+        "terms:first-run,first-run-onboarding,installation,manual-tests,onboarding,proof,through"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "First-run installation is one-pass and low-friction through [First-Run Onboarding Proof](../manual-tests/first-run-onboarding.md).",
       "kind": "checkbox",
       "line": 76,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
@@ -16471,7 +16815,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:active,back,falling,harness,instead,paths,preserve,projection"
+        "terms:active,back,claude-first,falling,harness,instead,paths,preserve"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Upgrade paths preserve the active harness instead of silently falling back to Claude-first settings projection.",
@@ -16642,24 +16986,23 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:architecture,baseline,deep,first-run,first-run-onboarding,manual-tests,onboarding,proof",
-        "missing_path:tests/first-run-onboarding.md"
+        "path:docs/manual-tests/first-run-onboarding.md",
+        "terms:architecture,baseline,deep,first-run,first-run-onboarding,manual-tests,onboarding,proof"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "A non-expert can reach a working baseline without reading deep architecture docs through [First-Run Onboarding Proof](../manual-tests/first-run-onboarding.md).",
       "kind": "checkbox",
       "line": 101,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
       "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "path:manifests/product-zones.yaml",
         "path:manifests/product-zones.yaml",
         "terms:classified,compatibility,core,experimental,explicitly,extensions,manifests,product-zones"
       ],
@@ -16671,16 +17014,19 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:README.md",
+        "path:docs/README.md",
+        "path:docs/product-zones.md",
         "terms:index,major,non-core,optional,present,product,product-zones,readme"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "Major docs present non-core systems as optional or secondary through [README](../../README.md), [Docs Index](../README.md), and [Product Zones](../product-zones.md).",
       "kind": "checkbox",
       "line": 106,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
@@ -16736,56 +17082,59 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:docs/architecture/tooling-stack-rationalization.md",
         "terms:architecture,decision,default,evaluated,external,frame,infrastructure,lightweight"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "External infrastructure is evaluated through a lightweight/default versus optional/reference decision frame in [Tooling Stack Rationalization](../architecture/tooling-stack-rationalization.md).",
       "kind": "checkbox",
       "line": 111,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:docs/architecture/infrastructure-service-catalog.md",
         "terms:architecture,catalog,cataloged,cloud,docker,infrastructure,infrastructure-service-catalog,python"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "Docker, Python, cloud, and reference services are cataloged in [Infrastructure Service Catalog](../architecture/infrastructure-service-catalog.md).",
       "kind": "checkbox",
       "line": 112,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:boundaries,checks,connected,connected-system,dependency,documented,including,local",
-        "missing_path:tests/local-connected-systems-validation.md"
+        "path:docs/manual-tests/local-connected-systems-validation.md",
+        "terms:boundaries,checks,connected,connected-system,dependency,documented,including,local"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "Local connected-system validation is documented in [Local Connected Systems Validation](../manual-tests/local-connected-systems-validation.md), including dependency manifest checks, setup profiles, MCP wiring, optional-service boundaries, and persistent test s",
       "kind": "checkbox",
       "line": 113,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:architecture,backend,backends,decision,evaluated,evaluation,observability,through"
+        "path:docs/architecture/observability-backend-evaluation-2026-04-24.md",
+        "terms:architecture,backend,backends,decision,evaluated,evaluation,observability,observability-backend-evaluation-2026-04-24"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "Observability backends are evaluated through a backend-neutral event-contract decision in [Observability Backend Evaluation](../architecture/observability-backend-evaluation-2026-04-24.md).",
       "kind": "checkbox",
       "line": 114,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
@@ -16815,103 +17164,101 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:docs/manual-tests/five-minute-demo.md",
         "path:scripts/demo-portability-proof.sh",
-        "terms:canonical,demo,demo-portability-proof,harness,manual-tests,provider,rewrites,scripts",
-        "missing_path:tests/five-minute-demo.md"
+        "terms:canonical,demo,demo-portability-proof,harness,manual-tests,provider,rewrites,scripts"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "A canonical demo shows provider and harness switching without system rewrites through [Five-Minute Demo](../manual-tests/five-minute-demo.md) and `scripts/demo-portability-proof.sh`.",
       "kind": "checkbox",
       "line": 120,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:action,canonical,demo,gates,manual-tests,quality,real,shows",
-        "missing_path:tests/five-minute-demo.md"
+        "path:docs/manual-tests/five-minute-demo.md",
+        "terms:action,canonical,demo,gates,manual-tests,quality,real,shows"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "A canonical demo shows real quality gates in action through [Five-Minute Demo](../manual-tests/five-minute-demo.md).",
       "kind": "checkbox",
       "line": 121,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:becoming,canonical,core,demo,manual-tests,minutes,shows,through",
-        "missing_path:tests/five-minute-demo.md"
+        "path:docs/manual-tests/five-minute-demo.md",
+        "terms:becoming,canonical,core,demo,manual-tests,minutes,shows,through"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "A canonical demo shows the core becoming usable in minutes through [Five-Minute Demo](../manual-tests/five-minute-demo.md).",
       "kind": "checkbox",
       "line": 122,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:adopt,contains,easy,manual-tests,path,paths,product,proof",
-        "missing_path:tests/proof-paths.md"
+        "path:docs/manual-tests/proof-paths.md",
+        "terms:adopt,contains,easy,manual-tests,path,paths,product,proof"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "The repo contains a short proof path for \u201ceasy to adopt, serious to trust\u201d through [Product Proof Paths](../manual-tests/proof-paths.md).",
       "kind": "checkbox",
       "line": 123,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:churn,contains,ecosystem,manual-tests,path,paths,product,proof",
-        "missing_path:tests/proof-paths.md"
+        "path:docs/manual-tests/proof-paths.md",
+        "terms:churn,contains,ecosystem,manual-tests,path,paths,product,proof"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "The repo contains a short proof path for resilience under ecosystem churn through [Product Proof Paths](../manual-tests/proof-paths.md).",
       "kind": "checkbox",
       "line": 124,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:missing,readme,reference",
-        "missing_path:docs/benchmark-results.md"
+        "terms:benchmark-results,missing,readme,reference"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_weak_proof",
       "item": "Fix `README.md` reference to missing `docs/benchmark-results.md`.",
       "kind": "checkbox",
       "line": 128,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
         "path:scripts/run-all-tests.sh",
-        "terms:contributing,references,run-all-tests,scripts,tests",
-        "missing_path:tests/run-all-tests.sh"
+        "terms:contributing,references,run-all-tests,scripts,tests"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "Fix `CONTRIBUTING.md` references from `tests/run-all-tests.sh` to `scripts/run-all-tests.sh`.",
       "kind": "checkbox",
       "line": 129,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
@@ -16919,7 +17266,7 @@
       "declared_status": "done",
       "evidence": [
         "path:.github/workflows/ci.yml",
-        "terms:around,core,github,product,real,workflows"
+        "terms:around,core,github,product,real,redesign,workflows"
       ],
       "inferred_status": "done_with_proof",
       "item": "Redesign `.github/workflows/ci.yml` around the real product core.",
@@ -16956,23 +17303,24 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:canonical,demo,manual-tests,path,prepare,product,through",
-        "missing_path:tests/five-minute-demo.md"
+        "path:docs/manual-tests/five-minute-demo.md",
+        "terms:canonical,demo,manual-tests,path,prepare,product,through"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_with_proof",
       "item": "Prepare a canonical five-minute product demo path through [Five-Minute Demo](../manual-tests/five-minute-demo.md).",
       "kind": "checkbox",
       "line": 133,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
+        "path:docs/reports/full-suite-validation-2026-04-23.md",
         "terms:current,evidence,failures,full,python,reduce,reports,suite"
       ],
       "inferred_status": "planned",
@@ -17025,7 +17373,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:capabilities,deeper,first,grow,needing,user,without"
+        "terms:capabilities,deeper,expertise,first,grow,needing,user,without"
       ],
       "inferred_status": "done_weak_proof",
       "item": "A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.",
@@ -17035,29 +17383,32 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:adr-027,adrs,architecture,cluster,clustered,direction,documented,headless"
+        "path:docs/architecture/adrs/027-headless-clustered-runtime-direction.md",
+        "path:.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md",
+        "terms:adr-027,adrs,architecture,cluster,clustered,cognitive-os,direction,documented"
       ],
-      "inferred_status": "done_weak_proof",
-      "item": "Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-027](../architecture/adrs/027-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../architecture/plans/headless-clustered-runtime-",
+      "inferred_status": "done_with_proof",
+      "item": "Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-027](../architecture/adrs/027-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../../.cognitive-os/plans/architecture/headless-c",
       "kind": "checkbox",
       "line": 143,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:across,architecture,benchmark,claude,codex,comparison,competitive,container"
+        "path:.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md",
+        "terms:across,architecture,benchmark,claude,codex,cognitive-os,comparison,competitive"
       ],
-      "inferred_status": "done_weak_proof",
-      "item": "Competitive/runtime benchmark direction is documented in [Runtime Comparison Benchmark Plan](../architecture/plans/runtime-comparison-benchmark-plan.md), covering vanilla Claude/Codex, COS-enabled harnesses, and prior-art tools across workstation, VM, containe",
+      "inferred_status": "done_with_proof",
+      "item": "Competitive/runtime benchmark direction is documented in [Runtime Comparison Benchmark Plan](../../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md), covering vanilla Claude/Codex, COS-enabled harnesses, and prior-art tools across workstat",
       "kind": "checkbox",
       "line": 144,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
@@ -17074,16 +17425,17 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
-        "terms:architecture,behavior,covered,detect,documented,draft,execution,first"
+        "path:.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md",
+        "terms:architecture,behavior,cognitive-os,covered,detect,documented,draft,execution"
       ],
-      "inferred_status": "done_weak_proof",
-      "item": "Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../architecture/plans/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice is covered by unit and behavior tests.",
+      "inferred_status": "done_with_proof",
+      "item": "Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../../.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice is covered by unit and behavior tests.",
       "kind": "checkbox",
       "line": 147,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
@@ -17193,7 +17545,9 @@
     {
       "confidence": 0.9,
       "declared_status": "planned",
-      "evidence": [],
+      "evidence": [
+        "weak_terms:openclaw-remaining-patterns"
+      ],
       "inferred_status": "planned",
       "item": "> Documento companero: [openclaw-remaining-patterns.md](openclaw-remaining-patterns.md)",
       "kind": "prose",
@@ -18167,7 +18521,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:hours,scheduling,support,timezone-aware,windows"
+        "terms:hours,market,scheduling,support,timezone-aware,windows"
       ],
       "inferred_status": "planned",
       "item": "Support timezone-aware scheduling (market hours, settlement windows)",
@@ -18752,7 +19106,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:days,guided,onboarding,pattern,setup"
+        "terms:days,guided,onboarding,pattern,setup,wizard"
       ],
       "inferred_status": "planned",
       "item": "**Onboarding Wizard** (Pattern 22) \u2014 Guided CLI setup. 4-5 days.",
@@ -18817,7 +19171,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:code,cognitive-os,core,project-specific,separate"
+        "terms:code,cognitive-os,core,open-source-design,project-specific,separate"
       ],
       "inferred_status": "proposed",
       "item": "Separate the cognitive-os core from project-specific code (see open-source-design.md)",
@@ -18830,7 +19184,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "weak_terms:repository,structure"
+        "terms:open-source-design,repository,structure"
       ],
       "inferred_status": "proposed",
       "item": "Repository structure per open-source-design.md",
@@ -19025,7 +19379,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:cloud,drop,future,instances,learn,parallel,pressure,price"
+        "terms:cloud,drop,future,instances,learn,market,parallel,pressure"
       ],
       "inferred_status": "planned",
       "item": "**What we can learn**: The price drop from $500 to $20 shows the market pressure. Parallel agent instances in cloud is the future.",
@@ -19116,7 +19470,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:added,pattern,structural,suite,test,tests"
+        "terms:added,pattern,philosophy,structural,suite,test,tests"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Structural tests pattern \u2192 added to COS test suite philosophy",
@@ -19129,7 +19483,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:capability,failure,learn,patterns,track,ultimate,what"
+        "terms:capability,failure,learn,patterns,self-modification,track,ultimate,what"
       ],
       "inferred_status": "proposed",
       "item": "**What we can learn**: Self-modification is the ultimate agent capability. Our Cognitive OS should track its own failure patterns.",
@@ -19858,7 +20212,7 @@
       "declared_status": "proposed",
       "evidence": [
         "path:docs/component-sources.md",
-        "terms:design,influences,openclaw,referenced,research,under"
+        "terms:component-sources,design,influences,openclaw,referenced,research,under"
       ],
       "inferred_status": "proposed",
       "item": "OpenClaw: Referenced in `docs/component-sources.md` under Research and Design Influences",
@@ -19937,7 +20291,7 @@
       "declared_status": "proposed",
       "evidence": [
         "path:docs/integrations/cursor-cloud-agents.md",
-        "terms:cursor,design,integration,integrations"
+        "terms:cursor,cursor-cloud-agents,design,integration,integrations"
       ],
       "inferred_status": "proposed",
       "item": "`docs/integrations/cursor-cloud-agents.md` -- Cursor integration design",
@@ -20249,6 +20603,45 @@
       "path": "docs/implementation-phases.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:below,fixes,hardening,long-term,mitigated,shipped,structural,tracked"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Status**: Mitigated 2026-05-01. Two structural fixes shipped; long-term hardening tracked below.",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/incidents/2026-05-01-session-multi-spawn-hang.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:across,atomic,audit,catches,change,codex,driver,drivers"
+      ],
+      "inferred_status": "planned",
+      "item": "**Atomic write across all settings/hooks projection scripts** \u2014 the audit test `test_no_other_unsafe_mktemp_to_settings_patterns` is the regression guard; if a future change introduces a new unsafe pattern, CI catches it. Codex driver and any future harness dr",
+      "kind": "bullet",
+      "line": 153,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/incidents/2026-05-01-session-multi-spawn-hang.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:addendum,adr-071,design,incident,profile-drift-autoapply,reference"
+      ],
+      "inferred_status": "proposed",
+      "item": "ADR-071 \u00a7F8 (`profile-drift-autoapply.sh` design \u2014 should reference this incident in addendum)",
+      "kind": "bullet",
+      "line": 159,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/incidents/2026-05-01-session-multi-spawn-hang.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -20382,7 +20775,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "weak_terms:user"
+        "weak_terms:complaints,user"
       ],
       "inferred_status": "planned",
       "item": "Fix top 3 user complaints",
@@ -20486,7 +20879,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "weak_terms:community,guide"
+        "terms:community,contributions,guide"
       ],
       "inferred_status": "planned",
       "item": "Community contributions guide",
@@ -20525,7 +20918,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:auto-fix,does,failures,integrated,loop,piter,refinement,reports"
+        "terms:auto-fix,does,failures,integrated,loop,piter,piter-framework,refinement"
       ],
       "inferred_status": "planned",
       "item": "**Gap**: Tests run but are not yet integrated into a PITER refinement loop. Agent reports test failures but does not auto-fix. See `piter-framework.md`.",
@@ -21045,17 +21438,16 @@
       "path": "docs/measurements/cos-adr-namespace-audit-2026-04-30.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:adr-064,body,cursor,does,exist,harness_adapter,implemented,mandates",
-        "missing_path:lib/harness_adapter/cursor.py"
+        "terms:adr-064,body,cursor,does,exist,harness_adapter,implemented,mandates"
       ],
-      "inferred_status": "stale",
+      "inferred_status": "done_weak_proof",
       "item": "ADR-064 body: `\"lib/harness_adapter/cursor.py`) are not yet implemented. The verification suite this ADR mandates... does not exist\"`",
       "kind": "bullet",
       "line": 58,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/measurements/cos-duplication-audit-2026-04-30.md"
     },
     {
@@ -21163,16 +21555,17 @@
       "path": "docs/migration-from/from-hermes.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:.cognitive-os/plans/",
         "terms:cognitive-os,issue,open,plans,progress,track,wired"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "> wired. Track progress in `.cognitive-os/plans/` or open an issue.",
       "kind": "prose",
       "line": 104,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/migration-from/from-hermes.md"
     },
     {
@@ -21659,22 +22052,6 @@
       "path": "docs/patterns-adopted.md"
     },
     {
-      "confidence": 0.82,
-      "declared_status": "done",
-      "evidence": [
-        "path:tests/unit/",
-        "path:tests/behavior/",
-        "terms:added,behavior,directory,lives,parallel,structural,tests,unit",
-        "missing_path:tests/structural/"
-      ],
-      "inferred_status": "stale",
-      "item": "**Where it lives**: Added to `tests/structural/` (new directory, parallel to `tests/unit/` and `tests/behavior/`).",
-      "kind": "prose",
-      "line": 452,
-      "next_action": "update stale path or demote completion claim",
-      "path": "docs/patterns-adopted.md"
-    },
-    {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
@@ -21900,7 +22277,7 @@
       "declared_status": "planned",
       "evidence": [
         "path:docs/architecture/FROZEN-BACKLOG.md",
-        "terms:analysis,architecture,prior"
+        "terms:analysis,architecture,frozen-backlog,prior"
       ],
       "inferred_status": "planned",
       "item": "Prior gap analysis: `docs/architecture/FROZEN-BACKLOG.md`",
@@ -22282,20 +22659,6 @@
       "path": "docs/research-log.md"
     },
     {
-      "confidence": 0.82,
-      "declared_status": "done",
-      "evidence": [
-        "terms:added,directory,structural,tests",
-        "missing_path:tests/structural/"
-      ],
-      "inferred_status": "stale",
-      "item": "3. Structural tests \u2014 added `tests/structural/` directory",
-      "kind": "prose",
-      "line": 276,
-      "next_action": "update stale path or demote completion claim",
-      "path": "docs/research-log.md"
-    },
-    {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
@@ -22336,16 +22699,17 @@
       "path": "docs/research-log.md"
     },
     {
-      "confidence": 0.62,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
+        "path:rules/*.md",
         "terms:added,files,frontmatter,rules,tier-0,tier-1,tier-2"
       ],
-      "inferred_status": "done_weak_proof",
+      "inferred_status": "done_with_proof",
       "item": "`rules/*.md` \u2014 112 files: 9 Tier-0, 95 Tier-1, 8 Tier-2 frontmatter added",
       "kind": "bullet",
       "line": 359,
-      "next_action": "add explicit test/workflow/proof link",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/research-log.md"
     },
     {
@@ -22498,7 +22862,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:capture,current,data,does,finding,instrumentation,invocations,jsonl"
+        "terms:capture,current,data,does,finding,implementable,instrumentation,invocations"
       ],
       "inferred_status": "proposed",
       "item": "Key finding: `session-learnings.jsonl` does NOT capture per-task tool sequences; Option A (repeated successful skill invocations) is the only option implementable with current data. Options B/C require new instrumentation.",
@@ -22511,7 +22875,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:analysis,cost,design,dimensions,documents,exceeds,five,four"
+        "terms:adr-096,analysis,cost,design,dimensions,documents,exceeds,five"
       ],
       "inferred_status": "proposed",
       "item": "ADR-096 (Proposed): documents four design dimensions (when/what/output/cost gate), five open questions, and cost analysis (Haiku \u2248 $0.075/day at 50 agents; Sonnet exceeds governance threshold).",
@@ -22531,6 +22895,32 @@
       "kind": "bullet",
       "line": 524,
       "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/research-log.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:accepted,added,adr-096,collapsed,decisions,design,implementation,locked"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**ADR-096**: promoted from Proposed \u2192 Accepted. Design space collapsed to 8 locked decisions. Implementation section added.",
+      "kind": "bullet",
+      "line": 541,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/research-log.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:adapted,added,aligned,copied,format,hermes,instruction,prevention"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Hermes prompt templates adapted (not copied verbatim): tool references replaced, TRUST_REPORT format aligned, rubber-stamp prevention instruction added.",
+      "kind": "bullet",
+      "line": 548,
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/research-log.md"
     },
     {
@@ -22798,7 +23188,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:design,file,format,locale,spanish,strings,translate"
+        "terms:design,externalize,file,format,locale,spanish,strings,translate"
       ],
       "inferred_status": "proposed",
       "item": "**i18n**: Translate documentation to Spanish. Externalize CLI strings. Design locale file format.",
@@ -23422,20 +23812,6 @@
       "path": "docs/testing/suite-signal-triage-2026-04-29.md"
     },
     {
-      "confidence": 0.82,
-      "declared_status": "done",
-      "evidence": [
-        "terms:backed,build,covers,custom,done,engram,fixture,harness",
-        "missing_path:tests/unit/test_engram_persistence.py"
-      ],
-      "inferred_status": "stale",
-      "item": "3. **Phase 3**: ~~Build custom Engram persistence test harness~~ **DONE** \u2014 `tests/unit/test_engram_persistence.py` covers 19 real engram tests using the `real_engram` fixture (no MagicMock; backed by a real SQLite DB).",
-      "kind": "prose",
-      "line": 248,
-      "next_action": "update stale path or demote completion claim",
-      "path": "docs/testing-cognitive-os.md"
-    },
-    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -23715,12 +24091,17 @@
         "planned": 3,
         "proposed": 2
       },
+      "docs/SESSION-HANDOFF-2026-05-01.md": {
+        "done_weak_proof": 8,
+        "done_with_proof": 1,
+        "planned": 1,
+        "proposed": 2
+      },
       "docs/adrs/ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify.md": {
         "done_weak_proof": 2
       },
       "docs/adrs/ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep.md": {
-        "done_weak_proof": 5,
-        "done_with_proof": 4,
+        "done_weak_proof": 9,
         "planned": 4
       },
       "docs/adrs/ADR-006-agpl-license-compliance.md": {
@@ -23765,7 +24146,8 @@
         "done_weak_proof": 2
       },
       "docs/adrs/ADR-019-scope-tagging.md": {
-        "done_weak_proof": 5
+        "done_weak_proof": 4,
+        "done_with_proof": 1
       },
       "docs/adrs/ADR-020-contamination-fix.md": {
         "done_weak_proof": 1,
@@ -23800,28 +24182,27 @@
       },
       "docs/adrs/ADR-026a-decisions.md": {
         "done_weak_proof": 2,
+        "done_with_proof": 1,
         "planned": 4,
-        "proposed": 7,
-        "stale": 1
+        "proposed": 7
       },
       "docs/adrs/ADR-027.md": {
-        "done_weak_proof": 5,
-        "done_with_proof": 1,
+        "done_weak_proof": 4,
+        "done_with_proof": 2,
         "planned": 3
       },
       "docs/adrs/ADR-027a.md": {
-        "done_weak_proof": 7,
-        "done_with_proof": 1,
-        "planned": 3,
-        "stale": 1
+        "done_weak_proof": 6,
+        "done_with_proof": 3,
+        "planned": 3
       },
       "docs/adrs/ADR-028.md": {
         "done_weak_proof": 8,
         "planned": 10
       },
       "docs/adrs/ADR-028a.md": {
-        "done_weak_proof": 10,
-        "done_with_proof": 5,
+        "done_weak_proof": 12,
+        "done_with_proof": 3,
         "planned": 9
       },
       "docs/adrs/ADR-028b.md": {
@@ -23946,7 +24327,8 @@
         "proposed": 1
       },
       "docs/adrs/ADR-055-docs-convention-enforcement.md": {
-        "done_weak_proof": 2,
+        "done_weak_proof": 1,
+        "done_with_proof": 1,
         "planned": 2,
         "proposed": 2
       },
@@ -23954,8 +24336,7 @@
         "done_weak_proof": 4
       },
       "docs/adrs/ADR-056-adaptive-agent-dispatch.md": {
-        "done_weak_proof": 5,
-        "done_with_proof": 1,
+        "done_weak_proof": 6,
         "planned": 4,
         "proposed": 1
       },
@@ -24066,8 +24447,8 @@
       },
       "docs/adrs/ADR-082-plan-location-convention.md": {
         "done_weak_proof": 4,
-        "proposed": 1,
-        "stale": 1
+        "done_with_proof": 1,
+        "proposed": 1
       },
       "docs/adrs/ADR-083-governed-self-improvement-loop.md": {
         "done_weak_proof": 1,
@@ -24107,7 +24488,8 @@
         "proposed": 2
       },
       "docs/adrs/ADR-092-harness-skills-sync-path.md": {
-        "done_weak_proof": 4,
+        "done_weak_proof": 2,
+        "done_with_proof": 2,
         "planned": 4
       },
       "docs/adrs/ADR-093-simplify-profiles.md": {
@@ -24123,8 +24505,9 @@
         "planned": 3
       },
       "docs/adrs/ADR-096-review-agent-pattern.md": {
-        "done_weak_proof": 3,
-        "planned": 1,
+        "done_weak_proof": 7,
+        "done_with_proof": 1,
+        "planned": 3,
         "proposed": 1
       },
       "docs/adrs/ADR-097-documentation-execution-audit.md": {
@@ -24139,6 +24522,14 @@
       "docs/adrs/ADR-098-multi-agent-file-coordination.md": {
         "done_weak_proof": 3,
         "planned": 1
+      },
+      "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md": {
+        "done_weak_proof": 1,
+        "planned": 1,
+        "proposed": 2
+      },
+      "docs/adrs/ADR-100-resource-governed-test-execution.md": {
+        "done_weak_proof": 3
       },
       "docs/adrs/README.md": {
         "planned": 1
@@ -24163,10 +24554,10 @@
         "proposed": 5
       },
       "docs/architecture-principles.md": {
+        "done_weak_proof": 1,
         "done_with_proof": 1,
         "planned": 1,
-        "proposed": 2,
-        "stale": 1
+        "proposed": 2
       },
       "docs/architecture/FROZEN-BACKLOG.md": {
         "done_weak_proof": 22,
@@ -24279,26 +24670,23 @@
         "proposed": 4
       },
       "docs/architecture/functional-audit/scorecard-hooks.md": {
-        "done_weak_proof": 8,
+        "done_weak_proof": 9,
         "planned": 2,
-        "proposed": 5,
-        "stale": 1
+        "proposed": 5
       },
       "docs/architecture/functional-audit/scorecard-install-scripts.md": {
-        "done_weak_proof": 3,
-        "done_with_proof": 1
+        "done_weak_proof": 2,
+        "done_with_proof": 2
       },
       "docs/architecture/functional-audit/scorecard-packages-squads-agents.md": {
-        "done_weak_proof": 1,
-        "done_with_proof": 1,
+        "done_with_proof": 2,
         "planned": 1,
         "proposed": 1
       },
       "docs/architecture/functional-audit/scorecard-rules.md": {
-        "done_weak_proof": 2,
+        "done_weak_proof": 3,
         "done_with_proof": 1,
-        "planned": 3,
-        "stale": 1
+        "planned": 3
       },
       "docs/architecture/functional-audit/scorecard-skills.md": {
         "done_weak_proof": 1,
@@ -24321,8 +24709,8 @@
         "done_weak_proof": 2
       },
       "docs/architecture/functional-audit/ux6-idempotent-update.md": {
-        "done_weak_proof": 5,
-        "done_with_proof": 2,
+        "done_weak_proof": 6,
+        "done_with_proof": 1,
         "planned": 2
       },
       "docs/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md": {
@@ -24337,15 +24725,15 @@
       },
       "docs/architecture/harness-adoption-gap/scripts-audit-B-init-bootstrap.md": {
         "done_weak_proof": 2,
-        "stale": 1
+        "done_with_proof": 1
       },
       "docs/architecture/harness-adoption-gap/scripts-audit-C-updaters.md": {
         "done_weak_proof": 1,
         "planned": 1
       },
       "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md": {
-        "done_weak_proof": 7,
-        "done_with_proof": 1,
+        "done_weak_proof": 6,
+        "done_with_proof": 2,
         "planned": 1,
         "proposed": 1
       },
@@ -24435,11 +24823,10 @@
         "planned": 2
       },
       "docs/business/conversation-reality-audit-2026-04-30.md": {
-        "done_weak_proof": 59,
-        "done_with_proof": 9,
+        "done_weak_proof": 61,
+        "done_with_proof": 8,
         "planned": 82,
-        "proposed": 1,
-        "stale": 1
+        "proposed": 1
       },
       "docs/business/developer-confidence.md": {
         "planned": 1
@@ -24460,10 +24847,9 @@
         "planned": 27
       },
       "docs/business/master-plan-checklist.md": {
-        "done_weak_proof": 71,
-        "done_with_proof": 13,
-        "planned": 2,
-        "stale": 14
+        "done_weak_proof": 61,
+        "done_with_proof": 37,
+        "planned": 2
       },
       "docs/business/master-plan-execution-requirements.md": {
         "planned": 1,
@@ -24552,6 +24938,11 @@
       "docs/implementation-phases.md": {
         "planned": 1
       },
+      "docs/incidents/2026-05-01-session-multi-spawn-hang.md": {
+        "done_weak_proof": 1,
+        "planned": 1,
+        "proposed": 1
+      },
       "docs/launch-strategy.md": {
         "planned": 19
       },
@@ -24587,8 +24978,8 @@
         "proposed": 1
       },
       "docs/measurements/cos-duplication-audit-2026-04-30.md": {
-        "proposed": 1,
-        "stale": 1
+        "done_weak_proof": 1,
+        "proposed": 1
       },
       "docs/measurements/hook-timing-runbook.md": {
         "done_weak_proof": 1
@@ -24600,7 +24991,8 @@
         "done_weak_proof": 2
       },
       "docs/migration-from/from-hermes.md": {
-        "done_weak_proof": 2,
+        "done_weak_proof": 1,
+        "done_with_proof": 1,
         "planned": 2
       },
       "docs/migration-from/from-vanilla-claude-code.md": {
@@ -24630,8 +25022,7 @@
       "docs/patterns-adopted.md": {
         "done_weak_proof": 14,
         "done_with_proof": 1,
-        "planned": 3,
-        "stale": 1
+        "planned": 3
       },
       "docs/patterns/component-classification.md": {
         "done_weak_proof": 1
@@ -24680,11 +25071,10 @@
         "planned": 10
       },
       "docs/research-log.md": {
-        "done_weak_proof": 10,
-        "done_with_proof": 6,
+        "done_weak_proof": 11,
+        "done_with_proof": 7,
         "planned": 3,
-        "proposed": 5,
-        "stale": 1
+        "proposed": 5
       },
       "docs/research/archon-evaluation.md": {
         "done_weak_proof": 1,
@@ -24766,9 +25156,6 @@
       "docs/stress-test-strategy.md": {
         "planned": 1
       },
-      "docs/testing-cognitive-os.md": {
-        "stale": 1
-      },
       "docs/testing.md": {
         "planned": 2
       },
@@ -24802,13 +25189,12 @@
         "planned": 1
       }
     },
-    "items": 1807,
+    "items": 1835,
     "statuses": {
-      "done_weak_proof": 754,
-      "done_with_proof": 87,
-      "planned": 740,
-      "proposed": 200,
-      "stale": 26
+      "done_weak_proof": 766,
+      "done_with_proof": 119,
+      "planned": 745,
+      "proposed": 205
     }
   }
 }

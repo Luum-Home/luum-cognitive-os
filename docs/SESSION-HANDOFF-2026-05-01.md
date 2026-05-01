@@ -136,7 +136,7 @@ export COS_DISABLE_PROFILE_AUTOAPPLY=1
 - **Rate-limiter pressure**: bash hit 22/22 cap multiple times during commit prep, causing 60-second waits and queue accumulation. Slowed iteration meaningfully. The lifting strategy is to delegate more (agents have their own budget) or batch commands.
 - **`scripts/install-timing-test.sh` baseline used `file://` clone** — avoids SSH but means real install times may be 5-20s higher when cloning over network. Plug-and-play verdict still safe (257s budget headroom), but worth confirming with one real-network run before claiming portability.
 - **30 decisions closed conservatively** — ADR-028 questions 5-6 were closed as "stale" without reading addenda 28a/28b/28c in full. Confidence on those two: 0.75. Reopenable if needed.
-- **`scripts/decision-triage.sh` should skip ACCEPTED ADRs** — the script currently scans all ADR sections and re-surfaces questions from ACCEPTED ADRs (e.g. ADR-028) as "pending." Follow-up tracked.
+- **`scripts/decision_triage.py` should skip ACCEPTED ADRs** — the script currently scans all ADR sections and re-surfaces questions from ACCEPTED ADRs (e.g. ADR-028) as "pending." Follow-up tracked.
 
 ## Engram session summary
 
