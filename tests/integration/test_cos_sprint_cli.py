@@ -13,7 +13,7 @@ import pytest
 
 _REPO = Path(__file__).resolve().parents[2]
 SCRIPT = _REPO / "scripts" / "cos_sprint.py"
-EXAMPLE = _REPO / ".cognitive-os" / "sprints" / "example-sprint.yaml"
+EXAMPLE = _REPO / "tests" / "fixtures" / "e2e" / "example-sprint.yaml"
 
 
 def _run_cli(args: list[str], project_dir: Path) -> subprocess.CompletedProcess:
@@ -109,3 +109,43 @@ def test_cancel_updates_state(fake_project: Path) -> None:
     # Double-cancel should fail (terminal state).
     double = _run_cli(["cancel", sprint_id], fake_project)
     assert double.returncode == 3
+
+
+def test_run_dispatch_updates_manifest_and_events(fake_project: Path, tmp_path: Path) -> None:
+    spec = fake_project / ".cognitive-os" / "sprints" / "example-sprint.yaml"
+    fake_agent = tmp_path / "cos-agent"
+    fake_agent.write_text(
+        "#!/usr/bin/env python3\n"
+        "import json\n"
+        "print(json.dumps({\"status\": \"success\", \"final_response\": \"stub ok\", \"session_id\": \"stub-agent\"}))\n"
+    )
+    fake_agent.chmod(0o755)
+
+    env = {
+        **os.environ,
+        "CLAUDE_PROJECT_DIR": str(fake_project),
+        "PYTHONPATH": str(_REPO),
+        "COS_SPRINT_AGENT_BIN": str(fake_agent),
+    }
+    result = subprocess.run(
+        [sys.executable, str(SCRIPT), "run", str(spec), "--dispatch", "--timeout", "5"],
+        capture_output=True,
+        text=True,
+        env=env,
+        cwd=str(fake_project),
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert "dispatch:" in result.stdout
+    assert "completed" in result.stdout
+
+    manifests = list((fake_project / ".cognitive-os" / "sprints").glob("sprint-*.json"))
+    assert len(manifests) == 1
+    data = json.loads(manifests[0].read_text())
+    assert data["status"] == "completed"
+    assert {task["status"] for task in data["tasks"]} == {"completed"}
+
+    events = (fake_project / ".cognitive-os" / "metrics" / "canonical-events.jsonl").read_text()
+    assert '"event_type": "sprint_started"' in events
+    assert '"event_type": "sprint_task_launched"' in events
+    assert '"event_type": "sprint_task_completed"' in events
+    assert '"event_type": "sprint_completed"' in events

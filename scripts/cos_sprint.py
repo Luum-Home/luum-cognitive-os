@@ -23,6 +23,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import subprocess
 import sys
 from pathlib import Path
 from typing import List, Optional
@@ -33,12 +35,15 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from lib.sprint_orchestrator import (  # noqa: E402
-    CommitStrategy,
     SprintCancelled,
     SprintManifest,
     SprintSpecError,
     SprintStarted,
     SprintStatus,
+    SprintTaskCompleted,
+    SprintTaskLaunched,
+    SprintTaskStatus,
+    SprintCompleted,
     default_sprints_dir,
     list_manifests,
     load_manifest,
@@ -132,6 +137,142 @@ def _write_launch_script(manifest: SprintManifest, project_dir: Path) -> Path:
     return out
 
 
+def _agent_bin(project_dir: Path) -> Path:
+    override = os.environ.get("COS_SPRINT_AGENT_BIN")
+    if override:
+        return Path(override)
+    return _REPO_ROOT / "bin" / "cos-agent"
+
+
+def _task_prompt(manifest: SprintManifest, task) -> str:
+    file_scope = ", ".join(task.file_scope) if task.file_scope else "(unscoped)"
+    return "\n".join(
+        [
+            f"Sprint: {manifest.name} ({manifest.id})",
+            f"Task: {task.id} — {task.title}",
+            f"File scope: {file_scope}",
+            "",
+            "Follow AGENTS.md and the Cognitive OS harness protocol.",
+            "Return concise evidence of what changed or what was verified.",
+            "",
+            task.prompt,
+        ]
+    )
+
+
+def _run_task_agent(manifest: SprintManifest, task, project_dir: Path, timeout_s: int) -> tuple[str, dict, str]:
+    agent = _agent_bin(project_dir)
+    if not agent.exists():
+        return "error", {}, f"cos-agent not found: {agent}"
+    env = os.environ.copy()
+    env.setdefault("COGNITIVE_OS_PROJECT_DIR", str(project_dir))
+    env.setdefault("COGNITIVE_OS_HARNESS", "bare_cli")
+    prompt = _task_prompt(manifest, task)
+    try:
+        proc = subprocess.run(
+            [str(agent), "spawn", "--prompt", prompt, "--model", task.model, "--json", "--timeout", str(timeout_s)],
+            cwd=str(project_dir),
+            env=env,
+            text=True,
+            capture_output=True,
+            timeout=max(timeout_s + 5, 10),
+        )
+    except subprocess.TimeoutExpired as exc:
+        return "timeout", {}, f"cos-agent subprocess timed out after {exc.timeout}s"
+
+    if proc.stdout.strip():
+        try:
+            payload = json.loads(proc.stdout)
+        except json.JSONDecodeError:
+            payload = {"final_response": proc.stdout.strip()}
+    else:
+        payload = {}
+    if proc.returncode == 0:
+        return "success", payload, proc.stderr.strip()
+    if proc.returncode == 124:
+        return "timeout", payload, proc.stderr.strip() or payload.get("error", "timeout")
+    return "error", payload, proc.stderr.strip() or payload.get("error", "agent failed")
+
+
+def _dispatch_manifest(manifest: SprintManifest, project_dir: Path, timeout_s: int) -> int:
+    try:
+        if manifest.status == SprintStatus.PENDING.value:
+            transition(manifest, SprintStatus.RUNNING.value)
+    except ValueError as exc:
+        print(f"cos sprint: {exc}", file=sys.stderr)
+        return 3
+
+    save_manifest(manifest, manifest_path(manifest.id, project_dir))
+    succeeded = 0
+    failed = 0
+    started = manifest.started_at or now_epoch()
+
+    for task in manifest.tasks:
+        if task.status in {SprintTaskStatus.COMPLETED.value, SprintTaskStatus.FAILED.value} and task.agent_id:
+            continue
+        task.status = SprintTaskStatus.LAUNCHED.value
+        task.started_at = now_epoch()
+        task.agent_id = task.agent_id or f"{manifest.id}-{task.id}"
+        _emit(
+            SprintTaskLaunched(
+                sprint_id=manifest.id,
+                task_id=task.id,
+                agent_id=task.agent_id,
+                model=task.model,
+                launched_at=task.started_at,
+            ),
+            project_dir,
+        )
+        save_manifest(manifest, manifest_path(manifest.id, project_dir))
+
+        status, payload, error = _run_task_agent(manifest, task, project_dir, timeout_s)
+        task.ended_at = now_epoch()
+        if status == "success":
+            task.status = SprintTaskStatus.COMPLETED.value
+            succeeded += 1
+        else:
+            task.status = SprintTaskStatus.FAILED.value
+            failed += 1
+            if error:
+                print(f"task {task.id}: {status}: {error}", file=sys.stderr)
+
+        duration_ms = int((task.ended_at - (task.started_at or task.ended_at)) * 1000)
+        _emit(
+            SprintTaskCompleted(
+                sprint_id=manifest.id,
+                task_id=task.id,
+                agent_id=task.agent_id or f"{manifest.id}-{task.id}",
+                exit_status=status,
+                ended_at=task.ended_at,
+                duration_ms=duration_ms,
+            ),
+            project_dir,
+        )
+        save_manifest(manifest, manifest_path(manifest.id, project_dir))
+
+    final_status = SprintStatus.COMPLETED.value if failed == 0 else SprintStatus.FAILED.value
+    try:
+        if manifest.status == SprintStatus.RUNNING.value:
+            transition(manifest, final_status)
+    except ValueError as exc:
+        print(f"cos sprint: {exc}", file=sys.stderr)
+        return 3
+    ended = manifest.ended_at or now_epoch()
+    _emit(
+        SprintCompleted(
+            sprint_id=manifest.id,
+            ended_at=ended,
+            tasks_succeeded=succeeded,
+            tasks_failed=failed,
+            duration_ms=int((ended - started) * 1000),
+        ),
+        project_dir,
+    )
+    save_manifest(manifest, manifest_path(manifest.id, project_dir))
+    print(f"dispatch: {manifest.id} {final_status} ({succeeded} succeeded, {failed} failed)")
+    return 0 if failed == 0 else 3
+
+
 # ---------------------------------------------------------------------------
 # Subcommand handlers
 # ---------------------------------------------------------------------------
@@ -168,6 +309,9 @@ def cmd_run(args: argparse.Namespace) -> int:
     print(f"manifest: {mpath}")
     print(f"launch:   {launch_md}")
     print(f"tasks:    {len(manifest.tasks)}")
+    if args.dispatch:
+        print("status:   dispatching")
+        return _dispatch_manifest(manifest, project_dir, args.timeout)
     print("status:   pending (awaiting orchestrator dispatch)")
     return 0
 
@@ -249,6 +393,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     pr = sub.add_parser("run", help="Create a sprint from a YAML spec")
     pr.add_argument("spec", help="Path to sprint YAML spec")
+    pr.add_argument("--dispatch", action="store_true", help="Launch tasks through bin/cos-agent and update the manifest")
+    pr.add_argument("--timeout", type=int, default=300, help="Per-task cos-agent timeout in seconds when --dispatch is used")
     pr.set_defaults(func=cmd_run)
 
     ps = sub.add_parser("status", help="Show a sprint's status")
