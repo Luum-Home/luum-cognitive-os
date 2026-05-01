@@ -1,0 +1,40 @@
+# Harness profiles define bounded Cognitive OS runtime surfaces.
+# They are descriptive contracts first; settings drivers may project them later.
+profiles:
+  minimal:
+    description: "Smallest useful harness: startup, bounded task execution, verification, and memory closure."
+    context_budget_tokens: 20000
+    startup_budget_ms: 5000
+    required_files:
+      - AGENTS.md
+      - cognitive-os.yaml
+      - rules/RULES-COMPACT.md
+      - .codex/project-index.md
+    required_hooks:
+      - hooks/session-init.sh
+      - hooks/auto-verify.sh
+      - hooks/session-learning.sh
+    optional_hooks:
+      - hooks/user-prompt-capture.sh
+      - hooks/git-context-capture.sh
+      - hooks/session-changelog.sh
+      - hooks/memory-prefetch.sh
+    required_commands:
+      - scripts/cos-doctor-harness.sh
+      - scripts/measure-harness-profiles.py
+      - scripts/cos_sprint.py
+      - bin/cos-agent
+      - bin/cos-skill
+    acceptance_criteria:
+      - "cos init-check exits 0 in an installed repo"
+      - "cos doctor harness exits 0 or reports explicit missing prerequisites"
+      - "cos measure harness-profiles emits JSON or text comparing minimal and full"
+      - "cos sprint run --dispatch records task launch/completion events"
+  full:
+    description: "All projected hooks and optional governance/observability surfaces available in the active harness."
+    context_budget_tokens: null
+    startup_budget_ms: null
+    source_of_truth:
+      - cognitive-os.yaml
+      - .claude/settings.json
+      - .codex/hooks.json
