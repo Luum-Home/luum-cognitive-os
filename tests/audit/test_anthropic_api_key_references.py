@@ -24,6 +24,16 @@ IGNORED_DIRS = {
     ".pytest_cache",
 }
 IGNORED_SUFFIXES = {".pyc"}
+IGNORED_PATHS = {
+    ".env",
+    ".claude/settings.local.json",
+}
+IGNORED_PATH_PREFIXES = (
+    ".claude/plugins/",
+    ".cognitive-os/",
+    ".engram/",
+    "reference/",
+)
 
 
 @dataclass(frozen=True)
@@ -86,8 +96,13 @@ def _iter_text_files() -> list[Path]:
     for path in PROJECT_ROOT.rglob("*"):
         if not path.is_file():
             continue
+        rel_path = path.relative_to(PROJECT_ROOT).as_posix()
         rel_parts = set(path.relative_to(PROJECT_ROOT).parts)
         if rel_parts & IGNORED_DIRS:
+            continue
+        if rel_path in IGNORED_PATHS:
+            continue
+        if rel_path.startswith(IGNORED_PATH_PREFIXES):
             continue
         if path.suffix in IGNORED_SUFFIXES:
             continue
@@ -100,7 +115,7 @@ def _references() -> dict[str, list[int]]:
     for path in _iter_text_files():
         try:
             text = path.read_text(encoding="utf-8")
-        except UnicodeDecodeError:
+        except (FileNotFoundError, UnicodeDecodeError):
             continue
         lines = [idx for idx, line in enumerate(text.splitlines(), 1) if "ANTHROPIC_API_KEY" in line]
         if lines:
