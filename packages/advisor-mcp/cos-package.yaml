@@ -48,7 +48,7 @@ tools:
     inputs:
       - context: "What the executor has learned so far"
       - question: "Specific strategic question for the advisor"
-      - provider: "anthropic | openai | google | litellm | local (default: anthropic)"
+      - provider: "local | litellm | openai | google | anthropic (default: local)"
       - model: "Override model (empty = provider default)"
       - max_tokens: "Max response tokens (default: 500)"
 
@@ -56,6 +56,7 @@ providers:
   anthropic:
     default_model: "claude-opus-4-6"
     env_var: "ANTHROPIC_API_KEY"
+    notes: "Requires llm_providers.claude_sdk.enabled: true"
   openai:
     default_model: "gpt-4o"
     env_var: "OPENAI_API_KEY"
