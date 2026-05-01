@@ -36,7 +36,16 @@ from tests.audit.shell_test_utils import (
     target_script_ids,
 )
 
-pytestmark = pytest.mark.audit
+pytestmark = [
+    pytest.mark.audit,
+    # ADR-072 follow-up: Layer 3-4 tests below run the REAL hooks/self-install.sh
+    # against a tmp_path target. Multiple xdist workers concurrently walking the
+    # live source tree (rules/, skills/, hooks/) caused install-test flakes that
+    # forced audit lane back to serial in commit 54439ea6. Pinning all tests in
+    # this file to a single xdist worker contains the race within ONE worker
+    # while the rest of the audit lane parallelises freely.
+    pytest.mark.xdist_group("self_install"),
+]
 
 
 # =============================================================================
