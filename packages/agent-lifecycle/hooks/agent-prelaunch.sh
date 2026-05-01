@@ -54,9 +54,12 @@ TASK_ID="task-$(date +%s)-$RANDOM"
 # Get current timestamp
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-# PID is not stored — the hook fires before the agent process starts,
-# so $$ is the hook's own (already-exiting) PID, not the agent's.
-# Health classification relies on age-based timeout only.
+# Fix 1 (ADR-097): write "pending" here, not "in_progress".
+# The hook fires at PreToolUse — after dispatch-gate has allowed the launch —
+# but BEFORE the agent process actually starts.  Status flips to "in_progress"
+# once the agent's own preamble runs write_context_marker.py (which knows its PID).
+# If the agent never starts (crash, rate-limit cancel), the record stays "pending"
+# and the zombie reaper will mark it "cancelled-stale" after 30 min.
 
 # Build the new task entry (includes toolUseId for native panel correlation)
 NEW_TASK=$(jq -c -n \
@@ -68,7 +71,8 @@ NEW_TASK=$(jq -c -n \
     id: $id,
     toolUseId: (if $tui == "" then null else $tui end),
     description: $desc,
-    status: "in_progress",
+    status: "pending",
+    requested_at: $ts,
     launchedAt: $ts,
     started_at: $ts,
     pid: null,

@@ -80,10 +80,20 @@ services:
 
   # ---------------------------------------------------------------------------
   # Paperclip PostgreSQL — Database for Paperclip agent coordination
+  #
+  # ADR-043 (2026-04-30): MIGRATED TO LOCAL DAEMON.
+  # cos-paperclip-local.sh manages a local Paperclip daemon when the binary is
+  # available. cos-postgres-local.sh (ADR-045) manages a local pg_ctl cluster
+  # on port 5433 as the Postgres backend.
+  # These containers are kept for legacy compatibility. They are NOT started
+  # by default. To use Docker explicitly:
+  #   docker compose -f docker-compose.cognitive-os.yml --profile legacy up -d paperclip paperclip-pg
   # ---------------------------------------------------------------------------
   paperclip-pg:
     image: postgres:17-alpine@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1  # pinned 2026-03-28
     container_name: cognitive-os-paperclip-pg
+    profiles:
+      - legacy
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${PAPERCLIP_PG_USER:-paperclip}
@@ -105,10 +115,14 @@ services:
   # Paperclip — Agent Coordination Platform
   # Built from local source at ./paperclip/
   # UI: http://localhost:3200
+  #
+  # ADR-043 (2026-04-30): demoted to profiles: [legacy]. See above.
   # ---------------------------------------------------------------------------
   paperclip:
     container_name: cognitive-os-paperclip
     image: reeoss/paperclipai-paperclip:latest  # mirror with ARM64 support (ghcr.io needs auth)
+    profiles:
+      - legacy
     restart: unless-stopped
     ports:
       - "${PAPERCLIP_PORT:-3200}:3100"
