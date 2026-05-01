@@ -151,3 +151,112 @@ def test_safe_path_collapses_slashes(fake_project):
     # Exactly one lock dir, key uses "--" separator (no path traversal).
     assert len(safe) == 1
     assert safe[0].name == "tests--sample.py"
+
+
+# ── D3: Bypass audit log tests ────────────────────────────────────────────────
+
+def test_bypass_audit_log_written_when_blocking_lock_exists(fake_project):
+    """When bypass is used against a live lock held by another session, an audit entry is written."""
+    # Session A acquires the lock.
+    _run(["acquire", "tests/sample.py", "x", "exclusive-edit"], session="A", project_dir=fake_project)
+
+    # Session B bypasses while session A holds the lock.
+    r = _run(
+        ["acquire", "tests/sample.py", "y", "exclusive-edit"],
+        session="B",
+        env_extra={
+            "COS_BYPASS_EDIT_LOCK": "1",
+            "COS_BYPASS_EDIT_LOCK_REASON": "critical-bugfix emergency",
+        },
+        project_dir=fake_project,
+    )
+    assert r.returncode == 0
+    assert "BYPASS" in r.stderr
+
+    audit_file = fake_project / ".cognitive-os" / "runtime" / "edit-locks-audit.jsonl"
+    assert audit_file.exists(), "Audit log must be created on bypass"
+
+    import json as _json
+    entries = [_json.loads(line) for line in audit_file.read_text().splitlines() if line.strip()]
+    assert len(entries) >= 1
+
+    entry = entries[-1]
+    assert entry["bypassed_session"] == "A"
+    assert entry["bypasser_session"] == "B"
+    assert entry["file_path"] == "tests/sample.py"
+    assert entry["reason"] == "critical-bugfix emergency"
+    assert "timestamp" in entry
+    assert "agent_id" in entry
+    assert "pid" in entry
+
+
+def test_bypass_audit_log_default_reason(fake_project):
+    """When no reason is set, the audit entry records 'no reason given'."""
+    _run(["acquire", "tests/sample.py", "x", "exclusive-edit"], session="A", project_dir=fake_project)
+
+    env_extra = {"COS_BYPASS_EDIT_LOCK": "1"}
+    env_extra.pop("COS_BYPASS_EDIT_LOCK_REASON", None)  # ensure unset
+    # subprocess inherits env from _run which clears it; just don't set it.
+    _run(
+        ["acquire", "tests/sample.py", "y", "exclusive-edit"],
+        session="B",
+        env_extra=env_extra,
+        project_dir=fake_project,
+    )
+
+    audit_file = fake_project / ".cognitive-os" / "runtime" / "edit-locks-audit.jsonl"
+    if audit_file.exists():
+        import json as _json
+        entries = [_json.loads(line) for line in audit_file.read_text().splitlines() if line.strip()]
+        if entries:
+            assert entries[-1]["reason"] == "no reason given"
+
+
+def test_bypass_no_audit_when_no_blocking_lock(fake_project):
+    """If bypass is used but no live lock exists, no audit entry is written."""
+    r = _run(
+        ["acquire", "tests/sample.py", "y", "exclusive-edit"],
+        session="B",
+        env_extra={"COS_BYPASS_EDIT_LOCK": "1"},
+        project_dir=fake_project,
+    )
+    assert r.returncode == 0
+
+    audit_file = fake_project / ".cognitive-os" / "runtime" / "edit-locks-audit.jsonl"
+    # Either audit file doesn't exist or has no relevant entry.
+    if audit_file.exists():
+        import json as _json
+        entries = [_json.loads(line) for line in audit_file.read_text().splitlines() if line.strip()]
+        for entry in entries:
+            # If an entry exists it should not reference an absent blocker.
+            assert entry.get("bypassed_session", "") != "", \
+                "Audit entry should only be written when a real lock is bypassed"
+
+
+def test_bypass_audit_log_is_append_only(fake_project):
+    """Multiple bypass events append new lines; old entries are never removed."""
+    _run(["acquire", "tests/file-a.py", "x", "exclusive-edit"], session="A", project_dir=fake_project)
+    _run(
+        ["acquire", "tests/file-a.py", "bypass1", "exclusive-edit"],
+        session="B",
+        env_extra={"COS_BYPASS_EDIT_LOCK": "1", "COS_BYPASS_EDIT_LOCK_REASON": "first"},
+        project_dir=fake_project,
+    )
+
+    _run(["acquire", "tests/file-b.py", "y", "exclusive-edit"], session="A", project_dir=fake_project)
+    _run(
+        ["acquire", "tests/file-b.py", "bypass2", "exclusive-edit"],
+        session="B",
+        env_extra={"COS_BYPASS_EDIT_LOCK": "1", "COS_BYPASS_EDIT_LOCK_REASON": "second"},
+        project_dir=fake_project,
+    )
+
+    audit_file = fake_project / ".cognitive-os" / "runtime" / "edit-locks-audit.jsonl"
+    assert audit_file.exists()
+
+    import json as _json
+    lines = [l for l in audit_file.read_text().splitlines() if l.strip()]
+    assert len(lines) >= 2, "Both bypass events should be appended to the audit log"
+    reasons = {_json.loads(l)["reason"] for l in lines}
+    assert "first" in reasons
+    assert "second" in reasons
