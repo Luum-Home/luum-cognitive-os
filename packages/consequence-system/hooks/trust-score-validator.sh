@@ -14,6 +14,8 @@ source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 5
 check_capability_level "trust-score-validator"
+# Runtime disable: DISABLE_HOOK_TRUST_SCORE_VALIDATOR=true skips this hook for the session
+check_disabled_env "trust-score-validator"
 
 # Read stdin and gate on Agent/task/delegate tool
 read_stdin_json

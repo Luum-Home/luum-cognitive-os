@@ -178,6 +178,38 @@ pre-cleanup-snapshot|architecture-compliance|auto-skill-generator)
   fi
 }
 
+# ─── check_disabled_env ──────────────────────────────────────────────────────
+# Exits 0 (skip hook silently) if the DISABLE_HOOK_<UPPERCASE_NAME> env var is
+# set to "true" or "1" for the current session.
+#
+# Usage: check_disabled_env "blast-radius"
+#   Checks: DISABLE_HOOK_BLAST_RADIUS=true
+#
+# Name transformation: hyphens → underscores, all uppercase.
+# This function must be called near the top of each hook that supports it.
+# Always exits 0 (never blocks), so it is safe for security-critical hooks too
+# (operator responsibility to not disable safety-critical hooks).
+#
+# Example:
+#   check_disabled_env "blast-radius"    # checks DISABLE_HOOK_BLAST_RADIUS
+#   check_disabled_env "clarification-gate"  # checks DISABLE_HOOK_CLARIFICATION_GATE
+
+check_disabled_env() {
+  local hook_name="${1:-}"
+  [ -z "$hook_name" ] && return 0
+
+  # Transform name: hyphens to underscores, uppercase
+  local env_key
+  env_key="DISABLE_HOOK_$(echo "$hook_name" | tr '[:lower:]-' '[:upper:]_')"
+
+  local env_val
+  env_val="${!env_key:-}"
+
+  if [ "$env_val" = "true" ] || [ "$env_val" = "1" ]; then
+    exit 0
+  fi
+}
+
 _STDIN_JSON=""
 _STDIN_READ="false"
 

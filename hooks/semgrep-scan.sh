@@ -15,6 +15,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="semgrep-scan"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/common.sh"
+# Runtime disable: DISABLE_HOOK_SEMGREP_SCAN=true skips this hook for the session
+check_disabled_env "semgrep-scan"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_DIR="$(_resolve_metrics_dir)"

@@ -19,6 +19,8 @@ source "$(dirname "$0")/_lib/common.sh"
 
 # Auto-disabled at capability level 4
 check_capability_level "assumption-tracking"
+# Runtime disable: DISABLE_HOOK_ASSUMPTION_TRACKER=true skips this hook for the session
+check_disabled_env "assumption-tracker"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
