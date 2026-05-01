@@ -31,9 +31,9 @@ Files moved via `git mv` and all citations updated in the same changeset:
 | `docs/architecture/stabilization-roadmap.md` | `.cognitive-os/plans/roadmaps/stabilization-roadmap.md` |
 | `docs/archive/plans/token-optimization-masterplan.md` | `.cognitive-os/plans/archive/token-optimization-masterplan.md` |
 
-**Anomaly resolved (2026-04-30 follow-up)**: `docs/architecture/plans/test-resource-governance-sprint.md`
+**Anomaly resolved (2026-04-30 follow-up)**: the test-resource-governance sprint plan
 was not in this ADR's migration table but was discovered during execution. It is a sprint plan
-tied to ADR-072/073 (test lane taxonomy) and was moved to
+tied to ADR-072/073 (test lane taxonomy) and now lives at
 `.cognitive-os/plans/architecture/test-resource-governance-sprint.md`. The directory
 `docs/architecture/plans/` was then removed.
 
