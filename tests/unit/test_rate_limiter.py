@@ -5,15 +5,12 @@ cost tracking, state persistence, custom configs, phase-aware limits,
 and edge cases.
 """
 
-import json
 import math
-import os
 import time
 
 import pytest
 
 from lib.rate_limiter import (
-    PHASE_MODIFIERS,
     VALID_ACTIONS,
     RateLimitConfig,
     RateLimiter,
@@ -79,15 +76,18 @@ class TestCheckWithinLimits:
 class TestCheckBlocks:
     """Actions exceeding limits should be blocked."""
 
-    def test_blocks_tool_calls_at_limit(self, tmp_path):
-        """Should block when tool_call count exceeds max_tool_calls_per_minute."""
+    def test_blocks_tool_calls_when_bucket_and_reserve_exhausted(self, tmp_path):
+        """Should block when burst bucket reaches the normal-lane reserve."""
         rl = _make_limiter(tmp_path, max_tool_calls_per_minute=3)
-        for _ in range(3):
+        normal_capacity = math.floor(
+            rl.burst_capacity("tool_call") * (1 - rl.config.operator_reserve_ratio)
+        )
+        for _ in range(normal_capacity):
             rl.record("tool_call")
         allowed, reason = rl.check("tool_call")
         assert allowed is False
         assert "tool_call" in reason
-        assert "limit exceeded" in reason.lower()
+        assert "token bucket" in reason.lower()
 
     def test_blocks_agent_launches_at_limit(self, tmp_path):
         """Should block when agent_launch count exceeds max_agent_launches_per_hour."""
@@ -198,9 +198,10 @@ class TestGetStatus:
         rl.record("tool_call")
         rl.record("tool_call")
         status = rl.get_status()
-        assert status["tool_call"]["remaining"] == 8
+        assert status["tool_call"]["remaining"] == 10
         assert status["tool_call"]["used"] == 2
         assert status["tool_call"]["limit"] == 10
+        assert status["tool_call"]["burst_capacity"] == 15
 
     def test_status_includes_all_action_types(self, tmp_path):
         """Status dict should contain entries for every valid action type."""
@@ -476,19 +477,25 @@ class TestPhaseAwareness:
         allowed, _ = rl.check("agent_launch")
         assert allowed is True, "reconstruction should allow up to 30 agent launches"
 
-    def test_reconstruction_blocks_at_effective_limit(self, tmp_path):
-        """In reconstruction, 30 agent launches should trigger block."""
+    def test_reconstruction_blocks_after_burst_capacity(self, tmp_path):
+        """In reconstruction, burst capacity applies before normal-lane block."""
         rl = _make_limiter(tmp_path, phase="reconstruction")
-        for _ in range(30):
+        normal_capacity = math.floor(
+            rl.burst_capacity("agent_launch") * (1 - rl.config.operator_reserve_ratio)
+        )
+        for _ in range(normal_capacity):
             rl.record("agent_launch")
         allowed, reason = rl.check("agent_launch")
         assert allowed is False
         assert "reconstruction" in reason
 
     def test_production_blocks_earlier(self, tmp_path):
-        """In production (0.75x), 15 agent launches should trigger block."""
+        """Production has lower refill and burst capacity than stabilization."""
         rl = _make_limiter(tmp_path, phase="production")
-        for _ in range(15):
+        normal_capacity = math.floor(
+            rl.burst_capacity("agent_launch") * (1 - rl.config.operator_reserve_ratio)
+        )
+        for _ in range(normal_capacity):
             rl.record("agent_launch")
         allowed, reason = rl.check("agent_launch")
         assert allowed is False
@@ -536,12 +543,49 @@ class TestPhaseAwareness:
     def test_block_reason_includes_phase_context(self, tmp_path):
         """Block reason should mention phase and modifier for debuggability."""
         rl = _make_limiter(tmp_path, phase="production", max_tool_calls_per_minute=4)
-        for _ in range(3):  # floor(4 * 0.75) = 3
+        normal_capacity = math.floor(
+            rl.burst_capacity("tool_call") * (1 - rl.config.operator_reserve_ratio)
+        )
+        for _ in range(normal_capacity):
             rl.record("tool_call")
         allowed, reason = rl.check("tool_call")
         assert allowed is False
         assert "production" in reason
         assert "0.75" in reason
+
+    def test_operator_lane_can_use_reserved_tokens(self, tmp_path):
+        """Operator lane may consume tokens preserved from normal orchestrator work."""
+        rl = _make_limiter(tmp_path, max_bash_commands_per_minute=4)
+        normal_capacity = math.floor(
+            rl.burst_capacity("bash_command") * (1 - rl.config.operator_reserve_ratio)
+        )
+        for _ in range(normal_capacity):
+            rl.record("bash_command")
+
+        normal_allowed, _ = rl.check("bash_command")
+        operator_allowed, _ = rl.check("bash_command", priority_lane="operator")
+
+        assert normal_allowed is False
+        assert operator_allowed is True
+
+    def test_repeated_signature_penalty_blocks_before_diverse_work(self, tmp_path):
+        """Repeated identical command signatures consume extra tokens as a loop signal."""
+        rl_loop = _make_limiter(tmp_path / "loop", max_bash_commands_per_minute=6)
+        signature = "same-command"
+        for _ in range(6):
+            rl_loop.record("bash_command", signature=signature)
+
+        loop_allowed, loop_reason = rl_loop.check("bash_command", signature=signature)
+
+        rl_diverse = _make_limiter(tmp_path / "diverse", max_bash_commands_per_minute=6)
+        for i in range(6):
+            rl_diverse.record("bash_command", signature=f"cmd-{i}")
+
+        diverse_allowed, _ = rl_diverse.check("bash_command", signature="cmd-new")
+
+        assert loop_allowed is False
+        assert "diversity penalty" in loop_reason
+        assert diverse_allowed is True
 
 
 # ---------------------------------------------------------------------------
@@ -608,6 +652,31 @@ class TestPhaseConfigReading:
         )
         assert rl.phase == "maintenance"
         assert rl.phase_modifier == 0.5
+
+
+    def test_limiter_reads_rate_limit_config(self, tmp_path, monkeypatch):
+        """RateLimiter should read security.rate_limits overrides from config."""
+        config = tmp_path / "cognitive-os.yaml"
+        config.write_text(
+            "security:\n"
+            "  rate_limits:\n"
+            "    max_bash_commands_per_minute: 4\n"
+            "    burst_multiplier: 2.0\n"
+            "    operator_reserve_ratio: 0.25\n"
+        )
+        monkeypatch.delenv("CLAUDE_PROJECT_DIR", raising=False)
+        monkeypatch.delenv("COGNITIVE_OS_PROJECT_DIR", raising=False)
+
+        rl = RateLimiter(
+            state_path=str(tmp_path / "state.json"),
+            config_path=str(config),
+            phase="stabilization",
+        )
+
+        assert rl.config.max_bash_commands_per_minute == 4
+        assert rl.config.burst_multiplier == 2.0
+        assert rl.config.operator_reserve_ratio == 0.25
+        assert rl.burst_capacity("bash_command") == 8
 
     def test_limiter_env_var_lookup(self, tmp_path, monkeypatch):
         """RateLimiter should find config via CLAUDE_PROJECT_DIR env var."""

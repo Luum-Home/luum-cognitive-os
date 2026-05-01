@@ -6,8 +6,10 @@ For API *token consumption* monitoring (80% / 95% budget thresholds) see:
   lib/token_budget_monitor.py  (renamed from lib/rate_limit_protection.py)
 
 Tracks tool calls, agent launches, bash commands, and file writes with
-configurable per-minute/per-hour limits. Includes cost-per-hour caps.
-State is persisted to disk for cross-invocation tracking within a session.
+configurable token-bucket per-minute/per-hour flow control. Includes
+cost-per-hour caps, burst allowance, soft warnings, operator priority reserve,
+and repeated-command diversity penalties. State is persisted to disk for
+cross-invocation tracking within a session.
 
 Phase-aware: reads the project phase from cognitive-os.yaml and applies
 a multiplier to all limits (reconstruction=1.5x, stabilization=1.0x,
@@ -53,8 +55,7 @@ import time
 import uuid
 from contextlib import contextmanager
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from typing import Any, Callable, Dict, Generator, List, Optional, Tuple
+from typing import Any, Dict, Generator, List, Optional, Tuple
 
 from lib.paths import project_root
 
@@ -210,11 +211,129 @@ def get_phase_modifier(
     return PHASE_MODIFIERS.get(phase, 1.0)
 
 
+def _parse_scalar(value: str) -> Any:
+    """Parse a minimal YAML scalar used by cognitive-os.yaml rate limits."""
+    value = value.split("#", 1)[0].strip().strip('"\'')
+    if value.lower() in {"true", "false"}:
+        return value.lower() == "true"
+    try:
+        if "." in value:
+            return float(value)
+        return int(value)
+    except ValueError:
+        return value
+
+
+def _valid_config_value(key: str, value: Any) -> bool:
+    """Return True when a parsed rate-limit config value is safe to apply."""
+    int_positive = {
+        "max_tool_calls_per_minute",
+        "max_agent_launches_per_hour",
+        "max_bash_commands_per_minute",
+        "max_file_writes_per_minute",
+        "diversity_penalty_min_events",
+    }
+    int_non_negative = {"cooldown_seconds"}
+    positive_float = {
+        "max_cost_per_hour_usd",
+        "burst_multiplier",
+        "diversity_penalty_cost",
+    }
+    ratio = {
+        "warning_threshold",
+        "operator_reserve_ratio",
+        "diversity_penalty_threshold",
+    }
+
+    if key in int_positive:
+        return isinstance(value, int) and not isinstance(value, bool) and value > 0
+    if key in int_non_negative:
+        return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+    if key in positive_float:
+        return isinstance(value, (int, float)) and not isinstance(value, bool) and value > 0
+    if key in ratio:
+        return (
+            isinstance(value, (int, float))
+            and not isinstance(value, bool)
+            and 0.0 <= float(value) <= 1.0
+        )
+    return False
+
+
+def _read_rate_limit_config(config_path: Optional[str] = None) -> "RateLimitConfig":
+    """Read ``security.rate_limits`` overrides from cognitive-os.yaml.
+
+    This deliberately avoids a mandatory YAML dependency because hooks must
+    degrade gracefully in minimal environments. Unknown or invalid keys are
+    ignored so one bad value does not disable the whole limiter.
+    """
+    config = RateLimitConfig()
+    paths_to_try: List[str] = []
+    if config_path:
+        paths_to_try.append(config_path)
+
+    project_dir = project_root()
+    if project_dir:
+        paths_to_try.append(os.path.join(project_dir, "cognitive-os.yaml"))
+        paths_to_try.append(
+            os.path.join(project_dir, ".cognitive-os", "cognitive-os.yaml")
+        )
+
+    paths_to_try.append("cognitive-os.yaml")
+    paths_to_try.append(os.path.join(".cognitive-os", "cognitive-os.yaml"))
+
+    valid_keys = set(config.__dataclass_fields__.keys())
+    for path in paths_to_try:
+        if not os.path.isfile(path):
+            continue
+        try:
+            lines = open(path, "r").read().splitlines()
+        except OSError:
+            continue
+
+        in_block = False
+        block_indent = 0
+        overrides: Dict[str, Any] = {}
+        for line in lines:
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
+            if not in_block:
+                if re.match(r"^\s*rate_limits:\s*(#.*)?$", line):
+                    in_block = True
+                    block_indent = len(line) - len(line.lstrip())
+                continue
+
+            indent = len(line) - len(line.lstrip())
+            if indent <= block_indent:
+                break
+            match = re.match(r"^\s*([A-Za-z_][A-Za-z0-9_]*):\s*(.+?)\s*$", line)
+            if not match:
+                continue
+            key, value = match.groups()
+            if key in valid_keys:
+                parsed_value = _parse_scalar(value)
+                if _valid_config_value(key, parsed_value):
+                    overrides[key] = parsed_value
+
+        if overrides:
+            for key, value in overrides.items():
+                try:
+                    setattr(config, key, value)
+                except (TypeError, ValueError):
+                    continue
+            return config
+
+    return config
+
+
 @dataclass
 class RateLimitConfig:
     """Configuration for rate limit thresholds.
 
-    These are the BASE limits before the phase modifier is applied.
+    Count limits are BASE refill rates before the phase modifier is applied.
+    The token bucket capacity is ``effective_limit * burst_multiplier`` so
+    legitimate short bursts can pass while sustained pressure is throttled.
     """
 
     max_tool_calls_per_minute: int = 30
@@ -223,6 +342,12 @@ class RateLimitConfig:
     max_file_writes_per_minute: int = 10
     max_cost_per_hour_usd: float = 5.0
     cooldown_seconds: int = 60
+    burst_multiplier: float = 1.5
+    warning_threshold: float = 0.80
+    operator_reserve_ratio: float = 0.20
+    diversity_penalty_threshold: float = 0.80
+    diversity_penalty_min_events: int = 5
+    diversity_penalty_cost: float = 2.0
 
 
 # Window durations in seconds per action type
@@ -247,12 +372,14 @@ VALID_ACTIONS = frozenset(_WINDOWS.keys())
 
 @dataclass
 class RateLimitState:
-    """Mutable state tracking timestamps and cost."""
+    """Mutable state tracking timestamps, token buckets, signatures, and cost."""
 
     tool_calls: List[float] = field(default_factory=list)
     agent_launches: List[float] = field(default_factory=list)
     bash_commands: List[float] = field(default_factory=list)
     file_writes: List[float] = field(default_factory=list)
+    action_signatures: Dict[str, List[Dict[str, Any]]] = field(default_factory=dict)
+    buckets: Dict[str, Dict[str, float]] = field(default_factory=dict)
     cost_usd: float = 0.0
     cost_reset_at: Optional[float] = None  # epoch when hourly cost resets
 
@@ -272,18 +399,31 @@ class RateLimitState:
             "agent_launches": self.agent_launches,
             "bash_commands": self.bash_commands,
             "file_writes": self.file_writes,
+            "action_signatures": self.action_signatures,
+            "buckets": self.buckets,
             "cost_usd": self.cost_usd,
             "cost_reset_at": self.cost_reset_at,
         }
 
     @classmethod
     def from_dict(cls, data: Dict) -> "RateLimitState":
+        if not isinstance(data, dict):
+            return cls()
+
+        def _list(name: str) -> List[float]:
+            value = data.get(name)
+            return value if isinstance(value, list) else []
+
+        signatures = data.get("action_signatures")
+        buckets = data.get("buckets")
         return cls(
-            tool_calls=data.get("tool_calls", []),
-            agent_launches=data.get("agent_launches", []),
-            bash_commands=data.get("bash_commands", []),
-            file_writes=data.get("file_writes", []),
-            cost_usd=data.get("cost_usd", 0.0),
+            tool_calls=_list("tool_calls"),
+            agent_launches=_list("agent_launches"),
+            bash_commands=_list("bash_commands"),
+            file_writes=_list("file_writes"),
+            action_signatures=signatures if isinstance(signatures, dict) else {},
+            buckets=buckets if isinstance(buckets, dict) else {},
+            cost_usd=data.get("cost_usd", 0.0) or 0.0,
             cost_reset_at=data.get("cost_reset_at"),
         )
 
@@ -299,7 +439,7 @@ class RateLimiter:
         phase: Optional[str] = None,
         config_path: Optional[str] = None,
     ):
-        self.config = config or RateLimitConfig()
+        self.config = config or _read_rate_limit_config(config_path)
         self.state_path = state_path
         self.state = self._load_state()
 
@@ -325,14 +465,100 @@ class RateLimiter:
         base = getattr(self.config, _LIMITS[action_type])
         return max(1, math.floor(base * self._phase_modifier))
 
-    def check(self, action_type: str) -> Tuple[bool, str]:
-        """Check if an action is allowed under current rate limits.
+    def burst_capacity(self, action_type: str) -> int:
+        """Return the token-bucket capacity for an action type."""
+        return max(1, math.ceil(self.effective_limit(action_type) * self.config.burst_multiplier))
 
-        Limits are scaled by the phase modifier before comparison.
+    def refill_rate_per_second(self, action_type: str) -> float:
+        """Return the token refill rate for an action type."""
+        return self.effective_limit(action_type) / _WINDOWS[action_type]
+
+    def _bucket_for(self, action_type: str, now: Optional[float] = None) -> Dict[str, float]:
+        """Refill and return the persisted token bucket for an action type."""
+        now = time.time() if now is None else now
+        capacity = float(self.burst_capacity(action_type))
+        bucket = self.state.buckets.get(action_type)
+        if not isinstance(bucket, dict):
+            bucket = {"tokens": capacity, "updated_at": now}
+            self.state.buckets[action_type] = bucket
+            return bucket
+
+        tokens = float(bucket.get("tokens", capacity))
+        updated_at = float(bucket.get("updated_at", now))
+        elapsed = max(0.0, now - updated_at)
+        tokens = min(capacity, tokens + elapsed * self.refill_rate_per_second(action_type))
+        bucket["tokens"] = tokens
+        bucket["updated_at"] = now
+        return bucket
+
+    def _priority_reserve(self, action_type: str, priority_lane: str) -> float:
+        """Return tokens reserved for operator lane."""
+        if priority_lane == "operator":
+            return 0.0
+        return self.burst_capacity(action_type) * self.config.operator_reserve_ratio
+
+    def _signature_events(
+        self, action_type: str, now: Optional[float] = None
+    ) -> List[Dict[str, Any]]:
+        """Return recent signature events for an action type."""
+        now = time.time() if now is None else now
+        window = _WINDOWS[action_type]
+        raw = self.state.action_signatures.get(action_type, [])
+        if not isinstance(raw, list):
+            raw = []
+        fresh = [e for e in raw if now - float(e.get("ts", 0.0)) < window]
+        self.state.action_signatures[action_type] = fresh
+        return fresh
+
+    def _diversity_penalty_active(
+        self, action_type: str, signature: Optional[str], now: Optional[float] = None
+    ) -> bool:
+        """Return True when recent traffic is dominated by one repeated signature."""
+        if not signature:
+            return False
+        events = self._signature_events(action_type, now=now)
+        if len(events) < self.config.diversity_penalty_min_events:
+            return False
+        counts: Dict[str, int] = {}
+        for event in events:
+            sig = str(event.get("signature", ""))
+            if sig:
+                counts[sig] = counts.get(sig, 0) + 1
+        if not counts:
+            return False
+        dominant_signature, dominant_count = max(counts.items(), key=lambda item: item[1])
+        dominance = dominant_count / len(events)
+        return (
+            dominant_signature == signature
+            and dominance >= self.config.diversity_penalty_threshold
+        )
+
+    def _token_cost(self, action_type: str, signature: Optional[str] = None) -> float:
+        """Return token cost, raising it when repeated signatures look loop-like."""
+        if self._diversity_penalty_active(action_type, signature):
+            return self.config.diversity_penalty_cost
+        return 1.0
+
+    def check(
+        self,
+        action_type: str,
+        priority_lane: str = "normal",
+        signature: Optional[str] = None,
+    ) -> Tuple[bool, str]:
+        """Check if an action is allowed under token-bucket flow control.
+
+        Limits are scaled by the phase modifier, then used as bucket refill
+        rates. Buckets carry burst capacity above the steady rate. The
+        ``operator`` priority lane may use reserved tokens that normal
+        orchestrator work cannot consume.
 
         Args:
             action_type: One of "tool_call", "agent_launch", "bash_command",
                          "file_write".
+            priority_lane: "operator" bypasses the reserve; all other lanes
+                           leave operator reserve intact.
+            signature: Optional stable signature for loop/diversity detection
+                       (for Bash, a command hash is sufficient).
 
         Returns:
             (allowed, reason) -- allowed is True if the action can proceed,
@@ -353,51 +579,81 @@ class RateLimiter:
                 f"x {self._phase_modifier} [{self._phase}])"
             )
 
-        # Check count limit for this action type (phase-adjusted)
-        timestamps = self.state._list_for(action_type)
-        limit = self.effective_limit(action_type)
-        window = _WINDOWS[action_type]
-
-        now = time.time()
-        recent = [t for t in timestamps if now - t < window]
-
-        if len(recent) >= limit:
+        bucket = self._bucket_for(action_type)
+        token_cost = self._token_cost(action_type, signature)
+        reserve = self._priority_reserve(action_type, priority_lane)
+        tokens = float(bucket.get("tokens", 0.0))
+        if tokens < token_cost or tokens - token_cost < reserve:
+            limit = self.effective_limit(action_type)
+            capacity = self.burst_capacity(action_type)
             base_limit = getattr(self.config, _LIMITS[action_type])
+            window = _WINDOWS[action_type]
             window_label = "minute" if window == 60 else "hour"
+            retry_after = max(
+                1,
+                math.ceil(
+                    (token_cost + reserve - tokens)
+                    / self.refill_rate_per_second(action_type)
+                ),
+            )
+            loop_note = " diversity penalty active;" if token_cost > 1 else ""
+            lane_note = " operator reserve protected;" if reserve > 0 else ""
             return False, (
-                f"{action_type} limit exceeded: {len(recent)}/{limit} "
-                f"per {window_label} "
+                f"{action_type} token bucket exhausted:{loop_note}{lane_note} "
+                f"{tokens:.2f}/{capacity} burst tokens available, cost {token_cost:.1f}, "
+                f"refill {limit} per {window_label} "
                 f"(base {base_limit} x {self._phase_modifier} [{self._phase}]). "
-                f"Wait {self.config.cooldown_seconds}s."
+                f"Wait ~{max(self.config.cooldown_seconds, retry_after)}s."
             )
 
         return True, "within limits"
 
-    def record(self, action_type: str, cost_usd: float = 0.0) -> None:
-        """Record an action for rate tracking.
+    def record(
+        self,
+        action_type: str,
+        cost_usd: float = 0.0,
+        signature: Optional[str] = None,
+    ) -> None:
+        """Record an action for rate tracking and consume bucket tokens.
 
         Args:
             action_type: One of the valid action types.
             cost_usd: Cost in USD for this action (default 0.0).
+            signature: Optional stable signature for diversity detection.
         """
         if action_type not in VALID_ACTIONS:
             return
 
-        now = time.time()
-        self.state._list_for(action_type).append(now)
+        with _queue_file_lock(self.state_path):
+            self.state = self._load_state()
+            now = time.time()
+            self._cleanup_old_entries()
+            self.state._list_for(action_type).append(now)
+            bucket = self._bucket_for(action_type, now=now)
+            token_cost = self._token_cost(action_type, signature)
+            bucket["tokens"] = max(
+                0.0, float(bucket.get("tokens", 0.0)) - token_cost
+            )
+            bucket["updated_at"] = now
+            if signature:
+                events = self._signature_events(action_type, now=now)
+                events.append({"ts": now, "signature": signature})
+                self.state.action_signatures[action_type] = events
 
-        # Track cost with hourly reset
-        if self.state.cost_reset_at is None or now >= self.state.cost_reset_at:
-            self.state.cost_usd = 0.0
-            self.state.cost_reset_at = now + 3600
+            # Track cost with hourly reset
+            if self.state.cost_reset_at is None or now >= self.state.cost_reset_at:
+                self.state.cost_usd = 0.0
+                self.state.cost_reset_at = now + 3600
 
-        self.state.cost_usd += cost_usd
-        self._save_state()
+            self.state.cost_usd += cost_usd
+            self._save_state()
 
     def get_status(self) -> Dict:
-        """Current rate limit status with remaining quota per type.
+        """Current rate limit status with token-bucket quota per type.
 
-        All limits reflect phase-adjusted effective values.
+        ``limit`` remains the phase-adjusted steady refill rate. ``burst_capacity``
+        is the maximum bucket depth. ``remaining`` is the number of immediately
+        usable tokens for normal-priority work after preserving operator reserve.
         """
         self._cleanup_old_entries()
         now = time.time()
@@ -409,15 +665,29 @@ class RateLimiter:
             base_limit = getattr(self.config, _LIMITS[action_type])
             window = _WINDOWS[action_type]
             recent = [t for t in timestamps if now - t < window]
+            bucket = self._bucket_for(action_type, now=now)
+            capacity = self.burst_capacity(action_type)
+            tokens = float(bucket.get("tokens", capacity))
+            reserve = self._priority_reserve(action_type, "normal")
+            normal_available = max(0.0, tokens - reserve)
+            pct_used = 1.0 - (tokens / capacity) if capacity > 0 else 0.0
             status[action_type] = {
                 "used": len(recent),
                 "limit": limit,
                 "base_limit": base_limit,
-                "remaining": max(0, limit - len(recent)),
+                "remaining": math.floor(normal_available),
+                "bucket_tokens": round(tokens, 4),
+                "burst_capacity": capacity,
+                "operator_reserve_tokens": round(reserve, 4),
+                "warning": pct_used >= self.config.warning_threshold,
+                "usage_ratio": round(pct_used, 4),
                 "window_seconds": window,
             }
 
         effective_cost_cap = self.config.max_cost_per_hour_usd * self._phase_modifier
+        cost_usage_ratio = (
+            self.state.cost_usd / effective_cost_cap if effective_cost_cap > 0 else 0.0
+        )
         status["cost"] = {
             "used_usd": round(self.state.cost_usd, 4),
             "limit_usd": round(effective_cost_cap, 4),
@@ -425,17 +695,43 @@ class RateLimiter:
             "remaining_usd": round(
                 max(0.0, effective_cost_cap - self.state.cost_usd), 4
             ),
+            "warning": cost_usage_ratio >= self.config.warning_threshold,
+            "usage_ratio": round(cost_usage_ratio, 4),
         }
 
         status["phase"] = self._phase
         status["phase_modifier"] = self._phase_modifier
+        status["burst_multiplier"] = self.config.burst_multiplier
+        status["warning_threshold"] = self.config.warning_threshold
+        status["operator_reserve_ratio"] = self.config.operator_reserve_ratio
 
         return status
 
+    def warnings(self) -> List[str]:
+        """Return soft warnings for buckets/cost at or above threshold."""
+        status = self.get_status()
+        messages: List[str] = []
+        for action_type in sorted(VALID_ACTIONS):
+            data = status[action_type]
+            if data.get("warning"):
+                used_pct = data["usage_ratio"] * 100
+                messages.append(
+                    f"{action_type} bucket at {used_pct:.0f}% "
+                    f"({data['bucket_tokens']}/{data['burst_capacity']} tokens left)"
+                )
+        cost = status["cost"]
+        if cost.get("warning"):
+            messages.append(
+                f"cost bucket at {cost['usage_ratio'] * 100:.0f}% "
+                f"(${cost['used_usd']:.2f}/${cost['limit_usd']:.2f})"
+            )
+        return messages
+
     def reset(self) -> None:
         """Reset all counters (manual override)."""
-        self.state = RateLimitState()
-        self._save_state()
+        with _queue_file_lock(self.state_path):
+            self.state = RateLimitState()
+            self._save_state()
 
     def format_status(self) -> str:
         """Human-readable status with phase, effective limits, and quotas."""
@@ -448,8 +744,9 @@ class RateLimiter:
             s = status[action_type]
             window_label = "min" if s["window_seconds"] == 60 else "hr"
             lines.append(
-                f"  {action_type}: {s['used']}/{s['limit']} per {window_label} "
-                f"(base {s['base_limit']}, {s['remaining']} remaining)"
+                f"  {action_type}: {s['used']}/{s['limit']} per {window_label}, "
+                f"bucket {s['bucket_tokens']}/{s['burst_capacity']} "
+                f"(base {s['base_limit']}, {s['remaining']} normal tokens remaining)"
             )
         cost = status["cost"]
         lines.append(
@@ -457,6 +754,9 @@ class RateLimiter:
             f"(base ${cost['base_limit_usd']:.2f}, "
             f"${cost['remaining_usd']:.2f} remaining)"
         )
+        warnings = self.warnings()
+        if warnings:
+            lines.append("  warnings: " + "; ".join(warnings))
         return "\n".join(lines)
 
     def format_limit_status(self, queue: Optional["RateLimitQueue"] = None) -> str:
@@ -487,11 +787,12 @@ class RateLimiter:
                 continue
             s = status[action_type]
             window_label = "minute" if s["window_seconds"] == 60 else "hour"
-            pct = (s["used"] / s["limit"] * 100) if s["limit"] > 0 else 0
+            pct = s.get("usage_ratio", 0) * 100
             name = display_names.get(action_type, action_type)
             lines.append(
-                f"  {name}: {s['used']}/{s['limit']} per {window_label} "
-                f"({pct:.0f}%) -- {s['remaining']} remaining"
+                f"  {name}: {s['used']}/{s['limit']} per {window_label}, "
+                f"bucket {s['bucket_tokens']}/{s['burst_capacity']} "
+                f"({pct:.0f}% used) -- {s['remaining']} normal tokens remaining"
             )
 
         # Cost line
@@ -505,6 +806,10 @@ class RateLimiter:
             f"  Cost: ${cost['used_usd']:.2f}/${cost['limit_usd']:.2f} per hour "
             f"({cost_pct:.0f}%)"
         )
+
+        warnings = self.warnings()
+        if warnings:
+            lines.append("  Soft warning: " + "; ".join(warnings))
 
         # Queue info if provided
         if queue is not None:
@@ -591,6 +896,10 @@ class RateLimiter:
             elif action_type == "file_write":
                 self.state.file_writes = fresh
 
+        for action_type in VALID_ACTIONS:
+            self._signature_events(action_type, now=now)
+            self._bucket_for(action_type, now=now)
+
         # Reset cost if hour elapsed
         if (
             self.state.cost_reset_at is not None
@@ -606,7 +915,7 @@ class RateLimiter:
                 with open(self.state_path, "r") as f:
                     data = json.load(f)
                 return RateLimitState.from_dict(data)
-            except (json.JSONDecodeError, KeyError, TypeError):
+            except (json.JSONDecodeError, KeyError, TypeError, AttributeError):
                 pass
         return RateLimitState()
 
