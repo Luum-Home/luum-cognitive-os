@@ -23,7 +23,7 @@
 - [x] Kernel contract tests exist.
 - [x] The skills/rules portability gap is documented in [Skills and Rules Portability Gap](../architecture/skills-rules-portability-gap.md).
 - [x] The canonicalization risk of moving skills/rules out of `.claude/` is documented in [Skills and Rules Canonicalization Risk Analysis](../architecture/skills-rules-canonicalization-risk-analysis.md).
-- [x] A step-by-step migration plan exists in [Skills and Rules Canonicalization Workplan](../architecture/skills-rules-canonicalization-workplan.md).
+- [x] A step-by-step migration plan exists in [Skills and Rules Canonicalization Workplan](../../.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md).
 - [x] Status and diagnostic tooling can read canonical-first artifact surfaces without changing install destinations.
 - [x] Core versus compatibility versus extension versus experimental taxonomy is documented in [Product Zones](../product-zones.md).
 - [x] New runtime additions are consistently classified by zone through root guardrails in [Product Zones Manifest](../../manifests/product-zones.yaml).
@@ -140,9 +140,9 @@
 - [x] A new user can see real evidence of value quickly.
 - [x] A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.
 
-- [x] Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-027](../architecture/adrs/027-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../architecture/plans/headless-clustered-runtime-plan.md).
-- [x] Competitive/runtime benchmark direction is documented in [Runtime Comparison Benchmark Plan](../architecture/plans/runtime-comparison-benchmark-plan.md), covering vanilla Claude/Codex, COS-enabled harnesses, and prior-art tools across workstation, VM, container, pod, and worker-cluster surfaces.
+- [x] Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-027](../architecture/adrs/027-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../../.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md).
+- [x] Competitive/runtime benchmark direction is documented in [Runtime Comparison Benchmark Plan](../../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md), covering vanilla Claude/Codex, COS-enabled harnesses, and prior-art tools across workstation, VM, container, pod, and worker-cluster surfaces.
 - [x] Competitive reassessment against OpenClaw and Hermes Agent is documented in [Competitive Reassessment: OpenClaw and Hermes Agent](competitive-reassessment-openclaw-hermes-2026-04.md), including native self-improvement, skill lifecycle, memory/profile bootstrap, and deployment/onboarding gaps.
 
-- [x] Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../architecture/plans/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice is covered by unit and behavior tests.
+- [x] Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../../.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice is covered by unit and behavior tests.
 - [x] Memory/Profile Bootstrap now creates a local source-linked, sanitized project profile draft during the first three sessions, with manual and Go CLI generate/inspect/promote/wipe commands, doctor coverage, and Codex SessionStart tests.
