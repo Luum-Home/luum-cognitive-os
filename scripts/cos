@@ -2,8 +2,12 @@
 # cos — minimal subcommand dispatcher for Cognitive OS
 #
 # Routes:
-#   cos status [flags]   -> scripts/cos-status.sh
-#   cos *                -> bin/cognitive-os.sh (init, doctor, list, install, ...)
+#   cos status [flags]                 -> scripts/cos-status.sh
+#   cos init-check                     -> scripts/cos-doctor-harness.sh --init-check
+#   cos doctor harness [flags]         -> scripts/cos-doctor-harness.sh
+#   cos measure harness-profiles       -> scripts/measure-harness-profiles.py
+#   cos sprint ...                     -> scripts/cos_sprint.py
+#   cos *                              -> bin/cognitive-os.sh (init, doctor, list, install, ...)
 #
 # This keeps the `cos` UX short (`cos status`, `cos init`) while leaving the
 # full CLI in bin/cognitive-os.sh unchanged.
@@ -20,12 +24,44 @@ case "$SUBCMD" in
     shift
     exec bash "$SCRIPT_DIR/cos-status.sh" "$@"
     ;;
+  init-check)
+    shift
+    exec bash "$SCRIPT_DIR/cos-doctor-harness.sh" --init-check "$@"
+    ;;
+  doctor)
+    if [ "${2:-}" = "harness" ]; then
+      shift 2
+      exec bash "$SCRIPT_DIR/cos-doctor-harness.sh" "$@"
+    fi
+    FULL_CLI="$PROJECT_ROOT/bin/cognitive-os.sh"
+    if [ ! -x "$FULL_CLI" ]; then
+      echo "cos: bin/cognitive-os.sh not found or not executable at $FULL_CLI" >&2
+      exit 1
+    fi
+    exec bash "$FULL_CLI" "$@"
+    ;;
+  measure)
+    if [ "${2:-}" = "harness-profiles" ]; then
+      shift 2
+      exec python3 "$SCRIPT_DIR/measure-harness-profiles.py" "$@"
+    fi
+    echo "cos: unknown measure target '${2:-}'. Try: cos measure harness-profiles" >&2
+    exit 1
+    ;;
+  sprint)
+    shift
+    exec python3 "$SCRIPT_DIR/cos_sprint.py" "$@"
+    ;;
   help|-h|--help|"")
     cat <<EOF
 cos — Cognitive OS command-line
 
 Usage:
   cos status [--verbose|--json|--help]   Show what is active (profile, skills, hooks, rules, health)
+  cos init-check                         Check the minimal harness readiness path
+  cos doctor harness [--json]            Check active harness projection and minimal profile
+  cos measure harness-profiles [--json]  Compare minimal vs full harness surface
+  cos sprint <cmd>                       Run sprint orchestration commands
   cos init [dir]                         Install Cognitive OS into a project
   cos doctor                             Check installation health
   cos list [type]                        List installed agentic primitives
