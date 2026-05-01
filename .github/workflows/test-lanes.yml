@@ -1,11 +1,10 @@
 # Lane-sharded test matrix (ADR-100 §CI distribution)
 #
-# Each lane runs on a dedicated GitHub Actions runner so the developer's local
-# machine never has to execute the full broad sweep. The lane registry
-# .cognitive-os/test-lanes.yaml is the single source of truth.
+# Matrix is generated dynamically from .cognitive-os/test-lanes.yaml so adding
+# a lane to the registry automatically adds it to CI — no workflow edits needed.
 #
-# Optional lanes (arena, benchmark, quality) are NOT in this default matrix.
-# Enable them with workflow_dispatch + the include-optional input.
+# Optional lanes (arena, benchmark, quality, e2e, smoke, integration, …) are
+# excluded from the default matrix. Enable with workflow_dispatch + include-optional.
 
 name: test-lanes
 
@@ -17,7 +16,7 @@ on:
   workflow_dispatch:
     inputs:
       include-optional:
-        description: "Include optional lanes (arena, benchmark, quality)"
+        description: "Include optional lanes (arena, benchmark, quality, e2e, smoke, integration, …)"
         required: false
         default: "false"
         type: boolean
@@ -27,13 +26,54 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # ── Setup: parse .cognitive-os/test-lanes.yaml and emit matrix lists ─────────
+  setup:
+    name: Parse lane registry
+    runs-on: ubuntu-latest
+    outputs:
+      parallel-lanes: ${{ steps.parse.outputs.parallel }}
+      serial-lanes:   ${{ steps.parse.outputs.serial }}
+      optional-lanes: ${{ steps.parse.outputs.optional }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: parse
+        name: Emit lane groups as JSON
+        run: |
+          python3 - <<'EOF' >> "$GITHUB_OUTPUT"
+          import yaml, json
+
+          with open('.cognitive-os/test-lanes.yaml') as f:
+              data = yaml.safe_load(f)
+
+          lanes = data.get('lanes', {})
+
+          parallel = [
+              name for name, cfg in lanes.items()
+              if cfg.get('parallel') is True and not cfg.get('optional')
+          ]
+          serial = [
+              name for name, cfg in lanes.items()
+              if cfg.get('parallel') is False and not cfg.get('optional')
+          ]
+          optional = [
+              name for name, cfg in lanes.items()
+              if cfg.get('optional')
+          ]
+
+          print(f"parallel={json.dumps(parallel)}")
+          print(f"serial={json.dumps(serial)}")
+          print(f"optional={json.dumps(optional)}")
+          EOF
+
+  # ── Parallel-safe lanes ───────────────────────────────────────────────────────
   parallel-safe:
     name: lane (${{ matrix.lane }})
+    needs: setup
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        lane: [unit, audit, contract, architecture, system]
+        lane: ${{ fromJson(needs.setup.outputs.parallel-lanes) }}
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -66,13 +106,15 @@ jobs:
           path: .cognitive-os/reports/test-runs/latest/
           retention-days: 7
 
+  # ── Serial / stateful lanes ───────────────────────────────────────────────────
   serial-stateful:
     name: lane (${{ matrix.lane }})
+    needs: setup
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        lane: [integration, behavior, hooks, e2e, chaos]
+        lane: ${{ fromJson(needs.setup.outputs.serial-lanes) }}
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
@@ -105,14 +147,16 @@ jobs:
           path: .cognitive-os/reports/test-runs/latest/
           retention-days: 7
 
+  # ── Optional lanes (workflow_dispatch only) ───────────────────────────────────
   optional-lanes:
     name: optional lane (${{ matrix.lane }})
+    needs: setup
     if: github.event_name == 'workflow_dispatch' && inputs.include-optional == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        lane: [arena, benchmark, quality]
+        lane: ${{ fromJson(needs.setup.outputs.optional-lanes) }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
