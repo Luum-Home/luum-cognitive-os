@@ -20,6 +20,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--format", choices=("json", "markdown", "sarif"), default="json")
     parser.add_argument("--out", default="")
     parser.add_argument("--fail-under", type=float, default=None, help="Exit 1 when average score is below this value")
+    parser.add_argument("--fail-actionable-gaps", action="store_true", help="Exit 1 when COS audit marks any actionable primitive gap")
     parser.add_argument("--no-cos-audits", action="store_true")
     return parser.parse_args()
 
@@ -39,7 +40,10 @@ def main() -> int:
         out.write_text(rendered, encoding="utf-8")
     else:
         print(rendered, end="")
-    if args.fail_under is not None and report.summary()["average_score"] < args.fail_under:
+    summary = report.summary()
+    if args.fail_under is not None and summary["average_score"] < args.fail_under:
+        return 1
+    if args.fail_actionable_gaps and summary.get("actionable_gaps", 0):
         return 1
     return 0
 

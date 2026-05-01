@@ -19,13 +19,15 @@ def write(path: Path, content: str) -> None:
 
 
 def test_collect_reports_hook_wiring_and_metrics(tmp_path: Path) -> None:
-    write(tmp_path / "hooks/example.sh", "#!/usr/bin/env bash\necho ok\n")
-    write(tmp_path / ".claude/settings.json", '{"command":"hooks/example.sh"}')
-    write(tmp_path / "tests/test_example.py", "def test_example():\n    assert 'example.sh'\n")
-    write(tmp_path / "skills/demo/SKILL.md", "---\nname: demo\n---\n")
-    write(tmp_path / "rules/demo.md", "<!-- TIER: 1 -->\n# Demo\n")
+    write(tmp_path / "hooks/example.sh", "#!/usr/bin/env bash\necho ok >> .cognitive-os/metrics/example.jsonl\n")
+    write(tmp_path / ".claude/settings.json", '{"hooks":{"PreToolUse":[{"hooks":[{"type":"command","command":"bash hooks/example.sh"}]}]}}')
+    write(tmp_path / "tests/test_example.py", "def test_example():\n    assert 'example.sh'\n    assert 'SKILL_RUNTIME_CONTRACT_GLOBS'\n    assert 'RULE_RUNTIME_CONTRACT_GLOBS'\n")
+    write(tmp_path / "skills/demo/SKILL.md", "---\nname: demo\ntriggers: [demo]\n---\n# Demo\n\nContextual Trigger: demo\n")
+    write(tmp_path / "rules/RULES-COMPACT.md", "demo.md\n")
+    write(tmp_path / "rules/demo.md", "<!-- TIER: 1 -->\n# Demo\n\nContextual Trigger: demo\n")
     write(tmp_path / ".cognitive-os/metrics/example.jsonl", '{"event":"x"}\n')
     write(tmp_path / ".cognitive-os/metrics/empty.jsonl", "")
+    write(tmp_path / "manifests/reduction-demotions.json", '{"demotions":[{"family":"metrics","path":".cognitive-os/metrics/empty.jsonl"}]}')
     write(tmp_path / ".cognitive-os/metrics/hook-timing.jsonl", '{"duration_ms": 10}\n{"duration_ms": 30}\n')
     write(tmp_path / "docs/adrs/ADR-001-demo.md", "# ADR-001\n")
     write(tmp_path / "docs/index.md", "ADR-001\n")
@@ -37,7 +39,9 @@ def test_collect_reports_hook_wiring_and_metrics(tmp_path: Path) -> None:
     assert families["hooks"].total == 1
     assert families["hooks"].proven_signal == 1
     assert families["metrics"].total == 3
-    assert families["metrics"].proven_signal == 2
+    assert families["metrics"].proven_signal == 1
+    assert sum(family.aspirational_signal for family in snapshot.families) == 0
+    assert snapshot.overall_risk == "low"
     assert snapshot.hook_latency["p50_ms"] == 20
     assert snapshot.hook_latency["p95_ms"] == 30
 

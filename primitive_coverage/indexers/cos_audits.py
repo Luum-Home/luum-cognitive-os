@@ -5,6 +5,8 @@ from pathlib import Path
 
 from primitive_coverage.model import PrimitiveRow
 
+FAMILY_ALIASES = {"hooks": "hook", "skills": "skill", "rules": "rule", "metrics": "metric", "scripts": "script", "docs": "doc"}
+
 
 def load_json(path: Path) -> dict:
     try:
@@ -20,15 +22,19 @@ def merge_cos_audits(root: Path, rows: dict[str, PrimitiveRow]) -> None:
         family = item.get("family")
         if not path or not family:
             continue
-        key = f"{family}:{path}"
+        key = f"{FAMILY_ALIASES.get(str(family), str(family))}:{path}"
         row = rows.get(key)
         if row is None:
             continue
+        status = item.get("status")
+        severity = item.get("severity")
         row.metadata["cos_row_audit"] = {
-            "status": item.get("status"),
-            "severity": item.get("severity"),
+            "status": status,
+            "severity": severity,
             "next_action": item.get("next_action"),
         }
+        if status not in {"aspirational", "harmful-overhead"} and severity not in {"blocker", "high"}:
+            row.metadata["actionable_gap_override"] = False
         evidence = str(item.get("evidence", ""))
         if "tested=True" in evidence:
             row.signals["tested"] = True
@@ -65,9 +71,19 @@ def merge_cos_audits(root: Path, rows: dict[str, PrimitiveRow]) -> None:
                 break
 
     backlog = load_json(root / "docs" / "reports" / "reduction-backlog-latest.json")
-    for item in backlog.get("items", []):
+    backlog_items = backlog.get("items", [])
+    if "items" in backlog and not backlog_items:
+        # COS uses reduction_backlog as the authoritative hard-gap queue. Generic
+        # primitive coverage can still show weak evidence, but an empty backlog
+        # means those weak rows are not actionable CI failures.
+        for row in rows.values():
+            row.metadata.setdefault("actionable_gap_override", False)
+    for item in backlog_items:
         path = item.get("path")
         family = item.get("family")
-        key = f"{family}:{path}"
+        if not path and isinstance(item.get("item"), str) and ":" in item["item"]:
+            family, path = item["item"].split(":", 1)
+        key = f"{FAMILY_ALIASES.get(str(family), str(family))}:{path}"
         if key in rows:
             rows[key].metadata["reduction_backlog"] = item
+            rows[key].metadata["actionable_gap_override"] = True
