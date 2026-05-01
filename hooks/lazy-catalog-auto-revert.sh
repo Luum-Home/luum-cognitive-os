@@ -30,11 +30,12 @@ fi
 [ -f "$BASELINE_FILE" ] || exit 0
 [ -f "$TELEMETRY_FILE" ] || exit 0
 
+export PROJECT_DIR
 REVERT=$(python3 - <<'PYEOF' 2>/dev/null
-import json, time, sys
+import json, os, time, sys
 from pathlib import Path
 
-project_dir = "$PROJECT_DIR"
+project_dir = os.environ.get("PROJECT_DIR", ".")
 baseline_path = Path(project_dir) / "docs" / "measurements" / "lazy-catalog-baseline.json"
 telemetry_path = Path(project_dir) / ".cognitive-os" / "runtime" / "skill-discovery.jsonl"
 
