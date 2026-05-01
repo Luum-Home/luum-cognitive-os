@@ -54,22 +54,43 @@ fi
 
 INDEX_MTIME=$(date -r "$MTIME_FILE" +%s 2>/dev/null || echo 0)
 
-# Collect newest mtime across source trees
-NEWEST_MTIME=0
-for dir in \
-  "$PROJECT_DIR/lib" \
-  "$PROJECT_DIR/hooks" \
-  "$PROJECT_DIR/scripts" \
-  "$PROJECT_DIR/docs/adrs" \
-  "$PROJECT_DIR/packages"; do
-  if [ ! -d "$dir" ]; then continue; fi
-  while IFS= read -r -d '' f; do
-    FILE_MTIME=$(date -r "$f" +%s 2>/dev/null || echo 0)
-    if [ "$FILE_MTIME" -gt "$NEWEST_MTIME" ]; then
-      NEWEST_MTIME="$FILE_MTIME"
-    fi
-  done < <(find "$dir" -maxdepth 4 -type f \( -name "*.py" -o -name "*.sh" -o -name "*.md" \) -print0 2>/dev/null)
-done
+# Collect newest mtime across source trees using Python os.stat() — avoids
+# spawning one `date -r` subprocess per file (O(N) was the 5.8s p95 root cause).
+NEWEST_MTIME=$(python3 - "$PROJECT_DIR" "$INDEX_MTIME" <<'PYSTAT' 2>/dev/null || echo 0
+import os, sys
+from pathlib import Path
+
+project_dir = sys.argv[1]
+index_mtime = int(sys.argv[2])
+dirs = ["lib", "hooks", "scripts", "docs/adrs", "packages"]
+exts = {".py", ".sh", ".md"}
+newest = 0
+
+for d in dirs:
+    base = Path(project_dir) / d
+    if not base.is_dir():
+        continue
+    for root, _, files in os.walk(base):
+        # Respect maxdepth 4
+        depth = len(Path(root).relative_to(base).parts)
+        if depth > 4:
+            continue
+        for fname in files:
+            if Path(fname).suffix in exts:
+                try:
+                    mtime = int(os.stat(os.path.join(root, fname)).st_mtime)
+                    if mtime > newest:
+                        newest = mtime
+                        # Early exit: already newer than index
+                        if newest > index_mtime:
+                            print(newest)
+                            sys.exit(0)
+                except OSError:
+                    pass
+
+print(newest)
+PYSTAT
+)
 
 if [ "$NEWEST_MTIME" -gt "$INDEX_MTIME" ]; then
   rebuild_background "stale"
