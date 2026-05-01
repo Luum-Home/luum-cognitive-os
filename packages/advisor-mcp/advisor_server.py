@@ -6,11 +6,11 @@ Any AI coding agent (Claude Code, Cursor, Windsurf, etc.) can call the
 mid-task, without writing code themselves.
 
 Inspired by Anthropic's Advisor Strategy, but vendor-agnostic: works with
-Anthropic, OpenAI, Google, LiteLLM proxy, or a local Ollama instance.
+local Ollama, LiteLLM proxy, OpenAI, Google, or explicitly enabled Anthropic API.
 
 Requirements:
     pip install fastmcp
-    pip install anthropic        # for provider="anthropic"
+    pip install anthropic        # for provider="anthropic" (explicit policy-gated)
     pip install openai           # for provider="openai"
     pip install google-generativeai  # for provider="google"
     pip install litellm          # for provider="litellm"
@@ -27,7 +27,9 @@ Configure in .claude/settings.json:
                 "args": ["-m", "packages.advisor-mcp.advisor_server"],
                 "env": {
                     "OPENAI_API_KEY": "${OPENAI_API_KEY}",
-                    "GOOGLE_API_KEY": "${GOOGLE_API_KEY}"
+                    "GOOGLE_API_KEY": "${GOOGLE_API_KEY}",
+                    "LITELLM_API_BASE": "${LITELLM_API_BASE}",
+                    "LITELLM_MODEL": "${LITELLM_MODEL}"
                 }
             }
         }
@@ -36,6 +38,7 @@ Configure in .claude/settings.json:
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import os
 import sys
@@ -113,6 +116,14 @@ _DEFAULT_MODELS: dict[str, str] = {
     "litellm": "gpt-4o",
     "local": "llama3",
 }
+
+_AUTO_PROVIDER_ORDER: tuple[str, ...] = (
+    "local",
+    "litellm",
+    "openai",
+    "google",
+    "anthropic",
+)
 
 # ---------------------------------------------------------------------------
 # Cost estimation (per 1M tokens, input/output in USD)
@@ -344,8 +355,135 @@ async def _call_local(
 
 
 # ---------------------------------------------------------------------------
-# Provider routing
+# Provider routing and safe auto-resolution
 # ---------------------------------------------------------------------------
+
+def _module_available(module_name: str) -> bool:
+    """Return True when *module_name* can be imported without importing it."""
+    try:
+        return importlib.util.find_spec(module_name) is not None
+    except (ImportError, ValueError):
+        return False
+
+
+def _env_present(*names: str) -> bool:
+    """Return True when any named environment variable has a non-empty value."""
+    return any(bool(os.getenv(name, "").strip()) for name in names)
+
+
+def _anthropic_provider_available() -> bool:
+    """Return True when Anthropic direct API use is explicitly allowed."""
+    if not _module_available("anthropic") or not _env_present("ANTHROPIC_API_KEY"):
+        return False
+    try:
+        from lib.anthropic_direct_policy import direct_anthropic_api_enabled
+
+        return direct_anthropic_api_enabled()
+    except Exception:
+        return False
+
+
+def _openai_provider_available() -> bool:
+    """Return True when OpenAI has both SDK and credentials."""
+    return _module_available("openai") and _env_present("OPENAI_API_KEY")
+
+
+def _google_provider_available() -> bool:
+    """Return True when Google Generative AI has both SDK and credentials."""
+    return _module_available("google.generativeai") and _env_present(
+        "GOOGLE_API_KEY",
+        "GEMINI_API_KEY",
+    )
+
+
+def _litellm_provider_available() -> bool:
+    """Return True when LiteLLM is installed and explicitly configured."""
+    return _module_available("litellm") and _env_present(
+        "LITELLM_API_BASE",
+        "LITELLM_BASE_URL",
+        "LITELLM_PROXY_URL",
+        "LITELLM_MODEL",
+    )
+
+
+async def _local_provider_available(model: str = "") -> bool:
+    """Return True when a local Ollama service and target model are reachable."""
+    if not _module_available("httpx"):
+        return False
+
+    try:
+        import httpx
+
+        target_model = model.strip() or _default_model_for_provider("local")
+        ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
+        async with httpx.AsyncClient(timeout=0.5) as client:
+            response = await client.get(f"{ollama_url}/api/tags")
+        if response.status_code >= 500:
+            return False
+
+        tags = response.json().get("models", [])
+        model_names = {item.get("name", "") for item in tags if isinstance(item, dict)}
+        return target_model in model_names or any(
+            name.split(":", 1)[0] == target_model for name in model_names
+        )
+    except Exception:
+        return False
+
+
+async def _provider_available(provider: str, model: str = "") -> bool:
+    """Return True when *provider* can be used without implicit paid fallback."""
+    checks = {
+        "anthropic": _anthropic_provider_available,
+        "openai": _openai_provider_available,
+        "google": _google_provider_available,
+        "litellm": _litellm_provider_available,
+    }
+    if provider == "local":
+        return await _local_provider_available(model)
+    check = checks.get(provider)
+    return bool(check and check())
+
+
+def _provider_candidates_for_model(model: str) -> tuple[str, ...]:
+    """Narrow auto provider candidates when the caller supplied a model name."""
+    normalized = model.strip().lower()
+    if not normalized:
+        return _AUTO_PROVIDER_ORDER
+    if normalized.startswith("claude"):
+        return ("anthropic",)
+    if normalized.startswith(("gpt", "o1", "o3", "o4")):
+        return ("openai", "litellm")
+    if normalized.startswith(("gemini", "models/gemini")):
+        return ("google", "litellm")
+    if "/" in normalized:
+        return ("litellm", "local")
+    return _AUTO_PROVIDER_ORDER
+
+
+def _default_model_for_provider(provider: str) -> str:
+    """Return the provider default model, honoring explicit gateway config."""
+    if provider == "litellm" and os.getenv("LITELLM_MODEL", "").strip():
+        return os.environ["LITELLM_MODEL"].strip()
+    return _DEFAULT_MODELS.get(provider, "")
+
+
+async def _resolve_auto_provider(model: str = "") -> tuple[str, str]:
+    """Resolve provider=auto without choosing cost-bearing providers implicitly."""
+    unavailable: list[str] = []
+    for candidate in _provider_candidates_for_model(model):
+        if await _provider_available(candidate, model):
+            return candidate, ""
+        unavailable.append(candidate)
+
+    checked = ", ".join(unavailable)
+    return "", (
+        "ERROR: No advisor provider available for provider=auto. "
+        f"Checked: {checked}. Start Ollama for provider=local, configure LiteLLM, "
+        "or set a provider explicitly with its SDK and credentials. Anthropic is "
+        "eligible only when llm_providers.claude_sdk.enabled: true and "
+        "ANTHROPIC_API_KEY is set."
+    )
+
 
 _PROVIDERS = {
     "anthropic": _call_anthropic,
@@ -365,7 +503,7 @@ _PROVIDERS = {
 async def consult_advisor(
     context: str,
     question: str,
-    provider: str = "local",
+    provider: str = "auto",
     model: str = "",
     max_tokens: int = 500,
 ) -> str:
@@ -380,7 +518,8 @@ async def consult_advisor(
                  constraints discovered, work completed).
         question: Specific strategic question for the advisor.
         provider: AI provider to use. One of: local, litellm, openai, google,
-                  anthropic. Default: local. The anthropic provider requires
+                  anthropic, auto. Default: auto. Auto prefers local and explicitly
+                  configured non-Anthropic providers; the anthropic provider requires
                   llm_providers.claude_sdk.enabled: true.
         model: Override the model (leave empty to use provider default).
                Examples: claude-opus-4-6, gpt-4o, gemini-2.5-pro, llama3.
@@ -392,11 +531,16 @@ async def consult_advisor(
         provider SDK is not installed or the API call fails.
     """
     provider = provider.lower().strip()
+    if provider == "auto":
+        provider, error = await _resolve_auto_provider(model)
+        if error:
+            return error
+
     if provider not in _PROVIDERS:
-        supported = ", ".join(sorted(_PROVIDERS.keys()))
+        supported = ", ".join(sorted([*_PROVIDERS.keys(), "auto"]))
         return f"ERROR: Unknown provider '{provider}'. Supported: {supported}"
 
-    resolved_model = model.strip() if model.strip() else _DEFAULT_MODELS.get(provider, "")
+    resolved_model = model.strip() if model.strip() else _default_model_for_provider(provider)
     if not resolved_model:
         return f"ERROR: No model specified and no default for provider '{provider}'."
 
