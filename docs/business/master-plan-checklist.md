@@ -140,7 +140,7 @@
 - [x] A new user can see real evidence of value quickly.
 - [x] A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.
 
-- [x] Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-027](../architecture/adrs/027-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../../.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md).
+- [x] Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-091](../adrs/ADR-091-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../../.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md).
 - [x] Competitive/runtime benchmark direction is documented in [Runtime Comparison Benchmark Plan](../../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md), covering vanilla Claude/Codex, COS-enabled harnesses, and prior-art tools across workstation, VM, container, pod, and worker-cluster surfaces.
 - [x] Competitive reassessment against OpenClaw and Hermes Agent is documented in [Competitive Reassessment: OpenClaw and Hermes Agent](competitive-reassessment-openclaw-hermes-2026-04.md), including native self-improvement, skill lifecycle, memory/profile bootstrap, and deployment/onboarding gaps.
 
@@ -148,3 +148,4 @@
 - [x] Memory/Profile Bootstrap now creates a local source-linked, sanitized project profile draft during the first three sessions, with manual and Go CLI generate/inspect/promote/wipe commands, doctor coverage, and Codex SessionStart tests.
 
 - [x] Action-count rate limiting uses token buckets with soft warnings, operator reserve, and diversity penalty (ADR-101).
+- [x] Audit/contract lane recovery is documented in [ADR-103](../adrs/ADR-103-audit-contract-lane-recovery.md) and [Audit and Contract Lane Recovery Plan](../../.cognitive-os/plans/architecture/audit-contract-lane-recovery-plan.md), with deterministic docs debt fixed before the parallel flip.

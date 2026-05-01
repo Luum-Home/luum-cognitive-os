@@ -8,6 +8,10 @@
 
 ---
 
+## Status
+
+Accepted.
+
 ## Context
 
 `hooks/pre-agent-snapshot.sh` ran `git stash push --include-untracked --keep-index` before every Agent tool launch. This was intended to create a rollback point so `post-agent-verify.sh` could restore out-of-scope writes.
@@ -51,14 +55,14 @@ Replace `--include-untracked` with a **copy-to-backup-dir** approach for untrack
 
 5. **Recovery**: `crash-recovery.sh` reads the manifest and surfaces both halves (untracked backup + tracked stash) for operator restoration. `lib/snapshot_manager.restore_snapshot()` handles the actual restoration.
 
-6. **TTL / cleanup**: `scripts/cleanup_snapshots.sh` calls `lib/snapshot_manager.prune_expired(ttl_days=30)`. TTL configurable in `cognitive-os.yaml` under `snapshots.ttl_days`.
+6. **TTL / cleanup**: `scripts/cleanup-snapshots.sh` calls `lib/snapshot_manager.prune_expired(ttl_days=30)`. TTL configurable in `cognitive-os.yaml` under `snapshots.ttl_days`.
 
 **Implementation artefacts**:
 - `lib/snapshot_manager.py` — pure-Python helper (`create_snapshot`, `list_snapshots`, `restore_snapshot`, `prune_expired`)
 - `hooks/pre-agent-snapshot.sh` — updated; delegates to `snapshot_manager.py` via inline Python heredoc
 - `hooks/crash-recovery.sh` — extended to surface snapshot manifests (backward-compat: still shows legacy stashes)
 - `cognitive-os.yaml` — new `snapshots:` section (ttl_days, mode)
-- `scripts/cleanup_snapshots.sh` — operator script
+- `scripts/cleanup-snapshots.sh` — operator script
 - `tests/unit/test_snapshot_manager.py` — 9 unit tests
 - `tests/integration/test_pre_agent_snapshot_border_cases.py` — 9 integration tests against real hooks
 - `scripts/chaos/` — 3 operator runbook scripts
@@ -104,22 +108,24 @@ New-path snapshots live in `.cognitive-os/snapshots/` and coexist with old stash
 ### Negative
 - **Disk usage**: snapshot copies accumulate until pruned. On a busy system with large untracked files and frequent agent launches, this could grow. Bounded by:
   - TTL prune (30 days default)
-  - `scripts/cleanup_snapshots.sh` can be run manually or scheduled
+  - `scripts/cleanup-snapshots.sh` can be run manually or scheduled
   - Future improvement: size-cap per snapshot or per repo
 
 ### Follow-up
 - Consider a size-cap guard (e.g., reject copy if total snapshot dir > N MB) in addition to TTL.
-- `cleanup_snapshots.sh` could be registered as a periodic hook (SessionEnd or daily cron).
+- `cleanup-snapshots.sh` could be registered as a periodic hook (SessionEnd or daily cron).
 - The manifest schema may evolve as crash-recovery.sh gains richer restoration UX; versioning in manifest recommended.
 
 ---
 
 ## Alternatives rejected
 
-**Scope-limited stash (don't stash untracked)**: what we implemented. We rejected pure `git stash push --keep-index` (no untracked handling at all) because it leaves no backup of untracked files, which defeats the safety-net purpose.
+- Keep the previous behavior unchanged — rejected because the audit or runtime failure would remain deterministic and would continue masking real regressions.
 
-**No snapshot at all**: removes the safety net entirely. Rejected because `post-agent-verify.sh` relies on it for out-of-scope write detection.
+## Verification
 
-**`git worktree` isolation**: creating a separate worktree per agent would fully isolate the WT. Rejected due to complexity: worktrees share the object store but not the index; setting one up per agent on every hook invocation is expensive and breaks multi-session assumptions.
+Run the focused contract for this decision:
 
-**Stash with pathspec per-file**: stash each untracked file individually via pathspec. Rejected because (a) pathspecs for untracked files in git stash are complex, (b) it still moves files out of WT, (c) no benefit over the copy approach.
+```bash
+python3 -m pytest tests/behavior/test_pre_agent_snapshot.py tests/unit/test_snapshot_manager.py -q
+```

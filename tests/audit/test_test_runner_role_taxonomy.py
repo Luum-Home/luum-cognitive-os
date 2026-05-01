@@ -45,8 +45,8 @@ def test_test_runner_role_taxonomy_maps_concerns_to_distinct_owners() -> None:
     assert {role: cells[1] for role, cells in rows.items() if role in {"Selection", "Execution", "Reporting", "Governance", "Lifecycle"}} == {
         "Selection": "`.cognitive-os/test-lanes.yaml`, `tests/conftest.py`, `cos-test focused / cluster / broad`",
         "Execution": "`cmd/cos-test`",
-        "Reporting": "`scripts/pytest-with-summary.sh`",
-        "Governance": "hooks/skills such as `auto-verify`, `dod-gate`, `coverage-enforcement`, `test-quality-audit`",
+        "Reporting": "`scripts/pytest-with-summary.sh`, `tests/coverage-report.sh`, `scripts/cos_test_quality_audit.py`",
+        "Governance": "hooks/skills such as `auto-verify`, `dod-gate`, `pre-commit-gate`, `coverage-enforcement`, `test-quality-audit`",
         "Lifecycle": "metrics JSONL, baselines, repair ledgers",
     }
 
