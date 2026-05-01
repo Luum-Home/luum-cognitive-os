@@ -98,6 +98,7 @@
   path: memory, doctor, minimal hooks, safety, changelog/session learning, and
   checks only where they provide clear value.
 - [x] Harness transparency status is documented honestly: memory protection and fallback persistence work today across Claude Code and Codex, while ADR-064 Surfaces 2–4 remain the path to full cross-harness transparency.
+- [x] Harness engineering is now documented and protected through [Harness Engineering](../architecture/harness-engineering.md), `manifests/harness-profiles.yaml`, `cos init-check`, `cos doctor harness`, `cos measure harness-profiles`, and `cos sprint run --dispatch`.
 - [x] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
 - [x] Setup and onboarding flows have visible performance budgets and regression tests through `scripts/demo-first-run-onboarding.sh` and `tests/integration/test_first_run_onboarding.py`.
