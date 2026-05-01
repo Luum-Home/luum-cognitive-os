@@ -107,7 +107,9 @@ except Exception:
 
 count_errors() {
   local logfile="$1"
-  grep -cE '\b(ERROR|FAIL|fatal)\b' "$logfile" 2>/dev/null || echo 0
+  local n
+  n="$(grep -cE '\b(ERROR|FAIL|fatal)\b' "$logfile" 2>/dev/null)" || n=0
+  echo "$n"
 }
 
 # ── Emit JSONL record ─────────────────────────────────────────────────────────

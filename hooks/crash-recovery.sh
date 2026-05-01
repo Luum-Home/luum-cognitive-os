@@ -77,8 +77,59 @@ if ! git -C "$PROJECT_DIR" rev-parse --git-dir >/dev/null 2>&1; then
     exit 0
 fi
 
-# Check for cos- checkpoint stashes
-STASHES=$(git -C "$PROJECT_DIR" stash list 2>/dev/null | grep "cos-" | head -5)
+# ── New-style snapshot recovery (ADR-099) ────────────────────────────────────
+# Surface incomplete snapshots from .cognitive-os/snapshots/ that have both
+# untracked file copies and/or a tracked stash ref.
+SNAPSHOTS_DIR="$PROJECT_DIR/.cognitive-os/snapshots"
+if [ -d "$SNAPSHOTS_DIR" ] && command -v python3 >/dev/null 2>&1; then
+    SNAPSHOT_REPORT=$(python3 - <<'PYEOF' 2>/dev/null
+import sys, json, os
+project_dir = os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+sys.path.insert(0, project_dir)
+try:
+    from lib.snapshot_manager import list_snapshots
+    from pathlib import Path
+    snaps = list_snapshots(Path(project_dir))
+    if not snaps:
+        sys.exit(0)
+    # Show the 3 most recent
+    for s in snaps[:3]:
+        sid = s.get("snapshot_id", "?")
+        ts = s.get("timestamp_iso", "?")
+        untracked = s.get("untracked_files", [])
+        stash = s.get("tracked_stash_ref") or "none"
+        mode = s.get("mode", "?")
+        status = s.get("status", "?")
+        print(f"  [{mode}|{status}] {sid}")
+        print(f"    created: {ts}")
+        print(f"    untracked files backed up: {len(untracked)}")
+        print(f"    tracked stash: {stash}")
+        if untracked:
+            for f in untracked[:5]:
+                print(f"      - {f}")
+            if len(untracked) > 5:
+                print(f"      ... and {len(untracked)-5} more")
+except Exception as exc:
+    pass
+PYEOF
+)
+    if [ -n "$SNAPSHOT_REPORT" ]; then
+        echo "" >&2
+        echo "INFO: SNAPSHOT RECOVERY (ADR-099): Found recent pre-agent snapshots:" >&2
+        echo "$SNAPSHOT_REPORT" >&2
+        echo "" >&2
+        echo "  To restore a snapshot (all files):" >&2
+        echo "    python3 -c \"from lib.snapshot_manager import restore_snapshot; from pathlib import Path; restore_snapshot(Path('.'), '<snapshot_id>')\"" >&2
+        echo "  To restore specific files:" >&2
+        echo "    python3 -c \"from lib.snapshot_manager import restore_snapshot; from pathlib import Path; restore_snapshot(Path('.'), '<snapshot_id>', files=['path/to/file'])\"" >&2
+        echo "  To prune old snapshots (>30d):" >&2
+        echo "    python3 -c \"from lib.snapshot_manager import prune_expired; from pathlib import Path; prune_expired(Path('.'))\"" >&2
+        echo "" >&2
+    fi
+fi
+
+# ── Legacy stash recovery (cos- stashes from old pre-agent-snapshot path) ────
+STASHES=$(git -C "$PROJECT_DIR" stash list 2>/dev/null | grep -E "(cos-|auto-pre-agent-)" | head -5)
 if [ -z "$STASHES" ]; then
     exit 0
 fi
@@ -123,7 +174,11 @@ fi
 echo "" >&2
 echo "  To restore: git stash apply (picks most recent)" >&2
 echo "  To discard: git stash drop" >&2
-echo "  To list all: git stash list | grep cos-" >&2
+echo "  To list all: git stash list | grep -E '(cos-|auto-pre-agent-)'" >&2
+echo "" >&2
+echo "  NOTE: cos-* stashes were created by the legacy pre-agent-snapshot path." >&2
+echo "  To inspect: git stash show -p <stash@{N}>" >&2
+echo "  These coexist with new-style snapshots in .cognitive-os/snapshots/ (ADR-099)." >&2
 echo "" >&2
 
 exit 0
