@@ -85,10 +85,10 @@ class TestToolDefinition:
         assert "model" in params
         assert "max_tokens" in params
 
-    def test_default_provider_is_local(self, advisor):
+    def test_default_provider_is_auto(self, advisor):
         import inspect
         sig = inspect.signature(advisor.consult_advisor)
-        assert sig.parameters["provider"].default == "local"
+        assert sig.parameters["provider"].default == "auto"
 
     def test_default_max_tokens_is_500(self, advisor):
         import inspect
@@ -99,6 +99,11 @@ class TestToolDefinition:
         import inspect
         sig = inspect.signature(advisor.consult_advisor)
         assert sig.parameters["model"].default == ""
+
+    def test_default_registration_docs_do_not_pass_anthropic_key(self):
+        readme = (PROJECT_ROOT / "packages" / "advisor-mcp" / "README.md").read_text()
+        registration_section = readme.split("Or run directly:", 1)[0]
+        assert "ANTHROPIC_API_KEY" not in registration_section
 
 
 # ---------------------------------------------------------------------------
@@ -155,6 +160,7 @@ class TestProviderRouting:
         ))
         assert result.startswith("ERROR:")
         assert "unknown_provider" in result
+        assert "auto" in result
 
     def test_provider_is_case_insensitive(self, advisor):
         mock_reply = ("Advice here.", 50, 10)
@@ -214,6 +220,121 @@ class TestProviderRouting:
                 max_tokens=123,
             ))
         assert captured_max == [123]
+
+
+class TestAutoProviderRouting:
+    """provider=auto must resolve safely without implicit Anthropic fallback."""
+
+    def test_auto_routes_to_first_available_provider(self, advisor):
+        async def fake_available(provider, model=""):
+            return provider == "openai"
+
+        mock_reply = ("OpenAI advice.", 30, 7)
+        with patch.object(advisor, "_provider_available", new=fake_available), \
+             patch.object(advisor, "_call_openai", new=AsyncMock(return_value=mock_reply)) as call:
+            result = _run(advisor.consult_advisor(
+                context="ctx",
+                question="q?",
+                provider="auto",
+            ))
+
+        assert result == "OpenAI advice."
+        call.assert_awaited_once()
+
+    def test_auto_default_uses_safe_resolver(self, advisor):
+        async def fake_available(provider, model=""):
+            return provider == "local"
+
+        mock_reply = ("Local advice.", 20, 5)
+        with patch.object(advisor, "_provider_available", new=fake_available), \
+             patch.object(advisor, "_call_local", new=AsyncMock(return_value=mock_reply)) as call:
+            result = _run(advisor.consult_advisor(context="ctx", question="q?"))
+
+        assert result == "Local advice."
+        call.assert_awaited_once()
+
+    def test_auto_returns_actionable_error_when_no_provider_available(self, advisor):
+        async def fake_available(provider, model=""):
+            return False
+
+        with patch.object(advisor, "_provider_available", new=fake_available):
+            result = _run(advisor.consult_advisor(
+                context="ctx",
+                question="q?",
+                provider="auto",
+            ))
+
+        assert result.startswith("ERROR: No advisor provider available")
+        assert "Checked:" in result
+        assert "Anthropic" in result
+
+    def test_auto_never_selects_anthropic_when_policy_disabled(self, advisor, monkeypatch):
+        monkeypatch.setenv("ANTHROPIC_API_KEY", "ambient-key")
+        for name in (
+            "OPENAI_API_KEY",
+            "GOOGLE_API_KEY",
+            "GEMINI_API_KEY",
+            "LITELLM_API_BASE",
+            "LITELLM_BASE_URL",
+            "LITELLM_PROXY_URL",
+            "LITELLM_MODEL",
+        ):
+            monkeypatch.delenv(name, raising=False)
+
+        async def local_unavailable(model=""):
+            return False
+
+        def module_available(name):
+            return name == "anthropic"
+
+        with patch.object(advisor, "_local_provider_available", new=local_unavailable), \
+             patch.object(advisor, "_module_available", side_effect=module_available), \
+             patch("lib.anthropic_direct_policy.direct_anthropic_api_enabled", return_value=False), \
+             patch.object(advisor, "_call_anthropic", new=AsyncMock()) as call:
+            result = _run(advisor.consult_advisor(
+                context="ctx",
+                question="q?",
+                provider="auto",
+            ))
+
+        assert result.startswith("ERROR: No advisor provider available")
+        call.assert_not_awaited()
+
+    def test_auto_model_hint_limits_candidates(self, advisor):
+        assert advisor._provider_candidates_for_model("claude-opus-4-6") == ("anthropic",)
+        assert advisor._provider_candidates_for_model("gpt-4o") == ("openai", "litellm")
+        assert advisor._provider_candidates_for_model("gemini-2.5-pro") == ("google", "litellm")
+
+    def test_litellm_default_model_honors_env(self, advisor, monkeypatch):
+        monkeypatch.setenv("LITELLM_MODEL", "openrouter/some-model")
+        assert advisor._default_model_for_provider("litellm") == "openrouter/some-model"
+
+    def test_local_provider_available_requires_target_model(self, advisor):
+        class FakeResponse:
+            status_code = 200
+
+            @staticmethod
+            def json():
+                return {"models": [{"name": "llama3:latest"}]}
+
+        class FakeClient:
+            def __init__(self, timeout):
+                self.timeout = timeout
+
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, exc_type, exc, tb):
+                return False
+
+            async def get(self, url):
+                return FakeResponse()
+
+        fake_httpx = type("FakeHttpx", (), {"AsyncClient": FakeClient})
+        with patch.object(advisor, "_module_available", return_value=True), \
+             patch.dict(sys.modules, {"httpx": fake_httpx}):
+            assert _run(advisor._local_provider_available("llama3")) is True
+            assert _run(advisor._local_provider_available("missing-model")) is False
 
 
 # ---------------------------------------------------------------------------
