@@ -7,7 +7,7 @@ Any AI coding agent (Claude Code, Cursor, Windsurf, etc.) can call
 mid-task — without that model writing code.
 
 Inspired by Anthropic's Advisor Strategy, but vendor-agnostic: works with
-Anthropic, OpenAI, Google, LiteLLM proxy, or a local Ollama instance.
+local Ollama, LiteLLM proxy, OpenAI, Google, or explicitly enabled Anthropic API.
 
 ## Installation
 
@@ -35,7 +35,6 @@ Add to `.claude/settings.json` (or your editor's MCP config):
             "args": ["-m", "packages.advisor-mcp.advisor_server"],
             "cwd": "/path/to/luum-agent-os",
             "env": {
-                "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
                 "OPENAI_API_KEY": "${OPENAI_API_KEY}",
                 "GOOGLE_API_KEY": "${GOOGLE_API_KEY}"
             }
@@ -56,7 +55,7 @@ python packages/advisor-mcp/advisor_server.py
 |-----------|------|---------|-------------|
 | `context` | str | required | What the executor has learned so far |
 | `question` | str | required | Specific question for the advisor |
-| `provider` | str | `"anthropic"` | `anthropic`, `openai`, `google`, `litellm`, `local` |
+| `provider` | str | `"local"` | `local`, `litellm`, `openai`, `google`, `anthropic` |
 | `model` | str | `""` | Override model (empty = provider default) |
 | `max_tokens` | int | `500` | Max tokens in advisor response |
 
@@ -81,7 +80,7 @@ consult_advisor(
              Redis via the cache interface in lib/cache.py.",
     question="Should I use write-through or write-behind caching here? What are
               the failure risks I should design for?",
-    provider="anthropic"
+    provider="local"
 )
 ```
 
@@ -140,7 +139,7 @@ providers continue to work normally.
 
 | Variable | Provider | Description |
 |----------|----------|-------------|
-| `ANTHROPIC_API_KEY` | anthropic | Anthropic API key |
+| `ANTHROPIC_API_KEY` | anthropic | Anthropic API key; only used when `llm_providers.claude_sdk.enabled: true` |
 | `OPENAI_API_KEY` | openai | OpenAI API key |
 | `GOOGLE_API_KEY` | google | Google AI API key (also `GEMINI_API_KEY`) |
 | `OLLAMA_URL` | local | Ollama base URL (default: `http://localhost:11434`) |
@@ -161,8 +160,8 @@ The advisor receives this system prompt regardless of provider:
 The advisor is ideal for mid-task decisions that exceed the executor's
 capability tier. Orchestrator routing guidance from `rules/model-routing.md`:
 
-- Use `provider="anthropic"` (claude-opus-4-6) for architecture decisions,
-  root cause analysis, complex debugging.
+- Use `provider="local"` for cost-free guidance by default.
+- Use `provider="anthropic"` (claude-opus-4-6) only when direct Anthropic API is explicitly enabled via `llm_providers.claude_sdk.enabled: true`.
 - Use `provider="openai"` (o3) for reasoning-heavy questions.
 - Use `provider="local"` (llama3) for cost-free guidance on simple questions.
 - Use `provider="litellm"` to route through your LiteLLM proxy with model
