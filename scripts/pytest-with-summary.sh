@@ -379,9 +379,35 @@ echo "[pytest-with-summary] Capacity log: $_capacity_json"
 unset _metrics_dir _capacity_json _capacity_raw
 # --- end ADR-068 Phase 2 ---
 
+# Resource governance (ADR-100) — applied to every cos-test/wrapper invocation
+# unless explicitly opted out. Two layers:
+#
+#   1. nice -n 10: lower CPU scheduling priority so the host stays responsive
+#      when other workloads (IDE, browser, Claude/Codex helper) need cycles.
+#      Disable with COS_PYTEST_NO_NICE=1.
+#   2. --reruns 2 --reruns-delay 1: pytest-rerunfailures retries transient
+#      flakes once before marking a test failed. Resource-pressure flakes
+#      (subprocess timeouts under load, perf-budget races) recover on retry
+#      ~99% of the time. Disable with COS_PYTEST_NO_RERUN=1.
+_nice_prefix=()
+if [ "${COS_PYTEST_NO_NICE:-}" != "1" ] && command -v nice >/dev/null 2>&1; then
+  _nice_prefix=(nice -n "${COS_PYTEST_NICE_LEVEL:-10}")
+fi
+
+_rerun_args=()
+if [ "${COS_PYTEST_NO_RERUN:-}" != "1" ]; then
+  if $PYTEST_BIN --help 2>/dev/null | grep -q -- "--reruns"; then
+    _rerun_args=(--reruns "${COS_PYTEST_RERUNS:-2}" --reruns-delay "${COS_PYTEST_RERUNS_DELAY:-1}")
+  fi
+fi
+
+if [ "${#_nice_prefix[@]}" -gt 0 ] || [ "${#_rerun_args[@]}" -gt 0 ]; then
+  echo "[pytest-with-summary] Resource governance: nice=${_nice_prefix[*]:-off} reruns=${_rerun_args[*]:-off}"
+fi
+
 set +e
 # shellcheck disable=SC2086
-$PYTEST_BIN "$@" --junitxml "$junit" 2>&1 | tee "$full_output"
+"${_nice_prefix[@]}" $PYTEST_BIN "$@" "${_rerun_args[@]}" --junitxml "$junit" 2>&1 | tee "$full_output"
 status=${PIPESTATUS[0]}
 set -e
 

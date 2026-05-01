@@ -74,6 +74,10 @@ testing = [
     "pytest-asyncio>=0.23",
     "pytest-timeout>=2.2",
     "pytest-xdist>=3.5",
+    # pytest-rerunfailures (ADR-100): retry transient flakes once before
+    # marking a test as failed. Used by cos-test cluster/broad through the
+    # wrapper so resource-pressure flakes don't cascade into red CI.
+    "pytest-rerunfailures>=15.0",
     "mutmut>=3.0",
     "pytest-smell>=1.0",
     # testcontainers: used for ephemeral Valkey in @pytest.mark.integration tests.
