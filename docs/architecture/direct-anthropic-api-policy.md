@@ -117,15 +117,13 @@ override example for users who choose direct API extraction.
 
 ### 5. Historical records
 
-Historical decision and handoff documents preserve prior rationale:
+Historical decision and handoff documents may discuss direct Anthropic API
+billing, but they should avoid repeating the exact environment variable unless
+the variable name itself is technically necessary. The canonical policy and
+audit own the exact string.
 
-- `CHANGELOG.md`
-- `docs/SESSION-HANDOFF-*.md`
-- `docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md`
-- `docs/adrs/ADR-063-agent-tool-replication-strategy.md`
-
-Reason: these are not runtime surfaces. They explain why the direct-provider
-path existed and how it was gated.
+Reason: historical documents are not runtime surfaces, but reducing repeated
+variable names makes future grep output smaller and easier to review.
 
 ### 6. Tests, benchmarks, and audits
 
