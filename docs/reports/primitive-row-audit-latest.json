@@ -289,15 +289,6 @@
       "status": "partial"
     },
     {
-      "evidence": "events=projected; tested=True; emits_metric=True",
-      "family": "hooks",
-      "name": "completeness-check.sh",
-      "next_action": "projected profile hook: activate intentionally or demote",
-      "path": "hooks/completeness-check.sh",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "evidence": "events=PostToolUse,projected; tested=True; emits_metric=True",
       "family": "hooks",
       "name": "completion-gate.sh",
@@ -343,7 +334,7 @@
       "status": "proven"
     },
     {
-      "evidence": "events=projected; tested=False; emits_metric=False",
+      "evidence": "events=projected; tested=True; emits_metric=False",
       "family": "hooks",
       "name": "consequence-evaluator.sh",
       "next_action": "projected profile hook: activate intentionally or demote",
@@ -505,6 +496,42 @@
       "status": "partial"
     },
     {
+      "evidence": "events=PostToolUse; tested=True; emits_metric=False",
+      "family": "hooks",
+      "name": "edit-lock-drain-parked.sh",
+      "next_action": "add metric/consumer proof",
+      "path": "hooks/edit-lock-drain-parked.sh",
+      "severity": "medium",
+      "status": "partial"
+    },
+    {
+      "evidence": "events=PreToolUse,projected; tested=True; emits_metric=False",
+      "family": "hooks",
+      "name": "edit-lock-pre-tool.sh",
+      "next_action": "add metric/consumer proof",
+      "path": "hooks/edit-lock-pre-tool.sh",
+      "severity": "medium",
+      "status": "partial"
+    },
+    {
+      "evidence": "events=UserPromptSubmit; tested=True; emits_metric=False",
+      "family": "hooks",
+      "name": "edit-lock-process-negotiations.sh",
+      "next_action": "add metric/consumer proof",
+      "path": "hooks/edit-lock-process-negotiations.sh",
+      "severity": "medium",
+      "status": "partial"
+    },
+    {
+      "evidence": "events=Stop,projected; tested=True; emits_metric=False",
+      "family": "hooks",
+      "name": "edit-lock-session-end.sh",
+      "next_action": "add metric/consumer proof",
+      "path": "hooks/edit-lock-session-end.sh",
+      "severity": "medium",
+      "status": "partial"
+    },
+    {
       "evidence": "events=unregistered; tested=True; emits_metric=False",
       "family": "hooks",
       "name": "engram-auto-import.sh",
@@ -582,6 +609,15 @@
       "name": "error-pipeline.sh",
       "next_action": "keep; monitor regression",
       "path": "hooks/error-pipeline.sh",
+      "severity": "low",
+      "status": "proven"
+    },
+    {
+      "evidence": "events=PreToolUse,projected; tested=True; emits_metric=True",
+      "family": "hooks",
+      "name": "git-commit-scope-guard.sh",
+      "next_action": "keep; monitor regression",
+      "path": "hooks/git-commit-scope-guard.sh",
       "severity": "low",
       "status": "proven"
     },
@@ -813,15 +849,6 @@
     {
       "evidence": "events=unregistered; tested=True; emits_metric=True",
       "family": "hooks",
-      "name": "post-agent-verify.sh",
-      "next_action": "dormant but behavior-tested: activate, archive, or document optional status",
-      "path": "hooks/post-agent-verify.sh",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "evidence": "events=unregistered; tested=True; emits_metric=True",
-      "family": "hooks",
       "name": "pre-agent-snapshot.sh",
       "next_action": "dormant but behavior-tested: activate, archive, or document optional status",
       "path": "hooks/pre-agent-snapshot.sh",
@@ -910,11 +937,11 @@
       "status": "partial"
     },
     {
-      "evidence": "events=projected; tested=False; emits_metric=True",
+      "evidence": "events=PreToolUse,projected; tested=True; emits_metric=False",
       "family": "hooks",
-      "name": "prompt-quality.sh",
-      "next_action": "projected profile hook: activate intentionally or demote",
-      "path": "hooks/prompt-quality.sh",
+      "name": "query-tailored-context-inject.sh",
+      "next_action": "add metric/consumer proof",
+      "path": "hooks/query-tailored-context-inject.sh",
       "severity": "medium",
       "status": "partial"
     },
@@ -1032,6 +1059,15 @@
       "name": "result-truncator.sh",
       "next_action": "keep; monitor regression",
       "path": "hooks/result-truncator.sh",
+      "severity": "low",
+      "status": "proven"
+    },
+    {
+      "evidence": "events=PostToolUse,projected; tested=True; emits_metric=True",
+      "family": "hooks",
+      "name": "review-spawner.sh",
+      "next_action": "keep; monitor regression",
+      "path": "hooks/review-spawner.sh",
       "severity": "low",
       "status": "proven"
     },
@@ -1243,6 +1279,15 @@
       "status": "partial"
     },
     {
+      "evidence": "events=Stop,projected; tested=True; emits_metric=True",
+      "family": "hooks",
+      "name": "skill-failure-monitor.sh",
+      "next_action": "keep; monitor regression",
+      "path": "hooks/skill-failure-monitor.sh",
+      "severity": "low",
+      "status": "proven"
+    },
+    {
       "evidence": "events=PostToolUse,projected; tested=True; emits_metric=True",
       "family": "hooks",
       "name": "skill-feedback-tracker.sh",
@@ -1266,6 +1311,15 @@
       "name": "skill-invocation-logger.sh",
       "next_action": "keep; monitor regression",
       "path": "hooks/skill-invocation-logger.sh",
+      "severity": "low",
+      "status": "proven"
+    },
+    {
+      "evidence": "events=Stop,projected; tested=True; emits_metric=True",
+      "family": "hooks",
+      "name": "skill-synthesis-scanner.sh",
+      "next_action": "keep; monitor regression",
+      "path": "hooks/skill-synthesis-scanner.sh",
       "severity": "low",
       "status": "proven"
     },
@@ -1407,6 +1461,15 @@
     {
       "evidence": "events=PostToolUse,projected; tested=True; emits_metric=True",
       "family": "hooks",
+      "name": "tool-sequence-capture.sh",
+      "next_action": "keep; monitor regression",
+      "path": "hooks/tool-sequence-capture.sh",
+      "severity": "low",
+      "status": "proven"
+    },
+    {
+      "evidence": "events=PostToolUse,projected; tested=True; emits_metric=True",
+      "family": "hooks",
       "name": "trust-score-validator.sh",
       "next_action": "keep; monitor regression",
       "path": "hooks/trust-score-validator.sh",
@@ -1488,6 +1551,15 @@
     {
       "evidence": "events=PostToolUse,projected; tested=True; emits_metric=True",
       "family": "hooks",
+      "name": "review-spawner.sh",
+      "next_action": "keep; monitor regression",
+      "path": "packages/agent-lifecycle/hooks/review-spawner.sh",
+      "severity": "low",
+      "status": "proven"
+    },
+    {
+      "evidence": "events=PostToolUse,projected; tested=True; emits_metric=True",
+      "family": "hooks",
       "name": "auto-rollback-trigger.sh",
       "next_action": "keep; monitor regression",
       "path": "packages/auto-repair-rollback/hooks/auto-rollback-trigger.sh",
@@ -1504,7 +1576,7 @@
       "status": "partial"
     },
     {
-      "evidence": "events=projected; tested=False; emits_metric=False",
+      "evidence": "events=projected; tested=True; emits_metric=False",
       "family": "hooks",
       "name": "consequence-evaluator.sh",
       "next_action": "projected profile hook: activate intentionally or demote",
@@ -1943,6 +2015,15 @@
       "path": "packages/agent-lifecycle/skills/resume-tasks/SKILL.md",
       "severity": "low",
       "status": "proven"
+    },
+    {
+      "evidence": "frontmatter=False; trigger=False; runtime_ref=False; tested=True",
+      "family": "skills",
+      "name": "review-output",
+      "next_action": "dormant but behavior-tested: activate, archive, or document optional status",
+      "path": "packages/agent-lifecycle/skills/review-output/SKILL.md",
+      "severity": "medium",
+      "status": "partial"
     },
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
@@ -2845,13 +2926,13 @@
       "status": "partial"
     },
     {
-      "evidence": "frontmatter=False; trigger=True; runtime_ref=False; tested=True",
+      "evidence": "frontmatter=False; trigger=True; runtime_ref=True; tested=True",
       "family": "skills",
       "name": "component-reality-check",
-      "next_action": "add metric/consumer proof",
+      "next_action": "keep; monitor regression",
       "path": "skills/component-reality-check/SKILL.md",
-      "severity": "medium",
-      "status": "partial"
+      "severity": "low",
+      "status": "proven"
     },
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
@@ -2890,6 +2971,15 @@
       "status": "proven"
     },
     {
+      "evidence": "frontmatter=False; trigger=False; runtime_ref=False; tested=True",
+      "family": "skills",
+      "name": "coordination-status",
+      "next_action": "dormant but behavior-tested: activate, archive, or document optional status",
+      "path": "skills/coordination-status/SKILL.md",
+      "severity": "medium",
+      "status": "partial"
+    },
+    {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
       "family": "skills",
       "name": "cos-status",
@@ -2899,13 +2989,13 @@
       "status": "proven"
     },
     {
-      "evidence": "frontmatter=False; trigger=True; runtime_ref=False; tested=True",
+      "evidence": "frontmatter=False; trigger=True; runtime_ref=True; tested=True",
       "family": "skills",
       "name": "cost-predictor",
-      "next_action": "add metric/consumer proof",
+      "next_action": "keep; monitor regression",
       "path": "skills/cost-predictor/SKILL.md",
-      "severity": "medium",
-      "status": "partial"
+      "severity": "low",
+      "status": "proven"
     },
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
@@ -2996,6 +3086,15 @@
       "path": "skills/doc-sync/SKILL.md",
       "severity": "low",
       "status": "proven"
+    },
+    {
+      "evidence": "frontmatter=False; trigger=True; runtime_ref=False; tested=True",
+      "family": "skills",
+      "name": "docs-execution-audit",
+      "next_action": "add metric/consumer proof",
+      "path": "skills/docs-execution-audit/SKILL.md",
+      "severity": "medium",
+      "status": "partial"
     },
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
@@ -3441,6 +3540,15 @@
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
       "family": "skills",
+      "name": "repair-skill",
+      "next_action": "keep; monitor regression",
+      "path": "skills/repair-skill/SKILL.md",
+      "severity": "low",
+      "status": "proven"
+    },
+    {
+      "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
+      "family": "skills",
       "name": "repair-status",
       "next_action": "keep; monitor regression",
       "path": "skills/repair-status/SKILL.md",
@@ -3517,6 +3625,15 @@
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
       "path": "skills/reverse-engineer/SKILL.md",
       "severity": "low",
+      "status": "partial"
+    },
+    {
+      "evidence": "frontmatter=False; trigger=False; runtime_ref=False; tested=True",
+      "family": "skills",
+      "name": "review-output",
+      "next_action": "dormant but behavior-tested: activate, archive, or document optional status",
+      "path": "skills/review-output/SKILL.md",
+      "severity": "medium",
       "status": "partial"
     },
     {
@@ -3770,6 +3887,15 @@
       "path": "skills/strands-evals-integration/SKILL.md",
       "severity": "low",
       "status": "partial"
+    },
+    {
+      "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
+      "family": "skills",
+      "name": "synthesize-skill",
+      "next_action": "keep; monitor regression",
+      "path": "skills/synthesize-skill/SKILL.md",
+      "severity": "low",
+      "status": "proven"
     },
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
@@ -4888,857 +5014,11 @@
       "status": "proven"
     },
     {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "adaptive-bypass.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/adaptive-bypass.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "adr-detections.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/adr-detections.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "adr-section-warnings.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/adr-section-warnings.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "advisor-consultations.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/advisor-consultations.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "agent-heartbeat.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/agent-heartbeat.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "agent-redirect.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/agent-redirect.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "agent-timeouts.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/agent-timeouts.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "agent-verification.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/agent-verification.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "aspirational-audit.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/aspirational-audit.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "assumptions.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/assumptions.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "auto-trigger-events.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/auto-trigger-events.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "auto-verify.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/auto-verify.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "blast-radius.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/blast-radius.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "canonical-events.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/canonical-events.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "canonical-live.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/canonical-live.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "capability-snapshots.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/capability-snapshots.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=False",
-      "family": "metrics",
-      "name": "chaos-weekly.jsonl",
-      "next_action": "find/add consumer or mark diagnostic-only",
-      "path": ".cognitive-os/metrics/chaos-weekly.jsonl",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "clarification-events.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/clarification-events.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "completeness-check.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/completeness-check.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "confidentiality-enforcer.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/confidentiality-enforcer.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "consequence-history.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/consequence-history.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "content-policy.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/content-policy.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "context-diet.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/context-diet.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "context-watchdog.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/context-watchdog.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "contextual-rules.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/contextual-rules.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "cost-events.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/cost-events.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "coverage-history.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/coverage-history.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "crystallization-events.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/crystallization-events.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "cwd-enforcer.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/cwd-enforcer.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "cwd-inject.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/cwd-inject.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "dispatch-gate.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/dispatch-gate.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "docker-drift.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/docker-drift.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "dod-gate.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/dod-gate.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "dogfood-score.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/dogfood-score.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "epic-task-detector.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/epic-task-detector.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "error-learning.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/error-learning.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "expansion-measurements.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/expansion-measurements.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "git-op-blocks.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/git-op-blocks.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "hallucinations.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/hallucinations.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "hook-header-warnings.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/hook-header-warnings.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "hook-health.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/hook-health.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "hook-timing.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/hook-timing.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "infra-detections.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/infra-detections.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "infra-health.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/infra-health.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "infra-usage.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/infra-usage.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "knowledge-graph.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/knowledge-graph.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "kpi-history.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/kpi-history.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "large-file-reads.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/large-file-reads.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "lifecycle-reinforcement.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/lifecycle-reinforcement.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "llm-dispatch.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/llm-dispatch.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "missing-secrets.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/missing-secrets.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "parity-results.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/parity-results.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "performance.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/performance.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "predev-completeness.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/predev-completeness.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "primitive-gap-snapshot.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/primitive-gap-snapshot.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "prompt-captures.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/prompt-captures.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "prompt-quality.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/prompt-quality.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "public-trend.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/public-trend.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "rate-limit-checks.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/rate-limit-checks.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "rate-limit-drain.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/rate-limit-drain.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "rate-limit-events.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/rate-limit-events.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=False",
-      "family": "metrics",
-      "name": "reasoning-cycle-counts.jsonl",
-      "next_action": "find/add consumer or mark diagnostic-only",
-      "path": ".cognitive-os/metrics/reasoning-cycle-counts.jsonl",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "ref-key-misses.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/ref-key-misses.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "reinvention-checks.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/reinvention-checks.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "repair-dispatch.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/repair-dispatch.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "resource-checks.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/resource-checks.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "retry-tracker.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/retry-tracker.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "rm-op-blocks.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/rm-op-blocks.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "rule-frontmatter-warnings.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/rule-frontmatter-warnings.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "scope-proportionality.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/scope-proportionality.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "secret-redactions.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/secret-redactions.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "self-knowledge-refresh.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/self-knowledge-refresh.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "session-leak.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/session-leak.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "session-learnings.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/session-learnings.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "session-log.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/session-log.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "session-watchdog.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/session-watchdog.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "skill-archive.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/skill-archive.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "skill-feedback.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/skill-feedback.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "skill-frontmatter-warnings.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/skill-frontmatter-warnings.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "skill-invocations.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/skill-invocations.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "skill-metrics.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/skill-metrics.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "skill-usage.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/skill-usage.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "so-vitals.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/so-vitals.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "startup-benchmark.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/startup-benchmark.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "surface-fix-detector.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/surface-fix-detector.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "symbiosis.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/symbiosis.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "task-completed.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/task-completed.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "task-created.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/task-created.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=False; mentioned=True",
-      "family": "metrics",
-      "name": "task-history.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/task-history.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "teammate-idle.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/teammate-idle.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "test-quality-audit.jsonl",
-      "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": ".cognitive-os/metrics/test-quality-audit.jsonl",
-      "severity": "low",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=False",
-      "family": "metrics",
-      "name": "tool-use-correlation.jsonl",
-      "next_action": "find/add consumer or mark diagnostic-only",
-      "path": ".cognitive-os/metrics/tool-use-correlation.jsonl",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "truncation-events.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/truncation-events.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
-      "evidence": "nonempty=True; mentioned=True",
-      "family": "metrics",
-      "name": "valkey-health.jsonl",
-      "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/valkey-health.jsonl",
-      "severity": "low",
-      "status": "proven"
-    },
-    {
       "evidence": "nonempty=True; mentioned=True",
       "family": "metrics",
-      "name": "verify-events.jsonl",
+      "name": "install-timing.jsonl",
       "next_action": "keep; assign retention if missing",
-      "path": ".cognitive-os/metrics/verify-events.jsonl",
+      "path": ".cognitive-os/metrics/install-timing.jsonl",
       "severity": "low",
       "status": "proven"
     },
@@ -5756,16 +5036,16 @@
     "hooks": {
       "aspirational": 0,
       "harmful-overhead": 0,
-      "partial": 141,
-      "proven": 66,
-      "total": 207
+      "partial": 143,
+      "proven": 72,
+      "total": 215
     },
     "metrics": {
       "aspirational": 0,
       "harmful-overhead": 0,
-      "partial": 25,
-      "proven": 71,
-      "total": 96
+      "partial": 0,
+      "proven": 2,
+      "total": 2
     },
     "rules": {
       "aspirational": 0,
@@ -5777,9 +5057,9 @@
     "skills": {
       "aspirational": 0,
       "harmful-overhead": 0,
-      "partial": 51,
-      "proven": 173,
-      "total": 224
+      "partial": 53,
+      "proven": 177,
+      "total": 230
     }
   }
 }

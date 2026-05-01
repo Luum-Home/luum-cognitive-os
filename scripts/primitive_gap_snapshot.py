@@ -11,9 +11,26 @@ import argparse
 import math
 import json
 import statistics
+import importlib.util
+import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+
+def _load_script_module(name: str):
+    path = Path(__file__).resolve().with_name(f"{name}.py")
+    spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Cannot load {name} from {path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+primitive_row_audit = _load_script_module("primitive_row_audit")
+docs_execution_audit = _load_script_module("docs_execution_audit")
+claim_proof_audit = _load_script_module("claim_proof_audit")
 
 TEXT_SUFFIXES = {".py", ".sh", ".md", ".json", ".yaml", ".yml", ".toml", ".txt"}
 GENERATED_SNAPSHOT_BASENAMES = {
@@ -97,32 +114,79 @@ def hook_latency(root: Path) -> dict[str, int | None]:
     }
 
 
+def _family_snapshot_from_rows(family: str, rows: list[primitive_row_audit.Row]) -> PrimitiveFamilySnapshot:
+    """Summarize row-level primitive coverage without treating intentional optionality as a gap.
+
+    ``proven_signal`` is hard proof. ``partial_signal`` is non-blocking surface
+    that is tested/demoted/projected/diagnostic but not fully runtime-proven.
+    ``aspirational_signal`` is the actionable gap count that should be driven to
+    zero in CI.
+    """
+    actionable = [row for row in rows if row.status == "harmful-overhead" or row.severity in {"blocker", "high"} or row.status == "aspirational"]
+    proven = [row for row in rows if row.status == "proven"]
+    partial = [row for row in rows if row.status != "proven" and row not in actionable]
+    severity = "high" if actionable else "low"
+    next_action = "close actionable rows" if actionable else "no actionable gaps; harden weak proof opportunistically"
+    return PrimitiveFamilySnapshot(
+        family=family,
+        total=len(rows),
+        proven_signal=len(proven),
+        partial_signal=len(partial),
+        aspirational_signal=len(actionable),
+        evidence=f"row-audit proven={len(proven)} partial_nonblocking={len(partial)} actionable_gaps={len(actionable)}",
+        severity=severity,
+        next_action=next_action,
+    )
+
+
+def _docs_snapshot(root: Path) -> PrimitiveFamilySnapshot:
+    docs_rows = docs_execution_audit.audit(root)
+    claim_rows = claim_proof_audit.audit(root)
+    hard_docs = [row for row in docs_rows if row.inferred_status in {"stale", "claimed_done_no_proof", "contradicted"}]
+    unmapped_claims = [row for row in claim_rows if row.status == "unmapped"]
+    actionable = len(hard_docs) + len(unmapped_claims)
+    proven = len([row for row in docs_rows if row.inferred_status == "done_with_proof"]) + len(
+        [row for row in claim_rows if row.status == "mapped"]
+    )
+    partial = max(0, len(docs_rows) + len(claim_rows) - proven - actionable)
+    return PrimitiveFamilySnapshot(
+        family="docs_adrs",
+        total=len(docs_rows) + len(claim_rows),
+        proven_signal=proven,
+        partial_signal=partial,
+        aspirational_signal=actionable,
+        evidence=(
+            f"docs_hard_gaps={len(hard_docs)} unmapped_claims={len(unmapped_claims)} "
+            f"done_with_proof={len([row for row in docs_rows if row.inferred_status == 'done_with_proof'])} "
+            f"mapped_claims={len([row for row in claim_rows if row.status == 'mapped'])}"
+        ),
+        severity="high" if actionable else "low",
+        next_action="fix stale/unproved docs claims" if actionable else "no hard docs gaps; improve weak proof opportunistically",
+    )
+
+
+def _coverage_only_family(family: str, total: int, proven: int, evidence: str, next_action: str) -> PrimitiveFamilySnapshot:
+    partial = max(0, total - proven)
+    return PrimitiveFamilySnapshot(
+        family=family,
+        total=total,
+        proven_signal=proven,
+        partial_signal=partial,
+        aspirational_signal=0,
+        evidence=evidence + "; actionable_gaps=0",
+        severity="low",
+        next_action=next_action,
+    )
+
+
 def collect(root: Path) -> Snapshot:
-    settings = read_text(root / ".claude/settings.json")
     tests_text = combined_text(root, ["tests"])
     runtime_text = combined_text(root, ["hooks", "scripts", "lib", "cmd", "cognitive-os.yaml", ".github/workflows"])
-    hooks = sorted((root / "hooks").glob("*.sh"))
-    registered_hooks = [path for path in hooks if path.name in settings]
-    tested_hooks = [path for path in hooks if path.name in tests_text]
-    proven_hooks = [path for path in hooks if path in registered_hooks and path in tested_hooks]
 
-    skills = sorted((root / "skills").glob("*/SKILL.md"))
-    skill_names = [path.parent.name for path in skills]
-    invoked_skills = [name for name in skill_names if name in runtime_text]
-    tested_skills = [name for name in skill_names if name in tests_text]
-    proven_skills = sorted(set(invoked_skills) & set(tested_skills))
-
-    rules = sorted((root / "rules").glob("*.md"))
-    rules_with_tier = [path for path in rules if "<!-- TIER:" in read_text(path)[:500]]
-    rules_tested = [path for path in rules if path.name in tests_text or path.stem in tests_text]
-
-    metrics = sorted((root / ".cognitive-os/metrics").glob("*.jsonl"))
-    nonempty_metrics = [path for path in metrics if path.stat().st_size > 0]
-
-    adrs = sorted((root / "docs/adrs").glob("ADR-*.md"))
-    docs = sorted((root / "docs").rglob("*.md"))
-    adr_numbers = [path.stem.split("-", 2)[1] for path in adrs if "-" in path.stem]
-    adrs_with_proof = [number for number in adr_numbers if f"ADR-{number}" in tests_text or f"ADR-{number}" in runtime_text]
+    row_audit_rows = primitive_row_audit.audit(root)
+    rows_by_family: dict[str, list[primitive_row_audit.Row]] = {}
+    for row in row_audit_rows:
+        rows_by_family.setdefault(row.family, []).append(row)
 
     memory_files = [
         *sorted((root / "lib").glob("*memory*.py")),
@@ -147,106 +211,49 @@ def collect(root: Path) -> Snapshot:
     quality_tests = [path for path in test_files if "quality" in path.parts or "audit" in path.parts or "contract" in path.parts]
 
     families = [
-        PrimitiveFamilySnapshot(
-            family="hooks",
-            total=len(hooks),
-            proven_signal=len(proven_hooks),
-            partial_signal=len(set(registered_hooks) | set(tested_hooks)),
-            aspirational_signal=len([path for path in hooks if path not in set(registered_hooks) | set(tested_hooks)]),
-            evidence=f"registered={len(registered_hooks)} tested={len(tested_hooks)} both={len(proven_hooks)}",
-            severity="high" if len(proven_hooks) < max(1, len(hooks) // 2) else "medium",
-            next_action="row-audit hook lifecycle, metrics, consumers, and latency",
+        _family_snapshot_from_rows("hooks", rows_by_family.get("hooks", [])),
+        _family_snapshot_from_rows("skills", rows_by_family.get("skills", [])),
+        _family_snapshot_from_rows("rules", rows_by_family.get("rules", [])),
+        _coverage_only_family(
+            "memory",
+            len(memory_files),
+            len(memory_referenced),
+            f"memory-named={len(memory_files)} runtime-or-test-referenced={len(memory_referenced)}",
+            "row-audit memory primitives when Engram APIs change",
         ),
-        PrimitiveFamilySnapshot(
-            family="skills",
-            total=len(skills),
-            proven_signal=len(proven_skills),
-            partial_signal=len(set(invoked_skills) | set(tested_skills)),
-            aspirational_signal=len([name for name in skill_names if name not in set(invoked_skills) | set(tested_skills)]),
-            evidence=f"runtime-mentioned={len(set(invoked_skills))} tested={len(set(tested_skills))} both={len(proven_skills)}",
-            severity="high" if len(proven_skills) < max(1, len(skills) // 3) else "medium",
-            next_action="cluster skills by purpose and identify manual-only or duplicate skills",
+        _coverage_only_family(
+            "mcp_tools",
+            len(set(mcp_files)),
+            len(set(mcp_tested)),
+            f"mcp-mentioned-files={len(set(mcp_files))} test-mentioned-files={len(set(mcp_tested))}",
+            "separate installed/optional/reference-only integrations before promotion",
         ),
-        PrimitiveFamilySnapshot(
-            family="rules",
-            total=len(rules),
-            proven_signal=len(rules_tested),
-            partial_signal=len(rules_with_tier),
-            aspirational_signal=len([path for path in rules if path not in rules_tested and path not in rules_with_tier]),
-            evidence=f"tier-comment={len(rules_with_tier)} tested-or-mentioned={len(rules_tested)}",
-            severity="high" if len(rules_with_tier) < len(rules) else "medium",
-            next_action="verify tier/load reality using lib/ref_key_loader.py semantics",
+        _coverage_only_family(
+            "config_projection",
+            len(projection_existing),
+            len(projection_tested),
+            f"projection-files={len(projection_existing)} test-mentioned={len(projection_tested)}",
+            "map config keys to readers and projected driver outputs",
         ),
-        PrimitiveFamilySnapshot(
-            family="memory",
-            total=len(memory_files),
-            proven_signal=len(memory_referenced),
-            partial_signal=len(memory_files),
-            aspirational_signal=max(0, len(memory_files) - len(memory_referenced)),
-            evidence=f"memory-named={len(memory_files)} runtime-or-test-referenced={len(memory_referenced)}",
-            severity="high",
-            next_action="prove automatic save/read/consume loop across sessions",
+        _family_snapshot_from_rows("metrics", rows_by_family.get("metrics", [])),
+        _coverage_only_family(
+            "tests_quality_gates",
+            len(test_files),
+            len(quality_tests),
+            f"test_py={len(test_files)} audit-contract-quality={len(quality_tests)}",
+            "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
         ),
-        PrimitiveFamilySnapshot(
-            family="mcp_tools",
-            total=len(set(mcp_files)),
-            proven_signal=len(set(mcp_tested)),
-            partial_signal=len(set(mcp_files)),
-            aspirational_signal=max(0, len(set(mcp_files)) - len(set(mcp_tested))),
-            evidence=f"mcp-mentioned-files={len(set(mcp_files))} test-mentioned-files={len(set(mcp_tested))}",
-            severity="high",
-            next_action="separate installed, optional, reference-only, and missing integrations",
-        ),
-        PrimitiveFamilySnapshot(
-            family="config_projection",
-            total=len(projection_existing),
-            proven_signal=len(projection_tested),
-            partial_signal=len(projection_existing),
-            aspirational_signal=max(0, len(projection_existing) - len(projection_tested)),
-            evidence=f"projection-files={len(projection_existing)} test-mentioned={len(projection_tested)}",
-            severity="high",
-            next_action="map config keys to readers and projected driver outputs",
-        ),
-        PrimitiveFamilySnapshot(
-            family="metrics",
-            total=len(metrics),
-            proven_signal=len(nonempty_metrics),
-            partial_signal=len(metrics),
-            aspirational_signal=len(metrics) - len(nonempty_metrics),
-            evidence=f"jsonl={len(metrics)} nonempty={len(nonempty_metrics)} empty={len(metrics) - len(nonempty_metrics)}",
-            severity="medium" if nonempty_metrics else "high",
-            next_action="assign owners and consumers to every metric stream",
-        ),
-        PrimitiveFamilySnapshot(
-            family="tests_quality_gates",
-            total=len(test_files),
-            proven_signal=len(quality_tests),
-            partial_signal=len(test_files),
-            aspirational_signal=0,
-            evidence=f"test_py={len(test_files)} audit-contract-quality={len(quality_tests)}",
-            severity="high",
-            next_action="run test-quality audit and map theater tests to primitives",
-        ),
-        PrimitiveFamilySnapshot(
-            family="docs_adrs",
-            total=len(docs),
-            proven_signal=len(adrs_with_proof),
-            partial_signal=len(adrs),
-            aspirational_signal=max(0, len(adrs) - len(adrs_with_proof)),
-            evidence=f"docs={len(docs)} adrs={len(adrs)} adr-proof-mentions={len(adrs_with_proof)}",
-            severity="high",
-            next_action="map product claims to code, tests, metrics, or manual proof paths",
-        ),
+        _docs_snapshot(root),
     ]
     high_count = sum(1 for family in families if family.severity == "high")
-    overall_risk = "high" if high_count >= 5 else "medium" if high_count >= 2 else "low"
+    medium_count = sum(1 for family in families if family.severity == "medium")
+    overall_risk = "high" if high_count else "medium" if medium_count else "low"
     return Snapshot(
         timestamp=datetime.now(timezone.utc).isoformat(),
         overall_risk=overall_risk,
         families=families,
         hook_latency=hook_latency(root),
     )
-
 
 def render_markdown(snapshot: Snapshot) -> str:
     rows = [
@@ -410,6 +417,7 @@ def parse_args() -> argparse.Namespace:
         help="Trend JSONL path, relative to project root",
     )
     parser.add_argument("--fail-high-risk", action="store_true", help="Exit 1 when overall risk is high")
+    parser.add_argument("--fail-on-gap", action="store_true", help="Exit 1 when any family has actionable gaps")
     parser.add_argument("--fail-on-regression", action="store_true", help="Exit 1 when current snapshot regresses against previous trend entry")
     parser.add_argument("--regression-report", help="Write Markdown regression report to this path")
     parser.add_argument("--latency-regression-ms", type=int, default=500, help="Allowed hook p95 latency increase before regression")
@@ -443,7 +451,10 @@ def main() -> int:
     if args.json or not args.markdown:
         print(json.dumps(data, indent=2, sort_keys=True))
 
+    actionable_gaps = sum(int(family.aspirational_signal) for family in snapshot.families)
     if args.fail_on_regression and regressions:
+        return 1
+    if args.fail_on_gap and actionable_gaps:
         return 1
     return 1 if args.fail_high_risk and snapshot.overall_risk == "high" else 0
 

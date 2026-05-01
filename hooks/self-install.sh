@@ -50,6 +50,58 @@ detect_settings_target() {
 
 SETTINGS_TARGET="$(detect_settings_target)"
 
+# ── Helper: serialize git config writes ─────────────────────────────────
+# Concurrent SessionStart hooks can all reach the git config repair path. Git
+# itself uses .git/config.lock, but a non-blocking outer lock keeps self-install
+# advisory and avoids startup stalls under multi-session/subagent fan-out.
+# Uses flock when available; otherwise falls back to Python fcntl on macOS.
+set_git_hooks_path() {
+  local git_dir lock_file
+  git_dir=$(git -C "$PROJECT_DIR" rev-parse --git-dir 2>/dev/null || true)
+  if [ -z "$git_dir" ]; then
+    return 0
+  fi
+  case "$git_dir" in
+    /*) ;;
+    *) git_dir="$PROJECT_DIR/$git_dir" ;;
+  esac
+  mkdir -p "$git_dir" 2>/dev/null || true
+  lock_file="$git_dir/cos-self-install-git-config.lock"
+
+  if command -v flock >/dev/null 2>&1; then
+    (
+      flock -n 200 || exit 0
+      git -C "$PROJECT_DIR" config core.hooksPath .githooks 2>/dev/null || true
+    ) 200>"$lock_file"
+    return 0
+  fi
+
+  if command -v python3 >/dev/null 2>&1; then
+    PROJECT_DIR="$PROJECT_DIR" LOCK_FILE="$lock_file" python3 - <<'PYLOCK' 2>/dev/null || true
+import fcntl
+import os
+import subprocess
+
+lock_file = os.environ["LOCK_FILE"]
+project_dir = os.environ["PROJECT_DIR"]
+with open(lock_file, "w") as fh:
+    try:
+        fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        raise SystemExit(0)
+    subprocess.run(
+        ["git", "-C", project_dir, "config", "core.hooksPath", ".githooks"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+PYLOCK
+    return 0
+  fi
+
+  git -C "$PROJECT_DIR" config core.hooksPath .githooks 2>/dev/null || true
+}
+
 # ── Sync directory registry ──────────────────────────────────────────────
 # FORMAT:  "src_dir|dest_base|strategy|pattern"
 #   src_dir   — directory name under PROJECT_DIR
@@ -577,7 +629,7 @@ fi
 # Check 4: git core.hooksPath points to .githooks
 hooks_path=$(git -C "$PROJECT_DIR" config core.hooksPath 2>/dev/null || echo "")
 if [ "$hooks_path" != ".githooks" ]; then
-  git -C "$PROJECT_DIR" config core.hooksPath .githooks 2>/dev/null || true
+  set_git_hooks_path
   fixes="${fixes:+$fixes, }fixed core.hooksPath -> .githooks"
 fi
 
