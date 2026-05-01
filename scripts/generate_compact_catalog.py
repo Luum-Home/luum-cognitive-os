@@ -5,6 +5,14 @@
 Walks skills/*/SKILL.md and packages/*/skills/*/SKILL.md, extracts
 name, audience, and description (first line) from YAML frontmatter,
 and emits a compact table grouped by audience.
+
+Intentional exclusions
+----------------------
+- skills/__contracts__/  — Internal harness-contract verification skills
+  (e.g. canonical-event-emitter).  The single-level glob ``skills/*/SKILL.md``
+  does NOT recurse into this namespace; skills there carry ``user-invocable:
+  false`` and TIER: 0 / SCOPE: os-only.  They are not user-facing procedures
+  and must not appear in the catalog.  See ADR-064 P0 Task 9b.
 """
 from __future__ import annotations
 
