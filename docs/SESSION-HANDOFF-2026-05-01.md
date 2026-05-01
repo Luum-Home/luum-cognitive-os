@@ -39,7 +39,7 @@ Result: **2 commits**, **30 engram decisions closed**, **5 install-timing baseli
 These exist on disk under `.cognitive-os/` but are not version-controlled:
 
 - `.cognitive-os/metrics/install-timing.jsonl` — 5 baseline records, mean 38.8s / p95 43s (budget 300s, 257s headroom).
-- `.cognitive-os/reports/install-timing-baseline-2026-05-01.md` — narrative baseline document.
+- `docs/reports/install-timing-baseline-2026-05-01.md` — narrative baseline document.
 - `.cognitive-os/reports/punch-list-{hooks,skills,lib,rules}.md` — 59 ASPIRATIONAL hooks, 10 skills, 1 DORMANT lib (jupyter_client), 0 rules.
 - `.cognitive-os/reports/prune-baseline.json` — today's audit baseline (`dormant_aspirational_ratio=0.3521`, ASPIRATIONAL=58 — drifted from the plan's April 24 figures of 0.381 / 71).
 - `.cognitive-os/plans/features/so-existential-validation-2026-04-24.md` — 9 checkboxes ticked total (6 from Phase 1 commit, 3 more from batch 2).

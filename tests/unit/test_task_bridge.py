@@ -34,7 +34,7 @@ class TestRegister:
         entry = json.loads(result.stdout)
         assert entry["toolUseId"] == "toolu_abc123"
         assert entry["description"] == "test task"
-        # ADR-097: register() now writes "pending"; status flips to "in_progress"
+        # ADR-102: register() now writes "pending"; status flips to "in_progress"
         # only when the subagent's write_context_marker.py runs.
         assert entry["status"] == "pending"
 

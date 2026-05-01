@@ -120,13 +120,13 @@ The recovery stash from the 2026-04-30 incident: `stash@{1}: cos-20260430-165827
 
 ```bash
 # Dry-run: see what would be deleted
-bash scripts/cleanup_snapshots.sh --dry-run
+bash scripts/cleanup-snapshots.sh --dry-run
 
 # Prune snapshots older than 30 days (default from cognitive-os.yaml)
-bash scripts/cleanup_snapshots.sh
+bash scripts/cleanup-snapshots.sh
 
 # Prune with custom TTL
-bash scripts/cleanup_snapshots.sh --ttl-days 7
+bash scripts/cleanup-snapshots.sh --ttl-days 7
 ```
 
 ---

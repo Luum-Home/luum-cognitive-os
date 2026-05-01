@@ -17,8 +17,9 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Validation Nervous System](architecture/validation-nervous-system.md) — SO-maintainer doctrine for test selection, resource policy, persistent artifacts, governance gates, and release validation.
 - [Rate Limiter Flow Control](architecture/rate-limiter-flow-control.md) — token-bucket action limiter with soft warnings, operator reserve, and diversity penalty.
 - [Competitive Reassessment: OpenClaw and Hermes Agent](business/competitive-reassessment-openclaw-hermes-2026-04.md) — current evidence-based comparison of self-improvement, memory, skills, deployment, and governance gaps.
-- [Runtime Comparison Benchmark Plan](architecture/plans/runtime-comparison-benchmark-plan.md) — benchmark matrix for Claude/Codex vanilla, COS-enabled harnesses, and prior-art tools across deployment surfaces.
-- [Headless and Clustered Runtime Plan](architecture/plans/headless-clustered-runtime-plan.md) — staged path from local harness runtime to EC2/container/Kubernetes workers.
+- [Runtime Comparison Benchmark Plan](../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md) — benchmark matrix for Claude/Codex vanilla, COS-enabled harnesses, and prior-art tools across deployment surfaces.
+- [Audit and Contract Lane Recovery Plan](../.cognitive-os/plans/architecture/audit-contract-lane-recovery-plan.md) — deterministic debt cleanup and parallel lane flip plan for audit/contract.
+- [Headless and Clustered Runtime Plan](../.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md) — staged path from local harness runtime to EC2/container/Kubernetes workers.
 - [Local Connected Systems Validation](manual-tests/local-connected-systems-validation.md) — proof path for dependency readiness, automatic install boundaries, MCP wiring, optional services, and persistent test summaries.
 
 - [Architecture Principles](architecture-principles.md) — dependency model and layer boundaries
@@ -60,7 +61,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Conversation Reality Audit — 2026-04-30](business/conversation-reality-audit-2026-04-30.md) — investigation plan for validating real behavior, daily efficiency, DX, automagic claims, and competitive alternatives
 - [Primitive Gap Matrix — 2026-04](reports/primitive-gap-matrix-2026-04.md) — living evidence matrix for hook, skill, rule, memory, MCP, config, metrics, test, and docs gaps
 - [Primitive Coverage Tooling Research — 2026-04](architecture/primitive-coverage-tooling-research-2026-04.md) — external tooling research and architecture for coverage of agentic primitives/docs without loading whole repos into agent context.
-- [Primitive Coverage Spike Plan — 2026-04](architecture/primitive-coverage-spike-plan-2026-04.md) — executable plan for a generic primitive coverage framework with graph, rule, and CI report surfaces.
+- [Primitive Coverage Spike Plan — 2026-04](../.cognitive-os/plans/research/primitive-coverage-spike-plan-2026-04.md) — executable plan for a generic primitive coverage framework with graph, rule, and CI report surfaces.
 - [Documentation Duplicate Audit](reports/docs-duplicate-latest.md) — latest duplicate-documentation baseline and prevention report
 - [Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) — validation snapshot and remaining work before merging the master-plan portability branch
 - [Full Suite Validation Report](reports/full-suite-validation-2026-04-23.md) — current full-suite evidence, passing proof paths, and remaining failure families
