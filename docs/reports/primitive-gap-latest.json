@@ -2,23 +2,23 @@
   "families": [
     {
       "aspirational_signal": 0,
-      "evidence": "row-audit proven=72 partial_nonblocking=143 actionable_gaps=0",
+      "evidence": "row-audit proven=75 partial_nonblocking=143 actionable_gaps=0",
       "family": "hooks",
       "next_action": "no actionable gaps; harden weak proof opportunistically",
       "partial_signal": 143,
-      "proven_signal": 72,
+      "proven_signal": 75,
       "severity": "low",
-      "total": 215
+      "total": 218
     },
     {
       "aspirational_signal": 0,
-      "evidence": "row-audit proven=177 partial_nonblocking=53 actionable_gaps=0",
+      "evidence": "row-audit proven=179 partial_nonblocking=53 actionable_gaps=0",
       "family": "skills",
       "next_action": "no actionable gaps; harden weak proof opportunistically",
       "partial_signal": 53,
-      "proven_signal": 177,
+      "proven_signal": 179,
       "severity": "low",
-      "total": 230
+      "total": 232
     },
     {
       "aspirational_signal": 0,
@@ -42,13 +42,13 @@
     },
     {
       "aspirational_signal": 0,
-      "evidence": "mcp-mentioned-files=174 test-mentioned-files=79; actionable_gaps=0",
+      "evidence": "mcp-mentioned-files=183 test-mentioned-files=85; actionable_gaps=0",
       "family": "mcp_tools",
       "next_action": "separate installed/optional/reference-only integrations before promotion",
-      "partial_signal": 95,
-      "proven_signal": 79,
+      "partial_signal": 98,
+      "proven_signal": 85,
       "severity": "low",
-      "total": 174
+      "total": 183
     },
     {
       "aspirational_signal": 0,
@@ -62,41 +62,41 @@
     },
     {
       "aspirational_signal": 0,
-      "evidence": "row-audit proven=2 partial_nonblocking=0 actionable_gaps=0",
+      "evidence": "row-audit proven=74 partial_nonblocking=25 actionable_gaps=0",
       "family": "metrics",
       "next_action": "no actionable gaps; harden weak proof opportunistically",
-      "partial_signal": 0,
-      "proven_signal": 2,
+      "partial_signal": 25,
+      "proven_signal": 74,
       "severity": "low",
-      "total": 2
+      "total": 99
     },
     {
       "aspirational_signal": 0,
-      "evidence": "test_py=600 audit-contract-quality=27; actionable_gaps=0",
+      "evidence": "test_py=614 audit-contract-quality=28; actionable_gaps=0",
       "family": "tests_quality_gates",
       "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
-      "partial_signal": 573,
-      "proven_signal": 27,
+      "partial_signal": 586,
+      "proven_signal": 28,
       "severity": "low",
-      "total": 600
+      "total": 614
     },
     {
       "aspirational_signal": 0,
-      "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=119 mapped_claims=268",
+      "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=126 mapped_claims=269",
       "family": "docs_adrs",
       "next_action": "no hard docs gaps; improve weak proof opportunistically",
-      "partial_signal": 1721,
-      "proven_signal": 387,
+      "partial_signal": 1750,
+      "proven_signal": 395,
       "severity": "low",
-      "total": 2108
+      "total": 2145
     }
   ],
   "hook_latency": {
-    "events": 0,
-    "max_ms": null,
-    "p50_ms": null,
-    "p95_ms": null
+    "events": 12419,
+    "max_ms": 8007,
+    "p50_ms": 194,
+    "p95_ms": 1164
   },
   "overall_risk": "low",
-  "timestamp": "2026-05-01T14:42:19.994392+00:00"
+  "timestamp": "2026-05-01T15:33:19.008112+00:00"
 }
