@@ -19,7 +19,9 @@
 | test-driven-development | sonnet | default | — | Fast red-green cycles |
 | verification-before-completion | sonnet | default | — | Evidence checking |
 
-> **sonnet+advisor** requires `ORCHESTRATOR_MODE=executor` and the `anthropic` Python package.
+> **sonnet+advisor** requires `ORCHESTRATOR_MODE=executor`,
+> `llm_providers.claude_sdk.enabled: true`, `ANTHROPIC_API_KEY`, and the
+> `anthropic` Python package.
 > When preconditions are not met, falls back to `sonnet` automatically.
 
 ## How This Works
