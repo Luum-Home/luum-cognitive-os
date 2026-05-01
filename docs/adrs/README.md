@@ -82,3 +82,4 @@ ADR-pattern file appears outside this directory without being a CD- file or redi
 | [ADR-041](ADR-041.md) | (see file) |
 | [ADR-042](ADR-042-valkey-local-daemon.md) | Valkey Local Daemon |
 | [ADR-101](ADR-101-intent-aware-rate-limiter.md) | Intent-Aware Rate Limiter Flow Control |
+| [ADR-104](ADR-104-startup-circuit-breaker.md) | Startup Circuit Breaker and Safe Mode |
