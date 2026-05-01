@@ -222,6 +222,19 @@ skills:
     level2_budget: 30000           # tokens for active skills (on demand)
     max_active: 5                  # max simultaneous loaded skills
     catalog: CATALOG.md            # compact skill index
+  catalog:
+    lazy_load: true                # Default ON: do not inject CATALOG-COMPACT.md at SessionStart
+    lazy_env_var: COS_LAZY_CATALOG # 0=eager, 1=lazy (default)
+    # Keywords that trigger catalog injection on UserPromptSubmit (lazy mode only)
+    lazy_triggers: [
+      "/skill", "what skills", "available skills", "skill that",
+      "list skills", "show skills", "which skill", "skill for",
+      "skills for", "skill router", "skill search", "invoke skill",
+      "run skill", "use skill", "skill help", "help with skill",
+      "what can you", "what commands", "/catalog"
+    ]
+    auto_revert_threshold: 2.0     # Revert if miss rate > N× baseline
+    baseline_file: docs/measurements/lazy-catalog-baseline.json
 
 rules:
   loading:
