@@ -39,6 +39,7 @@
 - [x] Skill routing is capability-centric before vendor-centric.
 - [x] Execution records and metrics include execution-profile data, not only model branding.
 - [x] Direct Anthropic API usage is separated from Claude Code native account execution through [Direct Anthropic API Policy](../architecture/direct-anthropic-api-policy.md) and centralized runtime tests.
+- [x] Advisor MCP is classified as optional external-advisor transport, not the canonical native advisor primitive, through [Advisor MCP Architecture Review](../architecture/advisor-mcp-architecture-review.md).
 
 ## 4. CI and Validation Integrity
 
