@@ -1,12 +1,16 @@
 # Stash Resolution Report — 2026-05-01
-> Local stash stack audit before clearing accumulated WIP stashes. Each stash was archived under `refs/archive/stashes/2026-05-01/<n>` before any cleanup.
+> Local stash stack audit before clearing accumulated WIP stashes. Each stash was first archived under `refs/archive/stashes/2026-05-01/<n>`, then exported to durable backups before the repo-local archive refs were cleaned.
 ## Retrieval
-To inspect an archived stash after the normal stash stack is cleared:
+The final recovery sources are outside the normal stash stack:
 ```bash
-git show refs/archive/stashes/2026-05-01/0
+# Inspect a preserved patch without touching the repo
+less $HOME/.codex/backups/luum-agent-os/stashes-2026-05-01/stash-0.patch
+
+# Rehydrate archive refs from the verified bundle if a branch recovery is needed
+git fetch $HOME/.codex/backups/luum-agent-os/stash-archive-2026-05-01.bundle 'refs/archive/stashes/2026-05-01/*:refs/archive/stashes/2026-05-01/*'
 git stash branch recover-stash-0 refs/archive/stashes/2026-05-01/0
 ```
-A local bundle was also created at `.git/stash-archive-2026-05-01.bundle`, and a redundant external backup was copied to `$HOME/.codex/backups/luum-agent-os/stash-archive-2026-05-01.bundle`. Per-stash patch/stat/file-list backups were exported to `$HOME/.codex/backups/luum-agent-os/stashes-2026-05-01/`.
+A verified external bundle exists at `$HOME/.codex/backups/luum-agent-os/stash-archive-2026-05-01.bundle`. Per-stash patch/stat/file-list backups were exported to `$HOME/.codex/backups/luum-agent-os/stashes-2026-05-01/`. The transient repo-local bundle `.git/stash-archive-2026-05-01.bundle` was removed after the external bundle and patches were verified.
 ## Classification
 | Stash | Archive ref | State vs current main | Subject | Files touched |
 | ---: | --- | --- | --- | ---: |
@@ -53,22 +57,34 @@ A local bundle was also created at `.git/stash-archive-2026-05-01.bundle`, and a
 - `applies cleanly but unreviewed`: archived instead of auto-applying because these are unrelated generated/WIP changes.
 - `conflicts or stale`: archived instead of auto-applying because the patch conflicts with current main or depends on old tree shape.
 
-No stash is destroyed without an archive ref and local bundle.
+No stash was removed from the normal stash stack until it had first been captured in archive refs and exported to a verified bundle.
 
 
 ## Final Resolution — Minutious Pass
 
 The normal stash stack was intentionally emptied only after three recovery paths existed:
 
-1. local git refs: `refs/archive/stashes/2026-05-01/<n>` for all 35 former stashes;
-2. verified bundle: `.git/stash-archive-2026-05-01.bundle`;
+1. temporary local git refs: `refs/archive/stashes/2026-05-01/<n>` for all 35 former stashes;
+2. verified repo-local bundle: `.git/stash-archive-2026-05-01.bundle`;
 3. external backup copy and per-stash patches under `$HOME/.codex/backups/luum-agent-os/`.
 
 Resolution categories:
 
 - Stashes `0`, `4`, `6`, and `7` were already represented by current history and do not need re-application.
 - Stash `21` had an empty patch.
-- Stashes `2` and `5` apply cleanly but are unreviewed generated/WIP changes, so they remain archived instead of being auto-committed.
-- All remaining stashes conflict with current `main` or depend on stale tree shape. They remain recoverable through archive refs/patches but were not auto-applied because doing so would reintroduce old broad WIP into a clean, tested `main`.
+- Stashes `2` and `5` apply cleanly but are unreviewed generated/WIP changes, so they were backed up instead of being auto-committed.
+- All remaining stashes conflict with current `main` or depend on stale tree shape. They remain recoverable through the verified external bundle and per-stash patches, but were not auto-applied because doing so would reintroduce old broad WIP into a clean, tested `main`.
 
-No stash content was discarded without a local ref, bundle entry, and patch backup.
+No stash content was discarded without a bundle entry and patch backup.
+
+## Final Cleanup — Repo-Local Artifacts Removed
+
+After verifying that the external bundle SHA-256 matched the repo-local bundle and that all 35 per-stash patches and checksums existed, the transient repo-local safety artifacts were removed to leave the repository clean:
+
+- `git stash list` is empty;
+- `refs/archive/stashes/2026-05-01/*` was deleted from the local repository;
+- `.git/stash-archive-2026-05-01.bundle` was deleted from the local repository;
+- `$HOME/.codex/backups/luum-agent-os/stash-archive-2026-05-01.bundle` remains as the verified recovery bundle;
+- `$HOME/.codex/backups/luum-agent-os/stashes-2026-05-01/` remains as the per-stash patch/stat/file-list backup directory.
+
+The repository no longer carries a stash stack, archive refs, or repo-local stash bundle. Recovery remains possible from the external backups.
