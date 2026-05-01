@@ -47,6 +47,7 @@ Commands:
   version     Show OS and package versions
   release     Create a new release
   status      Show release status of all packages
+  run-task    Run a headless task in an isolated workspace
   release-all Release all packages with unreleased changes`,
 }
 
