@@ -1,4 +1,4 @@
-"""Behavioral tests for the task tracker lifecycle (ADR-097).
+"""Behavioral tests for the task tracker lifecycle (ADR-102).
 
 Coverage:
 1. agent-prelaunch.sh writes status=pending (not in_progress)

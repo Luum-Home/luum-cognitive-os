@@ -227,7 +227,7 @@ Before executing `git mv` on the 3 DELETE items, confirm:
 **Evidence**:
 - Command run: `python3 scripts/aspirational_audit.py --json` → 669 total, 69 ASPIRATIONAL
 - Full item list extracted via Python import of `aspirational_audit.Auditor` directly
-- Punch lists `.cognitive-os/reports/punch-list-hooks.md` and `punch-list-skills.md` cross-referenced (59 + 10 = 69, consistent)
+- Punch lists `docs/reports/punch-list-hooks.md` and `punch-list-skills.md` cross-referenced (59 + 10 = 69, consistent)
 - `settings.json` checked for active replacements of DELETE candidates
 - Hook body line counts checked for all 59 hook items as implementation completeness proxy
 - Skill SKILL.md sizes and frontmatter checked for all 10 skill items

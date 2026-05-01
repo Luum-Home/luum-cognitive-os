@@ -1,6 +1,9 @@
-# ADR-097 — Task tracker lifecycle: pending → in_progress → terminal, with PID capture and zombie reaper
+# ADR-102 — Task tracker lifecycle: pending → in_progress → terminal, with PID capture and zombie reaper
 
-**Status:** Accepted  
+## Status
+
+Accepted.
+
 **Date:** 2026-04-30  
 **Author:** luum (session: task-tracker-lifecycle-fix)
 
@@ -89,18 +92,9 @@ The old `mark_dispatched(agent_id: str) -> bool` (no sync) is removed.
 
 ---
 
-## Alternatives Rejected
+## Alternatives rejected
 
-**`kill -9` on stale records** — rejected. The spec explicitly forbids process killing. The reaper marks records only.
-
-**Ignore zombies (current state)** — rejected. This was the failing state: 4 zombies caused queue saturation, requiring manual cleanup.
-
-**Write `in_progress` at dispatch-gate allow path (dispatch-gate.sh)** — considered but rejected. The dispatch-gate runs before agent-prelaunch and doesn't create the task record; adding record creation there would duplicate logic and require stdin re-parsing. Better to keep record creation in `agent-prelaunch.sh` and push the status flip to the subagent's own preamble.
-
-**Sidecar PID files (`.subagent-pid-<pid>.json`)** — considered as fallback for PID capture when no pending record matches. Not implemented in this ADR; the 30-minute stale reaper provides sufficient coverage for the common case.
-
----
-
+- Keep the previous behavior unchanged — rejected because the audit or runtime failure would remain deterministic and would continue masking real regressions.
 ## Files Changed
 
 | File | Change |
@@ -112,3 +106,11 @@ The old `mark_dispatched(agent_id: str) -> bool` (no sync) is removed.
 | `lib/queue_drainer.py` | Add `_sync_active_tasks()`, `cancel_queued()`, update `mark_dispatched()` |
 | `tests/unit/test_task_tracker_lifecycle.py` | New test suite (14 tests, all passing) |
 | `tests/unit/test_task_bridge.py` | Updated status assertion to `"pending"` |
+
+## Verification
+
+Run the focused contract for this decision:
+
+```bash
+python3 -m pytest tests/unit/test_task_tracker_lifecycle.py tests/unit/test_task_bridge.py -q
+```
