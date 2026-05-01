@@ -16,6 +16,8 @@ require_tool "Agent" "task" "delegate"
 
 # Skip in private mode
 check_private_mode
+# Runtime disable: DISABLE_HOOK_DISPATCH_GATE=true skips this hook for the session
+check_disabled_env "dispatch-gate"
 
 # ─── Read stdin once ──────────────────────────────────────────────────────────
 
