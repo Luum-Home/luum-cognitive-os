@@ -235,40 +235,23 @@ class TestStateCorruptionRecovery:
         assert allowed is True
 
     def test_wrong_type_state_file_creates_fresh_state(self, tmp_path):
-        """State file with wrong JSON type (array instead of object) — known bug.
-
-        BUG: _load_state() calls from_dict(data) without checking isinstance(data, dict).
-        When the file contains a JSON array, from_dict receives a list and crashes on
-        list.get(). This test documents the current (broken) behavior.
-
-        Expected fix: add `if not isinstance(data, dict): return RateLimitState()`
-        in _load_state() before calling from_dict.
-        """
+        """State file with wrong JSON type should recover to fresh state."""
         state_file = tmp_path / "state.json"
-        state_file.write_text("[]")  # valid JSON but wrong type (list, not dict)
-        # BUG: currently raises AttributeError — 'list' object has no attribute 'get'
-        with pytest.raises((AttributeError, TypeError, KeyError)):
-            RateLimiter(state_path=str(state_file), phase="stabilization")
+        state_file.write_text("[]")
+        rl = RateLimiter(state_path=str(state_file), phase="stabilization")
+        allowed, _ = rl.check("tool_call")
+        assert allowed is True
 
     def test_state_file_with_null_values_recovers(self, tmp_path):
-        """State file with null list values — known bug.
-
-        BUG: from_dict() uses data.get("tool_calls", []) which returns None when
-        the key maps to null. _cleanup_old_entries() then calls
-        `[t for t in None]` and crashes with TypeError.
-
-        Expected fix: use `data.get("tool_calls") or []` (coerce None to [])
-        in from_dict().
-        """
+        """State file with null list values should recover to empty lists."""
         state_file = tmp_path / "state.json"
         state_file.write_text(
             '{"tool_calls": null, "agent_launches": null, '
             '"bash_commands": null, "file_writes": null, "cost_usd": 0}'
         )
         rl = RateLimiter(state_path=str(state_file), phase="stabilization")
-        # BUG: currently raises TypeError — 'NoneType' object is not iterable
-        with pytest.raises(TypeError):
-            rl.check("tool_call")
+        allowed, _ = rl.check("tool_call")
+        assert allowed is True
 
     def test_missing_state_directory_handled_gracefully(self, tmp_path):
         """If the state directory doesn't exist, limiter creates it on save."""
@@ -347,17 +330,19 @@ class TestRateLimitBlocking:
             allowed, reason = rl.check(action)
             assert allowed is True, f"{action}: expected pass, got: {reason}"
 
-    def test_blocks_exactly_at_limit(self, tmp_path):
-        """Should pass N times then block on (N+1)th check."""
+    def test_blocks_when_normal_bucket_reserve_is_reached(self, tmp_path):
+        """Normal lane should pass burst tokens then block before operator reserve."""
         rl = _make_limiter(tmp_path, max_bash_commands_per_minute=3)
-        for i in range(3):
+        normal_capacity = int(
+            rl.burst_capacity("bash_command") * (1 - rl.config.operator_reserve_ratio)
+        )
+        for i in range(normal_capacity):
             allowed, reason = rl.check("bash_command")
-            assert allowed is True, f"Check {i+1}/3 should pass: {reason}"
+            assert allowed is True, f"Check {i+1}/{normal_capacity} should pass: {reason}"
             rl.record("bash_command")
 
-        # (N+1)th check should block
         allowed, reason = rl.check("bash_command")
-        assert allowed is False, f"Check 4/3 should be blocked: {reason}"
+        assert allowed is False, f"Normal lane should be blocked: {reason}"
         assert "bash_command" in reason
 
     def test_block_reason_is_descriptive(self, tmp_path):
@@ -367,7 +352,7 @@ class TestRateLimitBlocking:
         allowed, reason = rl.check("file_write")
         assert allowed is False
         assert "file_write" in reason
-        assert "limit exceeded" in reason.lower()
+        assert "token bucket" in reason.lower()
 
     def test_expired_entries_allow_new_actions(self, tmp_path):
         """After entries age past the window, limits reset automatically."""
@@ -437,17 +422,21 @@ class TestPhaseAwareBehavior:
             stab_lim = rl_stab.effective_limit(action)
             maint_lim = rl_maint.effective_limit(action)
             assert maint_lim <= prod_lim <= stab_lim, (
-                f"{action}: maintenance({maint_lim}) ≤ production({prod_lim}) ≤ stabilization({stab_lim})"
+                f"{action}: maintenance({maint_lim}) ≤ production({prod_lim}) "
+                f"≤ stabilization({stab_lim})"
             )
 
     def test_maintenance_blocks_at_half_stabilization_limit(self, tmp_path):
         """In maintenance, 10 agent launches should block (20 * 0.5 = 10)."""
         rl = _make_limiter(tmp_path, phase="maintenance")
-        for _ in range(10):
+        normal_capacity = int(
+            rl.burst_capacity("agent_launch") * (1 - rl.config.operator_reserve_ratio)
+        )
+        for _ in range(normal_capacity):
             rl.record("agent_launch")
         allowed, reason = rl.check("agent_launch")
         assert allowed is False, (
-            f"maintenance should block at 10 agent_launch, got allowed=True"
+            f"maintenance should block after normal burst capacity, got allowed=True"
         )
         assert "maintenance" in reason
 
