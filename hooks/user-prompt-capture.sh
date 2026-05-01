@@ -98,6 +98,6 @@ except Exception:
 " <<< "$(echo "$prompt_text" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null)" 2>/dev/null || true
 
 # Wire to feedback_detector, user_model, and learning_pipeline
-echo "$prompt_text" | python3 "$_PROJECT_DIR/lib/process_user_message.py" 2>/dev/null || true
+echo "$prompt_text" | python3 "$_PROJECT_DIR/lib/process_user_message.py" >/dev/null 2>&1 || true
 
 exit 0
