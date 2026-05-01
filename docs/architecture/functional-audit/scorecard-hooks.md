@@ -23,7 +23,7 @@ the remaining risk is promotion/wiring debt, not nonexistent hook files.
 
 | Metric | Count | Notes |
 |---|---|---|
-| Total hook files on disk (`hooks/*.sh`) | **165** | Flat invocable hook scripts under `hooks/` |
+| Total hook files on disk (`hooks/*.sh`) | **169** | Flat invocable hook scripts under `hooks/` |
 | Library helpers (`hooks/_lib/*.sh`) | **13** | Sourced by other hooks, not invocable directly (cache.sh, common.sh, etc.) |
 | Invocable hooks (`hooks/*.sh`, excl. `_lib/`) | **118** (flat list) | `_lib/` is a subdir, so counts unchanged |
 | **Functional-wired** (full profile) | **55** | Registered in `.claude/settings.json` |
@@ -32,7 +32,7 @@ the remaining risk is promotion/wiring debt, not nonexistent hook files.
 | **Functional-unwired-by-design** | **22** | In `full` but NOT in `standard`/`lean` — only active at top tier |
 | **Orphan** (in no profile anywhere) | **41** | Exist on disk, never wired — incl. 3 cluster-D names |
 | **Stub** (placeholder-only bodies) | **0** | Inspected all `<10 non-comment-line` hooks; all three have real logic |
-| **Code-dead** (ref'd by skill/rule/doc but no file) | **0 distinct names** | Prior code-dead hooks now exist; non-default wiring is tracked by `hooks/_lib/registration-allowlist.txt` |
+| **Code-dead** (ref'd by skill/rule/doc but no file) | **3 distinct names** | `completeness-check.sh`, `prompt-quality.sh`, and `session-sanity.sh` are referenced by legacy skills/rules/packages but no longer exist on disk. |
 | **Referenced-but-unused** (wired but matcher rarely triggers) | **unknown** | Requires runtime telemetry — flagged for Capa 4 |
 
 Project-gotchas claim is **"48/93 hooks intentionally not wired"**. Current reality is
@@ -254,7 +254,7 @@ Three hooks had < 10 non-comment non-empty lines and were manually inspected:
 
 **Stub count: 0.** All invocable hooks have non-trivial logic.
 
-### Code-dead references (0 after 2026-04-23 refresh)
+### Code-dead references (2026-05-01 refresh)
 
 Previous missing hook names (`auto-verify.sh`, `auto-refine.sh`, `dod-gate.sh`)
 now exist on disk. Their remaining risk is no longer "referenced but missing";
@@ -359,3 +359,8 @@ architecturally meaningful (closes the PITER Evaluate→Refine edge).
 - `scripts/apply-efficiency-profile.sh` — profile tier source of truth
 - `.claude/settings.json` — current wiring (full profile)
 - `hooks/self-install.sh` — installation entrypoint (the orchestrator for hook discovery)
+
+
+- `completeness-check.sh` — legacy regex completeness gate reference retained in rules/package prose; current implementation uses registered successors.
+- `prompt-quality.sh` — legacy regex prompt-quality gate reference retained in rules/package prose; current implementation uses LLM or profile-specific successors.
+- `session-sanity.sh` — legacy manual session-boundary checker reference retained by `cos-status`; current session checks are split across doctors and startup hooks.

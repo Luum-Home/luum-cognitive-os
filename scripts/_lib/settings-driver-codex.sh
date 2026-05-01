@@ -137,6 +137,7 @@ codex_driver_emit() {
   local user_prompt_submit
   user_prompt_submit=$(_codex_group "prompt" \
     "hooks/session-heartbeat.sh" \
+    "hooks/edit-lock-process-negotiations.sh" \
     "hooks/user-prompt-capture.sh" \
     "hooks/session-wrapup-trigger.sh" \
     "hooks/memory-prefetch.sh" \
@@ -164,6 +165,9 @@ codex_driver_emit() {
   local stop_hooks
   stop_hooks=$(_codex_group "shutdown" \
     "hooks/session-cleanup.sh" \
+    "hooks/edit-lock-session-end.sh" \
+    "hooks/skill-failure-monitor.sh" \
+    "hooks/skill-synthesis-scanner.sh" \
     "hooks/session-learning.sh" \
     "hooks/git-context-capture.sh" \
     "hooks/session-changelog.sh" \
