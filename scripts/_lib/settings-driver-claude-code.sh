@@ -166,6 +166,7 @@ cc_driver_emit() {
   pre_edit_write=$(_cc_hook_group "PreToolUse" "Edit|Write" \
     "hooks/secret-detector.sh"          "false" \
     "hooks/project-docs-convention.sh"  "false" \
+    "hooks/edit-lock-pre-tool.sh"       "false" \
   )
 
   local pre_agent
@@ -254,6 +255,7 @@ cc_driver_emit() {
     "hooks/session-summary-reminder.sh"       "false" \
     "hooks/session-learning.sh"               "false" \
     "hooks/session-cleanup.sh"                "false" \
+    "hooks/edit-lock-session-end.sh"          "false" \
     "hooks/git-context-capture.sh"            "false" \
     "hooks/session-changelog.sh"              "false" \
     "hooks/skill-failure-monitor.sh"          "false" \
