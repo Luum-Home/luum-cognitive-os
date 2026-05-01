@@ -46,15 +46,12 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     AllowedReference("lib/anthropic_direct_policy.py", "direct_api_policy", "central policy helper"),
     AllowedReference("lib/claude_executor.py", "direct_api_executor", "advisor fallback checks"),
     AllowedReference("packages/llm-providers/lib/__init__.py", "direct_api_provider", "provider inventory docs"),
-    AllowedReference("packages/llm-providers/lib/claude_sdk.py", "direct_api_provider", "policy-gated provider"),
     AllowedReference("pyproject.toml", "direct_api_optional_extra", "optional claude-sdk extra docs"),
     AllowedReference("rules/model-routing.md", "direct_api_routing_docs", "advisor preconditions"),
-    AllowedReference("scripts/llm_status.py", "direct_api_status", "redacted policy-aware status"),
     AllowedReference("skills/llm-status/SKILL.md", "direct_api_status_docs", "status output example"),
 
     # Advisor MCP is an optional external-advisor provider and is separately contract-tested.
     AllowedReference("packages/advisor-mcp/README.md", "external_advisor_docs", "policy-gated provider docs"),
-    AllowedReference("packages/advisor-mcp/advisor_server.py", "external_advisor_provider", "policy-gated provider implementation"),
     AllowedReference("packages/advisor-mcp/cos-package.yaml", "external_advisor_metadata", "provider metadata"),
     AllowedReference("docs/architecture/advisor-mcp-architecture-review.md", "external_advisor_policy_docs", "architecture review"),
 
@@ -69,6 +66,7 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     AllowedReference("env.example", "commented_opt_in_example", "commented claude_sdk opt-in only"),
     AllowedReference("tests/arena/arena-config.yaml", "cost_bearing_test_config", "explicit arena providers"),
     AllowedReference("tests/unit/test_advisor_integration.py", "test_fixture", "test-only env setup"),
+    AllowedReference("tests/unit/test_anthropic_direct_policy.py", "test_fixture", "canonical env helper tests"),
     AllowedReference("tests/unit/test_advisor_mcp.py", "test_fixture", "test-only env setup and docs guard"),
     AllowedReference("tests/unit/test_bootstrap.py", "test_fixture", "env merge preservation fixture"),
     AllowedReference("tests/unit/test_claude_executor.py", "test_fixture", "safe env redaction test"),
