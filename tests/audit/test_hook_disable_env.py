@@ -2,10 +2,10 @@
 
 Phase 5 of hook-architecture-v2. Tests verify:
   - check_disabled_env is defined in hooks/_lib/common.sh
-  - The 15 target hooks call check_disabled_env
+  - The 16 target hooks call check_disabled_env
   - The env var name convention matches hook name (hyphens → underscores, uppercase)
   - The hook-security-profiles.md rule documents the DISABLE_HOOK_* mechanism
-  - At least 15 hooks implement the disable env var check
+  - At least 16 hooks implement the disable env var check
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ import pytest
 
 REPO = Path(__file__).parent.parent.parent
 
-# ── The 15 target hooks from Phase 5 ─────────────────────────────────────────
+# ── The 16 target hooks from Phase 5 ─────────────────────────────────────────
 
 TARGET_HOOKS = [
     ("blast-radius.sh", "DISABLE_HOOK_BLAST_RADIUS"),
@@ -35,6 +35,7 @@ TARGET_HOOKS = [
     ("error-pattern-detector.sh", "DISABLE_HOOK_ERROR_PATTERN_DETECTOR"),
     ("semgrep-scan.sh", "DISABLE_HOOK_SEMGREP_SCAN"),
     ("aguara-scan.sh", "DISABLE_HOOK_AGUARA_SCAN"),
+    ("rate-limiter.sh", "DISABLE_HOOK_RATE_LIMITER"),
 ]
 
 

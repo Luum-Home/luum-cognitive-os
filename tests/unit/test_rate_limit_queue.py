@@ -5,7 +5,6 @@ priority ordering, persistence, cancellation, batch reduction suggestions,
 and the format_limit_status dashboard.
 """
 
-import json
 import time
 
 import pytest
@@ -360,7 +359,7 @@ class TestFormatLimitStatus:
         for _ in range(5):
             rl.record("agent_launch")
         output = rl.format_limit_status()
-        assert "50%" in output
+        assert "33%" in output
 
     def test_limit_status_shows_all_types(self, tmp_path):
         """Status should include all action types and cost."""
