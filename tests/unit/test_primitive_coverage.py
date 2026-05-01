@@ -102,3 +102,20 @@ def test_weekly_workflow_generates_generic_primitive_coverage_reports() -> None:
     assert "docs/reports/primitive-coverage-latest.json" in text
     assert "docs/reports/primitive-coverage-latest.md" in text
     assert "docs/reports/primitive-coverage-latest.sarif" in text
+
+
+def test_cos_reduction_backlog_empty_makes_weak_rows_non_actionable(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    reports = root / "docs" / "reports"
+    reports.mkdir(parents=True)
+    (reports / "primitive-row-audit-latest.json").write_text(json.dumps({"rows": []}))
+    (reports / "primitive-usage-map-latest.json").write_text(json.dumps({"targets": []}))
+    (reports / "claim-proof-latest.json").write_text(json.dumps({"rows": []}))
+    (reports / "reduction-backlog-latest.json").write_text(json.dumps({"items": []}))
+
+    report = scan_repository(root, adapter="cognitive-os", include_cos_audits=True)
+    sarif = json.loads(render_sarif(report))
+
+    assert report.summary()["actionable_gap_rows"] == 0
+    assert report.summary()["actionable_gaps"] == 0
+    assert sarif["runs"][0]["results"] == []

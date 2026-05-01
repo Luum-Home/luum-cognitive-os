@@ -23,6 +23,7 @@ jobs:
             --markdown docs/reports/primitive-gap-latest.md \
             --regression-report docs/reports/primitive-gap-regressions.md \
             --fail-on-regression \
+            --fail-on-gap \
             --json > docs/reports/primitive-gap-latest.json
 
       - name: Run documentation duplicate audit
@@ -74,14 +75,24 @@ jobs:
         run: |
           python3 scripts/primitive_coverage.py \
             --adapter cognitive-os \
-            --format all \
-            --out docs/reports/primitive-coverage-latest
+            --format json \
+            --out docs/reports/primitive-coverage-latest.json
+          python3 scripts/primitive_coverage.py \
+            --adapter cognitive-os \
+            --format markdown \
+            --out docs/reports/primitive-coverage-latest.md
+          python3 scripts/primitive_coverage.py \
+            --adapter cognitive-os \
+            --format sarif \
+            --out docs/reports/primitive-coverage-latest.sarif \
+            --fail-actionable-gaps
 
       - name: Run documentation execution audit
         run: |
           python3 scripts/docs_execution_audit.py \
             --json-out docs/reports/docs-execution-latest.json \
-            --md-out docs/reports/docs-execution-latest.md
+            --md-out docs/reports/docs-execution-latest.md \
+            --fail-hard-gaps
 
       - name: Upload primitive gap snapshot artifact
         if: always()

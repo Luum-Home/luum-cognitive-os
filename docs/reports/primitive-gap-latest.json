@@ -2,101 +2,101 @@
   "families": [
     {
       "aspirational_signal": 0,
-      "evidence": "registered=80 tested=162 both=77",
+      "evidence": "row-audit proven=72 partial_nonblocking=143 actionable_gaps=0",
       "family": "hooks",
-      "next_action": "row-audit hook lifecycle, metrics, consumers, and latency",
-      "partial_signal": 165,
-      "proven_signal": 77,
-      "severity": "high",
-      "total": 165
-    },
-    {
-      "aspirational_signal": 19,
-      "evidence": "runtime-mentioned=109 tested=92 both=77",
-      "family": "skills",
-      "next_action": "cluster skills by purpose and identify manual-only or duplicate skills",
-      "partial_signal": 124,
-      "proven_signal": 77,
-      "severity": "medium",
-      "total": 143
+      "next_action": "no actionable gaps; harden weak proof opportunistically",
+      "partial_signal": 143,
+      "proven_signal": 72,
+      "severity": "low",
+      "total": 215
     },
     {
       "aspirational_signal": 0,
-      "evidence": "tier-comment=112 tested-or-mentioned=97",
+      "evidence": "row-audit proven=177 partial_nonblocking=53 actionable_gaps=0",
+      "family": "skills",
+      "next_action": "no actionable gaps; harden weak proof opportunistically",
+      "partial_signal": 53,
+      "proven_signal": 177,
+      "severity": "low",
+      "total": 230
+    },
+    {
+      "aspirational_signal": 0,
+      "evidence": "row-audit proven=112 partial_nonblocking=0 actionable_gaps=0",
       "family": "rules",
-      "next_action": "verify tier/load reality using lib/ref_key_loader.py semantics",
-      "partial_signal": 112,
-      "proven_signal": 97,
-      "severity": "medium",
+      "next_action": "no actionable gaps; harden weak proof opportunistically",
+      "partial_signal": 0,
+      "proven_signal": 112,
+      "severity": "low",
       "total": 112
     },
     {
       "aspirational_signal": 0,
-      "evidence": "memory-named=9 runtime-or-test-referenced=9",
+      "evidence": "memory-named=9 runtime-or-test-referenced=9; actionable_gaps=0",
       "family": "memory",
-      "next_action": "prove automatic save/read/consume loop across sessions",
-      "partial_signal": 9,
+      "next_action": "row-audit memory primitives when Engram APIs change",
+      "partial_signal": 0,
       "proven_signal": 9,
-      "severity": "high",
+      "severity": "low",
       "total": 9
     },
     {
-      "aspirational_signal": 98,
-      "evidence": "mcp-mentioned-files=165 test-mentioned-files=67",
+      "aspirational_signal": 0,
+      "evidence": "mcp-mentioned-files=174 test-mentioned-files=79; actionable_gaps=0",
       "family": "mcp_tools",
-      "next_action": "separate installed, optional, reference-only, and missing integrations",
-      "partial_signal": 165,
-      "proven_signal": 67,
-      "severity": "high",
-      "total": 165
+      "next_action": "separate installed/optional/reference-only integrations before promotion",
+      "partial_signal": 95,
+      "proven_signal": 79,
+      "severity": "low",
+      "total": 174
     },
     {
       "aspirational_signal": 0,
-      "evidence": "projection-files=2 test-mentioned=2",
+      "evidence": "projection-files=2 test-mentioned=2; actionable_gaps=0",
       "family": "config_projection",
       "next_action": "map config keys to readers and projected driver outputs",
-      "partial_signal": 2,
+      "partial_signal": 0,
       "proven_signal": 2,
-      "severity": "high",
+      "severity": "low",
       "total": 2
     },
     {
-      "aspirational_signal": 22,
-      "evidence": "jsonl=95 nonempty=73 empty=22",
+      "aspirational_signal": 0,
+      "evidence": "row-audit proven=2 partial_nonblocking=0 actionable_gaps=0",
       "family": "metrics",
-      "next_action": "assign owners and consumers to every metric stream",
-      "partial_signal": 95,
-      "proven_signal": 73,
-      "severity": "medium",
-      "total": 95
+      "next_action": "no actionable gaps; harden weak proof opportunistically",
+      "partial_signal": 0,
+      "proven_signal": 2,
+      "severity": "low",
+      "total": 2
     },
     {
       "aspirational_signal": 0,
-      "evidence": "test_py=539 audit-contract-quality=20",
+      "evidence": "test_py=600 audit-contract-quality=27; actionable_gaps=0",
       "family": "tests_quality_gates",
-      "next_action": "run test-quality audit and map theater tests to primitives",
-      "partial_signal": 539,
-      "proven_signal": 20,
-      "severity": "high",
-      "total": 539
+      "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
+      "partial_signal": 573,
+      "proven_signal": 27,
+      "severity": "low",
+      "total": 600
     },
     {
-      "aspirational_signal": 11,
-      "evidence": "docs=374 adrs=58 adr-proof-mentions=47",
+      "aspirational_signal": 0,
+      "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=119 mapped_claims=268",
       "family": "docs_adrs",
-      "next_action": "map product claims to code, tests, metrics, or manual proof paths",
-      "partial_signal": 58,
-      "proven_signal": 47,
-      "severity": "high",
-      "total": 374
+      "next_action": "no hard docs gaps; improve weak proof opportunistically",
+      "partial_signal": 1721,
+      "proven_signal": 387,
+      "severity": "low",
+      "total": 2108
     }
   ],
   "hook_latency": {
-    "events": 2391,
-    "max_ms": 13332,
-    "p50_ms": 219,
-    "p95_ms": 1325
+    "events": 0,
+    "max_ms": null,
+    "p50_ms": null,
+    "p95_ms": null
   },
-  "overall_risk": "high",
-  "timestamp": "2026-04-30T17:39:43.137704+00:00"
+  "overall_risk": "low",
+  "timestamp": "2026-05-01T14:42:19.994392+00:00"
 }

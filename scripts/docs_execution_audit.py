@@ -16,6 +16,9 @@ PATHISH_RE = re.compile(r"^(?:docs|scripts|hooks|skills|rules|tests|primitive_co
 MARKDOWN_LINK_RE = re.compile(r"\[[^\]]+\]\((?P<target>[^)#]+)(?:#[^)]+)?\)")
 INLINE_CODE_RE = re.compile(r"`(?P<code>[^`]+)`")
 TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9_-]{3,}")
+GENERATED_STATE_PREFIXES = (".cognitive-os/metrics/", ".cognitive-os/agents/", ".cognitive-os/skills/")
+GENERATED_STATE_FILES = {".cognitive-os/work-queue.json"}
+
 STOPWORDS = {"this", "that", "with", "from", "into", "docs", "documentation", "cognitive", "agent", "agents", "should", "could", "would", "will", "have", "has", "the", "and", "for", "status", "report", "latest"}
 
 @dataclass(frozen=True)
@@ -97,6 +100,8 @@ def normalize_ref(root: Path, source_rel: str, ref: str) -> str:
     return ref
 
 def ref_exists(root: Path, ref: str, known: set[str]) -> bool:
+    if ref in GENERATED_STATE_FILES or ref.startswith(GENERATED_STATE_PREFIXES):
+        return True
     if ref in known or (root / ref).exists():
         return True
     if any(ch in ref for ch in "*?["):
@@ -213,6 +218,7 @@ def main() -> int:
     parser.add_argument("--json-out", default="docs/reports/docs-execution-latest.json")
     parser.add_argument("--md-out", default="docs/reports/docs-execution-latest.md")
     parser.add_argument("--fail-claimed-done-no-proof", action="store_true")
+    parser.add_argument("--fail-hard-gaps", action="store_true", help="Exit non-zero for stale, contradicted, or claimed-done-without-proof rows.")
     args = parser.parse_args()
     root = Path(args.project_dir).resolve()
     rows = audit(root)
@@ -223,7 +229,10 @@ def main() -> int:
     json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_markdown(rows, md_path)
     print(json.dumps({"items": len(rows), "json": str(json_path), "markdown": str(md_path)}, sort_keys=True))
+    hard_gap_statuses = {"stale", "claimed_done_no_proof", "contradicted"}
     if args.fail_claimed_done_no_proof and any(row.inferred_status == "claimed_done_no_proof" for row in rows):
+        return 2
+    if args.fail_hard_gaps and any(row.inferred_status in hard_gap_statuses for row in rows):
         return 2
     return 0
 
