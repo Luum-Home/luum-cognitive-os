@@ -87,6 +87,7 @@ DISABLE_HOOK_AGUARA_SCAN=true claude
 | error-pattern-detector.sh | `DISABLE_HOOK_ERROR_PATTERN_DETECTOR` |
 | semgrep-scan.sh | `DISABLE_HOOK_SEMGREP_SCAN` |
 | aguara-scan.sh | `DISABLE_HOOK_AGUARA_SCAN` |
+| rate-limiter.sh | `DISABLE_HOOK_RATE_LIMITER` |
 
 **Important**: These env vars are session-scoped (set in the shell that launches
 Claude Code). They do NOT persist across sessions or modify `settings.json`.
