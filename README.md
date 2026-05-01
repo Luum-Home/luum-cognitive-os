@@ -5,7 +5,7 @@
 [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](CHANGELOG.md)
 <!-- BADGES:START -->
 ![Dogfood Score](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/dogfood.json)
-![REAL Components](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/real-components.json)
+![REAL Primitives](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/real-components.json)
 ![Harness Portability](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/portability.json)
 ![Hook Wiring](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/hook-wiring.json)
 <!-- BADGES:END -->

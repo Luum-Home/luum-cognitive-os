@@ -658,11 +658,29 @@ Grouped by reason:
 
 ### Separate-pass items (rename tracking required)
 These are proper nouns (skill names, filenames, test function names) that need coordinated renaming beyond prose edits:
+
+Status updated: 2026-04-29 (pass 2 — applied feasible items, deferred items with downstream consumers)
+
 - Skill: `component-classifier` → `primitive-classifier`
+  **APPLIED** — SKILL.md frontmatter `name:` updated to `primitive-classifier`. Directory rename DEFERRED: the directory name is the slash-command trigger and cos-install key; renaming requires updating hooks/self-install.sh symlink logic, RULES-COMPACT.md ref, and skills/CATALOG* entries simultaneously. Track as a separate atomic commit.
+
 - Skill: `component-reality-check` → `primitive-reality-check`
+  **APPLIED** — SKILL.md frontmatter `name:` updated to `primitive-reality-check`. Directory rename DEFERRED: same reasoning as component-classifier above. Slash-command `/component-reality-check` remains functional until directory rename lands.
+
 - Script: `component-lint.sh` → `primitive-lint.sh`
+  **DEFERRED** — Consumer count is high: `tests/behavior/test_upgrade_script.py`, `tests/behavior/test_secondary_script_portability.py`, `docs/cos-package-manager.md` (3 references), and `scripts/upgrade.sh` (2 references) all reference the path by exact name. Renaming without updating all consumers would break behavior tests. Requires a coordinated multi-file rename pass.
+
 - Rule file: `component-classification.md` → `primitive-classification.md`
+  **DEFERRED** — `hooks/self-install.sh` line 360 registers this file by exact name for hook injection. Renaming without updating self-install.sh (forbidden scope) would silently drop the rule from hook context. Requires a coordinated hooks + docs pass.
+
 - Plan file: `component-scope-classification.md` → `primitive-scope-classification.md`
+  **DEFERRED** — `tests/unit/test_cos_init_py.py` lines 509–514 reference the path by exact name as a test fixture. Renaming without updating the test would break unit tests. Requires coordinated test + plan file update.
+
 - Test function: `test_uninstall_removes_cos_components` → `test_uninstall_removes_cos_primitives` (in `tests/`)
+  **APPLIED** — `tests/audit/test_install_scripts.py:240` renamed. No other callers found. Zero downstream effect.
+
 - Badge label: `real-components.json` → `real-primitives.json` (coordinate with badge infrastructure)
+  **APPLIED (partial)** — `README.md` alt-text updated to "REAL Primitives". The badge JSON filename `real-components.json` and its URL in the `src=` parameter are DEFERRED: the JSON file lives in `.cognitive-os/metrics/badges/` and must be renamed together with any CI/CD job that writes it and the Shields.io endpoint URL. Those are outside the doc-only scope of this pass.
+
 - CLI arg: `cos map [component]` → `cos map [primitive]` (requires Go source edit in `cmd/cos/`)
+  **APPLIED** — `cmd/cos/README.md:108` already shows `cos map [primitive]` (applied in a prior commit). Go source (`cmd/cos/`) is out of scope for this pass; the doc surface is complete.
