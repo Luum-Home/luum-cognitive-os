@@ -26,7 +26,6 @@ Configure in .claude/settings.json:
                 "command": "python3",
                 "args": ["-m", "packages.advisor-mcp.advisor_server"],
                 "env": {
-                    "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
                     "OPENAI_API_KEY": "${OPENAI_API_KEY}",
                     "GOOGLE_API_KEY": "${GOOGLE_API_KEY}"
                 }
@@ -176,6 +175,23 @@ async def _call_anthropic(
     context: str, question: str, model: str, max_tokens: int
 ) -> tuple[str, int, int]:
     """Call the Anthropic API. Returns (reply, input_tokens, output_tokens)."""
+    try:
+        from lib.anthropic_direct_policy import direct_anthropic_api_enabled
+
+        if not direct_anthropic_api_enabled():
+            return (
+                "ERROR: Anthropic provider disabled by "
+                "llm_providers.claude_sdk.enabled in cognitive-os.yaml",
+                0,
+                0,
+            )
+    except Exception:
+        return (
+            "ERROR: Anthropic provider disabled; unable to read direct API policy",
+            0,
+            0,
+        )
+
     try:
         import anthropic
     except ImportError:
@@ -349,7 +365,7 @@ _PROVIDERS = {
 async def consult_advisor(
     context: str,
     question: str,
-    provider: str = "anthropic",
+    provider: str = "local",
     model: str = "",
     max_tokens: int = 500,
 ) -> str:
@@ -363,8 +379,9 @@ async def consult_advisor(
         context: What the executor has learned so far (files seen, errors hit,
                  constraints discovered, work completed).
         question: Specific strategic question for the advisor.
-        provider: AI provider to use. One of: anthropic, openai, google,
-                  litellm, local. Default: anthropic.
+        provider: AI provider to use. One of: local, litellm, openai, google,
+                  anthropic. Default: local. The anthropic provider requires
+                  llm_providers.claude_sdk.enabled: true.
         model: Override the model (leave empty to use provider default).
                Examples: claude-opus-4-6, gpt-4o, gemini-2.5-pro, llama3.
         max_tokens: Maximum tokens in the advisor's response. Default: 500.
