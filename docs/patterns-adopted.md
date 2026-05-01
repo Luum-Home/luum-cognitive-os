@@ -449,7 +449,7 @@
 
 **What it does**: Tests that validate agent behavior invariants — not "does the code compile" but "does the agent follow the preamble format", "does every skill produce a TRUST_REPORT", "does the hook chain fire in the correct order". Structural tests catch regressions in the agent OS itself, not in the code it generates.
 
-**Where it lives**: Added to `tests/structural/` (new directory, parallel to `tests/unit/` and `tests/behavior/`).
+**Where it lives now**: structural-only test detection is enforced through `tests/unit/test_cos_test_quality_audit_scope.py`; the old `tests/structural/` directory is no longer a live surface.
 
 **How it integrates**: Part of the CI test suite. Run by `scripts/run-tests.sh` with the `--structural` flag. Checks: preamble compliance, trust report presence, hook registration in settings.local.json, skill frontmatter completeness, rule cross-references.
 
