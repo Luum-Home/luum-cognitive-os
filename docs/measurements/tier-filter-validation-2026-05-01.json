@@ -1,0 +1,627 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-01T14:55:37.012917+00:00",
+  "harness": "scripts/validate_tier_filter.py",
+  "approach": "synthetic",
+  "dry_run": false,
+  "config_a": "tier_filter=[0,1]",
+  "config_b": "tier_filter=[0]",
+  "baseline_skills_failed_rate": 0.445,
+  "revert_threshold": 0.89,
+  "statistics": {
+    "n_trials": 30,
+    "config_a_label": "tier_filter=[0,1]",
+    "config_b_label": "tier_filter=[0]",
+    "mean_unexpanded_keys_a": 0.333,
+    "mean_unexpanded_keys_b": 1.467,
+    "mean_delta_b_minus_a": 1.133,
+    "trials_b_worse": 18,
+    "trials_neutral": 10,
+    "trials_b_better": 2,
+    "wilcoxon_w": 3,
+    "wilcoxon_note": "z=3.808 p=0.0001",
+    "baseline_skills_failed_rate": 0.445,
+    "revert_threshold": 0.89,
+    "observed_skills_failed_rate": 0.2651
+  },
+  "decision": {
+    "recommendation": "KEEP",
+    "rationale": "Expansion regression in 18/30 trials (60%) \u2014 majority of sampled tasks leave Tier-1 rules unexpanded under [0]. Mean delta=1.13 keys. Live rate OK (observed_rate=0.2651 <= threshold=0.89) but context quality risk is unacceptably high for complex tasks.",
+    "auto_flip_eligible": false,
+    "auto_flip_env_var": "COS_AUTO_FLIP_TIER_FILTER",
+    "auto_flip_enabled": false
+  },
+  "trials": [
+    {
+      "source": "synthetic",
+      "seed_index": 0,
+      "prompt_preview": "Perform a cross-service refactor extracting shared RateLimiter from svc-auth and svc-orders into lib/rate-limiter. Follo",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "blast-radius",
+          "decomposition"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 1,
+      "prompt_preview": "Route this agent delegation: complex debugging task. Apply [`model-routing`] and [`token-economy`] to select the right m",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "model-routing",
+          "token-economy"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 2,
+      "prompt_preview": "Review this PR: changes 47 files across 3 services. Apply [`clarification-gate`] before starting and [`scope-creep-detec",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "clarification-gate",
+          "scope-creep-detection"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 3,
+      "prompt_preview": "Summarize the last 200 messages in context. Use [`context-management`] rules to decide what to drop and [`result-managem",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "context-management",
+          "result-management"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 4,
+      "prompt_preview": "A deploy just failed mid-migration. Apply [`auto-rollback`] protocol, then document in [`error-learning`] format.",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "auto-rollback",
+          "error-learning"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 5,
+      "prompt_preview": "Verify that the new auth module is complete. Apply [`confidence-gate`] \u2014 report unknowns explicitly with [`assumption-tr",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "assumption-tracking",
+          "confidence-gate"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 6,
+      "prompt_preview": "An agent needs access to the production DB. Apply [`agent-security`] TTL policy and [`credential-management`] rules.",
+      "config_a": {
+        "unexpanded_keys": 3,
+        "total_ref_keys": 2,
+        "resolved_keys": 1,
+        "unexpanded_key_names": [
+          "agent-customization",
+          "agent-identity",
+          "credential-management"
+        ]
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "agent-security",
+          "credential-management"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 7,
+      "prompt_preview": "The LLM API is rate-limited. Apply [`rate-limiting`] and [`rate-limit-protection`] \u2014 show the non-blocking retry approac",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "rate-limit-protection",
+          "rate-limiting"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 8,
+      "prompt_preview": "Log all agent actions for the past session. Follow [`audit-trail`] and [`agent-identity`] rules to produce a structured ",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "agent-identity",
+          "audit-trail"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 9,
+      "prompt_preview": "Apply a schema migration across 5 microservices. Assess [`blast-radius`] first. Use [`model-directive`] to pick the righ",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "blast-radius",
+          "model-directive"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 10,
+      "prompt_preview": "Fix a typo in README.md. Apply [`acceptance-criteria`] and [`trust-score`].",
+      "config_a": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": [
+          "closed-loop-prompts",
+          "definition-of-done"
+        ]
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": [
+          "closed-loop-prompts",
+          "definition-of-done"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 11,
+      "prompt_preview": "Add a unit test for the login function. Follow [`definition-of-done`] and [`agent-quality`].",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 12,
+      "prompt_preview": "Review the last commit. Use [`trust-score`] to assess confidence in the changes.",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 13,
+      "prompt_preview": "Write a simple bash one-liner to count lines. Apply [`agent-escalation`] rules if stuck.",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 14,
+      "prompt_preview": "Summarize the task requirements. Follow [`closed-loop-prompts`] format.",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 0,
+      "prompt_preview": "Perform a cross-service refactor extracting shared RateLimiter from svc-auth and svc-orders into lib/rate-limiter. Follo",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "blast-radius",
+          "decomposition"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 1,
+      "prompt_preview": "Route this agent delegation: complex debugging task. Apply [`model-routing`] and [`token-economy`] to select the right m",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "model-routing",
+          "token-economy"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 2,
+      "prompt_preview": "Review this PR: changes 47 files across 3 services. Apply [`clarification-gate`] before starting and [`scope-creep-detec",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "clarification-gate",
+          "scope-creep-detection"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 3,
+      "prompt_preview": "Summarize the last 200 messages in context. Use [`context-management`] rules to decide what to drop and [`result-managem",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "context-management",
+          "result-management"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 4,
+      "prompt_preview": "A deploy just failed mid-migration. Apply [`auto-rollback`] protocol, then document in [`error-learning`] format.",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "auto-rollback",
+          "error-learning"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 5,
+      "prompt_preview": "Verify that the new auth module is complete. Apply [`confidence-gate`] \u2014 report unknowns explicitly with [`assumption-tr",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "assumption-tracking",
+          "confidence-gate"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 6,
+      "prompt_preview": "An agent needs access to the production DB. Apply [`agent-security`] TTL policy and [`credential-management`] rules.",
+      "config_a": {
+        "unexpanded_keys": 3,
+        "total_ref_keys": 2,
+        "resolved_keys": 1,
+        "unexpanded_key_names": [
+          "agent-customization",
+          "agent-identity",
+          "credential-management"
+        ]
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "agent-security",
+          "credential-management"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 7,
+      "prompt_preview": "The LLM API is rate-limited. Apply [`rate-limiting`] and [`rate-limit-protection`] \u2014 show the non-blocking retry approac",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "rate-limit-protection",
+          "rate-limiting"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 8,
+      "prompt_preview": "Log all agent actions for the past session. Follow [`audit-trail`] and [`agent-identity`] rules to produce a structured ",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "agent-identity",
+          "audit-trail"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 9,
+      "prompt_preview": "Apply a schema migration across 5 microservices. Assess [`blast-radius`] first. Use [`model-directive`] to pick the righ",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 0,
+        "unexpanded_key_names": [
+          "blast-radius",
+          "model-directive"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 10,
+      "prompt_preview": "Fix a typo in README.md. Apply [`acceptance-criteria`] and [`trust-score`].",
+      "config_a": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": [
+          "closed-loop-prompts",
+          "definition-of-done"
+        ]
+      },
+      "config_b": {
+        "unexpanded_keys": 2,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": [
+          "closed-loop-prompts",
+          "definition-of-done"
+        ]
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 11,
+      "prompt_preview": "Add a unit test for the login function. Follow [`definition-of-done`] and [`agent-quality`].",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 2,
+        "resolved_keys": 2,
+        "unexpanded_key_names": []
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 12,
+      "prompt_preview": "Review the last commit. Use [`trust-score`] to assess confidence in the changes.",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 13,
+      "prompt_preview": "Write a simple bash one-liner to count lines. Apply [`agent-escalation`] rules if stuck.",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      }
+    },
+    {
+      "source": "synthetic",
+      "seed_index": 14,
+      "prompt_preview": "Summarize the task requirements. Follow [`closed-loop-prompts`] format.",
+      "config_a": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      },
+      "config_b": {
+        "unexpanded_keys": 0,
+        "total_ref_keys": 1,
+        "resolved_keys": 1,
+        "unexpanded_key_names": []
+      }
+    }
+  ],
+  "repeatability": "Re-run at any time with: python3 scripts/validate_tier_filter.py --approach=replay --n=30 --output=docs/measurements/tier-filter-validation-$(date +%F).json"
+}
