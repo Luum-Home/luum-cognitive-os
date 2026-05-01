@@ -160,10 +160,13 @@ Proof paths:
 
 ## Tracking Checklist
 
-- [ ] Phase 1 command design documented.
-- [ ] Phase 1 local task payload schema created.
-- [ ] Phase 1 isolated workspace proof implemented.
+- [x] Phase 1 command design documented.
+- [x] Phase 1 local task payload schema created.
+- [x] Phase 1 isolated workspace proof implemented.
+- [x] Phase 1 provider/agent command execution implemented.
+- [x] Phase 1 acceptance execution and outcome artifacts implemented.
 - [ ] Phase 2 queue/worker contract documented.
+- [x] Phase 2 queue/workflow tooling research documented.
 - [ ] Phase 2 worker lease tests implemented.
 - [ ] Phase 3 container contract documented.
 - [ ] Phase 3 no-host-path proof implemented.
@@ -173,3 +176,5 @@ Proof paths:
 
 - [Runtime Comparison Benchmark Plan](runtime-comparison-benchmark-plan.md) — compares COS against vanilla Claude/Codex and prior-art tools across workstation, VM, container, pod, and cluster surfaces.
 - [Local Connected Systems Validation](../../../docs/manual-tests/local-connected-systems-validation.md) — proves local dependency and service readiness before extending the runtime to VM/container/cluster surfaces.
+- [`cos run-task` Contract](../../../docs/architecture/cos-run-task-contract.md) — defines the Phase 1 payload, provider/agent command, artifact, exit-code, and security contract.
+- [Cloud Worker Runtime Tooling Research — 2026-05](../../../docs/architecture/cloud-worker-runtime-tooling-research-2026-05.md) — evaluates queue/workflow options for later phases.
