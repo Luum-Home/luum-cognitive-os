@@ -16,7 +16,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Test Resource Governance Sprint](architecture/plans/test-resource-governance-sprint.md) — resource policy manifest and staged enforcement plan for safe local/CI/headless test execution.
 - [Validation Nervous System](architecture/validation-nervous-system.md) — SO-maintainer doctrine for test selection, resource policy, persistent artifacts, governance gates, and release validation.
 - [Rate Limiter Flow Control](architecture/rate-limiter-flow-control.md) — token-bucket action limiter with soft warnings, operator reserve, and diversity penalty.
-- [Startup Circuit Breaker Plan](architecture/startup-circuit-breaker-plan.md) — implementation plan for ADR-101 safe mode, storm detection, SessionStart kill switch, and recovery command.
+- [Startup Circuit Breaker Plan](../.cognitive-os/plans/architecture/startup-circuit-breaker-plan.md) — implementation plan for ADR-104 safe mode, storm detection, SessionStart kill switch, and recovery command.
 - [Competitive Reassessment: OpenClaw and Hermes Agent](business/competitive-reassessment-openclaw-hermes-2026-04.md) — current evidence-based comparison of self-improvement, memory, skills, deployment, and governance gaps.
 - [Runtime Comparison Benchmark Plan](../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md) — benchmark matrix for Claude/Codex vanilla, COS-enabled harnesses, and prior-art tools across deployment surfaces.
 - [Audit and Contract Lane Recovery Plan](../.cognitive-os/plans/architecture/audit-contract-lane-recovery-plan.md) — deterministic debt cleanup and parallel lane flip plan for audit/contract.
