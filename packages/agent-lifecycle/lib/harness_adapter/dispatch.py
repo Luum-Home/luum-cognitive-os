@@ -34,15 +34,19 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Type
 
 from .aider import AiderAdapter
+from .bare_cli import BareCliAdapter
 from .base import HarnessAdapter, HeartbeatTick
 from .claude_code import ClaudeCodeAdapter
 from .codex import CodexAdapter
 
 #: Order matters: more-specific adapters go first.
+#: BareCliAdapter is last — it acts as a fallback when no other adapter claims
+#: the payload (its detect_harness uses a no-other-harness-env-vars heuristic).
 ADAPTERS: List[Type[HarnessAdapter]] = [
     CodexAdapter,
     ClaudeCodeAdapter,
     AiderAdapter,
+    BareCliAdapter,
 ]
 
 
