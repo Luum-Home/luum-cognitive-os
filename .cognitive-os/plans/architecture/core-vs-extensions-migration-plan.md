@@ -35,7 +35,7 @@ hook_registrations:
     matcher: "Agent"
     script: "hooks/prompt-quality-llm.sh"
     profile: [full]              # LLM hooks stay opt-in
-    requires_env: [ANTHROPIC_API_KEY]
+    requires_env: []
     skip_if_missing: true
 
 # NEW: rule contributions
