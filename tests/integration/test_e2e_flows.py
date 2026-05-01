@@ -466,8 +466,9 @@ class TestMemoryFlow:
       3. Search for related concepts
       4. Verify semantic relevance in results
 
-    NOTE: Cognee requires an LLM API key for cognify. If not available,
-    the test validates the API is accessible and add/search endpoints exist.
+    NOTE: Cognee can run without cloud API keys when both LLM and embeddings are
+    configured for local backends. This test validates API availability and
+    does not perform paid provider calls.
     """
 
     @pytest.fixture(scope="class")
@@ -491,10 +492,16 @@ class TestMemoryFlow:
                 .with_exposed_ports(8000)
                 .with_env("COGNEE_GRAPH_BACKEND", "networkx")
                 .with_env("COGNEE_VECTOR_STORE", "lancedb")
-                .with_env("COGNEE_LLM_PROVIDER", "anthropic")
-                .with_env("COGNEE_LLM_MODEL", "claude-sonnet-4-5-20250514")
-                # Keys intentionally empty — tests check API availability, not LLM calls
-                .with_env("ANTHROPIC_API_KEY", "")
+                .with_env("COGNEE_LLM_PROVIDER", "ollama")
+                .with_env("COGNEE_LLM_MODEL", "llama3.1:8b")
+                .with_env("LLM_PROVIDER", "ollama")
+                .with_env("LLM_MODEL", "llama3.1:8b")
+                .with_env("LLM_ENDPOINT", "http://host.docker.internal:11434/v1")
+                .with_env("LLM_API_KEY", "ollama")
+                .with_env("EMBEDDING_PROVIDER", "fastembed")
+                .with_env("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+                .with_env("EMBEDDING_DIMENSIONS", "384")
+                # No cloud provider keys: tests check API availability, not LLM calls
                 .with_env("OPENAI_API_KEY", "")
                 .with_command(
                     "bash -c '"

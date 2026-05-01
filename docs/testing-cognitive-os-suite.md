@@ -73,7 +73,7 @@ Runs infrastructure checks plus behavioral simulations.
 bash .cognitive-os/scripts/test-cognitive-os-full.sh
 ```
 
-Includes LLM-evaluated quality tests (requires promptfoo and ANTHROPIC_API_KEY).
+Includes optional LLM-evaluated quality tests (requires promptfoo and an explicitly configured eval provider key).
 
 ### Via Skill
 
@@ -109,7 +109,7 @@ Semi-deterministic. Pipe mock JSON to hooks and verify output patterns.
 
 ### Layer 3: Quality Tests
 
-LLM-evaluated via promptfoo. Requires `promptfoo` installed and `ANTHROPIC_API_KEY` set.
+LLM-evaluated via promptfoo. Requires `promptfoo` installed and an explicit eval provider key such as `OPENAI_API_KEY` set.
 
 | Test | What It Checks |
 |------|----------------|

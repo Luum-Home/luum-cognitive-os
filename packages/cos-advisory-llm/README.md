@@ -1,6 +1,6 @@
 # cos-advisory-llm
 
-Optional extension pack. Hosts the three Haiku-evaluated advisory gates that require Anthropic API access.
+Optional extension pack. Hosts three harness-native LLM advisory gates. The hooks emit Claude Code `type: prompt` hook output and do not call Anthropic SDK directly.
 
 ## What's here
 
@@ -10,7 +10,7 @@ Optional extension pack. Hosts the three Haiku-evaluated advisory gates that req
 
 ## Enabling
 
-These gates activate automatically when `ANTHROPIC_API_KEY` is set AND the efficiency profile is `full`. Without the key they no-op silently (`skip_if_missing: true`).
+These gates activate when the efficiency profile is `full` and the active harness supports prompt-type hook output. They use the harness native model/account path; they do not require `ANTHROPIC_API_KEY`.
 
 ## Wave 1 POC notes
 
