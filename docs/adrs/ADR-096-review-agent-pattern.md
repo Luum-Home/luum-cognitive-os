@@ -1,10 +1,10 @@
 # ADR-096: Review-agent pattern (Hermes-style audit loop)
 
-**Status**: Proposed
-**Date**: 2026-04-30
+**Status**: Accepted
+**Date**: 2026-05-01
 **Author**: Matias Nahuel Améndola (COS sub-agent)
-**Engram topic keys**: `cos/learning-loop-final-30pct`, `hermes-learning-loop-source-map`
-**Implementation sprint**: NOT this sprint — implementation is a separate future sprint.
+**Engram topic keys**: `cos/learning-loop-final-30pct`, `hermes-learning-loop-source-map`, `cos/review-agent-implementation`
+**Related ADRs**: ADR-090 (skill failure repair), ADR-095 (skill synthesis), ADR-097 (task-tracker lifecycle), ADR-099 (pre-agent snapshot)
 
 ---
 
@@ -50,10 +50,10 @@ The review runs in a `threading.Thread` (background, non-blocking).
 
 | Hermes artifact | COS equivalent | Portability |
 |-----------------|----------------|-------------|
-| `_MEMORY_REVIEW_PROMPT` / `_SKILL_REVIEW_PROMPT` (prompt text, ~200 words each) | New `templates/review-agent-prompt.md` | Verbatim copy OK after stripping Hermes tool references |
-| `max_iterations=8` cap on reviewer | Same cap in COS Agent call | Pattern portable |
-| Shared memory store between parent and reviewer | COS uses Engram (MCP); reviewer would call `mem_save` | Pattern portable, mechanism differs |
-| `threading.Thread` for non-blocking review | COS `run_in_background: true` Agent call | Pattern portable, mechanism differs |
+| `_MEMORY_REVIEW_PROMPT` / `_SKILL_REVIEW_PROMPT` (prompt text, ~200 words each) | `lib/review_agent.py::build_review_prompt` | Adapted verbatim (Hermes tool references replaced with COS TRUST_REPORT conventions) |
+| `max_iterations=8` cap on reviewer | Same cap via dispatch timeout | Pattern portable |
+| Shared memory store between parent and reviewer | COS uses Engram (MCP); reviewer calls `mem_save` | Pattern portable, mechanism differs |
+| `threading.Thread` for non-blocking review | v1: sync. v2 async follow-up | Pattern portable, mechanism deferred |
 
 What is NOT portable:
 - Hermes's `AIAgent` class (Hermes-internal; COS uses the Claude Code Agent)
@@ -62,104 +62,124 @@ What is NOT portable:
 
 ---
 
-## Decision space (open — not decided)
+## Decision
 
-### When does review fire?
+### 1. Trigger: post-hoc async (Accepted)
 
-**Option A — After every sub-agent completion** (Hermes default):
-Maximum coverage; maximum cost. Every Agent call in COS triggers a review.
-With ~10–15 agents per sprint, and each review at Haiku = ~$0.003–$0.008,
-total review cost per sprint = ~$0.03–$0.12. Acceptable but not zero.
+Review fires AFTER the parent agent reports done. The parent task is never
+blocked waiting for review. v1 ships sync (review completes before hook exits)
+with an explicit latency note. v2 async (background dispatch + sweeper) is a
+documented follow-up once we have data on review quality.
 
-**Option B — Only on `failure` outputs**:
-Review fires when the PostToolUse hook detects failure markers in the agent
-output. Lower cost; focuses review where it matters most (failures are where
-skill degradation is likely). Risk: misses successful outputs that contain
-hallucinations.
+**v1 sync note**: The `review-spawner.sh` hook dispatches the reviewer via
+`lib/dispatch.py` and blocks until the review response arrives. Measured
+latency budget: 2–15s at haiku/sonnet pricing. This is acceptable for the
+PostToolUse hook context (no user-visible latency in the critical path).
+v2 async is noted in the hook header as a follow-up.
 
-**Option C — Sampled N%**:
-Review fires for a random N% of agent completions (e.g. N=20%). Stable cost
-regardless of sprint size. Less deterministic; may miss bursty failure modes.
+### 2. Sampling: 20% by default (Accepted)
 
-**Open question**: COS already has `trust-score-validator.sh` which fires on
-every Agent completion and emits a trust score. Could the trust score gate
-review? (e.g. fire review only when trust_score < 0.7.)
+Reviews fire for 20% of sub-agent outputs by default. Configurable via
+`cognitive-os.yaml review.sample_rate: 0.2`. Always-review (`1.0`) and
+never-review (`0.0`) are supported edge cases.
 
-### What does the reviewer check?
+### 3. Cross-review enforcement: reviewer model must differ from producer (Accepted)
 
-Three candidate scopes:
+| Producer | Reviewer |
+|----------|----------|
+| haiku | sonnet (upward) |
+| sonnet | opus (upward) |
+| opus | sonnet (lateral, not downward) |
 
-1. **Trust score validation**: did the agent provide evidence for its claims?
-   (overlaps with existing `trust-score-validator.sh` — must not duplicate)
-2. **Claim accuracy**: did the agent claim to write a file that doesn't exist?
-   Did it claim tests pass when they didn't? (high value; not currently checked)
-3. **Skill opportunity detection**: did the agent solve something that should
-   become a skill? (feeds ADR-091)
-4. **Memory update**: is there something in this output worth persisting to
-   Engram? (partially covered by the `engram-reinforce-on-access.sh` hook)
+Implemented in `lib/review_agent.py::select_reviewer_model` and enforced in
+`hooks/review-spawner.sh`. Operator override via `COS_REVIEW_MODEL` env var.
 
-A combined reviewer (checks 2+3+4) maximises signal per LLM call.
+### 4. Default reviewer model: haiku (Accepted, with override)
 
-### What does the review produce?
+Default reviewer tier is `haiku` per `cognitive-os.yaml review.default_model`.
+The cross-review matrix (Decision 3) overrides this per-call. Operator can
+override globally via `cognitive-os.yaml review.default_model` or per-session
+via `COS_REVIEW_MODEL` env var.
 
-| Output type | Destination |
-|-------------|-------------|
-| Verified/falsified claim | Engram, type=`review-finding`, with `verified: bool` |
-| Skill opportunity | `skill-repair-queue.jsonl` (pending ADR-091 skill synthesis) OR a direct `/add-skill` call |
-| Memory update | `mem_save` call to Engram |
-| Trust score override | `trust-score.jsonl` with reviewer's independent score |
+### 5. Cost cap: 50 reviews/day (Accepted)
 
-### Cost gate
+Daily budget tracked in `.cognitive-os/runtime/review-budget.json`. When
+exhausted, `should_review()` returns False — reviews are skipped, NOT queued
+for later dispatch (queuing would create unbounded latency drift). Budget
+auto-rolls over at UTC midnight.
 
-A review agent is an additional LLM call per task. At Haiku pricing (~$0.003
-per 10K tokens, reviewer context ~5K tokens), cost per review ≈ $0.0015.
-At 50 agents/day × $0.0015 = $0.075/day — within governance bounds.
+### 6. What to check: trust score validation + claim accuracy + AC coverage (Accepted)
 
-At Sonnet pricing: $0.04/10K → $0.02/review → $1.00/day at 50 agents. This
-exceeds the $0.50 decomposition threshold from RULES-COMPACT §4. Reviewer
-MUST use Haiku unless the task requires deep reasoning.
+The review prompt (from `build_review_prompt`) instructs the reviewer to:
+1. Validate trust report honesty (score calibration, evidence quality)
+2. Check claim accuracy (files claimed to exist, tests claimed to pass)
+3. Check acceptance-criteria coverage
+4. Flag hallucination indicators (confident claims without corroborating output)
 
-**Open question**: should the cost of review be charged against the task's
-budget or tracked separately? The current cost-governance system tracks per-
-task costs; a post-task review blurs the boundary.
+NOT checked: code style, formatting, spelling.
 
----
+### 7. Output: Engram + JSONL (Accepted)
 
-## Open questions (must be answered before implementation sprint)
+Each finding is persisted to:
+- `.cognitive-os/metrics/review-findings.jsonl` (offline analysis, schema stable)
+- Engram observation type `review-finding` with topic_key
+  `review-finding/<producer_id>-<content_hash8>`
 
-1. **Sync or async?** Hermes uses `threading.Thread` (async, non-blocking).
-   COS's `run_in_background: true` is the natural equivalent, but background
-   agent results arrive as notifications, not as inline output. The reviewer's
-   findings (e.g. `mem_save` calls) are fire-and-forget. If the review finds
-   a critical claim error, can a notification surface it usefully? Or should
-   it be sync (block until done)?
+Schema: `{score, evidence, gaps, recommendations, producer_id, producer_model,
+reviewer_id, reviewer_model, reviewer_confidence, uncertainty, timestamp}`
 
-2. **Self-review vs cross-review?** Using the same model to audit its own
-   output has known limitations (same biases, same blind spots). Hermes uses
-   the same model because it shares the `_memory_store` reference. COS could
-   use a different model for the reviewer (e.g. Opus reviews Sonnet output)
-   but this doubles the already-elevated cost.
+### 8. No automatic skill modification in this phase (Accepted)
 
-3. **Where do review findings persist?** Engram with `type=review-finding`
-   is the natural choice. The schema must be defined before implementation to
-   ensure findings are searchable and not confused with other observation
-   types. Proposed schema fields: `task_id`, `reviewer_model`, `claim`,
-   `verified`, `confidence`, `evidence`.
-
-4. **Deduplication and loop prevention**: if the reviewer calls `mem_save`
-   for the same claim twice (across two sessions), does Engram deduplicate?
-   The current `mem_save` protocol uses `topic_key` for upsert — but review
-   findings don't have stable topic keys (each is tied to a specific task).
-   A content-hash deduplication scheme is needed.
-
-5. **Integration with `trust-score-validator.sh`**: the existing hook already
-   scores agent outputs. The reviewer must either augment the trust score or
-   run entirely separately. Running both risks inconsistent scores visible to
-   the user.
+Findings surface to `/analyze-improvements` (Phase 1's downstream consumer).
+The review agent emits data; it does NOT act on it. Closing the loop fully
+(review → auto-modify) requires a separate implementation sprint with quality
+data on review accuracy.
 
 ---
 
-## Consequences (anticipated)
+## Resolved questions
+
+1. **Sync or async?** v1: sync (block until review done, document latency cost).
+   v2 async (background + sweeper) is a follow-up ADR. Rationale: shipping
+   something useful now > shipping nothing pending a complex async design.
+
+2. **Self-review vs cross-review?** Cross-review, enforced by the model matrix.
+   Same model reviewing its own output has known echo-chamber risks.
+
+3. **Where do review findings persist?** Engram type=`review-finding` +
+   `.cognitive-os/metrics/review-findings.jsonl`. Deduplication via content
+   hash suffix in topic_key.
+
+4. **Deduplication and loop prevention?** Content hash in topic_key prevents
+   Engram upsert collisions. JSONL append is per-call (no dedup in JSONL —
+   offline analysis is responsible for dedup there).
+
+5. **Integration with `trust-score-validator.sh`?** The review agent runs as
+   a separate PostToolUse hook, after trust-score-validator. The two hooks do
+   NOT share state; trust-score-validator is lightweight (<200ms); review-spawner
+   is heavier but fires only for sampled outputs.
+
+---
+
+## Implementation
+
+| Artifact | Path | Notes |
+|----------|------|-------|
+| Library | `lib/review_agent.py` (source: `packages/agent-lifecycle/lib/review_agent.py`) | Public API: `should_review`, `select_reviewer_model`, `build_review_prompt`, `parse_review_response`, `persist_finding`, `daily_budget_state` |
+| Hook | `hooks/review-spawner.sh` (source: `packages/agent-lifecycle/hooks/review-spawner.sh`) | PostToolUse on Agent; v1 sync |
+| Skill | `skills/review-output/` (source: `packages/agent-lifecycle/skills/review-output/`) | Manual trigger: `/review-output --task-id <id>` or `--recent N` |
+| Config | `cognitive-os.yaml review:` block | `sample_rate`, `max_per_day`, `default_model`, `always_review_kinds` |
+| Unit tests | `tests/unit/test_review_agent.py` | All public functions; edge cases for should_review, parse_review_response |
+| Integration tests | `tests/integration/test_review_agent_flow.py` | End-to-end: synthetic producer → gate → prompt → mock dispatch → persist |
+
+### Hook registration
+
+Register `review-spawner.sh` as a PostToolUse hook via `apply-efficiency-profile.sh`
+or directly in `.claude/settings.json` under `hooks.PostToolUse` with matcher `Agent`.
+
+---
+
+## Consequences
 
 ### Positive
 
@@ -169,24 +189,28 @@ task costs; a post-task review blurs the boundary.
   ("what did the reviewer find about yesterday's deploy agent?").
 - Enables the ADR-095 skill synthesis path: the reviewer is the natural place
   to detect skill opportunities in successful task completions.
+- Cross-review matrix prevents echo chambers (reviewer always differs from producer).
 
 ### Negative
 
-- **LLM cost**: a review agent doubles the effective cost per task if it runs
-  on every agent completion. Must be gated by trust_score or sampling.
-- **Latency**: if sync, adds reviewer latency to every task. If async, the
-  review may arrive after the user has moved on (stale context).
-- **False trust**: a reviewer that consistently says "verified" without
-  actually checking provides false assurance and is worse than no reviewer.
-  Evaluation criteria for the reviewer itself are needed (meta-evaluation).
+- **v1 latency**: sync review adds 2–15s to hook exit time for sampled outputs.
+  This is PostToolUse, not in the user's critical render path, but it is
+  measurable. v2 async resolves this.
+- **False trust risk**: a reviewer that consistently says "verified" provides
+  false assurance. The prompt explicitly forbids rubber-stamping (MUST find
+  at least 1 gap), but LLM compliance is stochastic. Meta-evaluation of review
+  quality is a future follow-up.
+- **Cost**: at 20% sample rate and haiku pricing, daily cost ≈ $0.02–$0.05
+  for typical sprint load. Within governance bounds.
 
 ### Follow-up
 
-- Evaluate whether the review-agent pattern can be piloted on a single
-  high-stakes hook (e.g. only review `sdd-apply` outputs) before generalizing.
-- Define Engram schema for `review-finding` observations before implementation.
-- Determine cost amortization strategy (budget per sprint? per task? separate
-  "learning budget"?).
+- v2 async: background dispatch + `.cognitive-os/runtime/review-pending-*.json`
+  markers + sweeper hook. Separate ADR when v1 data shows latency is a problem.
+- Meta-evaluation: instrument whether review findings are acted on and whether
+  they correlate with later user corrections.
+- `always_review_kinds: ["sdd-verify"]` for high-stakes task types — config
+  hook already reads this field; enforcement is a 1-line extension.
 
 ---
 
@@ -198,10 +222,11 @@ task costs; a post-task review blurs the boundary.
 | Human-in-the-loop only | Defeats the autonomous learning goal. Requires the user to manually audit every agent output. |
 | Static linter / grep-based checker | Cannot evaluate claim accuracy or detect hallucination without LLM reasoning. |
 | Extend `trust-score-validator.sh` to do claim verification | The hook already runs on every agent completion and is latency-sensitive. Adding LLM calls to it would violate its <200ms budget. |
+| Same model for self-review | Echo chamber: same biases, same blind spots. Cross-review matrix prevents this. |
 
 ---
 
-## Relationship to ADR-090 and ADR-095
+## Relationship to other ADRs
 
 - ADR-090 (Accepted): detects and queues *failing skills* from metric data.
   No review agent involved.
@@ -209,6 +234,10 @@ task costs; a post-task review blurs the boundary.
   The review agent is the natural detector for ADR-095's "repeated success
   pattern" signal — the reviewer can say "this task pattern recurred; propose
   a skill."
-- The three ADRs form a complete learning loop: detect failure (090) →
-  detect success patterns (095) → actively audit outputs (096). They should
-  be designed together before 095 or 096 enter implementation.
+- ADR-097 (Accepted): task-tracker lifecycle. Review findings reference
+  producer_id which aligns with the task-tracker task IDs.
+- ADR-099 (Accepted): pre-agent snapshot fix. Untracked files now survive
+  agent launches, so review findings written during the hook are safe.
+- Together ADR-090 + ADR-095 + ADR-096 form a complete learning loop:
+  detect failure (090) → detect success patterns (095) → actively audit
+  outputs (096).
