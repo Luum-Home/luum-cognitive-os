@@ -1,7 +1,7 @@
 # Incident: Session-Startup Multi-Spawn Hang (2026-05-01)
 
 **Severity**: High — operator-blocking 5+ minute hang on every fresh session in `luum-agent-os`.
-**Status**: Mitigated 2026-05-01. Two structural fixes shipped; long-term hardening tracked below.
+**Status**: Hardened 2026-05-01. Initial mitigation shipped two structural fixes; follow-up hardening now gates subagent SessionStart fan-out and serializes self-install git config repair.
 **Detected**: 2026-05-01 by operator report (chat UI showed duplicate prompts and a "5m 0s" timer).
 **Engram**: `incident/2026-05-01-session-3-spawn-hang`.
 
@@ -145,13 +145,56 @@ Defensive opt-out (skips the autoapply hook entirely):
 export COS_DISABLE_PROFILE_AUTOAPPLY=1
 ```
 
-## Long-term hardening (deferred, not blocking)
+## Follow-up hardening shipped (2026-05-01)
 
-These are NOT required to close this incident — both fixes above remove the race. But they would harden the system further if related issues surface.
+These changes are defense-in-depth on top of the initial mitigation. They address the screenshot symptom class where startup/resume/subagent churn can duplicate visible prompt context or stall the first turn.
 
-- **Sub-agent SessionStart scope** — Claude Code currently fires the full SessionStart chain (17 hooks) for every sub-agent launch, not just user sessions. With heavy parallel-Agent orchestration this multiplies hook subprocess costs by 17×. Possible mitigation: a `COGNITIVE_OS_SESSION_KIND=subagent` env var that lets specific hooks short-circuit when invoked by a sub-agent. Tracked separately.
-- **Atomic write across all settings/hooks projection scripts** — the audit test `test_no_other_unsafe_mktemp_to_settings_patterns` is the regression guard; if a future change introduces a new unsafe pattern, CI catches it. Codex driver and any future harness drivers must follow the same invariant.
-- **Per-session lock on git config writes in `self-install.sh`** — concurrent self-install invocations from sub-agent SessionStart still race on `.git/index.lock`, though Bug A and B were the dominant contributors to today's incident. Adding a `flock` on `.git/index` before any `git config` call would close this completely.
+### Fix 3: centralized subagent SessionStart gate
+
+`scripts/hook-timing-wrapper.sh` now captures hook stdin once, parses the hook JSON, exports normalized context (`COGNITIVE_OS_SESSION_SOURCE`, `COGNITIVE_OS_HOOK_AGENT_TYPE`, `COGNITIVE_OS_HOOK_AGENT_ID`, `COGNITIVE_OS_SESSION_KIND`), and skips `SessionStart` hook bodies when the invocation is subagent-shaped. Detection is intentionally multi-signal:
+
+- `agent_id` present in hook JSON.
+- `transcript_path` contains `/subagents/`.
+- `SessionStart` includes `agent_type`.
+- `CLAUDE_SUBAGENT_ID` or `COS_SUBAGENT_ID` is present in env.
+
+The skip is centralized in the wrapper instead of duplicated across 17 individual hooks. `SubagentStart` remains the intended subagent context path; `SessionStart` is treated as orchestrator-scope because it performs self-install, daemon launch, settings projection, recovery, and session registration. Operators can temporarily disable the skip with `COS_DISABLE_SUBAGENT_SESSIONSTART_SKIP=1`.
+
+The timing log now includes `session_kind` and `skipped` fields so future RCA can distinguish real hook latency from intentional subagent suppression.
+
+### Fix 4: stdout quarantine for context-bearing hook events
+
+Claude Code treats `SessionStart` and `UserPromptSubmit` stdout as model context. Several COS hooks historically printed human diagnostics to stdout. When startup re-spawned or prompt submission retried, that stdout could become extra model context and amplify the duplicate-prompt symptom.
+
+The wrapper now redirects stdout to stderr for diagnostic hooks on context-bearing events while preserving stdout for hooks that intentionally inject context:
+
+- Allowed SessionStart context: `session-startup-protocol`, `session-resume`.
+- Quarantined: other `SessionStart` hooks and `UserPromptSubmit:user-prompt-capture`.
+- Direct script invocations keep historical stdout for tests/operator debugging.
+- Emergency opt-out: `COS_DISABLE_HOOK_STDOUT_QUARANTINE=1`.
+
+`hooks/user-prompt-capture.sh` also suppresses the JSON emitted by `lib/process_user_message.py`; that output is observability, not prompt context.
+
+### Fix 5: non-blocking lock around self-install git config repair
+
+`hooks/self-install.sh` now wraps the `git config core.hooksPath .githooks` repair with a non-blocking repo-local lock (`.git/cos-self-install-git-config.lock`). It uses `flock` when available and Python `fcntl` as the macOS fallback. Lock losers exit advisory-success rather than blocking session start.
+
+### Tests added
+
+`tests/integration/test_sessionstart_subagent_scope.py` verifies:
+
+- Subagent-shaped `SessionStart` input is skipped centrally and records `session_kind=subagent`, `skipped=1`.
+- Orchestrator `SessionStart` still runs and receives the original stdin, with diagnostic stdout quarantined from model context.
+
+
+### Fix 6: startup circuit breaker / bounded safe mode (ADR-101)
+
+`scripts/hook-timing-wrapper.sh` now detects `SessionStart` storms and activates bounded safe mode via `.cognitive-os/runtime/startup-safe-mode.json`. While active, `SessionStart` hook bodies are skipped before they can mutate watched settings, launch daemons, or write model-visible stdout. Operators can force recovery with `bash scripts/cos-startup-recover.sh` or a manual kill-switch file `.cognitive-os/runtime/disable-sessionstart-hooks`. Timing records include `safe_mode` and `skip_reason` for RCA.
+
+## Remaining watch items
+
+- **Atomic write across all settings/hooks projection scripts** — the audit test `test_no_other_unsafe_mktemp_to_settings_patterns` remains the regression guard; if a future change introduces a new unsafe pattern, CI catches it. Codex driver and any future harness drivers must follow the same invariant.
+- **Empirical Claude Code subagent markers** — the wrapper uses all currently documented and observed signals, but if a future Claude Code release changes subagent hook input shape, update `test_sessionstart_subagent_scope.py` first, then the parser.
 
 ## Cross-references
 

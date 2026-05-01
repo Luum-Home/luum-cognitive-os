@@ -15,10 +15,12 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Suite Signal Triage — 2026-04-29](testing/suite-signal-triage-2026-04-29.md) — explains and reduces broad-lane xfail/warning/skipped noise without relaxing behavior.
 - [Test Resource Governance Sprint](architecture/plans/test-resource-governance-sprint.md) — resource policy manifest and staged enforcement plan for safe local/CI/headless test execution.
 - [Validation Nervous System](architecture/validation-nervous-system.md) — SO-maintainer doctrine for test selection, resource policy, persistent artifacts, governance gates, and release validation.
+- [Startup Circuit Breaker Plan](architecture/startup-circuit-breaker-plan.md) — implementation plan for ADR-101 safe mode, storm detection, SessionStart kill switch, and recovery command.
 - [Competitive Reassessment: OpenClaw and Hermes Agent](business/competitive-reassessment-openclaw-hermes-2026-04.md) — current evidence-based comparison of self-improvement, memory, skills, deployment, and governance gaps.
 - [Runtime Comparison Benchmark Plan](architecture/plans/runtime-comparison-benchmark-plan.md) — benchmark matrix for Claude/Codex vanilla, COS-enabled harnesses, and prior-art tools across deployment surfaces.
 - [Headless and Clustered Runtime Plan](architecture/plans/headless-clustered-runtime-plan.md) — staged path from local harness runtime to EC2/container/Kubernetes workers.
 - [Local Connected Systems Validation](manual-tests/local-connected-systems-validation.md) — proof path for dependency readiness, automatic install boundaries, MCP wiring, optional services, and persistent test summaries.
+- [Claude Code Startup Hang Regression](manual-tests/claude-code-startup-hang-regression.md) — manual proof path for the 2026-05-01 startup hang/duplicate-prompt hardening and its automated regression tests.
 
 - [Architecture Principles](architecture-principles.md) — dependency model and layer boundaries
 - [Design Philosophy](design-philosophy.md) — biological-system framing for the OS
