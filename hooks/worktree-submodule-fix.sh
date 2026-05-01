@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: project
+# @manual-trigger: invoked manually after worktree operations; not a global default
 # worktree-submodule-fix.sh — SessionStart hook
 #
 # Problem: git submodule .git files use relative paths (gitdir: ../../../.git/modules/...)
