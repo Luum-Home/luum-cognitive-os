@@ -79,7 +79,6 @@ def _kill_process_group(process: subprocess.Popen) -> None:
 def _get_safe_env() -> dict:
     """Build a minimal environment dict for subprocess execution."""
     safe_env = {
-        "ANTHROPIC_API_KEY": os.getenv("ANTHROPIC_API_KEY"),
         "HOME": os.getenv("HOME"),
         "USER": os.getenv("USER"),
         "PATH": os.getenv("PATH"),

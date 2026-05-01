@@ -136,10 +136,18 @@ class TestModelFamily:
 
 class TestGetSafeEnv:
     def test_allowlisted_vars_pass_through(self):
-        with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "sk-test", "HOME": "/workspace/user-home"}, clear=True):
+        with patch.dict(os.environ, {"HOME": "/workspace/user-home"}, clear=True):
             env = _get_safe_env()
-            assert env["ANTHROPIC_API_KEY"] == "sk-test"
             assert env["HOME"] == "/workspace/user-home"
+
+    def test_anthropic_api_key_not_inherited_by_default(self):
+        with patch.dict(
+            os.environ,
+            {"ANTHROPIC_API_KEY": "sk-test", "HOME": "/workspace/user-home"},
+            clear=True,
+        ):
+            env = _get_safe_env()
+            assert "ANTHROPIC_API_KEY" not in env
 
     def test_non_allowlisted_vars_filtered(self):
         with patch.dict(os.environ, {"SECRET_KEY": "bad", "HOME": "/workspace/home"}, clear=True):

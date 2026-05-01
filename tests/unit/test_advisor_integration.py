@@ -9,7 +9,6 @@ Tests cover:
 - ClaudeResult advisor fields
 """
 
-import os
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -139,13 +138,19 @@ class TestIsAdvisorAvailable:
         monkeypatch.delenv("ORCHESTRATOR_MODE", raising=False)
         assert is_advisor_available() is False
 
-    def test_returns_true_when_executor(self, monkeypatch):
+    def test_returns_false_when_executor_without_config_enabled(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        assert is_advisor_available() is True
+        assert is_advisor_available() is False
+
+    def test_returns_true_when_executor_and_config_enabled(self, monkeypatch):
+        monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            assert is_advisor_available() is True
 
     def test_case_insensitive(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "EXECUTOR")
-        assert is_advisor_available() is True
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            assert is_advisor_available() is True
 
     def test_returns_false_for_other_values(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "subprocess")
@@ -160,7 +165,8 @@ class TestIsAdvisorAvailable:
 class TestSelectModelAdvisor:
     def test_advisor_task_in_executor_mode_returns_sentinel(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        result = select_model("sdd-apply")
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            result = select_model("sdd-apply")
         assert result == SONNET_ADVISOR_TIER
 
     def test_advisor_task_not_in_executor_mode_returns_normal_model(self, monkeypatch):
@@ -170,32 +176,42 @@ class TestSelectModelAdvisor:
 
     def test_non_advisor_task_in_executor_mode_returns_normal_model(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        result = select_model("sdd-propose")
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            result = select_model("sdd-propose")
         assert result != SONNET_ADVISOR_TIER
 
-    def test_advisor_override_true_forces_sentinel(self, monkeypatch):
+    def test_advisor_preference_true_respects_availability(self, monkeypatch):
         monkeypatch.delenv("ORCHESTRATOR_MODE", raising=False)
         result = select_model("sdd-verify", use_advisor=True)
+        assert result != SONNET_ADVISOR_TIER
+
+    def test_advisor_preference_true_returns_sentinel_when_available(self, monkeypatch):
+        monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            result = select_model("sdd-verify", use_advisor=True)
         assert result == SONNET_ADVISOR_TIER
 
     def test_advisor_override_false_suppresses_sentinel(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        result = select_model("sdd-verify", use_advisor=False)
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            result = select_model("sdd-verify", use_advisor=False)
         assert result != SONNET_ADVISOR_TIER
 
     def test_prefer_local_suppresses_advisor(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        result = select_model("sdd-apply", prefer_local=True)
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            result = select_model("sdd-apply", prefer_local=True)
         # When prefer_local=True, advisor is skipped
         assert result != SONNET_ADVISOR_TIER
 
     def test_all_advisor_tasks_return_sentinel_in_executor_mode(self, monkeypatch):
         monkeypatch.setenv("ORCHESTRATOR_MODE", "executor")
-        for task in ADVISOR_TASKS:
-            result = select_model(task)
-            assert result == SONNET_ADVISOR_TIER, (
-                f"select_model({task!r}) returned {result!r}, expected {SONNET_ADVISOR_TIER!r}"
-            )
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            for task in ADVISOR_TASKS:
+                result = select_model(task)
+                assert result == SONNET_ADVISOR_TIER, (
+                    f"select_model({task!r}) returned {result!r}, expected {SONNET_ADVISOR_TIER!r}"
+                )
 
 
 # ---------------------------------------------------------------------------
@@ -277,9 +293,10 @@ class TestRunWithAdvisor:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
-            executor = ClaudeExecutor()
-            result = executor.run_with_advisor("test prompt")
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
+                executor = ClaudeExecutor()
+                result = executor.run_with_advisor("test prompt")
 
         assert result.success is True
         assert result.result_text == "advisor answer"
@@ -298,9 +315,10 @@ class TestRunWithAdvisor:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
-            executor = ClaudeExecutor()
-            executor.run_with_advisor("test prompt", max_advisor_uses=2)
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
+                executor = ClaudeExecutor()
+                executor.run_with_advisor("test prompt", max_advisor_uses=2)
 
         call_kwargs = mock_client.beta.messages.create.call_args.kwargs
         assert call_kwargs.get("betas") == [ADVISOR_BETA]
@@ -331,9 +349,10 @@ class TestRunWithAdvisor:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
-            executor = ClaudeExecutor()
-            result = executor.run_with_advisor("test prompt")
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
+                executor = ClaudeExecutor()
+                result = executor.run_with_advisor("test prompt")
 
         assert result.advisor_uses == 2
         assert result.advisor_tokens_in == 900   # 500 + 400
@@ -341,6 +360,17 @@ class TestRunWithAdvisor:
 
     def test_falls_back_to_run_when_no_api_key(self, monkeypatch):
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+
+        executor = ClaudeExecutor()
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.object(executor, "run", return_value=ClaudeResult(success=True, result_text="fallback")) as mock_run:
+                result = executor.run_with_advisor("test prompt")
+
+        mock_run.assert_called_once_with(prompt="test prompt", model="sonnet")
+        assert result.result_text == "fallback"
+
+    def test_falls_back_to_run_when_config_disabled(self, monkeypatch):
+        monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-key")
 
         executor = ClaudeExecutor()
         with patch.object(executor, "run", return_value=ClaudeResult(success=True, result_text="fallback")) as mock_run:
@@ -353,10 +383,11 @@ class TestRunWithAdvisor:
         monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-key")
 
         # Remove anthropic from sys.modules and block import
-        with patch.dict("sys.modules", {"anthropic": None}):
-            executor = ClaudeExecutor()
-            with patch.object(executor, "run", return_value=ClaudeResult(success=True, result_text="cli-fallback")) as mock_run:
-                result = executor.run_with_advisor("test prompt")
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.dict("sys.modules", {"anthropic": None}):
+                executor = ClaudeExecutor()
+                with patch.object(executor, "run", return_value=ClaudeResult(success=True, result_text="cli-fallback")) as mock_run:
+                    result = executor.run_with_advisor("test prompt")
 
         mock_run.assert_called_once_with(prompt="test prompt", model="sonnet")
         assert result.result_text == "cli-fallback"
@@ -370,9 +401,10 @@ class TestRunWithAdvisor:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
-            executor = ClaudeExecutor()
-            result = executor.run_with_advisor("test prompt")
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
+                executor = ClaudeExecutor()
+                result = executor.run_with_advisor("test prompt")
 
         assert result.success is False
         assert "API error" in result.error_message
@@ -388,9 +420,10 @@ class TestRunWithAdvisor:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
-            executor = ClaudeExecutor()
-            executor.run_with_advisor("test prompt", system_prompt="You are an expert.")
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
+                executor = ClaudeExecutor()
+                executor.run_with_advisor("test prompt", system_prompt="You are an expert.")
 
         call_kwargs = mock_client.beta.messages.create.call_args.kwargs
         assert call_kwargs.get("system") == "You are an expert."
@@ -408,13 +441,14 @@ class TestRunAuto:
         mock_anthropic_module = MagicMock()
         executor = ClaudeExecutor()
 
-        with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
-            with patch.object(
-                executor,
-                "run_with_advisor",
-                return_value=ClaudeResult(success=True, result_text="advisor"),
-            ) as mock_advisor:
-                result = executor.run_auto("prompt", model=SONNET_ADVISOR_TIER)
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
+                with patch.object(
+                    executor,
+                    "run_with_advisor",
+                    return_value=ClaudeResult(success=True, result_text="advisor"),
+                ) as mock_advisor:
+                    result = executor.run_auto("prompt", model=SONNET_ADVISOR_TIER)
 
         mock_advisor.assert_called_once()
         assert result.result_text == "advisor"
@@ -423,10 +457,26 @@ class TestRunAuto:
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
 
         executor = ClaudeExecutor()
-        with patch.object(
-            executor, "run", return_value=ClaudeResult(success=True, result_text="sonnet-cli")
-        ) as mock_run:
-            result = executor.run_auto("prompt", model=SONNET_ADVISOR_TIER)
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.object(
+                executor, "run", return_value=ClaudeResult(success=True, result_text="sonnet-cli")
+            ) as mock_run:
+                result = executor.run_auto("prompt", model=SONNET_ADVISOR_TIER)
+
+        mock_run.assert_called_once_with(
+            prompt="prompt", model="sonnet", timeout=None, allowed_tools=None
+        )
+        assert result.result_text == "sonnet-cli"
+
+    def test_falls_back_to_sonnet_when_config_disabled(self, monkeypatch):
+        monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-key")
+
+        executor = ClaudeExecutor()
+        with patch.dict("sys.modules", {"anthropic": MagicMock()}):
+            with patch.object(
+                executor, "run", return_value=ClaudeResult(success=True, result_text="sonnet-cli")
+            ) as mock_run:
+                result = executor.run_auto("prompt", model=SONNET_ADVISOR_TIER)
 
         mock_run.assert_called_once_with(
             prompt="prompt", model="sonnet", timeout=None, allowed_tools=None
@@ -437,11 +487,12 @@ class TestRunAuto:
         monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-key")
 
         executor = ClaudeExecutor()
-        with patch.dict("sys.modules", {"anthropic": None}):
-            with patch.object(
-                executor, "run", return_value=ClaudeResult(success=True, result_text="sonnet-cli")
-            ) as mock_run:
-                result = executor.run_auto("prompt", model=SONNET_ADVISOR_TIER)
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.dict("sys.modules", {"anthropic": None}):
+                with patch.object(
+                    executor, "run", return_value=ClaudeResult(success=True, result_text="sonnet-cli")
+                ) as mock_run:
+                    executor.run_auto("prompt", model=SONNET_ADVISOR_TIER)
 
         mock_run.assert_called_once_with(
             prompt="prompt", model="sonnet", timeout=None, allowed_tools=None
@@ -487,9 +538,10 @@ class TestRunAuto:
         mock_anthropic_module = MagicMock()
         mock_anthropic_module.Anthropic.return_value = mock_client
 
-        with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
-            executor = ClaudeExecutor()
-            result = executor.run_auto("prompt", model=SONNET_ADVISOR_TIER)
+        with patch("lib.anthropic_direct_policy.advisor_strategy_enabled", return_value=True):
+            with patch.dict("sys.modules", {"anthropic": mock_anthropic_module}):
+                executor = ClaudeExecutor()
+                result = executor.run_auto("prompt", model=SONNET_ADVISOR_TIER)
 
         # Cost must include at least Sonnet executor cost
         sonnet_cost = ModelCatalog.estimate_cost(ADVISOR_EXECUTOR_MODEL, 10_000, 5_000)
