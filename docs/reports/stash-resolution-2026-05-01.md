@@ -6,7 +6,7 @@ To inspect an archived stash after the normal stash stack is cleared:
 git show refs/archive/stashes/2026-05-01/0
 git stash branch recover-stash-0 refs/archive/stashes/2026-05-01/0
 ```
-A local bundle was also created at `.git/stash-archive-2026-05-01.bundle`.
+A local bundle was also created at `.git/stash-archive-2026-05-01.bundle`, and a redundant external backup was copied to `$HOME/.codex/backups/luum-agent-os/stash-archive-2026-05-01.bundle`. Per-stash patch/stat/file-list backups were exported to `$HOME/.codex/backups/luum-agent-os/stashes-2026-05-01/`.
 ## Classification
 | Stash | Archive ref | State vs current main | Subject | Files touched |
 | ---: | --- | --- | --- | ---: |
@@ -54,3 +54,21 @@ A local bundle was also created at `.git/stash-archive-2026-05-01.bundle`.
 - `conflicts or stale`: archived instead of auto-applying because the patch conflicts with current main or depends on old tree shape.
 
 No stash is destroyed without an archive ref and local bundle.
+
+
+## Final Resolution — Minutious Pass
+
+The normal stash stack was intentionally emptied only after three recovery paths existed:
+
+1. local git refs: `refs/archive/stashes/2026-05-01/<n>` for all 35 former stashes;
+2. verified bundle: `.git/stash-archive-2026-05-01.bundle`;
+3. external backup copy and per-stash patches under `$HOME/.codex/backups/luum-agent-os/`.
+
+Resolution categories:
+
+- Stashes `0`, `4`, `6`, and `7` were already represented by current history and do not need re-application.
+- Stash `21` had an empty patch.
+- Stashes `2` and `5` apply cleanly but are unreviewed generated/WIP changes, so they remain archived instead of being auto-committed.
+- All remaining stashes conflict with current `main` or depend on stale tree shape. They remain recoverable through archive refs/patches but were not auto-applied because doing so would reintroduce old broad WIP into a clean, tested `main`.
+
+No stash content was discarded without a local ref, bundle entry, and patch backup.
