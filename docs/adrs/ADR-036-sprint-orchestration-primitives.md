@@ -1,7 +1,7 @@
 # ADR-036: Sprint orchestration primitives
 
 ## Status
-Proposed — MVP implemented 2026-04-20 (CLI skeleton + manifest + canonical events + example spec). TUI, test aggregator, and consolidated-commit execution deferred to follow-up waves.
+Proposed — MVP implemented 2026-04-20 (CLI skeleton + manifest + canonical events + example spec). Wave 1 test aggregation shipped 2026-04-21. Dispatch wiring via `cos sprint run --dispatch` shipped 2026-05-01. TUI, `SprintTestSummary` event emission, and consolidated-commit execution remain deferred to follow-up waves.
 
 ## Context
 
@@ -174,7 +174,7 @@ MVP provides `consolidate_commits_stub()` so callers can import a stable symbol.
 |------|-------|--------|
 | MVP (this ADR) | YAML spec, manifest persistence, 5 canonical events, `cos sprint {run,status,list,cancel}`, example spec, unit+integration tests | Shipped |
 | Wave 1 (test aggregator) | `lib/sprint_test_aggregator.py` (pytest/go/jest/vitest parsing + regression detection), `scripts/sprint-test-summary.sh` CLI (text + `--json`), 13 unit tests | **Shipped 2026-04-21** |
-| Beta | `cos watch --sprint` TUI, `SprintTestSummary` canonical event emission, orchestrator wiring that actually dispatches agents from `run` | Follow-up (pending) |
+| Beta | `cos watch --sprint` TUI, `SprintTestSummary` canonical event emission, orchestrator wiring that actually dispatches agents from `run` | Partial: dispatch shipped 2026-05-01; TUI/event emission pending |
 | Full | Consolidated-commit impl (`squash`), notifier on completion, multi-project sprint registry, retry-failed-tasks | Follow-up (pending) |
 
 ## Consequences
@@ -187,7 +187,7 @@ MVP provides `consolidate_commits_stub()` so callers can import a stable symbol.
 
 ### Harder
 - Sprint manifests add a new write surface; corruption must be tolerated (`list_manifests` already skips bad JSON).
-- Orchestrator must honor the manifest — MVP does not launch agents itself; the `launch.md` hand-off means orchestrator support is a coordinated follow-up.
+- Orchestrator dispatch is now available through `cos sprint run --dispatch`; the `launch.md` hand-off remains as a human-readable fallback prompt for harnesses or operators that choose manual launch.
 - YAML parsing: we ship a minimal fallback parser for environments without PyYAML. This is intentional (zero-dep stdlib policy for lib/) but limits spec complexity. Users who need richer YAML install PyYAML.
 
 ### Risks
@@ -204,8 +204,7 @@ MVP provides `consolidate_commits_stub()` so callers can import a stable symbol.
 1. **TUI — `cos watch --sprint <id>`**: extend `scripts/cos_watch.py` with a sprint-grouping table. Data source: `canonical-live.jsonl` filtered by `sprint_id`. Implement as Textual/rich table; reuse existing cost/token formatters.
 2. **Test aggregator — `lib/sprint_aggregator.py`**: implement `aggregate_test_results()` (pytest, go test, jest, vitest parsers), add `SprintTestSummary` canonical event, wire into `SprintCompleted` emission.
 3. **Consolidated commits — `lib.sprint_commit`**: implement `squash` strategy with safe rollback, capture base ref at `SprintStarted`, enforce file-scope guardrails.
-4. **Orchestrator dispatch wiring**: replace the `launch.md` hand-off with a direct orchestrator hook (`cos sprint run --dispatch`) that invokes the current harness's agent-launch primitive per task.
-5. **Notifier**: on `SprintCompleted`, emit a desktop/terminal notification summarizing pass/fail counts and total cost.
+4. **Notifier**: on `SprintCompleted`, emit a desktop/terminal notification summarizing pass/fail counts and total cost.
 
 ## Resolution Log
 
@@ -222,3 +221,9 @@ MVP provides `consolidate_commits_stub()` so callers can import a stable symbol.
   event next. **Still pending**: TUI (`cos watch --sprint`) and consolidated-commit (`squash`).
   Existing `aggregate_test_results_stub()` in `lib/sprint_orchestrator.py` remains for API
   stability; Beta wave should replace it with a thin shim over `aggregate()`.
+- **2026-05-01 — Dispatch wiring DELIVERED.** `scripts/cos_sprint.py run --dispatch` now
+  transitions the manifest to running, invokes each task through `bin/cos-agent spawn --json`,
+  records `SprintTaskLaunched`, `SprintTaskCompleted`, and `SprintCompleted` events, and
+  persists task-level status back to `.cognitive-os/sprints/<id>.json`. The launch Markdown
+  remains as a manual fallback, not the primary execution path. Covered by
+  `tests/integration/test_cos_sprint_cli.py::test_run_dispatch_updates_manifest_and_events`.
