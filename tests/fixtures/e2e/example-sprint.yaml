@@ -1,0 +1,27 @@
+name: example-mvp-sprint
+commit_strategy: per_task
+notes: Example ADR-036 sprint spec used by unit and integration tests.
+
+tasks:
+  - id: fix-login-bug
+    title: "Fix login bug"
+    prompt: "Investigate and fix the login bug. Run the focused login tests and report evidence."
+    model: sonnet
+    file_scope:
+      - src/auth/login.py
+      - tests/unit/test_login.py
+
+  - id: refactor-cache-layer
+    title: "Refactor cache layer"
+    prompt: "Refactor the cache layer while preserving existing behavior. Run relevant cache tests."
+    model: opus
+    file_scope:
+      - src/cache
+      - tests/unit/test_cache.py
+
+  - id: update-docs-rate-limits
+    title: "Update rate limit docs"
+    prompt: "Update documentation for rate limit behavior and verify Markdown links."
+    model: haiku
+    file_scope:
+      - docs/rate-limits.md
