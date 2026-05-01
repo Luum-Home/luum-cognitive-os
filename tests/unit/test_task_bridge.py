@@ -3,11 +3,7 @@
 import json
 import os
 import subprocess
-import tempfile
-import time
 from pathlib import Path
-
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 BRIDGE = REPO_ROOT / "hooks" / "_lib" / "task_bridge.py"
@@ -38,7 +34,9 @@ class TestRegister:
         entry = json.loads(result.stdout)
         assert entry["toolUseId"] == "toolu_abc123"
         assert entry["description"] == "test task"
-        assert entry["status"] == "in_progress"
+        # ADR-097: register() now writes "pending"; status flips to "in_progress"
+        # only when the subagent's write_context_marker.py runs.
+        assert entry["status"] == "pending"
 
     def test_register_persists_to_active_tasks_json(self, tmp_path):
         _run_bridge("register", env=_env(tmp_path),

@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 147
+Total skills: 148
 
 ## os (14)
 
@@ -24,7 +24,7 @@ Total skills: 147
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 
-## os-dev (34)
+## os-dev (35)
 
 | Skill | Description |
 |-------|-------------|
@@ -41,6 +41,7 @@ Total skills: 147
 | deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
 | deps-update | Audit and optionally upgrade project dependencies — Python, engram binary, Claude Code plugins, Doc… |
 | detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
+| docs-execution-audit | Audit what the docs say is done vs what repo evidence proves. |
 | dogfood-score | Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs). |
 | harness-audit | Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance. |
 | metrics-calibrator | Analyze KPI history and auto-calibrate thresholds for meaningful alerting |
