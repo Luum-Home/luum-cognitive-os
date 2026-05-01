@@ -37,11 +37,9 @@ pre-commit-gate.sh | GIT_HOOK: symlinked to .git/hooks/pre-commit; not a Claude 
 
 # ── Manual-trigger / admin scripts (MANUAL_TRIGGER / ADMIN) ─────────────────
 self-install.sh | ADMIN: bootstraps settings.json registrations; run at SessionStart only for self-wiring; also called as admin one-shot
-wiring-check.sh | MANUAL_TRIGGER: audits hook registration; run on demand by operator, not on every event
 registration-check.sh | MANUAL_TRIGGER: checks hook registration state; invoked manually or by CI
 cognitive-os-health.sh | MANUAL_TRIGGER: health-check report for the full OS; run on demand via /cos-status
 usage-health-check.sh | MANUAL_TRIGGER: reports token/rate usage; invoked on demand, not on every event
-session-sanity.sh | MANUAL_TRIGGER: sanity-check script; invoked manually at session boundaries as needed
 session-hygiene.sh | MANUAL_TRIGGER: cleanup script for stale session artefacts; run on demand
 singularity-check.sh | MANUAL_TRIGGER: checks MAPE-K loop state; invoked by /singularity skill, not by Claude events
 
@@ -97,10 +95,8 @@ recap-sync.sh | FUTURE: syncs session recap to external system; planned for Stop
 session-end-reap.sh | FUTURE: reaps stale session artefacts at Stop; ADR-028 Phase B work item — not yet wired
 
 # ── Agent lifecycle helpers ──────────────────────────────────────────────────
-post-agent-verify.sh | FUTURE: post-agent verification; superceded by completion-gate.sh in current wiring
 pre-agent-snapshot.sh | FUTURE: snapshot before agent launch; planned for PreToolUse Agent — not yet wired
 pre-cleanup-snapshot.sh | MANUAL_TRIGGER: snapshot before cleanup operations; invoked manually or by admin scripts on demand — @manual-trigger
-agent-work-tracker.sh | FUTURE: tracks in-progress agent work; planned integration with task-recorder.sh — not yet wired
 agent-output-verifier.sh | FUTURE: verifies agent output files exist; planned for PostToolUse Agent alongside completion-gate.sh — not yet wired
 background-agent-reminder.sh | FUTURE: reminds about background agents; planned for PostToolUse Agent — not yet wired
 tool-discovery-trigger.sh | FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired
@@ -152,7 +148,6 @@ architecture-compliance.sh | FUTURE: PostToolUse Edit|Write — planned but not 
 assumption-tracker.sh | FUTURE: PreToolUse Agent — ADR-022 variant, not in default profile
 auto-repair-dispatcher.sh | CONDITIONAL: fires only on error-pipeline output, sourced not registered
 auto-skill-generator.sh | MANUAL_TRIGGER: invoked by /auto-skill skill, not a hook matcher
-completeness-check.sh | FUTURE: regex variant superseded by completeness-check-llm.sh
 consequence-evaluator.sh | MANUAL_TRIGGER: invoked by /consequence skill
 context-watchdog.sh | CONDITIONAL: PostToolUse in full profile only; default uses context-diet.sh
 dequeue-notify.sh | CONDITIONAL: fires only when dispatch-gate emits queue events
@@ -163,7 +158,6 @@ kpi-trigger.sh | FUTURE: Stop hook in full profile; wires to kpi_collector
 mcp-scan.sh | CONDITIONAL: MCP server audit, fires on demand
 parry-scan.sh | CONDITIONAL: Parry security integration
 pre-compaction-flush.sh | CONDITIONAL: PreCompact event — registered in full profile only
-prompt-quality.sh | FUTURE: regex variant superseded by prompt-quality-llm.sh
 rate-limit-protection.sh | DEPRECATED: renamed to token-budget-monitor.sh; shim remains for back-compat
 scope-creep-detector.sh | FUTURE: PostToolUse Agent, planned but not wired
 scope-proportionality.sh | FUTURE: PostToolUse Agent, planned

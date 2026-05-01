@@ -1,6 +1,6 @@
 <!-- SCOPE: os-only -->
 ---
-name: primitive-reality-check
+name: component-reality-check
 description: Measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
 invoke: /component-reality-check
 version: 1.0.0
