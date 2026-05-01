@@ -36,7 +36,7 @@ Exit criteria:
 - local Codex and Claude Code installs pass host doctor checks;
 - self-install/update does not re-center the runtime on `.claude/`;
 - temporary test/canary installs do not pollute the production registry.
-- local connected-system validation proves dependency readiness, MCP wiring, optional service boundaries, and persistent test summaries through [Local Connected Systems Validation](../../manual-tests/local-connected-systems-validation.md).
+- local connected-system validation proves dependency readiness, MCP wiring, optional service boundaries, and persistent test summaries through [Local Connected Systems Validation](../../../docs/manual-tests/local-connected-systems-validation.md).
 
 ## Phase 1 — Headless Single-Node Runtime
 
@@ -172,4 +172,4 @@ Proof paths:
 - [ ] Phase 5 repair/product-factory workflow proof implemented.
 
 - [Runtime Comparison Benchmark Plan](runtime-comparison-benchmark-plan.md) — compares COS against vanilla Claude/Codex and prior-art tools across workstation, VM, container, pod, and cluster surfaces.
-- [Local Connected Systems Validation](../../manual-tests/local-connected-systems-validation.md) — proves local dependency and service readiness before extending the runtime to VM/container/cluster surfaces.
+- [Local Connected Systems Validation](../../../docs/manual-tests/local-connected-systems-validation.md) — proves local dependency and service readiness before extending the runtime to VM/container/cluster surfaces.

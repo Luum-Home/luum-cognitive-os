@@ -1,7 +1,7 @@
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-PLAN = PROJECT_ROOT / "docs" / "architecture" / "plans" / "runtime-comparison-benchmark-plan.md"
+PLAN = PROJECT_ROOT / ".cognitive-os" / "plans" / "architecture" / "runtime-comparison-benchmark-plan.md"
 
 
 def _table_rows(markdown: str, heading: str) -> list[list[str]]:
@@ -65,7 +65,7 @@ def test_benchmark_plan_requires_outcome_not_speed_only() -> None:
 
 def test_benchmark_plan_is_linked_from_runtime_plan_and_docs() -> None:
     runtime_plan = (
-        PROJECT_ROOT / "docs" / "architecture" / "plans" / "headless-clustered-runtime-plan.md"
+        PROJECT_ROOT / ".cognitive-os" / "plans" / "architecture" / "headless-clustered-runtime-plan.md"
     ).read_text(encoding="utf-8")
     docs_readme = (PROJECT_ROOT / "docs" / "README.md").read_text(encoding="utf-8")
     checklist = (PROJECT_ROOT / "docs" / "business" / "master-plan-checklist.md").read_text(
