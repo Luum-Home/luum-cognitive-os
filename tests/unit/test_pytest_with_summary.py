@@ -111,7 +111,8 @@ def test_wrapper_worker_lane_scalars_bypass_adaptive_policy(
     )
 
     if expected_prefix:
-        assert captured[:2] == expected_prefix, captured
+        assert captured[: len(expected_prefix)] == expected_prefix, captured
+        assert captured[len(expected_prefix):len(expected_prefix)+2] == ["--dist", "loadgroup"], captured
     else:
         assert captured[:2] != ["-n", "8"], captured
         assert captured[:2] != ["-n", "auto"], captured
@@ -121,7 +122,7 @@ def test_wrapper_injects_adaptive_workers_when_no_explicit_xdist_arg(tmp_path: P
     """Without an explicit xdist setting, the wrapper prepends the adaptive worker count."""
     captured, _reports = _run_wrapper(tmp_path, ["tests/unit/test_detect_runner_capacity.py", "-q"])
 
-    assert captured[:2] == ["-n", "8"], captured
+    assert captured[:4] == ["-n", "8", "--dist", "loadgroup"], captured
 
 
 def test_stateful_broad_lane_defaults_to_serial_without_worker_override(tmp_path: Path) -> None:
@@ -137,7 +138,7 @@ def test_stateful_lane_still_respects_explicit_worker_override(tmp_path: Path) -
     """Operators can still force parallelism when they intentionally want it."""
     captured, _reports = _run_wrapper(tmp_path, ["tests/", "-q"], workers="4")
 
-    assert captured[:2] == ["-n", "4"], captured
+    assert captured[:4] == ["-n", "4", "--dist", "loadgroup"], captured
 
 
 def test_wrapper_persists_resource_policy_metadata(tmp_path: Path) -> None:
