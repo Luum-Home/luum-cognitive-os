@@ -45,6 +45,20 @@ def make_repo(tmp_path: Path) -> Path:
             }
         )
     )
+    (root / "manifests" / "optional-hook-aliases.json").write_text(
+        json.dumps(
+            {
+                "aliases": [
+                    {
+                        "family": "hooks",
+                        "path": "hooks/optional.sh",
+                        "target": "../packages/demo/hooks/optional.sh",
+                        "decision": "accepted-optional-alias",
+                    }
+                ]
+            }
+        )
+    )
     (root / "tests" / "test_hooks.py").write_text("def test_hook(): assert 'tested-demoted.sh'\n")
     return root
 
@@ -60,8 +74,7 @@ def test_plan_hooks_marks_only_unregistered_demoted_untested_as_safe(tmp_path: P
     assert by_path["hooks/demoted.sh"].safe_to_apply is True
     assert by_path["hooks/tested-demoted.sh"].action == "keep-demoted-tested-hook"
     assert by_path["hooks/tested-demoted.sh"].safe_to_apply is False
-    assert by_path["hooks/optional.sh"].action == "review-optional-alias"
-    assert by_path["hooks/optional.sh"].safe_to_apply is False
+    assert "hooks/optional.sh" not in by_path
 
 
 def test_apply_safe_archives_only_safe_hook(tmp_path: Path) -> None:
