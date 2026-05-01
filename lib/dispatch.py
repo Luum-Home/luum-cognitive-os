@@ -489,6 +489,23 @@ def dispatch(
                     )
                 break
 
+        # ADR-080 Tier 1 #4 — rate-limit instrumentation precheck (opt-in via COS_RATE_TRACKER=1)
+        # When enabled and a provider bucket is >=85% consumed, skip that provider
+        # and advance the cascade rather than waiting for a 429.
+        try:
+            from lib.rate_limit_tracker import should_throttle as _rl_should_throttle
+            _rl_block, _rl_reason = _rl_should_throttle(provider)
+            if _rl_block:
+                if verbose:
+                    print(
+                        f"[dispatch] rate-limit guard: skipping {provider} — {_rl_reason}",
+                        file=sys.stderr,
+                    )
+                # Treat as unavailable — advance to next provider without counting as tried
+                continue
+        except Exception:  # noqa: BLE001
+            pass  # instrumentation must never block dispatch
+
         providers_tried.append(provider)
         if verbose:
             prefix = "[dispatch] primary" if not is_fallback else "[dispatch] fallback"
@@ -522,6 +539,17 @@ def dispatch(
                     print(f"[dispatch] provider {provider!r} unavailable — advancing", file=sys.stderr)
                 continue
             response = attempt
+
+        # ADR-080 Tier 1 #4 — record rate-limit headers if present in response
+        # (providers that surface headers embed them under "rate_limit_headers" key)
+        if response is not None:
+            _rl_headers = response.get("rate_limit_headers")
+            if _rl_headers and isinstance(_rl_headers, dict):
+                try:
+                    from lib.rate_limit_tracker import record as _rl_record
+                    _rl_record(provider, _rl_headers)
+                except Exception:  # noqa: BLE001
+                    pass  # instrumentation must never block dispatch
 
         if response.get("success"):
             break
