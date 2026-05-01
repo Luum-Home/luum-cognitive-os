@@ -1,16 +1,27 @@
 """Unit tests for lib/error_classifier.py
 
-Validates error classification across all categories, retry strategies,
-and formatted output.
+Validates:
+  1. Text/exit-code classifier (original): classify_error, get_retry_strategy, format_classified_error
+  2. JSONL taxonomy layer (ADR-080 Tier 2 #6): classify(), classify_jsonl(), ErrorClass, ClassifiedError
 """
+
+import json
 
 import pytest
 
 from lib.error_classifier import (
+    # Original text-classifier API
     ErrorCategory,
     classify_error,
     format_classified_error,
     get_retry_strategy,
+    # JSONL taxonomy API (ADR-080 Tier 2 #6)
+    ClassifiedError,
+    RecordCategory,
+    RecordSeverity,
+    Transience,
+    classify,
+    classify_jsonl,
 )
 
 pytestmark = pytest.mark.unit
@@ -228,3 +239,198 @@ class TestFormatClassifiedError:
         """Should format NETWORK errors with correct prefix."""
         result = format_classified_error("ECONNREFUSED", ErrorCategory.NETWORK)
         assert result == "[NETWORK] ECONNREFUSED"
+
+
+# ---------------------------------------------------------------------------
+# JSONL taxonomy layer — classify() (ADR-080 Tier 2 #6)
+# ---------------------------------------------------------------------------
+
+
+class TestClassifyRecord:
+    """Tests for the JSONL record-level classify() API."""
+
+    def _record(self, **kwargs):
+        base = {"timestamp": "2026-04-30T00:00:00Z", "timestamp_epoch": 1777000000}
+        base.update(kwargs)
+        return base
+
+    # Fast-path: TYPE field
+    def test_type_test_failure(self):
+        rec = self._record(type="TEST_FAILURE", command="go test ./...", exit_code=1)
+        result = classify(rec)
+        assert result.category is RecordCategory.test_failure
+        assert result.severity is RecordSeverity.high
+        assert result.transient is Transience.no
+
+    def test_type_lint_error(self):
+        result = classify(self._record(type="LINT_ERROR", command="golangci-lint run"))
+        assert result.category is RecordCategory.lint_error
+
+    def test_type_build_error(self):
+        result = classify(self._record(type="BUILD_ERROR", command="go build ./..."))
+        assert result.category is RecordCategory.build_error
+        assert result.severity is RecordSeverity.critical
+
+    def test_type_network_error(self):
+        result = classify(self._record(type="NETWORK_ERROR"))
+        assert result.category is RecordCategory.network
+
+    def test_type_timeout(self):
+        result = classify(self._record(type="TIMEOUT"))
+        assert result.category is RecordCategory.timeout
+        assert result.transient is Transience.yes
+
+    def test_type_auth_error(self):
+        result = classify(self._record(type="AUTH_ERROR"))
+        assert result.category is RecordCategory.auth
+        assert result.severity is RecordSeverity.critical
+        assert result.transient is Transience.no
+
+    def test_type_rate_limit(self):
+        result = classify(self._record(type="RATE_LIMIT"))
+        assert result.category is RecordCategory.rate_limit
+        assert result.transient is Transience.yes
+
+    # Pattern-based: TYPE is unknown, fall through to message matching
+    def test_message_rate_limit(self):
+        rec = self._record(type="UNKNOWN_TYPE", command="curl ... rate limit exceeded")
+        result = classify(rec)
+        assert result.category is RecordCategory.rate_limit
+
+    def test_message_timeout(self):
+        rec = self._record(type="UNKNOWN_TYPE", command="curl ...", message="operation timed out")
+        result = classify(rec)
+        assert result.category is RecordCategory.timeout
+
+    def test_message_permission(self):
+        rec = self._record(command="chmod 000 /etc/hosts && cat /etc/hosts", message="permission denied")
+        result = classify(rec)
+        assert result.category is RecordCategory.permission
+
+    def test_message_file_not_found(self):
+        rec = self._record(command="ls /nonexistent", message="no such file or directory")
+        result = classify(rec)
+        assert result.category is RecordCategory.file_not_found
+
+    def test_message_network(self):
+        rec = self._record(command="curl http://x", message="connection refused")
+        result = classify(rec)
+        assert result.category is RecordCategory.network
+
+    def test_message_context_overflow(self):
+        rec = self._record(command="llm call", message="context window exceeded")
+        result = classify(rec)
+        assert result.category is RecordCategory.context_overflow
+
+    def test_message_auth(self):
+        rec = self._record(command="api call", message="unauthorized: invalid token")
+        result = classify(rec)
+        assert result.category is RecordCategory.auth
+
+    # Edge cases
+    def test_empty_record(self):
+        result = classify({})
+        assert result.category is RecordCategory.unknown
+
+    def test_record_no_useful_fields(self):
+        result = classify({"fingerprint": "abc123", "exit_code": 1})
+        assert result.category is RecordCategory.unknown
+
+    def test_suggested_action_present(self):
+        result = classify({"type": "TEST_FAILURE", "command": "pytest"})
+        assert isinstance(result.suggested_action, str)
+        assert len(result.suggested_action) > 0
+
+    def test_as_dict_passthrough(self):
+        rec = {"type": "TEST_FAILURE", "fingerprint": "abc", "timestamp_epoch": 100}
+        result = classify(rec)
+        d = result.as_dict()
+        assert d["category"] == "test_failure"
+        assert d["fingerprint"] == "abc"
+
+    def test_raw_preserved(self):
+        rec = {"type": "LINT_ERROR", "command": "eslint .", "service": "frontend"}
+        result = classify(rec)
+        assert result.raw.get("service") == "frontend"
+
+
+class TestClassifyJsonl:
+    """Tests for classify_jsonl()."""
+
+    def _write_jsonl(self, records, path):
+        with open(path, "w") as f:
+            for r in records:
+                f.write(json.dumps(r) + "\n")
+
+    def test_bulk_classifies_all_records(self, tmp_path):
+        records = [
+            {"type": "TEST_FAILURE", "timestamp_epoch": 1000},
+            {"type": "LINT_ERROR", "timestamp_epoch": 1001},
+            {"type": "BUILD_ERROR", "timestamp_epoch": 1002},
+        ]
+        p = tmp_path / "error-learning.jsonl"
+        self._write_jsonl(records, p)
+        result = classify_jsonl(p)
+        assert len(result) == 3
+        assert result[0].category is RecordCategory.test_failure
+        assert result[1].category is RecordCategory.lint_error
+        assert result[2].category is RecordCategory.build_error
+
+    def test_skips_malformed_lines(self, tmp_path):
+        p = tmp_path / "errors.jsonl"
+        with open(p, "w") as f:
+            f.write('{"type": "TEST_FAILURE"}\n')
+            f.write("NOT JSON\n")
+            f.write('{"type": "LINT_ERROR"}\n')
+        result = classify_jsonl(p)
+        assert len(result) == 2
+
+    def test_skips_empty_lines(self, tmp_path):
+        p = tmp_path / "errors.jsonl"
+        with open(p, "w") as f:
+            f.write('{"type": "TEST_FAILURE"}\n')
+            f.write("\n")
+            f.write("   \n")
+        result = classify_jsonl(p)
+        assert len(result) == 1
+
+    def test_empty_file(self, tmp_path):
+        p = tmp_path / "errors.jsonl"
+        p.write_text("")
+        result = classify_jsonl(p)
+        assert result == []
+
+    def test_missing_file(self, tmp_path):
+        p = tmp_path / "nonexistent.jsonl"
+        result = classify_jsonl(p)
+        assert result == []
+
+    def test_single_record(self, tmp_path):
+        p = tmp_path / "errors.jsonl"
+        self._write_jsonl([{"type": "AUTH_ERROR"}], p)
+        result = classify_jsonl(p)
+        assert len(result) == 1
+        assert result[0].category is RecordCategory.auth
+
+    def test_classified_error_accessors(self, tmp_path):
+        p = tmp_path / "errors.jsonl"
+        self._write_jsonl([
+            {"type": "TEST_FAILURE", "fingerprint": "abc123", "timestamp_epoch": 9999},
+        ], p)
+        ce = classify_jsonl(p)[0]
+        assert isinstance(ce, ClassifiedError)
+        assert ce.fingerprint == "abc123"
+        assert ce.timestamp_epoch == 9999.0
+        assert ce.error_type == "TEST_FAILURE"
+
+    def test_large_file_performance(self, tmp_path):
+        """classify_jsonl should handle 1000+ records without error."""
+        records = [
+            {"type": "TEST_FAILURE", "fingerprint": f"fp{i}", "timestamp_epoch": 1000 + i}
+            for i in range(1200)
+        ]
+        p = tmp_path / "large.jsonl"
+        self._write_jsonl(records, p)
+        result = classify_jsonl(p)
+        assert len(result) == 1200
+        assert all(ce.category is RecordCategory.test_failure for ce in result)
