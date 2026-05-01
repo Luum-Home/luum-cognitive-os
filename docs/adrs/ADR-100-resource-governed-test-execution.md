@@ -130,18 +130,18 @@ Optional lanes gated behind `workflow_dispatch` with `include-optional`.
 ## Verification
 
 ```bash
-# 1. Detector caps at cores - 2 by default
-.venv/bin/python scripts/detect_runner_capacity.py --json | python3 -c \
+# 1. Automated live headroom proof: runs the real wrapper, generated CPU-work tests,
+#    capacity logging, resource-policy logging, nice, and xdist loadgroup.
+python3 scripts/adr100_live_headroom_check.py --keep-artifacts
+
+# 2. Detector caps at cores - 2 by default on local non-CI runs.
+python3 scripts/detect_runner_capacity.py --json | python3 -c \
   "import json,sys; d=json.load(sys.stdin); \
    assert d['rule_fired'] in ('default_headroom','cores_le_2','load_high','mem_low','battery_low','ci_env'); \
    print('OK', d['workers'], d['rule_fired'])"
 
-# 2. Wrapper applies nice + rerun by default
-bash scripts/pytest-with-summary.sh --workers 0 tests/audit/ -m audit --tb=no -q 2>&1 \
-  | grep -E "Resource governance: nice=.+ reruns=.+"
-
-# 3. Quarantine entries cause skip
-.venv/bin/python -m pytest tests/unit/test_conftest_automarker.py -v -k quarantine
+# 3. Quarantine entries cause skip.
+python3 -m pytest tests/unit/test_conftest_automarker.py -v -k quarantine
 ```
 
 ## Migration
@@ -163,6 +163,7 @@ behaviors are additive.
 - ADR-072 — test lane taxonomy (selection layer)
 - ADR-098 — multi-agent file coordination (the lock layer that made this re-application durable)
 - `scripts/detect_runner_capacity.py` — Row 6 cap
+- `scripts/adr100_live_headroom_check.py` — automated live headroom proof
 - `scripts/pytest-with-summary.sh` — nice + rerun
 - `tests/quarantine.yaml` — registry seed
 - `tests/conftest.py:pytest_collection_modifyitems` — quarantine site

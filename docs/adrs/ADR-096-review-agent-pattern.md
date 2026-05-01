@@ -4,9 +4,13 @@
 **Date**: 2026-05-01
 **Author**: Matias Nahuel Améndola (COS sub-agent)
 **Engram topic keys**: `cos/learning-loop-final-30pct`, `hermes-learning-loop-source-map`, `cos/review-agent-implementation`
-**Related ADRs**: ADR-090 (skill failure repair), ADR-095 (skill synthesis), ADR-097 (task-tracker lifecycle), ADR-099 (pre-agent snapshot)
+**Related ADRs**: ADR-090 (skill failure repair), ADR-095 (skill synthesis), ADR-102 (task-tracker lifecycle), ADR-099 (pre-agent snapshot)
 
 ---
+
+## Status
+
+Accepted.
 
 ## Context
 
@@ -234,10 +238,18 @@ or directly in `.claude/settings.json` under `hooks.PostToolUse` with matcher `A
   The review agent is the natural detector for ADR-095's "repeated success
   pattern" signal — the reviewer can say "this task pattern recurred; propose
   a skill."
-- ADR-097 (Accepted): task-tracker lifecycle. Review findings reference
+- ADR-102 (Accepted): task-tracker lifecycle. Review findings reference
   producer_id which aligns with the task-tracker task IDs.
 - ADR-099 (Accepted): pre-agent snapshot fix. Untracked files now survive
   agent launches, so review findings written during the hook are safe.
 - Together ADR-090 + ADR-095 + ADR-096 form a complete learning loop:
   detect failure (090) → detect success patterns (095) → actively audit
   outputs (096).
+
+## Verification
+
+Run the focused contract for this decision:
+
+```bash
+python3 -m pytest tests/behavior/test_code_review_skill.py -q
+```

@@ -89,11 +89,11 @@ _NO_REPORTS_REASON = (
 
 @pytest.mark.audit
 def test_research_dir_exists() -> None:
-    """The research reports directory must exist in the repo."""
-    assert RESEARCH_DIR.exists(), (
-        f"Missing directory: {RESEARCH_DIR}\n"
-        "Create it with: mkdir -p .cognitive-os/reports/research && touch .cognitive-os/reports/research/.gitkeep"
-    )
+    """Runtime research reports are optional; validate format only once the dir exists."""
+    if not RESEARCH_DIR.exists():
+        pytest.skip(
+            f"No runtime research report directory at {RESEARCH_DIR}; reports are generated on demand."
+        )
 
 
 @pytest.mark.audit

@@ -1,4 +1,4 @@
-# ADR-101 — Startup Circuit Breaker and Safe Mode
+# ADR-104 — Startup Circuit Breaker and Safe Mode
 
 <!-- SCOPE: OS -->
 
@@ -117,6 +117,12 @@ This lets future RCA distinguish normal hook execution from subagent gating, saf
 - Tests assert manual kill-switch file and env flags skip `SessionStart` hook bodies.
 - Tests assert expired safe mode does not suppress normal startup.
 - Manual proof path: `docs/manual-tests/claude-code-startup-hang-regression.md`.
+
+Runnable proof:
+
+```bash
+python3 -m pytest tests/unit/test_agent_runner.py tests/integration/test_startup_circuit_breaker.py -q
+```
 
 ## Operator commands
 

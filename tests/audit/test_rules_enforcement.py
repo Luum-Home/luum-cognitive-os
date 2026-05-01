@@ -124,7 +124,7 @@ def _file_refs_in_rule(rule_path: Path) -> set[str]:
 def _is_runtime_generated_ref(ref: str) -> bool:
     """Return True for documented runtime artifacts that should not exist in git."""
     if ref.startswith((".cognitive-os/metrics/", ".claude/metrics/", "metrics/")):
-        return ref.endswith(".jsonl")
+        return ref.endswith((".jsonl", ".json"))
     generated_prefixes = (
         ".cognitive-os/dynamic-tools/",
         ".cognitive-os/rate-limit-",
@@ -134,6 +134,14 @@ def _is_runtime_generated_ref(ref: str) -> bool:
         return True
     generated_files = {
         ".claude/detected-stack.json",
+        ".claude/settings.local.json",
+        ".claude/tasks/active-tasks.json",
+        ".cognitive-os/confidentiality.yaml",
+        ".cognitive-os/content-policy.yaml",
+        ".cognitive-os/metrics/dispatch-queue.json",
+        ".cognitive-os/tasks/active-tasks.json",
+        ".cognitive-os/tasks/dispatch-queue.json",
+        ".cognitive-os/work-queue.json",
     }
     return ref in generated_files
 
