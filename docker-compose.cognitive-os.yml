@@ -361,9 +361,19 @@ services:
     environment:
       COGNEE_GRAPH_BACKEND: ${COGNEE_GRAPH_BACKEND:-networkx}
       COGNEE_VECTOR_STORE: ${COGNEE_VECTOR_STORE:-lancedb}
-      COGNEE_LLM_PROVIDER: ${COGNEE_LLM_PROVIDER:-anthropic}
-      COGNEE_LLM_MODEL: ${COGNEE_LLM_MODEL:-claude-sonnet-4-5-20250514}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      # Cognee uses plain LLM_* / EMBEDDING_* env vars. Keep the COGNEE_*
+      # aliases for COS docs/backwards compatibility, but default to a local
+      # no-cloud setup instead of Anthropic direct API.
+      COGNEE_LLM_PROVIDER: ${COGNEE_LLM_PROVIDER:-ollama}
+      COGNEE_LLM_MODEL: ${COGNEE_LLM_MODEL:-llama3.1:8b}
+      COGNEE_LLM_ENDPOINT: ${COGNEE_LLM_ENDPOINT:-http://host.docker.internal:11434/v1}
+      LLM_PROVIDER: ${COGNEE_LLM_PROVIDER:-ollama}
+      LLM_MODEL: ${COGNEE_LLM_MODEL:-llama3.1:8b}
+      LLM_ENDPOINT: ${COGNEE_LLM_ENDPOINT:-http://host.docker.internal:11434/v1}
+      LLM_API_KEY: ${COGNEE_LLM_API_KEY:-ollama}
+      EMBEDDING_PROVIDER: ${COGNEE_EMBEDDING_PROVIDER:-fastembed}
+      EMBEDDING_MODEL: ${COGNEE_EMBEDDING_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+      EMBEDDING_DIMENSIONS: ${COGNEE_EMBEDDING_DIMENSIONS:-384}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
     ports:
       - "${COGNEE_PORT:-8100}:8000"

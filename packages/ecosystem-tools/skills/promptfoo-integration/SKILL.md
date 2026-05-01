@@ -111,7 +111,7 @@ npx promptfoo redteam run --config promptfoo/red-team.yaml
 - name: Prompt regression tests
   run: npx promptfoo eval --ci --config promptfoo/configs/
   env:
-    ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 ```
 
 ## Rules

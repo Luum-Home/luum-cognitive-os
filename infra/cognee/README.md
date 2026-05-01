@@ -32,5 +32,26 @@ results = await cognee.search("query")
 | COGNEE_PORT | 8100 | Server port |
 | COGNEE_GRAPH_BACKEND | networkx | Graph DB (networkx/neo4j) |
 | COGNEE_VECTOR_STORE | lancedb | Vector store (lancedb/qdrant/weaviate) |
-| COGNEE_LLM_PROVIDER | anthropic | LLM for knowledge extraction |
-| ANTHROPIC_API_KEY | — | Required for knowledge extraction |
+| COGNEE_LLM_PROVIDER | ollama | LLM for knowledge extraction (`ollama`, `openai`, `gemini`, `anthropic`, `custom`) |
+| COGNEE_LLM_MODEL | llama3.1:8b | Local Ollama model for extraction |
+| COGNEE_LLM_ENDPOINT | http://host.docker.internal:11434/v1 | Docker-to-host Ollama endpoint |
+| COGNEE_EMBEDDING_PROVIDER | fastembed | Local embedding backend; avoids OpenAI fallback |
+| COGNEE_EMBEDDING_MODEL | sentence-transformers/all-MiniLM-L6-v2 | Fastembed model |
+| COGNEE_LLM_API_KEY | ollama | Placeholder required by the client for Ollama; not a cloud key |
+
+
+## Provider Policy
+
+The reference Docker profile defaults to a local Ollama + Fastembed setup so
+starting `--profile memory` does not require or propagate `ANTHROPIC_API_KEY`.
+Use Anthropic only as an explicit Cognee override:
+
+```bash
+COGNEE_LLM_PROVIDER=anthropic \
+COGNEE_LLM_MODEL=claude-sonnet-4-5-20250514 \
+COGNEE_LLM_API_KEY="$ANTHROPIC_API_KEY" \
+docker compose -f docker-compose.cognitive-os.yml --profile memory up -d cognee
+```
+
+Cognee's current docs require configuring both LLM and embeddings for local
+operation; otherwise embeddings may fall back to OpenAI.

@@ -140,7 +140,8 @@ Configure Telegram notifications via environment variables:
 ## Environment Variables
 
 ```bash
-# Required
+# Required only for workflows that call Anthropic-hosted Claude in CI
+# Local/operator Claude Code sessions use native account auth instead.
 ANTHROPIC_API_KEY=...
 
 # Optional - ClickUp integration

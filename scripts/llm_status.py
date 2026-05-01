@@ -17,7 +17,7 @@ import os
 import statistics
 import sys
 import time
-from collections import Counter, defaultdict
+from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
@@ -67,14 +67,25 @@ def _provider_configured() -> dict[str, Any]:
             "base_url": os.environ.get("ALIBABA_QWEN_BASE_URL", "<default>"),
         },
         "anthropic_api_direct": {
-            "configured": bool(os.environ.get("ANTHROPIC_API_KEY")),
+            "configured": False,
             "api_key_hint": _redact(os.environ.get("ANTHROPIC_API_KEY", "")),
+            "note": "disabled unless llm_providers.claude_sdk.enabled is true",
         },
         "openrouter": {
             "configured": bool(os.environ.get("OPENROUTER_API_KEY")),
             "api_key_hint": _redact(os.environ.get("OPENROUTER_API_KEY", "")),
         },
     }
+    # Live probe for direct Anthropic API policy. A key alone is not enough.
+    try:
+        from lib.anthropic_direct_policy import direct_anthropic_api_enabled
+
+        result["anthropic_api_direct"]["configured"] = bool(direct_anthropic_api_enabled())
+        result["anthropic_api_direct"]["policy_enabled"] = result["anthropic_api_direct"]["configured"]
+    except Exception as exc:
+        result["anthropic_api_direct"]["policy_enabled"] = False
+        result["anthropic_api_direct"]["probe_error"] = f"policy read failed: {type(exc).__name__}"
+
     # Live probe for qwen
     try:
         from lib.qwen_provider import is_configured as qwen_is_configured
