@@ -19,6 +19,7 @@ Proposed. Blocked-by: ADR-081.
 | Item | Status | Executed | Artifacts |
 |------|--------|----------|-----------|
 | Tier 1 #2 — portable prompt caching layer | **Accepted (executed 2026-04-30 by Session A)** | 2026-04-30 | `lib/prompt_cache.py` (portable layer appended), `lib/dispatch.py` (opt-in integration), `tests/unit/test_prompt_cache.py` (73 tests, +34 new for portable layer) |
+| Tier 1 #4 — rate-limit instrumentation | **Accepted (executed 2026-05-01 by Session A)** | 2026-05-01 | `lib/rate_limit_tracker.py` (new portable module), `lib/dispatch.py` (precheck + record hooks, opt-in), `tests/unit/test_rate_limit_tracker.py` (40 tests) |
 
 ---
 
@@ -152,16 +153,32 @@ Implementation notes (2026-04-30):
 - Iterative updates: `previous_summary` enables second-compaction summary updates.
 - `compress_trajectory` collapses ADR-033 canonical event lists into a summary dict.
 
-**4. Rate-limit instrumentation**
+**4. Rate-limit instrumentation** — `Accepted (executed 2026-05-01 by Session A)`
 Source: `.claude/plugins/hermes-agent/agent/rate_limit_tracker.py`,
 `nous_rate_guard.py`
-Target: `lib/rate_limit_tracker.py`, `lib/rate_guard.py`
+Target: `lib/rate_limit_tracker.py` (merged module — tracker + guard unified)
 
 The `rate-limiting` rule (RULES-COMPACT.md §4) documents policy but does not
 measure or enforce it. These modules instrument actual token consumption and
 provider rate-limit headers, enabling the `resource-governor` skill and
 `non-blocking-retry` rule to act on real data rather than estimates. Without
 measurement, rate-limit failures surface as opaque errors across all harnesses.
+
+Implementation notes (2026-05-01):
+- Activated via `COS_RATE_TRACKER=1`. Default is off — observation-only first,
+  no behavior change without the env var.
+- Throttle threshold: 85% consumed (default). Override with `COS_RATE_THROTTLE_PCT`.
+- Per-provider parsers: `_parse_anthropic_headers` (anthropic-ratelimit-*),
+  `_parse_openai_headers` (x-ratelimit-*, used for openai/codex/openrouter),
+  `_parse_qwen_headers` (best-effort OpenAI shape), `_parse_ollama_headers` (no-op).
+- Dispatch integration: precheck via `should_throttle()` before each provider call;
+  record via `record()` after calls that return `rate_limit_headers` in their response.
+  Both paths are wrapped in `try/except` — instrumentation never blocks dispatch.
+- Persistence: `.cognitive-os/runtime/rate-limits.jsonl` (atomic append, daily rotation
+  via existing metrics-rotation.sh).
+- Relationship to `hooks/rate-limiter.sh`: complementary layers. The bash hook governs
+  COS tool-call rate (agent-side). This module governs provider API quota consumption
+  (provider-side). Neither replaces the other.
 
 ---
 
@@ -315,7 +332,7 @@ own follow-up ADR or SDD change:
 | Tier 1 #1 — multi-provider adapters | ADR-081 or `sdd-new hermes-provider-adapters` |
 | Tier 1 #2 — prompt caching layer | ADR or SDD task under #1's umbrella |
 | Tier 1 #3 — context/trajectory compressors | **Shipped 2026-04-30** `lib/context_compressor.py`, `tests/unit/test_context_compressor.py` |
-| Tier 1 #4 — rate-limit instrumentation | ADR or SDD task |
+| Tier 1 #4 — rate-limit instrumentation | **Shipped 2026-05-01** `lib/rate_limit_tracker.py`, `tests/unit/test_rate_limit_tracker.py` (40 tests) |
 | Tier 2 #5 — batch runner / cron | SDD change once Tier 1 is stable |
 | Tier 2 #6 — error classifier / insights | SDD change |
 | Parking lot #7, #8 | Investigation report → dedicated ADR if adopted |
