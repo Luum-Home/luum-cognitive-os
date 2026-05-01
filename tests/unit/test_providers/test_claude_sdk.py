@@ -1,7 +1,6 @@
 """Tests for lib/providers/claude_sdk.py (ADR-062 opt-in, ADR-063)."""
 
-import sys
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import patch
 
 
 def test_is_configured_false_when_no_api_key(monkeypatch):
@@ -14,15 +13,24 @@ def test_is_configured_false_when_sdk_not_installed(monkeypatch):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test")
     from lib.providers import claude_sdk
     # Temporarily remove the sdk from sys.modules to simulate not installed
-    with patch.object(claude_sdk, "_sdk_available", return_value=False):
-        assert claude_sdk.is_configured() is False
+    with patch("lib.anthropic_direct_policy.direct_anthropic_api_enabled", return_value=True):
+        with patch.object(claude_sdk, "_sdk_available", return_value=False):
+            assert claude_sdk.is_configured() is False
 
 
-def test_is_configured_true_when_key_and_sdk_available(monkeypatch):
+def test_is_configured_false_when_config_disabled(monkeypatch):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test")
     from lib.providers import claude_sdk
     with patch.object(claude_sdk, "_sdk_available", return_value=True):
-        assert claude_sdk.is_configured() is True
+        assert claude_sdk.is_configured() is False
+
+
+def test_is_configured_true_when_config_key_and_sdk_available(monkeypatch):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test")
+    from lib.providers import claude_sdk
+    with patch("lib.anthropic_direct_policy.direct_anthropic_api_enabled", return_value=True):
+        with patch.object(claude_sdk, "_sdk_available", return_value=True):
+            assert claude_sdk.is_configured() is True
 
 
 def test_model_map_has_all_tiers():
@@ -46,8 +54,9 @@ def test_call_returns_error_when_not_configured(monkeypatch):
 def test_call_returns_error_when_sdk_not_installed(monkeypatch):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test")
     from lib.providers import claude_sdk
-    with patch.object(claude_sdk, "get_client", return_value=None):
-        result = claude_sdk.call([{"role": "user", "content": "hi"}])
+    with patch("lib.anthropic_direct_policy.direct_anthropic_api_enabled", return_value=True):
+        with patch.object(claude_sdk, "get_client", return_value=None):
+            result = claude_sdk.call([{"role": "user", "content": "hi"}])
     assert result["success"] is False
     assert "not installed" in result["error"] or "unavailable" in result["error"]
 
