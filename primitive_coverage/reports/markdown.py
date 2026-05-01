@@ -11,6 +11,8 @@ def render_markdown(report: CoverageReport) -> str:
         f"Adapter: `{report.adapter}`",
         f"Targets: {summary['targets']}",
         f"Average score: {summary['average_score']}",
+        f"Actionable gap rows: {summary['actionable_gap_rows']}",
+        f"Actionable gaps: {summary['actionable_gaps']}",
         "",
         "## Families",
         "",
@@ -20,8 +22,9 @@ def render_markdown(report: CoverageReport) -> str:
     for family, info in summary["families"].items():
         statuses = ", ".join(f"{key}:{value}" for key, value in sorted(info["statuses"].items()))
         lines.append(f"| {family} | {info['count']} | {info['average_score']} | {statuses} |")
-    lines.extend(["", "## Rows", "", "| Primitive | Score | Status | Gaps |", "|---|---:|---|---|"])
+    lines.extend(["", "## Rows", "", "| Primitive | Score | Status | Actionable Gaps | Evidence Gaps |", "|---|---:|---|---|---|"])
     for row in sorted(report.rows, key=lambda item: (item.family, item.path)):
+        actionable = ", ".join(row.actionable_gaps)
         gaps = ", ".join(row.gaps)
-        lines.append(f"| `{row.primitive_id}` | {row.score} | {row.status} | {gaps} |")
+        lines.append(f"| `{row.primitive_id}` | {row.score} | {row.status} | {actionable} | {gaps} |")
     return "\n".join(lines) + "\n"

@@ -1,29 +1,39 @@
 {
   "summary": {
     "consumer_reference_totals": {
-      "doc": 81,
-      "hook": 18,
-      "rule": 40,
-      "script": 4,
-      "skill": 24,
-      "test": 85,
-      "workflow": 11
+      "doc": 96,
+      "hook": 20,
+      "rule": 43,
+      "script": 5,
+      "skill": 25,
+      "test": 92,
+      "workflow": 13
     },
-    "targets": 61,
+    "targets": 64,
     "without_any_consumer": 0,
-    "without_skill_consumer": 39
+    "without_skill_consumer": 41
   },
   "target_family": "scripts",
   "targets": [
     {
       "consumer_families": {
+        "doc": 1,
         "hook": 1,
+        "script": 1,
         "test": 2
       },
       "consumers": [
         {
+          "family": "doc",
+          "path": "docs/adrs/ADR-089-multi-session-git-coordination.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/project-docs-convention.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/reserve_adr_slot.py"
         },
         {
           "family": "test",
@@ -37,7 +47,7 @@
       "family": "scripts",
       "path": "scripts/adr_reserve.py",
       "skill_consumers": 0,
-      "total_consumers": 3
+      "total_consumers": 5
     },
     {
       "consumer_families": {
@@ -62,7 +72,7 @@
       "consumer_families": {
         "doc": 3,
         "hook": 2,
-        "rule": 1,
+        "rule": 2,
         "skill": 1,
         "test": 1,
         "workflow": 1
@@ -90,6 +100,10 @@
         },
         {
           "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
           "path": "rules/python-naming.md"
         },
         {
@@ -108,7 +122,7 @@
       "family": "scripts",
       "path": "scripts/aspirational_audit.py",
       "skill_consumers": 1,
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "consumer_families": {
@@ -249,6 +263,7 @@
       "consumer_families": {
         "doc": 6,
         "rule": 1,
+        "test": 1,
         "workflow": 1
       },
       "consumers": [
@@ -281,6 +296,10 @@
           "path": "rules/python-naming.md"
         },
         {
+          "family": "test",
+          "path": "tests/unit/test_cos_test_quality_audit_scope.py"
+        },
+        {
           "family": "workflow",
           "path": ".github/workflows/test-quality.yml"
         }
@@ -288,7 +307,7 @@
       "family": "scripts",
       "path": "scripts/check_test_quality.py",
       "skill_consumers": 0,
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "consumer_families": {
@@ -312,11 +331,15 @@
     },
     {
       "consumer_families": {
-        "doc": 1,
+        "doc": 2,
         "test": 2,
         "workflow": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
         {
           "family": "doc",
           "path": "docs/business/conversation-reality-audit-2026-04-30.md"
@@ -337,7 +360,7 @@
       "family": "scripts",
       "path": "scripts/claim_proof_audit.py",
       "skill_consumers": 0,
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "consumer_families": {
@@ -776,10 +799,14 @@
     },
     {
       "consumer_families": {
-        "rule": 1,
+        "rule": 2,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -792,15 +819,19 @@
       "family": "scripts",
       "path": "scripts/cost_predict.py",
       "skill_consumers": 1,
-      "total_consumers": 2
+      "total_consumers": 3
     },
     {
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "skill": 1,
         "test": 6
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-069-research-first-protocol.md"
@@ -841,11 +872,11 @@
       "family": "scripts",
       "path": "scripts/decision_triage.py",
       "skill_consumers": 1,
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "test": 1
       },
       "consumers": [
@@ -858,6 +889,10 @@
           "path": "docs/adrs/ADR-068-adaptive-test-runner-capacity.md"
         },
         {
+          "family": "doc",
+          "path": "docs/adrs/ADR-100-resource-governed-test-execution.md"
+        },
+        {
           "family": "test",
           "path": "tests/unit/test_detect_runner_capacity.py"
         }
@@ -865,7 +900,7 @@
       "family": "scripts",
       "path": "scripts/detect_runner_capacity.py",
       "skill_consumers": 0,
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "consumer_families": {
@@ -899,10 +934,15 @@
     },
     {
       "consumer_families": {
+        "doc": 1,
         "test": 3,
         "workflow": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
         {
           "family": "test",
           "path": "tests/unit/test_claim_proof_and_reduction.py"
@@ -923,7 +963,41 @@
       "family": "scripts",
       "path": "scripts/docs_duplicate_audit.py",
       "skill_consumers": 0,
-      "total_consumers": 4
+      "total_consumers": 5
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
+        "skill": 1,
+        "test": 2,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/documentation-execution-audit.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/docs-execution-audit/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_docs_execution_audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_projected_hook_gap_behaviors.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/primitive-gap-audit.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/docs_execution_audit.py",
+      "skill_consumers": 1,
+      "total_consumers": 5
     },
     {
       "consumer_families": {
@@ -953,7 +1027,7 @@
     {
       "consumer_families": {
         "doc": 4,
-        "rule": 1,
+        "rule": 2,
         "skill": 1,
         "workflow": 1
       },
@@ -976,6 +1050,10 @@
         },
         {
           "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
           "path": "rules/python-naming.md"
         },
         {
@@ -990,7 +1068,7 @@
       "family": "scripts",
       "path": "scripts/dogfood_score.py",
       "skill_consumers": 1,
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "consumer_families": {
@@ -1353,11 +1431,41 @@
     },
     {
       "consumer_families": {
+        "doc": 1,
+        "test": 1,
+        "workflow": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-coverage-spike-plan-2026-04.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_coverage.py"
+        },
+        {
+          "family": "workflow",
+          "path": ".github/workflows/primitive-gap-audit.yml"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/primitive_coverage.py",
+      "skill_consumers": 0,
+      "total_consumers": 3
+    },
+    {
+      "consumer_families": {
+        "doc": 1,
         "script": 1,
         "test": 3,
         "workflow": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
         {
           "family": "script",
           "path": "scripts/primitive_surface_reduce.py"
@@ -1382,14 +1490,19 @@
       "family": "scripts",
       "path": "scripts/primitive_gap_snapshot.py",
       "skill_consumers": 0,
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "consumer_families": {
+        "doc": 1,
         "test": 2,
         "workflow": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
         {
           "family": "test",
           "path": "tests/unit/test_primitive_gap_workflow.py"
@@ -1406,15 +1519,20 @@
       "family": "scripts",
       "path": "scripts/primitive_row_audit.py",
       "skill_consumers": 0,
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "consumer_families": {
+        "doc": 1,
         "skill": 1,
         "test": 2,
         "workflow": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
         {
           "family": "skill",
           "path": "skills/primitive-surface-reduction/SKILL.md"
@@ -1435,16 +1553,20 @@
       "family": "scripts",
       "path": "scripts/primitive_surface_reduce.py",
       "skill_consumers": 1,
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "consumer_families": {
-        "doc": 1,
+        "doc": 2,
         "skill": 2,
         "test": 2,
         "workflow": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
         {
           "family": "doc",
           "path": "docs/business/conversation-reality-audit-2026-04-30.md"
@@ -1473,7 +1595,7 @@
       "family": "scripts",
       "path": "scripts/primitive_usage_map.py",
       "skill_consumers": 2,
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "consumer_families": {
@@ -1541,11 +1663,15 @@
     },
     {
       "consumer_families": {
-        "doc": 1,
+        "doc": 2,
         "test": 2,
         "workflow": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
         {
           "family": "doc",
           "path": "docs/business/conversation-reality-audit-2026-04-30.md"
@@ -1566,7 +1692,7 @@
       "family": "scripts",
       "path": "scripts/reduction_backlog.py",
       "skill_consumers": 0,
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "consumer_families": {
@@ -1587,6 +1713,30 @@
       "path": "scripts/regen_catalog_bullets.py",
       "skill_consumers": 0,
       "total_consumers": 2
+    },
+    {
+      "consumer_families": {
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-089-multi-session-git-coordination.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-098-multi-agent-file-coordination.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_reserve_adr_slot.py"
+        }
+      ],
+      "family": "scripts",
+      "path": "scripts/reserve_adr_slot.py",
+      "skill_consumers": 0,
+      "total_consumers": 3
     },
     {
       "consumer_families": {
@@ -1824,9 +1974,9 @@
     },
     {
       "consumer_families": {
-        "doc": 2,
-        "hook": 1,
-        "test": 1
+        "doc": 3,
+        "hook": 3,
+        "test": 3
       },
       "consumers": [
         {
@@ -1835,21 +1985,41 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-097-task-tracker-lifecycle.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/measurements/hook-timing-runbook.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-prelaunch.sh"
         },
         {
           "family": "hook",
           "path": "hooks/session-init.sh"
         },
         {
+          "family": "hook",
+          "path": "packages/agent-lifecycle/hooks/agent-prelaunch.sh"
+        },
+        {
           "family": "test",
           "path": "tests/unit/test_commit_provenance_chain.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_task_bridge.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_task_tracker_lifecycle.py"
         }
       ],
       "family": "scripts",
       "path": "scripts/write_context_marker.py",
       "skill_consumers": 0,
-      "total_consumers": 4
+      "total_consumers": 9
     }
   ]
 }

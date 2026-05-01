@@ -27,6 +27,7 @@ class PrimitiveRow:
     claims: list[str] = field(default_factory=list)
     proof_links: list[str] = field(default_factory=list)
     gaps: list[str] = field(default_factory=list)
+    actionable_gaps: list[str] = field(default_factory=list)
     status: str = "unknown"
     score: int = 0
     metadata: dict[str, Any] = field(default_factory=dict)
@@ -41,6 +42,10 @@ class PrimitiveRow:
             self.gaps.append("runtime_not_seen")
         if not self.consumers and not self.signals.get("referenced", False):
             self.gaps.append("no_static_consumers")
+        if self.metadata.get("actionable_gap_override") is False:
+            self.actionable_gaps = []
+        else:
+            self.actionable_gaps = list(self.gaps)
         self.score = sum(weight for signal, weight in SIGNAL_WEIGHTS.items() if self.signals.get(signal, False))
         if self.score >= 80 and not self.gaps:
             self.status = "real"
@@ -61,6 +66,7 @@ class PrimitiveRow:
             "claims": self.claims,
             "proof_links": sorted(set(self.proof_links)),
             "gaps": self.gaps,
+            "actionable_gaps": self.actionable_gaps,
             "status": self.status,
             "score": self.score,
             "metadata": self.metadata,
@@ -77,12 +83,17 @@ class CoverageReport:
     def summary(self) -> dict[str, Any]:
         by_family: dict[str, dict[str, Any]] = {}
         status_counts: dict[str, int] = {}
+        actionable_gap_rows = 0
+        actionable_gap_count = 0
         for row in self.rows:
             fam = by_family.setdefault(row.family, {"count": 0, "score_total": 0, "statuses": {}})
             fam["count"] += 1
             fam["score_total"] += row.score
             fam["statuses"][row.status] = fam["statuses"].get(row.status, 0) + 1
             status_counts[row.status] = status_counts.get(row.status, 0) + 1
+            if row.actionable_gaps:
+                actionable_gap_rows += 1
+                actionable_gap_count += len(row.actionable_gaps)
         for fam in by_family.values():
             fam["average_score"] = round(fam["score_total"] / fam["count"], 2) if fam["count"] else 0
             del fam["score_total"]
@@ -92,6 +103,8 @@ class CoverageReport:
             "targets": len(self.rows),
             "average_score": score,
             "statuses": dict(sorted(status_counts.items())),
+            "actionable_gap_rows": actionable_gap_rows,
+            "actionable_gaps": actionable_gap_count,
             "families": dict(sorted(by_family.items())),
         }
 
