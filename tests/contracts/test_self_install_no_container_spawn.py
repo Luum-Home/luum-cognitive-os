@@ -43,7 +43,17 @@ if str(_TESTS_ROOT) not in sys.path:
 
 from unit._helpers import requires_bash  # noqa: E402
 
-pytestmark = [pytest.mark.contract, pytest.mark.unit, requires_bash]
+pytestmark = [
+    pytest.mark.contract,
+    pytest.mark.unit,
+    requires_bash,
+    # ADR-072 follow-up: this test runs every SessionStart hook against the real
+    # repo root. Concurrent xdist workers collided on .git/config.lock and the
+    # shared symlink forest, forcing the contract lane to serial in 54439ea6.
+    # Same xdist_group as tests/audit/test_install_scripts.py so all install-
+    # touching tests (across audit + contract) execute on a single worker.
+    pytest.mark.xdist_group("self_install"),
+]
 
 
 # ---------------------------------------------------------------------------
