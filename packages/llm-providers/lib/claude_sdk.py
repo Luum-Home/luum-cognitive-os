@@ -5,7 +5,7 @@ Uses the official Python `claude-agent-sdk` package (MIT license) to run
 agent loops with the full Claude Code ecosystem: MCP protocol, session
 persistence, in-process hooks, structured output.
 
-This is opt-in tier-5 — requires ANTHROPIC_API_KEY and the `claude-agent-sdk`
+This is opt-in tier-5 — requires the direct Anthropic API credential and the `claude-agent-sdk`
 Python package to be installed. Advance only on rate-limit errors (paid
 per-token via Anthropic API — same policy as openai provider).
 
@@ -15,7 +15,7 @@ Installation:
 
 Configuration:
     llm_providers.claude_sdk.enabled: true  — in cognitive-os.yaml
-    ANTHROPIC_API_KEY                       — from console.anthropic.com
+    direct Anthropic API credential         — from console.anthropic.com
 
 When to use this provider (vs Claude Code native):
   - CI environments where Claude Code CLI is unavailable
@@ -42,7 +42,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import os
 from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
@@ -85,13 +84,16 @@ def is_configured() -> bool:
     the runner. Missing any condition means this provider cannot function.
     """
     try:
-        from lib.anthropic_direct_policy import direct_anthropic_api_enabled
+        from lib.anthropic_direct_policy import (
+            direct_anthropic_api_enabled,
+            direct_anthropic_api_key_present,
+        )
 
         if not direct_anthropic_api_enabled():
             return False
+        if not direct_anthropic_api_key_present():
+            return False
     except Exception:  # noqa: BLE001
-        return False
-    if not os.environ.get("ANTHROPIC_API_KEY", "").strip():
         return False
     return _sdk_available()
 
@@ -153,7 +155,8 @@ def call(
             "cost_usd": 0.0,
             "error": (
                 "claude_sdk unavailable: llm_providers.claude_sdk.enabled is "
-                "false, ANTHROPIC_API_KEY is unset, or claude-agent-sdk is not "
+                "false, direct Anthropic API credential is unset, or "
+                "claude-agent-sdk is not "
                 "installed (uv sync --extra claude-sdk)"
             ),
         }

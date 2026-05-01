@@ -640,7 +640,7 @@ class ClaudeExecutor:
         Uses ``claude-sonnet-4`` as the executor and ``claude-opus-4-6`` as the
         advisor. Requires ``ORCHESTRATOR_MODE=executor``,
         ``llm_providers.claude_sdk.enabled: true`` in ``cognitive-os.yaml``, a
-        valid ``ANTHROPIC_API_KEY`` environment variable, and the ``anthropic``
+        valid direct Anthropic API credential, and the ``anthropic``
         Python package.
 
         This method is only available in ``ORCHESTRATOR_MODE=executor`` and when
@@ -661,7 +661,11 @@ class ClaudeExecutor:
         start_time = time.monotonic()
 
         # Check preconditions
-        from lib.anthropic_direct_policy import advisor_strategy_enabled
+        from lib.anthropic_direct_policy import (
+            ANTHROPIC_API_KEY_ENV,
+            advisor_strategy_enabled,
+            direct_anthropic_api_key,
+        )
 
         if not advisor_strategy_enabled():
             logger.warning(
@@ -670,10 +674,11 @@ class ClaudeExecutor:
             )
             return self.run(prompt=prompt, model="sonnet")
 
-        api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+        api_key = direct_anthropic_api_key()
         if not api_key:
             logger.warning(
-                "run_with_advisor: ANTHROPIC_API_KEY not set, falling back to run()"
+                "run_with_advisor: %s not set, falling back to run()",
+                ANTHROPIC_API_KEY_ENV,
             )
             return self.run(prompt=prompt, model="sonnet")
 
@@ -808,17 +813,20 @@ class ClaudeExecutor:
         """
         effective_model = model or self.default_model or ""
         if effective_model == SONNET_ADVISOR_TIER:
-            from lib.anthropic_direct_policy import advisor_strategy_enabled
+            from lib.anthropic_direct_policy import (
+                advisor_strategy_enabled,
+                direct_anthropic_api_key_present,
+            )
 
             advisor_enabled = advisor_strategy_enabled()
-            api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+            api_key_present = direct_anthropic_api_key_present()
             try:
                 import anthropic as _chk  # noqa: F401
                 has_pkg = True
             except ImportError:
                 has_pkg = False
 
-            if advisor_enabled and api_key and has_pkg:
+            if advisor_enabled and api_key_present and has_pkg:
                 return self.run_with_advisor(
                     prompt=prompt,
                     system_prompt=system_prompt,
@@ -830,7 +838,7 @@ class ClaudeExecutor:
                     "sonnet+advisor requested but preconditions not met "
                     "(advisor_enabled=%s, api_key=%s, has_pkg=%s), falling back to sonnet",
                     advisor_enabled,
-                    bool(api_key),
+                    api_key_present,
                     has_pkg,
                 )
                 return self.run(

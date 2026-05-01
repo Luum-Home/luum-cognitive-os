@@ -68,7 +68,7 @@ def _provider_configured() -> dict[str, Any]:
         },
         "anthropic_api_direct": {
             "configured": False,
-            "api_key_hint": _redact(os.environ.get("ANTHROPIC_API_KEY", "")),
+            "api_key_hint": "(managed by direct Anthropic API policy)",
             "note": "disabled unless llm_providers.claude_sdk.enabled is true",
         },
         "openrouter": {
