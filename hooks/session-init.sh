@@ -52,6 +52,14 @@ _register_session() {
 
     # Prune stale sessions before counting. Without this, active-sessions.json
     # accumulates dead PIDs and makes concurrent-session diagnosis misleading.
+    # TTL cache: only prune once per 60 s to avoid a cold Python start on every
+    # SessionStart (the PYPRUNE heredoc was a top contributor to the 3.4s p95).
+    _PRUNE_STAMP="$SESSIONS_DIR/.prune-last-run"
+    _now_epoch=$(date +%s 2>/dev/null || echo 0)
+    _last_prune=0
+    [ -f "$_PRUNE_STAMP" ] && _last_prune=$(cat "$_PRUNE_STAMP" 2>/dev/null || echo 0)
+    if [ $(( _now_epoch - _last_prune )) -ge 60 ]; then
+      echo "$_now_epoch" > "$_PRUNE_STAMP" 2>/dev/null || true
     ACTIVE_FILE="$ACTIVE_FILE" python3 - <<'PYPRUNE' 2>/dev/null || true
 import json, os, time
 from datetime import datetime, timezone
@@ -117,6 +125,7 @@ data["sessions"] = [
 ]
 path.write_text(json.dumps(data, indent=2) + "\n")
 PYPRUNE
+    fi  # end TTL-cache prune guard
 
     # Read max_concurrent from cognitive-os.yaml (default 10)
     MAX_CONCURRENT=10
@@ -191,8 +200,10 @@ echo "$SESSION_ID" > "$SESSIONS_DIR/.current-session-$$"
 # rather than env-var guessing (which fails when env is stripped by sub-shells).
 # Fail-silent: if write_context_marker.py is unavailable the legacy plain-text
 # marker above is still present as backwards-compat fallback.
+# Fire write_context_marker in background — purely advisory, does not affect
+# session startup and was a measurable contributor to the 3.4s p95 (cold start).
 COGNITIVE_OS_SESSION_ID="$SESSION_ID" \
-  python3 "$PROJECT_DIR/scripts/write_context_marker.py" orchestrator 2>/dev/null || true
+  python3 "$PROJECT_DIR/scripts/write_context_marker.py" orchestrator 2>/dev/null &
 
 # ─── Prune stale context markers (ADR-088) ────────────────────────────────────
 # Drop .context-<pid>.json files whose PID is no longer running OR that are
