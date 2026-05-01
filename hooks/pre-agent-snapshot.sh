@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
 # SCOPE: both
-# CONCERNS: safety, agent-lifecycle, adr-003-mechanism-a
+# CONCERNS: safety, agent-lifecycle, adr-003-mechanism-a, adr-099
 # Pre-Agent Snapshot Hook — PreToolUse Agent
 #
 # Creates a working-tree snapshot before every Agent tool launch so that
 # post-agent-verify.sh can restore out-of-scope writes without guessing.
 #
-# Snapshot strategy: `git stash push --include-untracked --keep-index`
-#   - captures tracked + untracked changes (excludes .gitignore'd files)
-#   - --keep-index preserves staged changes for the agent's workflow
-#   - tagged "auto-pre-agent-<AGENT_ID>" so it's identifiable in git stash list
+# Snapshot strategy (ADR-099 — default):
+#   1. Untracked files → copied to .cognitive-os/snapshots/<snapshot-id>/
+#      They are NOT removed from the working tree.
+#   2. Tracked-modified files → captured via `git stash push --keep-index`
+#      WITHOUT --include-untracked.
+#   3. Manifest written to .cognitive-os/snapshots/<snapshot-id>/manifest.json
+#      correlating both halves for crash-recovery.sh.
+#
+# Legacy mode (COS_LEGACY_SNAPSHOT=1):
+#   Uses original `git stash push --include-untracked --keep-index`.
+#   Untracked files WILL disappear from the working tree (old behaviour).
 #
 # Writes metadata to:
 #   .cognitive-os/sessions/<SESSION_ID>/agent-<AGENT_ID>-snapshot.json
@@ -19,7 +26,7 @@
 #
 # Advisory only — always exits 0. Never blocks agent launch on snapshot failure.
 #
-# Reference: ADR-003 Mechanism A.
+# Reference: ADR-003 Mechanism A, ADR-099 Pre-agent snapshot copy-on-untracked.
 
 set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
@@ -32,6 +39,7 @@ PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-default-session}"
 SESSIONS_DIR="$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID"
 METRICS_LOG="$PROJECT_DIR/.cognitive-os/metrics/agent-snapshots.jsonl"
+LEGACY_MODE="${COS_LEGACY_SNAPSHOT:-0}"
 
 # Read stdin JSON (best-effort)
 INPUT=""
@@ -77,74 +85,123 @@ mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 
 SNAPSHOT_FILE="$SESSIONS_DIR/agent-${AGENT_ID}-snapshot.json"
 
-# Determine if working tree has changes
-# NOTE: we check porcelain status but EXCLUDE our own session/metrics dirs
-# because git stash --include-untracked would otherwise sweep them away.
-TREE_DIRTY=false
-STATUS_OUT=$(git -C "$PROJECT_DIR" status --porcelain 2>/dev/null || true)
-# Filter out .cognitive-os/ paths (our bookkeeping) to decide dirtiness
-FILTERED_STATUS=$(echo "$STATUS_OUT" | grep -v -E '(^\?\? |^.. )\.cognitive-os/' || true)
-if [ -n "$FILTERED_STATUS" ]; then
-  TREE_DIRTY=true
-fi
+# ─── Legacy mode ─────────────────────────────────────────────────────────────
+if [ "$LEGACY_MODE" = "1" ]; then
+  STASH_MSG="auto-pre-agent-${AGENT_ID}"
+  STASH_REF=""
+  SNAPSHOT_STATUS="skipped"
+  ERROR_MSG=""
 
-STASH_MSG="auto-pre-agent-${AGENT_ID}"
-STASH_REF=""
-SNAPSHOT_STATUS="skipped"
-ERROR_MSG=""
+  # Determine if working tree has changes
+  STATUS_OUT=$(git -C "$PROJECT_DIR" status --porcelain 2>/dev/null || true)
+  FILTERED_STATUS=$(echo "$STATUS_OUT" | grep -v -E '(^\?\? |^.. )\.cognitive-os/' || true)
+  TREE_DIRTY=false
+  if [ -n "$FILTERED_STATUS" ]; then
+    TREE_DIRTY=true
+  fi
 
-if [ "$TREE_DIRTY" = true ]; then
-  # Use pathspec exclusion to keep .cognitive-os/ in the working tree.
-  # Git's stash push accepts pathspecs — we pass `.` with an exclude so the
-  # stash captures every normally-tracked/untracked change except our own
-  # session state (which MUST survive stash push or the metadata write
-  # that follows this block would fail).
-  if git -C "$PROJECT_DIR" stash push --include-untracked --keep-index \
-        -m "$STASH_MSG" \
-        -- ':(exclude).cognitive-os' ':(exclude).cognitive-os/**' '.' \
-        >/dev/null 2>&1; then
-    STASH_REF=$(git -C "$PROJECT_DIR" stash list --max-count=1 2>/dev/null | head -1 | cut -d: -f1 || true)
-    if [ -n "$STASH_REF" ]; then
-      SNAPSHOT_STATUS="stashed"
+  if [ "$TREE_DIRTY" = true ]; then
+    if git -C "$PROJECT_DIR" stash push --include-untracked --keep-index \
+          -m "$STASH_MSG" \
+          -- ':(exclude).cognitive-os' ':(exclude).cognitive-os/**' '.' \
+          >/dev/null 2>&1; then
+      STASH_REF=$(git -C "$PROJECT_DIR" stash list --max-count=1 2>/dev/null | head -1 | cut -d: -f1 || true)
+      if [ -n "$STASH_REF" ]; then
+        SNAPSHOT_STATUS="stashed_legacy"
+      else
+        SNAPSHOT_STATUS="stash_created_no_ref"
+        ERROR_MSG="stash push succeeded but ref could not be read"
+      fi
     else
-      SNAPSHOT_STATUS="stash_created_no_ref"
-      ERROR_MSG="stash push succeeded but ref could not be read"
+      SNAPSHOT_STATUS="stash_failed"
+      ERROR_MSG="git stash push returned non-zero"
     fi
   else
-    SNAPSHOT_STATUS="stash_failed"
-    ERROR_MSG="git stash push returned non-zero"
+    SNAPSHOT_STATUS="skip_clean"
   fi
-else
-  SNAPSHOT_STATUS="skip_clean"
+
+  mkdir -p "$SESSIONS_DIR" 2>/dev/null || true
+
+  {
+    printf '{'
+    printf '"timestamp":"%s",' "$TIMESTAMP"
+    printf '"agent_id":"%s",' "$AGENT_ID"
+    printf '"session_id":"%s",' "$SESSION_ID"
+    printf '"mode":"legacy_stash",'
+    printf '"stash_ref":"%s",' "${STASH_REF//\"/\\\"}"
+    printf '"stash_message":"%s",' "$STASH_MSG"
+    printf '"status":"%s",' "$SNAPSHOT_STATUS"
+    printf '"tree_dirty":%s,' "$TREE_DIRTY"
+    escaped_prompt=${PROMPT_SUMMARY//\\/\\\\}
+    escaped_prompt=${escaped_prompt//\"/\\\"}
+    printf '"prompt_summary":"%s"' "$escaped_prompt"
+    if [ -n "$ERROR_MSG" ]; then
+      printf ',"error":"%s"' "${ERROR_MSG//\"/\\\"}"
+    fi
+    printf '}\n'
+  } > "$SNAPSHOT_FILE" 2>/dev/null || true
+
+  METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","stash_ref":"%s","tree_dirty":%s,"mode":"legacy_stash"}' \
+    "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${STASH_REF}" "$TREE_DIRTY")
+  safe_jsonl_append "$METRICS_LOG" "$METRICS_LINE" 2>/dev/null || true
+
+  exit 0
 fi
 
-# Re-create SESSIONS_DIR in case stash swallowed it despite our exclude
+# ─── New copy-on-untracked mode (ADR-099) ───────────────────────────────────
+SNAPSHOT_RESULT=""
+SNAPSHOT_STATUS="skipped"
+SNAPSHOT_ID=""
+STASH_REF=""
+
+if command -v python3 >/dev/null 2>&1; then
+  SNAPSHOT_RESULT=$(python3 - <<PYEOF 2>/dev/null
+import sys, json
+sys.path.insert(0, '$PROJECT_DIR')
+try:
+    from lib.snapshot_manager import create_snapshot
+    from pathlib import Path
+    manifest = create_snapshot(Path('$PROJECT_DIR'), '$AGENT_ID')
+    print(json.dumps(manifest))
+except Exception as exc:
+    print(json.dumps({"status": "error", "error": str(exc), "snapshot_id": "", "tracked_stash_ref": None, "untracked_files": []}))
+PYEOF
+)
+  if [ -n "$SNAPSHOT_RESULT" ] && command -v jq >/dev/null 2>&1; then
+    SNAPSHOT_STATUS=$(echo "$SNAPSHOT_RESULT" | jq -r '.status // "error"' 2>/dev/null || echo "error")
+    SNAPSHOT_ID=$(echo "$SNAPSHOT_RESULT" | jq -r '.snapshot_id // ""' 2>/dev/null || true)
+    STASH_REF=$(echo "$SNAPSHOT_RESULT" | jq -r '.tracked_stash_ref // ""' 2>/dev/null || true)
+  elif [ -n "$SNAPSHOT_RESULT" ]; then
+    SNAPSHOT_STATUS="ok"
+  fi
+else
+  # Python unavailable — fall back to bash-only copy approach
+  SNAPSHOT_STATUS="python_unavailable"
+fi
+
+# Re-create SESSIONS_DIR in case stash swallowed it
 mkdir -p "$SESSIONS_DIR" 2>/dev/null || true
 mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 
-# Write snapshot metadata JSON (no jq dep — manual emit to stay fast)
+# Write session snapshot metadata JSON
 {
   printf '{'
   printf '"timestamp":"%s",' "$TIMESTAMP"
   printf '"agent_id":"%s",' "$AGENT_ID"
   printf '"session_id":"%s",' "$SESSION_ID"
+  printf '"mode":"copy",'
+  printf '"snapshot_id":"%s",' "${SNAPSHOT_ID//\"/\\\"}"
   printf '"stash_ref":"%s",' "${STASH_REF//\"/\\\"}"
-  printf '"stash_message":"%s",' "$STASH_MSG"
   printf '"status":"%s",' "$SNAPSHOT_STATUS"
-  printf '"tree_dirty":%s,' "$TREE_DIRTY"
-  # Prompt summary — escape double quotes and backslashes
   escaped_prompt=${PROMPT_SUMMARY//\\/\\\\}
   escaped_prompt=${escaped_prompt//\"/\\\"}
   printf '"prompt_summary":"%s"' "$escaped_prompt"
-  if [ -n "$ERROR_MSG" ]; then
-    printf ',"error":"%s"' "${ERROR_MSG//\"/\\\"}"
-  fi
   printf '}\n'
 } > "$SNAPSHOT_FILE" 2>/dev/null || true
 
 # Append to metrics JSONL
-METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","stash_ref":"%s","tree_dirty":%s}' \
-  "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${STASH_REF}" "$TREE_DIRTY")
+METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","snapshot_id":"%s","stash_ref":"%s","mode":"copy"}' \
+  "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${SNAPSHOT_ID}" "${STASH_REF}")
 safe_jsonl_append "$METRICS_LOG" "$METRICS_LINE" 2>/dev/null || true
 
 # Always advisory — never block
