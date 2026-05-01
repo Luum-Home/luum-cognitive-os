@@ -341,6 +341,9 @@ The following items are verified deferred — they do not block Accepted status 
 
 3. **`SUPPORTED_EVENTS` is not consulted by `dispatch.handle_event`** (ADR §Decision 1, last bullet): the dispatch layer calls `detect_harness` then `parse_event` without first checking whether the event type is in `SUPPORTED_EVENTS`. The frozenset is present as a class attribute (criterion met) but the routing guard is absent. Severity: LOW — `parse_event` handles unknown events gracefully by returning `ParseError`; the missing pre-check is a defence-in-depth gap, not a correctness failure.
 
+```bash
+python3 scripts/harness_parity_audit.py --source claude --target codex --strict --json
+```
 ## Implementation status
 
 Accepted implementation slice shipped on 2026-04-30:

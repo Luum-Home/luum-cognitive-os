@@ -58,6 +58,8 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/measurements/",
     # Business-scoped files (ADR-082 §"Files that stay in place")
     "docs/business/",
+    # Report artifacts can describe prior plans without becoming active plan files.
+    "docs/reports/",
     # Third-party reference / benchmark material — not project plans
     "reference/",
     # Rules documents — these are rules, not plans (plan-first.md is a rule)

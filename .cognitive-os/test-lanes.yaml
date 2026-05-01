@@ -11,12 +11,12 @@ lanes:
     marker_exclude: benchmark
   audit:
     paths: [tests/audit/]
-    parallel: false
-    stateful_reason: "ADR-072 Phase 1 of re-paralelization: xdist_group('self_install') applied to tests/audit/test_install_scripts.py (the install-touching offender). However a parallel smoke on 2026-05-01 surfaced ~47 deterministic pre-existing failures in doc-contract tests (test_local_connected_systems_validation_docs, test_headless_runtime_direction_docs, test_runtime_comparison_benchmark_plan) unrelated to the install-test race. Lane stays serial until those pre-existing issues are fixed; xdist_group is in place ready for the flip."
+    parallel: true
+    stateful_reason: "ADR-072 Phase 2: deterministic doc-contract debt was repaired and install-touching tests carry xdist_group('self_install'), so the lane is parallel-safe under loadgroup. Use COS_FORCE_SERIAL_LANES=audit for emergency rollback."
   contract:
     paths: [tests/contracts/]
-    parallel: false
-    stateful_reason: "ADR-072 Phase 1 of re-paralelization: xdist_group('self_install') applied to test_self_install_no_container_spawn.py (the .git/config.lock racer). Parallel smoke on 2026-05-01 still showed ~10 deterministic doc-contract failures unrelated to lock racing. Lane stays serial until those pre-existing issues are fixed; xdist_group is in place ready for the flip."
+    parallel: true
+    stateful_reason: "ADR-072 Phase 2: deterministic contract debt was repaired and the self-install lock racer carries xdist_group('self_install'), so the lane is parallel-safe under loadgroup. Use COS_FORCE_SERIAL_LANES=contract for emergency rollback."
   integration:
     paths: [tests/integration/]
     parallel: false

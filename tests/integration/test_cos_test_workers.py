@@ -70,20 +70,14 @@ class TestCosTestWorkersFlag:
             f"but dry-run output was:\n{output}"
         )
 
-    def test_audit_lane_passes_workers_zero(self, require_cos_test_binary):
-        """cos-test cluster --lane audit must pass --workers 0 (serial, no regression).
-
-        audit lane has parallel: false due to shared install-touching state.
-        """
+    def test_audit_lane_passes_workers_auto(self, require_cos_test_binary):
+        """cos-test cluster --lane audit passes --workers auto after grouped offenders."""
         output = _run_dry_run("audit")
-        assert "--workers 0" in output, (
-            f"audit lane (parallel:false) must remain serial with --workers 0, "
+        assert "--workers 0" not in output, (
+            f"audit lane should not be forced serial after xdist_group isolation, "
             f"but dry-run output was:\n{output}"
         )
-        assert "--workers auto" not in output, (
-            f"audit lane must NOT pass --workers auto (would cause install flakes), "
-            f"but dry-run output was:\n{output}"
-        )
+        assert "parallel-safe" in output, output
 
     def test_unit_lane_banner_shows_parallel(self, require_cos_test_binary):
         """Banner for unit lane must show 'parallel-safe' workers description."""
@@ -92,10 +86,9 @@ class TestCosTestWorkersFlag:
             f"unit lane banner should describe workers as parallel-safe, got:\n{output}"
         )
 
-    def test_audit_lane_banner_shows_serial(self, require_cos_test_binary):
-        """Banner for audit lane must show 'serial' workers description."""
+    def test_audit_lane_banner_shows_parallel(self, require_cos_test_binary):
+        """Banner for audit lane must show the parallel-safe worker description."""
         output = _run_dry_run("audit")
-        # The banner prints workers=serial (stateful) for parallel:false lanes
-        assert "serial" in output, (
-            f"audit lane banner should describe workers as serial, got:\n{output}"
+        assert "parallel-safe" in output, (
+            f"audit lane banner should describe workers as parallel-safe, got:\n{output}"
         )

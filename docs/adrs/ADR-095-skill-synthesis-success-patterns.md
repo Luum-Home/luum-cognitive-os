@@ -7,6 +7,10 @@
 
 ---
 
+## Status
+
+Accepted.
+
 ## Context
 
 Today (2026-04-30) the COS skill catalog has approximately 146 skills.
@@ -26,7 +30,7 @@ proposals from recurring success patterns in observed task data.
 
 ### Phase context
 
-- **Phase 0 — ADR-097**: task-tracker lifecycle (task IDs, session wiring)
+- **Phase 0 — ADR-102**: task-tracker lifecycle (task IDs, session wiring)
 - **Phase 1 — ADR-090**: auto-skill-repair from failure signals
 - **Phase 2 — ADR-095 (this ADR)**: skill synthesis from success patterns
 
@@ -204,11 +208,19 @@ Both hooks are registered in `.claude/settings.json`:
 
 ---
 
-## Relationship to ADR-090 and ADR-097
+## Relationship to ADR-090 and ADR-102
 
 - **ADR-090** (Accepted): detects and queues *failing* skills. ADR-095 is the
   inverse: synthesizes *new* skills from *successful* patterns.
-- **ADR-097** (Accepted): task-tracker lifecycle bugs — provides stable `task_id`
+- **ADR-102** (Accepted): task-tracker lifecycle bugs — provides stable `task_id`
   values that `tool-sequence-capture.sh` reads from `COS_TASK_ID` env.
 - ADR-096 (if implemented): a review agent that actively audits sub-agent output
   could act as an enhanced synthesis mechanism in the future.
+
+## Verification
+
+Run the focused contract for this decision:
+
+```bash
+python3 -m pytest tests/audit/test_skills_contracts.py -q
+```
