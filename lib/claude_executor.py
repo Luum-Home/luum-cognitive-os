@@ -35,7 +35,6 @@ from lib.model_catalog import (
     ADVISOR_TOOL_DEF,
     ADVISOR_EXECUTOR_MODEL,
     ADVISOR_MODEL,
-    ADVISOR_TOKENS_PER_USE,
 )
 
 # Model name mapping for the --model flag.
@@ -60,7 +59,6 @@ MODEL_COSTS: Dict[str, Tuple[float, float]] = {
 
 # Environment variables safe to pass to subprocess
 ENV_ALLOWLIST: List[str] = [
-    "ANTHROPIC_API_KEY",
     "HOME",
     "USER",
     "PATH",
@@ -640,8 +638,10 @@ class ClaudeExecutor:
         """Execute a prompt using the Anthropic Advisor Strategy (direct API).
 
         Uses ``claude-sonnet-4`` as the executor and ``claude-opus-4-6`` as the
-        advisor.  Requires a valid ``ANTHROPIC_API_KEY`` environment variable and
-        the ``anthropic`` Python package.
+        advisor. Requires ``ORCHESTRATOR_MODE=executor``,
+        ``llm_providers.claude_sdk.enabled: true`` in ``cognitive-os.yaml``, a
+        valid ``ANTHROPIC_API_KEY`` environment variable, and the ``anthropic``
+        Python package.
 
         This method is only available in ``ORCHESTRATOR_MODE=executor`` and when
         the ``anthropic`` package is installed.  If either precondition is not met
@@ -661,6 +661,15 @@ class ClaudeExecutor:
         start_time = time.monotonic()
 
         # Check preconditions
+        from lib.anthropic_direct_policy import advisor_strategy_enabled
+
+        if not advisor_strategy_enabled():
+            logger.warning(
+                "run_with_advisor: advisor strategy disabled by direct Anthropic "
+                "API policy, falling back to run()"
+            )
+            return self.run(prompt=prompt, model="sonnet")
+
         api_key = os.environ.get("ANTHROPIC_API_KEY", "")
         if not api_key:
             logger.warning(
@@ -781,8 +790,9 @@ class ClaudeExecutor:
         """Run a prompt, automatically selecting the advisor strategy when appropriate.
 
         If *model* is ``"sonnet+advisor"`` and the advisor preconditions are met
-        (API key present, ``anthropic`` package installed), delegates to
-        :meth:`run_with_advisor`.  Otherwise falls back to :meth:`run`.
+        (executor mode, direct Anthropic API enabled in ``cognitive-os.yaml``,
+        API key present, ``anthropic`` package installed), delegates to
+        :meth:`run_with_advisor`. Otherwise falls back to :meth:`run`.
 
         Args:
             prompt: The prompt string to execute.
@@ -798,6 +808,9 @@ class ClaudeExecutor:
         """
         effective_model = model or self.default_model or ""
         if effective_model == SONNET_ADVISOR_TIER:
+            from lib.anthropic_direct_policy import advisor_strategy_enabled
+
+            advisor_enabled = advisor_strategy_enabled()
             api_key = os.environ.get("ANTHROPIC_API_KEY", "")
             try:
                 import anthropic as _chk  # noqa: F401
@@ -805,7 +818,7 @@ class ClaudeExecutor:
             except ImportError:
                 has_pkg = False
 
-            if api_key and has_pkg:
+            if advisor_enabled and api_key and has_pkg:
                 return self.run_with_advisor(
                     prompt=prompt,
                     system_prompt=system_prompt,
@@ -815,7 +828,8 @@ class ClaudeExecutor:
                 # Graceful fallback: use Sonnet via CLI
                 logger.info(
                     "sonnet+advisor requested but preconditions not met "
-                    "(api_key=%s, has_pkg=%s), falling back to sonnet",
+                    "(advisor_enabled=%s, api_key=%s, has_pkg=%s), falling back to sonnet",
+                    advisor_enabled,
                     bool(api_key),
                     has_pkg,
                 )
