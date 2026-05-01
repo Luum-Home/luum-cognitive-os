@@ -17,10 +17,11 @@
 | 1.3 — cursor.py / ci.py | pending | — | P2 |
 | 2.4 — settings-driver-bare.sh | pending | — | P1, depends on 3.1 |
 | 2.5 — cos doctor harness | pending | — | P1, depends on 2.2/2.3 |
-| 3.1 — cos-skill list/describe | pending | — | — |
-| 3.2 — cos-skill run | pending | — | — |
+| 3.1 — cos-skill list/describe | ✅ DONE | 2026-04-30 | `bin/cos-skill list/describe`; 76 skills enumerated; 27 unit + 19 integration tests pass |
+| 3.2 — cos-skill run | ✅ DONE | 2026-04-30 | `bin/cos-skill run`; CC stop-gap (/slash-cmd) + bare_cli/codex body render; arg substitution; harness auto-detect; gap: CC stop-gap only (no cos-agent yet) |
 | 4.1 — cos-agent spawn | pending | — | — |
-| Verification suite | pending | — | depends on 1.1, 3.2, 4.1 |
+| Verification suite — 9b: canonical-event-emitter contract skill | ✅ DONE | 2026-04-30 | `skills/__contracts__/canonical-event-emitter/SKILL.md`; behavioral test 16/16 pass (`tests/audit/test_canonical_event_emitter_contract.py`); commit 137ac27 |
+| Verification suite — remaining (test_harness_parity.py, demo-portability-proof.sh) | pending | — | depends on 1.1, 3.2, 4.1 |
 
 ## Caveat
 

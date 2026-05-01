@@ -76,6 +76,54 @@ Before merging any significant change, check `docs/architecture/LESSONS-LEARNED.
 3. Link related ADRs (supersedes, related to)
 4. Include in the commit message: "Includes ADR-NNN"
 
+## cos-skill — Portable Skill Invocation (ADR-064 Surface 3)
+
+`cos-skill` is the harness-agnostic entry point for invoking any Cognitive OS
+skill from a plain shell, a Codex session, CI, or any context where Claude
+Code's `/slash-command` UI is unavailable.
+
+### Usage
+
+```bash
+# List all installed skills (name, tier, description)
+bin/cos-skill list
+bin/cos-skill list --json | jq '.[].name'
+
+# Inspect a skill's full metadata and body
+bin/cos-skill describe simplify
+bin/cos-skill describe verification-before-completion --json
+
+# Invoke a skill
+bin/cos-skill run simplify --harness=bare_cli     # renders body to stdout
+bin/cos-skill run simplify --harness=codex        # same; body is the instruction
+bin/cos-skill run simplify --harness=claude_code  # emits /simplify (stop-gap)
+
+# Arg substitution ({{key}} placeholders in SKILL.md body)
+bin/cos-skill run my-skill --target=path/to/file.py
+```
+
+### Harness detection
+
+The `--harness` flag overrides auto-detection. Without it, harness is resolved from:
+
+1. `COGNITIVE_OS_HARNESS` env var (highest priority)
+2. `CLAUDE_PROJECT_DIR` present → `claude_code`
+3. `CODEX_PROJECT_DIR` / `CODEX_SESSION_ID` present → `codex`
+4. Default → `bare_cli`
+
+### Claude Code stop-gap
+
+On harness `claude_code`, `run` prints the slash-command form (`/skill-name --arg=value`)
+to stdout. The operator pastes it into the CC chat interface. Once `cos-agent`
+ships (ADR-064 Surface 4), this branch will pipe directly into the agent loop.
+
+### Engine
+
+The Python engine lives at `lib/skill_runner.py`. Tests:
+
+- Unit: `tests/unit/test_skill_runner.py`
+- Integration: `tests/integration/test_cos_skill_cli.py`
+
 ## Using COS in Other Projects
 
 COS is installable in any project via `cos init`:

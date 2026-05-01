@@ -7,6 +7,22 @@ The short version:
 
 **author behavior once, project it into each harness through explicit drivers.**
 
+## Canonical Portable Skill Entry Point
+
+`bin/cos-skill` (ADR-064 Surface 3) is the canonical way to invoke any skill
+outside Claude Code's slash-command UI:
+
+```bash
+cos-skill list                              # enumerate skills
+cos-skill describe <name>                   # inspect metadata + body
+cos-skill run <name> [--harness=<h>]        # invoke portably
+```
+
+Harness-specific behavior lives in `lib/skill_runner.py::run_skill`. The
+shell wrapper (`bin/cos-skill`) is a thin 30-line Bash front that anchors to
+the repo root and delegates entirely to the Python engine. No harness-specific
+paths appear in the binary.
+
 ## Agent Self-Check Before Authoring (os-only)
 
 Before writing or modifying any SO code, test, or script, run this
