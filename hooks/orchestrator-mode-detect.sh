@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: both
+# @on-demand: sourced library helper — not registered independently, sourced by other hooks
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 # SessionStart: detect orchestrator communication mode and report to stderr.
