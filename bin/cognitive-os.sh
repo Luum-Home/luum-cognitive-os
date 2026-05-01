@@ -129,6 +129,7 @@ Usage:
   cognitive-os init                        Install Cognitive OS into the current project
   cognitive-os version                     Show version
   cognitive-os doctor                      Check installation health
+  cognitive-os doctor harness [--json]     Check active harness projection and minimal profile
 
   cognitive-os sources                     List configured package sources
   cognitive-os sources add <name> <url>    Add a remote source
@@ -1326,7 +1327,13 @@ _update_source() {
 case "${1:-help}" in
   init)      cmd_init "${2:-.}" ;;
   version)   cmd_version ;;
-  doctor)    cmd_doctor ;;
+  doctor)
+    if [ "${2:-}" = "harness" ]; then
+      shift 2
+      exec bash "$PACKAGE_DIR/scripts/cos-doctor-harness.sh" "$@"
+    fi
+    cmd_doctor
+    ;;
   sources)   shift; cmd_sources "$@" ;;
   search)    shift; cmd_search "$@" ;;
   install)   shift; cmd_install "$@" ;;
