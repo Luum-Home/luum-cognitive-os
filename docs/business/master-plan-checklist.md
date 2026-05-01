@@ -70,6 +70,7 @@
 - [x] Slow live integration is explicit rather than part of the default
   non-Docker broad lane.
 - [x] SessionStart performs a cached host-tool doctor check through `hooks/host-tool-doctor.sh`, while keeping broad pytest inventory explicit to avoid startup overload.
+- [x] Primitive-coverage backend candidates have a documented local benchmark and unit-tested harness in [Primitive Coverage Backend Benchmark Research](../architecture/primitive-coverage-backend-benchmark-2026-05.md), so future graph/index integrations must prove license, offline, JSON/SARIF, stale-doc, and primitive-semantic fit before adoption.
 
 ## 5. Onboarding and Operational Simplicity
 
