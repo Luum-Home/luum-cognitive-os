@@ -14,7 +14,8 @@ Installation:
     # or: pip install claude-agent-sdk>=0.1
 
 Configuration:
-    ANTHROPIC_API_KEY  — from console.anthropic.com
+    llm_providers.claude_sdk.enabled: true  — in cognitive-os.yaml
+    ANTHROPIC_API_KEY                       — from console.anthropic.com
 
 When to use this provider (vs Claude Code native):
   - CI environments where Claude Code CLI is unavailable
@@ -77,11 +78,19 @@ def _sdk_available() -> bool:
 # ── Provider interface ────────────────────────────────────────────────────────
 
 def is_configured() -> bool:
-    """True iff ANTHROPIC_API_KEY is set AND claude_agent_sdk is importable.
+    """True iff config enables this provider, key is set, and SDK is importable.
 
-    Both conditions must hold: the key pays for the calls, the package provides
-    the runner. Missing either means this provider cannot function.
+    All conditions must hold: cognitive-os.yaml must explicitly opt into direct
+    Anthropic API usage, the key pays for the calls, and the package provides
+    the runner. Missing any condition means this provider cannot function.
     """
+    try:
+        from lib.anthropic_direct_policy import direct_anthropic_api_enabled
+
+        if not direct_anthropic_api_enabled():
+            return False
+    except Exception:  # noqa: BLE001
+        return False
     if not os.environ.get("ANTHROPIC_API_KEY", "").strip():
         return False
     return _sdk_available()
@@ -143,8 +152,9 @@ def call(
             "tokens_out": 0,
             "cost_usd": 0.0,
             "error": (
-                "claude_sdk unavailable: ANTHROPIC_API_KEY unset or "
-                "claude-agent-sdk not installed (uv sync --extra claude-sdk)"
+                "claude_sdk unavailable: llm_providers.claude_sdk.enabled is "
+                "false, ANTHROPIC_API_KEY is unset, or claude-agent-sdk is not "
+                "installed (uv sync --extra claude-sdk)"
             ),
         }
 

@@ -38,6 +38,7 @@
 - [x] Gateway selection is capability-centric before vendor-centric.
 - [x] Skill routing is capability-centric before vendor-centric.
 - [x] Execution records and metrics include execution-profile data, not only model branding.
+- [x] Direct Anthropic API usage is separated from Claude Code native account execution through [Direct Anthropic API Policy](../architecture/direct-anthropic-api-policy.md) and centralized runtime tests.
 
 ## 4. CI and Validation Integrity
 

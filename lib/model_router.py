@@ -17,7 +17,7 @@ import json
 import logging
 import os
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -142,9 +142,13 @@ def is_advisor_available() -> bool:
     """Return True when the sonnet+advisor strategy can be used.
 
     The advisor strategy requires direct Anthropic API access (executor mode)
-    and is not available through CLI subprocess or LiteLLM gateway.
+    and is not available through CLI subprocess or LiteLLM gateway. Direct
+    Anthropic API access follows the existing provider configuration:
+    ``llm_providers.claude_sdk.enabled`` in ``cognitive-os.yaml``.
     """
-    return os.environ.get("ORCHESTRATOR_MODE", "").lower() == "executor"
+    from lib.anthropic_direct_policy import advisor_strategy_enabled
+
+    return advisor_strategy_enabled()
 
 
 def select_model(
@@ -169,16 +173,16 @@ def select_model(
             excludes models whose estimated cost exceeds this amount.
             Uses a reference call of 10K input + 5K output tokens.
         prefer_local: If True, only consider local models (cost=0).
-        use_advisor: Override for the advisor strategy.  ``None`` (default)
-            means auto-detect based on ``ORCHESTRATOR_MODE``.  Pass
-            ``True`` to force the advisor tier or ``False`` to disable it.
+        use_advisor: Advisor strategy preference. ``None`` and ``True`` both
+            use the advisor tier only when it is available according to policy.
+            Pass ``False`` to disable it for this call.
 
     Returns:
         Model identifier string, or ``SONNET_ADVISOR_TIER`` (``"sonnet+advisor"``)
         when the advisor strategy is selected.
     """
     # Advisor strategy: return the virtual tier sentinel when eligible
-    _use_advisor = use_advisor if use_advisor is not None else is_advisor_available()
+    _use_advisor = use_advisor is not False and is_advisor_available()
     if (
         _use_advisor
         and task_type in ADVISOR_TASKS
@@ -568,8 +572,6 @@ def route_and_execute(
         try:
             from lib.bifrost_client import (
                 BifrostClient,
-                BifrostError,
-                BifrostUnavailable,
                 get_bifrost_model_name,
             )
 
