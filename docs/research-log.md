@@ -525,3 +525,28 @@ python3 scripts/hook_timing_report.py --live
 - NO code written for this gap.
 
 **ADR numbers used**: 090, 095, 096 (089 was already taken by multi-session git coordination; 091-094 were taken by a concurrent ADR rename migration).
+
+## 2026-05-01: Phase 3 review-agent pattern shipped (final 30% of learning loop)
+
+**Session goal**: implement ADR-096 (review-agent pattern) — the last unimplemented gap in the learning loop.
+
+### What shipped
+
+- **`lib/review_agent.py`** (source: `packages/agent-lifecycle/lib/review_agent.py`): 6 public functions — `should_review` (stochastic + budget gate), `select_reviewer_model` (cross-review matrix), `build_review_prompt` (Hermes template adapted to COS TRUST_REPORT conventions), `parse_review_response` (structured extraction with graceful-failure mode), `persist_finding` (JSONL + Engram best-effort), `daily_budget_state` (load/rollover budget tracker). Module constants: `DEFAULT_SAMPLE_RATE=0.2`, `DEFAULT_MAX_PER_DAY=50`, `REVIEWER_MODEL_MATRIX`.
+- **`hooks/review-spawner.sh`** (source: `packages/agent-lifecycle/hooks/review-spawner.sh`): PostToolUse[Agent] hook. Reads config from cognitive-os.yaml, applies stochastic + budget gate, selects reviewer model via cross-review matrix, builds prompt, dispatches via `lib/dispatch.py`, parses response, persists finding. v1 sync (documented latency).
+- **`skills/review-output/SKILL.md`** (source: `packages/agent-lifecycle/skills/review-output/`): Operator skill for manual review trigger. Supports `--task-id <id>` and `--recent N`. Bypasses sample-rate, respects daily budget.
+- **`cognitive-os.yaml review:` block**: `sample_rate`, `max_per_day`, `default_model`, `always_review_kinds`.
+- **`tests/unit/test_review_agent.py`**: 40 unit tests covering all public functions and edge cases.
+- **`tests/integration/test_review_agent_flow.py`**: 7 integration tests covering end-to-end flow with mock dispatcher.
+- **ADR-096**: promoted from Proposed → Accepted. Design space collapsed to 8 locked decisions. Implementation section added.
+
+### Key decisions
+
+- v1 sync (not async). Documents latency cost explicitly in hook header. v2 async is a follow-up.
+- Cross-review matrix enforced: haiku→sonnet, sonnet→opus, opus→sonnet.
+- No automatic skill modification from findings. Findings surface to `/analyze-improvements`.
+- Hermes prompt templates adapted (not copied verbatim): tool references replaced, TRUST_REPORT format aligned, rubber-stamp prevention instruction added.
+
+### Cost envelope
+
+At 20% sample rate + haiku reviewer: ~$0.02–$0.05/day. At 50 reviews/day cap + haiku: ~$0.075/day max. Within governance bounds (ADR-096 §Decision 4–5).
