@@ -17,7 +17,13 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 REPORT_ROOT="${COS_TEST_REPORT_DIR:-$PROJECT_DIR/.cognitive-os/reports/test-runs}"
-PYTEST_BIN="${PYTEST_BIN:-$PROJECT_DIR/.venv/bin/python -m pytest}"
+if [ -z "${PYTEST_BIN:-}" ]; then
+  if [ -x "$PROJECT_DIR/.venv/bin/python" ]; then
+    PYTEST_BIN="$PROJECT_DIR/.venv/bin/python -m pytest"
+  else
+    PYTEST_BIN="python3 -m pytest"
+  fi
+fi
 REPORT_KEEP="${COS_TEST_REPORT_KEEP:-30}"
 REPORT_MAX_MIB="${COS_TEST_REPORT_MAX_MIB:-120}"
 
@@ -267,8 +273,23 @@ PYLANE
   fi  # end caller-supplied vs adaptive
 
   if [ "$_workers" != "0" ] && [ -n "$_workers" ]; then
-    set -- -n "$_workers" "$@"
-    echo "[pytest-with-summary] Injected: -n $_workers (use explicit -n or --workers N or COS_PYTEST_WORKERS to override)"
+    _has_dist_flag=0
+    for _arg in "$@"; do
+      case "$_arg" in
+        --dist | --dist=*)
+          _has_dist_flag=1
+          break
+          ;;
+      esac
+    done
+    if [ "$_has_dist_flag" -eq 0 ]; then
+      set -- -n "$_workers" --dist loadgroup "$@"
+      echo "[pytest-with-summary] Injected: -n $_workers --dist loadgroup (use explicit -n/--dist or --workers N to override)"
+    else
+      set -- -n "$_workers" "$@"
+      echo "[pytest-with-summary] Injected: -n $_workers (explicit --dist preserved)"
+    fi
+    unset _has_dist_flag
   else
     echo "[pytest-with-summary] Injected: serial (workers=0)"
   fi
@@ -407,7 +428,7 @@ fi
 
 set +e
 # shellcheck disable=SC2086
-"${_nice_prefix[@]}" $PYTEST_BIN "$@" "${_rerun_args[@]}" --junitxml "$junit" 2>&1 | tee "$full_output"
+${_nice_prefix[@]+"${_nice_prefix[@]}"} $PYTEST_BIN "$@" ${_rerun_args[@]+"${_rerun_args[@]}"} --junitxml "$junit" 2>&1 | tee "$full_output"
 status=${PIPESTATUS[0]}
 set -e
 
