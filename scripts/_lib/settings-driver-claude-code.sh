@@ -167,6 +167,7 @@ cc_driver_emit() {
     "hooks/destructive-git-blocker.sh"     "false" \
     "hooks/symlink-mutation-guard.sh"      "false" \
     "hooks/git-commit-scope-guard.sh"           "false" \
+    "hooks/direct-main-guard.sh"                "false" \
     "hooks/orchestrator-claim-gate.sh"          "false" \
     "hooks/pre-commit-content-hash-dedupe.sh"  "false" \
     "hooks/scope-marker-portability-gate.sh"    "false" \

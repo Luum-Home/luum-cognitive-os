@@ -60,8 +60,27 @@ if [ -n "$TOOL_USE_ID" ] && [ "$TOOL_USE_ID" != "null" ]; then
   AGENT_LEDGER_ID="$TOOL_USE_ID"
 fi
 
-# ADR-116 P1.1: acquire a cross-session task claim before recording or
-# launching the agent. This is the first automatic duplicate-task barrier.
+# ADR-116 P1.1/P3.3: acquire the shared active task claim and prove the
+# coordination surface is clean before recording or launching the agent.
+ACTIVE_CLAIM_ACQUIRED=0
+if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/cos_task_claims.py" ]; then
+  set +e
+  ACTIVE_CLAIM_OUT=$(python3 "$PROJECT_DIR/scripts/cos_task_claims.py" --project-dir "$PROJECT_DIR" \
+    claim --task-id "$TASK_ID" --session-id "$SESSION_ID" --description "$DESCRIPTION" 2>&1)
+  ACTIVE_CLAIM_RC=$?
+  set -e
+  if [ "$ACTIVE_CLAIM_RC" -eq 2 ]; then
+    echo "ADR-116 ACTIVE TASK CLAIM BLOCK: task '$TASK_ID' is already claimed by another session." >&2
+    echo "$ACTIVE_CLAIM_OUT" >&2
+    exit 2
+  elif [ "$ACTIVE_CLAIM_RC" -eq 0 ]; then
+    ACTIVE_CLAIM_ACQUIRED=1
+  elif [ "$ACTIVE_CLAIM_RC" -ne 0 ]; then
+    echo "$ACTIVE_CLAIM_OUT" >&2
+    exit "$ACTIVE_CLAIM_RC"
+  fi
+fi
+
 if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/claim_task.py" ]; then
   set +e
   CLAIM_OUT=$(python3 "$PROJECT_DIR/scripts/claim_task.py" --project-dir "$PROJECT_DIR" \
@@ -72,7 +91,29 @@ if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/claim_task.p
   if [ "$CLAIM_RC" -eq 2 ]; then
     echo "ADR-116 TASK CLAIM BLOCK: task '$TASK_ID' is already claimed by another session." >&2
     echo "$CLAIM_OUT" >&2
+    if [ "$ACTIVE_CLAIM_ACQUIRED" -eq 1 ]; then
+      python3 "$PROJECT_DIR/scripts/cos_task_claims.py" --project-dir "$PROJECT_DIR" \
+        release --task-id "$TASK_ID" --session-id "$SESSION_ID" >/dev/null 2>&1 || true
+    fi
     exit 2
+  fi
+fi
+
+if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/cos_work_inventory.py" ] && [ "${COS_SKIP_GOVERNED_INVENTORY:-0}" != "1" ]; then
+  set +e
+  INVENTORY_OUT=$(python3 "$PROJECT_DIR/scripts/cos_work_inventory.py" --project-dir "$PROJECT_DIR" --all --strict --json 2>&1)
+  INVENTORY_RC=$?
+  set -e
+  if [ "$INVENTORY_RC" -ne 0 ]; then
+    echo "ADR-116 GOVERNED PREFLIGHT BLOCK: cos_work_inventory.py --all --strict failed before Agent launch." >&2
+    echo "$INVENTORY_OUT" >&2
+    if [ "$ACTIVE_CLAIM_ACQUIRED" -eq 1 ]; then
+      python3 "$PROJECT_DIR/scripts/cos_task_claims.py" --project-dir "$PROJECT_DIR" \
+        release --task-id "$TASK_ID" --session-id "$SESSION_ID" >/dev/null 2>&1 || true
+    fi
+    python3 "$PROJECT_DIR/scripts/claim_task.py" --project-dir "$PROJECT_DIR" \
+      release "$TASK_ID" --session-id "$SESSION_ID" --agent-id "$AGENT_LEDGER_ID" >/dev/null 2>&1 || true
+    exit "$INVENTORY_RC"
   fi
 fi
 

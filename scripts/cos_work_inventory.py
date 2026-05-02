@@ -66,6 +66,46 @@ def is_git_repo(project: Path) -> bool:
     return git(project, ["rev-parse", "--is-inside-work-tree"]).returncode == 0
 
 
+def git_common_dir(project: Path) -> Path | None:
+    result = git(project, ["rev-parse", "--git-common-dir"])
+    if result.returncode != 0:
+        fallback = project / ".git"
+        if fallback.exists() and fallback.is_dir():
+            return fallback.resolve()
+        return None
+    raw = result.stdout.strip()
+    if not raw:
+        return None
+    path = Path(raw)
+    if not path.is_absolute():
+        path = project / path
+    return path.resolve()
+
+
+def worktree_status(path: Path) -> dict[str, Any]:
+    if path.exists() and is_git_repo(path):
+        return collect_status(path)
+    return {"is_dirty": None, "counts": {}, "entries": []}
+
+
+def branch_from_head_file(head_file: Path) -> str | None:
+    if not head_file.exists():
+        return None
+    content = head_file.read_text(encoding="utf-8").strip()
+    if content.startswith("ref: refs/heads/"):
+        return content.removeprefix("ref: refs/heads/")
+    return None
+
+
+def short_head_from_head_file(head_file: Path) -> str | None:
+    if not head_file.exists():
+        return None
+    content = head_file.read_text(encoding="utf-8").strip()
+    if content.startswith("ref:"):
+        return None
+    return content[:12] if content else None
+
+
 def safe_branch_name(branch: str) -> str:
     return branch.replace("/", "__") + ".json"
 
@@ -135,8 +175,21 @@ def current_branch(project: Path) -> str | None:
     return branch or None
 
 
+def is_runtime_status_path(path: str) -> bool:
+    """Return True for untracked COS runtime files created by coordination gates."""
+
+    runtime_prefixes = (
+        ".cognitive-os/tasks/",
+        ".cognitive-os/sessions/",
+        ".cognitive-os/runtime/",
+        ".cognitive-os/metrics/",
+        ".cognitive-os/reports/",
+    )
+    return any(path.startswith(prefix) for prefix in runtime_prefixes)
+
+
 def collect_status(project: Path) -> dict[str, Any]:
-    result = git(project, ["status", "--porcelain=v2", "--branch"])
+    result = git(project, ["status", "--porcelain=v2", "--branch", "--untracked-files=all"])
     entries: list[dict[str, Any]] = []
     counts = {"staged": 0, "modified": 0, "untracked": 0, "unmerged": 0}
     ahead = 0
@@ -156,6 +209,8 @@ def collect_status(project: Path) -> dict[str, Any]:
             continue
         if line.startswith("? "):
             path = line[2:]
+            if is_runtime_status_path(path):
+                continue
             counts["untracked"] += 1
             entries.append({"kind": "untracked", "path": path})
             continue
@@ -260,7 +315,7 @@ def collect_worktrees(project: Path) -> list[dict[str, Any]]:
         branch = item.get("branch", "")
         if branch.startswith("refs/heads/"):
             branch = branch.removeprefix("refs/heads/")
-        status = collect_status(path) if path.exists() and is_git_repo(path) else {"is_dirty": None, "counts": {}}
+        status = worktree_status(path)
         rows.append(
             {
                 "path": str(path),
@@ -475,37 +530,33 @@ def collect_orphans(project: Path) -> list[dict[str, Any]]:
 
 
 def collect_worktrees_direct(project: Path) -> list[dict[str, Any]]:
-    """Read .git/worktrees/ directly to avoid destructive-git-blocker.
+    """Read .git/worktrees/ directly and include dirty status.
 
-    This replaces the git-worktree-command-based collect_worktrees when
-    --worktrees flag is used from the new dimensions.
+    This path is independent of IDE state and avoids relying on the
+    human-facing `git worktree list` output for linked-worktree discovery.
     """
-    git_dir = project / ".git"
-    worktrees_dir = git_dir / "worktrees"
+    common_dir = git_common_dir(project)
     rows: list[dict[str, Any]] = []
 
-    # Main worktree (always exists, no entry in .git/worktrees/)
-    main_head_file = git_dir / "HEAD"
-    main_head: str | None = None
-    main_branch: str | None = None
-    if main_head_file.exists():
-        head_content = main_head_file.read_text(encoding="utf-8").strip()
-        if head_content.startswith("ref: refs/heads/"):
-            main_branch = head_content.removeprefix("ref: refs/heads/")
-            main_head = None  # resolve lazily only if needed
-        else:
-            main_head = head_content[:12]
+    main_status = worktree_status(project)
+    main_git_dir = common_dir or (project / ".git")
     rows.append(
         {
             "path": str(project.resolve()),
-            "branch": main_branch,
-            "head": main_head,
+            "branch": main_status.get("branch") or current_branch(project) or branch_from_head_file(main_git_dir / "HEAD"),
+            "head": main_status.get("head") or current_head(project) or short_head_from_head_file(main_git_dir / "HEAD"),
             "source": "main",
             "locked": False,
             "prunable": False,
+            "is_current_project": True,
+            "dirty": main_status.get("is_dirty"),
+            "dirty_counts": main_status.get("counts", {}),
         }
     )
 
+    if common_dir is None:
+        return rows
+    worktrees_dir = common_dir / "worktrees"
     if not worktrees_dir.exists():
         return rows
 
@@ -527,32 +578,82 @@ def collect_worktrees_direct(project: Path) -> list[dict[str, Any]]:
             else:
                 head = content[:12]
 
-        # Derive worktree path from gitdir back-pointer
         wt_path: str | None = None
         if gitdir_file.exists():
-            # gitdir contains the absolute path of the worktree's .git file
             gitdir_content = gitdir_file.read_text(encoding="utf-8").strip()
-            # e.g. /private/tmp/luum-agent-os-harness-fix/.git
             wt_path = str(Path(gitdir_content).parent)
 
         locked = locked_file.exists()
-        # prunable = gitdir target no longer exists
         prunable = False
         if gitdir_file.exists():
             target = Path(gitdir_file.read_text(encoding="utf-8").strip())
             prunable = not target.parent.exists()
 
+        path = Path(wt_path).resolve() if wt_path else Path(name)
+        status = worktree_status(path)
         rows.append(
             {
-                "path": wt_path or name,
-                "branch": branch,
-                "head": head,
+                "path": str(path),
+                "branch": branch or status.get("branch"),
+                "head": head or status.get("head"),
                 "source": "linked",
                 "locked": locked,
                 "prunable": prunable,
+                "is_current_project": path == project.resolve(),
+                "dirty": status.get("is_dirty"),
+                "dirty_counts": status.get("counts", {}),
             }
         )
 
+    return rows
+
+
+def collect_stashes_by_worktree(
+    project: Path,
+    worktrees: list[dict[str, Any]],
+    warn_ttl: int,
+    block_ttl: int,
+) -> list[dict[str, Any]]:
+    """Run stash inspection from each worktree path.
+
+    Git stores stash refs per repository, but running the check from every
+    linked worktree proves the inventory is IDE-independent and records which
+    worktree paths were inspected.
+    """
+    rows: list[dict[str, Any]] = []
+    seen_paths: set[str] = set()
+    for worktree in worktrees:
+        raw_path = worktree.get("path")
+        if not raw_path:
+            continue
+        path = Path(raw_path).resolve()
+        path_key = str(path)
+        if path_key in seen_paths:
+            continue
+        seen_paths.add(path_key)
+        if not path.exists() or not is_git_repo(path):
+            rows.append(
+                {
+                    "worktree_path": path_key,
+                    "worktree_branch": worktree.get("branch"),
+                    "is_current_project": path == project.resolve(),
+                    "available": False,
+                    "stash_count": 0,
+                    "stashes": [],
+                }
+            )
+            continue
+        stashes = collect_stashes(path, warn_ttl, block_ttl)
+        rows.append(
+            {
+                "worktree_path": path_key,
+                "worktree_branch": worktree.get("branch"),
+                "is_current_project": path == project.resolve(),
+                "available": True,
+                "stash_count": len(stashes),
+                "stashes": stashes,
+            }
+        )
     return rows
 
 
@@ -775,17 +876,23 @@ def build_findings(payload: dict[str, Any]) -> list[Finding]:
                     "Prove duplicated, cherry-pick needed files, or mark obsolete with evidence.",
                 )
             )
-    for worktree in payload["worktrees"]:
+    worktrees_by_path: dict[str, dict[str, Any]] = {}
+    for source_key in ("worktrees", "worktrees_direct"):
+        for worktree in payload.get(source_key, []):
+            path = worktree.get("path")
+            if path and path not in worktrees_by_path:
+                worktrees_by_path[path] = worktree
+    for worktree in worktrees_by_path.values():
         if worktree.get("is_current_project"):
             continue
         if worktree.get("dirty"):
             findings.append(
                 Finding(
-                    "WARN",
+                    "BLOCK",
                     "linked-worktree-dirty",
                     worktree["path"],
                     f"branch={worktree.get('branch') or 'detached'} counts={worktree.get('dirty_counts')}",
-                    "Inspect linked worktree before pruning, deleting branches, or claiming cleanup complete.",
+                    "Inspect and commit, preserve, or discard linked worktree WIP before pruning, deleting branches, or claiming cleanup complete.",
                 )
             )
         if worktree.get("prunable"):
@@ -798,6 +905,18 @@ def build_findings(payload: dict[str, Any]) -> list[Finding]:
                     "Run git worktree prune only after checking no WIP remains there.",
                 )
             )
+    for group in payload.get("worktree_stashes", []):
+        if group.get("is_current_project") or not group.get("stash_count"):
+            continue
+        findings.append(
+            Finding(
+                "BLOCK",
+                "linked-worktree-stashes-present",
+                group["worktree_path"],
+                f"branch={group.get('worktree_branch') or 'detached'} stashes={group.get('stash_count')}",
+                "Inspect linked worktree stashes before cleanup; use `git -C <worktree> stash list` and show/apply/drop only after review.",
+            )
+        )
     for stash in payload["stashes"]:
         if stash["level"] in {"WARN", "BLOCK"}:
             findings.append(
@@ -835,6 +954,9 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         "worktrees": collect_worktrees(project),
         "stashes": collect_stashes(project, args.stash_warn_ttl, args.stash_block_ttl),
     }
+    payload["worktree_stashes"] = collect_stashes_by_worktree(
+        project, payload["worktrees"], args.stash_warn_ttl, args.stash_block_ttl
+    )
 
     # P3.3 dimensions
     want_sessions = getattr(args, "sessions", False) or getattr(args, "all", False)
@@ -856,6 +978,10 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
 
     if want_worktrees_direct:
         payload["worktrees_direct"] = collect_worktrees_direct(project)
+        combined_worktrees = payload["worktrees"] + payload["worktrees_direct"]
+        payload["worktree_stashes"] = collect_stashes_by_worktree(
+            project, combined_worktrees, args.stash_warn_ttl, args.stash_block_ttl
+        )
     else:
         payload["worktrees_direct"] = []
 
@@ -891,6 +1017,7 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         "preserve_branch_count": len(payload["preserve_branches"]),
         "worktree_count": len(payload["worktrees"]),
         "stash_count": len(payload["stashes"]),
+        "worktree_stash_count": sum(group.get("stash_count", 0) for group in payload["worktree_stashes"]),
         "session_count": len(payload["sessions"]),
         "orphan_count": len(payload["orphans"]),
         "claim_count": len(payload["claims"]),
@@ -917,7 +1044,8 @@ def print_text(payload: dict[str, Any]) -> None:
         ("no unpushed commits", status.get("ahead", 0) == 0),
         ("preserve branches have manifests", all(b["manifest_exists"] for b in payload["preserve_branches"])),
         ("preserve branches are integrated/closed", all(b["candidate_delete"] for b in payload["preserve_branches"])),
-        ("linked worktrees are clean", all((w.get("is_current_project") or not w.get("dirty")) for w in payload["worktrees"])),
+        ("linked worktrees are clean", all((w.get("is_current_project") or not w.get("dirty")) for w in payload["worktrees"] + payload.get("worktrees_direct", []))),
+        ("linked worktrees have no stashes", all((g.get("is_current_project") or not g.get("stash_count")) for g in payload["worktree_stashes"])),
         ("no stashes require review", not payload["stashes"]),
     ]
     for label, ok in checks:
@@ -952,6 +1080,15 @@ def print_text(payload: dict[str, Any]) -> None:
             locked_str = " [locked]" if wt.get("locked") else ""
             prunable_str = " [PRUNABLE]" if wt.get("prunable") else ""
             print(f"  {wt.get('path', '?')} branch={wt.get('branch') or 'detached'}{locked_str}{prunable_str}")
+
+    worktree_stashes = payload.get("worktree_stashes", [])
+    if worktree_stashes:
+        print(f"\nWorktree stashes ({len(worktree_stashes)} worktree(s) checked):")
+        for group in worktree_stashes:
+            print(
+                f"  {group['worktree_path']} branch={group.get('worktree_branch') or 'detached'} "
+                f"stashes={group.get('stash_count', 0)}"
+            )
 
     stashes_extended = payload.get("stashes_extended", [])
     if stashes_extended:
