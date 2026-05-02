@@ -113,3 +113,20 @@ each automatic hook surface has an explicit tier and evidence.
 - [ADR-064 — Harness-Agnostic Cognitive OS](ADR-064-harness-agnostic-cognitive-os.md)
 - [ADR-112 — Codex Governed Tool Layer](ADR-112-codex-governed-tool-layer.md)
 - [Hook Quality System](../architecture/hook-quality-system.md)
+
+
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Keep relying on `bash -n` only | Syntax checks do not prove hook criticality, matcher coverage, degradation behavior, or harness parity. |
+| Maintain hook quality only in prose docs | Prose drifts from the canonical hook registry and cannot gate CI. |
+| Make each harness own separate quality checks | Splits one hook primitive contract into incompatible harness-specific interpretations. |
+
+
+## Verification
+
+```bash
+python3 scripts/hook_quality_audit.py --check
+python3 -m pytest tests/contracts/test_hook_quality_system.py -q
+```

@@ -1,8 +1,9 @@
 <!-- SCOPE: os-only -->
 # ADR-113: Validation Capsule Liveness Primitives
 
-**Status**: Proposed
-**Date**: 2026-05-02
+## Status
+
+Accepted — 2026-05-02.
 **Deciders**: orchestrator (incident-driven)
 **Supersedes**: extends ADR-106 (multi-session safety primitives) §P3 (orchestrator bilateral verification gate); does NOT supersede ADR-098 (multi-agent file coordination)
 **Cross-refs**: ADR-105 (claim verification contract), ADR-106 (multi-session safety primitives), `docs/incidents/2026-05-02-false-done-compounding.md`
@@ -159,6 +160,14 @@ Idempotent. Never blocks session start. Logs but does not warn unless ≥1 lock 
 - **Activity log false negatives**: a legitimate long-running validation step (e.g., big pytest with long collection phase) might not write metrics for 5 min. Mitigation: 5 min threshold tuneable via env; status command shows elapsed time for operator judgement.
 - **Race: P5 cleanup vs concurrent capsule starting**: very narrow window where P5 deletes a lock as another session writes one. Mitigation: P5 reads `started_at_epoch` and only deletes locks older than 60 s.
 
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Keep only PID and TTL checks | Cannot distinguish real long-running validation from an alive-but-hung process. |
+| Use `COS_VALIDATION_ALLOW_CONCURRENT_AGENTS=1` as the standard escape | Bypasses the safety boundary globally and reintroduces concurrent mutation risk. |
+| Require manual lock deletion without diagnostics | Forces operators to guess whether validation is still productive. |
+
 ## Implementation Plan
 
 | Component | File | Hours |
@@ -186,6 +195,14 @@ Idempotent. Never blocks session start. Logs but does not warn unless ≥1 lock 
 - [ ] Tests cover: heartbeat staleness, activity staleness, status command output schema, break command targeting + audit, P5 cleanup idempotency, race-window protection
 - [ ] No regression: existing TTL + PID checks still work
 - [ ] Documentation: `docs/runbooks/validation-capsule-recovery.md` (NEW) explains operator workflows
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit/test_validation_capsule.py -q
+python3 -m pytest tests/unit/test_validation_capsule_liveness.py -q
+bash scripts/cos-validation-status.sh --help
+```
 
 ## References
 
