@@ -740,6 +740,32 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/native-agent-heartbeat.sh
+  orchestrator-claim-gate:
+    behavior_tests:
+    - tests/contracts/test_orchestrator_claim_gate.py
+    criticality: quality
+    event: PreToolUse
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: Bash
+    max_runtime_ms: 1500
+    safe_degradation: warn_or_block_by_policy
+    scope: both
+    script: hooks/orchestrator-claim-gate.sh
+  plan-claim-validator:
+    behavior_tests:
+    - tests/contracts/test_red_team_harness_primitives.py
+    criticality: quality
+    event: PreToolUse
+    harness_tiers:
+      claude: native
+      codex: governed
+    matcher: Edit|Write|MultiEdit
+    max_runtime_ms: 1500
+    safe_degradation: warn_or_block_by_policy
+    scope: both
+    script: hooks/plan-claim-validator.sh
   pre-agent-snapshot:
     behavior_tests:
     - tests/behavior/test_post_agent_verify.py
