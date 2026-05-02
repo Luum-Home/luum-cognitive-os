@@ -81,10 +81,11 @@ Twelve primitives organized into six layers (L1 Detection / L2 Coordination / L3
 
 - **Layer**: L3 Isolation
 - **Problem (concrete failure mode)**: today's orphaned commits (`173bcae1`, `3f5932d6`) happened because two sessions wrote directly to `main`. A rebase from one session detached the other's commits.
-- **Decision**: `SessionStart` hook auto-creates `claude/session-<short-id>` branch unless the operator explicitly opts in to direct-main with `COS_ALLOW_DIRECT_MAIN=1`. Sub-agent commits land on the session branch. `main` only updated via P2.2 merge queue. Operator can still commit directly to main with the env var; sub-agents cannot.
-- **Artifacts to create**: hook `hooks/session-start-branch.sh`, `lib/session_branch.py`, doc `docs/architecture/per-session-branches.md`.
+- **Decision**: `SessionStart` creates or recommends a session branch for multi-session work. Local enforcement is actor-aware: autonomous agents/sub-agents are blocked from committing directly on `main`/`master`, while operator commits on `main` warn by default and can be escalated to block with `COS_OPERATOR_MAIN_POLICY=block`. `COS_ALLOW_DIRECT_MAIN=1` remains a one-off emergency bypass.
+- **Remote invariant**: local warnings are UX, not the safety boundary. The authoritative guarantee is the vendor-neutral protected landing contract in `docs/architecture/protected-landing-contract.md`: `main`/`master` must be advanced by provider-native protection, server-side Git hooks, or COS merge-queue/pre-push fallback according to remote capabilities.
+- **Artifacts to create/update**: `hooks/direct-main-guard.sh`, hook projections, `scripts/cos-session-branch.sh`, `lib/session_branch.py`, `docs/architecture/direct-main-policy.md`, and `docs/architecture/per-session-branches.md`.
 - **Effort**: L (~2 days, includes settings-driver integration).
-- **Acceptance criteria**: `tests/integration/test_per_session_branch.py::test_subagent_cannot_commit_to_main` — sub-agent attempting to commit on `main` without `COS_ALLOW_DIRECT_MAIN` is rejected by pre-commit hook.
+- **Acceptance criteria**: `tests/unit/test_direct_main_guard.py` covers agent block, operator warn, strict operator block, bypass, non-main branches, `master`, auto-detected agent env, and ignored non-commit/non-Bash calls. `tests/integration/test_per_session_branch.py::test_subagent_cannot_commit_to_main` covers the SessionStart branch workflow once P2.1 branch switching is default-on.
 - **Supersedes/related**: composes with ADR-110 (preserve-branch governance), ADR-109 (worktree isolation — see open question below on overlap).
 
 ---
@@ -98,6 +99,13 @@ Twelve primitives organized into six layers (L1 Detection / L2 Coordination / L3
 - **Effort**: L (~2 days).
 - **Acceptance criteria**: `tests/integration/test_merge_queue.py::test_serialized_main_writes` — two concurrent invocations of `merge-to-main.sh` are serialized; the second waits and re-validates against the new `main` HEAD before applying.
 - **Supersedes/related**: prerequisite for P2.1 to provide value (per-session branches without a merge queue just defers the race).
+
+#### P2.2a — Remote protection boundary
+
+- **Layer**: L3 Isolation
+- **Problem**: local hooks can be bypassed intentionally or accidentally, especially by operator terminal workflows.
+- **Decision**: `main`/`master` must use the vendor-neutral protected landing contract. Provider-native branch protection/merge queues are preferred when available, server-side Git hooks are the strongest portable self-hosted mechanism, and COS local merge queue + pre-push gates are the fallback for unknown/unsupported remotes. GitHub is one adapter, not a requirement.
+- **Acceptance criteria**: a direct `git push origin main` from a non-queue actor is rejected by the strongest available protection layer, while queue/bot landing succeeds after required gates. If remote enforcement is unavailable, status/documentation must report local-only fallback rather than claiming remote protection.
 
 ---
 
@@ -298,15 +306,13 @@ From `.cognitive-os/tasks/active-tasks.json`:
 
 ## Open questions
 
-1. **P2.1 default-on scope**: should per-session branches apply to operator commits as well, or only sub-agent commits? Operator workflow today commits directly to `main` for fast iteration. If P2.1 catches operator commits, the env-var escape hatch (`COS_ALLOW_DIRECT_MAIN`) becomes the de-facto default and the protection is symbolic. If it skips operator commits, operator commits remain the dominant orphaning vector. Decision deferred to Phase 3 review.
+1. **Engram daemon throughput for P1.3 + P5.1 + P5.2**: P1.3 emits events on every claim/commit/rebase. P5.1 writes claim observations on every dispatch. P5.2 acquires logical locks for shared resources. Combined throughput at peak (10 sub-agents × 5 events/agent/min) is ~50 writes/min. Not measured. Need a benchmark before flipping these flags default-on.
 
-2. **Engram daemon throughput for P1.3 + P5.1 + P5.2**: P1.3 emits events on every claim/commit/rebase. P5.1 writes claim observations on every dispatch. P5.2 acquires logical locks for shared resources. Combined throughput at peak (10 sub-agents × 5 events/agent/min) is ~50 writes/min. Not measured. Need a benchmark before flipping these flags default-on.
+2. **P2.1 vs ADR-109 worktree isolation overlap**: ADR-109 already isolates sub-agents in worktrees. P2.1 puts sub-agent commits on a session branch. If ADR-109 is default-on (P2.3), is P2.1 redundant? Or do they layer (worktree provides FS isolation, branch provides git-history isolation)? Tentative answer: they layer — worktrees can still write to `main` if not branched. But the cost-benefit of running both default-on needs validation in Phase 3.
 
-3. **P2.1 vs ADR-109 worktree isolation overlap**: ADR-109 already isolates sub-agents in worktrees. P2.1 puts sub-agent commits on a session branch. If ADR-109 is default-on (P2.3), is P2.1 redundant? Or do they layer (worktree provides FS isolation, branch provides git-history isolation)? Tentative answer: they layer — worktrees can still write to `main` if not branched. But the cost-benefit of running both default-on needs validation in Phase 3.
+3. **P1.2 fingerprint vs P4.1 patch-id**: both detect duplicate work but at different levels (task-bound vs raw-diff). Running both means two abort paths with different error messages. Acceptable, or should one supersede the other? Tentative answer: keep both — fingerprint catches semantic equivalence (same task → same outputs), patch-id catches syntactic equivalence (same diff regardless of task).
 
-4. **P1.2 fingerprint vs P4.1 patch-id**: both detect duplicate work but at different levels (task-bound vs raw-diff). Running both means two abort paths with different error messages. Acceptable, or should one supersede the other? Tentative answer: keep both — fingerprint catches semantic equivalence (same task → same outputs), patch-id catches syntactic equivalence (same diff regardless of task).
-
-5. **P3.2 destructive-git guard scope creep**: should `git push --force` be in the destructive set? It is destructive to `origin/main` reflog but not to local working tree. Likely yes, but interaction with merge-queue (P2.2) needs design.
+4. **P3.2 destructive-git guard scope creep**: should `git push --force` be in the destructive set? It is destructive to `origin/main` reflog but not to local working tree. Likely yes, but interaction with merge-queue (P2.2) needs design.
 
 6. **Effort estimates not historically anchored**: T-shirt sizes above are reasoned estimates, not derived from `lib/cost_predictor.py` historical data. Calibration after Phase 0 ships.
 
