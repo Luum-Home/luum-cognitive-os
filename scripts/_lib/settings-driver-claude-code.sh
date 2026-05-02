@@ -202,6 +202,7 @@ cc_driver_emit() {
     "hooks/agent-prelaunch.sh"              "false" \
     "hooks/error-pattern-detector.sh"       "false" \
     "hooks/predev-completeness-check.sh"    "false" \
+    "hooks/completeness-check.sh"           "false" \
     "hooks/reinvention-check.sh"            "false" \
     "hooks/native-agent-heartbeat.sh"       "false" \
   )
@@ -263,6 +264,7 @@ cc_driver_emit() {
     "hooks/claim-validator.sh"       "false" \
     "hooks/completion-gate.sh"       "false" \
     "hooks/agent-checkpoint.sh"      "false" \
+    "hooks/post-agent-verify.sh"     "false" \
     "hooks/trust-score-validator.sh" "false" \
     "hooks/confidence-gate.sh"       "false" \
     "hooks/audit-id-enricher.sh"     "false" \
