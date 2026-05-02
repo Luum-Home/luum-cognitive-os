@@ -84,3 +84,4 @@ ADR-pattern file appears outside this directory without being a CD- file or redi
 | [ADR-101](ADR-101-intent-aware-rate-limiter.md) | Intent-Aware Rate Limiter Flow Control |
 | [ADR-104](ADR-104-startup-circuit-breaker.md) | Startup Circuit Breaker and Safe Mode |
 | [ADR-107](ADR-107-human-approved-rollback.md) | Human-Approved Rollback Boundary |
+- [ADR-110: Preserve Branch Governance](ADR-110-preserve-branch-governance.md)
