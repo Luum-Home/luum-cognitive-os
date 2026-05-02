@@ -104,6 +104,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/edit-lock-process-negotiations.sh\" ]; then bash \"$PWD/hooks/edit-lock-process-negotiations.sh\"; fi"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/stash-budget-warn.sh\" ]; then bash \"$PWD/hooks/stash-budget-warn.sh\"; fi"
         }
       ],
       "matcher": "prompt"
@@ -146,6 +150,10 @@
         },
         {
           "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/pre-commit-content-hash-dedupe.sh\" ]; then bash \"$PWD/hooks/pre-commit-content-hash-dedupe.sh\"; fi"
+        },
+        {
+          "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/scope-marker-portability-gate.sh\" ]; then bash \"$PWD/hooks/scope-marker-portability-gate.sh\"; fi"
         }
       ],
@@ -174,6 +182,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/audit-id-enricher.sh\" ]; then bash \"$PWD/hooks/audit-id-enricher.sh\"; fi"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/post-git-orphan-notifier.sh\" ]; then bash \"$PWD/hooks/post-git-orphan-notifier.sh\"; fi"
         }
       ],
       "matcher": "bash"

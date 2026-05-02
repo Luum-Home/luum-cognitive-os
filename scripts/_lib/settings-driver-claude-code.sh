@@ -189,6 +189,10 @@ cc_driver_emit() {
     "hooks/project-docs-convention.sh"  "false" \
     "hooks/edit-lock-pre-tool.sh"       "false" \
     "hooks/concurrent-write-guard.sh"   "false" \
+  )
+
+  local pre_plan_claim
+  pre_plan_claim=$(_cc_hook_group "PreToolUse" "Edit|Write|MultiEdit" \
     "hooks/plan-claim-validator.sh"     "false" \
   )
 
@@ -340,7 +344,7 @@ cc_driver_emit() {
 
   printf '    "PreToolUse": [\n'
   local pre_first=true
-  for group in "$pre_all" "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_engram" "$pre_agent"; do
+  for group in "$pre_all" "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_plan_claim" "$pre_engram" "$pre_agent"; do
     [ -z "$group" ] && continue
     if [ "$pre_first" = true ]; then
       pre_first=false
