@@ -1,279 +1,394 @@
-# **Agent Capability Coverage (ACC): Quantifying the Semantic Alignment Between Systems and Cognitive Models**
+# Agent Capability Coverage (ACC)
 
-## **1\. Introduction to the Cognitive Systems Paradigm and the Structural Gap**
+## Status
 
-The evolution of Artificial Intelligence has irreversibly transitioned from passive language models, primarily designed as text retrieval and probabilistic synthesis engines, toward ecosystems of autonomous agents capable of sequential reasoning, adaptive planning, and active execution of actions in production environments.1 A traditional language model operates in an isolated environment, depending exclusively on the data frozen during its pre-training phase or, alternatively, on static context injections supplied through Retrieval-Augmented Generation (RAG) techniques.1 In contrast, a cognitive agent is ontologically defined by its "agency": the intrinsic ability to break down vague or ambiguous goals into manageable sub-tasks, retain an episodic memory across past interactions, and, crucially, use dynamic tools (Tool Use / Function Calling) to interact bidirectionally with real-world software, databases, and APIs.1
+- **Type:** Architecture specification
+- **Scope:** Cognitive OS core contract plus optional ecosystem adapters
+- **Phase:** reconstruction
+- **Audience:** maintainers, adapter authors, governance/test authors
 
-As enterprise software architectures rapidly adopt these "agentic" workflows, and organizations transition to distributed multi-agent systems to solve domain-specific tasks 6, a critical vulnerability has emerged that has neither been contemplated nor resolved by traditional software engineering methodologies. This vulnerability is defined as the fundamental misalignment between the "real system" (the empirical source code, deployed infrastructure, underlying business logic, and event surfaces) and the "represented system" (the cognitive model, tool catalog, and functional ontology that the AI agent perceives and is authorized to use).7 This discrepancy defines a severe "Structural Gap" in the discipline of AI engineering.
+## Thesis
 
-Today, multiple mature tools exist and proliferate to address the software lifecycle: platforms to measure *Test Coverage* (unit and integration testing coverage), static analyzers to evaluate *Code Quality* (code quality and vulnerabilities), vast infrastructures for Agent Observability (traces, latency, token consumption), and automated Documentation generators.9 However, there is currently no standardized methodology, nor a formal metric, that allows objectively measuring a fundamental architectural question: How well represented is a software system within an agent's cognitive model?
+Agent Capability Coverage (ACC) measures how completely the real capabilities of a software system are represented in the agentic primitives an AI coding agent can discover, reason about, and invoke.
 
-This structural disconnection has direct, immediate, and financially detrimental operational consequences. When an agent lacks a complete or accurate view of the system's true capabilities, it leads to **incomplete system usage**. Agents, faced with gaps in their tool catalog, attempt to compensate for the lack of represented capabilities through excessive and inefficient reasoning sequences.12 Mathematically, this results in **higher token consumption**, as the model enters trial-and-error loops trying to solve a problem for which an optimized but unexposed endpoint already exists.14 Simultaneously, this architectural blindness causes **low determinism** in the results: lacking specialized tools, the agent relies on its probabilistic parametric knowledge instead of delegating the action to deterministic code.15 Finally, semantic misalignment is the underlying cause of a **higher probability of errors** and hallucinations, where the agent invents API parameters, assumes the existence of fictional services, or violates implicit business rules simply because those rules were never incorporated into its cognitive representation.13
+The operating premise is:
 
-This report introduces, formalizes, and comprehensively defines the concept of **Agent Capability Coverage (ACC)**. ACC is posited not only as a mathematical metric but as the core of a new category of architectural analysis called **"Semantic System Coverage"**. Under this new paradigm, the fundamental premise and synthesis phrase governing the design of cognitive systems reduces to an undeniable axiom: *"If a capability is not modeled, the agent cannot use it"*. Through the exhaustive measurement of this coverage—by developing static analysis pipelines (AST parsing) cross-referenced with tool discovery registries (such as the Model Context Protocol)—organizations can guarantee the governance, determinism, and reliability of autonomous operations at an enterprise scale, emulating the qualitative leap that the adoption of Test Coverage represented in 2005, but applied to the era of cognitive systems.
+> If a capability is not structurally modeled, an agent cannot use it predictably, securely, or efficiently.
 
-## **2\. Critical Analysis of the State of the Art and the Evaluation Gap**
+ACC is not a replacement for unit test coverage, SAST, runtime observability, or agent evaluation. It measures a different gap: the structural alignment between the system that exists and the system represented to agents.
 
-To understand the mathematical and operational urgency of implementing Agent Capability Coverage, it is imperative to conduct a critical and comprehensive analysis of the tools, frameworks, and research methodologies that make up the current state of the art. The fundamental problem lies in the fact that contemporary solutions address agent reliability from orthogonal perspectives, focusing on dynamic execution, syntactic quality, or connection standardization, but systematically failing to quantify structural "completeness".
+## Problem
 
-| Technological Category | Representative Tools / Frameworks | Main Solution Focus | Critical Limitation Regarding ACC |
-| :---- | :---- | :---- | :---- |
-| **Agent Observability** | LangSmith, Datadog LLM, Arize, Helicone | Retrospective traceability, latency, token metrics, LLM-as-a-Judge. | They exclusively see probabilistic *execution*, not the *completeness* of the agent's latent knowledge. |
-| **Agent Frameworks** | LangChain, Model Context Protocol (MCP), VoltAgent | Definition of primitives, workflow orchestration, client-server connection standardization. | They define *how* to expose primitives, but do not measure *coverage* relative to the total codebase. |
-| **Academic Research** | FLARE (Agentic Fuzzing), ZeroGUI, SWE-bench | Coverage-guided dynamic fuzzing, test-time behavior training. | They measure empirical behavior and resistance to dynamic failures, not static system representation. |
-| **Static Analysis (SAST)** | SonarQube, ESLint, CodeQL, AST Parsers | Source code quality, vulnerabilities (OWASP), cyclomatic complexity. | They measure the syntactic integrity of the code but are semantically blind to the agent's cognitive capabilities. |
+Modern agentic workflows can execute tools, follow skills, delegate to subagents, call MCP servers, read rules, and apply hooks. These mechanisms are useful only when they accurately represent the real system.
 
-### **2.1. The False Promise of Observability: Retrospective Visibility**
+A coverage gap appears when the codebase contains a capability that is absent, stale, partially represented, or overexposed in the agentic layer. Consequences include:
 
-The current ecosystem of Language Model Operations (LLMOps) and AI observability has rapidly matured around the need to monitor systems in production. Industry-leading platforms such as LangSmith, Datadog LLM, Arize AI, and Helicone provide sophisticated interfaces to capture execution traces, log generation latency, attribute token costs, and visualize agent reasoning trees.9 These tools address the "known unknowns" by collecting telemetry from two key layers: the infrastructure hosting the agent and the internal logs of the agent (responses, tool calls, reflection chains).9
+- duplicated scripts around existing native functionality;
+- hallucinated APIs, parameters, or workflows;
+- stale business rules applied by the agent;
+- excessive token spend from search-and-guess loops;
+- unsafe tool use because policy and runtime hooks do not cover the capability surface.
 
-However, in the context of cognitive representation, observability presents an insurmountable epistemological deficiency: it is inherently retrospective and reactive.13 Observability can detail with pinpoint accuracy the steps an agent took to arrive at a failed conclusion, but it is completely blind to the actions the agent *did not take* due to ignorance of its capabilities.12
+## Definitions
 
-LLM-driven architectures introduce non-deterministic failure modes that violate the assumptions of traditional Application Performance Monitoring (APM) tools.12 A coding agent can execute a four-hour workflow, consume tens of dollars in tokens, make over 180 tool calls, and return an HTTP 200 OK response, generating code that compiles perfectly but introduces a security regression.12 Observability detects if an external API returned a 500 error, but it cannot trigger an alert if the agent used a suboptimal mitigation script simply because the optimal script (which resides a hundred lines away in the same repository) was never injected into its behavioral space.13 Observability sees execution, not structural completeness.
+### Capability
 
-### **2.2. Primitive Frameworks: Infrastructure without Auditing**
+A **capability** is a behavior, interface, rule, or operational path that a project can perform and that may affect code, data, infrastructure, governance, or user-visible behavior.
 
-The second dimension of the state of the art comprises the development frameworks that facilitate the physical construction of agents. These frameworks have solved massive integration problems, but they do not address semantic alignment as a metric.
+Canonical capability kinds:
 
-**The Model Context Protocol (MCP) Standard:** Introduced by Anthropic and backed by a growing coalition of industry players (GitHub, PulseMCP, Microsoft), the Model Context Protocol represents the most significant architectural advancement in agent standardization.20 MCP acts as a universal client-server interface that breaks down information silos, allowing AI applications to dynamically discover and use external tools.23 Using the tools/list primitive, an MCP client can interrogate a server about its available capabilities, receiving in return a structured array containing names, descriptions, and detailed JSON schemas (inputSchema) for each tool.23 Furthermore, MCP supports bidirectional notifications (listChanged), allowing the LLM's context to update in real-time if a backend capability changes.23 Nevertheless, the MCP standard is a communication channel; it defines the pipes, not the content of the supply. The public MCP registry ensures namespace authentication and hosts unopinionated metadata 21, but an MCP server lacks an introspective mechanism to guarantee that all critical routes of a database or all microservices in an enterprise network have been exposed in its tool catalog.
+| Kind | Examples | Discovery signal |
+|---|---|---|
+| `endpoint` | REST, GraphQL, gRPC route | router registration, decorator, schema |
+| `event` | Kafka topic, queue producer/consumer, webhook | subscription or publisher registration |
+| `job` | cron, scheduled task, batch runner | scheduler config, hook, command |
+| `integration` | Stripe, GitHub, Supabase, Vercel client | SDK/client wrapper, adapter package |
+| `business_rule` | fraud check, authorization rule, pricing constraint | domain function, policy file, decision table |
+| `workflow` | multi-step domain process | workflow graph, orchestrator definition |
+| `hook` | pre-tool, post-tool, session, stop gate | lifecycle hook file or config |
+| `skill` | procedural domain knowledge | `SKILL.md`, agent skill registry |
+| `rule` | governance rule or project instruction | rules docs, policy manifests, AGENTS.md |
 
-**Construction Frameworks (VoltAgent, LangChain):** Modern frameworks like VoltAgent (a TypeScript and Serverless function-based ecosystem) and LangChain provide superlative primitives for agent engineering.25 VoltAgent, for instance, stands out for requiring strict Zod schemas, incorporating declarative workflow engines, and offering built-in observability to track delegation between sub-agents and supervisors.25 These frameworks optimize the "correctness" of outputs and type safety, reducing runtime chaos.26 However, they focus on abstracting complexity to accelerate development 28, not on analyzing the gap between the total TypeScript code of the repository and the capabilities explicitly registered in the agent's constructor (new Agent(...)).28 They define primitives, they do not measure overall system coverage.
+### Real capability set
 
-### **2.3. Dynamic Coverage Research (Fuzzing and Behavior)**
+`C_total` is the weighted set of capabilities discovered from the real system.
 
-In scientific literature, the problem of coverage in AI systems has been tangentially addressed through the lens of automated *Software Testing* and behavior verification, yielding advanced methodologies that, while valuable, do not resolve static representation.20
+Sources may include source code, tests, infrastructure manifests, hook configs, skills, rules, generated schemas, package metadata, and runtime registries when available.
 
-The most representative case is the paper *"FLARE: Agentic Coverage-Guided Fuzzing for LLM-Based Multi-Agent Systems"*.20 FLARE is a testing framework specifically designed for Multi-Agent Systems (MAS) that extracts specifications (agent relationships, termination patterns, tool invocation) directly from agent definitions and builds test oracles.20 Using a coverage-guided fuzzing loop, FLARE injects mutated seeds to explore the state space of the MAS, achieving empirical metrics of 96.9% inter-agent coverage and 91.1% intra-agent coverage when evaluating open-source applications.20 Simultaneously, research on Graphical User Interface (GUI) agents like *ZeroGUI* demonstrates that test-time training on auto-generated tasks extends the agent's "capability coverage" against unknown interfaces, achieving relative improvements of 63% in environments like OSWorld.30
+### Represented capability set
 
-The fundamental limit of FLARE, ZeroGUI, and exhaustive benchmarks of real repositories like *SWE-bench* 31, is that they operate in a purely empirical and behavioral regime. They measure the agent's ability to react to dynamic attack vectors or evaluate what percentage of the *agent framework's code* was executed during a test.20 However, the "Agent Capability Coverage" (ACC) proposed in this report addresses the preceding stratum: static and semantic analysis. The problem is not just whether the agent can execute the code it knows without crashing (fuzzing), but mathematically measuring the fraction of the total codebase that the agent does not even know exists.
+`C_represented` is the weighted subset of `C_total` represented to agents through agentic primitives such as tools, skills, workflows, hooks, rules, MCP schemas, structured prompts, and local memory indexes.
 
-### **2.4. Traditional Static Analysis (SAST) and its Semantic Blindness**
+### Mapping
 
-Finally, the industry places blind trust in Static Application Security Testing (SAST) tools like SonarQube, ESLint, CodeQL, and pure AST analyzers to ensure quality.10 These tools are formidable at processing syntax; they can transform thousands of source files into an Abstract Syntax Tree (AST) to detect undeclared variables, or use interprocedural analysis to trace tainted data flows and identify OWASP Top 10 vulnerabilities.10
+A mapping links one real capability to one or more represented capabilities and classifies its alignment.
 
-The insurmountable limitation of ESLint or SonarQube in the "agentic" era is their myopia toward cognitive abstraction.35 A static analyzer evaluates code against a set of deterministic rules (e.g., "avoid SQL injection" or "force strict typing in TypeScript").10 However, it does not possess a logical model to correlate whether a calculateRiskPremium() function residing in the backend has been intentionally exposed and correctly documented in an LLM agent's registry.35 Static analysis measures code integrity in a vacuum; it does not measure capabilities represented in heterogeneous cognitive systems.
+Mapping statuses:
 
-## **3\. Definition and Mathematics of Agent Capability Coverage (ACC)**
+| Status | Meaning |
+|---|---|
+| `aligned` | Representation exists and matches the real capability contract. |
+| `missing` | Real capability exists but is not represented. |
+| `partial` | Representation exists but omits important parameters, constraints, or flow steps. |
+| `stale` | Representation conflicts with current code or policy. |
+| `overexposed` | Representation grants agent access beyond the safe or intended surface. |
+| `unverified` | Candidate mapping exists but confidence is below the audit threshold. |
 
-The "Key Insight" that triggers the need for ACC is understanding that the current bottleneck in the productivity and reliability of software agents is not a lack of detailed documentation, nor the absence of a robust testing net.17 The root problem is a fracture in the **semantic alignment** between the underlying system and the agent.36
+## Metric
 
-Semantic alignment frameworks are formal systems designed to represent, match, and transform semantic content across diverse modalities to achieve coordinated meaning.37 In the context of ACC, this implies ensuring that the structural ontology of the software (the code) has a bijective correspondence with the "semantic slice" that constitutes the local memory and primitive catalog of the autonomous agent.8
+ACC is a weighted coverage ratio:
 
-**Agent Capability Coverage (ACC)** is formally defined as the structural metric that quantifies what fraction of the real technological ecosystem (interfaces, events, logic) has been successfully modeled and injected into the agent's perception and action primitives.
-
-The fundamental equation governing ACC is expressed as the weighted sum of represented capabilities over the total volume of extractable system capabilities:
-
-![][image1]  
-Where:
-
-* ![][image2] represents the master set of all functionalities, interfaces, events, and logical constraints latent in the organization's source code.  
-* ![][image3] represents the strict subset of those capabilities that have been declared, semantically described, and connected through primitives like Tools, Skills, Workflows, Hooks, or Rules.
-
-### **3.1. Anatomy of a "Capability" (![][image2])**
-
-To establish the denominator of the ACC equation deterministically, it is imperative to rigorously define what constitutes a system "capability". In enterprise software architectures and contemporary microservice ecosystems, capabilities assume diverse and complex typologies extending beyond simple function calls 39:
-
-1. **Synchronous Endpoints (REST / GraphQL / gRPC):** These constitute the primary interactive surface. These capabilities are routinely detected through AST analysis. In TypeScript ecosystems, tools and libraries can track explicit decorators (e.g., @Get(), @Post(), @Query(), @Body()) in frameworks like NestJS or Express to list all exposed routes, expected parameters, and return types.41 In Golang, static analysis examines http.HandleFunc implementations or routing interfaces from the net/http package to build the API graph.45  
-2. **Asynchronous Events (Event-Driven Systems):** In an "always-on" world, inter-service communication is decoupled via event buses.48 Capabilities include producers and consumers subscribed to infrastructure like Apache Kafka clusters, or cloud integrations using AWS SNS (Simple Notification Service) for fan-out and SQS (Simple Queue Service) queues.49 Identifying these capabilities requires statically scanning infrastructure-as-code (IoC) constructors and topic subscription registries.50  
-3. **Jobs and Cron (Scheduled Tasks):** Batch processing or recurring tasks that alter system state without direct human invocation, essential for database synchronization or maintenance routines.53  
-4. **External Integrations:** Adapters and clients acting as bridges to third-party platforms (CRMs like Salesforce or HubSpot, payment gateways like Stripe).54 If an agent is unaware that the system already possesses a secure, authenticated HTTP client to connect to a provider, it will attempt to write redundant and supply-chain vulnerability-prone code.54  
-5. **Strict Business Rules:** This is the deepest and hardest dimension to quantify. It includes domain-specific conditional logic, fraud validations, regulatory constraints, and premium calculations, often trapped in millions of lines of "spaghetti" code (like legacy COBOL systems or Java monoliths).15 Modern business rule extraction employs Abstract Syntax Trees (AST) combined with AI to isolate critical functions and transform them into neutral data structures (e.g., strongly-typed POJOs).15 A system without rule coverage allows the agent to violate domain logic, forcing escalation to human intervention or injecting errors into the database.59  
-6. **Implicit Flows and Structural Dependencies:** Latent relationships in the codebase, such as underlying database architectures, inter-service calls, and reachability graphs that dictate what data is accessible from which security module.39
-
-## **4\. Agent Primitives: The Represented System**
-
-Having defined the total universe of capabilities (![][image2]), the numerator of the ACC (![][image3]) requires analyzing the interfaces through which the agent assimilates and acts upon the world. The cognitive abstraction of the environment materializes through a canonical set of **Agent Primitives**.5 The density and accuracy of this primitive network determine the agent's level of contextual intelligence.
-
-1. **Tools (Herramientas / Funciones):** Tools are the atomic unit of agency. They employ "Function Calling" mechanics, allowing the probabilistic model to request the execution of external deterministic code.1 An advanced tool design (facilitated by standards like MCP or frameworks like VoltAgent) includes not only an invocation identifier but also rich metadata and a strict JSON schema (inputSchema) dictated through libraries like Zod, which defines mandatory parameters, data types, and operational boundaries, instructing the LLM exactly on the format and purpose of the request.23  
-2. **Skills (Habilidades):** While tools are atomic functions, "Skills" are specialized domain knowledge packages and modular directives that teach the agent *how* to combine tools to solve complex problems.63 Skills often manifest as declarative files, such as the SKILL.md or .claude/rules/ conventions.7 Open-source collections like *Antigravity Awesome Skills* demonstrate that agents require structured, progressive directives to tackle API design, debugging strategies, or security audits, without overwhelming the initial context window.65  
-3. **Workflows (Flujos de Trabajo / Grafos de Ejecución):** To mitigate the error rates inherent in long, unguided reasoning chains (unconstrained Chain-of-Thought), *Workflow* primitives structure sequential or parallel operations imperatively.5 Engines like LangGraph or VoltAgent coordinators impose Directed Acyclic Graphs (DAGs) or supervisor-subagent delegation patterns.5 Modeling capabilities as "declared workflows" ensures the agent follows a validated enterprise recipe rather than inventing the sequence on the fly.25  
-4. **Hooks (Puntos de Intercepción del Ciclo de Vida):** Pure observability and execution tools cannot protect infrastructure from prompt injection attacks or logical deviations.55 *Hook* primitives provide defense-in-depth structurally embedded in the agent's architecture.68 For instance, frameworks like PRISM intercept the lifecycle at ten distinct layers: in the pre-execution phase (before\_prompt\_build, before\_tool\_call), in the post-execution and persistence phase (after\_tool\_call, tool\_result\_persist), and during session teardown (session\_end) to clean state and apply final typographic checks.68 Modeling security rules within Hooks ensures the environment dictates quality, freeing the LLM from the cognitive load of self-auditing.69  
-5. **Rules (Reglas y Políticas de Gobernanza):** Formal systems acting as execution guardrails.27 Through policy engines (like OPA Rego or semantic intent classifiers integrated into the Microsoft Agent Governance Toolkit), rules evaluate whether an agent's request violates identity, resource allocation, or corporate logic policies *before* the tool is invoked.70  
-6. **Structured Prompts (Superficie del Contexto):** The system prompt is no longer a plain text paragraph; it is a complex engineering surface.71 The "Prompt Surface" includes dynamic context injections, orchestration instructions, retrieved results (RAG), and tool schemas compiled into a format the model must process.5 Treating prompts as versionable and testable code is an essential primitive of the cognitive system.6
-
-## **5\. Multidimensional Mapping: Metrics Derived from ACC**
-
-The singular calculation of Agent Capability Coverage offers an invaluable macroscopic view of organizational alignment, but its maximum utility as a CI/CD diagnostic tool is unlocked by fragmenting it into five orthogonal dimensions.17 These derived metrics pinpoint exactly where semantic synchronization fails.
-
-| Coverage Type | Abstract Mathematical Formulation | Architectural Meaning and Practical Implication |
-| :---- | :---- | :---- |
-| **Tool Coverage** | **![][image4]** | Quantifies the fraction of programmatic interfaces (APIs, event queues) accessible in the code that have corresponding JSON schemas in the agent's catalog (e.g., MCP Registry).23 A 30% *Tool Coverage* will force the agent to try bypassing the system using fragile scripts (e.g., \`curl |
-| **Workflow Coverage** | **![][image5]** | Evaluates the proportion of complex (end-to-end) business processes abstracted within declarative orchestration graphs.5 Low coverage indicates the agent must infer intermediate process steps (e.g., book flight ![][image6] process payment ![][image6] notify) probabilistically, exponentially increasing latency costs and the risk of unwanted deviations.17 |
-| **Rule Coverage** | **![][image7]** | Also known as the *Rule Coverage Rate (RCR)* 74, quantifies the extent to which critical constraints embedded in legacy code or decision engines have been abstracted as explicit knowledge policies (POJOs).15 Its absence ensures the agent will propose technically and logically invalid solutions for the operational domain, degrading governance.59 |
-| **Hook Coverage** | **![][image8]** | Measures the depth of security defenses and interception in the LLM lifecycle (pre-execution, invocation, persistence, shutdown).68 Comprehensive coverage prevents parametric failures or destructive hallucinations from compromising system state, acting as a deterministic valve that blocks anomalous operations without consuming additional inferences.68 |
-| **Prompt Surface Coverage** | **![][image9]** | Analyzes the entropy and volumetric use of the model's attention window.11 Exposing *all* tools statically contaminates context, displacing critical instructions and degrading coherence.11 Optimal coverage demands on-demand Capability Discovery and dynamic routing, ensuring the agent views exclusively the schemas relevant to the current task.72 |
-
-## **6\. Proposed Architecture: The ACC Pipeline and its Integration**
-
-To turn "Semantic System Coverage" from a theoretical postulate into a software governance product applicable in production—achieving the impact that *Test Coverage* and automated vulnerability testing (SAST) had in their time 33—organizations must deploy the **ACC Pipeline**.
-
-This cross-analysis ecosystem requires very low-level tools, ideally built using syntactic analyzers in high-performance languages like Go or Rust, orchestrated alongside TypeScript to model the meta-information of interface agents.10 The architectural design of the ACC Pipeline operates in four sequential phases:
-
-### **Phase 1: Real System Detection (Static Discovery)**
-
-The ACC engine initializes its run by performing an exhaustive scan (Static Analysis) of the underlying codebase to empirically inventory latent capabilities. In TypeScript/JavaScript repositories, it uses advanced AST manipulation tools (like ts-morph or the Prism parser) to dissect code topology, extracting decorators (@Post, @Query), function signatures, and data models (DTOs) to map the complete graph of REST endpoints and exposed services.41 In backend Go applications, the analyzer dynamically extracts http.Client configurations, registered routes, and database schemas.45 Concurrently, the Event Discovery pipeline scans infrastructure constructors and SDKs to catalog active queues (AWS SNS/SQS) and Kafka topic subscriptions.50 Finally, it employs local models or deterministic semantic extractions to compile complex decision trees and extract business rule logic into neutral formats.15 The output of Phase 1 is the Universe ![][image2].
-
-### **Phase 2: Agentic Representation Detection**
-
-Temporarily isolating the backend system, the pipeline audits the AI agent's interfaces.
-
-* **Registry Audit:** The system interrogates the tool catalog by sending tools/list requests to any local or remote MCP Server associated with the ecosystem.23 The name, description, and JSON inputSchema properties of each connected tool are extracted and validated.23  
-* **Declarative Knowledge Analysis:** The engine scans the repository for *Skills* signatures, reading hierarchical directive files (e.g., .claude/rules/, AGENTS.md, or SKILL.md conventions) that define how the cognitive model should manipulate the development environment.7  
-* **Workflow Indexing:** Analyzes schemas from agent platforms (e.g., VoltAgent or graph architectures) to deduce which subagents and coordinators are explicitly programmed in the orchestration code.25
-
-### **Phase 3: Bidirectional Semantic Alignment Mapping**
-
-With ![][image2] and ![][image3] cataloged, the ACC engine executes the core of its analysis: a semantic and structural matching (Semantic Alignment Mapping).8 The system uses semantic similarity metrics and strict cross-type validation checking to ensure that a backend endpoint requires exactly the same fields as the tool schema exposed to the agent.29 Discrepancies produce a unified report.
-
-| Capability (Real System Logic) | Represented (Agent View) | Coverage Type / Mapping Status | Alignment Diagnosis and Risk |
-| :---- | :---- | :---- | :---- |
-| POST /api/createOrder | ❌ Absent | Missing Skill / Tool | **Critical Gap:** The agent is unaware of the API. It will attempt to create orders by manipulating the database indirectly or will fail.13 |
-| DELETE /api/cancelOrder | ✅ cancelOrder | Validated MCP Tool | **Total Alignment:** Metadata and Zod schemas of the MCP tool perfectly match the backend API decorators.23 |
-| cron/sync\_users | ❌ Absent | Ignored Job Event | **Orchestration Failure:** The agent cannot trigger state updates or audit asynchronous cycles.53 |
-| Logic fraudCheck() | ⚠️ Hardcoded fraud\_rule | Rule Coverage (Outdated) | **Conditional Hallucination:** The rule was statically injected into the prompt, but the Go algorithm changed. The agent will enforce obsolete validations, resulting in false positives.7 |
-| Multi-step payment transaction | ✅ payment\_supervisor | Workflow Orchestrator | **Assured Determinism:** The agent delegates complex coordination to a supervisor sub-agent with state memory (e.g., VoltAgent architecture).27 |
-
-### **Phase 4: Calculation and Continuous Integration**
-
-Raw metrics are synthesized into the final ACC percentage score. The paradigmatic application of this concept is the **agent-coverage CLI** tool. Its transformational function lies in deep integration with the Continuous Integration/Continuous Deployment (CI/CD) pipeline.7 Injected as an automated process (e.g., GitHub Actions), the CLI consumes the underlying repository, documentation directories (/docs), operational manuals (/skills), and the LLM network code (/workflows). The output directly intercepts the human workflow: if an engineer modifies the fraudCheck() code (causing the misalignment shown in the table), agent-coverage prints a PR diff alerting them to the percentage of missing capabilities and requiring the agent's tool to be refactored before allowing a code merge.7
-
-## **7\. Strategic Direction: Screaming Architecture and DSLs**
-
-Optimizing ACC is not exclusively a matter of adding more tools to the MCP catalog; it requires fundamentally modifying the philosophy with which engineers structure software applications for the AI era. If the goal is for systems to be organically understood by generative entities, applications must evolve toward intent-driven development paradigms.7
-
-The most effective strategic direction is the rigorous adoption of the **Screaming Architecture** pattern. Initially promoted by Robert C. Martin in 2011, the premise demands that the top-level organization of the system unequivocally express its business domain rather than its technical topology (directories should be /features/auth, /features/payments, instead of /controllers, /services).86 In interaction with agents, Screaming Architecture becomes a vital mechanism for **Attention Routing**.86 Instead of forcing the LLM to infer software design by wasting search cycles and fragmenting memory across separate MVC (Model-View-Controller) layers 86, the agent instantly recognizes task scope and coupled logic.86 Accompanied by hierarchical files (e.g., .claude/rules/ rules per subdirectory), this design ensures the model only exposes capabilities pertinent to the local domain in which it is operating, mitigating context window entropy and increasing functional coverage.7 The code repository literally becomes the architectural prompt.86
-
-Simultaneously, the technical vanguard is moving toward establishing capability **Domain-Specific Languages (DSLs)**.91 In complex software domains, the probabilistic barriers of LLMs are unacceptable.92 Designing a formal DSL to define agent tools and governance policies (e.g., Kotlin DSLs to extend capabilities or Cedar/Rego policies for access control 70) creates an infrastructure where humans design the hard constraints and AI performs iterative creation and semantic generation. The existence of a DSL allows static scanners (the ACC pipeline) to compile a deterministic verification of agent alignment with 100% reliability.92
-
-## **8\. Business Value and Future Vision of Semantic System Coverage**
-
-The operational problem choking engineering teams piloting enterprise generative tools **is not** a lack of textual documentation or exhaustive unit testing. The bottleneck is a fracture in **Continuous Semantic Alignment** between system capabilities and the agent's representational understanding.36
-
-Addressing corporate agent adoption guided strictly by maximizing Agent Capability Coverage triggers an immediate, quantifiable technological Return on Investment (ROI) across five vectors:
-
-1. **Drastic Reduction in Token Consumption (Costs and Inference):** Automated discovery and hierarchical representation prevent the model from using the context window in endless iterative loops trying to guess obscured tools.7  
-2. **Supreme Increase in Determinism:** Replacing probabilistic reasoning (unbounded Chain-of-Thought) with strongly typed workflows, validated hooks, and rules extracted via AST guarantees agents follow irrefutable code paths, operating as finite state machines.5  
-3. **Enhanced Governance and Compliance:** Constant cross-inventorying via tool scanning allows exact certification of which operational capabilities (e.g., financial transactions, database manipulation) are active in the model, exponentially reducing Identity and Access risk.62  
-4. **Intelligent Base Logic Reuse:** Eliminates the need to program ad-hoc script wrappers (fragile shadow scripts) by pushing agents to invoke native clients and Kafka events formally documented in semantic contracts.54  
-5. **Structural Mitigation of Hallucinations:** An agent cannot invent a billing API schema if the agent-coverage CLI pre-validates that the TypeScript method signature has an absolute, secure, and irreversible mapping within the Model Context Protocol server.23
-
-In retrospect, in 2005, the deployment of *Test Coverage* tools and static repositories (Static Analysis) transformed the algorithmic evaluation of software, forcing engineers to demonstrate functional quality with formal, unified metrics prior to production deployment. As the industry inevitably scales toward 2026, facing hyper-orchestrated ecosystems of ubiquitous multi-agent networks, the landscape demands an analogous revolution.
-
-Reactive infrastructures (traceability and observability) and primitive construction frameworks, while vital elements of the operational assembly, are ineffective at diagnosing "missing tools" (Unknown Unknowns) and semantic divergences.13 Dynamically evaluating a language model (Agentic Fuzzing) without a deterministically exposed underlying system is testing the chassis without checking the engine.20
-
-**Semantic System Coverage** therefore consolidates itself as the fundamental paradigm for regulating autonomy in Enterprise AI. The materialization of this framework into standardized products (like the agent-coverage CLI powered by Go and TS metaprogramming), the formulation of strict DSLs to abstract conditional policies, the native adoption of a *Screaming Architecture*, and ubiquitous standardization through MCP integrations constitute the unavoidable pillars for the next decade. Progress in computational agency will no longer be measured solely by the generative eloquence of parametric reasoning, but by the asymptotic precision of its semantic alignment, recalling in every compilation cycle: *"If a capability is not structurally modeled, the AI agent cannot use it predictably, securely, or profitably."*
-
-#### **Fuentes citadas**
-
-1. LLM Agents: The Enterprise Technical Guide (2025 Architecture) \- Aisera, acceso: mayo 1, 2026, [https://aisera.com/blog/llm-agents/](https://aisera.com/blog/llm-agents/)  
-2. LLM agents: The ultimate guide 2026 | SuperAnnotate, acceso: mayo 1, 2026, [https://www.superannotate.com/blog/llm-agents](https://www.superannotate.com/blog/llm-agents)  
-3. AI Agents in Typescript/Javascript Specialization \- Coursera, acceso: mayo 1, 2026, [https://www.coursera.org/specializations/ai-agents-typescript-javascript](https://www.coursera.org/specializations/ai-agents-typescript-javascript)  
-4. The ultimate LLM agent build guide \- Vellum, acceso: mayo 1, 2026, [https://www.vellum.ai/blog/the-ultimate-llm-agent-build-guide](https://www.vellum.ai/blog/the-ultimate-llm-agent-build-guide)  
-5. AI Agent Architecture: Build Systems That Work in 2026 \- Redis, acceso: mayo 1, 2026, [https://redis.io/blog/ai-agent-architecture/](https://redis.io/blog/ai-agent-architecture/)  
-6. Introducing Agent Development Kit for TypeScript: Build AI Agents with the Power of a Code-First Approach \- Google for Developers Blog, acceso: mayo 1, 2026, [https://developers.googleblog.com/introducing-agent-development-kit-for-typescript-build-ai-agents-with-the-power-of-a-code-first-approach/](https://developers.googleblog.com/introducing-agent-development-kit-for-typescript-build-ai-agents-with-the-power-of-a-code-first-approach/)  
-7. Building a Harness: How We Standardized Agentic Coding in a Real ..., acceso: mayo 1, 2026, [https://dev.to/tacoda/building-a-harness-how-we-standardized-agentic-coding-in-a-real-codebase-4oab](https://dev.to/tacoda/building-a-harness-how-we-standardized-agentic-coding-in-a-real-codebase-4oab)  
-8. Semantic Fusion: Verifiable Alignment in Decentralized Multi-Agent Systems \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2601.12580v1](https://arxiv.org/html/2601.12580v1)  
-9. What Is AI Agent Observability and Why Is It Important? \- Domo, acceso: mayo 1, 2026, [https://www.domo.com/glossary/ai-agent-observability](https://www.domo.com/glossary/ai-agent-observability)  
-10. TypeScript Static Code Analysis & quality and security Programming Language \- Sonar, acceso: mayo 1, 2026, [https://www.sonarsource.com/knowledge/languages/ts/](https://www.sonarsource.com/knowledge/languages/ts/)  
-11. Developer Experience with AI Coding Agents: HTTP Behavioral Signatures in Documentation Portals \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2604.02544v1](https://arxiv.org/html/2604.02544v1)  
-12. Agent Observability for AI Coding: How to Trace What Your Agents Actually Did, acceso: mayo 1, 2026, [https://www.augmentcode.com/guides/agent-observability-for-ai-coding](https://www.augmentcode.com/guides/agent-observability-for-ai-coding)  
-13. What is Agent Observability? Monitoring AI Reliability \- Salesforce, acceso: mayo 1, 2026, [https://www.salesforce.com/agentforce/observability/agent-observability/](https://www.salesforce.com/agentforce/observability/agent-observability/)  
-14. Stop Debugging Your Agent as One Loop. It's Three. | by Micheal Lanham \- Medium, acceso: mayo 1, 2026, [https://medium.com/@Micheal-Lanham/stop-debugging-your-agent-as-one-loop-its-three-d10013fa3a7e](https://medium.com/@Micheal-Lanham/stop-debugging-your-agent-as-one-loop-its-three-d10013fa3a7e)  
-15. Parsing Advanced Business Rules Using Agentic AI and Java: A Comprehensive Guide, acceso: mayo 1, 2026, [https://dev.to/vishalmysore/parsing-advanced-business-rules-using-agentic-ai-and-java-a-comprehensive-guide-1dp2](https://dev.to/vishalmysore/parsing-advanced-business-rules-using-agentic-ai-and-java-a-comprehensive-guide-1dp2)  
-16. Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity \- METR, acceso: mayo 1, 2026, [https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)  
-17. AI agent test coverage: what actually matters | Rhesis AI Blog, acceso: mayo 1, 2026, [https://rhesis.ai/post/test-coverage-llm-agentic-apps](https://rhesis.ai/post/test-coverage-llm-agentic-apps)  
-18. LangSmith: AI Agent & LLM Observability Platform \- LangChain, acceso: mayo 1, 2026, [https://www.langchain.com/langsmith/observability](https://www.langchain.com/langsmith/observability)  
-19. AI Agent Observability: Tracing, Testing, and Improving Agents \- LangChain, acceso: mayo 1, 2026, [https://www.langchain.com/articles/agent-observability](https://www.langchain.com/articles/agent-observability)  
-20. FLARE: Agentic Coverage-Guided Fuzzing for LLM-Based Multi-Agent Systems \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2604.05289v1](https://arxiv.org/html/2604.05289v1)  
-21. The MCP Registry \- Model Context Protocol, acceso: mayo 1, 2026, [https://modelcontextprotocol.io/registry/about](https://modelcontextprotocol.io/registry/about)  
-22. Introducing the Model Context Protocol \- Anthropic, acceso: mayo 1, 2026, [https://www.anthropic.com/news/model-context-protocol](https://www.anthropic.com/news/model-context-protocol)  
-23. Architecture overview \- What is the Model Context Protocol (MCP)?, acceso: mayo 1, 2026, [https://modelcontextprotocol.io/docs/learn/architecture](https://modelcontextprotocol.io/docs/learn/architecture)  
-24. Tools \- What is the Model Context Protocol (MCP)?, acceso: mayo 1, 2026, [https://modelcontextprotocol.io/specification/draft/server/tools](https://modelcontextprotocol.io/specification/draft/server/tools)  
-25. VoltAgent: TypeScript AI Agent Framework with Suspend/Resume, acceso: mayo 1, 2026, [https://www.codeline.co/thoughts/repo-review/2025/voltagent-typescript-ai-agent-framework-with-workflows-and-observability](https://www.codeline.co/thoughts/repo-review/2025/voltagent-typescript-ai-agent-framework-with-workflows-and-observability)  
-26. Emerging AI Agent Frameworks Developers Should Watch in 2026 (Part 2\) \- Medium, acceso: mayo 1, 2026, [https://medium.com/@techlatest.net/emerging-ai-agent-frameworks-developers-should-watch-in-2026-part-2-92d49e75e867](https://medium.com/@techlatest.net/emerging-ai-agent-frameworks-developers-should-watch-in-2026-part-2-92d49e75e867)  
-27. VoltAgent/voltagent: AI Agent Engineering Platform built on an Open Source TypeScript AI Agent Framework \- GitHub, acceso: mayo 1, 2026, [https://github.com/VoltAgent/voltagent](https://github.com/VoltAgent/voltagent)  
-28. TypeScript AI Agent Framework \- VoltAgent, acceso: mayo 1, 2026, [https://voltagent.dev/blog/typescript-ai-agent-framework/](https://voltagent.dev/blog/typescript-ai-agent-framework/)  
-29. AI Agent Development \- TypeScript Agent Patterns from Beginner to Advanced, acceso: mayo 1, 2026, [https://www.aisdkagents.com/explore/ai-agent-development](https://www.aisdkagents.com/explore/ai-agent-development)  
-30. ZeroGUI: Automated GUI Learning Framework | PDF | Graphical User Interfaces \- Scribd, acceso: mayo 1, 2026, [https://www.scribd.com/document/870116509/2505-23762v1](https://www.scribd.com/document/870116509/2505-23762v1)  
-31. SWE-CI: Evaluating Agent Capabilities in Maintaining Codebases via Continuous Integration \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2603.03823v1](https://arxiv.org/html/2603.03823v1)  
-32. Saving SWE-Bench: A Benchmark Mutation Approach for Realistic Agent Evaluation \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2510.08996v2](https://arxiv.org/html/2510.08996v2)  
-33. Source Code Analysis Tools \- OWASP Foundation, acceso: mayo 1, 2026, [https://owasp.org/www-community/Source\_Code\_Analysis\_Tools](https://owasp.org/www-community/Source_Code_Analysis_Tools)  
-34. Discovery Agent \- GitHub Next, acceso: mayo 1, 2026, [https://githubnext.com/projects/discovery-agent/](https://githubnext.com/projects/discovery-agent/)  
-35. 20 Powerful Static Analysis Tools Every TypeScript Team Needs \- IN-COM DATA SYSTEMS, acceso: mayo 1, 2026, [https://www.in-com.com/blog/20-powerful-static-analysis-tools-every-typescript-team-needs/](https://www.in-com.com/blog/20-powerful-static-analysis-tools-every-typescript-team-needs/)  
-36. Semantic Alignment and Output Constrained Generation for Reliable LLM-Based Classification \- Preprints.org, acceso: mayo 1, 2026, [https://www.preprints.org/manuscript/202602.0525](https://www.preprints.org/manuscript/202602.0525)  
-37. Semantic Alignment Frameworks \- Emergent Mind, acceso: mayo 1, 2026, [https://www.emergentmind.com/topics/semantic-alignment-framework](https://www.emergentmind.com/topics/semantic-alignment-framework)  
-38. THE INFORMATION FLOW APPROACH TO ONTOLOGY-BASED SEMANTIC ALIGNMENT \- ePrints Soton, acceso: mayo 1, 2026, [https://eprints.soton.ac.uk/268564/1/tao.pdf](https://eprints.soton.ac.uk/268564/1/tao.pdf)  
-39. AutoEDA: Enabling EDA Flow Automation through Microservice-Based LLM Agents \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2508.01012v2](https://arxiv.org/html/2508.01012v2)  
-40. What Is the Transitional Lock-In Risk in AI Agent Infrastructure? \- MindStudio, acceso: mayo 1, 2026, [https://www.mindstudio.ai/blog/transitional-lock-in-risk-ai-agent-infrastructure](https://www.mindstudio.ai/blog/transitional-lock-in-risk-ai-agent-infrastructure)  
-41. GraphQL \+ TypeScript | NestJS \- A progressive Node.js framework, acceso: mayo 1, 2026, [https://docs.nestjs.com/graphql/quick-start](https://docs.nestjs.com/graphql/quick-start)  
-42. Custom decorators | NestJS \- A progressive Node.js framework, acceso: mayo 1, 2026, [https://docs.nestjs.com/custom-decorators](https://docs.nestjs.com/custom-decorators)  
-43. Nest.js Brings TypeScript to Node.js and Express \- Auth0, acceso: mayo 1, 2026, [https://auth0.com/blog/nestjs-brings-typescript-to-nodejs-and-express/](https://auth0.com/blog/nestjs-brings-typescript-to-nodejs-and-express/)  
-44. What Is An Abstract Syntax Tree? Code Structure & Key Use Cases \- Apiiro, acceso: mayo 1, 2026, [https://apiiro.com/glossary/abstract-syntax-tree/](https://apiiro.com/glossary/abstract-syntax-tree/)  
-45. net/http \- Go Packages, acceso: mayo 1, 2026, [https://pkg.go.dev/net/http](https://pkg.go.dev/net/http)  
-46. Statically detecting and mapping HTTP and RPC endpoints in Go code \- hex0punk, acceso: mayo 1, 2026, [https://hex0punk.com/posts/introducing-wally/](https://hex0punk.com/posts/introducing-wally/)  
-47. Go API Development: Part 1 \- Routes & Handlers \- Jonathan Whitaker, acceso: mayo 1, 2026, [https://www.jon-whit.me/blog/golang/go-api-dev-routes/](https://www.jon-whit.me/blog/golang/go-api-dev-routes/)  
-48. Introduction | Apache Kafka, acceso: mayo 1, 2026, [https://kafka.apache.org/documentation/](https://kafka.apache.org/documentation/)  
-49. NodeJS Microservice with Kafka and TypeScript \- Rishabh Mishra, acceso: mayo 1, 2026, [https://rsbh.dev/blogs/kafka-with-nodejs-typescript](https://rsbh.dev/blogs/kafka-with-nodejs-typescript)  
-50. aws-sns-sqs \- AWS Solutions Constructs, acceso: mayo 1, 2026, [https://docs.aws.amazon.com/solutions/latest/constructs/aws\_sns\_sqs.html](https://docs.aws.amazon.com/solutions/latest/constructs/aws_sns_sqs.html)  
-51. Amazon SQS Source Connector for Confluent Platform, acceso: mayo 1, 2026, [https://docs.confluent.io/kafka-connectors/sqs/current/overview.html](https://docs.confluent.io/kafka-connectors/sqs/current/overview.html)  
-52. Testing Microservices: Message Isolation for Kafka, SQS, More | by Signadot | Medium, acceso: mayo 1, 2026, [https://medium.com/@signadot/testing-microservices-message-isolation-for-kafka-sqs-more-7fe635045536](https://medium.com/@signadot/testing-microservices-message-isolation-for-kafka-sqs-more-7fe635045536)  
-53. Automate test and failure analysis via streams for Apache Kafka | Red Hat Developer, acceso: mayo 1, 2026, [https://developers.redhat.com/articles/2026/03/19/automate-test-and-failure-analysis-streams-apache-kafka](https://developers.redhat.com/articles/2026/03/19/automate-test-and-failure-analysis-streams-apache-kafka)  
-54. Best practices for building API integrations with AI agents | Nango Blog, acceso: mayo 1, 2026, [https://nango.dev/blog/best-practices-for-building-api-integrations-with-ai-agents/](https://nango.dev/blog/best-practices-for-building-api-integrations-with-ai-agents/)  
-55. Static analysis for AI agent skills \- exploring a missing trust layer : r/LocalLLaMA \- Reddit, acceso: mayo 1, 2026, [https://www.reddit.com/r/LocalLLaMA/comments/1r99mu8/static\_analysis\_for\_ai\_agent\_skills\_exploring\_a/](https://www.reddit.com/r/LocalLLaMA/comments/1r99mu8/static_analysis_for_ai_agent_skills_exploring_a/)  
-56. Business Logic Extraction \- Sector7, acceso: mayo 1, 2026, [https://sector7.com/resource/business-logic-extraction](https://sector7.com/resource/business-logic-extraction)  
-57. Business Rules extraction from COBOL-based legacy codebases : r/mainframe \- Reddit, acceso: mayo 1, 2026, [https://www.reddit.com/r/mainframe/comments/1gr51a4/business\_rules\_extraction\_from\_cobolbased\_legacy/](https://www.reddit.com/r/mainframe/comments/1gr51a4/business_rules_extraction_from_cobolbased_legacy/)  
-58. SOLVING BUSINESS RULE EXTRACTION AT SCALE USING VISION AI \- Infosys, acceso: mayo 1, 2026, [https://www.infosys.com/industries/insurance/white-papers/documents/solving-business-rule-extraction.pdf](https://www.infosys.com/industries/insurance/white-papers/documents/solving-business-rule-extraction.pdf)  
-59. The Agent Complexity Spectrum: A Decision Framework for Enterprise AI \- Applied AI, acceso: mayo 1, 2026, [https://www.applied-ai.com/briefings/agent-complexity-spectrum/](https://www.applied-ai.com/briefings/agent-complexity-spectrum/)  
-60. Using AI for Business Rule Extraction from Legacy Systems \- ArgonDigital | Making Technology a Strategic Advantage, acceso: mayo 1, 2026, [https://argondigital.com/blog/general/using-ai-for-business-rule-extraction-from-legacy-systems/](https://argondigital.com/blog/general/using-ai-for-business-rule-extraction-from-legacy-systems/)  
-61. I built a tool that learns your codebase's unwritten rules and conventions- no AI, just AST parsing : r/LocalLLaMA \- Reddit, acceso: mayo 1, 2026, [https://www.reddit.com/r/LocalLLaMA/comments/1qm0l2q/i\_built\_a\_tool\_that\_learns\_your\_codebases/](https://www.reddit.com/r/LocalLLaMA/comments/1qm0l2q/i_built_a_tool_that_learns_your_codebases/)  
-62. What is the Model Context Protocol (MCP)? \- Databricks, acceso: mayo 1, 2026, [https://www.databricks.com/blog/what-is-model-context-protocol](https://www.databricks.com/blog/what-is-model-context-protocol)  
-63. Agent Skills – Codex | OpenAI Developers, acceso: mayo 1, 2026, [https://developers.openai.com/codex/skills](https://developers.openai.com/codex/skills)  
-64. EvoSkill: Automated Skill Discovery for Multi-Agent Systems \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2603.02766v1](https://arxiv.org/html/2603.02766v1)  
-65. 10 Must-Have Skills for Claude (and Any Coding Agent) in 2026 \- Medium, acceso: mayo 1, 2026, [https://medium.com/@unicodeveloper/10-must-have-skills-for-claude-and-any-coding-agent-in-2026-b5451b013051](https://medium.com/@unicodeveloper/10-must-have-skills-for-claude-and-any-coding-agent-in-2026-b5451b013051)  
-66. AI Agent Orchestration Patterns \- Azure Architecture Center \- Microsoft Learn, acceso: mayo 1, 2026, [https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)  
-67. Building AI Agents with TypeScript: My Journey Into Agentic AI | by Eva Matova \- Medium, acceso: mayo 1, 2026, [https://medium.com/@eva.matova6/building-ai-agents-with-typescript-my-journey-into-agentic-ai-14c9f749b503](https://medium.com/@eva.matova6/building-ai-agents-with-typescript-my-journey-into-agentic-ai-14c9f749b503)  
-68. GitHub \- KyaClaw/openclaw-prism: 🛡️ Proactive Runtime Injection Shield & Monitor for OpenClaw — injection scanning, tool execution guard, DLP, and file integrity monitoring, acceso: mayo 1, 2026, [https://github.com/KyaClaw/openclaw-prism](https://github.com/KyaClaw/openclaw-prism)  
-69. What happens when you stop adding rules to CLAUDE.md and start building infrastructure instead : r/ClaudeAI \- Reddit, acceso: mayo 1, 2026, [https://www.reddit.com/r/ClaudeAI/comments/1rz2oo3/what\_happens\_when\_you\_stop\_adding\_rules\_to/](https://www.reddit.com/r/ClaudeAI/comments/1rz2oo3/what_happens_when_you_stop_adding_rules_to/)  
-70. Introducing the Agent Governance Toolkit: Open-source runtime security for AI agents, acceso: mayo 1, 2026, [https://opensource.microsoft.com/blog/2026/04/02/introducing-the-agent-governance-toolkit-open-source-runtime-security-for-ai-agents/](https://opensource.microsoft.com/blog/2026/04/02/introducing-the-agent-governance-toolkit-open-source-runtime-security-for-ai-agents/)  
-71. Aman's AI Journal • Primers • Context Engineering, acceso: mayo 1, 2026, [https://aman.ai/primers/ai/context-engineering/](https://aman.ai/primers/ai/context-engineering/)  
-72. Databook: Tool Masking for Enterprise Agentic AI Systems at Scale \- ZenML, acceso: mayo 1, 2026, [https://www.zenml.io/llmops-database/tool-masking-for-enterprise-agentic-ai-systems-at-scale](https://www.zenml.io/llmops-database/tool-masking-for-enterprise-agentic-ai-systems-at-scale)  
-73. Building Effective AI Agents: Architecture Patterns and Implementation Frameworks | Anthropic, acceso: mayo 1, 2026, [https://resources.anthropic.com/hubfs/Building%20Effective%20AI%20Agents-%20Architecture%20Patterns%20and%20Implementation%20Frameworks.pdf?utm\_source=enterpriseaiexecutive.ai\&utm\_medium=referral\&utm\_campaign=deloitte-s-ai-playbook-for-cxos](https://resources.anthropic.com/hubfs/Building%20Effective%20AI%20Agents-%20Architecture%20Patterns%20and%20Implementation%20Frameworks.pdf?utm_source=enterpriseaiexecutive.ai&utm_medium=referral&utm_campaign=deloitte-s-ai-playbook-for-cxos)  
-74. From Black-Box Confidence to Measurable Trust in Clinical AI: A Framework for Evidence, Supervision, and Staged Autonomy \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2604.26671v1](https://arxiv.org/html/2604.26671v1)  
-75. bryankthompson/multi-agent-observability-with-TTS: Real-time monitoring for Claude Code agents through simple hook event tracking integrated with advanced TTS system. \- GitHub, acceso: mayo 1, 2026, [https://github.com/triepod-ai/multi-agent-observability-with-TTS](https://github.com/triepod-ai/multi-agent-observability-with-TTS)  
-76. Feature Request: Conversation Start Hook · Issue \#3062 · anthropics/claude-code \- GitHub, acceso: mayo 1, 2026, [https://github.com/anthropics/claude-code/issues/3062](https://github.com/anthropics/claude-code/issues/3062)  
-77. From Prompt–Response to Goal-Directed Systems: The Evolution of Agentic AI Software Architecture \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2602.10479v1](https://arxiv.org/html/2602.10479v1)  
-78. Building an AI Agent for Codebase Analysis and Understanding | by Zogoo \- Medium, acceso: mayo 1, 2026, [https://zogoo.medium.com/building-an-ai-agent-for-codebase-analysis-and-understanding-d02158ee0e99](https://zogoo.medium.com/building-an-ai-agent-for-codebase-analysis-and-understanding-d02158ee0e99)  
-79. Solving Claude Code's API Blindness with Static Analysis Tools \- Martin Alderson, acceso: mayo 1, 2026, [https://martinalderson.com/posts/claude-code-static-analysis/](https://martinalderson.com/posts/claude-code-static-analysis/)  
-80. How AI Agents Want to Write TypeScript – Encore Blog, acceso: mayo 1, 2026, [https://encore.dev/blog/typescript-ai](https://encore.dev/blog/typescript-ai)  
-81. Confluent's JavaScript Client for Apache Kafka® (CJSK) Is Now Generally Available, acceso: mayo 1, 2026, [https://www.confluent.io/blog/introducing-confluent-kafka-javascript/](https://www.confluent.io/blog/introducing-confluent-kafka-javascript/)  
-82. Semantic Needles in Document Haystacks: Sensitivity Testing of LLM-as-a-Judge Similarity Scoring \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2604.18835v1](https://arxiv.org/html/2604.18835v1)  
-83. OpenAI Agents SDK vs. VoltAgent Comparison \- SourceForge, acceso: mayo 1, 2026, [https://sourceforge.net/software/compare/OpenAI-Agents-SDK-vs-VoltAgent/](https://sourceforge.net/software/compare/OpenAI-Agents-SDK-vs-VoltAgent/)  
-84. Static Code Analysis: The Complete Guide to Getting Started with SCA \- Splunk, acceso: mayo 1, 2026, [https://www.splunk.com/en\_us/blog/learn/static-code-analysis.html](https://www.splunk.com/en_us/blog/learn/static-code-analysis.html)  
-85. Toward an Agentic Infused Software Ecosystem \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/html/2602.20979v1](https://arxiv.org/html/2602.20979v1)  
-86. Your codebase is the new prompt: architecture for the AI era | by Geovane Guibes \- Medium, acceso: mayo 1, 2026, [https://guibesdev.medium.com/your-codebase-is-the-new-prompt-architecture-for-the-ai-era-8ad33d319489](https://guibesdev.medium.com/your-codebase-is-the-new-prompt-architecture-for-the-ai-era-8ad33d319489)  
-87. Screaming Architecture: Designing Systems that Speak for Themselves \- C\# Corner, acceso: mayo 1, 2026, [https://www.c-sharpcorner.com/article/screaming-architectu-designing-systems-that-speak-for-themselves/](https://www.c-sharpcorner.com/article/screaming-architectu-designing-systems-that-speak-for-themselves/)  
-88. Screaming Architecture \- Secture Blog, acceso: mayo 1, 2026, [https://secture.com/en/screaming-architecture/](https://secture.com/en/screaming-architecture/)  
-89. AI-Driven Development with Claude Code | Gentleman Programming Book, acceso: mayo 1, 2026, [https://the-amazing-gentleman-programming-book.vercel.app/en/book/Chapter15\_IA-Driven-Development](https://the-amazing-gentleman-programming-book.vercel.app/en/book/Chapter15_IA-Driven-Development)  
-90. Screaming Architecture Guidelines \- MCP Market, acceso: mayo 1, 2026, [https://mcpmarket.com/tools/skills/screaming-architecture-guidelines](https://mcpmarket.com/tools/skills/screaming-architecture-guidelines)  
-91. Agent DSL \- Aigentic, acceso: mayo 1, 2026, [https://aigentic.io/docs/dsl/](https://aigentic.io/docs/dsl/)  
-92. Domain-Specific Languages: The Deterministic Backbone of AI Agents | by Takafumi Endo, acceso: mayo 1, 2026, [https://medium.com/@takafumi.endo/domain-specific-languages-the-deterministic-backbone-of-ai-agents-805da0ef2143](https://medium.com/@takafumi.endo/domain-specific-languages-the-deterministic-backbone-of-ai-agents-805da0ef2143)  
-93. Turn AI prompts into web apps using a semiformal DSL | TypeFox, acceso: mayo 1, 2026, [https://www.typefox.io/blog/turn-ai-prompts-into-web-apps-using-a-semiformal-dsl/](https://www.typefox.io/blog/turn-ai-prompts-into-web-apps-using-a-semiformal-dsl/)  
-94. \[2510.14465\] Towards Automated Governance: A DSL for Human-Agent Collaboration in Software Projects \- arXiv, acceso: mayo 1, 2026, [https://arxiv.org/abs/2510.14465](https://arxiv.org/abs/2510.14465)
-
-[image1]: <data:image/png;base64,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>
-
-[image2]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAYCAYAAABjswTDAAABtUlEQVR4Xu2WzysFURTHT5FSRMlCKCk7NlbIxpqVlRU2JCtb+QOkJCyU8mPhH7CXhbBEsVBkSyiRbPz+ft0Zc5w37817vcc8NZ/6NPeec5o5c+c2MyIJCZHUwwm4DJtVvEuNY2cDfsBz2Atb4BK8gp1erihgI++wyibApLj8sU3EwatErxrz/Tb419yLa6TcJgxRN/PrtIlr4swmQoi92TdxTYTt06KDjca+YtmST7OlNpCBbGsXJU0/JeIS1zYRgj3BLJw3sXTkUlspqdf6JpuV7YDDJsb3cY2JpSOX2hm4ZoM+F+Ka5SqHwfiNmo9LcIN0TOUW4D58gN2SuZZfyHU4CudU/AU2qnkKPBE/CrbhdnhrYqRa3GppTmGPmvtPK6z2CVZ44104pXJRT/mLLQlWgCfjceRHRQBXQu/BWkm9iD+3tVxxXctxmTfmDdjz5A3fzXoP8kfnQM25x/2L2lo+/lU1181NwxU1Lwj+BYa8Yx888caEW4q/mMTW8pEPeuMBcbV14l5tz7AJPnr5grANd2Crim3CI3gnbp/6hNVym13CBnErv+fF+Ut6KMGNJiT8Wz4BIulscyc+THMAAAAASUVORK5CYII=>
-
-[image3]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFYAAAAYCAYAAABgBArrAAADDElEQVR4Xu2YWchNURTHlykpYzwo8SBjIfP8oEhKXpTwwn0gw4PwQEqe5El4IZShUKa8KBmiz5MhIjJTZpkyZMz4/7f27q67nO+ee7uf6Gv/6t/Ze6197jnf2muvffYnkkgkErl0gRZDW6Duxj7atBNVsAv6Bd2BJkM9oU3QM2hU8CWqhEH7CbXzDrBC1H/FOxLl+S752Uj/VG9M1M9b0aC18g5HXuAThv6iAbvtHRmkwFbBD9GAZdXVRA0wqCkT/wIpsCLNvSGHMdBj6Kh3RJqJBvW5d2TQWIO/FtrgjRXA7/qx3mipJGNHQgVvbCTwu72jN1ZAXszknuggZm8WtL9wNp7KuOlNgnZDW41vFXQXuiDFDfEq9BmaAu2Ezgb7XOgSNBS6CD0NdjIE+gjthRYYexPoC7Rf9Lgd6Qx9gnaI3kPWi757B+gJdAw6GHwLpZhU1PxgJzx9nofuGxs5Ivr++6SCwBIO4gHBB3cw9NLZeMSNJWQgtFk0OISnsjmhTVZC00Ob4/kHksOiwTwELYEemjGkIDrhkXembcsWJ5cMgL4Z+9dw5YQwyA+MzwakvWjGWvisPqHdRorL/b1oPMgaqC60czkhxdljpvDKjKoPP2Mx2CzozBI+3GLHv4IWhTZr1QjjIxx7WnSieLVw06Dffnezz1VxDroJtXS+FqHdNvQj66S0vvYT9R+HPkDzgr1XsEf4DuNMv8HoLTqDluHyZ7AjM6Ezps9xrU3bk2WzDBOdvAOhX2689XGlLDV9Zrytr8ugR6YfYfDtCir3vJrYAy33Ril9ID9htoU2sytm6ETRWhfJeklvY00nXOLxdwrQ+NDmcrZljBlHeohmXiT+btwzYn92uPaF3oQ26QTNEv282h5sLBPxvkHh2mCwHjf1RtENgDWZLzfD2Pki3Gi4VFmTIxMk+1Onq+g9t0Q3kgiP36+h61I6sfwfB4PLDbPO2FdD00z/FHTN9E+KlhqWgMhG6IboiuQ+EGGd5gbLmss6fNn4/hk+AxM1wk8jZirrVjfnSyQS/wW/ASS+wslrHCaOAAAAAElFTkSuQmCC>
-
-[image4]: <data:image/png;base64,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>
-
-[image5]: <data:image/png;base64,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>
-
-[image6]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAUCAYAAABroNZJAAAAT0lEQVR4XmNgGAWjACvYiy5ADviHLkAOsAHiMnRBcsA5IDZHFjAhE98C4n0MUOBHJr4GxWSDiUDsjS5IClAE4k50QVLBJ3QBcsBhdIFhBACxlBEOFeZDIwAAAABJRU5ErkJggg==>
-
-[image7]: <data:image/png;base64,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>
-
-[image8]: <data:image/png;base64,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>
-
-[image9]: <data:image/png;base64,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>
+```text
+ACC = sum(weight(c) for c in C_total where status(c) == aligned)
+      / sum(weight(c) for c in C_total)
+```
+
+A stricter operational score should penalize stale and overexposed mappings:
+
+```text
+ACC_effective = (
+  aligned_weight
+  + 0.5 * partial_weight
+  - stale_penalty
+  - overexposed_penalty
+) / total_weight
+```
+
+The exact weights are project-configurable. The portable contract requires that every report disclose the weights used.
+
+Suggested default weights:
+
+| Capability kind | Default weight | Rationale |
+|---|---:|---|
+| `business_rule` | 5 | High hallucination and domain-risk impact. |
+| `endpoint` | 4 | Direct state-changing surface. |
+| `workflow` | 4 | Multi-step failure risk. |
+| `integration` | 4 | External data, auth, and cost risk. |
+| `event` | 3 | Async side effects are often hidden. |
+| `job` | 3 | Scheduled mutation can surprise agents. |
+| `hook` | 3 | Safety enforcement surface. |
+| `rule` | 2 | Governance and instruction alignment. |
+| `skill` | 2 | Procedural representation. |
+
+## Core Portable Contract
+
+The Cognitive OS core must remain provider-neutral and repository-host neutral. ACC core therefore defines contracts, not vendor-specific implementations.
+
+### 1. Capability manifest
+
+An ACC implementation emits a machine-readable manifest:
+
+```yaml
+schema_version: acc.v1
+project:
+  name: example-project
+  revision: git-or-provider-revision
+weights:
+  business_rule: 5
+  endpoint: 4
+capabilities:
+  - id: endpoint:create-order
+    kind: endpoint
+    source:
+      path: services/orders/routes.ts
+      symbol: POST /orders
+    risk: high
+    signature:
+      input: CreateOrderRequest
+      output: Order
+      side_effects: [database_write, payment_intent]
+    represented_by:
+      - kind: tool
+        id: mcp.orders.create_order
+        source: mcp://orders/tools/create_order
+    mapping_status: aligned
+    confidence: 0.94
+    evidence:
+      - exact route/schema match
+      - matching tool input schema
+```
+
+Required fields per capability:
+
+- `id`
+- `kind`
+- `source`
+- `risk`
+- `signature`
+- `represented_by`
+- `mapping_status`
+- `confidence`
+- `evidence`
+
+### 2. Report format
+
+An ACC run emits both:
+
+- `acc.json` for CI and automation;
+- `acc.md` for human review.
+
+Minimum JSON fields:
+
+```json
+{
+  "schema_version": "acc.report.v1",
+  "acc": 0.82,
+  "acc_effective": 0.76,
+  "total_weight": 100,
+  "aligned_weight": 82,
+  "partial_weight": 6,
+  "stale_weight": 4,
+  "overexposed_weight": 2,
+  "thresholds": {
+    "minimum_acc": 0.75,
+    "minimum_effective_acc": 0.70,
+    "critical_missing_allowed": 0
+  },
+  "findings": []
+}
+```
+
+### 3. Gate semantics
+
+ACC gates should be deterministic and configurable.
+
+Default gate outcomes:
+
+| Condition | Default outcome |
+|---|---|
+| Critical capability is `missing`, `stale`, or `overexposed` | block |
+| `ACC_effective` below configured threshold | block |
+| New capability has no mapping evidence | warn in reconstruction, block in production |
+| Low-confidence semantic match | warn |
+| Adapter unavailable | degrade gracefully and mark affected domains `unverified` |
+
+### 4. Portability boundaries
+
+Core ACC must not require:
+
+- GitHub or GitHub Actions;
+- a specific LLM provider;
+- a specific agent framework;
+- a specific MCP registry;
+- a specific language parser;
+- a hosted SaaS scanner.
+
+Provider-specific systems may implement adapters, but the core contract must remain portable.
+
+## Optional Adapters
+
+Adapters discover capabilities or representations and translate them into the core manifest.
+
+### Static code adapters
+
+| Adapter | Role | Notes |
+|---|---|---|
+| TypeScript AST | Discover routes, exports, schemas, workflows | May use `ts-morph`, TypeScript compiler API, or dependency graph tools. |
+| Go AST | Discover `net/http`, command, client, and package contracts | Should prefer `go/ast`, `go/types`, and module metadata. |
+| Python AST | Discover FastAPI/Flask routes, Pydantic schemas, jobs | Should avoid executing untrusted project code. |
+| IaC scanner | Discover queues, topics, cloud resources | Terraform, CDK, Kubernetes, Helm, Pulumi. |
+
+### Representation adapters
+
+| Adapter | Role | Notes |
+|---|---|---|
+| MCP | Read tool names, descriptions, and input schemas from `tools/list`. | Useful for `C_represented`, not sufficient for `C_total`. |
+| Skills | Parse `SKILL.md` frontmatter and procedural sections. | Must preserve progressive-disclosure semantics. |
+| Rules | Parse governance docs, AGENTS.md, `.claude/rules`, and projected rules. | Must distinguish always-active rules from contextual rules. |
+| Hooks | Read lifecycle hooks and projected settings. | Should classify hook phase and enforcement mode. |
+| Workflows | Read declarative workflow graphs or orchestrator code. | Framework-specific adapters belong outside core. |
+
+### Ecosystem references
+
+These tools can inform adapters, but they are not core dependencies:
+
+| Tool or project | Useful for | Boundary |
+|---|---|---|
+| Figra (`@neabyte/figra`) | TypeScript import/export graph and alias-aware dependency mapping. | Discovery helper only; does not define ACC semantics. |
+| PydanticAI | Typed Python tool/output contracts. | Optional Python representation adapter. |
+| VoltAgent | TypeScript workflows and Zod schemas. | Optional TypeScript workflow adapter. |
+| Microsoft Agent Governance Toolkit | Runtime policy enforcement patterns. | Optional governance reference; do not bind core to it. |
+| SWE-CI | CI-loop benchmark inspiration. | Evaluation reference, not ACC mapping logic. |
+| Deterministic AST hallucination correction research | API/identifier hallucination validation pattern. | Useful for stale/hallucinated mapping checks. |
+| AI SAST vendors | Market signal for semantic code review. | Vendor scanners are optional inputs, not trusted core truth. |
+
+## Pipeline
+
+### Phase 1: Discover real capabilities
+
+Input: source tree, configuration, tests, infrastructure manifests, package metadata.
+
+Output: `C_total` candidates with source evidence.
+
+Rules:
+
+- Prefer deterministic static analysis.
+- Do not execute untrusted project code to discover capabilities.
+- Mark inferred business rules with lower confidence unless supported by tests or policy files.
+- Keep all source paths and symbols in the manifest for auditability.
+
+### Phase 2: Discover represented capabilities
+
+Input: agentic primitives, tool registries, skills, rules, hooks, workflows, MCP servers, prompts, memory indexes.
+
+Output: `C_represented` candidates with representation evidence.
+
+Rules:
+
+- Treat tool schemas as contracts, not prose.
+- Distinguish executable tools from instructional knowledge.
+- Distinguish local project primitives from globally installed user primitives.
+- Record adapter provenance.
+
+### Phase 3: Map and classify alignment
+
+Input: `C_total`, `C_represented`.
+
+Output: mapping statuses and findings.
+
+Matching order:
+
+1. exact id or declared link;
+2. exact schema/signature match;
+3. route/event/workflow structural match;
+4. semantic similarity with confidence score;
+5. human-reviewed override.
+
+Semantic matches must not silently become `aligned`. If confidence is below the configured threshold, classify as `unverified`.
+
+### Phase 4: Calculate, report, and gate
+
+Input: mapping results and weights.
+
+Output: `acc.json`, `acc.md`, CI/hook outcome.
+
+Rules:
+
+- Always disclose thresholds and weights.
+- Show newly introduced gaps separately from existing debt.
+- In reconstruction phase, warnings may be acceptable for non-critical gaps.
+- In production phase, critical missing/stale/overexposed capabilities should block.
+
+## Derived Coverage Dimensions
+
+| Metric | Definition |
+|---|---|
+| Tool Coverage | State-changing or queryable real interfaces represented by executable tools with schemas. |
+| Workflow Coverage | Multi-step business flows represented as declared workflows or skills with deterministic checkpoints. |
+| Rule Coverage | Business and governance constraints represented as explicit rules or policies. |
+| Hook Coverage | Lifecycle interception coverage for risky agent actions. |
+| Prompt Surface Coverage | Fraction of relevant represented capabilities available to the agent without overloading context. |
+| Drift Coverage | Fraction of changed real capabilities that trigger representation updates or warnings. |
+
+## Risks and Anti-Patterns
+
+| Risk | Mitigation |
+|---|---|
+| Counting every function as a capability | Restrict capabilities to externally relevant, domain, governance, or side-effecting surfaces. |
+| Treating documentation as truth | Require source evidence and representation evidence. |
+| Overexposing every tool to improve coverage | Track `overexposed` separately and penalize it. |
+| Vendor lock-in | Keep core manifest and gates independent from adapters. |
+| False semantic matches | Require confidence thresholds and evidence. |
+| Formula without explainable weights | Disclose weights and allow project overrides. |
+
+## Acceptance Criteria
+
+A compliant ACC specification implementation must satisfy:
+
+1. `docs/agent-capability-coverage.md` contains no embedded formula images.
+2. All ACC formulas are represented as searchable text.
+3. The document uses **agentic primitives** terminology for the agentic layer.
+4. The document separates **Core Portable Contract** from **Optional Adapters**.
+5. The core contract does not require GitHub, a specific LLM provider, a specific agent framework, or a SaaS scanner.
+6. A generated report includes `acc`, `acc_effective`, thresholds, weights, findings, and evidence.
+7. Critical `missing`, `stale`, or `overexposed` capabilities produce deterministic gate outcomes.
+8. Adapter failure degrades to `unverified` evidence rather than pretending full coverage.
+
+## Future Test Contract
+
+A future audit test should enforce the documentation and portability contract:
+
+```text
+tests/audit/test_agent_capability_coverage_doc.py
+```
+
+Suggested assertions:
+
+- the ACC doc contains `Core Portable Contract`;
+- the ACC doc contains `Optional Adapters`;
+- the ACC doc contains `ACC =` as text;
+- the ACC doc does not contain embedded base64 image formulas;
+- the ACC doc uses `agentic primitives`;
+- the ACC doc does not introduce vendor-specific tools as core requirements;
+- the ACC manifest example includes `mapping_status`, `confidence`, and `evidence`.
+
+A later behavior test can validate a small fixture repository:
+
+```text
+tests/behavior/test_agent_capability_coverage_mapping.py
+```
+
+Fixture scenario:
+
+- one real endpoint with a matching tool -> `aligned`;
+- one real job with no representation -> `missing`;
+- one represented tool whose schema no longer matches the endpoint -> `stale`;
+- one tool exposing broader access than the real safe contract -> `overexposed`.
+
+Expected result:
+
+```text
+critical_missing_allowed = 0
+ACC_effective < threshold
+outcome = block
+```
+
+## References
+
+- Model Context Protocol documentation: tool discovery and schemas.
+- PydanticAI documentation: typed outputs, tool arguments, and validation context.
+- VoltAgent documentation: Zod-backed workflows and subagent orchestration.
+- Microsoft Agent Governance Toolkit announcement and repository: runtime policy enforcement reference.
+- SWE-CI paper: CI-loop framing for repository-level agent evaluation.
+- arXiv 2601.19106: deterministic AST validation for hallucinated code APIs.
+- Figra package metadata: TypeScript dependency graph and alias-aware import/export analysis.
