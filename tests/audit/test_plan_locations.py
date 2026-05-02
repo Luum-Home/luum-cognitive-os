@@ -47,6 +47,10 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/release/roadmap-v1.0-full-e2e.md",        # release artifact outside plan scope
     "docs/reports/merge-readiness-master-plan-2026-04-23.md",  # report artifact
     "docs/reports/next-session-plan-dormant-to-real.md",        # session artifact
+    "docs/architecture/primitive-coverage-spike-plan-2026-04.md",  # historical architecture spike report
+    "docs/architecture/startup-circuit-breaker-plan.md",  # ADR-101 design companion
+    "docs/architecture/plans/",  # runtime contract plan docs are linked from product entrypoints
+    "docs/reports/pending-plans-audit-2026-04-30.md",  # audit report, not active plan
     # docs/archive/plans/ contains files other than token-optimization-masterplan.md
     # that were NOT listed in ADR-082's migration table.  They remain in place.
     "docs/archive/plans/",   # directory prefix — any file under here is exempt
@@ -58,8 +62,6 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/measurements/",
     # Business-scoped files (ADR-082 §"Files that stay in place")
     "docs/business/",
-    # Report artifacts can describe prior plans without becoming active plan files.
-    "docs/reports/",
     # Third-party reference / benchmark material — not project plans
     "reference/",
     # Rules documents — these are rules, not plans (plan-first.md is a rule)

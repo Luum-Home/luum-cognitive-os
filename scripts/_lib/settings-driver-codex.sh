@@ -126,6 +126,7 @@ codex_driver_emit() {
     "hooks/engram-daemon-launcher.sh" \
     "hooks/crash-recovery.sh" \
     "hooks/session-resume.sh" \
+    "hooks/session-sanity.sh" \
     "hooks/infra-health.sh" \
     "hooks/aspirational-audit-weekly.sh" \
     "hooks/self-knowledge-refresh.sh" \
@@ -137,10 +138,10 @@ codex_driver_emit() {
   local user_prompt_submit
   user_prompt_submit=$(_codex_group "prompt" \
     "hooks/session-heartbeat.sh" \
-    "hooks/edit-lock-process-negotiations.sh" \
     "hooks/user-prompt-capture.sh" \
     "hooks/session-wrapup-trigger.sh" \
     "hooks/memory-prefetch.sh" \
+    "hooks/edit-lock-process-negotiations.sh" \
   )
 
   # PreToolUse: Bash only (Codex limitation — Bash is the only supported matcher)
@@ -165,12 +166,12 @@ codex_driver_emit() {
   local stop_hooks
   stop_hooks=$(_codex_group "shutdown" \
     "hooks/session-cleanup.sh" \
-    "hooks/edit-lock-session-end.sh" \
-    "hooks/skill-failure-monitor.sh" \
-    "hooks/skill-synthesis-scanner.sh" \
     "hooks/session-learning.sh" \
+    "hooks/edit-lock-session-end.sh" \
     "hooks/git-context-capture.sh" \
     "hooks/session-changelog.sh" \
+    "hooks/skill-failure-monitor.sh" \
+    "hooks/skill-synthesis-scanner.sh" \
     "hooks/kpi-trigger.sh" \
     "hooks/engram-crystallize-on-session-end.sh" \
     "hooks/session-summary-reminder.sh" \

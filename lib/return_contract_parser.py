@@ -1,247 +1,206 @@
 # SCOPE: both
-"""
-Return Contract Parser — lib/return_contract_parser.py
+"""Canonical parser for sub-agent ``RESULT:`` blocks.
 
-Parses and validates the structured RESULT: block that sub-agents are required
-to emit at the end of their responses (see templates/agent-preamble.md).
-
-The contract format:
-
-    RESULT:
-      STATUS: {success|partial|failed}
-      SUMMARY: {1-2 sentences}
-      FILES_CHANGED:
-        - {path} — {what changed}
-      KEY_FINDINGS:
-        - {finding}
-      BLOCKERS: {none, or description}
-      TOKENS_ESTIMATE: {number}
-
-Usage:
-    from lib.return_contract_parser import parse_return_contract, validate_return_contract, format_compact_result
-
-    parsed = parse_return_contract(agent_output)
-    if parsed:
-        violations = validate_return_contract(parsed)
-        compact = format_compact_result(parsed)
+Accepts the current compact preamble contract and the older WS2 uppercase
+contract, then renders a compact summary for orchestrator context.
 """
 
 from __future__ import annotations
 
 import re
-from typing import Optional
+from typing import Any, Optional
+
+VALID_STATUSES = frozenset({"completed", "success", "partial", "failed"})
 
 
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
-
-def parse_return_contract(output: str) -> Optional[dict]:
-    """Parse RESULT: block from agent output.
-
-    Returns a dict with keys:
-        status          str  — "success" | "partial" | "failed"
-        summary         str  — 1-2 sentence description
-        files_changed   list[str]  — each item is "path — description"
-        key_findings    list[str]  — non-obvious discoveries
-        blockers        str  — "none" or explanation
-        tokens_estimate int | None  — rough token count estimate
-
-    Returns None if no RESULT: block is found.
-    """
+def parse_return_contract(output: str) -> Optional[dict[str, Any]]:
+    """Parse and normalise a ``RESULT:`` block from agent output."""
     if not output or "RESULT:" not in output:
         return None
-
-    # Extract the RESULT: block — everything from "RESULT:" to the next
-    # top-level section marker (TRUST_REPORT:, ESCALATION:, or end of string).
-    block_match = re.search(
-        r"^RESULT:\s*\n(.*?)(?=^(?:TRUST_REPORT:|ESCALATION:|NEEDS_CLARIFICATION:)|\Z)",
-        output,
-        re.MULTILINE | re.DOTALL,
-    )
-    if not block_match:
-        # Fallback: try to find RESULT: and consume until blank line or end
-        block_match = re.search(
-            r"^RESULT:\s*\n(.*)",
-            output,
-            re.MULTILINE | re.DOTALL,
-        )
-    if not block_match:
+    block = _find_result_block(output)
+    if block is None:
         return None
-
-    block = block_match.group(1)
-
-    result: dict = {
-        "status": "",
-        "summary": "",
-        "files_changed": [],
-        "key_findings": [],
-        "blockers": "none",
-        "tokens_estimate": None,
+    fields = _parse_line_fields(block)
+    files_created = _parse_inline_list(fields.get("files_created", ""))
+    files_modified = _parse_inline_list(fields.get("files_modified", ""))
+    legacy_files = _parse_list_section(block, "files_changed")
+    discoveries = _parse_list_section(block, "discoveries") or _parse_repeated_values(block, "discoveries")
+    key_findings = _parse_list_section(block, "key_findings") or discoveries
+    files_changed = list(legacy_files)
+    files_changed.extend(f"created:{p}" for p in files_created)
+    files_changed.extend(f"modified:{p}" for p in files_modified)
+    return {
+        "status": _normalize_status(fields.get("status", "")),
+        "summary": fields.get("summary", "").strip(),
+        "files_created": files_created,
+        "files_modified": files_modified,
+        "files_changed": files_changed,
+        "key_findings": key_findings,
+        "discoveries": discoveries,
+        "blockers": fields.get("blockers", "none").strip() or "none",
+        "tests": _parse_tests(fields.get("tests", "")),
+        "tokens_estimate": _parse_int(fields.get("tokens_estimate", "")),
+        "trust_score": _parse_int(fields.get("trust_score", "")),
     }
 
-    # Parse STATUS
-    status_match = re.search(r"^\s*STATUS:\s*(.+)$", block, re.MULTILINE)
-    if status_match:
-        raw = status_match.group(1).strip().lower()
-        # Normalise — accept any casing and strip surrounding braces/quotes
-        raw = re.sub(r"[{}\[\]\"']", "", raw).strip()
-        if raw in ("success", "partial", "failed"):
-            result["status"] = raw
-        else:
-            result["status"] = raw  # preserve unknown value for validation
 
-    # Parse SUMMARY
-    summary_match = re.search(r"^\s*SUMMARY:\s*(.+)$", block, re.MULTILINE)
-    if summary_match:
-        result["summary"] = summary_match.group(1).strip()
-
-    # Parse FILES_CHANGED — list items starting with "- "
-    result["files_changed"] = _parse_list_section(block, "FILES_CHANGED")
-
-    # Parse KEY_FINDINGS
-    result["key_findings"] = _parse_list_section(block, "KEY_FINDINGS")
-
-    # Parse BLOCKERS (single-line value or multi-line list)
-    blockers_match = re.search(
-        r"^\s*BLOCKERS:\s*(.+?)(?=^\s*[A-Z_]+:|$)",
-        block,
-        re.MULTILINE | re.DOTALL,
-    )
-    if blockers_match:
-        raw_blockers = blockers_match.group(1).strip()
-        result["blockers"] = raw_blockers if raw_blockers else "none"
-
-    # Parse TOKENS_ESTIMATE
-    tokens_match = re.search(r"^\s*TOKENS_ESTIMATE:\s*([0-9,_]+)", block, re.MULTILINE)
-    if tokens_match:
-        try:
-            result["tokens_estimate"] = int(re.sub(r"[,_]", "", tokens_match.group(1)))
-        except ValueError:
-            result["tokens_estimate"] = None
-
-    return result
-
-
-def validate_return_contract(parsed: dict) -> list[str]:
-    """Validate a parsed return contract.
-
-    Returns a list of violation strings (empty list = valid).
-    """
+def validate_return_contract(parsed: dict[str, Any]) -> list[str]:
+    """Validate a parsed return contract. Empty list means valid."""
     violations: list[str] = []
-
-    if not parsed.get("status"):
+    status = parsed.get("status", "")
+    if not status:
         violations.append("STATUS is missing")
-    elif parsed["status"] not in ("success", "partial", "failed"):
+    elif status not in VALID_STATUSES:
         violations.append(
-            f"STATUS must be 'success', 'partial', or 'failed'; got '{parsed['status']}'"
+            "STATUS must be one of completed, success, partial, failed; "
+            f"got '{status}'"
         )
-
-    summary = parsed.get("summary", "").strip()
+    summary = str(parsed.get("summary", "")).strip()
     if not summary:
         violations.append("SUMMARY is empty")
     elif len(summary) > 500:
         violations.append(
             f"SUMMARY exceeds 500 characters ({len(summary)} chars) — use 1-2 sentences max"
         )
-
-    status = parsed.get("status", "")
-    blockers = parsed.get("blockers", "none").strip().lower()
+    blockers = str(parsed.get("blockers", "none")).strip().lower()
     if status in ("failed", "partial") and (blockers == "none" or not blockers):
-        violations.append(
-            f"BLOCKERS must explain why STATUS is '{status}' — cannot be 'none'"
-        )
-
-    key_findings = parsed.get("key_findings", [])
+        violations.append(f"BLOCKERS must explain why STATUS is '{status}' — cannot be 'none'")
+    key_findings = parsed.get("key_findings", []) or []
     if len(key_findings) > 5:
-        violations.append(
-            f"KEY_FINDINGS has {len(key_findings)} items; max is 5"
-        )
-
+        violations.append(f"KEY_FINDINGS has {len(key_findings)} items; max is 5")
     return violations
 
 
-def format_compact_result(parsed: dict) -> str:
-    """Format a parsed return contract into a minimal ~200-token string.
-
-    Intended for the orchestrator to inject into its own context as a concise
-    record of what the sub-agent accomplished, without retaining the full
-    verbose output.
-    """
+def format_compact_result(parsed: dict[str, Any]) -> str:
+    """Render a parsed contract as a bounded orchestrator summary."""
     if not parsed:
         return "[no return contract]"
-
     lines: list[str] = []
-
-    status = parsed.get("status", "unknown").upper()
-    summary = parsed.get("summary", "").strip()
+    status = str(parsed.get("status", "unknown")).upper()
+    summary = str(parsed.get("summary", "")).strip()
     lines.append(f"STATUS: {status} — {summary}" if summary else f"STATUS: {status}")
-
-    files = parsed.get("files_changed", [])
-    if files:
-        lines.append(f"FILES ({len(files)}): " + "; ".join(f[:80] for f in files[:5]))
-        if len(files) > 5:
-            lines.append(f"  …and {len(files) - 5} more")
-
-    findings = parsed.get("key_findings", [])
+    created = parsed.get("files_created", []) or []
+    modified = parsed.get("files_modified", []) or []
+    legacy = [f for f in (parsed.get("files_changed", []) or []) if not str(f).startswith(("created:", "modified:"))]
+    parts: list[str] = []
+    if created:
+        parts.append("created " + ", ".join(str(f)[:70] for f in created[:4]))
+    if modified:
+        parts.append("modified " + ", ".join(str(f)[:70] for f in modified[:4]))
+    if legacy:
+        shown = "; ".join(str(f)[:80] for f in legacy[:5])
+        if len(legacy) > 5:
+            shown += f"; and {len(legacy) - 5} more"
+        parts.append("changed " + shown)
+    if parts:
+        lines.append("FILES: " + " | ".join(parts))
+    tests = parsed.get("tests") or {}
+    if tests:
+        lines.append(_format_tests(tests))
+    findings = parsed.get("key_findings", []) or parsed.get("discoveries", []) or []
     if findings:
-        lines.append("FINDINGS:")
-        for f in findings[:5]:
-            lines.append(f"  • {f[:120]}")
-
-    blockers = parsed.get("blockers", "none").strip()
+        lines.append("FINDINGS: " + "; ".join(str(f)[:100] for f in findings[:3]))
+    blockers = str(parsed.get("blockers", "none")).strip()
     if blockers and blockers.lower() != "none":
-        lines.append(f"BLOCKERS: {blockers[:200]}")
-
+        lines.append(f"BLOCKERS: {blockers[:180]}")
+    trust = parsed.get("trust_score")
+    if trust is not None:
+        lines.append(f"TRUST: {trust}/100")
     tokens = parsed.get("tokens_estimate")
     if tokens is not None:
         lines.append(f"~{tokens:,} tokens consumed")
+    compact = "\n".join(lines)
+    return compact if len(compact) <= 800 else compact[:797] + "..."
 
-    return "\n".join(lines)
+
+def _find_result_block(output: str) -> str | None:
+    match = re.search(
+        r"^RESULT:\s*\n(.*?)(?=^(?:TRUST_REPORT:|ESCALATION:|NEEDS_CLARIFICATION:|##\s)|\Z)",
+        output,
+        re.MULTILINE | re.DOTALL,
+    )
+    return match.group(1) if match else None
 
 
-# ---------------------------------------------------------------------------
-# Internal helpers
-# ---------------------------------------------------------------------------
+def _parse_line_fields(block: str) -> dict[str, str]:
+    fields: dict[str, str] = {}
+    for line in block.splitlines():
+        if not line.strip() or line.lstrip().startswith("- "):
+            continue
+        match = re.match(r"^\s*([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$", line)
+        if match:
+            key = match.group(1).strip().lower()
+            value = match.group(2).strip()
+            if value or key not in fields:
+                fields[key] = value
+    return fields
+
+
+def _normalize_status(value: str) -> str:
+    raw = re.sub(r"[{}\[\]\"']", "", str(value or "")).strip().lower()
+    return {"succeeded": "success", "complete": "completed"}.get(raw, raw)
+
+
+def _parse_inline_list(value: str) -> list[str]:
+    raw = str(value or "").strip()
+    if not raw or raw.lower() in {"none", "[]", "-", "n/a"}:
+        return []
+    if raw.startswith("[") and raw.endswith("]"):
+        raw = raw[1:-1]
+    return [item.strip().strip("'\"") for item in raw.split(",") if item.strip() and item.strip().lower() != "none"]
+
 
 def _parse_list_section(block: str, section_name: str) -> list[str]:
-    """Extract a bullet-list section from the block.
-
-    Looks for a line like "  SECTION_NAME:" and collects all subsequent
-    bullet lines ("  - ...") until the next section header (a line whose
-    first non-whitespace characters are an ALL_CAPS identifier followed by
-    a colon, but only when that whole token starts at the beginning of the
-    line — i.e., it IS the header, not text within a bullet).
-    """
-    # Find the start of the section
-    header_pattern = re.compile(
-        rf"^\s*{re.escape(section_name)}:\s*$",
-        re.MULTILINE,
-    )
-    header_match = header_pattern.search(block)
-    if not header_match:
+    header = re.search(rf"^\s*{re.escape(section_name)}:\s*$", block, re.MULTILINE | re.IGNORECASE)
+    if not header:
         return []
-
-    # Walk lines after the header, collecting bullet items, stopping at the
-    # next top-level section header.  A top-level header is a line where the
-    # very first non-space characters are two or more uppercase letters /
-    # underscores immediately followed by a colon, with nothing non-space
-    # before them on that line.
-    next_header_re = re.compile(r"^\s{0,3}[A-Z_]{2,}:\s*")
-
     items: list[str] = []
-    lines = block[header_match.end():].splitlines()
-    for line in lines:
-        # Stop at the next section header (but not indented list content)
-        if next_header_re.match(line):
-            # It's a header if the content before the colon is ALL_CAPS only
-            left = line.strip().split(":")[0]
-            if re.match(r"^[A-Z_]{2,}$", left):
-                break
+    next_header = re.compile(r"^\s{0,3}[A-Za-z_][A-Za-z0-9_]*:\s*")
+    for line in block[header.end():].splitlines():
+        if next_header.match(line):
+            break
         stripped = line.strip()
         if stripped.startswith("- "):
             item = stripped[2:].strip()
             if item:
                 items.append(item)
-
     return items
+
+
+def _parse_repeated_values(block: str, key: str) -> list[str]:
+    items: list[str] = []
+    for match in re.finditer(rf"^\s*{re.escape(key)}:\s*(.+)$", block, re.MULTILINE | re.IGNORECASE):
+        value = match.group(1).strip().lstrip("- ").strip()
+        if value and value.lower() != "none":
+            items.append(value)
+    return items
+
+
+def _parse_int(value: str) -> int | None:
+    match = re.search(r"[0-9][0-9,_]*", str(value or ""))
+    if not match:
+        return None
+    try:
+        return int(re.sub(r"[,_]", "", match.group(0)))
+    except ValueError:
+        return None
+
+
+def _parse_tests(value: str) -> dict[str, int]:
+    if not value:
+        return {}
+    tests = {"passed": 0, "failed": 0, "xfail": 0, "skipped": 0}
+    found = False
+    for match in re.finditer(r"(\d+)\s+(passed|pass|failed|fail|xfail|skipped|skip)", value, re.IGNORECASE):
+        label = match.group(2).lower()
+        label = {"pass": "passed", "fail": "failed", "skip": "skipped"}.get(label, label)
+        tests[label] = int(match.group(1))
+        found = True
+    return tests if found else {}
+
+
+def _format_tests(tests: dict[str, int]) -> str:
+    parts = [f"{tests[k]} {k}" for k in ("passed", "failed", "xfail", "skipped") if tests.get(k)]
+    if not parts and tests:
+        parts = [f"{k}={v}" for k, v in tests.items()]
+    return "TESTS: " + ", ".join(parts)

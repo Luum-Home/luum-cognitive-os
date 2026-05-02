@@ -128,6 +128,7 @@ def _is_runtime_generated_ref(ref: str) -> bool:
     generated_prefixes = (
         ".cognitive-os/dynamic-tools/",
         ".cognitive-os/rate-limit-",
+        ".cognitive-os/tasks/",
         ".atl/",
     )
     if ref.startswith(generated_prefixes):
@@ -138,9 +139,6 @@ def _is_runtime_generated_ref(ref: str) -> bool:
         ".claude/tasks/active-tasks.json",
         ".cognitive-os/confidentiality.yaml",
         ".cognitive-os/content-policy.yaml",
-        ".cognitive-os/metrics/dispatch-queue.json",
-        ".cognitive-os/tasks/active-tasks.json",
-        ".cognitive-os/tasks/dispatch-queue.json",
         ".cognitive-os/work-queue.json",
     }
     return ref in generated_files

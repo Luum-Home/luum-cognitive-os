@@ -29,7 +29,10 @@ def compose_file(project_root):
 def docker_ok():
     if not shutil.which("docker"):
         pytest.skip("Docker not available")
-    result = subprocess.run(["docker", "info"], capture_output=True, timeout=10)
+    try:
+        result = subprocess.run(["docker", "info"], capture_output=True, timeout=10)
+    except subprocess.TimeoutExpired:
+        pytest.skip("Docker daemon unresponsive")
     if result.returncode != 0:
         pytest.skip("Docker daemon not running")
     return True
