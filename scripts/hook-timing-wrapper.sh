@@ -148,6 +148,7 @@ HOOK_PID=$$
 HOOK_SKIPPED=0
 HOOK_SAFE_MODE=0
 HOOK_SKIP_REASON=""
+HOOK_BODY_DURATION_MS=0
 
 # ── Startup circuit breaker / safe mode ─────────────────────────────────────
 # SessionStart is the highest-risk event: hooks can mutate watched settings,
@@ -285,6 +286,7 @@ elif [ "$EVENT_NAME" = "SessionStart" ]   && [ "$COGNITIVE_OS_SESSION_KIND" = "s
   HOOK_SKIPPED=1
   HOOK_SKIP_REASON="subagent_sessionstart"
 else
+  HOOK_BODY_START_MS=$(_now_ms)
   # For SessionStart/UserPromptSubmit, Claude Code treats stdout as model
   # context. Most COS hooks print human diagnostics, not intentional context;
   # leak them to stderr instead when invoked through the wrapper. Direct script
@@ -321,6 +323,8 @@ else
     fi
     HOOK_EXIT=$?
   fi
+  HOOK_BODY_END_MS=$(_now_ms)
+  HOOK_BODY_DURATION_MS=$(( HOOK_BODY_END_MS - HOOK_BODY_START_MS ))
 fi
 
 # ── Record timing (best-effort) ──────────────────────────────────────────────
@@ -335,7 +339,22 @@ SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-
 SAFE_SESSION=$(printf '%s' "$SESSION_ID" | tr -d '"\\')
 
 SAFE_SKIP_REASON=$(printf '%s' "$HOOK_SKIP_REASON" | tr -d '"\\')
-JSON_LINE="{\"timestamp\":\"$START_TS\",\"event\":\"$SAFE_EVENT\",\"hook\":\"$SAFE_HOOK\",\"duration_ms\":$DURATION_MS,\"exit_code\":$HOOK_EXIT,\"pid\":$HOOK_PID,\"session_id\":\"$SAFE_SESSION\",\"session_kind\":\"$COGNITIVE_OS_SESSION_KIND\",\"skipped\":$HOOK_SKIPPED,\"safe_mode\":$HOOK_SAFE_MODE,\"skip_reason\":\"$SAFE_SKIP_REASON\"}"
+
+HOOK_SIGNAL=""
+if [ "$HOOK_EXIT" -ge 128 ] 2>/dev/null; then
+  HOOK_SIGNAL=$(( HOOK_EXIT - 128 ))
+fi
+if [ "$HOOK_SKIPPED" = "1" ]; then
+  HOOK_EXECUTION_STATUS="skipped"
+elif [ -n "$HOOK_SIGNAL" ]; then
+  HOOK_EXECUTION_STATUS="signal"
+elif [ "$HOOK_EXIT" -eq 0 ]; then
+  HOOK_EXECUTION_STATUS="ok"
+else
+  HOOK_EXECUTION_STATUS="error"
+fi
+
+JSON_LINE="{\"timestamp\":\"$START_TS\",\"event\":\"$SAFE_EVENT\",\"hook\":\"$SAFE_HOOK\",\"duration_ms\":$DURATION_MS,\"body_duration_ms\":$HOOK_BODY_DURATION_MS,\"execution_status\":\"$HOOK_EXECUTION_STATUS\",\"exit_code\":$HOOK_EXIT,\"signal\":\"$HOOK_SIGNAL\",\"pid\":$HOOK_PID,\"session_id\":\"$SAFE_SESSION\",\"session_kind\":\"$COGNITIVE_OS_SESSION_KIND\",\"skipped\":$HOOK_SKIPPED,\"safe_mode\":$HOOK_SAFE_MODE,\"skip_reason\":\"$SAFE_SKIP_REASON\"}"
 
 # Append to JSONL — redirect all errors to /dev/null so a full disk or
 # read-only filesystem never breaks the hook chain.
