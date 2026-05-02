@@ -3,7 +3,7 @@
 ## Dry-run inventory
 
 ```bash
-python3 scripts/cos-worktree-sweeper.py --dry-run --json
+python3 scripts/cos_worktree_sweeper.py --dry-run --json
 ```
 
 Expected:
@@ -15,7 +15,7 @@ Expected:
 ## Apply on controlled temp prefix
 
 ```bash
-python3 scripts/cos-worktree-sweeper.py \
+python3 scripts/cos_worktree_sweeper.py \
   --dry-run \
   --ttl-seconds 0 \
   --no-default-safe-prefixes \
@@ -26,7 +26,7 @@ python3 scripts/cos-worktree-sweeper.py \
 Confirm the only candidate is the intended stale worktree, then run:
 
 ```bash
-python3 scripts/cos-worktree-sweeper.py \
+python3 scripts/cos_worktree_sweeper.py \
   --apply \
   --ttl-seconds 0 \
   --no-default-safe-prefixes \

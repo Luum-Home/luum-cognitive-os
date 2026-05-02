@@ -13,7 +13,7 @@ pytestmark = pytest.mark.behavior
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 IMPL = PROJECT_ROOT / "scripts" / "cos_worktree_sweeper.py"
-WRAPPER = PROJECT_ROOT / "scripts" / "cos-worktree-sweeper.py"
+WRAPPER = PROJECT_ROOT / "scripts" / "cos_worktree_sweeper.py"
 
 
 def run(args: list[str], cwd: Path, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
