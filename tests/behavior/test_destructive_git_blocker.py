@@ -116,8 +116,20 @@ class TestDestructiveBlocks:
         assert result.returncode == 1
         assert "BLOCKED" in result.stderr
 
-    def test_blocks_git_worktree(self, tmp_path: Path):
-        result = _run("git worktree add ../foo", tmp_path)
+    @pytest.mark.parametrize(
+        "command",
+        [
+            "git worktree add ../foo",
+            "git worktree remove ../foo",
+            "git worktree move ../foo ../bar",
+            "git worktree prune",
+            "git worktree repair",
+            "git worktree lock ../foo",
+            "git worktree unlock ../foo",
+        ],
+    )
+    def test_blocks_destructive_git_worktree_subcommands(self, tmp_path: Path, command: str):
+        result = _run(command, tmp_path)
         assert result.returncode == 1
         assert "BLOCKED" in result.stderr
 
@@ -157,6 +169,11 @@ class TestSafeOpsAllowed:
         # 'git stash list' is read-only, must NOT match the destructive pattern
         result = _run("git stash list", tmp_path)
         assert result.returncode == 0
+
+    def test_allows_git_worktree_list(self, tmp_path: Path):
+        result = _run("git worktree list --porcelain", tmp_path)
+        assert result.returncode == 0
+        assert "BLOCKED" not in result.stderr
 
 
 class TestUserContext:

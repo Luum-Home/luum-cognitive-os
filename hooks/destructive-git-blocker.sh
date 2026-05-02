@@ -100,7 +100,7 @@ fi
 # direct (`checkout -- <path>`) and via-ref (`checkout <ref> -- <path>`, e.g. HEAD, HEAD~1,
 # <sha>, <branch>, <tag>) forms. `<ref>` may contain letters, digits, slash, dot, underscore,
 # tilde, caret, hyphen.
-DESTRUCTIVE_PATTERN='^[[:space:]]*git[[:space:]]+(stash[[:space:]]+(pop|drop|apply)|reset([[:space:]]|$)|pull([^;&|]*)[[:space:]]+--rebase([[:space:]]|$)|checkout[[:space:]]+(--|[A-Za-z0-9/._~^-]+[[:space:]]+--)|clean[[:space:]]+-f|restore|revert|worktree|branch[[:space:]]+-D|rebase([[:space:]]|$))'
+DESTRUCTIVE_PATTERN='^[[:space:]]*git[[:space:]]+(stash[[:space:]]+(pop|drop|apply)|reset([[:space:]]|$)|pull([^;&|]*)[[:space:]]+--rebase([[:space:]]|$)|checkout[[:space:]]+(--|[A-Za-z0-9/._~^-]+[[:space:]]+--)|clean[[:space:]]+-f|restore|revert|worktree[[:space:]]+(add|remove|move|prune|repair|lock|unlock)([[:space:]]|$)|branch[[:space:]]+-D|rebase([[:space:]]|$))'
 
 # Force-push pattern (2026-05-02): matches `git push --force` and `git push -f` (with word
 # boundary after -f to avoid matching -fast-forward or similar flags).

@@ -85,6 +85,12 @@ def _run(
         ("git restore src/foo.py", "git restore"),
         ("git revert HEAD", "git revert"),
         ("git worktree add ../foo", "git worktree"),
+        ("git worktree remove ../foo", "git worktree"),
+        ("git worktree move ../foo ../bar", "git worktree"),
+        ("git worktree prune", "git worktree"),
+        ("git worktree repair", "git worktree"),
+        ("git worktree lock ../foo", "git worktree"),
+        ("git worktree unlock ../foo", "git worktree"),
     ],
 )
 def test_user_context_blocks_destructive_op(
@@ -199,6 +205,8 @@ def test_cos_git_bypass_allows_destructive_op(tmp_path: Path):
         "git log --oneline -5",
         "git show HEAD",
         "git stash list",
+        "git worktree list",
+        "git worktree list --porcelain",
         "git branch --list",  # non-destructive (no -D)
         "ls -la",
         "pwd",
