@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: both
+# @manual-trigger: diagnostic tool; invoke manually to inspect concurrent-agent safety primitive state
 # Read-only doctor for concurrent-agent safety primitives.
 set -uo pipefail
 

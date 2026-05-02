@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: project
+# @manual-trigger: run once to install Garak LLM vulnerability scanner; deferred until pentest workflow is adopted
 # install-garak.sh — Install Garak LLM vulnerability scanner
 set -euo pipefail
 

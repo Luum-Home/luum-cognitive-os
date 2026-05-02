@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# @manual-trigger: one-shot installer, run via curl pipe or `bash scripts/install-cos.sh`
 # install-cos.sh — One-liner installer for Cognitive OS (cos CLI)
 #
 # Usage:

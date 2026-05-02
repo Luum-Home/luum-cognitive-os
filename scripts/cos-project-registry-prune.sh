@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# @manual-trigger: maintenance tool; run periodically to prune stale COS project registry entries
 # cos-project-registry-prune.sh — Remove stale entries from the COS project registry
 #
 # Checks each registered installation for two conditions:
