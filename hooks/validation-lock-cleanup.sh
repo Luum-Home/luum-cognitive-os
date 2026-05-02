@@ -2,7 +2,7 @@
 # SCOPE: os-only
 # validation-lock-cleanup.sh — SessionStart hook that removes stale validation locks.
 #
-# Per ADR-108 P5. Catches the common case where a session ended without trap
+# Per ADR-113 P5. Catches the common case where a session ended without trap
 # firing (terminal closed, kernel panic, sleep+wake): the lock file remains
 # but the owning process is gone or hung. This hook walks all *.lock files in
 # .cognitive-os/runtime/, applies the 4-layer staleness check, and removes
@@ -36,7 +36,7 @@ mkdir -p "$METRICS_DIR" 2>/dev/null || true
 CLEANED=0
 
 shopt -s nullglob
-# ADR-108 P5 scope: ONLY validation-capsule locks. Other subsystems (profile
+# ADR-113 P5 scope: ONLY validation-capsule locks. Other subsystems (profile
 # autoapply, circuit breaker, etc.) own their own locks with their own schemas
 # and TTL semantics — they are NOT in scope for this hook.
 for lock in "$RUNTIME_DIR"/validation-capsule*.lock; do

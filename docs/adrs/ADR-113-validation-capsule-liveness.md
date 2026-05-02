@@ -1,5 +1,5 @@
 <!-- SCOPE: os-only -->
-# ADR-108: Validation Capsule Liveness Primitives
+# ADR-113: Validation Capsule Liveness Primitives
 
 **Status**: Proposed
 **Date**: 2026-05-02
