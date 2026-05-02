@@ -1,6 +1,6 @@
 """Unit tests for capability level 5 behavior.
 
-Validates that level 5 (autonomous+) correctly disables 11 additional
+Validates that level 5 (autonomous+) correctly disables 10 additional
 components beyond level 4, maintains cumulative disabling, never disables
 essential hooks, and that bash/python implementations stay in sync.
 """
@@ -25,7 +25,6 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 # Baseline components that level 5 should disable (from DEFAULT_AUTO_DISABLE[5]).
 # New additions to DEFAULT_AUTO_DISABLE[5] are OK; removals are caught.
 LEVEL_5_BASELINE_COMPONENTS = {
-    "completeness-check",
     "epic-task-detector",
     "scope-proportionality",
     "trust-score-validator",
@@ -156,10 +155,10 @@ class TestLevel5NeverDisablesEssential:
 
 
 class TestLevel5HooksHaveCapabilityCheck:
-    """All 11 level-5 hooks must have check_capability_level call."""
+    """All live level-5 hooks must have check_capability_level call."""
 
     def test_level5_hooks_have_capability_check(self):
-        """All 11 level-5 hooks must call check_capability_level in their source."""
+        """All live level-5 hooks must call check_capability_level in their source."""
         hooks_dir = PROJECT_ROOT / "hooks"
         missing = []
 
@@ -237,7 +236,6 @@ class TestLevel5BashFunctionMatchesPython:
                 if name and not name.startswith("$") and name != "case":
                     bash_components.add(name)
 
-        python_components = set(DEFAULT_AUTO_DISABLE.get(5, []))
         # Also include cumulative (levels 3 and 4) since bash level 5 case
         # includes ALL components disabled at that level
         all_python_at_5 = set()
