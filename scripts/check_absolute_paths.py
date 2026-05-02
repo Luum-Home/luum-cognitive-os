@@ -20,7 +20,7 @@ from pathlib import Path
 
 MAC_HOME_PREFIX = "/" + "Users" + "/"
 LINUX_HOME_PREFIX = "/" + "home" + "/"
-WINDOWS_HOME_PATTERN = re.compile(r"[A-Za-z]:\\\\Users\\\\[^\\\\\s]+(?:\\\\[^\s`'\"<>)]*)?")
+WINDOWS_HOME_PATTERN = re.compile(r"[A-Za-z]:\\Users\\[^\\\s]+(?:\\[^\s`'\"<>)]*)?")
 POSIX_PATH_PATTERN = re.compile(
     rf"(?:{re.escape(MAC_HOME_PREFIX)}|{re.escape(LINUX_HOME_PREFIX)})"
     r"[^/\s`'\"<>)]+"  # username segment
@@ -257,7 +257,7 @@ def is_git_repository(root: Path) -> bool:
 
 def staged_files(root: Path) -> list[StagedFile]:
     result = subprocess.run(
-        ["git", "diff", "--cached", "--raw", "--diff-filter=ACM"],
+        ["git", "diff", "--cached", "--raw", "-M", "-C", "--diff-filter=ACM"],
         cwd=str(root),
         text=True,
         capture_output=True,
@@ -279,14 +279,14 @@ def staged_files(root: Path) -> list[StagedFile]:
         new_mode = fields[1]
         if new_mode == "160000":
             continue
-        files.append(StagedFile(path=raw_path, mode=new_mode))
+        files.append(StagedFile(path=raw_path.split("\t")[-1], mode=new_mode))
     return files
 
 
 def staged_findings(root: Path) -> list[Finding]:
     findings: list[Finding] = []
     for staged in staged_files(root):
-        display_path = (root / staged.path).resolve()
+        display_path = root / staged.path
         try:
             display_path.relative_to(root)
         except ValueError:
