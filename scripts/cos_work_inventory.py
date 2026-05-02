@@ -4,6 +4,15 @@
 
 This doctor is intentionally projectable: keep it in the Cognitive OS repo and
 run it against any consumer repository with ``--project-dir``.
+
+Extended dimensions (P3.3):
+  --sessions    Active session metadata from .cognitive-os/sessions/
+  --orphans     Orphan-notifier JSONL or reflog-based scan
+  --worktrees   Read .git/worktrees/ directly (no destructive git worktree cmd)
+  --stashes     Git stash list with auto-pre-agent provenance
+  --claims      Active task claims from .cognitive-os/tasks/active-claims.json
+  --race-risks  Heuristic multi-session/worktree/stash race-condition detection
+  --all         Enable all dimensions above
 """
 from __future__ import annotations
 
@@ -13,13 +22,16 @@ import json
 import os
 import subprocess
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 DEFAULT_BRANCH_PATTERN = "codex/preserve-*"
 DEFAULT_STASH_WARN_TTL = 600
 DEFAULT_STASH_BLOCK_TTL = 3600
+
+# Race-risk heuristics
+RACE_RISK_STALE_STASH_THRESHOLD = 3600  # 1 hour
 
 
 @dataclass(frozen=True)
@@ -306,6 +318,398 @@ def collect_stashes(project: Path, warn_ttl: int, block_ttl: int) -> list[dict[s
     return rows
 
 
+# ---------------------------------------------------------------------------
+# P3.3 NEW DIMENSIONS
+# ---------------------------------------------------------------------------
+
+
+def _pid_alive(pid: int) -> bool:
+    """Return True if the given PID exists in the OS process table.
+
+    Note: on macOS/Linux, PIDs can be reused, so True only means *some*
+    process with that PID is alive — not necessarily the original session.
+    """
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        # We don't own it, but it exists
+        return True
+    except OSError:
+        return False
+
+
+def collect_sessions(project: Path) -> list[dict[str, Any]]:
+    """Read active-sessions.json + per-session meta.json files.
+
+    Returns a list of dicts with keys:
+      id, pid, alive, age_seconds, start_time, working_directory, current_task
+    """
+    sessions_dir = project / ".cognitive-os" / "sessions"
+    rows: list[dict[str, Any]] = []
+    now = int(time.time())
+
+    # 1. Collect IDs from active-sessions.json (authoritative registry)
+    active_ids: set[str] = set()
+    active_sessions_file = sessions_dir / "active-sessions.json"
+    if active_sessions_file.exists():
+        try:
+            data = json.loads(active_sessions_file.read_text(encoding="utf-8"))
+            for entry in data.get("sessions", []):
+                sid = entry.get("id")
+                if sid:
+                    active_ids.add(sid)
+        except (OSError, json.JSONDecodeError):
+            pass
+
+    # 2. Walk session directories to read meta.json + tasks.json
+    if sessions_dir.exists():
+        for session_dir in sorted(sessions_dir.iterdir()):
+            if not session_dir.is_dir():
+                continue
+            sid = session_dir.name
+            meta_file = session_dir / "meta.json"
+            if not meta_file.exists():
+                continue
+            try:
+                meta = json.loads(meta_file.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                meta = {}
+
+            pid = meta.get("pid")
+            start_epoch = meta.get("start_epoch") or 0
+            age = max(0, now - start_epoch) if start_epoch else None
+            alive = _pid_alive(int(pid)) if pid else False
+
+            # Current task: last in_progress entry from tasks.json
+            current_task: str | None = None
+            tasks_file = session_dir / "tasks.json"
+            if tasks_file.exists():
+                try:
+                    tasks_data = json.loads(tasks_file.read_text(encoding="utf-8"))
+                    tasks_list = tasks_data if isinstance(tasks_data, list) else tasks_data.get("tasks", [])
+                    for t in reversed(tasks_list):
+                        if isinstance(t, dict) and t.get("status") == "in_progress":
+                            current_task = t.get("description")
+                            break
+                except (OSError, json.JSONDecodeError):
+                    pass
+
+            rows.append(
+                {
+                    "id": sid,
+                    "pid": pid,
+                    "alive": alive,
+                    "age_seconds": age,
+                    "start_time": meta.get("start_time"),
+                    "working_directory": meta.get("working_directory"),
+                    "current_task": current_task,
+                    "in_active_registry": sid in active_ids,
+                }
+            )
+
+    return rows
+
+
+def collect_orphans(project: Path) -> list[dict[str, Any]]:
+    """Return orphan-commit records.
+
+    Priority: read .cognitive-os/metrics/orphan-notifier.jsonl if it exists
+    (written by P3.1 orphan-notifier hook). Fallback: scan git reflog for
+    commits that are not reachable from any branch ref.
+    """
+    rows: list[dict[str, Any]] = []
+
+    # --- Primary: orphan-notifier JSONL from P3.1 ---
+    notifier_file = project / ".cognitive-os" / "metrics" / "orphan-notifier.jsonl"
+    if notifier_file.exists():
+        try:
+            for line in notifier_file.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    record = json.loads(line)
+                    rows.append(record)
+                except json.JSONDecodeError:
+                    pass
+        except OSError:
+            pass
+        return rows
+
+    # --- Fallback: reflog-based scan ---
+    # Collect all reachable commits from refs
+    reachable_result = git(project, ["rev-list", "--all"])
+    reachable: set[str] = set()
+    if reachable_result.returncode == 0:
+        reachable = set(reachable_result.stdout.splitlines())
+
+    # Walk reflog entries
+    reflog_result = git(project, ["reflog", "--format=%H %gD %gs"])
+    if reflog_result.returncode != 0:
+        return rows
+
+    seen: set[str] = set()
+    for line in reflog_result.stdout.splitlines():
+        parts = line.split(None, 2)
+        if len(parts) < 1:
+            continue
+        commit_hash = parts[0]
+        ref_name = parts[1] if len(parts) > 1 else "unknown"
+        subject = parts[2] if len(parts) > 2 else ""
+        if commit_hash in reachable or commit_hash in seen:
+            continue
+        seen.add(commit_hash)
+        rows.append(
+            {
+                "commit": commit_hash[:12],
+                "full_hash": commit_hash,
+                "ref": ref_name,
+                "subject": subject,
+                "source": "reflog-scan",
+            }
+        )
+    return rows
+
+
+def collect_worktrees_direct(project: Path) -> list[dict[str, Any]]:
+    """Read .git/worktrees/ directly to avoid destructive-git-blocker.
+
+    This replaces the git-worktree-command-based collect_worktrees when
+    --worktrees flag is used from the new dimensions.
+    """
+    git_dir = project / ".git"
+    worktrees_dir = git_dir / "worktrees"
+    rows: list[dict[str, Any]] = []
+
+    # Main worktree (always exists, no entry in .git/worktrees/)
+    main_head_file = git_dir / "HEAD"
+    main_head: str | None = None
+    main_branch: str | None = None
+    if main_head_file.exists():
+        head_content = main_head_file.read_text(encoding="utf-8").strip()
+        if head_content.startswith("ref: refs/heads/"):
+            main_branch = head_content.removeprefix("ref: refs/heads/")
+            main_head = None  # resolve lazily only if needed
+        else:
+            main_head = head_content[:12]
+    rows.append(
+        {
+            "path": str(project.resolve()),
+            "branch": main_branch,
+            "head": main_head,
+            "source": "main",
+            "locked": False,
+            "prunable": False,
+        }
+    )
+
+    if not worktrees_dir.exists():
+        return rows
+
+    for wt_entry in sorted(worktrees_dir.iterdir()):
+        if not wt_entry.is_dir():
+            continue
+        name = wt_entry.name
+        head_file = wt_entry / "HEAD"
+        gitdir_file = wt_entry / "gitdir"
+        locked_file = wt_entry / "locked"
+
+        branch: str | None = None
+        head: str | None = None
+
+        if head_file.exists():
+            content = head_file.read_text(encoding="utf-8").strip()
+            if content.startswith("ref: refs/heads/"):
+                branch = content.removeprefix("ref: refs/heads/")
+            else:
+                head = content[:12]
+
+        # Derive worktree path from gitdir back-pointer
+        wt_path: str | None = None
+        if gitdir_file.exists():
+            # gitdir contains the absolute path of the worktree's .git file
+            gitdir_content = gitdir_file.read_text(encoding="utf-8").strip()
+            # e.g. /private/tmp/luum-agent-os-harness-fix/.git
+            wt_path = str(Path(gitdir_content).parent)
+
+        locked = locked_file.exists()
+        # prunable = gitdir target no longer exists
+        prunable = False
+        if gitdir_file.exists():
+            target = Path(gitdir_file.read_text(encoding="utf-8").strip())
+            prunable = not target.parent.exists()
+
+        rows.append(
+            {
+                "path": wt_path or name,
+                "branch": branch,
+                "head": head,
+                "source": "linked",
+                "locked": locked,
+                "prunable": prunable,
+            }
+        )
+
+    return rows
+
+
+def collect_stashes_extended(project: Path, warn_ttl: int, block_ttl: int) -> list[dict[str, Any]]:
+    """Like collect_stashes but also parses branch provenance from stash messages.
+
+    Adds keys: on_branch, is_manual_preserve, provenance_tag
+    """
+    base = collect_stashes(project, warn_ttl, block_ttl)
+    for stash in base:
+        subject = stash.get("subject", "")
+        # Parse "On <branch>: <msg>" format
+        on_branch: str | None = None
+        if subject.startswith("On ") and ": " in subject:
+            on_branch = subject[3:subject.index(": ")]
+        stash["on_branch"] = on_branch
+        # Detect manual-preserve from either the raw subject or the message part
+        _msg_part = subject[subject.index(": ") + 2:] if ": " in subject else subject
+        stash["is_manual_preserve"] = _msg_part.startswith("manual-preserve-")
+        # Derive a short tag
+        if stash["is_auto_pre_agent"]:
+            stash["provenance_tag"] = "auto-pre-agent"
+        elif stash["is_manual_preserve"]:
+            stash["provenance_tag"] = "manual-preserve"
+        else:
+            stash["provenance_tag"] = "user"
+    return base
+
+
+def collect_claims(project: Path) -> list[dict[str, Any]]:
+    """Read .cognitive-os/tasks/active-claims.json (written by P1.1 task-claim hook).
+
+    Falls back gracefully if the file does not exist.
+    """
+    claims_file = project / ".cognitive-os" / "tasks" / "active-claims.json"
+    if not claims_file.exists():
+        return []
+    try:
+        data = json.loads(claims_file.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    if isinstance(data, list):
+        return data
+    if isinstance(data, dict):
+        return data.get("claims", [])
+    return []
+
+
+@dataclass
+class RaceRisk:
+    code: str
+    description: str
+    details: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"code": self.code, "description": self.description, "details": self.details}
+
+
+def collect_race_risks(
+    sessions: list[dict[str, Any]],
+    worktrees: list[dict[str, Any]],
+    stashes: list[dict[str, Any]],
+    claims: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Heuristic race-condition detection.
+
+    Flags:
+      (a) >1 session has the same task in_progress
+      (b) >1 worktree on the same branch
+      (c) >1 hour-old stash from a session not currently active
+      (d) Sessions in active registry but whose PID is not alive (zombie sessions)
+    """
+    risks: list[RaceRisk] = []
+
+    # (a) Multiple sessions with same current_task
+    task_to_sessions: dict[str, list[str]] = {}
+    for s in sessions:
+        task = s.get("current_task")
+        if task and s.get("alive"):
+            task_to_sessions.setdefault(task, []).append(s["id"])
+    for task, sids in task_to_sessions.items():
+        if len(sids) > 1:
+            risks.append(
+                RaceRisk(
+                    code="multi-session-same-task",
+                    description="Multiple live sessions have the same task in_progress",
+                    details=[f"task={task!r}", f"sessions={sids}"],
+                )
+            )
+
+    # (b) Multiple worktrees on the same branch
+    branch_to_worktrees: dict[str, list[str]] = {}
+    for wt in worktrees:
+        branch = wt.get("branch")
+        if branch:
+            branch_to_worktrees.setdefault(branch, []).append(wt.get("path", "?"))
+    for branch, paths in branch_to_worktrees.items():
+        if len(paths) > 1:
+            risks.append(
+                RaceRisk(
+                    code="multi-worktree-same-branch",
+                    description="Multiple worktrees share the same branch",
+                    details=[f"branch={branch!r}", f"paths={paths}"],
+                )
+            )
+
+    # (c) >1 hour stash from a session no longer active
+    active_session_ids: set[str] = {s["id"] for s in sessions if s.get("alive")}
+    for stash in stashes:
+        age = stash.get("age_seconds", 0) or 0
+        subject = stash.get("subject", "")
+        if age < RACE_RISK_STALE_STASH_THRESHOLD:
+            continue
+        # Try to match stash subject to a session ID prefix
+        stash_from_dead_session = True
+        for sid in active_session_ids:
+            if sid[:8] in subject:
+                stash_from_dead_session = False
+                break
+        if stash_from_dead_session:
+            risks.append(
+                RaceRisk(
+                    code="stale-orphan-stash",
+                    description="Stash older than 1 hour not linked to any active session",
+                    details=[
+                        f"ref={stash['ref']}",
+                        f"age={age}s",
+                        f"subject={subject!r}",
+                    ],
+                )
+            )
+
+    # (d) Sessions registered in active-sessions.json but PID no longer alive
+    # These are "zombie" registry entries that can mislead other tools into
+    # thinking more work is in flight than actually is.
+    zombie_sessions = [
+        s for s in sessions
+        if s.get("in_active_registry") and not s.get("alive")
+    ]
+    if zombie_sessions:
+        risks.append(
+            RaceRisk(
+                code="zombie-registry-sessions",
+                description="Sessions in active-sessions.json whose PID is no longer alive",
+                details=[f"count={len(zombie_sessions)}"]
+                + [f"id={s['id']} pid={s.get('pid')}" for s in zombie_sessions[:5]],
+            )
+        )
+
+    return [r.to_dict() for r in risks]
+
+
+# ---------------------------------------------------------------------------
+# Findings builder (original + extended)
+# ---------------------------------------------------------------------------
+
+
 def build_findings(payload: dict[str, Any]) -> list[Finding]:
     findings: list[Finding] = []
     status = payload["status"]
@@ -422,7 +826,7 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
     project = Path(args.project_dir).expanduser().resolve()
     if not is_git_repo(project):
         raise SystemExit(f"Not a git repository: {project}")
-    payload = {
+    payload: dict[str, Any] = {
         "project": str(project),
         "base_ref": args.base_ref,
         "branch_pattern": args.branch_pattern,
@@ -431,6 +835,54 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         "worktrees": collect_worktrees(project),
         "stashes": collect_stashes(project, args.stash_warn_ttl, args.stash_block_ttl),
     }
+
+    # P3.3 dimensions
+    want_sessions = getattr(args, "sessions", False) or getattr(args, "all", False)
+    want_orphans = getattr(args, "orphans", False) or getattr(args, "all", False)
+    want_worktrees_direct = getattr(args, "worktrees_direct", False) or getattr(args, "all", False)
+    want_stashes_extended = getattr(args, "stashes_extended", False) or getattr(args, "all", False)
+    want_claims = getattr(args, "claims", False) or getattr(args, "all", False)
+    want_race_risks = getattr(args, "race_risks", False) or getattr(args, "all", False)
+
+    if want_sessions:
+        payload["sessions"] = collect_sessions(project)
+    else:
+        payload["sessions"] = []
+
+    if want_orphans:
+        payload["orphans"] = collect_orphans(project)
+    else:
+        payload["orphans"] = []
+
+    if want_worktrees_direct:
+        payload["worktrees_direct"] = collect_worktrees_direct(project)
+    else:
+        payload["worktrees_direct"] = []
+
+    # Stashes extended replaces/augments the base stashes list
+    if want_stashes_extended:
+        payload["stashes_extended"] = collect_stashes_extended(project, args.stash_warn_ttl, args.stash_block_ttl)
+    else:
+        payload["stashes_extended"] = []
+
+    if want_claims:
+        payload["claims"] = collect_claims(project)
+    else:
+        payload["claims"] = []
+
+    if want_race_risks:
+        sessions_for_risk = payload.get("sessions") or collect_sessions(project)
+        worktrees_for_risk = payload.get("worktrees_direct") or collect_worktrees_direct(project)
+        stashes_for_risk = payload.get("stashes_extended") or collect_stashes_extended(
+            project, args.stash_warn_ttl, args.stash_block_ttl
+        )
+        claims_for_risk = payload.get("claims") or collect_claims(project)
+        payload["race_risks"] = collect_race_risks(
+            sessions_for_risk, worktrees_for_risk, stashes_for_risk, claims_for_risk
+        )
+    else:
+        payload["race_risks"] = []
+
     findings = build_findings(payload)
     payload["findings"] = [finding.to_dict() for finding in findings]
     payload["summary"] = {
@@ -439,6 +891,10 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         "preserve_branch_count": len(payload["preserve_branches"]),
         "worktree_count": len(payload["worktrees"]),
         "stash_count": len(payload["stashes"]),
+        "session_count": len(payload["sessions"]),
+        "orphan_count": len(payload["orphans"]),
+        "claim_count": len(payload["claims"]),
+        "race_risk_count": len(payload["race_risks"]),
     }
     return payload
 
@@ -448,7 +904,12 @@ def print_text(payload: dict[str, Any]) -> None:
     status = payload["status"]
     print(f"Project: {payload['project']}")
     print(f"Base ref: {payload['base_ref']}")
-    print(f"Branch: {status.get('branch') or 'detached'} head={status.get('head') or '-'} upstream={status.get('upstream') or '-'} ahead={status.get('ahead')} behind={status.get('behind')}")
+    print(
+        f"Branch: {status.get('branch') or 'detached'} "
+        f"head={status.get('head') or '-'} "
+        f"upstream={status.get('upstream') or '-'} "
+        f"ahead={status.get('ahead')} behind={status.get('behind')}"
+    )
     print("Checklist:")
     checks = [
         ("current worktree has no conflicts", status["counts"]["unmerged"] == 0),
@@ -461,13 +922,74 @@ def print_text(payload: dict[str, Any]) -> None:
     ]
     for label, ok in checks:
         print(f"  {'PASS' if ok else 'WARN'} {label}")
+
+    # --- P3.3 dimensions output ---
+    sessions = payload.get("sessions", [])
+    if sessions:
+        print(f"\nSessions ({len(sessions)}):")
+        for s in sessions:
+            alive_str = "alive" if s.get("alive") else "dead"
+            age = s.get("age_seconds")
+            age_str = f"{age}s" if age is not None else "?"
+            task = s.get("current_task") or "-"
+            registry = "registered" if s.get("in_active_registry") else "unregistered"
+            print(f"  {s['id']} pid={s.get('pid')} [{alive_str}] age={age_str} [{registry}] task={task!r}")
+
+    orphans = payload.get("orphans", [])
+    if orphans:
+        print(f"\nOrphan commits ({len(orphans)}):")
+        for o in orphans[:20]:
+            commit = o.get("commit") or o.get("full_hash", "?")[:12]
+            subject = o.get("subject") or o.get("message", "?")
+            print(f"  {commit} {subject}")
+        if len(orphans) > 20:
+            print(f"  ... and {len(orphans) - 20} more")
+
+    worktrees_direct = payload.get("worktrees_direct", [])
+    if worktrees_direct:
+        print(f"\nWorktrees (direct, {len(worktrees_direct)}):")
+        for wt in worktrees_direct:
+            locked_str = " [locked]" if wt.get("locked") else ""
+            prunable_str = " [PRUNABLE]" if wt.get("prunable") else ""
+            print(f"  {wt.get('path', '?')} branch={wt.get('branch') or 'detached'}{locked_str}{prunable_str}")
+
+    stashes_extended = payload.get("stashes_extended", [])
+    if stashes_extended:
+        print(f"\nStashes extended ({len(stashes_extended)}):")
+        for s in stashes_extended:
+            tag = s.get("provenance_tag", "user")
+            print(
+                f"  {s['ref']} [{s['level']}] [{tag}] age={s['age_seconds']}s "
+                f"branch={s.get('on_branch') or '?'} :: {s['subject']}"
+            )
+
+    claims = payload.get("claims", [])
+    if claims:
+        print(f"\nActive claims ({len(claims)}):")
+        for c in claims:
+            task_id = c.get("task_id") or c.get("id", "?")
+            session = c.get("session_id", "?")
+            desc = c.get("description") or c.get("task", "?")
+            print(f"  {task_id} session={session} :: {desc}")
+
+    race_risks = payload.get("race_risks", [])
+    if race_risks:
+        print(f"\nRace risks ({len(race_risks)}):")
+        for r in race_risks:
+            print(f"  RISK [{r['code']}] {r['description']}")
+            for d in r.get("details", []):
+                print(f"    {d}")
+    elif "race_risks" in payload:
+        print("\nRace risks: none detected")
+
     if payload["findings"]:
-        print("Findings:")
+        print("\nFindings:")
         for finding in payload["findings"]:
             print(f"  {finding['level']} {finding['code']} {finding['subject']} :: {finding['detail']}")
             print(f"    action: {finding['action']}")
     else:
-        print("Findings: none")
+        print("\nFindings: none")
+
     print(
         "Result: "
         + ("BLOCK" if summary["blockers"] else "WARN" if summary["warnings"] else "PASS")
@@ -477,13 +999,37 @@ def print_text(payload: dict[str, Any]) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--project-dir", default=os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd())
+    parser.add_argument(
+        "--project-dir",
+        default=os.environ.get("COGNITIVE_OS_PROJECT_DIR")
+        or os.environ.get("CODEX_PROJECT_DIR")
+        or os.environ.get("CLAUDE_PROJECT_DIR")
+        or os.getcwd(),
+    )
     parser.add_argument("--branch-pattern", default=DEFAULT_BRANCH_PATTERN)
     parser.add_argument("--base-ref", default="HEAD")
-    parser.add_argument("--stash-warn-ttl", type=int, default=int(os.environ.get("COS_STASH_LEAK_TTL", DEFAULT_STASH_WARN_TTL)))
-    parser.add_argument("--stash-block-ttl", type=int, default=int(os.environ.get("COS_STASH_LEAK_BLOCK_TTL", DEFAULT_STASH_BLOCK_TTL)))
+    parser.add_argument(
+        "--stash-warn-ttl",
+        type=int,
+        default=int(os.environ.get("COS_STASH_LEAK_TTL", DEFAULT_STASH_WARN_TTL)),
+    )
+    parser.add_argument(
+        "--stash-block-ttl",
+        type=int,
+        default=int(os.environ.get("COS_STASH_LEAK_BLOCK_TTL", DEFAULT_STASH_BLOCK_TTL)),
+    )
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--strict", action="store_true", help="Exit non-zero when warnings or blockers exist.")
+
+    # P3.3 dimension flags
+    parser.add_argument("--sessions", action="store_true", help="Include active session metadata.")
+    parser.add_argument("--orphans", action="store_true", help="Include orphan commit scan.")
+    parser.add_argument("--worktrees", dest="worktrees_direct", action="store_true", help="Read .git/worktrees/ directly (no git worktree command).")
+    parser.add_argument("--stashes", dest="stashes_extended", action="store_true", help="Include extended stash provenance.")
+    parser.add_argument("--claims", action="store_true", help="Include active task claims.")
+    parser.add_argument("--race-risks", dest="race_risks", action="store_true", help="Run race-condition heuristics.")
+    parser.add_argument("--all", dest="all", action="store_true", help="Enable all P3.3 dimensions.")
+
     return parser
 
 
