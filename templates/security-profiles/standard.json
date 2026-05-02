@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
   "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 63,
+  "_hook_count": 64,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -79,6 +79,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/memory-prefetch.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/stash-budget-warn.sh\"",
             "async": true
           }
         ]
