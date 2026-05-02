@@ -1,0 +1,59 @@
+{
+  "tools": [
+    {
+      "name": "lethal-trifecta-policy",
+      "source": "https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/",
+      "version_ref": "2025-06-16-article",
+      "license_spdx": "N/A-docs-policy",
+      "install_mode": "none",
+      "default_enabled": true,
+      "data_sharing": "none",
+      "weight": "None",
+      "notes": "Doctrine implemented internally; no code dependency."
+    },
+    {
+      "name": "promptfoo",
+      "source": "https://github.com/promptfoo/promptfoo",
+      "version_ref": "pinned-before-use",
+      "license_spdx": "MIT",
+      "install_mode": "optional-cli",
+      "default_enabled": false,
+      "data_sharing": "operator-configured",
+      "weight": "High",
+      "notes": "Optional red-team/eval lane only; no default npm dependency."
+    },
+    {
+      "name": "garak",
+      "source": "https://github.com/NVIDIA/garak",
+      "version_ref": "pinned-before-use",
+      "license_spdx": "Apache-2.0",
+      "install_mode": "optional-cli",
+      "default_enabled": false,
+      "data_sharing": "operator-configured",
+      "weight": "High",
+      "notes": "Optional deep red-team lane only."
+    },
+    {
+      "name": "swe-bench",
+      "source": "https://github.com/swe-bench/SWE-bench",
+      "version_ref": "pinned-before-use",
+      "license_spdx": "license-scan-required",
+      "install_mode": "optional-container",
+      "default_enabled": false,
+      "data_sharing": "benchmark-dataset-local",
+      "weight": "Very high",
+      "notes": "External benchmark adapter only."
+    },
+    {
+      "name": "opencode",
+      "source": "https://github.com/opencode-ai/opencode",
+      "version_ref": "pinned-before-use",
+      "license_spdx": "MIT",
+      "install_mode": "optional-cli",
+      "default_enabled": false,
+      "data_sharing": "operator-configured",
+      "weight": "Medium/High",
+      "notes": "Reference or optional adapter; not core."
+    }
+  ]
+}
