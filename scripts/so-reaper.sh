@@ -68,6 +68,7 @@ PYEOF
 
 # ── Fix 3 (ADR-097): Sweep active-tasks.json for zombie/stale records ─────
 # - in_progress with dead PID → cancelled-zombie
+# - in_progress with pid=null and age > 30 min → cancelled-stale
 # - pending with pid=null, age > 30 min → cancelled-stale
 # - pending with pid=null, age < 30 min → leave (might still be starting)
 # NOTE: never kills processes; marks records only.
@@ -133,6 +134,14 @@ try:
                         t["outputSummary"] = f"reaped: pid {pid} not alive"
                         changed = True
                         reaped.append(("zombie", t["id"], pid))
+
+                elif status == "in_progress" and pid is None:
+                    if age is not None and age > STALE_SECS:
+                        t["status"] = "cancelled-stale"
+                        t["completedAt"] = now_iso
+                        t["outputSummary"] = f"reaped: in_progress without pid for {int(age)}s"
+                        changed = True
+                        reaped.append(("stale-in-progress", t["id"], None))
 
                 elif status == "pending" and pid is None:
                     if age is not None and age > STALE_SECS:

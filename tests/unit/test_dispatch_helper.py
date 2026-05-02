@@ -11,9 +11,9 @@ from __future__ import annotations
 
 import json
 import os
-import time
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -37,6 +37,12 @@ def _write_config(path: str, max_parallel: int = 5) -> None:
             f"project:\n  phase: reconstruction\n"
             f"resources:\n  compute:\n    max_parallel_agents: {max_parallel}\n"
         )
+
+
+def _iso_age(seconds: int) -> str:
+    return (datetime.now(timezone.utc) - timedelta(seconds=seconds)).strftime(
+        "%Y-%m-%dT%H:%M:%SZ"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -84,7 +90,7 @@ class TestCheckSlotAvailability:
         assert result["max"] == 2
 
     def test_counts_only_in_progress_tasks(self, tmp_path):
-        """Only in_progress tasks count toward the active slot total."""
+        """Only dispatch-active in_progress tasks count toward the active slot total."""
         from lib.dispatch_helper import check_slot_availability
 
         tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
@@ -93,12 +99,44 @@ class TestCheckSlotAvailability:
 
         mixed = [
             {"id": "t1", "status": "completed", "description": "done"},
-            {"id": "t2", "status": "in_progress", "description": "running"},
+            {"id": "t2", "status": "in_progress", "description": "running", "pid": os.getpid()},
             {"id": "t3", "status": "pending", "description": "waiting"},
             {"id": "t4", "status": "failed", "description": "dead"},
-            {"id": "t5", "status": "in_progress", "description": "also running"},
+            {"id": "t5", "status": "in_progress", "description": "starting", "pid": None, "started_at": _iso_age(30)},
         ]
         _write_tasks(tasks_path, mixed)
+
+        result = check_slot_availability(config_path=cfg_path, tasks_path=tasks_path)
+
+        assert result["active"] == 2
+
+    def test_excludes_dead_pid_and_stale_pidless_in_progress(self, tmp_path):
+        """Zombie and stale-starting in_progress records must not saturate slots."""
+        from lib.dispatch_helper import check_slot_availability
+
+        tasks_path = str(tmp_path / "tasks" / "active-tasks.json")
+        cfg_path = str(tmp_path / "cognitive-os.yaml")
+        _write_config(cfg_path, max_parallel=5)
+        _write_tasks(
+            tasks_path,
+            [
+                {"id": "live", "status": "in_progress", "pid": os.getpid()},
+                {"id": "dead", "status": "in_progress", "pid": 99999999},
+                {
+                    "id": "stale-pidless",
+                    "status": "in_progress",
+                    "pid": None,
+                    "started_at": _iso_age(4000),
+                },
+                {
+                    "id": "fresh-pidless",
+                    "status": "in_progress",
+                    "pid": None,
+                    "started_at": _iso_age(30),
+                },
+                {"id": "pending", "status": "pending", "pid": None},
+            ],
+        )
 
         result = check_slot_availability(config_path=cfg_path, tasks_path=tasks_path)
 
