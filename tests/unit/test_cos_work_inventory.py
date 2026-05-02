@@ -40,6 +40,7 @@ def _args(**kwargs):
         "claims": False,
         "race_risks": False,
         "all": False,
+        "volume_alarm_threshold": 500,
     }
     defaults.update(kwargs)
     return SimpleNamespace(**defaults)
@@ -361,6 +362,12 @@ class TestCollectRaceRisks:
         zombie_risk = next(r for r in risks if r["code"] == "zombie-registry-sessions")
         assert any("count=1" in d for d in zombie_risk["details"])
 
+    def test_session_volume_exceeded(self):
+        stats = {"session_dir_count": 4, "marker_file_count": 2, "total_artifact_count": 6}
+        risks = cwi.collect_race_risks([], [], [], [], stats, volume_alarm_threshold=5)
+        codes = [r["code"] for r in risks]
+        assert "session-volume-exceeded" in codes
+
     def test_no_risks_clean_state(self):
         risks = cwi.collect_race_risks([], [], [], [])
         assert risks == []
@@ -396,6 +403,7 @@ class TestAllFlagAndJsonOutput:
             "stashes_extended": [],
             "claims": [],
             "race_risks": [],
+            "session_fs_stats": {"session_dir_count": 0, "marker_file_count": 0, "total_artifact_count": 0, "path": str(tmp_path / ".cognitive-os" / "sessions")},
             "findings": [],
             "summary": {
                 "blockers": 0,
@@ -404,6 +412,7 @@ class TestAllFlagAndJsonOutput:
                 "worktree_count": 0,
                 "stash_count": 0,
                 "session_count": 0,
+                "session_fs_artifact_count": 0,
                 "orphan_count": 0,
                 "claim_count": 0,
                 "race_risk_count": 0,
