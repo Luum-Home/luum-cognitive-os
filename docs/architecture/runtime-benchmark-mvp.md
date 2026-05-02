@@ -20,7 +20,7 @@ The `--execute` lane currently exercises:
 - Schema/helpers/local checks: `lib/runtime_benchmark.py`
 - Tasks: `.cognitive-os/tests/runtime-comparison/tasks.yaml`
 - Runner: `scripts/run-runtime-benchmark.sh`
-- Report: `scripts/runtime-benchmark-report.py`
+- Report: `scripts/runtime_benchmark_report.py`
 - Tests: `tests/contracts/test_runtime_benchmark_schema.py`
 
 Generated metrics are appended to `.cognitive-os/metrics/runtime-benchmark-results.jsonl`; the leaderboard is written to `.cognitive-os/reports/runtime-benchmark-leaderboard.md`.
