@@ -1097,6 +1097,12 @@ harness:
       matcher: Bash
       scope: both
 
+    symlink-mutation-guard:
+      script: hooks/symlink-mutation-guard.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     git-commit-scope-guard:
       script: hooks/git-commit-scope-guard.sh
       event: PreToolUse
@@ -1105,6 +1111,12 @@ harness:
 
     orchestrator-claim-gate:
       script: hooks/orchestrator-claim-gate.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
+    scope-marker-portability-gate:
+      script: hooks/scope-marker-portability-gate.sh
       event: PreToolUse
       matcher: Bash
       scope: both

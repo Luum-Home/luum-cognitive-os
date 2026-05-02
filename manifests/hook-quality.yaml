@@ -1149,6 +1149,18 @@ hooks:
     safe_degradation: warn_or_block_by_policy
     scope: os-only
     script: hooks/rule-frontmatter-validator.sh
+  scope-marker-portability-gate:
+    behavior_tests: []
+    criticality: standard
+    event: PreToolUse
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: Bash
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: both
+    script: hooks/scope-marker-portability-gate.sh
   secret-detector:
     behavior_tests:
     - tests/behavior/test_hook_architecture.py
@@ -1561,6 +1573,18 @@ hooks:
     safe_degradation: warn_or_block_by_policy
     scope: os-only
     script: hooks/surface-fix-detector.sh
+  symlink-mutation-guard:
+    behavior_tests: []
+    criticality: standard
+    event: PreToolUse
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: Bash
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: both
+    script: hooks/symlink-mutation-guard.sh
   task-completed:
     behavior_tests: []
     criticality: standard
