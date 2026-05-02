@@ -18,7 +18,16 @@ PRE_AGENT_SNAPSHOT = PROJECT_ROOT / "hooks" / "pre-agent-snapshot.sh"
 PROFILE_AUTOAPPLY = PROJECT_ROOT / "hooks" / "profile-drift-autoapply.sh"
 
 
-def test_validation_capsule_runs_in_isolated_worktree() -> None:
+def test_validation_capsule_runs_in_isolated_worktree(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.name", "Test User"], cwd=repo, check=True)
+    (repo / "README.md").write_text("unit repo\n", encoding="utf-8")
+    subprocess.run(["git", "add", "README.md"], cwd=repo, check=True)
+    subprocess.run(["git", "commit", "-m", "base"], cwd=repo, check=True, capture_output=True)
+
     result = subprocess.run(
         [
             "bash",
@@ -31,17 +40,16 @@ def test_validation_capsule_runs_in_isolated_worktree() -> None:
             "-c",
             "pwd; test -z \"${COGNITIVE_OS_PROJECT_DIR:-}\" && test -n \"${COS_VALIDATION_SOURCE_PROJECT_DIR:-}\"",
         ],
-        cwd=PROJECT_ROOT,
+        cwd=repo,
         text=True,
         capture_output=True,
         timeout=60,
     )
     assert result.returncode == 0, result.stdout + result.stderr
     capsule_pwd = result.stdout.strip().splitlines()[0]
-    assert str(PROJECT_ROOT) not in capsule_pwd
+    assert str(repo) not in capsule_pwd
     assert "cos-validation-capsules" in capsule_pwd
-    assert not (PROJECT_ROOT / ".cognitive-os" / "runtime" / "validation-capsule.lock").exists()
-
+    assert not (repo / ".cognitive-os" / "runtime" / "validation-capsule.lock").exists()
 
 def test_validation_lock_helper_treats_live_lock_as_active(tmp_path: Path) -> None:
     runtime = tmp_path / ".cognitive-os" / "runtime"
