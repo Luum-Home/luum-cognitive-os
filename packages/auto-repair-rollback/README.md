@@ -1,16 +1,13 @@
 # @luum/auto-repair-rollback
 
-Auto-rollback trigger — detects verify-apply loop exhaustion and initiates rollback
-
-## Install
-
-```bash
-cos install @luum/auto-repair-rollback
-```
+Rollback planning trigger — detects verify-apply loop exhaustion and requests a human-approved rollback evidence package.
 
 ## Components
 
-- `hooks/auto-rollback-trigger.sh` (hook) -- Triggers auto-rollback when SDD verify-apply retries are exhausted
+- `hooks/auto-rollback-trigger.sh` logs `mode=plan_required`; it does not execute destructive git commands.
+- `skills/auto-rollback/SKILL.md` prepares evidence and waits for explicit operator approval.
+
+ADR-107 requires human approval for destructive git in every phase.
 
 ## License
 
