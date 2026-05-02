@@ -227,6 +227,60 @@ def archive_root(project_dir: Path) -> Path:
     return project_dir / ".cognitive-os" / "archive" / "sessions"
 
 
+def marker_archive_root(project_dir: Path) -> Path:
+    return archive_root(project_dir) / "_markers"
+
+
+def is_session_marker(path: Path) -> bool:
+    """Return true for per-session marker files that are safe to reap.
+
+    Runtime coordination files such as active-sessions.json, lock files, and
+    event streams are intentionally excluded. The marker files below are
+    per-PID breadcrumbs created by session startup and are the source of the
+    high-volume filesystem accumulation reported by cos_work_inventory.py.
+    """
+    return path.is_file() and (
+        path.name.startswith(".current-session-")
+        or (path.name.startswith(".context-") and path.suffix == ".json")
+    )
+
+
+def marker_pid(path: Path) -> int | None:
+    for prefix in (".current-session-", ".context-"):
+        if path.name.startswith(prefix):
+            raw = path.name[len(prefix) :]
+            if raw.endswith(".json"):
+                raw = raw[: -len(".json")]
+            try:
+                return int(raw)
+            except ValueError:
+                return None
+    return None
+
+
+def marker_age_seconds(path: Path, now: float | None = None) -> int | None:
+    now = time.time() if now is None else now
+    try:
+        return max(0, int(now - path.stat().st_mtime))
+    except OSError:
+        return None
+
+
+def marker_reap_decision(path: Path, *, now: float | None = None, grace_seconds: int = 24 * 3600) -> ReapDecision:
+    sid = path.name
+    if not is_session_marker(path):
+        return ReapDecision(sid, str(path), "ERROR_UNREADABLE", "not a reapable session marker")
+    age = marker_age_seconds(path, now=now)
+    pid = marker_pid(path)
+    if pid_alive(pid):
+        return ReapDecision(sid, str(path), "KEEP_ACTIVE", f"pid {pid} alive", age)
+    if age is None:
+        return ReapDecision(sid, str(path), "ERROR_UNREADABLE", "cannot determine age", None)
+    if age < grace_seconds:
+        return ReapDecision(sid, str(path), "KEEP_RECENT_GRACE", f"age {age}s below grace {grace_seconds}s", age)
+    return ReapDecision(sid, str(path), "ARCHIVE", "dead marker beyond grace", age)
+
+
 def archive_session(session_dir: Path, archive_dir: Path, *, now: float | None = None) -> str:
     archive_dir.mkdir(parents=True, exist_ok=True)
     target = archive_dir / session_dir.name
@@ -242,6 +296,17 @@ def archive_session(session_dir: Path, archive_dir: Path, *, now: float | None =
     return str(target)
 
 
+def archive_marker(marker: Path, project_dir: Path, *, now: float | None = None) -> str:
+    archive_dir = marker_archive_root(project_dir)
+    archive_dir.mkdir(parents=True, exist_ok=True)
+    target = archive_dir / marker.name
+    if target.exists():
+        suffix = int(time.time() if now is None else now)
+        target = archive_dir / f"{marker.name}.{suffix}"
+    shutil.move(str(marker), str(target))
+    return str(target)
+
+
 def reap_archived_sessions(project_dir: Path, *, now: float | None = None, archive_retention_days: int = 90, dry_run: bool = False) -> list[ReapDecision]:
     root = archive_root(project_dir)
     if not root.exists():
@@ -254,6 +319,26 @@ def reap_archived_sessions(project_dir: Path, *, now: float | None = None, archi
         decisions.append(decision)
         if decision.decision == "RM_ARCHIVED" and not dry_run:
             shutil.rmtree(session_dir)
+    return decisions
+
+
+def reap_archived_markers(project_dir: Path, *, now: float | None = None, archive_retention_days: int = 90, dry_run: bool = False) -> list[ReapDecision]:
+    root = marker_archive_root(project_dir)
+    if not root.exists():
+        return []
+    now = time.time() if now is None else now
+    decisions: list[ReapDecision] = []
+    for marker in sorted(root.iterdir()):
+        if not marker.is_file():
+            continue
+        age = marker_age_seconds(marker, now=now)
+        if age is not None and age >= archive_retention_days * 24 * 3600:
+            decision = ReapDecision(marker.name, str(marker), "RM_ARCHIVED", "marker archive retention exceeded", age)
+            if not dry_run:
+                marker.unlink()
+        else:
+            decision = ReapDecision(marker.name, str(marker), "KEEP_RECENT_GRACE", "marker archive retention grace", age)
+        decisions.append(decision)
     return decisions
 
 
@@ -274,7 +359,7 @@ def reap_sessions(
 
     if root.exists():
         for session_dir in sorted(root.iterdir()):
-            if not session_dir.is_dir() or session_dir.name == "active-sessions.json":
+            if not session_dir.is_dir():
                 continue
             decision = reap_decision(session_dir, now=now, grace_seconds=grace_seconds)
             decisions.append(decision)
@@ -284,7 +369,23 @@ def reap_sessions(
                 except Exception as exc:  # keep going; reaper must degrade safely
                     errors.append(f"archive {session_dir}: {exc}")
 
+        for marker in sorted(root.iterdir()):
+            if not is_session_marker(marker):
+                continue
+            decision = marker_reap_decision(marker, now=now, grace_seconds=grace_seconds)
+            decisions.append(decision)
+            if decision.decision == "ARCHIVE" and not dry_run:
+                try:
+                    archived.append(archive_marker(marker, project_dir, now=now))
+                except Exception as exc:  # keep going; reaper must degrade safely
+                    errors.append(f"archive marker {marker}: {exc}")
+
     for decision in reap_archived_sessions(project_dir, now=now, archive_retention_days=archive_retention_days, dry_run=dry_run):
+        decisions.append(decision)
+        if decision.decision == "RM_ARCHIVED" and not dry_run:
+            removed.append(decision.path)
+
+    for decision in reap_archived_markers(project_dir, now=now, archive_retention_days=archive_retention_days, dry_run=dry_run):
         decisions.append(decision)
         if decision.decision == "RM_ARCHIVED" and not dry_run:
             removed.append(decision.path)
