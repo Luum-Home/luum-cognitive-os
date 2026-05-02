@@ -1115,6 +1115,12 @@ harness:
       matcher: Bash
       scope: both
 
+    pre-commit-content-hash-dedupe:
+      script: hooks/pre-commit-content-hash-dedupe.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     scope-marker-portability-gate:
       script: hooks/scope-marker-portability-gate.sh
       event: PreToolUse
