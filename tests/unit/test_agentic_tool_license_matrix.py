@@ -105,3 +105,17 @@ def test_main_writes_markdown_and_json_reports(tmp_path: Path) -> None:
     assert "safe-tool" in report
     data = json.loads(json_out.read_text(encoding="utf-8"))
     assert data["passed"] is True
+
+def test_hyphenated_cli_entrypoint_exists_and_runs(tmp_path: Path) -> None:
+    manifest = tmp_path / "tools.json"
+    markdown = tmp_path / "report.md"
+    write_manifest(manifest, [tool_row(name="safe-tool")])
+
+    wrapper_path = Path(__file__).resolve().parents[2] / "scripts" / "agentic-tool-license-matrix.py"
+    wrapper_spec = importlib.util.spec_from_file_location("agentic_tool_license_matrix_cli", wrapper_path)
+    assert wrapper_spec and wrapper_spec.loader
+    wrapper = importlib.util.module_from_spec(wrapper_spec)
+    wrapper_spec.loader.exec_module(wrapper)
+
+    assert wrapper.main(["--manifest", str(manifest), "--markdown-out", str(markdown)]) == 0
+    assert "safe-tool" in markdown.read_text(encoding="utf-8")
