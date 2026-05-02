@@ -29,6 +29,9 @@ SCRIPT="$PROJECT_DIR/scripts/orchestrator_claim_gate.py"
 
 if printf '%s' "$COMMAND" | grep -Eq '(^|[;&|[:space:]])git([[:space:]]+-[^[:space:]]+)*[[:space:]]+push\b'; then
   GATE_MODE="pre-push"
+  # ADR-116 P4.2: subject collision detection before claim-gate claim check
+  _COLLISION_LIB="$(cd "$(dirname "$0")" && pwd)/_lib/push-collision-check.sh"
+  [ -f "$_COLLISION_LIB" ] && source "$_COLLISION_LIB" && run_push_collision_check "$PROJECT_DIR" || true
 else
   GATE_MODE="pre-commit"
 fi
