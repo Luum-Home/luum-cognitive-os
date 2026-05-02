@@ -135,6 +135,15 @@ Then:
 git worktree remove /path/to/bb5a
 ```
 
+
+## Related cleanup primitive
+
+When the operator confirms there are no active agents and the remaining blockers
+are only preserved stashes, temporary validation capsule worktrees, or zombie
+session registry entries, switch to `preserved-wip-cleanup`. Do not use that
+skill for named feature worktrees that still need porting; this skill remains
+the required path for branch/worktree triage.
+
 ## Exit codes
 
 - `0`: no blockers detected. Check `safe_to_remove` before cleanup.
