@@ -10,6 +10,7 @@
 # This hook now performs only structural checks:
 #   1. Coverage artifact check (advisory warn only, never blocks)
 #   2. Content-policy check on staged files
+#   3. Derived artifact / harness projection check (fast structural gate)
 #
 # Full test verification: run `bash hooks/global-verify.sh` before committing,
 # or rely on CI. Do NOT add pytest back here.
@@ -118,5 +119,18 @@ EOF
 fi
 
 # ─── All clear ───────────────────────────────────────────────────────────────
+
+derived_gate="$ROOT_DIR/scripts/derived_artifact_gate.py"
+if [ -x "$derived_gate" ] && command -v python3 >/dev/null 2>&1; then
+  if ! python3 "$derived_gate" --staged >/dev/null; then
+    echo "COMMIT BLOCKED: derived Cognitive OS artifacts are stale or incomplete." >&2
+    echo "Run the relevant generator(s), stage the derived artifacts, and retry:" >&2
+    echo "  python3 scripts/hook_quality_audit.py --sync" >&2
+    echo "  bash scripts/_lib/settings-driver-claude-code.sh" >&2
+    echo "  bash scripts/_lib/settings-driver-codex.sh" >&2
+    echo "  python3 scripts/derived_artifact_gate.py --staged" >&2
+    exit 1
+  fi
+fi
 
 exit 0

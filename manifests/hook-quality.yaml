@@ -56,6 +56,7 @@ hooks:
     script: hooks/agent-checkpoint.sh
   agent-prelaunch:
     behavior_tests:
+    - tests/behavior/test_adr108_ledger_hook_wiring.py
     - tests/behavior/test_hooks_batch1.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_task_tracker_lifecycle.py
@@ -237,6 +238,7 @@ hooks:
     script: hooks/blast-radius.sh
   claim-validator:
     behavior_tests:
+    - tests/behavior/test_adr108_ledger_hook_wiring.py
     - tests/behavior/test_claim_validator.py
     - tests/contracts/test_p95_hook_latency.py
     - tests/contracts/test_red_team_harness_primitives.py
@@ -244,6 +246,7 @@ hooks:
     - tests/unit/test_capability_level5.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_concurrent_agent_safety_status.py
+    - tests/unit/test_gate_runner.py
     criticality: quality
     event: PostToolUse
     harness_tiers:
@@ -300,6 +303,7 @@ hooks:
     script: hooks/completeness-check.sh
   completion-gate:
     behavior_tests:
+    - tests/behavior/test_adr108_ledger_hook_wiring.py
     - tests/behavior/test_clarification_gate.py
     - tests/behavior/test_hook_architecture.py
     - tests/behavior/test_hooks_batch1.py
@@ -321,6 +325,7 @@ hooks:
     behavior_tests:
     - tests/behavior/test_file_locking.py
     - tests/chaos/test_concurrent_write_guard_exercised.py
+    - tests/chaos/test_multi_ide_swarm_safety.py
     - tests/unit/test_concurrent_agent_safety_status.py
     - tests/unit/test_concurrent_write_guard_behavior.py
     criticality: standard
@@ -451,6 +456,7 @@ hooks:
     behavior_tests:
     - tests/behavior/test_destructive_git_blocker.py
     - tests/chaos/test_destructive_rm_blocker.py
+    - tests/chaos/test_multi_ide_swarm_safety.py
     - tests/chaos/test_reset_cascade_detector.py
     - tests/chaos/test_safety_drill.py
     - tests/contracts/test_killswitch.py
@@ -908,8 +914,10 @@ hooks:
     script: hooks/native-agent-heartbeat.sh
   orchestrator-claim-gate:
     behavior_tests:
+    - tests/chaos/test_multi_ide_swarm_safety.py
     - tests/contracts/test_orchestrator_claim_gate.py
     - tests/unit/test_concurrent_agent_safety_status.py
+    - tests/unit/test_gate_runner.py
     criticality: quality
     event: PreToolUse
     harness_tiers:
@@ -925,6 +933,7 @@ hooks:
     - tests/contracts/test_red_team_harness_primitives.py
     - tests/contracts/test_redteam_portability_coverage.py
     - tests/unit/test_concurrent_agent_safety_status.py
+    - tests/unit/test_gate_runner.py
     criticality: quality
     event: PreToolUse
     harness_tiers:
@@ -960,6 +969,18 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: both
     script: hooks/post-agent-verify.sh
+  post-git-orphan-notifier:
+    behavior_tests: []
+    criticality: standard
+    event: PostToolUse
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: Bash
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: both
+    script: hooks/post-git-orphan-notifier.sh
   pre-agent-snapshot:
     behavior_tests:
     - tests/behavior/test_post_agent_verify.py
@@ -976,6 +997,19 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/pre-agent-snapshot.sh
+  pre-commit-content-hash-dedupe:
+    behavior_tests:
+    - tests/unit/test_precommit_content_hash.py
+    criticality: standard
+    event: PreToolUse
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: Bash
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: both
+    script: hooks/pre-commit-content-hash-dedupe.sh
   pre-compaction-flush:
     behavior_tests:
     - tests/behavior/test_agent_resilience.py
@@ -1126,6 +1160,7 @@ hooks:
     - tests/unit/test_rate_limiter_behavior.py
     - tests/unit/test_rate_limiter_edge_matrix.py
     - tests/unit/test_self_knowledge_query.py
+    - tests/unit/test_work_identity.py
     criticality: standard
     event: PreToolUse
     harness_tiers:
@@ -1212,6 +1247,7 @@ hooks:
   scope-marker-portability-gate:
     behavior_tests:
     - tests/contracts/test_redteam_portability_coverage.py
+    - tests/unit/test_gate_runner.py
     criticality: standard
     event: PreToolUse
     harness_tiers:
@@ -1591,6 +1627,18 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/skill-usage-tracker.sh
+  stash-budget-warn:
+    behavior_tests: []
+    criticality: standard
+    event: UserPromptSubmit
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: ''
+    max_runtime_ms: 2500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/stash-budget-warn.sh
   state-heartbeat:
     behavior_tests:
     - tests/behavior/test_hook_architecture.py

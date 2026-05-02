@@ -2,14 +2,14 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — transactional rollout in progress
 **Date**: 2026-05-02
 **Author**: Maintainer (operator) + Software Architect (analysis)
 **Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-098 (multi-agent file edit-locks), ADR-099 (pre-agent snapshot copy-on-untracked), ADR-102 (task-tracker lifecycle), ADR-105 (bilateral claim verification contract), ADR-106 (multi-session safety primitives), ADR-108 (concurrent-agent safety layer), ADR-109 (validation capsule worktree isolation), ADR-110 (preserve-branch governance), ADR-113 (validation capsule liveness), `docs/incidents/2026-05-02-false-done-compounding.md`, `docs/architecture/multi-session-orchestration-audit-2026-05-02.md`
 
 ## Status
 
-Proposed (2026-05-02). Formalizes the full set of primitives required to make concurrent Claude Code / Codex / operator sessions safe on `main`. Composes on top of ADR-098/099/105/106/108/109/110/113. Each primitive is independently deployable behind a feature flag.
+Accepted (2026-05-02). Formalizes the full set of primitives required to make concurrent Claude Code / Codex / operator sessions safe on `main`. Composes on top of ADR-098/099/105/106/108/109/110/113. Each primitive is independently deployable behind a feature flag.
 
 ## Context
 
@@ -93,10 +93,10 @@ Twelve primitives organized into six layers (L1 Detection / L2 Coordination / L3
 
 - **Layer**: L3 Isolation
 - **Problem (concrete failure mode)**: there is no single-writer to `main` today. Concurrent rebase + commit sequences are what produced the orphaned commits.
-- **Decision**: `scripts/merge_to_main.sh` is the only sanctioned path to update `main`. It acquires `.cognitive-os/runtime/main-merge.lock` via `flock`, runs all gates (P1.2 fingerprint, P4.1 patch-id, full test lane), and applies atomically with `git push --force-with-lease`. A queue file `.cognitive-os/runtime/main-merge-queue.json` orders pending merges across sessions.
-- **Artifacts to create**: `scripts/merge_to_main.sh`, `lib/merge_queue.py`, hook `hooks/pre-merge-gate.sh`.
+- **Decision**: `scripts/merge-to-main.sh` is the only sanctioned path to update `main`. It acquires `.cognitive-os/runtime/main-merge.lock` via `flock`, runs all gates (P1.2 fingerprint, P4.1 patch-id, full test lane), and applies atomically with `git push --force-with-lease`. A queue file `.cognitive-os/runtime/main-merge-queue.json` orders pending merges across sessions.
+- **Artifacts to create**: `scripts/merge-to-main.sh`, `lib/merge_queue.py`, hook `hooks/pre-merge-gate.sh`.
 - **Effort**: L (~2 days).
-- **Acceptance criteria**: `tests/integration/test_merge_queue.py::test_serialized_main_writes` — two concurrent invocations of `merge_to_main.sh` are serialized; the second waits and re-validates against the new `main` HEAD before applying.
+- **Acceptance criteria**: `tests/integration/test_merge_queue.py::test_serialized_main_writes` — two concurrent invocations of `merge-to-main.sh` are serialized; the second waits and re-validates against the new `main` HEAD before applying.
 - **Supersedes/related**: prerequisite for P2.1 to provide value (per-session branches without a merge queue just defers the race).
 
 ---
@@ -220,6 +220,19 @@ Twelve primitives organized into six layers (L1 Detection / L2 Coordination / L3
 - **Supersedes/related**: complements ADR-098 (filesystem edit-locks); extends P5.1's storage pattern.
 
 ---
+
+## Transactional gate rollout
+
+The design is now treated as a set of SO transactions, not agent reminders. The first implementation slice makes these invariants default-on where they are cheap and structural:
+
+1. **Derived-artifact gate**: `scripts/derived_artifact_gate.py` checks `cognitive-os.yaml` registry drift against `manifests/hook-quality.yaml`, `.claude/settings.json`, `.codex/hooks.json`, and Codex/Claude parity. `hooks/pre-commit-gate.sh` invokes it in staged mode so a registry change cannot be committed without regenerated artifacts.
+2. **Projection parity**: supported target events are blocking; limited/unsupported harness gaps remain explicit report rows. This keeps ADR-081 honest for non-Bash Codex events instead of blindly copying Claude hooks.
+3. **Task-claim ledger**: `lib/task_claim_ledger.py` and `scripts/claim_task.py` provide an atomic local cache for P1.1; Engram remains the future cross-worktree source of truth in P5.1.
+4. **Session/event bus**: `lib/session_bus.py` and `scripts/session_event_bus.py` provide the append-only bus required by P1.3 and later stale-task watermarking.
+5. **Single-writer landing**: `scripts/merge-to-main.sh` serializes branch landing via `.cognitive-os/runtime/main-merge.lock`, rebases against fresh `origin/main`, runs validation, fast-forwards `main`, and pushes.
+6. **Orphan/overwrite detection**: `scripts/orphan_overwrite_detector.py` records unreachable commits or changed paths as corruption evidence and emits to the session bus.
+
+This slice does not claim to finish P1.2/P4.1/P4.2/P5.1/P5.2. It closes the immediate drift class by moving registry/projection correctness from late contract tests into pre-commit/merge gates, and it creates the runtime files that the remaining primitives can compose with.
 
 ## Phase plan
 
