@@ -1,0 +1,32 @@
+{
+  "branch": "codex/preserve-core-consumer-boundary-wip-20260502",
+  "created_at": "2026-05-02T13:23:58-03:00",
+  "created_by": "soporte.esolutions@gmail.com",
+  "source_branch": "main",
+  "source_head": "b189ad7b51d5149a8d74e31b416121258691fc27",
+  "reason": "Single-commit preserve of core/consumer concurrency boundary work: ADR-111, concurrency-safety-core-consumer-contract architecture doc, scenario test matrix, and claim-verification primitives — all subsequently landed in main.",
+  "scope": ["docs/adrs", "docs/architecture", "hooks", "lib", "scripts", "tests", "settings"],
+  "status": "integrated",
+  "files": [
+    ".claude/settings.json",
+    ".codex/hooks.json",
+    ".cognitive-os/plans/architecture/pending-attack-plan-2026-05-02.md",
+    "Makefile",
+    "cognitive-os.yaml",
+    "docs/README.md",
+    "docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md",
+    "docs/architecture/claim-verification-matrix.md",
+    "docs/architecture/codex-governed-tool-layer.md",
+    "docs/architecture/concurrency-safety-core-consumer-contract.md",
+    "docs/architecture/concurrent-agent-scenario-test-matrix.md",
+    "docs/architecture/hook-quality-system.md",
+    "docs/architecture/red-team-harness-design.md",
+    "hooks/orchestrator-claim-gate.sh",
+    "lib/concurrency_safety.py",
+    "scripts/cos-doctor-concurrency.sh",
+    "scripts/orchestrator_claim_gate.py",
+    "tests/contracts/test_orchestrator_verify.py"
+  ],
+  "integration_commit": "3097ef56",
+  "delete_after": "2026-06-02"
+}
