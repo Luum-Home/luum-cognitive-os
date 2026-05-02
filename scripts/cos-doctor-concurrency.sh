@@ -34,10 +34,10 @@ for f in \
   scripts/verify_plan_claims.py \
   scripts/stash-leak-alarm.sh \
   scripts/cos-doctor-preserve.sh \
-  scripts/resource-lease.py \
-  scripts/agent-work-ledger.py \
-  scripts/approval-ledger.py \
-  scripts/cross-session-reconciler.py \
+  scripts/resource_lease.py \
+  scripts/agent_work_ledger.py \
+  scripts/approval_ledger.py \
+  scripts/cross_session_reconciler.py \
   lib/concurrency_safety.py \
   docs/adrs/ADR-108-concurrent-agent-safety-layer.md \
   docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md \
@@ -52,10 +52,10 @@ if bash -n "$PROJECT_DIR/scripts/git-coop.sh" >/dev/null 2>&1; then pass "git-co
 if bash -n "$PROJECT_DIR/scripts/stash-leak-alarm.sh" >/dev/null 2>&1; then pass "stash-leak alarm syntax clean"; else fail "stash-leak alarm syntax failed"; fi
 for py in \
   scripts/verify_plan_claims.py \
-  scripts/resource-lease.py \
-  scripts/agent-work-ledger.py \
-  scripts/approval-ledger.py \
-  scripts/cross-session-reconciler.py \
+  scripts/resource_lease.py \
+  scripts/agent_work_ledger.py \
+  scripts/approval_ledger.py \
+  scripts/cross_session_reconciler.py \
   lib/concurrency_safety.py; do
   if python3 -m py_compile "$PROJECT_DIR/$py" >/dev/null 2>&1; then pass "python compiles: $py"; else fail "python compile failed: $py"; fi
 done
