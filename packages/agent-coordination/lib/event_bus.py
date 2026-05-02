@@ -74,6 +74,10 @@ EVENT_TYPES: frozenset[str] = frozenset(
         "merge_queued",
         "merge_completed",
         "merge_failed",
+        # P2.2 gate-runner / rollback events
+        "gate_outcome",
+        "gate_failed",
+        "merge_reverted",
     }
 )
 
