@@ -80,8 +80,32 @@ if ! git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   exit 0
 fi
 
-# Resolve agent ID — prefer env, else generate UUID-ish id
+# Resolve agent ID. Prefer explicit harness IDs, then deterministic tool-use IDs.
+# Random IDs make PostToolUse exact-match impossible when the harness does not
+# echo CLAUDE_AGENT_ID back to post hooks; that is how pre-agent markers become
+# orphaned after long-running agents. The payload hash fallback is intentionally
+# derived only from tool_input so PostToolUse payloads that add tool_response still
+# resolve to the same marker.
 AGENT_ID="${CLAUDE_AGENT_ID:-}"
+if [ -z "$AGENT_ID" ] && [ -n "$INPUT" ] && command -v jq >/dev/null 2>&1; then
+  AGENT_ID=$(echo "$INPUT" | jq -r '
+    .tool_input.agent_id
+    // .tool_use_id
+    // .tool_input.tool_use_id
+    // .tool_input.id
+    // empty
+  ' 2>/dev/null || true)
+fi
+if [ -z "$AGENT_ID" ] && [ -n "$INPUT" ] && command -v jq >/dev/null 2>&1; then
+  TOOL_INPUT_CANONICAL=$(echo "$INPUT" | jq -cS '.tool_input // {}' 2>/dev/null || true)
+  if [ -n "$TOOL_INPUT_CANONICAL" ]; then
+    if command -v shasum >/dev/null 2>&1; then
+      AGENT_ID="payload-$(printf '%s' "$TOOL_INPUT_CANONICAL" | shasum -a 256 | awk '{print substr($1,1,16)}')"
+    elif command -v sha256sum >/dev/null 2>&1; then
+      AGENT_ID="payload-$(printf '%s' "$TOOL_INPUT_CANONICAL" | sha256sum | awk '{print substr($1,1,16)}')"
+    fi
+  fi
+fi
 if [ -z "$AGENT_ID" ]; then
   if command -v uuidgen >/dev/null 2>&1; then
     AGENT_ID=$(uuidgen | tr '[:upper:]' '[:lower:]')
@@ -197,8 +221,8 @@ if [ "$LEGACY_MODE" = "1" ]; then
   # Write runtime marker so post-agent-snapshot-restore.sh can find the exact stash
   if [ -n "$STASH_REF" ]; then
     mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
-    printf '{"stash_ref":"%s","agent_id":"%s","timestamp":"%s","snapshot_id":"","mode":"legacy_stash"}\n' \
-      "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$TIMESTAMP" \
+    printf '{"stash_ref":"%s","agent_id":"%s","session_id":"%s","timestamp":"%s","snapshot_id":"","mode":"legacy_stash"}\n' \
+      "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$SESSION_ID" "$TIMESTAMP" \
       > "$MARKER_FILE" 2>/dev/null || true
   fi
 
@@ -327,8 +351,8 @@ safe_jsonl_append "$METRICS_LOG" "$METRICS_LINE" 2>/dev/null || true
 # Write runtime marker so post-agent-snapshot-restore.sh can find the exact stash/snapshot
 if [ -n "$STASH_REF" ] || [ -n "$SNAPSHOT_ID" ]; then
   mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
-  printf '{"stash_ref":"%s","agent_id":"%s","timestamp":"%s","snapshot_id":"%s","mode":"copy"}\n' \
-    "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$TIMESTAMP" "${SNAPSHOT_ID//\"/\\\"}" \
+  printf '{"stash_ref":"%s","agent_id":"%s","session_id":"%s","timestamp":"%s","snapshot_id":"%s","mode":"copy"}\n' \
+    "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$SESSION_ID" "$TIMESTAMP" "${SNAPSHOT_ID//\"/\\\"}" \
     > "$MARKER_FILE" 2>/dev/null || true
 fi
 
