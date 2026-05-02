@@ -83,15 +83,15 @@
       "hooks": [
         {
           "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-heartbeat.sh\" ] && bash \"$PWD/hooks/session-heartbeat.sh\" || true"
-        },
-        {
-          "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/user-prompt-capture.sh\" ] && bash \"$PWD/hooks/user-prompt-capture.sh\" || true"
         },
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-wrapup-trigger.sh\" ] && bash \"$PWD/hooks/session-wrapup-trigger.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-heartbeat.sh\" ] && bash \"$PWD/hooks/session-heartbeat.sh\" || true"
         },
         {
           "type": "command",
@@ -160,11 +160,15 @@
       "hooks": [
         {
           "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-cleanup.sh\" ] && bash \"$PWD/hooks/session-cleanup.sh\" || true"
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-summary-reminder.sh\" ] && bash \"$PWD/hooks/session-summary-reminder.sh\" || true"
         },
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-learning.sh\" ] && bash \"$PWD/hooks/session-learning.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-cleanup.sh\" ] && bash \"$PWD/hooks/session-cleanup.sh\" || true"
         },
         {
           "type": "command",
@@ -193,10 +197,6 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/engram-crystallize-on-session-end.sh\" ] && bash \"$PWD/hooks/engram-crystallize-on-session-end.sh\" || true"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-summary-reminder.sh\" ] && bash \"$PWD/hooks/session-summary-reminder.sh\" || true"
         }
       ],
       "matcher": "shutdown"
