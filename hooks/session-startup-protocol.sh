@@ -26,7 +26,7 @@ if [ -f "$KILLSWITCH_LIB" ]; then
   source "$KILLSWITCH_LIB" 2>/dev/null || true
 fi
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 
 # ── Helper: count .md files in a directory (0 if missing) ───────────────────
 _count_md() {
@@ -91,6 +91,22 @@ ARCH_PLAN_COUNT=$(_count_md_plans "$ARCH_PLANS_DIR")
 ROADMAP_COUNT=$(_count_md_plans "$ROADMAPS_DIR")
 ADR_COUNT=$(_count_md "$ADRS_DIR")
 
+ADR_LEDGER_LINE="run: python3 scripts/adr_implementation_ledger.py --write (no cached result)"
+ADR_LEDGER_CACHE="$PROJECT_DIR/.cognitive-os/metrics/adr-implementation-latest.json"
+if [ -f "$ADR_LEDGER_CACHE" ] && command -v python3 >/dev/null 2>&1; then
+  ADR_LEDGER_LINE=$(python3 -c '
+import json, sys
+try:
+    d = json.load(open(sys.argv[1]))
+    s = d.get("summary") or {}
+    counts = s.get("implementation_counts") or {}
+    attention = s.get("attention_count", "?")
+    print(f"{attention} need attention; states={counts} (from cache)")
+except Exception:
+    print("ADR ledger cache unparseable")
+' "$ADR_LEDGER_CACHE" 2>/dev/null || echo "ADR ledger cache unparseable")
+fi
+
 # ── 3. Work queue state ────────────────────────────────────────────────────
 WQ_FILE="$PROJECT_DIR/.cognitive-os/work-queue.json"
 LIVE_COUNT="n/a"
@@ -134,7 +150,7 @@ elif [ -f "$AUDIT_SCRIPT" ]; then
 fi
 
 # ── 5. Suggested first action ──────────────────────────────────────────────
-SUGGESTION="consult Engram + plans before drafting new ADRs/plans"
+SUGGESTION="consult Engram + plans + ADR ledger before drafting new ADRs/plans"
 if [ "$PLAN_COUNT" != "0" ] && [ "$LIVE_COUNT" != "0" ] && [ "$LIVE_COUNT" != "?" ] && [ "$LIVE_COUNT" != "n/a" ] && [ "$LIVE_COUNT" != "no-queue" ]; then
   SUGGESTION="live work items present — reconcile before starting new work"
 fi
@@ -144,6 +160,7 @@ cat <<SUMMARY
 [startup-protocol] Context check (rules/startup-protocol.md):
   - Engram: ${ENGRAM_STATUS} — ${ENGRAM_HINT}
   - Plans: ${PLAN_COUNT} features + ${RESEARCH_PLAN_COUNT} research + ${ARCH_PLAN_COUNT} arch + ${ROADMAP_COUNT} roadmaps (cross-ref ${ADR_COUNT} ADRs)
+  - ADR implementation: ${ADR_LEDGER_LINE}
   - Work queue: ${LIVE_COUNT} live, ${PARKED_COUNT} parked
   - Validator: ${VALIDATOR_LINE}
   - Suggested first action: ${SUGGESTION}

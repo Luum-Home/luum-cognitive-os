@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: project
 """radar_merge.py — Tech Radar merge engine for /radar-update.
 
 Reads one or more /repo-scout markdown artifacts, merges their auto-owned fields

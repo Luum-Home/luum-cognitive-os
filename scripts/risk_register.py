@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: project
 """CLI for risk_register scaffolder (ADR-054 Phase 2).
 
 Usage:

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """invariant-check-helper — propose pytest invariants between numeric constant pairs.
 
 Reads two file paths (typically an ADR and a Python implementation). Extracts
