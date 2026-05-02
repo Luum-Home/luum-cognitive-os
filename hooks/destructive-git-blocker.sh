@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: project
+# SCOPE: both
 # CONCERNS: safety, git-ops, adr-003-mechanism-c
 # Destructive Git Op Blocker — PreToolUse Bash
 #
@@ -20,13 +20,20 @@
 #   - git worktree (any subcommand)
 #   - git branch -D (force-delete)
 #   - git rebase --abort (state loss)
+#   - git push --force / git push -f  (force-push, 2026-05-02 extension)
+#     NOTE: --force-with-lease is intentionally NOT blocked (safer alternative)
 #
 # Allowed always:
 #   - git status, git diff, git log, git show, git blame, git rev-parse, …
+#   - git push --force-with-lease (safer force push)
 #   - any non-git bash command
+#   - patterns appearing only inside `git commit -m "..."` message bodies
+#     (false-positive fix: commit messages may document destructive ops without
+#      the hook treating them as if the ops themselves were executed)
 #
 # Override mechanisms (ADR-055b):
 #   - Per-command: append `--allow-destructive` token anywhere in the command
+#   - Per-command: append `--allow-force-push` token (force-push-specific bypass)
 #   - Per-session: export COS_ALLOW_DESTRUCTIVE_GIT=1
 #
 # Bypass contexts (SO-internal — block does not apply):
@@ -90,9 +97,46 @@ fi
 # tilde, caret, hyphen.
 DESTRUCTIVE_PATTERN='^[[:space:]]*git[[:space:]]+(stash[[:space:]]+(pop|drop|apply)|reset[[:space:]]+--hard|checkout[[:space:]]+(--|[A-Za-z0-9/._~^-]+[[:space:]]+--)|clean[[:space:]]+-f|restore|revert|worktree|branch[[:space:]]+-D|rebase[[:space:]]+--abort)'
 
+# Force-push pattern (2026-05-02): matches `git push --force` and `git push -f` (with word
+# boundary after -f to avoid matching -fast-forward or similar flags).
+# INTENTIONALLY does NOT match --force-with-lease (safer alternative, allowed per ADR-055b).
+FORCE_PUSH_PATTERN='^[[:space:]]*git[[:space:]]+push([[:space:]]+[^[:space:]]+)*[[:space:]]+(--force\b|-f\b)'
+
+# ── Commit-message stripping (false-positive fix 2026-05-02) ─────────────────
+# When a command is `git commit ... -m "..." ...` the quoted message body may
+# reference destructive ops (e.g. "feat: documents git stash pop behavior").
+# Stripping the -m argument before pattern-matching prevents false positives.
+# Handles: -m "text", -m 'text', --message="text", --message 'text'.
+# Strips all such argument values from the raw COMMAND before scanning.
+_strip_commit_message_args() {
+  local cmd="$1"
+  # Only strip when the command looks like a git commit invocation
+  if ! echo "$cmd" | grep -Eq '^[[:space:]]*git[[:space:]]+commit[[:space:]]'; then
+    echo "$cmd"
+    return
+  fi
+  # Strip -m "quoted" or -m 'quoted' (non-greedy: stops at first matching quote)
+  # Also handles --message= variants
+  # Use sed with basic extended regex; loop to strip multiple -m args
+  local stripped="$cmd"
+  # Remove -m "..." (double-quoted)
+  stripped=$(echo "$stripped" | sed 's/-m[[:space:]]*"[^"]*"//g')
+  # Remove -m '...' (single-quoted)
+  stripped=$(echo "$stripped" | sed "s/-m[[:space:]]*'[^']*'//g")
+  # Remove --message="..." (double-quoted)
+  stripped=$(echo "$stripped" | sed 's/--message=[[:space:]]*"[^"]*"//g')
+  # Remove --message='...' (single-quoted)
+  stripped=$(echo "$stripped" | sed "s/--message=[[:space:]]*'[^']*'//g")
+  echo "$stripped"
+}
+
+# Apply commit-message stripping before pattern scanning
+COMMAND_SCAN=$(_strip_commit_message_args "$COMMAND")
+
 # Test first line (commands may be multiline or pipelined — we inspect each sub-command
 # crudely by splitting on shell separators).
 FIRST_HIT=""
+FIRST_HIT_TYPE=""
 # Turn && || ; and pipe | into newlines, then test each segment
 while IFS= read -r segment; do
   [ -z "$segment" ] && continue
@@ -100,9 +144,18 @@ while IFS= read -r segment; do
   trimmed="${segment#"${segment%%[![:space:]]*}"}"
   if echo "$trimmed" | grep -Eq "$DESTRUCTIVE_PATTERN"; then
     FIRST_HIT="$trimmed"
+    FIRST_HIT_TYPE="destructive"
     break
   fi
-done <<< "$(echo "$COMMAND" | tr '|&;' '\n')"
+  # Check force-push pattern; exclude --force-with-lease explicitly
+  if echo "$trimmed" | grep -Eq "$FORCE_PUSH_PATTERN"; then
+    if ! echo "$trimmed" | grep -q -- '--force-with-lease'; then
+      FIRST_HIT="$trimmed"
+      FIRST_HIT_TYPE="force_push"
+      break
+    fi
+  fi
+done <<< "$(echo "$COMMAND_SCAN" | tr '|&;' '\n')"
 
 # No match → allow silently
 if [ -z "$FIRST_HIT" ]; then
@@ -131,15 +184,19 @@ _git_blocker_is_agent_context() {
 }
 
 # Extract the matched op name (stash pop, reset --hard, etc.) for the alert text
-OP_NAME=$(echo "$FIRST_HIT" | awk '{
-  if ($2=="stash") print "git stash " $3;
-  else if ($2=="reset") print "git reset " $3;
-  else if ($2=="checkout") print "git checkout --";
-  else if ($2=="clean") print "git clean -f";
-  else if ($2=="branch") print "git branch -D";
-  else if ($2=="rebase") print "git rebase --abort";
-  else print "git " $2;
-}')
+if [ "$FIRST_HIT_TYPE" = "force_push" ]; then
+  OP_NAME="git push --force"
+else
+  OP_NAME=$(echo "$FIRST_HIT" | awk '{
+    if ($2=="stash") print "git stash " $3;
+    else if ($2=="reset") print "git reset " $3;
+    else if ($2=="checkout") print "git checkout --";
+    else if ($2=="clean") print "git clean -f";
+    else if ($2=="branch") print "git branch -D";
+    else if ($2=="rebase") print "git rebase --abort";
+    else print "git " $2;
+  }')
+fi
 
 # One-line rationale per op (for override error message)
 _op_rationale() {
@@ -162,6 +219,8 @@ _op_rationale() {
       echo "force-deletes branches with unmerged commits; recovery requires reflog lookup";;
     "git rebase --abort")
       echo "discards in-progress rebase state; partial work may be lost";;
+    "git push --force")
+      echo "force-push rewrites remote history; can permanently destroy commits other collaborators depend on; use --force-with-lease for a safer alternative";;
     *)
       echo "destructive operation; irreversible without reflog recovery";;
   esac
@@ -178,6 +237,11 @@ esc_op=${OP_NAME//\"/\\\"}
 _has_allow_flag() {
   # Match --allow-destructive as a whole token (surrounded by whitespace or edges)
   echo "$COMMAND" | grep -Eq '(^|[[:space:]])--allow-destructive($|[[:space:]])'
+}
+
+# Per-command override for force-push specifically: `--allow-force-push`
+_has_allow_force_push_flag() {
+  echo "$COMMAND" | grep -Eq '(^|[[:space:]])--allow-force-push($|[[:space:]])'
 }
 
 # SO-internal bypass contexts (not user-initiated destructive ops)
@@ -207,9 +271,10 @@ if _is_bypass_context && ! _git_blocker_is_agent_context; then
 fi
 
 # Explicit override — allow with audit log
-if _has_session_override || _has_allow_flag; then
+if _has_session_override || _has_allow_flag || _has_allow_force_push_flag; then
   override_reason="session_env"
   _has_allow_flag && override_reason="inline_flag"
+  _has_allow_force_push_flag && override_reason="inline_flag_force_push"
   echo "" >&2
   echo "=== DESTRUCTIVE-GIT-BLOCKER: OVERRIDE ACCEPTED ===" >&2
   echo "Destructive op '$OP_NAME' allowed via $override_reason override." >&2
@@ -254,6 +319,10 @@ echo "" >&2
 echo "To proceed, use ONE of:" >&2
 echo "  1. Inline flag:   append --allow-destructive to the command" >&2
 echo "                    (e.g. 'git reset --hard HEAD~1 --allow-destructive')" >&2
+if [ "$FIRST_HIT_TYPE" = "force_push" ]; then
+  echo "     OR:           append --allow-force-push (force-push-specific bypass)" >&2
+  echo "     SAFER:        use --force-with-lease instead of --force / -f" >&2
+fi
 echo "  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)" >&2
 echo "" >&2
 echo "Reference: docs/adrs/ADR-055b-destructive-git-block.md" >&2

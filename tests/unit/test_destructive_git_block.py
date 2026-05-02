@@ -275,3 +275,113 @@ def test_bypass_is_logged(tmp_path: Path):
     entry = json.loads(lines[-1])
     assert entry["event"] == "bypassed"
     assert entry["reason"] == "so_internal_context"
+
+
+# ---------------------------------------------------------------------------
+# ISSUE 1: Force-push blocking (git push --force / git push -f)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "git push --force",
+        "git push -f",
+        "git push origin -f main",
+        "git push origin main --force",
+        "git push --force origin",
+    ],
+)
+def test_force_push_is_blocked(tmp_path: Path, command: str):
+    """git push --force and -f variants are blocked (exit 2) in user context."""
+    result = _run(command, tmp_path)
+    assert result.returncode == 2, (
+        f"expected block (exit 2) for `{command}`, got {result.returncode}\n"
+        f"stderr={result.stderr}"
+    )
+    assert "BLOCKED" in result.stderr
+    assert "force" in result.stderr.lower()
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "git push --force-with-lease",
+        "git push --force-with-lease=ref:abc123",
+        "git push origin main",
+        "git fetch -f",  # -f on non-push command
+    ],
+)
+def test_force_push_safe_alternatives_pass_through(tmp_path: Path, command: str):
+    """--force-with-lease and normal push are allowed; git fetch -f is not a push."""
+    result = _run(command, tmp_path)
+    assert result.returncode == 0, (
+        f"expected pass-through for `{command}`, got {result.returncode}\n"
+        f"stderr={result.stderr}"
+    )
+    assert "BLOCKED" not in result.stderr
+
+
+def test_allow_force_push_flag_overrides_block(tmp_path: Path):
+    """--allow-force-push inline flag bypasses the force-push block."""
+    result = _run("git push --force --allow-force-push", tmp_path)
+    assert result.returncode == 0, result.stderr
+    assert "OVERRIDE ACCEPTED" in result.stderr
+
+
+def test_force_push_block_message_suggests_lease(tmp_path: Path):
+    """Block message for force-push suggests --force-with-lease as safer alternative."""
+    result = _run("git push --force", tmp_path)
+    assert result.returncode == 2
+    assert "force-with-lease" in result.stderr
+
+
+def test_force_push_block_is_logged(tmp_path: Path):
+    """Force-push block is written to the JSONL audit log."""
+    result = _run("git push -f", tmp_path)
+    assert result.returncode == 2
+    log = tmp_path / ".cognitive-os" / "metrics" / "git-op-blocks.jsonl"
+    assert log.exists(), f"block log missing: {log}"
+    lines = [ln for ln in log.read_text().splitlines() if ln.strip()]
+    entry = json.loads(lines[-1])
+    assert entry["event"] == "blocked"
+    assert entry["context"] == "user"
+    assert "force" in entry["op"].lower()
+
+
+# ---------------------------------------------------------------------------
+# ISSUE 2: Commit-message false-positive fix
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        'git commit -m "feat: documents git stash pop ops"',
+        'git commit -m "fix: git reset --hard was previously broken"',
+        'git commit -m "docs: explain git stash drop behavior"',
+        "git commit -m 'chore: remove git restore usage from scripts'",
+        'git commit --no-edit -m "refactor: replace git checkout -- with git restore"',
+    ],
+)
+def test_commit_message_mentioning_destructive_op_is_not_blocked(
+    tmp_path: Path, command: str
+):
+    """Destructive-op names mentioned inside -m '...' message bodies must NOT block."""
+    result = _run(command, tmp_path)
+    assert result.returncode == 0, (
+        f"false-positive block for commit message: `{command}`\n"
+        f"stderr={result.stderr}"
+    )
+    assert "BLOCKED" not in result.stderr
+
+
+def test_genuine_destructive_op_after_commit_message_is_still_blocked(tmp_path: Path):
+    """A real destructive op following a commit command is still caught (pipeline)."""
+    command = 'git commit -m "chore: cleanup" && git stash pop'
+    result = _run(command, tmp_path)
+    assert result.returncode == 2, (
+        f"expected block for piped stash pop, got {result.returncode}\n"
+        f"stderr={result.stderr}"
+    )
+    assert "BLOCKED" in result.stderr
