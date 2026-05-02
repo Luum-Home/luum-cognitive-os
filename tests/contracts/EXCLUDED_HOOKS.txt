@@ -166,3 +166,5 @@ semgrep-scan.sh | MANUAL_TRIGGER: fires via /semgrep-scan skill on demand; not a
 subagent-context-injector.sh | INFRA: SubagentStart event — not included by default profile
 task-recorder.sh | LIBRARY: sourced by dispatch-gate; not a standalone matcher
 user-prompt-capture.sh | INFRA: UserPromptSubmit event — full profile only
+aci-observation-capture.sh | CONDITIONAL: registered in cognitive-os.yaml PostToolUse wildcard governance but not projected into default .claude/settings.json for this profile.
+lethal-trifecta-gate.sh | CONDITIONAL: registered in cognitive-os.yaml PreToolUse wildcard governance but not projected into default .claude/settings.json for this profile.
