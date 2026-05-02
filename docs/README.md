@@ -11,6 +11,8 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [Agentic Mastery License, Weight, and DX Matrix](architecture/agentic-mastery-license-weight-dx-matrix.md) — licensing confidence, dependency weight, default-install impact, and DX value for candidate external tools.
+- [Lethal Trifecta Gate](security/lethal-trifecta-gate.md) — deterministic PreToolUse block for private data + untrusted content + external communication.
 - [Governed Self-Improvement Roadmap](architecture/plans/governed-self-improvement-roadmap.md) — executable plan for detect→draft→verify→approve→promote self-improvement with tests.
 - [Suite Signal Triage — 2026-04-29](testing/suite-signal-triage-2026-04-29.md) — explains and reduces broad-lane xfail/warning/skipped noise without relaxing behavior.
 - [Test Resource Governance Sprint](architecture/plans/test-resource-governance-sprint.md) — resource policy manifest and staged enforcement plan for safe local/CI/headless test execution.
