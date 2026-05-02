@@ -100,4 +100,37 @@ except Exception:
 # Wire to feedback_detector, user_model, and learning_pipeline
 echo "$prompt_text" | python3 "$_PROJECT_DIR/lib/process_user_message.py" >/dev/null 2>&1 || true
 
+# ADR-077 Phase 1: peer-card capture for high-confidence durable signals only.
+# Medium-confidence cues are buffered for session-end consolidation by
+# lib/peer_card.py. Secrets / PII are rejected inside the Python entry point.
+# The hook stays non-blocking: any failure is silently swallowed so user
+# input never stalls.
+PEER_CARD_RESULT=$(
+  printf '%s' "$prompt_text" \
+    | PYTHONPATH="$_PROJECT_DIR" python3 -m lib.peer_card hook 2>/dev/null \
+    || echo '{"confidence":"none","reason":"hook_error"}'
+)
+
+# Best-effort observability — log peer-card decisions next to prompt-captures.
+if [ -n "$PEER_CARD_RESULT" ]; then
+  PEER_CARD_RESULT="$PEER_CARD_RESULT" \
+  COS_HOOK_PROJECT_DIR="$_PROJECT_DIR" \
+  python3 - <<'PY' 2>/dev/null || true
+import json, os, datetime
+metrics_dir = os.path.join(os.environ.get("COS_HOOK_PROJECT_DIR", "."), ".cognitive-os", "metrics")
+os.makedirs(metrics_dir, exist_ok=True)
+try:
+    decision = json.loads(os.environ.get("PEER_CARD_RESULT", "{}"))
+except Exception:
+    decision = {"confidence": "none", "reason": "parse_error"}
+entry = {
+    "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "event": "peer_card_signal",
+    **decision,
+}
+with open(os.path.join(metrics_dir, "peer-card.jsonl"), "a") as f:
+    f.write(json.dumps(entry) + "\n")
+PY
+fi
+
 exit 0
