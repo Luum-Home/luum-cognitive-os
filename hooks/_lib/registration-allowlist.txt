@@ -132,6 +132,7 @@ confidence-gate-llm.sh
 cos-executor-daemon-launcher.sh
 cos-executor-heartbeat.sh
 destructive-git-blocker.sh
+direct-main-guard.sh
 destructive-rm-blocker.sh
 docker-drift-detector.sh
 dod-gate.sh

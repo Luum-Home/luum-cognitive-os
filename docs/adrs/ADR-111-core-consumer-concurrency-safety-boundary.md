@@ -16,7 +16,7 @@ The SO must protect itself and the projects that consume it. The boundary is exp
 
 ## Decision
 
-Cognitive OS owns these universal agentic primitives in the core: `edit-coop`, `git-coop`, `stash-leak-alarm`, `plan-claim verifier`, `preserve-branch doctor`, `work inventory doctor`, `concurrency doctor`, `approval ledger`, `resource lease`, `agent work ledger`, and `cross-session reconciler`.
+Cognitive OS owns these universal agentic primitives in the core: `edit-coop`, `git-coop`, `stash-leak-alarm`, `plan-claim verifier`, `preserve-branch doctor`, `work inventory doctor`, `worktree triage doctor`, `concurrency doctor`, `approval ledger`, `resource lease`, `agent work ledger`, and `cross-session reconciler`.
 
 Consumer projects configure those primitives through `concurrency_safety` in `cognitive-os.yaml`. The core uses safe defaults when the section is missing or partial.
 
@@ -28,6 +28,7 @@ Consumer projects configure those primitives through `concurrency_safety` in `co
 - A plan claim is not complete unless the verifier can prove the expected evidence.
 - Preserve branches are not deleted until the doctor can prove manifest, scope, and integration state.
 - Preserved work closure must inspect branches, the active worktree, linked worktrees, and stashes; branch-only review is incomplete.
+- Linked worktrees are not removed until triage proves no unapplied commits, dirty files, or stashes remain.
 - Doctors are read-only and safe to run in local, CI, and recovery sessions.
 
 ## Consequences
@@ -52,5 +53,6 @@ Consumer projects configure those primitives through `concurrency_safety` in `co
 python3 -m pytest tests/behavior/test_concurrency_safety_ledgers.py -q
 python3 -m pytest tests/chaos/test_cross_session_reconciler.py -q
 bash scripts/cos-doctor-work-inventory.sh --json
+python3 -m pytest tests/behavior/test_cos_worktree_triage.py -q
 bash scripts/cos-doctor-concurrency.sh --strict
 ```

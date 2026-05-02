@@ -245,6 +245,32 @@ def complete_task(project: Path, task_id: str, session: str | None = None) -> di
     return payload
 
 
+def release_task(project: Path, task_id: str, session: str | None = None) -> dict[str, Any]:
+    """Release an active claim without marking the task completed."""
+    session = session or session_id()
+    path = claims_path(project)
+    lock = path.parent / ".active-claims.lock"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with lock.open("w", encoding="utf-8") as lock_fh:
+        fcntl.flock(lock_fh, fcntl.LOCK_EX)
+        data = normalize_claims(read_json(path, {"claims": []}))
+        updated = False
+        for claim in data["claims"]:
+            if (
+                claim.get("task_id") == task_id
+                and (claim.get("session_id") == session or session == "*")
+                and claim.get("status") == "active"
+            ):
+                claim["status"] = "released"
+                claim["released_at"] = now_iso()
+                updated = True
+        data["updated_at"] = now_iso()
+        atomic_write_json(path, data)
+    payload = {"task_id": task_id, "updated": updated}
+    append_event(project, "release", session, payload)
+    return payload
+
+
 def cmd_claim(args: argparse.Namespace) -> int:
     project = project_dir(args)
     task = read_json(Path(args.task_json), {}) if args.task_json else {"id": args.task_id, "description": args.description or "", "deliverable": args.deliverable or ""}
@@ -255,6 +281,11 @@ def cmd_claim(args: argparse.Namespace) -> int:
 
 def cmd_complete(args: argparse.Namespace) -> int:
     print(json.dumps(complete_task(project_dir(args), args.task_id, args.session_id), sort_keys=True))
+    return 0
+
+
+def cmd_release(args: argparse.Namespace) -> int:
+    print(json.dumps(release_task(project_dir(args), args.task_id, args.session_id), sort_keys=True))
     return 0
 
 
@@ -289,6 +320,10 @@ def build_parser() -> argparse.ArgumentParser:
     complete.add_argument("--task-id", required=True)
     complete.add_argument("--session-id")
     complete.set_defaults(func=cmd_complete)
+    release = sub.add_parser("release")
+    release.add_argument("--task-id", required=True)
+    release.add_argument("--session-id")
+    release.set_defaults(func=cmd_release)
     status = sub.add_parser("status")
     status.add_argument("--json", action="store_true")
     status.set_defaults(func=cmd_status)

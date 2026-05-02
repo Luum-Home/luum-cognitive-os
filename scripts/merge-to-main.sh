@@ -66,5 +66,5 @@ if [ "$DRY_RUN" = true ]; then
 fi
 git -C "$REPO" switch "$MAIN_BRANCH"
 git -C "$REPO" merge --ff-only "$branch"
-git -C "$REPO" push "$REMOTE" "$MAIN_BRANCH"
+COS_MERGE_TO_MAIN=1 git -C "$REPO" push "$REMOTE" "$MAIN_BRANCH"
 printf '{"timestamp":"%s","branch":"%s","pid":%s,"status":"pushed"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$branch" "$$" >> "$QUEUE_FILE"
