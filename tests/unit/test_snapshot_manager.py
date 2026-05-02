@@ -266,6 +266,87 @@ def test_prune_expired_drops_old(tmp_path: Path):
     assert Path(snap_new["snapshot_dir"]).exists(), "Recent snapshot was deleted"
 
 
+def test_snapshot_skips_untracked_files_over_size_cap(tmp_path: Path):
+    """Oversized untracked files remain in WT and are reported as skipped."""
+    repo = make_repo(tmp_path / "repo")
+    sm = import_manager(repo)
+
+    small = repo / "small.txt"
+    large = repo / "large.bin"
+    small.write_text("small\n")
+    large.write_bytes(b"x" * 2048)
+
+    manifest = sm.create_snapshot(
+        repo,
+        agent_id="size-cap-agent",
+        max_file_mb=0,
+        max_total_mb=1,
+    )
+
+    assert small.exists()
+    assert large.exists()
+    assert manifest["status"] == "partial"
+    assert manifest["untracked_files"] == []
+    assert {s["path"] for s in manifest["skipped_untracked_files"]} == {
+        "small.txt",
+        "large.bin",
+    }
+    assert {s["reason"] for s in manifest["skipped_untracked_files"]} == {
+        "max_file_bytes",
+    }
+
+
+def test_snapshot_enforces_per_snapshot_total_cap(tmp_path: Path):
+    """Per-snapshot byte cap prevents high-frequency launches from copying everything."""
+    repo = make_repo(tmp_path / "repo")
+    sm = import_manager(repo)
+
+    first = repo / "first.bin"
+    second = repo / "second.bin"
+    first.write_bytes(b"a" * 700_000)
+    second.write_bytes(b"b" * 700_000)
+
+    manifest = sm.create_snapshot(
+        repo,
+        agent_id="total-cap-agent",
+        max_file_mb=1,
+        max_total_mb=1,
+    )
+
+    assert first.exists()
+    assert second.exists()
+    assert len(manifest["untracked_files"]) == 1
+    assert len(manifest["skipped_untracked_files"]) == 1
+    assert manifest["skipped_untracked_files"][0]["reason"] == "max_total_bytes"
+    assert manifest["copied_bytes"] == 700_000
+
+
+def test_prune_expired_enforces_aggregate_size_cap(tmp_path: Path):
+    """Aggregate cap removes oldest snapshots even when TTL has not expired."""
+    repo = make_repo(tmp_path / "repo")
+    sm = import_manager(repo)
+
+    old_file = repo / "old.bin"
+    old_file.write_bytes(b"o" * 800_000)
+    old = sm.create_snapshot(repo, agent_id="old-size", max_file_mb=1, max_total_mb=2)
+    old_file.unlink()
+
+    newer_file = repo / "new.bin"
+    newer_file.write_bytes(b"n" * 800_000)
+    new = sm.create_snapshot(repo, agent_id="new-size", max_file_mb=1, max_total_mb=2)
+
+    old_manifest = Path(old["snapshot_dir"]) / "manifest.json"
+    old_data = json.loads(old_manifest.read_text())
+    old_data["timestamp"] = time.time() - 60
+    old_manifest.write_text(json.dumps(old_data))
+
+    deleted = sm.prune_expired(repo, ttl_days=30, max_total_mb=1)
+
+    assert old["snapshot_id"] in deleted
+    assert not Path(old["snapshot_dir"]).exists()
+    assert Path(new["snapshot_dir"]).exists()
+
+
 def test_recovery_after_partial_restore(tmp_path: Path):
     """Partial restore of subset → second restore on remaining files works."""
     repo = make_repo(tmp_path / "repo")

@@ -66,6 +66,8 @@ review:
 # ADR-099: Pre-agent snapshot configuration
 snapshots:
   ttl_days: 30          # Prune snapshots older than this many days
+  max_file_mb: 50       # Skip individual untracked files larger than this per snapshot
+  max_total_mb: 1024    # Prune oldest snapshots when aggregate snapshot copies exceed this cap
   mode: "copy"          # "copy" (default, ADR-099) | "stash" (legacy, same as COS_LEGACY_SNAPSHOT=1)
   snapshots_dir: ".cognitive-os/snapshots"  # Relative to project root
 
