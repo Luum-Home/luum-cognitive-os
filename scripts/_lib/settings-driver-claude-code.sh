@@ -153,7 +153,8 @@ cc_driver_emit() {
 
   local pre_all
   pre_all=$(_cc_hook_group "PreToolUse" "" \
-    "hooks/session-heartbeat.sh" "false" \
+    "hooks/session-heartbeat.sh"    "false" \
+    "hooks/lethal-trifecta-gate.sh" "false" \
   )
 
   local pre_bash
@@ -163,7 +164,9 @@ cc_driver_emit() {
     "hooks/rate-limiter.sh"                "false" \
     "hooks/destructive-rm-blocker.sh"      "false" \
     "hooks/destructive-git-blocker.sh"     "false" \
-    "hooks/git-commit-scope-guard.sh"      "false" \
+    "hooks/git-commit-scope-guard.sh"           "false" \
+    "hooks/orchestrator-claim-gate.sh"          "false" \
+    "hooks/scope-marker-portability-gate.sh"    "false" \
   )
 
   local pre_read
@@ -182,6 +185,7 @@ cc_driver_emit() {
     "hooks/secret-detector.sh"          "false" \
     "hooks/project-docs-convention.sh"  "false" \
     "hooks/edit-lock-pre-tool.sh"       "false" \
+    "hooks/plan-claim-validator.sh"     "false" \
   )
 
   local pre_agent
@@ -205,6 +209,7 @@ cc_driver_emit() {
     "hooks/context-watchdog.sh"       "true"  \
     "hooks/rate-limit-detector.sh"    "false" \
     "hooks/tool-sequence-capture.sh"  "false" \
+    "hooks/aci-observation-capture.sh" "false" \
   )
 
   local post_private_mode
