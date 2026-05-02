@@ -2,9 +2,13 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — acceptance testbed  
 **Date**: 2026-05-02  
 **Related**: ADR-089, ADR-098, ADR-105, ADR-106, ADR-108, ADR-116
+
+## Status
+
+Accepted (2026-05-02). This is the automated acceptance-test umbrella for ADR-116 and its transactional coordination rollout.
 
 ## Context
 
@@ -39,16 +43,28 @@ python3 -m pytest tests/chaos/test_multi_ide_swarm_safety.py -q
 
 ## Required Scenarios
 
-| Scenario | Expected behavior |
-|---|---|
-| Same task race | First claim wins; second live claim exits blocked with holder metadata. |
-| Same file race | Second writer is blocked/advised and the first edit survives. |
-| Same domain lease | First critical-domain lease wins; competing session is blocked. |
-| Dirty worktree + pull/rebase | `git pull --rebase` over WIP is blocked in agent context. |
-| Agent B fix overwritten | `git reset`/fetch-reset/rebase over WIP is blocked before the fix disappears. |
-| Cross-IDE parity | Claude/Codex shared gates are proven; known matcher gaps are explicit. |
-| Memory sharing | Portable memory doctor proves both harnesses project/run lifecycle hooks. |
-| Completed by other agent | Watermark/reaper marks pending work as `completed-by-watermark`. |
+| Scenario | Expected behavior | Primitive under test |
+|---|---|---|
+| Same task race | First claim wins; second live claim exits blocked with holder metadata. | ADR-116 P1.1 |
+| Registry/projection drift | Changing `cognitive-os.yaml` requires hook-quality and harness projections to be regenerated and staged. | ADR-081, ADR-114, ADR-116 transactional rollout |
+| Same file race | Second writer is blocked/advised and the first edit survives. | ADR-098, ADR-108 |
+| Same domain lease | First critical-domain lease wins; competing session is blocked. | ADR-116 P5.2 |
+| Direct-main concurrent landing | Merge queue serializes and revalidates against fresh HEAD. | ADR-116 P2.2 |
+| Dirty worktree + pull/rebase | `git pull --rebase` over WIP is blocked in agent context. | ADR-099, ADR-106, ADR-117 |
+| Agent B fix overwritten | `git reset`/fetch-reset/rebase over WIP is blocked or emits corruption evidence before the fix disappears. | ADR-116 P3.1/P3.2 |
+| Cross-IDE parity | Claude/Codex shared gates are proven; known matcher gaps are explicit. | ADR-081, ADR-112, ADR-114 |
+| Memory sharing | Portable memory doctor proves both harnesses project/run lifecycle hooks. | ADR-116 P5.1/P5.2 |
+| Completed by other agent | Watermark/reaper marks pending work as `completed-by-watermark` or `done-by-other-session`. | ADR-102, ADR-116 P1.4 |
+
+## Initial implementation slice
+
+The first local, laptop-safe slice includes:
+
+- `scripts/derived_artifact_gate.py` for registry/projection closure.
+- `lib/session_bus.py` and `scripts/session_event_bus.py` for append-only coordination events.
+- `lib/task_claim_ledger.py` and `scripts/claim_task.py` for atomic task claims.
+- `scripts/merge-to-main.sh` for single-writer landing.
+- `scripts/orphan_overwrite_detector.py` for corruption evidence after unsafe history movement.
 
 ## Consequences
 
@@ -59,12 +75,20 @@ python3 -m pytest tests/chaos/test_multi_ide_swarm_safety.py -q
 - Task claiming becomes a first-class agentic primitive instead of relying on
   post-launch work ledgers.
 
+## Alternatives rejected
+
+1. **Rely on prose instructions to agents.** Rejected because concurrent agents fail by racing between instructions, not only by misunderstanding them.
+2. **Keep these as late contract tests only.** Rejected because registry/projection drift should be blocked before commit, not discovered after a long laptop run.
+3. **Use manual multi-IDE rehearsals as the acceptance gate.** Rejected because the failure classes are race conditions and need reproducible automated scenarios.
+
 ## Verification
 
 ```bash
 python3 -m pytest tests/chaos/test_multi_ide_swarm_safety.py -q
 python3 -m pytest tests/behavior/test_concurrency_safety_ledgers.py -q
 python3 -m pytest tests/contracts/test_memory_lifecycle_portability.py -q
+python3 -m pytest tests/unit/test_multi_agent_coordination_primitives.py -q
+python3 scripts/derived_artifact_gate.py
 ```
 
 ## 2026-05-02 implementation update

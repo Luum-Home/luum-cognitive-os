@@ -1031,6 +1031,12 @@ harness:
       event: UserPromptSubmit
       scope: os-only
 
+    stash-budget-warn:
+      script: hooks/stash-budget-warn.sh
+      event: UserPromptSubmit
+      async: true
+      scope: os-only
+
     # ── SubagentStart ─────────────────────────────────────────────────────────
     # Codex: unsupported (SubagentStart not emitted by Codex v0.126.0-alpha.8)
     subagent-context-injector:
