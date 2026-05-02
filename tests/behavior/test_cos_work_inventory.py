@@ -36,7 +36,7 @@ def commit_file(project: Path, path: str, content: str, message: str) -> str:
     return run(["git", "rev-parse", "HEAD"], project).stdout.strip()
 
 
-def inventory(project: Path, *extra: str, check: bool = True) -> dict:
+def inventory(project: Path, *extra: str, check: bool = False) -> dict:
     result = run(["bash", str(DOCTOR), "--project-dir", str(project), "--json", *extra], project, check=check)
     return json.loads(result.stdout)
 
@@ -88,6 +88,43 @@ def test_inventory_reports_linked_dirty_worktree(repo: Path, tmp_path: Path) -> 
     assert linked
     assert linked[0]["dirty"] is True
     assert "linked-worktree-dirty" in finding_codes(payload)
+    finding = next(item for item in payload["findings"] if item["code"] == "linked-worktree-dirty")
+    assert finding["level"] == "BLOCK"
+    assert payload["summary"]["blockers"] >= 1
+
+
+@pytest.mark.behavior
+def test_direct_worktree_inventory_includes_dirty_counts(repo: Path, tmp_path: Path) -> None:
+    worktree = tmp_path / "direct-linked-worktree"
+    run(["git", "worktree", "add", "-b", "feature/direct-wip", str(worktree), "HEAD"], repo)
+    (worktree / "README.md").write_text("direct dirty\n", encoding="utf-8")
+
+    payload = inventory(repo, "--worktrees")
+
+    direct = [item for item in payload["worktrees_direct"] if item["path"] == str(worktree.resolve())]
+    assert direct
+    assert direct[0]["dirty"] is True
+    assert direct[0]["dirty_counts"]["modified"] == 1
+    assert "linked-worktree-dirty" in finding_codes(payload)
+
+
+@pytest.mark.behavior
+def test_inventory_reports_stashes_checked_from_each_worktree(repo: Path, tmp_path: Path) -> None:
+    worktree = tmp_path / "stash-linked-worktree"
+    run(["git", "worktree", "add", "-b", "feature/stash-wip", str(worktree), "HEAD"], repo)
+    (worktree / "linked-stash.txt").write_text("hidden from linked\n", encoding="utf-8")
+    run(["git", "add", "linked-stash.txt"], worktree)
+    run(["git", "stash", "push", "-m", "linked hidden work"], worktree)
+
+    payload = inventory(repo)
+
+    groups = {item["worktree_path"]: item for item in payload["worktree_stashes"]}
+    assert str(repo.resolve()) in groups
+    assert str(worktree.resolve()) in groups
+    assert groups[str(worktree.resolve())]["stash_count"] == 1
+    assert "linked-worktree-stashes-present" in finding_codes(payload)
+    finding = next(item for item in payload["findings"] if item["code"] == "linked-worktree-stashes-present")
+    assert finding["level"] == "BLOCK"
 
 
 @pytest.mark.behavior

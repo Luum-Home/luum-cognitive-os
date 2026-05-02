@@ -15,6 +15,7 @@ This contract defines how Cognitive OS protects concurrent agent work in the cor
 | `preserve-branch doctor` | `scripts/cos-doctor-preserve.sh` | Detect preserve branches without manifest, with mixed scope, or already integrated. |
 | `concurrency doctor` | `scripts/cos-doctor-concurrency.sh` | Prove the local safety surface exists and compiles. |
 | `work inventory doctor` | `scripts/cos-doctor-work-inventory.sh` | Produce a projectable closure checklist across dirty state, preserve branches, linked worktrees, and stashes. |
+| `worktree triage doctor` | `scripts/cos-worktree-triage.sh` | Compare one linked worktree to a target branch, identify already-applied vs still-to-port commits, surface dirty/stash blockers, and mark removal safe only after proof. |
 | `approval ledger` | `scripts/approval_ledger.py` | Record high-risk approvals with verification and rollback evidence. |
 | `resource lease` | `scripts/resource_lease.py` | Provide named, expiring cooperative leases for critical domains. |
 | `agent work ledger` | `scripts/agent_work_ledger.py` | Record started/completed/aborted work scopes across agents. |
@@ -29,7 +30,7 @@ Consumers configure policy through `concurrency_safety` in `cognitive-os.yaml`. 
 | Lane | Purpose | Representative tests |
 |---|---|---|
 | Unit | Config projection and defaults | `tests/unit/test_concurrency_safety_config.py` |
-| Behavior | Primitive command behavior | `tests/behavior/test_concurrency_safety_ledgers.py`, `tests/behavior/test_cos_work_inventory.py` |
+| Behavior | Primitive command behavior | `tests/behavior/test_concurrency_safety_ledgers.py`, `tests/behavior/test_cos_work_inventory.py`, `tests/behavior/test_cos_worktree_triage.py` |
 | Integration | Real same-file accident simulation | `tests/integration/test_concurrent_agent_same_file.py` |
 | Chaos/scenario | Recovery report over mixed runtime state | `tests/chaos/test_cross_session_reconciler.py` |
 
@@ -41,3 +42,4 @@ Consumers configure policy through `concurrency_safety` in `cognitive-os.yaml`. 
 - If a critical resource is leased, a second agent must be blocked until release or expiry.
 - If sessions are interrupted, the cross-session reconciler must reveal active leases, active work, approvals, edit locks, and preserve branch status.
 - Before preserved work is deleted, the work inventory doctor must check the current worktree, linked worktrees, stashes, and preserve branches in one checklist.
+- Before a linked worktree is removed, the worktree triage doctor must prove which commits are already applied, which still need porting, and whether dirty files or stashes block cleanup.

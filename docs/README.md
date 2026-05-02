@@ -13,6 +13,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 ## Key Documents
 - [Agent Capability Coverage](agent-capability-coverage.md) — strategic report defining ACC as semantic system coverage for agentic primitives.
 - [Multi-Session Orchestration Audit — 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) — documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap.
+- [ADR-116 Direct-Main Policy](architecture/direct-main-policy.md) — local agent-block/operator-warn policy plus remote protection invariant for `main`/`master`.
+- [Protected Landing Contract](architecture/protected-landing-contract.md) — vendor-neutral contract for protected `main`/`master` landing across GitHub, GitLab, Gitea/Forgejo, Bitbucket, bare Git, and unknown remotes.
 - [ADR-116: Multi-Session Coordination Primitives](adrs/ADR-116-multi-session-coordination-primitives.md) — layered cross-session coordination model for claims, status, push collision checks, branch isolation, merge queue, and Engram evidence.
 - [Multi-IDE Swarm Safety Testbed Plan](../.cognitive-os/plans/architecture/multi-ide-swarm-testbed-plan.md) — executable plan for reproducing same-task, same-file, same-domain, git-overwrite, parity, memory, and watermark races.
 - [Cross-IDE Claim Verification Matrix](architecture/claim-verification-matrix.md) — claim verbs mapped to deterministic verifiers, hooks, and tests so agents can report but not close without evidence.

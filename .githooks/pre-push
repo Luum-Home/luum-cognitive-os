@@ -8,6 +8,10 @@
 # Installed by: bash scripts/setup-git-hooks.sh
 # Remove with:  bash scripts/setup-git-hooks.sh --remove
 _COS_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
+_COS_PRE_PUSH_REFS="$(cat)"
+if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/hooks/direct-main-guard.sh" ]; then
+  COS_GIT_COMMAND="git push" COS_PRE_PUSH_REFS="$_COS_PRE_PUSH_REFS" bash "$_COS_DIR/hooks/direct-main-guard.sh" >&2 || exit 2
+fi
 if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/orchestrator_claim_gate.py" ]; then
   python3 "$_COS_DIR/scripts/orchestrator_claim_gate.py" --project-dir "$_COS_DIR" --mode pre-push --command "git push" --metrics >&2 || exit 2
 fi
@@ -19,7 +23,9 @@ while read -r _local_ref _local_sha _remote_ref _remote_sha; do
      [ "$_tag_ref" != "$_local_ref" ]; then
     _COS_PUSH_ALLOWED=true
   fi
-done
+done <<EOF
+$_COS_PRE_PUSH_REFS
+EOF
 if [ "$_COS_PUSH_ALLOWED" = true ] && [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
   (sleep 2 && echo "" && echo "[COS] Updating projects after push..." &&    bash "$_COS_DIR/scripts/auto-update-projects.sh" 2>&1 | sed 's/^/[COS] /') &
 else
