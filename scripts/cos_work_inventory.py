@@ -468,6 +468,26 @@ def collect_sessions(project: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def collect_session_fs_stats(project: Path) -> dict[str, Any]:
+    """Count session filesystem artifacts independently from active registry."""
+    sessions_dir = project / ".cognitive-os" / "sessions"
+    if not sessions_dir.exists():
+        return {"session_dir_count": 0, "marker_file_count": 0, "total_artifact_count": 0, "path": str(sessions_dir)}
+    session_dir_count = 0
+    marker_file_count = 0
+    for child in sessions_dir.iterdir():
+        if child.is_dir():
+            session_dir_count += 1
+        elif child.is_file() and child.name != "active-sessions.json":
+            marker_file_count += 1
+    return {
+        "session_dir_count": session_dir_count,
+        "marker_file_count": marker_file_count,
+        "total_artifact_count": session_dir_count + marker_file_count,
+        "path": str(sessions_dir),
+    }
+
+
 def collect_orphans(project: Path) -> list[dict[str, Any]]:
     """Return orphan-commit records.
 
@@ -717,6 +737,8 @@ def collect_race_risks(
     worktrees: list[dict[str, Any]],
     stashes: list[dict[str, Any]],
     claims: list[dict[str, Any]],
+    session_fs_stats: dict[str, Any] | None = None,
+    volume_alarm_threshold: int = 1000,
 ) -> list[dict[str, Any]]:
     """Heuristic race-condition detection.
 
@@ -725,6 +747,7 @@ def collect_race_risks(
       (b) >1 worktree on the same branch
       (c) >1 hour-old stash from a session not currently active
       (d) Sessions in active registry but whose PID is not alive (zombie sessions)
+      (e) Session filesystem artifact volume exceeds threshold
     """
     risks: list[RaceRisk] = []
 
@@ -802,6 +825,22 @@ def collect_race_risks(
                 + [f"id={s['id']} pid={s.get('pid')}" for s in zombie_sessions[:5]],
             )
         )
+
+    if session_fs_stats:
+        total = int(session_fs_stats.get("total_artifact_count") or 0)
+        if total > volume_alarm_threshold:
+            risks.append(
+                RaceRisk(
+                    code="session-volume-exceeded",
+                    description="Session filesystem artifact volume exceeds configured threshold",
+                    details=[
+                        f"total={total}",
+                        f"threshold={volume_alarm_threshold}",
+                        f"session_dirs={session_fs_stats.get('session_dir_count', 0)}",
+                        f"marker_files={session_fs_stats.get('marker_file_count', 0)}",
+                    ],
+                )
+            )
 
     return [r.to_dict() for r in risks]
 
@@ -953,6 +992,7 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         "preserve_branches": list_branches(project, args.branch_pattern, args.base_ref),
         "worktrees": collect_worktrees(project),
         "stashes": collect_stashes(project, args.stash_warn_ttl, args.stash_block_ttl),
+        "session_fs_stats": collect_session_fs_stats(project),
     }
     payload["worktree_stashes"] = collect_stashes_by_worktree(
         project, payload["worktrees"], args.stash_warn_ttl, args.stash_block_ttl
@@ -1004,7 +1044,12 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         )
         claims_for_risk = payload.get("claims") or collect_claims(project)
         payload["race_risks"] = collect_race_risks(
-            sessions_for_risk, worktrees_for_risk, stashes_for_risk, claims_for_risk
+            sessions_for_risk,
+            worktrees_for_risk,
+            stashes_for_risk,
+            claims_for_risk,
+            payload.get("session_fs_stats"),
+            args.volume_alarm_threshold,
         )
     else:
         payload["race_risks"] = []
@@ -1019,6 +1064,7 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         "stash_count": len(payload["stashes"]),
         "worktree_stash_count": sum(group.get("stash_count", 0) for group in payload["worktree_stashes"]),
         "session_count": len(payload["sessions"]),
+        "session_fs_artifact_count": payload["session_fs_stats"].get("total_artifact_count", 0),
         "orphan_count": len(payload["orphans"]),
         "claim_count": len(payload["claims"]),
         "race_risk_count": len(payload["race_risks"]),
@@ -1155,6 +1201,7 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=int(os.environ.get("COS_STASH_LEAK_BLOCK_TTL", DEFAULT_STASH_BLOCK_TTL)),
     )
+    parser.add_argument("--volume-alarm-threshold", type=int, default=int(os.environ.get("COS_SESSION_VOLUME_ALARM_THRESHOLD", 1000)))
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--strict", action="store_true", help="Exit non-zero when warnings or blockers exist.")
 
