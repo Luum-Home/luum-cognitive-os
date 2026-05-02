@@ -195,6 +195,41 @@ class TestGate1ProhibitedTerms:
 
         assert result.returncode == 0, result.stdout + result.stderr
 
+    def test_gate1_rename_uses_new_path(self, tmp_path):
+        repo = _make_git_repo(tmp_path)
+        hook_dest = repo / ".githooks"
+        hook_dest.mkdir()
+        import shutil
+        shutil.copy(HOOK, hook_dest / "pre-commit")
+
+        old_file = repo / "old.md"
+        new_file = repo / "new.md"
+        old_file.write_text("portable\n")
+        subprocess.run(["git", "add", "old.md"], cwd=str(repo), check=True)
+        subprocess.run(
+            ["git", "commit", "-m", "seed"],
+            cwd=str(repo),
+            check=True,
+            capture_output=True,
+        )
+        old_file.rename(new_file)
+        new_file.write_text("This mentions <consumer-codename-b> after rename.\n")
+        subprocess.run(["git", "add", "-A"], cwd=str(repo), check=True)
+
+        result = subprocess.run(
+            ["bash", str(hook_dest / "pre-commit")],
+            capture_output=True,
+            text=True,
+            cwd=str(repo),
+            env={**os.environ, "GIT_DIR": str(repo / ".git"), "PROJECT_ROOT": str(repo)},
+            timeout=20,
+        )
+
+        combined = result.stdout + result.stderr
+        assert result.returncode != 0
+        assert "new.md" in combined
+        assert "old.md\tnew.md" not in combined
+
 
 # ─── Gate 2: Python syntax ────────────────────────────────────────────────────
 

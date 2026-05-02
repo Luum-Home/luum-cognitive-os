@@ -25,6 +25,20 @@ def linux_home_path(user: str, *parts: str) -> str:
     return str(Path("/") / "home" / user / Path(*parts))
 
 
+def init_git_repo(path: Path) -> None:
+    subprocess.run(["git", "init"], cwd=path, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "config", "user.email", "test@example.invalid"],
+        cwd=path,
+        check=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Test User"],
+        cwd=path,
+        check=True,
+    )
+
+
 def test_scan_file_detects_developer_home_path(tmp_path: Path) -> None:
     doc = tmp_path / "README.md"
     leaked = mac_home_path("alice", "Projects", "private-app", "README.md")
@@ -81,17 +95,7 @@ def test_repo_has_no_tracked_developer_home_paths() -> None:
 
 
 def test_default_scan_ignores_paths_staged_for_deletion(tmp_path: Path) -> None:
-    subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(
-        ["git", "config", "user.email", "test@example.invalid"],
-        cwd=tmp_path,
-        check=True,
-    )
-    subprocess.run(
-        ["git", "config", "user.name", "Test User"],
-        cwd=tmp_path,
-        check=True,
-    )
+    init_git_repo(tmp_path)
     export = tmp_path / "memory.jsonl"
     export.write_text(mac_home_path("alice", "private", "note.md") + "\n", encoding="utf-8")
     subprocess.run(["git", "add", "memory.jsonl"], cwd=tmp_path, check=True)
@@ -109,17 +113,7 @@ def test_default_scan_ignores_paths_staged_for_deletion(tmp_path: Path) -> None:
 
 
 def test_staged_scan_ignores_gitlink_submodule_contents(tmp_path: Path) -> None:
-    subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(
-        ["git", "config", "user.email", "test@example.invalid"],
-        cwd=tmp_path,
-        check=True,
-    )
-    subprocess.run(
-        ["git", "config", "user.name", "Test User"],
-        cwd=tmp_path,
-        check=True,
-    )
+    init_git_repo(tmp_path)
     plugin = tmp_path / "vendor" / "plugin"
     plugin.mkdir(parents=True)
     (plugin / "README.md").write_text(
@@ -150,17 +144,7 @@ def test_staged_scan_ignores_gitlink_submodule_contents(tmp_path: Path) -> None:
 
 
 def test_staged_scan_reads_index_not_dirty_worktree(tmp_path: Path) -> None:
-    subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(
-        ["git", "config", "user.email", "test@example.invalid"],
-        cwd=tmp_path,
-        check=True,
-    )
-    subprocess.run(
-        ["git", "config", "user.name", "Test User"],
-        cwd=tmp_path,
-        check=True,
-    )
+    init_git_repo(tmp_path)
     doc = tmp_path / "README.md"
     doc.write_text("Portable staged content uses $PROJECT_DIR.\n", encoding="utf-8")
     subprocess.run(["git", "add", "README.md"], cwd=tmp_path, check=True)
@@ -180,17 +164,7 @@ def test_staged_scan_reads_index_not_dirty_worktree(tmp_path: Path) -> None:
 
 
 def test_staged_scan_blocks_index_even_if_worktree_was_fixed(tmp_path: Path) -> None:
-    subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(
-        ["git", "config", "user.email", "test@example.invalid"],
-        cwd=tmp_path,
-        check=True,
-    )
-    subprocess.run(
-        ["git", "config", "user.name", "Test User"],
-        cwd=tmp_path,
-        check=True,
-    )
+    init_git_repo(tmp_path)
     doc = tmp_path / "README.md"
     leaked = mac_home_path("alice", "private")
     doc.write_text(f"Staged leak: {leaked}\n", encoding="utf-8")
@@ -205,6 +179,193 @@ def test_staged_scan_blocks_index_even_if_worktree_was_fixed(tmp_path: Path) -> 
     )
 
     assert result.returncode == 1
+    assert leaked in result.stderr
+
+
+def test_staged_scan_rename_uses_new_path(tmp_path: Path) -> None:
+    init_git_repo(tmp_path)
+    old_doc = tmp_path / "old.md"
+    new_doc = tmp_path / "new.md"
+    old_doc.write_text("portable\n", encoding="utf-8")
+    subprocess.run(["git", "add", "old.md"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "commit", "-m", "seed"], cwd=tmp_path, check=True, capture_output=True)
+    old_doc.rename(new_doc)
+    leaked = mac_home_path("alice", "renamed")
+    new_doc.write_text(f"renamed leak: {leaked}\n", encoding="utf-8")
+    subprocess.run(["git", "add", "-A"], cwd=tmp_path, check=True)
+
+    staged = cap.staged_files(tmp_path)
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert [f.path for f in staged] == ["new.md"]
+    assert result.returncode == 1
+    assert "new.md" in result.stderr
+    assert "old.md\tnew.md" not in result.stderr
+    assert leaked in result.stderr
+
+
+def test_staged_scan_copy_uses_new_path(tmp_path: Path) -> None:
+    init_git_repo(tmp_path)
+    source = tmp_path / "source.md"
+    copied = tmp_path / "copied.md"
+    source.write_text(("portable reference line\n" * 20), encoding="utf-8")
+    subprocess.run(["git", "add", "source.md"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "commit", "-m", "seed"], cwd=tmp_path, check=True, capture_output=True)
+    leaked = mac_home_path("alice", "copied")
+    copied.write_text(source.read_text(encoding="utf-8") + f"path: {leaked}\n", encoding="utf-8")
+    subprocess.run(["git", "add", "copied.md"], cwd=tmp_path, check=True)
+
+    staged = cap.staged_files(tmp_path)
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert [f.path for f in staged] == ["copied.md"]
+    assert result.returncode == 1
+    assert "copied.md" in result.stderr
+    assert "source.md\tcopied.md" not in result.stderr
+    assert leaked in result.stderr
+
+
+def test_staged_scan_file_with_spaces(tmp_path: Path) -> None:
+    init_git_repo(tmp_path)
+    doc = tmp_path / "docs with spaces.md"
+    leaked = mac_home_path("alice", "spacey")
+    doc.write_text(f"path: {leaked}\n", encoding="utf-8")
+    subprocess.run(["git", "add", "docs with spaces.md"], cwd=tmp_path, check=True)
+
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 1
+    assert "docs with spaces.md" in result.stderr
+    assert leaked in result.stderr
+
+
+def test_staged_scan_blocks_symlink_to_developer_home(tmp_path: Path) -> None:
+    init_git_repo(tmp_path)
+    link = tmp_path / "private-link"
+    leaked = mac_home_path("alice", "private")
+    link.symlink_to(leaked)
+    subprocess.run(["git", "add", "private-link"], cwd=tmp_path, check=True)
+
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 1
+    assert "private-link" in result.stderr
+    assert leaked in result.stderr
+
+
+def test_staged_scan_blocks_gitmodules_local_absolute_path(tmp_path: Path) -> None:
+    init_git_repo(tmp_path)
+    leaked = mac_home_path("alice", "plugins", "tool")
+    (tmp_path / ".gitmodules").write_text(
+        '[submodule "local-tool"]\n'
+        "\tpath = .claude/plugins/local-tool\n"
+        f"\turl = {leaked}\n",
+        encoding="utf-8",
+    )
+    subprocess.run(["git", "add", ".gitmodules"], cwd=tmp_path, check=True)
+
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 1
+    assert ".gitmodules" in result.stderr
+    assert leaked in result.stderr
+
+
+def test_staged_scan_new_submodule_ignores_dirty_checkout_content(tmp_path: Path) -> None:
+    init_git_repo(tmp_path)
+    plugin = tmp_path / ".claude" / "plugins" / "dirty-tool"
+    plugin.mkdir(parents=True)
+    (plugin / "README.md").write_text(
+        f"upstream fixture path: {mac_home_path('upstream-dev', 'tool')}\n",
+        encoding="utf-8",
+    )
+    (tmp_path / ".gitmodules").write_text(
+        '[submodule ".claude/plugins/dirty-tool"]\n'
+        "\tpath = .claude/plugins/dirty-tool\n"
+        "\turl = https://example.invalid/dirty-tool.git\n",
+        encoding="utf-8",
+    )
+    subprocess.run(["git", "add", ".gitmodules"], cwd=tmp_path, check=True)
+    subprocess.run(
+        [
+            "git",
+            "update-index",
+            "--add",
+            "--cacheinfo",
+            "160000,0123456789012345678901234567890123456789,.claude/plugins/dirty-tool",
+        ],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+    )
+
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+
+def test_staged_scan_skips_binary_blob(tmp_path: Path) -> None:
+    init_git_repo(tmp_path)
+    binary = tmp_path / "payload.bin"
+    binary.write_bytes(b"\0" + mac_home_path("alice", "binary").encode("utf-8"))
+    subprocess.run(["git", "add", "payload.bin"], cwd=tmp_path, check=True)
+
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+
+def test_staged_scan_blocks_windows_developer_home_path(tmp_path: Path) -> None:
+    init_git_repo(tmp_path)
+    doc = tmp_path / "windows.md"
+    leaked = "C:" + "\\" + "Users" + "\\" + "alice" + "\\" + "secret"
+    doc.write_text(f"Windows leak: {leaked}\n", encoding="utf-8")
+    subprocess.run(["git", "add", "windows.md"], cwd=tmp_path, check=True)
+
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 1
+    assert "windows.md" in result.stderr
     assert leaked in result.stderr
 
 
