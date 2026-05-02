@@ -6,6 +6,10 @@
 
 ---
 
+## Status
+
+Proposed (2026-05-02). R1 has landed; R2-R4 remain in flight and are governed by this reversibility contract.
+
 ## Context
 
 On 2026-05-02, a compounding false-done incident produced **5 or more involuntary revert events in a single session**. Post-mortem analysis (see `docs/incidents/2026-05-02-false-done-compounding.md` and `docs/reports/revert-investigation-2026-05-02.md`) identified a shared root cause: `git stash` operations in OS hooks were:
@@ -148,6 +152,19 @@ The test lives at `tests/contracts/test_stash_mutation_reversibility.py` (to be 
 Until that test exists, code review MUST manually verify the five invariants for any hook PR touching stash.
 
 ---
+
+## Alternatives rejected
+
+1. **Allow anonymous `git stash` in hooks and rely on manual reflog recovery.** Rejected because the 2026-05-02 incident showed anonymous stashes made forensic recovery slow and unreliable.
+2. **Continue using `git stash pop` because it is shorter.** Rejected because failed apply can drop the only recoverable copy and turn a temporary conflict into silent data loss.
+3. **Warn only when stash count is high.** Rejected because warnings after mutation do not make stash operations reversible; named apply/drop and lock discipline are required.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+python3 -m pytest tests/integration/test_stash_lock.py -q
+```
 
 ## References
 
