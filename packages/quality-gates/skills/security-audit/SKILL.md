@@ -1,6 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: security-audit
+invocation_pattern: on-demand  # @on-demand: periodic — manual security review
 description: >
   Comprehensive security audit of Cognitive OS configuration, secrets, hooks,
   permissions, and infrastructure. Reports findings with severity levels.

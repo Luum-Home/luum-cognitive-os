@@ -1,6 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: push-release
+invocation_pattern: on-demand  # @on-demand: release pipeline step — manual trigger
 command: /push-release
 description: Push the release commit and tags to the remote — always requires explicit confirmation
 version: 0.1.0

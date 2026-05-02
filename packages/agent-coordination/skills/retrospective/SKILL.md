@@ -1,6 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: retrospective
+invocation_pattern: on-demand  # @on-demand: periodic — invoked manually after sprints
 version: 1.0.0
 command: /retrospective
 description: Weekly analysis of all squads with trend analysis and auto-reconfiguration proposals
