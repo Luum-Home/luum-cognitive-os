@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Emit and inspect Cognitive OS inter-session coordination events."""
+from __future__ import annotations
+
+import argparse
+import json
+
+from lib.session_bus import append_event, read_events
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", default=None)
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    emit = sub.add_parser("emit")
+    emit.add_argument("event_type")
+    emit.add_argument("--session-id", default=None)
+    emit.add_argument("--payload-json", default="{}")
+    tail = sub.add_parser("tail")
+    tail.add_argument("--limit", type=int, default=20)
+    tail.add_argument("--event-type", default=None)
+    args = parser.parse_args()
+    if args.cmd == "emit":
+        payload = json.loads(args.payload_json)
+        event = append_event(args.event_type, payload, project_dir=args.project_dir, session_id=args.session_id)
+        print(json.dumps(event, sort_keys=True))
+        return 0
+    events = read_events(project_dir=args.project_dir, limit=args.limit, event_type=args.event_type)
+    for event in events:
+        print(json.dumps(event, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
