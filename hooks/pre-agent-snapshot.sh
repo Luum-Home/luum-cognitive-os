@@ -35,6 +35,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="pre-agent-snapshot"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+OS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-default-session}"
 SESSIONS_DIR="$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID"
@@ -153,11 +155,13 @@ SNAPSHOT_RESULT=""
 SNAPSHOT_STATUS="skipped"
 SNAPSHOT_ID=""
 STASH_REF=""
+TREE_DIRTY=false
+UNTRACKED_COUNT=0
 
 if command -v python3 >/dev/null 2>&1; then
   SNAPSHOT_RESULT=$(python3 - <<PYEOF 2>/dev/null
 import sys, json
-sys.path.insert(0, '$PROJECT_DIR')
+sys.path.insert(0, '$OS_ROOT')
 try:
     from lib.snapshot_manager import create_snapshot
     from pathlib import Path
@@ -171,6 +175,16 @@ PYEOF
     SNAPSHOT_STATUS=$(echo "$SNAPSHOT_RESULT" | jq -r '.status // "error"' 2>/dev/null || echo "error")
     SNAPSHOT_ID=$(echo "$SNAPSHOT_RESULT" | jq -r '.snapshot_id // ""' 2>/dev/null || true)
     STASH_REF=$(echo "$SNAPSHOT_RESULT" | jq -r '.tracked_stash_ref // ""' 2>/dev/null || true)
+    UNTRACKED_COUNT=$(echo "$SNAPSHOT_RESULT" | jq -r '(.untracked_files // []) | length' 2>/dev/null || echo 0)
+    TREE_DIRTY=false
+    if [ -n "$STASH_REF" ] || [ "${UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null; then
+      TREE_DIRTY=true
+    fi
+    if [ "$SNAPSHOT_STATUS" = "ok" ] && [ "$TREE_DIRTY" = false ]; then
+      SNAPSHOT_STATUS="skip_clean"
+    elif [ "$SNAPSHOT_STATUS" = "ok" ] && [ -n "$STASH_REF" ]; then
+      SNAPSHOT_STATUS="stashed"
+    fi
   elif [ -n "$SNAPSHOT_RESULT" ]; then
     SNAPSHOT_STATUS="ok"
   fi
@@ -193,6 +207,7 @@ mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
   printf '"snapshot_id":"%s",' "${SNAPSHOT_ID//\"/\\\"}"
   printf '"stash_ref":"%s",' "${STASH_REF//\"/\\\"}"
   printf '"status":"%s",' "$SNAPSHOT_STATUS"
+  printf '"tree_dirty":%s,' "$TREE_DIRTY"
   escaped_prompt=${PROMPT_SUMMARY//\\/\\\\}
   escaped_prompt=${escaped_prompt//\"/\\\"}
   printf '"prompt_summary":"%s"' "$escaped_prompt"
@@ -200,8 +215,8 @@ mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 } > "$SNAPSHOT_FILE" 2>/dev/null || true
 
 # Append to metrics JSONL
-METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","snapshot_id":"%s","stash_ref":"%s","mode":"copy"}' \
-  "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${SNAPSHOT_ID}" "${STASH_REF}")
+METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","snapshot_id":"%s","stash_ref":"%s","tree_dirty":%s,"mode":"copy"}' \
+  "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${SNAPSHOT_ID}" "${STASH_REF}" "$TREE_DIRTY")
 safe_jsonl_append "$METRICS_LOG" "$METRICS_LINE" 2>/dev/null || true
 
 # Always advisory — never block

@@ -4,6 +4,18 @@
 
 # ── Cognitive OS runtime (generated during sessions, never committed) ────────
 .cognitive-os/
+!.cognitive-os/
+.cognitive-os/*
+!.cognitive-os/plans/
+!.cognitive-os/plans/*/
+!.cognitive-os/plans/*/.gitkeep
+!.cognitive-os/reports/
+.cognitive-os/reports/*
+!.cognitive-os/reports/research/
+!.cognitive-os/reports/research/.gitkeep
+!.cognitive-os/skills/
+.cognitive-os/skills/*
+!.cognitive-os/skills/_catalog-allowlist.txt
 dynamic-tools/
 sessions/
 transcripts/

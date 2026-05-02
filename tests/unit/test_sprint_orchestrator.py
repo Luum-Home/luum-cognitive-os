@@ -34,7 +34,7 @@ from lib.sprint_orchestrator import (  # noqa: E402
 )
 
 
-EXAMPLE_SPEC = _REPO / "tests" / "fixtures" / "e2e" / "example-sprint.yaml"
+EXAMPLE_SPEC = _REPO / "tests/fixtures/sprints/example-sprint.yaml"
 
 
 def test_load_spec_parses_example(tmp_path: Path) -> None:

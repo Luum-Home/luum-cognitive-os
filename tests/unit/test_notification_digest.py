@@ -1,5 +1,4 @@
 """Unit tests for lib/notification_digest.py"""
-import pytest
 from lib.notification_digest import NotificationDigest
 
 
@@ -146,6 +145,21 @@ def test_clear():
     d.clear()
     assert d.count() == 0
 
+
+
+def test_format_digest_omits_old_entries_but_keeps_totals():
+    d = _make(25)
+    digest = d.format_digest(max_entries=5, max_chars=4000)
+    assert "20 older notifications omitted" in digest
+    assert "Total tool calls" in digest
+    assert digest.count("Task number") == 5
+
+
+def test_format_digest_hard_caps_output():
+    d = _make(30)
+    digest = d.format_digest(max_entries=30, max_chars=500)
+    assert len(digest) <= 500
+    assert "digest truncated" in digest
 
 # ---------------------------------------------------------------------------
 # serialization roundtrip

@@ -5,7 +5,7 @@
 #   cos status [flags]                 -> scripts/cos-status.sh
 #   cos init-check                     -> scripts/cos-doctor-harness.sh --init-check
 #   cos doctor harness [flags]         -> scripts/cos-doctor-harness.sh
-#   cos measure harness-profiles       -> scripts/measure-harness-profiles.py
+#   cos measure harness-profiles       -> scripts/measure_harness_profiles.py
 #   cos sprint ...                     -> scripts/cos_sprint.py
 #   cos *                              -> bin/cognitive-os.sh (init, doctor, list, install, ...)
 #
@@ -43,7 +43,7 @@ case "$SUBCMD" in
   measure)
     if [ "${2:-}" = "harness-profiles" ]; then
       shift 2
-      exec python3 "$SCRIPT_DIR/measure-harness-profiles.py" "$@"
+      exec python3 "$SCRIPT_DIR/measure_harness_profiles.py" "$@"
     fi
     echo "cos: unknown measure target '${2:-}'. Try: cos measure harness-profiles" >&2
     exit 1

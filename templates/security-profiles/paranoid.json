@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
-  "_description": "Paranoid security profile \u2014 maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 55,
+  "_description": "Paranoid security profile — maximum defense. For pre-production validation and security audits.",
+  "_hook_count": 77,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -58,7 +58,7 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/lazy-catalog-auto-revert.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-sanity.sh\""
           }
         ]
       }
@@ -81,10 +81,6 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/memory-prefetch.sh\"",
             "async": true
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/lazy-catalog-injector.sh\""
           }
         ]
       }
@@ -168,6 +164,10 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pre-agent-snapshot.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-prelaunch.sh\""
           },
           {
@@ -217,11 +217,6 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-discovery-telemetry.sh\"",
-            "async": true
           }
         ]
       },
@@ -293,6 +288,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-checkpoint.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/post-agent-verify.sh\""
           },
           {
             "type": "command",
@@ -385,6 +384,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-cleanup.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-failure-monitor.sh\""
           },
           {
             "type": "command",

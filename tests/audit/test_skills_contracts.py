@@ -255,6 +255,10 @@ def _catalog_names() -> set[str]:
             m = re.match(r"\|\s*([a-z0-9_][a-z0-9\-_]*)\s*\|", line)
             if m:
                 names.add(m.group(1))
+                continue
+            m = re.match(r"- \*\*([a-z0-9_][a-z0-9\-_]*)\*\*", line)
+            if m:
+                names.add(m.group(1))
     return names
 
 

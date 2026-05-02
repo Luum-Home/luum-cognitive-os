@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
-  "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 37,
+  "_description": "Standard security profile — balanced safety and speed. Recommended for daily development.",
+  "_hook_count": 61,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -53,7 +53,7 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/lazy-catalog-auto-revert.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-sanity.sh\""
           }
         ]
       }
@@ -69,6 +69,10 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/prompt-quality.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-wrapup-trigger.sh\"",
             "async": true
           },
@@ -76,10 +80,6 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/memory-prefetch.sh\"",
             "async": true
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/lazy-catalog-injector.sh\""
           }
         ]
       }
@@ -163,6 +163,10 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pre-agent-snapshot.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-prelaunch.sh\""
           },
           {
@@ -187,11 +191,6 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-discovery-telemetry.sh\"",
-            "async": true
           }
         ]
       },
@@ -249,6 +248,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-checkpoint.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/post-agent-verify.sh\""
           },
           {
             "type": "command",

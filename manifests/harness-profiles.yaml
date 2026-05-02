@@ -21,7 +21,7 @@ profiles:
       - hooks/memory-prefetch.sh
     required_commands:
       - scripts/cos-doctor-harness.sh
-      - scripts/measure-harness-profiles.py
+      - scripts/measure_harness_profiles.py
       - scripts/cos_sprint.py
       - bin/cos-agent
       - bin/cos-skill

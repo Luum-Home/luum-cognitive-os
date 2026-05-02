@@ -181,3 +181,11 @@ trust-score-validator.sh
 # find them in apply-efficiency-profile.sh (which delegates to the driver).
 tool-sequence-capture.sh
 skill-synthesis-scanner.sh
+# 2026-05-01: default driver/parity hooks are registered in harness settings, but
+# architecture text-scan still expects security/efficiency profile literals.
+edit-lock-drain-parked.sh
+edit-lock-pre-tool.sh
+edit-lock-process-negotiations.sh
+edit-lock-session-end.sh
+host-tool-doctor.sh
+

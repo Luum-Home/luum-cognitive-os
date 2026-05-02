@@ -1,1 +1,1 @@
-../packages/prompt-quality-gate/hooks/prompt-quality.sh
+../../../packages/prompt-quality-gate/hooks/prompt-quality.sh

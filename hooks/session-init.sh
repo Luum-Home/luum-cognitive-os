@@ -180,32 +180,14 @@ if [ -x "$(dirname "$0")/crash-recovery.sh" ]; then
 fi
 
 # ─── Level-1 skills catalog pointer ──────────────────────────────────────────
-# LAZY-LOAD (default ON): CATALOG-COMPACT.md is NOT injected at SessionStart.
-# Instead, hooks/lazy-catalog-injector.sh injects it on the first UserPromptSubmit
-# that contains skill-related keywords. This saves ~3.5K tokens per session.
-#
-# To opt OUT of lazy-loading and restore eager injection at session start:
-#   export COS_LAZY_CATALOG=0
-#
-# The env var is also set automatically by hooks/lazy-catalog-auto-revert.sh
-# when the 24h suspected_missed_skills rate exceeds 2× baseline.
+# The compact catalog (CATALOG-COMPACT.md) is the Level-1 index loaded at
+# session start. Full SKILL.md files load on demand. The full catalog with
+# invocations and sections is available via /catalog-full.
 CATALOG_COMPACT="$PROJECT_DIR/skills/CATALOG-COMPACT.md"
-if [ "${COS_LAZY_CATALOG:-1}" = "0" ]; then
-  # Eager mode: inject now (opt-out of lazy-loading)
-  if [ -f "$CATALOG_COMPACT" ]; then
-    echo "Skills catalog: skills/CATALOG-COMPACT.md (run /catalog-full for details)"
-    echo "[COS_LAZY_CATALOG=0] Eager catalog injection active."
-  else
-    echo "WARN: skills/CATALOG-COMPACT.md missing — run: python3 scripts/generate_compact_catalog.py" >&2
-  fi
+if [ -f "$CATALOG_COMPACT" ]; then
+  echo "Skills catalog: skills/CATALOG-COMPACT.md (run /catalog-full for details)"
 else
-  # Lazy mode (default): catalog injected on first skill-related prompt
-  if [ -f "$CATALOG_COMPACT" ]; then
-    echo "Skills catalog available (lazy): catalog injected on first skill-related prompt."
-    echo "Use /catalog-full for the full index, or mention any skill name to trigger injection."
-  else
-    echo "WARN: skills/CATALOG-COMPACT.md missing — run: python3 scripts/generate_compact_catalog.py" >&2
-  fi
+  echo "WARN: skills/CATALOG-COMPACT.md missing — run: python3 scripts/generate_compact_catalog.py" >&2
 fi
 echo ""
 
