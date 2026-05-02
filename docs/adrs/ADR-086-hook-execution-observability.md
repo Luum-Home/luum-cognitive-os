@@ -1,10 +1,13 @@
-# ADR-085: Hook Execution Observability
+# ADR-086: Hook Execution Observability
+
+<!-- Renumbered-from: attempted ADR-085 during the ADR reservation race documented in ADR-089. -->
+<!-- Canonical-number: ADR-086. ADR-085 remains intentionally unused rather than reusing a contested slot. -->
 
 **Status**: Accepted (2026-04-30)
 
 ## Status
 
-Accepted.
+Accepted. The canonical number is ADR-086; ADR-085 was an abandoned contested reservation during the concurrent ADR slot race documented by ADR-089.
 
 ## Context
 
