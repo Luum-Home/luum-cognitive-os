@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
   "_description": "Standard security profile — balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 62,
+  "_hook_count": 63,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -305,6 +305,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/tool-sequence-capture.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aci-observation-capture.sh\""
           }
         ]
       }

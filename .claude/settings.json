@@ -262,6 +262,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/tool-sequence-capture.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/aci-observation-capture.sh\""
           }
         ]
       },

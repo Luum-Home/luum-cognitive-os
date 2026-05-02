@@ -14,6 +14,7 @@
 #
 # ── Hooks delegated to settings-driver-claude-code.sh (ADR-095 Phase 2) ──────
 # tool-sequence-capture.sh  — PostToolUse[*]; appends JSONL to tool-sequences.jsonl
+# aci-observation-capture.sh  — PostToolUse[*]; appends normalized ACI + trajectory JSONL
 # skill-synthesis-scanner.sh  — Stop; 30-min cooldown synthesis scanner
 # ─────────────────────────────────────────────────────────────────────────────
 #
@@ -128,7 +129,7 @@ run_claude_code_driver() {
     lethal-trifecta-gate.sh dispatch-gate.sh clarification-gate.sh blast-radius.sh query-tailored-context-inject.sh \
     pre-agent-snapshot.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh \
     content-policy.sh doc-sync-detector.sh claim-validator.sh completion-gate.sh \
-    trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
+    aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh context-watchdog.sh kpi-trigger.sh teammate-idle.sh \
     task-created.sh task-completed.sh session-sanity.sh; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
@@ -170,7 +171,7 @@ echo "  PreToolUse *: session-heartbeat.sh, lethal-trifecta-gate.sh"
 echo "  PreToolUse Bash: rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, git-commit-scope-guard.sh"
 echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, edit-lock-pre-tool.sh"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, pre-agent-snapshot.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, reinvention-check.sh, native-agent-heartbeat.sh"
-echo "  PostToolUse *: context-watchdog.sh (async), rate-limit-detector.sh"
+echo "  PostToolUse *: context-watchdog.sh (async), rate-limit-detector.sh, tool-sequence-capture.sh, aci-observation-capture.sh"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh (async)"
 echo "  PostToolUse Edit|Write: content-policy.sh, skill-frontmatter-validator.sh, rule-frontmatter-validator.sh, hook-header-validator.sh, adr-section-validator.sh, confidentiality-enforcer.sh, surface-fix-detector.sh, doc-sync-detector.sh (async)"
