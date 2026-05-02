@@ -28,7 +28,6 @@ Total skills: 153
 
 | Skill | Description |
 |-------|-------------|
-| __contracts__ | Internal namespace for harness-contract skills that define executable reference contracts for Cogni… |
 | agent-stress-test | Stress-test agent cognitive health to detect context-induced degradation |
 | arena | \"Run competitive benchmarks comparing Cognitive OS against other AI coding… |
 | automaker-bridge | Configure AutoMaker to use Cognitive OS as its execution brain |
@@ -38,13 +37,14 @@ Total skills: 153
 | cognitive-os-test | Run the Cognitive OS test suite with persisted summary (junit + failures + tails). |
 | compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI… |
 | component-reality-check | Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime. |
+| contracts-namespace | Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives. |
 | coordination-status | List who is editing what across concurrent COS sessions. |
 | deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
 | deps-update | Audit and optionally upgrade project dependencies — Python, engram binary, Claude Code plugins, Doc… |
 | detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
 | docs-execution-audit | Audit what the docs say is done vs what repo evidence proves. |
 | dogfood-score | Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs). |
-| experimental | Internal holding area for experimental skill drafts awaiting synthesis, review, promotion, or rejec… |
+| experimental | Structural namespace for experimental Cognitive OS skills that are not promoted to stable catalog s… |
 | harness-audit | Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance. |
 | metrics-calibrator | Analyze KPI history and auto-calibrate thresholds for meaningful alerting |
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules. |

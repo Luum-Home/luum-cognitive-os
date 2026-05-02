@@ -50,11 +50,7 @@ def _registration_allowlist() -> set[str]:
 # Known code-dead hooks (referenced but intentionally missing): these are the
 # classification output, not a TODO. This set is intentionally empty after the
 # 2026-04-23 audit refresh: previous entries now exist on disk.
-EXPECTED_CODE_DEAD: frozenset[str] = frozenset({
-    "completeness-check.sh",
-    "prompt-quality.sh",
-    "session-sanity.sh",
-})
+EXPECTED_CODE_DEAD: frozenset[str] = frozenset()
 
 # Placeholder/illustrative hook names used in skill templates and example docs
 # (e.g. skills that SCAFFOLD a new project generate a `block-prod-urls.sh`

@@ -10,29 +10,43 @@
 set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/portable.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 
 # ── Strategy B: TTL cache (60s) ──────────────────────────────────────────────
 # inject-phase-context was hitting p95 ~3674ms (budget: 2000ms) because it ran
 # multiple synchronous Python subprocesses (engram search + ref_key expansion)
-# on every PreToolUse fire.  Phase and project config change rarely (at most once
-# per session), so we cache the full context output for 60 seconds keyed on:
-#   {yaml_mtime}:{session_id}:{tool_name}
+# on every PreToolUse fire. Cache the full context output for 60 seconds, but
+# key it on content fingerprints rather than coarse mtimes so tests and rapid
+# profile edits never reuse stale phase/preamble output.
 # A cache hit exits in <10ms, well within the 2000ms budget.
 _PHASE_CACHE_DIR="${PROJECT_DIR}/.cognitive-os/cache/inject-phase-context"
 _PHASE_CACHE_TTL=60  # seconds
 
+_file_fingerprint() {
+  local path="${1:-}"
+  if [[ -n "$path" && -f "$path" ]]; then
+    shasum -a 256 "$path" 2>/dev/null | cut -d' ' -f1 \
+      || md5 "$path" 2>/dev/null | awk '{print $NF}' \
+      || portable_stat_mtime "$path" 2>/dev/null \
+      || echo "0"
+  else
+    echo "0"
+  fi
+}
+
 _cache_key_for_context() {
-  local yaml_mtime session_id tool_name
-  yaml_mtime=$(stat -f "%m" "${COGNITIVE_OS_YAML:-/dev/null}" 2>/dev/null \
-    || stat -c "%Y" "${COGNITIVE_OS_YAML:-/dev/null}" 2>/dev/null \
-    || echo "0")
+  local yaml_fp preamble_fp gotchas_fp session_id tool_name cache_basis
+  yaml_fp=$(_file_fingerprint "${COGNITIVE_OS_YAML:-/dev/null}")
+  preamble_fp=$(_file_fingerprint "${PROJECT_DIR}/templates/agent-preamble.md")
+  gotchas_fp=$(_file_fingerprint "${PROJECT_DIR}/templates/project-gotchas.md")
   session_id="${COGNITIVE_OS_SESSION_ID:-default}"
   tool_name="${1:-any}"
-  printf '%s:%s:%s' "$yaml_mtime" "$session_id" "$tool_name" \
+  cache_basis="${yaml_fp}:${preamble_fp}:${gotchas_fp}:${session_id}:${tool_name}"
+  printf '%s' "$cache_basis" \
     | shasum -a 256 2>/dev/null | cut -d' ' -f1 \
-    || printf '%s:%s:%s' "$yaml_mtime" "$session_id" "$tool_name" | md5 2>/dev/null \
+    || printf '%s' "$cache_basis" | md5 2>/dev/null \
     || echo "nocache"
 }
 

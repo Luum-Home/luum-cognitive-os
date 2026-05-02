@@ -123,7 +123,10 @@ def find_owning_context(repo: Path) -> dict | None:
     env_harness = _env_harness()
     env_kind = _env_kind()
 
-    if env_session or env_harness != "unknown" or env_kind != "manual":
+    # A harness-only environment such as CODEX_PROJECT_DIR is useful as
+    # enrichment, but it is not enough to identify the owning session. Keep
+    # searching so legacy/current context markers can provide the session ID.
+    if env_session or env_kind != "manual":
         return {
             "session": env_session or "unknown",
             "kind": env_kind,
@@ -279,6 +282,8 @@ def apply_to_file(message_file: Path, *, repo: Path | None = None) -> None:
         session = ctx.get("session") or "unknown"
         kind = ctx.get("kind") or "manual"
         harness = ctx.get("harness") or "unknown"
+        if harness == "unknown":
+            harness = _env_harness()
     else:
         session = "unknown"
         kind = _env_kind()

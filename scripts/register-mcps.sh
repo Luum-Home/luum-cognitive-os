@@ -166,13 +166,21 @@ _find_python() {
       return 0
     fi
   fi
-  # Fall back to PATH python3
-  if command -v python3 >/dev/null 2>&1; then
-    if python3 -c "import yaml" >/dev/null 2>&1; then
-      echo "python3"
+  # Fall back to PATH and common macOS/Homebrew locations. Tests may run
+  # with a deliberately minimal PATH to simulate a missing claude CLI; Python
+  # with PyYAML can still be installed outside that PATH.
+  local candidate
+  for candidate in \
+    "$(command -v python3 2>/dev/null || true)" \
+    /opt/homebrew/bin/python3 \
+    /opt/homebrew/opt/python@3.14/bin/python3.14 \
+    /usr/local/bin/python3 \
+    /usr/bin/python3; do
+    if [[ -n "$candidate" && -x "$candidate" ]] && "$candidate" -c "import yaml" >/dev/null 2>&1; then
+      echo "$candidate"
       return 0
     fi
-  fi
+  done
   echo ""
 }
 

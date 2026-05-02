@@ -2,9 +2,6 @@
 
 import json
 import os
-import textwrap
-import tempfile
-import pytest
 
 from lib.agent_output_extractor import (
     extract_assistant_text,
@@ -223,7 +220,7 @@ class TestSummarizeAgentOutput:
     def test_returns_dict_with_expected_keys(self):
         summary = summarize_agent_output(FIXTURE_PATH)
         assert isinstance(summary, dict)
-        assert set(summary.keys()) == {"text", "tool_calls", "duration_ms", "tokens"}
+        assert set(summary.keys()) == {"text", "compact_result", "has_return_contract", "tool_calls", "duration_ms", "tokens"}
 
     def test_text_contains_all_responses(self):
         summary = summarize_agent_output(FIXTURE_PATH)
@@ -245,7 +242,7 @@ class TestSummarizeAgentOutput:
 
     def test_missing_file_returns_zero_summary(self):
         summary = summarize_agent_output("/not/a/real/file.output")
-        assert summary == {"text": "", "tool_calls": 0, "duration_ms": 0, "tokens": 0}
+        assert summary == {"text": "", "compact_result": "", "has_return_contract": False, "tool_calls": 0, "duration_ms": 0, "tokens": 0}
 
     def test_no_timestamps_duration_zero(self, tmp_path):
         lines = [
@@ -255,3 +252,31 @@ class TestSummarizeAgentOutput:
         summary = summarize_agent_output(path)
         assert summary["duration_ms"] == 0
         assert summary["tokens"] == 5
+
+
+class TestCompactResultExtraction:
+    def test_extracts_compact_result_from_current_contract(self, tmp_path):
+        result_text = """RESULT:
+  status: completed
+  summary: Added compact output tests.
+  files_created: tests/unit/test_format_converter.py
+  files_modified: lib/format_converter.py
+  tests: 5 passed, 0 failed
+  blockers: none
+
+TRUST_REPORT: SCORE=80 STATUS=MEDIUM EVIDENCE=2 UNCERTAINTIES=1
+"""
+        lines = [{
+            "type": "assistant",
+            "timestamp": "2026-05-01T12:00:00Z",
+            "message": {
+                "content": [{"type": "text", "text": result_text}],
+                "usage": {"output_tokens": 77},
+            },
+        }]
+        path = _write_jsonl(tmp_path, lines)
+        summary = summarize_agent_output(path)
+        assert summary["has_return_contract"] is True
+        assert "COMPLETED" in summary["compact_result"]
+        assert "test_format_converter.py" in summary["compact_result"]
+        assert "5 passed" in summary["compact_result"]

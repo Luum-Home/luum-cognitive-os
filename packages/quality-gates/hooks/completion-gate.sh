@@ -92,10 +92,13 @@ TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)
 # Set trap AFTER early-exit checks — only Agent tool calls need queue draining
 trap '_drain_queue' EXIT
 
-RESPONSE=$(echo "$INPUT" | jq -r '.tool_response // empty' 2>/dev/null)
-if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
-  RESPONSE=$(echo "$INPUT" | jq -r '.tool_response.result // .tool_response.output // .tool_response.content // empty' 2>/dev/null)
-fi
+RESPONSE=$(echo "$INPUT" | jq -r '
+  if (.tool_response | type) == "object" then
+    (.tool_response.result // .tool_response.output // .tool_response.content // empty)
+  else
+    (.tool_response // empty)
+  end
+' 2>/dev/null)
 [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ] && exit 0
 
 AGENT_PROMPT=$(echo "$INPUT" | jq -r '.tool_input.prompt // .tool_input.description // ""' 2>/dev/null)
@@ -282,23 +285,17 @@ fi
 if [ "$IS_COMPLETION" = "true" ]; then
   if echo "$RESPONSE" | grep -q "^RESULT:"; then
     # Return contract present — optionally validate it
-    _RC_VIOLATIONS=$(python3 -c "
-import sys, os
-sys.path.insert(0, '$PROJECT_DIR')
+    _RC_VIOLATIONS=$(printf '%s' "$RESPONSE" | PYTHONPATH="$PROJECT_DIR" python3 -c '
+import sys
 try:
     from lib.return_contract_parser import parse_return_contract, validate_return_contract
-    output = open('/dev/stdin').read() if not sys.stdin.isatty() else '$RESPONSE'
-    # Use the response captured in bash (passed via heredoc approach won't work here,
-    # so we rely on the python inline eval with the known output variable)
-    import subprocess, json
-    parsed = parse_return_contract('''$(echo "$RESPONSE" | head -c 4000 | sed "s/'/'\\\\''/g")''')
+    parsed = parse_return_contract(sys.stdin.read()[:12000])
     if parsed:
-        violations = validate_return_contract(parsed)
-        for v in violations:
-            print(v)
+        for violation in validate_return_contract(parsed):
+            print(violation)
 except Exception:
     pass
-" 2>/dev/null)
+' 2>/dev/null)
     if [ -n "$_RC_VIOLATIONS" ]; then
       echo "" >&2
       echo "=== COMPLETION-GATE: RETURN CONTRACT WARNINGS ===" >&2

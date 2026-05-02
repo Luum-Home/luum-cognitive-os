@@ -76,28 +76,34 @@ class NotificationDigest:
         return (f"{icon} {self._trunc(n.description, 60)} — {summary} "
                 f"({self._secs(n.duration_ms)}, {n.tool_uses} calls)")
 
-    def format_digest(self) -> str:
+    def format_digest(self, max_entries: int = 20, max_chars: int = 4000) -> str:
+        """Return a bounded digest for orchestrator context."""
         if not self._notifications:
             return "=== AGENT DIGEST (0 completed) ===\n(nothing to report)\n================================"
 
+        visible = self._notifications[-max_entries:] if max_entries > 0 else []
+        omitted = max(0, self.count() - len(visible))
         lines: list[str] = [f"=== AGENT DIGEST ({self.count()} completed) ==="]
+        if omitted:
+            lines.append(f"… {omitted} older notifications omitted from detail rows")
 
         total_dur = 0
         total_tools = 0
         total_passed = total_failed = total_xfail = 0
-
         for n in self._notifications:
+            total_dur += n.duration_ms
+            total_tools += n.tool_uses
+            total_passed += n.tests.get("passed", 0)
+            total_failed += n.tests.get("failed", 0)
+            total_xfail += n.tests.get("xfail", 0)
+
+        for n in visible:
             icon = "✅" if n.status != "failed" else "❌"
             summary = self._trunc(n.result_summary) if n.result_summary else n.status
             lines.append(
                 f"{icon} {self._trunc(n.description, 60)} — {summary} "
                 f"({self._secs(n.duration_ms)}, {n.tool_uses} calls)"
             )
-            total_dur += n.duration_ms
-            total_tools += n.tool_uses
-            total_passed += n.tests.get("passed", 0)
-            total_failed += n.tests.get("failed", 0)
-            total_xfail += n.tests.get("xfail", 0)
 
         if total_passed or total_failed or total_xfail:
             lines.append(
@@ -107,7 +113,11 @@ class NotificationDigest:
             f"Total duration: {self._secs(total_dur)} | Total tool calls: {total_tools}"
         )
         lines.append("================================")
-        return "\n".join(lines)
+        result = "\n".join(lines)
+        if max_chars > 0 and len(result) > max_chars:
+            footer = "\n... [digest truncated]\n================================"
+            return result[: max(0, max_chars - len(footer))] + footer
+        return result
 
     # ------------------------------------------------------------------
     # Persistence

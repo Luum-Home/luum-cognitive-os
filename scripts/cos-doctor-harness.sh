@@ -62,7 +62,7 @@ for f in AGENTS.md cognitive-os.yaml rules/RULES-COMPACT.md .codex/project-index
   if [ -f "$f" ]; then emit_check ok "required file $f" "found"; else emit_check fail "required file $f" "missing"; fi
 done
 
-for f in scripts/cos-doctor-harness.sh scripts/measure-harness-profiles.py scripts/cos_sprint.py bin/cos-agent bin/cos-skill; do
+for f in scripts/cos-doctor-harness.sh scripts/measure_harness_profiles.py scripts/cos_sprint.py bin/cos-agent bin/cos-skill; do
   if [ -f "$f" ]; then emit_check ok "required command $f" "found"; else emit_check fail "required command $f" "missing"; fi
 done
 

@@ -20,8 +20,10 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Any
+
+from lib.return_contract_parser import format_compact_result, parse_return_contract
 
 
 def _iter_lines(output_path: str):
@@ -178,12 +180,21 @@ def summarize_agent_output(output_path: str) -> dict[str, Any]:
 
     Returns a dict with:
       - text (str): all assistant text concatenated
+      - compact_result (str): parsed RESULT block summary, when present
+      - has_return_contract (bool): whether a RESULT block was parseable
       - tool_calls (int): number of tool invocations
       - duration_ms (int): elapsed time from first to last event (0 if unavailable)
       - tokens (int): total output tokens across all assistant messages
     """
     if not output_path or not os.path.exists(output_path):
-        return {"text": "", "tool_calls": 0, "duration_ms": 0, "tokens": 0}
+        return {
+            "text": "",
+            "compact_result": "",
+            "has_return_contract": False,
+            "tool_calls": 0,
+            "duration_ms": 0,
+            "tokens": 0,
+        }
 
     text_segments: list[str] = []
     tool_call_count = 0
@@ -227,8 +238,12 @@ def summarize_agent_output(output_path: str) -> dict[str, Any]:
     if first_ts and last_ts:
         duration_ms = int((last_ts - first_ts).total_seconds() * 1000)
 
+    text = "\n\n".join(text_segments)
+    contract = parse_return_contract(text)
     return {
-        "text": "\n\n".join(text_segments),
+        "text": text,
+        "compact_result": format_compact_result(contract) if contract else "",
+        "has_return_contract": contract is not None,
         "tool_calls": tool_call_count,
         "duration_ms": duration_ms,
         "tokens": total_output_tokens,

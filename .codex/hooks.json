@@ -69,6 +69,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/mcp-scan.sh\" ] && bash \"$PWD/hooks/mcp-scan.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-sanity.sh\" ] && bash \"$PWD/hooks/session-sanity.sh\" || true"
         }
       ],
       "matcher": "startup"
@@ -83,10 +87,6 @@
         },
         {
           "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/edit-lock-process-negotiations.sh\" ] && bash \"$PWD/hooks/edit-lock-process-negotiations.sh\" || true"
-        },
-        {
-          "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/user-prompt-capture.sh\" ] && bash \"$PWD/hooks/user-prompt-capture.sh\" || true"
         },
         {
@@ -96,6 +96,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/memory-prefetch.sh\" ] && bash \"$PWD/hooks/memory-prefetch.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/edit-lock-process-negotiations.sh\" ] && bash \"$PWD/hooks/edit-lock-process-negotiations.sh\" || true"
         }
       ],
       "matcher": "prompt"
@@ -160,19 +164,11 @@
         },
         {
           "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/edit-lock-session-end.sh\" ] && bash \"$PWD/hooks/edit-lock-session-end.sh\" || true"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/skill-failure-monitor.sh\" ] && bash \"$PWD/hooks/skill-failure-monitor.sh\" || true"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/skill-synthesis-scanner.sh\" ] && bash \"$PWD/hooks/skill-synthesis-scanner.sh\" || true"
-        },
-        {
-          "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-learning.sh\" ] && bash \"$PWD/hooks/session-learning.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/edit-lock-session-end.sh\" ] && bash \"$PWD/hooks/edit-lock-session-end.sh\" || true"
         },
         {
           "type": "command",
@@ -181,6 +177,14 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-changelog.sh\" ] && bash \"$PWD/hooks/session-changelog.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/skill-failure-monitor.sh\" ] && bash \"$PWD/hooks/skill-failure-monitor.sh\" || true"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/skill-synthesis-scanner.sh\" ] && bash \"$PWD/hooks/skill-synthesis-scanner.sh\" || true"
         },
         {
           "type": "command",
