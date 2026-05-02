@@ -131,7 +131,7 @@ run_claude_code_driver() {
     content-policy.sh doc-sync-detector.sh claim-validator.sh completion-gate.sh \
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh context-watchdog.sh kpi-trigger.sh teammate-idle.sh \
-    task-created.sh task-completed.sh session-sanity.sh; do
+    task-created.sh task-completed.sh session-sanity.sh validation-lock-cleanup.sh; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
     fi

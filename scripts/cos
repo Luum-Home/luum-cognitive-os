@@ -48,6 +48,24 @@ case "$SUBCMD" in
     echo "cos: unknown measure target '${2:-}'. Try: cos measure harness-profiles" >&2
     exit 1
     ;;
+  validation)
+    # ADR-108: validation capsule diagnostic + recovery
+    case "${2:-status}" in
+      status)
+        shift 2 2>/dev/null || shift
+        exec bash "$SCRIPT_DIR/cos-validation-status.sh" "$@"
+        ;;
+      break)
+        shift 2
+        exec bash "$SCRIPT_DIR/cos-validation-break.sh" "$@"
+        ;;
+      *)
+        echo "cos: unknown validation subcommand '${2:-}'. Try: cos validation {status|break}" >&2
+        exit 1
+        ;;
+    esac
+    exit 0
+    ;;
   sprint)
     shift
     exec python3 "$SCRIPT_DIR/cos_sprint.py" "$@"
