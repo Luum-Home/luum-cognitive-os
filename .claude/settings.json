@@ -113,6 +113,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" UserPromptSubmit \"$CLAUDE_PROJECT_DIR/hooks/edit-lock-process-negotiations.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" UserPromptSubmit \"$CLAUDE_PROJECT_DIR/hooks/stash-budget-warn.sh\"",
+            "async": true
           }
         ]
       }
