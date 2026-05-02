@@ -426,9 +426,21 @@ fi
 status=${PIPESTATUS[0]}
 set -e
 
+_empty_reserved_lane=0
+case "${_caller_lane:-}" in
+  arena | benchmark | quality)
+    if [ "$status" -eq 5 ] && grep -Eq "collected 0 items|no tests ran" "$full_output"; then
+      _empty_reserved_lane=1
+      status=0
+    fi
+    ;;
+esac
+
 printf '%s\n' "$status" > "$exit_code_file"
 
-if [ "$status" -eq 0 ]; then
+if [ "$_empty_reserved_lane" -eq 1 ]; then
+  _resource_outcome="empty_reserved_lane"
+elif [ "$status" -eq 0 ]; then
   _resource_outcome="ok"
 else
   _resource_outcome="functional_failure"
@@ -472,6 +484,7 @@ PYRESOURCE
   echo "- Artifacts: $run_dir"
   echo "- Command: $PYTEST_BIN $* --junitxml $junit"
   echo "- Resource outcome: $_resource_outcome"
+  [ "$_empty_reserved_lane" -eq 1 ] && echo "- Empty reserved lane: true"
   [ -n "${_caller_lane:-}" ] && echo "- Lane: $_caller_lane"
   [ -n "${_effective_workers:-}" ] && echo "- Workers: $_effective_workers"
   [ -n "${_caller_timeout_seconds:-}" ] && echo "- Timeout seconds: $_caller_timeout_seconds"
@@ -504,6 +517,9 @@ echo "[pytest-with-summary] Failures: $failures"
 echo "[pytest-with-summary] JUnit: $junit"
 if [ -f "$run_dir/inventory.md" ]; then
   echo "[pytest-with-summary] Inventory: $run_dir/inventory.md"
+fi
+if [ "$_empty_reserved_lane" -eq 1 ]; then
+  echo "[pytest-with-summary] Empty reserved lane: ${_caller_lane:-unknown} collected no tests; treating as OK"
 fi
 echo "[pytest-with-summary] Exit code: $status"
 
