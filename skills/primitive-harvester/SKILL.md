@@ -1,0 +1,68 @@
+<!-- SCOPE: both -->
+---
+name: primitive-harvester
+description: Classify whether a conversation should become a reusable agentic primitive, improve an existing primitive, use an existing primitive, become documentation only, or be discarded.
+user-invocable: true
+version: 1.0.0
+last-updated: 2026-05-02
+audience: both
+tags: [meta, primitives, skills, automation, governance]
+summary_line: "Turn repeatable high-value conversation recipes into governed primitive proposals."
+platforms: ["codex", "claude-code", "generic-cli"]
+prerequisites: ["python3"]
+---
+
+# Primitive Harvester
+
+Use this skill when a conversation starts producing a repeatable workflow,
+operator checklist, scriptable safety sequence, or reusable governance pattern.
+The harvester is advisory: it classifies and plans, but it does not mutate the
+repo by itself.
+
+## Decision classes
+
+- `CREATE_PRIMITIVE`: create a new skill/script/hook/docs/tests bundle.
+- `IMPROVE_EXISTING`: extend an existing primitive instead of duplicating it.
+- `USE_EXISTING`: invoke the existing primitive; do not create a new artifact.
+- `DOCUMENT_ONLY`: preserve the decision/tradeoff as ADR/docs, no executable.
+- `DISCARD`: keep as ordinary conversation or Engram learning.
+
+## Run
+
+```bash
+python3 scripts/cos_primitive_harvester.py \
+  --repo "$PWD" \
+  --conversation-file /path/to/conversation.txt \
+  --json
+```
+
+For a short excerpt:
+
+```bash
+python3 scripts/cos_primitive_harvester.py --repo "$PWD" --text "..." --json
+```
+
+## Promotion rule
+
+Promote only when the workflow is:
+
+```text
+repeatable + risky/valuable + verifiable + portable
+```
+
+If the repo already has a matching primitive, improve or use that primitive
+instead of creating a duplicate.
+
+## Required follow-up for CREATE/IMPROVE
+
+1. Write or update the listed artifacts.
+2. Add behavior tests and red-team/portability tests.
+3. Validate with the emitted validation plan.
+4. Land through the governed merge queue.
+5. Save the decision/discovery to Engram.
+
+## Contextual Trigger
+
+Keywords: convert conversation to primitive, esto debería ser automático,
+crear skill, crear primitiva, no receta manual, harvester, classify primitive,
+descartar conversación, mejorar skill existente, usar primitiva existente.
