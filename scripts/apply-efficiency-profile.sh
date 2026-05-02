@@ -135,7 +135,8 @@ run_claude_code_driver() {
     task-created.sh task-completed.sh session-sanity.sh validation-lock-cleanup.sh \
     error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
     destructive-git-blocker.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
-    private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh stash-budget-warn.sh; do
+    private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh stash-budget-warn.sh \
+    post-git-orphan-notifier.sh; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
     fi
@@ -187,7 +188,7 @@ echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, e
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, pre-agent-snapshot.sh, post-agent-snapshot-restore.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, native-agent-heartbeat.sh"
 echo "  PostToolUse * (early): private-mode-metrics-gate.sh"
 echo "  PostToolUse *: context-watchdog.sh (async), rate-limit-detector.sh, tool-sequence-capture.sh, aci-observation-capture.sh"
-echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh"
+echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh, post-git-orphan-notifier.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh (async)"
 echo "  PostToolUse Edit|Write: content-policy.sh, skill-frontmatter-validator.sh, rule-frontmatter-validator.sh, hook-header-validator.sh, adr-section-validator.sh, confidentiality-enforcer.sh, surface-fix-detector.sh, doc-sync-detector.sh (async)"
 echo "  PostToolUse TodoWrite: work-queue-sync.sh"
