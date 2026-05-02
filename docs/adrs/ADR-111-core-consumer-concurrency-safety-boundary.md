@@ -16,7 +16,7 @@ The SO must protect itself and the projects that consume it. The boundary is exp
 
 ## Decision
 
-Cognitive OS owns these universal agentic primitives in the core: `edit-coop`, `git-coop`, `stash-leak-alarm`, `plan-claim verifier`, `preserve-branch doctor`, `concurrency doctor`, `approval ledger`, `resource lease`, `agent work ledger`, and `cross-session reconciler`.
+Cognitive OS owns these universal agentic primitives in the core: `edit-coop`, `git-coop`, `stash-leak-alarm`, `plan-claim verifier`, `preserve-branch doctor`, `work inventory doctor`, `concurrency doctor`, `approval ledger`, `resource lease`, `agent work ledger`, and `cross-session reconciler`.
 
 Consumer projects configure those primitives through `concurrency_safety` in `cognitive-os.yaml`. The core uses safe defaults when the section is missing or partial.
 
@@ -27,6 +27,7 @@ Consumer projects configure those primitives through `concurrency_safety` in `co
 - Resource leases expire automatically and are scoped by project directory.
 - A plan claim is not complete unless the verifier can prove the expected evidence.
 - Preserve branches are not deleted until the doctor can prove manifest, scope, and integration state.
+- Preserved work closure must inspect branches, the active worktree, linked worktrees, and stashes; branch-only review is incomplete.
 - Doctors are read-only and safe to run in local, CI, and recovery sessions.
 
 ## Consequences
@@ -50,5 +51,6 @@ Consumer projects configure those primitives through `concurrency_safety` in `co
 ```bash
 python3 -m pytest tests/behavior/test_concurrency_safety_ledgers.py -q
 python3 -m pytest tests/chaos/test_cross_session_reconciler.py -q
+bash scripts/cos-doctor-work-inventory.sh --json
 bash scripts/cos-doctor-concurrency.sh --strict
 ```

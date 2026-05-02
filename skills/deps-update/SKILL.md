@@ -1,6 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: deps-update
+invocation_pattern: on-demand  # @on-demand: monthly/pre-release maintenance — manual trigger
 command: /deps-update
 description: Audit and optionally upgrade project dependencies — Python, engram binary, Claude Code plugins, Docker images
 version: 0.1.0

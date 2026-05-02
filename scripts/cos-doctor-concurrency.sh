@@ -35,6 +35,8 @@ for f in \
   scripts/verify_plan_claims.py \
   scripts/stash-leak-alarm.sh \
   scripts/cos-doctor-preserve.sh \
+  scripts/cos-doctor-work-inventory.sh \
+  scripts/cos_work_inventory.py \
   scripts/resource_lease.py \
   scripts/agent_work_ledger.py \
   scripts/approval_ledger.py \
@@ -51,7 +53,9 @@ done
 if bash -n "$PROJECT_DIR/scripts/edit-coop.sh" >/dev/null 2>&1; then pass "edit-coop syntax clean"; else fail "edit-coop syntax failed"; fi
 if bash -n "$PROJECT_DIR/scripts/git-coop.sh" >/dev/null 2>&1; then pass "git-coop syntax clean"; else fail "git-coop syntax failed"; fi
 if bash -n "$PROJECT_DIR/scripts/stash-leak-alarm.sh" >/dev/null 2>&1; then pass "stash-leak alarm syntax clean"; else fail "stash-leak alarm syntax failed"; fi
+if bash -n "$PROJECT_DIR/scripts/cos-doctor-work-inventory.sh" >/dev/null 2>&1; then pass "work inventory wrapper syntax clean"; else fail "work inventory wrapper syntax failed"; fi
 for py in \
+  scripts/cos_work_inventory.py \
   scripts/verify_plan_claims.py \
   scripts/resource_lease.py \
   scripts/agent_work_ledger.py \
@@ -66,6 +70,7 @@ if [ -f "$PROJECT_DIR/tests/behavior/test_plan_false_done_gate.py" ]; then pass 
 if [ -f "$PROJECT_DIR/tests/behavior/test_stash_leak_alarm.py" ]; then pass "scenario test exists: stash-leak"; else warn "scenario test missing: stash-leak"; fi
 if [ -f "$PROJECT_DIR/tests/unit/test_concurrency_safety_config.py" ]; then pass "unit test exists: consumer projection"; else warn "unit test missing: consumer projection"; fi
 if [ -f "$PROJECT_DIR/tests/behavior/test_concurrency_safety_ledgers.py" ]; then pass "behavior test exists: ledgers and leases"; else warn "behavior test missing: ledgers and leases"; fi
+if [ -f "$PROJECT_DIR/tests/behavior/test_cos_work_inventory.py" ]; then pass "behavior test exists: work inventory checklist"; else warn "behavior test missing: work inventory checklist"; fi
 if [ -f "$PROJECT_DIR/tests/chaos/test_cross_session_reconciler.py" ]; then pass "chaos test exists: cross-session reconciler"; else warn "chaos test missing: cross-session reconciler"; fi
 
 if [ "$STRICT" = true ] && [ "$warnings" -gt 0 ]; then

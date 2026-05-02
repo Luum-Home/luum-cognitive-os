@@ -1,6 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: generate-changelog
+invocation_pattern: on-demand  # @on-demand: release pipeline — manual trigger
 command: /generate-changelog
 description: Move [Unreleased] CHANGELOG entries into a versioned release section
 version: 0.1.0

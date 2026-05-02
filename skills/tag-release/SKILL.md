@@ -1,6 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: tag-release
+invocation_pattern: on-demand  # @on-demand: release pipeline step — manual trigger
 command: /tag-release
 description: Create the release commit (VERSION + CHANGELOG) and annotated git tag
 version: 0.1.0

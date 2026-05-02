@@ -193,3 +193,69 @@ def test_composes_ground_truth_not_forked():
     from lib import ground_truth  # noqa: F401 — import must succeed
     from lib.ground_truth import extract_claims  # noqa: F401
     assert callable(extract_claims)
+
+
+# ── Case 9: false-positive suppression (ADR-105 claim-gate bugfix) ───────────
+# These strings appeared in real commit message bodies and were incorrectly
+# flagged as high-stakes claims by Pass 2 before the structured-claim gate
+# was introduced. They must produce NO claims.
+
+def test_false_pos_integrated_in_main_prose():
+    """'content already integrated in main (ADRs 106-115)' must NOT fire."""
+    text = "All 9 branches' unique content already integrated in main (ADRs 106-115,"
+    claims = extract_high_stakes_claims(text)
+    verbs = [c.verb for c in claims]
+    assert "integrated" not in verbs, (
+        "False positive: 'integrated in main' prose should not be a claim; got %s" % claims
+    )
+
+
+def test_false_pos_integrated_schema_field_in_parens():
+    """'status (integrated for all 9)' must NOT fire — verb is inside parens."""
+    text = "source_branch, source_head, reason, scope, status (integrated for all 9),"
+    claims = extract_high_stakes_claims(text)
+    verbs = [c.verb for c in claims]
+    assert "integrated" not in verbs, (
+        "False positive: verb inside parentheses should not be a claim; got %s" % claims
+    )
+
+
+def test_false_pos_verified_in_heading_parens():
+    """'Regex matrix (all verified):' must NOT fire — collective phrase in parens."""
+    text = "verified Regex matrix (all verified):"
+    claims = extract_high_stakes_claims(text)
+    assert len(claims) == 0, (
+        "False positive: heading with 'all verified' in parens should produce no claims; got %s" % claims
+    )
+
+
+# ── Case 10: true positives still fire ───────────────────────────────────────
+
+def test_true_pos_archived_with_path():
+    """'archived hooks/foo.sh' (path-based) must extract a claim."""
+    text = "archived hooks/foo.sh"
+    claims = extract_high_stakes_claims(text)
+    verbs = {c.verb for c in claims}
+    assert "archived" in verbs, (
+        "True positive missed: path-based archived claim should fire; got verbs=%s" % verbs
+    )
+
+
+def test_true_pos_plan_checkbox_archived():
+    """'[x] Archive completeness-check.sh — archived' (plan checkbox) must fire."""
+    text = "[x] Archive completeness-check.sh — archived"
+    claims = extract_high_stakes_claims(text)
+    verbs = {c.verb for c in claims}
+    assert "archived" in verbs, (
+        "True positive missed: plan checkbox with 'archived' should fire; got verbs=%s" % verbs
+    )
+
+
+def test_true_pos_bullet_path_verb():
+    """'* hooks/old-gate.sh: archived' (bullet + path) must fire."""
+    text = "* hooks/old-gate.sh: archived"
+    claims = extract_high_stakes_claims(text)
+    verbs = {c.verb for c in claims}
+    assert "archived" in verbs, (
+        "True positive missed: bullet+path claim should fire; got verbs=%s" % verbs
+    )
