@@ -330,3 +330,22 @@ def test_adr_numbering_monotonic_warn() -> None:
             f"Duplicate ADR numbers found in non-lettered ADR files: {dupes}. "
             f"Each canonical (non-lettered) ADR must have a unique number."
         )
+
+
+@pytest.mark.audit
+def test_adr_105_reflects_implemented_claim_verification_primitives() -> None:
+    """ADR-105 must not drift back to policy-only while gates exist."""
+    adr = ADRS_DIR / "ADR-105-claim-verification-contract.md"
+    text = _adr_text(adr)
+    assert "Accepted" in text and "Implemented" in text
+    assert "Policy definition only" not in text
+    required_refs = [
+        "hooks/claim-validator.sh",
+        "hooks/plan-claim-validator.sh",
+        "hooks/orchestrator-claim-gate.sh",
+        "scripts/orchestrator_claim_gate.py",
+        "lib/orchestrator_verify.py",
+        "docs/architecture/claim-verification-matrix.md",
+    ]
+    missing = [ref for ref in required_refs if ref not in text]
+    assert not missing, f"ADR-105 missing implemented primitive refs: {missing}"

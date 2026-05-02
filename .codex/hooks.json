@@ -127,6 +127,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/git-commit-scope-guard.sh\" ]; then bash \"$PWD/hooks/git-commit-scope-guard.sh\"; fi"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/orchestrator-claim-gate.sh\" ]; then bash \"$PWD/hooks/orchestrator-claim-gate.sh\"; fi"
         }
       ],
       "matcher": "bash"

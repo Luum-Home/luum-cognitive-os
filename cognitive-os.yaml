@@ -1097,6 +1097,12 @@ harness:
       matcher: Bash
       scope: os-only
 
+    orchestrator-claim-gate:
+      script: hooks/orchestrator-claim-gate.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     # ── PreToolUse — Edit|Write ───────────────────────────────────────────────
     # Codex: OMITTED — Edit|Write matcher not supported by Codex v0.126.0-alpha.8
     secret-detector:
@@ -1110,6 +1116,12 @@ harness:
       event: PreToolUse
       matcher: "Edit|Write"
       scope: os-only
+
+    plan-claim-validator:
+      script: hooks/plan-claim-validator.sh
+      event: PreToolUse
+      matcher: "Edit|Write|MultiEdit"
+      scope: both
 
     edit-lock-pre-tool:
       script: hooks/edit-lock-pre-tool.sh
