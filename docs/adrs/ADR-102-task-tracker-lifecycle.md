@@ -61,6 +61,24 @@ This is best-effort because the harness does not currently inject `CLAUDE_TOOL_U
 
 The reaper **never kills processes** — it only marks records. The 30-minute stale threshold is intentionally generous to cover slow subagent startup.
 
+### Fix P1.4 — Watermark sweep (completed-by-watermark)
+
+**`scripts/so-reaper.sh`** gains a third Python sweep after the zombie sweep. The sweep identifies `pending` or `in_progress` tasks whose work has already landed in `HEAD` without the task record being explicitly closed (common in parallel-session workflows). It uses two matching modes:
+
+| Mode | Trigger | Method | Verdict |
+|---|---|---|---|
+| **A — explicit outputs** | task has non-empty `expectedOutputs` | all listed paths exist and have >= 10 bytes | `completed-by-watermark` |
+| **B — commit keyword match** | `expectedOutputs` empty or Mode A fails | tokenize task `description` and each recent commit subject; >= 3 distinct overlapping content tokens (length >= 4, not in stopword list) | `completed-by-watermark` |
+
+Mode A wins when it produces a match. Mode B is the fallback heuristic. On a match, the task gains:
+- `status = "completed-by-watermark"`
+- `completedAt = <now>`
+- `watermark_evidence = {mode, commit_sha?, matched_paths? | matched_tokens?}`
+
+**Git log is fetched once** for the entire sweep window (from the earliest `requested_at` of active tasks to HEAD), not per-task.
+
+The **threshold of 3 tokens** is conservative. Short task descriptions (< 3 content tokens after stopword removal) are skipped to prevent false positives. The stopword list excludes generic verbs and prepositions; only domain-specific nouns and identifiers count toward the overlap score.
+
 The sweep runs at the existing reaper cadence (every 300 seconds via `reaper-daemon-launcher.sh` background loop, plus at SessionEnd). No frequency increase was made.
 
 ### Fix 4 — Queue↔active-tasks sync
