@@ -489,6 +489,19 @@ hooks:
     safe_degradation: fail_closed_when_confident_otherwise_warn
     scope: os-only
     script: hooks/destructive-rm-blocker.sh
+  direct-main-guard:
+    behavior_tests:
+    - tests/unit/test_direct_main_guard.py
+    criticality: standard
+    event: PreToolUse
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: Bash
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: both
+    script: hooks/direct-main-guard.sh
   dispatch-gate:
     behavior_tests:
     - tests/behavior/test_agent_resilience.py
