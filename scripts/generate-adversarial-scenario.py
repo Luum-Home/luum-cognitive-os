@@ -6,13 +6,12 @@ from __future__ import annotations
 
 import argparse
 import sys
-import json
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from lib.adversarial_rubric import load_scenarios
+from lib.adversarial_rubric import generate_fixture, load_scenarios
 
 
 DEFAULT_SCENARIOS = PROJECT_ROOT / ".cognitive-os" / "tests" / "adversarial-generalization" / "scenarios.yaml"
@@ -26,12 +25,10 @@ def main() -> int:
     parser.add_argument("--output-dir", default=str(DEFAULT_OUTPUT))
     args = parser.parse_args()
     scenarios = {s["id"]: s for s in load_scenarios(args.scenarios)}
-    scenario = scenarios[args.scenario_id]
-    out = Path(args.output_dir) / args.scenario_id
-    out.mkdir(parents=True, exist_ok=True)
-    (out / "SCENARIO.json").write_text(json.dumps(scenario, indent=2, sort_keys=True), encoding="utf-8")
-    (out / "README.md").write_text(f"# {scenario['id']}\n\n{scenario['prompt']}\n", encoding="utf-8")
-    print(str(out))
+    if args.scenario_id not in scenarios:
+        known = ", ".join(sorted(scenarios))
+        raise SystemExit(f"unknown scenario_id {args.scenario_id!r}; known: {known}")
+    print(str(generate_fixture(scenarios[args.scenario_id], args.output_dir)))
     return 0
 
 

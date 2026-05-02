@@ -107,7 +107,7 @@ Total skills: 154
 |-------|-------------|
 | audit-website | Perform a comprehensive 6-category website audit (SEO, Performance, Security… |
 | auto-refine | Analyze a failed agent's output, determine root cause, and re-launch with… |
-| auto-rollback | \"Auto-rollback failed SDD apply commits when verify-apply loop exceeds max… |
+| auto-rollback | Prepare a human-approved rollback evidence package; never silently reverts work. |
 | batch-runner | Execute multiple SDD changes sequentially with timing, reporting, and failure… |
 | code-review | Engram-integrated code review with adversarial protocol. |
 | cognee-search | Semantic knowledge graph search via Cognee — complements Engram FTS5 with… |
