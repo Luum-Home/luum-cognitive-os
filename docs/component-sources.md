@@ -4,6 +4,11 @@
 
 All external sources of skills, rules, hooks, tools, research, and infrastructure components referenced or integrated into luum-agent-os (Cognitive OS).
 
+Plugin submodules under `.claude/plugins/` are part of the observable ecosystem
+surface. Operational scripts must discover them from `.gitmodules` instead of
+hardcoding a small subset; today this includes `hermes-agent`, `pi-mono`, and
+`caveman`, and the set is expected to grow.
+
 ## Skills (External)
 
 | Source | URL | License | Components | Status |
@@ -133,6 +138,25 @@ All external sources of skills, rules, hooks, tools, research, and infrastructur
 | Settings override | `packages/settings/` | Influenced `cognitive-os.yaml` phase-aware config | ADOPTED (pattern) |
 
 **What we did NOT adopt**: TypeScript runtime, Pi's memory system (we have Engram), double-while loop (incompatible with Claude Code hook architecture).
+
+### Caveman — Added as submodule 2026-05-02
+
+**Repository**: [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman)
+
+| Metric | Value |
+|--------|-------|
+| Language | TypeScript |
+| License | MIT |
+| Added | git submodule, 2026-05-02 |
+
+**Components used as source reference**:
+
+| Component | Source file | COS implementation | Status |
+|-----------|------------|-------------------|--------|
+| Agent runtime patterns | Repository architecture | Under observation | WATCH |
+
+**What we did NOT adopt**: Runtime code. Current status is observation and
+pattern mining only.
 
 ## Agent Platforms / Operating Systems
 
