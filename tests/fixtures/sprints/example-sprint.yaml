@@ -1,0 +1,23 @@
+name: example-mvp-sprint
+commit_strategy: per_task
+tasks:
+  - id: fix-login-bug
+    title: Fix login bug
+    prompt: Fix the login flow regression and prove it with the unit test in scope.
+    model: sonnet
+    file_scope:
+      - src/auth/login.py
+      - tests/unit/test_login.py
+  - id: refactor-cache-layer
+    title: Refactor cache layer
+    prompt: Refactor the cache layer for clearer boundaries while preserving behavior.
+    model: opus
+    file_scope:
+      - src/cache/
+      - tests/unit/test_cache.py
+  - id: update-docs-rate-limits
+    title: Update rate-limit documentation
+    prompt: Update public documentation for the current rate-limit behavior.
+    model: haiku
+    file_scope:
+      - docs/rate-limits.md

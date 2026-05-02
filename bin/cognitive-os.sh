@@ -129,7 +129,6 @@ Usage:
   cognitive-os init                        Install Cognitive OS into the current project
   cognitive-os version                     Show version
   cognitive-os doctor                      Check installation health
-  cognitive-os doctor harness [--json]     Check active harness projection and minimal profile
 
   cognitive-os sources                     List configured package sources
   cognitive-os sources add <name> <url>    Add a remote source
@@ -172,7 +171,7 @@ cmd_init() {
   fi
 
   echo "Installing Cognitive OS into $target_dir..."
-  cp -r "$PACKAGE_DIR/.cognitive-os" "$target_dir/.cognitive-os"
+  cp -R "$PACKAGE_DIR/.cognitive-os" "$target_dir/.cognitive-os"
 
   if [ ! -f "$target_dir/cognitive-os.yaml" ]; then
     cp "$PACKAGE_DIR/cognitive-os.yaml" "$target_dir/cognitive-os.yaml"
@@ -195,7 +194,9 @@ cmd_init() {
   echo ""
 
   # Auto-detect project size for efficiency profile suggestion
-  src_count=$(find "$target_dir" -maxdepth 5 \( -name "*.go" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.rs" \) 2>/dev/null | wc -l | tr -d ' ')
+  src_count=$(find "$target_dir" \
+    \( -path "$target_dir/.cognitive-os" -o -path "$target_dir/.cognitive-os/*" -o -path "$target_dir/.claude" -o -path "$target_dir/.claude/*" \) -prune \
+    -o -maxdepth 5 \( -name "*.go" -o -name "*.ts" -o -name "*.py" -o -name "*.java" -o -name "*.rs" \) -print 2>/dev/null | wc -l | tr -d ' ')
   has_docker=false
   [ -f "$target_dir/docker-compose.yml" ] || [ -f "$target_dir/docker-compose.yaml" ] && has_docker=true
 
@@ -287,6 +288,11 @@ cmd_version() {
 # ── Command: doctor ────────────────────────────────────────────────────
 
 cmd_doctor() {
+  if [ "${1:-}" = "harness" ]; then
+    shift
+    exec bash "$PACKAGE_DIR/scripts/cos-doctor-harness.sh" "$@"
+  fi
+
   echo "=== Cognitive OS Doctor ==="
   echo ""
 
@@ -1327,13 +1333,7 @@ _update_source() {
 case "${1:-help}" in
   init)      cmd_init "${2:-.}" ;;
   version)   cmd_version ;;
-  doctor)
-    if [ "${2:-}" = "harness" ]; then
-      shift 2
-      exec bash "$PACKAGE_DIR/scripts/cos-doctor-harness.sh" "$@"
-    fi
-    cmd_doctor
-    ;;
+  doctor)    shift; cmd_doctor "$@" ;;
   sources)   shift; cmd_sources "$@" ;;
   search)    shift; cmd_search "$@" ;;
   install)   shift; cmd_install "$@" ;;

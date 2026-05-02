@@ -122,6 +122,7 @@ cc_driver_emit() {
     "hooks/engram-daemon-launcher.sh"        "true"  \
     "hooks/crash-recovery.sh"               "false" \
     "hooks/session-resume.sh"               "false" \
+    "hooks/session-sanity.sh"               "false" \
     "hooks/infra-health.sh"                 "true"  \
     "hooks/aspirational-audit-weekly.sh"    "false" \
     "hooks/self-knowledge-refresh.sh"       "false" \
@@ -178,6 +179,7 @@ cc_driver_emit() {
     "hooks/inject-phase-context.sh"         "false" \
     "hooks/agent-working-dir-inject.sh"     "false" \
     "hooks/query-tailored-context-inject.sh" "false" \
+    "hooks/pre-agent-snapshot.sh"           "false" \
     "hooks/agent-prelaunch.sh"              "false" \
     "hooks/error-pattern-detector.sh"       "false" \
     "hooks/predev-completeness-check.sh"    "false" \
@@ -234,6 +236,7 @@ cc_driver_emit() {
     "hooks/claim-validator.sh"       "false" \
     "hooks/completion-gate.sh"       "false" \
     "hooks/agent-checkpoint.sh"      "false" \
+    "hooks/post-agent-verify.sh"     "false" \
     "hooks/trust-score-validator.sh" "false" \
     "hooks/confidence-gate.sh"       "false" \
     "hooks/audit-id-enricher.sh"     "false" \

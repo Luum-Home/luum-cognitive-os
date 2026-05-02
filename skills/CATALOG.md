@@ -197,6 +197,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **auto-rollback** — Auto-rollback failed SDD apply commits when verify-apply loop exceeds max retries
 - **automaker-bridge** — Configure AutoMaker to use Cognitive OS as its execution brain
 - **batch-runner** — Execute multiple SDD changes sequentially with timing, reporting, and failure handling
+- **__contracts__** — Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives.
 - **bump-version** — Calculate and write the new version to the VERSION file
 - **capability-snapshot** — Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss during refactors
 - **catalog-full** — Load and display the full skills catalog (skills/CATALOG.md) with invocations, sections, and audience columns. Use when the compact Level-1 catalog does not have enough detail.
@@ -324,3 +325,15 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **webhook-trigger** — GitHub webhook server that receives issue events and launches SDD pipelines automatically via ClaudeExecutor.
 - **decision-triage** — Aggregate unanswered operator decisions from research reports and ADRs into a single ranked view. Complements /session-backlog (tasks) — this counts decisions.
 - **memory-scan** — Scan text content (or a file) for prompt injection, credential exfiltration, and invisible Unicode threats before persisting to memory.
+- **contracts-namespace** — Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives.
+- **coordination-status** — Inspect active multi-session edit locks and decide how to respond when a target file is held by another agent. Read-only introspection for sub-agents.
+- **docs-execution-audit** — Classify documentation items as done, weak-proof, planned, proposed, stale, or unknown using repository evidence.
+- **experimental** — Structural namespace for experimental Cognitive OS skills that are not promoted to stable catalog surfaces yet.
+- **hook-timing** — Report hook execution timing statistics (p50/p95/p99) from the COS hook-timing wrapper. Supports live tail, event filtering, and session scoping.
+- **primitive-classifier** — Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package.
+- **primitive-reality-check** — Measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
+- **primitive-surface-reduction** — Plan or apply conservative surface reduction for Cognitive OS agentic primitives; OS source repo only, plan by default.
+- **primitive-usage-map** — Map which Cognitive OS skills, hooks, rules, tests, docs, workflows, and configs reference each primitive or script.
+- **repair-skill** — Drain the skill repair queue and propose regeneration or deprecation for degraded skills
+- **review-output** — Manually trigger review of a specific past sub-agent output or the most recent N outputs. Bypasses sample-rate gate but respects the daily budget cap. Produces review findings in Engram and .cognitive-os/metrics/review-findings.jsonl.
+- **synthesize-skill** — Review the skill synthesis queue, list proposed drafts, and accept/reject/defer promotion candidates

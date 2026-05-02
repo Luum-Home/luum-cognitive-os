@@ -49,7 +49,7 @@ it.
 The minimum useful Cognitive OS harness should fit in a short operator path. Its
 required hook spine is `hooks/session-init.sh`, `hooks/auto-verify.sh`, and
 `hooks/session-learning.sh`; its required command spine is
-`scripts/cos-doctor-harness.sh`, `scripts/measure-harness-profiles.py`,
+`scripts/cos-doctor-harness.sh`, `scripts/measure_harness_profiles.py`,
 `scripts/cos_sprint.py`, `bin/cos-agent`, and `bin/cos-skill`.
 
 ```text
@@ -67,7 +67,7 @@ A minimal installation should not require understanding every hook, skill, or
 future architecture layer. Optional subsystems should remain discoverable without
 becoming mandatory context. The executable contract for this profile lives in
 `manifests/harness-profiles.yaml`; `scripts/cos-doctor-harness.sh` validates the
-readiness path, and `scripts/measure-harness-profiles.py` compares the minimal
+readiness path, and `scripts/measure_harness_profiles.py` compares the minimal
 contract against full Claude/Codex projections.
 
 ## Context and Memory Contract

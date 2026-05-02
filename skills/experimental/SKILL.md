@@ -1,27 +1,19 @@
 <!-- SCOPE: os-only -->
 ---
 name: experimental
-description: Internal holding area for experimental skill drafts awaiting synthesis, review, promotion, or rejection.
-version: "1.0.0"
-audience: os-dev
+version: 1.0.0
+description: Structural namespace for experimental Cognitive OS skills that are not promoted to stable catalog surfaces yet.
+triggers: []
 user-invocable: false
-tags: [skills, experimental, synthesis]
+audience: os-dev
 ---
 
-# Experimental Skill Drafts
+# Experimental Skills Namespace
 
-This directory is the review boundary for skill drafts before they become
-published Cognitive OS skills.
+This directory is reserved for experimental skills that need an explicit home
+before promotion, archival, or removal. Place runnable skills in their own child
+directories once they have a stable contract.
 
-## Promotion contract
+## Contextual Trigger
 
-1. Drafts enter this namespace only with enough context for review.
-2. `skills/synthesize-skill/SKILL.md` reviews the synthesis queue and decides
-   whether a draft is accepted, rejected, or deferred.
-3. Accepted drafts move into their own top-level `skills/<name>/SKILL.md`
-   directory and must pass the skill audit contract.
-
-## Guardrails
-
-- Experimental drafts are not part of the stable operator catalog.
-- Promotion requires frontmatter, concrete steps, and passing reference checks.
+This namespace is not invoked directly.

@@ -92,20 +92,24 @@ class TestHookExists:
 
 class TestSnapshotBehavior:
 
-    def test_snapshot_creates_stash_when_dirty(self, tmp_path: Path):
+    def test_snapshot_copies_untracked_when_dirty(self, tmp_path: Path):
         repo = tmp_path / "repo"
         _init_repo(repo)
-        # Dirty the tree
+        # Dirty the tree with an untracked file. ADR-099 copies untracked files
+        # instead of stashing/removing them from the working tree.
         (repo / "work.txt").write_text("inprogress\n")
 
         result = _run_hook(repo, agent_id="agent-dirty")
         assert result.returncode == 0, f"stderr={result.stderr}"
 
-        # There should be a stash with our auto-pre-agent-<id> message
         stash_list = _git(repo, "stash", "list").stdout
-        assert "auto-pre-agent-agent-dirty" in stash_list, (
-            f"expected auto-pre-agent stash in list, got:\n{stash_list}"
-        )
+        assert "auto-pre-agent-agent-dirty" not in stash_list
+        assert (repo / "work.txt").read_text() == "inprogress\n"
+
+        meta_path = repo / ".cognitive-os" / "sessions" / "sess-1" / "agent-agent-dirty-snapshot.json"
+        meta = json.loads(meta_path.read_text())
+        copied = repo / ".cognitive-os" / "snapshots" / meta["snapshot_id"] / "work.txt"
+        assert copied.read_text() == "inprogress\n"
 
     def test_snapshot_skips_when_clean(self, tmp_path: Path):
         repo = tmp_path / "repo"
@@ -150,9 +154,11 @@ class TestSnapshotBehavior:
 
         assert meta["agent_id"] == "agent-meta"
         assert meta["session_id"] == "sess-meta"
-        assert meta["status"] == "stashed"
+        assert meta["status"] == "ok"
         assert meta["tree_dirty"] is True
-        assert meta["stash_ref"].startswith("stash@{"), f"bad ref: {meta['stash_ref']}"
+        assert meta["stash_ref"] == ""
+        copied = repo / ".cognitive-os" / "snapshots" / meta["snapshot_id"] / "work.txt"
+        assert copied.read_text() == "inprogress\n"
 
     def test_snapshot_logs_to_metrics(self, tmp_path: Path):
         repo = tmp_path / "repo"
@@ -170,7 +176,8 @@ class TestSnapshotBehavior:
         entry = json.loads(lines[-1])
         assert entry["event"] == "agent_snapshot"
         assert entry["agent_id"] == "agent-metrics"
-        assert entry["status"] == "stashed"
+        assert entry["status"] == "ok"
+        assert entry["tree_dirty"] is True
 
     def test_snapshot_ignores_non_agent_tools(self, tmp_path: Path):
         repo = tmp_path / "repo"
