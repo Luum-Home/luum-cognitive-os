@@ -291,7 +291,7 @@ def save_to_engram(orphans: list[OrphanCommit], project_dir: Path) -> None:
     """
     try:
         sys.path.insert(0, str(project_dir))
-        from packages.ecosystem_tools.lib.engram_client import mem_save  # type: ignore[import]
+        from lib.engram_client import save_observation
 
         content_lines = [
             "ADR-116 P3.1 — Orphan-commit notifier finding.",
@@ -304,10 +304,9 @@ def save_to_engram(orphans: list[OrphanCommit], project_dir: Path) -> None:
         content_lines.append(
             "Recovery: git cherry-pick <sha>  OR  git branch recovered-<topic> <sha>"
         )
-        mem_save(
+        save_observation(
             title=f"Orphan commits detected ({len(orphans)})",
-            type="bugfix",
-            scope="project",
+            type_="bugfix",
             topic_key="features/p3-1-orphan-notifier",
             content="\n".join(content_lines),
         )
