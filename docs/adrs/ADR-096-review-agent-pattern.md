@@ -71,15 +71,10 @@ What is NOT portable:
 ### 1. Trigger: post-hoc async (Accepted)
 
 Review fires AFTER the parent agent reports done. The parent task is never
-blocked waiting for review. v1 ships sync (review completes before hook exits)
-with an explicit latency note. v2 async (background dispatch + sweeper) is a
-documented follow-up once we have data on review quality.
-
-**v1 sync note**: The `review-spawner.sh` hook dispatches the reviewer via
-`lib/dispatch.py` and blocks until the review response arrives. Measured
-latency budget: 2–15s at haiku/sonnet pricing. This is acceptable for the
-PostToolUse hook context (no user-visible latency in the critical path).
-v2 async is noted in the hook header as a follow-up.
+blocked waiting for review. v2 now writes `.cognitive-os/runtime/review-pending-*.json`
+markers and launches `scripts/review-pending-sweeper.py` in the background.
+The legacy synchronous path remains available for diagnostics with
+`review.async: false` or `COS_REVIEW_ASYNC=0`.
 
 ### 2. Sampling: 20% by default (Accepted)
 
@@ -170,9 +165,9 @@ data on review accuracy.
 | Artifact | Path | Notes |
 |----------|------|-------|
 | Library | `lib/review_agent.py` (source: `packages/agent-lifecycle/lib/review_agent.py`) | Public API: `should_review`, `select_reviewer_model`, `build_review_prompt`, `parse_review_response`, `persist_finding`, `daily_budget_state` |
-| Hook | `hooks/review-spawner.sh` (source: `packages/agent-lifecycle/hooks/review-spawner.sh`) | PostToolUse on Agent; v1 sync |
+| Hook | `hooks/review-spawner.sh` (source: `packages/agent-lifecycle/hooks/review-spawner.sh`) | PostToolUse on Agent; async marker + background sweeper by default |
 | Skill | `skills/review-output/` (source: `packages/agent-lifecycle/skills/review-output/`) | Manual trigger: `/review-output --task-id <id>` or `--recent N` |
-| Config | `cognitive-os.yaml review:` block | `sample_rate`, `max_per_day`, `default_model`, `always_review_kinds` |
+| Config | `cognitive-os.yaml review:` block | `sample_rate`, `max_per_day`, `default_model`, `async`, `always_review_kinds` |
 | Unit tests | `tests/unit/test_review_agent.py` | All public functions; edge cases for should_review, parse_review_response |
 | Integration tests | `tests/integration/test_review_agent_flow.py` | End-to-end: synthetic producer → gate → prompt → mock dispatch → persist |
 
@@ -197,9 +192,8 @@ or directly in `.claude/settings.json` under `hooks.PostToolUse` with matcher `A
 
 ### Negative
 
-- **v1 latency**: sync review adds 2–15s to hook exit time for sampled outputs.
-  This is PostToolUse, not in the user's critical render path, but it is
-  measurable. v2 async resolves this.
+- **Background drift**: async review means findings may land after the parent
+  hook exits. Markers make the drift explicit and auditable.
 - **False trust risk**: a reviewer that consistently says "verified" provides
   false assurance. The prompt explicitly forbids rubber-stamping (MUST find
   at least 1 gap), but LLM compliance is stochastic. Meta-evaluation of review
@@ -209,8 +203,7 @@ or directly in `.claude/settings.json` under `hooks.PostToolUse` with matcher `A
 
 ### Follow-up
 
-- v2 async: background dispatch + `.cognitive-os/runtime/review-pending-*.json`
-  markers + sweeper hook. Separate ADR when v1 data shows latency is a problem.
+- Async background dispatch shipped: pending markers plus `scripts/review-pending-sweeper.py`. Future work: schedule periodic sweeps for markers left behind after process crashes.
 - Meta-evaluation phase 1 shipped: every persisted finding now includes a deterministic `review_quality` score/verdict that catches missing gaps, evidence, recommendations, confidence, and uncertainty. Future work remains: correlate review findings with later user corrections and acted-on improvements.
 - `always_review_kinds: ["sdd-verify"]` for high-stakes task types — config
   hook already reads this field; enforcement is a 1-line extension.

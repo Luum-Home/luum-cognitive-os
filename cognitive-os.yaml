@@ -60,6 +60,7 @@ review:
   sample_rate: 0.2          # Fraction of sub-agent outputs to review (0.0=never, 1.0=always)
   max_per_day: 50           # Daily budget cap; excess reviews are queued, not dispatched
   default_model: haiku      # Default reviewer model tier (overridden by cross-review matrix)
+  async: true               # Write pending markers and let review-pending-sweeper dispatch in background
   always_review_kinds: []   # Task kinds that always get reviewed regardless of sample_rate
                             # e.g. ["sdd-verify", "sdd-apply"] for high-stakes phases
 
