@@ -103,13 +103,21 @@ Make concurrent sessions coordinate before they claim, commit, push, or mark wor
 
 ## Batch 5 — Structural isolation
 
-- [ ] P2.1 per-session branches by default
+- [x] P2.1 local direct-main policy
+  - **Deliverable**: `hooks/direct-main-guard.sh` blocks autonomous agents/sub-agents from direct commits on `main`/`master`, warns operator commits by default, and supports `COS_OPERATOR_MAIN_POLICY=block|warn|allow`.
+  - **Verify**: direct-main guard tests cover agent block, operator warn, operator block, and feature-branch no-op.
+
+- [ ] P2.1 session branch default-on workflow
   - **Deliverable**: SessionStart creates/switches to `<harness>/session-<id>` branch unless disabled by explicit config.
   - **Verify**: SessionStart fixture starts from main and ends on session branch with provenance metadata.
 
 - [ ] P2.2 merge queue / landing pipeline
   - **Deliverable**: single landing command serializes merges into `main`, runs gates, and records result.
   - **Verify**: two session branches landing concurrently serialize; second waits or aborts with clear message.
+
+- [ ] P2.2a vendor-neutral protected landing boundary
+  - **Deliverable**: provider adapter/status contract for protected landing across GitHub, GitLab, Gitea/Forgejo, Bitbucket, bare Git/server hooks, and unknown remotes; no dependency on `gh`.
+  - **Verify**: docs/tests prove GitHub is optional; direct push to `main` is rejected by the strongest available layer, or local-only fallback is explicitly reported.
 
 - [ ] P2.3 validation capsule full mode alignment
   - **Deliverable**: normal session branch behavior and validation capsule isolation share worktree/landing contracts.
