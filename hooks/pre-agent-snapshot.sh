@@ -34,6 +34,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="pre-agent-snapshot"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+STASH_LOCK_LIB="$(dirname "$0")/_lib/stash-lock.sh"
+[ -f "$STASH_LOCK_LIB" ] && source "$STASH_LOCK_LIB"
 
 HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
@@ -121,6 +123,18 @@ if [ "$LEGACY_MODE" = "1" ]; then
   fi
 
   if [ "$TREE_DIRTY" = true ]; then
+    if command -v cos_stash_lock_acquire >/dev/null 2>&1; then
+      cos_stash_lock_acquire "pre-agent-snapshot" || {
+        SNAPSHOT_STATUS="stash_lock_failed"
+        ERROR_MSG="could not acquire stash lock"
+      }
+      if [ -z "$ERROR_MSG" ]; then
+        trap 'cos_stash_lock_release' EXIT INT TERM
+      fi
+    fi
+  fi
+
+  if [ "$TREE_DIRTY" = true ] && [ -z "$ERROR_MSG" ]; then
     if git -C "$PROJECT_DIR" stash push --include-untracked --keep-index \
           -m "$STASH_MSG" \
           -- ':(exclude).cognitive-os' ':(exclude).cognitive-os/**' '.' \
@@ -136,8 +150,15 @@ if [ "$LEGACY_MODE" = "1" ]; then
       SNAPSHOT_STATUS="stash_failed"
       ERROR_MSG="git stash push returned non-zero"
     fi
+
+    if command -v cos_stash_lock_release >/dev/null 2>&1; then
+      cos_stash_lock_release
+      trap - EXIT INT TERM
+    fi
   else
-    SNAPSHOT_STATUS="skip_clean"
+    if [ -z "$ERROR_MSG" ]; then
+      SNAPSHOT_STATUS="skip_clean"
+    fi
   fi
 
   mkdir -p "$SESSIONS_DIR" 2>/dev/null || true
@@ -186,6 +207,14 @@ UNTRACKED_COUNT=0
 SKIPPED_UNTRACKED_COUNT=0
 
 if command -v python3 >/dev/null 2>&1; then
+  if command -v cos_stash_lock_acquire >/dev/null 2>&1; then
+    cos_stash_lock_acquire "pre-agent-snapshot" || SNAPSHOT_RESULT='{"status":"stash_lock_failed","error":"could not acquire stash lock","snapshot_id":"","tracked_stash_ref":null,"untracked_files":[],"skipped_untracked_files":[]}'
+    if [ -z "$SNAPSHOT_RESULT" ]; then
+      trap 'cos_stash_lock_release' EXIT INT TERM
+    fi
+  fi
+
+  if [ -z "$SNAPSHOT_RESULT" ]; then
   SNAPSHOT_RESULT=$(python3 - <<PYEOF 2>/dev/null
 import sys, json
 sys.path.insert(0, '$OS_ROOT')
@@ -225,6 +254,11 @@ except Exception as exc:
     print(json.dumps({"status": "error", "error": str(exc), "snapshot_id": "", "tracked_stash_ref": None, "untracked_files": [], "skipped_untracked_files": []}))
 PYEOF
 )
+  fi
+  if command -v cos_stash_lock_release >/dev/null 2>&1; then
+    cos_stash_lock_release
+    trap - EXIT INT TERM
+  fi
   if [ -n "$SNAPSHOT_RESULT" ] && command -v jq >/dev/null 2>&1; then
     SNAPSHOT_STATUS=$(echo "$SNAPSHOT_RESULT" | jq -r '.status // "error"' 2>/dev/null || echo "error")
     SNAPSHOT_ID=$(echo "$SNAPSHOT_RESULT" | jq -r '.snapshot_id // ""' 2>/dev/null || true)
