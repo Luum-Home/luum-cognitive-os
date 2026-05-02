@@ -118,7 +118,7 @@ EVENT_MATCHERS = {
 BASH_ONLY_TOOL_EVENTS = {"PreToolUse", "PostToolUse"}
 
 
-def codex_matcher(entry: dict) -> str | None:
+def codex_matcher(entry):
     event = entry.get("event")
     if event in EVENT_MATCHERS:
         return EVENT_MATCHERS[event]
@@ -140,8 +140,8 @@ def command_for(script: str) -> dict:
     }
 
 
-def groups_for(event: str) -> list[dict]:
-    by_matcher: dict[str, list[dict]] = {}
+def groups_for(event):
+    by_matcher = {}
     for entry in hooks.values():
         if not isinstance(entry, dict) or entry.get("event") != event:
             continue
