@@ -163,6 +163,25 @@ Derived from these wounds. Apply before adding new code:
 
 ---
 
+## 2026-05-02 — STASH MUTATION WITHOUT COORDINATION (SILENT-REVERT INCIDENT)
+
+**Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` | `docs/reports/revert-investigation-2026-05-02.md` | ADR-117
+
+**What happened:** During the same 2026-05-02 false-done compounding session, a parallel agent's pre-agent-snapshot hook pushed 59 modified files onto the stash and never restored them. Because the stash entry was anonymous and no audit trail existed, the missing files were invisible to all subsequent agents in the session. Their observations of the working tree were invalid, contributing to cascading false-done reports and 5+ revert events. The stash leak was only discovered during a manual adversarial review.
+
+**New wound: Stash as invisible side-channel.** An anonymous `git stash` can silently remove arbitrary working-tree state from an agent's view while leaving HEAD unchanged. The absence of structured audit logging means this failure mode produces no observable signal until a human audits `git stash list` directly.
+
+**New principle (ADR-117):** Every OS hook that mutates stash MUST satisfy five invariants simultaneously: named (stable suffix in message), apply-by-name (no `pop`), auditable (JSONL to `stash-ops.jsonl`), budget-bounded (max 5 unrestored per session), and lock-coordinated (`stash.lock` via R3 library).
+
+**New red flags to watch for:**
+
+- [ ] `git stash list` containing entries without a `cos-` or session-ID prefix (anonymous stash from a hook)
+- [ ] `stash-ops.jsonl` has a `push` entry with no matching `apply`+`drop` entries within the same session
+- [ ] Hook code containing `git stash pop` (forbidden — use `apply <ref>` + `drop <ref>`)
+- [ ] `git stash list | grep <session-id>` returning ≥5 results with unmatched push/drop pairs
+
+---
+
 ## 2026-05-02 — FALSE-DONE COMPOUNDING
 
 **Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` | ADR-105 | ADR-106
