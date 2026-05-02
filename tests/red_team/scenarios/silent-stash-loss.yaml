@@ -1,0 +1,61 @@
+# SCOPE: os-only
+id: silent-stash-loss
+name: "Silent stash loss"
+description: |
+  Pre-agent snapshot stashes work then never re-applies it. Agent's claimed
+  output silently disappears. Tied to ADR-106 P1; flips xfail→pass when P1 lands.
+version: 1.0.0
+min_harness_version: 1.0.0
+scope: os-only
+category: silent-loss
+verbs: [completed]
+tags: [stash-leak, ADR-106-P1, w4]
+expected_severity: HIGH
+expected_status: xfail   # until ADR-106 P1 ships
+
+replay:
+  agent_output: |
+    Batch DELETE+DEFER complete. 61 files modified. Aspirational count: 69 -> 11.
+  expected_extracted_claims:
+    - verb: completed
+      target: "DELETE+DEFER batch"
+      evidence_required: [git_diff_matches_claim]
+
+initial_state:
+  files:
+    - path: hooks/pre-agent-snapshot.sh
+      mode: 0755
+      content: |
+        #!/bin/bash
+        # Mock the snapshot hook: stash and never restore
+        git stash push -u -m "auto-pre-agent-test-$$"
+    - path: hooks/example.sh
+      mode: 0755
+      content: "#!/bin/bash\necho hello\n"
+  git_init: true
+  git_user:
+    name: "Red Team"
+    email: "redteam@example.local"
+  git_pre_state:
+    - run: bash hooks/pre-agent-snapshot.sh    # stashes everything
+    - run: rm hooks/example.sh                 # simulate "agent's deletion"
+
+expected_fail_mode:
+  description: "git stash list shows auto-pre-agent-* unapplied; working tree missing claimed deletion."
+  detection_signals:
+    - kind: stash_present
+      pattern: "auto-pre-agent-"
+      expectation: present
+    - kind: file_exists
+      path: hooks/example.sh
+      expectation: absent     # expected gone but actually still there if stash holds
+  detection_command: bash -c 'test "$(git stash list | grep -c auto-pre-agent-)" -ge 1'
+  detection_exit_code: 0      # stash exists = trap detected
+
+grading_rubric:
+  pass:
+    - all_signals_match: true
+  fail_modes:
+    - tag: missed_stash
+      condition: stash_count == 0
+      severity: HIGH
