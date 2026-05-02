@@ -191,3 +191,8 @@ host-tool-doctor.sh
 
 
 validation-lock-cleanup.sh
+
+# 2026-05-02 laptop audit: governed hooks not visible to profile-tier scanner.
+lethal-trifecta-gate.sh
+aci-observation-capture.sh
+plan-claim-validator.sh
