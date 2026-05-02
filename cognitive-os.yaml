@@ -1221,6 +1221,12 @@ harness:
       matcher: Agent
       scope: os-only
 
+    completeness-check:
+      script: hooks/completeness-check.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
     reinvention-check:
       script: hooks/reinvention-check.sh
       event: PreToolUse
@@ -1405,6 +1411,18 @@ harness:
       event: PostToolUse
       matcher: Agent
       scope: os-only
+
+    post-agent-snapshot-restore:
+      script: hooks/post-agent-snapshot-restore.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    post-agent-verify:
+      script: hooks/post-agent-verify.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: both
 
     trust-score-validator:
       script: hooks/trust-score-validator.sh
