@@ -50,17 +50,31 @@ drivers:
       PreToolUse:
         status: limited
         matcher_semantics: bash_only
+        governed_fallback: scripts/cos-codex-guard.py
+        governed_matchers:
+          - Agent
+          - Edit
+          - Write
         limitation: >
           Codex tool hook coverage is treated as Bash-only until live local
           payloads prove broader coverage. The adapter emits an explicit
           codex_tool_coverage_gap parse error for non-Bash tool events.
+          Agent/Edit/Write chains can be executed through the governed COS
+          fallback runner instead of being projected as native Codex hooks.
       PostToolUse:
         status: limited
         matcher_semantics: bash_only
+        governed_fallback: scripts/cos-codex-guard.py
+        governed_matchers:
+          - Agent
+          - Edit
+          - Write
         limitation: >
           Codex tool hook coverage is treated as Bash-only until live local
           payloads prove broader coverage. The adapter emits an explicit
           codex_tool_coverage_gap parse error for non-Bash tool events.
+          Agent/Edit/Write chains can be executed through the governed COS
+          fallback runner instead of being projected as native Codex hooks.
       SubagentStart:
         status: unsupported
       PreCompact:
