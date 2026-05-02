@@ -58,6 +58,46 @@ except Exception:
         echo "$_HEALTH_OUTPUT" >&2
     fi
 }
+
+
+_record_adr108_agent_completion() {
+    local _PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+    command -v jq >/dev/null 2>&1 || return 0
+    command -v python3 >/dev/null 2>&1 || return 0
+    [ -n "${INPUT:-}" ] || return 0
+    local _tool_use_id _prompt _session _agent_id _task _domains _prompt_lower _domain _domain_lower _domain_singular
+    _tool_use_id=$(printf '%s' "$INPUT" | jq -r '.tool_use_id // empty' 2>/dev/null || true)
+    _prompt=$(printf '%s' "$INPUT" | jq -r '.tool_input.prompt // .tool_input.description // "unknown task"' 2>/dev/null | head -c 500 || true)
+    _session="${COGNITIVE_OS_SESSION_ID:-default-session}"
+    _agent_id="${_tool_use_id:-agent-unknown}"
+    _task="${_tool_use_id:-$_prompt}"
+    python3 "$_PROJECT_DIR/scripts/agent_work_ledger.py" --project-dir "$_PROJECT_DIR" \
+      record --agent-id "$_agent_id" --session-id "$_session" \
+      --task "$_task" --status completed --scope "$_prompt" >/dev/null 2>&1 || true
+
+    _domains=$(python3 - "$_PROJECT_DIR" <<'PYEOF' 2>/dev/null || true
+import sys
+sys.path.insert(0, sys.argv[1])
+try:
+    from lib.concurrency_safety import load_concurrency_safety_config
+    cfg = load_concurrency_safety_config(sys.argv[1] + "/cognitive-os.yaml")
+    print("\n".join(cfg.resource_leases.critical_domains))
+except Exception:
+    print("auth\nbilling\nmigrations\ninfrastructure")
+PYEOF
+)
+    _prompt_lower=$(printf '%s' "$_prompt" | tr '[:upper:]' '[:lower:]')
+    while IFS= read -r _domain; do
+      [ -z "$_domain" ] && continue
+      _domain_lower=$(printf '%s' "$_domain" | tr '[:upper:]' '[:lower:]')
+      _domain_singular="${_domain_lower%s}"
+      if printf '%s' "$_prompt_lower" | grep -Eq "(^|[^[:alnum:]_-])(${_domain_lower}|${_domain_singular})([^[:alnum:]_-]|$)"; then
+        python3 "$_PROJECT_DIR/scripts/resource_lease.py" --project-dir "$_PROJECT_DIR" \
+          release "$_domain" --agent-id "$_agent_id" >/dev/null 2>&1 || true
+      fi
+    done <<< "$_domains"
+}
+
 # Paperclip notification helper for safety mesh blocks (Gap 5)
 _PAPERCLIP_LIB="$(dirname "$0")/_lib/paperclip-notify.sh"
 [ -f "$_PAPERCLIP_LIB" ] && source "$_PAPERCLIP_LIB"
@@ -90,7 +130,7 @@ TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)
 [ "$TOOL_NAME" != "Agent" ] && exit 0
 
 # Set trap AFTER early-exit checks — only Agent tool calls need queue draining
-trap '_drain_queue' EXIT
+trap '_record_adr108_agent_completion; _drain_queue' EXIT
 
 RESPONSE=$(echo "$INPUT" | jq -r '
   if (.tool_response | type) == "object" then
