@@ -427,6 +427,54 @@ def parse_review_response(response: str) -> dict[str, Any]:
     return result
 
 
+def evaluate_review_quality(parsed_finding: dict[str, Any]) -> dict[str, Any]:
+    """Meta-evaluate whether a reviewer finding is itself useful.
+
+    This is ADR-096 v2 groundwork: before trusting reviewer output as a learning
+    signal, record a deterministic quality score for the review artifact.  The
+    score is intentionally structural (not LLM-based) so it can run inside the
+    hook without adding latency or cost.
+    """
+    issues: list[str] = []
+    score = 100
+
+    if parsed_finding.get("score", -1) < 0:
+        score -= 25
+        issues.append("missing_or_invalid_review_score")
+    if not parsed_finding.get("evidence"):
+        score -= 20
+        issues.append("missing_evidence")
+    if not parsed_finding.get("gaps"):
+        score -= 35
+        issues.append("missing_gaps")
+    if not parsed_finding.get("recommendations"):
+        score -= 15
+        issues.append("missing_recommendations")
+    if parsed_finding.get("reviewer_confidence", -1) < 0:
+        score -= 10
+        issues.append("missing_reviewer_confidence")
+    if not str(parsed_finding.get("uncertainty") or "").strip():
+        score -= 10
+        issues.append("missing_uncertainty")
+    for warning in parsed_finding.get("parse_warnings", []):
+        score -= 5
+        issues.append(f"parse_warning:{warning}")
+
+    score = max(0, min(100, score))
+    if score >= 80:
+        verdict = "usable"
+    elif score >= 50:
+        verdict = "weak"
+    else:
+        verdict = "invalid"
+
+    return {
+        "quality_score": score,
+        "quality_verdict": verdict,
+        "quality_issues": issues,
+    }
+
+
 def persist_finding(
     finding: dict[str, Any],
     jsonl_path: Path | None = None,
@@ -455,6 +503,8 @@ def persist_finding(
     # Stamp timestamp if absent
     if "timestamp" not in finding:
         finding = {**finding, "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+    if "review_quality" not in finding:
+        finding = {**finding, "review_quality": evaluate_review_quality(finding)}
 
     # Stable content hash for deduplication (Engram topic_key suffix)
     content_sig = hashlib.sha256(
