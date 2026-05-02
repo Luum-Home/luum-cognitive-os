@@ -57,13 +57,15 @@ Replace `--include-untracked` with a **copy-to-backup-dir** approach for untrack
 
 6. **TTL / cleanup**: `scripts/cleanup-snapshots.sh` calls `lib/snapshot_manager.prune_expired(ttl_days=30)`. TTL configurable in `cognitive-os.yaml` under `snapshots.ttl_days`.
 
+7. **Size guard / retention cap**: untracked backup copies are bounded by `snapshots.max_file_mb` per file and `snapshots.max_total_mb` across snapshot storage. Oversized files stay in the WT, are not copied, and are recorded in `skipped_untracked_files`; aggregate cleanup prunes oldest snapshots first.
+
 **Implementation artefacts**:
 - `lib/snapshot_manager.py` — pure-Python helper (`create_snapshot`, `list_snapshots`, `restore_snapshot`, `prune_expired`)
 - `hooks/pre-agent-snapshot.sh` — updated; delegates to `snapshot_manager.py` via inline Python heredoc
 - `hooks/crash-recovery.sh` — extended to surface snapshot manifests (backward-compat: still shows legacy stashes)
-- `cognitive-os.yaml` — new `snapshots:` section (ttl_days, mode)
+- `cognitive-os.yaml` — new `snapshots:` section (ttl_days, max_file_mb, max_total_mb, mode)
 - `scripts/cleanup-snapshots.sh` — operator script
-- `tests/unit/test_snapshot_manager.py` — 9 unit tests
+- `tests/unit/test_snapshot_manager.py` — 12 unit tests
 - `tests/integration/test_pre_agent_snapshot_border_cases.py` — 9 integration tests against real hooks
 - `scripts/chaos/` — 3 operator runbook scripts
 
@@ -109,10 +111,9 @@ New-path snapshots live in `.cognitive-os/snapshots/` and coexist with old stash
 - **Disk usage**: snapshot copies accumulate until pruned. On a busy system with large untracked files and frequent agent launches, this could grow. Bounded by:
   - TTL prune (30 days default)
   - `scripts/cleanup-snapshots.sh` can be run manually or scheduled
-  - Future improvement: size-cap per snapshot or per repo
+  - Size caps skip large per-file copies and prune oldest snapshots under aggregate repo pressure
 
 ### Follow-up
-- Consider a size-cap guard (e.g., reject copy if total snapshot dir > N MB) in addition to TTL.
 - `cleanup-snapshots.sh` could be registered as a periodic hook (SessionEnd or daily cron).
 - The manifest schema may evolve as crash-recovery.sh gains richer restoration UX; versioning in manifest recommended.
 
