@@ -6,8 +6,8 @@ Trigger: PostToolUse Agent — agent response containing retry_count:3 + verdict
 Contract:
   - Only fires on Agent tool_name.
   - Detects "Verify-apply loop exceeded 3 retries" OR retry_count:3 + verdict:FAIL.
-  - In reconstruction/stabilization: emits "ORCHESTRATOR ACTION REQUIRED" (exit 0).
-  - In production/maintenance: emits HALT message (exit 0).
+  - In every phase: emits ROLLBACK PLAN REQUIRED (exit 0).
+  - Requires human approval before destructive git.
   - Advisory: always exits 0.
   - With SO_KILLSWITCH=1: exits 0 silently.
 """
@@ -105,8 +105,8 @@ def test_auto_rollback_trigger_no_failure_signal_silent(tmp_path: Path):
 
 
 @pytest.mark.skipif(not _HOOK.exists(), reason="auto-rollback-trigger.sh not found")
-def test_auto_rollback_trigger_retry_exhausted_emits_signal(tmp_path: Path):
-    """Agent response with retry_count:3 + verdict:FAIL must emit ORCHESTRATOR ACTION REQUIRED."""
+def test_auto_rollback_trigger_retry_exhausted_emits_plan_required(tmp_path: Path):
+    """Agent response with retry_count:3 + verdict:FAIL must emit plan-required signal."""
     _setup_project(tmp_path, phase="reconstruction")
     rollback_response = json.dumps({
         "retry_count": 3,
@@ -120,9 +120,10 @@ def test_auto_rollback_trigger_retry_exhausted_emits_signal(tmp_path: Path):
     })
     result = _run(tmp_path, payload)
     assert result.returncode == 0, f"Advisory hook must exit 0, got {result.returncode}: {result.stderr[:200]}"
-    # In reconstruction phase, should either emit the signal or detect the pattern
-    combined = result.stdout + result.stderr
-    # The hook may emit various outputs; what matters is it doesn't crash
+    assert "ROLLBACK PLAN REQUIRED" in result.stdout
+    assert "Human approval is required" in result.stdout
+    assert "ORCHESTRATOR ACTION REQUIRED" not in result.stdout
+    assert "execute automatically" not in result.stdout.lower()
     _write_chaos_run(tmp_path, "retry_exhausted_signal", True)
 
 

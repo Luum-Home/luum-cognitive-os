@@ -8,10 +8,8 @@ Tests:
 """
 
 import json
-import os
 import sys
 from pathlib import Path
-from typing import Any, Dict, List
 
 import pytest
 
@@ -160,7 +158,8 @@ class TestAutoRollbackTrigger:
             stdin=input_json,
         )
         assert result.returncode == 0
-        assert "AUTO-ROLLBACK TRIGGERED" in result.stdout
+        assert "ROLLBACK PLAN REQUIRED" in result.stdout
+        assert "Human approval is required" in result.stdout
 
     def test_detects_max_retries_reached(self, run_hook, cognitive_os_env):
         """Should detect 'max retries reached/exceeded' in verify context."""
@@ -177,7 +176,8 @@ class TestAutoRollbackTrigger:
             stdin=input_json,
         )
         assert result.returncode == 0
-        assert "AUTO-ROLLBACK TRIGGERED" in result.stdout
+        assert "ROLLBACK PLAN REQUIRED" in result.stdout
+        assert "Human approval is required" in result.stdout
 
     def test_detects_retry_count_with_fail(self, run_hook, cognitive_os_env):
         """Should detect retry_count: 3 combined with verdict: FAIL."""
@@ -196,7 +196,8 @@ class TestAutoRollbackTrigger:
             stdin=input_json,
         )
         assert result.returncode == 0
-        assert "AUTO-ROLLBACK TRIGGERED" in result.stdout
+        assert "ROLLBACK PLAN REQUIRED" in result.stdout
+        assert "Human approval is required" in result.stdout
 
     def test_ignores_normal_agent_output(self, run_hook, cognitive_os_env):
         """Should not trigger on normal agent completion."""
@@ -226,8 +227,8 @@ class TestAutoRollbackTrigger:
         assert result.returncode == 0
         assert "AUTO-ROLLBACK" not in result.stdout
 
-    def test_production_phase_halts(self, run_hook, cognitive_os_env):
-        """In production phase, should HALT and require human approval."""
+    def test_production_phase_requires_plan(self, run_hook, cognitive_os_env):
+        """In production phase, should require a rollback plan and human approval."""
         # Create cognitive-os.yaml with production phase
         project_dir = cognitive_os_env["project_dir"]
         config_file = project_dir / "cognitive-os.yaml"
@@ -243,26 +244,22 @@ class TestAutoRollbackTrigger:
             stdin=input_json,
         )
         assert result.returncode == 0
-        assert "HALT" in result.stdout
+        assert "ROLLBACK PLAN REQUIRED" in result.stdout
         assert "human approval" in result.stdout.lower()
 
-    def test_reconstruction_phase_auto_executes(self, run_hook, cognitive_os_env):
-        """In reconstruction phase, should auto-execute without approval."""
+    @pytest.mark.parametrize("phase", ["reconstruction", "stabilization", "production", "maintenance"])
+    def test_all_phases_require_human_approval(self, run_hook, cognitive_os_env, phase):
+        """Every phase should request a rollback plan, never automatic execution."""
         project_dir = cognitive_os_env["project_dir"]
         config_file = project_dir / "cognitive-os.yaml"
-        config_file.write_text("project:\n  phase: reconstruction\n")
-
-        input_json = json.dumps({
-            "tool_name": "Agent",
-            "tool_result": "Verify-apply loop exceeded 3 retries. Change: my-feature",
-        })
-        result = run_hook(
-            "auto-rollback-trigger.sh",
-            env=cognitive_os_env["env"],
-            stdin=input_json,
-        )
+        config_file.write_text(f"project:\n  phase: {phase}\n")
+        input_json = json.dumps({"tool_name": "Agent", "tool_result": "Verify-apply loop exceeded 3 retries. Change: my-feature"})
+        result = run_hook("auto-rollback-trigger.sh", env=cognitive_os_env["env"], stdin=input_json)
         assert result.returncode == 0
-        assert "auto-rollback will execute automatically" in result.stdout.lower()
+        assert "ROLLBACK PLAN REQUIRED" in result.stdout
+        assert "Human approval is required" in result.stdout
+        assert "No git revert" in result.stdout
+        assert "execute automatically" not in result.stdout.lower()
 
     def test_logs_to_metrics(self, run_hook, cognitive_os_env):
         """Should log the trigger event to auto-rollback.jsonl."""
@@ -290,6 +287,9 @@ class TestAutoRollbackTrigger:
         entries = [json.loads(line) for line in log_file.read_text().strip().split("\n")]
         assert len(entries) >= 1
         assert entries[0]["trigger"] == "verify-apply-exhaustion"
+        assert entries[0]["mode"] == "plan_required"
+        assert entries[0]["approval_required"] is True
+        assert entries[0]["destructive_commands_executed"] is False
 
 
 # ===========================================================================
