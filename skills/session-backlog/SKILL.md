@@ -15,7 +15,7 @@ prerequisites: []
 
 # Session Backlog — Pending Work Inventory
 
-Scan all sources of pending work, classify by priority, and produce a structured backlog document ready for future sessions.
+Scan all sources of pending work, including ADR implementation status, classify by priority, and produce a structured backlog document ready for future sessions.
 
 ## Instructions
 

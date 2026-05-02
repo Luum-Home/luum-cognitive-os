@@ -95,9 +95,15 @@
   prompt/session state, write git context, write a changelog, and emit the
   compaction memory-save reminder.
 - [x] A portable session backlog reconciler (`scripts/cos_session_backlog.py`) now
-  consolidates active tasks, plans, request queues, changelogs, handoffs, git,
-  and optional Engram memory into `.cognitive-os/sessions/{session_id}/backlog.md`,
-  `.cognitive-os/metrics/backlog-reconciliation.jsonl`, and `session/backlog/latest`.
+  consolidates active tasks, plans, request queues, changelogs, handoffs, ADR
+  implementation status, git, and optional Engram memory into
+  `.cognitive-os/sessions/{session_id}/backlog.md`,
+  `.cognitive-os/metrics/backlog-reconciliation.jsonl`,
+  `.cognitive-os/metrics/adr-implementation-latest.json`, and `session/backlog/latest`.
+- [x] Agentic primitive classification is now contract-enforced through
+  `tests/contracts/test_primitive_scope_classification.py`: new skills, hooks,
+  templates, and skill-referenced scripts must declare scope/audience/platform
+  metadata and remain covered by product-zone guardrails and install-scope proof.
 - [x] Developer-confidence positioning is documented as a lightweight adoption
   path: memory, doctor, minimal hooks, safety, changelog/session learning, and
   checks only where they provide clear value.
