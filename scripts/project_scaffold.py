@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: project
 """CLI for project_scaffolder — creates the 10-category docs/ skeleton (ADR-054).
 
 Usage:

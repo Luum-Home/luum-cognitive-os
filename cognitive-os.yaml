@@ -545,7 +545,7 @@ model_capability:
   auto_disable:
     3: [context-management]
     4: [clarification-gate, assumption-tracking, confidence-gate, model-routing, blast-radius]
-    5: [completeness-check, epic-task-detector, scope-proportionality, trust-score-validator,
+    5: [epic-task-detector, scope-proportionality, trust-score-validator,
         claim-validator, tool-loop-detector, consequence-evaluator, infra-intent-detector,
         pre-cleanup-snapshot, architecture-compliance, auto-skill-generator]
 
@@ -1305,12 +1305,6 @@ harness:
 
     agent-checkpoint:
       script: hooks/agent-checkpoint.sh
-      event: PostToolUse
-      matcher: Agent
-      scope: os-only
-
-    post-agent-verify:
-      script: hooks/post-agent-verify.sh
       event: PostToolUse
       matcher: Agent
       scope: os-only

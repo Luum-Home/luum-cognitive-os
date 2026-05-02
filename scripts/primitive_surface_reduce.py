@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Plan and apply safe surface reductions for COS agentic primitives.
 
 The reducer is deliberately conservative. It never deletes implementation
