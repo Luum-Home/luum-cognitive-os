@@ -937,6 +937,11 @@ harness:
       event: SessionStart
       scope: os-only
 
+    session-sanity:
+      script: hooks/session-sanity.sh
+      event: SessionStart
+      scope: os-only
+
     infra-health:
       script: hooks/infra-health.sh
       event: SessionStart

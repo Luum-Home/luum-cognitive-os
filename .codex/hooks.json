@@ -48,6 +48,10 @@
         },
         {
           "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-sanity.sh\" ] && bash \"$PWD/hooks/session-sanity.sh\" || true"
+        },
+        {
+          "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/infra-health.sh\" ] && bash \"$PWD/hooks/infra-health.sh\" || true"
         },
         {
@@ -69,10 +73,6 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/mcp-scan.sh\" ] && bash \"$PWD/hooks/mcp-scan.sh\" || true"
-        },
-        {
-          "type": "command",
-          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; [ -x \"$PWD/hooks/session-sanity.sh\" ] && bash \"$PWD/hooks/session-sanity.sh\" || true"
         }
       ],
       "matcher": "startup"
