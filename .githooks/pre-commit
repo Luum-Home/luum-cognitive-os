@@ -118,7 +118,7 @@ fi
 staged_skill_dirs=$(git diff --cached --name-only --diff-filter=A -- '.cognitive-os/skills/*' || true)
 if [ -n "$staged_skill_dirs" ]; then
   # Extract unique skill directory names
-  skill_dirs=$(echo "$staged_skill_dirs" | grep -oP '\.cognitive-os/skills/[^/]+' | sort -u || true)
+  skill_dirs=$(printf '%s\n' "$staged_skill_dirs" | sed -nE 's#^(.cognitive-os/skills/[^/]+).*#\1#p' | sort -u || true)
   while IFS= read -r skilldir; do
     [ -z "$skilldir" ] && continue
     if [ ! -f "$COS_ROOT/$skilldir/SKILL.md" ]; then
