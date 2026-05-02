@@ -210,7 +210,7 @@ def is_git_repository(root: Path) -> bool:
 
 def staged_files(root: Path) -> list[str]:
     result = subprocess.run(
-        ["git", "diff", "--cached", "--name-only", "--diff-filter=ACM"],
+        ["git", "diff", "--cached", "--raw", "--diff-filter=ACM"],
         cwd=str(root),
         text=True,
         capture_output=True,
@@ -218,7 +218,22 @@ def staged_files(root: Path) -> list[str]:
     )
     if result.returncode != 0:
         return []
-    return [line for line in result.stdout.splitlines() if line]
+
+    paths: list[str] = []
+    for line in result.stdout.splitlines():
+        if not line:
+            continue
+        meta, _, raw_path = line.partition("\t")
+        if not raw_path:
+            continue
+        fields = meta.split()
+        if len(fields) < 4:
+            continue
+        new_mode = fields[1]
+        if new_mode == "160000":
+            continue
+        paths.append(raw_path)
+    return paths
 
 
 def main(argv: list[str] | None = None) -> int:
