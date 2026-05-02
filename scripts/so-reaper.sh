@@ -247,6 +247,7 @@ def _mode_b(task, commits):
 
 if not os.path.isfile(TASKS_PATH):
     print("[so-reaper] active-tasks.json not found, skipping watermark sweep")
+    print("[so-reaper] watermark-sweep: 0 record(s) marked completed-by-watermark")
     sys.exit(0)
 
 os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
