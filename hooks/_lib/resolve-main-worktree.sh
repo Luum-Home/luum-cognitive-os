@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # resolve-main-worktree.sh — Shared library: resolve the main worktree path.
 #
 # Usage:
