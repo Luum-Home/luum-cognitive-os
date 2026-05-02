@@ -22,6 +22,10 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Headless and Clustered Runtime Plan](architecture/plans/headless-clustered-runtime-plan.md) — staged path from local harness runtime to EC2/container/Kubernetes workers.
 - [Local Connected Systems Validation](manual-tests/local-connected-systems-validation.md) — proof path for dependency readiness, automatic install boundaries, MCP wiring, optional services, and persistent test summaries.
 - [Claude Code Startup Hang Regression](manual-tests/claude-code-startup-hang-regression.md) — manual proof path for the 2026-05-01 startup hang/duplicate-prompt hardening and its automated regression tests.
+- [Validation Capsule](architecture/validation-capsule.md) — scoped worktree-isolated validation wrapper that suppresses snapshot/profile mutators without using the global hook killswitch.
+- [Validation Worktree Mutation Postmortem — 2026-05-02](reports/validation-worktree-mutation-postmortem-2026-05-02.md) — root-cause analysis of validation-induced worktree changes and false E2E failures.
+- [Validation Capsule Manual Test](manual-tests/validation-capsule.md) — manual proof that release-lane validation runs with scoped guards and persistent artifacts.
+- [ADR-109: Validation Capsule Worktree Isolation](adrs/ADR-109-validation-capsule-worktree-isolation.md) — accepted decision separating validation isolation from the global hook killswitch.
 
 - [Architecture Principles](architecture-principles.md) — dependency model and layer boundaries
 - [Design Philosophy](design-philosophy.md) — biological-system framing for the OS
