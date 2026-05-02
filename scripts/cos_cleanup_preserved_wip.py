@@ -144,6 +144,85 @@ def backup_worktree(path: Path, backup_dir: Path) -> dict[str, Any]:
     return {"path": str(path), "backup_dir": str(wt_dir), "untracked_count": len(files)}
 
 
+def pid_alive(pid: int) -> bool:
+    if pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+
+
+def validation_lock_active_for(repo: Path, path: Path) -> tuple[bool, str]:
+    lock = repo / ".cognitive-os" / "runtime" / "validation-capsule.lock"
+    if not lock.exists():
+        return False, "no validation capsule lock"
+    try:
+        data = json.loads(lock.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return True, "validation capsule lock is corrupt; fail closed"
+    capsule_dir = data.get("capsule_dir")
+    if not capsule_dir:
+        return True, "validation capsule lock has no capsule_dir; fail closed"
+    try:
+        if Path(capsule_dir).resolve() != path.resolve():
+            return False, "validation capsule lock points elsewhere"
+    except OSError:
+        return True, "validation capsule lock path is not resolvable; fail closed"
+
+    now = int(datetime.now(timezone.utc).timestamp())
+    expires_at = int(data.get("expires_at_epoch") or 0)
+    if expires_at and expires_at < now:
+        return False, "validation capsule lock expired"
+    pid = int(data.get("pid") or 0)
+    if pid and not pid_alive(pid):
+        return False, "validation capsule lock pid is dead"
+    heartbeat = int(data.get("last_heartbeat_epoch") or 0)
+    interval = int(data.get("heartbeat_interval_seconds") or 0)
+    if heartbeat and interval and (now - heartbeat) > (3 * interval):
+        return False, "validation capsule heartbeat is stale"
+    return True, "validation capsule lock is active"
+
+
+def process_activity_for_path(path: Path) -> tuple[bool, str]:
+    needle = str(path.resolve())
+    proc = subprocess.run(
+        ["ps", "-axo", "pid=,command="],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if proc.returncode == 0 and any(needle in line and "cos_cleanup_preserved_wip.py" not in line for line in proc.stdout.splitlines()):
+        return True, "process command references validation capsule path"
+    lsof = next((Path(item) / "lsof" for item in os.environ.get("PATH", "").split(os.pathsep) if (Path(item) / "lsof").is_file()), None)
+    if lsof is None:
+        return False, "no active process detected; lsof unavailable"
+    lsof_proc = subprocess.run(
+        [str(lsof), "+D", needle],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if lsof_proc.returncode == 0 and lsof_proc.stdout.strip():
+        return True, "open file detected under validation capsule path"
+    return False, "no active process detected"
+
+
+def validation_capsule_removal_blocker(repo: Path, path: Path) -> str | None:
+    lock_active, lock_reason = validation_lock_active_for(repo, path)
+    if lock_active:
+        return lock_reason
+    process_active, process_reason = process_activity_for_path(path)
+    if process_active:
+        return process_reason
+    return None
+
+
 def validation_capsule_worktrees(repo: Path) -> list[Worktree]:
     primary = repo.resolve()
     return [
@@ -234,7 +313,12 @@ def main(argv: list[str] | None = None) -> int:
     if requested["remove_validation_capsules"]:
         capsules = validation_capsule_worktrees(repo)
         removed: list[dict[str, Any]] = []
+        skipped: list[dict[str, Any]] = []
         for wt in capsules:
+            blocker = validation_capsule_removal_blocker(repo, wt.path)
+            if blocker:
+                skipped.append({"path": str(wt.path), "reason": blocker, "skipped": True})
+                continue
             item = backup_worktree(wt.path, backup_dir)
             if args.apply:
                 proc = run_git(repo, ["worktree", "remove", "--force", str(wt.path)])
@@ -244,6 +328,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.apply:
             run_git(repo, ["worktree", "prune"])
         report["validation_capsules"] = removed
+        report["skipped_validation_capsules"] = skipped
     if requested["clean_zombie_registry"]:
         report["zombie_registry"] = cleanup_zombie_registry(repo, backup_dir, apply=args.apply)
     report["after_status"] = git_status(repo)
