@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
+# @manual-trigger: invoke to generate agentic mastery executive summary from .cognitive-os/reports/
 """Generate one executive summary for the agentic mastery program."""
 
 from __future__ import annotations
