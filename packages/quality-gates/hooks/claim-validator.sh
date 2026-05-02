@@ -36,7 +36,7 @@ if ! type safe_jsonl_append &>/dev/null 2>&1; then
   }
 fi
 
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
 [ ! -f "$CONFIG_FILE" ] && CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 
@@ -69,6 +69,66 @@ if [ -n "$SESSION_ID" ]; then
   [ -d "$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID" ] && METRICS_DIR="$SESSION_METRICS"
 fi
 mkdir -p "$METRICS_DIR" 2>/dev/null
+
+
+# ADR-108: require durable approval evidence for extracted high-stakes claims.
+# In reconstruction/stabilization this is advisory; in production/maintenance it blocks.
+PHASE="reconstruction"
+if [ -f "$CONFIG_FILE" ]; then
+  PARSED_PHASE=$(grep 'phase:' "$CONFIG_FILE" 2>/dev/null | head -1 | sed 's/.*phase:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '[:space:]')
+  [ -n "$PARSED_PHASE" ] && PHASE="$PARSED_PHASE"
+fi
+
+APPROVAL_MISSING=0
+APPROVAL_DETAILS=""
+if command -v python3 >/dev/null 2>&1; then
+  RESPONSE_TMP=$(mktemp 2>/dev/null || printf '/tmp/cos-claim-response-%s' "$$")
+  printf '%s' "$RESPONSE" > "$RESPONSE_TMP" 2>/dev/null || true
+  CLAIM_LINES=$(python3 - "$PROJECT_DIR" "$RESPONSE_TMP" <<'PYEOF' 2>/dev/null || true
+import json, sys
+project = sys.argv[1]
+response_path = sys.argv[2]
+sys.path.insert(0, project)
+try:
+    text = open(response_path, encoding="utf-8", errors="replace").read()
+    from lib.orchestrator_verify import extract_high_stakes_claims
+    for claim in extract_high_stakes_claims(text):
+        print(json.dumps({"verb": claim.verb, "target": claim.target, "raw_text": claim.raw_text}, sort_keys=True))
+except Exception:
+    pass
+PYEOF
+)
+  rm -f "$RESPONSE_TMP" 2>/dev/null || true
+  if [ -n "$CLAIM_LINES" ]; then
+    while IFS= read -r claim_json; do
+      [ -z "$claim_json" ] && continue
+      verb=$(printf '%s' "$claim_json" | jq -r '.verb // empty' 2>/dev/null)
+      target=$(printf '%s' "$claim_json" | jq -r '.target // empty' 2>/dev/null)
+      [ -z "$verb" ] || [ -z "$target" ] && continue
+      APPROVAL_OUT=$(python3 "$PROJECT_DIR/scripts/approval_ledger.py" --project-dir "$PROJECT_DIR" \
+        require --category "$verb" --scope "$target" 2>/dev/null || true)
+      APPROVAL_STATUS=$(printf '%s' "$APPROVAL_OUT" | jq -r '.status // empty' 2>/dev/null || true)
+      if [ "$APPROVAL_STATUS" = "missing" ]; then
+        APPROVAL_MISSING=$((APPROVAL_MISSING + 1))
+        APPROVAL_DETAILS="${APPROVAL_DETAILS}  - ${verb} ${target}\n"
+      fi
+    done <<< "$CLAIM_LINES"
+  fi
+fi
+
+if [ "$APPROVAL_MISSING" -gt 0 ]; then
+  echo "" >&2
+  echo "=== ADR-108 APPROVAL LEDGER: $APPROVAL_MISSING missing approval(s) ===" >&2
+  echo -e "$APPROVAL_DETAILS" >&2
+  echo "Record approval with: python3 scripts/approval_ledger.py record --category <verb> --scope <target> --reason ..." >&2
+  safe_jsonl_append "$METRICS_DIR/approval-ledger-missing.jsonl" "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"missing\":$APPROVAL_MISSING}"
+  if [ "$PHASE" = "production" ] || [ "$PHASE" = "maintenance" ]; then
+    echo "Approval evidence required in $PHASE phase — blocking agent result." >&2
+    exit 2
+  fi
+  echo "Phase is $PHASE — warning only (not blocking)." >&2
+  echo "=== END ADR-108 APPROVAL LEDGER ===" >&2
+fi
 
 # Extract file-related claims from response
 # Patterns: "Created <path>", "Modified <path>", "Wrote <path>", "Updated <path>", "Edited <path>"
