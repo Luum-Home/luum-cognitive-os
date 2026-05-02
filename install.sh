@@ -390,17 +390,34 @@ prepare_source() {
     mkdir -p "$TEMP_DIR"
     # Use rsync if available (excludes broken symlinks in .venv, reference/, etc.)
     if command -v rsync >/dev/null 2>&1; then
+      set +e
       rsync -a \
         --exclude='.venv' \
         --exclude='node_modules' \
         --exclude='reference' \
         --exclude='.git' \
+        --exclude='.cognitive-os/metrics' \
+        --exclude='.cognitive-os/runtime' \
         --exclude='__pycache__' \
         "$SOURCE_DIR/" "$TEMP_DIR/"
+      rsync_status=$?
+      set -e
+      if [ "$rsync_status" -ne 0 ]; then
+        # Local source installs can race with live agent/test artifacts being
+        # created or removed. rsync returns 23/24 for partial transfer or
+        # vanished files; continue and let required-file checks below catch
+        # any genuinely missing installer inputs.
+        if [ "$rsync_status" -eq 23 ] || [ "$rsync_status" -eq 24 ]; then
+          echo "WARNING: local source changed during copy; continuing with partial rsync." >&2
+        else
+          exit "$rsync_status"
+        fi
+      fi
     else
       # Fallback: cp with error suppression for broken symlinks
       cp -r "$SOURCE_DIR" "$TEMP_DIR.bak" 2>/dev/null || true
       mv "$TEMP_DIR.bak" "$TEMP_DIR"
+      rm -rf "$TEMP_DIR/.cognitive-os/metrics" "$TEMP_DIR/.cognitive-os/runtime" 2>/dev/null || true
     fi
   else
     # Remote: git clone
