@@ -149,7 +149,6 @@ architecture-compliance.sh | FUTURE: PostToolUse Edit|Write — planned but not 
 assumption-tracker.sh | FUTURE: PreToolUse Agent — ADR-022 variant, not in default profile
 auto-repair-dispatcher.sh | CONDITIONAL: fires only on error-pipeline output, sourced not registered
 auto-skill-generator.sh | MANUAL_TRIGGER: invoked by /auto-skill skill, not a hook matcher
-completeness-check.sh | FUTURE: regex variant superseded by completeness-check-llm.sh
 consequence-evaluator.sh | MANUAL_TRIGGER: invoked by /consequence skill
 context-watchdog.sh | CONDITIONAL: PostToolUse in full profile only; default uses context-diet.sh
 dequeue-notify.sh | CONDITIONAL: fires only when dispatch-gate emits queue events
@@ -160,7 +159,6 @@ kpi-trigger.sh | FUTURE: Stop hook in full profile; wires to kpi_collector
 mcp-scan.sh | CONDITIONAL: MCP server audit, fires on demand
 parry-scan.sh | CONDITIONAL: Parry security integration
 pre-compaction-flush.sh | CONDITIONAL: PreCompact event — registered in full profile only
-prompt-quality.sh | FUTURE: regex variant superseded by prompt-quality-llm.sh
 rate-limit-protection.sh | DEPRECATED: renamed to token-budget-monitor.sh; shim remains for back-compat
 scope-creep-detector.sh | FUTURE: PostToolUse Agent, planned but not wired
 scope-proportionality.sh | FUTURE: PostToolUse Agent, planned
