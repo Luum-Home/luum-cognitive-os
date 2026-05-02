@@ -236,7 +236,6 @@ cc_driver_emit() {
     "hooks/claim-validator.sh"       "false" \
     "hooks/completion-gate.sh"       "false" \
     "hooks/agent-checkpoint.sh"      "false" \
-    "hooks/post-agent-verify.sh"     "false" \
     "hooks/trust-score-validator.sh" "false" \
     "hooks/confidence-gate.sh"       "false" \
     "hooks/audit-id-enricher.sh"     "false" \
