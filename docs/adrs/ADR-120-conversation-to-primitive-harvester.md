@@ -54,7 +54,7 @@ If a matching primitive already exists, the default is to use or improve it.
 - Future automation can wrap the harvester, but repository mutation remains
   governed by normal review, tests, and merge queue.
 
-## Alternatives Considered
+## Alternatives rejected
 
 - **Manual judgment only**: rejected because recent cleanup work proved manual
   recipes are easy to lose and hard to audit later.
@@ -64,7 +64,15 @@ If a matching primitive already exists, the default is to use or improve it.
   creation can affect hooks, Git state, or cleanup behavior and must stay behind
   validation and governed landing.
 
-## Validation
+## Verification
+
+The harvester is accepted when the advisory classifier and portability proof pass:
+
+```bash
+python3 -m pytest tests/behavior/test_cos_primitive_harvester.py -q
+python3 -m pytest tests/red_team/portability/test_cos_primitive_harvester.py -q
+python3 scripts/cos_primitive_harvester.py --conversation-file /tmp/conversation.txt --json
+```
 
 - Behavior tests cover create, improve-existing, use-existing, documentation-only,
   and discard decisions.
