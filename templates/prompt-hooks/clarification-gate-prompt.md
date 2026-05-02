@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 Score this agent prompt for ambiguity on a 0-100 scale.
 
 Signals to check (add points when detected):

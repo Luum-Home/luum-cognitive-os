@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 Check if the edited file is within the approved task scope.
 
 Task scope (approved paths):

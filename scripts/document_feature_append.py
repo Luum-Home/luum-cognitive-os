@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: project
 """CLI for document-feature append-to-backlog path (ADR-054 Phase 2).
 
 This CLI handles the NEW --project-dir flag behavior only — it appends
