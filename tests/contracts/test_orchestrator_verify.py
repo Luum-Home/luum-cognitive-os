@@ -53,7 +53,7 @@ def test_high_stakes_verbs_is_frozenset():
 
 
 def test_high_stakes_verbs_contains_adr105_verbs():
-    required = {"archived", "wired", "tested", "verified", "claimed"}
+    required = {"archived", "deleted", "removed", "wired", "integrated", "registered", "done", "closed", "migrated", "tested", "verified", "claimed"}
     assert required.issubset(HIGH_STAKES_VERBS), (
         "Missing ADR-105 verbs: %s" % (required - HIGH_STAKES_VERBS)
     )
@@ -106,8 +106,11 @@ def test_high_stakes_claim_fields():
 
 
 # ── Case 5: verify_claim returns VerificationOutcome ─────────────────────────
-def test_verify_claim_archived_source_absent(tmp_path):
-    """If source file does not exist, archived claim should pass."""
+def test_verify_claim_archived_requires_archive_copy(tmp_path):
+    """Archived claims require archive present, original absent, and no stale refs."""
+    archive_dir = tmp_path / "docs" / "archive" / "hooks"
+    archive_dir.mkdir(parents=True)
+    (archive_dir / "gone.sh").write_text("#!/usr/bin/env bash\necho archived\n")
     claim = HighStakesClaim(
         verb="archived",
         target="hooks/gone.sh",
@@ -117,8 +120,20 @@ def test_verify_claim_archived_source_absent(tmp_path):
     outcome = verify_claim(claim, str(tmp_path))
     assert isinstance(outcome, VerificationOutcome)
     assert outcome.claim is claim
-    assert isinstance(outcome.verified, bool)
-    assert isinstance(outcome.evidence, dict)
+    assert outcome.verified is True
+    assert "bilateral_archive_check" in outcome.evidence
+
+
+def test_verify_claim_archived_fails_without_archive_copy(tmp_path):
+    claim = HighStakesClaim(
+        verb="archived",
+        target="hooks/gone.sh",
+        evidence_required=["bilateral_archive_check"],
+        confidence=0.8,
+    )
+    outcome = verify_claim(claim, str(tmp_path))
+    assert outcome.verified is False
+    assert "archive copy missing" in (outcome.failure_reason or "")
 
 
 def test_verify_claim_archived_source_present(tmp_path):

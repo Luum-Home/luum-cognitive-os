@@ -3,7 +3,8 @@
 
 Composes lib.ground_truth (does NOT fork it). Filters the general claim set
 produced by ground_truth.extract_claims down to the specific ADR-105 verb set
-that carries high blast-radius consequences ("archived", "wired", "tested",
+that carries high blast-radius consequences ("archived", "deleted", "removed",
+"wired", "integrated", "registered", "done", "closed", "migrated", "tested",
 "verified", "claimed"). For each matched claim, runs a bilateral verification
 check appropriate to the verb.
 
@@ -46,7 +47,20 @@ except ImportError:
 # These verbs carry high-stakes completion claims per ADR-105.
 # Extending this set requires an ADR update — do NOT add verbs ad-hoc.
 HIGH_STAKES_VERBS: frozenset = frozenset(
-    {"archived", "wired", "tested", "verified", "claimed"}
+    {
+        "archived",
+        "deleted",
+        "removed",
+        "wired",
+        "integrated",
+        "registered",
+        "done",
+        "closed",
+        "migrated",
+        "tested",
+        "verified",
+        "claimed",
+    }
 )
 
 # Regex patterns to detect ADR-105 verbs directly in agent output.
@@ -62,7 +76,14 @@ _VERB_PATTERNS = {
 # Evidence check types dispatched by verb
 _VERB_EVIDENCE_MAP: Dict[str, List[str]] = {
     "archived": ["bilateral_archive_check"],
-    "wired": ["config_reference_check"],
+    "deleted": ["absence_and_reference_check"],
+    "removed": ["absence_and_reference_check"],
+    "wired": ["target_and_reference_check"],
+    "integrated": ["target_and_reference_check"],
+    "registered": ["target_and_reference_check"],
+    "done": ["inline_verification_check"],
+    "closed": ["inline_verification_check"],
+    "migrated": ["inline_verification_check"],
     "tested": ["test_result_check"],
     "verified": ["verification_output_check"],
     "claimed": ["claim_presence_check"],
@@ -186,7 +207,14 @@ def verify_claim(claim: HighStakesClaim, project_root: str) -> VerificationOutco
     """
     dispatch = {
         "archived": _verify_archived,
+        "deleted": _verify_removed,
+        "removed": _verify_removed,
         "wired": _verify_wired,
+        "integrated": _verify_wired,
+        "registered": _verify_wired,
+        "done": _verify_inline_verified,
+        "closed": _verify_inline_verified,
+        "migrated": _verify_inline_verified,
         "tested": _verify_tested,
         "verified": _verify_verified,
         "claimed": _verify_claimed,
@@ -210,65 +238,96 @@ def _verify_archived(claim: HighStakesClaim, project_root: str) -> VerificationO
     """Bilateral archive check: archive copy present AND original absent."""
     target = claim.target
     full_path = _resolve_path(target, project_root)
+    archive_path = _archive_path_for(target, project_root)
+    basename = os.path.basename(target)
 
-    # We cannot determine archive_dir from the claim alone without more context.
-    # Check 1: Does the file exist at all? (existence = was NOT removed = red flag)
+    problems: List[str] = []
+    evidence: Dict[str, str] = {}
     if os.path.isfile(full_path):
+        problems.append("original still present at %s" % full_path)
+    if not archive_path or not os.path.isfile(archive_path) or os.path.islink(archive_path):
+        problems.append("archive copy missing or not regular for %s" % target)
+    refs = _config_refs(project_root, basename, target)
+    if refs:
+        problems.append("stale config references: %s" % ", ".join(refs))
+
+    if problems:
+        evidence["bilateral_archive_check"] = "FAIL — " + "; ".join(problems)
         return VerificationOutcome(
             claim=claim,
             verified=False,
-            evidence={"bilateral_archive_check": "FAIL — original still present at %s" % full_path},
-            failure_reason=(
-                "File '%s' still exists at source path — not truly archived. "
-                "Use scripts/verify-archived.sh for bilateral check." % target
-            ),
+            evidence=evidence,
+            failure_reason="Archive claim requires archive present, original absent, and no config refs: " + "; ".join(problems),
         )
 
-    # File absent at claimed path — partial pass (archive copy location unknown to us)
+    evidence["bilateral_archive_check"] = "PASS — archive present, original absent, no config refs"
+    return VerificationOutcome(claim=claim, verified=True, evidence=evidence)
+
+
+def _verify_removed(claim: HighStakesClaim, project_root: str) -> VerificationOutcome:
+    """Bilateral removal check: target absent and no config references remain."""
+    target = claim.target
+    full_path = _resolve_path(target, project_root)
+    basename = os.path.basename(target)
+    refs = _config_refs(project_root, basename, target)
+    if os.path.exists(full_path) or refs:
+        problems = []
+        if os.path.exists(full_path):
+            problems.append("path still exists at %s" % full_path)
+        if refs:
+            problems.append("stale config references: %s" % ", ".join(refs))
+        return VerificationOutcome(
+            claim=claim,
+            verified=False,
+            evidence={"absence_and_reference_check": "FAIL — " + "; ".join(problems)},
+            failure_reason="Removal claim is false: " + "; ".join(problems),
+        )
     return VerificationOutcome(
         claim=claim,
         verified=True,
-        evidence={
-            "bilateral_archive_check": "PASS (source absent) — bilateral archive check "
-            "requires scripts/verify-archived.sh for full confirmation"
-        },
+        evidence={"absence_and_reference_check": "PASS — target absent and no config refs"},
     )
 
 
 def _verify_wired(claim: HighStakesClaim, project_root: str) -> VerificationOutcome:
-    """Config reference check: target appears in settings/config files."""
+    """Reference check: target exists and appears in settings/config files."""
     target = claim.target
     basename = os.path.basename(target)
+    full_path = _resolve_path(target, project_root)
+    found_in = _config_refs(project_root, basename, target)
 
-    # Scan common config files for reference
-    config_files = [
-        ".claude/settings.json",
-        "cognitive-os.yaml",
-        ".codex/hooks.json",
-    ]
-    found_in: List[str] = []
-    for cfg in config_files:
-        cfg_path = os.path.join(project_root, cfg)
-        if os.path.isfile(cfg_path):
-            try:
-                with open(cfg_path, "r", errors="replace") as f:
-                    content = f.read()
-                if basename in content or target in content:
-                    found_in.append(cfg)
-            except (OSError, IOError):
-                pass
-
-    if found_in:
+    if found_in and os.path.exists(full_path):
         return VerificationOutcome(
             claim=claim,
             verified=True,
-            evidence={"config_reference_check": "PASS — found in: %s" % ", ".join(found_in)},
+            evidence={"target_and_reference_check": "PASS — target exists and found in: %s" % ", ".join(found_in)},
+        )
+    problems = []
+    if not os.path.exists(full_path):
+        problems.append("target missing at %s" % full_path)
+    if not found_in:
+        problems.append("target not referenced in known configs")
+    return VerificationOutcome(
+        claim=claim,
+        verified=False,
+        evidence={"target_and_reference_check": "FAIL — " + "; ".join(problems)},
+        failure_reason="Target '%s' is not independently wired/registered/integrated: %s" % (target, "; ".join(problems)),
+    )
+
+
+def _verify_inline_verified(claim: HighStakesClaim, project_root: str) -> VerificationOutcome:
+    """Plan closure claims must carry inline verification evidence."""
+    if re.search(r"\(\s*verified\s*:", claim.raw_text, re.IGNORECASE):
+        return VerificationOutcome(
+            claim=claim,
+            verified=True,
+            evidence={"inline_verification_check": "PASS — raw claim includes (verified: ...) evidence marker"},
         )
     return VerificationOutcome(
         claim=claim,
         verified=False,
-        evidence={"config_reference_check": "FAIL — '%s' not found in any config file" % basename},
-        failure_reason="Target '%s' not found wired in any config file" % target,
+        evidence={"inline_verification_check": "FAIL — missing inline (verified: ...) proof"},
+        failure_reason="Closure claims must keep the plan open unless they include executable '(verified: ...)' evidence",
     )
 
 
@@ -348,6 +407,38 @@ def _verify_unknown(claim: HighStakesClaim, project_root: str) -> VerificationOu
         evidence={},
         failure_reason="Unknown verb '%s' — no verifier registered" % claim.verb,
     )
+
+
+def _archive_path_for(target: str, project_root: str) -> Optional[str]:
+    """Infer canonical archive path for a repo-relative target."""
+    normalized = target.lstrip("/")
+    parts = normalized.split("/")
+    if len(parts) >= 2:
+        return os.path.join(project_root, "docs", "archive", parts[0], os.path.basename(target))
+    return os.path.join(project_root, "docs", "archive", os.path.basename(target))
+
+
+def _config_refs(project_root: str, basename: str, target: str) -> List[str]:
+    """Return known config files that still reference basename or target."""
+    config_files = [
+        ".claude/settings.json",
+        ".codex/hooks.json",
+        "cognitive-os.yaml",
+        "manifests/hook-quality.yaml",
+        "manifests/harness-profiles.yaml",
+    ]
+    found_in: List[str] = []
+    for cfg in config_files:
+        cfg_path = os.path.join(project_root, cfg)
+        if os.path.isfile(cfg_path):
+            try:
+                with open(cfg_path, "r", errors="replace") as f:
+                    content = f.read()
+                if basename in content or target in content:
+                    found_in.append(cfg)
+            except (OSError, IOError):
+                pass
+    return found_in
 
 
 def _resolve_path(target: str, project_root: str) -> str:
