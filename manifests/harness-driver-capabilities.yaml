@@ -50,7 +50,8 @@ drivers:
       PreToolUse:
         status: limited
         matcher_semantics: bash_only
-        governed_fallback: scripts/cos-codex-guard.py
+        governed_fallback: scripts/cos_governed_runner.py
+        governed_wrapper: scripts/cos_codex_guard.py
         governed_matchers:
           - Agent
           - Edit
@@ -64,7 +65,8 @@ drivers:
       PostToolUse:
         status: limited
         matcher_semantics: bash_only
-        governed_fallback: scripts/cos-codex-guard.py
+        governed_fallback: scripts/cos_governed_runner.py
+        governed_wrapper: scripts/cos_codex_guard.py
         governed_matchers:
           - Agent
           - Edit
