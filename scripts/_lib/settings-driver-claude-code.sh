@@ -158,16 +158,23 @@ cc_driver_emit() {
 
   local pre_bash
   pre_bash=$(_cc_hook_group "PreToolUse" "Bash" \
-    "hooks/rate-limit-precheck.sh"     "false" \
-    "hooks/agent-bash-cwd-enforcer.sh" "false" \
-    "hooks/rate-limiter.sh"            "false" \
-    "hooks/destructive-rm-blocker.sh"  "false" \
-    "hooks/git-commit-scope-guard.sh"  "false" \
+    "hooks/rate-limit-precheck.sh"         "false" \
+    "hooks/agent-bash-cwd-enforcer.sh"     "false" \
+    "hooks/rate-limiter.sh"                "false" \
+    "hooks/destructive-rm-blocker.sh"      "false" \
+    "hooks/destructive-git-blocker.sh"     "false" \
+    "hooks/git-commit-scope-guard.sh"      "false" \
   )
 
   local pre_read
   pre_read=$(_cc_hook_group "PreToolUse" "Read" \
     "hooks/large-file-advisor.sh" "false" \
+  )
+
+  local pre_engram
+  pre_engram=$(_cc_hook_group "PreToolUse" \
+    "mcp__plugin_engram_engram__mem_save|mcp__plugin_engram_engram__mem_update|mcp__plugin_engram_engram__mem_session_summary|mcp__plugin_engram_engram__mem_session_end" \
+    "hooks/private-mode-gate.sh" "false" \
   )
 
   local pre_edit_write
@@ -198,6 +205,11 @@ cc_driver_emit() {
     "hooks/context-watchdog.sh"       "true"  \
     "hooks/rate-limit-detector.sh"    "false" \
     "hooks/tool-sequence-capture.sh"  "false" \
+  )
+
+  local post_private_mode
+  post_private_mode=$(_cc_hook_group "PostToolUse" "" \
+    "hooks/private-mode-metrics-gate.sh" "false" \
   )
 
   local post_bash
@@ -254,8 +266,10 @@ cc_driver_emit() {
     "hooks/dequeue-notify.sh"         "true"  \
     "hooks/state-heartbeat.sh"        "true"  \
     "hooks/review-spawner.sh"         "false" \
+    "hooks/auto-verify.sh"            "false" \
     "hooks/auto-refine.sh"            "false" \
     "hooks/dod-gate.sh"               "false" \
+    "hooks/skill-tracker.sh"          "false" \
   )
 
   local post_engram_mcp
@@ -274,6 +288,7 @@ cc_driver_emit() {
     "hooks/session-changelog.sh"              "false" \
     "hooks/skill-failure-monitor.sh"          "false" \
     "hooks/skill-synthesis-scanner.sh"        "false" \
+    "hooks/session-end-reap.sh"               "false" \
     "hooks/kpi-trigger.sh"                    "true"  \
     "hooks/engram-crystallize-on-session-end.sh" "true" \
   )
@@ -312,7 +327,7 @@ cc_driver_emit() {
 
   printf '    "PreToolUse": [\n'
   local pre_first=true
-  for group in "$pre_all" "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_agent"; do
+  for group in "$pre_all" "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_engram" "$pre_agent"; do
     [ -z "$group" ] && continue
     if [ "$pre_first" = true ]; then
       pre_first=false
@@ -325,7 +340,7 @@ cc_driver_emit() {
 
   printf '    "PostToolUse": [\n'
   local post_first=true
-  for group in "$post_all" "$post_bash" "$post_bash_edit_write" "$post_edit_write" "$post_todowrite" "$post_skill" "$post_agent" "$post_engram_mcp"; do
+  for group in "$post_all" "$post_private_mode" "$post_bash" "$post_bash_edit_write" "$post_edit_write" "$post_todowrite" "$post_skill" "$post_agent" "$post_engram_mcp"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
