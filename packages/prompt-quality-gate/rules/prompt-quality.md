@@ -29,13 +29,13 @@ Scores agent prompts on 5 quality dimensions (specificity, actionability, contex
 | Hook | What it scores | Behavior |
 |---|---|---|
 | `clarification-gate.sh` | Ambiguity (vague prompts) | Blocks on high ambiguity (exit 2) |
-| `prompt-quality.sh` | Quality (weak prompts) | Advisory only (always exit 0) |
+| Prompt-quality gate | Quality (weak prompts) | Advisory only (always exit 0) |
 
 A prompt can be unambiguous but low-quality (clear what to do, but missing acceptance criteria and context). A prompt can be high-quality but ambiguous (detailed context but unclear scope). Both hooks complement each other.
 
 ## Hook Details
 
-- **Hook**: `hooks/prompt-quality.sh`
+- **Primitive**: prompt-quality gate policy (archived hook contract; no live hook file)
 - **Type**: PreToolUse
 - **Matcher**: Agent
 - **Exit code**: Always 0 (advisory only)

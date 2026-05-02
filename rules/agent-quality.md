@@ -52,7 +52,7 @@ Invoke with `/exhaustive-prompt` BEFORE launching agents. It:
 
 This transforms "rebrand the project" into a 50-item file list with line numbers, verification commands, and pass/fail criteria.
 
-### Fix 4: Completeness Validator (`hooks/completeness-check.sh`)
+### Fix 4: Completeness Validator (archived completeness-check contract)
 
 PreToolUse hook that fires before launching any agent. Detects red flags:
 - "all files" without listing them
@@ -69,7 +69,7 @@ Advisory only (does not block). Suggests running `/exhaustive-prompt` first.
 Orchestrator receives task
     |
     v
-completeness-check.sh (PreToolUse) — warns if prompt is vague
+Completeness validation policy — warns if prompt is vague
     |
     v
 /exhaustive-prompt — generates exhaustive scope + criteria

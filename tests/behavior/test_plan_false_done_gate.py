@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-VERIFY = REPO_ROOT / "scripts" / "verify-plan-claims.py"
+VERIFY = REPO_ROOT / "scripts" / "verify_plan_claims.py"
 
 
 def run_verify(project: Path, plan: Path) -> subprocess.CompletedProcess[str]:
