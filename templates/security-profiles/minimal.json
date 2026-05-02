@@ -139,6 +139,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-claim-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pre-commit-content-hash-dedupe.sh\""
           }
         ]
       },
