@@ -1,7 +1,7 @@
 {
   "_profile": "minimal",
   "_description": "Minimal security profile \u2014 core safety only. For exploration and single-dev sessions where speed matters.",
-  "_hook_count": 32,
+  "_hook_count": 33,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -44,6 +44,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/validation-lock-cleanup.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-start-stash-reapply.sh\""
           }
         ]
       }

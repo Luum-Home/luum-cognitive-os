@@ -127,8 +127,9 @@ cc_driver_emit() {
     "hooks/infra-health.sh"                 "true"  \
     "hooks/aspirational-audit-weekly.sh"    "false" \
     "hooks/self-knowledge-refresh.sh"       "false" \
-    "hooks/session-start-worktree-nudge.sh" "false" \
-    "hooks/session-startup-protocol.sh"     "false" \
+    "hooks/session-start-worktree-nudge.sh"    "false" \
+    "hooks/session-start-stash-reapply.sh"    "false" \
+    "hooks/session-startup-protocol.sh"       "false" \
     "hooks/mcp-scan.sh"                     "true"  \
   )
 

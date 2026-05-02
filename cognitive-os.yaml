@@ -991,6 +991,11 @@ harness:
       event: SessionStart
       scope: os-only
 
+    session-start-stash-reapply:
+      script: hooks/session-start-stash-reapply.sh
+      event: SessionStart
+      scope: both
+
     session-startup-protocol:
       script: hooks/session-startup-protocol.sh
       event: SessionStart
