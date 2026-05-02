@@ -141,10 +141,10 @@ The approved direction is:
 
 ## Automated license gate
 
-The pinned optional-tool manifest lives at `.cognitive-os/tests/agentic-tools/license-matrix.json` and is checked by `scripts/agentic-tool-license-matrix.py`. The script is stdlib-only, requires no network access, blocks AGPL/SSPL/BSL/ELv2/Commons-Clause license families, and blocks `default_enabled=true` for external tools with `High` or `Very high` weight. It can emit Markdown and JSON reports for CI or local review.
+The pinned optional-tool manifest lives at `.cognitive-os/tests/agentic-tools/license-matrix.json` and is checked by `scripts/agentic_tool_license_matrix.py`. The script is stdlib-only, requires no network access, blocks AGPL/SSPL/BSL/ELv2/Commons-Clause license families, and blocks `default_enabled=true` for external tools with `High` or `Very high` weight. It can emit Markdown and JSON reports for CI or local review.
 
 ## Near-term actions
 
 1. Implement Lethal Trifecta Gate MVP.
-2. Add `scripts/agentic-tool-license-matrix.py` later to refresh this matrix from pinned metadata.
+2. Add `scripts/agentic_tool_license_matrix.py` later to refresh this matrix from pinned metadata.
 3. Add optional-tool status reporting to `make test-agentic-mastery` once that target exists.

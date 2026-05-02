@@ -11,7 +11,7 @@ cos install @luum/prompt-quality-gate
 ## Components
 
 - `rules/prompt-quality.md` (rule) -- Prompt quality standards and scoring criteria
-- `hooks/prompt-quality.sh` (hook) -- Validates agent prompt quality before launch
+- Prompt-quality gate primitive -- archived hook contract for validating agent prompt quality before launch
 
 ## License
 

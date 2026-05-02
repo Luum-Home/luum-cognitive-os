@@ -180,6 +180,6 @@ The skill would:
 ## Integration
 
 - **Pre-launch**: Run before ANY medium/large/critical agent launch
-- **Completeness Check**: `hooks/completeness-check.sh` suggests this skill when prompts are vague
+- **Completeness Check**: the archived completeness-check contract informs when this skill should be suggested for vague prompts
 - **Auto-Verify**: `hooks/auto-verify.sh` uses the acceptance criteria from this skill's output
 - **Acceptance Criteria**: `rules/acceptance-criteria.md` defines the format this skill produces

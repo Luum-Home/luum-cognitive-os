@@ -21,5 +21,5 @@ Cognitive OS measures whether skills help rather than assuming every skill is va
 ## Runtime surface
 
 - Library: `lib/skill_efficacy.py`
-- Report: `scripts/skill-efficacy-report.py`
+- Report: `scripts/skill_efficacy_report.py`
 - Tests: `tests/unit/test_skill_efficacy.py`
