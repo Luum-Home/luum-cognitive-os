@@ -8,7 +8,8 @@ set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
-TASKS_DIR="${CLAUDE_PROJECT_DIR:-.}/.cognitive-os/tasks"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+TASKS_DIR="$PROJECT_DIR/.cognitive-os/tasks"
 TASKS_FILE="$TASKS_DIR/active-tasks.json"
 
 # Ensure tasks directory and file exist
@@ -53,6 +54,12 @@ TASK_ID="task-$(date +%s)-$RANDOM"
 
 # Get current timestamp
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+SESSION_ID="${COGNITIVE_OS_SESSION_ID:-default-session}"
+AGENT_LEDGER_ID="$TASK_ID"
+if [ -n "$TOOL_USE_ID" ] && [ "$TOOL_USE_ID" != "null" ]; then
+  AGENT_LEDGER_ID="$TOOL_USE_ID"
+fi
 
 # Fix 1 (ADR-097): write "pending" here, not "in_progress".
 # The hook fires at PreToolUse — after dispatch-gate has allowed the launch —
@@ -103,5 +110,46 @@ if [ -n "$UPDATED" ]; then
 fi
 
 exec 200>&-
+
+# ADR-108: record automatic agent work start and acquire cooperative leases
+# for critical domains mentioned in the task prompt. These calls are best-effort
+# except lease contention, which blocks the agent launch to prevent concurrent
+# mutation of a shared logical primitive.
+if command -v python3 >/dev/null 2>&1; then
+  python3 "$PROJECT_DIR/scripts/agent_work_ledger.py" --project-dir "$PROJECT_DIR" \
+    record --agent-id "$AGENT_LEDGER_ID" --session-id "$SESSION_ID" \
+    --task "$TASK_ID" --status started --scope "$DESCRIPTION" >/dev/null 2>&1 || true
+
+  DOMAINS=$(python3 - "$PROJECT_DIR" <<'PYEOF' 2>/dev/null || true
+import sys
+sys.path.insert(0, sys.argv[1])
+try:
+    from lib.concurrency_safety import load_concurrency_safety_config
+    cfg = load_concurrency_safety_config(sys.argv[1] + "/cognitive-os.yaml")
+    print("\n".join(cfg.resource_leases.critical_domains))
+except Exception:
+    print("auth\nbilling\nmigrations\ninfrastructure")
+PYEOF
+)
+  DESCRIPTION_LOWER=$(printf '%s' "$DESCRIPTION" | tr '[:upper:]' '[:lower:]')
+  while IFS= read -r domain; do
+    [ -z "$domain" ] && continue
+    domain_lower=$(printf '%s' "$domain" | tr '[:upper:]' '[:lower:]')
+    domain_singular="${domain_lower%s}"
+    if printf '%s' "$DESCRIPTION_LOWER" | grep -Eq "(^|[^[:alnum:]_-])(${domain_lower}|${domain_singular})([^[:alnum:]_-]|$)"; then
+      set +e
+      LEASE_OUT=$(python3 "$PROJECT_DIR/scripts/resource_lease.py" --project-dir "$PROJECT_DIR" \
+        acquire "$domain" --agent-id "$AGENT_LEDGER_ID" --session-id "$SESSION_ID" \
+        --reason "Agent task $TASK_ID: $(printf '%s' "$DESCRIPTION" | head -c 120)" 2>&1)
+      LEASE_RC=$?
+      set -e
+      if [ "$LEASE_RC" -eq 2 ]; then
+        echo "ADR-108 RESOURCE LEASE BLOCK: resource '$domain' is already leased." >&2
+        echo "$LEASE_OUT" >&2
+        exit 2
+      fi
+    fi
+  done <<< "$DOMAINS"
+fi
 
 exit 0
