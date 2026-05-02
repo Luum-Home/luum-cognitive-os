@@ -11,6 +11,8 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [Preserve Branch Lifecycle](architecture/preserve-branch-lifecycle.md) — lifecycle, manifest schema, and consumer-project projection for `codex/preserve-*` governance.
+- [Preserve Branch Governance Report — 2026-05-02](reports/preserve-branch-governance-2026-05-02.md) — diagnostic report for current preserve branches and required controls.
 - [Agentic Mastery License, Weight, and DX Matrix](architecture/agentic-mastery-license-weight-dx-matrix.md) — licensing confidence, dependency weight, default-install impact, and DX value for candidate external tools.
 - [Lethal Trifecta Gate](security/lethal-trifecta-gate.md) — deterministic PreToolUse block for private data + untrusted content + external communication.
 - [Governed Self-Improvement Roadmap](architecture/plans/governed-self-improvement-roadmap.md) — executable plan for detect→draft→verify→approve→promote self-improvement with tests.
