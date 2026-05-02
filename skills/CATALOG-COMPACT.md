@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 154
+Total skills: 155
 
 ## os (15)
 
@@ -68,7 +68,7 @@ Total skills: 154
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
-## both (28)
+## both (29)
 
 | Skill | Description |
 |-------|-------------|
@@ -89,6 +89,7 @@ Total skills: 154
 | generate-config | Read detected-stack.json and generate or update cognitive-os.yaml with detected… |
 | llm-status | Inspect LLM dispatch state — provider inventory, kill-switches, cascade config, recent dispatch totals. |
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
+| redteam-harness | Execute red-team scenarios, aggregate baseline, and detect ADR-105 verb violations. |
 | repo-forensics | Deep forensic analysis of git repositories. |
 | repo-scout | Scout external git repositories for tech radar classification (bulk mode, markdown artifacts, adoption signals). |
 | reverse-engineer | Deep source code analysis of a dependency to understand its internal APIs… |
