@@ -149,6 +149,65 @@ def test_staged_scan_ignores_gitlink_submodule_contents(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stderr
 
 
+def test_staged_scan_reads_index_not_dirty_worktree(tmp_path: Path) -> None:
+    subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "config", "user.email", "test@example.invalid"],
+        cwd=tmp_path,
+        check=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Test User"],
+        cwd=tmp_path,
+        check=True,
+    )
+    doc = tmp_path / "README.md"
+    doc.write_text("Portable staged content uses $PROJECT_DIR.\n", encoding="utf-8")
+    subprocess.run(["git", "add", "README.md"], cwd=tmp_path, check=True)
+    doc.write_text(
+        f"Dirty worktree content mentions {mac_home_path('alice', 'private')}.\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+
+def test_staged_scan_blocks_index_even_if_worktree_was_fixed(tmp_path: Path) -> None:
+    subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "config", "user.email", "test@example.invalid"],
+        cwd=tmp_path,
+        check=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Test User"],
+        cwd=tmp_path,
+        check=True,
+    )
+    doc = tmp_path / "README.md"
+    leaked = mac_home_path("alice", "private")
+    doc.write_text(f"Staged leak: {leaked}\n", encoding="utf-8")
+    subprocess.run(["git", "add", "README.md"], cwd=tmp_path, check=True)
+    doc.write_text("Worktree has been fixed to $PROJECT_DIR.\n", encoding="utf-8")
+
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 1
+    assert leaked in result.stderr
+
+
 def test_path_portability_policy_is_documented_and_linked() -> None:
     content = DOC.read_text()
 

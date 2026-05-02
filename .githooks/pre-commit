@@ -7,7 +7,22 @@ errors=0
 
 # --- Gate 1: Block project-specific terms ---
 BLOCKED="n""1u|N""1u|N""1U|<consumer-codename-b>|<consumer-codename-c>|alta-tienda"
-VIOLATIONS=$(git diff --cached --name-only | grep -v ".githooks/" | grep -v "^tests/" | grep -v "^.engram/exports/" | grep -v "^docs/architecture/POST-MORTEM" | xargs grep -l -E "$BLOCKED" 2>/dev/null | grep -v ".git/" | grep -v "docs/business/" || true)
+VIOLATIONS=""
+while IFS= read -r staged_path; do
+  [ -z "$staged_path" ] && continue
+  case "$staged_path" in
+    .githooks/*|tests/*|.engram/exports/*|docs/architecture/POST-MORTEM*|docs/business/*)
+      continue
+      ;;
+  esac
+  if git show ":$staged_path" 2>/dev/null | grep -qE "$BLOCKED"; then
+    VIOLATIONS="${VIOLATIONS}${staged_path}"$'\n'
+  fi
+done < <(
+  git diff --cached --raw --diff-filter=ACM 2>/dev/null \
+    | awk '$4 != "160000" { split($0, parts, "\t"); if (parts[2] != "") print parts[2] }'
+)
+VIOLATIONS=$(printf '%s' "$VIOLATIONS" | grep -v '^$' || true)
 if [ -n "$VIOLATIONS" ]; then
   echo "BLOCKED: Project-specific terms found. Use generic names."
   echo "$VIOLATIONS"
