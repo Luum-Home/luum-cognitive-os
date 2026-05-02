@@ -70,6 +70,10 @@ EVENT_TYPES: frozenset[str] = frozenset(
         "session_started",
         "session_ended",
         "conflict_detected",
+        # P2.2 merge-queue events
+        "merge_queued",
+        "merge_completed",
+        "merge_failed",
     }
 )
 
