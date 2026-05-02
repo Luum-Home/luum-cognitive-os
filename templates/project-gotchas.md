@@ -7,7 +7,10 @@
 
 ## Architecture traps
 
-- **lib/*.py are SYMLINKS** → `packages/*/lib/*.py`. Never replace package files. Verify: `ls -la lib/<file>.py`
+- **lib/ has TWO symlink layers** — `ls -la lib/<file>` AND `ls -la lib/<dir>/` BEFORE acting:
+  - **File-level** (most): `lib/ground_truth.py`, `lib/peer_card.py`, etc. → `packages/<pkg>/lib/<file>.py`
+  - **Directory-level**: `lib/harness_adapter/` → `packages/agent-lifecycle/lib/harness_adapter/` (the WHOLE directory is a symlink). Mutations in `lib/harness_adapter/X.py` affect `packages/agent-lifecycle/lib/harness_adapter/X.py` directly. **Do NOT** `rm + ln -s` "to recreate the symlink" — relative targets resolve from the symlink's TARGET, not its literal path → broken/looped. Run `bash scripts/topology-discover.sh` for full topology. (See 2026-05-02 incident; `hooks/symlink-mutation-guard.sh` blocks the pattern.)
+  - **Other dir-symlinks**: `lib/providers/` → `packages/llm-providers/lib/`
 - **settings.json is GENERATED** by `scripts/apply-efficiency-profile.sh`. Never edit directly. Update the script, then run it.
 - **.cognitive-os/ = OS kernel** (universal). **.claude/ = driver** (Claude Code-specific). Don't mix.
 - **48/93 hooks are intentionally not wired** — controlled by efficiency profile (lean=7, standard=18, full=all). This is by design, not a bug.
