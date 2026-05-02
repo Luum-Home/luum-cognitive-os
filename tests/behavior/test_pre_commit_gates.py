@@ -14,10 +14,8 @@ NOTE: Tests run the hook with specific environment vars to simulate staged files
 without actually modifying the git index.
 """
 
-import json
 import os
 import subprocess
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -160,6 +158,42 @@ class TestGate1ProhibitedTerms:
             or "blocked" in combined.lower()
             or "gate" in combined.lower()
         )
+
+    def test_gate1_ignores_gitlink_submodule_worktree_content(self, tmp_path):
+        repo = _make_git_repo(tmp_path)
+        hook_dest = repo / ".githooks"
+        hook_dest.mkdir()
+        import shutil
+        shutil.copy(HOOK, hook_dest / "pre-commit")
+
+        plugin = repo / "vendor" / "plugin"
+        plugin.mkdir(parents=True)
+        (plugin / "README.md").write_text(
+            "Upstream docs mention <consumer-codename-b>, but this is submodule content.\n"
+        )
+        subprocess.run(
+            [
+                "git",
+                "update-index",
+                "--add",
+                "--cacheinfo",
+                "160000,0123456789012345678901234567890123456789,vendor/plugin",
+            ],
+            cwd=str(repo),
+            check=True,
+            capture_output=True,
+        )
+
+        result = subprocess.run(
+            ["bash", str(hook_dest / "pre-commit")],
+            capture_output=True,
+            text=True,
+            cwd=str(repo),
+            env={**os.environ, "GIT_DIR": str(repo / ".git"), "PROJECT_ROOT": str(repo)},
+            timeout=20,
+        )
+
+        assert result.returncode == 0, result.stdout + result.stderr
 
 
 # ─── Gate 2: Python syntax ────────────────────────────────────────────────────
