@@ -181,7 +181,7 @@ That is the standard required for true cross-harness self-hosting.
 ## Codex Governed Tool-Layer Progress
 
 Codex now has a first governed fallback for hook surfaces that the native Codex
-projection cannot emit. `scripts/cos-codex-guard.py` reads the canonical
+projection cannot emit. `scripts/cos_governed_runner.py --harness codex` reads the canonical
 `harness.hooks` registry and runs synthetic Agent and Edit/Write hook chains for
 Codex-hosted work.
 

@@ -2,8 +2,9 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted
-**Date**: 2026-05-02
+## Status
+
+Accepted — 2026-05-02.
 
 ## Context
 
@@ -23,10 +24,16 @@ silently not running in Codex-hosted work.
 ## Decision
 
 Introduce a **governed tool layer** for harnesses that lack native tool matcher
-coverage. For Codex the first implementation is:
+coverage. The generic implementation is:
 
 ```text
-scripts/cos-codex-guard.py
+scripts/cos_governed_runner.py
+```
+
+Codex keeps a compatibility wrapper at:
+
+```text
+scripts/cos_codex_guard.py
 ```
 
 The runner reads the canonical `cognitive-os.yaml > harness.hooks` registry,
@@ -35,7 +42,7 @@ and executes that chain with canonical environment variables:
 
 ```text
 COGNITIVE_OS_PROJECT_DIR -> CODEX_PROJECT_DIR -> CLAUDE_PROJECT_DIR -> cwd
-COGNITIVE_OS_HARNESS=codex
+COGNITIVE_OS_HARNESS=<harness>
 ```
 
 Supported governed actions:
@@ -85,11 +92,11 @@ portability.
 
 ## Acceptance Criteria
 
-- `python3 scripts/cos-codex-guard.py pre-agent --list` lists all canonical
+- `python3 scripts/cos_governed_runner.py --harness codex pre-agent --list` lists all canonical
   `PreToolUse:Agent` hooks plus matcherless all-tool hooks.
-- `python3 scripts/cos-codex-guard.py post-agent --list` lists all canonical
+- `python3 scripts/cos_governed_runner.py --harness codex post-agent --list` lists all canonical
   `PostToolUse:Agent` hooks plus matcherless all-tool hooks.
-- `python3 scripts/cos-codex-guard.py pre-edit --list` and `post-write --list`
+- `python3 scripts/cos_governed_runner.py --harness codex pre-edit --list` and `post-write --list`
   cover file mutation gates omitted from Codex native projection.
 - Unit tests prove chain selection and synthetic execution with canonical env.
 
@@ -98,3 +105,20 @@ portability.
 - [ADR-064 — Harness-Agnostic Cognitive OS](ADR-064-harness-agnostic-cognitive-os.md)
 - [ADR-081 — Codex Harness Adapter](ADR-081-codex-harness-adapter.md)
 - [Codex Governed Tool Layer](../architecture/codex-governed-tool-layer.md)
+
+
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Treat Codex matcher gaps as acceptable | Creates false portability by claiming governance exists while tool-specific chains are skipped. |
+| Fork separate Codex-only governance logic | Duplicates the canonical hook registry and would drift from Claude Code behavior. |
+| Require every harness to implement native hook matchers first | Blocks adoption for otherwise usable harnesses and ignores the runner/control-plane fallback path. |
+
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit/test_codex_guard_layer.py -q
+python3 -m pytest tests/contracts/test_session_start_tooling_contract.py -q
+```
