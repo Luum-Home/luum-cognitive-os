@@ -13,6 +13,7 @@ import json
 import os
 import re
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -87,10 +88,37 @@ try:
     if tasks_path.exists():
         with open(tasks_path) as f:
             tasks_data = json.load(f)
+
+        def _age_seconds(task):
+            ts = task.get("started_at") or task.get("launchedAt") or task.get("requested_at")
+            if not ts:
+                return None
+            try:
+                dt = datetime.fromisoformat(str(ts).rstrip("Z")).replace(tzinfo=timezone.utc)
+                return (datetime.now(timezone.utc) - dt).total_seconds()
+            except Exception:
+                return None
+
+        def _pid_alive(pid):
+            try:
+                os.kill(int(pid), 0)
+                return True
+            except Exception:
+                return False
+
+        def _is_dispatch_active(task):
+            if task.get("status") != "in_progress":
+                return False
+            pid = task.get("pid")
+            if pid is not None:
+                return _pid_alive(pid)
+            age = _age_seconds(task)
+            return age is None or age <= (30 * 60)
+
         result["active"] = sum(
             1
             for t in tasks_data.get("tasks", [])
-            if t.get("status") == "in_progress"
+            if _is_dispatch_active(t)
         )
 except Exception as e:
     result["error"] += f"tasks:{e};"
