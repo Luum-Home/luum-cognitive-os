@@ -4,12 +4,12 @@ name: session-backlog
 description: Inventory all pending work across plans, engram, tasks, todos, audits, and git. Classify by priority and produce a structured backlog document for future sessions.
 user-invocable: true
 version: 1.0.0
-last-updated: 2026-04-10
+last-updated: 2026-05-02
 audience: both
 tags: [session, planning, backlog, inventory]
 summary_line: "Inventory all pending work across plans, engram, tasks, todos, audits, and git."
 
-platforms: ["claude-code"]
+platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: []
 ---
 
@@ -19,13 +19,34 @@ Scan all sources of pending work, classify by priority, and produce a structured
 
 ## Instructions
 
+### Preferred Portable Command
+
+For Codex, Claude Code, or any generic shell session, prefer the reconciler:
+
+```bash
+python3 scripts/cos_session_backlog.py --write --sync-engram
+```
+
+It scans active tasks, plan checkboxes, user request queues, changelogs,
+handoffs, git status/stashes/branches, and optional Engram observations. It
+writes `.cognitive-os/sessions/{SESSION_ID}/backlog.md`, appends
+`.cognitive-os/metrics/backlog-reconciliation.jsonl`, and best-effort upserts
+Engram topics `session/backlog/latest` and `session/backlog/{TODAY}` when the
+Engram CLI/MCP-compatible local wrapper is available.
+
+Use the manual steps below when the script is unavailable or when you need to
+inspect each source interactively.
+
 ### Step 1: Determine Project Root and Date
 
 ```bash
-PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 TODAY=$(date -u +"%Y-%m-%d")
-SESSION_ID="${COGNITIVE_OS_SESSION_ID:-unknown}"
+SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-default}}}"
 ```
+
+Canonical project/session precedence is mandatory so Codex, Claude Code, and
+future harness drivers all read and write the same backlog ledgers.
 
 ### Step 2: Scan Source A — Plan Files
 
@@ -105,9 +126,11 @@ Collect:
 
 ### Step 7b: Scan Source G — User Request Queue
 
-Read the user request queue for this session:
+Read the user request queue for this session and, when reconciling cross-session
+work, scan all session request queues:
 ```bash
 cat "$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID/user-requests.jsonl" 2>/dev/null
+find "$PROJECT_DIR/.cognitive-os/sessions" -name user-requests.jsonl -print 2>/dev/null
 ```
 
 Or use the lib module:
@@ -156,9 +179,11 @@ Based on the prioritized backlog:
 2. **Quick wins**: up to 3 items estimated at `< 30min`
 3. **Can parallelize**: items with no dependencies on each other (suitable for multi-agent dispatch)
 
-### Step 11: Write Backlog Document
+### Step 11: Write Backlog Document and Reconciliation Metric
 
-Write the backlog to `.cognitive-os/sessions/{SESSION_ID}/backlog.md` (create directories as needed).
+Write the backlog to `.cognitive-os/sessions/{SESSION_ID}/backlog.md` and append
+a machine-readable reconciliation event to
+`.cognitive-os/metrics/backlog-reconciliation.jsonl` (create directories as needed).
 
 Use this exact format:
 
@@ -262,7 +287,7 @@ Saved to engram: session/backlog/{TODAY}
 ## Edge Cases
 
 - **No pending work found**: Report "Backlog is empty — all tracked work appears complete." and write an empty backlog document.
-- **Engram unavailable**: Skip Steps 3, 5, 6, and 12. Note "Engram unavailable — engram sources skipped." in the document header.
+- **Engram unavailable**: Skip Steps 3, 5, 6, and 12. Note "Engram unavailable — engram sources skipped." in the document header and still write `.cognitive-os/sessions/{SESSION_ID}/backlog.md` plus `.cognitive-os/metrics/backlog-reconciliation.jsonl`.
 - **`.cognitive-os/plans/` absent**: Skip Step 2, note in document.
 - **Active tasks file absent**: Skip Step 4, note in document.
 - **Git not available**: Skip Step 7, note in document.
@@ -270,4 +295,5 @@ Saved to engram: session/backlog/{TODAY}
 
 ## See also
 
+- `scripts/cos_session_backlog.py` — portable backlog reconciler for Codex, Claude Code, and generic shell sessions.
 - `/decision-triage` — companion skill that counts pending decisions (this skill counts pending tasks)
