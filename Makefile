@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help test test-local-fast test-laptop test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
+.PHONY: help test test-local-fast test-laptop test-laptop-direct test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -62,7 +62,11 @@ test-local-fast: cos-test
 	@./cos-test focused
 
 test-laptop: cos-test
-	@echo "[test-laptop] Laptop-friendly broad validation: max 2 workers, no Docker/cost/integration/e2e/chaos." >&2
+	@echo "[test-laptop] Laptop-friendly broad validation in an isolated validation capsule." >&2
+	@scripts/cos-validation-capsule.sh -- $(MAKE) test-laptop-direct
+
+test-laptop-direct: cos-test
+	@echo "[test-laptop-direct] Laptop-friendly broad validation: max 2 workers, no Docker/cost/integration/e2e/chaos." >&2
 	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane unit
 	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane audit
 	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane contract
