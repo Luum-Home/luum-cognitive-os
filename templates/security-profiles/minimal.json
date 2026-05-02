@@ -1,7 +1,7 @@
 {
   "_profile": "minimal",
   "_description": "Minimal security profile — core safety only. For exploration and single-dev sessions where speed matters.",
-  "_hook_count": 29,
+  "_hook_count": 30,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -90,6 +90,15 @@
       }
     ],
     "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/lethal-trifecta-gate.sh\""
+          }
+        ]
+      },
       {
         "matcher": "Bash|Agent|Edit|Write",
         "hooks": [
