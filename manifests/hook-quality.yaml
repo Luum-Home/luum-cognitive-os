@@ -136,6 +136,26 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/auto-checkpoint.sh
+  auto-refine:
+    behavior_tests:
+    - tests/behavior/test_core_skills_check.py
+    - tests/behavior/test_cos_init_parity_2_3.py
+    - tests/behavior/test_self_improvement.py
+    - tests/chaos/test_auto_refine_exercised.py
+    - tests/unit/test_chaos_template.py
+    - tests/unit/test_cos_init_py.py
+    - tests/unit/test_coverage_classifier.py
+    - tests/unit/test_hook_behavioral.py
+    criticality: standard
+    event: PostToolUse
+    harness_tiers:
+      claude: native
+      codex: governed
+    matcher: Agent
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/auto-refine.sh
   auto-repair-dispatcher:
     behavior_tests:
     - tests/unit/test_codex_guard_layer.py
@@ -168,6 +188,26 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/auto-rollback-trigger.sh
+  auto-verify:
+    behavior_tests:
+    - tests/behavior/test_hooks_batch1.py
+    - tests/chaos/test_auto_verify_exercised.py
+    - tests/chaos/test_killswitch_exercise.py
+    - tests/contracts/test_harness_engineering_docs.py
+    - tests/unit/test_chaos_template.py
+    - tests/unit/test_governance_artifact_consumption.py
+    - tests/unit/test_reinvention_embeddings.py
+    - tests/unit/test_reinvention_semantic.py
+    criticality: standard
+    event: PostToolUse
+    harness_tiers:
+      claude: native
+      codex: governed
+    matcher: Agent
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: both
+    script: hooks/auto-verify.sh
   blast-radius:
     behavior_tests:
     - tests/behavior/test_cos_init_parity_2_3.py
@@ -199,8 +239,10 @@ hooks:
     behavior_tests:
     - tests/behavior/test_claim_validator.py
     - tests/contracts/test_p95_hook_latency.py
+    - tests/contracts/test_red_team_harness_primitives.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_codex_guard_layer.py
+    - tests/unit/test_concurrent_agent_safety_status.py
     criticality: quality
     event: PostToolUse
     harness_tiers:
@@ -371,6 +413,24 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/dequeue-notify.sh
+  destructive-git-blocker:
+    behavior_tests:
+    - tests/behavior/test_destructive_git_blocker.py
+    - tests/chaos/test_destructive_rm_blocker.py
+    - tests/chaos/test_reset_cascade_detector.py
+    - tests/chaos/test_safety_drill.py
+    - tests/contracts/test_killswitch.py
+    - tests/unit/test_destructive_git_block.py
+    criticality: security
+    event: PreToolUse
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: Bash
+    max_runtime_ms: 750
+    safe_degradation: fail_closed_when_confident_otherwise_warn
+    scope: both
+    script: hooks/destructive-git-blocker.sh
   destructive-rm-blocker:
     behavior_tests:
     - tests/chaos/test_destructive_rm_blocker.py
@@ -437,6 +497,22 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/docker-drift-detector.sh
+  dod-gate:
+    behavior_tests:
+    - tests/behavior/test_hooks_batch1.py
+    - tests/unit/test_cos_init_py.py
+    - tests/unit/test_dod_gate_behavior.py
+    - tests/unit/test_governance_artifact_consumption.py
+    criticality: standard
+    event: PostToolUse
+    harness_tiers:
+      claude: native
+      codex: governed
+    matcher: Agent
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/dod-gate.sh
   edit-lock-drain-parked:
     behavior_tests:
     - tests/unit/test_codex_guard_layer.py
@@ -537,6 +613,49 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/engram-reinforce-on-access.sh
+  error-learning:
+    behavior_tests:
+    - tests/behavior/test_claude_md_diet.py
+    - tests/behavior/test_cos_index_and_global_init.py
+    - tests/behavior/test_cos_init_parity_2_3.py
+    - tests/behavior/test_governed_self_improvement_cli.py
+    - tests/behavior/test_hook_triggers.py
+    - tests/behavior/test_self_improvement.py
+    - tests/behavior/test_singularity.py
+    - tests/chaos/test_error_learning_exercised.py
+    - tests/chaos/test_error_pipeline_exercised.py
+    - tests/chaos/test_killswitch_exercise.py
+    - tests/unit/test_capability_level5.py
+    - tests/unit/test_chaos_template.py
+    - tests/unit/test_context_diet.py
+    - tests/unit/test_cos_init_py.py
+    - tests/unit/test_coverage_classifier.py
+    - tests/unit/test_error_classifier.py
+    - tests/unit/test_error_learning_behavior.py
+    - tests/unit/test_error_pattern_detector.py
+    - tests/unit/test_governed_self_improvement.py
+    - tests/unit/test_homeostasis.py
+    - tests/unit/test_hook_behavioral.py
+    - tests/unit/test_kpi_collector.py
+    - tests/unit/test_malformed_hook_input.py
+    - tests/unit/test_memory_first.py
+    - tests/unit/test_metric_event_migration.py
+    - tests/unit/test_performance_monitor.py
+    - tests/unit/test_prompt_integration.py
+    - tests/unit/test_self_improvement_lib.py
+    - tests/unit/test_singularity_suggestion.py
+    - tests/unit/test_symbiosis_monitor.py
+    - tests/unit/test_system_graph.py
+    criticality: standard
+    event: PostToolUse
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: Bash
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/error-learning.sh
   error-pattern-detector:
     behavior_tests:
     - tests/behavior/test_hooks_batch1.py
@@ -674,6 +793,19 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/kpi-trigger.sh
+  large-file-advisor:
+    behavior_tests:
+    - tests/behavior/test_large_file_advisor.py
+    criticality: standard
+    event: PreToolUse
+    harness_tiers:
+      claude: native
+      codex: unsupported
+    matcher: Read
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/large-file-advisor.sh
   lethal-trifecta-gate:
     behavior_tests:
     - tests/contracts/test_lethal_trifecta_gate.py
@@ -743,6 +875,7 @@ hooks:
   orchestrator-claim-gate:
     behavior_tests:
     - tests/contracts/test_orchestrator_claim_gate.py
+    - tests/unit/test_concurrent_agent_safety_status.py
     criticality: quality
     event: PreToolUse
     harness_tiers:
@@ -756,6 +889,7 @@ hooks:
   plan-claim-validator:
     behavior_tests:
     - tests/contracts/test_red_team_harness_primitives.py
+    - tests/unit/test_concurrent_agent_safety_status.py
     criticality: quality
     event: PreToolUse
     harness_tiers:
@@ -814,6 +948,32 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/predev-completeness-check.sh
+  private-mode-gate:
+    behavior_tests:
+    - tests/behavior/test_private_mode.py
+    criticality: security
+    event: PreToolUse
+    harness_tiers:
+      claude: native
+      codex: unsupported
+    matcher: mcp__plugin_engram_engram__mem_save|mcp__plugin_engram_engram__mem_update|mcp__plugin_engram_engram__mem_session_summary|mcp__plugin_engram_engram__mem_session_end
+    max_runtime_ms: 750
+    safe_degradation: fail_closed_when_confident_otherwise_warn
+    scope: os-only
+    script: hooks/private-mode-gate.sh
+  private-mode-metrics-gate:
+    behavior_tests:
+    - tests/behavior/test_private_mode.py
+    criticality: security
+    event: PostToolUse
+    harness_tiers:
+      claude: native
+      codex: governed
+    matcher: ''
+    max_runtime_ms: 750
+    safe_degradation: fail_closed_when_confident_otherwise_warn
+    scope: os-only
+    script: hooks/private-mode-metrics-gate.sh
   profile-drift-autoapply:
     behavior_tests:
     - tests/unit/test_registered_hook_behaviors.py
@@ -1084,6 +1244,20 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/session-cleanup.sh
+  session-end-reap:
+    behavior_tests:
+    - tests/chaos/test_session_end_reap_exercised.py
+    - tests/unit/test_coverage_classifier.py
+    criticality: lifecycle
+    event: Stop
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: ''
+    max_runtime_ms: 2000
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/session-end-reap.sh
   session-heartbeat-on-prompt:
     behavior_tests:
     - tests/chaos/test_session_heartbeat_exercised.py
@@ -1318,6 +1492,19 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/skill-synthesis-scanner.sh
+  skill-tracker:
+    behavior_tests:
+    - tests/behavior/test_hooks_batch1.py
+    criticality: standard
+    event: PostToolUse
+    harness_tiers:
+      claude: native
+      codex: governed
+    matcher: Agent
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/skill-tracker.sh
   skill-usage-tracker:
     behavior_tests:
     - tests/behavior/test_efficiency_profiles.py
@@ -1460,6 +1647,19 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/user-prompt-capture.sh
+  validation-lock-cleanup:
+    behavior_tests:
+    - tests/unit/test_validation_capsule.py
+    criticality: coordination
+    event: SessionStart
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: ''
+    max_runtime_ms: 1000
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/validation-lock-cleanup.sh
   work-queue-sync-agent:
     behavior_tests:
     - tests/unit/test_codex_guard_layer.py
