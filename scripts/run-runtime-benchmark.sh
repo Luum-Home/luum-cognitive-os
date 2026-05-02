@@ -4,36 +4,57 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 RESULTS="$ROOT/.cognitive-os/metrics/runtime-benchmark-results.jsonl"
+TASKS="$ROOT/.cognitive-os/tests/runtime-comparison/tasks.yaml"
 DRY_RUN=1
 if [ "${1:-}" = "--execute" ]; then
   DRY_RUN=0
 fi
 mkdir -p "$(dirname "$RESULTS")"
-python3 - "$RESULTS" "$DRY_RUN" <<'PY'
+PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 - "$ROOT" "$RESULTS" "$TASKS" "$DRY_RUN" <<'PY'
 import sys
-from lib.runtime_benchmark import RuntimeBenchmarkResult, append_result
+from pathlib import Path
 
-results_path = sys.argv[1]
-dry_run = sys.argv[2] == "1"
+from lib.adversarial_rubric import load_scenarios
+from lib.runtime_benchmark import RuntimeBenchmarkResult, append_result, run_local_smoke
+
+root = Path(sys.argv[1])
+results_path = sys.argv[2]
+tasks_path = Path(sys.argv[3])
+dry_run = sys.argv[4] == "1"
+
+def load_tasks(path: Path) -> list[dict]:
+    import yaml
+    return list((yaml.safe_load(path.read_text(encoding="utf-8")) or {}).get("tasks", []))
+
 systems = [("vanilla-codex", "baseline"), ("cos", "lean"), ("cos", "standard")]
-tasks = ["lethal-trifecta-smoke", "aci-empty-output-smoke", "skill-efficacy-smoke"]
+tasks = load_tasks(tasks_path)
 for system, profile in systems:
     for task in tasks:
+        task_id = str(task["id"])
+        if dry_run:
+            passed = False
+            duration = 0.0
+            security_events = 0
+            result = "inconclusive"
+            notes = "dry-run only; no model calls and no local checks executed"
+        else:
+            passed, duration, notes, security_events = run_local_smoke(task_id, root)
+            result = "pass" if passed else "fail"
         append_result(
             results_path,
             RuntimeBenchmarkResult(
-                benchmark_id="agentic-mastery-smoke",
+                benchmark_id="agentic-mastery-local",
                 system=system,
                 profile=profile,
-                task_id=task,
-                result="inconclusive" if dry_run else "pass",
-                duration_seconds=0.0,
-                tests_passed=not dry_run,
+                task_id=task_id,
+                result=result,
+                duration_seconds=duration,
+                tests_passed=passed,
                 cost_usd=0.0,
-                tool_calls=0,
+                tool_calls=1 if not dry_run else 0,
                 files_touched=0,
-                security_events=1 if system == "cos" and task == "lethal-trifecta-smoke" else 0,
-                notes="dry-run synthetic row; no model call" if dry_run else "executed smoke row",
+                security_events=security_events,
+                notes=notes,
             ),
         )
 PY
