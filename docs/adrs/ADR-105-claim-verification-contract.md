@@ -2,14 +2,14 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — Partially Implemented
 **Date**: 2026-05-02
 **Author**: Maintainer
 **Related**: ADR-088 (provenance markers), ADR-098 (multi-agent file coordination), ADR-104 (startup circuit breaker), `docs/incidents/2026-05-02-false-done-compounding.md`
 
 ## Status
 
-Proposed. Policy definition only. Hook enforcement and `verify-archived.sh` helper are implementation tasks tracked in the incident action items.
+Accepted — Partially Implemented. The contract is now backed by `hooks/claim-validator.sh`, `hooks/plan-claim-validator.sh`, `hooks/orchestrator-claim-gate.sh`, `scripts/verify_plan_claims.py`, `scripts/verify-archived.sh`, `scripts/orchestrator_claim_gate.py`, and `lib/orchestrator_verify.py`. Remaining work is to add domain-specific verifiers when new claim verbs need richer predicates.
 
 ## Context
 
@@ -33,7 +33,7 @@ Every one of these has an optimistic partial form (the "present" half) and a nec
 
 A **high-stakes claim** is any assertion in a commit message, agent report, or plan file that uses one of these verbs with respect to a filesystem artifact or system configuration:
 
-`archived`, `deleted`, `removed`, `wired`, `integrated`, `registered`, `done` (as plan closure), `closed`, `migrated`
+`archived`, `deleted`, `removed`, `wired`, `integrated`, `registered`, `done` (as plan closure), `closed`, `migrated`, `tested`, `verified`, `claimed`
 
 High-stakes claims require bilateral verification before they are accepted as true.
 
@@ -83,7 +83,7 @@ A domain-specific helper `scripts/verify-archived.sh <file>` SHALL be implemente
 # 3. grep -r <file> .claude/settings.json cognitive-os.yaml → empty
 ```
 
-Similar helpers for other claim types (verify-wired, verify-registered) SHOULD be created when patterns recur. The existence of these helpers makes bilateral verification a one-liner, removing the incentive to skip it.
+Similar helpers for other claim types (verify-wired, verify-registered) SHOULD be created when patterns recur. The shared orchestrator surface is `scripts/orchestrator_claim_gate.py`, which composes `lib/orchestrator_verify.py` and plan verifiers without trusting sub-agent supplied commands. The existence of these helpers makes bilateral verification a one-liner, removing the incentive to skip it.
 
 ### 6. Commit Message Policy
 
@@ -96,6 +96,7 @@ This contract applies to:
 - All sub-agent reports delivered to an orchestrator
 - All plan file checkbox transitions from `[ ]` to `[x]`
 - All commit messages on the `main` branch touching plan files, hooks, or configuration
+- All `git commit` / `git push` attempts observed through portable Bash hook surfaces
 
 It does NOT apply to:
 
@@ -134,17 +135,20 @@ It does NOT apply to:
 
 Policy is verified by:
 
-1. `scripts/verify-archived.sh` exits 0 only when all three bilateral conditions hold (unit testable with mock filesystem).
-2. Pre-commit hook detects bare `[x]` transitions without `(verified:)` in modified plan files (implementation tracked in action item 2 of the incident).
-3. Manual spot-check: next session producing a plan closure runs bilateral proof and attaches output inline.
+1. `scripts/verify-archived.sh` exits 0 only when all three bilateral conditions hold.
+2. `hooks/plan-claim-validator.sh` detects bare `[x]` transitions without `(verified:)` in plan files.
+3. `hooks/orchestrator-claim-gate.sh` blocks portable Bash `git commit` / `git push` attempts when high-stakes claims lack independent evidence.
+4. `lib/orchestrator_verify.py` and `scripts/orchestrator_claim_gate.py` map claim verbs to deterministic repo verifiers.
 
 ```bash
 # ADR contract smoke check: the ADR must keep the required sections and at
 # least one executable verification block.
-python3 -m pytest tests/audit/test_adr_contracts.py -q
+python3 -m pytest tests/audit/test_adr_contracts.py tests/contracts/test_orchestrator_verify.py tests/contracts/test_orchestrator_claim_gate.py -q
 ```
 
 ## References
+
+- Matrix: `docs/architecture/claim-verification-matrix.md`
 
 - Incident: `docs/incidents/2026-05-02-false-done-compounding.md`
 - ADR-106: multi-session safety primitives (companion ADR)
