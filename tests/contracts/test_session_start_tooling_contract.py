@@ -77,6 +77,73 @@ def test_generated_codex_default_projection_runs_host_tool_doctor() -> None:
     assert any("host-tool-doctor.sh" in command for command in commands), commands
 
 
+def test_codex_projection_preserves_hook_exit_codes() -> None:
+    """Codex hooks must not turn blocking hook exits into success.
+
+    Missing hook scripts should remain harmless during first install, but once a
+    hook exists its exit code is the hook decision.  Appending ``|| true`` would
+    silently disable Codex Bash safety gates such as destructive command blocks.
+    """
+
+    settings = json.loads((PROJECT_ROOT / ".codex" / "hooks.json").read_text())
+    commands = _commands(settings)
+
+    assert commands, "Codex projection should contain hook commands"
+    assert not [command for command in commands if "|| true" in command]
+    assert all("if [ -x " in command for command in commands)
+
+
+def test_generated_codex_projection_preserves_hook_exit_codes() -> None:
+    result = subprocess.run(
+        [
+            "bash",
+            str(PROJECT_ROOT / "scripts" / "generate-project-settings.sh"),
+            "--default",
+            "--harness=codex",
+        ],
+        cwd=str(PROJECT_ROOT),
+        text=True,
+        capture_output=True,
+        timeout=20,
+    )
+
+    assert result.returncode == 0, result.stderr
+    settings = json.loads(result.stdout)
+    commands = _commands(settings)
+    assert commands
+    assert not [command for command in commands if "|| true" in command]
+
+
+def test_generated_codex_projection_uses_supported_native_surface() -> None:
+    result = subprocess.run(
+        [
+            "bash",
+            str(PROJECT_ROOT / "scripts" / "generate-project-settings.sh"),
+            "--default",
+            "--harness=codex",
+        ],
+        cwd=str(PROJECT_ROOT),
+        text=True,
+        capture_output=True,
+        timeout=20,
+    )
+
+    assert result.returncode == 0, result.stderr
+    settings = json.loads(result.stdout)
+    assert set(settings) == {
+        "SessionStart",
+        "UserPromptSubmit",
+        "PreToolUse",
+        "PostToolUse",
+        "Stop",
+    }
+    assert {group["matcher"] for group in settings["SessionStart"]} <= {"startup"}
+    assert {group["matcher"] for group in settings["UserPromptSubmit"]} <= {"prompt"}
+    assert {group["matcher"] for group in settings["Stop"]} <= {"shutdown"}
+    assert {group["matcher"] for group in settings["PreToolUse"]} <= {"bash"}
+    assert {group["matcher"] for group in settings["PostToolUse"]} <= {"bash"}
+
+
 def test_session_start_does_not_run_pytest_inventory_or_full_suite() -> None:
     codex = json.loads((PROJECT_ROOT / ".codex" / "hooks.json").read_text())
     claude = json.loads((PROJECT_ROOT / ".claude" / "settings.json").read_text())
