@@ -164,6 +164,7 @@ cc_driver_emit() {
     "hooks/rate-limiter.sh"                "false" \
     "hooks/destructive-rm-blocker.sh"      "false" \
     "hooks/destructive-git-blocker.sh"     "false" \
+    "hooks/symlink-mutation-guard.sh"      "false" \
     "hooks/git-commit-scope-guard.sh"           "false" \
     "hooks/orchestrator-claim-gate.sh"          "false" \
     "hooks/scope-marker-portability-gate.sh"    "false" \
