@@ -108,7 +108,7 @@
   path: memory, doctor, minimal hooks, safety, changelog/session learning, and
   checks only where they provide clear value.
 - [x] Harness transparency status is documented honestly: memory protection and fallback persistence work today across Claude Code and Codex, while ADR-064 Surfaces 2–4 remain the path to full cross-harness transparency.
-- [x] Codex has a governed fallback layer for non-native Agent and Edit/Write hook chains through `scripts/cos-codex-guard.py`, so portability gaps are explicit rather than silently accepted.
+- [x] Codex has a governed fallback layer for non-native Agent and Edit/Write hook chains through `scripts/cos_governed_runner.py` plus the Codex wrapper `scripts/cos_codex_guard.py`, so portability gaps are explicit rather than silently accepted.
 - [x] Harness engineering is now documented and protected through [Harness Engineering](../architecture/harness-engineering.md), `manifests/harness-profiles.yaml`, `cos init-check`, `cos doctor harness`, `cos measure harness-profiles`, and `cos sprint run --dispatch`.
 - [x] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
