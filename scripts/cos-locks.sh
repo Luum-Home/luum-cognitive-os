@@ -8,8 +8,7 @@
 #   bash scripts/cos-locks.sh heartbeat <resource> <session-id>
 #   bash scripts/cos-locks.sh find      <resource>
 #
-# All heavy lifting is delegated to packages/agent-coordination/lib/engram_locks.py
-# (symlinked as lib/engram_locks.py).
+# All heavy lifting is delegated to lib/engram_locks.py.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -92,8 +91,8 @@ cmd_acquire() {
 
   run_python "
 import sys, json
-sys.path.insert(0, '${REPO_ROOT}/lib')
-import engram_locks
+sys.path.insert(0, '${REPO_ROOT}')
+import lib.engram_locks as engram_locks
 
 result = engram_locks.acquire_lock('${resource}', '${session_id}', ttl_seconds=${ttl})
 if result is None:
@@ -118,8 +117,8 @@ cmd_release() {
 
   run_python "
 import sys
-sys.path.insert(0, '${REPO_ROOT}/lib')
-import engram_locks
+sys.path.insert(0, '${REPO_ROOT}')
+import lib.engram_locks as engram_locks
 
 ok = engram_locks.release_lock('${resource}', '${session_id}')
 if ok:
@@ -140,8 +139,8 @@ cmd_heartbeat() {
 
   run_python "
 import sys
-sys.path.insert(0, '${REPO_ROOT}/lib')
-import engram_locks
+sys.path.insert(0, '${REPO_ROOT}')
+import lib.engram_locks as engram_locks
 
 ok = engram_locks.heartbeat_lock('${resource}', '${session_id}')
 if ok:
@@ -161,8 +160,8 @@ cmd_find() {
 
   run_python "
 import sys, json
-sys.path.insert(0, '${REPO_ROOT}/lib')
-import engram_locks
+sys.path.insert(0, '${REPO_ROOT}')
+import lib.engram_locks as engram_locks
 
 lock = engram_locks.find_lock('${resource}')
 if lock is None:
