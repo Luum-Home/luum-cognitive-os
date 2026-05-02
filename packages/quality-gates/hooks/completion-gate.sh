@@ -12,6 +12,7 @@
 set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/task-identity.sh"
 
 _HOOK_NAME="completion-gate"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
@@ -70,10 +71,12 @@ _record_adr108_agent_completion() {
     _prompt=$(printf '%s' "$INPUT" | jq -r '.tool_input.prompt // .tool_input.description // "unknown task"' 2>/dev/null | head -c 500 || true)
     _session="${COGNITIVE_OS_SESSION_ID:-default-session}"
     _agent_id="${_tool_use_id:-agent-unknown}"
-    _task="${_tool_use_id:-$_prompt}"
+    _task=$(cos_resolve_task_id "$INPUT" "$_prompt" "$_tool_use_id")
     python3 "$_PROJECT_DIR/scripts/agent_work_ledger.py" --project-dir "$_PROJECT_DIR" \
       record --agent-id "$_agent_id" --session-id "$_session" \
       --task "$_task" --status completed --scope "$_prompt" >/dev/null 2>&1 || true
+    python3 "$_PROJECT_DIR/scripts/claim_task.py" --project-dir "$_PROJECT_DIR" \
+      release "$_task" --agent-id "$_agent_id" --session-id "$_session" >/dev/null 2>&1 || true
 
     _domains=$(python3 - "$_PROJECT_DIR" <<'PYEOF' 2>/dev/null || true
 import sys
