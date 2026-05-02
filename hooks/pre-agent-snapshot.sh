@@ -102,6 +102,8 @@ mkdir -p "$SESSIONS_DIR" 2>/dev/null || true
 mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 
 SNAPSHOT_FILE="$SESSIONS_DIR/agent-${AGENT_ID}-snapshot.json"
+RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
+MARKER_FILE="$RUNTIME_DIR/pre-agent-snapshot-${AGENT_ID}.json"
 
 # ─── Legacy mode ─────────────────────────────────────────────────────────────
 if [ "$LEGACY_MODE" = "1" ]; then
@@ -162,6 +164,14 @@ if [ "$LEGACY_MODE" = "1" ]; then
   METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","stash_ref":"%s","tree_dirty":%s,"mode":"legacy_stash"}' \
     "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${STASH_REF}" "$TREE_DIRTY")
   safe_jsonl_append "$METRICS_LOG" "$METRICS_LINE" 2>/dev/null || true
+
+  # Write runtime marker so post-agent-snapshot-restore.sh can find the exact stash
+  if [ -n "$STASH_REF" ]; then
+    mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
+    printf '{"stash_ref":"%s","agent_id":"%s","timestamp":"%s","snapshot_id":"","mode":"legacy_stash"}\n' \
+      "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$TIMESTAMP" \
+      > "$MARKER_FILE" 2>/dev/null || true
+  fi
 
   exit 0
 fi
@@ -263,6 +273,14 @@ mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","snapshot_id":"%s","stash_ref":"%s","tree_dirty":%s,"untracked_count":%s,"skipped_untracked_count":%s,"mode":"copy"}' \
   "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${SNAPSHOT_ID}" "${STASH_REF}" "$TREE_DIRTY" "${UNTRACKED_COUNT:-0}" "${SKIPPED_UNTRACKED_COUNT:-0}")
 safe_jsonl_append "$METRICS_LOG" "$METRICS_LINE" 2>/dev/null || true
+
+# Write runtime marker so post-agent-snapshot-restore.sh can find the exact stash/snapshot
+if [ -n "$STASH_REF" ] || [ -n "$SNAPSHOT_ID" ]; then
+  mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
+  printf '{"stash_ref":"%s","agent_id":"%s","timestamp":"%s","snapshot_id":"%s","mode":"copy"}\n' \
+    "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$TIMESTAMP" "${SNAPSHOT_ID//\"/\\\"}" \
+    > "$MARKER_FILE" 2>/dev/null || true
+fi
 
 # Always advisory — never block
 exit 0
