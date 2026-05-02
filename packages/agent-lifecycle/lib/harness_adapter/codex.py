@@ -44,7 +44,21 @@ class CodexAdapter(HarnessAdapter):
     name: ClassVar[HarnessName] = HarnessName.CODEX
     default_output: ClassVar[str] = ".cognitive-os/metrics/canonical-events.jsonl"
 
+    #: Canonical event types this adapter can produce.
     SUPPORTED_EVENTS: ClassVar[frozenset[str]] = frozenset(
+        {
+            "session_start",
+            "user_prompt_submit",
+            "session_end",
+            "tool_use",
+            "tool_use_start",
+            "tool_use_end",
+            "parse_error",
+        }
+    )
+
+    #: Codex native/session-log/hook event kinds accepted as adapter input.
+    SUPPORTED_INPUT_EVENTS: ClassVar[frozenset[str]] = frozenset(
         {
             "session_meta",
             "task_started",
@@ -71,17 +85,36 @@ class CodexAdapter(HarnessAdapter):
             if raw.get("type") == "session_meta":
                 return cls.name
             payload = raw.get("payload")
-            if isinstance(payload, dict) and cls._payload_kind(payload) in cls.SUPPORTED_EVENTS:
+            if isinstance(payload, dict) and cls._payload_kind(payload) in cls.SUPPORTED_INPUT_EVENTS:
                 return cls.name
         if raw.get("harness") == cls.name.value:
             return cls.name
-        if raw.get("hook_event") in cls.SUPPORTED_EVENTS:
+        if raw.get("hook_event") in cls.SUPPORTED_INPUT_EVENTS:
             return cls.name
         # Codex hook rows often carry Codex env/session fields without a
         # wrapper when invoked through projected .codex/hooks.json commands.
         if raw.get("codex_session_id") or raw.get("codex_thread_id"):
             return cls.name
         return None
+
+    @classmethod
+    def supports_payload(cls, raw: Dict[str, Any]) -> bool:
+        """Return True when this Codex input kind is explicitly supported.
+
+        ADR-081 requires routing to consult an explicit support guard instead of
+        relying on broad harness detection alone.  Codex environment/session
+        hints can identify the harness, but unsupported native events must not
+        be routed as if the adapter understood them.
+        """
+        if raw.get("type") == "session_meta":
+            return True
+        if raw.get("hook_event"):
+            return str(raw.get("hook_event")) in cls.SUPPORTED_INPUT_EVENTS
+        payload = raw.get("payload") if raw.get("type") in {"response_item", "event_msg"} else raw
+        if not isinstance(payload, dict):
+            return False
+        kind = cls._payload_kind(payload)
+        return not kind or kind in cls.SUPPORTED_INPUT_EVENTS
 
     def parse_event(self, raw: Dict[str, Any]) -> List[CanonicalEvent]:
         if not isinstance(raw, dict):
@@ -98,7 +131,7 @@ class CodexAdapter(HarnessAdapter):
             return []
 
         kind = "session_meta" if raw.get("type") == "session_meta" else self._payload_kind(payload)
-        if kind not in self.SUPPORTED_EVENTS:
+        if kind not in self.SUPPORTED_INPUT_EVENTS:
             return [
                 ParseError(
                     source_line=_safe_json(payload),

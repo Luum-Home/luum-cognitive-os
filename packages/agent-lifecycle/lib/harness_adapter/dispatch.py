@@ -86,6 +86,9 @@ def _pick_adapter(
     for cls in adapters:
         try:
             if cls.detect_harness(payload) is not None:
+                supports_payload = getattr(cls, "supports_payload", None)
+                if callable(supports_payload) and not supports_payload(payload):
+                    continue
                 return cls(project_dir=project_dir)
         except Exception:
             continue

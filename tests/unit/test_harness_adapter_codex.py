@@ -16,6 +16,7 @@ from lib.harness_adapter.base import (
     UserPromptSubmit,
 )
 from lib.harness_adapter.codex import CodexAdapter
+from lib.harness_adapter.dispatch import dispatch_event
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "codex-live-session"
 
@@ -100,3 +101,22 @@ class TestCodexAdapter:
         b = CodexAdapter(project_dir=tmp_path)
         assert a.name == b.name == HarnessName.CODEX
         assert a.SUPPORTED_EVENTS == b.SUPPORTED_EVENTS
+
+    def test_supported_events_lists_canonical_outputs_only(self, tmp_path):
+        assert "session_start" in CodexAdapter.SUPPORTED_EVENTS
+        assert "parse_error" in CodexAdapter.SUPPORTED_EVENTS
+        assert "SessionStart" not in CodexAdapter.SUPPORTED_EVENTS
+        assert "SessionStart" in CodexAdapter.SUPPORTED_INPUT_EVENTS
+        assert "PreCompact" not in CodexAdapter.SUPPORTED_INPUT_EVENTS
+
+    def test_dispatch_consults_supported_input_guard(self, tmp_path):
+        payload = {
+            "harness": "codex",
+            "hook_event": "PreCompact",
+            "session_id": "codex-precompact",
+        }
+
+        result = dispatch_event(payload, adapters=[CodexAdapter], project_dir=tmp_path)
+
+        assert result["harness"] == "none"
+        assert result["events"] == []
