@@ -304,3 +304,8 @@ for tid, ev in watermarked:
     else:
         print(f"  watermark(B): id={tid} commit={ev.get('commit_sha','?')[:12]} tokens={ev.get('matched_tokens')}")
 PYEOF
+
+# ── Session filesystem reap: archive stale clean session directories ────────
+if [ -f "$PROJECT_DIR/hooks/_lib/session-fs-reap.sh" ]; then
+  bash "$PROJECT_DIR/hooks/_lib/session-fs-reap.sh" --project-dir "$PROJECT_DIR" 2>&1 | head -40
+fi
