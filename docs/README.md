@@ -11,6 +11,7 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [Agentic Mastery Validation — 2026-05-02](reports/agentic-mastery-validation-2026-05-02.md) — automated and manual proof results for the MVP slices.
 - [Agentic Mastery Manual Test](manual-tests/agentic-mastery.md) — manual proof path for safety, ACI capture, reports, and no-cost validation.
 - [Agent Trajectory Schema](architecture/agent-trajectory-schema.md) — normalized ACI-derived tool trajectory rows for benchmark and skill evaluation.
 - [Preserve Branch Lifecycle](architecture/preserve-branch-lifecycle.md) — lifecycle, manifest schema, and consumer-project projection for `codex/preserve-*` governance.
