@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: project
 from __future__ import annotations
 
 import argparse

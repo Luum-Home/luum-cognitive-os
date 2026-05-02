@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # ROLE: instrumentation
 # CANONICAL: scripts/hook-timing-wrapper.sh
 # hook-timing-wrapper.sh — Trampoline that records per-invocation hook timing

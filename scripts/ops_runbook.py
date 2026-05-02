@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: project
 """CLI for ops_runbook scaffolder (ADR-054 Phase 2).
 
 Usage:

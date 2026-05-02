@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """decision_triage.py — Aggregate unanswered operator decisions from research reports
 and ADRs into a unified, ranked view.
 

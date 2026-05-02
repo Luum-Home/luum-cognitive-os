@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # ROLE: observability
 # CANONICAL: scripts/hook-stream-statusline.sh
 # hook-stream-statusline.sh — Non-blocking FIFO reader for hook-stream statusline

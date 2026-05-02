@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # sprint-test-summary.sh — ADR-036 Wave 1 CLI wrapper for lib.sprint_test_aggregator
 #
 # Usage:

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: project
 """llm_status.py — Companion script for the /llm-status skill.
 
 Reads .env + environment + .cognitive-os/metrics/llm-dispatch.jsonl and

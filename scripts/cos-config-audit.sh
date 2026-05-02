@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """
 cos-config-audit.sh — Aspirational-vs-Real Config Validator for Cognitive OS
 
