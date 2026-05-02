@@ -59,10 +59,11 @@ _codex_entry() {
   local script="$1"
   # Codex command: set env then conditionally run the script (guard against
   # missing script during first-install when hooks.json is written before
-  # self-install.sh has run).
+  # self-install.sh has run).  Do not append `|| true`: an existing hook's
+  # exit code is the hook decision, and exit 2 must remain able to block.
   # NOTE: the JSON "command" string must use escaped double quotes for $PWD paths,
   # matching the format in the original hand-maintained .codex/hooks.json.
-  printf '        {\n          "type": "command",\n          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\\"; [ -x \\"$PWD/%s\\" ] && bash \\"$PWD/%s\\" || true"\n        }' \
+  printf '        {\n          "type": "command",\n          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\\"; if [ -x \\"$PWD/%s\\" ]; then bash \\"$PWD/%s\\"; fi"\n        }' \
     "$script" "$script"
 }
 
@@ -132,7 +133,9 @@ def command_for(script: str) -> dict:
         "command": (
             'export COGNITIVE_OS_HARNESS=codex; '
             'export COGNITIVE_OS_PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}"; '
-            f'[ -x "$PWD/{script}" ] && bash "$PWD/{script}" || true'
+            # Missing scripts are harmless during first install. Existing hook
+            # scripts must keep their exit code so Codex Bash gates can block.
+            f'if [ -x "$PWD/{script}" ]; then bash "$PWD/{script}"; fi'
         ),
     }
 

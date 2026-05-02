@@ -177,3 +177,16 @@ Bootstrap portability is succeeding when:
 - critical behavior tests exercise more than one harness path
 
 That is the standard required for true cross-harness self-hosting.
+
+## Codex Governed Tool-Layer Progress
+
+Codex now has a first governed fallback for hook surfaces that the native Codex
+projection cannot emit. `scripts/cos-codex-guard.py` reads the canonical
+`harness.hooks` registry and runs synthetic Agent and Edit/Write hook chains for
+Codex-hosted work.
+
+This does not make Codex's native hook surface equivalent to Claude Code. It
+creates a portable enforcement path for the highest-risk gaps while preserving
+honest driver projection: lifecycle and Bash hooks remain native in
+`.codex/hooks.json`; Agent and Edit/Write gates are governed by an explicit COS
+runner until Codex exposes native matchers with proven semantics.

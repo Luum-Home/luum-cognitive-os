@@ -215,15 +215,23 @@ case "$MODE" in
     # Full: include every hook installable under the active scope, then remove
     # self-hosting-only hooks inside build_jq_filter. This keeps generated
     # settings aligned with the files cos-init actually copies.
-    result=$(build_jq_filter "$(project_scoped_hooks)")
+    result=$(build_jq_filter "$(project_scoped_hooks) $DEFAULT_HOOKS")
     ;;
 esac
 
 # ── Output ──────────────────────────────────────────────────────────
 if [ "$HARNESS" = "codex" ]; then
-  # Codex hooks.json uses lifecycle events at the top level. Keep Claude's
-  # nested .hooks shape only for Claude settings.json.
-  result=$(echo "$result" | jq '.hooks')
+  # Codex hooks.json uses lifecycle events at the top level and has a narrower
+  # proven hook contract than Claude.  Project only lifecycle hooks plus
+  # Bash-scoped tool hooks, and translate matcher names to Codex-native values.
+  # Do not copy unsupported Claude events into Codex just to make counts match.
+  result=$(echo "$result" | jq '{
+    SessionStart: ((.hooks.SessionStart // []) | map(.matcher = "startup")),
+    UserPromptSubmit: ((.hooks.UserPromptSubmit // []) | map(.matcher = "prompt")),
+    PreToolUse: ((.hooks.PreToolUse // []) | map(select(.matcher == "Bash") | .matcher = "bash")),
+    PostToolUse: ((.hooks.PostToolUse // []) | map(select(.matcher == "Bash") | .matcher = "bash")),
+    Stop: ((.hooks.Stop // []) | map(.matcher = "shutdown"))
+  }')
 fi
 
 if [ -n "$OUTPUT" ]; then
