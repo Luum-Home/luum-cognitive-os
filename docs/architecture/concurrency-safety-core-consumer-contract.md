@@ -14,10 +14,10 @@ This contract defines how Cognitive OS protects concurrent agent work in the cor
 | `plan-claim verifier` | `scripts/verify_plan_claims.py` | Reject false-done claims without bilateral proof. |
 | `preserve-branch doctor` | `scripts/cos-doctor-preserve.sh` | Detect preserve branches without manifest, with mixed scope, or already integrated. |
 | `concurrency doctor` | `scripts/cos-doctor-concurrency.sh` | Prove the local safety surface exists and compiles. |
-| `approval ledger` | `scripts/approval-ledger.py` | Record high-risk approvals with verification and rollback evidence. |
-| `resource lease` | `scripts/resource-lease.py` | Provide named, expiring cooperative leases for critical domains. |
-| `agent work ledger` | `scripts/agent-work-ledger.py` | Record started/completed/aborted work scopes across agents. |
-| `cross-session reconciler` | `scripts/cross-session-reconciler.py` | Merge runtime safety state into one recovery report. |
+| `approval ledger` | `scripts/approval_ledger.py` | Record high-risk approvals with verification and rollback evidence. |
+| `resource lease` | `scripts/resource_lease.py` | Provide named, expiring cooperative leases for critical domains. |
+| `agent work ledger` | `scripts/agent_work_ledger.py` | Record started/completed/aborted work scopes across agents. |
+| `cross-session reconciler` | `scripts/cross_session_reconciler.py` | Merge runtime safety state into one recovery report. |
 
 ## Consumer projection
 
