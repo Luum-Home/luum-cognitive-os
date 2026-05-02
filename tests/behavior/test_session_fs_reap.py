@@ -75,3 +75,33 @@ def test_archive_older_than_retention_is_removed(tmp_path: Path) -> None:
 
     assert any(decision.decision == "RM_ARCHIVED" for decision in result.decisions)
     assert not archived.exists()
+
+
+def test_dead_old_current_session_marker_is_archived(tmp_path: Path) -> None:
+    sessions = tmp_path / ".cognitive-os" / "sessions"
+    sessions.mkdir(parents=True)
+    marker = sessions / ".current-session-999999999"
+    marker.write_text("dead-session-id\n")
+    import os
+    old = time.time() - 7200
+    os.utime(marker, (old, old))
+
+    result = reap_sessions(tmp_path, grace_seconds=1)
+
+    assert any(decision.path == str(marker) and decision.decision == "ARCHIVE" for decision in result.decisions)
+    assert not marker.exists()
+    archived = tmp_path / ".cognitive-os" / "archive" / "sessions" / "_markers" / marker.name
+    assert archived.exists()
+
+
+def test_live_current_session_marker_is_kept(tmp_path: Path) -> None:
+    sessions = tmp_path / ".cognitive-os" / "sessions"
+    sessions.mkdir(parents=True)
+    marker = sessions / ".current-session-12345"
+    marker.write_text("live-session-id\n")
+
+    with patch("lib.session_lifecycle.pid_alive", return_value=True):
+        result = reap_sessions(tmp_path, grace_seconds=0)
+
+    assert any(decision.path == str(marker) and decision.decision == "KEEP_ACTIVE" for decision in result.decisions)
+    assert marker.exists()
