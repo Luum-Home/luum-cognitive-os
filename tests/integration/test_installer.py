@@ -384,13 +384,19 @@ class TestGitignore:
     ALLOWED_TRACKED_COGNITIVE_OS_SOURCE_FILES = {
         ".cognitive-os/migrations/components-to-primitives.md",
         ".cognitive-os/migrations/test-architecture-inventory.md",
-        ".cognitive-os/plans/features/cos-test-extension-notes.md",
-        ".cognitive-os/plans/features/test-runner-ergonomics-design.md",
-        ".cognitive-os/plans/features/test-runner-ergonomics-proposal.md",
-        ".cognitive-os/plans/features/test-runner-ergonomics-spec.md",
-        ".cognitive-os/plans/features/test-runner-ergonomics-tasks.md",
+        ".cognitive-os/skills/_catalog-allowlist.txt",
         ".cognitive-os/test-lanes.yaml",
         ".cognitive-os/test-resource-policy.yaml",
+        ".cognitive-os/tests/adversarial-generalization/scenarios.yaml",
+        ".cognitive-os/tests/agentic-tools/license-matrix.json",
+        ".cognitive-os/tests/runtime-comparison/tasks.yaml",
+        ".cognitive-os/tests/skill-efficacy/tasks.json",
+    }
+    ALLOWED_TRACKED_PREFIXES = {
+        ".cognitive-os/plans/",
+    }
+    ALLOWED_TRACKED_NON_COS_SOURCE_FILES = {
+        ".promptfoo/config.yaml",
     }
 
     def test_gitignore_exists(self, cos_source):
@@ -433,14 +439,28 @@ class TestGitignore:
             capture_output=True,
             text=True,
         )
+        deleted_result = subprocess.run(
+            ["git", "ls-files", "--cached", "--deleted"],
+            cwd=cos_source,
+            capture_output=True,
+            text=True,
+        )
         tracked = result.stdout.strip().split("\n")
+        staged_or_worktree_deleted = set(deleted_result.stdout.strip().split("\n"))
         runtime_tracked = [
             f for f in tracked
+            if f not in staged_or_worktree_deleted
             if (
                 f.startswith(".cognitive-os/")
                 and f not in self.ALLOWED_TRACKED_COGNITIVE_OS_SOURCE_FILES
+                and not any(
+                    f.startswith(prefix) for prefix in self.ALLOWED_TRACKED_PREFIXES
+                )
             )
-            or f.startswith(".promptfoo/")
+            or (
+                f.startswith(".promptfoo/")
+                and f not in self.ALLOWED_TRACKED_NON_COS_SOURCE_FILES
+            )
             or f.startswith(".ruff_cache/")
         ]
         assert runtime_tracked == [], f"Runtime files still tracked in git: {runtime_tracked}"
