@@ -402,13 +402,31 @@ python3 scripts/cos_session_backlog.py --write --sync-engram
 ```
 
 The command uses canonical project/session precedence, reconciles active tasks,
-plan checkboxes, user request queues, recent changelogs, handoff docs, git
-status/stashes/unmerged branches, and optional Engram observations, then writes:
+plan checkboxes, user request queues, recent changelogs, handoff docs, ADR
+implementation status, git status/stashes/unmerged branches, and optional Engram
+observations, then writes:
 
 - `.cognitive-os/sessions/{session_id}/backlog.md`
 - `.cognitive-os/metrics/backlog-reconciliation.jsonl`
+- `.cognitive-os/metrics/adr-implementation-latest.json`
+- `.cognitive-os/sessions/{session_id}/adr-implementation-ledger.md`
 - Engram `session/backlog/latest` and `session/backlog/{YYYY-MM-DD}` when the
   local Engram CLI wrapper is available.
+
+The remaining P0/P1 governance gap is now enforceable rather than advisory:
+`tests/contracts/test_primitive_scope_classification.py` fails any new agentic
+primitive that lacks a valid `SCOPE`, any skill without `audience`, any
+user-invocable skill without `platforms`, any skill-referenced script without
+`SCOPE`, or any primitive root without a product-zone guardrail. The install
+scope proof remains anchored in `tests/integration/test_install_scope.py`, which
+covers project omission of `os-only` surfaces plus `scope=all` inclusion.
+
+ADR implementation state is now a startup-readable ledger, not just scattered
+ADR prose. `scripts/adr_implementation_ledger.py` classifies each ADR as
+implemented, partial, pending, pending-evidence, blocked, superseded, or unknown
+with reasons and evidence. The session startup hook only reads the cached latest
+ledger to stay fast, while `/session-backlog` refreshes the ledger during full
+reconciliation.
 
 The `/session-backlog` skill now points users to this command first and documents
 `COGNITIVE_OS_PROJECT_DIR -> CODEX_PROJECT_DIR -> CLAUDE_PROJECT_DIR -> cwd` plus

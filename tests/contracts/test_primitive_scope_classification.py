@@ -51,8 +51,12 @@ def test_agentic_primitive_roots_have_product_zone_guardrails() -> None:
     assert not missing, f"Primitive roots missing root guardrails: {missing}"
 
 
-def test_hooks_and_templates_declare_valid_scope() -> None:
-    paths = list((REPO / "hooks").rglob("*.sh")) + list((REPO / "templates").rglob("*.md"))
+def test_hooks_rules_and_templates_declare_valid_scope() -> None:
+    paths = (
+        list((REPO / "hooks").rglob("*.sh"))
+        + list((REPO / "rules").rglob("*.md"))
+        + list((REPO / "templates").rglob("*.md"))
+    )
     failures = [f"{p.relative_to(REPO)} -> {_header_scope(p)}" for p in paths if _header_scope(p) not in VALID_SCOPES]
     assert not failures, "Invalid or missing SCOPE:\n" + "\n".join(failures)
 
