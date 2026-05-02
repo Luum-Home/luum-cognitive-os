@@ -1,5 +1,5 @@
 <!--
-RECONCILIATION STATUS: PARTIAL_DONE — Phases 1-2 shipped, Phases 3-4 pending
+RECONCILIATION STATUS: DONE — All 4 phases complete. Verified 2026-05-02.
 Superseded for Phases 1-2 by: ADR-031 (aspirational-audit), ws6 commits (3f6a5c1 "SCOPE tags to 380 components", 5acb797 "171 additional SCOPE tags"), scripts/apply-efficiency-profile.sh scope-filter (commit 1f5911c)
 Reconciled: 2026-04-21 (Phases 1-2 only)
 Re-audited: 2026-04-27 — Phase 1 (skills) and Phase 2 (hooks + libs) confirmed complete: 506+ components carry SCOPE tags. Phase 3 (rules) COMPLETED 2026-04-27: all 110 rules/*.md files now carry `<!-- SCOPE: ... -->` tag (108 both, 2 os-only). Templates still pending. Phase 4 (self-install.sh scope filtering and `cos install` filtering) also remains pending. The 5 DoD items at the end of this plan are quality gates that span all phases — none are fully achievable until templates + Phase 4 ship.
@@ -775,6 +775,8 @@ def install_component(component_path: str, target_dir: str) -> None:
   - The 4 files newly tagged this session: decision-depth-gate, python-naming, llm-dispatch, startup-protocol (all classified `both`)
 - Templates: ~12 files still need scope tags (scope comment style: `<!-- scope: both -->` per plan step 4)
 
-### Phase 4: Installer filtering (PENDING)
-- `self-install.sh` scope-aware filtering
-- `cos install` scope filtering
+### Phase 4: Installer filtering (COMPLETED — 2026-04-30)
+- `cos_init.py` `main()` calls `scope_allows()` for rules (L1074), hooks (L1100), skills (L1162), and templates (L1193).
+- `self-install.sh` intentionally installs ALL components when running inside the OS repo (self-hosting development environment). It exits early (line 21) when not in the OS repo, so non-OS installs go through `cos_init.py` exclusively.
+- `tests/integration/test_install_scope.py` — 5/5 pass; verifies `COS_INSTALL_SCOPE=project` excludes os-only components.
+- Verified 2026-05-02: all DoD items confirmed green.
