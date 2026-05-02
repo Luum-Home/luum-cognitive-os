@@ -54,6 +54,7 @@ class ConcurrentAgentSafetyStatus:
     generated_at: str
     active_sessions: list[dict[str, Any]] = field(default_factory=list)
     locks: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
+    task_claims: list[dict[str, Any]] = field(default_factory=list)
     stash_alarm: dict[str, Any] | None = None
     claim_gate_projection: list[HookProjectionStatus] = field(default_factory=list)
     recent_agent_heartbeats: list[dict[str, Any]] = field(default_factory=list)
@@ -117,6 +118,7 @@ def collect_status(project_dir: str | Path = ".") -> ConcurrentAgentSafetyStatus
         generated_at=_now_iso(),
         active_sessions=_collect_active_sessions(root),
         locks=locks,
+        task_claims=_collect_task_claims(root),
         stash_alarm=stash_alarm if isinstance(stash_alarm, dict) else None,
         claim_gate_projection=projections,
         recent_agent_heartbeats=_collect_recent_agent_heartbeats(root),
@@ -196,6 +198,14 @@ def _collect_git_index_locks(root: Path) -> list[dict[str, Any]]:
         item.setdefault("lock_path", _relpath(lock_dir, root))
         return [item]
     return []
+
+
+def _collect_task_claims(root: Path) -> list[dict[str, Any]]:
+    data = _read_json_object(root / ".cognitive-os" / "runtime" / "task-claims.json")
+    if not isinstance(data, dict) or not isinstance(data.get("claims"), dict):
+        return []
+    claims = [item for item in data["claims"].values() if isinstance(item, Mapping)]
+    return [_clean_mapping(item) for item in sorted(claims, key=lambda item: str(item.get("task_id", "")))]
 
 
 def _collect_lock_metadata(root_dir: Path) -> list[dict[str, Any]]:
