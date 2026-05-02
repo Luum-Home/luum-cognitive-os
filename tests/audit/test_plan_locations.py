@@ -114,6 +114,9 @@ def test_no_plan_files_outside_canonical_root() -> None:
         parts = md_file.parts
         if any(p.startswith(".git") for p in parts):
             continue
+        rel_parts = md_file.relative_to(REPO).parts
+        if rel_parts[:2] == (".claude", "worktrees"):
+            continue
         if any(p in ("node_modules", "__pycache__", ".venv", "venv") for p in parts):
             continue
 
