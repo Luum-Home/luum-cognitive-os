@@ -139,6 +139,7 @@ cc_driver_emit() {
     "hooks/session-heartbeat.sh"                  "false" \
     "hooks/memory-prefetch.sh"                    "true"  \
     "hooks/edit-lock-process-negotiations.sh"     "false" \
+    "hooks/stash-budget-warn.sh"                  "true"  \
   )
 
   local subagent_start
