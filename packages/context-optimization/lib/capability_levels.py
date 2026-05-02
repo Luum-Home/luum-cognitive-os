@@ -36,8 +36,7 @@ DEFAULT_AUTO_DISABLE: Dict[int, List[str]] = {
         "blast-radius",
     ],
     5: [
-        "completeness-check",
-        "epic-task-detector",
+            "epic-task-detector",
         "scope-proportionality",
         "trust-score-validator",
         "claim-validator",

@@ -149,7 +149,7 @@ except Exception:
       5)
         case "$component_name" in
           context-management|clarification-gate|assumption-tracking|confidence-gate|model-routing|blast-radius|\
-completeness-check|epic-task-detector|scope-proportionality|trust-score-validator|\
+epic-task-detector|scope-proportionality|trust-score-validator|\
 claim-validator|tool-loop-detector|consequence-evaluator|infra-intent-detector|\
 pre-cleanup-snapshot|architecture-compliance|auto-skill-generator)
             disabled="disabled"
