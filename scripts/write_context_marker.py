@@ -26,8 +26,15 @@ import os
 import subprocess
 import sys
 import tempfile
+
 from datetime import datetime, timezone
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.cos_task_claims import claim_task
 
 VALID_KINDS = ("orchestrator", "subagent", "cron", "hook", "human")
 MAX_PARENT_DEPTH = 10
@@ -43,6 +50,27 @@ def _now_iso() -> str:
 
 def _active_tasks_path(repo: Path) -> Path:
     return repo / ".cognitive-os" / "tasks" / "active-tasks.json"
+
+
+
+def _is_claimable_pending(task: dict) -> bool:
+    return task.get("status") == "pending" and not task.get("claim_conflict")
+
+
+def _write_tasks_file(tasks_path: Path, data: dict) -> None:
+    tmp_fd, tmp_str = tempfile.mkstemp(
+        dir=tasks_path.parent, prefix=".active-tasks-tmp-", suffix=".json"
+    )
+    try:
+        with os.fdopen(tmp_fd, "w") as fh:
+            json.dump(data, fh, indent=2)
+        os.replace(tmp_str, tasks_path)
+    except Exception:
+        try:
+            os.unlink(tmp_str)
+        except OSError:
+            pass
+        raise
 
 
 def _claim_pending_task(repo: Path, pid: int, tool_use_id: str | None) -> bool:
@@ -78,7 +106,7 @@ def _claim_pending_task(repo: Path, pid: int, tool_use_id: str | None) -> bool:
                     for idx, t in enumerate(tasks):
                         if (
                             t.get("toolUseId") == tool_use_id
-                            and t.get("status") == "pending"
+                            and _is_claimable_pending(t)
                         ):
                             matched_idx = idx
                             break
@@ -89,7 +117,7 @@ def _claim_pending_task(repo: Path, pid: int, tool_use_id: str | None) -> bool:
                     pending = [
                         (idx, t)
                         for idx, t in enumerate(tasks)
-                        if t.get("status") == "pending"
+                        if _is_claimable_pending(t)
                     ]
                     if pending:
                         # Sort by launchedAt descending (latest first)
@@ -102,26 +130,25 @@ def _claim_pending_task(repo: Path, pid: int, tool_use_id: str | None) -> bool:
                 if matched_idx is None:
                     return False
 
+                # Cross-session claim ledger (P1.1): do not take a pending task
+                # if another live session already claimed the same task/work fingerprint.
+                claimed, claim_result = claim_task(repo, tasks[matched_idx])
+                if not claimed:
+                    tasks[matched_idx]["claim_conflict"] = claim_result
+                    data["lastUpdated"] = _now_iso()
+                    tasks[matched_idx]["status"] = "blocked_by_claim"
+                    _write_tasks_file(tasks_path, data)
+                    return False
+
                 now = _now_iso()
                 tasks[matched_idx]["status"] = "in_progress"
                 tasks[matched_idx]["pid"] = pid
                 tasks[matched_idx]["started_at"] = now
+                tasks[matched_idx]["claim_fingerprint"] = claim_result.get("fingerprint")
                 data["lastUpdated"] = now
 
                 # Atomic write: temp + rename
-                tmp_fd, tmp_str = tempfile.mkstemp(
-                    dir=tasks_path.parent, prefix=".active-tasks-tmp-", suffix=".json"
-                )
-                try:
-                    with os.fdopen(tmp_fd, "w") as fh:
-                        json.dump(data, fh, indent=2)
-                    os.replace(tmp_str, tasks_path)
-                except Exception:
-                    try:
-                        os.unlink(tmp_str)
-                    except OSError:
-                        pass
-                    raise
+                _write_tasks_file(tasks_path, data)
 
                 return True
             finally:

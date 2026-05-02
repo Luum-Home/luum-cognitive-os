@@ -277,6 +277,54 @@ class TestClaimPendingTask:
         assert new_task["status"] == "in_progress"
         assert new_task["pid"] == fake_pid
 
+
+    def test_claim_conflict_blocks_task_and_next_attempt_skips_it(self, tmp_path):
+        """A task blocked by another live claim must not be selected repeatedly."""
+        from scripts.cos_task_claims import claim_task  # noqa: PLC0415
+        from scripts.write_context_marker import _claim_pending_task  # noqa: PLC0415
+
+        tasks_file = _make_tasks_file(tmp_path, [
+            {
+                "id": "task-old-claimable",
+                "toolUseId": None,
+                "description": "older independent work",
+                "status": "pending",
+                "launchedAt": _now_iso(-120),
+                "started_at": _now_iso(-120),
+                "pid": None,
+                "completedAt": None,
+                "outputSummary": None,
+                "expectedOutputs": [],
+                "checkCommand": None,
+            },
+            {
+                "id": "task-new-conflict",
+                "toolUseId": None,
+                "description": "shared ledger work",
+                "status": "pending",
+                "launchedAt": _now_iso(-5),
+                "started_at": _now_iso(-5),
+                "pid": None,
+                "completedAt": None,
+                "outputSummary": None,
+                "expectedOutputs": [],
+                "checkCommand": None,
+            },
+        ])
+        claim_task(tmp_path, {"id": "other-id", "description": "shared ledger work"}, session="other-session")
+
+        assert _claim_pending_task(tmp_path, 11111, None) is False
+        tasks = _read_tasks(tasks_file)
+        conflicted = next(t for t in tasks if t["id"] == "task-new-conflict")
+        assert conflicted["status"] == "blocked_by_claim"
+        assert conflicted["claim_conflict"]["held_by"] == "other-session"
+
+        assert _claim_pending_task(tmp_path, 22222, None) is True
+        tasks = _read_tasks(tasks_file)
+        old_task = next(t for t in tasks if t["id"] == "task-old-claimable")
+        assert old_task["status"] == "in_progress"
+        assert old_task["pid"] == 22222
+
     def test_claim_no_pending_returns_false(self, tmp_path):
         """_claim_pending_task returns False when no pending records exist."""
         from scripts.write_context_marker import _claim_pending_task  # noqa: PLC0415

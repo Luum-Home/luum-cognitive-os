@@ -184,12 +184,15 @@ _install_cos_block() {
 
 # COS_AUTO_UPDATE BEGIN — Do not edit this block manually
 # Auto-updates all registered COS installations after git push completes.
-# Runs in background so the push is not delayed, and uses the new HEAD.
+# Runs collision checks before push, then updates projects in background using the new HEAD.
 # Skips feature branches so registered projects are not upgraded from
 # unmerged work. Main/master and tag pushes are allowed.
 # Installed by: bash scripts/setup-git-hooks.sh
 # Remove with:  bash scripts/setup-git-hooks.sh --remove
 _COS_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/orchestrator_claim_gate.py" ]; then
+  python3 "$_COS_DIR/scripts/orchestrator_claim_gate.py" --project-dir "$_COS_DIR" --mode pre-push --command "git push" --metrics >&2 || exit 2
+fi
 _COS_PUSH_ALLOWED=false
 while read -r _local_ref _local_sha _remote_ref _remote_sha; do
   _tag_ref="${_local_ref#refs/tags/}"
