@@ -157,6 +157,7 @@ SNAPSHOT_ID=""
 STASH_REF=""
 TREE_DIRTY=false
 UNTRACKED_COUNT=0
+SKIPPED_UNTRACKED_COUNT=0
 
 if command -v python3 >/dev/null 2>&1; then
   SNAPSHOT_RESULT=$(python3 - <<PYEOF 2>/dev/null
@@ -165,10 +166,37 @@ sys.path.insert(0, '$OS_ROOT')
 try:
     from lib.snapshot_manager import create_snapshot
     from pathlib import Path
-    manifest = create_snapshot(Path('$PROJECT_DIR'), '$AGENT_ID')
+
+    def _read_snapshot_int(key, default):
+        config = Path('$PROJECT_DIR') / 'cognitive-os.yaml'
+        if not config.exists():
+            return default
+        in_snapshots = False
+        for line in config.read_text().splitlines():
+            stripped = line.strip()
+            if stripped.startswith('snapshots:'):
+                in_snapshots = True
+                continue
+            if not in_snapshots:
+                continue
+            if stripped and not line.startswith((' ', '\t')) and ':' in stripped:
+                break
+            if stripped.startswith(f'{key}:'):
+                raw = stripped.split(':', 1)[1].split('#', 1)[0].strip()
+                if raw in ('', 'null', 'none', 'unlimited'):
+                    return None
+                return int(raw)
+        return default
+
+    manifest = create_snapshot(
+        Path('$PROJECT_DIR'),
+        '$AGENT_ID',
+        max_file_mb=_read_snapshot_int('max_file_mb', 50),
+        max_total_mb=_read_snapshot_int('max_total_mb', 1024),
+    )
     print(json.dumps(manifest))
 except Exception as exc:
-    print(json.dumps({"status": "error", "error": str(exc), "snapshot_id": "", "tracked_stash_ref": None, "untracked_files": []}))
+    print(json.dumps({"status": "error", "error": str(exc), "snapshot_id": "", "tracked_stash_ref": None, "untracked_files": [], "skipped_untracked_files": []}))
 PYEOF
 )
   if [ -n "$SNAPSHOT_RESULT" ] && command -v jq >/dev/null 2>&1; then
@@ -176,8 +204,9 @@ PYEOF
     SNAPSHOT_ID=$(echo "$SNAPSHOT_RESULT" | jq -r '.snapshot_id // ""' 2>/dev/null || true)
     STASH_REF=$(echo "$SNAPSHOT_RESULT" | jq -r '.tracked_stash_ref // ""' 2>/dev/null || true)
     UNTRACKED_COUNT=$(echo "$SNAPSHOT_RESULT" | jq -r '(.untracked_files // []) | length' 2>/dev/null || echo 0)
+    SKIPPED_UNTRACKED_COUNT=$(echo "$SNAPSHOT_RESULT" | jq -r '(.skipped_untracked_files // []) | length' 2>/dev/null || echo 0)
     TREE_DIRTY=false
-    if [ -n "$STASH_REF" ] || [ "${UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null; then
+    if [ -n "$STASH_REF" ] || [ "${UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null || [ "${SKIPPED_UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null; then
       TREE_DIRTY=true
     fi
     if [ "$SNAPSHOT_STATUS" = "ok" ] && [ "$TREE_DIRTY" = false ]; then
@@ -215,8 +244,8 @@ mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 } > "$SNAPSHOT_FILE" 2>/dev/null || true
 
 # Append to metrics JSONL
-METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","snapshot_id":"%s","stash_ref":"%s","tree_dirty":%s,"mode":"copy"}' \
-  "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${SNAPSHOT_ID}" "${STASH_REF}" "$TREE_DIRTY")
+METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","snapshot_id":"%s","stash_ref":"%s","tree_dirty":%s,"untracked_count":%s,"skipped_untracked_count":%s,"mode":"copy"}' \
+  "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${SNAPSHOT_ID}" "${STASH_REF}" "$TREE_DIRTY" "${UNTRACKED_COUNT:-0}" "${SKIPPED_UNTRACKED_COUNT:-0}")
 safe_jsonl_append "$METRICS_LOG" "$METRICS_LINE" 2>/dev/null || true
 
 # Always advisory — never block
