@@ -56,7 +56,7 @@ python3 scripts/run-skill-efficacy-smoke.py --reset
 
 ```bash
 python3 -m pytest tests/unit/test_agentic_tool_license_matrix.py -q
-python3 scripts/agentic-tool-license-matrix.py \
+python3 scripts/agentic_tool_license_matrix.py \
   --manifest .cognitive-os/tests/agentic-tools/license-matrix.json \
   --markdown-out /tmp/agentic-license-report.md \
   --json-out /tmp/agentic-license-report.json

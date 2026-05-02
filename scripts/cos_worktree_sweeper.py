@@ -139,7 +139,7 @@ def path_has_process_activity(path: Path) -> bool:
         return True
     needle = str(path.resolve())
     quoted = shlex.quote(needle)
-    return any((needle in line or quoted in line) and "cos_worktree_sweeper.py" not in line and "cos-worktree-sweeper.py" not in line for line in proc.stdout.splitlines())
+    return any((needle in line or quoted in line) and "cos_worktree_sweeper.py" not in line for line in proc.stdout.splitlines())
 
 
 def age_seconds(path: Path) -> float:
