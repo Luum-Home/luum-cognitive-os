@@ -246,19 +246,18 @@ def test_heartbeat_fresh_within_threshold_is_not_stale(tmp_path: Path) -> None:
 # ── P2 activity staleness ─────────────────────────────────────────────────────
 
 def test_activity_staleness_detected_via_threshold_env(tmp_path: Path) -> None:
-    """P2: activity log with old timestamp marks lock stale when
-    COS_VALIDATION_ACTIVITY_THRESHOLD is set to a small value.
-    """
+    """P2: old activity can mark ownerless locks stale when the PID is dead."""
     runtime = tmp_path / ".cognitive-os" / "runtime"
     runtime.mkdir(parents=True)
 
-    # Write a lock with live PID and fresh heartbeat so only activity triggers stale.
+    # Write a lock with a dead PID and fresh-looking heartbeat so activity is
+    # allowed to act as the secondary semantic stale signal.
     interval = 30
     _write_lock(
         runtime,
         {
             "run_id": "unit-activity-stale",
-            "pid": os.getpid(),
+            "pid": 99999999,
             "expires_at_epoch": int(time.time()) + 600,
             "started_at_epoch": int(time.time()) - 300,
             "last_heartbeat_epoch": int(time.time()) - 5,  # fresh heartbeat
@@ -298,6 +297,43 @@ def test_activity_staleness_detected_via_threshold_env(tmp_path: Path) -> None:
         f"Expected activity-stale (rc=1) but got {result.returncode}. stderr={result.stderr}"
     )
 
+
+
+def test_activity_staleness_does_not_remove_live_fresh_heartbeat_lock(tmp_path: Path) -> None:
+    """P2 regression: quiet but live validation must not be reaped mid-run."""
+    runtime = tmp_path / ".cognitive-os" / "runtime"
+    runtime.mkdir(parents=True)
+
+    interval = 30
+    _write_lock(
+        runtime,
+        {
+            "run_id": "unit-activity-live-quiet",
+            "pid": os.getpid(),
+            "expires_at_epoch": int(time.time()) + 600,
+            "started_at_epoch": int(time.time()) - 600,
+            "last_heartbeat_epoch": int(time.time()) - 5,
+            "heartbeat_interval_seconds": interval,
+            "capsule_dir": str(tmp_path / "capsule"),
+            "message": "quiet live validation",
+        },
+    )
+    old_ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - 600))
+    (runtime / "validation-activity.jsonl").write_text(
+        json.dumps({"ts": old_ts, "capsule": "unit-activity-live-quiet", "action": "capsule_start"}) + "\n",
+        encoding="utf-8",
+    )
+
+    env = {**os.environ, "COS_VALIDATION_ACTIVITY_THRESHOLD": "60"}
+    result = subprocess.run(
+        ["bash", "-c", f'source "{VALIDATION_LOCK}"; cos_validation_lock_active "{tmp_path}"'],
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert (runtime / "validation-capsule.lock").exists()
 
 def test_activity_log_within_threshold_is_not_stale(tmp_path: Path) -> None:
     """P2 negative: fresh activity log entry must not trigger stale detection."""
@@ -390,6 +426,60 @@ def test_p5_cleanup_does_not_remove_young_lock(tmp_path: Path) -> None:
         "Cleanup hook must NOT remove a lock started <60s ago (race-window protection)"
     )
 
+
+
+def test_cleanup_hook_keeps_live_quiet_validation_capsule(tmp_path: Path) -> None:
+    """P5 regression: SessionStart cleanup must not delete an active capsule.
+
+    Full laptop validation can spend several minutes inside pytest without
+    appending semantic validation-activity events. The heartbeat/PID are the
+    authoritative liveness signals in that case; activity is only a secondary
+    signal for ownerless locks.
+    """
+    runtime = tmp_path / ".cognitive-os" / "runtime"
+    runtime.mkdir(parents=True)
+    metrics = tmp_path / ".cognitive-os" / "metrics"
+    metrics.mkdir(parents=True)
+    capsule = tmp_path / "cos-validation-capsules" / "repo-validation-live"
+    capsule.mkdir(parents=True)
+
+    interval = 30
+    _write_lock(
+        runtime,
+        {
+            "run_id": "unit-cleanup-live-quiet",
+            "pid": os.getpid(),
+            "expires_at_epoch": int(time.time()) + 600,
+            "started_at_epoch": int(time.time()) - 600,
+            "last_heartbeat_epoch": int(time.time()) - 5,
+            "heartbeat_interval_seconds": interval,
+            "capsule_dir": str(capsule),
+            "message": "quiet active validation capsule",
+        },
+    )
+    old_ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - 600))
+    (runtime / "validation-activity.jsonl").write_text(
+        json.dumps({"ts": old_ts, "capsule": "unit-cleanup-live-quiet", "action": "capsule_start"}) + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        ["bash", str(CLEANUP_HOOK)],
+        env={
+            **os.environ,
+            "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
+            "COS_VALIDATION_ACTIVITY_THRESHOLD": "60",
+        },
+        capture_output=True,
+        text=True,
+        timeout=15,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert (runtime / "validation-capsule.lock").exists()
+    assert capsule.exists(), "cleanup hook must not delete a live validation capsule"
+    log = metrics / "validation-auto-recovery.jsonl"
+    assert not log.exists() or "unit-cleanup-live-quiet" not in log.read_text(encoding="utf-8")
 
 # ── P5 schema check ───────────────────────────────────────────────────────────
 
