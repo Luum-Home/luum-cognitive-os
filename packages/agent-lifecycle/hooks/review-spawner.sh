@@ -187,10 +187,10 @@ enqueue_review_request({
 })
 PYASYNC
 
-  if [ -x "$PROJECT_DIR/scripts/review-pending-sweeper.py" ]; then
+  if [ -x "$PROJECT_DIR/scripts/review_pending_sweeper.py" ]; then
     (
       export COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR"
-      python3 "$PROJECT_DIR/scripts/review-pending-sweeper.py" --project-dir "$PROJECT_DIR" --limit 1 >/dev/null 2>&1
+      python3 "$PROJECT_DIR/scripts/review_pending_sweeper.py" --project-dir "$PROJECT_DIR" --limit 1 >/dev/null 2>&1
     ) &
   fi
   exit 0
