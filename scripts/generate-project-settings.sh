@@ -213,9 +213,11 @@ case "$MODE" in
     ;;
   --full)
     # Full: include every hook installable under the active scope, then remove
-    # self-hosting-only hooks inside build_jq_filter. This keeps generated
-    # settings aligned with the files cos-init actually copies.
-    result=$(build_jq_filter "$(project_scoped_hooks) $DEFAULT_HOOKS")
+    # self-hosting-only hooks inside build_jq_filter. Do not append the default
+    # set here: default contains self-hosting os-only hooks that full external
+    # installs intentionally do not copy, and projecting them creates dangling
+    # driver commands.
+    result=$(build_jq_filter "$(project_scoped_hooks)")
     ;;
 esac
 
