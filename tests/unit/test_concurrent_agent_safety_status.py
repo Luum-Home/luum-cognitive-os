@@ -70,6 +70,21 @@ def test_collects_sessions_locks_stash_alarm_and_heartbeats(tmp_path: Path) -> N
         json.dumps({"blocking": True, "stash_ref": "stash@{0}"}),
     )
     write(
+        tmp_path / ".cognitive-os/runtime/task-claims.json",
+        json.dumps(
+            {
+                "version": 1,
+                "claims": {
+                    "TASK-123": {
+                        "task_id": "TASK-123",
+                        "session_id": "s1",
+                        "agent_id": "agent-a",
+                    }
+                },
+            }
+        ),
+    )
+    write(
         tmp_path / ".cognitive-os/agent-bus/agent-a/heartbeat.jsonl",
         json.dumps({"agent_id": "agent-a", "alive": True, "timestamp_epoch": 1}) + "\n",
     )
@@ -80,6 +95,7 @@ def test_collects_sessions_locks_stash_alarm_and_heartbeats(tmp_path: Path) -> N
     assert status.locks["git_index"][0]["operation"] == "commit"
     assert status.locks["edit"][0]["target_file"] == "hooks/foo.sh"
     assert status.locks["concurrent_write"][0]["file_path"] == "hooks/foo.sh"
+    assert status.task_claims[0]["task_id"] == "TASK-123"
     assert status.stash_alarm and status.stash_alarm["blocking"] is True
     assert status.recent_agent_heartbeats[0]["agent_id"] == "agent-a"
     assert any(finding.code == "stash_leak_blocking" for finding in status.findings)
