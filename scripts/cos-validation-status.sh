@@ -2,7 +2,7 @@
 # SCOPE: os-only
 # cos-validation-status.sh — diagnose the active validation capsule lock.
 #
-# Per ADR-108 P3. Reports per-signal liveness (TTL, PID, heartbeat, activity)
+# Per ADR-113 P3. Reports per-signal liveness (TTL, PID, heartbeat, activity)
 # and an overall verdict: HEALTHY / STALE / NO_LOCK.
 #
 # Exit codes:
