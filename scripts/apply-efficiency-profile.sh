@@ -128,7 +128,7 @@ run_claude_code_driver() {
   for hook in self-install.sh session-init.sh infra-health.sh subagent-context-injector.sh \
     pre-compaction-flush.sh agent-bash-cwd-enforcer.sh rate-limiter.sh secret-detector.sh \
     lethal-trifecta-gate.sh dispatch-gate.sh clarification-gate.sh blast-radius.sh query-tailored-context-inject.sh \
-    pre-agent-snapshot.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh \
+    pre-agent-snapshot.sh post-agent-snapshot-restore.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh \
     content-policy.sh doc-sync-detector.sh claim-validator.sh orchestrator-claim-gate.sh concurrent-write-guard.sh plan-claim-validator.sh completion-gate.sh \
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh context-watchdog.sh kpi-trigger.sh teammate-idle.sh \
