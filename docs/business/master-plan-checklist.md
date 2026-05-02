@@ -147,6 +147,15 @@
 - [x] Prepare a canonical five-minute product demo path through [Five-Minute Demo](../manual-tests/five-minute-demo.md).
 - [ ] Reduce the full Python suite from 195 failures to zero; current evidence is tracked in [Full Suite Validation Report](../reports/full-suite-validation-2026-04-23.md).
 
+## Preserve Branch Governance
+
+- [x] Preserve branch diagnostic report is documented in [Preserve Branch Governance Report — 2026-05-02](../reports/preserve-branch-governance-2026-05-02.md).
+- [x] ADR-110 defines preserve branch governance in [ADR-110](../adrs/ADR-110-preserve-branch-governance.md).
+- [x] Preserve branch lifecycle and consumer projection are documented in [Preserve Branch Lifecycle](../architecture/preserve-branch-lifecycle.md).
+- [x] `scripts/cos-doctor-preserve.sh --json` detects missing manifests, mixed scope, integrated branches, non-ancestor tips, and delete candidates.
+- [x] Preserve governance behavior tests cover the required scenarios in `tests/behavior/test_cos_doctor_preserve.py`.
+- [ ] Existing local `codex/preserve-*` branches have manifests or are explicitly reconciled/deleted.
+
 ## Success Signal
 
 - [x] A new user can understand the product quickly.
