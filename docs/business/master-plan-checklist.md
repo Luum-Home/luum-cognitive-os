@@ -174,3 +174,4 @@
 - [x] Action-count rate limiting uses token buckets with soft warnings, operator reserve, and diversity penalty (ADR-101).
 - [x] Audit/contract lane recovery is documented in [ADR-103](../adrs/ADR-103-audit-contract-lane-recovery.md) and [Audit and Contract Lane Recovery Plan](../../.cognitive-os/plans/architecture/audit-contract-lane-recovery-plan.md), with deterministic docs debt fixed before the parallel flip.
 - [x] Validation capsules are documented and implemented in [ADR-109](../adrs/ADR-109-validation-capsule-worktree-isolation.md), [Validation Capsule](../architecture/validation-capsule.md), and `scripts/cos-validation-capsule.sh`, separating release validation from the global hook killswitch.
+- [ ] Adopt ADR-111 concurrency safety core/consumer boundary and keep primitive tests green (`docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md`).
