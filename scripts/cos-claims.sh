@@ -8,8 +8,7 @@
 #   bash scripts/cos-claims.sh complete <task-id> <session-id> <evidence>
 #   bash scripts/cos-claims.sh release  <task-id> <session-id>
 #
-# All heavy lifting is delegated to packages/agent-coordination/lib/engram_claims.py
-# (symlinked as lib/engram_claims.py).
+# All heavy lifting is delegated to lib/engram_claims.py.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -99,8 +98,8 @@ cmd_claim() {
 
   run_python "
 import sys, json
-sys.path.insert(0, '${REPO_ROOT}/lib')
-import engram_claims
+sys.path.insert(0, '${REPO_ROOT}')
+import lib.engram_claims as engram_claims
 
 files = [f.strip() for f in '${files}'.split(',') if f.strip()] or None
 fp = '${fingerprint}' or None
@@ -124,8 +123,8 @@ cmd_find() {
 
   run_python "
 import sys, json
-sys.path.insert(0, '${REPO_ROOT}/lib')
-import engram_claims
+sys.path.insert(0, '${REPO_ROOT}')
+import lib.engram_claims as engram_claims
 
 record = engram_claims.find_claim('${task_id}')
 if record is None:
@@ -145,8 +144,8 @@ cmd_complete() {
 
   run_python "
 import sys, json
-sys.path.insert(0, '${REPO_ROOT}/lib')
-import engram_claims
+sys.path.insert(0, '${REPO_ROOT}')
+import lib.engram_claims as engram_claims
 
 evidence_raw = '''${evidence}'''
 try:
@@ -169,8 +168,8 @@ cmd_release() {
 
   run_python "
 import sys
-sys.path.insert(0, '${REPO_ROOT}/lib')
-import engram_claims
+sys.path.insert(0, '${REPO_ROOT}')
+import lib.engram_claims as engram_claims
 
 engram_claims.release_claim('${task_id}', '${session_id}')
 print('released')
