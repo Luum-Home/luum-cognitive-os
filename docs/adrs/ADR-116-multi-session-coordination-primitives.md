@@ -297,6 +297,21 @@ From `.cognitive-os/tasks/active-tasks.json`:
 
 6. **Effort estimates not historically anchored**: T-shirt sizes above are reasoned estimates, not derived from `lib/cost_predictor.py` historical data. Calibration after Phase 0 ships.
 
+
+## Alternatives rejected
+
+1. **Keep direct-main multi-session work and rely on manual vigilance.** Rejected because the 2026-05-02 incident showed manual checks happen after orphaned commits, duplicate claims, and wiped fixes have already occurred.
+2. **Only add more validation-capsule isolation.** Rejected because worktree isolation reduces filesystem collisions but does not provide task-claim ownership, duplicate-work fingerprints, merge serialization, or cross-session evidence sharing.
+3. **Use a heavyweight external queue as the first primitive.** Rejected for reconstruction-phase rollout: the immediate failure class needs repo-local, inspectable primitives first, with Engram-backed coordination added after throughput is measured.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+python3 -m pytest tests/contracts/test_hook_quality_system.py -q
+make test-laptop
+```
+
 ## Consequences
 
 ### Positive
