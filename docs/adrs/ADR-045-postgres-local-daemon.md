@@ -7,6 +7,10 @@
 
 ---
 
+## Relationship to ADR-018 and ADR-048
+
+This ADR is a continuation of ADR-018 phase 3, not a reversal of the Docker-to-pip migration. PostgreSQL is treated as a local or optional service because it cannot be replaced by a Python library without losing its runtime role. ADR-048 applies only when a Docker-backed fallback or reference container is used; the preferred local path remains non-Docker when available.
+
 ## Context
 
 As part of D34 (Docker→pip phase 3), PostgreSQL was the last service

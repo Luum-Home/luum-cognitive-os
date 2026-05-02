@@ -11,6 +11,22 @@
 
 Proposed. This ADR decides the layer and invariants. Implementation is tracked in the testbed plan and must be proven by automated tests, not manual checks.
 
+## Relationship to adjacent safety ADRs
+
+ADR-108 is the umbrella layer for concurrent-agent safety. It composes lower-level accepted or proposed ADRs rather than replacing them:
+
+| ADR | Role under ADR-108 |
+|---|---|
+| ADR-089 | Git-index coordination primitive. |
+| ADR-098 | File-edit coordination primitive. |
+| ADR-099 | Pre-agent snapshot safety and untracked-file preservation. |
+| ADR-105 | Bilateral claim verification contract. |
+| ADR-106 | Concrete multi-session primitives: stash alarm, plan lock, provenance enforcement, bilateral orchestration gate. |
+| ADR-110 | Preserve-branch governance primitive. |
+| ADR-111 | Core/consumer projection boundary for this safety layer. |
+
+If this ADR and a lower-level ADR disagree, the lower-level ADR controls its own primitive mechanics; ADR-108 controls the cross-primitive invariants and scenario-test requirement.
+
 ## Context
 
 Cognitive OS is expected to support multiple agents, harness sessions, worktrees, and background hooks working at the same time. That concurrency is valuable, but it creates distributed-systems failure modes inside a local repository:

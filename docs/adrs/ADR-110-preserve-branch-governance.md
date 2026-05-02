@@ -11,6 +11,10 @@
 
 Proposed. Initial doctor and behavior tests are part of the first implementation slice.
 
+## Relationship to ADR-108 and ADR-111
+
+ADR-110 is the preserve-branch primitive under the ADR-108 Concurrent Agent Safety Layer. It is intentionally narrower than ADR-108: it governs `codex/preserve-*` branches, manifests, ancestry checks, mixed-scope detection, and deletion proof. ADR-111 controls how this primitive is projected into consumer projects through configuration. ADR-110 controls the doctor contract and preserve-branch lifecycle semantics.
+
 ## Context
 
 Cognitive OS increasingly creates preservation branches such as `codex/preserve-*` to avoid losing WIP during concurrent sessions, validation capsules, rollback planning, and automatic cleanup. This is good as a crash-safety mechanism, but it creates a new governance problem: preserved work can remain reachable in Git while not being active in `HEAD`.

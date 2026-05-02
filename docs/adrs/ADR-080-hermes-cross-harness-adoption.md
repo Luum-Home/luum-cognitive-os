@@ -12,7 +12,11 @@ ADR-074 (Tier-0 learning loop), ADR-076 (skill-tier frontmatter), ADR-078 (mid-t
 
 ## Status
 
-Proposed. Blocked-by: ADR-081.
+Proposed umbrella. ADR-081 prerequisite is satisfied; remaining open work is tracked item-by-item in the implementation status table.
+
+## Relationship to memory ADRs
+
+ADR-080 is an umbrella for future Hermes-derived cross-harness ports. It does not reopen the accepted Engram and memory decisions in ADR-071, ADR-077, or ADR-078. The resolved layering is: ADR-071 governs Engram lifecycle ranking, ADR-077 governs the local peer-card user-memory model, ADR-078 governs the mid-task memory manager/tool surface, and ADR-080 governs additional Hermes portability candidates that are not already decided elsewhere. Individual accepted rows in this ADR are implementation status, not separate conflicting ADR decisions.
 
 ### Implementation Status
 
@@ -80,9 +84,7 @@ decision confidence.
 
 ### Prerequisite: Codex harness adapter (ADR-081)
 
-Tier 1 of this ADR is **blocked** until ADR-081 (Codex harness adapter) ships
-and produces byte-identical canonical events when compared against the existing
-Claude Code adapter.
+Tier 1 originally waited for ADR-081 (Codex harness adapter). That prerequisite is now satisfied, so new Tier 1 work may proceed only when its own implementation evidence and tests are identified.
 
 **Rationale.** ADR-064 (cross-harness authoring guide) is currently Proposed,
 pending proof that a second real harness can satisfy the canonical event schema
