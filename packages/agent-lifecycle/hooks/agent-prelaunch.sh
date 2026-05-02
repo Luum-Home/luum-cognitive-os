@@ -100,20 +100,26 @@ if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/claim_task.p
 fi
 
 if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/cos_work_inventory.py" ] && [ "${COS_SKIP_GOVERNED_INVENTORY:-0}" != "1" ]; then
-  set +e
-  INVENTORY_OUT=$(python3 "$PROJECT_DIR/scripts/cos_work_inventory.py" --project-dir "$PROJECT_DIR" --all --strict --json 2>&1)
-  INVENTORY_RC=$?
-  set -e
-  if [ "$INVENTORY_RC" -ne 0 ]; then
-    echo "ADR-116 GOVERNED PREFLIGHT BLOCK: cos_work_inventory.py --all --strict failed before Agent launch." >&2
-    echo "$INVENTORY_OUT" >&2
-    if [ "$ACTIVE_CLAIM_ACQUIRED" -eq 1 ]; then
-      python3 "$PROJECT_DIR/scripts/cos_task_claims.py" --project-dir "$PROJECT_DIR" \
-        release --task-id "$TASK_ID" --session-id "$SESSION_ID" >/dev/null 2>&1 || true
+  # Work inventory is a git-backed coordination gate. Consumer/project test
+  # fixtures can exercise Agent hooks before git init; those fixtures should
+  # still get task claims and resource leases instead of being blocked by a
+  # non-applicable repository inventory check.
+  if git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    set +e
+    INVENTORY_OUT=$(python3 "$PROJECT_DIR/scripts/cos_work_inventory.py" --project-dir "$PROJECT_DIR" --all --strict --json 2>&1)
+    INVENTORY_RC=$?
+    set -e
+    if [ "$INVENTORY_RC" -ne 0 ]; then
+      echo "ADR-116 GOVERNED PREFLIGHT BLOCK: cos_work_inventory.py --all --strict failed before Agent launch." >&2
+      echo "$INVENTORY_OUT" >&2
+      if [ "$ACTIVE_CLAIM_ACQUIRED" -eq 1 ]; then
+        python3 "$PROJECT_DIR/scripts/cos_task_claims.py" --project-dir "$PROJECT_DIR" \
+          release --task-id "$TASK_ID" --session-id "$SESSION_ID" >/dev/null 2>&1 || true
+      fi
+      python3 "$PROJECT_DIR/scripts/claim_task.py" --project-dir "$PROJECT_DIR" \
+        release "$TASK_ID" --session-id "$SESSION_ID" --agent-id "$AGENT_LEDGER_ID" >/dev/null 2>&1 || true
+      exit "$INVENTORY_RC"
     fi
-    python3 "$PROJECT_DIR/scripts/claim_task.py" --project-dir "$PROJECT_DIR" \
-      release "$TASK_ID" --session-id "$SESSION_ID" --agent-id "$AGENT_LEDGER_ID" >/dev/null 2>&1 || true
-    exit "$INVENTORY_RC"
   fi
 fi
 
