@@ -90,9 +90,67 @@ _SECRET_PATTERNS: Tuple[Tuple[str, "re.Pattern[str]"], ...] = tuple(
         ("jwt_like",           r"\beyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-]{10,}\b"),
         # PII / regulated identifiers
         ("us_ssn",             r"\b\d{3}-\d{2}-\d{4}\b"),
-        ("credit_card",        r"\b(?:\d[ -]*?){13,19}\b"),
     )
 )
+
+# Credit-card detection — separate from _SECRET_PATTERNS because it needs a
+# Luhn-checksum validator, not just a regex. Two-stage match:
+#   1. Pull contiguous digit-with-separator candidates of plausible PAN length
+#      (13-19 digits, optional space/dash every 4).
+#   2. Strip separators, then verify both a known brand prefix AND Luhn.
+# This avoids the prior regex pitfall where a single \b...{13,19}\b pattern
+# silently dropped phone numbers, IBANs, and arbitrary IDs.
+_CREDIT_CARD_CANDIDATE = re.compile(
+    r"(?<!\d)(?:\d[ -]?){12,18}\d(?!\d)"
+)
+
+# Brand prefixes per ISO/IEC 7812-1 with allowed lengths. Each entry is
+# ``(compiled_prefix_regex, allowed_lengths)`` matched against the digits-only
+# string. Lengths are exact — Visa 13/16/19, MC 16, Amex 15, etc.
+_CREDIT_CARD_BRANDS: Tuple[Tuple["re.Pattern[str]", Tuple[int, ...]], ...] = (
+    (re.compile(r"^4\d+$"),                                        (13, 16, 19)),  # Visa
+    (re.compile(r"^(?:5[1-5]|2(?:2(?:2[1-9]|[3-9]\d)|[3-6]\d{2}|7(?:[01]\d|20)))\d+$"),
+                                                                   (16,)),         # MasterCard
+    (re.compile(r"^3[47]\d+$"),                                    (15,)),         # Amex
+    (re.compile(r"^(?:6011|65\d{2}|64[4-9]\d)\d+$"),               (16,)),         # Discover
+    (re.compile(r"^35(?:2[89]|[3-8]\d)\d+$"),                      (16,)),         # JCB
+    (re.compile(r"^3(?:0[0-5]|[68]\d)\d+$"),                       (14,)),         # Diners
+)
+
+
+def _luhn_valid(digits: str) -> bool:
+    """Validate *digits* (a numeric string) against the Luhn (mod-10) checksum.
+
+    Returns ``False`` for empty input or any non-digit character. Used to gate
+    credit-card matches so that arbitrary 13-19 digit numbers (phone numbers,
+    IBANs, account IDs) do not silently block legitimate peer-card updates.
+    """
+    if not digits or not digits.isdigit():
+        return False
+    total = 0
+    # Walk right-to-left, double every second digit.
+    for i, ch in enumerate(reversed(digits)):
+        n = ord(ch) - 48  # ord('0') == 48
+        if i % 2 == 1:
+            n *= 2
+            if n > 9:
+                n -= 9
+        total += n
+    return total % 10 == 0
+
+
+def _contains_credit_card(text: str) -> bool:
+    """Return True if *text* contains a Luhn-valid PAN with a known brand prefix."""
+    if not text:
+        return False
+    for match in _CREDIT_CARD_CANDIDATE.finditer(text):
+        digits = re.sub(r"[ -]", "", match.group(0))
+        if not _luhn_valid(digits):
+            continue
+        for prefix_re, lengths in _CREDIT_CARD_BRANDS:
+            if len(digits) in lengths and prefix_re.match(digits):
+                return True
+    return False
 
 
 def _contains_secret(text: str) -> Optional[str]:
@@ -102,6 +160,8 @@ def _contains_secret(text: str) -> Optional[str]:
     for name, pattern in _SECRET_PATTERNS:
         if pattern.search(text):
             return name
+    if _contains_credit_card(text):
+        return "credit_card"
     return None
 
 
@@ -246,6 +306,7 @@ class EngramStore:
             content=json.dumps(card, ensure_ascii=False, sort_keys=True),
             topic_key=TOPIC_KEY,
             type_=OBSERVATION_TYPE,
+            scope=OBSERVATION_SCOPE,
         )
 
 
