@@ -27,13 +27,19 @@ def _project(tmp_path: Path) -> Path:
     return project
 
 
-def _run_hook(hook: str, payload: dict, project: Path) -> subprocess.CompletedProcess[str]:
+def _run_hook(
+    hook: str,
+    payload: dict,
+    project: Path,
+    *,
+    session_id: str = "session-test",
+) -> subprocess.CompletedProcess[str]:
     env = os.environ.copy()
     env.update(
         {
             "COGNITIVE_OS_PROJECT_DIR": str(project),
             "CLAUDE_PROJECT_DIR": str(project),
-            "COGNITIVE_OS_SESSION_ID": "session-test",
+            "COGNITIVE_OS_SESSION_ID": session_id,
             "COGNITIVE_OS_HOOK_HEARTBEAT": "false",
         }
     )
@@ -67,6 +73,8 @@ def test_agent_hooks_write_work_ledger_and_resource_lease(tmp_path: Path) -> Non
     assert events[-1]["status"] == "started"
     assert events[-1]["agent_id"] == "agent-tool-1"
     assert (project / ".cognitive-os/runtime/resource-leases/auth.json").exists()
+    claims = json.loads((project / ".cognitive-os/runtime/task-claims.json").read_text(encoding="utf-8"))
+    assert len(claims["claims"]) == 1
 
     post_payload = {
         **payload,
@@ -78,6 +86,30 @@ def test_agent_hooks_write_work_ledger_and_resource_lease(tmp_path: Path) -> Non
     events = _jsonl(project / ".cognitive-os/runtime/agent-work-ledger.jsonl")
     assert events[-1]["status"] == "completed"
     assert not (project / ".cognitive-os/runtime/resource-leases/auth.json").exists()
+    claims = json.loads((project / ".cognitive-os/runtime/task-claims.json").read_text(encoding="utf-8"))
+    assert claims["claims"] == {}
+
+
+def test_agent_prelaunch_blocks_duplicate_canonical_task_claim(tmp_path: Path) -> None:
+    project = _project(tmp_path)
+    payload_a = {
+        "tool_name": "Agent",
+        "tool_use_id": "agent-tool-a",
+        "tool_input": {"description": "implement TASK-123 cross IDE safety"},
+    }
+    payload_b = {
+        "tool_name": "Agent",
+        "tool_use_id": "agent-tool-b",
+        "tool_input": {"description": "implement TASK-123 cross IDE safety"},
+    }
+
+    first = _run_hook("agent-prelaunch.sh", payload_a, project, session_id="session-a")
+    assert first.returncode == 0, first.stderr
+
+    blocked = _run_hook("agent-prelaunch.sh", payload_b, project, session_id="session-b")
+    assert blocked.returncode == 2
+    assert "ADR-116 TASK CLAIM BLOCK" in blocked.stderr
+    assert "session-a" in blocked.stderr
 
 
 def test_agent_prelaunch_blocks_when_resource_lease_is_held(tmp_path: Path) -> None:
