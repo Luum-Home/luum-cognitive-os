@@ -6,6 +6,7 @@
 # This script is the entry point; actual projection is done by the drivers:
 #   scripts/_lib/settings-driver-claude-code.sh  → .claude/settings.json
 #   scripts/_lib/settings-driver-codex.sh        → .codex/hooks.json
+#   scripts/_lib/settings-driver-bare.sh         → .cognitive-os/cos-runner-hooks.json
 #
 # ── manual-invoke only ────────────────────────────────────────────────────────
 # so-emergency-stop.sh  — ADR-028 D5 kill-switch (manual CLI, not a hook matcher)
@@ -132,7 +133,9 @@ run_claude_code_driver() {
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh context-watchdog.sh kpi-trigger.sh teammate-idle.sh \
     task-created.sh task-completed.sh session-sanity.sh validation-lock-cleanup.sh \
-    error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh; do
+    error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
+    destructive-git-blocker.sh auto-verify.sh private-mode-gate.sh \
+    private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
     fi
@@ -144,6 +147,11 @@ run_codex_driver() {
   bash "$LIB_DIR/settings-driver-codex.sh"
 }
 
+run_bare_driver() {
+  echo "Running Bare-CLI driver..."
+  bash "$LIB_DIR/settings-driver-bare.sh"
+}
+
 case "$HARNESS" in
   claude-code)
     run_claude_code_driver
@@ -151,12 +159,16 @@ case "$HARNESS" in
   codex)
     run_codex_driver
     ;;
+  bare-cli)
+    run_bare_driver
+    ;;
   all)
     run_claude_code_driver
     run_codex_driver
+    run_bare_driver
     ;;
   *)
-    echo "ERROR: Unknown harness '$HARNESS'. Valid: claude-code, codex, all." >&2
+    echo "ERROR: Unknown harness '$HARNESS'. Valid: claude-code, codex, bare-cli, all." >&2
     exit 1
     ;;
 esac
@@ -169,9 +181,11 @@ echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  PreToolUse *: session-heartbeat.sh, lethal-trifecta-gate.sh"
-echo "  PreToolUse Bash: rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, git-commit-scope-guard.sh"
+echo "  PreToolUse Bash: rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, destructive-git-blocker.sh, git-commit-scope-guard.sh"
+echo "  PreToolUse engram write tools: private-mode-gate.sh"
 echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, edit-lock-pre-tool.sh"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, pre-agent-snapshot.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, reinvention-check.sh, native-agent-heartbeat.sh"
+echo "  PostToolUse * (early): private-mode-metrics-gate.sh"
 echo "  PostToolUse *: context-watchdog.sh (async), rate-limit-detector.sh, tool-sequence-capture.sh, aci-observation-capture.sh"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh (async)"
@@ -179,13 +193,14 @@ echo "  PostToolUse Edit|Write: content-policy.sh, skill-frontmatter-validator.s
 echo "  PostToolUse TodoWrite: work-queue-sync.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh (async), skill-invocation-logger.sh"
 echo "  PostToolUse mem_search|mem_get_observation: engram-reinforce-on-access.sh (async)"
-echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, skill-feedback-tracker.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async), review-spawner.sh"
-echo "  Stop: session-summary-reminder.sh, session-learning.sh, session-cleanup.sh, edit-lock-session-end.sh, git-context-capture.sh, session-changelog.sh, skill-failure-monitor.sh, kpi-trigger.sh (async), engram-crystallize-on-session-end.sh (async)"
+echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, skill-feedback-tracker.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async), review-spawner.sh, auto-verify.sh, auto-refine.sh, dod-gate.sh, skill-tracker.sh"
+echo "  Stop: session-summary-reminder.sh, session-learning.sh, session-cleanup.sh, edit-lock-session-end.sh, git-context-capture.sh, session-changelog.sh, skill-failure-monitor.sh, session-end-reap.sh, kpi-trigger.sh (async), engram-crystallize-on-session-end.sh (async)"
 echo "  TeammateIdle: teammate-idle.sh"
 echo "  TaskCreated: task-created.sh"
 echo "  TaskCompleted: task-completed.sh"
 echo ""
 echo "Codex driver also ran: .codex/hooks.json regenerated (SessionStart/UserPromptSubmit/Stop/PreToolUse:Bash/PostToolUse:Bash)"
+echo "Bare-CLI driver also ran (when --harness=all|bare-cli): .cognitive-os/cos-runner-hooks.json regenerated (session_start/user_prompt_submit/tool_use_start/tool_use_end/session_end)"
 echo ""
 echo "To revert to full hooks: bash scripts/apply-efficiency-profile.sh full"
 echo "  (This keeps settings.json and .codex/hooks.json as-is)"
