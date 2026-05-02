@@ -2,6 +2,7 @@
 # SCOPE: both
 # ROLE: observability
 # CANONICAL: scripts/hook-stream-statusline.sh
+# @on-demand: started manually by operator to display hook-stream statusline; requires hook-stream FIFO to be active
 # hook-stream-statusline.sh — Non-blocking FIFO reader for hook-stream statusline
 #
 # Reads lines from .cognitive-os/runtime/hook-stream.fifo and prints them in

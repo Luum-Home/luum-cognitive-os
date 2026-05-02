@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: project
+# @manual-trigger: invoke explicitly via `bash scripts/deps-update.sh [--audit|--apply]` for dependency maintenance
 # deps-update.sh — Audit and optionally upgrade project dependencies
 #
 # Usage:

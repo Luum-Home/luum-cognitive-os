@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# @on-demand: run periodically to prune snapshots older than ttl_days (ADR-099); no Claude event triggers it
 # cleanup-snapshots.sh — Prune expired pre-agent snapshots (ADR-099)
 #
 # Reads ttl_days from cognitive-os.yaml (key: snapshots.ttl_days, default: 30).
