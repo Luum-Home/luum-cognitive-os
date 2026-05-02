@@ -1309,12 +1309,6 @@ harness:
       matcher: Agent
       scope: os-only
 
-    post-agent-verify:
-      script: hooks/post-agent-verify.sh
-      event: PostToolUse
-      matcher: Agent
-      scope: os-only
-
     trust-score-validator:
       script: hooks/trust-score-validator.sh
       event: PostToolUse
