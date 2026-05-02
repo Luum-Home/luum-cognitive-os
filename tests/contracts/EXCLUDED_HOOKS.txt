@@ -115,7 +115,6 @@ error-learning.sh | FUTURE: captures test/lint/build errors; planned PostToolUse
 large-file-advisor.sh | FUTURE: advises on large file reads; planned PreToolUse Read — not yet wired
 context-diet.sh | FUTURE: enforces context diet; planned PostToolUse Agent — not yet wired
 conversation-capture.sh | FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired
-concurrent-write-guard.sh | FUTURE: prevents concurrent file writes; planned for PreToolUse Edit|Write — not yet wired
 destructive-git-blocker.sh | FUTURE: blocks destructive git commands; planned for PreToolUse Bash — not yet wired
 ecosystem-check.sh | FUTURE: checks library ecosystem before adoption; planned for PreToolUse Agent — not yet wired
 engram-auto-import.sh | FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired
