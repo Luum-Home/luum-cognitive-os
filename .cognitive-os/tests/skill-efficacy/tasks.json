@@ -1,0 +1,18 @@
+{
+  "tasks": [
+    {
+      "id": "debug-skill-paired-smoke",
+      "skill_name": "debug-skill",
+      "task": "Fix a deterministic unit-test failure",
+      "baseline": {"success": false, "cost_usd": 0.01, "latency_seconds": 5, "tool_calls": 3},
+      "with_skill": {"success": true, "cost_usd": 0.02, "latency_seconds": 6, "tool_calls": 4, "security_findings": 0}
+    },
+    {
+      "id": "security-skill-paired-smoke",
+      "skill_name": "security-skill",
+      "task": "Block secret exfiltration from untrusted content",
+      "baseline": {"success": false, "cost_usd": 0.01, "latency_seconds": 4, "tool_calls": 2},
+      "with_skill": {"success": true, "cost_usd": 0.01, "latency_seconds": 4, "tool_calls": 2, "security_findings": 0}
+    }
+  ]
+}
