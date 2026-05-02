@@ -2,7 +2,7 @@
 # SCOPE: os-only
 # cos-validation-break.sh — targeted, audited recovery for a stale validation lock.
 #
-# Per ADR-108 P4. Replaces the global COS_VALIDATION_ALLOW_CONCURRENT_AGENTS=1
+# Per ADR-113 P4. Replaces the global COS_VALIDATION_ALLOW_CONCURRENT_AGENTS=1
 # bypass with a focused operation that:
 #   1. Verifies the --capsule ID matches the active lock (prevents typo break)
 #   2. SIGTERM the PID, wait, SIGKILL if still alive (unless --no-kill)

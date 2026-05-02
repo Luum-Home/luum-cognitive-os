@@ -34,10 +34,10 @@ heartbeat = int(data.get("last_heartbeat_epoch") or 0)
 hb_interval = int(data.get("heartbeat_interval_seconds") or 0)
 
 stale = False
-# ADR-108 layer 1: TTL fail-safe
+# ADR-113 layer 1: TTL fail-safe
 if expires_at and expires_at < now:
     stale = True
-# ADR-108 layer 2: PID liveness
+# ADR-113 layer 2: PID liveness
 elif pid > 0:
     try:
         os.kill(pid, 0)
@@ -46,12 +46,12 @@ elif pid > 0:
     except PermissionError:
         stale = False
 
-# ADR-108 layer 3: heartbeat staleness (3 missed beats == dead)
+# ADR-113 layer 3: heartbeat staleness (3 missed beats == dead)
 if not stale and heartbeat > 0 and hb_interval > 0:
     if (now - heartbeat) > (3 * hb_interval):
         stale = True
 
-# ADR-108 layer 4: activity staleness (semantic check, 5 min default)
+# ADR-113 layer 4: activity staleness (semantic check, 5 min default)
 if not stale:
     activity_log = path.parent / "validation-activity.jsonl"
     activity_threshold = int(os.environ.get("COS_VALIDATION_ACTIVITY_THRESHOLD", "300"))
@@ -92,7 +92,7 @@ PY
   return 0
 }
 
-# ADR-108 P3: report a structured staleness diagnosis for status command.
+# ADR-113 P3: report a structured staleness diagnosis for status command.
 # Outputs one line per signal: "<signal>=<state> [<detail>]".
 # Signals: ttl, pid, heartbeat, activity. State: ok|stale|missing.
 cos_validation_lock_stale_reason() {

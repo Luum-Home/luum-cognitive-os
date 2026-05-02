@@ -95,14 +95,14 @@ fi
 
 mkdir -p "$base_dir"
 
-# ADR-108: heartbeat configuration
+# ADR-113: heartbeat configuration
 HEARTBEAT_INTERVAL_SECONDS="${COS_VALIDATION_HEARTBEAT_INTERVAL:-30}"
 HEARTBEAT_PID=""
 ACTIVITY_LOG="$RUNTIME_DIR/validation-activity.jsonl"
 
 cleanup() {
   status=$?
-  # ADR-108: kill heartbeat first so it stops touching the lock
+  # ADR-113: kill heartbeat first so it stops touching the lock
   if [ -n "$HEARTBEAT_PID" ]; then
     kill "$HEARTBEAT_PID" 2>/dev/null || true
     wait "$HEARTBEAT_PID" 2>/dev/null || true
@@ -127,15 +127,15 @@ payload = {
     "capsule_dir": capsule,
     "started_at_epoch": now,
     "expires_at_epoch": int(expires),
-    "last_heartbeat_epoch": now,           # ADR-108 P1
-    "heartbeat_interval_seconds": int(hb_interval),  # ADR-108 P1
+    "last_heartbeat_epoch": now,           # ADR-113 P1
+    "heartbeat_interval_seconds": int(hb_interval),  # ADR-113 P1
     "command": command,
     "message": f"validation capsule {run_id} is running in {capsule}",
 }
 Path(path).write_text(json.dumps(payload, separators=(",", ":")) + "\n")
 PYJSON
 
-# ADR-108 P1: heartbeat writer background loop. Updates last_heartbeat_epoch
+# ADR-113 P1: heartbeat writer background loop. Updates last_heartbeat_epoch
 # every $HEARTBEAT_INTERVAL_SECONDS so dispatch-gate can detect hung processes
 # (alive PID but no progress).
 (
@@ -159,7 +159,7 @@ PYHB
 ) &
 HEARTBEAT_PID=$!
 
-# ADR-108 P2: initialize activity log; subprocess can append events.
+# ADR-113 P2: initialize activity log; subprocess can append events.
 printf '{"ts":"%s","capsule":"%s","action":"capsule_start","detail":"%s"}\n' \
   "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$run_id" "$*" >> "$ACTIVITY_LOG" 2>/dev/null || true
 
