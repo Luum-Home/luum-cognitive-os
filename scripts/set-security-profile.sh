@@ -137,7 +137,7 @@ case "$PROFILE" in
     # ADR-023 mutation-style hooks (PreToolUse Bash|Edit|Write|Agent):
     # Hooks: secret-detector.sh — redacts via hookSpecificOutput.updatedInput
     # Hooks: blast-radius.sh    — surfaces warnings via additionalContext
-    echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, valkey-ensure.sh (executor mode only), pattern-check, metrics-rotation.sh, aspirational-audit-weekly.sh, mcp-scan.sh, session-start-worktree-nudge.sh (ADR-035: worktree cwd warning), self-knowledge-refresh.sh (ADR-037: stale index rebuild), session-watchdog-launcher.sh (ADR-047 Phase A: singleton watchdog daemon), session-startup-protocol.sh (rules/startup-protocol.md: 5-step context check), docker-drift-detector.sh (stale container vs compose pin advisory)"
+    echo "  SessionStart: self-install, session-init, crash-recovery, session-resume, infra-health, valkey-ensure.sh (executor mode only), pattern-check, metrics-rotation.sh, aspirational-audit-weekly.sh, mcp-scan.sh, session-start-worktree-nudge.sh (ADR-035: worktree cwd warning), self-knowledge-refresh.sh (ADR-037: stale index rebuild), session-watchdog-launcher.sh (ADR-047 Phase A: singleton watchdog daemon), session-startup-protocol.sh (rules/startup-protocol.md: 5-step context check), docker-drift-detector.sh (stale container vs compose pin advisory), session-start-stash-reapply.sh (ADR-116 P4.3: stash provenance auto-reapply)"
     echo "  UserPromptSubmit: user-prompt-capture, session-wrapup-trigger.sh"
     echo "  SubagentStart: subagent-context-injector"
     # Hooks: adr-detector.sh (async, PostToolUse/Bash)
