@@ -16,6 +16,8 @@
 !.cognitive-os/skills/
 .cognitive-os/skills/*
 !.cognitive-os/skills/_catalog-allowlist.txt
+!.cognitive-os/preserve-manifests/
+!.cognitive-os/preserve-manifests/*.json
 dynamic-tools/
 sessions/
 transcripts/
