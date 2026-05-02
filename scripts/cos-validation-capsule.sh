@@ -130,12 +130,10 @@ mkdir -p "$CAPSULE_DIR/.cognitive-os/metrics" "$CAPSULE_DIR/.cognitive-os/runtim
 printf '[validation-capsule] running in %s\n' "$CAPSULE_DIR" >&2
 (
   cd "$CAPSULE_DIR"
-  export COS_VALIDATION_CAPSULE_ACTIVE=1
-  export COS_VALIDATION_MODE=1
-  export COS_SUPPRESS_AGENT_SNAPSHOT=1
-  export COS_DISABLE_PROFILE_AUTOAPPLY=1
-  export COGNITIVE_OS_PROJECT_DIR="$CAPSULE_DIR"
-  export CLAUDE_PROJECT_DIR="$CAPSULE_DIR"
-  export CODEX_PROJECT_DIR="$CAPSULE_DIR"
+  # Keep test behavior representative. The source checkout is protected by the
+  # validation lock; the isolated worktree should run hooks/tests normally.
+  unset COGNITIVE_OS_PROJECT_DIR CLAUDE_PROJECT_DIR CODEX_PROJECT_DIR
+  unset COS_VALIDATION_MODE COS_SUPPRESS_AGENT_SNAPSHOT COS_DISABLE_PROFILE_AUTOAPPLY COS_VALIDATION_CAPSULE_ACTIVE
+  export COS_VALIDATION_SOURCE_PROJECT_DIR="$REPO_ROOT"
   exec "$@"
 )

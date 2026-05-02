@@ -18,7 +18,7 @@ PRE_AGENT_SNAPSHOT = PROJECT_ROOT / "hooks" / "pre-agent-snapshot.sh"
 PROFILE_AUTOAPPLY = PROJECT_ROOT / "hooks" / "profile-drift-autoapply.sh"
 
 
-def test_validation_capsule_runs_in_isolated_worktree_and_exports_guards() -> None:
+def test_validation_capsule_runs_in_isolated_worktree() -> None:
     result = subprocess.run(
         [
             "bash",
@@ -29,7 +29,7 @@ def test_validation_capsule_runs_in_isolated_worktree_and_exports_guards() -> No
             "--",
             "bash",
             "-c",
-            "pwd; test \"$COS_VALIDATION_MODE\" = 1 && test \"$COS_SUPPRESS_AGENT_SNAPSHOT\" = 1 && test \"$COS_DISABLE_PROFILE_AUTOAPPLY\" = 1",
+            "pwd; test -z \"${COGNITIVE_OS_PROJECT_DIR:-}\" && test -n \"${COS_VALIDATION_SOURCE_PROJECT_DIR:-}\"",
         ],
         cwd=PROJECT_ROOT,
         text=True,
