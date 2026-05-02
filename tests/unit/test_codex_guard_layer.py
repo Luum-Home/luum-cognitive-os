@@ -53,6 +53,7 @@ def test_post_agent_chain_covers_codex_omitted_quality_closure() -> None:
         "hooks/claim-validator.sh",
         "hooks/completion-gate.sh",
         "hooks/agent-checkpoint.sh",
+        "hooks/post-agent-snapshot-restore.sh",
         "hooks/trust-score-validator.sh",
         "hooks/confidence-gate.sh",
         "hooks/auto-rollback-trigger.sh",
@@ -64,6 +65,12 @@ def test_post_agent_chain_covers_codex_omitted_quality_closure() -> None:
         "hooks/review-spawner.sh",
     }
     assert expected.issubset(scripts)
+
+
+def test_pre_agent_snapshot_runs_after_blocking_agent_gates() -> None:
+    scripts = _listed("pre-agent")
+    assert scripts.index("hooks/pre-agent-snapshot.sh") > scripts.index("hooks/agent-prelaunch.sh")
+    assert scripts.index("hooks/pre-agent-snapshot.sh") > scripts.index("hooks/reinvention-check.sh")
 
 
 def test_edit_write_chain_covers_codex_omitted_file_gates() -> None:

@@ -146,6 +146,11 @@ run_claude_code_driver() {
 run_codex_driver() {
   echo "Running Codex driver..."
   bash "$LIB_DIR/settings-driver-codex.sh"
+  # Sanity: ADR-111 Gate-3 Codex proxy must be wired (UserPromptSubmit prompt matcher).
+  CODEX_HOOKS_FILE="$PROJECT_DIR/.codex/hooks.json"
+  if [ -f "$CODEX_HOOKS_FILE" ] && ! grep -q "concurrent-write-guard-codex-proxy.sh" "$CODEX_HOOKS_FILE"; then
+    echo "Warning: concurrent-write-guard-codex-proxy.sh is NOT wired in .codex/hooks.json (ADR-111 Gate-3)." >&2
+  fi
 }
 
 run_bare_driver() {
@@ -185,7 +190,7 @@ echo "  PreToolUse *: session-heartbeat.sh, lethal-trifecta-gate.sh"
 echo "  PreToolUse Bash: rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, destructive-git-blocker.sh, symlink-mutation-guard.sh, scope-marker-portability-gate.sh, git-commit-scope-guard.sh, direct-main-guard.sh, orchestrator-claim-gate.sh, pre-commit-content-hash-dedupe.sh"
 echo "  PreToolUse engram write tools: private-mode-gate.sh"
 echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, edit-lock-pre-tool.sh, concurrent-write-guard.sh, plan-claim-validator.sh"
-echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, pre-agent-snapshot.sh, post-agent-snapshot-restore.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, native-agent-heartbeat.sh"
+echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, pre-agent-snapshot.sh, native-agent-heartbeat.sh"
 echo "  PostToolUse * (early): private-mode-metrics-gate.sh"
 echo "  PostToolUse *: context-watchdog.sh (async), rate-limit-detector.sh, tool-sequence-capture.sh, aci-observation-capture.sh"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh, post-git-orphan-notifier.sh"
@@ -200,7 +205,7 @@ echo "  TeammateIdle: teammate-idle.sh"
 echo "  TaskCreated: task-created.sh"
 echo "  TaskCompleted: task-completed.sh"
 echo ""
-echo "Codex driver also ran: .codex/hooks.json regenerated (SessionStart/UserPromptSubmit/Stop/PreToolUse:Bash/PostToolUse:Bash)"
+echo "Codex driver also ran: .codex/hooks.json regenerated (SessionStart/UserPromptSubmit/Stop/PreToolUse:Bash/PostToolUse:Bash); ADR-111 Gate-3: concurrent-write-guard-codex-proxy.sh at UserPromptSubmit"
 echo "Bare-CLI driver also ran (when --harness=all|bare-cli): .cognitive-os/cos-runner-hooks.json regenerated (session_start/user_prompt_submit/tool_use_start/tool_use_end/session_end)"
 echo ""
 echo "To revert to full hooks: bash scripts/apply-efficiency-profile.sh full"

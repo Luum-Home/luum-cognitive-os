@@ -75,6 +75,10 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/stash-budget-warn.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/concurrent-write-guard-codex-proxy.sh\""
           }
         ]
       }
