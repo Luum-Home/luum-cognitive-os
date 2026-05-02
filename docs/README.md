@@ -12,6 +12,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 - [Multi-Session Orchestration Audit — 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) — documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap.
+- [Multi-IDE Swarm Safety Testbed Plan](architecture/multi-ide-swarm-testbed-plan.md) — executable plan for reproducing same-task, same-file, same-domain, git-overwrite, parity, memory, and watermark races.
 - [Cross-IDE Claim Verification Matrix](architecture/claim-verification-matrix.md) — claim verbs mapped to deterministic verifiers, hooks, and tests so agents can report but not close without evidence.
 - [ADR Collision Reconciliation — 2026-05-02](architecture/adr-collision-reconciliation.md) — namespace and semantic relationship cleanup for overlapping ADR clusters.
 - [Agentic Mastery Operations Plan](architecture/agentic-mastery-operations.md) — executable command plan for local tests, reports, and manual proof paths.
