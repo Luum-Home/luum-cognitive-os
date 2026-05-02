@@ -154,10 +154,13 @@ def extract_high_stakes_claims(agent_output: str) -> List[HighStakesClaim]:
         matched_verb = _detect_verb_in_text(line)
         if not matched_verb:
             continue
-        # Extract a plausible target from the line
+        # Extract a plausible target from the line.  Do not fall back to the
+        # whole line: ADR/status prose such as "already integrated in main" or
+        # headings like "verified Regex matrix:" are not executable claims unless
+        # they name a concrete path/identifier.
         target = _extract_target_from_line(line, matched_verb)
         if not target:
-            target = line.strip()[:80]  # fallback: truncated line
+            continue
         key = (matched_verb, target)
         if key not in seen:
             seen.add(key)
@@ -177,8 +180,13 @@ def extract_high_stakes_claims(agent_output: str) -> List[HighStakesClaim]:
 
 
 def _detect_verb_in_text(text: str) -> Optional[str]:
-    """Return the first HIGH_STAKES_VERBS verb found in text, else None."""
-    text_lower = text.lower()
+    """Return the first HIGH_STAKES_VERBS verb found in text, else None.
+
+    Parenthetical qualifiers are frequently schema/status prose, not an agent
+    completion claim (for example: ``status (integrated for all 9)``).
+    Strip them before verb detection to avoid false-positive claim gates.
+    """
+    text_lower = re.sub(r"\([^)]*\)", "", text).lower()
     for verb, pattern in _VERB_PATTERNS.items():
         if pattern.search(text_lower):
             return verb
