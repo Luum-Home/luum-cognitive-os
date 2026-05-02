@@ -426,3 +426,162 @@ def test_genuine_destructive_op_after_commit_message_is_still_blocked(tmp_path: 
         f"stderr={result.stderr}"
     )
     assert "BLOCKED" in result.stderr
+
+
+# ---------------------------------------------------------------------------
+# ADR-116 P3.2: WIP-guard cascade protection
+# ---------------------------------------------------------------------------
+
+def _init_dirty_repo(path: Path) -> None:
+    """Create a git repo with one committed file and one uncommitted modification."""
+    subprocess.run(["git", "init", "-b", "main"], cwd=path, check=True, capture_output=True)
+    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=path, check=True)
+    subprocess.run(["git", "config", "user.name", "Test"], cwd=path, check=True)
+    (path / "base.py").write_text("x = 1\n", encoding="utf-8")
+    subprocess.run(["git", "add", "base.py"], cwd=path, check=True)
+    subprocess.run(["git", "commit", "-m", "seed"], cwd=path, check=True, capture_output=True)
+    # Leave an uncommitted change — simulates in-flight sub-agent edit
+    (path / "base.py").write_text("x = 2\n", encoding="utf-8")
+
+
+def _init_clean_repo(path: Path) -> None:
+    """Create a git repo with no uncommitted changes."""
+    subprocess.run(["git", "init", "-b", "main"], cwd=path, check=True, capture_output=True)
+    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=path, check=True)
+    subprocess.run(["git", "config", "user.name", "Test"], cwd=path, check=True)
+    (path / "base.py").write_text("x = 1\n", encoding="utf-8")
+    subprocess.run(["git", "add", "base.py"], cwd=path, check=True)
+    subprocess.run(["git", "commit", "-m", "seed"], cwd=path, check=True, capture_output=True)
+
+
+def test_pull_rebase_with_wip_is_blocked(tmp_path: Path) -> None:
+    """git pull --rebase with WIP in working tree is blocked (WIP guard)."""
+    _init_dirty_repo(tmp_path)
+    result = _run("git pull --rebase origin main", tmp_path)
+    assert result.returncode == 2, (
+        f"expected WIP-guard block (exit 2), got {result.returncode}\n{result.stderr}"
+    )
+    assert "WIP GUARD BLOCKED" in result.stderr
+    assert "base.py" in result.stderr
+
+
+def test_pull_rebase_without_wip_falls_through_to_standard_block(tmp_path: Path) -> None:
+    """git pull --rebase on a clean tree still hits the standard destructive-op block.
+
+    The WIP guard does NOT make pull --rebase unconditionally safe; it only
+    injects the WIP-specific diagnostics when WIP is present.  The standard
+    block still fires because pull --rebase is in DESTRUCTIVE_PATTERN.
+    """
+    _init_clean_repo(tmp_path)
+    result = _run("git pull --rebase origin main", tmp_path)
+    # Must still be blocked — either by WIP guard (exit 2) or standard block (exit 2)
+    assert result.returncode == 2, (
+        f"expected block on clean tree, got {result.returncode}\n{result.stderr}"
+    )
+    assert "BLOCKED" in result.stderr
+    # WIP-specific message should NOT appear because there is no WIP
+    assert "WIP GUARD BLOCKED" not in result.stderr
+
+
+def test_rebase_main_with_wip_is_blocked(tmp_path: Path) -> None:
+    """git rebase main with WIP triggers the WIP guard."""
+    _init_dirty_repo(tmp_path)
+    result = _run("git rebase main", tmp_path)
+    assert result.returncode == 2, (
+        f"expected WIP-guard block (exit 2), got {result.returncode}\n{result.stderr}"
+    )
+    assert "WIP GUARD BLOCKED" in result.stderr
+
+
+def test_fetch_reset_hard_chain_with_wip_is_blocked(tmp_path: Path) -> None:
+    """git fetch && git reset --hard origin/main with WIP is blocked by WIP guard."""
+    _init_dirty_repo(tmp_path)
+    result = _run("git fetch origin && git reset --hard origin/main", tmp_path)
+    assert result.returncode == 2, (
+        f"expected WIP-guard block (exit 2), got {result.returncode}\n{result.stderr}"
+    )
+    assert "BLOCKED" in result.stderr
+
+
+def test_today_incident_sequence_is_blocked(tmp_path: Path) -> None:
+    """Exact today-incident: git pull --rebase origin main while orchestrator_verify.py is modified.
+
+    Reflog evidence: HEAD@{1}: pull --rebase origin main (pick): fix(safety): ...
+    The modified file simulates packages/verification-audit/lib/orchestrator_verify.py.
+    """
+    _init_dirty_repo(tmp_path)
+    # Simulate the exact file from the incident
+    wip_file = tmp_path / "packages" / "verification-audit" / "lib"
+    wip_file.mkdir(parents=True)
+    (wip_file / "orchestrator_verify.py").write_text(
+        "# in-flight sub-agent edit\n", encoding="utf-8"
+    )
+    result = _run("git pull --rebase origin main", tmp_path)
+    assert result.returncode == 2, (
+        f"today-incident sequence must be blocked; got {result.returncode}\n{result.stderr}"
+    )
+    assert "WIP GUARD BLOCKED" in result.stderr
+
+
+def test_wip_block_message_lists_recovery_options(tmp_path: Path) -> None:
+    """WIP guard block message contains all three recovery paths."""
+    _init_dirty_repo(tmp_path)
+    result = _run("git pull --rebase origin main", tmp_path)
+    assert result.returncode == 2
+    stderr = result.stderr
+    assert "git stash" in stderr, "should suggest stash path"
+    assert "COS_ALLOW_RESET_OVER_WIP=1" in stderr, "should suggest bypass env var"
+    assert "COS_AUTO_STASH_BEFORE_RESET=1" in stderr, "should mention auto-stash option"
+
+
+def test_cos_allow_reset_over_wip_bypasses_wip_guard(tmp_path: Path) -> None:
+    """COS_ALLOW_RESET_OVER_WIP=1 allows the op over WIP and logs bypass to JSONL."""
+    _init_dirty_repo(tmp_path)
+    result = _run(
+        "git pull --rebase origin main",
+        tmp_path,
+        extra_env={"COS_ALLOW_RESET_OVER_WIP": "1"},
+    )
+    # Hook exits 0 (bypass accepted); the actual git command would then fail
+    # because there is no remote, but the hook itself must allow it.
+    assert result.returncode == 0, (
+        f"expected bypass (exit 0), got {result.returncode}\n{result.stderr}"
+    )
+    assert "WIP-GUARD BYPASS ACCEPTED" in result.stderr
+    # Bypass log must exist and contain a wip_guard_bypass entry
+    bypass_log = tmp_path / ".cognitive-os" / "metrics" / "destructive-git-bypass.jsonl"
+    assert bypass_log.exists(), f"bypass log missing: {bypass_log}"
+    lines = [ln for ln in bypass_log.read_text().splitlines() if ln.strip()]
+    assert lines, "bypass log must have at least one entry"
+    entry = json.loads(lines[-1])
+    assert entry["event"] == "wip_guard_bypass"
+    assert entry["bypass_reason"] == "COS_ALLOW_RESET_OVER_WIP"
+    assert "wip_files" in entry
+
+
+def test_bypass_log_contains_wip_file_list(tmp_path: Path) -> None:
+    """Bypass JSONL entry includes the WIP file list for forensic trail."""
+    _init_dirty_repo(tmp_path)
+    _run(
+        "git pull --rebase origin main",
+        tmp_path,
+        extra_env={"COS_ALLOW_RESET_OVER_WIP": "1"},
+    )
+    bypass_log = tmp_path / ".cognitive-os" / "metrics" / "destructive-git-bypass.jsonl"
+    entry = json.loads(bypass_log.read_text().splitlines()[-1])
+    # wip_files must be a non-empty list
+    assert isinstance(entry["wip_files"], list)
+    assert len(entry["wip_files"]) >= 1
+
+
+def test_wip_guard_block_is_logged_to_blocks_jsonl(tmp_path: Path) -> None:
+    """WIP-guard block is written to the standard git-op-blocks.jsonl with reason=wip_guard."""
+    _init_dirty_repo(tmp_path)
+    result = _run("git rebase main", tmp_path)
+    assert result.returncode == 2
+    log = tmp_path / ".cognitive-os" / "metrics" / "git-op-blocks.jsonl"
+    assert log.exists(), f"blocks log missing: {log}"
+    lines = [ln for ln in log.read_text().splitlines() if ln.strip()]
+    entry = json.loads(lines[-1])
+    assert entry["event"] == "blocked"
+    assert entry.get("reason") == "wip_guard"
