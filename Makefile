@@ -59,11 +59,13 @@ help:
 
 test-agentic-mastery:
 	@echo "[test-agentic-mastery] Validating agentic mastery MVP slices." >&2
-	@python3 -m pytest tests/unit/test_lethal_trifecta.py tests/contracts/test_lethal_trifecta_gate.py tests/unit/test_aci_observation.py tests/unit/test_skill_efficacy.py tests/contracts/test_runtime_benchmark_schema.py tests/behavior/test_adversarial_generalization_manifest.py -q
+	@python3 -m pytest tests/unit/test_lethal_trifecta.py tests/contracts/test_lethal_trifecta_gate.py tests/unit/test_aci_observation.py tests/contracts/test_aci_observation_capture_hook.py tests/unit/test_skill_efficacy.py tests/unit/test_run_skill_efficacy_smoke.py tests/contracts/test_runtime_benchmark_schema.py tests/behavior/test_adversarial_generalization_manifest.py -q
 	@python3 scripts/skill-efficacy-report.py >/dev/null
-	@bash scripts/run-runtime-benchmark.sh >/dev/null
+	@python3 scripts/run-skill-efficacy-smoke.py --reset >/dev/null
+	@bash scripts/run-runtime-benchmark.sh --execute >/dev/null
 	@bash scripts/run-adversarial-generalization.sh >/dev/null
-	@echo "[test-agentic-mastery] Reports: .cognitive-os/reports/skill-efficacy-report.md, runtime-benchmark-leaderboard.md, adversarial-generalization-report.md" >&2
+	@python3 scripts/agentic-mastery-summary.py >/dev/null
+	@echo "[test-agentic-mastery] Reports: .cognitive-os/reports/skill-efficacy-report.md, skill-efficacy-smoke-report.md, runtime-benchmark-leaderboard.md, adversarial-generalization-report.md, agentic-mastery-summary.md" >&2
 
 test: test-fast
 
