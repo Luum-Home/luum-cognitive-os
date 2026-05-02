@@ -1091,6 +1091,12 @@ harness:
       matcher: Bash
       scope: os-only
 
+    destructive-git-blocker:
+      script: hooks/destructive-git-blocker.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     git-commit-scope-guard:
       script: hooks/git-commit-scope-guard.sh
       event: PreToolUse
@@ -1102,6 +1108,12 @@ harness:
       event: PreToolUse
       matcher: Bash
       scope: both
+
+    private-mode-gate:
+      script: hooks/private-mode-gate.sh
+      event: PreToolUse
+      matcher: "mcp__plugin_engram_engram__mem_save|mcp__plugin_engram_engram__mem_update|mcp__plugin_engram_engram__mem_session_summary|mcp__plugin_engram_engram__mem_session_end"
+      scope: os-only
 
     # ── PreToolUse — Edit|Write ───────────────────────────────────────────────
     # Codex: OMITTED — Edit|Write matcher not supported by Codex v0.126.0-alpha.8
@@ -1225,6 +1237,12 @@ harness:
 
     aci-observation-capture:
       script: hooks/aci-observation-capture.sh
+      event: PostToolUse
+      matcher: ""
+      scope: os-only
+
+    private-mode-metrics-gate:
+      script: hooks/private-mode-metrics-gate.sh
       event: PostToolUse
       matcher: ""
       scope: os-only
@@ -1445,6 +1463,18 @@ harness:
       matcher: Agent
       scope: os-only
 
+    auto-verify:
+      script: hooks/auto-verify.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: both
+
+    skill-tracker:
+      script: hooks/skill-tracker.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
     review-spawner:
       script: hooks/review-spawner.sh
       event: PostToolUse
@@ -1511,6 +1541,11 @@ harness:
       script: hooks/engram-crystallize-on-session-end.sh
       event: Stop
       async: true
+      scope: os-only
+
+    session-end-reap:
+      script: hooks/session-end-reap.sh
+      event: Stop
       scope: os-only
 
     # ── TeammateIdle (COS extension) ──────────────────────────────────────────
