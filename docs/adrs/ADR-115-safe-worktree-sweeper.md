@@ -14,9 +14,10 @@ Manual cleanup with recursive deletion is unsafe. A worktree can look stale whil
 
 Introduce a safe sweeper primitive:
 
-- implementation and CLI: `scripts/cos_worktree_sweeper.py`
+- implementation and Python CLI: `scripts/cos_worktree_sweeper.py`
+- optional human shell wrapper: `scripts/cos-worktree-sweeper.sh`
 
-The implementation uses underscore naming so it is importable, testable, and compliant with the repository Python script naming contract.
+The implementation uses underscore naming so it is importable, testable, and compliant with the repository Python script naming contract. The hyphenated path is Bash only, preserving operator-friendly shell ergonomics without creating hyphenated Python files.
 
 ## Safety invariants
 
@@ -33,7 +34,7 @@ The implementation uses underscore naming so it is importable, testable, and com
 
 ## Consequences
 
-The SO can automate cleanup of stale laptop worktrees while preserving active validation capsules and hidden work. This also establishes the naming pattern for Python CLIs: underscore implementation first, human-facing Python CLIs use underscore filenames even when invoked directly.
+The SO can automate cleanup of stale laptop worktrees while preserving active validation capsules and hidden work. This also establishes the naming pattern for CLIs: Python implementations and direct Python CLIs use underscore filenames; human-facing hyphenated entrypoints are Bash wrappers.
 
 
 ## Alternatives rejected
@@ -42,12 +43,13 @@ The SO can automate cleanup of stale laptop worktrees while preserving active va
 |---|---|
 | Delete stale worktrees with `rm -rf` | Unsafe because git worktree metadata and live processes can be left inconsistent. |
 | Sweep all detached worktrees without TTL | Active validation capsules and recent recovery worktrees can look detached while still useful. |
-| Provide a hyphenated Python wrapper | Violates the repository snake_case Python script contract and duplicates the importable CLI. |
+| Provide a hyphenated Python wrapper | Violates the repository snake_case Python script contract and duplicates the importable CLI. Use a Bash wrapper when a hyphenated operator command is needed. |
 
 
 ## Verification
 
 ```bash
 python3 scripts/cos_worktree_sweeper.py --dry-run --json
+bash scripts/cos-worktree-sweeper.sh --dry-run --json
 python3 -m pytest tests/behavior/test_cos_worktree_sweeper.py -q
 ```
