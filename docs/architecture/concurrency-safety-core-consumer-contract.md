@@ -20,6 +20,7 @@ This contract defines how Cognitive OS protects concurrent agent work in the cor
 | `resource lease` | `scripts/resource_lease.py` | Provide named, expiring cooperative leases for critical domains. |
 | `agent work ledger` | `scripts/agent_work_ledger.py` | Record started/completed/aborted work scopes across agents. |
 | `cross-session reconciler` | `scripts/cross_session_reconciler.py` | Merge runtime safety state into one recovery report. |
+| `session filesystem reaper` | `hooks/_lib/session-fs-reap.sh` + `lib/session_lifecycle.py` | Archive stale clean session directories and delete only archived sessions beyond retention. |
 
 ## Consumer projection
 
@@ -43,3 +44,4 @@ Consumers configure policy through `concurrency_safety` in `cognitive-os.yaml`. 
 - If sessions are interrupted, the cross-session reconciler must reveal active leases, active work, approvals, edit locks, and preserve branch status.
 - Before preserved work is deleted, the work inventory doctor must check the current worktree, linked worktrees, stashes, and preserve branches in one checklist.
 - Before a linked worktree is removed, the worktree triage doctor must prove which commits are already applied, which still need porting, and whether dirty files or stashes block cleanup.
+- Session filesystem artifacts are cleaned by archive-first lifecycle decisions; absence from `active-sessions.json` is not enough to delete.
