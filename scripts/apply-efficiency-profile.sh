@@ -129,12 +129,12 @@ run_claude_code_driver() {
     pre-compaction-flush.sh agent-bash-cwd-enforcer.sh rate-limiter.sh secret-detector.sh \
     lethal-trifecta-gate.sh dispatch-gate.sh clarification-gate.sh blast-radius.sh query-tailored-context-inject.sh \
     pre-agent-snapshot.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh \
-    content-policy.sh doc-sync-detector.sh claim-validator.sh completion-gate.sh \
+    content-policy.sh doc-sync-detector.sh claim-validator.sh orchestrator-claim-gate.sh plan-claim-validator.sh completion-gate.sh \
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh context-watchdog.sh kpi-trigger.sh teammate-idle.sh \
     task-created.sh task-completed.sh session-sanity.sh validation-lock-cleanup.sh \
     error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
-    destructive-git-blocker.sh auto-verify.sh private-mode-gate.sh \
+    destructive-git-blocker.sh symlink-mutation-guard.sh auto-verify.sh private-mode-gate.sh \
     private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
@@ -181,9 +181,9 @@ echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  PreToolUse *: session-heartbeat.sh, lethal-trifecta-gate.sh"
-echo "  PreToolUse Bash: rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, destructive-git-blocker.sh, git-commit-scope-guard.sh"
+echo "  PreToolUse Bash: rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, destructive-git-blocker.sh, git-commit-scope-guard.sh, orchestrator-claim-gate.sh"
 echo "  PreToolUse engram write tools: private-mode-gate.sh"
-echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, edit-lock-pre-tool.sh"
+echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, edit-lock-pre-tool.sh, plan-claim-validator.sh"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, pre-agent-snapshot.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, reinvention-check.sh, native-agent-heartbeat.sh"
 echo "  PostToolUse * (early): private-mode-metrics-gate.sh"
 echo "  PostToolUse *: context-watchdog.sh (async), rate-limit-detector.sh, tool-sequence-capture.sh, aci-observation-capture.sh"
