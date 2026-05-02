@@ -80,3 +80,7 @@ lanes:
     parallel: false
     stateful_reason: "LLM-evaluated quality tests: opt-in via COS_RUN_QUALITY=1, real model calls, cost-bounded"
     optional: true
+  red_team:
+    paths: [tests/red_team/, tests/contracts/test_redteam_baseline.py, tests/contracts/test_redteam_portability_coverage.py]
+    parallel: true
+    stateful_reason: "Tempdir-isolated: each scenario seeds its own mktemp dir and never mutates shared state. Portability and contract tests are read-only walks. Safe for -n auto."
