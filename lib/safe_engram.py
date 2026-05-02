@@ -140,6 +140,7 @@ def safe_save(
     topic_key: str = "",
     type_: str = "manual",
     project: str = "",
+    scope: str = "project",
     engram_bin: Optional[str] = None,
     timeout: int = 10,
 ) -> SafeEngramResult:
@@ -151,6 +152,9 @@ def safe_save(
         topic_key:  Stable upsert key (e.g. ``"architecture/auth-model"``).
         type_:      Engram observation type (``decision``, ``bugfix``, …).
         project:    Project name for scoping.
+        scope:      Engram scope (``"project"`` default; ``"personal"`` for
+                    user-private observations like peer-cards per ADR-077).
+                    Empty string is treated as default and not propagated.
         engram_bin: Path to the ``engram`` binary.  Defaults to the
                     ``ENGRAM_BIN`` environment variable or ``"engram"``.
         timeout:    Subprocess timeout in seconds.
@@ -180,6 +184,8 @@ def safe_save(
         cmd.extend(["--topic-key", topic_key])
     if project:
         cmd.extend(["--project", project])
+    if scope:
+        cmd.extend(["--scope", scope])
 
     # --- execute ----------------------------------------------------------
     try:

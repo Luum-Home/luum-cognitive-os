@@ -72,7 +72,7 @@ What is NOT portable:
 
 Review fires AFTER the parent agent reports done. The parent task is never
 blocked waiting for review. v2 now writes `.cognitive-os/runtime/review-pending-*.json`
-markers and launches `scripts/review-pending-sweeper.py` in the background.
+markers and launches `scripts/review_pending_sweeper.py` in the background.
 The legacy synchronous path remains available for diagnostics with
 `review.async: false` or `COS_REVIEW_ASYNC=0`.
 
@@ -203,7 +203,7 @@ or directly in `.claude/settings.json` under `hooks.PostToolUse` with matcher `A
 
 ### Follow-up
 
-- Async background dispatch shipped: pending markers plus `scripts/review-pending-sweeper.py`. Future work: schedule periodic sweeps for markers left behind after process crashes.
+- Async background dispatch shipped: pending markers plus `scripts/review_pending_sweeper.py`. Future work: schedule periodic sweeps for markers left behind after process crashes.
 - Meta-evaluation phase 1 shipped: every persisted finding now includes a deterministic `review_quality` score/verdict that catches missing gaps, evidence, recommendations, confidence, and uncertainty. Future work remains: correlate review findings with later user corrections and acted-on improvements.
 - `always_review_kinds: ["sdd-verify"]` for high-stakes task types — config
   hook already reads this field; enforcement is a 1-line extension.

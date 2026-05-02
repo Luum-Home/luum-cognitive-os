@@ -3,9 +3,9 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 153
+Total skills: 154
 
-## os (14)
+## os (15)
 
 | Skill | Description |
 |-------|-------------|
@@ -19,6 +19,7 @@ Total skills: 153
 | generate-changelog | Move [Unreleased] CHANGELOG entries into a versioned release section |
 | hook-timing | Analyze hook execution latency — full stats, live tail, per-event or per-session views. |
 | memory-scan | Scan content for memory threats (prompt injection, exfiltration, invisible Unicode). |
+| peer-card | Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. |
 | push-release | Push the release commit and tags to the remote — always requires explicit… |
 | release-os | META — orchestrate the full Cognitive OS release by chaining the 5 atomic… |
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
