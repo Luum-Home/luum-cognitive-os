@@ -1042,6 +1042,16 @@ harness:
       async: true
       scope: os-only
 
+    # concurrent-write-guard Codex projection (ADR-111 §Gate-3).
+    # Codex cannot fire PreToolUse[Edit|Write]; this proxy fires at
+    # UserPromptSubmit instead and performs a prompt-time stale-lock scan.
+    # Enforcement level: warning only (locking invariant requires per-file
+    # hook; that invariant is harness-advantaged for Claude Code).
+    concurrent-write-guard-codex-proxy:
+      script: hooks/concurrent-write-guard-codex-proxy.sh
+      event: UserPromptSubmit
+      scope: both
+
     # ── SubagentStart ─────────────────────────────────────────────────────────
     # Codex: unsupported (SubagentStart not emitted by Codex v0.126.0-alpha.8)
     subagent-context-injector:
@@ -1220,12 +1230,6 @@ harness:
       matcher: Agent
       scope: os-only
 
-    pre-agent-snapshot:
-      script: hooks/pre-agent-snapshot.sh
-      event: PreToolUse
-      matcher: Agent
-      scope: os-only
-
     agent-prelaunch:
       script: hooks/agent-prelaunch.sh
       event: PreToolUse
@@ -1252,6 +1256,12 @@ harness:
 
     reinvention-check:
       script: hooks/reinvention-check.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
+    pre-agent-snapshot:
+      script: hooks/pre-agent-snapshot.sh
       event: PreToolUse
       matcher: Agent
       scope: os-only
@@ -1424,12 +1434,23 @@ harness:
       scope: os-only
 
     # ── PostToolUse — Agent ───────────────────────────────────────────────────
-    # Codex: OMITTED — Agent matcher not supported by Codex v0.126.0-alpha.8
+    # Codex projection gap (ADR-111 §Gate-4): Codex v0.126.0-alpha.8 does not
+    # emit PostToolUse for the Agent tool. claim-validator cannot fire natively.
+    # Commit-time enforcement via orchestrator-claim-gate.sh (PreToolUse bash,
+    # already projected) provides equivalent claim verification at git-commit
+    # time. Full per-agent response validation requires a Codex upstream hook PR.
+    # This gap is documented in ADR-111 §Per-Gate Status Table.
     claim-validator:
       script: hooks/claim-validator.sh
       event: PostToolUse
       matcher: Agent
       scope: os-only
+      codex_projection: gap
+      codex_gap_reason: >
+        Codex v0.126.0-alpha.8 fires PostToolUse only for Bash.
+        PostToolUse[Agent] is not emitted. Fallback: orchestrator-claim-gate.sh
+        enforces claim verification at commit time (PreToolUse bash, projected).
+        Requires upstream Codex hook expansion for full parity.
 
     completion-gate:
       script: hooks/completion-gate.sh
