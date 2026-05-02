@@ -20,6 +20,11 @@ from typing import Any
 
 from lib.concurrency_safety import project_runtime_dir
 
+try:
+    from lib.session_bus import append_event
+except Exception:  # pragma: no cover - coordination bus must degrade safely
+    append_event = None
+
 
 DEFAULT_TTL_SECONDS = 1800
 
@@ -94,6 +99,15 @@ def _now() -> float:
     return time.time()
 
 
+def _emit_claim_event(project_dir: str | Path, event_type: str, payload: dict[str, Any], session_id: str | None) -> None:
+    if append_event is None:
+        return
+    try:
+        append_event(event_type, payload, project_dir=project_dir, session_id=session_id)
+    except Exception:
+        return
+
+
 def _expired(claim: dict[str, Any], now: float) -> bool:
     expires_at = claim.get("expires_at")
     return not isinstance(expires_at, (int, float)) or now >= float(expires_at)
@@ -147,7 +161,8 @@ def acquire_claim(
         claims[task_id] = claim
         data["updated_at"] = now
         _write_claims(path, data)
-        return ClaimResult(status="acquired", task_id=task_id, claim=claim)
+    _emit_claim_event(project_dir, "task_claimed", {"task_id": task_id, "expected_files": expected, "scope": scope}, session_id)
+    return ClaimResult(status="acquired", task_id=task_id, claim=claim)
 
 
 def release_claim(
@@ -174,7 +189,8 @@ def release_claim(
         claims.pop(task_id, None)
         data["updated_at"] = _now()
         _write_claims(path, data)
-        return ClaimResult(status="released", task_id=task_id, claim=existing)
+    _emit_claim_event(project_dir, "task_claim_released", {"task_id": task_id}, session_id or existing.get("session_id"))
+    return ClaimResult(status="released", task_id=task_id, claim=existing)
 
 
 def list_claims(project_dir: str | Path, *, include_expired: bool = False) -> list[dict[str, Any]]:
