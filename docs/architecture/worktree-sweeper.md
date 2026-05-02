@@ -7,8 +7,8 @@
 ## Commands
 
 ```bash
-python3 scripts/cos-worktree-sweeper.py --dry-run --json
-python3 scripts/cos-worktree-sweeper.py --apply --ttl-hours 2 --json
+python3 scripts/cos_worktree_sweeper.py --dry-run --json
+python3 scripts/cos_worktree_sweeper.py --apply --ttl-hours 2 --json
 ```
 
 The importable implementation is:
@@ -46,14 +46,14 @@ Allowlisted untracked paths:
 For a known stale laptop worktree:
 
 ```bash
-python3 scripts/cos-worktree-sweeper.py \
+python3 scripts/cos_worktree_sweeper.py \
   --dry-run \
   --ttl-seconds 0 \
   --no-default-safe-prefixes \
   --safe-prefix /private/tmp \
   --json
 
-python3 scripts/cos-worktree-sweeper.py \
+python3 scripts/cos_worktree_sweeper.py \
   --apply \
   --ttl-seconds 0 \
   --no-default-safe-prefixes \
