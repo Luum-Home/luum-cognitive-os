@@ -85,3 +85,4 @@ ADR-pattern file appears outside this directory without being a CD- file or redi
 | [ADR-104](ADR-104-startup-circuit-breaker.md) | Startup Circuit Breaker and Safe Mode |
 | [ADR-107](ADR-107-human-approved-rollback.md) | Human-Approved Rollback Boundary |
 - [ADR-110: Preserve Branch Governance](ADR-110-preserve-branch-governance.md)
+- [ADR-116: Multi-Session Coordination Primitives](ADR-116-multi-session-coordination-primitives.md)
