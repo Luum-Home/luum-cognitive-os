@@ -29,8 +29,10 @@ from lib.review_agent import (
     REVIEWER_MODEL_MATRIX,
     build_review_prompt,
     daily_budget_state,
+    enqueue_review_request,
     evaluate_review_quality,
     parse_review_response,
+    process_review_request,
     persist_finding,
     select_reviewer_model,
     should_review,
@@ -378,6 +380,76 @@ class TestEvaluateReviewQuality:
 
         assert quality["quality_verdict"] == "invalid"
         assert quality["quality_score"] < 50
+
+
+# ─── background review queue ─────────────────────────────────────────────────
+
+class TestBackgroundReviewQueue:
+    def test_enqueue_review_request_writes_pending_marker(self, tmp_path):
+        marker = enqueue_review_request(
+            {
+                "producer_id": "agent-bg-001",
+                "reviewer_model": "sonnet",
+                "prompt": "review this output",
+            },
+            runtime_dir=tmp_path,
+        )
+
+        payload = json.loads(marker.read_text())
+        assert marker.name.startswith("review-pending-")
+        assert payload["status"] == "pending"
+        assert payload["producer_id"] == "agent-bg-001"
+        assert "created_at" in payload
+
+    def test_process_review_request_persists_finding_and_marks_completed(self, tmp_path):
+        marker = enqueue_review_request(
+            {
+                "producer_id": "agent-bg-002",
+                "producer_model": "sonnet",
+                "reviewer_id": "review-bg-002",
+                "reviewer_model": "opus",
+                "task_description": "background review test",
+                "prompt": "review this output",
+            },
+            runtime_dir=tmp_path,
+        )
+        findings = tmp_path / "findings.jsonl"
+
+        result = process_review_request(
+            marker,
+            findings_jsonl=findings,
+            dispatch_func=lambda prompt, model: WELL_FORMED_RESPONSE,
+        )
+
+        assert result["status"] == "completed"
+        updated = json.loads(marker.read_text())
+        assert updated["status"] == "completed"
+        record = json.loads(findings.read_text().splitlines()[0])
+        assert record["producer_id"] == "agent-bg-002"
+        assert record["reviewer_model"] == "opus"
+        assert record["review_quality"]["quality_verdict"] == "usable"
+
+    def test_process_review_request_marks_failed_when_dispatch_empty(self, tmp_path):
+        marker = enqueue_review_request(
+            {
+                "producer_id": "agent-bg-003",
+                "reviewer_model": "sonnet",
+                "prompt": "review this output",
+            },
+            runtime_dir=tmp_path,
+        )
+        findings = tmp_path / "findings.jsonl"
+
+        result = process_review_request(
+            marker,
+            findings_jsonl=findings,
+            dispatch_func=lambda prompt, model: "",
+        )
+
+        assert result["status"] == "failed"
+        assert json.loads(marker.read_text())["status"] == "failed"
+        record = json.loads(findings.read_text().splitlines()[0])
+        assert record["error"] == "dispatch_failed"
 
 
 # ─── persist_finding ─────────────────────────────────────────────────────────
