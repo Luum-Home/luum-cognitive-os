@@ -15,13 +15,14 @@ def write(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def test_projection_status_detects_claim_gate_and_plan_validator(tmp_path: Path) -> None:
-    write(tmp_path / ".claude/settings.json", "hooks/orchestrator-claim-gate.sh\nhooks/plan-claim-validator.sh")
+def test_projection_status_detects_required_safety_hooks(tmp_path: Path) -> None:
+    claude_only_hooks = "hooks/plan-claim-validator.sh\nhooks/concurrent-write-guard.sh"
+    write(tmp_path / ".claude/settings.json", f"hooks/orchestrator-claim-gate.sh\n{claude_only_hooks}")
     write(tmp_path / ".codex/hooks.json", "hooks/orchestrator-claim-gate.sh")
-    write(tmp_path / "cognitive-os.yaml", "hooks/orchestrator-claim-gate.sh\nhooks/plan-claim-validator.sh")
+    write(tmp_path / "cognitive-os.yaml", f"hooks/orchestrator-claim-gate.sh\n{claude_only_hooks}")
     write(
         tmp_path / "scripts/_lib/settings-driver-claude-code.sh",
-        "hooks/orchestrator-claim-gate.sh\nhooks/plan-claim-validator.sh",
+        f"hooks/orchestrator-claim-gate.sh\n{claude_only_hooks}",
     )
 
     status = collect_status(tmp_path)
@@ -29,6 +30,10 @@ def test_projection_status_detects_claim_gate_and_plan_validator(tmp_path: Path)
     projections = {item.hook: item for item in status.claim_gate_projection}
     assert projections["hooks/orchestrator-claim-gate.sh"].complete_for_baseline is True
     assert projections["hooks/plan-claim-validator.sh"].complete_for_baseline is True
+    assert projections["hooks/plan-claim-validator.sh"].codex_required is False
+    assert projections["hooks/concurrent-write-guard.sh"].complete_for_baseline is True
+    assert projections["hooks/concurrent-write-guard.sh"].codex is False
+    assert projections["hooks/concurrent-write-guard.sh"].codex_required is False
     assert status.findings == []
 
 
@@ -57,6 +62,10 @@ def test_collects_sessions_locks_stash_alarm_and_heartbeats(tmp_path: Path) -> N
         'session_id: "s1"\ntarget_file: "hooks/foo.sh"\n',
     )
     write(
+        tmp_path / ".cognitive-os/sessions/locks/file.lock",
+        json.dumps({"session_id": "s1", "file_path": "hooks/foo.sh"}),
+    )
+    write(
         tmp_path / ".cognitive-os/runtime/stash-leak-alarm.json",
         json.dumps({"blocking": True, "stash_ref": "stash@{0}"}),
     )
@@ -70,6 +79,7 @@ def test_collects_sessions_locks_stash_alarm_and_heartbeats(tmp_path: Path) -> N
     assert status.active_sessions[0]["id"] == "s1"
     assert status.locks["git_index"][0]["operation"] == "commit"
     assert status.locks["edit"][0]["target_file"] == "hooks/foo.sh"
+    assert status.locks["concurrent_write"][0]["file_path"] == "hooks/foo.sh"
     assert status.stash_alarm and status.stash_alarm["blocking"] is True
     assert status.recent_agent_heartbeats[0]["agent_id"] == "agent-a"
     assert any(finding.code == "stash_leak_blocking" for finding in status.findings)
