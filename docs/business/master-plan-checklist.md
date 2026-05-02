@@ -94,6 +94,10 @@
   that a new Codex session can start Engram, recover pending work, capture
   prompt/session state, write git context, write a changelog, and emit the
   compaction memory-save reminder.
+- [x] A portable session backlog reconciler (`scripts/cos_session_backlog.py`) now
+  consolidates active tasks, plans, request queues, changelogs, handoffs, git,
+  and optional Engram memory into `.cognitive-os/sessions/{session_id}/backlog.md`,
+  `.cognitive-os/metrics/backlog-reconciliation.jsonl`, and `session/backlog/latest`.
 - [x] Developer-confidence positioning is documented as a lightweight adoption
   path: memory, doctor, minimal hooks, safety, changelog/session learning, and
   checks only where they provide clear value.
