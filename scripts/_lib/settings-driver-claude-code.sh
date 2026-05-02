@@ -259,6 +259,7 @@ cc_driver_emit() {
 
   local post_agent
   post_agent=$(_cc_hook_group "PostToolUse" "Agent" \
+    "hooks/post-agent-snapshot-restore.sh" "false" \
     "hooks/claim-validator.sh"       "false" \
     "hooks/completion-gate.sh"       "false" \
     "hooks/agent-checkpoint.sh"      "false" \
