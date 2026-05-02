@@ -16,7 +16,7 @@ The SO must protect itself and the projects that consume it. The boundary is exp
 
 ## Decision
 
-Cognitive OS owns these universal agentic primitives in the core: `edit-coop`, `git-coop`, `stash-leak-alarm`, `plan-claim verifier`, `preserve-branch doctor`, `work inventory doctor`, `worktree triage doctor`, `concurrency doctor`, `approval ledger`, `resource lease`, `agent work ledger`, and `cross-session reconciler`.
+Cognitive OS owns these universal agentic primitives in the core: `edit-coop`, `git-coop`, `stash-leak-alarm`, `plan-claim verifier`, `preserve-branch doctor`, `work inventory doctor`, `worktree triage doctor`, `concurrency doctor`, `approval ledger`, `resource lease`, `agent work ledger`, `cross-session reconciler`, and `session filesystem reaper`.
 
 Consumer projects configure those primitives through `concurrency_safety` in `cognitive-os.yaml`. The core uses safe defaults when the section is missing or partial.
 
@@ -29,6 +29,7 @@ Consumer projects configure those primitives through `concurrency_safety` in `co
 - Preserve branches are not deleted until the doctor can prove manifest, scope, and integration state.
 - Preserved work closure must inspect branches, the active worktree, linked worktrees, and stashes; branch-only review is incomplete.
 - Linked worktrees are not removed until triage proves no unapplied commits, dirty files, or stashes remain.
+- Session filesystem cleanup is archive-first and content-aware; pending requests/tasks keep the session directory.
 - Doctors are read-only and safe to run in local, CI, and recovery sessions.
 
 ## Consequences
