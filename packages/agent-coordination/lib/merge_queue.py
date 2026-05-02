@@ -23,14 +23,15 @@ Queue file location: ``.cognitive-os/sessions/merge-queue.jsonl``
 Schema (one JSON object per line)::
 
     {
-        "id":             "<uuid4>",
-        "session_branch": "<git branch name>",
-        "session_id":     "<string>",
-        "expected_files": ["<path>", ...],   # optional verification list
-        "enqueued_at":    "<ISO-8601 UTC>",
-        "status":         "queued|in-progress|completed|failed",
-        "completed_at":   null,
-        "notes":          null
+        "id":               "<uuid4>",
+        "session_branch":   "<git branch name>",
+        "session_id":       "<string>",
+        "expected_files":   ["<path>", ...],   # optional verification list
+        "enqueued_at":      "<ISO-8601 UTC>",
+        "status":           "queued|in-progress|completed|failed",
+        "completed_at":     null,
+        "notes":            null,
+        "rebase_evidence":  null               # optional; set by worker on rebase
     }
 
 Public API
@@ -184,6 +185,9 @@ def enqueue(
         "status": "queued",
         "completed_at": None,
         "notes": None,
+        # P2.2 extensions (optional, populated by gate_runner / merge_rollback)
+        "gate_evidence": None,
+        "revert_sha": None,
     }
 
     # Atomic append under exclusive lock.
