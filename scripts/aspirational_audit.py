@@ -608,6 +608,15 @@ class Auditor:
             )
 
         referenced = skill_name in self.skill_references
+        # Honor @on-demand marker before falling to DORMANT/ASPIRATIONAL.
+        # Skill-side parity with classify_hook/classify_lib (commit 30406bad's
+        # marker batch couldn't drop the ratio without this check).
+        if has_on_demand_marker(skill_md):
+            return Classification(
+                "ON_DEMAND",
+                {"invocations_30d": 0, "referenced_in_docs": referenced, "on_demand_marker": True},
+                "@on-demand marker — legit periodic/manual skill"
+            )
         if referenced:
             return Classification(
                 "DORMANT",
