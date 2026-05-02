@@ -189,3 +189,5 @@ edit-lock-process-negotiations.sh
 edit-lock-session-end.sh
 host-tool-doctor.sh
 
+
+validation-lock-cleanup.sh

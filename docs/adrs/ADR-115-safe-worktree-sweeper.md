@@ -1,9 +1,8 @@
 # ADR-115: Safe Worktree Sweeper
 
-- Status: Accepted
-- Date: 2026-05-02
-- Scope: OS core
-- Related: ADR-109, ADR-111, ADR-113
+## Status
+
+Accepted — 2026-05-02. Scope: OS core. Related: ADR-109, ADR-111, ADR-113.
 
 ## Context
 
@@ -15,10 +14,9 @@ Manual cleanup with recursive deletion is unsafe. A worktree can look stale whil
 
 Introduce a safe sweeper primitive:
 
-- implementation module: `scripts/cos_worktree_sweeper.py`
-- human CLI wrapper: `scripts/cos-worktree-sweeper.py`
+- implementation and CLI: `scripts/cos_worktree_sweeper.py`
 
-The implementation uses underscore naming so it is importable and testable. The hyphenated wrapper exists only as an operator-friendly CLI path.
+The implementation uses underscore naming so it is importable, testable, and compliant with the repository Python script naming contract.
 
 ## Safety invariants
 
@@ -35,4 +33,21 @@ The implementation uses underscore naming so it is importable and testable. The 
 
 ## Consequences
 
-The SO can automate cleanup of stale laptop worktrees while preserving active validation capsules and hidden work. This also establishes the naming pattern for Python CLIs: underscore implementation first, optional hyphenated wrapper only when a human-facing path is needed.
+The SO can automate cleanup of stale laptop worktrees while preserving active validation capsules and hidden work. This also establishes the naming pattern for Python CLIs: underscore implementation first, human-facing Python CLIs use underscore filenames even when invoked directly.
+
+
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Delete stale worktrees with `rm -rf` | Unsafe because git worktree metadata and live processes can be left inconsistent. |
+| Sweep all detached worktrees without TTL | Active validation capsules and recent recovery worktrees can look detached while still useful. |
+| Provide a hyphenated Python wrapper | Violates the repository snake_case Python script contract and duplicates the importable CLI. |
+
+
+## Verification
+
+```bash
+python3 scripts/cos_worktree_sweeper.py --dry-run --json
+python3 -m pytest tests/behavior/test_cos_worktree_sweeper.py -q
+```
