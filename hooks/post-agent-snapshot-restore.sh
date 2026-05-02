@@ -78,9 +78,28 @@ if ! git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
 fi
 
 # ─── Resolve agent ID ────────────────────────────────────────────────────────
+# Must mirror pre-agent-snapshot.sh. Native harnesses do not always echo an
+# environment CLAUDE_AGENT_ID into PostToolUse, and generated random IDs made
+# exact marker lookup impossible for long-running agents.
 AGENT_ID="${CLAUDE_AGENT_ID:-}"
 if [ -z "$AGENT_ID" ] && [ -n "$INPUT" ] && command -v jq >/dev/null 2>&1; then
-  AGENT_ID=$(echo "$INPUT" | jq -r '.tool_input.agent_id // empty' 2>/dev/null || true)
+  AGENT_ID=$(echo "$INPUT" | jq -r '
+    .tool_input.agent_id
+    // .tool_use_id
+    // .tool_input.tool_use_id
+    // .tool_input.id
+    // empty
+  ' 2>/dev/null || true)
+fi
+if [ -z "$AGENT_ID" ] && [ -n "$INPUT" ] && command -v jq >/dev/null 2>&1; then
+  TOOL_INPUT_CANONICAL=$(echo "$INPUT" | jq -cS '.tool_input // {}' 2>/dev/null || true)
+  if [ -n "$TOOL_INPUT_CANONICAL" ]; then
+    if command -v shasum >/dev/null 2>&1; then
+      AGENT_ID="payload-$(printf '%s' "$TOOL_INPUT_CANONICAL" | shasum -a 256 | awk '{print substr($1,1,16)}')"
+    elif command -v sha256sum >/dev/null 2>&1; then
+      AGENT_ID="payload-$(printf '%s' "$TOOL_INPUT_CANONICAL" | sha256sum | awk '{print substr($1,1,16)}')"
+    fi
+  fi
 fi
 
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -113,6 +132,45 @@ if [ -n "$MARKER_FILE" ] && [ -f "$MARKER_FILE" ] && command -v jq >/dev/null 2>
   SNAPSHOT_ID=$(jq -r '.snapshot_id // empty' "$MARKER_FILE" 2>/dev/null || true)
 fi
 
+# If exact lookup failed because older markers used random IDs, recover only
+# when there is a single safe candidate. Multiple pending stashes are ambiguous
+# in multi-agent operation; applying the wrong stash is worse than surfacing the
+# orphan.
+if [ -z "$STASH_REF" ] && { [ -z "$MARKER_FILE" ] || [ ! -f "$MARKER_FILE" ]; } && command -v jq >/dev/null 2>&1; then
+  CANDIDATE_SCAN=$(RUNTIME_DIR="$RUNTIME_DIR" SESSION_ID="$SESSION_ID" python3 - <<'PYEOF' 2>/dev/null || true
+import json, os
+from pathlib import Path
+runtime = Path(os.environ["RUNTIME_DIR"])
+session_id = os.environ.get("SESSION_ID", "")
+candidates = []
+for marker in runtime.glob("pre-agent-snapshot-*.json"):
+    try:
+        data = json.loads(marker.read_text())
+    except Exception:
+        continue
+    if data.get("session_id") and data.get("session_id") != session_id:
+        continue
+    if data.get("stash_ref"):
+        candidates.append((marker.stat().st_mtime, str(marker), data.get("stash_ref", ""), data.get("snapshot_id", "")))
+if len(candidates) == 1:
+    _, path, stash_ref, snapshot_id = candidates[0]
+    print(json.dumps({"marker": path, "stash_ref": stash_ref, "snapshot_id": snapshot_id}))
+elif len(candidates) > 1:
+    print(json.dumps({"ambiguous": len(candidates)}))
+PYEOF
+  )
+  if [ -n "$CANDIDATE_SCAN" ]; then
+    AMBIGUOUS_COUNT=$(printf '%s' "$CANDIDATE_SCAN" | jq -r '.ambiguous // empty' 2>/dev/null || true)
+    if [ -n "$AMBIGUOUS_COUNT" ]; then
+      MARKER_FILE=""
+    else
+      MARKER_FILE=$(printf '%s' "$CANDIDATE_SCAN" | jq -r '.marker // empty' 2>/dev/null || true)
+      STASH_REF=$(printf '%s' "$CANDIDATE_SCAN" | jq -r '.stash_ref // empty' 2>/dev/null || true)
+      SNAPSHOT_ID=$(printf '%s' "$CANDIDATE_SCAN" | jq -r '.snapshot_id // empty' 2>/dev/null || true)
+    fi
+  fi
+fi
+
 # ─── Fallback: scan stash list for most-recent auto-pre-agent-* stash ────────
 FALLBACK_USED=false
 if [ -z "$STASH_REF" ]; then
@@ -141,9 +199,12 @@ if [ -z "$STASH_REF" ]; then
   done < <(git -C "$PROJECT_DIR" stash list 2>/dev/null || true)
 fi
 
-# ─── No stash to restore — WT was clean at snapshot time ────────────────────
+# ─── No stash to restore — WT was clean or copy-only at snapshot time ────────
 if [ -z "$STASH_REF" ]; then
   log_metric "skip_no_stash" "" ""
+  # Exact copy-mode markers are completed by this no-op; leaving them behind
+  # made healthy snapshots look like chronic orphaned restores.
+  [ -n "$MARKER_FILE" ] && [ -f "$MARKER_FILE" ] && rm -f "$MARKER_FILE" 2>/dev/null || true
   exit 0
 fi
 
@@ -166,8 +227,18 @@ fi
 if [ "$APPLY_RC" -eq 0 ]; then
   log_metric "restored" "$STASH_REF" \
     "$([ "$FALLBACK_USED" = true ] && printf ',"fallback":true' || true)"
-  # Remove marker — restore complete
+  # Remove marker — restore complete. If fallback restored a stash without an
+  # exact marker, also remove any marker that names the restored stash_ref.
   [ -n "$MARKER_FILE" ] && [ -f "$MARKER_FILE" ] && rm -f "$MARKER_FILE" 2>/dev/null || true
+  if command -v jq >/dev/null 2>&1; then
+    for candidate_marker in "$RUNTIME_DIR"/pre-agent-snapshot-*.json; do
+      [ -f "$candidate_marker" ] || continue
+      candidate_ref=$(jq -r '.stash_ref // empty' "$candidate_marker" 2>/dev/null || true)
+      if [ "$candidate_ref" = "$STASH_REF" ]; then
+        rm -f "$candidate_marker" 2>/dev/null || true
+      fi
+    done
+  fi
 else
   # Conflict or error — stash preserved, log, warn operator
   escaped_out="${APPLY_OUT//\"/\\\"}"

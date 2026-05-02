@@ -2,7 +2,10 @@
 
 ## Status
 
-Accepted — 2026-05-02. Related: ADR-108, ADR-110.
+Accepted — Implemented 2026-05-02. Related: ADR-108, ADR-110.
+
+Consumer projection of the four Claude-only safety gates to Codex is complete.
+See §Per-Gate Status Table below for implementation details.
 
 ## Relationship to ADR-106, ADR-108, and ADR-110
 
@@ -48,6 +51,27 @@ Consumer projects configure those primitives through `concurrency_safety` in `co
 | Rely only on git conflicts and branch naming | Git does not model work claims, resource leases, stale stashes, or approval evidence. |
 
 
+## Per-Gate Status Table
+
+This table records the Codex consumer projection outcome for the four gates
+identified in the ADR-111 projection task (2026-05-02).
+
+| Gate | Hook | Claude Event | Codex Projection | Status | Notes |
+|---|---|---|---|---|---|
+| Gate-1 | `symlink-mutation-guard.sh` | `PreToolUse[Bash]` | Native bash matcher | **Projected** | Already in `.codex/hooks.json` PreToolUse bash. Portability test: `tests/red_team/portability/test_symlink-mutation-guard.py`. |
+| Gate-2 | `scope-marker-portability-gate.sh` | `PreToolUse[Bash]` | Native bash matcher | **Projected** | Already in `.codex/hooks.json` PreToolUse bash. Portability test: `tests/red_team/portability/test_scope-marker-portability-gate.py`. |
+| Gate-3 | `concurrent-write-guard.sh` | `PreToolUse[Edit\|Write]` | `UserPromptSubmit` via `concurrent-write-guard-codex-proxy.sh` | **Projected (degraded)** | Codex does not expose `PreToolUse[Edit\|Write]`. Proxy fires at prompt time and scans for cross-session live locks (warning only). Mutual-exclusion invariant is harness-advantaged for Claude Code. Portability test: `tests/red_team/portability/test_concurrent-write-guard.py`. |
+| Gate-4 | `claim-validator.sh` | `PostToolUse[Agent]` | **Gap** — no Codex `PostToolUse[Agent]` | **Gap — commit-time fallback** | Codex v0.126.0-alpha.8 fires `PostToolUse` only for Bash. Per-agent response validation is not natively projectable. Fallback: `orchestrator-claim-gate.sh` (`PreToolUse[Bash]`, already projected) enforces claim verification at `git commit` time. Full parity requires upstream Codex hook expansion. Gap documented in `cognitive-os.yaml` and `manifests/harness-driver-capabilities.yaml`. Portability test: `tests/red_team/portability/test_claim-validator.py`. |
+
+### Projection Classification (cross-harness-authoring taxonomy)
+
+| Gate | Classification |
+|---|---|
+| Gate-1: symlink-mutation-guard | `core-agnostic` — bash-projectable without modification |
+| Gate-2: scope-marker-portability-gate | `core-agnostic` — bash-projectable without modification |
+| Gate-3: concurrent-write-guard | `harness-advantaged` — prompt-level scan projected, per-file locking Claude-only |
+| Gate-4: claim-validator | `harness-only` (for per-response granularity) — commit-time fallback projected |
+
 ## Verification
 
 ```bash
@@ -56,4 +80,10 @@ python3 -m pytest tests/chaos/test_cross_session_reconciler.py -q
 bash scripts/cos-doctor-work-inventory.sh --json
 python3 -m pytest tests/behavior/test_cos_worktree_triage.py -q
 bash scripts/cos-doctor-concurrency.sh --strict
+
+# ADR-111 consumer projection tests (all 4 gates)
+python3 -m pytest tests/red_team/portability/test_symlink-mutation-guard.py -q
+python3 -m pytest tests/red_team/portability/test_scope-marker-portability-gate.py -q
+python3 -m pytest tests/red_team/portability/test_concurrent-write-guard.py -q
+python3 -m pytest tests/red_team/portability/test_claim-validator.py -q
 ```
