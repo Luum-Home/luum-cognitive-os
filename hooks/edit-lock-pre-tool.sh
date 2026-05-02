@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # edit-lock-pre-tool.sh — ADR-098 PreToolUse[Edit|Write] enforcement
 #
 # Reads the tool input JSON from stdin, extracts the target file_path, and

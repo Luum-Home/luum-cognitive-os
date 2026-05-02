@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 Score this agent prompt for quality on 5 dimensions (each 0-20, total 0-100).
 
 Dimensions:

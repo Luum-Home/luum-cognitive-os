@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # _singularity_suggestion — Advisory singularity run suggestion.
 # Sourced by session-init.sh; also sourced directly by tests.
 # Pure bash, no Python calls, always exits 0.
 
-# SCOPE: cognitive-os/session
 
 _singularity_suggestion() {
   local metrics_dir="$PROJECT_DIR/.cognitive-os/metrics"
