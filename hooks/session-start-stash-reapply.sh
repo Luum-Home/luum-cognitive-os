@@ -1,0 +1,1 @@
+../packages/agent-lifecycle/hooks/session-start-stash-reapply.sh

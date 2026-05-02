@@ -132,7 +132,7 @@ run_claude_code_driver() {
     content-policy.sh doc-sync-detector.sh claim-validator.sh post-agent-verify.sh direct-main-guard.sh orchestrator-claim-gate.sh pre-commit-content-hash-dedupe.sh concurrent-write-guard.sh plan-claim-validator.sh completion-gate.sh \
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh context-watchdog.sh kpi-trigger.sh teammate-idle.sh \
-    task-created.sh task-completed.sh session-sanity.sh validation-lock-cleanup.sh \
+    task-created.sh task-completed.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh \
     error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
     destructive-git-blocker.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
     private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh stash-budget-warn.sh \

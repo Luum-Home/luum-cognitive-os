@@ -72,6 +72,10 @@
         },
         {
           "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-start-stash-reapply.sh\" ]; then bash \"$PWD/hooks/session-start-stash-reapply.sh\"; fi"
+        },
+        {
+          "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/session-startup-protocol.sh\" ]; then bash \"$PWD/hooks/session-startup-protocol.sh\"; fi"
         },
         {

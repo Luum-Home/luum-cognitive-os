@@ -142,6 +142,14 @@ if [ "$LEGACY_MODE" = "1" ]; then
       STASH_REF=$(git -C "$PROJECT_DIR" stash list --max-count=1 2>/dev/null | head -1 | cut -d: -f1 || true)
       if [ -n "$STASH_REF" ]; then
         SNAPSHOT_STATUS="stashed_legacy"
+        # ADR-116 P4.3: record stash provenance for auto-reapply on next SessionStart
+        _PROV_FILES=$(git -C "$PROJECT_DIR" stash show --name-only "$STASH_REF" 2>/dev/null | tr '\n' '\n' || true)
+        COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" python3 -m stash_provenance record \
+          --stash-ref "$STASH_REF" \
+          --session-id "$SESSION_ID" \
+          --agent-id "$AGENT_ID" \
+          --original-files "$_PROV_FILES" \
+          --created-at "$TIMESTAMP" 2>/dev/null || true
       else
         SNAPSHOT_STATUS="stash_created_no_ref"
         ERROR_MSG="stash push succeeded but ref could not be read"
@@ -273,6 +281,14 @@ PYEOF
       SNAPSHOT_STATUS="skip_clean"
     elif [ "$SNAPSHOT_STATUS" = "ok" ] && [ -n "$STASH_REF" ]; then
       SNAPSHOT_STATUS="stashed"
+      # ADR-116 P4.3: record stash provenance for auto-reapply on next SessionStart
+      _PROV_FILES=$(git -C "$PROJECT_DIR" stash show --name-only "$STASH_REF" 2>/dev/null | tr '\n' '\n' || true)
+      COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" python3 -m stash_provenance record \
+        --stash-ref "$STASH_REF" \
+        --session-id "$SESSION_ID" \
+        --agent-id "$AGENT_ID" \
+        --original-files "$_PROV_FILES" \
+        --created-at "$TIMESTAMP" 2>/dev/null || true
     fi
   elif [ -n "$SNAPSHOT_RESULT" ]; then
     SNAPSHOT_STATUS="ok"
