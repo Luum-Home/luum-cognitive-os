@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: project
+# @manual-trigger: invoke at sprint end to aggregate test results; ADR-036 Wave 1 CLI tool
 # sprint-test-summary.sh — ADR-036 Wave 1 CLI wrapper for lib.sprint_test_aggregator
 #
 # Usage:

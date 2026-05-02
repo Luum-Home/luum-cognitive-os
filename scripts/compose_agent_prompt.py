@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # SCOPE: both
+# @on-demand: pipe agent prompt draft through before Agent calls touching settings.json/lib/*.py (ADR-032 orchestrator-prompt-compose)
 """
 compose_agent_prompt.py — Prepend trap warnings to an agent prompt before launch.
 
@@ -18,7 +19,6 @@ Exit code 0 always (advisory, never blocking).
 
 import re
 import sys
-import os
 from pathlib import Path
 
 

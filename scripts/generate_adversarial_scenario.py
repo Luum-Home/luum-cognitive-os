@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
+# @manual-trigger: invoke to generate adversarial scenario fixtures for testing; not an automated hook
 """Generate a disposable adversarial scenario fixture."""
 
 from __future__ import annotations

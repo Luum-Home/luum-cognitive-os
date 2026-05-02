@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @on-demand: processes pending review-pending-*.json markers; triggered when review.async=true in cognitive-os.yaml
 """Process pending ADR-096 background review markers.
 
 Markers live in .cognitive-os/runtime/review-pending-*.json and are created by

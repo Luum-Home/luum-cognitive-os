@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# @manual-trigger: run to execute local adversarial generalization fixture suite; no model calls required
 # Local adversarial generalization suite. Generates fixtures and evaluates local checks; no model calls.
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

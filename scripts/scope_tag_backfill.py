@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
+# @manual-trigger: run with --apply to add SCOPE: headers to files missing them; dry-run by default
 """
 scope_tag_backfill.py — Add SCOPE: header to files that lack one.
 
@@ -14,9 +15,7 @@ Heuristic:
   - everything else (lib/, rules/, skills/)  → both
 """
 import argparse
-import re
 import subprocess
-import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
