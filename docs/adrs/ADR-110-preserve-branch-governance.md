@@ -134,7 +134,7 @@ python3 -m pytest tests/behavior/test_cos_doctor_preserve.py -v
 bash scripts/cos-doctor-preserve.sh --json
 ```
 
-## Alternatives Rejected
+## Alternatives rejected
 
 | Alternative | Why rejected |
 |---|---|

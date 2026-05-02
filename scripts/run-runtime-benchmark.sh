@@ -58,4 +58,4 @@ for system, profile in systems:
             ),
         )
 PY
-python3 "$ROOT/scripts/runtime-benchmark-report.py" --results "$RESULTS"
+python3 "$ROOT/scripts/runtime_benchmark_report.py" --results "$RESULTS"

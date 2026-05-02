@@ -5,7 +5,7 @@ import json
 import sys
 from pathlib import Path
 
-MODULE_PATH = Path(__file__).resolve().parents[2] / "scripts" / "agentic-tool-license-matrix.py"
+MODULE_PATH = Path(__file__).resolve().parents[2] / "scripts" / "agentic_tool_license_matrix.py"
 spec = importlib.util.spec_from_file_location("agentic_tool_license_matrix", MODULE_PATH)
 assert spec and spec.loader
 agentic_tool_license_matrix = importlib.util.module_from_spec(spec)

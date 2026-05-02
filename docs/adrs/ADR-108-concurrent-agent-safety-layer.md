@@ -164,7 +164,7 @@ The scenario matrix is canonicalized in [Concurrent Agent Scenario Test Matrix](
 
 - This ADR does not require CRDT/OT. Locking plus worktrees remains the right default for current 2-4 concurrent agent workflows. CRDT/OT can be reconsidered if same-file contention becomes frequent or concurrent writers exceed the existing ADR-098 threshold.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 | Alternative | Why rejected |
 |---|---|
