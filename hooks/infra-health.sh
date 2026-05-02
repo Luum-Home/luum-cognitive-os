@@ -15,8 +15,37 @@ METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 METRICS_FILE="$METRICS_DIR/infra-health.jsonl"
 INFRA_AUTO_START="${INFRA_AUTO_START:-false}"
 INFRA_START_TIMEOUT="${INFRA_START_TIMEOUT:-10}"
+INFRA_CHECK_TIMEOUT="${INFRA_CHECK_TIMEOUT:-5}"
 DOCKER="$(command -v docker 2>/dev/null || echo "")"
 TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+run_bounded() {
+  # Run a command with a wall-clock timeout without relying on GNU timeout.
+  # Prints captured stdout and returns the command exit code, or 124 on timeout.
+  local limit="$1"
+  shift
+  local out_file err_file pid waited status
+  out_file="${TMPDIR:-/tmp}/infra-health-out-$$-$RANDOM"
+  err_file="${TMPDIR:-/tmp}/infra-health-err-$$-$RANDOM"
+  "$@" >"$out_file" 2>"$err_file" &
+  pid=$!
+  waited=0
+  while kill -0 "$pid" 2>/dev/null; do
+    if [ "$waited" -ge "$limit" ]; then
+      kill "$pid" 2>/dev/null || true
+      wait "$pid" 2>/dev/null || true
+      rm -f "$out_file" "$err_file" 2>/dev/null || true
+      return 124
+    fi
+    sleep 1
+    waited=$((waited + 1))
+  done
+  wait "$pid"
+  status=$?
+  cat "$out_file" 2>/dev/null || true
+  rm -f "$out_file" "$err_file" 2>/dev/null || true
+  return "$status"
+}
 
 run_compose_start() {
   # SessionStart infrastructure checks are advisory. Docker compose can block on
@@ -40,7 +69,7 @@ run_compose_start() {
 mkdir -p "$METRICS_DIR"
 
 # ---- 1. Check Docker daemon ----
-if [ -z "$DOCKER" ] || ! "$DOCKER" info >/dev/null 2>&1; then
+if [ -z "$DOCKER" ] || ! run_bounded "$INFRA_CHECK_TIMEOUT" "$DOCKER" info >/dev/null; then
   echo "Docker is not active. Start Docker to use infrastructure services."
   echo "{\"timestamp\":\"$TIMESTAMP\",\"docker\":false,\"running\":0,\"expected\":0,\"action\":\"none\",\"message\":\"Docker not active\"}" >> "$METRICS_FILE"
   exit 0
@@ -72,7 +101,7 @@ except Exception:
 fi
 
 # ---- 4. Get running services from docker compose ----
-running_json=$("$DOCKER" compose -f "$COMPOSE_FILE" ps --format json 2>/dev/null || true)
+running_json=$(run_bounded "$INFRA_CHECK_TIMEOUT" "$DOCKER" compose -f "$COMPOSE_FILE" ps --format json || true)
 running_services=""
 running_count=0
 
@@ -129,7 +158,7 @@ if [ -n "$expected_services" ]; then
 
     if [ "$is_running" = "false" ]; then
       # Determine profile for the service from docker-compose
-      profile=$("$DOCKER" compose -f "$COMPOSE_FILE" config --format json 2>/dev/null | python3 -c "
+      profile=$(run_bounded "$INFRA_CHECK_TIMEOUT" "$DOCKER" compose -f "$COMPOSE_FILE" config --format json | python3 -c "
 import sys, json
 try:
     cfg = json.load(sys.stdin)

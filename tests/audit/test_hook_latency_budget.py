@@ -135,18 +135,16 @@ def timing_pairs() -> dict[tuple[str, str], list[float]]:
 # ── Tests ────────────────────────────────────────────────────────────────────
 
 def test_timing_log_exists():
-    """The hook-timing.jsonl file is runtime evidence; skip when no session has generated it."""
+    """The hook-timing.jsonl file is optional until a timed session has run."""
     path = _timing_log_path()
     if not path.exists():
-        pytest.skip(
-            f"hook-timing.jsonl not found at {path}; run a harness session to enforce p95 budgets."
-        )
+        pytest.skip(f"hook-timing.jsonl not present yet at {path}")
 
 
 def test_timing_log_has_records(timing_pairs):
-    """At least one (event, hook) pair must have been recorded when runtime evidence exists."""
+    """At least one (event, hook) pair must have been recorded."""
     if not timing_pairs:
-        pytest.skip("No valid hook timing records; run a harness session to enforce p95 budgets.")
+        pytest.skip("hook timing has no valid records yet")
 
 
 @pytest.mark.parametrize("event,budget_ms", sorted(LATENCY_BUDGETS_MS.items()))
@@ -219,10 +217,10 @@ def test_no_hooks_exceed_default_budget(timing_pairs):
 
 
 def test_timing_wrapper_instrumented_hooks_count(timing_pairs):
-    """Sanity check active timing evidence only when the runtime log exists."""
+    """Sanity check: the wrapper must have recorded at least 10 distinct hooks."""
     unique_hooks = {hook for (_, hook) in timing_pairs}
     if not unique_hooks:
-        pytest.skip("No hook timing records; run a harness session to enforce instrumentation breadth.")
+        pytest.skip("hook timing has no records yet")
     assert len(unique_hooks) >= 10, (
         f"Only {len(unique_hooks)} distinct hooks recorded. "
         "Expected ≥10 after a normal session. "

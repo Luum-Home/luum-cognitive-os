@@ -221,17 +221,17 @@ def test_validator_distinguishes_manifest_digest_from_image_id():
         pytest.skip("validator did not emit docker_container_freshness line")
     line = lines[0]
     # Running containers exist per compose? check
-    # 30s: docker daemon can be slow to respond on macOS Docker Desktop, especially
-    # under parallel test load. If docker itself times out, treat as "no docker"
+    # Keep this below pytest's per-test timeout. If docker itself times out,
+    # treat as "no docker"
     # and skip — this test is about cognitive-os containers, not docker performance.
     import pytest
     try:
         has_running = subprocess.run(
             [docker, "ps", "--filter", "name=cognitive-os-", "-q"],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True, text=True, timeout=5,
         ).stdout.strip()
     except subprocess.TimeoutExpired:
-        pytest.skip("docker daemon unresponsive (>30s) — skipping container freshness check")
+        pytest.skip("docker daemon unresponsive (>5s) — skipping container freshness check")
     if not has_running:
         pytest.skip("no cognitive-os-* containers running")
 

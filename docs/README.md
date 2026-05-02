@@ -16,13 +16,10 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Test Resource Governance Sprint](architecture/plans/test-resource-governance-sprint.md) — resource policy manifest and staged enforcement plan for safe local/CI/headless test execution.
 - [Validation Nervous System](architecture/validation-nervous-system.md) — SO-maintainer doctrine for test selection, resource policy, persistent artifacts, governance gates, and release validation.
 - [Rate Limiter Flow Control](architecture/rate-limiter-flow-control.md) — token-bucket action limiter with soft warnings, operator reserve, and diversity penalty.
-- [Startup Circuit Breaker Plan](../.cognitive-os/plans/architecture/startup-circuit-breaker-plan.md) — implementation plan for ADR-104 safe mode, storm detection, SessionStart kill switch, and recovery command.
+- [Startup Circuit Breaker Plan](architecture/startup-circuit-breaker-plan.md) — implementation plan for ADR-101 safe mode, storm detection, SessionStart kill switch, and recovery command.
 - [Competitive Reassessment: OpenClaw and Hermes Agent](business/competitive-reassessment-openclaw-hermes-2026-04.md) — current evidence-based comparison of self-improvement, memory, skills, deployment, and governance gaps.
-- [Runtime Comparison Benchmark Plan](../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md) — benchmark matrix for Claude/Codex vanilla, COS-enabled harnesses, and prior-art tools across deployment surfaces.
-- [Audit and Contract Lane Recovery Plan](../.cognitive-os/plans/architecture/audit-contract-lane-recovery-plan.md) — deterministic debt cleanup and parallel lane flip plan for audit/contract.
-- [Headless and Clustered Runtime Plan](../.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md) — staged path from local harness runtime to EC2/container/Kubernetes workers.
-- [Cloud Worker Runtime Tooling Research — 2026-05](architecture/cloud-worker-runtime-tooling-research-2026-05.md) — queue, event-bus, and durable-execution options for the cloud/headless worker path.
-- [`cos run-task` Contract](architecture/cos-run-task-contract.md) — Phase 1 task payload, provider/agent command, artifact, exit-code, and security contract for headless single-node execution.
+- [Runtime Comparison Benchmark Plan](architecture/plans/runtime-comparison-benchmark-plan.md) — benchmark matrix for Claude/Codex vanilla, COS-enabled harnesses, and prior-art tools across deployment surfaces.
+- [Headless and Clustered Runtime Plan](architecture/plans/headless-clustered-runtime-plan.md) — staged path from local harness runtime to EC2/container/Kubernetes workers.
 - [Local Connected Systems Validation](manual-tests/local-connected-systems-validation.md) — proof path for dependency readiness, automatic install boundaries, MCP wiring, optional services, and persistent test summaries.
 - [Claude Code Startup Hang Regression](manual-tests/claude-code-startup-hang-regression.md) — manual proof path for the 2026-05-01 startup hang/duplicate-prompt hardening and its automated regression tests.
 
@@ -37,6 +34,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Product Proof Paths](manual-tests/proof-paths.md) — product claims mapped to files, commands, tests, and manual checks
 - [Codex Host Tooling Verification](manual-tests/codex-host-tooling-verification.md) — manual proof path for Codex driver wiring, declared dependencies, and Engram MCP registration
 - [Memory Lifecycle](architecture/memory-lifecycle.md) — simple map of the hooks, libraries, tests, and doctors that save and recover cross-session context
+- [Token-Efficient Agent Messaging](architecture/token-efficient-agent-messaging.md) — compact sub-agent result contracts, JSONL extraction, bounded digests, and format choices for reducing LLM context waste.
 - [Harness Transparency Status](architecture/harness-transparency-status.md) — honest matrix of what is automatic today across Claude Code, Codex, and consumer projects, and what remains in ADR-064 surfaces
 - [ADR-081: Codex Harness Adapter](adrs/ADR-081-codex-harness-adapter.md) — accepted Codex adapter backed by sanitized live Codex Desktop payload fixtures, making Codex a first-class canonical harness surface
 - [Model Evolution Resilience](model-evolution-resilience.md) — how to keep the system durable as models, vendors, and tools change
@@ -44,15 +42,12 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Bootstrap Portability](architecture/bootstrap-portability.md) — where the system is still Claude-first and how to make Codex and other harnesses first-class bootstrap hosts
 - [Capability-Centric Runtime Enforcement](architecture/capability-centric-runtime-enforcement.md) — how dispatch, skills, gateways, and metrics choose execution intent before vendors
 - [Runtime Hardcoding Discipline](architecture/runtime-hardcoding-discipline.md) — contract for keeping protected runtime paths from silently promoting non-core subsystems
-- [Direct Anthropic API Policy](architecture/direct-anthropic-api-policy.md) — keeps Claude Code native account usage separate from explicit pay-per-token Anthropic API flows.
-- [Advisor MCP Architecture Review](architecture/advisor-mcp-architecture-review.md) — separates native advisor primitives from optional external-advisor MCP provider calls.
 - [Path Portability and Privacy](architecture/path-portability-and-privacy.md) — policy and scanner for blocking developer-home absolute paths in docs, code, scripts, skills, rules, and tests
 - [Tooling Stack Rationalization](architecture/tooling-stack-rationalization.md) — how to keep external services lightweight, optional, and aligned with the product promise
 - [Infrastructure Service Catalog](architecture/infrastructure-service-catalog.md) — what each Docker/Python/cloud service is for and whether it is core, optional, or reference-only
 - [Observability Backend Evaluation](architecture/observability-backend-evaluation-2026-04-24.md) — 2026 decision record for MLflow, Langfuse, Opik, OpenTelemetry, and other observability options
 - [Driver-Specific Script Surfaces](architecture/driver-specific-script-surfaces.md) — which user-facing scripts are truly cross-harness today and which remain Claude-driver-only by contract
 - [Harness Driver Parity](architecture/harness-driver-parity.md) — how Claude, Codex, and future harness settings projections are compared without pretending every driver has the same capabilities
-- [Harness Engineering](architecture/harness-engineering.md) — synthesis of repo-as-system, context, memory, tools, multi-agent orchestration, verification, and portability doctrine
 - [Cross-Harness Authoring](architecture/cross-harness-authoring.md) — how to author skills, rules, hooks, and workflows once and project them through harness drivers
 - [Behavioral Test Contracts](architecture/behavioral-test-contracts.md) — doctrine for converting structural checks into runtime, projection, and discovery proof
 - [Testing Guide](testing.md) — pytest lanes, persistent run summaries, and test-run inventories for large-suite repair work
@@ -68,8 +63,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Conversation Reality Audit — 2026-04-30](business/conversation-reality-audit-2026-04-30.md) — investigation plan for validating real behavior, daily efficiency, DX, automagic claims, and competitive alternatives
 - [Primitive Gap Matrix — 2026-04](reports/primitive-gap-matrix-2026-04.md) — living evidence matrix for hook, skill, rule, memory, MCP, config, metrics, test, and docs gaps
 - [Primitive Coverage Tooling Research — 2026-04](architecture/primitive-coverage-tooling-research-2026-04.md) — external tooling research and architecture for coverage of agentic primitives/docs without loading whole repos into agent context.
-- [Primitive Coverage Backend Benchmark Research — 2026-05](architecture/primitive-coverage-backend-benchmark-2026-05.md) — local benchmark protocol and findings for Qartez, jCodeMunch MCP, Repowise, and CodeGraphContext as possible primitive coverage backends.
-- [Primitive Coverage Spike Plan — 2026-04](../.cognitive-os/plans/research/primitive-coverage-spike-plan-2026-04.md) — executable plan for a generic primitive coverage framework with graph, rule, and CI report surfaces.
+- [Primitive Coverage Spike Plan — 2026-04](architecture/primitive-coverage-spike-plan-2026-04.md) — executable plan for a generic primitive coverage framework with graph, rule, and CI report surfaces.
 - [Documentation Duplicate Audit](reports/docs-duplicate-latest.md) — latest duplicate-documentation baseline and prevention report
 - [Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) — validation snapshot and remaining work before merging the master-plan portability branch
 - [Full Suite Validation Report](reports/full-suite-validation-2026-04-23.md) — current full-suite evidence, passing proof paths, and remaining failure families
@@ -590,4 +584,5 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [Overview](overview.md) — Current system overview
 - [Tool Stack](tool-stack.md) — Evaluated tools and integration posture
 - [Blocked Tools](blocked-tools.md) — SaaS safety verdicts and blocked licenses
+- [Harness Engineering](architecture/harness-engineering.md) — Harness portability doctrine, init checks, and profile measurement
 - [Architecture Principles](architecture-principles.md) — How the durable product boundaries fit together

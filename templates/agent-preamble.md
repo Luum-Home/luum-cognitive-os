@@ -38,6 +38,7 @@ RESULT:
   files_created: [paths or none]
   files_modified: [paths or none]
   tests: [N passed, N failed]
+  blockers: [none, or reason if partial/failed]
 
 TRUST_REPORT: SCORE=<0-100> STATUS=<HIGH|MEDIUM|LOW|CRITICAL> EVIDENCE=<N> UNCERTAINTIES=<N>
 ---
@@ -66,7 +67,7 @@ Fields not declared in the schema should be treated as informational context.
 **CONTEXT BUDGET** (ADR-038 Wave 2 — Gap #2):
 Token budget layers (from `cognitive-os.yaml context_budget`). Informational — enforcement arrives in Wave 3:
 ```
-static_max_tokens:  4000   # preamble + KNOWN TRAPS + WORKING DIR (always loaded)
+static_max_tokens:  4000   # preamble + keyword traps + working dir (always loaded)
 turn_max_tokens:    8000   # per tool-use round
 user_max_tokens:   12000   # accumulated user-facing content per task
 cache_max_tokens:  32000   # MCP/engram retrievals

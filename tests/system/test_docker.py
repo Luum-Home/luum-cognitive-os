@@ -31,8 +31,13 @@ def docker_cmd():
     docker = shutil.which("docker") or "/Applications/Docker.app/Contents/Resources/bin/docker"
     if not shutil.which(docker.split("/")[-1]) and not Path(docker).exists():
         pytest.skip("Docker not found")
-    # Check daemon
-    result = subprocess.run([docker, "info"], capture_output=True, timeout=10)
+    # Check daemon. Some desktop Docker installs leave the CLI present while
+    # the daemon handshake hangs; treat that as unavailable infrastructure,
+    # not as a test error.
+    try:
+        result = subprocess.run([docker, "info"], capture_output=True, timeout=10)
+    except subprocess.TimeoutExpired:
+        pytest.skip("Docker daemon unresponsive")
     if result.returncode != 0:
         pytest.skip("Docker daemon not running")
     return docker
