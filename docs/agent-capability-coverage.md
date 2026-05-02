@@ -252,6 +252,66 @@ These tools can inform adapters, but they are not core dependencies:
 | Deterministic AST hallucination correction research | API/identifier hallucination validation pattern. | Useful for stale/hallucinated mapping checks. |
 | AI SAST vendors | Market signal for semantic code review. | Vendor scanners are optional inputs, not trusted core truth. |
 
+## Integration with existing COS subsystems
+
+ACC is additive. It MUST consume the registries and audit surfaces the host system already maintains, not re-discover or replace them. Each integration is exposed as an adapter with an explicit input → canonical-output contract.
+
+| Existing subsystem | Source path / handle | Adapter role | Canonical output |
+|---|---|---|---|
+| Skill registry | `.atl/skill-registry.md` (project) plus global skills index | Skill discovery and representation | `kind: skill` entries in `C_represented` |
+| Rules index | `rules/RULES-COMPACT.md` plus `rules/*.md` | Rule discovery and representation | `kind: rule` entries in `C_represented` |
+| Hooks profile | `scripts/apply-efficiency-profile.sh` plus `hooks/*.sh` | Hook discovery; profile tier (lean/standard/full) and lifecycle phase as metadata | `kind: hook` entries in `C_represented` |
+| Engram persistent memory | `mem_save` / `mem_search` API | Manifest storage, evidence persistence, drift history | Storage layer (see "Storage and persistence") |
+
+Adapter contracts:
+
+- **Read-only.** Adapters MUST NOT mutate the source registry. ACC reflects state; it does not edit it.
+- **Deterministic.** Two runs against the same registry revision MUST yield the same canonical output.
+- **Provenance-preserving.** Every emitted entry MUST cite its source path, symbol or anchor, and the registry revision used.
+- **Failure-isolated.** If an adapter fails, the affected domain MUST be reported as `unverified`, not silently dropped (see "Gate semantics").
+- **No re-implementation.** When a registry exposes a parser, query API, or canonical accessor, the adapter MUST use it instead of re-parsing the underlying file.
+
+The adapter set above is the minimum required for an ACC implementation hosted inside the Cognitive OS. Additional registries (workflow store, MCP tool catalog, prompt library) MAY be integrated via the same contract.
+
+## Relationship to component-reality-check / aspirational_audit
+
+The Cognitive OS already maintains a REAL / DORMANT / ASPIRATIONAL classification of components via `component-reality-check` (`scripts/aspirational_audit.py`). ACC subsumes this classification rather than running in parallel.
+
+Subsumption rules:
+
+- Every capability in the ACC manifest carries a `lifecycle_status` attribute with values `real`, `dormant`, or `aspirational`, sourced from the existing audit.
+- `aspirational_audit.py` is refactored as a **discovery adapter** for ACC. It continues to expose its current CLI for backward compatibility, but its output is canonicalised through the adapter contract above and contributes to `C_total`, not to a separate report.
+- `dogfood_score` (`scripts/dogfood_score.py`) consumes `acc_effective` and the breakdown of `lifecycle_status` as input signals. It does not re-derive them.
+- `component-reality-check` remains the user-facing command for the lifecycle question; ACC remains the user-facing surface for the coverage question. Both render from the same underlying manifest.
+
+Migration contract:
+
+- **Reconstruction phase**: `aspirational_audit` and ACC may coexist as separate entry points. Discrepancies between the two MUST be logged but do not block.
+- **Production phase**: `aspirational_audit` runs only as an internal adapter. Its standalone report is generated from the ACC manifest, not from a parallel scan. Discrepancies block.
+- The migration boundary is declared in the project phase configuration, not hard-coded in ACC.
+
+This relationship prevents two languages for the same fact: lifecycle status is owned by the audit; coverage status is owned by ACC; both share one manifest.
+
+## Storage and persistence
+
+ACC has four persistence layers with distinct purposes. Mixing them silently is an anti-pattern.
+
+| Layer | Location | Purpose | Mutability |
+|---|---|---|---|
+| Canonical manifest | Engram, topic key `acc/{project}/manifest` | Single source of truth for current capability state. Versioned by engram. | Mutable, incremental |
+| Reviewable snapshot | `docs/acc/acc-{revision}.json` and `acc-{revision}.md` | Human review, PR diffing, CI artefact. Generated from the canonical manifest. | Append-only |
+| Drift ground truth | `docs/acc/latest.json` (symlink to most recent snapshot) | Last committed manifest used to compute drift when engram is unavailable. | Updated by snapshot generator |
+| Historical evidence | Engram, topic key `acc/{project}/findings/{capability_id}` | Per-capability trace of status transitions, mapping changes, and adapter provenance. | Append-only |
+
+Rationale:
+
+- **Engram as canonical** allows incremental mutation and search without committing every adapter run. Coverage state changes on every meaningful edit; storing each delta in git would generate constant churn with no review value.
+- **Snapshots as reviewable artefacts** give PRs a diffable surface and let reviewers see "what changed in coverage" without an engram client. They are reports, not truth.
+- **`latest.json` as drift baseline** means ACC can compute drift in environments where engram is degraded or unavailable (CI runners, fresh clones), preserving the gate's usefulness offline.
+- **Per-capability evidence in engram** preserves the audit trail without bloating the manifest. Reviewers consult it on demand via `mem_search`.
+
+Implementations MAY add caches or indexes, but the four layers above are normative. The snapshot generator MUST be deterministic given a manifest revision, so identical manifests produce identical snapshots.
+
 ## Pipeline
 
 ### Phase 1: Discover real capabilities
@@ -343,6 +403,9 @@ A compliant ACC specification implementation must satisfy:
 6. A generated report includes `acc`, `acc_effective`, thresholds, weights, findings, and evidence.
 7. Critical `missing`, `stale`, or `overexposed` capabilities produce deterministic gate outcomes.
 8. Adapter failure degrades to `unverified` evidence rather than pretending full coverage.
+9. The document declares explicit integration with the host system's skill registry, rules index, hooks profile, and engram memory, with a read-only adapter contract for each.
+10. The document declares the relationship to `component-reality-check` and `aspirational_audit`, including the subsumption rule and the reconstruction-vs-production migration contract.
+11. The document defines a primary canonical store (engram), a reviewable snapshot store (`docs/acc/`), a drift baseline (`docs/acc/latest.json`), and a per-capability evidence store (engram), with their mutability and purpose.
 
 ## Future Test Contract
 
@@ -360,7 +423,11 @@ Suggested assertions:
 - the ACC doc does not contain embedded base64 image formulas;
 - the ACC doc uses `agentic primitives`;
 - the ACC doc does not introduce vendor-specific tools as core requirements;
-- the ACC manifest example includes `mapping_status`, `confidence`, and `evidence`.
+- the ACC manifest example includes `mapping_status`, `confidence`, and `evidence`;
+- the ACC doc contains a section titled `Integration with existing COS subsystems` referencing skill registry, rules index, hooks profile, and engram;
+- the ACC doc contains a section titled `Relationship to component-reality-check / aspirational_audit` declaring the subsumption rule;
+- the ACC doc contains a section titled `Storage and persistence` declaring engram as canonical, `docs/acc/` as snapshot store, and `docs/acc/latest.json` as drift baseline;
+- the ACC doc references `lifecycle_status` as a capability attribute.
 
 A later behavior test can validate a small fixture repository:
 

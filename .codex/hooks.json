@@ -112,6 +112,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/stash-budget-warn.sh\" ]; then bash \"$PWD/hooks/stash-budget-warn.sh\"; fi"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/concurrent-write-guard-codex-proxy.sh\" ]; then bash \"$PWD/hooks/concurrent-write-guard-codex-proxy.sh\"; fi"
         }
       ],
       "matcher": "prompt"
