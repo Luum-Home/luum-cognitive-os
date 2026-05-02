@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # edit-lock-process-negotiations.sh — ADR-098 Phase D2: surface incoming lock negotiations
 #
 # Heartbeat-driven: registered under UserPromptSubmit (which fires on every
