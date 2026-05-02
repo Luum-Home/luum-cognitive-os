@@ -11,6 +11,7 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [Agentic Mastery Operations Plan](architecture/agentic-mastery-operations.md) — executable command plan for local tests, reports, and manual proof paths.
 - [Agentic Mastery Validation — 2026-05-02](reports/agentic-mastery-validation-2026-05-02.md) — automated and manual proof results for the MVP slices.
 - [Agentic Mastery Manual Test](manual-tests/agentic-mastery.md) — manual proof path for safety, ACI capture, reports, and no-cost validation.
 - [Agent Trajectory Schema](architecture/agent-trajectory-schema.md) — normalized ACI-derived tool trajectory rows for benchmark and skill evaluation.
@@ -602,3 +603,8 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [Blocked Tools](blocked-tools.md) — SaaS safety verdicts and blocked licenses
 - [Harness Engineering](architecture/harness-engineering.md) — Harness portability doctrine, init checks, and profile measurement
 - [Architecture Principles](architecture-principles.md) — How the durable product boundaries fit together
+
+## Architecture
+
+- [ADR-111: Core/Consumer Boundary for Concurrent-Agent Safety](adrs/ADR-111-core-consumer-concurrency-safety-boundary.md)
+- [Concurrent-Agent Safety Core/Consumer Contract](architecture/concurrency-safety-core-consumer-contract.md)
