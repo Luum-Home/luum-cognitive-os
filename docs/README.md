@@ -34,6 +34,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Product Proof Paths](manual-tests/proof-paths.md) — product claims mapped to files, commands, tests, and manual checks
 - [Codex Host Tooling Verification](manual-tests/codex-host-tooling-verification.md) — manual proof path for Codex driver wiring, declared dependencies, and Engram MCP registration
 - [Memory Lifecycle](architecture/memory-lifecycle.md) — simple map of the hooks, libraries, tests, and doctors that save and recover cross-session context
+- [Cross-Tool Task Recovery Research — 2026-05](architecture/cross-tool-task-recovery-research-2026-05.md) — investigation of solved/pending task recovery across Codex, Claude Code, Engram, local ledgers, transcripts, and git.
 - [Token-Efficient Agent Messaging](architecture/token-efficient-agent-messaging.md) — compact sub-agent result contracts, JSONL extraction, bounded digests, and format choices for reducing LLM context waste.
 - [Harness Transparency Status](architecture/harness-transparency-status.md) — honest matrix of what is automatic today across Claude Code, Codex, and consumer projects, and what remains in ADR-064 surfaces
 - [ADR-081: Codex Harness Adapter](adrs/ADR-081-codex-harness-adapter.md) — accepted Codex adapter backed by sanitized live Codex Desktop payload fixtures, making Codex a first-class canonical harness surface
