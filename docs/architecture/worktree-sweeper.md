@@ -2,20 +2,19 @@
 
 ## Purpose
 
-`cos-worktree-sweeper` removes stale temporary git worktrees only when the OS can prove they are safe to remove.
+The safe worktree sweeper removes stale temporary git worktrees only when the OS can prove they are safe to remove. The importable Python implementation is `scripts/cos_worktree_sweeper.py`; the optional operator shell entrypoint is `scripts/cos-worktree-sweeper.sh`.
 
 ## Commands
 
 ```bash
 python3 scripts/cos_worktree_sweeper.py --dry-run --json
 python3 scripts/cos_worktree_sweeper.py --apply --ttl-hours 2 --json
+
+# Equivalent human-facing shell wrapper:
+bash scripts/cos-worktree-sweeper.sh --dry-run --json
 ```
 
-The importable implementation is:
-
-```bash
-python3 scripts/cos_worktree_sweeper.py --dry-run --json
-```
+Naming contract: Python scripts stay snake_case; hyphenated human commands are Bash wrappers only.
 
 ## Candidate requirements
 
