@@ -12,14 +12,16 @@
 #
 # Blocked by default (exit 2):
 #   - git stash pop | stash drop | stash apply
-#   - git reset --hard
+#   - git reset (any form; mutates HEAD/index/worktree state)
 #   - git checkout -- <anything>  (incl. `checkout HEAD -- <path>` form)
 #   - git clean -f[dx]
 #   - git restore (any form)
 #   - git revert (any form)
 #   - git worktree (any subcommand)
 #   - git branch -D (force-delete)
-#   - git rebase --abort (state loss)
+#   - git rebase (any form; mutates history/worktree state)
+#   - git pull --rebase (shared-worktree rebase/reset hazard)
+#   - git commit / git push from protected main/master branches
 #   - git push --force / git push -f  (force-push, 2026-05-02 extension)
 #     NOTE: --force-with-lease is intentionally NOT blocked (safer alternative)
 #
@@ -35,6 +37,7 @@
 #   - Per-command: append `--allow-destructive` token anywhere in the command
 #   - Per-command: append `--allow-force-push` token (force-push-specific bypass)
 #   - Per-session: export COS_ALLOW_DESTRUCTIVE_GIT=1
+#   - Protected branch write bypass: export COS_ALLOW_MAIN_BRANCH_WRITE=1
 #
 # Bypass contexts (SO-internal — block does not apply):
 #   - CI=1 (CI environment)
@@ -95,7 +98,7 @@ fi
 # direct (`checkout -- <path>`) and via-ref (`checkout <ref> -- <path>`, e.g. HEAD, HEAD~1,
 # <sha>, <branch>, <tag>) forms. `<ref>` may contain letters, digits, slash, dot, underscore,
 # tilde, caret, hyphen.
-DESTRUCTIVE_PATTERN='^[[:space:]]*git[[:space:]]+(stash[[:space:]]+(pop|drop|apply)|reset[[:space:]]+--hard|checkout[[:space:]]+(--|[A-Za-z0-9/._~^-]+[[:space:]]+--)|clean[[:space:]]+-f|restore|revert|worktree|branch[[:space:]]+-D|rebase[[:space:]]+--abort)'
+DESTRUCTIVE_PATTERN='^[[:space:]]*git[[:space:]]+(stash[[:space:]]+(pop|drop|apply)|reset([[:space:]]|$)|pull([^;&|]*)[[:space:]]+--rebase([[:space:]]|$)|checkout[[:space:]]+(--|[A-Za-z0-9/._~^-]+[[:space:]]+--)|clean[[:space:]]+-f|restore|revert|worktree|branch[[:space:]]+-D|rebase([[:space:]]|$))'
 
 # Force-push pattern (2026-05-02): matches `git push --force` and `git push -f` (with word
 # boundary after -f to avoid matching -fast-forward or similar flags).
@@ -137,6 +140,8 @@ COMMAND_SCAN=$(_strip_commit_message_args "$COMMAND")
 # crudely by splitting on shell separators).
 FIRST_HIT=""
 FIRST_HIT_TYPE=""
+PROTECTED_BRANCH_HIT=""
+PROTECTED_BRANCH=""
 # Turn && || ; and pipe | into newlines, then test each segment
 while IFS= read -r segment; do
   [ -z "$segment" ] && continue
@@ -146,6 +151,16 @@ while IFS= read -r segment; do
     FIRST_HIT="$trimmed"
     FIRST_HIT_TYPE="destructive"
     break
+  fi
+  if echo "$trimmed" | grep -Eq '^[[:space:]]*git[[:space:]]+(commit|push)([[:space:]]|$)'; then
+    current_branch=$(git -C "$PROJECT_DIR" branch --show-current 2>/dev/null || true)
+    if echo "$current_branch" | grep -Eq '^(main|master)$'; then
+      FIRST_HIT="$trimmed"
+      FIRST_HIT_TYPE="protected_branch_write"
+      PROTECTED_BRANCH_HIT="$trimmed"
+      PROTECTED_BRANCH="$current_branch"
+      break
+    fi
   fi
   # Check force-push pattern; exclude --force-with-lease explicitly
   if echo "$trimmed" | grep -Eq "$FORCE_PUSH_PATTERN"; then
@@ -186,14 +201,17 @@ _git_blocker_is_agent_context() {
 # Extract the matched op name (stash pop, reset --hard, etc.) for the alert text
 if [ "$FIRST_HIT_TYPE" = "force_push" ]; then
   OP_NAME="git push --force"
+elif [ "$FIRST_HIT_TYPE" = "protected_branch_write" ]; then
+  OP_NAME="git ${PROTECTED_BRANCH_HIT#git } on ${PROTECTED_BRANCH}"
 else
   OP_NAME=$(echo "$FIRST_HIT" | awk '{
     if ($2=="stash") print "git stash " $3;
-    else if ($2=="reset") print "git reset " $3;
+    else if ($2=="reset") print "git reset";
+    else if ($2=="pull") print "git pull --rebase";
     else if ($2=="checkout") print "git checkout --";
     else if ($2=="clean") print "git clean -f";
     else if ($2=="branch") print "git branch -D";
-    else if ($2=="rebase") print "git rebase --abort";
+    else if ($2=="rebase") print "git rebase";
     else print "git " $2;
   }')
 fi
@@ -203,8 +221,10 @@ _op_rationale() {
   case "$1" in
     "git stash pop"|"git stash drop"|"git stash apply")
       echo "stash ops can re-enact prior state from user-context or pop the wrong entry (ADR-055b, r5)";;
-    "git reset --hard")
-      echo "unconditional working-tree + index discard; no reflog-only recovery for uncommitted work";;
+    "git reset")
+      echo "mutates HEAD/index/worktree state and can erase another session's staged or uncommitted work";;
+    "git pull --rebase")
+      echo "rebases the current worktree and can reset/overwrite another agent's in-flight edits; use scripts/cos-git-sync.sh or a session branch";;
     "git checkout --")
       echo "working-tree discard of specific paths; no recovery if changes were not committed";;
     "git clean -f")
@@ -217,10 +237,12 @@ _op_rationale() {
       echo "worktree mutations can orphan sessions / detach HEAD in ways the OS does not track";;
     "git branch -D")
       echo "force-deletes branches with unmerged commits; recovery requires reflog lookup";;
-    "git rebase --abort")
-      echo "discards in-progress rebase state; partial work may be lost";;
+    "git rebase")
+      echo "rewrites local history and mutates the worktree; use an isolated session branch/worktree and explicit approval";;
     "git push --force")
       echo "force-push rewrites remote history; can permanently destroy commits other collaborators depend on; use --force-with-lease for a safer alternative";;
+    *" on main"|*" on master")
+      echo "committing or pushing directly from a protected shared branch bypasses per-session isolation; create a session branch first with scripts/cos-session-branch.sh";;
     *)
       echo "destructive operation; irreversible without reflog recovery";;
   esac
@@ -244,6 +266,10 @@ _has_allow_force_push_flag() {
   echo "$COMMAND" | grep -Eq '(^|[[:space:]])--allow-force-push($|[[:space:]])'
 }
 
+_has_allow_main_branch_flag() {
+  echo "$COMMAND" | grep -Eq '(^|[[:space:]])--allow-main-branch($|[[:space:]])'
+}
+
 # SO-internal bypass contexts (not user-initiated destructive ops)
 _is_bypass_context() {
   [ "${CI:-}" = "1" ]                      && return 0
@@ -259,6 +285,12 @@ _has_session_override() {
   return 1
 }
 
+_has_main_branch_override() {
+  [ "${COS_ALLOW_MAIN_BRANCH_WRITE:-}" = "1" ] && return 0
+  _has_allow_main_branch_flag && return 0
+  return 1
+}
+
 # Bypass context — allow silently, log as bypassed.
 # NOTE: bypass does NOT apply when an agent context is active. Agents running
 # under pytest/CI must still be blocked; otherwise a malicious or buggy sub-agent
@@ -271,10 +303,13 @@ if _is_bypass_context && ! _git_blocker_is_agent_context; then
 fi
 
 # Explicit override — allow with audit log
-if _has_session_override || _has_allow_flag || _has_allow_force_push_flag; then
+if _has_session_override || _has_allow_flag || _has_allow_force_push_flag || { [ "$FIRST_HIT_TYPE" = "protected_branch_write" ] && _has_main_branch_override; }; then
   override_reason="session_env"
   _has_allow_flag && override_reason="inline_flag"
   _has_allow_force_push_flag && override_reason="inline_flag_force_push"
+  if [ "$FIRST_HIT_TYPE" = "protected_branch_write" ] && _has_main_branch_override; then
+    override_reason="main_branch_override"
+  fi
   echo "" >&2
   echo "=== DESTRUCTIVE-GIT-BLOCKER: OVERRIDE ACCEPTED ===" >&2
   echo "Destructive op '$OP_NAME' allowed via $override_reason override." >&2
@@ -322,6 +357,10 @@ echo "                    (e.g. 'git reset --hard HEAD~1 --allow-destructive')" 
 if [ "$FIRST_HIT_TYPE" = "force_push" ]; then
   echo "     OR:           append --allow-force-push (force-push-specific bypass)" >&2
   echo "     SAFER:        use --force-with-lease instead of --force / -f" >&2
+fi
+if [ "$FIRST_HIT_TYPE" = "protected_branch_write" ]; then
+  echo "     OR:           append --allow-main-branch, or export COS_ALLOW_MAIN_BRANCH_WRITE=1" >&2
+  echo "     SAFER:        bash scripts/cos-session-branch.sh --slug <task> --switch" >&2
 fi
 echo "  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)" >&2
 echo "" >&2
