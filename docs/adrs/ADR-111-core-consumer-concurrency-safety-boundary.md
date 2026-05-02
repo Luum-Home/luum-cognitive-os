@@ -1,8 +1,8 @@
 # ADR-111: Core/Consumer Boundary for Concurrent-Agent Safety
 
-- Status: Accepted
-- Date: 2026-05-02
-- Related: ADR-108, ADR-110
+## Status
+
+Accepted — 2026-05-02. Related: ADR-108, ADR-110.
 
 ## Context
 
@@ -30,3 +30,21 @@ Consumer projects configure those primitives through `concurrency_safety` in `co
 - The SO can self-host its concurrent safety layer and export it to consumers.
 - Consumer adoption is incremental because missing config falls back to safe defaults.
 - Safety behavior becomes testable by unit, behavior, integration, and chaos/scenario lanes.
+
+
+## Alternatives rejected
+
+| Alternative | Why rejected |
+|---|---|
+| Put concurrency safety only in consumer projects | Duplicates critical safety logic and lets consumers drift from the core guarantees. |
+| Hardcode all policies in the SO core | Prevents consumers from setting phase, path, and approval thresholds appropriate to their risk. |
+| Rely only on git conflicts and branch naming | Git does not model work claims, resource leases, stale stashes, or approval evidence. |
+
+
+## Verification
+
+```bash
+python3 -m pytest tests/behavior/test_concurrency_safety_ledgers.py -q
+python3 -m pytest tests/chaos/test_cross_session_reconciler.py -q
+bash scripts/cos-doctor-concurrency.sh --strict
+```
