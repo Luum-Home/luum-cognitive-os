@@ -8,10 +8,9 @@
 # reviewer agent via lib/dispatch.py with a cross-review model (ADR-096
 # §Decision 3).
 #
-# v1: SYNC — blocks until review completes, then persists finding.
-# Documented latency cost: ~2–15s at haiku/sonnet pricing. A v2 async
-# implementation (background dispatch + sweeper) is noted in ADR-096 as
-# a follow-up once we have data on review quality.
+# v2: ASYNC by default — writes a pending review marker and launches the
+# background sweeper. Set review.async=false or COS_REVIEW_ASYNC=0 to use the
+# legacy synchronous path for diagnostics.
 #
 # Budget state: .cognitive-os/runtime/review-budget.json
 # Findings: .cognitive-os/metrics/review-findings.jsonl + Engram
@@ -64,6 +63,10 @@ SAMPLE_RATE=$(read_yaml_value "sample_rate" "0.2")
 MAX_PER_DAY=$(read_yaml_value "max_per_day" "50")
 DEFAULT_MODEL=$(read_yaml_value "default_model" "haiku")
 ALWAYS_REVIEW_KINDS=$(read_yaml_value "always_review_kinds" "")
+ASYNC_REVIEW=$(read_yaml_value "async" "true")
+if [ -n "${COS_REVIEW_ASYNC:-}" ]; then
+  ASYNC_REVIEW="$COS_REVIEW_ASYNC"
+fi
 
 # ── Extract producer output ──────────────────────────────────────────────────
 
@@ -155,6 +158,43 @@ fi
 # ── Dispatch review (v1: synchronous) ────────────────────────────────────────
 
 REVIEWER_ID="review-${PRODUCER_ID}-$(date +%s)"
+
+if [ "$ASYNC_REVIEW" = "true" ] || [ "$ASYNC_REVIEW" = "1" ] || [ "$ASYNC_REVIEW" = "yes" ]; then
+  REVIEW_PROMPT="$REVIEW_PROMPT" \
+  PRODUCER_ID="$PRODUCER_ID" \
+  PRODUCER_MODEL="$PRODUCER_MODEL" \
+  REVIEWER_ID="$REVIEWER_ID" \
+  REVIEWER_MODEL="$REVIEWER_MODEL" \
+  AGENT_PROMPT="$AGENT_PROMPT" \
+  BUDGET_STATE="$BUDGET_STATE" \
+  PROJECT_DIR="$PROJECT_DIR" \
+  python3 - <<'PYASYNC' 2>/dev/null || true
+import os
+import sys
+from pathlib import Path
+
+project = Path(os.environ["PROJECT_DIR"])
+sys.path.insert(0, str(project))
+from lib.review_agent import enqueue_review_request
+
+enqueue_review_request({
+    "prompt": os.environ.get("REVIEW_PROMPT", ""),
+    "producer_id": os.environ.get("PRODUCER_ID", "unknown"),
+    "producer_model": os.environ.get("PRODUCER_MODEL", "unknown"),
+    "reviewer_id": os.environ.get("REVIEWER_ID", "unknown"),
+    "reviewer_model": os.environ.get("REVIEWER_MODEL", "sonnet"),
+    "task_description": os.environ.get("AGENT_PROMPT", "")[:300],
+})
+PYASYNC
+
+  if [ -x "$PROJECT_DIR/scripts/review-pending-sweeper.py" ]; then
+    (
+      export COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR"
+      python3 "$PROJECT_DIR/scripts/review-pending-sweeper.py" --project-dir "$PROJECT_DIR" --limit 1 >/dev/null 2>&1
+    ) &
+  fi
+  exit 0
+fi
 
 REVIEW_RESPONSE=$(python3 -c "
 import sys
