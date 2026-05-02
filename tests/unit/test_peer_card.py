@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from typing import Any, Dict
 
 from lib.peer_card import (
     RECENT_TOPICS_CAP,
@@ -186,3 +187,62 @@ def test_update_rejects_multiple_secret_pattern_classes() -> None:
             f"expected {expected_pattern}, got {result.rejected}"
         )
         assert store.writes == [], "no partial writes on rejection"
+
+
+def test_save_uses_personal_scope(monkeypatch) -> None:
+    """ADR-077 invariant: peer-card writes MUST set scope='personal'.
+
+    Regression guard for adversarial review HIGH#1 — if the scope kwarg is
+    dropped from EngramStore.save(), peer-cards leak into the project scope.
+    """
+    from lib import peer_card as _pc
+    from lib import safe_engram as _se
+
+    captured: Dict[str, Any] = {}
+
+    def fake_safe_save(*args, **kwargs):
+        captured.update(kwargs)
+        # Mimic real return type so callers don't blow up.
+        return _se.SafeEngramResult(blocked=False, engram_output="ok", returncode=0)
+
+    monkeypatch.setattr(_se, "safe_save", fake_safe_save)
+
+    _pc.EngramStore().save({"name": "Mati", "role": "maintainer"})
+
+    assert captured.get("scope") == "personal", (
+        f"peer-card writes must set scope=personal; got {captured.get('scope')!r}"
+    )
+    assert captured.get("topic_key") == _pc.TOPIC_KEY
+    assert captured.get("type_") == _pc.OBSERVATION_TYPE
+
+
+def test_credit_card_regex_rejects_phone_numbers() -> None:
+    """HIGH#2: credit-card detector must require brand prefix + Luhn.
+
+    Phone numbers, IBANs, and arbitrary long IDs no longer trip the secret
+    blocker. A real Visa PAN that passes Luhn still does.
+    """
+    from lib import peer_card as _pc
+
+    # Non-PAN sequences must NOT match.
+    assert _pc._contains_secret("call me at +1-555-123-4567") is None
+    assert _pc._contains_secret("phone 555-123-4567") is None
+    assert _pc._contains_secret("id 1234567890123") is None  # 13 digits, no brand
+    # Visa-prefixed but Luhn-invalid (last digit flipped).
+    assert _pc._contains_secret("card 4111-1111-1111-1112") is None
+
+    # Real Visa test PAN — valid prefix and Luhn checksum.
+    assert _pc._contains_secret("card 4111-1111-1111-1111") == "credit_card"
+
+    # Whole-update rejection still wired through the public API.
+    store = _pc.InMemoryStore({"name": "Mati"})
+    result = _pc.update(store, {"recent_topics": ["card 4111-1111-1111-1111"]})
+    assert result.written is False
+    assert result.rejected == "credit_card"
+    assert store.writes == []
+
+    # And a phone number now goes through (was previously a false positive).
+    store2 = _pc.InMemoryStore()
+    ok = _pc.update(store2, {"recent_topics": ["call +1-555-123-4567 about ADR-077"]})
+    assert ok.written is True
+    assert ok.rejected is None
