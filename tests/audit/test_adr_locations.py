@@ -52,6 +52,9 @@ _STUB_MARKER = "# Moved"
 #                                    to link task to its governing ADR.
 #   .cognitive-os/plans/           — implementation plans (e.g. adr-049-050-051-mega-plan.md
 #                                    is a sprint plan, not an ADR).
+#   .cognitive-os/snapshots/       — pre-agent preservation copies. These may
+#                                    contain historical docs/adrs files verbatim
+#                                    and are not canonical ADR locations.
 #   docs/reports/                  — audit/report artifacts that reference ADRs by number.
 #   docs/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md
 #                                  — a pending-work note file, not the ADR itself (the
@@ -59,6 +62,7 @@ _STUB_MARKER = "# Moved"
 ALLOWLIST_RELATIVE: list[str] = [
     ".cognitive-os/pending-tasks/",
     ".cognitive-os/plans/",
+    ".cognitive-os/snapshots/",
     "docs/reports/",
     "docs/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md",
 ]

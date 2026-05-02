@@ -11,6 +11,10 @@
 
 Proposed. Policy definition and primitive specifications. Implementation of each primitive is tracked as a separate task.
 
+## Relationship to ADR-108 and ADR-111
+
+ADR-106 is the concrete primitive specification for the multi-session subset of ADR-108. It is not a second umbrella. ADR-108 names the full concurrent-agent safety layer and its scenario-test obligations; ADR-111 decides which parts belong in the OS core versus consumer-project projection. When projecting these primitives into a consumer project, ADR-111 controls configuration boundaries while this ADR controls the mechanics of stash alarms, plan locks, provenance enforcement, and bilateral orchestration gates.
+
 ## Context
 
 The 2026-05-02 incident exposed three concurrent failure modes in multi-IDE / multi-agent workflows:

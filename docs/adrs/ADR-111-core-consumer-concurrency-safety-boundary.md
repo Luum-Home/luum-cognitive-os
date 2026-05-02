@@ -4,6 +4,10 @@
 
 Accepted — 2026-05-02. Related: ADR-108, ADR-110.
 
+## Relationship to ADR-106, ADR-108, and ADR-110
+
+ADR-111 is the boundary decision for where concurrent-agent safety lives. ADR-108 is the umbrella safety layer, ADR-106 specifies multi-session primitives, and ADR-110 specifies preserve-branch governance. This ADR decides that those safety primitives are core OS primitives with consumer-project configuration, not project-local rewrites. It does not change the mechanics owned by ADR-106 or ADR-110.
+
 ## Context
 
 Cognitive OS can run multiple coding agents against the same worktree, plan, git state, stash, and runtime artifacts. The dangerous failure mode is not a single bad edit; it is an apparently useful agent flow that silently overwrites, hides, or misreports another agent's work.

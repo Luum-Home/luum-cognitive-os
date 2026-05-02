@@ -5,6 +5,10 @@
 **Commits:** b79e850, 767b772
 **Engram IDs:** 4819, 4820, 4826
 
+## Relationship to gateway ADRs
+
+ADR-018 is canonical for the 2026-04 infrastructure migration away from mandatory Docker services. Its statements about Bifrost and LiteLLM describe that migration moment. ADR-049 later supersedes the model-dispatch and LLM-gateway strategy: direct SDK dispatch is canonical for overflow routing, and neither LiteLLM nor Bifrost is part of the default dispatch path. ADR-018 still governs the resource-shape decision for Docker-to-pip/local-service migration.
+
 ## Context
 
 The Docker infrastructure was consuming 100GB+ disk cache and 4-6GB RAM on a 16GB MacBook. Measured footprint: 4.75GB images + 2.95GB volumes = ~7.7GB total. The docker-compose.cognitive-os.yml defined 21 services, but analysis showed 18 of them could be replaced with pip-installed libraries or cloud APIs. Many containers were literally just pip wrappers -- memu, cognee, and litellm were already in requirements.txt. Opik was already configured to use its cloud API with the container serving no purpose.
