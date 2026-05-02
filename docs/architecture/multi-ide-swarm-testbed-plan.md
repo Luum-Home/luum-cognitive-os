@@ -22,6 +22,9 @@ claims about safety.
 1. Verify Claude and Codex share the portable Bash gates.
 2. Mark Claude-only `Agent` and `Edit|Write` coverage as an explicit Codex gap.
 3. Require the memory lifecycle doctor for each supported harness.
+4. Provide governed Codex fallbacks until hook parity exists:
+   - `scripts/cos-governed-agent.sh` for task-claim/work-ledger guarded agent commands.
+   - `scripts/cos-governed-edit.sh` for edit-lock guarded file mutations.
 
 ## Phase 3 — Reconciliation
 
@@ -37,4 +40,3 @@ python3 -m pytest tests/chaos/test_multi_ide_swarm_safety.py -q
 
 The lane passes without mutating the real repository's stash, branches, remotes,
 or worktree.
-

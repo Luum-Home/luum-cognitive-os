@@ -17,6 +17,8 @@ RESOURCE_LEASE = ROOT / "scripts" / "resource_lease.py"
 DESTRUCTIVE_GIT_BLOCKER = ROOT / "hooks" / "destructive-git-blocker.sh"
 EDIT_COOP = ROOT / "scripts" / "edit-coop.sh"
 REAPER = ROOT / "scripts" / "so-reaper.sh"
+GOVERNED_AGENT = ROOT / "scripts" / "cos-governed-agent.sh"
+GOVERNED_EDIT = ROOT / "scripts" / "cos-governed-edit.sh"
 
 
 def run_python(script: Path, *args: str, cwd: Path) -> subprocess.CompletedProcess[str]:
@@ -109,6 +111,51 @@ def test_same_task_race_blocks_second_live_claim(scratch_project: Path) -> None:
     assert second_payload["held_by"]["task_id"] == "TASK-123"
 
 
+def test_codex_governed_agent_blocks_duplicate_task_claim(scratch_project: Path) -> None:
+    held = run_python(
+        CLAIM_TASK,
+        "acquire",
+        "TASK-CODEX",
+        "--session-id",
+        "claude-session",
+        "--agent-id",
+        "claude-agent",
+        "--scope",
+        "shared task",
+        "--ttl-seconds",
+        "60",
+        cwd=scratch_project,
+    )
+    assert held.returncode == 0, held.stderr
+
+    env = os.environ.copy()
+    env.update({"CODEX_PROJECT_DIR": str(scratch_project), "CODEX_SESSION_ID": "codex-session"})
+    blocked = subprocess.run(
+        [
+            "bash",
+            str(GOVERNED_AGENT),
+            "--task-id",
+            "TASK-CODEX",
+            "--agent-id",
+            "codex-agent",
+            "--scope",
+            "shared task",
+            "--",
+            "true",
+        ],
+        cwd=scratch_project,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=env,
+        timeout=10,
+        check=False,
+    )
+    assert blocked.returncode == 2
+    assert "TASK CLAIM BLOCK" in blocked.stderr
+    assert "claude-session" in blocked.stderr
+
+
 def test_same_file_race_blocks_second_writer(scratch_project: Path) -> None:
     env = os.environ.copy()
     env.update(
@@ -144,6 +191,59 @@ def test_same_file_race_blocks_second_writer(scratch_project: Path) -> None:
     assert "BLOCKED" in second.stderr
     assert "session=session-a" in second.stderr
     assert (scratch_project / "target.txt").read_text(encoding="utf-8") == "session-a fix\n"
+
+
+def test_codex_governed_edit_blocks_when_file_is_locked(scratch_project: Path) -> None:
+    env = os.environ.copy()
+    env.update(
+        {
+            "COGNITIVE_OS_PROJECT_DIR": str(scratch_project),
+            "COGNITIVE_OS_SESSION_ID": "session-a",
+            "COS_EDIT_LOCK_NO_PID_CHECK": "1",
+        }
+    )
+    first = subprocess.run(
+        ["bash", str(EDIT_COOP), "acquire", "target.txt", "swarm", "exclusive-edit"],
+        cwd=scratch_project,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=env,
+        timeout=10,
+    )
+    assert first.returncode == 0, first.stderr
+
+    codex_env = os.environ.copy()
+    codex_env.update(
+        {
+            "CODEX_PROJECT_DIR": str(scratch_project),
+            "CODEX_SESSION_ID": "codex-session",
+            "COS_EDIT_LOCK_NO_PID_CHECK": "1",
+        }
+    )
+    blocked = subprocess.run(
+        [
+            "bash",
+            str(GOVERNED_EDIT),
+            "--file",
+            "target.txt",
+            "--reason",
+            "codex edit",
+            "--",
+            "bash",
+            "-c",
+            "printf codex > target.txt",
+        ],
+        cwd=scratch_project,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=codex_env,
+        timeout=10,
+        check=False,
+    )
+    assert blocked.returncode == 2
+    assert "BLOCKED" in blocked.stderr
 
 
 def test_same_domain_lease_blocks_competing_agent(scratch_project: Path) -> None:

@@ -67,3 +67,20 @@ python3 -m pytest tests/behavior/test_concurrency_safety_ledgers.py -q
 python3 -m pytest tests/contracts/test_memory_lifecycle_portability.py -q
 ```
 
+## 2026-05-02 implementation update
+
+ADR-116 P1.1 is now wired into the Claude-style Agent lifecycle:
+
+- `hooks/agent-prelaunch.sh` resolves a canonical task id and calls
+  `scripts/claim_task.py acquire` before recording or launching the agent.
+- `hooks/completion-gate.sh` resolves the same task id and releases the claim on
+  completion, while preserving the ADR-108 work-ledger and resource-lease flow.
+- `scripts/cos-governed-agent.sh` provides the same claim/work-ledger guard for
+  Codex or other harnesses without Agent hook parity.
+- `scripts/cos-governed-edit.sh` wraps `scripts/edit-coop.sh` so Codex can take
+  the same file-edit locks even without an Edit/Write hook matcher.
+
+Canonical task id priority is explicit task id fields first, then a stable hash
+of normalized prompt/description, then the native tool-use id as last-resort
+correlation. This makes duplicate semantic tasks collide even when different
+IDEs generate different native tool ids.
