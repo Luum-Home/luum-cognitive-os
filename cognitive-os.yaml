@@ -1115,6 +1115,12 @@ harness:
       matcher: Bash
       scope: os-only
 
+    direct-main-guard:
+      script: hooks/direct-main-guard.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     orchestrator-claim-gate:
       script: hooks/orchestrator-claim-gate.sh
       event: PreToolUse

@@ -259,9 +259,9 @@ step_merge() {
         || die "Merge FAIL: --ff-only failed for ${branch} (branch is not fast-forwardable)"
     # Capture the merged SHA before push.
     MERGED_SHA="$(git rev-parse HEAD)"
-    git push "${REMOTE}" "${TARGET_BRANCH}"
+    COS_MERGE_QUEUE_WORKER=1 git push "${REMOTE}" "${TARGET_BRANCH}"
     # Clean up the remote session branch; best-effort.
-    git push "${REMOTE}" --delete "${branch}" 2>/dev/null \
+    COS_MERGE_QUEUE_WORKER=1 git push "${REMOTE}" --delete "${branch}" 2>/dev/null \
         || warn "Could not delete remote branch ${branch} (may not exist remotely)"
     git branch -d "${branch}" 2>/dev/null \
         || warn "Could not delete local branch ${branch}"
