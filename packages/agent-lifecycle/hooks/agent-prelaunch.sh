@@ -7,6 +7,7 @@
 set -euo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/task-identity.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 TASKS_DIR="$PROJECT_DIR/.cognitive-os/tasks"
@@ -49,16 +50,30 @@ if [ -z "$DESCRIPTION" ] || [ "$DESCRIPTION" = "null" ]; then
   DESCRIPTION="unknown task"
 fi
 
-# Generate a simple ID using timestamp + random
-TASK_ID="task-$(date +%s)-$RANDOM"
-
 # Get current timestamp
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-default-session}"
+TASK_ID=$(cos_resolve_task_id "$INPUT" "$DESCRIPTION" "$TOOL_USE_ID")
 AGENT_LEDGER_ID="$TASK_ID"
 if [ -n "$TOOL_USE_ID" ] && [ "$TOOL_USE_ID" != "null" ]; then
   AGENT_LEDGER_ID="$TOOL_USE_ID"
+fi
+
+# ADR-116 P1.1: acquire a cross-session task claim before recording or
+# launching the agent. This is the first automatic duplicate-task barrier.
+if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/claim_task.py" ]; then
+  set +e
+  CLAIM_OUT=$(python3 "$PROJECT_DIR/scripts/claim_task.py" --project-dir "$PROJECT_DIR" \
+    acquire "$TASK_ID" --agent-id "$AGENT_LEDGER_ID" --session-id "$SESSION_ID" \
+    --scope "$DESCRIPTION" --ttl-seconds 1800 2>&1)
+  CLAIM_RC=$?
+  set -e
+  if [ "$CLAIM_RC" -eq 2 ]; then
+    echo "ADR-116 TASK CLAIM BLOCK: task '$TASK_ID' is already claimed by another session." >&2
+    echo "$CLAIM_OUT" >&2
+    exit 2
+  fi
 fi
 
 # Fix 1 (ADR-097): write "pending" here, not "in_progress".
