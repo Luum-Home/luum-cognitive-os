@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
   "_description": "Paranoid security profile — maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 77,
+  "_hook_count": 78,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -109,6 +109,15 @@
       }
     ],
     "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/lethal-trifecta-gate.sh\""
+          }
+        ]
+      },
       {
         "matcher": "Bash",
         "hooks": [

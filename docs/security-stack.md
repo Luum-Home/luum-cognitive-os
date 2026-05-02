@@ -29,7 +29,8 @@ Prevents malformed, vague, or malicious prompts from reaching agents.
 | 1.3 | Dry-Run Preview | Hook | **ACTIVE** | Unintended execution during pipeline preview | `hooks/dry-run-preview.sh` | Internal |
 | 1.4 | Prompt Quality Scoring | Hook | **ACTIVE** | Weak prompts missing criteria/context (advisory) | `hooks/prompt-quality.sh` | Internal |
 | 1.5 | Aguara Scan | Hook | **ACTIVE** | Prompt injection, data exfil, supply chain (189 rules, 14 categories) | `hooks/aguara-scan.sh` | Apache-2.0 |
-| 1.6 | Parry Guard | Hook | **OPTIONAL** | ML-based prompt injection detection (DeBERTa transformers) | `hooks/parry-scan.sh` (documented) | OSS |
+| 1.6 | Lethal Trifecta Gate | Hook | **ACTIVE** | Blocks private data + untrusted content + external communication in one action | `hooks/lethal-trifecta-gate.sh` | Internal |
+| 1.7 | Parry Guard | Hook | **OPTIONAL** | ML-based prompt injection detection (DeBERTa transformers) | `hooks/parry-scan.sh` (documented) | OSS |
 
 ### Layer 2: Permission and Identity
 
