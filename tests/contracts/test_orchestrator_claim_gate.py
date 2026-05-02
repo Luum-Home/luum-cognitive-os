@@ -73,3 +73,34 @@ def test_cross_ide_hook_projection_contains_orchestrator_claim_gate() -> None:
     assert "hooks/orchestrator-claim-gate.sh" in claude
     assert "hooks/orchestrator-claim-gate.sh" in codex
     assert "orchestrator-claim-gate.sh" in generator
+
+
+def test_pre_push_detects_same_subject_collision_on_origin(tmp_path: Path) -> None:
+    remote = tmp_path / "remote.git"
+    subprocess.run(["git", "init", "--bare", str(remote)], check=True, stdout=subprocess.PIPE)
+    repo = tmp_path / "repo"
+    subprocess.run(["git", "clone", str(remote), str(repo)], check=True, stdout=subprocess.PIPE)
+    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.name", "Test"], cwd=repo, check=True)
+    (repo / "file.txt").write_text("base\n")
+    subprocess.run(["git", "add", "file.txt"], cwd=repo, check=True)
+    subprocess.run(["git", "commit", "-m", "base"], cwd=repo, check=True, stdout=subprocess.PIPE)
+    subprocess.run(["git", "push", "-u", "origin", "HEAD"], cwd=repo, check=True, stdout=subprocess.PIPE)
+
+    other = tmp_path / "other"
+    subprocess.run(["git", "clone", str(remote), str(other)], check=True, stdout=subprocess.PIPE)
+    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=other, check=True)
+    subprocess.run(["git", "config", "user.name", "Test"], cwd=other, check=True)
+    (other / "other.txt").write_text("remote\n")
+    subprocess.run(["git", "add", "other.txt"], cwd=other, check=True)
+    subprocess.run(["git", "commit", "-m", "feat: duplicate work"], cwd=other, check=True, stdout=subprocess.PIPE)
+    subprocess.run(["git", "push"], cwd=other, check=True, stdout=subprocess.PIPE)
+
+    subprocess.run(["git", "fetch", "origin"], cwd=repo, check=True)
+    (repo / "local.txt").write_text("local\n")
+    subprocess.run(["git", "add", "local.txt"], cwd=repo, check=True)
+    subprocess.run(["git", "commit", "-m", "feat: duplicate work"], cwd=repo, check=True, stdout=subprocess.PIPE)
+
+    result = evaluate(repo, "pre-push", command="git push")
+    assert result.ok is False
+    assert any("push collision" in finding.message for finding in result.findings)

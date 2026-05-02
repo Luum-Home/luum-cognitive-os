@@ -186,6 +186,72 @@ def commit_range(root: Path) -> list[str]:
     return [entry.strip() for entry in log_proc.stdout.split("\x1e") if entry.strip()]
 
 
+
+
+def _commit_subjects(root: Path, rev_range: str) -> list[tuple[str, str]]:
+    proc = run_git(root, ["log", "--format=%H%x1f%s", rev_range])
+    if proc.returncode != 0:
+        return []
+    rows: list[tuple[str, str]] = []
+    for line in proc.stdout.splitlines():
+        if "\x1f" not in line:
+            continue
+        sha, subject = line.split("\x1f", 1)
+        rows.append((sha.strip(), subject.strip()))
+    return rows
+
+
+def _patch_id(root: Path, sha: str) -> str | None:
+    show = run_git(root, ["show", "--format=", "--no-ext-diff", sha])
+    if show.returncode != 0:
+        return None
+    proc = subprocess.run(
+        ["git", "patch-id", "--stable"],
+        cwd=str(root),
+        input=show.stdout,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if proc.returncode != 0 or not proc.stdout.strip():
+        return None
+    return proc.stdout.split()[0]
+
+
+def verify_push_collisions(root: Path) -> list[GateFinding]:
+    branch_proc = run_git(root, ["rev-parse", "--abbrev-ref", "HEAD"])
+    if branch_proc.returncode != 0:
+        return []
+    branch = branch_proc.stdout.strip()
+    upstream = f"origin/{branch}"
+    if run_git(root, ["rev-parse", "--verify", upstream]).returncode != 0:
+        return []
+    local = _commit_subjects(root, f"{upstream}..HEAD")
+    if not local:
+        return []
+    recent = _commit_subjects(root, f"{upstream}~200..{upstream}") or _commit_subjects(root, upstream)
+    recent_by_subject: dict[str, list[str]] = {}
+    for sha, subject in recent:
+        if subject:
+            recent_by_subject.setdefault(subject, []).append(sha)
+    findings: list[GateFinding] = []
+    for local_sha, subject in local:
+        if not subject or subject not in recent_by_subject:
+            continue
+        local_pid = _patch_id(root, local_sha)
+        remote_pids = {pid for sha in recent_by_subject[subject] if (pid := _patch_id(root, sha))}
+        verdict = "same patch-id already landed" if local_pid and local_pid in remote_pids else "same subject landed with different content"
+        findings.append(
+            GateFinding(
+                source=f"unpushed-commit:{local_sha[:12]}",
+                status="FAIL",
+                message=f"push collision: subject already exists on {upstream}: {subject}",
+                evidence=f"{verdict}; inspect origin before push, then drop/merge/rename intentionally",
+            )
+        )
+    return findings
+
 def evaluate(root: Path, mode: str, command: str = "", text: str = "") -> GateResult:
     findings: list[GateFinding] = []
 
@@ -212,6 +278,7 @@ def evaluate(root: Path, mode: str, command: str = "", text: str = "") -> GateRe
         elif subcommand == "push":
             for idx, message in enumerate(commit_range(root), start=1):
                 findings.extend(verify_text_claims(root, message, f"unpushed-commit:{idx}"))
+            findings.extend(verify_push_collisions(root))
 
     hard_failures = [f for f in findings if f.status == "FAIL"]
     return GateResult(ok=not hard_failures, findings=findings)
