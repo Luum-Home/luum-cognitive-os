@@ -21,10 +21,34 @@ Scan all sources of pending work, classify by priority, and produce a structured
 
 ### Preferred Portable Command
 
-For Codex, Claude Code, or any generic shell session, prefer the reconciler:
+For Codex, Claude Code, or any generic shell session, prefer the reconciler.
+In the Cognitive OS source repo this can be run directly:
 
 ```bash
 python3 scripts/cos_session_backlog.py --write --sync-engram
+```
+
+In consumer projects, resolve the installed OS source from
+`.cognitive-os/install-meta.json` and run the same primitive against the consumer
+project directory:
+
+```bash
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-default}}}"
+COS_SOURCE=$(python3 - "$PROJECT_DIR" <<'PYCODE'
+import json, sys
+from pathlib import Path
+project = Path(sys.argv[1])
+meta = project / ".cognitive-os" / "install-meta.json"
+try:
+    print(json.loads(meta.read_text()).get("source") or str(project))
+except Exception:
+    print(str(project))
+PYCODE
+)
+SCRIPT="$PROJECT_DIR/scripts/cos_session_backlog.py"
+[ -f "$SCRIPT" ] || SCRIPT="$COS_SOURCE/scripts/cos_session_backlog.py"
+python3 "$SCRIPT" --project-dir "$PROJECT_DIR" --session-id "$SESSION_ID" --write --sync-engram
 ```
 
 It scans active tasks, plan checkboxes, user request queues, changelogs,
@@ -295,5 +319,5 @@ Saved to engram: session/backlog/{TODAY}
 
 ## See also
 
-- `scripts/cos_session_backlog.py` — portable backlog reconciler for Codex, Claude Code, and generic shell sessions.
+- `scripts/cos_session_backlog.py` — portable backlog reconciler for the SO source repo and consumer projects via `.cognitive-os/install-meta.json` source resolution.
 - `/decision-triage` — companion skill that counts pending decisions (this skill counts pending tasks)
