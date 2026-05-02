@@ -19,7 +19,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-119: Session Filesystem Reaper](adrs/ADR-119-session-filesystem-reaper.md) — archive-first cleanup for stale `.cognitive-os/sessions/` filesystem artifacts.
 - [ADR-120: Conversation-to-Primitive Harvester](adrs/ADR-120-conversation-to-primitive-harvester.md) — advisory classifier for promoting repeatable conversation recipes into governed agentic primitive proposals.
 - [Primitive Harvester](architecture/primitive-harvester.md) — architecture and JSON contract for create/improve/use/document/discard decisions.
-- [Primitive Harvester Implementation Plan](architecture/primitive-harvester-implementation-plan.md) — staged rollout plan and acceptance criteria for the meta-primitive.
+- [Primitive Harvester Implementation Plan](../.cognitive-os/plans/architecture/primitive-harvester-implementation-plan.md) — staged rollout plan and acceptance criteria for the meta-primitive.
 - [Session Filesystem Reaper](architecture/session-filesystem-reaper.md) — operator flow and safety invariants for session filesystem cleanup.
 - [Multi-IDE Swarm Safety Testbed Plan](../.cognitive-os/plans/architecture/multi-ide-swarm-testbed-plan.md) — executable plan for reproducing same-task, same-file, same-domain, git-overwrite, parity, memory, and watermark races.
 - [Cross-IDE Claim Verification Matrix](architecture/claim-verification-matrix.md) — claim verbs mapped to deterministic verifiers, hooks, and tests so agents can report but not close without evidence.
