@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = REPO_ROOT / "scripts" / "run-skill-efficacy-smoke.py"
+SCRIPT = REPO_ROOT / "scripts" / "run_skill_efficacy_smoke.py"
 
 
 def test_run_skill_efficacy_smoke_generates_report(tmp_path: Path) -> None:

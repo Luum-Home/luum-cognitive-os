@@ -30,6 +30,6 @@ This lane tests whether Cognitive OS survives messy, novel, adversarial tasks ra
 
 - Manifest: `.cognitive-os/tests/adversarial-generalization/scenarios.yaml`
 - Rubric/generator/evaluator: `lib/adversarial_rubric.py`
-- Single-fixture CLI: `scripts/generate-adversarial-scenario.py`
+- Single-fixture CLI: `scripts/generate_adversarial_scenario.py`
 - Suite runner: `scripts/run-adversarial-generalization.sh`
 - Tests: `tests/behavior/test_adversarial_generalization_manifest.py`

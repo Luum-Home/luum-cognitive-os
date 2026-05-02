@@ -37,23 +37,14 @@ Update relevant hooks:
 - `pre-agent-snapshot.sh` exits early when `COS_SUPPRESS_AGENT_SNAPSHOT=1` or `COS_VALIDATION_MODE=1`.
 - `profile-drift-autoapply.sh` exits early when `COS_VALIDATION_MODE=1` or `COS_DISABLE_PROFILE_AUTOAPPLY=1`.
 
-## Alternatives considered
+## Alternatives rejected
 
-### Use the global hook killswitch
-
-Rejected. It invalidates E2E proofs by suppressing hooks under test.
-
-### Always run validation in a separate git worktree
-
-Useful but insufficient. Operators still need a safe local command for targeted reproduction, and some harnesses run hooks in the current working directory. A worktree can be combined with a capsule, but it does not replace scoped suppression.
-
-### Disable all hooks during tests
-
-Rejected. E2E and integration lanes are intended to prove hook behavior.
-
-### Rely on manual `git stash` before every long run
-
-Rejected. Stashing was part of the confusing behavior. The validation boundary should be explicit, logged, and testable.
+| Alternative | Why rejected |
+|---|---|
+| Use the global hook killswitch | It invalidates E2E proofs by suppressing hooks under test. |
+| Always run validation in a separate git worktree without a capsule lock | Useful but insufficient because source-side hooks can still race and operators need a single safe local command for targeted reproduction. |
+| Disable all hooks during tests | E2E and integration lanes are intended to prove hook behavior. |
+| Rely on manual `git stash` before every long run | Stashing was part of the confusing behavior; the validation boundary must be explicit, logged, and testable. |
 
 ## Consequences
 
@@ -75,6 +66,13 @@ Rejected. Stashing was part of the confusing behavior. The validation boundary s
 - `tests/unit/test_validation_capsule.py` verifies capsule env propagation.
 - `tests/unit/test_validation_capsule.py` verifies `pre-agent-snapshot.sh` does not stash dirty work when suppressed.
 - `scripts/cos-validation-capsule.sh` refuses to run with the global killswitch active.
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit/test_validation_capsule.py -q
+make test-laptop
+```
 
 ## References
 
