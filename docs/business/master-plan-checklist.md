@@ -104,6 +104,7 @@
   `tests/contracts/test_primitive_scope_classification.py`: new skills, hooks,
   templates, and skill-referenced scripts must declare scope/audience/platform
   metadata and remain covered by product-zone guardrails and install-scope proof.
+- [x] Conversation-to-primitive promotion is now advisory and tested through `scripts/cos_primitive_harvester.py`, `skills/primitive-harvester/SKILL.md`, and ADR-120: repeatable recipes can become primitive proposals, existing primitives are reused/improved, docs-only decisions stay docs-only, and low-signal conversations are discarded.
 - [x] Developer-confidence positioning is documented as a lightweight adoption
   path: memory, doctor, minimal hooks, safety, changelog/session learning, and
   checks only where they provide clear value.
