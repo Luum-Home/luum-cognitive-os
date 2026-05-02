@@ -141,7 +141,7 @@ The approved direction is:
 
 ## Automated license gate
 
-The pinned optional-tool manifest lives at `.cognitive-os/tests/agentic-tools/license-matrix.json` and is checked by `scripts/agentic_tool_license_matrix.py`. The script is stdlib-only, requires no network access, blocks AGPL/SSPL/BSL/ELv2/Commons-Clause license families, and blocks `default_enabled=true` for external tools with `High` or `Very high` weight. It can emit Markdown and JSON reports for CI or local review.
+The pinned optional-tool manifest lives at `.cognitive-os/tests/agentic-tools/license-matrix.json` and is checked by `scripts/agentic_tool_license_matrix.py`. The script is stdlib-only, requires no network access, blocks AGPL/SSPL/BSL/ELv2/Commons-Clause license families, and blocks `default_enabled=true` for external tools with `High` or `Very high` weight. It can emit Markdown and JSON reports for CI or local review. `scripts/agentic-tool-license-matrix.py` is the hyphenated CLI entrypoint for maintainers.
 
 ## Near-term actions
 
