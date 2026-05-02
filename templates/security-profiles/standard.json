@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
   "_description": "Standard security profile — balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 61,
+  "_hook_count": 62,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -104,6 +104,15 @@
       }
     ],
     "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/lethal-trifecta-gate.sh\""
+          }
+        ]
+      },
       {
         "matcher": "Bash",
         "hooks": [

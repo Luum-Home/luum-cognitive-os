@@ -1028,6 +1028,12 @@ harness:
       matcher: ""
       scope: os-only
 
+    lethal-trifecta-gate:
+      script: hooks/lethal-trifecta-gate.sh
+      event: PreToolUse
+      matcher: ""
+      scope: os-only
+
     # ── PreToolUse — Bash only ────────────────────────────────────────────────
     # Codex: limited (Bash matcher only — these project to Codex PreToolUse)
     rate-limit-precheck:

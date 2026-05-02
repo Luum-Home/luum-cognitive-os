@@ -125,7 +125,7 @@ run_claude_code_driver() {
   # Sanity: confirm representative hooks from the committed baseline are wired.
   for hook in self-install.sh session-init.sh infra-health.sh subagent-context-injector.sh \
     pre-compaction-flush.sh agent-bash-cwd-enforcer.sh rate-limiter.sh secret-detector.sh \
-    dispatch-gate.sh clarification-gate.sh blast-radius.sh query-tailored-context-inject.sh \
+    lethal-trifecta-gate.sh dispatch-gate.sh clarification-gate.sh blast-radius.sh query-tailored-context-inject.sh \
     pre-agent-snapshot.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh \
     content-policy.sh doc-sync-detector.sh claim-validator.sh completion-gate.sh \
     trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
@@ -166,7 +166,7 @@ echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.
 echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh, memory-prefetch.sh (async)"
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
-echo "  PreToolUse *: session-heartbeat.sh"
+echo "  PreToolUse *: session-heartbeat.sh, lethal-trifecta-gate.sh"
 echo "  PreToolUse Bash: rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, git-commit-scope-guard.sh"
 echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, edit-lock-pre-tool.sh"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, pre-agent-snapshot.sh, agent-prelaunch.sh, error-pattern-detector.sh, predev-completeness-check.sh, reinvention-check.sh, native-agent-heartbeat.sh"
