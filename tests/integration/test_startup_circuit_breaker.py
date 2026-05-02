@@ -90,8 +90,12 @@ def test_storm_detector_activates_safe_mode_and_skips_later_hooks(tmp_path: Path
     recs = _records(project)
     assert recs[0]["safe_mode"] == 0
     assert recs[0]["skipped"] == 0
+    assert recs[0]["execution_status"] == "ok"
+    assert recs[0]["body_duration_ms"] >= 0
     assert recs[1]["safe_mode"] == 1
     assert recs[1]["skipped"] == 1
+    assert recs[1]["execution_status"] == "skipped"
+    assert recs[1]["body_duration_ms"] == 0
     assert recs[1]["skip_reason"] == "startup_storm"
 
 
@@ -106,7 +110,25 @@ def test_env_safe_mode_skips_sessionstart_immediately(tmp_path: Path) -> None:
     rec = _records(project)[-1]
     assert rec["safe_mode"] == 1
     assert rec["skipped"] == 1
+    assert rec["execution_status"] == "skipped"
+    assert rec["body_duration_ms"] == 0
     assert rec["skip_reason"] == "env_safe_mode"
+
+
+def test_timing_record_distinguishes_hook_signal_from_latency(tmp_path: Path) -> None:
+    project = _make_project(tmp_path)
+    hook = tmp_path / "signal-hook.sh"
+    hook.write_text("#!/usr/bin/env bash\nexit 143\n")
+    hook.chmod(0o755)
+
+    result = _run(project, hook)
+
+    assert result.returncode == 143
+    rec = _records(project)[-1]
+    assert rec["skipped"] == 0
+    assert rec["execution_status"] == "signal"
+    assert rec["signal"] == "15"
+    assert rec["body_duration_ms"] >= 0
 
 
 def test_manual_disable_file_skips_sessionstart(tmp_path: Path) -> None:
