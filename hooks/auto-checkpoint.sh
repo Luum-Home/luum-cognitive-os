@@ -19,6 +19,8 @@
 set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
+STASH_LOCK_LIB="$(dirname "${BASH_SOURCE[0]}")/_lib/stash-lock.sh"
+[ -f "$STASH_LOCK_LIB" ] && source "$STASH_LOCK_LIB"
 
 # Bypass: COS_DISABLE_AUTO_CHECKPOINT=1 skips this hook entirely
 if [ "${COS_DISABLE_AUTO_CHECKPOINT:-0}" = "1" ]; then
@@ -84,6 +86,11 @@ STASH_NAME="auto-checkpoint-${_UUID}"
 # Exclude .cognitive-os/ so the runtime dir is not swallowed by --include-untracked.
 STASH_RC=0
 if [ "${COS_ALLOW_DESTRUCTIVE_GIT:-0}" = "1" ]; then
+    if command -v cos_stash_lock_acquire >/dev/null 2>&1; then
+        cos_stash_lock_acquire "auto-checkpoint" || exit 0
+        trap 'cos_stash_lock_release' EXIT INT TERM
+    fi
+
     git -C "$PROJECT_DIR" stash push -m "$STASH_NAME" --include-untracked \
         -- ':(exclude).cognitive-os' ':(exclude).cognitive-os/**' . \
         >/dev/null 2>&1
@@ -125,6 +132,11 @@ if [ "$STASH_RC" -eq 0 ] && [ "${COS_ALLOW_DESTRUCTIVE_GIT:-0}" = "1" ]; then
 
     # Remove PID marker (best-effort; harmless if it lingers)
     rm -f "$MARKER_FILE" 2>/dev/null || true
+fi
+
+if command -v cos_stash_lock_release >/dev/null 2>&1; then
+    cos_stash_lock_release
+    trap - EXIT INT TERM
 fi
 
 # Save checkpoint metadata
