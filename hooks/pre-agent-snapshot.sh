@@ -38,6 +38,22 @@ source "$(dirname "$0")/_lib/safe-jsonl.sh"
 HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
+
+# Validation capsules must not mutate the operator worktree by taking git
+# snapshots. dispatch-gate blocks Agent launch under the same lock; this is a
+# second safety belt in case hook order or harness projection drifts.
+VALIDATION_LOCK_LIB="$HOOK_DIR/_lib/validation-lock.sh"
+if [ "${COS_SUPPRESS_AGENT_SNAPSHOT:-0}" = "1" ] || [ "${COS_VALIDATION_MODE:-0}" = "1" ]; then
+  exit 0
+fi
+if [ -f "$VALIDATION_LOCK_LIB" ]; then
+  # shellcheck source=/dev/null
+  source "$VALIDATION_LOCK_LIB"
+  if cos_validation_lock_active "$PROJECT_DIR"; then
+    exit 0
+  fi
+fi
+
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-default-session}"
 SESSIONS_DIR="$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID"
 METRICS_LOG="$PROJECT_DIR/.cognitive-os/metrics/agent-snapshots.jsonl"

@@ -29,11 +29,21 @@ set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 # Opt-out
-if [ "${COS_DISABLE_PROFILE_AUTOAPPLY:-0}" = "1" ]; then
+if [ "${COS_DISABLE_PROFILE_AUTOAPPLY:-0}" = "1" ] || [ "${COS_VALIDATION_MODE:-0}" = "1" ]; then
     exit 0
 fi
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+
+VALIDATION_LOCK_LIB="$(dirname "${BASH_SOURCE[0]}")/_lib/validation-lock.sh"
+if [ -f "$VALIDATION_LOCK_LIB" ]; then
+    # shellcheck source=/dev/null
+    source "$VALIDATION_LOCK_LIB"
+    if cos_validation_lock_active "$PROJECT_DIR"; then
+        echo "[profile-drift-autoapply] validation capsule active; skipping settings mutation" >&2
+        exit 0
+    fi
+fi
 SCRIPT_PATH="$PROJECT_DIR/scripts/apply-efficiency-profile.sh"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
 HASH_FILE="$RUNTIME_DIR/last-applied-profile.sha"
