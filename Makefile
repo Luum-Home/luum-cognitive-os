@@ -10,7 +10,7 @@
 #   cos-test cluster --lane <name>      — validate one lane
 #   cos-test broad                      — full pre-push sweep
 
-.PHONY: help test test-local-fast test-laptop test-laptop-direct test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
+.PHONY: help test-agentic-mastery test test-local-fast test-laptop test-laptop-direct test-laptop-integration test-local-wide-no-docker test-ci-default test-integration-no-docker test-release test-docker test-optional test-docker-explicit test-optional-cost test-fast test-unit test-integration test-e2e test-chaos test-all test-changed smoke audit clean ci-deps check-docs-convention test-no-docker test-no-docker-shard-a test-no-docker-shard-b test-skip-report cos-test install-test
 
 PY := uv run python3
 PYTEST := uv run pytest
@@ -21,6 +21,7 @@ cos-test:
 
 help:
 	@echo "Targets:"
+	@echo "  test-agentic-mastery  Agentic mastery MVP: ACI, skill efficacy, runtime benchmark schema, adversarial suite, lethal trifecta."
 	@echo "  test-local-fast   Official local quick lane: cos-test focused."
 	@echo "  test-laptop       Laptop-friendly broad lane: capped workers, no Docker/cost/integration/chaos."
 	@echo "  test-laptop-integration  Laptop-friendly explicit integration lane: serial + nice, still slow/stateful."
@@ -55,6 +56,14 @@ help:
 	@echo "  cos-test broad                      — full pre-push sweep"
 	@echo ""
 	@echo "All python commands run via 'uv run' — plain 'python3' or 'pytest' will miss UV-managed deps."
+
+test-agentic-mastery:
+	@echo "[test-agentic-mastery] Validating agentic mastery MVP slices." >&2
+	@python3 -m pytest tests/unit/test_lethal_trifecta.py tests/contracts/test_lethal_trifecta_gate.py tests/unit/test_aci_observation.py tests/unit/test_skill_efficacy.py tests/contracts/test_runtime_benchmark_schema.py tests/behavior/test_adversarial_generalization_manifest.py -q
+	@python3 scripts/skill-efficacy-report.py >/dev/null
+	@bash scripts/run-runtime-benchmark.sh >/dev/null
+	@bash scripts/run-adversarial-generalization.sh >/dev/null
+	@echo "[test-agentic-mastery] Reports: .cognitive-os/reports/skill-efficacy-report.md, runtime-benchmark-leaderboard.md, adversarial-generalization-report.md" >&2
 
 test: test-fast
 
