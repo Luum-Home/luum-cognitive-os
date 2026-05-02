@@ -10,9 +10,9 @@ import pytest
 pytestmark = pytest.mark.behavior
 
 ROOT = Path(__file__).resolve().parents[2]
-RESOURCE_LEASE = ROOT / "scripts" / "resource-lease.py"
-WORK_LEDGER = ROOT / "scripts" / "agent-work-ledger.py"
-APPROVAL_LEDGER = ROOT / "scripts" / "approval-ledger.py"
+RESOURCE_LEASE = ROOT / "scripts" / "resource_lease.py"
+WORK_LEDGER = ROOT / "scripts" / "agent_work_ledger.py"
+APPROVAL_LEDGER = ROOT / "scripts" / "approval_ledger.py"
 
 
 def run_script(script: Path, *args: str, cwd: Path) -> subprocess.CompletedProcess[str]:
