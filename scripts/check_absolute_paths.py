@@ -80,6 +80,12 @@ class Finding:
     reason: str
 
 
+@dataclass(frozen=True)
+class StagedFile:
+    path: str
+    mode: str
+
+
 def _is_binary(path: Path) -> bool:
     try:
         with path.open("rb") as handle:
@@ -96,6 +102,15 @@ def _should_skip(path: Path, root: Path) -> bool:
     if path.suffix.lower() in DEFAULT_EXCLUDED_SUFFIXES:
         return True
     return _is_binary(path)
+
+
+def _should_skip_virtual_path(path: Path, root: Path, content: bytes) -> bool:
+    rel_parts = path.relative_to(root).parts
+    if any(part in DEFAULT_EXCLUDED_DIRS for part in rel_parts):
+        return True
+    if path.suffix.lower() in DEFAULT_EXCLUDED_SUFFIXES:
+        return True
+    return b"\0" in content[:4096]
 
 
 def _posix_user_segment(match: str) -> str:
@@ -128,6 +143,38 @@ def scan_file(path: Path, root: Path) -> list[Finding]:
 
     findings: list[Finding] = []
     for line_number, line in enumerate(lines, start=1):
+        if ALLOW_MARKER in line:
+            continue
+        for match in POSIX_PATH_PATTERN.findall(line):
+            if not _is_allowed_match(match):
+                findings.append(
+                    Finding(
+                        path=path,
+                        line_number=line_number,
+                        matched_text=match,
+                        reason="developer home path",
+                    )
+                )
+        for match in WINDOWS_HOME_PATTERN.findall(line):
+            findings.append(
+                Finding(
+                    path=path,
+                    line_number=line_number,
+                    matched_text=match,
+                    reason="Windows developer home path",
+                )
+            )
+    return findings
+
+
+def scan_text(path: Path, root: Path, text: str) -> list[Finding]:
+    try:
+        path.relative_to(root)
+    except ValueError:
+        return []
+
+    findings: list[Finding] = []
+    for line_number, line in enumerate(text.splitlines(), start=1):
         if ALLOW_MARKER in line:
             continue
         for match in POSIX_PATH_PATTERN.findall(line):
@@ -208,7 +255,7 @@ def is_git_repository(root: Path) -> bool:
     )
     return result.returncode == 0 and result.stdout.strip() == "true"
 
-def staged_files(root: Path) -> list[str]:
+def staged_files(root: Path) -> list[StagedFile]:
     result = subprocess.run(
         ["git", "diff", "--cached", "--raw", "--diff-filter=ACM"],
         cwd=str(root),
@@ -219,7 +266,7 @@ def staged_files(root: Path) -> list[str]:
     if result.returncode != 0:
         return []
 
-    paths: list[str] = []
+    files: list[StagedFile] = []
     for line in result.stdout.splitlines():
         if not line:
             continue
@@ -232,8 +279,37 @@ def staged_files(root: Path) -> list[str]:
         new_mode = fields[1]
         if new_mode == "160000":
             continue
-        paths.append(raw_path)
-    return paths
+        files.append(StagedFile(path=raw_path, mode=new_mode))
+    return files
+
+
+def staged_findings(root: Path) -> list[Finding]:
+    findings: list[Finding] = []
+    for staged in staged_files(root):
+        display_path = (root / staged.path).resolve()
+        try:
+            display_path.relative_to(root)
+        except ValueError:
+            continue
+        result = subprocess.run(
+            ["git", "show", f":{staged.path}"],
+            cwd=str(root),
+            capture_output=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            continue
+        if _should_skip_virtual_path(display_path, root, result.stdout):
+            continue
+        try:
+            text = result.stdout.decode("utf-8")
+        except UnicodeDecodeError:
+            try:
+                text = result.stdout.decode("latin-1")
+            except UnicodeDecodeError:
+                continue
+        findings.extend(scan_text(display_path, root, text))
+    return findings
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -260,18 +336,25 @@ def main(argv: list[str] | None = None) -> int:
 
     root = Path(args.root).resolve()
     if args.staged:
-        raw_paths = staged_files(root)
+        findings = staged_findings(root)
     elif args.all_files:
         raw_paths = [str(root)]
+        findings = []
+        for path in iter_files(root, raw_paths):
+            try:
+                path.relative_to(root)
+            except ValueError:
+                continue
+            findings.extend(scan_file(path, root))
     else:
         raw_paths = args.paths
-    findings: list[Finding] = []
-    for path in iter_files(root, raw_paths):
-        try:
-            path.relative_to(root)
-        except ValueError:
-            continue
-        findings.extend(scan_file(path, root))
+        findings = []
+        for path in iter_files(root, raw_paths):
+            try:
+                path.relative_to(root)
+            except ValueError:
+                continue
+            findings.extend(scan_file(path, root))
 
     if findings:
         for finding in findings:
