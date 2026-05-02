@@ -4,8 +4,8 @@
 Portability proofs for scripts/cos-coordination-status.sh — P3.3 coordination
 status wrapper.
 
-Confirms the script delegates correctly to cos_work_inventory.py and works
-outside the SO harness.
+Confirms the shell wrapper delegates correctly to the snake_case Python
+implementation and works outside the SO harness.
 
 Run with:
     python3 -m pytest "tests/red_team/portability/test_cos-coordination-status.py" -v
@@ -18,11 +18,13 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 CLI_SH = REPO_ROOT / "scripts" / "cos-coordination-status.sh"
+CLI_PY = REPO_ROOT / "scripts" / "cos_coordination_status.py"
 
 
-def run_cli(*extra: str) -> "subprocess.CompletedProcess[str]":
+def run_cli(*extra: str, direct_python: bool = False) -> "subprocess.CompletedProcess[str]":
+    command = ["python3", str(CLI_PY), *extra] if direct_python else ["bash", str(CLI_SH), *extra]
     return subprocess.run(
-        ["bash", str(CLI_SH), *extra],
+        command,
         text=True,
         capture_output=True,
         timeout=15,
@@ -61,3 +63,11 @@ def test_unknown_flag_rejected() -> None:
     """Passing an unrecognised flag must fail with a non-zero exit code."""
     result = run_cli("--this-flag-does-not-exist-xyz")
     assert result.returncode != 0, "Expected non-zero exit for unknown flag"
+
+
+def test_snake_case_python_entrypoint_produces_json() -> None:
+    """Direct Python entrypoint must stay snake_case and functional."""
+    result = run_cli("--json", direct_python=True)
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert isinstance(payload, dict)
