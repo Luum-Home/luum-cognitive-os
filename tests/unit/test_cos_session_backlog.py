@@ -154,5 +154,7 @@ def test_session_backlog_skill_points_to_portable_reconciler() -> None:
     """The user-invocable skill should route cross-harness users to the script."""
     skill = (PROJECT_ROOT / "skills" / "session-backlog" / "SKILL.md").read_text()
     assert "scripts/cos_session_backlog.py --write --sync-engram" in skill
+    assert "install-meta.json" in skill
+    assert '--project-dir "$PROJECT_DIR" --session-id "$SESSION_ID"' in skill
     assert "COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR" in skill
     assert 'platforms: ["codex", "claude-code", "generic-cli"]' in skill
