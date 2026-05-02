@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
   "_description": "Paranoid security profile — maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 78,
+  "_hook_count": 79,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -361,6 +361,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/tool-sequence-capture.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aci-observation-capture.sh\""
           },
           {
             "type": "command",

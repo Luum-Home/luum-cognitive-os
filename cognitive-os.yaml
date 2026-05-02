@@ -1180,6 +1180,12 @@ harness:
       matcher: ""
       scope: os-only
 
+    aci-observation-capture:
+      script: hooks/aci-observation-capture.sh
+      event: PostToolUse
+      matcher: ""
+      scope: os-only
+
     # ── PostToolUse — Bash only ───────────────────────────────────────────────
     # Codex: limited (Bash matcher only — these project to Codex PostToolUse)
     error-pipeline:
