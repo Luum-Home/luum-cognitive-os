@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
 # Upgrade Cognitive OS to latest version
-# Usage: bash scripts/upgrade.sh [--force]
+# Usage: bash scripts/upgrade.sh [--force] [--merge]
 #
 # Reads install metadata to determine the original mode, pulls latest source,
 # and re-runs cos-init with the same mode.
@@ -13,13 +13,16 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/_lib/settings-driver.sh"
 
 FORCE=false
+ALLOW_MERGE=false
 for arg in "$@"; do
   case "$arg" in
     --force) FORCE=true ;;
+    --merge) ALLOW_MERGE=true ;;
     --help|-h)
-      echo "Usage: bash scripts/upgrade.sh [--force]"
+      echo "Usage: bash scripts/upgrade.sh [--force] [--merge]"
       echo ""
       echo "  --force  Skip confirmation prompt"
+      echo "  --merge  Permit an explicit merge commit if the COS source diverged"
       echo ""
       echo "Upgrades Cognitive OS to the latest version while preserving your mode."
       exit 0
@@ -91,15 +94,23 @@ if [ "$current_version" = "$latest_version" ] && [ "$FORCE" = "false" ]; then
   exit 0
 fi
 
-# ── 4. Pull latest if source is a git repo ──────────────────────
+# ── 4. Safely sync latest if source is a git repo ───────────────
 if [ -d "$source_dir/.git" ]; then
   echo ""
-  echo "Pulling latest from source..."
-  (cd "$source_dir" && git pull --ff-only 2>/dev/null) || \
-    echo "Warning: Could not pull latest. Using current source state."
+  echo "Synchronizing source with safe no-rebase policy..."
+  sync_args=("--repo" "$source_dir")
+  if [ "$ALLOW_MERGE" = true ]; then
+    sync_args+=("--merge")
+  fi
+  if ! bash "$SCRIPT_DIR/cos-git-sync.sh" "${sync_args[@]}"; then
+    echo ""
+    echo "Error: Source synchronization blocked. No rebase was performed."
+    echo "       Resolve manually or re-run upgrade with --merge to allow an explicit merge commit."
+    exit 1
+  fi
   echo ""
 
-  # Re-check version after pull
+  # Re-check version after sync
   if [ -f "$source_dir/.cognitive-os/version" ]; then
     latest_version=$(cat "$source_dir/.cognitive-os/version")
   else
