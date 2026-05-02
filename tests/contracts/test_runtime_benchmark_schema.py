@@ -1,6 +1,8 @@
 from pathlib import Path
 
-from lib.runtime_benchmark import RuntimeBenchmarkResult, append_result, format_leaderboard, load_results, validate_result
+from lib.runtime_benchmark import RuntimeBenchmarkResult, append_result, format_leaderboard, load_results, run_local_smoke, validate_result
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_runtime_benchmark_result_schema_accepts_valid_row() -> None:
@@ -30,3 +32,10 @@ def test_runtime_benchmark_jsonl_round_trip(tmp_path: Path) -> None:
     rows = load_results(path)
     assert rows[0]["system"] == "cos"
     assert "Runtime Benchmark Leaderboard" in format_leaderboard(rows)
+
+
+def test_runtime_benchmark_local_smokes_execute_real_checks() -> None:
+    for task_id in ["lethal-trifecta-smoke", "aci-empty-output-smoke", "skill-efficacy-smoke"]:
+        passed, duration, notes, _security_events = run_local_smoke(task_id, PROJECT_ROOT)
+        assert passed, notes
+        assert duration >= 0
