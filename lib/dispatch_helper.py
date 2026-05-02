@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from lib.config_loader import read_top_level_int as _cl_read_top_level_int
@@ -37,6 +38,7 @@ from lib.paths import project_root
 # ---------------------------------------------------------------------------
 
 _DEFAULT_MAX_PARALLEL = 5
+_STALE_STARTING_SECONDS = 30 * 60
 _COGNITIVE_OS_DIR = ".cognitive-os"
 _TASKS_PATH = os.path.join(_COGNITIVE_OS_DIR, "tasks", "active-tasks.json")
 
@@ -74,8 +76,47 @@ def _read_max_parallel_agents(config_path: Optional[str] = None) -> int:
     )
 
 
+def _age_seconds(task: Dict[str, Any]) -> Optional[float]:
+    """Return task age from lifecycle timestamps, or None when unavailable."""
+    ts = task.get("started_at") or task.get("launchedAt") or task.get("requested_at")
+    if not ts:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(ts).rstrip("Z")).replace(tzinfo=timezone.utc)
+        return (datetime.now(timezone.utc) - dt).total_seconds()
+    except (TypeError, ValueError):
+        return None
+
+
+def _pid_alive(pid: Any) -> bool:
+    """Return True when pid appears alive, False for dead/invalid PIDs."""
+    try:
+        os.kill(int(pid), 0)
+        return True
+    except Exception:
+        return False
+
+
+def _is_dispatch_active(task: Dict[str, Any]) -> bool:
+    """Return whether a task should consume a dispatch slot.
+
+    ADR-102 rule:
+    - pending records never consume slots.
+    - in_progress + live PID consumes a slot.
+    - in_progress + dead PID does not consume a slot; reaper marks terminal.
+    - in_progress + pid=null consumes a startup grace slot only while fresh.
+    """
+    if task.get("status") != "in_progress":
+        return False
+    pid = task.get("pid")
+    if pid is not None:
+        return _pid_alive(pid)
+    age = _age_seconds(task)
+    return age is None or age <= _STALE_STARTING_SECONDS
+
+
 def _count_active_tasks(tasks_path: Optional[str] = None) -> int:
-    """Count tasks with status == 'in_progress' from active-tasks.json.
+    """Count tasks that should consume dispatch slots from active-tasks.json.
 
     Returns 0 on any error (missing file, parse failure, etc.).
     """
@@ -87,7 +128,7 @@ def _count_active_tasks(tasks_path: Optional[str] = None) -> int:
         with open(path, "r") as fh:
             data = json.load(fh)
         tasks = data.get("tasks", [])
-        return sum(1 for t in tasks if t.get("status") == "in_progress")
+        return sum(1 for t in tasks if _is_dispatch_active(t))
     except (json.JSONDecodeError, TypeError, OSError, KeyError):
         return 0
 

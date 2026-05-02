@@ -368,6 +368,13 @@ class TestZombieReaperSweep:
                             t["outputSummary"] = f"reaped: pid {pid} not alive"
                             changed = True
                             reaped.append(("zombie", t["id"], pid))
+                    elif status == "in_progress" and pid is None:
+                        if age is not None and age > stale_secs:
+                            t["status"] = "cancelled-stale"
+                            t["completedAt"] = now_iso
+                            t["outputSummary"] = f"reaped: in_progress without pid for {int(age)}s"
+                            changed = True
+                            reaped.append(("stale-in-progress", t["id"], None))
                     elif status == "pending" and pid is None:
                         if age is not None and age > stale_secs:
                             t["status"] = "cancelled-stale"
@@ -447,6 +454,37 @@ class TestZombieReaperSweep:
 
         tasks = _read_tasks(tasks_file)
         task = next(t for t in tasks if t["id"] == "task-stale-001")
+        assert task["status"] == "cancelled-stale"
+
+    def test_stale_in_progress_without_pid_marked_cancelled_stale(self, tmp_path):
+        """in_progress + null PID + age > stale_secs → cancelled-stale."""
+        tasks_file = _make_tasks_file(tmp_path, [
+            {
+                "id": "task-stale-ip-001",
+                "toolUseId": "toolu_stale_ip_001",
+                "description": "stale in_progress without pid",
+                "status": "in_progress",
+                "requested_at": _now_iso(-4000),
+                "launchedAt": _now_iso(-4000),
+                "started_at": _now_iso(-4000),
+                "pid": None,
+                "completedAt": None,
+                "outputSummary": None,
+                "expectedOutputs": [],
+                "checkCommand": None,
+            }
+        ])
+
+        reaped = self._run_sweep(tasks_file, stale_secs=1800)
+
+        assert len(reaped) == 1
+        kind, tid, pid = reaped[0]
+        assert kind == "stale-in-progress"
+        assert tid == "task-stale-ip-001"
+        assert pid is None
+
+        tasks = _read_tasks(tasks_file)
+        task = next(t for t in tasks if t["id"] == "task-stale-ip-001")
         assert task["status"] == "cancelled-stale"
 
     def test_fresh_pending_left_alone(self, tmp_path):
