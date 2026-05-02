@@ -1,6 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: bump-version
+invocation_pattern: on-demand  # @on-demand: release pipeline step — manual trigger
 command: /bump-version
 description: Calculate and write the new version to the VERSION file
 version: 0.1.0

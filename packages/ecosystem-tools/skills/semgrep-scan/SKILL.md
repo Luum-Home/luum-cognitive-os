@@ -1,6 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: semgrep-scan
+invocation_pattern: on-demand  # @on-demand: manual SAST trigger before PRs
 description: >
   Run Semgrep SAST security scanning on a path or changed files.
   Reports findings in adversarial review format (BLOCKER/CONCERN/SUGGESTION).
