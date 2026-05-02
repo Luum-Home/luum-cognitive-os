@@ -14,6 +14,14 @@ Fixtures live in ``tests/fixtures/codex-live-session/`` and are sanitized from
 an actual Codex Desktop session on 2026-04-30.  They intentionally replace
 absolute paths and long prompt bodies with placeholders so the repository never
 stores operator-specific filesystem paths or conversation content.
+
+Tool-coverage gap (ADR-064 lines 24-27, manifests/harness-driver-capabilities.yaml):
+Codex hook surface as of v0.124.0 / v0.126.0-alpha.8 only fires PreToolUse and
+PostToolUse for the Bash tool.  Non-Bash hook payloads are emitted as a
+``ParseError`` with reason ``codex_tool_coverage_gap`` so callers can detect
+the missing coverage explicitly rather than silently dropping events.  Native
+session log payloads (``function_call``, ``exec_command_end``,
+``mcp_tool_call_end``) cover the gap when reading from ``~/.codex/sessions``.
 """
 
 from __future__ import annotations
