@@ -6,7 +6,8 @@ plus checks that the hook file exists and is executable.
 import json
 import os
 import stat
-import sys
+import subprocess
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -18,6 +19,7 @@ pytestmark = pytest.mark.unit
 
 _PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "../..")
 _HOOK_PATH = os.path.join(_PROJECT_ROOT, "hooks/dispatch-gate.sh")
+_CHECK_PATH = os.path.join(_PROJECT_ROOT, "hooks/_lib/dispatch_gate_check.py")
 
 
 def _count_in_progress(tasks_path: str) -> int:
@@ -45,6 +47,12 @@ def _read_max_agents(cfg_path: str) -> int:
 def _is_blocked(active: int, max_agents: int) -> bool:
     """Dispatch decision: blocked when active >= max."""
     return active >= max_agents
+
+
+def _iso_age(seconds: int) -> str:
+    return (datetime.now(timezone.utc) - timedelta(seconds=seconds)).strftime(
+        "%Y-%m-%dT%H:%M:%SZ"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -219,3 +227,48 @@ class TestDispatchGateEndToEnd:
         tasks_path = self._make_tasks(tmp_path, in_progress=2)
         active = _count_in_progress(tasks_path)
         assert _is_blocked(active, 2)
+
+    def test_dispatch_gate_check_excludes_zombie_and_stale_starting_records(self, tmp_path):
+        tasks_dir = tmp_path / ".cognitive-os" / "tasks"
+        tasks_dir.mkdir(parents=True)
+        (tmp_path / "cognitive-os.yaml").write_text(
+            "resources:\n  compute:\n    max_parallel_agents: 5\n"
+        )
+        (tasks_dir / "active-tasks.json").write_text(
+            json.dumps(
+                {
+                    "tasks": [
+                        {"id": "live", "status": "in_progress", "pid": os.getpid()},
+                        {"id": "dead", "status": "in_progress", "pid": 99999999},
+                        {
+                            "id": "stale-pidless",
+                            "status": "in_progress",
+                            "pid": None,
+                            "started_at": _iso_age(4000),
+                        },
+                        {
+                            "id": "fresh-pidless",
+                            "status": "in_progress",
+                            "pid": None,
+                            "started_at": _iso_age(30),
+                        },
+                        {"id": "pending", "status": "pending", "pid": None},
+                    ]
+                }
+            )
+        )
+        env = os.environ.copy()
+        env["COGNITIVE_OS_PROJECT_DIR"] = str(tmp_path)
+
+        result = subprocess.run(
+            ["python3", _CHECK_PATH],
+            input=json.dumps({"tool_input": {"description": "test"}}),
+            capture_output=True,
+            text=True,
+            env=env,
+            timeout=10,
+        )
+
+        assert result.returncode == 0, result.stderr
+        payload = json.loads(result.stdout)
+        assert payload["active"] == 2
