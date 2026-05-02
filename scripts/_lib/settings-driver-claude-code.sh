@@ -223,11 +223,12 @@ cc_driver_emit() {
 
   local post_bash
   post_bash=$(_cc_hook_group "PostToolUse" "Bash" \
-    "hooks/error-pipeline.sh"    "false" \
-    "hooks/result-truncator.sh"  "false" \
-    "hooks/rate-limit-drain.sh"  "false" \
-    "hooks/audit-id-enricher.sh" "false" \
-    "hooks/error-learning.sh"    "false" \
+    "hooks/error-pipeline.sh"              "false" \
+    "hooks/result-truncator.sh"            "false" \
+    "hooks/rate-limit-drain.sh"            "false" \
+    "hooks/audit-id-enricher.sh"           "false" \
+    "hooks/error-learning.sh"              "false" \
+    "hooks/post-git-orphan-notifier.sh"    "false" \
   )
 
   local post_bash_edit_write

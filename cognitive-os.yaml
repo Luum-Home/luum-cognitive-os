@@ -1303,6 +1303,14 @@ harness:
       matcher: Bash
       scope: os-only
 
+    post-git-orphan-notifier:
+      script: hooks/post-git-orphan-notifier.sh
+      event: PostToolUse
+      matcher: Bash
+      scope: both
+      # ADR-116 P3.1: advisory orphan detector — fires after rebase/reset/pull --rebase;
+      # never blocks (exit 0 always). Surfaces displaced commits before reflog expires.
+
     # ── PostToolUse — Bash|Edit|Write ─────────────────────────────────────────
     # Codex: OMITTED — Edit|Write matcher not supported by Codex v0.126.0-alpha.8
     auto-checkpoint:
