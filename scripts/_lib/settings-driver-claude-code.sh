@@ -165,6 +165,11 @@ cc_driver_emit() {
     "hooks/git-commit-scope-guard.sh"  "false" \
   )
 
+  local pre_read
+  pre_read=$(_cc_hook_group "PreToolUse" "Read" \
+    "hooks/large-file-advisor.sh" "false" \
+  )
+
   local pre_edit_write
   pre_edit_write=$(_cc_hook_group "PreToolUse" "Edit|Write" \
     "hooks/secret-detector.sh"          "false" \
@@ -201,6 +206,7 @@ cc_driver_emit() {
     "hooks/result-truncator.sh"  "false" \
     "hooks/rate-limit-drain.sh"  "false" \
     "hooks/audit-id-enricher.sh" "false" \
+    "hooks/error-learning.sh"    "false" \
   )
 
   local post_bash_edit_write
@@ -248,6 +254,8 @@ cc_driver_emit() {
     "hooks/dequeue-notify.sh"         "true"  \
     "hooks/state-heartbeat.sh"        "true"  \
     "hooks/review-spawner.sh"         "false" \
+    "hooks/auto-refine.sh"            "false" \
+    "hooks/dod-gate.sh"               "false" \
   )
 
   local post_engram_mcp
@@ -304,7 +312,7 @@ cc_driver_emit() {
 
   printf '    "PreToolUse": [\n'
   local pre_first=true
-  for group in "$pre_all" "$pre_bash" "$pre_edit_write" "$pre_agent"; do
+  for group in "$pre_all" "$pre_bash" "$pre_read" "$pre_edit_write" "$pre_agent"; do
     [ -z "$group" ] && continue
     if [ "$pre_first" = true ]; then
       pre_first=false
