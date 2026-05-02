@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: project
 # deps-update.sh — Audit and optionally upgrade project dependencies
 #
 # Usage:

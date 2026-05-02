@@ -127,7 +127,7 @@ run_claude_code_driver() {
     pre-compaction-flush.sh agent-bash-cwd-enforcer.sh rate-limiter.sh secret-detector.sh \
     dispatch-gate.sh clarification-gate.sh blast-radius.sh query-tailored-context-inject.sh \
     pre-agent-snapshot.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh \
-    content-policy.sh doc-sync-detector.sh prompt-quality.sh claim-validator.sh completion-gate.sh \
+    content-policy.sh doc-sync-detector.sh claim-validator.sh completion-gate.sh \
     trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh context-watchdog.sh kpi-trigger.sh teammate-idle.sh \
     task-created.sh task-completed.sh session-sanity.sh; do
@@ -177,7 +177,7 @@ echo "  PostToolUse Edit|Write: content-policy.sh, skill-frontmatter-validator.s
 echo "  PostToolUse TodoWrite: work-queue-sync.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh (async), skill-invocation-logger.sh"
 echo "  PostToolUse mem_search|mem_get_observation: engram-reinforce-on-access.sh (async)"
-echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, post-agent-verify.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, skill-feedback-tracker.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async), review-spawner.sh"
+echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, skill-feedback-tracker.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async), review-spawner.sh"
 echo "  Stop: session-summary-reminder.sh, session-learning.sh, session-cleanup.sh, edit-lock-session-end.sh, git-context-capture.sh, session-changelog.sh, skill-failure-monitor.sh, kpi-trigger.sh (async), engram-crystallize-on-session-end.sh (async)"
 echo "  TeammateIdle: teammate-idle.sh"
 echo "  TaskCreated: task-created.sh"

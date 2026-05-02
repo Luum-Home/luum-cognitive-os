@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """hook_timing_report.py — Aggregate and display hook execution timing.
 
 Reads .cognitive-os/metrics/hook-timing.jsonl and prints per-hook statistics

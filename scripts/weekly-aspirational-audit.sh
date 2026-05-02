@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: os-only
 # weekly-aspirational-audit.sh — ws8 weekly cron runner
 #
 # Runs aspirational_audit.py (which now auto-calls cos_classify_coverage.py)

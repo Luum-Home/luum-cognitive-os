@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: os-only
 """Map which COS agentic primitives and repo surfaces reference each primitive.
 
 This is a static reachability map, not runtime coverage. It answers questions

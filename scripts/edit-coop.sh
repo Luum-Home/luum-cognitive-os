@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SCOPE: both
 # edit-coop.sh — ADR-098 Layer 4: file-level edit coordination
 #
 # Builds on ADR-089 Layer 2 primitives (git-coop.sh atomic mkdir + PID-based

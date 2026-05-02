@@ -70,6 +70,10 @@ def test_hook_produces_output(tmp_path: Path) -> None:
     # adrs: 1
     (tmp_path / "docs" / "adrs").mkdir(parents=True)
     (tmp_path / "docs" / "adrs" / "ADR-001.md").write_text("x")
+    (tmp_path / ".cognitive-os" / "metrics").mkdir(parents=True)
+    (tmp_path / ".cognitive-os" / "metrics" / "adr-implementation-latest.json").write_text(
+        '{"summary": {"attention_count": 3, "implementation_counts": {"implemented": 1, "pending": 3}}}'
+    )
     (tmp_path / ".cognitive-os" / "work-queue.json").write_text(
         '{"live": [{"id":1}], "parked": [{"id":2},{"id":3}]}'
     )
@@ -92,6 +96,8 @@ def test_hook_produces_output(tmp_path: Path) -> None:
     assert "1 arch" in out
     assert "1 roadmaps" in out
     assert "cross-ref 1 ADRs" in out
+    assert "ADR implementation:" in out
+    assert "3 need attention" in out
     assert "1 live, 2 parked" in out
     assert "Validator:" in out
     assert "Suggested first action:" in out
@@ -111,6 +117,33 @@ def test_hook_fast(tmp_path: Path) -> None:
     elapsed = time.monotonic() - start
     assert r.returncode == 0
     assert elapsed < 1.0, f"hook took {elapsed:.3f}s (budget: 1.0s)"
+
+
+def test_hook_project_dir_precedence_prefers_cognitive_then_codex_then_claude(tmp_path: Path) -> None:
+    canonical = tmp_path / "canonical"
+    codex = tmp_path / "codex"
+    claude = tmp_path / "claude"
+    for project in (canonical, codex, claude):
+        (project / ".cognitive-os" / "plans" / "features").mkdir(parents=True)
+    (canonical / ".cognitive-os" / "plans" / "features" / "canonical.md").write_text("x")
+    (codex / ".cognitive-os" / "plans" / "features" / "codex.md").write_text("x")
+    (codex / ".cognitive-os" / "plans" / "features" / "codex-2.md").write_text("x")
+    (claude / ".cognitive-os" / "plans" / "features" / "claude.md").write_text("x")
+    (claude / ".cognitive-os" / "plans" / "features" / "claude-2.md").write_text("x")
+    (claude / ".cognitive-os" / "plans" / "features" / "claude-3.md").write_text("x")
+
+    env = os.environ.copy()
+    env["COGNITIVE_OS_PROJECT_DIR"] = str(canonical)
+    env["CODEX_PROJECT_DIR"] = str(codex)
+    env["CLAUDE_PROJECT_DIR"] = str(claude)
+    r = subprocess.run(["bash", str(HOOK)], capture_output=True, text=True, timeout=5, env=env)
+    assert r.returncode == 0
+    assert "Plans: 1 features" in r.stdout
+
+    env.pop("COGNITIVE_OS_PROJECT_DIR")
+    r = subprocess.run(["bash", str(HOOK)], capture_output=True, text=True, timeout=5, env=env)
+    assert r.returncode == 0
+    assert "Plans: 2 features" in r.stdout
 
 
 def test_hook_never_blocks_on_missing_files(tmp_path: Path) -> None:
