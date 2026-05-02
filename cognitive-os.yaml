@@ -965,6 +965,11 @@ harness:
       event: SessionStart
       scope: os-only
 
+    validation-lock-cleanup:
+      script: hooks/validation-lock-cleanup.sh
+      event: SessionStart
+      scope: os-only
+
     infra-health:
       script: hooks/infra-health.sh
       event: SessionStart
@@ -1052,6 +1057,12 @@ harness:
       script: hooks/lethal-trifecta-gate.sh
       event: PreToolUse
       matcher: ""
+      scope: os-only
+
+    large-file-advisor:
+      script: hooks/large-file-advisor.sh
+      event: PreToolUse
+      matcher: Read
       scope: os-only
 
     # ── PreToolUse — Bash only ────────────────────────────────────────────────
@@ -1210,6 +1221,12 @@ harness:
     # Codex: limited (Bash matcher only — these project to Codex PostToolUse)
     error-pipeline:
       script: hooks/error-pipeline.sh
+      event: PostToolUse
+      matcher: Bash
+      scope: os-only
+
+    error-learning:
+      script: hooks/error-learning.sh
       event: PostToolUse
       matcher: Bash
       scope: os-only
@@ -1402,6 +1419,18 @@ harness:
       event: PostToolUse
       matcher: Agent
       async: true
+      scope: os-only
+
+    auto-refine:
+      script: hooks/auto-refine.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    dod-gate:
+      script: hooks/dod-gate.sh
+      event: PostToolUse
+      matcher: Agent
       scope: os-only
 
     review-spawner:
