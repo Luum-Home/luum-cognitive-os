@@ -36,12 +36,14 @@ class HookProjectionStatus:
     codex: bool
     config: bool
     claude_driver: bool
+    codex_required: bool = True
 
     @property
     def complete_for_baseline(self) -> bool:
-        """Return true when the shared Claude/Codex/config/driver baseline is present."""
+        """Return true when required projection surfaces are present."""
 
-        return self.claude and self.codex and self.config and self.claude_driver
+        codex_ok = self.codex if self.codex_required else True
+        return self.claude and codex_ok and self.config and self.claude_driver
 
 
 @dataclass(frozen=True)
@@ -84,8 +86,8 @@ def collect_status(project_dir: str | Path = ".") -> ConcurrentAgentSafetyStatus
                     severity="warn",
                     code="projection_incomplete",
                     message=(
-                        f"{projection.hook} is not present in every baseline projection "
-                        "surface (Claude, Codex, config, Claude driver)"
+                        f"{projection.hook} is not present in every required projection "
+                        "surface for its supported harness surface"
                     ),
                     path=projection.hook,
                 )
@@ -105,6 +107,7 @@ def collect_status(project_dir: str | Path = ".") -> ConcurrentAgentSafetyStatus
     locks = {
         "git_index": _collect_git_index_locks(root),
         "edit": _collect_lock_metadata(root / ".cognitive-os" / "runtime" / "edit-locks"),
+        "concurrent_write": _collect_json_lock_files(root / ".cognitive-os" / "sessions" / "locks", root),
         "plan": _collect_lock_metadata(root / ".cognitive-os" / "runtime" / "plan-locks"),
         "resource": _collect_lock_metadata(root / ".cognitive-os" / "runtime" / "resource-leases"),
     }
@@ -146,7 +149,11 @@ def _read_json_object(path: Path) -> Any:
 
 
 def _collect_projection_status(root: Path) -> list[HookProjectionStatus]:
-    hooks = ("orchestrator-claim-gate.sh", "plan-claim-validator.sh")
+    hooks = (
+        ("orchestrator-claim-gate.sh", True),
+        ("plan-claim-validator.sh", False),
+        ("concurrent-write-guard.sh", False),
+    )
     claude = _read_text(root / ".claude" / "settings.json")
     codex = _read_text(root / ".codex" / "hooks.json")
     config = _read_text(root / "cognitive-os.yaml")
@@ -155,11 +162,12 @@ def _collect_projection_status(root: Path) -> list[HookProjectionStatus]:
         HookProjectionStatus(
             hook=f"hooks/{hook}",
             claude=f"hooks/{hook}" in claude,
-            codex=f"hooks/{hook}" in codex if hook == "orchestrator-claim-gate.sh" else True,
+            codex=f"hooks/{hook}" in codex,
             config=f"hooks/{hook}" in config,
             claude_driver=f"hooks/{hook}" in claude_driver,
+            codex_required=codex_required,
         )
-        for hook in hooks
+        for hook, codex_required in hooks
     ]
 
 
@@ -203,6 +211,19 @@ def _collect_lock_metadata(root_dir: Path) -> list[dict[str, Any]]:
         if item:
             item.setdefault("lock_path", str(lock_dir))
             results.append(item)
+    return results
+
+
+def _collect_json_lock_files(root_dir: Path, project_root: Path) -> list[dict[str, Any]]:
+    if not root_dir.is_dir():
+        return []
+    results: list[dict[str, Any]] = []
+    for lock_file in sorted(root_dir.glob("*.lock")):
+        item = _read_json_object(lock_file)
+        if isinstance(item, dict):
+            clean = _clean_mapping(item)
+            clean.setdefault("lock_path", _relpath(lock_file, project_root))
+            results.append(clean)
     return results
 
 

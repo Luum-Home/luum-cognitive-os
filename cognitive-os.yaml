@@ -1141,17 +1141,23 @@ harness:
       matcher: "Edit|Write"
       scope: os-only
 
-    plan-claim-validator:
-      script: hooks/plan-claim-validator.sh
-      event: PreToolUse
-      matcher: "Edit|Write|MultiEdit"
-      scope: both
-
     edit-lock-pre-tool:
       script: hooks/edit-lock-pre-tool.sh
       event: PreToolUse
       matcher: "Edit|Write"
       scope: os-only
+
+    concurrent-write-guard:
+      script: hooks/concurrent-write-guard.sh
+      event: PreToolUse
+      matcher: "Edit|Write"
+      scope: both
+
+    plan-claim-validator:
+      script: hooks/plan-claim-validator.sh
+      event: PreToolUse
+      matcher: "Edit|Write|MultiEdit"
+      scope: both
 
     # ── PreToolUse — Agent ────────────────────────────────────────────────────
     # Codex: OMITTED — Agent matcher not supported by Codex v0.126.0-alpha.8
