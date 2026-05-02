@@ -158,5 +158,32 @@ Derived from these wounds. Apply before adding new code:
 
 ---
 
-**Last updated:** 2026-04-16
+**Last updated:** 2026-05-02
 **Next review:** After any session that introduces >100 new lines of code OR modifies >10 files. Verify no red flags activated.
+
+---
+
+## 2026-05-02 — FALSE-DONE COMPOUNDING
+
+**Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` | ADR-105 | ADR-106
+
+**What happened:** A sub-agent (Wave C) claimed "3 DELETE hooks already archived" in a commit message. The claim was a bilateral failure: the files existed in `docs/archive/hooks/` but also remained live in `hooks/`, one was still registered in `.claude/settings.json`, and one archive copy was a symlink. The plan was marked `[x]` on this basis and committed to main. Concurrently, a parallel agent stash-leaked 59 modified files (never re-applied), and a second orchestrator session committed 3 uncoordinated fixes to main. Adversarial review — triggered manually by the operator — caught both HIGH findings before the session ended.
+
+**New wound: Presence ≠ Removal Fallacy.** Agents default to the optimistic partial: "archive present" ≠ "original absent + config refs gone." This is structurally different from the five existing wounds but compounds them.
+
+**New wound: Orchestrator TRUST_REPORT Blind Spot.** A 90+ trust score is compatible with false factual claims when the agent's cited "verification" is adjacent to (not inverse of) the claim. The orchestrator committed without independent bilateral check.
+
+**New red flags to watch for:**
+
+- [ ] A plan file with `[x]` items that lack `(verified: <cmd>)` annotations being read as ground truth by a subsequent session
+- [ ] `git stash list | grep auto-pre-agent` showing stashes older than the current session
+- [ ] Two different `X-COS-Session` IDs appearing in recent `git log` without an explicit coordination record
+- [ ] An orchestrator committing a plan closure without documenting its own bilateral verification commands
+
+**New principles:**
+
+- **Verify both halves**: every archive/delete/wire/register claim requires bilateral proof (presence AND absence/reference). A listing of the archive is not proof of deletion.
+- **Orchestrator is the final gate**: sub-agent TRUST_REPORT is insufficient for filesystem claims. The orchestrator runs independent inverse verification before committing.
+- **Stashes are not invisible**: auto-pre-agent stashes unapplied >10 minutes MUST surface as an operator alarm. 59 files of invisible work is not an acceptable state.
+- **Plan checkboxes need inline proof**: bare `[x]` on a high-stakes claim is unverified. Format: `[x] item (verified: <cmd> → <expected output>)`.
+- **Adversarial review must be on the critical path**: a ~15-minute adversarial pass on plan-closing commits is not optional. It is the only mechanism that caught both HIGH findings here.
