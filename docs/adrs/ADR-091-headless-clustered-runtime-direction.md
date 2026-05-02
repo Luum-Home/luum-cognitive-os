@@ -18,6 +18,10 @@
 
 Accepted.
 
+## Relationship to ADR-084
+
+ADR-091 supersedes ADR-084 for the headless and clustered runtime contract. ADR-084 remains useful as historical design input, but its three-mode taxonomy is not canonical. The accepted taxonomy is two runtime modes: local harness runtime and headless runtime. Clustered/Kubernetes operation is a future deployment surface under headless runtime and must not be claimed until the requirements in this ADR are implemented and verified.
+
 ## Context
 
 Cognitive OS started as a local operating layer for AI coding agents, with

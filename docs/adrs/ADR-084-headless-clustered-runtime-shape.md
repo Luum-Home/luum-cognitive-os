@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed (retroactive backfill 2026-04-30)
+**Status**: Superseded by ADR-091 (retroactive backfill kept for historical context)
 **Date**: 2026-04-30
 **Author**: Matias Nahuel Améndola
 **Related**: ADR-027 (performance monitoring SLOs), ADR-033 (harness-agnostic event capture), ADR-064 (cross-harness authoring)
@@ -12,7 +12,13 @@
 
 ## Status
 
-Proposed (retroactive backfill 2026-04-30).
+Superseded by ADR-091. Retained as the earlier shape sketch that motivated the accepted runtime direction; do not use this ADR as the canonical headless/clustered contract.
+
+---
+
+## Relationship to ADR-091
+
+ADR-091 is the canonical accepted decision for headless runtime direction. This ADR is superseded because it framed `local`, `headless single-node`, and `clustered headless` as peer runtime modes. The resolved taxonomy is simpler: `local harness runtime` and `headless runtime`; clustered workers are a deployment topology inside the headless runtime, not a third top-level mode.
 
 ---
 

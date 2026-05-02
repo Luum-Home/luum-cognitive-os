@@ -6,6 +6,10 @@
 in `docker-compose.cognitive-os.yml` since ADR-022-era) and establishes the
 canonical overflow strategy when Claude Code Max subscription hits rate limits.
 
+## Relationship to ADR-011 and ADR-018
+
+ADR-049 is canonical for LLM dispatch and overflow provider selection. It supersedes ADR-011 entirely and supersedes only the LLM-gateway portions of ADR-018. ADR-018 remains canonical for the broader Docker-to-pip/local-service migration. The resolved policy is: default runtime uses direct SDK/OpenAI-compatible dispatch for model overflow; remaining Docker or local daemons are infrastructure concerns, not LLM gateway requirements.
+
 ## Context
 
 ### The original problem
