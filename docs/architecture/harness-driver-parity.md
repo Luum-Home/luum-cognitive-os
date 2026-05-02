@@ -119,3 +119,20 @@ The product promise is portability with evidence, not matching JSON counts.
 - [Cross-Harness Authoring](cross-harness-authoring.md)
 - [ADR-057: Cross-Harness Authoring and Driver Projection](../adrs/ADR-057-cross-harness-authoring-and-driver-projection.md)
 - [ADR-064: Harness-Agnostic Cognitive OS](../adrs/ADR-064-harness-agnostic-cognitive-os.md)
+
+## Governed Fallback Layer
+
+Codex limited surfaces are no longer only a roadmap note. When a missing matcher
+protects a high-value action, Cognitive OS can provide a governed runner that
+executes the canonical hook chain explicitly. The first implementation is
+`scripts/cos-codex-guard.py`, documented in [Codex Governed Tool Layer](codex-governed-tool-layer.md).
+
+This creates a stricter parity vocabulary:
+
+- **native**: the driver projects and the harness emits the event.
+- **governed**: COS wraps the action and runs the canonical hook chain.
+- **unsupported**: no safe native or governed path exists yet.
+
+Future Cursor, OpenCode, IDE plugin, and bare-CLI drivers should use the same
+classification. Matching Claude Code hook counts is not the goal; preserving the
+governance guarantee through either native or governed execution is the goal.
