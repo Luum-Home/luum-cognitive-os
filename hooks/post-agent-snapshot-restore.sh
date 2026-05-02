@@ -35,6 +35,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="post-agent-snapshot-restore"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+STASH_LOCK_LIB="$(dirname "$0")/_lib/stash-lock.sh"
+[ -f "$STASH_LOCK_LIB" ] && source "$STASH_LOCK_LIB"
 source "$(dirname "$0")/_lib/common.sh"
 
 # ─── Bypass / killswitch ─────────────────────────────────────────────────────
@@ -114,6 +116,13 @@ fi
 # ─── Fallback: scan stash list for most-recent auto-pre-agent-* stash ────────
 FALLBACK_USED=false
 if [ -z "$STASH_REF" ]; then
+  if command -v cos_stash_lock_acquire >/dev/null 2>&1; then
+    cos_stash_lock_acquire "post-agent-snapshot-restore" || {
+      log_metric "stash_lock_failed" "" ""
+      exit 0
+    }
+    trap 'cos_stash_lock_release' EXIT INT TERM
+  fi
   FALLBACK_USED=true
   FIVE_MIN_AGO=$(( TIMESTAMP_EPOCH - 300 ))
   # Parse stash list: stash@{N}: On branch: auto-pre-agent-<UUID>: ...
@@ -141,7 +150,18 @@ fi
 # ─── Apply the stash ─────────────────────────────────────────────────────────
 APPLY_OUT=""
 APPLY_RC=0
+if command -v cos_stash_lock_acquire >/dev/null 2>&1 && [ "$FALLBACK_USED" != true ]; then
+  cos_stash_lock_acquire "post-agent-snapshot-restore" || {
+    log_metric "stash_lock_failed" "$STASH_REF" ""
+    exit 0
+  }
+  trap 'cos_stash_lock_release' EXIT INT TERM
+fi
 APPLY_OUT=$(git -C "$PROJECT_DIR" stash apply "$STASH_REF" 2>&1) || APPLY_RC=$?
+if command -v cos_stash_lock_release >/dev/null 2>&1; then
+  cos_stash_lock_release
+  trap - EXIT INT TERM
+fi
 
 if [ "$APPLY_RC" -eq 0 ]; then
   log_metric "restored" "$STASH_REF" \
