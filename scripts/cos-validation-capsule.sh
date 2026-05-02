@@ -156,7 +156,7 @@ tmp.write_text(json.dumps(data, separators=(",", ":")) + "\n")
 os.replace(tmp, p)
 PYHB
   done
-) &
+) >/dev/null 2>&1 < /dev/null &
 HEARTBEAT_PID=$!
 
 # ADR-113 P2: initialize activity log; subprocess can append events.
