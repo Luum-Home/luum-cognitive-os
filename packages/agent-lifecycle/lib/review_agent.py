@@ -31,6 +31,7 @@ import json
 import os
 import random
 import re
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -72,6 +73,15 @@ def _project_dir() -> Path:
 def _runtime_dir() -> Path:
     return _project_dir() / ".cognitive-os" / "runtime"
 
+
+
+
+def _atomic_write_json(path: Path, data: dict[str, Any]) -> None:
+    """Atomically write a JSON object to disk."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + f".{os.getpid()}.tmp")
+    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    os.replace(tmp, path)
 
 def _budget_state_path(state_file: Path | None = None) -> Path:
     if state_file is not None:
@@ -474,6 +484,114 @@ def evaluate_review_quality(parsed_finding: dict[str, Any]) -> dict[str, Any]:
         "quality_issues": issues,
     }
 
+
+
+def enqueue_review_request(
+    request: dict[str, Any],
+    runtime_dir: Path | None = None,
+) -> Path:
+    """Persist a pending background review request and return its marker path.
+
+    ADR-096 v2 uses marker files so the PostToolUse hook can exit quickly while
+    a sweeper performs the expensive reviewer dispatch out of band.
+    """
+    runtime = runtime_dir or _runtime_dir()
+    review_id = str(request.get("reviewer_id") or f"review-{uuid.uuid4().hex[:12]}")
+    marker = runtime / f"review-pending-{review_id}.json"
+    payload = {
+        **request,
+        "reviewer_id": review_id,
+        "status": "pending",
+        "created_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
+    _atomic_write_json(marker, payload)
+    return marker
+
+
+def _dispatch_review_prompt(prompt: str, reviewer_model: str) -> str:
+    """Default live dispatcher for background review requests."""
+    from lib.dispatch import dispatch  # type: ignore[import]
+
+    result = dispatch(
+        prompt=prompt,
+        providers=["qwen", "claude"],
+        claude_model=reviewer_model,
+        task_type="review",
+        skill_name="review-spawner",
+    )
+    return result.text if getattr(result, "success", False) else ""
+
+
+def process_review_request(
+    marker_path: Path,
+    *,
+    findings_jsonl: Path | None = None,
+    dispatch_func: Any | None = None,
+) -> dict[str, Any]:
+    """Process one pending background review marker.
+
+    Returns a status dict and rewrites the marker as completed/failed so the
+    sweeper is idempotent.  ``dispatch_func`` is injectable for tests and must
+    accept ``(prompt, reviewer_model)`` and return reviewer text.
+    """
+    try:
+        request = json.loads(marker_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return {"status": "error", "error": f"read_failed: {exc}"}
+
+    if request.get("status") not in (None, "pending"):
+        return {"status": "skipped", "reason": f"status={request.get('status')}"}
+
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    request["status"] = "in_progress"
+    request["started_at"] = now
+    _atomic_write_json(marker_path, request)
+
+    reviewer_model = str(request.get("reviewer_model") or "sonnet")
+    prompt = str(request.get("prompt") or "")
+    dispatcher = dispatch_func or _dispatch_review_prompt
+
+    try:
+        response = dispatcher(prompt, reviewer_model)
+    except Exception as exc:  # noqa: BLE001 — background sweeper must not crash loops
+        response = ""
+        request["error"] = f"dispatch_exception: {exc}"
+
+    if not response:
+        finding = {
+            "producer_id": request.get("producer_id", "unknown"),
+            "producer_model": request.get("producer_model", "unknown"),
+            "reviewer_id": request.get("reviewer_id", "unknown"),
+            "reviewer_model": reviewer_model,
+            "task_description": request.get("task_description", ""),
+            "score": -1,
+            "error": request.get("error", "dispatch_failed"),
+            "gaps": ["Review dispatch failed — no response from reviewer"],
+            "evidence": [],
+            "recommendations": [],
+        }
+        persist_finding(finding, jsonl_path=findings_jsonl, engram_topic="review-finding")
+        request["status"] = "failed"
+        request["completed_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        _atomic_write_json(marker_path, request)
+        return {"status": "failed", "producer_id": request.get("producer_id")}
+
+    parsed = parse_review_response(response)
+    finding = {
+        **parsed,
+        "producer_id": request.get("producer_id", "unknown"),
+        "producer_model": request.get("producer_model", "unknown"),
+        "reviewer_id": request.get("reviewer_id", "unknown"),
+        "reviewer_model": reviewer_model,
+        "task_description": request.get("task_description", ""),
+    }
+    persist_finding(finding, jsonl_path=findings_jsonl, engram_topic="review-finding")
+
+    request["status"] = "completed"
+    request["completed_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    request["score"] = parsed.get("score", -1)
+    _atomic_write_json(marker_path, request)
+    return {"status": "completed", "score": parsed.get("score", -1), "producer_id": request.get("producer_id")}
 
 def persist_finding(
     finding: dict[str, Any],
