@@ -25,7 +25,7 @@ Cognitive OS already has real coordination primitives: session identity, git-ind
 | Concurrent Agent Safety Layer | `docs/adrs/ADR-108-concurrent-agent-safety-layer.md`, `docs/architecture/concurrent-agent-safety-master.md` | Composed from pieces above; no single composer yet | N/A | N/A | scenario tests exist for slices | Missing unified layer |
 | Agent Work Ledger | `docs/adrs/ADR-108-concurrent-agent-safety-layer.md` | Not a unified runtime primitive yet | ❌ | ❌ | No full contract located | Aspirational |
 | Resource Lease | `docs/adrs/ADR-108-concurrent-agent-safety-layer.md` | Not a unified runtime primitive yet | ❌ | ❌ | No full contract located | Aspirational |
-| Read-only safety status composer | `docs/adrs/ADR-108-concurrent-agent-safety-layer.md`, `docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md` | `lib/concurrent_agent_safety_status.py`, `scripts/cos-concurrent-status.py` | CLI/runtime | CLI/runtime | `tests/unit/test_concurrent_agent_safety_status.py` | Real initial slice |
+| Read-only safety status composer | `docs/adrs/ADR-108-concurrent-agent-safety-layer.md`, `docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md` | `lib/concurrent_agent_safety_status.py`, `scripts/cos_concurrent_status.py` | CLI/runtime | CLI/runtime | `tests/unit/test_concurrent_agent_safety_status.py` | Real initial slice |
 | Cross-session reconciler | `docs/adrs/ADR-108-concurrent-agent-safety-layer.md`, `docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md` | Read-only status composer exists; divergence policy/reconciliation loop not complete | Partial | Partial | `tests/chaos/test_cross_session_reconciler.py` exists as target surface | Partial |
 | Squad runtime coordination | `rules/squad-protocol.md`, `squads/organization.yaml` | skills/docs, no confirmed session-level coordinator | ❌ | ❌ | Not proven in this audit | Dormant |
 
@@ -53,7 +53,7 @@ Do not create parallel implementations for these primitives:
 
 ## Next Implementation Gap
 
-The first read-only composer slice now exists in `lib/concurrent_agent_safety_status.py` with CLI `scripts/cos-concurrent-status.py`. Its responsibility is observation only:
+The first read-only composer slice now exists in `lib/concurrent_agent_safety_status.py` with CLI `scripts/cos_concurrent_status.py`. Its responsibility is observation only:
 
 - list active sessions;
 - list edit/git/plan locks;
