@@ -23,6 +23,21 @@ check_disabled_env "dispatch-gate"
 
 read_stdin_json
 
+# ─── Validation capsule: block new agents in the validating worktree ─────────
+VALIDATION_LOCK_LIB="$(dirname "$0")/_lib/validation-lock.sh"
+if [ -f "$VALIDATION_LOCK_LIB" ]; then
+    # shellcheck source=/dev/null
+    source "$VALIDATION_LOCK_LIB"
+    if cos_validation_lock_active "$_PROJECT_DIR"; then
+        _msg=$(cos_validation_lock_message "$_PROJECT_DIR" 2>/dev/null || echo "validation capsule active")
+        _log_event() { :; }
+        echo "DISPATCH GATE: Agent launch blocked — validation capsule active." >&2
+        echo "  ${_msg}" >&2
+        echo "  Use a separate worktree or wait for validation to finish." >&2
+        exit 2
+    fi
+fi
+
 # ─── Single Python pass: config + active tasks + skill + CE + CB + routing ───
 # Replaces 7 sequential python3 cold starts with one.
 
