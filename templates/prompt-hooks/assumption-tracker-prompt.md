@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 Scan this agent output for assumption language and count assumptions.
 
 Patterns to detect:
