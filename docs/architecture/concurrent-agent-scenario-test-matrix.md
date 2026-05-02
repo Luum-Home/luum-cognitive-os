@@ -118,3 +118,14 @@ python3 -m pytest tests/behavior/test_stash_leak_alarm.py -v
 - Do not use real wall-clock waiting; TTLs must be environment-controlled.
 - Do not mutate the developer's actual stash or production worktree.
 - Tests must be deterministic on macOS and Linux.
+
+## Expanded core/consumer primitive scenarios
+
+| Priority | Scenario | Accident simulated | Expected behavior | Test proposed |
+|---:|---|---|---|---|
+| 4 | Critical resource lease collision | Two agents attempt to modify `auth`, `billing`, `migrations`, or `infrastructure` at the same time. | First lease is acquired; second lease exits blocked until release or expiry. | `tests/behavior/test_concurrency_safety_ledgers.py` |
+| 5 | Approval required evidence | A high-risk change needs approval proof before execution. | Approval ledger records approver, reason, verification command, and rollback plan; missing approval exits blocked. | `tests/behavior/test_concurrency_safety_ledgers.py` |
+| 6 | Concurrent work visibility | An agent starts work and another session needs to know active scopes. | Agent work ledger summary reports active started work and removes completed work. | `tests/behavior/test_concurrency_safety_ledgers.py` |
+| 7 | Cross-session recovery | A session is interrupted with leases, approvals, and work entries present. | Reconciler emits one JSON report containing config, leases, work, approvals, edit locks, and preserve status. | `tests/chaos/test_cross_session_reconciler.py` |
+| 8 | Consumer config projection | A project customizes critical domains and TTLs. | Core primitives read normalized policy from `cognitive-os.yaml`; invalid partial values fall back safely. | `tests/unit/test_concurrency_safety_config.py` |
+
