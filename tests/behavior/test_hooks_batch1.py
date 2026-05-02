@@ -9,11 +9,6 @@ Tests: dod-gate, secret-detector, pre-compaction-flush, auto-verify,
 """
 
 import json
-import os
-import subprocess
-import time
-from pathlib import Path
-
 import pytest
 
 pytestmark = pytest.mark.behavior
@@ -229,7 +224,10 @@ class TestAgentPrelaunch:
         tasks_file = cognitive_os_env["cos_dir"] / "tasks" / "active-tasks.json"
         data = json.loads(tasks_file.read_text())
         assert len(data["tasks"]) == 1
-        assert data["tasks"][0]["status"] == "in_progress"
+        # ADR-097: PreToolUse registration is pending until the agent process
+        # claims the task through write_context_marker.py.
+        assert data["tasks"][0]["status"] == "pending"
+        assert data["tasks"][0]["pid"] is None
 
     def test_skips_non_agent(self, run_hook, cognitive_os_env):
         input_json = json.dumps({

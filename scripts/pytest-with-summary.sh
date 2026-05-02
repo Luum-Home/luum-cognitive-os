@@ -21,7 +21,7 @@ if [ -z "${PYTEST_BIN:-}" ]; then
   if [ -x "$PROJECT_DIR/.venv/bin/python" ]; then
     PYTEST_BIN="$PROJECT_DIR/.venv/bin/python -m pytest"
   else
-    PYTEST_BIN="python3 -m pytest"
+    PYTEST_BIN="${PYTHON:-python3} -m pytest"
   fi
 fi
 REPORT_KEEP="${COS_TEST_REPORT_KEEP:-30}"
@@ -273,23 +273,8 @@ PYLANE
   fi  # end caller-supplied vs adaptive
 
   if [ "$_workers" != "0" ] && [ -n "$_workers" ]; then
-    _has_dist_flag=0
-    for _arg in "$@"; do
-      case "$_arg" in
-        --dist | --dist=*)
-          _has_dist_flag=1
-          break
-          ;;
-      esac
-    done
-    if [ "$_has_dist_flag" -eq 0 ]; then
-      set -- -n "$_workers" --dist loadgroup "$@"
-      echo "[pytest-with-summary] Injected: -n $_workers --dist loadgroup (use explicit -n/--dist or --workers N to override)"
-    else
-      set -- -n "$_workers" "$@"
-      echo "[pytest-with-summary] Injected: -n $_workers (explicit --dist preserved)"
-    fi
-    unset _has_dist_flag
+    set -- -n "$_workers" "$@"
+    echo "[pytest-with-summary] Injected: -n $_workers (use explicit -n or --workers N or COS_PYTEST_WORKERS to override)"
   else
     echo "[pytest-with-summary] Injected: serial (workers=0)"
   fi
@@ -427,8 +412,17 @@ if [ "${#_nice_prefix[@]}" -gt 0 ] || [ "${#_rerun_args[@]}" -gt 0 ]; then
 fi
 
 set +e
+# Bash 3.2 with set -u treats empty-array expansion as unbound in some contexts.
 # shellcheck disable=SC2086
-${_nice_prefix[@]+"${_nice_prefix[@]}"} $PYTEST_BIN "$@" ${_rerun_args[@]+"${_rerun_args[@]}"} --junitxml "$junit" 2>&1 | tee "$full_output"
+if [ "${#_nice_prefix[@]}" -gt 0 ] && [ "${#_rerun_args[@]}" -gt 0 ]; then
+  "${_nice_prefix[@]}" $PYTEST_BIN "$@" "${_rerun_args[@]}" --junitxml "$junit" 2>&1 | tee "$full_output"
+elif [ "${#_nice_prefix[@]}" -gt 0 ]; then
+  "${_nice_prefix[@]}" $PYTEST_BIN "$@" --junitxml "$junit" 2>&1 | tee "$full_output"
+elif [ "${#_rerun_args[@]}" -gt 0 ]; then
+  $PYTEST_BIN "$@" "${_rerun_args[@]}" --junitxml "$junit" 2>&1 | tee "$full_output"
+else
+  $PYTEST_BIN "$@" --junitxml "$junit" 2>&1 | tee "$full_output"
+fi
 status=${PIPESTATUS[0]}
 set -e
 

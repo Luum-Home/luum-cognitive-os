@@ -1,24 +1,19 @@
 <!-- SCOPE: os-only -->
 ---
-name: __contracts__
-description: Internal namespace for harness-contract skills that define executable reference contracts for Cognitive OS primitives.
-version: "1.0.0"
-audience: os-dev
+name: contracts-namespace
+version: 1.0.0
+description: Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives.
+triggers: []
 user-invocable: false
-tags: [contracts, internal, harness]
+audience: os-dev
 ---
 
-# Contract Skills Namespace
+# Contracts Namespace
 
-This directory groups internal contract skills. These skills are loaded by tests
-and implementation audits rather than by normal operator workflows.
+This directory groups non-user-facing contract skills used by other Cognitive OS
+agentic primitives. Keep concrete contracts in child directories so each one has
+its own `SKILL.md`, examples, and validation surface.
 
-## Current contract skills
+## Contextual Trigger
 
-- `canonical-event-emitter/` defines the canonical event-emitter reference
-  contract used by ADR-064 validation.
-
-## Usage
-
-Use the child contract skill directly when a test or migration needs an
-executable reference contract. Do not invoke this namespace skill as a workflow.
+This namespace is not loaded directly. Use the child contract skills instead.

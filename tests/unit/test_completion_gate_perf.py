@@ -199,3 +199,47 @@ class TestAgentFunctionality:
             assert elapsed < 0.4, (
                 f"Tool {tool} took {elapsed*1000:.1f} ms — should be < 400 ms fast-exit"
             )
+
+class TestReturnContractGate:
+    def test_current_preamble_contract_does_not_warn(self, tmp_path):
+        project_dir = _setup_project(tmp_path)
+        response = '''Task complete.
+
+RESULT:
+  status: completed
+  summary: Implemented compact formatter tests.
+  files_created: tests/unit/test_format_converter.py
+  files_modified: lib/format_converter.py
+  tests: 6 passed, 0 failed
+  blockers: none
+
+TRUST_REPORT: SCORE=80 STATUS=MEDIUM EVIDENCE=2 UNCERTAINTIES=1
+---
+WHAT I VERIFIED: pytest targeted
+UNSURE ABOUT: broader suite
+HUMAN SHOULD CHECK: none
+'''
+        stdin = _make_hook_input(tool_name="Agent", response=response, prompt="finish task")
+        result = _run_hook(project_dir, stdin=stdin)
+        combined = result.stdout + result.stderr
+        assert result.returncode == 0
+        assert "RETURN CONTRACT WARNINGS" not in combined
+        assert "STATUS is missing" not in combined
+
+    def test_malformed_contract_warns_without_shell_interpolation_breakage(self, tmp_path):
+        project_dir = _setup_project(tmp_path)
+        response = """Task complete.
+
+RESULT:
+  status: done
+  summary: It's done even with tricky ''' text and $(echo unsafe).
+  files_modified: lib/foo.py
+
+TRUST_REPORT: SCORE=50 STATUS=LOW EVIDENCE=1 UNCERTAINTIES=2
+"""
+        stdin = _make_hook_input(tool_name="Agent", response=response, prompt="finish task")
+        result = _run_hook(project_dir, stdin=stdin)
+        combined = result.stdout + result.stderr
+        assert result.returncode == 0
+        assert "RETURN CONTRACT WARNINGS" in combined
+        assert "STATUS must be" in combined

@@ -35,7 +35,7 @@ def test_harness_engineering_doc_maps_real_components() -> None:
         "bin/cos-skill",
         "scripts/cos_sprint.py",
         "scripts/cos-doctor-harness.sh",
-        "scripts/measure-harness-profiles.py",
+        "scripts/measure_harness_profiles.py",
         "manifests/harness-profiles.yaml",
     ]
     for component in components:

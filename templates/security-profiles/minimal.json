@@ -1,7 +1,7 @@
 {
   "_profile": "minimal",
-  "_description": "Minimal security profile \u2014 core safety only. For exploration and single-dev sessions where speed matters.",
-  "_hook_count": 14,
+  "_description": "Minimal security profile — core safety only. For exploration and single-dev sessions where speed matters.",
+  "_hook_count": 29,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -39,7 +39,7 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/lazy-catalog-auto-revert.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-sanity.sh\""
           }
         ]
       }
@@ -55,6 +55,10 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/prompt-quality.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-wrapup-trigger.sh\"",
             "async": true
           },
@@ -62,10 +66,6 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/memory-prefetch.sh\"",
             "async": true
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/lazy-catalog-injector.sh\""
           }
         ]
       }
@@ -133,11 +133,6 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/result-truncator.sh\""
-          },
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-discovery-telemetry.sh\"",
-            "async": true
           }
         ]
       },
@@ -181,6 +176,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/review-spawner.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/post-agent-verify.sh\""
           }
         ]
       }

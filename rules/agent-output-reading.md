@@ -17,7 +17,7 @@ The notification includes a `<result>` field with the agent's final output, alre
 Agents are instructed (via agent-preamble.md) to ALWAYS save findings to Engram before finishing. Search by keywords from the task description, not by exact topic_key. Cost: ~100 tokens.
 
 ### Priority 3: `lib/agent_output_extractor.py`
-Python module that extracts assistant text from JSONL. Functions: `extract_assistant_text()`, `extract_last_response()`, `summarize_agent_output()`. Cost: ~500 tokens for the bash call.
+Python module that extracts assistant text from JSONL and parses the final `RESULT:` contract into `compact_result`. Functions: `extract_assistant_text()`, `extract_last_response()`, `summarize_agent_output()`. Cost: ~500 tokens for the bash call.
 
 ### Priority 4: `jq` one-liner
 ```bash
