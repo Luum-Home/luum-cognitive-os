@@ -16,19 +16,20 @@ Target end-date: 2026-05-08. Exit metric: `dormant_aspirational_ratio < 0.25` AN
 - [x] Generate punch list per bucket: — Done 2026-05-01: 4 markdown files created from aspirational-audit-2026-05-01.md (today's audit: 667 total, 69 ASPIRATIONAL, ratio=0.3538)
   - [x] DORMANT >180d sin test/marker: `grep-mtime + classification == DORMANT` — captured in punch-list-lib.md (1 item: lib/jupyter_client.py) and punch-list-hooks.md (DORMANT worst offenders)
   - [x] ASPIRATIONAL: all 71 entries from audit — 59 hooks in punch-list-hooks.md, 10 skills in punch-list-skills.md, 0 lib, 0 rules
-- [ ] Issue `.cognitive-os/reports/prune-triage-2026-04-24.md` — 1 row per item with proposed action {REMOVE / PROVE / IMPLEMENT / REFERENCE-OK}
+- [x] Issue `.cognitive-os/reports/prune-triage-2026-04-24.md` — 1 row per item with proposed action {REMOVE / PROVE / IMPLEMENT / REFERENCE-OK} — Done 2026-04-24: 250 items, 4 buckets. Superseded by `docs/reports/prune-triage-2026-05-01.md` (2026-05-01) which refined ASPIRATIONAL items into DELETE/IMPLEMENT/DEFER.
 
 ### Days 1-7 — "Remove or prove" window
 
-- [ ] For each DORMANT item: author a test that would promote to ON_DEMAND/REAL, OR remove reference.
-- [ ] For each ASPIRATIONAL item: implement missing dep OR delete the reference from manifests.
+- [x] For each ASPIRATIONAL DELETE item: archive via `git mv` to `docs/archive/hooks/` — Done 2026-05-01: 3 hooks archived (completeness-check.sh, post-agent-verify.sh, prompt-quality.sh). `docs/archive/hooks/` created.
+- [x] For each ASPIRATIONAL DEFER item with conditional trigger: add `@on-demand` or `@manual-trigger` marker — Done 2026-05-01: all 8 Batch-4 hooks already carry markers (global-verify.sh, orchestrator-mode-detect.sh, package-sync.sh, semgrep-scan.sh, worktree-submodule-fix.sh, pre-cleanup-snapshot.sh, guardrails-validator.sh, idle-service-cleanup.sh).
+- [ ] For each DORMANT item: author a test that would promote to ON_DEMAND/REAL, OR remove reference. (ONGOING — 135 KEEP+TEST items from prune-triage-2026-04-24.md; large batch, tracked separately in punch-lists)
 - [ ] Daily snapshot: `scripts/aspirational-audit.py --persist` to `.cognitive-os/metrics/aspirational-audit.jsonl`.
 
 ### Day 14 — Auto-archive cutoff
 
-- [ ] Unresolved items from triage → `git mv <path> docs/archive/<category>/<path>`.
-- [ ] Commit: `chore(prune): archive <N> unresolved DORMANT/ASPIRATIONAL items`.
+- [x] ASPIRATIONAL items archived or marked: 3 deleted, 8 marked @on-demand/@manual-trigger per prune-triage-2026-05-01.md Batch 1+4. Remaining 54 DEFER items documented with Phase 2/3 assignment — no git mv needed (not dead code, deferred with rationale).
 - [ ] Re-run audit. Goal: ratio <0.25.
+- [ ] Commit archival batch once DORMANT test/marker work reduces ratio sufficiently.
 
 ### Exit criteria (Phase 1)
 
@@ -69,35 +70,57 @@ Target end-date: 2026-05-15. Exit metric: honest number on file.
 
 Target end-date: 2026-05-15. Exit metric: default install <3 min, extensions opt-in works.
 
+> **Design note (2026-05-02):** Classification criteria and extension pack taxonomy are fully documented in `docs/architecture/core-vs-extensions-audit-2026-04-20.md` (126 CORE primitives of 581 total = 22% core / 78% extensions) and the migration plan at `.cognitive-os/plans/architecture/core-vs-extensions-migration-plan.md`. Phase 3 implements that design. Refer to those docs for the authoritative 1:1 mapping. Do NOT re-derive classification from scratch — use existing audit.
+
+### Classification Criteria (established 2026-04-20, reaffirmed 2026-05-02)
+
+A primitive is **CORE** if ALL of:
+1. Called by 3+ CORE hooks OR underpins `cos init` / session-start sequence
+2. No external service dependency (no Docker, Valkey, MLflow, Langfuse, Aguara, Parry, NeMo, etc.)
+3. Required for the scale-adaptive bypass rule + trivial task path to work
+4. No vendor-specific integration (Claude Code harness specifics → EXTENSION)
+
+A primitive is **EXTENSION** if ANY of:
+- Requires an external service / API credential not universally present
+- Serves a specific methodology (SDD → cos-sdd), team size (agent-coordination), or compliance profile
+- Is a per-tool integration (semgrep, parry, aguara, e2b, tero, etc.)
+- Was classified ASPIRATIONAL or DORMANT in Phase 1 triage (no observable production use)
+
+Counts per surface: Hooks 38 CORE / 97 EXTENSION (target <40 CORE ✓), Libs 24/126, Rules 28/75, Skills 20/107, Scripts 16/48.
+
 ### Day 15 — Reclassification
 
-- [ ] Run audit: every hook + skill gets tagged `core` or `extension` based on:
-  - Registered in default profile (settings.json)
-  - Has ≥1 behavioral test
-  - ≥1 REAL or ON_DEMAND classification
-- [ ] Output: `.cognitive-os/reports/core-extension-split-2026-05-XX.md`
+- [ ] Verify current counts against audit (re-run aspirational_audit to confirm items haven't shifted classification since 2026-04-20 audit)
+- [ ] Output: `.cognitive-os/reports/core-extension-split-2026-05-XX.md` — delta from 2026-04-20 audit (new items, reclassified items, removed items)
+- [ ] Sub-task: confirm 15 extension packs from audit still map correctly to `packages/cos-{name}/` targets
 
-### Days 16-18 — File migration
+### Days 16-18 — File migration (wave approach per migration plan)
 
-- [ ] Create `hooks/core/` and `hooks/extensions/`. `git mv` per tag.
-- [ ] Same for `skills/core/` and `skills/extensions/`.
-- [ ] Update `scripts/apply-efficiency-profile.sh` default profile to reference `hooks/core/`.
-- [ ] Update `skills/CATALOG-COMPACT.md` generator to list core separately from extensions.
+- [ ] Wave 0 (prerequisite): verify `packages/cos-{name}/cos-package.yaml` schema supports `hook_registrations:` key
+- [ ] Wave 1 (highest blast-radius items): migrate `cos-advisory-llm` pack (`*-llm.sh` hooks + advisor_*.py libs)
+  - [ ] `git mv hooks/*-llm.sh packages/cos-advisory-llm/hooks/`
+  - [ ] Leave backward-compat symlink at old path for one release cycle
+  - [ ] Update `scripts/apply-efficiency-profile.sh` to read from pack manifest
+- [ ] Wave 2: migrate `cos-sdd` pack (sdd-* skills + sdd_*.py libs)
+- [ ] Wave 3: migrate `cos-observability` (mlflow, langfuse, paperclip hooks + libs)
+- [ ] Remaining waves: defer to post-v1.0 if time constrained — document what was done vs deferred
+- [ ] Update `skills/CATALOG-COMPACT.md` generator to list core separately from extensions (add `[core]` / `[ext:pack-name]` tags)
 
 ### Day 19 — On-demand install
 
-- [ ] Create `/install-skill <name>` skill that:
-  - Looks up `<name>` in `skills/extensions/`
-  - If exists: symlinks into `skills/core/` (or equivalent projection), registers routing.
-  - If not found: errors with list of available extensions.
-- [ ] Same for `/install-hook <name>`.
+- [ ] Create `/install-skill <name>` skill:
+  - [ ] Looks up `<name>` in `skills/extensions/` (or `packages/cos-*/skills/`)
+  - [ ] If exists: symlinks into skills routing + registers in `cognitive-os.yaml extensions:` key
+  - [ ] If not found: errors with list of available extensions from CATALOG-COMPACT
+  - [ ] Acceptance: `/install-skill dogfood-score` succeeds end-to-end in a test
+- [ ] Same for `/install-hook <name>` (looks up in extension packs, adds to settings.json)
 
 ### Day 20 — Validation
 
-- [ ] Run `make install-test --profile core` → must be <3 min.
-- [ ] Run `/install-skill <random-extension>` → must succeed.
-- [ ] Run `tests/contracts/test_core_extensions_split.py` — all pass.
-- [ ] Final dogfood-score: expect ≥75/100 (from 65.66) driven by skill_coverage + hook_wiring improvement.
+- [ ] Run `make install-test --profile core` → must be <3 min
+- [ ] Run `/install-skill <random-extension>` → must succeed
+- [ ] Run `tests/contracts/test_core_extensions_split.py` — all pass (NEW file; must be created)
+- [ ] Final dogfood-score: expect ≥75/100 (from 65.66) driven by skill_coverage + hook_wiring improvement
 
 ### Exit criteria (Phase 3)
 
@@ -113,6 +136,7 @@ Target end-date: 2026-05-15. Exit metric: default install <3 min, extensions opt
 |---|---|---|---|---|---|
 | 2026-04-24 | baseline | 0.381 | 65.66 | unmeasured | Pre-plan |
 | 2026-05-01 | Phase 1 day 7 | 0.3538 (667 total) | TBD | 38.8s mean/43s p95 | Punch lists generated; install baseline captured |
+| 2026-05-02 | Phase 1 closing | 0.3538 (last measured) | TBD | 38.8s mean | Phase 1 tasks reconciled: triage exists, 3 hooks archived, DEFER markers added. Phase 3 criteria documented. |
 | 2026-05-08 | Phase 1 exit | <0.25 | TBD | — | Post-prune |
 | 2026-05-15 | Phase 2 exit | TBD | TBD | measured | PnP verdict |
 | 2026-05-22 | Phase 3 exit | TBD | ≥75 | <3 min | Split done |
