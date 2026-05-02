@@ -76,15 +76,17 @@ if age < 60:
     sys.exit(0)
 
 stale_signals = []
+pid_is_alive = False
 if expires_at and expires_at < now:
     stale_signals.append("ttl")
 if pid > 0:
     try:
         os.kill(pid, 0)
+        pid_is_alive = True
     except ProcessLookupError:
         stale_signals.append("pid")
     except PermissionError:
-        pass
+        pid_is_alive = True
 if heartbeat > 0 and hb_interval > 0:
     if (now - heartbeat) > (3 * hb_interval):
         stale_signals.append("heartbeat")
@@ -109,7 +111,10 @@ if activity_log.exists():
                     continue
     except Exception:
         pass
-if last_activity > 0 and (now - last_activity) > threshold:
+# Activity is a secondary stale signal only when the owner PID is not alive.
+# Long-running validation lanes may be quiet for > threshold while heartbeat is
+# fresh; removing those locks deletes the active validation capsule mid-test.
+if (not pid_is_alive) and last_activity > 0 and (now - last_activity) > threshold:
     stale_signals.append("activity")
 
 if stale_signals:
