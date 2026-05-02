@@ -24,6 +24,8 @@ from typing import Optional
 # ─── Constants ────────────────────────────────────────────────────────────────
 
 DEFAULT_TTL_DAYS = 30
+DEFAULT_MAX_FILE_MB = 50
+DEFAULT_MAX_TOTAL_MB = 1024
 SNAPSHOTS_DIR_NAME = ".cognitive-os/snapshots"
 MANIFEST_FILE = "manifest.json"
 
@@ -103,28 +105,85 @@ def _stash_tracked(repo: Path, message: str) -> Optional[str]:
     return ref if ref else None
 
 
-def _copy_untracked(repo: Path, untracked: list[str], dest: Path) -> list[str]:
+def _copy_untracked(
+    repo: Path,
+    untracked: list[str],
+    dest: Path,
+    *,
+    max_file_bytes: Optional[int] = None,
+    max_total_bytes: Optional[int] = None,
+) -> tuple[list[str], list[dict], int]:
     """
     Copy untracked files from the WT to dest/, preserving directory structure.
-    Returns list of paths successfully copied (relative to repo).
+
+    Oversized files or files that would exceed the per-snapshot byte budget are
+    skipped and reported in the manifest rather than silently filling the disk.
+    Returns (copied relative paths, skipped records, copied byte count).
     """
     copied: list[str] = []
+    skipped: list[dict] = []
+    copied_bytes = 0
+
     for rel_path in untracked:
         src = repo / rel_path
         dst = dest / rel_path
         try:
+            size_bytes = src.stat().st_size
+        except OSError as exc:
+            skipped.append({"path": rel_path, "reason": f"stat_failed: {exc}"})
+            continue
+
+        if max_file_bytes is not None and size_bytes > max_file_bytes:
+            skipped.append({
+                "path": rel_path,
+                "reason": "max_file_bytes",
+                "size_bytes": size_bytes,
+                "limit_bytes": max_file_bytes,
+            })
+            continue
+
+        if max_total_bytes is not None and copied_bytes + size_bytes > max_total_bytes:
+            skipped.append({
+                "path": rel_path,
+                "reason": "max_total_bytes",
+                "size_bytes": size_bytes,
+                "limit_bytes": max_total_bytes,
+            })
+            continue
+
+        try:
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(str(src), str(dst))
             copied.append(rel_path)
-        except Exception:
-            pass  # best-effort; partial copies are still useful
-    return copied
+            copied_bytes += size_bytes
+        except Exception as exc:
+            skipped.append({"path": rel_path, "reason": f"copy_failed: {exc}"})
+
+    return copied, skipped, copied_bytes
+
+
+def _snapshot_size_bytes(snap_dir: Path) -> int:
+    """Return the total byte size of regular files below a snapshot directory."""
+    total = 0
+    for path in snap_dir.rglob("*"):
+        if path.is_file():
+            try:
+                total += path.stat().st_size
+            except OSError:
+                continue
+    return total
 
 
 # ─── Public API ───────────────────────────────────────────────────────────────
 
 
-def create_snapshot(repo: Path, agent_id: str) -> dict:
+def create_snapshot(
+    repo: Path,
+    agent_id: str,
+    *,
+    max_file_mb: Optional[int] = DEFAULT_MAX_FILE_MB,
+    max_total_mb: Optional[int] = DEFAULT_MAX_TOTAL_MB,
+) -> dict:
     """
     Create a snapshot of the current working tree before an agent launch.
 
@@ -138,6 +197,8 @@ def create_snapshot(repo: Path, agent_id: str) -> dict:
         "snapshot_dir": str,
         "mode": "copy" | "legacy_stash",
         "status": "ok" | "partial" | "error",
+        "skipped_untracked_files": [{"path": str, "reason": str, ...}],
+        "copied_bytes": int,
     }
     """
     repo = Path(repo).resolve()
@@ -155,11 +216,22 @@ def create_snapshot(repo: Path, agent_id: str) -> dict:
     mode = "copy"
     status = "ok"
 
+    max_file_bytes = None if max_file_mb is None else max_file_mb * 1024 * 1024
+    max_total_bytes = None if max_total_mb is None else max_total_mb * 1024 * 1024
+
     # 1. Copy untracked files (they stay in WT — no ghosting)
     copied_untracked: list[str] = []
+    skipped_untracked: list[dict] = []
+    copied_bytes = 0
     if untracked:
-        copied_untracked = _copy_untracked(repo, untracked, snap_dir)
-        if len(copied_untracked) < len(untracked):
+        copied_untracked, skipped_untracked, copied_bytes = _copy_untracked(
+            repo,
+            untracked,
+            snap_dir,
+            max_file_bytes=max_file_bytes,
+            max_total_bytes=max_total_bytes,
+        )
+        if skipped_untracked or len(copied_untracked) < len(untracked):
             status = "partial"
 
     # 2. Stash tracked modifications (no --include-untracked)
@@ -176,6 +248,12 @@ def create_snapshot(repo: Path, agent_id: str) -> dict:
         "timestamp": timestamp,
         "timestamp_iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(timestamp)),
         "untracked_files": copied_untracked,
+        "skipped_untracked_files": skipped_untracked,
+        "copied_bytes": copied_bytes,
+        "retention": {
+            "max_file_mb": max_file_mb,
+            "max_total_mb": max_total_mb,
+        },
         "tracked_stash_ref": tracked_stash_ref,
         "snapshot_dir": str(snap_dir),
         "mode": mode,
@@ -366,10 +444,18 @@ def restore_snapshot(
     }
 
 
-def prune_expired(repo: Path, ttl_days: int = DEFAULT_TTL_DAYS) -> list[str]:
+def prune_expired(
+    repo: Path,
+    ttl_days: int = DEFAULT_TTL_DAYS,
+    *,
+    max_total_mb: Optional[int] = None,
+) -> list[str]:
     """
-    Delete snapshots older than ttl_days. Returns list of deleted snapshot_ids.
-    Uses os.path.getmtime (cross-platform) for mtime checks.
+    Delete snapshots older than ttl_days and optionally enforce a repo byte cap.
+
+    When max_total_mb is provided, snapshots are pruned oldest-first after TTL
+    pruning until the aggregate snapshot directory size is at or below the cap.
+    Returns list of deleted snapshot_ids.
     """
     repo = Path(repo).resolve()
     snapshots_root = repo / SNAPSHOTS_DIR_NAME
@@ -379,22 +465,42 @@ def prune_expired(repo: Path, ttl_days: int = DEFAULT_TTL_DAYS) -> list[str]:
     cutoff = time.time() - (ttl_days * 86400)
     deleted: list[str] = []
 
+    def snapshot_timestamp(snap_dir: Path) -> float:
+        manifest_path = snap_dir / MANIFEST_FILE
+        mtime = os.path.getmtime(str(snap_dir))
+        if manifest_path.exists():
+            try:
+                data = json.loads(manifest_path.read_text())
+                return float(data.get("timestamp", mtime))
+            except Exception:
+                return mtime
+        return mtime
+
     for snap_dir in snapshots_root.iterdir():
         if not snap_dir.is_dir():
             continue
-        manifest_path = snap_dir / MANIFEST_FILE
-        # Use manifest timestamp if available, else directory mtime
         try:
-            mtime = os.path.getmtime(str(snap_dir))
-            if manifest_path.exists():
-                try:
-                    data = json.loads(manifest_path.read_text())
-                    mtime = data.get("timestamp", mtime)
-                except Exception:
-                    pass
-            if mtime < cutoff:
+            if snapshot_timestamp(snap_dir) < cutoff:
                 shutil.rmtree(str(snap_dir))
                 deleted.append(snap_dir.name)
+        except Exception:
+            continue
+
+    if max_total_mb is None:
+        return deleted
+
+    max_total_bytes = max_total_mb * 1024 * 1024
+    remaining_dirs = [p for p in snapshots_root.iterdir() if p.is_dir()]
+    sized = [(p, snapshot_timestamp(p), _snapshot_size_bytes(p)) for p in remaining_dirs]
+    total_bytes = sum(size for _, _, size in sized)
+
+    for snap_dir, _, size_bytes in sorted(sized, key=lambda item: item[1]):
+        if total_bytes <= max_total_bytes:
+            break
+        try:
+            shutil.rmtree(str(snap_dir))
+            deleted.append(snap_dir.name)
+            total_bytes -= size_bytes
         except Exception:
             continue
 
