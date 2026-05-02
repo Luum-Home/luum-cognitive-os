@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# @weekly: run Sunday 02:00 via cron or /schedule; deferred until cron job is registered
 # weekly-aspirational-audit.sh — ws8 weekly cron runner
 #
 # Runs aspirational_audit.py (which now auto-calls cos_classify_coverage.py)

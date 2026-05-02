@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: both
+# @manual-trigger: invoked by operators to extract assistant text from agent JSONL output files on demand
 # extract-agent-output.sh — Extract assistant text from agent JSONL output files
 #
 # Usage:

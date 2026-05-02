@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# @manual-trigger: one-shot migration tool; run when migrating a project from .agent-os/ to .cognitive-os/
 # migrate-to-cognitive-os.sh — Migrate a project from .agent-os/ to .cognitive-os/
 #
 # Usage: bash /path/to/cognitive-os/scripts/migrate-to-cognitive-os.sh [project-dir]

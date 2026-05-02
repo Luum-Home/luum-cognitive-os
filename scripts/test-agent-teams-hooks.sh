@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# @manual-trigger: run to smoke-test Agent Teams hooks with mock input; invoke before merging hook changes
 # test-agent-teams-hooks.sh — Validate Agent Teams hooks with mock input.
 #
 # Usage: bash scripts/test-agent-teams-hooks.sh

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
+# @manual-trigger: run at release time via `bash scripts/create-release.sh [version]`; not a Claude event hook
 # Create a GitHub Release for Cognitive OS
 # Auto-generates release notes from the actual codebase state
 # Usage: bash scripts/create-release.sh [version]

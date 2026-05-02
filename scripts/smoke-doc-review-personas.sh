@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # SCOPE: both
+# @on-demand: live e2e smoke test for /doc-review-personas; requires ALIBABA_QWEN_API_KEY; exits 77 (skip) if absent
 # smoke-doc-review-personas.sh — live end-to-end check for /doc-review-personas.
 #
 # Creates a tmp corpus with intentional defects, runs the real skill with 2
