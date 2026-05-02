@@ -38,10 +38,18 @@ or releases. Use `scripts/edit-coop.sh acquire/release` for those.
 ## How
 
 ```bash
+bash scripts/cos-coordination-status.sh
+# machine-readable:
+bash scripts/cos-coordination-status.sh --json | python3 -m json.tool
+```
+
+For file-lock-only detail, keep using:
+
+```bash
 bash scripts/edit-coop.sh status | python3 -m json.tool
 ```
 
-Returns JSON like:
+The unified status includes active sessions, task claims, edit locks, stashes, orphan commits, worktrees, pending tasks, and race risks. The file-lock-only command returns JSON like:
 
 ```json
 {
