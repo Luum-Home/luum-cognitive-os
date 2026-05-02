@@ -62,7 +62,7 @@ Capsule subprocess appends to `.cognitive-os/runtime/validation-activity.jsonl` 
 
 The capsule populates this best-effort. As a fallback for non-instrumented commands, the validation hook scans capsule's metrics directory mtime; if newest mtime > 5 min old, semantic-stale.
 
-**Stale rule**: `now - max(mtime, last_activity_ts) > 300 s` → semantically stale (process alive but not doing useful work).
+**Stale rule**: activity staleness is a secondary signal only when the owner PID is dead or missing. If the PID is alive and heartbeat is fresh, a quiet long-running validation command must stay active even when `last_activity_ts` is older than 300 s.
 
 ### P3 — Diagnostic command `cos validation status`
 
@@ -129,7 +129,7 @@ Audit entry:
 New hook `hooks/validation-lock-cleanup.sh` (`SCOPE: os-only`). Registered as SessionStart hook in `scripts/apply-efficiency-profile.sh`. On every session start:
 
 1. Read all `*.lock` files under `.cognitive-os/runtime/`
-2. For each: apply 4-layer staleness check (TTL → PID → heartbeat → activity)
+2. For each: apply 4-layer staleness check (TTL → PID → heartbeat → activity). Activity is advisory while PID+heartbeat are healthy; it may delete only ownerless/dead locks.
 3. If stale: remove + log to `.cognitive-os/metrics/validation-auto-recovery.jsonl`
 4. Print summary to stderr if any cleanup happened
 
@@ -210,3 +210,8 @@ bash scripts/cos-validation-status.sh --help
 - Related: ADR-098 (multi-agent file coordination), ADR-106 (multi-session safety primitives), ADR-099 (pre-agent snapshot)
 - Code: `hooks/_lib/validation-lock.sh`, `scripts/cos-validation-capsule.sh`, `tests/unit/test_validation_capsule.py`
 - Bypass deprecation: `COS_VALIDATION_ALLOW_CONCURRENT_AGENTS=1` retains emergency function but is no longer the recommended escape
+
+
+## 2026-05-02 correction
+
+`make test-laptop` exposed a race where a quiet but live pytest process inside a validation capsule could be treated as semantically stale and the capsule worktree removed mid-run. The corrected rule is: live PID plus fresh heartbeat is authoritative liveness; activity staleness may only reap ownerless/dead locks. Cleanup primitives that remove validation capsule worktrees must also check the source repo validation lock before `git worktree remove --force`.

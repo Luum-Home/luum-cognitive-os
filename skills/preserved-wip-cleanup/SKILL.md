@@ -27,6 +27,9 @@ then prove the inventory is clean.
   `refs/cos-backup/stashes/<cleanup-id>/...` refs.
 - Temporary validation capsule worktrees are backed up with status, diff, and
   untracked tarball before `git worktree remove --force`.
+- Active validation capsule worktrees are kept. A capsule is active when the
+  source repo lock points to it with a live PID/fresh heartbeat, or when a
+  process/open file is detected under the capsule path.
 - Zombie session registry cleanup keeps live PIDs and removes only dead PIDs.
 - Never use this skill to remove a named feature worktree; use
   `worktree-triage` for non-temporary worktrees.
