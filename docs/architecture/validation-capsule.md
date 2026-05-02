@@ -30,6 +30,15 @@ For clean release proof, omit `--allow-dirty`.
 
 The capsule refuses to run while the global killswitch file exists.
 
+
+## Liveness and cleanup invariant
+
+A validation capsule must not be removed while its source repo lock points to the
+capsule with a live PID and fresh heartbeat. Long pytest or integration lanes can
+be quiet for several minutes; lack of semantic activity alone is not enough to
+reap the lock or delete the worktree. Cleanup tooling must fail closed and keep
+the capsule when liveness cannot be determined.
+
 ## Artifacts
 
 Each run writes to `.cognitive-os/reports/validation-capsules/<timestamp>-<name>/`:

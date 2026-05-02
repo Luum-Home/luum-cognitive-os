@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import time
 import subprocess
 from pathlib import Path
 
@@ -85,6 +87,51 @@ def test_cleanup_removes_validation_capsule_after_backup(repo: Path, tmp_path: P
     assert (backup_dir / "status.txt").exists()
     assert (backup_dir / "untracked.tgz").exists()
     assert str(capsule) not in run(["git", "worktree", "list", "--porcelain"], repo).stdout
+
+
+def test_cleanup_keeps_active_validation_capsule_lock(repo: Path, tmp_path: Path) -> None:
+    capsule_root = tmp_path / "cos-validation-capsules"
+    capsule = capsule_root / "project-validation-active"
+    run(["git", "worktree", "add", "--detach", str(capsule), "HEAD"], repo)
+    runtime = repo / ".cognitive-os" / "runtime"
+    runtime.mkdir(parents=True)
+    now = int(time.time())
+    (runtime / "validation-capsule.lock").write_text(
+        json.dumps(
+            {
+                "run_id": "active-test",
+                "pid": os.getpid(),
+                "capsule_dir": str(capsule),
+                "expires_at_epoch": now + 3600,
+                "last_heartbeat_epoch": now,
+                "heartbeat_interval_seconds": 60,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--repo",
+            str(repo),
+            "--backup-root",
+            str(tmp_path / "backups"),
+            "--remove-validation-capsules",
+            "--apply",
+            "--json",
+        ],
+        repo,
+    )
+    payload = json.loads(result.stdout)
+
+    assert payload["validation_capsules"] == []
+    assert payload["skipped_validation_capsules"][0]["path"] == str(capsule.resolve())
+    assert "active" in payload["skipped_validation_capsules"][0]["reason"]
+    assert capsule.exists()
+    assert str(capsule) in run(["git", "worktree", "list", "--porcelain"], repo).stdout
 
 
 def test_cleanup_removes_zombie_registry_sessions(repo: Path, tmp_path: Path) -> None:
