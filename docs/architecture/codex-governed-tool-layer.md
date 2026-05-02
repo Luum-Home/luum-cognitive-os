@@ -28,15 +28,15 @@ Without an alternative layer, Codex-hosted work loses those guarantees.
 Use:
 
 ```bash
-python3 scripts/cos-codex-guard.py pre-agent --prompt "..."
-python3 scripts/cos-codex-guard.py post-agent --prompt "..." --output @agent-result.txt
-python3 scripts/cos-codex-guard.py pre-edit --file-path path/to/file --content @new-content.txt
-python3 scripts/cos-codex-guard.py post-write --file-path path/to/file --content @written-content.txt
+python3 scripts/cos_governed_runner.py --harness codex pre-agent --prompt "..."
+python3 scripts/cos_governed_runner.py --harness codex post-agent --prompt "..." --output @agent-result.txt
+python3 scripts/cos_governed_runner.py --harness codex pre-edit --file-path path/to/file --content @new-content.txt
+python3 scripts/cos_governed_runner.py --harness codex post-write --file-path path/to/file --content @written-content.txt
 ```
 
-The command reads `cognitive-os.yaml > harness.hooks`, selects hook entries by
+The generic command reads `cognitive-os.yaml > harness.hooks`, selects hook entries by
 canonical event and matcher, and runs them with a synthetic hook payload. It
-sets `COGNITIVE_OS_HARNESS=codex` and canonical project env so older hooks that
+sets `COGNITIVE_OS_HARNESS` to the selected harness (`codex` here) and canonical project env so older hooks that
 still read `CLAUDE_PROJECT_DIR` remain compatible while the portability cleanup
 continues.
 
@@ -64,7 +64,7 @@ Every new harness should classify each surface as one of:
 | Tier | Meaning | Example |
 |---|---|---|
 | Native projection | Harness emits the event directly and settings driver projects it. | Claude Code `PreToolUse:Agent` |
-| Governed runner | Harness lacks the event, but COS can wrap the action explicitly. | Codex `pre-agent` |
+| Governed runner | Harness lacks the event, but COS can wrap the action explicitly. | `cos_governed_runner.py --harness codex pre-agent` |
 | COS-owned runtime | Harness has no reliable hook model; COS executes the whole workflow. | Bare CLI `cos-agent spawn` |
 | Unsupported | No safe native or governed path exists yet. | Unverified IDE events |
 
@@ -75,10 +75,10 @@ or governed and tested.**
 
 ```bash
 python3 -m pytest tests/unit/test_codex_guard_layer.py -q
-python3 scripts/cos-codex-guard.py pre-agent --list
-python3 scripts/cos-codex-guard.py post-agent --list
-python3 scripts/cos-codex-guard.py pre-edit --list
-python3 scripts/cos-codex-guard.py post-write --list
+python3 scripts/cos_governed_runner.py --harness codex pre-agent --list
+python3 scripts/cos_governed_runner.py --harness codex post-agent --list
+python3 scripts/cos_governed_runner.py --harness codex pre-edit --list
+python3 scripts/cos_governed_runner.py --harness codex post-write --list
 ```
 
 ## Related

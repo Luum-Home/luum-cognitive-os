@@ -125,7 +125,7 @@ The product promise is portability with evidence, not matching JSON counts.
 Codex limited surfaces are no longer only a roadmap note. When a missing matcher
 protects a high-value action, Cognitive OS can provide a governed runner that
 executes the canonical hook chain explicitly. The first implementation is
-`scripts/cos-codex-guard.py`, documented in [Codex Governed Tool Layer](codex-governed-tool-layer.md).
+`scripts/cos_governed_runner.py` with the Codex wrapper `scripts/cos_codex_guard.py`, documented in [Codex Governed Tool Layer](codex-governed-tool-layer.md).
 
 This creates a stricter parity vocabulary:
 
