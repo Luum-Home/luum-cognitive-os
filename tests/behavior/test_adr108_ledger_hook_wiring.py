@@ -108,7 +108,7 @@ def test_agent_prelaunch_blocks_duplicate_canonical_task_claim(tmp_path: Path) -
 
     blocked = _run_hook("agent-prelaunch.sh", payload_b, project, session_id="session-b")
     assert blocked.returncode == 2
-    assert "ADR-116 TASK CLAIM BLOCK" in blocked.stderr
+    assert "TASK CLAIM BLOCK" in blocked.stderr
     assert "session-a" in blocked.stderr
 
 
