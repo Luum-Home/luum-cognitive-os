@@ -40,7 +40,7 @@ self-install.sh | ADMIN: bootstraps settings.json registrations; run at SessionS
 registration-check.sh | MANUAL_TRIGGER: checks hook registration state; invoked manually or by CI
 cognitive-os-health.sh | MANUAL_TRIGGER: health-check report for the full OS; run on demand via /cos-status
 usage-health-check.sh | MANUAL_TRIGGER: reports token/rate usage; invoked on demand, not on every event
-session-sanity.sh | MANUAL_TRIGGER: sanity-check script; invoked manually at session boundaries as needed
+session-sanity.sh | CONDITIONAL: registered as SessionStart hook in .claude/settings.json, .codex/hooks.json, and cognitive-os.yaml; skipped when those harnesses are inactive
 session-hygiene.sh | MANUAL_TRIGGER: cleanup script for stale session artefacts; run on demand
 singularity-check.sh | MANUAL_TRIGGER: checks MAPE-K loop state; invoked by /singularity skill, not by Claude events
 
