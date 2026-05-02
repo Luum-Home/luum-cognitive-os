@@ -134,6 +134,124 @@ def test_cleanup_keeps_active_validation_capsule_lock(repo: Path, tmp_path: Path
     assert str(capsule) in run(["git", "worktree", "list", "--porcelain"], repo).stdout
 
 
+
+def test_cleanup_removes_stale_validation_capsule_after_backup(repo: Path, tmp_path: Path) -> None:
+    capsule_root = tmp_path / "cos-validation-capsules"
+    capsule = capsule_root / "project-validation-stale"
+    run(["git", "worktree", "add", "--detach", str(capsule), "HEAD"], repo)
+    (capsule / "generated.txt").write_text("stale generated\n", encoding="utf-8")
+    runtime = repo / ".cognitive-os" / "runtime"
+    runtime.mkdir(parents=True)
+    now = int(time.time())
+    (runtime / "validation-capsule.lock").write_text(
+        json.dumps(
+            {
+                "run_id": "stale-test",
+                "pid": 99999999,
+                "capsule_dir": str(capsule),
+                "expires_at_epoch": now - 60,
+                "last_heartbeat_epoch": now - 600,
+                "heartbeat_interval_seconds": 60,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--repo",
+            str(repo),
+            "--backup-root",
+            str(tmp_path / "backups"),
+            "--remove-validation-capsules",
+            "--apply",
+            "--json",
+        ],
+        repo,
+    )
+    payload = json.loads(result.stdout)
+
+    assert len(payload["validation_capsules"]) == 1
+    assert payload["skipped_validation_capsules"] == []
+    assert not capsule.exists()
+    backup_dir = Path(payload["validation_capsules"][0]["backup_dir"])
+    assert (backup_dir / "status.txt").exists()
+    assert (backup_dir / "untracked.tgz").exists()
+
+
+def test_cleanup_keeps_validation_capsule_with_corrupt_lock(repo: Path, tmp_path: Path) -> None:
+    capsule_root = tmp_path / "cos-validation-capsules"
+    capsule = capsule_root / "project-validation-corrupt-lock"
+    run(["git", "worktree", "add", "--detach", str(capsule), "HEAD"], repo)
+    runtime = repo / ".cognitive-os" / "runtime"
+    runtime.mkdir(parents=True)
+    (runtime / "validation-capsule.lock").write_text("{not valid json", encoding="utf-8")
+
+    result = run(
+        [
+            "python3",
+            str(SCRIPT),
+            "--repo",
+            str(repo),
+            "--backup-root",
+            str(tmp_path / "backups"),
+            "--remove-validation-capsules",
+            "--apply",
+            "--json",
+        ],
+        repo,
+    )
+    payload = json.loads(result.stdout)
+
+    assert payload["validation_capsules"] == []
+    assert payload["skipped_validation_capsules"][0]["path"] == str(capsule.resolve())
+    assert "corrupt" in payload["skipped_validation_capsules"][0]["reason"]
+    assert capsule.exists()
+
+
+def test_cleanup_keeps_validation_capsule_with_active_process(repo: Path, tmp_path: Path) -> None:
+    capsule_root = tmp_path / "cos-validation-capsules"
+    capsule = capsule_root / "project-validation-active-process"
+    run(["git", "worktree", "add", "--detach", str(capsule), "HEAD"], repo)
+    sleeper = subprocess.Popen(
+        ["python3", "-c", "import sys,time; time.sleep(30)", str(capsule)],
+        cwd=repo,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+    try:
+        result = run(
+            [
+                "python3",
+                str(SCRIPT),
+                "--repo",
+                str(repo),
+                "--backup-root",
+                str(tmp_path / "backups"),
+                "--remove-validation-capsules",
+                "--apply",
+                "--json",
+            ],
+            repo,
+        )
+    finally:
+        sleeper.terminate()
+        try:
+            sleeper.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            sleeper.kill()
+            sleeper.wait(timeout=5)
+    payload = json.loads(result.stdout)
+
+    assert payload["validation_capsules"] == []
+    assert payload["skipped_validation_capsules"][0]["path"] == str(capsule.resolve())
+    assert "process" in payload["skipped_validation_capsules"][0]["reason"]
+    assert capsule.exists()
+
 def test_cleanup_removes_zombie_registry_sessions(repo: Path, tmp_path: Path) -> None:
     registry = repo / ".cognitive-os" / "sessions" / "active-sessions.json"
     registry.parent.mkdir(parents=True)
@@ -161,3 +279,18 @@ def test_cleanup_removes_zombie_registry_sessions(repo: Path, tmp_path: Path) ->
     assert payload["zombie_registry"]["removed"] == 1
     assert json.loads(registry.read_text(encoding="utf-8"))["sessions"] == []
     assert (Path(payload["backup_dir"]) / "active-sessions.before-clean.json").exists()
+
+
+def test_branch_worktree_closure_skill_documents_safe_closure_protocol() -> None:
+    """Agents need a primitive for deciding what to do with leftover worktrees."""
+    skill = REPO_ROOT / "skills" / "branch-worktree-closure" / "SKILL.md"
+    text = skill.read_text(encoding="utf-8")
+
+    assert "name: branch-worktree-closure" in text
+    assert "git worktree list --porcelain" in text
+    assert "git branch --list 'codex/*' 'claude/*' -vv" in text
+    assert "scripts/merge-to-main.sh" in text
+    assert "git worktree remove" in text
+    assert "git branch -d" in text
+    assert "Never push directly from `main`" in text
+    assert "BRANCH_WORKTREE_CLOSURE" in text
