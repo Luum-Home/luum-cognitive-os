@@ -107,6 +107,48 @@ def test_default_scan_ignores_paths_staged_for_deletion(tmp_path: Path) -> None:
 
     assert result.returncode == 0, result.stderr
 
+
+def test_staged_scan_ignores_gitlink_submodule_contents(tmp_path: Path) -> None:
+    subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "config", "user.email", "test@example.invalid"],
+        cwd=tmp_path,
+        check=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Test User"],
+        cwd=tmp_path,
+        check=True,
+    )
+    plugin = tmp_path / "vendor" / "plugin"
+    plugin.mkdir(parents=True)
+    (plugin / "README.md").write_text(
+        f"Upstream fixture path: {mac_home_path('upstream-dev', 'repo')}\n",
+        encoding="utf-8",
+    )
+    subprocess.run(
+        [
+            "git",
+            "update-index",
+            "--add",
+            "--cacheinfo",
+            "160000,0123456789012345678901234567890123456789,vendor/plugin",
+        ],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+    )
+
+    result = subprocess.run(
+        ["python3", str(SCRIPT), "--root", str(tmp_path), "--staged"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+
+
 def test_path_portability_policy_is_documented_and_linked() -> None:
     content = DOC.read_text()
 
