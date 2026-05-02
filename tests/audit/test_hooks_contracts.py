@@ -78,7 +78,6 @@ KNOWN_ORPHANS = {
     "clarification-interceptor.sh",
     "code-review-on-commit.sh",
     "cognitive-os-health.sh",
-    "concurrent-write-guard.sh",
     "confidence-gate.sh",
     "context-diet.sh",
     "contextual-rule-loader.sh",

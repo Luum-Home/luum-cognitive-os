@@ -186,6 +186,7 @@ cc_driver_emit() {
     "hooks/secret-detector.sh"          "false" \
     "hooks/project-docs-convention.sh"  "false" \
     "hooks/edit-lock-pre-tool.sh"       "false" \
+    "hooks/concurrent-write-guard.sh"   "false" \
     "hooks/plan-claim-validator.sh"     "false" \
   )
 
