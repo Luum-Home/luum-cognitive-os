@@ -6,7 +6,7 @@ r5-stash-residue closure):
 - Destructive git ops are BLOCKED in BOTH agent and user context
 - Overrides: COS_ALLOW_DESTRUCTIVE_GIT=1 env, `--allow-destructive` inline flag
 - Bypass contexts: CI=1, PYTEST_CURRENT_TEST, COS_GIT_BYPASS=1
-- New ops covered: git branch -D, git rebase --abort
+- New ops covered: git branch -D, git rebase, git pull --rebase, protected branch writes
 """
 
 from __future__ import annotations
@@ -68,7 +68,11 @@ def _run(
 @pytest.mark.parametrize(
     "command,expected_op_fragment",
     [
-        ("git reset --hard HEAD~1", "git reset --hard"),
+        ("git reset --hard HEAD~1", "git reset"),
+        ("git reset --soft HEAD~1", "git reset"),
+        ("git reset HEAD~1", "git reset"),
+        ("git pull --rebase origin main", "git pull --rebase"),
+        ("git rebase main", "git rebase"),
         ("git checkout -- src/foo.py", "git checkout --"),
         ("git checkout HEAD -- src/foo.py", "git checkout --"),
         ("git clean -fd", "git clean -f"),
@@ -77,7 +81,7 @@ def _run(
         ("git stash pop", "git stash pop"),
         ("git stash drop", "git stash drop"),
         ("git stash apply", "git stash apply"),
-        ("git rebase --abort", "git rebase --abort"),
+        ("git rebase --abort", "git rebase"),
         ("git restore src/foo.py", "git restore"),
         ("git revert HEAD", "git revert"),
         ("git worktree add ../foo", "git worktree"),
@@ -196,7 +200,6 @@ def test_cos_git_bypass_allows_destructive_op(tmp_path: Path):
         "git show HEAD",
         "git stash list",
         "git branch --list",  # non-destructive (no -D)
-        "git rebase --continue",  # non-destructive rebase subcommand
         "ls -la",
         "pwd",
     ],
@@ -276,6 +279,44 @@ def test_bypass_is_logged(tmp_path: Path):
     assert entry["event"] == "bypassed"
     assert entry["reason"] == "so_internal_context"
 
+
+
+
+def _init_repo_on_branch(path: Path, branch: str = "main") -> None:
+    subprocess.run(["git", "init", "-b", branch], cwd=path, check=True, capture_output=True, text=True)
+    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=path, check=True)
+    subprocess.run(["git", "config", "user.name", "Test User"], cwd=path, check=True)
+    (path / "README.md").write_text("seed\n", encoding="utf-8")
+    subprocess.run(["git", "add", "README.md"], cwd=path, check=True)
+    subprocess.run(["git", "commit", "-m", "seed"], cwd=path, check=True, capture_output=True, text=True)
+
+
+def test_commit_on_main_is_blocked_until_session_branch(tmp_path: Path):
+    _init_repo_on_branch(tmp_path, "main")
+    result = _run("git commit -m change", tmp_path)
+    assert result.returncode == 2, result.stderr
+    assert "protected shared branch" in result.stderr or "session branch" in result.stderr
+
+
+def test_push_on_master_is_blocked_until_session_branch(tmp_path: Path):
+    _init_repo_on_branch(tmp_path, "master")
+    result = _run("git push origin master", tmp_path)
+    assert result.returncode == 2, result.stderr
+    assert "session branch" in result.stderr
+
+
+def test_commit_on_session_branch_is_allowed(tmp_path: Path):
+    _init_repo_on_branch(tmp_path, "main")
+    subprocess.run(["git", "switch", "-c", "session/test-work"], cwd=tmp_path, check=True, capture_output=True, text=True)
+    result = _run("git commit -m change", tmp_path)
+    assert result.returncode == 0, result.stderr
+
+
+def test_main_branch_override_allows_commit(tmp_path: Path):
+    _init_repo_on_branch(tmp_path, "main")
+    result = _run("git commit -m change --allow-main-branch", tmp_path)
+    assert result.returncode == 0, result.stderr
+    assert "OVERRIDE ACCEPTED" in result.stderr
 
 # ---------------------------------------------------------------------------
 # ISSUE 1: Force-push blocking (git push --force / git push -f)
