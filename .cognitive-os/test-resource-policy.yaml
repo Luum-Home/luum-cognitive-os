@@ -45,6 +45,10 @@ lanes:
     workers: 0
     timeout_seconds: 1200
     docker_policy: forbidden
+  red_team:
+    workers: 2
+    timeout_seconds: 900
+    docker_policy: forbidden
   smoke:
     workers: 0
     timeout_seconds: 900
