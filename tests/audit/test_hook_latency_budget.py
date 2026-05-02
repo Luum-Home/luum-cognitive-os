@@ -108,13 +108,25 @@ def _budget_for_event(event: str) -> float:
 
 
 def _collect_pairs(records: list[dict]) -> dict[tuple[str, str], list[float]]:
-    """Return {(event, hook): [duration_ms, ...]} using latest WINDOW entries per pair."""
+    """Return {(event, hook): [body duration_ms, ...]} using latest WINDOW entries.
+
+    The timing wrapper records both wall-clock wrapper latency (`duration_ms`)
+    and, for instrumented records, actual hook body latency
+    (`body_duration_ms`). Budget enforcement is about hook body work. Safe-mode
+    skips and killed/signal outcomes are classified elsewhere and must not be
+    counted as successful hook body latency.
+    """
     # Group all durations per pair (preserving order for sliding window)
     raw: dict[tuple[str, str], list[float]] = defaultdict(list)
     for rec in records:
         event = rec.get("event", "")
         hook = rec.get("hook", "")
-        dur = float(rec.get("duration_ms", 0))
+        if rec.get("skipped") or rec.get("safe_mode"):
+            continue
+        execution_status = rec.get("execution_status")
+        if execution_status and execution_status != "ok":
+            continue
+        dur = float(rec.get("body_duration_ms", rec.get("duration_ms", 0)))
         if event and hook:
             raw[(event, hook)].append(dur)
 
