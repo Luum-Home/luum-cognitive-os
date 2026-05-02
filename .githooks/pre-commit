@@ -19,8 +19,8 @@ while IFS= read -r staged_path; do
     VIOLATIONS="${VIOLATIONS}${staged_path}"$'\n'
   fi
 done < <(
-  git diff --cached --raw --diff-filter=ACM 2>/dev/null \
-    | awk '$4 != "160000" { split($0, parts, "\t"); if (parts[2] != "") print parts[2] }'
+  git diff --cached --raw -M -C --diff-filter=ACM 2>/dev/null \
+    | awk '$4 != "160000" { n = split($0, parts, "\t"); if (n >= 2 && parts[n] != "") print parts[n] }'
 )
 VIOLATIONS=$(printf '%s' "$VIOLATIONS" | grep -v '^$' || true)
 if [ -n "$VIOLATIONS" ]; then
