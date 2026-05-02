@@ -92,27 +92,41 @@ def _run(cmd: list, cwd: Path, env: dict | None = None, input_text: str = "") ->
     )
 
 
-def _run_pre_hook(repo: Path, agent_id: str, env: dict) -> subprocess.CompletedProcess:
+def _run_pre_hook(repo: Path, agent_id: str | None, env: dict, stdin: str = AGENT_STDIN) -> subprocess.CompletedProcess:
     """Invoke pre-agent-snapshot.sh with synthetic Agent stdin."""
-    hook_env = {**env, "CLAUDE_AGENT_ID": agent_id}
+    hook_env = {**env}
+    if agent_id is not None:
+        hook_env["CLAUDE_AGENT_ID"] = agent_id
+    else:
+        hook_env.pop("CLAUDE_AGENT_ID", None)
     return _run(
         ["bash", str(PRE_HOOK)],
         cwd=repo,
         env=hook_env,
-        input_text=AGENT_STDIN,
+        input_text=stdin,
     )
 
 
-def _run_post_hook(repo: Path, agent_id: str, env: dict, extra_env: dict | None = None) -> subprocess.CompletedProcess:
+def _run_post_hook(
+    repo: Path,
+    agent_id: str | None,
+    env: dict,
+    extra_env: dict | None = None,
+    stdin: str = AGENT_STDIN,
+) -> subprocess.CompletedProcess:
     """Invoke post-agent-snapshot-restore.sh with synthetic Agent stdin."""
-    hook_env = {**env, "CLAUDE_AGENT_ID": agent_id}
+    hook_env = {**env}
+    if agent_id is not None:
+        hook_env["CLAUDE_AGENT_ID"] = agent_id
+    else:
+        hook_env.pop("CLAUDE_AGENT_ID", None)
     if extra_env:
         hook_env.update(extra_env)
     return _run(
         ["bash", str(POST_HOOK)],
         cwd=repo,
         env=hook_env,
-        input_text=AGENT_STDIN,
+        input_text=stdin,
     )
 
 
@@ -137,6 +151,13 @@ def _read_metrics(repo: Path) -> list[dict]:
 def _stash_count(repo: Path) -> int:
     result = _run(["git", "stash", "list"], cwd=repo)
     return len([l for l in result.stdout.splitlines() if l.strip()])
+
+
+def _runtime_markers(repo: Path) -> list[Path]:
+    runtime = repo / ".cognitive-os" / "runtime"
+    if not runtime.exists():
+        return []
+    return sorted(runtime.glob("pre-agent-snapshot-*.json"))
 
 
 # ---------------------------------------------------------------------------
@@ -306,10 +327,69 @@ def test_marker_file_exact_match(git_repo: Path):
     restore_events = [r for r in records if r.get("action") == "restored"]
     assert restore_events, f"Should have restored via marker. Records: {records}"
 
-    # Marker should be cleaned up after successful restore
-    if marker_path.exists():
-        # Marker cleanup is best-effort; note if still present but don't fail
-        pass  # acceptable — hook cleans it up on success
+    assert not marker_path.exists(), "Marker must be cleaned up after successful restore"
+
+
+def test_deterministic_payload_id_restores_long_running_agent_without_env_id(git_repo: Path):
+    """PostToolUse can exact-match pre markers even without CLAUDE_AGENT_ID.
+
+    This reproduces the real failure mode: pre generated a random ID, the agent
+    ran longer than the five-minute fallback window, and post had agent_id=unknown.
+    Deterministic IDs from tool_input remove that time dependency.
+    """
+    env = _git_env(git_repo)
+    payload = json.dumps(
+        {
+            "tool_name": "Agent",
+            "tool_use_id": "toolu_snapshot_exact_001",
+            "tool_input": {"description": "long SDD propose", "prompt": "long SDD propose"},
+        }
+    )
+
+    (git_repo / "readme.txt").write_text("dirty before long agent\n")
+    pre_result = _run_pre_hook(git_repo, None, env, stdin=payload)
+    assert pre_result.returncode == 0, pre_result.stderr
+    assert _stash_count(git_repo) == 1
+
+    markers = _runtime_markers(git_repo)
+    assert len(markers) == 1
+    marker_data = json.loads(markers[0].read_text())
+    assert marker_data["agent_id"] == "toolu_snapshot_exact_001"
+    assert marker_data["session_id"] == "test-session"
+
+    post_payload = json.dumps(
+        {
+            "tool_name": "Agent",
+            "tool_use_id": "toolu_snapshot_exact_001",
+            "tool_input": {"description": "long SDD propose", "prompt": "long SDD propose"},
+            "tool_response": "completed after more than five minutes",
+        }
+    )
+    post_result = _run_post_hook(git_repo, None, env, stdin=post_payload)
+    assert post_result.returncode == 0, post_result.stderr
+
+    records = _read_metrics(git_repo)
+    assert any(r.get("action") == "restored" for r in records), records
+    assert _runtime_markers(git_repo) == []
+
+
+def test_copy_only_marker_is_removed_on_post_noop(git_repo: Path):
+    """Copy-mode untracked snapshots should not leave permanent runtime markers."""
+    env = _git_env(git_repo)
+    agent_id = "copy-only-marker"
+    (git_repo / "notes.txt").write_text("untracked but still present\n")
+
+    pre_result = _run_pre_hook(git_repo, agent_id, env)
+    assert pre_result.returncode == 0, pre_result.stderr
+    assert _stash_count(git_repo) == 0
+    marker_path = git_repo / ".cognitive-os" / "runtime" / f"pre-agent-snapshot-{agent_id}.json"
+    assert marker_path.exists()
+    assert json.loads(marker_path.read_text()).get("stash_ref") == ""
+
+    post_result = _run_post_hook(git_repo, agent_id, env)
+    assert post_result.returncode == 0, post_result.stderr
+    assert not marker_path.exists(), "copy-only marker should be completed and removed"
+    assert any(r.get("action") == "skip_no_stash" for r in _read_metrics(git_repo))
 
 
 # ---------------------------------------------------------------------------

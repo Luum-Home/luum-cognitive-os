@@ -166,3 +166,4 @@ task-recorder.sh | LIBRARY: sourced by dispatch-gate; not a standalone matcher
 user-prompt-capture.sh | INFRA: UserPromptSubmit event — full profile only
 aci-observation-capture.sh | CONDITIONAL: registered in cognitive-os.yaml PostToolUse wildcard governance but not projected into default .claude/settings.json for this profile.
 lethal-trifecta-gate.sh | CONDITIONAL: registered in cognitive-os.yaml PreToolUse wildcard governance but not projected into default .claude/settings.json for this profile.
+concurrent-write-guard-codex-proxy.sh | CONDITIONAL: Codex-only UserPromptSubmit degraded projection for ADR-111 Gate-3; registered through cognitive-os.yaml/.codex hooks, not default .claude/settings.json.
