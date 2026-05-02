@@ -49,7 +49,7 @@ For file-lock-only detail, keep using:
 bash scripts/edit-coop.sh status | python3 -m json.tool
 ```
 
-The unified status includes active sessions, task claims, edit locks, stashes, orphan commits, worktrees, pending tasks, and race risks. The file-lock-only command returns JSON like:
+The unified status includes active sessions, task claims, edit locks, stashes, orphan commits, worktrees, pending tasks, and race risks. If a specific linked worktree needs cleanup or porting, switch to `/worktree-triage` and run `scripts/cos-worktree-triage.sh` before deleting it. The file-lock-only command returns JSON like:
 
 ```json
 {

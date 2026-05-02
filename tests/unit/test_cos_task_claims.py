@@ -4,7 +4,7 @@ import json
 import os
 from pathlib import Path
 
-from scripts.cos_task_claims import claim_task, claims_path, task_fingerprint
+from scripts.cos_task_claims import claim_task, claims_path, release_task, task_fingerprint
 
 
 def write_active_session(project: Path, session_id: str, pid: int) -> None:
@@ -78,3 +78,20 @@ def test_unknown_session_claim_expires_after_ttl(tmp_path: Path, monkeypatch) ->
     statuses = {claim["session_id"]: claim["status"] for claim in data["claims"]}
     assert statuses["unknown-session"] == "stale"
     assert statuses["new-session"] == "active"
+
+
+def test_release_task_frees_claim_for_other_session(tmp_path: Path) -> None:
+    task = {"id": "T1", "description": "release me", "deliverable": "docs/out.md"}
+
+    ok, _ = claim_task(tmp_path, task, session="s1")
+    assert ok is True
+    released = release_task(tmp_path, "T1", session="s1")
+    assert released["updated"] is True
+    ok, takeover = claim_task(tmp_path, {**task, "id": "T2"}, session="s2")
+
+    assert ok is True
+    assert takeover["session_id"] == "s2"
+    data = json.loads(claims_path(tmp_path).read_text())
+    statuses = {claim["session_id"]: claim["status"] for claim in data["claims"]}
+    assert statuses["s1"] == "released"
+    assert statuses["s2"] == "active"
