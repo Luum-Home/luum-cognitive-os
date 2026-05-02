@@ -7,7 +7,8 @@ import subprocess
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-RUNNER = PROJECT_ROOT / "scripts" / "cos-codex-guard.py"
+GENERIC_RUNNER = PROJECT_ROOT / "scripts" / "cos_governed_runner.py"
+RUNNER = PROJECT_ROOT / "scripts" / "cos_codex_guard.py"
 
 
 def _listed(action: str) -> list[str]:
@@ -119,7 +120,9 @@ def test_runner_executes_synthetic_chain_with_canonical_env(tmp_path: Path) -> N
     result = subprocess.run(
         [
             "python3",
-            str(RUNNER),
+            str(GENERIC_RUNNER),
+            "--harness",
+            "codex",
             "pre-agent",
             "--project-dir",
             str(tmp_path),
@@ -138,4 +141,69 @@ def test_runner_executes_synthetic_chain_with_canonical_env(tmp_path: Path) -> N
         "tool": "Agent",
         "root": str(tmp_path.resolve()),
         "harness": "codex",
+    }
+
+
+def test_codex_wrapper_delegates_to_generic_runner() -> None:
+    result = subprocess.run(
+        ["python3", str(RUNNER), "pre-agent", "--project-dir", str(PROJECT_ROOT), "--list"],
+        cwd=PROJECT_ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    listed = json.loads(result.stdout)
+    assert listed["harness"] == "codex"
+    assert listed["event"] == "PreToolUse"
+    assert listed["matcher"] == "Agent"
+
+
+def test_generic_runner_supports_future_harness_env(tmp_path: Path) -> None:
+    hook = tmp_path / "hooks" / "capture.sh"
+    metrics = tmp_path / "cursor-env.json"
+    hook.parent.mkdir()
+    hook.write_text(
+        "#!/usr/bin/env bash\n"
+        "payload=$(cat)\n"
+        f"OUT_PATH={str(metrics)!r} PAYLOAD=\"$payload\" python3 -c '\n"
+        "import json, os, pathlib\n"
+        "payload = json.loads(os.environ[\"PAYLOAD\"])\n"
+        "pathlib.Path(os.environ[\"OUT_PATH\"]).write_text(json.dumps({\"payload_harness\": payload[\"harness\"], \"env_harness\": os.environ[\"COGNITIVE_OS_HARNESS\"], \"cursor_root\": os.environ[\"CURSOR_PROJECT_DIR\"]}))\n"
+        "'\n"
+    )
+    hook.chmod(0o755)
+    (tmp_path / "cognitive-os.yaml").write_text(
+        "harness:\n"
+        "  hooks:\n"
+        "    capture:\n"
+        "      script: hooks/capture.sh\n"
+        "      event: PostToolUse\n"
+        "      matcher: Write\n"
+        "      scope: os-only\n"
+    )
+    result = subprocess.run(
+        [
+            "python3",
+            str(GENERIC_RUNNER),
+            "--harness",
+            "cursor",
+            "post-write",
+            "--project-dir",
+            str(tmp_path),
+            "--file-path",
+            "x.txt",
+            "--content",
+            "hello",
+        ],
+        cwd=PROJECT_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    captured = json.loads(metrics.read_text())
+    assert captured == {
+        "payload_harness": "cursor",
+        "env_harness": "cursor",
+        "cursor_root": str(tmp_path.resolve()),
     }
