@@ -49,6 +49,16 @@ def _adr_number(path: Path) -> int:
     return int(m.group(1)) if m else 0
 
 
+def _first_heading_number(text: str) -> int | None:
+    """Return the ADR number claimed by the first Markdown heading."""
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("#"):
+            m = re.search(r"\bADR[- ]0*([0-9]+)\b", stripped, re.IGNORECASE)
+            return int(m.group(1)) if m else None
+    return None
+
+
 def _is_lettered_variant(path: Path) -> bool:
     """Return True if the filename is a lettered ADR variant (e.g., ADR-027a, ADR-028b-foo).
 
@@ -126,6 +136,80 @@ def test_adrs_directory_not_empty() -> None:
     """Sanity: docs/adrs/ contains at least 10 ADR files."""
     assert len(ALL_ADRS) >= 10, (
         f"Expected >= 10 ADR files in {ADRS_DIR}, found {len(ALL_ADRS)}"
+    )
+
+
+@pytest.mark.audit
+@pytest.mark.parametrize("adr_path", ALL_ADRS, ids=ALL_ADR_IDS)
+def test_non_lettered_adr_heading_number_matches_filename(adr_path: Path) -> None:
+    """Canonical ADR files must not claim a different number in the first heading.
+
+    Lettered addenda such as ADR-027a intentionally share a base number and are
+    excluded from this check. Non-lettered ADRs are namespace anchors, so a file
+    named ADR-086 with a heading claiming ADR-085 is a collision.
+    """
+    if _is_lettered_variant(adr_path):
+        return
+
+    filename_number = _adr_number(adr_path)
+    heading_number = _first_heading_number(_adr_text(adr_path))
+
+    assert heading_number == filename_number, (
+        f"{adr_path.name}: first heading claims "
+        f"{'no ADR number' if heading_number is None else f'ADR-{heading_number:03d}'}, "
+        f"but filename claims ADR-{filename_number:03d}. "
+        "Rename the file or correct the heading; do not leave contested ADR "
+        "slots ambiguous."
+    )
+
+
+@pytest.mark.audit
+def test_known_adr_collision_clusters_have_explicit_relationships() -> None:
+    """Known historical overlap clusters must declare their canonical hierarchy."""
+    required_relationships = {
+        "ADR-084-headless-clustered-runtime-shape.md": [
+            "Superseded by ADR-091",
+            "## Relationship to ADR-091",
+        ],
+        "ADR-091-headless-clustered-runtime-direction.md": [
+            "ADR-091 supersedes ADR-084",
+        ],
+        "ADR-049-llm-gateway-selection-and-overflow-providers.md": [
+            "## Relationship to ADR-011 and ADR-018",
+            "ADR-049 is canonical for LLM dispatch",
+        ],
+        "ADR-080-hermes-cross-harness-adoption.md": [
+            "## Relationship to memory ADRs",
+            "does not reopen the accepted Engram and memory decisions",
+        ],
+        "ADR-108-concurrent-agent-safety-layer.md": [
+            "## Relationship to adjacent safety ADRs",
+            "ADR-108 is the umbrella layer",
+        ],
+        "ADR-106-multi-session-safety-primitives.md": [
+            "## Relationship to ADR-108 and ADR-111",
+            "concrete primitive specification",
+        ],
+        "ADR-110-preserve-branch-governance.md": [
+            "## Relationship to ADR-108 and ADR-111",
+            "preserve-branch primitive",
+        ],
+        "ADR-111-core-consumer-concurrency-safety-boundary.md": [
+            "## Relationship to ADR-106, ADR-108, and ADR-110",
+            "boundary decision",
+        ],
+    }
+
+    missing: list[str] = []
+    for filename, required_snippets in required_relationships.items():
+        text = _adr_text(ADRS_DIR / filename)
+        for snippet in required_snippets:
+            if snippet not in text:
+                missing.append(f"{filename}: {snippet}")
+
+    assert not missing, (
+        "Known ADR overlap clusters must keep explicit relationship text:\n"
+        + "\n".join(f"  - {item}" for item in missing)
     )
 
 
