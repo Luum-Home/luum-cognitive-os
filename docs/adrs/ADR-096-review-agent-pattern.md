@@ -211,8 +211,7 @@ or directly in `.claude/settings.json` under `hooks.PostToolUse` with matcher `A
 
 - v2 async: background dispatch + `.cognitive-os/runtime/review-pending-*.json`
   markers + sweeper hook. Separate ADR when v1 data shows latency is a problem.
-- Meta-evaluation: instrument whether review findings are acted on and whether
-  they correlate with later user corrections.
+- Meta-evaluation phase 1 shipped: every persisted finding now includes a deterministic `review_quality` score/verdict that catches missing gaps, evidence, recommendations, confidence, and uncertainty. Future work remains: correlate review findings with later user corrections and acted-on improvements.
 - `always_review_kinds: ["sdd-verify"]` for high-stakes task types — config
   hook already reads this field; enforcement is a 1-line extension.
 

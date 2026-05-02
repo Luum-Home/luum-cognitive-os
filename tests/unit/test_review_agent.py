@@ -29,6 +29,7 @@ from lib.review_agent import (
     REVIEWER_MODEL_MATRIX,
     build_review_prompt,
     daily_budget_state,
+    evaluate_review_quality,
     parse_review_response,
     persist_finding,
     select_reviewer_model,
@@ -345,6 +346,40 @@ class TestParseReviewResponse:
         assert result["score"] == 55
 
 
+# ─── evaluate_review_quality ─────────────────────────────────────────────────
+
+class TestEvaluateReviewQuality:
+    def test_well_formed_review_is_usable(self):
+        parsed = parse_review_response(WELL_FORMED_RESPONSE)
+
+        quality = evaluate_review_quality(parsed)
+
+        assert quality["quality_verdict"] == "usable"
+        assert quality["quality_score"] >= 80
+        assert quality["quality_issues"] == []
+
+    def test_rubber_stamp_review_is_invalid_or_weak(self):
+        parsed = parse_review_response(
+            "REVIEW_SCORE: 95\n"
+            "EVIDENCE:\n"
+            "- Looks good.\n"
+            "RECOMMENDATIONS:\n"
+            "- None.\n"
+            "REVIEWER_CONFIDENCE: 99\n"
+        )
+
+        quality = evaluate_review_quality(parsed)
+
+        assert quality["quality_verdict"] in {"weak", "invalid"}
+        assert "missing_gaps" in quality["quality_issues"]
+
+    def test_empty_review_quality_is_invalid(self):
+        quality = evaluate_review_quality(parse_review_response(""))
+
+        assert quality["quality_verdict"] == "invalid"
+        assert quality["quality_score"] < 50
+
+
 # ─── persist_finding ─────────────────────────────────────────────────────────
 
 class TestPersistFinding:
@@ -364,6 +399,7 @@ class TestPersistFinding:
         record = json.loads(lines[0])
         assert record["score"] == 72
         assert "timestamp" in record
+        assert record["review_quality"]["quality_verdict"] in {"usable", "weak", "invalid"}
 
     def test_multiple_appends_dont_overwrite(self, tmp_findings_jsonl):
         for i in range(3):
