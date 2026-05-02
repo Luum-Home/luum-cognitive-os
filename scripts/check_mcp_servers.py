@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: project
 """check_mcp_servers.py — Diagnostic tool for Claude Code MCP server health.
 
 Reads MCP server definitions from:
@@ -19,9 +20,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import glob
 import json
-import os
 import shutil
 import subprocess
 import sys

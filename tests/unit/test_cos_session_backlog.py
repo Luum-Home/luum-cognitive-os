@@ -69,7 +69,8 @@ def test_reconciler_writes_backlog_and_metric_from_core_sources(tmp_path: Path) 
     (project / ".cognitive-os" / "plans" / "features").mkdir(parents=True)
     (project / ".cognitive-os" / "sessions" / "session-1").mkdir(parents=True)
     (project / ".cognitive-os" / "changelogs").mkdir(parents=True)
-    (project / "docs").mkdir(parents=True)
+    (project / "docs" / "adrs").mkdir(parents=True)
+    (project / "scripts").mkdir(parents=True)
 
     (project / ".cognitive-os" / "tasks" / "active-tasks.json").write_text(
         json.dumps(
@@ -92,6 +93,12 @@ def test_reconciler_writes_backlog_and_metric_from_core_sources(tmp_path: Path) 
     )
     (project / "docs" / "SESSION-HANDOFF-2026-05-02.md").write_text(
         "# Handoff\n\n## Next Steps\n\n- Commit reconciler\n"
+    )
+    (project / "docs" / "adrs" / "ADR-001-pending.md").write_text(
+        "# ADR-001 Pending\n\n## Status\nAccepted.\n"
+    )
+    (project / "scripts" / "adr_implementation_ledger.py").write_text(
+        (PROJECT_ROOT / "scripts" / "adr_implementation_ledger.py").read_text()
     )
 
     result = cos_session_backlog.reconcile(project, "session-1", include_engram=False)
@@ -117,12 +124,14 @@ def test_reconciler_writes_backlog_and_metric_from_core_sources(tmp_path: Path) 
     assert "User asked for backlog" in written
     assert "Verify portable command" in written
     assert "Commit reconciler" in written
+    assert "Resolve ADR implementation status: ADR-001-pending" in written
 
     metric = json.loads(metric_path.read_text().splitlines()[-1])
     assert metric["event"] == "backlog_reconciled"
     assert metric["priority_counts"]["1"] >= 2
     assert "active-tasks" in metric["sources"]
     assert "plans" in metric["sources"]
+    assert "adr-ledger" in metric["sources"]
 
 
 def test_cli_json_summary_reports_written_paths(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:

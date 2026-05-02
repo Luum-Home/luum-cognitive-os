@@ -126,7 +126,7 @@ project_scoped_hooks() {
 DEFAULT_HOOKS="error-pipeline.sh session-init.sh host-tool-doctor.sh session-cleanup.sh result-truncator.sh
   user-prompt-capture.sh session-wrapup-trigger.sh session-heartbeat.sh memory-prefetch.sh
   clarification-gate.sh blast-radius.sh scope-proportionality.sh
-  error-pattern-detector.sh auto-refine.sh auto-verify.sh completeness-check.sh dod-gate.sh
+  error-pattern-detector.sh auto-refine.sh auto-verify.sh dod-gate.sh
   trust-score-validator.sh skill-metrics-tracker.sh inject-phase-context.sh stack-detector.sh
   pre-compaction-flush.sh rate-limiter.sh large-file-advisor.sh secret-detector.sh content-policy.sh
   confidentiality-enforcer.sh
