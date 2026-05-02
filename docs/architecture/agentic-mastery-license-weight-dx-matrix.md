@@ -138,6 +138,11 @@ The approved direction is:
 4. Benchmark before making DX claims.
 5. Present simple reports: `safety`, `aci`, `skills`, `benchmark`, `adversarial`.
 
+
+## Automated license gate
+
+The pinned optional-tool manifest lives at `.cognitive-os/tests/agentic-tools/license-matrix.json` and is checked by `scripts/agentic-tool-license-matrix.py`. The script is stdlib-only, requires no network access, blocks AGPL/SSPL/BSL/ELv2/Commons-Clause license families, and blocks `default_enabled=true` for external tools with `High` or `Very high` weight. It can emit Markdown and JSON reports for CI or local review.
+
 ## Near-term actions
 
 1. Implement Lethal Trifecta Gate MVP.
