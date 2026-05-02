@@ -34,6 +34,7 @@ heartbeat = int(data.get("last_heartbeat_epoch") or 0)
 hb_interval = int(data.get("heartbeat_interval_seconds") or 0)
 
 stale = False
+pid_is_alive = False
 # ADR-113 layer 1: TTL fail-safe
 if expires_at and expires_at < now:
     stale = True
@@ -41,9 +42,11 @@ if expires_at and expires_at < now:
 elif pid > 0:
     try:
         os.kill(pid, 0)
+        pid_is_alive = True
     except ProcessLookupError:
         stale = True
     except PermissionError:
+        pid_is_alive = True
         stale = False
 
 # ADR-113 layer 3: heartbeat staleness (3 missed beats == dead)
@@ -51,8 +54,11 @@ if not stale and heartbeat > 0 and hb_interval > 0:
     if (now - heartbeat) > (3 * hb_interval):
         stale = True
 
-# ADR-113 layer 4: activity staleness (semantic check, 5 min default)
-if not stale:
+# ADR-113 layer 4: activity staleness is diagnostic unless the owning PID is
+# gone/missing. A long validation lane can legitimately produce no semantic
+# activity for >5 minutes while the shell PID is alive and heartbeat is fresh;
+# unlinking that lock lets cleanup hooks remove the active validation worktree.
+if not stale and not pid_is_alive:
     activity_log = path.parent / "validation-activity.jsonl"
     activity_threshold = int(os.environ.get("COS_VALIDATION_ACTIVITY_THRESHOLD", "300"))
     last_activity = 0
