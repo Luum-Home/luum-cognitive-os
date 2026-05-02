@@ -2,7 +2,7 @@
 ---
 name: document-feature
 version: 1.1.0
-description: Generate or update structured feature documentation using 3-layer detection (SDD spec, git diff, CLI arg). Extension (v1.1, ADR-054 Phase 2): accepts --project-dir to append to docs/05-features/features-backlog.md in an adopter project.
+description: "Generate or update structured feature documentation using 3-layer detection (SDD spec, git diff, CLI arg). Extension (v1.1, ADR-054 Phase 2): accepts --project-dir to append to docs/05-features/features-backlog.md in an adopter project."
 invocation: /document-feature [feature-name] [--project-dir <path>]
 user-invocable: true
 last-updated: 2026-03-26
