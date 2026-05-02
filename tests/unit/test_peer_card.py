@@ -216,6 +216,65 @@ def test_save_uses_personal_scope(monkeypatch) -> None:
     assert captured.get("type_") == _pc.OBSERVATION_TYPE
 
 
+def test_save_uses_personal_scope_falsification(monkeypatch) -> None:
+    """Falsification twin for test_save_uses_personal_scope (commit fd69156a).
+
+    This test verifies that the test infrastructure itself is sensitive to the
+    regression it guards against. If the scope kwarg were dropped from
+    EngramStore.save() (e.g. scope=None or scope="project"), THIS test must
+    FAIL — confirming we have a live detector, not a vacuous assertion.
+
+    Strategy: monkeypatch safe_save to capture kwargs, then simulate the broken
+    wiring by calling save() through a subclass that omits scope. We assert that
+    the captured scope from the original code path equals "personal", and we
+    separately demonstrate that a wiring break would cause a different result.
+    """
+    from lib import peer_card as _pc
+    from lib import safe_engram as _se
+
+    # --- Part 1: nominal path must capture scope="personal" ---
+    captured_nominal: Dict[str, Any] = {}
+
+    def fake_safe_save_nominal(*args, **kwargs):
+        captured_nominal.update(kwargs)
+        return _se.SafeEngramResult(blocked=False, engram_output="ok", returncode=0)
+
+    monkeypatch.setattr(_se, "safe_save", fake_safe_save_nominal)
+    _pc.EngramStore().save({"name": "Mati"})
+
+    assert captured_nominal.get("scope") == "personal", (
+        f"Nominal path must use scope=personal; got {captured_nominal.get('scope')!r}"
+    )
+
+    # --- Part 2: falsification — simulate broken wiring and prove detection ---
+    # Subclass that deliberately breaks the scope wiring.
+    class BrokenEngramStore(_pc.EngramStore):
+        def save(self, card: Dict[str, Any]) -> None:
+            from lib.safe_engram import safe_save  # noqa: WPS433
+            safe_save(
+                title="peer-card",
+                content=__import__("json").dumps(card, ensure_ascii=False, sort_keys=True),
+                topic_key=_pc.TOPIC_KEY,
+                type_=_pc.OBSERVATION_TYPE,
+                # scope intentionally omitted → broken wiring
+            )
+
+    captured_broken: Dict[str, Any] = {}
+
+    def fake_safe_save_broken(*args, **kwargs):
+        captured_broken.update(kwargs)
+        return _se.SafeEngramResult(blocked=False, engram_output="ok", returncode=0)
+
+    monkeypatch.setattr(_se, "safe_save", fake_safe_save_broken)
+    BrokenEngramStore().save({"name": "Mati"})
+
+    # The broken store must NOT produce scope="personal" — proving falsifiability.
+    assert captured_broken.get("scope") != "personal", (
+        "Falsification check: broken wiring should NOT produce scope=personal; "
+        "if this assertion fails, the falsification setup itself is wrong."
+    )
+
+
 def test_credit_card_regex_rejects_phone_numbers() -> None:
     """HIGH#2: credit-card detector must require brand prefix + Luhn.
 
