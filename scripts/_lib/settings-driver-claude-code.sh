@@ -123,6 +123,7 @@ cc_driver_emit() {
     "hooks/crash-recovery.sh"               "false" \
     "hooks/session-resume.sh"               "false" \
     "hooks/session-sanity.sh"               "false" \
+    "hooks/validation-lock-cleanup.sh"      "false" \
     "hooks/infra-health.sh"                 "true"  \
     "hooks/aspirational-audit-weekly.sh"    "false" \
     "hooks/self-knowledge-refresh.sh"       "false" \
