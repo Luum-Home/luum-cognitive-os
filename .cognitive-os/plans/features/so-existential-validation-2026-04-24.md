@@ -20,14 +20,14 @@ Target end-date: 2026-05-08. Exit metric: `dormant_aspirational_ratio < 0.25` AN
 
 ### Days 1-7 — "Remove or prove" window
 
-- [x] For each ASPIRATIONAL DELETE item: archive via `git mv` to `docs/archive/hooks/` — Done 2026-05-01: 3 hooks archived (completeness-check.sh, post-agent-verify.sh, prompt-quality.sh). `docs/archive/hooks/` created.
+- [x] DELETE batch archived (verified: `ls hooks/{post-agent-verify,completeness-check,prompt-quality}.sh` fails; grep returns 0 in settings.json/cognitive-os.yaml) — Done 2026-05-02 (honesty correction; commit c8987b7a claimed archived but hooks remained live; real git rm executed).
 - [x] For each ASPIRATIONAL DEFER item with conditional trigger: add `@on-demand` or `@manual-trigger` marker — Done 2026-05-01: all 8 Batch-4 hooks already carry markers (global-verify.sh, orchestrator-mode-detect.sh, package-sync.sh, semgrep-scan.sh, worktree-submodule-fix.sh, pre-cleanup-snapshot.sh, guardrails-validator.sh, idle-service-cleanup.sh).
 - [ ] For each DORMANT item: author a test that would promote to ON_DEMAND/REAL, OR remove reference. (ONGOING — 135 KEEP+TEST items from prune-triage-2026-04-24.md; large batch, tracked separately in punch-lists)
 - [ ] Daily snapshot: `scripts/aspirational-audit.py --persist` to `.cognitive-os/metrics/aspirational-audit.jsonl`.
 
 ### Day 14 — Auto-archive cutoff
 
-- [x] ASPIRATIONAL items archived or marked: 3 deleted, 8 marked @on-demand/@manual-trigger per prune-triage-2026-05-01.md Batch 1+4. Remaining 54 DEFER items documented with Phase 2/3 assignment — no git mv needed (not dead code, deferred with rationale).
+- [x] ASPIRATIONAL items archived or marked: 3 git-rm'd (verified 2026-05-02, honesty-correction), 8 marked @on-demand/@manual-trigger per prune-triage-2026-05-01.md Batch 1+4. Remaining 54 DEFER items documented with Phase 2/3 assignment — no git mv needed (not dead code, deferred with rationale).
 - [ ] Re-run audit. Goal: ratio <0.25.
 - [ ] Commit archival batch once DORMANT test/marker work reduces ratio sufficiently.
 
