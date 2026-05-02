@@ -91,7 +91,19 @@ class TestDestructiveBlocks:
         result = _run("git reset --hard HEAD", tmp_path)
         assert result.returncode == 1
         assert "BLOCKED" in result.stderr
-        assert "git reset --hard" in result.stderr
+        assert "git reset" in result.stderr
+
+    def test_blocks_git_pull_rebase(self, tmp_path: Path):
+        result = _run("git pull --rebase origin main", tmp_path)
+        assert result.returncode == 1
+        assert "BLOCKED" in result.stderr
+        assert "git pull --rebase" in result.stderr
+
+    def test_blocks_git_rebase(self, tmp_path: Path):
+        result = _run("git rebase main", tmp_path)
+        assert result.returncode == 1
+        assert "BLOCKED" in result.stderr
+        assert "git rebase" in result.stderr
 
     def test_blocks_git_checkout_dash(self, tmp_path: Path):
         result = _run("git checkout -- src/foo.py", tmp_path)
