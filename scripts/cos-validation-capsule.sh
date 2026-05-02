@@ -94,8 +94,19 @@ PYLOCK
 fi
 
 mkdir -p "$base_dir"
+
+# ADR-108: heartbeat configuration
+HEARTBEAT_INTERVAL_SECONDS="${COS_VALIDATION_HEARTBEAT_INTERVAL:-30}"
+HEARTBEAT_PID=""
+ACTIVITY_LOG="$RUNTIME_DIR/validation-activity.jsonl"
+
 cleanup() {
   status=$?
+  # ADR-108: kill heartbeat first so it stops touching the lock
+  if [ -n "$HEARTBEAT_PID" ]; then
+    kill "$HEARTBEAT_PID" 2>/dev/null || true
+    wait "$HEARTBEAT_PID" 2>/dev/null || true
+  fi
   if [ -f "$LOCK_FILE" ] && grep -q "\"run_id\":\"$run_id\"" "$LOCK_FILE" 2>/dev/null; then
     rm -f "$LOCK_FILE"
   fi
@@ -104,22 +115,53 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-python3 - "$LOCK_FILE" "$run_id" "$HEAD_SHA" "$CAPSULE_DIR" "$expires_at" "$$" "$*" <<'PYJSON'
+python3 - "$LOCK_FILE" "$run_id" "$HEAD_SHA" "$CAPSULE_DIR" "$expires_at" "$$" "$HEARTBEAT_INTERVAL_SECONDS" "$*" <<'PYJSON'
 import json, sys, time
 from pathlib import Path
-path, run_id, head, capsule, expires, shell_pid, command = sys.argv[1:]
+path, run_id, head, capsule, expires, shell_pid, hb_interval, command = sys.argv[1:]
+now = int(time.time())
 payload = {
     "run_id": run_id,
     "pid": int(shell_pid),
     "head": head,
     "capsule_dir": capsule,
-    "started_at_epoch": int(time.time()),
+    "started_at_epoch": now,
     "expires_at_epoch": int(expires),
+    "last_heartbeat_epoch": now,           # ADR-108 P1
+    "heartbeat_interval_seconds": int(hb_interval),  # ADR-108 P1
     "command": command,
     "message": f"validation capsule {run_id} is running in {capsule}",
 }
 Path(path).write_text(json.dumps(payload, separators=(",", ":")) + "\n")
 PYJSON
+
+# ADR-108 P1: heartbeat writer background loop. Updates last_heartbeat_epoch
+# every $HEARTBEAT_INTERVAL_SECONDS so dispatch-gate can detect hung processes
+# (alive PID but no progress).
+(
+  while sleep "$HEARTBEAT_INTERVAL_SECONDS"; do
+    [ -f "$LOCK_FILE" ] || exit 0
+    python3 - "$LOCK_FILE" <<'PYHB'
+import json, sys, time, os, tempfile
+from pathlib import Path
+p = Path(sys.argv[1])
+try:
+    data = json.loads(p.read_text())
+except Exception:
+    sys.exit(0)
+data["last_heartbeat_epoch"] = int(time.time())
+# atomic write via tmpfile + rename
+tmp = p.with_suffix(p.suffix + ".tmp")
+tmp.write_text(json.dumps(data, separators=(",", ":")) + "\n")
+os.replace(tmp, p)
+PYHB
+  done
+) &
+HEARTBEAT_PID=$!
+
+# ADR-108 P2: initialize activity log; subprocess can append events.
+printf '{"ts":"%s","capsule":"%s","action":"capsule_start","detail":"%s"}\n' \
+  "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$run_id" "$*" >> "$ACTIVITY_LOG" 2>/dev/null || true
 
 git worktree add --detach "$CAPSULE_DIR" "$HEAD_SHA" >/dev/null
 if [ -d "$REPO_ROOT/.venv" ] && [ ! -e "$CAPSULE_DIR/.venv" ]; then
