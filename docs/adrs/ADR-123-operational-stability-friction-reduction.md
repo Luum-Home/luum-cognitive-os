@@ -50,9 +50,12 @@ and is governed by these decisions:
    whether it is safe to work, launch agents, validate, and push.
 6. **Validation lanes are explicit.** Fast, landing, laptop, full, and chaos
    lanes have budgets and diff-based recommendations.
+7. **Distribution tiers separate runtime from meta-infrastructure.** ADR-124
+   defines `core`, `team`, `maintainer`, and `lab` boundaries so small projects
+   can adopt the safety primitives without the full SO-maintainer layer.
 
-The goal is not to remove governance. The goal is to make governance proportional
-and self-healing.
+The goal is not to remove governance. The goal is to make governance proportional,
+self-healing, and modular.
 
 ## Consequences
 
