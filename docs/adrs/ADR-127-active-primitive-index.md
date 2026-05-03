@@ -66,7 +66,9 @@ Current hardened baseline:
 
 Active-surface thresholds still warn because this maintainer repository projects
 a large runtime surface, but that warning is now about real represented surface,
-not undercounted metadata.
+not undercounted metadata. The companion runtime reality audit reports the
+current behavior split as 29 real blocking hooks, 59 real advisory hooks, and 28
+observe-only hooks, with zero projected/documentation drift.
 
 
 ## Alternatives rejected
@@ -97,6 +99,7 @@ scripts/cos-architecture-readiness --json | python3 -m json.tool >/dev/null
 Runtime hardening verification:
 
 ```bash
-python3 -m pytest tests/contracts/test_primitive_runtime_reality.py tests/unit/test_active_primitive_index.py -q
+python3 -m pytest tests/contracts/test_primitive_runtime_reality.py tests/unit/test_active_primitive_index.py tests/unit/test_runtime_hook_reality.py -q
 python3 scripts/active_primitive_index.py --json
+python3 scripts/runtime_hook_reality.py --fail-on-findings
 ```
