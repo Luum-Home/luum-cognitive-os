@@ -96,6 +96,8 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
 source "$SCRIPT_DIR/../hooks/_lib/validation-lock.sh"
+# shellcheck source=/dev/null
+source "$SCRIPT_DIR/../hooks/_lib/safe-worktree-remove.sh"
 SIGNALS=$(cos_validation_lock_stale_reason "$PROJECT_DIR")
 STALE_LIST=$(echo "$SIGNALS" | grep '=stale' | sed 's/=.*//' | tr '\n' ',' | sed 's/,$//')
 
@@ -142,7 +144,7 @@ rm -f "$LOCK_FILE"
 
 # Remove worktree
 if [ -n "$LOCK_CAPSULE_DIR" ] && [ -d "$LOCK_CAPSULE_DIR" ]; then
-  git -C "$PROJECT_DIR" worktree remove --force "$LOCK_CAPSULE_DIR" >/dev/null 2>&1 || rm -rf "$LOCK_CAPSULE_DIR"
+  safe_worktree_remove "$PROJECT_DIR" "$LOCK_CAPSULE_DIR" "cos-validation-break"
 fi
 
 # Audit
