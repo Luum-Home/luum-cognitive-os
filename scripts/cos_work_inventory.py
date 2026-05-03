@@ -21,6 +21,7 @@ import fnmatch
 import json
 import os
 import subprocess
+import sys
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -32,6 +33,60 @@ DEFAULT_STASH_BLOCK_TTL = 3600
 
 # Race-risk heuristics
 RACE_RISK_STALE_STASH_THRESHOLD = 3600  # 1 hour
+
+# ---------------------------------------------------------------------------
+# ADR-121: Preflight gate refinements
+# ---------------------------------------------------------------------------
+
+# Glob patterns for paths that belong to ephemeral validation workspaces.
+# These should never trigger BLOCK — they are transient and self-cleaning.
+# Add new patterns here when new ephemeral path conventions are introduced.
+EPHEMERAL_PATH_PATTERNS: tuple[str, ...] = (
+    "*/cos-validation-capsules/*",
+    "*/luum-agent-os-validation-*",
+)
+
+# Subagent types that are structurally read-only and cannot write to the main
+# worktree.  Matches the preamble convention in templates/agent-preamble.md.
+READ_ONLY_SUBAGENT_TYPES: frozenset[str] = frozenset(
+    {"Explore", "Plan", "Code Reviewer", "Security Engineer"}
+)
+
+
+def _ephemeral_tmpdir() -> str:
+    """Return the resolved $TMPDIR (or /tmp) for ephemeral path matching."""
+    raw = os.environ.get("TMPDIR", "") or "/tmp"
+    try:
+        return str(Path(raw).resolve())
+    except OSError:
+        return raw
+
+
+def _is_ephemeral_path(path: Path) -> bool:
+    """Return True if *path* matches any ephemeral workspace pattern.
+
+    Matches against EPHEMERAL_PATH_PATTERNS (glob) and paths that are
+    children of the runtime $TMPDIR.
+    """
+    path_str = str(path)
+    for pattern in EPHEMERAL_PATH_PATTERNS:
+        if fnmatch.fnmatch(path_str, pattern):
+            return True
+    tmpdir = _ephemeral_tmpdir()
+    try:
+        path.relative_to(tmpdir)
+        return True
+    except ValueError:
+        pass
+    return False
+
+
+def _canonical_path(path: str | Path) -> str:
+    """Return the canonical (resolved) string form of a path."""
+    try:
+        return str(Path(path).resolve())
+    except OSError:
+        return str(path)
 
 
 @dataclass(frozen=True)
@@ -305,13 +360,20 @@ def parse_worktree_porcelain(output: str) -> list[dict[str, str]]:
     return rows
 
 
-def collect_worktrees(project: Path) -> list[dict[str, Any]]:
+def collect_worktrees(
+    project: Path,
+    *,
+    skip_ephemeral: bool = True,
+) -> list[dict[str, Any]]:
     result = git(project, ["worktree", "list", "--porcelain"])
     if result.returncode != 0:
         return []
     rows: list[dict[str, Any]] = []
     for item in parse_worktree_porcelain(result.stdout):
         path = Path(item.get("worktree", "")).resolve()
+        # ADR-121: skip ephemeral validation workspace paths (unless disabled)
+        if skip_ephemeral and _is_ephemeral_path(path):
+            continue
         branch = item.get("branch", "")
         if branch.startswith("refs/heads/"):
             branch = branch.removeprefix("refs/heads/")
@@ -549,7 +611,11 @@ def collect_orphans(project: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def collect_worktrees_direct(project: Path) -> list[dict[str, Any]]:
+def collect_worktrees_direct(
+    project: Path,
+    *,
+    skip_ephemeral: bool = True,
+) -> list[dict[str, Any]]:
     """Read .git/worktrees/ directly and include dirty status.
 
     This path is independent of IDE state and avoids relying on the
@@ -560,19 +626,21 @@ def collect_worktrees_direct(project: Path) -> list[dict[str, Any]]:
 
     main_status = worktree_status(project)
     main_git_dir = common_dir or (project / ".git")
-    rows.append(
-        {
-            "path": str(project.resolve()),
-            "branch": main_status.get("branch") or current_branch(project) or branch_from_head_file(main_git_dir / "HEAD"),
-            "head": main_status.get("head") or current_head(project) or short_head_from_head_file(main_git_dir / "HEAD"),
-            "source": "main",
-            "locked": False,
-            "prunable": False,
-            "is_current_project": True,
-            "dirty": main_status.get("is_dirty"),
-            "dirty_counts": main_status.get("counts", {}),
-        }
-    )
+    # ADR-121: skip main project path if ephemeral (edge case, but consistent)
+    if not skip_ephemeral or not _is_ephemeral_path(project.resolve()):
+        rows.append(
+            {
+                "path": str(project.resolve()),
+                "branch": main_status.get("branch") or current_branch(project) or branch_from_head_file(main_git_dir / "HEAD"),
+                "head": main_status.get("head") or current_head(project) or short_head_from_head_file(main_git_dir / "HEAD"),
+                "source": "main",
+                "locked": False,
+                "prunable": False,
+                "is_current_project": True,
+                "dirty": main_status.get("is_dirty"),
+                "dirty_counts": main_status.get("counts", {}),
+            }
+        )
 
     if common_dir is None:
         return rows
@@ -610,6 +678,9 @@ def collect_worktrees_direct(project: Path) -> list[dict[str, Any]]:
             prunable = not target.parent.exists()
 
         path = Path(wt_path).resolve() if wt_path else Path(name)
+        # ADR-121: skip ephemeral validation workspace paths (unless disabled)
+        if skip_ephemeral and _is_ephemeral_path(path):
+            continue
         status = worktree_status(path)
         rows.append(
             {
@@ -768,9 +839,17 @@ def collect_race_risks(
             )
 
     # (b) Multiple worktrees on the same branch
+    # ADR-121: deduplicate by canonical (realpath) so that the same physical
+    # worktree appearing in both worktrees[] and worktrees_direct[] does not
+    # trigger a false self-collision race risk.
     branch_to_worktrees: dict[str, list[str]] = {}
+    seen_canonical: set[str] = set()
     for wt in worktrees:
         branch = wt.get("branch")
+        canon = _canonical_path(wt.get("path", ""))
+        if canon in seen_canonical:
+            continue
+        seen_canonical.add(canon)
         if branch:
             branch_to_worktrees.setdefault(branch, []).append(wt.get("path", "?"))
     for branch, paths in branch_to_worktrees.items():
@@ -846,11 +925,73 @@ def collect_race_risks(
 
 
 # ---------------------------------------------------------------------------
+# ADR-121: Branch-aware severity helper
+# ---------------------------------------------------------------------------
+
+
+def _classify_worktree_finding(
+    worktree: dict[str, Any],
+    current_branch: str | None,
+    current_path: Path,
+    allow_read_only: bool,
+) -> str:
+    """Return ``"BLOCK"`` or ``"WARN"`` for a dirty linked worktree.
+
+    Rules (applied in order):
+    1. If *allow_read_only* is True → WARN (read-only agents cannot mutate).
+    2. If the worktree's branch matches *current_branch* (including detached
+       HEAD identity ``detached@<sha12>``) → BLOCK (same-branch race risk).
+    3. If the worktree path is under *current_path* target space → BLOCK.
+    4. Otherwise → WARN (different branch, low risk of conflict).
+
+    Detached HEAD identity uses the first 12 chars of the commit SHA so that
+    two detached worktrees at the *same* commit count as colliding.
+    """
+    if allow_read_only:
+        return "WARN"
+
+    wt_branch: str | None = worktree.get("branch")
+    wt_head: str | None = worktree.get("head")
+
+    # Build comparable branch identity for the worktree
+    if wt_branch:
+        wt_identity = wt_branch
+    elif wt_head:
+        wt_identity = f"detached@{wt_head[:12]}"
+    else:
+        wt_identity = None
+
+    # Build comparable branch identity for the current worktree
+    if current_branch:
+        cur_identity = current_branch
+    else:
+        # Derive detached identity from HEAD — best effort via git
+        cur_identity = None
+
+    if wt_identity and cur_identity and wt_identity == cur_identity:
+        return "BLOCK"
+
+    # Check if worktree path is under the current project path (sub-path)
+    wt_path_str = worktree.get("path", "")
+    if wt_path_str:
+        try:
+            Path(wt_path_str).resolve().relative_to(current_path.resolve())
+            return "BLOCK"
+        except ValueError:
+            pass
+
+    return "WARN"
+
+
+# ---------------------------------------------------------------------------
 # Findings builder (original + extended)
 # ---------------------------------------------------------------------------
 
 
-def build_findings(payload: dict[str, Any]) -> list[Finding]:
+def build_findings(
+    payload: dict[str, Any],
+    allow_read_only: bool = False,
+) -> list[Finding]:
     findings: list[Finding] = []
     status = payload["status"]
     counts = status["counts"]
@@ -915,6 +1056,10 @@ def build_findings(payload: dict[str, Any]) -> list[Finding]:
                     "Prove duplicated, cherry-pick needed files, or mark obsolete with evidence.",
                 )
             )
+    # ADR-121: derive current branch/path for branch-aware severity
+    current_branch_val: str | None = payload.get("status", {}).get("branch")
+    current_path_val = Path(payload.get("project", "."))
+
     worktrees_by_path: dict[str, dict[str, Any]] = {}
     for source_key in ("worktrees", "worktrees_direct"):
         for worktree in payload.get(source_key, []):
@@ -925,9 +1070,15 @@ def build_findings(payload: dict[str, Any]) -> list[Finding]:
         if worktree.get("is_current_project"):
             continue
         if worktree.get("dirty"):
+            level = _classify_worktree_finding(
+                worktree,
+                current_branch_val,
+                current_path_val,
+                allow_read_only,
+            )
             findings.append(
                 Finding(
-                    "BLOCK",
+                    level,
                     "linked-worktree-dirty",
                     worktree["path"],
                     f"branch={worktree.get('branch') or 'detached'} counts={worktree.get('dirty_counts')}",
@@ -981,16 +1132,37 @@ def build_findings(payload: dict[str, Any]) -> list[Finding]:
 
 
 def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
+    # ADR-121 kill-switch: COS_PREFLIGHT_STRICT=1 restores pre-refinement
+    # conservative behavior. Log to stderr so the JSON payload is unaffected.
+    _strict_env = os.environ.get("COS_PREFLIGHT_STRICT", "0")
+    if _strict_env == "1":
+        print(
+            "COS_PREFLIGHT_STRICT=1: ADR-121 refinements bypassed; "
+            "reverting to pre-refinement blocking behavior.",
+            file=sys.stderr,
+        )
+        args.allow_read_only = False
+        args._preflight_strict_override = True
+    else:
+        if not hasattr(args, "allow_read_only"):
+            args.allow_read_only = False
+        args._preflight_strict_override = False
+
     project = Path(args.project_dir).expanduser().resolve()
     if not is_git_repo(project):
         raise SystemExit(f"Not a git repository: {project}")
+    # ADR-121: when strict override is active, disable ephemeral filter so that
+    # all worktrees (including validation capsule paths) are included — this
+    # restores the pre-refinement conservative behavior.
+    _skip_eph = not getattr(args, "_preflight_strict_override", False)
+
     payload: dict[str, Any] = {
         "project": str(project),
         "base_ref": args.base_ref,
         "branch_pattern": args.branch_pattern,
         "status": collect_status(project),
         "preserve_branches": list_branches(project, args.branch_pattern, args.base_ref),
-        "worktrees": collect_worktrees(project),
+        "worktrees": collect_worktrees(project, skip_ephemeral=_skip_eph),
         "stashes": collect_stashes(project, args.stash_warn_ttl, args.stash_block_ttl),
         "session_fs_stats": collect_session_fs_stats(project),
     }
@@ -1017,7 +1189,7 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         payload["orphans"] = []
 
     if want_worktrees_direct:
-        payload["worktrees_direct"] = collect_worktrees_direct(project)
+        payload["worktrees_direct"] = collect_worktrees_direct(project, skip_ephemeral=_skip_eph)
         combined_worktrees = payload["worktrees"] + payload["worktrees_direct"]
         payload["worktree_stashes"] = collect_stashes_by_worktree(
             project, combined_worktrees, args.stash_warn_ttl, args.stash_block_ttl
@@ -1038,7 +1210,7 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
 
     if want_race_risks:
         sessions_for_risk = payload.get("sessions") or collect_sessions(project)
-        worktrees_for_risk = payload.get("worktrees_direct") or collect_worktrees_direct(project)
+        worktrees_for_risk = payload.get("worktrees_direct") or collect_worktrees_direct(project, skip_ephemeral=_skip_eph)
         stashes_for_risk = payload.get("stashes_extended") or collect_stashes_extended(
             project, args.stash_warn_ttl, args.stash_block_ttl
         )
@@ -1054,7 +1226,7 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
     else:
         payload["race_risks"] = []
 
-    findings = build_findings(payload)
+    findings = build_findings(payload, allow_read_only=getattr(args, "allow_read_only", False))
     payload["findings"] = [finding.to_dict() for finding in findings]
     payload["summary"] = {
         "blockers": sum(1 for finding in findings if finding.level == "BLOCK"),
@@ -1204,6 +1376,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--volume-alarm-threshold", type=int, default=int(os.environ.get("COS_SESSION_VOLUME_ALARM_THRESHOLD", 1000)))
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--strict", action="store_true", help="Exit non-zero when warnings or blockers exist.")
+    parser.add_argument(
+        "--allow-read-only",
+        dest="allow_read_only",
+        action="store_true",
+        default=False,
+        help=(
+            "Downgrade linked-worktree-dirty from BLOCK to WARN when the "
+            "launching agent is structurally read-only (ADR-121). "
+            "Ignored when COS_PREFLIGHT_STRICT=1."
+        ),
+    )
 
     # P3.3 dimension flags
     parser.add_argument("--sessions", action="store_true", help="Include active session metadata.")
