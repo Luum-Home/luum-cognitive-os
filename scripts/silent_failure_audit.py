@@ -34,6 +34,14 @@ VALID_CLASSES = {
     "legacy_audited",
 }
 
+CLASS_RATIONALES = {
+    "optional_dependency": "Optional dependency or integration probe; absence must degrade without blocking the parent hook.",
+    "metrics_best_effort": "Telemetry/JSONL writes are best effort and must never break the guarded user action.",
+    "cleanup_best_effort": "Cleanup/reaper work is best effort; failures are surfaced by later hygiene or recovery checks.",
+    "probe_best_effort": "Read-only environment/state probe; failure means unknown state, not an immediate hard block.",
+    "legacy_audited": "Legacy silent degradation remains audited but needs manual classification before promotion.",
+}
+
 
 @dataclass(frozen=True)
 class Occurrence:
@@ -72,6 +80,36 @@ def scan(root: Path = DEFAULT_SCAN_ROOT, repo_root: Path = REPO_ROOT) -> list[Oc
     return occurrences
 
 
+
+def classify_occurrence(occurrence: Occurrence) -> str:
+    text = occurrence.text.lower()
+    path = occurrence.path.lower()
+    if any(token in path for token in ("safe-jsonl", "metrics", "usage", "feedback", "capture", "learning")) or any(
+        token in text for token in ("jsonl", "metrics", "safe_jsonl", "safe-jsonl", ">> $metrics", ">> metrics")
+    ):
+        return "metrics_best_effort"
+    if any(token in text for token in ("command -v", "type -p", "source ", "python3 -", "import ", "jq ", "node ", "go ")):
+        return "optional_dependency"
+    if any(token in path for token in ("cleanup", "reap", "reaper", "worktree-remove", "drain")) or any(
+        token in text for token in ("cleanup", "rm -", "rmdir", "kill ", "pkill", "wait ", "trap ", "git worktree prune", "unlock", "lock")
+    ):
+        return "cleanup_best_effort"
+    if any(token in text for token in ("grep ", "git rev-parse", "git status", "git branch", "pgrep", "test ", "[ -", "[[ ", "cat ", "head ", "tail ", "find ")):
+        return "probe_best_effort"
+    return "legacy_audited"
+
+
+def classify_path(path: str, occurrences: list[Occurrence]) -> str:
+    from collections import Counter
+
+    classes = [classify_occurrence(item) for item in occurrences if item.path == path]
+    if not classes:
+        return "legacy_audited"
+    counts = Counter(classes)
+    # Prefer a concrete class over legacy when tied.
+    order = ["metrics_best_effort", "cleanup_best_effort", "optional_dependency", "probe_best_effort", "legacy_audited"]
+    return sorted(counts, key=lambda cls: (-counts[cls], order.index(cls)))[0]
+
 def counts_by_path(occurrences: list[Occurrence]) -> dict[str, int]:
     counts: dict[str, int] = {}
     for occ in occurrences:
@@ -106,6 +144,12 @@ def build_report(
     counts = counts_by_path(occurrences)
     allowlist = allowlist_map(load_allowlist(allowlist_path))
     findings: list[Finding] = []
+    class_counts: dict[str, int] = {name: 0 for name in sorted(VALID_CLASSES)}
+
+    for entry in allowlist.values():
+        cls = entry.get("degradation_class")
+        if cls in class_counts:
+            class_counts[cls] += 1
 
     for path, count in counts.items():
         entry = allowlist.get(path)
@@ -185,6 +229,8 @@ def build_report(
         "file_count": len(counts),
         "occurrence_count": len(occurrences),
         "counts_by_path": counts,
+        "counts_by_degradation_class": class_counts,
+        "legacy_audited_count": class_counts.get("legacy_audited", 0),
         "sample_occurrences": [asdict(item) for item in occurrences[:50]],
         "findings": [asdict(item) for item in findings],
         "fail_count": fail_count,
@@ -192,16 +238,19 @@ def build_report(
     }
 
 
-def write_baseline(path: Path, counts: dict[str, int]) -> None:
-    entries = [
-        {
-            "path": file_path,
-            "max_occurrences": count,
-            "degradation_class": "legacy_audited",
-            "rationale": "Legacy best-effort degradation audited as baseline; increases require explicit review.",
-        }
-        for file_path, count in counts.items()
-    ]
+def write_baseline(path: Path, counts: dict[str, int], occurrences: list[Occurrence] | None = None) -> None:
+    occurrence_list = occurrences or []
+    entries = []
+    for file_path, count in counts.items():
+        degradation_class = classify_path(file_path, occurrence_list)
+        entries.append(
+            {
+                "path": file_path,
+                "max_occurrences": count,
+                "degradation_class": degradation_class,
+                "rationale": CLASS_RATIONALES[degradation_class],
+            }
+        )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(yaml.safe_dump({"schema_version": 1, "entries": entries}, sort_keys=False), encoding="utf-8")
 
@@ -216,7 +265,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.write_baseline:
-        write_baseline(args.allowlist, counts_by_path(scan(args.scan_root, REPO_ROOT)))
+        occurrences = scan(args.scan_root, REPO_ROOT)
+        write_baseline(args.allowlist, counts_by_path(occurrences), occurrences)
 
     report = build_report(REPO_ROOT, args.scan_root, args.allowlist)
     if args.json:

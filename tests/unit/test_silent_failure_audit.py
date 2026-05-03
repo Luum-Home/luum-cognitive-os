@@ -73,3 +73,12 @@ def test_silent_failure_audit_passes_classified_baseline(tmp_path: Path) -> None
     report = audit.build_report(tmp_path, hooks, allowlist)
 
     assert report["status"] == "pass"
+
+
+def test_repository_allowlist_is_not_all_legacy() -> None:
+    report = audit.build_report()
+
+    class_counts = report["counts_by_degradation_class"]
+    assert report["file_count"] > 0
+    assert class_counts["legacy_audited"] < report["file_count"]
+    assert sum(count for name, count in class_counts.items() if name != "legacy_audited") > 0
