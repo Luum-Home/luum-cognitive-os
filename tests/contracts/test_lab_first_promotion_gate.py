@@ -54,6 +54,15 @@ def test_existing_unchanged_core_primitive_is_grandfathered() -> None:
     assert findings == []
 
 
+def test_demotion_does_not_require_promotion_evidence() -> None:
+    old = primitive("hooks/team-task.sh", distribution="team", maturity="blocking", state="blocking")
+    new = primitive("hooks/team-task.sh", distribution="team", maturity="blocking", state="demoted")
+
+    findings = evaluate({"primitives": [old]}, {"primitives": [new]})
+
+    assert findings == []
+
+
 def test_cli_passes_against_current_branch_delta() -> None:
     result = subprocess.run(
         ["python3", str(SCRIPT), "--json"],
