@@ -34,6 +34,7 @@ CONTROL_PLANE_PRIMITIVES = {
     "scripts/cos-registry-lock",
     "scripts/cos-engram-bundle",
     "scripts/cos-federation-trigger-audit",
+    "scripts/cos-cross-instance-drill",
 }
 
 
