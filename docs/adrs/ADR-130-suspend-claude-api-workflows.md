@@ -9,6 +9,7 @@ implementation_files:
   - .github/workflows/claude-interactive.yml.disabled
   - .github/workflows/claude-issue-triage.yml.disabled
   - .github/workflows/claude-pr-review.yml.disabled
+  - .github/workflows/cross-platform.yml.disabled
 tier: maintainer
 tags: [ci, billing, github-actions, dx, future-work]
 ---
