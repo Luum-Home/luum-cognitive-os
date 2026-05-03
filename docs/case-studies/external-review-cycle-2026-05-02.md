@@ -123,6 +123,20 @@ and appends the event to `.cognitive-os/metrics/direct-main-bypass.jsonl`.
 This makes the bilateral obligation operational: if the maintainer chooses speed
 over the governed path, the choice becomes evidence, not folklore.
 
+## Self-triggered absorption: the doctrine working at micro-scale
+
+The "Protected landing" sub-cycle above documents *what happened*. Worth naming separately is *the structural property it demonstrates*: the system absorbed friction it produced **about itself, during its own documentation pass**, and converted that friction into a doctrine artefact within the same wall-clock.
+
+Concretely: the friction with `direct-main-guard.sh` happened during the documentation pass for this case study. Approximately 40 minutes after the recovery, commit `95239a50 fix: audit direct main bypasses` landed on `main` — hardening the guard by ~80 lines, adding unit tests for the bypass paths, and creating [`docs/architecture/direct-main-policy.md`](../architecture/direct-main-policy.md). The fix targets the exact failure mode the documentation pass surfaced.
+
+The structural difference from the main external-review cycle: the main cycle absorbed an **external** input (a senior review). This sub-cycle absorbed an **internal** input (the cycle's own friction) and produced the same class of artefact — gate hardening, tests, policy doc — without an external trigger. **The cycle ate its own friction.**
+
+The implication for durability: a system that codifies its own internal friction has a feedback loop the external-review cycle does not have to keep providing. The first external cycle is a trigger; subsequent improvements can be self-triggered by the cost of running the system itself. The next operator hitting the same friction inherits the hardened gate, not the recovery procedure.
+
+For external adopters evaluating the doctrine, this turns into a **falsifiable claim**: if the doctrine is real, the system should consume its own friction over time, which means low long-term operational overhead from recurring failure modes. If after several months of use the same friction recurs *without* producing a hardening commit and a corresponding policy doc, the claim is wrong and the doctrine is not behaving as written. The micro-cycle documented above is the first data point; subsequent ones can be tracked by correlating dates of `docs/architecture/*-policy.md` additions against `git log --grep='^fix: audit'` entries on `main`.
+
+The naming matters because this property is what allows the system to scale without continuous external pressure. External review is what produced this case study. Internal friction-absorption is what will produce the next twenty improvements without a second external review being required.
+
 ## What the cycle does not prove
 
 Stated honestly so the artefact is useful:
