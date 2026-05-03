@@ -25,6 +25,7 @@ import active_primitive_index
 import yaml
 import cos_governance_roi
 import primitive_lifecycle
+import runtime_hook_reality
 
 REPO_ROOT = SCRIPT_DIR.parents[0]
 REQUIRED_RUNTIME_PRIMITIVES = {
@@ -173,6 +174,26 @@ def check_active_surface(root: Path) -> Check:
     )
 
 
+
+
+def check_runtime_hook_reality(root: Path) -> Check:
+    try:
+        report = runtime_hook_reality.build_report(project_root=root)
+    except runtime_hook_reality.RuntimeHookRealityError as exc:
+        return Check(
+            id="runtime-hook-reality",
+            status="fail",
+            message="runtime hook reality audit could not run",
+            details={"error": str(exc)},
+        )
+    status = "pass" if report["summary"]["status"] == "pass" else "fail"
+    return Check(
+        id="runtime-hook-reality",
+        status=status,
+        message="runtime hooks match lifecycle metadata and observable behavior" if status == "pass" else "runtime hook reality audit has findings",
+        details={"summary": report["summary"], "findings": report["findings"]},
+    )
+
 def check_roi(root: Path, window_hours: int) -> Check:
     report = cos_governance_roi.build_report(root, window_hours)
     roi = report["roi"]
@@ -311,14 +332,12 @@ def _load_governance_maturity_overlay(root: Path) -> dict[str, dict[str, Any]]:
     manifest = root / "manifests" / "governance-maturity.yaml"
     if not manifest.exists():
         return {}
-    try:
-        data = yaml.safe_load(manifest.read_text(encoding="utf-8"))
-    except (OSError, yaml.YAMLError):
-        return {"<overlay>": {"maturity": "invalid"}}
-    primitives = data.get("primitives") if isinstance(data, dict) else None
-    if not isinstance(primitives, list):
-        return {"<overlay>": {"maturity": "invalid"}}
-    return {str(item.get("id")): item for item in primitives if isinstance(item, dict) and item.get("id")}
+    return {
+        "<overlay>": {
+            "maturity": "duplicate-source",
+            "path": str(manifest.relative_to(root)),
+        }
+    }
 
 
 def check_governance_maturity_labels(root: Path) -> Check:
@@ -335,12 +354,12 @@ def check_governance_maturity_labels(root: Path) -> Check:
         if overlay and overlay.get("maturity") != item.get("maturity"):
             contradictions.append(primitive_id)
     if "<overlay>" in overlay_labels:
-        invalid.append("manifests/governance-maturity.yaml")
+        contradictions.append("manifests/governance-maturity.yaml")
     status = "pass" if not missing and not invalid and not contradictions else "fail"
     return Check(
         id="governance-maturity-labels",
         status=status,
-        message="trust/blast governance maturity labels are explicit in lifecycle metadata" if status == "pass" else "required governance maturity labels are missing, invalid, or contradictory",
+        message="trust/blast governance maturity labels are explicit in lifecycle metadata" if status == "pass" else "required governance maturity labels are missing, invalid, or duplicated",
         details={
             "missing": missing,
             "invalid": sorted(invalid),
@@ -357,6 +376,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_adoption_tiers(root),
         check_lifecycle_manifest(root),
         check_active_surface(root),
+        check_runtime_hook_reality(root),
         check_roi(root, window_hours),
         check_lifecycle_recommendations(root, window_hours),
         check_runtime_primitives(root),
