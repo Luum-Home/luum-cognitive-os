@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# SCOPE: both
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+case "cos-import-consumer-evidence" in
+  cos-export-consumer-evidence) subcmd="export-consumer-evidence" ;;
+  cos-import-consumer-evidence) subcmd="import-consumer-evidence" ;;
+  cos-registry-lock) subcmd="registry-lock" ;;
+  cos-engram-bundle) subcmd="engram-export" ;;
+  cos-federation-trigger-audit) subcmd="federation-trigger-audit" ;;
+esac
+exec python3 "$SCRIPT_DIR/cos_cross_instance_learning.py" "$subcmd" "$@"

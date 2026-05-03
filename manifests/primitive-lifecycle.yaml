@@ -3750,3 +3750,146 @@ primitives:
     docs/proposals; no runtime doctrine is mutated by this primitive.
   sunset_criteria: Archive only if doctrine proposal generation moves into a
     stronger review workflow with equivalent non-runtime guarantees.
+- id: scripts/cos-export-consumer-evidence
+  kind: script
+  owner_adr: ADR-136
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-export-consumer-evidence
+  - scripts/cos_cross_instance_learning.py
+  - lib/cross_instance_learning.py
+  - manifests/external-adoption-evidence.yaml
+  runtime_projection: false
+  behavior_evidence: consumer evidence export covered by cross-instance runway tests
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_cross_instance_learning.py -q
+  exit_behavior: exit_0
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Delete generated consumer evidence JSON; no runtime
+    state changes are made by export.
+  sunset_criteria: Archive only if consumer evidence moves into a stronger signed
+    evidence exchange protocol.
+- id: scripts/cos-import-consumer-evidence
+  kind: script
+  owner_adr: ADR-136
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-import-consumer-evidence
+  - scripts/cos_cross_instance_learning.py
+  - lib/cross_instance_learning.py
+  - manifests/external-adoption-evidence.yaml
+  runtime_projection: false
+  behavior_evidence: consumer evidence import covered by cross-instance runway tests
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_cross_instance_learning.py -q
+  - python3 scripts/cos_claim_signature_audit.py --json
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Remove the imported report from
+    manifests/external-adoption-evidence.yaml if evidence is invalid.
+  sunset_criteria: Archive only if external evidence import moves into a signed
+    evidence intake service.
+- id: scripts/cos-registry-lock
+  kind: script
+  owner_adr: ADR-136
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: blocking
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-registry-lock
+  - scripts/cos_cross_instance_learning.py
+  - lib/cross_instance_learning.py
+  - manifests/agentic-primitive-registry.lock.yaml
+  - skills/REGISTRY.lock
+  runtime_projection: false
+  behavior_evidence: deterministic primitive/skill registry locks with audit tests
+  evidence_commands:
+  - scripts/cos-registry-lock --audit
+  - python3 -m pytest tests/unit/test_cross_instance_learning.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: blocking
+  rollback_or_repair_command: Run scripts/cos-registry-lock --write after reviewed
+    primitive or skill changes; investigate unexpected drift.
+  sunset_criteria: Archive only if registry locking moves into a stronger signed
+    package manager.
+  repair_message: Primitive and skill registry drift must be explicit before
+    cross-instance operation.
+  false_positive_tests:
+  - tests/unit/test_cross_instance_learning.py
+  promotion_evidence:
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    boring_reliability_artifact: docs/architecture/cross-instance-learning-runway.md
+    rationale: Blocking only for deterministic registry drift; it does not project
+      runtime behavior or expand default-visible hooks.
+- id: scripts/cos-engram-bundle
+  kind: script
+  owner_adr: ADR-136
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-engram-bundle
+  - scripts/cos-engram-import-propose
+  - scripts/cos_cross_instance_learning.py
+  - lib/cross_instance_learning.py
+  runtime_projection: false
+  behavior_evidence: portable Engram bundle export/import-propose covered by tests
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_cross_instance_learning.py -q
+  exit_behavior: exit_0
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Delete generated bundle or import proposal; no memory
+    store is mutated.
+  sunset_criteria: Archive only if Engram federation provides equivalent
+    conflict-aware propose-only import.
+- id: scripts/cos-federation-trigger-audit
+  kind: script
+  owner_adr: ADR-136
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-federation-trigger-audit
+  - scripts/cos_cross_instance_learning.py
+  - lib/cross_instance_learning.py
+  - manifests/federation-triggers.yaml
+  runtime_projection: false
+  behavior_evidence: Shape-B trigger audit covered by cross-instance runway tests
+  evidence_commands:
+  - scripts/cos-federation-trigger-audit
+  - python3 -m pytest tests/unit/test_cross_instance_learning.py -q
+  exit_behavior: exit_0
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Keep federation deferred until observed Shape-B
+    triggers fire; update manifests/federation-triggers.yaml only with evidence.
+  sunset_criteria: Archive only when Shape-B federation is implemented with
+    stronger distributed coordination contracts.
