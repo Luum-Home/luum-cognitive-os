@@ -17,7 +17,7 @@ Reduce Cognitive OS governance discovery load by exposing a filtered active agen
 
 - `scripts/active_primitive_index.py` adapts lifecycle `distribution` into adoption tier.
 - `scripts/cos-active-primitive-index` is a stable shell entrypoint.
-- `scripts/cos_opus_readiness.py` keeps compatibility but prints vendor-neutral governance readiness wording.
+- `scripts/cos_architecture_readiness.py` is the canonical readiness entrypoint; there are no model-named compatibility wrappers.
 - Thresholds are local constants in the index script until real DX telemetry justifies config-driven values.
 
 ## Validation
@@ -25,8 +25,8 @@ Reduce Cognitive OS governance discovery load by exposing a filtered active agen
 Run:
 
 ```bash
-python3 -m pytest tests/unit/test_active_primitive_index.py tests/unit/test_cos_opus_readiness.py -q
-python3 -m py_compile scripts/active_primitive_index.py scripts/cos_opus_readiness.py
+python3 -m pytest tests/unit/test_active_primitive_index.py tests/unit/test_cos_architecture_readiness.py -q
+python3 -m py_compile scripts/active_primitive_index.py scripts/cos_architecture_readiness.py
 bash -n scripts/cos-active-primitive-index
 ```
 

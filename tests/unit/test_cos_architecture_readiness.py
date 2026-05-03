@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
-import scripts.cos_opus_readiness as readiness
+import scripts.cos_architecture_readiness as readiness
 
 
 def test_build_report_warns_for_known_wiring_gaps(tmp_path: Path) -> None:
@@ -66,7 +66,7 @@ primitives:
     risk_class: blocking
     supported_harnesses: [codex]
     projection_targets: [.codex/hooks.json]
-    evidence_commands: [python3 -m pytest tests/unit/test_cos_opus_readiness.py -q]
+    evidence_commands: [python3 -m pytest tests/unit/test_cos_architecture_readiness.py -q]
     rollback_or_repair_command: disable hook
     sunset_criteria: archive after replacement
   - id: scripts/lab
@@ -78,7 +78,7 @@ primitives:
     risk_class: advisory
     supported_harnesses: [shell]
     projection_targets: [scripts/lab]
-    evidence_commands: [python3 -m pytest tests/unit/test_cos_opus_readiness.py -q]
+    evidence_commands: [python3 -m pytest tests/unit/test_cos_architecture_readiness.py -q]
     rollback_or_repair_command: leave in lab
     sunset_criteria: archive after no use
 """,
