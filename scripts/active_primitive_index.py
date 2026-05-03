@@ -41,6 +41,7 @@ class PrimitiveEntry:
     default_visible: bool
     projection_targets: list[str]
     evidence_commands: list[str]
+    runtime_projection: bool
 
 
 class ActivePrimitiveIndexError(ValueError):
@@ -92,6 +93,7 @@ def primitive_to_entry(primitive: dict[str, Any]) -> PrimitiveEntry:
         default_visible=default_visible,
         projection_targets=_string_list(primitive.get("projection_targets")),
         evidence_commands=_string_list(primitive.get("evidence_commands")),
+        runtime_projection=bool(primitive.get("runtime_projection", False)),
     )
 
 
@@ -214,6 +216,10 @@ def summarize(entries: list[PrimitiveEntry], root: Path = REPO_ROOT) -> dict[str
             default_visible_counts_by_tier[entry.tier] += 1
 
     active_surface_count = sum(active_counts_by_tier[tier] for tier in ACTIVE_SURFACE_TIERS)
+    runtime_active_surface_count = sum(
+        1 for entry in entries
+        if entry.active and entry.tier in ACTIVE_SURFACE_TIERS and entry.runtime_projection
+    )
     default_visible_count = sum(default_visible_counts_by_tier[tier] for tier in DEFAULT_VISIBLE_TIERS)
     lab_active_count = active_counts_by_tier["lab"]
     coverage = runtime_coverage(entries, root)
@@ -240,23 +246,23 @@ def summarize(entries: list[PrimitiveEntry], root: Path = REPO_ROOT) -> dict[str
             }
         )
 
-    if active_surface_count > ACTIVE_FAIL_THRESHOLD:
+    if runtime_active_surface_count > ACTIVE_FAIL_THRESHOLD:
         findings.append(
             {
-                "id": "active-surface-too-large",
+                "id": "runtime-active-surface-too-large",
                 "severity": "fail",
-                "message": "core/team/maintainer active primitive surface exceeds DX fail threshold",
-                "count": active_surface_count,
+                "message": "core/team/maintainer runtime-projected active primitive surface exceeds DX fail threshold",
+                "count": runtime_active_surface_count,
                 "threshold": ACTIVE_FAIL_THRESHOLD,
             }
         )
-    elif active_surface_count > ACTIVE_WARN_THRESHOLD:
+    elif runtime_active_surface_count > ACTIVE_WARN_THRESHOLD:
         findings.append(
             {
-                "id": "active-surface-near-limit",
+                "id": "runtime-active-surface-near-limit",
                 "severity": "warn",
-                "message": "core/team/maintainer active primitive surface exceeds DX warning threshold",
-                "count": active_surface_count,
+                "message": "core/team/maintainer runtime-projected active primitive surface exceeds DX warning threshold",
+                "count": runtime_active_surface_count,
                 "threshold": ACTIVE_WARN_THRESHOLD,
             }
         )
@@ -280,6 +286,7 @@ def summarize(entries: list[PrimitiveEntry], root: Path = REPO_ROOT) -> dict[str
         "active_counts_by_tier": active_counts_by_tier,
         "default_visible_counts_by_tier": default_visible_counts_by_tier,
         "active_surface_count": active_surface_count,
+        "runtime_active_surface_count": runtime_active_surface_count,
         "default_visible_count": default_visible_count,
         "runtime_coverage": coverage,
         "thresholds": {
@@ -324,7 +331,7 @@ def print_human(index: dict[str, Any]) -> None:
     coverage = summary["runtime_coverage"]
     print("Active agentic primitive index")
     print(f"source: {index['source_of_truth']}")
-    print(f"status: {summary['status']} active_surface={summary['active_surface_count']} default_visible={summary['default_visible_count']} runtime_coverage={coverage['coverage_ratio']}")
+    print(f"status: {summary['status']} active_surface={summary['active_surface_count']} runtime_active={summary['runtime_active_surface_count']} default_visible={summary['default_visible_count']} runtime_coverage={coverage['coverage_ratio']}")
     print("counts by tier:")
     for tier in TIERS:
         total = summary["counts_by_tier"][tier]
