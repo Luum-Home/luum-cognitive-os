@@ -54,6 +54,12 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Expansion Hardening Plan](architecture/expansion-hardening-plan.md) — three-sprint plan for scaling across PCs, IDEs, sessions, and autonomous agents without growing default-visible theatre.
 - [Lifecycle Demotion Proof — task-completed hook](reports/lifecycle-demotion-task-completed-2026-05-03.md) — first semantic `demoted` lifecycle transition proving shrink-without-delete behavior.
 - [ADR-133: Expansion Without Monsterization](adrs/ADR-133-expansion-without-monsterization.md) — lab-first promotion, portability-tax visibility, semantic matching, and federation boundaries.
+- [ADR-134: Headless Self-Improvement Proposer](adrs/ADR-134-headless-self-improvement-proposer.md) — propose-only audit→fix loop with `human_approval_required: true` hardcoded and a blocked-actions list.
+- [ADR-135: Self-Evolving Doctrine Proposals](adrs/ADR-135-self-evolving-doctrine-proposals.md) — control-plane evidence generates proposed doctrine amendments without mutating runtime rules.
+- [ADR-136: Cross-Instance Learning Runway](adrs/ADR-136-cross-instance-learning-runway.md) — registry locks, evidence exchange, Engram bundles, and federation triggers as Shape-B runway primitives.
+- [ADR-137: Operational Trajectory — Governance Layer → Embedded Runtime](adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) — accepted directional commitment from Framing B (governance over agents) to Framing A (runtime that travels with the agent); orthogonal to ADR-132's Shape A/B axis.
+- [ADR-138: Flow Contract Schema](adrs/ADR-138-flow-contract-schema.md) — required shape for `manifests/flow-contract-schema.yaml`; every cloud flow primitive declares its contract before it ships.
+- [DX-First Cloud Flow Bootstrap Plan](architecture/dx-cloud-flow-bootstrap-plan.md) — strategic plan for COS as runtime-of-prosthesis for cloud agent flows under human audit; vulnerability remediation in `e2b` sandbox as flow #1, with explicit bootstrap budget caps and falsifiable conditions.
 - [Skill Efficacy Measurement](architecture/skill-efficacy.md) — marginal skill utility metrics and report surface.
 - [Runtime Benchmark MVP](architecture/runtime-benchmark-mvp.md) — no-cost local schema and leaderboard for vanilla-vs-COS comparisons.
 - [Adversarial Generalization MVP](architecture/adversarial-generalization.md) — generated messy-task scenarios and deterministic rubric.

@@ -5,6 +5,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Documentation
+
+- `docs/architecture/cognitive-prosthesis.md` — new section *Two maturity stages: works-when-it-works, and knows-when-it-doesn't* enumerates the nine concrete mechanisms that materialise the transition (demotion-with-evidence, governance-maturity labels, silent-failure allowlist, aspirational audit, false-positive ledger, propose-only proposers per ADR-134/135, anti-self-validation, ADR-136 runway with observable triggers, falsifiable claims as release artefact). Adds the operable test for whether a capability belongs in the default profile: not only *does it work?* but *how would I know mechanically when it stops working?*.
+- `docs/architecture/dx-cloud-flow-bootstrap-plan.md` — new strategic plan for COS as runtime-of-prosthesis for cloud agent flows (vuln-fix, bug-fix, features, docs, primitive expansion) under human audit. Names the trajectory B → A (governance layer over agents → embedded runtime), the priority shifts that follow, and the bootstrap path: vulnerability remediation in `e2b` sandbox as flow #1 with explicit budget caps (zero new default-visible primitives, zero rules added to RULES-COMPACT, no Shape B activation). Includes 6 falsifiable conditions, 5 explicit non-goals, and a 3-step ordered next-action list.
+- `docs/adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md` — accepted trajectory ADR. Commits direction `Framing B → Framing A` orthogonal to ADR-132's Shape A/B axis (near-term target: `(Shape A, Framing A)`). Introduces the **framing-exercise statement** required in flow skill metadata; flows without it cannot be promoted out of `lab`. Makes ADR-064 implementation completion flow-gated rather than roadmap-gated.
+- `docs/adrs/ADR-138-flow-contract-schema.md` — accepted schema ADR. Commits the required shape for `manifests/flow-contract-schema.yaml` (twelve top-level fields including `flow_id`, `lifecycle_state`, `input_source.determinism`, `success_condition.verifier`, `sandboxed_write_paths`, `blocked_actions`, hardcoded `human_approval_required: true`, `evidence_shape` with anti-self-validation independence flags, `framing_exercise_statement`, `non_goals`, `falsifiable_when`). Schema stays in `exemplary` status until the second flow registers against it unchanged; extensions land as ADR-138a or new ADR.
+
+### Internal
+
+- `manifests/hook-quality.yaml` — regenerated via `scripts/hook_quality_audit.py --sync` to register two auto-detected behavior tests for `task-completed` and `validation-lock-cleanup` hooks (drift surfaced by `derived-artifact-gate` during merge-to-main validation).
+
 ## [0.24.0] - 2026-05-03 — "Closed-Loop Self-Improvement and Shape B Runway"
 
 This release lands the closed-loop self-improvement framework that the v0.23.0
