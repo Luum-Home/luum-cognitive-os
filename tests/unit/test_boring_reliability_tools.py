@@ -77,3 +77,26 @@ def test_wip_safety_score_penalizes_dirty_and_stash(tmp_path: Path) -> None:
 
     assert report["score"] < 100
     assert report["stash_count"] == 1
+
+
+def test_dispatch_metrics_evidence_warns_when_empty(tmp_path: Path) -> None:
+    import scripts.cos_boring_reliability as boring
+
+    report = boring.dispatch_metrics_evidence(tmp_path)
+
+    assert report["status"] == "warn"
+    assert report["repair_command"] == "scripts/cos-dispatch-smoke --json"
+
+
+def test_dispatch_smoke_writes_metrics(tmp_path: Path, monkeypatch) -> None:
+    import scripts.cos_dispatch_smoke as smoke
+
+    monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(tmp_path))
+    monkeypatch.setenv("CODEX_PROJECT_DIR", "")
+    monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(tmp_path))
+
+    report = smoke.build_report(tmp_path, "offline dispatch smoke test")
+
+    assert report["status"] == "pass"
+    assert (tmp_path / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl").stat().st_size > 0
+    assert (tmp_path / ".cognitive-os" / "metrics" / "task-history.jsonl").stat().st_size > 0
