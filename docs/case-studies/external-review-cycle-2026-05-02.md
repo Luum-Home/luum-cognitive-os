@@ -137,6 +137,20 @@ For external adopters evaluating the doctrine, this turns into a **falsifiable c
 
 The naming matters because this property is what allows the system to scale without continuous external pressure. External review is what produced this case study. Internal friction-absorption is what will produce the next twenty improvements without a second external review being required.
 
+## Cadence asymmetry between reviewer and maintainer
+
+A property that generalises the bilateral pressure point above and explains why review documents are *structurally stale by the time they finish writing*: the reviewer and the maintainer operate at different cadences by design.
+
+The reviewer's work is durability work — slow prose, structured tables, falsifiable claims. Wall-clock cost is dominated by the writing of the prose around the analysis, not by the analysis itself. The maintainer's work in single-maintainer mode is velocity work — small commits, scoped fixes, no coordination tax. Wall-clock cost is dominated by typing.
+
+In this cycle's documentation pass, two distinct snapshots taken by the reviewer were rendered partially obsolete by maintainer commits **before the prose around them finished writing**. Once for an early "no movement" status table on six axes — five of the six were resolved by boring-reliability commits landing while the table was being typed. Again for a later "four warn sections plus readiness fail" punch list — resolved by `33d8891a fix: clarify boring reliability warn exit` and `beb7d30c fix: clarify session start diet metrics`, which arrived between the reviewer's audit pass and the prose containing the punch list.
+
+This is not failure of the audit. It is the two cadences operating correctly, in opposite directions, on the same target. The friction between them is what produces the artefacts both sides care about — without the lag, the maintainer would have nothing to absorb; without the velocity, the reviewer would have nothing to audit.
+
+For external adopters: expect any audit of this system to be partially obsolete by the time you read it. The artefact value of an audit is **not its present-tense snapshot** — that drifts within hours under active maintenance — **but its structural frame**: what categories of risk, what kinds of evidence, what falsifiable claims. The snapshot expires; the frame composts into the next audit.
+
+A useful heuristic: read review documents as time-windowed dated photographs. Treat them as accurate at their timestamp and structural beyond it. The case study above has the date in its filename (`-2026-05-02.md`) precisely so future readers can apply that calibration without thinking about it. The companion documents — [`boring-reliability-control-plane.md`](../architecture/boring-reliability-control-plane.md), [`cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md), the relevant ADRs — are the structural frame; this case study is the photograph.
+
 ## What the cycle does not prove
 
 Stated honestly so the artefact is useful:
