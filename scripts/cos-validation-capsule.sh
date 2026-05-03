@@ -48,6 +48,8 @@ fi
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$REPO_ROOT"
+# shellcheck source=/dev/null
+source "$REPO_ROOT/hooks/_lib/safe-worktree-remove.sh"
 
 HEAD_SHA="$(git rev-parse HEAD)"
 RUNTIME_DIR="$REPO_ROOT/.cognitive-os/runtime"
@@ -110,7 +112,7 @@ cleanup() {
   if [ -f "$LOCK_FILE" ] && grep -q "\"run_id\":\"$run_id\"" "$LOCK_FILE" 2>/dev/null; then
     rm -f "$LOCK_FILE"
   fi
-  git worktree remove --force "$CAPSULE_DIR" >/dev/null 2>&1 || rm -rf "$CAPSULE_DIR"
+  safe_worktree_remove "$REPO_ROOT" "$CAPSULE_DIR" "cos-validation-capsule-trap"
   exit "$status"
 }
 trap cleanup EXIT INT TERM
