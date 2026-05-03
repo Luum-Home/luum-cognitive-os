@@ -1,3 +1,19 @@
+---
+adr: 119
+title: Session Filesystem Reaper
+status: implemented
+date: 2026-05-02
+supersedes: []
+superseded_by: null
+implementation_files:
+  - scripts/cos_work_inventory.py
+  - lib/session_lifecycle.py
+  - hooks/_lib/session-fs-reap.sh
+  - scripts/so-reaper.sh
+tier: standard
+tags: [session, filesystem, reaper, cleanup]
+---
+
 # ADR-119: Session Filesystem Reaper
 
 ## Status
