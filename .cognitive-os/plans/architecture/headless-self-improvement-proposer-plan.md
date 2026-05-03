@@ -1,0 +1,57 @@
+---
+related-adr: ADR-134
+---
+
+# Headless Self-Improvement Proposer Plan
+
+## Goal
+
+Turn existing Cognitive OS audits into bounded fix proposals without requiring a
+dashboard and without allowing uncontrolled self-modification.
+
+## Phase 1 — Proposal loop
+
+- [x] Add `lib/self_improvement_loop.py`.
+- [x] Add `scripts/cos-self-improvement-loop`.
+- [x] Normalize `cos-boring-reliability` warnings.
+- [x] Normalize `cos-claim-signature-audit` warnings.
+- [x] Persist optional proposal JSON under `.cognitive-os/improvements/proposals/`.
+- [x] Cover proposal generation with unit tests.
+
+## Phase 2 — Doctrine proposer
+
+- [ ] Add `scripts/cos-doctrine-proposer`.
+- [ ] Read false-positive, direct-main-bypass, demotion-loop, and tier-claim
+      evidence.
+- [ ] Write proposal markdown under `docs/proposals/`.
+- [ ] Require any doctrine amendment to start as proposed/lab, never default-on.
+
+## Phase 3 — Consumer evidence import/export
+
+- [ ] Add `scripts/cos-export-consumer-evidence`.
+- [ ] Add `scripts/cos-import-consumer-evidence`.
+- [ ] Feed qualifying reports into `manifests/external-adoption-evidence.yaml`.
+- [ ] Keep non-maintainer 30-day evidence as the threshold for signing the
+      helps-projects claim.
+
+## Phase 4 — Background proposer
+
+- [ ] Add a scheduled propose-only runner.
+- [ ] Ensure the runner stops on non-zero `cos-boring-reliability`.
+- [ ] Ensure the runner opens a branch/PR only after tests pass.
+- [ ] Keep merge/promotion human-approved.
+
+## Non-goals
+
+- No dashboard in this phase.
+- No auto-merge.
+- No auto-promotion to `core` or `team`.
+- No fabricated ROI evidence.
+- No federation work unless ADR-132 Shape-B triggers fire.
+
+## Validation
+
+```bash
+python3 -m pytest tests/unit/test_self_improvement_loop.py -q
+scripts/cos-self-improvement-loop --profile core --json
+```
