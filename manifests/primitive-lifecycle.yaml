@@ -1,0 +1,87 @@
+# Transitional agentic primitive lifecycle manifest for ADR-126.
+# This covers only the lifecycle-governor slice of the broader multi-ADR phase
+# plan (distribution, governance value, coordination, preflight, and runtime
+# hardening remain separate concerns). It is intentionally small and should grow
+# as primitives are touched.
+schema_version: 1
+primitives:
+  - id: hooks/direct-main-guard
+    kind: hook
+    owner_adr: ADR-116
+    lifecycle_state: blocking
+    distribution: core
+    governance_class: runtime-safety
+    risk_class: blocking
+    supported_harnesses:
+      - claude
+      - codex
+    projection_targets:
+      - .claude/settings.json
+      - .codex/hooks.json
+      - cognitive-os.yaml
+    latency_budget_ms: 1000
+    evidence_commands:
+      - python3 -m pytest tests/unit/test_direct_main_guard.py tests/unit/test_protected_landing_docs.py -q
+    rollback_or_repair_command: COS_OPERATOR_MAIN_POLICY=warn bash hooks/direct-main-guard.sh
+    repair_message: Switch to a task branch or set COS_OPERATOR_MAIN_POLICY=warn for an operator-only emergency bypass.
+    false_positive_tests:
+      - tests/unit/test_direct_main_guard.py
+    sunset_criteria: Demote when protected landing enforcement is fully delegated to provider-neutral remote branch protection and no local direct-main violations are observed for 90 days.
+
+  - id: hooks/concurrent-write-guard-codex-proxy
+    kind: hook
+    owner_adr: ADR-111
+    lifecycle_state: blocking
+    distribution: core
+    governance_class: runtime-safety
+    risk_class: blocking
+    supported_harnesses:
+      - codex
+    projection_targets:
+      - .codex/hooks.json
+      - cognitive-os.yaml
+    latency_budget_ms: 1000
+    evidence_commands:
+      - python3 -m pytest tests/unit/test_concurrent_write_guard_behavior.py tests/red_team/portability/test_concurrent-write-guard-codex-proxy.py -q
+    rollback_or_repair_command: COS_CONCURRENT_WRITE_GUARD=advisory bash hooks/concurrent-write-guard-codex-proxy.sh
+    repair_message: Claim or switch to a non-overlapping write set before editing shared files in parallel sessions.
+    false_positive_tests:
+      - tests/unit/test_concurrent_write_guard_behavior.py
+    sunset_criteria: Demote after native Codex tool-level write-set locks supersede the proxy and parity tests prove no uncovered races remain.
+
+  - id: scripts/cos-doctor-preserve
+    kind: doctor
+    owner_adr: ADR-116
+    lifecycle_state: advisory
+    distribution: maintainer
+    governance_class: delivery-structure
+    risk_class: advisory
+    supported_harnesses:
+      - claude
+      - codex
+      - shell
+    projection_targets:
+      - scripts/cos-doctor-preserve.sh
+      - docs/architecture/preserve-branch-lifecycle.md
+    evidence_commands:
+      - bash scripts/cos-doctor-preserve.sh --help >/dev/null
+      - python3 -m pytest tests/behavior/test_cos_doctor_preserve.py -q
+    rollback_or_repair_command: Disable preserve-branch doctor invocation from the active profile and keep preservation branches untouched for manual triage.
+    sunset_criteria: Archive when preserve-branch lifecycle is enforced by the protected landing contract and no preserved WIP branches are produced for 90 days.
+
+  - id: scripts/cos_primitive_harvester
+    kind: script
+    owner_adr: ADR-120
+    lifecycle_state: sandbox
+    distribution: lab
+    governance_class: meta-governance
+    risk_class: advisory
+    supported_harnesses:
+      - shell
+    projection_targets:
+      - scripts/cos_primitive_harvester.py
+      - docs/architecture/primitive-harvester.md
+    evidence_commands:
+      - python3 -m pytest tests/behavior/test_cos_primitive_harvester.py -q
+    rollback_or_repair_command: Keep generated primitive proposals in lab output only and ignore harvester suggestions until evidence is refreshed.
+    sunset_criteria: Demote to archived if proposal precision remains below the configured ROI threshold for two consecutive review windows.
