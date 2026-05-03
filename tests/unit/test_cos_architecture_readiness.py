@@ -26,7 +26,9 @@ def test_build_report_warns_for_known_wiring_gaps(tmp_path: Path) -> None:
          patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
          patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
          patch.object(readiness, "check_governance_maturity_labels", return_value=readiness.Check("maturity", "pass", "ok")), \
-         patch.object(readiness, "check_lab_first_promotion_gate", return_value=readiness.Check("lab-first", "pass", "ok")):
+         patch.object(readiness, "check_lab_first_promotion_gate", return_value=readiness.Check("lab-first", "pass", "ok")), \
+         patch.object(readiness, "check_manifest_tier_claim_audit", return_value=readiness.Check("manifest-tier", "pass", "ok")), \
+         patch.object(readiness, "check_demotion_loop_maturity", return_value=readiness.Check("demotion-loop", "pass", "ok")):
         report = readiness.build_report(tmp_path, 24)
 
     assert report["status"] == "warn"
