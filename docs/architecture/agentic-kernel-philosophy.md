@@ -111,7 +111,7 @@ for agentic development rather than another overgrown framework.
 ## Current execution implications
 
 1. Keep `core` small and enforceable.
-2. Reduce `SessionStart` for core instead of only measuring preamble tokens.
+2. Reduce `SessionStart` for core instead of only measuring preamble tokens; enforce it with `scripts/cos-session-start-budget --profile core`.
 3. Keep control-plane tools as maintainer primitives with `runtime_projection:
    false` unless they truly belong in the runtime path.
 4. Treat `legacy_audited` silent failures as visible debt that should shrink.

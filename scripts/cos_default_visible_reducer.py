@@ -15,6 +15,7 @@ MANIFEST = REPO_ROOT / "manifests" / "primitive-lifecycle.yaml"
 CORE_KEEP = {
     "hooks/secret-detector.sh",
     "hooks/destructive-git-blocker.sh",
+    "hooks/destructive-rm-blocker.sh",
     "hooks/direct-main-guard.sh",
     "hooks/concurrent-write-guard.sh",
     "hooks/agent-prelaunch.sh",
