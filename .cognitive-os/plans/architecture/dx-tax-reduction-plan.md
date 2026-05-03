@@ -171,9 +171,42 @@ noise for users and dangerous if it becomes default runtime.
 - [ ] Active default surface contains no Lab primitives.
 - [ ] Meta-governance promotion requires ROI and false-positive evidence.
 
+
+## 2026-05-03 SR review update
+
+Read-only senior/Solutions Architect reviews confirmed the design direction and
+identified the next execution risk: the active primitive index currently reads
+`manifests/primitive-lifecycle.yaml`, which has only four primitives, while the
+real Claude runtime projects 120 hook entries. That means readiness can report a
+small active surface before ADR-126 metadata covers the real runtime.
+
+Updated load-bearing priorities:
+
+1. ADR-126 must cover projected hooks from `cognitive-os.yaml` and
+   `manifests/hook-quality.yaml`, not only a hand-maintained seed manifest.
+2. ADR-127 must report runtime coverage: projected hook count, lifecycle-covered
+   hook count, and coverage status.
+3. ADR-124 must become projection behavior, not only tier documentation.
+4. ADR-125 must become enforceable metadata: every projected hook gets a
+   governance class and `meta-governance` stays out of default projection.
+5. Core proof must demonstrate the wedge in under ten minutes without dashboards,
+   squads, dogfood scorecards, or maintainer audits.
+
+DX KPIs adopted for the next implementation phase:
+
+| KPI | Initial target |
+|---|---:|
+| Core active hooks/primitives | <= 12 default-visible |
+| Core empty-session context tax | < 3K tokens |
+| Hook-chain p95 | core < 300ms; team < 800ms; maintainer < 1500ms |
+| False-positive block rate | core < 5%; maintainer < 10% |
+| Lab active by default | 0 |
+| Claim verification integrity | > 95% evidence-backed done claims |
+| Portability parity | core smoke proof green on every advertised harness |
+
 ## Exit criteria
 
-Opus should no longer be able to object that COS is indiscriminately heavy when:
+External reviewers should no longer be able to object that COS is indiscriminately heavy when:
 
 - Lean/Core has a documented low-friction budget;
 - Strict/Maintainer proves its added cost prevents multi-agent/headless damage;
