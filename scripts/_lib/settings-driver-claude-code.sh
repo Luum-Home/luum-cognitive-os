@@ -8,15 +8,16 @@
 # apply-efficiency-profile.sh delegates to this driver for all CC projection.
 #
 # Usage:
-#   bash scripts/_lib/settings-driver-claude-code.sh [--check] [--harness=claude-code]
+#   bash scripts/_lib/settings-driver-claude-code.sh [--check|--emit] [--harness=claude-code]
 #   source scripts/_lib/settings-driver-claude-code.sh && cc_driver_emit
 #
 # Flags:
 #   --check   Dry-run: exit 0 if .claude/settings.json is in sync, 1 if drift.
+#   --emit    Print generated settings JSON to stdout instead of writing it.
 #
 # Environment:
 #   PROJECT_DIR   — project root (default: cwd if cognitive-os.yaml or .claude/ present)
-#   PROFILE       — efficiency profile (default: read from cognitive-os.yaml)
+#   PROFILE       — efficiency/adoption profile: core, maintainer/default, full
 #
 # Output: writes .claude/settings.json (atomic via tmp file).
 # Idempotent — safe to run multiple times.
@@ -40,9 +41,17 @@ SETTINGS_FILE="$PROJECT_DIR/.claude/settings.json"
 
 # ── Parse flags ───────────────────────────────────────────────────────────────
 CHECK_MODE=false
+EMIT_MODE=false
+PROFILE="${PROFILE:-default}"
+case "$PROFILE" in
+  default) PROFILE="maintainer" ;;
+  core|maintainer|full) ;;
+  *) PROFILE="maintainer" ;;
+esac
 for arg in "$@"; do
   case "$arg" in
     --check) CHECK_MODE=true ;;
+    --emit) EMIT_MODE=true ;;
     --harness=*) : ;;  # accepted but ignored (this driver is CC-only)
     *) ;;
   esac
@@ -110,28 +119,36 @@ GROUPEOF
 # ── Build the full settings.json content ──────────────────────────────────────
 cc_driver_emit() {
   local session_start
-  session_start=$(_cc_hook_group "SessionStart" "" \
-    "hooks/self-install.sh"                  "false" \
-    "hooks/session-init.sh"                  "false" \
-    "hooks/host-tool-doctor.sh"              "true"  \
-    "hooks/profile-drift-autoapply.sh"       "false" \
-    "hooks/reaper-daemon-launcher.sh"        "false" \
-    "hooks/session-watchdog-launcher.sh"     "false" \
-    "hooks/docker-drift-detector.sh"         "false" \
-    "hooks/cos-executor-daemon-launcher.sh"  "false" \
-    "hooks/engram-daemon-launcher.sh"        "true"  \
-    "hooks/crash-recovery.sh"               "false" \
-    "hooks/session-resume.sh"               "false" \
-    "hooks/session-sanity.sh"               "false" \
-    "hooks/validation-lock-cleanup.sh"      "false" \
-    "hooks/infra-health.sh"                 "true"  \
-    "hooks/aspirational-audit-weekly.sh"    "false" \
-    "hooks/self-knowledge-refresh.sh"       "false" \
-    "hooks/session-start-worktree-nudge.sh"    "false" \
-    "hooks/session-start-stash-reapply.sh"    "false" \
-    "hooks/session-startup-protocol.sh"       "false" \
-    "hooks/mcp-scan.sh"                     "true"  \
-  )
+  if [ "$PROFILE" = "core" ]; then
+    session_start=$(_cc_hook_group "SessionStart" "" \
+      "hooks/session-init.sh"                  "false" \
+      "hooks/validation-lock-cleanup.sh"      "false" \
+      "hooks/session-start-stash-reapply.sh"  "false" \
+    )
+  else
+    session_start=$(_cc_hook_group "SessionStart" "" \
+      "hooks/self-install.sh"                  "false" \
+      "hooks/session-init.sh"                  "false" \
+      "hooks/host-tool-doctor.sh"              "true"  \
+      "hooks/profile-drift-autoapply.sh"       "false" \
+      "hooks/reaper-daemon-launcher.sh"        "false" \
+      "hooks/session-watchdog-launcher.sh"     "false" \
+      "hooks/docker-drift-detector.sh"         "false" \
+      "hooks/cos-executor-daemon-launcher.sh"  "false" \
+      "hooks/engram-daemon-launcher.sh"        "true"  \
+      "hooks/crash-recovery.sh"               "false" \
+      "hooks/session-resume.sh"               "false" \
+      "hooks/session-sanity.sh"               "false" \
+      "hooks/validation-lock-cleanup.sh"      "false" \
+      "hooks/infra-health.sh"                 "true"  \
+      "hooks/aspirational-audit-weekly.sh"    "false" \
+      "hooks/self-knowledge-refresh.sh"       "false" \
+      "hooks/session-start-worktree-nudge.sh" "false" \
+      "hooks/session-start-stash-reapply.sh"  "false" \
+      "hooks/session-startup-protocol.sh"     "false" \
+      "hooks/mcp-scan.sh"                     "true"  \
+    )
+  fi
 
   local user_prompt_submit
   user_prompt_submit=$(_cc_hook_group "UserPromptSubmit" "" \
@@ -389,6 +406,11 @@ cc_driver_emit() {
 
 # ── Main entrypoint (when invoked directly, not sourced) ──────────────────────
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+  if [ "$EMIT_MODE" = "true" ]; then
+    cc_driver_emit
+    exit 0
+  fi
+
   if [ "$CHECK_MODE" = "true" ]; then
     # --check mode: compare generated output against current settings.json
     if [ ! -f "$SETTINGS_FILE" ]; then
