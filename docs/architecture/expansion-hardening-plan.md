@@ -14,14 +14,23 @@ to prevent expansion from turning Cognitive OS into an always-on monster.
 
 ### A. Lab-first lifecycle enforcement
 
+Important guardrail: ROI is directional until calibrated. Heuristic constants such
+as minutes-per-blocked-incident may suggest review candidates, but promotion and
+demotion decisions must still be backed by concrete control-plane evidence and
+operator review.
+
+
 Done:
 
 - `scripts/cos-lab-first-gate` blocks new/promoted `core`, `team`, `blocking`, or
   `default-on` primitives unless they carry `promotion_evidence` linked to
   `cos-boring-reliability`.
 - Architecture readiness includes `lab-first-promotion-gate`.
-- `bash scripts/cos-ci-local.sh quick` includes the lab-first gate in the local
+- `bash scripts/cos-ci-local.sh quick` includes the lab-first gate, core adoption
+  profile, active primitive index, and core preamble budget in the local
   pre-push validation bundle.
+- Architecture readiness fails when the full core preamble, including `AGENTS.md`,
+  exceeds the token budget.
 - Contract tests cover new promoted primitives, evidence-backed exceptions, and
   grandfathered existing primitives.
 
@@ -29,6 +38,8 @@ Next:
 
 - Add a monthly demotion report for default-visible primitives with zero runtime
   use in 90 days.
+- Calibrate ROI constants with real session data before using ROI alone for
+  automatic demotion or promotion decisions.
 
 ### B. Semantic governance matching
 
