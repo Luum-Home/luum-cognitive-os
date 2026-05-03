@@ -109,6 +109,24 @@ Twelve primitives organized into six layers (L1 Detection / L2 Coordination / L3
 
 ---
 
+### P2.1b — Branch writer lease for shared non-main branches
+
+- **Problem (concrete failure mode)**: multiple agents can be assigned to the
+  same feature branch. Separate worktrees reduce filesystem collisions but do
+  not provide a single writer for branch history. Two agents can both commit,
+  rebase, or force-update the same branch and create orphaned or overwritten
+  work.
+- **Decision**: before an autonomous agent mutates a branch, it should acquire a
+  branch writer lease keyed by branch name and owner/session. The lease is
+  advisory at first, but blocking in strict/maintainer profiles. Leases expire by
+  TTL, can be renewed by the same owner, and can only be released by the owner.
+- **Implementation slice**: `scripts/cos_branch_lease.py` and
+  `scripts/cos-branch-lease` store leases in
+  `.cognitive-os/runtime/branch-writer-leases.json`.
+- **Relationship to P2.2**: P2.2 serializes landing to `main`; P2.1b serializes
+  writes to any shared branch before landing. Both are required for multi-agent
+  determinism.
+
 ### P2.2 — Merge queue / landing pipeline
 
 - **Layer**: L3 Isolation
