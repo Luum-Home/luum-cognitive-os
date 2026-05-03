@@ -53,7 +53,11 @@ case "$SUBCMD" in
       shift 2
       exec bash "$SCRIPT_DIR/cos-governance-roi" "$@"
     fi
-    echo "cos: unknown governance subcommand '${2:-}'. Try: cos governance roi" >&2
+    if [ "${2:-}" = "readiness" ]; then
+      shift 2
+      exec bash "$SCRIPT_DIR/cos-opus-readiness" "$@"
+    fi
+    echo "cos: unknown governance subcommand '${2:-}'. Try: cos governance {roi|readiness}" >&2
     exit 1
     ;;
   validation)
@@ -88,6 +92,7 @@ Usage:
   cos doctor harness [--json]            Check active harness projection and minimal profile
   cos measure harness-profiles [--json]  Compare minimal vs full harness surface
   cos governance roi [--json]            Estimate governance friction vs benefit
+  cos governance readiness [--json]      Report Opus-objection readiness and remaining gaps
   cos sprint <cmd>                       Run sprint orchestration commands
   cos init [dir]                         Install Cognitive OS into a project
   cos doctor                             Check installation health
