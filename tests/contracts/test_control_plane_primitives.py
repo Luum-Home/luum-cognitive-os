@@ -29,6 +29,11 @@ CONTROL_PLANE_PRIMITIVES = {
     "scripts/cos-self-improvement-loop",
     "scripts/cos-self-improvement-discipline-gate",
     "scripts/cos-doctrine-proposer",
+    "scripts/cos-export-consumer-evidence",
+    "scripts/cos-import-consumer-evidence",
+    "scripts/cos-registry-lock",
+    "scripts/cos-engram-bundle",
+    "scripts/cos-federation-trigger-audit",
 }
 
 

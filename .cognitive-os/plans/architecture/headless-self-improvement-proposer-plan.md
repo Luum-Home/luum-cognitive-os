@@ -31,11 +31,15 @@ dashboard and without allowing uncontrolled self-modification.
 
 ## Phase 3 — Consumer evidence import/export
 
-- [ ] Add `scripts/cos-export-consumer-evidence`.
-- [ ] Add `scripts/cos-import-consumer-evidence`.
-- [ ] Feed qualifying reports into `manifests/external-adoption-evidence.yaml`.
-- [ ] Keep non-maintainer 30-day evidence as the threshold for signing the
+- [x] Add `scripts/cos-export-consumer-evidence`.
+- [x] Add `scripts/cos-import-consumer-evidence`.
+- [x] Feed qualifying reports into `manifests/external-adoption-evidence.yaml`.
+- [x] Keep non-maintainer 30-day evidence as the threshold for signing the
       helps-projects claim.
+- [x] Add registry locks with `scripts/cos-registry-lock`.
+- [x] Add propose-only Engram bundles with `scripts/cos-engram-bundle` and
+      `scripts/cos-engram-import-propose`.
+- [x] Add Shape-B trigger audit with `scripts/cos-federation-trigger-audit`.
 
 ## Phase 4 — Background proposer
 
