@@ -27,6 +27,7 @@ import cos_governance_roi
 import primitive_lifecycle
 import runtime_hook_reality
 import silent_failure_audit
+import session_start_budget
 
 REPO_ROOT = SCRIPT_DIR.parents[0]
 REQUIRED_RUNTIME_PRIMITIVES = {
@@ -196,6 +197,32 @@ def check_runtime_hook_reality(root: Path) -> Check:
         details={"summary": report["summary"], "findings": report["findings"]},
     )
 
+
+
+def check_core_session_start_budget(root: Path) -> Check:
+    try:
+        report = session_start_budget.build_report("core", root)
+    except Exception as exc:  # noqa: BLE001
+        return Check(
+            id="core-session-start-budget",
+            status="fail",
+            message="core SessionStart budget could not be evaluated",
+            details={"error": str(exc)},
+        )
+    status = "pass" if report["fail_count"] == 0 else "fail"
+    return Check(
+        id="core-session-start-budget",
+        status=status,
+        message="core SessionStart projection is below budget and contains no lab hooks" if status == "pass" else "core SessionStart projection exceeds budget or contains lab hooks",
+        details={
+            "profile": report["profile"],
+            "session_start_hook_count": report["session_start_hook_count"],
+            "counts_by_tier": report["counts_by_tier"],
+            "budget": report["budget"],
+            "findings": report["findings"],
+            "candidates_to_move": report["candidates_to_move"][:20],
+        },
+    )
 
 def check_silent_failure_audit(root: Path) -> Check:
     report = silent_failure_audit.build_report(
@@ -400,6 +427,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_lifecycle_manifest(root),
         check_active_surface(root),
         check_runtime_hook_reality(root),
+        check_core_session_start_budget(root),
         check_silent_failure_audit(root),
         check_roi(root, window_hours),
         check_lifecycle_recommendations(root, window_hours),
