@@ -56,6 +56,8 @@ def test_core_budget_fails_lab_session_start(tmp_path: Path) -> None:
 
 def test_core_budget_passes_small_core_projection(tmp_path: Path) -> None:
     _manifest(tmp_path)
+    (tmp_path / ".claude").mkdir()
+    (tmp_path / ".claude" / "settings.json").write_text(json.dumps(_settings(["hooks/session-init.sh"])), encoding="utf-8")
     metrics = tmp_path / ".cognitive-os" / "metrics"
     metrics.mkdir(parents=True)
     (metrics / "hook-timing.jsonl").write_text(
@@ -68,4 +70,26 @@ def test_core_budget_passes_small_core_projection(tmp_path: Path) -> None:
 
     assert report["status"] == "pass"
     assert report["session_start_hook_count"] == 1
+    assert report["active_session_start_hook_count"] == 1
+    assert report["projection_source"] == "generated_profile"
+    assert report["active_projection_matches_profile"] is True
     assert report["hooks"][0]["p50_ms"] == 20
+
+
+def test_core_budget_distinguishes_generated_core_from_active_maintainer_settings(tmp_path: Path) -> None:
+    _manifest(tmp_path)
+    (tmp_path / ".claude").mkdir()
+    (tmp_path / ".claude" / "settings.json").write_text(
+        json.dumps(_settings(["hooks/session-init.sh", "hooks/validation-lock-cleanup.sh"])),
+        encoding="utf-8",
+    )
+    (tmp_path / ".cognitive-os" / "metrics").mkdir(parents=True)
+
+    with patch.object(budget, "generated_settings", return_value=_settings(["hooks/session-init.sh"])):
+        report = budget.build_report("core", tmp_path)
+
+    assert report["status"] == "pass"
+    assert report["projection_source"] == "generated_profile"
+    assert report["session_start_hook_count"] == 1
+    assert report["active_session_start_hook_count"] == 2
+    assert report["active_projection_matches_profile"] is False
