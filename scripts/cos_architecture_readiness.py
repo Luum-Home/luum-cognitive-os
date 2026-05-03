@@ -257,16 +257,28 @@ def check_silent_failure_audit(root: Path) -> Check:
         scan_root=root / "hooks",
         allowlist_path=root / "manifests" / "silent-failure-allowlist.yaml",
     )
-    status = "pass" if report["fail_count"] == 0 else "fail"
+    status = "fail" if report["fail_count"] else ("warn" if report["warn_count"] else "pass")
     return Check(
         id="silent-failure-audit",
         status=status,
-        message="shell silent-failure surface is classified and has not grown" if status == "pass" else "shell silent-failure surface has unclassified or increased patterns",
+        message=(
+            "shell silent-failure surface is classified, transferable, and has not grown"
+            if status == "pass"
+            else (
+                "shell silent-failure surface has unclassified or increased patterns"
+                if status == "fail"
+                else "shell silent-failure surface is classified but still carries ADR-132 transferability debt"
+            )
+        ),
         details={
             "file_count": report["file_count"],
             "occurrence_count": report["occurrence_count"],
             "fail_count": report["fail_count"],
             "warn_count": report["warn_count"],
+            "counts_by_transferability_state": report["counts_by_transferability_state"],
+            "occurrences_by_transferability_state": report["occurrences_by_transferability_state"],
+            "maintainer_cache_file_count": report["maintainer_cache_file_count"],
+            "maintainer_cache_occurrence_count": report["maintainer_cache_occurrence_count"],
             "findings": report["findings"][:50],
         },
     )
