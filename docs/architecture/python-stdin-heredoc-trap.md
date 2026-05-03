@@ -4,7 +4,7 @@ Do not pipe JSON or other data into `python - <<'PY'`.
 
 ```bash
 # WRONG: the heredoc is Python's stdin, so the pipe is discarded.
-producer --json | python3 - <<'PY'
+producer --json | python3 - <<'PY'  # cos: allow-python-stdin-heredoc-example
 import json, sys
 payload = json.load(sys.stdin)  # reads empty input
 PY
@@ -54,4 +54,6 @@ python3 -c 'import json, sys; print(json.load(sys.stdin)["status"])' \
 
 `scripts/cos-python-stdin-antipattern-audit` scans tracked files for the broken
 pattern and is wired into `bash scripts/cos-ci-local.sh quick` and architecture
-readiness. Any future `| python - <<` or `| python3 - <<` snippet is a CI failure.
+readiness. Any future pipe into a `python -` heredoc snippet is a CI failure
+unless it is an explicitly marked educational example with
+`cos: allow-python-stdin-heredoc-example`.
