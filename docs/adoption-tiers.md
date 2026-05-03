@@ -675,3 +675,7 @@ Signal: `bash hooks/self-install.sh` reports hooks registered but
 - `docs/hook-security-profiles.md` — profile design rationale
 - `docs/getting-started.md` — first-time install guide
 - `docs/architecture/cross-harness-authoring.md` — multi-harness model
+
+---
+
+<!-- Generated from 380b46f7 on 2026-05-03T00:42:05Z. Do not edit directly. Run `python3 scripts/render_adoption_tiers.py` to regenerate. -->
