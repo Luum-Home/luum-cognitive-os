@@ -9,12 +9,14 @@ OS does not overclaim cluster readiness before the runtime is real.
 
 ## Success Condition
 
-A new operator can use Cognitive OS in one of three ways without changing the
+A new operator can use Cognitive OS in one of four ways without changing the
 product philosophy:
 
 1. local harness mode on a developer machine;
 2. headless single-node mode in CI, a VM, or a container;
-3. queue-backed worker mode in a future cluster.
+3. solo-maintainer cloud worker mode for unattended but governed work across
+   multiple projects;
+4. queue-backed worker mode in a future cluster.
 
 In every mode, the runtime should remain governable, verifiable, portable, and
 capability-centric.
@@ -40,7 +42,9 @@ Exit criteria:
 
 ## Phase 1 — Headless Single-Node Runtime
 
-**Goal**: run Cognitive OS without an interactive IDE/harness.
+**Goal**: run Cognitive OS without an interactive IDE/harness. This includes the
+solo-maintainer cloud worker case: one operator intentionally leaves a governed
+agent runtime running on a VM/container while local IDE sessions may also exist.
 
 Deliverables:
 
@@ -49,7 +53,12 @@ Deliverables:
 - explicit workspace creation using git worktrees or temp directories;
 - local queue mode backed by filesystem or SQLite;
 - local artifact directory for logs, patches, and test summaries;
-- doctor check for headless prerequisites.
+- doctor check for headless prerequisites;
+- unattended safe-mode / kill-switch command;
+- protected-publication policy: no unattended worker may push to `main` without
+  merge queue or human approval;
+- crash-safe task outcome ledger so a restarted VM cannot double-publish or lose
+  evidence.
 
 Proof paths:
 
@@ -57,7 +66,10 @@ Proof paths:
 - generate a patch;
 - run quality gates;
 - write a task outcome record;
-- cleanly resume or fail after interruption.
+- cleanly resume or fail after interruption;
+- simulate VM restart during a task and prove idempotent resume/dead-letter;
+- attempt unattended direct-main publication and prove it is blocked or routed
+  through protected landing.
 
 ## Phase 2 — Queue-Backed Worker Runtime
 
@@ -156,6 +168,8 @@ Proof paths:
 - Do not make provider names the architecture boundary.
 - Do not write developer-specific absolute paths into tracked files.
 - Do not claim autonomous repair without a testable proof path.
+- Do not claim unattended cloud operation until crash recovery, safe-mode,
+  artifact persistence, and protected-publication proof paths pass.
 - Do not bypass existing quality gates in headless mode.
 
 ## Tracking Checklist
@@ -165,6 +179,9 @@ Proof paths:
 - [x] Phase 1 isolated workspace proof implemented.
 - [x] Phase 1 provider/agent command execution implemented.
 - [x] Phase 1 acceptance execution and outcome artifacts implemented.
+- [ ] Phase 1 unattended safe-mode / kill-switch proof implemented.
+- [ ] Phase 1 protected-publication proof implemented.
+- [ ] Phase 1 VM-restart idempotency proof implemented.
 - [ ] Phase 2 queue/worker contract documented.
 - [x] Phase 2 queue/workflow tooling research documented.
 - [ ] Phase 2 worker lease tests implemented.
