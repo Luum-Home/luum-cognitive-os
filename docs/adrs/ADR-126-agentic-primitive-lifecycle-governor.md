@@ -193,6 +193,13 @@ After this transition, the lifecycle governor has repeated demotion behavior
 decision (`roi_signed_demotion_count == 0`). That remaining warning is
 intentional.
 
+The warning is intentionally **bounded**. If the ROI-signed demotion gap remains
+open for 30 days after the second demotion, `scripts/cos-demotion-loop-audit`
+escalates `roi-signed-demotion-missing` from `warn` to `fail`, and architecture
+readiness propagates that failure. A permanent warning is treated as governance
+rot: either real-world ROI data signs a demotion, or the operator must revisit
+the policy instead of normalizing the warning.
+
 ## Consequences
 
 - Primitive creation becomes slower but safer.
