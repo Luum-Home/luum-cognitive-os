@@ -256,6 +256,33 @@ check_lab_first_gate() {
   fi
 }
 
+check_core_adoption_profile() {
+  if [ -x "$REPO_ROOT/scripts/cos-adoption-profile" ]; then
+    "$REPO_ROOT/scripts/cos-adoption-profile" --profile core >/dev/null
+  else
+    _skip "core adoption profile" "scripts/cos-adoption-profile not found"
+    return 0
+  fi
+}
+
+check_active_primitive_index() {
+  if [ -x "$REPO_ROOT/scripts/cos-active-primitive-index" ]; then
+    "$REPO_ROOT/scripts/cos-active-primitive-index" --json >/dev/null
+  else
+    _skip "active primitive index" "scripts/cos-active-primitive-index not found"
+    return 0
+  fi
+}
+
+check_core_preamble_budget() {
+  if [ -x "$REPO_ROOT/scripts/cos-preamble-budget" ]; then
+    "$REPO_ROOT/scripts/cos-preamble-budget" --profile core >/dev/null
+  else
+    _skip "core preamble budget" "scripts/cos-preamble-budget not found"
+    return 0
+  fi
+}
+
 check_gitignore_sanity() {
   local missing=0
   for pattern in ".env" ".env.local" "*.pem" "*.key"; do
@@ -345,6 +372,9 @@ run_quick() {
   _step "test quality (structural detector)"  check_test_quality
   _step "secret detector"                     check_secret_detector
   _step "silent failure audit"                check_silent_failure_audit
+  _step "core adoption profile"               check_core_adoption_profile
+  _step "active primitive index"              check_active_primitive_index
+  _step "core preamble budget"                check_core_preamble_budget
   _step "lab-first promotion gate"            check_lab_first_gate
   _step ".gitignore sanity"                   check_gitignore_sanity
 }

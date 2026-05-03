@@ -19,12 +19,14 @@ def test_build_report_warns_for_known_wiring_gaps(tmp_path: Path) -> None:
          patch.object(readiness, "check_adoption_tiers", return_value=readiness.Check("adoption", "pass", "ok")), \
          patch.object(readiness, "check_lifecycle_manifest", return_value=readiness.Check("lifecycle", "pass", "ok")), \
          patch.object(readiness, "check_active_surface", return_value=readiness.Check("active-surface", "pass", "ok")), \
+         patch.object(readiness, "check_core_preamble_budget", return_value=readiness.Check("core-preamble-budget", "pass", "ok")), \
          patch.object(readiness, "check_runtime_hook_reality", return_value=readiness.Check("runtime-hook-reality", "pass", "ok")), \
          patch.object(readiness, "check_core_session_start_budget", return_value=readiness.Check("core-session-start-budget", "pass", "ok")), \
          patch.object(readiness, "check_roi", return_value=readiness.Check("roi", "pass", "ok")), \
          patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
          patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
-         patch.object(readiness, "check_governance_maturity_labels", return_value=readiness.Check("maturity", "pass", "ok")):
+         patch.object(readiness, "check_governance_maturity_labels", return_value=readiness.Check("maturity", "pass", "ok")), \
+         patch.object(readiness, "check_lab_first_promotion_gate", return_value=readiness.Check("lab-first", "pass", "ok")):
         report = readiness.build_report(tmp_path, 24)
 
     assert report["status"] == "warn"
@@ -112,15 +114,51 @@ def test_readiness_report_includes_active_surface(tmp_path: Path) -> None:
          patch.object(readiness, "check_adoption_tiers", return_value=readiness.Check("adoption", "pass", "ok")), \
          patch.object(readiness, "check_lifecycle_manifest", return_value=readiness.Check("lifecycle", "pass", "ok")), \
          patch.object(readiness, "check_active_surface", return_value=readiness.Check("active-primitive-surface", "pass", "ok", {"counts_by_tier": {"core": 1}})), \
+         patch.object(readiness, "check_core_preamble_budget", return_value=readiness.Check("core-preamble-budget", "pass", "ok")), \
          patch.object(readiness, "check_runtime_hook_reality", return_value=readiness.Check("runtime-hook-reality", "pass", "ok")), \
          patch.object(readiness, "check_core_session_start_budget", return_value=readiness.Check("core-session-start-budget", "pass", "ok")), \
          patch.object(readiness, "check_roi", return_value=readiness.Check("roi", "pass", "ok")), \
          patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
          patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
-         patch.object(readiness, "check_governance_maturity_labels", return_value=readiness.Check("maturity", "pass", "ok")):
+         patch.object(readiness, "check_governance_maturity_labels", return_value=readiness.Check("maturity", "pass", "ok")), \
+         patch.object(readiness, "check_lab_first_promotion_gate", return_value=readiness.Check("lab-first", "pass", "ok")):
         report = readiness.build_report(tmp_path, 24)
 
     assert any(check["id"] == "active-primitive-surface" for check in report["checks"])
+
+
+def test_core_preamble_budget_fails_when_over_budget(tmp_path: Path) -> None:
+    report = {"status": "warn", "estimated_tokens": 4000, "budget_tokens": 3200}
+    with patch.object(readiness.cos_preamble_budget, "build_budget", return_value=report):
+        check = readiness.check_core_preamble_budget(tmp_path)
+
+    assert check.status == "fail"
+    assert check.details["estimated_tokens"] == 4000
+
+
+def test_readiness_report_includes_core_preamble_budget(tmp_path: Path) -> None:
+    for rels in readiness.REQUIRED_RUNTIME_PRIMITIVES.values():
+        for rel in rels:
+            path = tmp_path / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("x", encoding="utf-8")
+    (tmp_path / ".cognitive-os/runtime").mkdir(parents=True)
+
+    with patch.object(readiness, "run_git_stash_list", return_value=[]), \
+         patch.object(readiness, "check_adoption_tiers", return_value=readiness.Check("adoption", "pass", "ok")), \
+         patch.object(readiness, "check_lifecycle_manifest", return_value=readiness.Check("lifecycle", "pass", "ok")), \
+         patch.object(readiness, "check_active_surface", return_value=readiness.Check("active-primitive-surface", "pass", "ok")), \
+         patch.object(readiness, "check_core_preamble_budget", return_value=readiness.Check("core-preamble-budget", "pass", "ok")), \
+         patch.object(readiness, "check_runtime_hook_reality", return_value=readiness.Check("runtime-hook-reality", "pass", "ok")), \
+         patch.object(readiness, "check_core_session_start_budget", return_value=readiness.Check("core-session-start-budget", "pass", "ok")), \
+         patch.object(readiness, "check_roi", return_value=readiness.Check("roi", "pass", "ok")), \
+         patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
+         patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
+         patch.object(readiness, "check_governance_maturity_labels", return_value=readiness.Check("maturity", "pass", "ok")), \
+         patch.object(readiness, "check_lab_first_promotion_gate", return_value=readiness.Check("lab-first", "pass", "ok")):
+        report = readiness.build_report(tmp_path, 24)
+
+    assert any(check["id"] == "core-preamble-budget" for check in report["checks"])
 
 
 def test_product_claims_fail_missing_readme_hook_claim(tmp_path: Path) -> None:
