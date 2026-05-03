@@ -43,6 +43,17 @@ DESCRIPTION=$(echo "$INPUT" | jq -r '
   .tool_input.description // .tool_input.prompt // "unknown task"
 ' 2>/dev/null | head -c 500)
 
+# ADR-121: Detect read-only sub-agents to pass --allow-read-only to preflight.
+# Whitelist: structurally read-only subagent types + explicit READ_ONLY marker.
+SUBAGENT_TYPE=$(echo "$INPUT" | jq -r '.tool_input.subagent_type // empty' 2>/dev/null || true)
+_RO_TYPES="Explore Plan Code Reviewer Security Engineer"
+ALLOW_RO_ARG=""
+if [[ " $_RO_TYPES " == *" $SUBAGENT_TYPE "* ]]; then
+  ALLOW_RO_ARG="--allow-read-only"
+elif echo "$DESCRIPTION" | grep -q "READ_ONLY: true" 2>/dev/null; then
+  ALLOW_RO_ARG="--allow-read-only"
+fi
+
 # Extract Claude Code's native tool_use_id for panel correlation (ADR-024)
 TOOL_USE_ID=$(echo "$INPUT" | jq -r '.tool_use_id // empty' 2>/dev/null)
 
@@ -106,7 +117,7 @@ if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/cos_work_inv
   # non-applicable repository inventory check.
   if git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     set +e
-    INVENTORY_OUT=$(python3 "$PROJECT_DIR/scripts/cos_work_inventory.py" --project-dir "$PROJECT_DIR" --all --strict --json 2>&1)
+    INVENTORY_OUT=$(python3 "$PROJECT_DIR/scripts/cos_work_inventory.py" --project-dir "$PROJECT_DIR" --all --strict --json $ALLOW_RO_ARG 2>&1)
     INVENTORY_RC=$?
     set -e
     if [ "$INVENTORY_RC" -ne 0 ]; then

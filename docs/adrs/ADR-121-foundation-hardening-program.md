@@ -1,3 +1,18 @@
+---
+adr: 121
+title: Foundation Hardening Program
+status: accepted
+date: 2026-05-02
+supersedes: []
+superseded_by: null
+implementation_files:
+  - tests/unit/test_validation_capsule.py
+  - tests/behavior/test_cos_cleanup_preserved_wip.py
+  - scripts/derived_artifact_gate.py
+tier: strict
+tags: [hardening, foundation, validation, invariants]
+---
+
 # ADR-121: Foundation Hardening Program
 
 ## Status
