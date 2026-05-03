@@ -38,6 +38,17 @@ This means the same governance, verification, portability, and memory contracts
 that help local coding agents should eventually govern AI workers running in CI,
 VMs, containers, Kubernetes pods, and clustered repair/build systems.
 
+
+The solo maintainer swarm persona from ADR-124/ADR-125 strengthens this
+direction. A single operator may deliberately run Cognitive OS on cloud VMs or
+containers so work can continue when the laptop/IDE is closed, fan out across
+projects, or isolate long-running agents from local interactive sessions. In
+that mode the SO is no longer just an IDE enhancement; it is an unattended
+runtime boundary. The same primitives that feel heavy for a one-session laptop
+workflow become required controls for cloud execution: leases, idempotency,
+protected landing, symmetric WIP recovery, eventing, audit trails, repair-first
+blocks, and explicit human-approval gates for publication.
+
 ## Decision
 
 Cognitive OS will evolve toward a portable engineering-agent runtime with two
@@ -63,7 +74,9 @@ The target deployment surfaces are:
 - clustered worker pool;
 - CI/CD pipeline;
 - automatic bug-repair system;
-- feature/product factory.
+- feature/product factory;
+- solo-maintainer cloud worker that continues governed tasks without an
+  interactive IDE attached.
 
 ## Current Enablers
 
@@ -131,6 +144,23 @@ Each bug, ticket, or feature must run in an isolated workspace:
 - ephemeral volume;
 - rollback path with audit evidence.
 
+
+### Unattended Solo-Cloud Controls
+
+A headless single-node VM used by one operator must still satisfy team-scale
+coordination controls because the missing human-in-the-loop increases blast
+radius:
+
+- task leasing and heartbeat even when there is only one worker;
+- crash-safe resume with idempotent task outcomes;
+- explicit ownership of branch/worktree/stash/session artifacts;
+- no direct publication to `main` from unattended workers;
+- human approval or protected merge queue before pushing public results;
+- persistent artifacts for every task, including prompts, commands, diffs, test
+  summaries, and failure taxonomy;
+- remote kill switch / safe mode that can stop new task admission without
+  destroying in-flight evidence.
+
 ### Queue and Scheduler
 
 Headless execution must include:
@@ -186,6 +216,8 @@ Before claiming Kubernetes readiness, provide:
 
 - Cognitive OS is not yet a production Kubernetes-native autonomous repair
   cluster.
+- Cognitive OS is not yet a fully unattended cloud operator until Phase 1/2
+  crash recovery, lease, safe-mode, artifact, and publication gates are proven.
 - Cognitive OS should not make Docker, Kubernetes, Phoenix, Paperclip, or any
   UI/control-plane service mandatory for local default use.
 - Cognitive OS should not move non-core subsystems into central runtime paths
