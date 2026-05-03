@@ -246,17 +246,31 @@ shape_b_triggers:
 
 When any observed value crosses its trigger threshold, the audit fires and the system *proposes* the Shape A → Shape B transition through the same propose-only mechanism documented in earlier sections. The transition stops being a discretionary human decision; it becomes an audit signal with a structural follow-up.
 
-Combined with ADR-134 (`auto_merge: false`) and ADR-135 (`runtime_effect: none`), the runway forms the third ceiling stacked on the previous two. Three deliberate architectural refusals, each blocking a distinct runaway class:
+Combined with ADR-134 (`auto_merge: false`) and ADR-135 (`runtime_effect: none`), the runway forms the third ceiling stacked on the previous two. A fourth ceiling — anti-self-validation through required provenance — landed shortly after when the runway's first end-to-end drill made the gap visible. Four deliberate architectural refusals, each blocking a distinct runaway class:
 
-| ADR | Refusal | What it prevents |
+| ADR / commit | Refusal | What it prevents |
 |---|---|---|
 | ADR-134 | `auto_merge: false` | Self-applying operational fixes without review |
 | ADR-135 | `runtime_effect: none` | Self-modifying doctrine without review |
 | ADR-136 | "runway, not federation" | Self-federating without trigger evidence |
+| `d4535df0` | `independence + provenance required` | Self-validating with maintainer-owned evidence |
 
-For external adopters, this is the falsifiable claim: a system that builds Shape B's runway should not also operate Shape B. If `cos-federation-trigger-audit` reports zero observed triggers and federation primitives are nonetheless executing in production, the discipline is broken. If the audit reports triggers fired and the runway primitives never activate, the runway is decorative. The healthy state is **dormant runway with continuous trigger observability**.
+The fourth refusal closes the most subtle attack vector — one that became visible only after the runway's first drill ran end-to-end. Without it, a maintainer could:
 
-The runway-not-rocket pattern is what makes the system **defendable as a product** rather than as a research project. A user adopting Cognitive OS today gets Shape A, knows the trigger conditions for Shape B, and inherits a path to Shape B that does not require redesigning the system. None of those properties require Shape B to be operating now.
+- run a drill against a consumer project they themselves own;
+- generate consumer evidence;
+- import it via `cos-import-consumer-evidence`;
+- produce an audit reporting external help;
+- promote primitives based on that audit;
+- close a self-flattering loop indistinguishable from real adoption.
+
+The fix is structural. `manifests/external-adoption-evidence.yaml` codifies the schema of an admissible external-help claim: `independence.maintainer_owned: false`, `independence.same_machine: false`, `independence.same_repo: false`, `independence.self_reported: false`, plus a `provenance.producer` block carrying type, identity, optional signature, and timestamp. Evidence with any `independence` flag set to `true` is rejected as drill output, not as adoption signal. The system **refuses to validate itself with its own data**.
+
+The first drill report — [`docs/reports/cross-instance-consumer-e2e-2026-05-03.md`](../reports/cross-instance-consumer-e2e-2026-05-03.md) — applies that schema to its own output and explicitly disqualifies itself: *"This is a drill report, not external adoption evidence. The generated consumer evidence is maintainer-owned, same-machine, same-repo, and self-reported; it must not sign the helps-projects product claim."* The doctrine is applied to the doctrine's own first verification artefact.
+
+For external adopters, this is the falsifiable claim: a system that builds Shape B's runway should not also operate Shape B, and a system that runs drills should not also count drill output as adoption signal. If `cos-federation-trigger-audit` reports zero observed triggers and federation primitives are nonetheless executing in production, the discipline is broken. If the runway primitives never activate after triggers fire, the runway is decorative. If `manifests/external-adoption-evidence.yaml` accumulates entries with `maintainer_owned: true` *and* those entries are used to sign claims, the anti-self-validation is broken. The healthy state is **dormant runway with continuous trigger observability and zero self-signed adoption evidence**.
+
+The runway-not-rocket pattern, plus the anti-self-validation refusal, is what makes the system **defendable as a product** rather than as a research project. A user adopting Cognitive OS today gets Shape A, knows the trigger conditions for Shape B, inherits a path to Shape B that does not require redesigning the system, *and* receives a guarantee that the product claims are not self-flattered through closed evidence loops. None of those properties require Shape B to be operating now.
 
 ## What the cycle does not prove
 
