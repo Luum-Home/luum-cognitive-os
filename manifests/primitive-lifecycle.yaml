@@ -28,6 +28,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/aci-observations.jsonl
 - id: hooks/adr-section-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -56,6 +59,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/audit/test_hooks_contracts.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/adr-section-warnings.jsonl
 - id: hooks/agent-bash-cwd-enforcer.sh
   kind: hook
   owner_adr: ADR-126
@@ -78,6 +84,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/cwd-enforcer.jsonl
 - id: hooks/agent-checkpoint.sh
   kind: hook
   owner_adr: ADR-126
@@ -99,6 +108,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/agent-checkpoint.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/agent-timeouts.jsonl
 - id: hooks/agent-prelaunch.sh
   kind: hook
   owner_adr: ADR-126
@@ -126,6 +138,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_cos_governance_roi.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: none
 - id: hooks/agent-working-dir-inject.sh
   kind: hook
   owner_adr: ADR-126
@@ -148,6 +163,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/cwd-inject.jsonl
 - id: hooks/aspirational-audit-weekly.sh
   kind: hook
   owner_adr: ADR-126
@@ -170,6 +188,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
 - id: hooks/audit-id-enricher.sh
   kind: hook
   owner_adr: ADR-126
@@ -192,6 +213,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/cost-events.jsonl
 - id: hooks/auto-checkpoint.sh
   kind: hook
   owner_adr: ADR-126
@@ -213,6 +237,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/auto-checkpoint.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/auto-refine.sh
   kind: hook
   owner_adr: ADR-126
@@ -234,6 +261,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/auto-refine.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
 - id: hooks/auto-repair-dispatcher.sh
   kind: hook
   owner_adr: ADR-126
@@ -256,6 +286,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/error-learning.jsonl
 - id: hooks/auto-rollback-trigger.sh
   kind: hook
   owner_adr: ADR-126
@@ -278,6 +311,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/auto-rollback.jsonl
 - id: hooks/auto-verify.sh
   kind: hook
   owner_adr: ADR-126
@@ -299,6 +335,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/auto-verify.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/auto-verify.jsonl
 - id: hooks/blast-radius.sh
   kind: hook
   owner_adr: ADR-126
@@ -320,6 +359,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/blast-radius.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/blast-radius.jsonl
 - id: hooks/claim-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -347,6 +389,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_capability_level5.py
   - tests/unit/test_codex_guard_layer.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/hallucinations.jsonl
 - id: hooks/clarification-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -375,6 +420,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_capability_levels.py
   - tests/unit/test_codex_guard_layer.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/clarification-events.jsonl
 - id: hooks/completeness-check.sh
   kind: hook
   owner_adr: ADR-126
@@ -397,6 +445,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/completion-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -418,6 +469,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/completion-gate.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/auto-verify.jsonl
 - id: hooks/concurrent-write-guard.sh
   kind: hook
   owner_adr: ADR-126
@@ -447,6 +501,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_concurrent_agent_safety_status.py
   - tests/unit/test_concurrent_write_guard_behavior.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: none
 - id: hooks/confidence-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -474,6 +531,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_efficiency_optimization.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/confidence-gates.jsonl
 - id: hooks/confidentiality-enforcer.sh
   kind: hook
   owner_adr: ADR-126
@@ -502,6 +562,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/behavior/test_confidentiality_enforcer.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/confidentiality-enforcer.jsonl
 - id: hooks/content-policy.sh
   kind: hook
   owner_adr: ADR-126
@@ -529,6 +592,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_capability_level5.py
   - tests/unit/test_chaos_template.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/content-policy.jsonl
 - id: hooks/context-watchdog.sh
   kind: hook
   owner_adr: ADR-126
@@ -550,6 +616,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/context-watchdog.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/context-watchdog.jsonl
 - id: hooks/cos-executor-daemon-launcher.sh
   kind: hook
   owner_adr: ADR-126
@@ -572,6 +641,9 @@ primitives:
     regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/crash-recovery.sh
   kind: hook
   owner_adr: ADR-126
@@ -593,6 +665,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/crash-recovery.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/dequeue-notify.sh
   kind: hook
   owner_adr: ADR-126
@@ -614,6 +689,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/dequeue-notify.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/dispatch-gate.jsonl
 - id: hooks/destructive-git-blocker.sh
   kind: hook
   owner_adr: ADR-126
@@ -642,6 +720,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_destructive_git_block.py
   - tests/contracts/test_killswitch.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/git-op-blocks.jsonl
 - id: hooks/destructive-rm-blocker.sh
   kind: hook
   owner_adr: ADR-126
@@ -664,6 +745,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/rm-op-blocks.jsonl
 - id: hooks/direct-main-guard.sh
   kind: hook
   owner_adr: ADR-126
@@ -692,6 +776,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_active_primitive_index.py
   - tests/unit/test_direct_main_guard.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: none
 - id: hooks/dispatch-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -719,6 +806,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_config_loader.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/dispatch-gate.jsonl
 - id: hooks/doc-sync-detector.sh
   kind: hook
   owner_adr: ADR-126
@@ -741,6 +831,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/stale-docs.jsonl
 - id: hooks/docker-drift-detector.sh
   kind: hook
   owner_adr: ADR-126
@@ -763,6 +856,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/docker-drift.jsonl
 - id: hooks/dod-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -784,6 +880,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/dod-gate.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/dod-gate.jsonl
 - id: hooks/edit-lock-drain-parked.sh
   kind: hook
   owner_adr: ADR-126
@@ -806,6 +905,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/edit-lock-pre-tool.sh
   kind: hook
   owner_adr: ADR-126
@@ -834,6 +936,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_projected_hook_gap_behaviors.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: none
 - id: hooks/edit-lock-process-negotiations.sh
   kind: hook
   owner_adr: ADR-126
@@ -856,6 +961,9 @@ primitives:
     regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/edit-lock-session-end.sh
   kind: hook
   owner_adr: ADR-126
@@ -878,6 +986,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/engram-crystallize-on-session-end.sh
   kind: hook
   owner_adr: ADR-126
@@ -901,6 +1012,9 @@ primitives:
     then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/crystallization-events.jsonl
 - id: hooks/engram-daemon-launcher.sh
   kind: hook
   owner_adr: ADR-126
@@ -924,6 +1038,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/engram-reinforce-on-access.sh
   kind: hook
   owner_adr: ADR-126
@@ -946,6 +1063,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/lifecycle-reinforcement.jsonl
 - id: hooks/error-learning.sh
   kind: hook
   owner_adr: ADR-126
@@ -967,6 +1087,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/error-learning.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/error-learning.jsonl
 - id: hooks/error-pattern-detector.sh
   kind: hook
   owner_adr: ADR-126
@@ -989,6 +1112,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/error-learning.jsonl
 - id: hooks/error-pipeline.sh
   kind: hook
   owner_adr: ADR-126
@@ -1010,6 +1136,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/error-pipeline.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/error-learning.jsonl
 - id: hooks/git-commit-scope-guard.sh
   kind: hook
   owner_adr: ADR-126
@@ -1037,6 +1166,9 @@ primitives:
     with operator approval.
   false_positive_tests:
   - tests/unit/test_projected_hook_gap_behaviors.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/agent-audit-trail.jsonl
 - id: hooks/git-context-capture.sh
   kind: hook
   owner_adr: ADR-126
@@ -1060,6 +1192,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/session-audit.jsonl
 - id: hooks/hook-header-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -1088,6 +1223,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/audit/test_hooks_contracts.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/hook-header-warnings.jsonl
 - id: hooks/host-tool-doctor.sh
   kind: hook
   owner_adr: ADR-126
@@ -1110,6 +1248,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/host-tool-doctor.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/infra-health.sh
   kind: hook
   owner_adr: ADR-126
@@ -1131,6 +1272,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/infra-health.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/infra-health.jsonl
 - id: hooks/inject-phase-context.sh
   kind: hook
   owner_adr: ADR-126
@@ -1153,6 +1297,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/kpi-trigger.sh
   kind: hook
   owner_adr: ADR-126
@@ -1174,6 +1321,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/kpi-trigger.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/kpi-history.jsonl
 - id: hooks/large-file-advisor.sh
   kind: hook
   owner_adr: ADR-126
@@ -1196,6 +1346,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/large-file-reads.jsonl
 - id: hooks/lethal-trifecta-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -1224,6 +1377,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/contracts/test_lethal_trifecta_gate.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/lethal-trifecta.jsonl
 - id: hooks/mcp-scan.sh
   kind: hook
   owner_adr: ADR-126
@@ -1245,6 +1401,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/mcp-scan.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/mcp-scan-findings.jsonl
 - id: hooks/memory-prefetch.sh
   kind: hook
   owner_adr: ADR-126
@@ -1266,6 +1425,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/memory-prefetch.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/native-agent-heartbeat.sh
   kind: hook
   owner_adr: ADR-126
@@ -1288,6 +1450,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/agent-heartbeat.jsonl
 - id: hooks/orchestrator-claim-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -1316,6 +1481,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_concurrent_agent_safety_status.py
   - tests/unit/test_gate_runner.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
 - id: hooks/plan-claim-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -1344,6 +1512,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_concurrent_agent_safety_status.py
   - tests/unit/test_gate_runner.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/plan-claim-validator.jsonl
 - id: hooks/post-agent-snapshot-restore.sh
   kind: hook
   owner_adr: ADR-126
@@ -1366,6 +1537,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/agent-snapshots.jsonl
 - id: hooks/post-agent-verify.sh
   kind: hook
   owner_adr: ADR-126
@@ -1388,6 +1562,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/agent-violations.jsonl
 - id: hooks/post-git-orphan-notifier.sh
   kind: hook
   owner_adr: ADR-126
@@ -1410,6 +1587,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/orphan-notifier.jsonl
 - id: hooks/pre-agent-snapshot.sh
   kind: hook
   owner_adr: ADR-126
@@ -1432,6 +1612,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/agent-snapshots.jsonl
 - id: hooks/pre-commit-content-hash-dedupe.sh
   kind: hook
   owner_adr: ADR-126
@@ -1461,6 +1644,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_precommit_content_hash.py
   - tests/red_team/portability/test_pre-commit-content-hash-dedupe.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/events.jsonl
 - id: hooks/pre-compaction-flush.sh
   kind: hook
   owner_adr: ADR-126
@@ -1483,6 +1669,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/predev-completeness-check.sh
   kind: hook
   owner_adr: ADR-126
@@ -1511,6 +1700,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/audit/test_rules_enforcement.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/predev-completeness.jsonl
 - id: hooks/private-mode-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -1533,6 +1725,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/private-mode-metrics-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -1555,6 +1750,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
 - id: hooks/profile-drift-autoapply.sh
   kind: hook
   owner_adr: ADR-126
@@ -1577,6 +1775,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/project-docs-convention.sh
   kind: hook
   owner_adr: ADR-126
@@ -1605,6 +1806,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_project_docs_writers.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: none
 - id: hooks/query-tailored-context-inject.sh
   kind: hook
   owner_adr: ADR-126
@@ -1627,6 +1831,9 @@ primitives:
     regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/rate-limit-detector.sh
   kind: hook
   owner_adr: ADR-126
@@ -1649,6 +1856,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/rate-limit-events.jsonl
 - id: hooks/rate-limit-drain.sh
   kind: hook
   owner_adr: ADR-126
@@ -1670,6 +1880,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/rate-limit-drain.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/rate-limit-executed.jsonl
 - id: hooks/rate-limit-precheck.sh
   kind: hook
   owner_adr: ADR-126
@@ -1693,6 +1906,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/rate-limiter.sh
   kind: hook
   owner_adr: ADR-126
@@ -1720,6 +1936,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_confidentiality_scanner.py
   - tests/unit/test_dispatch_helper.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: none
 - id: hooks/reaper-daemon-launcher.sh
   kind: hook
   owner_adr: ADR-126
@@ -1742,6 +1961,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/reinvention-check.sh
   kind: hook
   owner_adr: ADR-126
@@ -1764,6 +1986,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/reinvention-checks.jsonl
 - id: hooks/result-truncator.sh
   kind: hook
   owner_adr: ADR-126
@@ -1785,6 +2010,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/result-truncator.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/truncation-events.jsonl
 - id: hooks/review-spawner.sh
   kind: hook
   owner_adr: ADR-126
@@ -1806,6 +2034,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/review-spawner.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/review-findings.jsonl
 - id: hooks/rule-frontmatter-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -1834,6 +2065,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/audit/test_hooks_contracts.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/rule-frontmatter-warnings.jsonl
 - id: hooks/scope-marker-portability-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -1862,6 +2096,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_gate_runner.py
   - tests/contracts/test_redteam_portability_coverage.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/scope-marker-portability-gate.jsonl
 - id: hooks/secret-detector.sh
   kind: hook
   owner_adr: ADR-126
@@ -1889,6 +2126,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_capability_level5.py
   - tests/unit/test_chaos_template.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/missing-secrets.jsonl
 - id: hooks/self-install.sh
   kind: hook
   owner_adr: ADR-126
@@ -1910,6 +2150,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/self-install.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
 - id: hooks/self-knowledge-refresh.sh
   kind: hook
   owner_adr: ADR-126
@@ -1932,6 +2175,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/self-knowledge-refresh.jsonl
 - id: hooks/session-changelog.sh
   kind: hook
   owner_adr: ADR-126
@@ -1954,6 +2200,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/session-cleanup.sh
   kind: hook
   owner_adr: ADR-126
@@ -1975,6 +2224,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/session-cleanup.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/agent-timeouts.jsonl
 - id: hooks/session-end-reap.sh
   kind: hook
   owner_adr: ADR-126
@@ -1996,6 +2248,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/session-end-reap.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/session-heartbeat.sh
   kind: hook
   owner_adr: ADR-126
@@ -2018,6 +2273,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/session-init.sh
   kind: hook
   owner_adr: ADR-126
@@ -2039,6 +2297,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/session-init.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
 - id: hooks/session-learning.sh
   kind: hook
   owner_adr: ADR-126
@@ -2060,6 +2321,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/session-learning.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/session-learnings.jsonl
 - id: hooks/session-resume.sh
   kind: hook
   owner_adr: ADR-126
@@ -2082,6 +2346,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/session-resume.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/session-sanity.sh
   kind: hook
   owner_adr: ADR-126
@@ -2102,6 +2369,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/session-sanity.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/session-start-stash-reapply.sh
   kind: hook
   owner_adr: ADR-126
@@ -2124,6 +2394,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/stash-provenance.jsonl
 - id: hooks/session-start-worktree-nudge.sh
   kind: hook
   owner_adr: ADR-126
@@ -2146,6 +2419,9 @@ primitives:
     regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/worktree-nudges.jsonl
 - id: hooks/session-startup-protocol.sh
   kind: hook
   owner_adr: ADR-126
@@ -2168,6 +2444,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
 - id: hooks/session-summary-reminder.sh
   kind: hook
   owner_adr: ADR-126
@@ -2190,6 +2469,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/session-summary-fallback.jsonl
 - id: hooks/session-watchdog-launcher.sh
   kind: hook
   owner_adr: ADR-126
@@ -2213,6 +2495,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/session-wrapup-trigger.sh
   kind: hook
   owner_adr: ADR-126
@@ -2235,6 +2520,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/auto-trigger-events.jsonl
 - id: hooks/skill-failure-monitor.sh
   kind: hook
   owner_adr: ADR-126
@@ -2257,6 +2545,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/skill-feedback.jsonl
 - id: hooks/skill-feedback-tracker.sh
   kind: hook
   owner_adr: ADR-126
@@ -2279,6 +2570,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/skill-feedback.jsonl
 - id: hooks/skill-frontmatter-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -2307,6 +2601,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_registered_hook_behaviors.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/skill-frontmatter-warnings.jsonl
 - id: hooks/skill-invocation-logger.sh
   kind: hook
   owner_adr: ADR-126
@@ -2329,6 +2626,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/skill-invocations.jsonl
 - id: hooks/skill-synthesis-scanner.sh
   kind: hook
   owner_adr: ADR-126
@@ -2351,6 +2651,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/skill-synthesis-queue.jsonl
 - id: hooks/skill-tracker.sh
   kind: hook
   owner_adr: ADR-126
@@ -2372,6 +2675,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/skill-tracker.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/skill-metrics.jsonl
 - id: hooks/skill-usage-tracker.sh
   kind: hook
   owner_adr: ADR-126
@@ -2394,6 +2700,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/skill-usage.jsonl
 - id: hooks/stash-budget-warn.sh
   kind: hook
   owner_adr: ADR-126
@@ -2416,6 +2725,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/stash-budget.jsonl
 - id: hooks/state-heartbeat.sh
   kind: hook
   owner_adr: ADR-126
@@ -2437,6 +2749,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/state-heartbeat.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/subagent-context-injector.sh
   kind: hook
   owner_adr: ADR-126
@@ -2459,6 +2774,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: none
 - id: hooks/surface-fix-detector.sh
   kind: hook
   owner_adr: ADR-126
@@ -2481,6 +2799,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/surface-fix-detector.jsonl
 - id: hooks/symlink-mutation-guard.sh
   kind: hook
   owner_adr: ADR-126
@@ -2508,6 +2829,9 @@ primitives:
     with operator approval.
   false_positive_tests:
   - tests/red_team/portability/test_symlink-mutation-guard.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: none
 - id: hooks/task-completed.sh
   kind: hook
   owner_adr: ADR-126
@@ -2535,6 +2859,9 @@ primitives:
   false_positive_tests:
   - tests/unit/test_event_bus.py
   - tests/unit/test_task_bridge.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/task-completed.jsonl
 - id: hooks/task-created.sh
   kind: hook
   owner_adr: ADR-126
@@ -2562,6 +2889,9 @@ primitives:
   false_positive_tests:
   - tests/integration/test_harness_driver_parity.py
   - tests/hooks/test_agent_teams_hooks.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/task-created.jsonl
 - id: hooks/teammate-idle.sh
   kind: hook
   owner_adr: ADR-126
@@ -2589,6 +2919,9 @@ primitives:
   false_positive_tests:
   - tests/integration/test_harness_driver_parity.py
   - tests/hooks/test_agent_teams_hooks.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/teammate-idle.jsonl
 - id: hooks/tool-sequence-capture.sh
   kind: hook
   owner_adr: ADR-126
@@ -2611,6 +2944,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/tool-sequences.jsonl
 - id: hooks/trust-score-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -2633,6 +2969,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/trust-scores.jsonl
 - id: hooks/user-prompt-capture.sh
   kind: hook
   owner_adr: ADR-126
@@ -2656,6 +2995,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/prompt-captures.jsonl
 - id: hooks/validation-lock-cleanup.sh
   kind: hook
   owner_adr: ADR-126
@@ -2678,6 +3020,9 @@ primitives:
     projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/validation-auto-recovery.jsonl
 - id: hooks/work-queue-sync.sh
   kind: hook
   owner_adr: ADR-126
@@ -2699,6 +3044,9 @@ primitives:
   rollback_or_repair_command: Disable or demote hooks/work-queue-sync.sh in generated harness settings, then regenerate projections.
   sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
     with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/work-queue.jsonl
 - id: scripts/cos-doctor-preserve
   kind: doctor
   owner_adr: ADR-116
@@ -2723,6 +3071,9 @@ primitives:
     untouched for manual triage.
   sunset_criteria: Archive when preserve-branch lifecycle is enforced by the protected landing contract and no preserved WIP
     branches are produced for 90 days.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
 - id: scripts/cos_primitive_harvester
   kind: script
   owner_adr: ADR-120
@@ -2744,3 +3095,6 @@ primitives:
     evidence is refreshed.
   sunset_criteria: Demote to archived if proposal precision remains below the configured ROI threshold for two consecutive
     review windows.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
