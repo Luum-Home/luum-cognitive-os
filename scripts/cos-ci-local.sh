@@ -269,6 +269,19 @@ check_lab_first_gate() {
   fi
 }
 
+check_self_improvement_discipline_gate() {
+  command -v python3 >/dev/null 2>&1 || {
+    _skip "self-improvement discipline gate" "python3 not installed"
+    return 0
+  }
+  if [ -x "$REPO_ROOT/scripts/cos-self-improvement-discipline-gate" ]; then
+    "$REPO_ROOT/scripts/cos-self-improvement-discipline-gate" --profile core --json >/dev/null
+  else
+    _skip "self-improvement discipline gate" "scripts/cos-self-improvement-discipline-gate not found"
+    return 0
+  fi
+}
+
 check_adr_tier_claim_audit() {
   command -v python3 >/dev/null 2>&1 || {
     _skip "ADR tier claim audit" "python3 not installed"
@@ -403,6 +416,7 @@ run_quick() {
   _step "active primitive index"              check_active_primitive_index
   _step "core preamble budget"                check_core_preamble_budget
   _step "lab-first promotion gate"            check_lab_first_gate
+  _step "self-improvement discipline gate"    check_self_improvement_discipline_gate
   _step "ADR tier claim audit"                check_adr_tier_claim_audit
   _step ".gitignore sanity"                   check_gitignore_sanity
 }
