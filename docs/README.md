@@ -29,6 +29,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Governance Tools Consolidation Plan](../.cognitive-os/plans/architecture/governance-tools-consolidation.md) — execution plan for reducing governance friction and consolidating duplicate sources of truth.
 - [External Review Readiness Plan](../.cognitive-os/plans/architecture/external-review-readiness-plan.md) — phased readiness plan that turns external architecture critique into executable gates and wiring work.
 - [DX Tax Reduction Plan](../.cognitive-os/plans/architecture/dx-tax-reduction-plan.md) — phased plan for cognitive load, token tax, latency, indirection, harness coupling, upstream duplication, and self-referential overhead.
+- [Cognitive OS vs Vanilla IDE Agents — Senior DX Review](business/cos-vs-vanilla-dx-review.md) — honest persona-based DX review of COS value versus vanilla Claude Code, Codex, Cursor, and similar IDE-agent defaults.
+- [DX Assessment Snapshot — 2026-05-02](reports/dx-assessment-2026-05-02.md) — frozen raw review snapshot of governance, cost, onboarding, cross-harness, SDD, and Engram gaps.
 - [Primitive Harvester Implementation Plan](../.cognitive-os/plans/architecture/primitive-harvester-implementation-plan.md) — staged rollout plan and acceptance criteria for the meta-primitive.
 - [Session Filesystem Reaper](architecture/session-filesystem-reaper.md) — operator flow and safety invariants for session filesystem cleanup.
 - [Multi-IDE Swarm Safety Testbed Plan](../.cognitive-os/plans/architecture/multi-ide-swarm-testbed-plan.md) — executable plan for reproducing same-task, same-file, same-domain, git-overwrite, parity, memory, and watermark races.
