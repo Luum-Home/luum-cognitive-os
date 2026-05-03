@@ -5,6 +5,159 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.23.0] - 2026-05-03 — "Boring Reliability and the Audited Default Surface"
+
+This release completes a single-session external-review absorption cycle (DX
+assessment → ADRs → enforcement → demotions → doctrine update). The dominant
+direction is **subtraction and maturity**, not addition: lifecycle states earn
+their default-visible position through evidence; demotion is a first-class
+operation; CI moves from GitHub-hosted to local pre-push gates.
+
+### Added — Boring Reliability Control Plane
+
+- `scripts/cos-boring-reliability` aggregator dashboard plus 9 sub-tools:
+  `cos-adoption-profile`, `cos-preamble-budget`, `cos-default-visible-reducer`,
+  `cos-false-positive-ledger`, `cos-wip-safety-score`, `cos-recovery-drill`,
+  `cos-runtime-hook-reality`, `cos-silent-failure-audit`, `cos-dispatch-smoke`.
+  Operator-readable signals replace prose-only reasoning about system health.
+- `manifests/governance-maturity.yaml` — explicit `advisory` / `observe` /
+  `blocking` labels for `trust-score-validator`, `blast-radius`, `review-spawner`.
+  Product docs can no longer claim a check is blocking without evidence.
+- `manifests/silent-failure-allowlist.yaml` — every `|| true` / `|| :` /
+  `2>/dev/null` occurrence in hooks is now classified with a rationale and
+  `max_occurrences`. Growth without classification fails the audit.
+- `docs/architecture/boring-reliability-control-plane.md` — operating doctrine
+  for default-visible primitives: real / measurable / reversible / honest /
+  evidence-backed.
+- `docs/architecture/cognitive-prosthesis.md` — rationale companion explaining
+  why the system has the shape it has.
+
+### Added — Adoption Profiles and Lifecycle Discipline
+
+- Adoption tiers `core` / `team` / `maintainer` / `lab` (ADR-124) with
+  `cos-active-primitive-index` enforcing default-visible thresholds
+  (`VISIBLE_WARN_THRESHOLD=12`, `VISIBLE_FAIL_THRESHOLD=25`) wired into local CI.
+- Eight lifecycle states (ADR-126: `candidate` → `sandbox` → `advisory` →
+  `blocking` → `default-on` → `demoted` → `archived` → `deleted`) with
+  required `demotion_evidence` and `sunset_criteria` on demoted entries.
+- `scripts/cos-tier-claim-audit` + `tests/audit/test_adr_tier_claims.py` —
+  ADRs claiming `tier: core`/`team` must include machine-readable evidence
+  blocks linking to control-plane output (ADR-133).
+- `scripts/lab_first_promotion_gate.py` — every new primitive starts in
+  `lab`/`sandbox`; promotion requires evidence (ADR-133).
+- First two demotions executed with evidence: `hooks/task-completed.sh`
+  and `hooks/context-watchdog.sh` projection.
+
+### Added — Local CI Migration (replaces GitHub Actions)
+
+- `scripts/cos-ci-local.sh` — tiered runner (`quick` / `full` / `deep`)
+  consolidating the seven ubuntu-equivalent workflows. Pre-push default
+  targets ~30s wall-clock (ADR-131).
+- `git-hooks/pre-push` + `scripts/install-git-hooks.sh` — tracked git hook
+  activated via `core.hooksPath`. Bypass with `--no-verify` or
+  `COS_PRE_PUSH_SKIP=1`.
+- Three weekly `launchd` schedules via `scripts/install-launchd-jobs.sh`
+  replacing the cron-style workflows: config-audit (Mon 09:00),
+  public-metrics (Mon 12:00), primitive-gap (Mon 12:30).
+- `scripts/cos-pr-review.sh` — manual `prep` / `post` CLI replacing the three
+  Claude API workflows. Zero per-PR API cost.
+
+### Added — Data Layer Integrity (ADR-128)
+
+- Engram wrapper-level upsert: `lib/engram_client.save_observation()` searches
+  for `(project, topic_key)` matches before save; routes exact matches to HTTP
+  update instead of appending duplicates.
+- Engram rank-derived score fallback in `lib/engram_lifecycle`: when the
+  binary returns no numeric `score`, the differential signal no longer
+  collapses to `1.0`.
+- Engram daemon-down visibility: `engram-daemon-down.jsonl` metric is written
+  when reinforcement cannot reach the daemon. Failures are no longer silent.
+- SDD topic-key namespace canonicalised to `planning/{change}/...`. Legacy
+  `sdd/*` keys remain read-fallbacks (ADR-128 §6).
+- `tests/audit/test_version_consistency.py` — `pyproject.toml` version must
+  match the latest released `CHANGELOG.md` heading.
+- `tests/audit/test_sdd_topic_keys.py` — canonical SDD namespace audit.
+
+### Added — Safety Hardening
+
+- `hooks/_lib/safe-worktree-remove.sh` (ADR-129) — replaces the
+  `--force || rm -rf` antipattern across four callsites with a helper that
+  captures git stderr, logs to `.cognitive-os/metrics/worktree-removals.jsonl`,
+  and never falls back to `rm -rf` unless `COS_WORKTREE_REMOVE_ALLOW_RM_RF=1`.
+- Semantic-scope refactor of `destructive-git-blocker.sh`,
+  `direct-main-guard.sh`, and `orchestrator-claim-gate.sh` — substring-match
+  false positives reduced by parsing actual command shape.
+- `direct-main-guard.sh` now requires `COS_DIRECT_MAIN_BYPASS_REASON` for
+  bypasses and appends each event to `.cognitive-os/metrics/direct-main-bypass.jsonl`.
+- `cos_false_positive_ledger.py` — match scope tightened from full-event
+  text to `event_type` / `bypass_kind` fields, eliminating filename-string
+  false positives.
+
+### Added — Strategic Decisions
+
+- ADR-132 — Solo-Swarm vs Multi-Maintainer Fork (`exploration`). Names the
+  trigger conditions for re-shaping the system from single-maintainer
+  (Shape A) to multi-maintainer (Shape B). Recommends staying in Shape A
+  until trigger fires.
+- ADR-133 — Expansion Without Monsterization. Lab-first admission contract
+  with required evidence blocks for `core` / `team` tiers.
+
+### Changed
+
+- All eleven GitHub Actions workflows renamed to `.disabled` (ADR-130). The
+  `.disabled` extension takes them out of GHA auto-discovery while preserving
+  YAML in the repo as documentation. Restoration is per-file rename.
+- `pyproject.toml` version bumped from `0.22.0` to `0.23.0`.
+- `core` adoption profile preamble files now include `AGENTS.md` so the
+  preamble-budget tool reflects the full context tax.
+- Architecture readiness fails when projected hooks are not represented in
+  the lifecycle manifest — readiness can no longer report green while
+  undercounting runtime surface.
+- Boring-reliability dashboard distinguishes `warn` from `fail` exit codes
+  cleanly: `warn` does not escalate to non-zero, `fail` does.
+
+### Fixed
+
+- Engram upsert no longer creates duplicate observations on repeated save
+  with the same `topic_key` (ADR-128 §1).
+- `cos_false_positive_ledger` no longer inflates counts by matching filenames
+  in event payloads (`adaptive-bypass.jsonl` was firing on every so-vitals
+  heartbeat tick).
+- Multiple substring-match gates no longer false-positive on legitimate
+  commit messages, push commands, and command bodies.
+- `pyproject.toml` and `CHANGELOG.md` versions are now CI-enforced to match.
+
+### Documentation
+
+- ADR-124 distribution boundaries / ADR-125 governance-tools value boundary /
+  ADR-126 lifecycle governor / ADR-127 active primitive index / ADR-128 data
+  layer integrity / ADR-129 safe worktree removal / ADR-130 GHA suspend /
+  ADR-131 local-CI migration / ADR-132 solo-swarm fork / ADR-133 expansion
+  without monsterization.
+- ADR namespace consolidated under `docs/adrs/` (ADR-087); legacy paths
+  remain as documentation references.
+- `docs/case-studies/external-review-cycle-2026-05-02.md` — worked example
+  of one external-review absorption cycle. Sections cover the cycle, what
+  made it possible, bilateral pressure, protected landing, self-triggered
+  absorption, cadence asymmetry between reviewer and maintainer, what the
+  cycle does not prove, and a replication template.
+- `docs/architecture/direct-main-policy.md` — operational policy for direct
+  pushes to `main`.
+- `docs/reports/dx-assessment-2026-05-02.md` — the SR-level DX assessment
+  that triggered the absorption cycle.
+- `docs/reports/boring-reliability-audit-2026-05-03.md` — end-to-end audit
+  baseline of the 10 control-plane tools.
+
+### Removed
+
+- Three Claude-API GitHub Actions workflows (`claude-interactive`,
+  `claude-issue-triage`, `claude-pr-review`) suspended by rename to
+  `.disabled` — no per-PR API cost.
+- macOS-matrix workflow (`cross-platform`) suspended — was the largest
+  remaining cost driver after the Claude-API workflows.
+- Seven additional ubuntu workflows suspended in favour of local-CI
+  replacement (ADR-131).
+
 ## [0.22.0] - 2026-04-30
 
 - **Test runner ergonomics** (ADR-072): Lane taxonomy with `.cognitive-os/test-lanes.yaml` as source of truth. New `cos-test focused/cluster/broad` escalation ladder. Auto-marker injection in conftest. Audit and contracts lanes now parallel (~40% wall-time reduction observed). Makefile `test-*` targets deprecated; redirect to cos-test (1 release cycle). Originally proposed as ADR-069; renumbered after the slot was claimed by `research-first-protocol`.
