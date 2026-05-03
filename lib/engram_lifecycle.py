@@ -38,6 +38,7 @@ import os
 import re
 import sys
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Callable
 
 # Allow both `from lib.engram_lifecycle import ...` and direct execution
@@ -139,6 +140,54 @@ def adjusted_score(
         Adjusted score in [0.0, 1.0].
     """
     return base_score * (1.0 - alpha) + confidence * retention * alpha
+
+
+def rank_fallback_score(rank: int, total: int) -> float:
+    """Return a deterministic fallback relevance score for score-less results.
+
+    Engram CLI/search exports may omit a normalized ``score`` field.  A flat
+    fallback of 1.0 erases native ranking information, so use the result order as
+    a weak relevance signal: top result = 1.0, last result = 0.9.  The range is
+    intentionally narrow so lifecycle retention/confidence can still reorder
+    stale results.
+    """
+    if total <= 1:
+        return 1.0
+    rank = max(0, min(rank, total - 1))
+    return 1.0 - (0.1 * rank / (total - 1))
+
+
+def _numeric_score_or_rank(obs: dict[str, Any], rank: int, total: int) -> float:
+    raw = obs.get("score")
+    if isinstance(raw, int | float):
+        return max(0.0, min(1.0, float(raw)))
+    return rank_fallback_score(rank, total)
+
+
+def _project_root_for_metrics() -> Path:
+    return Path(
+        os.environ.get("COGNITIVE_OS_PROJECT_DIR")
+        or os.environ.get("CODEX_PROJECT_DIR")
+        or os.environ.get("CLAUDE_PROJECT_DIR")
+        or os.getcwd()
+    )
+
+
+def record_daemon_down(observation_id: str | int, reason: str = "unavailable") -> None:
+    """Best-effort metric proving Engram reinforcement failure was visible."""
+    try:
+        metrics_dir = _project_root_for_metrics() / ".cognitive-os" / "metrics"
+        metrics_dir.mkdir(parents=True, exist_ok=True)
+        event = {
+            "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "observation_id": str(observation_id),
+            "reason": reason,
+            "component": "engram_lifecycle.reinforce",
+        }
+        with (metrics_dir / "engram-daemon-down.jsonl").open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(event, sort_keys=True) + "\n")
+    except Exception:
+        pass
 
 
 # ---------------------------------------------------------------------------
@@ -253,7 +302,8 @@ class EngramLifecycle:
             return results
 
         enriched = []
-        for obs in results:
+        total = len(results)
+        for rank, obs in enumerate(results):
             trailer = self._parse_trailer(obs.get("content", ""))
             retention = self._apply_decay(trailer)
 
@@ -262,10 +312,7 @@ class EngramLifecycle:
             else:
                 confidence = 0.5
 
-            # Engram does not return a normalised score field; use 1.0 as base
-            # so lifecycle signal still applies.  If engram ever exposes a score
-            # field, prefer it here.
-            raw_score = float(obs.get("score", 1.0))
+            raw_score = _numeric_score_or_rank(obs, rank, total)
             score = adjusted_score(raw_score, confidence, retention, self.ALPHA)
 
             enriched.append(
@@ -321,6 +368,7 @@ class EngramLifecycle:
             True if reinforcement succeeded, False otherwise.
         """
         if not engram_http_client.is_available():
+            record_daemon_down(observation_id)
             return False
 
         obs = engram_http_client.get_observation(observation_id)

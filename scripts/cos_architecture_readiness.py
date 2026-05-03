@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from dataclasses import asdict, dataclass, field
@@ -21,6 +22,7 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 import active_primitive_index
+import yaml
 import cos_governance_roi
 import primitive_lifecycle
 
@@ -57,6 +59,31 @@ PHASE2_WIRING_PROBES = [
         "phase": "Phase 2",
     },
 ]
+
+
+STALE_MODEL_NAMING_PATTERNS = [
+    re.compile(pattern, re.IGNORECASE)
+    for pattern in (
+        r"cos[_-]opus[_-]readiness",
+        r"Opus Objection",
+        r"Opus critique",
+        r"COS Opus",
+        r"claude-opus-[0-9]",
+        r"claude-sonnet-[0-9]",
+        r"claude-haiku-[0-9]",
+    )
+]
+PRODUCT_FACING_DOCS = [
+    "README.md",
+    "docs/README.md",
+    "docs/business",
+    ".cognitive-os/plans/architecture",
+]
+REQUIRED_MATURITY_LABELS = {
+    "hooks/trust-score-validator.sh",
+    "hooks/blast-radius.sh",
+}
+
 
 
 @dataclass(frozen=True)
@@ -124,13 +151,14 @@ def check_active_surface(root: Path) -> Check:
         )
     summary = index["summary"]
     status = summary["status"]
+    coverage = summary["runtime_coverage"]
     return Check(
         id="active-primitive-surface",
         status=status,
         message=(
-            "active primitive surface is within DX thresholds"
+            "active primitive surface and runtime coverage are within DX thresholds"
             if status == "pass"
-            else "active primitive surface exceeds DX threshold; reduce default-visible governance"
+            else "active primitive surface or lifecycle/runtime coverage exceeds DX threshold"
         ),
         details={
             "counts_by_tier": summary["counts_by_tier"],
@@ -138,6 +166,7 @@ def check_active_surface(root: Path) -> Check:
             "default_visible_counts_by_tier": summary["default_visible_counts_by_tier"],
             "active_surface_count": summary["active_surface_count"],
             "default_visible_count": summary["default_visible_count"],
+            "runtime_coverage": coverage,
             "thresholds": summary["thresholds"],
             "findings": summary["findings"],
         },
@@ -213,6 +242,85 @@ def check_wiring_gaps(root: Path) -> Check:
     )
 
 
+
+def _iter_product_facing_files(root: Path) -> list[Path]:
+    files: list[Path] = []
+    for rel in PRODUCT_FACING_DOCS:
+        path = root / rel
+        if path.is_file():
+            files.append(path)
+        elif path.is_dir():
+            files.extend(sorted(path.rglob("*.md")))
+    return files
+
+
+def check_product_claims(root: Path) -> Check:
+    findings: list[dict[str, Any]] = []
+    readme = root / "README.md"
+    if readme.exists():
+        content = readme.read_text(encoding="utf-8", errors="ignore")
+        for match in re.finditer(r"`([^`]+\.sh)`", content):
+            claim = match.group(1)
+            shell_paths = [token for token in re.split(r"\s+", claim) if token.endswith(".sh")]
+            for shell_path in shell_paths:
+                candidate_paths = [root / shell_path, root / "hooks" / shell_path, root / "scripts" / shell_path]
+                if not any(path.exists() for path in candidate_paths):
+                    findings.append({
+                        "id": "readme-missing-shell-claim",
+                        "severity": "fail",
+                        "file": "README.md",
+                        "claim": claim,
+                        "missing_path": shell_path,
+                        "message": "README references a shell hook/script that does not exist",
+                    })
+    for path in _iter_product_facing_files(root):
+        rel = str(path.relative_to(root))
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        for line_no, line in enumerate(text.splitlines(), 1):
+            for pattern in STALE_MODEL_NAMING_PATTERNS:
+                if pattern.search(line):
+                    findings.append({
+                        "id": "stale-model-branded-product-copy",
+                        "severity": "fail",
+                        "file": rel,
+                        "line": line_no,
+                        "pattern": pattern.pattern,
+                        "message": "product-facing docs contain stale model/vendor-branded readiness or direct model IDs",
+                    })
+    return Check(
+        id="product-claim-integrity",
+        status="fail" if findings else "pass",
+        message="product-facing claims reference existing files and neutral naming" if not findings else "product-facing claims contain missing files or stale model-branded names",
+        details={"findings": findings},
+    )
+
+
+def check_governance_maturity_labels(root: Path) -> Check:
+    manifest = root / "manifests" / "governance-maturity.yaml"
+    if not manifest.exists():
+        return Check("governance-maturity-labels", "fail", "governance maturity manifest is missing", {"missing": str(manifest.relative_to(root))})
+    try:
+        data = yaml.safe_load(manifest.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError) as exc:
+        return Check("governance-maturity-labels", "fail", "governance maturity manifest is unreadable", {"error": str(exc)})
+    primitives = data.get("primitives") if isinstance(data, dict) else None
+    if not isinstance(primitives, list):
+        return Check("governance-maturity-labels", "fail", "governance maturity manifest has no primitives list", {})
+    by_id = {item.get("id"): item for item in primitives if isinstance(item, dict)}
+    missing = sorted(REQUIRED_MATURITY_LABELS - set(by_id))
+    invalid = []
+    for primitive_id, item in by_id.items():
+        if primitive_id in REQUIRED_MATURITY_LABELS and item.get("maturity") not in {"observe", "advisory", "blocking"}:
+            invalid.append(primitive_id)
+    status = "pass" if not missing and not invalid else "fail"
+    return Check(
+        id="governance-maturity-labels",
+        status=status,
+        message="trust/blast governance maturity labels are explicit" if status == "pass" else "required governance maturity labels are missing or invalid",
+        details={"missing": missing, "invalid": invalid, "labels": by_id},
+    )
+
+
 def build_report(root: Path, window_hours: int) -> dict[str, Any]:
     checks = [
         check_repo_hygiene(root),
@@ -223,6 +331,8 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_lifecycle_recommendations(root, window_hours),
         check_runtime_primitives(root),
         check_wiring_gaps(root),
+        check_product_claims(root),
+        check_governance_maturity_labels(root),
     ]
     fail_count = sum(1 for check in checks if check.status == "fail")
     warn_count = sum(1 for check in checks if check.status == "warn")
