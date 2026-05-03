@@ -25,11 +25,17 @@ Answer these questions in order. Stop when you reach a tier.
    YES → consider NOT using the OS (see Anti-patterns below)
    NO  → LEAN
 
-3. Is your team larger than 5 people, or do you run 5+ agents concurrently?
+3. Are you one person running multiple IDEs/harnesses (for example
+   Claude Code + Codex), multiple simultaneous sessions, or multiple agents
+   across more than one project?
+   YES → STRICT, even if the "team size" is one
+   NO  → go to question 4
+
+4. Is your team larger than 5 people, or do you run 5+ agents concurrently?
    NO  → STANDARD
    YES → STRICT
 
-4. (STRICT check) Does your organization prohibit pre-commit hooks
+5. (STRICT check) Does your organization prohibit pre-commit hooks
    or pre-tool-use hooks?
    YES → the OS is not a fit (see Anti-patterns below)
    NO  → STRICT
@@ -41,8 +47,8 @@ Answer these questions in order. Stop when you reach a tier.
 
 | | Lean | Standard | Strict |
 |---|---|---|---|
-| Target team size | 1 developer | 2-5 developers | 5+ or enterprise |
-| Concurrent sessions | 1 | occasional parallel | 5+ simultaneous |
+| Target team size | 1 developer | 2-5 developers | 5+ or enterprise, including a solo maintainer operating a multi-IDE swarm |
+| Concurrent sessions | 1 | occasional parallel | 5+ simultaneous, or multiple harnesses/projects controlled by one operator |
 | Hooks wired | ~33 (minimal profile) | ~65 (standard profile) | ~81 (paranoid profile) |
 | Setup time | 15-30 min | 45-90 min | 2-4 hours |
 | Primary ADRs | ADR-105, ADR-121 §4 | + ADR-116, ADR-119, ADR-122 | + ADR-116 full, ADR-121 all |
@@ -58,6 +64,12 @@ Answer these questions in order. Stop when you reach a tier.
 One developer, one IDE, one active agent session. Your priority is iteration
 speed. You want to prevent the worst agent failures (WIP loss, bad commits to
 main, leaked credentials) without adding ceremony for low-risk work.
+
+Important carve-out: **solo developer does not automatically mean Lean**. If one
+operator runs Claude Code and Codex at the same time, opens multiple concurrent
+sessions, or delegates to multiple agents across multiple projects, that operator
+is no longer in the Lean risk model. That is a solo swarm and should use Strict
+or a Strict-derived maintainer profile.
 
 ### What it prevents
 
@@ -351,10 +363,13 @@ python3 -m pytest tests/audit/test_adr_contracts.py -q
 ### Target user
 
 Five or more parallel agent sessions, multiple IDEs, or a team with more than
-five developers. You are running the OS as production-grade infrastructure where
-a merge collision, duplicate claim, or orphaned commit has measurable cost. You
-need the full ADR-116 primitive set, chaos validation, and a serialized landing
-path to main.
+five developers. This tier also covers the solo maintainer swarm: one operator
+running Claude Code and Codex, multiple simultaneous sessions, multiple
+sub-agents, and multiple consumer projects while building the OS itself. You are
+running the OS as production-grade infrastructure where a merge collision,
+duplicate claim, orphaned commit, silent stash, or false-done report has
+measurable cost. You need the full ADR-116 primitive set, chaos validation, and a
+serialized landing path to main.
 
 ### What it adds over standard
 
@@ -514,6 +529,26 @@ python3 -m pytest tests/chaos/ -q
   from the fast lane)
 
 ---
+
+### Solo maintainer swarm is Strict, not Lean
+
+The common adoption mistake is to classify by headcount only. Cognitive OS should
+classify by **concurrency and blast radius**. A single developer can still have a
+Strict problem when they operate:
+
+- two or more IDEs/harnesses, such as Claude Code and Codex;
+- multiple simultaneous sessions against the same repository;
+- multiple sub-agents inside those sessions;
+- the OS itself plus several consumer projects;
+- long-running WIP where a silent stash, rebase, or false-done can erase days of
+  reasoning.
+
+For that persona, vanilla harness primitives are not enough. The required value
+is not bureaucracy; it is determinism pressure: task ownership, protected
+landing, derived-artifact gates, symmetric WIP recovery, work inventory, event
+signals, and repair-first diagnostics. The goal is to make agent concurrency
+boring enough that one operator can safely run what otherwise behaves like a
+small engineering organization.
 
 ## Migration path — graduating between tiers
 

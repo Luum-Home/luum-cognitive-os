@@ -36,8 +36,16 @@ The conclusion is not to remove governance. The conclusion is to apply a value
 boundary: keep governance that prevents real damage or improves medium+ delivery;
 make everything else opt-in, tiered, or maintainer-only. For most solo projects,
 vanilla Claude Code plus Engram and a short project instruction file may deliver
-most of the value with a fraction of the complexity. Cognitive OS earns default
-use only when its net productivity ROI is positive.
+most of the value with a fraction of the complexity.
+
+This does **not** apply to the solo maintainer swarm persona: one operator using
+multiple IDEs/harnesses, multiple sessions, and multiple agents across the OS and
+consumer projects. That workload has team-scale concurrency and platform-scale
+blast radius even with one human. For that case, governance must be evaluated as
+an operational safety layer, not as optional process ceremony. Cognitive OS earns
+default use when its net productivity ROI is positive, and for solo swarms the
+prevented-damage side of that ROI is materially higher than for ordinary solo
+projects.
 
 ## Decision
 

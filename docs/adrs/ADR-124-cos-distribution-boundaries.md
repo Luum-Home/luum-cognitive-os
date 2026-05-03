@@ -11,6 +11,13 @@ valuable but unevenly valuable across contexts. The full SO is appropriate for
 heavy multi-agent operation, but it is too much friction for a solo developer or
 a small project using a single Claude Code session.
 
+A later clarification adds an important distinction: **headcount is not the risk
+model**. A solo maintainer running Claude Code and Codex, multiple concurrent
+sessions, multiple sub-agents, and multiple consumer projects has a Strict-class
+concurrency problem even though the team size is one. For that persona, control,
+governance, and determinism primitives are not optional overhead; they are the
+operating envelope that keeps the work from escaping human control.
+
 A senior/architect review captured the product tension clearly:
 
 - for one developer and one small project, native harness primitives plus a few
@@ -40,19 +47,21 @@ flows must distinguish them.
 |---|---|---|---|
 | `core` | Solo devs, small projects, single harness session | Minimal, low-friction safety | claim verification, concurrent-write guard, stash auto-reapply, session branches, FS/session reaper, branch/worktree closure, protected landing/status/repair basics |
 | `team` | 3–5 developers or occasional parallel agent sessions | Coordination without heavy meta | `core` plus task claims, resource leases, derived-artifact gate, validation lanes, lightweight decision docs, small swarm tests |
-| `maintainer` | Teams maintaining Cognitive OS or other agent platforms | Full governance for platform work | `team` plus ADR contracts, hook quality, capability coverage, primitive coverage, scorecards, release/audit contracts |
+| `maintainer` | Teams maintaining Cognitive OS or other agent platforms; also solo maintainers operating multi-IDE/multi-agent swarms | Full governance for platform work | `team` plus ADR contracts, hook quality, capability coverage, primitive coverage, scorecards, release/audit contracts |
 | `lab` | Research/experimentation | Opt-in, never default | primitive harvester, aspirational audit experiments, dogfood scoring, meta-evaluation, large chaos N=50, experimental dashboards |
 
 ### Boundary rules
 
 1. Default installs and first-run docs MUST start with `core`.
-2. Meta-primitives MUST NOT run in `core` unless explicitly requested.
-3. Every hook, skill, script, and doctor SHOULD eventually declare
+2. Solo operators MUST be classified by concurrency/blast radius, not headcount;
+   a solo multi-IDE swarm may start at `maintainer`/Strict.
+3. Meta-primitives MUST NOT run in `core` unless explicitly requested.
+4. Every hook, skill, script, and doctor SHOULD eventually declare
    `distribution: core | team | maintainer | lab`.
-4. Profiles (`lean`, `standard`, `strict`) remain risk modes; distribution tiers
+5. Profiles (`lean`, `standard`, `strict`) remain risk modes; distribution tiers
    define which primitives are present at all.
-5. Product messaging should sell modular primitives first, not the entire SO.
-6. Maintainer/lab tooling can stay in-repo, but it must be clearly labeled as
+6. Product messaging should sell modular primitives first, not the entire SO.
+7. Maintainer/lab tooling can stay in-repo, but it must be clearly labeled as
    maintainer tooling and excluded from default projection.
 
 ## Consequences
