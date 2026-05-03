@@ -63,7 +63,7 @@ local signals are true on the branch being released:
 scripts/cos-runtime-hook-reality --fail-on-findings   # pass
 scripts/cos-silent-failure-audit --fail-on-findings  # pass; no unclassified growth
 scripts/cos-adoption-profile --profile core          # pass; core <=10 hooks, <=7 blocking
-scripts/cos-preamble-budget --profile core           # pass; core <3000 tokens
+scripts/cos-preamble-budget --profile core           # pass; full core tax includes AGENTS.md
 scripts/cos-session-start-budget --profile core      # pass; core boot path <=5 hooks, no lab hooks
 python3 scripts/active_primitive_index.py --json     # pass; no active/default-visible findings
 scripts/cos-wip-safety-score                         # pass or explicit archived WIP exception
