@@ -104,6 +104,25 @@ Two consequences follow:
 
 The bilateral pressure point is what makes external review a useful primitive at all. Without it, review is just an audit. With it, review is the trigger that converts standing doctrine into runtime artefacts. The four properties listed in *"What made the cycle possible"* are the prerequisites; the bilateral obligation is the spark.
 
+## Protected landing as the trade-off made visible
+
+One sub-cycle exposed the velocity-vs-durability trade-off in miniature. A
+documentation insight briefly landed on `main` directly during concurrent
+orchestration. The local direct-main guard then blocked the push, forcing the
+operator to restore the intended shape: create a session branch, re-apply the
+scoped edit, commit it there, open a PR, and merge through the protected path.
+
+The repair cost was small — roughly five minutes — but it is the point of the
+governance. Pure velocity would have been a direct push. Durability required a
+traceable branch, PR, merge, and reviewable landing path. The lesson is not
+"never bypass"; emergency bypasses remain available. The lesson is that bypass
+must be explicit, scoped, and audited. `hooks/direct-main-guard.sh` now requires
+`COS_DIRECT_MAIN_BYPASS_REASON` or `COS_BYPASS_REASON` for direct-main bypasses
+and appends the event to `.cognitive-os/metrics/direct-main-bypass.jsonl`.
+
+This makes the bilateral obligation operational: if the maintainer chooses speed
+over the governed path, the choice becomes evidence, not folklore.
+
 ## What the cycle does not prove
 
 Stated honestly so the artefact is useful:
