@@ -17,13 +17,89 @@ elif [ -n "${CLAUDE_TOOL_INPUT:-}" ]; then
 fi
 [ -z "$COMMAND" ] && COMMAND="${COS_GIT_COMMAND:-${COS_DIRECT_MAIN_GUARD_COMMAND:-}}"
 [ -z "$COMMAND" ] && exit 0
-if printf '%s' "$COMMAND" | grep -Eq '(^|[;&|[:space:]])git([[:space:]]+(-C|--git-dir|--work-tree|-c)(=)?[^[:space:]]*)*[[:space:]]+commit\b'; then
-  ACTION="commit"
-elif printf '%s' "$COMMAND" | grep -Eq '(^|[;&|[:space:]])git([[:space:]]+(-C|--git-dir|--work-tree|-c)(=)?[^[:space:]]*)*[[:space:]]+push\b'; then
-  ACTION="push"
-else
+
+_semantic_git_action() {
+  command -v python3 >/dev/null || return 1
+  python3 - "$1" <<'PY'
+from __future__ import annotations
+
+import shlex
+import sys
+from pathlib import Path
+
+try:
+    parts = shlex.split(sys.argv[1])
+except ValueError:
+    sys.exit(1)
+
+try:
+    git_idx = next(i for i, token in enumerate(parts) if token == "git" or Path(token).name == "git")
+except StopIteration:
+    sys.exit(1)
+
+i = git_idx + 1
+while i < len(parts):
+    token = parts[i]
+    if token in {"-C", "--git-dir", "--work-tree", "-c"}:
+        i += 2
+        continue
+    if token.startswith("--git-dir=") or token.startswith("--work-tree="):
+        i += 1
+        continue
+    sub = token
+    args = parts[i + 1 :]
+    break
+else:
+    sys.exit(1)
+
+if sub == "commit":
+    print("commit\tunknown")
+    sys.exit(0)
+if sub != "push":
+    sys.exit(1)
+
+protected_refs = {"main", "master", "refs/heads/main", "refs/heads/master"}
+delete_mode = False
+refspecs: list[str] = []
+i = 0
+while i < len(args):
+    token = args[i]
+    if token in {"--delete", "-d"}:
+        delete_mode = True
+        i += 1
+        continue
+    if token in {"-u", "--set-upstream", "--repo", "--receive-pack", "--exec"}:
+        i += 2
+        continue
+    if token.startswith("-"):
+        i += 1
+        continue
+    refspecs.append(token)
+    i += 1
+
+# First non-option is usually remote. Remaining tokens are refspecs.
+push_specs = refspecs[1:] if refspecs else []
+if delete_mode:
+    pushes_protected = any(spec in protected_refs for spec in push_specs)
+elif push_specs:
+    pushes_protected = any(
+        spec in protected_refs or spec.split(":", 1)[-1] in protected_refs
+        for spec in push_specs
+    )
+else:
+    # No explicit refspec: pushing current branch.
+    pushes_protected = True
+
+print(f"push\t{'protected' if pushes_protected else 'non_protected'}")
+PY
+}
+
+ACTION_INFO=$(_semantic_git_action "$COMMAND" || true)
+if [ -z "$ACTION_INFO" ]; then
   exit 0
 fi
+ACTION=$(printf '%s' "$ACTION_INFO" | awk -F '\t' '{print $1}')
+PUSH_TARGET_SCOPE=$(printf '%s' "$ACTION_INFO" | awk -F '\t' '{print $2}')
 [ "${COS_ALLOW_DIRECT_MAIN:-0}" = "1" ] && exit 0
 if ! git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then exit 0; fi
 BRANCH=$(git -C "$PROJECT_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
@@ -39,6 +115,8 @@ if [ "$ACTION" = "push" ] && [ -n "${COS_PRE_PUSH_REFS:-}" ]; then
 $COS_PRE_PUSH_REFS
 EOF
   [ "$PUSHES_MAIN" = true ] || exit 0
+elif [ "$ACTION" = "push" ] && [ "$PUSH_TARGET_SCOPE" = "non_protected" ]; then
+  exit 0
 fi
 case "$BRANCH" in main|master) ;; *) exit 0 ;; esac
 if [ "$ACTION" = "push" ]; then
