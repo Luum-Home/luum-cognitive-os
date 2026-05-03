@@ -40,6 +40,9 @@ dashboard and without allowing uncontrolled self-modification.
 - [x] Add propose-only Engram bundles with `scripts/cos-engram-bundle` and
       `scripts/cos-engram-import-propose`.
 - [x] Add Shape-B trigger audit with `scripts/cos-federation-trigger-audit`.
+- [x] Add manual drills with `scripts/cos-cross-instance-drill` to provoke
+      external-evidence, Shape-B trigger, registry-drift, Engram-conflict, and
+      governance-checklist states without mutating real evidence.
 
 ## Phase 4 — Background proposer
 
