@@ -12,6 +12,8 @@ TASK_ID=""
 SCOPE=""
 TTL_SECONDS=1800
 COMMAND=()
+BRANCH_LEASE_ACQUIRED=0
+BRANCH_LEASE_BRANCH=""
 declare -a EXPECTED_FILES=()
 
 usage() {
@@ -23,6 +25,11 @@ Runs the ADR-116 governed preflight before executing an agent command:
   1. acquire the shared active task claim (.cognitive-os/tasks/active-claims.json)
   2. acquire the runtime claim lease
   3. run cos_work_inventory.py --all --strict
+  4. acquire a branch writer lease before executing a mutating command
+
+Set COS_SKIP_BRANCH_WRITER_LEASE=1 only for tests or emergency recovery.
+No-command claim-only invocations release immediately without taking a branch
+writer lease.
 
 Use this from Codex/VS Code or other harnesses that do not yet expose
 Claude-style Agent hooks.
@@ -66,6 +73,53 @@ release_active_claim() {
 complete_active_claim() {
   python3 "$SCRIPT_DIR/cos_task_claims.py" --project-dir "$PROJECT_DIR" \
     complete --task-id "$TASK_ID" --session-id "$SESSION_ID" >/dev/null 2>&1 || true
+}
+
+current_branch() {
+  local branch=""
+  branch="$(git -C "$PROJECT_DIR" branch --show-current 2>/dev/null || true)"
+  if [ -z "$branch" ]; then
+    branch="$(git -C "$PROJECT_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
+  fi
+  if [ "$branch" = "HEAD" ]; then
+    branch=""
+  fi
+  printf '%s' "$branch"
+}
+
+acquire_branch_lease() {
+  if [ "${COS_SKIP_BRANCH_WRITER_LEASE:-0}" = "1" ]; then
+    return 0
+  fi
+  BRANCH_LEASE_BRANCH="$(current_branch)"
+  if [ -z "$BRANCH_LEASE_BRANCH" ]; then
+    echo "ADR-116 BRANCH WRITER LEASE BLOCK: could not determine current branch for '$PROJECT_DIR'." >&2
+    return 2
+  fi
+  local lease_out lease_rc
+  lease_out=$(python3 "$SCRIPT_DIR/cos_branch_lease.py" --project-dir "$PROJECT_DIR" \
+    acquire --branch "$BRANCH_LEASE_BRANCH" --owner "$AGENT_ID" --session-id "$SESSION_ID" \
+    --ttl-seconds "$TTL_SECONDS" --worktree "$PROJECT_DIR" --task-id "$TASK_ID" --json 2>&1)
+  lease_rc=$?
+  if [ "$lease_rc" -eq 2 ]; then
+    echo "ADR-116 BRANCH WRITER LEASE BLOCK: branch '$BRANCH_LEASE_BRANCH' already has an active writer." >&2
+    echo "$lease_out" >&2
+    return 2
+  elif [ "$lease_rc" -ne 0 ]; then
+    echo "$lease_out" >&2
+    return "$lease_rc"
+  fi
+  BRANCH_LEASE_ACQUIRED=1
+  return 0
+}
+
+release_branch_lease() {
+  if [ "$BRANCH_LEASE_ACQUIRED" != "1" ] || [ -z "$BRANCH_LEASE_BRANCH" ]; then
+    return 0
+  fi
+  python3 "$SCRIPT_DIR/cos_branch_lease.py" --project-dir "$PROJECT_DIR" \
+    release --branch "$BRANCH_LEASE_BRANCH" --owner "$AGENT_ID" --session-id "$SESSION_ID" >/dev/null 2>&1 || true
+  BRANCH_LEASE_ACQUIRED=0
 }
 
 ACTIVE_ARGS=(--project-dir "$PROJECT_DIR" claim --task-id "$TASK_ID" --description "$SCOPE" --session-id "$SESSION_ID")
@@ -126,6 +180,7 @@ finish() {
     --task "$TASK_ID" --status "$status" --scope "$SCOPE" >/dev/null 2>&1 || true
   python3 "$SCRIPT_DIR/claim_task.py" --project-dir "$PROJECT_DIR" \
     release "$TASK_ID" --session-id "$SESSION_ID" --agent-id "$AGENT_ID" >/dev/null 2>&1 || true
+  release_branch_lease
   if [ "$rc" -eq 0 ]; then
     complete_active_claim
   else
@@ -138,6 +193,13 @@ if [ "${#COMMAND[@]}" -eq 0 ]; then
   echo "cos-governed-agent: claim acquired; no command supplied, releasing immediately." >&2
   finish 0
   exit 0
+fi
+
+acquire_branch_lease
+LEASE_RC=$?
+if [ "$LEASE_RC" -ne 0 ]; then
+  finish "$LEASE_RC"
+  exit "$LEASE_RC"
 fi
 
 "${COMMAND[@]}"

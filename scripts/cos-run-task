@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# Wrapper for the ADR-091 Phase 2 local headless task admission proof.
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec python3 "$SCRIPT_DIR/cos_run_task.py" "$@"
