@@ -8,7 +8,7 @@ Accepted for Phase 1 DX.
 
 External review found that Cognitive OS exposes too much governance surface at once. The project already has `manifests/primitive-lifecycle.yaml`, which records each agentic primitive's lifecycle state and distribution tier. Phase 1 DX needs a smaller, operator-readable active index without creating a second source of truth.
 
-Product-facing output must stay vendor-neutral. Legacy readiness entrypoints can remain for compatibility, but new reports should describe governance readiness and active surface area without model-branded labels.
+Product-facing output must stay vendor-neutral. Readiness entrypoints use architecture/readiness naming; model-branded compatibility wrappers are not kept.
 
 ## Decision
 
@@ -27,7 +27,7 @@ Active surface semantics:
 - `core` and `team` primitives are default-visible.
 - `lab` primitives remain indexed but do not count as active or default-visible adoption surface.
 
-The governance readiness report now includes an `active-primitive-surface` check with counts by tier, active counts, default-visible counts, thresholds, and findings.
+The architecture readiness report now includes an `active-primitive-surface` check with counts by tier, active counts, default-visible counts, thresholds, and findings.
 
 ## Acceptance Criteria
 
@@ -49,3 +49,45 @@ The governance readiness report now includes an `active-primitive-surface` check
 ## Consequences
 
 The active index becomes the small DX surface for operators while preserving the richer lifecycle manifest for maintainers. The thresholds are intentionally conservative guardrails, not product claims; they can be adjusted after usage data shows a better friction budget.
+
+
+### 2026-05-03 Coverage Caveat
+
+The index is intentionally sourced from `manifests/primitive-lifecycle.yaml`, but
+that manifest is still a seed. It currently under-represents the real projected
+runtime hook surface. The next ADR-127 hardening step is to report projected hook
+coverage and warn or fail when lifecycle metadata does not cover the active
+runtime projection.
+
+
+## Alternatives rejected
+
+- **Create a second active-surface manifest**: rejected because it would create
+  another source of truth and drift from ADR-126 lifecycle metadata.
+- **Count only current runtime projection**: rejected for the initial slice
+  because projection is harness-specific and would not preserve lifecycle state,
+  distribution, governance class, or promotion/demotion evidence. The accepted
+  path is lifecycle-first plus explicit runtime-coverage reporting.
+- **Keep model-branded readiness aliases for compatibility**: rejected because
+  product-facing entrypoints must be vendor/model-neutral and the user explicitly
+  asked not to keep legacy model-named wrappers.
+
+
+## Verification
+
+Initial implementation and naming checks:
+
+```bash
+python3 -m pytest tests/unit/test_active_primitive_index.py tests/unit/test_cos_architecture_readiness.py -q
+python3 -m py_compile scripts/active_primitive_index.py scripts/cos_architecture_readiness.py
+bash -n scripts/cos-active-primitive-index scripts/cos-architecture-readiness scripts/cos
+scripts/cos-active-primitive-index --tier core --json | python3 -m json.tool >/dev/null
+scripts/cos-architecture-readiness --json | python3 -m json.tool >/dev/null
+```
+
+Required next hardening verification:
+
+```bash
+python3 -m pytest tests/contracts/test_active_index_runtime_coverage.py -q
+python3 -m pytest tests/contracts/test_projected_hooks_have_lifecycle_metadata.py -q
+```

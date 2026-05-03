@@ -7,7 +7,7 @@ prove safety value, keep the broad SO tiered, and prevent self-improvement from
 becoming uncontrolled meta-infrastructure.
 
 This plan does **not** try to make the full Cognitive OS default for every user.
-It makes the system honest enough that Opus has fewer objective objections:
+It makes the system honest enough that external reviewers have fewer objective objections:
 
 - Lean users get a small core.
 - Solo maintainer swarms get Strict/maintainer controls.
@@ -18,7 +18,7 @@ It makes the system honest enough that Opus has fewer objective objections:
 
 ### Objective
 
-One command answers: “What would Opus still object to today?”
+One command answers: “What would an external architecture reviewer still object to today?”
 
 ### Deliverables
 
@@ -103,6 +103,15 @@ Agents see a small active set by distribution/profile, not the whole lab.
 - Skills/hooks/rules discovery defaults to the active distribution.
 - Lab/meta primitives hidden unless requested.
 
+
+### 2026-05-03 caveat
+
+The first active primitive index exists, but it is not yet sufficient as a DX
+truth source because `manifests/primitive-lifecycle.yaml` contains only four
+primitives while the current Claude projection registers 120 hook entries. Phase
+3 cannot be considered complete until readiness reports runtime coverage and
+warns/fails when lifecycle metadata undercounts projected hooks.
+
 ### Acceptance
 
 - [ ] Lean/core active surface is small enough for first-run docs.
@@ -113,7 +122,7 @@ Agents see a small active set by distribution/profile, not the whole lab.
 
 ### Objective
 
-Prove the real failure modes Opus called out.
+Prove the real failure modes external reviewers called out.
 
 ### Scenarios
 
