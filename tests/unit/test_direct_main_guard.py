@@ -1,6 +1,7 @@
 """Tests for ADR-116 direct-main local guard."""
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 from pathlib import Path
@@ -61,9 +62,27 @@ def test_feature_branch_allows_agent(tmp_path: Path) -> None:
 
 def test_allow_bypass_allows_agent_on_main(tmp_path: Path) -> None:
     init_repo(tmp_path, "main")
-    proc = run_hook(tmp_path, env={"COS_ACTOR": "agent", "COS_ALLOW_DIRECT_MAIN": "1"})
+    proc = run_hook(
+        tmp_path,
+        env={
+            "COS_ACTOR": "agent",
+            "COS_ALLOW_DIRECT_MAIN": "1",
+            "COS_DIRECT_MAIN_BYPASS_REASON": "unit-test emergency commit",
+        },
+    )
     assert proc.returncode == 0
     assert proc.stderr == ""
+    audit = tmp_path / ".cognitive-os" / "metrics" / "direct-main-bypass.jsonl"
+    records = [json.loads(line) for line in audit.read_text(encoding="utf-8").splitlines()]
+    assert records[-1]["action"] == "commit"
+    assert records[-1]["reason"] == "unit-test emergency commit"
+
+
+def test_direct_main_commit_bypass_requires_reason(tmp_path: Path) -> None:
+    init_repo(tmp_path, "main")
+    proc = run_hook(tmp_path, env={"COS_ACTOR": "agent", "COS_ALLOW_DIRECT_MAIN": "1"})
+    assert proc.returncode == 2
+    assert "requires COS_DIRECT_MAIN_BYPASS_REASON" in proc.stderr
 
 
 def test_operator_policy_allow_suppresses_warning(tmp_path: Path) -> None:
@@ -120,6 +139,35 @@ def test_merge_queue_push_to_main_allows(tmp_path: Path) -> None:
     )
     assert proc.returncode == 0
     assert proc.stderr == ""
+
+
+def test_direct_push_bypass_requires_reason(tmp_path: Path) -> None:
+    init_repo(tmp_path, "main")
+    proc = run_hook(
+        tmp_path,
+        env={"COS_GIT_COMMAND": "git push origin main", "CLAUDE_TOOL_INPUT": "", "COS_ALLOW_DIRECT_PUSH": "1"},
+    )
+    assert proc.returncode == 2
+    assert "requires COS_DIRECT_MAIN_BYPASS_REASON" in proc.stderr
+
+
+def test_direct_push_bypass_with_reason_is_audited(tmp_path: Path) -> None:
+    init_repo(tmp_path, "main")
+    proc = run_hook(
+        tmp_path,
+        env={
+            "COS_GIT_COMMAND": "git push origin main",
+            "CLAUDE_TOOL_INPUT": "",
+            "COS_ALLOW_DIRECT_PUSH": "1",
+            "COS_BYPASS_REASON": "unit-test emergency push",
+        },
+    )
+    assert proc.returncode == 0
+    assert proc.stderr == ""
+    audit = tmp_path / ".cognitive-os" / "metrics" / "direct-main-bypass.jsonl"
+    records = [json.loads(line) for line in audit.read_text(encoding="utf-8").splitlines()]
+    assert records[-1]["action"] == "push"
+    assert records[-1]["reason"] == "unit-test emergency push"
 
 
 def test_pre_push_refs_non_main_allows(tmp_path: Path) -> None:

@@ -5,6 +5,7 @@
 # unless they are executed by the governed merge queue or explicit emergency env.
 set -uo pipefail
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+source "$(dirname "$0")/_lib/safe-jsonl.sh"
 INPUT=""
 if [ ! -t 0 ]; then INPUT=$(cat 2>/dev/null || true); fi
 TOOL_NAME=""; COMMAND=""
@@ -94,15 +95,72 @@ print(f"push\t{'protected' if pushes_protected else 'non_protected'}")
 PY
 }
 
-ACTION_INFO=$(_semantic_git_action "$COMMAND" || true)
+if ! ACTION_INFO=$(_semantic_git_action "$COMMAND"); then
+  ACTION_INFO=""
+fi
 if [ -z "$ACTION_INFO" ]; then
   exit 0
 fi
 ACTION=$(printf '%s' "$ACTION_INFO" | awk -F '\t' '{print $1}')
 PUSH_TARGET_SCOPE=$(printf '%s' "$ACTION_INFO" | awk -F '\t' '{print $2}')
-[ "${COS_ALLOW_DIRECT_MAIN:-0}" = "1" ] && exit 0
 if ! git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then exit 0; fi
 BRANCH=$(git -C "$PROJECT_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+
+_actor() {
+  local actor="${COS_ACTOR:-${COGNITIVE_OS_ACTOR:-}}"
+  if [ -z "$actor" ]; then
+    if [ -n "${CLAUDE_AGENT_ID:-}" ] || [ -n "${CODEX_AGENT_ID:-}" ] || [ -n "${COGNITIVE_OS_AGENT_ID:-}" ] || [ -n "${COS_AGENT_ID:-}" ] || [ "${COGNITIVE_OS_KIND:-}" = "subagent" ] || [ "${COS_SESSION_KIND:-}" = "subagent" ]; then
+      actor="agent"
+    else
+      actor="operator"
+    fi
+  fi
+  printf '%s' "$actor"
+}
+
+_audit_direct_main_bypass() {
+  local action="$1"
+  local branch="$2"
+  local reason="$3"
+  local actor="$4"
+  local metrics_file="$PROJECT_DIR/.cognitive-os/metrics/direct-main-bypass.jsonl"
+  local entry
+  entry=$(python3 - "$action" "$branch" "$reason" "$actor" "$COMMAND" <<'PY'
+from __future__ import annotations
+
+import json
+import sys
+from datetime import datetime, timezone
+
+action, branch, reason, actor, command = sys.argv[1:6]
+print(json.dumps({
+    "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    "hook": "direct-main-guard",
+    "event": "direct_main_bypass",
+    "action": action,
+    "branch": branch,
+    "actor": actor,
+    "reason": reason,
+    "command": command,
+}, sort_keys=True))
+PY
+)
+  if ! safe_jsonl_append "$metrics_file" "$entry"; then
+    echo "[direct-main-guard] WARN: failed to write direct-main bypass audit." >&2
+  fi
+}
+
+_require_bypass_reason() {
+  local action="$1"
+  local reason="${COS_DIRECT_MAIN_BYPASS_REASON:-${COS_BYPASS_REASON:-}}"
+  if [ -z "$reason" ]; then
+    echo "[direct-main-guard] BLOCK: $action bypass requires COS_DIRECT_MAIN_BYPASS_REASON or COS_BYPASS_REASON." >&2
+    echo "Bypass must be one-off, scoped, and auditable; use the merge queue unless this is an emergency." >&2
+    return 2
+  fi
+  printf '%s' "$reason"
+}
+
 if [ "$ACTION" = "push" ] && [ -n "${COS_PRE_PUSH_REFS:-}" ]; then
   PUSHES_MAIN=false
   while read -r _local_ref _local_sha _remote_ref _remote_sha; do
@@ -119,8 +177,13 @@ elif [ "$ACTION" = "push" ] && [ "$PUSH_TARGET_SCOPE" = "non_protected" ]; then
   exit 0
 fi
 case "$BRANCH" in main|master) ;; *) exit 0 ;; esac
+actor="$(_actor)"
 if [ "$ACTION" = "push" ]; then
-  [ "${COS_ALLOW_DIRECT_PUSH:-0}" = "1" ] && exit 0
+  if [ "${COS_ALLOW_DIRECT_PUSH:-0}" = "1" ]; then
+    if ! reason="$(_require_bypass_reason direct-push)"; then exit 2; fi
+    _audit_direct_main_bypass "push" "$BRANCH" "$reason" "$actor"
+    exit 0
+  fi
   [ "${COS_MERGE_QUEUE_WORKER:-0}" = "1" ] && exit 0
   [ "${COS_MERGE_TO_MAIN:-0}" = "1" ] && exit 0
   echo "[direct-main-guard] BLOCK: direct push from $BRANCH bypasses ADR-116 merge queue." >&2
@@ -128,13 +191,10 @@ if [ "$ACTION" = "push" ]; then
   echo "Emergency operator bypass: COS_ALLOW_DIRECT_PUSH=1." >&2
   exit 2
 fi
-actor="${COS_ACTOR:-${COGNITIVE_OS_ACTOR:-}}"
-if [ -z "$actor" ]; then
-  if [ -n "${CLAUDE_AGENT_ID:-}" ] || [ -n "${CODEX_AGENT_ID:-}" ] || [ -n "${COGNITIVE_OS_AGENT_ID:-}" ] || [ -n "${COS_AGENT_ID:-}" ] || [ "${COGNITIVE_OS_KIND:-}" = "subagent" ] || [ "${COS_SESSION_KIND:-}" = "subagent" ]; then
-    actor="agent"
-  else
-    actor="operator"
-  fi
+if [ "${COS_ALLOW_DIRECT_MAIN:-0}" = "1" ]; then
+  if ! reason="$(_require_bypass_reason direct-commit)"; then exit 2; fi
+  _audit_direct_main_bypass "commit" "$BRANCH" "$reason" "$actor"
+  exit 0
 fi
 case "$actor" in
   agent|subagent|autonomous|worker)
