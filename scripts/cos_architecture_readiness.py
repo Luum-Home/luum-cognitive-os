@@ -295,29 +295,59 @@ def check_product_claims(root: Path) -> Check:
     )
 
 
-def check_governance_maturity_labels(root: Path) -> Check:
-    manifest = root / "manifests" / "governance-maturity.yaml"
-    if not manifest.exists():
-        return Check("governance-maturity-labels", "fail", "governance maturity manifest is missing", {"missing": str(manifest.relative_to(root))})
+def _load_lifecycle_maturity_labels(root: Path) -> dict[str, dict[str, Any]]:
+    manifest = root / "manifests" / "primitive-lifecycle.yaml"
     try:
         data = yaml.safe_load(manifest.read_text(encoding="utf-8"))
-    except (OSError, yaml.YAMLError) as exc:
-        return Check("governance-maturity-labels", "fail", "governance maturity manifest is unreadable", {"error": str(exc)})
+    except (OSError, yaml.YAMLError):
+        return {}
     primitives = data.get("primitives") if isinstance(data, dict) else None
     if not isinstance(primitives, list):
-        return Check("governance-maturity-labels", "fail", "governance maturity manifest has no primitives list", {})
-    by_id = {item.get("id"): item for item in primitives if isinstance(item, dict)}
-    missing = sorted(REQUIRED_MATURITY_LABELS - set(by_id))
+        return {}
+    return {str(item.get("id")): item for item in primitives if isinstance(item, dict) and item.get("id")}
+
+
+def _load_governance_maturity_overlay(root: Path) -> dict[str, dict[str, Any]]:
+    manifest = root / "manifests" / "governance-maturity.yaml"
+    if not manifest.exists():
+        return {}
+    try:
+        data = yaml.safe_load(manifest.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError):
+        return {"<overlay>": {"maturity": "invalid"}}
+    primitives = data.get("primitives") if isinstance(data, dict) else None
+    if not isinstance(primitives, list):
+        return {"<overlay>": {"maturity": "invalid"}}
+    return {str(item.get("id")): item for item in primitives if isinstance(item, dict) and item.get("id")}
+
+
+def check_governance_maturity_labels(root: Path) -> Check:
+    lifecycle_labels = _load_lifecycle_maturity_labels(root)
+    overlay_labels = _load_governance_maturity_overlay(root)
+    missing = sorted(REQUIRED_MATURITY_LABELS - set(lifecycle_labels))
     invalid = []
-    for primitive_id, item in by_id.items():
-        if primitive_id in REQUIRED_MATURITY_LABELS and item.get("maturity") not in {"observe", "advisory", "blocking"}:
+    contradictions = []
+    for primitive_id in REQUIRED_MATURITY_LABELS:
+        item = lifecycle_labels.get(primitive_id, {})
+        if item.get("maturity") not in {"observe", "advisory", "blocking"}:
             invalid.append(primitive_id)
-    status = "pass" if not missing and not invalid else "fail"
+        overlay = overlay_labels.get(primitive_id)
+        if overlay and overlay.get("maturity") != item.get("maturity"):
+            contradictions.append(primitive_id)
+    if "<overlay>" in overlay_labels:
+        invalid.append("manifests/governance-maturity.yaml")
+    status = "pass" if not missing and not invalid and not contradictions else "fail"
     return Check(
         id="governance-maturity-labels",
         status=status,
-        message="trust/blast governance maturity labels are explicit" if status == "pass" else "required governance maturity labels are missing or invalid",
-        details={"missing": missing, "invalid": invalid, "labels": by_id},
+        message="trust/blast governance maturity labels are explicit in lifecycle metadata" if status == "pass" else "required governance maturity labels are missing, invalid, or contradictory",
+        details={
+            "missing": missing,
+            "invalid": sorted(invalid),
+            "contradictions": sorted(contradictions),
+            "labels": {primitive_id: lifecycle_labels.get(primitive_id) for primitive_id in sorted(REQUIRED_MATURITY_LABELS)},
+            "overlay_labels": overlay_labels,
+        },
     )
 
 
