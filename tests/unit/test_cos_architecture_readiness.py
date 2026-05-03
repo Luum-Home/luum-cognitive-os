@@ -63,6 +63,7 @@ primitives:
     kind: hook
     owner_adr: ADR-127
     lifecycle_state: blocking
+    maturity: blocking
     distribution: core
     governance_class: runtime-safety
     risk_class: blocking
@@ -75,6 +76,7 @@ primitives:
     kind: script
     owner_adr: ADR-127
     lifecycle_state: sandbox
+    maturity: observe
     distribution: lab
     governance_class: meta-governance
     risk_class: advisory
@@ -138,9 +140,20 @@ def test_product_claims_fail_stale_model_readiness_naming(tmp_path: Path) -> Non
 
 
 def test_governance_maturity_labels_require_trust_and_blast(tmp_path: Path) -> None:
-    manifest = tmp_path / "manifests" / "governance-maturity.yaml"
+    manifest = tmp_path / "manifests" / "primitive-lifecycle.yaml"
     manifest.parent.mkdir(parents=True)
     manifest.write_text(
+        """schema_version: 1
+primitives:
+  - id: hooks/trust-score-validator.sh
+    maturity: advisory
+  - id: hooks/blast-radius.sh
+    maturity: observe
+""",
+        encoding="utf-8",
+    )
+    overlay = tmp_path / "manifests" / "governance-maturity.yaml"
+    overlay.write_text(
         """schema_version: 1
 primitives:
   - id: hooks/trust-score-validator.sh
@@ -155,3 +168,33 @@ primitives:
 
     assert check.status == "pass"
     assert check.details["missing"] == []
+    assert check.details["contradictions"] == []
+
+
+def test_governance_maturity_labels_fail_on_overlay_contradiction(tmp_path: Path) -> None:
+    manifest = tmp_path / "manifests" / "primitive-lifecycle.yaml"
+    manifest.parent.mkdir(parents=True)
+    manifest.write_text(
+        """schema_version: 1
+primitives:
+  - id: hooks/trust-score-validator.sh
+    maturity: advisory
+  - id: hooks/blast-radius.sh
+    maturity: observe
+""",
+        encoding="utf-8",
+    )
+    overlay = tmp_path / "manifests" / "governance-maturity.yaml"
+    overlay.write_text(
+        """schema_version: 1
+primitives:
+  - id: hooks/trust-score-validator.sh
+    maturity: blocking
+""",
+        encoding="utf-8",
+    )
+
+    check = readiness.check_governance_maturity_labels(tmp_path)
+
+    assert check.status == "fail"
+    assert check.details["contradictions"] == ["hooks/trust-score-validator.sh"]

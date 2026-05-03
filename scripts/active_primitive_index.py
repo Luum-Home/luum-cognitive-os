@@ -33,6 +33,7 @@ class PrimitiveEntry:
     kind: str
     tier: str
     lifecycle_state: str
+    maturity: str
     governance_class: str
     risk_class: str
     owner_adr: str
@@ -83,6 +84,7 @@ def primitive_to_entry(primitive: dict[str, Any]) -> PrimitiveEntry:
         kind=str(primitive.get("kind") or "unknown"),
         tier=str(tier),
         lifecycle_state=state,
+        maturity=str(primitive.get("maturity") or "unknown"),
         governance_class=str(primitive.get("governance_class") or "unknown"),
         risk_class=str(primitive.get("risk_class") or "unknown"),
         owner_adr=str(primitive.get("owner_adr") or "unknown"),
