@@ -50,6 +50,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Headless Self-Improvement Proposer](architecture/headless-self-improvement-proposer.md) — propose-only audit→fix loop that needs no dashboard and keeps human approval plus growth-discipline gates mandatory.
 - [Self-Evolving Doctrine Proposals](architecture/self-evolving-doctrine-proposals.md) — control-plane evidence can generate proposed doctrine amendments without mutating runtime rules.
 - [Cross-Instance Learning Runway](architecture/cross-instance-learning-runway.md) — portable evidence, registry locks, Engram bundles, and Shape-B federation triggers.
+- [Cross-Instance Consumer E2E Drill — 2026-05-03](reports/cross-instance-consumer-e2e-2026-05-03.md) — fresh consumer install, provenance export/import, drills, and claim-audit honesty check.
 - [Expansion Hardening Plan](architecture/expansion-hardening-plan.md) — three-sprint plan for scaling across PCs, IDEs, sessions, and autonomous agents without growing default-visible theatre.
 - [Lifecycle Demotion Proof — task-completed hook](reports/lifecycle-demotion-task-completed-2026-05-03.md) — first semantic `demoted` lifecycle transition proving shrink-without-delete behavior.
 - [ADR-133: Expansion Without Monsterization](adrs/ADR-133-expansion-without-monsterization.md) — lab-first promotion, portability-tax visibility, semantic matching, and federation boundaries.
