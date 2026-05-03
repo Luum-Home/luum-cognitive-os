@@ -26,6 +26,9 @@ CONTROL_PLANE_PRIMITIVES = {
     "scripts/cos-tier-claim-audit",
     "scripts/cos-demotion-loop-audit",
     "scripts/cos-manifest-tier-claim-audit",
+    "scripts/cos-self-improvement-loop",
+    "scripts/cos-self-improvement-discipline-gate",
+    "scripts/cos-doctrine-proposer",
 }
 
 
