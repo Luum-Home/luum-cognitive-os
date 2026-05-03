@@ -85,6 +85,23 @@ This shape **does not scale to**: 3+ machines with concurrent
 writes, 4+ harnesses without portability bleed, 10+ truly
 unsupervised autonomous agents, any multi-maintainer scenario.
 
+### Adoption boundary
+
+`core` and `team` are the externally adoptable product surfaces. They must stay
+small, evidence-backed, and understandable without the original maintainer's
+mental cache.
+
+`maintainer` is different. It is explicitly **not transferable today**. It is
+the solo-swarm operating envelope: one maintainer, multiple IDEs, multiple
+sessions, multiple agents, and a large amount of tacit context externalised only
+partially through Engram, ADRs, metrics, and the boring-reliability dashboard.
+
+This is not a defect under Shape A. It is the honest trust boundary. A second
+human maintainer should not be onboarded directly into `maintainer` mode until
+this ADR moves out of `exploration` and the Shape B fork plan exists. Before
+that, any contributor consumes `core` or `team`; the original maintainer remains
+the only `maintainer` operator.
+
 ### Shape B — Multi-Maintainer COS (hypothetical)
 
 The shape the system would need if a second human contributor
@@ -155,6 +172,7 @@ forking later is possible without rebuilding from scratch:
 3. **Every ADR claiming `tier: core` or `team` MUST include
    evidence-block** linked to `cos-boring-reliability` output.
    This already happens informally; ADR-132 names the requirement.
+   ADR-133 implements this as `scripts/cos-tier-claim-audit`.
 4. **Engram-stored knowledge MUST use `topic_key`** so namespacing
    per-maintainer is mechanically possible later (the keys become
    prefixes when scopes are introduced).
