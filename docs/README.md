@@ -635,6 +635,10 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [Harness Engineering](architecture/harness-engineering.md) — Harness portability doctrine, init checks, and profile measurement
 - [Architecture Principles](architecture-principles.md) — How the durable product boundaries fit together
 
+## Getting started
+
+- [Cognitive OS Core in 30 Minutes](getting-started/core-30-minute-onboarding.md) — smallest reliable adoption path.
+
 ## Architecture
 
 - [ADR-111: Core/Consumer Boundary for Concurrent-Agent Safety](adrs/ADR-111-core-consumer-concurrency-safety-boundary.md)

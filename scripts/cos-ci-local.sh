@@ -230,6 +230,19 @@ check_secret_detector() {
   fi
 }
 
+check_silent_failure_audit() {
+  command -v python3 >/dev/null 2>&1 || {
+    _skip "silent failure audit" "python3 not installed"
+    return 0
+  }
+  if [ -x "$REPO_ROOT/scripts/cos-silent-failure-audit" ]; then
+    "$REPO_ROOT/scripts/cos-silent-failure-audit" --fail-on-findings
+  else
+    _skip "silent failure audit" "scripts/cos-silent-failure-audit not found"
+    return 0
+  fi
+}
+
 check_gitignore_sanity() {
   local missing=0
   for pattern in ".env" ".env.local" "*.pem" "*.key"; do
@@ -318,6 +331,7 @@ run_quick() {
   _step "yaml syntax (all .yml/.yaml)"        check_yaml_syntax
   _step "test quality (structural detector)"  check_test_quality
   _step "secret detector"                     check_secret_detector
+  _step "silent failure audit"                check_silent_failure_audit
   _step ".gitignore sanity"                   check_gitignore_sanity
 }
 

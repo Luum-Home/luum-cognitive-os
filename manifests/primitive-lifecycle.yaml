@@ -4,7 +4,8 @@ generated_from:
 - ADR-126
 - ADR-127
 - ADR-128
-policy: Every runtime-projected hook must have lifecycle metadata and a non-aspirational maturity label.
+policy: Every runtime-projected hook must have lifecycle metadata and a non-aspirational
+  maturity label.
 primitives:
 - id: hooks/aci-observation-capture.sh
   kind: hook
@@ -23,11 +24,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/aci-observation-capture.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_aci_observation_capture_hook.py -q
-  rollback_or_repair_command: Disable or demote hooks/aci-observation-capture.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_aci_observation_capture_hook.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/aci-observation-capture.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/aci-observations.jsonl
@@ -48,14 +50,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/adr-section-validator.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py -q
-  rollback_or_repair_command: Disable or demote hooks/adr-section-validator.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/adr-section-validator.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: adr-section-validator blocked the action; follow the hook message, repair the unsafe state, or demote only
-    with operator approval.
+  repair_message: adr-section-validator blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/audit/test_hooks_contracts.py
@@ -79,11 +82,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/agent-bash-cwd-enforcer.sh
-  - python3 -m pytest tests/integration/test_cwd_enforcer_rewrite.py tests/integration/test_cwd_enforcer_warns.py -q
-  rollback_or_repair_command: Disable or demote hooks/agent-bash-cwd-enforcer.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/integration/test_cwd_enforcer_rewrite.py tests/integration/test_cwd_enforcer_warns.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/agent-bash-cwd-enforcer.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/cwd-enforcer.jsonl
@@ -104,10 +108,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/agent-checkpoint.sh
-  - python3 -m pytest tests/unit/test_agent_timeout.py tests/unit/test_codex_guard_layer.py -q
-  rollback_or_repair_command: Disable or demote hooks/agent-checkpoint.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_agent_timeout.py tests/unit/test_codex_guard_layer.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/agent-checkpoint.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-timeouts.jsonl
@@ -128,13 +134,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/agent-prelaunch.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cos_governance_roi.py -q
-  rollback_or_repair_command: Disable or demote hooks/agent-prelaunch.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cos_governance_roi.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/agent-prelaunch.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 2000
-  repair_message: agent-prelaunch blocked the action; follow the hook message, repair the unsafe state, or demote only with
-    operator approval.
+  repair_message: agent-prelaunch blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_cos_governance_roi.py
@@ -158,11 +166,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/agent-working-dir-inject.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cross_platform_discipline.py -q
-  rollback_or_repair_command: Disable or demote hooks/agent-working-dir-inject.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cross_platform_discipline.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/agent-working-dir-inject.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/cwd-inject.jsonl
@@ -184,10 +193,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/aspirational-audit-weekly.sh
   - python3 -m pytest tests/hooks/test_aspirational_audit_weekly.py -q
-  rollback_or_repair_command: Disable or demote hooks/aspirational-audit-weekly.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/aspirational-audit-weekly.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
@@ -208,11 +217,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/audit-id-enricher.sh
-  - python3 -m pytest tests/behavior/test_audit_enricher.py tests/audit/test_rules_enforcement.py -q
-  rollback_or_repair_command: Disable or demote hooks/audit-id-enricher.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/behavior/test_audit_enricher.py tests/audit/test_rules_enforcement.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/audit-id-enricher.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/cost-events.jsonl
@@ -233,10 +243,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/auto-checkpoint.sh
-  - python3 -m pytest tests/unit/test_auto_checkpoint_behavior.py tests/unit/test_codex_guard_layer.py -q
-  rollback_or_repair_command: Disable or demote hooks/auto-checkpoint.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_auto_checkpoint_behavior.py tests/unit/test_codex_guard_layer.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/auto-checkpoint.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -257,10 +269,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/auto-refine.sh
-  - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_cos_init_py.py -q
-  rollback_or_repair_command: Disable or demote hooks/auto-refine.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_cos_init_py.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/auto-refine.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
@@ -281,11 +295,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/auto-repair-dispatcher.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/integration/test_repair_chain.py -q
-  rollback_or_repair_command: Disable or demote hooks/auto-repair-dispatcher.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/integration/test_repair_chain.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/auto-repair-dispatcher.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/error-learning.jsonl
@@ -306,11 +321,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/auto-rollback-trigger.sh
-  - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_codex_guard_layer.py -q
-  rollback_or_repair_command: Disable or demote hooks/auto-rollback-trigger.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_codex_guard_layer.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/auto-rollback-trigger.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/auto-rollback.jsonl
@@ -331,10 +347,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/auto-verify.sh
-  - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_governance_artifact_consumption.py -q
-  rollback_or_repair_command: Disable or demote hooks/auto-verify.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_governance_artifact_consumption.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/auto-verify.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/auto-verify.jsonl
@@ -355,10 +373,12 @@ primitives:
   behavior_evidence: observe-only-metrics; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/blast-radius.sh
-  - python3 -m pytest tests/unit/test_blast_radius_additional_context.py tests/unit/test_capability_levels.py -q
-  rollback_or_repair_command: Disable or demote hooks/blast-radius.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_blast_radius_additional_context.py tests/unit/test_capability_levels.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/blast-radius.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/blast-radius.jsonl
@@ -379,13 +399,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/claim-validator.sh
-  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_codex_guard_layer.py -q
-  rollback_or_repair_command: Disable or demote hooks/claim-validator.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_codex_guard_layer.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/claim-validator.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: claim-validator blocked the action; follow the hook message, repair the unsafe state, or demote only with
-    operator approval.
+  repair_message: claim-validator blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_capability_level5.py
   - tests/unit/test_codex_guard_layer.py
@@ -409,14 +431,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/clarification-gate.sh
-  - python3 -m pytest tests/unit/test_capability_levels.py tests/unit/test_codex_guard_layer.py -q
-  rollback_or_repair_command: Disable or demote hooks/clarification-gate.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_capability_levels.py tests/unit/test_codex_guard_layer.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/clarification-gate.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: clarification-gate blocked the action; follow the hook message, repair the unsafe state, or demote only
-    with operator approval.
+  repair_message: clarification-gate blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_capability_levels.py
   - tests/unit/test_codex_guard_layer.py
@@ -440,11 +463,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/completeness-check.sh
-  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_codex_guard_layer.py -q
-  rollback_or_repair_command: Disable or demote hooks/completeness-check.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_codex_guard_layer.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/completeness-check.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -465,10 +489,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/completion-gate.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_completion_gate_perf.py -q
-  rollback_or_repair_command: Disable or demote hooks/completion-gate.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_completion_gate_perf.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/completion-gate.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/auto-verify.jsonl
@@ -491,13 +517,13 @@ primitives:
   - bash -n hooks/concurrent-write-guard.sh
   - python3 -m pytest tests/unit/test_concurrent_agent_safety_status.py tests/unit/test_concurrent_write_guard_behavior.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/concurrent-write-guard.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/concurrent-write-guard.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: concurrent-write-guard blocked the action; follow the hook message, repair the unsafe state, or demote only
-    with operator approval.
+  repair_message: concurrent-write-guard blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_concurrent_agent_safety_status.py
   - tests/unit/test_concurrent_write_guard_behavior.py
@@ -521,13 +547,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/confidence-gate.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_efficiency_optimization.py -q
-  rollback_or_repair_command: Disable or demote hooks/confidence-gate.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_efficiency_optimization.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/confidence-gate.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: confidence-gate blocked the action; follow the hook message, repair the unsafe state, or demote only with
-    operator approval.
+  repair_message: confidence-gate blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_efficiency_optimization.py
@@ -551,14 +579,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/confidentiality-enforcer.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/behavior/test_confidentiality_enforcer.py -q
-  rollback_or_repair_command: Disable or demote hooks/confidentiality-enforcer.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/behavior/test_confidentiality_enforcer.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/confidentiality-enforcer.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: confidentiality-enforcer blocked the action; follow the hook message, repair the unsafe state, or demote
-    only with operator approval.
+  repair_message: confidentiality-enforcer blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/behavior/test_confidentiality_enforcer.py
@@ -582,13 +611,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/content-policy.sh
-  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_chaos_template.py -q
-  rollback_or_repair_command: Disable or demote hooks/content-policy.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_chaos_template.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/content-policy.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: content-policy blocked the action; follow the hook message, repair the unsafe state, or demote only with
-    operator approval.
+  repair_message: content-policy blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_capability_level5.py
   - tests/unit/test_chaos_template.py
@@ -612,10 +643,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory
   evidence_commands:
   - bash -n hooks/context-watchdog.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/behavior/test_compaction_protection.py -q
-  rollback_or_repair_command: Disable or demote hooks/context-watchdog.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/behavior/test_compaction_protection.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/context-watchdog.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/context-watchdog.jsonl
@@ -637,10 +670,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/cos-executor-daemon-launcher.sh
   - python3 -m pytest tests/contracts/test_self_install_no_container_spawn.py -q
-  rollback_or_repair_command: Disable or demote hooks/cos-executor-daemon-launcher.sh in generated harness settings, then
-    regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/cos-executor-daemon-launcher.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -661,10 +694,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/crash-recovery.sh
-  - python3 -m pytest tests/behavior/test_agent_resilience.py tests/behavior/test_crash_recovery.py -q
-  rollback_or_repair_command: Disable or demote hooks/crash-recovery.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/behavior/test_agent_resilience.py tests/behavior/test_crash_recovery.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/crash-recovery.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -685,10 +720,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/dequeue-notify.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_registered_hook_behaviors.py -q
-  rollback_or_repair_command: Disable or demote hooks/dequeue-notify.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_registered_hook_behaviors.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/dequeue-notify.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/dispatch-gate.jsonl
@@ -709,14 +746,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/destructive-git-blocker.sh
-  - python3 -m pytest tests/unit/test_destructive_git_block.py tests/contracts/test_killswitch.py -q
-  rollback_or_repair_command: Disable or demote hooks/destructive-git-blocker.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_destructive_git_block.py tests/contracts/test_killswitch.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/destructive-git-blocker.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: destructive-git-blocker blocked the action; follow the hook message, repair the unsafe state, or demote
-    only with operator approval.
+  repair_message: destructive-git-blocker blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_destructive_git_block.py
   - tests/contracts/test_killswitch.py
@@ -740,11 +778,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory
   evidence_commands:
   - bash -n hooks/destructive-rm-blocker.sh
-  - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_coverage_classifier.py -q
-  rollback_or_repair_command: Disable or demote hooks/destructive-rm-blocker.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_coverage_classifier.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/destructive-rm-blocker.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/rm-op-blocks.jsonl
@@ -765,14 +804,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/direct-main-guard.sh
-  - python3 -m pytest tests/unit/test_active_primitive_index.py tests/unit/test_direct_main_guard.py -q
-  rollback_or_repair_command: Disable or demote hooks/direct-main-guard.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_active_primitive_index.py tests/unit/test_direct_main_guard.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/direct-main-guard.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: direct-main-guard blocked the action; follow the hook message, repair the unsafe state, or demote only with
-    operator approval.
+  repair_message: direct-main-guard blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_active_primitive_index.py
   - tests/unit/test_direct_main_guard.py
@@ -796,13 +836,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/dispatch-gate.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_config_loader.py -q
-  rollback_or_repair_command: Disable or demote hooks/dispatch-gate.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_config_loader.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/dispatch-gate.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: dispatch-gate blocked the action; follow the hook message, repair the unsafe state, or demote only with
-    operator approval.
+  repair_message: dispatch-gate blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_config_loader.py
@@ -826,11 +868,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/doc-sync-detector.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/behavior/test_hooks_batch1.py -q
-  rollback_or_repair_command: Disable or demote hooks/doc-sync-detector.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/behavior/test_hooks_batch1.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/doc-sync-detector.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/stale-docs.jsonl
@@ -852,10 +895,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/docker-drift-detector.sh
   - python3 -m pytest tests/unit/test_docker_drift_detector.py -q
-  rollback_or_repair_command: Disable or demote hooks/docker-drift-detector.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/docker-drift-detector.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/docker-drift.jsonl
@@ -876,10 +919,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/dod-gate.sh
-  - python3 -m pytest tests/unit/test_cos_init_py.py tests/unit/test_dod_gate_behavior.py -q
-  rollback_or_repair_command: Disable or demote hooks/dod-gate.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_cos_init_py.py tests/unit/test_dod_gate_behavior.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/dod-gate.sh in generated harness
+    settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/dod-gate.jsonl
@@ -900,11 +945,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/edit-lock-drain-parked.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_edit_lock_drain_parked.py -q
-  rollback_or_repair_command: Disable or demote hooks/edit-lock-drain-parked.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_edit_lock_drain_parked.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/edit-lock-drain-parked.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -925,14 +971,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/edit-lock-pre-tool.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_projected_hook_gap_behaviors.py -q
-  rollback_or_repair_command: Disable or demote hooks/edit-lock-pre-tool.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_projected_hook_gap_behaviors.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/edit-lock-pre-tool.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: edit-lock-pre-tool blocked the action; follow the hook message, repair the unsafe state, or demote only
-    with operator approval.
+  repair_message: edit-lock-pre-tool blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_projected_hook_gap_behaviors.py
@@ -957,10 +1004,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/edit-lock-process-negotiations.sh
   - python3 -m pytest tests/unit/test_edit_lock_process_negotiations.py -q
-  rollback_or_repair_command: Disable or demote hooks/edit-lock-process-negotiations.sh in generated harness settings, then
-    regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/edit-lock-process-negotiations.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -981,11 +1028,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/edit-lock-session-end.sh
-  - python3 -m pytest tests/unit/test_projected_hook_gap_behaviors.py tests/integration/test_edit_lock_live_conflict.py -q
-  rollback_or_repair_command: Disable or demote hooks/edit-lock-session-end.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_projected_hook_gap_behaviors.py tests/integration/test_edit_lock_live_conflict.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/edit-lock-session-end.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -1008,10 +1056,10 @@ primitives:
   - bash -n hooks/engram-crystallize-on-session-end.sh
   - python3 -m pytest tests/contracts/test_harness_transparency_status_docs.py tests/contracts/test_memory_lifecycle_docs.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/engram-crystallize-on-session-end.sh in generated harness settings,
-    then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/engram-crystallize-on-session-end.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/crystallization-events.jsonl
@@ -1034,10 +1082,10 @@ primitives:
   - bash -n hooks/engram-daemon-launcher.sh
   - python3 -m pytest tests/contracts/test_harness_transparency_status_docs.py tests/contracts/test_memory_lifecycle_docs.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/engram-daemon-launcher.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/engram-daemon-launcher.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -1058,11 +1106,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory
   evidence_commands:
   - bash -n hooks/engram-reinforce-on-access.sh
-  - python3 -m pytest tests/contracts/test_memory_lifecycle_portability.py tests/behavior/test_engram_reinforce_hook.py -q
-  rollback_or_repair_command: Disable or demote hooks/engram-reinforce-on-access.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/contracts/test_memory_lifecycle_portability.py tests/behavior/test_engram_reinforce_hook.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/engram-reinforce-on-access.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/lifecycle-reinforcement.jsonl
@@ -1083,10 +1132,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/error-learning.sh
-  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_chaos_template.py -q
-  rollback_or_repair_command: Disable or demote hooks/error-learning.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_chaos_template.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/error-learning.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/error-learning.jsonl
@@ -1107,11 +1158,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/error-pattern-detector.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cross_platform_discipline.py -q
-  rollback_or_repair_command: Disable or demote hooks/error-pattern-detector.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cross_platform_discipline.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/error-pattern-detector.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/error-learning.jsonl
@@ -1132,10 +1184,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/error-pipeline.sh
-  - python3 -m pytest tests/unit/test_cross_platform_discipline.py tests/unit/test_hook_behavioral.py -q
-  rollback_or_repair_command: Disable or demote hooks/error-pipeline.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_cross_platform_discipline.py tests/unit/test_hook_behavioral.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/error-pipeline.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/error-learning.jsonl
@@ -1157,13 +1211,13 @@ primitives:
   evidence_commands:
   - bash -n hooks/git-commit-scope-guard.sh
   - python3 -m pytest tests/unit/test_projected_hook_gap_behaviors.py -q
-  rollback_or_repair_command: Disable or demote hooks/git-commit-scope-guard.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/git-commit-scope-guard.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: git-commit-scope-guard blocked the action; follow the hook message, repair the unsafe state, or demote only
-    with operator approval.
+  repair_message: git-commit-scope-guard blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_projected_hook_gap_behaviors.py
   docs_claim_level: blocking
@@ -1188,10 +1242,10 @@ primitives:
   - bash -n hooks/git-context-capture.sh
   - python3 -m pytest tests/contracts/test_harness_transparency_status_docs.py tests/contracts/test_memory_lifecycle_docs.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/git-context-capture.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/git-context-capture.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/session-audit.jsonl
@@ -1212,14 +1266,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/hook-header-validator.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py -q
-  rollback_or_repair_command: Disable or demote hooks/hook-header-validator.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/hook-header-validator.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: hook-header-validator blocked the action; follow the hook message, repair the unsafe state, or demote only
-    with operator approval.
+  repair_message: hook-header-validator blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/audit/test_hooks_contracts.py
@@ -1245,9 +1300,10 @@ primitives:
   - bash -n hooks/host-tool-doctor.sh
   - python3 -m pytest tests/contracts/test_session_start_tooling_contract.py tests/behavior/test_host_tool_doctor_hook.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/host-tool-doctor.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/host-tool-doctor.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -1268,10 +1324,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/infra-health.sh
-  - python3 -m pytest tests/behavior/test_efficiency_profiles.py tests/behavior/test_safety_mesh.py -q
-  rollback_or_repair_command: Disable or demote hooks/infra-health.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/behavior/test_efficiency_profiles.py tests/behavior/test_safety_mesh.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/infra-health.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/infra-health.jsonl
@@ -1292,11 +1350,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/inject-phase-context.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_inject_phase_context_native.py -q
-  rollback_or_repair_command: Disable or demote hooks/inject-phase-context.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_inject_phase_context_native.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/inject-phase-context.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -1318,9 +1377,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/kpi-trigger.sh
   - python3 -m pytest tests/behavior/test_self_improvement.py -q
-  rollback_or_repair_command: Disable or demote hooks/kpi-trigger.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/kpi-trigger.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/kpi-history.jsonl
@@ -1341,11 +1401,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/large-file-advisor.sh
-  - python3 -m pytest tests/behavior/test_large_file_advisor.py tests/hooks/test_hook_basics.py -q
-  rollback_or_repair_command: Disable or demote hooks/large-file-advisor.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/behavior/test_large_file_advisor.py tests/hooks/test_hook_basics.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/large-file-advisor.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/large-file-reads.jsonl
@@ -1366,14 +1427,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/lethal-trifecta-gate.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_lethal_trifecta_gate.py -q
-  rollback_or_repair_command: Disable or demote hooks/lethal-trifecta-gate.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_lethal_trifecta_gate.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/lethal-trifecta-gate.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: lethal-trifecta-gate blocked the action; follow the hook message, repair the unsafe state, or demote only
-    with operator approval.
+  repair_message: lethal-trifecta-gate blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/contracts/test_lethal_trifecta_gate.py
@@ -1397,10 +1459,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/mcp-scan.sh
-  - python3 -m pytest tests/behavior/test_security_integrations.py tests/hooks/test_hook_graceful_degradation.py -q
-  rollback_or_repair_command: Disable or demote hooks/mcp-scan.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/behavior/test_security_integrations.py tests/hooks/test_hook_graceful_degradation.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/mcp-scan.sh in generated harness
+    settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/mcp-scan-findings.jsonl
@@ -1422,9 +1486,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/memory-prefetch.sh
   - python3 -m pytest tests/unit/test_registered_hook_behaviors.py -q
-  rollback_or_repair_command: Disable or demote hooks/memory-prefetch.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/memory-prefetch.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -1445,11 +1510,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/native-agent-heartbeat.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/integration/test_native_agent_heartbeat.py -q
-  rollback_or_repair_command: Disable or demote hooks/native-agent-heartbeat.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/integration/test_native_agent_heartbeat.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/native-agent-heartbeat.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-heartbeat.jsonl
@@ -1470,14 +1536,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/orchestrator-claim-gate.sh
-  - python3 -m pytest tests/unit/test_concurrent_agent_safety_status.py tests/unit/test_gate_runner.py -q
-  rollback_or_repair_command: Disable or demote hooks/orchestrator-claim-gate.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_concurrent_agent_safety_status.py tests/unit/test_gate_runner.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/orchestrator-claim-gate.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: orchestrator-claim-gate blocked the action; follow the hook message, repair the unsafe state, or demote
-    only with operator approval.
+  repair_message: orchestrator-claim-gate blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_concurrent_agent_safety_status.py
   - tests/unit/test_gate_runner.py
@@ -1501,14 +1568,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/plan-claim-validator.sh
-  - python3 -m pytest tests/unit/test_concurrent_agent_safety_status.py tests/unit/test_gate_runner.py -q
-  rollback_or_repair_command: Disable or demote hooks/plan-claim-validator.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_concurrent_agent_safety_status.py tests/unit/test_gate_runner.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/plan-claim-validator.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: plan-claim-validator blocked the action; follow the hook message, repair the unsafe state, or demote only
-    with operator approval.
+  repair_message: plan-claim-validator blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_concurrent_agent_safety_status.py
   - tests/unit/test_gate_runner.py
@@ -1532,11 +1600,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/post-agent-snapshot-restore.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/integration/test_auto_checkpoint_named_stash.py -q
-  rollback_or_repair_command: Disable or demote hooks/post-agent-snapshot-restore.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/integration/test_auto_checkpoint_named_stash.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/post-agent-snapshot-restore.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-snapshots.jsonl
@@ -1558,10 +1627,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/post-agent-verify.sh
   - python3 -m pytest tests/behavior/test_post_agent_verify.py -q
-  rollback_or_repair_command: Disable or demote hooks/post-agent-verify.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/post-agent-verify.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-violations.jsonl
@@ -1582,11 +1651,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/post-git-orphan-notifier.sh
-  - python3 -m pytest tests/red_team/portability/test_post-git-orphan-notifier.py -q
-  rollback_or_repair_command: Disable or demote hooks/post-git-orphan-notifier.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/red_team/portability/test_post-git-orphan-notifier.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/post-git-orphan-notifier.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/orphan-notifier.jsonl
@@ -1607,11 +1677,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/pre-agent-snapshot.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cos_governance_roi.py -q
-  rollback_or_repair_command: Disable or demote hooks/pre-agent-snapshot.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cos_governance_roi.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/pre-agent-snapshot.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-snapshots.jsonl
@@ -1634,13 +1705,13 @@ primitives:
   - bash -n hooks/pre-commit-content-hash-dedupe.sh
   - python3 -m pytest tests/unit/test_precommit_content_hash.py tests/red_team/portability/test_pre-commit-content-hash-dedupe.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/pre-commit-content-hash-dedupe.sh in generated harness settings, then
-    regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/pre-commit-content-hash-dedupe.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: pre-commit-content-hash-dedupe blocked the action; follow the hook message, repair the unsafe state, or
-    demote only with operator approval.
+  repair_message: pre-commit-content-hash-dedupe blocked the action; follow the hook
+    message, repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_precommit_content_hash.py
   - tests/red_team/portability/test_pre-commit-content-hash-dedupe.py
@@ -1664,11 +1735,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/pre-compaction-flush.sh
-  - python3 -m pytest tests/unit/test_anchored_summarizer.py tests/unit/test_compaction_behavior.py -q
-  rollback_or_repair_command: Disable or demote hooks/pre-compaction-flush.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_anchored_summarizer.py tests/unit/test_compaction_behavior.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/pre-compaction-flush.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -1689,14 +1761,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/predev-completeness-check.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_rules_enforcement.py -q
-  rollback_or_repair_command: Disable or demote hooks/predev-completeness-check.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_rules_enforcement.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/predev-completeness-check.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: predev-completeness-check blocked the action; follow the hook message, repair the unsafe state, or demote
-    only with operator approval.
+  repair_message: predev-completeness-check blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/audit/test_rules_enforcement.py
@@ -1720,11 +1793,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/private-mode-gate.sh
-  - python3 -m pytest tests/behavior/test_private_mode.py tests/audit/test_hooks_contracts.py -q
-  rollback_or_repair_command: Disable or demote hooks/private-mode-gate.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/behavior/test_private_mode.py tests/audit/test_hooks_contracts.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/private-mode-gate.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -1745,11 +1819,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/private-mode-metrics-gate.sh
-  - python3 -m pytest tests/behavior/test_private_mode.py tests/audit/test_hooks_contracts.py -q
-  rollback_or_repair_command: Disable or demote hooks/private-mode-metrics-gate.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/behavior/test_private_mode.py tests/audit/test_hooks_contracts.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/private-mode-metrics-gate.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
@@ -1770,11 +1845,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/profile-drift-autoapply.sh
-  - python3 -m pytest tests/unit/test_registered_hook_behaviors.py tests/unit/test_validation_capsule.py -q
-  rollback_or_repair_command: Disable or demote hooks/profile-drift-autoapply.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_registered_hook_behaviors.py tests/unit/test_validation_capsule.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/profile-drift-autoapply.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -1795,14 +1871,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/project-docs-convention.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_project_docs_writers.py -q
-  rollback_or_repair_command: Disable or demote hooks/project-docs-convention.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_project_docs_writers.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/project-docs-convention.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: project-docs-convention blocked the action; follow the hook message, repair the unsafe state, or demote
-    only with operator approval.
+  repair_message: project-docs-convention blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_project_docs_writers.py
@@ -1826,11 +1903,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/query-tailored-context-inject.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_projected_hook_gap_behaviors.py -q
-  rollback_or_repair_command: Disable or demote hooks/query-tailored-context-inject.sh in generated harness settings, then
-    regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_projected_hook_gap_behaviors.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/query-tailored-context-inject.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -1851,11 +1929,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/rate-limit-detector.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_orchestrator_fallback.py -q
-  rollback_or_repair_command: Disable or demote hooks/rate-limit-detector.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_orchestrator_fallback.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/rate-limit-detector.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/rate-limit-events.jsonl
@@ -1876,10 +1955,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/rate-limit-drain.sh
-  - python3 -m pytest tests/unit/test_rate_limiter_edge_matrix.py tests/integration/test_rate_limit_drainer_executes.py -q
-  rollback_or_repair_command: Disable or demote hooks/rate-limit-drain.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_rate_limiter_edge_matrix.py tests/integration/test_rate_limit_drainer_executes.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/rate-limit-drain.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/rate-limit-executed.jsonl
@@ -1902,10 +1983,10 @@ primitives:
   - bash -n hooks/rate-limit-precheck.sh
   - python3 -m pytest tests/integration/test_query_tailored_context.py tests/integration/test_rate_limit_precheck_lift.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/rate-limit-precheck.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/rate-limit-precheck.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
@@ -1926,13 +2007,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/rate-limiter.sh
-  - python3 -m pytest tests/unit/test_confidentiality_scanner.py tests/unit/test_dispatch_helper.py -q
-  rollback_or_repair_command: Disable or demote hooks/rate-limiter.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_confidentiality_scanner.py tests/unit/test_dispatch_helper.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/rate-limiter.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 2000
-  repair_message: rate-limiter blocked the action; follow the hook message, repair the unsafe state, or demote only with operator
-    approval.
+  repair_message: rate-limiter blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_confidentiality_scanner.py
   - tests/unit/test_dispatch_helper.py
@@ -1956,11 +2039,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/reaper-daemon-launcher.sh
-  - python3 -m pytest tests/unit/test_cos_config_audit.py tests/contracts/test_self_install_no_container_spawn.py -q
-  rollback_or_repair_command: Disable or demote hooks/reaper-daemon-launcher.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_cos_config_audit.py tests/contracts/test_self_install_no_container_spawn.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/reaper-daemon-launcher.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -1981,11 +2065,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/reinvention-check.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_fd_invariant.py -q
-  rollback_or_repair_command: Disable or demote hooks/reinvention-check.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_fd_invariant.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/reinvention-check.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/reinvention-checks.jsonl
@@ -2006,10 +2091,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/result-truncator.sh
-  - python3 -m pytest tests/unit/test_capability_level5.py tests/behavior/test_hooks_batch1.py -q
-  rollback_or_repair_command: Disable or demote hooks/result-truncator.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_capability_level5.py tests/behavior/test_hooks_batch1.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/result-truncator.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/truncation-events.jsonl
@@ -2030,10 +2117,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/review-spawner.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_projected_hook_gap_behaviors.py -q
-  rollback_or_repair_command: Disable or demote hooks/review-spawner.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_projected_hook_gap_behaviors.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/review-spawner.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/review-findings.jsonl
@@ -2054,14 +2143,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/rule-frontmatter-validator.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py -q
-  rollback_or_repair_command: Disable or demote hooks/rule-frontmatter-validator.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/rule-frontmatter-validator.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: rule-frontmatter-validator blocked the action; follow the hook message, repair the unsafe state, or demote
-    only with operator approval.
+  repair_message: rule-frontmatter-validator blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/audit/test_hooks_contracts.py
@@ -2085,14 +2175,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/scope-marker-portability-gate.sh
-  - python3 -m pytest tests/unit/test_gate_runner.py tests/contracts/test_redteam_portability_coverage.py -q
-  rollback_or_repair_command: Disable or demote hooks/scope-marker-portability-gate.sh in generated harness settings, then
-    regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_gate_runner.py tests/contracts/test_redteam_portability_coverage.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/scope-marker-portability-gate.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: scope-marker-portability-gate blocked the action; follow the hook message, repair the unsafe state, or demote
-    only with operator approval.
+  repair_message: scope-marker-portability-gate blocked the action; follow the hook
+    message, repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_gate_runner.py
   - tests/contracts/test_redteam_portability_coverage.py
@@ -2116,13 +2207,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/secret-detector.sh
-  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_chaos_template.py -q
-  rollback_or_repair_command: Disable or demote hooks/secret-detector.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_chaos_template.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/secret-detector.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: secret-detector blocked the action; follow the hook message, repair the unsafe state, or demote only with
-    operator approval.
+  repair_message: secret-detector blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_capability_level5.py
   - tests/unit/test_chaos_template.py
@@ -2146,10 +2239,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/self-install.sh
-  - python3 -m pytest tests/unit/test_cos_config_audit.py tests/unit/test_efficiency_optimization.py -q
-  rollback_or_repair_command: Disable or demote hooks/self-install.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_cos_config_audit.py tests/unit/test_efficiency_optimization.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/self-install.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
@@ -2171,10 +2266,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/self-knowledge-refresh.sh
   - python3 -m pytest tests/integration/test_self_knowledge_refresh.py -q
-  rollback_or_repair_command: Disable or demote hooks/self-knowledge-refresh.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/self-knowledge-refresh.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/self-knowledge-refresh.jsonl
@@ -2195,11 +2290,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/session-changelog.sh
-  - python3 -m pytest tests/unit/test_changelog_generator.py tests/contracts/test_developer_confidence_docs.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-changelog.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_changelog_generator.py tests/contracts/test_developer_confidence_docs.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/session-changelog.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -2220,10 +2316,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/session-cleanup.sh
-  - python3 -m pytest tests/unit/test_agent_timeout.py tests/unit/test_capability_level5.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-cleanup.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_agent_timeout.py tests/unit/test_capability_level5.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/session-cleanup.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-timeouts.jsonl
@@ -2244,10 +2342,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/session-end-reap.sh
-  - python3 -m pytest tests/unit/test_coverage_classifier.py tests/chaos/test_session_end_reap_exercised.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-end-reap.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_coverage_classifier.py tests/chaos/test_session_end_reap_exercised.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/session-end-reap.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -2268,11 +2368,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/session-heartbeat.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/chaos/test_session_heartbeat_exercised.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-heartbeat.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/chaos/test_session_heartbeat_exercised.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/session-heartbeat.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -2293,10 +2394,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory
   evidence_commands:
   - bash -n hooks/session-init.sh
-  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_catalog_loading.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-init.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_catalog_loading.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/session-init.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
@@ -2317,10 +2420,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/session-learning.sh
-  - python3 -m pytest tests/unit/test_governed_self_improvement.py tests/contracts/test_harness_engineering_docs.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-learning.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_governed_self_improvement.py tests/contracts/test_harness_engineering_docs.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/session-learning.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/session-learnings.jsonl
@@ -2343,9 +2448,10 @@ primitives:
   - bash -n hooks/session-resume.sh
   - python3 -m pytest tests/contracts/test_developer_confidence_docs.py tests/contracts/test_harness_transparency_status_docs.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/session-resume.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/session-resume.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -2366,9 +2472,10 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/session-sanity.sh
-  rollback_or_repair_command: Disable or demote hooks/session-sanity.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/session-sanity.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -2390,10 +2497,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/session-start-stash-reapply.sh
   - python3 -m pytest tests/integration/test_stash_reapply.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-start-stash-reapply.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/session-start-stash-reapply.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/stash-provenance.jsonl
@@ -2414,11 +2521,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/session-start-worktree-nudge.sh
-  - python3 -m pytest tests/integration/test_session_start_worktree_nudge.py tests/e2e/test_cos_smoke.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-start-worktree-nudge.sh in generated harness settings, then
-    regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/integration/test_session_start_worktree_nudge.py tests/e2e/test_cos_smoke.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/session-start-worktree-nudge.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/worktree-nudges.jsonl
@@ -2440,10 +2548,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/session-startup-protocol.sh
   - python3 -m pytest tests/unit/test_startup_protocol.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-startup-protocol.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/session-startup-protocol.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/<dynamic>.jsonl
@@ -2465,10 +2573,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/session-summary-reminder.sh
   - python3 -m pytest tests/behavior/test_cos_doctor_tools.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-summary-reminder.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/session-summary-reminder.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/session-summary-fallback.jsonl
@@ -2491,10 +2599,10 @@ primitives:
   - bash -n hooks/session-watchdog-launcher.sh
   - python3 -m pytest tests/unit/test_session_watchdog_launcher.py tests/contracts/test_self_install_no_container_spawn.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/session-watchdog-launcher.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/session-watchdog-launcher.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -2515,11 +2623,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/session-wrapup-trigger.sh
-  - python3 -m pytest tests/integration/test_auto_trigger_honoured.py tests/hooks/test_session_wrapup_trigger.py -q
-  rollback_or_repair_command: Disable or demote hooks/session-wrapup-trigger.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/integration/test_auto_trigger_honoured.py tests/hooks/test_session_wrapup_trigger.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/session-wrapup-trigger.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/auto-trigger-events.jsonl
@@ -2541,10 +2650,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/skill-failure-monitor.sh
   - python3 -m pytest tests/unit/test_projected_hook_gap_behaviors.py -q
-  rollback_or_repair_command: Disable or demote hooks/skill-failure-monitor.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/skill-failure-monitor.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/skill-feedback.jsonl
@@ -2565,11 +2674,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/skill-feedback-tracker.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py -q
-  rollback_or_repair_command: Disable or demote hooks/skill-feedback-tracker.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/skill-feedback-tracker.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/skill-feedback.jsonl
@@ -2590,14 +2700,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/skill-frontmatter-validator.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_registered_hook_behaviors.py -q
-  rollback_or_repair_command: Disable or demote hooks/skill-frontmatter-validator.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_registered_hook_behaviors.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/skill-frontmatter-validator.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: skill-frontmatter-validator blocked the action; follow the hook message, repair the unsafe state, or demote
-    only with operator approval.
+  repair_message: skill-frontmatter-validator blocked the action; follow the hook
+    message, repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_registered_hook_behaviors.py
@@ -2622,10 +2733,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/skill-invocation-logger.sh
   - python3 -m pytest tests/integration/test_auto_trigger_honoured.py -q
-  rollback_or_repair_command: Disable or demote hooks/skill-invocation-logger.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/skill-invocation-logger.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/skill-invocations.jsonl
@@ -2647,10 +2758,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/skill-synthesis-scanner.sh
   - python3 -m pytest tests/unit/test_projected_hook_gap_behaviors.py -q
-  rollback_or_repair_command: Disable or demote hooks/skill-synthesis-scanner.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/skill-synthesis-scanner.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/skill-synthesis-queue.jsonl
@@ -2671,10 +2782,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/skill-tracker.sh
-  - python3 -m pytest tests/behavior/test_hooks_batch1.py tests/audit/test_hooks_contracts.py -q
-  rollback_or_repair_command: Disable or demote hooks/skill-tracker.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/behavior/test_hooks_batch1.py tests/audit/test_hooks_contracts.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/skill-tracker.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/skill-metrics.jsonl
@@ -2696,10 +2809,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/skill-usage-tracker.sh
   - python3 -m pytest tests/behavior/test_efficiency_profiles.py -q
-  rollback_or_repair_command: Disable or demote hooks/skill-usage-tracker.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/skill-usage-tracker.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/skill-usage.jsonl
@@ -2721,10 +2834,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/stash-budget-warn.sh
   - python3 -m pytest tests/integration/test_stash_budget_warn.py -q
-  rollback_or_repair_command: Disable or demote hooks/stash-budget-warn.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/stash-budget-warn.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/stash-budget.jsonl
@@ -2745,10 +2858,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/state-heartbeat.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_coverage_classifier.py -q
-  rollback_or_repair_command: Disable or demote hooks/state-heartbeat.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_coverage_classifier.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/state-heartbeat.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -2769,11 +2884,12 @@ primitives:
   behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/subagent-context-injector.sh
-  - python3 -m pytest tests/audit/test_rules_enforcement.py tests/hooks/test_hook_graceful_degradation.py -q
-  rollback_or_repair_command: Disable or demote hooks/subagent-context-injector.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/audit/test_rules_enforcement.py tests/hooks/test_hook_graceful_degradation.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/subagent-context-injector.sh
+    in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
@@ -2794,11 +2910,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/surface-fix-detector.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_surface_fix_detector.py -q
-  rollback_or_repair_command: Disable or demote hooks/surface-fix-detector.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_surface_fix_detector.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/surface-fix-detector.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/surface-fix-detector.jsonl
@@ -2820,13 +2937,13 @@ primitives:
   evidence_commands:
   - bash -n hooks/symlink-mutation-guard.sh
   - python3 -m pytest tests/red_team/portability/test_symlink-mutation-guard.py -q
-  rollback_or_repair_command: Disable or demote hooks/symlink-mutation-guard.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/symlink-mutation-guard.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: symlink-mutation-guard blocked the action; follow the hook message, repair the unsafe state, or demote only
-    with operator approval.
+  repair_message: symlink-mutation-guard blocked the action; follow the hook message,
+    repair the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/red_team/portability/test_symlink-mutation-guard.py
   docs_claim_level: blocking
@@ -2849,13 +2966,15 @@ primitives:
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/task-completed.sh
-  - python3 -m pytest tests/unit/test_event_bus.py tests/unit/test_task_bridge.py -q
-  rollback_or_repair_command: Disable or demote hooks/task-completed.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_event_bus.py tests/unit/test_task_bridge.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/task-completed.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: task-completed blocked the action; follow the hook message, repair the unsafe state, or demote only with
-    operator approval.
+  repair_message: task-completed blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/unit/test_event_bus.py
   - tests/unit/test_task_bridge.py
@@ -2879,13 +2998,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/task-created.sh
-  - python3 -m pytest tests/integration/test_harness_driver_parity.py tests/hooks/test_agent_teams_hooks.py -q
-  rollback_or_repair_command: Disable or demote hooks/task-created.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/integration/test_harness_driver_parity.py tests/hooks/test_agent_teams_hooks.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/task-created.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: task-created blocked the action; follow the hook message, repair the unsafe state, or demote only with operator
-    approval.
+  repair_message: task-created blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/integration/test_harness_driver_parity.py
   - tests/hooks/test_agent_teams_hooks.py
@@ -2909,13 +3030,15 @@ primitives:
   behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/teammate-idle.sh
-  - python3 -m pytest tests/integration/test_harness_driver_parity.py tests/hooks/test_agent_teams_hooks.py -q
-  rollback_or_repair_command: Disable or demote hooks/teammate-idle.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/integration/test_harness_driver_parity.py tests/hooks/test_agent_teams_hooks.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/teammate-idle.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   latency_budget_ms: 1000
-  repair_message: teammate-idle blocked the action; follow the hook message, repair the unsafe state, or demote only with
-    operator approval.
+  repair_message: teammate-idle blocked the action; follow the hook message, repair
+    the unsafe state, or demote only with operator approval.
   false_positive_tests:
   - tests/integration/test_harness_driver_parity.py
   - tests/hooks/test_agent_teams_hooks.py
@@ -2939,11 +3062,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/tool-sequence-capture.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_tool_sequence_capture.py -q
-  rollback_or_repair_command: Disable or demote hooks/tool-sequence-capture.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_tool_sequence_capture.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/tool-sequence-capture.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/tool-sequences.jsonl
@@ -2964,11 +3088,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/trust-score-validator.sh
-  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_codex_guard_layer.py -q
-  rollback_or_repair_command: Disable or demote hooks/trust-score-validator.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_codex_guard_layer.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/trust-score-validator.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/trust-scores.jsonl
@@ -2991,10 +3116,10 @@ primitives:
   - bash -n hooks/user-prompt-capture.sh
   - python3 -m pytest tests/contracts/test_harness_transparency_status_docs.py tests/contracts/test_memory_lifecycle_docs.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/user-prompt-capture.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/user-prompt-capture.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/prompt-captures.jsonl
@@ -3016,10 +3141,10 @@ primitives:
   evidence_commands:
   - bash -n hooks/validation-lock-cleanup.sh
   - python3 -m pytest tests/unit/test_validation_capsule.py -q
-  rollback_or_repair_command: Disable or demote hooks/validation-lock-cleanup.sh in generated harness settings, then regenerate
-    projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  rollback_or_repair_command: Disable or demote hooks/validation-lock-cleanup.sh in
+    generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/validation-auto-recovery.jsonl
@@ -3040,10 +3165,12 @@ primitives:
   behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/work-queue-sync.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_work_queue_sync.py -q
-  rollback_or_repair_command: Disable or demote hooks/work-queue-sync.sh in generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive
-    with equivalent tests.
+  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_work_queue_sync.py
+    -q
+  rollback_or_repair_command: Disable or demote hooks/work-queue-sync.sh in generated
+    harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90
+    days or replaced by a native harness primitive with equivalent tests.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/work-queue.jsonl
@@ -3067,10 +3194,10 @@ primitives:
   evidence_commands:
   - bash scripts/cos-doctor-preserve.sh --help >/dev/null
   - python3 -m pytest tests/behavior/test_cos_doctor_preserve.py -q
-  rollback_or_repair_command: Disable preserve-branch doctor invocation from the active profile and keep preservation branches
-    untouched for manual triage.
-  sunset_criteria: Archive when preserve-branch lifecycle is enforced by the protected landing contract and no preserved WIP
-    branches are produced for 90 days.
+  rollback_or_repair_command: Disable preserve-branch doctor invocation from the active
+    profile and keep preservation branches untouched for manual triage.
+  sunset_criteria: Archive when preserve-branch lifecycle is enforced by the protected
+    landing contract and no preserved WIP branches are produced for 90 days.
   docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
@@ -3091,10 +3218,269 @@ primitives:
   behavior_evidence: behavior-test
   evidence_commands:
   - python3 -m pytest tests/behavior/test_cos_primitive_harvester.py -q
-  rollback_or_repair_command: Keep generated primitive proposals in lab output only and ignore harvester suggestions until
-    evidence is refreshed.
-  sunset_criteria: Demote to archived if proposal precision remains below the configured ROI threshold for two consecutive
-    review windows.
+  rollback_or_repair_command: Keep generated primitive proposals in lab output only
+    and ignore harvester suggestions until evidence is refreshed.
+  sunset_criteria: Demote to archived if proposal precision remains below the configured
+    ROI threshold for two consecutive review windows.
   docs_claim_level: observe
   exit_behavior: manual
   metrics_file: none
+- kind: script
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: &id001
+  - shell
+  runtime_projection: false
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  id: scripts/cos-runtime-hook-reality
+  owner_adr: ADR-126
+  projection_targets:
+  - scripts/cos-runtime-hook-reality
+  - scripts/runtime_hook_reality.py
+  - docs/architecture/boring-reliability-control-plane.md
+  behavior_evidence: control-plane-smoke-and-unit-tests
+  evidence_commands:
+  - scripts/cos-runtime-hook-reality --fail-on-findings
+  - python3 -m pytest tests/unit/test_runtime_hook_reality.py tests/contracts/test_primitive_runtime_reality.py
+    -q
+  rollback_or_repair_command: Fix lifecycle/runtime projection drift, then rerun scripts/cos-runtime-hook-reality
+    --fail-on-findings.
+  sunset_criteria: Archive only if runtime hook reality is enforced by a stronger
+    canonical readiness gate.
+- kind: script
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: *id001
+  runtime_projection: false
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  id: scripts/cos-adoption-profile
+  owner_adr: ADR-124
+  projection_targets:
+  - scripts/cos-adoption-profile
+  - scripts/cos_adoption_profile.py
+  - docs/architecture/boring-reliability-control-plane.md
+  behavior_evidence: control-plane-smoke-and-unit-tests
+  evidence_commands:
+  - scripts/cos-adoption-profile --profile core
+  - python3 -m pytest tests/unit/test_boring_reliability_tools.py -q
+  rollback_or_repair_command: Demote non-core primitives or adjust lifecycle metadata,
+    then rerun the adoption profile.
+  sunset_criteria: Archive only if active primitive index subsumes adoption profile
+    reporting.
+- kind: script
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: *id001
+  runtime_projection: false
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  id: scripts/cos-preamble-budget
+  owner_adr: ADR-125
+  projection_targets:
+  - scripts/cos-preamble-budget
+  - scripts/cos_preamble_budget.py
+  - docs/architecture/core-adoption-preamble.md
+  behavior_evidence: control-plane-smoke-and-unit-tests
+  evidence_commands:
+  - scripts/cos-preamble-budget --profile core
+  - python3 -m pytest tests/unit/test_boring_reliability_tools.py -q
+  rollback_or_repair_command: Reduce core preamble or demote visible primitives, then
+    rerun scripts/cos-preamble-budget --profile core.
+  sunset_criteria: Archive only if token budget enforcement moves into the harness
+    adapter.
+- kind: script
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: *id001
+  runtime_projection: false
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  id: scripts/cos-active-primitive-index
+  owner_adr: ADR-127
+  projection_targets:
+  - scripts/cos-active-primitive-index
+  - scripts/active_primitive_index.py
+  - docs/adrs/ADR-127-active-primitive-index.md
+  behavior_evidence: control-plane-smoke-and-unit-tests
+  evidence_commands:
+  - scripts/cos-active-primitive-index --json
+  - python3 -m pytest tests/unit/test_active_primitive_index.py -q
+  rollback_or_repair_command: Fix lifecycle metadata or runtime projection coverage,
+    then rerun scripts/cos-active-primitive-index --json.
+  sunset_criteria: Archive only if architecture readiness owns the full active-surface
+    contract.
+- kind: script
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: *id001
+  runtime_projection: false
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  id: scripts/cos-wip-safety-score
+  owner_adr: ADR-117
+  projection_targets:
+  - scripts/cos-wip-safety-score
+  - scripts/cos_wip_safety_score.py
+  - docs/architecture/boring-reliability-control-plane.md
+  behavior_evidence: control-plane-smoke-and-unit-tests
+  evidence_commands:
+  - scripts/cos-wip-safety-score
+  - python3 -m pytest tests/unit/test_boring_reliability_tools.py -q
+  rollback_or_repair_command: Archive or restore WIP residue, clear orphan pre-agent
+    markers, then rerun scripts/cos-wip-safety-score.
+  sunset_criteria: Archive only if WIP safety becomes a first-class runtime session
+    primitive.
+- kind: script
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: *id001
+  runtime_projection: false
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  id: scripts/cos-boring-reliability
+  owner_adr: ADR-125
+  projection_targets:
+  - scripts/cos-boring-reliability
+  - scripts/cos_boring_reliability.py
+  - docs/architecture/boring-reliability-control-plane.md
+  behavior_evidence: aggregate-control-plane-smoke
+  evidence_commands:
+  - scripts/cos-boring-reliability --profile core
+  - python3 -m pytest tests/unit/test_boring_reliability_tools.py -q
+  rollback_or_repair_command: Run the failing child check printed in the dashboard,
+    repair the underlying primitive, then rerun scripts/cos-boring-reliability --profile
+    core.
+  sunset_criteria: Archive only if a canonical dashboard replaces the boring reliability
+    control plane.
+- kind: script
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: *id001
+  runtime_projection: false
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  id: scripts/cos-architecture-readiness
+  owner_adr: ADR-127
+  projection_targets:
+  - scripts/cos-architecture-readiness
+  - scripts/cos_architecture_readiness.py
+  - docs/adrs/ADR-127-active-primitive-index.md
+  - docs/adrs/ADR-128-data-layer-integrity-fixes.md
+  behavior_evidence: architecture-readiness-smoke-and-unit-tests
+  evidence_commands:
+  - scripts/cos-architecture-readiness --json
+  - python3 -m pytest tests/unit/test_cos_architecture_readiness.py -q
+  rollback_or_repair_command: Repair the failing readiness check details, then rerun
+    scripts/cos-architecture-readiness --json.
+  sunset_criteria: Archive only if release readiness is enforced by a stronger local
+    CI gate.
+- kind: script
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: *id001
+  runtime_projection: false
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  id: scripts/cos-silent-failure-audit
+  owner_adr: ADR-126
+  projection_targets:
+  - scripts/cos-silent-failure-audit
+  - scripts/silent_failure_audit.py
+  - manifests/silent-failure-allowlist.yaml
+  behavior_evidence: silent-failure-baseline-and-unit-tests
+  evidence_commands:
+  - scripts/cos-silent-failure-audit --fail-on-findings
+  - python3 -m pytest tests/unit/test_silent_failure_audit.py -q
+  rollback_or_repair_command: Classify legitimate degradation in manifests/silent-failure-allowlist.yaml
+    or remove the swallowed failure pattern.
+  sunset_criteria: Archive only if shell hooks no longer contain silent degradation
+    patterns.
+- kind: script
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses: *id001
+  runtime_projection: false
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+  id: scripts/cos-dispatch-smoke
+  owner_adr: ADR-128
+  projection_targets:
+  - scripts/cos-dispatch-smoke
+  - scripts/cos_dispatch_smoke.py
+  - docs/runbooks/llm-dispatch.md
+  behavior_evidence: offline-dispatch-metrics-smoke
+  evidence_commands:
+  - scripts/cos-dispatch-smoke --json
+  - python3 -m pytest tests/unit/test_dispatch.py tests/unit/test_cost_predictor.py
+    -q
+  rollback_or_repair_command: Fix dispatch metric writing or task-history append path,
+    then rerun scripts/cos-dispatch-smoke --json.
+  sunset_criteria: Archive only after production dispatch metrics are continuously
+    populated by normal runtime use.
+- kind: script
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses: *id001
+  runtime_projection: false
+  docs_claim_level: blocking
+  exit_behavior: mixed
+  metrics_file: none
+  id: scripts/cos-ci-local.sh
+  owner_adr: ADR-131
+  projection_targets:
+  - scripts/cos-ci-local.sh
+  - git-hooks/pre-push
+  - docs/adrs/ADR-131-local-ci-migration.md
+  behavior_evidence: local-ci-quick-smoke
+  evidence_commands:
+  - bash scripts/cos-ci-local.sh quick
+  - python3 -m pytest tests/contracts/test_control_plane_primitives.py -q
+  rollback_or_repair_command: Fix the failing local CI step; emergency bypass requires
+    explicit git push --no-verify operator decision.
+  sunset_criteria: Archive only if a stronger local pre-push/merge-queue gate replaces
+    cos-ci-local.sh.
+  repair_message: Local CI blocked the push; repair the failing step or consciously
+    bypass with operator audit.
+  false_positive_tests:
+  - tests/contracts/test_control_plane_primitives.py

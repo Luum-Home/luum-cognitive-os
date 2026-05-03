@@ -26,6 +26,8 @@ whether the SO is reducing damage and friction.
 | `scripts/cos-wip-safety-score` | Scores dirty WIP, stashes, and pre-agent snapshot markers. |
 | `scripts/cos-recovery-drill --scenario all` | Runs non-destructive recovery drill tests. |
 | `scripts/cos-runtime-hook-reality --fail-on-findings` | Proves runtime hooks match lifecycle and observable behavior. |
+| `scripts/cos-silent-failure-audit --fail-on-findings` | Fails if shell error-swallowing patterns grow without classification. |
+| `scripts/cos-dispatch-smoke --json` | Exercises dispatch metrics and task-history without external provider calls. |
 | `scripts/cos-boring-reliability --profile core` | Aggregates the operator dashboard. |
 
 ## North-star metrics
@@ -58,12 +60,25 @@ local signals are true on the branch being released:
 
 ```text
 scripts/cos-runtime-hook-reality --fail-on-findings   # pass
+scripts/cos-silent-failure-audit --fail-on-findings  # pass; no unclassified growth
 scripts/cos-adoption-profile --profile core          # pass; core <=10 hooks, <=7 blocking
 scripts/cos-preamble-budget --profile core           # pass; core <3000 tokens
 python3 scripts/active_primitive_index.py --json     # pass; no active/default-visible findings
 scripts/cos-wip-safety-score                         # pass or explicit archived WIP exception
+scripts/cos-dispatch-smoke --json                    # creates dispatch/task-history evidence locally
 bash scripts/cos-ci-local.sh quick                   # pass before push
 ```
 
 A release may still carry maintainer-mode warnings, but the consumer `core`
 profile must be small, truthful, reversible, and executable.
+
+## Control-plane lifecycle
+
+The reliability tools above are registered as maintainer-layer agentic
+primitives in `manifests/primitive-lifecycle.yaml`. They are not runtime hooks:
+`runtime_projection: false` is intentional. Their job is to keep the runtime
+primitives honest.
+
+The local CI runner is the exception: `scripts/cos-ci-local.sh` is also a
+maintainer primitive, but it is declared `maturity: blocking` because the
+tracked pre-push hook uses it as the local landing gate.

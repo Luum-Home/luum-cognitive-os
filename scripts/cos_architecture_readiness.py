@@ -26,6 +26,7 @@ import yaml
 import cos_governance_roi
 import primitive_lifecycle
 import runtime_hook_reality
+import silent_failure_audit
 
 REPO_ROOT = SCRIPT_DIR.parents[0]
 REQUIRED_RUNTIME_PRIMITIVES = {
@@ -166,6 +167,7 @@ def check_active_surface(root: Path) -> Check:
             "active_counts_by_tier": summary["active_counts_by_tier"],
             "default_visible_counts_by_tier": summary["default_visible_counts_by_tier"],
             "active_surface_count": summary["active_surface_count"],
+            "runtime_active_surface_count": summary.get("runtime_active_surface_count"),
             "default_visible_count": summary["default_visible_count"],
             "runtime_coverage": coverage,
             "thresholds": summary["thresholds"],
@@ -192,6 +194,27 @@ def check_runtime_hook_reality(root: Path) -> Check:
         status=status,
         message="runtime hooks match lifecycle metadata and observable behavior" if status == "pass" else "runtime hook reality audit has findings",
         details={"summary": report["summary"], "findings": report["findings"]},
+    )
+
+
+def check_silent_failure_audit(root: Path) -> Check:
+    report = silent_failure_audit.build_report(
+        repo_root=root,
+        scan_root=root / "hooks",
+        allowlist_path=root / "manifests" / "silent-failure-allowlist.yaml",
+    )
+    status = "pass" if report["fail_count"] == 0 else "fail"
+    return Check(
+        id="silent-failure-audit",
+        status=status,
+        message="shell silent-failure surface is classified and has not grown" if status == "pass" else "shell silent-failure surface has unclassified or increased patterns",
+        details={
+            "file_count": report["file_count"],
+            "occurrence_count": report["occurrence_count"],
+            "fail_count": report["fail_count"],
+            "warn_count": report["warn_count"],
+            "findings": report["findings"][:50],
+        },
     )
 
 def check_roi(root: Path, window_hours: int) -> Check:
@@ -377,6 +400,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_lifecycle_manifest(root),
         check_active_surface(root),
         check_runtime_hook_reality(root),
+        check_silent_failure_audit(root),
         check_roi(root, window_hours),
         check_lifecycle_recommendations(root, window_hours),
         check_runtime_primitives(root),
