@@ -1,0 +1,79 @@
+from __future__ import annotations
+
+from pathlib import Path
+from unittest.mock import patch
+
+import yaml
+
+import scripts.cos_adoption_profile as adoption
+import scripts.cos_default_visible_reducer as reducer
+import scripts.cos_preamble_budget as preamble
+import scripts.cos_wip_safety_score as wip
+
+
+def primitive(pid: str, distribution: str, maturity: str = "advisory", state: str = "advisory") -> dict[str, object]:
+    return {
+        "id": pid,
+        "kind": "hook",
+        "owner_adr": "ADR-126",
+        "lifecycle_state": state,
+        "maturity": maturity,
+        "distribution": distribution,
+        "governance_class": "runtime-safety" if maturity == "blocking" else "delivery-structure",
+        "risk_class": "blocking" if maturity == "blocking" else "advisory",
+        "supported_harnesses": ["claude"],
+        "projection_targets": [pid],
+        "evidence_commands": [f"bash -n {pid}"],
+        "exit_behavior": "exit_2" if maturity == "blocking" else "exit_0",
+        "metrics_file": "none",
+        "docs_claim_level": maturity,
+        "rollback_or_repair_command": "disable",
+        "sunset_criteria": "archive after no use",
+    }
+
+
+def write_manifest(tmp_path: Path, primitives: list[dict[str, object]]) -> Path:
+    manifest = tmp_path / "primitive-lifecycle.yaml"
+    manifest.write_text(yaml.safe_dump({"schema_version": 1, "primitives": primitives}), encoding="utf-8")
+    return manifest
+
+
+def test_adoption_profile_counts_core_surface(tmp_path: Path) -> None:
+    manifest = write_manifest(tmp_path, [primitive("hooks/a.sh", "core", "blocking", "blocking"), primitive("hooks/b.sh", "lab", "observe", "sandbox")])
+
+    report = adoption.build_profile("core", manifest)
+
+    assert report["primitive_count"] == 1
+    assert report["blocking_count"] == 1
+    assert report["status"] == "pass"
+
+
+def test_default_visible_reducer_recommends_non_killer_core(tmp_path: Path) -> None:
+    manifest = write_manifest(tmp_path, [primitive("hooks/non-killer.sh", "core", "advisory")])
+
+    report = reducer.build_recommendations(manifest)
+
+    assert report["recommendation_count"] == 1
+    assert report["recommendations"][0]["to"] == "lab"
+
+
+def test_preamble_budget_reports_estimate(monkeypatch, tmp_path: Path) -> None:
+    (tmp_path / "AGENTS.md").write_text("hello world", encoding="utf-8")
+    rules = tmp_path / "rules"
+    rules.mkdir()
+    (rules / "RULES-COMPACT.md").write_text("rule text", encoding="utf-8")
+    fake_adoption = {"default_visible_count": 1, "blocking_count": 1}
+    monkeypatch.setattr(preamble.cos_adoption_profile, "build_profile", lambda profile: fake_adoption)
+
+    report = preamble.build_budget("core", tmp_path)
+
+    assert report["estimated_tokens"] > 0
+    assert report["budget_tokens"] == 3000
+
+
+def test_wip_safety_score_penalizes_dirty_and_stash(tmp_path: Path) -> None:
+    with patch.object(wip, "run_git", side_effect=lambda args, root: " M x\n" if args[0] == "status" else "stash@{0}: test\n"):
+        report = wip.build_score(tmp_path)
+
+    assert report["score"] < 100
+    assert report["stash_count"] == 1
