@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # SCOPE: both
-"""Opus objection readiness report for Cognitive OS governance.
+"""Governance objection readiness report for Cognitive OS governance.
 
-This command converts the Opus critique into a concrete gate report. It is not a
+This command converts external critique into a concrete gate report. It is not a
 marketing score; warnings are intentionally visible so governance can be demoted,
 wired, or reduced when it does not earn its cost.
 """
@@ -20,6 +20,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
+import active_primitive_index
 import cos_governance_roi
 import primitive_lifecycle
 
@@ -111,6 +112,38 @@ def check_lifecycle_manifest(root: Path) -> Check:
     )
 
 
+def check_active_surface(root: Path) -> Check:
+    try:
+        index = active_primitive_index.build_index(root / "manifests" / "primitive-lifecycle.yaml")
+    except active_primitive_index.ActivePrimitiveIndexError as exc:
+        return Check(
+            id="active-primitive-surface",
+            status="fail",
+            message="active primitive index could not be built",
+            details={"error": str(exc)},
+        )
+    summary = index["summary"]
+    status = summary["status"]
+    return Check(
+        id="active-primitive-surface",
+        status=status,
+        message=(
+            "active primitive surface is within DX thresholds"
+            if status == "pass"
+            else "active primitive surface exceeds DX threshold; reduce default-visible governance"
+        ),
+        details={
+            "counts_by_tier": summary["counts_by_tier"],
+            "active_counts_by_tier": summary["active_counts_by_tier"],
+            "default_visible_counts_by_tier": summary["default_visible_counts_by_tier"],
+            "active_surface_count": summary["active_surface_count"],
+            "default_visible_count": summary["default_visible_count"],
+            "thresholds": summary["thresholds"],
+            "findings": summary["findings"],
+        },
+    )
+
+
 def check_roi(root: Path, window_hours: int) -> Check:
     report = cos_governance_roi.build_report(root, window_hours)
     roi = report["roi"]
@@ -185,6 +218,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_repo_hygiene(root),
         check_adoption_tiers(root),
         check_lifecycle_manifest(root),
+        check_active_surface(root),
         check_roi(root, window_hours),
         check_lifecycle_recommendations(root, window_hours),
         check_runtime_primitives(root),
@@ -214,7 +248,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
 
 
 def print_human(report: dict[str, Any]) -> None:
-    print("COS Opus Readiness")
+    print("COS Governance Readiness")
     print(f"status: {report['status']} score={report['score']} pass={report['pass_count']} warn={report['warn_count']} fail={report['fail_count']}")
     for check in report["checks"]:
         marker = {"pass": "PASS", "warn": "WARN", "fail": "FAIL"}[check["status"]]
