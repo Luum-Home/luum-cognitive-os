@@ -36,6 +36,8 @@ Done:
 
 Next:
 
+- First semantic demotion completed: `hooks/task-completed.sh` is now demoted,
+  preserved for opt-in use, and removed from default projection.
 - Add a monthly demotion report for default-visible primitives with zero runtime
   use in 90 days.
 - Calibrate ROI constants with real session data before using ROI alone for

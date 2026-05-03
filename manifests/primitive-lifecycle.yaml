@@ -2953,7 +2953,7 @@ primitives:
 - id: hooks/task-completed.sh
   kind: hook
   owner_adr: ADR-126
-  lifecycle_state: blocking
+  lifecycle_state: demoted
   maturity: blocking
   distribution: team
   governance_class: runtime-safety
@@ -2961,9 +2961,8 @@ primitives:
   supported_harnesses:
   - claude
   projection_targets:
-  - .claude/settings.json
   - hooks/task-completed.sh
-  runtime_projection: true
+  runtime_projection: false
   behavior_evidence: static-exit2-detected
   evidence_commands:
   - bash -n hooks/task-completed.sh
@@ -2971,8 +2970,19 @@ primitives:
     -q
   rollback_or_repair_command: Disable or demote hooks/task-completed.sh in generated
     harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90
-    days or replaced by a native harness primitive with equivalent tests.
+  sunset_criteria: Keep demoted until task completion events show sustained positive
+    ROI and cross-harness projection support; archive after 90 days with no opt-in
+    use.
+  demotion_evidence:
+    demoted_on: '2026-05-03'
+    reason: COS extension hook is not required for default team/core adoption; demotion
+      proves ADR-126 inactive lifecycle semantics without deleting the primitive.
+    control_plane_commands:
+    - scripts/cos-active-primitive-index --json
+    - scripts/cos-adoption-profile --profile team
+    - scripts/cos-boring-reliability --profile core
+    expected_effect: default_visible_count decreases while hooks/task-completed.sh
+      remains available for opt-in/manual task systems.
   latency_budget_ms: 1000
   repair_message: task-completed blocked the action; follow the hook message, repair
     the unsafe state, or demote only with operator approval.

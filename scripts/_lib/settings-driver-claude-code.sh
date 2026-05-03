@@ -339,10 +339,10 @@ cc_driver_emit() {
     "hooks/task-created.sh" "false" \
   )
 
-  local task_completed
-  task_completed=$(_cc_hook_group "TaskCompleted" "" \
-    "hooks/task-completed.sh" "false" \
-  )
+  # ADR-126/133: TaskCompleted is demoted from default projection. Keep the
+  # event bucket empty so the hook remains available for opt-in task systems
+  # without increasing the default active/runtime surface.
+  local task_completed=""
 
   # ── Assemble JSON ─────────────────────────────────────────────────────────
   printf '{\n  "hooks": {\n    "SessionStart": [\n'

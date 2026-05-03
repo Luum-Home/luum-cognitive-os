@@ -25,6 +25,7 @@ PROMOTED_DISTRIBUTIONS = {"core", "team"}
 PROMOTED_STATES = {"blocking", "default-on"}
 PROMOTED_MATURITIES = {"blocking"}
 PROMOTED_RISKS = {"blocking", "mutating", "destructive"}
+INACTIVE_STATES = {"demoted", "archived", "deleted"}
 
 
 @dataclass(frozen=True)
@@ -66,6 +67,8 @@ def load_base_manifest(repo_root: Path, base_ref: str, manifest_rel: str) -> dic
 
 
 def _is_promoted_target(primitive: dict[str, Any]) -> bool:
+    if primitive.get("lifecycle_state") in INACTIVE_STATES:
+        return False
     return (
         primitive.get("distribution") in PROMOTED_DISTRIBUTIONS
         or primitive.get("lifecycle_state") in PROMOTED_STATES
