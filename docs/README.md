@@ -27,6 +27,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Foundation Hardening Program](../.cognitive-os/plans/architecture/foundation-hardening-program.md) — execution checklist and production border-case matrix for ADR-121.
 - [Operational Stability and Friction Reduction Program](../.cognitive-os/plans/architecture/operational-stability-friction-reduction.md) — phase checklist for lowering SO friction without weakening safety.
 - [Governance Tools Consolidation Plan](../.cognitive-os/plans/architecture/governance-tools-consolidation.md) — execution plan for reducing governance friction and consolidating duplicate sources of truth.
+- [Opus Objection Closure Plan](../.cognitive-os/plans/architecture/opus-objection-closure-plan.md) — phased readiness plan that turns the Opus critique into executable gates and wiring work.
 - [Primitive Harvester Implementation Plan](../.cognitive-os/plans/architecture/primitive-harvester-implementation-plan.md) — staged rollout plan and acceptance criteria for the meta-primitive.
 - [Session Filesystem Reaper](architecture/session-filesystem-reaper.md) — operator flow and safety invariants for session filesystem cleanup.
 - [Multi-IDE Swarm Safety Testbed Plan](../.cognitive-os/plans/architecture/multi-ide-swarm-testbed-plan.md) — executable plan for reproducing same-task, same-file, same-domain, git-overwrite, parity, memory, and watermark races.
