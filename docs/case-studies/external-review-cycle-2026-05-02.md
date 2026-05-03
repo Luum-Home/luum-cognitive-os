@@ -213,6 +213,51 @@ For external adopters, the falsifiable claim becomes: if the doctrine proposer p
 
 This case study itself is a single data point. Replication would require running the cycle a second time, against an independent external reviewer, and observing whether the internal proposer's generated set partially overlaps the new findings. The artefact is the loop; the evidence is in subsequent runs.
 
+## Runway-not-rocket: building Shape B's infrastructure without operating Shape B
+
+A property that closes the recursion documented above is the **runway-not-rocket discipline**: the system invests in the infrastructure required for the next operating shape without actually operating it.
+
+[ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md) named the future Shape B (multi-maintainer, federated, distributed) and recommended *"do not implement Shape B until trigger fires"*. That recommendation is correct but easy to fail at: the natural temptations are either to implement none of Shape B (leaving the gap) or to implement all of it (premature complexity). Neither is right.
+
+[ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md) built the third option: a runway that
+
+1. **costs less than full Shape B operation** — four non-speculative primitives: consumer evidence exchange, deterministic registry locks (`agentic-primitive-registry.lock.yaml` SHA-pinning every primitive, `skills/REGISTRY.lock` for the skill set), portable Engram bundle (export plus import-propose-only), and federation trigger audit;
+2. **reduces the activation cost when triggers fire** — a future maintainer joining does not require the system to be redesigned from scratch; the primitives are present, dormant;
+3. **does not commit the system to Shape B operation** — all imports are propose-only; locks are observed not enforced cross-machine; bundles are produced on demand, not synced automatically.
+
+The structural elegance is in `manifests/federation-triggers.yaml`. ADR-132 named six trigger conditions for Shape B in prose. The runway converts each into an observable counter:
+
+```yaml
+observed:
+  active_maintainers: 1
+  active_machines: 2
+  concurrent_remote_writers: 0
+  external_consumer_reports_30d: 0
+  repeated_cross_machine_lock_conflicts: 0
+  unsupervised_remote_agents: 0
+shape_b_triggers:
+  active_maintainers: 2
+  active_machines: 3
+  concurrent_remote_writers: 1
+  external_consumer_reports_30d: 1
+  repeated_cross_machine_lock_conflicts: 2
+  unsupervised_remote_agents: 1
+```
+
+When any observed value crosses its trigger threshold, the audit fires and the system *proposes* the Shape A → Shape B transition through the same propose-only mechanism documented in earlier sections. The transition stops being a discretionary human decision; it becomes an audit signal with a structural follow-up.
+
+Combined with ADR-134 (`auto_merge: false`) and ADR-135 (`runtime_effect: none`), the runway forms the third ceiling stacked on the previous two. Three deliberate architectural refusals, each blocking a distinct runaway class:
+
+| ADR | Refusal | What it prevents |
+|---|---|---|
+| ADR-134 | `auto_merge: false` | Self-applying operational fixes without review |
+| ADR-135 | `runtime_effect: none` | Self-modifying doctrine without review |
+| ADR-136 | "runway, not federation" | Self-federating without trigger evidence |
+
+For external adopters, this is the falsifiable claim: a system that builds Shape B's runway should not also operate Shape B. If `cos-federation-trigger-audit` reports zero observed triggers and federation primitives are nonetheless executing in production, the discipline is broken. If the audit reports triggers fired and the runway primitives never activate, the runway is decorative. The healthy state is **dormant runway with continuous trigger observability**.
+
+The runway-not-rocket pattern is what makes the system **defendable as a product** rather than as a research project. A user adopting Cognitive OS today gets Shape A, knows the trigger conditions for Shape B, and inherits a path to Shape B that does not require redesigning the system. None of those properties require Shape B to be operating now.
+
 ## What the cycle does not prove
 
 Stated honestly so the artefact is useful:
