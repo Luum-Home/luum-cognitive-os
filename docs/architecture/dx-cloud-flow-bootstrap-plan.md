@@ -1,9 +1,9 @@
 # DX-First Cloud Flow Bootstrap Plan
 
-> **Status**: proposed
+> **Status**: ready-for-step-2 (trajectory ADR-137 committed; flow contract schema ADR pending)
 > **Date**: 2026-05-03
 > **Audience**: maintainer + future contributors evaluating the next operational direction
-> **Companion docs**: [`cognitive-prosthesis.md`](cognitive-prosthesis.md), [`boring-reliability-control-plane.md`](boring-reliability-control-plane.md), [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md), [ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md), [ADR-064](../adrs/ADR-064-harness-agnostic-cognitive-os.md)
+> **Companion docs**: [`cognitive-prosthesis.md`](cognitive-prosthesis.md), [`boring-reliability-control-plane.md`](boring-reliability-control-plane.md), [ADR-137](../adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md), [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md), [ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md), [ADR-064](../adrs/ADR-064-harness-agnostic-cognitive-os.md)
 
 This document captures a strategic direction surfaced in conversation and converts it into a concrete, bounded bootstrap plan. It is **not** an ADR (no decision is being committed) and **not** a roadmap (no dates beyond the first flow). It is a plan in the same sense as [`expansion-hardening-plan.md`](expansion-hardening-plan.md): a named direction with explicit non-goals and falsifiable conditions.
 
@@ -148,8 +148,8 @@ If a flow proposes something that violates one of the above, the violation is th
 
 ## Next concrete steps (ordered)
 
-1. **Trajectory ADR — Framing B → A.** Codifies the directional answer above, freezes the priority shifts, names ADR-064 completion and `bootstrap-portability.md` enforcement as the runtime-side prerequisites. Does **not** schedule them.
-2. **Flow contract schema ADR.** Commits the shape of `manifests/flow-contract-schema.yaml`: required fields per flow (input source, success condition, sandboxed write paths, blocked actions, evidence shape), and the rule that the schema is promoted to shared form only after the second flow reuses it.
+1. **Trajectory ADR — Framing B → A.** Landed as [ADR-137](../adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md). Codifies the directional answer above, names ADR-064 completion and `bootstrap-portability.md` enforcement as the runtime-side prerequisites, introduces the **framing-exercise statement** required in flow skill metadata. Does **not** schedule the priority shifts.
+2. **Flow contract schema ADR.** Commits the shape of `manifests/flow-contract-schema.yaml`: required fields per flow (input source, success condition, sandboxed write paths, blocked actions, evidence shape, framing-exercise statement per ADR-137), and the rule that the schema is promoted to shared form only after the second flow reuses it.
 3. **First flow lab entry.** `skills/vuln-remediation-flow/` registered with `lifecycle_state: lab` and the schema from step 2 wired in.
 
-Until the trajectory ADR (step 1) exists, this plan is in `proposed` status and no construction begins. The trajectory ADR is what makes the bootstrap path falsifiable as a route to Framing A rather than as a comfortable extension of Framing B.
+With the trajectory ADR (step 1) committed, this plan moves from `proposed` to `ready-for-step-2`. Construction begins when the flow contract schema ADR (step 2) lands.
