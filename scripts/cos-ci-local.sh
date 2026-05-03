@@ -243,6 +243,19 @@ check_silent_failure_audit() {
   fi
 }
 
+check_lab_first_gate() {
+  command -v python3 >/dev/null 2>&1 || {
+    _skip "lab-first promotion gate" "python3 not installed"
+    return 0
+  }
+  if [ -x "$REPO_ROOT/scripts/cos-lab-first-gate" ]; then
+    "$REPO_ROOT/scripts/cos-lab-first-gate" --json >/dev/null
+  else
+    _skip "lab-first promotion gate" "scripts/cos-lab-first-gate not found"
+    return 0
+  fi
+}
+
 check_gitignore_sanity() {
   local missing=0
   for pattern in ".env" ".env.local" "*.pem" "*.key"; do
@@ -332,6 +345,7 @@ run_quick() {
   _step "test quality (structural detector)"  check_test_quality
   _step "secret detector"                     check_secret_detector
   _step "silent failure audit"                check_silent_failure_audit
+  _step "lab-first promotion gate"            check_lab_first_gate
   _step ".gitignore sanity"                   check_gitignore_sanity
 }
 

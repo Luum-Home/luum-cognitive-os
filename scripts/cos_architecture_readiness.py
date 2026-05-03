@@ -28,6 +28,7 @@ import primitive_lifecycle
 import runtime_hook_reality
 import silent_failure_audit
 import session_start_budget
+import lab_first_promotion_gate
 
 REPO_ROOT = SCRIPT_DIR.parents[0]
 REQUIRED_RUNTIME_PRIMITIVES = {
@@ -420,6 +421,25 @@ def check_governance_maturity_labels(root: Path) -> Check:
     )
 
 
+def check_lab_first_promotion_gate(root: Path) -> Check:
+    report = lab_first_promotion_gate.build_report(
+        manifest_path=root / "manifests" / "primitive-lifecycle.yaml",
+        repo_root=root,
+        base_ref="origin/main",
+    )
+    status = "pass" if report["status"] == "pass" else "fail"
+    return Check(
+        id="lab-first-promotion-gate",
+        status=status,
+        message=(
+            "new/promoted non-lab primitives carry control-plane evidence"
+            if status == "pass"
+            else "new/promoted core/team/blocking/default-on primitives lack promotion evidence"
+        ),
+        details=report,
+    )
+
+
 def build_report(root: Path, window_hours: int) -> dict[str, Any]:
     checks = [
         check_repo_hygiene(root),
@@ -435,6 +455,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_wiring_gaps(root),
         check_product_claims(root),
         check_governance_maturity_labels(root),
+        check_lab_first_promotion_gate(root),
     ]
     fail_count = sum(1 for check in checks if check.status == "fail")
     warn_count = sum(1 for check in checks if check.status == "warn")
