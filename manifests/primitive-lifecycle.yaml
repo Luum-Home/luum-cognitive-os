@@ -2975,6 +2975,7 @@ primitives:
     use.
   demotion_evidence:
     demoted_on: '2026-05-03'
+    primary_signal: semantic-portability
     reason: COS extension hook is not required for default team/core adoption; demotion
       proves ADR-126 inactive lifecycle semantics without deleting the primitive.
     control_plane_commands:
@@ -3591,3 +3592,29 @@ primitives:
     boring_reliability_artifact: docs/adrs/ADR-133-expansion-without-monsterization.md
     rationale: Enforces profile-purity discipline for expansion without growing
       core/team by assertion.
+- id: scripts/cos-demotion-loop-audit
+  kind: script
+  owner_adr: ADR-126
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-demotion-loop-audit
+  - scripts/cos_demotion_loop_audit.py
+  - docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md
+  runtime_projection: false
+  behavior_evidence: demotion-loop maturity audit with tests
+  evidence_commands:
+  - scripts/cos-demotion-loop-audit --json
+  - python3 -m pytest tests/audit/test_demotion_loop_audit.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Treat findings as lifecycle maturity warnings, not
+    release blockers; execute a second evidence-backed demotion when justified.
+  sunset_criteria: Archive only if lifecycle recommendations become fully
+    transactionally signed by the primitive compiler.

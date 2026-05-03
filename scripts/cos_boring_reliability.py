@@ -24,6 +24,7 @@ import cos_wip_safety_score
 import runtime_hook_reality
 import silent_failure_audit
 import session_start_budget
+import cos_demotion_loop_audit
 
 
 
@@ -59,8 +60,9 @@ def build_dashboard(profile: str = "core", root: Path = REPO_ROOT) -> dict[str, 
     silent = silent_failure_audit.build_report(root, root / "hooks", root / "manifests" / "silent-failure-allowlist.yaml")
     session_budget = session_start_budget.build_report(profile, root)
     dispatch_evidence = dispatch_metrics_evidence(root)
+    demotion_loop = cos_demotion_loop_audit.build_report(root / "manifests" / "primitive-lifecycle.yaml")
     readiness = readiness_summary(root)
-    status_items = [runtime["summary"]["status"], adoption["status"], preamble["status"], wip["status"], silent["status"], session_budget["status"], dispatch_evidence["status"], readiness["status"]]
+    status_items = [runtime["summary"]["status"], adoption["status"], preamble["status"], wip["status"], silent["status"], session_budget["status"], dispatch_evidence["status"], demotion_loop["status"], readiness["status"]]
     overall = "fail" if "fail" in status_items else ("warn" if "warn" in status_items else "pass")
     return {
         "status": overall,
@@ -89,6 +91,13 @@ def build_dashboard(profile: str = "core", root: Path = REPO_ROOT) -> dict[str, 
             "legacy_audited_count": silent.get("legacy_audited_count", 0),
         },
         "dispatch_metrics_evidence": dispatch_evidence,
+        "demotion_loop": {
+            "status": demotion_loop["status"],
+            "demotion_count": demotion_loop["demotion_count"],
+            "roi_signed_demotion_count": demotion_loop["roi_signed_demotion_count"],
+            "findings": demotion_loop["findings"],
+            "policy": demotion_loop["policy"],
+        },
         "readiness": readiness,
     }
 
