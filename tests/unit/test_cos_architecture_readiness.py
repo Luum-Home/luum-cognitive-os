@@ -19,6 +19,7 @@ def test_build_report_warns_for_known_wiring_gaps(tmp_path: Path) -> None:
          patch.object(readiness, "check_adoption_tiers", return_value=readiness.Check("adoption", "pass", "ok")), \
          patch.object(readiness, "check_lifecycle_manifest", return_value=readiness.Check("lifecycle", "pass", "ok")), \
          patch.object(readiness, "check_active_surface", return_value=readiness.Check("active-surface", "pass", "ok")), \
+         patch.object(readiness, "check_runtime_hook_reality", return_value=readiness.Check("runtime-hook-reality", "pass", "ok")), \
          patch.object(readiness, "check_roi", return_value=readiness.Check("roi", "pass", "ok")), \
          patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
          patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
@@ -110,6 +111,7 @@ def test_readiness_report_includes_active_surface(tmp_path: Path) -> None:
          patch.object(readiness, "check_adoption_tiers", return_value=readiness.Check("adoption", "pass", "ok")), \
          patch.object(readiness, "check_lifecycle_manifest", return_value=readiness.Check("lifecycle", "pass", "ok")), \
          patch.object(readiness, "check_active_surface", return_value=readiness.Check("active-primitive-surface", "pass", "ok", {"counts_by_tier": {"core": 1}})), \
+         patch.object(readiness, "check_runtime_hook_reality", return_value=readiness.Check("runtime-hook-reality", "pass", "ok")), \
          patch.object(readiness, "check_roi", return_value=readiness.Check("roi", "pass", "ok")), \
          patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
          patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
@@ -152,17 +154,6 @@ primitives:
 """,
         encoding="utf-8",
     )
-    overlay = tmp_path / "manifests" / "governance-maturity.yaml"
-    overlay.write_text(
-        """schema_version: 1
-primitives:
-  - id: hooks/trust-score-validator.sh
-    maturity: advisory
-  - id: hooks/blast-radius.sh
-    maturity: observe
-""",
-        encoding="utf-8",
-    )
 
     check = readiness.check_governance_maturity_labels(tmp_path)
 
@@ -171,7 +162,7 @@ primitives:
     assert check.details["contradictions"] == []
 
 
-def test_governance_maturity_labels_fail_on_overlay_contradiction(tmp_path: Path) -> None:
+def test_governance_maturity_labels_fail_on_duplicate_overlay(tmp_path: Path) -> None:
     manifest = tmp_path / "manifests" / "primitive-lifecycle.yaml"
     manifest.parent.mkdir(parents=True)
     manifest.write_text(
@@ -185,16 +176,33 @@ primitives:
         encoding="utf-8",
     )
     overlay = tmp_path / "manifests" / "governance-maturity.yaml"
-    overlay.write_text(
-        """schema_version: 1
-primitives:
-  - id: hooks/trust-score-validator.sh
-    maturity: blocking
-""",
-        encoding="utf-8",
-    )
+    overlay.write_text("schema_version: 1\nprimitives: []\n", encoding="utf-8")
 
     check = readiness.check_governance_maturity_labels(tmp_path)
 
     assert check.status == "fail"
-    assert check.details["contradictions"] == ["hooks/trust-score-validator.sh"]
+    assert check.details["contradictions"] == ["manifests/governance-maturity.yaml"]
+
+
+def test_runtime_hook_reality_check_passes_with_clean_report(tmp_path: Path) -> None:
+    report = {
+        "summary": {"status": "pass", "counts": {"real_blocking": 1}},
+        "findings": [],
+    }
+    with patch.object(readiness.runtime_hook_reality, "build_report", return_value=report):
+        check = readiness.check_runtime_hook_reality(tmp_path)
+
+    assert check.status == "pass"
+    assert check.details["summary"] == report["summary"]
+
+
+def test_runtime_hook_reality_check_fails_on_findings(tmp_path: Path) -> None:
+    report = {
+        "summary": {"status": "fail", "counts": {}},
+        "findings": [{"id": "blocking-hook-without-exit2", "hook": "hooks/x.sh"}],
+    }
+    with patch.object(readiness.runtime_hook_reality, "build_report", return_value=report):
+        check = readiness.check_runtime_hook_reality(tmp_path)
+
+    assert check.status == "fail"
+    assert check.details["findings"] == report["findings"]
