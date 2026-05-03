@@ -143,6 +143,29 @@ If another project wants to run a comparable cycle, the minimum scaffolding is:
 
 Items 1–3 are paper without item 4. Item 4 is performative without item 5. Item 5 is a slogan without items 1–3. The combination is what makes the cycle reproducible rather than dependent on any one operator's diligence.
 
+## Maturity position at end of cycle (snapshot, 2026-05-03)
+
+The reviewer was asked, after the cycle closed, for a single-line characterisation of the system's maturity. The answer is preserved here verbatim because *"is it mature?"* is the question the doctrine demands an honest, falsifiable answer to — and because future reviewers should have a baseline to compare against rather than re-derive the question.
+
+> **Post-adolescent operational.** The system has the internal discipline, the self-awareness, the instruments, and the doctrine. What it lacks is *tenure* (real production time under pressure it does not control) and *bilateral external validation* (use by third parties with measurable feedback). Those two do not accelerate with commits — only with calendar and exposure.
+
+The phrasing is deliberate. *"Mature"* without qualification would be the lazy-reviewer answer the bilateral-pressure section warns against. *"Immature"* would ignore the evidence of self-correction this cycle produced. *"Post-adolescent"* names the specific shape: the system has stopped being undirected (childhood), has acquired internal regulation (adolescence), but has not yet earned the operational tenure that converts internal regulation into externally trustable robustness (adulthood).
+
+Two properties this position depends on, both of which the system itself tracks:
+
+- **Tenure** is the variable `cos-boring-reliability` measures cumulatively across sessions, incidents, recovery drills, and false-positive ledger drift. It is bounded by wall-clock, not by velocity.
+- **Bilateral external validation** is the variable that does not yet have a primitive in the repository. It would look like a third-party project running `core` for 30+ days and reporting prevented-incident counts, false-positive ratios, and cognitive-cost qualitative feedback. Building the receiving primitive for that data is itself a future cycle.
+
+The position is intentionally falsifiable. Re-read this snapshot when:
+
+- `cos_demotion_loop_audit` reports `status: pass` with `roi_signed_demotion_count >= 1` (the open warn budget closes 2026-06-02).
+- The lifecycle manifest holds three or more `lifecycle_state: demoted` entries.
+- A non-maintainer project posts a 30+ day adoption report with measurable findings.
+
+When all three are true, *"post-adolescent"* is no longer the right word. Until then, it is.
+
+The reviewer's signature on this characterisation is the act of writing it into the case-study commit, not a separate sign-off field. The maintainer's acceptance of this characterisation is the act of merging it. Both are obligations under the bilateral-pressure section above.
+
 ## How to read this document over time
 
 This is a snapshot of one cycle. The reproducible value is the structure of the cycle, not its specific findings. If a later review produces a different reframing or a different set of artefacts, that is expected and welcome. The point of preserving this is so the *shape* of the response — capture, reframe, enforce, test, document — has a worked example to compare against, not a procedure to comply with.
