@@ -38,6 +38,7 @@ def primitive(primitive_id: str, tier: str, state: str = "advisory") -> dict[str
         "kind": "script",
         "owner_adr": "ADR-127",
         "lifecycle_state": state,
+        "maturity": "blocking" if state in {"blocking", "default-on"} else "advisory",
         "distribution": tier,
         "governance_class": "delivery-structure",
         "risk_class": "advisory",
