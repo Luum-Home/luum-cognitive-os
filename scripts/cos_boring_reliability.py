@@ -117,10 +117,16 @@ def build_dashboard(profile: str = "core", root: Path = REPO_ROOT) -> dict[str, 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--profile", choices=["core", "team", "maintainer", "lab"], default="core")
+    parser.add_argument("--json", action="store_true", help="accepted for CLI consistency; output is always JSON")
+    parser.add_argument("--fail-on-warn", action="store_true", help="exit non-zero on warn as well as fail")
     args = parser.parse_args(argv)
     report = build_dashboard(args.profile)
     print(json.dumps(report, indent=2, sort_keys=True))
-    return 0 if report["status"] == "pass" else 1
+    if report["status"] == "fail":
+        return 1
+    if args.fail_on_warn and report["status"] == "warn":
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
