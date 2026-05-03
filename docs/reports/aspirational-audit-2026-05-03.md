@@ -4,12 +4,12 @@
 
 | Metric | Value |
 |--------|-------|
-| Total components | 837 |
-| REAL | 134 |
-| DORMANT | 166 |
+| Total components | 846 |
+| REAL | 166 |
+| DORMANT | 169 |
 | ASPIRATIONAL | 41 |
 | METADATA | 59 |
-| DORMANT + ASPIRATIONAL ratio | 24.7% |
+| DORMANT + ASPIRATIONAL ratio | 24.8% |
 
 ## Worst Offenders (ASPIRATIONAL + DORMANT)
 
@@ -52,10 +52,10 @@
 | `hooks/_lib/timing.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/tuning.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/validation-lock.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
-| `hooks/aci-observation-capture.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/aci-observation-capture.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/adaptive-bypass.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: logic merged into agent-prelaunch.sh and orchestrator rules; kept for reference | whitelisted exclusion: DEPRECATED: logic merged into agent-prelaunch.sh and orchestrator rules; kept for reference |
 | `hooks/adr-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired | planned but not wired: FUTURE: detects ADR references in prompts; planned for UserPromptSubmit — not yet wired |
-| `hooks/adr-section-validator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/adr-section-validator.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/agent-bash-cwd-enforcer.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/agent-bus-monitor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running | planned but not wired: CONDITIONAL: monitors Valkey agent bus; only active when ORCHESTRATOR_MODE=executor and Valkey is running |
 | `hooks/agent-checkpoint.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
@@ -102,11 +102,11 @@
 | `hooks/cos-executor-heartbeat.sh` | METADATA | registered=False, excluded=True, category=DEPRECATED: compatibility alias for cos-executor-daemon-launcher.sh; registering both would launch duplicate daemon checks | whitelisted exclusion: DEPRECATED: compatibility alias for cos-executor-daemon-launcher.sh; registering both would launch duplicate daemon checks |
 | `hooks/crash-recovery.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/dequeue-notify.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/destructive-git-blocker.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/destructive-rm-blocker.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/direct-main-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/destructive-git-blocker.sh` | REAL | fire_count_7d=80, registered=True | fires actively (80 rows in hook-health.jsonl last 7d) |
+| `hooks/destructive-rm-blocker.sh` | REAL | fire_count_7d=80, registered=True | fires actively (80 rows in hook-health.jsonl last 7d) |
+| `hooks/direct-main-guard.sh` | REAL | fire_count_7d=91, registered=True | fires actively (91 rows in hook-health.jsonl last 7d) |
 | `hooks/dispatch-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/doc-sync-detector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/doc-sync-detector.sh` | REAL | fire_count_7d=14, registered=True | fires actively (14 rows in hook-health.jsonl last 7d) |
 | `hooks/docker-drift-detector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/dod-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/dry-run-preview.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired | planned but not wired: FUTURE: previews destructive operations in dry-run mode; planned for PreToolUse Bash — not yet wired |
@@ -117,13 +117,13 @@
 | `hooks/edit-lock-session-end.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/engram-auto-import.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired | planned but not wired: FUTURE: auto-imports engram context; planned for SessionStart or SubagentStart — not yet wired |
 | `hooks/engram-auto-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: auto-syncs changes to engram; planned for PostToolUse — not yet wired | planned but not wired: FUTURE: auto-syncs changes to engram; planned for PostToolUse — not yet wired |
-| `hooks/engram-crystallize-on-session-end.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/engram-crystallize-on-session-end.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/engram-daemon-launcher.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/engram-reinforce-on-access.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/epic-task-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: heuristic detector, not yet wired to any matcher | planned but not wired: FUTURE: heuristic detector, not yet wired to any matcher |
-| `hooks/error-learning.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/error-learning.sh` | REAL | fire_count_7d=68, registered=True | fires actively (68 rows in hook-health.jsonl last 7d) |
 | `hooks/error-pattern-detector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/error-pipeline.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/error-pipeline.sh` | REAL | fire_count_7d=68, registered=True | fires actively (68 rows in hook-health.jsonl last 7d) |
 | `hooks/git-commit-scope-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/git-context-capture.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/global-verify.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: wired conditionally by apply-efficiency-profile.sh; not a global default — registered only when a profile is active — @on-demand | whitelisted exclusion: MANUAL_TRIGGER: wired conditionally by apply-efficiency-profile.sh; not a global default — registered only when a profile is active — @on-demand |
@@ -135,10 +135,10 @@
 | `hooks/infra-intent-detector.sh` | METADATA | registered=False, excluded=True, category=INFRA: detects infrastructure-intent in prompts; called by agent-prelaunch.sh, not registered independently | whitelisted exclusion: INFRA: detects infrastructure-intent in prompts; called by agent-prelaunch.sh, not registered independently |
 | `hooks/inject-phase-context.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/jupyter-sandbox.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired | planned but not wired: FUTURE: sandboxes Jupyter tool calls; planned for PreToolUse Jupyter — not yet wired |
-| `hooks/kpi-trigger.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/large-file-advisor.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/lethal-trifecta-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/mcp-scan.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/kpi-trigger.sh` | REAL | fire_count_7d=19, registered=True | fires actively (19 rows in hook-health.jsonl last 7d) |
+| `hooks/large-file-advisor.sh` | REAL | fire_count_7d=16, registered=True | fires actively (16 rows in hook-health.jsonl last 7d) |
+| `hooks/lethal-trifecta-gate.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
+| `hooks/mcp-scan.sh` | REAL | fire_count_7d=1, registered=True | fires actively (1 rows in hook-health.jsonl last 7d) |
 | `hooks/memory-prefetch.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/memu-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired | planned but not wired: FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired |
 | `hooks/metrics-calibrator-trigger.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired | planned but not wired: FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired |
@@ -155,7 +155,7 @@
 | `hooks/plan-claim-validator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/post-agent-snapshot-restore.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/post-agent-verify.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/post-git-orphan-notifier.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/post-git-orphan-notifier.sh` | REAL | fire_count_7d=68, registered=True | fires actively (68 rows in hook-health.jsonl last 7d) |
 | `hooks/pre-agent-snapshot.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/pre-cleanup-snapshot.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: snapshot before cleanup operations; invoked manually or by admin scripts on demand — @manual-trigger | whitelisted exclusion: MANUAL_TRIGGER: snapshot before cleanup operations; invoked manually or by admin scripts on demand — @manual-trigger |
 | `hooks/pre-commit-content-hash-dedupe.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
@@ -180,28 +180,28 @@
 | `hooks/reinvention-check.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/release-guard.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired | planned but not wired: FUTURE: guards release operations; planned for PreToolUse Bash — not yet wired |
 | `hooks/resource-check.sh` | METADATA | registered=False, excluded=True, category=INFRA: checks resource limits before spawning; called programmatically by rate-limiter.sh, not registered as independent hook | whitelisted exclusion: INFRA: checks resource limits before spawning; called programmatically by rate-limiter.sh, not registered as independent hook |
-| `hooks/result-truncator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/result-truncator.sh` | REAL | fire_count_7d=68, registered=True | fires actively (68 rows in hook-health.jsonl last 7d) |
 | `hooks/review-spawner.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/rule-frontmatter-validator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/scope-creep-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: PostToolUse Agent, planned but not wired | planned but not wired: FUTURE: PostToolUse Agent, planned but not wired |
 | `hooks/scope-marker-portability-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/scope-proportionality.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: PostToolUse Agent, planned | planned but not wired: FUTURE: PostToolUse Agent, planned |
-| `hooks/secret-detector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/secret-detector.sh` | REAL | fire_count_7d=14, registered=True | fires actively (14 rows in hook-health.jsonl last 7d) |
 | `hooks/self-install.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/self-knowledge-refresh.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/semgrep-scan.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: fires via /semgrep-scan skill on demand; not a global default hook — @on-demand | whitelisted exclusion: MANUAL_TRIGGER: fires via /semgrep-scan skill on demand; not a global default hook — @on-demand |
 | `hooks/session-changelog.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/session-cleanup.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/session-cleanup.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/session-end-reap.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/session-heartbeat.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/session-hygiene.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: cleanup script for stale session artefacts; run on demand | whitelisted exclusion: MANUAL_TRIGGER: cleanup script for stale session artefacts; run on demand |
 | `hooks/session-init.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/session-knowledge-extractor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: extracts learnings at session end; planned for Stop event — not yet wired | planned but not wired: FUTURE: extracts learnings at session end; planned for Stop event — not yet wired |
-| `hooks/session-learning.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/session-learning.sh` | REAL | fire_count_7d=19, registered=True | fires actively (19 rows in hook-health.jsonl last 7d) |
 | `hooks/session-resume.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/session-sanity.sh` | ON_DEMAND | fire_count_7d=0, registered=True, on_demand_marker=True | registered + @on-demand marker — legit sleeper (not smoke) |
 | `hooks/session-start-stash-reapply.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/session-start-worktree-nudge.sh` | REAL | fire_count_7d=1, registered=True | fires actively (1 rows in hook-health.jsonl last 7d) |
+| `hooks/session-start-worktree-nudge.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/session-startup-protocol.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/session-state-save.sh` | METADATA | registered=False, excluded=True, category=INFRA: saves session state to disk; invoked by session-cleanup.sh or manually; not a standalone registered hook | whitelisted exclusion: INFRA: saves session state to disk; invoked by session-cleanup.sh or manually; not a standalone registered hook |
 | `hooks/session-summary-reminder.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
@@ -212,13 +212,13 @@
 | `hooks/skill-feedback-tracker.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/skill-frontmatter-validator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/skill-invocation-logger.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/skill-synthesis-scanner.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/skill-synthesis-scanner.sh` | REAL | fire_count_7d=19, registered=True | fires actively (19 rows in hook-health.jsonl last 7d) |
 | `hooks/skill-tracker.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/skill-usage-tracker.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/stash-budget-warn.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/state-heartbeat.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/subagent-context-injector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
-| `hooks/surface-fix-detector.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/surface-fix-detector.sh` | REAL | fire_count_7d=14, registered=True | fires actively (14 rows in hook-health.jsonl last 7d) |
 | `hooks/symlink-mutation-guard.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/sync-to-repo.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: syncs local OS changes to the luum-agent-os repo; invoked manually by developer | whitelisted exclusion: MANUAL_TRIGGER: syncs local OS changes to the luum-agent-os repo; invoked manually by developer |
 | `hooks/task-bridge-notify.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: sends task events to external bridge; invoked programmatically by task lifecycle hooks | whitelisted exclusion: MANUAL_TRIGGER: sends task events to external bridge; invoked programmatically by task lifecycle hooks |
@@ -230,10 +230,10 @@
 | `hooks/token-budget-monitor.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: monitors token budget mid-session; planned for PostToolUse — not yet wired | planned but not wired: FUTURE: monitors token budget mid-session; planned for PostToolUse — not yet wired |
 | `hooks/tool-discovery-trigger.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired | planned but not wired: FUTURE: triggers dynamic tool discovery; planned for PostToolUse Agent — not yet wired |
 | `hooks/tool-loop-detector.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired | planned but not wired: FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired |
-| `hooks/tool-sequence-capture.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/tool-sequence-capture.sh` | REAL | fire_count_7d=98, registered=True | fires actively (98 rows in hook-health.jsonl last 7d) |
 | `hooks/trust-score-validator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/usage-health-check.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: reports token/rate usage; invoked on demand, not on every event | whitelisted exclusion: MANUAL_TRIGGER: reports token/rate usage; invoked on demand, not on every event |
-| `hooks/user-prompt-capture.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
+| `hooks/user-prompt-capture.sh` | REAL | fire_count_7d=0, registered=True, writes_jsonl=True | registered + writes metrics JSONL (fires may be outside 7d window) |
 | `hooks/validation-lock-cleanup.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/valkey-ensure.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed | planned but not wired: CONDITIONAL: starts Valkey on demand; invoked by agent-bus-monitor.sh or manually when pub/sub needed |
 | `hooks/work-queue-sync.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
@@ -285,9 +285,10 @@
 | `lib/context_compressor.py` | REAL | callers=1, size_bytes=22526 | imported by 1 non-test caller(s) |
 | `lib/context_diet.py` | REAL | callers=1, size_bytes=19972 | imported by 1 non-test caller(s) |
 | `lib/context_estimator.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=2925 | covered by test — legit sleeper (imported by test only) |
-| `lib/context_injector.py` | REAL | callers=3, size_bytes=16403 | imported by 3 non-test caller(s) |
+| `lib/context_injector.py` | REAL | callers=1, size_bytes=16403 | imported by 1 non-test caller(s) |
 | `lib/cost_dashboard.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=20362 | covered by test — legit sleeper (imported by test only) |
 | `lib/cost_predictor.py` | REAL | callers=1, size_bytes=26052 | imported by 1 non-test caller(s) |
+| `lib/cross_instance_learning.py` | REAL | callers=2, size_bytes=14565 | imported by 2 non-test caller(s) |
 | `lib/cross_verifier.py` | REAL | callers=1, size_bytes=10720 | imported by 1 non-test caller(s) |
 | `lib/dead_letter_queue.py` | REAL | callers=2, size_bytes=6889 | imported by 2 non-test caller(s) |
 | `lib/decision_tracker.py` | REAL | callers=3, size_bytes=4251 | imported by 3 non-test caller(s) |
@@ -296,6 +297,7 @@
 | `lib/dispatch_model_advisor.py` | REAL | callers=1, size_bytes=20374 | imported by 1 non-test caller(s) |
 | `lib/doc_review_personas.py` | REAL | callers=1, size_bytes=21891 | imported by 1 non-test caller(s) |
 | `lib/docs_writer.py` | REAL | callers=2, size_bytes=3099 | imported by 2 non-test caller(s) |
+| `lib/doctrine_proposer.py` | REAL | callers=1, size_bytes=10602 | imported by 1 non-test caller(s) |
 | `lib/document_feature_writer.py` | REAL | callers=1, size_bytes=3500 | imported by 1 non-test caller(s) |
 | `lib/dogfood_scorer.py` | REAL | callers=1, size_bytes=21566 | imported by 1 non-test caller(s) |
 | `lib/domain_model.py` | REAL | callers=1, size_bytes=4265 | imported by 1 non-test caller(s) |
@@ -316,7 +318,7 @@
 | `lib/estimation_calibrator.py` | REAL | callers=1, size_bytes=15391 | imported by 1 non-test caller(s) |
 | `lib/event_bus.py` | REAL | callers=5, size_bytes=9727 | imported by 5 non-test caller(s) |
 | `lib/execution_profile.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=8790 | covered by test — legit sleeper (imported by test only) |
-| `lib/feedback_consumer.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=7472 | covered by test — legit sleeper (imported by test only) |
+| `lib/feedback_consumer.py` | REAL | callers=0, writes_jsonl=True, size_bytes=7472 | writes to an existing metrics JSONL file |
 | `lib/feedback_detector.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=12110 | covered by test — legit sleeper (imported by test only) |
 | `lib/file_mutation_queue.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=3378 | covered by test — legit sleeper (imported by test only) |
 | `lib/format_converter.py` | REAL | callers=2, size_bytes=7714 | imported by 2 non-test caller(s) |
@@ -392,7 +394,7 @@
 | `lib/record_error.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=688 | covered by test — legit sleeper (imported by test only) |
 | `lib/ref_key_loader.py` | REAL | callers=3, size_bytes=7729 | imported by 3 non-test caller(s) |
 | `lib/reinvention_guard.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=12450 | covered by test — legit sleeper (imported by test only) |
-| `lib/reinvention_semantic.py` | REAL | callers=4, size_bytes=22337 | imported by 4 non-test caller(s) |
+| `lib/reinvention_semantic.py` | REAL | callers=2, size_bytes=22337 | imported by 2 non-test caller(s) |
 | `lib/release_analyzer.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=19825 | covered by test — legit sleeper (imported by test only) |
 | `lib/repetition_detector.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=6093 | covered by test — legit sleeper (imported by test only) |
 | `lib/repo_analyzer.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=51731 | covered by test — legit sleeper (imported by test only) |
@@ -411,7 +413,8 @@
 | `lib/sdd_pipeline.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=10141 | covered by test — legit sleeper (imported by test only) |
 | `lib/sdd_resume.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=11873 | covered by test — legit sleeper (imported by test only) |
 | `lib/secret_ref.py` | REAL | callers=1, size_bytes=4680 | imported by 1 non-test caller(s) |
-| `lib/self_improvement.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=8252 | covered by test — legit sleeper (imported by test only) |
+| `lib/self_improvement.py` | REAL | callers=0, writes_jsonl=True, size_bytes=8252 | writes to an existing metrics JSONL file |
+| `lib/self_improvement_loop.py` | REAL | callers=2, size_bytes=12990 | imported by 2 non-test caller(s) |
 | `lib/self_knowledge.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=10009 | covered by test — legit sleeper (imported by test only) |
 | `lib/session_bus.py` | REAL | callers=6, size_bytes=2862 | imported by 6 non-test caller(s) |
 | `lib/session_hygiene.py` | REAL | callers=2, size_bytes=6999 | imported by 2 non-test caller(s) |
@@ -439,7 +442,7 @@
 | `lib/staged_verification.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=15214 | covered by test — legit sleeper (imported by test only) |
 | `lib/stash_provenance.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=10475 | covered by test — legit sleeper (imported by test only) |
 | `lib/state_heartbeat.py` | REAL | callers=2, size_bytes=9842 | imported by 2 non-test caller(s) |
-| `lib/symbiosis_monitor.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=15958 | covered by test — legit sleeper (imported by test only) |
+| `lib/symbiosis_monitor.py` | REAL | callers=0, writes_jsonl=True, size_bytes=15958 | writes to an existing metrics JSONL file |
 | `lib/system_graph.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=39900 | covered by test — legit sleeper (imported by test only) |
 | `lib/targeted_test_resolver.py` | REAL | callers=1, size_bytes=5288 | imported by 1 non-test caller(s) |
 | `lib/task_claim_ledger.py` | REAL | callers=1, size_bytes=7056 | imported by 1 non-test caller(s) |
@@ -465,7 +468,7 @@
 | `scripts/agentic_mastery_summary.py` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=1625 | @on-demand marker — legit rarely-invoked script |
 | `scripts/agentic_tool_license_matrix.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=9482 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/align_skill_frontmatter.py` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=3292 | @on-demand marker — legit rarely-invoked script |
-| `scripts/apply-efficiency-profile.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=12691 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/apply-efficiency-profile.sh` | REAL | writes_jsonl=True, size_bytes=12691 | writes to an existing metrics JSONL file |
 | `scripts/approval_ledger.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=3237 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/aspirational_audit.py` | REAL | writes_jsonl=True, size_bytes=35217 | writes to an existing metrics JSONL file |
 | `scripts/audit_adrs.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=15530 | covered by test — legit sleeper (test proves it works when called) |
@@ -491,14 +494,14 @@
 | `scripts/component-lint.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=9923 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/compose_agent_prompt.py` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=7665 | @on-demand marker — legit rarely-invoked script |
 | `scripts/cos-bootstrap.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=15555 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/cos-ci-local.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=13330 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos-ci-local.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=14416 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-claims.sh` | DORMANT | callers=0, size_bytes=5176 | no observable production use, no test, no on-demand marker |
 | `scripts/cos-config-audit.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=34346 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-coordination-status.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=309 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-core-skills-check.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=8654 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-doctor-concurrency.sh` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=4198 | @on-demand marker — legit rarely-invoked script |
 | `scripts/cos-doctor-harness.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=8259 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/cos-doctor-memory-lifecycle.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=12581 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos-doctor-memory-lifecycle.sh` | REAL | writes_jsonl=True, size_bytes=12581 | writes to an existing metrics JSONL file |
 | `scripts/cos-doctor-preserve.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=7045 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-doctor-tools.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=9778 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-doctor-work-inventory.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=247 | covered by test — legit sleeper (test proves it works when called) |
@@ -539,21 +542,24 @@
 | `scripts/cos-worktree-sweeper.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=160 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-worktree-triage.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=234 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_adoption_profile.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=3308 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/cos_architecture_readiness.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=23987 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/cos_boring_reliability.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=5955 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos_architecture_readiness.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=25520 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos_boring_reliability.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=6550 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_branch_lease.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=9287 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_build_self_knowledge.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=14449 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_chaos_template.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=14967 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/cos_claim_signature_audit.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=9015 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos_claim_signature_audit.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=9644 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_classify_coverage.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=9296 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_cleanup_preserved_wip.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=14762 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_codex_guard.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=473 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_concurrent_status.py` | DORMANT | callers=0, size_bytes=939 | no observable production use, no test, no on-demand marker |
 | `scripts/cos_coordination_status.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=7790 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_coverage.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=14659 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos_cross_instance_drill.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=8504 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos_cross_instance_learning.py` | DORMANT | callers=0, size_bytes=5380 | no observable production use, no test, no on-demand marker |
 | `scripts/cos_default_visible_reducer.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=2262 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_demotion_loop_audit.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=6702 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_dispatch_smoke.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=3411 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos_doctrine_proposer.py` | DORMANT | callers=0, size_bytes=2448 | no observable production use, no test, no on-demand marker |
 | `scripts/cos_executor.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=14660 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_false_positive_ledger.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=4007 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_governance_roi.py` | REAL | writes_jsonl=True, size_bytes=10345 | writes to an existing metrics JSONL file |
@@ -568,6 +574,7 @@
 | `scripts/cos_profile_bootstrap.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=2860 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_recovery_drill.py` | DORMANT | callers=0, size_bytes=1936 | no observable production use, no test, no on-demand marker |
 | `scripts/cos_run_task.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=5917 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/cos_self_improvement_loop.py` | DORMANT | callers=0, size_bytes=1930 | no observable production use, no test, no on-demand marker |
 | `scripts/cos_session_backlog.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=31691 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_sprint.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=14519 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos_task_claims.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=13255 | covered by test — legit sleeper (test proves it works when called) |
@@ -632,7 +639,7 @@
 | `scripts/migrate-to-cognitive-os.sh` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=3339 | @on-demand marker — legit rarely-invoked script |
 | `scripts/ops_runbook.py` | REAL | callers=1, size_bytes=2061 | referenced by 1 other component(s) |
 | `scripts/orchestrator.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=14617 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/orchestrator_claim_gate.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=13075 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/orchestrator_claim_gate.py` | REAL | writes_jsonl=True, size_bytes=13075 | writes to an existing metrics JSONL file |
 | `scripts/orphan_commit_scan.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=13850 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/orphan_overwrite_detector.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=2472 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/parity_harness.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=22872 | covered by test — legit sleeper (test proves it works when called) |
@@ -645,8 +652,9 @@
 | `scripts/primitive_surface_reduce.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=9767 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/primitive_usage_map.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=8999 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/project_scaffold.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=2707 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/push_collision_detect.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=12672 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/push_collision_detect.py` | REAL | writes_jsonl=True, size_bytes=12672 | writes to an existing metrics JSONL file |
 | `scripts/pytest-with-summary.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=19189 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/python_stdin_antipattern_audit.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=3590 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/queue_throughput_bench.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=15115 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/radar_merge.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=30408 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/redteam_aggregate.py` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=11061 | @on-demand marker — legit rarely-invoked script |
@@ -668,9 +676,10 @@
 | `scripts/runtime_hook_reality.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=13711 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/scope_tag_backfill.py` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=4216 | @on-demand marker — legit rarely-invoked script |
 | `scripts/security_audit_writer.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=2851 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/self_improvement_discipline_gate.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=8172 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/session-leak-diagnostic.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=5866 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/session_event_bus.py` | DORMANT | callers=0, size_bytes=1268 | no observable production use, no test, no on-demand marker |
-| `scripts/session_start_budget.py` | REAL | writes_jsonl=True, size_bytes=9065 | writes to an existing metrics JSONL file |
+| `scripts/session_start_budget.py` | REAL | writes_jsonl=True, size_bytes=9571 | writes to an existing metrics JSONL file |
 | `scripts/set-security-profile.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=10805 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/setup-git-hooks.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=9146 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/setup.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=11200 | covered by test — legit sleeper (test proves it works when called) |
@@ -700,7 +709,7 @@
 | `scripts/uninstall.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=6475 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/update_readme_badges.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=9591 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/upgrade.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=7166 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/validate_tier_filter.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=22633 | covered by test — legit sleeper (test proves it works when called) |
+| `scripts/validate_tier_filter.py` | REAL | writes_jsonl=True, size_bytes=22633 | writes to an existing metrics JSONL file |
 | `scripts/verify-archived.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=8000 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/verify_plan_claims.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=4094 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/version.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=5907 | covered by test — legit sleeper (test proves it works when called) |
