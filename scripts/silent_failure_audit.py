@@ -33,6 +33,11 @@ VALID_CLASSES = {
     "probe_best_effort",
     "legacy_audited",
 }
+VALID_TRANSFERABILITY_STATES = {
+    "maintainer_cache",
+    "documented_classification",
+    "externally_reviewed",
+}
 
 CLASS_RATIONALES = {
     "optional_dependency": "Optional dependency or integration probe; absence must degrade without blocking the parent hook.",
@@ -40,6 +45,11 @@ CLASS_RATIONALES = {
     "cleanup_best_effort": "Cleanup/reaper work is best effort; failures are surfaced by later hygiene or recovery checks.",
     "probe_best_effort": "Read-only environment/state probe; failure means unknown state, not an immediate hard block.",
     "legacy_audited": "Legacy silent degradation remains audited but needs manual classification before promotion.",
+}
+TRANSFERABILITY_ACTIONS = {
+    "maintainer_cache": "Shape B blocker: requires second-maintainer or external review before this allowlist entry can be treated as transferable.",
+    "documented_classification": "Shape A acceptable: classification is explicit; second maintainer may re-review before owning this surface.",
+    "externally_reviewed": "Transferable: reviewed by someone other than the original maintainer or by an equivalent external process.",
 }
 
 
@@ -145,6 +155,8 @@ def build_report(
     allowlist = allowlist_map(load_allowlist(allowlist_path))
     findings: list[Finding] = []
     class_counts: dict[str, int] = {name: 0 for name in sorted(VALID_CLASSES)}
+    transferability_counts: dict[str, int] = {name: 0 for name in sorted(VALID_TRANSFERABILITY_STATES)}
+    transferability_occurrences: dict[str, int] = {name: 0 for name in sorted(VALID_TRANSFERABILITY_STATES)}
 
     for entry in allowlist.values():
         cls = entry.get("degradation_class")
@@ -164,6 +176,63 @@ def build_report(
                 )
             )
             continue
+        transferability_state = entry.get("transferability_state")
+        if transferability_state in transferability_counts:
+            transferability_counts[transferability_state] += 1
+            transferability_occurrences[transferability_state] += count
+        else:
+            findings.append(
+                Finding(
+                    "missing-transferability-state",
+                    "fail",
+                    path,
+                    "allowlist entry must declare transferability_state so ADR-132 debt is explicit",
+                    {"valid": sorted(VALID_TRANSFERABILITY_STATES), "value": transferability_state},
+                )
+            )
+        owner = entry.get("owner")
+        if not isinstance(owner, str) or len(owner.strip()) < 3:
+            findings.append(
+                Finding(
+                    "missing-silent-failure-owner",
+                    "fail",
+                    path,
+                    "allowlist entry must declare an accountable owner",
+                    {},
+                )
+            )
+        reviewed_on = entry.get("reviewed_on")
+        if not isinstance(reviewed_on, str) or not re.match(r"^\d{4}-\d{2}-\d{2}$", reviewed_on):
+            findings.append(
+                Finding(
+                    "missing-silent-failure-review-date",
+                    "fail",
+                    path,
+                    "allowlist entry must declare reviewed_on as YYYY-MM-DD",
+                    {"value": reviewed_on},
+                )
+            )
+        shape_b_action = entry.get("shape_b_action")
+        if not isinstance(shape_b_action, str) or len(shape_b_action.strip()) < 12:
+            findings.append(
+                Finding(
+                    "missing-shape-b-action",
+                    "fail",
+                    path,
+                    "allowlist entry must explain what makes this entry transferable or what must happen before Shape B",
+                    {},
+                )
+            )
+        elif transferability_state == "maintainer_cache":
+            findings.append(
+                Finding(
+                    "shape-b-transferability-debt",
+                    "warn",
+                    path,
+                    "allowlist entry still depends on original-maintainer cache; it blocks transferability until re-reviewed",
+                    {"occurrences": count, "owner": owner, "shape_b_action": shape_b_action},
+                )
+            )
         max_allowed = entry.get("max_occurrences")
         if not isinstance(max_allowed, int) or max_allowed < 0:
             findings.append(
@@ -230,7 +299,11 @@ def build_report(
         "occurrence_count": len(occurrences),
         "counts_by_path": counts,
         "counts_by_degradation_class": class_counts,
+        "counts_by_transferability_state": transferability_counts,
+        "occurrences_by_transferability_state": transferability_occurrences,
         "legacy_audited_count": class_counts.get("legacy_audited", 0),
+        "maintainer_cache_file_count": transferability_counts.get("maintainer_cache", 0),
+        "maintainer_cache_occurrence_count": transferability_occurrences.get("maintainer_cache", 0),
         "sample_occurrences": [asdict(item) for item in occurrences[:50]],
         "findings": [asdict(item) for item in findings],
         "fail_count": fail_count,
@@ -243,12 +316,17 @@ def write_baseline(path: Path, counts: dict[str, int], occurrences: list[Occurre
     entries = []
     for file_path, count in counts.items():
         degradation_class = classify_path(file_path, occurrence_list)
+        transferability_state = "maintainer_cache" if degradation_class == "legacy_audited" else "documented_classification"
         entries.append(
             {
                 "path": file_path,
                 "max_occurrences": count,
                 "degradation_class": degradation_class,
                 "rationale": CLASS_RATIONALES[degradation_class],
+                "owner": "original-maintainer",
+                "reviewed_on": "2026-05-03",
+                "transferability_state": transferability_state,
+                "shape_b_action": TRANSFERABILITY_ACTIONS[transferability_state],
             }
         )
     path.parent.mkdir(parents=True, exist_ok=True)

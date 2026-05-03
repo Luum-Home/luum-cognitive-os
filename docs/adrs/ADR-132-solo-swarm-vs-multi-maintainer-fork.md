@@ -117,6 +117,24 @@ runtime inventory. The manifest-level companion is
 Together these audits turn ADR-132 from an open philosophical concern into a
 measurable adoption-boundary backlog.
 
+The same principle now applies to the silent-failure allowlist. The 1,580
+accepted `|| true` / `|| :` / `2>/dev/null` occurrences are no longer an opaque
+maintainer memory cache:
+
+- every allowlist entry declares `owner`, `reviewed_on`,
+  `transferability_state`, and `shape_b_action`;
+- `transferability_state: maintainer_cache` is allowed under Shape A but emits a
+  `shape-b-transferability-debt` warning;
+- missing owner/review metadata is a hard failure in
+  `scripts/cos-silent-failure-audit`;
+- architecture readiness propagates the warning so the debt is visible before a
+  second maintainer appears.
+
+As of 2026-05-03 the allowlist is fully owned and dated, but still contains
+`maintainer_cache` entries. That is deliberate immaturity, not hidden maturity:
+Shape A can operate with those entries; Shape B cannot claim transferability
+until they are re-reviewed or moved to `externally_reviewed`.
+
 ### Shape B — Multi-Maintainer COS (hypothetical)
 
 The shape the system would need if a second human contributor
@@ -198,6 +216,11 @@ forking later is possible without rebuilding from scratch:
    externalised into ADRs, the boring-reliability dashboard, and
    `docs/architecture/`. Goal: the gap between what is documented
    and what is true should keep shrinking.
+6. **Silent-failure allowances MUST carry transferability metadata.**
+   An allowance owned only by the original maintainer is permitted in
+   Shape A, but it must say so mechanically. Missing owner/review
+   metadata fails; `maintainer_cache` entries warn until reviewed by a
+   second maintainer or equivalent external process.
 
 Following these constraints does not commit to Shape B; it keeps
 the door open at low cost.
