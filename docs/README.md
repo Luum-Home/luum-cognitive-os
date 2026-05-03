@@ -22,6 +22,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-123: Operational Stability and Friction Reduction Program](adrs/ADR-123-operational-stability-friction-reduction.md) — guard maturity, adaptive profiles, repair-first blockers, unified status, and validation lanes.
 - [ADR-124: COS Distribution Boundaries](adrs/ADR-124-cos-distribution-boundaries.md) — separates Core, Team, Maintainer, and Lab surfaces so users adopt safety primitives without the full meta-layer.
 - [ADR-125: Governance Tools Value Boundary](adrs/ADR-125-governance-tools-value-boundary.md) — classifies governance into runtime safety, delivery structure, and maintainer meta-governance.
+- [ADR-126: Agentic Primitive Lifecycle Governor](adrs/ADR-126-agentic-primitive-lifecycle-governor.md) — lifecycle states and gates for creating, promoting, demoting, archiving, and deleting self-adjusting primitives.
 - [Primitive Harvester](architecture/primitive-harvester.md) — architecture and JSON contract for create/improve/use/document/discard decisions.
 - [Foundation Hardening Program](../.cognitive-os/plans/architecture/foundation-hardening-program.md) — execution checklist and production border-case matrix for ADR-121.
 - [Operational Stability and Friction Reduction Program](../.cognitive-os/plans/architecture/operational-stability-friction-reduction.md) — phase checklist for lowering SO friction without weakening safety.
