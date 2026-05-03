@@ -158,6 +158,22 @@ This does not mean every hook is product-core. Many projected hooks remain
 `lab`/`sandbox` or advisory because this repository is the maintainer runtime,
 not the minimal consumer distribution.
 
+This first demotion is deliberately classified as **semantic-portability
+signed**, not ROI-signed. The reason was stronger than the ROI heuristic:
+`TaskCompleted` is a COS extension event and should not be default-projected as a
+portable baseline. Therefore the governance ROI dashboard remains an instrument
+after this demotion, not yet the decision knife.
+
+The lifecycle governor is considered a repeated control loop only after a
+second demotion lands, and at least one demotion records governance ROI as the
+primary signing signal. Until then, ADR-126 has proven that demotion works
+mechanically, but not that demotion happens reflexively under normal operation.
+
+This is now visible through `scripts/cos-demotion-loop-audit` and the
+`demotion-loop-maturity` architecture-readiness check. The check warns rather
+than fails while there is only one semantic demotion; it becomes green when the
+manifest contains at least two demotions and at least one is ROI-signed.
+
 ## Consequences
 
 - Primitive creation becomes slower but safer.
@@ -196,4 +212,5 @@ Future enforceable proof:
 python3 -m pytest tests/contracts/test_primitive_lifecycle_manifest.py -q
 python3 -m pytest tests/behavior/test_primitive_lifecycle_promotion.py -q
 python3 -m pytest tests/behavior/test_primitive_lifecycle_archive_claims.py -q
+scripts/cos-demotion-loop-audit --json
 ```
