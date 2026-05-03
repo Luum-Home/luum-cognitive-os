@@ -256,7 +256,7 @@ The companion documents to read alongside, in order:
    — the next strategic decision the system faces.
 
 If, while reading the codebase, something seems opinionated without
-explanation, the explanation is most likely one of the five sections
+explanation, the explanation is most likely one of the seven sections
 above. If none of them fit, that is signal: either the maintainer's
 filter has not been applied to that surface yet, or the section
 above is missing a case the new evidence reveals. Both are useful
