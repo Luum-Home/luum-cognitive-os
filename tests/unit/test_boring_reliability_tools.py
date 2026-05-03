@@ -164,3 +164,20 @@ def test_dispatch_smoke_writes_metrics(tmp_path: Path, monkeypatch) -> None:
     assert report["status"] == "pass"
     assert (tmp_path / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl").stat().st_size > 0
     assert (tmp_path / ".cognitive-os" / "metrics" / "task-history.jsonl").stat().st_size > 0
+
+
+def test_boring_reliability_warn_exit_is_zero_by_default(monkeypatch, capsys) -> None:
+    import scripts.cos_boring_reliability as boring
+
+    monkeypatch.setattr(boring, "build_dashboard", lambda profile: {"status": "warn", "profile": profile})
+
+    assert boring.main(["--profile", "core", "--json"]) == 0
+    assert '"status": "warn"' in capsys.readouterr().out
+
+
+def test_boring_reliability_can_fail_on_warn(monkeypatch) -> None:
+    import scripts.cos_boring_reliability as boring
+
+    monkeypatch.setattr(boring, "build_dashboard", lambda profile: {"status": "warn", "profile": profile})
+
+    assert boring.main(["--profile", "core", "--fail-on-warn"]) == 1
