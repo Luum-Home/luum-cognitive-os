@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import random
+from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Any
 from unittest.mock import patch
@@ -21,6 +22,7 @@ from lib.engram_lifecycle import (
     EngramLifecycle,
     adjusted_score,
     decay_retention,
+    rank_fallback_score,
     reinforce_confidence,
 )
 
@@ -187,6 +189,11 @@ class TestAdjustedScore:
         assert abs(score - expected) < 1e-9, (
             f"alpha=1 should return confidence * retention = {expected}, got {score}"
         )
+
+    def test_rank_fallback_score_preserves_result_order(self):
+        assert rank_fallback_score(0, 5) == 1.0
+        assert rank_fallback_score(4, 5) == pytest.approx(0.9)
+        assert rank_fallback_score(1, 5) > rank_fallback_score(3, 5)
 
 
 # ---------------------------------------------------------------------------
@@ -420,3 +427,25 @@ class TestReinforce:
         new_trailer = lc._parse_trailer(updated_calls[0]["content"])
         expected_confidence = initial_confidence + (1.0 - initial_confidence) * lc.BETA
         assert abs(new_trailer["confidence"] - expected_confidence) < 1e-9
+
+
+def test_search_without_native_scores_uses_rank_fallback() -> None:
+    lc = _make_lc()
+    observations = [_obs(obs_id=1), _obs(obs_id=2), _obs(obs_id=3)]
+    with patch("lib.engram_lifecycle.engram_client.search_observations", return_value=observations):
+        results = lc.search("query", limit=3)
+
+    scores = [result["adjusted_score"] for result in results]
+    assert scores == sorted(scores, reverse=True)
+    assert scores[0] > scores[-1]
+
+
+def test_reinforce_records_daemon_down_metric(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(tmp_path))
+    lc = _make_lc()
+    with patch("lib.engram_lifecycle.engram_http_client.is_available", return_value=False):
+        assert lc.reinforce(123) is False
+
+    metric = tmp_path / ".cognitive-os" / "metrics" / "engram-daemon-down.jsonl"
+    assert metric.exists()
+    assert '"observation_id": "123"' in metric.read_text(encoding="utf-8")
