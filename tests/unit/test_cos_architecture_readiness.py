@@ -20,6 +20,7 @@ def test_build_report_warns_for_known_wiring_gaps(tmp_path: Path) -> None:
          patch.object(readiness, "check_lifecycle_manifest", return_value=readiness.Check("lifecycle", "pass", "ok")), \
          patch.object(readiness, "check_active_surface", return_value=readiness.Check("active-surface", "pass", "ok")), \
          patch.object(readiness, "check_runtime_hook_reality", return_value=readiness.Check("runtime-hook-reality", "pass", "ok")), \
+         patch.object(readiness, "check_core_session_start_budget", return_value=readiness.Check("core-session-start-budget", "pass", "ok")), \
          patch.object(readiness, "check_roi", return_value=readiness.Check("roi", "pass", "ok")), \
          patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
          patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
@@ -112,6 +113,7 @@ def test_readiness_report_includes_active_surface(tmp_path: Path) -> None:
          patch.object(readiness, "check_lifecycle_manifest", return_value=readiness.Check("lifecycle", "pass", "ok")), \
          patch.object(readiness, "check_active_surface", return_value=readiness.Check("active-primitive-surface", "pass", "ok", {"counts_by_tier": {"core": 1}})), \
          patch.object(readiness, "check_runtime_hook_reality", return_value=readiness.Check("runtime-hook-reality", "pass", "ok")), \
+         patch.object(readiness, "check_core_session_start_budget", return_value=readiness.Check("core-session-start-budget", "pass", "ok")), \
          patch.object(readiness, "check_roi", return_value=readiness.Check("roi", "pass", "ok")), \
          patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
          patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
@@ -206,3 +208,20 @@ def test_runtime_hook_reality_check_fails_on_findings(tmp_path: Path) -> None:
 
     assert check.status == "fail"
     assert check.details["findings"] == report["findings"]
+
+
+def test_core_session_start_budget_check_fails_lab_hooks(tmp_path: Path) -> None:
+    report = {
+        "profile": "core",
+        "session_start_hook_count": 4,
+        "counts_by_tier": {"core": 3, "lab": 1, "team": 0, "maintainer": 0, "unknown": 0},
+        "budget": {"max_session_start_hooks": 5, "allow_lab": False},
+        "findings": [{"id": "core-session-start-lab-hooks", "severity": "fail"}],
+        "candidates_to_move": [],
+        "fail_count": 1,
+    }
+    with patch.object(readiness.session_start_budget, "build_report", return_value=report):
+        check = readiness.check_core_session_start_budget(tmp_path)
+
+    assert check.status == "fail"
+    assert check.details["findings"][0]["id"] == "core-session-start-lab-hooks"
