@@ -19,8 +19,9 @@ scripts/cos-session-start-budget --profile core
 python3 scripts/active_primitive_index.py --tier core --json
 ```
 
-Expected result: core is small enough to read, the preamble estimate is below
-the core token budget, and the `SessionStart` boot path has no lab hooks.
+Expected result: core is small enough to read, the preamble estimate includes
+`AGENTS.md` and stays below the core token budget, and the `SessionStart` boot
+path has no lab hooks.
 
 ## Step 2 — prove the safety controls are honest
 
