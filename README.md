@@ -1,6 +1,6 @@
 # Cognitive OS
 
-[![CI](https://github.com/luum-home/luum-cognitive-os/actions/workflows/ci.yml/badge.svg)](https://github.com/luum-home/luum-cognitive-os/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/badge/CI-local%20(ADR--131)-blue.svg)](docs/adrs/ADR-131-local-ci-migration.md)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](CHANGELOG.md)
 <!-- BADGES:START -->
@@ -82,6 +82,21 @@ configuration is required for the governance layer to be active.
 
 **Keeping up to date**: install git hooks once (`bash scripts/setup-git-hooks.sh`)
 and all registered projects update when you `git pull` the source repo.
+
+**Local CI** (only relevant when contributing to *this* repo): GitHub
+Actions workflows are suspended (see ADR-130). The replacement runs
+locally via a tracked pre-push hook. Wire it up once after clone:
+
+```bash
+bash scripts/install-git-hooks.sh        # pre-push gate (ADR-131)
+bash scripts/install-launchd-jobs.sh     # 3 weekly schedules (macOS)
+```
+
+After install, `git push` runs `scripts/cos-ci-local.sh quick` (~30s).
+Use `COS_PRE_PUSH_TIER=full git push` for a deeper gate, or `--no-verify`
+to bypass for a single push. PR review is on demand:
+`bash scripts/cos-pr-review.sh prep <PR>`. Full architecture in
+[ADR-131](docs/adrs/ADR-131-local-ci-migration.md).
 
 See [docs/getting-started.md](docs/getting-started.md) for detailed setup and
 [docs/migration-from/from-vanilla-claude-code.md](docs/migration-from/from-vanilla-claude-code.md)
