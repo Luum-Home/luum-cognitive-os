@@ -3893,3 +3893,30 @@ primitives:
     triggers fire; update manifests/federation-triggers.yaml only with evidence.
   sunset_criteria: Archive only when Shape-B federation is implemented with
     stronger distributed coordination contracts.
+- id: scripts/cos-cross-instance-drill
+  kind: script
+  owner_adr: ADR-136
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-cross-instance-drill
+  - scripts/cos_cross_instance_drill.py
+  - lib/cross_instance_learning.py
+  - docs/architecture/cross-instance-learning-runway.md
+  runtime_projection: false
+  behavior_evidence: temporary-state manual drills for cross-instance runway scenarios
+  evidence_commands:
+  - scripts/cos-cross-instance-drill --scenario all
+  - python3 -m pytest tests/unit/test_cross_instance_drill.py -q
+  exit_behavior: exit_0
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Delete temporary drill output; the drill must not
+    mutate real evidence, locks, governance, or memory stores.
+  sunset_criteria: Archive only if cross-instance simulation moves into a stronger
+    scenario testbed with equivalent no-real-mutation guarantees.

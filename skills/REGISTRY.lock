@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-03T05:11:36+00:00'
+generated_at: '2026-05-03T05:17:28+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
