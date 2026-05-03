@@ -60,6 +60,17 @@ Every proposal declares:
 - human approval requirement;
 - blocked actions.
 
+The proposal loop is protected by `scripts/cos-self-improvement-discipline-gate`.
+That gate fails proposals that:
+
+- open `auto_merge`;
+- open `auto_promote_core_or_team`;
+- remove the human-approval requirement;
+- propose adding or promoting default-visible `core`/`team` surface;
+- allow direct writes to live runtime surfaces such as `hooks/`, `rules/`, or
+  root `skills/`;
+- omit explicit blocked actions such as `invent_roi_evidence`.
+
 ## Consequences
 
 ### Positive
@@ -93,7 +104,9 @@ Every proposal declares:
 
 ```bash
 python3 -m pytest tests/unit/test_self_improvement_loop.py -q
+python3 -m pytest tests/unit/test_self_improvement_discipline_gate.py -q
 scripts/cos-self-improvement-loop --profile core --json
+scripts/cos-self-improvement-discipline-gate --profile core --json
 ```
 
 The output must show `mode: propose_only`, `human_approval_required: true`, and
