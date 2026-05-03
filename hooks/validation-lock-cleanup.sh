@@ -31,6 +31,8 @@ LIB="$SCRIPT_DIR/_lib/validation-lock.sh"
 [ -f "$LIB" ] || exit 0
 # shellcheck source=/dev/null
 source "$LIB"
+# shellcheck source=/dev/null
+source "$SCRIPT_DIR/_lib/safe-worktree-remove.sh"
 
 mkdir -p "$METRICS_DIR" 2>/dev/null || true
 CLEANED=0
@@ -134,7 +136,7 @@ PY
       CAPSULE_DIR=$(python3 -c "import json,sys;d=json.load(open('$lock'));print(d.get('capsule_dir',''))" 2>/dev/null || echo "")
       rm -f "$lock"
       if [ -n "$CAPSULE_DIR" ] && [ -d "$CAPSULE_DIR" ]; then
-        git -C "$PROJECT_DIR" worktree remove --force "$CAPSULE_DIR" >/dev/null 2>&1 || rm -rf "$CAPSULE_DIR"
+        safe_worktree_remove "$PROJECT_DIR" "$CAPSULE_DIR" "validation-lock-cleanup"
       fi
       printf '{"ts":"%s","action":"auto_recovery","lock":"%s","run_id":"%s","age_seconds":%s,"stale_signals":"%s"}\n' \
         "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$lock" "$RUN_ID" "$AGE" "$DETAIL" >> "$LOG_FILE" 2>/dev/null || true
