@@ -23,6 +23,7 @@ import cos_preamble_budget
 import cos_wip_safety_score
 import runtime_hook_reality
 import silent_failure_audit
+import session_start_budget
 
 
 
@@ -56,9 +57,10 @@ def build_dashboard(profile: str = "core", root: Path = REPO_ROOT) -> dict[str, 
     false_positive = cos_false_positive_ledger.build_report(root / ".cognitive-os" / "metrics")
     wip = cos_wip_safety_score.build_score(root)
     silent = silent_failure_audit.build_report(root, root / "hooks", root / "manifests" / "silent-failure-allowlist.yaml")
+    session_budget = session_start_budget.build_report(profile, root)
     dispatch_evidence = dispatch_metrics_evidence(root)
     readiness = readiness_summary(root)
-    status_items = [runtime["summary"]["status"], adoption["status"], preamble["status"], wip["status"], silent["status"], dispatch_evidence["status"], readiness["status"]]
+    status_items = [runtime["summary"]["status"], adoption["status"], preamble["status"], wip["status"], silent["status"], session_budget["status"], dispatch_evidence["status"], readiness["status"]]
     overall = "fail" if "fail" in status_items else ("warn" if "warn" in status_items else "pass")
     return {
         "status": overall,
@@ -69,6 +71,14 @@ def build_dashboard(profile: str = "core", root: Path = REPO_ROOT) -> dict[str, 
         "default_visible_reducer": {"status": reducer["status"], "recommendation_count": reducer["recommendation_count"], "recommendations": reducer["recommendations"][:10]},
         "false_positive_ledger": false_positive,
         "wip_safety": wip,
+        "session_start_budget": {
+            "status": session_budget["status"],
+            "profile": session_budget["profile"],
+            "session_start_hook_count": session_budget["session_start_hook_count"],
+            "counts_by_tier": session_budget["counts_by_tier"],
+            "budget": session_budget["budget"],
+            "findings": session_budget["findings"],
+        },
         "silent_failure_audit": {
             "status": silent["status"],
             "file_count": silent["file_count"],

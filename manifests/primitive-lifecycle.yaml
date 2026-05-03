@@ -801,7 +801,7 @@ primitives:
   - .claude/settings.json
   - hooks/direct-main-guard.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; team-branch-safety
   evidence_commands:
   - bash -n hooks/direct-main-guard.sh
   - python3 -m pytest tests/unit/test_active_primitive_index.py tests/unit/test_direct_main_guard.py
@@ -2391,7 +2391,7 @@ primitives:
   - .claude/settings.json
   - hooks/session-init.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; core-sessionstart-session-marker
   evidence_commands:
   - bash -n hooks/session-init.sh
   - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_catalog_loading.py
@@ -2482,9 +2482,9 @@ primitives:
 - id: hooks/session-start-stash-reapply.sh
   kind: hook
   owner_adr: ADR-126
-  lifecycle_state: sandbox
+  lifecycle_state: advisory
   maturity: advisory
-  distribution: lab
+  distribution: maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -2493,7 +2493,8 @@ primitives:
   - .claude/settings.json
   - hooks/session-start-stash-reapply.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo;
+    core-sessionstart-wip-recovery; core-sessionstart-wip-recovery-advisory
   evidence_commands:
   - bash -n hooks/session-start-stash-reapply.sh
   - python3 -m pytest tests/integration/test_stash_reapply.py -q
@@ -3137,7 +3138,7 @@ primitives:
   - .claude/settings.json
   - hooks/validation-lock-cleanup.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; core-sessionstart-validation-recovery
   evidence_commands:
   - bash -n hooks/validation-lock-cleanup.sh
   - python3 -m pytest tests/unit/test_validation_capsule.py -q
@@ -3484,3 +3485,30 @@ primitives:
     bypass with operator audit.
   false_positive_tests:
   - tests/contracts/test_control_plane_primitives.py
+- id: scripts/cos-session-start-budget
+  kind: script
+  owner_adr: ADR-124
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-session-start-budget
+  - scripts/session_start_budget.py
+  - scripts/_lib/settings-driver-claude-code.sh
+  - docs/architecture/agentic-kernel-philosophy.md
+  runtime_projection: false
+  behavior_evidence: sessionstart-budget-smoke-and-unit-tests
+  evidence_commands:
+  - scripts/cos-session-start-budget --profile core --fail-on-findings
+  - python3 -m pytest tests/unit/test_session_start_budget.py -q
+  rollback_or_repair_command: Move non-critical SessionStart hooks to maintainer/lab
+    projection or raise the profile budget with ADR approval.
+  sunset_criteria: Archive only if SessionStart budgeting is subsumed by a canonical
+    harness projection budget gate.
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
