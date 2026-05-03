@@ -65,7 +65,7 @@ def test_blocking_maturity_matches_real_exit2_behavior_and_tests() -> None:
         hook_path = str(item["id"])
         evidence = [str(command) for command in item.get("evidence_commands", [])]
         has_test_evidence = any("pytest" in command and "test" in command for command in evidence)
-        if "exit 2" not in _hook_text(hook_path) or not has_test_evidence:
+        if item.get("exit_behavior") != "exit_2" or "exit 2" not in _hook_text(hook_path) or not has_test_evidence:
             offenders.append(hook_path)
     assert offenders == []
 
@@ -85,4 +85,34 @@ def test_runtime_projected_hooks_are_not_deleted_or_archived() -> None:
         for item in _manifest_primitives()
         if item.get("kind") == "hook" and item.get("runtime_projection") and item.get("lifecycle_state") in INACTIVE_STATES
     ]
+    assert offenders == []
+
+
+def test_lifecycle_entries_have_reality_contract_fields() -> None:
+    offenders: list[str] = []
+    for item in _manifest_primitives():
+        for field in ("exit_behavior", "metrics_file", "docs_claim_level"):
+            if not item.get(field):
+                offenders.append(f"{item.get('id')}::{field}")
+    assert offenders == []
+
+
+def test_docs_claim_level_cannot_exceed_maturity() -> None:
+    order = {"observe": 0, "advisory": 1, "blocking": 2}
+    offenders = [
+        str(item["id"])
+        for item in _manifest_primitives()
+        if order[str(item.get("docs_claim_level"))] > order[str(item.get("maturity"))]
+    ]
+    assert offenders == []
+
+
+def test_core_team_and_blocking_entries_have_executable_evidence() -> None:
+    offenders: list[str] = []
+    for item in _manifest_primitives():
+        if item.get("distribution") not in {"core", "team"} and item.get("maturity") != "blocking":
+            continue
+        evidence = [str(command) for command in item.get("evidence_commands", [])]
+        if not evidence or not any(command.startswith(("bash -n", "python3 -m pytest")) for command in evidence):
+            offenders.append(str(item["id"]))
     assert offenders == []

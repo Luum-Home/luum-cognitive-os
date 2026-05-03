@@ -148,7 +148,8 @@ python3 -m py_compile \
 - `lib/engram_lifecycle.py`
 - `scripts/active_primitive_index.py`
 - `scripts/cos_architecture_readiness.py`
-- `manifests/governance-maturity.yaml`
+- `manifests/primitive-lifecycle.yaml`
+- `scripts/runtime_hook_reality.py`
 - `.cognitive-os/plans/architecture/integrity-and-de-theater-sprint.md`
 - `tests/unit/test_engram_client.py`
 - `tests/unit/test_engram_lifecycle.py`

@@ -61,6 +61,9 @@ Each new or changed primitive must declare, eventually in a canonical manifest:
 - `projection_targets`
 - `runtime_projection` when present in generated harness settings
 - `behavior_evidence` explaining whether the primitive observes, advises, or blocks
+- `exit_behavior`: `exit_0 | exit_2 | mixed | manual`
+- `metrics_file`: concrete JSONL path or `none` when the primitive does not emit metrics
+- `docs_claim_level`: `observe | advisory | blocking`; product/docs claims cannot exceed maturity
 - `latency_budget_ms` when runtime-facing and blocking
 - `evidence_commands`
 - `rollback_or_repair_command`
@@ -129,10 +132,19 @@ The hardening contract is intentionally anti-aspirational:
 
 - every projected hook must have a manifest entry;
 - every runtime-projected hook entry must point to an existing hook file;
-- `maturity: blocking` must correspond to a hook with an observable `exit 2`
-  path and pytest evidence;
+- `maturity: blocking` must correspond to `exit_behavior: exit_2`, a hook with an
+  observable `exit 2` path, and pytest evidence;
+- evidence commands must be syntactically executable references, not prose-only
+  placeholders;
 - non-blocking maturity cannot claim a blocking/default-on lifecycle state;
+- `docs_claim_level` cannot exceed runtime maturity, so docs cannot sell an
+  observe/advisory hook as blocking;
 - projected hooks cannot be marked archived, demoted, or deleted.
+
+The runtime reality audit (`scripts/runtime_hook_reality.py`) classifies the
+projected hook set into real blocking, real advisory, observe-only, dormant,
+projected-but-undocumented, and documented-but-not-projected buckets. It is wired
+into architecture readiness as `runtime-hook-reality`.
 
 This does not mean every hook is product-core. Many projected hooks remain
 `lab`/`sandbox` or advisory because this repository is the maintainer runtime,
