@@ -59,6 +59,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Validation Capsule Manual Test](manual-tests/validation-capsule.md) — manual proof that release-lane validation runs with scoped guards and persistent artifacts.
 - [ADR-109: Validation Capsule Worktree Isolation](adrs/ADR-109-validation-capsule-worktree-isolation.md) — accepted decision separating validation isolation from the global hook killswitch.
 
+- [Adoption Tiers](adoption-tiers.md) — concrete guide: which hooks and primitives to enable for lean (solo-dev), standard (small team), and strict (enterprise agentic) configurations, with setup commands and a decision tree.
+
 - [Architecture Principles](architecture-principles.md) — dependency model and layer boundaries
 - [Design Philosophy](design-philosophy.md) — biological-system framing for the OS
 - [Product Principles](product-principles.md) — product-level constraints and value focus
