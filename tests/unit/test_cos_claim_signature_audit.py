@@ -82,6 +82,19 @@ def test_helps_projects_requires_non_maintainer_core_30_day_report(tmp_path: Pat
                     "duration_days": 30,
                     "incident_evidence": {"prevented_incidents": 2, "false_positive_ratio": 0.05},
                     "dx_evidence": {"cognitive_cost": "low enough to keep enabled"},
+                    "provenance": {
+                        "producer": {
+                            "type": "ci",
+                            "identity": "external-ci",
+                            "generated_at": "2026-06-02T00:00:00Z",
+                        }
+                    },
+                    "independence": {
+                        "maintainer_owned": False,
+                        "same_machine": False,
+                        "same_repo": False,
+                        "self_reported": False,
+                    },
                 }
             ]
         },
@@ -92,6 +105,32 @@ def test_helps_projects_requires_non_maintainer_core_30_day_report(tmp_path: Pat
 
     assert claim["signed"] is True
     assert claim["evidence"]["qualifying_external_reports"] == ["external/example"]
+
+
+def test_helps_projects_rejects_missing_provenance(tmp_path: Path) -> None:
+    lifecycle = write_yaml(tmp_path / "primitive-lifecycle.yaml", {"primitives": [demoted("hooks/task-completed.sh")]})
+    external = write_yaml(
+        tmp_path / "external.yaml",
+        {
+            "reports": [
+                {
+                    "project": "external/example",
+                    "reporter": "external-dev",
+                    "maintainer_owned": False,
+                    "relationship": "external-user",
+                    "profile": "core",
+                    "duration_days": 30,
+                    "incident_evidence": {"prevented_incidents": 2, "false_positive_ratio": 0.05},
+                    "dx_evidence": {"cognitive_cost": "low enough to keep enabled"},
+                }
+            ]
+        },
+    )
+
+    report = audit.build_report(lifecycle, external)
+    claim = {item["id"]: item for item in report["claims"]}["helps-projects"]
+
+    assert claim["signed"] is False
 
 
 def test_maturity_loop_signs_with_roi_signed_demotion(tmp_path: Path) -> None:
