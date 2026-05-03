@@ -29,6 +29,7 @@ import runtime_hook_reality
 import silent_failure_audit
 import session_start_budget
 import lab_first_promotion_gate
+import cos_preamble_budget
 
 REPO_ROOT = SCRIPT_DIR.parents[0]
 REQUIRED_RUNTIME_PRIMITIVES = {
@@ -178,6 +179,28 @@ def check_active_surface(root: Path) -> Check:
     )
 
 
+
+def check_core_preamble_budget(root: Path) -> Check:
+    try:
+        report = cos_preamble_budget.build_budget("core", root)
+    except Exception as exc:  # noqa: BLE001
+        return Check(
+            id="core-preamble-budget",
+            status="fail",
+            message="core preamble budget could not be evaluated",
+            details={"error": str(exc)},
+        )
+    status = "pass" if report["status"] == "pass" else "fail"
+    return Check(
+        id="core-preamble-budget",
+        status=status,
+        message=(
+            "core full-context preamble is below token budget"
+            if status == "pass"
+            else "core full-context preamble exceeds token budget"
+        ),
+        details=report,
+    )
 
 
 def check_runtime_hook_reality(root: Path) -> Check:
@@ -446,6 +469,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_adoption_tiers(root),
         check_lifecycle_manifest(root),
         check_active_surface(root),
+        check_core_preamble_budget(root),
         check_runtime_hook_reality(root),
         check_core_session_start_budget(root),
         check_silent_failure_audit(root),
