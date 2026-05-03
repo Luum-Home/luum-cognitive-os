@@ -156,6 +156,90 @@ read with this in mind: the question is not *when does a second
 maintainer appear*, it is *when is the durability gain worth the
 velocity loss*. The two framings produce different decisions.
 
+## Two maturity stages: works-when-it-works, and knows-when-it-doesn't
+
+A system has two distinguishable maturity stages with respect to its
+own limits. **Works when it works**: capabilities ship; evidence of
+failure is anecdotal; doctrine is aspirational. **Knows when it
+doesn't work**: each capability ships alongside the conditions under
+which it would be considered broken; failure modes are first-class
+artefacts; doctrine is mechanically falsifiable.
+
+The transition is a one-way ratchet. Once a system has observable
+triggers for its own failure, it cannot revert to claiming the
+capability without confronting them. The cost of the transition is
+the loss of wishful self-reporting, which is operationally cheap and
+emotionally comforting.
+
+The mechanisms that materialise stage 2 in this repository, none of
+them decorative:
+
+- **Demotion as a first-class operation**
+  ([ADR-126](../adrs/ADR-126-agentic-primitive-lifecycle-governor.md))
+  — every primitive in `lifecycle_state: demoted` carries a
+  `demotion_evidence` block and `sunset_criteria`. The first executed
+  demotion (`hooks/task-completed.sh`) was deliberately small to
+  prove the semantics with no organisational pressure.
+- **Maturity labels with no shortcut to "blocking"**
+  (`manifests/governance-maturity.yaml`) — each gate is `advisory` /
+  `observe` / `blocking`; documentation cannot claim a check blocks
+  without an evidence link. `trust-score-validator`, `blast-radius`,
+  and `review-spawner` are explicitly named as non-blocking despite
+  being assumed otherwise in earlier docs.
+- **Silent failure as classified surface**
+  (`manifests/silent-failure-allowlist.yaml`) — every `|| true`,
+  `|| :`, and `2>/dev/null` in the hook tree carries a rationale and
+  `max_occurrences`; growth without classification fails the audit.
+- **Aspirational audit** (`scripts/aspirational_audit.py`) —
+  components tagged `REAL` / `DORMANT` / `ASPIRATIONAL`; drift in
+  either direction (capability that no longer fires, or doctrine
+  that asserts more than the runtime does) is reported.
+- **False-positive ledger** (`cos-false-positive-ledger`) — the
+  gates themselves are measured. A gate that fires wrong often
+  enough is a candidate for demotion, not for tighter rules around
+  it.
+- **Propose-only as enforced default**
+  ([ADR-134](../adrs/ADR-134-headless-self-improvement-proposer.md),
+  [ADR-135](../adrs/ADR-135-self-evolving-doctrine-proposals.md)) —
+  the self-improvement loop and the doctrine proposer generate
+  proposals from live audit data; neither can apply them.
+  `human_approval_required: true` is hardcoded; the blocked-actions
+  list includes `auto_merge`, `auto_promote_core_or_team`, and
+  `invent_roi_evidence`.
+- **Anti-self-validation**
+  (`manifests/external-adoption-evidence.yaml`, commit `d4535df`) —
+  external-adoption claims require signed provenance and pass
+  `independence` flags (`maintainer_owned: false`,
+  `same_machine: false`, `same_repo: false`, `self_reported: false`).
+  The first cross-instance drill report explicitly disqualified its
+  own output as adoption signal — the schema applied recursively to
+  its first artefact.
+- **Runway with observable triggers, not speculative federation**
+  ([ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md)) —
+  the Shape B infrastructure (registry locks, evidence exchange,
+  Engram bundles) is built and rehearsed via
+  `cos-cross-instance-drill`; Shape B itself is not activated. Six
+  federation triggers in `manifests/federation-triggers.yaml`
+  observe the gap between current state and activation conditions.
+- **Falsifiable claims as a release artefact** (CHANGELOG v0.24
+  *Falsifiable claims added*) — each newly-shipped capability lists
+  the conditions under which a future reader should consider it
+  broken: a self-improvement loop with static proposals after months
+  of audit evolution, a doctrine proposer with zero convergence
+  against external review, a Shape B runway with triggers fired but
+  no primitive activation.
+
+The shared pattern across all of these is the same: convert opinion
+into operable property. *"This system is honest"* cannot be
+falsified. *"This system writes a JSONL row each time gate X fires
+wrong, and the demotion threshold is ledger-derived"* can. Stage 2
+is the accumulation of the second kind of claim, not of the first.
+
+For a contributor, the test for whether a capability belongs in the
+default profile is not only *does it work?* but *how would I know,
+mechanically, when it stops working?*. If the second question has
+no answer, the capability has not finished landing.
+
 ## How to read this document over time
 
 This is not a manifesto and it is not a contract. It is a
