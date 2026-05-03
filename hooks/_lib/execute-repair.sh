@@ -31,6 +31,9 @@ source "$_EXEC_REPAIR_LIB_DIR/circuit-breaker.sh"
 # shellcheck source=remediation.sh
 source "$_EXEC_REPAIR_LIB_DIR/remediation.sh"
 
+# shellcheck source=safe-worktree-remove.sh
+source "$(dirname "${BASH_SOURCE[0]}")/safe-worktree-remove.sh"
+
 # ─── Configuration ─────────────────────────────────────────────────────────
 
 _REPAIR_TIMEOUT_DETERMINISTIC="${COGNITIVE_OS_REPAIR_TIMEOUT_DET:-120}"   # seconds
@@ -112,12 +115,7 @@ repair_cleanup_worktree() {
     branch_name=$(git -C "$wt_path" rev-parse --abbrev-ref HEAD 2>/dev/null || true)
   fi
 
-  # Remove worktree via git
-  if ! git -C "$project_dir" worktree remove --force "$wt_path" 2>/dev/null; then
-    # Fallback: manual removal
-    rm -rf "$wt_path" 2>/dev/null
-    git -C "$project_dir" worktree prune 2>/dev/null
-  fi
+  safe_worktree_remove "$project_dir" "$wt_path" "execute-repair"
 
   # Clean up the branch if it was auto-created
   if [ -n "$branch_name" ] && [[ "$branch_name" == auto-repair/* ]]; then
