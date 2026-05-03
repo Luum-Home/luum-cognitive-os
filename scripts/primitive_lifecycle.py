@@ -56,6 +56,7 @@ ENUMS = {
 RUNTIME_KINDS = {"hook", "doctor"}
 BLOCKING_STATES = {"blocking", "default-on"}
 BLOCKING_RISKS = {"blocking", "mutating", "destructive"}
+INACTIVE_STATES = {"demoted", "archived", "deleted"}
 SUPPORTED_HARNESSES = {"claude", "codex", "shell", "github-actions"}
 
 
@@ -143,7 +144,7 @@ def validate_manifest(manifest: dict[str, Any]) -> list[Finding]:
         risk_class = primitive.get("risk_class")
         exit_behavior = primitive.get("exit_behavior")
         docs_claim_level = primitive.get("docs_claim_level")
-        if maturity == "blocking" and lifecycle_state not in BLOCKING_STATES:
+        if maturity == "blocking" and lifecycle_state not in BLOCKING_STATES and lifecycle_state not in INACTIVE_STATES:
             findings.append(Finding(primitive_id, "lifecycle_state", "blocking maturity requires blocking/default-on lifecycle_state"))
         if lifecycle_state in BLOCKING_STATES and maturity != "blocking":
             findings.append(Finding(primitive_id, "maturity", "blocking/default-on lifecycle_state requires blocking maturity"))
