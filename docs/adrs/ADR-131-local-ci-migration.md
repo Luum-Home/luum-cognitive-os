@@ -1,31 +1,33 @@
 ---
 adr: 131
 title: Local-CI Migration — Three-Layer Architecture to Replace GitHub Actions
-status: proposed
+status: accepted
 date: 2026-05-03
 supersedes: []
 superseded_by: null
 implementation_files:
   - scripts/cos-ci-local.sh
-  - .git/hooks/pre-push
+  - git-hooks/pre-push
+  - scripts/install-git-hooks.sh
+  - scripts/cos-weekly-config-audit.sh
+  - scripts/cos-weekly-primitive-gap.sh
+  - scripts/cos-weekly-public-metrics.sh
+  - scripts/install-launchd-jobs.sh
   - scripts/cos-pr-review.sh
-  - launchd/com.luum.cos.cos-config-audit.plist
-  - launchd/com.luum.cos.primitive-gap-audit.plist
-  - launchd/com.luum.cos.weekly-public-metrics.plist
 tier: maintainer
-tags: [ci, local-execution, dogfood, future-work, dx]
+tags: [ci, local-execution, dogfood, dx]
 ---
 
 # ADR-131: Local-CI Migration — Three-Layer Architecture to Replace GitHub Actions
 
 ## Status
 
-Proposed. Companion to ADR-130 (which suspended all eleven workflows
-to a `.disabled` state pending this migration).
+Accepted. Implemented in the same PR that lands this ADR. Companion
+to ADR-130 (which suspended all eleven workflows to a `.disabled`
+state pending this migration).
 
-Estimated effort: ~2.5–3 hours of focused work, **not** to be done
-during the same session that landed ADR-130. Scheduled for a fresh
-session.
+Implementation files are listed in the frontmatter and are present
+in the working tree alongside this ADR.
 
 ## Context
 
@@ -48,7 +50,10 @@ Three layers, each owning a category of trigger.
 
 ### Layer 1 — Pre-push hook
 
-`.git/hooks/pre-push` invokes `scripts/cos-ci-local.sh`. The script
+`git-hooks/pre-push` (tracked) invokes `scripts/cos-ci-local.sh`.
+The hook is wired up via `git config core.hooksPath git-hooks`,
+installed by running `bash scripts/install-git-hooks.sh` once after
+clone. The script
 consolidates the seven ubuntu-only workflows that previously ran on
 push or pull_request:
 
@@ -73,20 +78,27 @@ runner provisioning, or cache-restore overhead.
 ### Layer 2 — launchd schedules on the maintainer's Mac
 
 The three weekly workflows previously triggered via cron-style
-schedules become `launchd` plists under `launchd/`. Each plist runs
-the same script the workflow ran, on the maintainer's Mac, every
-Monday at the same UTC time.
+schedules become `launchd` plists generated and installed by
+`scripts/install-launchd-jobs.sh`. The script generates the plists
+into `~/Library/LaunchAgents/` rather than committing them to the
+repo, so the absolute repo path is resolved at install time and
+the source-of-truth is the install script plus the three wrapper
+scripts it invokes:
 
-- `com.luum.cos.cos-config-audit.plist` — Mondays
-- `com.luum.cos.primitive-gap-audit.plist` — Mondays 12:30 UTC
-- `com.luum.cos.weekly-public-metrics.plist` — Mondays 12:00 UTC
+- `scripts/cos-weekly-config-audit.sh` — Mondays 09:00
+- `scripts/cos-weekly-public-metrics.sh` — Mondays 12:00
+- `scripts/cos-weekly-primitive-gap.sh` — Mondays 12:30
+
+(All times are local Mac time; the original workflows used UTC, but
+launchd's `StartCalendarInterval` uses local time.)
 
 `launchd` runs the job at the next opportunity if the Mac was asleep
 at the scheduled moment, so a Monday-morning sleep does not skip the
-audit.
+audit. Logs land at `~/Library/Logs/cos/<name>.{out,err}.log`.
 
-Output lands in `.cognitive-os/metrics/` with a timestamp, identical
-to what the GitHub Actions workflows wrote to repository artifacts.
+Outputs land under `.cognitive-os/reports/weekly/<date>/` for the
+config audit and under `docs/reports/` for the primitive-gap and
+public-metrics outputs (matching the directories the workflows used).
 
 ### Layer 3 — CLI on-demand for Claude review
 
