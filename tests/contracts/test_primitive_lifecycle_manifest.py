@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from scripts.primitive_lifecycle import validate_manifest
+from scripts.primitive_lifecycle import recommend_lifecycle_actions, validate_manifest
 
 pytestmark = pytest.mark.contract
 
@@ -107,3 +107,38 @@ def test_invalid_manifest_exits_non_zero(tmp_path: Path) -> None:
     report = json.loads(result.stdout)
     assert report["valid"] is False
     assert report["finding_count"] > 0
+
+
+def test_negative_roi_recommends_demoting_non_runtime_safety() -> None:
+    primitive = _valid_primitive()
+    primitive["id"] = "scripts/example-delivery-helper"
+    primitive["kind"] = "script"
+    primitive["lifecycle_state"] = "advisory"
+    primitive["governance_class"] = "delivery-structure"
+    primitive["risk_class"] = "advisory"
+    primitive.pop("repair_message", None)
+    primitive.pop("false_positive_tests", None)
+    primitive.pop("latency_budget_ms", None)
+    roi_report = {"roi": {"status": "negative", "net_minutes_estimate": -10}}
+
+    recommendations = recommend_lifecycle_actions({"primitives": [primitive]}, roi_report)
+
+    assert any(item.action == "demote-or-move-to-lab" for item in recommendations)
+
+
+def test_meta_governance_discovery_overload_recommends_lab() -> None:
+    primitive = _valid_primitive()
+    primitive["id"] = "scripts/example-meta-dashboard"
+    primitive["kind"] = "script"
+    primitive["lifecycle_state"] = "advisory"
+    primitive["distribution"] = "maintainer"
+    primitive["governance_class"] = "meta-governance"
+    primitive["risk_class"] = "advisory"
+    primitive.pop("repair_message", None)
+    primitive.pop("false_positive_tests", None)
+    primitive.pop("latency_budget_ms", None)
+    roi_report = {"roi": {"status": "positive"}, "discovery": {"discovery_overload": True}}
+
+    recommendations = recommend_lifecycle_actions({"primitives": [primitive]}, roi_report)
+
+    assert any(item.action == "move-to-lab" for item in recommendations)

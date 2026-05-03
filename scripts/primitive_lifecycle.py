@@ -160,9 +160,116 @@ def validate_manifest(manifest: dict[str, Any]) -> list[Finding]:
     return findings
 
 
-def build_report(path: Path) -> dict[str, Any]:
+
+
+@dataclass(frozen=True)
+class LifecycleRecommendation:
+    primitive_id: str
+    action: str
+    reason: str
+    severity: str = "warn"
+
+    def as_dict(self) -> dict[str, str]:
+        return {
+            "primitive_id": self.primitive_id,
+            "action": self.action,
+            "reason": self.reason,
+            "severity": self.severity,
+        }
+
+
+def recommend_lifecycle_actions(
+    manifest: dict[str, Any],
+    roi_report: dict[str, Any] | None = None,
+) -> list[LifecycleRecommendation]:
+    """Return demotion/promotion/review recommendations from manifest + ROI.
+
+    This is intentionally conservative. It does not mutate the manifest; it
+    identifies primitives that need operator review under ADR-125/126.
+    """
+    primitives = manifest.get("primitives")
+    if not isinstance(primitives, list):
+        return []
+
+    roi = (roi_report or {}).get("roi", {}) if isinstance(roi_report, dict) else {}
+    discovery = (roi_report or {}).get("discovery", {}) if isinstance(roi_report, dict) else {}
+    friction = (roi_report or {}).get("friction", {}) if isinstance(roi_report, dict) else {}
+    benefits = (roi_report or {}).get("benefits", {}) if isinstance(roi_report, dict) else {}
+
+    net_negative = roi.get("status") == "negative" or float(roi.get("net_minutes_estimate") or 0) < 0
+    discovery_overload = bool(discovery.get("discovery_overload"))
+    no_wip_restores = int(benefits.get("wip_restore_events") or 0) == 0
+    top_blocking_hooks = {
+        str(item.get("hook"))
+        for item in friction.get("top_blocking_hooks", [])
+        if isinstance(item, dict) and item.get("hook")
+    }
+
+    recommendations: list[LifecycleRecommendation] = []
+    for primitive in primitives:
+        if not isinstance(primitive, dict):
+            continue
+        primitive_id = str(primitive.get("id") or "<unknown>")
+        lifecycle_state = primitive.get("lifecycle_state")
+        governance_class = primitive.get("governance_class")
+        distribution = primitive.get("distribution")
+        risk_class = primitive.get("risk_class")
+
+        if net_negative and governance_class != "runtime-safety" and lifecycle_state in {"advisory", "blocking", "default-on"}:
+            recommendations.append(
+                LifecycleRecommendation(
+                    primitive_id=primitive_id,
+                    action="demote-or-move-to-lab",
+                    reason="governance ROI is negative and primitive is not runtime-safety",
+                    severity="warn",
+                )
+            )
+
+        if discovery_overload and governance_class == "meta-governance" and distribution != "lab":
+            recommendations.append(
+                LifecycleRecommendation(
+                    primitive_id=primitive_id,
+                    action="move-to-lab",
+                    reason="discovery overload is active; meta-governance should not be default-visible",
+                    severity="warn",
+                )
+            )
+
+        if primitive_id in top_blocking_hooks and no_wip_restores and risk_class == "blocking":
+            recommendations.append(
+                LifecycleRecommendation(
+                    primitive_id=primitive_id,
+                    action="review-false-positives",
+                    reason="primitive is a top blocking hook without matching WIP recovery benefit in this window",
+                    severity="warn",
+                )
+            )
+
+        if lifecycle_state == "sandbox" and governance_class == "meta-governance":
+            recommendations.append(
+                LifecycleRecommendation(
+                    primitive_id=primitive_id,
+                    action="keep-out-of-default",
+                    reason="sandbox meta-governance remains lab-only until ROI and precision evidence exist",
+                    severity="info",
+                )
+            )
+
+    # Deduplicate stable tuples while preserving order.
+    seen: set[tuple[str, str, str]] = set()
+    unique: list[LifecycleRecommendation] = []
+    for item in recommendations:
+        key = (item.primitive_id, item.action, item.reason)
+        if key not in seen:
+            seen.add(key)
+            unique.append(item)
+    return unique
+
+
+def build_report(path: Path, roi_report: dict[str, Any] | None = None) -> dict[str, Any]:
     manifest = load_manifest(path)
     findings = validate_manifest(manifest)
+    recommendations = recommend_lifecycle_actions(manifest, roi_report)
     primitives = manifest.get("primitives", [])
     return {
         "manifest": str(path),
@@ -170,6 +277,8 @@ def build_report(path: Path) -> dict[str, Any]:
         "primitive_count": len(primitives) if isinstance(primitives, list) else 0,
         "finding_count": len(findings),
         "findings": [finding.as_dict() for finding in findings],
+        "recommendation_count": len(recommendations),
+        "recommendations": [item.as_dict() for item in recommendations],
     }
 
 
@@ -177,10 +286,23 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", nargs="?", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--json", action="store_true", help="emit machine-readable JSON")
+    parser.add_argument(
+        "--recommendations",
+        action="store_true",
+        help="include lifecycle recommendations using current governance ROI",
+    )
     args = parser.parse_args(argv)
 
     try:
-        report = build_report(args.manifest)
+        roi_report = None
+        if args.recommendations:
+            try:
+                import cos_governance_roi
+
+                roi_report = cos_governance_roi.build_report(REPO_ROOT, 24)
+            except Exception:
+                roi_report = None
+        report = build_report(args.manifest, roi_report)
     except (OSError, ValueError, yaml.YAMLError) as exc:
         report = {
             "manifest": str(args.manifest),
@@ -194,6 +316,8 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(report, indent=2, sort_keys=True))
     elif report["valid"]:
         print(f"OK: {report['primitive_count']} primitives satisfy ADR-126 lifecycle manifest contract")
+        if report.get("recommendation_count"):
+            print(f"Recommendations: {report['recommendation_count']} lifecycle action(s) suggested")
     else:
         print(f"INVALID: {report['finding_count']} lifecycle manifest finding(s)", file=sys.stderr)
         for finding in report["findings"]:
