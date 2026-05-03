@@ -312,7 +312,7 @@ def build_report(
             findings.append({"id": "projected-hook-undocumented", "severity": "fail", "hook": hook.path})
         elif hook.category == "documented_but_not_projected":
             findings.append({"id": "documented-hook-not-projected", "severity": "fail", "hook": hook.path})
-        elif hook.maturity in BLOCKING_LABELS and not hook.exit2_observable:
+        elif hook.lifecycle_state not in INACTIVE_STATES and hook.maturity in BLOCKING_LABELS and not hook.exit2_observable:
             findings.append({"id": "blocking-hook-without-exit2", "severity": "fail", "hook": hook.path})
         elif hook.hook_exists is False:
             findings.append({"id": "hook-file-missing", "severity": "fail", "hook": hook.path})

@@ -83,9 +83,20 @@ def _registrations_from_json(path: Path) -> list[tuple[str, str, str]]:
 def check_claude_registry_parity(failures: list[str]) -> None:
     cfg = yaml.safe_load((ROOT / "cognitive-os.yaml").read_text(encoding="utf-8")) or {}
     hooks = (cfg.get("harness") or {}).get("hooks") or {}
+    lifecycle = yaml.safe_load((ROOT / "manifests" / "primitive-lifecycle.yaml").read_text(encoding="utf-8")) or {}
+    inactive_scripts = {
+        Path(str(item.get("id"))).name
+        for item in lifecycle.get("primitives", [])
+        if isinstance(item, dict) and item.get("lifecycle_state") in {"demoted", "archived", "deleted"}
+    }
     expected = set()
     for entry in hooks.values():
         if isinstance(entry, dict) and entry.get("event") and entry.get("script"):
+            script_name = Path(str(entry["script"])).name
+            if script_name in inactive_scripts:
+                continue
+            if entry.get("default_projection") is False or entry.get("claude_projection") is False:
+                continue
             expected.add((str(entry["event"]), str(entry.get("matcher") or ""), Path(str(entry["script"])).name))
     actual = set(_registrations_from_json(ROOT / ".claude" / "settings.json"))
     missing = sorted(expected - actual)
