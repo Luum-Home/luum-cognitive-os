@@ -22,7 +22,22 @@ import cos_false_positive_ledger
 import cos_preamble_budget
 import cos_wip_safety_score
 import runtime_hook_reality
+import silent_failure_audit
 
+
+
+def dispatch_metrics_evidence(root: Path) -> dict[str, Any]:
+    dispatch_path = root / ".cognitive-os" / "metrics" / "llm-dispatch.jsonl"
+    history_path = root / ".cognitive-os" / "metrics" / "task-history.jsonl"
+    dispatch_bytes = dispatch_path.stat().st_size if dispatch_path.exists() else 0
+    history_bytes = history_path.stat().st_size if history_path.exists() else 0
+    status = "pass" if dispatch_bytes > 0 and history_bytes > 0 else "warn"
+    return {
+        "status": status,
+        "llm_dispatch_bytes": dispatch_bytes,
+        "task_history_bytes": history_bytes,
+        "repair_command": "scripts/cos-dispatch-smoke --json",
+    }
 
 def readiness_summary(root: Path) -> dict[str, Any]:
     proc = subprocess.run(["python3", "scripts/cos_architecture_readiness.py", "--json"], cwd=root, text=True, capture_output=True, check=False)
@@ -40,8 +55,10 @@ def build_dashboard(profile: str = "core", root: Path = REPO_ROOT) -> dict[str, 
     reducer = cos_default_visible_reducer.build_recommendations()
     false_positive = cos_false_positive_ledger.build_report(root / ".cognitive-os" / "metrics")
     wip = cos_wip_safety_score.build_score(root)
+    silent = silent_failure_audit.build_report(root, root / "hooks", root / "manifests" / "silent-failure-allowlist.yaml")
+    dispatch_evidence = dispatch_metrics_evidence(root)
     readiness = readiness_summary(root)
-    status_items = [runtime["summary"]["status"], adoption["status"], preamble["status"], wip["status"], readiness["status"]]
+    status_items = [runtime["summary"]["status"], adoption["status"], preamble["status"], wip["status"], silent["status"], dispatch_evidence["status"], readiness["status"]]
     overall = "fail" if "fail" in status_items else ("warn" if "warn" in status_items else "pass")
     return {
         "status": overall,
@@ -52,6 +69,8 @@ def build_dashboard(profile: str = "core", root: Path = REPO_ROOT) -> dict[str, 
         "default_visible_reducer": {"status": reducer["status"], "recommendation_count": reducer["recommendation_count"], "recommendations": reducer["recommendations"][:10]},
         "false_positive_ledger": false_positive,
         "wip_safety": wip,
+        "silent_failure_audit": {"status": silent["status"], "file_count": silent["file_count"], "occurrence_count": silent["occurrence_count"], "fail_count": silent["fail_count"], "warn_count": silent["warn_count"]},
+        "dispatch_metrics_evidence": dispatch_evidence,
         "readiness": readiness,
     }
 
