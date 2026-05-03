@@ -53,12 +53,15 @@ Each new or changed primitive must declare, eventually in a canonical manifest:
 - `kind`: `hook | skill | rule | script | doctor | test | template | manifest`
 - `owner_adr`
 - `lifecycle_state`
+- `maturity`: `observe | advisory | blocking`
 - `distribution`: `core | team | maintainer | lab`
 - `governance_class`: `runtime-safety | delivery-structure | meta-governance`
 - `risk_class`: `advisory | blocking | mutating | destructive`
 - `supported_harnesses`
 - `projection_targets`
-- `latency_budget_ms` when runtime-facing
+- `runtime_projection` when present in generated harness settings
+- `behavior_evidence` explaining whether the primitive observes, advises, or blocks
+- `latency_budget_ms` when runtime-facing and blocking
 - `evidence_commands`
 - `rollback_or_repair_command`
 - `sunset_criteria`
@@ -114,6 +117,26 @@ silently land new runtime behavior. They must:
 For the solo maintainer swarm, this is the safety valve: the SO can learn, but it
 cannot silently rewrite its own operating envelope while multiple IDEs and agents
 are live.
+
+
+### 2026-05-03 Runtime hook inventory hardening
+
+`manifests/primitive-lifecycle.yaml` now contains lifecycle metadata for every
+hook projected by `.claude/settings.json` at the time of implementation. The
+manifest records 116 runtime-projected hooks plus non-hook lifecycle primitives.
+
+The hardening contract is intentionally anti-aspirational:
+
+- every projected hook must have a manifest entry;
+- every runtime-projected hook entry must point to an existing hook file;
+- `maturity: blocking` must correspond to a hook with an observable `exit 2`
+  path and pytest evidence;
+- non-blocking maturity cannot claim a blocking/default-on lifecycle state;
+- projected hooks cannot be marked archived, demoted, or deleted.
+
+This does not mean every hook is product-core. Many projected hooks remain
+`lab`/`sandbox` or advisory because this repository is the maintainer runtime,
+not the minimal consumer distribution.
 
 ## Consequences
 

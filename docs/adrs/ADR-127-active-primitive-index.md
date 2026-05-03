@@ -51,13 +51,22 @@ The architecture readiness report now includes an `active-primitive-surface` che
 The active index becomes the small DX surface for operators while preserving the richer lifecycle manifest for maintainers. The thresholds are intentionally conservative guardrails, not product claims; they can be adjusted after usage data shows a better friction budget.
 
 
-### 2026-05-03 Coverage Caveat
+### 2026-05-03 Runtime Coverage Hardening
 
-The index is intentionally sourced from `manifests/primitive-lifecycle.yaml`, but
-that manifest is still a seed. It currently under-represents the real projected
-runtime hook surface. The next ADR-127 hardening step is to report projected hook
-coverage and warn or fail when lifecycle metadata does not cover the active
-runtime projection.
+The index now compares `manifests/primitive-lifecycle.yaml` against the active
+Claude hook projection in `.claude/settings.json`. A readiness report can no
+longer pass while runtime-projected hooks are absent from lifecycle metadata.
+
+Current hardened baseline:
+
+- Runtime-projected unique hooks: 116
+- Lifecycle-covered projected hooks: 116
+- Missing projected hooks: 0
+- Runtime coverage ratio: 1.0
+
+Active-surface thresholds still warn because this maintainer repository projects
+a large runtime surface, but that warning is now about real represented surface,
+not undercounted metadata.
 
 
 ## Alternatives rejected
@@ -85,9 +94,9 @@ scripts/cos-active-primitive-index --tier core --json | python3 -m json.tool >/d
 scripts/cos-architecture-readiness --json | python3 -m json.tool >/dev/null
 ```
 
-Required next hardening verification:
+Runtime hardening verification:
 
 ```bash
-python3 -m pytest tests/contracts/test_active_index_runtime_coverage.py -q
-python3 -m pytest tests/contracts/test_projected_hooks_have_lifecycle_metadata.py -q
+python3 -m pytest tests/contracts/test_primitive_runtime_reality.py tests/unit/test_active_primitive_index.py -q
+python3 scripts/active_primitive_index.py --json
 ```
