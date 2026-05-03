@@ -3659,3 +3659,94 @@ primitives:
     input to a future semantic demotion.
   sunset_criteria: Archive only if primitive lifecycle distribution claims move
     into a stronger typed schema compiler with equivalent candidate reporting.
+- id: scripts/cos-self-improvement-loop
+  kind: script
+  owner_adr: ADR-134
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-self-improvement-loop
+  - scripts/cos_self_improvement_loop.py
+  - lib/self_improvement_loop.py
+  - docs/adrs/ADR-134-headless-self-improvement-proposer.md
+  runtime_projection: false
+  behavior_evidence: propose-only self-improvement loop with unit tests
+  evidence_commands:
+  - scripts/cos-self-improvement-loop --profile core --json
+  - python3 -m pytest tests/unit/test_self_improvement_loop.py -q
+  exit_behavior: exit_0
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Disable proposal generation or remove the generated
+    proposal file under .cognitive-os/improvements/proposals; no runtime surface
+    changes are made by this primitive.
+  sunset_criteria: Archive only if self-improvement proposals move into a stronger
+    typed workflow engine with equivalent approval and test constraints.
+- id: scripts/cos-self-improvement-discipline-gate
+  kind: script
+  owner_adr: ADR-134
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: blocking
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-self-improvement-discipline-gate
+  - scripts/self_improvement_discipline_gate.py
+  - scripts/cos-ci-local.sh
+  - docs/adrs/ADR-134-headless-self-improvement-proposer.md
+  runtime_projection: false
+  behavior_evidence: proposal discipline gate wired into quick CI with tests
+  evidence_commands:
+  - scripts/cos-self-improvement-discipline-gate --profile core --json
+  - python3 -m pytest tests/unit/test_self_improvement_discipline_gate.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: blocking
+  rollback_or_repair_command: Fix generated proposals so they remain propose-only,
+    human-approved, reversible, and free of default-surface expansion.
+  sunset_criteria: Archive only if proposal discipline is enforced by a canonical
+    typed workflow compiler with equivalent tests.
+  repair_message: Self-improvement proposals must not auto-merge, auto-promote
+    core/team, invent ROI evidence, or write live runtime surfaces directly.
+  false_positive_tests:
+  - tests/unit/test_self_improvement_discipline_gate.py
+  promotion_evidence:
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    boring_reliability_artifact: docs/architecture/headless-self-improvement-proposer.md
+    rationale: Control-plane gate that prevents the self-improvement loop from
+      turning warnings into default-surface inflation.
+- id: scripts/cos-doctrine-proposer
+  kind: script
+  owner_adr: ADR-135
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-doctrine-proposer
+  - scripts/cos_doctrine_proposer.py
+  - lib/doctrine_proposer.py
+  - docs/adrs/ADR-135-self-evolving-doctrine-proposals.md
+  runtime_projection: false
+  behavior_evidence: self-evolving doctrine proposal generator with unit tests
+  evidence_commands:
+  - scripts/cos-doctrine-proposer --profile core --json
+  - python3 -m pytest tests/unit/test_doctrine_proposer.py -q
+  exit_behavior: exit_0
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Delete or revise the generated markdown under
+    docs/proposals; no runtime doctrine is mutated by this primitive.
+  sunset_criteria: Archive only if doctrine proposal generation moves into a
+    stronger review workflow with equivalent non-runtime guarantees.

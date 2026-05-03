@@ -22,11 +22,12 @@ dashboard and without allowing uncontrolled self-modification.
 
 ## Phase 2 — Doctrine proposer
 
-- [ ] Add `scripts/cos-doctrine-proposer`.
-- [ ] Read false-positive, direct-main-bypass, demotion-loop, and tier-claim
+- [x] Add `scripts/cos-doctrine-proposer`.
+- [x] Read false-positive, direct-main-bypass, demotion-loop, and tier-claim
       evidence.
-- [ ] Write proposal markdown under `docs/proposals/`.
-- [ ] Require any doctrine amendment to start as proposed/lab, never default-on.
+- [x] Write proposal markdown under `docs/proposals/`.
+- [x] Require any doctrine amendment to start as proposed with
+      `runtime_effect: none`, never default-on.
 
 ## Phase 3 — Consumer evidence import/export
 
