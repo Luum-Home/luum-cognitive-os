@@ -20,7 +20,9 @@ def test_build_report_warns_for_known_wiring_gaps(tmp_path: Path) -> None:
          patch.object(readiness, "check_lifecycle_manifest", return_value=readiness.Check("lifecycle", "pass", "ok")), \
          patch.object(readiness, "check_active_surface", return_value=readiness.Check("active-surface", "pass", "ok")), \
          patch.object(readiness, "check_roi", return_value=readiness.Check("roi", "pass", "ok")), \
-         patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")):
+         patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
+         patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
+         patch.object(readiness, "check_governance_maturity_labels", return_value=readiness.Check("maturity", "pass", "ok")):
         report = readiness.build_report(tmp_path, 24)
 
     assert report["status"] == "warn"
@@ -107,7 +109,49 @@ def test_readiness_report_includes_active_surface(tmp_path: Path) -> None:
          patch.object(readiness, "check_lifecycle_manifest", return_value=readiness.Check("lifecycle", "pass", "ok")), \
          patch.object(readiness, "check_active_surface", return_value=readiness.Check("active-primitive-surface", "pass", "ok", {"counts_by_tier": {"core": 1}})), \
          patch.object(readiness, "check_roi", return_value=readiness.Check("roi", "pass", "ok")), \
-         patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")):
+         patch.object(readiness, "check_lifecycle_recommendations", return_value=readiness.Check("demotion", "pass", "ok")), \
+         patch.object(readiness, "check_product_claims", return_value=readiness.Check("product", "pass", "ok")), \
+         patch.object(readiness, "check_governance_maturity_labels", return_value=readiness.Check("maturity", "pass", "ok")):
         report = readiness.build_report(tmp_path, 24)
 
     assert any(check["id"] == "active-primitive-surface" for check in report["checks"])
+
+
+def test_product_claims_fail_missing_readme_hook_claim(tmp_path: Path) -> None:
+    (tmp_path / "README.md").write_text("`missing-hook.sh` blocks bad claims\n", encoding="utf-8")
+
+    check = readiness.check_product_claims(tmp_path)
+
+    assert check.status == "fail"
+    assert check.details["findings"][0]["id"] == "readme-missing-shell-claim"
+
+
+def test_product_claims_fail_stale_model_readiness_naming(tmp_path: Path) -> None:
+    docs = tmp_path / "docs" / "business"
+    docs.mkdir(parents=True)
+    docs.joinpath("x.md").write_text("Run cos-opus-readiness for the Opus critique.\n", encoding="utf-8")
+
+    check = readiness.check_product_claims(tmp_path)
+
+    assert check.status == "fail"
+    assert any(finding["id"] == "stale-model-branded-product-copy" for finding in check.details["findings"])
+
+
+def test_governance_maturity_labels_require_trust_and_blast(tmp_path: Path) -> None:
+    manifest = tmp_path / "manifests" / "governance-maturity.yaml"
+    manifest.parent.mkdir(parents=True)
+    manifest.write_text(
+        """schema_version: 1
+primitives:
+  - id: hooks/trust-score-validator.sh
+    maturity: advisory
+  - id: hooks/blast-radius.sh
+    maturity: observe
+""",
+        encoding="utf-8",
+    )
+
+    check = readiness.check_governance_maturity_labels(tmp_path)
+
+    assert check.status == "pass"
+    assert check.details["missing"] == []
