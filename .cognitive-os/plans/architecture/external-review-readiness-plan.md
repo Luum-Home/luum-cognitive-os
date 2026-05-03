@@ -1,8 +1,8 @@
-# Opus Objection Closure Plan
+# External Review Readiness Plan
 
 ## Goal
 
-Turn the strongest Opus critique into executable phases: reduce real friction,
+Turn the strongest external architecture critique into executable phases: reduce real friction,
 prove safety value, keep the broad SO tiered, and prevent self-improvement from
 becoming uncontrolled meta-infrastructure.
 
