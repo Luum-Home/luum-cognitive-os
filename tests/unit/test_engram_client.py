@@ -303,6 +303,53 @@ class TestSaveObservation:
         with patch("subprocess.run", side_effect=RuntimeError("boom")):
             assert engram_client.save_observation("t", "c") is None
 
+    def test_topic_key_save_updates_existing_observation_instead_of_appending(self):
+        existing = {"id": 42, "topic_key": "architecture/x", "project": "proj"}
+        with patch("lib.engram_client.search_observations", return_value=[existing]) as search, \
+             patch("lib.engram_client.engram_http_client.update_observation", return_value={"id": 42, "updated": True}) as update, \
+             patch("subprocess.run") as run:
+            result = engram_client.save_observation(
+                "New title",
+                "New body",
+                type_="decision",
+                topic_key="architecture/x",
+                project="proj",
+            )
+
+        assert result == {"id": 42, "updated": True}
+        search.assert_called_once()
+        update.assert_called_once_with(
+            42,
+            title="New title",
+            content="New body",
+            type_="decision",
+            topic_key="architecture/x",
+            timeout=10,
+        )
+        run.assert_not_called()
+
+    def test_topic_key_save_returns_none_when_existing_match_cannot_update(self):
+        existing = {"id": 42, "topic_key": "architecture/x", "project": "proj"}
+        with patch("lib.engram_client.search_observations", return_value=[existing]), \
+             patch("lib.engram_client.engram_http_client.update_observation", return_value=None), \
+             patch("subprocess.run") as run:
+            result = engram_client.save_observation("t", "c", topic_key="architecture/x", project="proj")
+
+        assert result is None
+        run.assert_not_called()
+
+    def test_topic_key_save_requires_exact_project_match_before_update(self):
+        existing = {"id": 42, "topic_key": "architecture/x", "project": "other"}
+        payload = {"id": 99, "topic_key": "architecture/x", "project": "proj"}
+        with patch("lib.engram_client.search_observations", return_value=[existing]), \
+             patch("lib.engram_client.engram_http_client.update_observation") as update, \
+             patch("subprocess.run", return_value=_mock_proc(json.dumps(payload))) as run:
+            result = engram_client.save_observation("t", "c", topic_key="architecture/x", project="proj")
+
+        assert result == payload
+        update.assert_not_called()
+        assert run.called
+
 
 # ---------------------------------------------------------------------------
 # ENGRAM_BIN env-var override
