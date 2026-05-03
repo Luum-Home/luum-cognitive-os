@@ -25,6 +25,7 @@ import runtime_hook_reality
 import silent_failure_audit
 import session_start_budget
 import cos_demotion_loop_audit
+import cos_manifest_tier_claim_audit
 
 
 
@@ -60,9 +61,10 @@ def build_dashboard(profile: str = "core", root: Path = REPO_ROOT) -> dict[str, 
     silent = silent_failure_audit.build_report(root, root / "hooks", root / "manifests" / "silent-failure-allowlist.yaml")
     session_budget = session_start_budget.build_report(profile, root)
     dispatch_evidence = dispatch_metrics_evidence(root)
+    manifest_tier_claims = cos_manifest_tier_claim_audit.build_report(root / "manifests" / "primitive-lifecycle.yaml")
     demotion_loop = cos_demotion_loop_audit.build_report(root / "manifests" / "primitive-lifecycle.yaml")
     readiness = readiness_summary(root)
-    status_items = [runtime["summary"]["status"], adoption["status"], preamble["status"], wip["status"], silent["status"], session_budget["status"], dispatch_evidence["status"], demotion_loop["status"], readiness["status"]]
+    status_items = [runtime["summary"]["status"], adoption["status"], preamble["status"], wip["status"], silent["status"], session_budget["status"], dispatch_evidence["status"], manifest_tier_claims["status"], demotion_loop["status"], readiness["status"]]
     overall = "fail" if "fail" in status_items else ("warn" if "warn" in status_items else "pass")
     return {
         "status": overall,
@@ -91,6 +93,13 @@ def build_dashboard(profile: str = "core", root: Path = REPO_ROOT) -> dict[str, 
             "legacy_audited_count": silent.get("legacy_audited_count", 0),
         },
         "dispatch_metrics_evidence": dispatch_evidence,
+        "manifest_tier_claims": {
+            "status": manifest_tier_claims["status"],
+            "finding_count": manifest_tier_claims["finding_count"],
+            "counts_by_category": manifest_tier_claims["counts_by_category"],
+            "candidate_second_demote_count": manifest_tier_claims["candidate_second_demote_count"],
+            "candidate_second_demotes": manifest_tier_claims["candidate_second_demotes"][:10],
+        },
         "demotion_loop": {
             "status": demotion_loop["status"],
             "demotion_count": demotion_loop["demotion_count"],

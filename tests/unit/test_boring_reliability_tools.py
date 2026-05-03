@@ -140,12 +140,14 @@ def test_boring_reliability_includes_demotion_loop_status(tmp_path: Path, monkey
     monkeypatch.setattr(boring.silent_failure_audit, "build_report", lambda root, scan, allow: {"status": "pass", "file_count": 0, "occurrence_count": 0, "fail_count": 0, "warn_count": 0})
     monkeypatch.setattr(boring.session_start_budget, "build_report", lambda profile, root: {"status": "pass", "profile": profile, "session_start_hook_count": 0, "counts_by_tier": {}, "budget": {}, "findings": []})
     monkeypatch.setattr(boring, "dispatch_metrics_evidence", lambda root: {"status": "pass"})
+    monkeypatch.setattr(boring.cos_manifest_tier_claim_audit, "build_report", lambda manifest: {"status": "warn", "finding_count": 2, "counts_by_category": {"candidate_second_demote": 1}, "candidate_second_demote_count": 1, "candidate_second_demotes": [{"primitive_id": "hooks/noisy.sh"}]})
     monkeypatch.setattr(boring.cos_demotion_loop_audit, "build_report", lambda manifest: {"status": "warn", "demotion_count": 1, "roi_signed_demotion_count": 0, "findings": [], "policy": "test"})
     monkeypatch.setattr(boring, "readiness_summary", lambda root: {"status": "pass"})
 
     report = boring.build_dashboard("core", tmp_path)
 
     assert report["status"] == "warn"
+    assert report["manifest_tier_claims"]["candidate_second_demote_count"] == 1
     assert report["demotion_loop"]["demotion_count"] == 1
     assert report["demotion_loop"]["roi_signed_demotion_count"] == 0
 
