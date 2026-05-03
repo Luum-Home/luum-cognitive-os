@@ -45,6 +45,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Preserve Branch Lifecycle](architecture/preserve-branch-lifecycle.md) — lifecycle, manifest schema, and consumer-project projection for `codex/preserve-*` governance.
 - [Preserve Branch Governance Report — 2026-05-02](reports/preserve-branch-governance-2026-05-02.md) — diagnostic report for current preserve branches and required controls.
 - [Cognitive OS Agent-Computer Interface](architecture/agent-computer-interface.md) — bounded, explicit, risk-tagged tool observation schema.
+- [Boring Reliability Control Plane](architecture/boring-reliability-control-plane.md) — tools and metrics for adoptable layers, DX budgets, WIP safety, false positives, and runtime reality.
 - [Skill Efficacy Measurement](architecture/skill-efficacy.md) — marginal skill utility metrics and report surface.
 - [Runtime Benchmark MVP](architecture/runtime-benchmark-mvp.md) — no-cost local schema and leaderboard for vanilla-vs-COS comparisons.
 - [Adversarial Generalization MVP](architecture/adversarial-generalization.md) — generated messy-task scenarios and deterministic rubric.
