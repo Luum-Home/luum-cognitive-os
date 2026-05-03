@@ -156,7 +156,7 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 - [x] A session can report governance overhead. (`cos governance roi`)
 - [x] A session can report at least one benefit category or explicitly say none.
 - [ ] Top friction causes feed ADR-123 telemetry.
-- [ ] Guards with high false-positive rate are demoted to `warn` until fixed.
+- [x] Guards with high false-positive rate produce lifecycle demotion/review recommendations.
 - [x] Dogfood/self-use metrics are not accepted as productivity ROI by
       themselves.
 
@@ -166,6 +166,16 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 blocking events, WIP restore signals, snapshot residue, active surface size, and
 net estimated ROI. The estimate is intentionally labeled heuristic so it cannot
 be confused with exact productivity accounting.
+
+
+### Phase 7 update — lifecycle recommendations
+
+`primitive_lifecycle.py --recommendations` now consumes the governance ROI report
+and emits non-mutating lifecycle recommendations. The first implemented actions
+are conservative: demote/move non-runtime-safety primitives when ROI is negative,
+move meta-governance out of default surfaces during discovery overload, review
+top blocking hooks with no matching recovery benefit, and keep sandbox
+meta-governance out of default projection.
 
 ## Phase 8 — Aggressive archive/delete trial
 
