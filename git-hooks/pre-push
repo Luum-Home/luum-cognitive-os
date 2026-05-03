@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# git-hooks/pre-push — local-CI gate per ADR-131.
+#
+# Runs scripts/cos-ci-local.sh in 'quick' tier before each push. If any check
+# fails, the push is aborted. Use `git push --no-verify` to bypass when
+# explicitly needed.
+#
+# This file lives under git-hooks/ (tracked) and is wired up via
+# `git config core.hooksPath git-hooks`. Install with
+# `bash scripts/install-git-hooks.sh`.
+#
+# Environment:
+#   COS_PRE_PUSH_TIER   defaults to 'quick'. Set to 'full' to run the full
+#                       tier on every push (slower; recommended weekly or
+#                       before tagged releases).
+#   COS_PRE_PUSH_SKIP=1 short-circuits the gate. Equivalent to --no-verify
+#                       but works when --no-verify is forgotten by reflex.
+
+set -uo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
+if [ "${COS_PRE_PUSH_SKIP:-0}" = "1" ]; then
+  echo "[pre-push] COS_PRE_PUSH_SKIP=1 — skipping local CI gate" >&2
+  exit 0
+fi
+
+TIER="${COS_PRE_PUSH_TIER:-quick}"
+SCRIPT="$REPO_ROOT/scripts/cos-ci-local.sh"
+
+if [ ! -x "$SCRIPT" ]; then
+  echo "[pre-push] $SCRIPT not found or not executable — skipping" >&2
+  exit 0
+fi
+
+echo "[pre-push] running cos-ci-local.sh ($TIER tier) — use --no-verify to bypass" >&2
+"$SCRIPT" "$TIER"
+rc=$?
+
+if [ "$rc" -ne 0 ]; then
+  echo >&2
+  echo "[pre-push] BLOCKED: local CI failed. Either fix the issue or push with --no-verify." >&2
+  exit "$rc"
+fi
+
+exit 0
