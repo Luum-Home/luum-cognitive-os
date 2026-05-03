@@ -6,7 +6,7 @@ dispatch cannot be tested in CI. These tests validate that:
   - Each hook handles empty stdin gracefully (exit 0)
   - Each hook handles malformed JSON gracefully (exit 0)
   - Phase-aware behavior works (production blocks missing criteria)
-  - settings.json has all 3 events registered
+  - settings.json registers default events and keeps demoted events opt-in
 """
 
 import json
@@ -39,16 +39,16 @@ class TestSettingsRegistration:
         assert "TaskCreated" in self.settings.get("hooks", {}), \
             "TaskCreated not registered in settings.json"
 
-    def test_task_completed_registered(self):
+    def test_task_completed_event_bucket_exists_but_is_demoted(self):
         assert "TaskCompleted" in self.settings.get("hooks", {}), \
             "TaskCompleted not registered in settings.json"
+        assert self.settings["hooks"]["TaskCompleted"] == []
 
     def test_hooks_reference_correct_scripts(self):
         hooks = self.settings["hooks"]
         for event, script in [
             ("TeammateIdle", "teammate-idle.sh"),
             ("TaskCreated", "task-created.sh"),
-            ("TaskCompleted", "task-completed.sh"),
         ]:
             hook_entries = hooks[event]
             commands = []

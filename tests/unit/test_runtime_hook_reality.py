@@ -156,10 +156,33 @@ def test_non_projected_inactive_or_non_runtime_hooks_are_dormant(tmp_path: Path)
     assert report["summary"]["status"] == "pass"  # type: ignore[index]
 
 
-def test_repository_settings_currently_project_116_unique_hooks() -> None:
+def test_demoted_blocking_hook_is_dormant_not_exit2_failure(tmp_path: Path) -> None:
+    write_hook(tmp_path, "hooks/demoted-blocking.sh", "#!/usr/bin/env bash\necho dormant\nexit 0\n")
+    settings = write_settings(tmp_path, [])
+    manifest = write_manifest(
+        tmp_path,
+        [
+            primitive(
+                "hooks/demoted-blocking.sh",
+                maturity="blocking",
+                lifecycle_state="demoted",
+                risk_class="blocking",
+                runtime_projection=False,
+            )
+        ],
+    )
+
+    report = audit.build_report(project_root=tmp_path, settings_path=settings, manifest_path=manifest)
+
+    assert categories(report)["dormant"] == ["hooks/demoted-blocking.sh"]
+    assert report["findings"] == []
+    assert report["summary"]["status"] == "pass"  # type: ignore[index]
+
+
+def test_repository_settings_currently_project_115_unique_hooks() -> None:
     projected = audit.load_projected_hooks(REPO_ROOT / ".claude" / "settings.json")
 
-    assert len(projected) == 116
+    assert len(projected) == 115
 
 
 def test_cli_emits_stable_json(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:

@@ -122,6 +122,9 @@ first-class project before claiming cluster-grade autonomy:
   product default.
 - Claude Code coupling remains allowed when declared, but invisible coupling is a
   readiness finding.
+- Demotion is a real lifecycle transition: `hooks/task-completed.sh` is preserved
+  but removed from default projection as the first proof that the governor can
+  shrink active surface without deleting primitives.
 
 ## Verification
 
