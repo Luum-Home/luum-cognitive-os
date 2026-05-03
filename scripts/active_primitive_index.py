@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -22,6 +23,8 @@ VISIBLE_WARN_THRESHOLD = 12
 VISIBLE_FAIL_THRESHOLD = 25
 ACTIVE_WARN_THRESHOLD = 24
 ACTIVE_FAIL_THRESHOLD = 48
+RUNTIME_COVERAGE_WARN_RATIO = 0.95
+HOOK_PATH_RE = re.compile(r"hooks/[A-Za-z0-9_.-]+\.sh")
 
 
 @dataclass(frozen=True)
@@ -102,7 +105,102 @@ def build_entries(manifest: dict[str, Any]) -> list[PrimitiveEntry]:
     return entries
 
 
-def summarize(entries: list[PrimitiveEntry]) -> dict[str, Any]:
+def _hook_path_from_primitive(entry: PrimitiveEntry) -> str | None:
+    candidates = [entry.id, *entry.projection_targets, *entry.evidence_commands]
+    for candidate in candidates:
+        match = HOOK_PATH_RE.search(candidate)
+        if match:
+            return match.group(0)
+        if candidate.startswith("hooks/") and not candidate.endswith(".sh"):
+            return f"{candidate}.sh"
+    return None
+
+
+def _extract_hook_paths_from_command(command: str) -> list[str]:
+    return HOOK_PATH_RE.findall(command or "")
+
+
+def _load_claude_projected_hooks(root: Path) -> tuple[list[str], str]:
+    settings_path = root / ".claude" / "settings.json"
+    if not settings_path.exists():
+        return [], "missing"
+    try:
+        data = json.loads(settings_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return [], "invalid"
+    hooks_by_event = data.get("hooks", {})
+    if not isinstance(hooks_by_event, dict):
+        return [], "invalid"
+    projected: list[str] = []
+    for matchers in hooks_by_event.values():
+        if not isinstance(matchers, list):
+            continue
+        for matcher in matchers:
+            if not isinstance(matcher, dict):
+                continue
+            hook_defs = matcher.get("hooks", [])
+            if not isinstance(hook_defs, list):
+                continue
+            for hook_def in hook_defs:
+                if not isinstance(hook_def, dict):
+                    continue
+                command = hook_def.get("command", "")
+                if isinstance(command, str):
+                    projected.extend(_extract_hook_paths_from_command(command))
+    return projected, "ok"
+
+
+def runtime_coverage(entries: list[PrimitiveEntry], root: Path) -> dict[str, Any]:
+    projected_entries, source_status = _load_claude_projected_hooks(root)
+    projected_unique = sorted(set(projected_entries))
+    lifecycle_hooks = sorted(
+        {hook for entry in entries if (hook := _hook_path_from_primitive(entry))}
+    )
+    lifecycle_hook_set = set(lifecycle_hooks)
+    covered = sorted(path for path in projected_unique if path in lifecycle_hook_set)
+    missing = sorted(path for path in projected_unique if path not in lifecycle_hook_set)
+    projected_count = len(projected_unique)
+    coverage_ratio = (len(covered) / projected_count) if projected_count else 1.0
+    findings: list[dict[str, Any]] = []
+    if source_status == "invalid":
+        findings.append(
+            {
+                "id": "runtime-projection-unreadable",
+                "severity": "fail",
+                "message": "Claude settings projection exists but could not be parsed",
+                "source": ".claude/settings.json",
+            }
+        )
+    elif projected_count and coverage_ratio < RUNTIME_COVERAGE_WARN_RATIO:
+        findings.append(
+            {
+                "id": "lifecycle-runtime-coverage-gap",
+                "severity": "fail",
+                "message": "projected runtime hooks are not covered by lifecycle metadata",
+                "covered_unique_hooks": len(covered),
+                "projected_unique_hooks": projected_count,
+                "coverage_ratio": round(coverage_ratio, 4),
+                "threshold": RUNTIME_COVERAGE_WARN_RATIO,
+            }
+        )
+    return {
+        "source": ".claude/settings.json",
+        "source_status": source_status,
+        "projected_hook_entries": len(projected_entries),
+        "projected_unique_hooks": projected_count,
+        "lifecycle_hook_count": len(lifecycle_hooks),
+        "covered_unique_hooks": len(covered),
+        "missing_unique_hooks": len(missing),
+        "coverage_ratio": round(coverage_ratio, 4),
+        "covered_hooks": covered,
+        "missing_hooks": missing[:50],
+        "missing_hooks_truncated": max(0, len(missing) - 50),
+        "findings": findings,
+        "status": "fail" if any(finding["severity"] == "fail" for finding in findings) else "pass",
+    }
+
+
+def summarize(entries: list[PrimitiveEntry], root: Path = REPO_ROOT) -> dict[str, Any]:
     counts_by_tier = {tier: 0 for tier in TIERS}
     active_counts_by_tier = {tier: 0 for tier in TIERS}
     default_visible_counts_by_tier = {tier: 0 for tier in TIERS}
@@ -116,6 +214,7 @@ def summarize(entries: list[PrimitiveEntry]) -> dict[str, Any]:
     active_surface_count = sum(active_counts_by_tier[tier] for tier in ACTIVE_SURFACE_TIERS)
     default_visible_count = sum(default_visible_counts_by_tier[tier] for tier in DEFAULT_VISIBLE_TIERS)
     lab_active_count = active_counts_by_tier["lab"]
+    coverage = runtime_coverage(entries, root)
 
     findings: list[dict[str, Any]] = []
     if default_visible_count > VISIBLE_FAIL_THRESHOLD:
@@ -171,6 +270,7 @@ def summarize(entries: list[PrimitiveEntry]) -> dict[str, Any]:
             }
         )
 
+    findings.extend(coverage["findings"])
     fail_count = sum(1 for finding in findings if finding["severity"] == "fail")
     warn_count = sum(1 for finding in findings if finding["severity"] == "warn")
     return {
@@ -179,11 +279,13 @@ def summarize(entries: list[PrimitiveEntry]) -> dict[str, Any]:
         "default_visible_counts_by_tier": default_visible_counts_by_tier,
         "active_surface_count": active_surface_count,
         "default_visible_count": default_visible_count,
+        "runtime_coverage": coverage,
         "thresholds": {
             "default_visible_warn": VISIBLE_WARN_THRESHOLD,
             "default_visible_fail": VISIBLE_FAIL_THRESHOLD,
             "active_surface_warn": ACTIVE_WARN_THRESHOLD,
             "active_surface_fail": ACTIVE_FAIL_THRESHOLD,
+            "runtime_coverage_warn_ratio": RUNTIME_COVERAGE_WARN_RATIO,
         },
         "findings": findings,
         "warn_count": warn_count,
@@ -192,13 +294,18 @@ def summarize(entries: list[PrimitiveEntry]) -> dict[str, Any]:
     }
 
 
-def build_index(manifest_path: Path = DEFAULT_MANIFEST, tier: str | None = None) -> dict[str, Any]:
+def build_index(
+    manifest_path: Path = DEFAULT_MANIFEST,
+    tier: str | None = None,
+    project_root: Path | None = None,
+) -> dict[str, Any]:
     if tier is not None and tier not in TIERS:
         raise ActivePrimitiveIndexError(f"unknown adoption tier {tier!r}; expected one of {', '.join(TIERS)}")
     manifest = load_manifest(manifest_path)
     all_entries = build_entries(manifest)
     filtered = [entry for entry in all_entries if tier is None or entry.tier == tier]
-    summary = summarize(all_entries)
+    root = project_root or manifest_path.resolve().parents[1]
+    summary = summarize(all_entries, root)
     return {
         "manifest": str(manifest_path),
         "schema_version": manifest.get("schema_version"),
@@ -212,15 +319,24 @@ def build_index(manifest_path: Path = DEFAULT_MANIFEST, tier: str | None = None)
 
 def print_human(index: dict[str, Any]) -> None:
     summary = index["summary"]
+    coverage = summary["runtime_coverage"]
     print("Active agentic primitive index")
     print(f"source: {index['source_of_truth']}")
-    print(f"status: {summary['status']} active_surface={summary['active_surface_count']} default_visible={summary['default_visible_count']}")
+    print(f"status: {summary['status']} active_surface={summary['active_surface_count']} default_visible={summary['default_visible_count']} runtime_coverage={coverage['coverage_ratio']}")
     print("counts by tier:")
     for tier in TIERS:
         total = summary["counts_by_tier"][tier]
         active = summary["active_counts_by_tier"][tier]
         visible = summary["default_visible_counts_by_tier"][tier]
         print(f"- {tier}: total={total} active={active} default_visible={visible}")
+    print("runtime coverage:")
+    print(
+        f"- projected_hook_entries={coverage['projected_hook_entries']} "
+        f"projected_unique_hooks={coverage['projected_unique_hooks']} "
+        f"lifecycle_hook_count={coverage['lifecycle_hook_count']} "
+        f"covered_unique_hooks={coverage['covered_unique_hooks']} "
+        f"missing_unique_hooks={coverage['missing_unique_hooks']}"
+    )
     if summary["findings"]:
         print("findings:")
         for finding in summary["findings"]:
@@ -230,12 +346,13 @@ def print_human(index: dict[str, Any]) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
+    parser.add_argument("--project-dir", type=Path, default=None, help="project root containing runtime projection files")
     parser.add_argument("--tier", choices=TIERS, help="filter primitives by adoption tier")
     parser.add_argument("--json", action="store_true", help="emit machine-readable JSON; this is the default")
     parser.add_argument("--human", action="store_true", help="emit a compact human summary")
     args = parser.parse_args(argv)
     try:
-        index = build_index(args.manifest, args.tier)
+        index = build_index(args.manifest, args.tier, args.project_dir)
     except ActivePrimitiveIndexError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2

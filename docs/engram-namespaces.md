@@ -25,7 +25,7 @@ Engram
 │
 ├── {project}              ← Project-specific knowledge, NEVER shared
 │   ├── architecture/auth-model
-│   ├── sdd/feature-x/proposal
+│   ├── planning/feature-x/proposal
 │   ├── sre-fix/api-server/oom
 │   └── discovery/users-core-44-endpoints
 │
@@ -90,10 +90,10 @@ Knowledge that belongs to ONE project. This is the project's private memory.
 **Topic Key Convention:**
 ```
 # SDD artifacts
-sdd/{change-name}/proposal
-sdd/{change-name}/spec
-sdd/{change-name}/design
-sdd/{change-name}/tasks
+planning/{change-name}/proposal
+planning/{change-name}/spec
+planning/{change-name}/design
+planning/{change-name}/tasks
 
 # SRE
 sre-fix/{container}/{error-type}

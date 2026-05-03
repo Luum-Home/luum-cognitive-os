@@ -150,7 +150,7 @@ sdd-explore -> sdd-propose -> sdd-spec  -> sdd-tasks -> sdd-apply -> sdd-verify 
 
 Each phase:
 - Has a dedicated skill in `~/.claude/skills/`
-- Reads required artifacts from Engram (topic keys: `sdd/{change-name}/{phase}`)
+- Reads required artifacts from Engram (topic keys: `planning/{change-name}/{phase}`)
 - Writes its artifact back to Engram
 - Returns: status, executive_summary, artifacts, next_recommended, risks
 

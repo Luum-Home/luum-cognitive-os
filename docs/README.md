@@ -23,12 +23,14 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-124: COS Distribution Boundaries](adrs/ADR-124-cos-distribution-boundaries.md) — separates Core, Team, Maintainer, and Lab surfaces so users adopt safety primitives without the full meta-layer.
 - [ADR-125: Governance Tools Value Boundary](adrs/ADR-125-governance-tools-value-boundary.md) — classifies governance into runtime safety, delivery structure, and maintainer meta-governance.
 - [ADR-126: Agentic Primitive Lifecycle Governor](adrs/ADR-126-agentic-primitive-lifecycle-governor.md) — lifecycle states and gates for creating, promoting, demoting, archiving, and deleting self-adjusting primitives.
+- [ADR-128: Data Layer Integrity Fixes](adrs/ADR-128-data-layer-integrity-fixes.md) — Engram upsert/ranking visibility, runtime coverage readiness, version audit, and SDD topic-key canonicalization.
 - [Primitive Harvester](architecture/primitive-harvester.md) — architecture and JSON contract for create/improve/use/document/discard decisions.
 - [Foundation Hardening Program](../.cognitive-os/plans/architecture/foundation-hardening-program.md) — execution checklist and production border-case matrix for ADR-121.
 - [Operational Stability and Friction Reduction Program](../.cognitive-os/plans/architecture/operational-stability-friction-reduction.md) — phase checklist for lowering SO friction without weakening safety.
 - [Governance Tools Consolidation Plan](../.cognitive-os/plans/architecture/governance-tools-consolidation.md) — execution plan for reducing governance friction and consolidating duplicate sources of truth.
 - [External Review Readiness Plan](../.cognitive-os/plans/architecture/external-review-readiness-plan.md) — phased readiness plan that turns external architecture critique into executable gates and wiring work.
 - [DX Tax Reduction Plan](../.cognitive-os/plans/architecture/dx-tax-reduction-plan.md) — phased plan for cognitive load, token tax, latency, indirection, harness coupling, upstream duplication, and self-referential overhead.
+- [Integrity and De-Theater Sprint](../.cognitive-os/plans/architecture/integrity-and-de-theater-sprint.md) — P0 execution plan for runtime coverage, Engram reliability, product-claim integrity, and governance maturity labels.
 - [Cognitive OS vs Vanilla IDE Agents — Senior DX Review](business/cos-vs-vanilla-dx-review.md) — honest persona-based DX review of COS value versus vanilla Claude Code, Codex, Cursor, and similar IDE-agent defaults.
 - [DX Assessment Snapshot — 2026-05-02](reports/dx-assessment-2026-05-02.md) — frozen raw review snapshot of governance, cost, onboarding, cross-harness, SDD, and Engram gaps.
 - [Primitive Harvester Implementation Plan](../.cognitive-os/plans/architecture/primitive-harvester-implementation-plan.md) — staged rollout plan and acceptance criteria for the meta-primitive.
@@ -257,7 +259,7 @@ metadata:
   name: sre-agent
 spec:
   brain:
-    model: claude-opus-4-6
+    model: architecture-review-model
     reasoning: reactive
   runtime:
     type: sandbox

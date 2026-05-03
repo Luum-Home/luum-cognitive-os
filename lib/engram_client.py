@@ -52,8 +52,35 @@ import os
 import subprocess
 from typing import Any
 
+from lib import engram_http_client
+
 # Path to engram binary — override via ENGRAM_BIN env var
 _ENGRAM_BIN = os.environ.get("ENGRAM_BIN", "engram")
+
+
+def _existing_observation_for_topic_key(
+    topic_key: str,
+    *,
+    project: str = "",
+    timeout: int = 5,
+) -> dict[str, Any] | None:
+    """Return an existing observation for ``topic_key`` if one can be found.
+
+    The engram CLI's save command appends even when a topic key is reused.  The
+    COS contract treats ``topic_key`` as an upsert key, so wrapper-level callers
+    must search first and update an exact project/topic match instead of blindly
+    saving duplicates.
+    """
+    if not topic_key:
+        return None
+    for obs in search_observations(topic_key, limit=20, project=project, timeout=timeout):
+        if obs.get("topic_key") != topic_key:
+            continue
+        obs_project = str(obs.get("project") or "")
+        if obs_project != project:
+            continue
+        return obs
+    return None
 
 
 def search_observations(
@@ -166,6 +193,21 @@ def save_observation(
     Prefer :func:`lib.safe_engram.safe_save` when content may be
     untrusted (it runs MemoryScanner first).
     """
+    if topic_key:
+        existing = _existing_observation_for_topic_key(topic_key, project=project, timeout=min(timeout, 5))
+        if existing is not None:
+            observation_id = existing.get("id")
+            if observation_id is None:
+                return None
+            return engram_http_client.update_observation(
+                observation_id,
+                title=title,
+                content=content,
+                type_=type_,
+                topic_key=topic_key,
+                timeout=timeout,
+            )
+
     cmd = [
         _ENGRAM_BIN, "save",
         "--json",
