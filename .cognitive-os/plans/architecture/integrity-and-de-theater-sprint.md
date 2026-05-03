@@ -75,8 +75,8 @@ Acceptance:
 
 Not in this sprint:
 
-- Full ADR-126 lifecycle metadata for every hook.
-- True `core` projection with <=12 hooks.
+- ~~Full ADR-126 lifecycle metadata for every hook.~~ Done for the current `.claude/settings.json` projection: 116/116 runtime hooks covered.
+- True consumer `core` projection with <=12 hooks. The maintainer repo still projects a larger surface and readiness warns honestly.
 - Historical report cleanup for legacy SDD topic-key mentions; runtime docs now use `planning/{change-name}/...` and legacy fallbacks remain documented in `rules/engram-organization.md`.
 - Full cost/savings dashboard.
 
@@ -88,4 +88,5 @@ Those remain the next sprint after readiness stops producing false confidence.
 python3 -m pytest tests/unit/test_active_primitive_index.py tests/unit/test_cos_architecture_readiness.py tests/unit/test_engram_client.py tests/unit/test_engram_lifecycle.py -q
 python3 -m py_compile scripts/active_primitive_index.py scripts/cos_architecture_readiness.py lib/engram_client.py lib/engram_lifecycle.py
 scripts/cos-architecture-readiness --json
+python3 -m pytest tests/contracts/test_primitive_runtime_reality.py tests/contracts/test_primitive_lifecycle_manifest.py -q
 ```

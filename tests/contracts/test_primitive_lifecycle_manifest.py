@@ -22,6 +22,7 @@ def _valid_primitive() -> dict:
         "kind": "hook",
         "owner_adr": "ADR-126",
         "lifecycle_state": "blocking",
+        "maturity": "blocking",
         "distribution": "core",
         "governance_class": "runtime-safety",
         "risk_class": "blocking",
@@ -114,6 +115,7 @@ def test_negative_roi_recommends_demoting_non_runtime_safety() -> None:
     primitive["id"] = "scripts/example-delivery-helper"
     primitive["kind"] = "script"
     primitive["lifecycle_state"] = "advisory"
+    primitive["maturity"] = "advisory"
     primitive["governance_class"] = "delivery-structure"
     primitive["risk_class"] = "advisory"
     primitive.pop("repair_message", None)
@@ -131,6 +133,7 @@ def test_meta_governance_discovery_overload_recommends_lab() -> None:
     primitive["id"] = "scripts/example-meta-dashboard"
     primitive["kind"] = "script"
     primitive["lifecycle_state"] = "advisory"
+    primitive["maturity"] = "advisory"
     primitive["distribution"] = "maintainer"
     primitive["governance_class"] = "meta-governance"
     primitive["risk_class"] = "advisory"

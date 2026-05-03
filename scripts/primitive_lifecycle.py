@@ -19,6 +19,7 @@ REQUIRED_FIELDS = {
     "kind",
     "owner_adr",
     "lifecycle_state",
+    "maturity",
     "distribution",
     "governance_class",
     "risk_class",
@@ -41,6 +42,7 @@ ENUMS = {
         "archived",
         "deleted",
     },
+    "maturity": {"observe", "advisory", "blocking"},
     "distribution": {"core", "team", "maintainer", "lab"},
     "governance_class": {"runtime-safety", "delivery-structure", "meta-governance"},
     "risk_class": {"advisory", "blocking", "mutating", "destructive"},
@@ -132,7 +134,14 @@ def validate_manifest(manifest: dict[str, Any]) -> list[Finding]:
                 )
 
         lifecycle_state = primitive.get("lifecycle_state")
+        maturity = primitive.get("maturity")
         risk_class = primitive.get("risk_class")
+        if maturity == "blocking" and lifecycle_state not in BLOCKING_STATES:
+            findings.append(Finding(primitive_id, "lifecycle_state", "blocking maturity requires blocking/default-on lifecycle_state"))
+        if lifecycle_state in BLOCKING_STATES and maturity != "blocking":
+            findings.append(Finding(primitive_id, "maturity", "blocking/default-on lifecycle_state requires blocking maturity"))
+        if maturity == "blocking" and not _is_non_empty_string(primitive.get("behavior_evidence")):
+            findings.append(Finding(primitive_id, "behavior_evidence", "blocking maturity requires behavior evidence"))
         is_blocking_or_default = lifecycle_state in BLOCKING_STATES or risk_class in BLOCKING_RISKS
         if is_blocking_or_default:
             if primitive.get("governance_class") != "runtime-safety":
