@@ -28,6 +28,7 @@ whether the SO is reducing damage and friction.
 | `scripts/cos-recovery-drill --scenario all` | Runs non-destructive recovery drill tests. |
 | `scripts/cos-runtime-hook-reality --fail-on-findings` | Proves runtime hooks match lifecycle and observable behavior. |
 | `scripts/cos-silent-failure-audit --fail-on-findings` | Fails if shell error-swallowing patterns grow without classification. |
+| `scripts/cos-demotion-loop-audit --json` | Warns until ADR-126 has a second demotion and at least one ROI-signed demotion. |
 | `scripts/cos-dispatch-smoke --json` | Exercises dispatch metrics and task-history without external provider calls. |
 | `scripts/cos-boring-reliability --profile core` | Aggregates the operator dashboard. |
 
@@ -65,6 +66,7 @@ scripts/cos-silent-failure-audit --fail-on-findings  # pass; no unclassified gro
 scripts/cos-adoption-profile --profile core          # pass; core <=10 hooks, <=7 blocking
 scripts/cos-preamble-budget --profile core           # pass; full core tax includes AGENTS.md
 scripts/cos-session-start-budget --profile core      # pass; core boot path <=5 hooks, no lab hooks
+scripts/cos-demotion-loop-audit --json               # warn until second/ROI-signed demotion proves control loop maturity
 scripts/cos-adoption-profile --profile core          # pass; core default-visible/blocking SLOs
 python3 scripts/active_primitive_index.py --json     # pass; no active/default-visible findings
 scripts/cos-wip-safety-score                         # pass or explicit archived WIP exception
