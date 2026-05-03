@@ -1,0 +1,18 @@
+schema_version: 1
+policy: >-
+  External-help claims require bilateral evidence from a non-maintainer project.
+  Self-deployments into projects owned by the original maintainer do not sign the
+  claim.
+reports: []
+required_report_shape:
+  project: third-party project name or URL
+  reporter: person or organization providing the report
+  maintainer_owned: false
+  relationship: external-user
+  profile: core
+  duration_days: 30
+  incident_evidence:
+    prevented_incidents: integer greater than zero
+    false_positive_ratio: numeric ratio or percentage
+  dx_evidence:
+    cognitive_cost: qualitative or quantitative cost note
