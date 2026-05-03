@@ -100,6 +100,23 @@ def _is_external_report(entry: dict[str, Any]) -> bool:
         return False
     if entry.get("relationship") in {"self", "same-maintainer", "internal-self-deployment"}:
         return False
+    independence = entry.get("independence")
+    if isinstance(independence, dict):
+        if independence.get("self_reported") is True:
+            return False
+        if independence.get("maintainer_owned") is True:
+            return False
+    else:
+        return False
+    provenance = entry.get("provenance")
+    if isinstance(provenance, dict):
+        producer = provenance.get("producer")
+        if not isinstance(producer, dict):
+            return False
+        if not producer.get("type") or not producer.get("identity") or not producer.get("generated_at"):
+            return False
+    else:
+        return False
     return bool(entry.get("project") and entry.get("reporter"))
 
 

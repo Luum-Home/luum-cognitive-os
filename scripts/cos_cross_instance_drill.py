@@ -64,6 +64,22 @@ def drill_external_evidence(project_root: Path) -> dict:
                 "false_positive_ratio": 0.0,
             },
             "dx_evidence": {"cognitive_cost": "synthetic drill evidence"},
+            "provenance": {
+                "producer": {
+                    "type": "agent",
+                    "identity": "synthetic-drill-agent",
+                    "repo": "synthetic-external-project",
+                    "machine_id": "synthetic-machine",
+                    "signature": "synthetic-drill-signature",
+                    "generated_at": "2099-01-01T00:00:00+00:00",
+                }
+            },
+            "independence": {
+                "maintainer_owned": False,
+                "same_machine": False,
+                "same_repo": False,
+                "self_reported": False,
+            },
         }
         report_path = tmp / "consumer-evidence.json"
         manifest = tmp / "external-adoption-evidence.yaml"

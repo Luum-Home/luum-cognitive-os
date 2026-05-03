@@ -16,3 +16,16 @@ required_report_shape:
     false_positive_ratio: numeric ratio or percentage
   dx_evidence:
     cognitive_cost: qualitative or quantitative cost note
+  provenance:
+    producer:
+      type: human|ci|agent|remote-instance|organization
+      identity: stable producer identity
+      repo: source repository or evidence URL
+      machine_id: optional machine/runner identifier
+      signature: optional cryptographic or CI signature
+      generated_at: timestamp
+  independence:
+    maintainer_owned: false
+    same_machine: false
+    same_repo: false
+    self_reported: false
