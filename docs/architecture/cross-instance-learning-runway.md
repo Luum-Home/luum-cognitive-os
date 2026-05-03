@@ -24,6 +24,10 @@ scripts/cos-export-consumer-evidence \
   --profile core \
   --duration-days 30 \
   --cos-version 0.23.0 \
+  --producer-type ci \
+  --producer-identity "consumer-ci" \
+  --source-repo "https://example.com/org/repo" \
+  --machine-id "runner-1" \
   --cognitive-cost "low after onboarding" \
   --output /tmp/example-consumer-cos-evidence.json
 ```
@@ -41,6 +45,27 @@ manifests/external-adoption-evidence.yaml
 ```
 
 This is the first step toward signing the “helps projects” claim.
+
+Evidence includes provenance and independence metadata:
+
+```yaml
+provenance:
+  producer:
+    type: human|ci|agent|remote-instance|organization
+    identity: stable producer identity
+    repo: source repository or evidence URL
+    machine_id: optional machine/runner identifier
+    signature: optional cryptographic or CI signature
+    generated_at: timestamp
+independence:
+  maintainer_owned: false
+  same_machine: false
+  same_repo: false
+  self_reported: false
+```
+
+The claim audit rejects reports that declare themselves self-owned,
+self-reported, or missing producer provenance.
 
 ## Primitive 2 — Registry lock
 
