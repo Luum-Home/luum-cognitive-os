@@ -65,11 +65,15 @@ that they block when they only log or add context.
 
 Acceptance:
 
-- `manifests/governance-maturity.yaml` labels trust score, blast radius, and
-  stochastic review spawning as `advisory`/`observe`, not `blocking`.
-- `cos architecture readiness` reports the maturity labels for those checks.
+- `manifests/primitive-lifecycle.yaml` labels trust score, blast radius, and
+  stochastic review spawning as `advisory`/`observe`, not `blocking`; a legacy
+  `manifests/governance-maturity.yaml` overlay is treated as duplicate truth and
+  fails readiness.
+- `cos architecture readiness` reports the maturity labels for those checks and
+  runs the runtime-hook-reality audit.
 - A future change that claims these primitives are blocking must add tests proving
-  blocking behavior.
+  blocking behavior, set `exit_behavior: exit_2`, and keep `docs_claim_level`
+  aligned with runtime maturity.
 
 ## P2 — Follow-up backlog
 
@@ -88,5 +92,6 @@ Those remain the next sprint after readiness stops producing false confidence.
 python3 -m pytest tests/unit/test_active_primitive_index.py tests/unit/test_cos_architecture_readiness.py tests/unit/test_engram_client.py tests/unit/test_engram_lifecycle.py -q
 python3 -m py_compile scripts/active_primitive_index.py scripts/cos_architecture_readiness.py lib/engram_client.py lib/engram_lifecycle.py
 scripts/cos-architecture-readiness --json
-python3 -m pytest tests/contracts/test_primitive_runtime_reality.py tests/contracts/test_primitive_lifecycle_manifest.py -q
+python3 -m pytest tests/contracts/test_primitive_runtime_reality.py tests/contracts/test_primitive_lifecycle_manifest.py tests/unit/test_runtime_hook_reality.py -q
+python3 scripts/runtime_hook_reality.py --fail-on-findings
 ```
