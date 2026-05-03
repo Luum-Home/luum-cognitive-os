@@ -151,6 +151,42 @@ For external adopters: expect any audit of this system to be partially obsolete 
 
 A useful heuristic: read review documents as time-windowed dated photographs. Treat them as accurate at their timestamp and structural beyond it. The case study above has the date in its filename (`-2026-05-02.md`) precisely so future readers can apply that calibration without thinking about it. The companion documents — [`boring-reliability-control-plane.md`](../architecture/boring-reliability-control-plane.md), [`cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md), the relevant ADRs — are the structural frame; this case study is the photograph.
 
+## Self-evolving doctrine: when the audit subsystem proposes rules about itself
+
+After the cycle had absorbed external review (main cycle) and absorbed its own internal friction (self-triggered absorption above), it took one more recursive step worth naming: **the system began proposing amendments to its own doctrine, derived from its own audit data, without any external prompt for that specific amendment**.
+
+The mechanism landed as two ADRs in sequence within minutes of each other:
+
+- [ADR-134](../adrs/ADR-134-headless-self-improvement-proposer.md) — `cos-self-improvement-loop` reads control-plane evidence and emits bounded **operational** proposals (gate refactors, configuration changes, scoped fixes). Propose-only mode, human approval required, sandboxed write paths, blocked actions list.
+- [ADR-135](../adrs/ADR-135-self-evolving-doctrine-proposals.md) — `cos-doctrine-proposer` reads the same evidence and emits proposed **doctrine amendments** as markdown under `docs/proposals/`. Status `proposed`, `runtime_effect: none`. The system proposes new rules; it does not apply them.
+
+On first execution against the live audit data, the doctrine proposer generated **five concrete amendments**, each grounded in observation rather than speculation:
+
+| Amendment | Trigger evidence | Source audit |
+|---|---|---|
+| Review direct-main bypasses as emergency debt | 10 bypass events recorded | `direct-main-bypass.jsonl` |
+| Prefer semantic matching over substring matching in gates | 24 false-positive events on `git-op-blocks` | `cos-false-positive-ledger` |
+| Warnings need expiry, owner, or explicit deferral | 2 demotions, 0 ROI-signed | `cos-demotion-loop-audit` |
+| Maintainer-cache allowlists are not transferable doctrine | 1,580 occurrences across 201 files, 65 in `legacy_audited` | `cos-silent-failure-audit` |
+| Self-improvement remains propose-only until promotion evidence exists | 7 active proposals, `auto_merge: false` policy | `cos-self-improvement-loop` |
+
+The second amendment — *"Prefer semantic matching over substring matching in gates"* — is structurally identical to a finding in the original external review (Risk B: substring-match governance). The proposer did not have access to the review document. It re-derived the finding by reading its own `cos-false-positive-ledger` and counting the events. **The system internalised the review's framework deeply enough to reproduce one of its findings on its own observability data.**
+
+Each proposal is structured the same way other primitives in the system are structured:
+
+- `evidence` — concrete data from a named audit
+- `proposed_rule` — the specific rule or refinement
+- `non_goals` — anti-patterns to avoid (e.g. *"ban emergency bypasses"*, *"remove conservative safety gates"*, *"silence historical false positives without classification"*)
+- `required_follow_up` — operational steps the rule implies
+
+The presence of `non_goals` in every proposal is the signal that the proposer is not naive: it knows what kind of over-correction the doctrine is meant to prevent and refuses to propose it. That property is what allows the system to propose changes to itself without becoming unsafe.
+
+The ceiling, named explicitly in ADR-135: *"This must not become autonomous policy mutation. Doctrine is governance surface."* All amendments land as markdown under `docs/proposals/` with `runtime_effect: none`. The next operator decides whether each one becomes part of the doctrine; the system does not promote its own proposals.
+
+For external adopters, this turns into another **falsifiable claim**: if the doctrine proposer is real, subsequent runs against new audit data should produce new proposals when the data shifts (and stop producing existing proposals when their evidence is resolved). If after several months of evolving audit data the proposal set is static, the loop is broken. The first generation is the baseline; subsequent ones can be tracked by `git log docs/proposals/` and correlating timestamps with audit-event volume.
+
+The recursion now reaches four levels: external review → ADRs and enforcement → audit subsystem observing the system → audit subsystem proposing amendments to the rules that govern it. The fifth level — auto-application of approved amendments — is **deliberately not built**. That is the boundary between "self-improving under governed human review" and "autonomous self-modifying software". The product claim sits on the right side of that boundary by design.
+
 ## What the cycle does not prove
 
 Stated honestly so the artefact is useful:
