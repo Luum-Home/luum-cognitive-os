@@ -1,7 +1,7 @@
 ---
 adr: 129
 title: Safe Worktree Removal — No Silent rm -rf Fallback
-status: proposed
+status: accepted
 date: 2026-05-02
 supersedes: []
 superseded_by: null
@@ -19,8 +19,9 @@ tags: [worktree, safety, data-loss, hooks]
 
 ## Status
 
-Proposed. Drafted urgently after the DX assessment dated 2026-05-02 surfaced
-the antipattern across four callsites.
+Accepted. Implemented in commit `d5ecda43` with the shared
+`hooks/_lib/safe-worktree-remove.sh` helper and adopted by the four destructive
+worktree-removal callsites.
 
 ## Context
 
