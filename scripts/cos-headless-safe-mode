@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# ROLE: headless-runtime
+# CANONICAL: scripts/cos-headless-safe-mode
+# @on-demand: Manage local headless safe mode / kill switch for task admission.
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec python3 "$SCRIPT_DIR/cos_headless_safe_mode.py" "$@"
