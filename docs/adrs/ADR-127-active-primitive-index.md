@@ -44,7 +44,7 @@ The governance readiness report now includes an `active-primitive-surface` check
 - Unknown tier in the manifest: fail index construction so drift is visible.
 - Missing manifest: return a readiness failure instead of silently reporting an empty surface.
 - Future auto-adjusted primitives: keep deriving from the lifecycle manifest; generators must update that manifest rather than bypassing this adapter.
-- Vendor-neutral naming: legacy `cos_opus_readiness.py` remains callable, but human-facing report copy uses governance readiness wording.
+- Vendor-neutral naming: the canonical readiness module is `cos_architecture_readiness.py`; there are no model-named compatibility wrappers.
 
 ## Consequences
 
