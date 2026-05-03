@@ -17,6 +17,8 @@ dashboard and without allowing uncontrolled self-modification.
 - [x] Normalize `cos-claim-signature-audit` warnings.
 - [x] Persist optional proposal JSON under `.cognitive-os/improvements/proposals/`.
 - [x] Cover proposal generation with unit tests.
+- [x] Add `scripts/cos-self-improvement-discipline-gate` so generated
+      proposals cannot quietly become default-surface expansion.
 
 ## Phase 2 — Doctrine proposer
 
@@ -53,5 +55,7 @@ dashboard and without allowing uncontrolled self-modification.
 
 ```bash
 python3 -m pytest tests/unit/test_self_improvement_loop.py -q
+python3 -m pytest tests/unit/test_self_improvement_discipline_gate.py -q
 scripts/cos-self-improvement-loop --profile core --json
+scripts/cos-self-improvement-discipline-gate --profile core --json
 ```
