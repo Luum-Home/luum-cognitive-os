@@ -22,6 +22,7 @@ CONTROL_PLANE_PRIMITIVES = {
     "scripts/cos-session-start-budget",
     "scripts/cos-dispatch-smoke",
     "scripts/cos-ci-local.sh",
+    "scripts/cos-lab-first-gate",
 }
 
 
