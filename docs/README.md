@@ -19,8 +19,10 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-119: Session Filesystem Reaper](adrs/ADR-119-session-filesystem-reaper.md) — archive-first cleanup for stale `.cognitive-os/sessions/` filesystem artifacts.
 - [ADR-120: Conversation-to-Primitive Harvester](adrs/ADR-120-conversation-to-primitive-harvester.md) — advisory classifier for promoting repeatable conversation recipes into governed agentic primitive proposals.
 - [ADR-121: Foundation Hardening Program](adrs/ADR-121-foundation-hardening-program.md) — phased invariants for validation capsules, single-writer main, WIP ownership, guard maturity, lane taxonomy, and chaos coverage.
+- [ADR-123: Operational Stability and Friction Reduction Program](adrs/ADR-123-operational-stability-friction-reduction.md) — guard maturity, adaptive profiles, repair-first blockers, unified status, and validation lanes.
 - [Primitive Harvester](architecture/primitive-harvester.md) — architecture and JSON contract for create/improve/use/document/discard decisions.
 - [Foundation Hardening Program](../.cognitive-os/plans/architecture/foundation-hardening-program.md) — execution checklist and production border-case matrix for ADR-121.
+- [Operational Stability and Friction Reduction Program](../.cognitive-os/plans/architecture/operational-stability-friction-reduction.md) — phase checklist for lowering SO friction without weakening safety.
 - [Primitive Harvester Implementation Plan](../.cognitive-os/plans/architecture/primitive-harvester-implementation-plan.md) — staged rollout plan and acceptance criteria for the meta-primitive.
 - [Session Filesystem Reaper](architecture/session-filesystem-reaper.md) — operator flow and safety invariants for session filesystem cleanup.
 - [Multi-IDE Swarm Safety Testbed Plan](../.cognitive-os/plans/architecture/multi-ide-swarm-testbed-plan.md) — executable plan for reproducing same-task, same-file, same-domain, git-overwrite, parity, memory, and watermark races.
