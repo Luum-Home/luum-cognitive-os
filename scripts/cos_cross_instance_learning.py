@@ -31,10 +31,14 @@ def _print(payload: dict) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--project-dir", type=Path, default=PROJECT_ROOT)
+    parser.add_argument("--project-dir", type=Path, default=None)
     sub = parser.add_subparsers(dest="command", required=True)
 
+    def add_project_dir(p: argparse.ArgumentParser) -> None:
+        p.add_argument("--project-dir", type=Path, default=None, help="project root; accepted before or after subcommand")
+
     export_evidence = sub.add_parser("export-consumer-evidence")
+    add_project_dir(export_evidence)
     export_evidence.add_argument("--project", required=True)
     export_evidence.add_argument("--reporter", required=True)
     export_evidence.add_argument("--profile", default="core")
@@ -43,28 +47,40 @@ def main(argv: list[str] | None = None) -> int:
     export_evidence.add_argument("--maintainer-owned", action="store_true")
     export_evidence.add_argument("--relationship", default="external-user")
     export_evidence.add_argument("--cognitive-cost", required=True)
+    export_evidence.add_argument("--producer-type", default="human", choices=["human", "ci", "agent", "remote-instance", "organization"])
+    export_evidence.add_argument("--producer-identity")
+    export_evidence.add_argument("--source-repo")
+    export_evidence.add_argument("--machine-id")
+    export_evidence.add_argument("--signature")
+    export_evidence.add_argument("--same-machine", action="store_true")
+    export_evidence.add_argument("--same-repo", action="store_true")
     export_evidence.add_argument("--output", type=Path)
 
     import_evidence = sub.add_parser("import-consumer-evidence")
+    add_project_dir(import_evidence)
     import_evidence.add_argument("reports", nargs="+", type=Path)
     import_evidence.add_argument("--manifest", type=Path)
 
     registry = sub.add_parser("registry-lock")
+    add_project_dir(registry)
     registry.add_argument("--write", action="store_true")
     registry.add_argument("--audit", action="store_true")
 
     engram_export = sub.add_parser("engram-export")
+    add_project_dir(engram_export)
     engram_export.add_argument("--project", default="luum-cognitive-os")
     engram_export.add_argument("--max-entries", type=int, default=500)
 
     engram_import = sub.add_parser("engram-import-propose")
+    add_project_dir(engram_import)
     engram_import.add_argument("bundle", type=Path)
 
     federation = sub.add_parser("federation-trigger-audit")
+    add_project_dir(federation)
     federation.add_argument("--config", type=Path)
 
     args = parser.parse_args(argv)
-    root = args.project_dir.resolve()
+    root = (args.project_dir or PROJECT_ROOT).resolve()
 
     if args.command == "export-consumer-evidence":
         report = build_consumer_evidence(
@@ -77,6 +93,13 @@ def main(argv: list[str] | None = None) -> int:
             maintainer_owned=args.maintainer_owned,
             relationship=args.relationship,
             cognitive_cost=args.cognitive_cost,
+            producer_type=args.producer_type,
+            producer_identity=args.producer_identity,
+            source_repo=args.source_repo,
+            machine_id=args.machine_id,
+            signature=args.signature,
+            same_machine=args.same_machine,
+            same_repo=args.same_repo,
         )
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
