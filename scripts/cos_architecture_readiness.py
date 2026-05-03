@@ -245,6 +245,9 @@ def check_core_session_start_budget(root: Path) -> Check:
         details={
             "profile": report["profile"],
             "session_start_hook_count": report["session_start_hook_count"],
+            "projection_source": report.get("projection_source"),
+            "active_session_start_hook_count": report.get("active_session_start_hook_count"),
+            "active_projection_matches_profile": report.get("active_projection_matches_profile"),
             "counts_by_tier": report["counts_by_tier"],
             "budget": report["budget"],
             "findings": report["findings"],
@@ -509,7 +512,15 @@ def check_adr_tier_claim_audit(root: Path) -> Check:
 
 
 def check_manifest_tier_claim_audit(root: Path) -> Check:
-    report = cos_manifest_tier_claim_audit.build_report(root / "manifests" / "primitive-lifecycle.yaml")
+    manifest_path = root / "manifests" / "primitive-lifecycle.yaml"
+    if not manifest_path.exists():
+        return Check(
+            id="manifest-tier-claim-audit",
+            status="warn",
+            message="primitive lifecycle manifest is missing; manifest tier claims could not be evaluated",
+            details={"manifest": str(manifest_path)},
+        )
+    report = cos_manifest_tier_claim_audit.build_report(manifest_path)
     status = "pass" if report["status"] == "pass" else "warn"
     return Check(
         id="manifest-tier-claim-audit",
@@ -529,7 +540,15 @@ def check_manifest_tier_claim_audit(root: Path) -> Check:
 
 
 def check_demotion_loop_maturity(root: Path) -> Check:
-    report = cos_demotion_loop_audit.build_report(root / "manifests" / "primitive-lifecycle.yaml")
+    manifest_path = root / "manifests" / "primitive-lifecycle.yaml"
+    if not manifest_path.exists():
+        return Check(
+            id="demotion-loop-maturity",
+            status="warn",
+            message="primitive lifecycle manifest is missing; demotion loop maturity could not be evaluated",
+            details={"manifest": str(manifest_path)},
+        )
+    report = cos_demotion_loop_audit.build_report(manifest_path)
     status = report["status"] if report["status"] in {"pass", "warn", "fail"} else "warn"
     return Check(
         id="demotion-loop-maturity",

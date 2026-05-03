@@ -46,6 +46,8 @@ def _extract_hook(command: str) -> str | None:
 
 
 def load_settings(path: Path = SETTINGS) -> dict[str, Any]:
+    if not path.exists():
+        return {"hooks": {}}
     return json.loads(path.read_text(encoding="utf-8"))
 
 
@@ -80,6 +82,8 @@ def session_start_hooks(settings: dict[str, Any]) -> list[tuple[str, bool]]:
 
 
 def load_lifecycle(path: Path = MANIFEST) -> dict[str, dict[str, Any]]:
+    if not path.exists():
+        return {}
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     primitives = data.get("primitives", []) if isinstance(data, dict) else []
     return {str(item.get("id")): item for item in primitives if isinstance(item, dict) and item.get("id")}
@@ -138,9 +142,11 @@ def build_report(profile: str = "current", root: Path = REPO_ROOT) -> dict[str, 
     if profile not in PROFILE_BUDGETS:
         raise ValueError(f"unknown profile {profile!r}")
     settings = generated_settings(profile, root)
+    active_settings = load_settings(root / ".claude" / "settings.json")
     lifecycle = load_lifecycle(root / "manifests" / "primitive-lifecycle.yaml")
     timings = load_timing(root / ".cognitive-os" / "metrics" / "hook-timing.jsonl")
     hooks = session_start_hooks(settings)
+    active_hooks = session_start_hooks(active_settings)
     entries: list[HookEntry] = []
     counts_by_tier = {"core": 0, "team": 0, "maintainer": 0, "lab": 0, "unknown": 0}
     findings: list[dict[str, Any]] = []
@@ -187,7 +193,10 @@ def build_report(profile: str = "current", root: Path = REPO_ROOT) -> dict[str, 
     return {
         "status": "fail" if fail_count else ("warn" if warn_count else "pass"),
         "profile": profile,
+        "projection_source": "active_settings" if profile == "current" else "generated_profile",
         "session_start_hook_count": len(hooks),
+        "active_session_start_hook_count": len(active_hooks),
+        "active_projection_matches_profile": len(active_hooks) == len(hooks) and sorted(active_hooks) == sorted(hooks),
         "counts_by_tier": counts_by_tier,
         "budget": budget,
         "hooks": [asdict(item) for item in entries],
