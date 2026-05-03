@@ -30,6 +30,7 @@ import silent_failure_audit
 import session_start_budget
 import lab_first_promotion_gate
 import cos_tier_claim_audit
+import cos_demotion_loop_audit
 import cos_preamble_budget
 
 REPO_ROOT = SCRIPT_DIR.parents[0]
@@ -479,6 +480,21 @@ def check_adr_tier_claim_audit(root: Path) -> Check:
     )
 
 
+def check_demotion_loop_maturity(root: Path) -> Check:
+    report = cos_demotion_loop_audit.build_report(root / "manifests" / "primitive-lifecycle.yaml")
+    status = "pass" if report["status"] == "pass" else "warn"
+    return Check(
+        id="demotion-loop-maturity",
+        status=status,
+        message=(
+            "ADR-126 demotion loop has repeated and ROI-signed evidence"
+            if status == "pass"
+            else "ADR-126 demotion loop is visible but not yet proven by a second/ROI-signed demotion"
+        ),
+        details=report,
+    )
+
+
 def build_report(root: Path, window_hours: int) -> dict[str, Any]:
     checks = [
         check_repo_hygiene(root),
@@ -497,6 +513,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_governance_maturity_labels(root),
         check_lab_first_promotion_gate(root),
         check_adr_tier_claim_audit(root),
+        check_demotion_loop_maturity(root),
     ]
     fail_count = sum(1 for check in checks if check.status == "fail")
     warn_count = sum(1 for check in checks if check.status == "warn")

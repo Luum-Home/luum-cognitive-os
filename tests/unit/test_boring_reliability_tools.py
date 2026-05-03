@@ -128,6 +128,28 @@ def test_dispatch_metrics_evidence_warns_when_empty(tmp_path: Path) -> None:
     assert report["repair_command"] == "scripts/cos-dispatch-smoke --json"
 
 
+def test_boring_reliability_includes_demotion_loop_status(tmp_path: Path, monkeypatch) -> None:
+    import scripts.cos_boring_reliability as boring
+
+    monkeypatch.setattr(boring.runtime_hook_reality, "build_report", lambda project_root: {"summary": {"status": "pass"}})
+    monkeypatch.setattr(boring.cos_adoption_profile, "build_profile", lambda profile: {"status": "pass", "primitive_count": 0, "hook_count": 0, "default_visible_count": 0, "blocking_count": 0})
+    monkeypatch.setattr(boring.cos_preamble_budget, "build_budget", lambda profile, root: {"status": "pass"})
+    monkeypatch.setattr(boring.cos_default_visible_reducer, "build_recommendations", lambda: {"status": "pass", "recommendation_count": 0, "recommendations": []})
+    monkeypatch.setattr(boring.cos_false_positive_ledger, "build_report", lambda path: {"status": "pass"})
+    monkeypatch.setattr(boring.cos_wip_safety_score, "build_score", lambda root: {"status": "pass"})
+    monkeypatch.setattr(boring.silent_failure_audit, "build_report", lambda root, scan, allow: {"status": "pass", "file_count": 0, "occurrence_count": 0, "fail_count": 0, "warn_count": 0})
+    monkeypatch.setattr(boring.session_start_budget, "build_report", lambda profile, root: {"status": "pass", "profile": profile, "session_start_hook_count": 0, "counts_by_tier": {}, "budget": {}, "findings": []})
+    monkeypatch.setattr(boring, "dispatch_metrics_evidence", lambda root: {"status": "pass"})
+    monkeypatch.setattr(boring.cos_demotion_loop_audit, "build_report", lambda manifest: {"status": "warn", "demotion_count": 1, "roi_signed_demotion_count": 0, "findings": [], "policy": "test"})
+    monkeypatch.setattr(boring, "readiness_summary", lambda root: {"status": "pass"})
+
+    report = boring.build_dashboard("core", tmp_path)
+
+    assert report["status"] == "warn"
+    assert report["demotion_loop"]["demotion_count"] == 1
+    assert report["demotion_loop"]["roi_signed_demotion_count"] == 0
+
+
 def test_dispatch_smoke_writes_metrics(tmp_path: Path, monkeypatch) -> None:
     import scripts.cos_dispatch_smoke as smoke
 
