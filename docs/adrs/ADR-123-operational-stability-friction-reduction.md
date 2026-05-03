@@ -1,3 +1,15 @@
+---
+adr: 123
+title: Operational Stability and Friction Reduction Program
+status: proposed
+date: 2026-05-02
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: standard
+tags: [stability, friction-reduction, guards, maturity]
+---
+
 # ADR-123: Operational Stability and Friction Reduction Program
 
 ## Status
