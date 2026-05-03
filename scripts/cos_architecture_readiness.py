@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # SCOPE: both
-"""Governance objection readiness report for Cognitive OS governance.
+"""Architecture readiness report for Cognitive OS governance.
 
-This command converts external critique into a concrete gate report. It is not a
+This command converts external architecture review findings into a concrete gate report. It is not a
 marketing score; warnings are intentionally visible so governance can be demoted,
 wired, or reduced when it does not earn its cost.
 """
@@ -248,7 +248,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
 
 
 def print_human(report: dict[str, Any]) -> None:
-    print("COS Governance Readiness")
+    print("COS Architecture Readiness")
     print(f"status: {report['status']} score={report['score']} pass={report['pass_count']} warn={report['warn_count']} fail={report['fail_count']}")
     for check in report["checks"]:
         marker = {"pass": "PASS", "warn": "WARN", "fail": "FAIL"}[check["status"]]
