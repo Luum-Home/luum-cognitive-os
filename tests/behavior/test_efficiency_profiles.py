@@ -38,6 +38,14 @@ def _load_settings(path: Path) -> dict:
     return json.loads(path.read_text())
 
 
+def _session_start_commands(settings: dict) -> list[str]:
+    commands: list[str] = []
+    for group in settings.get("hooks", {}).get("SessionStart", []):
+        for hook in group.get("hooks", []):
+            commands.append(hook.get("command", ""))
+    return commands
+
+
 def _make_profile_workspace(tmp_path: Path) -> Path:
     """Create a minimal project directory where the profile script can run."""
     workspace = tmp_path / "workspace"
@@ -132,3 +140,23 @@ class TestFullProfile:
         result = _run_profile("full", PROJECT_ROOT)
         combined = result.stdout + result.stderr
         assert "full" in combined.lower()
+
+
+class TestCoreProfile:
+    def test_core_profile_reduces_session_start_hooks(self, tmp_path):
+        workspace = _make_profile_workspace(tmp_path / "core")
+        result = _run_profile("core", workspace)
+        assert result.returncode == 0, result.stderr
+        settings = _load_settings(workspace / ".claude" / "settings.json")
+        commands = _session_start_commands(settings)
+        assert len(commands) == 3
+        assert any("session-init.sh" in command for command in commands)
+        assert any("validation-lock-cleanup.sh" in command for command in commands)
+        assert any("session-start-stash-reapply.sh" in command for command in commands)
+        assert not any("host-tool-doctor.sh" in command for command in commands)
+
+    def test_maintainer_profile_matches_default_baseline(self, tmp_path):
+        workspace = _make_profile_workspace(tmp_path / "maintainer")
+        result = _run_profile("maintainer", workspace)
+        assert result.returncode == 0, result.stderr
+        assert _load_settings(workspace / ".claude" / "settings.json") == _load_settings(SETTINGS_FILE)

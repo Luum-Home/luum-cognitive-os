@@ -19,15 +19,18 @@
 # skill-synthesis-scanner.sh  — Stop; 30-min cooldown synthesis scanner
 # ─────────────────────────────────────────────────────────────────────────────
 #
-# ADR-093 collapsed the 3-tier profile system (lean/standard/full) to two tiers:
-#   default  — committed baseline Claude projection used by the repository
-#   full     — preserve/restore the currently installed settings surface as-is
+# ADR-093 collapsed the legacy lean/standard/full system; ADR-124 adds
+# adoption profiles over the canonical projection:
+#   core       — consumer boot diet; minimal SessionStart runtime
+#   maintainer — self-hosting/solo-swarm projection used by this repository
+#   default    — alias for maintainer for backward compatibility
+#   full       — preserve/restore the currently installed settings surface as-is
 #
 # Legacy values (lean, standard, minimal) are silently remapped to `default`
 # with a stderr note so existing deployments keep working.
 #
 # Usage:
-#   bash scripts/apply-efficiency-profile.sh [default|full] [--harness=claude-code|codex|all]
+#   bash scripts/apply-efficiency-profile.sh [core|maintainer|default|full] [--harness=claude-code|codex|all]
 #
 # If no argument is given, reads from cognitive-os.yaml.
 # Idempotent — safe to run multiple times.
@@ -76,16 +79,19 @@ fi
 
 # Normalize profile (ADR-093 collapse). Legacy → default with stderr note.
 case "$RAW_PROFILE" in
-  default|full)
+  core|maintainer|full)
     PROFILE="$RAW_PROFILE"
     ;;
+  default)
+    PROFILE="maintainer"
+    ;;
   lean|standard|minimal)
-    echo "Note: ADR-093 collapsed '$RAW_PROFILE' into 'default'. Using 'default'." >&2
-    PROFILE="default"
+    echo "Note: ADR-093 collapsed '$RAW_PROFILE' into 'default/maintainer'. Using 'maintainer'." >&2
+    PROFILE="maintainer"
     ;;
   *)
-    echo "ERROR: Unknown profile '$RAW_PROFILE'. Valid: default, full." >&2
-    echo "       Legacy (remapped to default): lean, standard, minimal." >&2
+    echo "ERROR: Unknown profile '$RAW_PROFILE'. Valid: core, maintainer, default, full." >&2
+    echo "       Legacy (remapped to maintainer): lean, standard, minimal." >&2
     exit 1
     ;;
 esac
@@ -181,8 +187,12 @@ esac
 
 # ── Summary ─────────────────────────────────────────────────────────
 echo ""
-echo "Hook summary for profile 'default' (committed Claude projection):"
-echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh, reaper/session watchdogs, docker-drift-detector.sh, executor daemon, engram-daemon-launcher.sh (async), crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards"
+echo "Hook summary for profile '$PROFILE' (Claude projection):"
+if [ "$PROFILE" = "core" ]; then
+  echo "  SessionStart: session-init.sh, validation-lock-cleanup.sh, session-start-stash-reapply.sh"
+else
+  echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh, reaper/session watchdogs, docker-drift-detector.sh, executor daemon, engram-daemon-launcher.sh (async), crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards"
+fi
 echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh, memory-prefetch.sh (async)"
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
