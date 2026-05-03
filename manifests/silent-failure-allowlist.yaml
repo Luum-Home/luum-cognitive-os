@@ -3,1005 +3,1005 @@ entries:
 - path: hooks/_lib/cache.sh
   max_occurrences: 5
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/_lib/circuit-breaker.sh
   max_occurrences: 16
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/_lib/common.sh
   max_occurrences: 9
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/_lib/execute-repair.sh
   max_occurrences: 18
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/_lib/file_checker.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/_lib/hook-pipe.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/_lib/killswitch_check.sh
   max_occurrences: 2
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/_lib/normalize-stdin.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/_lib/paperclip-notify.sh
   max_occurrences: 5
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/_lib/portable.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/_lib/push-collision-check.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/_lib/remediation.sh
   max_occurrences: 21
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/_lib/resolve-main-worktree.sh
   max_occurrences: 3
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/_lib/safe-jsonl.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/_lib/safe-worktree-remove.sh
   max_occurrences: 17
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/_lib/semantic-search.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/_lib/singularity-suggestion.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/_lib/stash-lock.sh
   max_occurrences: 27
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/_lib/task-identity.sh
   max_occurrences: 3
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/_lib/timing.sh
   max_occurrences: 7
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/_lib/tuning.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/adaptive-bypass.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/adr-detector.sh
   max_occurrences: 9
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/adr-section-validator.sh
   max_occurrences: 9
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/agent-bash-cwd-enforcer.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/agent-bus-monitor.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/agent-checkpoint.sh
   max_occurrences: 19
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/agent-output-verifier.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/agent-prelaunch.sh
   max_occurrences: 15
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/agent-quota-advisor.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/agent-quota-redirect.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/agent-qwen-bridge.sh
   max_occurrences: 19
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/agent-working-dir-inject.sh
   max_occurrences: 19
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/agnix-lint.sh
   max_occurrences: 13
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/aguara-scan.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/architecture-compliance.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/aspirational-audit-weekly.sh
   max_occurrences: 8
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/assumption-tracker.sh
   max_occurrences: 5
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/audit-id-enricher.sh
   max_occurrences: 3
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/auto-checkpoint.sh
   max_occurrences: 11
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/auto-refine.sh
   max_occurrences: 9
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/auto-repair-dispatcher.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/auto-rollback-trigger.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/auto-skill-generator.sh
   max_occurrences: 9
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/auto-verify.sh
   max_occurrences: 14
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/background-agent-reminder.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/blast-radius.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/claim-validator.sh
   max_occurrences: 21
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/clarification-gate.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/clarification-interceptor.sh
   max_occurrences: 6
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/code-review-on-commit.sh
   max_occurrences: 2
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/cognitive-os-health.sh
   max_occurrences: 21
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/completeness-check-llm.sh
   max_occurrences: 4
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/completion-gate.sh
   max_occurrences: 45
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/concurrent-write-guard-codex-proxy.sh
   max_occurrences: 6
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/concurrent-write-guard.sh
   max_occurrences: 12
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/confidence-gate-llm.sh
   max_occurrences: 4
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/confidence-gate.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/confidentiality-enforcer.sh
   max_occurrences: 5
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/consequence-evaluator.sh
   max_occurrences: 4
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/content-policy.sh
   max_occurrences: 5
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/context-diet.sh
   max_occurrences: 7
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/context-watchdog.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/contextual-rule-loader.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/conversation-capture.sh
   max_occurrences: 8
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/cos-executor-daemon-launcher.sh
   max_occurrences: 1
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/cos-executor-heartbeat.sh
   max_occurrences: 1
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/crash-recovery.sh
   max_occurrences: 8
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/dequeue-notify.sh
   max_occurrences: 10
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/destructive-git-blocker.sh
   max_occurrences: 26
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/destructive-rm-blocker.sh
   max_occurrences: 8
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/direct-main-guard.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/dispatch-gate.sh
   max_occurrences: 9
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/doc-sync-detector.sh
   max_occurrences: 3
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/docker-drift-detector.sh
   max_occurrences: 8
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/dod-gate.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/dry-run-preview.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/ecosystem-check.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/edit-lock-drain-parked.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/edit-lock-pre-tool.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/edit-lock-process-negotiations.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/edit-lock-session-end.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/engram-auto-import.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/engram-auto-sync.sh
   max_occurrences: 7
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/engram-crystallize-on-session-end.sh
   max_occurrences: 4
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/engram-daemon-launcher.sh
   max_occurrences: 3
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/engram-reinforce-on-access.sh
   max_occurrences: 8
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/epic-task-detector.sh
   max_occurrences: 6
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/error-learning.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/error-pattern-detector.sh
   max_occurrences: 8
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/error-pipeline.sh
   max_occurrences: 26
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/git-commit-scope-guard.sh
   max_occurrences: 7
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/git-context-capture.sh
   max_occurrences: 15
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/global-verify.sh
   max_occurrences: 2
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/guardrails-validator.sh
   max_occurrences: 8
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/hook-header-validator.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/host-tool-doctor.sh
   max_occurrences: 6
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/idle-service-cleanup.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/infra-health.sh
   max_occurrences: 27
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/infra-intent-detector.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/inject-phase-context.sh
   max_occurrences: 26
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/jupyter-sandbox.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/kpi-trigger.sh
   max_occurrences: 16
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/large-file-advisor.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/mcp-scan.sh
   max_occurrences: 5
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/memory-prefetch.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/memu-sync.sh
   max_occurrences: 8
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/metrics-calibrator-trigger.sh
   max_occurrences: 5
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/metrics-rotation.sh
   max_occurrences: 18
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/mlflow-sync.sh
   max_occurrences: 1
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/native-agent-heartbeat.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/notify.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/orchestrator-claim-gate.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/orchestrator-mode-detect.sh
   max_occurrences: 1
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/package-sync.sh
   max_occurrences: 6
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/paperclip-sync.sh
   max_occurrences: 16
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/parry-scan.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/pattern-check.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/plan-claim-validator.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/post-agent-snapshot-restore.sh
   max_occurrences: 27
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/post-agent-verify.sh
   max_occurrences: 21
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/post-git-orphan-notifier.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/pre-agent-snapshot.sh
   max_occurrences: 46
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/pre-cleanup-snapshot.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/pre-commit-gate.sh
   max_occurrences: 11
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/pre-compaction-flush.sh
   max_occurrences: 2
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/predev-completeness-check.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/profile-drift-autoapply.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/project-docs-convention.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/prompt-quality-llm.sh
   max_occurrences: 4
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/query-tailored-context-inject.sh
   max_occurrences: 5
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/rate-limit-detector.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/rate-limit-drain.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/rate-limit-precheck.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/rate-limit-protection.sh
   max_occurrences: 2
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/rate-limiter.sh
   max_occurrences: 5
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/reaper-daemon-launcher.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/reaper-heartbeat.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/recap-sync.sh
   max_occurrences: 3
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/registration-check.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/reinvention-check.sh
   max_occurrences: 6
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/release-guard.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/resource-check.sh
   max_occurrences: 15
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/result-truncator.sh
   max_occurrences: 13
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/review-spawner.sh
   max_occurrences: 16
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/rule-frontmatter-validator.sh
   max_occurrences: 6
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/scope-creep-detector.sh
   max_occurrences: 6
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/scope-marker-portability-gate.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/scope-proportionality.sh
   max_occurrences: 6
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/secret-detector.sh
   max_occurrences: 30
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/self-install.sh
   max_occurrences: 20
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/self-knowledge-refresh.sh
   max_occurrences: 6
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/semgrep-scan.sh
   max_occurrences: 13
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/session-changelog.sh
   max_occurrences: 3
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/session-cleanup.sh
   max_occurrences: 26
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/session-end-reap.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/session-heartbeat.sh
   max_occurrences: 8
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/session-hygiene.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/session-init.sh
   max_occurrences: 24
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/session-knowledge-extractor.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/session-learning.sh
   max_occurrences: 14
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/session-resume.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/session-sanity.sh
   max_occurrences: 1
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/session-start-stash-reapply.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/session-start-worktree-nudge.sh
   max_occurrences: 6
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/session-startup-protocol.sh
   max_occurrences: 8
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/session-state-save.sh
   max_occurrences: 1
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/session-summary-reminder.sh
   max_occurrences: 11
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/session-watchdog-launcher.sh
   max_occurrences: 13
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/session-wrapup-trigger.sh
   max_occurrences: 4
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/singularity-check.sh
   max_occurrences: 2
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/skill-failure-monitor.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/skill-feedback-tracker.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/skill-frontmatter-validator.sh
   max_occurrences: 6
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/skill-invocation-logger.sh
   max_occurrences: 5
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/skill-synthesis-scanner.sh
   max_occurrences: 6
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/skill-tracker.sh
   max_occurrences: 13
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/skill-usage-tracker.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/stash-budget-warn.sh
   max_occurrences: 14
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/state-heartbeat.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/subagent-context-injector.sh
   max_occurrences: 5
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: probe_best_effort
+  rationale: Read-only environment/state probe; failure means unknown state, not an
+    immediate hard block.
 - path: hooks/surface-fix-detector.sh
   max_occurrences: 13
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/symlink-mutation-guard.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/sync-to-repo.sh
   max_occurrences: 2
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/task-bridge-notify.sh
   max_occurrences: 5
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/task-completed.sh
   max_occurrences: 11
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/task-created.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/task-panel-sync.sh
   max_occurrences: 4
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/task-recorder.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/teammate-idle.sh
   max_occurrences: 5
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/token-budget-monitor.sh
   max_occurrences: 2
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/tool-discovery-trigger.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/tool-loop-detector.sh
   max_occurrences: 3
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/tool-sequence-capture.sh
   max_occurrences: 7
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/trust-score-validator.sh
   max_occurrences: 2
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: optional_dependency
+  rationale: Optional dependency or integration probe; absence must degrade without
+    blocking the parent hook.
 - path: hooks/usage-health-check.sh
   max_occurrences: 4
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/user-prompt-capture.sh
   max_occurrences: 10
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: metrics_best_effort
+  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
+    user action.
 - path: hooks/validation-lock-cleanup.sh
   max_occurrences: 9
-  degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  degradation_class: cleanup_best_effort
+  rationale: Cleanup/reaper work is best effort; failures are surfaced by later hygiene
+    or recovery checks.
 - path: hooks/valkey-ensure.sh
   max_occurrences: 3
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/work-queue-sync.sh
   max_occurrences: 2
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.
 - path: hooks/worktree-submodule-fix.sh
   max_occurrences: 3
   degradation_class: legacy_audited
-  rationale: Legacy best-effort degradation audited as baseline; increases require
-    explicit review.
+  rationale: Legacy silent degradation remains audited but needs manual classification
+    before promotion.

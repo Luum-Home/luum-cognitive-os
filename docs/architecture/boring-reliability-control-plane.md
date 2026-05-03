@@ -82,3 +82,18 @@ primitives honest.
 The local CI runner is the exception: `scripts/cos-ci-local.sh` is also a
 maintainer primitive, but it is declared `maturity: blocking` because the
 tracked pre-push hook uses it as the local landing gate.
+
+## Silent failure classes
+
+`manifests/silent-failure-allowlist.yaml` is not allowed to be a blind
+`legacy_audited` bucket. Each audited shell degradation is classified as one of:
+
+- `metrics_best_effort` — telemetry must not break the guarded user action;
+- `optional_dependency` — optional tools/providers may be absent;
+- `cleanup_best_effort` — cleanup/reaper paths are retried or surfaced later;
+- `probe_best_effort` — read-only probes can fail without mutating state;
+- `legacy_audited` — bounded legacy debt that still needs manual classification.
+
+`legacy_audited` is tolerated as debt, not as a permanent explanation. The
+trend should move entries from `legacy_audited` into concrete classes or remove
+the swallowed failure entirely.
