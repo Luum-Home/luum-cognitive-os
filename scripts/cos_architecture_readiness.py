@@ -30,6 +30,7 @@ import silent_failure_audit
 import session_start_budget
 import lab_first_promotion_gate
 import cos_tier_claim_audit
+import cos_manifest_tier_claim_audit
 import cos_demotion_loop_audit
 import cos_preamble_budget
 
@@ -480,6 +481,26 @@ def check_adr_tier_claim_audit(root: Path) -> Check:
     )
 
 
+def check_manifest_tier_claim_audit(root: Path) -> Check:
+    report = cos_manifest_tier_claim_audit.build_report(root / "manifests" / "primitive-lifecycle.yaml")
+    status = "pass" if report["status"] == "pass" else "warn"
+    return Check(
+        id="manifest-tier-claim-audit",
+        status=status,
+        message=(
+            "primitive lifecycle distribution claims are evidence-backed"
+            if status == "pass"
+            else "primitive lifecycle distribution claims still expose maintainer-knowledge or demotion candidates"
+        ),
+        details={
+            "finding_count": report["finding_count"],
+            "counts_by_category": report["counts_by_category"],
+            "candidate_second_demote_count": report["candidate_second_demote_count"],
+            "candidate_second_demotes": report["candidate_second_demotes"][:10],
+        },
+    )
+
+
 def check_demotion_loop_maturity(root: Path) -> Check:
     report = cos_demotion_loop_audit.build_report(root / "manifests" / "primitive-lifecycle.yaml")
     status = "pass" if report["status"] == "pass" else "warn"
@@ -513,6 +534,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_governance_maturity_labels(root),
         check_lab_first_promotion_gate(root),
         check_adr_tier_claim_audit(root),
+        check_manifest_tier_claim_audit(root),
         check_demotion_loop_maturity(root),
     ]
     fail_count = sum(1 for check in checks if check.status == "fail")

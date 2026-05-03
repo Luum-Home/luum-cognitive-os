@@ -24,6 +24,8 @@ CONTROL_PLANE_PRIMITIVES = {
     "scripts/cos-ci-local.sh",
     "scripts/cos-lab-first-gate",
     "scripts/cos-tier-claim-audit",
+    "scripts/cos-demotion-loop-audit",
+    "scripts/cos-manifest-tier-claim-audit",
 }
 
 
