@@ -87,9 +87,9 @@ Proof-only primitives become actual operating controls where safe.
 
 ### Acceptance
 
-- [ ] Same-branch multi-agent writer conflict blocks before mutation.
-- [ ] Safe-mode blocks new headless task admission without deleting evidence.
-- [ ] Headless direct-main publication is blocked unless protected landing is explicit.
+- [x] Same-branch multi-agent writer conflict blocks before mutation.
+- [x] Safe-mode blocks new headless task admission without deleting evidence.
+- [x] Headless direct-main publication is blocked unless protected landing is explicit.
 
 ## Phase 3 — Active surface reduction
 
