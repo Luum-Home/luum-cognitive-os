@@ -187,6 +187,32 @@ For external adopters, this turns into another **falsifiable claim**: if the doc
 
 The recursion now reaches four levels: external review → ADRs and enforcement → audit subsystem observing the system → audit subsystem proposing amendments to the rules that govern it. The fifth level — auto-application of approved amendments — is **deliberately not built**. That is the boundary between "self-improving under governed human review" and "autonomous self-modifying software". The product claim sits on the right side of that boundary by design.
 
+## Convergence: when internal proposals reproduce external review findings
+
+Worth naming as a distinct observation from the capability above (the system *can* propose doctrine amendments) is the specific outcome on first execution: **one of the five amendments the system generated internally is structurally identical to a finding from the external review that triggered this cycle, derived entirely from internal observability data, with no access to the review document.**
+
+The escalating recursion in this cycle, ordered by depth rather than wall-clock:
+
+- **Stage 1 — observation only.** The system ran audits passively: warnings logged, no action taken. State at the start of the cycle.
+- **Stage 2 — friction absorption.** The system absorbed friction it produced about itself during its own documentation pass and converted it into a hardening commit (`95239a50`), without external prompt for that specific fix. Documented above as *"Self-triggered absorption"*.
+- **Stage 3 — operational proposals.** The system proposed bounded operational fixes for itself (commit `5ee415ba`, ADR-134, 7 active proposals) — all in `propose-only` mode with sandboxed write paths and human approval required.
+- **Stage 4 — doctrine proposals.** The system proposed amendments to its own doctrine based on its own audit data (commit `4b20619c`, ADR-135, 5 active proposals).
+
+The second of those 5 doctrine proposals — *"Prefer semantic matching over substring matching in gates"*, triggered by 24 false-positive events on `git-op-blocks` — is structurally equivalent to **Risk B** in the original external SR review (substring-match governance, with concrete examples of gates firing on commit-message content rather than parsed command shape). The internal proposer did not have access to the review document. It re-derived the finding by counting events in `cos-false-positive-ledger` and applying the same admission contract every other proposal uses.
+
+This is qualitatively different from *"the system absorbs external critique"*. It is **the system internally producing the same observations a competent external reviewer would produce**, by reading the same control-plane evidence the reviewer would read.
+
+The natural follow-up question is whether this convergence means the external reviewer is now redundant. ADR-135 answers that explicitly: it is not, and must not become so. The product claim — *"self-improving under governed human review"* — preserves the human reviewer as a structural invariant, not as a dependency to be removed once the internal loop matures.
+
+Two reasons for that ceiling, named for adopters:
+
+1. **Internal observation reads its own data.** External review reads observability *plus* intent, context, prior art, and adjacent systems the internal data alone does not capture. The two are different inputs even when their outputs sometimes converge. Convergence on one item does not mean parity on all items.
+2. **Promotion of a doctrine amendment is governance, not maintenance.** Governance changes that bypass external human review collapse the property the doctrine was built to preserve. The convergence above is a useful signal of internal coherence; it is not a license to remove the reviewer.
+
+For external adopters, the falsifiable claim becomes: if the doctrine proposer produces **zero** amendments that converge with an independent external review, the loop is too narrow (it is only catching internal patterns the reviewer also misses). If it produces **only** amendments the external reviewer would not reach, the loop is hallucinating. The healthy zone is **partial convergence**, with the external reviewer continuing to surface findings the internal loop does not.
+
+This case study itself is a single data point. Replication would require running the cycle a second time, against an independent external reviewer, and observing whether the internal proposer's generated set partially overlaps the new findings. The artefact is the loop; the evidence is in subsequent runs.
+
 ## What the cycle does not prove
 
 Stated honestly so the artefact is useful:
