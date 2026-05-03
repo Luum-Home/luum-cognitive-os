@@ -156,6 +156,12 @@ Two properties this position depends on, both of which the system itself tracks:
 - **Tenure** is the variable `cos-boring-reliability` measures cumulatively across sessions, incidents, recovery drills, and false-positive ledger drift. It is bounded by wall-clock, not by velocity.
 - **Bilateral external validation** is the variable that does not yet have a primitive in the repository. It would look like a third-party project running `core` for 30+ days and reporting prevented-incident counts, false-positive ratios, and cognitive-cost qualitative feedback. Building the receiving primitive for that data is itself a future cycle.
 
+That receiving primitive now exists as a truth surface:
+[`scripts/cos-claim-signature-audit`](../../scripts/cos-claim-signature-audit)
+and [`claim-signature-audit.md`](../architecture/claim-signature-audit.md). It
+does not sign the claims by itself. It records exactly what evidence would sign
+them, and currently reports the three remaining gaps as warnings.
+
 The position is intentionally falsifiable. Re-read this snapshot when:
 
 - `cos_demotion_loop_audit` reports `status: pass` with `roi_signed_demotion_count >= 1` (the open warn budget closes 2026-06-02).
