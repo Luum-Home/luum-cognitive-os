@@ -503,14 +503,18 @@ def check_manifest_tier_claim_audit(root: Path) -> Check:
 
 def check_demotion_loop_maturity(root: Path) -> Check:
     report = cos_demotion_loop_audit.build_report(root / "manifests" / "primitive-lifecycle.yaml")
-    status = "pass" if report["status"] == "pass" else "warn"
+    status = report["status"] if report["status"] in {"pass", "warn", "fail"} else "warn"
     return Check(
         id="demotion-loop-maturity",
         status=status,
         message=(
             "ADR-126 demotion loop has repeated and ROI-signed evidence"
             if status == "pass"
-            else "ADR-126 demotion loop is visible but not yet proven by a second/ROI-signed demotion"
+            else (
+                "ADR-126 demotion loop warning budget expired without ROI-signed demotion"
+                if status == "fail"
+                else "ADR-126 demotion loop is visible but not yet proven by a second/ROI-signed demotion"
+            )
         ),
         details=report,
     )
