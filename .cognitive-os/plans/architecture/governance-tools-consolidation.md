@@ -153,12 +153,19 @@ This plan implements ADR-125 and feeds ADR-123/ADR-124.
 
 ### Acceptance
 
-- [ ] A session can report governance overhead.
-- [ ] A session can report at least one benefit category or explicitly say none.
+- [x] A session can report governance overhead. (`cos governance roi`)
+- [x] A session can report at least one benefit category or explicitly say none.
 - [ ] Top friction causes feed ADR-123 telemetry.
 - [ ] Guards with high false-positive rate are demoted to `warn` until fixed.
-- [ ] Dogfood/self-use metrics are not accepted as productivity ROI by
+- [x] Dogfood/self-use metrics are not accepted as productivity ROI by
       themselves.
+
+### Implemented slice
+
+`cos governance roi` produces a heuristic JSON/human report with hook friction,
+blocking events, WIP restore signals, snapshot residue, active surface size, and
+net estimated ROI. The estimate is intentionally labeled heuristic so it cannot
+be confused with exact productivity accounting.
 
 ## Phase 8 — Aggressive archive/delete trial
 
