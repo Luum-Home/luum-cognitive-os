@@ -108,6 +108,17 @@ in the audit trail.
    `rm -rf` AND writes a `force_rm_rf` entry. Default-off behaviour
    verified by absence of the env var in the four callsites.
 
+## Evidence
+
+- Control-plane command: `scripts/cos-boring-reliability --profile core --json`
+- Validation command: `python3 -m pytest tests/unit/test_safe_worktree_remove.py -q`
+- Implementation proof: commit `d5ecda43` replaced silent `rm -rf` fallbacks
+  with `hooks/_lib/safe-worktree-remove.sh` and writes
+  `.cognitive-os/metrics/worktree-removals.jsonl`.
+- Tier rationale: `tier: core` is justified because this is a default safety
+  invariant against unrecoverable WIP deletion, not a maintainer-only metric or
+  lab governance experiment.
+
 ## Border Cases
 
 - **Validation capsule trap on process exit.** The `cos-validation-capsule.sh`
