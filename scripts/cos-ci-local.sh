@@ -256,6 +256,19 @@ check_lab_first_gate() {
   fi
 }
 
+check_adr_tier_claim_audit() {
+  command -v python3 >/dev/null 2>&1 || {
+    _skip "ADR tier claim audit" "python3 not installed"
+    return 0
+  }
+  if [ -x "$REPO_ROOT/scripts/cos-tier-claim-audit" ]; then
+    "$REPO_ROOT/scripts/cos-tier-claim-audit" --json >/dev/null
+  else
+    _skip "ADR tier claim audit" "scripts/cos-tier-claim-audit not found"
+    return 0
+  fi
+}
+
 check_core_adoption_profile() {
   if [ -x "$REPO_ROOT/scripts/cos-adoption-profile" ]; then
     "$REPO_ROOT/scripts/cos-adoption-profile" --profile core >/dev/null
@@ -376,6 +389,7 @@ run_quick() {
   _step "active primitive index"              check_active_primitive_index
   _step "core preamble budget"                check_core_preamble_budget
   _step "lab-first promotion gate"            check_lab_first_gate
+  _step "ADR tier claim audit"                check_adr_tier_claim_audit
   _step ".gitignore sanity"                   check_gitignore_sanity
 }
 

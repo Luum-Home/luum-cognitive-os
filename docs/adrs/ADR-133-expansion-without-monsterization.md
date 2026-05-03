@@ -38,6 +38,17 @@ architecture readiness as `lab-first-promotion-gate`. It is delta-based: existin
 ADR-126 inventory is grandfathered, but new or promoted primitives must prove why
 they are not lab-only.
 
+Profile-purity is a second executable control. Any ADR that claims `tier: core`
+or `tier: team` must include a `## Evidence` section that links the claim to
+`cos-boring-reliability` output or command evidence. The gate is
+`scripts/cos-tier-claim-audit`, wired into quick CI and architecture readiness as
+`adr-tier-claim-audit`.
+
+This prevents a documentation-only failure mode: an ADR can no longer label a
+primitive as core/team because it sounds important. The profile claim has to be
+operator-readable, measurable, and attached to the boring-reliability control
+plane.
+
 ### 2. Portability tax must be visible
 
 Claude Code can remain the richest driver, but it cannot remain an implicit
@@ -130,6 +141,8 @@ first-class project before claiming cluster-grade autonomy:
 
 ```bash
 scripts/cos-lab-first-gate --json
+scripts/cos-tier-claim-audit --json
 python3 -m pytest tests/contracts/test_lab_first_promotion_gate.py -q
+python3 -m pytest tests/audit/test_adr_tier_claims.py -q
 python3 scripts/cos_architecture_readiness.py --json
 ```

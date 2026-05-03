@@ -174,6 +174,77 @@ _strip_commit_message_args() {
   echo "$stripped"
 }
 
+_semantic_git_match() {
+  command -v python3 >/dev/null || return 1
+  python3 - "$1" <<'PY'
+from __future__ import annotations
+
+import shlex
+import sys
+from pathlib import Path
+
+try:
+    parts = shlex.split(sys.argv[1])
+except ValueError:
+    sys.exit(1)
+
+try:
+    git_idx = next(i for i, token in enumerate(parts) if token == "git" or Path(token).name == "git")
+except StopIteration:
+    sys.exit(1)
+
+i = git_idx + 1
+while i < len(parts):
+    token = parts[i]
+    if token in {"-C", "--git-dir", "--work-tree", "-c"}:
+        i += 2
+        continue
+    if token.startswith("--git-dir=") or token.startswith("--work-tree="):
+        i += 1
+        continue
+    if token == "--":
+        i += 1
+        continue
+    sub = token
+    args = parts[i + 1 :]
+    break
+else:
+    sys.exit(1)
+
+def emit(kind: str, op: str, wip: int = 0) -> None:
+    print(f"{kind}\t{op}\t{wip}")
+    sys.exit(0)
+
+if sub == "stash" and args and args[0] in {"pop", "drop", "apply"}:
+    emit("destructive", f"git stash {args[0]}")
+if sub == "reset":
+    emit("destructive", "git reset")
+if sub == "pull" and "--rebase" in args:
+    emit("destructive", "git pull --rebase", 1)
+if sub == "checkout" and "--" in args:
+    emit("destructive", "git checkout --")
+if sub == "clean" and any(arg.startswith("-") and "f" in arg for arg in args):
+    emit("destructive", "git clean -f")
+if sub == "restore":
+    emit("destructive", "git restore")
+if sub == "revert":
+    emit("destructive", "git revert")
+if sub == "worktree" and args and args[0] in {"add", "remove", "move", "prune", "repair", "lock", "unlock"}:
+    emit("destructive", "git worktree")
+if sub == "branch" and any(arg == "-D" or (arg.startswith("-") and "D" in arg) for arg in args):
+    emit("destructive", "git branch -D")
+if sub == "rebase":
+    emit("destructive", "git rebase", 1)
+if sub == "push":
+    has_force = any(arg == "-f" or arg == "--force" for arg in args)
+    has_lease = any(arg == "--force-with-lease" or arg.startswith("--force-with-lease=") for arg in args)
+    if has_force and not has_lease:
+        emit("force_push", "git push --force")
+
+sys.exit(1)
+PY
+}
+
 # Apply commit-message stripping before pattern scanning
 COMMAND_SCAN=$(_strip_commit_message_args "$COMMAND")
 
@@ -181,6 +252,7 @@ COMMAND_SCAN=$(_strip_commit_message_args "$COMMAND")
 # crudely by splitting on shell separators).
 FIRST_HIT=""
 FIRST_HIT_TYPE=""
+SEMANTIC_OP_NAME=""
 PROTECTED_BRANCH_HIT=""
 PROTECTED_BRANCH=""
 # ADR-116 P3.2: track whether the matched op is a WIP-guard candidate.
@@ -190,6 +262,14 @@ while IFS= read -r segment; do
   [ -z "$segment" ] && continue
   # strip leading whitespace
   trimmed="${segment#"${segment%%[![:space:]]*}"}"
+  semantic_hit=$(_semantic_git_match "$trimmed" || true)
+  if [ -n "$semantic_hit" ]; then
+    FIRST_HIT="$trimmed"
+    FIRST_HIT_TYPE=$(printf '%s' "$semantic_hit" | awk -F '\t' '{print $1}')
+    SEMANTIC_OP_NAME=$(printf '%s' "$semantic_hit" | awk -F '\t' '{print $2}')
+    IS_WIP_GUARD_OP=$(printf '%s' "$semantic_hit" | awk -F '\t' '{print $3}')
+    break
+  fi
   if echo "$trimmed" | grep -Eq "$DESTRUCTIVE_PATTERN"; then
     FIRST_HIT="$trimmed"
     FIRST_HIT_TYPE="destructive"
@@ -261,6 +341,8 @@ if [ "$FIRST_HIT_TYPE" = "force_push" ]; then
   OP_NAME="git push --force"
 elif [ "$FIRST_HIT_TYPE" = "protected_branch_write" ]; then
   OP_NAME="git ${PROTECTED_BRANCH_HIT#git } on ${PROTECTED_BRANCH}"
+elif [ -n "$SEMANTIC_OP_NAME" ]; then
+  OP_NAME="$SEMANTIC_OP_NAME"
 else
   OP_NAME=$(echo "$FIRST_HIT" | awk '{
     if ($2=="stash") print "git stash " $3;
