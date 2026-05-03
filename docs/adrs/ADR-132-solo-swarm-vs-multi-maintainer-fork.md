@@ -102,6 +102,21 @@ this ADR moves out of `exploration` and the Shape B fork plan exists. Before
 that, any contributor consumes `core` or `team`; the original maintainer remains
 the only `maintainer` operator.
 
+`scripts/cos-tier-claim-audit` is the first instrument that makes this boundary
+less philosophical: ADRs that claim `tier: core` or `tier: team` must now carry a
+`cos-boring-reliability` evidence block. That covers decision documents, not the
+runtime inventory. The manifest-level companion is
+`scripts/cos-manifest-tier-claim-audit`, which audits
+`manifests/primitive-lifecycle.yaml` for:
+
+- `core` / `team` primitives without strong distribution evidence;
+- `maintainer` primitives whose placement still depends on maintainer knowledge;
+- candidates to move to `lab` / `advisory`;
+- candidates for a future second semantic demotion under ADR-126.
+
+Together these audits turn ADR-132 from an open philosophical concern into a
+measurable adoption-boundary backlog.
+
 ### Shape B — Multi-Maintainer COS (hypothetical)
 
 The shape the system would need if a second human contributor
@@ -173,6 +188,8 @@ forking later is possible without rebuilding from scratch:
    evidence-block** linked to `cos-boring-reliability` output.
    This already happens informally; ADR-132 names the requirement.
    ADR-133 implements this as `scripts/cos-tier-claim-audit`.
+   Runtime manifest claims are tracked by
+   `scripts/cos-manifest-tier-claim-audit`.
 4. **Engram-stored knowledge MUST use `topic_key`** so namespacing
    per-maintainer is mechanically possible later (the keys become
    prefixes when scopes are introduced).
