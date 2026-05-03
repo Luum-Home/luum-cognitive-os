@@ -48,12 +48,6 @@ WIRE_GAPS = [
         "message": "protected-publication checker exists but is not yet wired into real headless publication orchestration",
         "phase": "Phase 2",
     },
-    {
-        "id": "primitive-demotion-gate",
-        "severity": "warn",
-        "message": "ROI/friction data does not yet automatically propose lifecycle demotions",
-        "phase": "Phase 1",
-    },
 ]
 
 
@@ -122,6 +116,27 @@ def check_roi(root: Path, window_hours: int) -> Check:
     )
 
 
+
+
+def check_lifecycle_recommendations(root: Path, window_hours: int) -> Check:
+    roi_report = cos_governance_roi.build_report(root, window_hours)
+    lifecycle_report = primitive_lifecycle.build_report(
+        root / "manifests" / "primitive-lifecycle.yaml",
+        roi_report,
+    )
+    recommendations = lifecycle_report.get("recommendations", [])
+    has_schema = isinstance(recommendations, list)
+    return Check(
+        id="friction-demotion-gate",
+        status="pass" if has_schema else "fail",
+        message="ROI/friction produces lifecycle recommendations" if has_schema else "lifecycle recommendations are unavailable",
+        details={
+            "recommendation_count": len(recommendations) if has_schema else 0,
+            "recommendations": recommendations,
+        },
+    )
+
+
 def check_runtime_primitives(root: Path) -> Check:
     missing: dict[str, list[str]] = {}
     for primitive_id, rel_paths in REQUIRED_RUNTIME_PRIMITIVES.items():
@@ -151,6 +166,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_adoption_tiers(root),
         check_lifecycle_manifest(root),
         check_roi(root, window_hours),
+        check_lifecycle_recommendations(root, window_hours),
         check_runtime_primitives(root),
         check_wiring_gaps(),
     ]

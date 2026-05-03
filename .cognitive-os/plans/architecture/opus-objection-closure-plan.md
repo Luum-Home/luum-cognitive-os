@@ -33,10 +33,10 @@ One command answers: “What would Opus still object to today?”
 
 ### Acceptance
 
-- [ ] Human-readable and JSON readiness output exist.
-- [ ] Negative ROI produces a warning, not hidden optimism.
-- [ ] Missing runtime primitive produces a failure.
-- [ ] Wiring gaps are visible as phase backlog.
+- [x] Human-readable and JSON readiness output exist.
+- [x] Negative ROI produces a warning, not hidden optimism.
+- [x] Missing runtime primitive produces a failure.
+- [x] Wiring gaps are visible as phase backlog.
 
 ## Phase 1 — Friction budget and demotion gate
 
@@ -57,9 +57,21 @@ Governance that blocks a lot and saves little gets demoted until fixed.
 
 ### Acceptance
 
-- [ ] `cos governance readiness --json` includes demotion candidates.
-- [ ] A high-friction/no-benefit fixture yields demotion recommendation.
-- [ ] Runtime-safety primitives are never archived without replacement.
+- [x] `cos governance readiness --json` includes demotion candidates.
+- [x] A high-friction/no-benefit fixture yields demotion recommendation.
+- [x] Runtime-safety primitives are never archived without replacement.
+
+
+### Implemented slice — 2026-05-02
+
+- `scripts/primitive_lifecycle.py --recommendations --json` now combines the
+  ADR-126 manifest with the ROI/friction report and emits lifecycle actions such
+  as `demote-or-move-to-lab`, `move-to-lab`, `review-false-positives`, and
+  `keep-out-of-default`.
+- `cos governance readiness --json` exposes those recommendations through the
+  `friction-demotion-gate` check.
+- Phase 1 is considered functionally started: recommendations are advisory and
+  non-mutating; automatic manifest mutation remains future work.
 
 ## Phase 2 — Wire existing safety primitives into real flows
 
