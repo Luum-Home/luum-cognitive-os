@@ -48,6 +48,14 @@ case "$SUBCMD" in
     echo "cos: unknown measure target '${2:-}'. Try: cos measure harness-profiles" >&2
     exit 1
     ;;
+  governance)
+    if [ "${2:-}" = "roi" ]; then
+      shift 2
+      exec bash "$SCRIPT_DIR/cos-governance-roi" "$@"
+    fi
+    echo "cos: unknown governance subcommand '${2:-}'. Try: cos governance roi" >&2
+    exit 1
+    ;;
   validation)
     # ADR-108: validation capsule diagnostic + recovery
     case "${2:-status}" in
@@ -79,6 +87,7 @@ Usage:
   cos init-check                         Check the minimal harness readiness path
   cos doctor harness [--json]            Check active harness projection and minimal profile
   cos measure harness-profiles [--json]  Compare minimal vs full harness surface
+  cos governance roi [--json]            Estimate governance friction vs benefit
   cos sprint <cmd>                       Run sprint orchestration commands
   cos init [dir]                         Install Cognitive OS into a project
   cos doctor                             Check installation health
