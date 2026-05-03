@@ -23,6 +23,17 @@ def test_allows_python_c_pipe(tmp_path: Path) -> None:
     assert audit.scan(tmp_path, [good]) == []
 
 
+def test_allows_explicit_educational_example_marker(tmp_path: Path) -> None:
+    doc = tmp_path / "doc.md"
+    heredoc = "<<" + "'PY'"
+    doc.write_text(
+        f"producer | python3 - {heredoc}  # cos: allow-python-stdin-heredoc-example\n",
+        encoding="utf-8",
+    )
+
+    assert audit.scan(tmp_path, [doc]) == []
+
+
 def test_current_repository_has_no_python_stdin_heredoc_antipattern() -> None:
     report = audit.build_report()
 
