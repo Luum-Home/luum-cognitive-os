@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-03T05:11:36+00:00'
+generated_at: '2026-05-03T05:17:28+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/aci-observation-capture.sh
@@ -1337,6 +1337,19 @@ primitives:
   - git-hooks/pre-push
   - docs/adrs/ADR-131-local-ci-migration.md
   sha256: 22ba5c90b38652f1307919ec2b93d664b4787bc96b36067dfac7b3cfd13c3d63
+- id: scripts/cos-cross-instance-drill
+  kind: script
+  owner_adr: ADR-136
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-cross-instance-drill
+  - scripts/cos_cross_instance_drill.py
+  - lib/cross_instance_learning.py
+  - docs/architecture/cross-instance-learning-runway.md
+  sha256: 94788d3287568e9b0613c855f69190aeb6fbaf5d11a081d3d78bd4e5ea4f360c
 - id: scripts/cos-demotion-loop-audit
   kind: script
   owner_adr: ADR-126
