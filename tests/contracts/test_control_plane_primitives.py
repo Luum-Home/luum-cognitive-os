@@ -19,6 +19,7 @@ CONTROL_PLANE_PRIMITIVES = {
     "scripts/cos-boring-reliability",
     "scripts/cos-architecture-readiness",
     "scripts/cos-silent-failure-audit",
+    "scripts/cos-session-start-budget",
     "scripts/cos-dispatch-smoke",
     "scripts/cos-ci-local.sh",
 }

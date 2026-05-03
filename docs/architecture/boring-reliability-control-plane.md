@@ -21,6 +21,7 @@ whether the SO is reducing damage and friction.
 |---|---|
 | `scripts/cos-adoption-profile --profile core` | Counts primitives/hooks/default-visible/blocking by adoption layer. |
 | `scripts/cos-preamble-budget --profile core` | Estimates token tax for a profile. |
+| `scripts/cos-session-start-budget --profile core` | Measures SessionStart hook count, lifecycle tiers, p50/p95 timing, and core lab-hook drift. |
 | `scripts/cos-default-visible-reducer` | Proposes demotions from core/team to lab. |
 | `scripts/cos-false-positive-ledger` | Reads metrics for bypass/false-positive signals. |
 | `scripts/cos-wip-safety-score` | Scores dirty WIP, stashes, and pre-agent snapshot markers. |
@@ -63,6 +64,7 @@ scripts/cos-runtime-hook-reality --fail-on-findings   # pass
 scripts/cos-silent-failure-audit --fail-on-findings  # pass; no unclassified growth
 scripts/cos-adoption-profile --profile core          # pass; core <=10 hooks, <=7 blocking
 scripts/cos-preamble-budget --profile core           # pass; core <3000 tokens
+scripts/cos-session-start-budget --profile core      # pass; core boot path <=5 hooks, no lab hooks
 python3 scripts/active_primitive_index.py --json     # pass; no active/default-visible findings
 scripts/cos-wip-safety-score                         # pass or explicit archived WIP exception
 scripts/cos-dispatch-smoke --json                    # creates dispatch/task-history evidence locally
@@ -97,3 +99,20 @@ tracked pre-push hook uses it as the local landing gate.
 `legacy_audited` is tolerated as debt, not as a permanent explanation. The
 trend should move entries from `legacy_audited` into concrete classes or remove
 the swallowed failure entirely.
+
+## SessionStart runtime diet
+
+Preamble diet and runtime boot diet are separate. `cos-preamble-budget` measures
+text/token load; `cos-session-start-budget` measures the actual Claude Code
+`SessionStart` projection.
+
+`core` projection intentionally keeps only the consumer boot hooks needed for
+state initialization and WIP/recovery safety:
+
+- `hooks/session-init.sh`
+- `hooks/validation-lock-cleanup.sh`
+- `hooks/session-start-stash-reapply.sh`
+
+The maintainer/default projection preserves the full self-hosting startup
+surface. This lets the SO maintainer keep solo-swarm tooling without forcing it
+onto consumer installs.
