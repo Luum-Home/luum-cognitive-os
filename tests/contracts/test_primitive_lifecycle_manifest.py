@@ -88,6 +88,16 @@ def test_blocking_primitive_requires_runtime_safety_metadata() -> None:
     assert "latency_budget_ms" in by_field
 
 
+def test_demoted_blocking_primitive_can_keep_behavior_metadata() -> None:
+    primitive = _valid_primitive()
+    primitive["lifecycle_state"] = "demoted"
+    primitive["runtime_projection"] = False
+
+    findings = validate_manifest({"schema_version": 1, "primitives": [primitive]})
+
+    assert not any(finding.field == "lifecycle_state" for finding in findings)
+
+
 def test_invalid_manifest_exits_non_zero(tmp_path: Path) -> None:
     bad_manifest = tmp_path / "primitive-lifecycle.yaml"
     bad_manifest.write_text(

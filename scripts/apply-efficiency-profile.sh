@@ -138,7 +138,7 @@ run_claude_code_driver() {
     content-policy.sh doc-sync-detector.sh claim-validator.sh post-agent-verify.sh direct-main-guard.sh orchestrator-claim-gate.sh pre-commit-content-hash-dedupe.sh concurrent-write-guard.sh plan-claim-validator.sh completion-gate.sh \
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh context-watchdog.sh kpi-trigger.sh teammate-idle.sh \
-    task-created.sh task-completed.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh \
+    task-created.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh \
     error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
     destructive-git-blocker.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
     private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh stash-budget-warn.sh \
@@ -213,7 +213,7 @@ echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpo
 echo "  Stop: session-summary-reminder.sh, session-learning.sh, session-cleanup.sh, edit-lock-session-end.sh, git-context-capture.sh, session-changelog.sh, skill-failure-monitor.sh, session-end-reap.sh, kpi-trigger.sh (async), engram-crystallize-on-session-end.sh (async)"
 echo "  TeammateIdle: teammate-idle.sh"
 echo "  TaskCreated: task-created.sh"
-echo "  TaskCompleted: task-completed.sh"
+echo "  TaskCompleted: (demoted; opt-in only)"
 echo ""
 echo "Codex driver also ran: .codex/hooks.json regenerated (SessionStart/UserPromptSubmit/Stop/PreToolUse:Bash/PostToolUse:Bash); ADR-111 Gate-3: concurrent-write-guard-codex-proxy.sh at UserPromptSubmit"
 echo "Bare-CLI driver also ran (when --harness=all|bare-cli): .cognitive-os/cos-runner-hooks.json regenerated (session_start/user_prompt_submit/tool_use_start/tool_use_end/session_end)"

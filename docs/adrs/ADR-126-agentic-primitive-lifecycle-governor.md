@@ -146,6 +146,14 @@ projected hook set into real blocking, real advisory, observe-only, dormant,
 projected-but-undocumented, and documented-but-not-projected buckets. It is wired
 into architecture readiness as `runtime-hook-reality`.
 
+### 2026-05-03 First semantic demotion
+
+`hooks/task-completed.sh` is the first lifecycle primitive moved to
+`lifecycle_state: demoted`. The hook remains in the repository for opt-in task
+systems, but it is no longer projected by default and no longer counts toward the
+active/default-visible surface. Proof is documented in
+`docs/reports/lifecycle-demotion-task-completed-2026-05-03.md`.
+
 This does not mean every hook is product-core. Many projected hooks remain
 `lab`/`sandbox` or advisory because this repository is the maintainer runtime,
 not the minimal consumer distribution.

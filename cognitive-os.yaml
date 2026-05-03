@@ -1051,6 +1051,7 @@ harness:
       script: hooks/concurrent-write-guard-codex-proxy.sh
       event: UserPromptSubmit
       scope: both
+      claude_projection: false
 
     # ── SubagentStart ─────────────────────────────────────────────────────────
     # Codex: unsupported (SubagentStart not emitted by Codex v0.126.0-alpha.8)
@@ -1650,9 +1651,11 @@ harness:
       event: TaskCreated
       scope: os-only
 
-    # ── TaskCompleted (COS extension) ─────────────────────────────────────────
+    # ── TaskCompleted (COS extension, demoted from default projection) ──────────
     # Codex: cognitive_os_extension — requires cos-runner (not yet implemented)
+    # ADR-126/133: available for opt-in task systems; not projected by default.
     task-completed:
       script: hooks/task-completed.sh
       event: TaskCompleted
       scope: os-only
+      default_projection: false
