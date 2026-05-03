@@ -243,6 +243,19 @@ check_silent_failure_audit() {
   fi
 }
 
+check_python_stdin_antipattern_audit() {
+  command -v python3 >/dev/null 2>&1 || {
+    _skip "python stdin antipattern audit" "python3 not installed"
+    return 0
+  }
+  if [ -x "$REPO_ROOT/scripts/cos-python-stdin-antipattern-audit" ]; then
+    "$REPO_ROOT/scripts/cos-python-stdin-antipattern-audit" --fail-on-findings
+  else
+    _skip "python stdin antipattern audit" "scripts/cos-python-stdin-antipattern-audit not found"
+    return 0
+  fi
+}
+
 check_lab_first_gate() {
   command -v python3 >/dev/null 2>&1 || {
     _skip "lab-first promotion gate" "python3 not installed"
@@ -385,6 +398,7 @@ run_quick() {
   _step "test quality (structural detector)"  check_test_quality
   _step "secret detector"                     check_secret_detector
   _step "silent failure audit"                check_silent_failure_audit
+  _step "python stdin antipattern audit"      check_python_stdin_antipattern_audit
   _step "core adoption profile"               check_core_adoption_profile
   _step "active primitive index"              check_active_primitive_index
   _step "core preamble budget"                check_core_preamble_budget
