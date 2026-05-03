@@ -253,7 +253,14 @@ The companion documents to read alongside, in order:
    — what the doctrine says.
 2. This document — why the doctrine looks the way it does.
 3. [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md)
-   — the next strategic decision the system faces.
+   — the maintainer-topology question the system has not yet
+   answered (Shape A vs Shape B).
+4. [ADR-137](../adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md)
+   — the runtime-topology question the system has answered
+   (Framing B → Framing A), orthogonal to ADR-132.
+5. [`dx-cloud-flow-bootstrap-plan.md`](dx-cloud-flow-bootstrap-plan.md)
+   — the operational plan that applies the stage-2 maturity
+   property of this document to cloud agent flows.
 
 If, while reading the codebase, something seems opinionated without
 explanation, the explanation is most likely one of the seven sections
