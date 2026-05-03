@@ -30,6 +30,10 @@ from scripts.verify_plan_claims import verify_plan
 
 
 PLAN_PATH = re.compile(r"(^|/)(\.cognitive-os/plans|plans)/|plan", re.IGNORECASE)
+SCOPED_CLAIM_LINE = re.compile(
+    r"^\s*(RESULT:|STATUS:|done\s+\d+\s+[A-Za-z][A-Za-z0-9_-]*)",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -171,6 +175,19 @@ def verify_text_claims(root: Path, text: str, source: str) -> list[GateFinding]:
     return findings
 
 
+def scoped_claim_text(text: str) -> str:
+    """Return only lines that intentionally carry high-stakes status claims.
+
+    Commit bodies and push ranges often contain examples, changelog prose, or
+    implementation descriptions with words like "wired" or "archived". Treating
+    the whole body as an agent claim produced false positives. ADR-133 moves the
+    commit-boundary gate to scoped semantic lines: RESULT:, STATUS:, or explicit
+    "done <number> <noun>" completion claims.
+    """
+    lines = [line for line in text.splitlines() if SCOPED_CLAIM_LINE.search(line)]
+    return "\n".join(lines)
+
+
 def commit_range(root: Path) -> list[str]:
     branch_proc = run_git(root, ["rev-parse", "--abbrev-ref", "HEAD"])
     if branch_proc.returncode != 0:
@@ -265,7 +282,7 @@ def evaluate(root: Path, mode: str, command: str = "", text: str = "") -> GateRe
         subcommand = is_git_commit_or_push(command)
         if subcommand == "commit":
             for idx, message in enumerate(extract_commit_messages(command), start=1):
-                findings.extend(verify_text_claims(root, message, f"commit-message:{idx}"))
+                findings.extend(verify_text_claims(root, scoped_claim_text(message), f"commit-message:{idx}"))
             if not extract_commit_messages(command):
                 findings.append(
                     GateFinding(
@@ -277,7 +294,7 @@ def evaluate(root: Path, mode: str, command: str = "", text: str = "") -> GateRe
                 )
         elif subcommand == "push":
             for idx, message in enumerate(commit_range(root), start=1):
-                findings.extend(verify_text_claims(root, message, f"unpushed-commit:{idx}"))
+                findings.extend(verify_text_claims(root, scoped_claim_text(message), f"unpushed-commit:{idx}"))
             findings.extend(verify_push_collisions(root))
 
     hard_failures = [f for f in findings if f.status == "FAIL"]

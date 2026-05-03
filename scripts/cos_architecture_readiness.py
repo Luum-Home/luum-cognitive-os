@@ -29,6 +29,7 @@ import runtime_hook_reality
 import silent_failure_audit
 import session_start_budget
 import lab_first_promotion_gate
+import cos_tier_claim_audit
 import cos_preamble_budget
 
 REPO_ROOT = SCRIPT_DIR.parents[0]
@@ -463,6 +464,21 @@ def check_lab_first_promotion_gate(root: Path) -> Check:
     )
 
 
+def check_adr_tier_claim_audit(root: Path) -> Check:
+    report = cos_tier_claim_audit.build_report(root / "docs" / "adrs", root)
+    status = "pass" if report["status"] == "pass" else "fail"
+    return Check(
+        id="adr-tier-claim-audit",
+        status=status,
+        message=(
+            "core/team ADR tier claims carry boring-reliability evidence"
+            if status == "pass"
+            else "core/team ADR tier claims lack boring-reliability evidence"
+        ),
+        details=report,
+    )
+
+
 def build_report(root: Path, window_hours: int) -> dict[str, Any]:
     checks = [
         check_repo_hygiene(root),
@@ -480,6 +496,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_product_claims(root),
         check_governance_maturity_labels(root),
         check_lab_first_promotion_gate(root),
+        check_adr_tier_claim_audit(root),
     ]
     fail_count = sum(1 for check in checks if check.status == "fail")
     warn_count = sum(1 for check in checks if check.status == "warn")
