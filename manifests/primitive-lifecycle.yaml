@@ -3618,3 +3618,31 @@ primitives:
     release blockers; execute a second evidence-backed demotion when justified.
   sunset_criteria: Archive only if lifecycle recommendations become fully
     transactionally signed by the primitive compiler.
+- id: scripts/cos-manifest-tier-claim-audit
+  kind: script
+  owner_adr: ADR-132
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-manifest-tier-claim-audit
+  - scripts/cos_manifest_tier_claim_audit.py
+  - manifests/primitive-lifecycle.yaml
+  - docs/adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md
+  runtime_projection: false
+  behavior_evidence: manifest distribution claim audit with tests
+  evidence_commands:
+  - scripts/cos-manifest-tier-claim-audit --json
+  - python3 -m pytest tests/audit/test_manifest_tier_claim_audit.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Treat findings as adoption-boundary warnings; add
+    promotion_evidence, move the primitive to lab/advisory, or use a finding as
+    input to a future semantic demotion.
+  sunset_criteria: Archive only if primitive lifecycle distribution claims move
+    into a stronger typed schema compiler with equivalent candidate reporting.
