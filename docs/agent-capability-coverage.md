@@ -459,3 +459,61 @@ outcome = block
 - SWE-CI paper: CI-loop framing for repository-level agent evaluation.
 - arXiv 2601.19106: deterministic AST validation for hallucinated code APIs.
 - Figra package metadata: TypeScript dependency graph and alias-aware import/export analysis.
+
+## Surfaces
+
+### CLI: `cos-coverage`
+
+Prints ACC metrics in real-time. Backed by a 30-second cache so p95 stays well under 300 ms.
+
+```
+# Human summary (default)
+bash scripts/cos-coverage
+
+# Machine-readable JSON
+bash scripts/cos-coverage --json
+
+# One-line statusline output
+bash scripts/cos-coverage --brief
+
+# Force cache refresh
+bash scripts/cos-coverage --refresh
+```
+
+**Output fields (--json)**:
+- `coverage_pct` — REAL / (REAL + DORMANT + ASPIRATIONAL) * 100
+- `real`, `dormant`, `aspirational`, `on_demand`, `metadata` — component counts from `aspirational-audit.jsonl`
+- `mapped`, `weak_proof`, `unmapped` — claim-proof counts from `docs/reports/claim-proof-latest.md`
+- `tiers` — tier counts A/B/C/D from `cos_classify_coverage.py`
+- `trend` — delta arrows vs last daily snapshot (`up` / `down` / `flat`)
+- `generated_at` — UTC timestamp of snapshot
+
+**Cache**: `.cognitive-os/runtime/coverage-snapshot.json` (TTL 30 s).
+**History**: each invocation appends a daily snapshot to `.cognitive-os/metrics/coverage-history.jsonl` for trend tracking.
+
+### Statusline segment: `statusline-coverage.sh`
+
+Opt-in statusline segment that reads the cache file only — no live computation, latency < 50 ms.
+
+```
+# Zsh/bash: append to PS1
+export PS1='$(bash scripts/statusline-coverage.sh) '$PS1
+
+# Tmux status-right (add to ~/.tmux.conf)
+set -g status-right '#(bash /path/to/luum-agent-os/scripts/statusline-coverage.sh)'
+set -g status-interval 30
+```
+
+When the cache is fresh (≤ 5 min) the output is:
+
+```
+ACC: 54.0%↑ | REAL: 235 DORM: 160
+```
+
+When the cache is absent or stale (> 5 min):
+
+```
+ACC: ? (run cos-coverage to refresh)
+```
+
+Environment override: `COS_COVERAGE_STALE_MAX=<seconds>` (default 300).
