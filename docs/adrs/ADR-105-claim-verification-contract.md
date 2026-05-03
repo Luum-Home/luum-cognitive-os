@@ -1,3 +1,22 @@
+---
+adr: 105
+title: Bilateral Claim Verification Contract
+status: implemented
+date: 2026-05-02
+supersedes: []
+superseded_by: null
+implementation_files:
+  - hooks/claim-validator.sh
+  - hooks/plan-claim-validator.sh
+  - hooks/orchestrator-claim-gate.sh
+  - scripts/verify_plan_claims.py
+  - scripts/verify-archived.sh
+  - scripts/orchestrator_claim_gate.py
+  - lib/orchestrator_verify.py
+tier: strict
+tags: [verification, claims, orchestrator, bilateral]
+---
+
 # ADR-105 — Bilateral Claim Verification Contract
 
 <!-- SCOPE: OS -->

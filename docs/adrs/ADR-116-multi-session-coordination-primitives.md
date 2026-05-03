@@ -1,3 +1,22 @@
+---
+adr: 116
+title: Multi-Session Coordination Primitives
+status: accepted
+date: 2026-05-02
+supersedes: []
+superseded_by: null
+implementation_files:
+  - lib/task_claim_ledger.py
+  - hooks/agent-prelaunch.sh
+  - lib/session_lifecycle.py
+  - lib/merge_queue.py
+  - scripts/cos_coordination_status.py
+  - scripts/so-reaper.sh
+  - scripts/cos_work_inventory.py
+tier: strict
+tags: [coordination, multi-session, concurrency, primitives]
+---
+
 # ADR-116 — Multi-Session Coordination Primitives
 
 <!-- SCOPE: OS -->
