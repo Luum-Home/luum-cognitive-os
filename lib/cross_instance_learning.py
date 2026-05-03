@@ -320,3 +320,35 @@ def audit_federation_triggers(config_path: Path) -> dict[str, Any]:
         "fired": fired,
         "policy": "Do not build distributed federation until Shape-B triggers fire.",
     }
+
+
+def write_shape_b_governance_checklist(target_dir: Path) -> Path:
+    """Write a manual Shape-B governance checklist for review drills."""
+
+    target_dir.mkdir(parents=True, exist_ok=True)
+    target = target_dir / "shape-b-governance-checklist.md"
+    target.write_text(
+        """# Shape-B Governance Checklist
+
+This checklist is a manual drill artifact. It does not activate Shape B.
+
+## Required before full federation
+
+- [ ] CODEOWNERS for agentic primitive surfaces.
+- [ ] ADR quorum policy for governance changes.
+- [ ] External owners for silent-failure allowlist classifications.
+- [ ] Engram permission scopes for project/personal/imported memories.
+- [ ] Promotion authority for `core` and `team`.
+- [ ] Warning-budget extension authority.
+- [ ] Distributed lock/lease owner and recovery policy.
+- [ ] Cross-machine incident review cadence.
+
+## Non-goals
+
+- Do not turn this checklist into a pass condition without actual second
+  maintainer participation.
+- Do not use this checklist to claim Shape B readiness.
+""",
+        encoding="utf-8",
+    )
+    return target
