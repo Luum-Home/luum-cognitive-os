@@ -29,6 +29,15 @@ incident.
 5. **One status surface**: agents should not run five diagnostics to understand
    if they can proceed.
 
+## Relationship to ADR-124 distribution tiers
+
+ADR-123 lowers friction by changing behavior; ADR-124 lowers friction by
+changing packaging. Profiles (`lean`, `standard`, `strict`) tune how strict an
+installed primitive is. Distribution tiers (`core`, `team`, `maintainer`, `lab`)
+decide which primitives are installed or projected by default. Both dimensions
+are required: a solo project should run `core + lean/standard`, while SO
+maintainers may run `maintainer + strict`.
+
 ## Phase 1 — Friction audit and blocker telemetry
 
 ### Deliverables
@@ -243,7 +252,42 @@ python3 -m pytest tests/unit/test_validation_lane_recommender.py -q
 python3 -m pytest tests/behavior/test_merge_queue_validation_lane.py -q
 ```
 
-## Phase 7 — Productization threshold
+## Phase 7 — Distribution boundary implementation
+
+### Deliverables
+
+- Add `distribution: core | team | maintainer | lab` metadata to hooks, skills,
+  scripts, and doctors.
+- Build a distribution resolver that can answer: "what runs in core?"
+- Project only `core` primitives in the default install path.
+- Move primitive harvester, aspirational audit, dogfood scoring, deep scorecards,
+  and large chaos tests to `maintainer` or `lab` projection.
+- Add docs that present COS as modular safety primitives before presenting the
+  full platform.
+
+### Border cases
+
+- A `core` primitive depends on a `maintainer` helper.
+- A hook is security-critical but high-friction.
+- A maintainer-only contract accidentally blocks a consumer project.
+- A lab primitive writes metrics in a default install.
+
+### Acceptance
+
+- [ ] Default install path includes only `core` unless explicitly configured.
+- [ ] Every projected primitive has distribution metadata.
+- [ ] `cos status` reports active distribution and profile.
+- [ ] Maintainer/lab tooling is available but not in the default runtime path.
+
+### Validation
+
+```bash
+python3 -m pytest tests/audit/test_distribution_metadata.py -q
+python3 -m pytest tests/contracts/test_core_distribution_projection.py -q
+python3 -m pytest tests/behavior/test_core_install_is_low_friction.py -q
+```
+
+## Phase 8 — Productization threshold
 
 ### Exit criteria
 
@@ -265,4 +309,5 @@ when all are true:
 4. Unified status CLI.
 5. Adaptive profiles.
 6. Diff-aware validation lanes.
-7. Chaos/productization threshold.
+7. Distribution boundary implementation.
+8. Chaos/productization threshold.
