@@ -7,6 +7,7 @@ import yaml
 
 import scripts.cos_adoption_profile as adoption
 import scripts.cos_default_visible_reducer as reducer
+import scripts.cos_false_positive_ledger as fp_ledger
 import scripts.cos_preamble_budget as preamble
 import scripts.cos_wip_safety_score as wip
 
@@ -59,6 +60,9 @@ def test_default_visible_reducer_recommends_non_killer_core(tmp_path: Path) -> N
 
 def test_preamble_budget_reports_estimate(monkeypatch, tmp_path: Path) -> None:
     (tmp_path / "AGENTS.md").write_text("hello world", encoding="utf-8")
+    docs = tmp_path / "docs" / "architecture"
+    docs.mkdir(parents=True)
+    (docs / "core-adoption-preamble.md").write_text("core preamble", encoding="utf-8")
     rules = tmp_path / "rules"
     rules.mkdir()
     (rules / "RULES-COMPACT.md").write_text("rule text", encoding="utf-8")
@@ -68,7 +72,43 @@ def test_preamble_budget_reports_estimate(monkeypatch, tmp_path: Path) -> None:
     report = preamble.build_budget("core", tmp_path)
 
     assert report["estimated_tokens"] > 0
-    assert report["budget_tokens"] == 3000
+    assert report["budget_tokens"] == 3200
+    assert "AGENTS.md" in report["file_tokens"]
+
+
+def test_false_positive_ledger_ignores_payload_filename_matches(tmp_path: Path) -> None:
+    metrics = tmp_path / "metrics"
+    metrics.mkdir()
+    (metrics / "so-vitals.jsonl").write_text(
+        '{"hook":"so-vitals","files":[".cognitive-os/metrics/adaptive-bypass.jsonl"]}\n',
+        encoding="utf-8",
+    )
+
+    report = fp_ledger.build_report(metrics)
+
+    assert report["false_positive_events"] == 0
+    assert report["status"] == "pass"
+
+
+def test_false_positive_ledger_counts_scoped_signals(tmp_path: Path) -> None:
+    metrics = tmp_path / "metrics"
+    metrics.mkdir()
+    (metrics / "gate.jsonl").write_text(
+        "\n".join(
+            [
+                '{"hook":"claim-gate","false_positive":true}',
+                '{"hook":"claim-gate","operator_bypass":true}',
+                '{"hook":"claim-gate","bypass_reason":"operator accepted false positive"}',
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    report = fp_ledger.build_report(metrics)
+
+    assert report["false_positive_events"] == 3
+    assert report["top_hooks"] == [{"hook": "claim-gate", "count": 3}]
 
 
 def test_wip_safety_score_penalizes_dirty_and_stash(tmp_path: Path) -> None:

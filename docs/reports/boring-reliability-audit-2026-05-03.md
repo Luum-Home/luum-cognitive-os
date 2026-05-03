@@ -61,6 +61,8 @@ not against the existence of files.
 - **Recommendation:** match only on top-level event keys or a scoped
   `event_type` / `bypass_kind` field; alternatively exclude filename strings
   from the match surface.
+- **Resolution note:** fixed by scoped field matching only; filenames such as
+  `adaptive-bypass.jsonl` no longer count as bypass evidence.
 
 ### Tool 10 — `cos-boring-reliability`: overall exits 1 (expected for current state)
 
@@ -90,6 +92,8 @@ not against the existence of files.
   `AGENTS.md` at session start. If the budget is meant to reflect the full
   context tax (which is the operator-relevant number), `AGENTS.md` should be
   added to the `core` profile inputs.
+- **Resolution note:** `AGENTS.md` is now included in the `core` estimate, with
+  the core budget adjusted to the honest full-context baseline.
 
 ---
 
