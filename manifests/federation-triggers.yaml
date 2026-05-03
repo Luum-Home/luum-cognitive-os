@@ -1,0 +1,19 @@
+schema_version: 1
+policy: >-
+  Shape-B federation stays deferred until observed operation exceeds Shape-A.
+  Do not build distributed locks, federated Engram, or multi-maintainer quorum
+  until one or more triggers fire.
+observed:
+  active_maintainers: 1
+  active_machines: 2
+  concurrent_remote_writers: 0
+  external_consumer_reports_30d: 0
+  repeated_cross_machine_lock_conflicts: 0
+  unsupervised_remote_agents: 0
+shape_b_triggers:
+  active_maintainers: 2
+  active_machines: 3
+  concurrent_remote_writers: 1
+  external_consumer_reports_30d: 1
+  repeated_cross_machine_lock_conflicts: 2
+  unsupervised_remote_agents: 1
