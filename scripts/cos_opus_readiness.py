@@ -28,22 +28,29 @@ REQUIRED_RUNTIME_PRIMITIVES = {
     "branch_writer_lease": ["scripts/cos_branch_lease.py", "scripts/cos-branch-lease"],
     "headless_safe_mode": ["scripts/cos_headless_safe_mode.py", "scripts/cos-headless-safe-mode"],
     "headless_publication": ["scripts/cos_headless_publication.py", "scripts/cos-headless-publication"],
+    "headless_run_task": ["scripts/cos_run_task.py", "scripts/cos-run-task"],
 }
-WIRE_GAPS = [
+PHASE2_WIRING_PROBES = [
     {
         "id": "branch-lease-prelaunch-wiring",
+        "path": "scripts/cos-governed-agent.sh",
+        "needles": ["cos_branch_lease.py", "acquire_branch_lease", "release_branch_lease"],
         "severity": "warn",
         "message": "branch writer lease exists but is not yet enforced by agent prelaunch/governed-agent flow",
         "phase": "Phase 2",
     },
     {
         "id": "headless-safe-mode-run-task-wiring",
+        "path": "scripts/cos_run_task.py",
+        "needles": ["read_state", "admits_new_tasks", "OUTCOME_DIR"],
         "severity": "warn",
         "message": "headless safe-mode exists but is not yet wired into cos run-task / worker admission",
         "phase": "Phase 2",
     },
     {
         "id": "headless-publication-flow-wiring",
+        "path": "scripts/cos_run_task.py",
+        "needles": ["check_publication_policy", "publication_target", "publication_decision.allowed"],
         "severity": "warn",
         "message": "protected-publication checker exists but is not yet wired into real headless publication orchestration",
         "phase": "Phase 2",
@@ -151,12 +158,25 @@ def check_runtime_primitives(root: Path) -> Check:
     )
 
 
-def check_wiring_gaps() -> Check:
+def check_wiring_gaps(root: Path) -> Check:
+    gaps: list[dict[str, Any]] = []
+    passed: list[str] = []
+    for probe in PHASE2_WIRING_PROBES:
+        path = root / str(probe["path"])
+        try:
+            content = path.read_text(encoding="utf-8")
+        except OSError:
+            gaps.append(probe)
+            continue
+        if all(needle in content for needle in probe["needles"]):
+            passed.append(str(probe["id"]))
+        else:
+            gaps.append(probe)
     return Check(
         id="known-wiring-gaps",
-        status="warn" if WIRE_GAPS else "pass",
-        message="known phase gaps remain visible" if WIRE_GAPS else "no known wiring gaps",
-        details={"gaps": WIRE_GAPS},
+        status="warn" if gaps else "pass",
+        message="known phase gaps remain visible" if gaps else "Phase 2 wiring probes are present",
+        details={"gaps": gaps, "passed": passed},
     )
 
 
@@ -168,7 +188,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_roi(root, window_hours),
         check_lifecycle_recommendations(root, window_hours),
         check_runtime_primitives(root),
-        check_wiring_gaps(),
+        check_wiring_gaps(root),
     ]
     fail_count = sum(1 for check in checks if check.status == "fail")
     warn_count = sum(1 for check in checks if check.status == "warn")
