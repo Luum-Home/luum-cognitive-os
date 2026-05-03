@@ -5,6 +5,129 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.24.0] - 2026-05-03 — "Closed-Loop Self-Improvement and Shape B Runway"
+
+This release lands the closed-loop self-improvement framework that the v0.23.0
+case study identified as the natural follow-up. Three new ADRs (134–136) plus
+one provenance-hardening commit add **four architectural ceilings** stacked on
+top of the v0.23.0 boring-reliability doctrine. Each ceiling blocks a distinct
+runaway class while preserving human review as a structural invariant.
+
+The release also lands a Shape-B runway: infrastructure required for future
+multi-maintainer / federated operation, built but not operated, with
+trigger conditions converted from prose into observable counters.
+
+### Added — Closed-Loop Self-Improvement (ADR-134, ADR-135)
+
+- `scripts/cos-self-improvement-loop` (ADR-134) — converts control-plane audit
+  findings into bounded operational proposals. `propose-only` mode hardcoded,
+  `human_approval_required: true`, sandboxed write paths per proposal,
+  blocked actions list (`auto_merge`, `auto_promote_core_or_team`,
+  `invent_roi_evidence`, `delete_without_reversible_path`).
+- `scripts/cos-self-improvement-discipline-gate` — wired into `cos-ci-local.sh`,
+  enforces the proposer's own discipline contract.
+- `scripts/cos-doctrine-proposer` (ADR-135) — generates proposed doctrine
+  amendments as markdown under `docs/proposals/`. `runtime_effect: none`
+  hardcoded; the system proposes new rules but never applies them.
+- `lib/self_improvement_loop.py`, `lib/doctrine_proposer.py` — the core
+  libraries. Each proposal includes `non_goals` (anti-patterns to avoid) so
+  the proposer cannot accidentally propose its own over-correction.
+- First doctrine-proposer run produced five concrete amendments derived from
+  live audit data. One amendment ("prefer semantic matching over substring
+  matching in gates") is structurally identical to a finding from the
+  external SR review that triggered the v0.23.0 cycle, re-derived
+  independently from the system's own `cos-false-positive-ledger`.
+
+### Added — Shape B Runway (ADR-136)
+
+- `manifests/agentic-primitive-registry.lock.yaml` — SHA-pinned manifest of
+  every primitive (1,588 lines). Cross-machine instances can verify identical
+  primitive sets deterministically.
+- `manifests/skills/REGISTRY.lock` — version-pinned skill set.
+- `manifests/federation-triggers.yaml` — converts ADR-132's prose trigger
+  conditions for Shape B into observable counters. Six metrics
+  (`active_maintainers`, `active_machines`, `concurrent_remote_writers`,
+  `external_consumer_reports_30d`, `repeated_cross_machine_lock_conflicts`,
+  `unsupervised_remote_agents`); each with current observed value and
+  Shape-B trigger threshold. Audit fires when any observed value crosses
+  its threshold.
+- `scripts/cos-export-consumer-evidence` / `cos-import-consumer-evidence` —
+  cross-instance evidence exchange. Imports are propose-only.
+- `scripts/cos-engram-bundle` / `cos-engram-import-propose` — portable
+  Engram bundle. Imports propose new observations; never auto-merge.
+- `scripts/cos-federation-trigger-audit` — periodic audit of the
+  observed-vs-trigger gap.
+- `scripts/cos-cross-instance-drill` — manual rehearsal of the runway
+  primitives end-to-end. A runway that is never rehearsed rusts; this drill
+  exercises the full export → bundle → import-propose → registry-lock
+  verification path without activating Shape B.
+
+### Added — Anti-Self-Validation (commit `d4535df0`)
+
+- `manifests/external-adoption-evidence.yaml` — schema for admissible
+  external-help claims. Required: `independence.maintainer_owned: false`,
+  `same_machine: false`, `same_repo: false`, `self_reported: false`, plus a
+  `provenance.producer` block (type, identity, optional signature,
+  timestamp). Evidence violating any `independence` flag is rejected as
+  drill output, not as adoption signal.
+- `scripts/cos_claim_signature_audit.py` extended — claims must carry signed
+  provenance to count.
+- First drill report (`docs/reports/cross-instance-consumer-e2e-2026-05-03.md`)
+  applies the schema to its own output and explicitly disqualifies itself
+  from signing the `helps-projects` claim. Doctrine applied recursively to
+  its first verification artefact.
+
+### Added — Case Study Sections
+
+The external-review-cycle case study gained four new structural sections,
+each documenting a property of the cycle distinct from the operational
+narrative:
+
+- *Self-evolving doctrine: when the audit subsystem proposes rules about itself*
+- *Convergence: when internal proposals reproduce external review findings*
+- *Runway-not-rocket: building Shape B's infrastructure without operating Shape B*
+- The *Runway-not-rocket* section now also documents the fourth ceiling
+  (anti-self-validation through required provenance) and the falsifiable
+  claim it adds for external adopters.
+
+The case study now has **seven meta-property sections** for external
+adopters to use as a frame when evaluating governance systems.
+
+### Changed
+
+- `pyproject.toml` version bumped from `0.23.0` to `0.24.0`.
+- The architectural posture documented as "three ceilings" (in the v0.23.0
+  case study) is now four, with the fourth landing inline in the
+  *Runway-not-rocket* section to keep all anti-runaway refusals in one
+  table.
+
+### Documentation
+
+- ADR-134 — Headless Self-Improvement Proposer
+- ADR-135 — Self-Evolving Doctrine Proposals
+- ADR-136 — Cross-Instance Learning Runway
+- `docs/architecture/cross-instance-learning-runway.md`
+- `docs/architecture/headless-self-improvement-proposer.md`
+- `docs/architecture/self-evolving-doctrine-proposals.md`
+- `docs/reports/cross-instance-consumer-e2e-2026-05-03.md` — first drill
+  report, intentionally self-disqualified per the new
+  anti-self-validation rule.
+
+### Falsifiable claims added (for external adopters)
+
+- **Self-improvement loop**: subsequent runs against new audit data should
+  produce new proposals when the data shifts. If the proposal set is static
+  after months of audit evolution, the loop is broken.
+- **Doctrine proposer**: the healthy zone is *partial convergence* with an
+  independent external review. Zero convergence = loop too narrow; full
+  convergence = loop hallucinating.
+- **Shape B runway**: dormant runway with continuous trigger observability is
+  healthy. Active runway with zero observed triggers = discipline broken.
+  Triggers fired with no runway primitive activation = runway decorative.
+- **Anti-self-validation**: `manifests/external-adoption-evidence.yaml` must
+  not accumulate entries with `maintainer_owned: true` that sign product
+  claims.
+
 ## [0.23.0] - 2026-05-03 — "Boring Reliability and the Audited Default Surface"
 
 This release completes a single-session external-review absorption cycle (DX
