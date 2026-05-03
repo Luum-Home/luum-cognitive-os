@@ -628,16 +628,6 @@
         ]
       }
     ],
-    "TaskCompleted": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" TaskCompleted \"$CLAUDE_PROJECT_DIR/hooks/task-completed.sh\""
-          }
-        ]
-      }
-    ]
+    "TaskCompleted": []
   }
 }
