@@ -80,6 +80,30 @@ The cycle is not a heroics story. It is the predictable output of having the fol
 
 If any of those four are missing, the same external review absorbs as defensiveness or feature-add, not as doctrine clarification.
 
+## Bilateral pressure: why the cycle closed in hours instead of weeks
+
+A fifth property is worth naming separately because it is easy to miss and easy to lose: external review is **bilaterally obligating**. Both sides have to escalate or the cycle does not close.
+
+**On the reviewer's side**, the obligation is to produce findings concrete enough to act on — not *"this looks complex"* but *"primitive X with property Y violates contract Z, here is the artefact that proves it"*. A review that lands as opinion lands as defensiveness on the receiving end. A review that lands as falsifiable claim lands as obligation.
+
+**On the maintainer's side**, the obligation is symmetric: translate the falsifiable claim into committed code, not leave it as a sketch in the conversation buffer. A review that the maintainer absorbs as draft but does not execute degrades into the same artefact graveyard the doctrine was built to prevent. The reviewer is obliged to not be lazy; the maintainer is obliged to not stop at the sketch.
+
+In this cycle, the wall-clock from review delivery to enforcement merged on `main` was approximately 8 hours overnight, covering five production-grade ADRs, three gate refactors with unit tests, a control-plane audit, and this case study itself. That speed is **not** evidence of skill or virtue. It is evidence of the single-maintainer property that [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md) catalogues:
+
+- One brain holding the full model means decisions do not need to be socialised before execution.
+- One repository without code-owners means a refactor of `destructive-git-blocker.sh` does not need approval.
+- One context with full read/write access to artefacts means tests can land in the same commit as the code they cover.
+
+This is **the positive side of the trade-off** that ADR-132's `single-maintainer calibration` section names. The same property that ADR-132 marks as a SPOF risk *for durability* is the property that enabled the cycle to close *for velocity*. The two readings — risk and lever — describe the same fact.
+
+Two consequences follow:
+
+1. **Multi-maintainer absorption of the same review would be slower by 5–10×.** Not because individual contributors would be slower at writing each artefact, but because each artefact would pass through coordination costs (review, approval, naming consensus, branch protection). The cycle would still close, but in days instead of hours, and with broader buy-in. That is the durability side of the trade-off doing its work.
+
+2. **Single-maintainer velocity is consumable.** It is bounded by the maintainer's continuous attention, which is finite. A second cycle of comparable depth in the same week would degrade in quality because the prosthesis (Engram, ADRs, dashboard) buys persistence, not unbounded throughput. Replication of this cycle as a routine practice should expect a cadence floor of weeks, not days.
+
+The bilateral pressure point is what makes external review a useful primitive at all. Without it, review is just an audit. With it, review is the trigger that converts standing doctrine into runtime artefacts. The four properties listed in *"What made the cycle possible"* are the prerequisites; the bilateral obligation is the spark.
+
 ## What the cycle does not prove
 
 Stated honestly so the artefact is useful:
