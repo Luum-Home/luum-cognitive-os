@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# SCOPE: both
+set -euo pipefail
+python3 "$(dirname "$0")/cos_self_improvement_loop.py" "$@"
