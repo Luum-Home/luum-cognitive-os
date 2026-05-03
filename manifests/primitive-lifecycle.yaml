@@ -13,7 +13,7 @@ primitives:
   lifecycle_state: sandbox
   maturity: advisory
   distribution: lab
-  governance_class: meta-governance
+  governance_class: runtime-safety
   risk_class: advisory
   supported_harnesses:
   - claude
@@ -3556,3 +3556,38 @@ primitives:
     boring_reliability_command: scripts/cos-boring-reliability --profile core
     boring_reliability_artifact: docs/architecture/boring-reliability-control-plane.md
     rationale: Control-plane gate created specifically to enforce lab-first expansion discipline.
+- id: scripts/cos-tier-claim-audit
+  kind: script
+  owner_adr: ADR-133
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-tier-claim-audit
+  - scripts/cos_tier_claim_audit.py
+  - docs/adrs/ADR-133-expansion-without-monsterization.md
+  runtime_projection: false
+  behavior_evidence: ADR tier/profile claims audit with regression tests
+  evidence_commands:
+  - scripts/cos-tier-claim-audit --json
+  - python3 -m pytest tests/audit/test_adr_tier_claims.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: blocking
+  rollback_or_repair_command: "Demote the ADR tier to maintainer/lab or add a
+    ## Evidence section with cos-boring-reliability proof."
+  sunset_criteria: Archive only if ADR metadata moves to a typed schema compiler
+    that enforces profile-purity claims.
+  repair_message: "ADRs claiming tier core/team must include ## Evidence linked
+    to cos-boring-reliability output or command evidence."
+  false_positive_tests:
+  - tests/audit/test_adr_tier_claims.py
+  promotion_evidence:
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    boring_reliability_artifact: docs/adrs/ADR-133-expansion-without-monsterization.md
+    rationale: Enforces profile-purity discipline for expansion without growing
+      core/team by assertion.
