@@ -29,6 +29,8 @@ def test_consumer_evidence_export_import_can_sign_external_shape(tmp_path: Path)
         maintainer_owned=False,
         relationship="external-user",
         cognitive_cost="low after onboarding",
+        same_machine=False,
+        same_repo=False,
     )
     report["incident_evidence"]["prevented_incidents"] = 1
     source = tmp_path / "report.json"
@@ -39,6 +41,8 @@ def test_consumer_evidence_export_import_can_sign_external_shape(tmp_path: Path)
     assert result["status"] == "pass"
     manifest = yaml.safe_load((tmp_path / "external-adoption-evidence.yaml").read_text())
     assert manifest["reports"][0]["project"] == "external-project"
+    assert manifest["reports"][0]["provenance"]["producer"]["type"] == "human"
+    assert manifest["reports"][0]["independence"]["self_reported"] is False
 
 
 def test_registry_lock_write_and_audit(tmp_path: Path) -> None:

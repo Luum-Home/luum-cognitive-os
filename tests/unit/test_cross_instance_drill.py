@@ -24,6 +24,7 @@ def test_external_evidence_drill_signs_only_temp_manifest() -> None:
     assert result["status"] == "pass"
     assert result["mutates_real_manifest"] is False
     assert result["helps_projects_signed_in_temp_manifest"] is True
+    assert result["claim_status"] == "signed"
 
 
 def test_shape_b_trigger_drill_fires_temp_config() -> None:

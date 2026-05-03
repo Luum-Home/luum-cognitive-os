@@ -30,6 +30,8 @@ class ConsumerEvidence:
     generated_at: str
     incident_evidence: dict[str, Any]
     dx_evidence: dict[str, Any]
+    provenance: dict[str, Any]
+    independence: dict[str, Any]
 
 
 def _utc_now() -> str:
@@ -82,6 +84,13 @@ def build_consumer_evidence(
     maintainer_owned: bool,
     relationship: str,
     cognitive_cost: str,
+    producer_type: str = "human",
+    producer_identity: str | None = None,
+    source_repo: str | None = None,
+    machine_id: str | None = None,
+    signature: str | None = None,
+    same_machine: bool | None = None,
+    same_repo: bool | None = None,
 ) -> dict[str, Any]:
     """Build portable consumer evidence from local metrics and operator input."""
 
@@ -113,6 +122,22 @@ def build_consumer_evidence(
             "false_positive_ratio": round(ratio, 4),
         },
         dx_evidence={"cognitive_cost": cognitive_cost},
+        provenance={
+            "producer": {
+                "type": producer_type,
+                "identity": producer_identity or reporter,
+                "repo": source_repo or str(project_root),
+                "machine_id": machine_id or "unknown",
+                "signature": signature or "",
+                "generated_at": _utc_now(),
+            }
+        },
+        independence={
+            "maintainer_owned": maintainer_owned,
+            "same_machine": same_machine,
+            "same_repo": same_repo,
+            "self_reported": maintainer_owned or relationship in {"self", "same-maintainer", "internal-self-deployment"},
+        },
     )
     return asdict(evidence)
 
