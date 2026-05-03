@@ -181,3 +181,4 @@
 - [x] ADR-119 session filesystem reaper archives stale clean session directories, preserves pending content, and emits aggregate session-volume alarms.
 - [x] Boring Reliability Control Plane is documented in [Boring Reliability Control Plane](../architecture/boring-reliability-control-plane.md), with profile, preamble, default-visible, false-positive, WIP safety, recovery drill, runtime reality, and dashboard CLIs covered by unit tests.
 - [x] Agentic kernel philosophy is documented in [Agentic Kernel Philosophy](../architecture/agentic-kernel-philosophy.md), establishing small-core, driver, boot-path, and evidence-backed primitive doctrine.
+- [x] Expansion hardening is documented in [Expansion Hardening Plan](../architecture/expansion-hardening-plan.md) and [ADR-133](../adrs/ADR-133-expansion-without-monsterization.md), with `scripts/cos-lab-first-gate` preventing unevidenced core/team/blocking/default-on primitive promotion.

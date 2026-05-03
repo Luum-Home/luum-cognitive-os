@@ -47,6 +47,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Cognitive OS Agent-Computer Interface](architecture/agent-computer-interface.md) — bounded, explicit, risk-tagged tool observation schema.
 - [Boring Reliability Control Plane](architecture/boring-reliability-control-plane.md) — tools and metrics for adoptable layers, DX budgets, WIP safety, false positives, and runtime reality.
 - [Agentic Kernel Philosophy](architecture/agentic-kernel-philosophy.md) — kernel-style doctrine for small core, drivers, boot-path diet, and evidence-backed primitives.
+- [Expansion Hardening Plan](architecture/expansion-hardening-plan.md) — three-sprint plan for scaling across PCs, IDEs, sessions, and autonomous agents without growing default-visible theatre.
+- [ADR-133: Expansion Without Monsterization](adrs/ADR-133-expansion-without-monsterization.md) — lab-first promotion, portability-tax visibility, semantic matching, and federation boundaries.
 - [Skill Efficacy Measurement](architecture/skill-efficacy.md) — marginal skill utility metrics and report surface.
 - [Runtime Benchmark MVP](architecture/runtime-benchmark-mvp.md) — no-cost local schema and leaderboard for vanilla-vs-COS comparisons.
 - [Adversarial Generalization MVP](architecture/adversarial-generalization.md) — generated messy-task scenarios and deterministic rubric.
