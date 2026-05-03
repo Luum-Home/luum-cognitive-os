@@ -52,6 +52,8 @@ def scan_file(path: Path, root: Path) -> list[Finding]:
         return []
     findings: list[Finding] = []
     for idx, line in enumerate(text.splitlines(), start=1):
+        if "cos: allow-python-stdin-heredoc-example" in line:
+            continue
         if ANTI_PATTERN.search(line):
             findings.append(
                 Finding(
