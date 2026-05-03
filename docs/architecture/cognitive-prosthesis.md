@@ -144,6 +144,18 @@ progressive externalisation of the maintainer's mental cache) are
 the discipline that keeps the door open to multi-maintainer at
 low cost without committing to it now.
 
+A property worth naming explicitly: the system's response velocity
+— feedback → ADR → implementation → audit, often inside a single
+working day — is not separable from the single-maintainer shape.
+The same absence of review quorum, code-owners file, and shared
+mental cache that ADR-132 catalogues as risk is what makes the
+iteration loop sub-daily. Multi-maintainer adoption is therefore
+not only an onboarding cost; it is a deliberate trade of iteration
+speed for durability. The trigger conditions in ADR-132 should be
+read with this in mind: the question is not *when does a second
+maintainer appear*, it is *when is the durability gain worth the
+velocity loss*. The two framings produce different decisions.
+
 ## How to read this document over time
 
 This is not a manifesto and it is not a contract. It is a
