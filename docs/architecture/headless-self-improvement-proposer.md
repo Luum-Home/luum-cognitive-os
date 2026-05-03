@@ -50,6 +50,35 @@ projection, adoption tiers, rules, skills, or manifests.
 - Extend warning budgets silently.
 - Hide current false positives behind historical baselines.
 
+## Growth discipline gate
+
+`scripts/cos-self-improvement-discipline-gate` audits the generated proposal plan
+itself. It exists because the main risk is not syntax or implementation; it is
+proposal drift.
+
+The gate fails when a proposal:
+
+- enables auto-merge;
+- enables auto-promotion to `core` or `team`;
+- removes human approval;
+- looks like default-surface expansion;
+- allows direct writes to live runtime surfaces (`hooks/`, `rules/`, root
+  `skills/`);
+- omits blocked actions for `auto_merge`, `auto_promote_core_or_team`, or
+  `invent_roi_evidence`.
+
+This makes the compounding loop asymmetrical:
+
+```text
+detect more -> propose more -> refine/demote/document more
+```
+
+but blocks:
+
+```text
+detect more -> add more default-visible primitives
+```
+
 ## Current proposal classes
 
 | Finding | Candidate action |

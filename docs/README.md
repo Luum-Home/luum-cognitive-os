@@ -47,7 +47,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Cognitive OS Agent-Computer Interface](architecture/agent-computer-interface.md) — bounded, explicit, risk-tagged tool observation schema.
 - [Boring Reliability Control Plane](architecture/boring-reliability-control-plane.md) — tools and metrics for adoptable layers, DX budgets, WIP safety, false positives, and runtime reality.
 - [Agentic Kernel Philosophy](architecture/agentic-kernel-philosophy.md) — kernel-style doctrine for small core, drivers, boot-path diet, and evidence-backed primitives.
-- [Headless Self-Improvement Proposer](architecture/headless-self-improvement-proposer.md) — propose-only audit→fix loop that needs no dashboard and keeps human approval mandatory.
+- [Headless Self-Improvement Proposer](architecture/headless-self-improvement-proposer.md) — propose-only audit→fix loop that needs no dashboard and keeps human approval plus growth-discipline gates mandatory.
 - [Expansion Hardening Plan](architecture/expansion-hardening-plan.md) — three-sprint plan for scaling across PCs, IDEs, sessions, and autonomous agents without growing default-visible theatre.
 - [Lifecycle Demotion Proof — task-completed hook](reports/lifecycle-demotion-task-completed-2026-05-03.md) — first semantic `demoted` lifecycle transition proving shrink-without-delete behavior.
 - [ADR-133: Expansion Without Monsterization](adrs/ADR-133-expansion-without-monsterization.md) — lab-first promotion, portability-tax visibility, semantic matching, and federation boundaries.
