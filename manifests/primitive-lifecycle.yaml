@@ -3512,3 +3512,37 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: mixed
   metrics_file: none
+- id: scripts/cos-lab-first-gate
+  kind: script
+  owner_adr: ADR-133
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-lab-first-gate
+  - scripts/lab_first_promotion_gate.py
+  - manifests/primitive-lifecycle.yaml
+  runtime_projection: false
+  behavior_evidence: delta-based lifecycle manifest promotion gate with contract tests
+  evidence_commands:
+  - python3 -m pytest tests/contracts/test_lab_first_promotion_gate.py -q
+  - scripts/cos-lab-first-gate --json
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: blocking
+  rollback_or_repair_command: Demote the proposed primitive to lab/sandbox or add
+    promotion_evidence with cos-boring-reliability proof.
+  sunset_criteria: Archive only if ADR-126 promotion enforcement moves into a stronger
+    canonical lifecycle compiler.
+  repair_message: New/promoted core, team, blocking, or default-on primitives must
+    start in lab or carry cos-boring-reliability promotion evidence.
+  false_positive_tests:
+  - tests/contracts/test_lab_first_promotion_gate.py
+  promotion_evidence:
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    boring_reliability_artifact: docs/architecture/boring-reliability-control-plane.md
+    rationale: Control-plane gate created specifically to enforce lab-first expansion discipline.
