@@ -20,7 +20,7 @@ primitives:
   - .claude/settings.json
   - hooks/aci-observation-capture.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/aci-observation-capture.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_aci_observation_capture_hook.py -q
@@ -65,10 +65,10 @@ primitives:
 - id: hooks/agent-bash-cwd-enforcer.sh
   kind: hook
   owner_adr: ADR-126
-  lifecycle_state: advisory
+  lifecycle_state: sandbox
   maturity: advisory
-  distribution: team
-  governance_class: delivery-structure
+  distribution: lab
+  governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
   - claude
@@ -76,7 +76,7 @@ primitives:
   - .claude/settings.json
   - hooks/agent-bash-cwd-enforcer.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/agent-bash-cwd-enforcer.sh
   - python3 -m pytest tests/integration/test_cwd_enforcer_rewrite.py tests/integration/test_cwd_enforcer_warns.py -q
@@ -116,7 +116,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: core
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -125,7 +125,7 @@ primitives:
   - .claude/settings.json
   - hooks/agent-prelaunch.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/agent-prelaunch.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cos_governance_roi.py -q
@@ -230,7 +230,7 @@ primitives:
   - .claude/settings.json
   - hooks/auto-checkpoint.sh
   runtime_projection: true
-  behavior_evidence: projected-observe-only
+  behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/auto-checkpoint.sh
   - python3 -m pytest tests/unit/test_auto_checkpoint_behavior.py tests/unit/test_codex_guard_layer.py -q
@@ -254,7 +254,7 @@ primitives:
   - .claude/settings.json
   - hooks/auto-refine.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/auto-refine.sh
   - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_cos_init_py.py -q
@@ -278,7 +278,7 @@ primitives:
   - .claude/settings.json
   - hooks/auto-repair-dispatcher.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/auto-repair-dispatcher.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/integration/test_repair_chain.py -q
@@ -303,7 +303,7 @@ primitives:
   - .claude/settings.json
   - hooks/auto-rollback-trigger.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/auto-rollback-trigger.sh
   - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_codex_guard_layer.py -q
@@ -328,7 +328,7 @@ primitives:
   - .claude/settings.json
   - hooks/auto-verify.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/auto-verify.sh
   - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_governance_artifact_consumption.py -q
@@ -352,7 +352,7 @@ primitives:
   - .claude/settings.json
   - hooks/blast-radius.sh
   runtime_projection: true
-  behavior_evidence: observe-only-metrics
+  behavior_evidence: observe-only-metrics; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/blast-radius.sh
   - python3 -m pytest tests/unit/test_blast_radius_additional_context.py tests/unit/test_capability_levels.py -q
@@ -437,7 +437,7 @@ primitives:
   - .claude/settings.json
   - hooks/completeness-check.sh
   runtime_projection: true
-  behavior_evidence: projected-observe-only
+  behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/completeness-check.sh
   - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_codex_guard_layer.py -q
@@ -462,7 +462,7 @@ primitives:
   - .claude/settings.json
   - hooks/completion-gate.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/completion-gate.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_completion_gate_perf.py -q
@@ -539,7 +539,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: core
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -548,7 +548,7 @@ primitives:
   - .claude/settings.json
   - hooks/confidentiality-enforcer.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/confidentiality-enforcer.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/behavior/test_confidentiality_enforcer.py -q
@@ -570,7 +570,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: core
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -579,7 +579,7 @@ primitives:
   - .claude/settings.json
   - hooks/content-policy.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/content-policy.sh
   - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_chaos_template.py -q
@@ -633,7 +633,7 @@ primitives:
   - .claude/settings.json
   - hooks/cos-executor-daemon-launcher.sh
   runtime_projection: true
-  behavior_evidence: projected-observe-only
+  behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/cos-executor-daemon-launcher.sh
   - python3 -m pytest tests/contracts/test_self_install_no_container_spawn.py -q
@@ -658,7 +658,7 @@ primitives:
   - .claude/settings.json
   - hooks/crash-recovery.sh
   runtime_projection: true
-  behavior_evidence: projected-observe-only
+  behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/crash-recovery.sh
   - python3 -m pytest tests/behavior/test_agent_resilience.py tests/behavior/test_crash_recovery.py -q
@@ -682,7 +682,7 @@ primitives:
   - .claude/settings.json
   - hooks/dequeue-notify.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/dequeue-notify.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_registered_hook_behaviors.py -q
@@ -784,7 +784,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: core
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -793,7 +793,7 @@ primitives:
   - .claude/settings.json
   - hooks/dispatch-gate.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/dispatch-gate.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_config_loader.py -q
@@ -823,7 +823,7 @@ primitives:
   - .claude/settings.json
   - hooks/doc-sync-detector.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/doc-sync-detector.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/behavior/test_hooks_batch1.py -q
@@ -873,7 +873,7 @@ primitives:
   - .claude/settings.json
   - hooks/dod-gate.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/dod-gate.sh
   - python3 -m pytest tests/unit/test_cos_init_py.py tests/unit/test_dod_gate_behavior.py -q
@@ -897,7 +897,7 @@ primitives:
   - .claude/settings.json
   - hooks/edit-lock-drain-parked.sh
   runtime_projection: true
-  behavior_evidence: projected-observe-only
+  behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/edit-lock-drain-parked.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_edit_lock_drain_parked.py -q
@@ -953,7 +953,7 @@ primitives:
   - .claude/settings.json
   - hooks/edit-lock-process-negotiations.sh
   runtime_projection: true
-  behavior_evidence: projected-observe-only
+  behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/edit-lock-process-negotiations.sh
   - python3 -m pytest tests/unit/test_edit_lock_process_negotiations.py -q
@@ -1080,7 +1080,7 @@ primitives:
   - .claude/settings.json
   - hooks/error-learning.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/error-learning.sh
   - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_chaos_template.py -q
@@ -1104,7 +1104,7 @@ primitives:
   - .claude/settings.json
   - hooks/error-pattern-detector.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/error-pattern-detector.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cross_platform_discipline.py -q
@@ -1129,7 +1129,7 @@ primitives:
   - .claude/settings.json
   - hooks/error-pipeline.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/error-pipeline.sh
   - python3 -m pytest tests/unit/test_cross_platform_discipline.py tests/unit/test_hook_behavioral.py -q
@@ -1200,7 +1200,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: maintainer
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1209,7 +1209,7 @@ primitives:
   - .claude/settings.json
   - hooks/hook-header-validator.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/hook-header-validator.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py -q
@@ -1338,7 +1338,7 @@ primitives:
   - .claude/settings.json
   - hooks/large-file-advisor.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/large-file-advisor.sh
   - python3 -m pytest tests/behavior/test_large_file_advisor.py tests/hooks/test_hook_basics.py -q
@@ -1354,7 +1354,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: core
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1363,7 +1363,7 @@ primitives:
   - .claude/settings.json
   - hooks/lethal-trifecta-gate.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/lethal-trifecta-gate.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_lethal_trifecta_gate.py -q
@@ -1518,10 +1518,10 @@ primitives:
 - id: hooks/post-agent-snapshot-restore.sh
   kind: hook
   owner_adr: ADR-126
-  lifecycle_state: advisory
+  lifecycle_state: sandbox
   maturity: advisory
-  distribution: team
-  governance_class: delivery-structure
+  distribution: lab
+  governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
   - claude
@@ -1529,7 +1529,7 @@ primitives:
   - .claude/settings.json
   - hooks/post-agent-snapshot-restore.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/post-agent-snapshot-restore.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/integration/test_auto_checkpoint_named_stash.py -q
@@ -1543,10 +1543,10 @@ primitives:
 - id: hooks/post-agent-verify.sh
   kind: hook
   owner_adr: ADR-126
-  lifecycle_state: advisory
+  lifecycle_state: sandbox
   maturity: advisory
-  distribution: team
-  governance_class: delivery-structure
+  distribution: lab
+  governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
   - claude
@@ -1554,7 +1554,7 @@ primitives:
   - .claude/settings.json
   - hooks/post-agent-verify.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/post-agent-verify.sh
   - python3 -m pytest tests/behavior/test_post_agent_verify.py -q
@@ -1593,10 +1593,10 @@ primitives:
 - id: hooks/pre-agent-snapshot.sh
   kind: hook
   owner_adr: ADR-126
-  lifecycle_state: advisory
+  lifecycle_state: sandbox
   maturity: advisory
-  distribution: team
-  governance_class: delivery-structure
+  distribution: lab
+  governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
   - claude
@@ -1604,7 +1604,7 @@ primitives:
   - .claude/settings.json
   - hooks/pre-agent-snapshot.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/pre-agent-snapshot.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_cos_governance_roi.py -q
@@ -1661,7 +1661,7 @@ primitives:
   - .claude/settings.json
   - hooks/pre-compaction-flush.sh
   runtime_projection: true
-  behavior_evidence: projected-observe-only
+  behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/pre-compaction-flush.sh
   - python3 -m pytest tests/unit/test_anchored_summarizer.py tests/unit/test_compaction_behavior.py -q
@@ -1677,7 +1677,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: maintainer
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1686,7 +1686,7 @@ primitives:
   - .claude/settings.json
   - hooks/predev-completeness-check.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/predev-completeness-check.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_rules_enforcement.py -q
@@ -1717,7 +1717,7 @@ primitives:
   - .claude/settings.json
   - hooks/private-mode-gate.sh
   runtime_projection: true
-  behavior_evidence: projected-observe-only
+  behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/private-mode-gate.sh
   - python3 -m pytest tests/behavior/test_private_mode.py tests/audit/test_hooks_contracts.py -q
@@ -1767,7 +1767,7 @@ primitives:
   - .claude/settings.json
   - hooks/profile-drift-autoapply.sh
   runtime_projection: true
-  behavior_evidence: projected-observe-only
+  behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/profile-drift-autoapply.sh
   - python3 -m pytest tests/unit/test_registered_hook_behaviors.py tests/unit/test_validation_capsule.py -q
@@ -1783,7 +1783,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: maintainer
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1792,7 +1792,7 @@ primitives:
   - .claude/settings.json
   - hooks/project-docs-convention.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/project-docs-convention.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_project_docs_writers.py -q
@@ -1914,7 +1914,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: core
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -1923,7 +1923,7 @@ primitives:
   - .claude/settings.json
   - hooks/rate-limiter.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/rate-limiter.sh
   - python3 -m pytest tests/unit/test_confidentiality_scanner.py tests/unit/test_dispatch_helper.py -q
@@ -1978,7 +1978,7 @@ primitives:
   - .claude/settings.json
   - hooks/reinvention-check.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/reinvention-check.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_fd_invariant.py -q
@@ -2003,7 +2003,7 @@ primitives:
   - .claude/settings.json
   - hooks/result-truncator.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/result-truncator.sh
   - python3 -m pytest tests/unit/test_capability_level5.py tests/behavior/test_hooks_batch1.py -q
@@ -2027,7 +2027,7 @@ primitives:
   - .claude/settings.json
   - hooks/review-spawner.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/review-spawner.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_projected_hook_gap_behaviors.py -q
@@ -2042,7 +2042,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: maintainer
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2051,7 +2051,7 @@ primitives:
   - .claude/settings.json
   - hooks/rule-frontmatter-validator.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/rule-frontmatter-validator.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py -q
@@ -2143,7 +2143,7 @@ primitives:
   - .claude/settings.json
   - hooks/self-install.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/self-install.sh
   - python3 -m pytest tests/unit/test_cos_config_audit.py tests/unit/test_efficiency_optimization.py -q
@@ -2167,7 +2167,7 @@ primitives:
   - .claude/settings.json
   - hooks/self-knowledge-refresh.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/self-knowledge-refresh.sh
   - python3 -m pytest tests/integration/test_self_knowledge_refresh.py -q
@@ -2375,10 +2375,10 @@ primitives:
 - id: hooks/session-start-stash-reapply.sh
   kind: hook
   owner_adr: ADR-126
-  lifecycle_state: advisory
+  lifecycle_state: sandbox
   maturity: advisory
-  distribution: team
-  governance_class: delivery-structure
+  distribution: lab
+  governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
   - claude
@@ -2386,7 +2386,7 @@ primitives:
   - .claude/settings.json
   - hooks/session-start-stash-reapply.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/session-start-stash-reapply.sh
   - python3 -m pytest tests/integration/test_stash_reapply.py -q
@@ -2537,7 +2537,7 @@ primitives:
   - .claude/settings.json
   - hooks/skill-failure-monitor.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/skill-failure-monitor.sh
   - python3 -m pytest tests/unit/test_projected_hook_gap_behaviors.py -q
@@ -2562,7 +2562,7 @@ primitives:
   - .claude/settings.json
   - hooks/skill-feedback-tracker.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/skill-feedback-tracker.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py -q
@@ -2578,7 +2578,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: maintainer
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2587,7 +2587,7 @@ primitives:
   - .claude/settings.json
   - hooks/skill-frontmatter-validator.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/skill-frontmatter-validator.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_registered_hook_behaviors.py -q
@@ -2618,7 +2618,7 @@ primitives:
   - .claude/settings.json
   - hooks/skill-invocation-logger.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/skill-invocation-logger.sh
   - python3 -m pytest tests/integration/test_auto_trigger_honoured.py -q
@@ -2643,7 +2643,7 @@ primitives:
   - .claude/settings.json
   - hooks/skill-synthesis-scanner.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/skill-synthesis-scanner.sh
   - python3 -m pytest tests/unit/test_projected_hook_gap_behaviors.py -q
@@ -2668,7 +2668,7 @@ primitives:
   - .claude/settings.json
   - hooks/skill-tracker.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/skill-tracker.sh
   - python3 -m pytest tests/behavior/test_hooks_batch1.py tests/audit/test_hooks_contracts.py -q
@@ -2692,7 +2692,7 @@ primitives:
   - .claude/settings.json
   - hooks/skill-usage-tracker.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/skill-usage-tracker.sh
   - python3 -m pytest tests/behavior/test_efficiency_profiles.py -q
@@ -2742,7 +2742,7 @@ primitives:
   - .claude/settings.json
   - hooks/state-heartbeat.sh
   runtime_projection: true
-  behavior_evidence: projected-observe-only
+  behavior_evidence: projected-observe-only; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/state-heartbeat.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_coverage_classifier.py -q
@@ -2791,7 +2791,7 @@ primitives:
   - .claude/settings.json
   - hooks/surface-fix-detector.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/surface-fix-detector.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_surface_fix_detector.py -q
@@ -2867,7 +2867,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: team
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2876,7 +2876,7 @@ primitives:
   - .claude/settings.json
   - hooks/task-created.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/task-created.sh
   - python3 -m pytest tests/integration/test_harness_driver_parity.py tests/hooks/test_agent_teams_hooks.py -q
@@ -2897,7 +2897,7 @@ primitives:
   owner_adr: ADR-126
   lifecycle_state: blocking
   maturity: blocking
-  distribution: team
+  distribution: lab
   governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
@@ -2906,7 +2906,7 @@ primitives:
   - .claude/settings.json
   - hooks/teammate-idle.sh
   runtime_projection: true
-  behavior_evidence: static-exit2-detected
+  behavior_evidence: static-exit2-detected; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/teammate-idle.sh
   - python3 -m pytest tests/integration/test_harness_driver_parity.py tests/hooks/test_agent_teams_hooks.py -q
@@ -2936,7 +2936,7 @@ primitives:
   - .claude/settings.json
   - hooks/tool-sequence-capture.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/tool-sequence-capture.sh
   - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_tool_sequence_capture.py -q
@@ -2961,7 +2961,7 @@ primitives:
   - .claude/settings.json
   - hooks/trust-score-validator.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/trust-score-validator.sh
   - python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_codex_guard_layer.py -q
@@ -2986,7 +2986,7 @@ primitives:
   - .claude/settings.json
   - hooks/user-prompt-capture.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash -n hooks/user-prompt-capture.sh
   - python3 -m pytest tests/contracts/test_harness_transparency_status_docs.py tests/contracts/test_memory_lifecycle_docs.py
@@ -3050,10 +3050,10 @@ primitives:
 - id: scripts/cos-doctor-preserve
   kind: doctor
   owner_adr: ADR-116
-  lifecycle_state: advisory
+  lifecycle_state: sandbox
   maturity: advisory
-  distribution: maintainer
-  governance_class: delivery-structure
+  distribution: lab
+  governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
   - claude
@@ -3063,7 +3063,7 @@ primitives:
   - scripts/cos-doctor-preserve.sh
   - docs/architecture/preserve-branch-lifecycle.md
   runtime_projection: false
-  behavior_evidence: behavior-test
+  behavior_evidence: behavior-test; lab-runtime-projected-in-maintainer-repo
   evidence_commands:
   - bash scripts/cos-doctor-preserve.sh --help >/dev/null
   - python3 -m pytest tests/behavior/test_cos_doctor_preserve.py -q
