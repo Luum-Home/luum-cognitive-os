@@ -629,7 +629,7 @@ primitives:
 - id: hooks/context-watchdog.sh
   kind: hook
   owner_adr: ADR-126
-  lifecycle_state: advisory
+  lifecycle_state: demoted
   maturity: advisory
   distribution: maintainer
   governance_class: meta-governance
@@ -637,9 +637,8 @@ primitives:
   supported_harnesses:
   - claude
   projection_targets:
-  - .claude/settings.json
   - hooks/context-watchdog.sh
-  runtime_projection: true
+  runtime_projection: false
   behavior_evidence: metrics-emitting-advisory
   evidence_commands:
   - bash -n hooks/context-watchdog.sh
@@ -647,8 +646,22 @@ primitives:
     -q
   rollback_or_repair_command: Disable or demote hooks/context-watchdog.sh in generated
     harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90
-    days or replaced by a native harness primitive with equivalent tests.
+  sunset_criteria: Keep demoted while context warnings remain advisory-only and no
+    sustained positive ROI demonstrates default projection value; archive after
+    90 days with no opt-in use.
+  demotion_evidence:
+    demoted_on: '2026-05-03'
+    primary_signal: manifest-tier-claim-audit
+    reason: Advisory PostToolUse wildcard hook adds default runtime surface and
+      cognitive noise without blocking behavior; manifest-tier audit identified
+      it as a candidate_second_demote, and pre-compaction-flush remains the hard
+      compaction safety primitive.
+    control_plane_commands:
+    - scripts/cos-manifest-tier-claim-audit --json
+    - scripts/cos-demotion-loop-audit --json
+    - python3 scripts/cos_architecture_readiness.py --json
+    expected_effect: default runtime projection shrinks while hooks/context-watchdog.sh
+      remains available for opt-in maintainer sessions.
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/context-watchdog.jsonl

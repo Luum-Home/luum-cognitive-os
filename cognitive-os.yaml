@@ -1280,6 +1280,7 @@ harness:
       matcher: ""
       async: true
       scope: os-only
+      default_projection: false
 
     rate-limit-detector:
       script: hooks/rate-limit-detector.sh

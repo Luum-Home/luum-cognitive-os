@@ -174,6 +174,25 @@ This is now visible through `scripts/cos-demotion-loop-audit` and the
 than fails while there is only one semantic demotion; it becomes green when the
 manifest contains at least two demotions and at least one is ROI-signed.
 
+### 2026-05-03 Second semantic demotion
+
+`hooks/context-watchdog.sh` is the second lifecycle primitive moved to
+`lifecycle_state: demoted`. This demotion was signed by
+`scripts/cos-manifest-tier-claim-audit`, not by the ROI dashboard: the hook is an
+advisory-only `PostToolUse` wildcard that adds default runtime surface without
+blocking unsafe state. The hard compaction path remains
+`hooks/pre-compaction-flush.sh` plus the session-summary/memory protocol.
+
+The hook remains available for opt-in maintainer sessions, but it is no longer
+projected by default in `.claude/settings.json`. Candidate resolution is
+documented in
+`docs/reports/second-demotion-candidate-resolution-2026-05-03.md`.
+
+After this transition, the lifecycle governor has repeated demotion behavior
+(`demotion_count >= 2`), but the ROI dashboard still has not signed a demotion
+decision (`roi_signed_demotion_count == 0`). That remaining warning is
+intentional.
+
 ## Consequences
 
 - Primitive creation becomes slower but safer.
