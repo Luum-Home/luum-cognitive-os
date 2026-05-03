@@ -23,6 +23,7 @@ CONTROL_PLANE_PRIMITIVES = {
     "scripts/cos-dispatch-smoke",
     "scripts/cos-ci-local.sh",
     "scripts/cos-lab-first-gate",
+    "scripts/cos-tier-claim-audit",
 }
 
 

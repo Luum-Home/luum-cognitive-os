@@ -222,6 +222,20 @@ def test_safe_ops_pass_through(tmp_path: Path, command: str):
     assert "BLOCKED" not in result.stderr
 
 
+def test_commit_message_mentions_worktree_without_blocking(tmp_path: Path):
+    """Semantic parsing must not treat commit prose as a git worktree op."""
+    result = _run("git commit -m 'docs: mention git worktree remove guard'", tmp_path)
+    assert result.returncode == 0, result.stderr
+    assert "BLOCKED" not in result.stderr
+
+
+def test_echoed_git_worktree_text_is_not_operator_intent(tmp_path: Path):
+    """Substring-only matching must not block non-git commands containing git words."""
+    result = _run("printf '%s\\n' 'git worktree remove ../stale'", tmp_path)
+    assert result.returncode == 0, result.stderr
+    assert "BLOCKED" not in result.stderr
+
+
 # ---------------------------------------------------------------------------
 # Override error-message contents (human-friendly guidance)
 # ---------------------------------------------------------------------------
