@@ -122,3 +122,35 @@ The runway does not:
 - make maintainer tier externally adoptable.
 
 It only makes the future federation problem measurable and reversible.
+
+## Manual drills
+
+Use `scripts/cos-cross-instance-drill` to deliberately provoke the runway states
+without mutating real product evidence.
+
+```bash
+scripts/cos-cross-instance-drill --scenario external-evidence
+scripts/cos-cross-instance-drill --scenario shape-b-trigger
+scripts/cos-cross-instance-drill --scenario registry-drift
+scripts/cos-cross-instance-drill --scenario engram-conflict
+scripts/cos-cross-instance-drill --scenario shape-b-governance
+scripts/cos-cross-instance-drill --scenario all
+```
+
+The drills use temporary manifests, temporary lock files, temporary Engram
+bundles, and temporary governance checklists. They prove that the machinery can
+flip states when the inputs are present, but they do **not** sign real claims.
+
+| Scenario | What it proves | Real state mutated |
+|---|---|---|
+| `external-evidence` | a qualifying non-maintainer report signs `helps-projects` in a temp manifest | no |
+| `shape-b-trigger` | Shape-B trigger audit flips from deferred to triggered with threshold inputs | no |
+| `registry-drift` | registry lock audit detects skill/primitive drift | no |
+| `engram-conflict` | topic-key conflict becomes an import proposal | no |
+| `shape-b-governance` | multi-maintainer governance checklist can be generated for review | no |
+
+The distinction matters:
+
+- **Drill pass** means the runway works.
+- **Claim signed** still requires real external evidence or real Shape-B
+  operation.
