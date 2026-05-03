@@ -26,6 +26,9 @@ REQUIRED_FIELDS = {
     "supported_harnesses",
     "projection_targets",
     "evidence_commands",
+    "exit_behavior",
+    "metrics_file",
+    "docs_claim_level",
     "rollback_or_repair_command",
     "sunset_criteria",
 }
@@ -43,6 +46,8 @@ ENUMS = {
         "deleted",
     },
     "maturity": {"observe", "advisory", "blocking"},
+    "exit_behavior": {"exit_0", "exit_2", "mixed", "manual"},
+    "docs_claim_level": {"observe", "advisory", "blocking"},
     "distribution": {"core", "team", "maintainer", "lab"},
     "governance_class": {"runtime-safety", "delivery-structure", "meta-governance"},
     "risk_class": {"advisory", "blocking", "mutating", "destructive"},
@@ -115,7 +120,7 @@ def validate_manifest(manifest: dict[str, Any]) -> list[Finding]:
                     )
                 )
 
-        for field in ("owner_adr", "rollback_or_repair_command", "sunset_criteria"):
+        for field in ("owner_adr", "rollback_or_repair_command", "sunset_criteria", "metrics_file"):
             if field in primitive and not _is_non_empty_string(primitive.get(field)):
                 findings.append(Finding(primitive_id, field, "must be a non-empty string"))
 
@@ -136,10 +141,20 @@ def validate_manifest(manifest: dict[str, Any]) -> list[Finding]:
         lifecycle_state = primitive.get("lifecycle_state")
         maturity = primitive.get("maturity")
         risk_class = primitive.get("risk_class")
+        exit_behavior = primitive.get("exit_behavior")
+        docs_claim_level = primitive.get("docs_claim_level")
         if maturity == "blocking" and lifecycle_state not in BLOCKING_STATES:
             findings.append(Finding(primitive_id, "lifecycle_state", "blocking maturity requires blocking/default-on lifecycle_state"))
         if lifecycle_state in BLOCKING_STATES and maturity != "blocking":
             findings.append(Finding(primitive_id, "maturity", "blocking/default-on lifecycle_state requires blocking maturity"))
+        if maturity == "blocking" and exit_behavior != "exit_2":
+            findings.append(Finding(primitive_id, "exit_behavior", "blocking maturity requires exit_2 behavior"))
+        if exit_behavior == "exit_2" and maturity != "blocking":
+            findings.append(Finding(primitive_id, "maturity", "exit_2 behavior requires blocking maturity"))
+        if docs_claim_level == "blocking" and maturity != "blocking":
+            findings.append(Finding(primitive_id, "docs_claim_level", "blocking docs claim requires blocking maturity"))
+        if maturity == "blocking" and docs_claim_level != "blocking":
+            findings.append(Finding(primitive_id, "docs_claim_level", "blocking maturity requires blocking docs claim level"))
         if maturity == "blocking" and not _is_non_empty_string(primitive.get("behavior_evidence")):
             findings.append(Finding(primitive_id, "behavior_evidence", "blocking maturity requires behavior evidence"))
         is_blocking_or_default = lifecycle_state in BLOCKING_STATES or risk_class in BLOCKING_RISKS
