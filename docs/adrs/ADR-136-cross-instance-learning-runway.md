@@ -92,11 +92,16 @@ Implement a Shape-B runway with four non-speculative primitives:
 
 ```bash
 python3 -m pytest tests/unit/test_cross_instance_learning.py -q
+python3 -m pytest tests/unit/test_cross_instance_drill.py -q
 scripts/cos-export-consumer-evidence --project demo --reporter maintainer --maintainer-owned --cognitive-cost "local smoke"
 scripts/cos-registry-lock --audit
 scripts/cos-engram-bundle --project example-project
 scripts/cos-federation-trigger-audit
+scripts/cos-cross-instance-drill --scenario all
 ```
 
 `cos-federation-trigger-audit` must report Shape A `deferred` until a configured
 Shape-B trigger fires.
+
+Manual drills must use temporary state and must not mutate real product evidence
+or claim-signing manifests.
