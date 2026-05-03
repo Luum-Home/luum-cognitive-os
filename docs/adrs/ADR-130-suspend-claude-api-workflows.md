@@ -1,24 +1,54 @@
 ---
 adr: 130
-title: Suspend Claude API Workflows — Preserve as .disabled Until Local-CI Migration
+title: Suspend All GitHub Actions Workflows — Preserve as .disabled Until Local-CI Migration
 status: accepted
 date: 2026-05-03
 supersedes: []
 superseded_by: null
 implementation_files:
+  - .github/workflows/ci.yml.disabled
   - .github/workflows/claude-interactive.yml.disabled
   - .github/workflows/claude-issue-triage.yml.disabled
   - .github/workflows/claude-pr-review.yml.disabled
+  - .github/workflows/cos-config-audit.yml.disabled
   - .github/workflows/cross-platform.yml.disabled
+  - .github/workflows/go-quality.yml.disabled
+  - .github/workflows/primitive-gap-audit.yml.disabled
+  - .github/workflows/test-lanes.yml.disabled
+  - .github/workflows/test-quality.yml.disabled
+  - .github/workflows/weekly-public-metrics.yml.disabled
 tier: maintainer
 tags: [ci, billing, github-actions, dx, future-work]
 ---
 
-# ADR-130: Suspend Claude API Workflows — Preserve as .disabled Until Local-CI Migration
+# ADR-130: Suspend All GitHub Actions Workflows — Preserve as .disabled Until Local-CI Migration
 
 ## Status
 
 Accepted.
+
+## Update — 2026-05-03 (same day)
+
+The original decision suspended only the three Claude API workflows
+plus `cross-platform.yml`. After confirming with the maintainer that
+the GitHub account has no payment method available and the goal is
+**zero spend until self-hosted CI is in place**, the scope was
+extended to **all eleven workflows**.
+
+Linux-only workflows alone could in theory fit the free-tier 2,000
+minutes/month budget, but:
+
+- The maintainer pushes to `main` ~50 times/day. `ci.yml` and
+  `test-lanes.yml` trigger on every push to main and would burn the
+  free-tier quota in roughly one week.
+- Once the quota is exhausted, every workflow's job fails to start
+  with the same "spending limit" message — the same failure mode
+  this ADR was created to address.
+- The cleanest posture under "no payment available" is total
+  suspension. Restoration is per-file rename when self-hosted CI
+  is ready.
+
+The full list of suspended files is in `implementation_files`.
 
 ## Context
 
