@@ -33,15 +33,15 @@ Search for existing SDD artifacts using topic keys:
 
 | Artifact | Topic Key | Required By |
 |----------|-----------|-------------|
-| Exploration | `sdd/{change-name}/explore` | proposal (optional) |
-| Proposal | `sdd/{change-name}/proposal` | spec, design |
-| Spec | `sdd/{change-name}/spec` | tasks, verify |
-| Design | `sdd/{change-name}/design` | tasks |
-| Tasks | `sdd/{change-name}/tasks` | apply |
-| Apply progress | `sdd/{change-name}/apply-progress` | verify |
-| Verify report | `sdd/{change-name}/verify-report` | archive |
-| Archive report | `sdd/{change-name}/archive-report` | (terminal) |
-| DAG state | `sdd/{change-name}/state` | (metadata) |
+| Exploration | `planning/{change-name}/explore` | proposal (optional) |
+| Proposal | `planning/{change-name}/proposal` | spec, design |
+| Spec | `planning/{change-name}/spec` | tasks, verify |
+| Design | `planning/{change-name}/design` | tasks |
+| Tasks | `planning/{change-name}/tasks` | apply |
+| Apply progress | `planning/{change-name}/apply-progress` | verify |
+| Verify report | `planning/{change-name}/verify-report` | archive |
+| Archive report | `planning/{change-name}/archive-report` | (terminal) |
+| DAG state | `planning/{change-name}/state` | (metadata) |
 
 For each topic key, run:
 ```
