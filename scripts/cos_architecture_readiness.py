@@ -33,6 +33,7 @@ import cos_tier_claim_audit
 import cos_manifest_tier_claim_audit
 import cos_demotion_loop_audit
 import cos_preamble_budget
+import python_stdin_antipattern_audit
 
 REPO_ROOT = SCRIPT_DIR.parents[0]
 REQUIRED_RUNTIME_PRIMITIVES = {
@@ -281,6 +282,20 @@ def check_silent_failure_audit(root: Path) -> Check:
             "maintainer_cache_occurrence_count": report["maintainer_cache_occurrence_count"],
             "findings": report["findings"][:50],
         },
+    )
+
+def check_python_stdin_antipattern_audit(root: Path) -> Check:
+    report = python_stdin_antipattern_audit.build_report(root)
+    status = "pass" if report["status"] == "pass" else "fail"
+    return Check(
+        id="python-stdin-antipattern-audit",
+        status=status,
+        message=(
+            "no pipe-into-python-heredoc stdin traps found"
+            if status == "pass"
+            else "pipe-into-python-heredoc pattern drops piped stdin and must be rewritten"
+        ),
+        details=report,
     )
 
 def check_roi(root: Path, window_hours: int) -> Check:
@@ -542,6 +557,7 @@ def build_report(root: Path, window_hours: int) -> dict[str, Any]:
         check_runtime_hook_reality(root),
         check_core_session_start_budget(root),
         check_silent_failure_audit(root),
+        check_python_stdin_antipattern_audit(root),
         check_roi(root, window_hours),
         check_lifecycle_recommendations(root, window_hours),
         check_runtime_primitives(root),

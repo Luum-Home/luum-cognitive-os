@@ -119,7 +119,7 @@ export _SMART_TRUNC_CMD="$COMMAND"
 export _SMART_TRUNC_MAX="$MAX_CHARS"
 export _SMART_TRUNC_LIB="$PROJECT_DIR/lib"
 
-SMART_RESULT=$(echo "$RESPONSE" | python3 - <<'PYEOF' 2>/dev/null
+SMART_RESULT=$(printf '%s' "$RESPONSE" | python3 -c '
 import sys
 import os
 sys.path.insert(0, os.environ.get("_SMART_TRUNC_LIB", ""))
@@ -134,8 +134,7 @@ try:
         print(result, end="")
 except Exception:
     pass  # Fall through to head+tail
-PYEOF
-)
+' 2>/dev/null)
 
 if [ -n "$SMART_RESULT" ]; then
   # Use smart structured extraction result
