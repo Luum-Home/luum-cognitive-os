@@ -50,3 +50,20 @@ A gate is allowed to be default-visible only when it is:
 
 If a primitive cannot satisfy the contract, it belongs in `lab` or `candidate`,
 not in the product default.
+
+## Ready bar
+
+The SO can be treated as ready for the next serious adoption push when these
+local signals are true on the branch being released:
+
+```text
+scripts/cos-runtime-hook-reality --fail-on-findings   # pass
+scripts/cos-adoption-profile --profile core          # pass; core <=10 hooks, <=7 blocking
+scripts/cos-preamble-budget --profile core           # pass; core <3000 tokens
+python3 scripts/active_primitive_index.py --json     # pass; no active/default-visible findings
+scripts/cos-wip-safety-score                         # pass or explicit archived WIP exception
+bash scripts/cos-ci-local.sh quick                   # pass before push
+```
+
+A release may still carry maintainer-mode warnings, but the consumer `core`
+profile must be small, truthful, reversible, and executable.
