@@ -18,8 +18,8 @@ The policy is intentionally split:
 | Operator with `COS_OPERATOR_MAIN_POLICY=block` | **BLOCK** | Strict mode for incident response, release stabilization, or high-risk work. |
 | Any actor `git push` to `main`/`master` | **BLOCK** by default | Shared `main` must advance only through merge queue / governed landing. |
 | Merge queue worker / `merge-to-main.sh` push | allow | Single-writer landing path sets `COS_MERGE_QUEUE_WORKER=1` or `COS_MERGE_TO_MAIN=1`. |
-| Any actor with `COS_ALLOW_DIRECT_MAIN=1` | allow local commit | One-off emergency commit bypass; do not export permanently. |
-| Any actor with `COS_ALLOW_DIRECT_PUSH=1` | allow direct push | One-off emergency push bypass; do not export permanently. |
+| Any actor with `COS_ALLOW_DIRECT_MAIN=1` plus bypass reason | allow local commit and audit | One-off emergency commit bypass; do not export permanently. |
+| Any actor with `COS_ALLOW_DIRECT_PUSH=1` plus bypass reason | allow direct push and audit | One-off emergency push bypass; do not export permanently. |
 | Any actor on a non-main branch | allow | Session branches and feature branches are the intended local write surface. |
 
 Implementation: `hooks/direct-main-guard.sh`.
@@ -40,11 +40,12 @@ A direct `git push origin main` from a normal operator or agent must fail before
 - operator commit to `main` warns by default,
 - strict operator policy blocks,
 - session/feature branch commits pass,
-- `COS_ALLOW_DIRECT_MAIN=1` bypasses intentionally,
+- `COS_ALLOW_DIRECT_MAIN=1` bypasses intentionally only with a scoped reason,
 - `COS_OPERATOR_MAIN_POLICY=allow` permits operator commits,
 - `CLAUDE_AGENT_ID` auto-detects agent context,
 - `master` is treated like `main`,
 - direct push from `main` blocks,
+- direct-push bypass requires a reason and writes `.cognitive-os/metrics/direct-main-bypass.jsonl`,
 - merge-queue push env is allowed,
 - pre-push refs for non-main branches pass,
 - non-commit Bash commands are ignored,
@@ -63,14 +64,21 @@ bash scripts/merge-to-main.sh enqueue <session-branch>
 If emergency direct-main work is unavoidable:
 
 ```bash
-COS_ALLOW_DIRECT_MAIN=1 git commit --only -- path/to/file -m "fix: emergency repair"
+COS_ALLOW_DIRECT_MAIN=1 \
+COS_DIRECT_MAIN_BYPASS_REASON="emergency repair: <why session branch cannot be used>" \
+git commit --only -- path/to/file -m "fix: emergency repair"
 ```
 
 If emergency direct-main push is unavoidable:
 
 ```bash
-COS_ALLOW_DIRECT_PUSH=1 git push origin main
+COS_ALLOW_DIRECT_PUSH=1 \
+COS_DIRECT_MAIN_BYPASS_REASON="emergency repair: <why merge queue cannot be used>" \
+git push origin main
 ```
 
 Do not put `COS_ALLOW_DIRECT_MAIN=1` in shell startup files.
 Do not put `COS_ALLOW_DIRECT_PUSH=1` in shell startup files.
+Do not use a generic bypass reason. The reason is appended to
+`.cognitive-os/metrics/direct-main-bypass.jsonl` so emergency bypasses stay
+reviewable instead of becoming invisible operator muscle memory.
