@@ -131,3 +131,24 @@ def test_pre_push_refs_non_main_allows(tmp_path: Path) -> None:
     )
     assert proc.returncode == 0
     assert proc.stderr == ""
+
+
+def test_direct_push_delete_non_main_branch_from_main_allows(tmp_path: Path) -> None:
+    """Deleting a non-protected remote branch from local main is not a direct-main push."""
+    init_repo(tmp_path, "main")
+    proc = run_hook(
+        tmp_path,
+        env={"COS_GIT_COMMAND": "git push origin --delete codex/old-branch", "CLAUDE_TOOL_INPUT": ""},
+    )
+    assert proc.returncode == 0
+    assert proc.stderr == ""
+
+
+def test_direct_push_explicit_main_ref_blocks(tmp_path: Path) -> None:
+    init_repo(tmp_path, "main")
+    proc = run_hook(
+        tmp_path,
+        env={"COS_GIT_COMMAND": "git push origin main", "CLAUDE_TOOL_INPUT": ""},
+    )
+    assert proc.returncode == 2
+    assert "direct push" in proc.stderr
