@@ -1181,116 +1181,12 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "weak_terms:lifecycle-declared-consumer-candidate"
+        "weak_terms:shell-ci-candidate"
       ],
       "inferred_status": "proposed",
-      "item": "lifecycle-declared-consumer-candidate: 49",
+      "item": "shell-ci-candidate: 15",
       "kind": "bullet",
-      "line": 28,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:aspirational_audit,before,candidate,consumer,harness,medium,needs,partial"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/aspirational_audit.py` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 37,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:before,candidate,check_mcp_servers,consumer,harness,medium,needs,partial"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/check_mcp_servers.py` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 38,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:before,candidate,consumer,harness,medium,needs,partial,projectable"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/cos` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 39,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:before,candidate,consumer,cos-coordination-status,harness,medium,needs,partial"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/cos-coordination-status.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 40,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:before,candidate,consumer,cos-release-check,harness,medium,needs,partial"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/cos-release-check.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 41,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:before,candidate,consumer,cos-smoke,harness,medium,needs,partial"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/cos-smoke.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 42,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:before,candidate,consumer,cos-status,harness,medium,needs,partial"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/cos-status.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 43,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:before,candidate,consumer,cos-usage-report,harness,medium,needs,partial"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/cos-usage-report.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 44,
+      "line": 32,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1303,7 +1199,7 @@
       "inferred_status": "proposed",
       "item": "Subagents should receive only selected rows/findings, not complete ACC/readiness reports.",
       "kind": "bullet",
-      "line": 50,
+      "line": 51,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1311,12 +1207,12 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "weak_terms:lifecycle-declared-consumer-candidate"
+        "weak_terms:shell-ci-candidate"
       ],
       "inferred_status": "proposed",
-      "item": "lifecycle-declared-consumer-candidate: 49",
+      "item": "shell-ci-candidate: 15",
       "kind": "bullet",
-      "line": 116,
+      "line": 82,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest.md"
     },
@@ -13355,6 +13251,114 @@
       "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: accepted",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Accepted** \u2014 2026-05-04",
+      "kind": "prose",
+      "line": 22,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "path:scripts/cos_init.py",
+        "terms:consumer,copied,cos_init,drivers,like,looked,profile,projects"
+      ],
+      "inferred_status": "proposed",
+      "item": "SO-local profile drivers, such as `scripts/cos_init.py`, looked like scripts that should be copied into consumer projects.",
+      "kind": "bullet",
+      "line": 28,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "path:manifests/harness-projection.yaml",
+        "terms:entries,expand,harness-projection,manifests,planned,yaml"
+      ],
+      "inferred_status": "planned",
+      "item": "Expand `manifests/harness-projection.yaml` with planned entries for:",
+      "kind": "prose",
+      "line": 43,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:claude,codex,driver,entries,exists,inherit,planned,proof"
+      ],
+      "inferred_status": "planned",
+      "item": "These planned entries do not inherit Claude/Codex proof. They remain unverified until a driver and temp-project proof exists.",
+      "kind": "prose",
+      "line": 50,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:entries,evolve,external,harness,ongoing,planned,require,research"
+      ],
+      "inferred_status": "planned",
+      "item": "Planned harness entries require ongoing research as external tools evolve.",
+      "kind": "bullet",
+      "line": 65,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:scripts/acc_pipeline.py",
+        "terms:acc_pipeline,default,full,harness,implemented,profile,projection,proof"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "`scripts/acc_pipeline.py` records default/full projection proof by implemented harness/profile.",
+      "kind": "bullet",
+      "line": 87,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "path:manifests/harness-projection.yaml",
+        "terms:code,deepseek,entries,harness-projection,includes,kimi,manifests,maxclaw"
+      ],
+      "inferred_status": "planned",
+      "item": "`manifests/harness-projection.yaml` includes planned Qwen Code, Kimi Code, MiniMax MaxClaw, and DeepSeek provider entries.",
+      "kind": "bullet",
+      "line": 88,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -15115,7 +15119,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`.",
       "kind": "prose",
-      "line": 100,
+      "line": 103,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture/agent-capability-coverage-pipeline.md"
     },
@@ -15523,6 +15527,19 @@
       "line": 284,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture/concurrent-agent-safety-master.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:consumer,intended,needs,projection,proof,shell,shell-ci-candidate,still"
+      ],
+      "inferred_status": "proposed",
+      "item": "`shell-ci-candidate`: intended consumer CLI/shell surface, but still needs shell/CI projection proof.",
+      "kind": "bullet",
+      "line": 53,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/architecture/consumer-project-primitive-accessibility.md"
     },
     {
       "confidence": 0.9,
@@ -29362,7 +29379,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Confirm all named IDEs are declared and only implemented harnesses are signed:",
       "kind": "prose",
-      "line": 86,
+      "line": 91,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/manual-tests/agent-capability-coverage-pipeline.md"
     },
@@ -32635,7 +32652,7 @@
         "proposed": 2
       },
       "docs/acc/latest-compact.md": {
-        "proposed": 10
+        "proposed": 2
       },
       "docs/acc/latest.md": {
         "proposed": 1
@@ -33281,6 +33298,12 @@
         "done_with_proof": 2,
         "proposed": 1
       },
+      "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md": {
+        "done_weak_proof": 2,
+        "done_with_proof": 1,
+        "planned": 4,
+        "proposed": 1
+      },
       "docs/adrs/README.md": {
         "planned": 1
       },
@@ -33382,6 +33405,9 @@
       "docs/architecture/concurrent-agent-safety-master.md": {
         "done_weak_proof": 4,
         "planned": 1
+      },
+      "docs/architecture/consumer-project-primitive-accessibility.md": {
+        "proposed": 1
       },
       "docs/architecture/core-vs-extensions-audit-2026-04-20.md": {
         "planned": 6
@@ -34120,12 +34146,12 @@
         "planned": 1
       }
     },
-    "items": 2479,
+    "items": 2480,
     "statuses": {
-      "done_weak_proof": 1029,
-      "done_with_proof": 201,
-      "planned": 970,
-      "proposed": 279
+      "done_weak_proof": 1031,
+      "done_with_proof": 202,
+      "planned": 974,
+      "proposed": 273
     }
   }
 }

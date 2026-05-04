@@ -78,6 +78,9 @@ assert projection['summary']['projected_primitives'] > 0
 for key in ('claude/default', 'claude/full', 'codex/default', 'codex/full'):
     assert projection['summary']['by_harness_profile'][key] > 0
 assert data['summary']['stale_weight'] == 0
+availability = data['adapters']['consumer_availability']
+assert availability['status'] == 'ok'
+assert availability['summary']['statuses']['maintainer-only'] > 0
 PY
 ```
 
