@@ -234,17 +234,26 @@ harnesses:
   - https://api-docs.deepseek.com/
 - id: shell-ci
   display_name: Shell / CI
-  status: planned
+  status: implemented
   projection_mode: cli-and-workflows
   settings_paths:
-  - .github/workflows
+  - .cognitive-os/shell-ci-projection.json
+  - .github/workflows/cognitive-os-shell-ci.yml
   - scripts
   projected_surfaces:
   - scripts
   - workflows
-  proof: none
+  - command-drivers
+  proof: temp-consumer-project-structural
   limitations:
-  - Current ACC projection proof is focused on IDE consumer installs.
-  - CI workflow `.github/workflows/ci.yml` remains disabled.
-  next_action: Define CLI/workflow projection contract and re-enable product-core
-    CI proof.
+  - Structural command/workflow projection and syntax proof only; generated commands
+    may still need project dependencies at runtime.
+  - The disabled repository CI workflow is not re-enabled by this harness promotion.
+  next_action: Add optional runtime smoke for projected commands against representative
+    consumer project stacks.
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - shell-ci
