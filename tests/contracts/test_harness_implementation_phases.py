@@ -21,13 +21,17 @@ def test_harness_phase_manifest_tracks_implemented_structural_harnesses() -> Non
     assert shell_ci["status"] == "done"
     assert shell_ci["implemented_harnesses"] == ["shell-ci"]
 
+    qwen_phase = phases["phases"]["qwen-windsurf-kimi-structural"]
+    assert qwen_phase["status"] == "in_progress"
+    assert qwen_phase["implemented_harnesses"] == ["qwen-code"]
+
 
 def test_implemented_harnesses_have_projection_commands_and_limitations() -> None:
     manifest = yaml.safe_load(HARNESS.read_text())
     implemented = [item for item in manifest["harnesses"] if item["status"] == "implemented"]
 
     ids = {item["id"] for item in implemented}
-    assert {"claude", "codex", "opencode", "vscode-copilot", "cursor", "shell-ci"} <= ids
+    assert {"claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "shell-ci"} <= ids
     for item in implemented:
         assert item.get("default_command"), item["id"]
         assert item.get("proof") not in {None, "none"}, item["id"]

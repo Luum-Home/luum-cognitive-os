@@ -13,7 +13,7 @@ Migration history (Phases 2.1 → 2.3 → 2.final):
   MIGRATED:   main()               (Phase 2.final, 2026-04-27)
 
 Usage (direct):
-    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor|shell-ci]
+    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor|qwen-code|shell-ci]
 
 Usage (internal dispatcher — kept for backward compat):
     python3 scripts/cos_init.py --internal-call detect_harness [project_root]
@@ -39,8 +39,8 @@ from pathlib import Path
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
 
 
-SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "shell-ci")
-STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor"}
+SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "shell-ci")
+STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor", "qwen-code"}
 SHELL_CI_HARNESSES = {"shell-ci"}
 
 HARNESS_SETTINGS = {
@@ -49,6 +49,7 @@ HARNESS_SETTINGS = {
     "opencode": ("opencode.json", "opencode.json"),
     "vscode-copilot": (".github/copilot-instructions.md", ".github/copilot-instructions.md"),
     "cursor": (".cursor/rules/cognitive-os.mdc", ".cursor/rules/cognitive-os.mdc"),
+    "qwen-code": (".qwen/settings.json", ".qwen/settings.json"),
     "shell-ci": (".cognitive-os/shell-ci-projection.json", ".cognitive-os/shell-ci-projection.json"),
 }
 
@@ -931,6 +932,26 @@ def _write_structural_instruction_harness_settings(project_dir: Path, harness: s
         print("Created .github/copilot-instructions.md and .vscode/mcp.json with COS projection")
         return
 
+
+    if harness == "qwen-code":
+        qwen_md = project_dir / "QWEN.md"
+        qwen_md.write_text(common_body, encoding="utf-8")
+        _write_json_if_changed(
+            project_dir / ".qwen" / "settings.json",
+            {
+                "context": {
+                    "fileName": ["QWEN.md", "AGENTS.md", ".cognitive-os/rules/cos/RULES-COMPACT.md"],
+                    "includeDirectories": [".cognitive-os/rules/cos", ".cognitive-os/skills/cos"],
+                    "loadFromIncludeDirectories": True,
+                    "fileFiltering": {"respectGitIgnore": True},
+                },
+                "mcpServers": {},
+                "tools": {"approvalMode": "default"},
+            },
+        )
+        print("Created .qwen/settings.json and QWEN.md with COS projection")
+        return
+
     if harness == "cursor":
         rule = project_dir / ".cursor" / "rules" / "cognitive-os.mdc"
         rule.parent.mkdir(parents=True, exist_ok=True)
@@ -1153,6 +1174,8 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         driver_dirs.extend([".vscode"])
     elif harness == "cursor":
         driver_dirs.extend([".cursor/rules"])
+    elif harness == "qwen-code":
+        driver_dirs.extend([".qwen"])
     elif harness == "shell-ci":
         driver_dirs.extend(["scripts", ".github/workflows", ".cognitive-os/scripts/cos"])
 
