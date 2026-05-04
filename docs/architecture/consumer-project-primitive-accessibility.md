@@ -44,6 +44,19 @@ Generated reports:
 
 Each row includes `consumer_accessibility` and `consumer_access_next_action`. Treat `so-local-only`, `repo-skill-not-projectable`, and `skill-referenced-not-projectable` as not available to consumer projects until an install/profile/package path proves otherwise.
 
+## Explicit availability overrides
+
+`manifests/primitive-consumer-availability.yaml` is the explicit classification layer for lifecycle-declared consumer candidates that are not directly resolved by projection output. It prevents ACC from treating every lifecycle candidate as a consumer-project file.
+
+Allowed statuses:
+
+- `shell-ci-candidate`: intended consumer CLI/shell surface, but still needs shell/CI projection proof.
+- `projectable-needs-driver`: intended consumer surface, but no harness/profile driver exists yet.
+- `maintainer-only`: SO maintainer primitive; represented and documented, not consumer-project debt.
+- `so-local-only`: local helper/context surface; not consumer-project debt.
+
+Only `shell-ci-candidate` and `projectable-needs-driver` should remain partial. `maintainer-only` and `so-local-only` are considered aligned when explicitly declared with rationale.
+
 ## Harness registry
 
 The machine-readable registry is `manifests/harness-projection.yaml`. ACC treats only `status: implemented` harnesses as executable projection proof. Planned harnesses stay visible as `unverified` rather than silently disappearing or being implied by Claude/Codex support.

@@ -2,11 +2,11 @@
 
 ## Summary
 
-Total items: 2479
-- done_weak_proof: 1029
-- done_with_proof: 201
-- planned: 970
-- proposed: 279
+Total items: 2480
+- done_weak_proof: 1031
+- done_with_proof: 202
+- planned: 974
+- proposed: 273
 
 ## Items Needing Attention
 
@@ -538,6 +538,8 @@ Total items: 2479
 | docs/adrs/ADR-148-adr-authoring-primitive.md | 77 | done | done_weak_proof | 0.62 | Implemented in `scripts/cos-new-adr`: shell entrypoint that resolves the project and invokes the Python authoring primitive. | terms:authoring,entrypoint,implemented,invokes,primitive,project,python,resolves | add explicit test/workflow/proof link |
 | docs/adrs/ADR-149-primitive-duplication-audit.md | 4 | done | done_weak_proof | 0.62 | status: accepted | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/adrs/ADR-149-primitive-duplication-audit.md | 22 | done | done_weak_proof | 0.62 | **Accepted** — 2026-05-04 | weak_terms:accepted | add explicit test/workflow/proof link |
+| docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md | 4 | done | done_weak_proof | 0.62 | status: accepted | weak_terms:accepted | add explicit test/workflow/proof link |
+| docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md | 22 | done | done_weak_proof | 0.62 | **Accepted** — 2026-05-04 | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/adw-patterns.md | 212 | done | done_weak_proof | 0.62 | Pipeline state is persisted to `.cognitive-os/pipeline-state/{change}.json` after every phase completion. Use `--resume` to continue from the last completed phase. | terms:after,change,cognitive-os,completed,completion,continue,every,json | add explicit test/workflow/proof link |
 | docs/agent-efficiency-strategy.md | 74 | done | done_weak_proof | 0.62 | **Status: Partially implemented (lean profile exists), not used by default** | terms:default,exists,implemented,lean,partially,profile,used | add explicit test/workflow/proof link |
 | docs/agent-efficiency-strategy.md | 127 | done | done_weak_proof | 0.62 | Approaches (a) and (d) are already implemented in infrastructure and require only config changes. They deliver the maximum token reduction for minimum implementation effort. | terms:already,approaches,changes,config,deliver,effort,implementation,implemented | add explicit test/workflow/proof link |
@@ -598,7 +600,7 @@ Total items: 2479
 | docs/architecture/adrs/README.md | 65 | done | done_weak_proof | 0.62 | This session closed the last 7 Claude Code feature gaps and brought the OS to 98% | terms:brought,claude,closed,code,feature,gaps,last,session | add explicit test/workflow/proof link |
 | docs/architecture/advisor-mcp-architecture-review.md | 21 | done | done_weak_proof | 0.62 | Commit `47d81773` added two advisor paths at the same time: | terms:added,advisor,commit,paths,same,time | add explicit test/workflow/proof link |
 | docs/architecture/advisor-mcp-architecture-review.md | 110 | done | done_weak_proof | 0.62 | Implemented resolver contract: | terms:contract,implemented,resolver | add explicit test/workflow/proof link |
-| docs/architecture/agent-capability-coverage-pipeline.md | 100 | done | done_weak_proof | 0.62 | Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`. | terms:adding,before,changing,driver,implemented,implementing,manifest,means | add explicit test/workflow/proof link |
+| docs/architecture/agent-capability-coverage-pipeline.md | 103 | done | done_weak_proof | 0.62 | Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`. | terms:adding,before,changing,driver,implemented,implementing,manifest,means | add explicit test/workflow/proof link |
 | docs/architecture/agent-computer-interface.md | 3 | done | done_weak_proof | 0.62 | > Status: MVP implemented for normalized observations. | terms:implemented,normalized,observations | add explicit test/workflow/proof link |
 | docs/architecture/agent-trajectory-schema.md | 3 | done | done_weak_proof | 0.62 | > Status: MVP implemented via ACI capture. | weak_terms:capture,implemented | add explicit test/workflow/proof link |
 | docs/architecture/agentic-kernel-philosophy.md | 92 | done | done_weak_proof | 0.62 | `production` — implemented and covered by tests; | terms:covered,implemented,production,tests | add explicit test/workflow/proof link |
@@ -939,7 +941,7 @@ Total items: 2479
 | docs/leverage-points.md | 185 | done | done_weak_proof | 0.62 | **Gap**: ADW concept is implemented but not explicitly named as such. See `adw-patterns.md` for formalization. | terms:adw-patterns,concept,explicitly,implemented,named,such | add explicit test/workflow/proof link |
 | docs/leverage-points.md | 193 | done | done_weak_proof | 0.62 | **Cognitive OS Status**: Implemented | weak_terms:implemented | add explicit test/workflow/proof link |
 | docs/leverage-points.md | 211 | done | done_weak_proof | 0.62 | **Cognitive OS Status**: Implemented | weak_terms:implemented | add explicit test/workflow/proof link |
-| docs/manual-tests/agent-capability-coverage-pipeline.md | 86 | done | done_weak_proof | 0.62 | Confirm all named IDEs are declared and only implemented harnesses are signed: | terms:confirm,declared,harnesses,ides,implemented,named,only,signed | add explicit test/workflow/proof link |
+| docs/manual-tests/agent-capability-coverage-pipeline.md | 91 | done | done_weak_proof | 0.62 | Confirm all named IDEs are declared and only implemented harnesses are signed: | terms:confirm,declared,harnesses,ides,implemented,named,only,signed | add explicit test/workflow/proof link |
 | docs/manual-tests/closure-discipline.md | 4 | done | done_weak_proof | 0.62 | closed the validation surfaces it invalidated. | terms:closed,invalidated,surfaces,validation | add explicit test/workflow/proof link |
 | docs/manual-tests/closure-discipline.md | 8 | done | done_weak_proof | 0.62 | Run this manually before calling a multi-file maintainer batch “done” when it | terms:batch,before,calling,done,maintainer,manually,multi-file,when | add explicit test/workflow/proof link |
 | docs/manual-tests/closure-discipline.md | 89 | done | done_weak_proof | 0.62 | A closure claim without this evidence is a partial-completion claim, not a done | terms:claim,closure,done,evidence,partial-completion,without | add explicit test/workflow/proof link |

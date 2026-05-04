@@ -10530,7 +10530,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 72,
         "hook": 11,
         "rule": 3,
@@ -10558,6 +10558,10 @@
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "doc",
@@ -11020,7 +11024,7 @@
         "script_consumers:7",
         "test_consumers:15",
         "doc_consumers:72",
-        "config_consumers:5"
+        "config_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -11030,7 +11034,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 118
+      "total_consumers": 119
     },
     {
       "confidence": "medium",

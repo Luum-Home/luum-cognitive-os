@@ -156,6 +156,9 @@ def status_for(row: dict[str, Any], family: str, projected: dict[str, dict[str, 
     projected = projected or {}
     if row.get("path") in projected:
         return "aligned"
+    override = row.get("_consumer_availability_override", {})
+    if override.get("status") in {"maintainer-only", "so-local-only"}:
+        return "aligned"
     access = row.get("consumer_accessibility", "so-local-only")
     role = row.get("role", "")
     if family == "scripts" and role == "agentic-primitive" and not row.get("lifecycle_id"):
@@ -176,7 +179,16 @@ def capability_from_readiness(row: dict[str, Any], family: str, projected: dict[
     kind = "script" if family == "scripts" else family[:-1]
     projection = projected.get(row.get("path", ""))
     status = status_for(row, family, projected)
-    effective_access = "projected-consumer-surface" if projection else row.get("consumer_accessibility", "so-local-only")
+    override = row.get("_consumer_availability_override", {})
+    projection_class = projection.get("projection_class") if projection else None
+    if projection_class in {"profile-driver", "maintainer-only", "so-local-only"}:
+        effective_access = projection_class
+    elif override.get("status") in {"maintainer-only", "so-local-only", "shell-ci-candidate", "projectable-needs-driver"}:
+        effective_access = override["status"]
+    elif projection:
+        effective_access = "projected-consumer-surface"
+    else:
+        effective_access = row.get("consumer_accessibility", "so-local-only")
     represented = []
     if row.get("role") not in {"archive"}:
         represented.append({
@@ -193,8 +205,13 @@ def capability_from_readiness(row: dict[str, Any], family: str, projected: dict[
         evidence.append(f"lifecycle_state:{row['lifecycle_state']}")
     if row.get("consumer_accessibility"):
         evidence.append(f"consumer_accessibility:{row['consumer_accessibility']}")
+    if override:
+        evidence.append(f"availability_override:{override.get('status')}")
+        if override.get("rationale"):
+            evidence.append(f"availability_rationale:{override['rationale'][:120]}")
     if projection:
-        evidence.append(f"projected_harnesses:{','.join(projection['harnesses'])}")
+        if projection.get("harnesses"):
+            evidence.append(f"projected_harnesses:{','.join(projection['harnesses'])}")
         if projection.get("profiles"):
             evidence.append(f"projected_profiles:{','.join(projection['profiles'])}")
         if projection.get("projection_class"):
@@ -219,10 +236,15 @@ def capability_from_readiness(row: dict[str, Any], family: str, projected: dict[
     )
 
 
-def load_readiness_capabilities(root: Path, projected: dict[str, dict[str, Any]] | None = None) -> tuple[dict[str, AdapterStatus], list[Capability], list[Finding]]:
+def load_readiness_capabilities(
+    root: Path,
+    projected: dict[str, dict[str, Any]] | None = None,
+    availability: dict[str, dict[str, Any]] | None = None,
+) -> tuple[dict[str, AdapterStatus], list[Capability], list[Finding]]:
     adapters: dict[str, AdapterStatus] = {}
     capabilities: list[Capability] = []
     findings: list[Finding] = []
+    availability = availability or {}
     for family, rel in READINESS_FILES.items():
         path = root / rel
         name = f"readiness:{family}"
@@ -237,6 +259,9 @@ def load_readiness_capabilities(root: Path, projected: dict[str, dict[str, Any]]
             continue
         adapters[name] = AdapterStatus("ok", rel, summary=data.get("summary", {}))
         for row in rows:
+            if row.get("path") in availability:
+                row = dict(row)
+                row["_consumer_availability_override"] = availability[row["path"]]
             cap = capability_from_readiness(row, family, projected)
             capabilities.append(cap)
             if cap.mapping_status == "missing":
@@ -296,6 +321,31 @@ def load_projection_profiles(root: Path) -> tuple[AdapterStatus, dict[str, Any]]
         "projection_classes": sorted((data.get("projection_classes") or {}).keys()),
     }
     return AdapterStatus("ok", "manifests/primitive-projection-profiles.yaml", summary=summary), data
+
+
+def load_consumer_availability(root: Path) -> tuple[AdapterStatus, dict[str, dict[str, Any]]]:
+    path = root / "manifests" / "primitive-consumer-availability.yaml"
+    if not path.exists():
+        return AdapterStatus("unverified", "manifests/primitive-consumer-availability.yaml", error="missing consumer availability manifest"), {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    items = data.get("items", [])
+    availability: dict[str, dict[str, Any]] = {}
+    statuses: dict[str, int] = {}
+    for item in items:
+        item_path = item.get("path")
+        status = item.get("status", "unknown")
+        if not item_path:
+            continue
+        availability[str(item_path)] = dict(item)
+        statuses[str(status)] = statuses.get(str(status), 0) + 1
+    return (
+        AdapterStatus(
+            "ok",
+            "manifests/primitive-consumer-availability.yaml",
+            summary={"items": len(availability), "statuses": dict(sorted(statuses.items()))},
+        ),
+        availability,
+    )
 
 
 def implemented_harness_ids(manifest: dict[str, Any]) -> tuple[str, ...]:
@@ -632,14 +682,16 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
     refresh_statuses = refresh_adapters(root, include_slow) if refresh else {}
     harness_status, harness_manifest = load_harness_projection(root)
     profile_status, profile_manifest = load_projection_profiles(root)
+    availability_status, availability = load_consumer_availability(root)
     projection_status, projected = collect_consumer_projection(root, implemented_harness_ids(harness_manifest), DEFAULT_PROJECTION_PROFILES, profile_manifest)
-    readiness_adapters, capabilities, findings = load_readiness_capabilities(root, projected)
+    readiness_adapters, capabilities, findings = load_readiness_capabilities(root, projected, availability)
     existing_adapters, existing_findings = existing_tool_findings(root)
     findings.extend(existing_findings)
     adapters = {
         **refresh_statuses,
         "harness_projection": harness_status,
         "projection_profiles": profile_status,
+        "consumer_availability": availability_status,
         "consumer_projection": projection_status,
         **readiness_adapters,
         **existing_adapters,
