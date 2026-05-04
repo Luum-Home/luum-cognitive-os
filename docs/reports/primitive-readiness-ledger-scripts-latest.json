@@ -1434,10 +1434,10 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 7,
         "hook": 2,
         "rule": 2,
@@ -1449,6 +1449,10 @@
         {
           "family": "config",
           "path": "manifests/adr-closure-metadata.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
@@ -1511,29 +1515,32 @@
           "path": "tests/integration/test_aspirational_audit.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
         "hook_consumers:2",
         "doc_consumers:7",
         "rule_consumers:2",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/aspirational_audit.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/aspirational_audit.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 16,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 17,
       "wrapper_for": null
     },
     {
@@ -2118,15 +2125,20 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "script": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/tooling-update-protocol.md"
@@ -2144,26 +2156,30 @@
           "path": "tests/unit/test_check_mcp_servers.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/check_mcp_servers.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/check_mcp_servers.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 4,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -2699,16 +2715,16 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 23,
-        "doc": 378,
+        "doc": 380,
         "hook": 67,
         "rule": 42,
         "script": 185,
         "skill": 55,
-        "test": 303
+        "test": 304
       },
       "consumers": [
         {
@@ -3457,6 +3473,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/consumer-project-primitive-accessibility.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -4010,6 +4030,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/codex-host-tooling-verification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/consumer-project-primitive-accessibility.md"
         },
         {
           "family": "doc",
@@ -5833,6 +5857,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_consumer_project_projection.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_content_policy.py"
         },
         {
@@ -6924,30 +6952,33 @@
           "path": "tests/unit/test_work_queue_sync.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:55",
-        "test_consumers:303",
+        "test_consumers:304",
         "hook_consumers:67",
-        "doc_consumers:378",
+        "doc_consumers:380",
         "rule_consumers:42",
         "config_consumers:23",
         "script_consumers:185"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 55,
-      "supported_harnesses": [],
-      "total_consumers": 1053,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 1056,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -7831,14 +7862,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
@@ -7856,25 +7892,29 @@
           "path": "tests/red_team/portability/test_cos-coordination-status.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:2"
+        "doc_consumers:2",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-coordination-status.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-coordination-status.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 4,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -10133,14 +10173,19 @@
       "wrapper_for": "scripts/queue_throughput_bench.py"
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 1,
         "hook": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "hook",
           "path": "hooks/direct-main-guard.sh"
@@ -10150,25 +10195,29 @@
           "path": "tests/red_team/portability/test_cos-merge-queue-worker.py"
         }
       ],
-      "distribution": null,
+      "distribution": "maintainer",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos-gate-stack.sh",
         "test_consumers:1",
-        "hook_consumers:1"
+        "hook_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-merge-queue-worker.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-merge-queue-worker.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "wrapper",
+      "role_source": "lifecycle",
       "skill_consumers": 0,
-      "supported_harnesses": [],
-      "total_consumers": 2,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 3,
       "wrapper_for": "scripts/cos-gate-stack.sh"
     },
     {
@@ -10642,14 +10691,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 4,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/bootstrap-portability.md"
@@ -10675,26 +10729,30 @@
           "path": "tests/integration/test_fresh_install_canary.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:4",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-release-check.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-release-check.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 6,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 7,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -11209,15 +11267,20 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 3,
         "rule": 1,
         "skill": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-072-test-lane-taxonomy.md"
@@ -11247,26 +11310,30 @@
           "path": "tests/audit/test_test_runner_role_taxonomy.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:2",
         "test_consumers:1",
         "doc_consumers:3",
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-smoke.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-smoke.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 2,
-      "supported_harnesses": [],
-      "total_consumers": 7,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -11317,15 +11384,20 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 12,
         "script": 5,
         "skill": 1,
         "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "README.md"
@@ -11415,26 +11487,30 @@
           "path": "tests/unit/test_cross_platform_discipline.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:4",
         "doc_consumers:12",
+        "config_consumers:1",
         "script_consumers:5"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-status.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-status.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 22,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 23,
       "wrapper_for": null
     },
     {
@@ -11663,14 +11739,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 3,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/bootstrap-portability.md"
@@ -11692,37 +11773,46 @@
           "path": "tests/behavior/test_secondary_script_portability.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:3",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-usage-report.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-usage-report.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 5,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "script": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-113-validation-capsule-liveness.md"
@@ -11744,26 +11834,30 @@
           "path": "tests/integration/test_validation_status_break.py"
         }
       ],
-      "distribution": null,
+      "distribution": "maintainer",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos-validation-status.sh",
         "test_consumers:1",
         "doc_consumers:2",
+        "config_consumers:1",
         "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-validation-break.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-validation-break.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "wrapper",
+      "role_source": "lifecycle",
       "skill_consumers": 0,
-      "supported_harnesses": [],
-      "total_consumers": 5,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos-validation-status.sh"
     },
     {
@@ -11839,15 +11933,20 @@
       "wrapper_for": null
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "script": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-113-validation-capsule-liveness.md"
@@ -11865,26 +11964,30 @@
           "path": "tests/integration/test_validation_status_break.py"
         }
       ],
-      "distribution": null,
+      "distribution": "maintainer",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos-validation-break.sh",
         "test_consumers:1",
         "doc_consumers:1",
+        "config_consumers:1",
         "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-validation-status.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-validation-status.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "wrapper",
+      "role_source": "lifecycle",
       "skill_consumers": 0,
-      "supported_harnesses": [],
-      "total_consumers": 4,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
       "wrapper_for": "scripts/cos-validation-break.sh"
     },
     {
@@ -12173,14 +12276,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "skill": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/concurrency-safety-core-consumer-contract.md"
@@ -12198,25 +12306,29 @@
           "path": "tests/behavior/test_cos_worktree_triage.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:2",
         "test_consumers:1",
-        "doc_consumers:1"
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos-worktree-triage.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-worktree-triage.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 2,
-      "supported_harnesses": [],
-      "total_consumers": 4,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -12274,9 +12386,9 @@
       "wrapper_for": null
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 3,
         "doc": 5,
@@ -12329,8 +12441,9 @@
           "path": "tests/unit/test_cos_architecture_readiness.py"
         }
       ],
-      "distribution": null,
+      "distribution": "maintainer",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos_branch_lease.py",
         "test_consumers:1",
         "doc_consumers:5",
@@ -12339,23 +12452,25 @@
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos_architecture_readiness.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos_architecture_readiness.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "wrapper",
+      "role_source": "lifecycle",
       "skill_consumers": 0,
-      "supported_harnesses": [],
+      "supported_harnesses": [
+        "shell"
+      ],
       "total_consumers": 11,
       "wrapper_for": "scripts/cos_branch_lease.py"
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 2,
         "script": 1
@@ -12374,24 +12489,27 @@
           "path": "scripts/cos-boring-reliability"
         }
       ],
-      "distribution": null,
+      "distribution": "maintainer",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos_architecture_readiness.py",
         "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos_boring_reliability.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos_boring_reliability.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "wrapper",
+      "role_source": "lifecycle",
       "skill_consumers": 0,
-      "supported_harnesses": [],
+      "supported_harnesses": [
+        "shell"
+      ],
       "total_consumers": 3,
       "wrapper_for": "scripts/cos_architecture_readiness.py"
     },
@@ -12728,9 +12846,9 @@
       "wrapper_for": null
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 2,
         "doc": 2,
@@ -12763,8 +12881,9 @@
           "path": "tests/unit/test_closure_discipline_audit.py"
         }
       ],
-      "distribution": null,
+      "distribution": "maintainer",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos-validation-capsule.sh",
         "test_consumers:1",
         "doc_consumers:2",
@@ -12773,16 +12892,18 @@
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos_closure_discipline_audit.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos_closure_discipline_audit.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "wrapper",
+      "role_source": "lifecycle",
       "skill_consumers": 0,
-      "supported_harnesses": [],
+      "supported_harnesses": [
+        "shell"
+      ],
       "total_consumers": 6,
       "wrapper_for": "scripts/cos-validation-capsule.sh"
     },
@@ -13652,9 +13773,9 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 2,
+        "doc": 4,
         "script": 2,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -13671,11 +13792,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/consumer-project-primitive-accessibility.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/red-team-harness-design.md"
         },
         {
           "family": "doc",
           "path": "docs/architecture/red-team-harness-proposal.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/consumer-project-primitive-accessibility.md"
         },
         {
           "family": "script",
@@ -13684,6 +13813,10 @@
         {
           "family": "script",
           "path": "scripts/cos-init.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_consumer_project_projection.py"
         },
         {
           "family": "test",
@@ -13715,8 +13848,8 @@
         "lifecycle",
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
-        "test_consumers:6",
-        "doc_consumers:2",
+        "test_consumers:7",
+        "doc_consumers:4",
         "config_consumers:3",
         "script_consumers:2"
       ],
@@ -13734,7 +13867,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 16,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -13823,8 +13956,8 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 2,
         "doc": 3,
@@ -13865,8 +13998,9 @@
           "path": "tests/red_team/portability/test_cos_primitive_harvester_portability.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos_work_inventory.py",
         "skill_consumers:1",
         "test_consumers:2",
@@ -13875,16 +14009,18 @@
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos_primitive_harvester.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos_primitive_harvester.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
+      "supported_harnesses": [
+        "shell"
+      ],
       "total_consumers": 8,
       "wrapper_for": "scripts/cos_work_inventory.py"
     },
@@ -13927,36 +14063,45 @@
       "wrapper_for": null
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 1,
         "script": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "script",
           "path": "scripts/cos-recovery-drill"
         }
       ],
-      "distribution": null,
+      "distribution": "maintainer",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos_wip_safety_score.py",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos_recovery_drill.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos_recovery_drill.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "wrapper",
+      "role_source": "lifecycle",
       "skill_consumers": 0,
-      "supported_harnesses": [],
-      "total_consumers": 1,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 2,
       "wrapper_for": "scripts/cos_wip_safety_score.py"
     },
     {
@@ -14055,14 +14200,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 3,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/cross-tool-task-recovery-research-2026-05.md"
@@ -14084,26 +14234,30 @@
           "path": "tests/unit/test_cos_session_backlog.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/adr_implementation_ledger.py",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:3",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos_session_backlog.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos_session_backlog.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 5,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
       "wrapper_for": "scripts/adr_implementation_ledger.py"
     },
     {
@@ -14536,9 +14690,10 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 8,
         "hook": 2,
         "script": 7,
@@ -14546,6 +14701,10 @@
         "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
@@ -14643,27 +14802,31 @@
           "path": "tests/unit/test_cos_work_inventory.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:3",
         "test_consumers:4",
         "hook_consumers:2",
         "doc_consumers:8",
+        "config_consumers:1",
         "script_consumers:7"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos_work_inventory.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos_work_inventory.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 3,
-      "supported_harnesses": [],
-      "total_consumers": 24,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 25,
       "wrapper_for": null
     },
     {
@@ -14758,14 +14921,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "script": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md"
@@ -14783,36 +14951,45 @@
           "path": "skills/worktree-triage/SKILL.md"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "doc_consumers:2",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cos_worktree_triage.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos_worktree_triage.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 4,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "rule": 2,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
@@ -14826,24 +15003,28 @@
           "path": "skills/cost-predictor/SKILL.md"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
-        "rule_consumers:2"
+        "rule_consumers:2",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/cost_predict.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cost_predict.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 3,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -14959,14 +15140,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 3,
         "skill": 1,
         "test": 6
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-01.md"
@@ -15008,36 +15194,45 @@
           "path": "tests/unit/test_decision_triage.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:6",
-        "doc_consumers:3"
+        "doc_consumers:3",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/decision_triage.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/decision_triage.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 10,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 1,
         "doc": 4,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/business/master-plan-checklist.md"
@@ -15059,25 +15254,29 @@
           "path": "tests/integration/test_first_run_onboarding.py"
         }
       ],
-      "distribution": null,
+      "distribution": "maintainer",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "test_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:4",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/demo-first-run-onboarding.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/demo-first-run-onboarding.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "wrapper",
+      "role_source": "lifecycle",
       "skill_consumers": 0,
-      "supported_harnesses": [],
-      "total_consumers": 5,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -15124,14 +15323,19 @@
       "wrapper_for": null
     },
     {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 1,
         "doc": 4,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-064-harness-agnostic-cognitive-os.md"
@@ -15153,25 +15357,29 @@
           "path": "tests/integration/test_portability_demo.py"
         }
       ],
-      "distribution": null,
+      "distribution": "maintainer",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "test_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:4",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/demo-portability-proof.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/demo-portability-proof.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "wrapper",
+      "role_source": "lifecycle",
       "skill_consumers": 0,
-      "supported_harnesses": [],
-      "total_consumers": 5,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -15418,9 +15626,10 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "rule": 1,
         "script": 1,
@@ -15428,6 +15637,10 @@
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
@@ -15449,27 +15662,31 @@
           "path": "tests/unit/test_doc_review_personas.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
         "rule_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/doc_review_personas.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/doc_review_personas.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 5,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -15526,15 +15743,20 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "script": 1,
         "skill": 1,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/documentation-execution-audit.md"
@@ -15564,26 +15786,30 @@
           "path": "tests/unit/test_projected_hook_gap_behaviors.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:3",
         "doc_consumers:2",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/docs_execution_audit.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/docs_execution_audit.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 7,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -15739,14 +15965,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -15760,38 +15991,47 @@
           "path": "tests/unit/test_document_feature.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/document_feature_append.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/document_feature_append.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 3,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 5,
         "rule": 2,
         "script": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-059-so-existential-validation.md"
@@ -15829,38 +16069,47 @@
           "path": "skills/dogfood-score/SKILL.md"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "doc_consumers:5",
         "rule_consumers:2",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/dogfood_score.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/dogfood_score.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 9,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -15874,32 +16123,37 @@
           "path": "tests/unit/test_domain_model.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/domain_model.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/domain_model.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 3,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 5,
         "hook": 3,
         "script": 3,
@@ -15907,6 +16161,10 @@
         "test": 8
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-098-multi-agent-file-coordination.md"
@@ -15988,27 +16246,31 @@
           "path": "tests/unit/test_projected_hook_gap_behaviors.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:8",
         "hook_consumers:3",
         "doc_consumers:5",
+        "config_consumers:1",
         "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/edit-coop.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/edit-coop.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 20,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 21,
       "wrapper_for": null
     },
     {
@@ -16294,10 +16556,10 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 5,
         "hook": 1,
         "rule": 2,
@@ -16308,6 +16570,10 @@
         {
           "family": "config",
           "path": "manifests/adr-closure-metadata.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
@@ -16354,28 +16620,31 @@
           "path": "tests/unit/test_compat_test.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
         "hook_consumers:1",
         "doc_consumers:5",
         "rule_consumers:2",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/generate_compact_catalog.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/generate_compact_catalog.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 12,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -16550,14 +16819,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "script": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-086-hook-execution-observability.md"
@@ -16571,33 +16845,37 @@
           "path": "skills/hook-timing/SKILL.md"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "doc_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/hook-stream-statusline.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/hook-stream-statusline.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 3,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 5,
         "script": 5,
         "skill": 1,
@@ -16607,6 +16885,10 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
@@ -16677,27 +16959,30 @@
           "path": "tests/unit/test_session_start_budget.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:6",
         "doc_consumers:5",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:5"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/hook-timing-wrapper.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/hook-timing-wrapper.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 18,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 19,
       "wrapper_for": null
     },
     {
@@ -16762,13 +17047,18 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 3,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-086-hook-execution-observability.md"
@@ -16786,24 +17076,28 @@
           "path": "skills/hook-timing/SKILL.md"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:3",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/hook_timing_report.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/hook_timing_report.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 4,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -17449,14 +17743,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "rule": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -17474,25 +17773,29 @@
           "path": "tests/unit/test_invariant_check_helper.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/invariant_check_helper.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/invariant_check_helper.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 4,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -17618,15 +17921,20 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "rule": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
@@ -17652,27 +17960,31 @@
           "path": "tests/unit/test_llm_status.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/smoke-qwen-fallback.sh",
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:2",
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/llm_status.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/llm_status.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 6,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 7,
       "wrapper_for": "scripts/smoke-qwen-fallback.sh"
     },
     {
@@ -17905,15 +18217,20 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 5,
         "hook": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
@@ -17951,27 +18268,31 @@
           "path": "tests/unit/test_multi_agent_coordination_primitives.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/derived_artifact_gate.py",
         "skill_consumers:1",
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:5"
+        "doc_consumers:5",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/merge-to-main.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/merge-to-main.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 9,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 10,
       "wrapper_for": "scripts/derived_artifact_gate.py"
     },
     {
@@ -18014,14 +18335,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -18035,25 +18361,29 @@
           "path": "tests/unit/test_ops_runbook.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/ops_runbook.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/ops_runbook.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 3,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -18579,6 +18909,68 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "doc": 6,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-146-primitive-readiness-ledger.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/consumer-project-primitive-accessibility.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-readiness-continuity-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-readiness-ledger-family-extension.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/consumer-project-primitive-accessibility.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_family_readiness_ledger_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_family_readiness_ledger.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:6"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/primitive_family_readiness_ledger.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 8,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
         "doc": 2,
         "script": 2,
         "test": 3
@@ -18692,7 +19084,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 6,
         "test": 3
       },
       "consumers": [
@@ -18706,11 +19098,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/consumer-project-primitive-accessibility.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/primitive-readiness-continuity-plan.md"
         },
         {
           "family": "doc",
           "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/consumer-project-primitive-accessibility.md"
         },
         {
           "family": "doc",
@@ -18732,7 +19132,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:4",
+        "doc_consumers:6",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -18747,7 +19147,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -18804,15 +19204,20 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "script": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
@@ -18838,39 +19243,48 @@
           "path": "tests/unit/test_primitive_surface_reduce.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:2",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/primitive_surface_reduce.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/primitive_surface_reduce.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 6,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 3,
         "script": 1,
         "skill": 2,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
@@ -18904,33 +19318,38 @@
           "path": "tests/unit/test_primitive_usage_map.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:2",
         "test_consumers:2",
         "doc_consumers:3",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/primitive_usage_map.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/primitive_usage_map.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 2,
-      "supported_harnesses": [],
-      "total_consumers": 8,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "hook": 1,
         "rule": 1,
@@ -18939,6 +19358,10 @@
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-054-project-docs-convention.md"
@@ -18964,28 +19387,32 @@
           "path": "tests/unit/test_project_scaffolder.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
         "hook_consumers:1",
         "doc_consumers:1",
         "rule_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/project_scaffold.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/project_scaffold.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 6,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -19036,9 +19463,10 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 11,
         "hook": 1,
         "rule": 1,
@@ -19047,6 +19475,10 @@
         "test": 9
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-27.md"
@@ -19160,28 +19592,32 @@
           "path": "tests/unit/test_pytest_with_summary_empty_lanes.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:4",
         "test_consumers:9",
         "hook_consumers:1",
         "doc_consumers:11",
         "rule_consumers:1",
+        "config_consumers:1",
         "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/pytest-with-summary.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/pytest-with-summary.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 4,
-      "supported_harnesses": [],
-      "total_consumers": 28,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 29,
       "wrapper_for": null
     },
     {
@@ -19267,14 +19703,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-066-polyglot-language-boundaries.md"
@@ -19292,37 +19733,46 @@
           "path": "tests/unit/test_radar_merge.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:2"
+        "doc_consumers:2",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/radar_merge.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/radar_merge.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 4,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/RED-TEAM-CHANGELOG.md"
@@ -19344,25 +19794,29 @@
           "path": "tests/contracts/test_redteam_portability_coverage.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:2"
+        "doc_consumers:2",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/redteam_aggregate.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/redteam_aggregate.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 5,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -19767,14 +20221,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -19788,32 +20247,37 @@
           "path": "tests/unit/test_risk_register.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/risk_register.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/risk_register.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 3,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "rule": 1,
         "script": 1,
@@ -19821,6 +20285,10 @@
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
@@ -19842,27 +20310,31 @@
           "path": "tests/unit/test_project_docs_writers.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
         "rule_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/rules_export.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/rules_export.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 5,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -19910,10 +20382,10 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 6,
         "rule": 1,
         "skill": 2,
@@ -19923,6 +20395,10 @@
         {
           "family": "config",
           "path": ".claude/settings.local.json"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
@@ -19965,40 +20441,48 @@
           "path": "tests/audit/test_test_runner_role_taxonomy.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:2",
         "test_consumers:1",
         "doc_consumers:6",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/run-all-tests.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/run-all-tests.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 2,
-      "supported_harnesses": [],
-      "total_consumers": 11,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 4,
         "script": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/RED-TEAM-CHANGELOG.md"
@@ -20032,26 +20516,30 @@
           "path": "tests/contracts/test_redteam_portability_coverage.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:4",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/run-redteam-scenario.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/run-redteam-scenario.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 8,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -20274,9 +20762,10 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "rule": 1,
         "script": 1,
@@ -20284,6 +20773,10 @@
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
@@ -20305,27 +20798,31 @@
           "path": "tests/unit/test_project_docs_writers.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:1",
         "rule_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/security_audit_writer.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/security_audit_writer.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 5,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -21201,46 +21698,60 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "skill",
           "path": "skills/doc-review-personas/SKILL.md"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/doc_review_personas.py",
-        "skill_consumers:1"
+        "skill_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/smoke-doc-review-personas.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/smoke-doc-review-personas.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 1,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 2,
       "wrapper_for": "scripts/doc_review_personas.py"
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-062-multi-provider-agent-loop.md"
@@ -21250,37 +21761,46 @@
           "path": "skills/llm-status/SKILL.md"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
-        "doc_consumers:1"
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/smoke-multi-provider-fallback.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/smoke-multi-provider-fallback.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 2,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "rule": 1,
         "script": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
@@ -21302,27 +21822,31 @@
           "path": "skills/llm-status/SKILL.md"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/orchestrator.py",
         "skill_consumers:1",
         "doc_consumers:2",
         "rule_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/smoke-qwen-fallback.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/smoke-qwen-fallback.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 5,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 6,
       "wrapper_for": "scripts/orchestrator.py"
     },
     {
@@ -21702,13 +22226,18 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-036-sprint-orchestration-primitives.md"
@@ -21718,24 +22247,28 @@
           "path": "skills/cognitive-os-test/SKILL.md"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
-        "doc_consumers:1"
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/sprint-test-summary.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/sprint-test-summary.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 2,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -21916,15 +22449,20 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 4,
         "rule": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-072-test-lane-taxonomy.md"
@@ -21958,38 +22496,47 @@
           "path": "tests/audit/test_test_runner_role_taxonomy.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:4",
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/test-all.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/test-all.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 8,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 4,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-072-test-lane-taxonomy.md"
@@ -22015,25 +22562,29 @@
           "path": "tests/audit/test_test_runner_role_taxonomy.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:4",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/test-cognitive-os-full.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/test-cognitive-os-full.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 6,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -22127,9 +22678,10 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "rule": 1,
         "script": 1,
@@ -22137,6 +22689,10 @@
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/business/master-plan-checklist.md"
@@ -22166,28 +22722,32 @@
           "path": "tests/unit/test_test_run_inventory.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/pytest-with-summary.sh",
         "skill_consumers:2",
         "test_consumers:1",
         "doc_consumers:2",
         "rule_consumers:1",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/test_run_inventory.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/test_run_inventory.py",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 2,
-      "supported_harnesses": [],
-      "total_consumers": 7,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 8,
       "wrapper_for": "scripts/pytest-with-summary.sh"
     },
     {
@@ -22494,14 +23054,19 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "doc": 8,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/RED-TEAM-CHANGELOG.md"
@@ -22547,25 +23112,29 @@
           "path": "tests/contracts/test_redteam_portability_coverage.py"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:8"
+        "doc_consumers:8",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/verify-archived.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/verify-archived.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 11,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -22686,35 +23255,44 @@
     },
     {
       "confidence": "high",
-      "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
-      "consumer_accessibility": "skill-referenced-not-projectable",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
+        "config": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "skill",
           "path": "skills/component-reality-check/SKILL.md"
         }
       ],
-      "distribution": null,
+      "distribution": "team",
       "evidence": [
+        "lifecycle",
         "wrapper_for:scripts/aspirational_audit.py",
-        "skill_consumers:1"
+        "skill_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle metadata or explicit package boundary before claiming shared-agent support",
+      "lifecycle_id": "scripts/weekly-aspirational-audit.sh",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/weekly-aspirational-audit.sh",
       "protected_install_surface": false,
       "role": "agentic-primitive",
-      "role_source": "usage:skill",
+      "role_source": "lifecycle",
       "skill_consumers": 1,
-      "supported_harnesses": [],
-      "total_consumers": 1,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 2,
       "wrapper_for": "scripts/aspirational_audit.py"
     },
     {
@@ -22801,26 +23379,27 @@
     }
   ],
   "summary": {
-    "agentic_primitives_without_lifecycle": 58,
+    "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 125,
-      "medium": 185
+      "high": 134,
+      "medium": 177
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
-      "lifecycle-declared-maintainer": 26,
-      "skill-referenced-not-projectable": 51,
-      "so-local-only": 214
+      "lifecycle-declared-consumer-candidate": 49,
+      "lifecycle-declared-maintainer": 35,
+      "skill-referenced-not-projectable": 2,
+      "so-local-only": 206
     },
     "low_confidence_rows": 0,
     "roles": {
       "agentic-primitive": 103,
       "driver-specific": 10,
       "lab": 13,
-      "maintainer-tool": 173,
+      "maintainer-tool": 174,
       "migration-only": 11
     },
-    "total_scripts": 310,
+    "total_scripts": 311,
     "without_consumers": 4
   },
   "target_family": "scripts"
