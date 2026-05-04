@@ -1,65 +1,65 @@
 schema_version: harness-implementation-phases.v1
 purpose: Machine-readable rollout checklist for multi-IDE/provider harness support.
 phase_order:
-  - ratchet-baseline
-  - structural-instruction-harnesses
-  - shell-ci-formal-harness
-  - qwen-windsurf-kimi-structural
-  - provider-hosted-surfaces
-  - account-backed-runtime-proof
+- ratchet-baseline
+- structural-instruction-harnesses
+- shell-ci-formal-harness
+- qwen-windsurf-kimi-structural
+- provider-hosted-surfaces
+- account-backed-runtime-proof
 phases:
   ratchet-baseline:
     status: done
     acceptance:
-      - acc_fail_new_passes
-      - broad_local_defaults_block_new_surfaces
+    - acc_fail_new_passes
+    - broad_local_defaults_block_new_surfaces
   structural-instruction-harnesses:
     status: in_progress
     implemented_harnesses:
-      - opencode
-      - vscode-copilot
-      - cursor
+    - opencode
+    - vscode-copilot
+    - cursor
     acceptance:
-      - cos_init_temp_project_projection
-      - behavior_tests_assert_generated_files
-      - acc_default_full_projection_counts
+    - cos_init_temp_project_projection
+    - behavior_tests_assert_generated_files
+    - acc_default_full_projection_counts
   shell-ci-formal-harness:
-    status: planned
-    candidate_harnesses:
-      - shell-ci
+    status: done
     acceptance:
-      - first_class_harness_or_equivalent_acc_adapter
-      - workflow_syntax_tests
-      - command_smoke_tests
+    - first_class_harness_or_equivalent_acc_adapter
+    - workflow_syntax_tests
+    - command_smoke_tests
+    implemented_harnesses:
+    - shell-ci
   qwen-windsurf-kimi-structural:
     status: planned
     candidate_harnesses:
-      - qwen-code
-      - windsurf
-      - kimi-code
+    - qwen-code
+    - windsurf
+    - kimi-code
     acceptance:
-      - primary_docs_confirm_project_local_config
-      - temp_project_projection_driver
-      - automated_structural_tests
+    - primary_docs_confirm_project_local_config
+    - temp_project_projection_driver
+    - automated_structural_tests
   provider-hosted-surfaces:
     status: planned
     candidate_harnesses:
-      - deepseek-provider
-      - minimax-maxclaw
-      - google-antigravity
+    - deepseek-provider
+    - minimax-maxclaw
+    - google-antigravity
     acceptance:
-      - provider_or_hosted_boundary_documented
-      - no_ide_projection_claim_without_local_config
+    - provider_or_hosted_boundary_documented
+    - no_ide_projection_claim_without_local_config
   account-backed-runtime-proof:
     status: planned
     candidate_harnesses:
-      - opencode
-      - vscode-copilot
-      - cursor
-      - qwen-code
-      - windsurf
-      - kimi-code
+    - opencode
+    - vscode-copilot
+    - cursor
+    - qwen-code
+    - windsurf
+    - kimi-code
     acceptance:
-      - optional_manual_runtime_smoke
-      - reports_capture_account_boundary
-      - not_required_for_default_ci
+    - optional_manual_runtime_smoke
+    - reports_capture_account_boundary
+    - not_required_for_default_ci
