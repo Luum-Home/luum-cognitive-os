@@ -321,3 +321,18 @@ a clear beneficiary.
   honestly)
 - `docs/reports/boring-reliability-audit-2026-05-03.md` — baseline
   metrics that would need parity in any Shape B
+
+## Decision
+
+Keep the decision bounded to its documented scope and route implementation through the current lifecycle/readiness gates rather than implicit operator memory.
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

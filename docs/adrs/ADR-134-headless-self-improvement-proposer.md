@@ -119,3 +119,14 @@ The output must show `mode: propose_only`, `human_approval_required: true`, and
 - `lib/self_improvement_loop.py`
 - `scripts/cos_self_improvement_loop.py`
 - `scripts/cos-self-improvement-loop`
+
+## Status
+
+Accepted — structural contract normalized on 2026-05-04.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

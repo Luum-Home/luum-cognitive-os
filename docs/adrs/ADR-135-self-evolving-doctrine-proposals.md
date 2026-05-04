@@ -94,3 +94,14 @@ This ADR does not implement cross-instance learning or federation. ADR-132 keeps
 that work behind Shape-B triggers. Until those triggers fire, consumer-project
 evidence may be collected manually, but locks, memory, and skill registries do
 not become distributed systems.
+
+## Status
+
+Accepted — structural contract normalized on 2026-05-04.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
