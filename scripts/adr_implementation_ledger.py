@@ -14,9 +14,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 PROJECT_PRECEDENCE = ("COGNITIVE_OS_PROJECT_DIR", "CODEX_PROJECT_DIR", "CLAUDE_PROJECT_DIR")
 SESSION_PRECEDENCE = ("COGNITIVE_OS_SESSION_ID", "CODEX_SESSION_ID", "CLAUDE_SESSION_ID")
 ATTENTION_STATES = {"blocked", "partial", "pending", "pending_evidence", "unknown"}
+IMPLEMENT_CURRENT_ATTENTION_STATES = ATTENTION_STATES | {"implement-current"}
+KNOWN_CLOSURE_CLASSES = {"evidence-only", "absorbed", "superseded", "obsolete-by-context", "deferred", "implement-current"}
+DEFAULT_CLOSURE_METADATA = Path("manifests/adr-closure-metadata.yaml")
 IMPLEMENTED_TERMS = re.compile(r"\b(implemented|done|completed|shipped|landed|closed)\b", re.IGNORECASE)
 PARTIAL_TERMS = re.compile(r"\b(partial|partially|partly|in progress|remaining|follow-up|follow up)\b", re.IGNORECASE)
 BLOCKED_TERMS = re.compile(r"\b(blocked|deferred|waiting|depends on|requires|until)\b", re.IGNORECASE)
@@ -36,6 +41,8 @@ class AdrRecord:
     reason: str
     evidence: list[str] = field(default_factory=list)
     open_questions: list[str] = field(default_factory=list)
+    closure_class: str = ""
+    closure_reason: str = ""
 
 
 def resolve_project_dir(explicit: str | None = None) -> Path:
@@ -88,6 +95,38 @@ def extract_status(text: str) -> str:
             if raw:
                 return raw[:160]
     return ""
+
+
+def load_closure_metadata(project_dir: Path, metadata_path: Path | None = None) -> dict[str, dict[str, str]]:
+    """Load explicit ADR closure metadata keyed by ADR id.
+
+    This file is the durable handoff between human ADR reconciliation and the
+    heuristic ledger. It prevents old accepted/proposed language from being
+    re-counted as implementation debt after a later ADR or validation pass has
+    intentionally closed, absorbed, superseded, or deferred the item.
+    """
+    path = metadata_path or project_dir / DEFAULT_CLOSURE_METADATA
+    if not path.exists():
+        return {}
+    payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    rows = payload.get("adrs", [])
+    if not isinstance(rows, list):
+        raise ValueError(f"{path}: expected top-level 'adrs' list")
+    out: dict[str, dict[str, str]] = {}
+    for index, row in enumerate(rows, start=1):
+        if not isinstance(row, dict):
+            raise ValueError(f"{path}: adrs[{index}] must be a mapping")
+        adr_id = str(row.get("adr_id", "")).strip()
+        closure_class = str(row.get("closure_class", "")).strip()
+        reason = str(row.get("reason", "")).strip()
+        if not adr_id:
+            raise ValueError(f"{path}: adrs[{index}] missing adr_id")
+        if closure_class not in KNOWN_CLOSURE_CLASSES:
+            raise ValueError(f"{path}: {adr_id} has invalid closure_class {closure_class!r}")
+        if not reason:
+            raise ValueError(f"{path}: {adr_id} missing closure reason")
+        out[adr_id] = {"closure_class": closure_class, "reason": reason}
+    return out
 
 
 def decision_state_from_status(status: str) -> str:
@@ -161,10 +200,47 @@ def implementation_state(decision_state: str, status: str, text: str, evidence: 
     return "unknown", "No reliable implementation status signal was found"
 
 
+def apply_closure_metadata(record: AdrRecord, metadata: dict[str, dict[str, str]]) -> AdrRecord:
+    """Apply explicit closure metadata to a heuristic record."""
+    closure = metadata.get(record.adr_id)
+    if not closure:
+        return record
+    closure_class = closure["closure_class"]
+    closure_reason = closure["reason"]
+    state_by_class = {
+        "evidence-only": "implemented",
+        "absorbed": "absorbed",
+        "superseded": "superseded",
+        "obsolete-by-context": "obsolete",
+        "deferred": "deferred",
+        "implement-current": "pending",
+    }
+    state = state_by_class[closure_class]
+    if closure_class == "implement-current":
+        reason = f"Closure metadata keeps this ADR in current implementation backlog: {closure_reason}"
+    else:
+        reason = f"Closure metadata marks this ADR as {closure_class}: {closure_reason}"
+    evidence = list(record.evidence)
+    evidence.insert(0, f"closure metadata: {closure_class}")
+    return AdrRecord(
+        record.adr_id,
+        record.title,
+        record.path,
+        record.decision_state,
+        state,
+        reason,
+        list(dict.fromkeys(evidence))[:15],
+        record.open_questions,
+        closure_class,
+        closure_reason,
+    )
+
+
 def scan_adrs(project_dir: Path) -> list[AdrRecord]:
     adrs_dir = project_dir / "docs" / "adrs"
     if not adrs_dir.exists():
         return []
+    closure_metadata = load_closure_metadata(project_dir)
     records: list[AdrRecord] = []
     for path in sorted(adrs_dir.glob("ADR-*.md")):
         text = path.read_text(encoding="utf-8", errors="replace")
@@ -176,7 +252,8 @@ def scan_adrs(project_dir: Path) -> list[AdrRecord]:
         evidence.extend(git_evidence_for_adr(project_dir, adr_id))
         evidence = list(dict.fromkeys(evidence))[:15]
         impl_state, reason = implementation_state(decision_state, status, text, evidence, open_questions)
-        records.append(AdrRecord(adr_id, extract_heading(text), path.relative_to(project_dir).as_posix(), decision_state, impl_state, reason, evidence, open_questions))
+        record = AdrRecord(adr_id, extract_heading(text), path.relative_to(project_dir).as_posix(), decision_state, impl_state, reason, evidence, open_questions)
+        records.append(apply_closure_metadata(record, closure_metadata))
     return records
 
 
@@ -190,6 +267,8 @@ def record_to_dict(record: AdrRecord) -> dict[str, Any]:
         "reason": record.reason,
         "evidence": record.evidence,
         "open_questions": record.open_questions,
+        "closure_class": record.closure_class,
+        "closure_reason": record.closure_reason,
     }
 
 

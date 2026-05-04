@@ -132,6 +132,26 @@ python3 -m pytest tests/integration/test_lazy_catalog_end_to_end.py tests/unit/t
 
 Batch 2 covers ADR-028, ADR-028a, ADR-028b, ADR-030, ADR-031, ADR-033, ADR-034, ADR-037, ADR-042, and ADR-044.
 
+## Ledger metadata extension — post-cap ADRs
+
+After wiring `manifests/adr-closure-metadata.yaml` into `scripts/adr_implementation_ledger.py`, the ledger surfaced additional ADRs up to ADR-138 that were hidden by the previous attention-list cap. These are now covered by closure metadata rather than being forced into runtime work:
+
+| ADR | Closure class | Rationale |
+|---|---|---|
+| ADR-118 | `deferred` | Multi-IDE swarm testbed has an initial implemented slice; remaining scenarios are phase-level chaos coverage. |
+| ADR-120 | `evidence-only` | Primitive harvester implementation, tests, and promotion evidence exist. |
+| ADR-121 | `deferred` | Foundation hardening is a phased program tracked by its architecture plan. |
+| ADR-122 | `evidence-only` | Preflight refinements are implemented and tested. |
+| ADR-123 | `deferred` | Operational stability/friction reduction is a phased program with current slices plus remaining plan work. |
+| ADR-124 | `evidence-only` | Distribution boundaries are represented in lifecycle/adoption metadata. |
+| ADR-125 | `evidence-only` | Governance value boundaries are represented in lifecycle/distribution and claim-boundary evidence. |
+| ADR-127 | `evidence-only` | Active primitive index and runtime coverage hardening exist. |
+| ADR-128 | `evidence-only` | Data-layer integrity files/tests/audits exist. |
+| ADR-135 | `evidence-only` | Doctrine proposer is a propose-only control-plane primitive. |
+| ADR-136 | `evidence-only` | Cross-instance runway primitives and Shape-A deferral audit exist. |
+
+ADR-144 is also closed as `evidence-only` in the metadata because the ledger scans all ADRs, not only ADR≤138. ADR-140 remains intentionally unclosed because its Docker Compose worker surface still requires separate implementation evidence.
+
 ## Working notes
 
 - `pending_evidence` is not automatically implementation debt; it is a request for proof or status correction.
