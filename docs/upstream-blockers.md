@@ -2,7 +2,7 @@
 
 Tracking file for work that is **ready to do** but blocked on third-party releases. Each entry has a trigger condition (what needs to happen upstream), an action (what we do once unblocked), and an estimate.
 
-Last reviewed: 2026-04-27.
+Last reviewed: 2026-05-04.
 
 ## Active blockers
 
@@ -16,17 +16,26 @@ Last reviewed: 2026-04-27.
 
 ### `rich` 14 → 15
 
-- **Trigger**: `cognee` unpins `rich<13.7.0` upstream. Track at https://github.com/topoteretes/cognee/issues
-- **Action**: bump `rich` in `requirements.txt` and any tool that pinned 14.x; run UI smoke tests for any rich-based output.
+- **Trigger**: `cognee` / `instructor` allow `rich>=15` in the all-extras resolver.
+- **Action**: bump `rich` once `uv lock` succeeds with `rich>=15`; run `scripts/cos_watch.py` smoke and dependency import tests.
 - **Estimate**: ~15 min.
 - **First flagged**: 2026-04-25.
+- **Last proof**: 2026-05-04 `uv lock` with `rich>=15` fails because `luum-cognitive-os[memory]` pulls `cognee`, which pulls `instructor` constrained to `rich>=13.7.0,<15.0.0`.
 
 ### `wrapt` 1 → 2
 
-- **Trigger**: OpenTelemetry / `deprecated` / `arize-phoenix` transitive deps validate `wrapt 2.x`.
-- **Action**: bump `wrapt` and re-run instrumentation tests.
+- **Trigger**: OpenTelemetry / OpenInference / `deprecated` / `arize-phoenix` transitive deps validate `wrapt 2.x`.
+- **Action**: bump `wrapt` and re-run Phoenix/OpenTelemetry instrumentation tests.
 - **Estimate**: ~30 min plus monitoring.
 - **First flagged**: 2026-04-25.
+- **Last proof**: 2026-05-04 resolver can accept `wrapt>=2`, but no first-party code imports it and instrumentation packages remain the risk surface, so the bump stays held pending targeted integration tests.
+
+### Python all-extras major resolver blockers
+
+- **Trigger**: upstream packages relax constraints blocking the 2026-05-04 major review: `arize-phoenix>=15`, `importlib-metadata>=9`, `lxml>=6`, `marshmallow>=4`, `packaging>=26`, `pandas>=3`, `protobuf>=7`, `snowballstemmer>=3`.
+- **Action**: re-run `uv lock` with temporary direct constraints and update `docs/reports/python-major-deps-review-2026-05-04.md` before any blanket `--apply --major`.
+- **Estimate**: ~45 min resolver proof + targeted tests.
+- **First flagged**: 2026-05-04.
 
 ## Resolved (kept for audit)
 
