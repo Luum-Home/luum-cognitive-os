@@ -5,7 +5,7 @@ Status: Accepted
 
 ## Status
 
-Accepted
+Accepted — Implemented
 
 ## Context
 
@@ -94,3 +94,12 @@ bash scripts/deps-update.sh --audit
 
 `bash scripts/deps-update.sh --audit` is for human review after syncing the
 target environment.
+
+## Implementation Evidence
+
+- Implemented in `pyproject.toml`: core dependencies and `dev` extra exclude heavy optional lanes.
+- Implemented in `requirements/dependency-lanes/`: explicit heavy-lane requirement files for LLM, observability, memory, guardrails, crawling, Jupyter, and semantic stacks.
+- Implemented in `scripts/dependency-lane.sh`: lane discovery, path lookup, display, and install helper.
+- Validated by `tests/audit/test_dependency_lane_split.py`.
+- Validated by `tests/unit/test_dependency_lane_script.py`.
+- Validated by `tests/audit/test_no_undefined_imports.py`.
