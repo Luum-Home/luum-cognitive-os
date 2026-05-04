@@ -122,12 +122,25 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
+        "terms:adrs,code,copilot,cursor,decision,harness,harnesses,implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "[ADR-154: Multi-IDE Structural Harness Projection](adrs/ADR-154-multi-ide-structural-harness-projection.md) \u2014 decision to promote OpenCode, VS Code Copilot, and Cursor to implemented structural projection harnesses.",
+      "kind": "bullet",
+      "line": 28,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/README.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
         "terms:architecture,audit,matrix,multi-ide,multi-session,next,orchestration,primitives"
       ],
       "inferred_status": "done_weak_proof",
       "item": "[Multi-Session Orchestration Audit \u2014 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) \u2014 documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap.",
       "kind": "bullet",
-      "line": 26,
+      "line": 29,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -140,7 +153,7 @@
       "inferred_status": "planned",
       "item": "[Headless Runtime Proof Drills](manual-tests/headless-runtime-proof-drills.md) \u2014 manual proof ladder for Docker worker, Engram Cloud sync, future headless task execution, crash/resume, VM, Kubernetes, and provider overlays.",
       "kind": "bullet",
-      "line": 63,
+      "line": 66,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -153,7 +166,7 @@
       "inferred_status": "planned",
       "item": "[COS Service Runtime Boundary](architecture/cos-service-runtime-boundary.md) \u2014 explicit boundary between today's IDE-embedded runtime, Docker worker surface, Engram Cloud service, and the future `cosd`/scheduler control plane.",
       "kind": "bullet",
-      "line": 64,
+      "line": 67,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -166,7 +179,7 @@
       "inferred_status": "planned",
       "item": "[COS Service Control Plane Research \u2014 2026-05-04](architecture/service-control-plane-research-2026-05-04.md) \u2014 reference-system and credential-mode analysis for a future `cosd` scheduler/queue/worker service without credential scraping.",
       "kind": "bullet",
-      "line": 65,
+      "line": 68,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -179,7 +192,7 @@
       "inferred_status": "proposed",
       "item": "[Self-Evolving Doctrine Proposals](architecture/self-evolving-doctrine-proposals.md) \u2014 control-plane evidence can generate proposed doctrine amendments without mutating runtime rules.",
       "kind": "bullet",
-      "line": 68,
+      "line": 71,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -192,7 +205,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Lifecycle Demotion Proof \u2014 task-completed hook](reports/lifecycle-demotion-task-completed-2026-05-03.md) \u2014 first semantic `demoted` lifecycle transition proving shrink-without-delete behavior.",
       "kind": "bullet",
-      "line": 72,
+      "line": 75,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -205,7 +218,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-135: Self-Evolving Doctrine Proposals](adrs/ADR-135-self-evolving-doctrine-proposals.md) \u2014 control-plane evidence generates proposed doctrine amendments without mutating runtime rules.",
       "kind": "bullet",
-      "line": 75,
+      "line": 78,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -218,7 +231,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-137: Operational Trajectory \u2014 Governance Layer \u2192 Embedded Runtime](adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) \u2014 accepted directional commitment from Framing B (governance over agents) to Framing A (runtime that travels wi",
       "kind": "bullet",
-      "line": 77,
+      "line": 80,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -231,7 +244,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Closure Discipline Manual Test](manual-tests/closure-discipline.md) \u2014 manual proof path for closing validation-system drift before claiming a multi-file maintainer batch is done.",
       "kind": "bullet",
-      "line": 87,
+      "line": 90,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -244,7 +257,7 @@
       "inferred_status": "planned",
       "item": "[Hook Registration Classification \u2014 2026-05-04](reports/hook-registration-classification-2026-05-04.md) \u2014 classifies the remaining unregistered hook surface into future, conditional, manual, deprecated, demoted, and promotion-candidate buckets.",
       "kind": "bullet",
-      "line": 90,
+      "line": 93,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -257,7 +270,7 @@
       "inferred_status": "planned",
       "item": "[Python Major Follow-up \u2014 2026-05-04](reports/python-major-followup-2026-05-04.md) \u2014 second-pass resolver evidence for wrapt, setuptools, and the remaining blocked major clusters.",
       "kind": "bullet",
-      "line": 92,
+      "line": 95,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -270,7 +283,7 @@
       "inferred_status": "proposed",
       "item": "[Agentic Mastery License, Weight, and DX Matrix](architecture/agentic-mastery-license-weight-dx-matrix.md) \u2014 licensing confidence, dependency weight, default-install impact, and DX value for candidate external tools.",
       "kind": "bullet",
-      "line": 105,
+      "line": 108,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -283,7 +296,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-109: Validation Capsule Worktree Isolation](adrs/ADR-109-validation-capsule-worktree-isolation.md) \u2014 accepted decision separating validation isolation from the global hook killswitch.",
       "kind": "bullet",
-      "line": 121,
+      "line": 124,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -296,7 +309,7 @@
       "inferred_status": "proposed",
       "item": "[Design Philosophy](design-philosophy.md) \u2014 biological-system framing for the OS",
       "kind": "bullet",
-      "line": 126,
+      "line": 129,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -309,7 +322,7 @@
       "inferred_status": "planned",
       "item": "[Cross-Tool Task Recovery Research \u2014 2026-05](architecture/cross-tool-task-recovery-research-2026-05.md) \u2014 investigation of solved/pending task recovery across Codex, Claude Code, Engram, local ledgers, transcripts, and git.",
       "kind": "bullet",
-      "line": 136,
+      "line": 139,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -322,7 +335,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-081: Codex Harness Adapter](adrs/ADR-081-codex-harness-adapter.md) \u2014 accepted Codex adapter backed by sanitized live Codex Desktop payload fixtures, making Codex a first-class canonical harness surface",
       "kind": "bullet",
-      "line": 139,
+      "line": 142,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -335,7 +348,7 @@
       "inferred_status": "planned",
       "item": "[Harness Driver Parity](architecture/harness-driver-parity.md) \u2014 how Claude, Codex, and future harness settings projections are compared without pretending every driver has the same capabilities",
       "kind": "bullet",
-      "line": 150,
+      "line": 153,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -348,7 +361,7 @@
       "inferred_status": "planned",
       "item": "[Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) \u2014 validation snapshot and remaining work before merging the master-plan portability branch",
       "kind": "bullet",
-      "line": 169,
+      "line": 172,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -361,7 +374,7 @@
       "inferred_status": "planned",
       "item": "[Full Suite Validation Report](reports/full-suite-validation-2026-04-23.md) \u2014 current full-suite evidence, passing proof paths, and remaining failure families",
       "kind": "bullet",
-      "line": 170,
+      "line": 173,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -374,7 +387,7 @@
       "inferred_status": "planned",
       "item": "`experimental`: squads, organization specs, future control-plane designs, and high-variance systems that should not dominate the README.",
       "kind": "bullet",
-      "line": 179,
+      "line": 182,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -387,7 +400,7 @@
       "inferred_status": "planned",
       "item": "The following model describes the long-range architecture. Treat it as future architecture unless a layer has a linked proof path, test, or operator workflow.",
       "kind": "prose",
-      "line": 185,
+      "line": 188,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -400,7 +413,7 @@
       "inferred_status": "done_weak_proof",
       "item": "The self-improvement loop is a closed feedback cycle where every agent execution produces data that improves future executions:",
       "kind": "prose",
-      "line": 460,
+      "line": 463,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -413,7 +426,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Extending from dev-time to production-capable (partially done):",
       "kind": "prose",
-      "line": 632,
+      "line": 635,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -1277,7 +1290,7 @@
       "inferred_status": "proposed",
       "item": "shell-ci-candidate: 15",
       "kind": "bullet",
-      "line": 40,
+      "line": 47,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest.md"
     },
@@ -13647,6 +13660,85 @@
       "path": "docs/adrs/ADR-153-acc-fail-new-and-harness-proof-boundary.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: accepted",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Accepted** \u2014 2026-05-04",
+      "kind": "prose",
+      "line": 23,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:code,copilot,cursor,harnesses,implemented,opencode,projection,promote"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Promote OpenCode, VS Code Copilot, and Cursor from roadmap-only to `implemented` structural projection harnesses.",
+      "kind": "prose",
+      "line": 39,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:becomes,boundary,exists,implemented,means,more,parity,planned"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "The implemented/planned boundary becomes more useful: implemented means temp-project structural proof exists, not universal runtime parity.",
+      "kind": "bullet",
+      "line": 54,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:configured,files,future,generated,placeholders,profiles,servers,specific"
+      ],
+      "inferred_status": "planned",
+      "item": "Generated MCP files are placeholders until specific MCP servers are configured by users or future profiles.",
+      "kind": "bullet",
+      "line": 61,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:manifests/harness-projection.yaml",
+        "terms:harness-projection,implemented,limitations,manifests,marks,those,three,yaml"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "`manifests/harness-projection.yaml` marks those three as `implemented` with structural-proof limitations.",
+      "kind": "bullet",
+      "line": 82,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -19129,7 +19221,7 @@
       "inferred_status": "planned",
       "item": "1. Add or update `manifests/harness-projection.yaml` entry with `status: planned` first.",
       "kind": "prose",
-      "line": 33,
+      "line": 36,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/architecture/harness-implementation-roadmap.md"
     },
@@ -19142,21 +19234,8 @@
       "inferred_status": "done_weak_proof",
       "item": "6. Only then change status to `implemented`.",
       "kind": "prose",
-      "line": 38,
+      "line": 41,
       "next_action": "add explicit test/workflow/proof link",
-      "path": "docs/architecture/harness-implementation-roadmap.md"
-    },
-    {
-      "confidence": 0.9,
-      "declared_status": "planned",
-      "evidence": [
-        "terms:current,declared,exists,harness,harnesses,inherit,must,planned"
-      ],
-      "inferred_status": "planned",
-      "item": "ACC can report 1.0 for the current declared scope. New harnesses must not inherit that status. Planned harness rows remain unverified until their own proof exists.",
-      "kind": "prose",
-      "line": 42,
-      "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/architecture/harness-implementation-roadmap.md"
     },
     {
@@ -19525,6 +19604,280 @@
       "line": 75,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/architecture/memory-lifecycle.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:backlog,being,evidence-backed,harness,path,product,promotion,rollout"
+      ],
+      "inferred_status": "planned",
+      "item": "Turn the ACC harness backlog into an evidence-backed rollout path. A harness can be product scope without being runtime-supported. The promotion rule is:",
+      "kind": "prose",
+      "line": 7,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:done"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Status: done.",
+      "kind": "prose",
+      "line": 33,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:code,copilot,cursor,implemented,opencode,slice"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Status: implemented in this slice for OpenCode, VS Code Copilot, and Cursor.",
+      "kind": "prose",
+      "line": 40,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:adapter,directly,driven,equivalent,first-class,harness,implemented,once"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Promote `shell-ci` from planned to implemented once its projection is driven directly as a harness or first-class ACC adapter with equivalent status semantics.",
+      "kind": "bullet",
+      "line": 62,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "weak_terms:planned"
+      ],
+      "inferred_status": "planned",
+      "item": "Status: planned.",
+      "kind": "prose",
+      "line": 68,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "weak_terms:planned"
+      ],
+      "inferred_status": "planned",
+      "item": "Status: planned.",
+      "kind": "prose",
+      "line": 78,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:manual,optional,planned"
+      ],
+      "inferred_status": "planned",
+      "item": "Status: planned/manual/optional.",
+      "kind": "prose",
+      "line": 88,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:exists,fail-new,gate,strict"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "ACC `--fail-new` strict gate exists.",
+      "kind": "checkbox",
+      "line": 98,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:implemented,opencode,projection,structural,tested"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "OpenCode structural projection implemented and tested.",
+      "kind": "checkbox",
+      "line": 99,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:code,copilot,implemented,projection,structural,tested"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "VS Code Copilot structural projection implemented and tested.",
+      "kind": "checkbox",
+      "line": 100,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:cursor,implemented,projection,structural,tested"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Cursor structural projection implemented and tested.",
+      "kind": "checkbox",
+      "line": 101,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:harness,implemented,promoted,semantics,shell"
+      ],
+      "inferred_status": "planned",
+      "item": "Shell/CI promoted to implemented harness semantics.",
+      "kind": "checkbox",
+      "line": 102,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:implemented,projection,qwen,researched,structural"
+      ],
+      "inferred_status": "planned",
+      "item": "Qwen structural projection researched and implemented.",
+      "kind": "checkbox",
+      "line": 103,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:confirmed,primary,project-local,projection,surface,windsurf"
+      ],
+      "inferred_status": "planned",
+      "item": "Windsurf project-local projection surface confirmed from primary docs.",
+      "kind": "checkbox",
+      "line": 104,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:code,implemented,kimi,mode,projection,selected"
+      ],
+      "inferred_status": "planned",
+      "item": "Kimi Code projection mode selected and implemented.",
+      "kind": "checkbox",
+      "line": 105,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:deepseek,projection,proof,provider,separated"
+      ],
+      "inferred_status": "planned",
+      "item": "DeepSeek provider proof separated from IDE projection.",
+      "kind": "checkbox",
+      "line": 106,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:classified,config,hosted,local,maxclaw,minimax,provider,repo"
+      ],
+      "inferred_status": "planned",
+      "item": "MiniMax/MaxClaw classified as hosted/provider unless local repo config emerges.",
+      "kind": "checkbox",
+      "line": 107,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:against,antigravity,before,claim,google,primary,projection,researched"
+      ],
+      "inferred_status": "planned",
+      "item": "Google Antigravity researched against primary docs before any projection claim.",
+      "kind": "checkbox",
+      "line": 108,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:documented,optional,runtime,smoke,tests"
+      ],
+      "inferred_status": "planned",
+      "item": "Account-backed optional runtime smoke tests documented per IDE.",
+      "kind": "checkbox",
+      "line": 109,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:scripts/cos_init.py",
+        "terms:assert,automated,consumer,cos_init,files,generated,harness,implemented"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "1. A harness is `implemented` only if `scripts/cos_init.py` can project it into a temp consumer project and automated tests assert generated files.",
+      "kind": "prose",
+      "line": 113,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:contributes,harness,implemented,marked,never,planned,projection,proof"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "2. A harness marked `planned` never contributes implemented projection proof in ACC.",
+      "kind": "prose",
+      "line": 114,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
     },
     {
       "confidence": 0.62,
@@ -30494,6 +30847,71 @@
       "path": "docs/manual-tests/lote-2-mcp-loop.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:consumer,harnesses,implemented,project,projects,requiring,sessions,verify"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Verify that Cognitive OS can project into consumer projects for implemented IDE harnesses without requiring account-backed GUI sessions.",
+      "kind": "prose",
+      "line": 5,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/manual-tests/multi-ide-structural-projection.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:claude,codex,counts,cursor,default,exist,expected,full"
+      ],
+      "inferred_status": "planned",
+      "item": "Expected: default/full counts exist for `claude`, `codex`, `cursor`, `opencode`, and `vscode-copilot`; remaining harnesses stay `planned`.",
+      "kind": "prose",
+      "line": 62,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/manual-tests/multi-ide-structural-projection.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:automated,behavior,every,harness,implemented,pass,tests"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "1. Automated behavior tests pass for every implemented harness.",
+      "kind": "prose",
+      "line": 72,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/manual-tests/multi-ide-structural-projection.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:counts,every,harness,implemented,profile,projection,reports,structural"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "2. ACC reports structural projection counts for every implemented harness/profile.",
+      "kind": "prose",
+      "line": 73,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/manual-tests/multi-ide-structural-projection.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:harnesses,planned,proof,receive,remain,their,they,until"
+      ],
+      "inferred_status": "planned",
+      "item": "3. Planned harnesses remain planned until they receive their own temp-project proof.",
+      "kind": "prose",
+      "line": 74,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/manual-tests/multi-ide-structural-projection.md"
+    },
+    {
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
@@ -33521,7 +33939,7 @@
         "planned": 1
       },
       "docs/README.md": {
-        "done_weak_proof": 9,
+        "done_weak_proof": 10,
         "planned": 13,
         "proposed": 4
       },
@@ -34232,6 +34650,11 @@
         "done_weak_proof": 2,
         "planned": 2
       },
+      "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md": {
+        "done_weak_proof": 4,
+        "done_with_proof": 1,
+        "planned": 1
+      },
       "docs/adrs/README.md": {
         "planned": 1
       },
@@ -34533,7 +34956,7 @@
       "docs/architecture/harness-implementation-roadmap.md": {
         "done_weak_proof": 1,
         "done_with_proof": 1,
-        "planned": 2
+        "planned": 1
       },
       "docs/architecture/harness-transparency-status.md": {
         "planned": 4
@@ -34556,6 +34979,11 @@
       },
       "docs/architecture/memory-lifecycle.md": {
         "planned": 4
+      },
+      "docs/architecture/multi-ide-harness-implementation-plan.md": {
+        "done_weak_proof": 8,
+        "done_with_proof": 1,
+        "planned": 12
       },
       "docs/architecture/observability-backend-evaluation-2026-04-24.md": {
         "done_weak_proof": 4,
@@ -34857,6 +35285,10 @@
         "done_weak_proof": 2,
         "planned": 9
       },
+      "docs/manual-tests/multi-ide-structural-projection.md": {
+        "done_weak_proof": 3,
+        "planned": 2
+      },
       "docs/manual-tests/primitive-duplication-audit.md": {
         "proposed": 1
       },
@@ -35102,11 +35534,11 @@
         "planned": 1
       }
     },
-    "items": 2550,
+    "items": 2582,
     "statuses": {
-      "done_weak_proof": 1048,
-      "done_with_proof": 204,
-      "planned": 1018,
+      "done_weak_proof": 1064,
+      "done_with_proof": 206,
+      "planned": 1032,
       "proposed": 280
     }
   }
