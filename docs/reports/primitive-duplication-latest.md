@@ -1,10 +1,10 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-05-04T20:31:50.693083+00:00`
+Generated: `2026-05-04T20:42:49.712984+00:00`
 
 ## Summary
 
-- Files scanned: 711
+- Files scanned: 713
 - Findings: 50
 - By kind: `{"bash-function-repeat": 10, "exact-copy": 1, "python-function-repeat": 39}`
 - By common home: `{"hooks/_lib/": 6, "lib/": 39, "scripts/_lib/": 4, "templates/ or lib/": 1}`

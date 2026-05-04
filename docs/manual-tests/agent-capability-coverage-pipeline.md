@@ -75,11 +75,13 @@ projection = data['adapters']['consumer_projection']
 print(projection)
 assert projection['status'] == 'ok'
 assert projection['summary']['projected_primitives'] > 0
+for key in ('claude/default', 'claude/full', 'codex/default', 'codex/full'):
+    assert projection['summary']['by_harness_profile'][key] > 0
 assert data['summary']['stale_weight'] == 0
 PY
 ```
 
-Expected result: Claude/Codex default projection rows are counted as `projected-consumer-surface`; unproved IDEs remain unsigned.
+Expected result: Claude/Codex default and full projection rows are counted as `projected-consumer-surface`; unproved IDEs remain unsigned.
 
 ## Harness Registry Check
 
@@ -90,7 +92,11 @@ python3 - <<'PY'
 import json, yaml
 manifest = yaml.safe_load(open('manifests/harness-projection.yaml'))
 ids = {item['id'] for item in manifest['harnesses']}
-required = {'claude', 'codex', 'cursor', 'windsurf', 'vscode-copilot', 'opencode', 'google-antigravity', 'shell-ci'}
+required = {
+    'claude', 'codex', 'cursor', 'windsurf', 'vscode-copilot', 'opencode',
+    'google-antigravity', 'qwen-code', 'kimi-code', 'minimax-maxclaw',
+    'deepseek-provider', 'shell-ci',
+}
 assert required <= ids
 acc = json.load(open('docs/acc/latest.json'))
 assert acc['harness_projection']['claude']['status'] == 'implemented'

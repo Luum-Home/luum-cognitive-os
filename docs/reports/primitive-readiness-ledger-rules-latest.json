@@ -2746,10 +2746,10 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 17,
+        "doc": 18,
         "hook": 2,
         "rule": 2,
-        "script": 4,
+        "script": 5,
         "test": 2
       },
       "consumers": [
@@ -2819,6 +2819,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/manual-tests/engram-cloud-docker-sync.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/plug-and-play.md"
         },
         {
@@ -2847,6 +2851,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-engram-cloud-docker-smoke"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-engram-cloud-enroll"
         },
         {
@@ -2870,9 +2878,9 @@
       "evidence": [
         "hook_consumers:2",
         "rule_consumers:2",
-        "script_consumers:4",
+        "script_consumers:5",
         "test_consumers:2",
-        "doc_consumers:17",
+        "doc_consumers:18",
         "config_consumers:1"
       ],
       "family": "rules",
@@ -2883,7 +2891,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 28
+      "total_consumers": 30
     },
     {
       "confidence": "medium",
@@ -12504,13 +12512,17 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 6,
+        "doc": 7,
         "hook": 3,
         "rule": 2,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-084-headless-clustered-runtime-shape.md"
@@ -12574,7 +12586,7 @@
         "hook_consumers:3",
         "rule_consumers:2",
         "test_consumers:2",
-        "doc_consumers:6"
+        "doc_consumers:7"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12584,7 +12596,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
