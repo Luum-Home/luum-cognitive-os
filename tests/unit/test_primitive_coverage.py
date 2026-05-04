@@ -5,12 +5,25 @@ import subprocess
 import sys
 from pathlib import Path
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+while str(REPO_ROOT) in sys.path:
+    sys.path.remove(str(REPO_ROOT))
+sys.path.insert(0, str(REPO_ROOT))
+
 from primitive_coverage import scan_repository
 from primitive_coverage.reports.sarif import render_sarif
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
 CLI = REPO_ROOT / "scripts" / "primitive_coverage.py"
-WORKFLOW = REPO_ROOT / ".github" / "workflows" / "primitive-gap-audit.yml"
+
+
+def workflow_file(name: str) -> Path:
+    active = REPO_ROOT / ".github" / "workflows" / name
+    if active.exists():
+        return active
+    return active.with_name(active.name + ".disabled")
+
+
+WORKFLOW = workflow_file("primitive-gap-audit.yml")
 
 
 def make_repo(tmp_path: Path) -> Path:

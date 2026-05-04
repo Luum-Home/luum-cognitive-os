@@ -4,7 +4,7 @@ Validates that shell scripts in hooks/ and scripts/ do not contain
 BSD-only or GNU-only constructs that will break on the other platform.
 
 These tests are the enforcement layer — they run in CI on both macOS
-and Linux (see .github/workflows/cross-platform.yml).
+and Linux (see .github/workflows/cross-platform.yml.disabled).
 
 Banned patterns (per portability audit 2026-04-20):
   - date -v          (BSD-only date adjustment)

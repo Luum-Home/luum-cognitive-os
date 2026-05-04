@@ -1,10 +1,10 @@
 """
-Static checks for .github/workflows/test-lanes.yml lane-registry integration.
+Static checks for the preserved test-lanes workflow lane-registry integration.
 
 Verifies:
 1. Every lane in .cognitive-os/test-lanes.yaml falls into exactly one of
    {parallel-safe, serial-stateful, optional}.
-2. The workflow YAML exists, parses, and contains the 4 expected jobs
+2. The preserved workflow YAML exists, parses, and contains the 4 expected jobs
    (setup, parallel-safe, serial-stateful, optional-lanes).
 3. Hardcoded lane lists are absent from the workflow file (the matrix must
    use fromJson expressions, not inline arrays).
@@ -20,7 +20,18 @@ import yaml
 
 REPO_ROOT = Path(__file__).parents[2]
 LANES_REGISTRY = REPO_ROOT / ".cognitive-os" / "test-lanes.yaml"
-WORKFLOW_FILE = REPO_ROOT / ".github" / "workflows" / "test-lanes.yml"
+
+
+def workflow_file(name: str) -> Path:
+    """Return active workflow when present, otherwise the ADR-130 preserved disabled file."""
+    active = REPO_ROOT / ".github" / "workflows" / name
+    if active.exists():
+        return active
+    disabled = active.with_name(active.name + ".disabled")
+    return disabled
+
+
+WORKFLOW_FILE = workflow_file("test-lanes.yml")
 
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
