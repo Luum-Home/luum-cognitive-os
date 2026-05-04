@@ -13,7 +13,7 @@ Migration history (Phases 2.1 → 2.3 → 2.final):
   MIGRATED:   main()               (Phase 2.final, 2026-04-27)
 
 Usage (direct):
-    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor]
+    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor|shell-ci]
 
 Usage (internal dispatcher — kept for backward compat):
     python3 scripts/cos_init.py --internal-call detect_harness [project_root]
@@ -39,8 +39,9 @@ from pathlib import Path
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
 
 
-SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor")
+SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "shell-ci")
 STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor"}
+SHELL_CI_HARNESSES = {"shell-ci"}
 
 HARNESS_SETTINGS = {
     "claude": (".claude/settings.json", ".claude/settings.json"),
@@ -48,6 +49,7 @@ HARNESS_SETTINGS = {
     "opencode": ("opencode.json", "opencode.json"),
     "vscode-copilot": (".github/copilot-instructions.md", ".github/copilot-instructions.md"),
     "cursor": (".cursor/rules/cognitive-os.mdc", ".cursor/rules/cognitive-os.mdc"),
+    "shell-ci": (".cognitive-os/shell-ci-projection.json", ".cognitive-os/shell-ci-projection.json"),
 }
 
 # ── ADR-093 canonical mode constants ─────────────────────────────────
@@ -949,6 +951,26 @@ def _write_structural_instruction_harness_settings(project_dir: Path, harness: s
 
     raise ValueError(f"unsupported structural instruction harness: {harness}")
 
+
+def _write_shell_ci_harness_settings(project_dir: Path, cos_source: Path, mode: str) -> None:
+    """Project Shell/CI commands and workflow as a first-class harness."""
+
+    profile = "full" if mode == "--full" else "default"
+    projector = cos_source / "scripts" / "project_shell_ci.py"
+    if not projector.is_file():
+        raise FileNotFoundError(projector)
+    result = subprocess.run(
+        [sys.executable, str(projector), "--project-dir", str(project_dir), "--profile", profile, "--json"],
+        cwd=project_dir,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=60,
+    )
+    if result.returncode != 0:
+        raise RuntimeError((result.stderr or result.stdout)[-500:])
+    print("Created .cognitive-os/shell-ci-projection.json and shell/CI driver files")
+
 def _apply_harness_settings(
     project_dir: Path,
     cos_source: Path,
@@ -960,6 +982,9 @@ def _apply_harness_settings(
     """Port of the settings generation block plus structural instruction harnesses."""
     if harness in STRUCTURAL_INSTRUCTION_HARNESSES:
         _write_structural_instruction_harness_settings(project_dir, harness, mode)
+        return
+    if harness in SHELL_CI_HARNESSES:
+        _write_shell_ci_harness_settings(project_dir, cos_source, mode)
         return
 
     generator = cos_source / "scripts" / "generate-project-settings.sh"
@@ -1128,6 +1153,8 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         driver_dirs.extend([".vscode"])
     elif harness == "cursor":
         driver_dirs.extend([".cursor/rules"])
+    elif harness == "shell-ci":
+        driver_dirs.extend(["scripts", ".github/workflows", ".cognitive-os/scripts/cos"])
 
     for d in [
         *driver_dirs,

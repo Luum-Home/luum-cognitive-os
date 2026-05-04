@@ -55,13 +55,14 @@ Non-claims:
 
 ### Phase 2 — Shell/CI formal harness
 
-Status: next.
+Status: done.
 
 Deliverables:
 
-- Promote `shell-ci` from planned to implemented once its projection is driven directly as a harness or first-class ACC adapter with equivalent status semantics.
-- Add workflow syntax tests and generated command smoke tests.
-- Decide whether `cos_init.py --harness shell-ci` is useful or whether `project_shell_ci.py` remains the canonical driver.
+- `shell-ci` is promoted from planned to implemented.
+- `cos_init.py --default/--full --harness shell-ci` installs the normal `.cognitive-os/` surface and invokes `project_shell_ci.py`.
+- ACC records `shell-ci/default` and `shell-ci/full` projection counts.
+- Workflow syntax and generated command-driver tests cover the structural baseline.
 
 ### Phase 3 — Qwen/Windsurf/Kimi structural candidates
 
@@ -99,7 +100,7 @@ Deliverables:
 - [x] OpenCode structural projection implemented and tested.
 - [x] VS Code Copilot structural projection implemented and tested.
 - [x] Cursor structural projection implemented and tested.
-- [ ] Shell/CI promoted to implemented harness semantics.
+- [x] Shell/CI promoted to implemented harness semantics.
 - [ ] Qwen structural projection researched and implemented.
 - [ ] Windsurf project-local projection surface confirmed from primary docs.
 - [ ] Kimi Code projection mode selected and implemented.
