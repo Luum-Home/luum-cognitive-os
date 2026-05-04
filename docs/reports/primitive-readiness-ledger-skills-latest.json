@@ -1845,7 +1845,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 4,
-        "doc": 18,
+        "doc": 19,
         "hook": 1,
         "script": 7,
         "test": 8
@@ -1902,6 +1902,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/five-minute-demo.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/kimi-code-cli-structural-projection.md"
         },
         {
           "family": "doc",
@@ -2009,7 +2013,7 @@
         "hook_consumers:1",
         "script_consumers:7",
         "test_consumers:8",
-        "doc_consumers:18",
+        "doc_consumers:19",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -2020,7 +2024,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 38
+      "total_consumers": 39
     },
     {
       "confidence": "high",
