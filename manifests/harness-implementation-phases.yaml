@@ -32,15 +32,16 @@ phases:
     implemented_harnesses:
     - shell-ci
   qwen-windsurf-kimi-structural:
-    status: planned
+    status: in_progress
     candidate_harnesses:
-    - qwen-code
     - windsurf
     - kimi-code
     acceptance:
     - primary_docs_confirm_project_local_config
     - temp_project_projection_driver
     - automated_structural_tests
+    implemented_harnesses:
+    - qwen-code
   provider-hosted-surfaces:
     status: planned
     candidate_harnesses:

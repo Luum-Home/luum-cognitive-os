@@ -21,7 +21,7 @@ Track planned IDE/provider harnesses without overclaiming support. A harness bec
 
 | Harness/provider | Current source signal | COS next step | Promotion gate |
 |---|---|---|---|
-| Qwen Code | Official docs describe MCP, TypeScript SDK, terminal/IDE/CI-style usage. | Define `.qwen`/settings projection, skills/tools/MCP mapping, and temp-project proof. | Add driver, contract test, manual test, ACC adapter count. |
+| Qwen Code | Official docs describe `.qwen/settings.json`, `mcpServers`, and context files such as `QWEN.md`. | Implemented structural projection. Next: optional account-backed CLI/runtime smoke. | Temp project validates `.qwen/settings.json`, `QWEN.md`, and ACC default/full counts. |
 | Kimi Code | Official docs describe CLI, VS Code extension, OpenAI/Anthropic-compatible coding API, and third-party agent usage. | Decide whether COS integrates Kimi as native CLI/VS Code harness or provider behind existing harnesses. | Add config projection or provider adapter; do not mark implemented until local project proof exists. |
 | OpenCode | Official docs expose `opencode.json`, instructions, permissions, and MCP config. | Implemented structural projection. Next: optional account-backed CLI smoke. | Temp project validates `opencode.json`; runtime smoke remains optional. |
 | Cursor | Official docs expose `.cursor/rules`, MDC metadata, AGENTS.md, and MCP config. | Implemented structural projection. Next: optional account-backed Cursor smoke. | Temp project validates `.cursor/rules/cognitive-os.mdc` and `.cursor/mcp.json`; runtime smoke remains optional. |
@@ -42,7 +42,7 @@ Track planned IDE/provider harnesses without overclaiming support. A harness bec
 
 ## Baseline discipline
 
-ACC can report 1.0 for the current declared scope. New harnesses must not inherit that status. Planned harness rows remain unverified until their own proof exists. Implemented structural harnesses prove project-local config/instruction or command/workflow projection, not native lifecycle hook parity or stack-specific runtime command success.
+ACC can report 1.0 for the current declared scope. New harnesses must not inherit that status. Planned harness rows remain unverified until their own proof exists. Implemented structural harnesses prove project-local config/instruction/context or command/workflow projection, not native lifecycle hook parity or stack-specific runtime command success.
 
 Run the ACC ratchet before promoting any harness work:
 
