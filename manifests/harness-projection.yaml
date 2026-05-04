@@ -51,21 +51,29 @@ harnesses:
   next_action: Expand Codex runtime parity proof and full-profile projection proof.
 - id: cursor
   display_name: Cursor
-  status: planned
-  projection_mode: ide-rules-or-wrapper
+  status: implemented
+  projection_mode: cursor-project-rules-and-mcp
   settings_paths:
-  - .cursor/rules
+  - .cursor/rules/cognitive-os.mdc
   - .cursor/mcp.json
   projected_surfaces:
   - rules
-  - skills
-  - mcp
-  proof: none
+  - instructions
+  - mcp-placeholder
+  - skills-reference
+  proof: temp-consumer-project-structural
   limitations:
-  - Native lifecycle hook semantics are not signed.
-  - Projection driver has not been implemented.
-  next_action: Define Cursor settings/rules/MCP projection driver and temp-project
-    proof.
+  - Structural project rule/MCP file proof only; no Cursor account-backed runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  next_action: Add optional Cursor runtime smoke once a licensed/manual test host
+    is available.
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - cursor
 - id: windsurf
   display_name: Windsurf
   status: planned
@@ -85,36 +93,54 @@ harnesses:
     proof.
 - id: vscode-copilot
   display_name: VS Code Copilot
-  status: planned
-  projection_mode: instructions-and-tasks
+  status: implemented
+  projection_mode: copilot-instructions-and-workspace-mcp
   settings_paths:
   - .github/copilot-instructions.md
-  - .vscode/tasks.json
-  - .vscode/settings.json
+  - .vscode/mcp.json
   projected_surfaces:
   - instructions
-  - tasks
-  - mcp
-  proof: none
+  - mcp-placeholder
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
   limitations:
-  - No native COS lifecycle hooks are signed.
-  - Must distinguish GitHub Copilot instructions from executable tools.
-  next_action: Define instruction/task/MCP projection and temp-project proof.
+  - Structural workspace file proof only; no GitHub account/Copilot extension runtime
+    invocation in automated tests.
+  - VS Code Copilot custom instructions are prompt/context surfaces, not native COS
+    lifecycle hooks.
+  next_action: Add optional VS Code smoke with installed Copilot extension when an
+    account-backed test host exists.
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - vscode-copilot
 - id: opencode
   display_name: OpenCode
-  status: planned
-  projection_mode: wrapper-or-native-config
+  status: implemented
+  projection_mode: opencode-json-instructions-mcp
   settings_paths:
   - opencode.json
-  - .opencode
   projected_surfaces:
   - instructions
-  - tools
-  - mcp
-  proof: none
+  - skills
+  - rules
+  - mcp-placeholder
+  proof: temp-consumer-project-structural
   limitations:
-  - Native config schema and hook support need audit.
-  next_action: Audit OpenCode config/tool surface and add projection proof.
+  - Structural project config proof only; no account-backed OpenCode runtime invocation
+    in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  next_action: Add account-backed optional runtime smoke when OpenCode CLI credentials
+    are available.
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - opencode
 - id: google-antigravity
   display_name: Google Antigravity
   status: planned
