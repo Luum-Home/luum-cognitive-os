@@ -18,6 +18,7 @@ This contract defines how Cognitive OS protects concurrent agent work in the cor
 | `worktree triage doctor` | `scripts/cos-worktree-triage.sh` | Compare one linked worktree to a target branch, identify already-applied vs still-to-port commits, surface dirty/stash blockers, and mark removal safe only after proof. |
 | `approval ledger` | `scripts/approval_ledger.py` | Record high-risk approvals with verification and rollback evidence. |
 | `resource lease` | `scripts/resource_lease.py` | Provide named, expiring cooperative leases for critical domains. |
+| `task claim ledger` | `scripts/claim_task.py` + `lib/task_claim_ledger.py` | Acquire an expiring task-level claim before concurrent agents start the same logical work; records `task_id`, `session_id`, `agent_id`, `scope`, `expected_files`, and fingerprint. |
 | `agent work ledger` | `scripts/agent_work_ledger.py` | Record started/completed/aborted work scopes across agents. |
 | `cross-session reconciler` | `scripts/cross_session_reconciler.py` | Merge runtime safety state into one recovery report. |
 | `session filesystem reaper` | `hooks/_lib/session-fs-reap.sh` + `lib/session_lifecycle.py` | Archive stale clean session directories and delete only archived sessions beyond retention. |
@@ -37,6 +38,7 @@ Consumers configure policy through `concurrency_safety` in `cognitive-os.yaml`. 
 
 ## Expected behavior
 
+- If two agents attempt the same logical task, the task claim ledger must let the first live claim win and return holder metadata to the second agent.
 - If two agents target the same file, the edit cooperation path must surface the conflict.
 - If an agent claims done without proof, the plan verifier must fail.
 - If hidden work ages past thresholds, the stash leak alarm must warn or block.

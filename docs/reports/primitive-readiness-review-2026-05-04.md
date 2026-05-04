@@ -60,12 +60,14 @@ ADR-146 adds `scripts/primitive_readiness_ledger.py` as the canonical machine-re
 | driver-specific | 11 |
 | lab | 13 |
 
-The first low-confidence pass is closed through `manifests/primitive-readiness-script-overrides.yaml`; the ledger now reports zero low-confidence rows. The remaining script readiness backlog is lifecycle promotion/demotion: 74 `agentic-primitive` rows do not yet have ADR-126 lifecycle metadata and are emitted to `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json` / `.md`.
+The first low-confidence pass is closed through `manifests/primitive-readiness-script-overrides.yaml`; the ledger now reports zero low-confidence rows. The follow-up lifecycle ratchet prioritized protected install/profile/projection scripts and added ADR-126 `candidate` metadata for those surfaces without making them active/default-visible. The lifecycle backlog reports remain active for the remaining agentic script rows that still need lifecycle metadata or downgrade decisions.
+
+The ledger now also reports `consumer_accessibility`. This is required because the SO repository docs are not automatically available inside downstream projects that implement the SO. A script can be documented and useful in this repository while still being `so-local-only` or `skill-referenced-not-projectable` for consumer-project agents.
 
 ## Next Review Pass
 
-1. Work `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json` from high-priority rows downward.
-2. Add lifecycle metadata for agentic-primitives that should be shared or harness-portable, or downgrade/archive rows that should not be promoted.
+1. Promote candidate script rows only after package/harness proof, or downgrade/archive rows that should not remain agent-facing.
+2. Keep protected install/profile rows tied to settings/profile projection checks before changing distribution or active visibility.
 3. Run the same review for hooks, skills, and rules after scripts are classified.
 4. Expand harness declarations beyond Claude only where projection proof exists.
 5. Keep product wording narrower than implementation evidence.

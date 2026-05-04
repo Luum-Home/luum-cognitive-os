@@ -25,7 +25,9 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
    print(data['summary'])
    assert data['target_family'] == 'scripts'
    assert data['summary']['total_scripts'] > 0
+   assert 'consumer_accessibility' in data['summary']
    assert not [row for row in data['scripts'] if row['role'] not in data['allowed_roles']]
+   assert not [row for row in data['scripts'] if not row['consumer_accessibility']]
    PY
    ```
 
@@ -37,6 +39,8 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
    data = json.load(open('docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json'))
    print(data['summary'])
    assert data['purpose'] == 'agentic primitives missing ADR-126 lifecycle metadata'
+   # Protected rows may be zero after candidate lifecycle metadata is added; if non-zero, work them before high-priority rows.
+   assert 'total' in data['summary']
    PY
    ```
 
@@ -46,9 +50,21 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
    head -40 docs/reports/primitive-readiness-ledger-scripts-latest.md
    ```
 
-5. Pick three rows, one each from `agentic-primitive`, `maintainer-tool`, and either `driver-specific` or `migration-only`. Confirm the row has a believable `role_source`, `confidence`, evidence, consumers, and next action.
+5. Pick three rows, one each from `agentic-primitive`, `maintainer-tool`, and either `driver-specific` or `migration-only`. Confirm the row has a believable `role_source`, `confidence`, evidence, consumers, `consumer_accessibility`, and next action.
 
-6. Run the automated contract:
+6. Confirm consumer accessibility is not being inferred from SO-local docs alone:
+
+   ```bash
+   python3 - <<'PY'
+   import json
+   data = json.load(open('docs/reports/primitive-readiness-ledger-scripts-latest.json'))
+   print(data['summary']['consumer_accessibility'])
+   assert data['summary']['consumer_accessibility'].get('install-profile-managed', 0) > 0
+   assert any(row['consumer_accessibility'] in {'so-local-only', 'skill-referenced-not-projectable'} for row in data['scripts'])
+   PY
+   ```
+
+7. Run the automated contract:
 
    ```bash
    python3 -m pytest tests/unit/test_primitive_readiness_ledger.py tests/contracts/test_primitive_readiness_ledger_contract.py -q
@@ -58,6 +74,7 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
 
 - JSON and Markdown reports exist.
 - Every script row has an allowed role.
+- Every script row has consumer accessibility metadata.
 - Low-confidence rows remain visible but do not fail the default command.
 - Optional fail flags can be used later as a ratchet, not as the initial adoption gate.
 

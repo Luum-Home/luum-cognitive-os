@@ -16,7 +16,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = REPO_ROOT / "manifests" / "primitive-lifecycle.yaml"
 TIERS = ("core", "team", "maintainer", "lab")
-INACTIVE_STATES = {"demoted", "archived", "deleted"}
+INACTIVE_STATES = {"candidate", "demoted", "archived", "deleted"}
 ACTIVE_SURFACE_TIERS = {"core", "team", "maintainer"}
 DEFAULT_VISIBLE_TIERS = {"core", "team"}
 VISIBLE_WARN_THRESHOLD = 12

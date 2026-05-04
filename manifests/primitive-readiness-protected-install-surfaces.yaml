@@ -1,0 +1,61 @@
+schema_version: 1
+purpose: Scripts that participate in automatic primitive installation, profile application, settings projection, bootstrap, upgrade, or harness/profile doctor flows. These rows must not be demoted, archived, or downgraded from agentic-primitive without profile-projection review.
+review_rule: Changes require checking generated harness settings/profile outputs and install/update paths.
+scripts:
+  - path: scripts/apply-efficiency-profile.sh
+    surface: profile-application
+    rationale: Applies efficiency/security profile behavior and influences active hook/primitive projection.
+  - path: scripts/set-security-profile.sh
+    surface: profile-application
+    rationale: Applies Claude security profiles and changes active hook projection by profile.
+  - path: scripts/generate-project-settings.sh
+    surface: settings-projection
+    rationale: Generates harness settings that install/project active primitives.
+  - path: scripts/cos-init.sh
+    surface: bootstrap
+    rationale: Shell bootstrap wrapper for COS initialization and primitive projection.
+  - path: scripts/cos_init.py
+    surface: bootstrap
+    rationale: Python implementation for COS initialization flows.
+  - path: scripts/cos-bootstrap.sh
+    surface: bootstrap
+    rationale: Bootstrap/update path for installing COS primitive surfaces.
+  - path: scripts/setup.sh
+    surface: bootstrap
+    rationale: Profile-aware dependency/setup path.
+  - path: scripts/upgrade.sh
+    surface: upgrade
+    rationale: Upgrade path that preserves/generated active harness settings.
+  - path: scripts/uninstall.sh
+    surface: uninstall
+    rationale: Removal path must understand projected primitive surfaces.
+  - path: scripts/create-release.sh
+    surface: release
+    rationale: Release path can publish installable primitive surfaces.
+  - path: scripts/cos-core-skills-check.sh
+    surface: skill-installation
+    rationale: Validates installed core skills.
+  - path: scripts/deps-update.sh
+    surface: dependency-profile
+    rationale: Updates dependency lanes used by install/profile workflows.
+  - path: scripts/install-garak.sh
+    surface: optional-tool-install
+    rationale: Optional red-team tool installer invoked by skill/profile flows.
+  - path: scripts/install-promptfoo.sh
+    surface: optional-tool-install
+    rationale: Optional eval tool installer invoked by skill/profile flows.
+  - path: scripts/cos-config-audit.sh
+    surface: profile-audit
+    rationale: Audits profile/config projection state.
+  - path: scripts/cos-weekly-config-audit.sh
+    surface: profile-audit
+    rationale: Scheduled profile/config audit wrapper.
+  - path: scripts/cos-doctor-memory-lifecycle.sh
+    surface: harness-doctor
+    rationale: Verifies projected memory lifecycle hooks for supported harness profiles.
+  - path: scripts/cos-doctor-tools.sh
+    surface: harness-doctor
+    rationale: Verifies active harness, driver settings, dependencies, and memory lifecycle.
+  - path: scripts/cos-doctor-harness.sh
+    surface: harness-doctor
+    rationale: Harness doctor for profile/projection support.
