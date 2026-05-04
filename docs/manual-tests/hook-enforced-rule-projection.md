@@ -22,7 +22,8 @@ both self-hosted COS and downstream projection.
    for hook in \
      skill-router-bash-gate.sh prompt-quality-llm.sh token-budget-monitor.sh \
      adaptive-bypass.sh assumption-tracker.sh scope-proportionality.sh \
-     scope-creep-detector.sh consequence-evaluator.sh auto-skill-generator.sh
+     scope-creep-detector.sh consequence-evaluator.sh auto-skill-generator.sh \
+     release-guard.sh
    do
      grep -q "$hook" .claude/settings.json && echo "PASS $hook"
    done

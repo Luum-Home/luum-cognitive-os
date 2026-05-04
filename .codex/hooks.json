@@ -171,6 +171,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/skill-router-bash-gate.sh\" ]; then bash \"$PWD/hooks/skill-router-bash-gate.sh\"; fi"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/release-guard.sh\" ]; then bash \"$PWD/hooks/release-guard.sh\"; fi"
         }
       ],
       "matcher": "bash"

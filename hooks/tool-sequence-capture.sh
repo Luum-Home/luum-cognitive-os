@@ -7,11 +7,12 @@
 #
 # Schema (one line per invocation):
 #   {"timestamp":"...","session_id":"...","task_id":"...","tool":"Bash|Edit|...","args_hash":"<sha256[:8]>","success":true|false}
+#   Bash adds: command_hash, command_family, command_preview (redacted, <=180 chars)
 #
 # PERFORMANCE CONTRACT:
 #   <30ms overhead per call. Pure shell. NO python3 per invocation.
-#   Atomic single-line >> append (safe for concurrent writers when
-#   line size < PIPE_BUF, which is 512 bytes on POSIX / 4KB on macOS).
+#   Atomic single-line >> append. Bash command_preview is capped and redacted;
+#   line size stays below POSIX PIPE_BUF (512 bytes).
 #
 # ADR-095: Phase 2 — tool-sequence instrumentation for skill synthesis.
 
@@ -63,20 +64,68 @@ fi
 
 # ── Args hash (PII-safe sha256[:8]) ─────────────────────────────────────────
 # Serialize tool_input to a stable string and sha256. No python3.
+_hash8() {
+  if command -v shasum >/dev/null 2>&1; then
+    printf '%s' "$1" | shasum -a 256 2>/dev/null | cut -c1-8 || echo '00000000'
+  elif command -v sha256sum >/dev/null 2>&1; then
+    printf '%s' "$1" | sha256sum 2>/dev/null | cut -c1-8 || echo '00000000'
+  else
+    echo '00000000'
+  fi
+}
+
+_json_string() {
+  printf '%s' "$1" | jq -Rs . 2>/dev/null || printf '""'
+}
+
+_redact_bash_preview() {
+  # Preserve enough command shape for bypass/sequence analysis while removing
+  # common inline credentials. Keep this pure shell+sed for hot-path portability.
+  printf '%s' "$1" \
+    | tr '\n\r\t' '   ' \
+    | sed -E \
+      -e 's/(^|[[:space:]])([A-Za-z_][A-Za-z0-9_]*(KEY|TOKEN|SECRET|PASSWORD|PASS|CREDENTIAL|AUTH)[A-Za-z0-9_]*=)[^[:space:]]+/\1\2[REDACTED]/Ig' \
+      -e 's/(--?(api[-_]?key|token|secret|password|pass|credential|auth)(=|[[:space:]]+))[^[:space:]]+/\1[REDACTED]/Ig' \
+      -e 's/(Bearer[[:space:]]+)[A-Za-z0-9._~+\/-]+/\1[REDACTED]/Ig' \
+    | cut -c1-180
+}
+
+_command_family() {
+  local cmd="$1"
+  # Strip leading env assignments and common wrappers so sequence analysis sees
+  # the command primitive instead of a one-off variable name.
+  printf '%s' "$cmd" | awk '{
+    for (i=1; i<=NF; i++) {
+      if ($i ~ /^[A-Za-z_][A-Za-z0-9_]*=/) continue
+      if ($i == "env" || $i == "command" || $i == "sudo") continue
+      print $i
+      exit
+    }
+  }' | sed -E 's#[;&|()].*$##' | cut -c1-48
+}
+
 TOOL_INPUT_RAW=$(echo "$_STDIN_JSON" | jq -c '.tool_input // {}' 2>/dev/null || echo '{}')
-if command -v shasum >/dev/null 2>&1; then
-  ARGS_HASH=$(printf '%s' "$TOOL_INPUT_RAW" | shasum -a 256 2>/dev/null | cut -c1-8 || echo '00000000')
-elif command -v sha256sum >/dev/null 2>&1; then
-  ARGS_HASH=$(printf '%s' "$TOOL_INPUT_RAW" | sha256sum 2>/dev/null | cut -c1-8 || echo '00000000')
-else
-  ARGS_HASH='00000000'
+ARGS_HASH=$(_hash8 "$TOOL_INPUT_RAW")
+
+# ── Bash command shape (safe, redacted, useful for bypass detection) ─────────
+BASH_FIELDS=""
+if [ "$TOOL_NAME" = "Bash" ]; then
+  COMMAND_RAW=$(echo "$_STDIN_JSON" | jq -r '.tool_input.command // empty' 2>/dev/null || true)
+  if [ -n "$COMMAND_RAW" ]; then
+    COMMAND_HASH=$(_hash8 "$COMMAND_RAW")
+    COMMAND_FAMILY=$(_command_family "$COMMAND_RAW")
+    COMMAND_PREVIEW=$(_redact_bash_preview "$COMMAND_RAW")
+    COMMAND_FAMILY_JSON=$(_json_string "$COMMAND_FAMILY")
+    COMMAND_PREVIEW_JSON=$(_json_string "$COMMAND_PREVIEW")
+    BASH_FIELDS=",\"command_hash\":\"${COMMAND_HASH}\",\"command_family\":${COMMAND_FAMILY_JSON},\"command_preview\":${COMMAND_PREVIEW_JSON}"
+  fi
 fi
 
 # ── Timestamp ────────────────────────────────────────────────────────────────
 TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u +%Y-%m-%dT%H:%M:%SZ)
 
-# ── Build JSON line (no python3, no jq for construction) ────────────────────
-JSON_LINE="{\"timestamp\":\"${TIMESTAMP}\",\"session_id\":\"${SESSION_ID}\",\"task_id\":\"${TASK_ID}\",\"tool\":\"${TOOL_NAME}\",\"args_hash\":\"${ARGS_HASH}\",\"success\":${SUCCESS}}"
+# ── Build JSON line (no python3) ─────────────────────────────────────────────
+JSON_LINE="{\"timestamp\":\"${TIMESTAMP}\",\"session_id\":\"${SESSION_ID}\",\"task_id\":\"${TASK_ID}\",\"tool\":\"${TOOL_NAME}\",\"args_hash\":\"${ARGS_HASH}\"${BASH_FIELDS},\"success\":${SUCCESS}}"
 
 # ── Append to JSONL ──────────────────────────────────────────────────────────
 METRICS_DIR=$(_resolve_metrics_dir)
