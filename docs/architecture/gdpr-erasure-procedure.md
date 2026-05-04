@@ -21,14 +21,14 @@ Engram local storage, Engram Cloud sync, or append-only COS audit rows.
 1. Identify the data subject and the relevant `tenant_id`.
 2. Search Engram for observations that contain subject data.
 3. Export an evidence snapshot before mutation when legal retention requires it.
-4. Delete or redact matching local Engram observations using the Engram CLI or
-   MCP admin tools available to the operator.
-5. If Engram Cloud sync is active, run the upstream cloud deletion command for
-   each affected observation ID:
-
-   ```bash
-   engram cloud delete --id <observation-id>
-   ```
+4. Delete or redact matching local Engram observations using the Engram MCP
+   admin/API tools available in the installed version, or perform a documented
+   DB-level erasure under maintenance mode. Current Engram v1.15.x does not
+   expose documented local or cloud delete CLI subcommands.
+5. If Engram Cloud sync is active, remove the affected observation through the
+   cloud server's supported admin/API path for the installed version, or rebuild
+   the cloud store from redacted local state. Do not document or automate a
+   nonexistent CLI command.
 
 6. Append an erasure audit row with `audit_class: privacy`, the `tenant_id`, the
    observation ID, and the operator/session that performed the erasure.

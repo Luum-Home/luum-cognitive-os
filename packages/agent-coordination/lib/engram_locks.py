@@ -43,6 +43,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 from datetime import datetime, timezone
 from typing import Any
@@ -66,15 +67,9 @@ def _default_save_fn(
     topic_key: str = "",
     project: str = _PROJECT,
 ) -> dict[str, Any] | None:
-    cmd = [
-        _ENGRAM_BIN, "save",
-        "--json",
-        "--title", title,
-        "--content", content,
-        "--type", type_,
-    ]
+    cmd = [_ENGRAM_BIN, "save", title, content, "--type", type_]
     if topic_key:
-        cmd.extend(["--topic-key", topic_key])
+        cmd.extend(["--topic", topic_key])
     if project:
         cmd.extend(["--project", project])
     try:
@@ -84,8 +79,15 @@ def _default_save_fn(
         output = proc.stdout.strip()
         if not output:
             return None
-        data = json.loads(output)
-        return data if isinstance(data, dict) else None
+        match = re.search(r"Memory saved:\s+#(?P<id>\d+)", output)
+        return {
+            "id": int(match.group("id")) if match else None,
+            "title": title,
+            "content": content,
+            "type": type_,
+            "topic_key": topic_key,
+            "project": project,
+        }
     except Exception:
         return None
 
@@ -96,22 +98,10 @@ def _default_search_fn(
     limit: int = 5,
     project: str = _PROJECT,
 ) -> list[dict[str, Any]]:
-    cmd = [_ENGRAM_BIN, "search", "--json", "--limit", str(limit), query]
-    if project:
-        cmd.extend(["--project", project])
     try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
-        if proc.returncode != 0:
-            return []
-        output = proc.stdout.strip()
-        if not output:
-            return []
-        data = json.loads(output)
-        if isinstance(data, list):
-            return data[:limit]
-        if isinstance(data, dict) and "results" in data:
-            return data["results"][:limit]
-        return []
+        from lib import engram_http_client
+
+        return engram_http_client.search_observations(query, limit=limit, project=project)[:limit]
     except Exception:
         return []
 

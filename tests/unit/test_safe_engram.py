@@ -16,7 +16,6 @@ Covers:
 
 from __future__ import annotations
 
-import subprocess
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -204,7 +203,7 @@ class TestSafeSaveWithMockedEngram:
         mock_proc.stdout = "Saved with id=abc123."
         mock_proc.stderr = ""
 
-        with patch("lib.safe_engram.subprocess.run", return_value=mock_proc) as mock_run:
+        with patch("lib.safe_engram.subprocess.run", return_value=mock_proc):
             result = safe_save("Decision", _CLEAN, engram_bin="engram")
 
         assert result.blocked is False
@@ -221,9 +220,9 @@ class TestSafeSaveWithMockedEngram:
             safe_save("My Title", _CLEAN, engram_bin="engram", topic_key="architecture/test")
 
         called_cmd = mock_run.call_args[0][0]
-        assert "--title" in called_cmd
+        assert "--title" not in called_cmd
         assert "My Title" in called_cmd
-        assert "--topic-key" in called_cmd
+        assert "--topic" in called_cmd
         assert "architecture/test" in called_cmd
 
     def test_type_and_project_forwarded(self):

@@ -176,12 +176,13 @@ def safe_save(
     cmd: List[str] = [
         bin_,
         "save",
-        "--title", title,
-        "--content", content,
-        "--type", type_,
+        title,
+        content,
+        "--type",
+        type_,
     ]
     if topic_key:
-        cmd.extend(["--topic-key", topic_key])
+        cmd.extend(["--topic", topic_key])
     if project:
         cmd.extend(["--project", project])
     if scope:
