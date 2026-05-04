@@ -51,3 +51,7 @@ python3 scripts/acc_pipeline.py --project-dir . --brief --fail-new
 ```
 
 `--fail-new` must stay strict by default: a new file that only matches a broad local default is review debt until it gets an exact availability row, lifecycle metadata, or projection proof. This keeps planned harness work from being hidden by existing local-surface defaults.
+
+## Proof-level boundary
+
+See [Harness Proof Levels](harness-proof-levels.md). `implemented` does not mean universal runtime support. For structural harnesses it means project-local files/configs are generated from official docs and shape-tested; account-backed runtime smoke remains optional.

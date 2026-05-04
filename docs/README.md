@@ -24,6 +24,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ACC Fail-New Gate Manual Test](manual-tests/acc-fail-new-gate.md) — manual proof that ACC blocks new debt and keeps planned harnesses roadmap-only.
 - [ADR-153: ACC Fail-New Gate and Harness Proof Boundary](adrs/ADR-153-acc-fail-new-and-harness-proof-boundary.md) — ratchet decision for strict new-debt blocking and planned-harness non-promotion.
 - [Multi-IDE Harness Implementation Plan](architecture/multi-ide-harness-implementation-plan.md) — phased rollout for structural, shell/CI, provider, and account-backed harness support.
+- [Harness Proof Levels](architecture/harness-proof-levels.md) — explicit boundary between structural projection, optional runtime smoke, native lifecycle proof, and planned-only support.
 - [Multi-IDE Structural Projection Manual Test](manual-tests/multi-ide-structural-projection.md) — manual proof path for Claude, Codex, OpenCode, VS Code Copilot, and Cursor consumer projection.
 - [ADR-154: Multi-IDE Structural Harness Projection](adrs/ADR-154-multi-ide-structural-harness-projection.md) — decision to promote OpenCode, VS Code Copilot, and Cursor to implemented structural projection harnesses.
 - [Shell CI Formal Harness Manual Test](manual-tests/shell-ci-formal-harness.md) — manual proof path for `cos_init.py --harness shell-ci`, projected commands, and generated workflow.
