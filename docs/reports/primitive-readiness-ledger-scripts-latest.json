@@ -1006,8 +1006,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 3,
-        "doc": 65,
+        "config": 4,
+        "doc": 63,
         "hook": 7,
         "rule": 4,
         "script": 8,
@@ -1022,6 +1022,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
           "family": "config",
@@ -1042,14 +1046,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-27.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -1456,9 +1452,9 @@
         "skill_consumers:1",
         "test_consumers:20",
         "hook_consumers:7",
-        "doc_consumers:65",
+        "doc_consumers:63",
         "rule_consumers:4",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:8"
       ],
       "install_surface": "profile-application",
@@ -1475,7 +1471,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 108,
+      "total_consumers": 107,
       "wrapper_for": "scripts/_lib/settings-driver-claude-code.sh"
     },
     {
@@ -2850,13 +2846,13 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 24,
-        "doc": 388,
+        "config": 25,
+        "doc": 390,
         "hook": 67,
         "rule": 42,
-        "script": 189,
+        "script": 191,
         "skill": 55,
-        "test": 309
+        "test": 310
       },
       "consumers": [
         {
@@ -2930,6 +2926,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
           "family": "config",
@@ -3753,6 +3753,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/engram-command-contract.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/expansion-hardening-plan.md"
         },
         {
@@ -4206,6 +4210,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/durable-product-verification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/engram-cloud-docker-sync.md"
         },
         {
           "family": "doc",
@@ -5113,7 +5121,15 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-engram-cloud-docker-smoke"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-engram-cloud-enroll"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-engram-command-audit.py"
         },
         {
           "family": "script",
@@ -5954,6 +5970,10 @@
         {
           "family": "test",
           "path": "tests/audit/test_demotion_loop_audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_engram_command_contract.py"
         },
         {
           "family": "test",
@@ -7161,12 +7181,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:55",
-        "test_consumers:309",
+        "test_consumers:310",
         "hook_consumers:67",
-        "doc_consumers:388",
+        "doc_consumers:390",
         "rule_consumers:42",
-        "config_consumers:24",
-        "script_consumers:189"
+        "config_consumers:25",
+        "script_consumers:191"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -7182,7 +7202,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1074,
+      "total_consumers": 1080,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -7415,8 +7435,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 3,
-        "doc": 11,
+        "config": 4,
+        "doc": 9,
         "rule": 2,
         "script": 1,
         "test": 6
@@ -7432,15 +7452,11 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7521,9 +7537,9 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-update.sh",
         "test_consumers:6",
-        "doc_consumers:11",
+        "doc_consumers:9",
         "rule_consumers:2",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:1"
       ],
       "install_surface": "bootstrap",
@@ -7540,7 +7556,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 23,
+      "total_consumers": 22,
       "wrapper_for": "scripts/cos-update.sh"
     },
     {
@@ -8006,8 +8022,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
-        "doc": 6,
+        "config": 3,
+        "doc": 4,
         "hook": 2,
         "rule": 2,
         "script": 3,
@@ -8021,15 +8037,11 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8108,9 +8120,9 @@
         "skill_consumers:2",
         "test_consumers:4",
         "hook_consumers:2",
-        "doc_consumers:6",
+        "doc_consumers:4",
         "rule_consumers:2",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:3"
       ],
       "install_surface": "profile-audit",
@@ -8127,7 +8139,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 21,
+      "total_consumers": 20,
       "wrapper_for": "scripts/so_session_watchdog.py"
     },
     {
@@ -8200,8 +8212,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
-        "doc": 5,
+        "config": 3,
+        "doc": 3,
         "test": 2
       },
       "consumers": [
@@ -8211,15 +8223,11 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8248,8 +8256,8 @@
         "protected_install_surface:skill-installation",
         "wrapper_for:scripts/cos-status.sh",
         "test_consumers:2",
-        "doc_consumers:5",
-        "config_consumers:2"
+        "doc_consumers:3",
+        "config_consumers:3"
       ],
       "install_surface": "skill-installation",
       "install_surface_rationale": "Validates installed core skills.",
@@ -8265,7 +8273,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 8,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -8621,8 +8629,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 3,
-        "doc": 2,
+        "config": 4,
+        "doc": 1,
         "script": 1,
         "test": 2
       },
@@ -8637,11 +8645,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "doc",
@@ -8666,8 +8674,8 @@
         "protected_install_surface:harness-doctor",
         "wrapper_for:scripts/measure_harness_profiles.py",
         "test_consumers:2",
-        "doc_consumers:2",
-        "config_consumers:3",
+        "doc_consumers:1",
+        "config_consumers:4",
         "script_consumers:1"
       ],
       "install_surface": "harness-doctor",
@@ -8692,8 +8700,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
-        "doc": 10,
+        "config": 3,
+        "doc": 9,
         "script": 1,
         "test": 6
       },
@@ -8704,11 +8712,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "doc",
@@ -8781,8 +8789,8 @@
         "protected_install_surface:harness-doctor",
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:6",
-        "doc_consumers:10",
-        "config_consumers:2",
+        "doc_consumers:9",
+        "config_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": "harness-doctor",
@@ -8881,8 +8889,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
-        "doc": 8,
+        "config": 3,
+        "doc": 7,
         "hook": 1,
         "test": 7
       },
@@ -8893,11 +8901,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "doc",
@@ -8967,8 +8975,8 @@
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:7",
         "hook_consumers:1",
-        "doc_consumers:8",
-        "config_consumers:2"
+        "doc_consumers:7",
+        "config_consumers:3"
       ],
       "install_surface": "harness-doctor",
       "install_surface_rationale": "Verifies active harness, driver settings, dependencies, and memory lifecycle.",
@@ -9189,6 +9197,58 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "doc": 4,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/engram-command-contract.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/engram-cloud-docker-sync.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_adr_139_141_142_cloud_surfaces.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "wrapper_for:scripts/engram-sync.sh",
+        "test_consumers:1",
+        "doc_consumers:4"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-engram-cloud-docker-smoke",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 5,
+      "wrapper_for": "scripts/engram-sync.sh"
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 6,
+        "script": 1,
         "test": 3
       },
       "consumers": [
@@ -9209,6 +9269,18 @@
           "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
         },
         {
+          "family": "doc",
+          "path": "docs/architecture/engram-command-contract.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/engram-cloud-docker-sync.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-engram-cloud-docker-smoke"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_adr_139_141_142_cloud_surfaces.py"
         },
@@ -9224,7 +9296,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:4"
+        "doc_consumers:6",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -9238,7 +9311,45 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 10,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/engram-command-contract.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_engram_command_contract.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-engram-command-audit.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -10128,8 +10239,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 6,
-        "doc": 22,
+        "config": 7,
+        "doc": 21,
         "script": 5,
         "skill": 1,
         "test": 12
@@ -10146,6 +10257,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
           "family": "config",
@@ -10166,10 +10281,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-01.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -10327,8 +10438,8 @@
         "wrapper_for:scripts/cos_init.py",
         "skill_consumers:1",
         "test_consumers:12",
-        "doc_consumers:22",
-        "config_consumers:6",
+        "doc_consumers:21",
+        "config_consumers:7",
         "script_consumers:5"
       ],
       "install_surface": "bootstrap",
@@ -11097,7 +11208,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 6,
         "skill": 1,
         "test": 1
       },
@@ -11105,6 +11216,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
         },
         {
           "family": "doc",
@@ -11141,7 +11256,7 @@
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -11158,7 +11273,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -11677,7 +11792,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 5,
         "rule": 1,
         "skill": 2,
         "test": 1
@@ -11686,6 +11801,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
         },
         {
           "family": "doc",
@@ -11725,7 +11844,7 @@
         "lifecycle",
         "skill_consumers:2",
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "rule_consumers:1",
         "config_consumers:1"
       ],
@@ -11743,7 +11862,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -11798,7 +11917,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 13,
+        "doc": 14,
         "script": 5,
         "skill": 1,
         "test": 4
@@ -11815,6 +11934,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
         },
         {
           "family": "doc",
@@ -11906,7 +12029,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:4",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:1",
         "script_consumers:5"
       ],
@@ -11924,7 +12047,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 24,
+      "total_consumers": 25,
       "wrapper_for": null
     },
     {
@@ -12157,7 +12280,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 5,
         "skill": 1,
         "test": 1
       },
@@ -12165,6 +12288,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
         },
         {
           "family": "doc",
@@ -12196,7 +12323,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -12213,7 +12340,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -12475,8 +12602,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
-        "doc": 2,
+        "config": 3,
+        "doc": 1,
         "script": 1
       },
       "consumers": [
@@ -12486,11 +12613,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "doc",
@@ -12506,8 +12633,8 @@
         "lifecycle",
         "protected_install_surface:profile-audit",
         "wrapper_for:scripts/cos-config-audit.sh",
-        "doc_consumers:2",
-        "config_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": "profile-audit",
@@ -14222,8 +14349,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 4,
-        "doc": 6,
+        "config": 5,
+        "doc": 5,
         "script": 3,
         "test": 7
       },
@@ -14238,15 +14365,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "config",
           "path": "manifests/runtime-hardcoding-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -14315,8 +14442,8 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:6",
-        "config_consumers:4",
+        "doc_consumers:5",
+        "config_consumers:5",
         "script_consumers:3"
       ],
       "install_surface": "bootstrap",
@@ -15581,8 +15708,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 3,
-        "doc": 3
+        "config": 4,
+        "doc": 2
       },
       "consumers": [
         {
@@ -15595,11 +15722,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "doc",
@@ -15615,8 +15742,8 @@
         "lifecycle",
         "protected_install_surface:release",
         "wrapper_for:scripts/cos-init.sh",
-        "doc_consumers:3",
-        "config_consumers:3"
+        "doc_consumers:2",
+        "config_consumers:4"
       ],
       "install_surface": "release",
       "install_surface_rationale": "Release path can publish installable primitive surfaces.",
@@ -15982,8 +16109,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
-        "doc": 5,
+        "config": 3,
+        "doc": 4,
         "hook": 1,
         "skill": 2,
         "test": 1
@@ -15995,15 +16122,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-25.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16042,8 +16169,8 @@
         "skill_consumers:2",
         "test_consumers:1",
         "hook_consumers:1",
-        "doc_consumers:5",
-        "config_consumers:2"
+        "doc_consumers:4",
+        "config_consumers:3"
       ],
       "install_surface": "dependency-profile",
       "install_surface_rationale": "Updates dependency lanes used by install/profile workflows.",
@@ -16887,8 +17014,9 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 7,
+        "doc": 9,
         "hook": 2,
+        "script": 1,
         "test": 2
       },
       "consumers": [
@@ -16918,6 +17046,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/engram-command-contract.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/engram-cloud-docker-sync.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/persistence-map.md"
         },
         {
@@ -16927,6 +17063,10 @@
         {
           "family": "hook",
           "path": "packages/engram-sync/hooks/engram-auto-sync.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-engram-cloud-docker-smoke"
         },
         {
           "family": "test",
@@ -16941,7 +17081,8 @@
       "evidence": [
         "test_consumers:2",
         "hook_consumers:2",
-        "doc_consumers:7"
+        "doc_consumers:9",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -16955,7 +17096,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 11,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -17012,8 +17153,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 5,
-        "doc": 11,
+        "config": 6,
+        "doc": 10,
         "script": 1,
         "skill": 1,
         "test": 3
@@ -17029,6 +17170,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
@@ -17038,10 +17183,6 @@
         {
           "family": "config",
           "path": "manifests/runtime-hardcoding-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -17111,8 +17252,8 @@
         "wrapper_for:scripts/hook-timing-wrapper.sh",
         "skill_consumers:1",
         "test_consumers:3",
-        "doc_consumers:11",
-        "config_consumers:5",
+        "doc_consumers:10",
+        "config_consumers:6",
         "script_consumers:1"
       ],
       "install_surface": "settings-projection",
@@ -17918,8 +18059,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 3,
-        "doc": 5,
+        "config": 4,
+        "doc": 4,
         "skill": 1
       },
       "consumers": [
@@ -17933,11 +18074,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "doc",
@@ -17965,8 +18106,8 @@
         "lifecycle",
         "protected_install_surface:optional-tool-install",
         "skill_consumers:1",
-        "doc_consumers:5",
-        "config_consumers:3"
+        "doc_consumers:4",
+        "config_consumers:4"
       ],
       "install_surface": "optional-tool-install",
       "install_surface_rationale": "Optional red-team tool installer invoked by skill/profile flows.",
@@ -18196,8 +18337,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 3,
-        "doc": 6,
+        "config": 4,
+        "doc": 5,
         "skill": 1,
         "test": 1
       },
@@ -18212,11 +18353,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "doc",
@@ -18253,8 +18394,8 @@
         "protected_install_surface:optional-tool-install",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:6",
-        "config_consumers:3"
+        "doc_consumers:5",
+        "config_consumers:4"
       ],
       "install_surface": "optional-tool-install",
       "install_surface_rationale": "Optional eval tool installer invoked by skill/profile flows.",
@@ -20266,7 +20407,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 12,
+        "doc": 13,
         "hook": 1,
         "rule": 1,
         "script": 2,
@@ -20313,6 +20454,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/codex-host-tooling-verification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/engram-cloud-docker-sync.md"
         },
         {
           "family": "doc",
@@ -20401,7 +20546,7 @@
         "skill_consumers:4",
         "test_consumers:9",
         "hook_consumers:1",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:2"
@@ -20420,7 +20565,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 30,
+      "total_consumers": 31,
       "wrapper_for": null
     },
     {
@@ -21905,8 +22050,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 4,
-        "doc": 24,
+        "config": 5,
+        "doc": 23,
         "hook": 1,
         "rule": 2,
         "script": 4,
@@ -21920,6 +22065,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
           "family": "config",
@@ -21940,10 +22089,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-27.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -22093,9 +22238,9 @@
         "wrapper_for:scripts/cos_executor.py",
         "test_consumers:8",
         "hook_consumers:1",
-        "doc_consumers:24",
+        "doc_consumers:23",
         "rule_consumers:2",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:4"
       ],
       "install_surface": "profile-application",
@@ -22201,8 +22346,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 4,
-        "doc": 12,
+        "config": 5,
+        "doc": 11,
         "rule": 1,
         "script": 3,
         "test": 3
@@ -22215,6 +22360,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
           "family": "config",
@@ -22231,10 +22380,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-01.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -22307,9 +22452,9 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-bootstrap.sh",
         "test_consumers:3",
-        "doc_consumers:12",
+        "doc_consumers:11",
         "rule_consumers:1",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:3"
       ],
       "install_surface": "bootstrap",
@@ -23664,8 +23809,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 3,
-        "doc": 13,
+        "config": 4,
+        "doc": 12,
         "test": 3
       },
       "consumers": [
@@ -23679,11 +23824,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "doc",
@@ -23752,8 +23897,8 @@
         "protected_install_surface:uninstall",
         "wrapper_for:scripts/cos-registry.sh",
         "test_consumers:3",
-        "doc_consumers:13",
-        "config_consumers:3"
+        "doc_consumers:12",
+        "config_consumers:4"
       ],
       "install_surface": "uninstall",
       "install_surface_rationale": "Removal path must understand projected primitive surfaces.",
@@ -23821,8 +23966,8 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 3,
-        "doc": 5,
+        "config": 4,
+        "doc": 4,
         "test": 1
       },
       "consumers": [
@@ -23836,11 +23981,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+          "path": "manifests/primitive-projection-profiles.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
           "family": "doc",
@@ -23869,8 +24014,8 @@
         "protected_install_surface:upgrade",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:1",
-        "doc_consumers:5",
-        "config_consumers:3"
+        "doc_consumers:4",
+        "config_consumers:4"
       ],
       "install_surface": "upgrade",
       "install_surface_rationale": "Upgrade path that preserves/generated active harness settings.",
@@ -24277,24 +24422,24 @@
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
       "high": 137,
-      "medium": 180
+      "medium": 182
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 49,
       "lifecycle-declared-maintainer": 38,
       "skill-referenced-not-projectable": 2,
-      "so-local-only": 209
+      "so-local-only": 211
     },
     "low_confidence_rows": 0,
     "roles": {
       "agentic-primitive": 106,
       "driver-specific": 10,
       "lab": 13,
-      "maintainer-tool": 177,
+      "maintainer-tool": 179,
       "migration-only": 11
     },
-    "total_scripts": 317,
+    "total_scripts": 319,
     "without_consumers": 4
   },
   "target_family": "scripts"

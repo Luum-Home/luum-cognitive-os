@@ -1,140 +1,224 @@
 schema_version: harness-projection.v1
-purpose: Declares harness/IDE projection status for Cognitive OS consumer-project ACC proof.
+purpose: Declares harness/IDE projection status for Cognitive OS consumer-project
+  ACC proof.
 status_values:
   implemented: Projection proof exists and ACC may execute it.
-  planned: Harness is in product scope but native projection proof is not implemented yet.
+  planned: Harness is in product scope but native projection proof is not implemented
+    yet.
   unsupported: Harness is intentionally out of scope for now.
 harnesses:
-  - id: claude
-    display_name: Claude Code
-    status: implemented
-    projection_mode: native-settings
-    default_command:
-      - python3
-      - scripts/cos_init.py
-      - --default
-      - --harness
-      - claude
-    settings_paths:
-      - .claude/settings.json
-    projected_surfaces:
-      - hooks
-      - rules
-      - skills
-    proof: temp-consumer-project
-    limitations:
-      - Proof currently covers default profile, not full profile.
-    next_action: Keep default/full projection tests current and add promotion proof for candidate primitives.
-  - id: codex
-    display_name: OpenAI Codex
-    status: implemented
-    projection_mode: settings-file
-    default_command:
-      - python3
-      - scripts/cos_init.py
-      - --default
-      - --harness
-      - codex
-    settings_paths:
-      - .codex/hooks.json
-    projected_surfaces:
-      - hooks
-      - rules
-      - skills
-    proof: temp-consumer-project
-    limitations:
-      - Runtime parity depends on Codex-supported hook/settings semantics.
-      - Proof currently covers default profile, not full profile.
-    next_action: Expand Codex runtime parity proof and full-profile projection proof.
-  - id: cursor
-    display_name: Cursor
-    status: planned
-    projection_mode: ide-rules-or-wrapper
-    settings_paths:
-      - .cursor/rules
-      - .cursor/mcp.json
-    projected_surfaces:
-      - rules
-      - skills
-      - mcp
-    proof: none
-    limitations:
-      - Native lifecycle hook semantics are not signed.
-      - Projection driver has not been implemented.
-    next_action: Define Cursor settings/rules/MCP projection driver and temp-project proof.
-  - id: windsurf
-    display_name: Windsurf
-    status: planned
-    projection_mode: ide-rules-or-wrapper
-    settings_paths:
-      - .windsurf/rules
-      - .windsurf/mcp.json
-    projected_surfaces:
-      - rules
-      - skills
-      - mcp
-    proof: none
-    limitations:
-      - Native lifecycle hook semantics are not signed.
-      - Projection driver has not been implemented.
-    next_action: Define Windsurf settings/rules/MCP projection driver and temp-project proof.
-  - id: vscode-copilot
-    display_name: VS Code Copilot
-    status: planned
-    projection_mode: instructions-and-tasks
-    settings_paths:
-      - .github/copilot-instructions.md
-      - .vscode/tasks.json
-      - .vscode/settings.json
-    projected_surfaces:
-      - instructions
-      - tasks
-      - mcp
-    proof: none
-    limitations:
-      - No native COS lifecycle hooks are signed.
-      - Must distinguish GitHub Copilot instructions from executable tools.
-    next_action: Define instruction/task/MCP projection and temp-project proof.
-  - id: opencode
-    display_name: OpenCode
-    status: planned
-    projection_mode: wrapper-or-native-config
-    settings_paths:
-      - opencode.json
-      - .opencode
-    projected_surfaces:
-      - instructions
-      - tools
-      - mcp
-    proof: none
-    limitations:
-      - Native config schema and hook support need audit.
-    next_action: Audit OpenCode config/tool surface and add projection proof.
-  - id: google-antigravity
-    display_name: Google Antigravity
-    status: planned
-    projection_mode: unknown
-    settings_paths: []
-    projected_surfaces:
-      - instructions
-      - tools
-      - mcp
-    proof: none
-    limitations:
-      - Supported local projection/config format is not signed in this repo.
-    next_action: Research supported projection surface, then add explicit driver and proof.
-  - id: shell-ci
-    display_name: Shell / CI
-    status: planned
-    projection_mode: cli-and-workflows
-    settings_paths:
-      - .github/workflows
-      - scripts
-    projected_surfaces:
-      - scripts
-      - workflows
-    proof: none
-    limitations:
-      - Current ACC projection proof is focused on IDE consumer installs.
-      - CI workflow `.github/workflows/ci.yml` remains disabled.
-    next_action: Define CLI/workflow projection contract and re-enable product-core CI proof.
+- id: claude
+  display_name: Claude Code
+  status: implemented
+  projection_mode: native-settings
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - claude
+  settings_paths:
+  - .claude/settings.json
+  projected_surfaces:
+  - hooks
+  - rules
+  - skills
+  proof: temp-consumer-project
+  limitations:
+  - Proof currently covers default profile, not full profile.
+  next_action: Keep default/full projection tests current and add promotion proof
+    for candidate primitives.
+- id: codex
+  display_name: OpenAI Codex
+  status: implemented
+  projection_mode: settings-file
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - codex
+  settings_paths:
+  - .codex/hooks.json
+  projected_surfaces:
+  - hooks
+  - rules
+  - skills
+  proof: temp-consumer-project
+  limitations:
+  - Runtime parity depends on Codex-supported hook/settings semantics.
+  - Proof currently covers default profile, not full profile.
+  next_action: Expand Codex runtime parity proof and full-profile projection proof.
+- id: cursor
+  display_name: Cursor
+  status: planned
+  projection_mode: ide-rules-or-wrapper
+  settings_paths:
+  - .cursor/rules
+  - .cursor/mcp.json
+  projected_surfaces:
+  - rules
+  - skills
+  - mcp
+  proof: none
+  limitations:
+  - Native lifecycle hook semantics are not signed.
+  - Projection driver has not been implemented.
+  next_action: Define Cursor settings/rules/MCP projection driver and temp-project
+    proof.
+- id: windsurf
+  display_name: Windsurf
+  status: planned
+  projection_mode: ide-rules-or-wrapper
+  settings_paths:
+  - .windsurf/rules
+  - .windsurf/mcp.json
+  projected_surfaces:
+  - rules
+  - skills
+  - mcp
+  proof: none
+  limitations:
+  - Native lifecycle hook semantics are not signed.
+  - Projection driver has not been implemented.
+  next_action: Define Windsurf settings/rules/MCP projection driver and temp-project
+    proof.
+- id: vscode-copilot
+  display_name: VS Code Copilot
+  status: planned
+  projection_mode: instructions-and-tasks
+  settings_paths:
+  - .github/copilot-instructions.md
+  - .vscode/tasks.json
+  - .vscode/settings.json
+  projected_surfaces:
+  - instructions
+  - tasks
+  - mcp
+  proof: none
+  limitations:
+  - No native COS lifecycle hooks are signed.
+  - Must distinguish GitHub Copilot instructions from executable tools.
+  next_action: Define instruction/task/MCP projection and temp-project proof.
+- id: opencode
+  display_name: OpenCode
+  status: planned
+  projection_mode: wrapper-or-native-config
+  settings_paths:
+  - opencode.json
+  - .opencode
+  projected_surfaces:
+  - instructions
+  - tools
+  - mcp
+  proof: none
+  limitations:
+  - Native config schema and hook support need audit.
+  next_action: Audit OpenCode config/tool surface and add projection proof.
+- id: google-antigravity
+  display_name: Google Antigravity
+  status: planned
+  projection_mode: unknown
+  settings_paths: []
+  projected_surfaces:
+  - instructions
+  - tools
+  - mcp
+  proof: none
+  limitations:
+  - Supported local projection/config format is not signed in this repo.
+  next_action: Research supported projection surface, then add explicit driver and
+    proof.
+- id: qwen-code
+  display_name: Qwen Code
+  status: planned
+  projection_mode: cli-ide-sdk-and-settings
+  settings_paths:
+  - .qwen/settings.json
+  - .qwen
+  - settings.json
+  projected_surfaces:
+  - instructions
+  - skills
+  - hooks
+  - mcp
+  - headless-ci
+  proof: none
+  limitations:
+  - Official docs show terminal, IDE, CI/CD, browser, and SDK environments, but COS
+    projection driver has not been implemented.
+  - Settings path/schema must be verified against Qwen Code docs before promotion.
+  next_action: Define Qwen Code settings/skills/hooks projection driver and temp-project
+    proof.
+  research_sources:
+  - https://qwenlm.github.io/qwen-code-docs/en/blog/thinks-like-a-programmer/
+  - https://github.com/QwenLM/qwen-code
+- id: kimi-code
+  display_name: Kimi Code
+  status: planned
+  projection_mode: terminal-agent-or-claude-compatible-wrapper
+  settings_paths: []
+  projected_surfaces:
+  - instructions
+  - tools
+  - mcp
+  proof: none
+  limitations:
+  - Official surface appears terminal-agent oriented; local project config/projection
+    schema is not signed in this repo.
+  next_action: Research Kimi Code local config surface, then add driver and temp-project
+    proof.
+  research_sources:
+  - https://www.kimi.com/code/en
+  - https://platform.kimi.ai/docs/guide/agent-support
+- id: minimax-maxclaw
+  display_name: MiniMax MaxClaw / MiniMax Agent
+  status: planned
+  projection_mode: hosted-agent-or-openclaw-compatible
+  settings_paths: []
+  projected_surfaces:
+  - instructions
+  - tools
+  - memory
+  - mcp
+  proof: none
+  limitations:
+  - Current evidence points to hosted/cloud agent surfaces; local IDE/project projection
+    contract is not signed.
+  next_action: Decide whether MaxClaw is a harness target, hosted deployment target,
+    or provider behind OpenClaw before adding projection proof.
+  research_sources:
+  - https://www.digitaljournal.com/pr/news/24-7-press-release/minimax-launches-maxclaw-one-click-agent-1506208713.html
+- id: deepseek-provider
+  display_name: DeepSeek provider integrations
+  status: planned
+  projection_mode: provider-via-existing-harness
+  settings_paths: []
+  projected_surfaces:
+  - model-provider
+  - api-compatible-agent
+  proof: none
+  limitations:
+  - No first-party DeepSeek coding IDE/agent projection contract is signed here; DeepSeek
+    should initially be modeled as provider support through Claude Code/OpenCode/OpenClaw-compatible
+    harnesses.
+  next_action: Track DeepSeek as provider compatibility unless a first-party coding
+    harness with project config emerges.
+  research_sources:
+  - https://api-docs.deepseek.com/
+- id: shell-ci
+  display_name: Shell / CI
+  status: planned
+  projection_mode: cli-and-workflows
+  settings_paths:
+  - .github/workflows
+  - scripts
+  projected_surfaces:
+  - scripts
+  - workflows
+  proof: none
+  limitations:
+  - Current ACC projection proof is focused on IDE consumer installs.
+  - CI workflow `.github/workflows/ci.yml` remains disabled.
+  next_action: Define CLI/workflow projection contract and re-enable product-core
+    CI proof.
