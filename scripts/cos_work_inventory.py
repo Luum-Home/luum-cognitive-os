@@ -65,19 +65,15 @@ def _ephemeral_tmpdir() -> str:
 def _is_ephemeral_path(path: Path) -> bool:
     """Return True if *path* matches any ephemeral workspace pattern.
 
-    Matches against EPHEMERAL_PATH_PATTERNS (glob) and paths that are
-    children of the runtime $TMPDIR.
+    Matches against EPHEMERAL_PATH_PATTERNS (glob). Do not classify every
+    child of $TMPDIR as ephemeral: pytest fixtures, ad-hoc consumer repos, and
+    temporary linked worktrees often live under TMPDIR while still representing
+    real WIP that the inventory must report.
     """
     path_str = str(path)
     for pattern in EPHEMERAL_PATH_PATTERNS:
         if fnmatch.fnmatch(path_str, pattern):
             return True
-    tmpdir = _ephemeral_tmpdir()
-    try:
-        path.relative_to(tmpdir)
-        return True
-    except ValueError:
-        pass
     return False
 
 
