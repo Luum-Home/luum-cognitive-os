@@ -40,3 +40,11 @@ Track planned IDE/provider harnesses without overclaiming support. A harness bec
 ## Baseline discipline
 
 ACC can report 1.0 for the current declared scope. New harnesses must not inherit that status. Planned harness rows remain unverified until their own proof exists.
+
+Run the ACC ratchet before promoting any harness work:
+
+```bash
+python3 scripts/acc_pipeline.py --project-dir . --brief --fail-new
+```
+
+`--fail-new` must stay strict by default: a new file that only matches a broad local default is review debt until it gets an exact availability row, lifecycle metadata, or projection proof. This keeps planned harness work from being hidden by existing local-surface defaults.
