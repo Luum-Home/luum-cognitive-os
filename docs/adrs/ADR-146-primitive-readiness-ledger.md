@@ -68,7 +68,7 @@ python3 scripts/primitive_readiness_ledger.py --fail-agentic-without-lifecycle
 - The ledger creates a ratchet path: start advisory, then fail only on touched rows or chosen role classes.
 - Classification remains revisable. A heuristic role is not a permanent decision; it is a visible starting point.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **Only extend `primitive_coverage.py`**: rejected because coverage score is not the same as distribution role or promotion state.
 - **Manually maintain a YAML row for all scripts immediately**: rejected because the repo is in reconstruction and a generated first pass prevents stalling on 300+ rows.
