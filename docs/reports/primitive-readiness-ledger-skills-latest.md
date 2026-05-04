@@ -65,7 +65,7 @@ Consumer accessibility: repo-skill-not-projectable:86, so-local-only:4
 | `skills/primitive-usage-map/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/project-scaffold/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/push-release/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/queue-drain/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 14 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/queue-drain/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 17 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/radar-update/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/red-team/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 34 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/redteam-harness/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |

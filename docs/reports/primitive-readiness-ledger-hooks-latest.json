@@ -51,7 +51,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 72,
+        "doc": 74,
         "hook": 27,
         "rule": 5,
         "script": 30,
@@ -250,6 +250,14 @@
         {
           "family": "doc",
           "path": "docs/architecture/self-evolving-doctrine-proposals.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-research-2026-05-04.md"
         },
         {
           "family": "doc",
@@ -867,7 +875,7 @@
         "rule_consumers:5",
         "script_consumers:30",
         "test_consumers:56",
-        "doc_consumers:72",
+        "doc_consumers:74",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -878,7 +886,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 200
+      "total_consumers": 202
     },
     {
       "confidence": "medium",
@@ -2668,7 +2676,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 87,
+        "doc": 88,
         "hook": 21,
         "rule": 2,
         "script": 28,
@@ -2919,6 +2927,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/runtime-hardcoding-discipline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-research-2026-05-04.md"
         },
         {
           "family": "doc",
@@ -3576,7 +3588,7 @@
         "rule_consumers:2",
         "script_consumers:28",
         "test_consumers:76",
-        "doc_consumers:87",
+        "doc_consumers:88",
         "config_consumers:4"
       ],
       "family": "hooks",
@@ -3587,7 +3599,7 @@
       "role": "runtime-safety",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 223
+      "total_consumers": 224
     },
     {
       "confidence": "medium",

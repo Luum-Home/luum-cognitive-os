@@ -80,6 +80,21 @@ Gate severity follows `cognitive-os.yaml → project.phase`:
 | `production` | Block stale, overexposed, critical missing, or `acc_effective` below threshold. |
 | `maintenance` | Same as production, with tighter tolerance for new missing mappings. |
 
+### Fail-new ratchet
+
+Use `--fail-new` when ACC should reject newly introduced debt instead of only reporting aggregate score drift:
+
+```bash
+python3 scripts/acc_pipeline.py --project-dir . --brief --fail-new
+python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new
+```
+
+`--fail-new` compares the current report with `--baseline` (default: `docs/acc/latest.json`) before writing the new report. It blocks new `missing`, `partial`, `stale`, `overexposed`, or `unverified` capabilities/findings. In strict mode, which is the default, it also blocks newly discovered capabilities that are aligned only by broad local-surface defaults such as `scripts/**`, `rules/*.md`, or `skills/**/SKILL.md`.
+
+Use `--allow-new-local-defaults` only when an operator intentionally wants to tolerate a new local-only surface for one run. The durable fix is an exact row in `manifests/primitive-consumer-availability.yaml`, lifecycle metadata, or real projection proof.
+
+The output includes a `new_debt` object in both the full and compact reports so hooks/CI can gate without loading the complete ACC JSON into agent context.
+
 ## Engram boundary
 
 A Python script cannot call in-process MCP tools unless they are exposed to that process. Therefore `acc_pipeline.py` records:
@@ -112,9 +127,9 @@ ACC runs this shell/CI projection inside the same temporary consumer projects us
 
 ## Multi-IDE harness registry
 
-`manifests/harness-projection.yaml` is the authoritative list of IDEs/harnesses considered by ACC. Claude Code and OpenAI Codex are currently `implemented`; Cursor, Windsurf, VS Code Copilot, OpenCode, Google Antigravity, Qwen Code, Kimi Code, MiniMax MaxClaw, DeepSeek provider integrations, and Shell/CI are declared as `planned`. Planned harnesses are reported as unverified and never inherit Claude/Codex projection proof.
+`manifests/harness-projection.yaml` is the authoritative list of IDEs/harnesses considered by ACC. Claude Code and OpenAI Codex are currently `implemented`; Cursor, Windsurf, VS Code Copilot, OpenCode, Google Antigravity, Qwen Code, Kimi Code, MiniMax MaxClaw, DeepSeek provider integrations, and Shell/CI are declared as `planned`. Planned harnesses are roadmap scope only: they are reported as unverified and never inherit Claude/Codex projection proof.
 
-Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`.
+Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, adding a temp-project proof path, adding automated/manual tests, and only then changing its status to `implemented`. A planned row may document research sources or target files, but it must not be described as supported runtime behavior.
 
 ## Primitive duplication adapter
 
