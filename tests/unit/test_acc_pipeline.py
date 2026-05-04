@@ -36,6 +36,27 @@ def make_repo(tmp_path: Path) -> Path:
             }
         )
     )
+    (root / "manifests" / "primitive-projection-profiles.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "primitive-projection-profiles.v1",
+                "profiles": {
+                    "default": {"description": "default profile"},
+                    "full": {"description": "full profile"},
+                },
+                "projection_classes": {
+                    "shared": {},
+                    "default": {},
+                    "full": {},
+                    "profile-driver": {},
+                    "maintainer-only": {},
+                },
+                "profile_driver_scripts": [
+                    {"path": "scripts/projected.sh", "class": "profile-driver", "source_manifest": "test"},
+                ],
+            }
+        )
+    )
     script_payload = {
         "summary": {},
         "scripts": [
@@ -114,6 +135,7 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert payload["persistence"]["engram"]["status"] == "unavailable"
     assert payload["harness_projection"]["claude"]["status"] == "implemented"
     assert payload["harness_projection"]["cursor"]["status"] == "planned"
+    assert payload["adapters"]["projection_profiles"]["status"] == "ok"
     compact = acc_pipeline.compact_summary(payload)
     assert compact["schema_version"] == "acc.compact.v1"
     assert compact["context_diet"]["read_this_first"] == "docs/acc/latest-compact.md"

@@ -17,7 +17,7 @@
         "doc": 72,
         "hook": 26,
         "rule": 5,
-        "script": 29,
+        "script": 30,
         "skill": 7,
         "test": 56
       },
@@ -472,6 +472,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-engram-command-audit.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-update.sh"
         },
         {
@@ -820,7 +824,7 @@
         "skill_consumers:7",
         "hook_consumers:26",
         "rule_consumers:5",
-        "script_consumers:29",
+        "script_consumers:30",
         "test_consumers:56",
         "doc_consumers:72",
         "config_consumers:3"
@@ -833,7 +837,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 198
+      "total_consumers": 199
     },
     {
       "confidence": "medium",
@@ -15322,7 +15326,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 7,
+        "doc": 8,
         "script": 4,
         "test": 4
       },
@@ -15366,6 +15370,10 @@
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/engram-command-contract.md"
         },
         {
           "family": "doc",
@@ -15421,7 +15429,7 @@
         "lifecycle",
         "script_consumers:4",
         "test_consumers:4",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -15434,7 +15442,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "high",
