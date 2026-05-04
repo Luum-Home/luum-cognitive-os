@@ -25,11 +25,16 @@ pytestmark = [
 
 def test_engram_cloud_enroll_dry_run_inside_container() -> None:
     assert DockerContainer is not None
-    with DockerContainer("python:3.11-slim").with_volume_mapping(str(ROOT), "/workspace", mode="rw").with_working_dir("/workspace").with_command(
-        "bash -lc 'scripts/cos-engram-cloud-enroll --project docker-smoke --dry-run --json'"
+    with DockerContainer("python:3.11-slim").with_volume_mapping(str(ROOT), "/workspace", mode="rw").with_command(
+        "sh -lc 'cd /workspace && scripts/cos-engram-cloud-enroll --project docker-smoke --dry-run --json'"
     ) as container:
-        exit_code, output = container.get_wrapped_container().wait()
-        logs = container.get_logs()[0].decode("utf-8", errors="replace")
+        wait_result = container.get_wrapped_container().wait()
+        exit_code = wait_result.get("StatusCode", wait_result) if isinstance(wait_result, dict) else wait_result
+        raw_logs = container.get_logs()
+        if isinstance(raw_logs, tuple):
+            logs = b"".join(part for part in raw_logs if part).decode("utf-8", errors="replace")
+        else:
+            logs = raw_logs.decode("utf-8", errors="replace")
     assert exit_code == 0
     assert '"project_scope": "docker-smoke"' in logs
 
