@@ -20,6 +20,8 @@ headless/Kubernetes/cloud-provider runtime is not.**
 
 For the service-boundary version of this distinction, see
 [`cos-service-runtime-boundary.md`](cos-service-runtime-boundary.md).
+For the future scheduler/queue/worker control-plane plan, see
+[`service-control-plane-implementation-plan.md`](service-control-plane-implementation-plan.md).
 
 ## Why this must not be a normal test lane
 
