@@ -48,7 +48,7 @@ Score task risk on 4 dimensions (AC clarity, blast radius, reversibility, decisi
 ### 14. Language Quality Gates (CI-enforced)
 Polyglot drift caught in PRs (ADR-066). Three tiers:
 - **Python** (live): snake_case via `rules/python-naming.md` + `tests/audit/test_python_naming.py`
-- **Go** (live): `gofmt -l` (no unformatted files) + `go vet ./...` (no issues) via `.github/workflows/go-quality.yml` — covers root module, `cmd/cos`, `cmd/cos-test`; existing gofmt debt on HEAD is pre-existing
+- **Go** (local-first): `gofmt -l` (no unformatted files) + `go vet ./...` (no issues); the former GitHub workflow is preserved as `.github/workflows/go-quality.yml.disabled` while ADR-131 local CI is authoritative — covers root module, `cmd/cos`, `cmd/cos-test`; existing gofmt debt on HEAD is pre-existing
 - **Bash** (future): `shellcheck` enforcement — tracked as follow-up; current state: advisory only via `scripts/lint-shell.sh --new-only`
 
 ### 15. Test Lane Taxonomy
