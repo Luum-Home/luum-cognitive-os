@@ -114,6 +114,43 @@ COS should not scrape, copy, or reinterpret provider credentials. It should
 define account-backed executor adapters that invoke official provider CLIs or
 gateways under explicit credential modes.
 
+### Economic premise: account-backed CLI before API key for maintainer mode
+
+For the maintainer's own solo-swarm environment, the default economic posture
+should be:
+
+```text
+prefer official account-backed CLI execution
+  before direct provider API-key execution
+```
+
+The reason is cost and plan shape. Claude Code, Codex, and future coding-agent
+CLIs may be tied to subscription/account products whose marginal operator cost
+differs materially from direct API billing. If COS forces every service path
+through provider API keys, the headless runtime may become too expensive for the
+maintainer use case it is supposed to serve first.
+
+That economic preference does **not** weaken the credential boundary:
+
+- COS may invoke an official CLI that is already authenticated.
+- COS may ask the operator to authenticate the CLI inside a trusted host or
+  container when the vendor supports that flow.
+- COS must not copy, parse, mount, or exfiltrate opaque credential stores unless
+  the provider explicitly documents that mode.
+- API-key/proxy/provider-cloud modes remain required for CI, enterprise,
+  hosted, or cloud-worker deployments where account-session semantics are not
+  portable or permitted.
+
+This creates two separate products:
+
+| Shape | Default credential posture | Intended user |
+|---|---|---|
+| Maintainer personal swarm | account-backed host CLI first | single operator running trusted machines/VMs |
+| Hosted/team/cloud COS | API key, provider-cloud, OAuth, or proxy gateway | reproducible automation, teams, or hosted service |
+
+The service control plane must support both, but it should not optimize away
+the maintainer's lower-cost CLI path by designing API-key-first.
+
 ### Credential modes
 
 | Mode | Meaning | Allowed for `cosd`? | Notes |
@@ -145,8 +182,8 @@ gateways under explicit credential modes.
 
 | Provider/runtime | Safe current COS posture |
 |---|---|
-| Claude Code | Supported as a future `claude-cli` account-backed executor only by invoking official `claude` in an authenticated host/session or by using documented OAuth/API/cloud-provider modes. |
-| Codex | Supported as a future `codex-cli` executor through `codex exec`; account auth is possible on trusted hosts, while API key is the recommended default for automation per OpenAI docs. |
+| Claude Code | Supported as a future `claude-cli` account-backed executor only by invoking official `claude` in an authenticated host/session or by using documented OAuth/API/cloud-provider modes. For maintainer mode, prefer the authenticated CLI path before direct API billing when provider terms and runtime shape permit it. |
+| Codex | Supported as a future `codex-cli` executor through `codex exec`; account auth is possible on trusted hosts, while API key remains the safer default for generic CI/cloud automation per OpenAI docs. |
 | Kimi | Lab until the specific CLI/API/headless auth contract is documented and proven. |
 | MiniMax | Lab until the specific CLI/API/headless auth contract is documented and proven. |
 | DeepSeek | Lab until the specific CLI/API/headless auth contract is documented and proven. |
@@ -177,6 +214,8 @@ Provider-specific knowledge belongs in adapters and proof drills, not in
 - Should the local task queue use SQLite or append-only JSONL first?
 - Should workers be spawned by Docker Compose initially, or should the first
   proof be a local subprocess to reduce moving parts?
+- Which service shape should own authenticated CLIs first: host subprocess,
+  Docker sidecar with explicit login, or VM-local account session?
 - Which provider adapter should be first: `codex-cli` because `codex exec
   --json` is documented, or `claude-cli` because current COS operation is
   Claude-heavy?
@@ -195,4 +234,3 @@ Until that exists, COS should keep claiming:
 And should not claim:
 
 > COS has a standalone autonomous service control plane.
-
