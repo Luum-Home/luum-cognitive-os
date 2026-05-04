@@ -39,8 +39,7 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
    data = json.load(open('docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json'))
    print(data['summary'])
    assert data['purpose'] == 'agentic primitives missing ADR-126 lifecycle metadata'
-   # Protected rows may be zero after candidate lifecycle metadata is added; if non-zero, work them before high-priority rows.
-   assert 'total' in data['summary']
+   assert data['summary']['total'] == 0
    PY
    ```
 
@@ -75,6 +74,7 @@ Purpose: prove that a future agent/operator can regenerate and use the machine-r
 - JSON and Markdown reports exist.
 - Every script row has an allowed role.
 - Every script row has consumer accessibility metadata.
+- Script agentic-primitives without lifecycle metadata remain at zero after the ratchet.
 - Low-confidence rows remain visible but do not fail the default command.
 - Optional fail flags can be used later as a ratchet, not as the initial adoption gate.
 
