@@ -3,9 +3,9 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 159
+Total skills: 160
 
-## os (16)
+## os (17)
 
 | Skill | Description |
 |-------|-------------|
@@ -25,6 +25,7 @@ Total skills: 159
 | release-os | META — orchestrate the full Cognitive OS release by chaining the 5 atomic… |
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
+| vuln-remediation-flow | Lab-stage propose-only cloud flow contract for sandboxed vulnerability remediation. |
 
 ## os-dev (37)
 
@@ -39,7 +40,7 @@ Total skills: 159
 | cognitive-os-test | Run the Cognitive OS test suite with persisted summary (junit + failures + tails). |
 | compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI… |
 | component-reality-check | Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime. |
-| contracts-namespace | Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives. |
+| __contracts__ | Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives. |
 | coordination-status | List who is editing what across concurrent COS sessions. |
 | deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
 | detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
@@ -198,4 +199,3 @@ Total skills: 159
 | Skill | Description |
 |-------|-------------|
 | so-vs-vanilla | A/B benchmark harness that measures Cognitive OS governance value by running the same task under fu… |
-
