@@ -162,3 +162,14 @@ provider_capabilities:
 - [ADR-142](ADR-142-compliance-audit-air-gapped-surface.md) — compliance and audit surface consuming `billing_identity`.
 - Rules §10 (`license-policy`) — primary gate for dependency licenses; this ADR adds provider-SDK specificity.
 - [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the operational plan that requires this credential posture.
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

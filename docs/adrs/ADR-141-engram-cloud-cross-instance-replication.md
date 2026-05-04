@@ -188,3 +188,14 @@ air_gapped_compatible: true|false  # can the flow operate in local-only mode?
 - `packages/engram-sync/` — existing git-jsonl sync package; hooks modified additively.
 - `scripts/engram-sync.sh` — existing sync script; unchanged except `--cloud` passthrough.
 - [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — cross-machine Engram discovery prerequisite this ADR satisfies.
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
