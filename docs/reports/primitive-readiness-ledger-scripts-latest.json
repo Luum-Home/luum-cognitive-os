@@ -426,7 +426,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 1,
-        "doc": 15,
+        "doc": 18,
         "test": 2
       },
       "consumers": [
@@ -464,6 +464,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-153-acc-fail-new-and-harness-proof-boundary.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/agent-capability-coverage.md"
         },
         {
@@ -476,6 +480,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/harness-implementation-roadmap.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/primitive-duplication-audit-implementation-plan.md"
         },
         {
@@ -485,6 +493,10 @@
         {
           "family": "doc",
           "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/acc-fail-new-gate.md"
         },
         {
           "family": "doc",
@@ -508,7 +520,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:15",
+        "doc_consumers:18",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -525,7 +537,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 18,
+      "total_consumers": 21,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -2859,7 +2871,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 27,
-        "doc": 390,
+        "doc": 398,
         "hook": 68,
         "rule": 42,
         "script": 192,
@@ -3733,6 +3745,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/cos-service-runtime-boundary.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md"
         },
         {
@@ -3857,7 +3873,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/harness-implementation-roadmap.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/harness-transparency-status.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/headless-runtime-proof-strategy.md"
         },
         {
           "family": "doc",
@@ -3946,6 +3970,14 @@
         {
           "family": "doc",
           "path": "docs/architecture/self-evolving-doctrine-proposals.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-research-2026-05-04.md"
         },
         {
           "family": "doc",
@@ -4213,6 +4245,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/manual-tests/acc-fail-new-gate.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/claude-code-startup-hang-regression.md"
         },
         {
@@ -4245,6 +4281,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/manual-tests/headless-runtime-proof-drills.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/local-connected-systems-validation.md"
         },
         {
@@ -4254,6 +4294,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/proof-paths.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/service-control-plane-proof-drills.md"
         },
         {
           "family": "doc",
@@ -7215,7 +7259,7 @@
         "skill_consumers:55",
         "test_consumers:311",
         "hook_consumers:68",
-        "doc_consumers:390",
+        "doc_consumers:398",
         "rule_consumers:42",
         "config_consumers:27",
         "script_consumers:192"
@@ -7234,7 +7278,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1085,
+      "total_consumers": 1093,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -8004,7 +8048,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 4,
+        "doc": 7,
         "test": 1
       },
       "consumers": [
@@ -8022,7 +8066,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/cos-service-runtime-boundary.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/dx-cloud-flow-bootstrap-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/headless-runtime-proof-strategy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/headless-runtime-proof-drills.md"
         },
         {
           "family": "test",
@@ -8032,7 +8088,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:7"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -8046,7 +8102,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -9228,7 +9284,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 4,
+        "doc": 7,
         "test": 1
       },
       "consumers": [
@@ -9238,11 +9294,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/cos-service-runtime-boundary.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/engram-command-contract.md"
         },
         {
           "family": "doc",
+          "path": "docs/architecture/headless-runtime-proof-strategy.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/engram-cloud-docker-sync.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/headless-runtime-proof-drills.md"
         },
         {
           "family": "doc",
@@ -9257,7 +9325,7 @@
       "evidence": [
         "wrapper_for:scripts/engram-sync.sh",
         "test_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:7"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -9271,7 +9339,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 8,
       "wrapper_for": "scripts/engram-sync.sh"
     },
     {
@@ -9279,7 +9347,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 6,
+        "doc": 7,
         "script": 1,
         "test": 3
       },
@@ -9299,6 +9367,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cos-service-runtime-boundary.md"
         },
         {
           "family": "doc",
@@ -9328,7 +9400,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -9343,7 +9415,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -14390,7 +14462,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 5,
-        "doc": 8,
+        "doc": 9,
         "script": 3,
         "test": 7
       },
@@ -14434,6 +14506,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/consumer-project-primitive-accessibility.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-implementation-roadmap.md"
         },
         {
           "family": "doc",
@@ -14494,7 +14570,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:5",
         "script_consumers:3"
       ],
@@ -14512,7 +14588,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 23,
+      "total_consumers": 24,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -17060,7 +17136,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 9,
+        "doc": 10,
         "hook": 2,
         "script": 1,
         "test": 2
@@ -17089,6 +17165,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cos-service-runtime-boundary.md"
         },
         {
           "family": "doc",
@@ -17127,7 +17207,7 @@
       "evidence": [
         "test_consumers:2",
         "hook_consumers:2",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -17142,7 +17222,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 14,
+      "total_consumers": 15,
       "wrapper_for": null
     },
     {
@@ -20406,7 +20486,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 3,
+        "doc": 4,
         "script": 1,
         "test": 1
       },
@@ -20424,6 +20504,10 @@
           "path": "docs/architecture/consumer-project-primitive-accessibility.md"
         },
         {
+          "family": "doc",
+          "path": "docs/architecture/harness-implementation-roadmap.md"
+        },
+        {
           "family": "script",
           "path": "scripts/acc_pipeline.py"
         },
@@ -20435,7 +20519,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -20450,7 +20534,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {

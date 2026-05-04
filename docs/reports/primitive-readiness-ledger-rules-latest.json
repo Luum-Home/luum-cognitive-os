@@ -2746,7 +2746,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 18,
+        "doc": 21,
         "hook": 2,
         "rule": 2,
         "script": 5,
@@ -2799,6 +2799,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/cos-service-runtime-boundary.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/dx-cloud-flow-bootstrap-plan.md"
         },
         {
@@ -2811,6 +2815,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/headless-runtime-proof-strategy.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/archive/plans/dead-weight-audit.md"
         },
         {
@@ -2820,6 +2828,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/engram-cloud-docker-sync.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/headless-runtime-proof-drills.md"
         },
         {
           "family": "doc",
@@ -2880,7 +2892,7 @@
         "rule_consumers:2",
         "script_consumers:5",
         "test_consumers:2",
-        "doc_consumers:18",
+        "doc_consumers:21",
         "config_consumers:1"
       ],
       "family": "rules",
@@ -2891,7 +2903,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 30
+      "total_consumers": 33
     },
     {
       "confidence": "medium",
@@ -12516,7 +12528,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 6,
+        "doc": 9,
         "hook": 3,
         "rule": 2,
         "skill": 1,
@@ -12537,11 +12549,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/cos-service-runtime-boundary.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-rules.md"
         },
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/service-control-plane-proof-drills.md"
         },
         {
           "family": "doc",
@@ -12586,7 +12610,7 @@
         "hook_consumers:3",
         "rule_consumers:2",
         "test_consumers:2",
-        "doc_consumers:6"
+        "doc_consumers:9"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12596,7 +12620,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 17
     },
     {
       "confidence": "medium",
