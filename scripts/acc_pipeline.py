@@ -388,6 +388,100 @@ def render_markdown(payload: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def compact_summary(payload: dict[str, Any], max_findings: int = 8) -> dict[str, Any]:
+    counts: dict[str, int] = {}
+    for cap in payload["capabilities"]:
+        key = cap.get("consumer_accessibility", "unknown")
+        counts[key] = counts.get(key, 0) + 1
+    finding_counts: dict[str, int] = {}
+    for finding in payload["findings"]:
+        key = finding["status"]
+        finding_counts[key] = finding_counts.get(key, 0) + 1
+    top_findings = [
+        {
+            "capability_id": finding["capability_id"],
+            "severity": finding["severity"],
+            "status": finding["status"],
+            "message": finding["message"][:180],
+            "next_action": finding.get("next_action", "")[:180],
+        }
+        for finding in payload["findings"][:max_findings]
+    ]
+    return {
+        "schema_version": "acc.compact.v1",
+        "generated_at": payload["generated_at"],
+        "summary": payload["summary"],
+        "gate": payload["gate"],
+        "capability_count": len(payload["capabilities"]),
+        "finding_count": len(payload["findings"]),
+        "finding_counts": dict(sorted(finding_counts.items())),
+        "consumer_accessibility": dict(sorted(counts.items())),
+        "top_findings": top_findings,
+        "context_diet": {
+            "read_this_first": "docs/acc/latest-compact.md",
+            "avoid_loading": ["docs/acc/latest.json", "docs/reports/primitive-readiness-ledger-*.json"],
+            "query_json_instead": "Use small Python/jq queries for selected rows; do not cat full JSON reports into agent context.",
+        },
+    }
+
+
+def render_compact_markdown(payload: dict[str, Any]) -> str:
+    compact = compact_summary(payload)
+    summary = compact["summary"]
+    gate_data = compact["gate"]
+    lines = [
+        "# Agent Capability Coverage — Compact",
+        "",
+        "> Context diet entrypoint. Read this before opening `docs/acc/latest.json`.",
+        "",
+        f"Generated: {compact['generated_at']}",
+        f"Gate: {gate_data['status']} ({gate_data['phase']})",
+        f"ACC: {summary['acc']:.4f}",
+        f"ACC effective: {summary['acc_effective']:.4f}",
+        f"Capabilities: {compact['capability_count']}",
+        f"Findings: {compact['finding_count']}",
+        "",
+        "## Warnings",
+        "",
+    ]
+    for warning in gate_data.get("warnings", []):
+        lines.append(f"- {warning}")
+    if not gate_data.get("warnings"):
+        lines.append("- none")
+    lines += [
+        "",
+        "## Mapping Weights",
+        "",
+    ]
+    for key, value in sorted(summary["mapping_weight_by_status"].items()):
+        lines.append(f"- {key}: {value}")
+    lines += [
+        "",
+        "## Consumer Accessibility",
+        "",
+    ]
+    for key, value in compact["consumer_accessibility"].items():
+        lines.append(f"- {key}: {value}")
+    lines += [
+        "",
+        "## Top Findings",
+        "",
+    ]
+    for finding in compact["top_findings"]:
+        lines.append(f"- `{finding['capability_id']}` [{finding['status']}/{finding['severity']}]: {finding['message']} → {finding['next_action']}")
+    if not compact["top_findings"]:
+        lines.append("- none")
+    lines += [
+        "",
+        "## Context Diet Rule",
+        "",
+        "- Do not open full JSON ledgers unless debugging the pipeline itself.",
+        "- Prefer this compact file, `python3 scripts/acc_pipeline.py --brief`, or targeted JSON queries.",
+        "- Subagents should receive only selected rows/findings, not complete ACC/readiness reports.",
+    ]
+    return "\n".join(lines) + "\n"
+
+
 def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bool) -> dict[str, Any]:
     refresh_statuses = refresh_adapters(root, include_slow) if refresh else {}
     readiness_adapters, capabilities, findings = load_readiness_capabilities(root)
@@ -427,6 +521,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--include-slow", action="store_true", help="Include slower primitive coverage adapter")
     parser.add_argument("--json-out", default="docs/acc/latest.json")
     parser.add_argument("--md-out", default="docs/acc/latest.md")
+    parser.add_argument("--compact-out", default="docs/acc/latest-compact.md")
+    parser.add_argument("--brief", action="store_true", help="Print compact JSON summary only; do not write reports or append history")
     parser.add_argument("--fail-on-block", action="store_true", help="Exit non-zero when gate status is block")
     parser.add_argument("--fail-on-warn", action="store_true", help="Treat warnings as blocking")
     return parser.parse_args()
@@ -436,12 +532,18 @@ def main() -> int:
     args = parse_args()
     root = Path(args.project_dir).resolve()
     payload = build_report(root, args.refresh, args.include_slow, args.fail_on_warn)
+    if args.brief:
+        print(json.dumps(compact_summary(payload), sort_keys=True))
+        return 0
     write_json(root / args.json_out, payload)
     md_path = root / args.md_out
     md_path.parent.mkdir(parents=True, exist_ok=True)
     md_path.write_text(render_markdown(payload), encoding="utf-8")
+    compact_path = root / args.compact_out
+    compact_path.parent.mkdir(parents=True, exist_ok=True)
+    compact_path.write_text(render_compact_markdown(payload), encoding="utf-8")
     append_history(root, payload)
-    print(json.dumps({"json": str(root / args.json_out), "markdown": str(md_path), "gate": payload["gate"], "summary": payload["summary"]}, sort_keys=True))
+    print(json.dumps({"json": args.json_out, "markdown": args.md_out, "compact": args.compact_out, "gate": payload["gate"], "summary": payload["summary"]}, sort_keys=True))
     if args.fail_on_block and payload["gate"]["status"] == "block":
         return 1
     return 0

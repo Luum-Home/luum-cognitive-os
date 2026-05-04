@@ -14,7 +14,8 @@ python3 scripts/acc_pipeline.py --project-dir . --refresh
 
 Outputs:
 
-- `docs/acc/latest.json` — machine-readable ACC report and drift baseline.
+- `docs/acc/latest-compact.md` — context-diet entrypoint for agents and humans.
+- `docs/acc/latest.json` — machine-readable ACC report and drift baseline. Do not load this whole file into agent context unless debugging the pipeline.
 - `docs/acc/latest.md` — human review summary.
 - `.cognitive-os/metrics/acc-pipeline-history.jsonl` — append-only local history.
 
@@ -30,6 +31,22 @@ existing tools / ledgers
   -> local JSONL history
   -> Engram handoff when mem tools are surfaced to the agent
 ```
+
+## Context diet
+
+ACC/readiness reports are intentionally machine-readable and can be large. Agent sessions must treat them as queryable artifacts, not startup context. The default human/agent entrypoint is:
+
+```bash
+python3 scripts/acc_pipeline.py --project-dir . --brief
+cat docs/acc/latest-compact.md
+```
+
+Do not `cat` these files into an agent conversation unless the task is debugging report generation itself:
+
+- `docs/acc/latest.json`
+- `docs/reports/primitive-readiness-ledger-*.json`
+
+Subagents should receive selected rows or findings only. Use Python/JQ snippets to extract those rows instead of passing complete ledgers.
 
 ## Current adapters
 

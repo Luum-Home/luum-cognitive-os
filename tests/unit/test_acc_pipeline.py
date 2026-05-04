@@ -100,6 +100,9 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert payload["summary"]["stale_weight"] >= 2
     assert payload["gate"]["phase"] == "reconstruction"
     assert payload["persistence"]["engram"]["status"] == "unavailable"
+    compact = acc_pipeline.compact_summary(payload)
+    assert compact["schema_version"] == "acc.compact.v1"
+    assert compact["context_diet"]["read_this_first"] == "docs/acc/latest-compact.md"
 
 
 def test_write_report_outputs_json_markdown_and_history(tmp_path: Path) -> None:
@@ -109,8 +112,10 @@ def test_write_report_outputs_json_markdown_and_history(tmp_path: Path) -> None:
     acc_pipeline.write_json(root / "docs" / "acc" / "latest.json", payload)
     (root / "docs" / "acc").mkdir(parents=True, exist_ok=True)
     (root / "docs" / "acc" / "latest.md").write_text(acc_pipeline.render_markdown(payload))
+    (root / "docs" / "acc" / "latest-compact.md").write_text(acc_pipeline.render_compact_markdown(payload))
     acc_pipeline.append_history(root, payload)
 
     assert json.loads((root / "docs" / "acc" / "latest.json").read_text())["schema_version"] == "acc.report.v1"
     assert "Agent Capability Coverage" in (root / "docs" / "acc" / "latest.md").read_text()
+    assert "Context Diet Rule" in (root / "docs" / "acc" / "latest-compact.md").read_text()
     assert (root / ".cognitive-os" / "metrics" / "acc-pipeline-history.jsonl").exists()
