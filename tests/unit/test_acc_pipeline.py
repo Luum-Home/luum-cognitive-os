@@ -229,3 +229,69 @@ def test_write_report_outputs_json_markdown_and_history(tmp_path: Path) -> None:
     assert "Agent Capability Coverage" in (root / "docs" / "acc" / "latest.md").read_text()
     assert "Context Diet Rule" in (root / "docs" / "acc" / "latest-compact.md").read_text()
     assert (root / ".cognitive-os" / "metrics" / "acc-pipeline-history.jsonl").exists()
+
+
+def test_fail_new_detects_new_partial_capability(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    baseline = acc_pipeline.build_report(root, refresh=False, include_slow=False, fail_on_warn=False)
+    current = json.loads(json.dumps(baseline))
+    current["capabilities"].append(
+        {
+            "id": "script:scripts/new_projectable.py",
+            "kind": "script",
+            "mapping_status": "partial",
+            "evidence": ["consumer_accessibility:install-profile-managed"],
+        }
+    )
+
+    new_debt = acc_pipeline.detect_new_debt(current, baseline)
+
+    assert any(item["id"] == "script:scripts/new_projectable.py" for item in new_debt)
+
+
+def test_fail_new_strictly_blocks_new_broad_local_default(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    baseline = acc_pipeline.build_report(root, refresh=False, include_slow=False, fail_on_warn=False)
+    current = json.loads(json.dumps(baseline))
+    current["capabilities"].append(
+        {
+            "id": "script:scripts/new_local_helper.py",
+            "kind": "script",
+            "mapping_status": "aligned",
+            "evidence": [
+                "availability_override:so-local-only",
+                "availability_match:pattern",
+                "availability_pattern:scripts/**",
+            ],
+        }
+    )
+
+    strict_debt = acc_pipeline.detect_new_debt(current, baseline, strict_local_defaults=True)
+    loose_debt = acc_pipeline.detect_new_debt(current, baseline, strict_local_defaults=False)
+
+    assert any(item["status"] == "unreviewed-local-default" for item in strict_debt)
+    assert not loose_debt
+
+
+def test_apply_fail_new_gate_blocks_payload(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    baseline = acc_pipeline.build_report(root, refresh=False, include_slow=False, fail_on_warn=False)
+    current = json.loads(json.dumps(baseline))
+    current["capabilities"].append(
+        {
+            "id": "rule:rules/new-rule.md",
+            "kind": "rule",
+            "mapping_status": "aligned",
+            "evidence": [
+                "availability_override:so-local-only",
+                "availability_match:pattern",
+                "availability_pattern:rules/*.md",
+            ],
+        }
+    )
+
+    acc_pipeline.apply_fail_new_gate(current, baseline, strict_local_defaults=True)
+
+    assert current["gate"]["status"] == "block"
+    assert current["new_debt"]["count"] == 1
+    assert current["gate"]["blocks"][-1] == "new_debt:1"
