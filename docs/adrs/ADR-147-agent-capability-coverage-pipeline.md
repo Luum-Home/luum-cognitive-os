@@ -74,6 +74,12 @@ This is conservative. It should not claim broad consumer availability unless pro
 - Engram remains the preferred canonical memory store when surfaced, but local JSONL history is the deterministic fallback.
 - The first pipeline is SO-oriented. Project-specific endpoint/event/job adapters remain future work.
 
+## Alternatives rejected
+
+- **Keep ACC as a manual checklist in `docs/agent-capability-coverage.md`**: rejected because manual execution was already drifting from readiness ledgers and docs execution reports.
+- **Fold ACC into `primitive_readiness_ledger.py`**: rejected because readiness is per primitive family, while ACC is a cross-adapter capability view.
+- **Claim consumer-project coverage from SO-local documentation alone**: rejected because downstream IDE/project availability requires projection evidence, not just repository-local docs.
+
 ## Acceptance Criteria
 
 ```text
@@ -85,3 +91,19 @@ ACCEPTANCE CRITERIA:
 5. Unit and contract tests cover mapping statuses and repository report generation.
 6. The manual test documents the refresh and inspection workflow.
 ```
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit/test_acc_pipeline.py tests/contracts/test_acc_pipeline_contract.py -q
+python3 -m py_compile scripts/acc_pipeline.py
+python3 scripts/acc_pipeline.py --project-dir . --refresh
+```
+
+## Implementation Evidence
+
+- Implemented in `scripts/acc_pipeline.py`: ACC adapter orchestration, capability mapping, threshold evaluation, local history persistence, and Markdown/JSON report generation.
+- Implemented in `tests/unit/test_acc_pipeline.py`: mapping and report-shape unit coverage.
+- Implemented in `tests/contracts/test_acc_pipeline_contract.py`: repository-level report generation contract.
+- Implemented in `docs/architecture/agent-capability-coverage-pipeline.md`: architecture and adapter boundaries.
+- Implemented in `docs/manual-tests/agent-capability-coverage-pipeline.md`: operator refresh and inspection workflow.
