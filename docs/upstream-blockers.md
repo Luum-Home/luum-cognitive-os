@@ -30,6 +30,11 @@ Last reviewed: 2026-05-04.
 - **First flagged**: 2026-04-25.
 - **Last proof**: 2026-05-04 resolver can accept `wrapt>=2`, but no first-party code imports it and instrumentation packages remain the risk surface, so the bump stays held pending targeted integration tests.
 
+### Setuptools 82 lock-churn blocker
+
+- **Trigger**: optional `semantic` extra lock strategy is clarified, or a resolver run can apply `setuptools>=82` without unrelated `torch`/CUDA package churn.
+- **Action**: re-run `uv lock --upgrade-package 'setuptools>=82'`; if the diff only updates `setuptools`, apply it. The `pkg_resources` first-party import scan is already clear and `tests/audit/test_no_undefined_imports.py` no longer allowlists `pkg_resources`.
+
 ### Python all-extras major resolver blockers
 
 - **Trigger**: upstream packages relax constraints blocking the 2026-05-04 major review: `arize-phoenix>=15`, `importlib-metadata>=9`, `lxml>=6`, `marshmallow>=4`, `packaging>=26`, `pandas>=3`, `protobuf>=7`, `snowballstemmer>=3`.
