@@ -58,6 +58,53 @@ def test_scan_classifies_implemented_partial_and_pending_adrs(tmp_path: Path) ->
     assert states["ADR-003-pending"] == "pending"
 
 
+def test_closure_metadata_overrides_stale_heuristic_attention(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    adrs = project / "docs" / "adrs"
+    manifests = project / "manifests"
+    adrs.mkdir(parents=True)
+    manifests.mkdir(parents=True)
+    (adrs / "ADR-001-old.md").write_text(
+        "# ADR-001 Old\n\n## Status\nProposed\n\n## Open Questions\n- Pending old wiring\n"
+    )
+    (adrs / "ADR-002-current.md").write_text(
+        "# ADR-002 Current\n\n## Status\nAccepted\n"
+    )
+    (manifests / "adr-closure-metadata.yaml").write_text(
+        """schema_version: 1
+adrs:
+  - adr_id: ADR-001-old
+    closure_class: absorbed
+    reason: Later ADR covers this old implementation shape.
+"""
+    )
+
+    records = adr_implementation_ledger.scan_adrs(project)
+    by_id = {record.adr_id: record for record in records}
+
+    assert by_id["ADR-001-old"].implementation_state == "absorbed"
+    assert by_id["ADR-001-old"].closure_class == "absorbed"
+    assert by_id["ADR-002-current"].implementation_state == "pending"
+    assert adr_implementation_ledger.summarize(records)["attention_count"] == 1
+
+
+def test_closure_metadata_rejects_unknown_classes(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    manifests = project / "manifests"
+    manifests.mkdir(parents=True)
+    (manifests / "adr-closure-metadata.yaml").write_text(
+        """schema_version: 1
+adrs:
+  - adr_id: ADR-001
+    closure_class: maybe
+    reason: invalid
+"""
+    )
+
+    with pytest.raises(ValueError, match="invalid closure_class"):
+        adr_implementation_ledger.load_closure_metadata(project)
+
+
 def test_write_outputs_creates_latest_json_jsonl_and_session_markdown(tmp_path: Path) -> None:
     project = tmp_path / "project"
     adrs = project / "docs" / "adrs"
