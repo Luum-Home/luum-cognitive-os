@@ -87,6 +87,17 @@ required_flow_shape:
     - explicitly listed anti-patterns the flow must not slide into
   falsifiable_when:
     - observable conditions under which this flow is considered broken
+  # Fields added by ADR-139 (account-agnostic runtime)
+  credential_source: byok-maintainer|byok-project|proxied
+  billing_identity: stable identifier for cost attribution (e.g., project slug)
+  provider_capabilities:
+    - text-completion|code-generation|...  # declared capabilities only
+  # Fields added by ADR-141 (Engram cloud replication)
+  engram_project_scope: stable project slug matching ENGRAM_CLOUD_ALLOWED_PROJECTS
+  air_gapped_compatible: true|false
+  # Fields added by ADR-142 (compliance / audit)
+  tenant_id: "<flow_id>-<launch-timestamp>"  # populated at worker launch time
+  audit_class: access_control|change_management|availability|processing_integrity|confidentiality|privacy|sync
 ```
 
 ### Field-level rules
@@ -164,3 +175,6 @@ This ADR is satisfied when:
 - [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the operational plan that consumes this schema.
 - [`cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md) — the stage-2 maturity property (`falsifiable_when`) the schema reifies as a required field.
 - [`bootstrap-portability.md`](../architecture/bootstrap-portability.md) — the gate the `success_condition.verifier` rule defers to.
+- [ADR-139](ADR-139-account-agnostic-multi-provider-runtime.md) — adds `credential_source`, `billing_identity`, `provider_capabilities` fields to `required_flow_shape`.
+- [ADR-141](ADR-141-engram-cloud-cross-instance-replication.md) — adds `engram_project_scope`, `air_gapped_compatible` fields to `required_flow_shape`.
+- [ADR-142](ADR-142-compliance-audit-air-gapped-surface.md) — adds `tenant_id`, `audit_class` fields to `required_flow_shape`.
