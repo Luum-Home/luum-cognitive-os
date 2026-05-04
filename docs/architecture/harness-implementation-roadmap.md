@@ -12,6 +12,9 @@ Track planned IDE/provider harnesses without overclaiming support. A harness bec
 |---|---|---|
 | Claude Code | implemented | ACC temp project runs `cos_init.py --default/--full --harness claude`. |
 | OpenAI Codex | implemented | ACC temp project runs `cos_init.py --default/--full --harness codex`. |
+| OpenCode | implemented structural | ACC temp project runs `cos_init.py --default/--full --harness opencode` and verifies `opencode.json`. |
+| VS Code Copilot | implemented structural | ACC temp project runs `cos_init.py --default/--full --harness vscode-copilot` and verifies `.github/copilot-instructions.md` plus `.vscode/mcp.json`. |
+| Cursor | implemented structural | ACC temp project runs `cos_init.py --default/--full --harness cursor` and verifies `.cursor/rules/cognitive-os.mdc` plus `.cursor/mcp.json`. |
 | Shell/CI | projected command layer | `scripts/project_shell_ci.py` projects signed CLI commands/workflow inside those temp projects. |
 
 ## Planned harness backlog
@@ -20,10 +23,10 @@ Track planned IDE/provider harnesses without overclaiming support. A harness bec
 |---|---|---|---|
 | Qwen Code | Official docs describe MCP, TypeScript SDK, terminal/IDE/CI-style usage. | Define `.qwen`/settings projection, skills/tools/MCP mapping, and temp-project proof. | Add driver, contract test, manual test, ACC adapter count. |
 | Kimi Code | Official docs describe CLI, VS Code extension, OpenAI/Anthropic-compatible coding API, and third-party agent usage. | Decide whether COS integrates Kimi as native CLI/VS Code harness or provider behind existing harnesses. | Add config projection or provider adapter; do not mark implemented until local project proof exists. |
-| OpenCode | Official docs expose `opencode.json`, agents, prompts, tools, and MCP config. | Implement `opencode.json` projection for instructions/tools/MCP. | Temp project validates config schema and ACC projected surface. |
-| Cursor | Planned IDE rules/MCP projection. | Define `.cursor/rules` and `.cursor/mcp.json` projection. | Temp project structural proof. |
+| OpenCode | Official docs expose `opencode.json`, instructions, permissions, and MCP config. | Implemented structural projection. Next: optional account-backed CLI smoke. | Temp project validates `opencode.json`; runtime smoke remains optional. |
+| Cursor | Official docs expose `.cursor/rules`, MDC metadata, AGENTS.md, and MCP config. | Implemented structural projection. Next: optional account-backed Cursor smoke. | Temp project validates `.cursor/rules/cognitive-os.mdc` and `.cursor/mcp.json`; runtime smoke remains optional. |
 | Windsurf | Planned IDE rules/MCP projection. | Define `.windsurf/rules` and `.windsurf/mcp.json` projection. | Temp project structural proof. |
-| VS Code Copilot | Planned instructions/tasks/MCP projection. | Generate `.github/copilot-instructions.md`, `.vscode/tasks.json`, and settings. | Temp project validates files and task syntax. |
+| VS Code Copilot | Official docs expose `.github/copilot-instructions.md`, AGENTS.md, and MCP configuration. | Implemented structural projection. Next: optional account-backed extension smoke. | Temp project validates `.github/copilot-instructions.md` and `.vscode/mcp.json`; runtime smoke remains optional. |
 | Google Antigravity | Local project config is not signed in this repo. | Research supported local config/tool format. | Add driver only after source-supported projection surface is known. |
 | MiniMax MaxClaw / MiniMax Agent | Current evidence points to hosted-agent/OpenClaw style surfaces. | Treat as hosted/provider surface unless a local IDE/project config exists. | Provider/openclaw adapter proof, not IDE projection by default. |
 | DeepSeek provider | Official docs are provider/API oriented. | Keep as provider compatibility through existing harnesses until a first-party IDE harness exists. | Provider smoke/config proof. |
@@ -39,7 +42,7 @@ Track planned IDE/provider harnesses without overclaiming support. A harness bec
 
 ## Baseline discipline
 
-ACC can report 1.0 for the current declared scope. New harnesses must not inherit that status. Planned harness rows remain unverified until their own proof exists.
+ACC can report 1.0 for the current declared scope. New harnesses must not inherit that status. Planned harness rows remain unverified until their own proof exists. Implemented structural harnesses prove project-local config/instruction projection, not native lifecycle hook parity.
 
 Run the ACC ratchet before promoting any harness work:
 

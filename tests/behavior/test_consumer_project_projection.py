@@ -18,6 +18,9 @@ COS_INIT = REPO_ROOT / "scripts" / "cos_init.py"
     [
         ("claude", ".claude/settings.json"),
         ("codex", ".codex/hooks.json"),
+        ("opencode", "opencode.json"),
+        ("vscode-copilot", ".github/copilot-instructions.md"),
+        ("cursor", ".cursor/rules/cognitive-os.mdc"),
     ],
 )
 def test_default_install_projects_core_primitives_into_consumer_project(tmp_path: Path, harness: str, settings_file: str) -> None:
@@ -37,6 +40,16 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
     assert install_meta["hooks_installed"] >= 37
     assert install_meta["skills_installed"] >= 8
     assert (tmp_path / settings_file).exists()
+    if harness == "opencode":
+        opencode = json.loads((tmp_path / "opencode.json").read_text())
+        assert ".cognitive-os/rules/cos/RULES-COMPACT.md" in opencode["instructions"]
+        assert opencode["permission"]["bash"] == "ask"
+    if harness == "vscode-copilot":
+        assert "Cognitive OS" in (tmp_path / ".github/copilot-instructions.md").read_text()
+        assert json.loads((tmp_path / ".vscode/mcp.json").read_text()) == {"servers": {}}
+    if harness == "cursor":
+        assert "alwaysApply: true" in (tmp_path / ".cursor/rules/cognitive-os.mdc").read_text()
+        assert json.loads((tmp_path / ".cursor/mcp.json").read_text()) == {"mcpServers": {}}
     assert (tmp_path / ".cognitive-os" / "hooks" / "cos" / "session-init.sh").exists()
     assert (tmp_path / ".cognitive-os" / "rules" / "cos" / "RULES-COMPACT.md").exists()
     assert (tmp_path / ".cognitive-os" / "skills" / "cos" / "cos-status" / "SKILL.md").exists()

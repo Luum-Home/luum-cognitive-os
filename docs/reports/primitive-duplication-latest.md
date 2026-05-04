@@ -1,14 +1,14 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-05-04T21:30:56.252975+00:00`
+Generated: `2026-05-04T21:53:53.214432+00:00`
 
 ## Summary
 
-- Files scanned: 717
-- Findings: 48
-- By kind: `{"bash-function-repeat": 8, "exact-copy": 1, "python-function-repeat": 39}`
-- By common home: `{"hooks/_lib/": 4, "lib/": 39, "scripts/_lib/": 4, "templates/ or lib/": 1}`
-- By consumer relevance: `{"consumer-project-relevant": 7, "so-local-first": 41}`
+- Files scanned: 718
+- Findings: 49
+- By kind: `{"bash-function-repeat": 8, "exact-copy": 1, "python-function-repeat": 40}`
+- By common home: `{"hooks/_lib/": 4, "lib/": 40, "scripts/_lib/": 4, "templates/ or lib/": 1}`
+- By consumer relevance: `{"consumer-project-relevant": 7, "so-local-first": 42}`
 
 ## Top Candidates
 
@@ -27,6 +27,7 @@ Generated: `2026-05-04T21:30:56.252975+00:00`
 | python-function-repeat | 1.0 | `scripts/acc_pipeline.py::read_json` | `scripts/adr100_live_headroom_check.py::_load_json` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | 1.0 | `scripts/acc_pipeline.py::read_json` | `scripts/derived_artifact_gate.py::normalized_json_file` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | 1.0 | `scripts/acc_pipeline.py::read_json` | `scripts/harness_parity_audit.py::_load_json` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | 1.0 | `scripts/acc_pipeline.py::write_json` | `scripts/cos_init.py::_write_json_if_changed` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | 1.0 | `scripts/agent_work_ledger.py::main` | `scripts/approval_ledger.py::main` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | 1.0 | `scripts/agent_work_ledger.py::main` | `scripts/claim_task.py::main` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | 1.0 | `scripts/agent_work_ledger.py::main` | `scripts/cross_session_reconciler.py::main` | extract-common-python-helper | `lib/` | so-local-first |

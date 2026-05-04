@@ -25,9 +25,56 @@
           "claude/default": 73,
           "claude/full": 347,
           "codex/default": 73,
-          "codex/full": 347
+          "codex/full": 347,
+          "cursor/default": 73,
+          "cursor/full": 347,
+          "opencode/default": 73,
+          "opencode/full": 347,
+          "vscode-copilot/default": 73,
+          "vscode-copilot/full": 347
         },
         "projected_primitives": 369
+      }
+    },
+    "cos_coverage": {
+      "command": "python3 scripts/cos_coverage.py --project-dir . --json --refresh",
+      "error": null,
+      "source": "cos_coverage",
+      "status": "ok",
+      "summary": {
+        "aspirational": 38,
+        "coverage_pct": 54.3,
+        "dormant": 160,
+        "generated_at": "2026-05-04T21:52:52Z",
+        "mapped": 268,
+        "metadata": 56,
+        "on_demand": 287,
+        "project": "<repo-root>",
+        "real": 235,
+        "tiers": {
+          "A": 2,
+          "B": 4,
+          "C": 39,
+          "D": 155
+        },
+        "trend": {
+          "coverage_pct": "flat",
+          "dormant": "flat",
+          "real": "flat"
+        },
+        "unmapped": 0,
+        "weak_proof": 0
+      }
+    },
+    "docs_execution": {
+      "command": "python3 scripts/docs_execution_audit.py --project-dir .",
+      "error": null,
+      "source": "docs_execution",
+      "status": "ok",
+      "summary": {
+        "items": 2582,
+        "json": "<repo-root>/docs/reports/docs-execution-latest.json",
+        "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"
       }
     },
     "docs_execution_report": {
@@ -49,7 +96,7 @@
             "planned": 1
           },
           "docs/README.md": {
-            "done_weak_proof": 9,
+            "done_weak_proof": 10,
             "planned": 13,
             "proposed": 4
           },
@@ -760,6 +807,11 @@
             "done_weak_proof": 2,
             "planned": 2
           },
+          "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md": {
+            "done_weak_proof": 4,
+            "done_with_proof": 1,
+            "planned": 1
+          },
           "docs/adrs/README.md": {
             "planned": 1
           },
@@ -1061,7 +1113,7 @@
           "docs/architecture/harness-implementation-roadmap.md": {
             "done_weak_proof": 1,
             "done_with_proof": 1,
-            "planned": 2
+            "planned": 1
           },
           "docs/architecture/harness-transparency-status.md": {
             "planned": 4
@@ -1084,6 +1136,11 @@
           },
           "docs/architecture/memory-lifecycle.md": {
             "planned": 4
+          },
+          "docs/architecture/multi-ide-harness-implementation-plan.md": {
+            "done_weak_proof": 8,
+            "done_with_proof": 1,
+            "planned": 12
           },
           "docs/architecture/observability-backend-evaluation-2026-04-24.md": {
             "done_weak_proof": 4,
@@ -1385,6 +1442,10 @@
             "done_weak_proof": 2,
             "planned": 9
           },
+          "docs/manual-tests/multi-ide-structural-projection.md": {
+            "done_weak_proof": 3,
+            "planned": 2
+          },
           "docs/manual-tests/primitive-duplication-audit.md": {
             "proposed": 1
           },
@@ -1630,13 +1691,96 @@
             "planned": 1
           }
         },
-        "items": 2550,
+        "items": 2582,
         "statuses": {
-          "done_weak_proof": 1048,
-          "done_with_proof": 204,
-          "planned": 1018,
+          "done_weak_proof": 1064,
+          "done_with_proof": 206,
+          "planned": 1032,
           "proposed": 280
         }
+      }
+    },
+    "family_readiness_hooks": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family hooks",
+      "error": null,
+      "source": "family_readiness_hooks",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "high": 126,
+          "medium": 86
+        },
+        "consumer_accessibility": {
+          "lifecycle-declared-consumer-candidate": 1,
+          "lifecycle-declared-maintainer": 114,
+          "projected-consumer-surface": 11,
+          "so-local-only": 86
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-hooks-latest.json",
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-hooks-latest.md",
+        "roles": {
+          "driver-specific": 12,
+          "lab": 103,
+          "memory-lifecycle": 65,
+          "observability": 25,
+          "runtime-safety": 7
+        },
+        "total": 212,
+        "without_consumers": 0,
+        "without_lifecycle": 86
+      }
+    },
+    "family_readiness_rules": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family rules",
+      "error": null,
+      "source": "family_readiness_rules",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "medium": 112
+        },
+        "consumer_accessibility": {
+          "so-local-only": 112
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.json",
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.md",
+        "roles": {
+          "context-only": 6,
+          "doctrine": 4,
+          "driver-specific": 48,
+          "hook-enforced": 43,
+          "lab": 11
+        },
+        "total": 112,
+        "without_consumers": 0,
+        "without_lifecycle": 112
+      }
+    },
+    "family_readiness_skills": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family skills",
+      "error": null,
+      "source": "family_readiness_skills",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "high": 51,
+          "medium": 39
+        },
+        "consumer_accessibility": {
+          "repo-skill-not-projectable": 86,
+          "so-local-only": 4
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.json",
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.md",
+        "roles": {
+          "compatibility-wrapper": 51,
+          "lab": 7,
+          "project-extension": 16,
+          "so-maintainer": 16
+        },
+        "total": 90,
+        "without_consumers": 0,
+        "without_lifecycle": 90
       }
     },
     "harness_projection": {
@@ -1645,10 +1789,143 @@
       "source": "manifests/harness-projection.yaml",
       "status": "ok",
       "summary": {
-        "implemented": 2,
-        "planned": 10,
+        "implemented": 5,
+        "planned": 7,
         "total": 12,
         "unsupported": 0
+      }
+    },
+    "primitive_duplication": {
+      "command": "python3 scripts/primitive_duplication_audit.py --project-root .",
+      "error": null,
+      "source": "primitive_duplication",
+      "status": "ok",
+      "summary": {
+        "by_common_home": {
+          "hooks/_lib/": 4,
+          "lib/": 40,
+          "scripts/_lib/": 4,
+          "templates/ or lib/": 1
+        },
+        "by_consumer_relevance": {
+          "consumer-project-relevant": 7,
+          "so-local-first": 42
+        },
+        "by_kind": {
+          "bash-function-repeat": 8,
+          "exact-copy": 1,
+          "python-function-repeat": 40
+        },
+        "files_scanned": 718,
+        "findings": 49
+      }
+    },
+    "primitive_gap_snapshot": {
+      "command": "python3 scripts/primitive_gap_snapshot.py --project-root . --json",
+      "error": null,
+      "source": "primitive_gap_snapshot",
+      "status": "ok",
+      "summary": {
+        "families": [
+          {
+            "aspirational_signal": 2,
+            "evidence": "row-audit proven=99 partial_nonblocking=133 actionable_gaps=2",
+            "family": "hooks",
+            "next_action": "close actionable rows",
+            "partial_signal": 133,
+            "proven_signal": 99,
+            "severity": "high",
+            "total": 234
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "row-audit proven=184 partial_nonblocking=55 actionable_gaps=0",
+            "family": "skills",
+            "next_action": "no actionable gaps; harden weak proof opportunistically",
+            "partial_signal": 55,
+            "proven_signal": 184,
+            "severity": "low",
+            "total": 239
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "row-audit proven=112 partial_nonblocking=0 actionable_gaps=0",
+            "family": "rules",
+            "next_action": "no actionable gaps; harden weak proof opportunistically",
+            "partial_signal": 0,
+            "proven_signal": 112,
+            "severity": "low",
+            "total": 112
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "memory-named=9 runtime-or-test-referenced=9; actionable_gaps=0",
+            "family": "memory",
+            "next_action": "row-audit memory primitives when Engram APIs change",
+            "partial_signal": 0,
+            "proven_signal": 9,
+            "severity": "low",
+            "total": 9
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "mcp-mentioned-files=218 test-mentioned-files=105; actionable_gaps=0",
+            "family": "mcp_tools",
+            "next_action": "separate installed/optional/reference-only integrations before promotion",
+            "partial_signal": 113,
+            "proven_signal": 105,
+            "severity": "low",
+            "total": 218
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "projection-files=2 test-mentioned=2; actionable_gaps=0",
+            "family": "config_projection",
+            "next_action": "map config keys to readers and projected driver outputs",
+            "partial_signal": 0,
+            "proven_signal": 2,
+            "severity": "low",
+            "total": 2
+          },
+          {
+            "aspirational_signal": 3,
+            "evidence": "row-audit proven=91 partial_nonblocking=25 actionable_gaps=3",
+            "family": "metrics",
+            "next_action": "close actionable rows",
+            "partial_signal": 25,
+            "proven_signal": 91,
+            "severity": "high",
+            "total": 119
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "test_py=772 audit-contract-quality=43; actionable_gaps=0",
+            "family": "tests_quality_gates",
+            "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
+            "partial_signal": 729,
+            "proven_signal": 43,
+            "severity": "low",
+            "total": 772
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=206 mapped_claims=410",
+            "family": "docs_adrs",
+            "next_action": "no hard docs gaps; improve weak proof opportunistically",
+            "partial_signal": 2376,
+            "proven_signal": 616,
+            "severity": "low",
+            "total": 2992
+          }
+        ],
+        "hook_latency": {
+          "events": 2500,
+          "max_ms": 5969,
+          "p50_ms": 414,
+          "p95_ms": 1622
+        },
+        "overall_risk": "high",
+        "timestamp": "2026-05-04T21:54:11.996876+00:00"
       }
     },
     "projection_profiles": {
@@ -1776,6 +2053,40 @@
         "total": 90,
         "without_consumers": 0,
         "without_lifecycle": 90
+      }
+    },
+    "script_readiness_refresh": {
+      "command": "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence",
+      "error": null,
+      "source": "script_readiness_refresh",
+      "status": "ok",
+      "summary": {
+        "agentic_primitives_without_lifecycle": 0,
+        "confidence": {
+          "high": 137,
+          "medium": 183
+        },
+        "consumer_accessibility": {
+          "install-profile-managed": 19,
+          "lifecycle-declared-consumer-candidate": 49,
+          "lifecycle-declared-maintainer": 38,
+          "skill-referenced-not-projectable": 2,
+          "so-local-only": 212
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-scripts-latest.json",
+        "lifecycle_backlog_json": "<repo-root>/docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json",
+        "lifecycle_backlog_markdown": "<repo-root>/docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md",
+        "low_confidence_rows": 0,
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-scripts-latest.md",
+        "roles": {
+          "agentic-primitive": 106,
+          "driver-specific": 10,
+          "lab": 13,
+          "maintainer-tool": 180,
+          "migration-only": 11
+        },
+        "total_scripts": 320,
+        "without_consumers": 4
       }
     },
     "shell_ci_projection": {
@@ -1963,7 +2274,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:18",
+        "doc_consumers:20",
         "config_consumers:1",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -3458,9 +3769,9 @@
         "skill_consumers:55",
         "test_consumers:311",
         "hook_consumers:68",
-        "doc_consumers:398",
+        "doc_consumers:401",
         "rule_consumers:42",
-        "config_consumers:27",
+        "config_consumers:28",
         "script_consumers:192",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -4048,7 +4359,7 @@
         "availability_override:shell-ci-candidate",
         "availability_match:exact",
         "availability_rationale:Candidate consumer coordination status command; needs projection proof.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "script:scripts/cos-coordination-status.sh",
       "kind": "script",
@@ -6772,7 +7083,7 @@
         "availability_override:shell-ci-candidate",
         "availability_match:exact",
         "availability_rationale:Candidate consumer usage-report command; needs shell/CI projection proof.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "script:scripts/cos-usage-report.sh",
       "kind": "script",
@@ -7185,7 +7496,7 @@
         "availability_override:shell-ci-candidate",
         "availability_match:exact",
         "availability_rationale:Candidate shell/CI triage command; needs projection proof before consumer claim.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "script:scripts/cos-worktree-triage.sh",
       "kind": "script",
@@ -8325,7 +8636,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:9",
+        "doc_consumers:12",
         "config_consumers:5",
         "script_consumers:3",
         "role_source:lifecycle",
@@ -12078,7 +12389,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "script_consumers:1",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
@@ -14182,7 +14493,7 @@
         "availability_override:shell-ci-candidate",
         "availability_match:exact",
         "availability_rationale:Candidate consumer full validation wrapper; needs shell/CI projection proof.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "script:scripts/test-cognitive-os-full.sh",
       "kind": "script",
@@ -14867,7 +15178,7 @@
         "skill_consumers:2",
         "hook_consumers:64",
         "rule_consumers:6",
-        "script_consumers:18",
+        "script_consumers:19",
         "test_consumers:31",
         "doc_consumers:48",
         "config_consumers:2",
@@ -15842,7 +16153,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/adr-detector.sh",
       "kind": "hook",
@@ -15972,7 +16283,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/agent-bus-monitor.sh",
       "kind": "hook",
@@ -16057,7 +16368,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/agent-output-verifier.sh",
@@ -16224,7 +16535,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -16351,7 +16662,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/aguara-scan.sh",
       "kind": "hook",
@@ -16829,7 +17140,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -17005,7 +17316,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/clarification-interceptor.sh",
       "kind": "hook",
@@ -17045,7 +17356,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -17128,7 +17439,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/completeness-check-llm.sh",
@@ -17258,7 +17569,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/concurrent-write-guard-codex-proxy.sh",
@@ -17345,7 +17656,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/confidence-gate-llm.sh",
       "kind": "hook",
@@ -17561,7 +17872,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -17647,7 +17958,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -18209,7 +18520,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/dry-run-preview.sh",
@@ -18251,7 +18562,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/ecosystem-check.sh",
@@ -18294,7 +18605,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/edit-lock-drain-parked.sh",
       "kind": "hook",
@@ -18382,7 +18693,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/edit-lock-process-negotiations.sh",
       "kind": "hook",
@@ -18680,7 +18991,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/epic-task-detector.sh",
       "kind": "hook",
@@ -18983,7 +19294,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/guardrails-validator.sh",
@@ -19198,7 +19509,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/infra-intent-detector.sh",
       "kind": "hook",
@@ -19283,7 +19594,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/jupyter-sandbox.sh",
@@ -19834,7 +20145,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -19954,7 +20265,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -20257,7 +20568,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/pre-cleanup-snapshot.sh",
       "kind": "hook",
@@ -21208,7 +21519,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/resource-check.sh",
       "kind": "hook",
@@ -21645,7 +21956,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/semgrep-scan.sh",
@@ -23199,7 +23510,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -23241,7 +23552,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -23412,7 +23723,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/tool-loop-detector.sh",
       "kind": "hook",
@@ -23670,7 +23981,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "hook:hooks/valkey-ensure.sh",
       "kind": "hook",
@@ -23753,7 +24064,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24260,7 +24571,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24302,7 +24613,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24382,7 +24693,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24465,7 +24776,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/catalog-full/SKILL.md",
       "kind": "skill",
@@ -24505,7 +24816,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24546,7 +24857,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24589,7 +24900,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/caveman/SKILL.md",
@@ -24715,7 +25026,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/cognitive-os-status/SKILL.md",
@@ -24944,7 +25255,7 @@
         "hook_consumers:1",
         "script_consumers:7",
         "test_consumers:8",
-        "doc_consumers:15",
+        "doc_consumers:16",
         "config_consumers:4",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
@@ -24952,7 +25263,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/cos-status/SKILL.md",
       "kind": "skill",
@@ -24991,7 +25302,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25035,7 +25346,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/decision-triage/SKILL.md",
       "kind": "skill",
@@ -25155,7 +25466,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25198,7 +25509,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/doc-review-personas/SKILL.md",
@@ -25319,7 +25630,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/domain-model/SKILL.md",
       "kind": "skill",
@@ -25359,7 +25670,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25481,7 +25792,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25562,7 +25873,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25606,7 +25917,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/invariant-check/SKILL.md",
       "kind": "skill",
@@ -25647,7 +25958,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/llm-status/SKILL.md",
@@ -25725,7 +26036,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25843,7 +26154,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25886,7 +26197,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/pr-review/SKILL.md",
@@ -25927,7 +26238,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25970,7 +26281,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/primitive-harvester/SKILL.md",
@@ -26090,7 +26401,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/project-scaffold/SKILL.md",
@@ -26290,7 +26601,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26370,7 +26681,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26413,7 +26724,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/repo-forensics/SKILL.md",
@@ -26456,7 +26767,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/resource-governor/SKILL.md",
       "kind": "skill",
@@ -26496,7 +26807,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26540,7 +26851,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/risk-register/SKILL.md",
       "kind": "skill",
@@ -26581,7 +26892,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/rules-export/SKILL.md",
@@ -26623,7 +26934,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/run-tests/SKILL.md",
@@ -26664,7 +26975,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26748,7 +27059,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26792,7 +27103,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/sdd-explore/SKILL.md",
       "kind": "skill",
@@ -26832,7 +27143,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26876,7 +27187,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/session-backlog/SKILL.md",
       "kind": "skill",
@@ -26915,7 +27226,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26957,7 +27268,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27001,7 +27312,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/session-wrapup/SKILL.md",
       "kind": "skill",
@@ -27043,7 +27354,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/skill-creator/SKILL.md",
       "kind": "skill",
@@ -27122,7 +27433,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27242,7 +27553,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27405,7 +27716,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "skill:skills/worktree-triage/SKILL.md",
       "kind": "skill",
@@ -27481,7 +27792,7 @@
         "rule_consumers:2",
         "script_consumers:11",
         "test_consumers:27",
-        "doc_consumers:67",
+        "doc_consumers:68",
         "config_consumers:4",
         "role_source:heuristic:path",
         "consumer_accessibility:so-local-only",
@@ -27653,7 +27964,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27697,7 +28008,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/agent-communication.md",
       "kind": "rule",
@@ -27738,7 +28049,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/agent-customization.md",
@@ -27781,7 +28092,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/agent-escalation.md",
       "kind": "rule",
@@ -27905,7 +28216,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -28031,7 +28342,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -28074,7 +28385,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/aguara-integration.md",
@@ -28117,7 +28428,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/anti-hallucination.md",
       "kind": "rule",
@@ -28326,7 +28637,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/auto-skill-generation.md",
@@ -28368,7 +28679,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/bash-naming.md",
@@ -28451,7 +28762,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -28494,7 +28805,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/capability-levels.md",
@@ -28661,7 +28972,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/cognitive-load.md",
@@ -28745,7 +29056,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/confidentiality-protection.md",
@@ -28787,7 +29098,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/consequence-system.md",
@@ -28955,7 +29266,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/context7-auto-trigger.md",
@@ -29373,7 +29684,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -29416,7 +29727,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/e2b-integration.md",
@@ -29457,7 +29768,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -29501,7 +29812,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/engram-organization.md",
       "kind": "rule",
@@ -29585,7 +29896,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/estimation-calibration.md",
       "kind": "rule",
@@ -29627,7 +29938,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/fault-tolerance.md",
       "kind": "rule",
@@ -29668,7 +29979,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/hcom-integration.md",
@@ -29710,7 +30021,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/hook-security-profiles.md",
@@ -29837,7 +30148,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/infra-intent.md",
       "kind": "rule",
@@ -30001,7 +30312,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/model-compatibility.md",
@@ -30043,7 +30354,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/model-directive.md",
@@ -30253,7 +30564,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/orchestrator-prompt-compose.md",
@@ -30295,7 +30606,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/parry-integration.md",
@@ -30380,7 +30691,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/performance-monitoring.md",
       "kind": "rule",
@@ -30422,7 +30733,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/phase-aware-agents.md",
       "kind": "rule",
@@ -30586,7 +30897,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/prompt-composition.md",
@@ -30669,7 +30980,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -30712,7 +31023,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/queue-advisor.md",
@@ -30755,7 +31066,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/queue-drain.md",
       "kind": "rule",
@@ -30920,7 +31231,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/repomix-integration.md",
@@ -31004,7 +31315,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/resource-governance.md",
       "kind": "rule",
@@ -31046,7 +31357,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/response-compression.md",
       "kind": "rule",
@@ -31129,7 +31440,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/result-management.md",
@@ -31172,7 +31483,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/sandbox-sampling.md",
       "kind": "rule",
@@ -31214,7 +31525,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/scope-creep-detection.md",
       "kind": "rule",
@@ -31297,7 +31608,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/scout-pattern.md",
@@ -31382,7 +31693,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/self-improvement-protocol.md",
       "kind": "rule",
@@ -31424,7 +31735,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/session-concurrency.md",
       "kind": "rule",
@@ -31507,7 +31818,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/skill-management.md",
@@ -31549,7 +31860,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/skill-rewrite.md",
@@ -31633,7 +31944,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/split-and-resume.md",
@@ -31676,7 +31987,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/squad-protocol.md",
       "kind": "rule",
@@ -31760,7 +32071,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/step-files.md",
       "kind": "rule",
@@ -31801,7 +32112,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/supply-chain-defense.md",
@@ -31843,7 +32154,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/task-dag.md",
@@ -31885,7 +32196,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/tero-integration.md",
@@ -31970,7 +32281,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex"
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot"
       ],
       "id": "rule:rules/trailofbits-skills.md",
       "kind": "rule",
@@ -32095,7 +32406,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex",
+        "projected_harnesses:claude,codex,cursor,opencode,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/workload-scheduling.md",
@@ -32128,7 +32439,10 @@
     "hooks/adaptive-bypass.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/adaptive-bypass.sh"
@@ -32141,7 +32455,10 @@
     "hooks/adr-detector.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/adr-detector.sh"
@@ -32154,7 +32471,10 @@
     "hooks/agent-bash-cwd-enforcer.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/agent-bash-cwd-enforcer.sh"
@@ -32167,7 +32487,10 @@
     "hooks/agent-bus-monitor.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/agent-bus-monitor.sh"
@@ -32180,7 +32503,10 @@
     "hooks/agent-checkpoint.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/agent-checkpoint.sh"
@@ -32194,7 +32520,10 @@
     "hooks/agent-output-verifier.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/agent-output-verifier.sh"
@@ -32207,7 +32536,10 @@
     "hooks/agent-prelaunch.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/agent-prelaunch.sh"
@@ -32220,7 +32552,10 @@
     "hooks/agent-quota-advisor.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/agent-quota-advisor.sh"
@@ -32233,7 +32568,10 @@
     "hooks/agent-qwen-bridge.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/agent-qwen-bridge.sh"
@@ -32246,7 +32584,10 @@
     "hooks/agent-working-dir-inject.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/agent-working-dir-inject.sh"
@@ -32259,7 +32600,10 @@
     "hooks/aguara-scan.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/aguara-scan.sh"
@@ -32272,7 +32616,10 @@
     "hooks/architecture-compliance.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/architecture-compliance.sh"
@@ -32285,7 +32632,10 @@
     "hooks/assumption-tracker.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/assumption-tracker.sh"
@@ -32298,7 +32648,10 @@
     "hooks/audit-id-enricher.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/audit-id-enricher.sh"
@@ -32311,7 +32664,10 @@
     "hooks/auto-checkpoint.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/auto-checkpoint.sh"
@@ -32325,7 +32681,10 @@
     "hooks/auto-refine.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/auto-refine.sh"
@@ -32339,7 +32698,10 @@
     "hooks/auto-repair-dispatcher.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/auto-repair-dispatcher.sh"
@@ -32352,7 +32714,10 @@
     "hooks/auto-rollback-trigger.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/auto-rollback-trigger.sh"
@@ -32365,7 +32730,10 @@
     "hooks/auto-verify.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/auto-verify.sh"
@@ -32379,7 +32747,10 @@
     "hooks/background-agent-reminder.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/background-agent-reminder.sh"
@@ -32392,7 +32763,10 @@
     "hooks/blast-radius.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/blast-radius.sh"
@@ -32406,7 +32780,10 @@
     "hooks/claim-validator.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/claim-validator.sh"
@@ -32420,7 +32797,10 @@
     "hooks/clarification-gate.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/clarification-gate.sh"
@@ -32434,7 +32814,10 @@
     "hooks/clarification-interceptor.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/clarification-interceptor.sh"
@@ -32448,7 +32831,10 @@
     "hooks/code-review-on-commit.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/code-review-on-commit.sh"
@@ -32461,7 +32847,10 @@
     "hooks/completeness-check-llm.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/completeness-check-llm.sh"
@@ -32474,7 +32863,10 @@
     "hooks/completion-gate.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/completion-gate.sh"
@@ -32488,7 +32880,10 @@
     "hooks/concurrent-write-guard-codex-proxy.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/concurrent-write-guard-codex-proxy.sh"
@@ -32501,7 +32896,10 @@
     "hooks/concurrent-write-guard.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/concurrent-write-guard.sh"
@@ -32514,7 +32912,10 @@
     "hooks/confidence-gate-llm.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/confidence-gate-llm.sh"
@@ -32527,7 +32928,10 @@
     "hooks/confidence-gate.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/confidence-gate.sh"
@@ -32540,7 +32944,10 @@
     "hooks/confidentiality-enforcer.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/confidentiality-enforcer.sh"
@@ -32554,7 +32961,10 @@
     "hooks/consequence-evaluator.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/consequence-evaluator.sh"
@@ -32567,7 +32977,10 @@
     "hooks/content-policy.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/content-policy.sh"
@@ -32581,7 +32994,10 @@
     "hooks/context-diet.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/context-diet.sh"
@@ -32594,7 +33010,10 @@
     "hooks/context-watchdog.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/context-watchdog.sh"
@@ -32607,7 +33026,10 @@
     "hooks/contextual-rule-loader.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/contextual-rule-loader.sh"
@@ -32620,7 +33042,10 @@
     "hooks/crash-recovery.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/crash-recovery.sh"
@@ -32634,7 +33059,10 @@
     "hooks/destructive-git-blocker.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/destructive-git-blocker.sh"
@@ -32647,7 +33075,10 @@
     "hooks/destructive-rm-blocker.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/destructive-rm-blocker.sh"
@@ -32660,7 +33091,10 @@
     "hooks/direct-main-guard.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/direct-main-guard.sh"
@@ -32673,7 +33107,10 @@
     "hooks/doc-sync-detector.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/doc-sync-detector.sh"
@@ -32687,7 +33124,10 @@
     "hooks/dod-gate.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/dod-gate.sh"
@@ -32701,7 +33141,10 @@
     "hooks/dry-run-preview.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/dry-run-preview.sh"
@@ -32714,7 +33157,10 @@
     "hooks/ecosystem-check.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/ecosystem-check.sh"
@@ -32727,7 +33173,10 @@
     "hooks/edit-lock-drain-parked.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/edit-lock-drain-parked.sh"
@@ -32740,7 +33189,10 @@
     "hooks/edit-lock-pre-tool.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/edit-lock-pre-tool.sh"
@@ -32753,7 +33205,10 @@
     "hooks/edit-lock-process-negotiations.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/edit-lock-process-negotiations.sh"
@@ -32766,7 +33221,10 @@
     "hooks/edit-lock-session-end.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/edit-lock-session-end.sh"
@@ -32779,7 +33237,10 @@
     "hooks/engram-crystallize-on-session-end.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/engram-crystallize-on-session-end.sh"
@@ -32792,7 +33253,10 @@
     "hooks/engram-daemon-launcher.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/engram-daemon-launcher.sh"
@@ -32805,7 +33269,10 @@
     "hooks/engram-reinforce-on-access.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/engram-reinforce-on-access.sh"
@@ -32818,7 +33285,10 @@
     "hooks/epic-task-detector.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/epic-task-detector.sh"
@@ -32831,7 +33301,10 @@
     "hooks/error-learning.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/error-learning.sh"
@@ -32845,7 +33318,10 @@
     "hooks/error-pattern-detector.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/error-pattern-detector.sh"
@@ -32859,7 +33335,10 @@
     "hooks/error-pipeline.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/error-pipeline.sh"
@@ -32873,7 +33352,10 @@
     "hooks/git-commit-scope-guard.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/git-commit-scope-guard.sh"
@@ -32886,7 +33368,10 @@
     "hooks/git-context-capture.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/git-context-capture.sh"
@@ -32899,7 +33384,10 @@
     "hooks/global-verify.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/global-verify.sh"
@@ -32912,7 +33400,10 @@
     "hooks/guardrails-validator.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/guardrails-validator.sh"
@@ -32925,7 +33416,10 @@
     "hooks/host-tool-doctor.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/host-tool-doctor.sh"
@@ -32939,7 +33433,10 @@
     "hooks/infra-intent-detector.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/infra-intent-detector.sh"
@@ -32952,7 +33449,10 @@
     "hooks/inject-phase-context.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/inject-phase-context.sh"
@@ -32966,7 +33466,10 @@
     "hooks/jupyter-sandbox.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/jupyter-sandbox.sh"
@@ -32979,7 +33482,10 @@
     "hooks/large-file-advisor.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/large-file-advisor.sh"
@@ -32993,7 +33499,10 @@
     "hooks/mcp-scan.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/mcp-scan.sh"
@@ -33006,7 +33515,10 @@
     "hooks/memory-prefetch.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/memory-prefetch.sh"
@@ -33020,7 +33532,10 @@
     "hooks/notify.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/notify.sh"
@@ -33033,7 +33548,10 @@
     "hooks/orchestrator-claim-gate.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/orchestrator-claim-gate.sh"
@@ -33046,7 +33564,10 @@
     "hooks/orchestrator-mode-detect.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/orchestrator-mode-detect.sh"
@@ -33059,7 +33580,10 @@
     "hooks/parry-scan.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/parry-scan.sh"
@@ -33072,7 +33596,10 @@
     "hooks/plan-claim-validator.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/plan-claim-validator.sh"
@@ -33085,7 +33612,10 @@
     "hooks/post-agent-verify.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/post-agent-verify.sh"
@@ -33098,7 +33628,10 @@
     "hooks/post-git-orphan-notifier.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/post-git-orphan-notifier.sh"
@@ -33111,7 +33644,10 @@
     "hooks/pre-agent-snapshot.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/pre-agent-snapshot.sh"
@@ -33124,7 +33660,10 @@
     "hooks/pre-cleanup-snapshot.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/pre-cleanup-snapshot.sh"
@@ -33137,7 +33676,10 @@
     "hooks/pre-commit-content-hash-dedupe.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/pre-commit-content-hash-dedupe.sh"
@@ -33150,7 +33692,10 @@
     "hooks/pre-commit-gate.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/pre-commit-gate.sh"
@@ -33163,7 +33708,10 @@
     "hooks/pre-compaction-flush.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/pre-compaction-flush.sh"
@@ -33177,7 +33725,10 @@
     "hooks/predev-completeness-check.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/predev-completeness-check.sh"
@@ -33190,7 +33741,10 @@
     "hooks/private-mode-gate.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/private-mode-gate.sh"
@@ -33203,7 +33757,10 @@
     "hooks/private-mode-metrics-gate.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/private-mode-metrics-gate.sh"
@@ -33216,7 +33773,10 @@
     "hooks/profile-drift-autoapply.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/profile-drift-autoapply.sh"
@@ -33229,7 +33789,10 @@
     "hooks/project-docs-convention.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/project-docs-convention.sh"
@@ -33242,7 +33805,10 @@
     "hooks/prompt-quality-llm.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/prompt-quality-llm.sh"
@@ -33255,7 +33821,10 @@
     "hooks/query-tailored-context-inject.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/query-tailored-context-inject.sh"
@@ -33268,7 +33837,10 @@
     "hooks/rate-limit-drain.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/rate-limit-drain.sh"
@@ -33281,7 +33853,10 @@
     "hooks/rate-limit-precheck.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/rate-limit-precheck.sh"
@@ -33294,7 +33869,10 @@
     "hooks/rate-limit-protection.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/rate-limit-protection.sh"
@@ -33307,7 +33885,10 @@
     "hooks/rate-limiter.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/rate-limiter.sh"
@@ -33321,7 +33902,10 @@
     "hooks/reinvention-check.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/reinvention-check.sh"
@@ -33334,7 +33918,10 @@
     "hooks/release-guard.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/release-guard.sh"
@@ -33347,7 +33934,10 @@
     "hooks/resource-check.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/resource-check.sh"
@@ -33360,7 +33950,10 @@
     "hooks/result-truncator.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/result-truncator.sh"
@@ -33374,7 +33967,10 @@
     "hooks/scope-creep-detector.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/scope-creep-detector.sh"
@@ -33387,7 +33983,10 @@
     "hooks/scope-marker-portability-gate.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/scope-marker-portability-gate.sh"
@@ -33400,7 +33999,10 @@
     "hooks/scope-proportionality.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/scope-proportionality.sh"
@@ -33414,7 +34016,10 @@
     "hooks/secret-detector.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/secret-detector.sh"
@@ -33428,7 +34033,10 @@
     "hooks/semgrep-scan.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/semgrep-scan.sh"
@@ -33441,7 +34049,10 @@
     "hooks/session-cleanup.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/session-cleanup.sh"
@@ -33455,7 +34066,10 @@
     "hooks/session-heartbeat.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/session-heartbeat.sh"
@@ -33468,7 +34082,10 @@
     "hooks/session-init.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/session-init.sh"
@@ -33482,7 +34099,10 @@
     "hooks/session-learning.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/session-learning.sh"
@@ -33496,7 +34116,10 @@
     "hooks/session-sanity.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/session-sanity.sh"
@@ -33509,7 +34132,10 @@
     "hooks/session-start-stash-reapply.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/session-start-stash-reapply.sh"
@@ -33522,7 +34148,10 @@
     "hooks/session-start-worktree-nudge.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/session-start-worktree-nudge.sh"
@@ -33535,7 +34164,10 @@
     "hooks/session-startup-protocol.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/session-startup-protocol.sh"
@@ -33548,7 +34180,10 @@
     "hooks/session-summary-reminder.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/session-summary-reminder.sh"
@@ -33561,7 +34196,10 @@
     "hooks/session-wrapup-trigger.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/session-wrapup-trigger.sh"
@@ -33574,7 +34212,10 @@
     "hooks/skill-frontmatter-validator.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/skill-frontmatter-validator.sh"
@@ -33587,7 +34228,10 @@
     "hooks/skill-router-bash-gate.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/skill-router-bash-gate.sh"
@@ -33600,7 +34244,10 @@
     "hooks/subagent-context-injector.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/subagent-context-injector.sh"
@@ -33613,7 +34260,10 @@
     "hooks/surface-fix-detector.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/surface-fix-detector.sh"
@@ -33626,7 +34276,10 @@
     "hooks/symlink-mutation-guard.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/symlink-mutation-guard.sh"
@@ -33639,7 +34292,10 @@
     "hooks/task-completed.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/task-completed.sh"
@@ -33653,7 +34309,10 @@
     "hooks/task-created.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/task-created.sh"
@@ -33667,7 +34326,10 @@
     "hooks/task-panel-sync.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/task-panel-sync.sh"
@@ -33680,7 +34342,10 @@
     "hooks/task-recorder.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/task-recorder.sh"
@@ -33693,7 +34358,10 @@
     "hooks/teammate-idle.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/teammate-idle.sh"
@@ -33707,7 +34375,10 @@
     "hooks/token-budget-monitor.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/token-budget-monitor.sh"
@@ -33720,7 +34391,10 @@
     "hooks/tool-loop-detector.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/tool-loop-detector.sh"
@@ -33733,7 +34407,10 @@
     "hooks/trust-score-validator.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/trust-score-validator.sh"
@@ -33747,7 +34424,10 @@
     "hooks/user-prompt-capture.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/user-prompt-capture.sh"
@@ -33761,7 +34441,10 @@
     "hooks/valkey-ensure.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/valkey-ensure.sh"
@@ -33774,7 +34457,10 @@
     "hooks/worktree-submodule-fix.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/hooks/cos/worktree-submodule-fix.sh"
@@ -33787,7 +34473,10 @@
     "rules/RULES-COMPACT.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/RULES-COMPACT.md"
@@ -33801,7 +34490,10 @@
     "rules/acceptance-criteria.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/acceptance-criteria.md"
@@ -33815,7 +34507,10 @@
     "rules/adaptive-bypass.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/adaptive-bypass.md"
@@ -33829,7 +34524,10 @@
     "rules/adversarial-review.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/adversarial-review.md"
@@ -33842,7 +34540,10 @@
     "rules/agent-audit-before-commit.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/agent-audit-before-commit.md"
@@ -33855,7 +34556,10 @@
     "rules/agent-communication.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/agent-communication.md"
@@ -33868,7 +34572,10 @@
     "rules/agent-customization.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/agent-customization.md"
@@ -33881,7 +34588,10 @@
     "rules/agent-escalation.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/agent-escalation.md"
@@ -33894,7 +34604,10 @@
     "rules/agent-identity.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/agent-identity.md"
@@ -33907,7 +34620,10 @@
     "rules/agent-kpis.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/agent-kpis.md"
@@ -33920,7 +34636,10 @@
     "rules/agent-output-reading.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/agent-output-reading.md"
@@ -33933,7 +34652,10 @@
     "rules/agent-quality.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/agent-quality.md"
@@ -33947,7 +34669,10 @@
     "rules/agent-security.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/agent-security.md"
@@ -33960,7 +34685,10 @@
     "rules/agent-sidecars.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/agent-sidecars.md"
@@ -33973,7 +34701,10 @@
     "rules/aguara-integration.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/aguara-integration.md"
@@ -33986,7 +34717,10 @@
     "rules/anti-hallucination.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/anti-hallucination.md"
@@ -33999,7 +34733,10 @@
     "rules/assumption-tracking.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/assumption-tracking.md"
@@ -34012,7 +34749,10 @@
     "rules/audit-trail.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/audit-trail.md"
@@ -34025,7 +34765,10 @@
     "rules/auto-repair.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/auto-repair.md"
@@ -34038,7 +34781,10 @@
     "rules/auto-rollback.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/auto-rollback.md"
@@ -34051,7 +34797,10 @@
     "rules/auto-skill-generation.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/auto-skill-generation.md"
@@ -34064,7 +34813,10 @@
     "rules/bash-naming.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/bash-naming.md"
@@ -34077,7 +34829,10 @@
     "rules/blast-radius.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/blast-radius.md"
@@ -34090,7 +34845,10 @@
     "rules/broken-window-policy.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/broken-window-policy.md"
@@ -34103,7 +34861,10 @@
     "rules/capability-levels.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/capability-levels.md"
@@ -34116,7 +34877,10 @@
     "rules/clarification-gate.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/clarification-gate.md"
@@ -34129,7 +34893,10 @@
     "rules/closed-loop-prompts.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/closed-loop-prompts.md"
@@ -34143,7 +34910,10 @@
     "rules/cognitive-load.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/cognitive-load.md"
@@ -34156,7 +34926,10 @@
     "rules/confidence-gate.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/confidence-gate.md"
@@ -34169,7 +34942,10 @@
     "rules/confidentiality-protection.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/confidentiality-protection.md"
@@ -34182,7 +34958,10 @@
     "rules/consequence-system.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/consequence-system.md"
@@ -34195,7 +34974,10 @@
     "rules/content-policy.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/content-policy.md"
@@ -34209,7 +34991,10 @@
     "rules/context-management.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/context-management.md"
@@ -34222,7 +35007,10 @@
     "rules/context-optimization.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/context-optimization.md"
@@ -34235,7 +35023,10 @@
     "rules/context7-auto-trigger.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/context7-auto-trigger.md"
@@ -34248,7 +35039,10 @@
     "rules/cost-prediction.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/cost-prediction.md"
@@ -34261,7 +35055,10 @@
     "rules/crash-recovery.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/crash-recovery.md"
@@ -34274,7 +35071,10 @@
     "rules/credential-management.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/credential-management.md"
@@ -34288,7 +35088,10 @@
     "rules/decision-depth-gate.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/decision-depth-gate.md"
@@ -34301,7 +35104,10 @@
     "rules/decomposition.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/decomposition.md"
@@ -34314,7 +35120,10 @@
     "rules/definition-of-done.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/definition-of-done.md"
@@ -34328,7 +35137,10 @@
     "rules/doc-sync.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/doc-sync.md"
@@ -34341,7 +35153,10 @@
     "rules/dry-run.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/dry-run.md"
@@ -34354,7 +35169,10 @@
     "rules/dynamic-tool-creation.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/dynamic-tool-creation.md"
@@ -34367,7 +35185,10 @@
     "rules/e2b-integration.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/e2b-integration.md"
@@ -34380,7 +35201,10 @@
     "rules/engram-api-safety.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/engram-api-safety.md"
@@ -34393,7 +35217,10 @@
     "rules/engram-organization.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/engram-organization.md"
@@ -34406,7 +35233,10 @@
     "rules/error-learning.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/error-learning.md"
@@ -34420,7 +35250,10 @@
     "rules/estimation-calibration.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/estimation-calibration.md"
@@ -34433,7 +35266,10 @@
     "rules/fault-tolerance.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/fault-tolerance.md"
@@ -34446,7 +35282,10 @@
     "rules/hcom-integration.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/hcom-integration.md"
@@ -34459,7 +35298,10 @@
     "rules/hook-security-profiles.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/hook-security-profiles.md"
@@ -34472,7 +35314,10 @@
     "rules/impact-analysis.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/impact-analysis.md"
@@ -34485,7 +35330,10 @@
     "rules/infra-health.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/infra-health.md"
@@ -34498,7 +35346,10 @@
     "rules/infra-intent.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/infra-intent.md"
@@ -34511,7 +35362,10 @@
     "rules/license-policy.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/license-policy.md"
@@ -34524,7 +35378,10 @@
     "rules/llm-dispatch.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/llm-dispatch.md"
@@ -34537,7 +35394,10 @@
     "rules/model-compatibility.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/model-compatibility.md"
@@ -34550,7 +35410,10 @@
     "rules/model-directive.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/model-directive.md"
@@ -34563,7 +35426,10 @@
     "rules/model-routing.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/model-routing.md"
@@ -34576,7 +35442,10 @@
     "rules/non-blocking-retry.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/non-blocking-retry.md"
@@ -34589,7 +35458,10 @@
     "rules/observability.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/observability.md"
@@ -34602,7 +35474,10 @@
     "rules/orchestrator-mode.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/orchestrator-mode.md"
@@ -34615,7 +35490,10 @@
     "rules/orchestrator-prompt-compose.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/orchestrator-prompt-compose.md"
@@ -34628,7 +35506,10 @@
     "rules/parry-integration.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/parry-integration.md"
@@ -34641,7 +35522,10 @@
     "rules/pentesting-readiness.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/pentesting-readiness.md"
@@ -34654,7 +35538,10 @@
     "rules/performance-monitoring.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/performance-monitoring.md"
@@ -34667,7 +35554,10 @@
     "rules/phase-aware-agents.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/phase-aware-agents.md"
@@ -34681,7 +35571,10 @@
     "rules/pre-commit-gate.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/pre-commit-gate.md"
@@ -34694,7 +35587,10 @@
     "rules/private-mode.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/private-mode.md"
@@ -34707,7 +35603,10 @@
     "rules/prompt-composition.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/prompt-composition.md"
@@ -34720,7 +35619,10 @@
     "rules/prompt-quality.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/prompt-quality.md"
@@ -34733,7 +35635,10 @@
     "rules/python-naming.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/python-naming.md"
@@ -34746,7 +35651,10 @@
     "rules/queue-advisor.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/queue-advisor.md"
@@ -34759,7 +35667,10 @@
     "rules/queue-drain.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/queue-drain.md"
@@ -34772,7 +35683,10 @@
     "rules/rate-limit-protection.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/rate-limit-protection.md"
@@ -34785,7 +35699,10 @@
     "rules/rate-limiting.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/rate-limiting.md"
@@ -34798,7 +35715,10 @@
     "rules/repomix-integration.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/repomix-integration.md"
@@ -34811,7 +35731,10 @@
     "rules/resource-governance.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/resource-governance.md"
@@ -34824,7 +35747,10 @@
     "rules/response-compression.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/response-compression.md"
@@ -34837,7 +35763,10 @@
     "rules/responsiveness.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/responsiveness.md"
@@ -34851,7 +35780,10 @@
     "rules/result-management.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/result-management.md"
@@ -34864,7 +35796,10 @@
     "rules/sandbox-sampling.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/sandbox-sampling.md"
@@ -34877,7 +35812,10 @@
     "rules/scope-creep-detection.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/scope-creep-detection.md"
@@ -34890,7 +35828,10 @@
     "rules/scope-proportionality.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/scope-proportionality.md"
@@ -34903,7 +35844,10 @@
     "rules/scout-pattern.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/scout-pattern.md"
@@ -34916,7 +35860,10 @@
     "rules/security-scanning.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/security-scanning.md"
@@ -34929,7 +35876,10 @@
     "rules/self-improvement-protocol.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/self-improvement-protocol.md"
@@ -34942,7 +35892,10 @@
     "rules/session-concurrency.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/session-concurrency.md"
@@ -34955,7 +35908,10 @@
     "rules/singularity.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/singularity.md"
@@ -34968,7 +35924,10 @@
     "rules/skill-management.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/skill-management.md"
@@ -34981,7 +35940,10 @@
     "rules/skill-rewrite.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/skill-rewrite.md"
@@ -34994,7 +35956,10 @@
     "rules/so-slo.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/so-slo.md"
@@ -35007,7 +35972,10 @@
     "rules/split-and-resume.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/split-and-resume.md"
@@ -35020,7 +35988,10 @@
     "rules/squad-protocol.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/squad-protocol.md"
@@ -35033,7 +36004,10 @@
     "rules/startup-protocol.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/startup-protocol.md"
@@ -35046,7 +36020,10 @@
     "rules/step-files.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/step-files.md"
@@ -35059,7 +36036,10 @@
     "rules/supply-chain-defense.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/supply-chain-defense.md"
@@ -35072,7 +36052,10 @@
     "rules/task-dag.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/task-dag.md"
@@ -35085,7 +36068,10 @@
     "rules/tero-integration.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/tero-integration.md"
@@ -35098,7 +36084,10 @@
     "rules/token-economy.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/token-economy.md"
@@ -35112,7 +36101,10 @@
     "rules/trailofbits-skills.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/trailofbits-skills.md"
@@ -35125,7 +36117,10 @@
     "rules/trust-score.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/trust-score.md"
@@ -35139,7 +36134,10 @@
     "rules/user-prompt-capture.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/user-prompt-capture.md"
@@ -35152,7 +36150,10 @@
     "rules/workload-scheduling.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/rules/cos/workload-scheduling.md"
@@ -35165,7 +36166,10 @@
     "scripts/apply-efficiency-profile.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35179,7 +36183,10 @@
     "scripts/check_mcp_servers.py": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/check_mcp_servers.py"
@@ -35193,7 +36200,10 @@
     "scripts/cos": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/cos"
@@ -35207,7 +36217,10 @@
     "scripts/cos-bootstrap.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35221,7 +36234,10 @@
     "scripts/cos-config-audit.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35235,7 +36251,10 @@
     "scripts/cos-coordination-status.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/cos-coordination-status.sh"
@@ -35249,7 +36268,10 @@
     "scripts/cos-core-skills-check.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35263,7 +36285,10 @@
     "scripts/cos-doctor-harness.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35277,7 +36302,10 @@
     "scripts/cos-doctor-memory-lifecycle.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35291,7 +36319,10 @@
     "scripts/cos-doctor-tools.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35305,7 +36336,10 @@
     "scripts/cos-init.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35319,7 +36353,10 @@
     "scripts/cos-release-check.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/cos-release-check.sh"
@@ -35333,7 +36370,10 @@
     "scripts/cos-smoke.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/cos-smoke.sh"
@@ -35347,7 +36387,10 @@
     "scripts/cos-status.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/cos-status.sh"
@@ -35361,7 +36404,10 @@
     "scripts/cos-usage-report.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/cos-usage-report.sh"
@@ -35375,7 +36421,10 @@
     "scripts/cos-weekly-config-audit.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35389,7 +36438,10 @@
     "scripts/cos-worktree-triage.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/cos-worktree-triage.sh"
@@ -35403,7 +36455,10 @@
     "scripts/cos_init.py": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35417,7 +36472,10 @@
     "scripts/create-release.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35431,7 +36489,10 @@
     "scripts/deps-update.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35445,7 +36506,10 @@
     "scripts/docs_execution_audit.py": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/docs_execution_audit.py"
@@ -35459,7 +36523,10 @@
     "scripts/generate-project-settings.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35473,7 +36540,10 @@
     "scripts/install-garak.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35487,7 +36557,10 @@
     "scripts/install-promptfoo.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35501,7 +36574,10 @@
     "scripts/project_scaffold.py": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/project_scaffold.py"
@@ -35515,7 +36591,10 @@
     "scripts/pytest-with-summary.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/pytest-with-summary.sh"
@@ -35529,7 +36608,10 @@
     "scripts/run-all-tests.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/run-all-tests.sh"
@@ -35543,7 +36625,10 @@
     "scripts/run-redteam-scenario.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/run-redteam-scenario.sh"
@@ -35557,7 +36642,10 @@
     "scripts/set-security-profile.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35571,7 +36659,10 @@
     "scripts/setup.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35585,7 +36676,10 @@
     "scripts/test-all.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/test-all.sh"
@@ -35599,7 +36693,10 @@
     "scripts/test-cognitive-os-full.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/scripts/cos/test-cognitive-os-full.sh"
@@ -35613,7 +36710,10 @@
     "scripts/uninstall.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35627,7 +36727,10 @@
     "scripts/upgrade.sh": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         "manifests/primitive-readiness-protected-install-surfaces.yaml"
@@ -35641,7 +36744,10 @@
     "skills/agent-kpis/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/agent-kpis/SKILL.md"
@@ -35654,7 +36760,10 @@
     "skills/analyze-improvements/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/analyze-improvements/SKILL.md"
@@ -35667,7 +36776,10 @@
     "skills/apply-improvements/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/apply-improvements/SKILL.md"
@@ -35680,7 +36792,10 @@
     "skills/audit-website/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/audit-website/SKILL.md"
@@ -35693,7 +36808,10 @@
     "skills/auto-refine/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/auto-refine/SKILL.md"
@@ -35707,7 +36825,10 @@
     "skills/auto-rollback/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/auto-rollback/SKILL.md"
@@ -35720,7 +36841,10 @@
     "skills/batch-runner/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/batch-runner/SKILL.md"
@@ -35733,7 +36857,10 @@
     "skills/branch-worktree-closure/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/branch-worktree-closure/SKILL.md"
@@ -35746,7 +36873,10 @@
     "skills/catalog-full/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/catalog-full/SKILL.md"
@@ -35759,7 +36889,10 @@
     "skills/caveman-compress/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/caveman-compress/SKILL.md"
@@ -35772,7 +36905,10 @@
     "skills/caveman-es/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/caveman-es/SKILL.md"
@@ -35785,7 +36921,10 @@
     "skills/caveman/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/caveman/SKILL.md"
@@ -35798,7 +36937,10 @@
     "skills/code-review/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/code-review/SKILL.md"
@@ -35811,7 +36953,10 @@
     "skills/cognee-search/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/cognee-search/SKILL.md"
@@ -35824,7 +36969,10 @@
     "skills/cognitive-os-init/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/cognitive-os-init/SKILL.md"
@@ -35837,7 +36985,10 @@
     "skills/cognitive-os-status/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/cognitive-os-status/SKILL.md"
@@ -35850,7 +37001,10 @@
     "skills/compose-prompt/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/compose-prompt/SKILL.md"
@@ -35864,7 +37018,10 @@
     "skills/confidence-check/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/confidence-check/SKILL.md"
@@ -35877,7 +37034,10 @@
     "skills/contract-drift/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/contract-drift/SKILL.md"
@@ -35890,7 +37050,10 @@
     "skills/conversation-memory/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/conversation-memory/SKILL.md"
@@ -35903,7 +37066,10 @@
     "skills/cos-status/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/cos-status/SKILL.md"
@@ -35917,7 +37083,10 @@
     "skills/cost-predictor/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/cost-predictor/SKILL.md"
@@ -35930,7 +37099,10 @@
     "skills/coverage-enforcement/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/coverage-enforcement/SKILL.md"
@@ -35943,7 +37115,10 @@
     "skills/decision-triage/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/decision-triage/SKILL.md"
@@ -35956,7 +37131,10 @@
     "skills/deep-research/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/deep-research/SKILL.md"
@@ -35969,7 +37147,10 @@
     "skills/detect-stack/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/detect-stack/SKILL.md"
@@ -35982,7 +37163,10 @@
     "skills/devbox-checkpoint/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/devbox-checkpoint/SKILL.md"
@@ -35995,7 +37179,10 @@
     "skills/doc-review-personas/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/doc-review-personas/SKILL.md"
@@ -36008,7 +37195,10 @@
     "skills/doc-sync/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/doc-sync/SKILL.md"
@@ -36021,7 +37211,10 @@
     "skills/document-feature/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/document-feature/SKILL.md"
@@ -36034,7 +37227,10 @@
     "skills/dod-check/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/dod-check/SKILL.md"
@@ -36047,7 +37243,10 @@
     "skills/domain-model/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/domain-model/SKILL.md"
@@ -36060,7 +37259,10 @@
     "skills/error-analyzer/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/error-analyzer/SKILL.md"
@@ -36073,7 +37275,10 @@
     "skills/eval-repo/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/eval-repo/SKILL.md"
@@ -36086,7 +37291,10 @@
     "skills/evaluate-plan/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/evaluate-plan/SKILL.md"
@@ -36099,7 +37307,10 @@
     "skills/exhaustive-prompt/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/exhaustive-prompt/SKILL.md"
@@ -36113,7 +37324,10 @@
     "skills/generate-config/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/generate-config/SKILL.md"
@@ -36126,7 +37340,10 @@
     "skills/gpu-sandbox/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/gpu-sandbox/SKILL.md"
@@ -36139,7 +37356,10 @@
     "skills/impact-analysis/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/impact-analysis/SKILL.md"
@@ -36152,7 +37372,10 @@
     "skills/install-recommended/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/install-recommended/SKILL.md"
@@ -36165,7 +37388,10 @@
     "skills/invariant-check/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/invariant-check/SKILL.md"
@@ -36178,7 +37404,10 @@
     "skills/issue-pipeline/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/issue-pipeline/SKILL.md"
@@ -36191,7 +37420,10 @@
     "skills/jupyter-execute/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/jupyter-execute/SKILL.md"
@@ -36204,7 +37436,10 @@
     "skills/llm-status/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/llm-status/SKILL.md"
@@ -36217,7 +37452,10 @@
     "skills/memu-context/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/memu-context/SKILL.md"
@@ -36230,7 +37468,10 @@
     "skills/model-optimizer/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/model-optimizer/SKILL.md"
@@ -36243,7 +37484,10 @@
     "skills/ops-runbook/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/ops-runbook/SKILL.md"
@@ -36256,7 +37500,10 @@
     "skills/optimize-skill/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/optimize-skill/SKILL.md"
@@ -36269,7 +37516,10 @@
     "skills/persistent-agent/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/persistent-agent/SKILL.md"
@@ -36282,7 +37532,10 @@
     "skills/phoenix-trace-ui/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/phoenix-trace-ui/SKILL.md"
@@ -36295,7 +37548,10 @@
     "skills/plan-bug/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/plan-bug/SKILL.md"
@@ -36308,7 +37564,10 @@
     "skills/plan-feature/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/plan-feature/SKILL.md"
@@ -36322,7 +37581,10 @@
     "skills/planning-poker/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/planning-poker/SKILL.md"
@@ -36335,7 +37597,10 @@
     "skills/pr-review/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/pr-review/SKILL.md"
@@ -36348,7 +37613,10 @@
     "skills/preserved-wip-cleanup/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/preserved-wip-cleanup/SKILL.md"
@@ -36361,7 +37629,10 @@
     "skills/primitive-harvester/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/primitive-harvester/SKILL.md"
@@ -36374,7 +37645,10 @@
     "skills/private-mode/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/private-mode/SKILL.md"
@@ -36387,7 +37661,10 @@
     "skills/project-scaffold/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/project-scaffold/SKILL.md"
@@ -36400,7 +37677,10 @@
     "skills/readiness-check/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/readiness-check/SKILL.md"
@@ -36413,7 +37693,10 @@
     "skills/recall-search/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/recall-search/SKILL.md"
@@ -36426,7 +37709,10 @@
     "skills/recommend-library/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/recommend-library/SKILL.md"
@@ -36439,7 +37725,10 @@
     "skills/redteam-harness/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/redteam-harness/SKILL.md"
@@ -36452,7 +37741,10 @@
     "skills/repair-skill/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/repair-skill/SKILL.md"
@@ -36465,7 +37757,10 @@
     "skills/repair-status/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/repair-status/SKILL.md"
@@ -36478,7 +37773,10 @@
     "skills/repo-forensics/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/repo-forensics/SKILL.md"
@@ -36491,7 +37789,10 @@
     "skills/repo-scout/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/repo-scout/SKILL.md"
@@ -36504,7 +37805,10 @@
     "skills/research-protocol/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/research-protocol/SKILL.md"
@@ -36517,7 +37821,10 @@
     "skills/resolve-blockers/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/resolve-blockers/SKILL.md"
@@ -36530,7 +37837,10 @@
     "skills/resource-governor/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/resource-governor/SKILL.md"
@@ -36544,7 +37854,10 @@
     "skills/resume-tasks/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/resume-tasks/SKILL.md"
@@ -36557,7 +37870,10 @@
     "skills/retrospective/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/retrospective/SKILL.md"
@@ -36570,7 +37886,10 @@
     "skills/reverse-engineer/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/reverse-engineer/SKILL.md"
@@ -36583,7 +37902,10 @@
     "skills/review-output/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/review-output/SKILL.md"
@@ -36596,7 +37918,10 @@
     "skills/risk-register/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/risk-register/SKILL.md"
@@ -36609,7 +37934,10 @@
     "skills/rules-export/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/rules-export/SKILL.md"
@@ -36622,7 +37950,10 @@
     "skills/run-tests/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/run-tests/SKILL.md"
@@ -36635,7 +37966,10 @@
     "skills/sandbox-sample/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/sandbox-sample/SKILL.md"
@@ -36648,7 +37982,10 @@
     "skills/scaffold-project/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/scaffold-project/SKILL.md"
@@ -36661,7 +37998,10 @@
     "skills/scout/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/scout/SKILL.md"
@@ -36674,7 +38014,10 @@
     "skills/sdd-compound/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/sdd-compound/SKILL.md"
@@ -36687,7 +38030,10 @@
     "skills/sdd-continue/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/sdd-continue/SKILL.md"
@@ -36700,7 +38046,10 @@
     "skills/sdd-explore/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/sdd-explore/SKILL.md"
@@ -36713,7 +38062,10 @@
     "skills/sdd-resume/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/sdd-resume/SKILL.md"
@@ -36726,7 +38078,10 @@
     "skills/secret-audit/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/secret-audit/SKILL.md"
@@ -36739,7 +38094,10 @@
     "skills/self-improve/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/self-improve/SKILL.md"
@@ -36752,7 +38110,10 @@
     "skills/self-review/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/self-review/SKILL.md"
@@ -36765,7 +38126,10 @@
     "skills/semgrep-scan/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/semgrep-scan/SKILL.md"
@@ -36778,7 +38142,10 @@
     "skills/session-backlog/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/session-backlog/SKILL.md"
@@ -36792,7 +38159,10 @@
     "skills/session-manager/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/session-manager/SKILL.md"
@@ -36805,7 +38175,10 @@
     "skills/session-report-executive/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/session-report-executive/SKILL.md"
@@ -36818,7 +38191,10 @@
     "skills/session-wrapup/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/session-wrapup/SKILL.md"
@@ -36831,7 +38207,10 @@
     "skills/singularity/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/singularity/SKILL.md"
@@ -36844,7 +38223,10 @@
     "skills/skill-creator/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/skill-creator/SKILL.md"
@@ -36857,7 +38239,10 @@
     "skills/sprint/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/sprint/SKILL.md"
@@ -36870,7 +38255,10 @@
     "skills/squad-manager/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/squad-manager/SKILL.md"
@@ -36883,7 +38271,10 @@
     "skills/sre-agent/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/sre-agent/SKILL.md"
@@ -36896,7 +38287,10 @@
     "skills/synthesize-skill/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/synthesize-skill/SKILL.md"
@@ -36909,7 +38303,10 @@
     "skills/systematic-debugging/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/systematic-debugging/SKILL.md"
@@ -36922,7 +38319,10 @@
     "skills/test-driven-development/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/test-driven-development/SKILL.md"
@@ -36935,7 +38335,10 @@
     "skills/trust-audit/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/trust-audit/SKILL.md"
@@ -36948,7 +38351,10 @@
     "skills/validate-config/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/validate-config/SKILL.md"
@@ -36961,7 +38367,10 @@
     "skills/verification-before-completion/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/verification-before-completion/SKILL.md"
@@ -36975,7 +38384,10 @@
     "skills/web-crawler/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/web-crawler/SKILL.md"
@@ -36988,7 +38400,10 @@
     "skills/webhook-trigger/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/webhook-trigger/SKILL.md"
@@ -37001,7 +38416,10 @@
     "skills/worktree-triage/SKILL.md": {
       "harnesses": [
         "claude",
-        "codex"
+        "codex",
+        "cursor",
+        "opencode",
+        "vscode-copilot"
       ],
       "paths": [
         ".cognitive-os/skills/cos/worktree-triage/SKILL.md"
@@ -37024,7 +38442,7 @@
     },
     "warnings": []
   },
-  "generated_at": "2026-05-04T21:31:26Z",
+  "generated_at": "2026-05-04T21:54:20Z",
   "harness_projection": {
     "claude": {
       "display_name": "Claude Code",
@@ -37066,22 +38484,23 @@
     "cursor": {
       "display_name": "Cursor",
       "limitations": [
-        "Native lifecycle hook semantics are not signed.",
-        "Projection driver has not been implemented."
+        "Structural project rule/MCP file proof only; no Cursor account-backed runtime invocation in automated tests.",
+        "No native COS lifecycle hook parity is claimed."
       ],
-      "next_action": "Define Cursor settings/rules/MCP projection driver and temp-project proof.",
+      "next_action": "Add optional Cursor runtime smoke once a licensed/manual test host is available.",
       "projected_surfaces": [
         "rules",
-        "skills",
-        "mcp"
+        "instructions",
+        "mcp-placeholder",
+        "skills-reference"
       ],
-      "projection_mode": "ide-rules-or-wrapper",
-      "proof_status": "unverified",
+      "projection_mode": "cursor-project-rules-and-mcp",
+      "proof_status": "ok",
       "settings_paths": [
-        ".cursor/rules",
+        ".cursor/rules/cognitive-os.mdc",
         ".cursor/mcp.json"
       ],
-      "status": "planned"
+      "status": "implemented"
     },
     "deepseek-provider": {
       "display_name": "DeepSeek provider integrations",
@@ -37150,21 +38569,22 @@
     "opencode": {
       "display_name": "OpenCode",
       "limitations": [
-        "Native config schema and hook support need audit."
+        "Structural project config proof only; no account-backed OpenCode runtime invocation in automated tests.",
+        "No native COS lifecycle hook parity is claimed."
       ],
-      "next_action": "Audit OpenCode config/tool surface and add projection proof.",
+      "next_action": "Add account-backed optional runtime smoke when OpenCode CLI credentials are available.",
       "projected_surfaces": [
         "instructions",
-        "tools",
-        "mcp"
+        "skills",
+        "rules",
+        "mcp-placeholder"
       ],
-      "projection_mode": "wrapper-or-native-config",
-      "proof_status": "unverified",
+      "projection_mode": "opencode-json-instructions-mcp",
+      "proof_status": "ok",
       "settings_paths": [
-        "opencode.json",
-        ".opencode"
+        "opencode.json"
       ],
-      "status": "planned"
+      "status": "implemented"
     },
     "qwen-code": {
       "display_name": "Qwen Code",
@@ -37211,23 +38631,23 @@
     "vscode-copilot": {
       "display_name": "VS Code Copilot",
       "limitations": [
-        "No native COS lifecycle hooks are signed.",
-        "Must distinguish GitHub Copilot instructions from executable tools."
+        "Structural workspace file proof only; no GitHub account/Copilot extension runtime invocation in automated tests.",
+        "VS Code Copilot custom instructions are prompt/context surfaces, not native COS lifecycle hooks."
       ],
-      "next_action": "Define instruction/task/MCP projection and temp-project proof.",
+      "next_action": "Add optional VS Code smoke with installed Copilot extension when an account-backed test host exists.",
       "projected_surfaces": [
         "instructions",
-        "tasks",
-        "mcp"
+        "mcp-placeholder",
+        "rules-reference",
+        "skills-reference"
       ],
-      "projection_mode": "instructions-and-tasks",
-      "proof_status": "unverified",
+      "projection_mode": "copilot-instructions-and-workspace-mcp",
+      "proof_status": "ok",
       "settings_paths": [
         ".github/copilot-instructions.md",
-        ".vscode/tasks.json",
-        ".vscode/settings.json"
+        ".vscode/mcp.json"
       ],
-      "status": "planned"
+      "status": "implemented"
     },
     "windsurf": {
       "display_name": "Windsurf",
