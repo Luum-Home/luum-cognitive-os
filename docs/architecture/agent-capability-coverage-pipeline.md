@@ -61,6 +61,7 @@ Subagents should receive selected rows or findings only. Use Python/JQ snippets 
 | `primitive_duplication` | `scripts/primitive_duplication_audit.py` output when available | Refactor/extraction signal for repeated Bash, Python, YAML/config, and primitive behavior. |
 | `harness_projection` | `manifests/harness-projection.yaml` | Registry of implemented/planned/unsupported IDE and harness projection surfaces. |
 | `projection_profiles` | `manifests/primitive-projection-profiles.yaml` | Declares `default`, `full`, `shared`, `profile-driver`, and maintainer-only projection classes. |
+| `consumer_availability` | `manifests/primitive-consumer-availability.yaml` | Explicitly classifies lifecycle consumer candidates as shell/CI candidates, projectable-needs-driver, maintainer-only, or so-local-only. |
 | `consumer_projection` | Temporary projects generated for harnesses with `status: implemented` | Proof that hooks, skills, and rules are actually projected into consumer projects for default and full profiles. |
 
 ## Scope boundary
@@ -95,6 +96,10 @@ The consumer projection adapter creates temporary projects and runs the default 
 This is intentionally narrow. It does not sign native support for Cursor, Windsurf, VS Code Copilot, Google Antigravity, OpenCode, or shell/CI until those harnesses have their own projection proof.
 
 The profile manifest also declares SO-local profile drivers, such as `scripts/cos_init.py`, `scripts/cos-init.sh`, and install/profile doctors. Those scripts are not copied into consumer projects. Their proof is that they successfully generate the declared consumer projection surface.
+
+## Consumer availability adapter
+
+`manifests/primitive-consumer-availability.yaml` resolves lifecycle-declared consumer candidates that are not proven by file projection. It is intentionally explicit: a path must name its status and rationale. `maintainer-only` and `so-local-only` rows count as aligned because they are not consumer-project debt; `shell-ci-candidate` and `projectable-needs-driver` remain partial until a projection driver proves them.
 
 ## Multi-IDE harness registry
 
