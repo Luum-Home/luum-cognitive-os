@@ -60,6 +60,12 @@ git -C "$REPO" rebase "$REMOTE/$MAIN_BRANCH"
   cd "$REPO"
   eval "$VALIDATE_CMD"
 )
+if [ -n "$(git -C "$REPO" status --porcelain=v1 --untracked-files=no)" ]; then
+  echo "Refusing merge queue landing because validation dirtied tracked worktree." >&2
+  echo "Commit or restore validation-generated artifacts before landing." >&2
+  git -C "$REPO" status --short --untracked-files=no >&2
+  exit 4
+fi
 if [ "$DRY_RUN" = true ]; then
   echo "merge_to_main: dry-run passed for $branch onto $REMOTE/$MAIN_BRANCH"
   exit 0
