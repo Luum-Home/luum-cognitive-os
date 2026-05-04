@@ -58,6 +58,68 @@ def test_scan_classifies_implemented_partial_and_pending_adrs(tmp_path: Path) ->
     assert states["ADR-003-pending"] == "pending"
 
 
+def test_missing_declared_implementation_file_prevents_overestimated_implemented_state(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    adrs = project / "docs" / "adrs"
+    adrs.mkdir(parents=True)
+    (adrs / "ADR-001-overstated.md").write_text(
+        """---
+adr: 1
+title: Overstated
+status: accepted
+implementation_files:
+  - scripts/missing-helper
+---
+
+# ADR-001 Overstated
+
+## Status
+
+Accepted — implemented.
+
+## Acceptance Criteria
+
+1. `scripts/missing-helper` exists and is executable.
+""",
+        encoding="utf-8",
+    )
+
+    [record] = adr_implementation_ledger.scan_adrs(project)
+
+    assert record.implementation_state == "pending"
+    assert record.missing_required_paths == ["scripts/missing-helper"]
+    assert "Required implementation paths are missing" in record.reason
+
+
+def test_missing_acceptance_criteria_path_keeps_partial_when_other_evidence_exists(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    adrs = project / "docs" / "adrs"
+    scripts = project / "scripts"
+    adrs.mkdir(parents=True)
+    scripts.mkdir()
+    (scripts / "existing.py").write_text("print('ok')\n", encoding="utf-8")
+    (adrs / "ADR-001-partial-evidence.md").write_text(
+        """# ADR-001 Partial Evidence
+
+## Status
+
+Accepted — implemented.
+
+Implementation evidence: `scripts/existing.py`
+
+## Acceptance Criteria
+
+1. `scripts/missing-helper` exists and is executable.
+""",
+        encoding="utf-8",
+    )
+
+    [record] = adr_implementation_ledger.scan_adrs(project)
+
+    assert record.implementation_state == "partial"
+    assert record.missing_required_paths == ["scripts/missing-helper"]
+
+
 def test_closure_metadata_overrides_stale_heuristic_attention(tmp_path: Path) -> None:
     project = tmp_path / "project"
     adrs = project / "docs" / "adrs"
