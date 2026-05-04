@@ -57,6 +57,20 @@ def make_repo(tmp_path: Path) -> Path:
             }
         )
     )
+    (root / "manifests" / "primitive-consumer-availability.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "primitive-consumer-availability.v1",
+                "items": [
+                    {
+                        "path": "scripts/local.py",
+                        "status": "maintainer-only",
+                        "rationale": "test maintainer override",
+                    }
+                ],
+            }
+        )
+    )
     script_payload = {
         "summary": {},
         "scripts": [
@@ -128,7 +142,7 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     statuses = {cap["id"]: cap["mapping_status"] for cap in payload["capabilities"]}
 
     assert statuses["script:scripts/projected.sh"] == "partial"
-    assert statuses["script:scripts/local.py"] == "unverified"
+    assert statuses["script:scripts/local.py"] == "aligned"
     assert statuses["hook:hooks/x"] == "aligned"
     assert payload["summary"]["stale_weight"] >= 2
     assert payload["gate"]["phase"] == "reconstruction"
@@ -136,6 +150,7 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert payload["harness_projection"]["claude"]["status"] == "implemented"
     assert payload["harness_projection"]["cursor"]["status"] == "planned"
     assert payload["adapters"]["projection_profiles"]["status"] == "ok"
+    assert payload["adapters"]["consumer_availability"]["status"] == "ok"
     compact = acc_pipeline.compact_summary(payload)
     assert compact["schema_version"] == "acc.compact.v1"
     assert compact["context_diet"]["read_this_first"] == "docs/acc/latest-compact.md"

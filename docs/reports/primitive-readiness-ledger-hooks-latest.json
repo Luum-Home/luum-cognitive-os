@@ -3640,7 +3640,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 6,
-        "doc": 33,
+        "doc": 34,
         "hook": 5,
         "rule": 3,
         "script": 1,
@@ -3679,6 +3679,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3892,7 +3896,7 @@
         "rule_consumers:3",
         "script_consumers:1",
         "test_consumers:9",
-        "doc_consumers:33",
+        "doc_consumers:34",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -3903,7 +3907,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 59
+      "total_consumers": 60
     },
     {
       "confidence": "medium",
@@ -4606,7 +4610,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 38,
         "hook": 2,
         "rule": 1,
@@ -4618,6 +4622,10 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "config",
@@ -4984,7 +4992,7 @@
         "script_consumers:17",
         "test_consumers:25",
         "doc_consumers:38",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -4994,7 +5002,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 90
+      "total_consumers": 91
     },
     {
       "confidence": "medium",

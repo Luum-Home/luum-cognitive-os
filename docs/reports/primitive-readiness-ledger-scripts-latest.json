@@ -426,7 +426,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 1,
-        "doc": 11,
+        "doc": 13,
         "test": 2
       },
       "consumers": [
@@ -452,11 +452,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/agent-capability-coverage.md"
         },
         {
           "family": "doc",
           "path": "docs/architecture/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/consumer-project-primitive-accessibility.md"
         },
         {
           "family": "doc",
@@ -492,7 +500,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:11",
+        "doc_consumers:13",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -509,7 +517,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 14,
+      "total_consumers": 16,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -1541,7 +1549,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 9,
         "hook": 2,
         "rule": 2,
@@ -1553,6 +1561,10 @@
         {
           "family": "config",
           "path": "manifests/adr-closure-metadata.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "config",
@@ -1635,7 +1647,7 @@
         "hook_consumers:2",
         "doc_consumers:9",
         "rule_consumers:2",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -1652,7 +1664,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 19,
+      "total_consumers": 20,
       "wrapper_for": null
     },
     {
@@ -2240,13 +2252,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "script": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -2282,7 +2298,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:3",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -2299,7 +2315,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -2846,8 +2862,8 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 25,
-        "doc": 390,
+        "config": 26,
+        "doc": 391,
         "hook": 67,
         "rule": 42,
         "script": 191,
@@ -2922,6 +2938,10 @@
         {
           "family": "config",
           "path": "manifests/optional-hook-aliases.json"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "config",
@@ -3526,6 +3546,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
         },
         {
           "family": "doc",
@@ -7183,9 +7207,9 @@
         "skill_consumers:55",
         "test_consumers:310",
         "hook_consumers:67",
-        "doc_consumers:390",
+        "doc_consumers:391",
         "rule_consumers:42",
-        "config_consumers:25",
+        "config_consumers:26",
         "script_consumers:191"
       ],
       "install_surface": null,
@@ -7202,7 +7226,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1080,
+      "total_consumers": 1082,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -8147,12 +8171,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 4,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -8188,7 +8216,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:4",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -8204,7 +8232,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -10240,7 +10268,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 7,
-        "doc": 21,
+        "doc": 22,
         "script": 5,
         "skill": 1,
         "test": 12
@@ -10293,6 +10321,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-093-simplify-profiles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
         },
         {
           "family": "doc",
@@ -10438,7 +10470,7 @@
         "wrapper_for:scripts/cos_init.py",
         "skill_consumers:1",
         "test_consumers:12",
-        "doc_consumers:21",
+        "doc_consumers:22",
         "config_consumers:7",
         "script_consumers:5"
       ],
@@ -10456,7 +10488,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 46,
+      "total_consumers": 47,
       "wrapper_for": "scripts/cos_init.py"
     },
     {
@@ -11207,12 +11239,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 6,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -11257,7 +11293,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:6",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -11273,7 +11309,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -11791,13 +11827,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 5,
         "rule": 1,
         "skill": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -11846,7 +11886,7 @@
         "test_consumers:1",
         "doc_consumers:5",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -11862,7 +11902,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -11916,13 +11956,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 14,
         "script": 5,
         "skill": 1,
         "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -12030,7 +12074,7 @@
         "skill_consumers:1",
         "test_consumers:4",
         "doc_consumers:14",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:5"
       ],
       "install_surface": null,
@@ -12047,7 +12091,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 25,
+      "total_consumers": 26,
       "wrapper_for": null
     },
     {
@@ -12279,12 +12323,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 5,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -12324,7 +12372,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:5",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -12340,7 +12388,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -12828,12 +12876,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "skill": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -12865,7 +12917,7 @@
         "skill_consumers:2",
         "test_consumers:1",
         "doc_consumers:2",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -12881,7 +12933,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -14350,7 +14402,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 5,
-        "doc": 5,
+        "doc": 7,
         "script": 3,
         "test": 7
       },
@@ -14378,6 +14430,14 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
         },
         {
           "family": "doc",
@@ -14442,7 +14502,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:5",
+        "doc_consumers:7",
         "config_consumers:5",
         "script_consumers:3"
       ],
@@ -14460,7 +14520,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 20,
+      "total_consumers": 22,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -14605,7 +14665,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 6,
         "skill": 1,
         "test": 2
@@ -14614,6 +14674,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "config",
@@ -14663,7 +14727,7 @@
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:6",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14679,7 +14743,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": "scripts/cos_work_inventory.py"
     },
     {
@@ -14861,12 +14925,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 4,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -14903,7 +14971,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:4",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14919,7 +14987,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": "scripts/adr_implementation_ledger.py"
     },
     {
@@ -15355,7 +15423,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 9,
         "hook": 2,
         "script": 7,
@@ -15363,6 +15431,10 @@
         "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -15475,7 +15547,7 @@
         "test_consumers:4",
         "hook_consumers:2",
         "doc_consumers:9",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:7"
       ],
       "install_surface": null,
@@ -15492,7 +15564,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 26,
+      "total_consumers": 27,
       "wrapper_for": null
     },
     {
@@ -15590,12 +15662,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "script": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -15626,7 +15702,7 @@
         "lifecycle",
         "skill_consumers:1",
         "doc_consumers:3",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -15643,7 +15719,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -15651,12 +15727,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "rule": 2,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -15684,7 +15764,7 @@
         "skill_consumers:1",
         "doc_consumers:1",
         "rule_consumers:2",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -15700,7 +15780,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -15823,12 +15903,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 4,
         "skill": 1,
         "test": 6
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -15884,7 +15968,7 @@
         "skill_consumers:1",
         "test_consumers:6",
         "doc_consumers:4",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -15900,7 +15984,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -16317,7 +16401,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "rule": 1,
         "script": 1,
@@ -16325,6 +16409,10 @@
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -16361,7 +16449,7 @@
         "test_consumers:1",
         "doc_consumers:2",
         "rule_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -16378,7 +16466,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -16446,13 +16534,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 5,
         "script": 2,
         "skill": 1,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -16508,7 +16600,7 @@
         "skill_consumers:1",
         "test_consumers:3",
         "doc_consumers:5",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -16525,7 +16617,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -16684,13 +16776,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -16719,7 +16815,7 @@
         "test_consumers:1",
         "doc_consumers:1",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -16735,7 +16831,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -16743,13 +16839,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 6,
         "rule": 2,
         "script": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -16801,7 +16901,7 @@
         "skill_consumers:1",
         "doc_consumers:6",
         "rule_consumers:2",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -16818,7 +16918,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -16826,13 +16926,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -16861,7 +16965,7 @@
         "test_consumers:1",
         "doc_consumers:1",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -16877,7 +16981,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -16885,7 +16989,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 6,
         "hook": 3,
         "script": 3,
@@ -16893,6 +16997,10 @@
         "test": 8
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -16989,7 +17097,7 @@
         "test_consumers:8",
         "hook_consumers:3",
         "doc_consumers:6",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:3"
       ],
       "install_surface": null,
@@ -17006,7 +17114,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 22,
+      "total_consumers": 23,
       "wrapper_for": null
     },
     {
@@ -17317,7 +17425,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 6,
         "hook": 1,
         "rule": 2,
@@ -17328,6 +17436,10 @@
         {
           "family": "config",
           "path": "manifests/adr-closure-metadata.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "config",
@@ -17390,7 +17502,7 @@
         "hook_consumers:1",
         "doc_consumers:6",
         "rule_consumers:2",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -17406,7 +17518,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 14,
+      "total_consumers": 15,
       "wrapper_for": null
     },
     {
@@ -17584,12 +17696,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "script": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -17616,7 +17732,7 @@
         "lifecycle",
         "skill_consumers:1",
         "doc_consumers:2",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -17633,7 +17749,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -17641,7 +17757,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 6,
         "script": 5,
         "skill": 1,
@@ -17651,6 +17767,10 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "config",
@@ -17735,7 +17855,7 @@
         "skill_consumers:1",
         "test_consumers:6",
         "doc_consumers:6",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:5"
       ],
       "install_surface": null,
@@ -17752,7 +17872,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 20,
+      "total_consumers": 21,
       "wrapper_for": null
     },
     {
@@ -17820,11 +17940,15 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 4,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -17855,7 +17979,7 @@
         "lifecycle",
         "skill_consumers:1",
         "doc_consumers:4",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -17871,7 +17995,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -18528,13 +18652,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -18567,7 +18695,7 @@
         "test_consumers:2",
         "doc_consumers:1",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -18583,7 +18711,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -18720,13 +18848,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "rule": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -18768,7 +18900,7 @@
         "test_consumers:2",
         "doc_consumers:3",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -18784,7 +18916,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": "scripts/smoke-qwen-fallback.sh"
     },
     {
@@ -19020,13 +19152,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 6,
         "hook": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -19080,7 +19216,7 @@
         "test_consumers:2",
         "hook_consumers:1",
         "doc_consumers:6",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -19096,7 +19232,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": "scripts/derived_artifact_gate.py"
     },
     {
@@ -19142,13 +19278,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -19177,7 +19317,7 @@
         "test_consumers:1",
         "doc_consumers:1",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -19193,7 +19333,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -20135,13 +20275,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "script": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -20181,7 +20325,7 @@
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:3",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -20198,7 +20342,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -20206,13 +20350,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 4,
         "script": 1,
         "skill": 2,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -20260,7 +20408,7 @@
         "skill_consumers:2",
         "test_consumers:2",
         "doc_consumers:4",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -20277,7 +20425,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -20285,7 +20433,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "hook": 1,
         "rule": 1,
@@ -20294,6 +20442,10 @@
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -20335,7 +20487,7 @@
         "hook_consumers:1",
         "doc_consumers:2",
         "rule_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -20352,7 +20504,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -20406,7 +20558,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 13,
         "hook": 1,
         "rule": 1,
@@ -20415,6 +20567,10 @@
         "test": 9
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -20548,7 +20704,7 @@
         "hook_consumers:1",
         "doc_consumers:13",
         "rule_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -20565,7 +20721,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 31,
+      "total_consumers": 32,
       "wrapper_for": null
     },
     {
@@ -20654,12 +20810,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -20691,7 +20851,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:3",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -20707,7 +20867,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -20715,12 +20875,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -20756,7 +20920,7 @@
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:3",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -20772,7 +20936,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -21180,13 +21344,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -21215,7 +21383,7 @@
         "test_consumers:1",
         "doc_consumers:1",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -21231,7 +21399,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -21239,7 +21407,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "rule": 1,
         "script": 1,
@@ -21247,6 +21415,10 @@
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -21283,7 +21455,7 @@
         "test_consumers:1",
         "doc_consumers:2",
         "rule_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -21300,7 +21472,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -21351,7 +21523,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 7,
         "rule": 1,
         "skill": 2,
@@ -21361,6 +21533,10 @@
         {
           "family": "config",
           "path": ".claude/settings.local.json"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "config",
@@ -21418,7 +21594,7 @@
         "test_consumers:1",
         "doc_consumers:7",
         "rule_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -21434,7 +21610,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -21442,13 +21618,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 5,
         "script": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -21496,7 +21676,7 @@
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:5",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -21513,7 +21693,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -21739,7 +21919,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "rule": 1,
         "script": 1,
@@ -21747,6 +21927,10 @@
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -21783,7 +21967,7 @@
         "test_consumers:1",
         "doc_consumers:2",
         "rule_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -21800,7 +21984,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -22687,11 +22871,15 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -22711,7 +22899,7 @@
         "wrapper_for:scripts/doc_review_personas.py",
         "skill_consumers:1",
         "doc_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -22727,7 +22915,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": "scripts/doc_review_personas.py"
     },
     {
@@ -22735,11 +22923,15 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -22762,7 +22954,7 @@
         "lifecycle",
         "skill_consumers:1",
         "doc_consumers:2",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -22778,7 +22970,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -22786,13 +22978,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "rule": 1,
         "script": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -22829,7 +23025,7 @@
         "skill_consumers:1",
         "doc_consumers:3",
         "rule_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -22846,7 +23042,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": "scripts/orchestrator.py"
     },
     {
@@ -23235,11 +23431,15 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 2,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -23262,7 +23462,7 @@
         "lifecycle",
         "skill_consumers:1",
         "doc_consumers:2",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -23278,7 +23478,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -23462,13 +23662,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 5,
         "rule": 1,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -23517,7 +23721,7 @@
         "test_consumers:2",
         "doc_consumers:5",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -23533,7 +23737,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -23541,12 +23745,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 5,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -23586,7 +23794,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:5",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -23602,7 +23810,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -23699,7 +23907,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "rule": 1,
         "script": 1,
@@ -23707,6 +23915,10 @@
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -23752,7 +23964,7 @@
         "test_consumers:1",
         "doc_consumers:3",
         "rule_consumers:1",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -23769,7 +23981,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": "scripts/pytest-with-summary.sh"
     },
     {
@@ -24087,12 +24299,16 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 9,
         "skill": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -24152,7 +24368,7 @@
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:9",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -24168,7 +24384,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -24292,11 +24508,15 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 1,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -24316,7 +24536,7 @@
         "wrapper_for:scripts/aspirational_audit.py",
         "skill_consumers:1",
         "doc_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -24332,7 +24552,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": "scripts/aspirational_audit.py"
     },
     {
