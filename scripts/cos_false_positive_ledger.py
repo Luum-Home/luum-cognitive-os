@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -40,6 +41,7 @@ FALSE_POSITIVE_ENUM_VALUES = (
     "overrode",
 )
 FALSE_POSITIVE_REASON_TOKENS = ("false positive", "false-positive", "operator bypass", "operator-bypass")
+DEFAULT_WINDOW_HOURS = 24
 
 
 def iter_jsonl(path: Path):
@@ -53,6 +55,18 @@ def iter_jsonl(path: Path):
                 continue
     except OSError:
         return
+
+
+def parse_ts(value: Any) -> float | None:
+    if isinstance(value, (int, float)):
+        return float(value)
+    if not isinstance(value, str) or not value.strip():
+        return None
+    text = value.strip().replace("Z", "+00:00")
+    try:
+        return datetime.fromisoformat(text).timestamp()
+    except ValueError:
+        return None
 
 
 def hook_name(event: dict[str, Any], fallback: str) -> str:
@@ -105,18 +119,25 @@ def is_false_positive_event(event: dict[str, Any]) -> bool:
     return False
 
 
-def build_report(metrics_dir: Path = METRICS) -> dict[str, Any]:
+def build_report(metrics_dir: Path = METRICS, *, window_hours: int = DEFAULT_WINDOW_HOURS) -> dict[str, Any]:
     counter: Counter[str] = Counter()
     events = 0
+    now = datetime.now(timezone.utc).timestamp()
+    since = now - (window_hours * 3600) if window_hours > 0 else None
     files = sorted(metrics_dir.glob("*.jsonl")) if metrics_dir.exists() else []
     for path in files:
         for event in iter_jsonl(path):
+            if since is not None:
+                ts = parse_ts(event.get("timestamp") or event.get("ts") or event.get("created_at"))
+                if ts is not None and ts < since:
+                    continue
             events += 1
             if is_false_positive_event(event):
                 counter[hook_name(event, path.name)] += 1
     total = sum(counter.values())
     return {
         "status": "pass" if total == 0 else "warn",
+        "window_hours": window_hours,
         "metrics_files": len(files),
         "events_scanned": events,
         "false_positive_events": total,
@@ -127,8 +148,9 @@ def build_report(metrics_dir: Path = METRICS) -> dict[str, Any]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--metrics-dir", type=Path, default=METRICS)
+    parser.add_argument("--window-hours", type=int, default=DEFAULT_WINDOW_HOURS)
     args = parser.parse_args(argv)
-    print(json.dumps(build_report(args.metrics_dir), indent=2, sort_keys=True))
+    print(json.dumps(build_report(args.metrics_dir, window_hours=args.window_hours), indent=2, sort_keys=True))
     return 0
 
 
