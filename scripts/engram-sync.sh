@@ -9,6 +9,7 @@
 #   ./scripts/engram-sync.sh           # export current project
 #   ./scripts/engram-sync.sh --all     # export all observations (NOT recommended)
 #   ./scripts/engram-sync.sh --import  # import exports back into engram
+#   ./scripts/engram-sync.sh --cloud   # run scoped engram cloud sync
 #
 # Output: .engram/exports/{project}.jsonl (one JSON object per line)
 
@@ -17,6 +18,8 @@ set -euo pipefail
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/.." && pwd)}}}"
 EXPORT_DIR="$PROJECT_DIR/.engram/exports"
 DB_PATH="${ENGRAM_DB:-$HOME/.engram/engram.db}"
+RUNTIME_DIR="${COGNITIVE_OS_RUNTIME_DIR:-$PROJECT_DIR/.cognitive-os/runtime}"
+AUDIT_TRAIL="$RUNTIME_DIR/agent-audit-trail.jsonl"
 
 # Determine project name — try git remote, fallback to dir name
 PROJECT_NAME="${COGNITIVE_OS_PROJECT:-}"
@@ -30,12 +33,49 @@ if [ -z "$PROJECT_NAME" ]; then
 fi
 [ -z "$PROJECT_NAME" ] && PROJECT_NAME=$(basename "$PROJECT_DIR")
 
+json_string() {
+  python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$1"
+}
+
+write_sync_audit() {
+  local event="$1"
+  local outcome="$2"
+  mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
+  printf '{"timestamp":"%s","event":%s,"outcome":%s,"tenant_id":%s,"audit_class":"sync","engram_project_scope":%s,"sync_mode":%s,"billing_identity":%s}\n' \
+    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+    "$(json_string "$event")" \
+    "$(json_string "$outcome")" \
+    "$(json_string "${TENANT_ID:-${PROJECT_NAME}-local}")" \
+    "$(json_string "${ENGRAM_PROJECT_SCOPE:-$PROJECT_NAME}")" \
+    "$(json_string "${ENGRAM_SYNC_MODE:-git-jsonl}")" \
+    "$(json_string "${BILLING_IDENTITY:-local-only}")" \
+    >> "$AUDIT_TRAIL" 2>/dev/null || true
+}
+
+MODE="${1:-export}"
+
+# ─── Cloud sync mode ──────────────────────────────────────────────────────────
+if [ "$MODE" = "--cloud" ]; then
+  if ! command -v engram >/dev/null 2>&1; then
+    write_sync_audit "engram-cloud-sync-skipped" "engram-not-found"
+    echo "engram binary not found — cloud sync skipped" >&2
+    exit 0
+  fi
+  SCOPE="${ENGRAM_PROJECT_SCOPE:-$PROJECT_NAME}"
+  if [ -z "$SCOPE" ]; then
+    write_sync_audit "engram-cloud-sync-failed" "missing-project-scope"
+    echo "ENGRAM_PROJECT_SCOPE or project auto-detection is required for cloud sync" >&2
+    exit 2
+  fi
+  ENGRAM_SYNC_MODE="engram-cloud" engram sync --cloud --project "$SCOPE"
+  write_sync_audit "engram-cloud-sync-completed" "pass"
+  exit 0
+fi
+
 if [ ! -f "$DB_PATH" ]; then
   echo "engram DB not found at $DB_PATH — nothing to sync" >&2
   exit 0
 fi
-
-MODE="${1:-export}"
 
 # ─── Import mode ──────────────────────────────────────────────────────────────
 if [ "$MODE" = "--import" ]; then
