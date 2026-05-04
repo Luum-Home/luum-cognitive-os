@@ -142,7 +142,7 @@ run_claude_code_driver() {
     error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
     destructive-git-blocker.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
     private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh stash-budget-warn.sh \
-    post-git-orphan-notifier.sh skill-router-bash-gate.sh prompt-quality-llm.sh token-budget-monitor.sh adaptive-bypass.sh \
+    post-git-orphan-notifier.sh skill-router-bash-gate.sh release-guard.sh prompt-quality-llm.sh token-budget-monitor.sh adaptive-bypass.sh \
     assumption-tracker.sh scope-proportionality.sh scope-creep-detector.sh consequence-evaluator.sh auto-skill-generator.sh; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
@@ -198,7 +198,7 @@ echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  PreToolUse *: session-heartbeat.sh, lethal-trifecta-gate.sh"
-echo "  PreToolUse Bash: rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, destructive-git-blocker.sh, symlink-mutation-guard.sh, scope-marker-portability-gate.sh, skill-router-bash-gate.sh, git-commit-scope-guard.sh, direct-main-guard.sh, orchestrator-claim-gate.sh, pre-commit-content-hash-dedupe.sh"
+echo "  PreToolUse Bash: rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, destructive-git-blocker.sh, symlink-mutation-guard.sh, scope-marker-portability-gate.sh, skill-router-bash-gate.sh, release-guard.sh, git-commit-scope-guard.sh, direct-main-guard.sh, orchestrator-claim-gate.sh, pre-commit-content-hash-dedupe.sh"
 echo "  PreToolUse engram write tools: private-mode-gate.sh"
 echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, edit-lock-pre-tool.sh, concurrent-write-guard.sh, plan-claim-validator.sh"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, prompt-quality-llm.sh, token-budget-monitor.sh, adaptive-bypass.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, pre-agent-snapshot.sh, native-agent-heartbeat.sh"
