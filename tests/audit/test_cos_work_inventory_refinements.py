@@ -119,10 +119,10 @@ class TestIsEphemeralPath:
         normal = Path("/workspace/developer/projects/my-feature-worktree")
         assert not m._is_ephemeral_path(normal)
 
-    def test_tmpdir_child_is_ephemeral(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    def test_tmpdir_child_is_not_automatically_ephemeral(self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setenv("TMPDIR", str(tmp_path))
         child = tmp_path / "some-runtime-dir"
-        assert m._is_ephemeral_path(child)
+        assert not m._is_ephemeral_path(child)
 
     def test_unrelated_path_not_ephemeral(self) -> None:
         unrelated = Path("/workspace/matias/Projects/luum/luum-agent-os")
