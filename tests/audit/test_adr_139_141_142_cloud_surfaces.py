@@ -43,7 +43,19 @@ def test_cos_worker_compose_declares_local_engram_cloud_stack() -> None:
     assert "engram-cloud" in cloud["profiles"]
     assert cloud["environment"]["ENGRAM_CLOUD_HOST"] == "0.0.0.0"
     assert "ENGRAM_DATABASE_URL" in cloud["environment"]
-    assert cloud["command"] == ["engram", "cloud", "serve"]
+    assert cloud["command"] == ["cloud", "serve"]
+    assert cloud["restart"] == "on-failure:5"
+
+
+def test_engram_cloud_docker_smoke_script_exists() -> None:
+    smoke = ROOT / "scripts" / "cos-engram-cloud-docker-smoke"
+    text = smoke.read_text(encoding="utf-8")
+
+    assert smoke.exists()
+    assert "cos-engram-cloud-db" in text
+    assert "cos-engram-cloud" in text
+    assert "engram-sync.sh\" --cloud" in text
+    assert "cloud_chunks" in text
 
 
 def test_audit_archive_and_gdpr_procedure_exist() -> None:

@@ -1,0 +1,151 @@
+#!/usr/bin/env bash
+# SCOPE: maintainer
+# PURPOSE: Prove local Engram Cloud Docker sync across COS and one consumer project.
+set -euo pipefail
+
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+COMPOSE_FILE="$PROJECT_DIR/docker/cos-worker/docker-compose.yml"
+COMPOSE_PROJECT="cosengramcloudsmoke${$}"
+PORT="${COS_ENGRAM_CLOUD_SMOKE_PORT:-18080}"
+SERVER="http://127.0.0.1:${PORT}"
+PRIMARY_PROJECT="${COS_ENGRAM_CLOUD_SMOKE_PRIMARY:-luum-agent-os}"
+CONSUMER_PROJECT="${COS_ENGRAM_CLOUD_SMOKE_CONSUMER:-cos-consumer-e2e-drill}"
+KEEP=0
+JSON_OUT=0
+
+usage() {
+  cat <<'EOF'
+Usage: scripts/cos-engram-cloud-docker-smoke [--keep] [--json]
+
+Starts the local docker/cos-worker Engram Cloud profile, enrolls two project
+scopes with a temporary Engram HOME, saves one observation in each project, runs
+`scripts/engram-sync.sh --cloud`, and verifies Postgres received project-scoped
+cloud chunks.
+
+Environment:
+  COS_ENGRAM_CLOUD_SMOKE_PORT       host port for Engram Cloud (default: 18080)
+  COS_ENGRAM_CLOUD_SMOKE_PRIMARY    primary project scope (default: luum-agent-os)
+  COS_ENGRAM_CLOUD_SMOKE_CONSUMER   consumer project scope (default: cos-consumer-e2e-drill)
+EOF
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --keep) KEEP=1; shift ;;
+    --json) JSON_OUT=1; shift ;;
+    --help|-h) usage; exit 0 ;;
+    *) echo "Unknown option: $1" >&2; usage >&2; exit 2 ;;
+  esac
+done
+
+if ! command -v docker >/dev/null 2>&1; then
+  echo "docker is required" >&2
+  exit 78
+fi
+if ! command -v engram >/dev/null 2>&1; then
+  echo "engram is required" >&2
+  exit 78
+fi
+if [ ! -f "$COMPOSE_FILE" ]; then
+  echo "compose file not found: $COMPOSE_FILE" >&2
+  exit 2
+fi
+
+TMP_HOME="$(mktemp -d /tmp/cos-engram-cloud-home.XXXXXX)"
+TMP_RUNTIME="$(mktemp -d /tmp/cos-engram-cloud-runtime.XXXXXX)"
+
+cleanup() {
+  if [ "$KEEP" != "1" ]; then
+    docker compose -p "$COMPOSE_PROJECT" -f "$COMPOSE_FILE" --profile engram-cloud down -v >/dev/null 2>&1 || true
+    rm -rf "$TMP_HOME" "$TMP_RUNTIME" >/dev/null 2>&1 || true
+  fi
+}
+trap cleanup EXIT
+
+export COS_WORKSPACE="$PROJECT_DIR"
+export ENGRAM_CLOUD_PORT="$PORT"
+export ENGRAM_CLOUD_ALLOWED_PROJECTS="${PRIMARY_PROJECT},${CONSUMER_PROJECT}"
+export ENGRAM_CLOUD_INSECURE_NO_AUTH=1
+
+docker compose -p "$COMPOSE_PROJECT" -f "$COMPOSE_FILE" --profile engram-cloud up -d cos-engram-cloud-db cos-engram-cloud >/dev/null
+
+run_with_retry() {
+  local attempts="${1}"
+  shift
+  local status=0
+  for _ in $(seq 1 "$attempts"); do
+    if "$@"; then
+      return 0
+    fi
+    status=$?
+    sleep 1
+  done
+  return "$status"
+}
+
+run_project_sync() {
+  local project="$1"
+  local topic="$2"
+  HOME="$TMP_HOME" \
+  COGNITIVE_OS_RUNTIME_DIR="$TMP_RUNTIME" \
+  ENGRAM_CLOUD_INSECURE_NO_AUTH=1 \
+  ENGRAM_CLOUD_SERVER="$SERVER" \
+  TENANT_ID="cos-engram-cloud-smoke" \
+    run_with_retry 30 "$PROJECT_DIR/scripts/cos-engram-cloud-enroll" --server "$SERVER" --project "$project" --json >/dev/null
+
+  HOME="$TMP_HOME" \
+    engram save "docker cloud sync proof ${project}" "Engram Cloud Docker smoke proof for ${project}" \
+      --type discovery --project "$project" --scope project --topic "$topic" >/dev/null
+
+  HOME="$TMP_HOME" \
+  COGNITIVE_OS_RUNTIME_DIR="$TMP_RUNTIME" \
+  ENGRAM_CLOUD_INSECURE_NO_AUTH=1 \
+  ENGRAM_CLOUD_SERVER="$SERVER" \
+  ENGRAM_PROJECT_SCOPE="$project" \
+  TENANT_ID="cos-engram-cloud-smoke" \
+    "$PROJECT_DIR/scripts/engram-sync.sh" --cloud >/dev/null
+}
+
+run_project_sync "$PRIMARY_PROJECT" "proof/engram-cloud/docker-primary"
+run_project_sync "$CONSUMER_PROJECT" "proof/engram-cloud/docker-consumer"
+
+rows="$(
+  docker compose -p "$COMPOSE_PROJECT" -f "$COMPOSE_FILE" exec -T cos-engram-cloud-db \
+    psql -U "${ENGRAM_CLOUD_DB_USER:-engram}" -d "${ENGRAM_CLOUD_DB:-engram}" -At -F '|' \
+    -c "select project_name, count(*) as chunks, coalesce(sum(observations_count),0) as observations from cloud_chunks group by project_name order by project_name;"
+)"
+
+if ! printf '%s\n' "$rows" | grep -q "^${PRIMARY_PROJECT}|[1-9][0-9]*|[1-9][0-9]*$"; then
+  echo "missing cloud chunk evidence for ${PRIMARY_PROJECT}" >&2
+  printf '%s\n' "$rows" >&2
+  exit 1
+fi
+if ! printf '%s\n' "$rows" | grep -q "^${CONSUMER_PROJECT}|[1-9][0-9]*|[1-9][0-9]*$"; then
+  echo "missing cloud chunk evidence for ${CONSUMER_PROJECT}" >&2
+  printf '%s\n' "$rows" >&2
+  exit 1
+fi
+
+if [ "$JSON_OUT" = "1" ]; then
+  python3 - "$PRIMARY_PROJECT" "$CONSUMER_PROJECT" "$SERVER" "$rows" "$TMP_RUNTIME/agent-audit-trail.jsonl" <<'PY'
+import json
+import sys
+
+primary, consumer, server, rows, audit_path = sys.argv[1:]
+print(json.dumps({
+    "status": "pass",
+    "server": server,
+    "projects": [primary, consumer],
+    "cloud_chunks": [
+        {"project": parts[0], "chunks": int(parts[1]), "observations": int(parts[2])}
+        for line in rows.splitlines()
+        if (parts := line.split("|")) and len(parts) == 3
+    ],
+    "audit_path": audit_path,
+}, sort_keys=True))
+PY
+else
+  echo "Engram Cloud Docker smoke passed against ${SERVER}"
+  printf '%s\n' "$rows"
+  echo "audit: $TMP_RUNTIME/agent-audit-trail.jsonl"
+fi
