@@ -12,7 +12,7 @@ Proposed (2026-05-02). R1 has landed; R2-R4 remain in flight and are governed by
 
 ## Context
 
-On 2026-05-02, a compounding false-done incident produced **5 or more involuntary revert events in a single session**. Post-mortem analysis (see `docs/incidents/2026-05-02-false-done-compounding.md` and `docs/reports/revert-investigation-2026-05-02.md`) identified a shared root cause: `git stash` operations in OS hooks were:
+On 2026-05-02, a compounding false-done incident produced **5 or more involuntary revert events in a single session**. Post-mortem analysis (see `docs/incidents/2026-05-02-false-done-compounding.md` and `docs/reports/stash-resolution-2026-05-01.md`) identified a shared root cause: `git stash` operations in OS hooks were:
 
 - **Anonymous** — stash messages were auto-generated (`WIP on branch`), making forensic identification unreliable
 - **Destructive on failure** — hooks used `git stash pop`, which drops the stash entry on apply even when the apply itself partially fails, losing work silently
@@ -147,9 +147,9 @@ git stash$
 
 ...without a corresponding invocation of the `stash_lock` library or an explicit `# STASH-LOCK-EXEMPT:` annotation.
 
-The test lives at `tests/contracts/test_stash_mutation_reversibility.py` (to be created with R2). It MUST be wired into the `cluster` test lane.
+The compliance checks are currently distributed across `tests/integration/test_auto_checkpoint_named_stash.py`, `tests/integration/test_stash_lock.py`, `tests/integration/test_stash_lock_hook_wiring.py`, `tests/integration/test_stash_reapply.py`, `tests/integration/test_stash_budget_warn.py`, and `tests/behavior/test_stash_leak_alarm.py`. A future consolidation may add a single contract wrapper, but this ADR no longer names a non-existent required path.
 
-Until that test exists, code review MUST manually verify the five invariants for any hook PR touching stash.
+Until a single contract wrapper exists, code review MUST verify that any hook PR touching stash keeps those behavior and integration tests green.
 
 ---
 
@@ -173,5 +173,5 @@ python3 -m pytest tests/integration/test_stash_lock.py -q
 - ADR-113 — Validation Capsule Liveness (`docs/adrs/ADR-113-validation-capsule-liveness.md`)
 - ADR-116 — Multi-Session Coordination Primitives (`docs/adrs/ADR-116-multi-session-coordination-primitives.md`)
 - Post-mortem: `docs/incidents/2026-05-02-false-done-compounding.md`
-- Investigation report: `docs/reports/revert-investigation-2026-05-02.md`
+- Investigation report: `docs/reports/stash-resolution-2026-05-01.md`
 - Revert-investigation task context: R1 (landed), R2–R4 (in flight)

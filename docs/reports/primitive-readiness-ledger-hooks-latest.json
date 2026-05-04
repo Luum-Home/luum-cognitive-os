@@ -5651,7 +5651,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 1,
+        "doc": 2,
         "script": 3,
         "test": 2
       },
@@ -5685,6 +5685,10 @@
           "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
         },
         {
+          "family": "doc",
+          "path": "docs/adrs/ADR-148-adr-authoring-primitive.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -5710,7 +5714,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -5723,7 +5727,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -12396,7 +12400,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 7,
+        "doc": 9,
         "test": 2
       },
       "consumers": [
@@ -12434,6 +12438,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -12443,6 +12451,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-hooks.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/agent-capability-coverage-pipeline.md"
         },
         {
           "family": "test",
@@ -12456,7 +12468,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:9",
         "config_consumers:4"
       ],
       "family": "hooks",
@@ -12467,7 +12479,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -29616,7 +29628,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 7,
-        "doc": 15,
+        "doc": 14,
         "script": 3,
         "test": 3
       },
@@ -29652,10 +29664,6 @@
         {
           "family": "doc",
           "path": "docs/README.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -29739,7 +29747,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:3",
-        "doc_consumers:15",
+        "doc_consumers:14",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -29752,7 +29760,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 28
+      "total_consumers": 27
     },
     {
       "confidence": "high",

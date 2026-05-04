@@ -105,6 +105,26 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert compact["context_diet"]["read_this_first"] == "docs/acc/latest-compact.md"
 
 
+def test_projected_readiness_row_becomes_aligned(tmp_path: Path) -> None:
+    row = {
+        "path": "skills/cos-status/SKILL.md",
+        "role": "compatibility-wrapper",
+        "role_source": "test",
+        "consumer_accessibility": "repo-skill-not-projectable",
+        "evidence": [],
+    }
+
+    cap = acc_pipeline.capability_from_readiness(
+        row,
+        "skills",
+        {"skills/cos-status/SKILL.md": {"harnesses": ["claude", "codex"], "paths": [".cognitive-os/skills/cos/cos-status/SKILL.md"]}},
+    )
+
+    assert cap.mapping_status == "aligned"
+    assert cap.consumer_accessibility == "projected-consumer-surface"
+    assert "projected_harnesses:claude,codex" in cap.evidence
+
+
 def test_write_report_outputs_json_markdown_and_history(tmp_path: Path) -> None:
     root = make_repo(tmp_path)
     payload = acc_pipeline.build_report(root, refresh=False, include_slow=False, fail_on_warn=False)

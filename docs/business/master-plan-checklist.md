@@ -156,7 +156,7 @@
 
 - [x] Fix `README.md` reference to missing `docs/benchmark-results.md`.
 - [x] Fix `CONTRIBUTING.md` references from `tests/run-all-tests.sh` to `scripts/run-all-tests.sh`.
-- [x] Redesign `.github/workflows/ci.yml` around the real product core.
+- [ ] Redesign and re-enable `.github/workflows/ci.yml`; current repository evidence is `.github/workflows/ci.yml.disabled`, so the product-core CI claim is not complete yet.
 - [x] Triage and improve `hooks/self-install.sh` performance against behavior-test expectations.
 - [x] Publish a simple “core vs extension” taxonomy document or section.
 - [x] Prepare a canonical five-minute product demo path through [Five-Minute Demo](../manual-tests/five-minute-demo.md).

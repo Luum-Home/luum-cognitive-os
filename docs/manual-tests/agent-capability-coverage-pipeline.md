@@ -62,3 +62,21 @@ Purpose: prove that the ACC pipeline can regenerate the unified coverage report 
 - The report includes capabilities, findings, adapter status, consumer accessibility, scores, and persistence status.
 - Local history is appended under `.cognitive-os/metrics/acc-pipeline-history.jsonl`.
 - Engram status is honest: unavailable unless a real bridge/tool exists.
+
+## Consumer Projection Check
+
+After refresh, confirm the projection adapter ran:
+
+```bash
+python3 - <<'PY'
+import json
+data = json.load(open('docs/acc/latest.json'))
+projection = data['adapters']['consumer_projection']
+print(projection)
+assert projection['status'] == 'ok'
+assert projection['summary']['projected_primitives'] > 0
+assert data['summary']['stale_weight'] == 0
+PY
+```
+
+Expected result: Claude/Codex default projection rows are counted as `projected-consumer-surface`; unproved IDEs remain unsigned.
