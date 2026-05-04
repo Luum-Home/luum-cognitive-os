@@ -54,20 +54,20 @@ ADR-146 adds `scripts/primitive_readiness_ledger.py` as the canonical machine-re
 
 | Role | Count |
 |---|---:|
-| agentic-primitive | 100 |
-| maintainer-tool | 175 |
+| agentic-primitive | 103 |
+| maintainer-tool | 173 |
 | migration-only | 11 |
-| driver-specific | 11 |
+| driver-specific | 10 |
 | lab | 13 |
 
-The first low-confidence pass is closed through `manifests/primitive-readiness-script-overrides.yaml`; the ledger now reports zero low-confidence rows. The follow-up lifecycle ratchet prioritized protected install/profile/projection scripts and added ADR-126 `candidate` metadata for those surfaces without making them active/default-visible. The lifecycle backlog reports remain active for the remaining agentic script rows that still need lifecycle metadata or downgrade decisions.
+The first low-confidence pass is closed through `manifests/primitive-readiness-script-overrides.yaml`; the ledger now reports zero low-confidence rows. The lifecycle ratchet added ADR-126 `candidate` metadata for protected install/profile/projection scripts and the remaining plausible script agentic primitives without making them active/default-visible. The lifecycle backlog now reports zero script agentic primitives missing lifecycle metadata.
 
-The ledger now also reports `consumer_accessibility`. This is required because the SO repository docs are not automatically available inside downstream projects that implement the SO. A script can be documented and useful in this repository while still being `so-local-only` or `skill-referenced-not-projectable` for consumer-project agents.
+The ledger now also reports `consumer_accessibility`. This is required because the SO repository docs are not automatically available inside downstream projects that implement the SO. A script can be documented and useful in this repository while still being `so-local-only` or `skill-referenced-not-projectable` for consumer-project agents. Hooks, skills, and rules now have the same first-pass family ledgers through `scripts/primitive_family_readiness_ledger.py`.
 
 ## Next Review Pass
 
 1. Promote candidate script rows only after package/harness proof, or downgrade/archive rows that should not remain agent-facing.
 2. Keep protected install/profile rows tied to settings/profile projection checks before changing distribution or active visibility.
-3. Run the same review for hooks, skills, and rules after scripts are classified.
+3. Use the generated hooks, skills, and rules ledgers to add lifecycle metadata, downgrade SO-local rows, or define projection tests.
 4. Expand harness declarations beyond Claude only where projection proof exists.
 5. Keep product wording narrower than implementation evidence.

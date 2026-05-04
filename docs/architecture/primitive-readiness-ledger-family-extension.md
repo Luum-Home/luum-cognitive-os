@@ -4,16 +4,22 @@
 
 ## Current Baseline
 
-`ADR-146` implements the first family ledger for `scripts/`. The generated reports are:
+`ADR-146` implements the first family ledger for `scripts/`. `scripts/primitive_family_readiness_ledger.py` extends the same machine-readable pattern to `hooks/`, `skills/`, and `rules/`. The generated reports are:
 
 - `docs/reports/primitive-readiness-ledger-scripts-latest.json`
 - `docs/reports/primitive-readiness-ledger-scripts-latest.md`
 - `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`
 - `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md`
+- `docs/reports/primitive-readiness-ledger-hooks-latest.json`
+- `docs/reports/primitive-readiness-ledger-hooks-latest.md`
+- `docs/reports/primitive-readiness-ledger-skills-latest.json`
+- `docs/reports/primitive-readiness-ledger-skills-latest.md`
+- `docs/reports/primitive-readiness-ledger-rules-latest.json`
+- `docs/reports/primitive-readiness-ledger-rules-latest.md`
 
-The script ledger now has explicit overrides for formerly low-confidence rows in `manifests/primitive-readiness-script-overrides.yaml`. The protected install/profile/projection surfaces have ADR-126 `candidate` lifecycle entries first because they can affect downstream SO installation by profile or harness. The remaining script lifecycle backlog is still active and must be worked from `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`, not inferred from chat history.
+The script ledger now has explicit overrides for formerly low-confidence rows in `manifests/primitive-readiness-script-overrides.yaml`. The protected install/profile/projection surfaces and the remaining script agentic primitives now have ADR-126 `candidate` lifecycle entries where they remain plausible primitives. The generated script lifecycle backlog is therefore closed; future script work is promotion, downgrade, or archive from candidate state.
 
-The script ledger also emits `consumer_accessibility`, because SO-local documentation is not automatically visible to downstream projects. Future family ledgers should carry the same distinction between repository-local evidence and consumer-project availability.
+All family ledgers emit `consumer_accessibility`, because SO-local documentation is not automatically visible to downstream projects. The current downstream projection boundary is documented in `docs/architecture/consumer-project-primitive-accessibility.md`.
 
 ## Protected install/profile surfaces
 
@@ -80,4 +86,4 @@ ACCEPTANCE CRITERIA:
 
 ## Next Implementation Slice
 
-Implement `--target-family hooks` in the readiness ledger or create `scripts/primitive_readiness_hooks_ledger.py` if the taxonomy diverges too much from scripts. Prefer extending the existing CLI only if the code stays readable.
+Use the generated hooks, skills, and rules ledgers to decide which rows deserve lifecycle metadata, which rows are SO-local only, and which rows need explicit consumer-project projection tests before any universal IDE claim.

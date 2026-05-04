@@ -11,6 +11,7 @@ pytestmark = pytest.mark.contract
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "primitive_readiness_ledger.py"
 REPORT = REPO_ROOT / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.json"
+BACKLOG = REPO_ROOT / "docs" / "reports" / "primitive-readiness-lifecycle-backlog-scripts-latest.json"
 
 
 def test_repository_script_ledger_classifies_every_script() -> None:
@@ -34,3 +35,5 @@ def test_repository_script_ledger_classifies_every_script() -> None:
     assert all(row["consumer_accessibility"] for row in payload["scripts"])
     assert all(row["consumer_access_next_action"] for row in payload["scripts"])
     assert not any(row["role"] == "unknown" for row in payload["scripts"])
+    backlog = json.loads(BACKLOG.read_text())
+    assert backlog["summary"]["total"] == 0

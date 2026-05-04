@@ -97,14 +97,14 @@ python3 scripts/primitive_readiness_ledger.py --project-dir .
 
 The first low-confidence script pass is closed through `manifests/primitive-readiness-script-overrides.yaml`. The default ledger now reports zero low-confidence rows.
 
-The lifecycle ratchet is intentionally narrower than the first classification pass: it added ADR-126 candidate metadata first for protected install/profile/projection surfaces, because those scripts can change how downstream projects receive primitives by profile or harness. The generated lifecycle backlog remains the source of truth for the remaining agentic script primitives that still lack ADR-126 metadata:
+The lifecycle ratchet added ADR-126 candidate metadata first for protected install/profile/projection surfaces, because those scripts can change how downstream projects receive primitives by profile or harness. It then closed the remaining script lifecycle backlog by adding candidate lifecycle rows for the remaining plausible script agentic primitives. The generated lifecycle backlog is now an audit report expected to stay empty unless new agentic scripts appear without lifecycle metadata:
 
 - `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`
 - `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md`
 
-Candidate entries are visible in the lifecycle manifest, but they are not active/default-visible primitives until a later promotion changes their lifecycle state and passes the normal evidence gates.
+Candidate entries are visible in the lifecycle manifest, but they are not active/default-visible primitives until a later promotion changes their lifecycle state and passes the normal evidence gates. Future script work is promotion, downgrade, or archive from candidate state, not first-pass missing-metadata discovery.
 
-Family extension is tracked in `docs/architecture/primitive-readiness-ledger-family-extension.md`.
+Family extension is implemented through `scripts/primitive_family_readiness_ledger.py` and tracked in `docs/architecture/primitive-readiness-ledger-family-extension.md`.
 
 ## 2026-05-04 Protected Install/Profile Surfaces
 
@@ -112,9 +112,9 @@ Primitive readiness triage must not treat install/profile/projection scripts as 
 
 Rows marked as protected were sorted ahead of normal high-priority lifecycle backlog rows with `priority: protected`. Their closure path was lifecycle metadata plus profile-projection review, not demotion/archive. Any future promotion/demotion of those rows must still check generated harness settings/profile outputs and install/update paths.
 
-## 2026-05-04 Protected Candidate Lifecycle Rows
+## 2026-05-04 Candidate Lifecycle Rows
 
-The protected install/profile surfaces are now represented in `manifests/primitive-lifecycle.yaml` as `lifecycle_state: candidate`, `maturity: observe`, and `runtime_projection: false`. This records their existence without making them active/default-visible primitives. `scripts/active_primitive_index.py` and `scripts/cos_adoption_profile.py` treat `candidate` as inactive so candidate rows do not inflate adoption/profile surfaces.
+The protected install/profile surfaces and remaining script agentic primitives are now represented in `manifests/primitive-lifecycle.yaml` as `lifecycle_state: candidate`, `maturity: observe`, and `runtime_projection: false`. This records their existence without making them active/default-visible primitives. `scripts/active_primitive_index.py` and `scripts/cos_adoption_profile.py` treat `candidate` as inactive so candidate rows do not inflate adoption/profile surfaces.
 
 Acceptance for this slice is advisory metadata only: no installer/profile behavior changed. Promotion requires separate profile projection evidence.
 
@@ -129,3 +129,13 @@ Primitive readiness does not equal downstream project accessibility. The docs in
 - `so-local-only`: rows that should not be relied on from consumer projects unless a future install/projection path exports them.
 
 This keeps the ledger honest for VS Code/Copilot, Cursor, Windsurf, Google Antigravity, Claude Code, OpenAI Codex, OpenCode, and other IDE agents: a row can be documented and useful inside the SO repo while still being unavailable to consumer-project agents.
+
+## 2026-05-04 Family Ledger and Consumer Projection Update
+
+`scripts/primitive_family_readiness_ledger.py` now emits the same readiness shape for hooks, skills, and rules using family-specific role taxonomies. The generated reports are:
+
+- `docs/reports/primitive-readiness-ledger-hooks-latest.json`
+- `docs/reports/primitive-readiness-ledger-skills-latest.json`
+- `docs/reports/primitive-readiness-ledger-rules-latest.json`
+
+Consumer-project projection proof is separated from ledger classification in `docs/architecture/consumer-project-primitive-accessibility.md`. Current automated projection proof signs only Claude Code and OpenAI Codex default installs through `tests/behavior/test_consumer_project_projection.py`; other IDEs remain unsigned until they get explicit projection drivers and temp-project proof.
