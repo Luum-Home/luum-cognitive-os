@@ -10,6 +10,11 @@
 
 ## 1. Product Promise
 
+- [ ] Keep the [Primitive Readiness Continuity Plan](../architecture/primitive-readiness-continuity-plan.md) current in every SO evolution cycle: refresh primitive index, gap snapshot, coverage, docs audit, script role classification, and harness proof before claiming universal agent-tool support.
+- [x] Machine-readable script primitive readiness ledger exists through `scripts/primitive_readiness_ledger.py`, [ADR-146](../adrs/ADR-146-primitive-readiness-ledger.md), and `docs/reports/primitive-readiness-ledger-scripts-latest.json`; remaining work is triage/ratchet, not first-pass visibility.
+- [x] Hooks/skills/rules ledger extension is staged in [Primitive Readiness Ledger Family Extension Plan](../architecture/primitive-readiness-ledger-family-extension.md).
+- [x] Agentic script primitives missing lifecycle metadata are emitted to `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json` for ADR-126 promotion/downgrade triage.
+- [x] Script readiness low-confidence triage is closed through `manifests/primitive-readiness-script-overrides.yaml`; `python3 scripts/primitive_readiness_ledger.py --fail-low-confidence` exits 0.
 - [x] The README expresses the same core product promise as the master plan.
 - [x] CONTRIBUTING is aligned with the product-core narrative instead of subsystem sprawl.
 - [x] The product promise is documented in [Durable Product Master Plan](durable-product-master-plan.md).
