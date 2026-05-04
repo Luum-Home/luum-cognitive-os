@@ -71,7 +71,7 @@ Consumer accessibility: so-local-only:112
 | `rules/model-directive.md` | driver-specific | heuristic:text | medium | so-local-only |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/model-routing.md` | driver-specific | heuristic:text | medium | so-local-only |  | 59 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/non-blocking-retry.md` | driver-specific | heuristic:text | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/observability.md` | driver-specific | heuristic:text | medium | so-local-only |  | 118 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/observability.md` | driver-specific | heuristic:text | medium | so-local-only |  | 119 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/orchestrator-mode.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 25 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/orchestrator-prompt-compose.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/parry-integration.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |

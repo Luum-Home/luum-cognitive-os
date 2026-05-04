@@ -37,6 +37,8 @@ def test_repository_acc_pipeline_generates_report() -> None:
         assert payload["adapters"][adapter]["status"] == "ok"
     assert payload["adapters"]["harness_projection"]["status"] == "ok"
     assert payload["adapters"]["projection_profiles"]["status"] == "ok"
+    assert payload["adapters"]["consumer_availability"]["status"] == "ok"
+    assert payload["adapters"]["consumer_availability"]["summary"]["statuses"]["maintainer-only"] > 0
     assert payload["adapters"]["consumer_projection"]["summary"]["by_harness_profile"]["claude/default"] > 0
     assert payload["adapters"]["consumer_projection"]["summary"]["by_harness_profile"]["claude/full"] > 0
     assert payload["adapters"]["consumer_projection"]["summary"]["by_harness_profile"]["codex/default"] > 0
