@@ -320,12 +320,12 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **validate-config** — Validate all Cognitive OS configuration files — agents, squads, skills, rules, hooks
 - **validate-release** — Pre-release readiness check — validates working tree, branch, changelog, and VERSION file
 - **verification-before-completion** — Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims
+- **vuln-remediation-flow** — Lab-stage propose-only cloud flow contract for sandboxed vulnerability remediation.
 - **vulnerability-scan** — Run LLM vulnerability probes using Garak against configured endpoints
 - **web-crawler** — Fetch and convert web pages to LLM-ready markdown using Crawl4AI. Supports single-page fetch, structured data extraction, and multi-page site crawling.
 - **webhook-trigger** — GitHub webhook server that receives issue events and launches SDD pipelines automatically via ClaudeExecutor.
 - **decision-triage** — Aggregate unanswered operator decisions from research reports and ADRs into a single ranked view. Complements /session-backlog (tasks) — this counts decisions.
 - **memory-scan** — Scan text content (or a file) for prompt injection, credential exfiltration, and invisible Unicode threats before persisting to memory.
-- **contracts-namespace** — Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives.
 - **coordination-status** — Inspect active multi-session edit locks and decide how to respond when a target file is held by another agent. Read-only introspection for sub-agents.
 - **docs-execution-audit** — Classify documentation items as done, weak-proof, planned, proposed, stale, or unknown using repository evidence.
 - **experimental** — Structural namespace for experimental Cognitive OS skills that are not promoted to stable catalog surfaces yet.

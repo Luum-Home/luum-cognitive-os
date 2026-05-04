@@ -1,6 +1,6 @@
 <!-- SCOPE: os-only -->
 ---
-name: contracts-namespace
+name: __contracts__
 version: 1.0.0
 description: Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives.
 triggers: []
