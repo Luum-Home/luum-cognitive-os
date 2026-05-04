@@ -5,7 +5,7 @@
 
 Total skills: 159
 
-## os (15)
+## os (16)
 
 | Skill | Description |
 |-------|-------------|
@@ -16,6 +16,7 @@ Total skills: 159
 | agent-dashboard | Show real-time status of all running background agents |
 | audit-integrity | Symlink-aware integrity audit of hooks, libs, and skills. |
 | bump-version | Calculate and write the new version to the VERSION file |
+| deps-update | Audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps, Docker images, Claude plugins) using scripts/deps-update.sh |
 | generate-changelog | Move [Unreleased] CHANGELOG entries into a versioned release section |
 | hook-timing | Analyze hook execution latency — full stats, live tail, per-event or per-session views. |
 | memory-scan | Scan content for memory threats (prompt injection, exfiltration, invisible Unicode). |
@@ -25,7 +26,7 @@ Total skills: 159
 | tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 
-## os-dev (38)
+## os-dev (37)
 
 | Skill | Description |
 |-------|-------------|
@@ -41,7 +42,6 @@ Total skills: 159
 | contracts-namespace | Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives. |
 | coordination-status | List who is editing what across concurrent COS sessions. |
 | deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
-| deps-update | Audit and optionally upgrade project dependencies — Python, engram binary, Claude Code plugins, Doc… |
 | detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
 | docs-execution-audit | Audit what the docs say is done vs what repo evidence proves. |
 | dogfood-score | Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs). |
