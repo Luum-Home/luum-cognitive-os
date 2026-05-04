@@ -183,6 +183,8 @@ fi
 # The compact catalog (CATALOG-COMPACT.md) is the Level-1 index loaded at
 # session start. Full SKILL.md files load on demand. The full catalog with
 # invocations and sections is available via /catalog-full.
+# COS_LAZY_CATALOG controls the lazy-catalog branch: default/on keeps startup to
+# this pointer; COS_LAZY_CATALOG=0 allows eager catalog injection for debugging.
 CATALOG_COMPACT="$PROJECT_DIR/skills/CATALOG-COMPACT.md"
 if [ -f "$CATALOG_COMPACT" ]; then
   echo "Skills catalog: skills/CATALOG-COMPACT.md (run /catalog-full for details)"
