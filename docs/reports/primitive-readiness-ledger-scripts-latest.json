@@ -2912,7 +2912,7 @@
         "rule": 42,
         "script": 192,
         "skill": 55,
-        "test": 311
+        "test": 312
       },
       "consumers": [
         {
@@ -6461,6 +6461,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_harness_implementation_phases.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_harness_transparency_status_docs.py"
         },
         {
@@ -7333,7 +7337,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:55",
-        "test_consumers:311",
+        "test_consumers:312",
         "hook_consumers:68",
         "doc_consumers:407",
         "rule_consumers:42",
@@ -7354,7 +7358,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1103,
+      "total_consumers": 1104,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
