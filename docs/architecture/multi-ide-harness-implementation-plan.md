@@ -21,7 +21,7 @@ Only the first implemented slice is in this change: structural projection for Op
 | Cursor | Official docs describe project rules under `.cursor/rules`, MDC metadata, `AGENTS.md`, and MCP configuration. See https://docs.cursor.com/en/context and https://docs.cursor.com/advanced/model-context-protocol. | Implement project rule + MCP placeholder projection now. Account-backed Cursor smoke later. |
 | Windsurf | Official docs describe Cascade MCP management/admin whitelist, but the repo has not signed a project-local rules/config surface. See https://docs.windsurf.com/windsurf/cascade/mcp. | Keep planned until project-local instruction/rule contract is confirmed. |
 | Qwen Code | Official docs describe project `.qwen/settings.json`, `mcpServers`, and hierarchical context files such as `QWEN.md`. See https://qwenlm.github.io/qwen-code-docs/en/users/configuration/settings/ and https://qwenlm.github.io/qwen-code-docs/en/users/features/mcp/. | Implemented structural projection; account-backed runtime smoke later. |
-| Kimi Code | Official docs describe a VS Code extension, approval flow, working directory, MCP server management, and required account/API key. See https://www.kimi.com/code/docs/en/kimi-code-for-vscode/guides/getting-started.html. | Candidate for Phase 3/4; likely account-backed or VS Code-extension mediated. |
+| Kimi Code | Official docs describe Kimi Code CLI, `--work-dir`, `--mcp-config-file`, MCP configuration, and project-level `AGENTS.md`; VS Code extension remains account-backed runtime proof. See https://www.kimi.com/code/docs/en/kimi-code-cli/reference/kimi-command.html and https://www.kimi.com/help/kimi-code/cli-customization. | Implemented structural CLI projection; account-backed runtime smoke later. |
 | Google Antigravity | Current local-project config evidence is not signed in this repo from a primary source. | Keep planned; research before projection. |
 | MiniMax MaxClaw | Current evidence points to hosted/agent-platform behavior, not local repo harness projection. | Treat as provider/hosted target, not IDE harness, unless local project config emerges. |
 | DeepSeek | Provider/API compatibility rather than first-party coding IDE projection. | Keep provider-via-existing-harness. |
@@ -66,13 +66,13 @@ Deliverables:
 
 ### Phase 3 — Qwen/Windsurf/Kimi structural candidates
 
-Status: in progress. Qwen Code is implemented; Windsurf and Kimi remain planned.
+Status: in progress. Qwen Code and Kimi Code CLI are implemented; Windsurf remains planned.
 
 Deliverables:
 
 - Qwen: `cos_init.py --default/--full --harness qwen-code` generates `.qwen/settings.json` and `QWEN.md` with conservative `mcpServers` placeholder and COS context references.
 - Windsurf: only generate project-local files after confirming a project-scoped rules/instructions contract from primary docs.
-- Kimi: decide whether COS targets VS Code extension settings, CLI config, or provider compatibility. Do not implement until the generated file path and account boundary are explicit.
+- Kimi: `cos_init.py --default/--full --harness kimi-code` generates a bounded `AGENTS.md` block plus `.kimi/mcp.json` and `.kimi/README.md`; account-backed runtime smoke remains optional.
 
 ### Phase 4 — Provider/hosted surfaces
 
@@ -103,7 +103,7 @@ Deliverables:
 - [x] Shell/CI promoted to implemented harness semantics.
 - [x] Qwen structural projection researched and implemented.
 - [ ] Windsurf project-local projection surface confirmed from primary docs.
-- [ ] Kimi Code projection mode selected and implemented.
+- [x] Kimi Code CLI projection mode selected and implemented.
 - [ ] DeepSeek provider proof separated from IDE projection.
 - [ ] MiniMax/MaxClaw classified as hosted/provider unless local repo config emerges.
 - [ ] Google Antigravity researched against primary docs before any projection claim.
