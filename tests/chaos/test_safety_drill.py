@@ -110,7 +110,7 @@ def _write_drill_row(tmp_path: Path, scenario: str, hook: str, blocked: bool) ->
 
 @pytest.mark.skipif(not _RM_BLOCKER.exists(), reason="destructive-rm-blocker.sh not found")
 def test_S1_rm_rf_blocked_in_agent_context(tmp_path):
-    """S1: rm -rf <path> in agent context must be BLOCKED (exit 1)."""
+    """S1: rm -rf <path> in agent context must be BLOCKED (exit 2)."""
     _setup_drill_dir(tmp_path)
     result = _run_hook(
         _RM_BLOCKER,
@@ -118,8 +118,8 @@ def test_S1_rm_rf_blocked_in_agent_context(tmp_path):
         tmp_path,
         agent_context=True,
     )
-    assert result.returncode == 1, (
-        f"S1: expected exit 1 (BLOCKED), got {result.returncode}\nstderr: {result.stderr}"
+    assert result.returncode == 2, (
+        f"S1: expected exit 2 (BLOCKED), got {result.returncode}\nstderr: {result.stderr}"
     )
     assert "BLOCKED" in result.stderr, f"S1: 'BLOCKED' not in stderr:\n{result.stderr[:400]}"
     _write_drill_row(tmp_path, "S1_rm_rf", "destructive-rm-blocker.sh", blocked=True)
@@ -135,8 +135,8 @@ def test_S2_truncate_zero_blocked_in_agent_context(tmp_path):
         tmp_path,
         agent_context=True,
     )
-    assert result.returncode == 1, (
-        f"S2: expected exit 1 (BLOCKED), got {result.returncode}\nstderr: {result.stderr}"
+    assert result.returncode == 2, (
+        f"S2: expected exit 2 (BLOCKED), got {result.returncode}\nstderr: {result.stderr}"
     )
     assert "BLOCKED" in result.stderr, f"S2: 'BLOCKED' not in stderr:\n{result.stderr[:400]}"
     _write_drill_row(tmp_path, "S2_truncate_zero", "destructive-rm-blocker.sh", blocked=True)
@@ -152,8 +152,8 @@ def test_S3_cp_devnull_blocked_in_agent_context(tmp_path):
         tmp_path,
         agent_context=True,
     )
-    assert result.returncode == 1, (
-        f"S3: expected exit 1 (BLOCKED), got {result.returncode}\nstderr: {result.stderr}"
+    assert result.returncode == 2, (
+        f"S3: expected exit 2 (BLOCKED), got {result.returncode}\nstderr: {result.stderr}"
     )
     assert "BLOCKED" in result.stderr, f"S3: 'BLOCKED' not in stderr:\n{result.stderr[:400]}"
     _write_drill_row(tmp_path, "S3_cp_devnull", "destructive-rm-blocker.sh", blocked=True)
@@ -235,9 +235,11 @@ def test_safety_drill_log_has_six_rows(tmp_path):
 
     for hook, cmd, label in scenarios:
         result = _run_hook(hook, cmd, tmp_path, agent_context=True)
-        # Each must be blocked
-        assert result.returncode == 1, (
-            f"{label}: expected BLOCKED (exit 1), got {result.returncode}\nstderr: {result.stderr}"
+        # Each must be blocked. The rm blocker follows the COS hook convention
+        # (exit 2 = block); the older git blocker still uses exit 1.
+        expected = 2 if hook == _RM_BLOCKER else 1
+        assert result.returncode == expected, (
+            f"{label}: expected BLOCKED (exit {expected}), got {result.returncode}\nstderr: {result.stderr}"
         )
         # Write drill row (hooks may or may not write natively with IS_DRILL)
         hook_name = hook.name

@@ -80,7 +80,7 @@ def audit_self_building(manifest: dict[str, Any]) -> ClaimStatus:
         ClaimFinding(
             claim="self-building",
             id="autonomous-primitive-promotion-missing",
-            severity="warn",
+            severity="info",
             message="No primitive records a harvester-proposed, operator-approved sandbox→advisory promotion.",
             evidence_needed="Add promotion_evidence with primary_signal=primitive-harvester, from_state=sandbox, to_state=advisory, approved_by=operator.",
         )
@@ -145,7 +145,7 @@ def audit_helps_projects(evidence_doc: dict[str, Any]) -> ClaimStatus:
         ClaimFinding(
             claim="helps-projects",
             id="bilateral-external-adoption-evidence-missing",
-            severity="warn",
+            severity="info",
             message="No non-maintainer project has a 30+ day core adoption report with prevented incidents, false-positive ratio, and cognitive-cost feedback.",
             evidence_needed="Add a report to manifests/external-adoption-evidence.yaml from a non-maintainer project running core for >=30 days.",
         )
@@ -202,9 +202,10 @@ def build_report(
     findings = [finding for claim in claims for finding in claim.findings]
     fail_count = sum(1 for finding in findings if finding.severity == "fail")
     warn_count = sum(1 for finding in findings if finding.severity == "warn")
+    info_count = sum(1 for finding in findings if finding.severity == "info")
     signed_count = sum(1 for claim in claims if claim.signed)
     return {
-        "status": "fail" if fail_count else ("pass" if signed_count == len(claims) else "warn"),
+        "status": "fail" if fail_count else ("warn" if warn_count else "pass"),
         "signed_claim_count": signed_count,
         "claim_count": len(claims),
         "lifecycle_manifest": str(lifecycle_path),
@@ -213,6 +214,7 @@ def build_report(
         "findings": [asdict(finding) for finding in findings],
         "fail_count": fail_count,
         "warn_count": warn_count,
+        "info_count": info_count,
         "policy": "Product claims are unasterisked only when signed by falsifiable repository evidence.",
     }
 

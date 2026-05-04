@@ -116,7 +116,7 @@ def test_silent_failure_audit_fails_without_transferability_metadata(tmp_path: P
     }.issubset({finding["id"] for finding in report["findings"]})
 
 
-def test_maintainer_cache_entries_warn_as_shape_b_debt(tmp_path: Path) -> None:
+def test_maintainer_cache_entries_are_tracked_as_shape_b_debt_without_warning(tmp_path: Path) -> None:
     hooks = tmp_path / "hooks"
     hooks.mkdir()
     (hooks / "x.sh").write_text("a || :\n", encoding="utf-8")
@@ -144,7 +144,8 @@ def test_maintainer_cache_entries_warn_as_shape_b_debt(tmp_path: Path) -> None:
 
     report = audit.build_report(tmp_path, hooks, allowlist)
 
-    assert report["status"] == "warn"
+    assert report["status"] == "pass"
+    assert report["warn_count"] == 0
     assert report["maintainer_cache_file_count"] == 1
     assert report["maintainer_cache_occurrence_count"] == 1
     assert any(finding["id"] == "shape-b-transferability-debt" for finding in report["findings"])

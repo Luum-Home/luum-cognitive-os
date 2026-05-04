@@ -96,4 +96,6 @@ def test_maintainer_without_explicit_evidence_is_classified_as_knowledge_depende
         [primitive("scripts/maintainer-only", distribution="maintainer", runtime_projection=False, behavior_evidence="control-plane-smoke")],
     )
     report = cos_manifest_tier_claim_audit.build_report(manifest)
+    assert report["status"] == "pass"
+    assert report["warning_count"] == 0
     assert report["findings"][0]["category"] == "maintainer_knowledge_dependent"
