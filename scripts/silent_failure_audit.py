@@ -227,9 +227,9 @@ def build_report(
             findings.append(
                 Finding(
                     "shape-b-transferability-debt",
-                    "warn",
+                    "info",
                     path,
-                    "allowlist entry still depends on original-maintainer cache; it blocks transferability until re-reviewed",
+                    "allowlist entry depends on original-maintainer cache; ADR-132 keeps it visible but defers transferability work until Shape B",
                     {"occurrences": count, "owner": owner, "shape_b_action": shape_b_action},
                 )
             )

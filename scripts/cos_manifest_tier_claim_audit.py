@@ -166,11 +166,13 @@ def build_report(manifest_path: Path = MANIFEST) -> dict[str, Any]:
     by_category = Counter(finding.category for finding in findings)
     by_severity = Counter(finding.severity for finding in findings)
     candidate_second_demotes = [finding for finding in findings if finding.category == "candidate_second_demote"]
+    warning_count = sum(1 for finding in findings if finding.severity in {"warn", "fail"})
     return {
-        "status": "warn" if findings else "pass",
+        "status": "warn" if warning_count else "pass",
         "manifest": str(manifest_path),
         "primitive_count": len(primitives),
         "finding_count": len(findings),
+        "warning_count": warning_count,
         "counts_by_category": dict(sorted(by_category.items())),
         "counts_by_severity": dict(sorted(by_severity.items())),
         "candidate_second_demote_count": len(candidate_second_demotes),
