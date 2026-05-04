@@ -34,6 +34,10 @@ flowchart TD
 6. **Lab-first provider support**: Kimi, MiniMax, DeepSeek, and any new
    provider start as lab until a proof drill signs their auth and output
    contract.
+7. **Maintainer economics matter**: the personal/maintainer swarm should prefer
+   official account-backed CLIs before direct API-key execution when that is
+   supported and safe. Hosted/team/cloud modes can require API keys, provider
+   cloud auth, OAuth, or gateways.
 
 ## Phase 0 — Contract and proof skeleton
 
@@ -116,14 +120,27 @@ scripts/cos-queue-drain --json
 Goal: invoke account-backed or API-backed provider runtimes through explicit
 adapters.
 
+Provider adapters should be added in this order:
+
+1. `local-command` — no model, no credentials, proves queue and artifacts.
+2. `host-cli` adapters — invoke official CLIs already authenticated on a
+   trusted host. This is the first economically useful maintainer mode because
+   it can use account-backed CLI products without forcing direct API billing.
+3. `container-cli` adapters — run official CLIs inside Docker only after an
+   explicit supported login/mount story is proven.
+4. `api-key` / `provider-cloud` / `proxy-gateway` adapters — required for
+   reproducible CI, hosted, or team deployments.
+
 Initial adapters:
 
-| Adapter | First proof | Credential mode |
+| Adapter | First proof | Credential mode | Runtime |
 |---|---|---|
-| `local-command` | deterministic command | none |
-| `codex-cli` | `codex exec --json` in a trusted, already-authenticated host | `account-session` or `api-key` |
-| `claude-cli` | official `claude` invocation in a trusted, already-authenticated host | `account-session`, `oauth-token`, `api-key`, or `provider-cloud` |
-| `proxy-gateway` | enterprise/local gateway smoke | `proxy-gateway` |
+| `local-command` | deterministic command | none | host/container |
+| `codex-cli-host` | `codex exec --json` in a trusted, already-authenticated host | `account-session` or `api-key` | host |
+| `claude-cli-host` | official `claude` invocation in a trusted, already-authenticated host | `account-session`, `oauth-token`, `api-key`, or `provider-cloud` | host |
+| `codex-cli-container` | official CLI inside Docker with explicit supported auth | `device-login`, `api-key`, or documented mounted credential | container |
+| `claude-cli-container` | official CLI inside Docker with explicit supported auth | `device-login`, `oauth-token`, `api-key`, or provider-cloud | container |
+| `proxy-gateway` | enterprise/local gateway smoke | `proxy-gateway` | host/container/cloud |
 
 Later lab adapters:
 
@@ -150,7 +167,11 @@ Acceptance criteria:
 - account-backed probes do not read credential files directly;
 - missing auth returns `auth_required`, not a stack trace;
 - provider stdout/stderr is redacted before artifact persistence;
-- provider adapters can run in `dry_run` without model calls.
+- provider adapters can run in `dry_run` without model calls;
+- every provider adapter declares `cost_mode`, `credential_mode`, and
+  `allowed_runtime`;
+- account-backed host CLI adapters are allowed for maintainer/local mode but
+  are not assumed portable to Docker/cloud.
 
 ## Phase 4 — Crash/resume and WIP safety
 
@@ -217,11 +238,25 @@ Cloud providers are explicitly out of scope until local Kubernetes proves:
 
 ## Credential handling plan
 
+### Runtime matrix
+
+| Runtime shape | Preferred credential posture | Why |
+|---|---|---|
+| Local maintainer host | `account-session` official CLI first | Keeps the personal swarm aligned with CLI/subscription economics and avoids unnecessary API spend. |
+| Personal VM controlled by maintainer | `account-session` or `device-login` official CLI if provider supports it | Lets the SO run longer-lived workers without copying laptop credentials. |
+| Docker on trusted host | explicit device/OAuth/API/provider-cloud/proxy auth; mounted credential store only if provider documents it | Containers do not safely inherit host account sessions by default. |
+| CI/headless automation | API key, provider-cloud, OAuth token, or proxy gateway | Reproducible and auditable. |
+| Hosted/team/multi-tenant COS | provider-cloud, OAuth, API key, or proxy gateway | Personal CLI account sessions are not a safe multi-user boundary. |
+
 ### Local trusted host
 
 `cosd` may invoke `codex exec` or `claude` if the operator has authenticated
 the official CLI. COS must treat the CLI as a black box and never read cached
 credentials.
+
+This is the preferred first provider path for maintainer mode because it can
+avoid direct API-key billing when the provider's CLI/account product supports
+the intended use.
 
 ### Container worker
 
@@ -238,6 +273,73 @@ Container workers cannot inherit host account auth implicitly. They need one of:
 Cloud workers must use managed secrets, workload identity, provider cloud auth,
 or gateway credentials. Copying a laptop's subscription credential into a cloud
 container is not a supported COS posture.
+
+### Cost posture
+
+Every executor contract must declare:
+
+```yaml
+cost_mode: subscription_account|api_metered|provider_cloud_metered|gateway_metered|none|unknown
+credential_mode: account-session|device-login|oauth-token|api-key|provider-cloud|proxy-gateway|unknown
+allowed_runtime:
+  - host
+  - container
+  - cloud
+```
+
+`subscription_account` is allowed only when the adapter invokes the official
+CLI/runtime and does not copy credentials. If the provider does not document a
+safe headless/container path, the adapter remains host-only or lab.
+
+## Local/VM/container service shapes
+
+### Shape A — Host CLI service
+
+```text
+cosd local
+  -> local queue
+  -> worker subprocess
+  -> official claude/codex CLI already authenticated on host
+  -> artifact bundle / PR proposal
+```
+
+This is the first economically meaningful maintainer service shape.
+
+### Shape B — Personal VM service
+
+```text
+personal VM
+  -> install official CLIs
+  -> authenticate via supported login/device/OAuth/API/cloud mode
+  -> cosd schedules workers
+```
+
+This is acceptable if the VM is controlled by the maintainer and provider auth
+is established through documented mechanisms.
+
+### Shape C — Docker sidecar CLI
+
+```text
+cosd
+  -> cos-worker container
+  -> official CLI installed in container
+  -> explicit supported auth
+```
+
+This is not allowed to rely on copying opaque local credential folders. It needs
+a proof drill per provider.
+
+### Shape D — Hosted/team service
+
+```text
+cosd cloud
+  -> queue
+  -> workers
+  -> API key / provider-cloud / OAuth / gateway
+```
+
+This is the right shape for teams or hosted COS, even if it costs more than a
+personal CLI account path.
 
 ## What this deliberately does not build yet
 
@@ -263,3 +365,5 @@ manifest contracts
 
 Only after that should `codex-cli` or `claude-cli` be attached.
 
+The first model-backed slice should be host CLI, not API key, unless the
+operator explicitly requests cloud/CI semantics.

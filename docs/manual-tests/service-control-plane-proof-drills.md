@@ -62,6 +62,8 @@ Expected evidence:
 - `auth_probe.status == "ready"` or `"auth_required"`;
 - no token-like strings in logs;
 - no direct read of `~/.codex/auth.json`;
+- `cost_mode` is reported as `subscription_account`, `api_metered`, or
+  `unknown` instead of being inferred silently;
 - worker output is a proposal/artifact, not a merge.
 
 ## Drill P3 — Account-backed Claude Code probe
@@ -89,9 +91,39 @@ Expected evidence:
 - `auth_probe.status == "ready"` or `"auth_required"`;
 - `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, and OAuth tokens are not printed;
 - no direct read of `~/.claude` or macOS Keychain;
+- `cost_mode` is reported as `subscription_account`, `api_metered`,
+  `provider_cloud_metered`, or `unknown` instead of being inferred silently;
 - output remains propose-only.
 
-## Drill P4 — Container auth-negative proof
+## Drill P4 — Docker sidecar CLI proof
+
+Purpose: prove a containerized official CLI path only when auth is explicit and
+provider-supported.
+
+Preconditions:
+
+- run only on a trusted machine;
+- use a temporary repository;
+- authenticate inside the container or mount only provider-documented
+  credential material;
+- never copy opaque laptop credential folders into the image.
+
+Future command shape:
+
+```bash
+docker compose -f docker/cos-worker/docker-compose.yml run --rm cos-worker \
+  scripts/cos-auth-probe --provider codex --mode device-login --json
+```
+
+Expected evidence:
+
+- status is `ready`, `auth_required`, or `unsupported`;
+- the proof names the exact credential mode used;
+- token-like strings are redacted from container logs;
+- the artifact states whether the adapter is `host`, `container`, or `cloud`
+  eligible.
+
+## Drill P5 — Container auth-negative proof
 
 Purpose: prove a container without explicit credentials fails safely.
 
@@ -109,7 +141,7 @@ Expected evidence:
 - no repeated retry storm;
 - no host credential probing.
 
-## Drill P5 — Crash/resume
+## Drill P6 — Crash/resume
 
 Purpose: prove worker leases are safe.
 
@@ -130,7 +162,7 @@ Expected evidence:
 - second worker cannot publish under the expired lease;
 - artifact bundle explains the transition.
 
-## Drill P6 — Provider lab promotion
+## Drill P7 — Provider lab promotion
 
 Purpose: promote Kimi, MiniMax, DeepSeek, or another provider from lab only
 after a documented auth/output contract.
@@ -143,4 +175,3 @@ Required evidence:
 - missing auth returns `auth_required`;
 - one no-op/summarization task produces redacted artifacts;
 - provider remains in lab until the drill passes.
-
