@@ -14,10 +14,12 @@ entries:
     use lighter file/runtime state.
   next_action: Wire only in executor/Valkey profile.
 - path: hooks/agent-output-verifier.sh
-  status: candidate_promote
-  rationale: Useful PostToolUse Agent claim verifier, but overlaps completion-gate/post-agent-verify
-    and needs false-positive proof.
-  next_action: Evaluate alongside completion-gate before default projection.
+  status: demoted
+  rationale: File-claim verification is intentionally not projected; it is a regex-only
+    advisory that overlaps completion-gate/post-agent-verify and has high false-positive
+    risk on prose paths.
+  next_action: Keep as manual diagnostic only; do not merge until a structured Agent
+    return contract supplies machine-readable file claims.
 - path: hooks/agent-quota-advisor.sh
   status: conditional_opt_in
   rationale: ADR-056 L1 quota advisory only matters when quota-aware dispatch is enabled.
@@ -220,10 +222,12 @@ entries:
     be noisy.
   next_action: Keep manual; this classification test covers default drift.
 - path: hooks/resource-check.sh
-  status: candidate_promote
-  rationale: Budget/resource preflight could protect Agent launches but may overlap
-    token-budget-monitor/rate-limiter.
-  next_action: Evaluate as replacement/merge candidate before projection.
+  status: demoted
+  rationale: Budget preflight is intentionally not projected; token-budget-monitor
+    and rate-limiter already cover hot-path budget/rate pressure without a second
+    Agent launch gate.
+  next_action: Keep demoted; merge only if token-budget-monitor gains cost-event budget
+    semantics.
 - path: hooks/semgrep-scan.sh
   status: conditional_opt_in
   rationale: Requires Semgrep and security scan workflow; default hook would add heavy
@@ -274,10 +278,11 @@ entries:
   rationale: Tool discovery is periodic maintainer research, not a startup default.
   next_action: Run scheduled/manual discovery.
 - path: hooks/tool-loop-detector.sh
-  status: candidate_promote
-  rationale: Loop detection is potentially useful but needs integration with current
-    tool sequence/ACI capture.
-  next_action: Evaluate merging with tool-sequence-capture before projection.
+  status: demoted
+  rationale: Loop detection was folded into tool-sequence-capture.sh so repeated signatures
+    and ping-pong patterns are detected from the existing PostToolUse stream.
+  next_action: Keep standalone hook unprojected; archive after compatibility window
+    if no manual callers remain.
 - path: hooks/usage-health-check.sh
   status: future
   rationale: Daily health check overlaps host-tool-doctor/cos-status and can be scheduled.
