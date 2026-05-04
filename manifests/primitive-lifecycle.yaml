@@ -4196,3 +4196,42 @@ primitives:
     mutate real evidence, locks, governance, or memory stores.
   sunset_criteria: Archive only if cross-instance simulation moves into a stronger
     scenario testbed with equivalent no-real-mutation guarantees.
+- id: hooks/release-guard.sh
+  kind: hook
+  owner_adr: ADR-041
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - cognitive-os.yaml
+  - hooks/release-guard.sh
+  runtime_projection: true
+  behavior_evidence: deterministic PreToolUse Bash release-safety blocker with chaos tests
+  evidence_commands:
+  - bash -n hooks/release-guard.sh
+  - python3 -m pytest tests/chaos/test_release_guard_exercised.py -q
+  exit_behavior: exit_2
+  metrics_file: none
+  docs_claim_level: blocking
+  rollback_or_repair_command: Remove hooks/release-guard.sh from generated harness
+    settings only after release operations are guarded by an equivalent typed release
+    command gate.
+  latency_budget_ms: 2000
+  sunset_criteria: Archive only if manual release mutation is impossible through a
+    stronger release transaction primitive.
+  repair_message: Manual VERSION edits and manual version-tag creation must use
+    the canonical release command instead.
+  false_positive_tests:
+  - tests/chaos/test_release_guard_exercised.py
+  promotion_evidence:
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    boring_reliability_artifact: docs/reports/hook-registration-classification-2026-05-04.md
+    rationale: Deterministic low-overhead release-safety blocker promoted into
+      PreToolUse Bash projection to prevent manual release drift.
