@@ -27,7 +27,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/_lib/singularity-suggestion.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/stash-lock.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/task-identity.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 3 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/_lib/timing.sh` | observability | heuristic:text | medium | so-local-only |  | 89 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/_lib/timing.sh` | observability | heuristic:text | medium | so-local-only |  | 90 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/tuning.sh` | observability | heuristic:text | medium | so-local-only |  | 28 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/validation-lock.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 22 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/aci-observation-capture.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 12 | keep maintainer-only or add explicit export path |
@@ -201,7 +201,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/symlink-mutation-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 14 | keep lifecycle, tests, and harness proof current |
 | `hooks/sync-to-repo.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/task-bridge-notify.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/task-completed.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-consumer-candidate | demoted | 27 | prove consumer project projection per supported harness before promotion |
+| `hooks/task-completed.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-consumer-candidate | demoted | 28 | prove consumer project projection per supported harness before promotion |
 | `hooks/task-created.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | blocking | 21 | keep maintainer-only or add explicit export path |
 | `hooks/task-panel-sync.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/task-recorder.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 14 | add lifecycle/package/projection metadata or keep SO-local |

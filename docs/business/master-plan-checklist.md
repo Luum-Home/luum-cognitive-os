@@ -20,6 +20,7 @@
 - [x] Script readiness now tracks `consumer_accessibility` so repository-local docs/skills are not mistaken for downstream project availability.
 - [x] Hooks/skills/rules readiness ledgers exist through `scripts/primitive_family_readiness_ledger.py` and the generated `docs/reports/primitive-readiness-ledger-{hooks,skills,rules}-latest.*` reports.
 - [x] Consumer-project projection proof is documented in [Consumer Project Primitive Accessibility](../architecture/consumer-project-primitive-accessibility.md) and automated for Claude/Codex default installs by `tests/behavior/test_consumer_project_projection.py`.
+- [x] Unified ACC pipeline exists through `scripts/acc_pipeline.py`, [ADR-147](../adrs/ADR-147-agent-capability-coverage-pipeline.md), and `docs/acc/latest.json`; it consumes readiness ledgers and existing audit tools instead of requiring manual interpretation.
 - [x] The README expresses the same core product promise as the master plan.
 - [x] CONTRIBUTING is aligned with the product-core narrative instead of subsystem sprawl.
 - [x] The product promise is documented in [Durable Product Master Plan](durable-product-master-plan.md).

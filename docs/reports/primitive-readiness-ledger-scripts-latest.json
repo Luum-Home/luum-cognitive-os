@@ -421,6 +421,78 @@
       "wrapper_for": null
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 1,
+        "doc": 6,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/agent-capability-coverage.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_acc_pipeline_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_acc_pipeline.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_coverage.py",
+        "test_consumers:2",
+        "doc_consumers:6",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/acc_pipeline.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/acc_pipeline.py",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 9,
+      "wrapper_for": "scripts/cos_coverage.py"
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -907,7 +979,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 63,
+        "doc": 64,
         "hook": 7,
         "rule": 4,
         "script": 8,
@@ -942,6 +1014,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-27.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -1348,7 +1424,7 @@
         "skill_consumers:1",
         "test_consumers:20",
         "hook_consumers:7",
-        "doc_consumers:63",
+        "doc_consumers:64",
         "rule_consumers:4",
         "config_consumers:3",
         "script_consumers:8"
@@ -1367,7 +1443,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 106,
+      "total_consumers": 107,
       "wrapper_for": "scripts/_lib/settings-driver-claude-code.sh"
     },
     {
@@ -1438,7 +1514,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 2,
-        "doc": 7,
+        "doc": 8,
         "hook": 2,
         "rule": 2,
         "script": 2,
@@ -1457,6 +1533,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -1521,7 +1601,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "hook_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "rule_consumers:2",
         "config_consumers:2",
         "script_consumers:2"
@@ -1540,7 +1620,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 17,
+      "total_consumers": 18,
       "wrapper_for": null
     },
     {
@@ -2129,7 +2209,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 2,
         "script": 1,
         "skill": 1,
         "test": 1
@@ -2138,6 +2218,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -2161,7 +2245,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:1",
         "script_consumers:1"
       ],
@@ -2179,7 +2263,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -2719,10 +2803,10 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 23,
-        "doc": 380,
+        "doc": 383,
         "hook": 67,
         "rule": 42,
-        "script": 185,
+        "script": 186,
         "skill": 55,
         "test": 304
       },
@@ -2866,6 +2950,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3373,6 +3461,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/README.md"
         },
         {
@@ -3418,6 +3510,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/advisor-mcp-architecture-review.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
         },
         {
           "family": "doc",
@@ -4790,6 +4886,10 @@
         {
           "family": "script",
           "path": "scripts/_lib/settings-driver.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/acc_pipeline.py"
         },
         {
           "family": "script",
@@ -6959,10 +7059,10 @@
         "skill_consumers:55",
         "test_consumers:304",
         "hook_consumers:67",
-        "doc_consumers:380",
+        "doc_consumers:383",
         "rule_consumers:42",
         "config_consumers:23",
-        "script_consumers:185"
+        "script_consumers:186"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -6978,7 +7078,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1056,
+      "total_consumers": 1060,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -7162,7 +7262,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 9,
+        "doc": 10,
         "rule": 2,
         "script": 1,
         "test": 6
@@ -7179,6 +7279,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7259,7 +7363,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-update.sh",
         "test_consumers:6",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "rule_consumers:2",
         "config_consumers:3",
         "script_consumers:1"
@@ -7278,7 +7382,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 21,
+      "total_consumers": 22,
       "wrapper_for": "scripts/cos-update.sh"
     },
     {
@@ -7745,7 +7849,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 2,
-        "doc": 4,
+        "doc": 5,
         "hook": 2,
         "rule": 2,
         "script": 3,
@@ -7760,6 +7864,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7838,7 +7946,7 @@
         "skill_consumers:2",
         "test_consumers:4",
         "hook_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "rule_consumers:2",
         "config_consumers:2",
         "script_consumers:3"
@@ -7857,7 +7965,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 19,
+      "total_consumers": 20,
       "wrapper_for": "scripts/so_session_watchdog.py"
     },
     {
@@ -7866,7 +7974,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "skill": 1,
         "test": 1
       },
@@ -7874,6 +7982,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7897,7 +8009,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -7914,7 +8026,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -7923,7 +8035,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 2,
-        "doc": 3,
+        "doc": 4,
         "test": 2
       },
       "consumers": [
@@ -7934,6 +8046,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7962,7 +8078,7 @@
         "protected_install_surface:skill-installation",
         "wrapper_for:scripts/cos-status.sh",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:2"
       ],
       "install_surface": "skill-installation",
@@ -7979,7 +8095,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -8336,7 +8452,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 1,
+        "doc": 2,
         "script": 1,
         "test": 2
       },
@@ -8352,6 +8468,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8376,7 +8496,7 @@
         "protected_install_surface:harness-doctor",
         "wrapper_for:scripts/measure_harness_profiles.py",
         "test_consumers:2",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:3",
         "script_consumers:1"
       ],
@@ -8394,7 +8514,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": "scripts/measure_harness_profiles.py"
     },
     {
@@ -8403,7 +8523,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 2,
-        "doc": 9,
+        "doc": 10,
         "script": 1,
         "test": 6
       },
@@ -8415,6 +8535,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8487,7 +8611,7 @@
         "protected_install_surface:harness-doctor",
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:6",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "config_consumers:2",
         "script_consumers:1"
       ],
@@ -8505,7 +8629,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 18,
+      "total_consumers": 19,
       "wrapper_for": "scripts/_lib/settings-driver.sh"
     },
     {
@@ -8588,7 +8712,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 2,
-        "doc": 7,
+        "doc": 8,
         "hook": 1,
         "test": 7
       },
@@ -8600,6 +8724,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8669,7 +8797,7 @@
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:7",
         "hook_consumers:1",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:2"
       ],
       "install_surface": "harness-doctor",
@@ -8686,7 +8814,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 17,
+      "total_consumers": 18,
       "wrapper_for": "scripts/_lib/settings-driver.sh"
     },
     {
@@ -9773,7 +9901,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 6,
-        "doc": 21,
+        "doc": 22,
         "script": 5,
         "skill": 1,
         "test": 12
@@ -9810,6 +9938,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9967,7 +10099,7 @@
         "wrapper_for:scripts/cos_init.py",
         "skill_consumers:1",
         "test_consumers:12",
-        "doc_consumers:21",
+        "doc_consumers:22",
         "config_consumers:6",
         "script_consumers:5"
       ],
@@ -9985,7 +10117,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 45,
+      "total_consumers": 46,
       "wrapper_for": "scripts/cos_init.py"
     },
     {
@@ -10695,7 +10827,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 5,
         "skill": 1,
         "test": 1
       },
@@ -10703,6 +10835,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -10735,7 +10871,7 @@
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -10752,7 +10888,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -11271,7 +11407,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 3,
+        "doc": 4,
         "rule": 1,
         "skill": 2,
         "test": 1
@@ -11280,6 +11416,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11315,7 +11455,7 @@
         "lifecycle",
         "skill_consumers:2",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "rule_consumers:1",
         "config_consumers:1"
       ],
@@ -11333,7 +11473,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -11388,7 +11528,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 12,
+        "doc": 13,
         "script": 5,
         "skill": 1,
         "test": 4
@@ -11405,6 +11545,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11492,7 +11636,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:4",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:1",
         "script_consumers:5"
       ],
@@ -11510,7 +11654,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 23,
+      "total_consumers": 24,
       "wrapper_for": null
     },
     {
@@ -11743,7 +11887,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 3,
+        "doc": 4,
         "skill": 1,
         "test": 1
       },
@@ -11751,6 +11895,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11778,7 +11926,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -11795,7 +11943,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -12058,7 +12206,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 2,
-        "doc": 1,
+        "doc": 2,
         "script": 1
       },
       "consumers": [
@@ -12069,6 +12217,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12084,7 +12236,7 @@
         "lifecycle",
         "protected_install_surface:profile-audit",
         "wrapper_for:scripts/cos-config-audit.sh",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:2",
         "script_consumers:1"
       ],
@@ -12102,7 +12254,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": "scripts/cos-config-audit.sh"
     },
     {
@@ -12280,7 +12432,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 2,
         "skill": 2,
         "test": 1
       },
@@ -12288,6 +12440,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12311,7 +12467,7 @@
         "lifecycle",
         "skill_consumers:2",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -12328,7 +12484,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -12794,11 +12950,15 @@
       "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
       "consumer_accessibility": "skill-referenced-not-projectable",
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "skill": 2,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-121-foundation-hardening-program.md"
@@ -12828,7 +12988,7 @@
       "evidence": [
         "skill_consumers:2",
         "test_consumers:2",
-        "doc_consumers:2"
+        "doc_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -12842,7 +13002,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 2,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -13046,10 +13206,23 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "script": 2,
+        "doc": 2,
+        "script": 3,
         "test": 4
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/acc_pipeline.py"
+        },
         {
           "family": "script",
           "path": "scripts/cos-coverage"
@@ -13078,7 +13251,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:4",
-        "script_consumers:2"
+        "doc_consumers:2",
+        "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -13092,7 +13266,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -13773,7 +13947,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 4,
+        "doc": 5,
         "script": 2,
         "test": 7
       },
@@ -13789,6 +13963,10 @@
         {
           "family": "config",
           "path": "manifests/runtime-hardcoding-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -13849,7 +14027,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:3",
         "script_consumers:2"
       ],
@@ -13867,7 +14045,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 16,
+      "total_consumers": 17,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -13960,7 +14138,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 2,
-        "doc": 3,
+        "doc": 4,
         "skill": 1,
         "test": 2
       },
@@ -13972,6 +14150,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -14004,7 +14186,7 @@
         "wrapper_for:scripts/cos_work_inventory.py",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -14021,7 +14203,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": "scripts/cos_work_inventory.py"
     },
     {
@@ -14204,7 +14386,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 3,
+        "doc": 4,
         "skill": 1,
         "test": 1
       },
@@ -14212,6 +14394,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -14240,7 +14426,7 @@
         "wrapper_for:scripts/adr_implementation_ledger.py",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -14257,7 +14443,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": "scripts/adr_implementation_ledger.py"
     },
     {
@@ -14694,7 +14880,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 8,
+        "doc": 9,
         "hook": 2,
         "script": 7,
         "skill": 3,
@@ -14704,6 +14890,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -14808,7 +14998,7 @@
         "skill_consumers:3",
         "test_consumers:4",
         "hook_consumers:2",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:1",
         "script_consumers:7"
       ],
@@ -14826,7 +15016,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 25,
+      "total_consumers": 26,
       "wrapper_for": null
     },
     {
@@ -14925,7 +15115,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "script": 1,
         "skill": 1
       },
@@ -14933,6 +15123,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -14955,7 +15149,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:1",
         "script_consumers:1"
       ],
@@ -14973,7 +15167,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -14982,6 +15176,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
+        "doc": 1,
         "rule": 2,
         "skill": 1
       },
@@ -14989,6 +15184,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "rule",
@@ -15007,6 +15206,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
+        "doc_consumers:1",
         "rule_consumers:2",
         "config_consumers:1"
       ],
@@ -15024,7 +15224,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -15033,7 +15233,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 2
+        "doc": 3
       },
       "consumers": [
         {
@@ -15050,6 +15250,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -15062,7 +15266,7 @@
         "lifecycle",
         "protected_install_surface:release",
         "wrapper_for:scripts/cos-init.sh",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:3"
       ],
       "install_surface": "release",
@@ -15079,7 +15283,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -15144,7 +15348,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 3,
+        "doc": 4,
         "skill": 1,
         "test": 6
       },
@@ -15156,6 +15360,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -15199,7 +15407,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:6",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -15216,7 +15424,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -15426,7 +15634,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 2,
-        "doc": 4,
+        "doc": 5,
         "hook": 1,
         "skill": 2,
         "test": 1
@@ -15443,6 +15651,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -15481,7 +15693,7 @@
         "skill_consumers:2",
         "test_consumers:1",
         "hook_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:2"
       ],
       "install_surface": "dependency-profile",
@@ -15498,7 +15710,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": "scripts/check_mcp_servers.py"
     },
     {
@@ -15630,7 +15842,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 2,
         "rule": 1,
         "script": 1,
         "skill": 1,
@@ -15640,6 +15852,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -15667,7 +15883,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:1"
@@ -15686,7 +15902,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -15747,8 +15963,8 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
-        "script": 1,
+        "doc": 5,
+        "script": 2,
         "skill": 1,
         "test": 3
       },
@@ -15759,11 +15975,27 @@
         },
         {
           "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/documentation-execution-audit.md"
         },
         {
           "family": "doc",
           "path": "docs/architecture/primitive-readiness-continuity-plan.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/acc_pipeline.py"
         },
         {
           "family": "script",
@@ -15791,9 +16023,9 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:3",
-        "doc_consumers:2",
+        "doc_consumers:5",
         "config_consumers:1",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -15809,7 +16041,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -15969,6 +16201,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
+        "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
@@ -15977,6 +16210,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "rule",
@@ -15996,6 +16233,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
+        "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:1"
       ],
@@ -16013,7 +16251,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -16022,7 +16260,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 6,
         "rule": 2,
         "script": 1,
         "skill": 1
@@ -16031,6 +16269,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16073,7 +16315,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "rule_consumers:2",
         "config_consumers:1",
         "script_consumers:1"
@@ -16092,7 +16334,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -16101,6 +16343,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
+        "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
@@ -16109,6 +16352,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "rule",
@@ -16128,6 +16375,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
+        "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:1"
       ],
@@ -16145,7 +16393,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -16154,7 +16402,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 6,
         "hook": 3,
         "script": 3,
         "skill": 1,
@@ -16164,6 +16412,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16252,7 +16504,7 @@
         "skill_consumers:1",
         "test_consumers:8",
         "hook_consumers:3",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:1",
         "script_consumers:3"
       ],
@@ -16270,7 +16522,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 21,
+      "total_consumers": 22,
       "wrapper_for": null
     },
     {
@@ -16400,7 +16652,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 5,
-        "doc": 10,
+        "doc": 11,
         "script": 1,
         "skill": 1,
         "test": 3
@@ -16425,6 +16677,10 @@
         {
           "family": "config",
           "path": "manifests/runtime-hardcoding-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16494,7 +16750,7 @@
         "wrapper_for:scripts/hook-timing-wrapper.sh",
         "skill_consumers:1",
         "test_consumers:3",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "config_consumers:5",
         "script_consumers:1"
       ],
@@ -16512,7 +16768,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 20,
+      "total_consumers": 21,
       "wrapper_for": "scripts/hook-timing-wrapper.sh"
     },
     {
@@ -16560,7 +16816,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 2,
-        "doc": 5,
+        "doc": 6,
         "hook": 1,
         "rule": 2,
         "skill": 1,
@@ -16582,6 +16838,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16626,7 +16886,7 @@
         "skill_consumers:1",
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "rule_consumers:2",
         "config_consumers:2"
       ],
@@ -16644,7 +16904,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -16823,7 +17083,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 2,
         "script": 1,
         "skill": 1
       },
@@ -16831,6 +17091,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16849,7 +17113,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:1",
         "script_consumers:1"
       ],
@@ -16867,7 +17131,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -16876,7 +17140,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 2,
-        "doc": 5,
+        "doc": 6,
         "script": 5,
         "skill": 1,
         "test": 6
@@ -16889,6 +17153,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16964,7 +17232,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:6",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:2",
         "script_consumers:5"
       ],
@@ -16982,7 +17250,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 19,
+      "total_consumers": 20,
       "wrapper_for": null
     },
     {
@@ -17051,13 +17319,17 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 3,
+        "doc": 4,
         "skill": 1
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -17080,7 +17352,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -17097,7 +17369,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -17286,7 +17558,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 4,
+        "doc": 5,
         "skill": 1
       },
       "consumers": [
@@ -17301,6 +17573,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -17328,7 +17604,7 @@
         "lifecycle",
         "protected_install_surface:optional-tool-install",
         "skill_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:3"
       ],
       "install_surface": "optional-tool-install",
@@ -17345,7 +17621,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -17560,7 +17836,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 5,
+        "doc": 6,
         "skill": 1,
         "test": 1
       },
@@ -17576,6 +17852,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -17612,7 +17892,7 @@
         "protected_install_surface:optional-tool-install",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:3"
       ],
       "install_surface": "optional-tool-install",
@@ -17629,7 +17909,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -17747,6 +18027,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
+        "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 2
@@ -17755,6 +18036,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "rule",
@@ -17778,6 +18063,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
+        "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:1"
       ],
@@ -17795,7 +18081,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -17925,7 +18211,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "rule": 1,
         "skill": 1,
         "test": 2
@@ -17934,6 +18220,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -17966,7 +18256,7 @@
         "wrapper_for:scripts/smoke-qwen-fallback.sh",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "rule_consumers:1",
         "config_consumers:1"
       ],
@@ -17984,7 +18274,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": "scripts/smoke-qwen-fallback.sh"
     },
     {
@@ -18221,7 +18511,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 6,
         "hook": 1,
         "skill": 1,
         "test": 2
@@ -18230,6 +18520,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -18275,7 +18569,7 @@
         "skill_consumers:1",
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -18292,7 +18586,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": "scripts/derived_artifact_gate.py"
     },
     {
@@ -18339,6 +18633,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
+        "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
@@ -18347,6 +18642,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "rule",
@@ -18366,6 +18665,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
+        "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:1"
       ],
@@ -18383,7 +18683,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -18849,8 +19149,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 4,
-        "script": 1,
+        "doc": 6,
+        "script": 2,
         "test": 2
       },
       "consumers": [
@@ -18864,11 +19164,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/primitive-readiness-continuity-plan.md"
         },
         {
           "family": "doc",
           "path": "docs/manual-tests/closure-discipline.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/acc_pipeline.py"
         },
         {
           "family": "script",
@@ -18886,8 +19198,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:4",
-        "script_consumers:1"
+        "doc_consumers:6",
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -18901,7 +19213,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -18909,13 +19221,18 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 6,
+        "doc": 7,
+        "script": 1,
         "test": 2
       },
       "consumers": [
         {
           "family": "doc",
           "path": "docs/adrs/ADR-146-primitive-readiness-ledger.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
         },
         {
           "family": "doc",
@@ -18938,6 +19255,10 @@
           "path": "docs/manual-tests/consumer-project-primitive-accessibility.md"
         },
         {
+          "family": "script",
+          "path": "scripts/acc_pipeline.py"
+        },
+        {
           "family": "test",
           "path": "tests/contracts/test_primitive_family_readiness_ledger_contract.py"
         },
@@ -18949,7 +19270,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:6"
+        "doc_consumers:7",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -18963,7 +19285,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -18971,11 +19293,19 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2,
-        "script": 2,
+        "doc": 4,
+        "script": 3,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
@@ -18983,6 +19313,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/primitive-readiness-continuity-plan.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/acc_pipeline.py"
         },
         {
           "family": "script",
@@ -19008,8 +19342,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:2",
-        "script_consumers:2"
+        "doc_consumers:4",
+        "script_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -19023,7 +19357,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -19084,7 +19418,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 6,
+        "doc": 7,
+        "script": 1,
         "test": 3
       },
       "consumers": [
@@ -19095,6 +19430,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-146-primitive-readiness-ledger.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
         },
         {
           "family": "doc",
@@ -19117,6 +19456,10 @@
           "path": "docs/manual-tests/primitive-readiness-ledger.md"
         },
         {
+          "family": "script",
+          "path": "scripts/acc_pipeline.py"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_primitive_readiness_coordination.py"
         },
@@ -19132,8 +19475,9 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:6",
-        "config_consumers:1"
+        "doc_consumers:7",
+        "config_consumers:1",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -19147,7 +19491,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 10,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -19208,7 +19552,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "script": 1,
         "skill": 1,
         "test": 2
@@ -19217,6 +19561,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -19248,7 +19596,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:1",
         "script_consumers:1"
       ],
@@ -19266,7 +19614,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -19275,7 +19623,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 3,
+        "doc": 4,
         "script": 1,
         "skill": 2,
         "test": 2
@@ -19284,6 +19632,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -19323,7 +19675,7 @@
         "lifecycle",
         "skill_consumers:2",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1",
         "script_consumers:1"
       ],
@@ -19341,7 +19693,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -19350,7 +19702,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 2,
         "hook": 1,
         "rule": 1,
         "script": 1,
@@ -19361,6 +19713,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -19393,7 +19749,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "hook_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:1"
@@ -19412,7 +19768,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -19467,7 +19823,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 11,
+        "doc": 12,
         "hook": 1,
         "rule": 1,
         "script": 2,
@@ -19482,6 +19838,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-27.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -19598,7 +19958,7 @@
         "skill_consumers:4",
         "test_consumers:9",
         "hook_consumers:1",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:2"
@@ -19617,7 +19977,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 29,
+      "total_consumers": 30,
       "wrapper_for": null
     },
     {
@@ -19707,7 +20067,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "skill": 1,
         "test": 1
       },
@@ -19715,6 +20075,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -19738,7 +20102,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -19755,7 +20119,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -19764,7 +20128,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "skill": 1,
         "test": 2
       },
@@ -19780,6 +20144,10 @@
         {
           "family": "doc",
           "path": "docs/RED-TEAM-COVERAGE.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "skill",
@@ -19799,7 +20167,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -19816,7 +20184,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -20225,6 +20593,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
+        "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
@@ -20233,6 +20602,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "rule",
@@ -20252,6 +20625,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
+        "doc_consumers:1",
         "rule_consumers:1",
         "config_consumers:1"
       ],
@@ -20269,7 +20643,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -20278,7 +20652,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 2,
         "rule": 1,
         "script": 1,
         "skill": 1,
@@ -20288,6 +20662,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -20315,7 +20693,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:1"
@@ -20334,7 +20712,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -20386,7 +20764,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 2,
-        "doc": 6,
+        "doc": 7,
         "rule": 1,
         "skill": 2,
         "test": 1
@@ -20399,6 +20777,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -20446,7 +20828,7 @@
         "lifecycle",
         "skill_consumers:2",
         "test_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "rule_consumers:1",
         "config_consumers:2"
       ],
@@ -20464,7 +20846,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -20473,7 +20855,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 5,
         "script": 1,
         "skill": 1,
         "test": 2
@@ -20490,6 +20872,10 @@
         {
           "family": "doc",
           "path": "docs/RED-TEAM-COVERAGE.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -20521,7 +20907,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:1",
         "script_consumers:1"
       ],
@@ -20539,7 +20925,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -20766,7 +21152,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 2,
         "rule": 1,
         "script": 1,
         "skill": 1,
@@ -20776,6 +21162,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -20803,7 +21193,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:1"
@@ -20822,7 +21212,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -21073,7 +21463,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 4,
-        "doc": 23,
+        "doc": 24,
         "hook": 1,
         "rule": 2,
         "script": 4,
@@ -21107,6 +21497,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-27.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -21256,7 +21650,7 @@
         "wrapper_for:scripts/cos_executor.py",
         "test_consumers:8",
         "hook_consumers:1",
-        "doc_consumers:23",
+        "doc_consumers:24",
         "rule_consumers:2",
         "config_consumers:4",
         "script_consumers:4"
@@ -21275,7 +21669,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 42,
+      "total_consumers": 43,
       "wrapper_for": "scripts/cos_executor.py"
     },
     {
@@ -21365,7 +21759,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 4,
-        "doc": 11,
+        "doc": 12,
         "rule": 1,
         "script": 3,
         "test": 3
@@ -21394,6 +21788,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -21466,7 +21864,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-bootstrap.sh",
         "test_consumers:3",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "rule_consumers:1",
         "config_consumers:4",
         "script_consumers:3"
@@ -21485,7 +21883,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 22,
+      "total_consumers": 23,
       "wrapper_for": "scripts/cos-bootstrap.sh"
     },
     {
@@ -21702,12 +22100,17 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
+        "doc": 1,
         "skill": 1
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "skill",
@@ -21719,6 +22122,7 @@
         "lifecycle",
         "wrapper_for:scripts/doc_review_personas.py",
         "skill_consumers:1",
+        "doc_consumers:1",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -21735,7 +22139,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": "scripts/doc_review_personas.py"
     },
     {
@@ -21744,13 +22148,17 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 2,
         "skill": 1
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -21765,7 +22173,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -21782,7 +22190,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -21791,7 +22199,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "rule": 1,
         "script": 1,
         "skill": 1
@@ -21800,6 +22208,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -21827,7 +22239,7 @@
         "lifecycle",
         "wrapper_for:scripts/orchestrator.py",
         "skill_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:1"
@@ -21846,7 +22258,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": "scripts/orchestrator.py"
     },
     {
@@ -22185,11 +22597,16 @@
       "consumer_access_next_action": "add lifecycle/package/projection metadata before assuming consumer access",
       "consumer_accessibility": "skill-referenced-not-projectable",
       "consumer_families": {
+        "doc": 1,
         "rule": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -22207,6 +22624,7 @@
       "evidence": [
         "skill_consumers:1",
         "test_consumers:1",
+        "doc_consumers:1",
         "rule_consumers:1"
       ],
       "install_surface": null,
@@ -22221,7 +22639,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 1,
       "supported_harnesses": [],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -22230,13 +22648,17 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 2,
         "skill": 1
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -22251,7 +22673,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -22268,7 +22690,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 3,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -22453,7 +22875,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 5,
         "rule": 1,
         "skill": 1,
         "test": 2
@@ -22462,6 +22884,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -22501,7 +22927,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "rule_consumers:1",
         "config_consumers:1"
       ],
@@ -22519,7 +22945,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -22528,7 +22954,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 5,
         "skill": 1,
         "test": 1
       },
@@ -22536,6 +22962,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -22567,7 +22997,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -22584,7 +23014,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -22682,7 +23112,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "rule": 1,
         "script": 1,
         "skill": 2,
@@ -22692,6 +23122,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -22728,7 +23162,7 @@
         "wrapper_for:scripts/pytest-with-summary.sh",
         "skill_consumers:2",
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:1"
@@ -22747,7 +23181,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": "scripts/pytest-with-summary.sh"
     },
     {
@@ -22788,7 +23222,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 12,
+        "doc": 13,
         "test": 3
       },
       "consumers": [
@@ -22803,6 +23237,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -22871,7 +23309,7 @@
         "protected_install_surface:uninstall",
         "wrapper_for:scripts/cos-registry.sh",
         "test_consumers:3",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:3"
       ],
       "install_surface": "uninstall",
@@ -22888,7 +23326,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 18,
+      "total_consumers": 19,
       "wrapper_for": "scripts/cos-registry.sh"
     },
     {
@@ -22941,7 +23379,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 4,
+        "doc": 5,
         "test": 1
       },
       "consumers": [
@@ -22956,6 +23394,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -22984,7 +23426,7 @@
         "protected_install_surface:upgrade",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:3"
       ],
       "install_surface": "upgrade",
@@ -23001,7 +23443,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -23058,7 +23500,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 8,
+        "doc": 9,
         "skill": 1,
         "test": 2
       },
@@ -23074,6 +23516,10 @@
         {
           "family": "doc",
           "path": "docs/RED-TEAM-COVERAGE.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -23117,7 +23563,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -23134,7 +23580,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -23259,12 +23705,17 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
+        "doc": 1,
         "skill": 1
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "skill",
@@ -23276,6 +23727,7 @@
         "lifecycle",
         "wrapper_for:scripts/aspirational_audit.py",
         "skill_consumers:1",
+        "doc_consumers:1",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -23292,7 +23744,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": "scripts/aspirational_audit.py"
     },
     {
@@ -23381,25 +23833,25 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 134,
+      "high": 135,
       "medium": 177
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 49,
-      "lifecycle-declared-maintainer": 35,
+      "lifecycle-declared-maintainer": 36,
       "skill-referenced-not-projectable": 2,
       "so-local-only": 206
     },
     "low_confidence_rows": 0,
     "roles": {
-      "agentic-primitive": 103,
+      "agentic-primitive": 104,
       "driver-specific": 10,
       "lab": 13,
       "maintainer-tool": 174,
       "migration-only": 11
     },
-    "total_scripts": 311,
+    "total_scripts": 312,
     "without_consumers": 4
   },
   "target_family": "scripts"
