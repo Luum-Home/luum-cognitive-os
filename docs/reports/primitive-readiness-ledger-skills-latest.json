@@ -3822,7 +3822,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 6,
+        "doc": 9,
         "hook": 3,
         "rule": 3,
         "test": 2
@@ -3842,11 +3842,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/cos-service-runtime-boundary.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-rules.md"
         },
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/service-control-plane-proof-drills.md"
         },
         {
           "family": "doc",
@@ -3890,7 +3902,7 @@
         "hook_consumers:3",
         "rule_consumers:3",
         "test_consumers:2",
-        "doc_consumers:6"
+        "doc_consumers:9"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3900,7 +3912,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 17
     },
     {
       "confidence": "high",

@@ -24,6 +24,7 @@ from typing import Any
 import yaml
 
 MAPPING_STATUSES = {"aligned", "missing", "partial", "stale", "overexposed", "unverified"}
+DEBT_STATUSES = {"missing", "partial", "stale", "overexposed", "unverified"}
 DEFAULT_WEIGHTS = {
     "script": 3,
     "hook": 3,
@@ -208,6 +209,10 @@ def capability_from_readiness(row: dict[str, Any], family: str, projected: dict[
         evidence.append(f"consumer_accessibility:{row['consumer_accessibility']}")
     if override:
         evidence.append(f"availability_override:{override.get('status')}")
+        if override.get("_match_kind"):
+            evidence.append(f"availability_match:{override['_match_kind']}")
+        if override.get("_pattern"):
+            evidence.append(f"availability_pattern:{override['_pattern']}")
         if override.get("rationale"):
             evidence.append(f"availability_rationale:{override['rationale'][:120]}")
     if projection:
@@ -363,10 +368,16 @@ def load_consumer_availability(root: Path) -> tuple[AdapterStatus, dict[str, dic
 
 def consumer_availability_for(path: str, availability: dict[str, dict[str, Any]]) -> dict[str, Any] | None:
     if path in availability:
-        return availability[path]
+        item = dict(availability[path])
+        item["_match_kind"] = "exact"
+        return item
     for item in availability.get("__patterns__", {}).get("patterns", []):
-        if fnmatch.fnmatch(path, item.get("pattern", "")):
-            return item
+        pattern = item.get("pattern", "")
+        if fnmatch.fnmatch(path, pattern):
+            matched = dict(item)
+            matched["_match_kind"] = "pattern"
+            matched["_pattern"] = pattern
+            return matched
     return None
 
 
@@ -509,6 +520,92 @@ def collect_consumer_projection(
     ), projected
 
 
+
+def finding_identity(finding: dict[str, Any]) -> str:
+    return "|".join([
+        str(finding.get("capability_id", "")),
+        str(finding.get("status", "")),
+        str(finding.get("message", "")),
+    ])
+
+
+def capability_statuses(payload: dict[str, Any]) -> dict[str, str]:
+    return {str(cap.get("id")): str(cap.get("mapping_status", "")) for cap in payload.get("capabilities", [])}
+
+
+def detect_new_debt(
+    current: dict[str, Any],
+    baseline: dict[str, Any],
+    strict_local_defaults: bool = True,
+) -> list[dict[str, Any]]:
+    """Return debt that appears in current ACC but not in the baseline.
+
+    Strict local-default mode treats newly discovered capabilities that are aligned
+    only because they matched a broad consumer-availability pattern as review debt.
+    This prevents `scripts/**`/`rules/**`/`skills/**` defaults from silently
+    absorbing new surfaces without an explicit lifecycle/projection decision.
+    """
+
+    baseline_statuses = capability_statuses(baseline)
+    baseline_finding_keys = {finding_identity(finding) for finding in baseline.get("findings", [])}
+    new_items: list[dict[str, Any]] = []
+
+    for cap in current.get("capabilities", []):
+        cap_id = str(cap.get("id", ""))
+        status = str(cap.get("mapping_status", ""))
+        baseline_status = baseline_statuses.get(cap_id)
+        evidence = [str(item) for item in cap.get("evidence", [])]
+        pattern_aligned = (
+            strict_local_defaults
+            and status == "aligned"
+            and baseline_status is None
+            and "availability_match:pattern" in evidence
+            and any(item.startswith("availability_override:") for item in evidence)
+        )
+        if status in DEBT_STATUSES and baseline_status != status:
+            new_items.append({
+                "kind": "capability",
+                "id": cap_id,
+                "status": status,
+                "baseline_status": baseline_status or "absent",
+                "reason": "new mapping debt",
+            })
+        elif pattern_aligned:
+            new_items.append({
+                "kind": "capability",
+                "id": cap_id,
+                "status": "unreviewed-local-default",
+                "baseline_status": "absent",
+                "reason": "new capability matched a broad local-surface default instead of an explicit row or projection proof",
+            })
+
+    for finding in current.get("findings", []):
+        status = str(finding.get("status", ""))
+        key = finding_identity(finding)
+        if status in DEBT_STATUSES and key not in baseline_finding_keys:
+            new_items.append({
+                "kind": "finding",
+                "id": str(finding.get("capability_id", "")),
+                "status": status,
+                "baseline_status": "absent",
+                "reason": str(finding.get("message", "new finding debt")),
+            })
+
+    return new_items
+
+
+def apply_fail_new_gate(payload: dict[str, Any], baseline: dict[str, Any], strict_local_defaults: bool = True) -> None:
+    new_debt = detect_new_debt(payload, baseline, strict_local_defaults=strict_local_defaults)
+    payload["new_debt"] = {
+        "status": "block" if new_debt else "pass",
+        "strict_local_defaults": strict_local_defaults,
+        "count": len(new_debt),
+        "items": new_debt[:100],
+    }
+    if new_debt:
+        payload["gate"]["status"] = "block"
+        payload["gate"].setdefault("blocks", []).append(f"new_debt:{len(new_debt)}")
+
 def existing_tool_findings(root: Path) -> tuple[dict[str, AdapterStatus], list[Finding]]:
     adapters: dict[str, AdapterStatus] = {}
     findings: list[Finding] = []
@@ -623,6 +720,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
         f"- Capabilities: {len(payload['capabilities'])}",
         f"- Findings: {len(payload['findings'])}",
         f"- Mapping weights: {summary['mapping_weight_by_status']}",
+        f"- New debt gate: {payload.get('new_debt', {}).get('status', 'not_evaluated')} ({payload.get('new_debt', {}).get('count', 0)})",
         "",
         "## Adapter Status",
         "",
@@ -634,6 +732,11 @@ def render_markdown(payload: dict[str, Any]) -> str:
     lines += ["", "## Findings", "", "| Capability | Severity | Status | Message | Next action |", "|---|---|---|---|---|"]
     for finding in payload["findings"][:80]:
         lines.append(f"| `{finding['capability_id']}` | {finding['severity']} | {finding['status']} | {finding['message'].replace('|', '/')} | {finding.get('next_action', '').replace('|', '/')} |")
+    lines += ["", "## New Debt", "", "| Capability | Status | Reason |", "|---|---|---|"]
+    for item in payload.get("new_debt", {}).get("items", [])[:40]:
+        lines.append(f"| `{item.get('id', '')}` | {item.get('status', '')} | {str(item.get('reason', '')).replace('|', '/')} |")
+    if not payload.get("new_debt", {}).get("items"):
+        lines.append("| none | pass | no new debt |")
     lines += ["", "## Consumer Accessibility Counts", ""]
     counts: dict[str, int] = {}
     for cap in payload["capabilities"]:
@@ -674,6 +777,7 @@ def compact_summary(payload: dict[str, Any], max_findings: int = 8) -> dict[str,
         "finding_counts": dict(sorted(finding_counts.items())),
         "consumer_accessibility": dict(sorted(counts.items())),
         "top_findings": top_findings,
+        "new_debt": payload.get("new_debt", {"status": "not_evaluated", "count": 0, "items": []}),
         "context_diet": {
             "read_this_first": "docs/acc/latest-compact.md",
             "avoid_loading": ["docs/acc/latest.json", "docs/reports/primitive-readiness-ledger-*.json"],
@@ -697,6 +801,7 @@ def render_compact_markdown(payload: dict[str, Any]) -> str:
         f"ACC effective: {summary['acc_effective']:.4f}",
         f"Capabilities: {compact['capability_count']}",
         f"Findings: {compact['finding_count']}",
+        f"New debt gate: {compact['new_debt'].get('status', 'not_evaluated')} ({compact['new_debt'].get('count', 0)})",
         "",
         "## Warnings",
         "",
@@ -727,6 +832,15 @@ def render_compact_markdown(payload: dict[str, Any]) -> str:
     for finding in compact["top_findings"]:
         lines.append(f"- `{finding['capability_id']}` [{finding['status']}/{finding['severity']}]: {finding['message']} → {finding['next_action']}")
     if not compact["top_findings"]:
+        lines.append("- none")
+    lines += [
+        "",
+        "## New Debt",
+        "",
+    ]
+    for item in compact["new_debt"].get("items", [])[:8]:
+        lines.append(f"- `{item.get('id')}` [{item.get('status')}]: {item.get('reason')}")
+    if not compact["new_debt"].get("items"):
         lines.append("- none")
     lines += [
         "",
@@ -782,6 +896,7 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "consumer_projection": scrub_project_paths(projected, root),
         "harness_projection": harness_projection_summary(harness_manifest, projection_status),
         "projection_profiles": scrub_project_paths(profile_manifest, root),
+        "new_debt": {"status": "not_evaluated", "strict_local_defaults": None, "count": 0, "items": []},
         "persistence": {
             "local_history": ".cognitive-os/metrics/acc-pipeline-history.jsonl",
             "engram": {
@@ -805,6 +920,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--brief", action="store_true", help="Print compact JSON summary only; do not write reports or append history")
     parser.add_argument("--fail-on-block", action="store_true", help="Exit non-zero when gate status is block")
     parser.add_argument("--fail-on-warn", action="store_true", help="Treat warnings as blocking")
+    parser.add_argument("--fail-new", action="store_true", help="Block when current ACC introduces new debt versus --baseline")
+    parser.add_argument("--baseline", default="docs/acc/latest.json", help="Baseline ACC JSON used by --fail-new")
+    parser.add_argument("--allow-new-local-defaults", action="store_true", help="With --fail-new, do not block new capabilities that only match broad local-default patterns")
     return parser.parse_args()
 
 
@@ -812,8 +930,20 @@ def main() -> int:
     args = parse_args()
     root = Path(args.project_dir).resolve()
     payload = build_report(root, args.refresh, args.include_slow, args.fail_on_warn)
+    baseline_missing = False
+    if args.fail_new:
+        baseline_path = (root / args.baseline).resolve() if not Path(args.baseline).is_absolute() else Path(args.baseline)
+        if not baseline_path.exists():
+            payload["new_debt"] = {"status": "block", "strict_local_defaults": not args.allow_new_local_defaults, "count": 1, "items": [{"kind": "baseline", "id": str(baseline_path), "status": "missing", "baseline_status": "absent", "reason": "--fail-new requires an existing ACC baseline"}]}
+            payload["gate"]["status"] = "block"
+            payload["gate"].setdefault("blocks", []).append("missing_fail_new_baseline")
+            baseline_missing = True
+        else:
+            apply_fail_new_gate(payload, read_json(baseline_path), strict_local_defaults=not args.allow_new_local_defaults)
     if args.brief:
         print(json.dumps(compact_summary(payload), sort_keys=True))
+        if args.fail_new and (baseline_missing or payload.get("new_debt", {}).get("status") == "block"):
+            return 1
         return 0
     write_json(root / args.json_out, payload)
     md_path = root / args.md_out
@@ -824,6 +954,8 @@ def main() -> int:
     compact_path.write_text(render_compact_markdown(payload), encoding="utf-8")
     append_history(root, payload)
     print(json.dumps({"json": args.json_out, "markdown": args.md_out, "compact": args.compact_out, "gate": payload["gate"], "summary": payload["summary"]}, sort_keys=True))
+    if args.fail_new and (baseline_missing or payload.get("new_debt", {}).get("status") == "block"):
+        return 1
     if args.fail_on_block and payload["gate"]["status"] == "block":
         return 1
     return 0
