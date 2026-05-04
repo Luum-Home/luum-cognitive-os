@@ -1,0 +1,3 @@
+# Optional heavy lane: semantic embeddings for reinvention-gate Phase B-β.
+sentence-transformers>=3.0
+numpy>=1.26
