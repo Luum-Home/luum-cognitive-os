@@ -19,6 +19,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="auto-verify"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/artifact-status.sh"
 
 INPUT=$(cat)
 [ -z "$INPUT" ] && exit 0
@@ -72,28 +73,6 @@ TEST_ARTIFACT_RUN=""
 COVERAGE_ARTIFACT_JSON=""
 COVERAGE_ARTIFACT_STATUS="missing"
 COVERAGE_ARTIFACT_RUN=""
-
-_load_test_artifact_status() {
-  [ -n "$TEST_ARTIFACT_JSON" ] && return 0
-  local helper="$PROJECT_DIR/scripts/cos_test_artifact_status.py"
-  [ -f "$helper" ] || return 1
-  TEST_ARTIFACT_JSON=$(python3 "$helper" --project-root "$PROJECT_DIR" --json 2>/dev/null || true)
-  [ -n "$TEST_ARTIFACT_JSON" ] || return 1
-  TEST_ARTIFACT_STATUS=$(echo "$TEST_ARTIFACT_JSON" | jq -r '.status // "missing"' 2>/dev/null)
-  TEST_ARTIFACT_RUN=$(echo "$TEST_ARTIFACT_JSON" | jq -r '.run_dir // ""' 2>/dev/null)
-  [ "$TEST_ARTIFACT_STATUS" != "missing" ]
-}
-
-_load_coverage_artifact_status() {
-  [ -n "$COVERAGE_ARTIFACT_JSON" ] && return 0
-  local helper="$PROJECT_DIR/scripts/cos_test_artifact_status.py"
-  [ -f "$helper" ] || return 1
-  COVERAGE_ARTIFACT_JSON=$(python3 "$helper" --project-root "$PROJECT_DIR" --artifact-kind coverage --coverage-threshold 80 --json 2>/dev/null || true)
-  [ -n "$COVERAGE_ARTIFACT_JSON" ] || return 1
-  COVERAGE_ARTIFACT_STATUS=$(echo "$COVERAGE_ARTIFACT_JSON" | jq -r '.status // "missing"' 2>/dev/null)
-  COVERAGE_ARTIFACT_RUN=$(echo "$COVERAGE_ARTIFACT_JSON" | jq -r '.run_dir // ""' 2>/dev/null)
-  [ "$COVERAGE_ARTIFACT_STATUS" != "missing" ]
-}
 
 if [ -z "$CRITERIA_SOURCE" ]; then
   safe_jsonl_append "$VERIFY_LOG" "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"status\":\"NO_CRITERIA\",\"agent\":$(echo "$AGENT_DESC" | jq -Rs .),\"checks\":0,\"passed\":0,\"failed\":0}"

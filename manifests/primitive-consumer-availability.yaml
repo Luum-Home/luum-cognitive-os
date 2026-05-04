@@ -1,155 +1,199 @@
 schema_version: primitive-consumer-availability.v1
-purpose: Explicit ACC classification for lifecycle-declared consumer candidates whose consumer-project availability cannot be inferred from projection output alone.
+purpose: Explicit ACC classification for lifecycle-declared consumer candidates whose
+  consumer-project availability cannot be inferred from projection output alone.
 status_values:
-  projectable-needs-driver: Intended consumer-project surface, but no install/profile/harness proof exists yet; remains partial.
-  maintainer-only: SO maintainer primitive; represented and documented, but not a consumer-project surface.
+  projectable-needs-driver: Intended consumer-project surface, but no install/profile/harness
+    proof exists yet; remains partial.
+  maintainer-only: SO maintainer primitive; represented and documented, but not a
+    consumer-project surface.
   so-local-only: Local-only helper or context surface; not consumer-project debt.
-  shell-ci-candidate: Candidate CLI/shell surface for future shell/CI projection proof; remains partial until projected.
+  shell-ci-candidate: Candidate CLI/shell surface for future shell/CI projection proof;
+    remains partial until projected.
 items:
-  - path: scripts/aspirational_audit.py
-    status: maintainer-only
-    rationale: Audits SO aspirational claims; consumer projects should consume generated reports or ACC summaries, not this maintainer scanner by default.
-  - path: scripts/cos_primitive_harvester.py
-    status: maintainer-only
-    rationale: Harvests conversation/codebase signals into SO primitive work inventory; not a default consumer project command.
-  - path: scripts/cos_session_backlog.py
-    status: maintainer-only
-    rationale: Maintainer backlog synthesis over SO session artifacts.
-  - path: scripts/cos_work_inventory.py
-    status: maintainer-only
-    rationale: Maintainer inventory over SO work products and ADR/readiness surfaces.
-  - path: scripts/cos_worktree_triage.py
-    status: maintainer-only
-    rationale: Maintainer worktree triage implementation behind local coordination flows.
-  - path: scripts/cost_predict.py
-    status: maintainer-only
-    rationale: SO cost prediction primitive; consumer use needs a package/profile contract before projection.
-  - path: scripts/decision_triage.py
-    status: maintainer-only
-    rationale: Maintainer decision-report triage, not installed consumer runtime.
-  - path: scripts/doc_review_personas.py
-    status: maintainer-only
-    rationale: SO documentation review helper; consumer projection needs explicit docs package decision.
-  - path: scripts/document_feature_append.py
-    status: maintainer-only
-    rationale: Maintainer documentation writer helper, not a projected primitive.
-  - path: scripts/dogfood_score.py
-    status: maintainer-only
-    rationale: Scores SO dogfooding signals; consumer projects should not receive it by default.
-  - path: scripts/domain_model.py
-    status: maintainer-only
-    rationale: Internal domain-model analysis helper.
-  - path: scripts/edit-coop.sh
-    status: maintainer-only
-    rationale: Local multi-session editing coordination command; consumer exposure requires separate concurrency package.
-  - path: scripts/generate_compact_catalog.py
-    status: maintainer-only
-    rationale: Maintainer catalog generator for context diet artifacts.
-  - path: scripts/hook-stream-statusline.sh
-    status: maintainer-only
-    rationale: Local hook/statusline observability helper; not part of consumer projection yet.
-  - path: scripts/hook-timing-wrapper.sh
-    status: maintainer-only
-    rationale: SO hook timing instrumentation wrapper; consumer exposure requires observability profile proof.
-  - path: scripts/hook_timing_report.py
-    status: maintainer-only
-    rationale: Maintainer report generator over hook metrics.
-  - path: scripts/invariant_check_helper.py
-    status: maintainer-only
-    rationale: Maintainer test-authoring helper for constants/invariants.
-  - path: scripts/llm_status.py
-    status: maintainer-only
-    rationale: Local model/provider diagnostic helper; consumer provider projection is separate.
-  - path: scripts/merge-to-main.sh
-    status: maintainer-only
-    rationale: Repository governance command for this SO's main branch policy.
-  - path: scripts/ops_runbook.py
-    status: maintainer-only
-    rationale: Maintainer runbook synthesis helper.
-  - path: scripts/primitive_surface_reduce.py
-    status: maintainer-only
-    rationale: SO primitive-surface reduction analysis helper.
-  - path: scripts/primitive_usage_map.py
-    status: maintainer-only
-    rationale: Maintainer primitive usage map generator.
-  - path: scripts/radar_merge.py
-    status: maintainer-only
-    rationale: Maintainer radar merge utility.
-  - path: scripts/redteam_aggregate.py
-    status: maintainer-only
-    rationale: Maintainer red-team report aggregator.
-  - path: scripts/risk_register.py
-    status: maintainer-only
-    rationale: Maintainer risk-register generator.
-  - path: scripts/rules_export.py
-    status: maintainer-only
-    rationale: Rule export helper requires explicit consumer package contract before projection.
-  - path: scripts/security_audit_writer.py
-    status: maintainer-only
-    rationale: Maintainer security audit writer helper.
-  - path: scripts/smoke-doc-review-personas.sh
-    status: maintainer-only
-    rationale: Smoke wrapper for SO documentation review personas.
-  - path: scripts/smoke-multi-provider-fallback.sh
-    status: maintainer-only
-    rationale: Maintainer/provider smoke proof; not a projected consumer primitive.
-  - path: scripts/smoke-qwen-fallback.sh
-    status: maintainer-only
-    rationale: Provider fallback smoke wrapper; Qwen harness projection remains planned separately.
-  - path: scripts/sprint-test-summary.sh
-    status: maintainer-only
-    rationale: Maintainer sprint summary helper.
-  - path: scripts/test_run_inventory.py
-    status: maintainer-only
-    rationale: Maintainer test-run inventory analyzer.
-  - path: scripts/verify-archived.sh
-    status: maintainer-only
-    rationale: Archive verification command for SO maintenance.
-  - path: scripts/weekly-aspirational-audit.sh
-    status: maintainer-only
-    rationale: Scheduled maintainer audit wrapper.
-  - path: scripts/check_mcp_servers.py
-    status: shell-ci-candidate
-    rationale: Candidate consumer doctor command; needs shell/CI projection proof.
-  - path: scripts/cos
-    status: shell-ci-candidate
-    rationale: Top-level CLI wrapper intended for consumer use once shell/CI projection is implemented.
-  - path: scripts/cos-coordination-status.sh
-    status: shell-ci-candidate
-    rationale: Candidate consumer coordination status command; needs projection proof.
-  - path: scripts/cos-release-check.sh
-    status: shell-ci-candidate
-    rationale: Candidate release gate command; needs shell/CI projection proof.
-  - path: scripts/cos-smoke.sh
-    status: shell-ci-candidate
-    rationale: Candidate consumer smoke command; needs shell/CI projection proof.
-  - path: scripts/cos-status.sh
-    status: shell-ci-candidate
-    rationale: Candidate consumer status command; needs shell/CI projection proof.
-  - path: scripts/cos-usage-report.sh
-    status: shell-ci-candidate
-    rationale: Candidate consumer usage-report command; needs shell/CI projection proof.
-  - path: scripts/cos-worktree-triage.sh
-    status: shell-ci-candidate
-    rationale: Candidate shell/CI triage command; needs projection proof before consumer claim.
-  - path: scripts/docs_execution_audit.py
-    status: shell-ci-candidate
-    rationale: Candidate consumer documentation reality audit; needs profile/package projection proof.
-  - path: scripts/project_scaffold.py
-    status: shell-ci-candidate
-    rationale: Candidate consumer scaffold command; needs explicit package/profile proof.
-  - path: scripts/pytest-with-summary.sh
-    status: shell-ci-candidate
-    rationale: Candidate consumer test wrapper; needs shell/CI projection proof.
-  - path: scripts/run-all-tests.sh
-    status: shell-ci-candidate
-    rationale: Candidate consumer test wrapper; needs shell/CI projection proof.
-  - path: scripts/run-redteam-scenario.sh
-    status: shell-ci-candidate
-    rationale: Candidate consumer red-team runner; needs shell/CI projection proof.
-  - path: scripts/test-all.sh
-    status: shell-ci-candidate
-    rationale: Candidate consumer test wrapper; needs shell/CI projection proof.
-  - path: scripts/test-cognitive-os-full.sh
-    status: shell-ci-candidate
-    rationale: Candidate consumer full validation wrapper; needs shell/CI projection proof.
+- path: scripts/aspirational_audit.py
+  status: maintainer-only
+  rationale: Audits SO aspirational claims; consumer projects should consume generated
+    reports or ACC summaries, not this maintainer scanner by default.
+- path: scripts/cos_primitive_harvester.py
+  status: maintainer-only
+  rationale: Harvests conversation/codebase signals into SO primitive work inventory;
+    not a default consumer project command.
+- path: scripts/cos_session_backlog.py
+  status: maintainer-only
+  rationale: Maintainer backlog synthesis over SO session artifacts.
+- path: scripts/cos_work_inventory.py
+  status: maintainer-only
+  rationale: Maintainer inventory over SO work products and ADR/readiness surfaces.
+- path: scripts/cos_worktree_triage.py
+  status: maintainer-only
+  rationale: Maintainer worktree triage implementation behind local coordination flows.
+- path: scripts/cost_predict.py
+  status: maintainer-only
+  rationale: SO cost prediction primitive; consumer use needs a package/profile contract
+    before projection.
+- path: scripts/decision_triage.py
+  status: maintainer-only
+  rationale: Maintainer decision-report triage, not installed consumer runtime.
+- path: scripts/doc_review_personas.py
+  status: maintainer-only
+  rationale: SO documentation review helper; consumer projection needs explicit docs
+    package decision.
+- path: scripts/document_feature_append.py
+  status: maintainer-only
+  rationale: Maintainer documentation writer helper, not a projected primitive.
+- path: scripts/dogfood_score.py
+  status: maintainer-only
+  rationale: Scores SO dogfooding signals; consumer projects should not receive it
+    by default.
+- path: scripts/domain_model.py
+  status: maintainer-only
+  rationale: Internal domain-model analysis helper.
+- path: scripts/edit-coop.sh
+  status: maintainer-only
+  rationale: Local multi-session editing coordination command; consumer exposure requires
+    separate concurrency package.
+- path: scripts/generate_compact_catalog.py
+  status: maintainer-only
+  rationale: Maintainer catalog generator for context diet artifacts.
+- path: scripts/hook-stream-statusline.sh
+  status: maintainer-only
+  rationale: Local hook/statusline observability helper; not part of consumer projection
+    yet.
+- path: scripts/hook-timing-wrapper.sh
+  status: maintainer-only
+  rationale: SO hook timing instrumentation wrapper; consumer exposure requires observability
+    profile proof.
+- path: scripts/hook_timing_report.py
+  status: maintainer-only
+  rationale: Maintainer report generator over hook metrics.
+- path: scripts/invariant_check_helper.py
+  status: maintainer-only
+  rationale: Maintainer test-authoring helper for constants/invariants.
+- path: scripts/llm_status.py
+  status: maintainer-only
+  rationale: Local model/provider diagnostic helper; consumer provider projection
+    is separate.
+- path: scripts/merge-to-main.sh
+  status: maintainer-only
+  rationale: Repository governance command for this SO's main branch policy.
+- path: scripts/ops_runbook.py
+  status: maintainer-only
+  rationale: Maintainer runbook synthesis helper.
+- path: scripts/primitive_surface_reduce.py
+  status: maintainer-only
+  rationale: SO primitive-surface reduction analysis helper.
+- path: scripts/primitive_usage_map.py
+  status: maintainer-only
+  rationale: Maintainer primitive usage map generator.
+- path: scripts/radar_merge.py
+  status: maintainer-only
+  rationale: Maintainer radar merge utility.
+- path: scripts/redteam_aggregate.py
+  status: maintainer-only
+  rationale: Maintainer red-team report aggregator.
+- path: scripts/risk_register.py
+  status: maintainer-only
+  rationale: Maintainer risk-register generator.
+- path: scripts/rules_export.py
+  status: maintainer-only
+  rationale: Rule export helper requires explicit consumer package contract before
+    projection.
+- path: scripts/security_audit_writer.py
+  status: maintainer-only
+  rationale: Maintainer security audit writer helper.
+- path: scripts/smoke-doc-review-personas.sh
+  status: maintainer-only
+  rationale: Smoke wrapper for SO documentation review personas.
+- path: scripts/smoke-multi-provider-fallback.sh
+  status: maintainer-only
+  rationale: Maintainer/provider smoke proof; not a projected consumer primitive.
+- path: scripts/smoke-qwen-fallback.sh
+  status: maintainer-only
+  rationale: Provider fallback smoke wrapper; Qwen harness projection remains planned
+    separately.
+- path: scripts/sprint-test-summary.sh
+  status: maintainer-only
+  rationale: Maintainer sprint summary helper.
+- path: scripts/test_run_inventory.py
+  status: maintainer-only
+  rationale: Maintainer test-run inventory analyzer.
+- path: scripts/verify-archived.sh
+  status: maintainer-only
+  rationale: Archive verification command for SO maintenance.
+- path: scripts/weekly-aspirational-audit.sh
+  status: maintainer-only
+  rationale: Scheduled maintainer audit wrapper.
+- path: scripts/check_mcp_servers.py
+  status: shell-ci-candidate
+  rationale: Candidate consumer doctor command; needs shell/CI projection proof.
+- path: scripts/cos
+  status: shell-ci-candidate
+  rationale: Top-level CLI wrapper intended for consumer use once shell/CI projection
+    is implemented.
+- path: scripts/cos-coordination-status.sh
+  status: shell-ci-candidate
+  rationale: Candidate consumer coordination status command; needs projection proof.
+- path: scripts/cos-release-check.sh
+  status: shell-ci-candidate
+  rationale: Candidate release gate command; needs shell/CI projection proof.
+- path: scripts/cos-smoke.sh
+  status: shell-ci-candidate
+  rationale: Candidate consumer smoke command; needs shell/CI projection proof.
+- path: scripts/cos-status.sh
+  status: shell-ci-candidate
+  rationale: Candidate consumer status command; needs shell/CI projection proof.
+- path: scripts/cos-usage-report.sh
+  status: shell-ci-candidate
+  rationale: Candidate consumer usage-report command; needs shell/CI projection proof.
+- path: scripts/cos-worktree-triage.sh
+  status: shell-ci-candidate
+  rationale: Candidate shell/CI triage command; needs projection proof before consumer
+    claim.
+- path: scripts/docs_execution_audit.py
+  status: shell-ci-candidate
+  rationale: Candidate consumer documentation reality audit; needs profile/package
+    projection proof.
+- path: scripts/project_scaffold.py
+  status: shell-ci-candidate
+  rationale: Candidate consumer scaffold command; needs explicit package/profile proof.
+- path: scripts/pytest-with-summary.sh
+  status: shell-ci-candidate
+  rationale: Candidate consumer test wrapper; needs shell/CI projection proof.
+- path: scripts/run-all-tests.sh
+  status: shell-ci-candidate
+  rationale: Candidate consumer test wrapper; needs shell/CI projection proof.
+- path: scripts/run-redteam-scenario.sh
+  status: shell-ci-candidate
+  rationale: Candidate consumer red-team runner; needs shell/CI projection proof.
+- path: scripts/test-all.sh
+  status: shell-ci-candidate
+  rationale: Candidate consumer test wrapper; needs shell/CI projection proof.
+- path: scripts/test-cognitive-os-full.sh
+  status: shell-ci-candidate
+  rationale: Candidate consumer full validation wrapper; needs shell/CI projection
+    proof.
+patterns:
+- pattern: scripts/**
+  status: so-local-only
+  rationale: Scripts are SO-local by default unless exact rows or projection manifests
+    classify them as consumer surfaces.
+- pattern: hooks/_lib/**
+  status: so-local-only
+  rationale: Hook libraries are support files projected with hooks, not standalone
+    consumer capabilities.
+- pattern: hooks/*.sh
+  status: so-local-only
+  rationale: Unprojected hooks are local optional/runtime surfaces unless cos_init
+    projection proves them.
+- pattern: rules/*.md
+  status: so-local-only
+  rationale: Unprojected rules are doctrine/context surfaces unless default/full projection
+    proves them.
+- pattern: skills/**/SKILL.md
+  status: so-local-only
+  rationale: Unprojected repo skills are repo-only or maintainer surfaces unless default/full
+    projection proves them.
+- pattern: .codex/skills/**/SKILL.md
+  status: so-local-only
+  rationale: Codex workspace skills are local authoring aids, not consumer-project
+    projection surfaces.

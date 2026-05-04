@@ -62,6 +62,7 @@ Subagents should receive selected rows or findings only. Use Python/JQ snippets 
 | `harness_projection` | `manifests/harness-projection.yaml` | Registry of implemented/planned/unsupported IDE and harness projection surfaces. |
 | `projection_profiles` | `manifests/primitive-projection-profiles.yaml` | Declares `default`, `full`, `shared`, `profile-driver`, and maintainer-only projection classes. |
 | `consumer_availability` | `manifests/primitive-consumer-availability.yaml` | Explicitly classifies lifecycle consumer candidates as shell/CI candidates, projectable-needs-driver, maintainer-only, or so-local-only. |
+| `shell_ci_projection` | `manifests/shell-ci-projection.yaml` | Declares consumer shell/CI command and workflow projection surfaces. |
 | `consumer_projection` | Temporary projects generated for harnesses with `status: implemented` | Proof that hooks, skills, and rules are actually projected into consumer projects for default and full profiles. |
 
 ## Scope boundary
@@ -100,6 +101,14 @@ The profile manifest also declares SO-local profile drivers, such as `scripts/co
 ## Consumer availability adapter
 
 `manifests/primitive-consumer-availability.yaml` resolves lifecycle-declared consumer candidates that are not proven by file projection. It is intentionally explicit: a path must name its status and rationale. `maintainer-only` and `so-local-only` rows count as aligned because they are not consumer-project debt; `shell-ci-candidate` and `projectable-needs-driver` remain partial until a projection driver proves them.
+
+The same manifest also carries local-surface defaults for broad families. These defaults mean unprojected scripts, hook support files, rules, repo skills, and Codex workspace skills are treated as local/repo-only unless a projection adapter proves otherwise.
+
+## Shell/CI projection adapter
+
+`scripts/project_shell_ci.py` reads `manifests/shell-ci-projection.yaml` and projects signed shell/CI commands into temp consumer projects. It writes canonical copies under `.cognitive-os/scripts/cos/`, creates consumer-facing driver symlinks under `scripts/`, and generates `.github/workflows/cognitive-os-shell-ci.yml`.
+
+ACC runs this shell/CI projection inside the same temporary consumer projects used for Claude/Codex default/full proof. Rows listed as shell/CI commands become aligned only when their canonical projected file exists.
 
 ## Multi-IDE harness registry
 
