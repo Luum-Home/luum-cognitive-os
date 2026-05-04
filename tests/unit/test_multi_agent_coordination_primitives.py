@@ -95,3 +95,10 @@ def test_merge_to_main_help_documents_single_writer_lock() -> None:
     assert result.returncode == 0
     assert "main-merge.lock" in result.stdout
     assert "single-writer" in result.stdout
+
+
+def test_merge_to_main_refuses_validation_dirty_worktree() -> None:
+    text = (REPO / "scripts" / "merge-to-main.sh").read_text(encoding="utf-8")
+
+    assert "validation dirtied tracked worktree" in text
+    assert "status --porcelain=v1 --untracked-files=no" in text
