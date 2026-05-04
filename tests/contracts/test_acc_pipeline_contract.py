@@ -49,7 +49,9 @@ def test_repository_acc_pipeline_generates_report() -> None:
     assert payload["adapters"]["consumer_projection"]["summary"]["by_harness_profile"]["codex/full"] > 0
     assert payload["harness_projection"]["claude"]["status"] == "implemented"
     assert payload["harness_projection"]["codex"]["status"] == "implemented"
-    assert payload["harness_projection"]["cursor"]["status"] == "planned"
+    assert payload["harness_projection"]["cursor"]["status"] == "implemented"
+    assert payload["harness_projection"]["opencode"]["status"] == "implemented"
+    assert payload["harness_projection"]["vscode-copilot"]["status"] == "implemented"
     assert COMPACT.exists()
     assert "Context Diet Rule" in COMPACT.read_text()
 
@@ -74,4 +76,4 @@ def test_harness_projection_manifest_declares_named_ides() -> None:
 
     assert required <= ids
     implemented = {item["id"] for item in manifest["harnesses"] if item["status"] == "implemented"}
-    assert implemented == {"claude", "codex"}
+    assert implemented == {"claude", "codex", "cursor", "opencode", "vscode-copilot"}

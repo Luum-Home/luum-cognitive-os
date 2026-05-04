@@ -13,7 +13,7 @@ Migration history (Phases 2.1 → 2.3 → 2.final):
   MIGRATED:   main()               (Phase 2.final, 2026-04-27)
 
 Usage (direct):
-    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex]
+    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor]
 
 Usage (internal dispatcher — kept for backward compat):
     python3 scripts/cos_init.py --internal-call detect_harness [project_root]
@@ -37,6 +37,18 @@ from pathlib import Path
 
 # ── Repository root (cos source directory) ───────────────────────────
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
+
+
+SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor")
+STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor"}
+
+HARNESS_SETTINGS = {
+    "claude": (".claude/settings.json", ".claude/settings.json"),
+    "codex": (".codex/hooks.json", ".codex/hooks.json"),
+    "opencode": ("opencode.json", "opencode.json"),
+    "vscode-copilot": (".github/copilot-instructions.md", ".github/copilot-instructions.md"),
+    "cursor": (".cursor/rules/cognitive-os.mdc", ".cursor/rules/cognitive-os.mdc"),
+}
 
 # ── ADR-093 canonical mode constants ─────────────────────────────────
 DEFAULT_RULES = (
@@ -89,7 +101,7 @@ def detect_harness(project_root: str = ".") -> str:
     """Detect the active harness for a project directory.
 
     Inlined from scripts/_lib/settings-driver.sh::cos_detect_harness.
-    Detects the active harness (claude|codex) by inspecting filesystem markers
+    Detects the active harness (claude|codex plus structural instruction harnesses) by inspecting filesystem markers
     and environment variables. Priority order matches the bash implementation
     exactly (parity required for strangler-fig correctness):
 
@@ -113,7 +125,7 @@ def detect_harness(project_root: str = ".") -> str:
             meta_harness = json.loads(meta_path.read_text(encoding="utf-8")).get("harness")
         except (OSError, json.JSONDecodeError):
             meta_harness = None
-        if meta_harness in {"claude", "codex"}:
+        if meta_harness in SUPPORTED_HARNESSES:
             return meta_harness
 
     codex_hooks = root / ".codex" / "hooks.json"
@@ -470,9 +482,9 @@ def _build_parser() -> argparse.ArgumentParser:
                             help=argparse.SUPPRESS)
     mode_group.add_argument("--lean", dest="mode", action="store_const", const="--default",
                             help=argparse.SUPPRESS)
-    parser.add_argument("--harness", choices=["claude", "codex"],
+    parser.add_argument("--harness", choices=list(SUPPORTED_HARNESSES),
                         default=None,
-                        help="Target harness (claude or codex). Overrides auto-detection.")
+                        help="Target harness. Overrides auto-detection.")
     # Internal dispatcher (kept for backward compat)
     parser.add_argument("--internal-call", dest="internal_call", metavar="FUNCTION",
                         help=argparse.SUPPRESS)
@@ -866,6 +878,77 @@ def _apply_efficiency_profile(
 
 # ── Helper: harness settings generation ──────────────────────────────
 
+
+def _write_json_if_changed(path: Path, payload: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _write_structural_instruction_harness_settings(project_dir: Path, harness: str, mode: str) -> None:
+    """Write project-local instruction/config files for harnesses without native COS hooks.
+
+    These drivers prove consumer-project projection of instructions, rules, skills,
+    and optional MCP placeholders. They do not claim native lifecycle hook parity.
+    """
+
+    common_body = (
+        "# Cognitive OS\n\n"
+        "This project has Cognitive OS installed under `.cognitive-os/`. "
+        "Use `.cognitive-os/rules/cos/RULES-COMPACT.md` as the compact governance entrypoint, "
+        "consult `.cognitive-os/skills/cos/` for reusable SKILL.md procedures, and preserve "
+        "the repository `AGENTS.md` contract when present. Do not claim Claude/Codex hook parity "
+        "unless the active harness exposes equivalent lifecycle events.\n"
+    )
+
+    if harness == "opencode":
+        _write_json_if_changed(
+            project_dir / "opencode.json",
+            {
+                "$schema": "https://opencode.ai/config.json",
+                "instructions": [
+                    "AGENTS.md",
+                    ".cognitive-os/rules/cos/RULES-COMPACT.md",
+                    ".cognitive-os/rules/cos/*.md",
+                    ".cognitive-os/skills/cos/*/SKILL.md",
+                ],
+                "mcp": {},
+                "permission": {"bash": "ask", "edit": "ask"},
+            },
+        )
+        print("Created opencode.json with COS instruction projection")
+        return
+
+    if harness == "vscode-copilot":
+        instructions = project_dir / ".github" / "copilot-instructions.md"
+        instructions.parent.mkdir(parents=True, exist_ok=True)
+        instructions.write_text(common_body, encoding="utf-8")
+        _write_json_if_changed(
+            project_dir / ".vscode" / "mcp.json",
+            {"servers": {}},
+        )
+        print("Created .github/copilot-instructions.md and .vscode/mcp.json with COS projection")
+        return
+
+    if harness == "cursor":
+        rule = project_dir / ".cursor" / "rules" / "cognitive-os.mdc"
+        rule.parent.mkdir(parents=True, exist_ok=True)
+        rule.write_text(
+            "---\n"
+            "description: Cognitive OS governance, skills, and verification contract\n"
+            "alwaysApply: true\n"
+            "---\n\n"
+            + common_body,
+            encoding="utf-8",
+        )
+        _write_json_if_changed(
+            project_dir / ".cursor" / "mcp.json",
+            {"mcpServers": {}},
+        )
+        print("Created .cursor/rules/cognitive-os.mdc and .cursor/mcp.json with COS projection")
+        return
+
+    raise ValueError(f"unsupported structural instruction harness: {harness}")
+
 def _apply_harness_settings(
     project_dir: Path,
     cos_source: Path,
@@ -874,7 +957,11 @@ def _apply_harness_settings(
     settings_relative_path: str,
     settings_label: str,
 ) -> None:
-    """Port of the settings generation block (cos-init.sh lines 585-620)."""
+    """Port of the settings generation block plus structural instruction harnesses."""
+    if harness in STRUCTURAL_INSTRUCTION_HARNESSES:
+        _write_structural_instruction_harness_settings(project_dir, harness, mode)
+        return
+
     generator = cos_source / "scripts" / "generate-project-settings.sh"
     merge_script = cos_source / "scripts" / "merge-settings.sh"
     settings_path = project_dir / settings_relative_path
@@ -988,15 +1075,10 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     else:
         harness = detect_harness(str(project_dir))
 
-    if harness == "claude":
-        settings_relative_path = ".claude/settings.json"
-        settings_label = ".claude/settings.json"
-    elif harness == "codex":
-        settings_relative_path = ".codex/hooks.json"
-        settings_label = ".codex/hooks.json"
-    else:
-        print(f"Error: unsupported harness '{harness}' (expected claude or codex).", file=sys.stderr)
+    if harness not in HARNESS_SETTINGS:
+        print(f"Error: unsupported harness '{harness}' (expected one of: {', '.join(SUPPORTED_HARNESSES)}).", file=sys.stderr)
         return 1
+    settings_relative_path, settings_label = HARNESS_SETTINGS[harness]
 
     # ── Scope filter ─────────────────────────────────────────────────
     install_scope = os.environ.get("COS_INSTALL_SCOPE", "both")
@@ -1032,7 +1114,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
 
     # ── 3. Create directory structure ────────────────────────────────
     # SAFETY: replace symlinks with real directories
-    for dir_check in (".cognitive-os", ".claude", ".codex"):
+    for dir_check in (".cognitive-os", ".claude", ".codex", ".cursor", ".github", ".vscode"):
         p = project_dir / dir_check
         if p.is_symlink():
             target = os.readlink(str(p))
@@ -1042,6 +1124,10 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     driver_dirs = [str(Path(settings_relative_path).parent)]
     if harness == "claude":
         driver_dirs.extend([".claude/rules/cos", ".claude/commands"])
+    elif harness == "vscode-copilot":
+        driver_dirs.extend([".vscode"])
+    elif harness == "cursor":
+        driver_dirs.extend([".cursor/rules"])
 
     for d in [
         *driver_dirs,
