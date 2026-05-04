@@ -75,7 +75,7 @@ THIRD_PARTY_ALLOWLIST = {
     # ML
     "numpy", "pandas", "scipy", "sklearn", "torch", "transformers",
     # Package management
-    "pip", "setuptools", "pkg_resources", "importlib_metadata",
+    "pip", "setuptools", "importlib_metadata",
     # Misc commonly installed
     "dotenv", "decouple", "environs", "dateutil", "arrow", "pendulum",
     "tqdm", "humanize", "tabulate", "jinja2", "markupsafe",
