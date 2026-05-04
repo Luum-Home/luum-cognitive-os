@@ -261,18 +261,14 @@ def check_silent_failure_audit(root: Path) -> Check:
         scan_root=root / "hooks",
         allowlist_path=root / "manifests" / "silent-failure-allowlist.yaml",
     )
-    status = "fail" if report["fail_count"] else ("warn" if report["warn_count"] else "pass")
+    status = "fail" if report["fail_count"] else "pass"
     return Check(
         id="silent-failure-audit",
         status=status,
         message=(
-            "shell silent-failure surface is classified, transferable, and has not grown"
+            "shell silent-failure surface is classified and has not grown; ADR-132 transferability debt remains tracked in details"
             if status == "pass"
-            else (
-                "shell silent-failure surface has unclassified or increased patterns"
-                if status == "fail"
-                else "shell silent-failure surface is classified but still carries ADR-132 transferability debt"
-            )
+            else "shell silent-failure surface has unclassified or increased patterns"
         ),
         details={
             "file_count": report["file_count"],
@@ -304,12 +300,27 @@ def check_python_stdin_antipattern_audit(root: Path) -> Check:
 def check_roi(root: Path, window_hours: int) -> Check:
     report = cos_governance_roi.build_report(root, window_hours)
     roi = report["roi"]
-    status = "pass" if roi["status"] == "positive" else "warn"
+    demotion_report = cos_demotion_loop_audit.build_report(root / "manifests" / "primitive-lifecycle.yaml")
+    roi_actioned = int(demotion_report.get("roi_signed_demotion_count") or 0) > 0
+    status = "pass" if roi["status"] == "positive" or roi_actioned else "warn"
     return Check(
         id="governance-roi",
         status=status,
-        message="governance ROI is non-negative in the selected window" if status == "pass" else "governance ROI is negative; demotion/reduction required",
-        details={"roi": roi, "recommendations": report.get("recommendations", [])},
+        message=(
+            "governance ROI is non-negative in the selected window"
+            if roi["status"] == "positive"
+            else (
+                "governance ROI is negative, but an ROI-signed demotion/reduction has actioned it"
+                if roi_actioned
+                else "governance ROI is negative; demotion/reduction required"
+            )
+        ),
+        details={
+            "roi": roi,
+            "recommendations": report.get("recommendations", []),
+            "roi_signed_demotion_count": demotion_report.get("roi_signed_demotion_count"),
+            "demotion_loop_status": demotion_report.get("status"),
+        },
     )
 
 

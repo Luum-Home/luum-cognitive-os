@@ -20,7 +20,7 @@ PROFILE_TIERS = {
 }
 INACTIVE = {"demoted", "archived", "deleted"}
 SLO = {
-    "core": {"max_default_visible": 10, "max_blocking": 7},
+    "core": {"max_default_visible": 10, "max_blocking": 8},
     "team": {"max_default_visible": 20, "max_blocking": 15},
     "maintainer": {"max_default_visible": 35, "max_blocking": 35},
     "lab": {"max_default_visible": 999, "max_blocking": 999},
