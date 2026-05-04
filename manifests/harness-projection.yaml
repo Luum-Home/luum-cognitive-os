@@ -157,28 +157,35 @@ harnesses:
     proof.
 - id: qwen-code
   display_name: Qwen Code
-  status: planned
-  projection_mode: cli-ide-sdk-and-settings
+  status: implemented
+  projection_mode: qwen-project-settings-context-mcp
   settings_paths:
   - .qwen/settings.json
-  - .qwen
-  - settings.json
+  - QWEN.md
   projected_surfaces:
+  - context
   - instructions
-  - skills
-  - hooks
-  - mcp
-  - headless-ci
-  proof: none
+  - skills-reference
+  - rules-reference
+  - mcp-placeholder
+  proof: temp-consumer-project-structural
   limitations:
-  - Official docs show terminal, IDE, CI/CD, browser, and SDK environments, but COS
-    projection driver has not been implemented.
-  - Settings path/schema must be verified against Qwen Code docs before promotion.
-  next_action: Define Qwen Code settings/skills/hooks projection driver and temp-project
-    proof.
+  - Structural project settings/context proof only; no account-backed Qwen Code runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - MCP servers are intentionally empty placeholders until profiles configure concrete
+    tools.
+  next_action: Add optional Qwen Code CLI/runtime smoke when qwen authentication and
+    CLI are available.
   research_sources:
-  - https://qwenlm.github.io/qwen-code-docs/en/blog/thinks-like-a-programmer/
-  - https://github.com/QwenLM/qwen-code
+  - https://qwenlm.github.io/qwen-code-docs/en/users/configuration/settings/
+  - https://qwenlm.github.io/qwen-code-docs/en/users/features/mcp/
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - qwen-code
 - id: kimi-code
   display_name: Kimi Code
   status: planned
