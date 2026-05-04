@@ -22,6 +22,7 @@ COS_INIT = REPO_ROOT / "scripts" / "cos_init.py"
         ("vscode-copilot", ".github/copilot-instructions.md"),
         ("cursor", ".cursor/rules/cognitive-os.mdc"),
         ("qwen-code", ".qwen/settings.json"),
+        ("kimi-code", "AGENTS.md"),
         ("shell-ci", ".cognitive-os/shell-ci-projection.json"),
     ],
 )
@@ -59,6 +60,12 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
         assert qwen_settings["mcpServers"] == {}
         assert qwen_settings["tools"]["approvalMode"] == "default"
         assert "Cognitive OS" in (tmp_path / "QWEN.md").read_text()
+    if harness == "kimi-code":
+        agents = (tmp_path / "AGENTS.md").read_text()
+        assert "COGNITIVE_OS_KIMI_START" in agents
+        assert "Cognitive OS for Kimi Code CLI" in agents
+        assert json.loads((tmp_path / ".kimi/mcp.json").read_text()) == {"mcpServers": {}}
+        assert "--mcp-config-file .kimi/mcp.json" in (tmp_path / ".kimi/README.md").read_text()
     if harness == "shell-ci":
         shell_meta = json.loads((tmp_path / ".cognitive-os/shell-ci-projection.json").read_text())
         assert shell_meta["commands_projected"] == 15

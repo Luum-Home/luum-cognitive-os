@@ -13,7 +13,7 @@ Migration history (Phases 2.1 → 2.3 → 2.final):
   MIGRATED:   main()               (Phase 2.final, 2026-04-27)
 
 Usage (direct):
-    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor|qwen-code|shell-ci]
+    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor|qwen-code|kimi-code|shell-ci]
 
 Usage (internal dispatcher — kept for backward compat):
     python3 scripts/cos_init.py --internal-call detect_harness [project_root]
@@ -39,8 +39,8 @@ from pathlib import Path
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
 
 
-SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "shell-ci")
-STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor", "qwen-code"}
+SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "shell-ci")
+STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code"}
 SHELL_CI_HARNESSES = {"shell-ci"}
 
 HARNESS_SETTINGS = {
@@ -50,6 +50,7 @@ HARNESS_SETTINGS = {
     "vscode-copilot": (".github/copilot-instructions.md", ".github/copilot-instructions.md"),
     "cursor": (".cursor/rules/cognitive-os.mdc", ".cursor/rules/cognitive-os.mdc"),
     "qwen-code": (".qwen/settings.json", ".qwen/settings.json"),
+    "kimi-code": ("AGENTS.md", "AGENTS.md"),
     "shell-ci": (".cognitive-os/shell-ci-projection.json", ".cognitive-os/shell-ci-projection.json"),
 }
 
@@ -887,6 +888,31 @@ def _write_json_if_changed(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+
+def _upsert_agents_md_for_kimi(project_dir: Path, common_body: str) -> None:
+    agents = project_dir / "AGENTS.md"
+    start = "<!-- COGNITIVE_OS_KIMI_START -->"
+    end = "<!-- COGNITIVE_OS_KIMI_END -->"
+    block = (
+        f"{start}\n"
+        "# Cognitive OS for Kimi Code CLI\n\n"
+        + common_body
+        + "\nRun Kimi from this project root, or pass `--work-dir .`. "
+        "If using the projected MCP placeholder, pass `--mcp-config-file .kimi/mcp.json`.\n"
+        f"{end}\n"
+    )
+    if agents.exists():
+        text = agents.read_text(encoding="utf-8")
+        if start in text and end in text:
+            before = text.split(start, 1)[0]
+            after = text.split(end, 1)[1]
+            agents.write_text(before + block + after.lstrip("\n"), encoding="utf-8")
+        else:
+            sep = "" if text.endswith("\n") else "\n"
+            agents.write_text(text + sep + "\n" + block, encoding="utf-8")
+    else:
+        agents.write_text(block, encoding="utf-8")
+
 def _write_structural_instruction_harness_settings(project_dir: Path, harness: str, mode: str) -> None:
     """Write project-local instruction/config files for harnesses without native COS hooks.
 
@@ -932,6 +958,23 @@ def _write_structural_instruction_harness_settings(project_dir: Path, harness: s
         print("Created .github/copilot-instructions.md and .vscode/mcp.json with COS projection")
         return
 
+
+
+    if harness == "kimi-code":
+        _upsert_agents_md_for_kimi(project_dir, common_body)
+        _write_json_if_changed(
+            project_dir / ".kimi" / "mcp.json",
+            {"mcpServers": {}},
+        )
+        (project_dir / ".kimi" / "README.md").write_text(
+            "# Kimi Code CLI Cognitive OS Projection\n\n"
+            "Run from the project root so Kimi loads `AGENTS.md`, or use `kimi --work-dir .`.\n"
+            "Use `kimi --mcp-config-file .kimi/mcp.json` when opting into the projected MCP placeholder.\n"
+            "This structural projection does not configure credentials or claim native lifecycle hook parity.\n",
+            encoding="utf-8",
+        )
+        print("Created AGENTS.md and .kimi/mcp.json with Kimi Code CLI COS projection")
+        return
 
     if harness == "qwen-code":
         qwen_md = project_dir / "QWEN.md"
@@ -1176,6 +1219,8 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         driver_dirs.extend([".cursor/rules"])
     elif harness == "qwen-code":
         driver_dirs.extend([".qwen"])
+    elif harness == "kimi-code":
+        driver_dirs.extend([".kimi"])
     elif harness == "shell-ci":
         driver_dirs.extend(["scripts", ".github/workflows", ".cognitive-os/scripts/cos"])
 
