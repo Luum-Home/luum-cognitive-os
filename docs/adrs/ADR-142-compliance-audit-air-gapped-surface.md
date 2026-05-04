@@ -95,10 +95,10 @@ All three exist on the local filesystem and are committed to the project repo on
 
 COS does not guarantee Engram observations are free of personal data. The GDPR erasure path:
 
-1. **Identification**: the operator runs `engram search --query "email|name|@"` (or equivalent) to surface observations potentially containing personal data. COS does not automate this search; it documents the command.
-2. **Erasure from local DB**: the Engram CLI `engram delete --id <observation-id>` removes the row from local SQLite. COS does not wrap this command; the operator runs it directly.
+1. **Identification**: the operator runs `engram search "email|name|@"` (or an equivalent narrower query) to surface observations potentially containing personal data. COS does not automate this search; it documents the command.
+2. **Erasure from local DB**: current Engram v1.15.x does not expose a documented `engram delete` CLI command. The operator must use an available Engram MCP admin/API deletion path for the installed version, or perform a documented DB-level erasure procedure under maintenance mode. COS does not silently mutate the Engram store.
 3. **Erasure from git-jsonl export**: the operator removes the corresponding line from `.engram/exports/{project}.jsonl` and commits. History erasure (rewriting git history) is outside COS scope and must be performed by the operator via `git filter-repo` or equivalent.
-4. **Erasure from cloud sync**: the operator calls `engram cloud delete --id <observation-id>` against the cloud server. COS does not wrap this; it documents the procedure.
+4. **Erasure from cloud sync**: current Engram v1.15.x does not expose a documented `engram cloud delete` command. The operator must use the cloud server's supported admin/API deletion path for the installed version, or rotate/rebuild the cloud store from redacted local state. COS records the procedure and audit evidence, but does not pretend a nonexistent CLI exists.
 5. **Audit log**: each erasure MUST be recorded in `agent-audit-trail.jsonl` with `audit_class: privacy`, `event: observation_erased`, and the observation ID. The erasure record itself is retained (the audit of the erasure, not the erased content).
 
 COS's role in GDPR compliance is to provide the erasure path and to ensure the audit trail is auditable. COS does not implement automated erasure or data retention policies; these are operator responsibilities.
