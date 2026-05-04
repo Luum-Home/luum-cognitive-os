@@ -139,7 +139,15 @@ class TestGenerateProjectSettings:
             assert expected in filenames, f"{expected} missing from standard mode"
 
     def test_standard_is_subset_of_full(self):
-        standard = set(extract_hook_filenames(run_generator("--standard")))
+        # The curated default tier intentionally includes a few bootstrap
+        # conveniences marked SCOPE: os-only (for example session-heartbeat and
+        # session-sanity). Full external installs are scope-filtered to
+        # project/both hooks, so subset parity only applies to hooks that are
+        # installable under the default external scope.
+        standard = {
+            hook for hook in extract_hook_filenames(run_generator("--standard"))
+            if source_hook_allows_default_scope(hook)
+        }
         full = set(extract_hook_filenames(run_generator("--full")))
         assert standard.issubset(full), f"Standard hooks not in full: {standard - full}"
 

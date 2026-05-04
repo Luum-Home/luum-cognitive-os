@@ -115,6 +115,13 @@ def _is_redirect_stub(path: Path) -> bool:
 
 def _skip_directory(parts: tuple[str, ...]) -> bool:
     """Return True if this path should be skipped entirely."""
+    # Local validation/session worktrees can contain full repository copies,
+    # including their own canonical docs/adrs tree. They are runtime artifacts,
+    # not source ADR locations for the current checkout.
+    if ".claude" in parts:
+        idx = parts.index(".claude")
+        if len(parts) > idx + 1 and parts[idx + 1] == "worktrees":
+            return True
     return any(
         p.startswith(".git") or p in ("node_modules", "__pycache__", ".venv", "venv")
         for p in parts

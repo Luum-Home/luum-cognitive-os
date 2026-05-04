@@ -1155,6 +1155,12 @@ harness:
       matcher: Bash
       scope: both
 
+    skill-router-bash-gate:
+      script: hooks/skill-router-bash-gate.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     private-mode-gate:
       script: hooks/private-mode-gate.sh
       event: PreToolUse
@@ -1243,6 +1249,24 @@ harness:
       matcher: Agent
       scope: os-only
 
+    prompt-quality-llm:
+      script: hooks/prompt-quality-llm.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: both
+
+    token-budget-monitor:
+      script: hooks/token-budget-monitor.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: both
+
+    adaptive-bypass:
+      script: hooks/adaptive-bypass.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: both
+
     predev-completeness-check:
       script: hooks/predev-completeness-check.sh
       event: PreToolUse
@@ -1272,6 +1296,24 @@ harness:
       event: PreToolUse
       matcher: Agent
       scope: os-only
+
+    assumption-tracker:
+      script: hooks/assumption-tracker.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: both
+
+    scope-proportionality:
+      script: hooks/scope-proportionality.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: both
+
+    scope-creep-detector:
+      script: hooks/scope-creep-detector.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      scope: both
 
     # ── PostToolUse — all tools ───────────────────────────────────────────────
     context-watchdog:
@@ -1516,6 +1558,18 @@ harness:
 
     skill-feedback-tracker:
       script: hooks/skill-feedback-tracker.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: os-only
+
+    consequence-evaluator:
+      script: hooks/consequence-evaluator.sh
+      event: PostToolUse
+      matcher: Agent
+      scope: both
+
+    auto-skill-generator:
+      script: hooks/auto-skill-generator.sh
       event: PostToolUse
       matcher: Agent
       scope: os-only

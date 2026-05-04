@@ -47,14 +47,6 @@ COMPACT_EXEMPT: set[str] = {
 # is registered in .claude/settings.json.
 SETTINGS_WIRING_EXEMPT: dict[str, str] = {
     "pre-commit-gate.md": "git hook (.git/hooks/pre-commit), not a Claude hook",
-    # Hook-enforced-BROKEN — pending registration. See rules/ROADMAP.md §1.
-    "acceptance-criteria.md": "auto-verify.sh exists; registration pending (ROADMAP §2.1)",
-    "agent-quality.md": "auto-verify.sh + dod-gate.sh exist; registration pending (ROADMAP §2.2)",
-    "closed-loop-prompts.md": "auto-refine.sh exists; registration pending (ROADMAP §2.3)",
-    "phase-aware-agents.md": "auto-refine.sh exists; registration pending (ROADMAP §2.4)",
-    "audit-trail.md": "git-context-capture.sh + session-changelog.sh + audit-id-enricher.sh exist; registration pending (ROADMAP §1.1)",
-    "confidentiality-protection.md": "confidentiality-enforcer.sh exists; registration pending (ROADMAP §1.4)",
-    "pre-dev-readiness-gate.md": "predev-completeness-check.sh exists; registration pending (ROADMAP §1.6)",
     "observability.md": "mlflow-sync.sh exists; registration pending (agent-instruction-only per scorecard)",
     "trust-score.md": "trust-score-validator.sh IS registered; test trips on secondary confidence-gate.sh ref (see ROADMAP §1.3)",
 }

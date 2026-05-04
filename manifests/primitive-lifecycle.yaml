@@ -3605,6 +3605,224 @@ primitives:
     boring_reliability_artifact: docs/adrs/ADR-133-expansion-without-monsterization.md
     rationale: Enforces profile-purity discipline for expansion without growing
       core/team by assertion.
+- id: hooks/skill-router-bash-gate.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - cognitive-os.yaml
+  - hooks/skill-router-bash-gate.sh
+  runtime_projection: true
+  behavior_evidence: deterministic Bash dependency-upgrade bypass gate plus optional skill suggestion
+  evidence_commands:
+  - bash -n hooks/skill-router-bash-gate.sh
+  - python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
+  sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+- id: hooks/prompt-quality-llm.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/prompt-quality-llm.sh
+  runtime_projection: true
+  behavior_evidence: hook-enforced projection for prompt-quality rule exclusion
+  evidence_commands:
+  - bash -n hooks/prompt-quality-llm.sh
+  - python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
+  sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+- id: hooks/token-budget-monitor.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/token-budget-monitor.sh
+  runtime_projection: true
+  behavior_evidence: hook-enforced projection for token budget rule exclusion
+  evidence_commands:
+  - bash -n hooks/token-budget-monitor.sh
+  - python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
+  sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+- id: hooks/adaptive-bypass.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/adaptive-bypass.sh
+  runtime_projection: true
+  behavior_evidence: hook-enforced projection for adaptive bypass rule exclusion
+  evidence_commands:
+  - bash -n hooks/adaptive-bypass.sh
+  - python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
+  sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+- id: hooks/assumption-tracker.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/assumption-tracker.sh
+  runtime_projection: true
+  behavior_evidence: hook-enforced projection for assumption tracking rule exclusion
+  evidence_commands:
+  - bash -n hooks/assumption-tracker.sh
+  - python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
+  sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+- id: hooks/scope-proportionality.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/scope-proportionality.sh
+  runtime_projection: true
+  behavior_evidence: hook-enforced projection for scope proportionality rule exclusion
+  evidence_commands:
+  - bash -n hooks/scope-proportionality.sh
+  - python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
+  sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+- id: hooks/scope-creep-detector.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/scope-creep-detector.sh
+  runtime_projection: true
+  behavior_evidence: hook-enforced projection for scope creep rule exclusion
+  evidence_commands:
+  - bash -n hooks/scope-creep-detector.sh
+  - python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
+  sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+- id: hooks/consequence-evaluator.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/consequence-evaluator.sh
+  runtime_projection: true
+  behavior_evidence: hook-enforced projection for consequence evaluation rule exclusion
+  evidence_commands:
+  - bash -n hooks/consequence-evaluator.sh
+  - python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
+  sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
+- id: hooks/auto-skill-generator.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/auto-skill-generator.sh
+  runtime_projection: true
+  behavior_evidence: hook-enforced projection for auto skill generation rule exclusion
+  evidence_commands:
+  - bash -n hooks/auto-skill-generator.sh
+  - python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Remove the hook from cognitive-os.yaml harness.hooks and regenerate settings, or restore the excluded rule to startup context.
+  sunset_criteria: Archive only if hook-enforced rule exclusion moves into a typed projection compiler with equivalent tests.
 - id: scripts/cos-closure-discipline-audit
   kind: script
   owner_adr: ADR-143
