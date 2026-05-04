@@ -4,34 +4,6 @@
       "common_home": "hooks/_lib/",
       "confidence": 0.84,
       "consumer_relevance": "consumer-project-relevant",
-      "finding_id": "bash-function-repeat:9f6f1c6c8144",
-      "kind": "bash-function-repeat",
-      "left": "hooks/auto-verify.sh::_load_coverage_artifact_status",
-      "pair_key": "hooks/auto-verify.sh::_load_coverage_artifact_status :: hooks/dod-gate.sh::_load_coverage_artifact_status",
-      "rationale": "Shell functions have identical normalized bodies",
-      "recommendation": "extract-common-shell-helper",
-      "right": "hooks/dod-gate.sh::_load_coverage_artifact_status",
-      "severity": "medium",
-      "similarity": 1.0
-    },
-    {
-      "common_home": "hooks/_lib/",
-      "confidence": 0.84,
-      "consumer_relevance": "consumer-project-relevant",
-      "finding_id": "bash-function-repeat:4b4e9b49aafb",
-      "kind": "bash-function-repeat",
-      "left": "hooks/auto-verify.sh::_load_test_artifact_status",
-      "pair_key": "hooks/auto-verify.sh::_load_test_artifact_status :: hooks/dod-gate.sh::_load_test_artifact_status",
-      "rationale": "Shell functions have identical normalized bodies",
-      "recommendation": "extract-common-shell-helper",
-      "right": "hooks/dod-gate.sh::_load_test_artifact_status",
-      "severity": "medium",
-      "similarity": 1.0
-    },
-    {
-      "common_home": "hooks/_lib/",
-      "confidence": 0.84,
-      "consumer_relevance": "consumer-project-relevant",
       "finding_id": "bash-function-repeat:acbeb65b53b3",
       "kind": "bash-function-repeat",
       "left": "hooks/auto-verify.sh::found",
@@ -721,22 +693,22 @@
   "schema_version": "primitive-duplication-audit.v1",
   "summary": {
     "by_common_home": {
-      "hooks/_lib/": 6,
+      "hooks/_lib/": 4,
       "lib/": 39,
       "scripts/_lib/": 4,
       "templates/ or lib/": 1
     },
     "by_consumer_relevance": {
-      "consumer-project-relevant": 9,
+      "consumer-project-relevant": 7,
       "so-local-first": 41
     },
     "by_kind": {
-      "bash-function-repeat": 10,
+      "bash-function-repeat": 8,
       "exact-copy": 1,
       "python-function-repeat": 39
     },
-    "files_scanned": 714,
-    "findings": 50
+    "files_scanned": 717,
+    "findings": 48
   },
-  "timestamp": "2026-05-04T20:54:40.016647+00:00"
+  "timestamp": "2026-05-04T21:08:37.082494+00:00"
 }
