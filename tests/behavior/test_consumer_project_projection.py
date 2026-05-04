@@ -21,6 +21,7 @@ COS_INIT = REPO_ROOT / "scripts" / "cos_init.py"
         ("opencode", "opencode.json"),
         ("vscode-copilot", ".github/copilot-instructions.md"),
         ("cursor", ".cursor/rules/cognitive-os.mdc"),
+        ("qwen-code", ".qwen/settings.json"),
         ("shell-ci", ".cognitive-os/shell-ci-projection.json"),
     ],
 )
@@ -51,6 +52,13 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
     if harness == "cursor":
         assert "alwaysApply: true" in (tmp_path / ".cursor/rules/cognitive-os.mdc").read_text()
         assert json.loads((tmp_path / ".cursor/mcp.json").read_text()) == {"mcpServers": {}}
+    if harness == "qwen-code":
+        qwen_settings = json.loads((tmp_path / ".qwen/settings.json").read_text())
+        assert qwen_settings["context"]["fileName"] == ["QWEN.md", "AGENTS.md", ".cognitive-os/rules/cos/RULES-COMPACT.md"]
+        assert ".cognitive-os/skills/cos" in qwen_settings["context"]["includeDirectories"]
+        assert qwen_settings["mcpServers"] == {}
+        assert qwen_settings["tools"]["approvalMode"] == "default"
+        assert "Cognitive OS" in (tmp_path / "QWEN.md").read_text()
     if harness == "shell-ci":
         shell_meta = json.loads((tmp_path / ".cognitive-os/shell-ci-projection.json").read_text())
         assert shell_meta["commands_projected"] == 15
