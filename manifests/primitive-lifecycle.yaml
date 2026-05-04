@@ -3890,8 +3890,8 @@ primitives:
 - id: scripts/cos-flow-register.sh
   kind: script
   owner_adr: ADR-138
-  lifecycle_state: sandbox
-  maturity: observe
+  lifecycle_state: advisory
+  maturity: advisory
   distribution: maintainer
   governance_class: runtime-safety
   risk_class: advisory
