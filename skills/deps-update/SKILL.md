@@ -37,6 +37,7 @@ Keep all luum-cognitive-os dependencies current between releases. Covers four di
 | `--apply` | Upgrade Python minor/patch + engram binary if newer. Plugins and Docker are info-only. |
 | `--apply-major` | Same as `--apply` but also applies Python major version bumps (`uv sync --upgrade`). |
 | `--dry-run` | Print the commands that `--apply` would run without executing them. |
+| `--fix-symlinks` | With `--apply`, consolidate extra `engram` PATH entries to the brew canonical binary. |
 
 ## Output
 
@@ -100,7 +101,7 @@ Runs `uv sync --upgrade` which includes major version bumps. Review the changelo
 ### Step 4: Handle plugins and Docker manually
 
 - **Plugins**: Claude Code UI → Settings → Plugins → Update for any flagged plugin.
-- **Docker**: Review any digest changes noted by the script. Update digest pins in `docker-compose*.yml` after manual testing.
+- **Docker**: Review any digest changes or pull failures noted by the script. Update digest pins in `docker-compose*.yml` after manual testing.
 
 ## Dependencies
 
@@ -121,6 +122,7 @@ Missing tools cause per-dimension SKIP messages; the script does not fail.
 - NEVER upgrades plugins automatically — Claude Code UI manages plugin lifecycle.
 - Major Python bumps require explicit `--major` flag — no surprises.
 - `uv.lock` is rewritten only in `--apply` mode (by uv itself, not the script).
+- Docker pull failures are warnings in `--apply`; they do not abort Python/engram maintenance.
 - Before any binary swap, the existing binary is backed up to `<path>.v<old-version>.bak`.
 
 ## Engram: Brew-First Upgrade Flow
@@ -224,7 +226,7 @@ bash scripts/deps-update.sh --apply --fix-symlinks
 
 1. `bash scripts/deps-update.sh --audit` exits 0 in <60s without side effects and prints the summary.
 2. `bash scripts/deps-update.sh --dry-run` prints lines containing `would run:` without executing.
-3. `bash scripts/deps-update.sh --apply` upgrades Python minor/patch and engram; prints MANUAL for major bumps.
+3. `bash scripts/deps-update.sh --apply` upgrades Python minor/patch and engram; prints MANUAL for major bumps and does not abort on Docker pull failures.
 4. Skill passes `uv run pytest tests/audit/test_skills_contracts.py -k deps-update`.
 5. `validate-release/SKILL.md` references the audit call as an advisory step.
 

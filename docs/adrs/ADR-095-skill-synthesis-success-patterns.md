@@ -66,7 +66,7 @@ What is NOT directly portable:
 
 | Stream | Schema fields relevant to pattern detection |
 |--------|----------------------------------------------|
-| `tool-sequences.jsonl` | `timestamp`, `session_id`, `task_id`, `tool`, `args_hash`, `success` |
+| `tool-sequences.jsonl` | `timestamp`, `session_id`, `task_id`, `tool`, `args_hash`, `success`; Bash rows also include redacted `command_hash`, `command_family`, and capped `command_preview` |
 | `skill-feedback.jsonl` | `skill`, `success` (boolean) |
 | `session-learnings.jsonl` | `skills_total`, `skills_success`, `skills_failed`, `failed_skills` |
 | `prompt-captures.jsonl` | `classification`, `prompt` (user intent captured by `prompt_classifier`) |
@@ -87,7 +87,9 @@ instrumentation hook (`hooks/tool-sequence-capture.sh`) in addition to the
 synthesis library.
 
 Only successful tool invocations (`"success": true`) contribute to pattern
-counts — failed calls are filtered out to reduce noise.
+counts — failed calls are filtered out to reduce noise. Bash rows preserve a
+redacted command shape so bypass analysis can distinguish `brew`, `pip`, `git`,
+and similar primitives without storing raw secrets or full command text.
 
 ### Chosen defaults (binding)
 
@@ -150,7 +152,7 @@ path to promote a draft to `skills/<name>/`. Auto-promotion is never automatic
 | `skills/synthesize-skill/SKILL.md` | Operator skill — review/accept/reject/defer synthesis proposals |
 | `skills/experimental/` | Directory for auto-drafted experimental skills |
 | `tests/unit/test_skill_synthesizer.py` | 22 unit tests for `lib/skill_synthesizer.py` |
-| `tests/unit/test_tool_sequence_capture.py` | 11 unit tests for `hooks/tool-sequence-capture.sh` |
+| `tests/unit/test_tool_sequence_capture.py` | 13 unit tests for `hooks/tool-sequence-capture.sh`, including Bash command-shape redaction |
 
 ### Metric streams written
 

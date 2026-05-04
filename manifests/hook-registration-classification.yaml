@@ -219,11 +219,6 @@ entries:
   rationale: Registration checks are CI/manual audits; running before Agent would
     be noisy.
   next_action: Keep manual; this classification test covers default drift.
-- path: hooks/release-guard.sh
-  status: candidate_promote
-  rationale: Manual release blocking is valuable but currently not in canonical projection.
-  next_action: Decide whether to register PreToolUse Bash or move fully into cos release/pre-commit
-    policy.
 - path: hooks/resource-check.sh
   status: candidate_promote
   rationale: Budget/resource preflight could protect Agent launches but may overlap
