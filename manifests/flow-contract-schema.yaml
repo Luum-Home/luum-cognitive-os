@@ -1,0 +1,104 @@
+schema_version: 1
+policy: >-
+  Every cloud flow primitive declares its contract before it ships. The
+  contract makes the flow's promises and limits machine-checkable. A flow
+  whose contract is missing fields, contradictory, or inconsistent with
+  ADR-137's framing-exercise statement is rejected at registration.
+owner_adr: ADR-138
+schema_lifecycle: exemplary
+promotion_rule: >-
+  Promote this schema to shared only after a second flow registers against it
+  without modification. Extensions before that point require a follow-up ADR.
+required_fields:
+  - flow_id
+  - lifecycle_state
+  - owner
+  - registered_on
+  - input_source
+  - success_condition
+  - sandboxed_write_paths
+  - blocked_actions
+  - human_approval_required
+  - evidence_shape
+  - framing_exercise_statement
+  - non_goals
+  - falsifiable_when
+  - credential_source
+  - billing_identity
+  - provider_capabilities
+  - engram_project_scope
+  - air_gapped_compatible
+  - tenant_id
+  - audit_class
+enums:
+  lifecycle_state:
+    - lab
+    - sandbox
+    - advisory
+    - blocking
+    - default-on
+    - demoted
+    - archived
+    - deleted
+  input_source_type:
+    - cve-feed
+    - semgrep
+    - dependabot
+    - issue
+    - pr-comment
+    - manual
+    - other
+  input_source_determinism:
+    - deterministic
+    - best-effort
+  evidence_transport:
+    - pr
+    - cos-engram-import-propose
+    - file-drop
+    - other
+  framing_axis_value:
+    - yes
+    - no
+    - partial
+  credential_source:
+    - byok-maintainer
+    - byok-project
+    - proxied
+  provider_capabilities:
+    - text-completion
+    - code-generation
+    - tool-calling
+    - embeddings
+    - web-research
+    - vulnerability-analysis
+    - repository-editing
+  audit_class:
+    - access_control
+    - change_management
+    - availability
+    - processing_integrity
+    - confidentiality
+    - privacy
+    - sync
+required_blocked_actions:
+  - auto_merge
+  - auto_promote_core_or_team
+  - invent_evidence
+  - bypass_governance_gate
+  - direct_main_push
+required_evidence_flags:
+  - maintainer_owned
+  - same_machine
+  - same_repo
+  - self_reported
+required_framing_axes:
+  - boots_cos_init
+  - uses_native_engram_client
+  - dispatches_through_configured_providers
+  - hooks_fire_natively
+  - session_lifecycle_handled
+protected_write_roots:
+  - manifests
+  - rules
+  - docs/adrs
+  - .cognitive-os/runtime
