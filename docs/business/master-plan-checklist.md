@@ -178,6 +178,7 @@
 - [x] Audit/contract lane recovery is documented in [ADR-103](../adrs/ADR-103-audit-contract-lane-recovery.md) and [Audit and Contract Lane Recovery Plan](../../.cognitive-os/plans/architecture/audit-contract-lane-recovery-plan.md), with deterministic docs debt fixed before the parallel flip.
 - [x] Validation capsules are documented and implemented in [ADR-109](../adrs/ADR-109-validation-capsule-worktree-isolation.md), [Validation Capsule](../architecture/validation-capsule.md), and `scripts/cos-validation-capsule.sh`, separating release validation from the global hook killswitch.
 - [ ] Adopt ADR-111 concurrency safety core/consumer boundary and keep primitive tests green (`docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md`).
+- [ ] Execute the remaining ADR implementation backlog in [Session Handoff — 2026-05-04](../SESSION-HANDOFF-2026-05-04.md): ADR-138 flow schema first, first lab flow second, cloud premises third, then ADR-106/117/concurrency/doc-drift closure.
 
 - [x] ADR-119 session filesystem reaper archives stale clean session directories, preserves pending content, and emits aggregate session-volume alarms.
 - [x] Boring Reliability Control Plane is documented in [Boring Reliability Control Plane](../architecture/boring-reliability-control-plane.md), with profile, preamble, default-visible, false-positive, WIP safety, recovery drill, runtime reality, and dashboard CLIs covered by unit tests.
