@@ -2010,3 +2010,11 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
+- path: hooks/skill-router-bash-gate.sh
+  max_occurrences: 2
+  degradation_class: optional_dependency
+  rationale: Skill-router suggestions are best-effort; the hard dependency-upgrade block runs before the optional Python catalog lookup, and missing router/catalog support must not block unrelated Bash commands.
+  owner: original-maintainer
+  reviewed_on: '2026-05-04'
+  transferability_state: documented_classification
+  shape_b_action: 'Shape A acceptable: deterministic dependency-upgrade blocking remains hard; advisory catalog suggestions may degrade silently until a portable skill-router service exists.'
