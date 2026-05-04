@@ -1543,7 +1543,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 12,
+        "doc": 11,
         "rule": 2,
         "skill": 4,
         "test": 2
@@ -1576,10 +1576,6 @@
         {
           "family": "doc",
           "path": "docs/getting-started.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/ide-compatibility.md"
         },
         {
           "family": "doc",
@@ -1635,7 +1631,7 @@
         "skill_consumers:4",
         "rule_consumers:2",
         "test_consumers:2",
-        "doc_consumers:12"
+        "doc_consumers:11"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1645,7 +1641,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 20
+      "total_consumers": 19
     },
     {
       "confidence": "high",

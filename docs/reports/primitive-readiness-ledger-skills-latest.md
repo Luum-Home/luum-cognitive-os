@@ -30,7 +30,7 @@ Consumer accessibility: repo-skill-not-projectable:86, so-local-only:4
 | `skills/code-review/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 29 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/cognitive-os-init/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 33 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/cognitive-os-status/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 20 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/cognitive-os-test/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 20 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/cognitive-os-test/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 19 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/compat-test/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/component-classifier/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/component-reality-check/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 3 | add lifecycle/package/projection metadata or keep SO-local |

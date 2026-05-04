@@ -51,7 +51,7 @@
         "aspirational": 38,
         "coverage_pct": 54.3,
         "dormant": 160,
-        "generated_at": "2026-05-04T22:27:43Z",
+        "generated_at": "2026-05-04T22:40:19Z",
         "mapped": 268,
         "metadata": 56,
         "on_demand": 287,
@@ -78,7 +78,7 @@
       "source": "docs_execution",
       "status": "ok",
       "summary": {
-        "items": 2612,
+        "items": 2634,
         "json": "<repo-root>/docs/reports/docs-execution-latest.json",
         "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"
       }
@@ -103,7 +103,7 @@
           },
           "docs/README.md": {
             "done_weak_proof": 13,
-            "planned": 14,
+            "planned": 15,
             "proposed": 4
           },
           "docs/RED-TEAM-CHANGELOG.md": {
@@ -831,6 +831,11 @@
             "done_with_proof": 1,
             "proposed": 1
           },
+          "docs/adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md": {
+            "done_weak_proof": 3,
+            "planned": 4,
+            "proposed": 1
+          },
           "docs/adrs/README.md": {
             "planned": 1
           },
@@ -1233,10 +1238,12 @@
             "proposed": 1
           },
           "docs/architecture/service-control-plane-implementation-plan.md": {
+            "done_weak_proof": 1,
             "planned": 2
           },
           "docs/architecture/service-control-plane-research-2026-05-04.md": {
-            "proposed": 5
+            "planned": 1,
+            "proposed": 6
           },
           "docs/architecture/session-filesystem-reaper.md": {
             "planned": 1
@@ -1319,7 +1326,7 @@
           },
           "docs/business/master-plan-checklist.md": {
             "done_weak_proof": 65,
-            "done_with_proof": 69,
+            "done_with_proof": 70,
             "planned": 10
           },
           "docs/business/master-plan-execution-requirements.md": {
@@ -1406,7 +1413,8 @@
             "done_weak_proof": 1
           },
           "docs/ide-compatibility.md": {
-            "done_weak_proof": 2
+            "done_with_proof": 1,
+            "planned": 1
           },
           "docs/identity-stack.md": {
             "done_weak_proof": 1,
@@ -1438,6 +1446,11 @@
           },
           "docs/manual-tests/agent-capability-coverage-pipeline.md": {
             "done_weak_proof": 1
+          },
+          "docs/manual-tests/ai-agent-harness-landscape-review.md": {
+            "done_weak_proof": 1,
+            "done_with_proof": 2,
+            "proposed": 5
           },
           "docs/manual-tests/closure-discipline.md": {
             "done_weak_proof": 3
@@ -1489,7 +1502,7 @@
           },
           "docs/manual-tests/service-control-plane-proof-drills.md": {
             "done_weak_proof": 2,
-            "planned": 6,
+            "planned": 7,
             "proposed": 1
           },
           "docs/manual-tests/shell-ci-formal-harness.md": {
@@ -1724,12 +1737,12 @@
             "planned": 1
           }
         },
-        "items": 2612,
+        "items": 2634,
         "statuses": {
-          "done_weak_proof": 1088,
-          "done_with_proof": 212,
-          "planned": 1031,
-          "proposed": 281
+          "done_weak_proof": 1091,
+          "done_with_proof": 216,
+          "planned": 1039,
+          "proposed": 288
         }
       }
     },
@@ -1849,7 +1862,7 @@
           "exact-copy": 1,
           "python-function-repeat": 40
         },
-        "files_scanned": 718,
+        "files_scanned": 719,
         "findings": 49
       }
     },
@@ -1902,13 +1915,13 @@
           },
           {
             "aspirational_signal": 0,
-            "evidence": "mcp-mentioned-files=223 test-mentioned-files=105; actionable_gaps=0",
+            "evidence": "mcp-mentioned-files=225 test-mentioned-files=106; actionable_gaps=0",
             "family": "mcp_tools",
             "next_action": "separate installed/optional/reference-only integrations before promotion",
-            "partial_signal": 118,
-            "proven_signal": 105,
+            "partial_signal": 119,
+            "proven_signal": 106,
             "severity": "low",
-            "total": 223
+            "total": 225
           },
           {
             "aspirational_signal": 0,
@@ -1932,23 +1945,23 @@
           },
           {
             "aspirational_signal": 0,
-            "evidence": "test_py=772 audit-contract-quality=43; actionable_gaps=0",
+            "evidence": "test_py=773 audit-contract-quality=43; actionable_gaps=0",
             "family": "tests_quality_gates",
             "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
-            "partial_signal": 729,
+            "partial_signal": 730,
             "proven_signal": 43,
             "severity": "low",
-            "total": 772
+            "total": 773
           },
           {
             "aspirational_signal": 0,
-            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=212 mapped_claims=412",
+            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=216 mapped_claims=412",
             "family": "docs_adrs",
             "next_action": "no hard docs gaps; improve weak proof opportunistically",
-            "partial_signal": 2400,
-            "proven_signal": 624,
+            "partial_signal": 2418,
+            "proven_signal": 628,
             "severity": "low",
-            "total": 3024
+            "total": 3046
           }
         ],
         "hook_latency": {
@@ -1958,7 +1971,7 @@
           "p95_ms": 1622
         },
         "overall_risk": "high",
-        "timestamp": "2026-05-04T22:28:53.424160+00:00"
+        "timestamp": "2026-05-04T22:41:29.033076+00:00"
       }
     },
     "projection_profiles": {
@@ -2307,7 +2320,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:26",
+        "doc_consumers:28",
         "config_consumers:1",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -3802,7 +3815,7 @@
         "skill_consumers:55",
         "test_consumers:312",
         "hook_consumers:68",
-        "doc_consumers:407",
+        "doc_consumers:408",
         "rule_consumers:42",
         "config_consumers:28",
         "script_consumers:192",
@@ -10808,7 +10821,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "override_rationale",
-        "doc_consumers:4",
+        "doc_consumers:3",
         "config_consumers:2",
         "role_source:override",
         "consumer_accessibility:so-local-only",
@@ -15213,7 +15226,7 @@
         "rule_consumers:6",
         "script_consumers:19",
         "test_consumers:31",
-        "doc_consumers:48",
+        "doc_consumers:49",
         "config_consumers:2",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -15493,7 +15506,7 @@
         "rule_consumers:2",
         "script_consumers:28",
         "test_consumers:76",
-        "doc_consumers:88",
+        "doc_consumers:89",
         "config_consumers:4",
         "role_source:default",
         "consumer_accessibility:so-local-only",
@@ -25094,7 +25107,7 @@
         "skill_consumers:4",
         "rule_consumers:2",
         "test_consumers:2",
-        "doc_consumers:12",
+        "doc_consumers:11",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
         "availability_override:so-local-only",
@@ -39582,7 +39595,7 @@
     },
     "warnings": []
   },
-  "generated_at": "2026-05-04T22:29:02Z",
+  "generated_at": "2026-05-04T22:41:38Z",
   "harness_projection": {
     "claude": {
       "display_name": "Claude Code",
