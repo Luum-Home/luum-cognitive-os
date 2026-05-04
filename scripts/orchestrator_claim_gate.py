@@ -181,10 +181,17 @@ def scoped_claim_text(text: str) -> str:
     Commit bodies and push ranges often contain examples, changelog prose, or
     implementation descriptions with words like "wired" or "archived". Treating
     the whole body as an agent claim produced false positives. ADR-133 moves the
-    commit-boundary gate to scoped semantic lines: RESULT:, STATUS:, or explicit
-    "done <number> <noun>" completion claims.
+    commit-boundary gate to scoped semantic lines: RESULT:, STATUS:, explicit
+    "done <number> <noun>" completion claims, or the commit subject itself.
+    The subject is still a user-facing high-stakes claim, so
+    ``git commit -m "archived hooks/foo.sh"`` must be verified, while body prose
+    below the subject is ignored unless it opts into a scoped claim line.
     """
-    lines = [line for line in text.splitlines() if SCOPED_CLAIM_LINE.search(line)]
+    raw_lines = text.splitlines()
+    lines = [line for line in raw_lines if SCOPED_CLAIM_LINE.search(line)]
+    first_nonempty = next((line for line in raw_lines if line.strip()), "")
+    if first_nonempty and first_nonempty not in lines:
+        lines.insert(0, first_nonempty)
     return "\n".join(lines)
 
 
