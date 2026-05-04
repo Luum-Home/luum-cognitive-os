@@ -149,6 +149,36 @@ class TestToolSequenceCaptureOutput:
         hashes = [json.loads(l)["args_hash"] for l in lines]
         assert hashes[0] != hashes[1]
 
+    def test_bash_command_shape_is_captured_without_raw_secret(self, tmp_path: Path) -> None:
+        _, _, _, target = _run_hook(
+            tmp_path,
+            tool_name="Bash",
+            tool_input={
+                "command": "API_TOKEN=supersecret brew upgrade engram --password hunter2",
+            },
+        )
+        record = json.loads(target.read_text().strip())
+
+        assert record["command_family"] == "brew"
+        assert len(record["command_hash"]) == 8
+        assert all(c in "0123456789abcdef" for c in record["command_hash"])
+        assert "brew upgrade engram" in record["command_preview"]
+        assert "supersecret" not in record["command_preview"]
+        assert "hunter2" not in record["command_preview"]
+        assert "[REDACTED]" in record["command_preview"]
+
+    def test_non_bash_tools_do_not_capture_command_preview(self, tmp_path: Path) -> None:
+        _, _, _, target = _run_hook(
+            tmp_path,
+            tool_name="Read",
+            tool_input={"file_path": "README.md"},
+        )
+        record = json.loads(target.read_text().strip())
+
+        assert "command_hash" not in record
+        assert "command_family" not in record
+        assert "command_preview" not in record
+
 
 class TestToolSequenceCaptureLatency:
     def test_p95_latency_under_30ms(self, tmp_path: Path) -> None:
