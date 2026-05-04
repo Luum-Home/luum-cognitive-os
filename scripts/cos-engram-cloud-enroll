@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# PURPOSE: Enroll a project-scoped Engram Cloud sync target without leaking tokens.
+set -euo pipefail
+
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+SERVER="${ENGRAM_CLOUD_SERVER:-http://127.0.0.1:8080}"
+PROJECT_SCOPE="${ENGRAM_PROJECT_SCOPE:-${COGNITIVE_OS_PROJECT:-}}"
+ROTATE=0
+UPGRADE=0
+DRY_RUN=0
+JSON_OUT=0
+EMIT_ENV=0
+
+usage() {
+  cat <<'EOF'
+Usage: scripts/cos-engram-cloud-enroll [--server URL] [--project SCOPE] [--rotate] [--upgrade] [--emit-env] [--dry-run] [--json]
+
+Project-scoped wrapper around `engram cloud config/enroll/upgrade`.
+No token values are printed. ENGRAM_CLOUD_TOKEN stays in the environment.
+EOF
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --server) SERVER="${2:-}"; shift 2 ;;
+    --project|--scope) PROJECT_SCOPE="${2:-}"; shift 2 ;;
+    --rotate) ROTATE=1; shift ;;
+    --upgrade) UPGRADE=1; shift ;;
+    --emit-env) EMIT_ENV=1; shift ;;
+    --dry-run) DRY_RUN=1; shift ;;
+    --json) JSON_OUT=1; shift ;;
+    --help|-h) usage; exit 0 ;;
+    *) echo "Unknown option: $1" >&2; usage >&2; exit 2 ;;
+  esac
+done
+
+if [ -z "$PROJECT_SCOPE" ]; then
+  if [ -d "$PROJECT_DIR/.git" ]; then
+    remote="$(git -C "$PROJECT_DIR" remote get-url origin 2>/dev/null || true)"
+    [ -n "$remote" ] && PROJECT_SCOPE="$(basename "$remote" .git)"
+  fi
+fi
+[ -z "$PROJECT_SCOPE" ] && PROJECT_SCOPE="$(basename "$PROJECT_DIR")"
+
+RUNTIME_DIR="${COGNITIVE_OS_RUNTIME_DIR:-$PROJECT_DIR/.cognitive-os/runtime}"
+AUDIT_TRAIL="$RUNTIME_DIR/agent-audit-trail.jsonl"
+
+json_string() {
+  python3 -c 'import json,sys; print(json.dumps(sys.argv[1]))' "$1"
+}
+
+write_audit() {
+  local event="$1"
+  local outcome="$2"
+  mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
+  printf '{"timestamp":"%s","event":%s,"outcome":%s,"tenant_id":%s,"audit_class":"sync","engram_project_scope":%s,"sync_mode":"engram-cloud","server":%s,"token_present":%s}\n' \
+    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+    "$(json_string "$event")" \
+    "$(json_string "$outcome")" \
+    "$(json_string "${TENANT_ID:-${PROJECT_SCOPE}-enroll}")" \
+    "$(json_string "$PROJECT_SCOPE")" \
+    "$(json_string "$SERVER")" \
+    "$([ -n "${ENGRAM_CLOUD_TOKEN:-}" ] && echo true || echo false)" \
+    >> "$AUDIT_TRAIL" 2>/dev/null || true
+}
+
+emit_json() {
+  python3 - "$@" <<'PY'
+import json
+import sys
+keys = ["status", "server", "project_scope", "dry_run", "rotate", "upgrade", "token_present"]
+print(json.dumps(dict(zip(keys, sys.argv[1:])), sort_keys=True))
+PY
+}
+
+if [ "$DRY_RUN" = "1" ]; then
+  write_audit "engram-cloud-enroll-dry-run" "pass"
+  if [ "$JSON_OUT" = "1" ]; then
+    emit_json dry-run "$SERVER" "$PROJECT_SCOPE" true "$ROTATE" "$UPGRADE" "$([ -n "${ENGRAM_CLOUD_TOKEN:-}" ] && echo true || echo false)"
+  else
+    echo "engram cloud enroll dry-run ok for project scope: $PROJECT_SCOPE"
+  fi
+  exit 0
+fi
+
+if ! command -v engram >/dev/null 2>&1; then
+  write_audit "engram-cloud-enroll-skipped" "engram-not-found"
+  echo "engram binary not found" >&2
+  exit 78
+fi
+
+engram cloud config --server "$SERVER"
+if [ "$UPGRADE" = "1" ]; then
+  engram cloud upgrade
+fi
+
+enroll_args=("$PROJECT_SCOPE")
+if [ "$ROTATE" = "1" ]; then
+  enroll_args+=("--rotate")
+fi
+engram cloud enroll "${enroll_args[@]}"
+
+write_audit "engram-cloud-enroll-completed" "pass"
+
+if [ "$EMIT_ENV" = "1" ]; then
+  printf 'ENGRAM_CLOUD_SERVER=%s\n' "$SERVER"
+  printf 'ENGRAM_PROJECT_SCOPE=%s\n' "$PROJECT_SCOPE"
+  printf 'ENGRAM_CLOUD_AUTOSYNC=1\n'
+fi
+if [ "$JSON_OUT" = "1" ]; then
+  emit_json pass "$SERVER" "$PROJECT_SCOPE" false "$ROTATE" "$UPGRADE" "$([ -n "${ENGRAM_CLOUD_TOKEN:-}" ] && echo true || echo false)"
+else
+  echo "engram cloud enrollment completed for project scope: $PROJECT_SCOPE"
+fi

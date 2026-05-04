@@ -16,12 +16,17 @@ json_string() {
 write_audit() {
   local event="$1"
   local detail="$2"
-  printf '{"timestamp":"%s","event":%s,"detail":%s,"harness":%s,"project_dir":%s}\n' \
+  printf '{"timestamp":"%s","event":%s,"detail":%s,"harness":%s,"project_dir":%s,"tenant_id":%s,"audit_class":%s,"credential_source":%s,"billing_identity":%s,"engram_project_scope":%s}\n' \
     "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
     "$(json_string "$event")" \
     "$(json_string "$detail")" \
     "$(json_string "${COGNITIVE_OS_HARNESS:-barecli}")" \
     "$(json_string "$PROJECT_DIR")" \
+    "$(json_string "${TENANT_ID:-${COGNITIVE_OS_SESSION_ID:-cos-worker}}")" \
+    "$(json_string "${AUDIT_CLASS:-change_management}")" \
+    "$(json_string "${CREDENTIAL_SOURCE:-byok-project}")" \
+    "$(json_string "${BILLING_IDENTITY:-cos-worker-local}")" \
+    "$(json_string "${ENGRAM_PROJECT_SCOPE:-luum-agent-os}")" \
     >> "$AUDIT_TRAIL"
 }
 

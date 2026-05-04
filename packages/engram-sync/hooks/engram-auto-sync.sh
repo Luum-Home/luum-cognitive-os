@@ -22,8 +22,13 @@ if [ ! -x "$SYNC_SCRIPT" ]; then
   exit 0
 fi
 
-# Export observations
+# Export observations through the existing git-jsonl path first. ADR-141 cloud
+# sync is additive, never a replacement for this local/offline export.
 "$SYNC_SCRIPT" >/dev/null 2>&1 || true
+
+if [ "${ENGRAM_CLOUD_AUTOSYNC:-0}" = "1" ]; then
+  "$SYNC_SCRIPT" --cloud >/dev/null 2>&1 || true
+fi
 
 # Stage and commit if there are changes
 cd "$PROJECT_DIR"

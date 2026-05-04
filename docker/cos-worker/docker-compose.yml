@@ -32,3 +32,36 @@ services:
     volumes:
       - ${COS_WORKSPACE:-../..}:/workspace
     command: ["bash", "-lc", "command -v engram >/dev/null 2>&1 && exec engram serve \"$$ENGRAM_PORT\" || { echo 'engram binary not installed in worker image; mount/provide it before enabling profile' >&2; exit 78; }"]
+
+  cos-engram-cloud-db:
+    profiles: ["engram-cloud"]
+    image: ${ENGRAM_CLOUD_DB_IMAGE:-pgvector/pgvector:pg16}
+    environment:
+      POSTGRES_DB: ${ENGRAM_CLOUD_DB:-engram}
+      POSTGRES_USER: ${ENGRAM_CLOUD_DB_USER:-engram}
+      POSTGRES_PASSWORD: ${ENGRAM_CLOUD_DB_PASSWORD:-engram-local}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  cos-engram-cloud:
+    profiles: ["engram-cloud"]
+    image: ${ENGRAM_CLOUD_IMAGE:-ghcr.io/gentleman-programming/engram:latest}
+    depends_on:
+      cos-engram-cloud-db:
+        condition: service_healthy
+    working_dir: /workspace
+    environment:
+      COGNITIVE_OS_PROJECT_DIR: /workspace
+      COGNITIVE_OS_RUNTIME_DIR: /workspace/.cognitive-os/runtime
+      ENGRAM_DATABASE_URL: postgres://${ENGRAM_CLOUD_DB_USER:-engram}:${ENGRAM_CLOUD_DB_PASSWORD:-engram-local}@cos-engram-cloud-db:5432/${ENGRAM_CLOUD_DB:-engram}?sslmode=disable
+      ENGRAM_CLOUD_HOST: 0.0.0.0
+      ENGRAM_CLOUD_ALLOWED_PROJECTS: ${ENGRAM_CLOUD_ALLOWED_PROJECTS:-luum-agent-os}
+      ENGRAM_CLOUD_INSECURE_NO_AUTH: ${ENGRAM_CLOUD_INSECURE_NO_AUTH:-1}
+    ports:
+      - "${ENGRAM_CLOUD_PORT:-8080}:8080"
+    volumes:
+      - ${COS_WORKSPACE:-../..}:/workspace
+    command: ["engram", "cloud", "serve"]
