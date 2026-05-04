@@ -1,11 +1,17 @@
 ---
 adr: 139
 title: Account-Agnostic Multi-Provider Runtime
-status: accepted
+status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null
-implementation_files: []
+implementation_files:
+  - manifests/flow-contract-schema.yaml
+  - scripts/cos-flow-register.sh
+  - scripts/cos_flow_register.py
+  - scripts/cos-engram-cloud-enroll
+  - docker/cos-worker/docker-compose.yml
+  - tests/audit/test_adr_139_141_142_cloud_surfaces.py
 tier: maintainer
 tags: [security, provider, byok, billing, credentials, license-policy, cloud-flows]
 ---
@@ -14,7 +20,7 @@ tags: [security, provider, byok, billing, credentials, license-policy, cloud-flo
 
 ## Status
 
-**Accepted** as the credential and billing posture for all COS runtime surfaces — local maintainer, cloud worker, and ephemeral sandbox.
+**Accepted — Implemented** as the credential and billing posture for all COS runtime surfaces — local maintainer, cloud worker, and ephemeral sandbox.
 
 ## Context
 
@@ -170,6 +176,13 @@ provider_capabilities:
 ## Verification
 
 ```bash
-python3 -m pytest tests/audit/test_adr_contracts.py -q
+python3 -m pytest tests/audit/test_adr_139_141_142_cloud_surfaces.py tests/audit/test_flow_contract_schema.py -q
 ```
 
+## Implementation Evidence
+
+- Implemented in `manifests/flow-contract-schema.yaml`: flow contracts require `credential_source`, `billing_identity`, and `provider_capabilities`.
+- Implemented in `scripts/cos-flow-register.sh` and `scripts/cos_flow_register.py`: registration rejects missing or unsupported account/billing/provider declarations.
+- Implemented in `docker/cos-worker/docker-compose.yml`: worker and Engram Cloud surfaces use generic provider-key names (`LLM_PRIMARY_API_KEY`, `LLM_FALLBACK_API_KEY`) instead of vendor-branded variables.
+- Implemented in `scripts/cos-engram-cloud-enroll`: Engram Cloud enrollment uses project-scoped Engram variables and does not print or embed token values.
+- Validated by `tests/audit/test_flow_contract_schema.py` and `tests/audit/test_adr_139_141_142_cloud_surfaces.py`.

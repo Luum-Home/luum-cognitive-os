@@ -1,11 +1,16 @@
 ---
 adr: 142
 title: Compliance, Audit, and Air-Gapped Surface (SOC 2 / ISO 27001 / GDPR)
-status: accepted
+status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null
-implementation_files: []
+implementation_files:
+  - scripts/cos-audit-archive
+  - docs/architecture/gdpr-erasure-procedure.md
+  - docker/cos-worker/entrypoint.sh
+  - tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py
+  - tests/audit/test_adr_139_141_142_cloud_surfaces.py
 tier: maintainer
 tags: [security, compliance, audit, air-gap, gdpr, soc2, iso27001, cloud-flows, tenant-isolation]
 ---
@@ -14,7 +19,7 @@ tags: [security, compliance, audit, air-gap, gdpr, soc2, iso27001, cloud-flows, 
 
 ## Status
 
-**Accepted** as the compliance posture and audit-trail bridge for all COS cloud worker surfaces.
+**Accepted — Implemented** as the compliance posture and audit-trail bridge for all COS cloud worker surfaces.
 
 This ADR does not certify COS for any standard. It names the structural properties that make COS *auditable towards* SOC 2 Type II, ISO 27001, and GDPR, and the constraints that make air-gapped deployment viable. Certification is an operator-level concern; this ADR provides the underlying machinery.
 
@@ -181,6 +186,13 @@ audit_class: access_control|change_management|availability|processing_integrity|
 ## Verification
 
 ```bash
-python3 -m pytest tests/audit/test_adr_contracts.py -q
+python3 -m pytest tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py tests/audit/test_adr_139_141_142_cloud_surfaces.py tests/audit/test_flow_contract_schema.py -q
 ```
 
+## Implementation Evidence
+
+- Implemented in `docker/cos-worker/entrypoint.sh`: cloud-worker audit rows carry `tenant_id`, `audit_class`, credential source, billing identity, and Engram project scope.
+- Implemented in `scripts/cos-engram-cloud-enroll` and `scripts/engram-sync.sh`: Engram Cloud enrollment/sync rows use `audit_class: sync` and `tenant_id`.
+- Implemented in `scripts/cos-audit-archive`: old audit rows are copied into gzip archives without truncating or deleting the source JSONL.
+- Implemented in `docs/architecture/gdpr-erasure-procedure.md`: GDPR erasure workflow and required privacy audit row shape.
+- Validated by `tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py`, `tests/audit/test_adr_139_141_142_cloud_surfaces.py`, and `tests/audit/test_flow_contract_schema.py`.
