@@ -4,13 +4,14 @@
 # deps-update.sh — Audit and optionally upgrade project dependencies
 #
 # Usage:
-#   bash scripts/deps-update.sh [--audit] [--apply [--major]] [--dry-run]
+#   bash scripts/deps-update.sh [--audit] [--apply [--major] [--fix-symlinks]] [--dry-run]
 #
 # Modes:
 #   --audit    (default) Read-only report of current vs latest. Exit 0 always.
 #   --apply             Upgrade safe (minor/patch) deps. Skips major bumps.
 #   --apply --major     Upgrade everything including major bumps.
 #   --dry-run           Print what --apply would do, without executing.
+#   --fix-symlinks      With --apply, consolidate extra engram PATH entries to brew.
 #
 # SCOPE: os-only
 
@@ -21,6 +22,7 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MODE="audit"
 ALLOW_MAJOR=false
 DRY_RUN=false
+FIX_SYMLINKS=false
 
 # ── Parse args ─────────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
@@ -29,6 +31,7 @@ while [[ $# -gt 0 ]]; do
     --audit)   MODE="audit" ;;
     --major)   ALLOW_MAJOR=true ;;
     --dry-run) DRY_RUN=true ; MODE="apply" ;;
+    --fix-symlinks) FIX_SYMLINKS=true ;;
     *) echo "Unknown option: $1" >&2 ; exit 1 ;;
   esac
   shift
@@ -71,7 +74,7 @@ _run_or_dry() {
 
 echo ""
 _bold "=== Dependency Audit/Update ==="
-echo " Mode: $MODE | allow-major: $ALLOW_MAJOR | dry-run: $DRY_RUN"
+echo " Mode: $MODE | allow-major: $ALLOW_MAJOR | dry-run: $DRY_RUN | fix-symlinks: $FIX_SYMLINKS"
 echo " Repo: $REPO_ROOT"
 echo ""
 
@@ -156,10 +159,10 @@ print('MAJOR=' + ' '.join(major_skip))
           SAFE_ARGS=$(echo "$SAFE_LIST" | tr ' ' '\n' | sed 's/^/--upgrade-package /' | tr '\n' ' ')
           echo "  [apply] Upgrading minor/patch packages..."
           if $DRY_RUN; then
-            echo "  would run: uv sync $SAFE_ARGS"
+            echo "  would run: uv sync --extra dev $SAFE_ARGS"
           else
             # shellcheck disable=SC2086
-            uv sync $SAFE_ARGS
+            uv sync --extra dev $SAFE_ARGS
           fi
           PY_UPGRADED=$(echo "$SAFE_LIST" | tr ' ' '\n' | grep -c '[a-z]' || true)
         else
@@ -196,12 +199,30 @@ _engram_warn_multipath() {
   ALL_PATHS=$(which -a engram 2>/dev/null || true)
   PATH_COUNT=$(echo "$ALL_PATHS" | grep -c 'engram' || true)
   if [ "$PATH_COUNT" -gt 1 ]; then
+    BREW_CANONICAL=$(command -v brew &>/dev/null && brew --prefix 2>/dev/null || echo "")
+    BREW_ENGRAM="${BREW_CANONICAL}/bin/engram"
+    if [ -n "$BREW_CANONICAL" ] && [ -e "$BREW_ENGRAM" ]; then
+      BREW_REAL=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$BREW_ENGRAM" 2>/dev/null || printf '%s' "$BREW_ENGRAM")
+      CONFLICT=false
+      while IFS= read -r p; do
+        [ -z "$p" ] && continue
+        P_REAL=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$p" 2>/dev/null || printf '%s' "$p")
+        if [ "$P_REAL" != "$BREW_REAL" ]; then
+          CONFLICT=true
+        fi
+      done <<< "$ALL_PATHS"
+      if ! $CONFLICT; then
+        _green "  OK: multiple engram PATH entries all resolve to brew canonical"
+        echo ""
+        return 0
+      fi
+    fi
+
     _yellow "  WARNING: engram found in multiple PATH locations (3-paths trap):"
     echo ""
     echo "$ALL_PATHS" | while IFS= read -r p; do
       echo "    $p"
     done
-    BREW_CANONICAL=$(command -v brew &>/dev/null && brew --prefix 2>/dev/null || echo "")
     if [ -n "$BREW_CANONICAL" ]; then
       echo "  Recommended: symlink each location to the brew canonical binary to eliminate ambiguity:"
       echo "    ln -sf ${BREW_CANONICAL}/bin/engram ~/.local/bin/engram"
@@ -360,9 +381,10 @@ if [ "$MODE" = "apply" ] && command -v brew &>/dev/null; then
       if [ -f "$extra_path" ] && [ ! -L "$extra_path" ]; then
         if $DRY_RUN; then
           _dry_echo "ln -sf $BREW_ENGRAM $extra_path   # consolidate to brew canonical"
+        elif $FIX_SYMLINKS; then
+          echo "  Linking $extra_path -> $BREW_ENGRAM"
+          ln -sf "$BREW_ENGRAM" "$extra_path"
         fi
-        # Auto-apply symlinks only with explicit opt-in (future: --fix-symlinks flag)
-        # For now, suggest only — don't auto-apply to avoid surprising PATH changes
       fi
     done
   fi
@@ -479,7 +501,12 @@ else
           else
             # Capture old and new digest for comparison
             OLD_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "$image" 2>/dev/null || echo "not-pulled")
-            docker pull "$image" 2>&1 | tail -3
+            if ! docker pull "$image" 2>&1 | tail -3; then
+              _yellow "  WARNING: docker pull failed for $image — manual review required"
+              echo ""
+              DOCKER_CHANGED=$((DOCKER_CHANGED + 1))
+              continue
+            fi
             NEW_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "$image" 2>/dev/null || echo "unknown")
             if [ "$OLD_DIGEST" != "$NEW_DIGEST" ] && [ "$OLD_DIGEST" != "not-pulled" ]; then
               _yellow "  Digest changed: $image"
