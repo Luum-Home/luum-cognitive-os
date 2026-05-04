@@ -63,6 +63,19 @@ def test_demotion_does_not_require_promotion_evidence() -> None:
     assert findings == []
 
 
+def test_candidate_core_or_team_metadata_does_not_require_promotion_evidence() -> None:
+    current = {
+        "primitives": [
+            primitive("scripts/candidate-core", distribution="core", maturity="advisory", state="candidate"),
+            primitive("scripts/candidate-team", distribution="team", maturity="advisory", state="candidate"),
+        ]
+    }
+
+    findings = evaluate({"primitives": []}, current)
+
+    assert findings == []
+
+
 def test_cli_passes_against_current_branch_delta() -> None:
     result = subprocess.run(
         ["python3", str(SCRIPT), "--json"],

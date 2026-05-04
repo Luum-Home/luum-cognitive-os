@@ -25,7 +25,7 @@ PROMOTED_DISTRIBUTIONS = {"core", "team"}
 PROMOTED_STATES = {"blocking", "default-on"}
 PROMOTED_MATURITIES = {"blocking"}
 PROMOTED_RISKS = {"blocking", "mutating", "destructive"}
-INACTIVE_STATES = {"demoted", "archived", "deleted"}
+INACTIVE_STATES = {"candidate", "demoted", "archived", "deleted"}
 
 
 @dataclass(frozen=True)
