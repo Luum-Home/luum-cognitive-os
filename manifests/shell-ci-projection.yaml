@@ -1,0 +1,72 @@
+schema_version: shell-ci-projection.v1
+purpose: Declares shell/CI consumer projection proof for CLI scripts and generated workflows.
+profiles:
+  default:
+    description: Consumer-safe shell/CI command surface.
+    canonical_root: .cognitive-os/scripts/cos
+    driver_root: scripts
+    workflow_root: .github/workflows
+  full:
+    description: Full profile uses the same shell/CI command surface until a larger command set is signed.
+    canonical_root: .cognitive-os/scripts/cos
+    driver_root: scripts
+    workflow_root: .github/workflows
+projection_classes:
+  shell-ci-command:
+    description: Consumer-facing script projected to canonical storage and driver path.
+  shell-ci-workflow:
+    description: Generated CI workflow that exercises projected commands.
+commands:
+  - path: scripts/check_mcp_servers.py
+    class: shell-ci-command
+    executable: true
+  - path: scripts/cos
+    class: shell-ci-command
+    executable: true
+  - path: scripts/cos-coordination-status.sh
+    class: shell-ci-command
+    executable: true
+  - path: scripts/cos-release-check.sh
+    class: shell-ci-command
+    executable: true
+  - path: scripts/cos-smoke.sh
+    class: shell-ci-command
+    executable: true
+  - path: scripts/cos-status.sh
+    class: shell-ci-command
+    executable: true
+  - path: scripts/cos-usage-report.sh
+    class: shell-ci-command
+    executable: true
+  - path: scripts/cos-worktree-triage.sh
+    class: shell-ci-command
+    executable: true
+  - path: scripts/docs_execution_audit.py
+    class: shell-ci-command
+    executable: true
+  - path: scripts/project_scaffold.py
+    class: shell-ci-command
+    executable: true
+  - path: scripts/pytest-with-summary.sh
+    class: shell-ci-command
+    executable: true
+  - path: scripts/run-all-tests.sh
+    class: shell-ci-command
+    executable: true
+  - path: scripts/run-redteam-scenario.sh
+    class: shell-ci-command
+    executable: true
+  - path: scripts/test-all.sh
+    class: shell-ci-command
+    executable: true
+  - path: scripts/test-cognitive-os-full.sh
+    class: shell-ci-command
+    executable: true
+workflows:
+  - id: cognitive-os-shell-ci
+    class: shell-ci-workflow
+    path: .github/workflows/cognitive-os-shell-ci.yml
+    required_commands:
+      - scripts/cos-status.sh
+      - scripts/check_mcp_servers.py
+      - scripts/project_scaffold.py

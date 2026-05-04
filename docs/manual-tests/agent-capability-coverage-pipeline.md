@@ -81,6 +81,11 @@ assert data['summary']['stale_weight'] == 0
 availability = data['adapters']['consumer_availability']
 assert availability['status'] == 'ok'
 assert availability['summary']['statuses']['maintainer-only'] > 0
+shell_ci = data['adapters']['shell_ci_projection']
+assert shell_ci['status'] == 'ok'
+assert shell_ci['summary']['commands'] == 15
+assert data['summary']['partial_weight'] == 0
+assert data['summary']['unverified_weight'] == 0
 PY
 ```
 

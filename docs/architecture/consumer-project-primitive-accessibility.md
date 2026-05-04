@@ -57,6 +57,8 @@ Allowed statuses:
 
 Only `shell-ci-candidate` and `projectable-needs-driver` should remain partial. `maintainer-only` and `so-local-only` are considered aligned when explicitly declared with rationale.
 
+`shell-ci-candidate` rows are resolved by `manifests/shell-ci-projection.yaml` plus `scripts/project_shell_ci.py`. The shell/CI projection path writes canonical command copies under `.cognitive-os/scripts/cos/`, driver symlinks under `scripts/`, and a workflow at `.github/workflows/cognitive-os-shell-ci.yml`.
+
 ## Harness registry
 
 The machine-readable registry is `manifests/harness-projection.yaml`. ACC treats only `status: implemented` harnesses as executable projection proof. Planned harnesses stay visible as `unverified` rather than silently disappearing or being implied by Claude/Codex support.

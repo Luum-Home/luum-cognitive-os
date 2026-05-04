@@ -147,20 +147,11 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 2,
         "script": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "script",
           "path": "scripts/generate_compact_catalog.py"
@@ -178,8 +169,7 @@
       "evidence": [
         "skill_consumers:1",
         "script_consumers:1",
-        "test_consumers:1",
-        "doc_consumers:2"
+        "test_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -189,26 +179,18 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 3
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 3,
+        "doc": 1,
         "script": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/architecture/cross-tool-task-recovery-research-2026-05.md"
@@ -226,7 +208,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -236,27 +218,19 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 3
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 7,
+        "doc": 5,
         "rule": 1,
         "script": 1,
         "test": 4
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -307,7 +281,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:4",
-        "doc_consumers:7"
+        "doc_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -317,7 +291,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -325,20 +299,12 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 7
+        "doc": 5
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/reduction-demotions.json"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -363,7 +329,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:7",
+        "doc_consumers:5",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -374,27 +340,19 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 6
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 7,
+        "doc": 5,
         "rule": 1,
         "script": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -433,7 +391,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:7"
+        "doc_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -443,27 +401,19 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 12,
+        "doc": 10,
         "rule": 2,
         "script": 1,
         "skill": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
@@ -526,7 +476,7 @@
         "skill_consumers:1",
         "rule_consumers:2",
         "script_consumers:1",
-        "doc_consumers:12"
+        "doc_consumers:10"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -536,7 +486,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 14
     },
     {
       "confidence": "medium",
@@ -544,7 +494,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 9,
+        "doc": 8,
         "script": 2,
         "test": 4
       },
@@ -552,10 +502,6 @@
         {
           "family": "config",
           "path": "manifests/runtime-hardcoding-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -618,7 +564,7 @@
       "evidence": [
         "script_consumers:2",
         "test_consumers:4",
-        "doc_consumers:9",
+        "doc_consumers:8",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -629,22 +575,18 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 4,
+        "doc": 3,
         "rule": 2,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -674,7 +616,7 @@
       "evidence": [
         "rule_consumers:2",
         "test_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -684,7 +626,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 6
     },
     {
       "confidence": "medium",
@@ -803,7 +745,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 6,
+        "doc": 5,
         "hook": 1,
         "test": 1
       },
@@ -811,10 +753,6 @@
         {
           "family": "doc",
           "path": "docs/HOW-TO-USE-COS.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -845,7 +783,7 @@
       "evidence": [
         "hook_consumers:1",
         "test_consumers:1",
-        "doc_consumers:6"
+        "doc_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -855,7 +793,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -903,15 +841,11 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 6,
+        "doc": 5,
         "skill": 4,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
@@ -957,7 +891,7 @@
       "evidence": [
         "skill_consumers:4",
         "test_consumers:1",
-        "doc_consumers:6"
+        "doc_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -967,7 +901,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -1609,16 +1543,12 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 13,
+        "doc": 12,
         "rule": 2,
         "skill": 4,
         "test": 2
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
@@ -1705,7 +1635,7 @@
         "skill_consumers:4",
         "rule_consumers:2",
         "test_consumers:2",
-        "doc_consumers:13"
+        "doc_consumers:12"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1715,22 +1645,18 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 21
+      "total_consumers": 20
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 5,
+        "doc": 4,
         "rule": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/architecture.md"
@@ -1760,7 +1686,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:1",
-        "doc_consumers:5"
+        "doc_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1770,7 +1696,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -1778,16 +1704,12 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 5
+        "doc": 4
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/reduction-demotions.json"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -1808,7 +1730,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:5",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -1819,21 +1741,17 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 5
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 3,
+        "doc": 2,
         "rule": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
@@ -1850,7 +1768,7 @@
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1860,15 +1778,15 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 3
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 2,
-        "doc": 5,
+        "config": 3,
+        "doc": 4,
         "test": 1
       },
       "consumers": [
@@ -1881,12 +1799,12 @@
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/SESSION-HANDOFF-2026-05-02.md"
+          "family": "config",
+          "path": "manifests/shell-ci-projection.yaml"
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest.md"
+          "path": "docs/SESSION-HANDOFF-2026-05-02.md"
         },
         {
           "family": "doc",
@@ -1908,8 +1826,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:5",
-        "config_consumers:2"
+        "doc_consumers:4",
+        "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1926,11 +1844,11 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 15,
         "hook": 1,
         "script": 7,
-        "test": 7
+        "test": 8
       },
       "consumers": [
         {
@@ -1944,6 +1862,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/shell-ci-projection.yaml"
         },
         {
           "family": "doc",
@@ -2064,15 +1986,19 @@
         {
           "family": "test",
           "path": "tests/unit/test_cross_platform_discipline.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_project_shell_ci.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
         "script_consumers:7",
-        "test_consumers:7",
+        "test_consumers:8",
         "doc_consumers:15",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2082,7 +2008,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 33
+      "total_consumers": 35
     },
     {
       "confidence": "high",
@@ -2214,7 +2140,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 4,
-        "doc": 7,
+        "doc": 6,
         "hook": 1,
         "script": 1,
         "skill": 1,
@@ -2248,10 +2174,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -2292,7 +2214,7 @@
         "hook_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:6",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -2303,24 +2225,20 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 5,
+        "doc": 4,
         "hook": 1
       },
       "consumers": [
         {
           "family": "doc",
           "path": "docs/HOW-TO-USE-COS.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -2342,7 +2260,7 @@
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
-        "doc_consumers:5"
+        "doc_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2352,7 +2270,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 5
     },
     {
       "confidence": "medium",
@@ -2479,13 +2397,9 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 2
+        "doc": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
@@ -2493,7 +2407,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:2"
+        "doc_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2503,24 +2417,20 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 2
+      "total_consumers": 1
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 3,
+        "doc": 2,
         "rule": 2,
         "script": 1,
         "skill": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-059-so-existential-validation.md"
@@ -2556,7 +2466,7 @@
         "rule_consumers:2",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2566,7 +2476,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -2668,7 +2578,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 3,
-        "doc": 25,
+        "doc": 24,
         "hook": 1,
         "rule": 1,
         "skill": 3,
@@ -2694,10 +2604,6 @@
         {
           "family": "doc",
           "path": "docs/README.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -2834,7 +2740,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "test_consumers:5",
-        "doc_consumers:25",
+        "doc_consumers:24",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -2845,21 +2751,17 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 38
+      "total_consumers": 37
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 5,
+        "doc": 4,
         "skill": 4
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-054-project-docs-convention.md"
@@ -2896,7 +2798,7 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:4",
-        "doc_consumers:5"
+        "doc_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2906,7 +2808,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
@@ -2977,7 +2879,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 3,
-        "doc": 11,
+        "doc": 10,
         "script": 11,
         "test": 8
       },
@@ -2997,10 +2899,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-01.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3119,7 +3017,7 @@
       "evidence": [
         "script_consumers:11",
         "test_consumers:8",
-        "doc_consumers:11",
+        "doc_consumers:10",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -3130,7 +3028,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 33
+      "total_consumers": 32
     },
     {
       "confidence": "medium",
@@ -3299,16 +3197,12 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 3
+        "doc": 2
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/reduction-demotions.json"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3321,7 +3215,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:3",
+        "doc_consumers:2",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -3332,7 +3226,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 3
     },
     {
       "confidence": "high",
@@ -3372,14 +3266,10 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 4,
+        "doc": 3,
         "script": 3
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
@@ -3408,7 +3298,7 @@
       "distribution": null,
       "evidence": [
         "script_consumers:3",
-        "doc_consumers:4"
+        "doc_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3418,22 +3308,18 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 6
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 6,
+        "doc": 5,
         "hook": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-077-peer-card-local-model.md"
@@ -3467,7 +3353,7 @@
       "evidence": [
         "hook_consumers:1",
         "test_consumers:1",
-        "doc_consumers:6"
+        "doc_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3477,7 +3363,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
@@ -3722,15 +3608,11 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 2,
+        "doc": 1,
         "script": 2,
         "test": 2
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/business/conversation-reality-audit-2026-04-30.md"
@@ -3756,7 +3638,7 @@
       "evidence": [
         "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:2"
+        "doc_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3766,22 +3648,18 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 5
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 3,
+        "doc": 2,
         "script": 2,
         "test": 3
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/architecture/primitive-readiness-continuity-plan.md"
@@ -3815,7 +3693,7 @@
       "evidence": [
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:3"
+        "doc_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3825,7 +3703,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -3890,17 +3768,13 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 3,
         "skill": 3
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/reduction-demotions.json"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3930,7 +3804,7 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:3",
-        "doc_consumers:4",
+        "doc_consumers:3",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -3941,23 +3815,19 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 7,
+        "doc": 6,
         "hook": 3,
         "rule": 3,
         "test": 2
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-084-headless-clustered-runtime-shape.md"
@@ -4020,7 +3890,7 @@
         "hook_consumers:3",
         "rule_consumers:3",
         "test_consumers:2",
-        "doc_consumers:7"
+        "doc_consumers:6"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4030,7 +3900,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -4038,7 +3908,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 4,
         "script": 1
       },
       "consumers": [
@@ -4056,10 +3926,6 @@
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
         },
         {
@@ -4074,7 +3940,7 @@
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -4085,7 +3951,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -4093,7 +3959,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 4,
-        "doc": 18,
+        "doc": 17,
         "hook": 1,
         "rule": 2,
         "script": 4,
@@ -4124,10 +3990,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-02.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -4249,7 +4111,7 @@
         "rule_consumers:2",
         "script_consumers:4",
         "test_consumers:4",
-        "doc_consumers:18",
+        "doc_consumers:17",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -4260,7 +4122,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 35
+      "total_consumers": 34
     },
     {
       "confidence": "high",
@@ -4316,15 +4178,11 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 7,
+        "doc": 6,
         "rule": 1,
         "test": 2
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-019-scope-tagging.md"
@@ -4366,7 +4224,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:2",
-        "doc_consumers:7"
+        "doc_consumers:6"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4376,7 +4234,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -5978,17 +5836,13 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 3,
+        "doc": 2,
         "hook": 1,
         "rule": 1,
         "script": 1,
         "test": 2
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
@@ -6024,7 +5878,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:3"
+        "doc_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -6034,7 +5888,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
@@ -6069,7 +5923,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 4,
         "skill": 5,
         "test": 2
       },
@@ -6077,10 +5931,6 @@
         {
           "family": "config",
           "path": "manifests/reduction-demotions.json"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6131,7 +5981,7 @@
       "evidence": [
         "skill_consumers:5",
         "test_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -6142,24 +5992,20 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 12
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 4,
+        "doc": 3,
         "script": 1
       },
       "consumers": [
         {
           "family": "doc",
           "path": "docs/HOW-TO-USE-COS.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6177,7 +6023,7 @@
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "doc_consumers:4"
+        "doc_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -6187,7 +6033,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 4
     },
     {
       "confidence": "medium",
@@ -6262,17 +6108,13 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
+        "doc": 3,
         "skill": 3
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/reduction-demotions.json"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6302,7 +6144,7 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:3",
-        "doc_consumers:4",
+        "doc_consumers:3",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -6313,7 +6155,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 7
     },
     {
       "confidence": "medium",
@@ -6321,7 +6163,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 2,
-        "doc": 7,
+        "doc": 6,
         "test": 1
       },
       "consumers": [
@@ -6340,10 +6182,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6369,7 +6207,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:7",
+        "doc_consumers:6",
         "config_consumers:2"
       ],
       "family": "skills",
@@ -6380,7 +6218,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -6388,7 +6226,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 7,
+        "doc": 6,
         "rule": 1,
         "script": 1,
         "test": 1
@@ -6397,10 +6235,6 @@
         {
           "family": "config",
           "path": "manifests/dependencies.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6444,7 +6278,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:7",
+        "doc_consumers:6",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -6455,14 +6289,14 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 10
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "script": 1,
         "skill": 2,
@@ -6476,6 +6310,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/shell-ci-projection.yaml"
         },
         {
           "family": "doc",
@@ -6508,7 +6346,7 @@
         "script_consumers:1",
         "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -6518,7 +6356,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     }
   ],
   "schema_version": 1,
