@@ -1,24 +1,25 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-05-04T19:33:19Z
+Generated: 2026-05-04T19:54:52Z
 Phase: reconstruction
 Gate: pass
 
 ## Summary
 
-- ACC: 0.2441
-- ACC effective: 0.2933
+- ACC: 0.2663
+- ACC effective: 0.3178
 - Total weight: 1979
-- Capabilities: 725
-- Findings: 160
-- Mapping weights: {'aligned': 483, 'missing': 0, 'overexposed': 0, 'partial': 207, 'stale': 6, 'unverified': 1283}
+- Capabilities: 727
+- Findings: 153
+- Mapping weights: {'aligned': 527, 'missing': 0, 'overexposed': 0, 'partial': 204, 'stale': 0, 'unverified': 1248}
 
 ## Adapter Status
 
 | Adapter | Status | Source | Summary |
 |---|---|---|---|
-| cos_coverage | ok | `cos_coverage` | `{"aspirational": 38, "coverage_pct": 54.3, "dormant": 160, "generated_at": "2026-05-04T19:32:31Z", "mapped": 268, "metadata": 56, "on_demand": 287, "project": "<repo-root>", "real": 235, "tiers": {"A": 2, "B": 4, "C": 39, "D": 155}, "trend"` |
-| docs_execution | ok | `docs_execution` | `{"items": 2434, "json": "<repo-root>/docs/reports/docs-execution-latest.json", "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"}` |
+| consumer_projection | ok | `consumer_projection` | `{"by_harness": {"claude": 58, "codex": 58}, "projected_primitives": 58}` |
+| cos_coverage | ok | `cos_coverage` | `{"aspirational": 38, "coverage_pct": 54.3, "dormant": 160, "generated_at": "2026-05-04T19:54:06Z", "mapped": 268, "metadata": 56, "on_demand": 287, "project": "<repo-root>", "real": 235, "tiers": {"A": 2, "B": 4, "C": 39, "D": 155}, "trend"` |
+| docs_execution | ok | `docs_execution` | `{"items": 2454, "json": "<repo-root>/docs/reports/docs-execution-latest.json", "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"}` |
 | docs_execution_report | ok | `docs/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 1}, "docs/HOW-TO-USE-COS.md": {"done_weak_proof": 2, "planned": 1}, "docs/README.md": {"done_weak_proof": 9, "planned": 8, "proposed": 4}, "d` |
 | family_readiness_hooks | ok | `family_readiness_hooks` | `{"confidence": {"high": 126, "medium": 85}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 1, "lifecycle-declared-maintainer": 114, "projected-consumer-surface": 11, "so-local-only": 85}, "json": "<repo-root>/docs/repor` |
 | family_readiness_rules | ok | `family_readiness_rules` | `{"confidence": {"medium": 112}, "consumer_accessibility": {"so-local-only": 112}, "json": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.json", "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest` |
@@ -26,9 +27,9 @@ Gate: pass
 | primitive_gap_snapshot | ok | `primitive_gap_snapshot` | `{"families": [{"aspirational_signal": 2, "evidence": "row-audit proven=99 partial_nonblocking=133 actionable_gaps=2", "family": "hooks", "next_action": "close actionable rows", "partial_signal": 133, "proven_signal": 99, "severity": "high",` |
 | readiness:hooks | ok | `docs/reports/primitive-readiness-ledger-hooks-latest.json` | `{"confidence": {"high": 126, "medium": 85}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 1, "lifecycle-declared-maintainer": 114, "projected-consumer-surface": 11, "so-local-only": 85}, "roles": {"driver-specific": 12` |
 | readiness:rules | ok | `docs/reports/primitive-readiness-ledger-rules-latest.json` | `{"confidence": {"medium": 112}, "consumer_accessibility": {"so-local-only": 112}, "roles": {"context-only": 6, "doctrine": 4, "driver-specific": 48, "hook-enforced": 43, "lab": 11}, "total": 112, "without_consumers": 0, "without_lifecycle":` |
-| readiness:scripts | ok | `docs/reports/primitive-readiness-ledger-scripts-latest.json` | `{"agentic_primitives_without_lifecycle": 0, "confidence": {"high": 135, "medium": 177}, "consumer_accessibility": {"install-profile-managed": 19, "lifecycle-declared-consumer-candidate": 49, "lifecycle-declared-maintainer": 36, "skill-refer` |
+| readiness:scripts | ok | `docs/reports/primitive-readiness-ledger-scripts-latest.json` | `{"agentic_primitives_without_lifecycle": 0, "confidence": {"high": 137, "medium": 177}, "consumer_accessibility": {"install-profile-managed": 19, "lifecycle-declared-consumer-candidate": 49, "lifecycle-declared-maintainer": 38, "skill-refer` |
 | readiness:skills | ok | `docs/reports/primitive-readiness-ledger-skills-latest.json` | `{"confidence": {"high": 51, "medium": 39}, "consumer_accessibility": {"repo-skill-not-projectable": 86, "so-local-only": 4}, "roles": {"compatibility-wrapper": 51, "lab": 7, "project-extension": 16, "so-maintainer": 16}, "total": 90, "witho` |
-| script_readiness_refresh | ok | `script_readiness_refresh` | `{"agentic_primitives_without_lifecycle": 0, "confidence": {"high": 135, "medium": 177}, "consumer_accessibility": {"install-profile-managed": 19, "lifecycle-declared-consumer-candidate": 49, "lifecycle-declared-maintainer": 36, "skill-refer` |
+| script_readiness_refresh | ok | `script_readiness_refresh` | `{"agentic_primitives_without_lifecycle": 0, "confidence": {"high": 137, "medium": 177}, "consumer_accessibility": {"install-profile-managed": 19, "lifecycle-declared-consumer-candidate": 49, "lifecycle-declared-maintainer": 38, "skill-refer` |
 
 ## Findings
 
@@ -104,7 +105,6 @@ Gate: pass
 | `script:scripts/upgrade.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
 | `script:scripts/verify-archived.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
 | `script:scripts/weekly-aspirational-audit.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `hook:hooks/task-completed.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
 | `skill:skills/__contracts__/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
 | `skill:skills/__contracts__/canonical-event-emitter/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
 | `skill:skills/add-hook/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
@@ -114,16 +114,17 @@ Gate: pass
 | `skill:skills/agent-dashboard/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
 | `skill:skills/agent-stress-test/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
 | `skill:skills/analyze-improvements/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
+| `skill:skills/apply-improvements/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
 
 ## Consumer Accessibility Counts
 
 - install-profile-managed: 19
-- lifecycle-declared-consumer-candidate: 50
-- lifecycle-declared-maintainer: 150
-- projected-consumer-surface: 11
-- repo-skill-not-projectable: 86
+- lifecycle-declared-consumer-candidate: 49
+- lifecycle-declared-maintainer: 119
+- projected-consumer-surface: 62
+- repo-skill-not-projectable: 83
 - skill-referenced-not-projectable: 2
-- so-local-only: 407
+- so-local-only: 393
 
 ## Persistence
 

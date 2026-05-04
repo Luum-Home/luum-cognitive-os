@@ -2,12 +2,11 @@
 
 ## Summary
 
-Total items: 2434
-- done_weak_proof: 1013
-- done_with_proof: 184
-- planned: 968
-- proposed: 266
-- stale: 3
+Total items: 2454
+- done_weak_proof: 1017
+- done_with_proof: 192
+- planned: 969
+- proposed: 276
 
 ## Items Needing Attention
 
@@ -444,7 +443,6 @@ Total items: 2434
 | docs/adrs/ADR-116-multi-session-coordination-primitives.md | 239 | done | done_weak_proof | 0.62 | **Effort**: S (~2h, mostly already done per spec). | terms:already,done,effort,mostly,spec | add explicit test/workflow/proof link |
 | docs/adrs/ADR-116-multi-session-coordination-primitives.md | 379 | done | done_weak_proof | 0.62 | Plan-checkbox false-done class becomes commit-blocked (P4.4 + ADR-105 + ADR-106 P2). | terms:adr-105,adr-106,becomes,class,false-done,plan-checkbox | add explicit test/workflow/proof link |
 | docs/adrs/ADR-116-multi-session-coordination-primitives.md | 393 | done | done_weak_proof | 0.62 | Incident: `docs/incidents/2026-05-02-false-done-compounding.md` | path:docs/incidents/2026-05-02-false-done-compounding.md, weak_terms:incident,incidents | add explicit test/workflow/proof link |
-| docs/adrs/ADR-117-stash-mutation-reversibility.md | 150 | done | stale | 0.82 | The test lives at `tests/contracts/test_stash_mutation_reversibility.py` (to be created with R2). It MUST be wired into the `cluster` test lane. | terms:cluster,contracts,created,lane,lives,must,test,tests, missing_path:tests/contracts/test_stash_mutation_reversibility.py | update stale path or demote completion claim |
 | docs/adrs/ADR-117-stash-mutation-reversibility.md | 175 | done | done_weak_proof | 0.62 | Post-mortem: `docs/incidents/2026-05-02-false-done-compounding.md` | path:docs/incidents/2026-05-02-false-done-compounding.md, weak_terms:incidents,post-mortem | add explicit test/workflow/proof link |
 | docs/adrs/ADR-118-multi-ide-swarm-testbed.md | 5 | done | done_weak_proof | 0.62 | **Status**: Accepted — acceptance testbed | terms:acceptance,accepted,testbed | add explicit test/workflow/proof link |
 | docs/adrs/ADR-118-multi-ide-swarm-testbed.md | 11 | done | done_weak_proof | 0.62 | Accepted (2026-05-02). This is the automated acceptance-test umbrella for ADR-116 and its transactional coordination rollout. | terms:accepted,adr-116,automated,coordination,rollout,umbrella | add explicit test/workflow/proof link |
@@ -528,6 +526,10 @@ Total items: 2434
 | docs/adrs/ADR-145-dependency-lane-split.md | 101 | done | done_weak_proof | 0.62 | Implemented in `requirements/dependency-lanes/`: explicit heavy-lane requirement files for LLM, observability, memory, guardrails, crawling, Jupyter, and semantic stacks. | terms:crawling,dependency-lanes,explicit,files,guardrails,heavy-lane,implemented,jupyter | add explicit test/workflow/proof link |
 | docs/adrs/ADR-146-primitive-readiness-ledger.md | 5 | done | done_weak_proof | 0.62 | Accepted — 2026-05-04 | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/adrs/ADR-147-agent-capability-coverage-pipeline.md | 5 | done | done_weak_proof | 0.62 | Accepted — 2026-05-04 | weak_terms:accepted | add explicit test/workflow/proof link |
+| docs/adrs/ADR-148-adr-authoring-primitive.md | 4 | done | done_weak_proof | 0.62 | status: accepted | weak_terms:accepted | add explicit test/workflow/proof link |
+| docs/adrs/ADR-148-adr-authoring-primitive.md | 20 | done | done_weak_proof | 0.62 | **Accepted** — 2026-05-04 | weak_terms:accepted | add explicit test/workflow/proof link |
+| docs/adrs/ADR-148-adr-authoring-primitive.md | 42 | done | done_weak_proof | 0.62 | optional implementation-file declarations for accepted or implemented ADRs. | terms:accepted,adrs,declarations,implementation-file,implemented,optional | add explicit test/workflow/proof link |
+| docs/adrs/ADR-148-adr-authoring-primitive.md | 77 | done | done_weak_proof | 0.62 | Implemented in `scripts/cos-new-adr`: shell entrypoint that resolves the project and invokes the Python authoring primitive. | terms:authoring,entrypoint,implemented,invokes,primitive,project,python,resolves | add explicit test/workflow/proof link |
 | docs/adw-patterns.md | 212 | done | done_weak_proof | 0.62 | Pipeline state is persisted to `.cognitive-os/pipeline-state/{change}.json` after every phase completion. Use `--resume` to continue from the last completed phase. | terms:after,change,cognitive-os,completed,completion,continue,every,json | add explicit test/workflow/proof link |
 | docs/agent-efficiency-strategy.md | 74 | done | done_weak_proof | 0.62 | **Status: Partially implemented (lean profile exists), not used by default** | terms:default,exists,implemented,lean,partially,profile,used | add explicit test/workflow/proof link |
 | docs/agent-efficiency-strategy.md | 127 | done | done_weak_proof | 0.62 | Approaches (a) and (d) are already implemented in infrastructure and require only config changes. They deliver the maximum token reduction for minimum implementation effort. | terms:already,approaches,changes,config,deliver,effort,implementation,implemented | add explicit test/workflow/proof link |
@@ -564,7 +566,6 @@ Total items: 2434
 | docs/architecture/FROZEN-BACKLOG.md | 290 | done | done_weak_proof | 0.62 | 3. **DO** update this file when items complete — move to "Archive" section (to be added) | terms:added,archive,complete,file,items,move,section,update | add explicit test/workflow/proof link |
 | docs/architecture/LESSONS-LEARNED.md | 69 | done | done_weak_proof | 0.62 | Audit #2 reported "13 missing libs" (false — 11 existed, symlinks not resolved) | terms:audit,existed,false,libs,missing,reported,resolved,symlinks | add explicit test/workflow/proof link |
 | docs/architecture/LESSONS-LEARNED.md | 92 | done | done_weak_proof | 0.62 | **How we know we're repeating it:** When a commit makes an architectural choice without an ADR. When a feature is added that changes behavior without a design doc. When "we talked about this" but there's no record. | terms:about,added,architectural,behavior,changes,choice,commit,design | add explicit test/workflow/proof link |
-| docs/architecture/LESSONS-LEARNED.md | 168 | done | stale | 0.82 | **Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` \| `docs/reports/revert-investigation-2026-05-02.md` \| ADR-117 | path:docs/incidents/2026-05-02-false-done-compounding.md, terms:adr-117,incidents,reference,reports,revert-investigation-2026-05-02, missing_path:docs/reports/revert-investigation-2026-05-02.md | update stale path or demote completion claim |
 | docs/architecture/POST-MORTEM-2026-04.md | 14 | done | done_weak_proof | 0.62 | 1. **Aspirational logic** — schemas, metadata, and flags added but never consumed | terms:added,aspirational,consumed,flags,logic,metadata,never,schemas | add explicit test/workflow/proof link |
 | docs/architecture/POST-MORTEM-2026-04.md | 36 | done | done_weak_proof | 0.62 | **March 29:** 5 releases in one day (v0.2.2 through v0.2.6). Paperclip, E2B, prompt governance, dynamic tools, dashboard scaffold. **audience: field added to 88 SKILL.md files — engram entry #1771 explicitly warns "needs follow-up to be read by code" — follow- | terms:added,audience,code,dashboard,dynamic,engram,entry,explicitly | add explicit test/workflow/proof link |
 | docs/architecture/POST-MORTEM-2026-04.md | 41 | done | done_weak_proof | 0.62 | **April 8-9:** "Maturation sprint" v0.4.0-v0.7.0. 472 behavioral tests claim to be added. Later audit reveals many are structural. | terms:added,april,audit,behavioral,claim,later,many,maturation | add explicit test/workflow/proof link |
@@ -868,7 +869,6 @@ Total items: 2434
 | docs/business/master-plan-checklist.md | 147 | done | done_weak_proof | 0.62 | Provider compatibility is explicitly inventoried. | terms:compatibility,explicitly,provider | add explicit test/workflow/proof link |
 | docs/business/master-plan-checklist.md | 148 | done | done_weak_proof | 0.62 | Provider-agnostic outcome metrics exist. | terms:exist,metrics,outcome,provider-agnostic | add explicit test/workflow/proof link |
 | docs/business/master-plan-checklist.md | 157 | done | done_weak_proof | 0.62 | Fix `README.md` reference to missing `docs/benchmark-results.md`. | terms:benchmark-results,missing,readme,reference | add explicit test/workflow/proof link |
-| docs/business/master-plan-checklist.md | 159 | done | stale | 0.82 | Redesign `.github/workflows/ci.yml` around the real product core. | terms:around,core,github,product,real,redesign,workflows, missing_path:.github/workflows/ci.yml | update stale path or demote completion claim |
 | docs/business/master-plan-checklist.md | 161 | done | done_weak_proof | 0.62 | Publish a simple “core vs extension” taxonomy document or section. | terms:core,document,extension,publish,section,simple,taxonomy | add explicit test/workflow/proof link |
 | docs/business/master-plan-checklist.md | 176 | done | done_weak_proof | 0.62 | A new user can understand the product quickly. | terms:product,quickly,understand,user | add explicit test/workflow/proof link |
 | docs/business/master-plan-checklist.md | 177 | done | done_weak_proof | 0.62 | A new user can install it without pain. | terms:install,pain,user,without | add explicit test/workflow/proof link |
