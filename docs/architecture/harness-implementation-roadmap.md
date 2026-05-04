@@ -15,7 +15,7 @@ Track planned IDE/provider harnesses without overclaiming support. A harness bec
 | OpenCode | implemented structural | ACC temp project runs `cos_init.py --default/--full --harness opencode` and verifies `opencode.json`. |
 | VS Code Copilot | implemented structural | ACC temp project runs `cos_init.py --default/--full --harness vscode-copilot` and verifies `.github/copilot-instructions.md` plus `.vscode/mcp.json`. |
 | Cursor | implemented structural | ACC temp project runs `cos_init.py --default/--full --harness cursor` and verifies `.cursor/rules/cognitive-os.mdc` plus `.cursor/mcp.json`. |
-| Shell/CI | projected command layer | `scripts/project_shell_ci.py` projects signed CLI commands/workflow inside those temp projects. |
+| Shell/CI | implemented structural | `cos_init.py --default/--full --harness shell-ci` invokes `scripts/project_shell_ci.py` and ACC records shell-ci default/full projection counts. |
 
 ## Planned harness backlog
 
@@ -42,7 +42,7 @@ Track planned IDE/provider harnesses without overclaiming support. A harness bec
 
 ## Baseline discipline
 
-ACC can report 1.0 for the current declared scope. New harnesses must not inherit that status. Planned harness rows remain unverified until their own proof exists. Implemented structural harnesses prove project-local config/instruction projection, not native lifecycle hook parity.
+ACC can report 1.0 for the current declared scope. New harnesses must not inherit that status. Planned harness rows remain unverified until their own proof exists. Implemented structural harnesses prove project-local config/instruction or command/workflow projection, not native lifecycle hook parity or stack-specific runtime command success.
 
 Run the ACC ratchet before promoting any harness work:
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -23,3 +24,7 @@ def test_project_shell_ci_creates_canonical_drivers_and_workflow(tmp_path: Path)
     assert str(Path(__file__).resolve().parents[2]) not in (tmp_path / ".github/workflows/cognitive-os-shell-ci.yml").read_text()
     saved = json.loads((tmp_path / ".cognitive-os/shell-ci-projection.json").read_text())
     assert saved["commands_projected"] == 15
+    workflow = (tmp_path / ".github/workflows/cognitive-os-shell-ci.yml").read_text()
+    assert "bash -n scripts/cos-status.sh" in workflow
+    assert "python3 -m py_compile scripts/check_mcp_servers.py" in workflow
+    assert os.access(tmp_path / ".cognitive-os/scripts/cos/cos-status.sh", os.X_OK)
