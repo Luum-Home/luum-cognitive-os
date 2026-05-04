@@ -1,0 +1,103 @@
+schema_version: 1
+purpose: Explicit first-pass triage for script rows that the generated ledger classified with low confidence.
+roles:
+  - agentic-primitive
+  - maintainer-tool
+  - migration-only
+  - driver-specific
+  - lab
+  - archive
+scripts:
+  - path: scripts/agentic-tool-license-matrix.sh
+    role: maintainer-tool
+    rationale: License matrix helper is maintainer/research evidence, not a default agent tool.
+  - path: scripts/agentic_mastery_summary.py
+    role: maintainer-tool
+    rationale: Summary/report helper for maintainer validation; no direct shared-agent package boundary yet.
+  - path: scripts/check_lazy_catalog_health.py
+    role: maintainer-tool
+    rationale: Catalog health checker is maintainer governance until promoted through lifecycle metadata.
+  - path: scripts/ci-setup.sh
+    role: maintainer-tool
+    rationale: CI environment setup helper; not agent-facing runtime primitive.
+  - path: scripts/ci-smoke-linux.sh
+    role: maintainer-tool
+    rationale: CI smoke helper for maintainers and release validation.
+  - path: scripts/compose_agent_prompt.py
+    role: maintainer-tool
+    rationale: Prompt composition support is internal maintainer/runtime glue until exposed through a stable primitive.
+  - path: scripts/demo-governance.sh
+    role: maintainer-tool
+    rationale: Demo helper for product proof paths, not reusable agent primitive.
+  - path: scripts/extract-agent-output.sh
+    role: maintainer-tool
+    rationale: Transcript extraction helper used by docs/rules; keep maintainer-scoped.
+  - path: scripts/generate_adversarial_scenario.py
+    role: lab
+    rationale: Adversarial scenario generation is experimental validation surface.
+  - path: scripts/harness-parity-audit
+    role: driver-specific
+    rationale: Harness parity wrapper is explicitly driver/IDE portability tooling.
+  - path: scripts/ide-bridge.sh
+    role: driver-specific
+    rationale: IDE bridge is driver-specific compatibility surface.
+  - path: scripts/install-cos.sh
+    role: maintainer-tool
+    rationale: Installer wrapper remains maintainer/distribution tooling until lifecycle metadata signs it as shared primitive.
+  - path: scripts/install-git-hooks.sh
+    role: maintainer-tool
+    rationale: Git hook installer is setup tooling, not an agent-facing primitive by default.
+  - path: scripts/install-launchd-jobs.sh
+    role: driver-specific
+    rationale: macOS launchd installer is platform-specific host integration.
+  - path: scripts/install-timing-test.sh
+    role: maintainer-tool
+    rationale: Timing test installer is maintainer validation tooling.
+  - path: scripts/install-tob-skills.sh
+    role: maintainer-tool
+    rationale: External skill installer is optional maintainer tooling pending package boundary.
+  - path: scripts/lint-shell.sh
+    role: maintainer-tool
+    rationale: Shell lint helper is validation tooling.
+  - path: scripts/orphan_overwrite_detector.py
+    role: maintainer-tool
+    rationale: Orphan overwrite detector is repository safety tooling, not packaged agent primitive yet.
+  - path: scripts/postinstall.js
+    role: maintainer-tool
+    rationale: Package postinstall helper is distribution plumbing.
+  - path: scripts/python_stdin_antipattern_audit.py
+    role: maintainer-tool
+    rationale: Audit helper for maintainer quality checks.
+  - path: scripts/run-adversarial-generalization.sh
+    role: lab
+    rationale: Adversarial generalization run path is experimental validation surface.
+  - path: scripts/runtime_hook_reality.py
+    role: maintainer-tool
+    rationale: Runtime hook reality audit is core maintainer evidence tooling but not user-facing primitive until lifecycle row exists.
+  - path: scripts/session_event_bus.py
+    role: maintainer-tool
+    rationale: Session event bus support is internal runtime glue pending lifecycle/projection proof.
+  - path: scripts/session_start_budget.py
+    role: maintainer-tool
+    rationale: SessionStart budget audit is maintainer performance tooling.
+  - path: scripts/shellcheck-baseline.txt
+    role: maintainer-tool
+    rationale: Baseline data file for shell linting; not an executable primitive.
+  - path: scripts/silent_failure_audit.py
+    role: maintainer-tool
+    rationale: Audit helper for maintainer governance checks.
+  - path: scripts/skill_efficacy_report.py
+    role: maintainer-tool
+    rationale: Skill efficacy report is maintainer measurement tooling until shared lifecycle metadata exists.
+  - path: scripts/smoke-agent-quota-advisor.sh
+    role: maintainer-tool
+    rationale: Smoke test helper for optional agent quota flow.
+  - path: scripts/smoke-agent-quota-redirect.sh
+    role: maintainer-tool
+    rationale: Smoke test helper for optional quota redirect flow.
+  - path: scripts/test-agent-teams-hooks.sh
+    role: maintainer-tool
+    rationale: Test helper for agent-team hooks.
+  - path: scripts/test-mcp-server.sh
+    role: maintainer-tool
+    rationale: MCP server smoke helper for maintainers.
