@@ -86,3 +86,4 @@ ADR-pattern file appears outside this directory without being a CD- file or redi
 | [ADR-107](ADR-107-human-approved-rollback.md) | Human-Approved Rollback Boundary |
 - [ADR-110: Preserve Branch Governance](ADR-110-preserve-branch-governance.md)
 - [ADR-116: Multi-Session Coordination Primitives](ADR-116-multi-session-coordination-primitives.md)
+- [ADR-143: Closure Discipline Gate](ADR-143-closure-discipline-gate.md)

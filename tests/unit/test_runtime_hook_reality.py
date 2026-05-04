@@ -179,10 +179,17 @@ def test_demoted_blocking_hook_is_dormant_not_exit2_failure(tmp_path: Path) -> N
     assert report["summary"]["status"] == "pass"  # type: ignore[index]
 
 
-def test_repository_settings_currently_project_115_unique_hooks() -> None:
-    projected = audit.load_projected_hooks(REPO_ROOT / ".claude" / "settings.json")
+def test_repository_settings_hook_count_is_report_derived_not_hardcoded() -> None:
+    report = audit.build_report(
+        project_root=REPO_ROOT,
+        settings_path=REPO_ROOT / ".claude" / "settings.json",
+        manifest_path=REPO_ROOT / "manifests" / "primitive-lifecycle.yaml",
+    )
 
-    assert len(projected) == 115
+    assert report["summary"]["status"] == "pass"
+    assert report["summary"]["projected_unique_hooks"] == len(
+        audit.load_projected_hooks(REPO_ROOT / ".claude" / "settings.json")
+    )
 
 
 def test_cli_emits_stable_json(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:

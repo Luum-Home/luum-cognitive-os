@@ -48,8 +48,32 @@ fi
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$REPO_ROOT"
-# shellcheck source=/dev/null
-source "$REPO_ROOT/hooks/_lib/safe-worktree-remove.sh"
+# COS_VALIDATION_CAPSULE_SAFE_WORKTREE_FALLBACK: keep validation usable in
+# minimal consumer repos that do not carry the COS helper library. The full COS
+# checkout uses ADR-129 safe_worktree_remove; minimal repos get a logged,
+# non-rm-rf git-worktree cleanup fallback.
+if [ -f "$REPO_ROOT/hooks/_lib/safe-worktree-remove.sh" ]; then
+  # shellcheck source=/dev/null
+  source "$REPO_ROOT/hooks/_lib/safe-worktree-remove.sh"
+else
+  safe_worktree_remove() {
+    local project_dir="${1:-}"
+    local target="${2:-}"
+    local caller="${3:-cos-validation-capsule-fallback}"
+    [ -n "$project_dir" ] && [ -n "$target" ] || return 2
+    [ -e "$target" ] || return 0
+    mkdir -p "$project_dir/.cognitive-os/metrics" 2>/dev/null || true
+    if git -C "$project_dir" worktree remove --force "$target" >/dev/null 2>&1; then
+      printf '{"ts":"%s","action":"removed","target":"%s","caller":"%s","fallback":true}\n' \
+        "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$target" "$caller" >> "$project_dir/.cognitive-os/metrics/worktree-removals.jsonl" 2>/dev/null || true
+      return 0
+    fi
+    git -C "$project_dir" worktree prune 2>/dev/null || true
+    printf '{"ts":"%s","action":"remove_failed","target":"%s","caller":"%s","fallback":true}\n' \
+      "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$target" "$caller" >> "$project_dir/.cognitive-os/metrics/worktree-removals.jsonl" 2>/dev/null || true
+    return 1
+  }
+fi
 
 HEAD_SHA="$(git rev-parse HEAD)"
 RUNTIME_DIR="$REPO_ROOT/.cognitive-os/runtime"

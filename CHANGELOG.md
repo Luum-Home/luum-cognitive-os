@@ -5,6 +5,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added — Closure Discipline Gate (ADR-143)
+
+- `docs/adrs/ADR-143-closure-discipline-gate.md` — accepted blocking maintainer gate for closing validator drift after fast agent batches.
+- `scripts/cos-closure-discipline-audit` / `scripts/cos_closure_discipline_audit.py` — quick structural audit for stale suspended-workflow references, hardcoded runtime hook counts, validation capsule minimal-repo fallback, primitive lifecycle findings, and local-CI self-wiring.
+- `docs/manual-tests/closure-discipline.md` and `tests/unit/test_closure_discipline_audit.py` — manual and automatic proof paths for closure discipline.
+
+### Fixed — Validation closure drift from May 3 batch
+
+- Updated workflow tests to understand ADR-130 `.yml.disabled` preservation.
+- Replaced hardcoded runtime hook count assertion with report-derived runtime-hook reality parity.
+- Made `cos-validation-capsule.sh` usable in minimal repos without silently falling back to `rm -rf`.
+- Updated work-inventory tests to opt out of ephemeral-path filtering when testing direct parser behavior.
+- Corrected blocking primitive lifecycle metadata for self-improvement discipline and registry-lock gates.
+
 ### Documentation
 
 - `docs/architecture/cognitive-prosthesis.md` — new section *Two maturity stages: works-when-it-works, and knows-when-it-doesn't* enumerates the nine concrete mechanisms that materialise the transition (demotion-with-evidence, governance-maturity labels, silent-failure allowlist, aspirational audit, false-positive ledger, propose-only proposers per ADR-134/135, anti-self-validation, ADR-136 runway with observable triggers, falsifiable claims as release artefact). Adds the operable test for whether a capability belongs in the default profile: not only *does it work?* but *how would I know mechanically when it stops working?*.
