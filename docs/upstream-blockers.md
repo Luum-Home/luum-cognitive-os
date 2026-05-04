@@ -32,8 +32,8 @@ Last reviewed: 2026-05-04.
 
 ### Setuptools 82 lock-churn blocker
 
-- **Trigger**: optional `semantic` extra lock strategy is clarified, or a resolver run can apply `setuptools>=82` without unrelated `torch`/CUDA package churn.
-- **Action**: re-run `uv lock --upgrade-package 'setuptools>=82'`; if the diff only updates `setuptools`, apply it. The `pkg_resources` first-party import scan is already clear and `tests/audit/test_no_undefined_imports.py` no longer allowlists `pkg_resources`.
+- **Trigger**: Torch/sentence-transformers semantic stack supports `setuptools>=82`, or the project intentionally accepts a semantic-stack downgrade from `torch 2.11.0`/CUDA 13 to `torch 2.10.0`/CUDA 12.
+- **Action**: re-run `uv lock --upgrade-package 'setuptools>=82'`; only apply if the lock diff is either setuptools-only or an explicit semantic-stack decision. The `pkg_resources` first-party import scan is already clear and `tests/audit/test_no_undefined_imports.py` no longer allowlists `pkg_resources`.
 
 ### Python all-extras major resolver blockers
 
@@ -52,3 +52,6 @@ Last reviewed: 2026-05-04.
 - Move to "Resolved" when the upstream release lands AND the work is committed.
 - If a blocker has been waiting more than 90 days, re-evaluate whether the trigger is still relevant — sometimes the API never changes and the "blocker" was a false alarm.
 - Cross-reference with `docs/SESSION-HANDOFF-*.md` files when first flagging.
+
+
+Detailed resolver evidence: `docs/reports/python-major-followup-2026-05-04.md`.
