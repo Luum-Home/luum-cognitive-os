@@ -105,3 +105,18 @@ Shape-B trigger fires.
 
 Manual drills must use temporary state and must not mutate real product evidence
 or claim-signing manifests.
+
+## Status
+
+Accepted — structural contract normalized on 2026-05-04.
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
