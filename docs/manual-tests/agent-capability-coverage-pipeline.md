@@ -10,7 +10,14 @@ Purpose: prove that the ACC pipeline can regenerate the unified coverage report 
    python3 scripts/acc_pipeline.py --project-dir . --refresh
    ```
 
-2. Inspect JSON invariants:
+2. Inspect compact context-diet output:
+
+   ```bash
+   python3 scripts/acc_pipeline.py --project-dir . --brief
+   head -80 docs/acc/latest-compact.md
+   ```
+
+3. Inspect JSON invariants:
 
    ```bash
    python3 - <<'PY'
@@ -25,13 +32,13 @@ Purpose: prove that the ACC pipeline can regenerate the unified coverage report 
    PY
    ```
 
-3. Inspect the Markdown summary:
+4. Inspect the Markdown summary:
 
    ```bash
    head -80 docs/acc/latest.md
    ```
 
-4. Confirm adapter reports are not silently dropped:
+5. Confirm adapter reports are not silently dropped:
 
    ```bash
    python3 - <<'PY'
@@ -43,7 +50,7 @@ Purpose: prove that the ACC pipeline can regenerate the unified coverage report 
    PY
    ```
 
-5. Run automated tests:
+6. Run automated tests:
 
    ```bash
    python3 -m pytest tests/unit/test_acc_pipeline.py tests/contracts/test_acc_pipeline_contract.py -q
@@ -51,7 +58,7 @@ Purpose: prove that the ACC pipeline can regenerate the unified coverage report 
 
 ## Expected Result
 
-- `docs/acc/latest.json` and `docs/acc/latest.md` exist.
+- `docs/acc/latest-compact.md`, `docs/acc/latest.json`, and `docs/acc/latest.md` exist.
 - The report includes capabilities, findings, adapter status, consumer accessibility, scores, and persistence status.
 - Local history is appended under `.cognitive-os/metrics/acc-pipeline-history.jsonl`.
 - Engram status is honest: unavailable unless a real bridge/tool exists.
