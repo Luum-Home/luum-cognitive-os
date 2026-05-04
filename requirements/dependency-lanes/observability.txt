@@ -1,0 +1,5 @@
+# Optional heavy lane: Phoenix/OpenTelemetry observability.
+# Install explicitly when running Phoenix trace UI or integration tests.
+arize-phoenix>=4.0
+arize-phoenix-otel>=0.6
+mlflow-skinny>=2.0
