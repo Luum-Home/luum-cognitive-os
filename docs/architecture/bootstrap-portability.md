@@ -164,6 +164,15 @@ correction:
   pending-task resume, user-prompt capture, session learning, git context,
   changelog, crystallization metric, and pre-compaction reminder. The cached
   SessionStart host doctor invokes this check through `cos-doctor-tools.sh`.
+- ADR-140 container worker surface is now represented by
+  `docker/cos-worker/docker-compose.yml`,
+  `docker/cos-worker/Dockerfile`, and
+  `scripts/cos-cloud-worker-bootstrap.sh`. This gives cloud-worker surfaces a
+  Compose-based boot path whose runtime center is `/workspace/.cognitive-os/`
+  and whose provider credentials use account-agnostic `LLM_PRIMARY_API_KEY` /
+  `LLM_FALLBACK_API_KEY` names. The worker self-test runs a hook smoke and
+  writes `.cognitive-os/runtime/agent-audit-trail.jsonl` without relying on
+  shell profiles or `~/.claude/`.
 
 This is not the full migration, but it is the correct direction.
 
