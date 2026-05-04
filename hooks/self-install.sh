@@ -343,7 +343,7 @@ EXCLUDED_RULES=(
   "clarification-gate.md"          # → clarification-gate.sh (PreToolUse Agent)
   "content-policy.md"              # → content-policy.sh (PostToolUse Edit|Write)
   "crash-recovery.md"              # → auto-checkpoint.sh + crash-recovery.sh
-  "prompt-quality.md"              # → prompt-quality.sh (PreToolUse Agent)
+  "prompt-quality.md"              # → prompt-quality-llm.sh (PreToolUse Agent)
   "rate-limiting.md"               # → rate-limiter.sh (PreToolUse Bash|Agent|Edit|Write)
   "rate-limit-protection.md"       # → token-budget-monitor.sh (PreToolUse Agent)
   "skill-rewrite.md"               # → completion-gate.sh (PostToolUse Agent)
