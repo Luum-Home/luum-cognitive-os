@@ -134,3 +134,14 @@ Windows-native Docker (without WSL2) is not a supported target. The invariant is
 - [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the plan whose `cos-cloud-worker-bootstrap.sh` entry point this ADR specifies.
 - [`bootstrap-portability.md`](../architecture/bootstrap-portability.md) — portability gate; the Compose stack satisfies it for worker surfaces.
 - [`cloud-worker-runtime-tooling-research-2026-05.md`](../architecture/cloud-worker-runtime-tooling-research-2026-05.md) — research baseline for Phase 1 no-broker constraint.
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

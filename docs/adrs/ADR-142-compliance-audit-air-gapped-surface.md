@@ -173,3 +173,14 @@ audit_class: access_control|change_management|availability|processing_integrity|
 - [ADR-141](ADR-141-engram-cloud-cross-instance-replication.md) — Engram sync audit rows; `sync` class.
 - `hooks/git-commit-scope-guard.sh` — confirms `.cognitive-os/runtime/agent-audit-trail.jsonl` as the canonical audit file.
 - [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the plan whose audit-trail signal this ADR formalises.
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

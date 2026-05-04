@@ -182,3 +182,14 @@ This ADR is satisfied when:
 - [ADR-139](ADR-139-account-agnostic-multi-provider-runtime.md) — adds `credential_source`, `billing_identity`, `provider_capabilities` fields to `required_flow_shape`.
 - [ADR-141](ADR-141-engram-cloud-cross-instance-replication.md) — adds `engram_project_scope`, `air_gapped_compatible` fields to `required_flow_shape`.
 - [ADR-142](ADR-142-compliance-audit-air-gapped-surface.md) — adds `tenant_id`, `audit_class` fields to `required_flow_shape`.
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

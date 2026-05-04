@@ -239,3 +239,14 @@ for a project whose primary target runtime is macOS Claude Code.
   surfaced the GitHub Actions billing issue.
 - Future engram topic key: `backlog/local-ci-migration` — already
   noted as the tracking key from prior sessions.
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
