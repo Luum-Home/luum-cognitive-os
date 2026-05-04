@@ -89,8 +89,8 @@ def test_inventory_reports_linked_dirty_worktree(repo: Path, tmp_path: Path) -> 
     assert linked[0]["dirty"] is True
     assert "linked-worktree-dirty" in finding_codes(payload)
     finding = next(item for item in payload["findings"] if item["code"] == "linked-worktree-dirty")
-    assert finding["level"] == "BLOCK"
-    assert payload["summary"]["blockers"] >= 1
+    assert finding["level"] == "WARN"
+    assert payload["summary"]["warnings"] >= 1
 
 
 @pytest.mark.behavior
