@@ -1,6 +1,6 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-05-04T21:09:31Z
+Generated: 2026-05-04T21:31:26Z
 Phase: reconstruction
 Gate: pass
 
@@ -12,6 +12,7 @@ Gate: pass
 - Capabilities: 734
 - Findings: 0
 - Mapping weights: {'aligned': 2000, 'missing': 0, 'overexposed': 0, 'partial': 0, 'stale': 0, 'unverified': 0}
+- New debt gate: pass (0)
 
 ## Adapter Status
 
@@ -19,7 +20,7 @@ Gate: pass
 |---|---|---|---|
 | consumer_availability | ok | `manifests/primitive-consumer-availability.yaml` | `{"items": 49, "patterns": 6, "statuses": {"maintainer-only": 34, "pattern:so-local-only": 6, "shell-ci-candidate": 15}}` |
 | consumer_projection | ok | `consumer_projection` | `{"by_harness_profile": {"claude/default": 73, "claude/full": 347, "codex/default": 73, "codex/full": 347}, "projected_primitives": 369}` |
-| docs_execution_report | ok | `docs/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 1}, "docs/HOW-TO-USE-COS.md": {"done_weak_proof": 2, "planned": 1}, "docs/README.md": {"done_weak_proof": 9, "planned": 8, "proposed": 4}, "d` |
+| docs_execution_report | ok | `docs/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 1}, "docs/HOW-TO-USE-COS.md": {"done_weak_proof": 2, "planned": 1}, "docs/README.md": {"done_weak_proof": 9, "planned": 13, "proposed": 4}, "` |
 | harness_projection | ok | `manifests/harness-projection.yaml` | `{"implemented": 2, "planned": 10, "total": 12, "unsupported": 0}` |
 | projection_profiles | ok | `manifests/primitive-projection-profiles.yaml` | `{"profile_driver_scripts": 19, "profiles": ["default", "full"], "projection_classes": ["default", "full", "maintainer-only", "profile-driver", "shared"]}` |
 | readiness:hooks | ok | `docs/reports/primitive-readiness-ledger-hooks-latest.json` | `{"confidence": {"high": 126, "medium": 86}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 1, "lifecycle-declared-maintainer": 114, "projected-consumer-surface": 11, "so-local-only": 86}, "roles": {"driver-specific": 12` |
@@ -32,6 +33,12 @@ Gate: pass
 
 | Capability | Severity | Status | Message | Next action |
 |---|---|---|---|---|
+
+## New Debt
+
+| Capability | Status | Reason |
+|---|---|---|
+| none | pass | no new debt |
 
 ## Consumer Accessibility Counts
 

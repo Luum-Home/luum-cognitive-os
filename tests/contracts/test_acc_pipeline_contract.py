@@ -17,7 +17,7 @@ COMPACT = REPO_ROOT / "docs" / "acc" / "latest-compact.md"
 
 def test_repository_acc_pipeline_generates_report() -> None:
     result = subprocess.run(
-        ["python3", str(SCRIPT), "--project-dir", str(REPO_ROOT)],
+        ["python3", str(SCRIPT), "--project-dir", str(REPO_ROOT), "--fail-new"],
         cwd=REPO_ROOT,
         text=True,
         capture_output=True,
@@ -32,6 +32,8 @@ def test_repository_acc_pipeline_generates_report() -> None:
     assert payload["mapping_statuses"] == ["aligned", "missing", "overexposed", "partial", "stale", "unverified"]
     assert "consumer_accessibility" in payload["capabilities"][0]
     assert "persistence" in payload
+    assert payload["new_debt"]["status"] == "pass"
+    assert payload["new_debt"]["count"] == 0
     assert payload["persistence"]["engram"]["status"] in {"unavailable", "ok"}
     for adapter in ("readiness:scripts", "readiness:hooks", "readiness:skills", "readiness:rules"):
         assert payload["adapters"][adapter]["status"] == "ok"
