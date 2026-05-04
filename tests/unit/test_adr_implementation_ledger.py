@@ -88,6 +88,47 @@ adrs:
     assert adr_implementation_ledger.summarize(records)["attention_count"] == 1
 
 
+def test_closure_class_semantics_define_runtime_work_boundary(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    adrs = project / "docs" / "adrs"
+    manifests = project / "manifests"
+    adrs.mkdir(parents=True)
+    manifests.mkdir(parents=True)
+
+    closure_to_expected_state = {
+        "evidence-only": "implemented",
+        "absorbed": "absorbed",
+        "superseded": "superseded",
+        "obsolete-by-context": "obsolete",
+        "deferred": "deferred",
+        "implement-current": "pending",
+    }
+    rows: list[str] = ["schema_version: 1", "adrs:"]
+    for idx, closure_class in enumerate(closure_to_expected_state, start=1):
+        adr_id = f"ADR-{idx:03d}-{closure_class.replace('_', '-')}"
+        (adrs / f"{adr_id}.md").write_text(
+            f"# {adr_id}\n\n## Status\nAccepted\n\n## Open Questions\n- Pending historical work\n",
+            encoding="utf-8",
+        )
+        rows.extend(
+            [
+                f"  - adr_id: {adr_id}",
+                f"    closure_class: {closure_class}",
+                "    reason: Test closure policy semantics.",
+            ]
+        )
+    (manifests / "adr-closure-metadata.yaml").write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+    records = adr_implementation_ledger.scan_adrs(project)
+    states = {record.closure_class: record.implementation_state for record in records}
+
+    assert states == closure_to_expected_state
+    assert adr_implementation_ledger.summarize(records)["attention_count"] == 1
+    current = [record for record in records if record.implementation_state == "pending"]
+    assert len(current) == 1
+    assert current[0].closure_class == "implement-current"
+
+
 def test_closure_metadata_rejects_unknown_classes(tmp_path: Path) -> None:
     project = tmp_path / "project"
     manifests = project / "manifests"
