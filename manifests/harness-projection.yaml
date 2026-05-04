@@ -188,22 +188,37 @@ harnesses:
   - qwen-code
 - id: kimi-code
   display_name: Kimi Code
-  status: planned
-  projection_mode: terminal-agent-or-claude-compatible-wrapper
-  settings_paths: []
+  status: implemented
+  projection_mode: kimi-cli-agents-md-mcp
+  settings_paths:
+  - AGENTS.md
+  - .kimi/mcp.json
+  - .kimi/README.md
   projected_surfaces:
-  - instructions
-  - tools
-  - mcp
-  proof: none
+  - project-instructions
+  - mcp-placeholder
+  - cli-workdir-guidance
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
   limitations:
-  - Official surface appears terminal-agent oriented; local project config/projection
-    schema is not signed in this repo.
-  next_action: Research Kimi Code local config surface, then add driver and temp-project
-    proof.
+  - Structural Kimi Code CLI project-context proof only; no account-backed CLI runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - MCP config is an empty placeholder until an operator or profile configures concrete
+    servers.
+  next_action: Add optional Kimi CLI runtime smoke with kimi --work-dir . --mcp-config-file
+    .kimi/mcp.json when Kimi CLI credentials are available.
   research_sources:
-  - https://www.kimi.com/code/en
-  - https://platform.kimi.ai/docs/guide/agent-support
+  - https://www.kimi.com/code/docs/en/kimi-code-cli/reference/kimi-command.html
+  - https://www.kimi.com/code/docs/en/kimi-code-cli/configuration/data-locations.html
+  - https://www.kimi.com/help/kimi-code/cli-customization
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - kimi-code
 - id: minimax-maxclaw
   display_name: MiniMax MaxClaw / MiniMax Agent
   status: planned
