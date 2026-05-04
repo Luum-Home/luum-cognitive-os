@@ -120,7 +120,7 @@ services:
   # ---------------------------------------------------------------------------
   paperclip:
     container_name: cognitive-os-paperclip
-    image: reeoss/paperclipai-paperclip:latest  # mirror with ARM64 support (ghcr.io needs auth)
+    image: reeoss/paperclipai-paperclip:latest@sha256:677649a2ea0571cc83ab8cff2e1d29343c0641684113b464853c4fde16809e46  # pinned 2026-05-04; mirror with ARM64 support (ghcr.io needs auth)
     profiles:
       - legacy
     restart: unless-stopped
