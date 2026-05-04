@@ -11,7 +11,13 @@
 - `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`
 - `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md`
 
-The script ledger now has explicit overrides for formerly low-confidence rows in `manifests/primitive-readiness-script-overrides.yaml`. Remaining script work is lifecycle promotion/demotion, not first-pass classification.
+The script ledger now has explicit overrides for formerly low-confidence rows in `manifests/primitive-readiness-script-overrides.yaml`. The protected install/profile/projection surfaces have ADR-126 `candidate` lifecycle entries first because they can affect downstream SO installation by profile or harness. The remaining script lifecycle backlog is still active and must be worked from `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`, not inferred from chat history.
+
+The script ledger also emits `consumer_accessibility`, because SO-local documentation is not automatically visible to downstream projects. Future family ledgers should carry the same distinction between repository-local evidence and consumer-project availability.
+
+## Protected install/profile surfaces
+
+Before working normal lifecycle debt, keep `priority: protected` rows ahead of high-priority rows. These rows manage automatic primitive installation, profile application, or harness projection and require profile-projection review before any demotion/archive/downgrade. The first script pass added candidate lifecycle metadata for the protected rows; future hook/skill/rule ledgers should use the same protected-first ordering when profile projection is involved.
 
 ## Extension Order
 
