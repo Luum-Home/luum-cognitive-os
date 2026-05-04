@@ -426,7 +426,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 1,
-        "doc": 18,
+        "doc": 20,
         "test": 2
       },
       "consumers": [
@@ -468,6 +468,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/agent-capability-coverage.md"
         },
         {
@@ -504,6 +508,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/manual-tests/multi-ide-structural-projection.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/primitive-duplication-audit.md"
         },
         {
@@ -520,7 +528,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:18",
+        "doc_consumers:20",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -537,7 +545,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 21,
+      "total_consumers": 23,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -2870,8 +2878,8 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 27,
-        "doc": 398,
+        "config": 28,
+        "doc": 401,
         "hook": 68,
         "rule": 42,
         "script": 192,
@@ -2922,6 +2930,10 @@
         {
           "family": "config",
           "path": "manifests/harness-driver-capabilities.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/harness-implementation-phases.yaml"
         },
         {
           "family": "config",
@@ -3561,6 +3573,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/README.md"
         },
         {
@@ -3898,6 +3914,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/memory-lifecycle.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
         },
         {
           "family": "doc",
@@ -4290,6 +4310,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/lote-2-mcp-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/multi-ide-structural-projection.md"
         },
         {
           "family": "doc",
@@ -7259,9 +7283,9 @@
         "skill_consumers:55",
         "test_consumers:311",
         "hook_consumers:68",
-        "doc_consumers:398",
+        "doc_consumers:401",
         "rule_consumers:42",
-        "config_consumers:27",
+        "config_consumers:28",
         "script_consumers:192"
       ],
       "install_surface": null,
@@ -7278,7 +7302,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1093,
+      "total_consumers": 1097,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -14462,7 +14486,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 5,
-        "doc": 9,
+        "doc": 12,
         "script": 3,
         "test": 7
       },
@@ -14501,6 +14525,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-154-multi-ide-structural-harness-projection.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/agent-capability-coverage-pipeline.md"
         },
         {
@@ -14513,6 +14541,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/red-team-harness-design.md"
         },
         {
@@ -14522,6 +14554,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/consumer-project-primitive-accessibility.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/multi-ide-structural-projection.md"
         },
         {
           "family": "script",
@@ -14570,7 +14606,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:9",
+        "doc_consumers:12",
         "config_consumers:5",
         "script_consumers:3"
       ],
@@ -14588,7 +14624,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 24,
+      "total_consumers": 27,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -20486,7 +20522,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 4,
+        "doc": 5,
         "script": 1,
         "test": 1
       },
@@ -20508,6 +20544,10 @@
           "path": "docs/architecture/harness-implementation-roadmap.md"
         },
         {
+          "family": "doc",
+          "path": "docs/architecture/multi-ide-harness-implementation-plan.md"
+        },
+        {
           "family": "script",
           "path": "scripts/acc_pipeline.py"
         },
@@ -20519,7 +20559,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -20534,7 +20574,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {

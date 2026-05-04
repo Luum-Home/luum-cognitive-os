@@ -186,6 +186,20 @@
       "common_home": "lib/",
       "confidence": 0.86,
       "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:d529e5eea191",
+      "kind": "python-function-repeat",
+      "left": "scripts/acc_pipeline.py::write_json",
+      "pair_key": "scripts/acc_pipeline.py::write_json :: scripts/cos_init.py::_write_json_if_changed",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/cos_init.py::_write_json_if_changed",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
       "finding_id": "python-function-repeat:1f3adfe1a8a8",
       "kind": "python-function-repeat",
       "left": "scripts/agent_work_ledger.py::main",
@@ -694,21 +708,21 @@
   "summary": {
     "by_common_home": {
       "hooks/_lib/": 4,
-      "lib/": 39,
+      "lib/": 40,
       "scripts/_lib/": 4,
       "templates/ or lib/": 1
     },
     "by_consumer_relevance": {
       "consumer-project-relevant": 7,
-      "so-local-first": 41
+      "so-local-first": 42
     },
     "by_kind": {
       "bash-function-repeat": 8,
       "exact-copy": 1,
-      "python-function-repeat": 39
+      "python-function-repeat": 40
     },
-    "files_scanned": 717,
-    "findings": 48
+    "files_scanned": 718,
+    "findings": 49
   },
-  "timestamp": "2026-05-04T21:30:56.252975+00:00"
+  "timestamp": "2026-05-04T21:53:53.214432+00:00"
 }
