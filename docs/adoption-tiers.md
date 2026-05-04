@@ -49,11 +49,11 @@ Answer these questions in order. Stop when you reach a tier.
 |---|---|---|---|
 | Target team size | 1 developer | 2-5 developers | 5+ or enterprise, including a solo maintainer operating a multi-IDE swarm |
 | Concurrent sessions | 1 | occasional parallel | 5+ simultaneous, or multiple harnesses/projects controlled by one operator |
-| Hooks wired | ~33 (minimal profile) | ~65 (standard profile) | ~81 (paranoid profile) |
+| Hooks wired | ~33 (minimal profile) | ~81 (standard profile) | ~96 (paranoid profile) |
 | Setup time | 15-30 min | 45-90 min | 2-4 hours |
 | Primary ADRs | ADR-105, ADR-121 §4 | + ADR-116, ADR-119, ADR-122 | + ADR-116 full, ADR-121 all |
 | Kill problems | Silent WIP loss, agent commits to main | + duplicate claims, stale sessions, orphaned commits | + multi-agent races, merge collisions, chaos-level failures |
-| Primary cost | ~33 hook fires/turn | ~65 hook fires/turn | ~81 hook fires/turn + engram I/O |
+| Primary cost | ~33 hook fires/turn | ~81 hook fires/turn | ~96 hook fires/turn + engram I/O |
 
 ---
 
@@ -252,7 +252,7 @@ choreographing who owns what.
 
 ### Hook list (standard security profile)
 
-`templates/security-profiles/standard.json` (`_hook_count: 65`).
+`templates/security-profiles/standard.json` (`_hook_count: 81`).
 
 Inherits all lean hooks plus the following additions.
 
@@ -348,7 +348,7 @@ python3 -m pytest tests/audit/test_adr_contracts.py -q
 
 ### Overhead at standard tier
 
-- ~65 hook fires per turn
+- ~81 hook fires per turn
 - `agent-prelaunch.sh` adds ~400ms per sub-agent dispatch (preflight inventory)
 - `pre-agent-snapshot.sh` adds ~200ms + disk per agent call
 - `engram-daemon-launcher.sh` starts one background process per session
@@ -409,7 +409,7 @@ serialized landing path to main.
 
 ### Hook list (strict / paranoid security profile)
 
-`templates/security-profiles/paranoid.json` (`_hook_count: 81`).
+`templates/security-profiles/paranoid.json` (`_hook_count: 96`).
 
 Inherits all standard hooks plus the following additions.
 
@@ -517,7 +517,7 @@ python3 -m pytest tests/chaos/ -q
 
 ### Overhead at strict tier
 
-- ~81 hook fires per turn
+- ~96 hook fires per turn
 - `agent-prelaunch.sh --strict` adds ~600ms per sub-agent dispatch
 - `merge-to-main.sh` acquires a flock before every main landing; adds 1-5s
   per landing
@@ -648,7 +648,7 @@ Signal: `bash hooks/self-install.sh` reports hooks registered but
 | Dimension | Lean | Standard | Strict |
 |---|---|---|---|
 | Security profile file | `minimal.json` | `standard.json` | `paranoid.json` |
-| Hook count | 33 | 65 | 81 |
+| Hook count | 33 | 81 | 96 |
 | ADR-116 primitives active | None (P2.1 warn-only for agents) | P1.1, P1.3, P3.3, P4.3, P5.1 | All 12 (P1.1-P5.2) |
 | ADR-121 invariants covered | §4 guard maturity (observe/warn only) | + §3 WIP ownership | All 6 invariants |
 | ADR-122 preflight refinements | Not applicable (no sub-agent preflight) | Active with ephemeral filter and read-only exemption | Active with `COS_PREFLIGHT_STRICT=1` |
@@ -659,7 +659,7 @@ Signal: `bash hooks/self-install.sh` reports hooks registered but
 | Chaos validation | No | No | Yes (`tests/chaos/`) |
 | Setup time | 15-30 min | 45-90 min | 2-4 hours |
 | Kill problems prevented | WIP loss, bad commits, secrets | + duplicate claims, orphaned commits, stale sessions | + merge collisions, fingerprint dupes, swarm races |
-| Hook fires per turn | ~33, 0 daemons | ~65, 1 daemon (Engram) | ~81, Engram hot-path |
+| Hook fires per turn | ~33, 0 daemons | ~81, 1 daemon (Engram) | ~96, Engram hot-path |
 | Rollback cost | Swap `settings.json` | Swap `settings.json` + flip 5 flags | Swap `settings.json` + flip 16 flags |
 
 ---
@@ -678,4 +678,4 @@ Signal: `bash hooks/self-install.sh` reports hooks registered but
 
 ---
 
-<!-- Generated from 380b46f7 on 2026-05-03T00:42:05Z. Do not edit directly. Run `python3 scripts/render_adoption_tiers.py` to regenerate. -->
+<!-- Generated from f639707b on 2026-05-04T15:13:51Z. Do not edit directly. Run `python3 scripts/render_adoption_tiers.py` to regenerate. -->

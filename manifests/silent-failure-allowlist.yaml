@@ -1931,7 +1931,7 @@ entries:
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
 - path: hooks/tool-sequence-capture.sh
-  max_occurrences: 7
+  max_occurrences: 9
   degradation_class: metrics_best_effort
   rationale: Telemetry/JSONL writes are best effort and must never break the guarded
     user action.
