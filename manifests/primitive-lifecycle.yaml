@@ -6250,3 +6250,29 @@ primitives:
   metrics_file: none
   consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: prove installation/projection into a consumer project for each supported harness before claiming shared availability
+
+- id: scripts/acc_pipeline.py
+  kind: script
+  owner_adr: ADR-147
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/acc_pipeline.py
+  runtime_projection: false
+  behavior_evidence: Unified ACC orchestrator consumes readiness ledgers and audit reports; candidate until broader application adapters and Engram bridge are implemented.
+  evidence_commands:
+  - python3 -m py_compile scripts/acc_pipeline.py
+  - python3 scripts/acc_pipeline.py --project-dir . --refresh
+  - python3 -m pytest tests/unit/test_acc_pipeline.py tests/contracts/test_acc_pipeline_contract.py -q
+  rollback_or_repair_command: Remove or update scripts/acc_pipeline.py lifecycle row, then regenerate ACC and primitive readiness reports.
+  sunset_criteria: Promote after stable ACC adapter contract, CI/hook gate wiring, and Engram bridge proof; downgrade if it remains report-only maintainer tooling.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: .cognitive-os/metrics/acc-pipeline-history.jsonl
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until consumer-project ACC adapter package and projection proof exist.
