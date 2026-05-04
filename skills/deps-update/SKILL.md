@@ -3,12 +3,11 @@
 name: deps-update
 invocation_pattern: on-demand  # @on-demand: monthly/pre-release maintenance — manual trigger
 command: /deps-update
-description: Audit and optionally upgrade project dependencies — Python, engram binary, Claude Code plugins, Docker images
+description: Audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps, Docker images, Claude plugins) using the canonical scripts/deps-update.sh primitive
 version: 0.1.0
-audience: os-dev
-scope: os-only
-tags: [maintenance, dependencies, audit, upgrade]
-last-updated: 2026-04-24
+audience: os
+tags: [maintenance, dependencies, primitives]
+last-updated: 2026-05-04
 effort: haiku
 script: scripts/deps-update.sh
 platforms: ["claude-code"]
@@ -48,6 +47,21 @@ Keep all luum-cognitive-os dependencies current between releases. Covers four di
   Plugins:  0 of 4 need upgrade (manual via Claude Code UI)
   Docker:   1 image(s) may have newer digest (manual review)
 ```
+
+## Trigger
+
+Invoke `/deps-update` when any of the following applies:
+
+**Keywords:** upgrade, update, outdated, version drift, brew, pip install -U, uv sync --upgrade, engram version, npm update, pnpm update, yarn upgrade, go get, deps drift.
+
+**Bash-gate redirect:** `hooks/skill-router-bash-gate.sh` (PreToolUse) **blocks** direct dep-upgrade commands (`brew upgrade`, `pip install -U`, `uv sync --upgrade`, `npm update`, `pnpm update`, `yarn upgrade`, `go get ...@`) and emits:
+
+```
+SKILL ROUTER BASH GATE: BLOCK
+Direct dependency/toolchain upgrade command detected. Use /deps-update --audit …
+```
+
+When you see this message, run `/deps-update --audit` first, then decide whether `--apply` is warranted.
 
 ## When to Use
 
@@ -173,6 +187,38 @@ cp ~/.local/bin/engram.v1.10.2.bak ~/.local/bin/engram
 **GOPATH versioned-bin issue**: On macOS with `go env GOVERSION` in the path (e.g. `~/go/1.25.6/bin/`), `go install` writes the binary to the versioned subdirectory instead of `~/go/bin/`. The script detects this and copies the freshly built binary to `~/go/bin/engram` so the PATH-resolved binary is updated. This gotcha only applies to the `go install` fallback path; the brew path does not have this issue.
 
 **brew tap formula lag**: `brew info` returns stale data if you haven't run `brew update` recently. Always run `brew update` first — the script does this automatically in `--apply` mode.
+
+## Bypass Mechanism
+
+When an operator intentionally needs to run a raw dep-upgrade command (e.g., installing an unrelated brew formula that happens to match the gate pattern), prefix the command with `COS_ALLOW_SKILL_BYPASS=1`:
+
+```bash
+COS_ALLOW_SKILL_BYPASS=1 brew install some-other-tool
+```
+
+Use sparingly. The bypass is intentionally noisy so it appears in audit logs. It leaves the action **untracked** by the dep-management pipeline — Python gaps, engram symlinks, and major-bump reviews are not checked.
+
+## ADR References
+
+- **ADR-144** — hook-enforced-rule-projection-contract: the gate's blocking contract and bypass mechanism.
+- `audience: os` — this skill covers the COS repo's own deps only. Consumer projects have separate dep tooling; they should not invoke this skill.
+
+## Examples
+
+**Audit only (safe, read-only, exit 0):**
+```bash
+bash scripts/deps-update.sh --audit
+```
+
+**Apply minor/patch upgrades:**
+```bash
+bash scripts/deps-update.sh --apply
+```
+
+**Fix engram multi-path symlink conflict:**
+```bash
+bash scripts/deps-update.sh --apply --fix-symlinks
+```
 
 ## Acceptance Criteria
 
