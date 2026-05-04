@@ -60,7 +60,8 @@ Subagents should receive selected rows or findings only. Use Python/JQ snippets 
 | `primitive_gap_snapshot` | `scripts/primitive_gap_snapshot.py` output when available | Family risk signal. |
 | `primitive_duplication` | `scripts/primitive_duplication_audit.py` output when available | Refactor/extraction signal for repeated Bash, Python, YAML/config, and primitive behavior. |
 | `harness_projection` | `manifests/harness-projection.yaml` | Registry of implemented/planned/unsupported IDE and harness projection surfaces. |
-| `consumer_projection` | Temporary projects generated for harnesses with `status: implemented` | Proof that hooks, skills, and rules are actually projected into consumer projects. |
+| `projection_profiles` | `manifests/primitive-projection-profiles.yaml` | Declares `default`, `full`, `shared`, `profile-driver`, and maintainer-only projection classes. |
+| `consumer_projection` | Temporary projects generated for harnesses with `status: implemented` | Proof that hooks, skills, and rules are actually projected into consumer projects for default and full profiles. |
 
 ## Scope boundary
 
@@ -89,13 +90,15 @@ The agent must not claim Engram persistence from the pipeline unless a real Engr
 
 ## Consumer projection adapter
 
-The consumer projection adapter creates temporary projects and runs the default installer for Claude Code and OpenAI Codex. It records projected paths under `.cognitive-os/hooks/cos/`, `.cognitive-os/skills/cos/`, and `.cognitive-os/rules/cos/`. Readiness rows whose source path matches those projected artifacts become `aligned` for the proved harnesses.
+The consumer projection adapter creates temporary projects and runs the default and full installers for Claude Code and OpenAI Codex. It records projected paths under `.cognitive-os/hooks/cos/`, `.cognitive-os/skills/cos/`, and `.cognitive-os/rules/cos/`. Readiness rows whose source path matches those projected artifacts become `aligned` for the proved harnesses and profiles.
 
 This is intentionally narrow. It does not sign native support for Cursor, Windsurf, VS Code Copilot, Google Antigravity, OpenCode, or shell/CI until those harnesses have their own projection proof.
 
+The profile manifest also declares SO-local profile drivers, such as `scripts/cos_init.py`, `scripts/cos-init.sh`, and install/profile doctors. Those scripts are not copied into consumer projects. Their proof is that they successfully generate the declared consumer projection surface.
+
 ## Multi-IDE harness registry
 
-`manifests/harness-projection.yaml` is the authoritative list of IDEs/harnesses considered by ACC. Claude Code and OpenAI Codex are currently `implemented`; Cursor, Windsurf, VS Code Copilot, OpenCode, Google Antigravity, and Shell/CI are declared as `planned`. Planned harnesses are reported as unverified and never inherit Claude/Codex projection proof.
+`manifests/harness-projection.yaml` is the authoritative list of IDEs/harnesses considered by ACC. Claude Code and OpenAI Codex are currently `implemented`; Cursor, Windsurf, VS Code Copilot, OpenCode, Google Antigravity, Qwen Code, Kimi Code, MiniMax MaxClaw, DeepSeek provider integrations, and Shell/CI are declared as `planned`. Planned harnesses are reported as unverified and never inherit Claude/Codex projection proof.
 
 Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`.
 

@@ -22,7 +22,7 @@ That behavior test runs `scripts/cos_init.py --default --harness claude` and `sc
 - projected rules under `.cognitive-os/rules/cos/`
 - projected skills under `.cognitive-os/skills/cos/`
 
-This proves default consumer projection for those two harnesses. It does not prove full-mode projection, third-party IDE native integration, or availability of every SO-local primitive.
+The ACC consumer-projection adapter additionally runs both `--default` and `--full` for implemented harnesses when `python3 scripts/acc_pipeline.py --project-dir . --refresh` is used. This proves projected hooks/rules/skills for Claude Code and OpenAI Codex across those two profiles. It does not prove third-party IDE native integration or availability of every SO-local primitive.
 
 ## Current ledger evidence
 
@@ -52,13 +52,17 @@ The machine-readable registry is `manifests/harness-projection.yaml`. ACC treats
 
 | Harness / IDE | Current consumer proof | Current safe claim | Next proof needed |
 |---|---|---|---|
-| Claude Code | Automated default install projection test passes. | Default profile projects hooks, rules, and skills into consumer projects. | Full profile projection and selected lifecycle candidate promotion proof. |
-| OpenAI Codex | Automated default install projection test passes. | Default profile projects Codex settings plus COS hooks/rules/skills into consumer projects. | Full profile projection and Codex runtime parity proof. |
+| Claude Code | Automated default/full install projection proof passes in ACC. | Default and full profiles project hooks, rules, and skills into consumer projects. | Selected lifecycle candidate promotion proof. |
+| OpenAI Codex | Automated default/full install projection proof passes in ACC. | Default and full profiles project Codex settings plus COS hooks/rules/skills into consumer projects. | Codex runtime parity proof beyond file projection. |
 | Cursor | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Define Cursor settings/rules/MCP projection driver and temp-project proof. |
 | Windsurf | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Define Windsurf settings/rules/MCP projection driver and temp-project proof. |
 | VS Code Copilot | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Define instruction/task/MCP projection surface and temp-project proof. |
 | Google Antigravity | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Audit supported config/tool format and add projection proof. |
 | OpenCode | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Define wrapper or native config projection and temp-project proof. |
+| Qwen Code | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Define Qwen Code settings/skills/hooks/MCP projection and temp-project proof. |
+| Kimi Code | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Research local config surface, then add projection proof. |
+| MiniMax MaxClaw / MiniMax Agent | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native local projection; may be hosted-agent/provider surface instead. | Decide harness-vs-provider boundary before implementation. |
+| DeepSeek provider integrations | Declared in `manifests/harness-projection.yaml` as `planned`. | Track as provider compatibility, not first-party IDE support. | Promote only if a first-party coding harness/project config is identified. |
 | Shell/CI | CLI scripts are available in the SO repo; consumer projection depends on install/profile. | Use deterministic CLI entrypoints only when project install path exposes them. | Add temp-project shell/CI projection test. |
 
 ## Acceptance criteria for future claims
