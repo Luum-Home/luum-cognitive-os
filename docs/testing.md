@@ -406,6 +406,17 @@ COS_RUN_SMART_INFRA_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/in
 COS_RUN_ENGRAM_CLOUD_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_engram_cloud_docker.py -q -ra
 ```
 
+For the stronger Engram Cloud proof that starts the Compose profile and performs
+real multi-project `engram sync --cloud --project` calls against Docker
+Postgres, run:
+
+```bash
+scripts/cos-engram-cloud-docker-smoke --json
+```
+
+See `docs/manual-tests/engram-cloud-docker-sync.md` for the expanded manual
+drill and cleanup steps.
+
 `tests/contracts/test_optional_docker_lanes.py` enforces this policy so any new
 integration test that creates testcontainers must declare and document a
 `COS_RUN_*` opt-in flag before it can enter the repository.
