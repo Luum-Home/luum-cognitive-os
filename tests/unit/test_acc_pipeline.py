@@ -23,7 +23,19 @@ def write_json(path: Path, payload: dict) -> None:
 def make_repo(tmp_path: Path) -> Path:
     root = tmp_path / "repo"
     (root / "docs" / "reports").mkdir(parents=True)
+    (root / "manifests").mkdir(parents=True)
     (root / "cognitive-os.yaml").write_text(yaml.safe_dump({"project": {"phase": "reconstruction"}}))
+    (root / "manifests" / "harness-projection.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "harness-projection.v1",
+                "harnesses": [
+                    {"id": "claude", "display_name": "Claude Code", "status": "implemented", "projection_mode": "native-settings"},
+                    {"id": "cursor", "display_name": "Cursor", "status": "planned", "projection_mode": "ide-rules-or-wrapper"},
+                ],
+            }
+        )
+    )
     script_payload = {
         "summary": {},
         "scripts": [
@@ -100,6 +112,8 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert payload["summary"]["stale_weight"] >= 2
     assert payload["gate"]["phase"] == "reconstruction"
     assert payload["persistence"]["engram"]["status"] == "unavailable"
+    assert payload["harness_projection"]["claude"]["status"] == "implemented"
+    assert payload["harness_projection"]["cursor"]["status"] == "planned"
     compact = acc_pipeline.compact_summary(payload)
     assert compact["schema_version"] == "acc.compact.v1"
     assert compact["context_diet"]["read_this_first"] == "docs/acc/latest-compact.md"
@@ -123,6 +137,18 @@ def test_projected_readiness_row_becomes_aligned(tmp_path: Path) -> None:
     assert cap.mapping_status == "aligned"
     assert cap.consumer_accessibility == "projected-consumer-surface"
     assert "projected_harnesses:claude,codex" in cap.evidence
+
+
+def test_harness_registry_reports_planned_harnesses(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+
+    status, manifest = acc_pipeline.load_harness_projection(root)
+    summary = acc_pipeline.harness_projection_summary(manifest, status)
+
+    assert status.status == "ok"
+    assert summary["claude"]["status"] == "implemented"
+    assert summary["cursor"]["status"] == "planned"
+    assert "cursor" not in acc_pipeline.implemented_harness_ids(manifest)
 
 
 def test_write_report_outputs_json_markdown_and_history(tmp_path: Path) -> None:

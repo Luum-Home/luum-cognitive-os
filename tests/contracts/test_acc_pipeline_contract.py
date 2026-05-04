@@ -5,6 +5,7 @@ import subprocess
 from pathlib import Path
 
 import pytest
+import yaml
 
 pytestmark = pytest.mark.contract
 
@@ -34,5 +35,19 @@ def test_repository_acc_pipeline_generates_report() -> None:
     assert payload["persistence"]["engram"]["status"] in {"unavailable", "ok"}
     for adapter in ("readiness:scripts", "readiness:hooks", "readiness:skills", "readiness:rules"):
         assert payload["adapters"][adapter]["status"] == "ok"
+    assert payload["adapters"]["harness_projection"]["status"] == "ok"
+    assert payload["harness_projection"]["claude"]["status"] == "implemented"
+    assert payload["harness_projection"]["codex"]["status"] == "implemented"
+    assert payload["harness_projection"]["cursor"]["status"] == "planned"
     assert COMPACT.exists()
     assert "Context Diet Rule" in COMPACT.read_text()
+
+
+def test_harness_projection_manifest_declares_named_ides() -> None:
+    manifest = yaml.safe_load((REPO_ROOT / "manifests" / "harness-projection.yaml").read_text())
+    ids = {item["id"] for item in manifest["harnesses"]}
+    required = {"claude", "codex", "cursor", "windsurf", "vscode-copilot", "opencode", "google-antigravity", "shell-ci"}
+
+    assert required <= ids
+    implemented = {item["id"] for item in manifest["harnesses"] if item["status"] == "implemented"}
+    assert implemented == {"claude", "codex"}
