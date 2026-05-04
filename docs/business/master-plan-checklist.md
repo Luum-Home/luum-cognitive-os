@@ -13,11 +13,13 @@
 - [ ] Keep the [Primitive Readiness Continuity Plan](../architecture/primitive-readiness-continuity-plan.md) current in every SO evolution cycle: refresh primitive index, gap snapshot, coverage, docs audit, script role classification, and harness proof before claiming universal agent-tool support.
 - [x] Machine-readable script primitive readiness ledger exists through `scripts/primitive_readiness_ledger.py`, [ADR-146](../adrs/ADR-146-primitive-readiness-ledger.md), and `docs/reports/primitive-readiness-ledger-scripts-latest.json`; remaining work is triage/ratchet, not first-pass visibility.
 - [x] Hooks/skills/rules ledger extension is staged in [Primitive Readiness Ledger Family Extension Plan](../architecture/primitive-readiness-ledger-family-extension.md).
-- [ ] Finish the remaining script lifecycle backlog in `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`; protected install/profile rows have candidate metadata, but normal agentic script rows still need lifecycle or downgrade decisions.
+- [x] Finish the script lifecycle backlog in `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`; script agentic primitives now have lifecycle rows or non-agentic roles, with promotion/downgrade/archive remaining as candidate-state work.
 - [x] Script readiness low-confidence triage is closed through `manifests/primitive-readiness-script-overrides.yaml`; `python3 scripts/primitive_readiness_ledger.py --fail-low-confidence` exits 0.
 - [x] Profile-managed install/projection scripts are protected from naive demotion through `manifests/primitive-readiness-protected-install-surfaces.yaml` and lifecycle backlog `priority: protected`.
-- [x] Protected install/profile scripts now have candidate lifecycle metadata in `manifests/primitive-lifecycle.yaml` without changing runtime projection; remaining script lifecycle backlog is 58 rows.
+- [x] Protected install/profile scripts have candidate lifecycle metadata in `manifests/primitive-lifecycle.yaml` without changing runtime projection; remaining script lifecycle backlog is 0 rows.
 - [x] Script readiness now tracks `consumer_accessibility` so repository-local docs/skills are not mistaken for downstream project availability.
+- [x] Hooks/skills/rules readiness ledgers exist through `scripts/primitive_family_readiness_ledger.py` and the generated `docs/reports/primitive-readiness-ledger-{hooks,skills,rules}-latest.*` reports.
+- [x] Consumer-project projection proof is documented in [Consumer Project Primitive Accessibility](../architecture/consumer-project-primitive-accessibility.md) and automated for Claude/Codex default installs by `tests/behavior/test_consumer_project_projection.py`.
 - [x] The README expresses the same core product promise as the master plan.
 - [x] CONTRIBUTING is aligned with the product-core narrative instead of subsystem sprawl.
 - [x] The product promise is documented in [Durable Product Master Plan](durable-product-master-plan.md).

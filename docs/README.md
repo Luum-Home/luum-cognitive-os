@@ -16,6 +16,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Primitive Readiness Ledger Manual Test](manual-tests/primitive-readiness-ledger.md) — manual proof path for regenerating and inspecting the script readiness ledger.
 - [ADR-146: Primitive Readiness Ledger](adrs/ADR-146-primitive-readiness-ledger.md) — accepted contract for the machine-readable script role ledger and future ratchet gates.
 - [Primitive Readiness Ledger Family Extension Plan](architecture/primitive-readiness-ledger-family-extension.md) — staged plan for extending readiness ledgers from scripts to hooks, skills, and rules.
+- [Consumer Project Primitive Accessibility](architecture/consumer-project-primitive-accessibility.md) — downstream-project projection contract and current Claude/Codex proof boundary.
+- [Consumer Project Primitive Accessibility Manual Test](manual-tests/consumer-project-primitive-accessibility.md) — manual proof path for temp-project projection and readiness-ledger accessibility checks.
 - [Agent Capability Coverage](agent-capability-coverage.md) — strategic report defining ACC as semantic system coverage for agentic primitives.
 - [Multi-Session Orchestration Audit — 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) — documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap.
 - [ADR-116 Direct-Main Policy](architecture/direct-main-policy.md) — local agent-block/operator-warn policy plus remote protection invariant for `main`/`master`.

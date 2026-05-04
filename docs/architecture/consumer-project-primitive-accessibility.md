@@ -1,0 +1,68 @@
+# Consumer Project Primitive Accessibility
+
+> Contract for distinguishing SO-local primitive evidence from primitives that are actually installed or projected into downstream projects.
+
+## Why this exists
+
+A downstream project that implements Cognitive OS does not automatically have access to every document, script, hook, skill, or rule in this repository. A primitive is consumer-accessible only when an install, profile, settings driver, package, or wrapper projects it into that project for a declared harness.
+
+## Current automated proof
+
+The current automated consumer projection proof covers the default install path for Claude Code and OpenAI Codex:
+
+```bash
+python3 -m pytest tests/behavior/test_consumer_project_projection.py -q
+```
+
+That behavior test runs `scripts/cos_init.py --default --harness claude` and `scripts/cos_init.py --default --harness codex` inside temporary consumer projects and verifies that the project receives:
+
+- `.cognitive-os/install-meta.json`
+- harness settings (`.claude/settings.json` or `.codex/hooks.json`)
+- projected hooks under `.cognitive-os/hooks/cos/`
+- projected rules under `.cognitive-os/rules/cos/`
+- projected skills under `.cognitive-os/skills/cos/`
+
+This proves default consumer projection for those two harnesses. It does not prove full-mode projection, third-party IDE native integration, or availability of every SO-local primitive.
+
+## Current ledger evidence
+
+Regenerate all family ledgers:
+
+```bash
+python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+for family in hooks skills rules; do
+  python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family "$family"
+done
+```
+
+Generated reports:
+
+- `docs/reports/primitive-readiness-ledger-scripts-latest.json`
+- `docs/reports/primitive-readiness-ledger-hooks-latest.json`
+- `docs/reports/primitive-readiness-ledger-skills-latest.json`
+- `docs/reports/primitive-readiness-ledger-rules-latest.json`
+
+Each row includes `consumer_accessibility` and `consumer_access_next_action`. Treat `so-local-only`, `repo-skill-not-projectable`, and `skill-referenced-not-projectable` as not available to consumer projects until an install/profile/package path proves otherwise.
+
+## Harness support matrix
+
+| Harness / IDE | Current consumer proof | Current safe claim | Next proof needed |
+|---|---|---|---|
+| Claude Code | Automated default install projection test passes. | Default profile projects hooks, rules, and skills into consumer projects. | Full profile projection and selected lifecycle candidate promotion proof. |
+| OpenAI Codex | Automated default install projection test passes. | Default profile projects Codex settings plus COS hooks/rules/skills into consumer projects. | Full profile projection and Codex runtime parity proof. |
+| Cursor | No native projection proof in this slice. | Not signed as native consumer projection. | Define settings/profile driver and temp-project projection test. |
+| Windsurf | No native projection proof in this slice. | Not signed as native consumer projection. | Define settings/profile driver and temp-project projection test. |
+| VS Code Copilot | No native projection proof in this slice. | Not signed as native consumer projection. | Define instruction/task/MCP projection surface and temp-project proof. |
+| Google Antigravity | No native projection proof in this slice. | Not signed as native consumer projection. | Audit supported config/tool format and add projection proof. |
+| OpenCode | No native projection proof in this slice. | Not signed as native consumer projection. | Define wrapper or native config projection and temp-project proof. |
+| Shell/CI | CLI scripts are available in the SO repo; consumer projection depends on install/profile. | Use deterministic CLI entrypoints only when project install path exposes them. | Add temp-project shell/CI projection test. |
+
+## Acceptance criteria for future claims
+
+A primitive can be described as available to consumer projects only when all are true:
+
+1. The primitive row has lifecycle metadata or explicit package/profile projection metadata.
+2. The row declares supported harnesses or has a documented unsupported-harness fallback.
+3. A temp consumer project proof installs/projects the primitive or its family.
+4. The generated readiness ledger no longer marks the row as SO-local only.
+5. Manual documentation names the exact harnesses proved, not all IDEs by default.
