@@ -35,12 +35,12 @@ phases:
     status: in_progress
     candidate_harnesses:
     - windsurf
-    - kimi-code
     acceptance:
     - primary_docs_confirm_project_local_config
     - temp_project_projection_driver
     - automated_structural_tests
     implemented_harnesses:
+    - kimi-code
     - qwen-code
   provider-hosted-surfaces:
     status: planned

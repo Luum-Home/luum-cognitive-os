@@ -115,7 +115,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 70,
+        "doc": 71,
         "hook": 4,
         "rule": 2,
         "script": 11,
@@ -342,6 +342,10 @@
         {
           "family": "doc",
           "path": "docs/leverage-points.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/kimi-code-cli-structural-projection.md"
         },
         {
           "family": "doc",
@@ -623,7 +627,7 @@
         "rule_consumers:2",
         "script_consumers:11",
         "test_consumers:27",
-        "doc_consumers:70",
+        "doc_consumers:71",
         "config_consumers:4"
       ],
       "family": "rules",
@@ -634,7 +638,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 123
+      "total_consumers": 124
     },
     {
       "confidence": "medium",
