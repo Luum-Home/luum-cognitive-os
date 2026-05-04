@@ -13,6 +13,47 @@
         "projected_primitives": 58
       }
     },
+    "cos_coverage": {
+      "command": "python3 scripts/cos_coverage.py --project-dir . --json --refresh",
+      "error": null,
+      "source": "cos_coverage",
+      "status": "ok",
+      "summary": {
+        "aspirational": 38,
+        "coverage_pct": 54.3,
+        "dormant": 160,
+        "generated_at": "2026-05-04T20:30:56Z",
+        "mapped": 268,
+        "metadata": 56,
+        "on_demand": 287,
+        "project": "<repo-root>",
+        "real": 235,
+        "tiers": {
+          "A": 2,
+          "B": 4,
+          "C": 39,
+          "D": 155
+        },
+        "trend": {
+          "coverage_pct": "flat",
+          "dormant": "flat",
+          "real": "flat"
+        },
+        "unmapped": 0,
+        "weak_proof": 0
+      }
+    },
+    "docs_execution": {
+      "command": "python3 scripts/docs_execution_audit.py --project-dir .",
+      "error": null,
+      "source": "docs_execution",
+      "status": "ok",
+      "summary": {
+        "items": 2476,
+        "json": "<repo-root>/docs/reports/docs-execution-latest.json",
+        "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"
+      }
+    },
     "docs_execution_report": {
       "command": null,
       "error": null,
@@ -718,6 +759,11 @@
             "done_weak_proof": 4,
             "done_with_proof": 2
           },
+          "docs/adrs/ADR-149-primitive-duplication-audit.md": {
+            "done_weak_proof": 2,
+            "done_with_proof": 2,
+            "proposed": 1
+          },
           "docs/adrs/README.md": {
             "planned": 1
           },
@@ -1058,6 +1104,10 @@
             "planned": 1,
             "proposed": 3
           },
+          "docs/architecture/primitive-duplication-audit.md": {
+            "planned": 1,
+            "proposed": 1
+          },
           "docs/architecture/primitive-harvester.md": {
             "done_weak_proof": 1,
             "planned": 1
@@ -1310,6 +1360,9 @@
             "done_weak_proof": 2,
             "planned": 9
           },
+          "docs/manual-tests/primitive-duplication-audit.md": {
+            "proposed": 1
+          },
           "docs/manual-tests/primitive-readiness-ledger.md": {
             "planned": 2
           },
@@ -1547,13 +1600,96 @@
             "planned": 1
           }
         },
-        "items": 2468,
+        "items": 2476,
         "statuses": {
-          "done_weak_proof": 1025,
-          "done_with_proof": 198,
-          "planned": 969,
-          "proposed": 276
+          "done_weak_proof": 1027,
+          "done_with_proof": 200,
+          "planned": 970,
+          "proposed": 279
         }
+      }
+    },
+    "family_readiness_hooks": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family hooks",
+      "error": null,
+      "source": "family_readiness_hooks",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "high": 126,
+          "medium": 85
+        },
+        "consumer_accessibility": {
+          "lifecycle-declared-consumer-candidate": 1,
+          "lifecycle-declared-maintainer": 114,
+          "projected-consumer-surface": 11,
+          "so-local-only": 85
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-hooks-latest.json",
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-hooks-latest.md",
+        "roles": {
+          "driver-specific": 12,
+          "lab": 103,
+          "memory-lifecycle": 65,
+          "observability": 25,
+          "runtime-safety": 6
+        },
+        "total": 211,
+        "without_consumers": 0,
+        "without_lifecycle": 85
+      }
+    },
+    "family_readiness_rules": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family rules",
+      "error": null,
+      "source": "family_readiness_rules",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "medium": 112
+        },
+        "consumer_accessibility": {
+          "so-local-only": 112
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.json",
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.md",
+        "roles": {
+          "context-only": 6,
+          "doctrine": 4,
+          "driver-specific": 48,
+          "hook-enforced": 43,
+          "lab": 11
+        },
+        "total": 112,
+        "without_consumers": 0,
+        "without_lifecycle": 112
+      }
+    },
+    "family_readiness_skills": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family skills",
+      "error": null,
+      "source": "family_readiness_skills",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "high": 51,
+          "medium": 39
+        },
+        "consumer_accessibility": {
+          "repo-skill-not-projectable": 86,
+          "so-local-only": 4
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.json",
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.md",
+        "roles": {
+          "compatibility-wrapper": 51,
+          "lab": 7,
+          "project-extension": 16,
+          "so-maintainer": 16
+        },
+        "total": 90,
+        "without_consumers": 0,
+        "without_lifecycle": 90
       }
     },
     "harness_projection": {
@@ -1566,6 +1702,139 @@
         "planned": 6,
         "total": 8,
         "unsupported": 0
+      }
+    },
+    "primitive_duplication": {
+      "command": "python3 scripts/primitive_duplication_audit.py --project-root .",
+      "error": null,
+      "source": "primitive_duplication",
+      "status": "ok",
+      "summary": {
+        "by_common_home": {
+          "hooks/_lib/": 6,
+          "lib/": 39,
+          "scripts/_lib/": 4,
+          "templates/ or lib/": 1
+        },
+        "by_consumer_relevance": {
+          "consumer-project-relevant": 9,
+          "so-local-first": 41
+        },
+        "by_kind": {
+          "bash-function-repeat": 10,
+          "exact-copy": 1,
+          "python-function-repeat": 39
+        },
+        "files_scanned": 711,
+        "findings": 50
+      }
+    },
+    "primitive_gap_snapshot": {
+      "command": "python3 scripts/primitive_gap_snapshot.py --project-root . --json",
+      "error": null,
+      "source": "primitive_gap_snapshot",
+      "status": "ok",
+      "summary": {
+        "families": [
+          {
+            "aspirational_signal": 2,
+            "evidence": "row-audit proven=99 partial_nonblocking=133 actionable_gaps=2",
+            "family": "hooks",
+            "next_action": "close actionable rows",
+            "partial_signal": 133,
+            "proven_signal": 99,
+            "severity": "high",
+            "total": 234
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "row-audit proven=184 partial_nonblocking=55 actionable_gaps=0",
+            "family": "skills",
+            "next_action": "no actionable gaps; harden weak proof opportunistically",
+            "partial_signal": 55,
+            "proven_signal": 184,
+            "severity": "low",
+            "total": 239
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "row-audit proven=112 partial_nonblocking=0 actionable_gaps=0",
+            "family": "rules",
+            "next_action": "no actionable gaps; harden weak proof opportunistically",
+            "partial_signal": 0,
+            "proven_signal": 112,
+            "severity": "low",
+            "total": 112
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "memory-named=9 runtime-or-test-referenced=9; actionable_gaps=0",
+            "family": "memory",
+            "next_action": "row-audit memory primitives when Engram APIs change",
+            "partial_signal": 0,
+            "proven_signal": 9,
+            "severity": "low",
+            "total": 9
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "mcp-mentioned-files=211 test-mentioned-files=104; actionable_gaps=0",
+            "family": "mcp_tools",
+            "next_action": "separate installed/optional/reference-only integrations before promotion",
+            "partial_signal": 107,
+            "proven_signal": 104,
+            "severity": "low",
+            "total": 211
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "projection-files=2 test-mentioned=2; actionable_gaps=0",
+            "family": "config_projection",
+            "next_action": "map config keys to readers and projected driver outputs",
+            "partial_signal": 0,
+            "proven_signal": 2,
+            "severity": "low",
+            "total": 2
+          },
+          {
+            "aspirational_signal": 3,
+            "evidence": "row-audit proven=91 partial_nonblocking=25 actionable_gaps=3",
+            "family": "metrics",
+            "next_action": "close actionable rows",
+            "partial_signal": 25,
+            "proven_signal": 91,
+            "severity": "high",
+            "total": 119
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "test_py=769 audit-contract-quality=42; actionable_gaps=0",
+            "family": "tests_quality_gates",
+            "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
+            "partial_signal": 727,
+            "proven_signal": 42,
+            "severity": "low",
+            "total": 769
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=200 mapped_claims=400",
+            "family": "docs_adrs",
+            "next_action": "no hard docs gaps; improve weak proof opportunistically",
+            "partial_signal": 2276,
+            "proven_signal": 600,
+            "severity": "low",
+            "total": 2876
+          }
+        ],
+        "hook_latency": {
+          "events": 2500,
+          "max_ms": 5969,
+          "p50_ms": 414,
+          "p95_ms": 1622
+        },
+        "overall_risk": "high",
+        "timestamp": "2026-05-04T20:32:08.577338+00:00"
       }
     },
     "readiness:hooks": {
@@ -1629,24 +1898,24 @@
         "agentic_primitives_without_lifecycle": 0,
         "confidence": {
           "high": 137,
-          "medium": 179
+          "medium": 180
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
           "lifecycle-declared-consumer-candidate": 49,
           "lifecycle-declared-maintainer": 38,
           "skill-referenced-not-projectable": 2,
-          "so-local-only": 208
+          "so-local-only": 209
         },
         "low_confidence_rows": 0,
         "roles": {
           "agentic-primitive": 106,
           "driver-specific": 10,
           "lab": 13,
-          "maintainer-tool": 176,
+          "maintainer-tool": 177,
           "migration-only": 11
         },
-        "total_scripts": 316,
+        "total_scripts": 317,
         "without_consumers": 4
       }
     },
@@ -1673,6 +1942,40 @@
         "total": 90,
         "without_consumers": 0,
         "without_lifecycle": 90
+      }
+    },
+    "script_readiness_refresh": {
+      "command": "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence",
+      "error": null,
+      "source": "script_readiness_refresh",
+      "status": "ok",
+      "summary": {
+        "agentic_primitives_without_lifecycle": 0,
+        "confidence": {
+          "high": 137,
+          "medium": 180
+        },
+        "consumer_accessibility": {
+          "install-profile-managed": 19,
+          "lifecycle-declared-consumer-candidate": 49,
+          "lifecycle-declared-maintainer": 38,
+          "skill-referenced-not-projectable": 2,
+          "so-local-only": 209
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-scripts-latest.json",
+        "lifecycle_backlog_json": "<repo-root>/docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json",
+        "lifecycle_backlog_markdown": "<repo-root>/docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md",
+        "low_confidence_rows": 0,
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-scripts-latest.md",
+        "roles": {
+          "agentic-primitive": 106,
+          "driver-specific": 10,
+          "lab": 13,
+          "maintainer-tool": 177,
+          "migration-only": 11
+        },
+        "total_scripts": 317,
+        "without_consumers": 4
       }
     }
   },
@@ -1830,7 +2133,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:11",
         "config_consumers:1",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -3105,7 +3408,7 @@
       "evidence": [
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:5",
         "script_consumers:1",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only"
@@ -3181,7 +3484,7 @@
         "skill_consumers:55",
         "test_consumers:309",
         "hook_consumers:67",
-        "doc_consumers:386",
+        "doc_consumers:388",
         "rule_consumers:42",
         "config_consumers:24",
         "script_consumers:189",
@@ -7680,7 +7983,7 @@
         "wrapper_for:scripts/cos_work_inventory.py",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:6",
         "config_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -8760,7 +9063,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:1",
+        "doc_consumers:3",
         "script_consumers:1",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only"
@@ -9967,7 +10270,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "override_rationale",
-        "doc_consumers:1",
+        "doc_consumers:3",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:2",
@@ -10519,6 +10822,7 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:1",
+        "doc_consumers:2",
         "config_consumers:2",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only"
@@ -10621,6 +10925,41 @@
       "confidence": 0.45,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "test_consumers:1",
+        "doc_consumers:4",
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only"
+      ],
+      "id": "script:scripts/primitive_duplication_audit.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "unverified",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/primitive_duplication_audit.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/primitive_duplication_audit.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/primitive_duplication_audit.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.45,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "test_consumers:2",
         "doc_consumers:7",
         "script_consumers:1",
@@ -10692,7 +11031,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:4",
         "script_consumers:1",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only"
@@ -13327,7 +13666,7 @@
         "skill_consumers:7",
         "hook_consumers:26",
         "rule_consumers:5",
-        "script_consumers:28",
+        "script_consumers:29",
         "test_consumers:56",
         "doc_consumers:72",
         "config_consumers:3",
@@ -13404,9 +13743,9 @@
         "skill_consumers:2",
         "hook_consumers:64",
         "rule_consumers:6",
-        "script_consumers:17",
-        "test_consumers:30",
-        "doc_consumers:43",
+        "script_consumers:18",
+        "test_consumers:31",
+        "doc_consumers:48",
         "config_consumers:2",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only"
@@ -29572,7 +29911,7 @@
         "skill_consumers:55",
         "test_consumers:309",
         "hook_consumers:67",
-        "doc_consumers:386",
+        "doc_consumers:388",
         "rule_consumers:42",
         "config_consumers:24",
         "script_consumers:189",
@@ -29884,7 +30223,7 @@
         "wrapper_for:scripts/cos_work_inventory.py",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:6",
         "config_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -31992,11 +32331,11 @@
     },
     "warnings": [
       "coverage_debt:153",
-      "acc_below_threshold:0.2655<0.5",
-      "acc_effective_below_threshold:0.3169<0.4"
+      "acc_below_threshold:0.2651<0.5",
+      "acc_effective_below_threshold:0.3164<0.4"
     ]
   },
-  "generated_at": "2026-05-04T20:17:19Z",
+  "generated_at": "2026-05-04T20:32:09Z",
   "harness_projection": {
     "claude": {
       "display_name": "Claude Code",
@@ -32173,8 +32512,8 @@
   },
   "schema_version": "acc.report.v1",
   "summary": {
-    "acc": 0.2655,
-    "acc_effective": 0.3169,
+    "acc": 0.2651,
+    "acc_effective": 0.3164,
     "aligned_weight": 527,
     "mapping_weight_by_status": {
       "aligned": 527,
@@ -32182,14 +32521,14 @@
       "overexposed": 0,
       "partial": 204,
       "stale": 0,
-      "unverified": 1254
+      "unverified": 1257
     },
     "missing_weight": 0,
     "overexposed_weight": 0,
     "partial_weight": 204,
     "stale_weight": 0,
-    "total_weight": 1985,
-    "unverified_weight": 1254
+    "total_weight": 1988,
+    "unverified_weight": 1257
   },
   "weights": {
     "doc_claim": 2,

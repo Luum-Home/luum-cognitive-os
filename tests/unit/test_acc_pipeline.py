@@ -151,6 +151,22 @@ def test_harness_registry_reports_planned_harnesses(tmp_path: Path) -> None:
     assert "cursor" not in acc_pipeline.implemented_harness_ids(manifest)
 
 
+def test_refresh_adapters_includes_primitive_duplication(monkeypatch, tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    seen: list[str] = []
+
+    def fake_run_json_command(root_path, name, command, timeout=120):
+        seen.append(name)
+        return acc_pipeline.AdapterStatus("ok", name, " ".join(command), summary={}), {}
+
+    monkeypatch.setattr(acc_pipeline, "run_json_command", fake_run_json_command)
+
+    adapters = acc_pipeline.refresh_adapters(root, include_slow=False)
+
+    assert "primitive_duplication" in adapters
+    assert "primitive_duplication" in seen
+
+
 def test_write_report_outputs_json_markdown_and_history(tmp_path: Path) -> None:
     root = make_repo(tmp_path)
     payload = acc_pipeline.build_report(root, refresh=False, include_slow=False, fail_on_warn=False)

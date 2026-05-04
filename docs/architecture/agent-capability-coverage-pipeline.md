@@ -58,6 +58,7 @@ Subagents should receive selected rows or findings only. Use Python/JQ snippets 
 | `docs_execution` | `scripts/docs_execution_audit.py` output when available | Stale/docs-reality signal. |
 | `primitive_coverage` | `scripts/primitive_coverage.py` output when available | Coverage/actionable-gap signal. |
 | `primitive_gap_snapshot` | `scripts/primitive_gap_snapshot.py` output when available | Family risk signal. |
+| `primitive_duplication` | `scripts/primitive_duplication_audit.py` output when available | Refactor/extraction signal for repeated Bash, Python, YAML/config, and primitive behavior. |
 | `harness_projection` | `manifests/harness-projection.yaml` | Registry of implemented/planned/unsupported IDE and harness projection surfaces. |
 | `consumer_projection` | Temporary projects generated for harnesses with `status: implemented` | Proof that hooks, skills, and rules are actually projected into consumer projects. |
 
@@ -97,3 +98,14 @@ This is intentionally narrow. It does not sign native support for Cursor, Windsu
 `manifests/harness-projection.yaml` is the authoritative list of IDEs/harnesses considered by ACC. Claude Code and OpenAI Codex are currently `implemented`; Cursor, Windsurf, VS Code Copilot, OpenCode, Google Antigravity, and Shell/CI are declared as `planned`. Planned harnesses are reported as unverified and never inherit Claude/Codex projection proof.
 
 Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`.
+
+## Primitive duplication adapter
+
+The `primitive_duplication` adapter is advisory during reconstruction. It complements readiness and projection checks by finding repeated implementation/configuration patterns that may be better represented as common agentic primitive infrastructure:
+
+- Python repeats → `lib/`;
+- Bash repeats → `hooks/_lib/` or `scripts/_lib/`;
+- YAML/config repeats → `manifests/`;
+- rule/skill overlap → merge, deprecate, or document boundaries.
+
+The adapter must not auto-refactor. Duplicates can be intentional when isolation, portability, or harness-specific behavior is more important than abstraction.
