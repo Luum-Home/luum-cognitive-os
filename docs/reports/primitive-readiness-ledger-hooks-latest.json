@@ -17,7 +17,7 @@
         "doc": 72,
         "hook": 26,
         "rule": 5,
-        "script": 28,
+        "script": 29,
         "skill": 7,
         "test": 56
       },
@@ -528,6 +528,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/primitive_duplication_audit.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/primitive_family_readiness_ledger.py"
         },
         {
@@ -816,7 +820,7 @@
         "skill_consumers:7",
         "hook_consumers:26",
         "rule_consumers:5",
-        "script_consumers:28",
+        "script_consumers:29",
         "test_consumers:56",
         "doc_consumers:72",
         "config_consumers:3"
@@ -829,7 +833,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 197
+      "total_consumers": 198
     },
     {
       "confidence": "medium",
@@ -950,12 +954,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 43,
+        "doc": 48,
         "hook": 64,
         "rule": 6,
-        "script": 17,
+        "script": 18,
         "skill": 2,
-        "test": 30
+        "test": 31
       },
       "consumers": [
         {
@@ -1024,6 +1028,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/anti-hallucination.md"
         },
         {
@@ -1037,6 +1045,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/LESSONS-LEARNED.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
         },
         {
           "family": "doc",
@@ -1061,6 +1073,14 @@
         {
           "family": "doc",
           "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit.md"
         },
         {
           "family": "doc",
@@ -1109,6 +1129,10 @@
         {
           "family": "doc",
           "path": "docs/guides/queue-classes-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/primitive-duplication-audit.md"
         },
         {
           "family": "doc",
@@ -1472,6 +1496,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/primitive_duplication_audit.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/radar_merge.py"
         },
         {
@@ -1600,6 +1628,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_duplication_audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_repo_analyzer.py"
         },
         {
@@ -1620,9 +1652,9 @@
         "skill_consumers:2",
         "hook_consumers:64",
         "rule_consumers:6",
-        "script_consumers:17",
-        "test_consumers:30",
-        "doc_consumers:43",
+        "script_consumers:18",
+        "test_consumers:31",
+        "doc_consumers:48",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -1633,7 +1665,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 164
+      "total_consumers": 171
     },
     {
       "confidence": "medium",
@@ -15073,8 +15105,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 12,
-        "test": 1
+        "doc": 13,
+        "test": 2
       },
       "consumers": [
         {
@@ -15096,6 +15128,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-089-multi-session-git-coordination.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md"
         },
         {
           "family": "doc",
@@ -15139,13 +15175,17 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_adr_139_141_142_cloud_surfaces.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_hooks_batch2.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
-        "doc_consumers:12",
+        "test_consumers:2",
+        "doc_consumers:13",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -15156,7 +15196,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 18
     },
     {
       "confidence": "high",
