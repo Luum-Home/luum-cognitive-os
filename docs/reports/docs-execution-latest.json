@@ -1184,9 +1184,139 @@
         "weak_terms:lifecycle-declared-consumer-candidate"
       ],
       "inferred_status": "proposed",
-      "item": "lifecycle-declared-consumer-candidate: 50",
+      "item": "lifecycle-declared-consumer-candidate: 49",
       "kind": "bullet",
-      "line": 121,
+      "line": 30,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:apply-efficiency-profile,before,candidate,consumer,harness,medium,needs,partial"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/apply-efficiency-profile.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 39,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:aspirational_audit,before,candidate,consumer,harness,medium,needs,partial"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/aspirational_audit.py` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 40,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:before,candidate,check_mcp_servers,consumer,harness,medium,needs,partial"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/check_mcp_servers.py` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 41,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:before,candidate,consumer,harness,medium,needs,partial,projectable"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/cos` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 42,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:before,candidate,consumer,cos-bootstrap,harness,medium,needs,partial"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/cos-bootstrap.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 43,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:before,candidate,consumer,cos-config-audit,harness,medium,needs,partial"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/cos-config-audit.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 44,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:before,candidate,consumer,cos-coordination-status,harness,medium,needs,partial"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/cos-coordination-status.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 45,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:before,candidate,consumer,cos-core-skills-check,harness,medium,needs,partial"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/cos-core-skills-check.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 46,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:complete,findings,only,readiness,receive,reports,rows,selected"
+      ],
+      "inferred_status": "proposed",
+      "item": "Subagents should receive only selected rows/findings, not complete ACC/readiness reports.",
+      "kind": "bullet",
+      "line": 52,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "weak_terms:lifecycle-declared-consumer-candidate"
+      ],
+      "inferred_status": "proposed",
+      "item": "lifecycle-declared-consumer-candidate: 49",
+      "kind": "bullet",
+      "line": 115,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest.md"
     },
@@ -10629,20 +10759,6 @@
       "path": "docs/adrs/ADR-117-stash-mutation-reversibility.md"
     },
     {
-      "confidence": 0.82,
-      "declared_status": "done",
-      "evidence": [
-        "terms:cluster,contracts,created,lane,lives,must,test,tests",
-        "missing_path:tests/contracts/test_stash_mutation_reversibility.py"
-      ],
-      "inferred_status": "stale",
-      "item": "The test lives at `tests/contracts/test_stash_mutation_reversibility.py` (to be created with R2). It MUST be wired into the `cluster` test lane.",
-      "kind": "prose",
-      "line": 150,
-      "next_action": "update stale path or demote completion claim",
-      "path": "docs/adrs/ADR-117-stash-mutation-reversibility.md"
-    },
-    {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
@@ -12845,6 +12961,156 @@
       "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
     },
     {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:scripts/acc_pipeline.py",
+        "terms:acc_pipeline,adapter,capability,evaluation,generation,history,implemented,json"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `scripts/acc_pipeline.py`: ACC adapter orchestration, capability mapping, threshold evaluation, local history persistence, and Markdown/JSON report generation.",
+      "kind": "bullet",
+      "line": 105,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:tests/unit/test_acc_pipeline.py",
+        "terms:coverage,implemented,mapping,test_acc_pipeline,tests,unit"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `tests/unit/test_acc_pipeline.py`: mapping and report-shape unit coverage.",
+      "kind": "bullet",
+      "line": 106,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:tests/contracts/test_acc_pipeline_contract.py",
+        "terms:contract,contracts,generation,implemented,repository-level,test_acc_pipeline_contract,tests"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `tests/contracts/test_acc_pipeline_contract.py`: repository-level report generation contract.",
+      "kind": "bullet",
+      "line": 107,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:docs/architecture/agent-capability-coverage-pipeline.md",
+        "terms:adapter,architecture,boundaries,implemented"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `docs/architecture/agent-capability-coverage-pipeline.md`: architecture and adapter boundaries.",
+      "kind": "bullet",
+      "line": 108,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:docs/manual-tests/agent-capability-coverage-pipeline.md",
+        "terms:implemented,inspection,manual-tests,operator,refresh,workflow"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `docs/manual-tests/agent-capability-coverage-pipeline.md`: operator refresh and inspection workflow.",
+      "kind": "bullet",
+      "line": 109,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: accepted",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-148-adr-authoring-primitive.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Accepted** \u2014 2026-05-04",
+      "kind": "prose",
+      "line": 20,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-148-adr-authoring-primitive.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:accepted,adrs,declarations,implementation-file,implemented,optional"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "optional implementation-file declarations for accepted or implemented ADRs.",
+      "kind": "bullet",
+      "line": 42,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-148-adr-authoring-primitive.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:authoring,entrypoint,implemented,invokes,primitive,project,python,resolves"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Implemented in `scripts/cos-new-adr`: shell entrypoint that resolves the project and invokes the Python authoring primitive.",
+      "kind": "bullet",
+      "line": 77,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-148-adr-authoring-primitive.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:scripts/cos_new_adr.py",
+        "terms:cos_new_adr,dry-run,frontmatter,implemented,json,output,rendering,reservation"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `scripts/cos_new_adr.py`: ADR reservation, frontmatter rendering, required-section rendering, dry-run, and JSON output.",
+      "kind": "bullet",
+      "line": 78,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-148-adr-authoring-primitive.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:tests/unit/test_cos_new_adr.py",
+        "terms:behavior,draft,dry-run,generated,implemented,json,reporting,shape"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `tests/unit/test_cos_new_adr.py`: generated draft shape, dry-run behavior, and CLI JSON reporting.",
+      "kind": "bullet",
+      "line": 79,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-148-adr-authoring-primitive.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -13900,18 +14166,18 @@
       "path": "docs/architecture/LESSONS-LEARNED.md"
     },
     {
-      "confidence": 0.82,
+      "confidence": 0.86,
       "declared_status": "done",
       "evidence": [
         "path:docs/incidents/2026-05-02-false-done-compounding.md",
-        "terms:adr-117,incidents,reference,reports,revert-investigation-2026-05-02",
-        "missing_path:docs/reports/revert-investigation-2026-05-02.md"
+        "path:docs/reports/stash-resolution-2026-05-01.md",
+        "terms:adr-117,incidents,reference,reports"
       ],
-      "inferred_status": "stale",
-      "item": "**Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` | `docs/reports/revert-investigation-2026-05-02.md` | ADR-117",
+      "inferred_status": "done_with_proof",
+      "item": "**Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` | `docs/reports/stash-resolution-2026-05-01.md` | ADR-117",
       "kind": "prose",
       "line": 168,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/architecture/LESSONS-LEARNED.md"
     },
     {
@@ -24348,17 +24614,17 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
-      "confidence": 0.82,
-      "declared_status": "done",
+      "confidence": 0.9,
+      "declared_status": "planned",
       "evidence": [
-        "terms:around,core,github,product,real,redesign,workflows",
-        "missing_path:.github/workflows/ci.yml"
+        "path:.github/workflows/ci.yml.disabled",
+        "terms:claim,complete,current,disabled,evidence,github,re-enable,redesign"
       ],
-      "inferred_status": "stale",
-      "item": "Redesign `.github/workflows/ci.yml` around the real product core.",
+      "inferred_status": "planned",
+      "item": "Redesign and re-enable `.github/workflows/ci.yml`; current repository evidence is `.github/workflows/ci.yml.disabled`, so the product-core CI claim is not complete yet.",
       "kind": "checkbox",
       "line": 159,
-      "next_action": "update stale path or demote completion claim",
+      "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/business/master-plan-checklist.md"
     },
     {
@@ -32033,6 +32299,9 @@
         "planned": 3,
         "proposed": 2
       },
+      "docs/acc/latest-compact.md": {
+        "proposed": 10
+      },
       "docs/acc/latest.md": {
         "proposed": 1
       },
@@ -32541,8 +32810,7 @@
       "docs/adrs/ADR-117-stash-mutation-reversibility.md": {
         "done_weak_proof": 1,
         "planned": 1,
-        "proposed": 1,
-        "stale": 1
+        "proposed": 1
       },
       "docs/adrs/ADR-118-multi-ide-swarm-testbed.md": {
         "done_weak_proof": 3,
@@ -32664,7 +32932,12 @@
       },
       "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md": {
         "done_weak_proof": 1,
+        "done_with_proof": 5,
         "planned": 2
+      },
+      "docs/adrs/ADR-148-adr-authoring-primitive.md": {
+        "done_weak_proof": 4,
+        "done_with_proof": 2
       },
       "docs/adrs/README.md": {
         "planned": 1
@@ -32704,9 +32977,8 @@
       },
       "docs/architecture/LESSONS-LEARNED.md": {
         "done_weak_proof": 2,
-        "done_with_proof": 1,
-        "planned": 20,
-        "stale": 1
+        "done_with_proof": 2,
+        "planned": 20
       },
       "docs/architecture/POST-MORTEM-2026-04.md": {
         "done_weak_proof": 12,
@@ -33120,8 +33392,7 @@
       "docs/business/master-plan-checklist.md": {
         "done_weak_proof": 65,
         "done_with_proof": 69,
-        "planned": 9,
-        "stale": 1
+        "planned": 10
       },
       "docs/business/master-plan-execution-requirements.md": {
         "planned": 1,
@@ -33491,13 +33762,12 @@
         "planned": 1
       }
     },
-    "items": 2434,
+    "items": 2454,
     "statuses": {
-      "done_weak_proof": 1013,
-      "done_with_proof": 184,
-      "planned": 968,
-      "proposed": 266,
-      "stale": 3
+      "done_weak_proof": 1017,
+      "done_with_proof": 192,
+      "planned": 969,
+      "proposed": 276
     }
   }
 }

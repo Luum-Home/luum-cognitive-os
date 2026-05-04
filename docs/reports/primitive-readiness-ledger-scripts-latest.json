@@ -990,7 +990,7 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 65,
         "hook": 7,
         "rule": 4,
@@ -999,6 +999,10 @@
         "test": 20
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -1438,7 +1442,7 @@
         "hook_consumers:7",
         "doc_consumers:65",
         "rule_consumers:4",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:8"
       ],
       "install_surface": "profile-application",
@@ -1455,7 +1459,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 107,
+      "total_consumers": 108,
       "wrapper_for": "scripts/_lib/settings-driver-claude-code.sh"
     },
     {
@@ -1682,11 +1686,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 11,
         "script": 1,
         "test": 6
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-093-simplify-profiles.md"
@@ -1765,6 +1774,7 @@
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:6",
         "doc_consumers:11",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -1779,7 +1789,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 18,
+      "total_consumers": 19,
       "wrapper_for": "scripts/_lib/settings-driver.sh"
     },
     {
@@ -2816,13 +2826,13 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 22,
+        "config": 23,
         "doc": 385,
         "hook": 67,
         "rule": 42,
         "script": 187,
         "skill": 55,
-        "test": 305
+        "test": 306
       },
       "consumers": [
         {
@@ -2832,6 +2842,10 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
         },
         {
           "family": "config",
@@ -6511,6 +6525,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_acc_pipeline.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_adr_detector.py"
         },
         {
@@ -7083,11 +7101,11 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:55",
-        "test_consumers:305",
+        "test_consumers:306",
         "hook_consumers:67",
         "doc_consumers:385",
         "rule_consumers:42",
-        "config_consumers:22",
+        "config_consumers:23",
         "script_consumers:187"
       ],
       "install_surface": null,
@@ -7104,7 +7122,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1063,
+      "total_consumers": 1065,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -9942,13 +9960,17 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 5,
+        "config": 6,
         "doc": 22,
         "script": 5,
         "skill": 1,
         "test": 12
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/dependencies.yaml"
@@ -10138,7 +10160,7 @@
         "skill_consumers:1",
         "test_consumers:12",
         "doc_consumers:22",
-        "config_consumers:5",
+        "config_consumers:6",
         "script_consumers:5"
       ],
       "install_surface": "bootstrap",
@@ -10155,7 +10177,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 45,
+      "total_consumers": 46,
       "wrapper_for": "scripts/cos_init.py"
     },
     {
@@ -10816,11 +10838,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 5,
         "script": 4,
         "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -10878,6 +10905,7 @@
       "evidence": [
         "test_consumers:4",
         "doc_consumers:5",
+        "config_consumers:1",
         "script_consumers:4"
       ],
       "install_surface": null,
@@ -10892,7 +10920,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -14021,8 +14049,8 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 3,
-        "doc": 5,
-        "script": 2,
+        "doc": 7,
+        "script": 3,
         "test": 7
       },
       "consumers": [
@@ -14044,6 +14072,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/consumer-project-primitive-accessibility.md"
         },
         {
@@ -14057,6 +14093,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/consumer-project-primitive-accessibility.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/acc_pipeline.py"
         },
         {
           "family": "script",
@@ -14101,9 +14141,9 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:5",
+        "doc_consumers:7",
         "config_consumers:3",
-        "script_consumers:2"
+        "script_consumers:3"
       ],
       "install_surface": "bootstrap",
       "install_surface_rationale": "Python implementation for COS initialization flows.",
@@ -14119,7 +14159,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 17,
+      "total_consumers": 20,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -15359,10 +15399,14 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -15390,7 +15434,7 @@
         "protected_install_surface:release",
         "wrapper_for:scripts/cos-init.sh",
         "doc_consumers:3",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": "release",
       "install_surface_rationale": "Release path can publish installable primitive surfaces.",
@@ -15406,7 +15450,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -16774,13 +16818,17 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 11,
         "script": 1,
         "skill": 1,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -16870,7 +16918,7 @@
         "skill_consumers:1",
         "test_consumers:3",
         "doc_consumers:11",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": "settings-projection",
@@ -16887,7 +16935,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 20,
+      "total_consumers": 21,
       "wrapper_for": "scripts/hook-timing-wrapper.sh"
     },
     {
@@ -17496,10 +17544,14 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-readiness-script-overrides.yaml"
@@ -17525,7 +17577,7 @@
       "evidence": [
         "override_rationale",
         "doc_consumers:4",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -17539,7 +17591,7 @@
       "role_source": "override",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -17547,11 +17599,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 6,
         "rule": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -17589,7 +17646,8 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:6",
-        "rule_consumers:1"
+        "rule_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -17603,7 +17661,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -17666,11 +17724,15 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 5,
         "skill": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -17710,7 +17772,7 @@
         "protected_install_surface:optional-tool-install",
         "skill_consumers:1",
         "doc_consumers:5",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": "optional-tool-install",
       "install_surface_rationale": "Optional red-team tool installer invoked by skill/profile flows.",
@@ -17726,7 +17788,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": null
     },
     {
@@ -17824,10 +17886,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 6,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -17860,7 +17927,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:6"
+        "doc_consumers:6",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -17874,7 +17942,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -17934,12 +18002,16 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 6,
         "skill": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -17988,7 +18060,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:6",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": "optional-tool-install",
       "install_surface_rationale": "Optional eval tool installer invoked by skill/profile flows.",
@@ -18004,7 +18076,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -18689,9 +18761,14 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -18699,7 +18776,8 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:1"
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -18713,7 +18791,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -20852,13 +20930,17 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 7,
         "rule": 1,
         "skill": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -20915,7 +20997,7 @@
         "test_consumers:1",
         "doc_consumers:7",
         "rule_consumers:1",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -20931,7 +21013,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -21357,10 +21439,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "hook": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -21373,7 +21460,8 @@
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
-        "doc_consumers:1"
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -21387,7 +21475,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -21541,7 +21629,7 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 24,
         "hook": 1,
         "rule": 2,
@@ -21549,6 +21637,10 @@
         "test": 8
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -21727,7 +21819,7 @@
         "hook_consumers:1",
         "doc_consumers:24",
         "rule_consumers:2",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:4"
       ],
       "install_surface": "profile-application",
@@ -21744,7 +21836,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 42,
+      "total_consumers": 43,
       "wrapper_for": "scripts/cos_executor.py"
     },
     {
@@ -21752,11 +21844,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 5,
         "test": 5
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/dependencies.yaml"
@@ -21807,7 +21903,7 @@
         "wrapper_for:scripts/orchestrator_claim_gate.py",
         "test_consumers:5",
         "doc_consumers:5",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -21821,7 +21917,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 11,
+      "total_consumers": 12,
       "wrapper_for": "scripts/orchestrator_claim_gate.py"
     },
     {
@@ -23292,11 +23388,15 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 13,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -23377,7 +23477,7 @@
         "wrapper_for:scripts/cos-registry.sh",
         "test_consumers:3",
         "doc_consumers:13",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": "uninstall",
       "install_surface_rationale": "Removal path must understand projected primitive surfaces.",
@@ -23393,7 +23493,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 18,
+      "total_consumers": 19,
       "wrapper_for": "scripts/cos-registry.sh"
     },
     {
@@ -23445,11 +23545,15 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 5,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -23490,7 +23594,7 @@
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:1",
         "doc_consumers:5",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "install_surface": "upgrade",
       "install_surface_rationale": "Upgrade path that preserves/generated active harness settings.",
@@ -23506,7 +23610,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -23715,10 +23819,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
@@ -23739,7 +23848,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:1"
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -23753,7 +23863,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
