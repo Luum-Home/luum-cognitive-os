@@ -146,3 +146,8 @@ python3 -m pytest tests/contracts/test_lab_first_promotion_gate.py -q
 python3 -m pytest tests/audit/test_adr_tier_claims.py -q
 python3 scripts/cos_architecture_readiness.py --json
 ```
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
