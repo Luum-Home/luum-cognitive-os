@@ -221,19 +221,23 @@ The short implementation classification remains:
 
 | ADR | Saved state |
 |---|---|
-| ADR-137 | Partial / accepted trajectory. Needs first Framing-A flow evidence. |
-| ADR-138 | Next implementation target. Needs schema manifest, register script, tests, and first lab contract. |
-| ADR-139 | Flow enforcement pending on ADR-138 fields. |
+| ADR-137 | Partial / accepted trajectory. First lab flow contract now carries framing evidence; end-to-end Framing-A worker execution still missing. |
+| ADR-138 | Implemented for first lab registration. Schema manifest, register script, tests, and first lab contract exist; shared promotion waits for a second flow. |
+| ADR-139 | Partially enforced at registration through ADR-138 fields; worker launch credential isolation still pending. |
 | ADR-140 | Not implemented; needs `docker/cos-worker/docker-compose.yml`. |
 | ADR-141 | Not implemented; requires upstream Engram Cloud pinning before wrapper work. |
-| ADR-142 | Not implemented; requires audit-row inventory, archive helper, and GDPR procedure. |
+| ADR-142 | Partially enforced at registration through ADR-138 fields; runtime audit rows, archive helper, and GDPR procedure still pending. |
 | ADR-143 | Implemented; targeted validation passed. |
 | ADR-144 | Implemented; targeted validation passed. |
 
 Current implementation order agreed in-session:
 
-1. Materialize ADR-138 first.
-2. Register the first lab `vuln-remediation-flow` contract.
-3. Enforce ADR-139/141/142 fields through the flow register gate.
-4. Add ADR-140 container worker surface after the contract can validate it.
-5. Only mark an ADR implemented after executable or documented evidence exists.
+1. Continue from the ADR-138 lab registration baseline:
+   `manifests/flow-contract-schema.yaml`,
+   `scripts/cos-flow-register.sh`,
+   `skills/vuln-remediation-flow/flow_contract.yaml`, and
+   `tests/audit/test_flow_contract_schema.py`.
+2. Add ADR-140 container worker surface after the contract can validate it.
+3. Pin Engram upstream before implementing ADR-141 wrappers.
+4. Inventory audit producers before implementing ADR-142 archive/GDPR/runtime-row changes.
+5. Only mark an ADR fully implemented after executable or documented evidence exists.
