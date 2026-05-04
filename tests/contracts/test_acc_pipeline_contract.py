@@ -11,6 +11,7 @@ pytestmark = pytest.mark.contract
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "acc_pipeline.py"
 REPORT = REPO_ROOT / "docs" / "acc" / "latest.json"
+COMPACT = REPO_ROOT / "docs" / "acc" / "latest-compact.md"
 
 
 def test_repository_acc_pipeline_generates_report() -> None:
@@ -33,3 +34,5 @@ def test_repository_acc_pipeline_generates_report() -> None:
     assert payload["persistence"]["engram"]["status"] in {"unavailable", "ok"}
     for adapter in ("readiness:scripts", "readiness:hooks", "readiness:skills", "readiness:rules"):
         assert payload["adapters"][adapter]["status"] == "ok"
+    assert COMPACT.exists()
+    assert "Context Diet Rule" in COMPACT.read_text()
