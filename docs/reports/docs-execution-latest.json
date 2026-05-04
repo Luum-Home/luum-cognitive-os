@@ -13274,6 +13274,73 @@
       "path": "docs/adrs/ADR-148-adr-authoring-primitive.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: accepted",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Accepted** \u2014 2026-05-04",
+      "kind": "prose",
+      "line": 22,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:actionable,because,behavior,common,findings,live,suggest,they"
+      ],
+      "inferred_status": "proposed",
+      "item": "Findings are actionable because they suggest where common behavior should live.",
+      "kind": "bullet",
+      "line": 64,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:scripts/primitive_duplication_audit.py",
+        "terms:detection,duplicate,generation,implemented,json,markdown,primitive_duplication_audit,scripts"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `scripts/primitive_duplication_audit.py`: unified duplicate detection and JSON/Markdown report generation.",
+      "kind": "bullet",
+      "line": 93,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:tests/unit/test_primitive_duplication_audit.py",
+        "terms:bash,coverage,implemented,python,test_primitive_duplication_audit,tests,unit,yaml"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `tests/unit/test_primitive_duplication_audit.py`: Python, Bash, YAML, and CLI report coverage.",
+      "kind": "bullet",
+      "line": 94,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -15034,7 +15101,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`.",
       "kind": "prose",
-      "line": 99,
+      "line": 100,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture/agent-capability-coverage-pipeline.md"
     },
@@ -19204,6 +19271,32 @@
       "line": 433,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:affect,claude,codex,future,harness,projection,refactoring,whether"
+      ],
+      "inferred_status": "planned",
+      "item": "whether refactoring could affect Claude/Codex or future harness projection;",
+      "kind": "bullet",
+      "line": 11,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/primitive-duplication-audit.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "weak_terms:recommendation"
+      ],
+      "inferred_status": "proposed",
+      "item": "`recommendation`",
+      "kind": "bullet",
+      "line": 48,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/architecture/primitive-duplication-audit.md"
     },
     {
       "confidence": 0.62,
@@ -29547,6 +29640,19 @@
       "path": "docs/manual-tests/lote-2-mcp-loop.md"
     },
     {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:common_home,consumer_relevance,fields,findings,include,recommendation"
+      ],
+      "inferred_status": "proposed",
+      "item": "Findings include `recommendation`, `common_home`, and `consumer_relevance` fields.",
+      "kind": "bullet",
+      "line": 26,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/manual-tests/primitive-duplication-audit.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -33130,6 +33236,11 @@
         "done_weak_proof": 4,
         "done_with_proof": 2
       },
+      "docs/adrs/ADR-149-primitive-duplication-audit.md": {
+        "done_weak_proof": 2,
+        "done_with_proof": 2,
+        "proposed": 1
+      },
       "docs/adrs/README.md": {
         "planned": 1
       },
@@ -33470,6 +33581,10 @@
         "planned": 1,
         "proposed": 3
       },
+      "docs/architecture/primitive-duplication-audit.md": {
+        "planned": 1,
+        "proposed": 1
+      },
       "docs/architecture/primitive-harvester.md": {
         "done_weak_proof": 1,
         "planned": 1
@@ -33722,6 +33837,9 @@
         "done_weak_proof": 2,
         "planned": 9
       },
+      "docs/manual-tests/primitive-duplication-audit.md": {
+        "proposed": 1
+      },
       "docs/manual-tests/primitive-readiness-ledger.md": {
         "planned": 2
       },
@@ -33959,12 +34077,12 @@
         "planned": 1
       }
     },
-    "items": 2468,
+    "items": 2476,
     "statuses": {
-      "done_weak_proof": 1025,
-      "done_with_proof": 198,
-      "planned": 969,
-      "proposed": 276
+      "done_weak_proof": 1027,
+      "done_with_proof": 200,
+      "planned": 970,
+      "proposed": 279
     }
   }
 }
