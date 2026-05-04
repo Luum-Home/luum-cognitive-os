@@ -6,9 +6,9 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
-| `hooks/_lib/cache.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 197 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/_lib/cache.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 198 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/circuit-breaker.sh` | observability | heuristic:text | medium | so-local-only |  | 20 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/_lib/common.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 164 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/_lib/common.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 171 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/execute-repair.sh` | observability | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/file_checker.sh` | runtime-safety | default | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/hook-pipe.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
@@ -94,7 +94,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/edit-lock-process-negotiations.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 9 | keep maintainer-only or add explicit export path |
 | `hooks/edit-lock-session-end.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 12 | keep maintainer-only or add explicit export path |
 | `hooks/engram-auto-import.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 17 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/engram-auto-sync.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/engram-auto-sync.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 18 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/engram-crystallize-on-session-end.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 21 | keep maintainer-only or add explicit export path |
 | `hooks/engram-daemon-launcher.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 22 | keep maintainer-only or add explicit export path |
 | `hooks/engram-reinforce-on-access.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 17 | keep maintainer-only or add explicit export path |
