@@ -1,0 +1,387 @@
+schema_version: ai-agent-harness-landscape.v1
+review_date: 2026-05-04
+purpose: >-
+  Candidate inventory for AI coding IDEs, CLIs, hosted agents, and provider/tool
+  surfaces relevant to Cognitive OS harness projection. This is not an
+  implementation claim.
+proof_levels:
+  native-lifecycle: Native lifecycle hooks/events are projected and tested.
+  runtime-smoke: Account-backed runtime smoke was executed and recorded.
+  structural: Project-local files/configs are generated and shape-tested from official docs.
+  none: No local projection proof exists.
+required_candidate_fields:
+  - id
+  - display_name
+  - category
+  - status
+  - proof_level
+  - availability_boundary
+  - projection_surface
+  - official_sources
+candidates:
+  - id: claude
+    display_name: Claude Code
+    category: cli
+    status: implemented
+    proof_level: native-lifecycle
+    availability_boundary: local-project
+    projection_surface: [settings, hooks, rules, skills, mcp]
+    official_sources: [https://docs.anthropic.com/en/docs/claude-code/hooks-guide]
+    next_action: Keep lifecycle proof current.
+  - id: codex
+    display_name: OpenAI Codex
+    category: cli
+    status: implemented
+    proof_level: native-lifecycle
+    availability_boundary: local-project
+    projection_surface: [settings, hooks, instructions]
+    official_sources: [https://platform.openai.com/docs/codex]
+    next_action: Keep lifecycle proof current.
+  - id: cursor
+    display_name: Cursor
+    category: ide
+    status: implemented
+    proof_level: structural
+    availability_boundary: local-project
+    projection_surface: [rules, mcp]
+    official_sources: [https://docs.cursor.com/]
+    next_action: Optional runtime smoke when licensed host exists.
+  - id: vscode-copilot
+    display_name: VS Code Copilot
+    category: ide
+    status: implemented
+    proof_level: structural
+    availability_boundary: local-project
+    projection_surface: [copilot-instructions, mcp]
+    official_sources: [https://code.visualstudio.com/docs/copilot/customization/custom-instructions]
+    next_action: Optional runtime smoke with Copilot account.
+  - id: opencode
+    display_name: OpenCode
+    category: cli
+    status: implemented
+    proof_level: structural
+    availability_boundary: local-project
+    projection_surface: [config, instructions, mcp]
+    official_sources: [https://opencode.ai/docs/]
+    next_action: Optional runtime smoke with credentials.
+  - id: qwen-code
+    display_name: Qwen Code
+    category: cli
+    status: implemented
+    proof_level: structural
+    availability_boundary: local-project
+    projection_surface: [QWEN.md, settings, mcp]
+    official_sources:
+      - https://qwenlm.github.io/qwen-code-docs/en/users/configuration/settings/
+      - https://qwenlm.github.io/qwen-code-docs/en/users/features/mcp/
+    next_action: Optional runtime smoke with Qwen Code credentials.
+  - id: kimi-code
+    display_name: Kimi Code CLI
+    category: cli
+    status: implemented
+    proof_level: structural
+    availability_boundary: local-project
+    projection_surface: [AGENTS.md, mcp]
+    official_sources:
+      - https://www.kimi.com/code/docs/en/kimi-code-cli/reference/kimi-command.html
+      - https://www.kimi.com/help/kimi-code/cli-customization
+    next_action: Optional runtime smoke with Kimi CLI credentials.
+  - id: shell-ci
+    display_name: Shell / CI
+    category: ci
+    status: implemented
+    proof_level: structural
+    availability_boundary: local-project
+    projection_surface: [commands, workflows]
+    official_sources: []
+    next_action: Add runtime command smoke against representative consumer stacks.
+  - id: gemini-cli
+    display_name: Gemini CLI
+    category: cli
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [GEMINI.md, settings, mcp, skills]
+    official_sources: [https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/cli-reference.md]
+    next_action: Implement structural projection after settings scope is captured.
+  - id: kiro
+    display_name: Kiro IDE/CLI
+    category: ide-cli
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [steering, hooks, agents, mcp]
+    official_sources:
+      - https://kiro.dev/docs/cli/hooks/
+      - https://kiro.dev/docs/getting-started/first-project/
+    next_action: Investigate whether lifecycle hooks can map to native-lifecycle.
+  - id: cline
+    display_name: Cline
+    category: ide-cli
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [.clinerules, AGENTS.md, mcp, skills, hooks]
+    official_sources: [https://docs.cline.bot/customization/cline-rules]
+    next_action: Implement structural rules/MCP projection, then investigate hooks.
+  - id: roo-code
+    display_name: Roo Code
+    category: ide
+    status: deprecated-candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [.roo/mcp.json, rules]
+    official_sources: [https://docs.roocode.com/]
+    next_action: Do not implement until shutdown/successor path is resolved.
+  - id: continue-dev
+    display_name: Continue.dev
+    category: ide
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [.continue, rules, mcp]
+    official_sources: [https://docs.continue.dev/guides/configuring-models-rules-tools]
+    next_action: Implement structural config/rules/MCP projection.
+  - id: aider
+    display_name: Aider
+    category: cli
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [CONVENTIONS.md, .aider.conf.yml]
+    official_sources: [https://aider.chat/docs/usage/conventions.html]
+    next_action: Implement rules-only structural projection if worth maintaining.
+  - id: goose
+    display_name: Goose
+    category: cli-desktop
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [instructions, mcp]
+    official_sources: [https://goose-docs.ai/docs/quickstart/]
+    next_action: Implement structural CLI instructions/MCP projection.
+  - id: kilo-code
+    display_name: Kilo Code
+    category: ide-cli
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [.kilo/kilo.jsonc, mcp]
+    official_sources: [https://kilo.ai/docs/automate/mcp/using-in-kilo-code]
+    next_action: Implement structural project config projection.
+  - id: augment-code
+    display_name: Augment / Auggie
+    category: cli-ide
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [rules, mcp, permissions]
+    official_sources: [https://docs.augmentcode.com/cli/reference]
+    next_action: Implement structural rules/MCP projection.
+  - id: jetbrains-junie
+    display_name: JetBrains Junie
+    category: ide-cli
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [.junie/AGENTS.md, AGENTS.md, mcp]
+    official_sources: [https://www.jetbrains.com/help/ai-assistant/junie-agent.html]
+    next_action: Implement structural AGENTS.md projection.
+  - id: zed-ai
+    display_name: Zed AI
+    category: ide
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [.rules, AGENTS.md, CLAUDE.md, context_servers]
+    official_sources:
+      - https://zed.dev/docs/ai/rules
+      - https://zed.dev/docs/ai/mcp
+    next_action: Implement structural rules/MCP projection.
+  - id: amp-code
+    display_name: Amp Code
+    category: cli-ide
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [AGENTS.md, mcp]
+    official_sources: [https://ampcode.com/manual]
+    next_action: Implement structural AGENTS.md/MCP projection.
+  - id: warp
+    display_name: Warp Agent
+    category: terminal
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [AGENTS.md, WARP.md, mcp]
+    official_sources: [https://docs.warp.dev/agent-platform/capabilities/rules]
+    next_action: Implement structural AGENTS.md projection.
+  - id: factory-droid
+    display_name: Factory Droid
+    category: cli-desktop-ci
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project-and-hosted
+    projection_surface: [AGENTS.md, skills, mcp, hooks, plugins]
+    official_sources:
+      - https://docs.factory.ai/welcome
+      - https://docs.factory.ai/cli/configuration/cli-reference
+    next_action: Implement structural CLI projection; keep hosted functions separate.
+  - id: qodo-gen
+    display_name: Qodo Gen CLI
+    category: cli-ide
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [agents, mcp]
+    official_sources: [https://docs.qodo.ai/qodo-documentation/qodo-gen/cli/creating-and-managing-agents]
+    next_action: Research project-local agent file format and implement if stable.
+  - id: qoder
+    display_name: Qoder
+    category: ide-cli
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [AGENTS.md, agents, mcp]
+    official_sources:
+      - https://docs.qoder.com/cli/using-cli
+      - https://docs.qoder.com/user-guide/chat/model-context-protocol
+    next_action: Implement structural AGENTS.md/MCP projection after local config details are pinned.
+  - id: tabnine-agent
+    display_name: Tabnine Agent
+    category: ide
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [.tabnine/mcp_servers.json]
+    official_sources:
+      - https://docs.tabnine.com/main/getting-started/tabnine-agent
+      - https://docs.tabnine.com/main/getting-started/tabnine-agent/agent-settings
+    next_action: Research whether project instruction files exist before projection.
+  - id: openhands
+    display_name: OpenHands
+    category: cli-sdk-hosted
+    status: candidate
+    proof_level: none
+    availability_boundary: local-project-and-hosted
+    projection_surface: [.openhands/microagents, config]
+    official_sources: [https://docs.openhands.dev/openhands/usage/cli/terminal]
+    next_action: Treat as lab/adapter candidate.
+  - id: swe-agent
+    display_name: SWE-agent
+    category: cli-benchmark
+    status: lab-candidate
+    proof_level: none
+    availability_boundary: lab
+    projection_surface: [yaml-config]
+    official_sources: [https://swe-agent.com/latest/config/]
+    next_action: Keep as benchmark/lab adapter, not default harness.
+  - id: github-copilot-coding-agent
+    display_name: GitHub Copilot coding agent
+    category: hosted-agent
+    status: hosted-candidate
+    proof_level: none
+    availability_boundary: hosted-github
+    projection_surface: [copilot-instructions, AGENTS.md, mcp]
+    official_sources:
+      - https://docs.github.com/en/copilot/concepts/prompting/response-customization
+      - https://docs.github.com/en/copilot/concepts/coding-agent/mcp-and-coding-agent
+    next_action: Design hosted adapter boundary separate from VS Code Copilot.
+  - id: sourcegraph-cody
+    display_name: Sourcegraph Cody
+    category: ide-enterprise
+    status: candidate
+    proof_level: none
+    availability_boundary: enterprise
+    projection_surface: [mcp, context]
+    official_sources:
+      - https://sourcegraph.com/docs/cody/capabilities/agentic-chat
+      - https://sourcegraph.com/docs/api/mcp
+    next_action: Treat as enterprise/tooling candidate until project instruction projection is signed.
+  - id: devin
+    display_name: Devin
+    category: hosted-agent
+    status: hosted-candidate
+    proof_level: none
+    availability_boundary: hosted
+    projection_surface: [mcp-server, sessions, playbooks]
+    official_sources: [https://docs.devin.ai/work-with-devin/devin-mcp]
+    next_action: Treat as remote-agent/MCP integration, not local projection.
+  - id: replit-agent
+    display_name: Replit Agent
+    category: hosted-agent
+    status: hosted-candidate
+    proof_level: none
+    availability_boundary: hosted
+    projection_surface: [mcp-connectors]
+    official_sources:
+      - https://docs.replit.com/core-concepts/agent
+      - https://docs.replit.com/replitai/mcp/overview
+    next_action: Keep hosted; no local projection claim.
+  - id: lovable
+    display_name: Lovable
+    category: hosted-agent
+    status: hosted-candidate
+    proof_level: none
+    availability_boundary: hosted
+    projection_surface: [agent-mode, mcp-connectors]
+    official_sources:
+      - https://docs.lovable.dev/features/modes
+      - https://docs.lovable.dev/integrations/mcp-servers
+    next_action: Keep hosted; no local projection claim.
+  - id: bolt-new
+    display_name: Bolt.new
+    category: hosted-agent
+    status: hosted-candidate
+    proof_level: none
+    availability_boundary: hosted
+    projection_surface: [connectors]
+    official_sources: [https://support.bolt.new/]
+    next_action: Keep hosted; no local projection claim until project config docs are found.
+  - id: minimax-mini-agent
+    display_name: MiniMax Mini-Agent / mmx-cli
+    category: provider-tooling
+    status: provider-candidate
+    proof_level: none
+    availability_boundary: provider-tool
+    projection_surface: [cli-tool, skills, mcp]
+    official_sources:
+      - https://platform.minimax.io/docs/token-plan/minimax-cli
+      - https://platform.minimax.io/docs/coding-plan/mini-agent
+    next_action: Model as provider/tooling unless coding-harness projection emerges.
+  - id: deepseek-provider
+    display_name: DeepSeek provider integrations
+    category: provider
+    status: provider-candidate
+    proof_level: none
+    availability_boundary: provider
+    projection_surface: [provider-api]
+    official_sources: [https://api-docs.deepseek.com/guides/coding_agents]
+    next_action: Keep provider-only; integrate through existing harnesses.
+  - id: google-antigravity
+    display_name: Google Antigravity
+    category: ide
+    status: planned
+    proof_level: none
+    availability_boundary: unknown
+    projection_surface: [unknown]
+    official_sources: []
+    next_action: Research official local projection docs.
+  - id: windsurf
+    display_name: Windsurf
+    category: ide
+    status: planned
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [rules, mcp]
+    official_sources: []
+    next_action: Refresh official docs before implementation.
+  - id: trae
+    display_name: Trae IDE
+    category: ide
+    status: research-candidate
+    proof_level: none
+    availability_boundary: local-project
+    projection_surface: [.rules, mcp]
+    official_sources: [https://traeide.com/news/6]
+    next_action: Wait for stable official syntax docs before projection.
