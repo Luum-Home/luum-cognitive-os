@@ -252,6 +252,7 @@ def refresh_adapters(root: Path, include_slow: bool) -> dict[str, AdapterStatus]
         ("family_readiness_skills", ["python3", "scripts/primitive_family_readiness_ledger.py", "--project-dir", ".", "--target-family", "skills"]),
         ("family_readiness_rules", ["python3", "scripts/primitive_family_readiness_ledger.py", "--project-dir", ".", "--target-family", "rules"]),
         ("docs_execution", ["python3", "scripts/docs_execution_audit.py", "--project-dir", "."]),
+        ("primitive_duplication", ["python3", "scripts/primitive_duplication_audit.py", "--project-root", "."]),
         ("primitive_gap_snapshot", ["python3", "scripts/primitive_gap_snapshot.py", "--project-root", ".", "--json"]),
     ]
     if include_slow:

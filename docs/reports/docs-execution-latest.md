@@ -2,11 +2,11 @@
 
 ## Summary
 
-Total items: 2468
-- done_weak_proof: 1025
-- done_with_proof: 198
-- planned: 969
-- proposed: 276
+Total items: 2476
+- done_weak_proof: 1027
+- done_with_proof: 200
+- planned: 970
+- proposed: 279
 
 ## Items Needing Attention
 
@@ -536,6 +536,8 @@ Total items: 2468
 | docs/adrs/ADR-148-adr-authoring-primitive.md | 20 | done | done_weak_proof | 0.62 | **Accepted** — 2026-05-04 | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/adrs/ADR-148-adr-authoring-primitive.md | 42 | done | done_weak_proof | 0.62 | optional implementation-file declarations for accepted or implemented ADRs. | terms:accepted,adrs,declarations,implementation-file,implemented,optional | add explicit test/workflow/proof link |
 | docs/adrs/ADR-148-adr-authoring-primitive.md | 77 | done | done_weak_proof | 0.62 | Implemented in `scripts/cos-new-adr`: shell entrypoint that resolves the project and invokes the Python authoring primitive. | terms:authoring,entrypoint,implemented,invokes,primitive,project,python,resolves | add explicit test/workflow/proof link |
+| docs/adrs/ADR-149-primitive-duplication-audit.md | 4 | done | done_weak_proof | 0.62 | status: accepted | weak_terms:accepted | add explicit test/workflow/proof link |
+| docs/adrs/ADR-149-primitive-duplication-audit.md | 22 | done | done_weak_proof | 0.62 | **Accepted** — 2026-05-04 | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/adw-patterns.md | 212 | done | done_weak_proof | 0.62 | Pipeline state is persisted to `.cognitive-os/pipeline-state/{change}.json` after every phase completion. Use `--resume` to continue from the last completed phase. | terms:after,change,cognitive-os,completed,completion,continue,every,json | add explicit test/workflow/proof link |
 | docs/agent-efficiency-strategy.md | 74 | done | done_weak_proof | 0.62 | **Status: Partially implemented (lean profile exists), not used by default** | terms:default,exists,implemented,lean,partially,profile,used | add explicit test/workflow/proof link |
 | docs/agent-efficiency-strategy.md | 127 | done | done_weak_proof | 0.62 | Approaches (a) and (d) are already implemented in infrastructure and require only config changes. They deliver the maximum token reduction for minimum implementation effort. | terms:already,approaches,changes,config,deliver,effort,implementation,implemented | add explicit test/workflow/proof link |
@@ -596,7 +598,7 @@ Total items: 2468
 | docs/architecture/adrs/README.md | 65 | done | done_weak_proof | 0.62 | This session closed the last 7 Claude Code feature gaps and brought the OS to 98% | terms:brought,claude,closed,code,feature,gaps,last,session | add explicit test/workflow/proof link |
 | docs/architecture/advisor-mcp-architecture-review.md | 21 | done | done_weak_proof | 0.62 | Commit `47d81773` added two advisor paths at the same time: | terms:added,advisor,commit,paths,same,time | add explicit test/workflow/proof link |
 | docs/architecture/advisor-mcp-architecture-review.md | 110 | done | done_weak_proof | 0.62 | Implemented resolver contract: | terms:contract,implemented,resolver | add explicit test/workflow/proof link |
-| docs/architecture/agent-capability-coverage-pipeline.md | 99 | done | done_weak_proof | 0.62 | Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`. | terms:adding,before,changing,driver,implemented,implementing,manifest,means | add explicit test/workflow/proof link |
+| docs/architecture/agent-capability-coverage-pipeline.md | 100 | done | done_weak_proof | 0.62 | Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`. | terms:adding,before,changing,driver,implemented,implementing,manifest,means | add explicit test/workflow/proof link |
 | docs/architecture/agent-computer-interface.md | 3 | done | done_weak_proof | 0.62 | > Status: MVP implemented for normalized observations. | terms:implemented,normalized,observations | add explicit test/workflow/proof link |
 | docs/architecture/agent-trajectory-schema.md | 3 | done | done_weak_proof | 0.62 | > Status: MVP implemented via ACI capture. | weak_terms:capture,implemented | add explicit test/workflow/proof link |
 | docs/architecture/agentic-kernel-philosophy.md | 92 | done | done_weak_proof | 0.62 | `production` — implemented and covered by tests; | terms:covered,implemented,production,tests | add explicit test/workflow/proof link |
