@@ -21,6 +21,7 @@ COS_INIT = REPO_ROOT / "scripts" / "cos_init.py"
         ("opencode", "opencode.json"),
         ("vscode-copilot", ".github/copilot-instructions.md"),
         ("cursor", ".cursor/rules/cognitive-os.mdc"),
+        ("shell-ci", ".cognitive-os/shell-ci-projection.json"),
     ],
 )
 def test_default_install_projects_core_primitives_into_consumer_project(tmp_path: Path, harness: str, settings_file: str) -> None:
@@ -50,6 +51,11 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
     if harness == "cursor":
         assert "alwaysApply: true" in (tmp_path / ".cursor/rules/cognitive-os.mdc").read_text()
         assert json.loads((tmp_path / ".cursor/mcp.json").read_text()) == {"mcpServers": {}}
+    if harness == "shell-ci":
+        shell_meta = json.loads((tmp_path / ".cognitive-os/shell-ci-projection.json").read_text())
+        assert shell_meta["commands_projected"] == 15
+        assert (tmp_path / ".github/workflows/cognitive-os-shell-ci.yml").is_file()
+        assert (tmp_path / "scripts/cos-status.sh").is_symlink()
     assert (tmp_path / ".cognitive-os" / "hooks" / "cos" / "session-init.sh").exists()
     assert (tmp_path / ".cognitive-os" / "rules" / "cos" / "RULES-COMPACT.md").exists()
     assert (tmp_path / ".cognitive-os" / "skills" / "cos" / "cos-status" / "SKILL.md").exists()
