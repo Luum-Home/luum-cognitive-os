@@ -1,9 +1,9 @@
 # DX-First Cloud Flow Bootstrap Plan
 
-> **Status**: ready-for-step-3 (trajectory ADR-137 + flow contract schema ADR-138 committed; first flow lab entry pending)
-> **Date**: 2026-05-03
+> **Status**: ready-for-step-3 (trajectory ADR-137 + flow contract schema ADR-138 committed; cloud premises ADR-139..142 committed; first flow lab entry pending)
+> **Date**: 2026-05-03 (updated 2026-05-04: ADR-139..142 landed)
 > **Audience**: maintainer + future contributors evaluating the next operational direction
-> **Companion docs**: [`cognitive-prosthesis.md`](cognitive-prosthesis.md), [`boring-reliability-control-plane.md`](boring-reliability-control-plane.md), [ADR-137](../adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md), [ADR-138](../adrs/ADR-138-flow-contract-schema.md), [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md), [ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md), [ADR-064](../adrs/ADR-064-harness-agnostic-cognitive-os.md)
+> **Companion docs**: [`cognitive-prosthesis.md`](cognitive-prosthesis.md), [`boring-reliability-control-plane.md`](boring-reliability-control-plane.md), [ADR-137](../adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md), [ADR-138](../adrs/ADR-138-flow-contract-schema.md), [ADR-139](../adrs/ADR-139-account-agnostic-multi-provider-runtime.md), [ADR-140](../adrs/ADR-140-cross-os-containerized-deployment.md), [ADR-141](../adrs/ADR-141-engram-cloud-cross-instance-replication.md), [ADR-142](../adrs/ADR-142-compliance-audit-air-gapped-surface.md), [ADR-132](../adrs/ADR-132-solo-swarm-vs-multi-maintainer-fork.md), [ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md), [ADR-064](../adrs/ADR-064-harness-agnostic-cognitive-os.md)
 
 This document captures a strategic direction surfaced in conversation and converts it into a concrete, bounded bootstrap plan. It is **not** an ADR (no decision is being committed) and **not** a roadmap (no dates beyond the first flow). It is a plan in the same sense as [`expansion-hardening-plan.md`](expansion-hardening-plan.md): a named direction with explicit non-goals and falsifiable conditions.
 
@@ -150,6 +150,11 @@ If a flow proposes something that violates one of the above, the violation is th
 
 1. **Trajectory ADR — Framing B → A.** Landed as [ADR-137](../adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md). Codifies the directional answer above, names ADR-064 completion and `bootstrap-portability.md` enforcement as the runtime-side prerequisites, introduces the **framing-exercise statement** required in flow skill metadata. Does **not** schedule the priority shifts.
 2. **Flow contract schema ADR.** Landed as [ADR-138](../adrs/ADR-138-flow-contract-schema.md). Commits the shape of `manifests/flow-contract-schema.yaml`: required fields per flow (input source, success condition, sandboxed write paths, blocked actions, evidence shape, framing-exercise statement per ADR-137), and the rule that the schema is promoted to shared form only after the second flow reuses it.
-3. **First flow lab entry.** `skills/vuln-remediation-flow/` registered with `lifecycle_state: lab` and the contract from ADR-138 wired in. Construction begins now.
+3. **Cloud premises ADRs.** Landed as ADR-139..142. These four ADRs are required before flow #1 is promoted beyond `lab`. They close the structural gaps that would otherwise be discovered mid-construction:
+   - [ADR-139](../adrs/ADR-139-account-agnostic-multi-provider-runtime.md) — credential isolation and billing attribution; adds `credential_source`, `billing_identity`, `provider_capabilities` to the flow contract.
+   - [ADR-140](../adrs/ADR-140-cross-os-containerized-deployment.md) — Docker Compose worker stack; satisfies `bootstrap-portability.md` for container surfaces; required before promoting flow #1 to `advisory` on CI targets.
+   - [ADR-141](../adrs/ADR-141-engram-cloud-cross-instance-replication.md) — Engram cloud replication; satisfies the cross-machine Engram discovery prerequisite named in ADR-137 §Priority shifts; adds `engram_project_scope`, `air_gapped_compatible` to the flow contract.
+   - [ADR-142](../adrs/ADR-142-compliance-audit-air-gapped-surface.md) — compliance audit surface; formalises `agent-audit-trail.jsonl` as the compliance evidence file, adds `tenant_id`, `audit_class` to the flow contract. Required before flow #1 is promoted beyond `advisory`.
+4. **First flow lab entry.** `skills/vuln-remediation-flow/` registered with `lifecycle_state: lab` and the full contract from ADR-138 (including ADR-139..142 fields) wired in. Construction begins now.
 
-With both ADRs committed, this plan moves from `ready-for-step-2` to `ready-for-step-3`. The first flow may be built against the canonical schema in ADR-138 even before `manifests/flow-contract-schema.yaml` lands physically (ADR-138 §Acceptance Criteria allows the manifest to be created lazily, no later than the first `lab` registration).
+With ADR-137..142 all committed, this plan moves from `ready-for-step-3` to **`ready-for-first-flow-lab`**. The first flow may be built against the canonical schema in ADR-138 (as extended by ADR-139/141/142) even before `manifests/flow-contract-schema.yaml` lands physically.
