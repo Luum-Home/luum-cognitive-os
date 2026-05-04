@@ -222,6 +222,12 @@ Allowed future wording after S7:
 - ADR-141 implements Engram Cloud replication.
 - `docs/architecture/headless-runtime-proof-strategy.md` defines how to prove
   the future service stages without polluting normal test lanes.
+- `docs/architecture/service-control-plane-research-2026-05-04.md` compares
+  service-shaped agent runtimes and defines the credential-mode boundary for
+  account-backed provider executors.
+- `docs/architecture/service-control-plane-implementation-plan.md` stages the
+  future `cosd` queue, leases, workers, provider adapters, artifact store, and
+  propose-only output.
 
 This document is the boundary statement: it prevents the implemented worker
 surface from being overclaimed as a complete COS service.
