@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-04T15:14:59+00:00'
+generated_at: '2026-05-04T15:31:53+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/aci-observation-capture.sh
@@ -349,14 +349,14 @@ primitives:
 - id: hooks/destructive-rm-blocker.sh
   kind: hook
   owner_adr: ADR-126
-  lifecycle_state: advisory
-  maturity: advisory
+  lifecycle_state: blocking
+  maturity: blocking
   distribution: core
   runtime_projection: true
   projection_targets:
   - .claude/settings.json
   - hooks/destructive-rm-blocker.sh
-  sha256: 41fc8f074cb444530aba17028603044a8e777e5ec28d7eee30a3abd85b1fa313
+  sha256: 07d008005f9077b6b6f254d82e1fbc009b368272be1e50260f5fd070b916c818
 - id: hooks/direct-main-guard.sh
   kind: hook
   owner_adr: ADR-126
