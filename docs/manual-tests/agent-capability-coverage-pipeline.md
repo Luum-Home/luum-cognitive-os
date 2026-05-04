@@ -80,3 +80,21 @@ PY
 ```
 
 Expected result: Claude/Codex default projection rows are counted as `projected-consumer-surface`; unproved IDEs remain unsigned.
+
+## Harness Registry Check
+
+Confirm all named IDEs are declared and only implemented harnesses are signed:
+
+```bash
+python3 - <<'PY'
+import json, yaml
+manifest = yaml.safe_load(open('manifests/harness-projection.yaml'))
+ids = {item['id'] for item in manifest['harnesses']}
+required = {'claude', 'codex', 'cursor', 'windsurf', 'vscode-copilot', 'opencode', 'google-antigravity', 'shell-ci'}
+assert required <= ids
+acc = json.load(open('docs/acc/latest.json'))
+assert acc['harness_projection']['claude']['status'] == 'implemented'
+assert acc['harness_projection']['codex']['status'] == 'implemented'
+assert acc['harness_projection']['cursor']['status'] == 'planned'
+PY
+```

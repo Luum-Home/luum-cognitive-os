@@ -1316,7 +1316,7 @@
       "inferred_status": "proposed",
       "item": "lifecycle-declared-consumer-candidate: 49",
       "kind": "bullet",
-      "line": 115,
+      "line": 116,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest.md"
     },
@@ -12353,10 +12353,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
       "next_action": "add explicit test/workflow/proof link",
@@ -12366,12 +12366,12 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:accepted,billing,cloud,credential,ephemeral,local,maintainer,posture"
+        "terms:accepted,billing,cloud,credential,ephemeral,implemented,local,maintainer"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Accepted** as the credential and billing posture for all COS runtime surfaces \u2014 local maintainer, cloud worker, and ephemeral sandbox.",
+      "item": "**Accepted \u2014 Implemented** as the credential and billing posture for all COS runtime surfaces \u2014 local maintainer, cloud worker, and ephemeral sandbox.",
       "kind": "prose",
-      "line": 17,
+      "line": 23,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
     },
@@ -12384,7 +12384,7 @@
       "inferred_status": "done_weak_proof",
       "item": "**ALLOW with review**: proprietary provider SDKs (Anthropic, OpenAI, etc.) are permissible provided they do not require embedding the SDK in a redistributable COS binary. HTTP-only usage (no SDK binary shipped) is the preferred posture for cloud worker surface",
       "kind": "bullet",
-      "line": 66,
+      "line": 72,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
     },
@@ -12398,7 +12398,7 @@
       "inferred_status": "done_with_proof",
       "item": "The following fields are added to the `required_flow_shape` in `manifests/flow-contract-schema.yaml`. Any flow registered after this ADR lands MUST include them:",
       "kind": "prose",
-      "line": 104,
+      "line": 110,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
     },
@@ -12412,7 +12412,7 @@
       "inferred_status": "done_with_proof",
       "item": "4. The license audit in `tests/audit/` is extended (or a new test is added) to cover direct dependencies in provider-facing scripts.",
       "kind": "prose",
-      "line": 130,
+      "line": 136,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
     },
@@ -12425,7 +12425,62 @@
       "inferred_status": "done_weak_proof",
       "item": "**A flow running on a platform where generic env var names conflict with platform conventions.** The mapping from `LLM_PRIMARY_API_KEY` to the platform's convention is done in the launch wrapper, not in the flow contract itself. The contract always uses the ge",
       "kind": "bullet",
-      "line": 136,
+      "line": 142,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:manifests/flow-contract-schema.yaml",
+        "terms:billing_identity,contracts,credential_source,flow,flow-contract-schema,implemented,manifests,provider_capabilities"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `manifests/flow-contract-schema.yaml`: flow contracts require `credential_source`, `billing_identity`, and `provider_capabilities`.",
+      "kind": "bullet",
+      "line": 184,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:scripts/cos-flow-register.sh",
+        "path:scripts/cos_flow_register.py",
+        "terms:account,billing,cos-flow-register,cos_flow_register,declarations,implemented,missing,provider"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `scripts/cos-flow-register.sh` and `scripts/cos_flow_register.py`: registration rejects missing or unsupported account/billing/provider declarations.",
+      "kind": "bullet",
+      "line": 185,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:cloud,cos-worker,docker,docker-compose,engram,generic,implemented,instead"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Implemented in `docker/cos-worker/docker-compose.yml`: worker and Engram Cloud surfaces use generic provider-key names (`LLM_PRIMARY_API_KEY`, `LLM_FALLBACK_API_KEY`) instead of vendor-branded variables.",
+      "kind": "bullet",
+      "line": 186,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:cloud,cos-engram-cloud-enroll,does,embed,engram,implemented,print,project-scoped"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Implemented in `scripts/cos-engram-cloud-enroll`: Engram Cloud enrollment uses project-scoped Engram variables and does not print or embed token values.",
+      "kind": "bullet",
+      "line": 187,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
     },
@@ -12539,10 +12594,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
       "next_action": "add explicit test/workflow/proof link",
@@ -12552,10 +12607,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:accepted,across,authoritative,cloud,engram,instances,local,observations"
+        "terms:accepted,across,authoritative,cloud,engram,implemented,instances,local"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Accepted** as the replication strategy for Engram observations across COS instances. Local SQLite remains authoritative. Cloud is replication-only.",
+      "item": "**Accepted \u2014 Implemented** as the replication strategy for Engram observations across COS instances. Local SQLite remains authoritative. Cloud is replication-only.",
       "kind": "prose",
       "line": 18,
       "next_action": "add explicit test/workflow/proof link",
@@ -12578,10 +12633,64 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "terms:around,audit-trail,cloud,config,cos-engram-cloud-enroll,dry-run,engram,enroll"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "Implemented in `scripts/cos-engram-cloud-enroll`: project-scoped wrapper around `engram cloud config/enroll/upgrade`, with dry-run/JSON modes and audit-trail rows.",
+      "kind": "bullet",
+      "line": 204,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:scripts/engram-sync.sh",
+        "terms:calls,cloud,engram,engram-sync,explicit,implemented,invokes,mode"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `scripts/engram-sync.sh`: explicit `--cloud` mode invokes `engram sync --cloud --project \"$SCOPE\"` and never calls `--cloud --all`.",
+      "kind": "bullet",
+      "line": 205,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:packages/engram-sync/hooks/engram-auto-sync.sh",
+        "terms:adds,after,cloud,engram-auto-sync,engram-sync,engram_cloud_autosync,existing,export"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `packages/engram-sync/hooks/engram-auto-sync.sh`: `ENGRAM_CLOUD_AUTOSYNC=1` adds cloud sync after the existing git-jsonl export path.",
+      "kind": "bullet",
+      "line": 206,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:cloud,cos-engram-cloud,cos-worker,database,docker,docker-compose,engram,engram-cloud"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Implemented in `docker/cos-worker/docker-compose.yml`: local `engram-cloud` profile with Postgres/pgvector database and `cos-engram-cloud` service running `engram cloud serve`.",
+      "kind": "bullet",
+      "line": 207,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
       "next_action": "add explicit test/workflow/proof link",
@@ -12591,12 +12700,12 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:accepted,audit-trail,bridge,cloud,compliance,posture,surfaces,worker"
+        "terms:accepted,audit-trail,bridge,cloud,compliance,implemented,posture,surfaces"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Accepted** as the compliance posture and audit-trail bridge for all COS cloud worker surfaces.",
+      "item": "**Accepted \u2014 Implemented** as the compliance posture and audit-trail bridge for all COS cloud worker surfaces.",
       "kind": "prose",
-      "line": 17,
+      "line": 22,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
     },
@@ -12609,8 +12718,62 @@
       "inferred_status": "done_weak_proof",
       "item": "5. The `audit_class` enumeration is added to the ADR-138 flow contract schema; CI rejects a flow contract missing the field.",
       "kind": "prose",
-      "line": 139,
+      "line": 144,
       "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:audit,audit_class,billing,carry,cloud-worker,cos-worker,credential,docker"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Implemented in `docker/cos-worker/entrypoint.sh`: cloud-worker audit rows carry `tenant_id`, `audit_class`, credential source, billing identity, and Engram project scope.",
+      "kind": "bullet",
+      "line": 194,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:scripts/engram-sync.sh",
+        "terms:audit_class,cloud,cos-engram-cloud-enroll,engram,engram-sync,implemented,rows,scripts"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `scripts/cos-engram-cloud-enroll` and `scripts/engram-sync.sh`: Engram Cloud enrollment/sync rows use `audit_class: sync` and `tenant_id`.",
+      "kind": "bullet",
+      "line": 195,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:archives,audit,copied,cos-audit-archive,deleting,gzip,implemented,jsonl"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Implemented in `scripts/cos-audit-archive`: old audit rows are copied into gzip archives without truncating or deleting the source JSONL.",
+      "kind": "bullet",
+      "line": 196,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:docs/architecture/gdpr-erasure-procedure.md",
+        "terms:architecture,audit,erasure,gdpr,gdpr-erasure-procedure,implemented,privacy,required"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `docs/architecture/gdpr-erasure-procedure.md`: GDPR erasure workflow and required privacy audit row shape.",
+      "kind": "bullet",
+      "line": 197,
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
     },
     {
@@ -14861,6 +15024,19 @@
       "line": 110,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture/advisor-mcp-architecture-review.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:adding,before,changing,driver,implemented,implementing,manifest,means"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`.",
+      "kind": "prose",
+      "line": 99,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/agent-capability-coverage-pipeline.md"
     },
     {
       "confidence": 0.62,
@@ -29074,6 +29250,19 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
+        "terms:confirm,declared,harnesses,ides,implemented,named,only,signed"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Confirm all named IDEs are declared and only implemented harnesses are signed:",
+      "kind": "prose",
+      "line": 86,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/manual-tests/agent-capability-coverage-pipeline.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
         "terms:closed,invalidated,surfaces,validation"
       ],
       "inferred_status": "done_weak_proof",
@@ -32898,8 +33087,8 @@
         "proposed": 2
       },
       "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md": {
-        "done_weak_proof": 4,
-        "done_with_proof": 2
+        "done_weak_proof": 6,
+        "done_with_proof": 4
       },
       "docs/adrs/ADR-140-cross-os-containerized-deployment.md": {
         "done_weak_proof": 5,
@@ -32907,10 +33096,12 @@
         "proposed": 1
       },
       "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md": {
-        "done_weak_proof": 3
+        "done_weak_proof": 5,
+        "done_with_proof": 2
       },
       "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md": {
-        "done_weak_proof": 3
+        "done_weak_proof": 5,
+        "done_with_proof": 2
       },
       "docs/adrs/ADR-143-closure-discipline-gate.md": {
         "done_weak_proof": 4,
@@ -33000,6 +33191,9 @@
         "done_weak_proof": 2,
         "done_with_proof": 2,
         "proposed": 1
+      },
+      "docs/architecture/agent-capability-coverage-pipeline.md": {
+        "done_weak_proof": 1
       },
       "docs/architecture/agent-computer-interface.md": {
         "done_weak_proof": 1
@@ -33504,6 +33698,9 @@
         "done_weak_proof": 14,
         "planned": 3
       },
+      "docs/manual-tests/agent-capability-coverage-pipeline.md": {
+        "done_weak_proof": 1
+      },
       "docs/manual-tests/closure-discipline.md": {
         "done_weak_proof": 3
       },
@@ -33762,10 +33959,10 @@
         "planned": 1
       }
     },
-    "items": 2454,
+    "items": 2468,
     "statuses": {
-      "done_weak_proof": 1017,
-      "done_with_proof": 192,
+      "done_weak_proof": 1025,
+      "done_with_proof": 198,
       "planned": 969,
       "proposed": 276
     }

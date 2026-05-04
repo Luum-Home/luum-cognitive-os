@@ -13,47 +13,6 @@
         "projected_primitives": 58
       }
     },
-    "cos_coverage": {
-      "command": "python3 scripts/cos_coverage.py --project-dir . --json --refresh",
-      "error": null,
-      "source": "cos_coverage",
-      "status": "ok",
-      "summary": {
-        "aspirational": 38,
-        "coverage_pct": 54.3,
-        "dormant": 160,
-        "generated_at": "2026-05-04T19:54:06Z",
-        "mapped": 268,
-        "metadata": 56,
-        "on_demand": 287,
-        "project": "<repo-root>",
-        "real": 235,
-        "tiers": {
-          "A": 2,
-          "B": 4,
-          "C": 39,
-          "D": 155
-        },
-        "trend": {
-          "coverage_pct": "flat",
-          "dormant": "flat",
-          "real": "flat"
-        },
-        "unmapped": 0,
-        "weak_proof": 0
-      }
-    },
-    "docs_execution": {
-      "command": "python3 scripts/docs_execution_audit.py --project-dir .",
-      "error": null,
-      "source": "docs_execution",
-      "status": "ok",
-      "summary": {
-        "items": 2454,
-        "json": "<repo-root>/docs/reports/docs-execution-latest.json",
-        "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"
-      }
-    },
     "docs_execution_report": {
       "command": null,
       "error": null,
@@ -716,8 +675,8 @@
             "proposed": 2
           },
           "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md": {
-            "done_weak_proof": 4,
-            "done_with_proof": 2
+            "done_weak_proof": 6,
+            "done_with_proof": 4
           },
           "docs/adrs/ADR-140-cross-os-containerized-deployment.md": {
             "done_weak_proof": 5,
@@ -725,10 +684,12 @@
             "proposed": 1
           },
           "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md": {
-            "done_weak_proof": 3
+            "done_weak_proof": 5,
+            "done_with_proof": 2
           },
           "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md": {
-            "done_weak_proof": 3
+            "done_weak_proof": 5,
+            "done_with_proof": 2
           },
           "docs/adrs/ADR-143-closure-discipline-gate.md": {
             "done_weak_proof": 4,
@@ -818,6 +779,9 @@
             "done_weak_proof": 2,
             "done_with_proof": 2,
             "proposed": 1
+          },
+          "docs/architecture/agent-capability-coverage-pipeline.md": {
+            "done_weak_proof": 1
           },
           "docs/architecture/agent-computer-interface.md": {
             "done_weak_proof": 1
@@ -1322,6 +1286,9 @@
             "done_weak_proof": 14,
             "planned": 3
           },
+          "docs/manual-tests/agent-capability-coverage-pipeline.md": {
+            "done_weak_proof": 1
+          },
           "docs/manual-tests/closure-discipline.md": {
             "done_weak_proof": 3
           },
@@ -1580,204 +1547,25 @@
             "planned": 1
           }
         },
-        "items": 2454,
+        "items": 2468,
         "statuses": {
-          "done_weak_proof": 1017,
-          "done_with_proof": 192,
+          "done_weak_proof": 1025,
+          "done_with_proof": 198,
           "planned": 969,
           "proposed": 276
         }
       }
     },
-    "family_readiness_hooks": {
-      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family hooks",
+    "harness_projection": {
+      "command": null,
       "error": null,
-      "source": "family_readiness_hooks",
+      "source": "manifests/harness-projection.yaml",
       "status": "ok",
       "summary": {
-        "confidence": {
-          "high": 126,
-          "medium": 85
-        },
-        "consumer_accessibility": {
-          "lifecycle-declared-consumer-candidate": 1,
-          "lifecycle-declared-maintainer": 114,
-          "projected-consumer-surface": 11,
-          "so-local-only": 85
-        },
-        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-hooks-latest.json",
-        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-hooks-latest.md",
-        "roles": {
-          "driver-specific": 12,
-          "lab": 103,
-          "memory-lifecycle": 65,
-          "observability": 25,
-          "runtime-safety": 6
-        },
-        "total": 211,
-        "without_consumers": 0,
-        "without_lifecycle": 85
-      }
-    },
-    "family_readiness_rules": {
-      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family rules",
-      "error": null,
-      "source": "family_readiness_rules",
-      "status": "ok",
-      "summary": {
-        "confidence": {
-          "medium": 112
-        },
-        "consumer_accessibility": {
-          "so-local-only": 112
-        },
-        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.json",
-        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.md",
-        "roles": {
-          "context-only": 6,
-          "doctrine": 4,
-          "driver-specific": 48,
-          "hook-enforced": 43,
-          "lab": 11
-        },
-        "total": 112,
-        "without_consumers": 0,
-        "without_lifecycle": 112
-      }
-    },
-    "family_readiness_skills": {
-      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family skills",
-      "error": null,
-      "source": "family_readiness_skills",
-      "status": "ok",
-      "summary": {
-        "confidence": {
-          "high": 51,
-          "medium": 39
-        },
-        "consumer_accessibility": {
-          "repo-skill-not-projectable": 86,
-          "so-local-only": 4
-        },
-        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.json",
-        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.md",
-        "roles": {
-          "compatibility-wrapper": 51,
-          "lab": 7,
-          "project-extension": 16,
-          "so-maintainer": 16
-        },
-        "total": 90,
-        "without_consumers": 0,
-        "without_lifecycle": 90
-      }
-    },
-    "primitive_gap_snapshot": {
-      "command": "python3 scripts/primitive_gap_snapshot.py --project-root . --json",
-      "error": null,
-      "source": "primitive_gap_snapshot",
-      "status": "ok",
-      "summary": {
-        "families": [
-          {
-            "aspirational_signal": 2,
-            "evidence": "row-audit proven=99 partial_nonblocking=133 actionable_gaps=2",
-            "family": "hooks",
-            "next_action": "close actionable rows",
-            "partial_signal": 133,
-            "proven_signal": 99,
-            "severity": "high",
-            "total": 234
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "row-audit proven=184 partial_nonblocking=55 actionable_gaps=0",
-            "family": "skills",
-            "next_action": "no actionable gaps; harden weak proof opportunistically",
-            "partial_signal": 55,
-            "proven_signal": 184,
-            "severity": "low",
-            "total": 239
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "row-audit proven=112 partial_nonblocking=0 actionable_gaps=0",
-            "family": "rules",
-            "next_action": "no actionable gaps; harden weak proof opportunistically",
-            "partial_signal": 0,
-            "proven_signal": 112,
-            "severity": "low",
-            "total": 112
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "memory-named=9 runtime-or-test-referenced=9; actionable_gaps=0",
-            "family": "memory",
-            "next_action": "row-audit memory primitives when Engram APIs change",
-            "partial_signal": 0,
-            "proven_signal": 9,
-            "severity": "low",
-            "total": 9
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "mcp-mentioned-files=210 test-mentioned-files=103; actionable_gaps=0",
-            "family": "mcp_tools",
-            "next_action": "separate installed/optional/reference-only integrations before promotion",
-            "partial_signal": 107,
-            "proven_signal": 103,
-            "severity": "low",
-            "total": 210
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "projection-files=2 test-mentioned=2; actionable_gaps=0",
-            "family": "config_projection",
-            "next_action": "map config keys to readers and projected driver outputs",
-            "partial_signal": 0,
-            "proven_signal": 2,
-            "severity": "low",
-            "total": 2
-          },
-          {
-            "aspirational_signal": 3,
-            "evidence": "row-audit proven=91 partial_nonblocking=25 actionable_gaps=3",
-            "family": "metrics",
-            "next_action": "close actionable rows",
-            "partial_signal": 25,
-            "proven_signal": 91,
-            "severity": "high",
-            "total": 119
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "test_py=765 audit-contract-quality=41; actionable_gaps=0",
-            "family": "tests_quality_gates",
-            "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
-            "partial_signal": 724,
-            "proven_signal": 41,
-            "severity": "low",
-            "total": 765
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=192 mapped_claims=397",
-            "family": "docs_adrs",
-            "next_action": "no hard docs gaps; improve weak proof opportunistically",
-            "partial_signal": 2262,
-            "proven_signal": 589,
-            "severity": "low",
-            "total": 2851
-          }
-        ],
-        "hook_latency": {
-          "events": 2500,
-          "max_ms": 5969,
-          "p50_ms": 414,
-          "p95_ms": 1622
-        },
-        "overall_risk": "high",
-        "timestamp": "2026-05-04T19:54:51.818391+00:00"
+        "implemented": 2,
+        "planned": 6,
+        "total": 8,
+        "unsupported": 0
       }
     },
     "readiness:hooks": {
@@ -1841,24 +1629,24 @@
         "agentic_primitives_without_lifecycle": 0,
         "confidence": {
           "high": 137,
-          "medium": 177
+          "medium": 179
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
           "lifecycle-declared-consumer-candidate": 49,
           "lifecycle-declared-maintainer": 38,
           "skill-referenced-not-projectable": 2,
-          "so-local-only": 206
+          "so-local-only": 208
         },
         "low_confidence_rows": 0,
         "roles": {
           "agentic-primitive": 106,
           "driver-specific": 10,
           "lab": 13,
-          "maintainer-tool": 174,
+          "maintainer-tool": 176,
           "migration-only": 11
         },
-        "total_scripts": 314,
+        "total_scripts": 316,
         "without_consumers": 4
       }
     },
@@ -1885,40 +1673,6 @@
         "total": 90,
         "without_consumers": 0,
         "without_lifecycle": 90
-      }
-    },
-    "script_readiness_refresh": {
-      "command": "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence",
-      "error": null,
-      "source": "script_readiness_refresh",
-      "status": "ok",
-      "summary": {
-        "agentic_primitives_without_lifecycle": 0,
-        "confidence": {
-          "high": 137,
-          "medium": 177
-        },
-        "consumer_accessibility": {
-          "install-profile-managed": 19,
-          "lifecycle-declared-consumer-candidate": 49,
-          "lifecycle-declared-maintainer": 38,
-          "skill-referenced-not-projectable": 2,
-          "so-local-only": 206
-        },
-        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-scripts-latest.json",
-        "lifecycle_backlog_json": "<repo-root>/docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json",
-        "lifecycle_backlog_markdown": "<repo-root>/docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md",
-        "low_confidence_rows": 0,
-        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-scripts-latest.md",
-        "roles": {
-          "agentic-primitive": 106,
-          "driver-specific": 10,
-          "lab": 13,
-          "maintainer-tool": 174,
-          "migration-only": 11
-        },
-        "total_scripts": 314,
-        "without_consumers": 4
       }
     }
   },
@@ -3425,12 +3179,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:55",
-        "test_consumers:306",
+        "test_consumers:309",
         "hook_consumers:67",
-        "doc_consumers:385",
+        "doc_consumers:386",
         "rule_consumers:42",
-        "config_consumers:23",
-        "script_consumers:187",
+        "config_consumers:24",
+        "script_consumers:189",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate"
@@ -3579,6 +3333,40 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-architecture-readiness"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.45,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:3",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only"
+      ],
+      "id": "script:scripts/cos-audit-archive",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "unverified",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-audit-archive",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-audit-archive"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-audit-archive"
       },
       "weight": 3
     },
@@ -4499,6 +4287,40 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-engram-bundle"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.45,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "test_consumers:3",
+        "doc_consumers:4",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only"
+      ],
+      "id": "script:scripts/cos-engram-cloud-enroll",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "unverified",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-engram-cloud-enroll",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-engram-cloud-enroll"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-engram-cloud-enroll"
       },
       "weight": 3
     },
@@ -7497,6 +7319,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
+        "doc_consumers:1",
         "config_consumers:2",
         "script_consumers:1",
         "role_source:heuristic:self-evolution",
@@ -7707,8 +7530,8 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:7",
-        "config_consumers:3",
+        "doc_consumers:6",
+        "config_consumers:4",
         "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -9214,7 +9037,7 @@
       "confidence": 0.45,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "test_consumers:1",
+        "test_consumers:2",
         "hook_consumers:2",
         "doc_consumers:7",
         "role_source:usage:repo",
@@ -16919,8 +16742,8 @@
       "confidence": 0.45,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "test_consumers:1",
-        "doc_consumers:12",
+        "test_consumers:2",
+        "doc_consumers:13",
         "config_consumers:3",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only"
@@ -25656,9 +25479,9 @@
       "evidence": [
         "hook_consumers:2",
         "rule_consumers:2",
-        "script_consumers:1",
-        "test_consumers:1",
-        "doc_consumers:16",
+        "script_consumers:4",
+        "test_consumers:2",
+        "doc_consumers:17",
         "config_consumers:1",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only"
@@ -26674,9 +26497,9 @@
         "skill_consumers:7",
         "hook_consumers:5",
         "rule_consumers:2",
-        "script_consumers:25",
-        "test_consumers:28",
-        "doc_consumers:50",
+        "script_consumers:27",
+        "test_consumers:30",
+        "doc_consumers:52",
         "config_consumers:4",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only"
@@ -29747,12 +29570,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:55",
-        "test_consumers:306",
+        "test_consumers:309",
         "hook_consumers:67",
-        "doc_consumers:385",
+        "doc_consumers:386",
         "rule_consumers:42",
-        "config_consumers:23",
-        "script_consumers:187",
+        "config_consumers:24",
+        "script_consumers:189",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate"
@@ -30042,8 +29865,8 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:7",
-        "config_consumers:3",
+        "doc_consumers:6",
+        "config_consumers:4",
         "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -32169,11 +31992,165 @@
     },
     "warnings": [
       "coverage_debt:153",
-      "acc_below_threshold:0.2663<0.5",
-      "acc_effective_below_threshold:0.3178<0.4"
+      "acc_below_threshold:0.2655<0.5",
+      "acc_effective_below_threshold:0.3169<0.4"
     ]
   },
-  "generated_at": "2026-05-04T19:54:52Z",
+  "generated_at": "2026-05-04T20:17:19Z",
+  "harness_projection": {
+    "claude": {
+      "display_name": "Claude Code",
+      "limitations": [
+        "Proof currently covers default profile, not full profile."
+      ],
+      "next_action": "Keep default/full projection tests current and add promotion proof for candidate primitives.",
+      "projected_surfaces": [
+        "hooks",
+        "rules",
+        "skills"
+      ],
+      "projection_mode": "native-settings",
+      "proof_status": "ok",
+      "settings_paths": [
+        ".claude/settings.json"
+      ],
+      "status": "implemented"
+    },
+    "codex": {
+      "display_name": "OpenAI Codex",
+      "limitations": [
+        "Runtime parity depends on Codex-supported hook/settings semantics.",
+        "Proof currently covers default profile, not full profile."
+      ],
+      "next_action": "Expand Codex runtime parity proof and full-profile projection proof.",
+      "projected_surfaces": [
+        "hooks",
+        "rules",
+        "skills"
+      ],
+      "projection_mode": "settings-file",
+      "proof_status": "ok",
+      "settings_paths": [
+        ".codex/hooks.json"
+      ],
+      "status": "implemented"
+    },
+    "cursor": {
+      "display_name": "Cursor",
+      "limitations": [
+        "Native lifecycle hook semantics are not signed.",
+        "Projection driver has not been implemented."
+      ],
+      "next_action": "Define Cursor settings/rules/MCP projection driver and temp-project proof.",
+      "projected_surfaces": [
+        "rules",
+        "skills",
+        "mcp"
+      ],
+      "projection_mode": "ide-rules-or-wrapper",
+      "proof_status": "unverified",
+      "settings_paths": [
+        ".cursor/rules",
+        ".cursor/mcp.json"
+      ],
+      "status": "planned"
+    },
+    "google-antigravity": {
+      "display_name": "Google Antigravity",
+      "limitations": [
+        "Supported local projection/config format is not signed in this repo."
+      ],
+      "next_action": "Research supported projection surface, then add explicit driver and proof.",
+      "projected_surfaces": [
+        "instructions",
+        "tools",
+        "mcp"
+      ],
+      "projection_mode": "unknown",
+      "proof_status": "unverified",
+      "settings_paths": [],
+      "status": "planned"
+    },
+    "opencode": {
+      "display_name": "OpenCode",
+      "limitations": [
+        "Native config schema and hook support need audit."
+      ],
+      "next_action": "Audit OpenCode config/tool surface and add projection proof.",
+      "projected_surfaces": [
+        "instructions",
+        "tools",
+        "mcp"
+      ],
+      "projection_mode": "wrapper-or-native-config",
+      "proof_status": "unverified",
+      "settings_paths": [
+        "opencode.json",
+        ".opencode"
+      ],
+      "status": "planned"
+    },
+    "shell-ci": {
+      "display_name": "Shell / CI",
+      "limitations": [
+        "Current ACC projection proof is focused on IDE consumer installs.",
+        "CI workflow `.github/workflows/ci.yml` remains disabled."
+      ],
+      "next_action": "Define CLI/workflow projection contract and re-enable product-core CI proof.",
+      "projected_surfaces": [
+        "scripts",
+        "workflows"
+      ],
+      "projection_mode": "cli-and-workflows",
+      "proof_status": "unverified",
+      "settings_paths": [
+        ".github/workflows",
+        "scripts"
+      ],
+      "status": "planned"
+    },
+    "vscode-copilot": {
+      "display_name": "VS Code Copilot",
+      "limitations": [
+        "No native COS lifecycle hooks are signed.",
+        "Must distinguish GitHub Copilot instructions from executable tools."
+      ],
+      "next_action": "Define instruction/task/MCP projection and temp-project proof.",
+      "projected_surfaces": [
+        "instructions",
+        "tasks",
+        "mcp"
+      ],
+      "projection_mode": "instructions-and-tasks",
+      "proof_status": "unverified",
+      "settings_paths": [
+        ".github/copilot-instructions.md",
+        ".vscode/tasks.json",
+        ".vscode/settings.json"
+      ],
+      "status": "planned"
+    },
+    "windsurf": {
+      "display_name": "Windsurf",
+      "limitations": [
+        "Native lifecycle hook semantics are not signed.",
+        "Projection driver has not been implemented."
+      ],
+      "next_action": "Define Windsurf settings/rules/MCP projection driver and temp-project proof.",
+      "projected_surfaces": [
+        "rules",
+        "skills",
+        "mcp"
+      ],
+      "projection_mode": "ide-rules-or-wrapper",
+      "proof_status": "unverified",
+      "settings_paths": [
+        ".windsurf/rules",
+        ".windsurf/mcp.json"
+      ],
+      "status": "planned"
+    }
+  },
   "mapping_statuses": [
     "aligned",
     "missing",
@@ -32196,8 +32173,8 @@
   },
   "schema_version": "acc.report.v1",
   "summary": {
-    "acc": 0.2663,
-    "acc_effective": 0.3178,
+    "acc": 0.2655,
+    "acc_effective": 0.3169,
     "aligned_weight": 527,
     "mapping_weight_by_status": {
       "aligned": 527,
@@ -32205,14 +32182,14 @@
       "overexposed": 0,
       "partial": 204,
       "stale": 0,
-      "unverified": 1248
+      "unverified": 1254
     },
     "missing_weight": 0,
     "overexposed_weight": 0,
     "partial_weight": 204,
     "stale_weight": 0,
-    "total_weight": 1979,
-    "unverified_weight": 1248
+    "total_weight": 1985,
+    "unverified_weight": 1254
   },
   "weights": {
     "doc_claim": 2,
