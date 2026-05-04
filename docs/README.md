@@ -19,6 +19,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Consumer Project Primitive Accessibility](architecture/consumer-project-primitive-accessibility.md) — downstream-project projection contract and current Claude/Codex proof boundary.
 - [Consumer Project Primitive Accessibility Manual Test](manual-tests/consumer-project-primitive-accessibility.md) — manual proof path for temp-project projection and readiness-ledger accessibility checks.
 - [Agent Capability Coverage](agent-capability-coverage.md) — strategic report defining ACC as semantic system coverage for agentic primitives.
+- [Agent Capability Coverage Pipeline](architecture/agent-capability-coverage-pipeline.md) — unified ACC orchestrator that consumes primitive readiness ledgers and existing audit tools.
+- [ADR-147: Agent Capability Coverage Pipeline](adrs/ADR-147-agent-capability-coverage-pipeline.md) — decision record for `scripts/acc_pipeline.py` and `docs/acc/latest.*`.
 - [Multi-Session Orchestration Audit — 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) — documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap.
 - [ADR-116 Direct-Main Policy](architecture/direct-main-policy.md) — local agent-block/operator-warn policy plus remote protection invariant for `main`/`master`.
 - [Protected Landing Contract](architecture/protected-landing-contract.md) — vendor-neutral contract for protected `main`/`master` landing across GitHub, GitLab, Gitea/Forgejo, Bitbucket, bare Git, and unknown remotes.
