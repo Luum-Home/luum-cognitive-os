@@ -3,6 +3,10 @@
 Date: 2026-05-04
 Status: Accepted
 
+## Status
+
+Accepted
+
 ## Context
 
 The project lock previously included every optional extra declared in `pyproject.toml`.
@@ -49,6 +53,14 @@ Trade-offs:
 - Lane users must install the corresponding requirement file explicitly.
 - Lane validation needs separate commands and cannot be inferred from `uv lock --check` alone.
 
+## Alternatives rejected
+
+- Keep all optional extras in the core lock: rejected because optional upstream
+  constraints were blocking unrelated core maintainer dependency hygiene.
+- Remove heavy optional stacks entirely: rejected because observability, memory,
+  crawling, guardrails, Jupyter, semantic, and LLM stacks remain useful when a
+  task explicitly enters that lane.
+
 ## Installation contract
 
 Core maintainer lane:
@@ -72,8 +84,13 @@ bash scripts/dependency-lane.sh install observability
 
 The helper resolves to `uv pip install -r requirements/dependency-lanes/<lane>.txt`. Lane-specific tests must declare their lane prerequisites and skip cleanly when the lane is absent.
 
-## Validation
+## Verification
 
-- `uv lock --check`
-- `python3 -m pytest tests/audit/test_dependency_lane_split.py tests/unit/test_dependency_lane_script.py tests/audit/test_no_undefined_imports.py -q`
-- `bash scripts/deps-update.sh --audit` for human review after syncing the target environment.
+```bash
+uv lock --check
+python3 -m pytest tests/audit/test_dependency_lane_split.py tests/unit/test_dependency_lane_script.py tests/audit/test_no_undefined_imports.py -q
+bash scripts/deps-update.sh --audit
+```
+
+`bash scripts/deps-update.sh --audit` is for human review after syncing the
+target environment.
