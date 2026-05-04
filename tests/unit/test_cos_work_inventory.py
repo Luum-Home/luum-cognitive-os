@@ -222,7 +222,7 @@ class TestCollectWorktreesDirect:
         git_dir = tmp_path / ".git"
         git_dir.mkdir()
         (git_dir / "HEAD").write_text("ref: refs/heads/main\n")
-        result = cwi.collect_worktrees_direct(tmp_path)
+        result = cwi.collect_worktrees_direct(tmp_path, skip_ephemeral=False)
         assert len(result) >= 1
         assert result[0]["source"] == "main"
         assert result[0]["branch"] == "main"
@@ -237,7 +237,7 @@ class TestCollectWorktreesDirect:
         # gitdir points to a non-existent path → prunable
         fake_target = tmp_path / "other" / ".git"
         (worktrees_dir / "gitdir").write_text(str(fake_target) + "\n")
-        result = cwi.collect_worktrees_direct(tmp_path)
+        result = cwi.collect_worktrees_direct(tmp_path, skip_ephemeral=False)
         linked = [wt for wt in result if wt["source"] == "linked"]
         assert len(linked) == 1
         assert linked[0]["branch"] == "feature-x"
@@ -251,7 +251,7 @@ class TestCollectWorktreesDirect:
         worktrees_dir.mkdir(parents=True)
         (worktrees_dir / "HEAD").write_text("ref: refs/heads/some-branch\n")
         (worktrees_dir / "locked").write_text("manual lock reason\n")
-        result = cwi.collect_worktrees_direct(tmp_path)
+        result = cwi.collect_worktrees_direct(tmp_path, skip_ephemeral=False)
         locked = [wt for wt in result if wt.get("locked")]
         assert len(locked) == 1
 

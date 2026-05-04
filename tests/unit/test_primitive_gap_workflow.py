@@ -3,7 +3,17 @@ import subprocess
 import sys
 from pathlib import Path
 
-WORKFLOW = Path(__file__).resolve().parents[2] / ".github" / "workflows" / "primitive-gap-audit.yml"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+def workflow_file(name: str) -> Path:
+    active = REPO_ROOT / ".github" / "workflows" / name
+    if active.exists():
+        return active
+    return active.with_name(active.name + ".disabled")
+
+
+WORKFLOW = workflow_file("primitive-gap-audit.yml")
 
 
 def test_weekly_audit_workflow_runs_row_claim_and_backlog_audits() -> None:

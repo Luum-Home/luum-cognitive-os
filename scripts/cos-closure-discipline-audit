@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+exec python3 "$ROOT/scripts/cos_closure_discipline_audit.py" --project-dir "$ROOT" "$@"
