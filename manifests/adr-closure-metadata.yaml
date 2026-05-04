@@ -1,0 +1,252 @@
+schema_version: 1
+source: docs/SESSION-ADR-CLOSURE-2026-05-04.md
+scope: ADR implementation closure metadata consumed by scripts/adr_implementation_ledger.py
+closure_classes:
+  evidence-only: Implementation exists or ADR is historically satisfied; close by evidence/status reconciliation rather than
+    runtime changes.
+  absorbed: Useful decision intent is covered by later ADRs or current architecture; do not revive the old implementation
+    shape.
+  superseded: A later ADR explicitly replaces this ADR.
+  obsolete-by-context: The ADR solved a historical context that no longer applies.
+  deferred: Still valid enough to preserve, but intentionally not current implementation work until the re-entry trigger occurs.
+  implement-current: Still-current implementation work; ledger should continue surfacing it as attention.
+adrs:
+- adr_id: ADR-001-abc-parallel-dedup-fix-broken-infra-add-global-verify
+  closure_class: evidence-only
+  reason: Auto-generated draft already records source commit dacd7dc, global-verify hook, targeted tests, and remaining aspirational
+    items; closure action is status/evidence promotion, not new runtime.
+- adr_id: ADR-002-docker-pip-localhost-envs-targetedtestresolver-redis-dep
+  closure_class: evidence-only
+  reason: Auto-generated draft already records source commit e4a3c86, env-var Valkey defaults, targeted_test_resolver, and
+    validation notes; closure action is status/evidence promotion plus checking the old EXCLUDED_HOOKS note.
+- adr_id: ADR-006-agpl-license-compliance
+  closure_class: evidence-only
+  reason: ADR already says Accepted with commit evidence; ledger likely misses bold status syntax. Closure action is parser/evidence
+    reconciliation, not replacing services again.
+- adr_id: ADR-007-cognitive-os-rebrand
+  closure_class: evidence-only
+  reason: ADR already says Accepted and current repo is branded Cognitive OS; any remaining Agent OS mentions need context
+    filtering for historical references only.
+- adr_id: ADR-008-multi-tool-support
+  closure_class: absorbed
+  reason: Current cross-harness posture is governed by later harness/adapter ADRs; do not re-implement old multi-tool shape
+    without reconciling ADR-057/064/081/112/124.
+- adr_id: ADR-009-package-architecture
+  closure_class: absorbed
+  reason: Package/reclassification intent is now covered by distribution boundaries and primitive lifecycle governance; reconcile
+    against ADR-124/126 before touching packaging.
+- adr_id: ADR-010-hook-architecture-v2
+  closure_class: absorbed
+  reason: Original event/profile model predates later simplified profiles, distribution tiers, and hook projection contracts;
+    reconcile via ADR-093/124/144 instead of restoring old profile assumptions.
+- adr_id: ADR-011-dual-gateway-bifrost-litellm
+  closure_class: superseded
+  reason: ADR explicitly says Superseded by ADR-018; no implementation attack unless a current provider ADR reintroduces a
+    gateway need.
+- adr_id: ADR-014-sdd-fast-path
+  closure_class: evidence-only
+  reason: ADR records implementation in lib/sdd_pipeline.py and commits; closure action is evidence/test verification.
+- adr_id: ADR-015-rules-to-hooks-migration
+  closure_class: absorbed
+  reason: The rule-to-enforcement direction is now constrained by ADR-143/144 closure and projection gates; do not migrate
+    more rules blindly.
+- adr_id: ADR-017-stabilization-freeze
+  closure_class: obsolete-by-context
+  reason: Temporal freeze decision was for the stabilization window; current project phase is reconstruction, so closure should
+    document historical completion/expiry.
+- adr_id: ADR-018-docker-to-pip-migration
+  closure_class: evidence-only
+  reason: ADR records Accepted status and commits; closure action is evidence/ledger reconciliation and verifying current
+    optional-service posture.
+- adr_id: ADR-020-contamination-fix
+  closure_class: evidence-only
+  reason: ADR records Accepted status and commit; closure action is contamination evidence/audit status, not new feature work.
+- adr_id: ADR-021-vendor-agnostic-with-adapters
+  closure_class: absorbed
+  reason: Adapter direction is superseded/extended by later cross-harness and account-agnostic provider runtime ADRs, especially
+    ADR-139; reconcile before implementing old adapter assumptions.
+- adr_id: ADR-022-prompt-type-hooks-adoption
+  closure_class: obsolete-by-context
+  reason: The model-specific Haiku framing should not be expanded; preserve generic advisory-hook behavior only where current
+    gates still need it.
+- adr_id: ADR-023-updated-input-pattern
+  closure_class: evidence-only
+  reason: ADR has concrete references to secret-detector, blast-radius, and unit tests; closure action is evidence/test verification.
+- adr_id: ADR-025-install-update-loop
+  closure_class: evidence-only
+  reason: ADR has concrete references to scripts/register-mcps.sh, scripts/cos-update.sh, and behavior tests; closure action
+    is evidence/test verification.
+- adr_id: ADR-028
+  closure_class: evidence-only
+  reason: Parent ADR states the 6-pillar framework is CLOSED and addenda resolved pending items; implementation evidence spans
+    lib/metric_event.py, metrics rotation, MLflow timeout hardening, global-verify, and reports. Ledger blocker is historical
+    language.
+- adr_id: ADR-028a
+  closure_class: evidence-only
+  reason: Addendum reconciles WS11 and heartbeat overlap; global-verify and agent-bus boundaries now exist. Closure action
+    is ledger/status reconciliation, not a new heartbeat system.
+- adr_id: ADR-028b
+  closure_class: evidence-only
+  reason: Revised D1.C explicitly says do not create duplicate heartbeat primitives; lib/agent_bus_metrics.py and tests/contracts/test_agent_bus_metrics.py
+    exist and passed in this session.
+- adr_id: ADR-030
+  closure_class: evidence-only
+  reason: 'All acceptance surfaces are present: hooks/session-wrapup-trigger.sh, profile/settings registration, AUTO-TRIGGER
+    preamble rule, .githooks/post-commit, hooks/session-init.sh, skills/session-wrapup/SKILL.md, and hermetic tests; ADR status
+    is stale Proposed.'
+- adr_id: ADR-031
+  closure_class: evidence-only
+  reason: scripts/aspirational_audit.py, hooks/aspirational-audit-weekly.sh, integration tests, and dated reports exist. Closure
+    is evidence/status reconciliation.
+- adr_id: ADR-033-harness-agnostic-event-capture
+  closure_class: evidence-only
+  reason: lib/harness_adapter/, lib/event_bus.py, scripts/cos-events.sh, canonical event contract tests, and portability tests
+    exist. Closure is evidence/status reconciliation.
+- adr_id: ADR-034-harness-agnostic-live-streaming
+  closure_class: evidence-only
+  reason: 'The Proposed status is stale: scripts/cos_executor.py, scripts/cos_watch.py, lib/harness_adapter/aider_streaming.py,
+    and the three named tests exist and passed in this session.'
+- adr_id: ADR-037-self-knowledge-base
+  closure_class: evidence-only
+  reason: scripts/cos_build_self_knowledge.py, hooks/self-knowledge-refresh.sh, lib/self_knowledge.py, generated .cognitive-os/self-knowledge/
+    artifacts, and unit/integration tests exist and passed in this session.
+- adr_id: ADR-042-valkey-local-daemon
+  closure_class: evidence-only
+  reason: scripts/cos-valkey-local.sh, hooks/valkey-ensure.sh, lib/agent_bus.py local fallback, and tests/integration/test_valkey_local_daemon.py
+    exist and passed in this session. Remaining Paperclip/PostgreSQL Docker items are explicitly deferred outside Valkey scope.
+- adr_id: ADR-044-context-payload-slimming
+  closure_class: evidence-only
+  reason: Phase-2 repo surfaces are present (.claude/commands/, compact catalog generator, lazy catalog tests). This session
+    fixed drift in hooks/session-init.sh, scripts/generate_compact_catalog.py, and regenerated skills/CATALOG-COMPACT.md;
+    global user CLAUDE slimming remains opt-in/external, not repo implementation debt.
+- adr_id: ADR-049-llm-gateway-selection-and-overflow-providers
+  closure_class: absorbed
+  reason: ADR-049 — LLM Gateway Selection + Overflow Provider Strategy — Decision exists, but implementation evidence was
+    not found
+- adr_id: ADR-054-project-docs-convention
+  closure_class: evidence-only
+  reason: ADR-054 — Project Documentation Convention (10 Categories) — Evidence references exist, but the ADR does not state
+    completion clearly
+- adr_id: ADR-057-cross-harness-authoring-and-driver-projection
+  closure_class: evidence-only
+  reason: 'ADR-057: Cross-Harness Authoring and Driver Projection — Evidence references exist, but the ADR does not state
+    completion clearly'
+- adr_id: ADR-058-observability-migration-langfuse-to-phoenix
+  closure_class: obsolete-by-context
+  reason: 'ADR-058 — Observability Migration: Langfuse → Arize Phoenix — No reliable implementation status signal was found'
+- adr_id: ADR-060-local-only-optional-services
+  closure_class: evidence-only
+  reason: ADR-060 — Local-Only Policy for Optional Services — Evidence references exist, but the ADR does not state completion
+    clearly
+- adr_id: ADR-065-radar-update-curation-pipeline
+  closure_class: deferred
+  reason: ADR-065 — Tech Radar Curation Pipeline (/radar-update) — Evidence references exist, but the ADR does not state completion
+    clearly
+- adr_id: ADR-069-research-first-protocol
+  closure_class: deferred
+  reason: 'ADR-069: Research-First Protocol for High-Risk Changes — Open questions or dependency language indicate blocked
+    work'
+- adr_id: ADR-083-governed-self-improvement-loop
+  closure_class: absorbed
+  reason: ADR-083 — Governed Self-Improvement Loop — Pending/unresolved language found and no implementation evidence was
+    detected
+- adr_id: ADR-086-hook-execution-observability
+  closure_class: evidence-only
+  reason: 'ADR-086: Hook Execution Observability — Evidence references exist, but the ADR does not state completion clearly'
+- adr_id: ADR-088-provenance-trailer-ppid-chain
+  closure_class: evidence-only
+  reason: ADR-088 — Provenance trailer attribution via PPID chain — Evidence references exist, but the ADR does not state
+    completion clearly
+- adr_id: ADR-090-auto-skill-repair
+  closure_class: evidence-only
+  reason: 'ADR-090: Auto-skill repair via failure-threshold signals — Evidence references exist, but the ADR does not state
+    completion clearly'
+- adr_id: ADR-092-harness-skills-sync-path
+  closure_class: absorbed
+  reason: 'ADR-092: Harness Skills Sync Path — Add .claude/skills/ as Second Sync Destination — Evidence references exist,
+    but the ADR does not state completion clearly'
+- adr_id: ADR-093-simplify-profiles
+  closure_class: evidence-only
+  reason: 'ADR-093: Simplify Install Profiles — Collapse 3-Tier System to default + --full — Evidence references exist, but
+    the ADR does not state completion clearly'
+- adr_id: ADR-097-documentation-execution-audit
+  closure_class: evidence-only
+  reason: 'ADR-097: Documentation Execution Audit — Decision exists, but implementation evidence was not found'
+- adr_id: ADR-099-pre-agent-snapshot-copy-on-untracked
+  closure_class: evidence-only
+  reason: 'ADR-099 — Pre-agent snapshot: copy-on-untracked instead of stash-sweep — Evidence references exist, but the ADR
+    does not state completion clearly'
+- adr_id: ADR-103-audit-contract-lane-recovery
+  closure_class: evidence-only
+  reason: 'ADR-103: Audit and contract lane recovery before parallel flip — Evidence references exist, but the ADR does not
+    state completion clearly'
+- adr_id: ADR-104-startup-circuit-breaker
+  closure_class: evidence-only
+  reason: ADR-104 — Startup Circuit Breaker and Safe Mode — Evidence references exist, but the ADR does not state completion
+    clearly
+- adr_id: ADR-107-human-approved-rollback
+  closure_class: absorbed
+  reason: ADR-107 — Human-Approved Rollback Boundary — Decision exists, but implementation evidence was not found
+- adr_id: ADR-110-preserve-branch-governance
+  closure_class: absorbed
+  reason: ADR-110 — Preserve Branch Governance — Decision exists, but implementation evidence was not found
+- adr_id: ADR-112-codex-governed-tool-layer
+  closure_class: absorbed
+  reason: ADR-112 — Codex Governed Tool Layer — Decision exists, but implementation evidence was not found
+- adr_id: ADR-113-validation-capsule-liveness
+  closure_class: deferred
+  reason: 'ADR-113: Validation Capsule Liveness Primitives — Open questions or dependency language indicate blocked work'
+- adr_id: ADR-114-hook-quality-system
+  closure_class: evidence-only
+  reason: ADR-114 — Hook Quality System — Decision exists, but implementation evidence was not found
+- adr_id: ADR-115-safe-worktree-sweeper
+  closure_class: evidence-only
+  reason: 'ADR-115: Safe Worktree Sweeper — Evidence references exist, but the ADR does not state completion clearly'
+- adr_id: ADR-118-multi-ide-swarm-testbed
+  closure_class: deferred
+  reason: Accepted acceptance-test umbrella with an initial ADR-116 slice implemented; remaining swarm scenarios are phase-level
+    chaos coverage tracked by the foundation hardening plan, not a missing core runtime primitive.
+- adr_id: ADR-120-conversation-to-primitive-harvester
+  closure_class: evidence-only
+  reason: Harvester implementation, behavior tests, portability tests, promotion evidence, and maintainer advisory classification
+    exist; close by evidence/status reconciliation.
+- adr_id: ADR-121-foundation-hardening-program
+  closure_class: deferred
+  reason: This is a phased program and acceptance framework, not one atomic feature; current slices exist, while remaining
+    phases stay tracked in the foundation hardening plan.
+- adr_id: ADR-122-preflight-gate-refinements
+  closure_class: evidence-only
+  reason: Preflight refinements are implemented in cos_work_inventory and agent-prelaunch behavior; close by evidence/status
+    reconciliation.
+- adr_id: ADR-123-operational-stability-friction-reduction
+  closure_class: deferred
+  reason: Operational stability is a phased program. Current guard maturity/profile/readiness slices exist, while remaining
+    friction-reduction phases stay tracked in the architecture plan.
+- adr_id: ADR-124-cos-distribution-boundaries
+  closure_class: evidence-only
+  reason: Distribution tiers are represented in primitive lifecycle/adoption tier metadata and projection boundaries; close
+    by evidence/status reconciliation.
+- adr_id: ADR-125-governance-tools-value-boundary
+  closure_class: evidence-only
+  reason: Governance value boundaries are represented in lifecycle/distribution metadata and claim-boundary reporting; close
+    by evidence/status reconciliation.
+- adr_id: ADR-127-active-primitive-index
+  closure_class: evidence-only
+  reason: Active primitive index CLI, readiness integration, runtime coverage hardening, and tests exist; close by evidence/status
+    reconciliation.
+- adr_id: ADR-128-data-layer-integrity-fixes
+  closure_class: evidence-only
+  reason: Engram integrity, active primitive runtime coverage, version/topic-key audits, and implementation file/test surfaces
+    exist; close by evidence/status reconciliation.
+- adr_id: ADR-135-self-evolving-doctrine-proposals
+  closure_class: evidence-only
+  reason: Doctrine proposer exists as propose-only control-plane primitive with ADR contract normalization; close by evidence/status
+    reconciliation.
+- adr_id: ADR-136-cross-instance-learning-runway
+  closure_class: evidence-only
+  reason: Cross-instance learning runway scripts, registry locks, federation trigger audit, and drill surfaces exist while
+    Shape A remains explicitly deferred; close by evidence/status reconciliation.
+- adr_id: ADR-144-hook-enforced-rule-projection-contract
+  closure_class: evidence-only
+  reason: Hook-enforced rule projection contract, skill-router bash gate, projection tests, settings-driver checks, and manual
+    test documentation exist; close by evidence/status reconciliation.
