@@ -6,59 +6,20 @@ requires-python = ">=3.11"
 dependencies = [
     "pyyaml>=6.0",
     "jinja2>=3.1",
-    "rich>=14",  # rich 15 blocked by cognee[memory] pin (research: docs/reports/python-major-bumps-2026-04-24.md)
+    "rich>=15",  # core lane can advance independently from memory/cognee lane (ADR-145)
 ]
 
 [project.optional-dependencies]
-llm = [
-    "litellm>=1.0",
-    # redis client speaks the Valkey wire protocol; Valkey (fork of Redis 7.2.4)
-    # is the server running in OrbStack (see rules/orchestrator-mode.md).
-    # The `valkey` Python package was redundant — code uses `import redis`.
-    "redis>=5.0.0",
-]
 web = [
     "fastapi>=0.100",
     "uvicorn>=0.23",
 ]
-observability = [
-    # ADR-060 (2026-04-24): cloud-only observability backend removed — see
-    # ADR-060 for the local-only policy. Phoenix is the single surface.
-    # ADR-058 (2026-04-24): Phoenix is the LLM-native trace UI (former backend retired).
-    # arize-phoenix: full UI server (run via `uv run phoenix serve`).
-    # arize-phoenix-otel: OTel exporter used by lib/record_completion.py.
-    "arize-phoenix>=4.0",
-    "arize-phoenix-otel>=0.6",
-    # mlflow-skinny: lightweight mlflow without pyarrow/pandas (which fail on Python 3.14).
-    # Use mlflow-skinny for agent-metrics mirror; full mlflow requires pyarrow to build.
-    "mlflow-skinny>=2.0",
-]
-memory = [
-    "cognee>=0.1",
-]
-guardrails = [
-    "nemoguardrails",
-]
-jupyter = [
-    "jupyter",
-    "notebook",
-]
-crawling = [
-    "crawl4ai>=0.8.0",
-]
-# ADR-029b Phase B-β (ADR-039) — reinvention-gate semantic embeddings.
-# Optional: adds ~90MB model + PyTorch CPU wheel (~200MB). Hook falls back
-# to Jaccard (Phase B-α) when this extra is not installed.
-# Install with: uv sync --extra semantic
-semantic = [
-    "sentence-transformers>=3.0",
-    "numpy>=1.26",
-]
 # ADR-049 — direct-SDK LLM dispatch (no LiteLLM/Bifrost proxy).
 # The `openai` SDK covers Alibaba Qwen, DeepSeek, OpenRouter, MiniMax, GLM,
 # and OpenAI itself via base_url overrides. Used by lib/qwen_provider.py
-# and (future) sibling providers.
+# and sibling providers.
 # Install with: uv sync --extra direct_providers
+# This remains in the core lock because it is a lightweight runtime adapter.
 direct_providers = [
     "openai>=1.50",
 ]
@@ -83,11 +44,6 @@ testing = [
     # testcontainers: used for ephemeral Valkey in @pytest.mark.integration tests.
     # RedisContainer("valkey/valkey:7.2.4") provides an isolated Valkey instance
     # so integration tests don't depend on OrbStack being up.
-    # NOTE: The orchestrator Valkey-bridge test (heartbeat → MetricEvent JSONL) was
-    # evaluated but not implemented with testcontainers: it would require spawning a
-    # real sub-Claude to produce heartbeats, which is expensive and out of scope.
-    # testcontainers is included so future integration tests (e.g. agent_bus pub/sub)
-    # can use it without a pyproject.toml change.
     "testcontainers[redis]>=4.0",
 ]
 security = [
@@ -103,13 +59,10 @@ enforcement = [
     "diff-cover>=9.0",
 ]
 dev = [
-    # Note: `semantic` extra is OPTIONAL and NOT in `dev` on purpose — Phase B-β
-    # embeddings pull in PyTorch (~200MB) which bloats CI. Opt in explicitly with
-    # `pip install '.[semantic]'`.
-    # Note: `memory` extra (cognee/kuzu) is OPTIONAL and NOT in `dev` on purpose — kuzu
-    # fails to build on Python 3.14, blocking normal dev workflow. Opt in explicitly with
-    # `uv sync --extra memory`.
-    "luum-cognitive-os[llm,web,observability,guardrails,jupyter,crawling,testing,enforcement]",
+    # Dependency lane split: dev stays lightweight and first-party focused.
+    # Heavy optional lanes live under requirements/dependency-lanes/ so their
+    # upstream pins cannot block core dependency hygiene.
+    "luum-cognitive-os[web,direct_providers,testing,enforcement]",
 ]
 
 [tool.ruff]

@@ -44,3 +44,8 @@ The useful progress is stricter evidence:
 5. `nemoguardrails`/LangChain/dataclasses-json relax pandas/marshmallow major bounds.
 6. `mlflow-skinny` relaxes `importlib-metadata<9`.
 7. `opentelemetry-proto` supports `protobuf>=7`.
+
+
+## Resolution update — ADR-145
+
+The second-pass blockers are still true inside their optional lanes, but they no longer block the core maintainer lock. ADR-145 moved heavy lanes to `requirements/dependency-lanes/`; see `docs/reports/python-major-lane-resolution-2026-05-04.md`.
