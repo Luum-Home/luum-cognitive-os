@@ -33,6 +33,9 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-156: Qwen Code Structural Harness Projection](adrs/ADR-156-qwen-code-structural-harness-projection.md) — decision to promote Qwen Code to implemented structural projection.
 - [Kimi Code CLI Structural Projection Manual Test](manual-tests/kimi-code-cli-structural-projection.md) — manual proof path for `AGENTS.md`, `.kimi/mcp.json`, and optional Kimi CLI smoke.
 - [ADR-157: Kimi Code CLI Structural Harness Projection](adrs/ADR-157-kimi-code-cli-structural-harness-projection.md) — decision to promote Kimi Code CLI to implemented structural projection.
+- [AI Agent Harness Landscape — 2026-05-04](reports/ai-agent-harness-landscape-2026-05-04.md) — current repo-plus-official-doc review of IDEs, CLIs, hosted agents, provider/tooling surfaces, and missing harness candidates.
+- [ADR-158: AI Agent Harness Landscape and Proof Backlog](adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md) — decision to track broad ecosystem coverage in a separate machine-readable backlog without overclaiming runtime support.
+- [AI Agent Harness Landscape Manual Test](manual-tests/ai-agent-harness-landscape-review.md) — manual proof path for source spot-checks, stale-claim checks, and ACC ratchet validation.
 - [Multi-Session Orchestration Audit — 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) — documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap.
 - [ADR-116 Direct-Main Policy](architecture/direct-main-policy.md) — local agent-block/operator-warn policy plus remote protection invariant for `main`/`master`.
 - [Protected Landing Contract](architecture/protected-landing-contract.md) — vendor-neutral contract for protected `main`/`master` landing across GitHub, GitLab, Gitea/Forgejo, Bitbucket, bare Git, and unknown remotes.
