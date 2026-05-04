@@ -29,6 +29,7 @@ IGNORED_PATHS = {
     ".claude/settings.local.json",
 }
 IGNORED_PATH_PREFIXES = (
+    ".claude/worktrees/",
     ".claude/plugins/",
     ".cognitive-os/",
     ".engram/",
@@ -70,6 +71,8 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
 
     # Direct policy docs. Historical docs intentionally avoid the exact string.
     AllowedReference("docs/architecture/direct-anthropic-api-policy.md", "policy_docs", "canonical policy"),
+    AllowedReference("docs/adrs/ADR-131-local-ci-migration.md", "policy_docs", "local CI migration names CI-only secret removal"),
+    AllowedReference("docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md", "policy_docs", "account-agnostic credential policy names legacy env var as banned/default-unsafe"),
 
     # Explicit examples / benchmark / arena / tests.
     AllowedReference("docs/benchmarks/so-vs-vanilla-tasks.yaml", "fake_benchmark_secret", "fake key example"),
