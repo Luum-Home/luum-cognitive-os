@@ -179,6 +179,31 @@ class TestToolSequenceCaptureOutput:
         assert "command_family" not in record
         assert "command_preview" not in record
 
+    def test_warns_on_repeated_tool_loop_without_extra_hook(self, tmp_path: Path) -> None:
+        for _ in range(2):
+            _run_hook(tmp_path, tool_name="Read", tool_input={"file_path": "README.md"})
+        rc, _, stderr, _ = _run_hook(
+            tmp_path,
+            tool_name="Read",
+            tool_input={"file_path": "README.md"},
+        )
+
+        assert rc == 0
+        assert "TOOL LOOP DETECTED: generic_repeat" in stderr
+
+    def test_warns_on_ping_pong_tool_loop_without_extra_hook(self, tmp_path: Path) -> None:
+        _run_hook(tmp_path, tool_name="Read", tool_input={"file_path": "README.md"})
+        _run_hook(tmp_path, tool_name="Grep", tool_input={"pattern": "foo"})
+        _run_hook(tmp_path, tool_name="Read", tool_input={"file_path": "README.md"})
+        rc, _, stderr, _ = _run_hook(
+            tmp_path,
+            tool_name="Grep",
+            tool_input={"pattern": "foo"},
+        )
+
+        assert rc == 0
+        assert "TOOL LOOP DETECTED: ping_pong" in stderr
+
 
 class TestToolSequenceCaptureLatency:
     def test_p95_latency_under_30ms(self, tmp_path: Path) -> None:
