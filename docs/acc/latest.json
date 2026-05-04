@@ -30,6 +30,8 @@
           "cursor/full": 347,
           "opencode/default": 73,
           "opencode/full": 347,
+          "qwen-code/default": 73,
+          "qwen-code/full": 347,
           "shell-ci/default": 73,
           "shell-ci/full": 347,
           "vscode-copilot/default": 73,
@@ -47,7 +49,7 @@
         "aspirational": 38,
         "coverage_pct": 54.3,
         "dormant": 160,
-        "generated_at": "2026-05-04T22:08:27Z",
+        "generated_at": "2026-05-04T22:14:36Z",
         "mapped": 268,
         "metadata": 56,
         "on_demand": 287,
@@ -74,7 +76,7 @@
       "source": "docs_execution",
       "status": "ok",
       "summary": {
-        "items": 2593,
+        "items": 2600,
         "json": "<repo-root>/docs/reports/docs-execution-latest.json",
         "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"
       }
@@ -98,7 +100,7 @@
             "planned": 1
           },
           "docs/README.md": {
-            "done_weak_proof": 11,
+            "done_weak_proof": 12,
             "planned": 13,
             "proposed": 4
           },
@@ -818,6 +820,10 @@
             "done_weak_proof": 5,
             "done_with_proof": 2
           },
+          "docs/adrs/ADR-156-qwen-code-structural-harness-projection.md": {
+            "done_weak_proof": 3,
+            "done_with_proof": 2
+          },
           "docs/adrs/README.md": {
             "planned": 1
           },
@@ -1144,9 +1150,9 @@
             "planned": 4
           },
           "docs/architecture/multi-ide-harness-implementation-plan.md": {
-            "done_weak_proof": 10,
+            "done_weak_proof": 12,
             "done_with_proof": 1,
-            "planned": 11
+            "planned": 9
           },
           "docs/architecture/observability-backend-evaluation-2026-04-24.md": {
             "done_weak_proof": 4,
@@ -1463,6 +1469,9 @@
             "planned": 1,
             "proposed": 1
           },
+          "docs/manual-tests/qwen-code-structural-projection.md": {
+            "done_weak_proof": 1
+          },
           "docs/manual-tests/service-control-plane-proof-drills.md": {
             "done_weak_proof": 2,
             "planned": 6,
@@ -1700,11 +1709,11 @@
             "planned": 1
           }
         },
-        "items": 2593,
+        "items": 2600,
         "statuses": {
-          "done_weak_proof": 1074,
-          "done_with_proof": 208,
-          "planned": 1031,
+          "done_weak_proof": 1081,
+          "done_with_proof": 210,
+          "planned": 1029,
           "proposed": 280
         }
       }
@@ -1798,8 +1807,8 @@
       "source": "manifests/harness-projection.yaml",
       "status": "ok",
       "summary": {
-        "implemented": 6,
-        "planned": 6,
+        "implemented": 7,
+        "planned": 5,
         "total": 12,
         "unsupported": 0
       }
@@ -1878,13 +1887,13 @@
           },
           {
             "aspirational_signal": 0,
-            "evidence": "mcp-mentioned-files=218 test-mentioned-files=105; actionable_gaps=0",
+            "evidence": "mcp-mentioned-files=220 test-mentioned-files=105; actionable_gaps=0",
             "family": "mcp_tools",
             "next_action": "separate installed/optional/reference-only integrations before promotion",
-            "partial_signal": 113,
+            "partial_signal": 115,
             "proven_signal": 105,
             "severity": "low",
-            "total": 218
+            "total": 220
           },
           {
             "aspirational_signal": 0,
@@ -1918,13 +1927,13 @@
           },
           {
             "aspirational_signal": 0,
-            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=208 mapped_claims=412",
+            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=210 mapped_claims=412",
             "family": "docs_adrs",
             "next_action": "no hard docs gaps; improve weak proof opportunistically",
-            "partial_signal": 2385,
-            "proven_signal": 620,
+            "partial_signal": 2390,
+            "proven_signal": 622,
             "severity": "low",
-            "total": 3005
+            "total": 3012
           }
         ],
         "hook_latency": {
@@ -1934,7 +1943,7 @@
           "p95_ms": 1622
         },
         "overall_risk": "high",
-        "timestamp": "2026-05-04T22:09:33.088172+00:00"
+        "timestamp": "2026-05-04T22:15:41.706551+00:00"
       }
     },
     "projection_profiles": {
@@ -2283,7 +2292,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:22",
+        "doc_consumers:24",
         "config_consumers:1",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -3778,7 +3787,7 @@
         "skill_consumers:55",
         "test_consumers:311",
         "hook_consumers:68",
-        "doc_consumers:403",
+        "doc_consumers:405",
         "rule_consumers:42",
         "config_consumers:28",
         "script_consumers:192",
@@ -4368,7 +4377,7 @@
         "availability_override:shell-ci-candidate",
         "availability_match:exact",
         "availability_rationale:Candidate consumer coordination status command; needs projection proof.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "script:scripts/cos-coordination-status.sh",
       "kind": "script",
@@ -7092,7 +7101,7 @@
         "availability_override:shell-ci-candidate",
         "availability_match:exact",
         "availability_rationale:Candidate consumer usage-report command; needs shell/CI projection proof.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "script:scripts/cos-usage-report.sh",
       "kind": "script",
@@ -7505,7 +7514,7 @@
         "availability_override:shell-ci-candidate",
         "availability_match:exact",
         "availability_rationale:Candidate shell/CI triage command; needs projection proof before consumer claim.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "script:scripts/cos-worktree-triage.sh",
       "kind": "script",
@@ -8645,7 +8654,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:15",
+        "doc_consumers:17",
         "config_consumers:5",
         "script_consumers:3",
         "role_source:lifecycle",
@@ -14502,7 +14511,7 @@
         "availability_override:shell-ci-candidate",
         "availability_match:exact",
         "availability_rationale:Candidate consumer full validation wrapper; needs shell/CI projection proof.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "script:scripts/test-cognitive-os-full.sh",
       "kind": "script",
@@ -16162,7 +16171,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/adr-detector.sh",
       "kind": "hook",
@@ -16292,7 +16301,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/agent-bus-monitor.sh",
       "kind": "hook",
@@ -16377,7 +16386,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/agent-output-verifier.sh",
@@ -16544,7 +16553,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -16671,7 +16680,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/aguara-scan.sh",
       "kind": "hook",
@@ -17149,7 +17158,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -17325,7 +17334,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/clarification-interceptor.sh",
       "kind": "hook",
@@ -17365,7 +17374,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -17448,7 +17457,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/completeness-check-llm.sh",
@@ -17578,7 +17587,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/concurrent-write-guard-codex-proxy.sh",
@@ -17665,7 +17674,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/confidence-gate-llm.sh",
       "kind": "hook",
@@ -17881,7 +17890,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -17967,7 +17976,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -18529,7 +18538,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/dry-run-preview.sh",
@@ -18571,7 +18580,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/ecosystem-check.sh",
@@ -18614,7 +18623,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/edit-lock-drain-parked.sh",
       "kind": "hook",
@@ -18702,7 +18711,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/edit-lock-process-negotiations.sh",
       "kind": "hook",
@@ -19000,7 +19009,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/epic-task-detector.sh",
       "kind": "hook",
@@ -19303,7 +19312,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/guardrails-validator.sh",
@@ -19518,7 +19527,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/infra-intent-detector.sh",
       "kind": "hook",
@@ -19603,7 +19612,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/jupyter-sandbox.sh",
@@ -20154,7 +20163,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -20274,7 +20283,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -20577,7 +20586,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/pre-cleanup-snapshot.sh",
       "kind": "hook",
@@ -21528,7 +21537,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/resource-check.sh",
       "kind": "hook",
@@ -21965,7 +21974,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "hook:hooks/semgrep-scan.sh",
@@ -23519,7 +23528,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -23561,7 +23570,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -23732,7 +23741,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/tool-loop-detector.sh",
       "kind": "hook",
@@ -23990,7 +23999,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "hook:hooks/valkey-ensure.sh",
       "kind": "hook",
@@ -24073,7 +24082,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24580,7 +24589,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24622,7 +24631,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24702,7 +24711,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24785,7 +24794,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/catalog-full/SKILL.md",
       "kind": "skill",
@@ -24825,7 +24834,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24866,7 +24875,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -24909,7 +24918,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/caveman/SKILL.md",
@@ -25035,7 +25044,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/cognitive-os-status/SKILL.md",
@@ -25264,7 +25273,7 @@
         "hook_consumers:1",
         "script_consumers:7",
         "test_consumers:8",
-        "doc_consumers:17",
+        "doc_consumers:18",
         "config_consumers:4",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
@@ -25272,7 +25281,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/cos-status/SKILL.md",
       "kind": "skill",
@@ -25311,7 +25320,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25355,7 +25364,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/decision-triage/SKILL.md",
       "kind": "skill",
@@ -25475,7 +25484,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25518,7 +25527,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/doc-review-personas/SKILL.md",
@@ -25639,7 +25648,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/domain-model/SKILL.md",
       "kind": "skill",
@@ -25679,7 +25688,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25801,7 +25810,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25882,7 +25891,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -25926,7 +25935,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/invariant-check/SKILL.md",
       "kind": "skill",
@@ -25967,7 +25976,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/llm-status/SKILL.md",
@@ -26045,7 +26054,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26163,7 +26172,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26206,7 +26215,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/pr-review/SKILL.md",
@@ -26247,7 +26256,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26290,7 +26299,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/primitive-harvester/SKILL.md",
@@ -26410,7 +26419,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/project-scaffold/SKILL.md",
@@ -26610,7 +26619,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26690,7 +26699,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26733,7 +26742,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/repo-forensics/SKILL.md",
@@ -26776,7 +26785,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/resource-governor/SKILL.md",
       "kind": "skill",
@@ -26816,7 +26825,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -26860,7 +26869,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/risk-register/SKILL.md",
       "kind": "skill",
@@ -26901,7 +26910,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/rules-export/SKILL.md",
@@ -26943,7 +26952,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "skill:skills/run-tests/SKILL.md",
@@ -26984,7 +26993,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27068,7 +27077,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27112,7 +27121,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/sdd-explore/SKILL.md",
       "kind": "skill",
@@ -27152,7 +27161,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27196,7 +27205,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/session-backlog/SKILL.md",
       "kind": "skill",
@@ -27235,7 +27244,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27277,7 +27286,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27321,7 +27330,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/session-wrapup/SKILL.md",
       "kind": "skill",
@@ -27363,7 +27372,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/skill-creator/SKILL.md",
       "kind": "skill",
@@ -27442,7 +27451,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27562,7 +27571,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -27725,7 +27734,7 @@
         "availability_match:pattern",
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "skill:skills/worktree-triage/SKILL.md",
       "kind": "skill",
@@ -27801,7 +27810,7 @@
         "rule_consumers:2",
         "script_consumers:11",
         "test_consumers:27",
-        "doc_consumers:68",
+        "doc_consumers:70",
         "config_consumers:4",
         "role_source:heuristic:path",
         "consumer_accessibility:so-local-only",
@@ -27973,7 +27982,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -28017,7 +28026,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/agent-communication.md",
       "kind": "rule",
@@ -28058,7 +28067,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/agent-customization.md",
@@ -28101,7 +28110,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/agent-escalation.md",
       "kind": "rule",
@@ -28225,7 +28234,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -28351,7 +28360,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -28394,7 +28403,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/aguara-integration.md",
@@ -28437,7 +28446,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/anti-hallucination.md",
       "kind": "rule",
@@ -28646,7 +28655,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/auto-skill-generation.md",
@@ -28688,7 +28697,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/bash-naming.md",
@@ -28771,7 +28780,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -28814,7 +28823,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/capability-levels.md",
@@ -28981,7 +28990,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/cognitive-load.md",
@@ -29065,7 +29074,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/confidentiality-protection.md",
@@ -29107,7 +29116,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/consequence-system.md",
@@ -29275,7 +29284,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/context7-auto-trigger.md",
@@ -29693,7 +29702,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -29736,7 +29745,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/e2b-integration.md",
@@ -29777,7 +29786,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -29821,7 +29830,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/engram-organization.md",
       "kind": "rule",
@@ -29905,7 +29914,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/estimation-calibration.md",
       "kind": "rule",
@@ -29947,7 +29956,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/fault-tolerance.md",
       "kind": "rule",
@@ -29988,7 +29997,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/hcom-integration.md",
@@ -30030,7 +30039,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/hook-security-profiles.md",
@@ -30157,7 +30166,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/infra-intent.md",
       "kind": "rule",
@@ -30321,7 +30330,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/model-compatibility.md",
@@ -30363,7 +30372,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/model-directive.md",
@@ -30573,7 +30582,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/orchestrator-prompt-compose.md",
@@ -30615,7 +30624,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/parry-integration.md",
@@ -30700,7 +30709,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/performance-monitoring.md",
       "kind": "rule",
@@ -30742,7 +30751,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/phase-aware-agents.md",
       "kind": "rule",
@@ -30906,7 +30915,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/prompt-composition.md",
@@ -30989,7 +30998,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full",
         "projection_class:shared"
       ],
@@ -31032,7 +31041,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/queue-advisor.md",
@@ -31075,7 +31084,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/queue-drain.md",
       "kind": "rule",
@@ -31240,7 +31249,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/repomix-integration.md",
@@ -31324,7 +31333,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/resource-governance.md",
       "kind": "rule",
@@ -31366,7 +31375,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/response-compression.md",
       "kind": "rule",
@@ -31449,7 +31458,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/result-management.md",
@@ -31492,7 +31501,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/sandbox-sampling.md",
       "kind": "rule",
@@ -31534,7 +31543,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/scope-creep-detection.md",
       "kind": "rule",
@@ -31617,7 +31626,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/scout-pattern.md",
@@ -31702,7 +31711,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/self-improvement-protocol.md",
       "kind": "rule",
@@ -31744,7 +31753,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/session-concurrency.md",
       "kind": "rule",
@@ -31827,7 +31836,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/skill-management.md",
@@ -31869,7 +31878,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/skill-rewrite.md",
@@ -31953,7 +31962,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/split-and-resume.md",
@@ -31996,7 +32005,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/squad-protocol.md",
       "kind": "rule",
@@ -32080,7 +32089,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/step-files.md",
       "kind": "rule",
@@ -32121,7 +32130,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/supply-chain-defense.md",
@@ -32163,7 +32172,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/task-dag.md",
@@ -32205,7 +32214,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/tero-integration.md",
@@ -32290,7 +32299,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot"
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot"
       ],
       "id": "rule:rules/trailofbits-skills.md",
       "kind": "rule",
@@ -32415,7 +32424,7 @@
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:claude,codex,cursor,opencode,shell-ci,vscode-copilot",
+        "projected_harnesses:claude,codex,cursor,opencode,qwen-code,shell-ci,vscode-copilot",
         "projected_profiles:full"
       ],
       "id": "rule:rules/workload-scheduling.md",
@@ -32451,6 +32460,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32468,6 +32478,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32485,6 +32496,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32502,6 +32514,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32519,6 +32532,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32537,6 +32551,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32554,6 +32569,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32571,6 +32587,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32588,6 +32605,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32605,6 +32623,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32622,6 +32641,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32639,6 +32659,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32656,6 +32677,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32673,6 +32695,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32690,6 +32713,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32708,6 +32732,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32726,6 +32751,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32743,6 +32769,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32760,6 +32787,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32778,6 +32806,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32795,6 +32824,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32813,6 +32843,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32831,6 +32862,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32849,6 +32881,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32867,6 +32900,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32884,6 +32918,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32901,6 +32936,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32919,6 +32955,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32936,6 +32973,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32953,6 +32991,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32970,6 +33009,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -32987,6 +33027,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33005,6 +33046,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33022,6 +33064,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33040,6 +33083,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33057,6 +33101,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33074,6 +33119,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33091,6 +33137,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33109,6 +33156,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33126,6 +33174,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33143,6 +33192,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33160,6 +33210,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33178,6 +33229,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33196,6 +33248,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33213,6 +33266,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33230,6 +33284,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33247,6 +33302,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33264,6 +33320,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33281,6 +33338,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33298,6 +33356,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33315,6 +33374,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33332,6 +33392,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33349,6 +33410,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33366,6 +33428,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33384,6 +33447,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33402,6 +33466,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33420,6 +33485,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33437,6 +33503,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33454,6 +33521,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33471,6 +33539,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33488,6 +33557,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33506,6 +33576,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33523,6 +33594,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33541,6 +33613,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33558,6 +33631,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33576,6 +33650,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33593,6 +33668,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33611,6 +33687,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33628,6 +33705,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33645,6 +33723,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33662,6 +33741,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33679,6 +33759,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33696,6 +33777,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33713,6 +33795,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33730,6 +33813,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33747,6 +33831,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33764,6 +33849,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33781,6 +33867,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33798,6 +33885,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33816,6 +33904,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33833,6 +33922,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33850,6 +33940,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33867,6 +33958,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33884,6 +33976,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33901,6 +33994,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33918,6 +34012,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33935,6 +34030,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33952,6 +34048,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33969,6 +34066,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -33986,6 +34084,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34004,6 +34103,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34021,6 +34121,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34038,6 +34139,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34055,6 +34157,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34073,6 +34176,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34090,6 +34194,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34107,6 +34212,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34125,6 +34231,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34143,6 +34250,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34160,6 +34268,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34178,6 +34287,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34195,6 +34305,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34213,6 +34324,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34231,6 +34343,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34248,6 +34361,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34265,6 +34379,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34282,6 +34397,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34299,6 +34415,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34316,6 +34433,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34333,6 +34451,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34350,6 +34469,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34367,6 +34487,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34384,6 +34505,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34401,6 +34523,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34418,6 +34541,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34436,6 +34560,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34454,6 +34579,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34471,6 +34597,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34488,6 +34615,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34506,6 +34634,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34523,6 +34652,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34540,6 +34670,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34558,6 +34689,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34576,6 +34708,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34593,6 +34726,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34610,6 +34744,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34628,6 +34763,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34646,6 +34782,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34664,6 +34801,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34681,6 +34819,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34698,6 +34837,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34715,6 +34855,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34732,6 +34873,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34749,6 +34891,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34766,6 +34909,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34783,6 +34927,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34800,6 +34945,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34818,6 +34964,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34835,6 +34982,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34852,6 +35000,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34869,6 +35018,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34886,6 +35036,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34903,6 +35054,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34920,6 +35072,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34937,6 +35090,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34954,6 +35108,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34971,6 +35126,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -34988,6 +35144,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35005,6 +35162,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35022,6 +35180,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35039,6 +35198,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35056,6 +35216,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35074,6 +35235,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35091,6 +35253,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35108,6 +35271,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35125,6 +35289,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35142,6 +35307,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35160,6 +35326,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35177,6 +35344,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35194,6 +35362,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35211,6 +35380,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35228,6 +35398,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35245,6 +35416,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35263,6 +35435,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35280,6 +35453,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35297,6 +35471,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35315,6 +35490,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35332,6 +35508,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35349,6 +35526,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35366,6 +35544,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35383,6 +35562,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35400,6 +35580,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35417,6 +35598,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35435,6 +35617,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35452,6 +35635,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35469,6 +35653,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35486,6 +35671,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35503,6 +35689,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35520,6 +35707,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35537,6 +35725,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35554,6 +35743,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35571,6 +35761,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35588,6 +35779,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35605,6 +35797,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35622,6 +35815,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35639,6 +35833,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35656,6 +35851,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35673,6 +35869,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35690,6 +35887,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35707,6 +35905,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35724,6 +35923,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35741,6 +35941,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35758,6 +35959,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35776,6 +35978,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35793,6 +35996,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35810,6 +36014,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35827,6 +36032,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35844,6 +36050,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35861,6 +36068,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35878,6 +36086,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35895,6 +36104,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35912,6 +36122,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35929,6 +36140,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35946,6 +36158,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35963,6 +36176,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35980,6 +36194,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -35998,6 +36213,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36015,6 +36231,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36032,6 +36249,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36049,6 +36267,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36066,6 +36285,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36083,6 +36303,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36100,6 +36321,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36117,6 +36339,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36134,6 +36357,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36151,6 +36375,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36168,6 +36393,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36185,6 +36411,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36202,6 +36429,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36219,6 +36447,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36236,6 +36465,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36253,6 +36483,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36270,6 +36501,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36287,6 +36519,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36304,6 +36537,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36321,6 +36555,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36339,6 +36574,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36356,6 +36592,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36374,6 +36611,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36391,6 +36629,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36408,6 +36647,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36426,6 +36666,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36444,6 +36685,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36462,6 +36704,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36480,6 +36723,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36498,6 +36742,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36516,6 +36761,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36534,6 +36780,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36552,6 +36799,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36570,6 +36818,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36588,6 +36837,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36606,6 +36856,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36624,6 +36875,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36642,6 +36894,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36660,6 +36913,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36678,6 +36932,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36696,6 +36951,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36714,6 +36970,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36732,6 +36989,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36750,6 +37008,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36768,6 +37027,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36786,6 +37046,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36804,6 +37065,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36822,6 +37084,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36840,6 +37103,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36858,6 +37122,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36876,6 +37141,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36894,6 +37160,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36912,6 +37179,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36930,6 +37198,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36948,6 +37217,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36966,6 +37236,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -36984,6 +37255,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37002,6 +37274,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37020,6 +37293,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37037,6 +37311,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37054,6 +37329,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37071,6 +37347,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37088,6 +37365,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37106,6 +37384,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37123,6 +37402,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37140,6 +37420,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37157,6 +37438,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37174,6 +37456,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37191,6 +37474,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37208,6 +37492,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37225,6 +37510,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37242,6 +37528,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37259,6 +37546,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37276,6 +37564,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37293,6 +37582,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37311,6 +37601,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37328,6 +37619,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37345,6 +37637,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37362,6 +37655,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37380,6 +37674,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37397,6 +37692,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37414,6 +37710,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37431,6 +37728,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37448,6 +37746,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37465,6 +37764,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37482,6 +37782,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37499,6 +37800,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37516,6 +37818,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37533,6 +37836,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37550,6 +37854,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37567,6 +37872,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37584,6 +37890,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37601,6 +37908,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37618,6 +37926,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37636,6 +37945,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37653,6 +37963,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37670,6 +37981,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37687,6 +37999,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37704,6 +38017,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37721,6 +38035,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37738,6 +38053,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37755,6 +38071,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37772,6 +38089,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37789,6 +38107,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37806,6 +38125,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37823,6 +38143,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37840,6 +38161,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37857,6 +38179,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37874,6 +38197,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37891,6 +38215,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37909,6 +38234,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37926,6 +38252,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37943,6 +38270,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37960,6 +38288,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37977,6 +38306,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -37994,6 +38324,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38011,6 +38342,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38028,6 +38360,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38045,6 +38378,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38062,6 +38396,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38079,6 +38414,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38096,6 +38432,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38113,6 +38450,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38130,6 +38468,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38147,6 +38486,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38164,6 +38504,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38181,6 +38522,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38199,6 +38541,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38216,6 +38559,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38233,6 +38577,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38250,6 +38595,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38267,6 +38613,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38284,6 +38631,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38301,6 +38649,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38318,6 +38667,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38335,6 +38685,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38352,6 +38703,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38369,6 +38721,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38386,6 +38739,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38403,6 +38757,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38420,6 +38775,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38437,6 +38793,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38454,6 +38811,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38471,6 +38829,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38488,6 +38847,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38505,6 +38865,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38523,6 +38884,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38540,6 +38902,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38557,6 +38920,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38574,6 +38938,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38591,6 +38956,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38608,6 +38974,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38625,6 +38992,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38642,6 +39010,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38659,6 +39028,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38676,6 +39046,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38693,6 +39064,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38710,6 +39082,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38727,6 +39100,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38744,6 +39118,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38762,6 +39137,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38779,6 +39155,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38796,6 +39173,7 @@
         "codex",
         "cursor",
         "opencode",
+        "qwen-code",
         "shell-ci",
         "vscode-copilot"
       ],
@@ -38820,7 +39198,7 @@
     },
     "warnings": []
   },
-  "generated_at": "2026-05-04T22:09:39Z",
+  "generated_at": "2026-05-04T22:15:48Z",
   "harness_projection": {
     "claude": {
       "display_name": "Claude Code",
@@ -38967,25 +39345,25 @@
     "qwen-code": {
       "display_name": "Qwen Code",
       "limitations": [
-        "Official docs show terminal, IDE, CI/CD, browser, and SDK environments, but COS projection driver has not been implemented.",
-        "Settings path/schema must be verified against Qwen Code docs before promotion."
+        "Structural project settings/context proof only; no account-backed Qwen Code runtime invocation in automated tests.",
+        "No native COS lifecycle hook parity is claimed.",
+        "MCP servers are intentionally empty placeholders until profiles configure concrete tools."
       ],
-      "next_action": "Define Qwen Code settings/skills/hooks projection driver and temp-project proof.",
+      "next_action": "Add optional Qwen Code CLI/runtime smoke when qwen authentication and CLI are available.",
       "projected_surfaces": [
+        "context",
         "instructions",
-        "skills",
-        "hooks",
-        "mcp",
-        "headless-ci"
+        "skills-reference",
+        "rules-reference",
+        "mcp-placeholder"
       ],
-      "projection_mode": "cli-ide-sdk-and-settings",
-      "proof_status": "unverified",
+      "projection_mode": "qwen-project-settings-context-mcp",
+      "proof_status": "ok",
       "settings_paths": [
         ".qwen/settings.json",
-        ".qwen",
-        "settings.json"
+        "QWEN.md"
       ],
-      "status": "planned"
+      "status": "implemented"
     },
     "shell-ci": {
       "display_name": "Shell / CI",

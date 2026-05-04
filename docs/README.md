@@ -28,6 +28,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-154: Multi-IDE Structural Harness Projection](adrs/ADR-154-multi-ide-structural-harness-projection.md) — decision to promote OpenCode, VS Code Copilot, and Cursor to implemented structural projection harnesses.
 - [Shell CI Formal Harness Manual Test](manual-tests/shell-ci-formal-harness.md) — manual proof path for `cos_init.py --harness shell-ci`, projected commands, and generated workflow.
 - [ADR-155: Shell CI Formal Harness Projection](adrs/ADR-155-shell-ci-formal-harness.md) — decision to promote Shell/CI to an implemented structural command/workflow harness.
+- [Qwen Code Structural Projection Manual Test](manual-tests/qwen-code-structural-projection.md) — manual proof path for `.qwen/settings.json`, `QWEN.md`, and ACC Qwen projection counts.
+- [ADR-156: Qwen Code Structural Harness Projection](adrs/ADR-156-qwen-code-structural-harness-projection.md) — decision to promote Qwen Code to implemented structural projection.
 - [Multi-Session Orchestration Audit — 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) — documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap.
 - [ADR-116 Direct-Main Policy](architecture/direct-main-policy.md) — local agent-block/operator-warn policy plus remote protection invariant for `main`/`master`.
 - [Protected Landing Contract](architecture/protected-landing-contract.md) — vendor-neutral contract for protected `main`/`master` landing across GitHub, GitLab, Gitea/Forgejo, Bitbucket, bare Git, and unknown remotes.
