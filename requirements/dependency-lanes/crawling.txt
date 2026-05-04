@@ -1,0 +1,2 @@
+# Optional heavy lane: browser/crawler stack.
+crawl4ai>=0.8.0

@@ -55,3 +55,8 @@ Last reviewed: 2026-05-04.
 
 
 Detailed resolver evidence: `docs/reports/python-major-followup-2026-05-04.md`.
+
+
+## ADR-145 lane split note
+
+The Python major blockers above are no longer core-lock blockers after ADR-145. They remain lane-specific upstream watch items for `requirements/dependency-lanes/*`. Core dependency hygiene should not wait on those optional stacks.
