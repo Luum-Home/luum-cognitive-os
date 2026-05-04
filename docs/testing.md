@@ -403,6 +403,7 @@ COS_RUN_PLATFORM_SERVICES=1 bash scripts/pytest-with-summary.sh -- tests/integra
 COS_RUN_OPIK_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_opik_integration.py -q -ra
 COS_RUN_COGNEE_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_cognee_integration.py -q -ra
 COS_RUN_SMART_INFRA_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_smart_infra_containers.py -q -ra
+COS_RUN_ENGRAM_CLOUD_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_engram_cloud_docker.py -q -ra
 ```
 
 `tests/contracts/test_optional_docker_lanes.py` enforces this policy so any new
