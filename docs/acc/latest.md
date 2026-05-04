@@ -1,22 +1,23 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-05-04T20:46:31Z
+Generated: 2026-05-04T20:56:05Z
 Phase: reconstruction
 Gate: pass
 
 ## Summary
 
-- ACC: 0.4814
-- ACC effective: 0.5183
+- ACC: 0.5326
+- ACC effective: 0.5439
 - Total weight: 1994
 - Capabilities: 732
-- Findings: 89
-- Mapping weights: {'aligned': 960, 'missing': 0, 'overexposed': 0, 'partial': 147, 'stale': 0, 'unverified': 887}
+- Findings: 40
+- Mapping weights: {'aligned': 1062, 'missing': 0, 'overexposed': 0, 'partial': 45, 'stale': 0, 'unverified': 887}
 
 ## Adapter Status
 
 | Adapter | Status | Source | Summary |
 |---|---|---|---|
+| consumer_availability | ok | `manifests/primitive-consumer-availability.yaml` | `{"items": 49, "statuses": {"maintainer-only": 34, "shell-ci-candidate": 15}}` |
 | consumer_projection | ok | `consumer_projection` | `{"by_harness_profile": {"claude/default": 58, "claude/full": 332, "codex/default": 58, "codex/full": 332}, "projected_primitives": 354}` |
 | docs_execution_report | ok | `docs/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 1}, "docs/HOW-TO-USE-COS.md": {"done_weak_proof": 2, "planned": 1}, "docs/README.md": {"done_weak_proof": 9, "planned": 8, "proposed": 4}, "d` |
 | harness_projection | ok | `manifests/harness-projection.yaml` | `{"implemented": 2, "planned": 10, "total": 12, "unsupported": 0}` |
@@ -30,57 +31,8 @@ Gate: pass
 
 | Capability | Severity | Status | Message | Next action |
 |---|---|---|---|---|
-| `script:scripts/aspirational_audit.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/check_mcp_servers.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cos` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cos-coordination-status.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cos-release-check.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cos-smoke.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cos-status.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cos-usage-report.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cos-worktree-triage.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
 | `script:scripts/cos_cleanup_preserved_wip.py` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
-| `script:scripts/cos_primitive_harvester.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cos_session_backlog.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cos_work_inventory.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cos_worktree_triage.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/cost_predict.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/decision_triage.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/doc_review_personas.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/docs_execution_audit.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/document_feature_append.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/dogfood_score.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/domain_model.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/edit-coop.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/generate_compact_catalog.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/hook-stream-statusline.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/hook-timing-wrapper.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/hook_timing_report.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/invariant_check_helper.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/llm_status.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/merge-to-main.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/ops_runbook.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/primitive_surface_reduce.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/primitive_usage_map.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/project_scaffold.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/pytest-with-summary.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/radar_merge.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/redteam_aggregate.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/risk_register.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/rules_export.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/run-all-tests.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/run-redteam-scenario.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/security_audit_writer.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/smoke-doc-review-personas.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/smoke-multi-provider-fallback.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/smoke-qwen-fallback.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
 | `script:scripts/so_vs_vanilla_benchmark.py` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
-| `script:scripts/sprint-test-summary.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/test-all.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/test-cognitive-os-full.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/test_run_inventory.py` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/verify-archived.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
-| `script:scripts/weekly-aspirational-audit.sh` | medium | partial | Candidate/projectable surface needs consumer projection proof | add harness projection proof before promotion |
 | `skill:skills/__contracts__/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
 | `skill:skills/__contracts__/canonical-event-emitter/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
 | `skill:skills/add-hook/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
@@ -110,13 +62,24 @@ Gate: pass
 | `skill:skills/primitive-usage-map/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
 | `skill:skills/push-release/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
 | `skill:skills/queue-drain/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
+| `skill:skills/radar-update/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
+| `skill:skills/red-team/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
+| `skill:skills/release-os/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
+| `skill:skills/so-vs-vanilla/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
+| `skill:skills/tag-release/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
+| `skill:skills/test-contract-repair/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
+| `skill:skills/validate-release/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
+| `skill:skills/vuln-remediation-flow/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
+| `skill:skills/vulnerability-scan/SKILL.md` | medium | unverified | Represented locally but not proven projectable | add package/profile projection metadata |
 
 ## Consumer Accessibility Counts
 
-- lifecycle-declared-consumer-candidate: 49
 - lifecycle-declared-maintainer: 74
-- projected-consumer-surface: 297
+- maintainer-only: 34
+- profile-driver: 19
+- projected-consumer-surface: 278
 - repo-skill-not-projectable: 38
+- shell-ci-candidate: 15
 - skill-referenced-not-projectable: 2
 - so-local-only: 272
 
