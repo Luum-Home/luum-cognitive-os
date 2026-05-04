@@ -49,6 +49,7 @@ services:
   cos-engram-cloud:
     profiles: ["engram-cloud"]
     image: ${ENGRAM_CLOUD_IMAGE:-ghcr.io/gentleman-programming/engram:latest}
+    restart: on-failure:5
     depends_on:
       cos-engram-cloud-db:
         condition: service_healthy
@@ -64,4 +65,5 @@ services:
       - "${ENGRAM_CLOUD_PORT:-8080}:8080"
     volumes:
       - ${COS_WORKSPACE:-../..}:/workspace
-    command: ["engram", "cloud", "serve"]
+    # The upstream image entrypoint is already `engram`; pass only subcommands.
+    command: ["cloud", "serve"]
