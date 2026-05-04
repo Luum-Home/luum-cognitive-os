@@ -15,7 +15,11 @@ tags: [strategy, runtime, flows, manifest, schema, propose-only]
 
 ## Status
 
-**Accepted** for the schema shape committed below. The companion artefact (`manifests/flow-contract-schema.yaml`) is created lazily — it lands when the first flow under [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) needs to register against it. The ADR commits the **shape**; the manifest is created when shape meets a real first user.
+**Accepted and materialized for first lab registration.** The companion
+artefact (`manifests/flow-contract-schema.yaml`) now exists because the first
+lab flow contract (`skills/vuln-remediation-flow/flow_contract.yaml`) registers
+against it. The schema remains **exemplary**, not shared, until a second flow
+registers without modification.
 
 ## Context
 

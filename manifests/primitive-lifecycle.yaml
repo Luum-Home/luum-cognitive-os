@@ -3855,6 +3855,32 @@ primitives:
     boring_reliability_command: scripts/cos-boring-reliability --profile core
     boring_reliability_artifact: docs/adrs/ADR-143-closure-discipline-gate.md
     rationale: Converts known broad-validation drift classes into a quick local-CI gate.
+- id: scripts/cos-flow-register.sh
+  kind: script
+  owner_adr: ADR-138
+  lifecycle_state: sandbox
+  maturity: observe
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-flow-register.sh
+  - scripts/cos_flow_register.py
+  - manifests/flow-contract-schema.yaml
+  - skills/vuln-remediation-flow/flow_contract.yaml
+  - docs/adrs/ADR-138-flow-contract-schema.md
+  runtime_projection: false
+  behavior_evidence: ADR-138 flow contract registration rejects incomplete or unsafe lab flow contracts
+  evidence_commands:
+  - scripts/cos-flow-register.sh --check --contract skills/vuln-remediation-flow/flow_contract.yaml
+  - python3 -m pytest tests/audit/test_flow_contract_schema.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: advisory
+  rollback_or_repair_command: Fix the flow contract schema, contract YAML, or registration validator before adding/promoting cloud flows.
+  sunset_criteria: Archive only if flow registration moves into a typed manifest compiler with equivalent ADR-138/139/141/142 coverage.
 - id: scripts/cos-demotion-loop-audit
   kind: script
   owner_adr: ADR-126

@@ -1,0 +1,60 @@
+flow_id: vuln-remediation-flow
+lifecycle_state: lab
+owner: maintainer
+registered_on: "2026-05-04"
+input_source:
+  type: manual
+  identifier: docs/architecture/dx-cloud-flow-bootstrap-plan.md#flow-1
+  determinism: deterministic
+success_condition:
+  description: Produces a propose-only vulnerability-remediation bundle with tests, rescan evidence, and human review status.
+  verifier: scripts/cos-flow-register.sh --check --contract skills/vuln-remediation-flow/flow_contract.yaml
+  evidence_required:
+    test_pass: true
+    rescan_clean: true
+    reviewer_signature: true
+sandboxed_write_paths:
+  - docs/proposals/vuln-remediation-flow-results-*.md
+  - .cognitive-os/proposals/vuln-remediation-flow-*.md
+  - .cognitive-os/metrics/llm-dispatch.jsonl
+blocked_actions:
+  - auto_merge
+  - auto_promote_core_or_team
+  - invent_evidence
+  - bypass_governance_gate
+  - direct_main_push
+human_approval_required: true
+evidence_shape:
+  transport: cos-engram-import-propose
+  bundle_path: .cognitive-os/proposals/vuln-remediation-flow-<launch-timestamp>.md
+  independence:
+    maintainer_owned: false
+    same_machine: false
+    same_repo: false
+    self_reported: false
+framing_exercise_statement:
+  boots_cos_init: partial
+  uses_native_engram_client: partial
+  dispatches_through_configured_providers: partial
+  hooks_fire_natively: partial
+  session_lifecycle_handled: partial
+  notes: Lab registration proves the contract shape only; worker execution must later prove each Framing-A axis inside the container or sandbox runtime before promotion.
+non_goals:
+  - auto-merge vulnerability fixes
+  - bypass maintainer review after tests pass
+  - promote the flow to a default-visible primitive during lab bootstrap
+falsifiable_when:
+  - A proposed fix lands without a reviewer signature.
+  - The flow emits a clean result without a test command and rescan command.
+  - The worker claims Framing-A execution while hooks or session lifecycle did not run natively.
+credential_source: byok-project
+billing_identity: luum-agent-os-vuln-remediation-flow
+provider_capabilities:
+  - text-completion
+  - code-generation
+  - vulnerability-analysis
+  - repository-editing
+engram_project_scope: luum-agent-os
+air_gapped_compatible: true
+tenant_id: vuln-remediation-flow-<launch-timestamp>
+audit_class: change_management

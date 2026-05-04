@@ -8,6 +8,7 @@ observed:
   active_machines: 2
   concurrent_remote_writers: 0
   external_consumer_reports_30d: 0
+  framing_a_flows_active: 0
   repeated_cross_machine_lock_conflicts: 0
   unsupervised_remote_agents: 0
 shape_b_triggers:
