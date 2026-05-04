@@ -71,6 +71,16 @@ def make_repo(tmp_path: Path) -> Path:
             }
         )
     )
+    (root / "manifests" / "shell-ci-projection.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "shell-ci-projection.v1",
+                "profiles": {"default": {}, "full": {}},
+                "commands": [{"path": "scripts/projected.sh", "class": "shell-ci-command"}],
+                "workflows": [{"path": ".github/workflows/cognitive-os-shell-ci.yml"}],
+            }
+        )
+    )
     script_payload = {
         "summary": {},
         "scripts": [
@@ -151,6 +161,7 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert payload["harness_projection"]["cursor"]["status"] == "planned"
     assert payload["adapters"]["projection_profiles"]["status"] == "ok"
     assert payload["adapters"]["consumer_availability"]["status"] == "ok"
+    assert payload["adapters"]["shell_ci_projection"]["status"] == "ok"
     compact = acc_pipeline.compact_summary(payload)
     assert compact["schema_version"] == "acc.compact.v1"
     assert compact["context_diet"]["read_this_first"] == "docs/acc/latest-compact.md"
