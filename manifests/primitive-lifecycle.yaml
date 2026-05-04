@@ -4267,3 +4267,536 @@ primitives:
     boring_reliability_artifact: docs/reports/hook-registration-classification-2026-05-04.md
     rationale: Deterministic low-overhead release-safety blocker promoted into
       PreToolUse Bash projection to prevent manual release drift.
+
+- id: scripts/apply-efficiency-profile.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: core
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/apply-efficiency-profile.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=profile-application; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/apply-efficiency-profile.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/apply-efficiency-profile.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: profile-application
+  install_surface_rationale: Applies efficiency/security profile behavior and influences active hook/primitive projection.
+- id: scripts/set-security-profile.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: core
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/set-security-profile.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=profile-application; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/set-security-profile.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/set-security-profile.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: profile-application
+  install_surface_rationale: Applies Claude security profiles and changes active hook projection by profile.
+- id: scripts/generate-project-settings.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: core
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/generate-project-settings.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=settings-projection; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/generate-project-settings.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/generate-project-settings.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: settings-projection
+  install_surface_rationale: Generates harness settings that install/project active primitives.
+- id: scripts/cos-init.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: core
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-init.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=bootstrap; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/cos-init.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/cos-init.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: bootstrap
+  install_surface_rationale: Shell bootstrap wrapper for COS initialization and primitive projection.
+- id: scripts/cos_init.py
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: core
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_init.py
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=bootstrap; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_init.py
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/cos_init.py lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: bootstrap
+  install_surface_rationale: Python implementation for COS initialization flows.
+- id: scripts/cos-bootstrap.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: core
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-bootstrap.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=bootstrap; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/cos-bootstrap.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/cos-bootstrap.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: bootstrap
+  install_surface_rationale: Bootstrap/update path for installing COS primitive surfaces.
+- id: scripts/setup.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: core
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/setup.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=bootstrap; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/setup.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/setup.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: bootstrap
+  install_surface_rationale: Profile-aware dependency/setup path.
+- id: scripts/upgrade.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/upgrade.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=upgrade; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/upgrade.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/upgrade.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: upgrade
+  install_surface_rationale: Upgrade path that preserves/generated active harness settings.
+- id: scripts/uninstall.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/uninstall.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=uninstall; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/uninstall.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/uninstall.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: uninstall
+  install_surface_rationale: Removal path must understand projected primitive surfaces.
+- id: scripts/create-release.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/create-release.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=release; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/create-release.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/create-release.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: release
+  install_surface_rationale: Release path can publish installable primitive surfaces.
+- id: scripts/cos-core-skills-check.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-core-skills-check.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=skill-installation; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/cos-core-skills-check.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/cos-core-skills-check.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: skill-installation
+  install_surface_rationale: Validates installed core skills.
+- id: scripts/deps-update.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/deps-update.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=dependency-profile; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/deps-update.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/deps-update.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: dependency-profile
+  install_surface_rationale: Updates dependency lanes used by install/profile workflows.
+- id: scripts/install-garak.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/install-garak.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=optional-tool-install; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/install-garak.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/install-garak.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: optional-tool-install
+  install_surface_rationale: Optional red-team tool installer invoked by skill/profile flows.
+- id: scripts/install-promptfoo.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/install-promptfoo.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=optional-tool-install; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/install-promptfoo.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/install-promptfoo.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: optional-tool-install
+  install_surface_rationale: Optional eval tool installer invoked by skill/profile flows.
+- id: scripts/cos-config-audit.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-config-audit.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=profile-audit; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/cos-config-audit.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/cos-config-audit.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: profile-audit
+  install_surface_rationale: Audits profile/config projection state.
+- id: scripts/cos-weekly-config-audit.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-weekly-config-audit.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=profile-audit; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/cos-weekly-config-audit.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/cos-weekly-config-audit.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: profile-audit
+  install_surface_rationale: Scheduled profile/config audit wrapper.
+- id: scripts/cos-doctor-memory-lifecycle.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-doctor-memory-lifecycle.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=harness-doctor; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/cos-doctor-memory-lifecycle.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/cos-doctor-memory-lifecycle.sh lifecycle row only after profile
+    projection/install-path review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: harness-doctor
+  install_surface_rationale: Verifies projected memory lifecycle hooks for supported harness profiles.
+- id: scripts/cos-doctor-tools.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-doctor-tools.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=harness-doctor; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/cos-doctor-tools.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/cos-doctor-tools.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: harness-doctor
+  install_surface_rationale: Verifies active harness, driver settings, dependencies, and memory lifecycle.
+- id: scripts/cos-doctor-harness.sh
+  kind: script
+  owner_adr: ADR-146
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: maintainer
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-doctor-harness.sh
+  - manifests/primitive-readiness-protected-install-surfaces.yaml
+  runtime_projection: false
+  behavior_evidence: protected install/profile surface; surface=harness-doctor; primitive-readiness-ledger priority=protected
+  evidence_commands:
+  - bash -n scripts/cos-doctor-harness.sh
+  - python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence
+  rollback_or_repair_command: Remove or update the scripts/cos-doctor-harness.sh lifecycle row only after profile projection/install-path
+    review, then regenerate primitive readiness ledgers.
+  sunset_criteria: Promote after profile/harness projection proof, downgrade only with install/update path review, or archive
+    after 90 days without consumers and no profile references.
+  docs_claim_level: observe
+  exit_behavior: manual
+  metrics_file: none
+  protected_install_surface: true
+  install_surface: harness-doctor
+  install_surface_rationale: Harness doctor for profile/projection support.

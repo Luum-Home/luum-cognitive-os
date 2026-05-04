@@ -51,6 +51,21 @@ def make_repo(tmp_path: Path) -> Path:
             }
         )
     )
+
+    (root / "manifests" / "primitive-readiness-protected-install-surfaces.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": 1,
+                "scripts": [
+                    {
+                        "path": "scripts/tool.py",
+                        "surface": "bootstrap",
+                        "rationale": "Synthetic protected install surface",
+                    }
+                ],
+            }
+        )
+    )
     return root
 
 
@@ -69,6 +84,11 @@ def test_build_ledger_classifies_script_roles(tmp_path: Path) -> None:
     assert by_path["scripts/cos-sample"].role == "agentic-primitive"
     assert by_path["scripts/cos-sample"].lifecycle_state == "advisory"
     assert by_path["scripts/cos-sample"].supported_harnesses == ["shell"]
+    assert by_path["scripts/tool.py"].protected_install_surface is True
+    assert by_path["scripts/tool.py"].install_surface == "bootstrap"
+    assert by_path["scripts/tool.py"].consumer_accessibility == "install-profile-managed"
+    assert by_path["scripts/cos-sample"].consumer_accessibility == "lifecycle-declared-consumer-candidate"
+    assert by_path["scripts/audit.py"].consumer_accessibility == "so-local-only"
 
 
 def test_cli_writes_machine_readable_and_markdown_ledgers(tmp_path: Path) -> None:
@@ -86,13 +106,23 @@ def test_cli_writes_machine_readable_and_markdown_ledgers(tmp_path: Path) -> Non
     assert payload["schema_version"] == 1
     assert payload["target_family"] == "scripts"
     assert payload["summary"]["total_scripts"] == 6
+    assert payload["summary"]["consumer_accessibility"]["install-profile-managed"] == 1
+    assert payload["summary"]["consumer_accessibility"]["lifecycle-declared-consumer-candidate"] == 1
     assert set(payload["allowed_roles"]) == primitive_readiness_ledger.ROLES
+    assert all(row["consumer_accessibility"] for row in payload["scripts"])
+    assert all(row["consumer_access_next_action"] for row in payload["scripts"])
     assert "Primitive Readiness Ledger" in (
+        root / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.md"
+    ).read_text()
+    assert "Consumer Access" in (
         root / "docs" / "reports" / "primitive-readiness-ledger-scripts-latest.md"
     ).read_text()
     backlog = json.loads((root / "docs" / "reports" / "primitive-readiness-lifecycle-backlog-scripts-latest.json").read_text())
     assert backlog["purpose"] == "agentic primitives missing ADR-126 lifecycle metadata"
     assert backlog["summary"]["total"] >= 1
+    protected = [item for item in backlog["items"] if item["priority"] == "protected"]
+    assert protected
+    assert protected[0]["protected_install_surface"] is True
 
 
 def test_fail_flags_make_weak_rows_actionable(tmp_path: Path) -> None:

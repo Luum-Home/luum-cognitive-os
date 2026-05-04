@@ -38,6 +38,7 @@ The JSON report is the machine-readable surface. Each script row declares:
 - `confidence`
 - lifecycle fields when present
 - supported harnesses when present
+- consumer accessibility: whether the row is SO-local only, lifecycle-declared for consumer candidacy, protected install/profile managed, or referenced by skills without projection metadata
 - consumers and consumer families
 - evidence signals
 - next action
@@ -94,11 +95,37 @@ python3 scripts/primitive_readiness_ledger.py --project-dir .
 
 ## 2026-05-04 Triage Ratchet Update
 
-The first low-confidence script pass is closed through `manifests/primitive-readiness-script-overrides.yaml`. The default ledger now reports zero low-confidence rows, while keeping 74 `agentic-primitive` rows without lifecycle metadata visible in the generated lifecycle backlog:
+The first low-confidence script pass is closed through `manifests/primitive-readiness-script-overrides.yaml`. The default ledger now reports zero low-confidence rows.
+
+The lifecycle ratchet is intentionally narrower than the first classification pass: it added ADR-126 candidate metadata first for protected install/profile/projection surfaces, because those scripts can change how downstream projects receive primitives by profile or harness. The generated lifecycle backlog remains the source of truth for the remaining agentic script primitives that still lack ADR-126 metadata:
 
 - `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json`
 - `docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md`
 
-Those backlog rows are not runtime lifecycle entries yet. They are candidate work items that must become ADR-126 metadata rows, be downgraded from `agentic-primitive`, or be archived before shared/harness-portable claims are made.
+Candidate entries are visible in the lifecycle manifest, but they are not active/default-visible primitives until a later promotion changes their lifecycle state and passes the normal evidence gates.
 
 Family extension is tracked in `docs/architecture/primitive-readiness-ledger-family-extension.md`.
+
+## 2026-05-04 Protected Install/Profile Surfaces
+
+Primitive readiness triage must not treat install/profile/projection scripts as isolated debt. `manifests/primitive-readiness-protected-install-surfaces.yaml` identifies scripts that participate in automatic primitive installation, profile application, settings projection, bootstrap, upgrade, uninstall, release, optional-tool install, or harness doctor flows.
+
+Rows marked as protected were sorted ahead of normal high-priority lifecycle backlog rows with `priority: protected`. Their closure path was lifecycle metadata plus profile-projection review, not demotion/archive. Any future promotion/demotion of those rows must still check generated harness settings/profile outputs and install/update paths.
+
+## 2026-05-04 Protected Candidate Lifecycle Rows
+
+The protected install/profile surfaces are now represented in `manifests/primitive-lifecycle.yaml` as `lifecycle_state: candidate`, `maturity: observe`, and `runtime_projection: false`. This records their existence without making them active/default-visible primitives. `scripts/active_primitive_index.py` and `scripts/cos_adoption_profile.py` treat `candidate` as inactive so candidate rows do not inflate adoption/profile surfaces.
+
+Acceptance for this slice is advisory metadata only: no installer/profile behavior changed. Promotion requires separate profile projection evidence.
+
+## 2026-05-04 Consumer Accessibility Update
+
+Primitive readiness does not equal downstream project accessibility. The docs in this repository are not automatically present in projects that implement the SO, so the script ledger now separates local evidence from consumer availability using `consumer_accessibility`:
+
+- `install-profile-managed`: protected bootstrap/profile/settings/update surfaces that must be verified through generated consumer profiles and harness settings before claiming project availability.
+- `lifecycle-declared-consumer-candidate`: lifecycle-backed core/team rows that are candidates for consumer projection but still need install/package proof per harness.
+- `lifecycle-declared-maintainer`: lifecycle-backed rows intended for SO maintainers unless a profile/package exports them.
+- `skill-referenced-not-projectable`: rows used by skills but missing lifecycle/package/projection metadata, so downstream agents cannot assume access.
+- `so-local-only`: rows that should not be relied on from consumer projects unless a future install/projection path exports them.
+
+This keeps the ledger honest for VS Code/Copilot, Cursor, Windsurf, Google Antigravity, Claude Code, OpenAI Codex, OpenCode, and other IDE agents: a row can be documented and useful inside the SO repo while still being unavailable to consumer-project agents.
