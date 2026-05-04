@@ -51,7 +51,7 @@
         "aspirational": 38,
         "coverage_pct": 54.3,
         "dormant": 160,
-        "generated_at": "2026-05-04T22:23:20Z",
+        "generated_at": "2026-05-04T22:27:43Z",
         "mapped": 268,
         "metadata": 56,
         "on_demand": 287,
@@ -78,7 +78,7 @@
       "source": "docs_execution",
       "status": "ok",
       "summary": {
-        "items": 2607,
+        "items": 2612,
         "json": "<repo-root>/docs/reports/docs-execution-latest.json",
         "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"
       }
@@ -103,7 +103,7 @@
           },
           "docs/README.md": {
             "done_weak_proof": 13,
-            "planned": 13,
+            "planned": 14,
             "proposed": 4
           },
           "docs/RED-TEAM-CHANGELOG.md": {
@@ -1134,6 +1134,11 @@
             "done_with_proof": 1,
             "planned": 1
           },
+          "docs/architecture/harness-proof-levels.md": {
+            "done_weak_proof": 1,
+            "done_with_proof": 1,
+            "planned": 2
+          },
           "docs/architecture/harness-transparency-status.md": {
             "planned": 4
           },
@@ -1719,11 +1724,11 @@
             "planned": 1
           }
         },
-        "items": 2607,
+        "items": 2612,
         "statuses": {
-          "done_weak_proof": 1087,
-          "done_with_proof": 211,
-          "planned": 1028,
+          "done_weak_proof": 1088,
+          "done_with_proof": 212,
+          "planned": 1031,
           "proposed": 281
         }
       }
@@ -1897,13 +1902,13 @@
           },
           {
             "aspirational_signal": 0,
-            "evidence": "mcp-mentioned-files=222 test-mentioned-files=105; actionable_gaps=0",
+            "evidence": "mcp-mentioned-files=223 test-mentioned-files=105; actionable_gaps=0",
             "family": "mcp_tools",
             "next_action": "separate installed/optional/reference-only integrations before promotion",
-            "partial_signal": 117,
+            "partial_signal": 118,
             "proven_signal": 105,
             "severity": "low",
-            "total": 222
+            "total": 223
           },
           {
             "aspirational_signal": 0,
@@ -1937,13 +1942,13 @@
           },
           {
             "aspirational_signal": 0,
-            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=211 mapped_claims=412",
+            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=212 mapped_claims=412",
             "family": "docs_adrs",
             "next_action": "no hard docs gaps; improve weak proof opportunistically",
-            "partial_signal": 2396,
-            "proven_signal": 623,
+            "partial_signal": 2400,
+            "proven_signal": 624,
             "severity": "low",
-            "total": 3019
+            "total": 3024
           }
         ],
         "hook_latency": {
@@ -1953,7 +1958,7 @@
           "p95_ms": 1622
         },
         "overall_risk": "high",
-        "timestamp": "2026-05-04T22:24:29.279407+00:00"
+        "timestamp": "2026-05-04T22:28:53.424160+00:00"
       }
     },
     "projection_profiles": {
@@ -3795,7 +3800,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:55",
-        "test_consumers:311",
+        "test_consumers:312",
         "hook_consumers:68",
         "doc_consumers:407",
         "rule_consumers:42",
@@ -39577,7 +39582,7 @@
     },
     "warnings": []
   },
-  "generated_at": "2026-05-04T22:24:36Z",
+  "generated_at": "2026-05-04T22:29:02Z",
   "harness_projection": {
     "claude": {
       "display_name": "Claude Code",
