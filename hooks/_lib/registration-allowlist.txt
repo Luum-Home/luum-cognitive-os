@@ -78,7 +78,6 @@ token-budget-monitor.sh
 rate-limiter.sh
 registration-check.sh
 reinvention-check.sh
-release-guard.sh
 resource-check.sh
 result-truncator.sh
 scope-creep-detector.sh

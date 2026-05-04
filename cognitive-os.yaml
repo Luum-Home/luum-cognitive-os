@@ -1161,6 +1161,12 @@ harness:
       matcher: Bash
       scope: both
 
+    release-guard:
+      script: hooks/release-guard.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     private-mode-gate:
       script: hooks/private-mode-gate.sh
       event: PreToolUse
