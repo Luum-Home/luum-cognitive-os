@@ -222,32 +222,14 @@ services:
       - memory  # Only starts with: docker compose --profile memory up
 
   # ---------------------------------------------------------------------------
-  # AutoMaker — Kanban-based AI Development Studio (MIT)
-  # https://github.com/AutoMaker-Org/automaker
-  # Visual Kanban UI + Claude Agent SDK + real-time agent streaming
-  # COS hooks fire automatically when AutoMaker launches Claude sessions
+  # AutoMaker
   # ---------------------------------------------------------------------------
-  automaker:
-    image: ghcr.io/automaker-org/automaker:latest  # TODO: pin digest — registry denied access, verify and pin before production
-    container_name: cognitive-os-automaker
-    restart: unless-stopped
-    ports:
-      - "${COGNITIVE_OS_AUTOMAKER_PORT:-4200}:4200"
-    volumes:
-      - .:/workspace
-    environment:
-      CLAUDE_API_KEY: ${CLAUDE_API_KEY:-}
-      WORKSPACE_DIR: /workspace
-    healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://localhost:4200/health || exit 1"]
-      interval: 15s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    networks:
-      - cognitive-os-network
-    profiles:
-      - ui  # Only starts with: docker compose --profile ui up
+  # Removed from the reference compose stack on 2026-05-04: the previously
+  # referenced ghcr.io/automaker-org/automaker:latest image returns
+  # MANIFEST_UNKNOWN, and upstream documents source-build Docker Compose rather
+  # than a public pullable GHCR image. Keep AutoMaker as an external/manual
+  # integration until a stable image digest exists.
+
 
   # ---------------------------------------------------------------------------
   # Jupyter — GPU/Compute Sandbox for ML, data processing, analytics

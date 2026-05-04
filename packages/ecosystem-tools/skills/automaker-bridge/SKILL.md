@@ -169,7 +169,9 @@ This is documented here for reference but should NOT be applied automatically --
 ```yaml
 # Add to docker-compose.cognitive-os.yml
 automaker:
-  image: ghcr.io/automaker-org/automaker:latest
+  # No stable public GHCR image as of 2026-05-04. Clone upstream and use its
+  # source-build Docker Compose flow until a public digest exists.
+  build: /path/to/automaker
   container_name: cognitive-os-automaker
   restart: unless-stopped
   ports:
