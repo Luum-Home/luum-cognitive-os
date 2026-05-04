@@ -1,6 +1,6 @@
 """ADR-003 R2 — Chaos tests for hooks/destructive-rm-blocker.sh.
 
-Contract: the blocker must exit 1 (BLOCKED) when an agent attempts destructive
+Contract: the blocker must exit 2 (BLOCKED) when an agent attempts destructive
 file-erasure operations, and exit 0 (WARN) in user context.
 
 Test matrix — 3 blocked, 3 allowed (minimum per spec):
@@ -23,7 +23,6 @@ from __future__ import annotations
 
 import os
 import subprocess
-import textwrap
 from pathlib import Path
 
 import pytest
@@ -77,7 +76,7 @@ def _executor_env(**extra) -> dict:
     return d
 
 
-# ── Blocked cases (exit 1 + "BLOCKED" in stderr) ─────────────────────────────
+# ── Blocked cases (exit 2 + "BLOCKED" in stderr) ─────────────────────────────
 
 @pytest.mark.skipif(not _BLOCKER.exists(), reason="destructive-rm-blocker.sh not found")
 def test_B1_rm_rf_in_agent_context_is_blocked(tmp_path):
@@ -87,8 +86,8 @@ def test_B1_rm_rf_in_agent_context_is_blocked(tmp_path):
         env_extra=_agent_env(),
         tmp_path=tmp_path,
     )
-    assert result.returncode == 1, (
-        f"Expected exit 1 (BLOCKED), got {result.returncode}\nstderr: {result.stderr}"
+    assert result.returncode == 2, (
+        f"Expected exit 2 (BLOCKED), got {result.returncode}\nstderr: {result.stderr}"
     )
     assert "BLOCKED" in result.stderr, f"'BLOCKED' not in stderr:\n{result.stderr[:400]}"
 
@@ -101,8 +100,8 @@ def test_B2_truncate_zero_with_session_id_is_blocked(tmp_path):
         env_extra=_session_env(),
         tmp_path=tmp_path,
     )
-    assert result.returncode == 1, (
-        f"Expected exit 1 (BLOCKED) via session_id context, got {result.returncode}\n"
+    assert result.returncode == 2, (
+        f"Expected exit 2 (BLOCKED) via session_id context, got {result.returncode}\n"
         f"stderr: {result.stderr}"
     )
     assert "BLOCKED" in result.stderr, f"'BLOCKED' not in stderr:\n{result.stderr[:400]}"
@@ -116,8 +115,8 @@ def test_B3_cp_devnull_with_executor_mode_is_blocked(tmp_path):
         env_extra=_executor_env(),
         tmp_path=tmp_path,
     )
-    assert result.returncode == 1, (
-        f"Expected exit 1 (BLOCKED) via executor mode, got {result.returncode}\n"
+    assert result.returncode == 2, (
+        f"Expected exit 2 (BLOCKED) via executor mode, got {result.returncode}\n"
         f"stderr: {result.stderr}"
     )
     assert "BLOCKED" in result.stderr, f"'BLOCKED' not in stderr:\n{result.stderr[:400]}"
@@ -131,8 +130,8 @@ def test_B4_dd_devzero_in_agent_context_is_blocked(tmp_path):
         env_extra=_agent_env(),
         tmp_path=tmp_path,
     )
-    assert result.returncode == 1, (
-        f"Expected exit 1 (BLOCKED) for dd if=/dev/zero, got {result.returncode}\n"
+    assert result.returncode == 2, (
+        f"Expected exit 2 (BLOCKED) for dd if=/dev/zero, got {result.returncode}\n"
         f"stderr: {result.stderr}"
     )
     assert "BLOCKED" in result.stderr, f"'BLOCKED' not in stderr:\n{result.stderr[:400]}"
@@ -180,15 +179,6 @@ def test_A3_rm_rf_in_user_context_warns_and_allows(tmp_path):
     for key in ("CLAUDE_AGENT_ID", "COGNITIVE_OS_SESSION_ID", "ORCHESTRATOR_MODE"):
         env.pop(key, None)
 
-    result = subprocess.run(
-        ["bash", str(_BLOCKER)],
-        capture_output=True,
-        text=True,
-        timeout=10,
-        env=env,
-        cwd=str(_PROJ_ROOT),
-        input=None,
-    )
     # In user context: should exit 0 (warn, allow), not block
     # NOTE: safe zone /tmp passes silently; a non-safe path warns
     # We pass a non-safe path to ensure we hit the warning branch

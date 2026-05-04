@@ -6,7 +6,7 @@
 # Intercepts bash commands about to run and blocks destructive file-erasure
 # patterns when the call originates from a sub-agent (agent context detected).
 #
-# Blocked in agent context (exit 1):
+# Blocked in agent context (exit 2):
 #   - rm -rf <path>  /  rm -fr  /  rm -Rf  (recursive removal)
 #   - > <tracked-file>      (stdout-redirect truncation of a project file)
 #   - truncate -s 0 <file>  (explicit zero-truncation)
@@ -289,7 +289,7 @@ if _is_agent_context; then
     "$TIMESTAMP" "$AGENT_ID" "$esc_type" "$esc_cmd")
   safe_jsonl_append "$BLOCKS_LOG" "$ENTRY" 2>/dev/null || true
 
-  exit 1
+  exit 2
 fi
 
 # Orchestrator / user context → WARN but allow

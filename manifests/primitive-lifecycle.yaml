@@ -651,12 +651,13 @@ primitives:
     90 days with no opt-in use.
   demotion_evidence:
     demoted_on: '2026-05-03'
-    primary_signal: manifest-tier-claim-audit
+    primary_signal: governance-roi
     reason: Advisory PostToolUse wildcard hook adds default runtime surface and
-      cognitive noise without blocking behavior; manifest-tier audit identified
-      it as a candidate_second_demote, and pre-compaction-flush remains the hard
-      compaction safety primitive.
+      cognitive noise without blocking behavior; governance ROI remained negative
+      in the default window, manifest-tier audit identified it as a candidate_second_demote,
+      and pre-compaction-flush remains the hard compaction safety primitive.
     control_plane_commands:
+    - scripts/cos-governance-roi --json
     - scripts/cos-manifest-tier-claim-audit --json
     - scripts/cos-demotion-loop-audit --json
     - python3 scripts/cos_architecture_readiness.py --json
@@ -777,29 +778,47 @@ primitives:
 - id: hooks/destructive-rm-blocker.sh
   kind: hook
   owner_adr: ADR-126
-  lifecycle_state: advisory
-  maturity: advisory
+  lifecycle_state: blocking
+  maturity: blocking
   distribution: core
   governance_class: runtime-safety
-  risk_class: advisory
+  risk_class: blocking
   supported_harnesses:
   - claude
   projection_targets:
   - .claude/settings.json
   - hooks/destructive-rm-blocker.sh
   runtime_projection: true
-  behavior_evidence: metrics-emitting-advisory
+  behavior_evidence: static-exit2-detected; chaos-tested agent-context file-erasure blocker
   evidence_commands:
   - bash -n hooks/destructive-rm-blocker.sh
-  - python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_coverage_classifier.py
+  - python3 -m pytest tests/chaos/test_destructive_rm_blocker.py tests/chaos/test_safety_drill.py
     -q
+  promotion_evidence:
+    primary_signal: runtime-safety-exit2
+    from_state: advisory
+    to_state: blocking
+    approved_by: operator
+    promoted_on: '2026-05-04'
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    rationale: The hook is a core data-loss prevention primitive; it blocks agent-context
+      destructive file erasure with exit 2 and remains warn-only for direct user/operator
+      context.
   rollback_or_repair_command: Disable or demote hooks/destructive-rm-blocker.sh in
     generated harness settings, then regenerate projections.
-  sunset_criteria: Archive when the hook is removed from runtime projection for 90
-    days or replaced by a native harness primitive with equivalent tests.
-  docs_claim_level: advisory
-  exit_behavior: exit_0
+  sunset_criteria: Demote only if semantic parsing or native harness file-erasure
+    controls provide equivalent agent-context exit-2 behavior with lower false-positive
+    rate.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/rm-op-blocks.jsonl
+  latency_budget_ms: 2000
+  repair_message: Agent-context destructive file erasure is blocked; use targeted
+    Edit operations, move through a safe temp path, or ask the operator for explicit
+    approval.
+  false_positive_tests:
+  - tests/chaos/test_destructive_rm_blocker.py
+  - tests/chaos/test_safety_drill.py
 - id: hooks/direct-main-guard.sh
   kind: hook
   owner_adr: ADR-126
