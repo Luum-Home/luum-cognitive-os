@@ -37,15 +37,15 @@ External references checked:
 | `pandas` | 2.3.3 | 3.0.2 | **Do not apply** | `nemoguardrails>=0.11.1` requires `pandas>=1.4.0,<3`; pandas 3 changes default string dtype and removes deprecated APIs. |
 | `protobuf` | 6.33.6 | 7.34.1 | **Do not apply** | `opentelemetry-proto` requires `protobuf>=3.13,<7.0`; Phoenix/OTel traces depend on that path. |
 | `rich` | 14.3.4 | 15.0.0 | **Do not apply yet** | First-party usage is low risk, but `cognee`/`instructor` require `rich>=13.7.0,<15.0.0` under `luum-cognitive-os[memory]`. |
-| `setuptools` | 81.0.0 | 82.0.1 | **Hold** | Targeted `pkg_resources` scan passed and the audit allowlist no longer masks future `pkg_resources` imports. Applying `setuptools>=82` still produces unrelated universal-lock churn in the optional semantic stack (`torch`/CUDA package set), so keep it held until that lock churn is separated or accepted intentionally. |
+| `setuptools` | 81.0.0 | 82.0.1 | **Hold** | Targeted `pkg_resources` scan passed and the audit allowlist no longer masks future `pkg_resources` imports. Current blocker is `torch==2.11.0` requiring `setuptools<82`; applying `setuptools>=82` would downgrade the optional semantic stack to `torch 2.10.0` and CUDA 12 packages. |
 | `snowballstemmer` | 2.2.0 | 3.0.1 | **Do not apply** | `crawl4ai>=0.8.0` requires `snowballstemmer>=2.2,<3.dev0`; PyPI also shows the initial 3.0.0 was yanked. |
-| `wrapt` | 1.17.3 | 2.1.2 | **Hold** | No first-party imports, but OpenTelemetry/OpenInference/Phoenix instrumentation are transitive consumers. Keep the existing blocker until those paths are explicitly tested against wrapt 2.x. |
+| `wrapt` | 1.17.3 | 2.1.2 | **Hold** | Re-tested on 2026-05-04: `wrapt>=2` is unsatisfiable with current `arize-phoenix>=14.6.0` / `openinference-instrumentation>=0.1.48`; forcing it downgrades/removes observability packages. |
 
 ## Follow-up order
 
 1. Re-check `cognee`, `crawl4ai`, `nemoguardrails`, `mlflow-skinny`, and OpenTelemetry constraints before any global `--major` run.
 2. `pkg_resources` scan is complete; revisit `setuptools>=82` only after deciding whether the unrelated `torch`/CUDA universal-lock churn is acceptable or isolating the semantic extra.
-3. Revisit `wrapt>=2` only with the Phoenix/OpenTelemetry instrumentation integration tests.
+3. Revisit `wrapt>=2` only after OpenInference/Phoenix publish a wrapt-2-compatible instrumentation set.
 4. Do not use `bash scripts/deps-update.sh --apply --major` as a blanket operation until this table has fewer blockers.
 
 
@@ -54,3 +54,6 @@ External references checked:
 - Removed `pkg_resources` from `tests/audit/test_no_undefined_imports.py` third-party allowlist and reran the audit; no first-party import uses it.
 - Tried `uv lock --upgrade-package 'setuptools>=82'`; the resolver can select `setuptools 82.0.1`, but the generated lock also downgrades `torch` and rewrites CUDA 13 package entries to CUDA 12 package names. That is unrelated to `setuptools` and too broad for this maintenance slice.
 - Decision: the `pkg_resources` blocker is cleared, but the package remains retained pending a dedicated lock-strategy decision for the optional `semantic` extra.
+
+
+Cross-reference: `docs/reports/python-major-followup-2026-05-04.md` contains the second-pass resolver evidence for all retained majors.
