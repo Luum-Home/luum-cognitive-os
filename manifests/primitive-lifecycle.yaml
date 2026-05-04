@@ -6276,3 +6276,54 @@ primitives:
   metrics_file: .cognitive-os/metrics/acc-pipeline-history.jsonl
   consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: Keep maintainer-only until consumer-project ACC adapter package and projection proof exist.
+
+- id: scripts/cos-new-adr
+  kind: script
+  owner_adr: ADR-148
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-new-adr
+  runtime_projection: false
+  behavior_evidence: ADR authoring primitive creates contract-compliant drafts through atomic ADR reservation; maintainer-only until a consumer authoring workflow needs it.
+  evidence_commands:
+  - bash -n scripts/cos-new-adr
+  - python3 -m py_compile scripts/cos_new_adr.py
+  - python3 -m pytest tests/unit/test_cos_new_adr.py tests/audit/test_adr_contracts.py -q
+  rollback_or_repair_command: Remove scripts/cos-new-adr and scripts/cos_new_adr.py, then remove this lifecycle row and ADR-148 references.
+  sunset_criteria: Promote only after repeated ADR authoring use with lower contract drift; demote to candidate if it remains maintainer-only convenience.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/locks/adr-reservations.json
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until packaged as a documented authoring command for consumer projects.
+
+- id: scripts/cos_new_adr.py
+  kind: script
+  owner_adr: ADR-148
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_new_adr.py
+  runtime_projection: false
+  behavior_evidence: Python implementation behind scripts/cos-new-adr; renders frontmatter and ADR-067+ required sections.
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_new_adr.py
+  - python3 -m pytest tests/unit/test_cos_new_adr.py -q
+  rollback_or_repair_command: Remove scripts/cos_new_adr.py and wrapper, then remove this lifecycle row and ADR-148 references.
+  sunset_criteria: Keep while scripts/cos-new-adr is active; archive only if ADR authoring moves to another canonical primitive.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/locks/adr-reservations.json
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until packaged as a documented authoring command for consumer projects.
