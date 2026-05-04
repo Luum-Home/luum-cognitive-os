@@ -107,3 +107,9 @@ python3 scripts/acc_pipeline.py --project-dir . --refresh
 - Implemented in `tests/contracts/test_acc_pipeline_contract.py`: repository-level report generation contract.
 - Implemented in `docs/architecture/agent-capability-coverage-pipeline.md`: architecture and adapter boundaries.
 - Implemented in `docs/manual-tests/agent-capability-coverage-pipeline.md`: operator refresh and inspection workflow.
+
+## 2026-05-04 Consumer Projection Adapter
+
+The ACC pipeline now runs a temp-project projection adapter for Claude Code and OpenAI Codex default installs. The adapter invokes `scripts/cos_init.py --default --harness claude` and `--harness codex`, inventories `.cognitive-os/hooks/cos/`, `.cognitive-os/skills/cos/`, and `.cognitive-os/rules/cos/`, and marks matching hook/skill/rule capability rows as `aligned` with `consumer_accessibility: projected-consumer-surface`.
+
+This adapter is deliberately evidence-first: it signs only the primitives that actually appear in generated consumer projects. It does not imply Cursor, Windsurf, VS Code Copilot, Google Antigravity, OpenCode, full-profile projection, or script CLI availability.

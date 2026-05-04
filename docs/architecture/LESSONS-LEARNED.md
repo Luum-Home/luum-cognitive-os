@@ -165,7 +165,7 @@ Derived from these wounds. Apply before adding new code:
 
 ## 2026-05-02 — STASH MUTATION WITHOUT COORDINATION (SILENT-REVERT INCIDENT)
 
-**Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` | `docs/reports/revert-investigation-2026-05-02.md` | ADR-117
+**Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` | `docs/reports/stash-resolution-2026-05-01.md` | ADR-117
 
 **What happened:** During the same 2026-05-02 false-done compounding session, a parallel agent's pre-agent-snapshot hook pushed 59 modified files onto the stash and never restored them. Because the stash entry was anonymous and no audit trail existed, the missing files were invisible to all subsequent agents in the session. Their observations of the working tree were invalid, contributing to cascading false-done reports and 5+ revert events. The stash leak was only discovered during a manual adversarial review.
 
