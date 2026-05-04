@@ -13,9 +13,46 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "doc": 1,
+        "hook": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/auto-verify.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/dod-gate.sh"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:2",
+        "doc_consumers:1"
+      ],
+      "family": "hooks",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "hooks/_lib/artifact-status.sh",
+      "role": "runtime-safety",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
         "config": 3,
         "doc": 72,
-        "hook": 26,
+        "hook": 27,
         "rule": 5,
         "script": 30,
         "skill": 7,
@@ -321,6 +358,10 @@
         {
           "family": "doc",
           "path": "docs/testing.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/_lib/artifact-status.sh"
         },
         {
           "family": "hook",
@@ -822,7 +863,7 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:7",
-        "hook_consumers:26",
+        "hook_consumers:27",
         "rule_consumers:5",
         "script_consumers:30",
         "test_consumers:56",
@@ -837,7 +878,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 199
+      "total_consumers": 200
     },
     {
       "confidence": "medium",
@@ -3640,7 +3681,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 6,
-        "doc": 34,
+        "doc": 33,
         "hook": 5,
         "rule": 3,
         "script": 1,
@@ -3679,10 +3720,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3896,7 +3933,7 @@
         "rule_consumers:3",
         "script_consumers:1",
         "test_consumers:9",
-        "doc_consumers:34",
+        "doc_consumers:33",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -3907,7 +3944,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 60
+      "total_consumers": 59
     },
     {
       "confidence": "medium",
@@ -4611,7 +4648,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 38,
+        "doc": 37,
         "hook": 2,
         "rule": 1,
         "script": 17,
@@ -4654,10 +4691,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-01.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -4991,7 +5024,7 @@
         "rule_consumers:1",
         "script_consumers:17",
         "test_consumers:25",
-        "doc_consumers:38",
+        "doc_consumers:37",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -5002,7 +5035,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 91
+      "total_consumers": 90
     },
     {
       "confidence": "medium",
@@ -8601,7 +8634,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 34,
+        "doc": 35,
         "hook": 1,
         "rule": 9,
         "script": 6,
@@ -8672,6 +8705,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-093-simplify-profiles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md"
         },
         {
           "family": "doc",
@@ -8910,7 +8947,7 @@
         "rule_consumers:9",
         "script_consumers:6",
         "test_consumers:13",
-        "doc_consumers:34",
+        "doc_consumers:35",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -8923,7 +8960,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 73
+      "total_consumers": 74
     },
     {
       "confidence": "medium",
@@ -14316,7 +14353,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 28,
+        "doc": 29,
         "hook": 1,
         "rule": 4,
         "script": 4,
@@ -14383,6 +14420,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-143-closure-discipline-gate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md"
         },
         {
           "family": "doc",
@@ -14545,7 +14586,7 @@
         "rule_consumers:4",
         "script_consumers:4",
         "test_consumers:7",
-        "doc_consumers:28",
+        "doc_consumers:29",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -14558,7 +14599,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 53
+      "total_consumers": 54
     },
     {
       "confidence": "medium",
@@ -31550,24 +31591,24 @@
   "summary": {
     "confidence": {
       "high": 126,
-      "medium": 85
+      "medium": 86
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 1,
       "lifecycle-declared-maintainer": 114,
       "projected-consumer-surface": 11,
-      "so-local-only": 85
+      "so-local-only": 86
     },
     "roles": {
       "driver-specific": 12,
       "lab": 103,
       "memory-lifecycle": 65,
       "observability": 25,
-      "runtime-safety": 6
+      "runtime-safety": 7
     },
-    "total": 211,
+    "total": 212,
     "without_consumers": 0,
-    "without_lifecycle": 85
+    "without_lifecycle": 86
   },
   "target_family": "hooks"
 }

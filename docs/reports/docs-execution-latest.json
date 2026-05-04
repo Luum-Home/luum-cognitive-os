@@ -1186,7 +1186,7 @@
       "inferred_status": "proposed",
       "item": "shell-ci-candidate: 15",
       "kind": "bullet",
-      "line": 32,
+      "line": 29,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1199,7 +1199,7 @@
       "inferred_status": "proposed",
       "item": "Subagents should receive only selected rows/findings, not complete ACC/readiness reports.",
       "kind": "bullet",
-      "line": 51,
+      "line": 40,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1212,7 +1212,7 @@
       "inferred_status": "proposed",
       "item": "shell-ci-candidate: 15",
       "kind": "bullet",
-      "line": 82,
+      "line": 40,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest.md"
     },
@@ -13359,6 +13359,176 @@
       "path": "docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: accepted",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-151-consumer-availability-classification.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Accepted** \u2014 2026-05-04",
+      "kind": "prose",
+      "line": 21,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-151-consumer-availability-classification.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:candidates,consumer,exists,future,partial,projection,proof,real"
+      ],
+      "inferred_status": "planned",
+      "item": "some scripts are real future consumer CLI candidates and should remain partial until shell/CI projection proof exists;",
+      "kind": "bullet",
+      "line": 27,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-151-consumer-availability-classification.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:consumer-project,count,debt,maintainer,scripts,some,tools"
+      ],
+      "inferred_status": "proposed",
+      "item": "some scripts are SO maintainer tools and should not count as consumer-project debt;",
+      "kind": "bullet",
+      "line": 28,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/adrs/ADR-151-consumer-availability-classification.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:before,claimed,driver,future,need,package,projectable,scripts"
+      ],
+      "inferred_status": "planned",
+      "item": "some scripts may need a future package/driver before they can be claimed as projectable.",
+      "kind": "bullet",
+      "line": 29,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-151-consumer-availability-classification.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:manifests/primitive-consumer-availability.yaml",
+        "terms:candidates,classification,consumer,explicit,lifecycle-declared,manifest,manifests,output"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Add `manifests/primitive-consumer-availability.yaml` as the explicit classification manifest for lifecycle-declared consumer candidates not resolved by projection output.",
+      "kind": "prose",
+      "line": 35,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-151-consumer-availability-classification.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:actual,candidates,driver,partial,remaining,rows,shell,they"
+      ],
+      "inferred_status": "planned",
+      "item": "Remaining partial rows are now higher-signal: they are actual shell/CI or driver candidates.",
+      "kind": "bullet",
+      "line": 54,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-151-consumer-availability-classification.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:candidates,projection,remaining,remains,shell,unimplemented"
+      ],
+      "inferred_status": "planned",
+      "item": "Shell/CI projection remains unimplemented for the remaining candidates.",
+      "kind": "bullet",
+      "line": 60,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-151-consumer-availability-classification.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: accepted",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Accepted** \u2014 2026-05-04",
+      "kind": "prose",
+      "line": 22,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:candidates,commands,instead,partial,projection,proven,remaining,shell"
+      ],
+      "inferred_status": "planned",
+      "item": "Shell/CI commands are now proven by temp-project projection instead of remaining partial candidates.",
+      "kind": "bullet",
+      "line": 48,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:avoid,completeness,coverage,current,declared,future,interpreting,must"
+      ],
+      "inferred_status": "planned",
+      "item": "ACC can reach perfect coverage for the current declared scope; future work must avoid interpreting that as universal product completeness.",
+      "kind": "bullet",
+      "line": 54,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:broad,default,defaults,future,more,must,package,project"
+      ],
+      "inferred_status": "planned",
+      "item": "Broad local-surface defaults must be reviewed if a future package wants to project more scripts/rules/skills by default.",
+      "kind": "bullet",
+      "line": 55,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md"
+    },
+    {
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
@@ -15119,7 +15289,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Adding support for a new IDE means updating the manifest, implementing a projection driver or wrapper, and adding a temp-project proof path before changing its status to `implemented`.",
       "kind": "prose",
-      "line": 103,
+      "line": 117,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture/agent-capability-coverage-pipeline.md"
     },
@@ -29379,7 +29549,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Confirm all named IDEs are declared and only implemented harnesses are signed:",
       "kind": "prose",
-      "line": 91,
+      "line": 96,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/manual-tests/agent-capability-coverage-pipeline.md"
     },
@@ -33304,6 +33474,16 @@
         "planned": 4,
         "proposed": 1
       },
+      "docs/adrs/ADR-151-consumer-availability-classification.md": {
+        "done_weak_proof": 2,
+        "done_with_proof": 1,
+        "planned": 4,
+        "proposed": 1
+      },
+      "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md": {
+        "done_weak_proof": 2,
+        "planned": 3
+      },
       "docs/adrs/README.md": {
         "planned": 1
       },
@@ -34146,12 +34326,12 @@
         "planned": 1
       }
     },
-    "items": 2480,
+    "items": 2493,
     "statuses": {
-      "done_weak_proof": 1031,
-      "done_with_proof": 202,
-      "planned": 974,
-      "proposed": 273
+      "done_weak_proof": 1035,
+      "done_with_proof": 203,
+      "planned": 981,
+      "proposed": 274
     }
   }
 }
