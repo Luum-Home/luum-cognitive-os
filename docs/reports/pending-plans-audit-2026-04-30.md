@@ -80,7 +80,7 @@ Based on ROI (impact / effort), small-to-large:
 
 4. **[1 session] hook-architecture-v2 Phase 3 — timing instrumentation** — wire `timing.sh` into the 15 named hooks (`dispatch-gate.sh`, `clarification-gate.sh`, etc.). Zero risk; `_lib/timing.sh` already exists. Fills the `performance.jsonl` dashboard that currently has no data.
 
-5. **[1 session] phoenix-migration-plan Phase 1** — install `arize-phoenix>=7.0`, author the `/phoenix-trace-ui` skill, run smoke test. Operator prereq: `uv pip install -e '.[observability]'`. 2.5 (integration test) already done.
+5. **[1 session] phoenix-migration-plan Phase 1** — install `arize-phoenix>=7.0`, author the `/phoenix-trace-ui` skill, run smoke test. Operator prereq: `uv pip install -r requirements/dependency-lanes/observability.txt`. 2.5 (integration test) already done.
 
 6. **[2 sessions] so-existential-validation Phase 1 (Aggressive Prune)** — run `aspirational-audit.py --json`, generate triage doc, archive unresolved DORMANT/ASPIRATIONAL items. Target: `dormant_aspirational_ratio < 0.25`. Deadline in plan: 2026-05-08.
 

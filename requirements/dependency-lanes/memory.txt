@@ -1,0 +1,2 @@
+# Optional heavy lane: Cognee memory backend.
+cognee>=0.1

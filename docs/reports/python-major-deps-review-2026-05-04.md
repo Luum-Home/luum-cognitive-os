@@ -57,3 +57,8 @@ External references checked:
 
 
 Cross-reference: `docs/reports/python-major-followup-2026-05-04.md` contains the second-pass resolver evidence for all retained majors.
+
+
+## Resolution update — ADR-145
+
+ADR-145 split heavy optional stacks into explicit dependency lanes. The core maintainer lock no longer carries the optional blockers listed above. See `docs/reports/python-major-lane-resolution-2026-05-04.md` for the resolved core-lane outcome.
