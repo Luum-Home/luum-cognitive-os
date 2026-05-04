@@ -32,6 +32,8 @@ def test_unsigned_repo_reports_three_claim_gaps(tmp_path: Path) -> None:
 
     assert report["status"] == "warn"
     assert report["signed_claim_count"] == 0
+    assert report["warn_count"] == 1
+    assert report["info_count"] == 2
     assert {finding["id"] for finding in report["findings"]} == {
         "autonomous-primitive-promotion-missing",
         "bilateral-external-adoption-evidence-missing",
@@ -145,3 +147,6 @@ def test_maturity_loop_signs_with_roi_signed_demotion(tmp_path: Path) -> None:
 
     assert claim["signed"] is True
     assert claim["evidence"]["roi_signed_demotion_count"] == 1
+    assert report["status"] == "pass"
+    assert report["warn_count"] == 0
+    assert report["info_count"] == 2
